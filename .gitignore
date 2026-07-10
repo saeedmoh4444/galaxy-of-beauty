@@ -1,0 +1,79 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.next/
+.expo/
+*.tsbuildinfo
+
+# Environment files (contains secrets)
+.env
+.env.local
+.env.*.local
+.env.production
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# Turbo
+.turbo/
+
+# Prisma
+packages/db/prisma/migrations/
+
+# Uploads (local dev)
+uploads/*
+!uploads/.gitkeep
+
+# Certificates
+*.pem
+*.key
+*.crt
+certs/
+
+# Docker
+.docker/
+docker-data/
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# AI / ML
+*.pkl
+*.joblib
+models/
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
+# Mobile
+apps/mobile/android/
+apps/mobile/ios/

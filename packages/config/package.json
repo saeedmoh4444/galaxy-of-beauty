@@ -1,0 +1,19 @@
+{
+  "name": "@galaxy/config",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./tsconfig/base.json": "./src/tsconfig/base.json",
+    "./tsconfig/next.json": "./src/tsconfig/next.json",
+    "./tsconfig/expo.json": "./src/tsconfig/expo.json",
+    "./tsconfig/react-library.json": "./src/tsconfig/react-library.json",
+    "./eslint/base": "./src/eslint/base.js",
+    "./eslint/next": "./src/eslint/next.js",
+    "./eslint/react": "./src/eslint/react.js",
+    "./prettier": "./src/prettier/index.js",
+    "./tailwind": "./src/tailwind/index.js"
+  },
+  "scripts": {
+    "clean": "rm -rf .turbo"
+  }
+}

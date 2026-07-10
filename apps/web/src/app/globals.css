@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+@layer base {
+  html[dir='rtl'] {
+    font-family: 'Tajawal', sans-serif;
+  }
+  html[dir='ltr'] {
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  /* Shimmer animation for skeletons */
+  .shimmer {
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+}

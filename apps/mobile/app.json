@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Galaxy of Beauty",
+    "slug": "galaxy-of-beauty",
+    "version": "2.0.0",
+    "orientation": "portrait",
+    "scheme": "galaxyofbeauty",
+    "platforms": ["ios", "android"],
+    "plugins": ["expo-router"]
+  }
+}
