@@ -18,10 +18,16 @@
     "@galaxy/db": "workspace:*",
     "@galaxy/shared": "workspace:*",
     "@trpc/server": "^11.0.0",
-    "zod": "^3.23.0"
+    "bcryptjs": "^3.0.3",
+    "ioredis": "^5.11.1",
+    "jsonwebtoken": "^9.0.3",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@galaxy/config": "workspace:*",
+    "@types/bcryptjs": "^3.0.0",
+    "@types/ioredis": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
     "typescript": "^5.5.0"
   }
 }

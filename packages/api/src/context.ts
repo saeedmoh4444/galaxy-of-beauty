@@ -1,16 +1,16 @@
-import type { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
+import { prisma } from '@galaxy/db';
+import type { JwtPayload } from './lib/jwt';
 
-/**
- * tRPC context — created for each request.
- * Extend this with auth, database, and other per-request state.
- */
-export async function createTRPCContext(_opts?: CreateFastifyContextOptions) {
+export interface TRPCContext {
+  prisma: typeof prisma;
+  user: JwtPayload | null;
+}
+
+export async function createTRPCContext(opts?: { user?: JwtPayload | null }): Promise<TRPCContext> {
   return {
-    // db: prisma,
-    // session: null,
-    // req: opts?.req,
-    // res: opts?.res,
+    prisma,
+    user: opts?.user ?? null,
   };
 }
 
-export type TRPCContext = Awaited<ReturnType<typeof createTRPCContext>>;
+export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
