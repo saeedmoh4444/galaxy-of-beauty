@@ -1,0 +1,91 @@
+version: "3.9"
+
+# =============================================================================
+# Galaxy of Beauty — Docker Compose (Dev / Staging)
+# =============================================================================
+# Usage:
+#   docker compose up -d                # Start all services
+#   docker compose up -d --build        # Rebuild and start
+#   docker compose down                 # Stop all
+#   docker compose logs -f web          # Tail web logs
+# =============================================================================
+
+services:
+  # ---- PostgreSQL 15 ----
+  postgres:
+    image: postgres:15-alpine
+    container_name: gob-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-gob_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gob_secure_pass_2024}
+      POSTGRES_DB: ${POSTGRES_DB:-Galaxy_of_Beauty_db}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-gob_admin} -d ${POSTGRES_DB:-Galaxy_of_Beauty_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gob-network
+
+  # ---- Redis 7 ----
+  redis:
+    image: redis:7-alpine
+    container_name: gob-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gob-network
+
+  # ---- Web (Next.js Dev Server) ----
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      target: development
+    container_name: gob-web
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-gob_admin}:${POSTGRES_PASSWORD:-gob_secure_pass_2024}@postgres:5432/${POSTGRES_DB:-Galaxy_of_Beauty_db}?schema=public"
+      REDIS_URL: "redis://redis:6379"
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-dev-access-secret-at-least-32-chars-long}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-dev-refresh-secret-at-least-32-chars-long}
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    volumes:
+      - ./apps/web/src:/app/apps/web/src
+      - ./packages:/app/packages
+      - /app/node_modules
+      - /app/apps/web/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - gob-network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  gob-network:
+    driver: bridge
+    name: gob-network
