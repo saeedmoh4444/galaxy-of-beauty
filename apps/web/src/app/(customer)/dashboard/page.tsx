@@ -35,7 +35,7 @@ export default function CustomerDashboardPage(): JSX.Element {
         {bookings.isLoading ? <CardSkeleton />
         : bookings.isError ? <ErrorAlert message="فشل تحميل الحجوزات" onRetry={() => bookings.refetch()} />
         : !bookings.data?.bookings || (bookings.data.bookings as unknown[]).length === 0
-          ? <EmptyState title="لا توجد حجوزات" description="لم تقم بأي حجز بعد" action={{ label: 'تصفح الخدمات', onPress: () => window.location.href = '/services' }} />
+          ? <div><EmptyState title="لا توجد حجوزات" description="لم تقم بأي حجز بعد" /><div className="text-center"><Link href="/services"><Button>تصفح الخدمات</Button></Link></div></div>
         : <div className="space-y-3">
             {(bookings.data.bookings as Record<string, unknown>[]).map((b: Record<string, unknown>) => (
               <Card key={b.id as number} padding="md" hover>

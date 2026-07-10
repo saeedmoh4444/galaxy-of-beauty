@@ -7,10 +7,9 @@ export default function NotFound(): JSX.Element {
       <EmptyState
         title="الصفحة غير موجودة"
         description="عذراً، الصفحة التي تبحث عنها غير موجودة"
-        action={{ label: 'العودة للرئيسية', onPress: () => {} }}
       />
       <div className="mt-4 text-center">
-        <Link href="/" className="text-brand-600 hover:underline">
+        <Link href="/" className="rounded-lg bg-brand-600 px-6 py-2.5 text-sm font-medium text-white">
           العودة للرئيسية
         </Link>
       </div>

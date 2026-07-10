@@ -24,7 +24,7 @@ export default function BookingsPage(): JSX.Element {
 
         {isLoading ? <CardSkeleton />
         : isError ? <ErrorAlert message="فشل تحميل الحجوزات" onRetry={() => refetch()} />
-        : bookings.length === 0 ? <EmptyState title="لا توجد حجوزات" action={{ label: 'تصفح الخدمات', onPress: () => window.location.href = '/services' }} />
+        : bookings.length === 0 ? <div><EmptyState title="لا توجد حجوزات" /><div className="text-center"><Link href="/services"><Button>تصفح الخدمات</Button></Link></div></div>
         : <div className="space-y-3">{bookings.map((b: Record<string, unknown>) => (
             <Card key={b.id as number} padding="md">
               <div className="flex items-center justify-between">

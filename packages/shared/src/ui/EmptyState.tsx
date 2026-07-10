@@ -1,3 +1,5 @@
+'use client';
+
 import type { ReactNode } from 'react';
 
 interface EmptyStateProps {
@@ -47,6 +49,7 @@ export function EmptyState({
       )}
       {action && (
         <button
+          type="button"
           onClick={action.onPress}
           className="mt-6 rounded-lg bg-brand-600 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-brand-700"
         >
