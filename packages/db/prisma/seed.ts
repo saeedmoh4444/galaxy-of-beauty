@@ -51,22 +51,6 @@ async function main() {
 
   console.log('✅ Cleaned existing data');
 
-  // ---- Platform Config ----
-  await prisma.platformConfig.createMany({
-    data: [
-      { key: 'platformFeeSar', value: '11', description: 'Platform fee in SAR per booking' },
-      { key: 'cashbackFirstBookingPercent', value: '40', description: 'Cashback % for first booking' },
-      { key: 'cashbackSubsequentPercent', value: '5', description: 'Cashback % for subsequent bookings' },
-      { key: 'minWithdrawalBalance', value: '200', description: 'Minimum balance to allow withdrawal' },
-      { key: 'minWithdrawalAmount', value: '100', description: 'Minimum withdrawal amount' },
-      { key: 'withdrawalFeePercent', value: '5', description: 'Withdrawal fee percentage' },
-      { key: 'technicianEarningsPercent', value: '99', description: 'Technician earnings share' },
-      { key: 'termsVersion', value: '1.0', description: 'Current terms version' },
-      { key: 'maintenanceMode', value: 'false', description: 'Maintenance mode toggle' },
-    ],
-  });
-  console.log('✅ Platform configuration');
-
   // ---- Saudi Cities ----
   const cities = [
     { nameAr: 'الرياض', nameEn: 'Riyadh', regionAr: 'منطقة الرياض', regionEn: 'Riyadh Region' },
@@ -88,7 +72,7 @@ async function main() {
 
   // ---- Admin User ----
   // Password: Admin@123456
-  const adminPasswordHash = '$2a$12$LJ3m4ys3LkBCVxJGqOjPNOGvns5mGZbYIXrvMNKN1sdMGqZ5oX3Ni'; // bcrypt hash placeholder
+  const adminPasswordHash = '$2b$12$WLl1knNaSSoIuae5Pjcd9.5IlMOPSEb8w5dd/22Kyxmkw5Sei2Wvi'; // Admin@123456
 
   const admin = await prisma.user.create({
     data: {
@@ -107,6 +91,22 @@ async function main() {
     data: { userId: admin.id, balance: 0, bonusBalance: 0 },
   });
   console.log('✅ Admin user (admin@galaxyofbeauty.sa / Admin@123456)');
+
+  // ---- Platform Config ----
+  await prisma.platformConfig.createMany({
+    data: [
+      { key: 'platformFeeSar', value: '11', description: 'Platform fee in SAR per booking', updatedBy: admin.id },
+      { key: 'cashbackFirstBookingPercent', value: '40', description: 'Cashback % for first booking', updatedBy: admin.id },
+      { key: 'cashbackSubsequentPercent', value: '5', description: 'Cashback % for subsequent bookings', updatedBy: admin.id },
+      { key: 'minWithdrawalBalance', value: '200', description: 'Minimum balance to allow withdrawal', updatedBy: admin.id },
+      { key: 'minWithdrawalAmount', value: '100', description: 'Minimum withdrawal amount', updatedBy: admin.id },
+      { key: 'withdrawalFeePercent', value: '5', description: 'Withdrawal fee percentage', updatedBy: admin.id },
+      { key: 'technicianEarningsPercent', value: '99', description: 'Technician earnings share', updatedBy: admin.id },
+      { key: 'termsVersion', value: '1.0', description: 'Current terms version', updatedBy: admin.id },
+      { key: 'maintenanceMode', value: 'false', description: 'Maintenance mode toggle', updatedBy: admin.id },
+    ],
+  });
+  console.log('✅ Platform configuration');
 
   // ---- Categories (6 root categories) ----
   const categories = await Promise.all([
