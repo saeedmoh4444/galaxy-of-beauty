@@ -1,5 +1,6 @@
 # PLAN.md — Galaxy of Beauty: Greenfield Rebuild
 
+
 > **Strategy:** Full greenfield rebuild into the target Next.js 14 + tRPC + Turborepo + pnpm monorepo stack, carrying forward all 27 features from the existing Express + React/Vite + Expo codebase.
 
 ---
