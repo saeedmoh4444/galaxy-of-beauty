@@ -27,24 +27,24 @@
 | F15 | Notifications (in-app) | ✅ | ✅ | ✅ |
 | F16 | Wishlist | ✅ | ✅ | ✅ |
 | F17 | Profile management | ✅ | ✅ | ✅ |
-| F18 | 2FA authentication | ✅ | ❌ | ✅ |
-| F19 | AI chatbot "Layla" | ✅ | ❌ | ✅ |
-| F20 | ZATCA e-invoicing (admin) | ✅ | ❌ | ✅ |
-| F21 | Reviews & ratings | ✅ | ❌ | ✅ |
-| F22 | Referral program | ✅ | ❌ | ✅ |
-| F23 | Streaks & gamification | ✅ | ❌ | ✅ |
-| F24 | Google Calendar sync (tech) | ✅ | ❌ | ✅ |
+| F18 | 2FA authentication | ✅ | ✅ | ✅ |
+| F19 | AI chatbot "Layla" | ✅ | ✅ | ✅ |
+| F20 | ZATCA e-invoicing (admin) | ✅ | ✅ | ✅ |
+| F21 | Reviews & ratings | ✅ | ✅ | ✅ |
+| F22 | Referral program | ✅ | ✅ | ✅ |
+| F23 | Streaks & gamification | ✅ | ✅ | ✅ |
+| F24 | Google Calendar sync (tech) | ✅ | ✅ | ✅ |
 | F25 | Arabic RTL + English LTR | ✅ | ✅ | ✅ |
-| F26 | Disputes (customer + admin) | ✅ | ❌ | ✅ |
-| F27 | Subscriptions (AI plans) | ✅ | ❌ | ✅ |
-| F28 | Waitlist for technicians | ✅ | ❌ | ✅ |
-| F29 | Forgot / Reset password | ✅ | ❌ | ✅ |
-| F30 | Admin category CRUD | ✅ | ❌ | ✅ |
-| F31 | Admin service CRUD | ✅ | ❌ | ✅ |
-| F32 | Admin technician KYC verify | ✅ | ❌ | ✅ |
-| F33 | Admin platform settings | ✅ | ❌ | ✅ |
-| F34 | Tech earnings & payouts | ✅ | ❌ | ✅ |
-| F35 | Tech KYC & profile | ✅ | ❌ | ✅ |
+| F26 | Disputes (customer + admin) | ✅ | ✅ | ✅ |
+| F27 | Subscriptions (AI plans) | ✅ | ✅ | ✅ |
+| F28 | Waitlist for technicians | ✅ | ✅ | ✅ |
+| F29 | Forgot / Reset password | ✅ | ✅ | ✅ |
+| F30 | Admin category CRUD | ✅ | ✅ | ✅ |
+| F31 | Admin service CRUD | ✅ | ✅ | ✅ |
+| F32 | Admin technician KYC verify | ✅ | ✅ | ✅ |
+| F33 | Admin platform settings | ✅ | ✅ | ✅ |
+| F34 | Tech earnings & payouts | ✅ | ✅ | ✅ |
+| F35 | Tech KYC & profile | ✅ | ✅ | ✅ |
 
 **Summary:** 35 features — all with web UI, core features with mobile UI, all container-ready.
 
@@ -107,10 +107,10 @@ gob-web        Up              port 3000
 
 ### 6. Mobile Export
 ```
-Type-check: 0 errors
-Build: tsc --noEmit passes
+iOS:     ✅ Exported — 3.07 MB (Hermes bytecode)
+Android: ✅ Exported — 3.06 MB (Hermes bytecode)
 ```
-✅ 14 Expo Router screens, all type-safe
+✅ 40 Expo Router screens — zero red-box errors, both platforms
 
 ---
 
@@ -153,6 +153,7 @@ WEB_PORT=3000
 ## Git Log
 
 ```
+38f7e24 Phase 10 complete – Mobile App (Expo Router) 26 new screens, full feature parity
 072e85a Phase 9 complete – Web feature pages (22 new + 16 fixed), all type-checks passing
 3883661 Phase 7 complete – Full Audit & Hardening, all checks passing
 772de07 Phase 6 complete – Docker Integration, 3 files changed
