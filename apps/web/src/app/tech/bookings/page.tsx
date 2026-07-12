@@ -10,7 +10,7 @@ export default function TechBookingsPage(): JSX.Element {
   const { data, isLoading, isError, refetch } = api.bookings.list.useQuery({ status, page: 1, limit: 20 });
   const transition = api.bookings.transition.useMutation({ onSuccess: () => refetch() });
 
-  const bookings = (data?.bookings as Record<string, unknown>[]) ?? [];
+  const bookings = (data?.bookings as unknown as Record<string, unknown>[]) ?? [];
 
   return (
     <DashboardLayout role="TECHNICIAN">

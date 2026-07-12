@@ -5,7 +5,7 @@ import { api } from '@/lib/trpc';
 import { Button, Card, CardSkeleton, ErrorAlert, EmptyState } from '@galaxy/shared';
 
 export default function HomePage(): JSX.Element {
-  const cats = api.categories.list.useQuery();
+  const cats = api.categories.list.useQuery({} as never);
   const services = api.services.list.useQuery({ sort: 'popular', limit: 6 });
   const categories = (cats.data ?? []) as unknown as Record<string, unknown>[];
   const svcItems = (services.data?.items ?? []) as unknown as Record<string, unknown>[];

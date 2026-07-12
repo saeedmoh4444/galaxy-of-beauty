@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -14,7 +15,7 @@ export default function BookingsPage(): JSX.Element {
   const { data, isLoading, isError, refetch } = api.bookings.list.useQuery({ status, page, limit: 10 });
   const cancelMut = api.bookings.transition.useMutation({ onSuccess: () => { setCancelId(null); refetch(); } });
 
-  const bookings = (data?.bookings as Record<string, unknown>[]) ?? [];
+  const bookings = (data?.bookings as unknown as Record<string, unknown>[]) ?? [];
 
   return (
     <DashboardLayout role="CUSTOMER">

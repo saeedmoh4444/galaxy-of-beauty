@@ -7,8 +7,9 @@ export default function AdminDashboardScreen() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    trpc.admin.dashboardStats.query()
-      .then((d) => { setStats(d as unknown as Record<string, unknown>); setLoading(false); })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (trpc.admin.dashboardStats as any).query()
+      .then((d: Record<string, unknown>) => { setStats(d as unknown as Record<string, unknown>); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
 

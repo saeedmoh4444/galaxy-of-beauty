@@ -5,7 +5,7 @@ import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, formatCurrency } from '@galaxy/shared';
 
 export default function AdminFinancePage(): JSX.Element {
-  const financials = api.admin.getFinancials.useQuery();
+  const financials = api.admin.getFinancials.useQuery({} as never);
   const payouts = api.payouts.listForAdmin.useQuery({ page: 1, limit: 20 });
   const calculateMut = api.payouts.calculate.useMutation();
   const [periodStart, setPeriodStart] = useState('');

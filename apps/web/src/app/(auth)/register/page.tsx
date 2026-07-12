@@ -15,11 +15,11 @@ export default function RegisterPage(): JSX.Element {
   const [accepted, setAccepted] = useState(false);
   const mutation = api.auth.register.useMutation({
     onSuccess: async (data) => {
-      const u = (data as Record<string, unknown>).user as Record<string, unknown>;
-      localStorage.setItem('gob_access', (data as Record<string, unknown>).accessToken as string);
-      localStorage.setItem('gob_refresh', (data as Record<string, unknown>).refreshToken as string);
+      const u = (data as unknown as Record<string, unknown>).user as unknown as Record<string, unknown>;
+      localStorage.setItem('gob_access', (data as unknown as Record<string, unknown>).accessToken as string);
+      localStorage.setItem('gob_refresh', (data as unknown as Record<string, unknown>).refreshToken as string);
       await login(
-        { accessToken: (data as Record<string, unknown>).accessToken as string, refreshToken: (data as Record<string, unknown>).refreshToken as string },
+        { accessToken: (data as unknown as Record<string, unknown>).accessToken as string, refreshToken: (data as unknown as Record<string, unknown>).refreshToken as string },
         { id: u.id as number, email: u.email as string, name: u.name as string, role: u.role as 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN', preferredLanguage: 'ar' },
       );
       router.push('/dashboard');

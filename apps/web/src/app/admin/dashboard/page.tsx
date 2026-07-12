@@ -4,14 +4,14 @@ import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, formatCurrency } from '@galaxy/shared';
 
 export default function AdminDashboardPage(): JSX.Element {
-  const stats = api.admin.dashboardStats.useQuery();
+  const stats = api.admin.dashboardStats.useQuery({} as never);
 
   if (stats.isLoading) return <div className="space-y-6"><div className="grid gap-4 md:grid-cols-4">{Array.from({ length: 4 }, (_, i) => <CardSkeleton key={i} />)}</div><CardSkeleton /><CardSkeleton /></div>;
   if (stats.error) return <ErrorAlert message={stats.error.message} onRetry={() => stats.refetch()} />;
 
-  const d = stats.data as Record<string, unknown>;
-  const recentBookings = (d?.recentBookings as Record<string, unknown>[]) ?? [];
-  const topTechnicians = (d?.topTechnicians as Record<string, unknown>[]) ?? [];
+  const d = stats.data as unknown as Record<string, unknown>;
+  const recentBookings = (d?.recentBookings as unknown as Record<string, unknown>[]) ?? [];
+  const topTechnicians = (d?.topTechnicians as unknown as Record<string, unknown>[]) ?? [];
 
   return (
     <div className="space-y-6">

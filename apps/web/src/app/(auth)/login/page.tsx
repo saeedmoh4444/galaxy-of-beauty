@@ -15,7 +15,7 @@ export default function LoginPage(): JSX.Element {
   const [error, setError] = useState('');
   const mutation = api.auth.login.useMutation({
     onSuccess: async (data) => {
-      const u = data.user as Record<string, unknown>;
+      const u = data.user as unknown as Record<string, unknown>;
       localStorage.setItem('gob_access', data.accessToken);
       localStorage.setItem('gob_refresh', data.refreshToken);
       await login(

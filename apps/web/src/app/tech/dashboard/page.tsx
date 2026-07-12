@@ -5,7 +5,7 @@ import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } fr
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function TechDashboardPage(): JSX.Element {
-  const pending = api.bookings.getTechnicianPending.useQuery();
+  const pending = api.bookings.getTechnicianPending.useQuery({} as never);
   const earnings = api.analytics.technicianEarnings.useQuery({ days: 7 });
   const transition = api.bookings.transition.useMutation({
     onSuccess: () => { pending.refetch(); },
@@ -32,7 +32,7 @@ export default function TechDashboardPage(): JSX.Element {
         : !pending.data || (pending.data as unknown[]).length === 0
           ? <EmptyState title="لا توجد طلبات معلقة" />
         : <div className="space-y-3">
-            {(pending.data as Record<string, unknown>[]).map((b: Record<string, unknown>) => (
+            {(pending.data as unknown as Record<string, unknown>[]).map((b: Record<string, unknown>) => (
               <Card key={b.id as number} padding="md">
                 <div className="flex items-center justify-between">
                   <div>

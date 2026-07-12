@@ -124,6 +124,32 @@ export const waitlistRouter = router({
       return { success: true };
     }),
 
+  // ── List my waitlist entries ──────────────────────────────────────────────
+  listMyEntries: customerProcedure
+    .query(async ({ ctx }) => {
+      const entries = await prisma.waitlistEntry.findMany({
+        where: { customerId: ctx.user.id },
+        orderBy: { createdAt: 'desc' },
+        include: {
+          technician: {
+            include: {
+              user: { select: { id: true, name: true } },
+            },
+          },
+        },
+      });
+
+      return entries.map((e) => ({
+        id: e.id,
+        status: e.status,
+        position: e.position,
+        createdAt: e.createdAt,
+        technicianId: e.technicianId,
+        technicianName: e.technician.user.name,
+        serviceName: null as string | null,
+      }));
+    }),
+
   // ── Get my position ───────────────────────────────────────────────────────
   getMyPosition: customerProcedure
     .input(z.object({ technicianId: z.number() }))

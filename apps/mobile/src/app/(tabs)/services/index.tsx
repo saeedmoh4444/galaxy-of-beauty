@@ -11,8 +11,9 @@ export default function ServicesScreen() {
 
   useEffect(() => {
     setLoading(true);
-    trpc.services.list.query({ search: search || undefined, sort: 'newest', page: 1, limit: 20 })
-      .then((d) => { setData((d.items ?? []) as Record<string, unknown>[]); setLoading(false); })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (trpc.services.list as any).query({ search: search || undefined, sort: 'newest', page: 1, limit: 20 })
+      .then((d: Record<string, unknown>) => { setData((d.items ?? []) as Record<string, unknown>[]); setLoading(false); })
       .catch(() => setLoading(false));
   }, [search]);
 

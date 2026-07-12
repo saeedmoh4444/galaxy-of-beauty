@@ -7,7 +7,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CustomerDashboardPage(): JSX.Element {
   const bookings = api.bookings.list.useQuery({ limit: 5 });
-  const insights = api.analytics.customerInsights.useQuery();
+  const insights = api.analytics.customerInsights.useQuery({} as never);
 
   return (
     <DashboardLayout role="CUSTOMER">
@@ -21,7 +21,7 @@ export default function CustomerDashboardPage(): JSX.Element {
             <Card className="text-center"><p className="text-sm text-gray-500">إجمالي الحجوزات</p><p className="text-2xl font-bold text-brand-600">{insights.data?.bookingCount ?? 0}</p></Card>
             <Card className="text-center"><p className="text-sm text-gray-500">إجمالي الإنفاق</p><p className="text-2xl font-bold text-green-600">{formatCurrency(Number(insights.data?.totalSpent ?? 0))}</p></Card>
             <Card className="text-center"><p className="text-sm text-gray-500">التقييمات</p><p className="text-2xl font-bold text-amber-600">⭐</p></Card>
-            <Card className="text-center"><p className="text-sm text-gray-500">الاستمرارية</p><p className="text-2xl font-bold text-purple-600">{(insights.data?.streakInfo as Record<string, unknown>)?.currentStreak as number ?? 0} أسابيع</p></Card>
+            <Card className="text-center"><p className="text-sm text-gray-500">الاستمرارية</p><p className="text-2xl font-bold text-purple-600">{(insights.data?.streakInfo as unknown as Record<string, unknown>)?.currentStreak as number ?? 0} أسابيع</p></Card>
           </div>
         )}
 
@@ -37,7 +37,7 @@ export default function CustomerDashboardPage(): JSX.Element {
         : !bookings.data?.bookings || (bookings.data.bookings as unknown[]).length === 0
           ? <div><EmptyState title="لا توجد حجوزات" description="لم تقم بأي حجز بعد" /><div className="text-center"><Link href="/services"><Button>تصفح الخدمات</Button></Link></div></div>
         : <div className="space-y-3">
-            {(bookings.data.bookings as Record<string, unknown>[]).map((b: Record<string, unknown>) => (
+            {(bookings.data.bookings as unknown as Record<string, unknown>[]).map((b: Record<string, unknown>) => (
               <Card key={b.id as number} padding="md" hover>
                 <div className="flex items-center justify-between">
                   <div>

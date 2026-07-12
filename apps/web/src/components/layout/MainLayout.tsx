@@ -8,7 +8,7 @@ const navLinks = [
   { href: '/services', labelAr: 'الخدمات', labelEn: 'Services' },
 ];
 
-export function MainLayout({ children }: { children: ReactNode }) {
+export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
   const pathname = usePathname();
 
   return (

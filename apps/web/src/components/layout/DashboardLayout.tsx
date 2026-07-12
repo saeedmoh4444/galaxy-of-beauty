@@ -23,7 +23,7 @@ const technicianLinks = [
   { href: '/profile', labelAr: 'الملف الشخصي', labelEn: 'Profile', icon: '👤' },
 ];
 
-export function DashboardLayout({ children, role = 'CUSTOMER' }: { children: ReactNode; role?: string }) {
+export function DashboardLayout({ children, role = 'CUSTOMER' }: { children: ReactNode; role?: string }): JSX.Element {
   const pathname = usePathname();
   const router = useRouter();
   const { logout } = useAuth();

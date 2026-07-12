@@ -11,7 +11,7 @@ export default function ServicesPage(): JSX.Element {
   const [sort, setSort] = useState('newest');
   const [page, setPage] = useState(1);
   const svcQuery = api.services.list.useQuery({ search: debouncedSearch || undefined, sort: sort as 'newest', page, limit: 12 });
-  const cats = api.categories.list.useQuery();
+  const cats = api.categories.list.useQuery({} as never);
   const data = svcQuery.data as unknown as { items: Record<string, unknown>[]; total: number; page: number; limit: number } | undefined;
   const items = data?.items ?? [];
   const total = data?.total ?? 0;
