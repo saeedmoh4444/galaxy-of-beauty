@@ -68,7 +68,11 @@ services:
       - "${WEB_PORT:-3000}:3000"
     volumes:
       - ./apps/web/src:/app/apps/web/src
-      - ./packages:/app/packages
+      - ./packages/api/src:/app/packages/api/src
+      - ./packages/shared/src:/app/packages/shared/src
+      - ./packages/db/prisma:/app/packages/db/prisma
+      - ./packages/db/src:/app/packages/db/src
+      - ./packages/config:/app/packages/config
       - /app/node_modules
       - /app/apps/web/node_modules
     depends_on:

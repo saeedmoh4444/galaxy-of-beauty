@@ -7,10 +7,10 @@
 # =============================================================================
 
 # ---- Base ----
-FROM node:20-alpine AS base
+FROM node:20-slim AS base
 WORKDIR /app
 
-# Install pnpm
+# Install pnpm + Prisma deps
 RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
 
 # Copy workspace config and lockfile
@@ -41,8 +41,8 @@ ENV NODE_ENV=development
 COPY packages/db/src ./packages/db/src
 COPY packages/db/prisma ./packages/db/prisma
 
-# Generate Prisma client
-RUN cd /app/packages/db && npx prisma generate
+# Generate Prisma client for current platform
+RUN cd /app/packages/db && npx prisma generate && npx prisma --version
 
 WORKDIR /app/apps/web
 EXPOSE 3000
@@ -56,8 +56,8 @@ COPY packages/shared/src ./packages/shared/src
 COPY apps/web/src ./apps/web/src
 COPY apps/web/public ./apps/web/public
 
-# Generate Prisma client
-RUN cd /app/packages/db && npx prisma generate
+# Generate Prisma client for current platform
+RUN cd /app/packages/db && npx prisma generate && npx prisma --version
 
 # Build Next.js
 RUN cd /app/apps/web && npx next build
