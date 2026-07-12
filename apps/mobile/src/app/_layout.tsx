@@ -14,11 +14,17 @@ export default function RootLayout() {
         <Stack.Screen name="(auth)/login/index" options={{ title: 'تسجيل الدخول' }} />
         <Stack.Screen name="(auth)/register/index" options={{ title: 'إنشاء حساب' }} />
         <Stack.Screen name="(auth)/forgot-password/index" options={{ title: 'نسيت كلمة المرور' }} />
+        <Stack.Screen name="(auth)/reset-password/index" options={{ title: 'إعادة تعيين كلمة المرور' }} />
+        <Stack.Screen name="(auth)/verify-email/index" options={{ title: 'توثيق البريد الإلكتروني' }} />
         <Stack.Screen name="(auth)/2fa/index" options={{ title: 'المصادقة الثنائية' }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="services/[id]" options={{ title: 'تفاصيل الخدمة' }} />
+        <Stack.Screen name="services/surprise-me/index" options={{ title: 'فاجئيني' }} />
+        <Stack.Screen name="technicians/index" options={{ title: 'الفنيات' }} />
+        <Stack.Screen name="technicians/[id]/index" options={{ title: 'ملف الفنية' }} />
 
         {/* Customer screens */}
+        <Stack.Screen name="customer/addresses/index" options={{ title: 'العناوين' }} />
         <Stack.Screen name="customer/wishlist/index" options={{ title: 'المفضلة' }} />
         <Stack.Screen name="customer/waitlist/index" options={{ title: 'قائمة الانتظار' }} />
         <Stack.Screen name="customer/notifications/index" options={{ title: 'الإشعارات' }} />
