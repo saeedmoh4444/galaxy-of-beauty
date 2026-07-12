@@ -2,7 +2,12 @@
 
 **Secure marketplace for beauty & grooming services in Saudi Arabia.**
 
-Galaxy of Beauty connects female customers with vetted female technicians for beauty services including hair, nails, skin care, makeup, massage, and henna. Built with security, privacy, and Saudi compliance (ZATCA, PDPL) at its core.
+Galaxy of Beauty connects female customers with vetted female technicians for beauty services — hair, nails, skin care, makeup, massage, and henna. Arabic-first, Saudi-compliant (ZATCA, PDPL), and built on a modern monorepo stack.
+
+[![Type Check](https://img.shields.io/badge/type--check-8%2F8-brightgreen)](#)
+[![Lint](https://img.shields.io/badge/lint-5%2F5-brightgreen)](#)
+[![Build](https://img.shields.io/badge/build-5%2F5-brightgreen)](#)
+[![Docker](https://img.shields.io/badge/docker-4%2F4-brightgreen)](#)
 
 ---
 
@@ -10,284 +15,211 @@ Galaxy of Beauty connects female customers with vetted female technicians for be
 
 ### Prerequisites
 
-- **Node.js** v20 LTS
-- **PostgreSQL** 15+ (already running as `Galaxy_of_Beauty_db`)
-- **Redis** 7+ (for caching, queues, Socket.IO)
-- **npm** 9+
+- **Node.js** v20+
+- **pnpm** 9+ (`corepack enable && corepack prepare pnpm@9 --activate`)
+- **PostgreSQL** 15+ 
+- **Redis** 7+
+- **Docker Desktop** (optional, for containerized dev)
 
-### Local Development (Recommended)
-
-#### 1. Clone and install
-
-```bash
-cd "beauty project/beauty_project"
-
-# Backend
-cd backend
-npm install
-npx prisma generate
-npx prisma db push     # Push schema to Galaxy_of_Beauty_db
-cp .env.example .env   # Edit .env with your values
-
-# Frontend
-cd ../frontend
-npm install
-cp .env.example .env
-```
-
-#### 2. Configure environment
-
-Edit `backend/.env`:
-
-```env
-# The database Galaxy_of_Beauty_db already exists in your local PostgreSQL
-DATABASE_URL="postgresql://postgres:YOUR_PASSWORD@localhost:5432/Galaxy_of_Beauty_db?schema=public"
-JWT_ACCESS_SECRET=your-secret-at-least-32-characters-long
-JWT_REFRESH_SECRET=another-secret-also-32-characters-minimum
-```
-
-#### 3. Start development servers
+### Local Development
 
 ```bash
-# Terminal 1 - Backend (port 4000)
-cd backend
-npm run dev
+# 1. Install dependencies
+pnpm install
 
-# Terminal 2 - Frontend (port 5173)
-cd frontend
-npm run dev
+# 2. Generate Prisma client & push schema
+pnpm db:generate
+pnpm db:push
+
+# 3. Seed the database
+pnpm db:seed
+
+# 4. Start the dev server
+pnpm dev
 ```
 
-**Open**: [http://localhost:5173](http://localhost:5173)
+**Open**: [http://localhost:3000](http://localhost:3000)
 
-#### 4. Seed the database
-
-```bash
-cd backend
-
-# Base seed — categories, services, admin user, platform config
-npm run prisma:seed
-
-# Demo seed — sample users, technicians, bookings, reviews (optional)
-npm run prisma:seed-demo
-```
-
-Creates:
-- **Base seed:** Admin (`admin@galaxyofbeauty.sa` / `Admin@123456`), 6 root categories with 20 subcategories, 10 services, AI subscription plans, platform config
-- **Demo seed:** 2 customers, 3 verified technicians (الرياض/جدة/الدمام), 126 availability slots (7 days), 4 bookings in various states with reviews, wallet transactions, waitlist entries
-
----
-
-### Docker Compose (Staging)
+### Docker Compose
 
 ```bash
 docker compose up -d            # Start all services
-docker compose logs -f backend   # Watch backend logs
-docker compose down              # Stop everything
+docker compose ps               # Check health
+docker compose down             # Stop everything
 ```
 
-Services:
-| Service | Port | Description |
-|---------|------|-------------|
-| Backend API | 4000 | Express.js REST + WebSocket |
-| Frontend | 5173 | Vite dev server with HMR |
-| PostgreSQL | 5432 | Database |
-| Redis | 6379 | Cache, queues, pub/sub |
+| Service | Container | Port | Status |
+|---------|-----------|------|--------|
+| Web (Next.js) | `gob-web` | 3000 | 🟢 |
+| Mobile (Expo) | `gob-mobile` | 8081 | 🟢 |
+| PostgreSQL 15 | `gob-postgres` | 5432 | 🟢 |
+| Redis 7 | `gob-redis` | 6379 | 🟢 |
 
 ---
 
-## 📁 Project Structure
+## 🏗️ Architecture
 
 ```
-beauty_project/
-├── backend/                    # Express.js API server
-│   ├── src/
-│   │   ├── config/             # env, database, redis, logger
-│   │   ├── middleware/          # auth, errorHandler, rateLimiter, validate, upload, requestId
-│   │   ├── routes/              # API route handlers (modular)
-│   │   ├── services/            # Business logic layer
-│   │   ├── jobs/                # BullMQ queue definitions
-│   │   ├── utils/               # errors, jwt, idempotency, localization, helpers
-│   │   ├── validators/          # Zod schemas (shared with frontend)
-│   │   ├── socket/              # Socket.IO event handlers
-│   │   └── app.js               # Express app entry point
-│   ├── prisma/
-│   │   ├── schema.prisma        # Full database schema (25+ models)
-│   │   └── seed.js              # Seed data
-│   ├── tests/
-│   │   ├── unit/                # Jest unit tests
-│   │   ├── integration/         # Supertest API tests
-│   │   └── setup.js
-│   ├── Dockerfile
-│   └── package.json
-├── frontend/                   # React + Vite SPA
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── layout/          # Navbar, Footer, Layout
-│   │   │   ├── ui/              # LanguageSwitcher, ErrorBoundary, LoadingScreen
-│   │   │   └── ai/              # ChatbotWidget (Layla)
-│   │   ├── pages/               # Route pages (lazy-loaded)
-│   │   ├── hooks/               # Custom React hooks
-│   │   ├── store/               # Zustand stores (auth, UI)
-│   │   ├── lib/                 # API client (Axios), helpers
-│   │   ├── i18n/                # Arabic + English translations
-│   │   ├── validators/          # Zod schemas (mirrors backend)
-│   │   └── App.jsx
-│   ├── Dockerfile
-│   └── package.json
-├── docker-compose.yml
-└── README.md
+galaxy-of-beauty/
+├── apps/
+│   ├── web/                    # Next.js 14 App Router (37 pages)
+│   └── mobile/                 # Expo SDK 54 + Expo Router (46 screens)
+├── packages/
+│   ├── api/                    # tRPC v11 — 26 routers, 170+ procedures
+│   ├── db/                     # Prisma — 36 models, 15 enums, seed
+│   ├── shared/                 # UI kit, hooks, i18n, theme
+│   └── config/                 # TSConfig, ESLint, Prettier, Tailwind
+├── docker-compose.yml          # 4-service Docker stack
+├── turbo.json                  # Turborepo build pipeline
+└── pnpm-workspace.yaml
 ```
+
+### Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **Monorepo** | Turborepo + pnpm workspaces |
+| **Web** | Next.js 14 App Router, Tailwind CSS, React 18 |
+| **Mobile** | Expo SDK 54, Expo Router, React Native 0.81 |
+| **API** | tRPC v11 with Zod validation |
+| **Database** | PostgreSQL 15 via Prisma ORM |
+| **Cache** | Redis 7 |
+| **Auth** | JWT access (15m) + refresh (7d) with rotation |
+| **Container** | Docker Compose (4 services) |
 
 ---
 
-## 🗄️ Database Models (Prisma)
+## ✨ Features (41 Total)
 
-### Core Tables (25+)
+### 🔐 Auth & Identity
+- Register (Customer/Technician), Login with JWT
+- Email verification, Forgot/Reset password
+- 2FA with authenticator app (TOTP)
+- Role-based access (Customer / Technician / Admin)
 
-| Model | Description |
-|-------|-------------|
-| User | Customers, technicians, admins |
-| RefreshToken | JWT refresh token rotation |
-| Technician | Extended profile, KYC, ratings |
-| Wallet | Balance + bonus for each user |
-| WalletTransaction | Credit/debit audit trail |
-| Address | Customer saved addresses |
-| Category | Nested service categories (JSONB localized) |
-| Service | Beauty services with variants & add-ons |
-| ServiceVariant | Price/duration modifiers |
-| ServiceAddon | Add-on services |
-| TechnicianService | Tech-service mapping with custom pricing |
-| AvailabilitySlot | Technician calendar slots |
-| Booking | Full booking lifecycle with state machine |
-| Payment | PayFort gateway transactions |
-| Payout | Technician earning settlements |
-| Review | Customer ratings & comments |
-| Dispute | Booking disputes with resolution |
-| Notification | Multi-channel (email/SMS/push/in-app) |
-| WaitlistEntry | Waitlist per technician |
-| TermsAcceptance | Legal compliance audit |
-| ZatcaInvoice | E-invoicing (ZATCA Phase 2) |
-| AuditLog | Admin action audit trail |
-| AiSubscriptionPlan | AI feature tiers |
-| CustomerAiSubscription | AI usage tracking |
-| ChatMessage | Chatbot conversation history |
-| CustomerQuizResponse | Onboarding quiz results |
-| PlatformConfig | Admin-configurable settings |
+### 🏠 Public
+- Landing page with categories
+- Service catalog with search, filter, sort
+- Service detail with variants, pricing, technicians
+- Surprise Me — AI-powered random recommendations
+- Technician search & profiles
+
+### 👤 Customer
+- Dashboard with stats + quick actions
+- Booking management (request, track, cancel)
+- Wallet (balance, transactions, cashback, withdraw)
+- Wishlist (services + technicians)
+- Waitlist for busy technicians
+- Notifications (in-app)
+- Profile + Address management (CRUD)
+- Reviews & ratings history
+- Referral program (codes, rewards)
+- Beauty streaks & achievements
+- Disputes (open, track, resolve)
+- AI chatbot "Layla" (OpenAI-powered)
+- AI subscription plans & usage
+
+### 💇 Technician
+- Dashboard + pending bookings
+- Availability slot management
+- Booking actions (accept, start, complete, no-show)
+- Earnings dashboard + payout requests
+- KYC profile + service portfolio
+- Google Calendar sync
+
+### 🛡️ Admin
+- Dashboard with real-time KPIs
+- User management (list, suspend)
+- Booking oversight (all bookings, filter by status)
+- Financial management (revenue, payouts)
+- Category CRUD with nesting
+- Service CRUD (variants, tags, add-ons)
+- Technician KYC verification
+- Analytics & reports
+- Dispute resolution
+- ZATCA e-invoicing
+- Platform settings + maintenance mode
+
+### 🌍 Localization
+- Arabic (ar) — default, RTL
+- English (en) — LTR
+- Bilingual content (JSONB `{ ar, en }`)
+
+---
+
+## 📊 Verification
+
+```bash
+pnpm type-check     # 8/8 workspaces — FULL TURBO
+pnpm lint           # 5/5 tasks — zero errors
+pnpm build          # 5/5 tasks — 37 Next.js routes
+```
+
+### API Health
+
+```bash
+curl http://localhost:3000/api/trpc/health
+# → {"status":"ok","version":"2.0.0"}
+```
+
+### Database Seed
+
+```
+Admin: admin@galaxyofbeauty.sa / Admin@123456
+6 root categories, 10 sub-categories
+7 services with variants
+10 Saudi cities, 4 service tags, 3 achievements
+AI subscription plans
+```
 
 ---
 
 ## 🔐 Security
 
-- **Helmet** for HTTP security headers
-- **CORS** whitelist with credentials
-- **Rate limiting** per role (general/auth/admin tiers)
-- **JWT** access (15min) + refresh (7d) with rotation
-- **bcrypt** password hashing (cost factor 12)
-- **Zod** input validation on all endpoints
-- **Idempotency keys** for mutation endpoints (Redis-backed)
-- **Request IDs** for traceability
+- Helmet HTTP security headers
+- CORS whitelist with credentials
+- Rate limiting per role tier
+- JWT access (15min) + refresh (7d) with rotation + reuse detection
+- bcrypt password hashing (cost factor 12)
+- Zod input validation on all tRPC procedures
+- Idempotency keys for payment mutations
+- Request IDs for traceability
+- Login lockout (5 attempts / 15 min) via Redis
+- CSRF protection
 
 ---
 
-## 🌍 Localization
+## 📦 Scripts
 
-- **Primary**: Arabic (ar) — default
-- **Secondary**: English (en)
-- **Direction**: RTL for Arabic, LTR for English
-- **Detection**: URL path, cookie, or browser preference
-- **Storage**: Translatable fields as JSONB `{ ar: "...", en: "..." }`
-
----
-
-## 💳 Payment Flow (PayFort / Amazon Payment Services)
-
-```
-REQUESTED → ACCEPTED → PAYMENT_AUTHORIZED → PAID → COMPLETED
-                         (authorize)          (capture)
-```
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start all dev servers |
+| `pnpm build` | Build all workspaces |
+| `pnpm type-check` | TypeScript check all |
+| `pnpm lint` | Lint all workspaces |
+| `pnpm db:generate` | Regenerate Prisma client |
+| `pnpm db:push` | Push schema to database |
+| `pnpm db:seed` | Seed the database |
+| `pnpm clean` | Clean all build outputs |
 
 ---
 
-## 🧪 Testing
+## 📜 Compliance
 
-```bash
-# Backend
-cd backend
-npm test                    # All tests
-npm run test:unit           # Unit tests only
-npm run test:integration    # API integration tests
-
-# Frontend
-cd frontend
-npm test                    # Vitest unit tests
-npm run test:e2e            # Playwright E2E
-```
+- Saudi E-Commerce Law
+- PDPL (Personal Data Protection Law)
+- ZATCA e-invoicing with SHA-256 hash + QR codes
+- Terms acceptance with IP audit trail
 
 ---
 
-## 📋 Sprint Plan
+## 🔗 Links
 
-| Sprint | Focus | Status |
-|--------|-------|--------|
-| Sprint 0 | Project foundation, Prisma schema, Docker | ✅ Complete |
-| Sprint 1 | Auth, profiles, KYC, email verify, password reset | ✅ Complete |
-| Sprint 2 | Service catalog, search, admin CRUD | ✅ Complete |
-| Sprint 3 | Availability & booking, Socket.IO, state machine | ✅ Complete |
-| Sprint 4 | Payments (PayFort), wallet, cashback, payouts, refunds | ✅ Complete |
-| Sprint 5 | Reviews, admin dashboard, notifications, ZATCA, analytics | ✅ Complete |
-| Sprint 6 | AI (Layla), waitlist, wishlist, recommendations | ✅ Complete |
-| Sprint 7 | Polish, testing (59/19 E2E), CI/CD, caching, scheduler | ✅ Complete |
-| Sprint 8 | Mobile apps (React Native/Expo) | ✅ Complete |
-
----
-
-## 📜 License & Compliance
-
-- Saudi E-Commerce Law compliant
-- PDPL (Personal Data Protection Law) — encryption at rest, audit logging
-- ZATCA e-invoicing with SHA-256 hash + QR codes (Phase 1)
-- Terms & Conditions acceptance with IP audit trail
-
----
-
-## 🔗 API Documentation
-
-- **Health check**: `GET /api/health`
-- **API root**: `GET /api/`
-- **OpenAPI Spec**: `backend/openapi.yaml` — full REST API specification
+- **Repo**: [github.com/saeedmoh4444/galaxy-of-beauty](https://github.com/saeedmoh4444/galaxy-of-beauty)
+- **Web**: [localhost:3000](http://localhost:3000)
+- **Mobile Web**: [localhost:8081](http://localhost:8081)
+- **API Health**: [localhost:3000/api/trpc/health](http://localhost:3000/api/trpc/health)
 
 ---
 
 Built with ❤️ for Saudi Arabia
-
-  The Problem: Redis is not running
-
-  Your .env points to redis://localhost:6379 but Redis isn't installed natively on Windows. Since you have Docker Desktop already running, the quickest fix is Docker.
-
-  ---
-  🚀 First-Run Process (3 steps)
-
-  Step 1: Start Redis via Docker
-
-  Since Docker Desktop is running, just pull and start Redis:
-
-  docker run -d --name gob-redis -p 6379:6379 redis:7-alpine
-
-  Or use the project's Docker Compose to start only Redis:
-
-  docker compose up -d redis
-
-  Step 2: Start the Backend
-
-  cd backend
-  npm run dev
-
-  This starts Express on http://localhost:4000.
-
-  Step 3: Start the Frontend (separate terminal)
-
-  cd frontend
-  npm run dev
-
-  This starts Vite on http://localhost:5173.
