@@ -13,11 +13,42 @@ export default function RootLayout() {
         <Stack.Screen name="index" />
         <Stack.Screen name="(auth)/login/index" options={{ title: 'تسجيل الدخول' }} />
         <Stack.Screen name="(auth)/register/index" options={{ title: 'إنشاء حساب' }} />
+        <Stack.Screen name="(auth)/forgot-password/index" options={{ title: 'نسيت كلمة المرور' }} />
+        <Stack.Screen name="(auth)/2fa/index" options={{ title: 'المصادقة الثنائية' }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="services/[id]" options={{ title: 'تفاصيل الخدمة' }} />
+
+        {/* Customer screens */}
+        <Stack.Screen name="customer/wishlist/index" options={{ title: 'المفضلة' }} />
+        <Stack.Screen name="customer/waitlist/index" options={{ title: 'قائمة الانتظار' }} />
+        <Stack.Screen name="customer/notifications/index" options={{ title: 'الإشعارات' }} />
+        <Stack.Screen name="customer/reviews/index" options={{ title: 'تقييماتي' }} />
+        <Stack.Screen name="customer/referrals/index" options={{ title: 'الإحالات' }} />
+        <Stack.Screen name="customer/streaks/index" options={{ title: 'الاستمرارية' }} />
+        <Stack.Screen name="customer/disputes/index" options={{ title: 'النزاعات' }} />
+        <Stack.Screen name="customer/ai-chat/index" options={{ title: 'لايلى' }} />
+        <Stack.Screen name="customer/subscriptions/index" options={{ title: 'الاشتراكات' }} />
+
+        {/* Technician screens */}
         <Stack.Screen name="tech/dashboard/index" options={{ title: 'لوحة الفنية' }} />
         <Stack.Screen name="tech/slots/index" options={{ title: 'المواعيد' }} />
+        <Stack.Screen name="tech/bookings/index" options={{ title: 'حجوزاتي' }} />
+        <Stack.Screen name="tech/earnings/index" options={{ title: 'الأرباح' }} />
+        <Stack.Screen name="tech/profile/index" options={{ title: 'ملفي الشخصي' }} />
+        <Stack.Screen name="tech/calendar/index" options={{ title: 'التقويم' }} />
+
+        {/* Admin screens */}
         <Stack.Screen name="admin/dashboard/index" options={{ title: 'لوحة الإدارة' }} />
+        <Stack.Screen name="admin/users/index" options={{ title: 'المستخدمين' }} />
+        <Stack.Screen name="admin/bookings/index" options={{ title: 'الحجوزات' }} />
+        <Stack.Screen name="admin/finance/index" options={{ title: 'الإدارة المالية' }} />
+        <Stack.Screen name="admin/categories/index" options={{ title: 'الأقسام' }} />
+        <Stack.Screen name="admin/services/index" options={{ title: 'الخدمات' }} />
+        <Stack.Screen name="admin/technicians/index" options={{ title: 'الفنيات' }} />
+        <Stack.Screen name="admin/analytics/index" options={{ title: 'التحليلات' }} />
+        <Stack.Screen name="admin/disputes/index" options={{ title: 'النزاعات' }} />
+        <Stack.Screen name="admin/zatca/index" options={{ title: 'زاتكا' }} />
+        <Stack.Screen name="admin/settings/index" options={{ title: 'الإعدادات' }} />
       </Stack>
     </QueryClientProvider>
   );
