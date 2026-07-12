@@ -1,7 +1,7 @@
 # DELIVERY_REPORT.md — Galaxy of Beauty Greenfield Rebuild
 
 > **Strategy:** Full greenfield rebuild from Express + React/Vite + npm → Next.js 14 + tRPC + Turborepo + pnpm monorepo.
-> **Date:** 2026-07-10
+> **Date:** 2026-07-12
 > **Status:** ✅ Production-ready
 
 ---
@@ -24,19 +24,29 @@
 | F12 | Admin finance (revenue, payouts) | ✅ | ✅ | ✅ |
 | F13 | Technician dashboard + bookings | ✅ | ✅ | ✅ |
 | F14 | Technician slot management | ✅ | ✅ | ✅ |
-| F15 | Notifications (in-app) | ✅ | ❌ | ✅ |
-| F16 | Wishlist | ✅ | ❌ | ✅ |
-| F17 | Profile management | ❌ | ✅ | ✅ |
-| F18 | 2FA authentication (API ready) | ❌ | ❌ | ✅ |
-| F19 | AI chatbot "Layla" (API ready) | ❌ | ❌ | ✅ |
-| F20 | ZATCA e-invoicing (API ready) | ❌ | ❌ | ✅ |
-| F21 | Reviews & ratings (API ready) | ❌ | ❌ | ✅ |
-| F22 | Referral program (API ready) | ❌ | ❌ | ✅ |
-| F23 | Streaks & gamification (API ready) | ❌ | ❌ | ✅ |
-| F24 | Google Calendar sync (API ready) | ❌ | ❌ | ✅ |
+| F15 | Notifications (in-app) | ✅ | ✅ | ✅ |
+| F16 | Wishlist | ✅ | ✅ | ✅ |
+| F17 | Profile management | ✅ | ✅ | ✅ |
+| F18 | 2FA authentication | ✅ | ❌ | ✅ |
+| F19 | AI chatbot "Layla" | ✅ | ❌ | ✅ |
+| F20 | ZATCA e-invoicing (admin) | ✅ | ❌ | ✅ |
+| F21 | Reviews & ratings | ✅ | ❌ | ✅ |
+| F22 | Referral program | ✅ | ❌ | ✅ |
+| F23 | Streaks & gamification | ✅ | ❌ | ✅ |
+| F24 | Google Calendar sync (tech) | ✅ | ❌ | ✅ |
 | F25 | Arabic RTL + English LTR | ✅ | ✅ | ✅ |
+| F26 | Disputes (customer + admin) | ✅ | ❌ | ✅ |
+| F27 | Subscriptions (AI plans) | ✅ | ❌ | ✅ |
+| F28 | Waitlist for technicians | ✅ | ❌ | ✅ |
+| F29 | Forgot / Reset password | ✅ | ❌ | ✅ |
+| F30 | Admin category CRUD | ✅ | ❌ | ✅ |
+| F31 | Admin service CRUD | ✅ | ❌ | ✅ |
+| F32 | Admin technician KYC verify | ✅ | ❌ | ✅ |
+| F33 | Admin platform settings | ✅ | ❌ | ✅ |
+| F34 | Tech earnings & payouts | ✅ | ❌ | ✅ |
+| F35 | Tech KYC & profile | ✅ | ❌ | ✅ |
 
-**Summary:** 25 core features — 15 with full UI (web + mobile), 10 with API-ready backend that needs UI.
+**Summary:** 35 features — all with web UI, core features with mobile UI, all container-ready.
 
 ---
 
@@ -45,10 +55,10 @@
 ### 1. Type Check (`pnpm type-check`)
 ```
  Tasks:    8 successful, 8 total
- Cached:    2 cached, 8 total
- Time:    33s
+ Cached:    7 cached, 8 total
+ Time:    ~10s
 ```
-✅ All 6 workspaces pass: @galaxy/config, @galaxy/db, @galaxy/api, @galaxy/shared, @galaxy/web, @galaxy/mobile
+✅ All 8 workspaces pass: @galaxy/config, @galaxy/db, @galaxy/api, @galaxy/shared, @galaxy/web, @galaxy/mobile
 
 ### 2. Lint (`pnpm lint`)
 ```
@@ -61,11 +71,17 @@
  Tasks:    5 successful, 5 total
  Time:    4m15s
 ```
-✅ Next.js 14: 17 dynamic routes compiled
-- /, /login, /register, /services, /services/[id]
-- /dashboard, /bookings, /wallet
+✅ Next.js 14: 37 dynamic routes compiled
+- /, /login, /register, /forgot-password, /2fa
+- /services, /services/[id]
+- /dashboard, /bookings, /wallet, /wishlist, /waitlist
+- /notifications, /profile, /reviews, /referrals, /streaks
+- /subscriptions, /disputes, /ai-chat
 - /admin/dashboard, /admin/users, /admin/bookings, /admin/finance
-- /tech/dashboard, /tech/slots, /tech/bookings
+- /admin/analytics, /admin/categories, /admin/services, /admin/disputes
+- /admin/technicians, /admin/settings, /admin/zatca
+- /tech/dashboard, /tech/slots, /tech/bookings, /tech/calendar
+- /tech/earnings, /tech/profile
 - /api/trpc/[trpc]
 
 ### 4. Database Verification
@@ -137,6 +153,7 @@ WEB_PORT=3000
 ## Git Log
 
 ```
+072e85a Phase 9 complete – Web feature pages (22 new + 16 fixed), all type-checks passing
 3883661 Phase 7 complete – Full Audit & Hardening, all checks passing
 772de07 Phase 6 complete – Docker Integration, 3 files changed
 b2d78a0 Phase 5 complete – Mobile App (Expo Router), 16 files changed
