@@ -79,6 +79,31 @@ services:
     networks:
       - gob-network
 
+  # ---- Mobile (Expo Web Preview) ----
+  mobile:
+    build:
+      context: .
+      dockerfile: apps/mobile/Dockerfile
+    container_name: gob-mobile
+    restart: unless-stopped
+    environment:
+      EXPO_PUBLIC_API_URL: http://web:3000/api/trpc
+    ports:
+      - "${MOBILE_WEB_PORT:-8081}:8081"
+      - "19000:19000"
+      - "19001:19001"
+      - "19002:19002"
+    volumes:
+      - ./apps/mobile/src:/app/apps/mobile/src
+      - ./packages:/app/packages
+      - /app/node_modules
+      - /app/apps/mobile/node_modules
+    depends_on:
+      web:
+        condition: service_started
+    networks:
+      - gob-network
+
 volumes:
   postgres_data:
     driver: local
