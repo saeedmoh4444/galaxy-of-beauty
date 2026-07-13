@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import crypto from 'crypto';
-import { publicProcedure, protectedProcedure, router } from '../trpc';
+import { publicProcedure, publicMutation, protectedProcedure, protectedMutation, router } from '../trpc';
 import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
 import {
@@ -10,6 +10,11 @@ import {
   signRefreshToken,
   verifyRefreshToken,
   getEnv,
+  generateTotpSecret,
+  verifyTotpToken,
+  sendPasswordResetEmail,
+  incrementAttempts,
+  resetAttempts,
 } from '../lib';
 import {
   registerSchema,
@@ -76,7 +81,7 @@ export const authRouter = router({
   // ──────────────────────────────────────────────────────
   // Register a new user account
   // ──────────────────────────────────────────────────────
-  register: publicProcedure
+  register: publicMutation
     .input(registerSchema)
     .mutation(async ({ input }) => {
       try {
@@ -162,10 +167,23 @@ export const authRouter = router({
   // ──────────────────────────────────────────────────────
   // Login with email and password
   // ──────────────────────────────────────────────────────
-  login: publicProcedure
+  login: publicMutation
     .input(loginSchema)
     .mutation(async ({ input }) => {
       try {
+        // ── Rate limiting: 5 attempts per 15 minutes per email ──
+        const lockoutKey = `login_attempts:${input.email}`;
+        const attempts = await incrementAttempts(lockoutKey, 900); // 15 min window
+        const MAX_ATTEMPTS = 5;
+
+        if (attempts > MAX_ATTEMPTS) {
+          throw new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+            message: 'Too many login attempts. Please try again in 15 minutes.',
+          });
+        }
+
+        // ── Find user ──
         const user = await prisma.user.findUnique({
           where: { email: input.email },
         });
@@ -176,6 +194,7 @@ export const authRouter = router({
           });
         }
 
+        // ── Verify password ──
         const valid = await verifyPassword(input.password, user.passwordHash);
         if (!valid) {
           throw new TRPCError({
@@ -191,15 +210,28 @@ export const authRouter = router({
           });
         }
 
-        // 2FA check
-        if (user.twoFactorEnabled && !input.totpToken) {
-          throw new TRPCError({
-            code: 'PRECONDITION_FAILED',
-            message: '2FA_REQUIRED',
-          });
+        // ── 2FA check ──
+        if (user.twoFactorEnabled) {
+          if (!input.totpToken) {
+            throw new TRPCError({
+              code: 'PRECONDITION_FAILED',
+              message: '2FA_REQUIRED',
+            });
+          }
+
+          // Verify the TOTP token against the stored secret
+          if (!user.twoFactorSecret || !verifyTotpToken(input.totpToken, user.twoFactorSecret)) {
+            throw new TRPCError({
+              code: 'UNAUTHORIZED',
+              message: 'Invalid 2FA code',
+            });
+          }
         }
 
-        // Update last login timestamp
+        // ── Reset rate limit on successful login ──
+        await resetAttempts(lockoutKey);
+
+        // ── Update last login timestamp ──
         await prisma.user.update({
           where: { id: user.id },
           data: { lastLoginAt: new Date() },
@@ -279,7 +311,7 @@ export const authRouter = router({
   // ──────────────────────────────────────────────────────
   // Logout — revoke all active refresh tokens
   // ──────────────────────────────────────────────────────
-  logout: protectedProcedure
+  logout: protectedMutation
     .mutation(async ({ ctx }) => {
       try {
         await prisma.refreshToken.updateMany({
@@ -335,7 +367,7 @@ export const authRouter = router({
   // ──────────────────────────────────────────────────────
   // Update profile fields
   // ──────────────────────────────────────────────────────
-  updateProfile: protectedProcedure
+  updateProfile: protectedMutation
     .input(updateProfileSchema)
     .mutation(async ({ ctx, input }) => {
       try {
@@ -358,7 +390,7 @@ export const authRouter = router({
   // ──────────────────────────────────────────────────────
   // Change password
   // ──────────────────────────────────────────────────────
-  changePassword: protectedProcedure
+  changePassword: protectedMutation
     .input(changePasswordSchema)
     .mutation(async ({ ctx, input }) => {
       try {
@@ -398,9 +430,9 @@ export const authRouter = router({
     }),
 
   // ──────────────────────────────────────────────────────
-  // Request password reset (stub)
+  // Request password reset — generates a token and stores it
   // ──────────────────────────────────────────────────────
-  forgotPassword: publicProcedure
+  forgotPassword: publicMutation
     .input(forgotPasswordSchema)
     .mutation(async ({ input }) => {
       try {
@@ -410,13 +442,26 @@ export const authRouter = router({
         });
 
         if (user) {
-          // Stub: In production, generate a reset token, store it
-          // (requires a ResetToken model or additional fields on User),
-          // then send an email with the reset link.
+          // Generate a random reset token valid for 1 hour
           const token = generateToken();
-          // TODO: Persist token and send email
-          // eslint-disable-next-line no-console
-          console.log(`[STUB] Password reset token for ${input.email}: ${token}`);
+          const expiresAt = new Date(Date.now() + 3600 * 1000); // 1 hour
+
+          // Persist the reset token
+          await prisma.resetToken.create({
+            data: {
+              token,
+              userId: user.id,
+              expiresAt,
+            },
+          });
+
+          // Send the password reset email
+          const locale = (user.preferredLanguage as 'ar' | 'en') || 'ar';
+          sendPasswordResetEmail(user.email, user.name, token, locale).catch(
+            // Log but don't fail the request if email sending fails
+            // eslint-disable-next-line no-console
+            (err) => console.error('[ResetToken] Failed to send email:', err),
+          );
         }
 
         return {
@@ -432,20 +477,52 @@ export const authRouter = router({
     }),
 
   // ──────────────────────────────────────────────────────
-  // Reset password with token (stub)
+  // Reset password using a valid reset token
   // ──────────────────────────────────────────────────────
-  resetPassword: publicProcedure
+  resetPassword: publicMutation
     .input(resetPasswordSchema)
-    .mutation(async () => {
+    .mutation(async ({ input }) => {
       try {
-        // Stub: In production, verify the reset token from the database
-        // before updating the password. This requires a ResetToken model
-        // or reset token fields on the User model.
-        throw new TRPCError({
-          code: 'NOT_IMPLEMENTED',
-          message:
-            'Password reset requires a reset token store. Please implement the ResetToken model first.',
+        // Find a valid (non-expired, unused) reset token
+        const resetToken = await prisma.resetToken.findUnique({
+          where: { token: input.token },
         });
+
+        if (!resetToken) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Invalid or expired reset token',
+          });
+        }
+
+        if (resetToken.usedAt) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'This reset token has already been used',
+          });
+        }
+
+        if (resetToken.expiresAt < new Date()) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Reset token has expired. Please request a new one.',
+          });
+        }
+
+        // Update the user's password
+        const newHash = await hashPassword(input.newPassword);
+        await prisma.user.update({
+          where: { id: resetToken.userId },
+          data: { passwordHash: newHash },
+        });
+
+        // Mark token as used
+        await prisma.resetToken.update({
+          where: { id: resetToken.id },
+          data: { usedAt: new Date() },
+        });
+
+        return { message: 'Password reset successfully. You can now log in.' };
       } catch (error) {
         if (error instanceof TRPCError) throw error;
         throw new TRPCError({
@@ -458,7 +535,7 @@ export const authRouter = router({
   // ──────────────────────────────────────────────────────
   // Verify email address
   // ──────────────────────────────────────────────────────
-  verifyEmail: publicProcedure
+  verifyEmail: publicMutation
     .input(verifyEmailSchema)
     .mutation(async ({ input }) => {
       try {
@@ -498,7 +575,7 @@ export const authRouter = router({
   // ──────────────────────────────────────────────────────
   // Resend email verification token
   // ──────────────────────────────────────────────────────
-  resendVerification: protectedProcedure
+  resendVerification: protectedMutation
     .mutation(async ({ ctx }) => {
       try {
         const token = generateToken();
@@ -526,11 +603,9 @@ export const authRouter = router({
   // ──────────────────────────────────────────────────────
   // Generate 2FA secret and return otpauth URI
   // ──────────────────────────────────────────────────────
-  setup2FA: protectedProcedure
+  setup2FA: protectedMutation
     .mutation(async ({ ctx }) => {
       try {
-        const secret = crypto.randomBytes(32).toString('base64');
-
         const user = await prisma.user.findUnique({
           where: { id: ctx.user.id },
         });
@@ -541,12 +616,12 @@ export const authRouter = router({
           });
         }
 
+        const { secret, otpauthUrl } = generateTotpSecret(user.email);
+
         await prisma.user.update({
           where: { id: ctx.user.id },
           data: { twoFactorSecret: secret },
         });
-
-        const otpauthUrl = `otpauth://totp/GalaxyOfBeauty:${encodeURIComponent(user.email)}?secret=${secret}&issuer=GalaxyOfBeauty`;
 
         return { secret, otpauthUrl };
       } catch (error) {
@@ -561,9 +636,9 @@ export const authRouter = router({
   // ──────────────────────────────────────────────────────
   // Verify and enable 2FA
   // ──────────────────────────────────────────────────────
-  verify2FA: protectedProcedure
+  verify2FA: protectedMutation
     .input(twoFactorVerifySchema)
-    .mutation(async ({ ctx }) => {
+    .mutation(async ({ ctx, input }) => {
       try {
         const user = await prisma.user.findUnique({
           where: { id: ctx.user.id },
@@ -583,9 +658,13 @@ export const authRouter = router({
           });
         }
 
-        // TODO: Verify the TOTP token using a library such as otplib or speakeasy.
-        // Example: otplib.authenticator.check(input.token, user.twoFactorSecret)
-        // For now the 6-digit token is accepted as valid (stub).
+        // Verify the TOTP token against the stored secret
+        if (!verifyTotpToken(input.token, user.twoFactorSecret)) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Invalid 2FA code. Please try again.',
+          });
+        }
 
         await prisma.user.update({
           where: { id: ctx.user.id },
@@ -605,7 +684,7 @@ export const authRouter = router({
   // ──────────────────────────────────────────────────────
   // Disable 2FA
   // ──────────────────────────────────────────────────────
-  disable2FA: protectedProcedure
+  disable2FA: protectedMutation
     .mutation(async ({ ctx }) => {
       try {
         await prisma.user.update({

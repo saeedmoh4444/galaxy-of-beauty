@@ -6,10 +6,30 @@ import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { api } from '@/lib/trpc';
 
+function getCsrfToken(): string | null {
+  if (typeof window === 'undefined') return null;
+  // Read the CSRF cookie value
+  const match = document.cookie.match(/(?:^|;\s*)csrf-token=([^;]*)/);
+  return match?.[1] ?? null;
+}
+
 function getAuthHeaders(): Record<string, string> {
-  if (typeof window === 'undefined') return {};
-  const token = localStorage.getItem('gob_access');
-  return token ? { Authorization: `Bearer ${token}` } : {};
+  const headers: Record<string, string> = {};
+
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('gob_access');
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    // Include CSRF token header
+    const csrfToken = getCsrfToken();
+    if (csrfToken) {
+      headers['x-csrf-token'] = csrfToken;
+    }
+  }
+
+  return headers;
 }
 
 export default function TRPCProvider({ children }: { children: ReactNode }): ReactNode {

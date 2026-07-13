@@ -10,8 +10,9 @@ export default function ServiceDetailScreen() {
 
   useEffect(() => {
     if (!id) return;
-    trpc.services.getById.query({ id: Number(id) })
-      .then((d) => { setData(d as unknown as Record<string, unknown>); setLoading(false); })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (trpc as any).services.getById.query({ id: Number(id) })
+      .then((d: unknown) => { setData(d as Record<string, unknown>); setLoading(false); })
       .catch(() => setLoading(false));
   }, [id]);
 

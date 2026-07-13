@@ -152,6 +152,7 @@ model User {
   resolvedDisputes  Dispute[]          @relation("DisputeResolvedBy")
   waitlistEntries   WaitlistEntry[]
   refreshTokens     RefreshToken[]
+  resetTokens       ResetToken[]
   sentMessages      ChatMessage[]      @relation("SenderMessages")
   auditLogs         AuditLog[]
   wishlistItems     WishlistItem[]
@@ -181,6 +182,22 @@ model RefreshToken {
   @@index([token])
   @@index([expiresAt])
   @@map("refresh_tokens")
+}
+
+model ResetToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+  @@map("reset_tokens")
 }
 
 // =============================================================================
