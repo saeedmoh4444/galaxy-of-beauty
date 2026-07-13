@@ -29,6 +29,15 @@ import { referralRouter } from './referrals';
 import { uploadRouter } from './uploads';
 import { searchRouter } from './search';
 import { loyaltyRouter } from './loyalty';
+import { rescheduleRouter } from './reschedule';
+import { savedCardRouter } from './savedCards';
+import { galleryRouter } from './gallery';
+import { promoRouter } from './promo';
+import { subscriptionBoxRouter } from './subscriptionBoxes';
+import { featureFlagRouter } from './featureFlags';
+import { chatRouter } from './chat';
+import { performanceRouter } from './performance';
+import { cmsRouter } from './cms';
 
 export const appRouter = router({
   // Health
@@ -68,6 +77,15 @@ export const appRouter = router({
   uploads: uploadRouter,
   search: searchRouter,
   loyalty: loyaltyRouter,
+  reschedule: rescheduleRouter,
+  savedCards: savedCardRouter,
+  gallery: galleryRouter,
+  promo: promoRouter,
+  subscriptionBoxes: subscriptionBoxRouter,
+  featureFlags: featureFlagRouter,
+  chat: chatRouter,
+  performance: performanceRouter,
+  cms: cmsRouter,
 });
 
 export type AppRouter = typeof appRouter;

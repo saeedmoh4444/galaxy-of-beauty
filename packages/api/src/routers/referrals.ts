@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
-import { protectedProcedure, router } from '../trpc';
+import { publicProcedure, protectedProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
 
 function generateReferralCode(userId: number, name: string): string {
@@ -178,9 +178,34 @@ export const referralRouter = router({
       return {
         id: referral.id,
         status: referral.status,
-        message: 'Referral code applied successfully! You will both receive a reward once your first booking is completed.',
+        message: 'Referral code applied successfully!',
         referrerBonus: referral.referrerReward.toNumber(),
         referredBonus: referral.referredReward.toNumber(),
       };
     }),
+
+  // ── Leaderboard ───────────────────────────────────────
+  leaderboard: publicProcedure
+    .input(z.object({ limit: z.number().default(10) }))
+    .query(async ({ input }) => {
+      const topReferrers = await prisma.referral.groupBy({
+        by: ['referrerId'],
+        where: { status: 'COMPLETED' },
+        _count: { id: true },
+        orderBy: { _count: { id: 'desc' } },
+        take: input.limit,
+      });
+      return topReferrers;
+    }),
+
+  // ── Share card ────────────────────────────────────────
+  shareCard: protectedProcedure.query(async ({ ctx }) => {
+    const ref = await prisma.referral.findFirst({ where: { referrerId: ctx.user.id }, select: { referralCode: true } });
+    const code = ref?.referralCode || `GOB-${ctx.user.id}`;
+    return {
+      code,
+      shareUrl: `${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/register?ref=${code}`,
+      shareText: 'انضمي إلى جالكسي بيوتي واحصلي على خصم ٢٠ ريال!',
+    };
+  }),
 });

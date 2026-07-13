@@ -155,6 +155,9 @@ model User {
   resetTokens       ResetToken[]
   pushTokens        PushToken[]
   loyaltyAccount    LoyaltyAccount?
+  savedCards        SavedCard[]
+  subscriptions     CustomerSubscription[]
+  promoUsages       PromoUsage[]
   sentMessages      ChatMessage[]      @relation("SenderMessages")
   auditLogs         AuditLog[]
   wishlistItems     WishlistItem[]
@@ -298,6 +301,7 @@ model Technician {
   technicianServices    TechnicianService[]
   waitlistEntries       WaitlistEntry[]
   wishlistItems         WishlistItem[]
+  galleryImages         GalleryImage[]
 
   @@index([city, kycStatus])
   @@index([ratingAvg])
@@ -550,6 +554,7 @@ model Booking {
   review     Review?
   dispute    Dispute?
   zatcaInvoice ZatcaInvoice?
+  chatMessages ChatMessage[]
 
   @@index([customerId, status, createdAt])
   @@index([technicianId, status, startAt])
@@ -831,14 +836,17 @@ model ChatMessage {
   id         Int      @id @default(autoincrement())
   senderId   Int
   receiverId Int?     // Null if talking to AI chatbot
+  bookingId  Int?
   content    String
   isAi       Boolean  @default(false)
   metadata   Json?
   createdAt  DateTime @default(now())
 
-  sender User @relation("SenderMessages", fields: [senderId], references: [id])
+  sender  User     @relation("SenderMessages", fields: [senderId], references: [id])
+  booking Booking? @relation(fields: [bookingId], references: [id])
 
   @@index([senderId, createdAt])
+  @@index([bookingId])
   @@map("chat_messages")
 }
 
@@ -992,4 +1000,149 @@ model PlatformConfig {
   createdAt    DateTime @default(now())
 
   @@map("platform_configs")
+}
+
+// =============================================================================
+// Saved Payment Methods
+// =============================================================================
+
+model SavedCard {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  cardToken    String   // PayFort/APS token
+  lastFour     String   // Last 4 digits
+  brand        String   // visa, mastercard, mada, amex
+  expMonth     Int
+  expYear      Int
+  cardholderName String
+  isDefault    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, cardToken])
+  @@index([userId])
+  @@map("saved_cards")
+}
+
+// =============================================================================
+// Portfolio / Before & After Gallery
+// =============================================================================
+
+model GalleryImage {
+  id           Int      @id @default(autoincrement())
+  technicianId Int
+  imageUrl     String
+  captionJson  Json?    // { ar: "...", en: "..." }
+  category     String?  // hair, nails, makeup, etc.
+  isBefore     Boolean  @default(false) // Before/after pair indicator
+  pairId       Int?     // Links before→after images
+  sortOrder    Int      @default(0)
+  isPublished  Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  technician Technician @relation(fields: [technicianId], references: [userId])
+
+  @@index([technicianId, isPublished])
+  @@map("gallery_images")
+}
+
+// =============================================================================
+// Promo Codes & Flash Deals
+// =============================================================================
+
+model PromoCode {
+  id              Int      @id @default(autoincrement())
+  code            String   @unique
+  discountType    String   // percent, fixed
+  discountValue   Decimal  @db.Decimal(10, 2)
+  minOrderAmount  Decimal? @db.Decimal(10, 2)
+  maxDiscount     Decimal? @db.Decimal(10, 2)
+  maxUses         Int?
+  currentUses     Int      @default(0)
+  validFrom       DateTime @default(now())
+  validUntil      DateTime?
+  isActive        Boolean  @default(true)
+  appliesTo       String?  // "all", "category:3", "service:5"
+  createdBy       Int
+  createdAt       DateTime @default(now())
+
+  usages PromoUsage[]
+
+  @@index([code, isActive])
+  @@index([validUntil])
+  @@map("promo_codes")
+}
+
+model PromoUsage {
+  id          Int      @id @default(autoincrement())
+  promoCodeId Int
+  userId      Int
+  bookingId   Int?
+  discountAmount Decimal @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
+
+  promoCode PromoCode @relation(fields: [promoCodeId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@unique([promoCodeId, userId, bookingId])
+  @@map("promo_usages")
+}
+
+// =============================================================================
+// Subscription Boxes (Monthly Beauty Packages)
+// =============================================================================
+
+model SubscriptionPlan {
+  id              Int      @id @default(autoincrement())
+  nameJson        Json     // { ar: "الباقة الذهبية", en: "Gold Package" }
+  descriptionJson Json
+  interval        String   @default("MONTHLY") // MONTHLY, BIWEEKLY, WEEKLY
+  price           Decimal  @db.Decimal(10, 2)
+  servicesPerMonth Int     @default(1)
+  discountPercent Int      @default(0) // vs individual bookings
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+
+  subscriptions CustomerSubscription[]
+
+  @@map("subscription_plans")
+}
+
+model CustomerSubscription {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  planId          Int
+  status          String   @default("ACTIVE") // ACTIVE, PAUSED, CANCELLED, EXPIRED
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  bookingsThisMonth  Int      @default(0)
+  cancelledAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User              @relation(fields: [userId], references: [id])
+  plan SubscriptionPlan  @relation(fields: [planId], references: [id])
+
+  @@unique([userId, planId])
+  @@index([userId, status])
+  @@map("customer_subscriptions")
+}
+
+// =============================================================================
+// Feature Flags
+// =============================================================================
+
+model FeatureFlag {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  name        String
+  description String?
+  enabled     Boolean  @default(false)
+  rolloutPercent Int   @default(0) // 0-100, 0=off, 100=all
+  enabledFor  Json?    // Specific user IDs or role-based: { "roles": ["ADMIN"], "userIds": [1,2] }
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("feature_flags")
 }
