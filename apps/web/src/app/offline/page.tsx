@@ -1,6 +1,6 @@
 import { Card, EmptyState } from '@galaxy/shared';
 
-export default function OfflinePage() {
+export default function OfflinePage(): JSX.Element {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md text-center" padding="lg">
