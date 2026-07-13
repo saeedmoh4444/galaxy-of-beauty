@@ -8,3 +8,4 @@ export { hashPassword, verifyPassword } from './lib/password';
 export { getEnv } from './lib/env';
 export type { Env } from './lib/env';
 export { generateCsrfToken, verifyCsrfToken, buildCsrfCookie, getCsrfCookieName, getCsrfHeaderName } from './lib/csrf';
+export { initializeSocket, getIO, emitToUser, emitToTechnician, emitToWaitlist, emitToAdmin } from './socket/index';

@@ -12,7 +12,8 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf .turbo dist",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "socket": "tsx src/socket/server.ts"
   },
   "dependencies": {
     "@galaxy/db": "workspace:*",
@@ -22,6 +23,7 @@
     "ioredis": "^5.11.1",
     "jsonwebtoken": "^9.0.3",
     "nodemailer": "^9.0.3",
+    "socket.io": "^4.8.3",
     "zod": "^3.25.76"
   },
   "devDependencies": {

@@ -22,6 +22,7 @@ export function ErrorAlert({
   return (
     <div
       role="alert"
+      aria-live="assertive"
       className={`rounded-2xl border border-red-200 bg-red-50 p-6 dark:border-red-800 dark:bg-red-950 ${className}`}
     >
       <div className="flex flex-col items-center gap-4 text-center">

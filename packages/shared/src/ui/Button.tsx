@@ -48,6 +48,8 @@ export function Button({
         className,
       )}
       disabled={disabled || loading}
+      aria-busy={loading}
+      aria-disabled={disabled || loading}
       {...props}
     >
       {loading && (
@@ -55,6 +57,7 @@ export function Button({
           className="h-4 w-4 animate-spin"
           fill="none"
           viewBox="0 0 24 24"
+          aria-hidden="true"
         >
           <circle
             className="opacity-25"

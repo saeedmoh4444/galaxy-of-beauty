@@ -153,6 +153,7 @@ model User {
   waitlistEntries   WaitlistEntry[]
   refreshTokens     RefreshToken[]
   resetTokens       ResetToken[]
+  pushTokens        PushToken[]
   sentMessages      ChatMessage[]      @relation("SenderMessages")
   auditLogs         AuditLog[]
   wishlistItems     WishlistItem[]
@@ -198,6 +199,21 @@ model ResetToken {
   @@index([token])
   @@index([expiresAt])
   @@map("reset_tokens")
+}
+
+model PushToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  platform  String   @default("ios") // ios | android | web
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@map("push_tokens")
 }
 
 // =============================================================================

@@ -12,6 +12,7 @@ import {
   createBookingSchema,
   bookingQuerySchema,
 } from '../validators/booking';
+import { emitToUser, emitToTechnician, emitToAdmin } from '../socket/index';
 
 // ---------------------------------------------------------------------------
 // Booking State Machine
@@ -197,10 +198,22 @@ export const bookingRouter = router({
       });
 
       // 8. Return full booking with relations
-      return prisma.booking.findUnique({
+      const result = await prisma.booking.findUnique({
         where: { id: booking.id },
         include: bookingDetailInclude,
       });
+
+      // 9. Emit real-time events
+      if (result) {
+        // Notify the technician about the new booking request
+        emitToTechnician(input.technicianId, 'new_booking_request', result);
+        // Notify the customer with confirmation
+        emitToUser(ctx.user.id, 'new_booking_request', result);
+        // Notify admins
+        emitToAdmin('admin_update', { type: 'new_booking', booking: result });
+      }
+
+      return result;
     }),
 
   /**
@@ -391,6 +404,35 @@ export const bookingRouter = router({
           data: updateData,
           include: bookingDetailInclude,
         });
+      });
+
+      // Emit real-time events based on the action
+      const eventMap: Record<string, string> = {
+        accept: 'booking_accepted',
+        reject: 'booking_rejected',
+        cancel: 'booking_cancelled',
+        start: 'booking_started',
+        complete: 'booking_completed',
+        no_show: 'booking_no_show',
+      };
+
+      const event = eventMap[input.action] || 'booking_updated';
+
+      // Notify the customer
+      if (booking.customerId) {
+        emitToUser(booking.customerId, event, updatedBooking);
+      }
+
+      // Notify the technician
+      if (booking.technicianId) {
+        emitToTechnician(booking.technicianId, event, updatedBooking);
+      }
+
+      // Notify admins
+      emitToAdmin('admin_update', {
+        type: 'booking_action',
+        action: input.action,
+        booking: updatedBooking,
       });
 
       return updatedBooking;

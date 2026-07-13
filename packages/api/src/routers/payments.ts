@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
-import crypto from 'crypto';
 import { prisma } from '@galaxy/db';
 import {
   router,
@@ -10,6 +9,8 @@ import {
   technicianProcedure,
   adminProcedure,
 } from '../trpc';
+import { emitToUser, emitToAdmin } from '../socket/index';
+import { authorizePayment, verifyWebhookSignature } from '../lib/payfort';
 
 // ---------------------------------------------------------------------------
 // Input schemas
@@ -97,18 +98,52 @@ export const paymentRouter = router({
             data: { status: 'CONFIRMED_OFFLINE' },
           });
         } else {
-          // Online — stub PayFort integration
-          const gatewayRef = `PF-${crypto.randomUUID().split('-').join('').toUpperCase().slice(0, 20)}`;
-
-          await prisma.payment.update({
-            where: { id: payment.id },
-            data: { gatewayRef },
+          // Online — PayFort/APS payment gateway integration
+          const user = await prisma.user.findUnique({
+            where: { id: ctx.user.id },
+            select: { email: true, name: true },
           });
 
+          const appUrl = process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';
+
+          const payfortResult = await authorizePayment({
+            amount: Number(booking.totalAmount),
+            currency: 'SAR',
+            customerEmail: user?.email || '',
+            customerName: user?.name || 'Customer',
+            merchantReference: `GOB-BOOKING-${booking.id}`,
+            returnUrl: `${appUrl}/bookings/${booking.id}`,
+          });
+
+          // Update payment with gateway reference
+          const updateData: Record<string, string | null> = {};
+          if (payfortResult.gatewayRef) {
+            updateData.gatewayRef = payfortResult.gatewayRef;
+          }
+
+          if (Object.keys(updateData).length > 0) {
+            await prisma.payment.update({
+              where: { id: payment.id },
+              data: updateData as { gatewayRef?: string },
+            });
+          }
+
+          if (!payfortResult.success) {
+            // Payment gateway returned an error
+            await prisma.payment.update({
+              where: { id: payment.id },
+              data: { status: 'FAILED' },
+            });
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: `Payment failed: ${payfortResult.message}`,
+            });
+          }
+
           return {
-            paymentUrl: null, // In production this would be the PayFort redirect URL
+            paymentUrl: payfortResult.paymentUrl,
             paymentId: payment.id,
-            gatewayRef,
+            gatewayRef: payfortResult.gatewayRef,
           };
         }
 
@@ -208,6 +243,21 @@ export const paymentRouter = router({
         await prisma.wallet.update({
           where: { id: wallet.id },
           data: { bonusBalance: { increment: cashbackAmount } },
+        });
+
+        // Emit real-time events
+        emitToUser(booking.customerId, 'payment_success', {
+          bookingId: booking.id,
+          amount: booking.totalAmount,
+          cashback: cashbackAmount,
+        });
+        emitToUser(booking.customerId, 'wallet_updated', {
+          bookingId: booking.id,
+        });
+        emitToAdmin('admin_update', {
+          type: 'payment_captured',
+          bookingId: booking.id,
+          amount: booking.totalAmount,
         });
 
         return payment;
@@ -339,6 +389,20 @@ export const paymentRouter = router({
     .input(webhookSchema)
     .mutation(async ({ input }) => {
       try {
+        // Verify webhook signature if provided
+        if (input.signature) {
+          const paramsToVerify: Record<string, string> = {
+            gatewayRef: input.gatewayRef,
+            status: input.status,
+          };
+          if (!verifyWebhookSignature(paramsToVerify, input.signature)) {
+            throw new TRPCError({
+              code: 'FORBIDDEN',
+              message: 'Invalid webhook signature',
+            });
+          }
+        }
+
         // Find payment by gateway reference
         const payment = await prisma.payment.findFirst({
           where: { gatewayRef: input.gatewayRef },
@@ -377,11 +441,30 @@ export const paymentRouter = router({
           data: { status: newStatus },
         });
 
-        // On successful capture, update booking to PAID
+        // On successful capture, update booking to PAID + emit events
         if (newStatus === 'CAPTURED') {
           await prisma.booking.update({
             where: { id: payment.bookingId },
             data: { status: 'PAID' },
+          });
+
+          // Emit real-time payment success to the customer (we need the booking to get customerId)
+          const booking = await prisma.booking.findUnique({
+            where: { id: payment.bookingId },
+            select: { customerId: true, totalAmount: true },
+          });
+          if (booking) {
+            emitToUser(booking.customerId, 'payment_success', {
+              bookingId: payment.bookingId,
+              amount: booking.totalAmount,
+            });
+            emitToUser(booking.customerId, 'wallet_updated', {
+              bookingId: payment.bookingId,
+            });
+          }
+          emitToAdmin('admin_update', {
+            type: 'payment_webhook_captured',
+            bookingId: payment.bookingId,
           });
         }
 

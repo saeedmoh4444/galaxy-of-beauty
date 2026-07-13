@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/api';
+import { setSocketToken } from '@/hooks/useSocket';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -20,6 +21,8 @@ export default function LoginScreen() {
         ...(twoFactorRequired ? { totpToken } : {}),
       });
       const u = result.user as Record<string, unknown>;
+      // Store the access token for socket authentication
+      setSocketToken(result.accessToken);
       if (u.role === 'ADMIN') router.replace('/admin/dashboard');
       else if (u.role === 'TECHNICIAN') router.replace('/tech/dashboard');
       else router.replace('/(tabs)/home');

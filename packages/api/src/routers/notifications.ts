@@ -5,6 +5,8 @@ import {
   protectedProcedure,
   adminProcedure,
 } from '../trpc';
+import { emitToUser } from '../socket/index';
+import { sendPushToUser } from '../lib/push';
 
 export const notificationRouter = router({
   // ── List notifications (paginated, newest first) ──────────────────────────
@@ -97,7 +99,7 @@ export const notificationRouter = router({
     return { success: true };
   }),
 
-  // ── Register push token (stub) ────────────────────────────────────────────
+  // ── Register push token ────────────────────────────────────────────────────
   registerPushToken: protectedProcedure
     .input(
       z.object({
@@ -106,10 +108,28 @@ export const notificationRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      // TODO: Store push token in a push_tokens table and wire to FCM/APNs
-      console.log(
-        `[PushToken] user=${ctx.user.id} platform=${input.platform} token=${input.token.slice(0, 20)}...`,
-      );
+      // Upsert: one unique token per user+platform combination
+      const existing = await prisma.pushToken.findUnique({
+        where: { token: input.token },
+      });
+
+      if (existing) {
+        // Token already registered — update userId if it changed
+        if (existing.userId !== ctx.user.id) {
+          await prisma.pushToken.update({
+            where: { id: existing.id },
+            data: { userId: ctx.user.id, platform: input.platform },
+          });
+        }
+      } else {
+        await prisma.pushToken.create({
+          data: {
+            token: input.token,
+            userId: ctx.user.id,
+            platform: input.platform,
+          },
+        });
+      }
 
       return { success: true };
     }),
@@ -141,10 +161,33 @@ export const notificationRouter = router({
         },
       });
 
-      // TODO: Send real push/email/SMS via Firebase / SendGrid / Twilio
-      console.log(
-        `[Notification] user=${userId} type=${type} title[ar]=${titleAr} title[en]=${titleEn}`,
-      );
+      // Emit real-time notification to the user via WebSocket
+      emitToUser(userId, 'new_notification', {
+        id: notification.id,
+        type,
+        titleEn,
+        titleAr,
+        bodyEn,
+        bodyAr,
+        link: link ?? null,
+        createdAt: notification.createdAt,
+      });
+
+      // Send push notification to the user's devices
+      // Determine locale from user preference
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { preferredLanguage: true },
+      });
+      const locale = (user?.preferredLanguage as 'ar' | 'en') || 'ar';
+      sendPushToUser(userId, {
+        title: locale === 'ar' ? titleAr : titleEn,
+        body: locale === 'ar' ? bodyAr : bodyEn,
+        data: link ? { link } : undefined,
+      }).catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error('[Push] Failed to send push notification:', err);
+      });
 
       return notification;
     }),
