@@ -154,6 +154,7 @@ model User {
   refreshTokens     RefreshToken[]
   resetTokens       ResetToken[]
   pushTokens        PushToken[]
+  loyaltyAccount    LoyaltyAccount?
   sentMessages      ChatMessage[]      @relation("SenderMessages")
   auditLogs         AuditLog[]
   wishlistItems     WishlistItem[]
@@ -216,6 +217,52 @@ model PushToken {
   @@map("push_tokens")
 }
 
+model LoyaltyAccount {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @unique
+  points        Int      @default(0)
+  tier          String   @default("SILVER") // SILVER, GOLD, PLATINUM
+  lifetimePoints Int     @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions  LoyaltyTransaction[]
+
+  @@index([userId])
+  @@index([tier])
+  @@map("loyalty_accounts")
+}
+
+model LoyaltyTransaction {
+  id          Int      @id @default(autoincrement())
+  accountId   Int
+  points      Int      // Positive = earned, negative = redeemed
+  reason      String   // "booking", "streak_bonus", "referral", "redemption", "tier_bonus"
+  referenceId String?  // Booking ID, etc.
+  createdAt   DateTime @default(now())
+
+  account     LoyaltyAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([accountId])
+  @@index([createdAt])
+  @@map("loyalty_transactions")
+}
+
+model LoyaltyReward {
+  id            Int      @id @default(autoincrement())
+  nameJson      Json     // { ar: "خصم ٢٠٪", en: "20% Discount" }
+  descriptionJson Json   // { ar: "...", en: "..." }
+  pointsCost    Int      // Points needed to redeem
+  rewardType    String   // "discount_percent", "discount_fixed", "free_service"
+  rewardValue   Decimal  @db.Decimal(10, 2) // e.g., 20 (%) or 50 (SAR)
+  minTier       String   @default("SILVER") // Min tier required
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  @@map("loyalty_rewards")
+}
+
 // =============================================================================
 // Technician Profile
 // =============================================================================
@@ -236,6 +283,10 @@ model Technician {
   suspendedAt         DateTime?
   googleCalendarToken String?
   googleCalendarEmail String?
+  googleRefreshToken   String?
+  googleTokenExpiry    DateTime?
+  latitude             Float?
+  longitude            Float?
   isEcoFriendly       Boolean  @default(false) // Uses cruelty-free/organic products
   bufferMinutes       Int      @default(15)    // Buffer between bookings
   createdAt           DateTime  @default(now())
@@ -349,6 +400,7 @@ model Service {
   basePrice       Decimal  @db.Decimal(10, 2)
   durationMin     Int      // Duration in minutes
   imageUrl        String?
+  slug            String?   @unique
   isActive        Boolean  @default(true)
   isPopular       Boolean  @default(false)
   sortOrder       Int      @default(0)
@@ -485,6 +537,7 @@ model Booking {
   idempotencyKey     String?       @unique
   cancelledAt        DateTime?
   cancelReason       String?
+  googleEventId      String?
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
 

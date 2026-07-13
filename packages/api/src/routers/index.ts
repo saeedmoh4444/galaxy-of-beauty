@@ -26,6 +26,9 @@ import { subscriptionRouter } from './subscriptions';
 import { platformRouter } from './platform';
 import { streakRouter } from './streaks';
 import { referralRouter } from './referrals';
+import { uploadRouter } from './uploads';
+import { searchRouter } from './search';
+import { loyaltyRouter } from './loyalty';
 
 export const appRouter = router({
   // Health
@@ -62,6 +65,9 @@ export const appRouter = router({
   platform: platformRouter,
   streaks: streakRouter,
   referrals: referralRouter,
+  uploads: uploadRouter,
+  search: searchRouter,
+  loyalty: loyaltyRouter,
 });
 
 export type AppRouter = typeof appRouter;
