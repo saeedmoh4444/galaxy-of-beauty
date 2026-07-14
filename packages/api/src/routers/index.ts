@@ -38,6 +38,9 @@ import { featureFlagRouter } from './featureFlags';
 import { chatRouter } from './chat';
 import { performanceRouter } from './performance';
 import { cmsRouter } from './cms';
+import { videoRouter } from './video';
+import { skinAnalysisRouter } from './skinAnalysis';
+import { marketplaceRouter } from './marketplace';
 
 export const appRouter = router({
   // Health
@@ -86,6 +89,9 @@ export const appRouter = router({
   chat: chatRouter,
   performance: performanceRouter,
   cms: cmsRouter,
+  video: videoRouter,
+  skinAnalysis: skinAnalysisRouter,
+  marketplace: marketplaceRouter,
 });
 
 export type AppRouter = typeof appRouter;

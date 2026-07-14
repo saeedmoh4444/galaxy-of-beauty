@@ -158,6 +158,10 @@ model User {
   savedCards        SavedCard[]
   subscriptions     CustomerSubscription[]
   promoUsages       PromoUsage[]
+  skinAnalyses       SkinAnalysis[]
+  vendor             Vendor?
+  productReviews     ProductReview[]
+  cartItems          CartItem[]
   sentMessages      ChatMessage[]      @relation("SenderMessages")
   auditLogs         AuditLog[]
   wishlistItems     WishlistItem[]
@@ -555,6 +559,7 @@ model Booking {
   dispute    Dispute?
   zatcaInvoice ZatcaInvoice?
   chatMessages ChatMessage[]
+  videoSession VideoSession?
 
   @@index([customerId, status, createdAt])
   @@index([technicianId, status, startAt])
@@ -1145,4 +1150,147 @@ model FeatureFlag {
   updatedAt   DateTime @updatedAt
 
   @@map("feature_flags")
+}
+
+// =============================================================================
+// Video Consultations
+// =============================================================================
+
+model VideoSession {
+  id          Int      @id @default(autoincrement())
+  bookingId   Int      @unique
+  roomId      String   @unique // Unique WebRTC room identifier
+  initiatorId Int      // User who started the call
+  status      String   @default("WAITING") // WAITING, IN_PROGRESS, ENDED
+  startedAt   DateTime?
+  endedAt     DateTime?
+  durationSec Int?
+  recordingUrl String?
+  createdAt   DateTime @default(now())
+
+  booking Booking @relation(fields: [bookingId], references: [id])
+
+  @@index([roomId])
+  @@index([bookingId])
+  @@map("video_sessions")
+}
+
+// =============================================================================
+// AI Skin Analysis
+// =============================================================================
+
+model SkinAnalysis {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  imageUrl    String
+  resultJson  Json     // AI analysis results: { skinType, concerns, recommendations }
+  skinType    String?  // oily, dry, combination, sensitive, normal
+  concerns    String[] // acne, wrinkles, dark_spots, redness, etc.
+  recommendations Json? // { services: [id], products: [id], routine: [...] }
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+  @@map("skin_analyses")
+}
+
+// =============================================================================
+// Beauty Product Marketplace
+// =============================================================================
+
+model ProductCategory {
+  id        Int      @id @default(autoincrement())
+  nameJson  Json     // { ar: "عناية بالبشرة", en: "Skincare" }
+  slug      String   @unique
+  imageUrl  String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  products Product[]
+
+  @@map("product_categories")
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  vendorId    Int
+  categoryId  Int
+  nameJson    Json
+  descriptionJson Json
+  price       Decimal  @db.Decimal(10, 2)
+  comparePrice Decimal? @db.Decimal(10, 2) // "Was" price for discounts
+  stock       Int      @default(0)
+  imageUrl    String?
+  images      String[] // Additional images
+  brand       String?
+  isActive    Boolean  @default(true)
+  isFeatured  Boolean  @default(false)
+  tags        String[] // organic, vegan, cruelty-free, etc.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  vendor   Vendor           @relation(fields: [vendorId], references: [id])
+  category ProductCategory  @relation(fields: [categoryId], references: [id])
+  reviews  ProductReview[]
+  cartItems CartItem[]
+
+  @@index([vendorId, isActive])
+  @@index([categoryId, isActive])
+  @@index([price])
+  @@map("products")
+}
+
+model Vendor {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique
+  storeName   String
+  storeSlug   String   @unique
+  descriptionJson Json?
+  logoUrl     String?
+  bannerUrl   String?
+  isVerified  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  commissionRate Decimal @default(10) @db.Decimal(5, 2) // Platform commission %
+  totalSales  Decimal  @default(0) @db.Decimal(12, 2)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id])
+  products Product[]
+
+  @@index([storeSlug])
+  @@index([isVerified, isActive])
+  @@map("vendors")
+}
+
+model ProductReview {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  userId    Int
+  rating    Int      // 1-5
+  comment   String?
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@unique([productId, userId])
+  @@index([productId])
+  @@map("product_reviews")
+}
+
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId])
+  @@index([userId])
+  @@map("cart_items")
 }
