@@ -41,6 +41,10 @@ import { cmsRouter } from './cms';
 import { videoRouter } from './video';
 import { skinAnalysisRouter } from './skinAnalysis';
 import { marketplaceRouter } from './marketplace';
+import { advancedBookingRouter } from './advancedBooking';
+import { socialRouter } from './social';
+import { aiFeaturesRouter } from './aiFeatures';
+import { adminToolsRouter } from './adminTools';
 
 export const appRouter = router({
   // Health
@@ -92,6 +96,10 @@ export const appRouter = router({
   video: videoRouter,
   skinAnalysis: skinAnalysisRouter,
   marketplace: marketplaceRouter,
+  advancedBooking: advancedBookingRouter,
+  social: socialRouter,
+  aiFeatures: aiFeaturesRouter,
+  adminTools: adminToolsRouter,
 });
 
 export type AppRouter = typeof appRouter;
