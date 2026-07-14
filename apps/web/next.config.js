@@ -69,10 +69,10 @@ const nextConfig = {
 
   webpack(config, { isServer, dev }) {
     // Enable tree-shaking for barrel files
+    // Note: do NOT set usedExports — it conflicts with Next.js's cacheUnaffected
     config.optimization = {
       ...config.optimization,
       sideEffects: true,
-      usedExports: true,
     };
 
     // Add bundle analyzer in analyze mode
