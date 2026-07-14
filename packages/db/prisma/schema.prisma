@@ -746,6 +746,7 @@ model ZatcaInvoice {
   invoiceHash         String?     // Cryptographic hash
   cryptographicStamp  String?     // ZATCA signed stamp
   qrCode              String?     // Base64 encoded QR code
+  clearanceId         String?     // ZATCA clearance UUID from reporting
   status              ZatcaStatus @default(PENDING)
   reportedAt          DateTime?
   clearedAt           DateTime?

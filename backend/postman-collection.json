@@ -1,0 +1,170 @@
+{
+  "info": {
+    "name": "Galaxy of Beauty API",
+    "description": "REST API collection for Galaxy of Beauty (جالكسي بيوتي) platform.\n\nBase URL: http://localhost:4000/api\nAuth: JWT Bearer Token\n\n🔐 Set the `token` collection variable after login to auto-authenticate.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000/api" },
+    { "key": "token", "value": "" },
+    { "key": "bookingId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "System",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/health" }, "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "API Root",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}" }, "auth": { "type": "noauth" } }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/auth/register" },
+            "body": {
+              "mode": "raw", "raw": "{\n  \"email\": \"test@example.com\",\n  \"phone\": \"+966599999999\",\n  \"password\": \"Test@Pass123\",\n  \"name\": \"Test User\",\n  \"role\": \"CUSTOMER\"\n}"
+            },
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["if (pm.response.code === 200) {", "  const body = pm.response.json();", "  pm.collectionVariables.set('token', body.accessToken);", "}"]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/auth/login" },
+            "body": {
+              "mode": "raw", "raw": "{\n  \"email\": \"sara.demo@example.com\",\n  \"password\": \"Demo@123456\"\n}"
+            },
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST", "url": { "raw": "{{baseUrl}}/auth/refresh" },
+            "body": { "mode": "raw", "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}" },
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST", "url": { "raw": "{{baseUrl}}/auth/forgot-password" },
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"sara.demo@example.com\"\n}" },
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "POST", "url": { "raw": "{{baseUrl}}/auth/verify-email" },
+            "body": { "mode": "raw", "raw": "{\n  \"token\": \"verification-token-here\"\n}" },
+            "auth": { "type": "noauth" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Profile",
+      "item": [
+        { "name": "Get Profile", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/me" } } },
+        { "name": "Update Profile", "request": { "method": "PUT", "url": { "raw": "{{baseUrl}}/me" }, "body": { "mode": "raw", "raw": "{\n  \"name\": \"Updated Name\"\n}" } } },
+        { "name": "Change Password", "request": { "method": "PUT", "url": { "raw": "{{baseUrl}}/auth/change-password" }, "body": { "mode": "raw", "raw": "{\n  \"currentPassword\": \"Demo@123456\",\n  \"newPassword\": \"New@Pass123\"\n}" } } }
+      ]
+    },
+    {
+      "name": "Catalog",
+      "item": [
+        { "name": "Category Tree", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/categories" }, "auth": { "type": "noauth" } } },
+        { "name": "List Services", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/services?limit=10&sortBy=newest" }, "auth": { "type": "noauth" } } },
+        { "name": "Service Detail", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/services/1" }, "auth": { "type": "noauth" } } },
+        { "name": "Surprise Me", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/services/surprise-me?maxPrice=300" }, "auth": { "type": "noauth" } } }
+      ]
+    },
+    {
+      "name": "Technicians",
+      "item": [
+        { "name": "Get Technician Profile", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/technicians/3" }, "auth": { "type": "noauth" } } },
+        { "name": "Technician Services", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/technicians/1/services" }, "auth": { "type": "noauth" } } },
+        { "name": "Availability Slots", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/technicians/1/slots" }, "auth": { "type": "noauth" } } }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        { "name": "My Bookings", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/bookings?limit=20" } } },
+        { "name": "Booking Detail", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/bookings/{{bookingId}}" } } },
+        { "name": "Download ICS", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/bookings/{{bookingId}}/ics" } } }
+      ]
+    },
+    {
+      "name": "Wallet",
+      "item": [
+        { "name": "Get Wallet", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/wallet" } } },
+        { "name": "Transactions", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/wallet/transactions?limit=10" } } }
+      ]
+    },
+    {
+      "name": "AI & Discovery",
+      "item": [
+        { "name": "Chat with Layla", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/ai/chat" }, "body": { "mode": "raw", "raw": "{\n  \"message\": \"ما هي خدمات العناية بالشعر؟\"\n}" } } },
+        { "name": "Get Recommendations", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/ai/recommend" }, "body": { "mode": "raw", "raw": "{\n  \"limit\": 6\n}" } } },
+        { "name": "Get Streak", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/streaks" } } },
+        { "name": "Referral Stats", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/referrals" } } },
+        { "name": "Wishlist", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/wishlist" } } }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        { "name": "Get Notifications", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/notifications" } } },
+        { "name": "Mark Read", "request": { "method": "PATCH", "url": { "raw": "{{baseUrl}}/notifications/1/read" } } },
+        { "name": "Mark All Read", "request": { "method": "PATCH", "url": { "raw": "{{baseUrl}}/notifications/read-all" } } }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        { "name": "Dashboard Stats", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/admin/stats" } } },
+        { "name": "Revenue Chart", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/admin/revenue-chart?days=30" } } },
+        { "name": "Booking Stats", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/admin/booking-stats" } } },
+        { "name": "Financials", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/admin/financials" } } },
+        { "name": "Top Technicians", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/admin/top-technicians" } } },
+        { "name": "List Technicians", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/admin/technicians?kycStatus=VERIFIED" } } },
+        { "name": "List Customers", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/admin/customers" } } },
+        { "name": "Platform Settings", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/admin/settings" } } },
+        { "name": "Audit Logs", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/admin/audit-logs?limit=20" } } }
+      ]
+    },
+    {
+      "name": "Location",
+      "item": [
+        { "name": "All Cities", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/cities" }, "auth": { "type": "noauth" } } },
+        { "name": "Search Cities", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/cities?search=جد" }, "auth": { "type": "noauth" } } },
+        { "name": "City Areas", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/cities/الرياض/areas" }, "auth": { "type": "noauth" } } }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+<mjml>
+  <mj-head>
+    <mj-title>طلب حجز جديد - جالكسي بيوتي</mj-title>
+    <mj-font name="Tajawal" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" />
+    <mj-attributes>
+      <mj-all font-family="Tajawal, Tahoma, Arial, sans-serif" />
+      <mj-text font-size="16px" line-height="1.6" color="#374151" />
+    </mj-attributes>
+    <mj-style>
+      .highlight { color: #8B5CF6; font-weight: 700; }
+      .ar { direction: rtl; text-align: right; }
+      .en { direction: ltr; text-align: left; }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#F3F4F6">
+    <mj-section padding="20px 0">
+      <mj-column>
+        <mj-image width="180px" src="{{logoUrl}}" alt="Galaxy of Beauty" />
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#ffffff" padding="24px" border-radius="8px">
+      <mj-column>
+        <mj-text css-class="ar" font-size="20px" font-weight="700" color="#1F2937">
+          {{titleAr}}
+        </mj-text>
+        <mj-divider border-color="#E5E7EB" border-width="1px" padding="16px 0" />
+
+        <mj-text css-class="ar" padding="8px 0">
+          مرحباً {{technicianName}}،
+        </mj-text>
+        <mj-text css-class="ar" padding="8px 0">
+          لديك طلب حجز جديد من <span class="highlight">{{customerName}}</span>.
+        </mj-text>
+
+        <mj-table padding="16px 0">
+          <tr style="border-bottom: 1px solid #E5E7EB;">
+            <td style="padding: 8px 16px; font-weight: 700; color: #6B7280;">الخدمة</td>
+            <td style="padding: 8px 16px;">{{serviceName}}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #E5E7EB;">
+            <td style="padding: 8px 16px; font-weight: 700; color: #6B7280;">التاريخ</td>
+            <td style="padding: 8px 16px;">{{bookingDate}}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #E5E7EB;">
+            <td style="padding: 8px 16px; font-weight: 700; color: #6B7280;">الوقت</td>
+            <td style="padding: 8px 16px;">{{bookingTime}}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #E5E7EB;">
+            <td style="padding: 8px 16px; font-weight: 700; color: #6B7280;">المبلغ</td>
+            <td style="padding: 8px 16px; font-weight: 700; color: #8B5CF6;">{{amount}} ر.س</td>
+          </tr>
+        </mj-table>
+
+        <mj-button background-color="#8B5CF6" color="#ffffff" border-radius="8px" href="{{actionUrl}}" font-size="16px" padding="20px 0">
+          عرض تفاصيل الحجز
+        </mj-button>
+
+        <mj-text css-class="ar" font-size="14px" color="#9CA3AF" padding="12px 0">
+          يرجى الرد خلال 30 دقيقة. سينتهي الطلب تلقائياً بعد ذلك.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section padding="16px 0">
+      <mj-column>
+        <mj-text font-size="12px" color="#9CA3AF" align="center">
+          © {{year}} جالكسي بيوتي. جميع الحقوق محفوظة.
+        </mj-text>
+        <mj-text font-size="11px" color="#D1D5DB" align="center">
+          المملكة العربية السعودية | Galaxy of Beauty
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

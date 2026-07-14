@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Tajawal', sans-serif;
+  }
+
+  /* RTL Support */
+  [dir="rtl"] {
+    text-align: right;
+  }
+
+  [dir="ltr"] {
+    text-align: left;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #c084fc;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a855f7;
+  }
+}
+
+@layer components {
+  /* RTL-aware form inputs */
+  .input-field {
+    @apply w-full rounded-lg border border-gray-300 px-4 py-3 text-right
+           focus:border-primary-500 focus:ring-2 focus:ring-primary-200
+           placeholder:text-gray-400 transition-colors;
+  }
+
+  .btn-primary {
+    @apply bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold
+           hover:bg-primary-700 active:bg-primary-800 transition-colors
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-primary-600 border border-primary-300 px-6 py-3 rounded-lg font-semibold
+           hover:bg-primary-50 active:bg-primary-100 transition-colors;
+  }
+
+  .btn-ghost {
+    @apply text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6;
+  }
+
+  .card-hover {
+    @apply card hover:shadow-md hover:border-primary-200 transition-all duration-200;
+  }
+
+  .section-title {
+    @apply text-2xl font-bold text-gray-900 mb-6;
+  }
+
+  /* Status badges */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .badge-pending {
+    @apply badge bg-yellow-100 text-yellow-800;
+  }
+
+  .badge-success {
+    @apply badge bg-green-100 text-green-800;
+  }
+
+  .badge-error {
+    @apply badge bg-red-100 text-red-800;
+  }
+
+  .badge-info {
+    @apply badge bg-blue-100 text-blue-800;
+  }
+
+  .badge-purple {
+    @apply badge bg-primary-100 text-primary-800;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

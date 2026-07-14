@@ -7,6 +7,7 @@ import {
   customerProcedure,
   technicianProcedure,
 } from '../trpc';
+import { sendPushToUser } from '../lib/push';
 
 export const waitlistRouter = router({
   // ── Join waitlist ─────────────────────────────────────────────────────────
@@ -242,10 +243,39 @@ export const waitlistRouter = router({
         },
       });
 
-      // TODO: Send push notification to the customer
-      console.log(
-        `[Waitlist] tech=${ctx.user.id} notified customer=${entry.customerId} (entry=${entry.id})`,
-      );
+      // Send push notification to the customer
+      const technician = await prisma.user.findUnique({
+        where: { id: ctx.user.id },
+        select: { name: true },
+      });
+
+      sendPushToUser(entry.customerId, {
+        title: 'تم توفر موعد! 🔔',
+        body: technician?.name
+          ? `الفنية ${technician.name} أصبحت متاحة للحجز. بادري بحجز موعدك الآن!`
+          : 'أصبحت الفنية متاحة للحجز. بادري بحجز موعدك الآن!',
+        data: { screen: 'waitlist', technicianId: String(entry.technicianId) },
+      });
+
+      // Create in-app notification
+      const bodyAr = technician?.name
+        ? `الفنية ${technician.name} أصبحت متاحة للحجز. بادري بحجز موعدك الآن!`
+        : 'أصبحت الفنية متاحة للحجز. بادري بحجز موعدك الآن!';
+      const bodyEn = technician?.name
+        ? `Technician ${technician.name} is now available. Book your slot now!`
+        : 'A technician is now available. Book your slot now!';
+
+      await prisma.notification.create({
+        data: {
+          userId: entry.customerId,
+          type: 'WAITLIST',
+          titleJson: { ar: 'تم توفر موعد! 🔔', en: 'Slot Available! 🔔' },
+          bodyJson: { ar: bodyAr, en: bodyEn },
+          link: `/technicians/${entry.technicianId}`,
+          sentVia: ['push', 'in_app'],
+          isRead: false,
+        },
+      });
 
       return updated;
     }),

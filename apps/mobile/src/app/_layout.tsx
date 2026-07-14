@@ -24,6 +24,7 @@ export default function RootLayout() {
         <Stack.Screen name="services/surprise-me/index" options={{ title: 'فاجئيني' }} />
         <Stack.Screen name="technicians/index" options={{ title: 'الفنيات' }} />
         <Stack.Screen name="technicians/[id]/index" options={{ title: 'ملف الفنية' }} />
+        <Stack.Screen name="marketplace/index" options={{ title: 'متجر المنتجات' }} />
 
         {/* Customer screens */}
         <Stack.Screen name="customer/addresses/index" options={{ title: 'العناوين' }} />
@@ -36,6 +37,7 @@ export default function RootLayout() {
         <Stack.Screen name="customer/disputes/index" options={{ title: 'النزاعات' }} />
         <Stack.Screen name="customer/ai-chat/index" options={{ title: 'لايلى' }} />
         <Stack.Screen name="customer/subscriptions/index" options={{ title: 'الاشتراكات' }} />
+        <Stack.Screen name="customer/skin-analysis/index" options={{ title: 'تحليل البشرة' }} />
 
         {/* Technician screens */}
         <Stack.Screen name="tech/dashboard/index" options={{ title: 'لوحة الفنية' }} />

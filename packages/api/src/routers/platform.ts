@@ -71,18 +71,80 @@ export const platformRouter = router({
   }),
 
   getTerms: publicProcedure.query(async () => {
-    // Return the latest terms acceptance version
-    const latestAcceptance = await prisma.termsAcceptance.findFirst({
-      orderBy: { acceptedAt: 'desc' },
-      select: { termsVersion: true },
-    });
+    // Return the latest terms version + content from PlatformConfig
+    const [latestAcceptance, termsConfig] = await Promise.all([
+      prisma.termsAcceptance.findFirst({
+        orderBy: { acceptedAt: 'desc' },
+        select: { termsVersion: true },
+      }),
+      prisma.platformConfig.findUnique({
+        where: { key: 'TERMS_CONTENT' },
+      }),
+    ]);
+
+    let content: { ar: string; en: string } | null = null;
+    if (termsConfig?.value) {
+      try {
+        content = JSON.parse(termsConfig.value);
+      } catch {
+        content = { ar: termsConfig.value, en: termsConfig.value };
+      }
+    }
 
     return {
       version: latestAcceptance?.termsVersion ?? 'v1.0',
-      content: null, // TODO: Store terms content in DB or S3
-      updatedAt: null,
+      content,
+      updatedAt: termsConfig?.updatedAt ?? null,
     };
   }),
+
+  updateTerms: adminProcedure
+    .input(
+      z.object({
+        version: z.string().min(1),
+        contentAr: z.string().min(1),
+        contentEn: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      // Store terms content as JSON in PlatformConfig
+      const contentJson = JSON.stringify({ ar: input.contentAr, en: input.contentEn });
+
+      await prisma.platformConfig.upsert({
+        where: { key: 'TERMS_CONTENT' },
+        create: {
+          key: 'TERMS_CONTENT',
+          value: contentJson,
+          description: `Terms & Conditions v${input.version}`,
+          updatedBy: ctx.user.id,
+        },
+        update: {
+          value: contentJson,
+          description: `Terms & Conditions v${input.version}`,
+          updatedBy: ctx.user.id,
+        },
+      });
+
+      // Also store the version explicitly
+      await prisma.platformConfig.upsert({
+        where: { key: 'TERMS_VERSION' },
+        create: {
+          key: 'TERMS_VERSION',
+          value: input.version,
+          description: 'Current terms & conditions version',
+          updatedBy: ctx.user.id,
+        },
+        update: {
+          value: input.version,
+          updatedBy: ctx.user.id,
+        },
+      });
+
+      return {
+        version: input.version,
+        message: 'Terms content updated successfully',
+      };
+    }),
 
   acceptTerms: protectedProcedure
     .input(

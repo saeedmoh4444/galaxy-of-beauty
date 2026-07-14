@@ -1,0 +1,561 @@
+openapi: "3.0.3"
+info:
+  title: Galaxy of Beauty API
+  description: |
+    REST API for the Galaxy of Beauty (جالكسي بيوتي) platform — a secure marketplace
+    connecting female customers with vetted female technicians for at-home
+    beauty and grooming services in Saudi Arabia.
+
+    **Base URL:** `/api`
+
+    **Authentication:** JWT Bearer token in `Authorization` header.
+  version: "1.0.0"
+  contact:
+    name: Galaxy of Beauty
+    email: support@galaxyofbeauty.sa
+
+servers:
+  - url: http://localhost:4000/api
+    description: Local Development
+  - url: https://api.galaxyofbeauty.sa/api
+    description: Production
+
+tags:
+  - name: Auth
+    description: Authentication & user management
+  - name: Categories
+    description: Service categories (tree structure)
+  - name: Services
+    description: Beauty service catalog
+  - name: Technicians
+    description: Technician profiles, KYC, service mappings
+  - name: Bookings
+    description: Booking creation & lifecycle management
+  - name: Payments
+    description: Payment authorization, capture, webhooks
+  - name: Wallet
+    description: Wallet balance, transactions, withdrawals
+  - name: Reviews
+    description: Customer reviews & ratings
+  - name: Notifications
+    description: In-app notifications
+  - name: Admin
+    description: Admin dashboard & management
+  - name: AI
+    description: Chatbot (Layla), recommendations, quiz
+  - name: Waitlist
+    description: Customer waitlist management
+  - name: Wishlist
+    description: Customer saved items
+
+security:
+  - bearerAuth: []
+
+paths:
+  # ── Health ──────────────────────────────────────────────
+  /health:
+    get:
+      tags: [System]
+      summary: Health check
+      security: []
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  timestamp:
+                    type: string
+                    format: date-time
+                  uptime:
+                    type: number
+                  services:
+                    type: object
+                  version:
+                    type: string
+
+  # ── Auth ────────────────────────────────────────────────
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Register a new user
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, phone, password, name, role]
+              properties:
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                  pattern: '^\+9665\d{8}$'
+                  example: "+966512345678"
+                password:
+                  type: string
+                  minLength: 8
+                name:
+                  type: string
+                role:
+                  type: string
+                  enum: [CUSTOMER, TECHNICIAN]
+                city:
+                  type: string
+                  description: Required if role=TECHNICIAN
+                area:
+                  type: string
+                idempotencyKey:
+                  type: string
+      responses:
+        "201":
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: "#/components/schemas/User"
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: "#/components/schemas/User"
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      summary: Refresh access token (token rotation)
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [refreshToken]
+              properties:
+                refreshToken:
+                  type: string
+      responses:
+        "200":
+          description: New token pair
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Logout (revoke refresh token)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+
+  /auth/change-password:
+    put:
+      tags: [Auth]
+      summary: Change password (requires current password)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [currentPassword, newPassword]
+              properties:
+                currentPassword:
+                  type: string
+                newPassword:
+                  type: string
+                  minLength: 8
+
+  /auth/verify-email:
+    post:
+      tags: [Auth]
+      summary: Verify email with token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token]
+              properties:
+                token:
+                  type: string
+
+  /auth/forgot-password:
+    post:
+      tags: [Auth]
+      summary: Request password reset email
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email:
+                  type: string
+
+  /auth/reset-password:
+    post:
+      tags: [Auth]
+      summary: Reset password with token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token, newPassword]
+              properties:
+                token:
+                  type: string
+                newPassword:
+                  type: string
+
+  # ── Me ──────────────────────────────────────────────────
+  /me:
+    get:
+      tags: [Auth]
+      summary: Get current user profile
+      responses:
+        "200":
+          description: User profile
+    put:
+      tags: [Auth]
+      summary: Update current user profile
+
+  # ── Categories ──────────────────────────────────────────
+  /categories:
+    get:
+      tags: [Categories]
+      summary: Get category tree (nested, cached, localized)
+      security: []
+      parameters:
+        - name: activeOnly
+          in: query
+          schema:
+            type: boolean
+            default: true
+      responses:
+        "200":
+          description: Nested category tree
+
+  /categories/{id}:
+    get:
+      tags: [Categories]
+      summary: Get single category
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+  # ── Services ────────────────────────────────────────────
+  /services:
+    get:
+      tags: [Services]
+      summary: List services (filtered, paginated, localized)
+      security: []
+      parameters:
+        - name: categoryId
+          in: query
+          schema:
+            type: integer
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: minPrice
+          in: query
+          schema:
+            type: number
+        - name: maxPrice
+          in: query
+          schema:
+            type: number
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            enum: [newest, price, -price, popularity, duration]
+
+  /services/{id}:
+    get:
+      tags: [Services]
+      summary: Get service detail (with variants, add-ons, tags, technicians)
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+  # ── Bookings ────────────────────────────────────────────
+  /bookings:
+    get:
+      tags: [Bookings]
+      summary: List user's bookings
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+    post:
+      tags: [Bookings]
+      summary: Create booking (idempotent)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBooking"
+
+  /bookings/{id}:
+    get:
+      tags: [Bookings]
+      summary: Get booking detail
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+  /bookings/{id}/status:
+    patch:
+      tags: [Bookings]
+      summary: Transition booking status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [action]
+              properties:
+                action:
+                  type: string
+                  enum: [accept, reject, cancel, start, complete, no_show]
+                reason:
+                  type: string
+
+  # ── Payments ────────────────────────────────────────────
+  /payments/authorize/{bookingId}:
+    post:
+      tags: [Payments]
+      summary: Authorize payment (cash or PayFort)
+      parameters:
+        - name: bookingId
+          in: path
+          required: true
+          schema:
+            type: integer
+
+  /payments/capture/{bookingId}:
+    post:
+      tags: [Payments]
+      summary: Capture payment + trigger earnings distribution
+      parameters:
+        - name: bookingId
+          in: path
+          required: true
+          schema:
+            type: integer
+
+  /payments/refund/{bookingId}:
+    post:
+      tags: [Payments]
+      summary: Refund a captured payment (admin)
+      parameters:
+        - name: bookingId
+          in: path
+          required: true
+          schema:
+            type: integer
+
+  /payments/webhook:
+    post:
+      tags: [Payments]
+      summary: PayFort webhook receiver
+      security: []
+
+  # ── Wallet ──────────────────────────────────────────────
+  /wallet:
+    get:
+      tags: [Wallet]
+      summary: Get wallet balance + recent transactions
+
+  /wallet/transactions:
+    get:
+      tags: [Wallet]
+      summary: Get paginated wallet transactions
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [CREDIT, DEBIT]
+        - name: source
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+
+  /wallet/withdraw:
+    post:
+      tags: [Wallet]
+      summary: Withdraw funds (technician only, idempotent)
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        phone:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          enum: [CUSTOMER, TECHNICIAN, ADMIN]
+        isActive:
+          type: boolean
+        avatarUrl:
+          type: string
+          nullable: true
+        preferredLanguage:
+          type: string
+          enum: [ar, en]
+        createdAt:
+          type: string
+          format: date-time
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: object
+            requestId:
+              type: string
+
+    CreateBooking:
+      type: object
+      required: [technicianId, serviceId, addressId, slotId, idempotencyKey]
+      properties:
+        technicianId:
+          type: integer
+        serviceId:
+          type: integer
+        variantId:
+          type: integer
+        addressId:
+          type: integer
+        slotId:
+          type: integer
+        notes:
+          type: string
+        idempotencyKey:
+          type: string
