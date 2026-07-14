@@ -2,52 +2,57 @@
 
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, formatCurrency } from '@galaxy/shared';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function AdminDashboardPage(): JSX.Element {
-  const stats = api.admin.dashboardStats.useQuery({} as never);
+  const { data, isLoading, isError, refetch } = api.adminTools.health.useQuery({} as never);
+  const stats = data as unknown as Record<string, unknown>;
 
-  if (stats.isLoading) return <div className="space-y-6"><div className="grid gap-4 md:grid-cols-4">{Array.from({ length: 4 }, (_, i) => <CardSkeleton key={i} />)}</div><CardSkeleton /><CardSkeleton /></div>;
-  if (stats.error) return <ErrorAlert message={stats.error.message} onRetry={() => stats.refetch()} />;
-
-  const d = stats.data as unknown as Record<string, unknown>;
-  const recentBookings = (d?.recentBookings as unknown as Record<string, unknown>[]) ?? [];
-  const topTechnicians = (d?.topTechnicians as unknown as Record<string, unknown>[]) ?? [];
+  if (isLoading) return <DashboardLayout role="ADMIN"><div className="space-y-6">{Array.from({ length: 4 }, (_, i) => <CardSkeleton key={i} />)}</div></DashboardLayout>;
+  if (isError) return <DashboardLayout role="ADMIN"><ErrorAlert message="فشل تحميل لوحة التحكم" onRetry={() => refetch()} /></DashboardLayout>;
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold">لوحة الإدارة</h1>
+    <DashboardLayout role="ADMIN">
+      <div className="space-y-6">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">لوحة التحكم</h1>
 
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card className="text-center"><p className="text-sm text-gray-500">المستخدمين</p><p className="text-2xl font-bold text-brand-600">{d?.totalUsers as number ?? 0}</p></Card>
-        <Card className="text-center"><p className="text-sm text-gray-500">الفنيات</p><p className="text-2xl font-bold text-green-600">{d?.totalTechnicians as number ?? 0}</p></Card>
-        <Card className="text-center"><p className="text-sm text-gray-500">الحجوزات</p><p className="text-2xl font-bold text-amber-600">{d?.totalBookings as number ?? 0}</p></Card>
-        <Card className="text-center"><p className="text-sm text-gray-500">الإيرادات</p><p className="text-2xl font-bold text-purple-600">{formatCurrency(Number(d?.totalRevenue ?? 0))}</p></Card>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Card padding="md" className="text-center">
+            <p className="text-sm text-gray-500">إجمالي المستخدمين</p>
+            <p className="text-3xl font-bold text-brand-600">{Number(stats?.users ?? 0).toLocaleString('ar-SA')}</p>
+          </Card>
+          <Card padding="md" className="text-center">
+            <p className="text-sm text-gray-500">إجمالي الحجوزات</p>
+            <p className="text-3xl font-bold text-green-600">{Number(stats?.totalBookings ?? 0).toLocaleString('ar-SA')}</p>
+          </Card>
+          <Card padding="md" className="text-center">
+            <p className="text-sm text-gray-500">حجوزات اليوم</p>
+            <p className="text-3xl font-bold text-amber-600">{Number(stats?.bookingsToday ?? 0).toLocaleString('ar-SA')}</p>
+          </Card>
+          <Card padding="md" className="text-center">
+            <p className="text-sm text-gray-500">الإيرادات (ر.س)</p>
+            <p className="text-3xl font-bold text-blue-600">{formatCurrency(Number(stats?.totalRevenue ?? 0))}</p>
+          </Card>
+        </div>
+
+        <Card padding="md">
+          <h3 className="mb-3 text-lg font-semibold">معلومات النظام</h3>
+          <div className="grid gap-3 text-sm sm:grid-cols-3">
+            <div className="rounded-lg bg-gray-50 p-3 dark:bg-gray-800">
+              <span className="text-gray-500">Node.js</span>
+              <p className="font-mono font-semibold">{String(stats?.nodeVersion ?? '-')}</p>
+            </div>
+            <div className="rounded-lg bg-gray-50 p-3 dark:bg-gray-800">
+              <span className="text-gray-500">مدة التشغيل</span>
+              <p className="font-semibold">{Math.round(Number(stats?.uptime ?? 0) / 60)} دقيقة</p>
+            </div>
+            <div className="rounded-lg bg-gray-50 p-3 dark:bg-gray-800">
+              <span className="text-gray-500">قاعدة البيانات</span>
+              <p className="font-semibold text-green-600">{String(stats?.dbStatus ?? 'متصل')}</p>
+            </div>
+          </div>
+        </Card>
       </div>
-
-      <Card><h2 className="mb-3 text-lg font-semibold">آخر الحجوزات</h2>
-        {recentBookings.length === 0 ? <p className="text-gray-500">لا توجد حجوزات</p> : (
-          <div className="space-y-2">{recentBookings.map((b: Record<string, unknown>) => (
-            <div key={b.id as number} className="flex items-center justify-between border-b border-gray-100 pb-2 dark:border-gray-800">
-              <span className="font-medium">{b.bookingCode as string}</span>
-              <span className="text-sm text-gray-500">{new Date(b.createdAt as string).toLocaleDateString('ar-SA')}</span>
-              <span className="rounded-full bg-brand-100 px-2 py-0.5 text-xs text-brand-700">{b.status as string}</span>
-              <span className="font-semibold">{formatCurrency(Number(b.totalAmount ?? 0))}</span>
-            </div>
-          ))}</div>
-        )}
-      </Card>
-
-      <Card><h2 className="mb-3 text-lg font-semibold">أفضل الفنيات</h2>
-        {topTechnicians.length === 0 ? <p className="text-gray-500">لا توجد فنيات</p> : (
-          <div className="space-y-2">{topTechnicians.map((t: Record<string, unknown>) => (
-            <div key={t.id as number} className="flex items-center justify-between border-b border-gray-100 pb-2 dark:border-gray-800">
-              <span className="font-medium">{t.name as string}</span>
-              <span className="text-sm text-gray-500">⭐ {t.ratingAvg as number ?? 0}</span>
-              <span className="text-sm text-gray-500">{t.completedBookings as number} حجز</span>
-            </div>
-          ))}</div>
-        )}
-      </Card>
-    </div>
+    </DashboardLayout>
   );
 }
