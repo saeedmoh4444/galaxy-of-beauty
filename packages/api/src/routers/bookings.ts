@@ -572,14 +572,16 @@ export const bookingRouter = router({
 
   /**
    * Get the timeline (audit trail) of status changes for a booking.
-   * Currently a stub — returns an empty events array.
+   * Built from booking lifecycle + payment events + admin audit logs.
    */
   getTimeline: protectedProcedure
     .input(z.object({ bookingId: z.number() }))
     .query(async ({ ctx, input }) => {
       const booking = await prisma.booking.findUnique({
         where: { id: input.bookingId },
-        select: { id: true, customerId: true, technicianId: true },
+        include: {
+          payment: { select: { id: true, status: true, amount: true, createdAt: true } },
+        },
       });
 
       if (!booking) {
@@ -592,16 +594,98 @@ export const bookingRouter = router({
         booking.technicianId !== userId &&
         ctx.user.role !== 'ADMIN'
       ) {
-        throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'You do not have access to this booking',
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'You do not have access to this booking' });
+      }
+
+      const events: Array<Record<string, unknown>> = [];
+
+      // Booking created
+      events.push({
+        type: 'BOOKING_CREATED',
+        labelAr: 'تم إنشاء الحجز',
+        labelEn: 'Booking created',
+        timestamp: booking.createdAt.toISOString(),
+        actor: 'customer',
+      });
+
+      // Payment timeline
+      if (booking.payment) {
+        events.push({
+          type: 'PAYMENT_EVENT',
+          labelAr: `الدفع: ${booking.payment.status === 'CAPTURED' ? 'تم التحصيل' : booking.payment.status === 'AUTHORIZED' ? 'تم التفويض' : booking.payment.status === 'REFUNDED' ? 'تم الاسترداد' : booking.payment.status}`,
+          labelEn: `Payment: ${booking.payment.status}`,
+          timestamp: booking.payment.createdAt.toISOString(),
+          actor: 'system',
+          amount: booking.payment.amount.toNumber(),
         });
       }
 
-      // Stub: return empty timeline until audit log model is integrated
+      // Status label for the booking's current state
+      const statusLabels: Record<string, { ar: string; en: string }> = {
+        REQUESTED: { ar: 'في انتظار القبول', en: 'Awaiting acceptance' },
+        ACCEPTED: { ar: 'تم القبول', en: 'Accepted' },
+        PAYMENT_AUTHORIZED: { ar: 'تم تفويض الدفع', en: 'Payment authorized' },
+        CONFIRMED_OFFLINE: { ar: 'تم التأكيد (دفع خارجي)', en: 'Confirmed (offline payment)' },
+        PAID: { ar: 'تم الدفع', en: 'Paid' },
+        IN_PROGRESS: { ar: 'قيد التنفيذ', en: 'In progress' },
+        COMPLETED: { ar: 'مكتمل', en: 'Completed' },
+        REJECTED: { ar: 'مرفوض', en: 'Rejected' },
+        CANCELLED: { ar: 'ملغي', en: 'Cancelled' },
+        NO_SHOW: { ar: 'لم يحضر', en: 'No-show' },
+      };
+
+      const currentLabel = statusLabels[booking.status] || { ar: booking.status, en: booking.status };
+
+      // Cancelled event
+      if (booking.cancelledAt) {
+        events.push({
+          type: 'BOOKING_CANCELLED',
+          labelAr: 'تم إلغاء الحجز',
+          labelEn: 'Booking cancelled',
+          timestamp: booking.cancelledAt.toISOString(),
+          actor: 'customer',
+          reason: booking.cancelReason || undefined,
+        });
+      }
+
+      // Last update
+      events.push({
+        type: 'STATUS_UPDATE',
+        labelAr: `الحالة الحالية: ${currentLabel.ar}`,
+        labelEn: `Current status: ${currentLabel.en}`,
+        timestamp: booking.updatedAt.toISOString(),
+        actor: 'system',
+      });
+
+      // Admin audit log entries for this booking
+      if (ctx.user.role === 'ADMIN') {
+        const auditLogs = await prisma.auditLog.findMany({
+          where: { targetType: 'Booking', targetId: String(input.bookingId) },
+          include: { admin: { select: { name: true } } },
+          orderBy: { createdAt: 'asc' },
+        });
+
+        for (const log of auditLogs) {
+          events.push({
+            type: 'ADMIN_ACTION',
+            labelAr: `إجراء إداري: ${log.action}`,
+            labelEn: `Admin action: ${log.action}`,
+            timestamp: log.createdAt.toISOString(),
+            actor: 'admin',
+            adminName: log.admin.name,
+            action: log.action,
+            changes: log.newValue,
+          });
+        }
+      }
+
+      // Sort chronologically
+      events.sort((a, b) => new Date(a.timestamp as string).getTime() - new Date(b.timestamp as string).getTime());
+
       return {
         bookingId: input.bookingId,
-        events: [],
+        status: booking.status,
+        events,
       };
     }),
 });

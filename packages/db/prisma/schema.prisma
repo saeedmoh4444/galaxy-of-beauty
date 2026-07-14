@@ -916,10 +916,26 @@ model SaudiCity {
   regionEn  String
   isActive  Boolean @default(true)
 
+  areas Area[]
+
   @@unique([nameAr, regionAr])
   @@index([nameAr])
   @@index([regionAr])
   @@map("saudi_cities")
+}
+
+model Area {
+  id       Int    @id @default(autoincrement())
+  cityId   Int
+  nameAr   String
+  nameEn   String
+  isActive Boolean @default(true)
+
+  city SaudiCity @relation(fields: [cityId], references: [id], onDelete: Cascade)
+
+  @@unique([cityId, nameAr])
+  @@index([cityId])
+  @@map("areas")
 }
 
 // =============================================================================

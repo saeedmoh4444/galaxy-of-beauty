@@ -206,7 +206,6 @@ export const platformRouter = router({
   getAreas: publicProcedure
     .input(z.object({ cityName: z.string() }))
     .query(async ({ input }) => {
-      // TODO: Store areas in DB — for now return sample areas per city
       const city = await prisma.saudiCity.findFirst({
         where: {
           OR: [
@@ -214,23 +213,17 @@ export const platformRouter = router({
             { nameEn: { equals: input.cityName, mode: 'insensitive' } },
           ],
         },
+        include: {
+          areas: {
+            where: { isActive: true },
+            orderBy: { nameAr: 'asc' },
+          },
+        },
       });
 
       if (!city) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'City not found',
-        });
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'City not found' });
       }
-
-      // Stub: return sample areas based on city
-      const sampleAreas = [
-        { nameAr: 'المركز', nameEn: 'Downtown' },
-        { nameAr: 'الحي الشمالي', nameEn: 'Northern District' },
-        { nameAr: 'الحي الجنوبي', nameEn: 'Southern District' },
-        { nameAr: 'الحي الشرقي', nameEn: 'Eastern District' },
-        { nameAr: 'الحي الغربي', nameEn: 'Western District' },
-      ];
 
       return {
         city: {
@@ -238,7 +231,11 @@ export const platformRouter = router({
           nameAr: city.nameAr,
           nameEn: city.nameEn,
         },
-        areas: sampleAreas,
+        areas: city.areas.map((a) => ({
+          id: a.id,
+          nameAr: a.nameAr,
+          nameEn: a.nameEn,
+        })),
       };
     }),
 

@@ -383,7 +383,8 @@ export const paymentRouter = router({
     }),
 
   // -----------------------------------------------------------------------
-  // webhook — Stub PayFort / APS webhook handler
+  // webhook — PayFort / APS webhook handler
+  // Handles post-payment callbacks: capture, decline, refund notifications
   // -----------------------------------------------------------------------
   webhook: publicProcedure
     .input(webhookSchema)
