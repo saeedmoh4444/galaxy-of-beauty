@@ -27,6 +27,7 @@ export default function RootLayout() {
         <Stack.Screen name="technicians/index" options={{ title: 'الفنيات' }} />
         <Stack.Screen name="technicians/[id]/index" options={{ title: 'ملف الفنية' }} />
         <Stack.Screen name="marketplace/index" options={{ title: 'متجر المنتجات' }} />
+        <Stack.Screen name="compare/index" options={{ title: 'مقارنة الخدمات' }} />
 
         {/* Customer screens */}
         <Stack.Screen name="customer/addresses/index" options={{ title: 'العناوين' }} />

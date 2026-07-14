@@ -6,6 +6,8 @@ export { Button } from './ui/Button';
 export { Input } from './ui/Input';
 export { Card } from './ui/Card';
 export { Modal } from './ui/Modal';
+export { Spinner, PageSpinner } from './ui/Spinner';
+export { ProgressBar } from './ui/ProgressBar';
 
 // Hooks
 export { useForm, useAuth, useDebounce } from './hooks';

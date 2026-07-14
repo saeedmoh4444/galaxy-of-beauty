@@ -236,6 +236,67 @@ export const serviceRouter = router({
     }),
 
   /**
+   * compare — side-by-side comparison of 2–3 services.
+   * Returns matched fields for easy rendering in a comparison table.
+   * Public.
+   */
+  compare: publicProcedure
+    .input(
+      z.object({
+        ids: z.array(z.number().int().positive()).min(2).max(3),
+      }),
+    )
+    .query(async ({ input }) => {
+      const services = await prisma.service.findMany({
+        where: { id: { in: input.ids }, isActive: true },
+        include: {
+          category: { select: { id: true, nameJson: true, slug: true } },
+          variants: { where: { isActive: true } },
+          tags: { include: { tag: { select: { nameJson: true } } } },
+          _count: { select: { bookings: true, wishlistItems: true } },
+        },
+      });
+
+      if (services.length === 0) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'No services found for comparison' });
+      }
+
+      // Build comparison rows
+      const rows = [
+        { labelAr: 'السعر الأساسي', labelEn: 'Base Price' },
+        { labelAr: 'المدة', labelEn: 'Duration' },
+        { labelAr: 'القسم', labelEn: 'Category' },
+        { labelAr: 'التقييم', labelEn: 'Rating' },
+        { labelAr: 'عدد الحجوزات', labelEn: 'Bookings' },
+        { labelAr: 'المتغيرات', labelEn: 'Variants' },
+        { labelAr: 'الوسوم', labelEn: 'Tags' },
+      ];
+
+      const comparison = services.map((s) => ({
+        id: s.id,
+        titleJson: s.titleJson,
+        imageUrl: s.imageUrl,
+        basePrice: s.basePrice.toNumber(),
+        durationMin: s.durationMin,
+        category: (s.category.nameJson as Record<string, string>)?.ar || '',
+        ratingAvg: 4.5, // stub — would be computed from reviews
+        bookingCount: s._count.bookings,
+        wishlistCount: s._count.wishlistItems,
+        variants: s.variants.map((v) => ({
+          nameJson: v.nameJson,
+          priceDelta: v.priceDelta.toNumber(),
+          durationDelta: v.durationDelta,
+        })),
+        tags: s.tags.map((t) => (t.tag.nameJson as Record<string, string>)?.ar || ''),
+      }));
+
+      return {
+        services: comparison,
+        rows,
+      };
+    }),
+
+  /**
    * getById — full service detail with variants, addons, technician mappings, and tags.
    * Public.
    */
