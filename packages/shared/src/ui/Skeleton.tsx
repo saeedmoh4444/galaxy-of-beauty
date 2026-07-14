@@ -40,3 +40,41 @@ export function ListSkeleton({ rows = 5 }: { rows?: number }) {
     </div>
   );
 }
+
+/** Text line skeleton for paragraph placeholders */
+export function TextLineSkeleton({ width = 'full', className = '' }: { width?: string; className?: string }) {
+  return (
+    <div
+      role="status"
+      aria-label="Loading text"
+      className={`animate-pulse rounded bg-gray-200 dark:bg-gray-700 h-3 ${width === 'full' ? 'w-full' : width} ${className}`}
+    />
+  );
+}
+
+/** Avatar circle skeleton */
+export function AvatarSkeleton({ size = 10 }: { size?: number }) {
+  const px = size * 4;
+  return (
+    <div
+      role="status"
+      aria-label="Loading avatar"
+      className={`animate-pulse rounded-full bg-gray-200 dark:bg-gray-700`}
+      style={{ width: px, height: px }}
+    />
+  );
+}
+
+/** Table row skeleton with multiple columns */
+export function TableRowSkeleton({ cols = 4 }: { cols?: number }) {
+  return (
+    <div className="flex gap-4 py-3" role="status" aria-label="Loading table row">
+      {Array.from({ length: cols }, (_, i) => (
+        <div
+          key={i}
+          className="animate-pulse rounded bg-gray-200 dark:bg-gray-700 h-4 flex-1"
+        />
+      ))}
+    </div>
+  );
+}
