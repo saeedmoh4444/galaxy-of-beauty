@@ -31,9 +31,20 @@ export default function HomeScreen() {
         </View>
       )}
 
+      <Text style={styles.sectionTitle}>اكتشفي المزيد</Text>
       <View style={styles.quickActions}>
-        <TouchableOpacity style={styles.qaBtn} onPress={() => router.push('/(tabs)/services')}><Text style={styles.qaText}>تصفح الخدمات</Text></TouchableOpacity>
-        <TouchableOpacity style={[styles.qaBtn, styles.qaOutline]} onPress={() => router.push('/services/surprise-me')}><Text style={[styles.qaText, { color: '#7c3aed' }]}>فاجئيني</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.qaBtn} onPress={() => router.push('/(tabs)/services')}>
+          <Text style={styles.qaText}>تصفح الخدمات</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.qaBtn, styles.qaOutline]} onPress={() => router.push('/services/surprise-me')}>
+          <Text style={[styles.qaText, { color: '#7c3aed' }]}>فاجئيني</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.qaBtn} onPress={() => router.push('/marketplace')}>
+          <Text style={styles.qaText}>🛍️ متجر المنتجات</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.qaBtn, styles.qaPink]} onPress={() => router.push('/customer/skin-analysis')}>
+          <Text style={styles.qaText}>🔬 تحليل البشرة</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -53,5 +64,6 @@ const styles = StyleSheet.create({
   quickActions: { padding: 16, gap: 8 },
   qaBtn: { backgroundColor: '#7c3aed', borderRadius: 12, padding: 14, alignItems: 'center' },
   qaOutline: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#7c3aed' },
+  qaPink: { backgroundColor: '#ec4899' },
   qaText: { color: '#fff', fontSize: 16, fontWeight: '600' },
 });
