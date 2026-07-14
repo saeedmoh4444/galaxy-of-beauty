@@ -85,6 +85,16 @@ export const authRouter = router({
     .input(registerSchema)
     .mutation(async ({ input }) => {
       try {
+        // ── Rate limiting: 3 registrations per email per hour ──
+        const registerKey = `register:${input.email}`;
+        const registerAttempts = await incrementAttempts(registerKey, 3600);
+        if (registerAttempts > 3) {
+          throw new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+            message: 'Too many registration attempts. Please try again later.',
+          });
+        }
+
         // Check for duplicate email
         const existingEmail = await prisma.user.findUnique({
           where: { email: input.email },
@@ -419,7 +429,13 @@ export const authRouter = router({
           data: { passwordHash: newHash },
         });
 
-        return { message: 'Password changed successfully' };
+        // Revoke all active refresh tokens — force re-login on all devices
+        await prisma.refreshToken.updateMany({
+          where: { userId: ctx.user.id, revokedAt: null },
+          data: { revokedAt: new Date() },
+        });
+
+        return { message: 'Password changed successfully. All other sessions have been revoked.' };
       } catch (error) {
         if (error instanceof TRPCError) throw error;
         throw new TRPCError({
@@ -436,6 +452,16 @@ export const authRouter = router({
     .input(forgotPasswordSchema)
     .mutation(async ({ input }) => {
       try {
+        // ── Rate limiting: 3 requests per email per 15 min ──
+        const resetKey = `forgot_pw:${input.email}`;
+        const resetAttempts = await incrementAttempts(resetKey, 900);
+        if (resetAttempts > 3) {
+          throw new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+            message: 'Too many password reset requests. Please try again in 15 minutes.',
+          });
+        }
+
         // Do not reveal whether the email exists (user enumeration prevention)
         const user = await prisma.user.findUnique({
           where: { email: input.email },
@@ -522,7 +548,13 @@ export const authRouter = router({
           data: { usedAt: new Date() },
         });
 
-        return { message: 'Password reset successfully. You can now log in.' };
+        // Revoke all active refresh tokens — force re-login on all devices
+        await prisma.refreshToken.updateMany({
+          where: { userId: resetToken.userId, revokedAt: null },
+          data: { revokedAt: new Date() },
+        });
+
+        return { message: 'Password reset successfully. All sessions revoked. You can now log in.' };
       } catch (error) {
         if (error instanceof TRPCError) throw error;
         throw new TRPCError({

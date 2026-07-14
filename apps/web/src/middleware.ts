@@ -16,6 +16,21 @@ export function middleware(request: NextRequest) {
     'max-age=63072000; includeSubDomains; preload',
   );
 
+  // Prevent MIME type sniffing
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+
+  // Prevent clickjacking
+  response.headers.set('X-Frame-Options', 'DENY');
+
+  // Restrict referrer information
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+
+  // Restrict browser features
+  response.headers.set(
+    'Permissions-Policy',
+    'camera=(), microphone=(), geolocation=(self), payment=()',
+  );
+
   // Cross-origin isolation for the tRPC API endpoint
   if (pathname.startsWith('/api/trpc')) {
     response.headers.set('Access-Control-Allow-Credentials', 'true');
