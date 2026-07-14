@@ -3,15 +3,17 @@ import { StatusBar } from 'expo-status-bar';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 import SocketProvider from '@/components/SocketProvider';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 export default function RootLayout() {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <SocketProvider>
-        <StatusBar style="auto" />
-        <Stack screenOptions={{ headerShown: false }}>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <SocketProvider>
+          <StatusBar style="auto" />
+          <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="(auth)/login/index" options={{ title: 'تسجيل الدخول' }} />
         <Stack.Screen name="(auth)/register/index" options={{ title: 'إنشاء حساب' }} />
@@ -60,7 +62,8 @@ export default function RootLayout() {
         <Stack.Screen name="admin/zatca/index" options={{ title: 'زاتكا' }} />
         <Stack.Screen name="admin/settings/index" options={{ title: 'الإعدادات' }} />
       </Stack>
-      </SocketProvider>
-    </QueryClientProvider>
+        </SocketProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }

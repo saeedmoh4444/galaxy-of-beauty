@@ -40,6 +40,36 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
 
+  # ── Unit Tests ─────────────────────────────────────────────
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: gob_admin
+          POSTGRES_PASSWORD: gob_test_pass
+          POSTGRES_DB: Galaxy_of_Beauty_db
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: '9' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @galaxy/db exec prisma generate
+        env:
+          DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
+      - run: pnpm --filter @galaxy/api test
+        env:
+          DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
+
   # ── Build ─────────────────────────────────────────────────
   build:
     name: Build
