@@ -27,13 +27,10 @@ async function main() {
     'الجبيل', 'الأحساء', 'القطيف', 'الظهران', 'حفر الباطن', 'عنيزة',
   ];
 
-  for (const city of cities) {
-    await prisma.city.upsert({
-      where: { nameAr: city },
-      update: {},
-      create: { nameAr: city, nameEn: city, region: 'Saudi Arabia' },
-    });
-  }
+  await prisma.saudiCity.createMany({
+    data: cities.map((c) => ({ nameAr: c, nameEn: c, regionAr: 'المملكة العربية السعودية', regionEn: 'Saudi Arabia' })),
+    skipDuplicates: true,
+  });
   console.log(`  ${cities.length} cities seeded`);
 
   // ── Categories ───────────────────────────────────────────
@@ -52,16 +49,10 @@ async function main() {
     { ar: 'الاسترخاء', en: 'Relaxation', slug: 'relaxation' },
   ];
 
-  for (const cat of categoryData) {
-    await prisma.category.create({
-      data: {
-        nameJson: { ar: cat.ar, en: cat.en },
-        slug: cat.slug,
-        imageUrl: null,
-        sortOrder: 0,
-      },
-    });
-  }
+  await prisma.category.createMany({
+    data: categoryData.map((c) => ({ nameJson: { ar: c.ar, en: c.en }, slug: c.slug, imageUrl: null, sortOrder: 0 })),
+    skipDuplicates: true,
+  });
   console.log(`  ${categoryData.length} categories seeded`);
 
   // ── Services ─────────────────────────────────────────────
@@ -93,17 +84,18 @@ async function main() {
     { cat: 'relaxation', ar: 'جلسة استرخاء', en: 'Relaxation Session', price: 150, min: 60 },
   ];
 
-  const categories = await prisma.category.findMany();
+  // Create services with correct category IDs
+  const catMap = new Map((await prisma.category.findMany()).map((c) => [c.slug, c.id]));
   for (const s of services) {
-    const cat = categories.find((c) => (c.nameJson as Record<string, string>).en === services.find((x) => x.cat === s.cat)?.en);
-    await prisma.service.create({
-      data: {
-        categoryId: cat?.id || 1,
-        titleJson: { ar: s.ar, en: s.en },
+    const slug = s.en.toLowerCase().replace(/[^a-z]/g, '-');
+    const catId = catMap.get(s.cat) || 1;
+    await prisma.service.upsert({
+      where: { slug },
+      update: { titleJson: { ar: s.ar, en: s.en }, basePrice: s.price, categoryId: catId },
+      create: {
+        categoryId: catId, titleJson: { ar: s.ar, en: s.en }, basePrice: s.price,
+        durationMin: s.min, slug,
         descriptionJson: { ar: `خدمة ${s.ar} احترافية`, en: `Professional ${s.en} service` },
-        basePrice: s.price,
-        durationMin: s.min,
-        slug: s.en.toLowerCase().replace(/[^a-z]/g, '-'),
       },
     });
   }
@@ -119,18 +111,21 @@ async function main() {
   ];
 
   for (const t of techNames) {
-    const user = await prisma.user.create({
-      data: {
-        email: t.email, phone: `+9665${Math.random().toString().slice(2, 10)}`,
-        passwordHash: '$2a$10$placeholder',
-        name: t.name, role: 'TECHNICIAN', emailVerified: true,
+    const user = await prisma.user.upsert({
+      where: { email: t.email },
+      update: { name: t.name, role: 'TECHNICIAN' },
+      create: {
+        email: t.email, phone: `+9665${Math.floor(Math.random() * 100000000).toString().padStart(8, '0')}`,
+        passwordHash: '$2a$10$placeholder', name: t.name, role: 'TECHNICIAN', emailVerified: true,
       },
     });
 
-    await prisma.wallet.create({ data: { userId: user.id } });
+    await prisma.wallet.upsert({ where: { userId: user.id }, update: {}, create: { userId: user.id } });
 
-    await prisma.technician.create({
-      data: {
+    await prisma.technician.upsert({
+      where: { userId: user.id },
+      update: { city: t.city, area: t.area, kycStatus: 'VERIFIED' },
+      create: {
         userId: user.id,
         city: t.city, area: t.area,
         kycStatus: 'VERIFIED',
