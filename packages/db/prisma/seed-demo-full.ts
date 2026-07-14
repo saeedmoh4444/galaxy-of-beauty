@@ -208,6 +208,7 @@ async function main() {
       { code: 'RAMADAN50', discountType: 'fixed', discountValue: 50, maxUses: 200, minOrderAmount: 200, validUntil: new Date('2026-12-31'), isActive: true, createdBy: admin.id },
       { code: 'VIP100', discountType: 'fixed', discountValue: 100, maxUses: 50, isActive: true, createdBy: admin.id },
     ],
+    skipDuplicates: true,
   });
   console.log('  3 promo codes seeded');
 
@@ -220,6 +221,7 @@ async function main() {
       { key: 'subscription_boxes', name: 'Subscription Boxes', enabled: true, rolloutPercent: 100 },
       { key: 'express_booking', name: 'Express AI Booking', enabled: false, rolloutPercent: 0 },
     ],
+    skipDuplicates: true,
   });
   console.log('  5 feature flags seeded');
 
