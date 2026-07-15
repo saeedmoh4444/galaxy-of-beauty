@@ -3,9 +3,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const navLinks = [
   { href: '/services', labelAr: 'الخدمات', labelEn: 'Services' },
+  { href: '/marketplace', labelAr: 'المتجر', labelEn: 'Marketplace' },
+  { href: '/subscription-boxes', labelAr: 'الصناديق الشهرية', labelEn: 'Subscription Boxes' },
 ];
 
 export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
@@ -37,6 +40,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
           </nav>
 
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <Link
               href="/login"
               className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
