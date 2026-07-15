@@ -11,6 +11,12 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: 'Galaxy of Beauty | جالكسي بيوتي',
   description: 'Secure marketplace for beauty & grooming services in Saudi Arabia',
+  icons: { icon: '/logo.png', apple: '/logo.png' },
+  openGraph: {
+    title: 'Galaxy of Beauty | جالكسي بيوتي',
+    description: 'Secure marketplace for beauty & grooming services in Saudi Arabia',
+    images: ['/logo.png'],
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }): ReactNode {

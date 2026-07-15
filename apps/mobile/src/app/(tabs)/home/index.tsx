@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/api';
 import { useState, useEffect } from 'react';
@@ -15,6 +15,7 @@ export default function HomeScreen() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.hero}>
+        <Image source={require('@/../assets/logo.png')} style={styles.heroLogo} resizeMode="contain" />
         <Text style={styles.heroTitle}>جالكسي بيوتي</Text>
         <Text style={styles.heroSub}>منصة خدمات التجميل الأولى في السعودية</Text>
       </View>
@@ -53,6 +54,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   hero: { backgroundColor: '#7c3aed', padding: 32, alignItems: 'center' },
+  heroLogo: { width: 80, height: 80, borderRadius: 16, marginBottom: 12 },
   heroTitle: { fontSize: 32, fontWeight: '800', color: '#fff' },
   heroSub: { fontSize: 16, color: '#ede9fe', marginTop: 8 },
   sectionTitle: { fontSize: 20, fontWeight: '700', margin: 16, marginBottom: 8 },

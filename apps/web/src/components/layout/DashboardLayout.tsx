@@ -38,8 +38,9 @@ export function DashboardLayout({ children, role = 'CUSTOMER' }: { children: Rea
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <aside className="hidden w-64 border-e border-gray-200 bg-white p-4 md:block dark:border-gray-800 dark:bg-gray-950">
-        <Link href="/" className="mb-8 block text-xl font-bold text-brand-600">
-          جالكسي بيوتي
+        <Link href="/" className="mb-8 flex items-center gap-2">
+          <img src="/logo.png" alt="جالكسي بيوتي" className="h-10 w-10 rounded-lg object-cover" />
+          <span className="text-xl font-bold text-brand-600">جالكسي بيوتي</span>
         </Link>
         <nav className="space-y-1">
           {links.map((link) => (
