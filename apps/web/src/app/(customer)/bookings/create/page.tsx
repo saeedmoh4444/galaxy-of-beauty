@@ -56,12 +56,12 @@ export default function CreateBookingPage(): JSX.Element {
     setSubmitting(true);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (createMut as any).mutate({
-      serviceId,
-      variantId,
-      addressId,
-      promoCode: promoCode || undefined,
+      serviceId, variantId, addressId, slotId: 0,
+      technicianId: 1, // Placeholder — auto-assign in production
+      idempotencyKey: `web_${Date.now()}_${Math.random().toString(36).slice(2,10)}`,
       notes: notes || undefined,
-      startAt: new Date(Date.now() + 86400000).toISOString(), // tomorrow (technician picks exact time)
+      startAt: new Date(Date.now() + 86400000).toISOString(),
+      endAt: new Date(Date.now() + 86400000 + ((svc?.durationMin as number) || 60) * 60000).toISOString(),
     });
   };
 

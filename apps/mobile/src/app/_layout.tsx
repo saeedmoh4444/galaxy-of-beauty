@@ -47,6 +47,7 @@ export default function RootLayout() {
         <Stack.Screen name="customer/ai-chat/index" options={{ title: 'لايلى' }} />
         <Stack.Screen name="customer/subscriptions/index" options={{ title: 'الاشتراكات' }} />
         <Stack.Screen name="customer/saved-cards/index" options={{ title: 'البطاقات المحفوظة' }} />
+        <Stack.Screen name="customer/bookings/create/index" options={{ title: 'حجز جديد' }} />
         <Stack.Screen name="customer/skin-analysis/index" options={{ title: 'تحليل البشرة' }} />
         <Stack.Screen name="customer/loyalty/index" options={{ title: 'الولاء' }} />
         <Stack.Screen name="customer/promo/index" options={{ title: 'كود الخصم' }} />

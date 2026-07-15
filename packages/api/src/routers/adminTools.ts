@@ -99,18 +99,28 @@ export const adminToolsRouter = router({
 
   // ── System Health ──────────────────────────────────────
   health: adminProcedure.query(async () => {
-    const [userCount, bookingCount, revenueAgg, activeToday] = await Promise.all([
+    const [userCount, bookingCount, revenueAgg, activeToday, techCount, serviceCount, disputeCount, completedCount] = await Promise.all([
       prisma.user.count(),
       prisma.booking.count(),
       prisma.booking.aggregate({ where: { status: 'COMPLETED' }, _sum: { totalAmount: true } }),
       prisma.booking.count({ where: { createdAt: { gte: new Date(Date.now() - 86400000) } } }),
+      prisma.user.count({ where: { role: 'TECHNICIAN' } }),
+      prisma.service.count({ where: { isActive: true } }),
+      prisma.dispute.count({ where: { status: 'OPEN' } }),
+      prisma.booking.count({ where: { status: 'COMPLETED' } }),
     ]);
+
+    const completionRate = bookingCount > 0 ? Math.round((completedCount / bookingCount) * 100) : 0;
 
     return {
       users: userCount,
       totalBookings: bookingCount,
       totalRevenue: Number(revenueAgg._sum.totalAmount || 0),
       bookingsToday: activeToday,
+      technicians: techCount,
+      services: serviceCount,
+      openDisputes: disputeCount,
+      completionRate,
       uptime: process.uptime(),
       memory: process.memoryUsage(),
       nodeVersion: process.version,
