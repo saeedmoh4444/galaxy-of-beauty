@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { trpc } from '@/lib/api';
+import { useCamera } from '@/hooks/useCamera';
 import { useState, useEffect, useCallback } from 'react';
 
 export default function SkinAnalysisScreen() {
@@ -8,6 +9,22 @@ export default function SkinAnalysisScreen() {
   const [result, setResult] = useState<Record<string, unknown> | null>(null);
   const [history, setHistory] = useState<Record<string, unknown>[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(true);
+  const [showCamera, setShowCamera] = useState(false);
+  const { hasPermission, requestPermission, takePhoto } = useCamera();
+
+  const handleCameraCapture = async () => {
+    if (!hasPermission) {
+      const granted = await requestPermission();
+      if (!granted) return;
+    }
+    setShowCamera(true);
+    const photo = await takePhoto();
+    setShowCamera(false);
+    if (photo?.uri) {
+      setImageUrl(photo.uri);
+      Alert.alert('تم', 'تم التقاط الصورة بنجاح. اضغطي على تحليل للمتابعة.');
+    }
+  };
 
   const fetchHistory = useCallback(async () => {
     setLoadingHistory(true);
@@ -63,7 +80,10 @@ export default function SkinAnalysisScreen() {
 
         <View style={styles.uploadZone}>
           <Text style={styles.uploadEmoji}>📸</Text>
-          <Text style={styles.uploadHint}>أدخلي رابط الصورة أدناه</Text>
+          <Text style={styles.uploadHint}>التقطي صورة أو أدخلي رابط الصورة</Text>
+          <TouchableOpacity style={styles.cameraBtn} onPress={handleCameraCapture} activeOpacity={0.8}>
+            <Text style={styles.cameraBtnText}>{showCamera ? '📷 جاري التصوير...' : '📷 التقاط صورة'}</Text>
+          </TouchableOpacity>
         </View>
 
         <TextInput
@@ -183,7 +203,9 @@ const styles = StyleSheet.create({
     borderRadius: 12, padding: 28, alignItems: 'center', marginBottom: 14,
   },
   uploadEmoji: { fontSize: 40, marginBottom: 8 },
-  uploadHint: { fontSize: 13, color: '#9ca3af' },
+  uploadHint: { fontSize: 13, color: '#9ca3af', marginBottom: 12 },
+  cameraBtn: { backgroundColor: '#ec4899', borderRadius: 10, paddingHorizontal: 20, paddingVertical: 10 },
+  cameraBtnText: { color: '#fff', fontSize: 14, fontWeight: '600' },
 
   urlInput: {
     borderWidth: 1, borderColor: '#d1d5db', borderRadius: 10,
