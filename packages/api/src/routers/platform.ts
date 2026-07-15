@@ -311,6 +311,40 @@ export const platformRouter = router({
       return { format: 'json', data: users, total: users.length };
     }),
 
+  // ── Area Management ──────────────────────────────────
+  listAreas: adminProcedure
+    .input(z.object({ cityId: z.number().int().positive().optional() }))
+    .query(async ({ input }) => {
+      const where = input.cityId ? { cityId: input.cityId } : {};
+      return prisma.area.findMany({
+        where,
+        include: { city: { select: { nameAr: true } } },
+        orderBy: [{ cityId: 'asc' }, { nameAr: 'asc' }],
+      });
+    }),
+
+  createArea: adminProcedure
+    .input(z.object({ cityId: z.number().int().positive(), nameAr: z.string().min(2), nameEn: z.string().min(2) }))
+    .mutation(async ({ input }) => {
+      return prisma.area.create({
+        data: { cityId: input.cityId, nameAr: input.nameAr, nameEn: input.nameEn },
+      });
+    }),
+
+  updateArea: adminProcedure
+    .input(z.object({ id: z.number().int().positive(), nameAr: z.string().min(2).optional(), nameEn: z.string().min(2).optional(), isActive: z.boolean().optional() }))
+    .mutation(async ({ input }) => {
+      const { id, ...data } = input;
+      return prisma.area.update({ where: { id }, data });
+    }),
+
+  deleteArea: adminProcedure
+    .input(z.object({ id: z.number().int().positive() }))
+    .mutation(async ({ input }) => {
+      await prisma.area.update({ where: { id: input.id }, data: { isActive: false } });
+      return { success: true };
+    }),
+
   getAuditLogs: adminProcedure
     .input(
       z

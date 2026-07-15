@@ -28,6 +28,9 @@ export default function RootLayout() {
         <Stack.Screen name="technicians/[id]/index" options={{ title: 'ملف الفنية' }} />
         <Stack.Screen name="marketplace/index" options={{ title: 'متجر المنتجات' }} />
         <Stack.Screen name="compare/index" options={{ title: 'مقارنة الخدمات' }} />
+        <Stack.Screen name="subscription-boxes/index" options={{ title: 'الصناديق الشهرية' }} />
+        <Stack.Screen name="customer/video/[bookingId]/index" options={{ title: 'استشارة فيديو' }} />
+        <Stack.Screen name="customer/video/[bookingId]/room/index" options={{ title: 'غرفة الفيديو' }} />
 
         {/* Customer screens */}
         <Stack.Screen name="customer/addresses/index" options={{ title: 'العناوين' }} />
