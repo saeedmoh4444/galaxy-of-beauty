@@ -7,3 +7,5 @@ export { Card } from './Card';
 export { Modal } from './Modal';
 export { Spinner, PageSpinner } from './Spinner';
 export { ProgressBar } from './ProgressBar';
+export { ToastProvider, useToast } from './Toast';
+export type { ToastType } from './Toast';

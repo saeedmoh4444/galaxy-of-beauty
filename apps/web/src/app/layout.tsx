@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import Providers from '@/components/Providers';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { SkipLink } from '@/components/SkipLink';
+import { ToastProvider } from '@galaxy/shared';
 import './globals.css';
 
 export const dynamic = 'force-dynamic';
@@ -19,7 +20,9 @@ export default function RootLayout({ children }: { children: ReactNode }): React
         <SkipLink />
         <main id="main-content" tabIndex={-1}>
           <ErrorBoundary>
-            <Providers>{children}</Providers>
+            <ToastProvider>
+              <Providers>{children}</Providers>
+            </ToastProvider>
           </ErrorBoundary>
         </main>
       </body>

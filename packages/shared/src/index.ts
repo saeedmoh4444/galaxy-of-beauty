@@ -8,6 +8,8 @@ export { Card } from './ui/Card';
 export { Modal } from './ui/Modal';
 export { Spinner, PageSpinner } from './ui/Spinner';
 export { ProgressBar } from './ui/ProgressBar';
+export { ToastProvider, useToast } from './ui/Toast';
+export type { ToastType } from './ui/Toast';
 
 // Hooks
 export { useForm, useAuth, useDebounce } from './hooks';
