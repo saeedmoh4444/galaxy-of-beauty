@@ -297,6 +297,26 @@ export const serviceRouter = router({
     }),
 
   /**
+   * getRelated — services in the same category (excluding current).
+   * Public.
+   */
+  getRelated: publicProcedure
+    .input(z.object({ serviceId: z.number().int().positive(), limit: z.number().default(4) }))
+    .query(async ({ input }) => {
+      const svc = await prisma.service.findUnique({
+        where: { id: input.serviceId },
+        select: { categoryId: true },
+      });
+      if (!svc) return [];
+
+      return prisma.service.findMany({
+        where: { categoryId: svc.categoryId, id: { not: input.serviceId }, isActive: true },
+        take: input.limit,
+        orderBy: { createdAt: 'desc' },
+      });
+    }),
+
+  /**
    * getById — full service detail with variants, addons, technician mappings, and tags.
    * Public.
    */
