@@ -6,6 +6,23 @@
     "orientation": "portrait",
     "scheme": "galaxyofbeauty",
     "platforms": ["ios", "android", "web"],
+    "icon": "./assets/logo.png",
+    "splash": {
+      "image": "./assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#7c3aed"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "sa.galaxyofbeauty.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo.png",
+        "backgroundColor": "#7c3aed"
+      },
+      "package": "sa.galaxyofbeauty.app"
+    },
     "plugins": ["expo-router"]
   }
 }

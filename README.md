@@ -62,14 +62,14 @@ docker compose down             # Stop everything
 ```
 galaxy-of-beauty/
 ├── apps/
-│   ├── web/                    # Next.js 14 App Router (37 pages)
-│   └── mobile/                 # Expo SDK 54 + Expo Router (46 screens)
+│   ├── web/                    # Next.js 14 App Router (65+ pages)
+│   └── mobile/                 # Expo SDK 54 + Expo Router (55+ screens)
 ├── packages/
-│   ├── api/                    # tRPC v11 — 26 routers, 170+ procedures
-│   ├── db/                     # Prisma — 36 models, 15 enums, seed
-│   ├── shared/                 # UI kit, hooks, i18n, theme
+│   ├── api/                    # tRPC v11 — 47 routers, 200+ procedures
+│   ├── db/                     # Prisma — 55+ models, 15 enums, seed (24 cities, 122 areas)
+│   ├── shared/                 # UI kit (15 components), hooks, i18n, theme
 │   └── config/                 # TSConfig, ESLint, Prettier, Tailwind
-├── docker-compose.yml          # 4-service Docker stack
+├── docker-compose.yml          # 4-service Docker stack with health checks
 ├── turbo.json                  # Turborepo build pipeline
 └── pnpm-workspace.yaml
 ```
