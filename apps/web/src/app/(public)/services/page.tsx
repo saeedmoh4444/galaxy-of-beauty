@@ -72,7 +72,10 @@ export default function ServicesPage(): JSX.Element {
                 <div className="h-40 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100" />
                 <h3 className="mt-3 font-semibold">{(svc.titleJson as Record<string, string>)?.ar ?? ''}</h3>
                 <p className="mt-1 text-sm text-gray-500">{svc.durationMin as number} دقيقة</p>
-                <p className="mt-2 font-bold text-brand-600">{svc.basePrice as number} ر.س</p>
+                <div className="mt-2 flex items-center justify-between">
+                  <p className="font-bold text-brand-600">{svc.basePrice as number} ر.س</p>
+                  <Link href={`/customer/bookings/create?serviceId=${svc.id}`} onClick={(e) => e.stopPropagation()} className="rounded-lg bg-brand-600 px-3 py-1 text-xs font-medium text-white hover:bg-brand-700">احجز</Link>
+                </div>
               </Card>
             </Link>
             )
