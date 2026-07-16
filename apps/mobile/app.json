@@ -18,7 +18,6 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#7c3aed"
       },
       "package": "sa.galaxyofbeauty.app"
