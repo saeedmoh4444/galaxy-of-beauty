@@ -10,7 +10,13 @@ const customerLinks = [
   { href: '/bookings', labelAr: 'حجوزاتي', labelEn: 'My Bookings', icon: '📅' },
   { href: '/wallet', labelAr: 'المحفظة', labelEn: 'Wallet', icon: '💰' },
   { href: '/wishlist', labelAr: 'المفضلة', labelEn: 'Wishlist', icon: '❤️' },
+  { href: '/loyalty', labelAr: 'الولاء', labelEn: 'Loyalty', icon: '⭐' },
+  { href: '/promo', labelAr: 'كود الخصم', labelEn: 'Promo Code', icon: '🏷️' },
+  { href: '/saved-cards', labelAr: 'البطاقات', labelEn: 'Cards', icon: '💳' },
   { href: '/notifications', labelAr: 'الإشعارات', labelEn: 'Notifications', icon: '🔔' },
+  { href: '/skin-analysis', labelAr: 'تحليل البشرة', labelEn: 'Skin Analysis', icon: '🔬' },
+  { href: '/ai-chat', labelAr: 'لايلى', labelEn: 'Layla AI', icon: '🤖' },
+  { href: '/subscriptions', labelAr: 'الاشتراكات', labelEn: 'Subscriptions', icon: '📦' },
   { href: '/profile', labelAr: 'الملف الشخصي', labelEn: 'Profile', icon: '👤' },
   { href: '/addresses', labelAr: 'العناوين', labelEn: 'Addresses', icon: '📍' },
 ];
@@ -20,14 +26,30 @@ const technicianLinks = [
   { href: '/tech/slots', labelAr: 'المواعيد المتاحة', labelEn: 'Availability', icon: '⏰' },
   { href: '/tech/bookings', labelAr: 'الحجوزات', labelEn: 'Bookings', icon: '📅' },
   { href: '/tech/earnings', labelAr: 'الأرباح', labelEn: 'Earnings', icon: '💰' },
-  { href: '/profile', labelAr: 'الملف الشخصي', labelEn: 'Profile', icon: '👤' },
+  { href: '/tech/calendar', labelAr: 'تقويم قوقل', labelEn: 'Calendar', icon: '📆' },
+  { href: '/tech/profile', labelAr: 'ملفي الشخصي', labelEn: 'Profile', icon: '👤' },
+];
+
+const adminLinks = [
+  { href: '/admin/dashboard', labelAr: 'لوحة التحكم', labelEn: 'Dashboard', icon: '📊' },
+  { href: '/admin/users', labelAr: 'المستخدمين', labelEn: 'Users', icon: '👥' },
+  { href: '/admin/technicians', labelAr: 'الفنيات', labelEn: 'Technicians', icon: '👩‍🎨' },
+  { href: '/admin/services', labelAr: 'الخدمات', labelEn: 'Services', icon: '💄' },
+  { href: '/admin/categories', labelAr: 'الأقسام', labelEn: 'Categories', icon: '📂' },
+  { href: '/admin/areas', labelAr: 'المناطق', labelEn: 'Areas', icon: '📍' },
+  { href: '/admin/bookings', labelAr: 'الحجوزات', labelEn: 'Bookings', icon: '📅' },
+  { href: '/admin/finance', labelAr: 'المالية', labelEn: 'Finance', icon: '💰' },
+  { href: '/admin/disputes', labelAr: 'النزاعات', labelEn: 'Disputes', icon: '⚡' },
+  { href: '/admin/analytics', labelAr: 'التحليلات', labelEn: 'Analytics', icon: '📈' },
+  { href: '/admin/zatca', labelAr: 'زاتكا', labelEn: 'ZATCA', icon: '🧾' },
+  { href: '/admin/settings', labelAr: 'الإعدادات', labelEn: 'Settings', icon: '⚙️' },
 ];
 
 export function DashboardLayout({ children, role = 'CUSTOMER' }: { children: ReactNode; role?: string }): JSX.Element {
   const pathname = usePathname();
   const router = useRouter();
   const { logout } = useAuth();
-  const links = role === 'TECHNICIAN' ? technicianLinks : customerLinks;
+  const links = role === 'ADMIN' ? adminLinks : role === 'TECHNICIAN' ? technicianLinks : customerLinks;
 
   const handleLogout = async () => {
     await logout();
