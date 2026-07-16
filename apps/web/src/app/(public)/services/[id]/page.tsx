@@ -47,6 +47,22 @@ export default function ServiceDetailPage(): JSX.Element {
       <p className="mt-1 text-sm text-gray-500">{cat.nameAr as string || ''}</p>
       {desc && <p className="mt-3 text-gray-600 dark:text-gray-400">{desc}</p>}
 
+      {/* Share buttons */}
+      <div className="mt-3 flex gap-2">
+        <button
+          onClick={() => navigator.share?.({ title, url: window.location.href }).catch(() => navigator.clipboard.writeText(window.location.href))}
+          className="rounded-lg border border-gray-200 px-3 py-1 text-xs text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
+        >
+          📤 مشاركة
+        </button>
+        <button
+          onClick={() => { navigator.clipboard.writeText(window.location.href); }}
+          className="rounded-lg border border-gray-200 px-3 py-1 text-xs text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
+        >
+          📋 نسخ الرابط
+        </button>
+      </div>
+
       <div className="mt-6 flex gap-8">
         <div><span className="text-sm text-gray-500">السعر</span><p className="text-2xl font-bold text-brand-600">{formatCurrency(Number(svc.basePrice))}</p></div>
         <div><span className="text-sm text-gray-500">المدة</span><p className="text-2xl font-bold">{svc.durationMin as number} دقيقة</p></div>

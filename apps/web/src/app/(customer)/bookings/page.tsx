@@ -33,6 +33,9 @@ export default function BookingsPage(): JSX.Element {
                 <span className={`rounded-full px-3 py-1 text-xs font-medium ${
                   b.status === 'COMPLETED' ? 'bg-green-100 text-green-700' : b.status === 'CANCELLED' || b.status === 'REJECTED' ? 'bg-red-100 text-red-700' : 'bg-brand-100 text-brand-700'}`}>{b.status as string}</span>
                 {(b.status === 'REQUESTED' || b.status === 'ACCEPTED') && <Button size="sm" variant="danger" onClick={() => setCancelId(b.id as number)}>إلغاء</Button>}
+                {(b.status === 'PAID' || b.status === 'IN_PROGRESS') && (
+                  <Link href={`/customer/video/${b.id}`} className="rounded-lg bg-purple-600 px-3 py-1 text-xs font-medium text-white hover:bg-purple-700">📹 فيديو</Link>
+                )}
               </div>
             </Card>
           ))}</div>

@@ -42,6 +42,15 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
 
           <div className="flex items-center gap-3">
             <ThemeToggle />
+            <form action="/services" method="GET" className="hidden md:block">
+              <input
+                type="search"
+                name="search"
+                placeholder="بحث سريع..."
+                className="w-40 rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                aria-label="بحث عن خدمات"
+              />
+            </form>
             <Link
               href="/login"
               className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
