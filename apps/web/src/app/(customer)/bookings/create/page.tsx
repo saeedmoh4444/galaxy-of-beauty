@@ -68,7 +68,7 @@ export default function CreateBookingPage(): JSX.Element {
     }
 
     (createMut as any).mutate({
-      serviceId, variantId, addressId, slotId: 0,
+      serviceId, variantId, addressId,
       technicianId,
       idempotencyKey: `web_${Date.now()}_${Math.random().toString(36).slice(2,10)}`,
       notes: notes || undefined,

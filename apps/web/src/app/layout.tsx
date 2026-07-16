@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import Providers from '@/components/Providers';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { SkipLink } from '@/components/SkipLink';
+import { OfflineBanner } from '@/components/OfflineBanner';
 import { ToastProvider } from '@galaxy/shared';
 import './globals.css';
 
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: { children: ReactNode }): React
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <body className="min-h-screen bg-white font-sans text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-100">
         <SkipLink />
+        <OfflineBanner />
         <main id="main-content" tabIndex={-1}>
           <ErrorBoundary>
             <ToastProvider>

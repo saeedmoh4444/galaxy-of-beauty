@@ -55,6 +55,7 @@ export function DashboardLayout({ children, role = 'CUSTOMER' }: { children: Rea
   const links = role === 'ADMIN' ? adminLinks : role === 'TECHNICIAN' ? technicianLinks : customerLinks;
 
   const handleLogout = async () => {
+    if (!window.confirm('هل أنت متأكد من تسجيل الخروج؟')) return;
     await logout();
     router.push('/login');
   };

@@ -58,7 +58,7 @@ export default function CreateBookingScreen() {
       }
 
       await (trpc.bookings.create.mutate({
-        serviceId, variantId, addressId, slotId: 0,
+        serviceId, variantId, addressId,
         technicianId,
         idempotencyKey: `mob_${Date.now()}_${Math.random().toString(36).slice(2,10)}`,
         notes: notes || undefined,

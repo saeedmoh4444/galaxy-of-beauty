@@ -20,7 +20,7 @@ export const createBookingSchema = z.object({
   serviceId: z.number().int().positive(),
   variantId: z.number().int().positive().optional(),
   addressId: z.number().int().positive(),
-  slotId: z.number().int().positive(),
+  slotId: z.number().int().positive().optional(),
   startAt: z.string().datetime(),
   endAt: z.string().datetime(),
   notes: z.string().max(500).optional(),

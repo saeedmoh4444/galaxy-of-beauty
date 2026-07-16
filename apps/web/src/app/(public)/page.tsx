@@ -71,7 +71,14 @@ export default function HomePage(): JSX.Element {
       {/* Trust Section */}
       <section className="mx-auto max-w-7xl px-4 py-16 text-center">
         <div className="grid gap-8 md:grid-cols-4">
-          {[{ label: 'خبيرة تجميل', value: '+500' }, { label: 'عميلة', value: '+10,000' }, { label: 'حجز مكتمل', value: '+25,000' }, { label: 'مدينة', value: '+10' }].map((s) => (
+          {[
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (() => { const d = (cats.data ?? []) as unknown as Record<string, unknown>[]; return { label: 'قسم تجميل', value: `+${d.length || 12}` }; })(),
+            { label: 'خبيرة تجميل', value: '+500' },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (() => { const total = svcItems.length > 0 ? (services.data?.total as number) || 25 : 25; return { label: 'خدمة', value: `+${total}` }; })(),
+            { label: 'مدينة سعودية', value: '+24' },
+          ].map((s) => (
             <div key={s.label}><p className="text-3xl font-extrabold text-brand-600">{s.value}</p><p className="text-gray-500">{s.label}</p></div>
           ))}
         </div>
