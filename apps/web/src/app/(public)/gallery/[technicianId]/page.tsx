@@ -3,7 +3,6 @@
 import { useParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState } from '@galaxy/shared';
-import { MainLayout } from '@/components/layout/MainLayout';
 
 export default function GalleryPage(): JSX.Element {
   const { technicianId } = useParams<{ technicianId: string }>();
@@ -19,8 +18,7 @@ export default function GalleryPage(): JSX.Element {
   const total = ((data as Record<string, unknown>)?.total as number) || 0;
 
   return (
-    <MainLayout>
-      <div className="mx-auto max-w-6xl space-y-6 px-4 py-8">
+    <div className="mx-auto max-w-6xl space-y-6 px-4 py-8">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
           معرض الأعمال
         </h1>
@@ -72,6 +70,5 @@ export default function GalleryPage(): JSX.Element {
           </>
         )}
       </div>
-    </MainLayout>
   );
 }

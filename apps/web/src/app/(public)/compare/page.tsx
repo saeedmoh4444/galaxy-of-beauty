@@ -3,7 +3,6 @@
 import { useSearchParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
 import { Card, ErrorAlert, PageSpinner, EmptyState, Button } from '@galaxy/shared';
-import { MainLayout } from '@/components/layout/MainLayout';
 
 export default function ComparePage(): JSX.Element {
   const params = useSearchParams();
@@ -21,8 +20,7 @@ export default function ComparePage(): JSX.Element {
   const rows = ((data as Record<string, unknown>)?.rows as Array<Record<string, unknown>>) || [];
 
   return (
-    <MainLayout>
-      <div className="mx-auto max-w-6xl px-4 py-8">
+    <div className="mx-auto max-w-6xl px-4 py-8">
         <h1 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">
           مقارنة الخدمات
         </h1>
@@ -154,6 +152,5 @@ export default function ComparePage(): JSX.Element {
           </div>
         )}
       </div>
-    </MainLayout>
   );
 }

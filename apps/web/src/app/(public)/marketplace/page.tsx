@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, formatCurrency } from '@galaxy/shared';
-import { MainLayout } from '@/components/layout/MainLayout';
 
 export default function MarketplacePage(): JSX.Element {
   const [search, setSearch] = useState('');
@@ -19,8 +18,7 @@ export default function MarketplacePage(): JSX.Element {
   const total = (data as unknown as Record<string, unknown>)?.total as number || 0;
 
   return (
-    <MainLayout>
-      <div className="mx-auto max-w-7xl space-y-6 px-4 py-8">
+    <div className="mx-auto max-w-7xl space-y-6 px-4 py-8">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">متجر منتجات التجميل</h1>
 
         <div className="flex gap-4">
@@ -67,6 +65,5 @@ export default function MarketplacePage(): JSX.Element {
           </>
         )}
       </div>
-    </MainLayout>
   );
 }

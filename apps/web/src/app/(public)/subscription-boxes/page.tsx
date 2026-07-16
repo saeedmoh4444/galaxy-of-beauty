@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/shared';
-import { MainLayout } from '@/components/layout/MainLayout';
 
 export default function SubscriptionBoxesPage(): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -11,8 +10,7 @@ export default function SubscriptionBoxesPage(): JSX.Element {
   const planList = (plans as Array<Record<string, unknown>>) || [];
 
   return (
-    <MainLayout>
-      <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
+    <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
             📦 صناديق التجميل الشهرية
@@ -92,7 +90,6 @@ export default function SubscriptionBoxesPage(): JSX.Element {
           </div>
         </div>
       </div>
-    </MainLayout>
   );
 }
 
