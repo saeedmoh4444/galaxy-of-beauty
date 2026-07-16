@@ -1,10 +1,12 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/api';
+import { useHaptics } from '@/hooks/useHaptics';
 import { useState, useEffect } from 'react';
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { trigger } = useHaptics();
   const [cats, setCats] = useState<Record<string, unknown>[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,16 +36,16 @@ export default function HomeScreen() {
 
       <Text style={styles.sectionTitle}>اكتشفي المزيد</Text>
       <View style={styles.quickActions}>
-        <TouchableOpacity style={styles.qaBtn} onPress={() => router.push('/(tabs)/services')}>
+        <TouchableOpacity style={styles.qaBtn} onPress={() => { trigger('light'); router.push('/(tabs)/services'); }}>
           <Text style={styles.qaText}>تصفح الخدمات</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.qaBtn, styles.qaOutline]} onPress={() => router.push('/services/surprise-me')}>
+        <TouchableOpacity style={[styles.qaBtn, styles.qaOutline]} onPress={() => { trigger('light'); router.push('/services/surprise-me'); }}>
           <Text style={[styles.qaText, { color: '#7c3aed' }]}>فاجئيني</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.qaBtn} onPress={() => router.push('/marketplace')}>
+        <TouchableOpacity style={styles.qaBtn} onPress={() => { trigger('light'); router.push('/marketplace'); }}>
           <Text style={styles.qaText}>🛍️ متجر المنتجات</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.qaBtn, styles.qaPink]} onPress={() => router.push('/customer/skin-analysis')}>
+        <TouchableOpacity style={[styles.qaBtn, styles.qaPink]} onPress={() => { trigger('light'); router.push('/customer/skin-analysis'); }}>
           <Text style={styles.qaText}>🔬 تحليل البشرة</Text>
         </TouchableOpacity>
       </View>

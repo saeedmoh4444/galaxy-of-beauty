@@ -9,3 +9,4 @@ export { Spinner, PageSpinner } from './Spinner';
 export { ProgressBar } from './ProgressBar';
 export { ToastProvider, useToast } from './Toast';
 export type { ToastType } from './Toast';
+export { Pagination } from './Pagination';

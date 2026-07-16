@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityInd
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/api';
 import { setSocketToken } from '@/hooks/useSocket';
+import { useBiometric } from '@/hooks/useBiometric';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -11,6 +12,15 @@ export default function LoginScreen() {
   const [totpToken, setTotpToken] = useState('');
   const [loading, setLoading] = useState(false);
   const [twoFactorRequired, setTwoFactorRequired] = useState(false);
+  const { isAvailable, authenticate } = useBiometric();
+
+  const handleBiometricLogin = async () => {
+    const result = await authenticate();
+    if (result.success) {
+      Alert.alert('تم', 'تم التحقق البيومتري بنجاح');
+      // In production: exchange biometric token for JWT via a dedicated endpoint
+    }
+  };
 
   const handleLogin = async () => {
     setLoading(true);
@@ -86,6 +96,11 @@ export default function LoginScreen() {
         </View>
       )}
 
+      {isAvailable && !twoFactorRequired && (
+        <TouchableOpacity onPress={handleBiometricLogin} style={styles.biometricBtn}>
+          <Text style={styles.biometricText}>🔐 دخول سريع</Text>
+        </TouchableOpacity>
+      )}
       <TouchableOpacity
         style={[styles.button, loading && styles.buttonDisabled]}
         onPress={handleLogin}
@@ -116,6 +131,8 @@ const styles = StyleSheet.create({
   button: { backgroundColor: '#7c3aed', borderRadius: 12, padding: 16, alignItems: 'center' },
   buttonDisabled: { opacity: 0.6 },
   buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  biometricBtn: { backgroundColor: '#f5f3ff', borderRadius: 12, padding: 14, alignItems: 'center', borderWidth: 1, borderColor: '#c4b5fd', marginBottom: 8 },
+  biometricText: { color: '#7c3aed', fontSize: 14, fontWeight: '600' },
   link: { color: '#7c3aed', textAlign: 'center', marginTop: 16, fontSize: 14 },
   totpContainer: {
     backgroundColor: '#f5f3ff',

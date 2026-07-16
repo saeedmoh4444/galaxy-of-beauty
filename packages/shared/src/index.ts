@@ -10,6 +10,7 @@ export { Spinner, PageSpinner } from './ui/Spinner';
 export { ProgressBar } from './ui/ProgressBar';
 export { ToastProvider, useToast } from './ui/Toast';
 export type { ToastType } from './ui/Toast';
+export { Pagination } from './ui/Pagination';
 
 // Hooks
 export { useForm, useAuth, useDebounce } from './hooks';
