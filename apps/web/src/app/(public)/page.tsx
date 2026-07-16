@@ -13,12 +13,12 @@ export default function HomePage(): JSX.Element {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-600 to-brand-800 px-4 py-20 text-center text-white">
-        <h1 className="text-4xl font-extrabold md:text-5xl">جالكسي بيوتي</h1>
-        <p className="mt-4 text-lg text-brand-100">منصة خدمات التجميل الأولى في السعودية</p>
+      <section className="bg-gradient-to-br from-brand-600 to-brand-800 px-4 py-24 text-center text-white">
+        <h1 className="text-3xl font-extrabold md:text-5xl">اكتشفي جمالك مع أفضل الفنيات</h1>
+        <p className="mt-4 text-lg text-brand-100">احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج والمزيد</p>
         <div className="mt-8 flex justify-center gap-4">
           <Link href="/services"><Button size="lg" className="bg-white !text-brand-700 hover:bg-gray-100">تصفح الخدمات</Button></Link>
-          <Link href="/services/surprise-me"><Button size="lg" variant="outline" className="border-white !text-white hover:bg-white/10">فاجئيني</Button></Link>
+          <Link href="/marketplace"><Button size="lg" variant="outline" className="border-white !text-white hover:bg-white/10">المتجر</Button></Link>
         </div>
       </section>
 
@@ -77,12 +77,6 @@ export default function HomePage(): JSX.Element {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="bg-brand-600 px-4 py-16 text-center text-white">
-        <h2 className="text-2xl font-bold">جاهزة لتجربة مميزة؟</h2>
-        <p className="mt-2 text-brand-100">انضمي إلى آلاف السعوديات اللواتي يثقن في جالكسي بيوتي</p>
-        <div className="mt-6"><Link href="/register"><Button size="lg" className="bg-white !text-brand-700 hover:bg-gray-100">ابدئي الآن</Button></Link></div>
-      </section>
     </div>
   );
 }
