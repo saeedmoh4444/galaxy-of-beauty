@@ -8,6 +8,7 @@ import { useAuth } from '@galaxy/shared';
 const customerLinks = [
   { href: '/dashboard', labelAr: 'لوحة التحكم', labelEn: 'Dashboard', icon: '📊' },
   { href: '/bookings', labelAr: 'حجوزاتي', labelEn: 'My Bookings', icon: '📅' },
+  { href: '/bookings/create', labelAr: 'حجز جديد', labelEn: 'New Booking', icon: '➕' },
   { href: '/wallet', labelAr: 'المحفظة', labelEn: 'Wallet', icon: '💰' },
   { href: '/wishlist', labelAr: 'المفضلة', labelEn: 'Wishlist', icon: '❤️' },
   { href: '/loyalty', labelAr: 'الولاء', labelEn: 'Loyalty', icon: '⭐' },
@@ -17,6 +18,8 @@ const customerLinks = [
   { href: '/skin-analysis', labelAr: 'تحليل البشرة', labelEn: 'Skin Analysis', icon: '🔬' },
   { href: '/ai-chat', labelAr: 'لايلى', labelEn: 'Layla AI', icon: '🤖' },
   { href: '/subscriptions', labelAr: 'الاشتراكات', labelEn: 'Subscriptions', icon: '📦' },
+  { href: '/marketplace', labelAr: 'المتجر', labelEn: 'Marketplace', icon: '🛍️' },
+  { href: '/subscription-boxes', labelAr: 'الصناديق الشهرية', labelEn: 'Boxes', icon: '📦' },
   { href: '/profile', labelAr: 'الملف الشخصي', labelEn: 'Profile', icon: '👤' },
   { href: '/addresses', labelAr: 'العناوين', labelEn: 'Addresses', icon: '📍' },
 ];

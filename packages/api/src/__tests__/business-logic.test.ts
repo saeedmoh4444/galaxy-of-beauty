@@ -298,3 +298,95 @@ describe('Card Validation', () => {
     expect(isValid(2041)).toBe(false);
   });
 });
+
+// ── Booking State Machine ─────────────────────────────────
+
+describe('Booking State Machine', () => {
+  const transitions: Record<string, string[]> = {
+    REQUESTED: ['ACCEPTED', 'REJECTED', 'CANCELLED'],
+    ACCEPTED: ['IN_PROGRESS', 'CANCELLED', 'PAYMENT_AUTHORIZED'],
+    IN_PROGRESS: ['COMPLETED', 'NO_SHOW'],
+    PAYMENT_AUTHORIZED: ['PAID', 'CANCELLED'],
+    PAID: ['IN_PROGRESS', 'CANCELLED'],
+    COMPLETED: [],
+    REJECTED: [],
+    CANCELLED: [],
+    NO_SHOW: [],
+  };
+
+  function isValidTransition(from: string, to: string): boolean {
+    return (transitions[from] || []).includes(to);
+  }
+
+  it('allows REQUESTED → ACCEPTED', () => {
+    expect(isValidTransition('REQUESTED', 'ACCEPTED')).toBe(true);
+  });
+
+  it('allows REQUESTED → CANCELLED', () => {
+    expect(isValidTransition('REQUESTED', 'CANCELLED')).toBe(true);
+  });
+
+  it('prevents REQUESTED → COMPLETED (skip steps)', () => {
+    expect(isValidTransition('REQUESTED', 'COMPLETED')).toBe(false);
+  });
+
+  it('terminal states have no transitions', () => {
+    for (const state of ['COMPLETED', 'REJECTED', 'CANCELLED', 'NO_SHOW']) {
+      expect(transitions[state]).toHaveLength(0);
+    }
+  });
+
+  it('allows customer cancellation from active states', () => {
+    expect(isValidTransition('ACCEPTED', 'CANCELLED')).toBe(true);
+    expect(isValidTransition('PAID', 'CANCELLED')).toBe(true);
+  });
+
+  it('prevents cancellation from terminal states', () => {
+    expect(isValidTransition('COMPLETED', 'CANCELLED')).toBe(false);
+  });
+});
+
+// ── Referral Code Generation ──────────────────────────────
+
+describe('Referral Codes', () => {
+  function generateReferralCode(name: string): string {
+    const prefix = name.replace(/[^a-zA-Z0-9]/g, '').slice(0, 4).toUpperCase();
+    const random = Math.random().toString(36).slice(2, 6).toUpperCase();
+    return `${prefix}${random}`;
+  }
+
+  it('generates codes with name prefix + random suffix', () => {
+    const code = generateReferralCode('Saeed');
+    expect(code).toHaveLength(8);
+    expect(code).toMatch(/^[A-Z0-9]{8}$/);
+  });
+
+  it('strips non-alphanumeric from name', () => {
+    const code = generateReferralCode('Fatima Al-Zahra');
+    expect(code.slice(0, 4)).toBe('FATI');
+  });
+
+  it('generates unique codes', () => {
+    const codes = new Set(Array.from({ length: 20 }, () => generateReferralCode('Test')));
+    expect(codes.size).toBeGreaterThan(15); // Allow some collisions
+  });
+});
+
+// ── Saudi Phone Validation ────────────────────────────────
+
+describe('Saudi Phone', () => {
+  const saudiPhone = /^\+9665\d{8}$/;
+
+  it('accepts valid Saudi mobile', () => {
+    expect('+966512345678').toMatch(saudiPhone);
+    expect('+966550001111').toMatch(saudiPhone);
+    expect('+966598887777').toMatch(saudiPhone);
+  });
+
+  it('rejects invalid formats', () => {
+    expect('0512345678').not.toMatch(saudiPhone);
+    expect('+96612345678').not.toMatch(saudiPhone);
+    expect('+96651234567').not.toMatch(saudiPhone);
+    expect('+9665123456789').not.toMatch(saudiPhone);
+  });
+});
