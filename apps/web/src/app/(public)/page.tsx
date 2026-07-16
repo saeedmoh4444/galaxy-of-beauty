@@ -17,8 +17,8 @@ export default function HomePage(): JSX.Element {
         <h1 className="text-3xl font-extrabold md:text-5xl">اكتشفي جمالك مع أفضل الفنيات</h1>
         <p className="mt-4 text-lg text-brand-100">احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج والمزيد</p>
         <div className="mt-8 flex justify-center gap-4">
-          <Link href="/services"><Button size="lg" className="bg-white !text-brand-700 hover:bg-gray-100">تصفح الخدمات</Button></Link>
-          <Link href="/marketplace"><Button size="lg" variant="outline" className="border-white !text-white hover:bg-white/10">المتجر</Button></Link>
+          <Link href="/customer/bookings/create"><Button size="lg" className="bg-white !text-brand-700 hover:bg-gray-100">احجزي الآن</Button></Link>
+          <Link href="/services/surprise-me"><Button size="lg" variant="outline" className="border-white !text-white hover:bg-white/10">🎲 فاجئيني</Button></Link>
         </div>
       </section>
 
