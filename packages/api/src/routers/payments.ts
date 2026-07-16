@@ -215,7 +215,7 @@ export const paymentRouter = router({
           data: { status: 'PAID' },
         });
 
-        // 5. Cashback stub — credit 5% to customer's wallet
+        // 5. Cashback — credit 5% to customer's wallet
         const cashbackAmount = Number(booking.totalAmount) * 0.05;
 
         // Ensure wallet exists for the customer

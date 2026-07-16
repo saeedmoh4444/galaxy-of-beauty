@@ -46,9 +46,20 @@ export default function CreateBookingScreen() {
     setSubmitting(true);
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // Auto-assign first available technician for this service
+      const techs = (svc?.technicianServices as Array<Record<string, unknown>>) || [];
+      const technicianId = techs.length > 0
+        ? (techs[0]!.technician as Record<string, unknown>)?.userId as number || 0
+        : 0;
+      if (!technicianId) {
+        Alert.alert('تنبيه', 'لا توجد فنيات متاحة لهذه الخدمة حالياً');
+        setSubmitting(false);
+        return;
+      }
+
       await (trpc.bookings.create.mutate({
         serviceId, variantId, addressId, slotId: 0,
-        technicianId: 1, // Placeholder — select from available technicians in production
+        technicianId,
         idempotencyKey: `mob_${Date.now()}_${Math.random().toString(36).slice(2,10)}`,
         notes: notes || undefined,
         startAt: new Date(Date.now() + 86400000).toISOString(),

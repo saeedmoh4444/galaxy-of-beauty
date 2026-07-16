@@ -55,9 +55,21 @@ export default function CreateBookingPage(): JSX.Element {
     }
     setSubmitting(true);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // Auto-assign first available technician for this service
+    let technicianId = 0;
+    const techs = (svc?.technicianServices as Array<Record<string, unknown>>) || [];
+    if (techs.length > 0) {
+      technicianId = (techs[0]!.technician as Record<string, unknown>)?.userId as number || 0;
+    }
+    if (!technicianId) {
+      addToast('error', 'لا توجد فنيات متاحة لهذه الخدمة حالياً');
+      setSubmitting(false);
+      return;
+    }
+
     (createMut as any).mutate({
       serviceId, variantId, addressId, slotId: 0,
-      technicianId: 1, // Placeholder — auto-assign in production
+      technicianId,
       idempotencyKey: `web_${Date.now()}_${Math.random().toString(36).slice(2,10)}`,
       notes: notes || undefined,
       startAt: new Date(Date.now() + 86400000).toISOString(),

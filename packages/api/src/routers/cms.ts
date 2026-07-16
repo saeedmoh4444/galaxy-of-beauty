@@ -49,11 +49,54 @@ export const cmsRouter = router({
       basePrice: z.number().positive(), durationMin: z.number().int().positive(),
       slug: z.string().optional(), imageUrl: z.string().optional(),
       isPopular: z.boolean().default(false), sortOrder: z.number().default(0),
+      variants: z.array(z.object({
+        nameAr: z.string(), nameEn: z.string(),
+        priceDelta: z.number().default(0), durationDelta: z.number().int().default(0),
+      })).optional(),
+      tagIds: z.array(z.number().int().positive()).optional(),
     }))
-    .mutation(async ({ input }) => ({
-      // Stub — full implementation requires variant/tag management
-      success: true, input,
-    })),
+    .mutation(async ({ input }) => {
+      const { id, titleAr, titleEn, descriptionAr, descriptionEn, variants, tagIds, ...rest } = input;
+      const data = {
+        ...rest,
+        titleJson: { ar: titleAr, en: titleEn },
+        descriptionJson: descriptionAr || descriptionEn ? { ar: descriptionAr || '', en: descriptionEn || '' } : undefined,
+        slug: input.slug || titleEn.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      };
+
+      let service;
+      if (id) {
+        service = await prisma.service.update({ where: { id }, data });
+        // Delete old variants and recreate
+        await prisma.serviceVariant.deleteMany({ where: { serviceId: id } });
+        // Delete old tag assignments
+        await prisma.serviceTagAssignment.deleteMany({ where: { serviceId: id } });
+      } else {
+        service = await prisma.service.create({ data });
+      }
+
+      // Create variants if provided
+      if (variants && variants.length > 0) {
+        await prisma.serviceVariant.createMany({
+          data: variants.map((v) => ({
+            serviceId: service.id,
+            nameJson: { ar: v.nameAr, en: v.nameEn },
+            priceDelta: v.priceDelta,
+            durationDelta: v.durationDelta,
+          })),
+        });
+      }
+
+      // Assign tags if provided
+      if (tagIds && tagIds.length > 0) {
+        await prisma.serviceTagAssignment.createMany({
+          data: tagIds.map((tagId) => ({ serviceId: service.id, tagId })),
+          skipDuplicates: true,
+        });
+      }
+
+      return { success: true, id: service.id };
+    }),
 
   // ── Banners ────────────────────────────────────────────
   listBanners: adminProcedure.query(async () => {

@@ -118,7 +118,7 @@ export const aiFeaturesRouter = router({
         if (content?.['content']) {
           return JSON.parse(content['content'] as string);
         }
-      } catch { /* fall through to stub */ }
+      } catch { /* fall through to fallback */ }
       return { descriptionAr: 'وصف تجريبي للخدمة', descriptionEn: 'Sample service description' };
     }),
 

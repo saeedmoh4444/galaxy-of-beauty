@@ -272,14 +272,43 @@ export const serviceRouter = router({
         { labelAr: 'الوسوم', labelEn: 'Tags' },
       ];
 
-      const comparison = services.map((s) => ({
+      // Compute real ratings from reviews via bookings
+      const serviceIds = services.map((s) => s.id);
+      const ratingAggs = await prisma.review.groupBy({
+        by: ['bookingId'],
+        where: { booking: { serviceId: { in: serviceIds } }, isVisible: true },
+        _avg: { rating: true },
+      });
+
+      // Fetch booking→service mapping for the aggregated reviews
+      const bookingServices = ratingAggs.length > 0 ? await prisma.booking.findMany({
+        where: { id: { in: ratingAggs.map((r) => r.bookingId) } },
+        select: { id: true, serviceId: true },
+      }) : [];
+      const serviceRatings = new Map<number, number[]>();
+      for (const agg of ratingAggs) {
+        const booking = bookingServices.find((b) => b.id === agg.bookingId);
+        if (booking && agg._avg.rating) {
+          const ratings = serviceRatings.get(booking.serviceId) || [];
+          ratings.push(agg._avg.rating);
+          serviceRatings.set(booking.serviceId, ratings);
+        }
+      }
+
+      const comparison = services.map((s) => {
+        const ratings = serviceRatings.get(s.id) || [];
+        const avg = ratings.length > 0
+          ? Math.round((ratings.reduce((a, b) => a + b, 0) / ratings.length) * 10) / 10
+          : 0;
+        return {
         id: s.id,
         titleJson: s.titleJson,
         imageUrl: s.imageUrl,
         basePrice: s.basePrice.toNumber(),
         durationMin: s.durationMin,
         category: (s.category.nameJson as Record<string, string>)?.ar || '',
-        ratingAvg: 4.5, // stub — would be computed from reviews
+        ratingAvg: avg,
+        reviewCount: ratings.length,
         bookingCount: s._count.bookings,
         wishlistCount: s._count.wishlistItems,
         variants: s.variants.map((v) => ({
@@ -288,7 +317,8 @@ export const serviceRouter = router({
           durationDelta: v.durationDelta,
         })),
         tags: s.tags.map((t) => (t.tag.nameJson as Record<string, string>)?.ar || ''),
-      }));
+      };
+    });
 
       return {
         services: comparison,

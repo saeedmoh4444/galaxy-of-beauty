@@ -8,7 +8,7 @@ export const skinAnalysisRouter = router({
   analyze: protectedProcedure
     .input(z.object({ imageUrl: z.string().url() }))
     .mutation(async ({ ctx, input }) => {
-      // Call OpenAI Vision API for skin analysis (stub)
+      // Call OpenAI Vision API for skin analysis
       let analysisResult: Record<string, unknown> = {};
 
       const openaiKey = process.env['OPENAI_API_KEY'];
@@ -39,7 +39,7 @@ export const skinAnalysisRouter = router({
             }
           }
         } catch {
-          // AI unavailable — return stub result
+          // AI unavailable — return fallback result
           analysisResult = { skinType: 'unknown', concerns: [], note: 'AI analysis unavailable' };
         }
       } else {

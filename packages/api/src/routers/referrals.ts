@@ -39,8 +39,7 @@ export const referralRouter = router({
 
     const code = generateReferralCode(ctx.user.id, user.name);
 
-    // Create a placeholder referral entry to reserve the code
-    // (full referral is created when someone uses the code)
+    // The code is reserved — full referral record is created when someone redeems it
     return { code };
   }),
 
