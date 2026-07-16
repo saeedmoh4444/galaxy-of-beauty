@@ -28,7 +28,12 @@ export default function ServicesPage(): JSX.Element {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold">الخدمات</h1>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-2xl font-bold">الخدمات</h1>
+        <Link href="/services/surprise-me" className="rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white hover:bg-accent-600 transition-colors">
+          🎲 فاجئيني
+        </Link>
+      </div>
       <div className="mb-6 flex flex-wrap gap-4">
         <Input placeholder="بحث عن خدمة..." value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} className="max-w-sm" />
         <select value={sort} onChange={(e) => { setSort(e.target.value); setPage(1); }} className="rounded-lg border border-gray-300 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-900">

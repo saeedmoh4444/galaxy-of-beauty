@@ -39,9 +39,9 @@ export default function AdminAnalyticsPage(): JSX.Element {
         ) : (
           <div className="grid gap-4 md:grid-cols-4">
             <StatCard title="إجمالي الحجوزات" value={String(bookingStats?.total ?? 0)} color="text-brand-600" />
-            <StatCard title="حسب الحالة" value={JSON.stringify((bookingStats?.byStatus as Record<string, number>) ?? {})} color="text-amber-600" />
-            <StatCard title="نسبة الإكمال" value={`${Number(bookingStats?.completionRate ?? 0).toFixed(1)}%`} color="text-green-600" />
-            <StatCard title="نسبة الإلغاء" value={`${Number(bookingStats?.cancellationRate ?? 0).toFixed(1)}%`} color="text-red-600" />
+            <StatCard title="مكتملة" value={String((bookingStats?.byStatus as Record<string, number>)?.COMPLETED ?? 0)} color="text-green-600" />
+            <StatCard title="قيد الانتظار" value={String((bookingStats?.byStatus as Record<string, number>)?.REQUESTED ?? 0)} color="text-amber-600" />
+            <StatCard title="ملغية" value={String((bookingStats?.byStatus as Record<string, number>)?.CANCELLED ?? 0)} color="text-red-600" />
           </div>
         )}
       </div>
