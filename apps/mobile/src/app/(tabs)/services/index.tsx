@@ -1,20 +1,25 @@
 import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function ServicesScreen() {
   const router = useRouter();
   const [data, setData] = useState<Record<string, unknown>[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
     setLoading(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.services.list as any).query({ search: search || undefined, sort: 'newest', page: 1, limit: 20 })
-      .then((d: Record<string, unknown>) => { setData((d.items ?? []) as Record<string, unknown>[]); setLoading(false); })
-      .catch(() => setLoading(false));
+    timerRef.current = setTimeout(() => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (trpc.services.list as any).query({ search: search || undefined, sort: 'newest', page: 1, limit: 20 })
+        .then((d: Record<string, unknown>) => { setData((d.items ?? []) as Record<string, unknown>[]); setLoading(false); })
+        .catch(() => setLoading(false));
+    }, 350);
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
   }, [search]);
 
   return (

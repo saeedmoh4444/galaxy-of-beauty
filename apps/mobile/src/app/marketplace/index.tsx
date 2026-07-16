@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 export default function MarketplaceScreen() {
   const [search, setSearch] = useState('');
@@ -31,8 +31,11 @@ export default function MarketplaceScreen() {
     }
   }, [search, selectedCat]);
 
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
-    fetchProducts();
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => { fetchProducts(); }, 350);
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
   }, [fetchProducts]);
 
   useEffect(() => {
