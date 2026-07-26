@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 
+// ── React Helpers ────────────────────────────────────────────────────
+
 export interface ChildrenProps {
   children?: ReactNode;
 }
@@ -19,3 +21,38 @@ export interface FeatureComponentSet<T> {
   /** Renders the actual data. Named FeatureDataView to avoid conflict with native DataView API. */
   FeatureDataView: React.ComponentType<{ data: T[] }>;
 }
+
+// ── API Types ────────────────────────────────────────────────────────
+
+/** Standard paginated response from list endpoints. */
+export interface PaginatedResponse<T> {
+  items: T[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+/** Generic API error shape. */
+export interface ApiError {
+  code: string;
+  message: string;
+  zodError?: Record<string, string[]> | null;
+}
+
+/** Sort direction for list queries. */
+export type SortDirection = 'asc' | 'desc';
+
+/** Common sort options for service/technician listings. */
+export type SortOption = 'newest' | 'price_asc' | 'price_desc' | 'popular' | 'duration';
+
+/** Bilingual content field (JSONB `{ ar, en }`). */
+export interface BilingualContent {
+  ar: string;
+  en: string;
+}
+
+/** Saudi currency amount in SAR. */
+export type SARAmount = number;
+
+/** ISO 8601 date-time string. */
+export type ISODateTime = string;

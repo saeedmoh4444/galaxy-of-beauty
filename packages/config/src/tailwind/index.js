@@ -1,4 +1,12 @@
-/** @type {import('tailwindcss').Config} */
+/**
+ * Tailwind CSS configuration for Galaxy of Beauty.
+ *
+ * SYNC NOTICE: Brand and accent color values must stay in sync with
+ * packages/shared/src/theme/index.ts — these are the canonical
+ * design tokens used by both Tailwind and the JS theme system.
+ *
+ * @type {import('tailwindcss').Config}
+ */
 module.exports = {
   content: [
     './src/**/*.{js,ts,jsx,tsx,mdx}',

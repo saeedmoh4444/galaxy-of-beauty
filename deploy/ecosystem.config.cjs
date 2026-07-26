@@ -1,9 +1,17 @@
 // Galaxy of Beauty — PM2 Monorepo Production
+//
+// The APP_ROOT path is the application directory. It defaults to /app
+// (the Docker container mount point). For bare-metal deployments,
+// set APP_ROOT in your environment, e.g.:
+//   APP_ROOT=/var/www/galaxyofbeauty pm2 start ecosystem.config.cjs
+
+const APP_ROOT = process.env['APP_ROOT'] || '/app';
+
 module.exports = {
   apps: [
     {
       name: 'gob-web',
-      cwd: '/app/apps/web',
+      cwd: `${APP_ROOT}/apps/web`,
       script: 'node_modules/.bin/next',
       args: 'start',
       instances: 2,
@@ -13,7 +21,7 @@ module.exports = {
     },
     {
       name: 'gob-socket',
-      cwd: '/app',
+      cwd: APP_ROOT,
       script: 'npx',
       args: 'tsx packages/api/src/socket/server.ts',
       instances: 1,
