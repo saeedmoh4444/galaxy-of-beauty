@@ -76,11 +76,9 @@ export default function HomePage(): JSX.Element {
       <section className="mx-auto max-w-7xl px-4 py-16 text-center">
         <div className="grid gap-8 md:grid-cols-4">
           {[
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (() => { const d = (cats.data ?? []) as unknown as Record<string, unknown>[]; return { label: 'قسم تجميل', value: `+${d.length || 12}` }; })(),
+            { label: 'قسم تجميل', value: `+${categories.length || 12}` },
             { label: 'خبيرة تجميل', value: '+500' },
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (() => { const total = svcItems.length > 0 ? (services.data?.total as number) || 25 : 25; return { label: 'خدمة', value: `+${total}` }; })(),
+            { label: 'خدمة', value: `+${services.data?.total || 25}` },
             { label: 'مدينة سعودية', value: '+24' },
           ].map((s) => (
             <div key={s.label}><p className="text-3xl font-extrabold text-brand-600">{s.value}</p><p className="text-gray-500">{s.label}</p></div>

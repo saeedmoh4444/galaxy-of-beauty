@@ -67,18 +67,15 @@ export function useSocket(): void {
 
     // ── Connection lifecycle ────────────────────────────
     socket.on('connect', () => {
-      // eslint-disable-next-line no-console
-      console.log('[Socket] Connected:', socket.id);
+      if (process.env['NODE_ENV'] !== 'production') console.log('[Socket] Connected:', socket.id);
     });
 
     socket.on('connect_error', (err: Error) => {
-      // eslint-disable-next-line no-console
-      console.error('[Socket] Connection error:', err.message);
+      if (process.env['NODE_ENV'] !== 'production') console.error('[Socket] Connection error:', err.message);
     });
 
     socket.on('disconnect', (reason: string) => {
-      // eslint-disable-next-line no-console
-      console.log('[Socket] Disconnected:', reason);
+      if (process.env['NODE_ENV'] !== 'production') console.log('[Socket] Disconnected:', reason);
     });
 
     // ── Incoming events → invalidate React Query caches ─

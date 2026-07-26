@@ -16,7 +16,6 @@ export default function PromoPage(): JSX.Element {
     setResult(null);
     if (!code || !amount) { setError('الرجاء إدخال الكود والمبلغ'); return; }
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const r = await api.promo.validate.fetch({
         code: code.toUpperCase(),
         orderAmount: Number(amount),
