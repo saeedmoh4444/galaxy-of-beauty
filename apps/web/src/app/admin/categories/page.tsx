@@ -2,36 +2,49 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input, Modal } from '@galaxy/shared';
 
+type CategoryItem = RouterOutput['categories']['all'][number];
+
+function getCatName(cat: CategoryItem, lang: 'ar' | 'en'): string {
+  const nameJson = cat.nameJson as { ar?: string; en?: string } | null;
+  return nameJson?.[lang] ?? '';
+}
+
 export default function AdminCategoriesPage(): JSX.Element {
-  const { data, isLoading, isError, refetch } = api.categories.all.useQuery({} as never);
+  const { data, isLoading, isError, refetch } = api.categories.all.useQuery();
   const createMut = api.categories.create.useMutation({ onSuccess: () => { refetch(); setCreateOpen(false); setForm({ nameAr: '', nameEn: '', slug: '', parentId: null }); } });
   const updateMut = api.categories.update.useMutation({ onSuccess: () => { refetch(); setEditOpen(false); setSelected(null); } });
   const deleteMut = api.categories.delete.useMutation({ onSuccess: () => refetch() });
 
   const [createOpen, setCreateOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-  const [selected, setSelected] = useState<Record<string, unknown> | null>(null);
+  const [selected, setSelected] = useState<CategoryItem | null>(null);
   const [form, setForm] = useState({ nameAr: '', nameEn: '', slug: '', parentId: null as number | null });
 
-  const categories = (data as unknown as Record<string, unknown>[]) ?? [];
+  const categories: CategoryItem[] = data ?? [];
 
   const parentCategories = categories.filter((c) => !c.parentId);
 
-  const childrenOf = (parentId: number): Record<string, unknown>[] =>
+  const childrenOf = (parentId: number): CategoryItem[] =>
     categories.filter((c) => Number(c.parentId) === parentId);
 
-  const handleCreate = () => createMut.mutate(form as never);
+  const handleCreate = () => {
+    const input = { ...form, parentId: form.parentId ?? undefined };
+    createMut.mutate(input);
+  };
   const handleUpdate = () => {
     if (!selected) return;
-    updateMut.mutate({ id: selected.id as number, ...form } as never);
+    const input = { id: selected.id, ...form, parentId: form.parentId ?? undefined };
+    updateMut.mutate(input);
   };
-  const handleDelete = (cat: Record<string, unknown>) => deleteMut.mutate({ id: cat.id as number } as never);
+  const handleDelete = (cat: CategoryItem) => deleteMut.mutate({ id: cat.id });
 
-  const openEdit = (cat: Record<string, unknown>) => {
+  const openEdit = (cat: CategoryItem) => {
     setSelected(cat);
-    setForm({ nameAr: cat.nameAr as string, nameEn: cat.nameEn as string, slug: cat.slug as string, parentId: cat.parentId as number | null });
+    const nameJson = cat.nameJson as { ar?: string; en?: string };
+    setForm({ nameAr: nameJson.ar ?? '', nameEn: nameJson.en ?? '', slug: cat.slug, parentId: cat.parentId ?? null });
     setEditOpen(true);
   };
 
@@ -51,13 +64,13 @@ export default function AdminCategoriesPage(): JSX.Element {
         </>
       ) : (
         <div className="space-y-2">
-          {parentCategories.map((cat: Record<string, unknown>) => (
-            <div key={cat.id as number}>
+          {parentCategories.map((cat: CategoryItem) => (
+            <div key={cat.id}>
               <Card padding="md">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-semibold">{cat.nameAr as string} / {cat.nameEn as string}</p>
-                    <p className="text-sm text-gray-500">المعرف: {cat.slug as string}</p>
+                    <p className="font-semibold">{getCatName(cat, 'ar')} / {getCatName(cat, 'en')}</p>
+                    <p className="text-sm text-gray-500">المعرف: {cat.slug}</p>
                     <p className="text-sm text-gray-500">الترتيب: {String(cat.sortOrder ?? 0)}</p>
                   </div>
                   <div className="flex items-center gap-3">
@@ -71,13 +84,13 @@ export default function AdminCategoriesPage(): JSX.Element {
                   </div>
                 </div>
               </Card>
-              {childrenOf(cat.id as number).map((child: Record<string, unknown>) => (
-                <div key={child.id as number} className="mr-6">
+              {childrenOf(cat.id).map((child: CategoryItem) => (
+                <div key={child.id} className="mr-6">
                   <Card padding="md">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-semibold">↳ {child.nameAr as string} / {child.nameEn as string}</p>
-                        <p className="text-sm text-gray-500">المعرف: {child.slug as string}</p>
+                        <p className="font-semibold">↳ {getCatName(child, 'ar')} / {getCatName(child, 'en')}</p>
+                        <p className="text-sm text-gray-500">المعرف: {child.slug}</p>
                         <p className="text-sm text-gray-500">الترتيب: {String(child.sortOrder ?? 0)}</p>
                       </div>
                       <div className="flex items-center gap-3">
@@ -113,7 +126,7 @@ export default function AdminCategoriesPage(): JSX.Element {
             >
               <option value="">-- لا يوجد (قسم رئيسي) --</option>
               {categories.map((c) => (
-                <option key={c.id as number} value={c.id as number}>{c.nameAr as string}</option>
+                <option key={c.id} value={c.id}>{getCatName(c, 'ar')}</option>
               ))}
             </select>
           </div>
@@ -139,7 +152,7 @@ export default function AdminCategoriesPage(): JSX.Element {
             >
               <option value="">-- لا يوجد (قسم رئيسي) --</option>
               {categories.map((c) => (
-                <option key={c.id as number} value={c.id as number}>{c.nameAr as string}</option>
+                <option key={c.id} value={c.id}>{getCatName(c, 'ar')}</option>
               ))}
             </select>
           </div>

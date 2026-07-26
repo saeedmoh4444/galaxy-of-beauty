@@ -2,12 +2,18 @@
 
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
+type CustomerInsights = RouterOutput['analytics']['customerInsights'];
+type StreakInfo = NonNullable<CustomerInsights>['streakInfo'];
+
 export default function CustomerDashboardPage(): JSX.Element {
   const bookings = api.bookings.list.useQuery({ limit: 5 });
-  const insights = api.analytics.customerInsights.useQuery({} as never);
+  const insights = api.analytics.customerInsights.useQuery();
+
+  const streakInfo = insights.data?.streakInfo as StreakInfo | undefined;
 
   return (
     <DashboardLayout role="CUSTOMER">
@@ -21,7 +27,7 @@ export default function CustomerDashboardPage(): JSX.Element {
             <Card className="text-center"><p className="text-sm text-gray-500">إجمالي الحجوزات</p><p className="text-2xl font-bold text-brand-600">{insights.data?.bookingCount ?? 0}</p></Card>
             <Card className="text-center"><p className="text-sm text-gray-500">إجمالي الإنفاق</p><p className="text-2xl font-bold text-green-600">{formatCurrency(Number(insights.data?.totalSpent ?? 0))}</p></Card>
             <Card className="text-center"><p className="text-sm text-gray-500">التقييمات</p><p className="text-2xl font-bold text-amber-600">⭐</p></Card>
-            <Card className="text-center"><p className="text-sm text-gray-500">الاستمرارية</p><p className="text-2xl font-bold text-purple-600">{(insights.data?.streakInfo as unknown as Record<string, unknown>)?.currentStreak as number ?? 0} أسابيع</p></Card>
+            <Card className="text-center"><p className="text-sm text-gray-500">الاستمرارية</p><p className="text-2xl font-bold text-purple-600">{streakInfo?.currentStreak ?? 0} أسابيع</p></Card>
           </div>
         )}
 

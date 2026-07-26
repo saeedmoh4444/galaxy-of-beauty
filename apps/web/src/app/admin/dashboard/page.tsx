@@ -2,12 +2,15 @@
 
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, formatCurrency } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
+type AdminHealth = RouterOutput['adminTools']['health'];
+
 export default function AdminDashboardPage(): JSX.Element {
-  const { data, isLoading, isError, refetch } = api.adminTools.health.useQuery({} as never);
-  const stats = data as unknown as Record<string, unknown>;
+  const { data, isLoading, isError, refetch } = api.adminTools.health.useQuery();
+  const stats = data as AdminHealth;
 
   if (isLoading) return <DashboardLayout role="ADMIN"><div className="space-y-6">{Array.from({ length: 4 }, (_, i) => <CardSkeleton key={i} />)}</div></DashboardLayout>;
   if (isError) return <DashboardLayout role="ADMIN"><ErrorAlert message="فشل تحميل لوحة التحكم" onRetry={() => refetch()} /></DashboardLayout>;

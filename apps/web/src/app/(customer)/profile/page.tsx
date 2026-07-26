@@ -3,8 +3,12 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+
+type ProfileUser = NonNullable<RouterOutput['auth']['me']>;
+type ProfileAddress = RouterOutput['addresses']['list'][number];
 
 type AddressForm = {
   label: string;
@@ -31,7 +35,7 @@ export default function ProfilePage(): JSX.Element {
   const [msg, setMsg] = useState('');
 
   // -- Profile tab --
-  const { data: user, isLoading: userLoading, isError: userError, refetch: refetchUser } = api.auth.me.useQuery({} as never);
+  const { data: user, isLoading: userLoading, isError: userError, refetch: refetchUser } = api.auth.me.useQuery();
   const updateProfileMut = api.auth.updateProfile.useMutation({
     onSuccess: () => { setMsg('تم تحديث الملف الشخصي بنجاح'); refetchUser(); },
   });
@@ -40,7 +44,7 @@ export default function ProfilePage(): JSX.Element {
   const [formLang, setFormLang] = useState('ar');
 
   // -- Addresses tab --
-  const { data: addresses, isLoading: addrLoading, isError: addrError, refetch: refetchAddr } = api.addresses.list.useQuery({} as never);
+  const { data: addresses, isLoading: addrLoading, isError: addrError, refetch: refetchAddr } = api.addresses.list.useQuery();
   const createAddrMut = api.addresses.create.useMutation({ onSuccess: () => { closeAddrModal(); refetchAddr(); } });
   const updateAddrMut = api.addresses.update.useMutation({ onSuccess: () => { closeAddrModal(); refetchAddr(); } });
   const deleteAddrMut = api.addresses.delete.useMutation({ onSuccess: () => refetchAddr() });
@@ -64,9 +68,9 @@ export default function ProfilePage(): JSX.Element {
     }
   };
 
-  const addrList = (addresses as unknown as Record<string, unknown>[]) ?? [];
+  const addrList: ProfileAddress[] = addresses ?? [];
 
-  const userData = user as unknown as Record<string, unknown>;
+  const userData: ProfileUser | undefined = user ?? undefined;
 
   return (
     <DashboardLayout role="CUSTOMER">

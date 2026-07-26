@@ -2,13 +2,17 @@
 
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Button, Card, CardSkeleton, ErrorAlert, EmptyState } from '@galaxy/shared';
 
+type CategoryItem = RouterOutput['categories']['list'][number];
+type ServiceListItem = NonNullable<RouterOutput['services']['list']>['items'][number];
+
 export default function HomePage(): JSX.Element {
-  const cats = api.categories.list.useQuery({} as never);
+  const cats = api.categories.list.useQuery();
   const services = api.services.list.useQuery({ sort: 'popular', limit: 6 });
-  const categories = (cats.data ?? []) as unknown as Record<string, unknown>[];
-  const svcItems = (services.data?.items ?? []) as unknown as Record<string, unknown>[];
+  const categories: CategoryItem[] = cats.data ?? [];
+  const svcItems: ServiceListItem[] = services.data?.items ?? [];
 
   return (
     <div>

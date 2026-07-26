@@ -2,17 +2,19 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/shared';
 
 const STATUSES = ['ALL', 'REQUESTED', 'ACCEPTED', 'PAID', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
 
+type BookingItem = NonNullable<RouterOutput['admin']['getAllBookings']>['items'][number];
+
 export default function AdminBookingsPage(): JSX.Element {
   const [status, setStatus] = useState<string | undefined>(undefined);
-  const query = api.admin.getAllBookings.useQuery({ status: (status || undefined) as never, page: 1, limit: 20 } as never);
-  const { data, isLoading, isError, refetch } = query as unknown as { data: Record<string, unknown>[] | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data, isLoading, isError, refetch } = api.admin.getAllBookings.useQuery({ status: status || undefined, page: 1, limit: 20 });
   const cancelMut = api.bookings.transition.useMutation({ onSuccess: () => refetch() });
 
-  const bookings = (data as unknown as Record<string, unknown>[]) ?? [];
+  const bookings = data?.items ?? [];
 
   return (
     <div className="space-y-6">
@@ -22,13 +24,13 @@ export default function AdminBookingsPage(): JSX.Element {
       {isLoading ? <CardSkeleton />
       : isError ? <ErrorAlert message="فشل تحميل الحجوزات" onRetry={() => refetch()} />
       : bookings.length === 0 ? <EmptyState title="لا توجد حجوزات" />
-      : <div className="space-y-2">{bookings.map((b: Record<string, unknown>) => (
-          <Card key={b.id as number} padding="md">
+      : <div className="space-y-2">{bookings.map((b: BookingItem) => (
+          <Card key={b.id} padding="md">
             <div className="flex items-center justify-between">
-              <div><p className="font-semibold">{b.bookingCode as string}</p><p className="text-sm text-gray-500">{new Date(b.createdAt as string).toLocaleDateString('ar-SA')}</p></div>
-              <span className={`rounded-full px-3 py-1 text-xs font-medium ${b.status === 'COMPLETED' ? 'bg-green-100 text-green-700' : b.status === 'CANCELLED' ? 'bg-red-100 text-red-700' : 'bg-brand-100 text-brand-700'}`}>{b.status as string}</span>
+              <div><p className="font-semibold">{b.bookingCode}</p><p className="text-sm text-gray-500">{new Date(b.createdAt).toLocaleDateString('ar-SA')}</p></div>
+              <span className={`rounded-full px-3 py-1 text-xs font-medium ${b.status === 'COMPLETED' ? 'bg-green-100 text-green-700' : b.status === 'CANCELLED' ? 'bg-red-100 text-red-700' : 'bg-brand-100 text-brand-700'}`}>{b.status}</span>
               <p className="font-semibold">{formatCurrency(Number(b.totalAmount ?? 0))}</p>
-              {b.status !== 'COMPLETED' && b.status !== 'CANCELLED' && <Button size="sm" variant="danger" onClick={() => cancelMut.mutate({ id: b.id as number, action: 'cancel' })}>إلغاء</Button>}
+              {b.status !== 'COMPLETED' && b.status !== 'CANCELLED' && <Button size="sm" variant="danger" onClick={() => cancelMut.mutate({ id: b.id, action: 'cancel' })}>إلغاء</Button>}
             </div>
           </Card>
         ))}</div>

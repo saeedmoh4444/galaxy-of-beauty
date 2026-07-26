@@ -1,17 +1,18 @@
 'use client';
 
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/shared';
 
+type FlagItem = RouterOutput['featureFlags']['list'][number];
+
 export default function FeatureFlagsPage(): JSX.Element {
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = (api.featureFlags as any).list.useQuery();
-  const flags = (data as Array<Record<string, unknown>>) || [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const toggleMut = (api.featureFlags as any).toggle.useMutation({
+  const { data, isLoading, isError, refetch } = api.featureFlags.list.useQuery();
+  const flags: FlagItem[] = data ?? [];
+  const toggleMut = api.featureFlags.toggle.useMutation({
     onSuccess: () => { refetch(); addToast('success', 'تم التحديث'); },
     onError: () => addToast('error', 'فشل التحديث'),
   });

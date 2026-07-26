@@ -5,7 +5,7 @@ import { api } from '@/lib/trpc';
 import { Button, Card, CardSkeleton, ErrorAlert, Input } from '@galaxy/shared';
 
 export default function TwoFactorPage(): JSX.Element {
-  const { data, isLoading, isError, refetch } = api.auth.me.useQuery({} as never);
+  const { data, isLoading, isError, refetch } = api.auth.me.useQuery();
 
   const setupMut = api.auth.setup2FA.useMutation({
     onSuccess: () => refetch(),
@@ -20,11 +20,10 @@ export default function TwoFactorPage(): JSX.Element {
   const [verifyCode, setVerifyCode] = useState('');
   const [verifyError, setVerifyError] = useState('');
 
-  const me = data as unknown as Record<string, unknown>;
-  const twoFactorEnabled = (me?.twoFactorEnabled as boolean) ?? false;
+  const twoFactorEnabled = data?.twoFactorEnabled ?? false;
 
   // Setup result data (secret, otpauthUrl)
-  const setupData = setupMut.data as unknown as Record<string, unknown> | undefined;
+  const setupData = setupMut.data;
 
   const handleVerify = () => {
     if (verifyCode.length !== 6) {
@@ -79,7 +78,7 @@ export default function TwoFactorPage(): JSX.Element {
                 <Button
                   variant="danger"
                   className="w-full"
-                  onClick={() => disableMut.mutate({} as never)}
+                  onClick={() => disableMut.mutate()}
                   loading={disableMut.isPending}
                 >
                   تعطيل المصادقة الثنائية
@@ -106,7 +105,7 @@ export default function TwoFactorPage(): JSX.Element {
 
                   <Button
                     className="w-full"
-                    onClick={() => setupMut.mutate({} as never)}
+                    onClick={() => setupMut.mutate()}
                     loading={setupMut.isPending}
                   >
                     بدء الإعداد

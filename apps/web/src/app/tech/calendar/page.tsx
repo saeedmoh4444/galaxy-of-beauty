@@ -5,7 +5,7 @@ import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/shar
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function TechCalendarPage(): JSX.Element {
-  const status = api.calendar.status.useQuery({} as never);
+  const status = api.calendar.status.useQuery();
   const connectMut = api.calendar.connect.useMutation({ onSuccess: () => status.refetch() });
   const disconnectMut = api.calendar.disconnect.useMutation({ onSuccess: () => status.refetch() });
   const syncMut = api.calendar.sync.useMutation({ onSuccess: () => status.refetch() });
@@ -39,14 +39,14 @@ export default function TechCalendarPage(): JSX.Element {
               <div className="flex flex-wrap gap-3">
                 <Button
                   variant="outline"
-                  onClick={() => syncMut.mutate({} as never)}
+                  onClick={() => syncMut.mutate()}
                   loading={syncMut.isPending}
                 >
                   مزامنة الآن
                 </Button>
                 <Button
                   variant="danger"
-                  onClick={() => disconnectMut.mutate({} as never)}
+                  onClick={() => disconnectMut.mutate()}
                   loading={disconnectMut.isPending}
                 >
                   قطع الاتصال
@@ -68,7 +68,7 @@ export default function TechCalendarPage(): JSX.Element {
                 اربط تقويم قوقل الخاص بك لعرض مواعيد الحجوزات تلقائياً ومزامنتها مع تقويمك الشخصي.
               </p>
               <Button
-                onClick={() => connectMut.mutate({ authCode: 'stub-auth-code' } as never)}
+                onClick={() => connectMut.mutate({ authCode: 'stub-auth-code' })}
                 loading={connectMut.isPending}
               >
                 ربط تقويم قوقل

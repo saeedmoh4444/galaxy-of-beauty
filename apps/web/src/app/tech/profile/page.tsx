@@ -13,7 +13,7 @@ const KYC_BADGES: Record<string, { colour: string; label: string }> = {
 };
 
 export default function TechProfilePage(): JSX.Element {
-  const { data, isLoading, isError, refetch } = api.auth.me.useQuery({} as never);
+  const { data, isLoading, isError, refetch } = api.auth.me.useQuery();
   const servicesQ = api.services.list.useQuery({ limit: 50 });
   const addServiceMut = api.technicians.addService.useMutation({ onSuccess: () => refetch() });
   const removeServiceMut = api.technicians.removeService.useMutation({ onSuccess: () => refetch() });

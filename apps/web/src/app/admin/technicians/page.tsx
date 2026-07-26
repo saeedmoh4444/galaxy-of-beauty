@@ -2,9 +2,12 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Modal } from '@galaxy/shared';
 
 const KYC_TABS = ['ALL', 'PENDING', 'SUBMITTED', 'VERIFIED', 'REJECTED'] as const;
+
+type TechnicianItem = NonNullable<RouterOutput['admin']['listTechnicians']>['items'][number];
 
 const kycBadge = (status: string): { label: string; className: string } => {
   switch (status) {
@@ -17,26 +20,26 @@ const kycBadge = (status: string): { label: string; className: string } => {
 
 export default function AdminTechniciansPage(): JSX.Element {
   const [kycTab, setKycTab] = useState<string>('ALL');
-  const [reviewTech, setReviewTech] = useState<Record<string, unknown> | null>(null);
+  const [reviewTech, setReviewTech] = useState<TechnicianItem | null>(null);
   const [reviewNote, setReviewNote] = useState('');
 
-  const { data, isLoading, isError, refetch } = api.admin.listTechnicians.useQuery({ page: 1, limit: 50 } as never);
+  const { data, isLoading, isError, refetch } = api.admin.listTechnicians.useQuery({ page: 1, limit: 50 });
   const verifyMut = api.technicians.verifyKyc.useMutation({ onSuccess: () => { refetch(); setReviewTech(null); setReviewNote(''); } });
   const suspendMut = api.admin.suspendUser.useMutation({ onSuccess: () => refetch() });
 
-  const technicians = (data as unknown as Record<string, unknown>[]) ?? [];
+  const technicians = data?.items ?? [];
 
   const filtered = kycTab === 'ALL'
     ? technicians
-    : technicians.filter((t) => (t.kycStatus as string) === kycTab);
+    : technicians.filter((t) => t.kycStatus === kycTab);
 
   const handleVerify = (approved: boolean) => {
     if (!reviewTech) return;
     verifyMut.mutate({
-      technicianId: reviewTech.id as number,
-      status: approved ? 'VERIFIED' : 'REJECTED',
-      adminNote: reviewNote,
-    } as never);
+      userId: reviewTech.userId,
+      status: approved ? 'VERIFIED' as const : 'REJECTED' as const,
+      notes: reviewNote || undefined,
+    });
   };
 
   return (
@@ -61,16 +64,16 @@ export default function AdminTechniciansPage(): JSX.Element {
         <EmptyState title="لا توجد فنيات" />
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
-          {filtered.map((tech: Record<string, unknown>) => {
-            const badge = kycBadge(tech.kycStatus as string);
+          {filtered.map((tech: TechnicianItem) => {
+            const badge = kycBadge(tech.kycStatus);
             return (
-              <Card key={tech.id as number} padding="md">
+              <Card key={tech.id} padding="md">
                 <div className="space-y-3">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="font-semibold">{tech.name as string}</p>
-                      <p className="text-sm text-gray-500">{tech.email as string}</p>
-                      <p className="text-sm text-gray-500">{tech.city as string ?? '—'}</p>
+                      <p className="font-semibold">{tech.user.name}</p>
+                      <p className="text-sm text-gray-500">{tech.user.email}</p>
+                      <p className="text-sm text-gray-500">{tech.city ?? '—'}</p>
                     </div>
                     <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${badge.className}`}>
                       {badge.label}
@@ -83,17 +86,17 @@ export default function AdminTechniciansPage(): JSX.Element {
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    {(tech.kycStatus as string) !== 'VERIFIED' && (
+                    {tech.kycStatus !== 'VERIFIED' && (
                       <Button size="sm" variant="primary" onClick={() => setReviewTech(tech)}>
                         مراجعة التوثيق
                       </Button>
                     )}
                     <Button
                       size="sm"
-                      variant={tech.isActive ? 'danger' : 'primary'}
-                      onClick={() => suspendMut.mutate({ userId: tech.id as number } as never)}
+                      variant={tech.user.isActive ? 'danger' : 'primary'}
+                      onClick={() => suspendMut.mutate({ userId: tech.userId })}
                     >
-                      {tech.isActive ? 'تعليق' : 'إلغاء التعليق'}
+                      {tech.user.isActive ? 'تعليق' : 'إلغاء التعليق'}
                     </Button>
                   </div>
                 </div>
@@ -107,16 +110,16 @@ export default function AdminTechniciansPage(): JSX.Element {
       <Modal open={!!reviewTech} onClose={() => { setReviewTech(null); setReviewNote(''); }} title="مراجعة توثيق الفنية">
         {reviewTech && (
           <div className="space-y-4">
-            <p className="text-sm"><strong>الاسم:</strong> {reviewTech.name as string}</p>
-            <p className="text-sm"><strong>البريد:</strong> {reviewTech.email as string}</p>
-            <p className="text-sm"><strong>حالة التوثيق:</strong> {reviewTech.kycStatus as string}</p>
+            <p className="text-sm"><strong>الاسم:</strong> {reviewTech.user.name}</p>
+            <p className="text-sm"><strong>البريد:</strong> {reviewTech.user.email}</p>
+            <p className="text-sm"><strong>حالة التوثيق:</strong> {reviewTech.kycStatus}</p>
 
             <div>
               <p className="mb-1 text-sm font-medium">الوثائق المقدمة:</p>
-              {((reviewTech.kycDocuments as unknown as Record<string, unknown>[]) ?? []).length > 0 ? (
-                (reviewTech.kycDocuments as unknown as Record<string, unknown>[]).map((doc: Record<string, unknown>, i: number) => (
+              {((reviewTech.kycDocuments as { type: string; url: string }[]) ?? []).length > 0 ? (
+                (reviewTech.kycDocuments as { type: string; url: string }[]).map((doc, i: number) => (
                   <p key={i} className="text-sm text-blue-600 hover:underline cursor-pointer">
-                    {doc.name as string ?? `مستند ${i + 1}`}
+                    {doc.type ?? `مستند ${i + 1}`}
                   </p>
                 ))
               ) : (

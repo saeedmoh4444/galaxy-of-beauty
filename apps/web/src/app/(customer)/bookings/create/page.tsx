@@ -1,11 +1,27 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Card, ErrorAlert, Button, Input } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/shared';
+
+type ServiceListItem = NonNullable<RouterOutput['services']['list']>['items'][number];
+type ServiceDetail = RouterOutput['services']['getById'];
+type AddressItem = RouterOutput['addresses']['list'][number];
+type BookingResult = RouterOutput['bookings']['create'];
+
+// Helper to extract bilingual JSON field
+function ar(json: unknown): string {
+  return (json as { ar?: string })?.ar ?? '';
+}
+
+// Helper to safely get number
+function num(v: unknown, fallback = 0): number {
+  return typeof v === 'number' ? v : Number(v) || fallback;
+}
 
 export default function CreateBookingPage(): JSX.Element {
   const router = useRouter();
@@ -21,25 +37,21 @@ export default function CreateBookingPage(): JSX.Element {
   const [notes, setNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: servicesData } = (api.services as any).list.useQuery({ page: 1, limit: 100 });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: serviceDetail } = (api.services as any).getById.useQuery(
-    { id: serviceId! },
+  const { data: servicesData } = api.services.list.useQuery({ page: 1, limit: 100 });
+  const { data: serviceDetail } = api.services.getById.useQuery(
+    { id: serviceId ?? 0 },
     { enabled: !!serviceId },
   );
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: addressesData } = (api.addresses as any).list.useQuery();
+  const { data: addressesData } = api.addresses.list.useQuery();
 
-  const services = (servicesData as Record<string, unknown>)?.items as Array<Record<string, unknown>> || [];
-  const svc = serviceDetail as Record<string, unknown> | null;
-  const variants = (svc?.variants as Array<Record<string, unknown>>) || [];
-  const addresses = (addressesData as Array<Record<string, unknown>>) || [];
+  const services: ServiceListItem[] = servicesData?.items ?? [];
+  const svc: ServiceDetail | null = serviceDetail ?? null;
+  const variants = (svc as unknown as { variants?: Array<Record<string, unknown>> })?.variants ?? [];
+  const addresses: AddressItem[] = addressesData ?? [];
 
   const createMut = api.bookings.create.useMutation({
-    onSuccess: (result) => {
+    onSuccess: (result: BookingResult) => {
       addToast('success', 'تم إنشاء الحجز بنجاح!');
-      const bookingId = (result as Record<string, unknown>).id as number;
       router.push(`/customer/bookings`);
     },
     onError: () => {
@@ -54,12 +66,11 @@ export default function CreateBookingPage(): JSX.Element {
       return;
     }
     setSubmitting(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // Auto-assign first available technician for this service
     let technicianId = 0;
-    const techs = (svc?.technicianServices as Array<Record<string, unknown>>) || [];
+    const techs = (svc as unknown as { technicianServices?: Array<{ technician?: { userId?: number } }> })?.technicianServices ?? [];
     if (techs.length > 0) {
-      technicianId = (techs[0]!.technician as Record<string, unknown>)?.userId as number || 0;
+      technicianId = techs[0]?.technician?.userId ?? 0;
     }
     if (!technicianId) {
       addToast('error', 'لا توجد فنيات متاحة لهذه الخدمة حالياً');
@@ -67,13 +78,13 @@ export default function CreateBookingPage(): JSX.Element {
       return;
     }
 
-    (createMut as any).mutate({
+    createMut.mutate({
       serviceId, variantId, addressId,
       technicianId,
-      idempotencyKey: `web_${Date.now()}_${Math.random().toString(36).slice(2,10)}`,
+      idempotencyKey: crypto.randomUUID(),
       notes: notes || undefined,
       startAt: new Date(Date.now() + 86400000).toISOString(),
-      endAt: new Date(Date.now() + 86400000 + ((svc?.durationMin as number) || 60) * 60000).toISOString(),
+      endAt: new Date(Date.now() + 86400000 + (num(svc ? (svc as unknown as { durationMin?: number }).durationMin : 60, 60)) * 60000).toISOString(),
     });
   };
 
@@ -103,14 +114,14 @@ export default function CreateBookingPage(): JSX.Element {
             <div className="max-h-80 space-y-2 overflow-y-auto">
               {services.map((s) => (
                 <button
-                  key={s.id as number}
-                  onClick={() => { setServiceId(s.id as number); setStep(2); }}
+                  key={s.id}
+                  onClick={() => { setServiceId(s.id); setStep(2); }}
                   className={`w-full rounded-lg border p-4 text-right transition-colors hover:border-brand-400 ${
                     serviceId === s.id ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'
                   }`}
                 >
-                  <p className="font-semibold text-gray-900 dark:text-gray-100">{((s.titleJson as Record<string, string>)?.ar) || ''}</p>
-                  <p className="mt-1 text-sm text-gray-500">{Number(s.basePrice).toFixed(0)} ر.س · {s.durationMin as number} دقيقة</p>
+                  <p className="font-semibold text-gray-900 dark:text-gray-100">{ar((s as unknown as { titleJson: unknown }).titleJson)}</p>
+                  <p className="mt-1 text-sm text-gray-500">{num((s as unknown as { basePrice: unknown }).basePrice).toFixed(0)} ر.س · {num((s as unknown as { durationMin: unknown }).durationMin)} دقيقة</p>
                 </button>
               ))}
             </div>
@@ -121,7 +132,7 @@ export default function CreateBookingPage(): JSX.Element {
           <Card padding="md">
             <h3 className="mb-4 font-semibold text-gray-900 dark:text-gray-100">تفاصيل الحجز</h3>
 
-            <p className="mb-2 text-sm font-bold text-brand-600">{((svc.titleJson as Record<string, string>)?.ar) || ''}</p>
+            <p className="mb-2 text-sm font-bold text-brand-600">{ar((svc as unknown as { titleJson: unknown }).titleJson)}</p>
 
             {variants.length > 0 && (
               <div className="mb-4">
@@ -134,7 +145,7 @@ export default function CreateBookingPage(): JSX.Element {
                   <option value="">الخدمة الأساسية</option>
                   {variants.map((v) => (
                     <option key={v.id as number} value={v.id as number}>
-                      {((v.nameJson as Record<string, string>)?.ar) || ''} (+{Number(v.priceDelta).toFixed(0)} ر.س)
+                      {ar(v.nameJson)} (+{num(v.priceDelta).toFixed(0)} ر.س)
                     </option>
                   ))}
                 </select>
@@ -150,8 +161,8 @@ export default function CreateBookingPage(): JSX.Element {
               >
                 <option value="">اختر عنواناً...</option>
                 {addresses.map((a) => (
-                  <option key={a.id as number} value={a.id as number}>
-                    {a.label as string} — {a.city as string}
+                  <option key={a.id} value={a.id}>
+                    {String(a.label)} — {String(a.city)}
                   </option>
                 ))}
               </select>
@@ -191,15 +202,15 @@ export default function CreateBookingPage(): JSX.Element {
             <div className="space-y-3 text-sm">
               <div className="flex justify-between border-b pb-2">
                 <span className="text-gray-500">الخدمة</span>
-                <span className="font-semibold">{((svc?.titleJson as Record<string, string>)?.ar) || ''}</span>
+                <span className="font-semibold">{svc ? ar((svc as unknown as { titleJson: unknown }).titleJson) : ''}</span>
               </div>
               <div className="flex justify-between border-b pb-2">
                 <span className="text-gray-500">السعر</span>
-                <span className="font-bold text-brand-600">{Number(svc?.basePrice || 0).toFixed(0)} ر.س</span>
+                <span className="font-bold text-brand-600">{num((svc as unknown as { basePrice?: unknown })?.basePrice).toFixed(0)} ر.س</span>
               </div>
               <div className="flex justify-between border-b pb-2">
                 <span className="text-gray-500">المدة</span>
-                <span>{svc?.durationMin as number || 0} دقيقة</span>
+                <span>{num((svc as unknown as { durationMin?: unknown })?.durationMin)} دقيقة</span>
               </div>
             </div>
 

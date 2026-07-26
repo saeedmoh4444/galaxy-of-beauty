@@ -2,9 +2,13 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/shared';
+
+type AreaItem = RouterOutput['platform']['listAreas'][number];
+type CityItem = RouterOutput['platform']['getCities'][number];
 
 export default function AdminAreasPage(): JSX.Element {
   const { addToast } = useToast();
@@ -12,22 +16,18 @@ export default function AdminAreasPage(): JSX.Element {
   const [showAdd, setShowAdd] = useState(false);
   const [newArea, setNewArea] = useState({ cityId: '', nameAr: '', nameEn: '' });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: areasData, isLoading, isError, refetch } = (api.platform as any).listAreas.useQuery(
+  const { data: areasData, isLoading, isError, refetch } = api.platform.listAreas.useQuery(
     cityFilter ? { cityId: cityFilter } : {},
   );
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: citiesData } = (api.platform as any).getCities.useQuery();
-  const areas = (areasData as Array<Record<string, unknown>>) || [];
-  const cities = (citiesData as Array<Record<string, unknown>>) || [];
+  const { data: citiesData } = api.platform.getCities.useQuery();
+  const areas: AreaItem[] = areasData ?? [];
+  const cities: CityItem[] = citiesData ?? [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const createMut = (api.platform as any).createArea.useMutation({
+  const createMut = api.platform.createArea.useMutation({
     onSuccess: () => { setShowAdd(false); refetch(); addToast('success', 'تمت إضافة المنطقة'); },
     onError: () => addToast('error', 'فشلت الإضافة'),
   });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const deleteMut = (api.platform as any).deleteArea.useMutation({
+  const deleteMut = api.platform.deleteArea.useMutation({
     onSuccess: () => { refetch(); addToast('success', 'تم تعطيل المنطقة'); },
   });
 
@@ -53,7 +53,7 @@ export default function AdminAreasPage(): JSX.Element {
           >
             <option value="">كل المدن</option>
             {cities.map((c) => (
-              <option key={c.id as number} value={c.id as number}>{c.nameAr as string}</option>
+              <option key={c.id} value={c.id}>{c.nameAr}</option>
             ))}
           </select>
         </div>
@@ -77,9 +77,9 @@ export default function AdminAreasPage(): JSX.Element {
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                 {areas.map((a) => (
-                  <tr key={a.id as number} className="hover:bg-gray-50 dark:hover:bg-gray-900">
-                    <td className="p-3 font-medium">{a.nameAr as string}</td>
-                    <td className="p-3 text-gray-500">{(a.city as Record<string, unknown>)?.nameAr as string || ''}</td>
+                  <tr key={a.id} className="hover:bg-gray-50 dark:hover:bg-gray-900">
+                    <td className="p-3 font-medium">{a.nameAr}</td>
+                    <td className="p-3 text-gray-500">{a.city?.nameAr ?? ''}</td>
                     <td className="p-3">
                       <span className={`rounded px-2 py-0.5 text-xs ${a.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                         {a.isActive ? 'نشط' : 'معطل'}
@@ -110,7 +110,7 @@ export default function AdminAreasPage(): JSX.Element {
                 >
                   <option value="">اختر المدينة</option>
                   {cities.map((c) => (
-                    <option key={c.id as number} value={c.id as number}>{c.nameAr as string}</option>
+                    <option key={c.id} value={c.id}>{c.nameAr}</option>
                   ))}
                 </select>
                 <Input value={newArea.nameAr} onChange={(e) => setNewArea({ ...newArea, nameAr: e.target.value })} placeholder="اسم المنطقة (عربي)" />

@@ -1,15 +1,19 @@
 'use client';
 
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
-export default function StreaksPage(): JSX.Element {
-  const streakQ = api.streaks.get.useQuery({} as never);
-  const achievementsQ = api.streaks.getAchievements.useQuery({} as never);
+type StreakData = RouterOutput['streaks']['get'];
+type AchievementData = RouterOutput['streaks']['getAchievements'];
 
-  const streakData = streakQ.data as unknown as Record<string, unknown> | undefined;
-  const achievementsData = achievementsQ.data as unknown as Record<string, unknown> | undefined;
+export default function StreaksPage(): JSX.Element {
+  const streakQ = api.streaks.get.useQuery();
+  const achievementsQ = api.streaks.getAchievements.useQuery();
+
+  const streakData = streakQ.data as StreakData | undefined;
+  const achievementsData = achievementsQ.data as AchievementData | undefined;
 
   const isLoading = streakQ.isLoading || achievementsQ.isLoading;
   const isError = streakQ.isError || achievementsQ.isError;

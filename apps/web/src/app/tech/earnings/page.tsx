@@ -6,7 +6,7 @@ import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal, Input, forma
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function TechEarningsPage(): JSX.Element {
-  const balanceQ = api.wallet.getBalance.useQuery({} as never);
+  const balanceQ = api.wallet.getBalance.useQuery();
   const payoutsQ = api.payouts.listMyPayouts.useQuery({ page: 1, limit: 20 });
   const earningsQ = api.analytics.technicianEarnings.useQuery({ days: 30 });
 

@@ -5,8 +5,7 @@ import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/shared';
 
 export default function SubscriptionBoxesPage(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: plans, isLoading, isError, refetch } = (api.subscriptionBoxes.plans as any).useQuery();
+  const { data: plans, isLoading, isError, refetch } = api.subscriptionBoxes.plans.useQuery();
   const planList = (plans as Array<Record<string, unknown>>) || [];
 
   return (
@@ -95,8 +94,7 @@ export default function SubscriptionBoxesPage(): JSX.Element {
 
 function SubscribeButton({ planId, planName }: { planId: number; planName: string }) {
   const [subscribed, setSubscribed] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const subscribeMut = (api.subscriptionBoxes.subscribe as any).useMutation({
+  const subscribeMut = api.subscriptionBoxes.subscribe.useMutation({
     onSuccess: () => setSubscribed(true),
   });
 

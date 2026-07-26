@@ -2,9 +2,12 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Modal } from '@galaxy/shared';
 
 const STATUS_TABS = ['OPEN', 'UNDER_REVIEW', 'RESOLVED_CUSTOMER', 'RESOLVED_TECHNICIAN', 'CLOSED'] as const;
+
+type DisputeItem = NonNullable<RouterOutput['disputes']['listAdmin']>['items'][number];
 
 const statusBadge = (status: string): { label: string; className: string } => {
   switch (status) {
@@ -20,28 +23,28 @@ const statusBadge = (status: string): { label: string; className: string } => {
 export default function AdminDisputesPage(): JSX.Element {
   const [statusTab, setStatusTab] = useState<string>('OPEN');
   const [resolveOpen, setResolveOpen] = useState(false);
-  const [selected, setSelected] = useState<Record<string, unknown> | null>(null);
+  const [selected, setSelected] = useState<DisputeItem | null>(null);
   const [resolveStatus, setResolveStatus] = useState<string>('RESOLVED_CUSTOMER');
   const [resolutionText, setResolutionText] = useState('');
 
-  const { data, isLoading, isError, refetch } = api.disputes.listAdmin.useQuery({ page: 1, limit: 20 } as never);
+  const { data, isLoading, isError, refetch } = api.disputes.listAdmin.useQuery({ page: 1, limit: 20 });
   const resolveMut = api.disputes.resolve.useMutation({
     onSuccess: () => { refetch(); setResolveOpen(false); setSelected(null); setResolutionText(''); },
   });
 
-  const disputes = (data as unknown as Record<string, unknown>[]) ?? [];
+  const disputes = data?.items ?? [];
 
   const filtered = statusTab === 'OPEN'
-    ? disputes.filter((d) => (d.status as string) === 'OPEN')
-    : disputes.filter((d) => (d.status as string) === statusTab);
+    ? disputes.filter((d) => d.status === 'OPEN')
+    : disputes.filter((d) => d.status === statusTab);
 
   const handleResolve = () => {
     if (!selected) return;
     resolveMut.mutate({
-      disputeId: selected.id as number,
-      status: resolveStatus,
-      resolutionNote: resolutionText,
-    } as never);
+      disputeId: selected.id,
+      status: resolveStatus as 'RESOLVED_CUSTOMER' | 'RESOLVED_TECHNICIAN' | 'CLOSED',
+      resolution: resolutionText,
+    });
   };
 
   return (
@@ -72,23 +75,23 @@ export default function AdminDisputesPage(): JSX.Element {
         <EmptyState title={`لا توجد نزاعات في حالة "${statusTab === 'OPEN' ? 'مفتوح' : statusTab === 'UNDER_REVIEW' ? 'قيد المراجعة' : statusTab === 'RESOLVED_CUSTOMER' ? 'لصالح العميل' : statusTab === 'RESOLVED_TECHNICIAN' ? 'لصالح الفنية' : 'مغلق'}"`} />
       ) : (
         <div className="space-y-2">
-          {filtered.map((d: Record<string, unknown>) => {
-            const badge = statusBadge(d.status as string);
+          {filtered.map((d: DisputeItem) => {
+            const badge = statusBadge(d.status);
             return (
-              <Card key={d.id as number} padding="md">
+              <Card key={d.id} padding="md">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3">
-                      <p className="font-semibold">{d.bookingCode as string}</p>
+                      <p className="font-semibold">{d.booking.bookingCode}</p>
                       <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${badge.className}`}>{badge.label}</span>
                     </div>
                     <div className="mt-1 flex flex-wrap gap-3 text-sm text-gray-500">
-                      <span>العميل: {d.customerName as string ?? '—'}</span>
-                      <span>السبب: {d.reason as string ?? '—'}</span>
-                      <span>{d.createdAt ? new Date(d.createdAt as string).toLocaleDateString('ar-SA') : '—'}</span>
+                      <span>العميل: {d.raiser?.name ?? '—'}</span>
+                      <span>السبب: {d.reason ?? '—'}</span>
+                      <span>{d.createdAt ? new Date(d.createdAt).toLocaleDateString('ar-SA') : '—'}</span>
                     </div>
                   </div>
-                  {(d.status as string) !== 'CLOSED' && (
+                  {d.status !== 'CLOSED' && (
                     <Button
                       size="sm"
                       variant="primary"
@@ -108,8 +111,8 @@ export default function AdminDisputesPage(): JSX.Element {
       <Modal open={resolveOpen} onClose={() => { setResolveOpen(false); setSelected(null); setResolutionText(''); }} title="حل النزاع">
         {selected && (
           <div className="space-y-4">
-            <p className="text-sm"><strong>رمز الحجز:</strong> {selected.bookingCode as string}</p>
-            <p className="text-sm"><strong>السبب:</strong> {selected.reason as string}</p>
+            <p className="text-sm"><strong>رمز الحجز:</strong> {selected.booking.bookingCode}</p>
+            <p className="text-sm"><strong>السبب:</strong> {selected.reason}</p>
 
             <div>
               <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">نتيجة النزاع</label>

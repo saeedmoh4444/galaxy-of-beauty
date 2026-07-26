@@ -2,14 +2,18 @@
 
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
+type WishlistOutput = NonNullable<RouterOutput['wishlist']['list']>;
+type WishlistItem = WishlistOutput['items'][number];
+
 export default function WishlistPage(): JSX.Element {
-  const { data, isLoading, isError, refetch } = api.wishlist.list.useQuery({} as never);
+  const { data, isLoading, isError, refetch } = api.wishlist.list.useQuery();
   const removeMut = api.wishlist.remove.useMutation({ onSuccess: () => refetch() });
 
-  const items = (data?.items as unknown as Record<string, unknown>[]) ?? [];
+  const items: WishlistItem[] = data?.items ?? [];
 
   return (
     <DashboardLayout role="CUSTOMER">
@@ -31,13 +35,13 @@ export default function WishlistPage(): JSX.Element {
           </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {items.map((item: Record<string, unknown>) => {
-              const service = item.service as unknown as Record<string, unknown> | null;
-              const technician = item.technician as unknown as Record<string, unknown> | null;
+            {items.map((item) => {
+              const service = item.service;
+              const technician = item.technician;
 
               if (service) {
-                const category = service.category as unknown as Record<string, unknown>;
-                const titleJson = service.titleJson as Record<string, string>;
+                const category = service.category;
+                const titleJson = service.titleJson;
                 return (
                   <Card key={item.id as number} padding="md" className="relative">
                     <div className="mb-3 flex h-36 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
@@ -65,7 +69,7 @@ export default function WishlistPage(): JSX.Element {
               }
 
               if (technician) {
-                const user = technician.user as unknown as Record<string, unknown>;
+                const user = technician.user;
                 return (
                   <Card key={item.id as number} padding="md" className="relative">
                     <div className="mb-3 flex items-center gap-3">

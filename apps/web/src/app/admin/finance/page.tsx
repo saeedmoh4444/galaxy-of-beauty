@@ -2,16 +2,20 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, formatCurrency } from '@galaxy/shared';
 
+type FinancialData = RouterOutput['admin']['getFinancials'];
+type PayoutItem = NonNullable<RouterOutput['payouts']['listForAdmin']>['payouts'][number];
+
 export default function AdminFinancePage(): JSX.Element {
-  const financials = api.admin.getFinancials.useQuery({} as never);
+  const financials = api.admin.getFinancials.useQuery();
   const payouts = api.payouts.listForAdmin.useQuery({ page: 1, limit: 20 });
   const calculateMut = api.payouts.calculate.useMutation();
   const [periodStart, setPeriodStart] = useState('');
   const [periodEnd, setPeriodEnd] = useState('');
 
-  const fin = financials.data as Record<string, unknown>;
+  const fin = financials.data as FinancialData | undefined;
 
   return (
     <div className="space-y-6">
@@ -35,8 +39,8 @@ export default function AdminFinancePage(): JSX.Element {
 
       <Card><h2 className="mb-3 text-lg font-semibold">سجل المدفوعات</h2>
         {payouts.isLoading ? <CardSkeleton /> : payouts.isError ? <ErrorAlert message="فشل التحميل" onRetry={() => payouts.refetch()} />
-        : !payouts.data || (payouts.data as unknown as Record<string, unknown>[]).length === 0 ? <EmptyState title="لا توجد مدفوعات" />
-        : <div className="space-y-2">{(payouts.data as unknown as Record<string, unknown>[]).map((p: Record<string, unknown>) => <div key={p.id as number} className="flex items-center justify-between border-b border-gray-100 pb-2 dark:border-gray-800"><span>{formatCurrency(Number(p.amount))}</span><span className="text-sm text-gray-500">{p.status as string}</span></div>)}</div>}
+        : !payouts.data || payouts.data.payouts.length === 0 ? <EmptyState title="لا توجد مدفوعات" />
+        : <div className="space-y-2">{payouts.data.payouts.map((p: PayoutItem) => <div key={p.id} className="flex items-center justify-between border-b border-gray-100 pb-2 dark:border-gray-800"><span>{formatCurrency(Number(p.amount))}</span><span className="text-sm text-gray-500">{p.status}</span></div>)}</div>}
       </Card>
     </div>
   );

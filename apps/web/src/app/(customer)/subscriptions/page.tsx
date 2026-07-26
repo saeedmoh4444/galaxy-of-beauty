@@ -5,8 +5,8 @@ import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } fr
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function SubscriptionsPage(): JSX.Element {
-  const plansQ = api.subscriptions.getPlans.useQuery({} as never);
-  const mySubQ = api.subscriptions.getMySubscription.useQuery({} as never);
+  const plansQ = api.subscriptions.getPlans.useQuery();
+  const mySubQ = api.subscriptions.getMySubscription.useQuery();
   const purchaseMut = api.subscriptions.purchase.useMutation({ onSuccess: () => mySubQ.refetch() });
   const cancelMut = api.subscriptions.cancelAutoRenew.useMutation({ onSuccess: () => mySubQ.refetch() });
 

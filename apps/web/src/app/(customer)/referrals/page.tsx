@@ -10,8 +10,8 @@ export default function ReferralsPage(): JSX.Element {
   const [applyCode, setApplyCode] = useState('');
   const [applyMsg, setApplyMsg] = useState('');
 
-  const codeQ = api.referrals.getMyCode.useQuery({} as never);
-  const statsQ = api.referrals.getStats.useQuery({} as never);
+  const codeQ = api.referrals.getMyCode.useQuery();
+  const statsQ = api.referrals.getStats.useQuery();
   const applyMut = api.referrals.applyCode.useMutation({
     onSuccess: (res) => {
       setApplyMsg(`تم تطبيق الكود! مكافأة: ${formatCurrency(Number((res as unknown as Record<string, unknown>).referrerBonus))}`);

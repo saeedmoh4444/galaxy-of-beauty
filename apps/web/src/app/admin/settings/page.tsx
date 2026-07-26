@@ -2,7 +2,10 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input, Modal } from '@galaxy/shared';
+
+type SettingItem = RouterOutput['platform']['getSettings'][number];
 
 export default function AdminSettingsPage(): JSX.Element {
   const [editOpen, setEditOpen] = useState(false);
@@ -11,29 +14,30 @@ export default function AdminSettingsPage(): JSX.Element {
   const [editDescription, setEditDescription] = useState('');
   const [exportFormat, setExportFormat] = useState<'csv' | 'json'>('csv');
 
-  const { data, isLoading, isError, refetch } = api.platform.getSettings.useQuery({} as never);
-  const settings = (data as unknown as Record<string, unknown>[]) ?? [];
+  const { data, isLoading, isError, refetch } = api.platform.getSettings.useQuery();
+  const settings: SettingItem[] = data ?? [];
 
   const updateMut = api.platform.updateSetting.useMutation({ onSuccess: () => { refetch(); setEditOpen(false); setSelectedKey(null); } });
   const toggleMaintenanceMut = api.platform.toggleMaintenance.useMutation({ onSuccess: () => refetch() });
-  const termsQuery = api.platform.getTerms.useQuery({} as never);
-  const citiesQuery = api.platform.getCities.useQuery({} as never);
-  const exportBookingsQuery = api.platform.exportBookings.useQuery({ format: exportFormat } as never);
+  const termsQuery = api.platform.getTerms.useQuery();
+  const citiesQuery = api.platform.getCities.useQuery();
+  const exportBookingsQuery = api.platform.exportBookings.useQuery({ format: exportFormat });
 
   const termsData = termsQuery.data as Record<string, unknown>;
-  const citiesData = (citiesQuery.data as unknown as string[]) ?? [];
-  const maintenanceMode = settings.find((s) => s.key === 'maintenance_mode')?.value === 'true';
+  const citiesData = citiesQuery.data ?? [];
+  const maintenanceMode = settings.find((s) => (s as unknown as { key: string }).key === 'maintenance_mode')?.value === 'true';
 
-  const openEdit = (setting: Record<string, unknown>) => {
-    setSelectedKey(setting.key as string);
-    setEditValue(setting.value as string);
-    setEditDescription((setting.description as string) ?? '');
+  const openEdit = (setting: SettingItem) => {
+    const s = setting as unknown as { key: string; value: string; description?: string };
+    setSelectedKey(s.key);
+    setEditValue(s.value);
+    setEditDescription(s.description ?? '');
     setEditOpen(true);
   };
 
   const handleUpdate = () => {
     if (!selectedKey) return;
-    updateMut.mutate({ key: selectedKey, value: editValue } as never);
+    updateMut.mutate({ key: selectedKey, value: editValue });
   };
 
   const handleExport = () => {

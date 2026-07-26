@@ -3,7 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Input, Card, CardSkeleton, ErrorAlert, EmptyState, useDebounce } from '@galaxy/shared';
+
+type ServiceListOutput = NonNullable<RouterOutput['services']['list']>;
+type ServiceItem = ServiceListOutput['items'][number];
 
 export default function ServicesPage(): JSX.Element {
   const [search, setSearch] = useState('');
@@ -13,9 +17,9 @@ export default function ServicesPage(): JSX.Element {
   const [compareMode, setCompareMode] = useState(false);
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const svcQuery = api.services.list.useQuery({ search: debouncedSearch || undefined, sort: sort as 'newest', page, limit: 12 });
-  const cats = api.categories.list.useQuery({} as never);
-  const data = svcQuery.data as unknown as { items: Record<string, unknown>[]; total: number; page: number; limit: number } | undefined;
-  const items = data?.items ?? [];
+  const cats = api.categories.list.useQuery();
+  const data = svcQuery.data;
+  const items: ServiceItem[] = data?.items ?? [];
   const total = data?.total ?? 0;
 
   const toggleSelect = (id: number) => {

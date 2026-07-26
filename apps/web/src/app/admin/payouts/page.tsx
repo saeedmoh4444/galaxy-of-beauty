@@ -1,17 +1,18 @@
 'use client';
 
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/shared';
 
+type PayoutItem = NonNullable<RouterOutput['payouts']['listForAdmin']>['payouts'][number];
+
 export default function PayoutsPage(): JSX.Element {
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = (api.payouts as any).list.useQuery({});
-  const items = (data as Record<string, unknown>)?.items as Array<Record<string, unknown>> || [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const processMut = (api.payouts as any).processPayout.useMutation({
+  const { data, isLoading, isError, refetch } = api.payouts.listForAdmin.useQuery({});
+  const items: PayoutItem[] = data?.payouts ?? [];
+  const processMut = api.payouts.process.useMutation({
     onSuccess: () => { refetch(); addToast('success', 'تمت معالجة الدفع'); },
     onError: () => addToast('error', 'فشلت المعالجة'),
   });
@@ -35,13 +36,13 @@ export default function PayoutsPage(): JSX.Element {
                 <tr><th className="p-3 text-right">الفنية</th><th className="p-3 text-right">المبلغ</th><th className="p-3 text-right">الحالة</th><th className="p-3 text-right">التاريخ</th><th className="p-3 text-right">إجراء</th></tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-                {items.map((p) => (
-                  <tr key={p.id as number}>
-                    <td className="p-3 font-medium">{(p.user as Record<string, string>)?.name || '-'}</td>
-                    <td className="p-3 font-bold">{formatCurrency(Number(p.amount || 0))}</td>
-                    <td className="p-3">{statusBadge(p.status as string)}</td>
-                    <td className="p-3 text-gray-400">{new Date(p.createdAt as string).toLocaleDateString('ar-SA')}</td>
-                    <td className="p-3">{p.status === 'PENDING' ? <Button size="sm" onClick={() => processMut.mutate({ id: p.id })}>معالجة</Button> : null}</td>
+                {items.map((p: PayoutItem) => (
+                  <tr key={p.id}>
+                    <td className="p-3 font-medium">{p.technician?.name ?? '-'}</td>
+                    <td className="p-3 font-bold">{formatCurrency(Number(p.amount ?? 0))}</td>
+                    <td className="p-3">{statusBadge(p.status)}</td>
+                    <td className="p-3 text-gray-400">{new Date(p.createdAt).toLocaleDateString('ar-SA')}</td>
+                    <td className="p-3">{p.status === 'PENDING' ? <Button size="sm" onClick={() => processMut.mutate({ payoutId: p.id })}>معالجة</Button> : null}</td>
                   </tr>
                 ))}
               </tbody>

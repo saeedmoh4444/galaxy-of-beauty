@@ -1,7 +1,13 @@
 'use client';
 
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, formatCurrency } from '@galaxy/shared';
+
+type RevenueDay = NonNullable<RouterOutput['analytics']['revenueChart']>['dailyRevenue'][number];
+type BookingStats = RouterOutput['analytics']['bookingStats'];
+type TopTechnician = RouterOutput['analytics']['topTechnicians'][number];
+type UserGrowthDay = NonNullable<RouterOutput['analytics']['userGrowth']>['dailyGrowth'][number];
 
 function StatCard({ title, value, color }: { title: string; value: string; color: string }): JSX.Element {
   return (
@@ -13,17 +19,24 @@ function StatCard({ title, value, color }: { title: string; value: string; color
 }
 
 export default function AdminAnalyticsPage(): JSX.Element {
-  const revenueQuery = api.analytics.revenueChart.useQuery({ days: 30 } as never);
-  const bookingStatsQuery = api.analytics.bookingStats.useQuery({} as never);
-  const topTechQuery = api.analytics.topTechnicians.useQuery({ limit: 10 } as never);
-  const userGrowthQuery = api.analytics.userGrowth.useQuery({ days: 30 } as never);
+  const revenueQuery = api.analytics.revenueChart.useQuery({ days: 30 });
+  const bookingStatsQuery = api.analytics.bookingStats.useQuery();
+  const topTechQuery = api.analytics.topTechnicians.useQuery({ limit: 10 });
+  const userGrowthQuery = api.analytics.userGrowth.useQuery({ days: 30 });
 
-  const revenueData = (revenueQuery.data as unknown as Record<string, unknown>[]) ?? [];
-  const bookingStats = bookingStatsQuery.data as Record<string, unknown>;
-  const topTechs = (topTechQuery.data as unknown as Record<string, unknown>[]) ?? [];
-  const userGrowth = (userGrowthQuery.data as unknown as Record<string, unknown>[]) ?? [];
+  const revenueData = revenueQuery.data?.dailyRevenue ?? [];
+  const bookingStats = bookingStatsQuery.data as BookingStats | undefined;
+  const topTechs = topTechQuery.data ?? [];
+  const userGrowth = userGrowthQuery.data?.dailyGrowth ?? [];
 
-  const maxRevenue = Math.max(...revenueData.map((r) => Number(r.amount ?? 0)), 1);
+  const maxRevenue = Math.max(...revenueData.map((r) => Number(r.revenue ?? 0)), 1);
+
+  const byStatusMap: Record<string, number> = {};
+  if (bookingStats) {
+    for (const entry of bookingStats.byStatus) {
+      byStatusMap[entry.status] = entry.count;
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -39,9 +52,9 @@ export default function AdminAnalyticsPage(): JSX.Element {
         ) : (
           <div className="grid gap-4 md:grid-cols-4">
             <StatCard title="إجمالي الحجوزات" value={String(bookingStats?.total ?? 0)} color="text-brand-600" />
-            <StatCard title="مكتملة" value={String((bookingStats?.byStatus as Record<string, number>)?.COMPLETED ?? 0)} color="text-green-600" />
-            <StatCard title="قيد الانتظار" value={String((bookingStats?.byStatus as Record<string, number>)?.REQUESTED ?? 0)} color="text-amber-600" />
-            <StatCard title="ملغية" value={String((bookingStats?.byStatus as Record<string, number>)?.CANCELLED ?? 0)} color="text-red-600" />
+            <StatCard title="مكتملة" value={String(byStatusMap['COMPLETED'] ?? 0)} color="text-green-600" />
+            <StatCard title="قيد الانتظار" value={String(byStatusMap['REQUESTED'] ?? 0)} color="text-amber-600" />
+            <StatCard title="ملغية" value={String(byStatusMap['CANCELLED'] ?? 0)} color="text-red-600" />
           </div>
         )}
       </div>
@@ -57,8 +70,8 @@ export default function AdminAnalyticsPage(): JSX.Element {
           <EmptyState title="لا توجد بيانات إيرادات" />
         ) : (
           <div className="flex items-end gap-1" style={{ height: 200 }}>
-            {revenueData.map((r: Record<string, unknown>, i: number) => {
-              const amount = Number(r.amount ?? 0);
+            {revenueData.map((r: RevenueDay, i: number) => {
+              const amount = Number(r.revenue ?? 0);
               const pct = (amount / maxRevenue) * 100;
               return (
                 <div
@@ -69,10 +82,10 @@ export default function AdminAnalyticsPage(): JSX.Element {
                   <div
                     className="w-full rounded-t bg-brand-500 transition-all hover:bg-brand-600"
                     style={{ height: `${Math.max(pct, 2)}%`, minHeight: 4 }}
-                    title={`${r.date as string ?? ''}: ${formatCurrency(amount)}`}
+                    title={`${r.date ?? ''}: ${formatCurrency(amount)}`}
                   />
                   <span className="mt-1 text-[10px] text-gray-400">
-                    {r.label as string ?? (r.date as string)?.slice(5, 10) ?? ''}
+                    {r.date?.slice(5, 10) ?? ''}
                   </span>
                 </div>
               );
@@ -101,9 +114,9 @@ export default function AdminAnalyticsPage(): JSX.Element {
                 </tr>
               </thead>
               <tbody>
-                {topTechs.map((t: Record<string, unknown>, i: number) => (
-                  <tr key={t.id as number ?? i} className="border-b border-gray-100 dark:border-gray-800">
-                    <td className="py-2 font-medium">{t.name as string}</td>
+                {topTechs.map((t: TopTechnician, i: number) => (
+                  <tr key={t.id ?? i} className="border-b border-gray-100 dark:border-gray-800">
+                    <td className="py-2 font-medium">{t.name}</td>
                     <td className="py-2">{String(t.completedBookings ?? 0)}</td>
                     <td className="py-2">⭐ {Number(t.ratingAvg ?? 0).toFixed(1)}</td>
                   </tr>
@@ -125,10 +138,10 @@ export default function AdminAnalyticsPage(): JSX.Element {
           <EmptyState title="لا توجد بيانات نمو" />
         ) : (
           <div className="space-y-1">
-            {userGrowth.map((u: Record<string, unknown>, i: number) => (
+            {userGrowth.map((u: UserGrowthDay, i: number) => (
               <div key={i} className="flex items-center justify-between border-b border-gray-100 pb-1 text-sm dark:border-gray-800">
-                <span>{u.date as string ?? '—'}</span>
-                <span className="font-medium text-brand-600">+{String(u.count ?? 0)}</span>
+                <span>{u.date ?? '—'}</span>
+                <span className="font-medium text-brand-600">+{String(u.total ?? 0)}</span>
               </div>
             ))}
           </div>

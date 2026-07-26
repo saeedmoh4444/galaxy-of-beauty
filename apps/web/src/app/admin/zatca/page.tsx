@@ -21,7 +21,7 @@ export default function AdminZatcaPage(): JSX.Element {
   const [generateOpen, setGenerateOpen] = useState(false);
   const [bookingId, setBookingId] = useState('');
 
-  const { data, isLoading, isError, refetch } = api.zatca.listInvoices.useQuery({ page: 1, limit: 20 } as never);
+  const { data, isLoading, isError, refetch } = api.zatca.listInvoices.useQuery({ page: 1, limit: 20 });
   const generateMut = api.zatca.generateInvoice.useMutation({
     onSuccess: () => { refetch(); setGenerateOpen(false); setBookingId(''); },
   });
@@ -33,11 +33,11 @@ export default function AdminZatcaPage(): JSX.Element {
 
   const handleGenerate = () => {
     if (!bookingId) return;
-    generateMut.mutate({ bookingId: Number(bookingId) } as never);
+    generateMut.mutate({ bookingId: Number(bookingId) });
   };
 
   const handleReport = (invoice: Record<string, unknown>) => {
-    reportMut.mutate({ invoiceId: invoice.id as number } as never);
+    reportMut.mutate({ invoiceId: invoice.id as number });
   };
 
   return (

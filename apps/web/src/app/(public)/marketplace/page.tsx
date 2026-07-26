@@ -12,10 +12,10 @@ export default function MarketplacePage(): JSX.Element {
     page: 1,
     limit: 20,
   });
-  const { data: categories } = api.marketplace.productCategories.useQuery({} as never);
+  const { data: categories } = api.marketplace.productCategories.useQuery();
 
-  const items = (data as unknown as Record<string, unknown>)?.items as Array<Record<string, unknown>> || [];
-  const total = (data as unknown as Record<string, unknown>)?.total as number || 0;
+  const items = data?.items ?? [];
+  const total = data?.total ?? 0;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-8">

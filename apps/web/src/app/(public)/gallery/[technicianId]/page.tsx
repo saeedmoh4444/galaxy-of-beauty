@@ -8,14 +8,13 @@ export default function GalleryPage(): JSX.Element {
   const { technicianId } = useParams<{ technicianId: string }>();
   const tid = Number(technicianId);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = (api.gallery as any).byTechnician.useQuery(
+  const { data, isLoading, isError, refetch } = api.gallery.byTechnician.useQuery(
     { technicianId: tid, page: 1, limit: 50 },
     { enabled: !isNaN(tid) },
   );
 
-  const items = ((data as Record<string, unknown>)?.items as Array<Record<string, unknown>>) || [];
-  const total = ((data as Record<string, unknown>)?.total as number) || 0;
+  const items = data?.items ?? [];
+  const total = data?.total ?? 0;
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 px-4 py-8">

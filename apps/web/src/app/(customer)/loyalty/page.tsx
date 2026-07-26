@@ -1,21 +1,23 @@
 'use client';
 
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useState } from 'react';
 
-export default function LoyaltyPage(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = (api.loyalty as any).myAccount.useQuery();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: txData } = (api.loyalty as any).myTransactions.useQuery({ page: 1, limit: 10 });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: rewardsData } = (api.loyalty as any).rewards.useQuery();
-  const redeemMut = (api.loyalty as any).redeem.useMutation({ onSuccess: () => refetch() });
+type LoyaltyAccount = RouterOutput['loyalty']['myAccount'];
+type LoyaltyTransaction = NonNullable<RouterOutput['loyalty']['myTransactions']>['items'][number];
+type LoyaltyReward = RouterOutput['loyalty']['rewards'][number];
 
-  const account = data as Record<string, unknown> | null;
-  const transactions = (txData as Record<string, unknown>)?.items as Array<Record<string, unknown>> || [];
+export default function LoyaltyPage(): JSX.Element {
+  const { data, isLoading, isError, refetch } = api.loyalty.myAccount.useQuery();
+  const { data: txData } = api.loyalty.myTransactions.useQuery({ page: 1, limit: 10 });
+  const { data: rewardsData } = api.loyalty.rewards.useQuery();
+  const redeemMut = api.loyalty.redeem.useMutation({ onSuccess: () => refetch() });
+
+  const account = data as LoyaltyAccount | null;
+  const transactions: LoyaltyTransaction[] = txData?.items ?? [];
   const rewardList = (rewardsData as Array<Record<string, unknown>>) || [];
 
   const tierColors: Record<string, string> = {

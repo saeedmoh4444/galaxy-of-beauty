@@ -2,26 +2,26 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/shared';
 
+type SavedCardItem = RouterOutput['savedCards']['list'][number];
+
 export default function SavedCardsPage(): JSX.Element {
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = (api.savedCards as any).list.useQuery();
-  const cards = (data as Array<Record<string, unknown>>) || [];
+  const { data, isLoading, isError, refetch } = api.savedCards.list.useQuery();
+  const cards: SavedCardItem[] = data ?? [];
 
   const [showAdd, setShowAdd] = useState(false);
   const [form, setForm] = useState({ lastFour: '', brand: 'visa', expMonth: '1', expYear: '2026', cardholderName: '' });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const addMut = (api.savedCards as any).add.useMutation({
+  const addMut = api.savedCards.add.useMutation({
     onSuccess: () => { setShowAdd(false); refetch(); addToast('success', 'تمت إضافة البطاقة'); },
     onError: () => addToast('error', 'فشلت إضافة البطاقة'),
   });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const deleteMut = (api.savedCards as any).delete.useMutation({
+  const deleteMut = api.savedCards.delete.useMutation({
     onSuccess: () => { refetch(); addToast('success', 'تم حذف البطاقة'); },
   });
 

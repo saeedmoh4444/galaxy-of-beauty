@@ -5,7 +5,7 @@ import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } fr
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function TechDashboardPage(): JSX.Element {
-  const pending = api.bookings.getTechnicianPending.useQuery({} as never);
+  const pending = api.bookings.getTechnicianPending.useQuery();
   const earnings = api.analytics.technicianEarnings.useQuery({ days: 7 });
   const transition = api.bookings.transition.useMutation({
     onSuccess: () => { pending.refetch(); },

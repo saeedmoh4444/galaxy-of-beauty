@@ -24,7 +24,7 @@ export default function WaitlistPage(): JSX.Element {
   const [selectedTechId, setSelectedTechId] = useState('');
   const [serviceName, setServiceName] = useState('');
 
-  const { data, isLoading, isError, refetch } = api.waitlist.listMyEntries.useQuery({} as never);
+  const { data, isLoading, isError, refetch } = api.waitlist.listMyEntries.useQuery();
   const techsQuery = api.technicians.list.useQuery({ limit: 100 });
   const joinMut = api.waitlist.join.useMutation({
     onSuccess: () => {

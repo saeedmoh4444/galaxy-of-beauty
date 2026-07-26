@@ -9,10 +9,9 @@ export default function ServiceDetailPage(): JSX.Element {
   const params = useParams();
   const id = Number(params.id);
   const query = api.services.getById.useQuery({ id });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const relatedQuery = (api.services as any).getRelated.useQuery({ serviceId: id, limit: 4 }, { enabled: !isNaN(id) });
-  const data = query.data as unknown as Record<string, unknown> | undefined;
-  const related = (relatedQuery.data as Array<Record<string, unknown>>) || [];
+  const relatedQuery = api.services.getRelated.useQuery({ serviceId: id, limit: 4 }, { enabled: !isNaN(id) });
+  const data = query.data;
+  const related = relatedQuery.data ?? [];
 
   if (query.isLoading) return <div className="mx-auto max-w-4xl px-4 py-8"><CardSkeleton /></div>;
   if (query.isError || !data) return <div className="mx-auto max-w-4xl px-4 py-8"><ErrorAlert message="فشل تحميل الخدمة" onRetry={() => query.refetch()} /></div>;

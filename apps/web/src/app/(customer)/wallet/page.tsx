@@ -2,18 +2,23 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal, Input, formatCurrency } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
+type WalletBalance = RouterOutput['wallet']['getBalance'];
+type TransactionItem = NonNullable<RouterOutput['wallet']['getTransactions']>['transactions'][number];
+
 export default function WalletPage(): JSX.Element {
-  const { data: balance, isLoading, isError, refetch } = api.wallet.getBalance.useQuery({} as never);
+  const { data: balance, isLoading, isError, refetch } = api.wallet.getBalance.useQuery();
   const txs = api.wallet.getTransactions.useQuery({ page: 1, limit: 20 });
   const withdrawMut = api.wallet.withdraw.useMutation({ onSuccess: () => { setShowWithdraw(false); setAmount(''); refetch(); txs.refetch(); } });
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [amount, setAmount] = useState('');
   const [msg, setMsg] = useState('');
 
-  const bal = balance as unknown as Record<string, unknown>;
+  const bal = balance as WalletBalance | undefined;
+  const transactions: TransactionItem[] = txs.data?.transactions ?? [];
 
   return (
     <DashboardLayout role="CUSTOMER">
@@ -36,10 +41,10 @@ export default function WalletPage(): JSX.Element {
         <h2 className="text-lg font-semibold">المعاملات</h2>
         {txs.isLoading ? <CardSkeleton />
         : txs.isError ? <ErrorAlert message="فشل تحميل المعاملات" onRetry={() => txs.refetch()} />
-        : !txs.data?.transactions || (txs.data.transactions as unknown[]).length === 0 ? <EmptyState title="لا توجد معاملات" />
-        : <div className="space-y-2">{(txs.data.transactions as unknown as Record<string, unknown>[]).map((t: Record<string, unknown>) => (
-            <Card key={t.id as number} padding="sm">
-              <div className="flex items-center justify-between"><div><p className="text-sm font-medium">{t.description as string}</p><p className="text-xs text-gray-500">{new Date(t.createdAt as string).toLocaleDateString('ar-SA')}</p></div><p className={`text-sm font-semibold ${t.type === 'CREDIT' ? 'text-green-600' : 'text-red-600'}`}>{t.type === 'CREDIT' ? '+' : '-'}{formatCurrency(Number(t.amount))}</p></div>
+        : transactions.length === 0 ? <EmptyState title="لا توجد معاملات" />
+        : <div className="space-y-2">{transactions.map((t) => (
+            <Card key={t.id} padding="sm">
+              <div className="flex items-center justify-between"><div><p className="text-sm font-medium">{t.description ?? ''}</p><p className="text-xs text-gray-500">{new Date(String(t.createdAt)).toLocaleDateString('ar-SA')}</p></div><p className={`text-sm font-semibold ${t.type === 'CREDIT' ? 'text-green-600' : 'text-red-600'}`}>{t.type === 'CREDIT' ? '+' : '-'}{formatCurrency(Number(t.amount))}</p></div>
             </Card>
           ))}</div>
         }
