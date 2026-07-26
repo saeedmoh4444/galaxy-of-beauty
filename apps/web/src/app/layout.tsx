@@ -10,13 +10,38 @@ import './globals.css';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Galaxy of Beauty | جالكسي بيوتي',
-  description: 'Secure marketplace for beauty & grooming services in Saudi Arabia',
+  title: {
+    default: 'Galaxy of Beauty | جالكسي بيوتي',
+    template: '%s | Galaxy of Beauty',
+  },
+  description:
+    'Secure marketplace for beauty & grooming services in Saudi Arabia — book vetted female technicians for hair, nails, skincare, makeup, massage & henna.',
+  metadataBase: new URL(process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'),
   icons: { icon: '/logo.png', apple: '/logo.png' },
   openGraph: {
     title: 'Galaxy of Beauty | جالكسي بيوتي',
-    description: 'Secure marketplace for beauty & grooming services in Saudi Arabia',
+    description:
+      'Secure marketplace for beauty & grooming services in Saudi Arabia — book vetted female technicians.',
+    siteName: 'Galaxy of Beauty',
+    locale: 'ar_SA',
+    type: 'website',
     images: ['/logo.png'],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Galaxy of Beauty | جالكسي بيوتي',
+    description: 'Beauty & grooming marketplace — Saudi Arabia',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 
