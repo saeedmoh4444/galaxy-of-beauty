@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "tsc --noEmit",
     "type-check": "tsc --noEmit",
-    "clean": "rm -rf .next .turbo"
+    "clean": "rm -rf .next .turbo",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@galaxy/api": "workspace:*",
