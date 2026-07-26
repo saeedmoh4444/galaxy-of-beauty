@@ -29,12 +29,12 @@ export default function FeatureFlagsPage(): JSX.Element {
                 <tr><th className="p-3 text-right">الميزة</th><th className="p-3 text-right">الحالة</th><th className="p-3 text-right">النسبة</th><th className="p-3 text-right">إجراء</th></tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-                {flags.map((f) => (
-                  <tr key={f.key as string}>
-                    <td className="p-3 font-medium">{f.name as string}<br /><span className="text-xs text-gray-400">{f.key as string}</span></td>
+                {flags.map((f: FlagItem) => (
+                  <tr key={f.key}>
+                    <td className="p-3 font-medium">{f.name}<br /><span className="text-xs text-gray-400">{f.key}</span></td>
                     <td className="p-3"><span className={`rounded px-2 py-0.5 text-xs ${f.enabled ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{f.enabled ? 'مفعل' : 'معطل'}</span></td>
-                    <td className="p-3 text-gray-500">{f.rolloutPercent as number}%</td>
-                    <td className="p-3"><Button size="sm" variant="outline" onClick={() => toggleMut.mutate({ key: f.key, enabled: !f.enabled })}>{f.enabled ? 'تعطيل' : 'تفعيل'}</Button></td>
+                    <td className="p-3 text-gray-500">{f.rolloutPercent}%</td>
+                    <td className="p-3"><Button size="sm" variant="outline" onClick={() => toggleMut.mutate({ key: f.key })}>{f.enabled ? 'تعطيل' : 'تفعيل'}</Button></td>
                   </tr>
                 ))}
               </tbody>

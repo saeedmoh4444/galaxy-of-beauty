@@ -2,9 +2,12 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutput } from '@galaxy/api/client';
 import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input, Modal, formatCurrency } from '@galaxy/shared';
 
 const STATUS_TABS = ['PENDING', 'REPORTED', 'CLEARED', 'REJECTED'] as const;
+
+type InvoiceItem = NonNullable<RouterOutput['zatca']['listInvoices']>['items'][number];
 
 const statusBadge = (status: string): { label: string; className: string } => {
   switch (status) {
@@ -27,17 +30,17 @@ export default function AdminZatcaPage(): JSX.Element {
   });
   const reportMut = api.zatca.reportInvoice.useMutation({ onSuccess: () => refetch() });
 
-  const invoices = (data as unknown as Record<string, unknown>[]) ?? [];
+  const invoices = data?.items ?? [];
 
-  const filtered = invoices.filter((inv) => (inv.status as string) === statusTab);
+  const filtered = invoices.filter((inv) => inv.status === statusTab);
 
   const handleGenerate = () => {
     if (!bookingId) return;
     generateMut.mutate({ bookingId: Number(bookingId) });
   };
 
-  const handleReport = (invoice: Record<string, unknown>) => {
-    reportMut.mutate({ invoiceId: invoice.id as number });
+  const handleReport = (invoice: InvoiceItem) => {
+    reportMut.mutate({ invoiceId: invoice.id });
   };
 
   return (
@@ -68,10 +71,10 @@ export default function AdminZatcaPage(): JSX.Element {
         <EmptyState title={`لا توجد فواتير في حالة "${statusTab === 'PENDING' ? 'قيد الانتظار' : statusTab === 'REPORTED' ? 'مبلغ' : statusTab === 'CLEARED' ? 'مقبول' : 'مرفوض'}"`} />
       ) : (
         <div className="space-y-2">
-          {filtered.map((inv: Record<string, unknown>) => {
-            const badge = statusBadge(inv.status as string);
+          {filtered.map((inv: InvoiceItem) => {
+            const badge = statusBadge(inv.status);
             return (
-              <Card key={inv.id as number} padding="md">
+              <Card key={inv.id} padding="md">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3">
@@ -79,12 +82,12 @@ export default function AdminZatcaPage(): JSX.Element {
                       <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${badge.className}`}>{badge.label}</span>
                     </div>
                     <div className="mt-1 flex flex-wrap gap-3 text-sm text-gray-500">
-                      <span>الحجز: {inv.bookingCode as string ?? '—'}</span>
-                      <span>{formatCurrency(Number(inv.amount ?? 0))}</span>
-                      <span>{inv.createdAt ? new Date(inv.createdAt as string).toLocaleDateString('ar-SA') : '—'}</span>
+                      <span>الحجز: {inv.booking?.bookingCode ?? '—'}</span>
+                      <span>{formatCurrency(Number(inv.booking?.totalAmount ?? 0))}</span>
+                      <span>{inv.createdAt ? new Date(inv.createdAt).toLocaleDateString('ar-SA') : '—'}</span>
                     </div>
                   </div>
-                  {(inv.status as string) === 'PENDING' && (
+                  {inv.status === 'PENDING' && (
                     <Button
                       size="sm"
                       variant="primary"

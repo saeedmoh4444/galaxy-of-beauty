@@ -5,7 +5,9 @@ import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
 import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input, Modal } from '@galaxy/shared';
 
-type SettingItem = RouterOutput['platform']['getSettings'][number];
+type SettingsMap = RouterOutput['platform']['getSettings'];
+type TermsData = RouterOutput['platform']['getTerms'];
+type CityItem = RouterOutput['platform']['getCities'][number];
 
 export default function AdminSettingsPage(): JSX.Element {
   const [editOpen, setEditOpen] = useState(false);
@@ -15,7 +17,8 @@ export default function AdminSettingsPage(): JSX.Element {
   const [exportFormat, setExportFormat] = useState<'csv' | 'json'>('csv');
 
   const { data, isLoading, isError, refetch } = api.platform.getSettings.useQuery();
-  const settings: SettingItem[] = data ?? [];
+  const settingsMap = data as SettingsMap | undefined;
+  const settingsEntries = Object.entries(settingsMap ?? {});
 
   const updateMut = api.platform.updateSetting.useMutation({ onSuccess: () => { refetch(); setEditOpen(false); setSelectedKey(null); } });
   const toggleMaintenanceMut = api.platform.toggleMaintenance.useMutation({ onSuccess: () => refetch() });
@@ -23,15 +26,14 @@ export default function AdminSettingsPage(): JSX.Element {
   const citiesQuery = api.platform.getCities.useQuery();
   const exportBookingsQuery = api.platform.exportBookings.useQuery({ format: exportFormat });
 
-  const termsData = termsQuery.data as Record<string, unknown>;
+  const termsData = termsQuery.data as TermsData | undefined;
   const citiesData = citiesQuery.data ?? [];
-  const maintenanceMode = settings.find((s) => (s as unknown as { key: string }).key === 'maintenance_mode')?.value === 'true';
+  const maintenanceMode = (settingsMap ?? {})['maintenance_mode'] === 'true';
 
-  const openEdit = (setting: SettingItem) => {
-    const s = setting as unknown as { key: string; value: string; description?: string };
-    setSelectedKey(s.key);
-    setEditValue(s.value);
-    setEditDescription(s.description ?? '');
+  const openEdit = (key: string, value: string) => {
+    setSelectedKey(key);
+    setEditValue(value);
+    setEditDescription('');
     setEditOpen(true);
   };
 
@@ -57,21 +59,20 @@ export default function AdminSettingsPage(): JSX.Element {
           <CardSkeleton />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل الإعدادات" onRetry={() => refetch()} />
-        ) : settings.length === 0 ? (
+        ) : settingsEntries.length === 0 ? (
           <EmptyState title="لا توجد إعدادات" />
         ) : (
           <div className="space-y-2">
-            {settings.map((s: Record<string, unknown>) => (
+            {settingsEntries.map(([key, value]) => (
               <div
-                key={s.key as string}
+                key={key}
                 className="flex items-center justify-between border-b border-gray-100 pb-2 dark:border-gray-800"
               >
                 <div className="flex-1">
-                  <p className="text-sm font-medium">{s.key as string}</p>
-                  <p className="text-xs text-gray-500">{s.description as string ?? '—'}</p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">{String(s.value ?? '')}</p>
+                  <p className="text-sm font-medium">{key}</p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">{String(value ?? '')}</p>
                 </div>
-                <Button size="sm" variant="outline" onClick={() => openEdit(s)}>تعديل</Button>
+                <Button size="sm" variant="outline" onClick={() => openEdit(key, value)}>تعديل</Button>
               </div>
             ))}
           </div>
@@ -105,9 +106,11 @@ export default function AdminSettingsPage(): JSX.Element {
         ) : (
           <div className="space-y-1 text-sm">
             <p><strong>الإصدار الحالي:</strong> {String(termsData?.version ?? '—')}</p>
-            <p><strong>آخر تحديث:</strong> {termsData?.updatedAt ? new Date(termsData.updatedAt as string).toLocaleDateString('ar-SA') : '—'}</p>
+            <p><strong>آخر تحديث:</strong> {termsData?.updatedAt ? new Date(termsData.updatedAt).toLocaleDateString('ar-SA') : '—'}</p>
             <p className="mt-2 max-h-32 overflow-y-auto whitespace-pre-wrap rounded bg-gray-50 p-2 text-xs dark:bg-gray-900">
-              {String(termsData?.content ?? 'لا يوجد محتوى')}
+              {typeof termsData?.content === 'object' && termsData.content !== null
+                ? String((termsData.content as { ar?: string }).ar ?? JSON.stringify(termsData.content))
+                : String(termsData?.content ?? 'لا يوجد محتوى')}
             </p>
           </div>
         )}
@@ -124,8 +127,8 @@ export default function AdminSettingsPage(): JSX.Element {
           <EmptyState title="لا توجد مدن" />
         ) : (
           <div className="flex flex-wrap gap-2">
-            {citiesData.map((city: string, i: number) => (
-              <span key={i} className="rounded-full bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">{city}</span>
+            {citiesData.map((city: CityItem, i: number) => (
+              <span key={i} className="rounded-full bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">{city.nameAr}</span>
             ))}
           </div>
         )}
