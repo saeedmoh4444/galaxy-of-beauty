@@ -1,11 +1,17 @@
 /**
- * k6 Load Testing Script — Galaxy of Beauty API
+ * k6 Load Testing Script — Galaxy of Beauty (tRPC API)
  *
  * Tests critical API endpoints under load to identify bottlenecks.
  *
  * Usage:
+ *   # Default (local dev)
  *   k6 run k6-load-tests.js
- *   k6 run --vus 50 --duration 60s k6-load-tests.js
+ *
+ *   # Custom target and load
+ *   k6 run -e API_URL=http://localhost:3000/api/trpc -e VUS=50 -e DURATION=60s k6-load-tests.js
+ *
+ *   # Staging / Production
+ *   k6 run -e API_URL=https://galaxyofbeauty.sa/api/trpc k6-load-tests.js
  *
  * Scenarios:
  *   1. Browse catalog (anonymous users) — 60% of traffic
@@ -23,8 +29,8 @@ const errorRate = new Rate('errors');
 const searchTrend = new Trend('search_duration');
 const loginTrend = new Trend('login_duration');
 
-// Configuration
-const BASE_URL = __ENV.API_URL || 'http://localhost:4000/api';
+// Configuration — all overridable via -e flags
+const BASE_URL = __ENV.API_URL || 'http://localhost:3000/api/trpc';
 const VUS = __ENV.VUS || 10;
 const DURATION = __ENV.DURATION || '30s';
 
