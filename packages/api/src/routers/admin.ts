@@ -122,6 +122,7 @@ export const adminRouter = router({
           city: t.city,
           area: t.area,
           kycStatus: t.kycStatus,
+          kycDocuments: t.kycDocuments,
           kycNotes: t.kycNotes,
           isEcoFriendly: t.isEcoFriendly,
           completedBookings: t.completedBookings,
