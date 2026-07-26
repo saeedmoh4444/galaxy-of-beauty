@@ -40,7 +40,7 @@ export default function GalleryPage(): JSX.Element {
                     {img.imageUrl ? (
                       <img
                         src={img.imageUrl as string}
-                        alt={(img.captionAr as string) || 'Gallery image'}
+                        alt={((img.captionJson as { ar?: string })?.ar) || 'Gallery image'}
                         className="h-full w-full object-cover"
                         loading="lazy"
                       />
@@ -48,9 +48,9 @@ export default function GalleryPage(): JSX.Element {
                       <span>🖼️</span>
                     )}
                   </div>
-                  {img.captionAr ? (
+                  {((img.captionJson as { ar?: string })?.ar) ? (
                     <div className="p-3">
-                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{String(img.captionAr)}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{String((img.captionJson as { ar?: string }).ar)}</p>
                       {img.isBefore ? (
                         <span className="mt-1 inline-block rounded bg-brand-50 px-2 py-0.5 text-xs text-brand-700 dark:bg-brand-950 dark:text-brand-300">
                           قبل

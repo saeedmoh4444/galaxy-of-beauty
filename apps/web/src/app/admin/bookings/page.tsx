@@ -11,7 +11,11 @@ type BookingItem = NonNullable<RouterOutput['admin']['getAllBookings']>['items']
 
 export default function AdminBookingsPage(): JSX.Element {
   const [status, setStatus] = useState<string | undefined>(undefined);
-  const { data, isLoading, isError, refetch } = api.admin.getAllBookings.useQuery({ status: status || undefined, page: 1, limit: 20 });
+  const { data, isLoading, isError, refetch } = api.admin.getAllBookings.useQuery({
+    status: (status as BookingItem['status']) || undefined,
+    page: 1,
+    limit: 20,
+  });
   const cancelMut = api.bookings.transition.useMutation({ onSuccess: () => refetch() });
 
   const bookings = data?.items ?? [];

@@ -20,7 +20,9 @@ export default function TwoFactorPage(): JSX.Element {
   const [verifyCode, setVerifyCode] = useState('');
   const [verifyError, setVerifyError] = useState('');
 
-  const twoFactorEnabled = data?.twoFactorEnabled ?? false;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const me = data as { twoFactorEnabled?: boolean } | undefined;
+  const twoFactorEnabled = me?.twoFactorEnabled ?? false;
 
   // Setup result data (secret, otpauthUrl)
   const setupData = setupMut.data;

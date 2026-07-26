@@ -16,5 +16,6 @@ export interface FeatureComponentSet<T> {
   Skeleton: React.ComponentType;
   Error: React.ComponentType<{ message: string; onRetry: () => void }>;
   Empty: React.ComponentType;
-  DataView: React.ComponentType<{ data: T[] }>;
+  /** Renders the actual data. Named FeatureDataView to avoid conflict with native DataView API. */
+  FeatureDataView: React.ComponentType<{ data: T[] }>;
 }

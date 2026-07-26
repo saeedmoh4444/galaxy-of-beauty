@@ -26,7 +26,7 @@ export default function DisputesPage(): JSX.Element {
   const [bookingId, setBookingId] = useState('');
   const [reason, setReason] = useState('');
 
-  const { data, isLoading, isError, refetch } = api.disputes.list.useQuery();
+  const { data, isLoading, isError, refetch } = api.disputes.list.useQuery({});
   const createMut = api.disputes.create.useMutation({
     onSuccess: () => {
       setShowCreate(false);

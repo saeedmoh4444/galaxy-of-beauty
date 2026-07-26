@@ -10,13 +10,15 @@ export default function PromoPage(): JSX.Element {
   const [amount, setAmount] = useState('');
   const [result, setResult] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState('');
+  const utils = api.useUtils();
 
   const handleValidate = async () => {
     setError('');
     setResult(null);
     if (!code || !amount) { setError('الرجاء إدخال الكود والمبلغ'); return; }
     try {
-      const r = await api.promo.validate.fetch({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const r = await (utils as any).promo.validate.fetch({
         code: code.toUpperCase(),
         orderAmount: Number(amount),
       });

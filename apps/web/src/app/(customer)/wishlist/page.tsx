@@ -51,7 +51,7 @@ export default function WishlistPage(): JSX.Element {
                         <span className="text-4xl text-gray-300">📷</span>
                       )}
                     </div>
-                    <h3 className="font-semibold">{titleJson?.ar ?? titleJson?.en ?? ''}</h3>
+                    <h3 className="font-semibold">{(titleJson as { ar?: string; en?: string })?.ar ?? (titleJson as { ar?: string; en?: string })?.en ?? ''}</h3>
                     <p className="mt-1 text-xs text-gray-500">
                       {(category?.nameJson as Record<string, string>)?.ar ?? ''}
                     </p>

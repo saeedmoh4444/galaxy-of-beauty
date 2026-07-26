@@ -2,6 +2,7 @@ import { initTRPC, TRPCError } from '@trpc/server';
 import { ZodError } from 'zod';
 import type { Context } from './context';
 import { verifyCsrfToken } from './lib/csrf';
+import { checkRateLimit } from './lib/rateLimit';
 
 const t = initTRPC.context<Context>().create({
   errorFormatter({ shape, error }) {
@@ -17,8 +18,27 @@ const t = initTRPC.context<Context>().create({
 
 export const { router, procedure, middleware, mergeRouters } = t;
 
+// ---- Rate Limiting Middleware ----
+const rateLimitGuard = middleware(async ({ ctx, next, path }) => {
+  const tier = ctx.user
+    ? ctx.user.role === 'ADMIN' ? 'admin' : 'authenticated'
+    : 'anonymous';
+  const key = ctx.user ? `user:${ctx.user.id}` : `anon:${path}`;
+
+  const result = await checkRateLimit(key, tier as 'anonymous' | 'authenticated' | 'admin');
+  if (!result.allowed) {
+    throw new TRPCError({
+      code: 'TOO_MANY_REQUESTS',
+      message: `Rate limit exceeded. Reset at ${new Date(result.resetAt * 1000).toISOString()}`,
+    });
+  }
+
+  return next();
+});
+
 // ---- Public (no auth) ----
-export const publicProcedure = procedure;
+// All procedures get rate-limited by default
+export const publicProcedure = procedure.use(rateLimitGuard);
 
 // ---- CSRF Protection (applied to mutations) ----
 const csrfGuard = middleware(({ ctx, next }) => {

@@ -5,14 +5,17 @@ import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
 import { Button, Card, CardSkeleton, ErrorAlert, EmptyState } from '@galaxy/shared';
 
-type CategoryItem = RouterOutput['categories']['list'][number];
-type ServiceListItem = NonNullable<RouterOutput['services']['list']>['items'][number];
+// Intermediate types to avoid TS2589 "type instantiation excessively deep"
+type CategoryList = RouterOutput['categories']['list'];
+type CategoryItem = CategoryList extends (infer T)[] ? T : never;
+type ServiceList = NonNullable<RouterOutput['services']['list']>;
+type ServiceListItem = ServiceList['items'] extends (infer T)[] ? T : never;
 
 export default function HomePage(): JSX.Element {
   const cats = api.categories.list.useQuery();
   const services = api.services.list.useQuery({ sort: 'popular', limit: 6 });
-  const categories: CategoryItem[] = cats.data ?? [];
-  const svcItems: ServiceListItem[] = services.data?.items ?? [];
+  const categories = (cats.data ?? []) as CategoryItem[];
+  const svcItems = (services.data?.items ?? []) as ServiceListItem[];
 
   return (
     <div>
@@ -58,12 +61,12 @@ export default function HomePage(): JSX.Element {
           {svcItems.length > 0 && (
             <div className="grid gap-6 md:grid-cols-3">
               {svcItems.map((svc) => (
-                <Link key={svc.id as number} href={`/services/${svc.id}`}>
+                <Link key={String(svc.id)} href={`/services/${svc.id}`}>
                   <Card hover>
                     <div className="h-40 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100 dark:from-brand-900 dark:to-accent-900" />
                     <h3 className="mt-3 font-semibold">{(svc.titleJson as Record<string, string>)?.ar ?? ''}</h3>
-                    <p className="mt-1 text-sm text-gray-500">{svc.durationMin as number} دقيقة</p>
-                    <p className="mt-2 font-bold text-brand-600">{svc.basePrice as number} ر.س</p>
+                    <p className="mt-1 text-sm text-gray-500">{Number(svc.durationMin)} دقيقة</p>
+                    <p className="mt-2 font-bold text-brand-600">{Number(svc.basePrice)} ر.س</p>
                   </Card>
                 </Link>
               ))}

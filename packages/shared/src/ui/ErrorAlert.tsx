@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { Button } from './Button';
 
 interface ErrorAlertProps {
   title?: string;
@@ -52,27 +52,5 @@ export function ErrorAlert({
         )}
       </div>
     </div>
-  );
-}
-
-// Inline import to avoid circular dependency — simple button inline
-function Button({
-  variant = 'primary',
-  onClick,
-  children,
-}: {
-  variant?: 'primary' | 'outline';
-  onClick?: () => void;
-  children: ReactNode;
-}) {
-  const base = 'rounded-lg px-4 py-2 text-sm font-medium transition-colors';
-  const variants = {
-    primary: 'bg-brand-600 text-white hover:bg-brand-700',
-    outline: 'border border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800',
-  };
-  return (
-    <button className={`${base} ${variants[variant]}`} onClick={onClick}>
-      {children}
-    </button>
   );
 }

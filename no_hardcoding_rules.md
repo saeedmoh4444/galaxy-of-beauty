@@ -1,3 +1,4 @@
+-- Active: 1777832863017@@127.0.0.1@5432@Galaxy_of_Beauty_db
 # No‑Hardcoding Rules (Master File)
 
 ## For Existing Large Projects

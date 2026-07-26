@@ -15,7 +15,7 @@ export default function SavedCardsPage(): JSX.Element {
   const cards: SavedCardItem[] = data ?? [];
 
   const [showAdd, setShowAdd] = useState(false);
-  const [form, setForm] = useState({ lastFour: '', brand: 'visa', expMonth: '1', expYear: '2026', cardholderName: '' });
+  const [form, setForm] = useState({ lastFour: '', brand: 'visa' as const, expMonth: '1', expYear: '2026', cardholderName: '' });
 
   const addMut = api.savedCards.add.useMutation({
     onSuccess: () => { setShowAdd(false); refetch(); addToast('success', 'تمت إضافة البطاقة'); },
@@ -84,7 +84,7 @@ export default function SavedCardsPage(): JSX.Element {
               <Input label="الاسم على البطاقة" value={form.cardholderName} onChange={(e) => setForm({ ...form, cardholderName: e.target.value })} />
               <Input label="آخر 4 أرقام" value={form.lastFour} onChange={(e) => setForm({ ...form, lastFour: e.target.value })} maxLength={4} />
               <div className="flex gap-3">
-                <select className="flex-1 rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800" value={form.brand} onChange={(e) => setForm({ ...form, brand: e.target.value })}>
+                <select className="flex-1 rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800" value={form.brand} onChange={(e) => setForm({ ...form, brand: e.target.value as typeof form.brand })}>
                   <option value="visa">Visa</option>
                   <option value="mastercard">Mastercard</option>
                   <option value="mada">Mada</option>

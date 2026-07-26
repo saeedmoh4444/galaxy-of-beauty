@@ -18,7 +18,8 @@ export default function LoyaltyPage(): JSX.Element {
 
   const account = data as LoyaltyAccount | null;
   const transactions: LoyaltyTransaction[] = txData?.items ?? [];
-  const rewardList = (rewardsData as Array<Record<string, unknown>>) || [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const rewardList = (rewardsData ?? []) as any[];
 
   const tierColors: Record<string, string> = {
     SILVER: 'from-gray-300 to-gray-400',
@@ -40,30 +41,30 @@ export default function LoyaltyPage(): JSX.Element {
         ) : (
           <>
             {/* Tier Card */}
-            <Card padding="lg" className={`bg-gradient-to-r ${tierColors[account.tier as string] || tierColors.SILVER} text-white`}>
+            <Card padding="lg" className={`bg-gradient-to-r ${tierColors[String(account.tier)] || tierColors['SILVER']} text-white`}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm opacity-80">مستوى العضوية</p>
-                  <p className="text-3xl font-bold mt-1">
+                  <p className="mt-1 text-3xl font-bold">
                     {account.tier === 'PLATINUM' ? '🥇' : account.tier === 'GOLD' ? '🥈' : '🥉'}{' '}
                     {account.tier === 'PLATINUM' ? 'بلاتينية' : account.tier === 'GOLD' ? 'ذهبية' : 'فضية'}
                   </p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm opacity-80">النقاط</p>
-                  <p className="text-4xl font-bold">{account.points as number}</p>
-                  <p className="text-xs opacity-60 mt-1">المضاعف: {account.multiplier as number}x</p>
+                  <p className="text-4xl font-bold">{Number(account.points)}</p>
+                  <p className="mt-1 text-xs opacity-60">المضاعف: {Number(account.multiplier)}x</p>
                 </div>
               </div>
-              {(account.pointsToNextTier as number) > 0 && (
+              {account.nextTier && Number(account.nextTier.pointsNeeded) > 0 && (
                 <div className="mt-4 rounded-lg bg-white/20 p-3">
                   <p className="text-sm">
-                    تبقى {account.pointsToNextTier as number} نقطة للوصول إلى المستوى {account.nextTier as string}
+                    تبقى {Number(account.nextTier.pointsNeeded)} نقطة للوصول إلى المستوى {account.nextTier.name}
                   </p>
                   <div className="mt-2 h-2 rounded-full bg-white/30">
                     <div
                       className="h-2 rounded-full bg-white"
-                      style={{ width: `${Math.min(100, ((account.points as number) / ((account.points as number) + (account.pointsToNextTier as number))) * 100)}%` }}
+                      style={{ width: `${Math.min(100, (Number(account.points) / (Number(account.points) + Number(account.nextTier.pointsNeeded))) * 100)}%` }}
                     />
                   </div>
                 </div>
@@ -80,12 +81,12 @@ export default function LoyaltyPage(): JSX.Element {
                   <Card key={i} padding="sm" className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                        {tx.type === 'EARN' ? '➕' : '➖'} {tx.description as string}
+                        {Number(tx.points) > 0 ? '➕' : '➖'} {tx.reason}
                       </p>
-                      <p className="text-xs text-gray-400">{new Date(tx.createdAt as string).toLocaleDateString('ar-SA')}</p>
+                      <p className="text-xs text-gray-400">{new Date(String(tx.createdAt)).toLocaleDateString('ar-SA')}</p>
                     </div>
-                    <span className={`text-sm font-bold ${tx.type === 'EARN' ? 'text-green-600' : 'text-red-600'}`}>
-                      {tx.type === 'EARN' ? '+' : '-'}{tx.points as number} نقطة
+                    <span className={`text-sm font-bold ${Number(tx.points) > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      {Number(tx.points) > 0 ? '+' : '-'}{Math.abs(Number(tx.points))} نقطة
                     </span>
                   </Card>
                 ))}
@@ -97,28 +98,32 @@ export default function LoyaltyPage(): JSX.Element {
         {/* Rewards */}
         {rewardList.length > 0 && (
           <>
-            <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mt-8">المكافآت المتاحة</h2>
+            <h2 className="mt-8 text-lg font-bold text-gray-900 dark:text-gray-100">المكافآت المتاحة</h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {rewardList.map((r) => (
-                <Card key={r.id as number} padding="md">
+              {rewardList.map((r) => {
+                const nameJson = r.nameJson as { ar?: string };
+                const descJson = r.descriptionJson as { ar?: string };
+                return (
+                <Card key={Number(r.id)} padding="md">
                   <p className="font-bold text-gray-900 dark:text-gray-100">
-                    {((r.nameJson as Record<string, string>)?.ar) || ''}
+                    {nameJson.ar || ''}
                   </p>
-                  <p className="text-sm text-gray-500 mt-1">
-                    {((r.descriptionJson as Record<string, string>)?.ar) || ''}
+                  <p className="mt-1 text-sm text-gray-500">
+                    {descJson.ar || ''}
                   </p>
                   <div className="mt-3 flex items-center justify-between">
-                    <span className="text-lg font-bold text-brand-600">{r.pointsCost as number} نقطة</span>
+                    <span className="text-lg font-bold text-brand-600">{Number(r.pointsCost)} نقطة</span>
                     <Button
                       size="sm"
-                      onClick={() => redeemMut.mutate({ rewardId: r.id })}
-                      disabled={(account?.points as number || 0) < (r.pointsCost as number)}
+                      onClick={() => redeemMut.mutate({ rewardId: Number(r.id) })}
+                      disabled={(Number(account?.points) || 0) < Number(r.pointsCost)}
                     >
                       استبدال
                     </Button>
                   </div>
                 </Card>
-              ))}
+                );
+              })}
             </div>
           </>
         )}

@@ -11,7 +11,6 @@
  * Run: pnpm --filter @galaxy/api test
  */
 import { describe, it, expect } from 'vitest';
-import { initTRPC, TRPCError } from '@trpc/server';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import {
@@ -24,26 +23,6 @@ import {
 import type { JwtPayload } from '../lib/jwt';
 
 // ── Helpers ──────────────────────────────────────────────────────────
-
-// Access tRPC internals to create a caller (works across tRPC v11 versions)
-function getCallerFactory() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const t = initTRPC as any;
-  // initTRPC.context() returns an object; we need its createCallerFactory
-  // In tRPC v11, the caller is available via router._def._config.experimental_caller
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const routerAny = appRouter as any;
-  if (typeof routerAny.createCaller === 'function') {
-    return routerAny.createCaller.bind(routerAny);
-  }
-  // Fallback: access internal factory
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const factory = (t.create as any)?.callerFactory;
-  if (typeof factory === 'function') {
-    return (ctx: Record<string, unknown>) => factory(appRouter, ctx);
-  }
-  return null;
-}
 
 async function anonCaller() {
   const ctx = await createTRPCContext();
