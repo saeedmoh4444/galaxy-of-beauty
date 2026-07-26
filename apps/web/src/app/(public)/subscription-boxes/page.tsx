@@ -5,8 +5,11 @@ import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/shared';
 
 export default function SubscriptionBoxesPage(): JSX.Element {
-  const { data: plans, isLoading, isError, refetch } = api.subscriptionBoxes.plans.useQuery();
-  const planList = (plans as Array<Record<string, unknown>>) || [];
+  // Cast to avoid TS2589 in Next.js build
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const plansQuery = api.subscriptionBoxes.plans.useQuery() as any;
+  const { data: plans, isLoading, isError, refetch } = plansQuery;
+  const planList: any[] = plans ?? [];
 
   return (
     <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">

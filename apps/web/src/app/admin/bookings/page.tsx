@@ -1,24 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/shared';
 
 const STATUSES = ['ALL', 'REQUESTED', 'ACCEPTED', 'PAID', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
 
-type BookingItem = NonNullable<RouterOutput['admin']['getAllBookings']>['items'][number];
-
 export default function AdminBookingsPage(): JSX.Element {
   const [status, setStatus] = useState<string | undefined>(undefined);
-  const { data, isLoading, isError, refetch } = api.admin.getAllBookings.useQuery({
-    status: (status as BookingItem['status']) || undefined,
+  // Cast to avoid TS2589 from deeply nested admin RouterOutput in Next.js build
+  const bookingsQuery = api.admin.getAllBookings.useQuery({
+    status: (status || undefined) as any,
     page: 1,
     limit: 20,
-  });
+  }) as any;
+  const { data, isLoading, isError, refetch } = bookingsQuery;
   const cancelMut = api.bookings.transition.useMutation({ onSuccess: () => refetch() });
 
-  const bookings = data?.items ?? [];
+  const bookings: any[] = data?.items ?? [];
 
   return (
     <div className="space-y-6">
@@ -28,7 +28,7 @@ export default function AdminBookingsPage(): JSX.Element {
       {isLoading ? <CardSkeleton />
       : isError ? <ErrorAlert message="فشل تحميل الحجوزات" onRetry={() => refetch()} />
       : bookings.length === 0 ? <EmptyState title="لا توجد حجوزات" />
-      : <div className="space-y-2">{bookings.map((b: BookingItem) => (
+      : <div className="space-y-2">{bookings.map((b: any) => (
           <Card key={b.id} padding="md">
             <div className="flex items-center justify-between">
               <div><p className="font-semibold">{b.bookingCode}</p><p className="text-sm text-gray-500">{new Date(b.createdAt).toLocaleDateString('ar-SA')}</p></div>

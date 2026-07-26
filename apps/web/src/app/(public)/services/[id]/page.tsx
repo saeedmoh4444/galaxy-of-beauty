@@ -8,10 +8,13 @@ import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, formatCurrency } fr
 export default function ServiceDetailPage(): JSX.Element {
   const params = useParams();
   const id = Number(params.id);
-  const query = api.services.getById.useQuery({ id });
-  const relatedQuery = api.services.getRelated.useQuery({ serviceId: id, limit: 4 }, { enabled: !isNaN(id) });
-  const data = query.data;
-  const related = relatedQuery.data ?? [];
+  // Cast to avoid TS2589 from deeply nested service RouterOutput in Next.js build
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const query = api.services.getById.useQuery({ id }) as any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const relatedQuery = api.services.getRelated.useQuery({ serviceId: id, limit: 4 }, { enabled: !isNaN(id) }) as any;
+  const data: Record<string, any> | undefined = query.data;
+  const related: any[] = relatedQuery.data ?? [];
 
   if (query.isLoading) return <div className="mx-auto max-w-4xl px-4 py-8"><CardSkeleton /></div>;
   if (query.isError || !data) return <div className="mx-auto max-w-4xl px-4 py-8"><ErrorAlert message="فشل تحميل الخدمة" onRetry={() => query.refetch()} /></div>;

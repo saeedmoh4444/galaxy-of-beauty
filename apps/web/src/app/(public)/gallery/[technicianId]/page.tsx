@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useParams } from 'next/navigation';
@@ -8,13 +9,15 @@ export default function GalleryPage(): JSX.Element {
   const { technicianId } = useParams<{ technicianId: string }>();
   const tid = Number(technicianId);
 
-  const { data, isLoading, isError, refetch } = api.gallery.byTechnician.useQuery(
+  // Cast avoids TS2589 deep type from gallery RouterOutput in Next.js build
+  const galleryQuery = api.gallery.byTechnician.useQuery(
     { technicianId: tid, page: 1, limit: 50 },
     { enabled: !isNaN(tid) },
-  );
+  ) as any;
 
-  const items = data?.items ?? [];
-  const total = data?.total ?? 0;
+  const items: any[] = galleryQuery.data?.items ?? [];
+  const total: number = galleryQuery.data?.total ?? 0;
+  const { isLoading, isError, refetch } = galleryQuery;
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 px-4 py-8">
@@ -34,7 +37,7 @@ export default function GalleryPage(): JSX.Element {
           <>
             <p className="text-sm text-gray-500">{total} صورة</p>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {items.map((img) => (
+              {items.map((img: any) => (
                 <Card key={img.id as number} padding="none" className="overflow-hidden group cursor-pointer">
                   <div className="aspect-square bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-5xl">
                     {img.imageUrl ? (

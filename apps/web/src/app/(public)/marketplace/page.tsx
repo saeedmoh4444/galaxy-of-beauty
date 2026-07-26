@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
@@ -6,16 +7,18 @@ import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, formatCurren
 
 export default function MarketplacePage(): JSX.Element {
   const [search, setSearch] = useState('');
-  const { data, isLoading, isError, refetch } = api.marketplace.products.useQuery({
+  // Cast to avoid TS2589 deep type from marketplace RouterOutput in Next.js build
+  const productsQuery = api.marketplace.products.useQuery({
     search: search || undefined,
     sortBy: 'newest',
     page: 1,
     limit: 20,
-  });
-  const { data: categories } = api.marketplace.productCategories.useQuery();
+  }) as any;
+  const categoriesQuery = api.marketplace.productCategories.useQuery() as any;
+  const { data, isLoading, isError, refetch } = productsQuery;
 
-  const items = data?.items ?? [];
-  const total = data?.total ?? 0;
+  const items: any[] = data?.items ?? [];
+  const total: number = data?.total ?? 0;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-8">
@@ -42,7 +45,7 @@ export default function MarketplacePage(): JSX.Element {
           <>
             <p className="text-sm text-gray-500">{total} منتج</p>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {items.map((p) => (
+              {items.map((p: any) => (
                 <Card key={p.id as number} padding="sm" className="group cursor-pointer hover:shadow-lg transition-shadow">
                   <div className="aspect-square w-full rounded-lg bg-gray-100 dark:bg-gray-800 mb-3 flex items-center justify-center text-4xl">
                     🧴
