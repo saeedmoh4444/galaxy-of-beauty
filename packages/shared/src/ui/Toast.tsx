@@ -4,6 +4,9 @@ import { useState, useCallback, createContext, useContext, type ReactNode } from
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
 
+/** Auto-dismiss duration for toast notifications (milliseconds). */
+const TOAST_DURATION_MS = 4000;
+
 interface Toast {
   id: number;
   type: ToastType;
@@ -35,7 +38,7 @@ export function ToastProvider({ children }: { children: ReactNode }): JSX.Elemen
     (type: ToastType, message: string) => {
       const id = ++nextId;
       setToasts((prev) => [...prev.slice(-4), { id, type, message }]);
-      setTimeout(() => removeToast(id), 4000);
+      setTimeout(() => removeToast(id), TOAST_DURATION_MS);
     },
     [removeToast],
   );

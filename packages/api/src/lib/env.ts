@@ -9,7 +9,7 @@ const envSchema = z.object({
   JWT_ACCESS_EXPIRY: z.string().default('15m'),
   JWT_REFRESH_EXPIRY: z.string().default('7d'),
   CORS_ORIGIN: z.string().default('http://localhost:3000'),
-  PORT: z.coerce.number().int().positive().default(4000),
+  PORT: z.coerce.number().int().positive().default(3000), // Next.js dev server port
 });
 
 export type Env = z.infer<typeof envSchema>;
