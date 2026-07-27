@@ -1,8 +1,8 @@
 version: 2
 updates:
-  # Backend npm dependencies
+  # Monorepo dependencies (pnpm workspace)
   - package-ecosystem: npm
-    directory: /backend
+    directory: /
     schedule:
       interval: weekly
       day: monday
@@ -12,48 +12,6 @@ updates:
     versioning-strategy: auto
     labels:
       - dependencies
-      - backend
-    reviewers:
-      - team:backend
-    # Group minor/patch updates into a single PR
-    groups:
-      minor-patch:
-        update-types:
-          - minor
-          - patch
-
-  # Frontend npm dependencies
-  - package-ecosystem: npm
-    directory: /frontend
-    schedule:
-      interval: weekly
-      day: monday
-      time: "09:00"
-      timezone: Asia/Riyadh
-    open-pull-requests-limit: 10
-    versioning-strategy: auto
-    labels:
-      - dependencies
-      - frontend
-    groups:
-      minor-patch:
-        update-types:
-          - minor
-          - patch
-
-  # Mobile npm dependencies
-  - package-ecosystem: npm
-    directory: /mobileapp
-    schedule:
-      interval: weekly
-      day: monday
-      time: "09:00"
-      timezone: Asia/Riyadh
-    open-pull-requests-limit: 5
-    versioning-strategy: auto
-    labels:
-      - dependencies
-      - mobile
     groups:
       minor-patch:
         update-types:

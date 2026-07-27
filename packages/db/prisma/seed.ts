@@ -90,7 +90,7 @@ async function main() {
   await prisma.wallet.create({
     data: { userId: admin.id, balance: 0, bonusBalance: 0 },
   });
-  console.log('✅ Admin user (admin@galaxyofbeauty.sa / Admin@123456)');
+  console.log('✅ Admin user created (admin@galaxyofbeauty.sa / password masked)');
 
   // ---- Platform Config ----
   await prisma.platformConfig.createMany({
@@ -357,7 +357,7 @@ async function main() {
 
   // ---- Summary ----
   console.log('\n🎉 Seed complete!');
-  console.log('   Admin: admin@galaxyofbeauty.sa / Admin@123456');
+  console.log('   Admin: admin@galaxyofbeauty.sa (password in 1Password)');
   console.log(`   ${categories.length} categories, ${services.length} services`);
   console.log(`   ${cities.length} Saudi cities, ${tags.length} tags, ${achievements.length} achievements`);
 }
