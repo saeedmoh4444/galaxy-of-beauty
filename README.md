@@ -62,13 +62,15 @@ docker compose down             # Stop everything
 ```
 galaxy-of-beauty/
 ├── apps/
-│   ├── web/                    # Next.js 14 App Router (65+ pages)
-│   └── mobile/                 # Expo SDK 54 + Expo Router (55+ screens)
+│   ├── web/                    # Next.js 14 App Router (52 routes, 4 SSR pages)
+│   └── mobile/                 # Expo SDK 54 + Expo Router (46 screens)
 ├── packages/
-│   ├── api/                    # tRPC v11 — 47 routers, 200+ procedures
-│   ├── db/                     # Prisma — 55+ models, 15 enums, seed (24 cities, 122 areas)
-│   ├── shared/                 # UI kit (15 components), hooks, i18n, theme
+│   ├── api/                    # tRPC v11 — 45 routers, 170+ procedures
+│   ├── db/                     # Prisma — 42 models, 15 enums
+│   ├── shared/                 # UI kit (11 components), hooks, i18n, theme, types
 │   └── config/                 # TSConfig, ESLint, Prettier, Tailwind
+├── _legacy/                    # Archived v1.0 (Express + Vite + standalone Expo)
+├── trash_stuff/                # Local env files & legacy Postman artifacts
 ├── docker-compose.yml          # 4-service Docker stack with health checks
 ├── turbo.json                  # Turborepo build pipeline
 └── pnpm-workspace.yaml
@@ -162,14 +164,13 @@ curl http://localhost:3000/api/trpc/health
 # → {"status":"ok","version":"2.0.0"}
 ```
 
-### Database Seed
+### Pipeline Status
 
-```
-Admin: admin@galaxyofbeauty.sa / Admin@123456
-6 root categories, 10 sub-categories
-7 services with variants
-10 Saudi cities, 4 service tags, 3 achievements
-AI subscription plans
+```bash
+pnpm type-check   # 10/10 workspaces ✅
+pnpm lint         # 7/7 ✅
+pnpm build        # 5/5 — 52 Next.js routes ✅
+pnpm test         # 189 tests (8 suites) ✅
 ```
 
 ---
@@ -197,6 +198,8 @@ AI subscription plans
 | `pnpm build` | Build all workspaces |
 | `pnpm type-check` | TypeScript check all |
 | `pnpm lint` | Lint all workspaces |
+| `pnpm test` | Run API tests (189 tests) |
+| `pnpm --filter @galaxy/web test:e2e` | Playwright E2E tests |
 | `pnpm db:generate` | Regenerate Prisma client |
 | `pnpm db:push` | Push schema to database |
 | `pnpm db:seed` | Seed the database |
