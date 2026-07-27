@@ -47,6 +47,7 @@ import { aiFeaturesRouter } from './aiFeatures';
 import { adminToolsRouter } from './adminTools';
 import { giftCardRouter } from './giftCards';
 import { groupBookingRouter } from './groupBookings';
+import { beautyPackageRouter } from './beautyPackages';
 
 export const appRouter = router({
   // Health
@@ -104,6 +105,7 @@ export const appRouter = router({
   adminTools: adminToolsRouter,
   giftCards: giftCardRouter,
   groupBookings: groupBookingRouter,
+  beautyPackages: beautyPackageRouter,
 });
 
 export type AppRouter = typeof appRouter;

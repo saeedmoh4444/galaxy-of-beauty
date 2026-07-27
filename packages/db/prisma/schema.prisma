@@ -1382,3 +1382,36 @@ model GroupBookingMember {
   @@index([groupBookingId])
   @@map("group_booking_members")
 }
+
+// =============================================================================
+// Beauty Packages (curated service bundles)
+// =============================================================================
+
+model BeautyPackage {
+  id              Int      @id @default(autoincrement())
+  nameJson        Json     // { ar, en }
+  descriptionJson Json?
+  imageUrl        String?
+  discountPercent Int      @default(15) // % off vs individual booking
+  isActive        Boolean  @default(true)
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  services        BeautyPackageService[]
+
+  @@map("beauty_packages")
+}
+
+model BeautyPackageService {
+  id          Int     @id @default(autoincrement())
+  packageId   Int
+  serviceId   Int
+  sortOrder   Int     @default(0)
+
+  package     BeautyPackage @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  @@unique([packageId, serviceId])
+  @@index([packageId])
+  @@map("beauty_package_services")
+}
