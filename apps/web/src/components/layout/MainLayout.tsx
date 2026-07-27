@@ -8,8 +8,11 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 const navLinks = [
   { href: '/services', labelAr: 'الخدمات', labelEn: 'Services' },
   { href: '/marketplace', labelAr: 'المتجر', labelEn: 'Marketplace' },
+  { href: '/beauty-quiz', labelAr: 'اختبار الجمال', labelEn: 'Quiz' },
   { href: '/beauty-packages', labelAr: 'الباقات', labelEn: 'Packages' },
+  { href: '/bridal-concierge', labelAr: 'تخطيط الزفاف', labelEn: 'Bridal' },
   { href: '/campaigns', labelAr: 'العروض', labelEn: 'Deals' },
+  { href: '/events', labelAr: 'الفعاليات', labelEn: 'Events' },
   { href: '/blog', labelAr: 'المدونة', labelEn: 'Blog' },
 ];
 
