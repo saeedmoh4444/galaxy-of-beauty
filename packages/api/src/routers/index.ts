@@ -45,6 +45,7 @@ import { advancedBookingRouter } from './advancedBooking';
 import { socialRouter } from './social';
 import { aiFeaturesRouter } from './aiFeatures';
 import { adminToolsRouter } from './adminTools';
+import { giftCardRouter } from './giftCards';
 
 export const appRouter = router({
   // Health
@@ -100,6 +101,7 @@ export const appRouter = router({
   social: socialRouter,
   aiFeatures: aiFeaturesRouter,
   adminTools: adminToolsRouter,
+  giftCards: giftCardRouter,
 });
 
 export type AppRouter = typeof appRouter;

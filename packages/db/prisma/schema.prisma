@@ -1311,3 +1311,38 @@ model CartItem {
   @@index([userId])
   @@map("cart_items")
 }
+
+// =============================================================================
+// Gift Cards / Beauty Vouchers
+// =============================================================================
+
+model GiftCard {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  amount      Decimal  @db.Decimal(10, 2)
+  balance     Decimal  @db.Decimal(10, 2)
+  purchaserId Int
+  recipientEmail String?
+  recipientName  String?
+  message     String?
+  status      String   @default("ACTIVE")
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([code])
+  @@index([purchaserId])
+  @@index([status])
+  @@map("gift_cards")
+}
+
+model GiftCardTransaction {
+  id          String   @id @default(uuid())
+  giftCardId  String
+  bookingId   Int?
+  amount      Decimal  @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
+
+  @@index([giftCardId])
+  @@map("gift_card_transactions")
+}
