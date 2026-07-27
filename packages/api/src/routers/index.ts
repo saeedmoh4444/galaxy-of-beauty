@@ -51,6 +51,8 @@ import { beautyPackageRouter } from './beautyPackages';
 import { favoriteRouter } from './favorites';
 import { campaignRouter } from './campaigns';
 import { blogRouter } from './blog';
+import { beautyProfileRouter } from './beautyProfile';
+import { priceEstimatorRouter } from './priceEstimator';
 
 export const appRouter = router({
   // Health
@@ -112,6 +114,8 @@ export const appRouter = router({
   favorites: favoriteRouter,
   campaigns: campaignRouter,
   blog: blogRouter,
+  beautyProfile: beautyProfileRouter,
+  priceEstimator: priceEstimatorRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -1476,3 +1476,25 @@ model BlogPost {
   @@index([isPublished, publishedAt])
   @@map("blog_posts")
 }
+
+// =============================================================================
+// Beauty Profile — Personalized Customer Preferences
+// =============================================================================
+
+model BeautyProfile {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique
+  skinType    String?  // oily, dry, combination, sensitive, normal
+  hairType    String?  // straight, wavy, curly, coily
+  hairLength  String?  // short, medium, long
+  skinTone    String?  // fair, medium, olive, tan, deep
+  allergies   String[] // e.g. ["latex", "fragrance", "nuts"]
+  preferredScents String[] // floral, citrus, woody, etc.
+  makeupStyle String?  // natural, glam, soft, bold
+  concerns    String[] // acne, aging, dark_spots, redness, etc.
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("beauty_profiles")
+}
