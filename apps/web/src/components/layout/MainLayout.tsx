@@ -63,9 +63,47 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
       <main>{children}</main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 bg-white py-8 dark:border-gray-800 dark:bg-gray-950">
-        <div className="mx-auto max-w-7xl px-4 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} Galaxy of Beauty — جالكسي بيوتي
+      <footer className="border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
+        <div className="mx-auto max-w-7xl px-4 py-12">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <Link href="/" className="flex items-center gap-2">
+                <img src="/logo.png" alt="جالكسي بيوتي" className="h-10 w-10 rounded-lg object-cover" />
+                <span className="text-lg font-bold text-brand-600">جالكسي بيوتي</span>
+              </Link>
+              <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">منصتكِ للجمال والعناية — احجزي خدمات التجميل المنزلية بكل سهولة</p>
+            </div>
+            <div>
+              <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">تصفحي</h4>
+              <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
+                <Link href="/services" className="block hover:text-brand-600">الخدمات</Link>
+                <Link href="/technicians" className="block hover:text-brand-600">الفنيات</Link>
+                <Link href="/marketplace" className="block hover:text-brand-600">المتجر</Link>
+                <Link href="/blog" className="block hover:text-brand-600">المدونة</Link>
+              </div>
+            </div>
+            <div>
+              <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">المساعدة</h4>
+              <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
+                <Link href="/customer/ai-chat" className="block hover:text-brand-600">تحدثي مع ليلى</Link>
+                <Link href="/customer/bookings/create" className="block hover:text-brand-600">احجزي الآن</Link>
+                <Link href="/subscription-boxes" className="block hover:text-brand-600">الصناديق الشهرية</Link>
+                <Link href="/services/surprise-me" className="block hover:text-brand-600">🎲 فاجئيني</Link>
+              </div>
+            </div>
+            <div>
+              <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">روابط سريعة</h4>
+              <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
+                <Link href="/login" className="block hover:text-brand-600">تسجيل الدخول</Link>
+                <Link href="/register" className="block hover:text-brand-600">إنشاء حساب</Link>
+                <Link href="/customer/dashboard" className="block hover:text-brand-600">لوحة التحكم</Link>
+                <Link href="/customer/gift-cards" className="block hover:text-brand-600">بطاقات الهدية</Link>
+              </div>
+            </div>
+          </div>
+          <div className="mt-10 border-t border-gray-100 pt-6 text-center text-sm text-gray-400 dark:border-gray-800">
+            © {new Date().getFullYear()} Galaxy of Beauty — جالكسي بيوتي. جميع الحقوق محفوظة.
+          </div>
         </div>
       </footer>
     </div>
