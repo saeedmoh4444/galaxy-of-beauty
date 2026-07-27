@@ -53,6 +53,7 @@ import { campaignRouter } from './campaigns';
 import { blogRouter } from './blog';
 import { beautyProfileRouter } from './beautyProfile';
 import { priceEstimatorRouter } from './priceEstimator';
+import { emergencyBookingRouter } from './emergencyBooking';
 
 export const appRouter = router({
   // Health
@@ -116,6 +117,7 @@ export const appRouter = router({
   blog: blogRouter,
   beautyProfile: beautyProfileRouter,
   priceEstimator: priceEstimatorRouter,
+  emergencyBooking: emergencyBookingRouter,
 });
 
 export type AppRouter = typeof appRouter;
