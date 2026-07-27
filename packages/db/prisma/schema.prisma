@@ -1586,3 +1586,38 @@ model BeautyEvent {
   @@index([isPublished])
   @@map("beauty_events")
 }
+
+// =============================================================================
+// Self-Care Tracker — Daily Wellness Check-ins
+// =============================================================================
+
+model SelfCareCheckin {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  mood        Int      // 1-5 scale
+  energy      Int?     // 1-5 scale
+  sleepHours  Decimal? @db.Decimal(3, 1)
+  waterGlasses Int?    // glasses of water
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("self_care_checkins")
+}
+
+// =============================================================================
+// Beauty Budget — Monthly Spending Overview
+// =============================================================================
+
+model BeautyBudget {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  month       String   // "2026-07"
+  budget      Decimal  @db.Decimal(10, 2) // Planned budget
+  spent       Decimal  @default(0) @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, month])
+  @@map("beauty_budgets")
+}
