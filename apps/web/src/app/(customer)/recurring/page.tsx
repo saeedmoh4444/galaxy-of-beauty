@@ -56,7 +56,7 @@ export default function RecurringPage(): JSX.Element {
                   <option value="WEEKLY">أسبوعي</option><option value="BIWEEKLY">كل أسبوعين</option><option value="MONTHLY">شهري</option>
                 </select>
                 <Input type="date" value={form.nextDate} onChange={(e) => setForm({ ...form, nextDate: e.target.value })} />
-                <Button onClick={() => createMut.mutate({ ...form, serviceId: Number(form.serviceId), addressId: Number(form.addressId), technicianId: form.technicianId ? Number(form.technicianId) : undefined, nextDate: new Date(form.nextDate).toISOString() })} loading={createMut.isPending} className="w-full">حفظ</Button>
+                <Button onClick={() => createMut.mutate({ serviceId: Number(form.serviceId), addressId: Number(form.addressId), technicianId: form.technicianId ? Number(form.technicianId) : undefined, frequency: form.frequency as 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY', nextDate: new Date(form.nextDate).toISOString() })} loading={createMut.isPending} className="w-full">حفظ</Button>
               </div>
             </div>
           </div>

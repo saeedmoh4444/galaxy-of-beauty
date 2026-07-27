@@ -25,7 +25,7 @@ export default function AdminCampaignsPage(): JSX.Element {
           <Input label="كود الخصم" value={form.promoCode} onChange={(e) => setForm({ ...form, promoCode: e.target.value })} />
           <Input label="يبدأ من" type="datetime-local" value={form.startsAt} onChange={(e) => setForm({ ...form, startsAt: e.target.value })} />
           <Input label="ينتهي في" type="datetime-local" value={form.endsAt} onChange={(e) => setForm({ ...form, endsAt: e.target.value })} />
-          <Button onClick={() => createMut.mutate({ ...form, discountValue: Number(form.discountValue), startsAt: new Date(form.startsAt).toISOString(), endsAt: new Date(form.endsAt).toISOString() })} loading={createMut.isPending}>حفظ</Button>
+          <Button onClick={() => createMut.mutate({ nameAr: form.nameAr, nameEn: form.nameEn, discountType: form.discountType as 'percent' | 'fixed', discountValue: Number(form.discountValue), promoCode: form.promoCode || undefined, startsAt: new Date(form.startsAt).toISOString(), endsAt: new Date(form.endsAt).toISOString() })} loading={createMut.isPending}>حفظ</Button>
         </div>
       </Modal>
     </div>

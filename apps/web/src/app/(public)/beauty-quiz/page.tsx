@@ -53,7 +53,7 @@ export default function BeautyQuizPage(): JSX.Element {
     if (step < questions.length - 1) setStep(step + 1);
     else {
       const key = `${newAnswers['occasion']}-${newAnswers['focus']}-${newAnswers['budget']}`;
-      setResult(recommendations[key] || recommendations['default']);
+      setResult(recommendations[key] || recommendations['default'] || null);
     }
   };
 

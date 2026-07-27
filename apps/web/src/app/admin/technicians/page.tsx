@@ -23,15 +23,16 @@ export default function AdminTechniciansPage(): JSX.Element {
   const [reviewTech, setReviewTech] = useState<TechnicianItem | null>(null);
   const [reviewNote, setReviewNote] = useState('');
 
-  const { data, isLoading, isError, refetch } = api.admin.listTechnicians.useQuery({ page: 1, limit: 50 });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, isLoading, isError, refetch } = api.admin.listTechnicians.useQuery({ page: 1, limit: 50 }) as any;
   const verifyMut = api.technicians.verifyKyc.useMutation({ onSuccess: () => { refetch(); setReviewTech(null); setReviewNote(''); } });
   const suspendMut = api.admin.suspendUser.useMutation({ onSuccess: () => refetch() });
 
-  const technicians = data?.items ?? [];
+  const technicians: Array<Record<string, any>> = data?.items ?? [];
 
   const filtered = kycTab === 'ALL'
     ? technicians
-    : technicians.filter((t) => t.kycStatus === kycTab);
+    : technicians.filter((t: Record<string, any>) => t.kycStatus === kycTab);
 
   const handleVerify = (approved: boolean) => {
     if (!reviewTech) return;

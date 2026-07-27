@@ -61,7 +61,7 @@ export default function GiftRegistryPage(): JSX.Element {
                 <Input type="number" placeholder="المبلغ المستهدف (ر.س)" value={form.targetAmount} onChange={(e) => setForm({ ...form, targetAmount: e.target.value })} />
                 <Input placeholder="معرفات الخدمات (مفصولة بفواصل)" value={form.serviceIds} onChange={(e) => setForm({ ...form, serviceIds: e.target.value })} />
                 <Input placeholder="رسالة للضيوف (اختياري)" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
-                <Button onClick={() => createMut.mutate({ ...form, targetAmount: Number(form.targetAmount), serviceIds: form.serviceIds.split(',').map(Number).filter(n => n > 0) })} loading={createMut.isPending} className="w-full">إنشاء</Button>
+                <Button onClick={() => createMut.mutate({ title: form.title, occasion: form.occasion as 'wedding' | 'birthday' | 'baby_shower' | 'other', targetAmount: Number(form.targetAmount), serviceIds: form.serviceIds.split(',').map(Number).filter(n => n > 0), message: form.message || undefined })} loading={createMut.isPending} className="w-full">إنشاء</Button>
               </div>
             </div>
           </div>
