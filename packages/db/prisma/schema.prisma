@@ -1346,3 +1346,39 @@ model GiftCardTransaction {
   @@index([giftCardId])
   @@map("gift_card_transactions")
 }
+
+// =============================================================================
+// Group / Party Bookings
+// =============================================================================
+
+model GroupBooking {
+  id          Int      @id @default(autoincrement())
+  organizerId Int      // Customer who created the group
+  name        String   // e.g. "حفلة توديع العزوبية"
+  theme       String?  // e.g. "bridal", "birthday", "girls_night"
+  discountPercent Int  @default(10) // Group discount %
+  status      String   @default("PENDING") // PENDING, CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED
+  totalAmount Decimal  @db.Decimal(10, 2) @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members     GroupBookingMember[]
+
+  @@index([organizerId])
+  @@map("group_bookings")
+}
+
+model GroupBookingMember {
+  id             Int      @id @default(autoincrement())
+  groupBookingId Int
+  name           String   // Member's name
+  serviceId      Int
+  technicianId   Int?
+  status         String   @default("PENDING")
+  createdAt      DateTime @default(now())
+
+  groupBooking   GroupBooking @relation(fields: [groupBookingId], references: [id], onDelete: Cascade)
+
+  @@index([groupBookingId])
+  @@map("group_booking_members")
+}
