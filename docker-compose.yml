@@ -81,6 +81,43 @@ services:
     networks:
       - gob-network
 
+  # ---- Socket.IO (Real-time Events) ----
+  socket:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      target: development
+    container_name: gob-socket
+    restart: unless-stopped
+    command: npx tsx packages/api/src/socket/server.ts
+    environment:
+      NODE_ENV: development
+      SOCKET_PORT: "4001"
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-gob_admin}:${POSTGRES_PASSWORD:-gob_secure_pass_2024}@postgres:5432/${POSTGRES_DB:-Galaxy_of_Beauty_db}?schema=public"
+      REDIS_URL: "redis://redis:6379"
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-dev-access-secret-at-least-32-chars-long}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-dev-refresh-secret-at-least-32-chars-long}
+      CORS_ORIGIN: http://localhost:3000
+    ports:
+      - "${SOCKET_PORT:-4001}:4001"
+    volumes:
+      - ./packages/api/src:/app/packages/api/src
+      - ./packages/db/src:/app/packages/db/src
+      - ./packages/db/prisma:/app/packages/db/prisma
+      - /app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4001/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    networks:
+      - gob-network
+
   # ---- Mobile (Expo Web Preview) ----
   mobile:
     build:

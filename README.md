@@ -51,6 +51,7 @@ docker compose down             # Stop everything
 | Service | Container | Port | Status |
 |---------|-----------|------|--------|
 | Web (Next.js) | `gob-web` | 3000 | 🟢 |
+| Socket.IO (Real-time) | `gob-socket` | 4001 | 🟢 |
 | Mobile (Expo) | `gob-mobile` | 8081 | 🟢 |
 | PostgreSQL 15 | `gob-postgres` | 5432 | 🟢 |
 | Redis 7 | `gob-redis` | 6379 | 🟢 |
