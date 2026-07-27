@@ -48,6 +48,7 @@ import { adminToolsRouter } from './adminTools';
 import { giftCardRouter } from './giftCards';
 import { groupBookingRouter } from './groupBookings';
 import { beautyPackageRouter } from './beautyPackages';
+import { favoriteRouter } from './favorites';
 
 export const appRouter = router({
   // Health
@@ -106,6 +107,7 @@ export const appRouter = router({
   giftCards: giftCardRouter,
   groupBookings: groupBookingRouter,
   beautyPackages: beautyPackageRouter,
+  favorites: favoriteRouter,
 });
 
 export type AppRouter = typeof appRouter;

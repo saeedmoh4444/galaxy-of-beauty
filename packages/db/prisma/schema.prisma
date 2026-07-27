@@ -1415,3 +1415,20 @@ model BeautyPackageService {
   @@index([packageId])
   @@map("beauty_package_services")
 }
+
+// =============================================================================
+// Customer Favorites (quick rebooking)
+// =============================================================================
+
+model CustomerFavorite {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  label        String   @default("مفضل") // Custom label for this favorite
+  serviceId    Int
+  technicianId Int?
+  createdAt    DateTime @default(now())
+
+  @@unique([userId, serviceId, technicianId])
+  @@index([userId])
+  @@map("customer_favorites")
+}
