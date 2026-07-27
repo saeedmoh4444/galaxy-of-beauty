@@ -8,8 +8,9 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 const navLinks = [
   { href: '/services', labelAr: 'الخدمات', labelEn: 'Services' },
   { href: '/marketplace', labelAr: 'المتجر', labelEn: 'Marketplace' },
+  { href: '/beauty-packages', labelAr: 'الباقات', labelEn: 'Packages' },
+  { href: '/campaigns', labelAr: 'العروض', labelEn: 'Deals' },
   { href: '/blog', labelAr: 'المدونة', labelEn: 'Blog' },
-  { href: '/subscription-boxes', labelAr: 'الصناديق الشهرية', labelEn: 'Subscription Boxes' },
 ];
 
 export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
