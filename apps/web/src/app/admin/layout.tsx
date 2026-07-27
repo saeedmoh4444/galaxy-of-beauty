@@ -15,6 +15,10 @@ const adminLinks = [
   { href: '/admin/disputes', labelAr: 'النزاعات', labelEn: 'Disputes', icon: '⚖️' },
   { href: '/admin/finance', labelAr: 'المالية', labelEn: 'Finance', icon: '💰' },
   { href: '/admin/settings', labelAr: 'الإعدادات', labelEn: 'Settings', icon: '⚙️' },
+  { href: '/admin/gift-cards', labelAr: 'بطاقات الهدية', labelEn: 'Gift Cards', icon: '🎁' },
+  { href: '/admin/packages', labelAr: 'الباقات', labelEn: 'Packages', icon: '💅' },
+  { href: '/admin/campaigns', labelAr: 'الحملات', labelEn: 'Campaigns', icon: '📢' },
+  { href: '/admin/blog', labelAr: 'المدونة', labelEn: 'Blog', icon: '📝' },
   { href: '/admin/zatca', labelAr: 'الفاتورة الإلكترونية', labelEn: 'ZATCA', icon: '🧾' },
 ];
 
