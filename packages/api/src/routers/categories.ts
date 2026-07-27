@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { publicProcedure, adminProcedure, router } from '../trpc';
 import { createCategorySchema, updateCategorySchema } from '../validators/catalog';
+import { cached, invalidateCachePrefix } from '../lib/cache';
 
 /** Simple slugify helper for auto-generating slugs from English names. */
 function slugify(text: string): string {
@@ -20,17 +21,18 @@ export const categoryRouter = router({
    * Public (no auth required).
    */
   list: publicProcedure.query(async () => {
-    const categories = await prisma.category.findMany({
-      where: { parentId: null, isActive: true },
-      orderBy: { sortOrder: 'asc' },
-      include: {
-        children: {
-          where: { isActive: true },
-          orderBy: { sortOrder: 'asc' },
+    return cached('categories:list', () =>
+      prisma.category.findMany({
+        where: { parentId: null, isActive: true },
+        orderBy: { sortOrder: 'asc' },
+        include: {
+          children: {
+            where: { isActive: true },
+            orderBy: { sortOrder: 'asc' },
+          },
         },
-      },
-    });
-    return categories;
+      })
+    );
   }),
 
   /**
@@ -129,6 +131,8 @@ export const categoryRouter = router({
         },
       });
 
+      // Invalidate category cache after mutation
+      invalidateCachePrefix('categories:').catch(() => {});
       return category;
     }),
 
@@ -164,6 +168,7 @@ export const categoryRouter = router({
         data,
       });
 
+      invalidateCachePrefix('categories:').catch(() => {});
       return category;
     }),
 
@@ -189,6 +194,7 @@ export const categoryRouter = router({
         data: { isActive: false },
       });
 
+      invalidateCachePrefix('categories:').catch(() => {});
       return { success: true };
     }),
 });
