@@ -1,76 +1,32 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
+import { getServerCaller } from '@/lib/server-trpc';
+import { GalleryClient } from './GalleryClient';
+import type { GalleryPageData } from './GalleryClient';
 
-import { useParams } from 'next/navigation';
-import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState } from '@galaxy/shared';
-
-export default function GalleryPage(): JSX.Element {
-  const { technicianId } = useParams<{ technicianId: string }>();
+export default async function GalleryPage({
+  params,
+}: {
+  params: { technicianId: string };
+}): Promise<JSX.Element> {
+  const { technicianId } = params;
   const tid = Number(technicianId);
 
-  // Cast avoids TS2589 deep type from gallery RouterOutput in Next.js build
-  const galleryQuery = api.gallery.byTechnician.useQuery(
-    { technicianId: tid, page: 1, limit: 50 },
-    { enabled: !isNaN(tid) },
-  ) as any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const data: GalleryPageData = { items: [] as any[], total: 0 };
 
-  const items: any[] = galleryQuery.data?.items ?? [];
-  const total: number = galleryQuery.data?.total ?? 0;
-  const { isLoading, isError, refetch } = galleryQuery;
+  if (isNaN(tid)) {
+    data.fetchError = 'معرف الفنية غير صالح';
+    return <GalleryClient data={data} />;
+  }
 
-  return (
-    <div className="mx-auto max-w-6xl space-y-6 px-4 py-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-          معرض الأعمال
-        </h1>
+  try {
+    const caller = await getServerCaller();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = (await caller.gallery.byTechnician({ technicianId: tid, page: 1, limit: 50 })) as any;
+    data.items = result.items ?? [];
+    data.total = result.total ?? 0;
+  } catch (e) {
+    data.fetchError = (e as Error).message || 'فشل تحميل المعرض';
+  }
 
-        {isLoading ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }, (_, i) => <CardSkeleton key={i} />)}
-          </div>
-        ) : isError ? (
-          <ErrorAlert message="فشل تحميل المعرض" onRetry={() => refetch()} />
-        ) : items.length === 0 ? (
-          <EmptyState title="لا توجد صور في المعرض" description="لم تقم الفنية برفع أي صور بعد." />
-        ) : (
-          <>
-            <p className="text-sm text-gray-500">{total} صورة</p>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {items.map((img: any) => (
-                <Card key={img.id as number} padding="none" className="overflow-hidden group cursor-pointer">
-                  <div className="aspect-square bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-5xl">
-                    {img.imageUrl ? (
-                      <img
-                        src={img.imageUrl as string}
-                        alt={((img.captionJson as { ar?: string })?.ar) || 'Gallery image'}
-                        className="h-full w-full object-cover"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <span>🖼️</span>
-                    )}
-                  </div>
-                  {((img.captionJson as { ar?: string })?.ar) ? (
-                    <div className="p-3">
-                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{String((img.captionJson as { ar?: string }).ar)}</p>
-                      {img.isBefore ? (
-                        <span className="mt-1 inline-block rounded bg-brand-50 px-2 py-0.5 text-xs text-brand-700 dark:bg-brand-950 dark:text-brand-300">
-                          قبل
-                        </span>
-                      ) : null}
-                      {img.category ? (
-                        <span className="mt-1 ml-1 inline-block rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-500 dark:bg-gray-800 dark:text-gray-400">
-                          {String(img.category)}
-                        </span>
-                      ) : null}
-                    </div>
-                  ) : null}
-                </Card>
-              ))}
-            </div>
-          </>
-        )}
-      </div>
-  );
+  return <GalleryClient data={data} />;
 }
