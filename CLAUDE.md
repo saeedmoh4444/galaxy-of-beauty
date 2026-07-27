@@ -143,6 +143,10 @@ Overall average: **60-90% token reduction** on common development operations.
 - **Tools**: Use `rtk` hooks to validate terminal outputs before processing.
 - **Testing**: Every new feature must have a corresponding test file created before implementation (TDD).
 - **Communication**: When an error occurs, use `rtk` to analyze the stack trace before suggesting a fix.
-- **Database**: This project uses Prisma with `prisma db push` for schema management (no migration files). Always regenerate the Prisma client (`npx prisma generate`) after schema changes. For production, use `prisma migrate deploy`.
+- **Database**: This project uses Prisma with migrations for schema management.
+  - Dev: `pnpm db:migrate:dev` (creates migration from schema changes, applies to dev DB)
+  - Deploy: `pnpm db:migrate:deploy` (applies pending migrations in production)
+  - Quick sync (dev only): `pnpm db:push` (skip migrations for rapid prototyping)
+  - Always run `pnpm db:generate` after schema changes to regenerate Prisma client.
 
 @skills.md

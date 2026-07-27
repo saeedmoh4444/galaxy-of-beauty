@@ -42,9 +42,6 @@ test-results/
 # Turbo
 .turbo/
 
-# Prisma
-packages/db/prisma/migrations/
-
 # Uploads (local dev)
 uploads/*
 !uploads/.gitkeep
