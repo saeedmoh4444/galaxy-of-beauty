@@ -10,6 +10,8 @@ import { useAuth } from '@galaxy/shared';
 export default function LoginPage(): JSX.Element {
   const router = useRouter();
   const { login } = useAuth();
+  // Pre-warm CSRF cookie by calling a public tRPC query
+  api.health.useQuery();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [totpToken, setTotpToken] = useState('');

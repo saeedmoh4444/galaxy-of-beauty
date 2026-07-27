@@ -4,6 +4,12 @@ const DEMO_EMAIL = 'admin@galaxyofbeauty.sa';
 const DEMO_PASSWORD = 'Admin@123456';
 
 test.describe('Authenticated Flows', () => {
+  // Pre-warm CSRF cookie — visit the tRPC health endpoint which sets the cookie
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/api/trpc/health');
+    await page.waitForTimeout(500);
+  });
+
   test('should login with demo credentials', async ({ page }) => {
     await page.goto('/login');
     await expect(page.getByRole('heading', { name: 'تسجيل الدخول' })).toBeVisible();

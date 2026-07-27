@@ -80,7 +80,7 @@ export function useSocket(): void {
 
     // ── Incoming events → invalidate React Query caches ─
     Object.entries(EVENT_CACHE_MAP).forEach(([event, tags]) => {
-      socket.on(event, (_data: unknown) => {
+      socket.on(event, () => {
         tags.forEach((tag) => {
           queryClient.invalidateQueries({ queryKey: [tag] });
         });

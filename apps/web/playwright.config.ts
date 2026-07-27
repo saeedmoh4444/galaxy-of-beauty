@@ -20,8 +20,14 @@ export default defineConfig({
   webServer: process.env['CI']
     ? undefined
     : {
-        command: 'pnpm --filter @galaxy/web dev',
+        command: 'npx next start --port 3000',
         url: 'http://localhost:3000',
         reuseExistingServer: !process.env['CI'],
+        env: {
+          JWT_ACCESS_SECRET: 'test-access-secret-at-least-32-chars-long!!',
+          JWT_REFRESH_SECRET: 'test-refresh-secret-at-least-32-chars-long!!',
+          DATABASE_URL: process.env['DATABASE_URL'] || 'postgresql://gob_admin:gob_secure_pass_2024@localhost:5433/Galaxy_of_Beauty_db',
+        },
+        timeout: 30000,
       },
 });

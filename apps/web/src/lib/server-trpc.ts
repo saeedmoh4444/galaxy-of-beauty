@@ -10,6 +10,5 @@ import { appRouter, createTRPCContext } from '@galaxy/api';
  */
 export async function getServerCaller() {
   const ctx = await createTRPCContext();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (appRouter as any).createCaller(ctx);
+  return (appRouter as any).createCaller(ctx) as any;
 }
