@@ -1686,3 +1686,36 @@ model CommunityLike {
   @@unique([postId, userId])
   @@map("community_likes")
 }
+
+// =============================================================================
+// Beauty Gift Registry — Friends contribute to service funds
+// =============================================================================
+
+model GiftRegistry {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  title       String   // e.g. "زفافي" or "عيد ميلادي"
+  occasion    String   // wedding, birthday, baby_shower, other
+  targetAmount Decimal @db.Decimal(10, 2)
+  raisedAmount Decimal @default(0) @db.Decimal(10, 2)
+  serviceIds  Int[]    // Services the registry is for
+  message     String?
+  status      String   @default("ACTIVE") // ACTIVE, COMPLETED, CLOSED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@map("gift_registries")
+}
+
+model GiftRegistryContribution {
+  id          Int      @id @default(autoincrement())
+  registryId  Int
+  contributorName String
+  amount      Decimal  @db.Decimal(10, 2)
+  message     String?
+  createdAt   DateTime @default(now())
+
+  @@index([registryId])
+  @@map("gift_registry_contributions")
+}

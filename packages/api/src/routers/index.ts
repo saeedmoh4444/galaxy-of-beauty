@@ -62,6 +62,7 @@ import { beautyBudgetRouter } from './beautyBudget';
 import { inspirationRouter } from './inspiration';
 import { recurringBookingRouter } from './recurringBookings';
 import { communityRouter } from './community';
+import { giftRegistryRouter } from './giftRegistry';
 
 export const appRouter = router({
   // Health
@@ -134,6 +135,7 @@ export const appRouter = router({
   inspiration: inspirationRouter,
   recurringBookings: recurringBookingRouter,
   community: communityRouter,
+  giftRegistry: giftRegistryRouter,
 });
 
 export type AppRouter = typeof appRouter;
