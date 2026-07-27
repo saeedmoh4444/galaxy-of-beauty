@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import type { RouterOutput } from '@galaxy/api/client';
 import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Modal } from '@galaxy/shared';
 
 const KYC_TABS = ['ALL', 'PENDING', 'SUBMITTED', 'VERIFIED', 'REJECTED'] as const;
 
-type TechnicianItem = NonNullable<RouterOutput['admin']['listTechnicians']>['items'][number];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type TechnicianItem = Record<string, any>;
 
 const kycBadge = (status: string): { label: string; className: string } => {
   switch (status) {

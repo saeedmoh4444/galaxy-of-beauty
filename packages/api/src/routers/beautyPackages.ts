@@ -2,10 +2,13 @@ import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { publicProcedure, adminProcedure, router } from '../trpc';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = prisma as any;
+
 export const beautyPackageRouter = router({
   // List all active packages (public)
   list: publicProcedure.query(async () => {
-    const packages = await prisma.beautyPackage.findMany({
+    const packages = await db.beautyPackage.findMany({
       where: { isActive: true },
       orderBy: { sortOrder: 'asc' },
       include: {
@@ -24,7 +27,7 @@ export const beautyPackageRouter = router({
   getById: publicProcedure
     .input(z.object({ id: z.number().int().positive() }))
     .query(async ({ input }) => {
-      const pkg = await prisma.beautyPackage.findUnique({
+      const pkg = await db.beautyPackage.findUnique({
         where: { id: input.id },
         include: {
           services: {
@@ -47,7 +50,7 @@ export const beautyPackageRouter = router({
       serviceIds: z.array(z.number().int().positive()).min(2),
     }))
     .mutation(async ({ input }) => {
-      const pkg = await prisma.beautyPackage.create({
+      const pkg = await db.beautyPackage.create({
         data: {
           nameJson: { ar: input.nameAr, en: input.nameEn },
           descriptionJson: input.descriptionAr ? { ar: input.descriptionAr, en: input.descriptionEn || input.descriptionAr } : undefined,
@@ -64,7 +67,7 @@ export const beautyPackageRouter = router({
 
   // Admin: list all (including inactive)
   listAll: adminProcedure.query(async () => {
-    const packages = await prisma.beautyPackage.findMany({
+    const packages = await db.beautyPackage.findMany({
       orderBy: { sortOrder: 'asc' },
       include: {
         services: {

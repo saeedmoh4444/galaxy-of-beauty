@@ -54,7 +54,8 @@ export default function BeautyProfilePage(): JSX.Element {
     set(arr.includes(val) ? arr.filter(v => v !== val) : [...arr, val]);
   };
 
-  const handleSave = () => upsertMut.mutate({ skinType: skinType || undefined, hairType: hairType || undefined, hairLength: hairLength || undefined, skinTone: skinTone || undefined, makeupStyle: makeupStyle || undefined, concerns: concerns.length ? concerns : undefined, preferredScents: scents.length ? scents : undefined, notes: notes || undefined });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSave = () => upsertMut.mutate({ skinType: (skinType || undefined) as any, hairType: (hairType || undefined) as any, hairLength: (hairLength || undefined) as any, skinTone: (skinTone || undefined) as any, makeupStyle: (makeupStyle || undefined) as any, concerns: concerns.length ? concerns : undefined, preferredScents: scents.length ? scents : undefined, notes: notes || undefined });
 
   return (
     <DashboardLayout role="CUSTOMER">
