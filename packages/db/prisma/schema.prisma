@@ -1432,3 +1432,26 @@ model CustomerFavorite {
   @@index([userId])
   @@map("customer_favorites")
 }
+
+// =============================================================================
+// Seasonal Campaigns (Ramadan, Eid, wedding season, etc.)
+// =============================================================================
+
+model Campaign {
+  id              Int      @id @default(autoincrement())
+  nameJson        Json     // { ar, en }
+  descriptionJson Json?
+  imageUrl        String?
+  discountType    String   @default("percent") // percent, fixed
+  discountValue   Decimal  @db.Decimal(10, 2)
+  promoCode       String?  @unique // Optional linked promo code
+  startsAt        DateTime
+  endsAt          DateTime
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([startsAt, endsAt])
+  @@index([isActive])
+  @@map("campaigns")
+}
