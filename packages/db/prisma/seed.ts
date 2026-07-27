@@ -355,6 +355,68 @@ async function main() {
   });
   console.log('✅ AI subscription plans');
 
+  // ---- New Features (Post-MVP) ----
+
+  // Seed blog posts
+  const blog1 = await prisma.blogPost.create({
+    data: {
+      titleJson: { ar: 'أسرار العناية بالبشرة في الصيف', en: 'Summer Skincare Secrets' },
+      bodyJson: { ar: '<p>في فصل الصيف، تحتاج بشرتكِ إلى عناية خاصة...</p>', en: '<p>During summer, your skin needs special care...</p>' },
+      slug: 'summer-skincare-secrets',
+      tags: ['skincare', 'summer', 'tips'],
+      isPublished: true,
+      publishedAt: new Date(),
+    },
+  });
+  const blog2 = await prisma.blogPost.create({
+    data: {
+      titleJson: { ar: 'أحدث صيحات مكياج ٢٠٢٦', en: '2026 Makeup Trends' },
+      bodyJson: { ar: '<p>اكتشفي أحدث صيحات المكياج لهذا العام...</p>', en: '<p>Discover the latest makeup trends...</p>' },
+      slug: '2026-makeup-trends',
+      tags: ['makeup', 'trends'],
+      isPublished: true,
+      publishedAt: new Date(),
+    },
+  });
+  console.log('✅ Blog posts');
+
+  // Seed technician badges
+  const badge1 = await prisma.technicianBadge.create({ data: { key: 'bridal_specialist', nameJson: { ar: 'أخصائية عرايس', en: 'Bridal Specialist' } } });
+  const badge2 = await prisma.technicianBadge.create({ data: { key: 'organic_products', nameJson: { ar: 'منتجات عضوية', en: 'Organic Products' } } });
+  const badge3 = await prisma.technicianBadge.create({ data: { key: 'celebrity_stylist', nameJson: { ar: 'مصففة مشاهير', en: 'Celebrity Stylist' } } });
+  console.log('✅ Technician badges');
+
+  // Seed beauty events
+  await prisma.beautyEvent.create({
+    data: {
+      nameJson: { ar: 'ورشة العناية بالبشرة', en: 'Skincare Workshop' },
+      descriptionJson: { ar: 'تعلمي أساسيات العناية بالبشرة من خبراء التجميل', en: 'Learn skincare basics from beauty experts' },
+      eventType: 'workshop',
+      location: 'الرياض - مركز التجميل',
+      price: 100,
+      maxAttendees: 20,
+      startsAt: new Date(Date.now() + 7 * 86400000),
+      endsAt: new Date(Date.now() + 7 * 86400000 + 3 * 3600000),
+      isPublished: true,
+    },
+  });
+  console.log('✅ Beauty events');
+
+  // Seed campaign
+  await prisma.campaign.create({
+    data: {
+      nameJson: { ar: 'عرض الصيف - خصم ٢٠٪', en: 'Summer Sale - 20% Off' },
+      descriptionJson: { ar: 'خصم ٢٠٪ على جميع خدمات العناية بالبشرة', en: '20% off all skincare services' },
+      discountType: 'percent',
+      discountValue: 20,
+      promoCode: 'SUMMER20',
+      startsAt: new Date(),
+      endsAt: new Date(Date.now() + 30 * 86400000),
+      isActive: true,
+    },
+  });
+  console.log('✅ Campaigns');
+
   // ---- Summary ----
   console.log('\n🎉 Seed complete!');
   console.log('   Admin: admin@galaxyofbeauty.sa (password in 1Password)');
