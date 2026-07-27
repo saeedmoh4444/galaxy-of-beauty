@@ -51,7 +51,7 @@ export const giftCardRouter = router({
   // Redeem a gift card against a booking (customer)
   redeem: customerProcedure
     .input(z.object({ code: z.string().min(1), amount: z.number().positive(), bookingId: z.number().optional() }))
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ input }) => {
       const card = await prisma.giftCard.findUnique({ where: { code: input.code.toUpperCase() } });
       if (!card) throw new TRPCError({ code: 'NOT_FOUND', message: 'بطاقة الهدية غير موجودة' });
       if (card.status !== 'ACTIVE') throw new TRPCError({ code: 'BAD_REQUEST', message: 'البطاقة غير نشطة أو مستخدمة' });

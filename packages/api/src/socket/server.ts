@@ -1,6 +1,5 @@
 import http from 'http';
 import { initializeSocket } from './index';
-import { getEnv } from '../lib/env';
 
 /**
  * Standalone Socket.IO server for real-time events.
@@ -15,7 +14,6 @@ import { getEnv } from '../lib/env';
  * Health check: GET /health → { status: "ok" }
  * Run: pnpm --filter @galaxy/api socket
  */
-const env = getEnv();
 const PORT = parseInt(process.env['SOCKET_PORT'] || '4001', 10);
 
 const httpServer = http.createServer((req, res) => {

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { publicProcedure, adminProcedure, technicianProcedure, router } from '../trpc';
+import { publicProcedure, adminProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = prisma as any;

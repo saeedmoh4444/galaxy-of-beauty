@@ -1719,3 +1719,22 @@ model GiftRegistryContribution {
   @@index([registryId])
   @@map("gift_registry_contributions")
 }
+
+// =============================================================================
+// Notification Preferences
+// =============================================================================
+
+model NotificationPreference {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique
+  bookingReminders Boolean @default(true)
+  promotions   Boolean @default(true)
+  tips        Boolean @default(true)
+  community   Boolean @default(true)
+  emailDigest Boolean @default(false)
+  smsAlerts   Boolean @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("notification_preferences")
+}

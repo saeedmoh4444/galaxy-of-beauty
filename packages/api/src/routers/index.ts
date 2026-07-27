@@ -63,6 +63,7 @@ import { inspirationRouter } from './inspiration';
 import { recurringBookingRouter } from './recurringBookings';
 import { communityRouter } from './community';
 import { giftRegistryRouter } from './giftRegistry';
+import { notificationPrefsRouter } from './notificationPrefs';
 
 export const appRouter = router({
   // Health
@@ -136,6 +137,7 @@ export const appRouter = router({
   recurringBookings: recurringBookingRouter,
   community: communityRouter,
   giftRegistry: giftRegistryRouter,
+  notificationPrefs: notificationPrefsRouter,
 });
 
 export type AppRouter = typeof appRouter;

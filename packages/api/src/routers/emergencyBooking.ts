@@ -36,10 +36,10 @@ export const emergencyBookingRouter = router({
       });
 
       const available = techServices
-        .filter(ts => ts.technician.availabilitySlots.length > 0)
-        .map(ts => ({
+        .filter((ts: any) => ts.technician.availabilitySlots.length > 0)
+        .map((ts: any) => ({
           technicianId: ts.technician.id,
-          name: ts.technician.user?.name || 'Unknown',
+          name: `فنية #${ts.technician.id}`,
           city: ts.technician.city,
           rating: Number(ts.technician.ratingAvg),
           price: Number(ts.customPrice),

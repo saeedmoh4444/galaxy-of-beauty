@@ -11,9 +11,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   createServiceSchema,
-  updateServiceSchema,
   createVariantSchema,
-  createTagSchema,
   serviceQuerySchema,
 } from '../validators/catalog';
 import {
@@ -30,13 +28,10 @@ import {
   createBookingSchema,
   createSlotSchema,
   bookingStatusSchema,
-  rescheduleSchema,
 } from '../validators/booking';
 import {
   paymentAuthorizeSchema,
   walletWithdrawSchema,
-  walletTransactionQuerySchema,
-  createPayoutSchema,
   createAddressSchema,
 } from '../validators/payment';
 
