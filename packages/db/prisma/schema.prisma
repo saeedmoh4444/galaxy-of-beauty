@@ -411,6 +411,8 @@ model Service {
   slug            String?   @unique
   isActive        Boolean  @default(true)
   isPopular       Boolean  @default(false)
+  isPregnancySafe  Boolean @default(false) // Safe for pregnant women
+  isMommyFriendly  Boolean @default(false) // Suitable for mother+child
   sortOrder       Int      @default(0)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
