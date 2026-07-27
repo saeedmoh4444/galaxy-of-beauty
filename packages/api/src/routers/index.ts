@@ -61,6 +61,7 @@ import { selfCareRouter } from './selfCare';
 import { beautyBudgetRouter } from './beautyBudget';
 import { inspirationRouter } from './inspiration';
 import { recurringBookingRouter } from './recurringBookings';
+import { communityRouter } from './community';
 
 export const appRouter = router({
   // Health
@@ -132,6 +133,7 @@ export const appRouter = router({
   beautyBudget: beautyBudgetRouter,
   inspiration: inspirationRouter,
   recurringBookings: recurringBookingRouter,
+  community: communityRouter,
 });
 
 export type AppRouter = typeof appRouter;

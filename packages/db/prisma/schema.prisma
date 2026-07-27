@@ -1660,3 +1660,29 @@ model RecurringBooking {
   @@index([userId, status])
   @@map("recurring_bookings")
 }
+
+// =============================================================================
+// Beauty Community — Social Feed
+// =============================================================================
+
+model CommunityPost {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  content     String
+  imageUrl    String?
+  likes       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("community_posts")
+}
+
+model CommunityLike {
+  id          Int      @id @default(autoincrement())
+  postId      Int
+  userId      Int
+  createdAt   DateTime @default(now())
+
+  @@unique([postId, userId])
+  @@map("community_likes")
+}
