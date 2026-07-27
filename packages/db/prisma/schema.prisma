@@ -1759,3 +1759,22 @@ model BirthdayReward {
   @@unique([userId, year])
   @@map("birthday_rewards")
 }
+
+// =============================================================================
+// Beauty Savings Goals
+// =============================================================================
+
+model SavingsGoal {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  serviceId   Int?
+  title       String   // e.g. "تسريحة العروس" or "باقة العناية"
+  targetAmount Decimal @db.Decimal(10, 2)
+  savedAmount  Decimal @default(0) @db.Decimal(10, 2)
+  status      String   @default("ACTIVE") // ACTIVE, COMPLETED, CANCELLED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@map("savings_goals")
+}
