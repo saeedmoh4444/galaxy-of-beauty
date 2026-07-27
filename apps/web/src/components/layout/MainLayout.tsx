@@ -4,10 +4,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { LanguageToggle } from '@/components/LanguageToggle';
 
 const navLinks = [
   { href: '/services', labelAr: 'الخدمات', labelEn: 'Services' },
   { href: '/marketplace', labelAr: 'المتجر', labelEn: 'Marketplace' },
+  { href: '/lookbook', labelAr: 'لوك بوك', labelEn: 'Lookbook' },
   { href: '/beauty-quiz', labelAr: 'اختبار الجمال', labelEn: 'Quiz' },
   { href: '/beauty-packages', labelAr: 'الباقات', labelEn: 'Packages' },
   { href: '/bridal-concierge', labelAr: 'تخطيط الزفاف', labelEn: 'Bridal' },
@@ -46,6 +48,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
           </nav>
 
           <div className="flex items-center gap-3">
+            <LanguageToggle />
             <ThemeToggle />
             <Link
               href="/login"
