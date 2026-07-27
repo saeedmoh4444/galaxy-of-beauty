@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import type { RouterOutput } from '@galaxy/api/client';
 import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input, Modal, formatCurrency } from '@galaxy/shared';
 
-type ServiceItem = NonNullable<RouterOutput['services']['list']>['items'][number];
-type CategoryItem = RouterOutput['categories']['all'][number];
-type VariantItem = NonNullable<ServiceItem['variants']>[number];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ServiceItem = Record<string, any>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type CategoryItem = Record<string, any>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type VariantItem = Record<string, any>;
 
 interface ServiceForm {
   titleAr: string;

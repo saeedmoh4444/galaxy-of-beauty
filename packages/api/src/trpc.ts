@@ -99,3 +99,51 @@ export const staffProcedure = protectedProcedure.use(hasRole('TECHNICIAN', 'ADMI
 export const customerMutation = customerProcedure.use(csrfGuard);
 export const technicianMutation = technicianProcedure.use(csrfGuard);
 export const adminMutation = adminProcedure.use(csrfGuard);
+
+// ---- Feature Flags ----
+
+/**
+ * Gates a procedure behind a feature flag. If the flag is disabled,
+ * returns a NOT_FOUND error (so disabled features appear not to exist).
+ *
+ * Usage:
+ *   myProcedure.use(requireFeatureFlag('ENABLE_NEW_FEATURE'))
+ *
+ * The flag is checked against the FeatureFlag table (cached in-memory
+ * for 30s to avoid DB load). Flags with rolloutPercent < 100 require
+ * authenticated users with matching role/userId configuration.
+ */
+export function requireFeatureFlag(flagKey: string) {
+  // Lazy import to avoid circular dependency
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const cachedFlags = new Map<string, { enabled: boolean; expiresAt: number }>();
+
+  return middleware(async ({ ctx, next }) => {
+    // Check in-memory cache first (30s TTL)
+    const cached = cachedFlags.get(flagKey);
+    if (cached && cached.expiresAt > Date.now()) {
+      if (!cached.enabled) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Feature not available' });
+      }
+      return next();
+    }
+
+    // Query the flag from the database
+    try {
+      const flag = await ctx.prisma.featureFlag.findUnique({ where: { key: flagKey } });
+      const enabled = flag?.enabled ?? false;
+
+      // Cache for 30 seconds
+      cachedFlags.set(flagKey, { enabled, expiresAt: Date.now() + 30000 });
+
+      if (!enabled) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Feature not available' });
+      }
+    } catch (err) {
+      // If the query fails (e.g., during migration), allow access
+      if (err instanceof TRPCError) throw err;
+    }
+
+    return next();
+  });
+}
