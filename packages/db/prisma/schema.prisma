@@ -1621,3 +1621,42 @@ model BeautyBudget {
   @@unique([userId, month])
   @@map("beauty_budgets")
 }
+
+// =============================================================================
+// Beauty Inspiration Board — Save looks & ideas
+// =============================================================================
+
+model InspirationPin {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  imageUrl    String?
+  title       String?
+  notes       String?
+  tags        String[] // e.g. ["bridal", "nails", "haircolor"]
+  serviceId   Int?     // Link to a service
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@map("inspiration_pins")
+}
+
+// =============================================================================
+// Recurring Bookings — Automated repeat appointments
+// =============================================================================
+
+model RecurringBooking {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  serviceId     Int
+  technicianId  Int?
+  addressId     Int
+  frequency     String   // WEEKLY, BIWEEKLY, MONTHLY
+  nextDate      DateTime
+  status        String   @default("ACTIVE") // ACTIVE, PAUSED, CANCELLED
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId, status])
+  @@map("recurring_bookings")
+}

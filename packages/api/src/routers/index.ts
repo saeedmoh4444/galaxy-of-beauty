@@ -59,6 +59,8 @@ import { technicianBadgeRouter } from './technicianBadges';
 import { beautyEventRouter } from './beautyEvents';
 import { selfCareRouter } from './selfCare';
 import { beautyBudgetRouter } from './beautyBudget';
+import { inspirationRouter } from './inspiration';
+import { recurringBookingRouter } from './recurringBookings';
 
 export const appRouter = router({
   // Health
@@ -128,6 +130,8 @@ export const appRouter = router({
   beautyEvents: beautyEventRouter,
   selfCare: selfCareRouter,
   beautyBudget: beautyBudgetRouter,
+  inspiration: inspirationRouter,
+  recurringBookings: recurringBookingRouter,
 });
 
 export type AppRouter = typeof appRouter;
