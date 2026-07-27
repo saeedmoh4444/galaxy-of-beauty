@@ -74,11 +74,13 @@ The project was greenfield-rebuilt from an Express + React/Vite stack into a mod
 
 ### 1. `apps/web` — Next.js 14 Web App
 
-- **37 pages** across 5 route groups: `(public)`, `(auth)`, `(customer)`, `admin`, `tech`
+- **52 routes** across 5 route groups: `(public)`, `(auth)`, `(customer)`, `admin`, `tech`
+- **SSR**: 2 Server Components — landing page (`/`) and service detail (`/services/[id]`) pre-fetch data via tRPC `createCaller`, with ISR revalidation (60s). Interactive pages remain `'use client'`.
 - **State**: tRPC + TanStack React Query v5, no Zustand
 - **Auth**: JWT in `localStorage`, CSRF double-submit cookie, middleware guards
 - **SEO**: Arabic-first metadata with OpenGraph, Twitter cards, `googleBot` directives
 - **Build**: `ignoreBuildErrors` for Next.js SWC (separate `tsc --noEmit` catches real errors)
+- **Helper**: `lib/server-trpc.ts` — `getServerCaller()` for server-side data fetching
 - **Entry**: `apps/web/src/app/layout.tsx`, `apps/web/src/middleware.ts`
 
 ### 2. `apps/mobile` — Expo Mobile App
@@ -188,6 +190,9 @@ The project was greenfield-rebuilt from an Express + React/Vite stack into a mod
 12. ✅ `test:e2e` script added to web package
 13. ✅ Hardcoded ports updated (4000→3000)
 14. ✅ `trash_stuff/` cleanup
+15. ✅ Fixed offline page missing `'use client'` (E2E error)
+16. ✅ Landing page + service detail → Server Components (SSR)
+17. ✅ Socket.IO `/health` endpoint + graceful shutdown
 
 ### 7 Real Bugs Found During Audit
 
@@ -217,10 +222,10 @@ E2E Tests:   27/38 ⚠️ (pre-existing test selector issues)
 
 ## Recommendations Going Forward
 
-1. **Fix remaining E2E tests** — Update selectors for refactored pages, align demo credentials with seed data
-2. **Gradual SSR migration** — Convert public marketing pages to Server Components for SEO
+1. **Continue SSR migration** — Convert remaining static public pages (technicians, marketplace) using the established `getServerCaller()` pattern
+2. **Fix remaining E2E tests** — Run against `next start` (production build) with JWT env vars. Update selectors for refactored pages, align demo credentials with seed data
 3. **Add Storybook** — For shared UI component library documentation
-4. **Consolidate Socket.IO** — Consider tRPC WebSocket subscriptions to eliminate port 4001
+4. **Consolidate Socket.IO** — Consider tRPC WebSocket subscriptions to eliminate port 4001 (socket server now has `/health` and graceful shutdown as interim improvement)
 5. **Add database migrations** — Replace `prisma db push` with `prisma migrate dev` for production
 
 ---
