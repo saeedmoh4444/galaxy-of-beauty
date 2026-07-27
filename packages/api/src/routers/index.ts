@@ -54,6 +54,9 @@ import { blogRouter } from './blog';
 import { beautyProfileRouter } from './beautyProfile';
 import { priceEstimatorRouter } from './priceEstimator';
 import { emergencyBookingRouter } from './emergencyBooking';
+import { bridalConciergeRouter } from './bridalConcierge';
+import { technicianBadgeRouter } from './technicianBadges';
+import { beautyEventRouter } from './beautyEvents';
 
 export const appRouter = router({
   // Health
@@ -118,6 +121,9 @@ export const appRouter = router({
   beautyProfile: beautyProfileRouter,
   priceEstimator: priceEstimatorRouter,
   emergencyBooking: emergencyBookingRouter,
+  bridalConcierge: bridalConciergeRouter,
+  technicianBadges: technicianBadgeRouter,
+  beautyEvents: beautyEventRouter,
 });
 
 export type AppRouter = typeof appRouter;

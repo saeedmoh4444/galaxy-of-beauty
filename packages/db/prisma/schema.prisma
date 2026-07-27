@@ -1498,3 +1498,91 @@ model BeautyProfile {
 
   @@map("beauty_profiles")
 }
+
+// =============================================================================
+// Bridal Concierge — Wedding Beauty Planning
+// =============================================================================
+
+model BridalConcierge {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @unique
+  weddingDate   DateTime?
+  venue         String?
+  guestCount    Int?
+  budget        Decimal? @db.Decimal(10, 2)
+  status        String   @default("PLANNING") // PLANNING, TRIAL, CONFIRMED, COMPLETED
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  services      BridalService[]
+
+  @@map("bridal_concierges")
+}
+
+model BridalService {
+  id            Int      @id @default(autoincrement())
+  conciergeId   Int
+  serviceId     Int
+  trialDate     DateTime?
+  isTrialDone   Boolean  @default(false)
+  status        String   @default("PENDING")
+  notes         String?
+
+  concierge     BridalConcierge @relation(fields: [conciergeId], references: [id], onDelete: Cascade)
+
+  @@index([conciergeId])
+  @@map("bridal_services")
+}
+
+// =============================================================================
+// Technician Skill Badges
+// =============================================================================
+
+model TechnicianBadge {
+  id          Int    @id @default(autoincrement())
+  key         String @unique // "bridal_specialist", "organic_products", "celebrity_stylist"
+  nameJson    Json   // { ar, en }
+  iconUrl     String?
+
+  technicians TechnicianBadgeAssignment[]
+
+  @@map("technician_badges")
+}
+
+model TechnicianBadgeAssignment {
+  id            Int      @id @default(autoincrement())
+  technicianId  Int
+  badgeId       Int
+  awardedAt     DateTime @default(now())
+
+  badge         TechnicianBadge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([technicianId, badgeId])
+  @@index([technicianId])
+  @@map("technician_badge_assignments")
+}
+
+// =============================================================================
+// Beauty Events — Workshops, Masterclasses
+// =============================================================================
+
+model BeautyEvent {
+  id            Int      @id @default(autoincrement())
+  nameJson      Json     // { ar, en }
+  descriptionJson Json?
+  eventType     String   // workshop, masterclass, launch, seasonal
+  location      String?
+  price         Decimal? @db.Decimal(10, 2) // 0 = free
+  maxAttendees  Int?
+  startsAt      DateTime
+  endsAt        DateTime
+  imageUrl      String?
+  isPublished   Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([startsAt])
+  @@index([isPublished])
+  @@map("beauty_events")
+}
