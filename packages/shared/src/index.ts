@@ -30,4 +30,5 @@ export { defaultLocale, supportedLocales, isRTL, sharedMessages, t } from './i18
 export type { Locale, TranslationKey } from './i18n';
 
 // Types
-export type { ChildrenProps, AsyncState, FeatureComponentSet } from './types/index';
+export type { ChildrenProps, AsyncState, FeatureComponentSet, Bilingual, BilingualContent, PaginatedResponse, ApiError } from './types/index';
+export { ar, en } from './types/index';

@@ -51,6 +51,30 @@ export interface BilingualContent {
   en: string;
 }
 
+/**
+ * Loose bilingual type for Prisma Json fields.
+ * Prisma types JSONB as `JsonValue` which is a deep union;
+ * use this to safely extract Arabic/English text.
+ */
+export interface Bilingual {
+  ar?: string | null;
+  en?: string | null;
+}
+
+/** Extract Arabic text from a bilingual JSONB field. Falls back to English, then empty. */
+export function ar(json: unknown): string {
+  if (!json || typeof json !== 'object') return '';
+  const b = json as Bilingual;
+  return b.ar ?? b.en ?? '';
+}
+
+/** Extract English text from a bilingual JSONB field. Falls back to Arabic, then empty. */
+export function en(json: unknown): string {
+  if (!json || typeof json !== 'object') return '';
+  const b = json as Bilingual;
+  return b.en ?? b.ar ?? '';
+}
+
 /** Saudi currency amount in SAR. */
 export type SARAmount = number;
 

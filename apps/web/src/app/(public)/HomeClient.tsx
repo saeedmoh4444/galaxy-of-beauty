@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Button, Card, CardSkeleton, ErrorAlert, EmptyState } from '@galaxy/shared';
+import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, ar } from '@galaxy/shared';
 
 interface Category {
   id: number;
@@ -55,9 +55,9 @@ export function HomeClient({
               <Link key={c.id} href={`/services?categoryId=${c.id}`}>
                 <Card hover padding="lg" className="flex flex-col items-center text-center">
                   <div className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-100 text-2xl text-brand-600 dark:bg-brand-900">
-                    {(c.nameJson?.ar ?? '✨').charAt(0)}
+                    {ar(c.nameJson).charAt(0) || '✨'}
                   </div>
-                  <h3 className="mt-3 text-sm font-semibold">{c.nameJson?.ar ?? ''}</h3>
+                  <h3 className="mt-3 text-sm font-semibold">{ar(c.nameJson)}</h3>
                 </Card>
               </Link>
             ))}
@@ -77,7 +77,7 @@ export function HomeClient({
                 <Link key={svc.id} href={`/services/${svc.id}`}>
                   <Card hover>
                     <div className="h-40 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100 dark:from-brand-900 dark:to-accent-900" />
-                    <h3 className="mt-3 font-semibold">{svc.titleJson?.ar ?? ''}</h3>
+                    <h3 className="mt-3 font-semibold">{ar(svc.titleJson)}</h3>
                     <p className="mt-1 text-sm text-gray-500">{svc.durationMin} دقيقة</p>
                     <p className="mt-2 font-bold text-brand-600">{svc.basePrice} ر.س</p>
                   </Card>
