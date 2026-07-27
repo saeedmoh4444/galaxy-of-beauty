@@ -63,16 +63,17 @@ docker compose down             # Stop everything
 ```
 galaxy-of-beauty/
 ├── apps/
-│   ├── web/                    # Next.js 14 App Router (52 routes, 4 SSR pages)
-│   └── mobile/                 # Expo SDK 54 + Expo Router (46 screens)
+│   ├── web/                    # Next.js 14 App Router (84 routes, 10 SSR pages)
+│   └── mobile/                 # Expo SDK 54 + Expo Router (47 screens)
 ├── packages/
-│   ├── api/                    # tRPC v11 — 45 routers, 170+ procedures
-│   ├── db/                     # Prisma — 42 models, 15 enums
+│   ├── api/                    # tRPC v11 — 65 routers, 170+ procedures
+│   ├── db/                     # Prisma — 69 models, 15 enums
 │   ├── shared/                 # UI kit (11 components), hooks, i18n, theme, types
 │   └── config/                 # TSConfig, ESLint, Prettier, Tailwind
+├── docs/                       # ADRs, architecture docs
 ├── _legacy/                    # Archived v1.0 (Express + Vite + standalone Expo)
 ├── trash_stuff/                # Local env files & legacy Postman artifacts
-├── docker-compose.yml          # 4-service Docker stack with health checks
+├── docker-compose.yml          # 5-service Docker stack with health checks
 ├── turbo.json                  # Turborepo build pipeline
 └── pnpm-workspace.yaml
 ```
@@ -170,9 +171,23 @@ curl http://localhost:3000/api/trpc/health
 ```bash
 pnpm type-check   # 10/10 workspaces ✅
 pnpm lint         # 7/7 ✅
-pnpm build        # 5/5 — 52 Next.js routes ✅
-pnpm test         # 189 tests (8 suites) ✅
+pnpm build        # 5/5 — 84 Next.js routes ✅
+pnpm test         # 243 tests (10 suites) ✅
 ```
+
+### New Features (Post-MVP)
+
+| Category | Features |
+|----------|----------|
+| Commerce | Gift Cards 🎁 · Beauty Packages 💅 · Price Estimator 💰 · Build Bundle 📦 |
+| Social | Group Bookings 👯‍♀️ · Community Feed 💬 · Inspiration Board 📌 |
+| Wedding | Bridal Concierge 👰 · Gift Registry 🎁 |
+| Content | Beauty Blog 📝 · Seasonal Lookbook 📸 · Seasonal Campaigns 📢 |
+| Wellness | Self-Care Tracker 🌸 · Beauty Budget 💰 · Beauty Profile 💄 |
+| Convenience | Recurring Bookings 🔄 · Emergency Booking 🚨 · Favorites ⭐ |
+| Marketing | Mommy & Me 👩‍👧 · Beauty Quiz ✨ · Rewards Catalog 🏆 · Birthday Rewards 🎂 |
+| Trust | Technician Badges 🏅 · Loyalty Tiers 👑 |
+| Platform | Language Toggle 🌐 · Social Sharing 🔗 · Add to Calendar 📅 |
 
 ---
 
