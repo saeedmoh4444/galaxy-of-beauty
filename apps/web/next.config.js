@@ -6,6 +6,9 @@ const nextConfig = {
   // Next.js build may produce TS2589 "type instantiation excessively deep" false
   // positives from deeply nested tRPC RouterOutput types. These are safe to ignore
   // because the separate `tsc --noEmit` step catches all real type errors.
+  // ADR-001: TypeScript type-checking is handled separately by `pnpm type-check`
+  // (tsc --noEmit, 10/10 workspaces). Next.js build may produce TS2589 false
+  // positives from deeply nested tRPC RouterOutput types. See docs/adr/001-ts-build-strategy.md
   typescript: { ignoreBuildErrors: true },
 
   experimental: {
