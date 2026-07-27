@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import type { Transporter } from 'nodemailer';
+import { logger } from './logger';
 
 // ── Configuration ──────────────────────────────────────────
 
@@ -70,11 +71,8 @@ export async function sendEmail({ to, subject, html }: SendEmailParams): Promise
   const config = getEmailConfig();
 
   if (!transport || !config) {
-    // SMTP not configured — log the email for development
-    // eslint-disable-next-line no-console
-    console.log(`[EMAIL] SMTP not configured. Would send to ${to}: "${subject}"`);
-    // eslint-disable-next-line no-console
-    console.log(`[EMAIL] Body preview: ${html.slice(0, 200)}`);
+    // SMTP not configured — log metadata only (never the email body)
+    logger.warn({ to, subject, htmlLen: html.length }, 'SMTP not configured — email not sent');
     return;
   }
 
@@ -87,8 +85,7 @@ export async function sendEmail({ to, subject, html }: SendEmailParams): Promise
     });
   } catch (err) {
     // Log but don't throw — email failures should not break the API
-    // eslint-disable-next-line no-console
-    console.error(`[EMAIL] Failed to send to ${to}:`, err);
+    logger.error({ err, to, subject }, 'Failed to send email');
   }
 }
 

@@ -1,4 +1,5 @@
 import { prisma } from '@galaxy/db';
+import { logger } from './logger';
 
 // ── Types ──────────────────────────────────────────────────
 
@@ -30,9 +31,7 @@ async function sendExpoPush(
   const accessToken = process.env['EXPO_ACCESS_TOKEN'];
 
   if (!accessToken) {
-    // Expo push not configured — log for development
-    // eslint-disable-next-line no-console
-    console.log(`[Push] Would send to ${tokens.length} device(s): "${message.title}"`);
+    logger.warn({ tokenCount: tokens.length, title: message.title }, 'Expo push not configured');
     return;
   }
 
@@ -57,25 +56,19 @@ async function sendExpoPush(
     });
 
     if (!response.ok) {
-      // eslint-disable-next-line no-console
-      console.error(`[Push] Expo API error: ${response.status}`);
+      logger.error({ status: response.status }, 'Expo push API error');
       return;
     }
 
     const tickets = (await response.json()) as { data?: ExpoPushTicket[] };
 
-    // Check for errors in individual tickets
     const errors = (tickets.data || []).filter((t) => t.status === 'error');
     if (errors.length > 0) {
-      // eslint-disable-next-line no-console
-      console.error(
-        `[Push] ${errors.length} ticket(s) failed:`,
-        errors.map((e) => e.details?.error || e.message),
-      );
+      // Count only — never log individual ticket details (contains device tokens)
+      logger.error({ errorCount: errors.length, totalCount: tickets.data?.length }, 'Expo push ticket errors');
     }
   } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error('[Push] Failed to send Expo push:', err);
+    logger.error({ err }, 'Failed to send Expo push');
   }
 }
 
