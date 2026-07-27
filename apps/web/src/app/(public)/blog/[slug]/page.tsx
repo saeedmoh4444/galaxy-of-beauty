@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getServerCaller } from '@/lib/server-trpc';
+import { ShareButtons } from '@/components/ShareButtons';
 
 export default async function BlogPostPage({
   params,
@@ -41,6 +42,10 @@ export default async function BlogPostPage({
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{title}</h1>
         {date && <p className="mt-2 text-sm text-gray-400">{date}</p>}
         <div className="prose prose-brand mt-8 max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: body }} />
+        <div className="mt-8 border-t border-gray-200 pt-6 dark:border-gray-800">
+          <p className="mb-3 text-sm text-gray-500">شاركي هذا المقال</p>
+          <ShareButtons title={title} />
+        </div>
       </article>
     </div>
   );
