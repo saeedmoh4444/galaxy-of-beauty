@@ -1738,3 +1738,22 @@ model NotificationPreference {
 
   @@map("notification_preferences")
 }
+
+// =============================================================================
+// Birthday Rewards
+// =============================================================================
+
+model BirthdayReward {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  year        Int      // Year the reward was claimed (2026, 2027...)
+  rewardType  String   // "discount_percent", "gift_card", "free_service"
+  rewardValue Decimal  @db.Decimal(10, 2)
+  promoCode   String?  @unique
+  claimed     Boolean  @default(false)
+  claimedAt   DateTime?
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, year])
+  @@map("birthday_rewards")
+}
