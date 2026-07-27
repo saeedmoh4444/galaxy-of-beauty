@@ -9,6 +9,7 @@ import { LanguageToggle } from '@/components/LanguageToggle';
 const navLinks = [
   { href: '/services', labelAr: 'الخدمات', labelEn: 'Services' },
   { href: '/marketplace', labelAr: 'المتجر', labelEn: 'Marketplace' },
+  { href: '/mommy-and-me', labelAr: 'أم وابنتها', labelEn: 'Mommy & Me' },
   { href: '/lookbook', labelAr: 'لوك بوك', labelEn: 'Lookbook' },
   { href: '/beauty-quiz', labelAr: 'اختبار الجمال', labelEn: 'Quiz' },
   { href: '/beauty-packages', labelAr: 'الباقات', labelEn: 'Packages' },
