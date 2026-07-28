@@ -84,6 +84,11 @@ import { eventTicketsRouter } from './eventTickets';
 import { technicianQARouter } from './technicianQA';
 import { homeServiceRouter } from './homeService';
 import { serviceWarrantyRouter } from './serviceWarranty';
+import { liveStreamRouter } from './liveStream';
+import { boxBuilderRouter } from './boxBuilder';
+import { aiRoutineRouter } from './aiRoutine';
+import { beautyCoursesRouter } from './beautyCourses';
+import { vipMembershipRouter } from './vipMembership';
 
 export const appRouter = router({
   // Health
@@ -178,6 +183,11 @@ export const appRouter = router({
   technicianQA: technicianQARouter,
   homeService: homeServiceRouter,
   serviceWarranty: serviceWarrantyRouter,
+  liveStream: liveStreamRouter,
+  boxBuilder: boxBuilderRouter,
+  aiRoutine: aiRoutineRouter,
+  beautyCourses: beautyCoursesRouter,
+  vipMembership: vipMembershipRouter,
 });
 
 export type AppRouter = typeof appRouter;
