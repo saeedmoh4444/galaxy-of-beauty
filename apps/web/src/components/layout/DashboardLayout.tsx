@@ -11,6 +11,7 @@ const customerLinks = [
   { href: '/bookings/create', labelAr: 'حجز جديد', labelEn: 'New Booking', icon: '➕' },
   { href: '/wallet', labelAr: 'المحفظة', labelEn: 'Wallet', icon: '💰' },
   { href: '/wishlist', labelAr: 'المفضلة', labelEn: 'Wishlist', icon: '❤️' },
+  { href: '/mood-board', labelAr: 'لوحة الإلهام', labelEn: 'Mood Board', icon: '🎨' },
   { href: '/family-account', labelAr: 'حساب العائلة', labelEn: 'Family', icon: '👨‍👩‍👧' },
   { href: '/virtual-try-on', labelAr: 'تجربة افتراضية', labelEn: 'Try-On AR', icon: '🤳' },
   { href: '/bridal-concierge', labelAr: 'تخطيط الزفاف', labelEn: 'Bridal', icon: '👰' },
