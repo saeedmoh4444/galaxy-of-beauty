@@ -1778,3 +1778,19 @@ model SavingsGoal {
   @@index([userId])
   @@map("savings_goals")
 }
+
+// =============================================================================
+// Technician Follow System
+// =============================================================================
+
+model TechnicianFollow {
+  id            Int      @id @default(autoincrement())
+  customerId    Int
+  technicianId  Int
+  createdAt     DateTime @default(now())
+
+  @@unique([customerId, technicianId])
+  @@index([customerId])
+  @@index([technicianId])
+  @@map("technician_follows")
+}

@@ -68,6 +68,7 @@ import { birthdayRewardRouter } from './birthdayRewards';
 import { cashbackRouter } from './cashback';
 import { savingsGoalRouter } from './savingsGoals';
 import { recommendationsRouter } from './recommendations';
+import { technicianFollowRouter } from './technicianFollows';
 
 export const appRouter = router({
   // Health
@@ -146,6 +147,7 @@ export const appRouter = router({
   cashback: cashbackRouter,
   savingsGoals: savingsGoalRouter,
   recommendations: recommendationsRouter,
+  technicianFollows: technicianFollowRouter,
 });
 
 export type AppRouter = typeof appRouter;
