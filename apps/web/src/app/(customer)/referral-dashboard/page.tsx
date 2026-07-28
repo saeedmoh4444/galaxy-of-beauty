@@ -2,76 +2,105 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button, Input, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/shared';
 
 export default function ReferralDashboardPage(): JSX.Element {
   const { addToast } = useToast();
-  const [showInvite, setShowInvite] = useState(false);
-  const [inviteEmail, setInviteEmail] = useState('');
-  const [inviteMsg, setInviteMsg] = useState('');
+  const { data: codeData } = api.referrals.getMyCode.useQuery() as { data: { code: string } | undefined };
+  const { data: stats, isLoading, isError, refetch } = api.referrals.getStats.useQuery() as {
+    data: { totalReferred: number; completedReferrals: number; pendingReferrals: number; totalEarned: number; pendingRewards: number; referrals: Array<{ id: number; status: string; referralCode: string; rewardCredited: boolean; referrerReward: number; referred: { name: string; createdAt: string }; completedAt: string | null; createdAt: string }> } | undefined;
+    isLoading: boolean; isError: boolean; refetch: () => void;
+  };
+  const { data: leaderboard } = api.referrals.leaderboard.useQuery({ limit: 10 }) as { data: Array<{ referrerId: number; _count: { id: number } }> | undefined };
+  const { data: share } = api.referrals.shareCard.useQuery() as { data: { code: string; shareUrl: string; shareText: string } | undefined };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: refData, isLoading, isError, refetch } = (api as any).referrals?.getDashboard?.useQuery?.() as any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: codeData } = (api as any).referrals?.getMyCode?.useQuery?.() as any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: statsData } = (api as any).referrals?.getStats?.useQuery?.() as any;
+  const code = codeData?.code ?? share?.code ?? '———';
+  const shareUrl = share?.shareUrl ?? `${typeof window !== 'undefined' ? window.location.origin : ''}/register?ref=${code}`;
 
-  const referralCode = codeData?.code || '———';
-  const referralUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/register?ref=${referralCode}`;
-  const stats = statsData || { totalReferrals: 0, successfulReferrals: 0, totalEarnings: 0 };
+  const copyCode = () => { navigator.clipboard.writeText(code).then(() => addToast('success', 'تم نسخ الكود')); };
+  const shareWhatsApp = () => { window.open(`https://wa.me/?text=${encodeURIComponent((share?.shareText ?? 'انضمي لجالكسي بيوتي') + ' — استخدمي كود: ' + code + '\n' + shareUrl)}`, '_blank'); };
 
-  const copyCode = () => { navigator.clipboard.writeText(referralCode).then(() => addToast('success', 'تم نسخ الكود')); };
-  const copyLink = () => { navigator.clipboard.writeText(referralUrl).then(() => addToast('success', 'تم نسخ الرابط')); };
-
-  const shareWhatsApp = () => { window.open(`https://wa.me/?text=${encodeURIComponent('جربي جالكسي بيوتي! احصلي على ٢٠ ر.س مع أول حجز باستخدام كودي: ' + referralCode + '\n' + referralUrl)}`, '_blank'); };
+  const s = stats ?? { totalReferred: 0, completedReferrals: 0, pendingReferrals: 0, totalEarned: 0, pendingRewards: 0, referrals: [] };
+  const topReferrers = leaderboard ?? [];
 
   return (
     <DashboardLayout role="CUSTOMER">
-      <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">🔗 برنامج الإحالة</h1>
-        <p className="text-sm text-gray-500">دعي صديقاتكِ ينضممن واحصلي على مكافآت! لكل صديقة تسجل وتحجز، تكسبين ٢٠ ر.س</p>
+      <div className="mx-auto max-w-4xl space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold">🎫 برنامج الإحالة</h1>
+          <p className="mt-1 text-sm text-gray-500">ادعي صديقاتكِ واربحوا معاً — ٢٠ ر.س لكل من تسجل وتحجز</p>
+        </div>
 
-        {/* Stats */}
-        {isLoading ? <div className="grid gap-4 md:grid-cols-3">{Array.from({ length: 3 }, (_, i) => <CardSkeleton key={i} />)}</div> : (
-          <div className="grid gap-4 md:grid-cols-3">
-            <Card className="text-center"><p className="text-sm text-gray-500">إجمالي الإحالات</p><p className="text-2xl font-bold text-brand-600">{stats.totalReferrals || 0}</p></Card>
-            <Card className="text-center"><p className="text-sm text-gray-500">إحالات ناجحة</p><p className="text-2xl font-bold text-green-600">{stats.successfulReferrals || 0}</p></Card>
-            <Card className="text-center"><p className="text-sm text-gray-500">المكافآت</p><p className="text-2xl font-bold text-amber-600">{formatCurrency(stats.totalEarnings || 0)}</p></Card>
-          </div>
-        )}
+        {/* Stats Cards */}
+        <div className="grid gap-4 sm:grid-cols-4">
+          <Card padding="md" className="text-center"><p className="text-3xl">👯‍♀️</p><p className="mt-1 text-2xl font-bold">{s.totalReferred}</p><p className="text-xs text-gray-500">مدعوة</p></Card>
+          <Card padding="md" className="text-center"><p className="text-3xl">✅</p><p className="mt-1 text-2xl font-bold text-green-600">{s.completedReferrals}</p><p className="text-xs text-gray-500">مكتملة</p></Card>
+          <Card padding="md" className="text-center"><p className="text-3xl">💰</p><p className="mt-1 text-2xl font-bold text-brand-600">{formatCurrency(s.totalEarned)}</p><p className="text-xs text-gray-500">ربح</p></Card>
+          <Card padding="md" className="text-center"><p className="text-3xl">⏳</p><p className="mt-1 text-2xl font-bold text-amber-600">{formatCurrency(s.pendingRewards)}</p><p className="text-xs text-gray-500">معلق</p></Card>
+        </div>
 
-        {/* Referral Code */}
-        <Card padding="lg">
-          <h3 className="font-semibold mb-3">🎁 كود الإحالة الخاص بكِ</h3>
-          <div className="flex gap-2">
-            <div className="flex-1 rounded-lg border border-gray-200 bg-gray-50 p-3 text-center font-mono text-lg font-bold text-brand-600 dark:border-gray-700 dark:bg-gray-800">{referralCode}</div>
-            <Button onClick={copyCode} variant="outline">📋 نسخ</Button>
+        {/* Share Card */}
+        <Card padding="lg" className="bg-gradient-to-r from-brand-500 to-purple-500 text-white text-center">
+          <p className="text-2xl font-bold">🎁 كود الإحالة الخاص بكِ</p>
+          <div className="mt-3 inline-block rounded-xl bg-white/20 px-8 py-3 backdrop-blur">
+            <p className="text-4xl font-mono font-extrabold tracking-[0.3em]">{code}</p>
           </div>
-          <div className="mt-3 flex gap-2">
-            <div className="flex-1 rounded-lg border border-gray-200 bg-gray-50 p-2 text-xs text-gray-500 truncate dark:border-gray-700 dark:bg-gray-800">{referralUrl}</div>
-            <Button onClick={copyLink} variant="outline" size="sm">📋 نسخ الرابط</Button>
-          </div>
-          <div className="mt-4 flex gap-2">
-            <Button onClick={shareWhatsApp} size="sm" className="flex-1">📱 واتساب</Button>
-            <Button onClick={() => setShowInvite(true)} size="sm" variant="outline" className="flex-1">📧 دعوة بالبريد</Button>
+          <div className="mt-4 flex justify-center gap-3">
+            <button onClick={copyCode} className="rounded-lg bg-white/20 px-4 py-2 text-sm font-bold hover:bg-white/30 transition-colors">📋 نسخ الكود</button>
+            <button onClick={shareWhatsApp} className="rounded-lg bg-green-500/50 px-4 py-2 text-sm font-bold hover:bg-green-500/70 transition-colors">💬 واتساب</button>
           </div>
         </Card>
 
-        {/* Invite Modal */}
-        {showInvite && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={() => setShowInvite(false)}>
-            <div className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-gray-900" onClick={(e) => e.stopPropagation()}>
-              <h3 className="mb-4 text-lg font-bold">دعوة صديقة</h3>
-              <div className="space-y-3">
-                <Input placeholder="البريد الإلكتروني" value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} />
-                <textarea className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800" rows={3} value={inviteMsg} onChange={(e) => setInviteMsg(e.target.value)} placeholder="رسالة شخصية..." />
-                <Button onClick={() => { setShowInvite(false); addToast('success', 'تم إرسال الدعوة'); }} className="w-full">إرسال الدعوة</Button>
-              </div>
+        {/* Referral History */}
+        <h3 className="text-lg font-bold">📋 سجل الإحالات</h3>
+        {isLoading ? <CardSkeleton /> :
+         isError ? <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} /> :
+         s.referrals.length === 0 ? <p className="text-sm text-gray-400 text-center py-8">لم تحيلي أحداً بعد — شاركي كودكِ!</p> :
+         <div className="space-y-2">
+           {s.referrals.map((r) => (
+             <Card key={r.id} padding="md" className="flex items-center justify-between">
+               <div className="flex items-center gap-3">
+                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900 text-lg">👤</div>
+                 <div>
+                   <p className="font-semibold text-sm">{r.referred?.name ?? 'مستخدم'}</p>
+                   <p className="text-xs text-gray-500">{new Date(r.createdAt).toLocaleDateString('ar-SA')}</p>
+                 </div>
+               </div>
+               <div className="text-right">
+                 <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                   r.status === 'COMPLETED' ? 'bg-green-100 text-green-700' :
+                   r.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' :
+                   'bg-gray-100 text-gray-600'
+                 }`}>
+                   {r.status === 'COMPLETED' ? 'مكتمل' : r.status === 'PENDING' ? 'معلق' : r.status}
+                 </span>
+                 <p className="text-xs font-bold text-brand-600 mt-0.5">+{formatCurrency(r.referrerReward)}</p>
+               </div>
+             </Card>
+           ))}
+         </div>
+        }
+
+        {/* Leaderboard */}
+        <h3 className="text-lg font-bold">🏆 أكثر الأعضاء إحالة</h3>
+        {topReferrers.length === 0 ? (
+          <p className="text-sm text-gray-400 text-center py-4">لا توجد بيانات كافية بعد</p>
+        ) : (
+          <Card padding="md">
+            <div className="space-y-2">
+              {topReferrers.slice(0, 5).map((entry, idx) => (
+                <div key={entry.referrerId} className="flex items-center gap-3 py-1">
+                  <span className="text-xl w-8 text-center font-bold">{['🥇','🥈','🥉','4️⃣','5️⃣'][idx] ?? `${idx+1}`}</span>
+                  <div className="flex-1 h-4 rounded-full bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                    <div className="h-full rounded-full bg-gradient-to-r from-brand-400 to-purple-500" style={{ width: `${Math.min(100, (entry._count.id / Math.max(1, topReferrers[0]?._count?.id ?? 1)) * 100)}%` }} />
+                  </div>
+                  <span className="text-sm font-semibold w-12 text-right">{entry._count.id} 👥</span>
+                </div>
+              ))}
             </div>
-          </div>
+          </Card>
         )}
       </div>
     </DashboardLayout>

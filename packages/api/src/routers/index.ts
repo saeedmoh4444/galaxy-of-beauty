@@ -78,6 +78,7 @@ import { salonMapRouter } from './salonMap';
 import { familyAccountRouter } from './familyAccount';
 import { moodBoardRouter } from './moodBoard';
 import { postCareRouter } from './postCare';
+import { beautyAnalyticsRouter } from './beautyAnalytics';
 
 export const appRouter = router({
   // Health
@@ -166,6 +167,7 @@ export const appRouter = router({
   familyAccount: familyAccountRouter,
   moodBoard: moodBoardRouter,
   postCare: postCareRouter,
+  beautyAnalytics: beautyAnalyticsRouter,
 });
 
 export type AppRouter = typeof appRouter;

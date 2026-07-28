@@ -1,91 +1,131 @@
-import Link from 'next/link';
-import { getServerCaller } from '@/lib/server-trpc';
+'use client';
 
-export default async function CampaignsPage(): Promise<JSX.Element> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let active: any[] = [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let upcoming: any[] = [];
-  try {
-    const caller = await getServerCaller();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [a, u] = await Promise.all([caller.campaigns.active() as any, caller.campaigns.upcoming() as any]);
-    active = a; upcoming = u;
-  } catch { /* empty */ }
+import { useState, useEffect } from 'react';
+import { api } from '@/lib/trpc';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/shared';
+import Link from 'next/link';
+
+interface Campaign {
+  id: number;
+  nameJson: Record<string, string>;
+  descriptionJson: Record<string, string> | null;
+  imageUrl: string | null;
+  discountType: string;
+  discountValue: number;
+  promoCode: string | null;
+  startsAt: string;
+  endsAt: string;
+  isActive: boolean;
+}
+
+function Countdown({ endsAt }: { endsAt: string }) {
+  const [label, setLabel] = useState('');
+  useEffect(() => {
+    const update = () => {
+      const diff = new Date(endsAt).getTime() - Date.now();
+      if (diff <= 0) { setLabel('انتهى'); return; }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      if (d > 0) setLabel(`متبقي ${d} يوم`);
+      else if (h > 0) setLabel(`متبقي ${h} ساعة`);
+      else setLabel(`ينتهي قريباً`);
+    };
+    update();
+    const i = setInterval(update, 60000);
+    return () => clearInterval(i);
+  }, [endsAt]);
+  return <span className="text-xs font-semibold text-red-500 animate-pulse">⏰ {label}</span>;
+}
+
+export default function CampaignsPage(): JSX.Element {
+  const { data: active, isLoading: aLoad, isError: aErr, refetch: aRef } = api.campaigns.active.useQuery() as {
+    data: Campaign[] | undefined; isLoading: boolean; isError: boolean; refetch: () => void;
+  };
+  const { data: upcoming, isLoading: uLoad } = api.campaigns.upcoming.useQuery() as {
+    data: Campaign[] | undefined; isLoading: boolean;
+  };
+
+  const activeList = active ?? [];
+  const upcomingList = upcoming ?? [];
+  const isLoading = aLoad || uLoad;
+  const isEmpty = activeList.length === 0 && upcomingList.length === 0;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">العروض والحملات</h1>
+        <span className="text-6xl">🎉</span>
+        <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">العروض والحملات</h1>
         <p className="mt-2 text-gray-500 dark:text-gray-400">عروض الموسم وخصومات حصرية — لفترة محدودة!</p>
       </div>
 
-      {/* Active campaigns */}
-      {active.length > 0 && (
-        <div className="mb-12">
-          <h2 className="mb-6 text-xl font-bold text-gray-900 dark:text-gray-100">🔥 عروض نشطة الآن</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {active.map((c: Record<string, any>) => {
-              const name = (c.nameJson as Record<string, string>)?.ar || '';
-              const desc = (c.descriptionJson as Record<string, string>)?.ar || '';
-              const endsAt = c.endsAt ? new Date(c.endsAt).toLocaleDateString('ar-SA') : '';
-              return (
-                <div key={c.id} className="relative overflow-hidden rounded-2xl border-2 border-red-200 bg-white dark:border-red-800 dark:bg-gray-900">
-                  <div className="absolute left-3 top-3 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white animate-pulse">نشط</div>
-                  <div className="flex h-36 items-center justify-center bg-gradient-to-br from-red-100 to-amber-100 text-5xl dark:from-red-950 dark:to-amber-950">
-                    {c.imageUrl ? <img src={c.imageUrl} alt={name} className="h-full w-full object-cover" /> : <span>🎉</span>}
-                  </div>
-                  <div className="p-5">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">{name}</h3>
-                    {desc && <p className="mt-1 text-sm text-gray-500 line-clamp-2">{desc}</p>}
-                    <div className="mt-3 flex items-center justify-between">
-                      <span className="text-2xl font-bold text-red-600">
-                        {c.discountType === 'percent' ? `-${Number(c.discountValue)}%` : `-${Number(c.discountValue)} ر.س`}
-                      </span>
-                      <span className="text-xs text-gray-400">حتى {endsAt}</span>
+      {isLoading ? (
+        <div className="space-y-6">{Array.from({ length: 4 }, (_, i) => <CardSkeleton key={i} />)}</div>
+      ) : aErr ? (
+        <ErrorAlert message="فشل تحميل الحملات" onRetry={() => aRef()} />
+      ) : isEmpty ? (
+        <EmptyState title="لا توجد حملات حالياً" description="تابعينا للموسم القادم! 🎉" action={{ label: 'تصفحي الخدمات', onPress: () => window.location.assign('/services') }} />
+      ) : (
+        <>
+          {activeList.length > 0 && (
+            <div className="mb-12">
+              <h2 className="mb-6 text-xl font-bold">🔥 عروض نشطة الآن</h2>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {activeList.map((c) => (
+                  <Card key={c.id} padding="none" className="overflow-hidden border-2 border-red-200 dark:border-red-800 hover:shadow-xl transition-all">
+                    <div className="relative flex h-36 items-center justify-center bg-gradient-to-br from-red-100 to-amber-100 dark:from-red-950 dark:to-amber-950 text-5xl">
+                      {c.imageUrl ? <img src={c.imageUrl} alt="" className="h-full w-full object-cover" /> : <span>🎉</span>}
+                      <span className="absolute top-3 right-3 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white animate-pulse">نشط</span>
                     </div>
-                    {c.promoCode && <p className="mt-2 rounded bg-gray-100 px-3 py-1 text-center font-mono text-sm dark:bg-gray-800">كود: {c.promoCode}</p>}
-                    <Link href="/services" className="mt-3 block w-full rounded-lg bg-brand-600 py-2 text-center text-sm font-medium text-white hover:bg-brand-700">
-                      استفيدي من العرض
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+                    <div className="p-5">
+                      <h3 className="text-lg font-bold">{(c.nameJson as Record<string,string>)?.ar}</h3>
+                      <p className="mt-1 text-sm text-gray-500 line-clamp-2">{(c.descriptionJson as Record<string,string>)?.ar ?? ''}</p>
+                      <div className="mt-3 flex items-center justify-between">
+                        <span className="text-2xl font-extrabold text-red-600">
+                          {c.discountType === 'percent' ? `-${c.discountValue}%` : `-${formatCurrency(c.discountValue)}`}
+                        </span>
+                        <Countdown endsAt={c.endsAt} />
+                      </div>
+                      {c.promoCode && (
+                        <div className="mt-2 flex items-center gap-2 rounded-lg bg-gray-100 dark:bg-gray-800 p-2">
+                          <span className="text-xs text-gray-500">كود:</span>
+                          <code className="font-mono font-bold text-brand-600 text-sm">{c.promoCode}</code>
+                          <button onClick={() => { navigator.clipboard.writeText(c.promoCode ?? ''); }} className="mr-auto text-xs text-brand-500 hover:text-brand-700">📋 نسخ</button>
+                        </div>
+                      )}
+                      <Link href="/services" className="mt-3 block w-full rounded-lg bg-brand-600 py-2 text-center text-sm font-medium text-white hover:bg-brand-700 transition-colors">
+                        استفيدي من العرض
+                      </Link>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
 
-      {/* Upcoming */}
-      {upcoming.length > 0 && (
-        <div>
-          <h2 className="mb-6 text-xl font-bold text-gray-900 dark:text-gray-100">📅 قريباً</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {upcoming.map((c: Record<string, any>) => {
-              const name = (c.nameJson as Record<string, string>)?.ar || '';
-              const startsAt = c.startsAt ? new Date(c.startsAt).toLocaleDateString('ar-SA') : '';
-              return (
-                <div key={c.id} className="overflow-hidden rounded-2xl border border-gray-200 bg-white opacity-70 dark:border-gray-800 dark:bg-gray-900">
-                  <div className="flex h-36 items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100 text-5xl dark:from-blue-950 dark:to-purple-950">
-                    <span>📅</span>
-                  </div>
-                  <div className="p-5">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">{name}</h3>
-                    <p className="mt-2 text-sm text-brand-600">يبدأ {startsAt}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {active.length === 0 && upcoming.length === 0 && (
-        <div className="py-16 text-center text-gray-400">
-          <span className="text-5xl">🎉</span>
-          <p className="mt-4">لا توجد حملات نشطة حالياً. تابعينا للموسم القادم!</p>
-          <Link href="/services" className="mt-4 inline-block text-brand-600 hover:underline">تصفحي الخدمات</Link>
-        </div>
+          {upcomingList.length > 0 && (
+            <div>
+              <h2 className="mb-6 text-xl font-bold">📅 قريباً</h2>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {upcomingList.map((c) => (
+                  <Card key={c.id} padding="none" className="overflow-hidden opacity-70 hover:opacity-100 transition-all">
+                    <div className="flex h-36 items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-950 dark:to-purple-950 text-5xl">
+                      <span>📅</span>
+                    </div>
+                    <div className="p-5">
+                      <h3 className="text-lg font-bold">{(c.nameJson as Record<string,string>)?.ar}</h3>
+                      <p className="mt-2 text-sm text-brand-600 font-semibold">
+                        يبدأ {new Date(c.startsAt).toLocaleDateString('ar-SA', { month: 'long', day: 'numeric' })}
+                      </p>
+                      <span className="inline-block mt-2 rounded-full bg-blue-100 dark:bg-blue-900 px-3 py-1 text-xs font-medium text-blue-700 dark:text-blue-300">
+                        {c.discountType === 'percent' ? `-${c.discountValue}%` : `-${formatCurrency(c.discountValue)}`}
+                      </span>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

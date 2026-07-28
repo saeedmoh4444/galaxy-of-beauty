@@ -11,6 +11,8 @@ const customerLinks = [
   { href: '/bookings/create', labelAr: 'حجز جديد', labelEn: 'New Booking', icon: '➕' },
   { href: '/wallet', labelAr: 'المحفظة', labelEn: 'Wallet', icon: '💰' },
   { href: '/wishlist', labelAr: 'المفضلة', labelEn: 'Wishlist', icon: '❤️' },
+  { href: '/beauty-analytics', labelAr: 'تحليلاتي', labelEn: 'Analytics', icon: '📊' },
+  { href: '/birthday-rewards', labelAr: 'هدية الميلاد', labelEn: 'Birthday', icon: '🎂' },
   { href: '/post-care', labelAr: 'العناية بعد الخدمة', labelEn: 'Aftercare', icon: '💆‍♀️' },
   { href: '/mood-board', labelAr: 'لوحة الإلهام', labelEn: 'Mood Board', icon: '🎨' },
   { href: '/family-account', labelAr: 'حساب العائلة', labelEn: 'Family', icon: '👨‍👩‍👧' },
