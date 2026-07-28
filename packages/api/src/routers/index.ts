@@ -75,6 +75,7 @@ import { flashDealRouter } from './flashDeals';
 import { virtualTryOnRouter } from './virtualTryOn';
 import { tutorialsRouter } from './tutorials';
 import { salonMapRouter } from './salonMap';
+import { familyAccountRouter } from './familyAccount';
 
 export const appRouter = router({
   // Health
@@ -160,6 +161,7 @@ export const appRouter = router({
   virtualTryOn: virtualTryOnRouter,
   tutorials: tutorialsRouter,
   salonMap: salonMapRouter,
+  familyAccount: familyAccountRouter,
 });
 
 export type AppRouter = typeof appRouter;
