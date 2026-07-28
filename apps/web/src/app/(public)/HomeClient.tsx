@@ -101,6 +101,30 @@ export function HomeClient({
           ))}
         </div>
       </section>
+
+      {/* Discover Features */}
+      <section className="mx-auto max-w-7xl px-4 py-16">
+        <h2 className="mb-8 text-center text-2xl font-bold">اكتشفي المزيد</h2>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { href: '/virtual-try-on', emoji: '🤳', title: 'تجربة افتراضية', desc: 'جربي المكياج قبل الشراء' },
+            { href: '/tutorials', emoji: '📹', title: 'دروس الجمال', desc: 'تعلمي من الخبراء' },
+            { href: '/salon-map', emoji: '🗺️', title: 'خريطة الصالونات', desc: 'اكتشفي الفنيات القريبات' },
+            { href: '/beauty-courses', emoji: '🎓', title: 'دورات تجميل', desc: 'احصلي على شهادات' },
+            { href: '/blog', emoji: '📝', title: 'المدونة', desc: 'نصائح وأسرار الجمال' },
+            { href: '/live-stream', emoji: '🎥', title: 'بث مباشر', desc: 'تابعي الخبراء مباشرة' },
+            { href: '/flash-deals', emoji: '⚡', title: 'عروض فلاش', desc: 'خصومات لفترة محدودة' },
+            { href: '/community', emoji: '💬', title: 'مجتمع الجمال', desc: 'شاركي تجاربكِ' },
+          ].map((f) => (
+            <Link key={f.href} href={f.href}>
+              <Card hover padding="lg" className="flex items-start gap-3 transition-all">
+                <span className="text-3xl">{f.emoji}</span>
+                <div><h3 className="font-bold text-sm">{f.title}</h3><p className="text-xs text-gray-500 mt-0.5">{f.desc}</p></div>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
