@@ -18,6 +18,8 @@ export const metadata: Metadata = {
     'Secure marketplace for beauty & grooming services in Saudi Arabia — book vetted female technicians for hair, nails, skincare, makeup, massage & henna.',
   metadataBase: new URL(process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'),
   icons: { icon: '/logo.png', apple: '/logo.png' },
+  manifest: '/manifest.json',
+  themeColor: '#c41e3a',
   openGraph: {
     title: 'Galaxy of Beauty | جالكسي بيوتي',
     description:
