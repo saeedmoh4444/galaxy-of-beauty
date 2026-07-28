@@ -102,7 +102,27 @@ export function DashboardLayout({ children, role = 'CUSTOMER' }: { children: Rea
       </aside>
 
       {/* Content */}
-      <main className="flex-1 overflow-auto bg-gray-50 p-6 dark:bg-gray-950">{children}</main>
+      <main className="flex-1 overflow-auto bg-gray-50 p-4 pb-20 md:p-6 md:pb-6 dark:bg-gray-950">{children}</main>
+
+      {/* Mobile Bottom Navigation */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950 md:hidden">
+        <div className="flex overflow-x-auto">
+          {links.slice(0, 5).map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`flex min-w-[64px] flex-1 flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-medium transition-colors ${
+                pathname.startsWith(link.href)
+                  ? 'text-brand-600'
+                  : 'text-gray-400'
+              }`}
+            >
+              <span className="text-lg">{link.icon}</span>
+              <span className="truncate max-w-[56px]">{link.labelAr}</span>
+            </Link>
+          ))}
+        </div>
+      </nav>
     </div>
   );
 }

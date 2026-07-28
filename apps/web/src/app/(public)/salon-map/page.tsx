@@ -117,7 +117,7 @@ export default function SalonMapPage(): JSX.Element {
   }, []);
 
   return (
-    <div className="relative h-[calc(100vh-64px)]">
+    <div className="relative h-[calc(100vh-64px)] md:h-[calc(100vh-64px)]">
       {/* Leaflet CSS + JS from CDN */}
       <link
         rel="stylesheet"
