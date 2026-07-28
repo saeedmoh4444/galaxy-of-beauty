@@ -7,6 +7,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { LanguageToggle } from '@/components/LanguageToggle';
 import { BackToTop } from '@/components/BackToTop';
 import { NotificationBadge } from '@/components/NotificationBadge';
+import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
 
 const navLinks = [
   { href: '/search', labelAr: '🔍', labelEn: 'Search' },
@@ -120,6 +121,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
           </div>
         </div>
       </footer>
+      <PWAInstallPrompt />
     </div>
   );
 }
