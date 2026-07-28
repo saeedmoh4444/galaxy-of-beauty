@@ -83,6 +83,7 @@ import { wellnessTrackerRouter } from './wellnessTracker';
 import { eventTicketsRouter } from './eventTickets';
 import { technicianQARouter } from './technicianQA';
 import { homeServiceRouter } from './homeService';
+import { serviceWarrantyRouter } from './serviceWarranty';
 
 export const appRouter = router({
   // Health
@@ -176,6 +177,7 @@ export const appRouter = router({
   eventTickets: eventTicketsRouter,
   technicianQA: technicianQARouter,
   homeService: homeServiceRouter,
+  serviceWarranty: serviceWarrantyRouter,
 });
 
 export type AppRouter = typeof appRouter;

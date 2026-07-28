@@ -11,6 +11,7 @@ const customerLinks = [
   { href: '/bookings/create', labelAr: 'حجز جديد', labelEn: 'New Booking', icon: '➕' },
   { href: '/wallet', labelAr: 'المحفظة', labelEn: 'Wallet', icon: '💰' },
   { href: '/wishlist', labelAr: 'المفضلة', labelEn: 'Wishlist', icon: '❤️' },
+  { href: '/service-warranty', labelAr: 'ضمان الخدمة', labelEn: 'Warranty', icon: '🛡️' },
   { href: '/wellness-tracker', labelAr: 'متعقب العافية', labelEn: 'Wellness', icon: '🧘' },
   { href: '/home-service', labelAr: 'خدمة منزلية', labelEn: 'Home Service', icon: '🏠' },
   { href: '/beauty-analytics', labelAr: 'تحليلاتي', labelEn: 'Analytics', icon: '📊' },

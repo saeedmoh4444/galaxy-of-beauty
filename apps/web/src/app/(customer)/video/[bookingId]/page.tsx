@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { api } from '@/lib/trpc';
-import { Card, ErrorAlert, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useState } from 'react';
 
@@ -46,7 +46,7 @@ export default function VideoSessionPage(): JSX.Element {
         </h1>
 
         {isLoading ? (
-          <Card padding="md"><p className="text-sm text-gray-500">جاري التحميل...</p></Card>
+          <CardSkeleton />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل الجلسة" onRetry={() => refetch()} />
         ) : !sess ? (
