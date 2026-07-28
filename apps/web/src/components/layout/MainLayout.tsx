@@ -9,6 +9,7 @@ import { BackToTop } from '@/components/BackToTop';
 import { NotificationBadge } from '@/components/NotificationBadge';
 
 const navLinks = [
+  { href: '/search', labelAr: '🔍', labelEn: 'Search' },
   { href: '/services', labelAr: 'الخدمات', labelEn: 'Services' },
   { href: '/marketplace', labelAr: 'المتجر', labelEn: 'Marketplace' },
   { href: '/mommy-and-me', labelAr: 'أم وابنتها', labelEn: 'Mommy & Me' },
