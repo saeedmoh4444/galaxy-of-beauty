@@ -69,6 +69,7 @@ import { cashbackRouter } from './cashback';
 import { savingsGoalRouter } from './savingsGoals';
 import { recommendationsRouter } from './recommendations';
 import { technicianFollowRouter } from './technicianFollows';
+import { beautyJournalRouter } from './beautyJournal';
 
 export const appRouter = router({
   // Health
@@ -148,6 +149,7 @@ export const appRouter = router({
   savingsGoals: savingsGoalRouter,
   recommendations: recommendationsRouter,
   technicianFollows: technicianFollowRouter,
+  beautyJournal: beautyJournalRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -1794,3 +1794,22 @@ model TechnicianFollow {
   @@index([technicianId])
   @@map("technician_follows")
 }
+
+// =============================================================================
+// Beauty Journal — Track your beauty journey
+// =============================================================================
+
+model BeautyJournal {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  title       String?
+  content     String
+  mood        Int?     // 1-5
+  imageUrl    String?
+  serviceType String?  // hair, skin, makeup, nails, body
+  bookingId   Int?
+  createdAt   DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("beauty_journals")
+}
