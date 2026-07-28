@@ -1,72 +1,298 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, Input, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/shared';
+
+interface EstimateResult {
+  serviceName: string;
+  basePrice: number;
+  variantDelta: number;
+  variantName: string;
+  subtotal: number;
+  platformFee: number;
+  discount: number;
+  discountType: string;
+  promoValid: boolean;
+  total: number;
+  currency: string;
+}
+
+interface ServiceOption {
+  id: number;
+  titleJson: Record<string, string>;
+  basePrice: string | number;
+  categoryId: number;
+}
 
 export default function PriceEstimatorPage(): JSX.Element {
-  const [serviceId, setServiceId] = useState('');
-  const [variantId, setVariantId] = useState('');
+  const [search, setSearch] = useState('');
+  const [selectedServiceId, setSelectedServiceId] = useState<number | null>(null);
   const [promoCode, setPromoCode] = useState('');
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [result, setResult] = useState<any>(null);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
-  const estimate = async () => {
-    setError(''); setResult(null);
-    if (!serviceId) { setError('الرجاء إدخال معرف الخدمة'); return; }
-    setLoading(true);
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const utils = (api as any).useUtils?.() as any;
-      if (utils?.priceEstimator?.estimate?.fetch) {
-        const r = await utils.priceEstimator.estimate.fetch({
-          serviceId: Number(serviceId),
-          variantId: variantId ? Number(variantId) : undefined,
-          promoCode: promoCode || undefined,
-        });
-        setResult(r);
-      } else {
-        // Fallback: show manual calculation
-        setResult({
-          serviceName: `خدمة #${serviceId}`,
-          basePrice: 0, variantDelta: 0, variantName: '',
-          subtotal: 0, platformFee: 11, discount: 0,
-          total: 0, currency: 'SAR', manual: true,
-        });
-      }
-    } catch (e: any) { setError(e?.message || 'فشل التقدير'); }
-    setLoading(false);
+  // Service search
+  const { data: services, isLoading: servicesLoading } = api.services.list.useQuery(
+    { search: search || undefined, page: 1, limit: 10 },
+    { enabled: search.length >= 1 },
+  ) as { data: { items: ServiceOption[] } | undefined; isLoading: boolean };
+
+  // Estimation query (auto-runs when service is selected)
+  const {
+    data: estimate,
+    isLoading: estimateLoading,
+    isError,
+    error,
+    refetch,
+  } = api.priceEstimator.estimate.useQuery(
+    {
+      serviceId: selectedServiceId ?? 0,
+      promoCode: promoCode.trim() || undefined,
+    },
+    { enabled: !!selectedServiceId && !isNaN(selectedServiceId) },
+  ) as {
+    data: EstimateResult | undefined;
+    isLoading: boolean;
+    isError: boolean;
+    error: { message?: string } | null;
+    refetch: () => void;
   };
+
+  const serviceList: ServiceOption[] = (services as { items: ServiceOption[] })?.items ?? [];
+  const selectedService = serviceList.find((s) => s.id === selectedServiceId);
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    if (!value) setSelectedServiceId(null);
+  };
+
+  const handleServiceSelect = (id: number) => {
+    setSelectedServiceId(id);
+    setSearch('');
+  };
+
+  const savings = estimate && estimate.discount > 0 ? estimate.discount : 0;
+  const hasPromoError = promoCode.trim() && estimate && !estimate.promoValid && estimate.discount === 0;
 
   return (
     <div className="mx-auto max-w-lg px-4 py-12">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">💰 حاسبة التكلفة</h1>
-        <p className="mt-2 text-gray-500">احسبي تكلفة الحجز قبل التأكيد — شاملة جميع الرسوم والخصومات</p>
+      {/* Header */}
+      <div className="mb-8 text-center">
+        <span className="text-6xl">💰</span>
+        <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">حاسبة التكلفة</h1>
+        <p className="mt-2 text-gray-500 dark:text-gray-400">
+          احسبي تكلفة حجزكِ قبل التأكيد — السعر الأساسي، الرسوم، والخصومات
+        </p>
       </div>
+
+      {/* Input Card */}
       <Card padding="lg">
         <div className="space-y-4">
-          <Input label="معرف الخدمة" type="number" value={serviceId} onChange={(e) => setServiceId(e.target.value)} placeholder="مثال: ١" />
-          <Input label="معرف المتغير (اختياري)" type="number" value={variantId} onChange={(e) => setVariantId(e.target.value)} placeholder="مثال: ٢" />
-          <Input label="كود الخصم (اختياري)" value={promoCode} onChange={(e) => setPromoCode(e.target.value.toUpperCase())} placeholder="WELCOME20" />
-          <Button onClick={estimate} loading={loading} className="w-full">احسبي التكلفة</Button>
-          {error && <p className="text-sm text-red-600 text-center">{error}</p>}
+          {/* Service Search / Select */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
+              الخدمة <span className="text-red-500">*</span>
+            </label>
+
+            {selectedService ? (
+              <div className="flex items-center justify-between rounded-xl border-2 border-brand-300 bg-brand-50 p-3 dark:border-brand-700 dark:bg-brand-950">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">💅</span>
+                  <div>
+                    <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                      {selectedService.titleJson?.ar ?? selectedService.titleJson?.en ?? `خدمة #${selectedService.id}`}
+                    </p>
+                    <p className="text-xs text-brand-600 font-semibold">
+                      {formatCurrency(Number(selectedService.basePrice))}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedServiceId(null)}
+                  className="text-gray-400 hover:text-red-500 p-1 transition-colors"
+                  title="تغيير الخدمة"
+                >
+                  ✕
+                </button>
+              </div>
+            ) : (
+              <div className="relative">
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  placeholder="ابحثي عن خدمة..."
+                  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-gray-500"
+                />
+                {servicesLoading && search.length > 0 && (
+                  <div className="absolute top-full mt-1 w-full rounded-xl border border-gray-200 bg-white p-4 text-center text-sm text-gray-400 dark:border-gray-700 dark:bg-gray-900 z-10 shadow-lg">
+                    🔍 جاري البحث...
+                  </div>
+                )}
+                {search.length > 0 && !servicesLoading && serviceList.length > 0 && (
+                  <div className="absolute top-full mt-1 w-full rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900 z-10 shadow-xl max-h-64 overflow-y-auto">
+                    {serviceList.map((s) => (
+                      <button
+                        key={s.id}
+                        onClick={() => handleServiceSelect(s.id)}
+                        className="flex w-full items-center justify-between px-4 py-3 text-sm hover:bg-brand-50 dark:hover:bg-brand-950 transition-colors border-b border-gray-50 dark:border-gray-800 last:border-0"
+                      >
+                        <span className="text-gray-900 dark:text-gray-100">
+                          {s.titleJson?.ar ?? s.titleJson?.en ?? `خدمة #${s.id}`}
+                        </span>
+                        <span className="text-xs font-semibold text-brand-600">
+                          {formatCurrency(Number(s.basePrice))}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Promo Code */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
+              كود الخصم <span className="text-gray-400 font-normal">(اختياري)</span>
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                placeholder="مثال: WELCOME20"
+                className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm uppercase tracking-wider focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-gray-500"
+              />
+              {promoCode && estimate?.promoValid && (
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-green-500 text-sm font-bold">✓ صالح</span>
+              )}
+              {hasPromoError && (
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-red-400 text-xs">غير صالح</span>
+              )}
+            </div>
+          </div>
+
+          {/* Quick Info */}
+          <div className="rounded-xl bg-gray-50 p-3 dark:bg-gray-800 text-xs text-gray-500 space-y-1">
+            <p>📌 <strong>السعر الأساسي</strong> — سعر الخدمة قبل أي إضافات</p>
+            <p>📌 <strong>رسوم المنصة</strong> — ١١ ر.س ثابتة لكل حجز</p>
+            <p>📌 <strong>الخصم</strong> — يطبق تلقائياً عند إدخال كود خصم صالح</p>
+          </div>
         </div>
       </Card>
 
-      {result && (
-        <Card padding="lg" className="mt-6">
-          <h3 className="font-bold text-lg mb-4 text-center">{result.serviceName}</h3>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between"><span className="text-gray-500">السعر الأساسي</span><span>{formatCurrency(result.basePrice)}</span></div>
-            {result.variantDelta > 0 && <div className="flex justify-between"><span className="text-gray-500">{result.variantName || 'المتغير'}</span><span className="text-green-600">+{formatCurrency(result.variantDelta)}</span></div>}
-            <div className="flex justify-between"><span className="text-gray-500">المجموع الفرعي</span><span className="font-semibold">{formatCurrency(result.subtotal)}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">رسوم المنصة</span><span>{formatCurrency(result.platformFee)}</span></div>
-            {result.discount > 0 && <div className="flex justify-between"><span className="text-green-600">الخصم {result.discountType === 'percent' ? `(${result.promoCode || 'كود'})` : ''}</span><span className="text-green-600 font-bold">-{formatCurrency(result.discount)}</span></div>}
+      {/* Estimate Result */}
+      {estimateLoading && selectedServiceId && (
+        <div className="mt-6">
+          <CardSkeleton />
+        </div>
+      )}
+
+      {isError && selectedServiceId && (
+        <div className="mt-6">
+          <ErrorAlert
+            message={(error as { message?: string })?.message || 'فشل حساب التكلفة'}
+            onRetry={() => refetch()}
+          />
+        </div>
+      )}
+
+      {estimate && !estimateLoading && selectedServiceId && (
+        <Card
+          padding="lg"
+          className={`mt-6 transition-all ${
+            savings > 0
+              ? 'border-2 border-green-300 dark:border-green-700'
+              : ''
+          }`}
+        >
+          {/* Service Title */}
+          <div className="text-center mb-5">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+              {estimate.serviceName}
+            </h3>
+            {estimate.variantDelta > 0 && estimate.variantName && (
+              <span className="inline-block mt-1 rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700 dark:bg-purple-900 dark:text-purple-300">
+                {estimate.variantName}
+              </span>
+            )}
+          </div>
+
+          {/* Breakdown */}
+          <div className="space-y-3 text-sm">
+            <div className="flex justify-between">
+              <span className="text-gray-500">السعر الأساسي</span>
+              <span className="font-medium text-gray-700 dark:text-gray-300">
+                {formatCurrency(estimate.basePrice)}
+              </span>
+            </div>
+
+            {estimate.variantDelta > 0 && (
+              <div className="flex justify-between">
+                <span className="text-gray-500">{estimate.variantName || 'المتغير'}</span>
+                <span className="text-purple-600 font-medium">
+                  +{formatCurrency(estimate.variantDelta)}
+                </span>
+              </div>
+            )}
+
+            <div className="flex justify-between pt-2 border-t border-gray-100 dark:border-gray-800">
+              <span className="text-gray-500">المجموع الفرعي</span>
+              <span className="font-semibold text-gray-800 dark:text-gray-200">
+                {formatCurrency(estimate.subtotal)}
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-500">رسوم المنصة</span>
+              <span className="text-gray-600 dark:text-gray-400">
+                {formatCurrency(estimate.platformFee)}
+              </span>
+            </div>
+
+            {estimate.discount > 0 && (
+              <div className="flex justify-between rounded-lg bg-green-50 p-2 dark:bg-green-950">
+                <span className="text-green-700 dark:text-green-300 font-medium">
+                  🏷️ الخصم {estimate.discountType === 'percent' ? `(${promoCode})` : ''}
+                </span>
+                <span className="text-green-700 dark:text-green-300 font-bold">
+                  -{formatCurrency(estimate.discount)}
+                </span>
+              </div>
+            )}
+
+            {hasPromoError && (
+              <div className="rounded-lg bg-red-50 p-2 text-center text-xs text-red-600 dark:bg-red-950 dark:text-red-400">
+                ⚠️ كود الخصم "{promoCode}" غير صالح أو منتهي الصلاحية
+              </div>
+            )}
+
             <hr className="dark:border-gray-700" />
-            <div className="flex justify-between text-lg"><span className="font-bold">الإجمالي</span><span className="font-extrabold text-brand-600">{formatCurrency(result.total)}</span></div>
+
+            {/* Total */}
+            <div className="flex justify-between text-lg pt-1">
+              <span className="font-bold text-gray-900 dark:text-gray-100">الإجمالي</span>
+              <span className="font-extrabold text-brand-600">
+                {formatCurrency(estimate.total)} ر.س
+              </span>
+            </div>
+
+            {savings > 0 && (
+              <div className="rounded-full bg-green-100 px-4 py-1.5 text-center text-xs font-bold text-green-700 dark:bg-green-900 dark:text-green-300">
+                🎉 وفرتِ {formatCurrency(savings)} ر.س!
+              </div>
+            )}
+          </div>
+
+          {/* CTA */}
+          <div className="mt-5 text-center">
+            <Button
+              size="lg"
+              className="w-full"
+              onClick={() => window.location.assign(`/bookings/create?serviceId=${selectedServiceId}`)}
+            >
+              احجزي الآن ←
+            </Button>
           </div>
         </Card>
       )}

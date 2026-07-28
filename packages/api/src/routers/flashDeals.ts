@@ -13,6 +13,31 @@ export const flashDealRouter = router({
       orderBy: { endsAt: 'asc' },
       take: 10,
     });
+    // Enrich with service info
+    const enriched = await Promise.all(
+      deals.map(async (d: any) => {
+        const service = await db.service.findUnique({ where: { id: d.serviceId } });
+        const nameJson = service?.nameJson as Record<string, string> | undefined;
+        return {
+          ...d,
+          discountValue: Number(d.discountValue),
+          originalPrice: Number(d.originalPrice),
+          dealPrice: Number(d.dealPrice),
+          serviceNameAr: nameJson?.ar ?? '',
+          serviceNameEn: nameJson?.en ?? '',
+          serviceEmoji: service?.emoji ?? '💅',
+        };
+      }),
+    );
+    return enriched;
+  }),
+  upcoming: publicProcedure.query(async () => {
+    const now = new Date();
+    const deals = await db.flashDeal.findMany({
+      where: { isActive: true, startsAt: { gt: now } },
+      orderBy: { startsAt: 'asc' },
+      take: 5,
+    });
     return deals.map((d: any) => ({ ...d, discountValue: Number(d.discountValue), originalPrice: Number(d.originalPrice), dealPrice: Number(d.dealPrice) }));
   }),
   create: adminProcedure
