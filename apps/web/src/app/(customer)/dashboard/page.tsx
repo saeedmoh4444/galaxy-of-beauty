@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { RebookReminder } from '@/components/RebookReminder';
 
 export default function CustomerDashboardPage(): JSX.Element {
   const bookings = api.bookings.list.useQuery({ limit: 3 });
@@ -25,6 +26,7 @@ export default function CustomerDashboardPage(): JSX.Element {
       <div className="mx-auto max-w-5xl space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">لوحة التحكم</h1>
+        <RebookReminder />
           <Link href="/customer/self-care"><Button variant="outline" size="sm">🌸 تقييم اليوم</Button></Link>
         </div>
 
