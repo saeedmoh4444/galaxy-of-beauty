@@ -33,20 +33,18 @@ function readingTime(html: string): string {
 export default function BlogPage(): JSX.Element {
   const [page, setPage] = useState(1);
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
 
   const { data, isLoading, isError, refetch } = api.blog.list.useQuery(
-    { page, limit: POSTS_PER_PAGE },
+    { page, limit: POSTS_PER_PAGE, search: search || undefined },
   ) as { data: { items: BlogPost[]; total: number } | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
 
   const posts: BlogPost[] = data?.items ?? [];
   const totalPages = data ? Math.ceil(data.total / POSTS_PER_PAGE) : 1;
 
-  // Collect unique tags from all posts
   const availableTags = useMemo(() => {
-    const tagSet = new Set<string>();
-    posts.forEach((p) => p.tags?.forEach((t) => tagSet.add(t)));
-    // Also add known tags that might appear in other pages
-    ALL_TAGS.forEach((t) => tagSet.add(t));
+    const tagSet = new Set(ALL_TAGS);
+    posts.forEach((p) => p.tags?.forEach((t: string) => tagSet.add(t)));
     return Array.from(tagSet);
   }, [posts]);
 
@@ -61,6 +59,17 @@ export default function BlogPage(): JSX.Element {
         <p className="mt-2 text-gray-500 dark:text-gray-400">
           نصائح، اتجاهات، وأسرار العناية بالجمال — كل ما تحتاجين معرفته
         </p>
+      </div>
+
+      {/* Search */}
+      <div className="mb-4 flex justify-center">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+          placeholder="🔍 ابحثي في المقالات..."
+          className="w-full max-w-md rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-gray-500"
+        />
       </div>
 
       {/* Tag Filter */}

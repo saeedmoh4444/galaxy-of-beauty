@@ -41,12 +41,13 @@ export default function TutorialsPage(): JSX.Element {
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState<string | undefined>();
   const [difficulty, setDifficulty] = useState<string | undefined>();
+  const [search, setSearch] = useState('');
 
   const { data: filtersData } = api.tutorials.filters.useQuery() as {
     data: { categories: FilterMeta[]; difficulties: FilterMeta[] } | undefined;
   };
   const { data, isLoading, isError, refetch } = api.tutorials.list.useQuery(
-    { page, limit: TUTORIALS_PER_PAGE, category, difficulty },
+    { page, limit: TUTORIALS_PER_PAGE, category, difficulty, search: search || undefined },
   ) as { data: { items: Tutorial[]; total: number } | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
 
   const tutorials: Tutorial[] = data?.items ?? [];
@@ -63,6 +64,17 @@ export default function TutorialsPage(): JSX.Element {
         <p className="mt-2 text-gray-500 dark:text-gray-400">
           تعلمي أسرار الجمال من خبراء معتمدين — دروس بالفيديو خطوة بخطوة
         </p>
+      </div>
+
+      {/* Search */}
+      <div className="mb-4 flex justify-center">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+          placeholder="🔍 ابحثي في الدروس..."
+          className="w-full max-w-md rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-gray-500"
+        />
       </div>
 
       {/* Filters */}

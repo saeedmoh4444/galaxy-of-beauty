@@ -5,16 +5,24 @@ import { publicProcedure, adminProcedure, router } from '../trpc';
 export const blogRouter = router({
   // Published posts (public, paginated)
   list: publicProcedure
-    .input(z.object({ page: z.number().default(1), limit: z.number().default(9) }))
+    .input(z.object({ page: z.number().default(1), limit: z.number().default(9), search: z.string().optional() }))
     .query(async ({ input }) => {
+      const where: Record<string, unknown> = { isPublished: true };
+      if (input.search) {
+        where.OR = [
+          { titleJson: { path: ['ar'], string_contains: input.search } },
+          { titleJson: { path: ['en'], string_contains: input.search } },
+          { tags: { hasSome: [input.search] } },
+        ];
+      }
       const [items, total] = await Promise.all([
         prisma.blogPost.findMany({
-          where: { isPublished: true },
+          where,
           orderBy: { publishedAt: 'desc' },
           skip: (input.page - 1) * input.limit,
           take: input.limit,
         }),
-        prisma.blogPost.count({ where: { isPublished: true } }),
+        prisma.blogPost.count({ where }),
       ]);
       return { items, total, page: input.page, limit: input.limit };
     }),
