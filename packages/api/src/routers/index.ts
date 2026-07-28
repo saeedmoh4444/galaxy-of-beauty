@@ -79,6 +79,10 @@ import { familyAccountRouter } from './familyAccount';
 import { moodBoardRouter } from './moodBoard';
 import { postCareRouter } from './postCare';
 import { beautyAnalyticsRouter } from './beautyAnalytics';
+import { wellnessTrackerRouter } from './wellnessTracker';
+import { eventTicketsRouter } from './eventTickets';
+import { technicianQARouter } from './technicianQA';
+import { homeServiceRouter } from './homeService';
 
 export const appRouter = router({
   // Health
@@ -168,6 +172,10 @@ export const appRouter = router({
   moodBoard: moodBoardRouter,
   postCare: postCareRouter,
   beautyAnalytics: beautyAnalyticsRouter,
+  wellnessTracker: wellnessTrackerRouter,
+  eventTickets: eventTicketsRouter,
+  technicianQA: technicianQARouter,
+  homeService: homeServiceRouter,
 });
 
 export type AppRouter = typeof appRouter;
