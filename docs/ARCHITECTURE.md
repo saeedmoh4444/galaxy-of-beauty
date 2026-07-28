@@ -8,20 +8,21 @@
 │  ┌──────────────────┐  ┌──────────────────┐                 │
 │  │ apps/web         │  │ apps/mobile      │                 │
 │  │ Next.js 14 (SSR) │  │ Expo SDK 54      │                 │
-│  │ tRPC Client      │  │ Expo Router      │                 │
-│  │ React Query      │  │ React Query      │                 │
+│  │ 90+ pages        │  │ Expo Router      │                 │
+│  │ tRPC Client      │  │ React Query      │                 │
+│  │ React Query      │  │                  │                 │
 │  └────────┬─────────┘  └────────┬─────────┘                │
 └───────────┼─────────────────────┼──────────────────────────┘
             │ tRPC over HTTP      │
 ┌───────────▼─────────────────────▼──────────────────────────┐
 │                     API LAYER                                │
 │  ┌──────────────────────────────────────────────────────┐   │
-│  │ packages/api — tRPC v11 (45 routers)                 │   │
+│  │ packages/api — tRPC v11 (89 routers)                 │   │
 │  │ Middleware: rateLimit → auth → role → CSRF → Zod     │   │
 │  └──────────────────────┬───────────────────────────────┘   │
 │  ┌──────────────────────┼───────────────────────────────┐   │
 │  │ packages/db          │  packages/shared              │   │
-│  │ Prisma (42 models)   │  UI kit, i18n, types          │   │
+│  │ Prisma (87+ models)  │  UI kit, i18n, types          │   │
 │  └──────────────────────┴───────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
             │
@@ -29,6 +30,7 @@
 │                    INFRASTRUCTURE                           │
 │  PostgreSQL 15 · Redis 7 · Socket.IO · Docker Compose     │
 │  PayFort/APS · OpenAI · Google Calendar · ZATCA · SMS    │
+│  Leaflet/OSM · MediaPipe · Cloudinary · Sentry           │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -54,6 +56,23 @@
 7. Optional dispute → disputes.create
    └── Admin resolves → disputes.resolve
 ```
+
+## Feature Inventory (v2.1.0)
+
+| Category | Features |
+|----------|----------|
+| Core | Booking System · Payments (PayFort) · Wallet · Auth (JWT+2FA) · AI Chatbot |
+| Commerce | Gift Cards · Beauty Packages · Price Estimator · Flash Deals · Box Builder · Marketplace |
+| Social | Community Feed · Group Bookings · Mood Board · Technician Q&A · Referrals |
+| Content | Blog · Beauty Tutorials · Live Stream · Beauty Courses · Lookbook · Campaigns |
+| Wellness | Self-Care Tracker · Beauty Budget · Beauty Profile · Wellness Tracker · Post-Service Care |
+| Innovation | Virtual Try-On AR · AI Skin Analysis · AI Routine Builder · Beauty Analytics |
+| Wedding | Bridal Concierge · Gift Registry |
+| Family | Family Account · Mommy & Me |
+| Loyalty | Loyalty Tiers · Challenges · Birthday Rewards · VIP Membership · Streaks |
+| Discovery | Salon Map · Search · Technician Badges · Events · Event Ticketing |
+| Convenience | Home Service · Service Warranty · Recurring Bookings · Emergency Booking |
+| Platform | i18n (ar/en) · ZATCA · Notifications · PWA · Calendar Sync |
 
 ## Key Design Decisions
 

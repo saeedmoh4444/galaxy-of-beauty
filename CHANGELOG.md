@@ -1,50 +1,96 @@
-# Changelog
+# Changelog — Galaxy of Beauty
 
-All notable changes to Galaxy of Beauty.
+## [2.1.0] — 2026-07-28
 
-## [2.0.0] — 2026-07-26
+### New Features (30+)
 
-### Added
-- **Greenfield rebuild** to Next.js 14 + tRPC + Turborepo + pnpm monorepo
-- 46 tRPC routers (170+ procedures) with end-to-end type safety
-- 11 shared UI components in `@galaxy/shared` (Button, Card, Modal, Toast, etc.)
-- Rate limiting middleware (Redis-backed, per-tier: 20/60/300 req/min)
-- CSRF protection on all mutations (double-submit cookie pattern)
-- `tailwind-merge` + `clsx` for proper class conflict resolution in `cn()`
-- 36 integration tests exercising full tRPC pipeline
-- Shared API types: `PaginatedResponse<T>`, `ApiError`, `BilingualContent`
-- `.editorconfig` for cross-IDE consistency
-- `CONTRIBUTING.md` with coding standards and workflow
+**Wave 1 — Quick Wins (API-ready pages)**
+- 🏆 Challenges — Customer dashboard with progress tracking and join flow
+- 💬 Community Feed — Enhanced with user info, optimistic likes, pagination
+- ⚡ Flash Deals — Rebuilt with live API, countdown timers, claim flow
+- 👯‍♀️ Group Bookings — Create modal, member management, detail view
+- 📝 Blog — Rebuilt with tag filtering, reading time, search, pagination
+- 📅 Beauty Events — Rebuilt with event-type filter, countdown timers
+- 💰 Price Estimator — Rebuilt with service search dropdown, promo validation
+- 👰 Bridal Concierge — Smart auth-gated dashboard, progress tracker
 
-### Changed
-- Archived legacy codebase (`backend/`, `frontend/`, `mobileapp/`) → `_legacy/`
-- Eliminated 81 `as never`/`as any` type casts across 37 web pages
-- Reduced eslint-disables from 31 to 3 (legitimate ErrorBoundary only)
-- PM2 config now supports `APP_ROOT` env var (no longer Docker-only)
-- `ErrorAlert` now imports real `Button` component (no inline duplication)
-- Renamed `DataView` → `FeatureDataView` to avoid native API conflict
+**Wave 2 — Brand New Features**
+- 🤳 Virtual Try-On AR — Camera-based makeup color simulation
+- 📹 Beauty Tutorials — Video learning with category/difficulty filters
+- 🗺️ Salon Map View — Interactive Leaflet/OpenStreetMap with technician markers
+- 👨‍👩‍👧 Family Account — Manage family members, book on their behalf
+- 🎨 Mood Board — Pinterest-style inspiration boards
+- 💆‍♀️ Post-Service Care — Personalized aftercare tips by service category
 
-### Fixed
-- Variant form: field names `price`/`durationMin` → `priceDelta`/`durationDelta`
-- KYC submission: `technicianId`/`adminNote` → `userId`/`notes`
-- Dispute resolution: `resolutionNote` → `resolution`
-- Payout procedures: `list` → `listForAdmin`, `processPayout` → `process`
-- Gallery caption: `captionAr` → `captionJson.ar`
-- Loyalty fields: `pointsToNextTier` → `nextTier.pointsNeeded`
-- Admin API: missing `kycDocuments` in technician list response
-- Booking creation: `idempotencyKey` now uses `crypto.randomUUID()`
+**Wave 3 — Fill the Gaps**
+- 🎂 Birthday Rewards — Reward claim with promo codes
+- 🏅 Technician Badges — Public catalog with gradient cards
+- 📢 Campaigns — Rebuilt with countdown timers, promo code copy
+- 🧠 Skin Analysis Dashboard — Enhanced with stats, trend cards
+- 🎫 Referral Leaderboard — Rebuilt with share card, leaderboard table
+- 📊 Beauty Analytics — Spending KPIs, category breakdown, monthly trends
 
-## [1.0.0] — 2026-06-10
+**Wave 4 — Next Horizons**
+- 🧘 Wellness Tracker — Daily water/sleep/mood/steps/skincare check-in
+- 🎟️ Event Ticketing — Browse events, reserve tickets
+- 💬 Technician Q&A — Ask beauty experts by category
+- 🏠 Home Service — At-home beauty booking with city-based pricing
+- 🛡️ Service Warranty — Satisfaction guarantee with claims tracking
 
-### Added
-- Initial Express.js REST API (27 route modules, 22 services)
-- React 18 + Vite SPA frontend
-- Expo SDK 54 mobile app
-- Prisma ORM with PostgreSQL 15
-- PayFort/Amazon Payment Services integration
-- OpenAI "Layla" chatbot
+**Wave 5 — Engagement**
+- 🎥 Live Stream — Live video player with real-time chat sidebar
+- 📦 Box Builder — Custom monthly beauty box with product selection
+- 🧠 AI Routine — Personalized AM/PM skincare by skin type
+- 🎓 Beauty Courses — Multi-lesson courses with instructor info
+- 💎 VIP Membership — 3-tier comparison with upgrade flow
+
+### API Enhancements
+- Blog router: added search support (JSONB title + tag matching)
+- Flash Deals router: added service name/emoji enrichment + upcoming query
+- Community router: added user info enrichment, myLikes query, delete mutation
+- DashboardLayout: added mobile bottom navigation bar
+- 11 new API routers (78 → 89 total)
+
+### Platform Improvements
+- 🔍 Search added to Blog and Tutorials pages
+- 📱 Mobile bottom navigation bar with quick-access links
+- 🧭 Breadcrumbs component added to deep pages
+- ✨ Page fade-in animation on dashboard pages
+- 📝 README updated with 50+ features across 7 categories
+- 🏷️ data-testid attributes for E2E targeting
+- 🧹 CardSkeleton replaces bare text loading states
+
+### Technical Stats
+- **Routers:** 78 → 89
+- **Pages:** 70+ → 90+
+- **Tests:** 243/243 passing (10 suites)
+- **Type Check:** 10/10 workspaces
+- **Build:** 5/5 tasks
+
+---
+
+## [2.0.0] — 2026-07-27
+
+### Architecture
+- Greenfield rebuild from Express + React/Vite → Next.js 14 + tRPC v11 + Turborepo
+- Monorepo: `apps/web`, `apps/mobile`, `packages/api`, `packages/db`, `packages/shared`, `packages/config`
+- 54 routers, 53 models, 69 pages at launch
+- 243 tests across 10 suites
+
+### Core Platform
+- Booking management with 10-state lifecycle
+- Payments via PayFort/APS with wallet + cashback
+- JWT auth with rotation, 2FA TOTP, CSRF protection
+- AI chatbot "Layla" (OpenAI GPT-4o-mini)
 - ZATCA e-invoicing compliance
-- JWT authentication with refresh token rotation
-- Real-time updates via Socket.IO
-- Docker Compose (4 services)
-- GitHub Actions CI pipeline
+- Redis caching + rate limiting
+- Docker Compose (5 services)
+- PM2 + Nginx deployment
+
+### Post-Audit Remediation
+- 15/15 critical/high findings resolved
+- Prisma migrations configured (dev + deploy)
+- Contract tests added for all mutations
+- Structured logging (Pino) replacing console.log
+- ADR framework with 001 — TypeScript build strategy
+- Legacy codebase archived to `_legacy/`

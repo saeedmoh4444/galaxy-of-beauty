@@ -66,8 +66,8 @@ galaxy-of-beauty/
 │   ├── web/                    # Next.js 14 App Router (84 routes, 10 SSR pages)
 │   └── mobile/                 # Expo SDK 54 + Expo Router (47 screens)
 ├── packages/
-│   ├── api/                    # tRPC v11 — 65 routers, 170+ procedures
-│   ├── db/                     # Prisma — 69 models, 15 enums
+│   ├── api/                    # tRPC v11 — 89 routers, 200+ procedures
+│   ├── db/                     # Prisma — 87 models, 15 enums
 │   ├── shared/                 # UI kit (11 components), hooks, i18n, theme, types
 │   └── config/                 # TSConfig, ESLint, Prettier, Tailwind
 ├── docs/                       # ADRs, architecture docs
@@ -154,9 +154,10 @@ galaxy-of-beauty/
 ## 📊 Verification
 
 ```bash
-pnpm type-check     # 8/8 workspaces — FULL TURBO
-pnpm lint           # 5/5 tasks — zero errors
-pnpm build          # 5/5 tasks — 37 Next.js routes
+pnpm type-check     # 10/10 workspaces
+pnpm lint           # 7/7 tasks
+pnpm build          # 5/5 tasks — 90+ Next.js routes
+pnpm test           # 243 tests (10 suites)
 ```
 
 ### API Health
@@ -171,7 +172,7 @@ curl http://localhost:3000/api/trpc/health
 ```bash
 pnpm type-check   # 10/10 workspaces ✅
 pnpm lint         # 7/7 ✅
-pnpm build        # 5/5 — 84 Next.js routes ✅
+pnpm build        # 5/5 — 90+ Next.js routes ✅
 pnpm test         # 243 tests (10 suites) ✅
 ```
 
