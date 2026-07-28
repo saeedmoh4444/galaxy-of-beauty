@@ -77,6 +77,7 @@ import { tutorialsRouter } from './tutorials';
 import { salonMapRouter } from './salonMap';
 import { familyAccountRouter } from './familyAccount';
 import { moodBoardRouter } from './moodBoard';
+import { postCareRouter } from './postCare';
 
 export const appRouter = router({
   // Health
@@ -164,6 +165,7 @@ export const appRouter = router({
   salonMap: salonMapRouter,
   familyAccount: familyAccountRouter,
   moodBoard: moodBoardRouter,
+  postCare: postCareRouter,
 });
 
 export type AppRouter = typeof appRouter;
