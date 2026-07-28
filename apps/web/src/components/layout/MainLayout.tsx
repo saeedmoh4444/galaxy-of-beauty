@@ -5,6 +5,8 @@ import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LanguageToggle } from '@/components/LanguageToggle';
+import { BackToTop } from '@/components/BackToTop';
+import { NotificationBadge } from '@/components/NotificationBadge';
 
 const navLinks = [
   { href: '/services', labelAr: 'الخدمات', labelEn: 'Services' },
@@ -50,6 +52,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
           </nav>
 
           <div className="flex items-center gap-3">
+            <NotificationBadge />
             <LanguageToggle />
             <ThemeToggle />
             <Link
@@ -70,6 +73,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
 
       {/* Main Content */}
       <main>{children}</main>
+      <BackToTop />
 
       {/* Footer */}
       <footer className="border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
