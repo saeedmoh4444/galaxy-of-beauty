@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/shared';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 
 const DEFAULT_DIFFICULTY = { label: 'غير معروف', color: 'bg-gray-100 text-gray-700' };
 const DIFFICULTY_META: Record<string, { label: string; color: string }> = {
@@ -81,10 +82,7 @@ export default function TutorialDetailPage(): JSX.Element {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
-      {/* Back link */}
-      <Link href="/tutorials" className="inline-flex items-center gap-1 text-sm text-brand-600 hover:text-brand-700 transition-colors font-medium mb-6">
-        ← العودة للدروس
-      </Link>
+      <Breadcrumbs items={[{ label: 'الدروس', href: '/tutorials' }, { label: title }]} />
 
       {/* Video Player */}
       <div className="relative w-full overflow-hidden rounded-2xl bg-black shadow-2xl" style={{ paddingBottom: '56.25%' }}>

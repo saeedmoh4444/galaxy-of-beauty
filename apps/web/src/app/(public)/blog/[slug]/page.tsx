@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { ErrorAlert, Button } from '@galaxy/shared';
 import { ShareButtons } from '@/components/ShareButtons';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 
 interface BlogPost {
   id: number;
@@ -90,13 +91,7 @@ export default function BlogPostPage(): JSX.Element {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
-      {/* Back link */}
-      <Link
-        href="/blog"
-        className="inline-flex items-center gap-1 text-sm text-brand-600 hover:text-brand-700 transition-colors font-medium"
-      >
-        ← العودة للمدونة
-      </Link>
+      <Breadcrumbs items={[{ label: 'المدونة', href: '/blog' }, { label: title || 'المقال' }]} />
 
       <article className="mt-6">
         {/* Hero Image */}

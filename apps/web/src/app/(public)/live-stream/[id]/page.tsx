@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { CardSkeleton, ErrorAlert, Button } from '@galaxy/shared';
 import { useAuth } from '@galaxy/shared';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 
 export default function LiveStreamDetailPage(): JSX.Element {
   const { id } = useParams();
@@ -31,7 +32,9 @@ export default function LiveStreamDetailPage(): JSX.Element {
   const isLive = (stream.isLive as boolean) ?? false;
 
   return (
-    <div className="flex h-[calc(100vh-64px)] flex-col lg:flex-row">
+    <div className="flex h-[calc(100vh-64px)] flex-col">
+      <div className="px-4 pt-4"><Breadcrumbs items={[{ label: 'البث المباشر', href: '/live-stream' }, { label: stream.titleAr as string }]} /></div>
+      <div className="flex flex-1 flex-col lg:flex-row">
       {/* Video Player */}
       <div className="flex-1 bg-black flex items-center justify-center">
         {stream.streamUrl ? (
@@ -81,6 +84,7 @@ export default function LiveStreamDetailPage(): JSX.Element {
             )}
           </div>
         )}
+      </div>
       </div>
     </div>
   );

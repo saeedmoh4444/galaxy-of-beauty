@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 
 const DEFAULT_STATUS = { label: 'غير معروف', color: 'text-gray-700 dark:text-gray-300', bg: 'bg-gray-100 dark:bg-gray-800' };
 const STATUS_MAP: Record<string, { label: string; color: string; bg: string }> = {
@@ -48,10 +49,7 @@ export default function GroupBookingDetailPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        {/* Back link */}
-        <Link href="/group-bookings" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-brand-600 transition-colors">
-          ← العودة لحجوزات المجموعات
-        </Link>
+        <Breadcrumbs items={[{ label: 'حجوزات المجموعات', href: '/group-bookings' }, { label: (group?.name as string) || 'تفاصيل' }]} />
 
         {isLoading ? (
           <div className="space-y-4">

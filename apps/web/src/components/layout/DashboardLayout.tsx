@@ -108,7 +108,7 @@ export function DashboardLayout({ children, role = 'CUSTOMER' }: { children: Rea
       </aside>
 
       {/* Content */}
-      <main data-testid="dashboard-content" className="flex-1 overflow-auto bg-gray-50 p-4 pb-20 md:p-6 md:pb-6 dark:bg-gray-950">{children}</main>
+      <main data-testid="dashboard-content" className="flex-1 overflow-auto bg-gray-50 p-4 pb-20 md:p-6 md:pb-6 dark:bg-gray-950 animate-fade-in">{children}</main>
 
       {/* Mobile Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950 md:hidden">
