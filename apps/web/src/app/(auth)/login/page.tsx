@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Button, Input, Card, ErrorAlert } from '@galaxy/shared';
 import { useAuth } from '@galaxy/shared';
+import { SocialLogin } from '@/components/SocialLogin';
 
 export default function LoginPage(): JSX.Element {
   const router = useRouter();
@@ -134,6 +135,9 @@ export default function LoginPage(): JSX.Element {
           </Button>
         </form>
 
+        {!twoFactorRequired && (
+          <div className="mt-6"><SocialLogin /></div>
+        )}
         {!twoFactorRequired && (
           <div className="mt-4 text-center text-sm text-gray-500">
             <Link href="/forgot-password" className="text-brand-600 hover:underline">
