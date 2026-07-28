@@ -73,6 +73,7 @@ import { beautyJournalRouter } from './beautyJournal';
 import { challengesRouter } from './challenges';
 import { flashDealRouter } from './flashDeals';
 import { virtualTryOnRouter } from './virtualTryOn';
+import { tutorialsRouter } from './tutorials';
 
 export const appRouter = router({
   // Health
@@ -156,6 +157,7 @@ export const appRouter = router({
   challenges: challengesRouter,
   flashDeals: flashDealRouter,
   virtualTryOn: virtualTryOnRouter,
+  tutorials: tutorialsRouter,
 });
 
 export type AppRouter = typeof appRouter;
