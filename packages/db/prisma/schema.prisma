@@ -1813,3 +1813,27 @@ model BeautyJournal {
   @@index([userId, createdAt])
   @@map("beauty_journals")
 }
+
+// =============================================================================
+// Flash Deals — Limited-Time Offers
+// =============================================================================
+
+model FlashDeal {
+  id                Int      @id @default(autoincrement())
+  serviceId         Int
+  titleAr           String?
+  titleEn           String?
+  discountPercent   Int      // e.g. 40 = 40% off
+  originalPrice     Decimal  @db.Decimal(10, 2)
+  dealPrice         Decimal  @db.Decimal(10, 2)
+  discountValue     Decimal  @db.Decimal(10, 2)
+  maxRedemptions    Int      @default(20)
+  currentRedemptions Int     @default(0)
+  startsAt          DateTime
+  endsAt            DateTime
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+
+  @@index([isActive, startsAt, endsAt])
+  @@map("flash_deals")
+}
