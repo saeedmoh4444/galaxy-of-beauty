@@ -94,6 +94,11 @@ import { styleMatchRouter } from './styleMatch';
 import { giftQuizRouter } from './giftQuiz';
 import { techCalendarRouter } from './techCalendar';
 import { productCompareRouter } from './productCompare';
+import { skinDiaryRouter } from './skinDiary';
+import { penPalRouter } from './penPal';
+import { techLeaderboardRouter } from './techLeaderboard';
+import { beforeAfterRouter } from './beforeAfter';
+import { saleAlertsRouter } from './saleAlerts';
 
 export const appRouter = router({
   // Health
@@ -198,6 +203,11 @@ export const appRouter = router({
   giftQuiz: giftQuizRouter,
   techCalendar: techCalendarRouter,
   productCompare: productCompareRouter,
+  skinDiary: skinDiaryRouter,
+  penPal: penPalRouter,
+  techLeaderboard: techLeaderboardRouter,
+  beforeAfter: beforeAfterRouter,
+  saleAlerts: saleAlertsRouter,
 });
 
 export type AppRouter = typeof appRouter;
