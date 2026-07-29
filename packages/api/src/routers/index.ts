@@ -90,6 +90,7 @@ import { aiRoutineRouter } from './aiRoutine';
 import { beautyCoursesRouter } from './beautyCourses';
 import { vipMembershipRouter } from './vipMembership';
 import { productScannerRouter } from './productScanner';
+import { styleMatchRouter } from './styleMatch';
 
 export const appRouter = router({
   // Health
@@ -190,6 +191,7 @@ export const appRouter = router({
   beautyCourses: beautyCoursesRouter,
   vipMembership: vipMembershipRouter,
   productScanner: productScannerRouter,
+  styleMatch: styleMatchRouter,
 });
 
 export type AppRouter = typeof appRouter;
