@@ -121,6 +121,13 @@ import { videoTestimonialsRouter } from './videoTestimonials';
 import { serviceTrendsRouter } from './serviceTrends';
 import { nightModeRouter } from './nightMode';
 import { travelKitRouter } from './travelKit';
+import { liveChatRouter } from './liveChat';
+import { vendorPortalRouter } from './vendorPortal';
+import { serviceMenuQrRouter } from './serviceMenuQr';
+import { certificationQuizRouter } from './certificationQuiz';
+import { geofenceOffersRouter } from './geofenceOffers';
+import { salonManagementRouter } from './salonManagement';
+import { newsletterRouter } from './newsletter';
 
 export const appRouter = router({
   // Health
@@ -252,6 +259,13 @@ export const appRouter = router({
   serviceTrends: serviceTrendsRouter,
   nightMode: nightModeRouter,
   travelKit: travelKitRouter,
+  liveChat: liveChatRouter,
+  vendorPortal: vendorPortalRouter,
+  serviceMenuQr: serviceMenuQrRouter,
+  certificationQuiz: certificationQuizRouter,
+  geofenceOffers: geofenceOffersRouter,
+  salonManagement: salonManagementRouter,
+  newsletter: newsletterRouter,
 });
 
 export type AppRouter = typeof appRouter;
