@@ -136,6 +136,15 @@ import { beautyAwardsRouter } from './beautyAwards';
 import { giftCardMarketRouter } from './giftCardMarket';
 import { behindScenesRouter } from './behindScenes';
 import { beautyExpoRouter } from './beautyExpo';
+import { corporateWellnessRouter } from './corporateWellness';
+import { techOnboardingRouter } from './techOnboarding';
+import { adminAnalyticsV2Router } from './adminAnalyticsV2';
+import { calendarSyncRouter } from './calendarSync';
+import { whatsappBotRouter } from './whatsappBot';
+import { bnplRouter } from './bnpl';
+import { beautyStoriesRouter } from './beautyStories';
+import { audioRoomsRouter } from './audioRooms';
+import { beautyShortsRouter } from './beautyShorts';
 
 export const appRouter = router({
   // Health
@@ -282,6 +291,15 @@ export const appRouter = router({
   giftCardMarket: giftCardMarketRouter,
   behindScenes: behindScenesRouter,
   beautyExpo: beautyExpoRouter,
+  corporateWellness: corporateWellnessRouter,
+  techOnboarding: techOnboardingRouter,
+  adminAnalyticsV2: adminAnalyticsV2Router,
+  calendarSync: calendarSyncRouter,
+  whatsappBot: whatsappBotRouter,
+  bnpl: bnplRouter,
+  beautyStories: beautyStoriesRouter,
+  audioRooms: audioRoomsRouter,
+  beautyShorts: beautyShortsRouter,
 });
 
 export type AppRouter = typeof appRouter;
