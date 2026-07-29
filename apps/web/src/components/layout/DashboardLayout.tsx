@@ -11,6 +11,7 @@ const customerLinks = [
   { href: '/bookings/create', labelAr: 'حجز جديد', labelEn: 'New Booking', icon: '➕' },
   { href: '/wallet', labelAr: 'المحفظة', labelEn: 'Wallet', icon: '💰' },
   { href: '/wishlist', labelAr: 'المفضلة', labelEn: 'Wishlist', icon: '❤️' },
+  { href: '/product-scanner', labelAr: 'فحص المنتجات', labelEn: 'Scanner', icon: '🔍' },
   { href: '/vip-membership', labelAr: 'عضوية VIP', labelEn: 'VIP', icon: '💎' },
   { href: '/ai-routine', labelAr: 'روتين ذكي', labelEn: 'AI Routine', icon: '🧠' },
   { href: '/box-builder', labelAr: 'صندوق التجميل', labelEn: 'Box Builder', icon: '📦' },

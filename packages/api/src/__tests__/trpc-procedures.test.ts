@@ -52,7 +52,7 @@ describe('Router Structure', () => {
   const routerKeys = Object.keys(appRouter['_def']['record']);
 
   it('should have exactly 78 routers', () => {
-    expect(routerKeys).toHaveLength(89);
+    expect(routerKeys).toHaveLength(90);
   });
 
   const required = [
