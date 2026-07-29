@@ -1,8 +1,8 @@
 # Changelog — Galaxy of Beauty
 
-## [2.1.0] — 2026-07-28
+## [2.2.0] — 2026-07-29
 
-### New Features (30+)
+### New Features (70+)
 
 **Wave 1 — Quick Wins (API-ready pages)**
 - 🏆 Challenges — Customer dashboard with progress tracking and join flow
@@ -60,11 +60,67 @@
 - 🏷️ data-testid attributes for E2E targeting
 - 🧹 CardSkeleton replaces bare text loading states
 
+**Wave 6 — Platform Expansion**
+- 🧬 Skin Diary — Photo timeline + hydration tracking
+- 💌 Beauty Pen Pal — Interest-based beauty buddy matching
+- 🏆 Tech Leaderboard — Rankings by rating/bookings/speed
+- 📸 Before/After Gallery — Transformation photos with credit
+- 🛒 Sale Alerts — Custom discount notifications by category
+
+**Wave 7 — Smart Tools**
+- 🧪 Ingredient Analyzer — Paste ingredients, get safety ratings
+- 📋 Booking Checklist — Pre-appointment prep by service type
+- 🎙️ Beauty Podcast — Curated beauty podcast episodes
+- 💇‍♀️ Hair Color Simulator — 12 colors with photo upload
+- 🕯️ Spa Day Planner — Build spa itineraries with breaks
+- 📦 Restock Reminder — Track product usage + refill alerts
+
+**Wave 8 — Engagement & Discovery**
+- 🎯 Service Matchmaker — 3-question quiz to find perfect service
+- 📊 Booking Heatmap — 7-day visual peak hour calendar
+- ⏱️ Expiry Tracker — Product expiration countdown
+- 🤖 Beauty FAQ — Searchable Q&A with 8 curated answers
+- 🔔 Price Drop Alerts — Track services + get drop notifications
+- 🎀 Loyalty Punch Card — 10 stamps = free session
+- 📅 Routine Scheduler — AM/PM/weekly checklist
+- 🌟 Featured Tech — Weekly spotlight with interview
+
+**Wave 9 — Substitution & Social**
+- 🧴 Ingredient Sub — Find safe alternatives to harmful ingredients
+- 📸 Look of the Day — Daily featured looks with voting
+- 🎫 Referral Race — Live leaderboard with prizes
+- 📋 Tech Waitlist — Join waitlists for booked technicians
+- 🎥 Video Testimonials — Customer video reviews with ratings
+- 📊 Service Trends — Monthly popularity charts + top 5
+- 🌙 Night Mode — Evening routine with sleep tips
+- 🧳 Travel Kit — Custom kit by destination + duration
+
+**Wave 10 — Business & Community**
+- 💬 Live Chat — Real-time support with auto-responses
+- 🏪 Vendor Portal — Product management dashboard
+- 📋 QR Service Menu — Generate QR codes for menus
+- 🎓 Certification Quiz — Beauty knowledge + certificates
+- 📍 Geofence Offers — Location-based salon deals
+- 🤝 Salon Management — Multi-staff salon dashboard
+- 📰 Newsletter — Email archive + subscription
+
+**Wave 11 — AI, Commerce & Awards**
+- 🧠 AI Assistant — Q&A with auto-answered beauty topics
+- 🛒 Group Buy — Bulk discounts via group purchasing
+- 🎮 Beauty Bingo — Gamified 9-task beauty card
+- 📝 Service Wishlist — Track prices with drops
+- 🏆 Beauty Awards — Monthly community voting
+- 💳 Gift Card Market — P2P gift card trading
+- 📹 Behind the Scenes — Technician studio tours
+- 🎪 Beauty Expo — Virtual brand exhibition
+
 ### Technical Stats
-- **Routers:** 78 → 89
-- **Pages:** 70+ → 90+
+- **Routers:** 78 → 136
+- **Pages:** 70+ → 120+
+- **Mobile Screens:** 84 → 111
 - **Tests:** 243/243 passing (10 suites)
 - **Type Check:** 10/10 workspaces
+- **E2E:** 38/38 chromium (100%)
 - **Build:** 5/5 tasks
 
 ---
