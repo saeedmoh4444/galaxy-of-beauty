@@ -11,7 +11,7 @@ export const lookOfTheDayRouter = router({
   today: publicProcedure.query(() => LOOKS[0]),
   feed: publicProcedure
     .input(z.object({ page: z.number().default(1), limit: z.number().default(12) }))
-    .query(async ({ input }) => ({ items: LOOKS, total: LOOKS.length })),
+    .query(async () => ({ items: LOOKS, total: LOOKS.length })),
   vote: customerProcedure
     .input(z.object({ lookId: z.number() }))
     .mutation(async ({ input }) => ({ lookId: input.lookId, votes: 246, voted: true })),
