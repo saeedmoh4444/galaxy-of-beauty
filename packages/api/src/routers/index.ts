@@ -113,6 +113,14 @@ import { priceDropAlertsRouter } from './priceDropAlerts';
 import { loyaltyPunchCardRouter } from './loyaltyPunchCard';
 import { routineSchedulerRouter } from './routineScheduler';
 import { featuredTechRouter } from './featuredTech';
+import { ingredientSubRouter } from './ingredientSub';
+import { lookOfTheDayRouter } from './lookOfTheDay';
+import { referralRaceRouter } from './referralRace';
+import { techWaitlistRouter } from './techWaitlist';
+import { videoTestimonialsRouter } from './videoTestimonials';
+import { serviceTrendsRouter } from './serviceTrends';
+import { nightModeRouter } from './nightMode';
+import { travelKitRouter } from './travelKit';
 
 export const appRouter = router({
   // Health
@@ -236,6 +244,14 @@ export const appRouter = router({
   loyaltyPunchCard: loyaltyPunchCardRouter,
   routineScheduler: routineSchedulerRouter,
   featuredTech: featuredTechRouter,
+  ingredientSub: ingredientSubRouter,
+  lookOfTheDay: lookOfTheDayRouter,
+  referralRace: referralRaceRouter,
+  techWaitlist: techWaitlistRouter,
+  videoTestimonials: videoTestimonialsRouter,
+  serviceTrends: serviceTrendsRouter,
+  nightMode: nightModeRouter,
+  travelKit: travelKitRouter,
 });
 
 export type AppRouter = typeof appRouter;
