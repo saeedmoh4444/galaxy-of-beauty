@@ -91,6 +91,7 @@ import { beautyCoursesRouter } from './beautyCourses';
 import { vipMembershipRouter } from './vipMembership';
 import { productScannerRouter } from './productScanner';
 import { styleMatchRouter } from './styleMatch';
+import { giftQuizRouter } from './giftQuiz';
 
 export const appRouter = router({
   // Health
@@ -192,6 +193,7 @@ export const appRouter = router({
   vipMembership: vipMembershipRouter,
   productScanner: productScannerRouter,
   styleMatch: styleMatchRouter,
+  giftQuiz: giftQuizRouter,
 });
 
 export type AppRouter = typeof appRouter;
