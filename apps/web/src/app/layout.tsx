@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import Providers from '@/components/Providers';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
@@ -8,6 +8,10 @@ import { ToastProvider } from '@galaxy/shared';
 import './globals.css';
 
 export const dynamic = 'force-dynamic';
+
+export const viewport: Viewport = {
+  themeColor: '#c41e3a',
+};
 
 export const metadata: Metadata = {
   title: {
@@ -19,7 +23,6 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'),
   icons: { icon: '/logo.png', apple: '/logo.png' },
   manifest: '/manifest.json',
-  themeColor: '#c41e3a',
   openGraph: {
     title: 'Galaxy of Beauty | جالكسي بيوتي',
     description:
