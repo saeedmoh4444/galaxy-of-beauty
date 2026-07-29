@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { customerProcedure, publicProcedure, router } from '../trpc';
+import { publicProcedure, router } from '../trpc';
 
 // Curated beauty product database with ingredient safety info
 const PRODUCTS = [
