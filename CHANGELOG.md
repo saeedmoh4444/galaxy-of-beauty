@@ -114,10 +114,15 @@
 - 📹 Behind the Scenes — Technician studio tours
 - 🎪 Beauty Expo — Virtual brand exhibition
 
+**Wave 12 — Enterprise & Polish**
+- 🧠 AI Assistant 2.0 — OpenAI GPT-4o-mini integration
+- 📊 Admin Reports — Charts, CSV exports, city/service breakdowns
+- 📚 API Docs — Auto-generated OpenAPI 3.0 reference
+
 ### Technical Stats
-- **Routers:** 78 → 136
-- **Pages:** 70+ → 120+
-- **Mobile Screens:** 84 → 111
+- **Routers:** 78 → 147
+- **Pages:** 70+ → 180+
+- **Mobile Screens:** 84 → 156
 - **Tests:** 243/243 passing (10 suites)
 - **Type Check:** 10/10 workspaces
 - **E2E:** 38/38 chromium (100%)

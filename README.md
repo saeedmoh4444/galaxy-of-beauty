@@ -66,7 +66,7 @@ galaxy-of-beauty/
 │   ├── web/                    # Next.js 14 App Router (84 routes, 10 SSR pages)
 │   └── mobile/                 # Expo SDK 54 + Expo Router (47 screens)
 ├── packages/
-│   ├── api/                    # tRPC v11 — 136 routers, 300+ procedures
+│   ├── api/                    # tRPC v11 — 147 routers, 350+ procedures
 │   ├── db/                     # Prisma — 87 models, 15 enums
 │   ├── shared/                 # UI kit (11 components), hooks, i18n, theme, types
 │   └── config/                 # TSConfig, ESLint, Prettier, Tailwind

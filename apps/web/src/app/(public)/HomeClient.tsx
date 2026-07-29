@@ -102,6 +102,26 @@ export function HomeClient({
         </div>
       </section>
 
+      {/* Testimonials */}
+      <section className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950 px-4 py-16">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="mb-8 text-center text-2xl font-bold">💬 ماذا تقول عميلاتنا؟</h2>
+          <div className="grid gap-6 md:grid-cols-3">
+            {[
+              { name: 'سارة', text: 'أفضل تجربة تجميل! حجزت مكياج ليوم زفافي وكانت النتيجة خيالية. الفنانة نورة أبدعت! 👰', rating: 5 },
+              { name: 'مريم', text: 'جلسات تنظيف البشرة غيرت بشرتي تماماً. د. ليلى محترفة وتستخدم أفضل المنتجات ✨', rating: 5 },
+              { name: 'نورة', text: 'المنصة سهلة والتطبيق رائع. أقدر أحجز لأمي وأختي من حساب واحد. شكراً جالكسي بيوتي! 💝', rating: 5 },
+            ].map((t, i) => (
+              <Card key={i} padding="lg" className="text-center bg-white/80 dark:bg-gray-900/80 backdrop-blur">
+                <p className="text-3xl">{"⭐".repeat(t.rating)}</p>
+                <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">&ldquo;{t.text}&rdquo;</p>
+                <p className="mt-3 font-bold text-brand-600">— {t.name}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Discover Features */}
       <section className="mx-auto max-w-7xl px-4 py-16">
         <h2 className="mb-8 text-center text-2xl font-bold">اكتشفي المزيد</h2>
