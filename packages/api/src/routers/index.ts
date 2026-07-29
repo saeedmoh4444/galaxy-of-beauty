@@ -105,6 +105,14 @@ import { beautyPodcastRouter } from './beautyPodcast';
 import { hairColorSimRouter } from './hairColorSim';
 import { spaPlannerRouter } from './spaPlanner';
 import { restockReminderRouter } from './restockReminder';
+import { serviceMatchmakerRouter } from './serviceMatchmaker';
+import { bookingHeatmapRouter } from './bookingHeatmap';
+import { expiryTrackerRouter } from './expiryTracker';
+import { beautyFaqRouter } from './beautyFaq';
+import { priceDropAlertsRouter } from './priceDropAlerts';
+import { loyaltyPunchCardRouter } from './loyaltyPunchCard';
+import { routineSchedulerRouter } from './routineScheduler';
+import { featuredTechRouter } from './featuredTech';
 
 export const appRouter = router({
   // Health
@@ -220,6 +228,14 @@ export const appRouter = router({
   hairColorSim: hairColorSimRouter,
   spaPlanner: spaPlannerRouter,
   restockReminder: restockReminderRouter,
+  serviceMatchmaker: serviceMatchmakerRouter,
+  bookingHeatmap: bookingHeatmapRouter,
+  expiryTracker: expiryTrackerRouter,
+  beautyFaq: beautyFaqRouter,
+  priceDropAlerts: priceDropAlertsRouter,
+  loyaltyPunchCard: loyaltyPunchCardRouter,
+  routineScheduler: routineSchedulerRouter,
+  featuredTech: featuredTechRouter,
 });
 
 export type AppRouter = typeof appRouter;
