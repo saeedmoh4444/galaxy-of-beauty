@@ -99,6 +99,12 @@ import { penPalRouter } from './penPal';
 import { techLeaderboardRouter } from './techLeaderboard';
 import { beforeAfterRouter } from './beforeAfter';
 import { saleAlertsRouter } from './saleAlerts';
+import { ingredientAnalyzerRouter } from './ingredientAnalyzer';
+import { bookingChecklistRouter } from './bookingChecklist';
+import { beautyPodcastRouter } from './beautyPodcast';
+import { hairColorSimRouter } from './hairColorSim';
+import { spaPlannerRouter } from './spaPlanner';
+import { restockReminderRouter } from './restockReminder';
 
 export const appRouter = router({
   // Health
@@ -208,6 +214,12 @@ export const appRouter = router({
   techLeaderboard: techLeaderboardRouter,
   beforeAfter: beforeAfterRouter,
   saleAlerts: saleAlertsRouter,
+  ingredientAnalyzer: ingredientAnalyzerRouter,
+  bookingChecklist: bookingChecklistRouter,
+  beautyPodcast: beautyPodcastRouter,
+  hairColorSim: hairColorSimRouter,
+  spaPlanner: spaPlannerRouter,
+  restockReminder: restockReminderRouter,
 });
 
 export type AppRouter = typeof appRouter;
