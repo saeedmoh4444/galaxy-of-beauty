@@ -128,6 +128,14 @@ import { certificationQuizRouter } from './certificationQuiz';
 import { geofenceOffersRouter } from './geofenceOffers';
 import { salonManagementRouter } from './salonManagement';
 import { newsletterRouter } from './newsletter';
+import { aiAssistantRouter } from './aiAssistant';
+import { groupBuyRouter } from './groupBuy';
+import { beautyBingoRouter } from './beautyBingo';
+import { serviceWishlistRouter } from './serviceWishlist';
+import { beautyAwardsRouter } from './beautyAwards';
+import { giftCardMarketRouter } from './giftCardMarket';
+import { behindScenesRouter } from './behindScenes';
+import { beautyExpoRouter } from './beautyExpo';
 
 export const appRouter = router({
   // Health
@@ -266,6 +274,14 @@ export const appRouter = router({
   geofenceOffers: geofenceOffersRouter,
   salonManagement: salonManagementRouter,
   newsletter: newsletterRouter,
+  aiAssistant: aiAssistantRouter,
+  groupBuy: groupBuyRouter,
+  beautyBingo: beautyBingoRouter,
+  serviceWishlist: serviceWishlistRouter,
+  beautyAwards: beautyAwardsRouter,
+  giftCardMarket: giftCardMarketRouter,
+  behindScenes: behindScenesRouter,
+  beautyExpo: beautyExpoRouter,
 });
 
 export type AppRouter = typeof appRouter;
