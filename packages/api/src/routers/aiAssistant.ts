@@ -1,13 +1,14 @@
 import { z } from 'zod';
 import { customerProcedure, router } from '../trpc';
 
-const RESPONSES: Record<string, string> = {
+const FALLBACK_RESPONSES: Record<string, string> = {
   'روتين': 'بناءً على نوع بشرتكِ، أقترح: صباحاً — غسول لطيف + تونر + سيروم فيتامين C + مرطب + واقي شمس. مساءً — مزيل مكياج + غسول + تونر + ريتينول + كريم ليلي.',
   'بشرة': 'للعناية بالبشرة الدهنية: استخدمي غسول جل، تونر خالي من الكحول، سيروم نيياسيناميد، ومرطب خفيف. للبشرة الجافة: غسول كريمي، تونر مرطب، سيروم حمض الهيالورونيك، ومرطب غني.',
   'مكياج': 'لإطلالة يومية: كريم BB + كونسيلر + أحمر خدود كريمي + ماسكارا + ملمع شفاه. للمناسبات: أضيفي برايمر + كريم أساس + ظلال عيون + آيلاينر.',
   'شعر': 'للعناية بالشعر: اغسلي شعركِ مرتين أسبوعياً، استخدمي بلسم بعد كل غسلة، وماسك مرة أسبوعياً. تجنبي الحرارة العالية واستخدمي واقي حرارة.',
   'زواج': 'خطة العناية للعروس: قبل ٦ أشهر — روتين عناية يومي. قبل ٣ أشهر — جلسات تنظيف بشرة شهرية. قبل شهر — تجربة مكياج وتسريحة. قبل أسبوع — مانيكير وباديكير. قبل يوم — مساج استرخاء.',
   'صيف': 'للعناية الصيفية: واقي شمس SPF50+ ضروري يومياً، مرطب خفيف، ماء بكثرة، تجنبي الشمس من ١٠ صباحاً لـ ٤ مساءً، واستخدمي سيروم فيتامين C.',
+  'default': 'شكراً لسؤالكِ! يمكنني مساعدتكِ في: روتين العناية، نصائح البشرة، المكياج، العناية بالشعر، تحضيرات الزواج، والعناية الصيفية. ما الموضوع الذي تهتمين به؟ ✨',
 };
 
 export const aiAssistantRouter = router({
@@ -16,11 +17,37 @@ export const aiAssistantRouter = router({
     .query(async ({ input }) => {
       const q = input.question;
       let answer = '';
-      for (const [keyword, response] of Object.entries(RESPONSES)) {
+      for (const [keyword, response] of Object.entries(FALLBACK_RESPONSES)) {
         if (q.includes(keyword)) { answer = response; break; }
       }
-      if (!answer) answer = 'شكراً لسؤالكِ! يمكنني مساعدتكِ في: روتين العناية، نصائح البشرة، المكياج، العناية بالشعر، تحضيرات الزواج، والعناية الصيفية. ما الموضوع الذي تهتمين به؟ ✨';
-      return { question: q, answer, topics: Object.keys(RESPONSES) };
+
+      // Try OpenAI for unmatched questions
+      if (!answer) {
+        try {
+          const key = process.env['OPENAI_API_KEY'];
+          if (key) {
+            const res = await fetch('https://api.openai.com/v1/chat/completions', {
+              method: 'POST',
+              headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                model: 'gpt-4o-mini',
+                messages: [
+                  { role: 'system', content: 'You are a Saudi beauty expert assistant. Answer in Arabic. Keep answers under 200 words. Topic: skincare, makeup, hair, wellness.' },
+                  { role: 'user', content: q },
+                ],
+                max_tokens: 300,
+              }),
+            });
+            const data = (await res.json()) as Record<string, unknown>;
+            const content = (data['choices'] as Array<Record<string, unknown>>)?.[0]?.['message'] as Record<string, unknown> | undefined;
+            if (content?.['content']) answer = content['content'] as string;
+          }
+        } catch { /* use fallback */ }
+      }
+
+      if (!answer) answer = FALLBACK_RESPONSES['default']!;
+
+      return { question: q, answer, topics: Object.keys(FALLBACK_RESPONSES).filter((k) => k !== 'default'), aiPowered: answer !== FALLBACK_RESPONSES['default'] };
     }),
-  topics: customerProcedure.query(() => Object.keys(RESPONSES).map((k) => ({ key: k, emoji: { 'روتين':'🧴','بشرة':'✨','مكياج':'💄','شعر':'💇‍♀️','زواج':'👰','صيف':'☀️' }[k] ?? '💬', label: k }))),
+  topics: customerProcedure.query(() => Object.keys(FALLBACK_RESPONSES).filter((k) => k !== 'default').map((k) => ({ key: k, emoji: { 'روتين':'🧴','بشرة':'✨','مكياج':'💄','شعر':'💇‍♀️','زواج':'👰','صيف':'☀️' }[k] ?? '💬', label: k }))),
 });

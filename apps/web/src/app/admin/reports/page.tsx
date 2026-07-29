@@ -1,0 +1,54 @@
+'use client';
+import { api } from '@/lib/trpc';
+import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
+
+export default function AdminReportsPage(): JSX.Element {
+  const { data, isLoading } = api.adminReports.dashboard.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean };
+  const { data: csv } = api.adminReports.exportCSV.useQuery() as { data: Record<string,string> | undefined };
+
+  const d = data ?? {};
+  const topTechs = (d.topTechs ?? []) as Array<Record<string,unknown>>;
+  const byService = (d.byService ?? []) as Array<Record<string,unknown>>;
+  const byCity = (d.byCity ?? []) as Array<Record<string,unknown>>;
+  const revenueData = (d.revenue as Record<string,unknown[]>) ?? {};
+  const bookingsData = (d.bookings as Record<string,unknown[]>) ?? {};
+
+  const downloadCSV = (content: string, filename: string) => {
+    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
+  };
+
+  return (
+    <div className="mx-auto max-w-6xl px-4 py-12 space-y-6">
+      <div className="flex items-center justify-between"><h1 className="text-2xl font-bold">📊 التقارير</h1><div className="flex gap-2">
+        {csv && <Button size="sm" onClick={() => downloadCSV(csv.topTechs as string, 'top-technicians.csv')}>📥 CSV فنيات</Button>}
+        {csv && <Button size="sm" onClick={() => downloadCSV(csv.byService as string, 'services.csv')}>📥 CSV خدمات</Button>}
+      </div></div>
+
+      {isLoading ? <div className="grid gap-4 sm:grid-cols-2">{Array.from({length:4},(_,i)=><CardSkeleton key={i}/>)}</div> : (
+        <>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Card padding="lg"><h3 className="font-bold mb-4">📈 الإيرادات الشهرية</h3>
+              <div className="flex items-end gap-1 h-32">{(revenueData.data as number[])?.map((v: number, i: number) => <div key={i} className="flex-1 flex flex-col items-center gap-1"><div className="w-full rounded-t bg-gradient-to-t from-brand-400 to-brand-600" style={{ height: `${Math.max(4, (v / 500000) * 100)}%` }} /><span className="text-[8px] text-gray-400">{(revenueData.labels as string[])?.[i]}</span></div>)}</div>
+            </Card>
+            <Card padding="lg"><h3 className="font-bold mb-4">📅 الحجوزات الشهرية</h3>
+              <div className="flex items-end gap-1 h-32">{(bookingsData.data as number[])?.map((v: number, i: number) => <div key={i} className="flex-1 flex flex-col items-center gap-1"><div className="w-full rounded-t bg-gradient-to-t from-green-400 to-emerald-600" style={{ height: `${Math.max(4, (v / 2000) * 100)}%` }} /><span className="text-[8px] text-gray-400">{(bookingsData.labels as string[])?.[i]}</span></div>)}</div>
+            </Card>
+          </div>
+          <Card padding="lg"><h3 className="font-bold mb-4">👩‍🎨 أفضل الفنيات</h3>
+            <div className="overflow-x-auto"><table className="w-full text-sm"><thead><tr className="text-right text-gray-500 border-b dark:border-gray-700"><th className="py-2 px-3">الاسم</th><th className="py-2 px-3">الإيرادات</th><th className="py-2 px-3">الحجوزات</th><th className="py-2 px-3">التقييم</th></tr></thead><tbody>{topTechs.map((t: Record<string,unknown>, i: number) => <tr key={i} className="border-b dark:border-gray-700"><td className="py-2 px-3 font-bold">{t.name as string}</td><td className="py-2 px-3">{formatCurrency(t.revenue as number)}</td><td className="py-2 px-3">{t.bookings as number}</td><td className="py-2 px-3">⭐ {t.rating as number}</td></tr>)}</tbody></table></div>
+          </Card>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Card padding="lg"><h3 className="font-bold mb-4">💄 حسب الخدمة</h3>
+              <div className="space-y-2">{byService.map((s: Record<string,unknown>, i: number) => <div key={i} className="flex items-center gap-2"><span className="w-20 text-xs">{s.name as string}</span><div className="flex-1 h-3 rounded-full bg-gray-200 dark:bg-gray-700"><div className="h-3 rounded-full bg-brand-500" style={{ width: `${s.pct as number}%` }} /></div><span className="text-xs w-10">{s.pct as number}%</span></div>)}</div>
+            </Card>
+            <Card padding="lg"><h3 className="font-bold mb-4">📍 حسب المدينة</h3>
+              <div className="space-y-2">{byCity.map((c: Record<string,unknown>, i: number) => <div key={i} className="flex justify-between text-sm"><span>{c.city as string}</span><span className="text-gray-500">{c.bookings as number} حجز</span><span className="font-bold">{formatCurrency(c.revenue as number)}</span></div>)}</div>
+            </Card>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}

@@ -145,6 +145,8 @@ import { bnplRouter } from './bnpl';
 import { beautyStoriesRouter } from './beautyStories';
 import { audioRoomsRouter } from './audioRooms';
 import { beautyShortsRouter } from './beautyShorts';
+import { adminReportsRouter } from './adminReports';
+import { apiDocsRouter } from './apiDocs';
 
 export const appRouter = router({
   // Health
@@ -300,6 +302,8 @@ export const appRouter = router({
   beautyStories: beautyStoriesRouter,
   audioRooms: audioRoomsRouter,
   beautyShorts: beautyShortsRouter,
+  adminReports: adminReportsRouter,
+  apiDocs: apiDocsRouter,
 });
 
 export type AppRouter = typeof appRouter;
