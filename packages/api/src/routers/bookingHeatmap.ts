@@ -8,7 +8,7 @@ export const bookingHeatmapRouter = router({
   data: publicProcedure
     .input(z.object({ technicianId: z.number().optional() }))
     .query(async ({ input }) => {
-      const heatmap = DAYS.map((day, di) =>
+      const heatmap = DAYS.map((_day, di) =>
         HOURS.map((hour) => ({
           day: di, hour, value: Math.floor(Math.random() * 10) + (di >= 4 ? 6 : 2) + (hour >= 16 && hour <= 20 ? 4 : 0) + (input.technicianId ? (input.technicianId % 3) : 0),
         })),
