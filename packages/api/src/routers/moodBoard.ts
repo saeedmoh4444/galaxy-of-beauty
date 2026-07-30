@@ -23,7 +23,7 @@ export const moodBoardRouter = router({
 
   removePin: customerProcedure
     .input(z.object({ boardId: z.number(), pinId: z.number() }))
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ input }) => {
       await prisma.moodBoardPin.deleteMany({ where: { id: input.pinId, boardId: input.boardId } });
       return { success: true };
     }),
