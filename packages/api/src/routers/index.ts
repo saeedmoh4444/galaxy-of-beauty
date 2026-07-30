@@ -157,6 +157,7 @@ import { smartPricingRouter } from './smartPricing';
 import { rideHailingRouter } from './rideHailing';
 import { lastMileDeliveryRouter } from './lastMileDelivery';
 import { clinicConnectRouter } from './clinicConnect';
+import { monitoringRouter } from './monitoring';
 
 export const appRouter = router({
   // Health
@@ -324,6 +325,7 @@ export const appRouter = router({
   rideHailing: rideHailingRouter,
   lastMileDelivery: lastMileDeliveryRouter,
   clinicConnect: clinicConnectRouter,
+  monitoring: monitoringRouter,
 });
 
 export type AppRouter = typeof appRouter;

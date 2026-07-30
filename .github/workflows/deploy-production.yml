@@ -1,0 +1,148 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9'
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Type Check
+        run: pnpm type-check
+      
+      - name: Lint
+        run: pnpm lint
+      
+      - name: Test
+        run: pnpm --filter @galaxy/api test
+        env:
+          JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
+          JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
+          DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+      
+      - name: Build
+        run: pnpm build
+
+  e2e:
+    name: E2E Tests
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: gob_admin
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: Galaxy_of_Beauty_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      
+      - name: Install + Build
+        run: pnpm install --frozen-lockfile && pnpm build
+      
+      - name: Push Schema + Seed
+        run: |
+          pnpm db:push
+          pnpm db:seed
+        env:
+          DATABASE_URL: postgresql://gob_admin:${{ secrets.DB_PASSWORD }}@localhost:5432/Galaxy_of_Beauty_db
+      
+      - name: Run E2E Tests
+        run: pnpm --filter @galaxy/web test:e2e
+        env:
+          DATABASE_URL: postgresql://gob_admin:${{ secrets.DB_PASSWORD }}@localhost:5432/Galaxy_of_Beauty_db
+          PLAYWRIGHT_BASE_URL: http://localhost:3000
+          JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
+          JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
+      
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-report
+          path: apps/web/test-results/
+          retention-days: 7
+
+  deploy:
+    name: Deploy
+    needs: e2e
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: production
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          script: |
+            cd /app/galaxy-of-beauty
+            git pull origin master
+            pnpm install --frozen-lockfile
+            pnpm db:generate
+            pnpm db:migrate:deploy
+            pnpm build
+            pm2 reload all
+            echo "✅ Deploy complete: $(date)"
+      
+      - name: Health Check
+        run: |
+          sleep 5
+          curl -f https://galaxyofbeauty.sa/api/trpc/health || exit 1
+          echo "✅ Health check passed"
+      
+      - name: Notify Sentry
+        if: always()
+        run: |
+          curl -X POST https://sentry.io/api/0/organizations/${{ secrets.SENTRY_ORG }}/releases/ \
+            -H "Authorization: Bearer ${{ secrets.SENTRY_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"version\": \"$(git rev-parse --short HEAD)\", \"projects\": [\"galaxy-of-beauty\"]}"
