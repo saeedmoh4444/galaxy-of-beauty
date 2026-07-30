@@ -78,6 +78,72 @@ const SERVICES = {
       { id: 'tb3', nameAr: 'تنظيف بشرة خفيف', nameEn: 'Gentle Cleansing', price: 100, durationMin: 25, emoji: '🧼', precautions: '' },
     ],
   },
+  menopause: {
+    nameAr: 'عناية سن اليأس', nameEn: 'Menopause Care', emoji: '🦋',
+    description: 'عناية متخصصة للبشرة والجسم خلال مرحلة انقطاع الطمث',
+    subServices: [
+      { id: 'mp1', nameAr: 'عناية بالبشرة لسن اليأس', nameEn: 'Menopause Facial', price: 220, durationMin: 50, emoji: '✨', precautions: 'منتجات غنية بالكولاجين' },
+      { id: 'mp2', nameAr: 'مساج هرموني', nameEn: 'Hormonal Balance Massage', price: 280, durationMin: 60, emoji: '💆‍♀️', precautions: 'زيوت طبيعية متوازنة' },
+      { id: 'mp3', nameAr: 'علاج جفاف البشرة', nameEn: 'Dryness Treatment', price: 200, durationMin: 45, emoji: '💧', precautions: 'ترطيب مكثف' },
+    ],
+  },
+  hijab_care: {
+    nameAr: 'عناية المحجبة', nameEn: 'Hijab-Friendly Haircare', emoji: '🧕',
+    description: 'عناية متخصصة بالشعر للمحجبات — جلسات خاصة وخصوصية تامة',
+    subServices: [
+      { id: 'hj1', nameAr: 'علاج تساقط الشعر', nameEn: 'Hair Loss Treatment', price: 300, durationMin: 60, emoji: '💆‍♀️', precautions: 'جلسات شهرية' },
+      { id: 'hj2', nameAr: 'حمام زيت عميق', nameEn: 'Deep Oil Treatment', price: 180, durationMin: 45, emoji: '🫒', precautions: 'زيوت طبيعية' },
+      { id: 'hj3', nameAr: 'تصفيف خاص للمحجبات', nameEn: 'Hijab-Friendly Styling', price: 150, durationMin: 30, emoji: '💇‍♀️', precautions: 'خصوصية تامة' },
+      { id: 'hj4', nameAr: 'قناع شعر مرطب', nameEn: 'Hydrating Hair Mask', price: 160, durationMin: 35, emoji: '🧴', precautions: 'لفروة الرأس الصحية' },
+    ],
+  },
+  pcos_care: {
+    nameAr: 'عناية تكيس المبايض', nameEn: 'PCOS Beauty', emoji: '🩺',
+    description: 'عناية متخصصة للبشرة والشعر لحالات تكيس المبايض',
+    subServices: [
+      { id: 'pc1', nameAr: 'عناية بشرة دهنية', nameEn: 'Oily Skin Facial', price: 200, durationMin: 45, emoji: '✨', precautions: 'منظفات طبية' },
+      { id: 'pc2', nameAr: 'علاج حب الشباب الهرموني', nameEn: 'Hormonal Acne Treatment', price: 250, durationMin: 50, emoji: '🔬', precautions: 'بإشراف طبي' },
+      { id: 'pc3', nameAr: 'إزالة شعر زائد', nameEn: 'Excess Hair Removal', price: 300, durationMin: 60, emoji: '🌸', precautions: 'بشرة حساسة' },
+    ],
+  },
+  bridal_prep: {
+    nameAr: 'تحضير العروس', nameEn: 'Bridal Preparation', emoji: '👰‍♀️',
+    description: 'برنامج متكامل لتحضير العروس — من ٦ أشهر حتى يوم الزفاف',
+    subServices: [
+      { id: 'br1', nameAr: 'باقة العروس الذهبية', nameEn: 'Golden Bride Package', price: 3500, durationMin: 300, emoji: '👑', precautions: '٦ جلسات على ٣ أشهر' },
+      { id: 'br2', nameAr: 'باقة العروس الفضية', nameEn: 'Silver Bride Package', price: 2000, durationMin: 200, emoji: '💍', precautions: '٤ جلسات على شهرين' },
+      { id: 'br3', nameAr: 'تجربة مكياج و تسريحة', nameEn: 'Makeup & Hair Trial', price: 400, durationMin: 90, emoji: '💄', precautions: 'جلسة تجربة قبل الزفاف' },
+      { id: 'br4', nameAr: 'عناية بالأسنان', nameEn: 'Teeth Whitening', price: 600, durationMin: 60, emoji: '😁', precautions: 'تبييض آمن' },
+    ],
+  },
+  working_woman: {
+    nameAr: 'المرأة العاملة', nameEn: 'Working Woman Express', emoji: '💼',
+    description: 'خدمات سريعة تناسب جدول المرأة العاملة — خلال استراحة الغداء',
+    subServices: [
+      { id: 'ww1', nameAr: 'مكياج سريع ٢٠ دقيقة', nameEn: '20-Min Express Makeup', price: 120, durationMin: 20, emoji: '💄', precautions: '' },
+      { id: 'ww2', nameAr: 'مانيكير سريع', nameEn: 'Express Manicure', price: 80, durationMin: 20, emoji: '💅', precautions: '' },
+      { id: 'ww3', nameAr: 'تصفيف سريع', nameEn: 'Express Styling', price: 100, durationMin: 25, emoji: '💇‍♀️', precautions: '' },
+      { id: 'ww4', nameAr: 'باقة عاملة', nameEn: 'Working Woman Bundle', price: 250, durationMin: 60, emoji: '⏱️', precautions: 'مكياج + أظافر + شعر' },
+    ],
+  },
+  first_beauty: {
+    nameAr: 'أول مرة', nameEn: 'First Beauty Experience', emoji: '🦋',
+    description: 'تجربة تجميل أولى للشابات — استشارة وتعليم بلطف',
+    subServices: [
+      { id: 'fb1', nameAr: 'استشارة تجميل أولى', nameEn: 'First Beauty Consultation', price: 80, durationMin: 30, emoji: '💬', precautions: 'تعليم روتين العناية' },
+      { id: 'fb2', nameAr: 'جلسة تعليم مكياج', nameEn: 'Makeup Tutorial Session', price: 200, durationMin: 60, emoji: '📚', precautions: 'تعلم خطوة بخطوة' },
+      { id: 'fb3', nameAr: 'أول عناية بالبشرة', nameEn: 'First Facial', price: 100, durationMin: 35, emoji: '✨', precautions: 'منتجات لطيفة جداً' },
+    ],
+  },
+  breastfeeding_safe: {
+    nameAr: 'عناية المرضعة', nameEn: 'Breastfeeding-Safe Beauty', emoji: '🍼',
+    description: 'خدمات تجميل آمنة أثناء فترة الرضاعة الطبيعية',
+    subServices: [
+      { id: 'bf1', nameAr: 'عناية بشرة آمنة', nameEn: 'Nursing-Safe Facial', price: 180, durationMin: 40, emoji: '✨', precautions: 'خالي من الريتينول والساليسيليك' },
+      { id: 'bf2', nameAr: 'مساج استرخاء', nameEn: 'Relaxation Massage', price: 250, durationMin: 50, emoji: '💆‍♀️', precautions: 'وضعية جانبية آمنة' },
+      { id: 'bf3', nameAr: 'مانيكير آمن', nameEn: 'Safe Manicure', price: 100, durationMin: 30, emoji: '💅', precautions: 'منتجات غير سامة' },
+    ],
+  },
 };
 
 export const womensServicesRouter = router({
@@ -144,6 +210,13 @@ export const womensServicesRouter = router({
         intimate_care: ['جميع الخدمات بخصوصية تامة', 'فنيات متخصصات ومعتمدات', 'منتجات طبية آمنة ومعقمة'],
         mommy_makeover: ['احجزي الجلسة في وقت تكونين فيه مرتاحة', 'أحضري صورة إطلالتكِ المفضلة', 'استمتعي بيومكِ الخاص'],
         teen_beauty: ['خدمات مناسبة للعمر', 'منتجات لطيفة وخالية من العطور', 'استشارة مجانية للروتين المناسب'],
+        menopause: ['استخدمي منتجات غنية بالكولاجين', 'الترطيب المكثف ضروري', 'تجنبي المنتجات القاسية'],
+        hijab_care: ['جلسات بخصوصية تامة', 'اهتمي بفروة الرأس', 'جففي شعركِ جيداً قبل الارتداء', 'استخدمي أغطية حرير'],
+        pcos_care: ['استشيري طبيبكِ قبل العلاج', 'منتجات طبية مخصصة', 'متابعة دورية للبشرة'],
+        bridal_prep: ['ابدئي قبل ٦ أشهر من الزفاف', 'جلسات منتظمة أفضل من جلسة واحدة', 'جربي المكياج قبل الزفاف بشهر'],
+        working_woman: ['خدمات سريعة في ٢٠-٦٠ دقيقة', 'احجزي خلال استراحة الغداء', 'باقات موفرة للوقت'],
+        first_beauty: ['تعلمي أساسيات العناية', 'لا تترددي في طرح الأسئلة', 'ابدئي بمنتجات بسيطة'],
+        breastfeeding_safe: ['تجنبي الريتينول والساليسيليك', 'أخبري الفنية أنكِ مرضعة', 'استخدمي منتجات طبيعية ١٠٠٪'],
       };
       return tips[input.category] ?? [];
     }),
