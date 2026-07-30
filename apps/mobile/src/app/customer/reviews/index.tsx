@@ -1,18 +1,19 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function ReviewsScreen(): JSX.Element {
-  const { data, loading, error, refetch } = useQuery(() => trpc.reviews.list.query({}));
+  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.reviews.list.query({}));
 
-  if (loading) return <ActivityIndicator color="#f59e0b" style={{ marginTop: 40 }} size="large" />;
+  if (loading) return <View style={styles.c}><Text style={styles.t}>⭐ تقييماتي</Text><SkeletonList count={4} /></View>;
   if (error) return <ErrorAlert message="فشل تحميل التقييمات" onRetry={refetch} />;
 
   const items = (data ?? []) as Record<string, unknown>[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#f59e0b']} />}>
       <Text style={styles.t}>⭐ تقييماتي</Text>
       {items.length === 0 ? <Text style={styles.e}>لا توجد تقييمات</Text> :
         (items as any[]).map((r: any) => (

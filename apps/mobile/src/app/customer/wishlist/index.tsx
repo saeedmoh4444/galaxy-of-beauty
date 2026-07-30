@@ -1,23 +1,24 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function WishlistScreen(): JSX.Element {
-  const { data, loading, error, refetch } = useQuery(() => trpc.wishlist.list.query());
+  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.wishlist.list.query());
 
   const handleRemove = async (id: number) => {
     await (trpc.wishlist.remove as any).mutate({ wishlistItemId: id });
     refetch();
   };
 
-  if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
+  if (loading) return <View style={styles.container}><Text style={styles.title}>المفضلة</Text><SkeletonList count={4} /></View>;
   if (error) return <ErrorAlert message="فشل تحميل المفضلة" onRetry={refetch} />;
 
   const items = ((data as any)?.items ?? []) as Record<string, unknown>[];
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />}>
       <Text style={styles.title}>المفضلة</Text>
       {items.length === 0 ? (
         <View style={styles.centered}>
