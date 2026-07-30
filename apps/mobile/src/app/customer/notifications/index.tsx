@@ -1,61 +1,44 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
 
-export default function NotificationsScreen() {
-  const [data, setData] = useState<Record<string, unknown>[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  const fetch = () => {
-    setLoading(true);
-    setError('');
-    (trpc.notifications.list as any).query({} as never)
-      .then((d: Record<string, unknown>[]) => { setData(d ?? []); setLoading(false); })
-      .catch(() => { setError('فشل تحميل الإشعارات'); setLoading(false); });
-  };
-
-  useEffect(() => { fetch(); }, []);
+export default function NotificationsScreen(): JSX.Element {
+  const { data, loading, error, refetch } = useQuery(() => trpc.notifications.list.query({}));
 
   const handleMarkRead = async (id: number) => {
-    try {
-      await (trpc.notifications.markRead as any).mutate({ id });
-      fetch();
-    } catch {}
+    await (trpc.notifications.markRead as any).mutate({ id });
+    refetch();
   };
 
   const handleMarkAll = async () => {
-    try {
-      await (trpc.notifications.markAllRead as any).mutate({});
-      fetch();
-    } catch {}
+    await (trpc.notifications.markAllRead as any).mutate({});
+    refetch();
   };
+
+  if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
+  if (error) return <ErrorAlert message="فشل تحميل الإشعارات" onRetry={refetch} />;
+
+  const items = (data ?? []) as Record<string, unknown>[];
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>الإشعارات</Text>
-        {data.length > 0 && (
+        {items.length > 0 && (
           <TouchableOpacity onPress={handleMarkAll}>
             <Text style={styles.markAll}>تحديد الكل كمقروء</Text>
           </TouchableOpacity>
         )}
       </View>
-
-      {loading ? <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} /> :
-       error ? (
-        <View style={styles.centered}>
-          <Text style={styles.error}>{error}</Text>
-          <TouchableOpacity style={styles.retryBtn} onPress={fetch}><Text style={styles.retryText}>إعادة المحاولة</Text></TouchableOpacity>
-        </View>
-       ) : data.length === 0 ? (
+      {items.length === 0 ? (
         <View style={styles.centered}>
           <Text style={styles.emptyIcon}>🔔</Text>
           <Text style={styles.empty}>لا توجد إشعارات</Text>
         </View>
-       ) : (
+      ) : (
         <ScrollView>
-          {data.map((n: Record<string, unknown>) => (
+          {items.map((n: Record<string, unknown>) => (
             <TouchableOpacity
               key={n.id as number}
               style={[styles.card, !n.readAt && styles.unread]}
@@ -90,7 +73,4 @@ const styles = StyleSheet.create({
   centered: { alignItems: 'center', marginTop: 40 },
   emptyIcon: { fontSize: 48, marginBottom: 12 },
   empty: { fontSize: 18, fontWeight: '600', color: '#6b7280' },
-  error: { color: '#ef4444', fontSize: 16, marginBottom: 12 },
-  retryBtn: { backgroundColor: '#7c3aed', borderRadius: 12, paddingHorizontal: 24, paddingVertical: 10 },
-  retryText: { color: '#fff', fontSize: 14, fontWeight: '600' },
 });
