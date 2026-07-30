@@ -1943,3 +1943,55 @@ model QAQuestion {
   @@index([category, isAnswered])
   @@map("qa_questions")
 }
+
+// =============================================================================
+// Mood Board — Visual inspiration boards + pins
+// =============================================================================
+
+model MoodBoard {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  name        String
+  description String   @default("")
+  coverUrl    String?
+  createdAt   DateTime @default(now())
+
+  pins        MoodBoardPin[]
+
+  @@index([userId])
+  @@map("mood_boards")
+}
+
+model MoodBoardPin {
+  id        Int      @id @default(autoincrement())
+  boardId   Int
+  imageUrl  String
+  title     String   @default("")
+  note      String   @default("")
+  tags      String[] @default([])
+  serviceId Int?
+  createdAt DateTime @default(now())
+
+  board     MoodBoard @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  @@index([boardId])
+  @@map("mood_board_pins")
+}
+
+// =============================================================================
+// Service Wishlist — Price tracking for desired services
+// =============================================================================
+
+model ServiceWishlistItem {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  serviceName     String
+  currentPrice    Int
+  prevPrice       Int      @default(0)
+  lowestPrice     Int      @default(0)
+  emoji           String   @default("💅")
+  createdAt       DateTime @default(now())
+
+  @@index([userId])
+  @@map("service_wishlist_items")
+}
