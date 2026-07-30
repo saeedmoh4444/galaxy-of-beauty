@@ -550,6 +550,69 @@ const SERVICES = {
       { id: 'it3', nameAr: 'جلسة استرخاء', nameEn: 'Interpreter Relaxation', price: 220, durationMin: 50, emoji: '🧘‍♀️', precautions: 'لتخفيف ضغط العمل' },
     ],
   },
+  musician_beauty: {
+    nameAr: 'عناية الموسيقيات', nameEn: 'Musician Woman Beauty', emoji: '🎵',
+    description: 'خدمات تجميل للموسيقيات — لأن الموسيقى والجمال لحن واحد',
+    subServices: [
+      { id: 'mu1', nameAr: 'عناية بالأيدي', nameEn: 'Musician Hand Care', price: 200, durationMin: 35, emoji: '🤲', precautions: 'للعازفات على الآلات' },
+      { id: 'mu2', nameAr: 'إطلالة حفل', nameEn: 'Concert Look', price: 350, durationMin: 70, emoji: '🎼', precautions: 'مكياج + شعر' },
+      { id: 'mu3', nameAr: 'جلسة استرخاء', nameEn: 'Musician Relaxation', price: 250, durationMin: 50, emoji: '🎶', precautions: 'بعد البروفات' },
+    ],
+  },
+  actress_beauty: {
+    nameAr: 'عناية الممثلات', nameEn: 'Actress Woman Beauty', emoji: '🎭',
+    description: 'خدمات تجميل للممثلات — من خشبة المسرح للشاشة',
+    subServices: [
+      { id: 'ac1', nameAr: 'مكياج مسرحي', nameEn: 'Stage Makeup', price: 400, durationMin: 75, emoji: '🎪', precautions: 'يدوم تحت الأضواء' },
+      { id: 'ac2', nameAr: 'إطلالة بريمير', nameEn: 'Premiere Look', price: 500, durationMin: 90, emoji: '🌟', precautions: 'إطلالة السجادة الحمراء' },
+      { id: 'ac3', nameAr: 'عناية بالبشرة', nameEn: 'Actor Skincare', price: 280, durationMin: 50, emoji: '✨', precautions: 'للبشرة بعد المكياج الثقيل' },
+    ],
+  },
+  architect_beauty: {
+    nameAr: 'عناية المعماريات', nameEn: 'Architect Woman Beauty', emoji: '🏗️',
+    description: 'خدمات تجميل للمعماريات — لأنكِ تصممين الجمال حولكِ',
+    subServices: [
+      { id: 'ah1', nameAr: 'عناية بالأيدي', nameEn: 'Architect Hand Care', price: 180, durationMin: 30, emoji: '🤲', precautions: 'للأيدي العاملة على المخططات' },
+      { id: 'ah2', nameAr: 'إطلالة عرض مشروع', nameEn: 'Project Pitch Look', price: 300, durationMin: 60, emoji: '📐', precautions: 'احترافية وواثقة' },
+      { id: 'ah3', nameAr: 'مساج ظهر', nameEn: 'Back Massage', price: 250, durationMin: 45, emoji: '💆‍♀️', precautions: 'لتخفيف آلام الجلوس' },
+    ],
+  },
+  pilot_beauty: {
+    nameAr: 'عناية الطيارات', nameEn: 'Pilot Woman Beauty', emoji: '✈️',
+    description: 'خدمات تجميل للطيارات والمضيفات — الجمال في الأجواء',
+    subServices: [
+      { id: 'pl1', nameAr: 'عناية مرطبة', nameEn: 'Hydration Facial', price: 250, durationMin: 50, emoji: '💧', precautions: 'لبشرة الطائرة الجافة' },
+      { id: 'pl2', nameAr: 'إطلالة طيران', nameEn: 'Flight Ready Look', price: 200, durationMin: 40, emoji: '🛫', precautions: 'يدوم طوال الرحلة' },
+      { id: 'pl3', nameAr: 'استرخاء ترانزيت', nameEn: 'Transit Relaxation', price: 300, durationMin: 60, emoji: '🌍', precautions: 'بين الرحلات' },
+    ],
+  },
+  farmer_beauty: {
+    nameAr: 'عناية المزارعات', nameEn: 'Farmer Woman Beauty', emoji: '👩‍🌾',
+    description: 'خدمات تجميل للمرأة العاملة في الأرض — جمال الطبيعة',
+    subServices: [
+      { id: 'fm1', nameAr: 'عناية بالأيدي', nameEn: 'Farmer Hand Care', price: 180, durationMin: 35, emoji: '🤲', precautions: 'ترميم وترطيب عميق' },
+      { id: 'fm2', nameAr: 'عناية بشرة طبيعية', nameEn: 'Natural Facial', price: 200, durationMin: 45, emoji: '🌾', precautions: 'منتجات من الطبيعة' },
+      { id: 'fm3', nameAr: 'مساج ظهر', nameEn: 'Back Massage', price: 250, durationMin: 50, emoji: '💆‍♀️', precautions: 'لتخفيف آلام العمل' },
+    ],
+  },
+  librarian_beauty: {
+    nameAr: 'عناية أمينات المكتبات', nameEn: 'Librarian Woman Beauty', emoji: '📚',
+    description: 'خدمات تجميل لأمينات المكتبات — أناقة المعرفة',
+    subServices: [
+      { id: 'lb1', nameAr: 'إطلالة هادئة', nameEn: 'Quiet Elegance Look', price: 200, durationMin: 45, emoji: '📖', precautions: 'مكياج ناعم' },
+      { id: 'lb2', nameAr: 'جلسة قراءة', nameEn: 'Reading Relaxation', price: 300, durationMin: 80, emoji: '☕', precautions: 'مساج + كتاب + شاي' },
+      { id: 'lb3', nameAr: 'عناية بالأيدي', nameEn: 'Librarian Hand Care', price: 150, durationMin: 30, emoji: '🤲', precautions: 'للأيدي المتعاملة مع الكتب' },
+    ],
+  },
+  sailor_beauty: {
+    nameAr: 'عناية البحريات', nameEn: 'Sailor Woman Beauty', emoji: '⚓',
+    description: 'خدمات تجميل للعاملات في البحر — جمال يقاوم الملوحة',
+    subServices: [
+      { id: 'sb1', nameAr: 'عناية مقاومة للملوحة', nameEn: 'Salt-Resistant Facial', price: 280, durationMin: 50, emoji: '🌊', precautions: 'حماية من海水' },
+      { id: 'sb2', nameAr: 'عناية بالشعر', nameEn: 'Marine Hair Care', price: 250, durationMin: 55, emoji: '💇‍♀️', precautions: 'ترميم من أضرار الملوحة' },
+      { id: 'sb3', nameAr: 'مساج بحري', nameEn: 'Marine Massage', price: 300, durationMin: 60, emoji: '💆‍♀️', precautions: 'بأملاح البحر الميت' },
+    ],
+  },
 };
 
 export const womensServicesRouter = router({
@@ -668,6 +731,13 @@ export const womensServicesRouter = router({
         designer_beauty: ['استشارة ألوان مجانية', 'إطلالات عروض الأزياء', 'أناقة تبدأ منكِ'],
         florist_beauty: ['باقات ورد مع العناية', 'ترميم الأيدي', 'جمال الطبيعة'],
         interpreter_beauty: ['عناية بالصوت', 'إطلالات المؤتمرات', 'استرخاء بعد الترجمة'],
+        musician_beauty: ['عناية خاصة بالأيدي', 'مرونة وجمال', 'إطلالات الحفلات'],
+        actress_beauty: ['عناية بعد المكياج الثقيل', 'إطلالات السجادة الحمراء', 'منتجات احترافية'],
+        architect_beauty: ['عناية بالأيدي والظهر', 'إطلالات واثقة', 'استرخاء بعد التصميم'],
+        pilot_beauty: ['ترطيب مكثف للبشرة', 'إطلالات تدوم طويلاً', 'استرخاء بين الرحلات'],
+        farmer_beauty: ['ترميم الأيدي', 'منتجات طبيعية', 'جمال الطبيعة'],
+        librarian_beauty: ['إطلالات هادئة', 'جلسات قراءة', 'أناقة المعرفة'],
+        sailor_beauty: ['حماية من الملوحة', 'ترميم الشعر', 'أملاح البحر الميت'],
       };
       return tips[input.category] ?? [];
     }),
