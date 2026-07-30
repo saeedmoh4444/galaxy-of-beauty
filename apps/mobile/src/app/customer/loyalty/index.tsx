@@ -1,49 +1,33 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
 
-export default function LoyaltyScreen() {
-  const [account, setAccount] = useState<Record<string, unknown> | null>(null);
-  const [txs, setTxs] = useState<Record<string, unknown>[]>([]);
-  const [rewards, setRewards] = useState<Record<string, unknown>[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function LoyaltyScreen(): JSX.Element {
+  const { data: account, loading: aLoad, error: aErr, refetch } = useQuery(() => trpc.loyalty.myAccount.query());
+  const { data: txsData } = useQuery(() => trpc.loyalty.myTransactions.query({ page: 1, limit: 10 }));
+  const { data: rewards } = useQuery(() => trpc.loyalty.rewards.query());
 
-  useEffect(() => {
-    Promise.all([
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (trpc.loyalty.myAccount.query() as any as Promise<Record<string, unknown>>),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (trpc.loyalty.myTransactions.query({ page: 1, limit: 10 }) as any as Promise<Record<string, unknown>>),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (trpc.loyalty.rewards.query() as any as Promise<Record<string, unknown>[]>),
-    ]).then(([a, t, r]) => {
-      setAccount(a);
-      setTxs((t?.items as Record<string, unknown>[]) || []);
-      setRewards(r || []);
-      setLoading(false);
-    }).catch(() => setLoading(false));
-  }, []);
+  const loading = aLoad;
+  const error = aErr;
 
   if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
+  if (error) return <ErrorAlert message="فشل تحميل برنامج الولاء" onRetry={refetch} />;
   if (!account) return <View style={styles.empty}><Text style={styles.emptyText}>لا يوجد حساب ولاء</Text></View>;
 
+  const txs = ((txsData as any)?.items ?? []) as Record<string, unknown>[];
   const tierColor = account.tier === 'PLATINUM' ? '#6366f1' : account.tier === 'GOLD' ? '#f59e0b' : '#9ca3af';
   const tierEmoji = account.tier === 'PLATINUM' ? '🥇' : account.tier === 'GOLD' ? '🥈' : '🥉';
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.inner}>
-      {/* Tier Card */}
       <View style={[styles.tierCard, { backgroundColor: tierColor }]}>
         <Text style={styles.tierEmoji}>{tierEmoji}</Text>
         <Text style={styles.tierName}>{account.tierNameAr as string}</Text>
         <Text style={styles.points}>{account.points as number} نقطة</Text>
       </View>
-
-      {/* Transactions */}
       <Text style={styles.sectionTitle}>سجل العمليات</Text>
-      {txs.length === 0 ? (
-        <Text style={styles.emptyText}>لا توجد عمليات بعد</Text>
-      ) : (
+      {txs.length === 0 ? <Text style={styles.emptyText}>لا توجد عمليات بعد</Text> :
         txs.slice(0, 10).map((tx, i) => (
           <View key={i} style={styles.txRow}>
             <View>
@@ -54,15 +38,12 @@ export default function LoyaltyScreen() {
               {(tx.points as number) > 0 ? '+' : ''}{tx.points as number}
             </Text>
           </View>
-        ))
-      )}
-
-      {/* Rewards */}
-      {rewards.length > 0 && (
+        ))}
+      {(rewards as any[])?.length > 0 && (
         <>
           <Text style={styles.sectionTitle}>المكافآت</Text>
-          {rewards.map((r) => (
-            <View key={r.id as number} style={styles.rewardCard}>
+          {(rewards as any[]).map((r: any) => (
+            <View key={r.id} style={styles.rewardCard}>
               <View style={{ flex: 1 }}>
                 <Text style={styles.rewardName}>{((r.nameJson as Record<string, string>)?.ar) || ''}</Text>
                 <Text style={styles.rewardCost}>{r.pointsCost as number} نقطة</Text>
@@ -70,7 +51,6 @@ export default function LoyaltyScreen() {
               <TouchableOpacity
                 style={[styles.redeemBtn, (account.points as number) < (r.pointsCost as number) && styles.redeemDisabled]}
                 disabled={(account.points as number) < (r.pointsCost as number)}
-                activeOpacity={0.8}
               >
                 <Text style={styles.redeemText}>استبدال</Text>
               </TouchableOpacity>
