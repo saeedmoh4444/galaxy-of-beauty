@@ -1,18 +1,15 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
 import { useRouter } from 'expo-router';
 
-export default function DashboardScreen() {
-  const [insights, setInsights] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+export default function DashboardScreen(): JSX.Element {
+  const { data: insights, loading, error, refetch } = useQuery(() => trpc.analytics.customerInsights.query());
   const router = useRouter();
 
-  useEffect(() => {
-    ((trpc as any).analytics.customerInsights.query() as any).then((d: any) => { setInsights(d); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
-
   if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
+  if (error) return <ErrorAlert message="فشل تحميل لوحة التحكم" onRetry={refetch} />;
 
   const quickLinks = [
     { href: '/(tabs)/bookings', label: '📅 حجوزاتي', color: '#7c3aed' },
@@ -28,9 +25,9 @@ export default function DashboardScreen() {
       <Text style={styles.t}>👋 مرحباً بكِ</Text>
       {insights && (
         <View style={styles.stats}>
-          <View style={styles.stat}><Text style={styles.statNum}>{insights.totalBookings || 0}</Text><Text style={styles.statLabel}>حجز</Text></View>
-          <View style={styles.stat}><Text style={styles.statNum}>{insights.totalSpent || 0} ر.س</Text><Text style={styles.statLabel}>إنفاق</Text></View>
-          <View style={styles.stat}><Text style={styles.statNum}>{insights.loyaltyPoints || 0}</Text><Text style={styles.statLabel}>نقطة</Text></View>
+          <View style={styles.stat}><Text style={styles.statNum}>{insights.bookingCount || 0}</Text><Text style={styles.statLabel}>حجز</Text></View>
+          <View style={styles.stat}><Text style={styles.statNum}>{(insights.totalSpent as number)?.toLocaleString() || 0} ر.س</Text><Text style={styles.statLabel}>إنفاق</Text></View>
+          <View style={styles.stat}><Text style={styles.statNum}>{insights.completedBookings || 0}</Text><Text style={styles.statLabel}>مكتمل</Text></View>
         </View>
       )}
       <Text style={styles.section}>⚡ وصول سريع</Text>

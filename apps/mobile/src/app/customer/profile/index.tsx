@@ -1,13 +1,13 @@
 import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
 
-export default function CustomerProfileScreen() {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => { ((trpc as any).users.me.query() as any).then((d: any) => { setUser(d); setLoading(false); }).catch(() => setLoading(false)); }, []);
+export default function CustomerProfileScreen(): JSX.Element {
+  const { data: user, loading, error, refetch } = useQuery(() => trpc.users.getMe.query());
 
   if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
+  if (error) return <ErrorAlert message="فشل تحميل الملف الشخصي" onRetry={refetch} />;
   if (!user) return <Text style={styles.e}>لا يوجد ملف</Text>;
 
   return (

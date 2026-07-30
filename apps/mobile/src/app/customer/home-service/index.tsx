@@ -5,7 +5,7 @@ import { useState } from 'react';
 export default function HomeServiceScreen() {
   const [estimate, setEstimate] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const fetch = () => { setLoading(true); ((trpc as any).homeService.estimate.query({ city: 'الرياض' }) as any).then((d: any) => { setEstimate(d); setLoading(false); }).catch(() => setLoading(false)); };
+  const fetch = () => { setLoading(true); ((trpc as any).homeService.estimate.query({ city: 'الرياض' /* TODO: from user location */ }) as any).then((d: any) => { setEstimate(d); setLoading(false); }).catch(() => setLoading(false)); };
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
