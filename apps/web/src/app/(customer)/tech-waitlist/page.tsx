@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, EmptyState, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function TechWaitlistPage(): JSX.Element {
