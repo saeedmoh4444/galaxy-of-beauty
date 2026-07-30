@@ -685,6 +685,70 @@ const SERVICES = {
       { id: 'gd3', nameAr: 'إطلالة حديقة', nameEn: 'Garden Party Look', price: 250, durationMin: 50, emoji: '🏡', precautions: 'إطلالة منعشة وطبيعية' },
     ],
   },
+  yoga_instructor: {
+    nameAr: 'عناية مدربات اليوغا', nameEn: 'Yoga Instructor Beauty', emoji: '🧘‍♀️', description: 'خدمات تجميل لمدربات اليوغا — توازن الجسد والروح',
+    subServices: [
+      { id: 'yg1', nameAr: 'مساج مرونة', nameEn: 'Flexibility Massage', price: 300, durationMin: 60, emoji: '🤸‍♀️', precautions: 'زيوت أيورفيدا' },
+      { id: 'yg2', nameAr: 'إطلالة zen', nameEn: 'Zen Look', price: 200, durationMin: 40, emoji: '🕉️', precautions: 'مكياج طبيعي جداً' },
+      { id: 'yg3', nameAr: 'جلسة تأمل', nameEn: 'Meditation Session', price: 350, durationMin: 90, emoji: '🕯️', precautions: 'مساج + تأمل + شاي' },
+    ],
+  },
+  horse_rider: {
+    nameAr: 'عناية الفارسات', nameEn: 'Horse Rider Beauty', emoji: '🐴', description: 'خدمات تجميل للفارسات وراكبات الخيل',
+    subServices: [
+      { id: 'hr1', nameAr: 'مساج ظهر', nameEn: 'Rider Back Massage', price: 300, durationMin: 60, emoji: '🏇', precautions: 'لتخفيف آلام الركوب' },
+      { id: 'hr2', nameAr: 'عناية بالأيدي', nameEn: 'Rider Hand Care', price: 200, durationMin: 35, emoji: '🤲', precautions: 'لليدين بعد اللجام' },
+      { id: 'hr3', nameAr: 'إطلالة سباق', nameEn: 'Race Day Look', price: 350, durationMin: 60, emoji: '🏆', precautions: 'لأيام السباقات' },
+    ],
+  },
+  swimmer_beauty: {
+    nameAr: 'عناية السباحات', nameEn: 'Swimmer Woman Beauty', emoji: '🏊‍♀️', description: 'خدمات تجميل للسباحات — جمال يقاوم الكلور',
+    subServices: [
+      { id: 'sw1', nameAr: 'عناية مقاومة للكلور', nameEn: 'Chlorine-Resistant Facial', price: 250, durationMin: 50, emoji: '💧', precautions: 'حماية من الكلور' },
+      { id: 'sw2', nameAr: 'عناية بالشعر', nameEn: 'Swimmer Hair Care', price: 280, durationMin: 55, emoji: '💇‍♀️', precautions: 'ترميم من الكلور' },
+      { id: 'sw3', nameAr: 'مساج عضلي', nameEn: 'Swimmer Muscle Massage', price: 300, durationMin: 60, emoji: '💪', precautions: 'استرخاء العضلات' },
+    ],
+  },
+  boxer_beauty: {
+    nameAr: 'عناية الملاكمات', nameEn: 'Boxer Woman Beauty', emoji: '🥊', description: 'خدمات تجميل للملاكمات — قوة وجمال',
+    subServices: [
+      { id: 'bx1', nameAr: 'مساج عضلي', nameEn: 'Deep Recovery Massage', price: 350, durationMin: 60, emoji: '💆‍♀️', precautions: 'استرخاء عميق' },
+      { id: 'bx2', nameAr: 'عناية بالوجه', nameEn: 'Post-Training Facial', price: 280, durationMin: 50, emoji: '✨', precautions: 'تهدئة البشرة' },
+      { id: 'bx3', nameAr: 'إطلالة نزال', nameEn: 'Fight Night Look', price: 300, durationMin: 55, emoji: '🏟️', precautions: 'للظهور الإعلامي' },
+    ],
+  },
+  runner_beauty: {
+    nameAr: 'عناية العداءات', nameEn: 'Runner Woman Beauty', emoji: '🏃‍♀️', description: 'خدمات تجميل للعداءات — جمال في الحركة',
+    subServices: [
+      { id: 'rn1', nameAr: 'عناية بالأقدام', nameEn: 'Runner Foot Care', price: 250, durationMin: 50, emoji: '🦶', precautions: 'لأقدام العداءات' },
+      { id: 'rn2', nameAr: 'مساج عضلي', nameEn: 'Runner Muscle Massage', price: 300, durationMin: 60, emoji: '💆‍♀️', precautions: 'استرخاء بعد الماراثون' },
+      { id: 'rn3', nameAr: 'إطلالة سباق', nameEn: 'Race Day Look', price: 200, durationMin: 40, emoji: '🏅', precautions: 'للظهور في السباقات' },
+    ],
+  },
+  weightlifter_beauty: {
+    nameAr: 'عناية رافعات الأثقال', nameEn: 'Weightlifter Beauty', emoji: '🏋️‍♀️', description: 'خدمات تجميل لرافعات الأثقال — قوة وأنوثة',
+    subServices: [
+      { id: 'wl1', nameAr: 'مساج عضلي عميق', nameEn: 'Deep Muscle Recovery', price: 350, durationMin: 60, emoji: '💪', precautions: 'استرخاء العضلات' },
+      { id: 'wl2', nameAr: 'عناية بالأيدي', nameEn: 'Lifter Hand Care', price: 200, durationMin: 35, emoji: '🤲', precautions: 'ترميم الأيدي' },
+      { id: 'wl3', nameAr: 'إطلالة بطولة', nameEn: 'Competition Look', price: 300, durationMin: 55, emoji: '🏆', precautions: 'للظهور في البطولات' },
+    ],
+  },
+  cyclist_beauty: {
+    nameAr: 'عناية الدراجات', nameEn: 'Cyclist Woman Beauty', emoji: '🚴‍♀️', description: 'خدمات تجميل لراكبات الدراجات — جمال على الطريق',
+    subServices: [
+      { id: 'cy1', nameAr: 'مساج أرجل', nameEn: 'Leg Recovery Massage', price: 300, durationMin: 55, emoji: '🦵', precautions: 'استرخاء بعد الدراجة' },
+      { id: 'cy2', nameAr: 'عناية بشرة مقاومة', nameEn: 'Wind-Resistant Facial', price: 250, durationMin: 45, emoji: '🌬️', precautions: 'حماية من الرياح' },
+      { id: 'cy3', nameAr: 'إطلالة سباق', nameEn: 'Race Look', price: 200, durationMin: 40, emoji: '🚲', precautions: 'للظهور في السباقات' },
+    ],
+  },
+  climber_beauty: {
+    nameAr: 'عناية المتسلقات', nameEn: 'Climber Woman Beauty', emoji: '🧗‍♀️', description: 'خدمات تجميل لمتسلقات الجبال — جمال القمم',
+    subServices: [
+      { id: 'cl1', nameAr: 'عناية بالأيدي', nameEn: 'Climber Hand Care', price: 220, durationMin: 40, emoji: '🤲', precautions: 'ترميم عميق' },
+      { id: 'cl2', nameAr: 'مساج عضلي', nameEn: 'Full Body Recovery', price: 350, durationMin: 60, emoji: '💆‍♀️', precautions: 'استرخاء كامل' },
+      { id: 'cl3', nameAr: 'إطلالة قمة', nameEn: 'Summit Look', price: 250, durationMin: 45, emoji: '⛰️', precautions: 'للاحتفال بالقمة' },
+    ],
+  },
 };
 
 export const womensServicesRouter = router({
@@ -818,6 +882,14 @@ export const womensServicesRouter = router({
         social_worker_beauty: ['خصم خاص', 'لتخفيف ضغط العمل', 'أنتِ تعطين كل يوم'],
         physiotherapist_beauty: ['راحة للعضلات', 'عناية بالأيدي القوية', 'أنتِ تعالجين الجميع'],
         gardener_beauty: ['ترميم الأيدي', 'منتجات نباتية', 'جمال الطبيعة'],
+        yoga_instructor: ['زيوت أيورفيدا', 'مرونة وتوازن', 'سلام داخلي'],
+        horse_rider: ['راحة للظهر', 'عناية باليدين', 'إطلالات السباقات'],
+        swimmer_beauty: ['حماية من الكلور', 'ترميم الشعر', 'راحة للعضلات'],
+        boxer_beauty: ['استرخاء عميق', 'تهدئة البشرة', 'إطلالات إعلامية'],
+        runner_beauty: ['عناية بالأقدام', 'استرخاء العضلات', 'إطلالات السباقات'],
+        weightlifter_beauty: ['استرخاء العضلات', 'ترميم الأيدي', 'إطلالات البطولات'],
+        cyclist_beauty: ['استرخاء الأرجل', 'حماية من الرياح', 'إطلالات السباقات'],
+        climber_beauty: ['ترميم الأيدي', 'استرخاء كامل', 'احتفال القمة'],
       };
       return tips[input.category] ?? [];
     }),
