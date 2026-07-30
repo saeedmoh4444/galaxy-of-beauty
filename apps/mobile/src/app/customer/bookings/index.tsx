@@ -1,6 +1,8 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect, useCallback } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { useState } from 'react';
 
 const STATUS_TABS = ['ALL', 'REQUESTED', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
 const STATUS_LABELS: Record<string, string> = {
@@ -17,26 +19,21 @@ const STATUS_COLORS: Record<string, { color: string; bg: string }> = {
 
 export default function BookingsScreen(): JSX.Element {
   const [status, setStatus] = useState<string | undefined>(undefined);
-  const [bookings, setBookings] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [cancelId, setCancelId] = useState<number | null>(null);
 
-  const fetch = useCallback(() => {
-    setLoading(true);
-    ((trpc as any).bookings.list.query({ status, page: 1, limit: 10 }) as any)
-      .then((d: any) => { setBookings(d?.bookings || []); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, [status]);
-
-  useEffect(() => { fetch(); }, [fetch]);
+  const { data, loading, error, refreshing, refetch, refresh } = useQuery(
+    () => (trpc.bookings.list as any).query({ status, page: 1, limit: 10 }),
+  );
 
   const cancel = () => {
     if (!cancelId) return;
-    ((trpc as any).bookings.transition.mutate({ id: cancelId, action: 'cancel' }) as any)
-      .then(() => { setCancelId(null); fetch(); });
+    (trpc.bookings.transition as any).mutate({ id: cancelId, action: 'cancel' }).then(() => { setCancelId(null); refetch(); });
   };
 
   if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
+  if (error) return <ErrorAlert message="فشل تحميل الحجوزات" onRetry={refetch} />;
+
+  const bookings = ((data as any)?.bookings ?? []) as any[];
 
   return (
     <View style={styles.c}>
@@ -50,7 +47,9 @@ export default function BookingsScreen(): JSX.Element {
           );
         })}
       </ScrollView>
-      <ScrollView style={{flex:1}} contentContainerStyle={styles.i}>
+      <ScrollView style={{flex:1}} contentContainerStyle={styles.i}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#ec4899']} />}
+      >
         <Text style={styles.t}>📅 حجوزاتي</Text>
         {bookings.length === 0 ? <Text style={styles.e}>لا توجد حجوزات</Text> :
           bookings.map((b: any) => {

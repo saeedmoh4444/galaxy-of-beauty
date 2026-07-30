@@ -4,32 +4,44 @@ interface QueryState<T> {
   data: T | null;
   loading: boolean;
   error: boolean;
+  refreshing: boolean;
   refetch: () => void;
+  refresh: () => void;
 }
 
 /**
  * Typed hook for tRPC queries — replaces the `(trpc as any)` pattern
- * with proper type inference, loading states, and error handling with retry.
+ * with proper type inference, loading states, error handling with retry,
+ * and pull-to-refresh support via `refreshing` + `refresh()`.
  *
  * @example
- * const { data, loading, error, refetch } = useQuery(() => trpc.services.list.query({}));
+ * const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.services.list.query({}));
+ * // In ScrollView: refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}
  */
 export function useQuery<T>(queryFn: () => Promise<T>): QueryState<T> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const refetch = useCallback(() => {
-    setLoading(true);
+  const execute = useCallback((isRefresh = false) => {
+    if (isRefresh) {
+      setRefreshing(true);
+    } else {
+      setLoading(true);
+    }
     setError(false);
     queryFn()
-      .then((d) => { setData(d); setLoading(false); })
-      .catch(() => { setError(true); setLoading(false); });
+      .then((d) => { setData(d); setLoading(false); setRefreshing(false); })
+      .catch(() => { setError(true); setLoading(false); setRefreshing(false); });
   }, []);
 
-  useEffect(() => { refetch(); }, [refetch]);
+  const refetch = useCallback(() => execute(false), [execute]);
+  const refresh = useCallback(() => execute(true), [execute]);
 
-  return { data, loading, error, refetch };
+  useEffect(() => { execute(false); }, [execute]);
+
+  return { data, loading, error, refreshing, refetch, refresh };
 }
 
 /**
