@@ -424,6 +424,69 @@ const SERVICES = {
       { id: 'jr3', nameAr: 'باقة الظهور الإعلامي', nameEn: 'Media Appearance Pack', price: 500, durationMin: 100, emoji: '🌟', precautions: 'مكياج + شعر + استشارة' },
     ],
   },
+  artist_beauty: {
+    nameAr: 'عناية الفنانات', nameEn: 'Artist Woman Beauty', emoji: '🎨',
+    description: 'خدمات تجميل للفنانات والمبدعات — لأن الإبداع يبدأ من داخلكِ',
+    subServices: [
+      { id: 'ar1', nameAr: 'إطلالة افتتاح معرض', nameEn: 'Gallery Opening Look', price: 350, durationMin: 60, emoji: '🖼️', precautions: 'إطلالة فنية مميزة' },
+      { id: 'ar2', nameAr: 'عناية بالأيدي', nameEn: 'Artist Hand Care', price: 180, durationMin: 35, emoji: '🤲', precautions: 'للرسامات والنحاتات' },
+      { id: 'ar3', nameAr: 'جلسة إلهام', nameEn: 'Inspiration Session', price: 250, durationMin: 80, emoji: '✨', precautions: 'مساج + تأمل + إبداع' },
+    ],
+  },
+  tech_woman: {
+    nameAr: 'عناية التقنيات', nameEn: 'Tech Woman Beauty', emoji: '💻',
+    description: 'خدمات تجميل للمبرمجات والمهندسات — لأن التقنية والجمال معاً',
+    subServices: [
+      { id: 'tw1', nameAr: 'عناية بالعينين', nameEn: 'Screen-Time Eye Care', price: 200, durationMin: 35, emoji: '👁️', precautions: 'لتخفيف إجهاد الشاشات' },
+      { id: 'tw2', nameAr: 'مساج رقبة وأكتاف', nameEn: 'Tech Neck Massage', price: 220, durationMin: 40, emoji: '💆‍♀️', precautions: 'لتخفيف آلام الجلوس' },
+      { id: 'tw3', nameAr: 'مانيكير تقنية', nameEn: 'Techie Manicure', price: 130, durationMin: 30, emoji: '💅', precautions: 'أظافر قصيرة وعملية' },
+    ],
+  },
+  nomad_beauty: {
+    nameAr: 'جمال البدويات', nameEn: 'Bedouin Woman Beauty', emoji: '🐪',
+    description: 'خدمات تجميل تقليدية مستوحاة من تراث البادية — أصالة وجمال',
+    subServices: [
+      { id: 'nd1', nameAr: 'حناء بدوية', nameEn: 'Bedouin Henna', price: 250, durationMin: 60, emoji: '🌿', precautions: 'نقوش تقليدية أصيلة' },
+      { id: 'nd2', nameAr: 'خلطات بدوية', nameEn: 'Bedouin Herbal Mix', price: 200, durationMin: 50, emoji: '🌵', precautions: 'أعشاب صحراوية' },
+      { id: 'nd3', nameAr: 'إطلالة بدوية', nameEn: 'Bedouin Look', price: 300, durationMin: 75, emoji: '🏜️', precautions: 'مكياج + حناء + عطور' },
+    ],
+  },
+  kbeauty_inspired: {
+    nameAr: 'جمال كوري', nameEn: 'K-Beauty Inspired', emoji: '🇰🇷',
+    description: 'إطلالات مستوحاة من الجمال الكوري — نضارة وإشراقة',
+    subServices: [
+      { id: 'kb1', nameAr: 'روتين كوري', nameEn: 'K-Beauty Routine', price: 280, durationMin: 60, emoji: '✨', precautions: '١٠ خطوات للعناية' },
+      { id: 'kb2', nameAr: 'مكياج كوري', nameEn: 'K-Beauty Makeup', price: 250, durationMin: 50, emoji: '💄', precautions: 'إطلالة طبيعية ناعمة' },
+      { id: 'kb3', nameAr: 'قناع وجه كوري', nameEn: 'Korean Sheet Mask', price: 100, durationMin: 20, emoji: '🎭', precautions: 'ورق كوري أصلي' },
+    ],
+  },
+  eco_beauty: {
+    nameAr: 'الجمال المستدام', nameEn: 'Eco-Conscious Beauty', emoji: '🌍',
+    description: 'خدمات تجميل صديقة للبيئة — جميلة أنتِ وجميلة الأرض',
+    subServices: [
+      { id: 'ec1', nameAr: 'عناية بشرة صديقة للبيئة', nameEn: 'Eco-Friendly Facial', price: 250, durationMin: 50, emoji: '🌱', precautions: 'منتجات قابلة للتحلل' },
+      { id: 'ec2', nameAr: 'صبغات نباتية', nameEn: 'Plant-Based Hair Color', price: 300, durationMin: 90, emoji: '🍃', precautions: 'خالي من الأمونيا' },
+      { id: 'ec3', nameAr: 'باقة خضراء', nameEn: 'Green Package', price: 450, durationMin: 120, emoji: '♻️', precautions: 'بصمة كربونية منخفضة' },
+    ],
+  },
+  volunteer_beauty: {
+    nameAr: 'عناية المتطوعات', nameEn: 'Volunteer Woman Beauty', emoji: '🤝',
+    description: 'خدمات مخصصة للمتطوعات — شكراً لعطائكِ',
+    subServices: [
+      { id: 'vl1', nameAr: 'باقة المتطوعة', nameEn: 'Volunteer Package', price: 200, durationMin: 75, emoji: '💝', precautions: 'خصم خاص للمتطوعات' },
+      { id: 'vl2', nameAr: 'جلسة استرخاء', nameEn: 'Relaxation Session', price: 150, durationMin: 45, emoji: '🧘‍♀️', precautions: 'بعد يوم تطوعي' },
+      { id: 'vl3', nameAr: 'إطلالة مناسبة خيرية', nameEn: 'Charity Event Look', price: 180, durationMin: 50, emoji: '🎗️', precautions: 'لحضور الفعاليات' },
+    ],
+  },
+  gamer_beauty: {
+    nameAr: 'عناية اللاعبات', nameEn: 'Gamer Girl Beauty', emoji: '🎮',
+    description: 'خدمات تجميل لمحبات الألعاب — إطلالات مستوحاة من عالم الألعاب',
+    subServices: [
+      { id: 'gm1', nameAr: 'مانيكير ألعاب', nameEn: 'Gamer Nail Art', price: 180, durationMin: 40, emoji: '💅', precautions: 'تصاميم شخصيات الألعاب' },
+      { id: 'gm2', nameAr: 'عناية بالعينين', nameEn: 'Gamer Eye Care', price: 150, durationMin: 30, emoji: '👁️', precautions: 'لتخفيف إجهاد الشاشة' },
+      { id: 'gm3', nameAr: 'إطلالة بطولة', nameEn: 'Tournament Look', price: 250, durationMin: 50, emoji: '🏆', precautions: 'للظهور في البطولات' },
+    ],
+  },
 };
 
 export const womensServicesRouter = router({
@@ -528,6 +591,13 @@ export const womensServicesRouter = router({
         expat_beauty: ['أهلاً بكِ في السعودية', 'منتجات مناسبة للمناخ', 'تعرفي على الجمال الخليجي'],
         police_firefighter: ['شكراً لخدمتكِ', 'خصم خاص للعسكريات', 'جلسات بعد المناوبة'],
         journalist_beauty: ['مكياج يدوم تحت الأضواء', 'إطلالة طبيعية للكاميرا', 'استشارة ألوان مجانية'],
+        artist_beauty: ['إطلالات تعكس شخصيتكِ الإبداعية', 'عناية خاصة بالأيدي', 'استوحي من لوحاتكِ'],
+        tech_woman: ['عناية بالعينين من إجهاد الشاشات', 'مساج للرقبة والأكتاف', 'أظافر عملية'],
+        nomad_beauty: ['حناء طبيعية ١٠٠٪', 'خلطات صحراوية أصيلة', 'عطور عربية تقليدية'],
+        kbeauty_inspired: ['منتجات كورية أصلية', 'روتين ١٠ خطوات', 'إطلالة زجاجية'],
+        eco_beauty: ['منتجات قابلة للتحلل', 'تغليف صديق للبيئة', 'بصمة كربونية منخفضة'],
+        volunteer_beauty: ['خصم للمتطوعات', 'شكراً لعطائكِ', 'مواعيد مرنة'],
+        gamer_beauty: ['تصاميم مستوحاة من الألعاب', 'عناية بالعينين', 'إطلالات للبثوث'],
       };
       return tips[input.category] ?? [];
     }),
