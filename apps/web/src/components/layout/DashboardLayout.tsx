@@ -11,6 +11,7 @@ const customerLinks = [
   { href: '/bookings/create', labelAr: 'حجز جديد', labelEn: 'New Booking', icon: '➕' },
   { href: '/wallet', labelAr: 'المحفظة', labelEn: 'Wallet', icon: '💰' },
   { href: '/wishlist', labelAr: 'المفضلة', labelEn: 'Wishlist', icon: '❤️' },
+  { href: '/womens-services', labelAr: 'خدمات نسائية', labelEn: 'Women', icon: '🌸' },
   { href: '/dna-beauty', labelAr: 'تحليل الجينات', labelEn: 'DNA Beauty', icon: '🧬' },
   { href: '/ride-hailing', labelAr: 'توصيل للموعد', labelEn: 'Ride', icon: '🚗' },
   { href: '/last-mile', labelAr: 'توصيل سريع', labelEn: 'Delivery', icon: '📦' },

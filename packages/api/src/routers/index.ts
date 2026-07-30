@@ -159,6 +159,8 @@ import { lastMileDeliveryRouter } from './lastMileDelivery';
 import { clinicConnectRouter } from './clinicConnect';
 import { monitoringRouter } from './monitoring';
 import { womensServicesRouter } from './womensServices';
+import { kidsServicesRouter } from './kidsServices';
+import { serviceRecommenderRouter } from './serviceRecommender';
 
 export const appRouter = router({
   // Health
@@ -328,6 +330,8 @@ export const appRouter = router({
   clinicConnect: clinicConnectRouter,
   monitoring: monitoringRouter,
   womensServices: womensServicesRouter,
+  kidsServices: kidsServicesRouter,
+  serviceRecommender: serviceRecommenderRouter,
 });
 
 export type AppRouter = typeof appRouter;
