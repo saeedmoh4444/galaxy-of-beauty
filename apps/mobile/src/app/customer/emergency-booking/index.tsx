@@ -23,7 +23,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
   };
 
   const book = (technicianId: number, slotId: number) => {
-    ((trpc as any).emergencyBooking.create.mutate({ serviceId: selectedSvc!, technicianId, addressId: 1, slotId }) as any)
+    ((trpc as any).emergencyBooking.create.mutate({ serviceId: selectedSvc!, technicianId, addressId: 1 /* TODO: from address book */, slotId }) as any)
       .then((d: any) => setResult(d));
   };
 

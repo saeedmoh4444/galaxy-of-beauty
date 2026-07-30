@@ -1,13 +1,13 @@
 import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
 
-export default function StreakCalendarScreen() {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => { (trpc.streaks.get.query() as any).then((d: any) => { setData(d); setLoading(false); }).catch(() => setLoading(false)); }, []);
+export default function StreakCalendarScreen(): JSX.Element {
+  const { data, loading, error, refetch } = useQuery(() => trpc.streaks.get.query());
 
   if (loading) return <ActivityIndicator color="#f59e0b" style={{ marginTop: 40 }} size="large" />;
+  if (error) return <ErrorAlert message="فشل تحميل تقويم الاستمرارية" onRetry={refetch} />;
 
   const streak = (data as any)?.currentStreak || 0;
 

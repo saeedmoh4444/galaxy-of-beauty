@@ -1,13 +1,15 @@
 import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
 
-export default function SavedCardsScreen() {
-  const [cards, setCards] = useState<Record<string, unknown>[]>([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => { ((trpc as any).savedCards.list.query() as any).then((d: any) => { setCards(d || []); setLoading(false); }).catch(() => setLoading(false)); }, []);
+export default function SavedCardsScreen(): JSX.Element {
+  const { data, loading, error, refetch } = useQuery(() => trpc.savedCards.list.query());
 
   if (loading) return <ActivityIndicator color="#6b7280" style={{ marginTop: 40 }} size="large" />;
+  if (error) return <ErrorAlert message="فشل تحميل البطاقات" onRetry={refetch} />;
+
+  const cards = (data ?? []) as Record<string, unknown>[];
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>

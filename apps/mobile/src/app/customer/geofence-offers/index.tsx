@@ -7,7 +7,7 @@ export default function GeofenceOffersScreen(): JSX.Element {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    ((trpc as any).geofenceOffers.nearby.query({ city: 'الرياض' }) as any).then((d: any) => { setOffers(d || []); setLoading(false); }).catch(() => setLoading(false));
+    ((trpc as any).geofenceOffers.nearby.query({ city: 'الرياض' /* TODO: from user location */ }) as any).then((d: any) => { setOffers(d || []); setLoading(false); }).catch(() => setLoading(false));
   }, []);
 
   const optIn = () => {

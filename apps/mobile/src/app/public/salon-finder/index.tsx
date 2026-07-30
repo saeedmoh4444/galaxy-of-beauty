@@ -7,7 +7,7 @@ export default function SalonFinderScreen(): JSX.Element {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    ((trpc as any).salonMap.locations.query({ city: 'الرياض' }) as any).then((d: any) => { setSalons(d || []); setLoading(false); }).catch(() => setLoading(false));
+    ((trpc as any).salonMap.locations.query({ city: 'الرياض' /* TODO: from user location */ }) as any).then((d: any) => { setSalons(d || []); setLoading(false); }).catch(() => setLoading(false));
   }, []);
 
   if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;

@@ -18,7 +18,7 @@ export default function CalendarSyncScreen(): JSX.Element {
   useEffect(() => { fetch(); }, [fetch]);
 
   const connect = () => {
-    ((trpc as any).calendarSync.connect.mutate({ authCode: 'google-auth-code' }) as any).then(() => fetch());
+    ((trpc as any).calendarSync.connect.mutate({ authCode: 'google-auth-code' /* TODO: from OAuth flow */ }) as any).then(() => fetch());
   };
   const disconnect = () => {
     ((trpc as any).calendarSync.disconnect.mutate({}) as any).then(() => fetch());

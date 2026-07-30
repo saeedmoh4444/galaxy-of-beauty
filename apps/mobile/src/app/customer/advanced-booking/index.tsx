@@ -25,7 +25,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
     const startAt = new Date(Date.now() + 86400000).toISOString();
     const endAt = new Date(Date.now() + 86400000 + 3600000).toISOString();
     ((trpc as any).advancedBooking.createRecurring.mutate({
-      technicianId: 1, serviceId: selectedSvc, addressId: 1, slotId: 1,
+      technicianId: 1 /* TODO: from technician selection */, serviceId: selectedSvc, addressId: 1 /* TODO: from address selection */, slotId: 1 /* TODO: from slot selection */,
       startAt, endAt, recurrence, occurrences, notes: 'حجز متكرر',
     }) as any).then((d: any) => setResult(d));
   };

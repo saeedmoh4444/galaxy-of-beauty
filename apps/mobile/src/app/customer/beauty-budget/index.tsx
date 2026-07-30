@@ -1,22 +1,22 @@
 import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
 
-export default function BeautyBudgetScreen() {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => { ((trpc as any).beautyBudget.get.query() as any).then((d: any) => { setData(d); setLoading(false); }).catch(() => setLoading(false)); }, []);
+export default function BeautyBudgetScreen(): JSX.Element {
+  const { data, loading, error, refetch } = useQuery(() => trpc.beautyBudget.get.query());
 
   if (loading) return <ActivityIndicator color="#059669" style={{ marginTop: 40 }} size="large" />;
+  if (error) return <ErrorAlert message="فشل تحميل الميزانية" onRetry={refetch} />;
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
       <Text style={styles.t}>💰 ميزانية الجمال</Text>
       {data ? (
         <View style={styles.card}>
-          <Text style={styles.budget}>{(data.monthlyBudget as number)?.toLocaleString()} ر.س</Text>
+          <Text style={styles.budget}>{(data.budget as number)?.toLocaleString()} ر.س</Text>
           <Text style={styles.spent}>تم الإنفاق: {(data.spent as number)?.toLocaleString()} ر.س</Text>
-          <View style={styles.bar}><View style={[styles.fill, { width: `${Math.min(100, ((data.spent as number) / (data.monthlyBudget as number || 1)) * 100)}%` }]} /></View>
+          <View style={styles.bar}><View style={[styles.fill, { width: `${Math.min(100, ((data.spent as number) / (data.budget as number || 1)) * 100)}%` }]} /></View>
         </View>
       ) : <Text style={styles.e}>لا توجد بيانات</Text>}
     </ScrollView>
