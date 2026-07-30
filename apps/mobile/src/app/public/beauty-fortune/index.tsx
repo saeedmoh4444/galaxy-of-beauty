@@ -17,10 +17,10 @@ const FORTUNES = [
 ];
 
 export default function BeautyFortuneScreen(): JSX.Element {
-  const [fortune, setFortune] = useState(FORTUNES[0]);
+  const [fortune, setFortune] = useState<(typeof FORTUNES)[0]>(FORTUNES[0]!);
 
   const getRandom = () => {
-    const next = FORTUNES[Math.floor(Math.random() * FORTUNES.length)];
+    const next = FORTUNES[Math.floor(Math.random() * FORTUNES.length)] ?? FORTUNES[0]!;
     setFortune(next);
   };
 

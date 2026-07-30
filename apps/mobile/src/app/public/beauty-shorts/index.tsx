@@ -1,8 +1,6 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState, useEffect } from 'react';
-
-const { width } = Dimensions.get('window');
 
 export default function BeautyShortsScreen(): JSX.Element {
   const [shorts, setShorts] = useState<any[]>([]);

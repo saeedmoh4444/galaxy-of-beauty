@@ -29,7 +29,7 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
   const [loading, setLoading] = useState(false);
 
   const select = (value: string) => {
-    const q = QUESTIONS[step];
+    const q = QUESTIONS[step]!;
     const next = { ...answers, [q.id]: value };
     setAnswers(next);
     if (step < QUESTIONS.length - 1) {
@@ -68,7 +68,7 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
     );
   }
 
-  const q = QUESTIONS[step];
+  const q = QUESTIONS[step]!;
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>

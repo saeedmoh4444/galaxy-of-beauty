@@ -29,7 +29,7 @@ export default function BeautyQuizScreen(): JSX.Element {
   const [done, setDone] = useState(false);
 
   const select = (value: string) => {
-    const q = questions[step];
+    const q = questions[step]!;
     const next = { ...answers, [q.id]: value };
     setAnswers(next);
     if (step < questions.length - 1) { setStep(step + 1); } else { setDone(true); }
@@ -56,7 +56,7 @@ export default function BeautyQuizScreen(): JSX.Element {
     );
   }
 
-  const q = questions[step];
+  const q = questions[step]!;
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>

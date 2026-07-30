@@ -1,7 +1,5 @@
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-
-const { width } = Dimensions.get('window');
 
 const slides = [
   { emoji: '💆‍♀️', title: 'أهلاً بكِ في جالكسي بيوتي', desc: 'منصتكِ الشاملة لكل خدمات التجميل والعناية' },
@@ -18,9 +16,9 @@ export default function OnboardingScreen(): JSX.Element {
   return (
     <View style={styles.c}>
       <View style={styles.i}>
-        <Text style={styles.emoji}>{slides[step].emoji}</Text>
-        <Text style={styles.title}>{slides[step].title}</Text>
-        <Text style={styles.desc}>{slides[step].desc}</Text>
+        <Text style={styles.emoji}>{slides[step]!.emoji}</Text>
+        <Text style={styles.title}>{slides[step]!.title}</Text>
+        <Text style={styles.desc}>{slides[step]!.desc}</Text>
         <View style={styles.dots}>
           {slides.map((_, i) => <View key={i} style={[styles.dot, i === step && styles.dotActive]} />)}
         </View>

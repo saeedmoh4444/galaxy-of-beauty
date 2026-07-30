@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 
 export default function BnplScreen(): JSX.Element {
   const [providers, setProviders] = useState<any[]>([]);
-  const [eligibility, setEligibility] = useState<any>(null);
+  const [, setEligibility] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [provider, setProvider] = useState('tabby');
-  const [amount, setAmount] = useState(500);
-  const [inst, setInst] = useState(4);
+  const [amount] = useState(500);
+  const [inst] = useState(4);
   const [result, setResult] = useState<any>(null);
 
   useEffect(() => {

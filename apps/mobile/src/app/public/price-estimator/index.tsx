@@ -6,7 +6,7 @@ export default function PriceEstimatorScreen(): JSX.Element {
   const [services, setServices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<number | null>(null);
-  const [promo, setPromo] = useState('');
+  const [promo] = useState('');
   const [estimate, setEstimate] = useState<any>(null);
 
   useEffect(() => {

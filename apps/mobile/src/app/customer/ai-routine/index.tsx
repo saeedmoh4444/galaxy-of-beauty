@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const SKIN_TYPES = [
   { key: 'dry', emoji: '🏜️', label: 'جافة' },
