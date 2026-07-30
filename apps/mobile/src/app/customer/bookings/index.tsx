@@ -1,7 +1,8 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
 
 const STATUS_TABS = ['ALL', 'REQUESTED', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
@@ -30,7 +31,7 @@ export default function BookingsScreen(): JSX.Element {
     (trpc.bookings.transition as any).mutate({ id: cancelId, action: 'cancel' }).then(() => { setCancelId(null); refetch(); });
   };
 
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
+  if (loading) return <View style={styles.c}><SkeletonList count={5} /></View>;
   if (error) return <ErrorAlert message="فشل تحميل الحجوزات" onRetry={refetch} />;
 
   const bookings = ((data as any)?.bookings ?? []) as any[];
