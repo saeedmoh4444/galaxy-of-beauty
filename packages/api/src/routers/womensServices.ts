@@ -216,6 +216,70 @@ const SERVICES = {
       { id: 'st3', nameAr: 'مانيكير طلابي', nameEn: 'Student Manicure', price: 50, durationMin: 25, emoji: '💅', precautions: 'سعر مخفض' },
     ],
   },
+  fresh_start: {
+    nameAr: 'بداية جديدة', nameEn: 'Fresh Start Glow Up', emoji: '🦋',
+    description: 'باقات تجميل لبداية جديدة— تدللي واستعيدي ثقتكِ بنفسكِ',
+    subServices: [
+      { id: 'fs1', nameAr: 'باقة البداية الجديدة', nameEn: 'Fresh Start Package', price: 800, durationMin: 180, emoji: '🌟', precautions: 'شعر + بشرة + مكياج + أظافر' },
+      { id: 'fs2', nameAr: 'استشارة تغيير الإطلالة', nameEn: 'Style Transformation', price: 350, durationMin: 90, emoji: '✨', precautions: 'استشارة شاملة' },
+      { id: 'fs3', nameAr: 'جلسة تدليل', nameEn: 'Pampering Session', price: 400, durationMin: 120, emoji: '💆‍♀️', precautions: 'مساج + عناية بالبشرة' },
+    ],
+  },
+  athlete_beauty: {
+    nameAr: 'عناية الرياضيات', nameEn: 'Athlete Woman Beauty', emoji: '🏃‍♀️',
+    description: 'خدمات عناية مصممة للمرأة النشطة — بعد التمرين وقبل المنافسات',
+    subServices: [
+      { id: 'at1', nameAr: 'مساج عضلي', nameEn: 'Sports Massage', price: 300, durationMin: 60, emoji: '💪', precautions: 'مثالي بعد التمرين' },
+      { id: 'at2', nameAr: 'عناية بشرة مقاومة للعرق', nameEn: 'Sweat-Proof Facial', price: 220, durationMin: 45, emoji: '💦', precautions: 'منتجات مقاومة للتعرق' },
+      { id: 'at3', nameAr: 'باديكير رياضي', nameEn: 'Athletic Pedicure', price: 150, durationMin: 35, emoji: '🦶', precautions: 'عناية بالأقدام المتعبة' },
+    ],
+  },
+  chronic_care: {
+    nameAr: 'عناية المريضات', nameEn: 'Chronic Illness Care', emoji: '💜',
+    description: 'خدمات تجميل لطيفة للنساء المصابات بأمراض مزمنة — عناية برفق',
+    subServices: [
+      { id: 'cc1', nameAr: 'مساج لطيف', nameEn: 'Gentle Massage', price: 250, durationMin: 45, emoji: '🤲', precautions: 'ضغط خفيف جداً' },
+      { id: 'cc2', nameAr: 'عناية بشرة مهدئة', nameEn: 'Soothing Facial', price: 200, durationMin: 40, emoji: '🌸', precautions: 'منتجات مضادة للحساسية' },
+      { id: 'cc3', nameAr: 'جلسة استرخاء', nameEn: 'Relaxation Session', price: 180, durationMin: 50, emoji: '🧘‍♀️', precautions: 'بدون مجهود' },
+    ],
+  },
+  plus_size_beauty: {
+    nameAr: 'جمال المرأة الممتلئة', nameEn: 'Plus Size Beauty', emoji: '💖',
+    description: 'خدمات تجميل شاملة للمرأة الممتلئة — كل جسم جميل',
+    subServices: [
+      { id: 'ps1', nameAr: 'مساج للجسم الممتلئ', nameEn: 'Plus Size Massage', price: 300, durationMin: 60, emoji: '💆‍♀️', precautions: 'طاولة واسعة' },
+      { id: 'ps2', nameAr: 'عناية بالبشرة', nameEn: 'Body-Positive Facial', price: 220, durationMin: 45, emoji: '✨', precautions: 'منتجات مناسبة' },
+      { id: 'ps3', nameAr: 'تصفيف شعر', nameEn: 'Volumizing Styling', price: 200, durationMin: 45, emoji: '💇‍♀️', precautions: 'تسريحات تناسب الوجه' },
+    ],
+  },
+  natural_beauty: {
+    nameAr: 'الجمال الطبيعي', nameEn: 'Natural Beauty', emoji: '🌿',
+    description: 'خدمات تجميل ١٠٠٪ طبيعية — بدون أي مواد كيميائية',
+    subServices: [
+      { id: 'nt1', nameAr: 'عناية بشرة طبيعية', nameEn: 'Organic Facial', price: 250, durationMin: 50, emoji: '🌱', precautions: 'منتجات عضوية معتمدة' },
+      { id: 'nt2', nameAr: 'صبغات شعر طبيعية', nameEn: 'Natural Hair Dye', price: 300, durationMin: 90, emoji: '🍂', precautions: 'حناء وأعشاب طبيعية' },
+      { id: 'nt3', nameAr: 'قناع وجه طبيعي', nameEn: 'Natural Face Mask', price: 120, durationMin: 25, emoji: '🥑', precautions: 'مكونات طازجة' },
+      { id: 'nt4', nameAr: 'زيوت عطرية', nameEn: 'Essential Oil Therapy', price: 180, durationMin: 40, emoji: '🌸', precautions: 'زيوت نقية ١٠٠٪' },
+    ],
+  },
+  luxury_spa: {
+    nameAr: 'يوم سبا فاخر', nameEn: 'Luxury Spa Day', emoji: '👑',
+    description: 'تجربة سبا فاخرة — يوم كامل من التدليل والرفاهية',
+    subServices: [
+      { id: 'lx1', nameAr: 'يوم سبا ملكي', nameEn: 'Royal Spa Day', price: 2500, durationMin: 360, emoji: '👸', precautions: 'باقة كاملة ٦ ساعات' },
+      { id: 'lx2', nameAr: 'نصف يوم سبا', nameEn: 'Half-Day Spa', price: 1200, durationMin: 180, emoji: '💎', precautions: 'مساج + عناية + غداء' },
+      { id: 'lx3', nameAr: 'سبا مسائي', nameEn: 'Evening Spa', price: 800, durationMin: 120, emoji: '🌆', precautions: 'مساج + عشاء خفيف' },
+    ],
+  },
+  homemaker_beauty: {
+    nameAr: 'عناية ربات البيوت', nameEn: 'Homemaker Beauty', emoji: '🏠',
+    description: 'باقات عناية تناسب جدول ربة المنزل — سريعة وفعالة',
+    subServices: [
+      { id: 'hm1', nameAr: 'باقة ربة المنزل', nameEn: 'Homemaker Package', price: 350, durationMin: 90, emoji: '🏡', precautions: 'شعر + أظافر + بشرة' },
+      { id: 'hm2', nameAr: 'عناية بالأيدي', nameEn: 'Hand Care Treatment', price: 120, durationMin: 30, emoji: '🤲', precautions: 'للأيدي المتعبة من العمل' },
+      { id: 'hm3', nameAr: 'استرخاء منزلي', nameEn: 'At-Home Relaxation', price: 400, durationMin: 120, emoji: '🛋️', precautions: 'زيارة منزلية' },
+    ],
+  },
 };
 
 export const womensServicesRouter = router({
@@ -297,6 +361,13 @@ export const womensServicesRouter = router({
         eid_prep: ['احجزي قبل العيد بـ ٣ أيام على الأقل', 'الباقات توفر أكثر', 'تأكدي من توفر الفنية'],
         new_bride: ['استمتعي بكل لحظة', 'جربي إطلالات مختلفة', 'الباقة السنوية الأوفر'],
         student_beauty: ['أظهري بطاقتكِ الجامعية للخصم', 'احجزي في أوقات التخفيضات', 'استفسري عن عروض الطالبات'],
+        fresh_start: ['هذه بدايتكِ الجديدة — استمتعي', 'جربي إطلالة مختلفة', 'الباقة الشاملة أوفر'],
+        athlete_beauty: ['احجزي بعد التمرين للاستفادة القصوى', 'منتجات مقاومة للتعرق', 'اهتمي بترطيب جسمكِ'],
+        chronic_care: ['استشيري طبيبكِ قبل الحجز', 'أخبري الفنية عن حالتكِ', 'جميع الخدمات بضغط خفيف'],
+        plus_size_beauty: ['كل جسم جميل', 'طاولات وأدوات مناسبة', 'خدمات مريحة ومحترمة'],
+        natural_beauty: ['منتجات عضوية معتمدة ١٠٠٪', 'خالي تماماً من المواد الكيميائية', 'مناسب لجميع أنواع البشرة'],
+        luxury_spa: ['احجزي قبل أسبوع على الأقل', 'الغداء مشمول في الباقات', 'تجربة لا تنسى'],
+        homemaker_beauty: ['خدمة منزلية متوفرة', 'باقات موفرة للوقت', 'اهتمي بنفسكِ كما تهتمين ببيتكِ'],
       };
       return tips[input.category] ?? [];
     }),
