@@ -1,2 +1,52 @@
-import { View, Text } from 'react-native';
-export default function TechLeaderboardScreen(): JSX.Element { return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}><Text style={{ fontSize: 48 }}>🏆</Text><Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 16 }}>لوحة المتصدرين</Text></View>; }
+import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { trpc } from '@/lib/api';
+import { useState, useEffect } from 'react';
+
+export default function TechLeaderboardScreen(): JSX.Element {
+  const [board, setBoard] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, _setFilter] = useState('rating');
+
+  useEffect(() => {
+    ((trpc as any).techLeaderboard.rankings.query({ sortBy: filter }) as any).then((d: any) => { setBoard(d || []); setLoading(false); }).catch(() => setLoading(false));
+  }, [filter]);
+
+  if (loading) return <ActivityIndicator color="#f59e0b" style={{ marginTop: 40 }} size="large" />;
+
+  return (
+    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+      <Text style={styles.t}>🏆 لوحة المتصدرين</Text>
+      <Text style={styles.sub}>أفضل الفنيات حسب التقييمات والحجوزات</Text>
+      {board.length === 0 ? <Text style={styles.e}>لا توجد بيانات</Text> :
+        board.map((t: any, i: number) => (
+          <View key={t.id} style={[styles.card, i === 0 && styles.topCard]}>
+            <View style={[styles.rank, i === 0 && styles.rankTop]}>
+              <Text style={[styles.rankText, i === 0 && styles.rankTextTop]}>{i + 1}</Text>
+            </View>
+            <Text style={styles.rankEmoji}>{i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '👩‍🎨'}</Text>
+            <View style={{flex:1}}>
+              <Text style={styles.techName}>{t.name as string}</Text>
+              <Text style={styles.techMeta}>⭐ {t.rating as number} · 📅 {t.bookings as number} حجز</Text>
+            </View>
+            {i === 0 && <Text style={styles.crown}>👑</Text>}
+          </View>
+        ))
+      }
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  c: { flex: 1, backgroundColor: '#fffbeb' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#d97706', textAlign: 'center', marginBottom: 4 },
+  sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 20 },
+  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 6 },
+  topCard: { borderWidth: 2, borderColor: '#fcd34d', backgroundColor: '#fffbeb' },
+  rank: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#f3f4f6', alignItems: 'center', justifyContent: 'center' },
+  rankTop: { backgroundColor: '#fcd34d' },
+  rankText: { fontSize: 14, fontWeight: '700', color: '#6b7280' }, rankTextTop: { color: '#d97706' },
+  rankEmoji: { fontSize: 24 }, techName: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  techMeta: { fontSize: 12, color: '#6b7280', marginTop: 2 },
+  crown: { fontSize: 28 },
+});
