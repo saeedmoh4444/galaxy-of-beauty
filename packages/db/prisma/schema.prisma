@@ -1837,3 +1837,74 @@ model FlashDeal {
   @@index([isActive, startsAt, endsAt])
   @@map("flash_deals")
 }
+
+// =============================================================================
+// Family Account — Family members for booking on behalf
+// =============================================================================
+
+model FamilyMember {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  name         String
+  relationship String   // child, spouse, parent, sibling, other
+  ageGroup     String   // infant, child, teen, adult, senior
+  preferences  String[] // gentle, hypoallergenic, fragrance_free, etc.
+  notes        String   @default("")
+  createdAt    DateTime @default(now())
+
+  @@index([userId])
+  @@map("family_members")
+}
+
+// =============================================================================
+// Skin Diary — Photo timeline tracking skin changes
+// =============================================================================
+
+model SkinDiaryEntry {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  imageUrl       String
+  skinCondition  String
+  hydration      Int      @default(5)
+  concerns       String[] @default([])
+  notes          String   @default("")
+  createdAt      DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("skin_diary_entries")
+}
+
+// =============================================================================
+// Wellness Tracker — Daily health & beauty check-ins
+// =============================================================================
+
+model WellnessCheckin {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  date      String   // YYYY-MM-DD
+  water     Int      @default(0)  // glasses
+  sleep     Float    @default(0)  // hours
+  mood      Int      @default(3)  // 1-5
+  steps     Int      @default(0)
+  skincare  Boolean  @default(false)
+  notes     String   @default("")
+  createdAt DateTime @default(now())
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@map("wellness_checkins")
+}
+
+// =============================================================================
+// Beauty Pen Pal — Interest-based beauty buddy matching
+// =============================================================================
+
+model PenPalProfile {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  interests String[] // skincare, makeup, hair, nails, etc.
+  bio       String   @default("")
+  createdAt DateTime @default(now())
+
+  @@map("pen_pal_profiles")
+}

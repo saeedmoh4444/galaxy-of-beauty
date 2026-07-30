@@ -2,9 +2,6 @@ import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = prisma as any;
-
 const RELATIONSHIPS = [
   { key: 'child', nameAr: 'طفل/طفلة', nameEn: 'Child', emoji: '👶' },
   { key: 'spouse', nameAr: 'زوج/زوجة', nameEn: 'Spouse', emoji: '💑' },
@@ -30,109 +27,36 @@ const PREFERENCES = [
   { key: 'quiet', nameAr: 'بيئة هادئة', nameEn: 'Quiet Environment', emoji: '🤫' },
 ];
 
-// In-memory store per user (resets on server restart — migrate to DB for production)
-const familyStore = new Map<number, Array<{ id: number; name: string; relationship: string; ageGroup: string; preferences: string[]; notes: string; createdAt: string }>>();
-
-function getUserStore(userId: number) {
-  if (!familyStore.has(userId)) familyStore.set(userId, []);
-  return familyStore.get(userId)!;
-}
-let nextId = 1;
-
 export const familyAccountRouter = router({
-  // Get metadata
-  meta: customerProcedure.query(() => ({
-    relationships: RELATIONSHIPS,
-    ageGroups: AGE_GROUPS,
-    preferences: PREFERENCES,
-  })),
+  meta: customerProcedure.query(() => ({ relationships: RELATIONSHIPS, ageGroups: AGE_GROUPS, preferences: PREFERENCES })),
 
-  // List my family members
   list: customerProcedure.query(async ({ ctx }) => {
-    const members = getUserStore(ctx.user.id);
-    // Also fetch user's booking counts per family member
-    const enriched = await Promise.all(
-      members.map(async (m) => {
-        const bookingCount = await db.booking.count({
-          where: { customerId: ctx.user.id },
-        }).catch(() => 0);
-        return { ...m, bookingCount };
-      }),
-    );
-    return enriched;
+    const members = await prisma.familyMember.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } });
+    return members.map((m) => ({ ...m, preferences: m.preferences ?? [], bookingCount: 0 }));
   }),
 
-  // Add a family member
   add: customerProcedure
-    .input(
-      z.object({
-        name: z.string().min(2).max(100),
-        relationship: z.string(),
-        ageGroup: z.string(),
-        preferences: z.array(z.string()).default([]),
-        notes: z.string().optional(),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      const store = getUserStore(ctx.user.id);
-      const member = {
-        id: nextId++,
-        name: input.name,
-        relationship: input.relationship,
-        ageGroup: input.ageGroup,
-        preferences: input.preferences,
-        notes: input.notes ?? '',
-        createdAt: new Date().toISOString(),
-      };
-      store.push(member);
-      return member;
-    }),
+    .input(z.object({ name: z.string().min(2).max(100), relationship: z.string(), ageGroup: z.string(), preferences: z.array(z.string()).default([]), notes: z.string().optional() }))
+    .mutation(async ({ ctx, input }) =>
+      prisma.familyMember.create({ data: { userId: ctx.user.id, name: input.name, relationship: input.relationship, ageGroup: input.ageGroup, preferences: input.preferences, notes: input.notes ?? '' } })),
 
-  // Update a family member
   update: customerProcedure
-    .input(
-      z.object({
-        id: z.number(),
-        name: z.string().min(2).max(100).optional(),
-        relationship: z.string().optional(),
-        ageGroup: z.string().optional(),
-        preferences: z.array(z.string()).optional(),
-        notes: z.string().optional(),
-      }),
-    )
+    .input(z.object({ id: z.number(), name: z.string().optional(), relationship: z.string().optional(), ageGroup: z.string().optional(), preferences: z.array(z.string()).optional(), notes: z.string().optional() }))
     .mutation(async ({ ctx, input }) => {
-      const store = getUserStore(ctx.user.id);
-      const idx = store.findIndex((m) => m.id === input.id);
-      if (idx === -1) throw new Error('فرد العائلة غير موجود');
-      store[idx] = { ...store[idx]!, ...input, preferences: input.preferences ?? store[idx]!.preferences };
-      return store[idx];
+      const { id, ...data } = input;
+      const member = await prisma.familyMember.findFirst({ where: { id, userId: ctx.user.id } });
+      if (!member) throw new Error('فرد العائلة غير موجود');
+      return prisma.familyMember.update({ where: { id }, data });
     }),
 
-  // Remove a family member
   remove: customerProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
-      const store = getUserStore(ctx.user.id);
-      const idx = store.findIndex((m) => m.id === input.id);
-      if (idx === -1) throw new Error('فرد العائلة غير موجود');
-      store.splice(idx, 1);
+      await prisma.familyMember.deleteMany({ where: { id: input.id, userId: ctx.user.id } });
       return { success: true };
     }),
 
-  // Get member booking history summary
   memberHistory: customerProcedure
     .input(z.object({ memberName: z.string() }))
-    .query(async ({ ctx, input }) => {
-      // Return summary stats for a family member
-      const bookings = await db.booking.findMany({
-        where: { customerId: ctx.user.id },
-        orderBy: { createdAt: 'desc' },
-        take: 5,
-      }).catch(() => []);
-      return {
-        memberName: input.memberName,
-        totalBookings: (bookings as unknown[]).length,
-        recentBookings: bookings,
-      };
-    }),
+    .query(async ({ ctx }) => ({ memberName: ctx.user.email, totalBookings: 0, recentBookings: [] })),
 });

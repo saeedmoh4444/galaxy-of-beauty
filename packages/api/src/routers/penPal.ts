@@ -1,27 +1,40 @@
 import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
 const INTERESTS = ['skincare', 'makeup', 'hair', 'nails', 'wellness', 'natural', 'kbeauty', 'arabic'];
-const penPals: Array<{ id: number; userId: number; userName: string; interests: string[]; bio: string; }> = [];
-let palId = 1;
+
+const INTEREST_LABELS: Record<string, { nameAr: string; emoji: string }> = {
+  skincare: { nameAr: 'عناية بالبشرة', emoji: '✨' },
+  makeup: { nameAr: 'مكياج', emoji: '💄' },
+  hair: { nameAr: 'شعر', emoji: '💇‍♀️' },
+  nails: { nameAr: 'أظافر', emoji: '💅' },
+  wellness: { nameAr: 'عافية', emoji: '🧘' },
+  natural: { nameAr: 'طبيعي', emoji: '🌿' },
+  kbeauty: { nameAr: 'K-Beauty', emoji: '🇰🇷' },
+  arabic: { nameAr: 'عربي', emoji: '🧕' },
+};
 
 export const penPalRouter = router({
   register: customerProcedure
     .input(z.object({ interests: z.array(z.string()).min(2), bio: z.string().max(200).optional() }))
-    .mutation(async ({ ctx, input }) => {
-      const existing = penPals.findIndex((p) => p.userId === ctx.user.id);
-      const pal = { id: existing >= 0 ? penPals[existing]!.id : palId++, userId: ctx.user.id, userName: ctx.user.email, interests: input.interests, bio: input.bio ?? '' };
-      if (existing >= 0) penPals[existing] = pal; else penPals.push(pal);
-      return pal;
-    }),
+    .mutation(async ({ ctx, input }) =>
+      prisma.penPalProfile.upsert({
+        where: { userId: ctx.user.id },
+        create: { userId: ctx.user.id, interests: input.interests, bio: input.bio ?? '' },
+        update: { interests: input.interests, bio: input.bio ?? '' },
+      })),
+
   match: customerProcedure.query(async ({ ctx }) => {
-    const me = penPals.find((p) => p.userId === ctx.user.id);
+    const me = await prisma.penPalProfile.findUnique({ where: { userId: ctx.user.id } });
     if (!me) return [];
-    return penPals
-      .filter((p) => p.userId !== ctx.user.id)
-      .map((p) => ({ ...p, score: p.interests.filter((i) => me.interests.includes(i)).length }))
+    const all = await prisma.penPalProfile.findMany({ where: { userId: { not: ctx.user.id } } });
+    return all
+      .map((p) => ({ ...p, score: p.interests.filter((i: string) => me.interests.includes(i)).length, userName: `مستخدمة #${p.userId}` }))
       .sort((a, b) => b.score - a.score)
       .slice(0, 6);
   }),
-  interests: customerProcedure.query(() => INTERESTS.map((k) => ({ key: k, nameAr: { skincare: 'عناية بالبشرة', makeup: 'مكياج', hair: 'شعر', nails: 'أظافر', wellness: 'عافية', natural: 'طبيعي', kbeauty: 'K-Beauty', arabic: 'عربي' }[k] ?? k, emoji: { skincare: '✨', makeup: '💄', hair: '💇‍♀️', nails: '💅', wellness: '🧘', natural: '🌿', kbeauty: '🇰🇷', arabic: '🧕' }[k] ?? '💬' }))),
+
+  interests: customerProcedure.query(() =>
+    INTERESTS.map((k) => ({ key: k, nameAr: INTEREST_LABELS[k]?.nameAr ?? k, emoji: INTEREST_LABELS[k]?.emoji ?? '💬' }))),
 });
