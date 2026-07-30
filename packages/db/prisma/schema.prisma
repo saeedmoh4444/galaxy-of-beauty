@@ -1995,3 +1995,57 @@ model ServiceWishlistItem {
   @@index([userId])
   @@map("service_wishlist_items")
 }
+
+// =============================================================================
+// Gift Card Market — P2P gift card listings
+// =============================================================================
+
+model GiftCardListing {
+  id           Int      @id @default(autoincrement())
+  sellerId     Int
+  sellerName   String
+  value        Int
+  sellingPrice Int
+  discount     Int
+  emoji        String   @default("🎁")
+  createdAt    DateTime @default(now())
+
+  @@map("gift_card_listings")
+}
+
+// =============================================================================
+// Expiry Tracker — Product expiration tracking
+// =============================================================================
+
+model ExpiryTrackerItem {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  productName   String
+  category      String
+  openDate      DateTime @default(now())
+  expiryMonths  Int      @default(12)
+  emoji         String   @default("📦")
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@map("expiry_tracker_items")
+}
+
+// =============================================================================
+// Restock Reminder — Product repurchase tracking
+// =============================================================================
+
+model RestockReminderItem {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  productName   String
+  category      String
+  purchaseDate  DateTime @default(now())
+  lifespanDays  Int      @default(60)
+  notifyDays    Int      @default(7)
+  emoji         String   @default("📦")
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@map("restock_reminder_items")
+}
