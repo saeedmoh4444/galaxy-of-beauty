@@ -613,6 +613,78 @@ const SERVICES = {
       { id: 'sb3', nameAr: 'مساج بحري', nameEn: 'Marine Massage', price: 300, durationMin: 60, emoji: '💆‍♀️', precautions: 'بأملاح البحر الميت' },
     ],
   },
+  veterinarian_beauty: {
+    nameAr: 'عناية الطبيبات البيطريات', nameEn: 'Veterinarian Beauty', emoji: '🐾',
+    description: 'خدمات تجميل للطبيبات البيطريات — لأنكِ تعتنين بالجميع إلا نفسكِ',
+    subServices: [
+      { id: 'vt1', nameAr: 'عناية بالأيدي', nameEn: 'Vet Hand Care', price: 200, durationMin: 35, emoji: '🤲', precautions: 'تعقيم وترميم' },
+      { id: 'vt2', nameAr: 'مساج ظهر', nameEn: 'Back Recovery Massage', price: 280, durationMin: 50, emoji: '💆‍♀️', precautions: 'لتخفيف آلام الانحناء' },
+      { id: 'vt3', nameAr: 'باقة الطبيبة', nameEn: 'Veterinarian Package', price: 400, durationMin: 100, emoji: '🐱', precautions: 'مساج + بشرة + أظافر' },
+    ],
+  },
+  pharmacist_beauty: {
+    nameAr: 'عناية الصيدلانيات', nameEn: 'Pharmacist Woman Beauty', emoji: '💊',
+    description: 'خدمات تجميل للصيدلانيات — أنتِ خبيرة التركيبات',
+    subServices: [
+      { id: 'ph1', nameAr: 'عناية بالأيدي', nameEn: 'Pharmacist Hand Care', price: 180, durationMin: 30, emoji: '🤲', precautions: 'ترميم من جفاف المعقمات' },
+      { id: 'ph2', nameAr: 'إطلالة صيدلية', nameEn: 'Pharmacy Look', price: 200, durationMin: 45, emoji: '💄', precautions: 'مكياج خفيف وطبيعي' },
+      { id: 'ph3', nameAr: 'استرخاء بعد الدوام', nameEn: 'Post-Shift Relaxation', price: 250, durationMin: 55, emoji: '🧘‍♀️', precautions: 'بعد وقوف طويل' },
+    ],
+  },
+  dentist_beauty: {
+    nameAr: 'عناية طبيبات الأسنان', nameEn: 'Dentist Woman Beauty', emoji: '🦷',
+    description: 'خدمات تجميل لطبيبات الأسنان — ابتسامة جميلة تستحقينها',
+    subServices: [
+      { id: 'dt1', nameAr: 'عناية بالأيدي', nameEn: 'Dentist Hand Care', price: 200, durationMin: 35, emoji: '🤲', precautions: 'للأيدي الدقيقة' },
+      { id: 'dt2', nameAr: 'مساج رقبة وأكتاف', nameEn: 'Neck & Shoulder Massage', price: 250, durationMin: 45, emoji: '💆‍♀️', precautions: 'لتخفيف آلام الانحناء' },
+      { id: 'dt3', nameAr: 'إطلالة عيادة', nameEn: 'Clinic Look', price: 280, durationMin: 55, emoji: '😁', precautions: 'احترافية وأنيقة' },
+    ],
+  },
+  psychologist_beauty: {
+    nameAr: 'عناية المعالجات النفسيات', nameEn: 'Psychologist Woman Beauty', emoji: '🧠',
+    description: 'خدمات عناية للمعالجات النفسيات — لأنكِ تستمعين للجميع، استمعي لجسدكِ',
+    subServices: [
+      { id: 'py1', nameAr: 'جلسة استرخاء', nameEn: 'Deep Relaxation', price: 300, durationMin: 60, emoji: '🧘‍♀️', precautions: 'لتفريغ الطاقة' },
+      { id: 'py2', nameAr: 'مساج تأملي', nameEn: 'Meditation Massage', price: 350, durationMin: 75, emoji: '🕯️', precautions: 'زيوت مهدئة' },
+      { id: 'py3', nameAr: 'إطلالة عيادة', nameEn: 'Practice Look', price: 250, durationMin: 50, emoji: '💼', precautions: 'مريحة واحترافية' },
+    ],
+  },
+  dietitian_beauty: {
+    nameAr: 'عناية أخصائيات التغذية', nameEn: 'Dietitian Woman Beauty', emoji: '🥗',
+    description: 'خدمات تجميل لأخصائيات التغذية — جمال من الداخل والخارج',
+    subServices: [
+      { id: 'di1', nameAr: 'عناية بشرة مغذية', nameEn: 'Nourishing Facial', price: 250, durationMin: 50, emoji: '✨', precautions: 'مكونات طبيعية' },
+      { id: 'di2', nameAr: 'باقة الصحة والجمال', nameEn: 'Health & Beauty Package', price: 400, durationMin: 100, emoji: '🥑', precautions: 'عناية + استشارة غذائية' },
+      { id: 'di3', nameAr: 'إطلالة عيادة', nameEn: 'Clinic Consultation Look', price: 200, durationMin: 45, emoji: '💄', precautions: 'طبيعي ومنعش' },
+    ],
+  },
+  social_worker_beauty: {
+    nameAr: 'عناية الأخصائيات الاجتماعيات', nameEn: 'Social Worker Beauty', emoji: '🤲',
+    description: 'خدمات عناية للأخصائيات الاجتماعيات — لأنكِ تقدمين للآخرين كل يوم',
+    subServices: [
+      { id: 'sw1', nameAr: 'جلسة استرخاء', nameEn: 'Social Worker Relaxation', price: 220, durationMin: 55, emoji: '💆‍♀️', precautions: 'لتخفيف الضغط' },
+      { id: 'sw2', nameAr: 'باقة العطاء', nameEn: 'Giver Package', price: 350, durationMin: 100, emoji: '💝', precautions: 'خصم خاص' },
+      { id: 'sw3', nameAr: 'إطلالة ميدانية', nameEn: 'Field Visit Look', price: 180, durationMin: 40, emoji: '🏘️', precautions: 'عملية ومريحة' },
+    ],
+  },
+  physiotherapist_beauty: {
+    nameAr: 'عناية المعالجات الطبيعيات', nameEn: 'Physiotherapist Beauty', emoji: '💪',
+    description: 'خدمات تجميل للمعالجات الطبيعيات — لأنكِ تعالجين الأجسام، عالجي جسدكِ',
+    subServices: [
+      { id: 'pt1', nameAr: 'مساج عضلي', nameEn: 'Deep Tissue Massage', price: 300, durationMin: 60, emoji: '💆‍♀️', precautions: 'لتخفيف إجهاد العضلات' },
+      { id: 'pt2', nameAr: 'عناية بالأيدي', nameEn: 'Therapist Hand Care', price: 200, durationMin: 35, emoji: '🤲', precautions: 'للأيدي القوية' },
+      { id: 'pt3', nameAr: 'باقة المعالجة', nameEn: 'Therapist Package', price: 450, durationMin: 120, emoji: '🏋️‍♀️', precautions: 'مساج + بشرة + أظافر' },
+    ],
+  },
+  gardener_beauty: {
+    nameAr: 'عناية البستانيات', nameEn: 'Gardener Woman Beauty', emoji: '🌻',
+    description: 'خدمات تجميل لمحبات الزراعة والبستنة — جمال الطبيعة في يديكِ',
+    subServices: [
+      { id: 'gd1', nameAr: 'عناية بالأيدي', nameEn: 'Gardener Hand Care', price: 180, durationMin: 35, emoji: '🤲', precautions: 'ترميم وترطيب عميق' },
+      { id: 'gd2', nameAr: 'باقة الطبيعة', nameEn: 'Nature Package', price: 300, durationMin: 90, emoji: '🌺', precautions: 'بشرة + شعر بمنتجات نباتية' },
+      { id: 'gd3', nameAr: 'إطلالة حديقة', nameEn: 'Garden Party Look', price: 250, durationMin: 50, emoji: '🏡', precautions: 'إطلالة منعشة وطبيعية' },
+    ],
+  },
 };
 
 export const womensServicesRouter = router({
@@ -738,6 +810,14 @@ export const womensServicesRouter = router({
         farmer_beauty: ['ترميم الأيدي', 'منتجات طبيعية', 'جمال الطبيعة'],
         librarian_beauty: ['إطلالات هادئة', 'جلسات قراءة', 'أناقة المعرفة'],
         sailor_beauty: ['حماية من الملوحة', 'ترميم الشعر', 'أملاح البحر الميت'],
+        veterinarian_beauty: ['تعقيم وترميم الأيدي', 'راحة للظهر المتعب', 'أنتِ تعتنين بالجميع'],
+        pharmacist_beauty: ['ترميم من جفاف المعقمات', 'إطلالة خفيفة', 'استرخاء بعد الوقوف'],
+        dentist_beauty: ['عناية بالأيدي الدقيقة', 'راحة للرقبة والكتفين', 'ابتسامة جميلة'],
+        psychologist_beauty: ['تفريغ الطاقة السلبية', 'زيوت مهدئة', 'أنتِ تستمعين للجميع'],
+        dietitian_beauty: ['مكونات طبيعية', 'جمال من الداخل والخارج', 'استشارة غذائية'],
+        social_worker_beauty: ['خصم خاص', 'لتخفيف ضغط العمل', 'أنتِ تعطين كل يوم'],
+        physiotherapist_beauty: ['راحة للعضلات', 'عناية بالأيدي القوية', 'أنتِ تعالجين الجميع'],
+        gardener_beauty: ['ترميم الأيدي', 'منتجات نباتية', 'جمال الطبيعة'],
       };
       return tips[input.category] ?? [];
     }),
