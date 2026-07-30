@@ -749,6 +749,62 @@ const SERVICES = {
       { id: 'cl3', nameAr: 'إطلالة قمة', nameEn: 'Summit Look', price: 250, durationMin: 45, emoji: '⛰️', precautions: 'للاحتفال بالقمة' },
     ],
   },
+  lawyer_beauty: {
+    nameAr: 'عناية المحاميات', nameEn: 'Lawyer Woman Beauty', emoji: '⚖️', description: 'إطلالات قوية للمحاميات — ثقة أمام القاضي',
+    subServices: [
+      { id: 'lw1', nameAr: 'إطلالة محكمة', nameEn: 'Courtroom Look', price: 350, durationMin: 65, emoji: '🏛️', precautions: 'احترافية ورسمية' },
+      { id: 'lw2', nameAr: 'إطلالة اجتماع', nameEn: 'Client Meeting Look', price: 280, durationMin: 50, emoji: '💼', precautions: 'ثقة واحترافية' },
+      { id: 'lw3', nameAr: 'استرخاء بعد القضية', nameEn: 'Post-Case Relaxation', price: 350, durationMin: 80, emoji: '🧘‍♀️', precautions: 'لتخفيف التوتر' },
+    ],
+  },
+  banker_beauty: {
+    nameAr: 'عناية المصرفيات', nameEn: 'Banker Woman Beauty', emoji: '🏦', description: 'إطلالات أنيقة للمصرفيات — ثقة في كل معاملة',
+    subServices: [
+      { id: 'bk1', nameAr: 'إطلالة بنكية', nameEn: 'Banking Look', price: 300, durationMin: 55, emoji: '💳', precautions: 'أنيقة ومحترفة' },
+      { id: 'bk2', nameAr: 'عناية بالأيدي', nameEn: 'Banker Hand Care', price: 200, durationMin: 30, emoji: '🤲', precautions: 'أظافر أنيقة' },
+      { id: 'bk3', nameAr: 'استرخاء بعد الدوام', nameEn: 'Post-Shift Relax', price: 280, durationMin: 55, emoji: '🧘‍♀️', precautions: 'لتخفيف الضغط' },
+    ],
+  },
+  wedding_planner: {
+    nameAr: 'عناية منظمات الحفلات', nameEn: 'Wedding Planner Beauty', emoji: '💒', description: 'خدمات تجميل لمنظمات الأفراح — أنتِ وراء كل زفاف جميل',
+    subServices: [
+      { id: 'wp1', nameAr: 'إطلالة يوم الزفاف', nameEn: 'Wedding Day Look', price: 350, durationMin: 60, emoji: '👰', precautions: 'للظهور يوم الزفاف' },
+      { id: 'wp2', nameAr: 'مساج ظهر', nameEn: 'Back Recovery', price: 300, durationMin: 55, emoji: '💆‍♀️', precautions: 'بعد يوم طويل' },
+      { id: 'wp3', nameAr: 'باقة المنظمة', nameEn: 'Planner Package', price: 500, durationMin: 120, emoji: '💝', precautions: 'شعر + مكياج + استرخاء' },
+    ],
+  },
+  call_center_beauty: {
+    nameAr: 'عناية موظفات الاتصالات', nameEn: 'Call Center Beauty', emoji: '📞', description: 'خدمات عناية لموظفات خدمة العملاء — صوت جميل وإطلالة أجمل',
+    subServices: [
+      { id: 'cc1', nameAr: 'عناية بالصوت', nameEn: 'Voice Care Treatment', price: 150, durationMin: 30, emoji: '🗣️', precautions: 'أعشاب ومرطبات' },
+      { id: 'cc2', nameAr: 'مساج رقبة', nameEn: 'Neck & Head Massage', price: 220, durationMin: 40, emoji: '💆‍♀️', precautions: 'لتخفيف آلام السماعة' },
+      { id: 'cc3', nameAr: 'استرخاء بعد المناوبة', nameEn: 'Post-Shift Relaxation', price: 250, durationMin: 55, emoji: '🧘‍♀️', precautions: 'لتفريغ ضغط المكالمات' },
+    ],
+  },
+  real_estate_beauty: {
+    nameAr: 'عناية العقاريات', nameEn: 'Real Estate Beauty', emoji: '🏘️', description: 'إطلالات جاهزة للقاء العملاء — بيعي بأجمل إطلالة',
+    subServices: [
+      { id: 're1', nameAr: 'إطلالة عميلة', nameEn: 'Client Ready Look', price: 300, durationMin: 55, emoji: '🤝', precautions: 'واثقة وجذابة' },
+      { id: 're2', nameAr: 'إطلالة عرض عقاري', nameEn: 'Open House Look', price: 250, durationMin: 45, emoji: '🏠', precautions: 'منعشة وطبيعية' },
+      { id: 're3', nameAr: 'استرخاء بعد البيع', nameEn: 'Post-Sale Relax', price: 350, durationMin: 75, emoji: '🥂', precautions: 'احتفال بالإنجاز' },
+    ],
+  },
+  accountant_beauty: {
+    nameAr: 'عناية المحاسبات', nameEn: 'Accountant Woman Beauty', emoji: '📊', description: 'خدمات عناية للمحاسبات — دقة وجمال في الأرقام',
+    subServices: [
+      { id: 'ac1', nameAr: 'مساج ظهر', nameEn: 'Back & Neck Massage', price: 280, durationMin: 50, emoji: '💆‍♀️', precautions: 'لتخفيف آلام الجلوس' },
+      { id: 'ac2', nameAr: 'عناية بالعينين', nameEn: 'Screen-Time Eye Care', price: 200, durationMin: 30, emoji: '👁️', precautions: 'لتخفيف إجهاد الأرقام' },
+      { id: 'ac3', nameAr: 'استرخاء موسم الضرائب', nameEn: 'Tax Season Relief', price: 400, durationMin: 100, emoji: '🧘‍♀️', precautions: 'لتخفيف ضغط الموسم' },
+    ],
+  },
+  event_host_beauty: {
+    nameAr: 'عناية مقدمات الحفلات', nameEn: 'Event Host Beauty', emoji: '🎤', description: 'إطلالات مبهرة لمقدمات الحفلات والمناسبات',
+    subServices: [
+      { id: 'eh1', nameAr: 'إطلالة مسرح', nameEn: 'Stage Look', price: 400, durationMin: 70, emoji: '🎪', precautions: 'يدوم تحت الأضواء' },
+      { id: 'eh2', nameAr: 'إطلالة حفل', nameEn: 'Event Look', price: 350, durationMin: 60, emoji: '🎉', precautions: 'أنيقة وجذابة' },
+      { id: 'eh3', nameAr: 'عناية بالصوت', nameEn: 'Voice Care', price: 180, durationMin: 30, emoji: '🗣️', precautions: 'أعشاب ومرطبات للحنجرة' },
+    ],
+  },
 };
 
 export const womensServicesRouter = router({
@@ -890,6 +946,13 @@ export const womensServicesRouter = router({
         weightlifter_beauty: ['استرخاء العضلات', 'ترميم الأيدي', 'إطلالات البطولات'],
         cyclist_beauty: ['استرخاء الأرجل', 'حماية من الرياح', 'إطلالات السباقات'],
         climber_beauty: ['ترميم الأيدي', 'استرخاء كامل', 'احتفال القمة'],
+        lawyer_beauty: ['إطلالات رسمية', 'ثقة أمام المحكمة', 'استرخاء بعد القضايا'],
+        banker_beauty: ['إطلالات أنيقة', 'أظافر راقية', 'استرخاء بعد الدوام'],
+        wedding_planner: ['إطلالات يوم الزفاف', 'راحة للظهر', 'أنتِ وراء الجمال'],
+        call_center_beauty: ['عناية بالصوت', 'راحة للرقبة', 'تفريغ ضغط المكالمات'],
+        real_estate_beauty: ['إطلالات للعملاء', 'ثقة وجاذبية', 'احتفال بالإنجاز'],
+        accountant_beauty: ['راحة للظهر', 'عناية بالعينين', 'استرخاء موسم الضرائب'],
+        event_host_beauty: ['إطلالات مسرحية', 'عناية بالصوت', 'أناقة وجاذبية'],
       };
       return tips[input.category] ?? [];
     }),
