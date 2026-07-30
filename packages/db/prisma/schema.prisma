@@ -1908,3 +1908,38 @@ model PenPalProfile {
 
   @@map("pen_pal_profiles")
 }
+
+// =============================================================================
+// Live Chat — Customer support chat messages
+// =============================================================================
+
+model LiveChatMessage {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  userName  String
+  message   String
+  isAgent   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("live_chat_messages")
+}
+
+// =============================================================================
+// Technician Q&A — Customer questions + technician answers
+// =============================================================================
+
+model QAQuestion {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  userName        String
+  question        String
+  answer          String?
+  technicianName  String?
+  category        String   @default("general")
+  isAnswered      Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  @@index([category, isAnswered])
+  @@map("qa_questions")
+}
