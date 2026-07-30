@@ -144,6 +144,78 @@ const SERVICES = {
       { id: 'bf3', nameAr: 'مانيكير آمن', nameEn: 'Safe Manicure', price: 100, durationMin: 30, emoji: '💅', precautions: 'منتجات غير سامة' },
     ],
   },
+  fertility_wellness: {
+    nameAr: 'عناية الخصوبة', nameEn: 'Fertility Wellness', emoji: '🌱',
+    description: 'عناية متكاملة لتحضير الجسم للحمل — صحة وجمال',
+    subServices: [
+      { id: 'fw1', nameAr: 'مساج خصوبة', nameEn: 'Fertility Massage', price: 300, durationMin: 60, emoji: '💆‍♀️', precautions: 'تقنيات لطيفة' },
+      { id: 'fw2', nameAr: 'عناية طبيعية بالبشرة', nameEn: 'Natural Skincare', price: 200, durationMin: 45, emoji: '🌿', precautions: 'منتجات عضوية ١٠٠٪' },
+      { id: 'fw3', nameAr: 'جلسة استرخاء وتأمل', nameEn: 'Relaxation & Meditation', price: 250, durationMin: 75, emoji: '🧘‍♀️', precautions: 'تقليل التوتر' },
+    ],
+  },
+  post_surgery: {
+    nameAr: 'عناية بعد العمليات', nameEn: 'Post-Surgery Recovery', emoji: '🏥',
+    description: 'عناية متخصصة بعد عمليات التجميل — استشفاء آمن وسريع',
+    subServices: [
+      { id: 'sg1', nameAr: 'تصريف لمفاوي', nameEn: 'Lymphatic Drainage', price: 350, durationMin: 60, emoji: '💆‍♀️', precautions: 'بعد موافقة الطبيب' },
+      { id: 'sg2', nameAr: 'علاج ندوب', nameEn: 'Scar Treatment', price: 400, durationMin: 45, emoji: '🩹', precautions: 'بعد التئام الجرح' },
+      { id: 'sg3', nameAr: 'كمادات باردة', nameEn: 'Cold Compress Therapy', price: 150, durationMin: 30, emoji: '🧊', precautions: 'لتقليل التورم' },
+    ],
+  },
+  cycle_synced: {
+    nameAr: 'عناية الدورة الشهرية', nameEn: 'Cycle-Synced Beauty', emoji: '📅',
+    description: 'خدمات عناية متزامنة مع دورتكِ الشهرية لكل مرحلة',
+    subServices: [
+      { id: 'cs1', nameAr: 'مساج تخفيف الآلام', nameEn: 'Cramp Relief Massage', price: 250, durationMin: 50, emoji: '💆‍♀️', precautions: 'زيوت دافئة' },
+      { id: 'cs2', nameAr: 'قناع وجه مهدئ', nameEn: 'Soothing Facial Mask', price: 120, durationMin: 25, emoji: '🎭', precautions: 'مكونات مهدئة' },
+      { id: 'cs3', nameAr: 'حمام دافئ بالأعشاب', nameEn: 'Herbal Warm Bath', price: 180, durationMin: 40, emoji: '🛁', precautions: 'أعشاب طبية' },
+    ],
+  },
+  mature_skin: {
+    nameAr: 'عناية البشرة الناضجة', nameEn: 'Mature Skin Care (50+)', emoji: '✨',
+    description: 'عناية متخصصة للبشرة فوق ٥٠ عاماً — مضادات شيخوخة وترطيب عميق',
+    subServices: [
+      { id: 'ms1', nameAr: 'شد البشرة بالكولاجين', nameEn: 'Collagen Lifting', price: 350, durationMin: 60, emoji: '⬆️', precautions: 'نتيجة فورية' },
+      { id: 'ms2', nameAr: 'ترطيب عميق', nameEn: 'Deep Hydration', price: 280, durationMin: 50, emoji: '💧', precautions: 'حمض الهيالورونيك' },
+      { id: 'ms3', nameAr: 'علاج التجاعيد', nameEn: 'Wrinkle Treatment', price: 400, durationMin: 55, emoji: '🔬', precautions: 'ببتيدات مركزة' },
+    ],
+  },
+  ramadan_beauty: {
+    nameAr: 'عناية رمضان', nameEn: 'Ramadan Beauty', emoji: '🌙',
+    description: 'خدمات عناية مصممة خصيصاً لشهر رمضان — قبل الإفطار وبعده',
+    subServices: [
+      { id: 'rm1', nameAr: 'عناية قبل الإفطار', nameEn: 'Pre-Iftar Refresh', price: 150, durationMin: 30, emoji: '☀️', precautions: 'منعشة وسريعة' },
+      { id: 'rm2', nameAr: 'عناية بعد التراويح', nameEn: 'Post-Taraweeh Facial', price: 200, durationMin: 45, emoji: '🌙', precautions: 'مرطبة ومهدئة' },
+      { id: 'rm3', nameAr: 'حناء رمضانية', nameEn: 'Ramadan Henna', price: 150, durationMin: 35, emoji: '🌿', precautions: 'تصاميم رمضانية' },
+    ],
+  },
+  eid_prep: {
+    nameAr: 'تحضير العيد', nameEn: 'Eid Preparation', emoji: '🎊',
+    description: 'باقة متكاملة لتحضير إطلالة العيد — شعر، مكياج، وأظافر',
+    subServices: [
+      { id: 'ei1', nameAr: 'باقة العيد الكاملة', nameEn: 'Full Eid Package', price: 600, durationMin: 150, emoji: '🌟', precautions: 'شعر + مكياج + أظافر' },
+      { id: 'ei2', nameAr: 'باقة العيد السريعة', nameEn: 'Express Eid Package', price: 350, durationMin: 90, emoji: '⚡', precautions: 'مكياج + شعر' },
+      { id: 'ei3', nameAr: 'مكياج العيد', nameEn: 'Eid Makeup', price: 250, durationMin: 60, emoji: '💄', precautions: 'إطلالة احتفالية' },
+    ],
+  },
+  new_bride: {
+    nameAr: 'العروس الجديدة', nameEn: 'New Bride (First Year)', emoji: '💝',
+    description: 'عناية خاصة للسنة الأولى من الزواج — تألقي في كل المناسبات',
+    subServices: [
+      { id: 'nb1', nameAr: 'باقة السنة الأولى', nameEn: 'First Year Package', price: 2500, durationMin: 300, emoji: '💑', precautions: '١٢ جلسة على مدار السنة' },
+      { id: 'nb2', nameAr: 'إطلالة عشاء رومانسي', nameEn: 'Romantic Dinner Look', price: 300, durationMin: 60, emoji: '🌹', precautions: '' },
+      { id: 'nb3', nameAr: 'عناية قبل شهر العسل', nameEn: 'Pre-Honeymoon Prep', price: 500, durationMin: 120, emoji: '🏖️', precautions: 'باقة شاملة للسفر' },
+    ],
+  },
+  student_beauty: {
+    nameAr: 'عناية الطالبات', nameEn: 'Student Beauty', emoji: '📚',
+    description: 'خدمات تجميل بأسعار مخفضة للطالبات الجامعيات',
+    subServices: [
+      { id: 'st1', nameAr: 'عناية بشرة طلابية', nameEn: 'Student Facial', price: 80, durationMin: 30, emoji: '✨', precautions: 'سعر مخفض للطالبات' },
+      { id: 'st2', nameAr: 'مكياج تخرج', nameEn: 'Graduation Makeup', price: 150, durationMin: 45, emoji: '🎓', precautions: '' },
+      { id: 'st3', nameAr: 'مانيكير طلابي', nameEn: 'Student Manicure', price: 50, durationMin: 25, emoji: '💅', precautions: 'سعر مخفض' },
+    ],
+  },
 };
 
 export const womensServicesRouter = router({
@@ -217,6 +289,14 @@ export const womensServicesRouter = router({
         working_woman: ['خدمات سريعة في ٢٠-٦٠ دقيقة', 'احجزي خلال استراحة الغداء', 'باقات موفرة للوقت'],
         first_beauty: ['تعلمي أساسيات العناية', 'لا تترددي في طرح الأسئلة', 'ابدئي بمنتجات بسيطة'],
         breastfeeding_safe: ['تجنبي الريتينول والساليسيليك', 'أخبري الفنية أنكِ مرضعة', 'استخدمي منتجات طبيعية ١٠٠٪'],
+        fertility_wellness: ['استخدمي منتجات طبيعية فقط', 'تجنبي الزيوت العطرية القوية', 'استشيري طبيبكِ قبل أي علاج'],
+        post_surgery: ['استشيري طبيبكِ أولاً', 'لا تبدأي قبل التئام الجروح', 'أخبري الفنية عن العملية'],
+        cycle_synced: ['تجنبي العلاجات القوية خلال الدورة', 'المساج الدافئ يخفف الآلام', 'البشرة تكون أكثر حساسية'],
+        mature_skin: ['استخدمي منتجات غنية بمضادات الأكسدة', 'الترطيب العميق أساسي', 'تجنبي المنتجات القاسية'],
+        ramadan_beauty: ['احجزي قبل الإفطار أو بعد التراويح', 'اهتمي بالترطيب خلال الصيام', 'تجنبي العلاجات المجهدة'],
+        eid_prep: ['احجزي قبل العيد بـ ٣ أيام على الأقل', 'الباقات توفر أكثر', 'تأكدي من توفر الفنية'],
+        new_bride: ['استمتعي بكل لحظة', 'جربي إطلالات مختلفة', 'الباقة السنوية الأوفر'],
+        student_beauty: ['أظهري بطاقتكِ الجامعية للخصم', 'احجزي في أوقات التخفيضات', 'استفسري عن عروض الطالبات'],
       };
       return tips[input.category] ?? [];
     }),
