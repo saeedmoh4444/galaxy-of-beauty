@@ -352,6 +352,78 @@ const SERVICES = {
       { id: 'ns3', nameAr: 'باقة ليلية', nameEn: 'Night Worker Bundle', price: 350, durationMin: 100, emoji: '🌃', precautions: 'مساج + بشرة + استرخاء' },
     ],
   },
+  grandmother_beauty: {
+    nameAr: 'عناية الجدات', nameEn: 'Grandmother Beauty (60+)', emoji: '👵',
+    description: 'عناية لطيفة وراقية للأمهات الكبيرات — لأن الجمال ليس له عمر',
+    subServices: [
+      { id: 'gm1', nameAr: 'باقة الجدة', nameEn: 'Grandmother Package', price: 350, durationMin: 100, emoji: '💐', precautions: 'شعر + بشرة + أظافر' },
+      { id: 'gm2', nameAr: 'عناية بالبشرة الناضجة', nameEn: 'Senior Skincare', price: 250, durationMin: 50, emoji: '✨', precautions: 'ترطيب عميق' },
+      { id: 'gm3', nameAr: 'جلسة مع الحفيدة', nameEn: 'Grandma-Granddaughter', price: 500, durationMin: 150, emoji: '👩‍👧', precautions: 'جلسة مشتركة مميزة' },
+    ],
+  },
+  mother_of_bride: {
+    nameAr: 'عناية أم العروس', nameEn: 'Mother of the Bride', emoji: '👩‍👧',
+    description: 'إطلالة مميزة لأم العروس في يوم الزفاف — أنتِ نجمة أيضاً',
+    subServices: [
+      { id: 'mb1', nameAr: 'إطلالة أم العروس', nameEn: 'MOB Complete Look', price: 600, durationMin: 150, emoji: '👑', precautions: 'مكياج + شعر + بشرة' },
+      { id: 'mb2', nameAr: 'باقة أم العروس', nameEn: 'MOB Package', price: 1200, durationMin: 250, emoji: '💎', precautions: '٣ جلسات قبل الزفاف' },
+      { id: 'mb3', nameAr: 'تجربة مكياج', nameEn: 'MOB Makeup Trial', price: 300, durationMin: 60, emoji: '💄', precautions: 'جلسة تجربة' },
+    ],
+  },
+  baby_shower: {
+    nameAr: 'عناية الحامل قبل الولادة', nameEn: 'Baby Shower Beauty', emoji: '🎀',
+    description: 'إطلالة متألقة لحفل استقبال المولود — احتفلي بقرب وصول طفلكِ',
+    subServices: [
+      { id: 'bs1', nameAr: 'إطلالة بيبي شاور', nameEn: 'Baby Shower Look', price: 300, durationMin: 90, emoji: '🤰', precautions: 'مكياج + شعر' },
+      { id: 'bs2', nameAr: 'باقة الحامل', nameEn: 'Mama-to-Be Package', price: 450, durationMin: 150, emoji: '🎁', precautions: 'مساج حمل + عناية + مكياج' },
+      { id: 'bs3', nameAr: 'حناء بيبي شاور', nameEn: 'Baby Shower Henna', price: 200, durationMin: 50, emoji: '🌿', precautions: 'حناء طبيعية آمنة' },
+    ],
+  },
+  bridal_party: {
+    nameAr: 'وصيفات العروس', nameEn: 'Bridal Party Beauty', emoji: '👯‍♀️',
+    description: 'باقات جماعية لوصيفات العروس — إطلالات متناسقة بأفضل الأسعار',
+    subServices: [
+      { id: 'bp1', nameAr: 'باقة الوصيفات (٣)', nameEn: 'Bridesmaid Trio', price: 750, durationMin: 180, emoji: '💝', precautions: '٣ إطلالات متطابقة' },
+      { id: 'bp2', nameAr: 'باقة الوصيفات (٥)', nameEn: 'Bridesmaid Group (5)', price: 1200, durationMin: 300, emoji: '🌸', precautions: '٥ إطلالات' },
+      { id: 'bp3', nameAr: 'إطلالة وصيفة', nameEn: 'Single Bridesmaid', price: 280, durationMin: 60, emoji: '💄', precautions: 'إطلالة فردية' },
+    ],
+  },
+  retirement_beauty: {
+    nameAr: 'عناية المتقاعدات', nameEn: 'Retirement Beauty', emoji: '🏖️',
+    description: 'باقات عناية للمرأة بعد التقاعد — اكتشفي نفسكِ من جديد',
+    subServices: [
+      { id: 'rt1', nameAr: 'باقة التقاعد', nameEn: 'Retirement Package', price: 600, durationMin: 150, emoji: '🌺', precautions: 'تجديد شامل' },
+      { id: 'rt2', nameAr: 'استشارة نمط حياة', nameEn: 'Lifestyle Consultation', price: 250, durationMin: 60, emoji: '💬', precautions: 'روتين جديد' },
+      { id: 'rt3', nameAr: 'جلسة استرخاء', nameEn: 'Retirement Relaxation', price: 350, durationMin: 90, emoji: '🧘‍♀️', precautions: 'يوم تدليل' },
+    ],
+  },
+  expat_beauty: {
+    nameAr: 'عناية الوافدات', nameEn: 'Expat Woman Beauty', emoji: '🌍',
+    description: 'خدمات تجميل ترحيبية للوافدات إلى المملكة — أهلاً بكِ',
+    subServices: [
+      { id: 'ex1', nameAr: 'باقة الترحيب', nameEn: 'Welcome Package', price: 400, durationMin: 120, emoji: '🤝', precautions: 'تعريف بالمنتجات المحلية' },
+      { id: 'ex2', nameAr: 'استشارة مناخية', nameEn: 'Climate Adaptation', price: 200, durationMin: 45, emoji: '☀️', precautions: 'عناية مناسبة للمناخ' },
+      { id: 'ex3', nameAr: 'إطلالة سعودية', nameEn: 'Saudi Look', price: 300, durationMin: 60, emoji: '🇸🇦', precautions: 'مكياج خليجي' },
+    ],
+  },
+  police_firefighter: {
+    nameAr: 'عناية البطلات', nameEn: 'Women in Uniform Beauty', emoji: '👮‍♀️',
+    description: 'خدمات عناية للعاملات في المجالات العسكرية والأمنية — أنتن بطلات',
+    subServices: [
+      { id: 'pf1', nameAr: 'مساج عضلي', nameEn: 'Deep Muscle Recovery', price: 280, durationMin: 60, emoji: '💪', precautions: 'للاسترخاء بعد المهام' },
+      { id: 'pf2', nameAr: 'عناية سريعة', nameEn: 'Quick Beauty Refresh', price: 150, durationMin: 30, emoji: '⚡', precautions: 'قبل أو بعد الدوام' },
+      { id: 'pf3', nameAr: 'باقة البطلة', nameEn: 'Hero Package', price: 450, durationMin: 120, emoji: '🎖️', precautions: 'مساج + بشرة + شعر' },
+    ],
+  },
+  journalist_beauty: {
+    nameAr: 'عناية الإعلاميات', nameEn: 'Media Woman Beauty', emoji: '🎤',
+    description: 'إطلالات جاهزة للكاميرا — للصحفيات والمذيعات والمؤثرات',
+    subServices: [
+      { id: 'jr1', nameAr: 'مكياج كاميرا', nameEn: 'Camera-Ready Makeup', price: 350, durationMin: 60, emoji: '📺', precautions: 'يدوم تحت الأضواء' },
+      { id: 'jr2', nameAr: 'إطلالة مقابلة', nameEn: 'Interview Look', price: 250, durationMin: 50, emoji: '🎙️', precautions: 'طبيعي واحترافي' },
+      { id: 'jr3', nameAr: 'باقة الظهور الإعلامي', nameEn: 'Media Appearance Pack', price: 500, durationMin: 100, emoji: '🌟', precautions: 'مكياج + شعر + استشارة' },
+    ],
+  },
 };
 
 export const womensServicesRouter = router({
@@ -448,6 +520,14 @@ export const womensServicesRouter = router({
         teacher_beauty: ['مواعيد بعد الدوام', 'عروض خاصة في الإجازات', 'خصم للمعلمات'],
         entrepreneur_beauty: ['إطلالات تدوم طوال اليوم', 'منتجات عالية الجودة', 'استشارة ألوان مجانية'],
         night_shift_beauty: ['مواعيد صباحية ومسائية', 'علاجات للهالات والإرهاق', 'اهتمي بصحتكِ بعد العمل'],
+        grandmother_beauty: ['جلسات لطيفة ومريحة', 'خدمة منزلية متوفرة', 'جلسات مشتركة مع الحفيدات'],
+        mother_of_bride: ['ابدئي قبل الزفاف بشهر', 'جلسة تجربة ضرورية', 'إطلالة تناسب فستانكِ'],
+        baby_shower: ['حناء طبيعية آمنة للحامل', 'جلسات مريحة', 'احتفلي باقتراب مولودكِ'],
+        bridal_party: ['احجزي للجميع معاً', 'خصم للمجموعات', 'إطلالات متناسقة'],
+        retirement_beauty: ['اكتشفي نفسكِ من جديد', 'روتين يناسب وقتكِ', 'استمتعي بحريتكِ'],
+        expat_beauty: ['أهلاً بكِ في السعودية', 'منتجات مناسبة للمناخ', 'تعرفي على الجمال الخليجي'],
+        police_firefighter: ['شكراً لخدمتكِ', 'خصم خاص للعسكريات', 'جلسات بعد المناوبة'],
+        journalist_beauty: ['مكياج يدوم تحت الأضواء', 'إطلالة طبيعية للكاميرا', 'استشارة ألوان مجانية'],
       };
       return tips[input.category] ?? [];
     }),
