@@ -487,6 +487,69 @@ const SERVICES = {
       { id: 'gm3', nameAr: 'إطلالة بطولة', nameEn: 'Tournament Look', price: 250, durationMin: 50, emoji: '🏆', precautions: 'للظهور في البطولات' },
     ],
   },
+  writer_beauty: {
+    nameAr: 'عناية الكاتبات', nameEn: 'Writer Woman Beauty', emoji: '✍️',
+    description: 'خدمات تجميل للكاتبات والمؤلفات — لأن الكلمات الجميلة تبدأ من روح جميلة',
+    subServices: [
+      { id: 'wr1', nameAr: 'جلسة كتابة', nameEn: 'Writing Session', price: 200, durationMin: 60, emoji: '📝', precautions: 'مساج + وقت كتابة' },
+      { id: 'wr2', nameAr: 'إطلالة توقيع كتاب', nameEn: 'Book Signing Look', price: 300, durationMin: 60, emoji: '📚', precautions: 'إطلالة أدبية راقية' },
+      { id: 'wr3', nameAr: 'عناية بالأيدي', nameEn: 'Writer Hand Care', price: 150, durationMin: 30, emoji: '🤲', precautions: 'للأيدي المتعبة من الكتابة' },
+    ],
+  },
+  photographer_beauty: {
+    nameAr: 'عناية المصورات', nameEn: 'Photographer Woman Beauty', emoji: '📷',
+    description: 'خدمات تجميل للمصورات — لأنكِ خلف الكاميرا تستحقين الظهور',
+    subServices: [
+      { id: 'ph1', nameAr: 'إطلالة أمام الكاميرا', nameEn: 'Behind-the-Lens Look', price: 280, durationMin: 55, emoji: '📸', precautions: 'للمناسبات الخاصة' },
+      { id: 'ph2', nameAr: 'عناية بالأيدي', nameEn: 'Photographer Hand Care', price: 150, durationMin: 30, emoji: '🤲', precautions: 'للأيدي الحاملة للكاميرا' },
+      { id: 'ph3', nameAr: 'مساج أكتاف', nameEn: 'Shoulder Massage', price: 200, durationMin: 35, emoji: '💆‍♀️', precautions: 'لتخفيف حمل المعدات' },
+    ],
+  },
+  chef_beauty: {
+    nameAr: 'عناية الطباخات', nameEn: 'Chef Woman Beauty', emoji: '👩‍🍳',
+    description: 'خدمات تجميل للطباخات والشيفات — لأن المطبخ والجمال يلتقيان',
+    subServices: [
+      { id: 'ch1', nameAr: 'عناية بالأيدي', nameEn: 'Chef Hand Care', price: 180, durationMin: 35, emoji: '🤲', precautions: 'ترطيب مكثف' },
+      { id: 'ch2', nameAr: 'عناية بشرة مقاومة للحرارة', nameEn: 'Heat-Resistant Facial', price: 220, durationMin: 45, emoji: '🔥', precautions: 'للبشرة المعرضة للحرارة' },
+      { id: 'ch3', nameAr: 'إطلالة مطعم', nameEn: 'Restaurant Look', price: 250, durationMin: 50, emoji: '🍽️', precautions: 'للظهور في المطعم' },
+    ],
+  },
+  dancer_beauty: {
+    nameAr: 'عناية الراقصات', nameEn: 'Dancer Woman Beauty', emoji: '💃',
+    description: 'خدمات تجميل للراقصات — مرونة وجمال في كل حركة',
+    subServices: [
+      { id: 'dn1', nameAr: 'مساج مرونة', nameEn: 'Flexibility Massage', price: 300, durationMin: 60, emoji: '🤸‍♀️', precautions: 'زيوت دافئة' },
+      { id: 'dn2', nameAr: 'إطلالة عرض', nameEn: 'Performance Look', price: 350, durationMin: 70, emoji: '🎭', precautions: 'مكياج يدوم طويلاً' },
+      { id: 'dn3', nameAr: 'عناية بالأقدام', nameEn: 'Dancer Foot Care', price: 200, durationMin: 40, emoji: '🦶', precautions: 'للأقدام المتعبة' },
+    ],
+  },
+  designer_beauty: {
+    nameAr: 'عناية المصممات', nameEn: 'Fashion Designer Beauty', emoji: '👗',
+    description: 'خدمات تجميل لمصممات الأزياء — لأن الأناقة تبدأ منكِ',
+    subServices: [
+      { id: 'ds1', nameAr: 'إطلالة عرض أزياء', nameEn: 'Fashion Show Look', price: 400, durationMin: 80, emoji: '👠', precautions: 'إطلالة راقية' },
+      { id: 'ds2', nameAr: 'استشارة ألوان', nameEn: 'Color Consultation', price: 250, durationMin: 50, emoji: '🎨', precautions: 'تحليل ألوان البشرة' },
+      { id: 'ds3', nameAr: 'باقة المصممة', nameEn: 'Designer Package', price: 600, durationMin: 150, emoji: '✨', precautions: 'شعر + مكياج + أظافر' },
+    ],
+  },
+  florist_beauty: {
+    nameAr: 'عناية بائعات الزهور', nameEn: 'Florist Woman Beauty', emoji: '💐',
+    description: 'خدمات تجميل لمحبات وبائعات الزهور — جمال الطبيعة في عنايتكِ',
+    subServices: [
+      { id: 'fl1', nameAr: 'عناية بالأيدي', nameEn: 'Florist Hand Care', price: 150, durationMin: 30, emoji: '🤲', precautions: 'ترميم الأيدي المتعبة' },
+      { id: 'fl2', nameAr: 'باقة ورود وعناية', nameEn: 'Flowers & Facial', price: 350, durationMin: 90, emoji: '🌸', precautions: 'باقة ورد + عناية بالبشرة' },
+      { id: 'fl3', nameAr: 'إطلالة محل', nameEn: 'Shop Look', price: 200, durationMin: 45, emoji: '🏪', precautions: 'إطلالة منعشة' },
+    ],
+  },
+  interpreter_beauty: {
+    nameAr: 'عناية المترجمات', nameEn: 'Interpreter Woman Beauty', emoji: '🗣️',
+    description: 'خدمات عناية للمترجمات — لأن صوتكِ الجميل يستحق إطلالة أجمل',
+    subServices: [
+      { id: 'it1', nameAr: 'عناية بالصوت', nameEn: 'Voice Care', price: 150, durationMin: 30, emoji: '🎤', precautions: 'مساج حنجرة وأعشاب' },
+      { id: 'it2', nameAr: 'إطلالة مؤتمر', nameEn: 'Conference Look', price: 300, durationMin: 60, emoji: '🏛️', precautions: 'احترافية وأنيقة' },
+      { id: 'it3', nameAr: 'جلسة استرخاء', nameEn: 'Interpreter Relaxation', price: 220, durationMin: 50, emoji: '🧘‍♀️', precautions: 'لتخفيف ضغط العمل' },
+    ],
+  },
 };
 
 export const womensServicesRouter = router({
@@ -598,6 +661,13 @@ export const womensServicesRouter = router({
         eco_beauty: ['منتجات قابلة للتحلل', 'تغليف صديق للبيئة', 'بصمة كربونية منخفضة'],
         volunteer_beauty: ['خصم للمتطوعات', 'شكراً لعطائكِ', 'مواعيد مرنة'],
         gamer_beauty: ['تصاميم مستوحاة من الألعاب', 'عناية بالعينين', 'إطلالات للبثوث'],
+        writer_beauty: ['جلسات هادئة للإبداع', 'عناية بالأيدي المتعبة', 'إطلالات للتوقيعات'],
+        photographer_beauty: ['عناية بالأيدي والكتفين', 'إطلالات أنيقة', 'لكِ الحق في الظهور'],
+        chef_beauty: ['عناية مكثفة بالأيدي', 'منتجات مقاومة للحرارة', 'للطباخات المحترفات'],
+        dancer_beauty: ['زيوت دافئة للمرونة', 'مكياج يدوم طويلاً', 'عناية بالأقدام'],
+        designer_beauty: ['استشارة ألوان مجانية', 'إطلالات عروض الأزياء', 'أناقة تبدأ منكِ'],
+        florist_beauty: ['باقات ورد مع العناية', 'ترميم الأيدي', 'جمال الطبيعة'],
+        interpreter_beauty: ['عناية بالصوت', 'إطلالات المؤتمرات', 'استرخاء بعد الترجمة'],
       };
       return tips[input.category] ?? [];
     }),
