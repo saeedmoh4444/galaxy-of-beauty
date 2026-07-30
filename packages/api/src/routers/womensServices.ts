@@ -280,6 +280,78 @@ const SERVICES = {
       { id: 'hm3', nameAr: 'استرخاء منزلي', nameEn: 'At-Home Relaxation', price: 400, durationMin: 120, emoji: '🛋️', precautions: 'زيارة منزلية' },
     ],
   },
+  cancer_survivor: {
+    nameAr: 'عناية المتعافيات', nameEn: 'Cancer Survivor Beauty', emoji: '🎗️',
+    description: 'خدمات تجميل لطيفة للمتعافيات من السرطان — عناية بكل حب',
+    subServices: [
+      { id: 'cv1', nameAr: 'عناية بشرة لطيفة', nameEn: 'Ultra-Gentle Facial', price: 220, durationMin: 40, emoji: '🌸', precautions: 'منتجات خالية من المهيجات' },
+      { id: 'cv2', nameAr: 'تصفيف شعر لطيف', nameEn: 'Gentle Hair Styling', price: 180, durationMin: 35, emoji: '💇‍♀️', precautions: 'للشعر الخفيف' },
+      { id: 'cv3', nameAr: 'جلسة دعم نفسي', nameEn: 'Beauty Support Session', price: 200, durationMin: 50, emoji: '💝', precautions: 'دعم وتشجيع' },
+    ],
+  },
+  single_mother: {
+    nameAr: 'عناية الأم العزباء', nameEn: 'Single Mother Beauty', emoji: '💪',
+    description: 'خدمات سريعة وبأسعار مناسبة للأمهات العازبات — أنتِ تستحقين',
+    subServices: [
+      { id: 'sm1', nameAr: 'باقة الأم العزباء', nameEn: 'Single Mom Package', price: 250, durationMin: 75, emoji: '💝', precautions: 'شعر + بشرة + أظافر' },
+      { id: 'sm2', nameAr: 'خدمة مسائية', nameEn: 'Evening Service', price: 150, durationMin: 30, emoji: '🌙', precautions: 'بعد نوم الأطفال' },
+      { id: 'sm3', nameAr: 'جلسة استرخاء سريعة', nameEn: 'Quick Relaxation', price: 100, durationMin: 25, emoji: '☕', precautions: 'استراحة أمومة' },
+    ],
+  },
+  accessible_beauty: {
+    nameAr: 'عناية ذوات الاحتياجات', nameEn: 'Accessible Beauty', emoji: '♿',
+    description: 'خدمات تجميل مهيأة لذوات الاحتياجات الخاصة — وصول سهل وراحة تامة',
+    subServices: [
+      { id: 'ab1', nameAr: 'جلسة عناية مهيأة', nameEn: 'Accessible Beauty Session', price: 250, durationMin: 60, emoji: '💆‍♀️', precautions: 'مداخل واسعة وكراسي متحركة' },
+      { id: 'ab2', nameAr: 'خدمة منزلية', nameEn: 'Home Visit Service', price: 350, durationMin: 90, emoji: '🏠', precautions: 'الفنية تأتي إليكِ' },
+      { id: 'ab3', nameAr: 'استشارة عناية', nameEn: 'Beauty Consultation', price: 100, durationMin: 30, emoji: '💬', precautions: 'منتجات مناسبة لاحتياجاتكِ' },
+    ],
+  },
+  diabetic_care: {
+    nameAr: 'عناية مريضات السكر', nameEn: 'Diabetic-Safe Beauty', emoji: '💉',
+    description: 'خدمات آمنة لمريضات السكري — عناية بالأقدام والبشرة الحساسة',
+    subServices: [
+      { id: 'db1', nameAr: 'باديكير آمن', nameEn: 'Diabetic-Safe Pedicure', price: 200, durationMin: 45, emoji: '🦶', precautions: 'تعقيم طبي وتعامل لطيف' },
+      { id: 'db2', nameAr: 'عناية بالأقدام', nameEn: 'Foot Care Treatment', price: 250, durationMin: 50, emoji: '👣', precautions: 'ترطيب مكثف بدون جروح' },
+      { id: 'db3', nameAr: 'عناية بشرة لطيفة', nameEn: 'Gentle Skincare', price: 180, durationMin: 40, emoji: '✨', precautions: 'منتجات طبية آمنة' },
+    ],
+  },
+  healthcare_worker: {
+    nameAr: 'عناية الكوادر الصحية', nameEn: 'Healthcare Worker Beauty', emoji: '🩺',
+    description: 'خدمات مخصصة للطبيبات والممرضات — بعد مناوبات طويلة',
+    subServices: [
+      { id: 'hw1', nameAr: 'مساج ظهر وأكتاف', nameEn: 'Back & Shoulder Massage', price: 200, durationMin: 40, emoji: '💆‍♀️', precautions: 'لتخفيف آلام الوقوف الطويل' },
+      { id: 'hw2', nameAr: 'عناية بالأيدي', nameEn: 'Healthcare Hand Care', price: 150, durationMin: 30, emoji: '🤲', precautions: 'للأيدي المتعبة من الغسيل المتكرر' },
+      { id: 'hw3', nameAr: 'جلسة عناية سريعة', nameEn: 'Quick Recovery Session', price: 180, durationMin: 35, emoji: '⚡', precautions: 'قبل أو بعد المناوبة' },
+    ],
+  },
+  teacher_beauty: {
+    nameAr: 'عناية المعلمات', nameEn: 'Teacher Beauty', emoji: '🍎',
+    description: 'خدمات تناسب جدول المعلمات — بعد الدوام المدرسي وفي العطل',
+    subServices: [
+      { id: 'tc1', nameAr: 'باقة المعلمة', nameEn: 'Teacher Package', price: 300, durationMin: 90, emoji: '📚', precautions: 'شعر + بشرة + أظافر' },
+      { id: 'tc2', nameAr: 'عناية بالصوت والحنجرة', nameEn: 'Voice & Throat Care', price: 120, durationMin: 30, emoji: '🗣️', precautions: 'مساج واسترخاء' },
+      { id: 'tc3', nameAr: 'إطلالة اليوم الدراسي', nameEn: 'School Day Look', price: 150, durationMin: 40, emoji: '💄', precautions: 'مكياج طبيعي خفيف' },
+    ],
+  },
+  entrepreneur_beauty: {
+    nameAr: 'عناية رائدات الأعمال', nameEn: 'Entrepreneur Woman Beauty', emoji: '💼',
+    description: 'إطلالات قوية للمرأة القيادية — مظهر يعكس نجاحكِ',
+    subServices: [
+      { id: 'ep1', nameAr: 'إطلالة سيدات الأعمال', nameEn: 'Power Look Package', price: 500, durationMin: 120, emoji: '👩‍💼', precautions: 'مكياج + شعر + استشارة' },
+      { id: 'ep2', nameAr: 'إطلالة اجتماعات', nameEn: 'Meeting Ready Look', price: 300, durationMin: 60, emoji: '📊', precautions: 'إطلالة احترافية' },
+      { id: 'ep3', nameAr: 'باقة السفر', nameEn: 'Business Travel Package', price: 400, durationMin: 90, emoji: '✈️', precautions: 'إطلالة تدوم طوال اليوم' },
+    ],
+  },
+  night_shift_beauty: {
+    nameAr: 'عناية الليليات', nameEn: 'Night Shift Beauty', emoji: '🌙',
+    description: 'خدمات تناسب العاملات ليلاً — مواعيد صباحية ومسائية مرنة',
+    subServices: [
+      { id: 'ns1', nameAr: 'عناية بعد الدوام', nameEn: 'Post-Shift Recovery', price: 250, durationMin: 60, emoji: '💆‍♀️', precautions: 'للاسترخاء بعد ليلة عمل' },
+      { id: 'ns2', nameAr: 'علاج الهالات', nameEn: 'Dark Circle Treatment', price: 180, durationMin: 30, emoji: '👁️', precautions: 'لإخفاء آثار السهر' },
+      { id: 'ns3', nameAr: 'باقة ليلية', nameEn: 'Night Worker Bundle', price: 350, durationMin: 100, emoji: '🌃', precautions: 'مساج + بشرة + استرخاء' },
+    ],
+  },
 };
 
 export const womensServicesRouter = router({
@@ -368,6 +440,14 @@ export const womensServicesRouter = router({
         natural_beauty: ['منتجات عضوية معتمدة ١٠٠٪', 'خالي تماماً من المواد الكيميائية', 'مناسب لجميع أنواع البشرة'],
         luxury_spa: ['احجزي قبل أسبوع على الأقل', 'الغداء مشمول في الباقات', 'تجربة لا تنسى'],
         homemaker_beauty: ['خدمة منزلية متوفرة', 'باقات موفرة للوقت', 'اهتمي بنفسكِ كما تهتمين ببيتكِ'],
+        cancer_survivor: ['منتجات خالية تماماً من المهيجات', 'جلسات خاصة وخصوصية تامة', 'لمسة لطيفة وحنونة'],
+        single_mother: ['أسعار مخفضة ومناسبة', 'مواعيد مسائية متاحة', 'أنتِ بطلة وتستحقين الأفضل'],
+        accessible_beauty: ['مداخل وممرات واسعة', 'كرسي متحرك مهيأ', 'فنيات مدربات على التعامل'],
+        diabetic_care: ['تعقيم طبي كامل', 'لا جروح أو أدوات حادة', 'استشارة طبية مسبقة'],
+        healthcare_worker: ['خصم خاص للكوادر الصحية', 'مواعيد مرنة', 'شكراً لخدمتكِ'],
+        teacher_beauty: ['مواعيد بعد الدوام', 'عروض خاصة في الإجازات', 'خصم للمعلمات'],
+        entrepreneur_beauty: ['إطلالات تدوم طوال اليوم', 'منتجات عالية الجودة', 'استشارة ألوان مجانية'],
+        night_shift_beauty: ['مواعيد صباحية ومسائية', 'علاجات للهالات والإرهاق', 'اهتمي بصحتكِ بعد العمل'],
       };
       return tips[input.category] ?? [];
     }),
