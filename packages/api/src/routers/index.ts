@@ -147,6 +147,16 @@ import { audioRoomsRouter } from './audioRooms';
 import { beautyShortsRouter } from './beautyShorts';
 import { adminReportsRouter } from './adminReports';
 import { apiDocsRouter } from './apiDocs';
+import { dnaBeautyRouter } from './dnaBeauty';
+import { iotSyncRouter } from './iotSync';
+import { beautyMetaverseRouter } from './beautyMetaverse';
+import { franchisePortalRouter } from './franchisePortal';
+import { predictiveDemandRouter } from './predictiveDemand';
+import { personalizedFeedRouter } from './personalizedFeed';
+import { smartPricingRouter } from './smartPricing';
+import { rideHailingRouter } from './rideHailing';
+import { lastMileDeliveryRouter } from './lastMileDelivery';
+import { clinicConnectRouter } from './clinicConnect';
 
 export const appRouter = router({
   // Health
@@ -304,6 +314,16 @@ export const appRouter = router({
   beautyShorts: beautyShortsRouter,
   adminReports: adminReportsRouter,
   apiDocs: apiDocsRouter,
+  dnaBeauty: dnaBeautyRouter,
+  iotSync: iotSyncRouter,
+  beautyMetaverse: beautyMetaverseRouter,
+  franchisePortal: franchisePortalRouter,
+  predictiveDemand: predictiveDemandRouter,
+  personalizedFeed: personalizedFeedRouter,
+  smartPricing: smartPricingRouter,
+  rideHailing: rideHailingRouter,
+  lastMileDelivery: lastMileDeliveryRouter,
+  clinicConnect: clinicConnectRouter,
 });
 
 export type AppRouter = typeof appRouter;
