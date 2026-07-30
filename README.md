@@ -66,7 +66,7 @@ galaxy-of-beauty/
 │   ├── web/                    # Next.js 14 App Router (84 routes, 10 SSR pages)
 │   └── mobile/                 # Expo SDK 54 + Expo Router (47 screens)
 ├── packages/
-│   ├── api/                    # tRPC v11 — 147 routers, 350+ procedures
+│   ├── api/                    # tRPC v11 — 159 routers, 400+ procedures
 │   ├── db/                     # Prisma — 87 models, 15 enums
 │   ├── shared/                 # UI kit (11 components), hooks, i18n, theme, types
 │   └── config/                 # TSConfig, ESLint, Prettier, Tailwind
@@ -156,7 +156,7 @@ galaxy-of-beauty/
 ```bash
 pnpm type-check     # 10/10 workspaces
 pnpm lint           # 7/7 tasks
-pnpm build          # 5/5 tasks — 120+ Next.js routes
+pnpm build          # 5/5 tasks — 190+ Next.js routes
 pnpm test           # 243 tests (10 suites)
 pnpm test:e2e       # 38/38 chromium (100%)
 ```
