@@ -1,10 +1,11 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function NotificationsScreen(): JSX.Element {
-  const { data, loading, error, refetch } = useQuery(() => trpc.notifications.list.query({}));
+  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.notifications.list.query({}));
 
   const handleMarkRead = async (id: number) => {
     await (trpc.notifications.markRead as any).mutate({ id });
@@ -16,7 +17,7 @@ export default function NotificationsScreen(): JSX.Element {
     refetch();
   };
 
-  if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
+  if (loading) return <View style={styles.container}><View style={styles.header}><Text style={styles.title}>الإشعارات</Text></View><SkeletonList count={4} /></View>;
   if (error) return <ErrorAlert message="فشل تحميل الإشعارات" onRetry={refetch} />;
 
   const items = (data ?? []) as Record<string, unknown>[];
@@ -35,9 +36,10 @@ export default function NotificationsScreen(): JSX.Element {
         <View style={styles.centered}>
           <Text style={styles.emptyIcon}>🔔</Text>
           <Text style={styles.empty}>لا توجد إشعارات</Text>
+          <Text style={styles.hint}>ستصلكِ إشعارات الحجوزات والعروض هنا</Text>
         </View>
       ) : (
-        <ScrollView>
+        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />}>
           {items.map((n: Record<string, unknown>) => (
             <TouchableOpacity
               key={n.id as number}
@@ -73,4 +75,5 @@ const styles = StyleSheet.create({
   centered: { alignItems: 'center', marginTop: 40 },
   emptyIcon: { fontSize: 48, marginBottom: 12 },
   empty: { fontSize: 18, fontWeight: '600', color: '#6b7280' },
+  hint: { fontSize: 14, color: '#9ca3af', marginTop: 4, textAlign: 'center' },
 });
