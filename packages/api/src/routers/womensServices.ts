@@ -805,6 +805,26 @@ const SERVICES = {
       { id: 'eh3', nameAr: 'عناية بالصوت', nameEn: 'Voice Care', price: 180, durationMin: 30, emoji: '🗣️', precautions: 'أعشاب ومرطبات للحنجرة' },
     ],
   },
+  grandmother_bride: { nameAr: 'عناية الجدة العروس', nameEn: 'Grandmother Bride Beauty', emoji: '💍', description: 'عناية خاصة للجدات المتزوجات — الحب ليس له عمر', subServices: [
+    { id: 'gb1', nameAr: 'إطلالة زفاف', nameEn: 'Wedding Look', price: 400, durationMin: 80, emoji: '👰', precautions: 'راقية ومناسبة للعمر' },
+    { id: 'gb2', nameAr: 'باقة الجدة العروس', nameEn: 'Grandma Bride Package', price: 700, durationMin: 160, emoji: '💝', precautions: 'شعر + مكياج + أظافر' },
+    { id: 'gb3', nameAr: 'عناية بالبشرة', nameEn: 'Bridal Skincare', price: 300, durationMin: 55, emoji: '✨', precautions: 'ترطيب مكثف' },
+  ]},
+  twins_mom: { nameAr: 'عناية أم التوائم', nameEn: 'Twins Mother Beauty', emoji: '👯', description: 'خدمات سريعة لأمهات التوائم — لأن وقتكِ ثمين', subServices: [
+    { id: 'tm1', nameAr: 'باقة سريعة', nameEn: 'Express Package', price: 350, durationMin: 60, emoji: '⚡', precautions: '٣ خدمات في ساعة' },
+    { id: 'tm2', nameAr: 'خدمة منزلية', nameEn: 'Home Visit', price: 500, durationMin: 120, emoji: '🏠', precautions: 'الفنية تأتي إليكِ' },
+    { id: 'tm3', nameAr: 'استرخاء الأمومة', nameEn: 'Motherhood Relaxation', price: 280, durationMin: 50, emoji: '🧘‍♀️', precautions: 'استراحة تستحقينها' },
+  ]},
+  makeup_artist_self: { nameAr: 'عناية خبيرات التجميل', nameEn: 'MUA Self-Care', emoji: '💄', description: 'خدمات عناية لخبيرات التجميل أنفسهن — لأنكِ تستحقين العناية أيضاً', subServices: [
+    { id: 'ma1', nameAr: 'عناية بالأيدي', nameEn: 'MUA Hand Care', price: 200, durationMin: 35, emoji: '🤲', precautions: 'للأيدي المبدعة' },
+    { id: 'ma2', nameAr: 'مساج ظهر', nameEn: 'Back Recovery', price: 300, durationMin: 55, emoji: '💆‍♀️', precautions: 'بعد يوم طويل من العمل' },
+    { id: 'ma3', nameAr: 'باقة الخبيرة', nameEn: 'MUA Package', price: 400, durationMin: 100, emoji: '✨', precautions: 'بشرة + شعر + أظافر' },
+  ]},
+  influencer_beauty: { nameAr: 'عناية المؤثرات', nameEn: 'Influencer Beauty', emoji: '📱', description: 'إطلالات جاهزة للتصوير — للمؤثرات وصانعات المحتوى', subServices: [
+    { id: 'if1', nameAr: 'إطلالة تصوير', nameEn: 'Content Shoot Look', price: 350, durationMin: 65, emoji: '📸', precautions: 'يدوم تحت الإضاءة' },
+    { id: 'if2', nameAr: 'إطلالة ستوري', nameEn: 'Story-Ready Look', price: 200, durationMin: 35, emoji: '📱', precautions: 'سريعة ومنعشة' },
+    { id: 'if3', nameAr: 'باقة المحتوى', nameEn: 'Content Package', price: 600, durationMin: 150, emoji: '🌟', precautions: '٣ إطلالات في جلسة' },
+  ]},
 };
 
 export const womensServicesRouter = router({
@@ -953,6 +973,10 @@ export const womensServicesRouter = router({
         real_estate_beauty: ['إطلالات للعملاء', 'ثقة وجاذبية', 'احتفال بالإنجاز'],
         accountant_beauty: ['راحة للظهر', 'عناية بالعينين', 'استرخاء موسم الضرائب'],
         event_host_beauty: ['إطلالات مسرحية', 'عناية بالصوت', 'أناقة وجاذبية'],
+        grandmother_bride: ['إطلالات راقية', 'باقة شاملة', 'الحب ليس له عمر'],
+        twins_mom: ['خدمات سريعة', 'زيارة منزلية', 'استراحة أمومة'],
+        makeup_artist_self: ['عناية بالأيدي المبدعة', 'راحة للظهر', 'أنتِ تستحقين'],
+        influencer_beauty: ['إطلالات للكاميرا', 'سريعة ومنعشة', 'باقة ٣ إطلالات'],
       };
       return tips[input.category] ?? [];
     }),
