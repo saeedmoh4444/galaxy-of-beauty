@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/shared';
 import Link from 'next/link';
 
 export default function ServiceMatchmakerPage(): JSX.Element {
