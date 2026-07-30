@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/shared';
 import { useAuth } from '@galaxy/shared';
 
 export default function AudioRoomsPage(): JSX.Element {

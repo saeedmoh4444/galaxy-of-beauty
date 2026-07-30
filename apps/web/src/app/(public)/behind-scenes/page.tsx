@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert } from '@galaxy/shared';
 
 export default function BehindScenesPage(): JSX.Element {
   const { data, isLoading } = api.behindScenes.feed.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };

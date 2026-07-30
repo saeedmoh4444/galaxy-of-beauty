@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, Modal, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, Button, Modal, formatCurrency } from '@galaxy/shared';
 
 export default function CorporateWellnessPage(): JSX.Element {
   const { data: plans, isLoading } = api.corporateWellness.plans.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
