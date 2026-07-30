@@ -110,7 +110,7 @@ export const womensServicesRouter = router({
       pregnancyTrimester: z.number().min(1).max(3).optional(),
       postpartumWeeks: z.number().optional(),
     }))
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ input }) => {
       const cat = SERVICES[input.category as keyof typeof SERVICES];
       const svc = cat?.subServices.find((s) => s.id === input.serviceId);
       if (!svc) throw new Error('الخدمة غير موجودة');
