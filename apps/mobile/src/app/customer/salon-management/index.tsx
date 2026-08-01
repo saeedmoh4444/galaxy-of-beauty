@@ -1,58 +1,38 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function SalonManagementScreen(): JSX.Element {
   const [dash, setDash] = useState<any>(null);
   const [staff, setStaff] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    Promise.all([
-      ((trpc as any).salonManagement.dashboard.query() as any),
-      ((trpc as any).salonManagement.staff.query() as any),
-    ]).then(([d, s]: any[]) => { setDash(d); setStaff(s || []); setLoading(false); }).catch(() => setLoading(false));
+  const [refreshing, setRefreshing] = useState(false);
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    Promise.all([((trpc as any).salonManagement.dashboard.query() as any), ((trpc as any).salonManagement.staff.query() as any)])
+      .then(([d, s]: any[]) => { setDash(d); setStaff(s || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, []);
-
-  if (loading) return <ActivityIndicator color="#0891b2" style={{ marginTop: 40 }} size="large" />;
-
+  useEffect(() => { fetch(); }, [fetch]);
+  if (loading) return <SkeletonList count={4} />;
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#0891b2']} />}>
       <Text style={styles.t}>🤝 إدارة الصالون</Text>
-      <Text style={styles.sub}>تابعي أداء فريقكِ وصالونكِ</Text>
-      <View style={styles.kpiRow}>
-        <View style={styles.kpi}><Text style={styles.kpiEmoji}>📅</Text><Text style={styles.kpiVal}>{dash?.todayBookings as number ?? 0}</Text><Text style={styles.kpiLabel}>حجز اليوم</Text></View>
-        <View style={styles.kpi}><Text style={styles.kpiEmoji}>💰</Text><Text style={[styles.kpiVal, {color:'#059669'}]}>{(dash?.todayRevenue as number ?? 0)?.toLocaleString()}</Text><Text style={styles.kpiLabel}>إيراد اليوم</Text></View>
-        <View style={styles.kpi}><Text style={styles.kpiEmoji}>👩‍🎨</Text><Text style={[styles.kpiVal, {color:'#2563eb'}]}>{dash?.activeStaff as number ?? 0}</Text><Text style={styles.kpiLabel}>موظفات</Text></View>
-        <View style={styles.kpi}><Text style={styles.kpiEmoji}>⭐</Text><Text style={[styles.kpiVal, {color:'#f59e0b'}]}>{dash?.avgRating as number ?? 0}</Text><Text style={styles.kpiLabel}>التقييم</Text></View>
+      <View style={styles.kr}>
+        <View style={styles.k}><Text style={styles.ke}>📅</Text><Text style={styles.kv}>{dash?.todayBookings as number ?? 0}</Text><Text style={styles.kl}>حجز اليوم</Text></View>
+        <View style={styles.k}><Text style={styles.ke}>💰</Text><Text style={[styles.kv,{color:'#059669'}]}>{(dash?.todayRevenue as number ?? 0)?.toLocaleString()}</Text><Text style={styles.kl}>ر.س</Text></View>
       </View>
-      <Text style={styles.sectionTitle}>👩‍🎨 فريق العمل</Text>
-      {staff.length === 0 ? <Text style={styles.e}>لا يوجد فريق</Text> :
-        staff.map((s: any) => (
-          <View key={s.id} style={styles.staffCard}>
-            <Text style={styles.staffEmoji}>👩‍🎨</Text>
-            <View style={{flex:1}}>
-              <Text style={styles.staffName}>{s.name as string}</Text>
-              <Text style={styles.staffRole}>{s.role as string}</Text>
-            </View>
-            <Text style={styles.staffRating}>⭐ {s.rating as number ?? 0}</Text>
-          </View>
-        ))
-      }
+      {staff.map((s: any) => (
+        <View key={s.id} style={styles.card}><Text style={styles.em}>👩‍🎨</Text><View style={{flex:1}}><Text style={styles.nm}>{s.name as string}</Text><Text style={styles.role}>{s.role as string}</Text></View><Text style={styles.rt}>⭐ {s.rating as number ?? 0}</Text></View>
+      ))}
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
   c: { flex: 1, backgroundColor: '#ecfeff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#0891b2', textAlign: 'center', marginBottom: 4 },
-  sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 20 },
-  kpiRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 20 },
-  kpi: { flex: 1, minWidth: '45%', backgroundColor: '#fff', borderRadius: 14, padding: 14, alignItems: 'center' },
-  kpiEmoji: { fontSize: 28, marginBottom: 4 }, kpiVal: { fontSize: 24, fontWeight: '800', color: '#111827' }, kpiLabel: { fontSize: 11, color: '#9ca3af' },
-  sectionTitle: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 12 },
-  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 20 },
-  staffCard: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 6 },
-  staffEmoji: { fontSize: 28 }, staffName: { fontSize: 14, fontWeight: '600', color: '#111827' },
-  staffRole: { fontSize: 12, color: '#6b7280' }, staffRating: { fontSize: 13, fontWeight: '600', color: '#f59e0b' },
+  t: { fontSize: 24, fontWeight: '800', color: '#0891b2', textAlign: 'center', marginBottom: 20 },
+  kr: { flexDirection: 'row', gap: 8, marginBottom: 20 }, k: { flex: 1, backgroundColor: '#fff', borderRadius: 14, padding: 14, alignItems: 'center' },
+  ke: { fontSize: 28, marginBottom: 4 }, kv: { fontSize: 24, fontWeight: '800', color: '#111827' }, kl: { fontSize: 11, color: '#9ca3af' },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 6 },
+  em: { fontSize: 28 }, nm: { fontSize: 14, fontWeight: '600', color: '#111827' }, role: { fontSize: 12, color: '#6b7280' }, rt: { fontSize: 13, fontWeight: '600', color: '#f59e0b' },
 });
