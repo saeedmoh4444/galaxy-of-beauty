@@ -1,21 +1,38 @@
 import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
-const LOOKS = [
-  { id: 1, userName: 'نورة', imageUrl: '', title: 'إطلالة سهرة ناعمة', technicianName: 'نورة العمري', votes: 245, category: 'makeup', date: '2026-07-15' },
-  { id: 2, userName: 'مها', imageUrl: '', title: 'تسريحة شعر راقية', technicianName: 'سارة الحربي', votes: 189, category: 'hair', date: '2026-07-14' },
-  { id: 3, userName: 'ريم', imageUrl: '', title: 'أظافر صيفية', technicianName: 'هند المطيري', votes: 156, category: 'nails', date: '2026-07-13' },
-];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = prisma as any;
 
 export const lookOfTheDayRouter = router({
-  today: publicProcedure.query(() => LOOKS[0]),
+  today: publicProcedure.query(async () => {
+    return db.communityLook.findFirst({ where: { isPublished: true }, orderBy: { votes: 'desc' } });
+  }),
+
   feed: publicProcedure
     .input(z.object({ page: z.number().default(1), limit: z.number().default(12) }))
-    .query(async () => ({ items: LOOKS, total: LOOKS.length })),
+    .query(async ({ input }) => {
+      const skip = (input.page - 1) * input.limit;
+      const [items, total] = await Promise.all([
+        db.communityLook.findMany({ where: { isPublished: true }, orderBy: { createdAt: 'desc' }, skip, take: input.limit }),
+        db.communityLook.count({ where: { isPublished: true } }),
+      ]);
+      return { items, total };
+    }),
+
   vote: customerProcedure
     .input(z.object({ lookId: z.number() }))
-    .mutation(async ({ input }) => ({ lookId: input.lookId, votes: 246, voted: true })),
+    .mutation(async ({ input }) => {
+      const look = await db.communityLook.update({ where: { id: input.lookId }, data: { votes: { increment: 1 } } });
+      return { lookId: input.lookId, votes: look.votes, voted: true };
+    }),
+
   submit: customerProcedure
     .input(z.object({ imageUrl: z.string().url(), title: z.string().min(1), technicianName: z.string(), category: z.string() }))
-    .mutation(async ({ ctx, input }) => ({ id: LOOKS.length + 1, userName: ctx.user.email, ...input, votes: 0, date: new Date().toISOString().slice(0, 10) })),
+    .mutation(async ({ ctx, input }) => {
+      return db.communityLook.create({
+        data: { userName: ctx.user.email, imageUrl: input.imageUrl, title: input.title, technicianName: input.technicianName, category: input.category },
+      });
+    }),
 });

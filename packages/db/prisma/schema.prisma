@@ -2258,3 +2258,59 @@ model SalonMembership {
     updatedAt      DateTime @updatedAt
     @@map("group_buy_deals")
   }
+
+  // ── Look of the Day ───────────────────────────────────────
+  model CommunityLook {
+    id             Int      @id @default(autoincrement())
+    userName       String
+    imageUrl       String   @default("")
+    title          String
+    technicianName String
+    votes          Int      @default(0)
+    category       String   @default("makeup")
+    date           DateTime @default(now())
+    isPublished    Boolean  @default(true)
+    createdAt      DateTime @default(now())
+    @@map("community_looks")
+  }
+
+  // ── Product Compare ───────────────────────────────────────
+  model CompareProduct {
+    id          Int      @id @default(autoincrement())
+    nameJson    Json
+    brand       String
+    price       Float
+    rating      Float    @default(0)
+    category    String   @default("skincare")
+    emoji       String   @default("🧴")
+    features    Json
+    ingredients Int      @default(0)
+    crueltyFree Boolean  @default(false)
+    vegan       Boolean  @default(false)
+    isActive    Boolean  @default(true)
+    createdAt   DateTime @default(now())
+    @@map("compare_products")
+  }
+
+  // ── Service Matchmaker ────────────────────────────────────
+  model MatchmakerQuestion {
+    id       Int    @id @default(autoincrement())
+    questionKey String @unique
+    question   String
+    options   Json
+    sortOrder Int    @default(0)
+    isActive  Boolean @default(true)
+    createdAt DateTime @default(now())
+    @@map("matchmaker_questions")
+  }
+
+  model MatchmakerService {
+    id       Int     @id @default(autoincrement())
+    nameAr   String
+    emoji    String  @default("💅")
+    price    Float
+    tags     Json
+    isActive Boolean @default(true)
+    createdAt DateTime @default(now())
+    @@map("matchmaker_services")
+  }
