@@ -1,35 +1,32 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function BeautyProfileScreen() {
+export default function BeautyProfileScreen(): JSX.Element {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  useEffect(() => { ((trpc as any).beautyProfile.get.query() as any).then((d: any) => { setData(d); setLoading(false); }).catch(() => setLoading(false)); }, []);
-
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
-  if (!data) return <Text style={styles.e}>لا يوجد ملف</Text>;
-
+  const [refreshing, setRefreshing] = useState(false);
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).beautyProfile.get.query() as any).then((d: any) => { setData(d); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
+  useEffect(() => { fetch(); }, [fetch]);
+  if (loading) return <SkeletonList count={3} />;
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#ec4899']} />}>
       <Text style={styles.t}>💄 ملف الجمال</Text>
-      <View style={styles.card}>
-        {['skinType','hairType','hairLength','skinTone','makeupStyle'].map((k: string) => (
-          <View key={k} style={styles.row}><Text style={styles.label}>{k}</Text><Text style={styles.val}>{(data[k] as string) || '—'}</Text></View>
-        ))}
-        {data.concerns && <View style={styles.concerns}>{(data.concerns as string[]).map((c: string) => <Text key={c} style={styles.concern}>{c}</Text>)}</View>}
-      </View>
+      {data && (
+        <View style={styles.card}>
+          <Text style={styles.label}>نوع البشرة: {data.skinType as string}</Text>
+          <Text style={styles.label}>نوع الشعر: {data.hairType as string}</Text>
+        </View>
+      )}
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
   c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#be185d', textAlign: 'center', marginBottom: 20 },
-  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
-  card: { backgroundColor: '#fff', borderRadius: 16, padding: 16 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' },
-  label: { fontSize: 13, color: '#6b7280' }, val: { fontSize: 13, fontWeight: '600', color: '#111827', textAlign: 'right' },
-  concerns: { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 12, justifyContent: 'flex-end' },
-  concern: { fontSize: 11, backgroundColor: '#fce7f3', color: '#be185d', paddingHorizontal: 10, paddingVertical: 3, borderRadius: 8 },
+  t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 20 },
+  card: { backgroundColor: '#fff', borderRadius: 16, padding: 20 }, label: { fontSize: 15, color: '#374151', paddingVertical: 6 },
 });
