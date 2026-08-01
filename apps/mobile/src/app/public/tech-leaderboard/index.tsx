@@ -1,20 +1,24 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function TechLeaderboardScreen(): JSX.Element {
   const [board, setBoard] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, _setFilter] = useState('rating');
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    ((trpc as any).techLeaderboard.rankings.query({ sortBy: filter }) as any).then((d: any) => { setBoard(d || []); setLoading(false); }).catch(() => setLoading(false));
-  }, [filter]);
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).techLeaderboard.rankings.query({ sortBy: 'rating' }) as any).then((d: any) => { setBoard(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
 
-  if (loading) return <ActivityIndicator color="#f59e0b" style={{ marginTop: 40 }} size="large" />;
+  useEffect(() => { fetch(); }, [fetch]);
+
+  if (loading) return <SkeletonList count={5} />;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#f59e0b']} />}>
       <Text style={styles.t}>🏆 لوحة المتصدرين</Text>
       <Text style={styles.sub}>أفضل الفنيات حسب التقييمات والحجوزات</Text>
       {board.length === 0 ? <Text style={styles.e}>لا توجد بيانات</Text> :
