@@ -36,7 +36,7 @@ export default function BeautyEventsPage(): JSX.Element {
                 <p className="text-xs text-gray-500">{e.location as string} · {new Date(e.startsAt as string).toLocaleDateString('ar-SA',{day:'numeric',month:'long'})}</p>
                 <p className="text-lg font-extrabold text-brand-600 mt-2">{e.price ? formatCurrency(e.price as number) : 'مجانية'}</p>
                 <Button size="sm" onClick={() => isRegistered ? cancelMut.mutate({ eventId: e.id as number }) : registerMut.mutate({ eventId: e.id as number })} loading={registerMut.isPending || cancelMut.isPending} variant={isRegistered ? 'outline' : 'primary'} className="w-full mt-3">{isRegistered ? '✅ مسجلة — إلغاء' : '📝 سجلي الآن'}</Button>
-                {e.maxAttendees && <p className="text-xs text-gray-400 mt-1">المقاعد: {e.maxAttendees as number}</p>}
+                {(e.maxAttendees as number) > 0 && <p className="text-xs text-gray-400 mt-1">المقاعد: {e.maxAttendees as number}</p>}
               </Card>
             );
           })}</div>
