@@ -1,48 +1,29 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function SalonMapScreen() {
-  const insets = useSafeAreaInsets();
-  const [techs, setTechs] = useState<Record<string, unknown>[]>([]);
+export default function SalonMapScreen(): JSX.Element {
+  const [salons, setSalons] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc as any).salonMap.explore.query({ city: 'riyadh' }).then((d: any) => { setTechs(d || []); setLoading(false); }).catch(() => setLoading(false));
+  const [refreshing, setRefreshing] = useState(false);
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).salonMap.locations.query({ city: 'الرياض' /* TODO */ }) as any).then((d: any) => { setSalons(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, []);
-
-  if (loading) return <ActivityIndicator color="#059669" style={{ marginTop: 40 }} size="large" />;
-
+  useEffect(() => { fetch(); }, [fetch]);
+  if (loading) return <SkeletonList count={5} />;
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}><Text style={styles.title}>🗺️ خريطة الصالونات</Text></View>
-      <ScrollView contentContainerStyle={styles.inner}>
-        {techs.map((t: Record<string, unknown>, i: number) => (
-          <TouchableOpacity key={i} style={styles.card} activeOpacity={0.8}>
-            <View style={styles.avatar}><Text style={styles.avatarText}>{(t.name as string)?.[0] || '👩'}</Text></View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.name}>{t.name as string}</Text>
-              <Text style={styles.city}>📍 {t.city as string} · ⭐ {t.rating as number}</Text>
-              <Text style={styles.availability}>{t.isAvailable ? '🟢 متاحة' : '🔴 مشغولة'}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-    </View>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#059669']} />}>
+      <Text style={styles.t}>🗺️ خريطة الصالونات</Text>
+      {salons.map((s: any) => (<View key={s.id} style={styles.card}><Text style={styles.se}>💇‍♀️</Text><View style={{flex:1}}><Text style={styles.sn}>{s.nameAr as string ?? s.name as string}</Text><Text style={styles.sm}>📍 {s.city as string}</Text><Text style={styles.sr}>⭐ {s.rating as number ?? 0}</Text></View><TouchableOpacity style={styles.vb}><Text style={styles.vt}>عرض</Text></TouchableOpacity></View>))}
+    </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#ecfdf5' },
-  header: { padding: 16, borderBottomWidth: 1, borderBottomColor: '#d1fae5', backgroundColor: '#fff' },
-  title: { fontSize: 22, fontWeight: '800', color: '#059669', textAlign: 'center' },
-  inner: { padding: 16, paddingBottom: 40 },
-  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10, gap: 12 },
-  avatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#d1fae5', alignItems: 'center', justifyContent: 'center' },
-  avatarText: { fontSize: 20, fontWeight: '700', color: '#059669' },
-  name: { fontSize: 15, fontWeight: '700', color: '#111827', textAlign: 'right' },
-  city: { fontSize: 12, color: '#6b7280', textAlign: 'right', marginTop: 2 },
-  availability: { fontSize: 11, color: '#059669', textAlign: 'right', marginTop: 4 },
+  c: { flex: 1, backgroundColor: '#ecfdf5' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 20 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8 },
+  se: { fontSize: 36 }, sn: { fontSize: 15, fontWeight: '700', color: '#111827' }, sm: { fontSize: 12, color: '#6b7280', marginTop: 2 }, sr: { fontSize: 12, color: '#f59e0b', marginTop: 2 },
+  vb: { backgroundColor: '#059669', borderRadius: 10, paddingHorizontal: 16, paddingVertical: 8 }, vt: { color: '#fff', fontSize: 13, fontWeight: '600' },
 });

@@ -1,49 +1,28 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function LookOfTheDayScreen() {
-  const insets = useSafeAreaInsets();
-  const [looks, setLooks] = useState<Record<string, unknown>[]>([]);
+export default function LookOfTheDayScreen(): JSX.Element {
+  const [looks, setLooks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.lookOfTheDay.feed.query({ page: 1, limit: 12 }) as any).then((d: any) => { setLooks(d.items || []); setLoading(false); }).catch(() => setLoading(false));
+  const [refreshing, setRefreshing] = useState(false);
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).lookOfTheDay.list.query() as any).then((d: any) => { setLooks(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, []);
-
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
-
+  useEffect(() => { fetch(); }, [fetch]);
+  if (loading) return <SkeletonList count={3} />;
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}><Text style={styles.title}>📸 إطلالة اليوم</Text></View>
-      <ScrollView contentContainerStyle={styles.inner}>
-        {looks.map((l: Record<string, unknown>, i: number) => (
-          <View key={i} style={styles.card}>
-            <View style={styles.imagePlaceholder}><Text style={styles.imageEmoji}>📸</Text></View>
-            <Text style={styles.cardTitle}>{l.title as string}</Text>
-            <View style={styles.row}>
-              <Text style={styles.tech}>👩‍🎨 {l.technicianName as string}</Text>
-              <Text style={styles.votes}>❤️ {l.votes as number}</Text>
-            </View>
-          </View>
-        ))}
-      </ScrollView>
-    </View>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#f59e0b']} />}>
+      <Text style={styles.t}>🌟 إطلالة اليوم</Text>
+      {looks.map((l: any, i: number) => (<View key={i} style={styles.card}><Text style={styles.le}>{l.emoji as string ?? '✨'}</Text><View style={{flex:1}}><Text style={styles.lt}>{l.titleAr as string}</Text><Text style={styles.ld}>{l.descAr as string}</Text><Text style={styles.lb}>👩‍🎨 {l.technician as string}</Text></View></View>))}
+    </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fdf2f8' },
-  header: { padding: 16, borderBottomWidth: 1, borderBottomColor: '#fce7f3', backgroundColor: '#fff' },
-  title: { fontSize: 22, fontWeight: '800', color: '#be185d', textAlign: 'center' },
-  inner: { flexDirection: 'row', flexWrap: 'wrap', padding: 12, paddingBottom: 40 },
-  card: { width: '48%', backgroundColor: '#fff', borderRadius: 14, padding: 8, margin: '1%', marginBottom: 10 },
-  imagePlaceholder: { height: 120, borderRadius: 10, backgroundColor: '#fce7f3', alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
-  imageEmoji: { fontSize: 36 },
-  cardTitle: { fontSize: 13, fontWeight: '700', color: '#111827', textAlign: 'right' },
-  row: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 },
-  tech: { fontSize: 10, color: '#6b7280' },
-  votes: { fontSize: 11, color: '#dc2626', fontWeight: '600' },
+  c: { flex: 1, backgroundColor: '#fffbeb' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#d97706', textAlign: 'center', marginBottom: 20 },
+  card: { flexDirection: 'row', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 16, marginBottom: 10 },
+  le: { fontSize: 40 }, lt: { fontSize: 15, fontWeight: '700', color: '#111827' }, ld: { fontSize: 13, color: '#6b7280', marginTop: 4 }, lb: { fontSize: 12, color: '#f59e0b', marginTop: 4 },
 });
