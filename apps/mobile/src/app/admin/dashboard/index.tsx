@@ -1,47 +1,41 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function AdminDashboardScreen() {
-  const [stats, setStats] = useState<Record<string, unknown> | null>(null);
+export default function AdminDashboardScreen(): JSX.Element {
+  const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.admin.dashboardStats as any).query()
-      .then((d: Record<string, unknown>) => { setStats(d as unknown as Record<string, unknown>); setLoading(false); })
-      .catch(() => setLoading(false));
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).admin.dashboardStats.query() as any).then((d: any) => { setStats(d); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, []);
 
-  if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} />;
+  useEffect(() => { fetch(); }, [fetch]);
+
+  if (loading) return <SkeletonList count={5} />;
+
+  const s = stats ?? {};
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>لوحة الإدارة</Text>
-      <View style={styles.grid}>
-        <StatCard label="المستخدمين" value={String(stats?.totalUsers ?? 0)} color="#7c3aed" />
-        <StatCard label="الفنيات" value={String(stats?.totalTechnicians ?? 0)} color="#10b981" />
-        <StatCard label="الحجوزات" value={String(stats?.totalBookings ?? 0)} color="#f59e0b" />
-        <StatCard label="الإيرادات" value={`${Number(stats?.totalRevenue ?? 0).toFixed(0)} ر.س`} color="#8b5cf6" />
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#6366f1']} />}>
+      <Text style={styles.t}>📊 لوحة التحكم</Text>
+      <View style={styles.kpiRow}>
+        <View style={styles.kpi}><Text style={styles.kpiEmoji}>👥</Text><Text style={styles.kpiVal}>{s.totalUsers as number ?? 0}</Text><Text style={styles.kpiLabel}>مستخدم</Text></View>
+        <View style={styles.kpi}><Text style={styles.kpiEmoji}>📅</Text><Text style={[styles.kpiVal,{color:'#2563eb'}]}>{s.totalBookings as number ?? 0}</Text><Text style={styles.kpiLabel}>حجز</Text></View>
+        <View style={styles.kpi}><Text style={styles.kpiEmoji}>💰</Text><Text style={[styles.kpiVal,{color:'#059669'}]}>{(s.totalRevenue as number ?? 0)?.toLocaleString()}</Text><Text style={styles.kpiLabel}>ر.س</Text></View>
+        <View style={styles.kpi}><Text style={styles.kpiEmoji}>👩‍🎨</Text><Text style={[styles.kpiVal,{color:'#7c3aed'}]}>{s.totalTechnicians as number ?? 0}</Text><Text style={styles.kpiLabel}>فنية</Text></View>
       </View>
     </ScrollView>
   );
 }
 
-function StatCard({ label, value, color }: { label: string; value: string; color: string }) {
-  return (
-    <View style={[styles.statCard, { borderLeftColor: color }]}>
-      <Text style={styles.statValue}>{value}</Text>
-      <Text style={styles.statLabel}>{label}</Text>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
-  title: { fontSize: 24, fontWeight: '800', color: '#111827', marginBottom: 16 },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  statCard: { width: '47%', backgroundColor: '#f9fafb', borderRadius: 12, padding: 16, borderLeftWidth: 3, marginBottom: 8 },
-  statValue: { fontSize: 24, fontWeight: '800', color: '#111827' },
-  statLabel: { fontSize: 13, color: '#6b7280', marginTop: 4 },
+  c: { flex: 1, backgroundColor: '#eef2ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#4f46e5', textAlign: 'center', marginBottom: 20 },
+  kpiRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  kpi: { flex: 1, minWidth: '45%', backgroundColor: '#fff', borderRadius: 14, padding: 14, alignItems: 'center' },
+  kpiEmoji: { fontSize: 28, marginBottom: 4 }, kpiVal: { fontSize: 24, fontWeight: '800', color: '#111827' }, kpiLabel: { fontSize: 11, color: '#9ca3af' },
 });
