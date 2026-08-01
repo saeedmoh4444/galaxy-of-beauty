@@ -1,14 +1,16 @@
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
+import { useToast } from '@/components/Toast';
 
 export default function VideoRoomScreen() {
   const { bookingId, room } = useLocalSearchParams<{ bookingId: string; room: string }>();
+  const { showToast } = useToast();
   const [copied, setCopied] = useState(false);
 
   const copyRoomId = () => {
     setCopied(true);
-    Alert.alert('رقم الغرفة', room || 'غير معروف');
+    showToast('info', `رقم الغرفة: ${room || 'غير معروف'}`);
     setTimeout(() => setCopied(false), 2000);
   };
 

@@ -1,12 +1,14 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useCamera } from '@/hooks/useCamera';
 import { useState, useEffect, useCallback } from 'react';
+import { useToast } from '@/components/Toast';
 
 export default function SkinAnalysisScreen() {
   const [imageUrl, setImageUrl] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
   const [result, setResult] = useState<Record<string, unknown> | null>(null);
+  const { showToast } = useToast();
   const [history, setHistory] = useState<Record<string, unknown>[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(true);
   const [showCamera, setShowCamera] = useState(false);
@@ -22,7 +24,7 @@ export default function SkinAnalysisScreen() {
     setShowCamera(false);
     if (photo?.uri) {
       setImageUrl(photo.uri);
-      Alert.alert('تم', 'تم التقاط الصورة بنجاح. اضغطي على تحليل للمتابعة.');
+      showToast('success', 'تم التقاط الصورة بنجاح. اضغطي على تحليل للمتابعة.');
     }
   };
 
@@ -44,7 +46,7 @@ export default function SkinAnalysisScreen() {
 
   const handleAnalyze = async () => {
     if (!imageUrl) {
-      Alert.alert('خطأ', 'الرجاء إدخال رابط الصورة');
+      showToast('error', 'الرجاء إدخال رابط الصورة');
       return;
     }
     setAnalyzing(true);
@@ -55,7 +57,7 @@ export default function SkinAnalysisScreen() {
       setResult(resultJson);
       fetchHistory();
     } catch {
-      Alert.alert('خطأ', 'فشل تحليل الصورة. حاولي مجدداً.');
+      showToast('error', 'فشل تحليل الصورة. حاولي مجدداً.');
     } finally {
       setAnalyzing(false);
     }

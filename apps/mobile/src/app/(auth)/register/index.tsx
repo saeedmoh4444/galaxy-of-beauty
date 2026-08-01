@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/api';
+import { useToast } from '@/components/Toast';
 
 export default function RegisterScreen() {
   const router = useRouter();
+  const { showToast } = useToast();
   const [form, setForm] = useState({ name: '', email: '', phone: '+9665', password: '', role: 'CUSTOMER' as 'CUSTOMER' | 'TECHNICIAN', city: '' });
   const [loading, setLoading] = useState(false);
 
@@ -17,9 +19,10 @@ export default function RegisterScreen() {
         email: form.email, phone: form.phone, password: form.password, name: form.name,
         role: form.role, acceptedTerms: true, city: form.role === 'TECHNICIAN' ? form.city : undefined,
       } as Parameters<typeof trpc.auth.register.mutate>[0]);
-      Alert.alert('تم', 'تم إنشاء الحساب بنجاح', [{ text: 'دخول', onPress: () => router.replace('/(auth)/login') }]);
+      showToast('success', 'تم إنشاء الحساب بنجاح');
+      setTimeout(() => router.replace('/(auth)/login'), 1000);
     } catch (err: unknown) {
-      Alert.alert('خطأ', (err as Error).message || 'فشل إنشاء الحساب');
+      showToast('error', (err as Error).message || 'فشل إنشاء الحساب');
     } finally {
       setLoading(false);
     }

@@ -1,10 +1,12 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator, TextInput, Alert } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/api';
 import { useState, useEffect } from 'react';
+import { useToast } from '@/components/Toast';
 
 export default function CreateBookingScreen() {
   const router = useRouter();
+  const { showToast } = useToast();
   const [step, setStep] = useState(1);
   const [serviceId, setServiceId] = useState<number | undefined>();
   const [variantId, setVariantId] = useState<number | undefined>();
@@ -40,7 +42,7 @@ export default function CreateBookingScreen() {
 
   const handleSubmit = async () => {
     if (!serviceId || !addressId) {
-      Alert.alert('تنبيه', 'الرجاء اختيار الخدمة والعنوان');
+      showToast('warning', 'الرجاء اختيار الخدمة والعنوان');
       return;
     }
     setSubmitting(true);
@@ -52,7 +54,7 @@ export default function CreateBookingScreen() {
         ? (techs[0]!.technician as Record<string, unknown>)?.userId as number || 0
         : 0;
       if (!technicianId) {
-        Alert.alert('تنبيه', 'لا توجد فنيات متاحة لهذه الخدمة حالياً');
+        showToast('warning', 'لا توجد فنيات متاحة لهذه الخدمة حالياً');
         setSubmitting(false);
         return;
       }
@@ -65,9 +67,9 @@ export default function CreateBookingScreen() {
         startAt: new Date(Date.now() + 86400000).toISOString(),
         endAt: new Date(Date.now() + 86400000 + (svc?.durationMin as number || 60) * 60000).toISOString(),
       }) as any as Promise<unknown>);
-      Alert.alert('تم', 'تم إنشاء الحجز بنجاح!', [{ text: 'حسناً', onPress: () => router.back() }]);
+      showToast('success', 'تم إنشاء الحجز بنجاح!'); setTimeout(() => router.back(), 1000);
     } catch {
-      Alert.alert('خطأ', 'فشل إنشاء الحجز');
+      showToast('error', 'فشل إنشاء الحجز');
     } finally { setSubmitting(false); }
   };
 

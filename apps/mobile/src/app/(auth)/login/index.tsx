@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/api';
 import { setSocketToken } from '@/hooks/useSocket';
 import { useBiometric } from '@/hooks/useBiometric';
+import { useToast } from '@/components/Toast';
 
 export default function LoginScreen() {
   const router = useRouter();
+  const { showToast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [totpToken, setTotpToken] = useState('');
@@ -17,8 +19,7 @@ export default function LoginScreen() {
   const handleBiometricLogin = async () => {
     const result = await authenticate();
     if (result.success) {
-      Alert.alert('تم', 'تم التحقق البيومتري بنجاح');
-      // In production: exchange biometric token for JWT via a dedicated endpoint
+      showToast('success', 'تم التحقق البيومتري بنجاح');
     }
   };
 
@@ -42,7 +43,7 @@ export default function LoginScreen() {
       if (trpcErr.data?.code === 'PRECONDITION_FAILED' && trpcErr.message === '2FA_REQUIRED') {
         setTwoFactorRequired(true);
       } else {
-        Alert.alert('خطأ', (err as Error).message || 'فشل تسجيل الدخول');
+        showToast('error', (err as Error).message || 'فشل تسجيل الدخول');
       }
     } finally {
       setLoading(false);
