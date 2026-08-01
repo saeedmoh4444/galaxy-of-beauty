@@ -1,56 +1,50 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function CompareScreen(): JSX.Element {
   const [services, setServices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<number[]>([]);
 
-  useEffect(() => {
-    ((trpc as any).compare.services.query() as any).then((d: any) => { setServices(d || []); setLoading(false); }).catch(() => setLoading(false));
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).compare.services.query() as any).then((d: any) => { setServices(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, []);
 
-  const toggle = (id: number) => {
-    if (selected.includes(id)) setSelected(selected.filter(x => x !== id));
-    else if (selected.length < 3) setSelected([...selected, id]);
-  };
+  useEffect(() => { fetch(); }, [fetch]);
 
-  const compareItems = services.filter(s => selected.includes(s.id as number));
+  const toggle = (id: number) => { if (selected.includes(id)) setSelected(selected.filter(x => x !== id)); else if (selected.length < 3) setSelected([...selected, id]); };
+  const compareItems = services.filter((s: any) => selected.includes(s.id));
 
-  if (loading) return <ActivityIndicator color="#6366f1" style={{ marginTop: 40 }} size="large" />;
+  if (loading) return <SkeletonList count={5} />;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#6366f1']} />}>
       <Text style={styles.t}>⚖️ مقارنة الخدمات</Text>
       <Text style={styles.sub}>اختاري حتى ٣ خدمات للمقارنة</Text>
       <View style={styles.grid}>
         {services.map((s: any) => {
-          const isSel = selected.includes(s.id as number);
+          const isSel = selected.includes(s.id);
           return (
-            <TouchableOpacity key={s.id} onPress={() => toggle(s.id as number)} style={[styles.serviceChip, isSel && styles.serviceChipActive]}>
-              <Text style={styles.serviceEmoji}>{s.emoji as string ?? '💆‍♀️'}</Text>
-              <Text style={[styles.serviceName, isSel && styles.serviceNameActive]}>{s.nameAr as string}</Text>
-              <Text style={[styles.servicePrice, isSel && styles.servicePriceActive]}>{(s.price as number)?.toLocaleString()} ر.س</Text>
+            <TouchableOpacity key={s.id} onPress={() => toggle(s.id)} style={[styles.chip, isSel && styles.chipActive]}>
+              <Text style={styles.chipEmoji}>{s.emoji as string ?? '💆‍♀️'}</Text>
+              <Text style={[styles.chipName, isSel && styles.chipNameActive]}>{s.nameAr as string}</Text>
+              <Text style={styles.chipPrice}>{(s.price as number)?.toLocaleString()} ر.س</Text>
             </TouchableOpacity>
           );
         })}
       </View>
       {compareItems.length > 0 && (
-        <View style={styles.compareTable}>
-          <Text style={styles.compareTitle}>📊 المقارنة</Text>
-          <View style={styles.tableHeader}>
-            <View style={styles.tableLabel}><Text style={styles.tableLabelText}>الميزة</Text></View>
-            {compareItems.map((s: any) => <View key={s.id} style={styles.tableCol}><Text style={styles.tableColTitle}>{s.nameAr as string}</Text></View>)}
-          </View>
-          {['price', 'duration', 'rating'].map((field) => (
-            <View key={field} style={styles.tableRow}>
-              <View style={styles.tableLabel}><Text style={styles.tableLabelText}>{field === 'price' ? '💰 السعر' : field === 'duration' ? '⏱️ المدة' : '⭐ التقييم'}</Text></View>
-              {compareItems.map((s: any) => (
-                <View key={s.id} style={styles.tableCol}>
-                  <Text style={styles.tableValue}>{field === 'price' ? (s.price as number)?.toLocaleString() + ' ر.س' : field === 'duration' ? s.duration as string : s.rating as string}</Text>
-                </View>
-              ))}
+        <View style={styles.table}>
+          <Text style={styles.tableTitle}>📊 المقارنة</Text>
+          {compareItems.map((s: any) => (
+            <View key={s.id} style={styles.compareCard}>
+              <Text style={styles.cTitle}>{s.nameAr as string}</Text>
+              <View style={styles.cRow}><Text style={styles.cLabel}>💰</Text><Text style={styles.cVal}>{(s.price as number)?.toLocaleString()} ر.س</Text></View>
+              <View style={styles.cRow}><Text style={styles.cLabel}>⏱️</Text><Text style={styles.cVal}>{s.duration as string}</Text></View>
             </View>
           ))}
         </View>
@@ -64,15 +58,11 @@ const styles = StyleSheet.create({
   t: { fontSize: 24, fontWeight: '800', color: '#4f46e5', textAlign: 'center', marginBottom: 4 },
   sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 20 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 20 },
-  serviceChip: { width: '30%', backgroundColor: '#fff', borderRadius: 12, padding: 10, alignItems: 'center', borderWidth: 2, borderColor: '#e5e7eb' },
-  serviceChipActive: { borderColor: '#4f46e5', backgroundColor: '#eef2ff' },
-  serviceEmoji: { fontSize: 24 }, serviceName: { fontSize: 11, fontWeight: '600', color: '#6b7280', marginTop: 4, textAlign: 'center' },
-  serviceNameActive: { color: '#4f46e5' }, servicePrice: { fontSize: 11, color: '#9ca3af', marginTop: 2 }, servicePriceActive: { color: '#4f46e5' },
-  compareTable: { backgroundColor: '#fff', borderRadius: 16, padding: 16 },
-  compareTitle: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 12 },
-  tableHeader: { flexDirection: 'row', borderBottomWidth: 2, borderBottomColor: '#e5e7eb', paddingBottom: 8, marginBottom: 8 },
-  tableRow: { flexDirection: 'row', paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' },
-  tableLabel: { width: 80 }, tableLabelText: { fontSize: 12, fontWeight: '600', color: '#6b7280' },
-  tableCol: { flex: 1, alignItems: 'center' }, tableColTitle: { fontSize: 12, fontWeight: '700', color: '#111827' },
-  tableValue: { fontSize: 12, color: '#374151' },
+  chip: { width: '30%', backgroundColor: '#fff', borderRadius: 12, padding: 10, alignItems: 'center', borderWidth: 2, borderColor: '#e5e7eb' },
+  chipActive: { borderColor: '#4f46e5', backgroundColor: '#eef2ff' },
+  chipEmoji: { fontSize: 24 }, chipName: { fontSize: 10, fontWeight: '600', color: '#6b7280', marginTop: 4, textAlign: 'center' },
+  chipNameActive: { color: '#4f46e5' }, chipPrice: { fontSize: 10, color: '#9ca3af', marginTop: 2 },
+  table: { gap: 10 }, tableTitle: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 },
+  compareCard: { backgroundColor: '#fff', borderRadius: 14, padding: 14 }, cTitle: { fontSize: 15, fontWeight: '700', color: '#4f46e5', marginBottom: 8 },
+  cRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 4 }, cLabel: { fontSize: 13, color: '#6b7280' }, cVal: { fontSize: 13, fontWeight: '600', color: '#111827' },
 });

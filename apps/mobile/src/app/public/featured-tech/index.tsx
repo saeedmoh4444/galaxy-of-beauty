@@ -1,74 +1,58 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function FeaturedTechScreen() {
-  const insets = useSafeAreaInsets();
-  const [tech, setTech] = useState<Record<string, unknown> | null>(null);
-  const [past, setPast] = useState<Record<string, unknown>[]>([]);
+export default function FeaturedTechScreen(): JSX.Element {
+  const [tech, setTech] = useState<any>(null);
+  const [past, setPast] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
     Promise.all([
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (trpc.featuredTech.current.query() as any),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (trpc.featuredTech.past.query() as any),
-    ]).then(([c, p]) => { setTech(c); setPast(p || []); setLoading(false); }).catch(() => setLoading(false));
+      (trpc as any).featuredTech.current.query(),
+      (trpc as any).featuredTech.past.query(),
+    ]).then(([t, p]: any[]) => { setTech(t); setPast(p || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, []);
 
-  if (loading) return <ActivityIndicator color="#f59e0b" style={{ marginTop: 40 }} size="large" />;
+  useEffect(() => { fetch(); }, [fetch]);
+
+  if (loading) return <SkeletonList count={4} />;
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}><Text style={styles.title}>🌟 فنية الأسبوع</Text></View>
-      <ScrollView contentContainerStyle={styles.inner}>
-        {tech ? (
-          <View style={styles.featuredCard}>
-            <Text style={styles.bigEmoji}>{tech.emoji as string}</Text>
-            <Text style={styles.techName}>{tech.name as string}</Text>
-            <Text style={styles.techTitle}>{tech.titleAr as string}</Text>
-            <Text style={styles.bio}>{tech.bio as string}</Text>
-            <View style={styles.highlights}>
-              {(tech.highlights as string[]).map((h: string, i: number) => <Text key={i} style={styles.highlight}>✨ {h}</Text>)}
-            </View>
-            {(tech.interview as Record<string, string>) && (
-              <View style={styles.interview}>
-                <Text style={styles.iq}>س: {(tech.interview as Record<string, string>).q}</Text>
-                <Text style={styles.ia}>ج: {(tech.interview as Record<string, string>).a}</Text>
-              </View>
-            )}
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#f59e0b']} />}>
+      <Text style={styles.t}>🌟 فنية الشهر</Text>
+      {tech && (
+        <View style={styles.featured}>
+          <Text style={styles.fEmoji}>👩‍🎨</Text>
+          <Text style={styles.fName}>{tech.name as string}</Text>
+          <Text style={styles.fMeta}>⭐ {tech.rating as number} · {tech.specialtyAr as string}</Text>
+        </View>
+      )}
+      <Text style={styles.sectionTitle}>⭐ سابقات</Text>
+      {past.length === 0 ? <Text style={styles.e}>لا توجد فنيات سابقات</Text> :
+        past.map((p: any, i: number) => (
+          <View key={i} style={styles.card}>
+            <Text style={styles.avatar}>👩‍🎨</Text>
+            <View style={{flex:1}}><Text style={styles.name}>{p.name as string}</Text><Text style={styles.month}>{p.month as string}</Text></View>
           </View>
-        ) : null}
-        {past.length > 0 && <Text style={styles.section}>⭐ سابقات</Text>}
-        {past.map((t: Record<string, unknown>, i: number) => (
-          <View key={i} style={styles.pastItem}>
-            <Text>{t.emoji as string} {t.name as string}</Text>
-            <Text style={styles.pastDate}>{new Date(t.weekOf as string).toLocaleDateString('ar-SA')}</Text>
-          </View>
-        ))}
-      </ScrollView>
-    </View>
+        ))
+      }
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fffbeb' },
-  header: { padding: 16, borderBottomWidth: 1, borderBottomColor: '#fde68a', backgroundColor: '#fff' },
-  title: { fontSize: 22, fontWeight: '800', color: '#d97706', textAlign: 'center' },
-  inner: { padding: 16, paddingBottom: 40 },
-  featuredCard: { backgroundColor: '#fff', borderRadius: 20, padding: 20, marginBottom: 20, alignItems: 'center' },
-  bigEmoji: { fontSize: 64, marginBottom: 8 },
-  techName: { fontSize: 22, fontWeight: '800', color: '#111827' },
-  techTitle: { fontSize: 14, color: '#d97706', marginTop: 4 },
-  bio: { fontSize: 13, color: '#6b7280', marginTop: 12, textAlign: 'center', lineHeight: 22 },
-  highlights: { marginTop: 16, gap: 4 },
-  highlight: { fontSize: 13, color: '#374151', textAlign: 'center', marginBottom: 4 },
-  interview: { marginTop: 16, backgroundColor: '#fef3c7', borderRadius: 12, padding: 14, width: '100%' },
-  iq: { fontSize: 13, fontWeight: '700', color: '#92400e', textAlign: 'right' },
-  ia: { fontSize: 13, color: '#78350f', marginTop: 8, textAlign: 'right', lineHeight: 22 },
-  section: { fontSize: 17, fontWeight: '700', color: '#111827', marginBottom: 10, textAlign: 'right' },
-  pastItem: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' },
-  pastDate: { fontSize: 12, color: '#9ca3af' },
+  c: { flex: 1, backgroundColor: '#fffbeb' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#d97706', textAlign: 'center', marginBottom: 20 },
+  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 20 },
+  featured: { backgroundColor: '#fff', borderRadius: 20, padding: 24, alignItems: 'center', marginBottom: 20, borderWidth: 2, borderColor: '#fcd34d' },
+  fEmoji: { fontSize: 56 }, fName: { fontSize: 20, fontWeight: '800', color: '#111827', marginTop: 8 },
+  fMeta: { fontSize: 14, color: '#6b7280', marginTop: 4 },
+  sectionTitle: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 10 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 6 },
+  avatar: { fontSize: 32 }, name: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  month: { fontSize: 12, color: '#6b7280', marginTop: 2 },
 });
