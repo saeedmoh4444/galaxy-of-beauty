@@ -2314,3 +2314,16 @@ model SalonMembership {
     createdAt DateTime @default(now())
     @@map("matchmaker_services")
   }
+
+  // ── Beauty Reminders ──────────────────────────────────────
+  model BeautyReminder {
+    id              Int      @id @default(autoincrement())
+    userId          Int
+    title           String
+    category        String   @default("other")
+    intervalDays    Int      @default(30)
+    nextDate        DateTime
+    lastCompletedAt DateTime?
+    createdAt       DateTime @default(now())
+    @@map("beauty_reminders")
+  }
