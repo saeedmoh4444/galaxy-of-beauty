@@ -1,53 +1,42 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function BeautyAwardsScreen() {
-  const insets = useSafeAreaInsets();
-  const [data, setData] = useState<Record<string, unknown> | null>(null);
-  const [loading, setLoading] = useState(true);
+export default function BeautyAwardsScreen(): JSX.Element {
+  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).beautyAwards.list.query());
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.beautyAwards.current.query() as any).then((d: any) => { setData(d); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  if (loading) return <SkeletonList count={4} />;
+  if (error) return <ErrorAlert message="فشل تحميل الجوائز" onRetry={refetch} />;
 
-  const cats = (data?.categories ?? []) as Record<string, unknown>[];
-
-  if (loading) return <ActivityIndicator color="#f59e0b" style={{ marginTop: 40 }} size="large" />;
+  const items = (data ?? []) as Record<string, unknown>[];
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}><Text style={styles.title}>🏆 جوائز الجمال</Text><Text style={styles.subtitle}>{data?.month as string}</Text></View>
-      <ScrollView contentContainerStyle={styles.inner}>
-        {cats.map((c: Record<string, unknown>, i: number) => (
-          <View key={i} style={styles.category}>
-            <Text style={styles.catTitle}>{c.emoji as string} {c.nameAr as string}</Text>
-            {(c.nominees as Record<string, unknown>[]).map((n: Record<string, unknown>, j: number) => (
-              <View key={j} style={styles.nominee}>
-                <Text style={[styles.rank, { color: j === 0 ? '#f59e0b' : '#9ca3af' }]}>{['🥇','🥈','🥉'][j] ?? `#${j+1}`}</Text>
-                <Text style={styles.name}>{n.name as string}</Text>
-                <Text style={styles.votes}>{(n.votes as number)?.toLocaleString()} صوت</Text>
-              </View>
-            ))}
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#f59e0b']} />}>
+      <Text style={styles.t}>🏆 جوائز التجميل</Text>
+      <Text style={styles.sub}>أفضل الخدمات والفنيات لهذا العام</Text>
+      {items.length === 0 ? <Text style={styles.e}>لا توجد جوائز</Text> :
+        items.map((a: Record<string, unknown>, i: number) => (
+          <View key={i} style={styles.card}>
+            <Text style={styles.awardEmoji}>{a.emoji as string ?? '🏆'}</Text>
+            <View style={{flex:1}}>
+              <Text style={styles.awardName}>{a.nameAr as string}</Text>
+              <Text style={styles.awardWinner}>{a.winner as string}</Text>
+            </View>
           </View>
-        ))}
-      </ScrollView>
-    </View>
+        ))
+      }
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fffbeb' },
-  header: { padding: 16, borderBottomWidth: 1, borderBottomColor: '#fde68a', backgroundColor: '#fff', alignItems: 'center' },
-  title: { fontSize: 22, fontWeight: '800', color: '#d97706' },
-  subtitle: { fontSize: 13, color: '#9ca3af', marginTop: 4 },
-  inner: { padding: 16, paddingBottom: 40 },
-  category: { marginBottom: 20 },
-  catTitle: { fontSize: 17, fontWeight: '700', color: '#111827', marginBottom: 10, textAlign: 'right' },
-  nominee: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 12, padding: 12, marginBottom: 6, gap: 8 },
-  rank: { fontSize: 20, width: 36, textAlign: 'center' },
-  name: { flex: 1, fontSize: 14, fontWeight: '600', color: '#111827', textAlign: 'right' },
-  votes: { fontSize: 12, color: '#9ca3af' },
+  c: { flex: 1, backgroundColor: '#fffbeb' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#d97706', textAlign: 'center', marginBottom: 4 },
+  sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 20 },
+  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8 },
+  awardEmoji: { fontSize: 36 }, awardName: { fontSize: 14, fontWeight: '700', color: '#111827' },
+  awardWinner: { fontSize: 12, color: '#6b7280', marginTop: 2 },
 });

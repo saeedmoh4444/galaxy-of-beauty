@@ -1,52 +1,43 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function BeautyPodcastScreen() {
-  const insets = useSafeAreaInsets();
-  const [eps, setEps] = useState<Record<string, unknown>[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function BeautyPodcastScreen(): JSX.Element {
+  const { data: eps, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).beautyPodcast.list.query());
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.beautyPodcast.episodes.query() as any).then((d: any) => { setEps(d || []); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  if (loading) return <SkeletonList count={4} />;
+  if (error) return <ErrorAlert message="فشل تحميل البودكاست" onRetry={refetch} />;
 
-  if (loading) return <ActivityIndicator color="#8b5cf6" style={{ marginTop: 40 }} size="large" />;
-
-  const icons: any = { skincare: '✨', makeup: '💄', hair: '💇‍♀️', natural: '🌿', bridal: '👰' };
+  const items = (eps ?? []) as Record<string, unknown>[];
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}><Text style={styles.title}>🎙️ بودكاست الجمال</Text></View>
-      <ScrollView contentContainerStyle={styles.inner}>
-        {eps.map((e: Record<string, unknown>, i: number) => (
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />}>
+      <Text style={styles.t}>🎙️ بودكاست الجمال</Text>
+      <Text style={styles.sub}>حلقات شيقة عن الجمال والعناية</Text>
+      {items.length === 0 ? <Text style={styles.e}>لا توجد حلقات</Text> :
+        items.map((e: Record<string, unknown>, i: number) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.epEmoji}>{icons[e.category as string] || '🎙️'}</Text>
-            <View style={{ flex: 1 }}>
+            <Text style={styles.epEmoji}>{e.emoji as string ?? '🎙️'}</Text>
+            <View style={{flex:1}}>
               <Text style={styles.epTitle}>{e.titleAr as string}</Text>
-              <Text style={styles.epHost}>🎤 {e.host as string} · ⏱️ {e.duration as string}</Text>
-              <Text style={styles.epDesc}>{e.description as string}</Text>
+              <Text style={styles.epHost}>🎤 {e.host as string}</Text>
+              <Text style={styles.epDuration}>⏱️ {e.duration as string}</Text>
             </View>
-            <View style={styles.playBtn}><Text style={styles.playIcon}>▶</Text></View>
           </View>
-        ))}
-      </ScrollView>
-    </View>
+        ))
+      }
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#faf5ff' },
-  header: { padding: 16, borderBottomWidth: 1, borderBottomColor: '#ede9fe', backgroundColor: '#fff' },
-  title: { fontSize: 22, fontWeight: '800', color: '#7c3aed', textAlign: 'center' },
-  inner: { padding: 16, paddingBottom: 40 },
-  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10, gap: 12 },
-  epEmoji: { fontSize: 32 },
-  epTitle: { fontSize: 14, fontWeight: '700', color: '#111827', textAlign: 'right' },
-  epHost: { fontSize: 11, color: '#6b7280', textAlign: 'right', marginTop: 4 },
-  epDesc: { fontSize: 12, color: '#9ca3af', textAlign: 'right', marginTop: 4 },
-  playBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#7c3aed', alignItems: 'center', justifyContent: 'center' },
-  playIcon: { color: '#fff', fontSize: 14, marginLeft: 2 },
+  c: { flex: 1, backgroundColor: '#faf5ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 4 },
+  sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 20 },
+  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8 },
+  epEmoji: { fontSize: 32 }, epTitle: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  epHost: { fontSize: 12, color: '#6b7280', marginTop: 2 }, epDuration: { fontSize: 11, color: '#9ca3af', marginTop: 2 },
 });

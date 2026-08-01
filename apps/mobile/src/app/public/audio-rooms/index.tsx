@@ -1,61 +1,38 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function AudioRoomsScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).audioRooms.rooms.query());
 
-  useEffect(() => {
-    ((trpc as any).audioRooms.rooms.query() as any).then((d: any) => { setData(d); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  if (loading) return <SkeletonList count={4} />;
+  if (error) return <ErrorAlert message="فشل تحميل الغرف الصوتية" onRetry={refetch} />;
 
-  const join = (roomId: number) => {
-    ((trpc as any).audioRooms.join.mutate({ roomId }) as any);
-  };
-
-  if (loading) return <ActivityIndicator color="#ef4444" style={{ marginTop: 40 }} size="large" />;
-
-  const live = (data?.live ?? []) as any[];
-  const upcoming = (data?.upcoming ?? []) as any[];
+  const live = ((data as any)?.live ?? []) as any[];
+  const upcoming = ((data as any)?.upcoming ?? []) as any[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#dc2626']} />}>
       <Text style={styles.t}>🎙️ الغرف الصوتية</Text>
       <Text style={styles.sub}>انضمي لنقاشات مباشرة مع خبراء التجميل</Text>
-
-      {live.length > 0 && (
-        <>
-          <Text style={styles.sectionTitle}>🔴 مباشر الآن</Text>
-          {live.map((r: any) => (
-            <View key={r.id} style={[styles.card, styles.liveCard]}>
-              <Text style={styles.roomEmoji}>🎙️</Text>
-              <View style={{flex:1}}>
-                <Text style={styles.roomTitle}>{r.title as string}</Text>
-                <Text style={styles.roomMeta}>{r.host as string} · {r.listeners as number} مستمعين</Text>
-              </View>
-              <TouchableOpacity onPress={() => join(r.id as number)} style={styles.joinBtn}><Text style={styles.joinBtnText}>انضمام</Text></TouchableOpacity>
-            </View>
-          ))}
-        </>
-      )}
-
-      {upcoming.length > 0 && (
-        <>
-          <Text style={styles.sectionTitle}>📅 قادم</Text>
-          {upcoming.map((r: any) => (
-            <View key={r.id} style={styles.card}>
-              <Text style={styles.roomEmoji}>🎙️</Text>
-              <View style={{flex:1}}>
-                <Text style={styles.roomTitle}>{r.title as string}</Text>
-                <Text style={styles.roomMeta}>{r.host as string} · {new Date(r.scheduledAt as string).toLocaleDateString('ar-SA', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' })}</Text>
-              </View>
-              <View style={styles.remindBadge}><Text style={styles.remindText}>⏰ تذكير</Text></View>
-            </View>
-          ))}
-        </>
-      )}
-
+      {live.length > 0 && <Text style={styles.sectionTitle}>🔴 مباشر الآن</Text>}
+      {live.map((r: any) => (
+        <View key={r.id} style={[styles.card, styles.liveCard]}>
+          <Text style={styles.roomEmoji}>🎙️</Text>
+          <View style={{flex:1}}><Text style={styles.roomTitle}>{r.title as string}</Text><Text style={styles.roomMeta}>{r.host as string} · {r.listeners as number} مستمعين</Text></View>
+          <TouchableOpacity style={styles.joinBtn}><Text style={styles.joinBtnText}>انضمام</Text></TouchableOpacity>
+        </View>
+      ))}
+      {upcoming.length > 0 && <Text style={styles.sectionTitle}>📅 قادم</Text>}
+      {upcoming.map((r: any) => (
+        <View key={r.id} style={styles.card}>
+          <Text style={styles.roomEmoji}>🎙️</Text>
+          <View style={{flex:1}}><Text style={styles.roomTitle}>{r.title as string}</Text><Text style={styles.roomMeta}>{r.host as string} · {new Date(r.scheduledAt as string).toLocaleDateString('ar-SA', {month:'short',day:'numeric'})}</Text></View>
+          <View style={styles.remindBadge}><Text style={styles.remindText}>⏰ تذكير</Text></View>
+        </View>
+      ))}
       {live.length === 0 && upcoming.length === 0 && <Text style={styles.e}>لا توجد غرف</Text>}
     </ScrollView>
   );
