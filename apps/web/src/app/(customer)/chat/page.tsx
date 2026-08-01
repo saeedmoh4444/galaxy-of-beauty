@@ -6,9 +6,9 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function ChatPage(): JSX.Element {
   const { data: conversations, isLoading: convLoading } = api.chat.conversations.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
-  const { data: messages, isLoading: msgLoading } = api.chat.messages.useQuery({ page: 1, limit: 50 }) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
   const sendMut = api.chat.send.useMutation();
   const [selectedConv, setSelectedConv] = useState<number | null>(null);
+  const { data: messages, isLoading: msgLoading } = api.chat.messages.useQuery({ bookingId: selectedConv ?? 0 }, { enabled: !!selectedConv }) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
   const [content, setContent] = useState('');
   const convs = conversations ?? [];
   const msgs = messages ?? [];

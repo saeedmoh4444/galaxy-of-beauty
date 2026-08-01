@@ -175,6 +175,7 @@ import { beautyExpensesRouter } from './beautyExpenses';
 import { beautyDiscoveryRouter } from './beautyDiscovery';
 import { beautyStatsRouter } from './beautyStats';
 import { customerAchievementsRouter } from './customerAchievements';
+import { wellnessHubRouter } from './wellnessHub';
 
 export const appRouter = router({
   // Health
@@ -360,6 +361,7 @@ export const appRouter = router({
   beautyDiscovery: beautyDiscoveryRouter,
   beautyStats: beautyStatsRouter,
   customerAchievements: customerAchievementsRouter,
+  wellnessHub: wellnessHubRouter,
 });
 
 export type AppRouter = typeof appRouter;

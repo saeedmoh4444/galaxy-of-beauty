@@ -55,11 +55,11 @@ export default function CycleTrackerPage(): JSX.Element {
         </Card>}
 
         {todayLoading ? <CardSkeleton/> : (
-          <Card padding="lg" className="text-center border-2" style={{borderColor: phase?.color as string ?? '#ec4899'}}>
+          <Card padding="lg" className={`text-center border-2`}>
             <span className="text-5xl">{phase?.emoji as string ?? '📅'}</span>
             <h2 className="text-xl font-bold mt-2">{phase?.name as string}</h2>
             <p className="text-sm text-gray-500">اليوم {today?.currentDay as number} من {cycleLength}</p>
-            {today?.hasSettings && today?.daysUntilNext != null && <p className="text-xs text-brand-600 mt-1">⏱️ متبقي {(today?.daysUntilNext as number)} يوم على الدورة القادمة</p>}
+            {(today?.hasSettings as boolean) && (today?.daysUntilNext as number) != null && <p className="text-xs text-brand-600 mt-1">⏱️ متبقي {today?.daysUntilNext as number} يوم على الدورة القادمة</p>}
             {!today?.hasSettings && <p className="text-xs text-amber-600 mt-2">⚠️ اضبطي إعدادات الدورة للحصول على توقعات دقيقة</p>}
           </Card>
         )}
@@ -78,7 +78,7 @@ export default function CycleTrackerPage(): JSX.Element {
           </div>
         </Card>}
 
-        <Card padding="lg"><h3 className="font-bold mb-3">💡 توصيات الجمال — {phase?.name}</h3>
+        <Card padding="lg"><h3 className="font-bold mb-3">💡 توصيات الجمال — {phase?.name as string}</h3>
           <div className="space-y-2">{(phase?.tips as string[] ?? []).map((tip: string, i: number) => <p key={i} className="text-sm text-gray-600">• {tip}</p>)}</div>
         </Card>
 
