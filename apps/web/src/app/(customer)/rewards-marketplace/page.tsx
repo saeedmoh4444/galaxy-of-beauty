@@ -26,7 +26,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
             <p className="text-sm opacity-80">رصيد نقاطكِ</p>
             <p className="text-4xl font-extrabold mt-2">{points.toLocaleString('ar-SA')}</p>
             <p className="text-sm mt-1 opacity-80">{account?.tierNameAr as string} · مضاعف ×{account?.multiplier as number}</p>
-            {(account?.nextTier as Record<string,unknown>) && <p className="text-xs mt-2 bg-white/20 rounded-full px-3 py-1 inline-block">تحتاجين {(account.nextTier as Record<string,unknown>).pointsNeeded as number} نقطة للوصول لـ {(account.nextTier as Record<string,unknown>).name as string}</p>}
+            {(account?.nextTier as Record<string,unknown>) && <p className="text-xs mt-2 bg-white/20 rounded-full px-3 py-1 inline-block">تحتاجين {(account!.nextTier as Record<string,unknown>).pointsNeeded as number} نقطة للوصول لـ {(account!.nextTier as Record<string,unknown>).name as string}</p>}
           </Card>
         )}
 
