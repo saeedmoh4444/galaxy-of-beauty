@@ -1,53 +1,35 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/api';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function ServicesScreen() {
+export default function ServicesScreen(): JSX.Element {
   const router = useRouter();
-  const [data, setData] = useState<Record<string, unknown>[]>([]);
+  const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    setLoading(true);
-    timerRef.current = setTimeout(() => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (trpc.services.list as any).query({ search: search || undefined, sort: 'newest', page: 1, limit: 20 })
-        .then((d: Record<string, unknown>) => { setData((d.items ?? []) as Record<string, unknown>[]); setLoading(false); })
-        .catch(() => setLoading(false));
-    }, 350);
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [search]);
-
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).services.list.query({}) as any).then((d: any) => { setData(d?.items || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
+  useEffect(() => { fetch(); }, [fetch]);
+  if (loading) return <SkeletonList count={6} />;
+  const filtered = search ? data.filter((s: any) => ((s.titleJson as any)?.ar as string ?? '').includes(search)) : data;
   return (
-    <View style={styles.container}>
-      <TextInput style={styles.search} placeholder="بحث عن خدمة..." value={search} onChangeText={setSearch} />
-      {loading ? <ActivityIndicator color="#7c3aed" style={{ marginTop: 20 }} /> : (
-        <ScrollView>
-          {data.map((svc: Record<string, unknown>, i: number) => (
-            <TouchableOpacity key={i} style={styles.card} onPress={() => router.push(`/services/${svc.id}`)}>
-              <View style={styles.cardLeft}>
-                <Text style={styles.cardTitle}>{(svc.titleJson as Record<string, string>)?.ar ?? ''}</Text>
-                <Text style={styles.cardMeta}>{svc.durationMin as number} دقيقة</Text>
-              </View>
-              <Text style={styles.cardPrice}>{svc.basePrice as number} ر.س</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      )}
-    </View>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#db2777']} />}>
+      <Text style={styles.t}>💆‍♀️ الخدمات</Text>
+      <TextInput value={search} onChangeText={setSearch} placeholder="ابحثي..." style={styles.inp} placeholderTextColor="#9ca3af" />
+      <View style={styles.grid}>{filtered.map((s: any, i: number) => (<TouchableOpacity key={i} onPress={() => router.push(`/services/${s.id}` as any)} style={styles.card}><Text style={styles.ce}>{s.emoji as string ?? '💆‍♀️'}</Text><Text style={styles.cn}>{(s.titleJson as any)?.ar as string}</Text><Text style={styles.cp}>{(s.basePrice as number)?.toLocaleString()} ر.س</Text></TouchableOpacity>))}</View>
+    </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  search: { margin: 16, borderWidth: 1, borderColor: '#d1d5db', borderRadius: 12, padding: 12, fontSize: 16, backgroundColor: '#f9fafb' },
-  card: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, marginHorizontal: 16, marginBottom: 8, backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#e5e7eb' },
-  cardLeft: { flex: 1 },
-  cardTitle: { fontSize: 16, fontWeight: '600', color: '#111827' },
-  cardMeta: { fontSize: 13, color: '#6b7280', marginTop: 4 },
-  cardPrice: { fontSize: 16, fontWeight: '700', color: '#7c3aed' },
+  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 16 },
+  inp: { borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 12, padding: 12, marginBottom: 16, fontSize: 14, color: '#111827', textAlign: 'right' },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  card: { width: '47%', backgroundColor: '#fff', borderRadius: 14, padding: 12, alignItems: 'center' },
+  ce: { fontSize: 32 }, cn: { fontSize: 12, fontWeight: '600', color: '#111827', marginTop: 6, textAlign: 'center' }, cp: { fontSize: 13, fontWeight: '700', color: '#db2777', marginTop: 4 },
 });
