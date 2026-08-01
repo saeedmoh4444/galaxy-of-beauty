@@ -1,7 +1,8 @@
-import { View, Text, ScrollView, TouchableOpacity, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { trpc } from '@/lib/api';
 import { useState } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 const RATING_COLORS: any = { safe: '#16a34a', caution: '#d97706', avoid: '#dc2626' };
 
@@ -24,7 +25,7 @@ export default function IngredientAnalyzerScreen() {
       <ScrollView contentContainerStyle={styles.inner}>
         <TextInput style={styles.input} value={text} onChangeText={setText} placeholder="الصقي قائمة المكونات..." multiline numberOfLines={4} textAlign="right" />
         <TouchableOpacity style={styles.btn} onPress={analyze} disabled={!text.trim() || loading}><Text style={styles.btnText}>🧪 تحليل</Text></TouchableOpacity>
-        {loading ? <ActivityIndicator color="#7c3aed" style={{ marginTop: 20 }} /> : result ? (
+        {loading ? <SkeletonList count={2} /> : result ? (
           <View style={styles.resultCard}>
             <View style={styles.stats}>
               <View style={styles.stat}><Text style={[styles.statNum, { color: '#16a34a' }]}>{result.stats.safe}</Text><Text style={styles.statLabel}>آمن</Text></View>

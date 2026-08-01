@@ -1,7 +1,8 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { trpc } from '@/lib/api';
 import { useState, useEffect } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function GiftQuizScreen() {
   const insets = useSafeAreaInsets();
@@ -22,7 +23,7 @@ export default function GiftQuizScreen() {
     (trpc.giftQuiz.recommend.query({ answers: ans }) as any).then((d: any) => { setResults(d); setLoading(false); }).catch(() => setLoading(false));
   };
 
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
+  if (loading) return <SkeletonList count={3} />;
 
   if (results) {
     return (

@@ -1,7 +1,8 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState, useEffect } from 'react';
 import { useLocalSearchParams } from 'expo-router';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function LiveStreamDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -23,7 +24,7 @@ export default function LiveStreamDetailScreen(): JSX.Element {
       .then(() => { setChatText(''); });
   };
 
-  if (loading) return <ActivityIndicator color="#dc2626" style={{ marginTop: 40 }} size="large" />;
+  if (loading) return <SkeletonList count={4} />;
   if (!stream) return <View style={styles.c}><Text style={styles.e}>تعذر تحميل البث</Text></View>;
 
   return (

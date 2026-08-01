@@ -1,6 +1,7 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function ProductScannerScreen() {
   const [barcode, setBarcode] = useState('');
@@ -13,7 +14,7 @@ export default function ProductScannerScreen() {
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
       <Text style={styles.t}>🔍 فحص المنتجات</Text>
       <View style={styles.inputRow}><TextInput style={styles.input} value={barcode} onChangeText={setBarcode} onSubmitEditing={scan} placeholder="أدخلي الباركود..." keyboardType="numeric" textAlign="center" /><TouchableOpacity style={styles.btn} onPress={scan}><Text style={styles.btnText}>فحص</Text></TouchableOpacity></View>
-      {loading ? <ActivityIndicator color="#2563eb" style={{ marginTop: 20 }} /> : result?.found ? (
+      {loading ? <SkeletonList count={2} /> : result?.found ? (
         <View style={styles.resultCard}>
           <Text style={styles.productName}>{result.product.nameAr}</Text><Text style={styles.brand}>{result.product.brand}</Text>
           <View style={styles.scoreRow}><View style={styles.scoreBar}><View style={[styles.scoreFill, { width: `${result.product.safetyScore}%`, backgroundColor: result.product.safetyScore >= 90 ? '#16a34a' : result.product.safetyScore >= 75 ? '#d97706' : '#dc2626' }]} /></View><Text style={styles.scoreText}>{result.product.safetyScore}% آمن</Text></View>
