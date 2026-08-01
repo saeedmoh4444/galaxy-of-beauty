@@ -1689,6 +1689,16 @@ model CommunityLike {
   @@map("community_likes")
 }
 
+model CommunityComment {
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  userId    Int
+  content   String
+  createdAt DateTime @default(now())
+  @@index([postId])
+  @@map("community_comments")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================

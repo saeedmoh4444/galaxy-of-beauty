@@ -185,7 +185,7 @@ export default function CommunityPage(): JSX.Element {
   const handleDelete = useCallback(
     (postId: number): void => {
       if (!confirm('هل أنتِ متأكدة من حذف هذا المنشور؟')) return;
-      deleteMut.mutate({ postId });
+      deleteMut.mutate({ id: postId });
     },
     [deleteMut],
   );
