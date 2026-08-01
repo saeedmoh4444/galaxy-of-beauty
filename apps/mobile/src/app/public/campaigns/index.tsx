@@ -1,23 +1,23 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function CampaignsScreen(): JSX.Element {
-  const [campaigns, setCampaigns] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: campaigns, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).campaigns.list.query());
 
-  useEffect(() => {
-    ((trpc as any).campaigns.list.query() as any).then((d: any) => { setCampaigns(d || []); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  if (loading) return <SkeletonList count={4} />;
+  if (error) return <ErrorAlert message="فشل تحميل الحملات" onRetry={refetch} />;
 
-  if (loading) return <ActivityIndicator color="#f59e0b" style={{ marginTop: 40 }} size="large" />;
+  const items = (campaigns ?? []) as any[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#f59e0b']} />}>
       <Text style={styles.t}>📢 العروض والحملات</Text>
       <Text style={styles.sub}>أحدث العروض والتخفيضات</Text>
-      {campaigns.length === 0 ? <Text style={styles.e}>لا توجد حملات</Text> :
-        campaigns.map((c: any) => (
+      {items.length === 0 ? <Text style={styles.e}>لا توجد حملات</Text> :
+        items.map((c: any) => (
           <View key={c.id} style={styles.card}>
             <Text style={styles.campEmoji}>{c.emoji as string ?? '🎯'}</Text>
             <View style={{flex:1}}>
