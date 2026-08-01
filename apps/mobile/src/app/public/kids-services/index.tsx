@@ -1,96 +1,57 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
+import { useState } from 'react';
 
-export default function KidsServicesScreen() {
-  const [cats, setCats] = useState<Record<string, unknown>[]>([]);
+export default function KidsServicesScreen(): JSX.Element {
+  const { data: cats, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).kidsServices.categories.query());
   const [selectedCat, setSelectedCat] = useState<Record<string, unknown> | null>(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.kidsServices.categories.query() as any as Promise<Record<string, unknown>[]>)
-      .then((data) => { setCats(data); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, []);
+  if (loading) return <SkeletonList count={5} />;
+  if (error) return <ErrorAlert message="فشل تحميل الخدمات" onRetry={refetch} />;
 
-  const fetchCategory = (key: string) => {
-    setLoading(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.kidsServices.byCategory.query({ category: key }) as any as Promise<Record<string, unknown>>)
-      .then((data) => { setSelectedCat(data); setLoading(false); })
-      .catch(() => setLoading(false));
-  };
-
-  if (loading) return <ActivityIndicator color="#1d4ed8" style={{ marginTop: 40 }} size="large" />;
-
-  if (selectedCat) {
-    const services = (selectedCat.subServices as Record<string, unknown>[]) ?? [];
-    return (
-      <ScrollView style={styles.container} contentContainerStyle={styles.inner}>
-        <TouchableOpacity onPress={() => setSelectedCat(null)} style={styles.backBtn}>
-          <Text style={styles.backText}>← العودة</Text>
-        </TouchableOpacity>
-        <View style={styles.catHeader}>
-          <Text style={styles.catEmoji}>{selectedCat.emoji as string}</Text>
-          <Text style={styles.catTitle}>{selectedCat.nameAr as string}</Text>
-          <Text style={styles.catDesc}>{selectedCat.description as string}</Text>
-        </View>
-        {services.map((s: Record<string, unknown>, i: number) => (
-          <View key={i} style={styles.serviceCard}>
-            <Text style={styles.serviceEmoji}>{s.emoji as string}</Text>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.serviceName}>{s.nameAr as string}</Text>
-              <Text style={styles.serviceAge}>👶 من {(s.ageMin as number) || 0} سنوات</Text>
-            </View>
-            <View style={{ alignItems: 'flex-end' }}>
-              <Text style={styles.servicePrice}>{s.price as number} ر.س</Text>
-              <Text style={styles.serviceTime}>{s.durationMin as number} د</Text>
-            </View>
-          </View>
-        ))}
-      </ScrollView>
-    );
-  }
+  const categories = (cats ?? []) as Record<string, unknown>[];
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.inner}>
-      <Text style={styles.pageTitle}>🧒 خدمات الأطفال</Text>
-      <Text style={styles.pageSubtitle}>عناية لطيفة وآمنة للصغار</Text>
-      {cats.map((c: Record<string, unknown>, i: number) => (
-        <TouchableOpacity key={i} style={styles.card} onPress={() => fetchCategory(c.key as string)} activeOpacity={0.8}>
-          <Text style={styles.cardEmoji}>{c.emoji as string}</Text>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.cardTitle}>{c.nameAr as string}</Text>
-            <Text style={styles.cardDesc}>{c.description as string}</Text>
-          </View>
-          <Text style={styles.cardCount}>{c.serviceCount as number} خدمات →</Text>
-        </TouchableOpacity>
-      ))}
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#f59e0b']} />}>
+      <Text style={styles.t}>🧒 خدمات الأطفال</Text>
+      <Text style={styles.sub}>خدمات تجميل للأطفال والصغار</Text>
+      <View style={styles.catGrid}>
+        {categories.map((cat: Record<string, unknown>) => (
+          <TouchableOpacity key={cat.key as string} onPress={() => setSelectedCat(cat)} style={[styles.catCard, selectedCat?.key === cat.key && styles.catActive]}>
+            <Text style={styles.catEmoji}>{cat.emoji as string}</Text>
+            <Text style={styles.catLabel}>{cat.nameAr as string}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      {selectedCat && (
+        <View style={styles.servicesSection}>
+          <Text style={styles.sectionTitle}>{selectedCat.emoji as string} {selectedCat.nameAr as string}</Text>
+          {((selectedCat.services as any[]) ?? []).map((s: any, i: number) => (
+            <View key={i} style={styles.svcCard}>
+              <View style={{flex:1}}><Text style={styles.svcName}>{s.nameAr as string}</Text><Text style={styles.svcAge}>{s.ageGroup as string}</Text></View>
+              <Text style={styles.svcPrice}>{(s.price as number)?.toLocaleString()} ر.س</Text>
+            </View>
+          ))}
+        </View>
+      )}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#eff6ff' },
-  inner: { padding: 16, paddingBottom: 40 },
-  pageTitle: { fontSize: 24, fontWeight: '800', color: '#1d4ed8', textAlign: 'center', marginTop: 8 },
-  pageSubtitle: { fontSize: 13, color: '#6b7280', textAlign: 'center', marginBottom: 16 },
-  card: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 14, padding: 16, marginBottom: 10, alignItems: 'center' },
-  cardEmoji: { fontSize: 40, marginRight: 14 },
-  cardTitle: { fontSize: 16, fontWeight: '700', color: '#111827', textAlign: 'right' },
-  cardDesc: { fontSize: 12, color: '#6b7280', textAlign: 'right', marginTop: 2 },
-  cardCount: { fontSize: 13, fontWeight: '600', color: '#1d4ed8' },
-  backBtn: { marginBottom: 12 },
-  backText: { fontSize: 14, color: '#1d4ed8', fontWeight: '600' },
-  catHeader: { backgroundColor: '#fff', borderRadius: 16, padding: 20, marginBottom: 16, alignItems: 'center' },
-  catEmoji: { fontSize: 48 },
-  catTitle: { fontSize: 20, fontWeight: '800', color: '#111827', marginTop: 8 },
-  catDesc: { fontSize: 13, color: '#6b7280', textAlign: 'center', marginTop: 4 },
-  serviceCard: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 8, alignItems: 'center' },
-  serviceEmoji: { fontSize: 32, marginRight: 12 },
-  serviceName: { fontSize: 15, fontWeight: '700', color: '#111827', textAlign: 'right' },
-  serviceAge: { fontSize: 12, color: '#6b7280', textAlign: 'right', marginTop: 2 },
-  servicePrice: { fontSize: 16, fontWeight: '800', color: '#1d4ed8' },
-  serviceTime: { fontSize: 12, color: '#9ca3af', marginTop: 2 },
+  c: { flex: 1, backgroundColor: '#fffbeb' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#d97706', textAlign: 'center', marginBottom: 4 },
+  sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 20 },
+  catGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 20 },
+  catCard: { width: '30%', backgroundColor: '#fff', borderRadius: 14, padding: 14, alignItems: 'center', borderWidth: 2, borderColor: '#e5e7eb' },
+  catActive: { borderColor: '#f59e0b', backgroundColor: '#fffbeb' },
+  catEmoji: { fontSize: 30 }, catLabel: { fontSize: 11, fontWeight: '600', color: '#111827', marginTop: 6, textAlign: 'center' },
+  servicesSection: { backgroundColor: '#fff', borderRadius: 16, padding: 16 },
+  sectionTitle: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 12 },
+  svcCard: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' },
+  svcName: { fontSize: 13, color: '#374151' }, svcAge: { fontSize: 11, color: '#9ca3af', marginTop: 2 },
+  svcPrice: { fontSize: 13, fontWeight: '600', color: '#d97706' },
 });

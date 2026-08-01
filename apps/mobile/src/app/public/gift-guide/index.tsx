@@ -1,30 +1,27 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function GiftGuideScreen(): JSX.Element {
-  const [guides, setGuides] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: guides, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).giftGuide.list.query());
 
-  useEffect(() => {
-    ((trpc as any).giftGuide.list.query() as any).then((d: any) => { setGuides(d || []); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  if (loading) return <SkeletonList count={4} />;
+  if (error) return <ErrorAlert message="فشل تحميل الدليل" onRetry={refetch} />;
 
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
+  const items = (guides ?? []) as any[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />}>
       <Text style={styles.t}>🎁 دليل الهدايا</Text>
       <Text style={styles.sub}>أفكار هدايا لكل المناسبات</Text>
-      {guides.length === 0 ? <Text style={styles.e}>لا توجد أدلة</Text> :
-        guides.map((g: any) => (
+      {items.length === 0 ? <Text style={styles.e}>لا توجد أدلة</Text> :
+        items.map((g: any) => (
           <View key={g.id} style={styles.card}>
             <Text style={styles.guideEmoji}>{g.emoji as string ?? '🎁'}</Text>
-            <View style={{flex:1}}>
-              <Text style={styles.guideTitle}>{g.titleAr as string}</Text>
-              <Text style={styles.guideOccasion}>{g.occasionAr as string}</Text>
-              <Text style={styles.guidePrice}>من {(g.priceRange as string) ?? (g.minPrice as number)?.toLocaleString() + ' ر.س'}</Text>
-            </View>
+            <View style={{flex:1}}><Text style={styles.guideTitle}>{g.titleAr as string}</Text><Text style={styles.guideOccasion}>{g.occasionAr as string}</Text>
+              <Text style={styles.guidePrice}>من {(g.priceRange as string) ?? (g.minPrice as number)?.toLocaleString() + ' ر.س'}</Text></View>
             <TouchableOpacity style={styles.viewBtn}><Text style={styles.viewBtnText}>عرض</Text></TouchableOpacity>
           </View>
         ))

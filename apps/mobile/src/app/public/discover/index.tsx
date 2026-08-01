@@ -1,32 +1,29 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function DiscoverScreen(): JSX.Element {
-  const [trending, setTrending] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: trending, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).discover.trending.query());
+  const { data: categories } = useQuery(() => (trpc as any).discover.categories.query());
 
-  useEffect(() => {
-    Promise.all([
-      ((trpc as any).discover.trending.query() as any),
-      ((trpc as any).discover.categories.query() as any),
-    ]).then(([t, c]: any[]) => { setTrending(t || []); setCategories(c || []); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  if (loading) return <SkeletonList count={6} />;
+  if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;
 
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
+  const trendingItems = (trending ?? []) as any[];
+  const catItems = (categories ?? []) as any[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />}>
       <Text style={styles.t}>🔍 اكتشف</Text>
       <Text style={styles.sub}>اكتشفي خدمات وأفكار جديدة</Text>
-
-      {categories.length > 0 && (
+      {catItems.length > 0 && (
         <>
           <Text style={styles.sectionTitle}>📂 الفئات</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{marginBottom:20}}>
             <View style={{flexDirection:'row', gap:10}}>
-              {categories.map((cat: any) => (
+              {catItems.map((cat: any) => (
                 <TouchableOpacity key={cat.id ?? cat.key} style={styles.catChip}>
                   <Text style={styles.catEmoji}>{cat.emoji as string ?? '📂'}</Text>
                   <Text style={styles.catName}>{cat.nameAr as string}</Text>
@@ -36,10 +33,9 @@ export default function DiscoverScreen(): JSX.Element {
           </ScrollView>
         </>
       )}
-
       <Text style={styles.sectionTitle}>🔥 الأكثر رواجاً</Text>
-      {trending.length === 0 ? <Text style={styles.e}>لا توجد نتائج</Text> :
-        trending.map((t: any) => (
+      {trendingItems.length === 0 ? <Text style={styles.e}>لا توجد نتائج</Text> :
+        trendingItems.map((t: any) => (
           <View key={t.id} style={styles.card}>
             <Text style={styles.cardEmoji}>{t.emoji as string ?? '✨'}</Text>
             <View style={{flex:1}}>
