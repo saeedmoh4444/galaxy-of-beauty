@@ -172,6 +172,7 @@ import { serviceRecommenderRouter } from './serviceRecommender';
 import { beautyDashboardRouter } from './beautyDashboard';
 import { beautyRemindersRouter } from './beautyReminders';
 import { beautyExpensesRouter } from './beautyExpenses';
+import { beautyDiscoveryRouter } from './beautyDiscovery';
 
 export const appRouter = router({
   // Health
@@ -354,6 +355,7 @@ export const appRouter = router({
   beautyDashboard: beautyDashboardRouter,
   beautyReminders: beautyRemindersRouter,
   beautyExpenses: beautyExpensesRouter,
+  beautyDiscovery: beautyDiscoveryRouter,
 });
 
 export type AppRouter = typeof appRouter;
