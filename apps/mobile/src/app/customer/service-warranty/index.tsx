@@ -1,42 +1,30 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function ServiceWarrantyScreen() {
-  const [claims, setClaims] = useState<Record<string, unknown>[]>([]);
-  const [policy, setPolicy] = useState<any>(null);
+export default function ServiceWarrantyScreen(): JSX.Element {
+  const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    Promise.all([((trpc as any).serviceWarranty.myClaims.query() as any), ((trpc as any).serviceWarranty.policy.query() as any)])
-      .then(([c, p]) => { setClaims(c || []); setPolicy(p); setLoading(false); }).catch(() => setLoading(false));
+  const [refreshing, setRefreshing] = useState(false);
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).serviceWarranty.list.query() as any).then((d: any) => { setData(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, []);
-
-  if (loading) return <ActivityIndicator color="#f59e0b" style={{ marginTop: 40 }} size="large" />;
-
-  const STATUS: any = { PENDING: '⏳ قيد المراجعة', APPROVED: '✅ موافق', REJECTED: '❌ مرفوض', COMPENSATED: '💰 تم التعويض' };
-
+  useEffect(() => { fetch(); }, [fetch]);
+  if (loading) return <SkeletonList count={4} />;
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#2563eb']} />}>
       <Text style={styles.t}>🛡️ ضمان الخدمة</Text>
-      {policy?.coverage ? (policy.coverage as Record<string, unknown>[]).map((c: Record<string, unknown>, i: number) => (
-        <View key={i} style={styles.coverage}><Text style={styles.covEmoji}>{c.emoji as string}</Text><View style={{flex:1}}><Text style={styles.covTitle}>{c.titleAr as string}</Text><Text style={styles.covDesc}>{c.descAr as string}</Text></View></View>
-      )) : null}
-      <Text style={styles.section}>📋 مطالباتي</Text>
-      {claims.length === 0 ? <Text style={styles.e}>لا توجد مطالبات</Text> :
-        claims.map((c: Record<string, unknown>, i: number) => (
-          <View key={i} style={styles.claim}><Text>حجز #{c.bookingId as number}</Text><Text>{(STATUS as any)[c.status as string] || c.status}</Text><Text>{(c.compensation as number) > 0 ? `${c.compensation} ر.س` : ''}</Text></View>
-        ))
-      }
+      {data.map((w: any, i: number) => (
+        <View key={i} style={styles.card}><Text style={styles.emoji}>{w.emoji as string ?? '🛡️'}</Text><View style={{flex:1}}><Text style={styles.name}>{w.serviceName as string}</Text><Text style={styles.exp}>ينتهي: {new Date(w.expiresAt as string).toLocaleDateString('ar-SA')}</Text></View></View>
+      ))}
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fffbeb' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#d97706', textAlign: 'center', marginBottom: 20 },
-  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 20 },
-  section: { fontSize: 16, fontWeight: '700', color: '#111827', textAlign: 'right', marginTop: 16, marginBottom: 8 },
-  coverage: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 12, padding: 12, marginBottom: 8, gap: 10, alignItems: 'center' },
-  covEmoji: { fontSize: 28 }, covTitle: { fontSize: 14, fontWeight: '700', color: '#111827', textAlign: 'right' }, covDesc: { fontSize: 11, color: '#6b7280', textAlign: 'right', marginTop: 2 },
-  claim: { flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#fff', borderRadius: 10, padding: 10, marginBottom: 4 },
+  c: { flex: 1, backgroundColor: '#eff6ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#2563eb', textAlign: 'center', marginBottom: 20 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 6 },
+  emoji: { fontSize: 28 }, name: { fontSize: 14, fontWeight: '600', color: '#111827' }, exp: { fontSize: 12, color: '#6b7280', marginTop: 2 },
 });

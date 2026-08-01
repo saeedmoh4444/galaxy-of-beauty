@@ -1,37 +1,30 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function SpaPlannerScreen() {
-  const [plans, setPlans] = useState<Record<string, unknown>[]>([]);
+export default function SpaPlannerScreen(): JSX.Element {
+  const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  useEffect(() => { (trpc.spaPlanner.myPlans.query() as any).then((d: any) => { setPlans(d || []); setLoading(false); }).catch(() => setLoading(false)); }, []);
-
-  if (loading) return <ActivityIndicator color="#8b5cf6" style={{ marginTop: 40 }} size="large" />;
-
+  const [refreshing, setRefreshing] = useState(false);
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).spaPlanner.services.query() as any).then((d: any) => { setData(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
+  useEffect(() => { fetch(); }, [fetch]);
+  if (loading) return <SkeletonList count={4} />;
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>🕯️ مخطط يوم سبا</Text>
-      {plans.length === 0 ? <Text style={styles.e}>لا توجد خطط</Text> : plans.map((p: Record<string, unknown>, i: number) => (
-        <View key={i} style={styles.card}>
-          <Text style={styles.name}>{p.name as string}</Text>
-          <Text style={styles.date}>{new Date(p.createdAt as string).toLocaleDateString('ar-SA')}</Text>
-          {(p.items as Record<string, unknown>[]).map((item: Record<string, unknown>, j: number) => (
-            <View key={j} style={styles.item}><Text style={styles.itemEmoji}>{item.emoji as string}</Text><Text style={styles.itemName}>{item.nameAr as string}</Text><Text style={styles.itemTime}>{item.durationMin as number}د</Text></View>
-          ))}
-        </View>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#0891b2']} />}>
+      <Text style={styles.t}>🧖‍♀️ مخطط السبا</Text>
+      {data.map((s: any, i: number) => (
+        <View key={i} style={styles.card}><Text style={styles.emoji}>{s.emoji as string ?? '🧖‍♀️'}</Text><View style={{flex:1}}><Text style={styles.name}>{s.nameAr as string}</Text><Text style={styles.dur}>⏱️ {s.duration as string} · {(s.price as number)?.toLocaleString()} ر.س</Text></View></View>
       ))}
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#faf5ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 20 },
-  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
-  card: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10 },
-  name: { fontSize: 16, fontWeight: '700', color: '#111827', textAlign: 'right' },
-  date: { fontSize: 12, color: '#9ca3af', textAlign: 'right', marginTop: 2, marginBottom: 10 },
-  item: { flexDirection: 'row', alignItems: 'center', paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: '#f3f4f6', gap: 6 },
-  itemEmoji: { fontSize: 18 }, itemName: { flex: 1, fontSize: 12, color: '#374151', textAlign: 'right' }, itemTime: { fontSize: 11, color: '#9ca3af' },
+  c: { flex: 1, backgroundColor: '#ecfeff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#0891b2', textAlign: 'center', marginBottom: 20 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 6 },
+  emoji: { fontSize: 28 }, name: { fontSize: 14, fontWeight: '600', color: '#111827' }, dur: { fontSize: 12, color: '#6b7280', marginTop: 2 },
 });

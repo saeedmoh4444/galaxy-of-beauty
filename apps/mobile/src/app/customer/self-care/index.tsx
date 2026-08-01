@@ -1,33 +1,30 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function SelfCareScreen() {
-  const [data, setData] = useState<any>(null);
+export default function SelfCareScreen(): JSX.Element {
+  const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  useEffect(() => { ((trpc as any).selfCare.todayMood.query() as any).then((d: any) => { setData(d); setLoading(false); }).catch(() => setLoading(false)); }, []);
-
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
-
+  const [refreshing, setRefreshing] = useState(false);
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).selfCare.activities.query() as any).then((d: any) => { setData(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
+  useEffect(() => { fetch(); }, [fetch]);
+  if (loading) return <SkeletonList count={4} />;
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>🌸 العناية الذاتية</Text>
-      {data ? (
-        <View style={styles.card}>
-          <Text style={styles.mood}>مزاج اليوم: {['😞','😕','😐','🙂','😄'][((data as any).mood || 3) - 1]}</Text>
-          <View style={styles.r}><Text>💧 ماء</Text><Text>{(data as any).water || 0} أكواب</Text></View>
-          <View style={styles.r}><Text>😴 نوم</Text><Text>{(data as any).sleep || 0} ساعات</Text></View>
-        </View>
-      ) : <Text style={styles.e}>لا توجد بيانات اليوم</Text>}
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#ec4899']} />}>
+      <Text style={styles.t}>🧘 العناية الذاتية</Text>
+      {data.map((a: any, i: number) => (
+        <View key={i} style={styles.card}><Text style={styles.emoji}>{a.emoji as string ?? '🧘'}</Text><View style={{flex:1}}><Text style={styles.name}>{a.nameAr as string}</Text><Text style={styles.dur}>⏱️ {a.duration as string}</Text></View></View>
+      ))}
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
   c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#be185d', textAlign: 'center', marginBottom: 20 },
-  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
-  card: { backgroundColor: '#fff', borderRadius: 16, padding: 20 },
-  mood: { fontSize: 20, fontWeight: '700', color: '#111827', textAlign: 'center', marginBottom: 16 },
-  r: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' },
+  t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 20 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 6 },
+  emoji: { fontSize: 28 }, name: { fontSize: 14, fontWeight: '600', color: '#111827' }, dur: { fontSize: 12, color: '#6b7280', marginTop: 2 },
 });
