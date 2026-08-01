@@ -2063,6 +2063,19 @@ model CycleEntry {
   @@map("cycle_entries")
 }
 
+// ── Cycle Settings ────────────────────────────────────────
+model CycleSettings {
+  id              Int      @id @default(autoincrement())
+  userId          Int      @unique
+  cycleLength     Int      @default(28)
+  periodLength    Int      @default(5)
+  lastPeriodStart DateTime?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@map("cycle_settings")
+}
+
 // ── Beauty Closet ─────────────────────────────────────────
 model BeautyClosetProduct {
   id           Int      @id @default(autoincrement())
