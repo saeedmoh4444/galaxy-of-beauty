@@ -1,23 +1,23 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function BeautyStoriesScreen(): JSX.Element {
-  const [stories, setStories] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: stories, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).beautyStories.list.query());
 
-  useEffect(() => {
-    ((trpc as any).beautyStories.list.query() as any).then((d: any) => { setStories(d || []); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  if (loading) return <SkeletonList count={4} />;
+  if (error) return <ErrorAlert message="فشل تحميل القصص" onRetry={refetch} />;
 
-  if (loading) return <ActivityIndicator color="#8b5cf6" style={{ marginTop: 40 }} size="large" />;
+  const items = (stories ?? []) as any[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />}>
       <Text style={styles.t}>📖 القصص</Text>
       <Text style={styles.sub}>قصص نجاح وتحولات الجمال</Text>
-      {stories.length === 0 ? <Text style={styles.e}>لا توجد قصص</Text> :
-        stories.map((s: any, i: number) => (
+      {items.length === 0 ? <Text style={styles.e}>لا توجد قصص</Text> :
+        items.map((s: any, i: number) => (
           <View key={s.id ?? i} style={styles.card}>
             <Text style={styles.storyEmoji}>{s.emoji as string ?? '📖'}</Text>
             <View style={{flex:1}}>

@@ -1,23 +1,23 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function BeautyPackagesScreen(): JSX.Element {
-  const [packages, setPackages] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: packages, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).beautyPackages.list.query());
 
-  useEffect(() => {
-    ((trpc as any).beautyPackages.list.query() as any).then((d: any) => { setPackages(d || []); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  if (loading) return <SkeletonList count={4} />;
+  if (error) return <ErrorAlert message="فشل تحميل الباقات" onRetry={refetch} />;
 
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
+  const items = (packages ?? []) as any[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />}>
       <Text style={styles.t}>📦 باقات التجميل</Text>
       <Text style={styles.sub}>باقات مجمعة بأسعار مخفضة</Text>
-      {packages.length === 0 ? <Text style={styles.e}>لا توجد باقات</Text> :
-        packages.map((p: any) => (
+      {items.length === 0 ? <Text style={styles.e}>لا توجد باقات</Text> :
+        items.map((p: any) => (
           <View key={p.id} style={styles.card}>
             <Text style={styles.pkgEmoji}>{p.emoji as string ?? '📦'}</Text>
             <View style={{flex:1}}>
