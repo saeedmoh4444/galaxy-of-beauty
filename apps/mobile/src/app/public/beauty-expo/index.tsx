@@ -1,50 +1,44 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function BeautyExpoScreen() {
-  const insets = useSafeAreaInsets();
-  const [booths, setBooths] = useState<Record<string, unknown>[]>([]);
+export default function BeautyExpoScreen(): JSX.Element {
+  const [booths, setBooths] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.beautyExpo.booths.query() as any).then((d: any) => { setBooths(d || []); setLoading(false); }).catch(() => setLoading(false));
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    (trpc.beautyExpo.booths.query() as any).then((d: any) => { setBooths(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, []);
 
-  if (loading) return <ActivityIndicator color="#8b5cf6" style={{ marginTop: 40 }} size="large" />;
+  useEffect(() => { fetch(); }, [fetch]);
+
+  if (loading) return <SkeletonList count={4} />;
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}><Text style={styles.title}>🎪 معرض التجميل</Text></View>
-      <ScrollView contentContainerStyle={styles.inner}>
-        {booths.map((b: Record<string, unknown>, i: number) => (
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#7c3aed']} />}>
+      <Text style={styles.t}>🎪 معرض الجمال</Text>
+      <Text style={styles.sub}>أجنحة وفعاليات المعرض</Text>
+      {booths.length === 0 ? <Text style={styles.e}>لا توجد أجنحة</Text> :
+        booths.map((b: any, i: number) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.brandEmoji}>{b.emoji as string}</Text>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.brand}>{b.brand as string}</Text>
-              <Text style={styles.desc}>{b.description as string}</Text>
-              <View style={styles.products}>{(b.products as string[]).map((p: string) => <Text key={p} style={styles.product}>{p}</Text>)}</View>
-              <Text style={styles.visitors}>👥 {(b.visitors as number)?.toLocaleString()} زائر</Text>
-            </View>
+            <Text style={styles.emoji}>{b.emoji as string ?? '🎪'}</Text>
+            <View style={{flex:1}}><Text style={styles.name}>{b.nameAr as string}</Text><Text style={styles.desc}>{b.descAr as string}</Text></View>
           </View>
-        ))}
-      </ScrollView>
-    </View>
+        ))
+      }
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#faf5ff' },
-  header: { padding: 16, borderBottomWidth: 1, borderBottomColor: '#ede9fe', backgroundColor: '#fff' },
-  title: { fontSize: 22, fontWeight: '800', color: '#7c3aed', textAlign: 'center' },
-  inner: { padding: 16, paddingBottom: 40 },
-  card: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10, gap: 12, alignItems: 'center' },
-  brandEmoji: { fontSize: 40 },
-  brand: { fontSize: 16, fontWeight: '700', color: '#111827', textAlign: 'right' },
-  desc: { fontSize: 12, color: '#6b7280', textAlign: 'right', marginTop: 4 },
-  products: { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 8, justifyContent: 'flex-end' },
-  product: { fontSize: 10, backgroundColor: '#ede9fe', color: '#7c3aed', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8 },
-  visitors: { fontSize: 11, color: '#9ca3af', textAlign: 'right', marginTop: 8 },
+  c: { flex: 1, backgroundColor: '#faf5ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 4 },
+  sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 20 },
+  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8 },
+  emoji: { fontSize: 32 }, name: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  desc: { fontSize: 12, color: '#6b7280', marginTop: 2 },
 });

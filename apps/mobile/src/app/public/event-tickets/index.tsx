@@ -1,50 +1,47 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function EventTicketsScreen() {
-  const insets = useSafeAreaInsets();
-  const [events, setEvents] = useState<Record<string, unknown>[]>([]);
+export default function EventTicketsScreen(): JSX.Element {
+  const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.eventTickets.available.query() as any).then((d: any) => { setEvents(d || []); setLoading(false); }).catch(() => setLoading(false));
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).eventTickets.list.query()).then((d: any) => { setEvents(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, []);
 
-  if (loading) return <ActivityIndicator color="#f59e0b" style={{ marginTop: 40 }} size="large" />;
+  useEffect(() => { fetch(); }, [fetch]);
+
+  if (loading) return <SkeletonList count={4} />;
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}><Text style={styles.title}>🎟️ تذاكر الفعاليات</Text></View>
-      <ScrollView contentContainerStyle={styles.inner}>
-        {events.length === 0 ? <Text style={styles.empty}>لا توجد فعاليات قادمة</Text> :
-          events.map((e: Record<string, unknown>, i: number) => (
-            <TouchableOpacity key={i} style={styles.card} activeOpacity={0.8}>
-              <Text style={styles.cardEmoji}>{['workshop','masterclass','launch','seasonal'].includes(e.eventType as string) ? ({workshop:'🛠️',masterclass:'👩‍🏫',launch:'🚀',seasonal:'🌸'} as any)[e.eventType as string] : '📅'}</Text>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.cardTitle}>{(e.nameJson as Record<string,string>)?.ar}</Text>
-                <Text style={styles.date}>{new Date(e.startsAt as string).toLocaleDateString('ar-SA', { month: 'long', day: 'numeric' })}</Text>
-              </View>
-              <Text style={styles.price}>{Number(e.price) > 0 ? `${Number(e.price)} ر.س` : 'مجاناً'}</Text>
-            </TouchableOpacity>
-          ))
-        }
-      </ScrollView>
-    </View>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#8b5cf6']} />}>
+      <Text style={styles.t}>🎟️ تذاكر الفعاليات</Text>
+      <Text style={styles.sub}>احجزي تذكرتكِ لأقرب فعالية</Text>
+      {events.length === 0 ? <Text style={styles.e}>لا توجد فعاليات</Text> :
+        events.map((e: any, i: number) => (
+          <View key={i} style={styles.card}>
+            <Text style={styles.eventEmoji}>{e.emoji as string ?? '🎪'}</Text>
+            <View style={{flex:1}}><Text style={styles.eventName}>{e.nameAr as string}</Text><Text style={styles.eventDate}>{new Date(e.date as string).toLocaleDateString('ar-SA')}</Text></View>
+            <TouchableOpacity style={styles.bookBtn}><Text style={styles.bookBtnText}>حجز</Text></TouchableOpacity>
+          </View>
+        ))
+      }
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fffbeb' },
-  header: { padding: 16, borderBottomWidth: 1, borderBottomColor: '#fde68a', backgroundColor: '#fff' },
-  title: { fontSize: 22, fontWeight: '800', color: '#d97706', textAlign: 'center' },
-  inner: { padding: 16, paddingBottom: 40 },
-  empty: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
-  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10, gap: 12 },
-  cardEmoji: { fontSize: 36 },
-  cardTitle: { fontSize: 15, fontWeight: '700', color: '#111827', textAlign: 'right' },
-  date: { fontSize: 12, color: '#6b7280', textAlign: 'right', marginTop: 4 },
-  price: { fontSize: 16, fontWeight: '800', color: '#d97706' },
+  c: { flex: 1, backgroundColor: '#faf5ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 4 },
+  sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 20 },
+  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8 },
+  eventEmoji: { fontSize: 32 }, eventName: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  eventDate: { fontSize: 12, color: '#6b7280', marginTop: 2 },
+  bookBtn: { backgroundColor: '#7c3aed', borderRadius: 10, paddingHorizontal: 16, paddingVertical: 8 },
+  bookBtnText: { color: '#fff', fontSize: 13, fontWeight: '600' },
 });

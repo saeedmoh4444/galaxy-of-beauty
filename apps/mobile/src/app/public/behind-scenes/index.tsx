@@ -1,50 +1,44 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function BehindScenesScreen() {
-  const insets = useSafeAreaInsets();
-  const [videos, setVideos] = useState<Record<string, unknown>[]>([]);
+export default function BehindScenesScreen(): JSX.Element {
+  const [videos, setVideos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.behindScenes.feed.query() as any).then((d: any) => { setVideos(d || []); setLoading(false); }).catch(() => setLoading(false));
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).behindScenes.list.query()).then((d: any) => { setVideos(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, []);
 
-  if (loading) return <ActivityIndicator color="#0284c7" style={{ marginTop: 40 }} size="large" />;
+  useEffect(() => { fetch(); }, [fetch]);
+
+  if (loading) return <SkeletonList count={4} />;
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}><Text style={styles.title}>📹 وراء الكواليس</Text></View>
-      <ScrollView contentContainerStyle={styles.grid}>
-        {videos.map((v: Record<string, unknown>, i: number) => (
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#f59e0b']} />}>
+      <Text style={styles.t}>🎬 كواليس الجمال</Text>
+      <Text style={styles.sub}>لقطات من وراء الكواليس</Text>
+      {videos.length === 0 ? <Text style={styles.e}>لا توجد فيديوهات</Text> :
+        videos.map((v: any, i: number) => (
           <View key={i} style={styles.card}>
-            <View style={styles.thumb}><Text style={styles.thumbEmoji}>{v.emoji as string}</Text></View>
-            <Text style={styles.cardTitle} numberOfLines={2}>{v.title as string}</Text>
-            <View style={styles.meta}>
-              <Text style={styles.metaText}>👩‍🎨 {v.technicianName as string}</Text>
-              <Text style={styles.metaText}>⏱️ {v.duration as string}</Text>
-            </View>
-            <Text style={styles.views}>👁️ {(v.views as number)?.toLocaleString()}</Text>
+            <Text style={styles.vidEmoji}>{v.emoji as string ?? '🎬'}</Text>
+            <View style={{flex:1}}><Text style={styles.vidTitle}>{v.titleAr as string}</Text><Text style={styles.vidDur}>⏱️ {v.duration as string}</Text></View>
           </View>
-        ))}
-      </ScrollView>
-    </View>
+        ))
+      }
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f0f9ff' },
-  header: { padding: 16, borderBottomWidth: 1, borderBottomColor: '#e0f2fe', backgroundColor: '#fff' },
-  title: { fontSize: 22, fontWeight: '800', color: '#0284c7', textAlign: 'center' },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', padding: 12, paddingBottom: 40 },
-  card: { width: '48%', backgroundColor: '#fff', borderRadius: 14, padding: 8, margin: '1%', marginBottom: 10 },
-  thumb: { height: 100, borderRadius: 10, backgroundColor: '#e0f2fe', alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
-  thumbEmoji: { fontSize: 36 },
-  cardTitle: { fontSize: 12, fontWeight: '700', color: '#111827', textAlign: 'right', marginBottom: 4 },
-  meta: { flexDirection: 'row', justifyContent: 'space-between' },
-  metaText: { fontSize: 10, color: '#6b7280' },
-  views: { fontSize: 10, color: '#0284c7', textAlign: 'right', marginTop: 4, fontWeight: '600' },
+  c: { flex: 1, backgroundColor: '#fffbeb' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#d97706', textAlign: 'center', marginBottom: 4 },
+  sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 20 },
+  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8 },
+  vidEmoji: { fontSize: 32 }, vidTitle: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  vidDur: { fontSize: 11, color: '#6b7280', marginTop: 2 },
 });
