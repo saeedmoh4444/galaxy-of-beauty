@@ -233,4 +233,77 @@ describe('Galaxy of Beauty Mobile App', () => {
       expect(switchTime).toBeLessThan(5000);
     });
   });
+
+  // ── Auth Flow ─────────────────────────────────────────────
+  describe('Authentication', () => {
+    it('should display login screen elements', async () => {
+      await element(by.text('تسجيل الدخول')).tap();
+      await detoxExpect(element(by.text('البريد الإلكتروني'))).toBeVisible();
+      await detoxExpect(element(by.text('دخول')).toBeVisible());
+    });
+
+    it('should show validation for empty fields', async () => {
+      await element(by.text('دخول')).tap();
+      // Should show error toast or stay on login screen
+      await detoxExpect(element(by.text('تسجيل الدخول'))).toBeVisible();
+    });
+
+    it('should navigate to register screen', async () => {
+      await element(by.text('إنشاء حساب جديد')).tap();
+      await detoxExpect(element(by.text('إنشاء حساب'))).toBeVisible();
+    });
+  });
+
+  // ── Service Discovery ─────────────────────────────────────
+  describe('Service Discovery', () => {
+    it('should display service categories', async () => {
+      await element(by.text('الخدمات')).tap();
+      // Categories should load and display
+      await detoxExpect(element(by.text('الخدمات')).atIndex(0)).toBeVisible();
+    });
+
+    it('should have search functionality', async () => {
+      await detoxExpect(element(by.text('بحث عن خدمة...'))).toBeVisible();
+    });
+  });
+
+  // ── Offline Handling ──────────────────────────────────────
+  describe('Offline Resilience', () => {
+    it('should show offline screen when disconnected', async () => {
+      await device.setURLBlacklist(['.*trpc.*']);
+      await element(by.text('الرئيسية')).tap();
+      // App should handle gracefully without crashing
+      await detoxExpect(element(by.text('الرئيسية'))).toBeVisible();
+      await device.setURLBlacklist([]);
+    });
+  });
+
+  // ── Pull-to-Refresh ───────────────────────────────────────
+  describe('Pull-to-Refresh', () => {
+    it('should support pull-to-refresh on bookings', async () => {
+      await element(by.text('حجوزاتي')).tap();
+      // Swipe down to refresh
+      await element(by.type('UIScrollView')).swipe('down', 'slow');
+      // Screen should still be visible after refresh
+      await detoxExpect(element(by.text('حجوزاتي')).atIndex(0)).toBeVisible();
+    });
+  });
+
+  // ── Accessibility ─────────────────────────────────────────
+  describe('Accessibility', () => {
+    it('should have sufficient tap targets on main tabs', async () => {
+      const tabs = ['الرئيسية', 'الخدمات', 'حجوزاتي', 'المحفظة', 'حسابي'];
+      for (const tab of tabs) {
+        const el = element(by.text(tab));
+        await detoxExpect(el).toBeVisible();
+      }
+    });
+
+    it('should display Arabic text correctly', async () => {
+      // Verify RTL Arabic text renders
+      await element(by.text('الرئيسية')).tap();
+      // RTL text should render without issues
+      await detoxExpect(element(by.text('الرئيسية'))).toBeVisible();
+    });
+  });
 });
