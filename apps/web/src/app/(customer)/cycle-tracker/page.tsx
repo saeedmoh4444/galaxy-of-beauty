@@ -22,7 +22,7 @@ export default function CycleTrackerPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div><h1 className="text-2xl font-bold">📅 متعقب الدورة</h1><p className="mt-1 text-sm text-gray-500">توصيات جمالية حسب يوم دورتكِ</p></div>
         <Card padding="lg"><div className="flex flex-wrap gap-1 justify-center">{Array.from({length:28},(_,i)=>i+1).map(d=><button key={d} onClick={()=>setSelectedDay(d)} className={`w-8 h-8 rounded-full text-xs ${selectedDay===d?'bg-pink-600 text-white':'bg-gray-100'}`}>{d}</button>)}</div></Card>
-        <Card padding="lg" className="text-center border-2" style={{borderColor:currentPhase.color}}>
+        <Card padding="lg" className={`text-center border-2 border-[${currentPhase.color}]`}>
           <span className="text-5xl">{currentPhase.emoji}</span><h2 className="text-xl font-bold mt-2">{currentPhase.name}</h2><p className="text-sm text-gray-500">الأيام {currentPhase.days}</p>
         </Card>
         <Card padding="lg"><h3 className="font-bold mb-4">💡 توصيات الجمال</h3><div className="space-y-2">{currentPhase.tips.map((tip,i)=><p key={i} className="text-sm text-gray-600">• {tip}</p>)}</div></Card>

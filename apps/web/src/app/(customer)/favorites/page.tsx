@@ -1,0 +1,36 @@
+'use client';
+import { api } from '@/lib/trpc';
+import { Card, CardSkeleton, Button } from '@galaxy/shared';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
+
+export default function FavoritesPage(): JSX.Element {
+  const { data, isLoading } = api.favorites.list.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const removeMut = api.favorites.remove.useMutation();
+  const favorites = data ?? [];
+
+  return (
+    <DashboardLayout role="CUSTOMER">
+      <div className="mx-auto max-w-3xl space-y-6">
+        <div><h1 className="text-2xl font-bold">⭐ المفضلة</h1><p className="mt-1 text-sm text-gray-500">خدماتكِ وفنياتكِ المفضلة</p></div>
+
+        {isLoading ? <div className="space-y-3">{Array.from({length:3},(_,i)=><CardSkeleton key={i}/>)}</div> :
+          favorites.length === 0 ? <Card padding="lg" className="text-center py-8"><p className="text-4xl mb-2">⭐</p><p className="text-gray-500">مافي مفضلات بعد — أضيفي خدماتكِ المفضلة</p></Card> :
+          <div className="space-y-3">{favorites.map((f: Record<string,unknown>) => (
+            <Card key={f.id as number} padding="md">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">💅</span>
+                  <div>
+                    <p className="font-bold">{f.label as string}</p>
+                    <p className="text-xs text-gray-500">خدمة #{f.serviceId as number}{f.technicianId ? ` · فنية #${f.technicianId}` : ''}</p>
+                  </div>
+                </div>
+                <Button size="sm" variant="ghost" onClick={() => removeMut.mutate({ id: f.id as number })} loading={removeMut.isPending} className="text-red-500">❌</Button>
+              </div>
+            </Card>
+          ))}</div>
+        }
+      </div>
+    </DashboardLayout>
+  );
+}
