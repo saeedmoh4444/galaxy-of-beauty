@@ -1,23 +1,29 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function RoutineSchedulerScreen() {
-  const [routines, setRoutines] = useState<Record<string, unknown>[]>([]);
+export default function RoutineSchedulerScreen(): JSX.Element {
+  const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  useEffect(() => { (trpc.routineScheduler.myRoutines.query() as any).then((d: any) => { setRoutines(d || []); setLoading(false); }).catch(() => setLoading(false)); }, []);
+  const [refreshing, setRefreshing] = useState(false);
 
-  if (loading) return <ActivityIndicator color="#3b82f6" style={{ marginTop: 40 }} size="large" />;
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).routineScheduler.list.query() as any).then((d: any) => { setData(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
+
+  useEffect(() => { fetch(); }, [fetch]);
+
+  if (loading) return <SkeletonList count={4} />;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#8b5cf6']} />}>
       <Text style={styles.t}>📅 جدول الروتين</Text>
-      {routines.map((r: Record<string, unknown>, i: number) => (
+      {data.map((r: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.cardTitle}>{r.nameAr as string}</Text>
-          {(r.steps as Record<string, unknown>[]).map((s: Record<string, unknown>, j: number) => (
-            <View key={j} style={styles.step}><Text style={styles.stepEmoji}>{s.emoji as string}</Text><Text style={styles.stepTime}>{s.time as string}</Text><Text style={styles.stepTask}>{s.task as string}</Text></View>
-          ))}
+          <Text style={styles.emoji}>{r.emoji as string ?? '📅'}</Text>
+          <View style={{flex:1}}><Text style={styles.name}>{r.nameAr as string}</Text><Text style={styles.time}>{r.time as string} · {r.frequency as string}</Text></View>
         </View>
       ))}
     </ScrollView>
@@ -25,12 +31,9 @@ export default function RoutineSchedulerScreen() {
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#eff6ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#2563eb', textAlign: 'center', marginBottom: 20 },
-  card: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 12 },
-  cardTitle: { fontSize: 16, fontWeight: '700', color: '#111827', textAlign: 'right', marginBottom: 10 },
-  step: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f3f4f6', gap: 8 },
-  stepEmoji: { fontSize: 22, width: 36, textAlign: 'center' },
-  stepTime: { fontSize: 12, color: '#9ca3af', width: 48 },
-  stepTask: { fontSize: 13, color: '#374151', flex: 1, textAlign: 'right' },
+  c: { flex: 1, backgroundColor: '#faf5ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 20 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 6 },
+  emoji: { fontSize: 28 }, name: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  time: { fontSize: 12, color: '#6b7280', marginTop: 2 },
 });

@@ -1,33 +1,39 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function RecurringScreen() {
-  const [data, setData] = useState<Record<string, unknown>[]>([]);
+export default function RecurringScreen(): JSX.Element {
+  const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  useEffect(() => { (trpc.recurringBookings.list.query() as any).then((d: any) => { setData(d || []); setLoading(false); }).catch(() => setLoading(false)); }, []);
+  const [refreshing, setRefreshing] = useState(false);
 
-  if (loading) return <ActivityIndicator color="#2563eb" style={{ marginTop: 40 }} size="large" />;
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).recurringBookings.list.query() as any).then((d: any) => { setData(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
+
+  useEffect(() => { fetch(); }, [fetch]);
+
+  if (loading) return <SkeletonList count={4} />;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#7c3aed']} />}>
       <Text style={styles.t}>🔄 حجوزات متكررة</Text>
-      {data.length === 0 ? <Text style={styles.e}>لا توجد حجوزات متكررة</Text> :
-        data.map((r: Record<string, unknown>, i: number) => (
-          <View key={i} style={styles.card}>
-            <Text style={styles.name}>{(r as any).name || `حجز #${i+1}`}</Text>
-            <Text style={styles.freq}>{(r as any).frequency || 'شهرياً'}</Text>
-          </View>
-        ))
-      }
+      {data.map((r: any, i: number) => (
+        <View key={i} style={styles.card}>
+          <Text style={styles.emoji}>🔄</Text>
+          <View style={{flex:1}}><Text style={styles.name}>{r.serviceName as string}</Text><Text style={styles.freq}>{r.recurrence as string} · {r.occurrences as number} مرات</Text></View>
+        </View>
+      ))}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#eff6ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#2563eb', textAlign: 'center', marginBottom: 20 },
-  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
-  card: { flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#fff', borderRadius: 12, padding: 12, marginBottom: 6 },
-  name: { fontSize: 14, fontWeight: '600', color: '#111827', textAlign: 'right' }, freq: { fontSize: 12, color: '#6b7280' },
+  c: { flex: 1, backgroundColor: '#faf5ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 20 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 6 },
+  emoji: { fontSize: 28 }, name: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  freq: { fontSize: 12, color: '#6b7280', marginTop: 2 },
 });
