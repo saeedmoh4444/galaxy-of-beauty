@@ -1,196 +1,36 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function CompareScreen() {
-  const { ids: idsParam } = useLocalSearchParams<{ ids: string }>();
-  const ids = (idsParam || '')
-    .split(',')
-    .map(Number)
-    .filter((n) => n > 0);
-
+export default function CompareScreen(): JSX.Element {
+  const [services, setServices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [services, setServices] = useState<Record<string, unknown>[]>([]);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    if (ids.length < 2) {
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
-    (trpc.services.compare.query({ ids }) as unknown as Promise<Record<string, unknown>>)
-      .then((d) => {
-        setServices((d.services as Record<string, unknown>[]) || []);
-        setError(false);
-      })
-      .catch(() => setError(true))
-      .finally(() => setLoading(false));
-  }, [idsParam]);
-
-  if (ids.length < 2) {
-    return (
-      <View style={styles.empty}>
-        <Text style={styles.emptyIcon}>⚖️</Text>
-        <Text style={styles.emptyTitle}>اختر خدمتين أو أكثر</Text>
-        <Text style={styles.emptySub}>يمكنك مقارنة خدمتين إلى ثلاث خدمات</Text>
-      </View>
-    );
-  }
-
-  if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
-  if (error || services.length === 0) {
-    return (
-      <View style={styles.empty}>
-        <Text style={styles.emptyIcon}>❌</Text>
-        <Text style={styles.emptyTitle}>فشل التحميل</Text>
-      </View>
-    );
-  }
-
-  const bestValue = [...services].sort(
-    (a, b) =>
-      (a.basePrice as number) / ((a.durationMin as number) || 1) -
-      (b.basePrice as number) / ((b.durationMin as number) || 1),
-  )[0];
-
+  const [refreshing, setRefreshing] = useState(false);
+  const [selected, setSelected] = useState<number[]>([]);
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).compare.services.query() as any).then((d: any) => { setServices(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
+  useEffect(() => { fetch(); }, [fetch]);
+  const toggle = (id: number) => { if (selected.includes(id)) setSelected(selected.filter(x => x !== id)); else if (selected.length < 3) setSelected([...selected, id]); };
+  const ci = services.filter((s: any) => selected.includes(s.id));
+  if (loading) return <SkeletonList count={5} />;
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.inner}>
-      <Text style={styles.title}>مقارنة الخدمات</Text>
-
-      {/* Service headers */}
-      <View style={styles.headerRow}>
-        <View style={styles.labelCell} />
-        {services.map((s) => (
-          <View key={s.id as number} style={styles.serviceCell}>
-            <View style={styles.serviceIcon}>
-              <Text style={styles.serviceEmoji}>💄</Text>
-            </View>
-            <Text style={styles.serviceName} numberOfLines={2}>
-              {((s.titleJson as Record<string, string>)?.ar) || ''}
-            </Text>
-          </View>
-        ))}
-      </View>
-
-      {/* Price */}
-      <View style={styles.row}>
-        <Text style={styles.label}>السعر</Text>
-        {services.map((s) => (
-          <Text key={s.id as number} style={styles.valueBold}>
-            {Number(s.basePrice).toFixed(0)} ر.س
-          </Text>
-        ))}
-      </View>
-
-      {/* Duration */}
-      <View style={styles.row}>
-        <Text style={styles.label}>المدة</Text>
-        {services.map((s) => (
-          <Text key={s.id as number} style={styles.value}>
-            {s.durationMin as number} دقيقة
-          </Text>
-        ))}
-      </View>
-
-      {/* Category */}
-      <View style={styles.row}>
-        <Text style={styles.label}>القسم</Text>
-        {services.map((s) => (
-          <Text key={s.id as number} style={styles.value}>
-            {s.category as string}
-          </Text>
-        ))}
-      </View>
-
-      {/* Bookings */}
-      <View style={styles.row}>
-        <Text style={styles.label}>الحجوزات</Text>
-        {services.map((s) => (
-          <Text key={s.id as number} style={styles.value}>
-            {s.bookingCount as number}
-          </Text>
-        ))}
-      </View>
-
-      {/* Tags */}
-      <View style={styles.row}>
-        <Text style={styles.label}>الوسوم</Text>
-        {services.map((s) => (
-          <View key={s.id as number} style={styles.tagCell}>
-            {((s.tags as string[]) || []).map((tag, i) => (
-              <View key={i} style={styles.tag}>
-                <Text style={styles.tagText}>{tag}</Text>
-              </View>
-            ))}
-          </View>
-        ))}
-      </View>
-
-      {/* Variants */}
-      <View style={styles.row}>
-        <Text style={styles.label}>المتغيرات</Text>
-        {services.map((s) => (
-          <View key={s.id as number} style={styles.tagCell}>
-            {((s.variants as Array<Record<string, unknown>>) || []).map((v, i) => (
-              <Text key={i} style={styles.variantText}>
-                {((v.nameJson as Record<string, string>)?.ar) || ''}
-                {Number(v.priceDelta) > 0 ? ` (+${Number(v.priceDelta).toFixed(0)})` : ''}
-              </Text>
-            ))}
-          </View>
-        ))}
-      </View>
-
-      {/* Best value */}
-      {bestValue && (
-        <View style={styles.bestValue}>
-          <Text style={styles.bestText}>
-            💡 الأفضل قيمة: {((bestValue.titleJson as Record<string, string>)?.ar) || ''}
-          </Text>
-          <Text style={styles.bestSub}>الأقل سعراً للدقيقة</Text>
-        </View>
-      )}
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#6366f1']} />}>
+      <Text style={styles.t}>⚖️ مقارنة الخدمات</Text>
+      <View style={styles.grid}>{services.map((s: any) => { const isSel = selected.includes(s.id); return (<TouchableOpacity key={s.id} onPress={() => toggle(s.id)} style={[styles.ch, isSel && styles.cha]}><Text style={styles.ce}>{s.emoji as string ?? '💆‍♀️'}</Text><Text style={[styles.cn, isSel && styles.cna]}>{s.nameAr as string}</Text><Text style={styles.cp}>{(s.price as number)?.toLocaleString()} ر.س</Text></TouchableOpacity>);})}</View>
+      {ci.length > 0 && <View style={styles.tbl}><Text style={styles.ttl}>📊 المقارنة</Text>{ci.map((s: any) => (<View key={s.id} style={styles.tc}><Text style={styles.tcn}>{s.nameAr as string}</Text><View style={styles.tr}><Text style={styles.tl}>💰</Text><Text style={styles.tv}>{(s.price as number)?.toLocaleString()} ر.س</Text></View><View style={styles.tr}><Text style={styles.tl}>⏱️</Text><Text style={styles.tv}>{s.duration as string}</Text></View></View>))}</View>}
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  inner: { padding: 16, paddingBottom: 40 },
-  title: { fontSize: 22, fontWeight: '800', color: '#111827', textAlign: 'right', marginBottom: 20 },
-  headerRow: { flexDirection: 'row', marginBottom: 16 },
-  labelCell: { width: 80 },
-  serviceCell: { flex: 1, alignItems: 'center', paddingHorizontal: 4 },
-  serviceIcon: {
-    width: 52, height: 52, borderRadius: 14, backgroundColor: '#f5f3ff',
-    justifyContent: 'center', alignItems: 'center', marginBottom: 6,
-  },
-  serviceEmoji: { fontSize: 22 },
-  serviceName: { fontSize: 12, fontWeight: '700', color: '#111827', textAlign: 'center' },
-  row: {
-    flexDirection: 'row', alignItems: 'flex-start',
-    paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#f3f4f6',
-  },
-  label: { width: 80, fontSize: 13, fontWeight: '600', color: '#6b7280', textAlign: 'right', paddingRight: 8 },
-  value: { flex: 1, fontSize: 13, color: '#374151', textAlign: 'center' },
-  valueBold: { flex: 1, fontSize: 15, fontWeight: '700', color: '#7c3aed', textAlign: 'center' },
-  tagCell: { flex: 1, alignItems: 'center' },
-  tag: {
-    backgroundColor: '#f5f3ff', paddingHorizontal: 8, paddingVertical: 2,
-    borderRadius: 10, marginBottom: 3,
-  },
-  tagText: { fontSize: 11, color: '#7c3aed' },
-  variantText: { fontSize: 11, color: '#9ca3af', marginBottom: 2, textAlign: 'center' },
-  bestValue: {
-    marginTop: 20, backgroundColor: '#faf5ff', borderRadius: 14,
-    padding: 16, alignItems: 'center', borderWidth: 1, borderColor: '#e9d5ff',
-  },
-  bestText: { fontSize: 14, fontWeight: '700', color: '#7c3aed' },
-  bestSub: { fontSize: 12, color: '#a78bfa', marginTop: 4 },
-  empty: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 40 },
-  emptyIcon: { fontSize: 48, marginBottom: 12 },
-  emptyTitle: { fontSize: 16, fontWeight: '700', color: '#6b7280' },
-  emptySub: { fontSize: 13, color: '#9ca3af', marginTop: 4 },
+  c: { flex: 1, backgroundColor: '#eef2ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#4f46e5', textAlign: 'center', marginBottom: 20 },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 20 },
+  ch: { width: '30%', backgroundColor: '#fff', borderRadius: 12, padding: 10, alignItems: 'center', borderWidth: 2, borderColor: '#e5e7eb' },
+  cha: { borderColor: '#4f46e5', backgroundColor: '#eef2ff' }, ce: { fontSize: 24 }, cn: { fontSize: 10, fontWeight: '600', color: '#6b7280', marginTop: 4, textAlign: 'center' }, cna: { color: '#4f46e5' }, cp: { fontSize: 10, color: '#9ca3af', marginTop: 2 },
+  tbl: { gap: 10 }, ttl: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 },
+  tc: { backgroundColor: '#fff', borderRadius: 14, padding: 14 }, tcn: { fontSize: 15, fontWeight: '700', color: '#4f46e5', marginBottom: 8 },
+  tr: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 4 }, tl: { fontSize: 13, color: '#6b7280' }, tv: { fontSize: 13, fontWeight: '600', color: '#111827' },
 });

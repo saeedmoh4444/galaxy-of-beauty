@@ -1,55 +1,32 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function TravelKitScreen() {
-  const [dests, setDests] = useState<Record<string, unknown>[]>([]);
+export default function TravelKitScreen(): JSX.Element {
+  const [dests, setDests] = useState<any[]>([]);
   const [kit, setKit] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => { (trpc.travelKit.destinations.query() as any).then((d: any) => { setDests(d || []); setLoading(false); }).catch(() => setLoading(false)); }, []);
-
-  const build = (dest: string) => { setLoading(true); ((trpc as any).travelKit.build.query({ destination: dest, days: 7 }) as any).then((d: any) => { setKit(d); setLoading(false); }).catch(() => setLoading(false)); };
-
-  if (loading) return <ActivityIndicator color="#0891b2" style={{ marginTop: 40 }} size="large" />;
-
-  if (kit) return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <TouchableOpacity onPress={() => setKit(null)}><Text style={styles.back}>← العودة</Text></TouchableOpacity>
-      <Text style={styles.t}>🧳 حقيبة {kit.days} أيام</Text>
-      <Text style={styles.tip}>💡 {kit.tip}</Text>
-      {(kit.items as Record<string, unknown>[]).map((item: Record<string, unknown>, i: number) => (
-        <View key={i} style={[styles.item, (item.essential as boolean) && styles.essential]}>
-          <Text style={styles.itemEmoji}>{item.emoji as string}</Text><View style={{flex:1}}><Text style={styles.itemName}>{item.nameAr as string}</Text><Text style={styles.itemSize}>{item.size as string}</Text></View>
-          {(item.essential as boolean) ? <Text style={styles.essentialBadge}>أساسي</Text> : null}
-        </View>
-      ))}
-    </ScrollView>
-  );
-
+  const [refreshing, setRefreshing] = useState(false);
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).travelKit.destinations.query() as any).then((d: any) => { setDests(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
+  useEffect(() => { fetch(); }, [fetch]);
+  if (loading) return <SkeletonList count={4} />;
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#0891b2']} />}>
       <Text style={styles.t}>🧳 حقيبة السفر</Text>
-      {dests.map((d: Record<string, unknown>) => (
-        <TouchableOpacity key={d.key as string} onPress={() => build(d.key as string)} style={styles.card}>
-          <Text style={styles.cardEmoji}>{d.nameAr as string}</Text><Text style={styles.cardName}>{d.tips as string}</Text>
-        </TouchableOpacity>
-      ))}
+      {dests.map((d: any, i: number) => (<TouchableOpacity key={i} style={styles.card} onPress={() => setKit(d)}><Text style={styles.de}>{d.emoji as string ?? '🌍'}</Text><View style={{flex:1}}><Text style={styles.dn}>{d.nameAr as string}</Text><Text style={styles.dd}>{d.descAr as string}</Text></View></TouchableOpacity>))}
+      {kit && <View style={styles.kc}><Text style={styles.kt}>🧳 محتويات الحقيبة - {kit.nameAr as string}</Text>{(kit.items as any[])?.map((item: any, i: number) => (<View key={i} style={styles.ki}><Text style={styles.kie}>{item.emoji as string}</Text><Text style={styles.kit}>{item.nameAr as string}</Text></View>))}</View>}
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
   c: { flex: 1, backgroundColor: '#ecfeff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  back: { fontSize: 14, color: '#0891b2', marginBottom: 12 },
-  t: { fontSize: 24, fontWeight: '800', color: '#0891b2', textAlign: 'center', marginBottom: 12 },
-  tip: { fontSize: 13, color: '#6b7280', textAlign: 'center', marginBottom: 16 },
-  card: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10 },
-  cardEmoji: { fontSize: 18, fontWeight: '700', color: '#111827', textAlign: 'right' },
-  cardName: { fontSize: 13, color: '#6b7280', textAlign: 'right', marginTop: 4 },
-  item: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 12, padding: 10, marginBottom: 6, gap: 10 },
-  essential: { borderWidth: 1, borderColor: '#a7f3d0', backgroundColor: '#f0fdf4' },
-  itemEmoji: { fontSize: 28 }, itemName: { fontSize: 13, fontWeight: '600', color: '#111827', textAlign: 'right' },
-  itemSize: { fontSize: 11, color: '#9ca3af', textAlign: 'right', marginTop: 2 },
-  essentialBadge: { fontSize: 10, fontWeight: '700', color: '#059669', backgroundColor: '#d1fae5', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8 },
+  t: { fontSize: 24, fontWeight: '800', color: '#0891b2', textAlign: 'center', marginBottom: 20 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8 },
+  de: { fontSize: 36 }, dn: { fontSize: 15, fontWeight: '700', color: '#111827' }, dd: { fontSize: 12, color: '#6b7280', marginTop: 2 },
+  kc: { backgroundColor: '#fff', borderRadius: 16, padding: 16, marginTop: 12 }, kt: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 10 },
+  ki: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6 }, kie: { fontSize: 24 }, kit: { fontSize: 13, color: '#374151' },
 });
