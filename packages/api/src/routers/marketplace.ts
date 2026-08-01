@@ -105,6 +105,28 @@ export const marketplaceRouter = router({
       });
     }),
 
+  // ── Product Reviews ────────────────────────────────────
+  addReview: customerProcedure
+    .input(z.object({ productId: z.number().int().positive(), rating: z.number().min(1).max(5), comment: z.string().max(500).optional() }))
+    .mutation(async ({ ctx, input }) => {
+      return prisma.productReview.upsert({
+        where: { productId_userId: { productId: input.productId, userId: ctx.user.id } },
+        update: { rating: input.rating, comment: input.comment },
+        create: { productId: input.productId, userId: ctx.user.id, rating: input.rating, comment: input.comment },
+      });
+    }),
+
+  productReviews: publicProcedure
+    .input(z.object({ productId: z.number().int().positive(), page: z.number().default(1), limit: z.number().default(20) }))
+    .query(async ({ input }) => {
+      const skip = (input.page - 1) * input.limit;
+      const [items, total] = await Promise.all([
+        prisma.productReview.findMany({ where: { productId: input.productId }, include: { user: { select: { name: true, avatarUrl: true } } }, orderBy: { createdAt: 'desc' }, skip, take: input.limit }),
+        prisma.productReview.count({ where: { productId: input.productId } }),
+      ]);
+      return { items, total };
+    }),
+
   // ── Admin ─────────────────────────────────────────────
   adminProducts: adminProcedure
     .input(z.object({ page: z.number().default(1), limit: z.number().default(50) }))
