@@ -1,25 +1,22 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function BeautyCoursesScreen() {
-  const insets = useSafeAreaInsets();
-  const [courses, setCourses] = useState<Record<string, unknown>[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function BeautyCoursesScreen(): JSX.Element {
+  const { data: courses, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.beautyCourses.list.query() as any);
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.beautyCourses.list.query() as any).then((d: any) => { setCourses(d || []); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  if (loading) return <View style={styles.container}><View style={styles.header}><Text style={styles.title}>🎓 دورات التجميل</Text></View><SkeletonList count={4} /></View>;
+  if (error) return <ErrorAlert message="فشل تحميل الدورات" onRetry={refetch} />;
 
-  if (loading) return <ActivityIndicator color="#8b5cf6" style={{ marginTop: 40 }} size="large" />;
+  const items = (courses ?? []) as Record<string, unknown>[];
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
+    <View style={styles.container}>
       <View style={styles.header}><Text style={styles.title}>🎓 دورات التجميل</Text></View>
-      <ScrollView contentContainerStyle={styles.inner}>
-        {courses.map((c: Record<string, unknown>, i: number) => (
+      <ScrollView contentContainerStyle={styles.inner} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />}>
+        {items.map((c: Record<string, unknown>, i: number) => (
           <TouchableOpacity key={i} style={styles.card} activeOpacity={0.8}>
             <Text style={styles.cardEmoji}>{c.emoji as string}</Text>
             <View style={{ flex: 1 }}>
