@@ -9,8 +9,9 @@ export default function MarketplaceScreen(): JSX.Element {
   const [search, setSearch] = useState('');
   const { data, loading, error, refetch, refreshing, refresh } = useQuery(() => (trpc as any).marketplace.products.query({ search: search||undefined, page:1, limit:24 }));
   const { data: cart } = useQuery(() => (trpc as any).marketplace.cart.query());
-  const products = ((data as any)?.items ?? []) as any[];
-  const cartCount = (cart ?? []).length;
+  const productItems = (data as any)?.items;
+  const products: any[] = Array.isArray(productItems) ? productItems : [];
+  const cartCount = ((cart ?? []) as any[]).length;
 
   const handleAddToCart = async (pid: number) => { try { await (trpc as any).marketplace.addToCart.mutate({ productId: pid }); } catch {} };
 

@@ -8,8 +8,9 @@ const TYPES: Record<string,string> = { workshop:'🎓 ورشة', masterclass:'�
 
 export default function BeautyEventsScreen(): JSX.Element {
   const { data: events, loading, error, refetch, refreshing, refresh } = useQuery(() => (trpc as any).beautyEvents.upcoming.query());
-  const { data: myRegs } = useQuery(() => (trpc as any).beautyEvents.myRegistrations.query());
-  const registeredIds = new Set((myRegs ?? []).map((r:any) => r.eventId));
+  const { data: myRegsData } = useQuery(() => (trpc as any).beautyEvents.myRegistrations.query());
+  const myRegs = (myRegsData ?? []) as any[];
+  const registeredIds = new Set(((myRegs ?? []) as any[]).map((r:any) => r.eventId));
 
   const handleRegister = async (id: number) => { try { await (trpc as any).beautyEvents.register.mutate({ eventId: id }); refetch(); } catch {} };
   const handleCancel = async (id: number) => { try { await (trpc as any).beautyEvents.cancelRegistration.mutate({ eventId: id }); refetch(); } catch {} };
@@ -17,16 +18,16 @@ export default function BeautyEventsScreen(): JSX.Element {
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الفعاليات" onRetry={refetch} />;
 
-  const items = (events ?? []) as any[];
+  const items: any[] = Array.isArray(events) ? events : [];
 
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />}>
       <Text style={s.t}>🎪 فعاليات وورش</Text>
       <Text style={s.sub}>سجلي في ورش العمل والفعاليات الحصرية</Text>
 
-      {(myRegs as any[])?.length > 0 && <View style={{backgroundColor:'#ecfdf5',borderRadius:12,padding:12,marginBottom:16}}>
-        <Text style={{fontWeight:'700',color:'#059669',marginBottom:4}}>✅ مسجلة في {myRegs!.length} فعاليات</Text>
-        <View style={{flexDirection:'row',flexWrap:'wrap',gap:4}}>{myRegs!.map((r:any)=>(<View key={r.id} style={{backgroundColor:'#d1fae5',borderRadius:12,paddingHorizontal:10,paddingVertical:4}}><Text style={{fontSize:11,color:'#047857'}}>{r.event?.nameJson?.ar}</Text></View>))}</View>
+      {myRegs.length > 0 && <View style={{backgroundColor:'#ecfdf5',borderRadius:12,padding:12,marginBottom:16}}>
+        <Text style={{fontWeight:'700',color:'#059669',marginBottom:4}}>✅ مسجلة في {myRegs.length} فعاليات</Text>
+        <View style={{flexDirection:'row',flexWrap:'wrap',gap:4}}>{myRegs.map((r:any)=>(<View key={r.id} style={{backgroundColor:'#d1fae5',borderRadius:12,paddingHorizontal:10,paddingVertical:4}}><Text style={{fontSize:11,color:'#047857'}}>{r.event?.nameJson?.ar}</Text></View>))}</View>
       </View>}
 
       {items.length===0 && <View style={{alignItems:'center',padding:30}}><Text style={{fontSize:40}}>🎪</Text><Text style={{color:'#6b7280',marginTop:8}}>لا توجد فعاليات قادمة</Text></View>}

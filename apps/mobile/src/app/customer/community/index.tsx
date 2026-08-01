@@ -14,8 +14,10 @@ export default function CommunityScreen(): JSX.Element {
   const [commentId, setCommentId] = useState<number|null>(null);
   const [commentText, setCommentText] = useState('');
 
-  const likedIds = new Set((myLikes ?? []).map((l:any) => l.postId));
-  const posts = ((feedData as any)?.items ?? []) as any[];
+  const myLikesArr = (myLikes ?? []) as any[];
+  const likedIds = new Set(myLikesArr.map((l:any) => l.postId));
+  const feedItems = (feedData as any)?.items;
+  const posts: any[] = Array.isArray(feedItems) ? feedItems : [];
 
   const handleLike = async (postId: number) => { try { await (trpc as any).community.toggleLike.mutate({ postId }); refetch(); } catch {} };
   const handleCreate = async () => { if(!content)return; try{await(trpc as any).community.create.mutate({content});setContent('');setShowCreate(false);refetch();}catch{} };
@@ -37,9 +39,9 @@ export default function CommunityScreen(): JSX.Element {
         <TouchableOpacity onPress={handleCreate} style={s.btn}><Text style={s.btnText}>📤 نشر</Text></TouchableOpacity>
       </View>}
 
-      {(trending as any[])?.length > 0 && <View style={{marginBottom:16}}>
+      {Array.isArray(trending) && (trending as any[]).length > 0 && <View style={{marginBottom:16}}>
         <Text style={{fontWeight:'700',fontSize:14,color:'#111827',marginBottom:8}}>🔥 الأكثر تفاعلاً</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>{trending!.map((p:any,i:number)=>(
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>{(trending as any[]).map((p:any,i:number)=>(
           <View key={p.id??i} style={{backgroundColor:'#fffbeb',borderRadius:14,padding:14,marginRight:8,alignItems:'center',minWidth:90}}><Text style={{fontSize:24}}>💖</Text><Text style={{fontSize:11,fontWeight:'600',marginTop:4}}>{p.user?.name}</Text><Text style={{fontSize:11,color:'#d97706'}}>❤️{p.likes}</Text></View>
         ))}</ScrollView>
       </View>}
