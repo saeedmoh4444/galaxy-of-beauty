@@ -1699,6 +1699,16 @@ model CommunityComment {
   @@map("community_comments")
 }
 
+model EventRegistration {
+  id        Int      @id @default(autoincrement())
+  eventId   Int
+  userId    Int
+  status    String   @default("REGISTERED")
+  createdAt DateTime @default(now())
+  @@unique([eventId, userId])
+  @@map("event_registrations")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================
