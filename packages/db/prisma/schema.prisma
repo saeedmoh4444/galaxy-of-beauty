@@ -2188,3 +2188,30 @@ model SalonMembership {
     @@unique([userId, courseId])
     @@map("course_enrollments")
   }
+
+  // ── Corporate Wellness ────────────────────────────────────
+  model CorporatePlan {
+    id        Int      @id @default(autoincrement())
+    key       String   @unique
+    nameJson  Json
+    price     Float
+    employees Int
+    services  Json
+    emoji     String   @default("🌱")
+    isActive  Boolean  @default(true)
+    sortOrder Int      @default(0)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    @@map("corporate_plans")
+  }
+
+  model CorporateEnquiry {
+    id          Int      @id @default(autoincrement())
+    userId      Int?
+    companyName String
+    contactName String
+    email       String
+    planId      String
+    createdAt   DateTime @default(now())
+    @@map("corporate_enquiries")
+  }

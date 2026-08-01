@@ -1,22 +1,44 @@
 import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
-const PLANS = [
-  { id: 'starter', nameAr: 'الباقة الأساسية', nameEn: 'Starter', price: 5000, employees: 10, services: ['مانيكير', 'مساج سريع', 'استشارة عناية'], emoji: '🌱' },
-  { id: 'growth', nameAr: 'باقة النمو', nameEn: 'Growth', price: 12000, employees: 50, services: ['مانيكير', 'باديكير', 'مساج', 'تنظيف بشرة', 'استشارة'], emoji: '🌿' },
-  { id: 'enterprise', nameAr: 'الباقة الشاملة', nameEn: 'Enterprise', price: 25000, employees: 200, services: ['كل الخدمات', 'يوم سبا', 'ورش عناية', 'مدير حساب'], emoji: '🌳' },
-];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = prisma as any;
 
-const ENQUIRIES: Array<{ id: number; companyName: string; contactName: string; email: string; planId: string; createdAt: string }> = [];
+function formatPlan(p: any) {
+  return {
+    id: p.key,
+    nameAr: (p.nameJson as Record<string, string>)?.ar ?? '',
+    nameEn: (p.nameJson as Record<string, string>)?.en ?? '',
+    price: p.price,
+    employees: p.employees,
+    services: p.services as string[],
+    emoji: p.emoji,
+  };
+}
 
 export const corporateWellnessRouter = router({
-  plans: publicProcedure.query(() => PLANS),
+  plans: publicProcedure.query(async () => {
+    const plans = await db.corporatePlan.findMany({ where: { isActive: true }, orderBy: { sortOrder: 'asc' } });
+    return plans.map(formatPlan);
+  }),
+
   enquire: publicProcedure
     .input(z.object({ companyName: z.string().min(1), contactName: z.string().min(1), email: z.string().email(), planId: z.string() }))
-    .mutation(async ({ input }) => {
-      const enq = { id: ENQUIRIES.length + 1, ...input, createdAt: new Date().toISOString() };
-      ENQUIRIES.push(enq);
+    .mutation(async ({ ctx, input }) => {
+      await db.corporateEnquiry.create({
+        data: {
+          userId: ctx.user?.id ?? null,
+          companyName: input.companyName,
+          contactName: input.contactName,
+          email: input.email,
+          planId: input.planId,
+        },
+      });
       return { success: true, message: 'تم استلام طلبكِ وسنتواصل معكِ خلال ٢٤ ساعة' };
     }),
-  myEnquiries: customerProcedure.query(async () => ENQUIRIES),
+
+  myEnquiries: customerProcedure.query(async ({ ctx }) => {
+    return db.corporateEnquiry.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } });
+  }),
 });
