@@ -2241,3 +2241,20 @@ model SalonMembership {
     createdAt DateTime @default(now())
     @@map("gift_quiz_recommendations")
   }
+
+  // ── Group Buy ─────────────────────────────────────────────
+  model GroupBuyDeal {
+    id             Int      @id @default(autoincrement())
+    service        String
+    originalPrice  Float
+    groupPrice     Float
+    minBuyers      Int      @default(3)
+    currentBuyers  Int      @default(0)
+    endsIn         String   @default("٣ أيام")
+    emoji          String   @default("💄")
+    savings        Float
+    isActive       Boolean  @default(true)
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+    @@map("group_buy_deals")
+  }
