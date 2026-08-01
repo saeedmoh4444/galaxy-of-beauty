@@ -1,6 +1,8 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 const STEPS = [
   { key: 'consultation', emoji: '💬', title: 'استشارة', desc: 'تحديد احتياجات العروس' },
@@ -9,27 +11,25 @@ const STEPS = [
 ];
 
 export default function BridalConciergeScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).bridalConcierge.dashboard.query());
 
-  useEffect(() => {
-    ((trpc as any).bridalConcierge.dashboard.query() as any).then((d: any) => { setData(d); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  if (loading) return <SkeletonList count={4} />;
+  if (error) return <ErrorAlert message="فشل تحميل كونسيرج العروس" onRetry={refetch} />;
 
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
+  const d = (data ?? {}) as any;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />}>
       <Text style={styles.t}>👰 كونسيرج العروس</Text>
       <Text style={styles.sub}>خططي ليوم زفافك المثالي</Text>
       <View style={styles.progressCard}>
         <Text style={styles.progressEmoji}>💍</Text>
         <Text style={styles.progressTitle}>تقدم التحضيرات</Text>
-        <View style={styles.progressBar}><View style={[styles.progressFill, {width: `${data?.completionPercent as number ?? 0}%`}]} /></View>
-        <Text style={styles.progressPct}>{data?.completionPercent as number ?? 0}%</Text>
+        <View style={styles.progressBar}><View style={[styles.progressFill, {width: `${d.completionPercent as number ?? 0}%`}]} /></View>
+        <Text style={styles.progressPct}>{d.completionPercent as number ?? 0}%</Text>
       </View>
       {STEPS.map((step) => {
-        const stepData = data?.steps?.[step.key] as any;
+        const stepData = d.steps?.[step.key] as any;
         return (
           <View key={step.key} style={[styles.step, stepData?.completed && styles.stepDone]}>
             <Text style={styles.stepEmoji}>{step.emoji}</Text>
@@ -42,10 +42,10 @@ export default function BridalConciergeScreen(): JSX.Element {
           </View>
         );
       })}
-      {data?.weddingDate && (
+      {d.weddingDate && (
         <View style={styles.countdown}>
           <Text style={styles.countdownEmoji}>⏳</Text>
-          <Text style={styles.countdownText}>الأيام المتبقية: {data.daysUntil as number}</Text>
+          <Text style={styles.countdownText}>الأيام المتبقية: {d.daysUntil as number}</Text>
         </View>
       )}
     </ScrollView>

@@ -1,56 +1,42 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function TrendingScreen(): JSX.Element {
-  const [trending, setTrending] = useState<any[]>([]);
-  const [spotlight, setSpotlight] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: trending, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).social.trending.query());
+  const { data: spotlight } = useQuery(() => (trpc as any).social.spotlight.query());
 
-  useEffect(() => {
-    Promise.all([
-      ((trpc as any).social.trending.query() as any),
-      ((trpc as any).social.spotlight.query() as any),
-    ]).then(([t, s]: any[]) => { setTrending(t || []); setSpotlight(s || []); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  if (loading) return <SkeletonList count={5} />;
+  if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;
 
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
+  const trendingItems = (trending ?? []) as any[];
+  const spotlightItems = (spotlight ?? []) as any[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />}>
       <Text style={styles.t}>🔥 الأكثر رواجاً</Text>
       <Text style={styles.sub}>الخدمات والفنيات الأكثر طلباً هذا الشهر</Text>
-
-      {trending.length > 0 && (
-        <>
-          <Text style={styles.sectionTitle}>💆‍♀️ الخدمات الرائجة</Text>
-          {trending.map((s: any, i: number) => (
-            <View key={s.id ?? i} style={styles.card}>
-              <View style={styles.rank}><Text style={styles.rankText}>#{i + 1}</Text></View>
-              <View style={{flex:1}}>
-                <Text style={styles.svcName}>{(s.titleJson as any)?.ar as string ?? s.name as string}</Text>
-                <Text style={styles.svcBookings}>{s.bookingCount as number} حجز</Text>
-              </View>
-              <Text style={styles.svcPrice}>{(s.basePrice as number)?.toLocaleString()} ر.س</Text>
-            </View>
-          ))}
-        </>
-      )}
-
-      {spotlight.length > 0 && (
-        <>
-          <Text style={styles.sectionTitle}>⭐ فنيات مميزات</Text>
-          {spotlight.map((t: any, i: number) => (
-            <View key={t.id ?? i} style={styles.card}>
-              <Text style={styles.techEmoji}>{i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '👩‍🎨'}</Text>
-              <View style={{flex:1}}>
-                <Text style={styles.techName}>{t.name as string}</Text>
-                <Text style={styles.techMeta}>📍 {t.city as string} · ⭐ {t.ratingAvg as number}</Text>
-              </View>
-            </View>
-          ))}
-        </>
-      )}
+      {trendingItems.length > 0 && <>
+        <Text style={styles.sectionTitle}>💆‍♀️ الخدمات الرائجة</Text>
+        {trendingItems.map((s: any, i: number) => (
+          <View key={s.id ?? i} style={styles.card}>
+            <View style={styles.rank}><Text style={styles.rankText}>#{i + 1}</Text></View>
+            <View style={{flex:1}}><Text style={styles.svcName}>{(s.titleJson as any)?.ar as string ?? s.name as string}</Text><Text style={styles.svcBookings}>{s.bookingCount as number} حجز</Text></View>
+            <Text style={styles.svcPrice}>{(s.basePrice as number)?.toLocaleString()} ر.س</Text>
+          </View>
+        ))}
+      </>}
+      {spotlightItems.length > 0 && <>
+        <Text style={styles.sectionTitle}>⭐ فنيات مميزات</Text>
+        {spotlightItems.map((t: any, i: number) => (
+          <View key={t.id ?? i} style={styles.card}>
+            <Text style={styles.techEmoji}>{i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '👩‍🎨'}</Text>
+            <View style={{flex:1}}><Text style={styles.techName}>{t.name as string}</Text><Text style={styles.techMeta}>📍 {t.city as string} · ⭐ {t.ratingAvg as number}</Text></View>
+          </View>
+        ))}
+      </>}
     </ScrollView>
   );
 }
