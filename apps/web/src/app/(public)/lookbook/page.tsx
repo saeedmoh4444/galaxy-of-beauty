@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Card } from '@galaxy/shared';
+import { api } from '@/lib/trpc';
+import { Card, CardSkeleton } from '@galaxy/shared';
 
 const SEASONS = [
   { id: 'summer', nameAr: 'صيف ٢٠٢٦', nameEn: 'Summer 2026', emoji: '☀️', color: 'from-amber-400 to-orange-500' },
@@ -74,6 +75,29 @@ export default function LookbookPage(): JSX.Element {
           </Link>
         ))}
       </div>
+
+      <CommunityLooks />
+    </div>
+  );
+}
+
+function CommunityLooks(): JSX.Element {
+  const { data, isLoading } = api.lookOfTheDay.feed.useQuery({ page: 1, limit: 6 }) as { data: Record<string,unknown> | undefined; isLoading: boolean };
+  const looks = (data?.items as Array<Record<string,unknown>>) ?? [];
+  if (looks.length === 0 && !isLoading) return <></>;
+  return (
+    <div className="mt-16">
+      <div className="text-center mb-8"><h2 className="text-2xl font-bold">💖 إطلالات المجتمع</h2><p className="mt-2 text-gray-500">أحدث الإطلالات من مجتمع جالكسي بيوتي</p></div>
+      {isLoading ? <div className="grid gap-6 sm:grid-cols-3">{Array.from({length:3},(_,i)=><CardSkeleton key={i}/>)}</div> :
+        <div className="grid gap-6 sm:grid-cols-3">{looks.map((l: Record<string,unknown>) => (
+          <Card key={l.id as number} padding="lg" className="text-center">
+            <span className="text-5xl">{l.category === 'makeup' ? '💄' : l.category === 'hair' ? '💇‍♀️' : l.category === 'nails' ? '💅' : '✨'}</span>
+            <h3 className="font-bold mt-3">{l.title as string}</h3>
+            <p className="text-xs text-gray-500 mt-1">{l.userName as string} · 👩‍🎨 {l.technicianName as string}</p>
+            <p className="text-xs text-gray-400 mt-1">❤️ {l.votes as number} · {new Date(l.date as string).toLocaleDateString('ar-SA')}</p>
+          </Card>
+        ))}</div>
+      }
     </div>
   );
 }
