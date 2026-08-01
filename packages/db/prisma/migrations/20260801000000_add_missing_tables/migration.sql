@@ -891,14 +891,3 @@ ALTER TABLE "technician_badge_assignments" ADD CONSTRAINT "technician_badge_assi
 
 -- AddForeignKey
 ALTER TABLE "mood_board_pins" ADD CONSTRAINT "mood_board_pins_boardId_fkey" FOREIGN KEY ("boardId") REFERENCES "mood_boards"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
-┌─────────────────────────────────────────────────────────┐
-│  Update available 5.22.0 -> 7.9.1                       │
-│                                                         │
-│  This is a major update - please follow the guide at    │
-│  https://pris.ly/d/major-version-upgrade                │
-│                                                         │
-│  Run the following to update                            │
-│    npm i --save-dev prisma@latest                       │
-│    npm i @prisma/client@latest                          │
-└─────────────────────────────────────────────────────────┘

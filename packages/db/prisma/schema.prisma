@@ -2156,3 +2156,35 @@ model SalonMembership {
   status    String   @default("ACTIVE")
   @@map("salon_memberships")
 }
+
+  // ── Beauty Courses ────────────────────────────────────────
+  model BeautyCourse {
+    id        Int      @id @default(autoincrement())
+    titleJson Json
+    descJson  Json?
+    instructor String
+    lessons    Int     @default(1)
+    duration   String  @default("1 ساعة")
+    level      String  @default("beginner")
+    category   String  @default("skincare")
+    emoji      String  @default("📚")
+    rating     Float   @default(0)
+    isActive   Boolean @default(true)
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+    enrollments CourseEnrollment[]
+    @@map("beauty_courses")
+  }
+
+  model CourseEnrollment {
+    id        Int      @id @default(autoincrement())
+    courseId  Int
+    userId    Int
+    status    String   @default("ENROLLED")
+    progress  Int      @default(0)
+    enrolledAt DateTime @default(now())
+    completedAt DateTime?
+    course    BeautyCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
+    @@unique([userId, courseId])
+    @@map("course_enrollments")
+  }

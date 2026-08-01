@@ -1,22 +1,78 @@
 import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
-const COURSES = [
-  { id: 1, titleAr: 'أساسيات المكياج الاحترافي', titleEn: 'Professional Makeup Basics', descAr: 'تعلمي أساسيات المكياج من الصفر', descEn: 'Learn makeup fundamentals from scratch', instructor: 'نورة العمري', lessons: 8, duration: '٤ ساعات', level: 'beginner', category: 'makeup', emoji: '💄', enrolledCount: 1250, rating: 4.8 },
-  { id: 2, titleAr: 'فن العناية بالبشرة', titleEn: 'Art of Skincare', descAr: 'روتين متكامل للعناية بكل أنواع البشرة', descEn: 'Complete skincare routine for all skin types', instructor: 'د. ليلى القحطاني', lessons: 6, duration: '٣ ساعات', level: 'beginner', category: 'skincare', emoji: '✨', enrolledCount: 980, rating: 4.9 },
-  { id: 3, titleAr: 'تسريحات شعر للمناسبات', titleEn: 'Occasion Hairstyling', descAr: 'تعلمي أجمل التسريحات للمناسبات', descEn: 'Learn beautiful hairstyles for occasions', instructor: 'سارة الحربي', lessons: 10, duration: '٥ ساعات', level: 'intermediate', category: 'hair', emoji: '💇‍♀️', enrolledCount: 720, rating: 4.7 },
-  { id: 4, titleAr: 'فن الأظافر المتقدم', titleEn: 'Advanced Nail Art', descAr: 'تقنيات متقدمة في تزيين الأظافر', descEn: 'Advanced nail decoration techniques', instructor: 'هند المطيري', lessons: 5, duration: '٢.٥ ساعة', level: 'advanced', category: 'nails', emoji: '💅', enrolledCount: 450, rating: 4.6 },
-];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = prisma as any;
+
+function formatCourse(c: any) {
+  const titleJson = c.titleJson as Record<string, string> | undefined;
+  const descJson = c.descJson as Record<string, string> | undefined;
+  const enrollmentCount = Array.isArray(c.enrollments) ? c.enrollments.length : (c._count?.enrollments ?? 0);
+  return {
+    id: c.id,
+    titleAr: titleJson?.ar ?? '',
+    titleEn: titleJson?.en ?? '',
+    descAr: descJson?.ar ?? '',
+    descEn: descJson?.en ?? '',
+    instructor: c.instructor,
+    lessons: c.lessons,
+    duration: c.duration,
+    level: c.level,
+    category: c.category,
+    emoji: c.emoji,
+    rating: c.rating,
+    enrolledCount: enrollmentCount,
+  };
+}
 
 export const beautyCoursesRouter = router({
-  list: publicProcedure.query(() => COURSES),
-  get: publicProcedure.input(z.object({ id: z.number() })).query(async ({ input }) => {
-    const course = COURSES.find((c) => c.id === input.id);
-    if (!course) throw new Error('الدورة غير موجودة');
-    return course;
+  list: publicProcedure.query(async () => {
+    const courses = await db.beautyCourse.findMany({
+      where: { isActive: true },
+      orderBy: { createdAt: 'desc' },
+      include: { _count: { select: { enrollments: true } } },
+    });
+    return courses.map(formatCourse);
   }),
-  enroll: customerProcedure.input(z.object({ courseId: z.number() })).mutation(async ({ ctx, input }) => ({
-    enrollmentId: `ENR-${ctx.user.id}-${input.courseId}`, courseId: input.courseId, status: 'ENROLLED', progress: 0,
-  })),
-  myCourses: customerProcedure.query(async () => []),
+
+  get: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ input }) => {
+      const course = await db.beautyCourse.findUnique({
+        where: { id: input.id },
+        include: { _count: { select: { enrollments: true } } },
+      });
+      if (!course) throw new Error('الدورة غير موجودة');
+      return formatCourse(course);
+    }),
+
+  enroll: customerProcedure
+    .input(z.object({ courseId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const existing = await db.courseEnrollment.findUnique({
+        where: { userId_courseId: { userId: ctx.user.id, courseId: input.courseId } },
+      });
+      if (existing) return { enrollmentId: `ENR-${ctx.user.id}-${input.courseId}`, courseId: input.courseId, status: existing.status, progress: existing.progress };
+      const enrollment = await db.courseEnrollment.create({
+        data: { userId: ctx.user.id, courseId: input.courseId },
+      });
+      return { enrollmentId: `ENR-${ctx.user.id}-${input.courseId}`, courseId: input.courseId, status: enrollment.status, progress: enrollment.progress };
+    }),
+
+  myCourses: customerProcedure.query(async ({ ctx }) => {
+    const enrollments = await db.courseEnrollment.findMany({
+      where: { userId: ctx.user.id },
+      include: { course: { include: { _count: { select: { enrollments: true } } } } },
+      orderBy: { enrolledAt: 'desc' },
+    });
+    return enrollments.map((e: any) => ({
+      enrollmentId: `ENR-${e.userId}-${e.courseId}`,
+      courseId: e.courseId,
+      status: e.status,
+      progress: e.progress,
+      enrolledAt: e.enrolledAt,
+      course: formatCourse(e.course),
+    }));
+  }),
 });
