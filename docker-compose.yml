@@ -89,7 +89,7 @@ services:
       target: development
     container_name: gob-socket
     restart: unless-stopped
-    command: npx tsx packages/api/src/socket/server.ts
+    command: pnpm --filter @galaxy/api socket
     environment:
       NODE_ENV: development
       SOCKET_PORT: "4001"
