@@ -1,5 +1,7 @@
+'use client';
 import Link from 'next/link';
-import { Card } from '@galaxy/shared';
+import { api } from '@/lib/trpc';
+import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
 
 const FEATURES = [
   { emoji: '💇‍♀️', title: 'احجزي خدمات التجميل', desc: 'شعر، بشرة، مكياج، أظافر والمزيد', href: '/services', color: 'from-brand-100 to-brand-200' },
@@ -46,6 +48,30 @@ export default function DiscoverPage(): JSX.Element {
           </Link>
         ))}
       </div>
+
+      <TrendingNow />
+    </div>
+  );
+}
+
+function TrendingNow(): JSX.Element {
+  const { data: trending, isLoading } = api.social.trending.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  if (!(trending??[]).length && !isLoading) return <></>;
+  return (
+    <div className="mt-16">
+      <h2 className="text-2xl font-bold text-center mb-6">🔥 الأكثر طلباً هذا الشهر</h2>
+      {isLoading ? <div className="grid gap-4 sm:grid-cols-3">{Array.from({length:6},(_,i)=><CardSkeleton key={i}/>)}</div> :
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{(trending??[]).slice(0,8).map((s: Record<string,unknown>) => (
+          <Link key={s.serviceId as number} href="/services">
+            <Card hover padding="md" className="text-center">
+              <span className="text-2xl">💅</span>
+              <p className="font-bold text-sm mt-2">{(s.titleJson as Record<string,string>)?.ar}</p>
+              <p className="text-xs text-brand-600 mt-1">{formatCurrency(Number(s.basePrice ?? 0))}</p>
+              <span className="mt-1 inline-block rounded-full bg-red-100 px-2 py-0.5 text-xs text-red-700">{s.bookingCount as number} حجز</span>
+            </Card>
+          </Link>
+        ))}</div>
+      }
     </div>
   );
 }
