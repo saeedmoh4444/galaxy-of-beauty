@@ -1,60 +1,40 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function TechDashboardScreen() {
-  const [pending, setPending] = useState<Record<string, unknown>[]>([]);
+export default function TechDashboardScreen(): JSX.Element {
+  const [data, setData] = useState<any>({});
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const fetchData = () => {
-    setLoading(true);
-    trpc.bookings.getTechnicianPending.query()
-      .then((d) => { setPending((d as unknown as Record<string, unknown>[]) ?? []); setLoading(false); })
-      .catch(() => setLoading(false));
-  };
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).analytics.technicianDashboard.query() as any).then((d: any) => { setData(d || {}); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => { fetch(); }, [fetch]);
 
-  const handleAction = async (id: number, action: 'accept' | 'reject') => {
-    await trpc.bookings.transition.mutate({ id, action } as never);
-    fetchData();
-  };
+  if (loading) return <SkeletonList count={4} />;
+
+  const d = data ?? {};
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>لوحة تحكم الفنية</Text>
-      <View style={styles.stats}>
-        <View style={styles.statCard}><Text style={styles.statNum}>{pending.length}</Text><Text style={styles.statLabel}>طلبات معلقة</Text></View>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#059669']} />}>
+      <Text style={styles.t}>📊 لوحة الفنية</Text>
+      <View style={styles.kpiRow}>
+        <View style={styles.kpi}><Text style={styles.kpiEmoji}>📅</Text><Text style={styles.kpiVal}>{d.todayBookings as number ?? 0}</Text><Text style={styles.kpiLabel}>حجز اليوم</Text></View>
+        <View style={styles.kpi}><Text style={styles.kpiEmoji}>💰</Text><Text style={[styles.kpiVal,{color:'#059669'}]}>{(d.todayEarnings as number ?? 0)?.toLocaleString()}</Text><Text style={styles.kpiLabel}>ر.س</Text></View>
+        <View style={styles.kpi}><Text style={styles.kpiEmoji}>⭐</Text><Text style={[styles.kpiVal,{color:'#f59e0b'}]}>{d.rating as number ?? 0}</Text><Text style={styles.kpiLabel}>التقييم</Text></View>
       </View>
-      <Text style={styles.sectionTitle}>طلبات الحجز</Text>
-      {loading ? <ActivityIndicator color="#7c3aed" /> : pending.length === 0 ? <Text style={styles.empty}>لا توجد طلبات</Text> : pending.map((b: Record<string, unknown>, i: number) => (
-        <View key={i} style={styles.card}>
-          <Text style={styles.cardTitle}>{b.bookingCode as string}</Text>
-          <Text style={styles.cardDate}>{new Date(b.startAt as string).toLocaleDateString('ar-SA')}</Text>
-          <View style={styles.actions}>
-            <TouchableOpacity style={styles.acceptBtn} onPress={() => handleAction(b.id as number, 'accept')}><Text style={styles.btnText}>قبول</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.rejectBtn} onPress={() => handleAction(b.id as number, 'reject')}><Text style={[styles.btnText, { color: '#ef4444' }]}>رفض</Text></TouchableOpacity>
-          </View>
-        </View>
-      ))}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
-  title: { fontSize: 24, fontWeight: '800', color: '#111827', marginBottom: 16 },
-  stats: { flexDirection: 'row', gap: 8, marginBottom: 24 },
-  statCard: { flex: 1, backgroundColor: '#f5f3ff', borderRadius: 12, padding: 16, alignItems: 'center' },
-  statNum: { fontSize: 28, fontWeight: '800', color: '#7c3aed' },
-  statLabel: { fontSize: 13, color: '#6b7280', marginTop: 4 },
-  sectionTitle: { fontSize: 18, fontWeight: '700', marginBottom: 12 },
-  card: { padding: 16, marginBottom: 8, borderRadius: 12, borderWidth: 1, borderColor: '#e5e7eb' },
-  cardTitle: { fontSize: 16, fontWeight: '600', color: '#111827' },
-  cardDate: { fontSize: 13, color: '#6b7280', marginTop: 4 },
-  actions: { flexDirection: 'row', gap: 8, marginTop: 12 },
-  acceptBtn: { flex: 1, backgroundColor: '#7c3aed', borderRadius: 8, padding: 10, alignItems: 'center' },
-  rejectBtn: { flex: 1, borderWidth: 1, borderColor: '#ef4444', borderRadius: 8, padding: 10, alignItems: 'center' },
-  btnText: { color: '#fff', fontWeight: '600', fontSize: 14 },
-  empty: { textAlign: 'center', color: '#9ca3af', marginTop: 20 },
+  c: { flex: 1, backgroundColor: '#ecfdf5' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 20 },
+  kpiRow: { flexDirection: 'row', gap: 8 },
+  kpi: { flex: 1, backgroundColor: '#fff', borderRadius: 14, padding: 14, alignItems: 'center' },
+  kpiEmoji: { fontSize: 28, marginBottom: 4 }, kpiVal: { fontSize: 20, fontWeight: '800', color: '#111827' }, kpiLabel: { fontSize: 11, color: '#9ca3af' },
 });

@@ -1,98 +1,41 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function TechCalendarScreen() {
-  const [data, setData] = useState<Record<string, unknown>[]>([]);
+export default function TechCalendarScreen(): JSX.Element {
+  const [slots, setSlots] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
 
-  const fetch = () => {
-    setLoading(true);
-    setError('');
-    const today = new Date().toISOString().slice(0, 10);
-    (trpc.slots.getMySlots as any).query({ startDate: today, endDate: today } as never)
-      .then((d: Record<string, unknown>[]) => { setData(d ?? []); setLoading(false); })
-      .catch(() => { setError('فشل تحميل المواعيد'); setLoading(false); });
-  };
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).slots.mySlots.query({}) as any).then((d: any) => { setSlots(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
 
-  useEffect(() => { fetch(); }, []);
+  useEffect(() => { fetch(); }, [fetch]);
 
-  const handleSync = async () => {
-    try {
-      await (trpc.calendar.sync as any).mutate({});
-      fetch();
-    } catch {}
-  };
-
-  const handleDisconnect = async () => {
-    try {
-      await (trpc.calendar.disconnect as any).mutate({});
-      fetch();
-    } catch {}
-  };
+  if (loading) return <SkeletonList count={6} />;
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>التقويم</Text>
-
-      <View style={styles.syncSection}>
-        <TouchableOpacity style={styles.syncBtn} onPress={handleSync}>
-          <Text style={styles.syncText}>📅 مزامنة مع Google Calendar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.disconnectBtn} onPress={handleDisconnect}>
-          <Text style={styles.disconnectText}>قطع الاتصال</Text>
-        </TouchableOpacity>
-      </View>
-
-      {loading ? <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} /> :
-       error ? (
-        <View style={styles.centered}>
-          <Text style={styles.error}>{error}</Text>
-          <TouchableOpacity style={styles.retryBtn} onPress={fetch}><Text style={styles.retryText}>إعادة المحاولة</Text></TouchableOpacity>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#059669']} />}>
+      <Text style={styles.t}>📅 تقويمي</Text>
+      {slots.map((s: any, i: number) => (
+        <View key={i} style={styles.card}>
+          <Text style={styles.time}>{new Date(s.startAt as string).toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'})}</Text>
+          <View style={{flex:1}}><Text style={styles.date}>{new Date(s.startAt as string).toLocaleDateString('ar-SA')}</Text></View>
+          <View style={[styles.badge, s.isBooked ? styles.booked : styles.free]}><Text style={styles.badgeText}>{s.isBooked ? 'محجوز' : 'متاح'}</Text></View>
         </View>
-       ) : data.length === 0 ? (
-        <View style={styles.centered}>
-          <Text style={styles.emptyIcon}>📅</Text>
-          <Text style={styles.empty}>لا توجد مواعيد اليوم</Text>
-          <Text style={styles.hint}>أضف مواعيد توفرك من شاشة المواعيد</Text>
-        </View>
-       ) : (
-        data.map((s: Record<string, unknown>) => (
-          <View key={s.id as number} style={styles.card}>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.timeText}>
-                {new Date(s.startAt as string).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}
-                {' - '}
-                {new Date(s.endAt as string).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}
-              </Text>
-              <Text style={styles.statusText}>{s.isBooked ? 'محجوز' : s.isAvailable ? 'متاح' : 'غير متاح'}</Text>
-            </View>
-            <View style={[styles.dot, { backgroundColor: s.isBooked ? '#ef4444' : s.isAvailable ? '#10b981' : '#9ca3af' }]} />
-          </View>
-        ))
-      )}
+      ))}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
-  title: { fontSize: 24, fontWeight: '800', color: '#111827', marginBottom: 16 },
-  syncSection: { flexDirection: 'row', gap: 8, marginBottom: 20 },
-  syncBtn: { flex: 1, backgroundColor: '#f5f3ff', borderRadius: 12, padding: 14, alignItems: 'center', borderWidth: 1, borderColor: '#c4b5fd' },
-  syncText: { fontSize: 14, fontWeight: '600', color: '#7c3aed' },
-  disconnectBtn: { backgroundColor: '#fef2f2', borderRadius: 12, padding: 14, alignItems: 'center', borderWidth: 1, borderColor: '#fecaca' },
-  disconnectText: { fontSize: 14, fontWeight: '600', color: '#ef4444' },
-  centered: { alignItems: 'center', marginTop: 40 },
-  emptyIcon: { fontSize: 48, marginBottom: 12 },
-  empty: { fontSize: 18, fontWeight: '600', color: '#6b7280' },
-  hint: { fontSize: 14, color: '#9ca3af', marginTop: 4, textAlign: 'center' },
-  error: { color: '#ef4444', fontSize: 16, marginBottom: 12 },
-  retryBtn: { backgroundColor: '#7c3aed', borderRadius: 12, paddingHorizontal: 24, paddingVertical: 10 },
-  retryText: { color: '#fff', fontSize: 14, fontWeight: '600' },
-  card: { flexDirection: 'row', alignItems: 'center', padding: 16, marginBottom: 8, borderRadius: 12, borderWidth: 1, borderColor: '#e5e7eb' },
-  timeText: { fontSize: 16, fontWeight: '600', color: '#111827' },
-  statusText: { fontSize: 13, color: '#6b7280', marginTop: 4 },
-  dot: { width: 12, height: 12, borderRadius: 6 },
+  c: { flex: 1, backgroundColor: '#ecfdf5' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 20 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 6 },
+  time: { fontSize: 14, fontWeight: '700', color: '#111827' }, date: { fontSize: 13, color: '#374151' },
+  badge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 }, booked: { backgroundColor: '#fee2e2' }, free: { backgroundColor: '#dcfce7' },
+  badgeText: { fontSize: 11, fontWeight: '600' },
 });
