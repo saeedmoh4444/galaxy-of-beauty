@@ -1,48 +1,44 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function BirthdayRewardsScreen() {
-  const [reward, setReward] = useState<Record<string, unknown> | null>(null);
+export default function BirthdayRewardsScreen(): JSX.Element {
+  const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const fetch = () => { setLoading(true); (trpc.birthdayRewards.myReward.query() as any).then((d: any) => { setReward(d); setLoading(false); }).catch(() => setLoading(false)); };
-  useEffect(() => { fetch(); }, []);
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).birthdayRewards.status.query() as any).then((d: any) => { setData(d); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
 
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
+  useEffect(() => { fetch(); }, [fetch]);
+
+  if (loading) return <SkeletonList count={3} />;
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.inner}>
-      <Text style={styles.title}>🎂 هدية عيد ميلادكِ</Text>
-      {reward?.claimed ? (
-        <View style={styles.claimedCard}>
-          <Text style={styles.bigEmoji}>🎉</Text><Text style={styles.heading}>تم استلام هديتكِ!</Text>
-          {reward.promoCode ? <View style={styles.codeBox}><Text style={styles.codeText}>{reward.promoCode as string}</Text></View> : null}
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#ec4899']} />}>
+      <Text style={styles.t}>🎂 مكافآت الميلاد</Text>
+      {data ? (
+        <View style={styles.card}>
+          <Text style={styles.emoji}>🎁</Text>
+          <Text style={styles.reward}>{data.rewardName as string}</Text>
+          <Text style={styles.code}>كود: {data.promoCode as string}</Text>
+          <TouchableOpacity style={styles.claimBtn}><Text style={styles.claimText}>استلام</Text></TouchableOpacity>
         </View>
-      ) : reward ? (
-        <View style={styles.claimCard}>
-          <Text style={styles.bigEmoji}>🎁</Text><Text style={styles.heading}>هديتكِ في انتظاركِ!</Text>
-          <TouchableOpacity style={styles.claimBtn} onPress={() => ((trpc as any).birthdayRewards.claim.mutate()).then(() => fetch())}><Text style={styles.claimText}>🎂 استلمي هديتكِ</Text></TouchableOpacity>
-        </View>
-      ) : (
-        <View style={styles.emptyCard}><Text style={styles.bigEmoji}>📅</Text><Text style={styles.heading}>لم يحن موعد هديتكِ بعد</Text><Text style={styles.hint}>تأكدي من تحديث تاريخ ميلادكِ</Text></View>
-      )}
+      ) : <Text style={styles.e}>لا توجد مكافآت</Text>}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fdf2f8' },
-  inner: { padding: 20, paddingTop: 40, alignItems: 'center' },
-  title: { fontSize: 24, fontWeight: '800', color: '#be185d', marginBottom: 24 },
-  bigEmoji: { fontSize: 64, marginBottom: 16 },
-  heading: { fontSize: 20, fontWeight: '700', color: '#111827', marginBottom: 16 },
-  hint: { fontSize: 14, color: '#9ca3af', textAlign: 'center' },
-  claimedCard: { alignItems: 'center', backgroundColor: '#fff', borderRadius: 20, padding: 30, width: '100%' },
-  claimCard: { alignItems: 'center', backgroundColor: '#fff', borderRadius: 20, padding: 30, width: '100%' },
-  emptyCard: { alignItems: 'center', backgroundColor: '#fff', borderRadius: 20, padding: 30, width: '100%' },
-  codeBox: { backgroundColor: '#fce7f3', borderRadius: 14, borderWidth: 2, borderColor: '#f9a8d4', borderStyle: 'dashed', padding: 20, marginTop: 12 },
-  codeText: { fontSize: 28, fontWeight: '800', color: '#be185d', letterSpacing: 6 },
-  claimBtn: { backgroundColor: '#be185d', borderRadius: 14, padding: 16, marginTop: 12, width: '100%', alignItems: 'center' },
-  claimText: { color: '#fff', fontSize: 16, fontWeight: '700' },
+  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 20 },
+  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
+  card: { backgroundColor: '#fff', borderRadius: 20, padding: 24, alignItems: 'center', borderWidth: 2, borderColor: '#fbcfe8' },
+  emoji: { fontSize: 48 }, reward: { fontSize: 16, fontWeight: '700', color: '#111827', marginTop: 8 },
+  code: { fontSize: 14, fontWeight: '600', color: '#db2777', marginTop: 4, fontFamily: 'monospace' },
+  claimBtn: { backgroundColor: '#db2777', borderRadius: 12, paddingHorizontal: 24, paddingVertical: 12, marginTop: 16 },
+  claimText: { color: '#fff', fontSize: 14, fontWeight: '700' },
 });

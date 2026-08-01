@@ -1,42 +1,54 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function BoxBuilderScreen() {
-  const [catalog, setCatalog] = useState<Record<string, unknown>[]>([]);
-  const [selected, setSelected] = useState<number[]>([]);
+export default function BoxBuilderScreen(): JSX.Element {
+  const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  useEffect(() => { (trpc.boxBuilder.catalog.query() as any).then((d: any) => { setCatalog(d || []); setLoading(false); }).catch(() => setLoading(false)); }, []);
+  const [refreshing, setRefreshing] = useState(false);
+  const [selected, setSelected] = useState<Set<number>>(new Set());
 
-  const toggle = (id: number) => setSelected((p) => p.includes(id) ? p.filter((x) => x !== id) : p.length < 6 ? [...p, id] : p);
-  const total = catalog.filter((p) => selected.includes(p.id as number)).reduce((s, p) => s + (p.price as number), 0);
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).boxBuilder.products.query() as any).then((d: any) => { setProducts(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
 
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
+  useEffect(() => { fetch(); }, [fetch]);
+
+  const toggle = (id: number) => { const n = new Set(selected); if (n.has(id)) n.delete(id); else if (n.size < 5) n.add(id); setSelected(n); };
+
+  if (loading) return <SkeletonList count={5} />;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>📦 صندوق التجميل</Text>
-      <Text style={styles.sub}>اختاري {selected.length}/6 منتجات</Text>
-      <View style={styles.grid}>{catalog.map((p: Record<string, unknown>) => (
-        <TouchableOpacity key={p.id as number} onPress={() => toggle(p.id as number)} style={[styles.card, selected.includes(p.id as number) && styles.selected]}>
-          <Text style={styles.cardEmoji}>{p.emoji as string}</Text><Text style={styles.cardName}>{p.nameAr as string}</Text><Text style={styles.cardPrice}>{p.price as number} ر.س</Text>
-        </TouchableOpacity>
-      ))}</View>
-      {selected.length >= 3 && <View style={styles.footer}><Text style={styles.total}>الإجمالي: {total} ر.س</Text><Text style={styles.discount}>الخصم: {Math.round(total * 0.15)} ر.س</Text></View>}
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#7c3aed']} />}>
+      <Text style={styles.t}>📦 صندوقي</Text>
+      <Text style={styles.sub}>اختاري حتى ٥ منتجات لصندوقك الشهري</Text>
+      {selected.size > 0 && <View style={styles.badge}><Text style={styles.badgeText}>🎉 {selected.size} منتجات</Text></View>}
+      {products.map((p: any) => {
+        const isSel = selected.has(p.id);
+        return (
+          <TouchableOpacity key={p.id} onPress={() => toggle(p.id)} style={[styles.card, isSel && styles.cardActive]}>
+            <Text style={styles.emoji}>{p.emoji as string ?? '🧴'}</Text>
+            <View style={{flex:1}}><Text style={styles.name}>{p.nameAr as string}</Text><Text style={styles.price}>{(p.price as number)?.toLocaleString()} ر.س</Text></View>
+            <View style={[styles.check, isSel && styles.checkOn]}><Text style={styles.checkText}>{isSel ? '✓' : '+'}</Text></View>
+          </TouchableOpacity>
+        );
+      })}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#be185d', textAlign: 'center' },
-  sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginTop: 4, marginBottom: 16 },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  card: { width: '48%', backgroundColor: '#fff', borderRadius: 14, padding: 12, marginBottom: 4, alignItems: 'center' },
-  selected: { borderWidth: 2, borderColor: '#be185d', backgroundColor: '#fce7f3' },
-  cardEmoji: { fontSize: 32 }, cardName: { fontSize: 11, fontWeight: '600', color: '#111827', textAlign: 'center', marginTop: 4 },
-  cardPrice: { fontSize: 12, fontWeight: '700', color: '#be185d', marginTop: 4 },
-  footer: { marginTop: 16, backgroundColor: '#fff', borderRadius: 14, padding: 14, alignItems: 'center' },
-  total: { fontSize: 16, fontWeight: '700', color: '#111827' },
-  discount: { fontSize: 14, color: '#059669', marginTop: 4 },
+  c: { flex: 1, backgroundColor: '#faf5ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 4 },
+  sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 16 },
+  badge: { backgroundColor: '#ede9fe', borderRadius: 12, padding: 10, alignItems: 'center', marginBottom: 12 },
+  badgeText: { fontSize: 14, fontWeight: '700', color: '#7c3aed' },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8 },
+  cardActive: { borderWidth: 2, borderColor: '#7c3aed', backgroundColor: '#faf5ff' },
+  emoji: { fontSize: 28 }, name: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  price: { fontSize: 12, color: '#6b7280', marginTop: 2 },
+  check: { width: 28, height: 28, borderRadius: 14, backgroundColor: '#f3f4f6', alignItems: 'center', justifyContent: 'center' },
+  checkOn: { backgroundColor: '#7c3aed' }, checkText: { fontSize: 14, fontWeight: '700', color: '#6b7280' },
 });
