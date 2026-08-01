@@ -30,7 +30,7 @@ export function RebookReminder(): JSX.Element {
           <p className="font-semibold text-gray-900 dark:text-gray-100 text-sm">مرّ {weeksSince} {weeksSince === 1 ? 'أسبوع' : 'أسابيع'} على آخر {serviceName}</p>
           <p className="text-xs text-gray-500 mt-0.5">مستعدة لتجديد إطلالتكِ؟</p>
         </div>
-        <Link href={`/customer/bookings/create?serviceId=${serviceId}`}><Button size="sm">أعيدي الحجز</Button></Link>
+        <Link href={`/bookings/create?serviceId=${serviceId}`}><Button size="sm">أعيدي الحجز</Button></Link>
       </div>
     </Card>
   );

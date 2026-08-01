@@ -73,7 +73,7 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
                 <h3 className="font-semibold">{ar(svc.titleJson)}</h3>
                 <p className="text-sm text-gray-500">{svc.durationMin} دقيقة</p>
                 <p className="mt-1 font-bold text-brand-600">{formatCurrency(Number(s.customPrice || svc.basePrice || 0))}</p>
-                <Link href={`/customer/bookings/create?serviceId=${svc.id}`} className="mt-3 block w-full">
+                <Link href={`/bookings/create?serviceId=${svc.id}`} className="mt-3 block w-full">
                   <Button size="sm" className="w-full">احجزي</Button>
                 </Link>
               </Card>

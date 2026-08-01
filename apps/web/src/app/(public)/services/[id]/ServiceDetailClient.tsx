@@ -107,7 +107,7 @@ export function ServiceDetailClient({
 
       {/* CTA */}
       <div className="mt-8 flex gap-3">
-        <Link href={`/customer/bookings/create?serviceId=${id}`}>
+        <Link href={`/bookings/create?serviceId=${id}`}>
           <Button size="lg">احجزي الآن</Button>
         </Link>
         <Link href={`/compare?ids=${id}`}>
@@ -137,7 +137,7 @@ export function ServiceDetailClient({
                         </p>
                       ) : null}
                     </div>
-                    <Link href={`/customer/bookings/create?serviceId=${id}`}>
+                    <Link href={`/bookings/create?serviceId=${id}`}>
                       <Button size="sm">احجز</Button>
                     </Link>
                   </div>

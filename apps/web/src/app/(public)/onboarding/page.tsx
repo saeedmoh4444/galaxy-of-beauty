@@ -32,13 +32,13 @@ const STEPS = [
     title: '🎁 هدايا الجمال',
     desc: 'بطاقات هدايا وسجل هدايا — أهدي من تحبين أو اطلبي ما تتمنين.',
     action: 'تصفحي بطاقات الهدية',
-    link: '/customer/gift-cards',
+    link: '/gift-cards',
   },
   {
     title: '🌸 أنتِ جاهزة!',
     desc: 'احجزي موعدكِ الأول اليوم واستمتعي بتجربة جمال لا تُنسى.',
     action: 'احجزي الآن',
-    link: '/customer/bookings/create',
+    link: '/bookings/create',
   },
 ];
 

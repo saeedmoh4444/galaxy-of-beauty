@@ -37,7 +37,7 @@ export default function BeautyRoutinePage(): JSX.Element {
             <span className="text-5xl">💄</span>
             <p className="mt-4 text-gray-500">أكملي ملفكِ الجمالي للحصول على روتين مخصص</p>
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            <a href="/customer/beauty-profile" className="mt-4 inline-block"><Button>أكملي ملفكِ</Button></a>
+            <a href="/beauty-profile" className="mt-4 inline-block"><Button>أكملي ملفكِ</Button></a>
           </Card>
         ) : (
           <>

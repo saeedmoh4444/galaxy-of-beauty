@@ -94,7 +94,7 @@ export default function MyJourneyPage(): JSX.Element {
         </Card>
 
         <div className="text-center">
-          <Link href="/customer/bookings/create"><Button>استمري في رحلتكِ ✨</Button></Link>
+          <Link href="/bookings/create"><Button>استمري في رحلتكِ ✨</Button></Link>
         </div>
       </div>
     </DashboardLayout>

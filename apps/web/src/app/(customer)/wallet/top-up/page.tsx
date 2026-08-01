@@ -48,7 +48,7 @@ export default function WalletTopUpPage(): JSX.Element {
           <Button onClick={handleTopUp} size="lg" className="w-full mt-4">💳 شحن {formatCurrency(selected || Number(amount) || 0)}</Button>
         </Card>
         <div className="text-center">
-          <Link href="/customer/wallet" className="text-sm text-brand-600 hover:underline">العودة للمحفظة</Link>
+          <Link href="/wallet" className="text-sm text-brand-600 hover:underline">العودة للمحفظة</Link>
         </div>
       </div>
     </DashboardLayout>

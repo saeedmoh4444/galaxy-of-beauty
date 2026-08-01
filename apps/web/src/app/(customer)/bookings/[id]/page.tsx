@@ -34,7 +34,7 @@ export default function BookingDetailPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">تفاصيل الحجز</h1>
-          <Link href="/customer/bookings"><Button variant="outline">العودة للحجوزات</Button></Link>
+          <Link href="/bookings"><Button variant="outline">العودة للحجوزات</Button></Link>
         </div>
 
         <Card padding="lg">

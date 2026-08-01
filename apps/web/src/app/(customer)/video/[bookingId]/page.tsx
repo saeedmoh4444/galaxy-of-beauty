@@ -30,7 +30,7 @@ export default function VideoSessionPage(): JSX.Element {
     try {
       const result = await startMut.mutateAsync({ bookingId: bid });
       const roomId = (result as Record<string, unknown>).roomId as string;
-      router.push(`/customer/video/${bookingId}/room?room=${roomId}`);
+      router.push(`/video/${bookingId}/room?room=${roomId}`);
     } catch {
       setJoining(false);
     }
@@ -70,7 +70,7 @@ export default function VideoSessionPage(): JSX.Element {
             <h3 className="font-semibold text-brand-700">في انتظار الطرف الآخر...</h3>
             <p className="mt-2 text-sm text-brand-500">تم إرسال إشعار. سيتم الاتصال عند الانضمام.</p>
             <div className="mt-4">
-              <Button onClick={() => router.push(`/customer/video/${bookingId}/room?room=${sess.roomId}`)}>
+              <Button onClick={() => router.push(`/video/${bookingId}/room?room=${sess.roomId}`)}>
                 الانضمام للغرفة
               </Button>
             </div>
@@ -80,7 +80,7 @@ export default function VideoSessionPage(): JSX.Element {
             <div className="mb-4 text-5xl">🟢</div>
             <h3 className="font-semibold text-green-700">الجلسة نشطة</h3>
             <div className="mt-4 flex gap-3 justify-center">
-              <Button onClick={() => router.push(`/customer/video/${bookingId}/room?room=${sess.roomId}`)}>
+              <Button onClick={() => router.push(`/video/${bookingId}/room?room=${sess.roomId}`)}>
                 العودة للغرفة
               </Button>
               <Button variant="outline" onClick={() => endMut.mutate({ roomId: sess.roomId as string })}>

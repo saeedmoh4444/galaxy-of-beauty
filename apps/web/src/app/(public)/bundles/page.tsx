@@ -69,7 +69,7 @@ export default function BundlesPage(): JSX.Element {
 
       {count >= 2 && (
         <div className="mt-8 text-center">
-          <Link href={`/customer/bookings/create?serviceIds=${[...selected].join(',')}`}>
+          <Link href={`/bookings/create?serviceIds=${[...selected].join(',')}`}>
             <Button size="lg">✨ احجزي باقتكِ بخصم {discount}%</Button>
           </Link>
         </div>

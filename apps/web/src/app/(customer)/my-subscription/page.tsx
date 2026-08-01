@@ -63,13 +63,13 @@ export default function MySubscriptionPage(): JSX.Element {
 
         {/* Actions */}
         <div className="flex gap-3">
-          <Link href="/customer/bookings/create" className="flex-1"><Button className="w-full">احجزي الآن</Button></Link>
+          <Link href="/bookings/create" className="flex-1"><Button className="w-full">احجزي الآن</Button></Link>
           {sub.status === 'ACTIVE' && <Button variant="outline" onClick={handlePause}>⏸ إيقاف مؤقت</Button>}
         </div>
         <div className="text-center">
           <Link href="/subscription-boxes" className="text-sm text-brand-600 hover:underline">تغيير الباقة</Link>
           <span className="mx-2 text-gray-300">|</span>
-          <Link href="/customer/wallet" className="text-sm text-brand-600 hover:underline">المحفظة</Link>
+          <Link href="/wallet" className="text-sm text-brand-600 hover:underline">المحفظة</Link>
         </div>
       </div>
     </DashboardLayout>

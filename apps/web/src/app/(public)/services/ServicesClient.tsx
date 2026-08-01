@@ -107,7 +107,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
                 <p className="mt-1 text-sm text-gray-500">{svc.durationMin} دقيقة</p>
                 <div className="mt-2 flex items-center justify-between">
                   <p className="font-bold text-brand-600">{Number(svc.basePrice)} ر.س</p>
-                  <Link href={`/customer/bookings/create?serviceId=${svc.id}`} onClick={(e) => e.stopPropagation()} className="rounded-lg bg-brand-600 px-3 py-1 text-xs font-medium text-white hover:bg-brand-700">احجز</Link>
+                  <Link href={`/bookings/create?serviceId=${svc.id}`} onClick={(e) => e.stopPropagation()} className="rounded-lg bg-brand-600 px-3 py-1 text-xs font-medium text-white hover:bg-brand-700">احجز</Link>
                 </div>
               </Card>
             </Link>

@@ -74,7 +74,7 @@ export default function ShopTheLookPage(): JSX.Element {
                   <p className="text-lg font-extrabold text-gray-900 dark:text-gray-100">{formatCurrency(total)}</p>
                   <p className="text-xs text-gray-500">{totalDuration} دقيقة · {look.services.length} خدمات</p>
                 </div>
-                <Link href="/customer/bookings/create"><Button>احجزي الإطلالة</Button></Link>
+                <Link href="/bookings/create"><Button>احجزي الإطلالة</Button></Link>
               </div>
             </Card>
           );

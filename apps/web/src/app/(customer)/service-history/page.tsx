@@ -44,7 +44,7 @@ export default function ServiceHistoryPage(): JSX.Element {
                       <p className="font-semibold">{info.title}</p>
                       <p className="text-xs text-gray-500">تم الحجز {info.count} مرات · آخر مرة {new Date(info.lastDate).toLocaleDateString('ar-SA')}</p>
                     </div>
-                    <Link href={`/customer/bookings/create?serviceId=${sid}`}><Button size="sm">أعد الحجز</Button></Link>
+                    <Link href={`/bookings/create?serviceId=${sid}`}><Button size="sm">أعد الحجز</Button></Link>
                   </div>
                 </Card>
               ))}
@@ -70,7 +70,7 @@ export default function ServiceHistoryPage(): JSX.Element {
                     <div className="flex items-center gap-3">
                       <span className="text-sm font-bold text-brand-600">{formatCurrency(Number(b.totalAmount || 0))}</span>
                       {b.status === 'COMPLETED' && (
-                        <Link href={`/customer/bookings/create?serviceId=${b.serviceId}`}><Button size="sm" variant="outline">🔄</Button></Link>
+                        <Link href={`/bookings/create?serviceId=${b.serviceId}`}><Button size="sm" variant="outline">🔄</Button></Link>
                       )}
                     </div>
                   </div>

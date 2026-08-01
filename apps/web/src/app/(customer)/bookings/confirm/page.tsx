@@ -31,9 +31,9 @@ export default function BookingConfirmPage(): JSX.Element {
         </Card>
 
         <div className="space-y-2">
-          <Link href="/customer/bookings"><Button variant="outline" className="w-full">عرض حجوزاتي</Button></Link>
+          <Link href="/bookings"><Button variant="outline" className="w-full">عرض حجوزاتي</Button></Link>
           <Link href="/services"><Button className="w-full">احجزي خدمة أخرى</Button></Link>
-          <Link href="/customer/dashboard"><span className="block text-sm text-brand-600 hover:underline mt-2">العودة للوحة التحكم</span></Link>
+          <Link href="/dashboard"><span className="block text-sm text-brand-600 hover:underline mt-2">العودة للوحة التحكم</span></Link>
         </div>
       </div>
     </DashboardLayout>

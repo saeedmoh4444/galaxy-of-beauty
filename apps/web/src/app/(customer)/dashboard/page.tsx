@@ -27,7 +27,7 @@ export default function CustomerDashboardPage(): JSX.Element {
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">لوحة التحكم</h1>
         <RebookReminder />
-          <Link href="/customer/self-care"><Button variant="outline" size="sm">🌸 تقييم اليوم</Button></Link>
+          <Link href="/self-care"><Button variant="outline" size="sm">🌸 تقييم اليوم</Button></Link>
         </div>
 
         {/* Stats */}
@@ -46,16 +46,16 @@ export default function CustomerDashboardPage(): JSX.Element {
 
         {/* Quick Actions */}
         <div className="flex flex-wrap gap-2">
-          <Link href="/customer/bookings/create"><Button>✨ احجزي الآن</Button></Link>
-          <Link href="/customer/gift-cards"><Button variant="outline">🎁 بطاقات الهدية</Button></Link>
-          <Link href="/customer/inspiration"><Button variant="outline">📌 لوحة الإلهام</Button></Link>
+          <Link href="/bookings/create"><Button>✨ احجزي الآن</Button></Link>
+          <Link href="/gift-cards"><Button variant="outline">🎁 بطاقات الهدية</Button></Link>
+          <Link href="/inspiration"><Button variant="outline">📌 لوحة الإلهام</Button></Link>
           <Link href="/services/surprise-me"><Button variant="outline">🎲 فاجئيني</Button></Link>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Recent Bookings */}
           <div>
-            <div className="mb-3 flex items-center justify-between"><h2 className="text-lg font-semibold">آخر الحجوزات</h2><Link href="/customer/bookings" className="text-xs text-brand-600 hover:underline">عرض الكل</Link></div>
+            <div className="mb-3 flex items-center justify-between"><h2 className="text-lg font-semibold">آخر الحجوزات</h2><Link href="/bookings" className="text-xs text-brand-600 hover:underline">عرض الكل</Link></div>
             {bookings.isLoading ? <CardSkeleton />
             : bookings.isError ? <ErrorAlert message="فشل التحميل" onRetry={() => bookings.refetch()} />
             : !bookings.data?.bookings || (bookings.data.bookings as unknown[]).length === 0
@@ -75,7 +75,7 @@ export default function CustomerDashboardPage(): JSX.Element {
           <div className="space-y-4">
             {pins?.data?.length > 0 && (
               <div>
-                <div className="mb-2 flex items-center justify-between"><h2 className="text-lg font-semibold">📌 لوحة الإلهام</h2><Link href="/customer/inspiration" className="text-xs text-brand-600 hover:underline">عرض الكل</Link></div>
+                <div className="mb-2 flex items-center justify-between"><h2 className="text-lg font-semibold">📌 لوحة الإلهام</h2><Link href="/inspiration" className="text-xs text-brand-600 hover:underline">عرض الكل</Link></div>
                 <div className="flex gap-2 overflow-x-auto pb-2">{(pins.data as Array<Record<string, any>>).slice(0, 3).map((p: Record<string, any>) => (
                   <div key={p.id} className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800">
                     {p.imageUrl ? <img src={p.imageUrl} alt="" className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center text-2xl">✨</div>}
@@ -85,7 +85,7 @@ export default function CustomerDashboardPage(): JSX.Element {
             )}
             {registries?.data?.length > 0 && (
               <div>
-                <div className="mb-2 flex items-center justify-between"><h2 className="text-lg font-semibold">🎁 سجل الهدايا</h2><Link href="/customer/gift-registry" className="text-xs text-brand-600 hover:underline">عرض الكل</Link></div>
+                <div className="mb-2 flex items-center justify-between"><h2 className="text-lg font-semibold">🎁 سجل الهدايا</h2><Link href="/gift-registry" className="text-xs text-brand-600 hover:underline">عرض الكل</Link></div>
                 {registries.data.slice(0, 2).map((r: Record<string, any>) => {
                   const pct = r.targetAmount > 0 ? Math.min(100, (Number(r.raisedAmount) / Number(r.targetAmount)) * 100) : 0;
                   return (
@@ -102,8 +102,8 @@ export default function CustomerDashboardPage(): JSX.Element {
 
         {/* Community + Wellness row */}
         <div className="grid gap-4 sm:grid-cols-3">
-          <Link href="/customer/self-care"><Card hover padding="md" className="text-center"><span className="text-3xl">🌸</span><p className="mt-2 font-semibold text-sm">العناية الذاتية</p><p className="text-xs text-gray-500">تقييم مزاجكِ اليومي</p></Card></Link>
-          <Link href="/customer/beauty-budget"><Card hover padding="md" className="text-center"><span className="text-3xl">💰</span><p className="mt-2 font-semibold text-sm">ميزانية الجمال</p><p className="text-xs text-gray-500">تتبعي إنفاقكِ الشهري</p></Card></Link>
+          <Link href="/self-care"><Card hover padding="md" className="text-center"><span className="text-3xl">🌸</span><p className="mt-2 font-semibold text-sm">العناية الذاتية</p><p className="text-xs text-gray-500">تقييم مزاجكِ اليومي</p></Card></Link>
+          <Link href="/beauty-budget"><Card hover padding="md" className="text-center"><span className="text-3xl">💰</span><p className="mt-2 font-semibold text-sm">ميزانية الجمال</p><p className="text-xs text-gray-500">تتبعي إنفاقكِ الشهري</p></Card></Link>
           <Link href="/community"><Card hover padding="md" className="text-center"><span className="text-3xl">💬</span><p className="mt-2 font-semibold text-sm">مجتمع الجمال</p><p className="text-xs text-gray-500">شاركي تجاربكِ وآرائكِ</p></Card></Link>
         </div>
       </div>

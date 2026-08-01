@@ -49,7 +49,7 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
                       </div>
                     ))}
                   </div>
-                  <Link href="/customer/bookings/create" className="mt-4 block w-full rounded-lg bg-brand-600 py-2 text-center text-sm font-medium text-white hover:bg-brand-700">
+                  <Link href="/bookings/create" className="mt-4 block w-full rounded-lg bg-brand-600 py-2 text-center text-sm font-medium text-white hover:bg-brand-700">
                     احجزي الباقة
                   </Link>
                 </div>

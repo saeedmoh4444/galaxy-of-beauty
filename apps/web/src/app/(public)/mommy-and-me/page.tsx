@@ -33,7 +33,7 @@ export default function MommyAndMePage(): JSX.Element {
               </div>
               <p className="mt-4 text-2xl font-extrabold text-brand-600">{pkg.price} ر.س</p>
               <p className="text-xs text-gray-400">للشخصين</p>
-              <Link href="/customer/bookings/create" className="mt-4 inline-block">
+              <Link href="/bookings/create" className="mt-4 inline-block">
                 <Button size="sm">احجزي لشخصين</Button>
               </Link>
             </div>
@@ -44,7 +44,7 @@ export default function MommyAndMePage(): JSX.Element {
       <div className="mt-16 text-center bg-gradient-to-r from-pink-50 to-purple-50 rounded-3xl p-12 dark:from-pink-950 dark:to-purple-950">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">💝 هدية مثالية</h2>
         <p className="mt-3 text-gray-500 max-w-md mx-auto">اشتري بطاقة هدية Mommy & Me واهدِ أمكِ أو ابنتكِ يوماً لا يُنسى من العناية والجمال</p>
-        <Link href="/customer/gift-cards" className="mt-6 inline-block"><Button size="lg">🎁 اشتري بطاقة هدية</Button></Link>
+        <Link href="/gift-cards" className="mt-6 inline-block"><Button size="lg">🎁 اشتري بطاقة هدية</Button></Link>
       </div>
     </div>
   );

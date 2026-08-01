@@ -87,7 +87,7 @@ function ServiceCard({ svc }: { svc: AnyRecord }): JSX.Element {
         <Link href={`/services/${svc.id}`}>
           <Button variant="outline">التفاصيل</Button>
         </Link>
-        <Link href={`/customer/bookings/create?serviceId=${svc.id}`}>
+        <Link href={`/bookings/create?serviceId=${svc.id}`}>
           <Button>احجزي الآن</Button>
         </Link>
       </div>

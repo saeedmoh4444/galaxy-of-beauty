@@ -100,8 +100,8 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
             <div>
               <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">المساعدة</h4>
               <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
-                <Link href="/customer/ai-chat" className="block hover:text-brand-600">تحدثي مع ليلى</Link>
-                <Link href="/customer/bookings/create" className="block hover:text-brand-600">احجزي الآن</Link>
+                <Link href="/ai-chat" className="block hover:text-brand-600">تحدثي مع ليلى</Link>
+                <Link href="/bookings/create" className="block hover:text-brand-600">احجزي الآن</Link>
                 <Link href="/subscription-boxes" className="block hover:text-brand-600">الصناديق الشهرية</Link>
                 <Link href="/services/surprise-me" className="block hover:text-brand-600">🎲 فاجئيني</Link>
               </div>
@@ -111,8 +111,8 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
               <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
                 <Link href="/login" className="block hover:text-brand-600">تسجيل الدخول</Link>
                 <Link href="/register" className="block hover:text-brand-600">إنشاء حساب</Link>
-                <Link href="/customer/dashboard" className="block hover:text-brand-600">لوحة التحكم</Link>
-                <Link href="/customer/gift-cards" className="block hover:text-brand-600">بطاقات الهدية</Link>
+                <Link href="/dashboard" className="block hover:text-brand-600">لوحة التحكم</Link>
+                <Link href="/gift-cards" className="block hover:text-brand-600">بطاقات الهدية</Link>
               </div>
             </div>
           </div>

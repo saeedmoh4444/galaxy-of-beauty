@@ -98,7 +98,7 @@ export default function StreakCalendarPage(): JSX.Element {
             </Card>
 
             <div className="text-center">
-              <Link href="/customer/bookings/create"><Button>احجزي الآن وحافظي على استمراريتكِ 🔥</Button></Link>
+              <Link href="/bookings/create"><Button>احجزي الآن وحافظي على استمراريتكِ 🔥</Button></Link>
             </div>
           </>
         )}

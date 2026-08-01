@@ -55,7 +55,7 @@ export default function CreateBookingPage(): JSX.Element {
   const createMut = api.bookings.create.useMutation({
     onSuccess: (_result) => {
       addToast('success', 'تم إنشاء الحجز بنجاح!');
-      router.push(`/customer/bookings`);
+      router.push(`/bookings`);
     },
     onError: () => {
       addToast('error', 'فشل إنشاء الحجز');
