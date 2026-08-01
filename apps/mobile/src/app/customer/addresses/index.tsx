@@ -1,18 +1,19 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function AddressesScreen(): JSX.Element {
-  const { data, loading, error, refetch } = useQuery(() => trpc.addresses.list.query());
+  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.addresses.list.query());
 
-  if (loading) return <ActivityIndicator color="#0891b2" style={{ marginTop: 40 }} size="large" />;
+  if (loading) return <View style={styles.c}><Text style={styles.t}>📍 عناويني</Text><SkeletonList count={3} /></View>;
   if (error) return <ErrorAlert message="فشل تحميل العناوين" onRetry={refetch} />;
 
   const items = (data ?? []) as Record<string, unknown>[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#0891b2']} />}>
       <Text style={styles.t}>📍 عناويني</Text>
       {items.length === 0 ? <Text style={styles.e}>لا توجد عناوين محفوظة</Text> :
         (items as any[]).map((a: any) => (

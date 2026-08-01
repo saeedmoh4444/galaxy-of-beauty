@@ -1,17 +1,18 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function LoyaltyScreen(): JSX.Element {
-  const { data: account, loading: aLoad, error: aErr, refetch } = useQuery(() => trpc.loyalty.myAccount.query());
+  const { data: account, loading: aLoad, error: aErr, refreshing, refetch, refresh } = useQuery(() => trpc.loyalty.myAccount.query());
   const { data: txsData } = useQuery(() => trpc.loyalty.myTransactions.query({ page: 1, limit: 10 }));
   const { data: rewards } = useQuery(() => trpc.loyalty.rewards.query());
 
   const loading = aLoad;
   const error = aErr;
 
-  if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
+  if (loading) return <View style={styles.container}><SkeletonList count={5} /></View>;
   if (error) return <ErrorAlert message="فشل تحميل برنامج الولاء" onRetry={refetch} />;
   if (!account) return <View style={styles.empty}><Text style={styles.emptyText}>لا يوجد حساب ولاء</Text></View>;
 
@@ -20,7 +21,7 @@ export default function LoyaltyScreen(): JSX.Element {
   const tierEmoji = account.tier === 'PLATINUM' ? '🥇' : account.tier === 'GOLD' ? '🥈' : '🥉';
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.inner}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.inner} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />}>
       <View style={[styles.tierCard, { backgroundColor: tierColor }]}>
         <Text style={styles.tierEmoji}>{tierEmoji}</Text>
         <Text style={styles.tierName}>{account.tierNameAr as string}</Text>

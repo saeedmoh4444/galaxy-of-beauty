@@ -1,18 +1,19 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function GiftCardsScreen(): JSX.Element {
-  const { data: cards, loading, error, refetch } = useQuery(() => trpc.giftCards.myCards.query() as any);
+  const { data: cards, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.giftCards.myCards.query() as any);
 
-  if (loading) return <ActivityIndicator color="#f59e0b" style={{ marginTop: 40 }} size="large" />;
+  if (loading) return <View style={styles.c}><Text style={styles.t}>🎁 بطاقات الهدايا</Text><SkeletonList count={3} /></View>;
   if (error) return <ErrorAlert message="فشل تحميل البطاقات" onRetry={refetch} />;
 
   const items = (cards ?? []) as Record<string, unknown>[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#f59e0b']} />}>
       <Text style={styles.t}>🎁 بطاقات الهدايا</Text>
       {items.length === 0 ? <Text style={styles.e}>لا توجد بطاقات</Text> : items.map((c: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>

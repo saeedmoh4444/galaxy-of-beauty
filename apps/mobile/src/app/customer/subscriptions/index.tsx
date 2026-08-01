@@ -1,13 +1,14 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function SubscriptionsScreen(): JSX.Element {
-  const { data, loading, error, refetch } = useQuery(() => (trpc.subscriptions as any).getMySubscription.query({}));
+  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc.subscriptions as any).getMySubscription.query({}));
   const { data: plans } = useQuery(() => (trpc.subscriptions as any).getPlans.query({}));
 
-  if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
+  if (loading) return <View style={styles.container}><Text style={styles.title}>الاشتراكات</Text><SkeletonList count={4} /></View>;
   if (error) return <ErrorAlert message="فشل تحميل الاشتراكات" onRetry={refetch} />;
 
   const handleCancel = async () => {
@@ -19,7 +20,7 @@ export default function SubscriptionsScreen(): JSX.Element {
   const plansList = (plans ?? []) as Record<string, unknown>[];
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />}>
       <Text style={styles.title}>الاشتراكات</Text>
       {subData ? (
         <View style={styles.currentPlan}>
