@@ -417,6 +417,77 @@ async function main() {
   });
   console.log('✅ Campaigns');
 
+  // ---- Beauty Courses ----
+  const courses = await Promise.all([
+    prisma.beautyCourse.create({ data: { titleJson: { ar: 'أساسيات المكياج الاحترافي', en: 'Professional Makeup Basics' }, instructor: 'نورة العمري', lessons: 8, duration: '٤ ساعات', level: 'beginner', category: 'makeup', emoji: '💄', rating: 4.8 } }),
+    prisma.beautyCourse.create({ data: { titleJson: { ar: 'فن العناية بالبشرة', en: 'Art of Skincare' }, instructor: 'د. ليلى القحطاني', lessons: 6, duration: '٣ ساعات', level: 'beginner', category: 'skincare', emoji: '✨', rating: 4.9 } }),
+    prisma.beautyCourse.create({ data: { titleJson: { ar: 'تسريحات شعر للمناسبات', en: 'Occasion Hairstyling' }, instructor: 'سارة الحربي', lessons: 10, duration: '٥ ساعات', level: 'intermediate', category: 'hair', emoji: '💇‍♀️', rating: 4.7 } }),
+    prisma.beautyCourse.create({ data: { titleJson: { ar: 'فن الأظافر المتقدم', en: 'Advanced Nail Art' }, instructor: 'هند المطيري', lessons: 5, duration: '٢.٥ ساعة', level: 'advanced', category: 'nails', emoji: '💅', rating: 4.6 } }),
+  ]);
+  console.log(`   ${courses.length} beauty courses`);
+
+  // ---- Corporate Plans ----
+  await prisma.corporatePlan.createMany({ data: [
+    { key: 'starter', nameJson: { ar: 'الباقة الأساسية', en: 'Starter' }, price: 5000, employees: 10, services: ['مانيكير', 'مساج سريع', 'استشارة عناية'], emoji: '🌱' },
+    { key: 'growth', nameJson: { ar: 'باقة النمو', en: 'Growth' }, price: 12000, employees: 50, services: ['مانيكير', 'باديكير', 'مساج', 'تنظيف بشرة', 'استشارة'], emoji: '🌿' },
+    { key: 'enterprise', nameJson: { ar: 'الباقة الشاملة', en: 'Enterprise' }, price: 25000, employees: 200, services: ['كل الخدمات', 'يوم سبا', 'ورش عناية', 'مدير حساب'], emoji: '🌳' },
+  ]});
+
+  // ---- Gift Quiz ----
+  await prisma.giftQuizQuestion.createMany({ data: [
+    { questionKey: 'occasion', questionJson: { ar: 'ما هي المناسبة؟', en: 'What is the occasion?' }, options: [{ key: 'birthday', labelAr: 'عيد ميلاد 🎂', labelEn: 'Birthday', tags: ['احتفالي', 'شخصي'] }, { key: 'wedding', labelAr: 'زفاف 👰', labelEn: 'Wedding', tags: ['راقي', 'فخم'] }, { key: 'graduation', labelAr: 'تخرج 🎓', labelEn: 'Graduation', tags: ['شبابي', 'عصري'] }, { key: 'thankyou', labelAr: 'شكر وامتنان 💐', labelEn: 'Thank You', tags: ['لطيف', 'راقي'] }, { key: 'baby', labelAr: 'بيبي شاور 👶', labelEn: 'Baby Shower', tags: ['لطيف', 'عناية'] }, { key: 'justbecause', labelAr: 'بدون مناسبة 🎁', labelEn: 'Just Because', tags: ['متنوع', 'شخصي'] }] },
+    { questionKey: 'recipient', questionJson: { ar: 'لمن الهدية؟', en: 'Who is the gift for?' }, options: [{ key: 'friend', labelAr: 'صديقة 👯‍♀️', labelEn: 'Friend', tags: ['عصري', 'مرح'] }, { key: 'mom', labelAr: 'أمي 👩‍👧', labelEn: 'Mom', tags: ['فخم', 'عناية'] }, { key: 'sister', labelAr: 'أختي 👭', labelEn: 'Sister', tags: ['شبابي', 'شخصي'] }, { key: 'wife', labelAr: 'زوجتي 💑', labelEn: 'Wife', tags: ['رومانسي', 'فخم'] }, { key: 'self', labelAr: 'نفسي 💝', labelEn: 'Myself', tags: ['شخصي', 'متنوع'] }] },
+    { questionKey: 'budget', questionJson: { ar: 'ما هي ميزانيتك؟', en: 'What is your budget?' }, options: [{ key: 'low', labelAr: 'اقتصادية (حتى ٢٠٠ ر.س) 💰', labelEn: 'Budget (up to 200 SAR)', tags: ['اقتصادي'] }, { key: 'mid', labelAr: 'متوسطة (٢٠٠-٥٠٠ ر.س) 💵', labelEn: 'Mid (200-500 SAR)', tags: ['متوسط'] }, { key: 'high', labelAr: 'فاخرة (٥٠٠+ ر.س) 💎', labelEn: 'Premium (500+ SAR)', tags: ['فاخر'] }] },
+    { questionKey: 'interest', questionJson: { ar: 'ما أكثر ما تهتم به؟', en: 'What interests them most?' }, options: [{ key: 'skincare', labelAr: 'العناية بالبشرة ✨', labelEn: 'Skincare', tags: ['عناية', 'بشرة'] }, { key: 'makeup', labelAr: 'المكياج 💄', labelEn: 'Makeup', tags: ['مكياج', 'عصري'] }, { key: 'hair', labelAr: 'العناية بالشعر 💇‍♀️', labelEn: 'Hair Care', tags: ['شعر', 'عناية'] }, { key: 'fragrance', labelAr: 'العطور 🌸', labelEn: 'Fragrance', tags: ['عطور', 'فاخر'] }, { key: 'wellness', labelAr: 'الاسترخاء والعناية 🧘', labelEn: 'Wellness & Relaxation', tags: ['استرخاء', 'صحة'] }] },
+  ]});
+
+  await prisma.giftQuizRecommendation.createMany({ data: [
+    { nameJson: { ar: 'باقة عناية بالبشرة فاخرة', en: 'Premium Skincare Set' }, descJson: { ar: 'مجموعة متكاملة من كريم وسيروم وتونر' }, price: 450, category: 'skincare', emoji: '✨', tags: ['فاخر', 'عناية', 'بشرة'] },
+    { nameJson: { ar: 'علبة مكياج احترافية', en: 'Pro Makeup Kit' }, descJson: { ar: '١٨ لون ظلال عيون + ٦ ألوان أحمر شفاه' }, price: 320, category: 'makeup', emoji: '💄', tags: ['مكياج', 'عصري', 'شبابي'] },
+    { nameJson: { ar: 'جلسة مساج استرخائية', en: 'Relaxation Massage' }, descJson: { ar: 'جلسة مساج ٦٠ دقيقة مع زيوت عطرية' }, price: 250, category: 'wellness', emoji: '💆‍♀️', tags: ['استرخاء', 'صحة'] },
+    { nameJson: { ar: 'بطاقة هدية جالكسي بيوتي', en: 'Galaxy Gift Card' }, descJson: { ar: 'قيمة ٣٠٠ ر.س' }, price: 300, category: 'giftcard', emoji: '🎁', tags: ['مرن', 'شخصي', 'متوسط'] },
+  ]});
+
+  // ---- Group Buy Deals ----
+  await prisma.groupBuyDeal.createMany({ data: [
+    { service: 'مكياج احترافي', originalPrice: 300, groupPrice: 200, minBuyers: 5, currentBuyers: 3, endsIn: '٣ أيام', emoji: '💄', savings: 100 },
+    { service: 'تنظيف بشرة', originalPrice: 200, groupPrice: 140, minBuyers: 3, currentBuyers: 2, endsIn: 'يومين', emoji: '✨', savings: 60 },
+    { service: 'مساج استرخائي', originalPrice: 250, groupPrice: 180, minBuyers: 4, currentBuyers: 4, endsIn: 'يوم', emoji: '💆‍♀️', savings: 70 },
+  ]});
+
+  // ---- Community Looks ----
+  await prisma.communityLook.createMany({ data: [
+    { userName: 'نورة', title: 'إطلالة سهرة ناعمة', technicianName: 'نورة العمري', votes: 245, category: 'makeup' },
+    { userName: 'مها', title: 'تسريحة شعر راقية', technicianName: 'سارة الحربي', votes: 189, category: 'hair' },
+    { userName: 'ريم', title: 'أظافر صيفية', technicianName: 'هند المطيري', votes: 156, category: 'nails' },
+  ]});
+
+  // ---- Compare Products ----
+  await prisma.compareProduct.createMany({ data: [
+    { nameJson: { ar: 'كريم ترطيب يومي' }, brand: 'Nivea', price: 89, rating: 4.5, category: 'skincare', emoji: '🧴', features: { hydration: 85, absorption: 80, value: 90, gentle: 75 }, ingredients: 12, crueltyFree: false, vegan: false },
+    { nameJson: { ar: 'مرطب طبيعي' }, brand: 'Organic Beauty', price: 120, rating: 4.8, category: 'skincare', emoji: '🌿', features: { hydration: 92, absorption: 88, value: 75, gentle: 95 }, ingredients: 6, crueltyFree: true, vegan: true },
+    { nameJson: { ar: 'سيروم فيتامين C' }, brand: 'The Ordinary', price: 145, rating: 4.9, category: 'skincare', emoji: '✨', features: { hydration: 70, absorption: 95, value: 85, gentle: 80 }, ingredients: 8, crueltyFree: true, vegan: true },
+    { nameJson: { ar: 'أحمر شفاه مطفي' }, brand: 'MAC', price: 110, rating: 4.3, category: 'makeup', emoji: '💄', features: { hydration: 60, absorption: 70, value: 65, gentle: 60 }, ingredients: 18, crueltyFree: false, vegan: false },
+  ]});
+
+  // ---- Matchmaker ----
+  await prisma.matchmakerQuestion.createMany({ data: [
+    { questionKey: 'occasion', question: 'ما هي المناسبة؟', options: [{ k: 'daily', l: 'يومي ☀️', t: ['basic'] }, { k: 'work', l: 'عمل 💼', t: ['natural'] }, { k: 'party', l: 'حفلة 🎉', t: ['glam'] }, { k: 'wedding', l: 'زفاف 👰', t: ['luxury'] }, { k: 'date', l: 'موعد رومانسي 💑', t: ['elegant'] }] },
+    { questionKey: 'budget', question: 'ميزانيتك؟', options: [{ k: 'low', l: 'اقتصادية 💰', t: ['budget'] }, { k: 'mid', l: 'متوسطة 💵', t: ['standard'] }, { k: 'high', l: 'فاخرة 💎', t: ['premium'] }] },
+    { questionKey: 'area', question: 'ما تهتمين به؟', options: [{ k: 'face', l: 'وجه ✨', t: ['skincare', 'makeup'] }, { k: 'hair', l: 'شعر 💇‍♀️', t: ['hair'] }, { k: 'body', l: 'جسم 🧖‍♀️', t: ['massage', 'spa'] }, { k: 'nails', l: 'أظافر 💅', t: ['nails'] }, { k: 'all', l: 'كل شيء 🌟', t: ['full'] }] },
+  ]});
+
+  await prisma.matchmakerService.createMany({ data: [
+    { nameAr: 'مكياج احترافي', emoji: '💄', price: 300, tags: ['glam', 'luxury', 'makeup', 'premium'] },
+    { nameAr: 'تنظيف بشرة عميق', emoji: '✨', price: 200, tags: ['skincare', 'standard', 'basic'] },
+    { nameAr: 'تسريحة شعر', emoji: '💇‍♀️', price: 200, tags: ['hair', 'elegant', 'standard'] },
+    { nameAr: 'مساج استرخائي', emoji: '💆‍♀️', price: 250, tags: ['massage', 'spa', 'standard'] },
+    { nameAr: 'مانيكير وباديكير', emoji: '💅', price: 180, tags: ['nails', 'basic', 'budget'] },
+    { nameAr: 'حمام مغربي', emoji: '🧖‍♀️', price: 350, tags: ['spa', 'luxury', 'full', 'premium'] },
+    { nameAr: 'مكياج طبيعي', emoji: '🌸', price: 200, tags: ['natural', 'makeup', 'daily', 'budget'] },
+    { nameAr: 'عناية بالبشرة', emoji: '🧴', price: 150, tags: ['skincare', 'basic', 'daily', 'budget'] },
+  ]});
+
   // ---- Summary ----
   console.log('\n🎉 Seed complete!');
   console.log('   Admin: admin@galaxyofbeauty.sa (password in 1Password)');
