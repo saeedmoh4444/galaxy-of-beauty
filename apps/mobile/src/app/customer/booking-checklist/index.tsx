@@ -1,61 +1,34 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
 
 export default function BookingChecklistScreen(): JSX.Element {
-  const { data: cats, loading, error, refetch } = useQuery(() => trpc.bookingChecklist.categories.query() as any);
+  const { data: cats, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.bookingChecklist.categories.query() as any);
   const [selectedCat, setSelectedCat] = useState<string | null>(null);
-  const { data: itemsData, loading: itemsLoading } = useQuery(
-    () => selectedCat ? (trpc.bookingChecklist.get.query({ category: selectedCat }) as any) : Promise.resolve(null),
-  );
-
-  if (loading) return <ActivityIndicator color="#2563eb" style={{ marginTop: 40 }} size="large" />;
+  const { data: itemsData, loading: itemsLoading } = useQuery(() => selectedCat ? (trpc.bookingChecklist.get.query({ category: selectedCat }) as any) : Promise.resolve(null));
+  if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل قائمة التحضير" onRetry={refetch} />;
-
-  const categories = (cats ?? []) as Record<string, unknown>[];
-
+  const categories = (cats ?? []) as any[];
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#2563eb']} />}>
       <Text style={styles.t}>📋 قائمة التحضير</Text>
-      <Text style={styles.sub}>استعدادات ما قبل الموعد</Text>
-
-      <View style={styles.catRow}>
-        {(categories as any[]).map((c: any) => (
-          <TouchableOpacity key={c.key as string} onPress={() => setSelectedCat(c.key as string)} style={[styles.catChip, selectedCat === c.key && styles.catChipActive]}>
-            <Text style={[styles.catText, selectedCat === c.key && styles.catTextActive]}>{c.emoji as string} {c.nameAr as string}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-
-      {itemsLoading && <ActivityIndicator color="#2563eb" style={{ marginTop: 20 }} />}
-      {(itemsData as any) && (
-        <View style={styles.itemsCard}>
-          <Text style={styles.itemsTitle}>✅ المطلوب قبل الموعد</Text>
-          {((itemsData as any).items ?? []).map((item: any, i: number) => (
-            <View key={i} style={styles.item}>
-              <Text style={styles.check}>☐</Text>
-              <Text style={styles.itemText}>{item.textAr as string ?? item.text as string}</Text>
-            </View>
-          ))}
-        </View>
-      )}
+      <View style={styles.cr}>{categories.map((c: any) => (<TouchableOpacity key={c.key} onPress={() => setSelectedCat(c.key)} style={[styles.cc, selectedCat === c.key && styles.cca]}><Text style={[styles.ct, selectedCat === c.key && styles.cta]}>{c.emoji as string} {c.nameAr as string}</Text></TouchableOpacity>))}</View>
+      {itemsLoading && <SkeletonList count={2} />}
+      {(itemsData as any) && (<View style={styles.ic}><Text style={styles.it}>✅ المطلوب قبل الموعد</Text>
+        {((itemsData as any).items ?? []).map((item: any, i: number) => (<View key={i} style={styles.item}><Text style={styles.chk}>☐</Text><Text style={styles.itx}>{item.textAr as string ?? item.text as string}</Text></View>))}</View>)}
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
   c: { flex: 1, backgroundColor: '#eff6ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#2563eb', textAlign: 'center', marginBottom: 4 },
-  sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 20 },
-  catRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 },
-  catChip: { backgroundColor: '#fff', borderRadius: 14, paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: '#e5e7eb' },
-  catChipActive: { backgroundColor: '#2563eb', borderColor: '#2563eb' },
-  catText: { fontSize: 12, fontWeight: '600', color: '#6b7280' }, catTextActive: { color: '#fff' },
-  itemsCard: { backgroundColor: '#fff', borderRadius: 16, padding: 16 },
-  itemsTitle: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 12 },
+  t: { fontSize: 24, fontWeight: '800', color: '#2563eb', textAlign: 'center', marginBottom: 20 },
+  cr: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 },
+  cc: { backgroundColor: '#fff', borderRadius: 14, paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: '#e5e7eb' },
+  cca: { backgroundColor: '#2563eb', borderColor: '#2563eb' }, ct: { fontSize: 12, fontWeight: '600', color: '#6b7280' }, cta: { color: '#fff' },
+  ic: { backgroundColor: '#fff', borderRadius: 16, padding: 16 }, it: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 12 },
   item: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' },
-  check: { fontSize: 18, color: '#2563eb' },
-  itemText: { fontSize: 13, color: '#374151', flex: 1, textAlign: 'right' },
+  chk: { fontSize: 18, color: '#2563eb' }, itx: { fontSize: 13, color: '#374151', flex: 1, textAlign: 'right' },
 });

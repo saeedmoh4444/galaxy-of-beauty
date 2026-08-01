@@ -1,31 +1,21 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function SavedCardsScreen(): JSX.Element {
-  const { data, loading, error, refetch } = useQuery(() => trpc.savedCards.list.query());
-
-  if (loading) return <ActivityIndicator color="#6b7280" style={{ marginTop: 40 }} size="large" />;
+  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.savedCards.list.query());
+  if (loading) return <SkeletonList count={3} />;
   if (error) return <ErrorAlert message="فشل تحميل البطاقات" onRetry={refetch} />;
-
   const cards = (data ?? []) as Record<string, unknown>[];
-
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#6b7280']} />}>
       <Text style={styles.t}>💳 البطاقات المحفوظة</Text>
-      {cards.length === 0 ? <Text style={styles.e}>لا توجد بطاقات</Text> :
-        cards.map((c: Record<string, unknown>, i: number) => (
-          <View key={i} style={styles.card}>
-            <Text style={styles.brand}>{(c as any).brand || 'بطاقة'}</Text>
-            <Text style={styles.last4}>**** {(c as any).last4 || '----'}</Text>
-          </View>
-        ))
-      }
+      {cards.length === 0 ? <Text style={styles.e}>لا توجد بطاقات</Text> : cards.map((c: Record<string, unknown>, i: number) => (<View key={i} style={styles.card}><Text style={styles.brand}>{(c as any).brand || 'بطاقة'}</Text><Text style={styles.last4}>**** {(c as any).last4 || '----'}</Text></View>))}
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
   c: { flex: 1, backgroundColor: '#f9fafb' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#111827', textAlign: 'center', marginBottom: 20 },

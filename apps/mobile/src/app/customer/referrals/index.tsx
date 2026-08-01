@@ -1,16 +1,17 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function ReferralsScreen(): JSX.Element {
-  const { data, loading, error, refetch } = useQuery(() => trpc.referrals.getMyCode.query());
+  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.referrals.getMyCode.query());
 
-  if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
+  if (loading) return <SkeletonList count={3} />;
   if (error) return <ErrorAlert message="فشل تحميل بيانات الإحالة" onRetry={refetch} />;
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />}>
       <Text style={styles.title}>برنامج الإحالة</Text>
       {!data ? (
         <View style={styles.centered}>
