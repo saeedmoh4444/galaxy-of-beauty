@@ -26,7 +26,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
             <p className="text-sm opacity-80">رصيد نقاطكِ</p>
             <p className="text-4xl font-extrabold mt-2">{points.toLocaleString('ar-SA')}</p>
             <p className="text-sm mt-1 opacity-80">{account?.tierNameAr as string} · مضاعف ×{account?.multiplier as number}</p>
-            {account?.nextTier && <p className="text-xs mt-2 bg-white/20 rounded-full px-3 py-1 inline-block">تحتاجين {(account.nextTier as Record<string,unknown>).pointsNeeded as number} نقطة للوصول لـ {(account.nextTier as Record<string,unknown>).name as string}</p>}
+            {(account?.nextTier as Record<string,unknown>) && <p className="text-xs mt-2 bg-white/20 rounded-full px-3 py-1 inline-block">تحتاجين {(account.nextTier as Record<string,unknown>).pointsNeeded as number} نقطة للوصول لـ {(account.nextTier as Record<string,unknown>).name as string}</p>}
           </Card>
         )}
 
@@ -41,7 +41,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
                 <h3 className="font-bold mt-3">{(r.nameJson as Record<string,string>)?.ar}</h3>
                 <p className="text-xs text-gray-500 mt-1">{(r.descriptionJson as Record<string,string>)?.ar ?? ''}</p>
                 <p className="text-2xl font-extrabold text-amber-600 mt-3">{r.pointsCost as number} نقطة</p>
-                {r.rewardValue && <p className="text-xs text-gray-500">
+                {(r.rewardValue as number) > 0 && <p className="text-xs text-gray-500">
                   {r.rewardType === 'discount_percent' ? `خصم ${r.rewardValue as number}%` : r.rewardType === 'discount_fixed' ? `خصم ${formatCurrency(r.rewardValue as number)}` : 'خدمة مجانية'}
                 </p>}
                 {isRedeemed ? <p className="text-green-600 font-bold mt-3">✅ تم الاستبدال</p> :
