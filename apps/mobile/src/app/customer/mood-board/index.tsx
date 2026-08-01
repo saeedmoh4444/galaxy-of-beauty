@@ -1,39 +1,40 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl, Image } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function MoodBoardScreen() {
-  const [boards, setBoards] = useState<Record<string, unknown>[]>([]);
+export default function MoodBoardScreen(): JSX.Element {
+  const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  useEffect(() => { (trpc.moodBoard.list.query() as any).then((d: any) => { setBoards(d || []); setLoading(false); }).catch(() => setLoading(false)); }, []);
+  const [refreshing, setRefreshing] = useState(false);
 
-  if (loading) return <ActivityIndicator color="#8b5cf6" style={{ marginTop: 40 }} size="large" />;
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).moodBoard.myBoard.query() as any).then((d: any) => { setData(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
+
+  useEffect(() => { fetch(); }, [fetch]);
+
+  if (loading) return <SkeletonList count={6} />;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>🎨 لوحة الإلهام</Text>
-      {boards.length === 0 ? <Text style={styles.e}>لا توجد لوحات</Text> :
-        boards.map((b: Record<string, unknown>, i: number) => (
-          <View key={i} style={styles.card}>
-            <View style={styles.cover}><Text style={styles.coverEmoji}>🎨</Text></View>
-            <Text style={styles.name}>{b.name as string}</Text>
-            {(b.description as string) ? <Text style={styles.desc}>{b.description as string}</Text> : null}
-            <Text style={styles.count}>{(b.pins as any[])?.length || 0} صورة</Text>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#ec4899']} />}>
+      <Text style={styles.t}>🎨 لوحة المود</Text>
+      <View style={styles.grid}>
+        {data.map((p: any, i: number) => (
+          <View key={i} style={styles.pin}>
+            {p.imageUrl ? <Image source={{uri: p.imageUrl as string}} style={styles.img} /> : <View style={styles.placeholder}><Text style={{fontSize:28}}>🖼️</Text></View>}
           </View>
-        ))
-      }
+        ))}
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#faf5ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 20 },
-  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
-  card: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10 },
-  cover: { height: 120, borderRadius: 10, backgroundColor: '#ede9fe', alignItems: 'center', justifyContent: 'center', marginBottom: 10 },
-  coverEmoji: { fontSize: 40 },
-  name: { fontSize: 16, fontWeight: '700', color: '#111827', textAlign: 'right' },
-  desc: { fontSize: 12, color: '#6b7280', textAlign: 'right', marginTop: 4 },
-  count: { fontSize: 12, fontWeight: '600', color: '#7c3aed', textAlign: 'right', marginTop: 8 },
+  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 20 },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  pin: { width: '31%', aspectRatio: 1, borderRadius: 12, overflow: 'hidden' },
+  img: { width: '100%', height: '100%' }, placeholder: { width: '100%', height: '100%', backgroundColor: '#f3f4f6', alignItems: 'center', justifyContent: 'center' },
 });

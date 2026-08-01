@@ -1,34 +1,29 @@
-import { View, Text, ScrollView, Switch, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, Switch, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-const TOGGLES = [
-  { key: 'bookingReminders', label: 'تذكير بالمواعيد' },
-  { key: 'promotions', label: 'العروض والتخفيضات' },
-  { key: 'tips', label: 'نصائح جمالية' },
-  { key: 'community', label: 'المجتمع' },
-];
-
-export default function NotificationSettingsScreen() {
-  const [prefs, setPrefs] = useState<Record<string, boolean>>({});
+export default function NotificationSettingsScreen(): JSX.Element {
+  const [data, setData] = useState<any>({});
   const [loading, setLoading] = useState(true);
-  useEffect(() => { ((trpc as any).notificationPrefs.get.query() as any).then((d: any) => { setPrefs(d || {}); setLoading(false); }).catch(() => setLoading(false)); }, []);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const toggle = (key: string) => {
-    const updated = { ...prefs, [key]: !prefs[key] };
-    setPrefs(updated);
-    ((trpc as any).notificationPrefs.update.mutate({ [key]: updated[key] }) as any);
-  };
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).notificationPrefs.get.query() as any).then((d: any) => { setData(d || {}); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
 
-  if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
+  useEffect(() => { fetch(); }, [fetch]);
+
+  if (loading) return <SkeletonList count={3} />;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>🔔 الإشعارات</Text>
-      {TOGGLES.map((t) => (
-        <View key={t.key} style={styles.row}>
-          <Text style={styles.label}>{t.label}</Text>
-          <Switch value={!!prefs[t.key]} onValueChange={() => toggle(t.key)} trackColor={{ false: '#e5e7eb', true: '#c4b5fd' }} thumbColor={prefs[t.key] ? '#7c3aed' : '#9ca3af'} />
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#6366f1']} />}>
+      <Text style={styles.t}>🔔 إعدادات الإشعارات</Text>
+      {['bookings','promo','chat','reviews'].map((key) => (
+        <View key={key} style={styles.row}>
+          <Text style={styles.label}>{key === 'bookings' ? '📅 الحجوزات' : key === 'promo' ? '📢 العروض' : key === 'chat' ? '💬 المحادثة' : '⭐ التقييمات'}</Text>
+          <Switch value={(data as any)[key] ?? true} onValueChange={() => {}} trackColor={{false:'#e5e7eb',true:'#6366f1'}} />
         </View>
       ))}
     </ScrollView>
@@ -36,8 +31,8 @@ export default function NotificationSettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#111827', textAlign: 'center', marginBottom: 24 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' },
-  label: { fontSize: 15, color: '#374151', textAlign: 'right' },
+  c: { flex: 1, backgroundColor: '#eef2ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#4f46e5', textAlign: 'center', marginBottom: 20 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#fff', borderRadius: 14, padding: 16, marginBottom: 6 },
+  label: { fontSize: 14, fontWeight: '600', color: '#111827' },
 });

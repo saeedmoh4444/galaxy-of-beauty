@@ -1,40 +1,41 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function PenPalScreen() {
-  const [matches, setMatches] = useState<Record<string, unknown>[]>([]);
-  const [interests, setInterests] = useState<Record<string, unknown>[]>([]);
+export default function PenPalScreen(): JSX.Element {
+  const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    Promise.all([(trpc.penPal.match.query() as any), (trpc.penPal.interests.query() as any)])
-      .then(([m, i]) => { setMatches(m || []); setInterests(i || []); setLoading(false); }).catch(() => setLoading(false));
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).penPal.match.query() as any).then((d: any) => { setData(d); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, []);
 
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
+  useEffect(() => { fetch(); }, [fetch]);
+
+  if (loading) return <SkeletonList count={3} />;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>💌 Beauty Pen Pal</Text>
-      {matches.length === 0 ? <Text style={styles.e}>لا توجد تطابقات</Text> : matches.map((m: Record<string, unknown>, i: number) => (
-        <View key={i} style={styles.card}>
-          <View style={styles.avatar}><Text style={styles.avatarText}>{(m.userName as string)?.[0] || '👤'}</Text></View>
-          <View style={{flex:1}}><Text style={styles.name}>{m.userName as string}</Text><Text style={styles.score}>{m.score as number} اهتمامات مشتركة</Text></View>
-          <View style={styles.intIcons}>{(m.interests as string[])?.map((s: string) => <Text key={s}>{(interests as any[]).find((x: any) => x.key === s)?.emoji || '💬'}</Text>)}</View>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#ec4899']} />}>
+      <Text style={styles.t}>💌 صديقة الجمال</Text>
+      {data ? (
+        <View style={styles.card}>
+          <Text style={styles.emoji}>👩‍🎨</Text>
+          <Text style={styles.name}>{data.name as string}</Text>
+          <Text style={styles.match}>{data.matchReason as string}</Text>
         </View>
-      ))}
+      ) : <Text style={styles.e}>لم تجدِ صديقة بعد</Text>}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#be185d', textAlign: 'center', marginBottom: 20 },
+  t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 20 },
   e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
-  card: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8, alignItems: 'center', gap: 10 },
-  avatar: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#fce7f3', alignItems: 'center', justifyContent: 'center' },
-  avatarText: { fontSize: 18, fontWeight: '700', color: '#be185d' },
-  name: { fontSize: 14, fontWeight: '700', color: '#111827', textAlign: 'right' },
-  score: { fontSize: 12, color: '#059669', textAlign: 'right', marginTop: 2 },
-  intIcons: { flexDirection: 'row', gap: 2 },
+  card: { backgroundColor: '#fff', borderRadius: 20, padding: 24, alignItems: 'center', borderWidth: 2, borderColor: '#fbcfe8' },
+  emoji: { fontSize: 48 }, name: { fontSize: 18, fontWeight: '700', color: '#111827', marginTop: 8 },
+  match: { fontSize: 13, color: '#6b7280', marginTop: 4, textAlign: 'center' },
 });
