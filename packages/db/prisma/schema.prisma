@@ -2049,3 +2049,110 @@ model RestockReminderItem {
   @@index([userId])
   @@map("restock_reminder_items")
 }
+
+// ── Cycle Entries ─────────────────────────────────────────
+model CycleEntry {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  dayNumber Int
+  phase     String
+  mood      String?
+  notes     String?
+  createdAt DateTime @default(now())
+  @@index([userId])
+  @@map("cycle_entries")
+}
+
+// ── Beauty Closet ─────────────────────────────────────────
+model BeautyClosetProduct {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  name         String
+  emoji        String   @default("🧴")
+  category     String   @default("skincare")
+  openDate     DateTime?
+  expiryMonths Int?
+  usagePct     Int      @default(100)
+  notes        String?
+  createdAt    DateTime @default(now())
+  @@index([userId])
+  @@map("beauty_closet_products")
+}
+
+// ── Beauty Parties ────────────────────────────────────────
+model BeautyParty {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  theme       String
+  guestCount  Int
+  totalAmount Float
+  discountPct Int      @default(0)
+  status      String   @default("PENDING")
+  scheduledAt DateTime?
+  createdAt   DateTime @default(now())
+  @@index([userId])
+  @@map("beauty_parties")
+}
+
+// ── Allergen Profiles ─────────────────────────────────────
+model AllergenProfile {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  allergens String[] @default([])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("allergen_profiles")
+}
+
+// ── Beauty Budget Items ───────────────────────────────────
+model BeautyBudgetItem {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  category     String
+  monthlyLimit Float
+  spent        Float    @default(0)
+  month        String
+  year         Int
+  createdAt    DateTime @default(now())
+  @@index([userId])
+  @@map("beauty_budget_items")
+}
+
+// ── Challenge Participants ────────────────────────────────
+model ChallengeParticipant {
+  id           Int       @id @default(autoincrement())
+  userId       Int
+  challengeKey String
+  joinedAt     DateTime  @default(now())
+  completedAt  DateTime?
+  progress     Int       @default(0)
+  @@unique([userId, challengeKey])
+  @@map("challenge_participants")
+}
+
+// ── Virtual Consultations ─────────────────────────────────
+model VirtualConsultation {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  consultantType String
+  scheduledAt    DateTime
+  slot           String
+  price          Float
+  status         String   @default("CONFIRMED")
+  meetingLink    String?
+  createdAt      DateTime @default(now())
+  @@index([userId])
+  @@map("virtual_consultations")
+}
+
+// ── Salon Memberships ─────────────────────────────────────
+model SalonMembership {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  tier      String   @default("basic")
+  startedAt DateTime @default(now())
+  expiresAt DateTime?
+  autoRenew Boolean  @default(false)
+  status    String   @default("ACTIVE")
+  @@map("salon_memberships")
+}

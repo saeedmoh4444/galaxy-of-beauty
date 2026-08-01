@@ -158,6 +158,14 @@ import { rideHailingRouter } from './rideHailing';
 import { lastMileDeliveryRouter } from './lastMileDelivery';
 import { clinicConnectRouter } from './clinicConnect';
 import { monitoringRouter } from './monitoring';
+import { cycleTrackerRouter } from './cycleTracker';
+import { beautyClosetRouter } from './beautyCloset';
+import { beautyPartyRouter } from './beautyParty';
+import { allergenCheckerRouter } from './allergenChecker';
+import { beautyBudgetPlannerRouter } from './beautyBudgetPlanner';
+import { socialChallengesRouter } from './socialChallenges';
+import { virtualConsultationRouter } from './virtualConsultation';
+import { salonMembershipRouter } from './salonMembership';
 import { womensServicesRouter } from './womensServices';
 import { kidsServicesRouter } from './kidsServices';
 import { serviceRecommenderRouter } from './serviceRecommender';
@@ -332,6 +340,14 @@ export const appRouter = router({
   womensServices: womensServicesRouter,
   kidsServices: kidsServicesRouter,
   serviceRecommender: serviceRecommenderRouter,
+  cycleTracker: cycleTrackerRouter,
+  beautyCloset: beautyClosetRouter,
+  beautyParty: beautyPartyRouter,
+  allergenChecker: allergenCheckerRouter,
+  beautyBudgetPlanner: beautyBudgetPlannerRouter,
+  socialChallenges: socialChallengesRouter,
+  virtualConsultation: virtualConsultationRouter,
+  salonMembership: salonMembershipRouter,
 });
 
 export type AppRouter = typeof appRouter;
