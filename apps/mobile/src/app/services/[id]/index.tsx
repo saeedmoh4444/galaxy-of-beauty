@@ -1,61 +1,34 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function ServiceDetailScreen() {
+export default function ServiceDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [data, setData] = useState<Record<string, unknown> | null>(null);
+  const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!id) return;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc as any).services.getById.query({ id: Number(id) })
-      .then((d: unknown) => { setData(d as Record<string, unknown>); setLoading(false); })
-      .catch(() => setLoading(false));
+  const [refreshing, setRefreshing] = useState(false);
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).services.getById.query({ id: parseInt(id, 10) }) as any).then((d: any) => { setData(d); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, [id]);
-
-  if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} />;
-  if (!data) return <Text style={styles.error}>لم يتم العثور على الخدمة</Text>;
-
+  useEffect(() => { fetch(); }, [fetch]);
+  if (loading) return <SkeletonList count={4} />;
+  if (!data) return <View style={styles.c}><Text style={styles.e}>الخدمة غير موجودة</Text></View>;
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.hero} />
-      <Text style={styles.title}>{(data.titleJson as Record<string, string>)?.ar ?? ''}</Text>
-      {(data.descriptionJson as Record<string, string>)?.ar ? <Text style={styles.desc}>{(data.descriptionJson as Record<string, string>).ar}</Text> : null}
-      <View style={styles.row}>
-        <View style={styles.stat}><Text style={styles.statLabel}>السعر</Text><Text style={styles.statValue}>{data.basePrice as number} ر.س</Text></View>
-        <View style={styles.stat}><Text style={styles.statLabel}>المدة</Text><Text style={styles.statValue}>{data.durationMin as number} دقيقة</Text></View>
-      </View>
-      <Text style={styles.sectionTitle}>الفنيات المتاحات</Text>
-      {((data.technicianServices as Record<string, unknown>[]) ?? []).map((ts: Record<string, unknown>, i: number) => {
-        const tech = (ts.technician as Record<string, unknown>) ?? {};
-        return (
-          <View key={i} style={styles.techCard}>
-            <Text style={styles.techName}>{(tech.user as Record<string, string>)?.name ?? ''}</Text>
-            <Text style={styles.techCity}>{tech.city as string} ⭐ {Number(tech.ratingAvg ?? 0).toFixed(1)}</Text>
-          </View>
-        );
-      })}
-      {((data.technicianServices as unknown[]) ?? []).length === 0 && <Text style={styles.empty}>لا توجد فنيات متاحة حالياً</Text>}
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#db2777']} />}>
+      <Text style={styles.t}>{data.emoji as string ?? '💆‍♀️'} {(data.titleJson as any)?.ar as string}</Text>
+      <View style={styles.card}><Text style={styles.price}>{(data.basePrice as number)?.toLocaleString()} ر.س</Text><Text style={styles.dur}>⏱️ {data.durationMin as number} دقيقة</Text></View>
+      {data.descriptionJson && <Text style={styles.desc}>{(data.descriptionJson as any)?.ar as string}</Text>}
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  hero: { height: 200, backgroundColor: '#ede9fe' },
-  title: { fontSize: 24, fontWeight: '800', color: '#111827', padding: 16, paddingBottom: 4 },
-  desc: { fontSize: 14, color: '#6b7280', paddingHorizontal: 16, marginBottom: 8 },
-  row: { flexDirection: 'row', padding: 16, gap: 16 },
-  stat: { flex: 1, backgroundColor: '#f9fafb', borderRadius: 12, padding: 12, alignItems: 'center' },
-  statLabel: { fontSize: 12, color: '#6b7280' },
-  statValue: { fontSize: 18, fontWeight: '700', color: '#7c3aed', marginTop: 4 },
-  sectionTitle: { fontSize: 18, fontWeight: '700', padding: 16, paddingBottom: 8 },
-  techCard: { padding: 12, marginHorizontal: 16, marginBottom: 8, borderRadius: 12, borderWidth: 1, borderColor: '#e5e7eb' },
-  techName: { fontSize: 16, fontWeight: '600', color: '#111827' },
-  techCity: { fontSize: 13, color: '#6b7280', marginTop: 2 },
-  error: { textAlign: 'center', color: '#ef4444', marginTop: 40, fontSize: 16 },
-  empty: { textAlign: 'center', color: '#9ca3af', marginTop: 20 },
+  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 22, fontWeight: '800', color: '#111827', textAlign: 'right', marginBottom: 16 },
+  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
+  card: { flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#fff', borderRadius: 16, padding: 20, marginBottom: 16 },
+  price: { fontSize: 24, fontWeight: '800', color: '#db2777' }, dur: { fontSize: 14, color: '#6b7280' },
+  desc: { fontSize: 14, color: '#374151', lineHeight: 24, textAlign: 'right' },
 });
