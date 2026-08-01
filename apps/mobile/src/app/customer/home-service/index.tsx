@@ -1,34 +1,30 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
 
-export default function HomeServiceScreen() {
+export default function HomeServiceScreen(): JSX.Element {
   const [estimate, setEstimate] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const fetch = () => { setLoading(true); ((trpc as any).homeService.estimate.query({ city: 'الرياض' /* TODO: from user location */ }) as any).then((d: any) => { setEstimate(d); setLoading(false); }).catch(() => setLoading(false)); };
-
+  const [refreshing, setRefreshing] = useState(false);
+  const fetch = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    ((trpc as any).homeService.estimate.query({ city: 'الرياض' /* TODO */ }) as any).then((d: any) => { setEstimate(d); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+  }, []);
+  if (loading) return <SkeletonList count={3} />;
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#059669']} />}>
       <Text style={styles.t}>🏠 خدمة منزلية</Text>
-      <TouchableOpacity onPress={fetch} style={styles.btn} disabled={loading}><Text style={styles.btnText}>💰 تقدير التكلفة — الرياض</Text></TouchableOpacity>
-      {loading ? <ActivityIndicator color="#059669" style={{ marginTop: 20 }} /> : estimate ? (
-        <View style={styles.result}>
-          <View style={styles.row}><Text style={styles.label}>رسوم الخدمة</Text><Text>{estimate.serviceFee} ر.س</Text></View>
-          <View style={styles.row}><Text style={styles.label}>رسوم الزيارة</Text><Text>{estimate.travelFee} ر.س</Text></View>
-          <View style={styles.row}><Text style={styles.label}>الإجمالي</Text><Text style={styles.total}>{estimate.total} ر.س</Text></View>
-        </View>
-      ) : null}
+      <TouchableOpacity onPress={() => fetch(false)} style={styles.btn}><Text style={styles.bt}>💰 تقدير التكلفة — الرياض</Text></TouchableOpacity>
+      {estimate && <View style={styles.card}><Text style={styles.ep}>{(estimate.totalEstimate as number)?.toLocaleString()} ر.س</Text><Text style={styles.em}>⏱️ {estimate.estimatedDuration as string}</Text></View>}
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
   c: { flex: 1, backgroundColor: '#ecfdf5' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 20 },
-  btn: { backgroundColor: '#059669', borderRadius: 14, padding: 16, alignItems: 'center' },
-  btnText: { color: '#fff', fontSize: 16, fontWeight: '700' },
-  result: { marginTop: 20, backgroundColor: '#fff', borderRadius: 16, padding: 16 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8 },
-  label: { fontSize: 14, color: '#6b7280' },
-  total: { fontSize: 18, fontWeight: '800', color: '#059669' },
+  btn: { backgroundColor: '#059669', borderRadius: 14, padding: 16, alignItems: 'center', marginBottom: 16 },
+  bt: { color: '#fff', fontSize: 16, fontWeight: '700' },
+  card: { backgroundColor: '#fff', borderRadius: 16, padding: 20, alignItems: 'center' },
+  ep: { fontSize: 28, fontWeight: '800', color: '#059669' }, em: { fontSize: 14, color: '#6b7280', marginTop: 4 },
 });
