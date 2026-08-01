@@ -31,15 +31,15 @@ export default function VirtualConsultationScreen(): JSX.Element {
   const myBookings = (bookings ?? []) as any[];
 
   return (
-    <ScrollView style={s.c} contentContainerStyle={s.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />}>
-      <Text style={s.t}>📹 استشارة افتراضية</Text>
-      <Text style={s.sub}>استشيري خبيرات التجميل عبر الفيديو</Text>
+    <ScrollView style={st.c} contentContainerStyle={st.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />}>
+      <Text style={st.t}>📹 استشارة افتراضية</Text>
+      <Text style={st.sub}>استشيري خبيرات التجميل عبر الفيديو</Text>
 
       {booked && <View style={{backgroundColor:'#ecfdf5',borderRadius:12,padding:16,marginBottom:16,alignItems:'center'}}><Text style={{fontSize:32}}>✅</Text><Text style={{fontWeight:'700',color:'#059669',marginTop:8}}>تم الحجز بنجاح</Text></View>}
 
-      <View style={s.grid}>
+      <View style={st.grid}>
         {CONSULTANTS.map(c => (
-          <TouchableOpacity key={c.key} onPress={() => { setSelected(c.key); setSlot(null); }} style={[s.consCard, selected===c.key&&{borderColor:'#db2777',backgroundColor:'#fdf2f8'}]}>
+          <TouchableOpacity key={c.key} onPress={() => { setSelected(c.key); setSlot(null); }} style={[st.consCard, selected===c.key&&{borderColor:'#db2777',backgroundColor:'#fdf2f8'}]}>
             <Text style={{fontSize:40,textAlign:'center'}}>{c.emoji}</Text>
             <Text style={{fontWeight:'700',fontSize:14,textAlign:'center',marginTop:8}}>{c.name}</Text>
             <Text style={{fontSize:11,color:'#6b7280',textAlign:'center'}}>{c.specialty}</Text>
@@ -51,9 +51,9 @@ export default function VirtualConsultationScreen(): JSX.Element {
       {consultant && <View style={{marginTop:16}}>
         <Text style={{fontSize:16,fontWeight:'700',color:'#111827',marginBottom:8}}>📅 اختر الوقت — {consultant.emoji} {consultant.name}</Text>
         <View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>{consultant.slots.map(s => (
-          <TouchableOpacity key={s} onPress={() => setSlot(s)} style={[s.slotBtn, slot===s&&{backgroundColor:'#db2777'}]}><Text style={[s.slotText, slot===s&&{color:'#fff'}]}>{s}</Text></TouchableOpacity>
+          <TouchableOpacity key={s} onPress={() => setSlot(s)} style={[st.slotBtn, slot===s&&{backgroundColor:'#db2777'}]}><Text style={[st.slotText, slot===s&&{color:'#fff'}]}>{s}</Text></TouchableOpacity>
         ))}</View>
-        {slot && <TouchableOpacity onPress={handleBook} style={[s.btn,{marginTop:12}]}><Text style={s.btnText}>📹 احجزي — {consultant.price} ر.س</Text></TouchableOpacity>}
+        {slot && <TouchableOpacity onPress={handleBook} style={[st.btn,{marginTop:12}]}><Text style={st.btnText}>📹 احجزي — {consultant.price} ر.س</Text></TouchableOpacity>}
       </View>}
 
       {myBookings.length > 0 && <View style={{marginTop:20}}>
@@ -64,7 +64,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
   );
 }
 
-const s = StyleSheet.create({
+const st = StyleSheet.create({
   c:{flex:1,backgroundColor:'#fdf2f8'}, i:{padding:16,paddingBottom:40},
   t:{fontSize:24,fontWeight:'800',color:'#111827',textAlign:'center',marginBottom:8},
   sub:{fontSize:14,color:'#6b7280',textAlign:'center',marginBottom:20},
