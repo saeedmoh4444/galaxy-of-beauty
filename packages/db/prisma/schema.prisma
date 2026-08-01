@@ -2215,3 +2215,29 @@ model SalonMembership {
     createdAt   DateTime @default(now())
     @@map("corporate_enquiries")
   }
+
+  // ── Gift Quiz ─────────────────────────────────────────────
+  model GiftQuizQuestion {
+    id       Int    @id @default(autoincrement())
+    questionKey String @unique
+    questionJson Json
+    options  Json
+    sortOrder Int  @default(0)
+    isActive  Boolean @default(true)
+    createdAt DateTime @default(now())
+    @@map("gift_quiz_questions")
+  }
+
+  model GiftQuizRecommendation {
+    id        Int    @id @default(autoincrement())
+    nameJson  Json
+    descJson  Json?
+    price     Float
+    category  String
+    emoji     String @default("🎁")
+    tags      Json
+    sortOrder Int    @default(0)
+    isActive  Boolean @default(true)
+    createdAt DateTime @default(now())
+    @@map("gift_quiz_recommendations")
+  }
