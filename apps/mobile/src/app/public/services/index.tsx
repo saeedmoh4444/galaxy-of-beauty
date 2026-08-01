@@ -1,35 +1,31 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
+import { useState } from 'react';
 
 export default function ServicesScreen(): JSX.Element {
-  const [categories, setCategories] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: categories, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).services.categories.query());
   const [activeCat, setActiveCat] = useState<string | null>(null);
-  const [services, setServices] = useState<any[]>([]);
+  const { data: services } = useQuery(() => activeCat ? (trpc as any).services.byCategory.query({ category: activeCat }) : Promise.resolve(null));
 
-  useEffect(() => {
-    ((trpc as any).services.categories.query() as any).then((d: any) => { setCategories(d || []); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  if (loading) return <SkeletonList count={6} />;
+  if (error) return <ErrorAlert message="فشل تحميل الخدمات" onRetry={refetch} />;
 
-  const selectCat = (catKey: string) => {
-    setActiveCat(catKey);
-    ((trpc as any).services.byCategory.query({ category: catKey }) as any).then((d: any) => setServices(d || []));
-  };
-
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
+  const catItems = (categories ?? []) as any[];
+  const svcItems = (services ?? []) as any[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />}>
       <Text style={styles.t}>💆‍♀️ الخدمات</Text>
       <Text style={styles.sub}>اكتشفي جميع خدمات التجميل والعناية</Text>
-
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{marginBottom:16}}>
         <View style={{flexDirection:'row', gap:8}}>
-          {categories.map((cat: any) => {
+          {catItems.map((cat: any) => {
             const isActive = activeCat === cat.key;
             return (
-              <TouchableOpacity key={cat.key} onPress={() => selectCat(cat.key as string)} style={[styles.catChip, isActive && styles.catChipActive]}>
+              <TouchableOpacity key={cat.key} onPress={() => setActiveCat(cat.key as string)} style={[styles.catChip, isActive && styles.catChipActive]}>
                 <Text style={styles.catEmoji}>{cat.emoji as string ?? '📂'}</Text>
                 <Text style={[styles.catName, isActive && styles.catNameActive]}>{cat.nameAr as string}</Text>
               </TouchableOpacity>
@@ -37,12 +33,11 @@ export default function ServicesScreen(): JSX.Element {
           })}
         </View>
       </ScrollView>
-
       {activeCat && (
         <>
-          <Text style={styles.sectionTitle}>{services.length} خدمات</Text>
-          {services.length === 0 ? <Text style={styles.e}>لا توجد خدمات في هذه الفئة</Text> :
-            services.map((s: any) => (
+          <Text style={styles.sectionTitle}>{svcItems.length} خدمات</Text>
+          {svcItems.length === 0 ? <Text style={styles.e}>لا توجد خدمات في هذه الفئة</Text> :
+            svcItems.map((s: any) => (
               <View key={s.id} style={styles.card}>
                 <Text style={styles.svcEmoji}>{s.emoji as string ?? '💆‍♀️'}</Text>
                 <View style={{flex:1}}>

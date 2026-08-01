@@ -1,23 +1,23 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function SubscriptionBoxesScreen(): JSX.Element {
-  const [boxes, setBoxes] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: boxes, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).subscriptionBoxes.list.query());
 
-  useEffect(() => {
-    ((trpc as any).subscriptionBoxes.list.query() as any).then((d: any) => { setBoxes(d || []); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  if (loading) return <SkeletonList count={4} />;
+  if (error) return <ErrorAlert message="فشل تحميل الصناديق" onRetry={refetch} />;
 
-  if (loading) return <ActivityIndicator color="#8b5cf6" style={{ marginTop: 40 }} size="large" />;
+  const items = (boxes ?? []) as any[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />}>
       <Text style={styles.t}>📦 الصناديق الشهرية</Text>
       <Text style={styles.sub}>صندوق جمال شهري لباب بيتكِ</Text>
-      {boxes.length === 0 ? <Text style={styles.e}>لا توجد صناديق</Text> :
-        boxes.map((b: any) => (
+      {items.length === 0 ? <Text style={styles.e}>لا توجد صناديق</Text> :
+        items.map((b: any) => (
           <View key={b.id} style={styles.card}>
             <Text style={styles.boxEmoji}>{b.emoji as string ?? '📦'}</Text>
             <View style={{flex:1}}>

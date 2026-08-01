@@ -1,23 +1,23 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@/lib/useQuery';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function TechniciansScreen(): JSX.Element {
-  const [techs, setTechs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: techs, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).technicians.list.query());
 
-  useEffect(() => {
-    ((trpc as any).technicians.list.query() as any).then((d: any) => { setTechs(d || []); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  if (loading) return <SkeletonList count={6} />;
+  if (error) return <ErrorAlert message="فشل تحميل الفنيات" onRetry={refetch} />;
 
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
+  const items = (techs ?? []) as any[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />}>
       <Text style={styles.t}>👩‍🎨 الفنيات</Text>
       <Text style={styles.sub}>تعرفي على نخبة فنيات التجميل</Text>
-      {techs.length === 0 ? <Text style={styles.e}>لا توجد فنيات</Text> :
-        techs.map((t: any) => (
+      {items.length === 0 ? <Text style={styles.e}>لا توجد فنيات</Text> :
+        items.map((t: any) => (
           <View key={t.id} style={styles.card}>
             <Text style={styles.avatar}>👩‍🎨</Text>
             <View style={{flex:1}}>
