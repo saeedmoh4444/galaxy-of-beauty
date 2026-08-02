@@ -1,10 +1,21 @@
+import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
-// Simulated punch card — 10 bookings = 1 free
+// 10 bookings = 1 free service
+const PUNCH_TOTAL = 10;
+
 export const loyaltyPunchCardRouter = router({
   myCard: customerProcedure.query(async ({ ctx }) => {
-    const stamps = Math.floor((ctx.user.id * 7) % 10);
-    const free = stamps >= 9;
-    return { total: 10, stamps, remaining: 10 - stamps, earnedFree: free, message: free ? '🎉 لكِ جلسة مجانية!' : `متبقي ${10 - stamps} حجوزات للجلسة المجانية` };
+    const completedBookings = await prisma.booking.count({ where: { customerId: ctx.user.id, status: 'COMPLETED' } });
+    const stamps = completedBookings % PUNCH_TOTAL;
+    const earnedFree = stamps === 0 && completedBookings > 0;
+    return {
+      total: PUNCH_TOTAL,
+      stamps,
+      remaining: PUNCH_TOTAL - stamps,
+      totalCompleted: completedBookings,
+      earnedFree,
+      message: earnedFree ? '🎉 لكِ جلسة مجانية!' : `متبقي ${PUNCH_TOTAL - stamps} حجوزات للجلسة المجانية`,
+    };
   }),
 });
