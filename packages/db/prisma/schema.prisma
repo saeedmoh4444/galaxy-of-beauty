@@ -1871,6 +1871,20 @@ model DnaAnalysis {
   @@map("dna_analyses")
 }
 
+model BeforeAfter {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  userName       String
+  beforeUrl      String
+  afterUrl       String
+  serviceType    String
+  technicianName String
+  description    String
+  likes          Int      @default(0)
+  createdAt      DateTime @default(now())
+  @@map("before_after")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================
