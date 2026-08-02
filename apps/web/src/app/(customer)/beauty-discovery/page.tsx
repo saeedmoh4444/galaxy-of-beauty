@@ -22,7 +22,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
         <div className="grid gap-6 lg:grid-cols-2">
           {fLoading ? <CardSkeleton/> : (
             <Card padding="lg"><h3 className="font-bold mb-3">🔥 الأكثر طلباً</h3>
-              <div className="space-y-2">{(featured?.popularServices as Array<Record<string,unknown>>)?.map((s: Record<string,unknown>) => (
+              <div className="space-y-2">{((Array.isArray(featured?.popularServices) ? featured?.popularServices : []) as Array<Record<string,unknown>>).map((s: Record<string,unknown>) => (
                 <div key={s.id as number} className="flex items-center justify-between rounded-lg border p-2 text-sm"><span>{s.emoji as string} {s.name as string}</span><span className="font-bold">{formatCurrency(s.price as number)}</span></div>
               ))}</div>
             </Card>
