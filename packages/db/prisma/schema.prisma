@@ -1827,6 +1827,20 @@ model SaleAlert {
   @@map("sale_alerts")
 }
 
+model VideoTestimonial {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  userName       String
+  videoUrl       String
+  rating         Int
+  comment        String
+  technicianName String
+  serviceName    String
+  likes          Int      @default(0)
+  createdAt      DateTime @default(now())
+  @@map("video_testimonials")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================
