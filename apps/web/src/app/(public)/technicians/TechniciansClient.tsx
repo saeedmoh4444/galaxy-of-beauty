@@ -17,7 +17,7 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const query = api.technicians.list.useQuery({ city: city || undefined }) as any;
-  const techs: AnyRecord[] = query.data ?? data.initialTechnicians;
+  const techs: AnyRecord[] = Array.isArray(query.data) ? query.data : Array.isArray(data.initialTechnicians) ? data.initialTechnicians : [];
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
