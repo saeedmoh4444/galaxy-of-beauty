@@ -24,8 +24,8 @@ export const adminReportsRouter = router({
       db.booking.groupBy({ by: ['technicianId'], _count: { id: true }, orderBy: { _count: { id: 'desc' } }, take: 5 }),
     ]);
 
-    const byService = topServices.map(c => {
-      const bookings = c.services.reduce((s, svc) => s + svc.bookings.length, 0);
+    const byService = (topServices as any[]).map((c: any) => {
+      const bookings = c.services.reduce((s: number, svc: any) => s + (svc.bookings?.length || 0), 0);
       const revenue = c.services.reduce((s, svc) => s + svc.bookings.reduce((bs, b) => bs + Number(b.totalAmount || 0), 0), 0);
       return { name: (c.nameJson as Record<string, string>)?.ar ?? '', revenue, bookings, pct: 0 };
     }).sort((a, b) => b.bookings - a.bookings);
