@@ -2,13 +2,14 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const TIER_COLORS: Record<string,string> = { SILVER: 'from-gray-300 to-gray-400', GOLD: 'from-yellow-400 to-amber-500', PLATINUM: 'from-purple-400 to-indigo-500' };
 
 export default function RewardsMarketplacePage(): JSX.Element {
-  const { data: account, isLoading: acctLoading } = api.loyalty.myAccount.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean };
-  const { data: rewards, isLoading: rwLoading } = api.loyalty.rewards.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const { data: account, isLoading: acctLoading } = api.loyalty.myAccount.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: rewards, isLoading: rwLoading } = api.loyalty.rewards.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const { data: transactions } = api.loyalty.myTransactions.useQuery({ page: 1, limit: 20 }) as { data: Record<string,unknown> | undefined };
   const redeemMut = api.loyalty.redeem.useMutation();
   const [redeemed, setRedeemed] = useState<number | null>(null);
@@ -16,6 +17,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
   const points = account?.points as number ?? 0;
   const tier = account?.tier as string ?? 'SILVER';
 
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
@@ -35,6 +37,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{(rewards??[]).map((r: Record<string,unknown>) => {
             const canAfford = points >= (r.pointsCost as number);
             const isRedeemed = redeemed === r.id;
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
             return (
               <Card key={r.id as number} padding="lg" className={`text-center ${isRedeemed ? 'border-2 border-green-300 bg-green-50' : canAfford ? '' : 'opacity-50'}`}>
                 <span className="text-4xl">{r.rewardType === 'free_service' ? '💆‍♀️' : r.rewardType === 'discount_percent' ? '🏷️' : '💰'}</span>

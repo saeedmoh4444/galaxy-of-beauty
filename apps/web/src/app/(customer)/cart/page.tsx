@@ -1,10 +1,11 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CartPage(): JSX.Element {
-  const { data, isLoading } = api.marketplace.cart.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const { data, isLoading } = api.marketplace.cart.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const removeMut = api.marketplace.removeFromCart.useMutation();
   const cartItems = data ?? [];
   const total = cartItems.reduce((sum: number, item: Record<string,unknown>) => {
@@ -12,6 +13,7 @@ export default function CartPage(): JSX.Element {
     return sum + (Number(product?.price ?? 0) * (item.quantity as number));
   }, 0);
 
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">

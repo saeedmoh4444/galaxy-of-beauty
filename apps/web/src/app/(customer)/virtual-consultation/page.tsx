@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const CONSULTANTS = [
@@ -17,6 +18,7 @@ export default function VirtualConsultationPage(): JSX.Element {
   const [selected, setSelected] = useState<string|null>(null); const [slot, setSlot] = useState<string|null>(null);
   const consultant = CONSULTANTS.find(c=>c.key===selected);
 
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">

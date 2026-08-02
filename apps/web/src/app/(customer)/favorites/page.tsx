@@ -1,13 +1,15 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, Button } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function FavoritesPage(): JSX.Element {
-  const { data, isLoading } = api.favorites.list.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const { data, isLoading } = api.favorites.list.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const removeMut = api.favorites.remove.useMutation();
   const favorites = data ?? [];
 
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">

@@ -30,6 +30,7 @@ export default function NotificationSettingsPage(): JSX.Element {
     updateMut.mutate({ [key]: updated[key] });
   };
 
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6">

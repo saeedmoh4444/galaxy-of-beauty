@@ -2,20 +2,22 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const TIP_CATEGORIES = ['skincare','makeup','hair','wellness','all'];
 
 export default function SocialPage(): JSX.Element {
-  const { data: trending, isLoading: trLoading } = api.social.trending.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
-  const { data: spotlight, isLoading: spLoading } = api.social.spotlight.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
-  const { data: tipsData, isLoading: tipsLoading } = api.social.tips.useQuery({ page: 1 }) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
-  const { data: lookbook, isLoading: lbLoading } = api.social.lookbook.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
-  const { data: feedData, isLoading: feedLoading } = api.social.feed.useQuery({ page: 1, limit: 12 }) as { data: Record<string,unknown> | undefined; isLoading: boolean };
+  const { data: trending, isLoading: trLoading } = api.social.trending.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: spotlight, isLoading: spLoading } = api.social.spotlight.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: tipsData, isLoading: tipsLoading } = api.social.tips.useQuery({ page: 1 }) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: lookbook, isLoading: lbLoading } = api.social.lookbook.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: feedData, isLoading: feedLoading } = api.social.feed.useQuery({ page: 1, limit: 12 }) as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const [tipCat, setTipCat] = useState('all');
   const tips = (tipsData ?? []).filter((t: Record<string,unknown>) => tipCat==='all' || (t.category as string)===tipCat);
   const feedItems = (feedData?.items as Array<Record<string,unknown>>) ?? [];
 
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">

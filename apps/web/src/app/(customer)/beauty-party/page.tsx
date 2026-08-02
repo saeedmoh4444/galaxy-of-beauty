@@ -2,18 +2,20 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const THEMES = [{key:'spa',emoji:'🧖‍♀️',name:'سبا منزلي'},{key:'makeup',emoji:'💄',name:'حفلة مكياج'},{key:'nails',emoji:'💅',name:'صالون أظافر'},{key:'bridal',emoji:'👰',name:'توديع عزوبية'},{key:'skincare',emoji:'✨',name:'روتين عناية'}];
 
 export default function BeautyPartyPage(): JSX.Element {
-  const { data, isLoading } = api.beautyParty.myParties.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const { data, isLoading } = api.beautyParty.myParties.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const createMut = api.beautyParty.create.useMutation();
   const [theme, setTheme] = useState('spa'); const [guests, setGuests] = useState(4);
   const parties = data ?? [];
   const estPerPerson = 150; const total = estPerPerson * guests;
   const discount = guests>=6?20:guests>=4?10:0; const finalTotal = total - (total*discount/100);
 
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">

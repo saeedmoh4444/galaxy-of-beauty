@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const POPULAR_SERVICES = [
@@ -12,9 +13,10 @@ const POPULAR_SERVICES = [
 
 export default function RecommendationsPage(): JSX.Element {
   const [serviceId, setServiceId] = useState(1);
-  const { data: together, isLoading: tLoading } = api.recommendations.frequentlyBookedTogether.useQuery({ serviceId, limit: 4 }) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
-  const { data: complete, isLoading: cLoading } = api.recommendations.completeTheLook.useQuery({ serviceId, limit: 4 }) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const { data: together, isLoading: tLoading } = api.recommendations.frequentlyBookedTogether.useQuery({ serviceId, limit: 4 }) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: complete, isLoading: cLoading } = api.recommendations.completeTheLook.useQuery({ serviceId, limit: 4 }) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
 
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">

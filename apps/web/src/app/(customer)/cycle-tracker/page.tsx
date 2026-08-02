@@ -2,14 +2,15 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, Button } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const SYMPTOMS_LIST = ['تقلصات','صداع','تعب','انتفاخ','غثيان','أرق','شهية مفتوحة','آلام ظهر','حساسية الصدر','تقلبات مزاجية'];
 const MOODS = ['😍','😊','😐','😔','😢'];
 
 export default function CycleTrackerPage(): JSX.Element {
-  const { data: today, isLoading: todayLoading } = api.cycleTracker.today.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean };
-  const { data: entriesData, isLoading: entriesLoading } = api.cycleTracker.myEntries.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean };
+  const { data: today, isLoading: todayLoading } = api.cycleTracker.today.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: entriesData, isLoading: entriesLoading } = api.cycleTracker.myEntries.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const { data: settings } = api.cycleTracker.settings.useQuery() as { data: Record<string,unknown> | undefined };
   const logMut = api.cycleTracker.logDay.useMutation();
   const settingsMut = api.cycleTracker.updateSettings.useMutation();
@@ -37,6 +38,7 @@ export default function CycleTrackerPage(): JSX.Element {
     }, { onSuccess: () => { setShowLog(false); setNotes(''); } });
   };
 
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
@@ -87,6 +89,7 @@ export default function CycleTrackerPage(): JSX.Element {
             <div className="flex flex-wrap gap-1">{Array.from({length:cycleLength},(_,i) => i+1).map(d => {
               const p = (() => { const adj = ((d-1) % cycleLength) + 1; if (adj<=5) return PHASES_LIST[0]; if (adj<=13) return PHASES_LIST[1]; if (adj<=16) return PHASES_LIST[2]; return PHASES_LIST[3]; })();
               const entry = entries.find((e: Record<string,unknown>) => e.dayNumber === d);
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
               return (
                 <div key={d} className={`w-8 h-8 rounded-full text-xs flex items-center justify-center relative ${entry ? 'ring-2 ring-offset-1' : 'bg-gray-100'}`} style={{backgroundColor: entry ? p!.color+'30' : '', borderColor: p!.color}} title={`اليوم ${d}: ${p!.name}`}>
                   <span className="text-[10px]">{d}</span>

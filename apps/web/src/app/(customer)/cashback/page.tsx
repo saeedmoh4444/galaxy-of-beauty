@@ -1,13 +1,15 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CashbackPage(): JSX.Element {
-  const { data: info, isLoading: infoLoading } = api.cashback.info.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean };
-  const { data: history, isLoading: histLoading } = api.cashback.history.useQuery({ page: 1, limit: 20 }) as { data: Record<string,unknown> | undefined; isLoading: boolean };
+  const { data: info, isLoading: infoLoading } = api.cashback.info.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: history, isLoading: histLoading } = api.cashback.history.useQuery({ page: 1, limit: 20 }) as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const transactions = (history?.items as Array<Record<string,unknown>>) ?? [];
 
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">

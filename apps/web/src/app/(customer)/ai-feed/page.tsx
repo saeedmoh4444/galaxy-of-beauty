@@ -1,14 +1,16 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function AiFeedPage(): JSX.Element {
-  const { data: feed, isLoading } = api.aiFeatures.personalizedFeed.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean };
+  const { data: feed, isLoading } = api.aiFeatures.personalizedFeed.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const wishlistItems = (feed?.wishlistItems as Array<Record<string,unknown>>) ?? [];
   const recommendations = (feed?.recommendations as Array<Record<string,unknown>>) ?? [];
   const skinProfile = feed?.skinProfile as Record<string,unknown> | null;
 
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
