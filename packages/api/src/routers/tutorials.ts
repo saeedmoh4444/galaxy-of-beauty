@@ -6,7 +6,7 @@ const TUTORIALS = [
   {
     id: 1, titleAr: ' routine مكياج سهرة كامل', titleEn: 'Full Evening Makeup Routine',
     descAr: 'تعلمي خطوات المكياج الكامل للسهرات والمناسبات الخاصة', descEn: 'Learn complete evening makeup step by step',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', duration: '18:24',
+    videoUrl: '', duration: '18:24',
     category: 'makeup', difficulty: 'intermediate',
     thumbnailUrl: null, tags: ['مكياج', 'سهرة', 'احترافي'],
     authorName: 'نورة العمري', authorTitleAr: 'خبيرة تجميل', authorTitleEn: 'Beauty Expert',
@@ -15,7 +15,7 @@ const TUTORIALS = [
   {
     id: 2, titleAr: 'تسريحة شعر للعرايس', titleEn: 'Bridal Hairstyling Tutorial',
     descAr: 'تسريحة شعر راقية ليوم الزفاف — خطوة بخطوة', descEn: 'Elegant bridal hairstyle — step by step guide',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', duration: '22:10',
+    videoUrl: '', duration: '22:10',
     category: 'hair', difficulty: 'advanced',
     thumbnailUrl: null, tags: ['شعر', 'عرايس', 'تسريحة'],
     authorName: 'سارة الحربي', authorTitleAr: 'مصففة شعر', authorTitleEn: 'Hair Stylist',
@@ -24,7 +24,7 @@ const TUTORIALS = [
   {
     id: 3, titleAr: 'روتين العناية بالبشرة اليومي', titleEn: 'Daily Skincare Routine',
     descAr: 'روتين متكامل للعناية اليومية بالبشرة — تنظيف، تونر، سيروم، ومرطب', descEn: 'Complete daily skincare: cleanse, tone, serum, moisturize',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', duration: '12:45',
+    videoUrl: '', duration: '12:45',
     category: 'skincare', difficulty: 'beginner',
     thumbnailUrl: null, tags: ['عناية', 'بشرة', 'روتين'],
     authorName: 'د. ليلى القحطاني', authorTitleAr: 'طبيبة جلدية', authorTitleEn: 'Dermatologist',
@@ -33,7 +33,7 @@ const TUTORIALS = [
   {
     id: 4, titleAr: 'فن رسم الحواجب', titleEn: 'Eyebrow Shaping Art',
     descAr: 'تعلمي رسم الحواجب بالشكل المثالي لوجهكِ', descEn: 'Master the art of perfect eyebrow shaping',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', duration: '9:15',
+    videoUrl: '', duration: '9:15',
     category: 'makeup', difficulty: 'beginner',
     thumbnailUrl: null, tags: ['حواجب', 'رسم', 'مكياج'],
     authorName: 'نورة العمري', authorTitleAr: 'خبيرة تجميل', authorTitleEn: 'Beauty Expert',
@@ -42,7 +42,7 @@ const TUTORIALS = [
   {
     id: 5, titleAr: 'صبغات شعر طبيعية في المنزل', titleEn: 'Natural Hair Dye at Home',
     descAr: 'طرق طبيعية وآمنة لصبغ الشعر في المنزل — حناء وأعشاب', descEn: 'Safe natural hair coloring at home — henna and herbs',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', duration: '15:30',
+    videoUrl: '', duration: '15:30',
     category: 'hair', difficulty: 'beginner',
     thumbnailUrl: null, tags: ['شعر', 'صبغة', 'طبيعي'],
     authorName: 'مريم الشمري', authorTitleAr: 'خبيرة أعشاب', authorTitleEn: 'Herbal Expert',
@@ -51,7 +51,7 @@ const TUTORIALS = [
   {
     id: 6, titleAr: 'مانيكير جل في المنزل', titleEn: 'Gel Manicure at Home',
     descAr: 'خطوات عمل مانيكير جل احترافي في البيت — أدوات وتقنيات', descEn: 'Professional gel manicure steps at home',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', duration: '20:05',
+    videoUrl: '', duration: '20:05',
     category: 'nails', difficulty: 'intermediate',
     thumbnailUrl: null, tags: ['أظافر', 'مانيكير', 'جل'],
     authorName: 'هند المطيري', authorTitleAr: 'أخصائية أظافر', authorTitleEn: 'Nail Specialist',
@@ -60,7 +60,7 @@ const TUTORIALS = [
   {
     id: 7, titleAr: 'مكياج العيون السموكي', titleEn: 'Smokey Eye Makeup',
     descAr: 'تقنية العيون السموكي بخطوات سهلة وبسيطة', descEn: 'Easy smokey eye technique for beginners',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', duration: '11:20',
+    videoUrl: '', duration: '11:20',
     category: 'makeup', difficulty: 'intermediate',
     thumbnailUrl: null, tags: ['عيون', 'سموكي', 'مكياج'],
     authorName: 'نورة العمري', authorTitleAr: 'خبيرة تجميل', authorTitleEn: 'Beauty Expert',
@@ -69,7 +69,7 @@ const TUTORIALS = [
   {
     id: 8, titleAr: 'تدليك الوجه للتخلص من التجاعيد', titleEn: 'Anti-Aging Facial Massage',
     descAr: 'تقنيات تدليك الوجه لتحسين الدورة الدموية وتقليل التجاعيد', descEn: 'Facial massage techniques for circulation and anti-aging',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', duration: '8:50',
+    videoUrl: '', duration: '8:50',
     category: 'skincare', difficulty: 'beginner',
     thumbnailUrl: null, tags: ['وجه', 'تدليك', 'تجاعيد'],
     authorName: 'د. ليلى القحطاني', authorTitleAr: 'طبيبة جلدية', authorTitleEn: 'Dermatologist',
