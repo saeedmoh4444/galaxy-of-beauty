@@ -3,17 +3,13 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useQueryClient } from '@tanstack/react-query';
+import { SOCKET_DEFAULT_PORT, SOCKET_RECONNECT_ATTEMPTS, SOCKET_RECONNECT_DELAY_MS, SOCKET_RECONNECT_MAX_DELAY_MS } from '@galaxy/shared';
 
 // ── Configuration ──────────────────────────────────────────
 
-/**
- * URL of the standalone Socket.IO server.
- * In development, this runs on port 4001.
- * In production, it would be the same host but a different port or path.
- */
 const SOCKET_URL =
   typeof window !== 'undefined'
-    ? process.env['NEXT_PUBLIC_SOCKET_URL'] || `${window.location.protocol}//${window.location.hostname}:4001`
+    ? process.env['NEXT_PUBLIC_SOCKET_URL'] || `${window.location.protocol}//${window.location.hostname}:${SOCKET_DEFAULT_PORT}`
     : '';
 
 // ── Cache tags invalidated on real-time events ─────────────
@@ -58,9 +54,9 @@ export function useSocket(): void {
       auth: { token },
       transports: ['websocket', 'polling'],
       reconnection: true,
-      reconnectionAttempts: 10,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 30000,
+      reconnectionAttempts: SOCKET_RECONNECT_ATTEMPTS,
+      reconnectionDelay: SOCKET_RECONNECT_DELAY_MS,
+      reconnectionDelayMax: SOCKET_RECONNECT_MAX_DELAY_MS,
     });
 
     socketRef.current = socket;

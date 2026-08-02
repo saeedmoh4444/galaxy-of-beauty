@@ -1,9 +1,12 @@
+import { RATE_LIMIT_PUBLIC, RATE_LIMIT_AUTH, RATE_LIMIT_ADMIN } from '@galaxy/shared';
 import { getRedis } from './redis';
 
+const RATE_LIMIT_WINDOW_S = 60; // 1‑minute sliding window
+
 const RATE_LIMITS = {
-  anonymous: { window: 60, max: 20 },   // 20 req/min
-  authenticated: { window: 60, max: 60 }, // 60 req/min
-  admin: { window: 60, max: 300 },       // 300 req/min
+  anonymous: { window: RATE_LIMIT_WINDOW_S, max: RATE_LIMIT_PUBLIC },
+  authenticated: { window: RATE_LIMIT_WINDOW_S, max: RATE_LIMIT_AUTH },
+  admin: { window: RATE_LIMIT_WINDOW_S, max: RATE_LIMIT_ADMIN },
 };
 
 interface RateLimitResult {

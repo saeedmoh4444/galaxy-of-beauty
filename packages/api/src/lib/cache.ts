@@ -1,7 +1,8 @@
+import { CACHE_DEFAULT_TTL_S } from '@galaxy/shared';
 import { getRedis } from './redis';
 import { logger } from './logger';
 
-const DEFAULT_TTL = 300; // 5 minutes — good balance for catalog data
+const DEFAULT_TTL = CACHE_DEFAULT_TTL_S; // 5 minutes — good balance for catalog data
 
 /**
  * Attempts to read from Redis cache. On miss, calls `fetcher()`,

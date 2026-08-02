@@ -81,6 +81,19 @@ export const CAMPAIGN_POLL_INTERVAL_MS = 60_000; // 1 minute
 export const EVENT_POLL_INTERVAL_MS = 30_000; // 30 seconds
 export const FORTUNE_ANIMATION_MS = 1_000; // fortune cookie reveal
 
+/** Socket.IO client configuration. */
+export const SOCKET_DEFAULT_PORT = 4001;
+export const SOCKET_RECONNECT_ATTEMPTS = 10;
+export const SOCKET_RECONNECT_DELAY_MS = 1_000;
+export const SOCKET_RECONNECT_MAX_DELAY_MS = 30_000;
+
+/** Rate-limiting defaults (requests per window). */
+export const RATE_LIMIT_PUBLIC = 20; // public endpoints per minute
+export const RATE_LIMIT_AUTH = 60; // authenticated endpoints per minute
+export const RATE_LIMIT_ADMIN = 300; // admin endpoints per minute
+/** Default cache TTL (seconds). */
+export const CACHE_DEFAULT_TTL_S = 300; // 5 minutes
+
 /** Date/time duration constants (milliseconds). */
 export const MS_PER_DAY = 86_400_000;
 export const MS_PER_WEEK = 7 * MS_PER_DAY;
