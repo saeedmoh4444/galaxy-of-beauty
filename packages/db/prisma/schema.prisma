@@ -1841,6 +1841,26 @@ model VideoTestimonial {
   @@map("video_testimonials")
 }
 
+model HairColorSim {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  colorId   String
+  colorName String
+  colorHex  String
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  @@map("hair_color_sims")
+}
+
+model AiRoutine {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  steps     Json
+  createdAt DateTime @default(now())
+  @@map("ai_routines")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================

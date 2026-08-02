@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
 const HAIR_COLORS = [
@@ -20,8 +21,12 @@ export const hairColorSimRouter = router({
   colors: publicProcedure.query(() => HAIR_COLORS),
   save: customerProcedure
     .input(z.object({ colorId: z.string(), imageUrl: z.string().optional() }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ ctx, input }) => {
       const color = HAIR_COLORS.find((c) => c.id === input.colorId);
+      await prisma.hairColorSim.create({ data: { userId: ctx.user.id, colorId: input.colorId, colorName: color?.nameAr || '', colorHex: color?.hex || '', imageUrl: input.imageUrl } });
       return { saved: true, color: color?.nameAr, colorHex: color?.hex };
     }),
+  mySims: customerProcedure.query(({ ctx }) =>
+    prisma.hairColorSim.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } })
+  ),
 });
