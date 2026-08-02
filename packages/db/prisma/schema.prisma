@@ -1885,6 +1885,16 @@ model BeforeAfter {
   @@map("before_after")
 }
 
+model BingoProgress {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  taskId    Int
+  completed Boolean  @default(true)
+  createdAt DateTime @default(now())
+  @@unique([userId, taskId])
+  @@map("bingo_progress")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================
