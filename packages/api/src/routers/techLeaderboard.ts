@@ -2,9 +2,6 @@ import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { publicProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = prisma as any;
-
 const CATEGORIES = [
   { key: 'rating', nameAr: 'الأعلى تقييماً', emoji: '⭐' },
   { key: 'bookings', nameAr: 'الأكثر حجوزات', emoji: '🔥' },
@@ -14,30 +11,17 @@ const CATEGORIES = [
 
 export const techLeaderboardRouter = router({
   categories: publicProcedure.query(() => CATEGORIES),
+
   leaderboard: publicProcedure
     .input(z.object({ category: z.string().default('rating'), limit: z.number().default(10) }))
     .query(async ({ input }) => {
-      const technicians = await db.technician.findMany({
-        where: { isVerified: true },
-        include: { user: { select: { name: true, avatarUrl: true } } },
-        take: 50,
-      }).catch(() => []);
-
-      const results = (technicians as any[]).map((t: any) => ({
-        id: t.id,
-        name: t.user?.name ?? '',
-        avatarUrl: t.user?.avatarUrl ?? null,
-        rating: Number(t.rating ?? 4.5),
-        reviewCount: Number(t.reviewCount ?? 0),
-        bookingCount: t._count?.bookings ?? Math.floor(Math.random() * 200) + 10,
-        responseTime: Math.floor(Math.random() * 30) + 5,
+      const techs = await prisma.technician.findMany({
+        take: input.limit,
+        include: { user: { select: { name: true, avatarUrl: true } }, _count: { select: { bookings: true } } },
+        orderBy: input.category === 'bookings' ? { bookings: { _count: 'desc' } } : input.category === 'rating' ? { ratingAvg: 'desc' } : { createdAt: 'desc' },
+      });
+      return techs.map(t => ({
+        id: t.id, name: t.user.name, rating: Number(t.ratingAvg), totalBookings: t._count.bookings, city: t.city,
       }));
-
-      if (input.category === 'rating') results.sort((a, b) => b.rating - a.rating);
-      else if (input.category === 'bookings') results.sort((a, b) => b.bookingCount - a.bookingCount);
-      else if (input.category === 'speed') results.sort((a, b) => a.responseTime - b.responseTime);
-      else results.sort((a, b) => b.reviewCount - a.reviewCount);
-
-      return results.slice(0, input.limit);
     }),
 });
