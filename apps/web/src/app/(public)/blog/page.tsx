@@ -38,7 +38,7 @@ export default function BlogPage(): JSX.Element {
     { page, limit: POSTS_PER_PAGE, search: search || undefined },
   ) as { data: { items: BlogPost[]; total: number } | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
 
-  const posts: BlogPost[] = data?.items ?? [];
+  const posts: BlogPost[] = useMemo(() => data?.items ?? [], [data?.items]);
   const totalPages = data ? Math.ceil(data.total / POSTS_PER_PAGE) : 1;
 
   const availableTags = useMemo(() => {

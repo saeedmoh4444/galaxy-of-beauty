@@ -20,7 +20,7 @@ export default function VerifyEmailPage(): JSX.Element {
   useEffect(() => {
     if (token) verifyMut.mutate({ token });
     else { setStatus('error'); setMsg('رمز التحقق غير موجود'); }
-  }, [token]);
+  }, [token, verifyMut]);
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
