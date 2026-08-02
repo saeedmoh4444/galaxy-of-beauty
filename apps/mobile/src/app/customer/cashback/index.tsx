@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
+import { LARGE_PAGE_SIZE } from '@galaxy/shared';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function CashbackScreen(): JSX.Element {
@@ -10,7 +11,7 @@ export default function CashbackScreen(): JSX.Element {
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true); else setLoading(true);
-    Promise.all([((trpc as any).cashback.info.query() as any), ((trpc as any).cashback.history.query({ page: 1, limit: 20 }) as any)])
+    Promise.all([((trpc as any).cashback.info.query() as any), ((trpc as any).cashback.history.query({ page: 1, limit: LARGE_PAGE_SIZE }) as any)])
       .then(([i, h]: any[]) => { setInfo(i); setHistory(h); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, []);
   useEffect(() => { fetch(); }, [fetch]);

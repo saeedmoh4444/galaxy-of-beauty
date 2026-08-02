@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TextInput, TouchableOpacity } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
+import { BULK_PAGE_SIZE } from '@galaxy/shared';
 
 export default function ChatScreen(): JSX.Element {
   const [messages, setMessages] = useState<any[]>([]);
@@ -9,7 +10,7 @@ export default function ChatScreen(): JSX.Element {
 
   const fetch = useCallback(() => {
     setLoading(true);
-    ((trpc as any).chat.messages.query({ bookingId: 1, page: 1, limit: 50 }) as any)
+    ((trpc as any).chat.messages.query({ bookingId: 1, page: 1, limit: BULK_PAGE_SIZE }) as any)
       .then((d: any) => { setMessages(d?.items || []); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);

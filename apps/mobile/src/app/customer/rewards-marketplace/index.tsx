@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import { LARGE_PAGE_SIZE } from '@galaxy/shared';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -10,7 +11,7 @@ const TIER_COLORS: Record<string,string[]> = { SILVER:['#d1d5db','#9ca3af'], GOL
 export default function RewardsMarketplaceScreen(): JSX.Element {
   const { data: account, loading, error, refetch, refreshing, refresh } = useQuery(() => (trpc as any).loyalty.myAccount.query());
   const { data: rewards } = useQuery(() => (trpc as any).loyalty.rewards.query());
-  const { data: txs } = useQuery(() => (trpc as any).loyalty.myTransactions.query({ page: 1, limit: 20 }));
+  const { data: txs } = useQuery(() => (trpc as any).loyalty.myTransactions.query({ page: 1, limit: LARGE_PAGE_SIZE }));
   const [redeemed, setRedeemed] = useState<number|null>(null);
 
   const handleRedeem = async (rid: number) => { try { await (trpc as any).loyalty.redeem.mutate({ rewardId: rid }); setRedeemed(rid); refetch(); } catch {} };

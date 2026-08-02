@@ -3,9 +3,10 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { MAX_LIST_SIZE } from '@galaxy/shared';
 
 export default function ServiceHistoryScreen(): JSX.Element {
-  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.bookings.list.query({ limit: 100 }) as any);
+  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.bookings.list.query({ limit: MAX_LIST_SIZE }) as any);
 
   if (loading) return <View style={styles.c}><Text style={styles.t}>📋 سجل الخدمات</Text><SkeletonList count={5} /></View>;
   if (error) return <ErrorAlert message="فشل تحميل السجل" onRetry={refetch} />;

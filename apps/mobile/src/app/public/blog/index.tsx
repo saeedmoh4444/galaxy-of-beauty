@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
+import { LARGE_PAGE_SIZE } from '@galaxy/shared';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -7,7 +8,7 @@ import { useRouter } from 'expo-router';
 
 export default function BlogScreen(): JSX.Element {
   const router = useRouter();
-  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.blog.list.query({ page: 1, limit: 20 }) as any);
+  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.blog.list.query({ page: 1, limit: LARGE_PAGE_SIZE }) as any);
 
   if (loading) return <View style={styles.container}><View style={styles.header}><Text style={styles.title}>📝 المدونة</Text></View><SkeletonList count={4} /></View>;
   if (error) return <ErrorAlert message="فشل تحميل المدونة" onRetry={refetch} />;

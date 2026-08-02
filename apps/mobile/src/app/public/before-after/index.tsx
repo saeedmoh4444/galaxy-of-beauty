@@ -1,11 +1,12 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl, Image } from 'react-native';
+import { MEDIUM_PAGE_SIZE } from '@galaxy/shared';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function BeforeAfterScreen(): JSX.Element {
-  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.beforeAfter.feed.query({ page: 1, limit: 12 }) as any);
+  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.beforeAfter.feed.query({ page: 1, limit: MEDIUM_PAGE_SIZE }) as any);
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل التحولات" onRetry={refetch} />;

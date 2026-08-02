@@ -1,6 +1,7 @@
 import { Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
+import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function BookingsScreen(): JSX.Element {
@@ -9,7 +10,7 @@ export default function BookingsScreen(): JSX.Element {
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).bookings.list.query({ page: 1, limit: 10 }) as any).then((d: any) => { setData(d?.bookings || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+    ((trpc as any).bookings.list.query({ page: 1, limit: DEFAULT_PAGE_SIZE }) as any).then((d: any) => { setData(d?.bookings || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, []);
   useEffect(() => { fetch(); }, [fetch]);
   if (loading) return <SkeletonList count={4} />;

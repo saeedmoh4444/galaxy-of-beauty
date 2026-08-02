@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { MEDIUM_PAGE_SIZE } from '@galaxy/shared';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -17,7 +18,7 @@ export default function SocialScreen(): JSX.Element {
   const { data: trending, loading, error, refetch, refreshing, refresh } = useQuery(() => (trpc as any).social.trending.query());
   const { data: spotlight } = useQuery(() => (trpc as any).social.spotlight.query());
   const { data: tipsData } = useQuery(() => (trpc as any).social.tips.query({ page: 1 }));
-  const { data: feedData } = useQuery(() => (trpc as any).social.feed.query({ page: 1, limit: 12 }));
+  const { data: feedData } = useQuery(() => (trpc as any).social.feed.query({ page: 1, limit: MEDIUM_PAGE_SIZE }));
   const { data: lookbook } = useQuery(() => (trpc as any).social.lookbook.query());
 
   if (loading) return <SkeletonList count={5} />;

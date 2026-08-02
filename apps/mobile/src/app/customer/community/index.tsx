@@ -1,12 +1,13 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, TextInput, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import { LARGE_PAGE_SIZE } from '@galaxy/shared';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function CommunityScreen(): JSX.Element {
-  const { data: feedData, loading, error, refetch, refreshing, refresh } = useQuery(() => (trpc as any).community.feed.query({ page: 1, limit: 20 }));
+  const { data: feedData, loading, error, refetch, refreshing, refresh } = useQuery(() => (trpc as any).community.feed.query({ page: 1, limit: LARGE_PAGE_SIZE }));
   const { data: myLikes } = useQuery(() => (trpc as any).community.myLikes.query());
   const { data: trending } = useQuery(() => (trpc as any).community.trending.query());
   const [content, setContent] = useState('');

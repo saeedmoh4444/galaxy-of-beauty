@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
+import { BULK_PAGE_SIZE } from '@galaxy/shared';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function AdminGiftCardsScreen(): JSX.Element {
@@ -10,7 +11,7 @@ export default function AdminGiftCardsScreen(): JSX.Element {
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).giftCards.listAll.query({ page: 1, limit: 50 }) as any).then((d: any) => { setData(d?.items || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+    ((trpc as any).giftCards.listAll.query({ page: 1, limit: BULK_PAGE_SIZE }) as any).then((d: any) => { setData(d?.items || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, []);
 
   useEffect(() => { fetch(); }, [fetch]);

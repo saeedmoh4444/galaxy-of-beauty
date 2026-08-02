@@ -3,9 +3,10 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { MAX_LIST_SIZE } from '@galaxy/shared';
 
 export default function MyJourneyScreen(): JSX.Element {
-  const { data: bData, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.bookings.list.query({ limit: 100 }) as any);
+  const { data: bData, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.bookings.list.query({ limit: MAX_LIST_SIZE }) as any);
   const { data: insights } = useQuery(() => trpc.analytics.customerInsights.query());
 
   if (loading) return <View style={styles.c}><Text style={styles.t}>🚀 رحلتي</Text><SkeletonList count={5} /></View>;

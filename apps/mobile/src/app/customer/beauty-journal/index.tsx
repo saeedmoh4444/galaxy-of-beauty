@@ -1,11 +1,12 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import { LARGE_PAGE_SIZE } from '@galaxy/shared';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function BeautyJournalScreen(): JSX.Element {
-  const { data: entries, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).beautyJournal.list.query({ page: 1, limit: 20 }));
+  const { data: entries, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).beautyJournal.list.query({ page: 1, limit: LARGE_PAGE_SIZE }));
 
   if (loading) return <View style={styles.c}><Text style={styles.t}>📔 يوميات الجمال</Text><SkeletonList count={4} /></View>;
   if (error) return <ErrorAlert message="فشل تحميل اليوميات" onRetry={refetch} />;

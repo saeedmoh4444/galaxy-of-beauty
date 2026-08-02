@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/api';
 import { useState, useEffect } from 'react';
+import { DEFAULT_PAGE_SIZE, MAX_LIST_SIZE } from '@galaxy/shared';
 import { useToast } from '@/components/Toast';
 
 export default function CreateBookingScreen() {
@@ -23,7 +24,7 @@ export default function CreateBookingScreen() {
   useEffect(() => {
     Promise.all([
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (trpc.services.list.query({ page: 1, limit: 100 }) as any as Promise<Record<string, unknown>>),
+      (trpc.services.list.query({ page: 1, limit: MAX_LIST_SIZE }) as any as Promise<Record<string, unknown>>),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (trpc.addresses.list.query() as any as Promise<Record<string, unknown>[]>),
     ]).then(([s, a]) => {

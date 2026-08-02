@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
+import { LARGE_PAGE_SIZE } from '@galaxy/shared';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function RescheduleScreen(): JSX.Element {
@@ -11,7 +12,7 @@ export default function RescheduleScreen(): JSX.Element {
   const [result, setResult] = useState<any>(null);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).bookings.list.query({ status: 'ACCEPTED', page: 1, limit: 20 }) as any).then((d: any) => { setBookings(d?.bookings || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+    ((trpc as any).bookings.list.query({ status: 'ACCEPTED', page: 1, limit: LARGE_PAGE_SIZE }) as any).then((d: any) => { setBookings(d?.bookings || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
   }, []);
   useEffect(() => { fetch(); }, [fetch]);
   const reschedule = (bookingId: number) => { const nd = new Date(Date.now() + 86400000).toISOString(); ((trpc as any).reschedule.request.mutate({ bookingId, newStartAt: nd, reason: 'طلب تعديل الموعد' }) as any).then((d: any) => setResult(d)); };

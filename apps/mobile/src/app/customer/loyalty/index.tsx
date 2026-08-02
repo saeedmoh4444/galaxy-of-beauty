@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
+import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -6,7 +7,7 @@ import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function LoyaltyScreen(): JSX.Element {
   const { data: account, loading: aLoad, error: aErr, refreshing, refetch, refresh } = useQuery(() => trpc.loyalty.myAccount.query());
-  const { data: txsData } = useQuery(() => trpc.loyalty.myTransactions.query({ page: 1, limit: 10 }));
+  const { data: txsData } = useQuery(() => trpc.loyalty.myTransactions.query({ page: 1, limit: DEFAULT_PAGE_SIZE }));
   const { data: rewards } = useQuery(() => trpc.loyalty.rewards.query());
 
   const loading = aLoad;

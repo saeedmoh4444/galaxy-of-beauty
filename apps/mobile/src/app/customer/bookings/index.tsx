@@ -4,6 +4,7 @@ import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
+import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
 
 const STATUS_TABS = ['ALL', 'REQUESTED', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
 const STATUS_LABELS: Record<string, string> = {
@@ -23,7 +24,7 @@ export default function BookingsScreen(): JSX.Element {
   const [cancelId, setCancelId] = useState<number | null>(null);
 
   const { data, loading, error, refreshing, refetch, refresh } = useQuery(
-    () => (trpc.bookings.list as any).query({ status, page: 1, limit: 10 }),
+    () => (trpc.bookings.list as any).query({ status, page: 1, limit: DEFAULT_PAGE_SIZE }),
   );
 
   const cancel = () => {

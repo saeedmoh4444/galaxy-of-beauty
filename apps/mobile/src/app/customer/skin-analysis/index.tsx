@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, Activi
 import { trpc } from '@/lib/api';
 import { useCamera } from '@/hooks/useCamera';
 import { useState, useEffect, useCallback } from 'react';
+import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
 import { useToast } from '@/components/Toast';
 
 export default function SkinAnalysisScreen() {
@@ -31,7 +32,7 @@ export default function SkinAnalysisScreen() {
   const fetchHistory = useCallback(async () => {
     setLoadingHistory(true);
     try {
-      const data = (await trpc.skinAnalysis.history.query({ page: 1, limit: 10 })) as Record<string, unknown>;
+      const data = (await trpc.skinAnalysis.history.query({ page: 1, limit: DEFAULT_PAGE_SIZE })) as Record<string, unknown>;
       setHistory((data.items as Record<string, unknown>[]) || []);
     } catch {
       // keep stale

@@ -1,12 +1,13 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, TextInput, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import { LARGE_PAGE_SIZE } from '@galaxy/shared';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function RescheduleScreen(): JSX.Element {
-  const { data: bookingsData, loading, error, refetch, refreshing, refresh } = useQuery(() => (trpc as any).bookings.list.query({ page: 1, limit: 20 }));
+  const { data: bookingsData, loading, error, refetch, refreshing, refresh } = useQuery(() => (trpc as any).bookings.list.query({ page: 1, limit: LARGE_PAGE_SIZE }));
   const [selectedId, setSelectedId] = useState<number|null>(null);
   const [newDate, setNewDate] = useState(''); const [newTime, setNewTime] = useState('');
   const [reason, setReason] = useState(''); const [done, setDone] = useState(false);
