@@ -1,10 +1,11 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function AchievementsPage(): JSX.Element {
-  const { data, isLoading } = api.customerAchievements.myAchievements.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean };
+  const { data, isLoading, isError, refetch } = api.customerAchievements.myAchievements.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-4xl space-y-6"><ErrorAlert message="فشل تحميل الإنجازات" onRetry={() => refetch()} /></div></DashboardLayout>;
   const achievements = (data?.achievements as Array<Record<string,unknown>>) ?? [];
   const stats = data?.stats as Record<string,unknown> | undefined;
   const earnedCount = data?.earnedCount as number ?? 0;

@@ -1,10 +1,11 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyExpensesPage(): JSX.Element {
-  const { data, isLoading } = api.beautyExpenses.summary.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean };
+  const { data, isLoading, isError, refetch } = api.beautyExpenses.summary.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-4xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
 
   return (
     <DashboardLayout role="CUSTOMER">

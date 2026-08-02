@@ -1,14 +1,15 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, Button, ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const CATEGORIES: Record<string,string> = { hair: '💇‍♀️ شعر', nails: '💅 أظافر', skincare: '✨ بشرة', makeup: '💄 مكياج', body: '🧴 جسم', other: '📌 أخرى' };
 const INTERVALS = [7, 14, 21, 30, 60, 90];
 
 export default function BeautyRemindersPage(): JSX.Element {
-  const { data: reminders, isLoading } = api.beautyReminders.myReminders.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const { data: reminders, isLoading, isError, refetch } = api.beautyReminders.myReminders.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل التذكيرات" onRetry={() => refetch()} /></div></DashboardLayout>;
   const createMut = api.beautyReminders.create.useMutation();
   const completeMut = api.beautyReminders.complete.useMutation();
   const deleteMut = api.beautyReminders.delete.useMutation();
