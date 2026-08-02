@@ -1755,6 +1755,17 @@ model PriceDropAlert {
   @@map("price_drop_alerts")
 }
 
+model WarrantyClaim {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  bookingId   Int
+  reason      String
+  status      String   @default("PENDING")
+  compensation Float  @default(0)
+  createdAt   DateTime @default(now())
+  @@map("warranty_claims")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================

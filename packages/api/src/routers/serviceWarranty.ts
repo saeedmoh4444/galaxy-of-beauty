@@ -5,16 +5,6 @@ import { customerProcedure, router } from '../trpc';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = prisma as any;
 
-export interface WarrantyClaimRecord {
-  id: number; userId: number; bookingId: number;
-  reason: string; status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'COMPENSATED';
-  compensation: number; createdAt: string;
-}
-type WarrantyClaim = WarrantyClaimRecord;
-
-const claims: WarrantyClaim[] = [];
-let claimId = 1;
-
 export const serviceWarrantyRouter = router({
   policy: customerProcedure.query(() => ({
     coverage: [
@@ -34,7 +24,7 @@ export const serviceWarrantyRouter = router({
       const completedAt = new Date(booking.completedAt || booking.updatedAt);
       const hoursSinceCompletion = (Date.now() - completedAt.getTime()) / 3600000;
       if (hoursSinceCompletion > 48) return { eligible: false, reason: 'انتهت فترة الضمان (٤٨ ساعة)' };
-      const existing = claims.find((c) => c.bookingId === input.bookingId && c.userId === ctx.user.id);
+      const existing = await db.warrantyClaim.findFirst({ where: { bookingId: input.bookingId, userId: ctx.user.id } });
       if (existing) return { eligible: false, reason: 'تم تقديم مطالبة سابقة لهذا الحجز' };
       return { eligible: true, reason: null };
     }),
@@ -44,16 +34,11 @@ export const serviceWarrantyRouter = router({
     .mutation(async ({ ctx, input }) => {
       const booking = await db.booking.findUnique({ where: { id: input.bookingId } });
       if (!booking || booking.customerId !== ctx.user.id) throw new Error('الحجز غير موجود');
-      const compensationMap = { redo: 0, refund: Number(booking.totalAmount || 0), credit: Math.round(Number(booking.totalAmount || 0) * 0.3) };
-      const claim: WarrantyClaim = {
-        id: claimId++, userId: ctx.user.id, bookingId: input.bookingId,
-        reason: input.reason, status: 'PENDING',
-        compensation: compensationMap[input.compensationType],
-        createdAt: new Date().toISOString(),
-      };
-      claims.push(claim);
-      return claim;
+      const compensationMap: Record<string, number> = { redo: 0, refund: Number(booking.totalAmount || 0), credit: Math.round(Number(booking.totalAmount || 0) * 0.3) };
+      return db.warrantyClaim.create({ data: { userId: ctx.user.id, bookingId: input.bookingId, reason: input.reason, status: 'PENDING', compensation: compensationMap[input.compensationType] } });
     }),
 
-  myClaims: customerProcedure.query(async ({ ctx }) => claims.filter((c) => c.userId === ctx.user.id)),
+  myClaims: customerProcedure.query(async ({ ctx }) =>
+    db.warrantyClaim.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } })
+  ),
 });
