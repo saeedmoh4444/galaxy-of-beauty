@@ -1,22 +1,15 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import { LOYALTY_TIERS } from '@galaxy/shared';
 import { protectedProcedure, adminProcedure, router } from '../trpc';
-
-// ── Tier thresholds & multipliers ──────────────────────────
-
-const TIERS = {
-  SILVER:   { min: 0,      multiplier: 1, nameAr: 'فضية',   nameEn: 'Silver' },
-  GOLD:     { min: 500,    multiplier: 1.5, nameAr: 'ذهبية', nameEn: 'Gold' },
-  PLATINUM: { min: 2000,   multiplier: 2, nameAr: 'بلاتينية', nameEn: 'Platinum' },
-};
 
 // Points per 1 SAR spent (configurable)
 const POINTS_PER_SAR = 10;
 
 function getTier(lifetimePoints: number): string {
-  if (lifetimePoints >= TIERS.PLATINUM.min) return 'PLATINUM';
-  if (lifetimePoints >= TIERS.GOLD.min) return 'GOLD';
+  if (lifetimePoints >= LOYALTY_TIERS.PLATINUM.minPoints) return 'PLATINUM';
+  if (lifetimePoints >= LOYALTY_TIERS.GOLD.minPoints) return 'GOLD';
   return 'SILVER';
 }
 
@@ -34,7 +27,8 @@ export const loyaltyRouter = router({
   // ── Get current account status ──────────────────────────
   myAccount: protectedProcedure.query(async ({ ctx }) => {
     const account = await getOrCreateAccount(ctx.user.id);
-    const tier = TIERS[account.tier as keyof typeof TIERS] || TIERS.SILVER;
+    const tierKey = account.tier as keyof typeof LOYALTY_TIERS;
+    const tier = LOYALTY_TIERS[tierKey] || LOYALTY_TIERS.SILVER;
 
     return {
       points: account.points,
@@ -42,12 +36,12 @@ export const loyaltyRouter = router({
       tierNameAr: tier.nameAr,
       tierNameEn: tier.nameEn,
       lifetimePoints: account.lifetimePoints,
-      multiplier: tier.multiplier,
+      multiplier: tier.pointMultiplier,
       nextTier: account.tier === 'PLATINUM' ? null : {
         name: account.tier === 'SILVER' ? 'GOLD' : 'PLATINUM',
         pointsNeeded: account.tier === 'SILVER'
-          ? TIERS.GOLD.min - account.lifetimePoints
-          : TIERS.PLATINUM.min - account.lifetimePoints,
+          ? LOYALTY_TIERS.GOLD.minPoints - account.lifetimePoints
+          : LOYALTY_TIERS.PLATINUM.minPoints - account.lifetimePoints,
       },
     };
   }),
@@ -199,8 +193,9 @@ export const loyaltyRouter = router({
 export async function accrueBookingPoints(bookingId: number, userId: number, amountSar: number): Promise<void> {
   try {
     const account = await getOrCreateAccount(userId);
-    const tier = TIERS[account.tier as keyof typeof TIERS] || TIERS.SILVER;
-    const points = Math.round(amountSar * POINTS_PER_SAR * tier.multiplier);
+    const tierKey = account.tier as keyof typeof LOYALTY_TIERS;
+    const tier = LOYALTY_TIERS[tierKey] || LOYALTY_TIERS.SILVER;
+    const points = Math.round(amountSar * POINTS_PER_SAR * tier.pointMultiplier);
     const newLifetime = account.lifetimePoints + points;
     const newTier = getTier(newLifetime);
 

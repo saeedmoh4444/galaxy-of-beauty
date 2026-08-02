@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, formatCurrency, CAMPAIGN_POLL_INTERVAL_MS } from '@galaxy/shared';
 import Link from 'next/link';
 
 interface Campaign {
@@ -31,7 +31,7 @@ function Countdown({ endsAt }: { endsAt: string }) {
       else setLabel(`ينتهي قريباً`);
     };
     update();
-    const i = setInterval(update, 60000);
+    const i = setInterval(update, CAMPAIGN_POLL_INTERVAL_MS);
     return () => clearInterval(i);
   }, [endsAt]);
   return <span className="text-xs font-semibold text-red-500 animate-pulse">⏰ {label}</span>;

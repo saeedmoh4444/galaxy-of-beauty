@@ -75,6 +75,12 @@ export const VERIFY_REDIRECT_MS = 3_000;
 /** Copy‑to‑clipboard feedback duration. */
 export const COPY_FEEDBACK_MS = 2_000;
 
+/** Polling intervals for live-updating UI elements. */
+export const COUNTDOWN_INTERVAL_MS = 1_000; // per-second tick (flash deals)
+export const CAMPAIGN_POLL_INTERVAL_MS = 60_000; // 1 minute
+export const EVENT_POLL_INTERVAL_MS = 30_000; // 30 seconds
+export const FORTUNE_ANIMATION_MS = 1_000; // fortune cookie reveal
+
 // ---------------------------------------------------------------------------
 // External URLs (CDN, third‑party)
 // ---------------------------------------------------------------------------
@@ -134,11 +140,11 @@ export const DEFAULT_PLATFORM_FEE_SAR = 11;
 /** VAT rate in Saudi Arabia. */
 export const VAT_RATE = 0.15;
 
-/** Loyalty tier thresholds and multipliers. */
+/** Loyalty tier thresholds and multipliers — single source of truth for API + UI. */
 export const LOYALTY_TIERS = {
-  SILVER: { minPoints: 0, pointMultiplier: 1, nameAr: 'الفضية', emoji: '🥈' },
-  GOLD: { minPoints: 500, pointMultiplier: 1.5, nameAr: 'الذهبية', emoji: '🥇' },
-  PLATINUM: { minPoints: 2000, pointMultiplier: 2, nameAr: 'البلاتينية', emoji: '💎' },
+  SILVER:   { minPoints: 0,    pointMultiplier: 1,   nameAr: 'فضية',     nameEn: 'Silver',   emoji: '🥈', color: 'from-gray-300 to-gray-400' },
+  GOLD:     { minPoints: 500,  pointMultiplier: 1.5, nameAr: 'ذهبية',   nameEn: 'Gold',     emoji: '🥇', color: 'from-yellow-400 to-amber-500' },
+  PLATINUM: { minPoints: 2000, pointMultiplier: 2,   nameAr: 'بلاتينية', nameEn: 'Platinum', emoji: '💎', color: 'from-purple-400 to-indigo-500' },
 } as const;
 
 /** Wallet minimum withdrawal balance (SAR). */

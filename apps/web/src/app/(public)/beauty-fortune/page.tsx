@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, Button } from '@galaxy/shared';
+import { Card, Button, FORTUNE_ANIMATION_MS } from '@galaxy/shared';
 import Link from 'next/link';
 
 const FORTUNES = [
@@ -38,7 +38,7 @@ export default function BeautyFortunePage(): JSX.Element {
       const random = FORTUNES[Math.floor(Math.random() * FORTUNES.length)]!;
       setFortune(random);
       setOpening(false);
-    }, 1000);
+    }, FORTUNE_ANIMATION_MS);
   };
 
   return (

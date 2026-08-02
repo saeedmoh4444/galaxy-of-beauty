@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency, EVENT_POLL_INTERVAL_MS } from '@galaxy/shared';
 import { useAuth } from '@galaxy/shared';
 import Link from 'next/link';
 
@@ -51,7 +51,7 @@ function EventCountdown({ startsAt }: { startsAt: string }): JSX.Element {
     };
 
     update();
-    const interval = setInterval(update, 30000);
+    const interval = setInterval(update, EVENT_POLL_INTERVAL_MS);
     return () => clearInterval(interval);
   }, [startsAt]);
 

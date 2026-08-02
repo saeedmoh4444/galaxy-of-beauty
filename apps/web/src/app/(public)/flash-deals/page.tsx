@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, ProgressBar, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, ProgressBar, formatCurrency, COUNTDOWN_INTERVAL_MS } from '@galaxy/shared';
 import { useAuth } from '@galaxy/shared';
 import Link from 'next/link';
 
@@ -53,7 +53,7 @@ function CountdownTimer({ endsAt }: { endsAt: string }): JSX.Element {
     };
 
     update();
-    const interval = setInterval(update, 1000);
+    const interval = setInterval(update, COUNTDOWN_INTERVAL_MS);
     return () => clearInterval(interval);
   }, [endsAt]);
 
