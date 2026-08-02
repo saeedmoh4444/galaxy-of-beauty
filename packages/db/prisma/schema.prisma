@@ -1817,6 +1817,16 @@ model NewsletterSubscriber {
   @@map("newsletter_subscribers")
 }
 
+model SaleAlert {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  categories  Json
+  maxDiscount Int
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  @@map("sale_alerts")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================
