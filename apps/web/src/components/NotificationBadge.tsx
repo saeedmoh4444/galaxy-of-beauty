@@ -5,9 +5,9 @@ import { api } from '@/lib/trpc';
 import { useAuth } from '@galaxy/shared';
 
 export function NotificationBadge(): JSX.Element {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const { data } = api.notifications.unreadCount.useQuery(undefined, {
-    enabled: !!isAuthenticated,
+    enabled: !isLoading && !!isAuthenticated,
     retry: false,
   });
   const count = (data as any)?.count || 0;

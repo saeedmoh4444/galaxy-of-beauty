@@ -58,7 +58,7 @@ const nextConfig = {
       },
       // API + dynamic pages: never cache
       {
-        source: '/(api|login|register|dashboard|admin|bookings|wallet|profile)/(.*)',
+        source: '/(api|login|register|dashboard|admin|bookings|wallet|profile|tech|cart|checkout|payments|2fa)/(.*)',
         headers: [{ key: 'Cache-Control', value: 'no-store, max-age=0' }],
       },
     ];
