@@ -1796,6 +1796,19 @@ model QuizCertificate {
   @@map("quiz_certificates")
 }
 
+model BeautyBox {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  products  Json
+  frequency String
+  subtotal  Float
+  discount  Float
+  total     Float
+  createdAt DateTime @default(now())
+  @@map("beauty_boxes")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================
