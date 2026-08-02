@@ -6,12 +6,22 @@ import { customerProcedure, publicProcedure, router } from '../trpc';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = prisma as any;
 
-const CAMPAIGN_DURATION_DAYS = 14; // TODO: move to DB-backed campaigns
+const CAMPAIGN_DURATION_DAYS = 14;
 const PRIZES = ['🥇 جلسة مجانية', '🥈 خصم ٥٠٪', '🥉 خصم ٣٠٪'];
+
+/** Returns the fixed campaign end date. Uses REFERRAL_CAMPAIGN_START env var
+ *  (ISO date string) to anchor the campaign, defaulting to the first time this
+ *  module was loaded (stable within a deployment, resets on redeploy). */
+const getEndDate = (() => {
+  const startRaw = process.env['REFERRAL_CAMPAIGN_START'];
+  const start = startRaw ? new Date(startRaw) : new Date();
+  const end = new Date(start.getTime() + CAMPAIGN_DURATION_DAYS * MS_PER_DAY);
+  return () => end;
+})();
 
 export const referralRaceRouter = router({
   leaderboard: publicProcedure.query(async () => {
-    const endDate = new Date(Date.now() + CAMPAIGN_DURATION_DAYS * MS_PER_DAY);
+    const endDate = getEndDate();
     const leaders = await db.referral.groupBy({ by: ['referrerId'], where: { status: 'COMPLETED' }, _count: { id: true }, orderBy: { _count: { id: 'desc' } }, take: DEFAULT_PAGE_SIZE });
     const enriched = await Promise.all((leaders as any[]).map(async (l: any, i: number) => {
       const user = await db.user.findUnique({ where: { id: l.referrerId }, select: { name: true } });
