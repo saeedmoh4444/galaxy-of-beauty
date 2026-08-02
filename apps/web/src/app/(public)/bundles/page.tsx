@@ -3,9 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency, ar } from '@galaxy/shared';
-import { ErrorAlert } from '@galaxy/shared';
-
+import { CardSkeleton, Button, formatCurrency, ar } from '@galaxy/shared';
 const BUNDLE_DISCOUNTS: Record<number, number> = { 2: 10, 3: 15, 4: 20, 5: 25 };
 
 export default function BundlesPage(): JSX.Element {

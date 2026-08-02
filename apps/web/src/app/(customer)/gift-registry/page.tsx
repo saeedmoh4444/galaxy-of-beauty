@@ -43,7 +43,7 @@ export default function GiftRegistryPage(): JSX.Element {
                   <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700"><div className="h-2 rounded-full bg-brand-500 transition-all" style={{ width: `${pct}%` }} /></div>
                   <p className="mt-1 text-center text-xs text-gray-400">{pct.toFixed(0)}%</p>
                 </div>
-                {r.message && <p className="mt-3 text-center text-sm italic text-gray-500">"{r.message}"</p>}
+                {r.message && <p className="mt-3 text-center text-sm italic text-gray-500">&ldquo;{r.message}&rdquo;</p>}
               </Card>
             );
           })}</div>

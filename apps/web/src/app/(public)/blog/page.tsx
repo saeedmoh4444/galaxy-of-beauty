@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { CardSkeleton, ErrorAlert, EmptyState, Button, Pagination } from '@galaxy/shared';
+import { CardSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/shared';
 
 interface BlogPost {
   id: number;
@@ -20,8 +20,7 @@ interface BlogPost {
 const POSTS_PER_PAGE = 9;
 const ALL_TAGS = ['العناية بالبشرة', 'الشعر', 'المكياج', 'الأظافر', 'العناية الشخصية', 'نصائح', 'اتجاهات', 'صحة'];
 const TAG_EMOJIS: Record<string, string> = {
-  'العناية بالبشرة': '✨', 'الشعر': '💇‍♀️', 'المكياج': '💄', 'الأظافر': '💅', 'العناية الشخصية': '🧖‍♀️', 'نصائح': '💡', 'اتجاهات': '🔥', 'صحة': '💚',
-};
+  'العناية بالبشرة': '✨', 'الشعر': '💇‍♀️', 'المكياج': '💄', 'الأظافر': '💅', 'العناية الشخصية': '🧖‍♀️', 'نصائح': '💡', 'اتجاهات': '🔥', 'صحة': '💚' };
 
 function readingTime(html: string): string {
   const text = html.replace(/<[^>]+>/g, '');
@@ -87,8 +86,7 @@ export default function BlogPage(): JSX.Element {
         {availableTags.slice(0, 8).map((tag) => {
           const emoji = TAG_EMOJIS[tag] ?? '🏷️';
           return (
-            <button
-              key={tag}
+            <button key={tag}
               onClick={() => { setActiveTag(tag === activeTag ? null : tag); setPage(1); }}
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
                 activeTag === tag

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useAuth } from '@galaxy/shared';
 import Link from 'next/link';
@@ -28,15 +28,13 @@ export default function BirthdayRewardsPage(): JSX.Element {
     refetch: () => void;
   };
   const claimMut = api.birthdayRewards.claim.useMutation({
-    onSuccess: () => refetch(),
-  });
+    onSuccess: () => refetch() });
   const [claimError, setClaimError] = useState('');
 
   const handleClaim = () => {
     setClaimError('');
     claimMut.mutate(undefined, {
-      onError: (err: { message?: string }) => setClaimError(err?.message ?? 'فشل استلام المكافأة'),
-    });
+      onError: (err: { message?: string }) => setClaimError(err?.message ?? 'فشل استلام المكافأة') });
   };
 
   // Estimate days until next birthday

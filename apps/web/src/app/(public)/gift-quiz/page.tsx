@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
 import Link from 'next/link';
 
 interface Question { id: string; questionAr: string; options: Array<{ key: string; labelAr: string; tags: string[] }>; }

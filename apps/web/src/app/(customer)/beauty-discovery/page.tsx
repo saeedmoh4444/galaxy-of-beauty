@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency , ErrorAlert } from '@galaxy/shared';
+import { Card, CardSkeleton, formatCurrency  } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyDiscoveryPage(): JSX.Element {

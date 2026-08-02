@@ -3,8 +3,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
-import { ErrorAlert } from '@galaxy/shared';
-
 const OCCASIONS = [
   { id: 'birthday', emoji: '🎂', name: 'عيد ميلاد', desc: 'أفضل هدايا التجميل لعيد الميلاد', gifts: [
     { title: 'باقة عناية بالبشرة', price: '٢٥٠ ر.س', desc: 'جلسة تنظيف وترطيب مع ماسك', emoji: '✨', link: '/services' },

@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, ErrorAlert } from '@galaxy/shared';
+import { Card, Button } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CalendarSyncPage(): JSX.Element {

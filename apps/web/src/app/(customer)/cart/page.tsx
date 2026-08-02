@@ -1,7 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
-import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CartPage(): JSX.Element {

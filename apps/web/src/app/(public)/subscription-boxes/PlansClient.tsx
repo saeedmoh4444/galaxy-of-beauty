@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/shared';
+import { Card, ErrorAlert, EmptyState, Button } from '@galaxy/shared';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type PlanItem = Record<string, any>;
@@ -100,8 +100,7 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
 function SubscribeButton({ planId, planName }: { planId: number; planName: string }) {
   const [subscribed, setSubscribed] = useState(false);
   const subscribeMut = api.subscriptionBoxes.subscribe.useMutation({
-    onSuccess: () => setSubscribed(true),
-  });
+    onSuccess: () => setSubscribed(true) });
 
   if (subscribed) {
     return <p className="text-sm font-semibold text-green-600">✅ تم الاشتراك!</p>;

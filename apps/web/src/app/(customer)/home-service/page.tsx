@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/shared';
+import { Card, Button, formatCurrency } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 
@@ -21,8 +21,7 @@ export default function HomeServicePage(): JSX.Element {
   const { data: estimate } = api.homeService.estimate.useQuery({ city }) as { data: Record<string, unknown> | undefined };
   const requestMut = api.homeService.request.useMutation({
     onSuccess: (data) => { setRequested(data as Record<string, unknown>); setError(''); },
-    onError: (err: { message?: string }) => setError(err?.message ?? 'فشل الطلب'),
-  });
+    onError: (err: { message?: string }) => setError(err?.message ?? 'فشل الطلب') });
 
   const handleRequest = () => {
     setError('');

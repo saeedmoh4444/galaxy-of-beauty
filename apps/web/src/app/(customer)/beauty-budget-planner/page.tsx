@@ -1,7 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
-import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const CATEGORIES = [
@@ -14,7 +13,7 @@ const CATEGORIES = [
 ];
 
 export default function BeautyBudgetPlannerPage(): JSX.Element {
-  const { data: items, isLoading, isError, refetch } = api.beautyBudgetPlanner.myBudgets.useQuery({month:'7',year:2026}) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: items, isLoading } = api.beautyBudgetPlanner.myBudgets.useQuery({month:'7',year:2026}) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const totalBudget = CATEGORIES.reduce((s,c)=>s+c.budget,0);
   const allocated = (items??[]).reduce((s,i)=>s+(i.spent as number??0),0);
   const remaining = totalBudget - allocated;

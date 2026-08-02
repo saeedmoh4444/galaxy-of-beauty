@@ -1,8 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { CardSkeleton } from '@galaxy/shared';
-import { ErrorAlert } from '@galaxy/shared';
-
 export default function BeautyStoriesPage(): JSX.Element {
   const { data, isLoading } = api.beautyStories.feed.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const stories = data ?? [];

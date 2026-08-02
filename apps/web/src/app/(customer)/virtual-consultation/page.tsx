@@ -1,8 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
-import { ErrorAlert } from '@galaxy/shared';
+import { Card, Button, formatCurrency } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const CONSULTANTS = [

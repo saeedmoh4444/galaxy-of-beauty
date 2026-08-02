@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { Card, Button, formatCurrency } from '@galaxy/shared';
+import { formatCurrency } from '@galaxy/shared';
 
 interface Addon {
   id: number;
@@ -35,8 +34,7 @@ const ADDONS_BY_CATEGORY: Record<string, Addon[]> = {
   default: [
     { id: 13, title: 'مساج سريع (١٥ دقيقة)', price: 40, emoji: '💆‍♀️' },
     { id: 14, title: 'مشروب ترحيبي', price: 15, emoji: '🍵' },
-  ],
-};
+  ] };
 
 interface AddonSuggestionsProps {
   category?: string;
@@ -54,8 +52,7 @@ export function AddonSuggestions({ category, onSelect, selected }: AddonSuggesti
         {addons.map(a => {
           const isSelected = selected.includes(a.id);
           return (
-            <button
-              key={a.id}
+            <button key={a.id}
               onClick={() => onSelect(a)}
               className={`flex items-center gap-3 rounded-xl border-2 p-3 text-right transition-all ${
                 isSelected ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 hover:border-brand-300 dark:border-gray-700'

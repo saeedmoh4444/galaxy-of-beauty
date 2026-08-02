@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, formatCurrency , ErrorAlert } from '@galaxy/shared';
+import { Card, Button, formatCurrency  } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const SERVICES = [
@@ -35,8 +35,7 @@ export default function AdvancedBookingPage(): JSX.Element {
     recurringMut.mutate({
       technicianId, serviceId: svcId, addressId: 1, slotId: 1,
       startAt: start.toISOString(), endAt: end.toISOString(),
-      recurrence: recurrence as 'WEEKLY', occurrences, notes: notes || undefined,
-    }, { onSuccess: () => setDone(true) });
+      recurrence: recurrence as 'WEEKLY', occurrences, notes: notes || undefined }, { onSuccess: () => setDone(true) });
   };
 
   const svc = SERVICES.find(s => s.id === svcId)!;

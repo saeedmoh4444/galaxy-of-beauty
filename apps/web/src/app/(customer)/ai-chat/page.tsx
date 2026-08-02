@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/shared';
+import { CardSkeleton, EmptyState, Button } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const LAYLA_AVATAR = '🌸';
@@ -26,8 +26,7 @@ export default function AiChatPage(): JSX.Element {
         ...prev,
         { id: crypto.randomUUID(), role: 'assistant', content: (reply.response as string) ?? (reply.message as string) ?? '', createdAt: new Date().toISOString() },
       ]);
-    },
-  });
+    } });
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

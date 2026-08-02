@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Card, Button , ErrorAlert } from '@galaxy/shared';
+import { Card } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const GOAL_TEMPLATES = [

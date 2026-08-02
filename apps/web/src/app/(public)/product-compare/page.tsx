@@ -2,11 +2,10 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
 
 const DIM_LABELS: Record<string, string> = {
-  hydration: '💧 ترطيب', absorption: '🧽 امتصاص', value: '💰 قيمة', gentle: '🌸 لطف',
-};
+  hydration: '💧 ترطيب', absorption: '🧽 امتصاص', value: '💰 قيمة', gentle: '🌸 لطف' };
 
 export default function ProductComparePage(): JSX.Element {
   const [selected, setSelected] = useState<number[]>([]);

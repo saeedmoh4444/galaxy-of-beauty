@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Spinner, Pagination } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Pagination } from '@galaxy/shared';
 import { useAuth } from '@galaxy/shared';
 import Link from 'next/link';
 
@@ -26,8 +26,7 @@ function PostCard({
   onDelete,
   likePending,
   deletePending,
-  currentUserId,
-}: {
+  currentUserId }: {
   post: Post;
   isLiked: boolean;
   onToggleLike: (postId: number) => void;
@@ -135,8 +134,7 @@ function getTimeAgo(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('ar-SA', {
     year: 'numeric',
     month: 'short',
-    day: 'numeric',
-  });
+    day: 'numeric' });
 }
 
 export default function CommunityPage(): JSX.Element {
@@ -154,8 +152,7 @@ export default function CommunityPage(): JSX.Element {
       setContent('');
       setPage(1);
       refetch();
-    },
-  });
+    } });
   const likeMut = api.community.toggleLike.useMutation();
   const deleteMut = api.community.delete.useMutation({ onSuccess: () => refetch() });
 
@@ -173,9 +170,7 @@ export default function CommunityPage(): JSX.Element {
         ...prev,
         [postId]: {
           liked: !isCurrentlyLiked,
-          count: isCurrentlyLiked ? Math.max(0, currentCount - 1) : currentCount + 1,
-        },
-      }));
+          count: isCurrentlyLiked ? Math.max(0, currentCount - 1) : currentCount + 1 } }));
 
       likeMut.mutate({ postId }, { onError: () => refetch() });
     },

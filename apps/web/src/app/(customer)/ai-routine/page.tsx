@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, Button } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const SKIN_TYPES = [
@@ -16,7 +16,7 @@ export default function AIRoutinePage(): JSX.Element {
   const [skinType, setSkinType] = useState<'dry' | 'oily' | 'combination' | 'normal'>('combination');
   const [generated, setGenerated] = useState(false);
 
-  const { data, isLoading, refetch } = api.aiRoutine.generate.useQuery(
+  const { data, isLoading } = api.aiRoutine.generate.useQuery(
     { skinType },
     { enabled: generated },
   ) as { data: Record<string, unknown> | undefined; isLoading: boolean; refetch: () => void };

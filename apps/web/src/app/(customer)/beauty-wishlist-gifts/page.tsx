@@ -1,11 +1,11 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency , ErrorAlert } from '@galaxy/shared';
+import { Card, CardSkeleton, Button, formatCurrency  } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyWishlistGiftsPage(): JSX.Element {
-  const { data: registries, isLoading, isError, refetch } = api.giftRegistry.myRegistries.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: registries, isLoading } = api.giftRegistry.myRegistries.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const createMut = api.giftRegistry.create.useMutation();
   const [title, setTitle] = useState(''); const [occasion, setOccasion] = useState('birthday'); const [targetAmount, setTarget] = useState(500); const [showForm, setShowForm] = useState(false);
   const [created, setCreated] = useState(false);

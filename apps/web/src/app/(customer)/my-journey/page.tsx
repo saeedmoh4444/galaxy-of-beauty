@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 

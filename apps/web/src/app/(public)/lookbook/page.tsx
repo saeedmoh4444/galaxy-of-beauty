@@ -4,8 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton } from '@galaxy/shared';
-import { ErrorAlert } from '@galaxy/shared';
-
 const SEASONS = [
   { id: 'summer', nameAr: 'صيف ٢٠٢٦', nameEn: 'Summer 2026', emoji: '☀️', color: 'from-amber-400 to-orange-500' },
   { id: 'eid', nameAr: 'أناقة العيد', nameEn: 'Eid Elegance', emoji: '🌙', color: 'from-emerald-400 to-teal-600' },

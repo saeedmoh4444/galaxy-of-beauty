@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Script from 'next/script';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/shared';
+import { Card, ErrorAlert, Button, formatCurrency } from '@galaxy/shared';
 
 interface Technician {
   id: number;
@@ -33,8 +33,7 @@ function MapView({
   technicians,
   selectedCity,
   selectedTechnician,
-  onSelectTechnician,
-}: {
+  onSelectTechnician }: {
   technicians: Technician[];
   selectedCity: CityInfo | null;
   selectedTechnician: Technician | null;
@@ -57,8 +56,7 @@ function MapView({
       const map = L.map(mapRef.current).setView(center, selectedCity ? 13 : 6);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        maxZoom: 18,
-      }).addTo(map);
+        maxZoom: 18 }).addTo(map);
       mapInstance.current = map;
     }
 
@@ -80,8 +78,7 @@ function MapView({
             transition: all 0.2s; cursor: pointer;
           ">💅</div>`,
           iconSize: [isSelected ? 40 : 32, isSelected ? 40 : 32],
-          iconAnchor: [isSelected ? 20 : 16, isSelected ? 20 : 16],
-        });
+          iconAnchor: [isSelected ? 20 : 16, isSelected ? 20 : 16] });
 
         const marker = L.marker([t.lat, t.lng], { icon })
           .addTo(map)

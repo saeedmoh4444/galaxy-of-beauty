@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
 
 export default function SmartPricingPage(): JSX.Element {
   const { data, isLoading } = api.smartPricing.current.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };

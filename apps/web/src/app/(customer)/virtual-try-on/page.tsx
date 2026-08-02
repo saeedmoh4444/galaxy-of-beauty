@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 
@@ -32,12 +32,10 @@ const TYPE_LABELS: Record<MakeupType, { label: string; emoji: string }> = {
   lips: { label: 'أحمر شفاه', emoji: '💄' },
   eyes: { label: 'ظلال عيون', emoji: '👁️' },
   blush: { label: 'أحمر خدود', emoji: '😊' },
-  nails: { label: 'أظافر', emoji: '💅' },
-};
+  nails: { label: 'أظافر', emoji: '💅' } };
 
 const TYPE_CATEGORIES: Record<MakeupType, 'lips' | 'eyes' | 'blush' | 'nails'> = {
-  lips: 'lips', eyes: 'eyes', blush: 'blush', nails: 'nails',
-};
+  lips: 'lips', eyes: 'eyes', blush: 'blush', nails: 'nails' };
 
 // ---------------------------------------------------------------------------
 // Camera + Canvas Hook
@@ -61,8 +59,7 @@ function useCamera(
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: mode, width: { ideal: 720 }, height: { ideal: 1280 } },
-        audio: false,
-      });
+        audio: false });
       streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
@@ -206,8 +203,7 @@ function drawOverlay(
 function ColorPalette({
   colors,
   selectedId,
-  onSelect,
-}: {
+  onSelect }: {
   colors: ColorItem[];
   selectedId: string | null;
   onSelect: (c: ColorItem) => void;
@@ -368,8 +364,7 @@ export default function VirtualTryOnPage(): JSX.Element {
         makeupType,
         colorId: selectedColor.id,
         colorHex: selectedColor.hex,
-        imageDataUrl: url,
-      });
+        imageDataUrl: url });
     }
   }, [facing, selectedColor, makeupType, intensity, saveSessionMut]);
 
@@ -551,7 +546,7 @@ export default function VirtualTryOnPage(): JSX.Element {
               🛍️ منتجات مقترحة
             </h3>
             <p className="text-sm text-gray-500 mb-4">
-              منتجات تناسب درجة "{selectedColor.nameAr}" من متجرنا
+              منتجات تناسب درجة &ldquo;{selectedColor.nameAr}&rdquo; من متجرنا
             </p>
             {recsLoading ? (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

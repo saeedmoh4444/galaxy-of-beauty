@@ -1,8 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState } from '@galaxy/shared';
 import Link from 'next/link';
 
 interface Badge {
@@ -21,8 +20,7 @@ const BADGE_META: Record<string, { emoji: string; gradient: string; descAr: stri
   certified: { emoji: '🏅', gradient: 'from-green-400 to-emerald-500', descAr: 'حاصلة على شهادات معتمدة في مجال التجميل' },
   newcomer: { emoji: '🌱', gradient: 'from-lime-400 to-green-500', descAr: 'انضمت حديثاً وأثبتت جدارتها' },
   loyal: { emoji: '👑', gradient: 'from-pink-400 to-rose-500', descAr: 'معنا منذ أكثر من سنتين من الخدمة المتميزة' },
-  mentor: { emoji: '🎓', gradient: 'from-teal-400 to-cyan-500', descAr: 'مدربة وخبيرة تدرب فنيات أخريات' },
-};
+  mentor: { emoji: '🎓', gradient: 'from-teal-400 to-cyan-500', descAr: 'مدربة وخبيرة تدرب فنيات أخريات' } };
 
 function getBadgeMeta(key: string) {
   return BADGE_META[key] ?? { emoji: '🏷️', gradient: 'from-gray-400 to-gray-500', descAr: 'شارة تميز' };

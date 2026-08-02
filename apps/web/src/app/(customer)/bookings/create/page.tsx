@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
-import { Card, ErrorAlert, Button, Input } from '@galaxy/shared';
+import { Card, Button, Input } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/shared';
 
@@ -60,8 +60,7 @@ export default function CreateBookingPage(): JSX.Element {
     onError: () => {
       addToast('error', 'فشل إنشاء الحجز');
       setSubmitting(false);
-    },
-  });
+    } });
 
   const handleSubmit = async () => {
     if (!serviceId || !addressId) {
@@ -87,8 +86,7 @@ export default function CreateBookingPage(): JSX.Element {
       idempotencyKey: crypto.randomUUID(),
       notes: notes || undefined,
       startAt: new Date(Date.now() + 86400000).toISOString(),
-      endAt: new Date(Date.now() + 86400000 + (num(svc ? (svc as unknown as { durationMin?: number }).durationMin : 60, 60)) * 60000).toISOString(),
-    });
+      endAt: new Date(Date.now() + 86400000 + (num(svc ? (svc as unknown as { durationMin?: number }).durationMin : 60, 60)) * 60000).toISOString() });
   };
 
   return (

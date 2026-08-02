@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button, Modal } from '@galaxy/shared';
+import { Card, CardSkeleton, Button, Modal } from '@galaxy/shared';
 import { useAuth } from '@galaxy/shared';
 
 export default function VideoTestimonialsPage(): JSX.Element {

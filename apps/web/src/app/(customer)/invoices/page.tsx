@@ -1,10 +1,10 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency , ErrorAlert } from '@galaxy/shared';
+import { Card, CardSkeleton, formatCurrency  } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function InvoicesPage(): JSX.Element {
-  const { data: bookingsData, isLoading, isError, refetch } = api.bookings.list.useQuery({ page: 1, limit: 50 }) as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: bookingsData, isLoading } = api.bookings.list.useQuery({ page: 1, limit: 50 }) as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const bookings = (bookingsData?.bookings as Array<Record<string,unknown>>) ?? [];
   const completed = bookings.filter((b: Record<string,unknown>) => b.status === 'COMPLETED');
   const totalSpent = completed.reduce((s: number, b: Record<string,unknown>) => s + (Number(b.totalAmount) || 0), 0);

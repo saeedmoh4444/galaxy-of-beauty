@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/shared';
 
@@ -42,12 +42,10 @@ export default function PriceEstimatorPage(): JSX.Element {
     isLoading: estimateLoading,
     isError,
     error,
-    refetch,
-  } = api.priceEstimator.estimate.useQuery(
+    refetch } = api.priceEstimator.estimate.useQuery(
     {
       serviceId: selectedServiceId ?? 0,
-      promoCode: promoCode.trim() || undefined,
-    },
+      promoCode: promoCode.trim() || undefined },
     { enabled: !!selectedServiceId && !isNaN(selectedServiceId) },
   ) as {
     data: EstimateResult | undefined;
@@ -263,7 +261,7 @@ export default function PriceEstimatorPage(): JSX.Element {
 
             {hasPromoError && (
               <div className="rounded-lg bg-red-50 p-2 text-center text-xs text-red-600 dark:bg-red-950 dark:text-red-400">
-                ⚠️ كود الخصم "{promoCode}" غير صالح أو منتهي الصلاحية
+                ⚠️ كود الخصم &ldquo;{promoCode}&rdquo; غير صالح أو منتهي الصلاحية
               </div>
             )}
 

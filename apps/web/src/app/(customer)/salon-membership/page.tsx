@@ -1,7 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
-import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const MEMBERSHIPS = [
@@ -11,7 +10,7 @@ const MEMBERSHIPS = [
 ];
 
 export default function SalonMembershipPage(): JSX.Element {
-  const { data: membership, isLoading, isError, refetch } = api.salonMembership.myMembership.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: membership, isLoading } = api.salonMembership.myMembership.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const subscribeMut = api.salonMembership.subscribe.useMutation(); const cancelMut = api.salonMembership.cancel.useMutation();
 
   return (

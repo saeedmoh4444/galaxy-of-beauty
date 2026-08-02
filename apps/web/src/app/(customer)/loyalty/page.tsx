@@ -1,14 +1,13 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const TIERS: Record<string, { name: string; emoji: string; color: string; points: number; benefits: string[] }> = {
   SILVER: { name: 'الفضية', emoji: '🥈', color: 'from-gray-300 to-gray-400', points: 0, benefits: ['خصم ٥٪ على الحجوزات', 'مضاعف نقاط ١x', 'هدية عيد ميلاد'] },
   GOLD: { name: 'الذهبية', emoji: '🥇', color: 'from-yellow-400 to-amber-500', points: 500, benefits: ['خصم ١٠٪', 'مضاعف نقاط ٢x', 'أولوية الحجز', 'هدية عيد ميلاد', 'جلسة تجريبية مجانية'] },
-  PLATINUM: { name: 'البلاتينية', emoji: '💎', color: 'from-purple-400 to-indigo-500', points: 2000, benefits: ['خصم ٢٠٪', 'مضاعف نقاط ٣x', 'حجز VIP', 'هدية عيد ميلاد', 'جلسة مجانية شهرياً', 'استشاري تجميل شخصي'] },
-};
+  PLATINUM: { name: 'البلاتينية', emoji: '💎', color: 'from-purple-400 to-indigo-500', points: 2000, benefits: ['خصم ٢٠٪', 'مضاعف نقاط ٣x', 'حجز VIP', 'هدية عيد ميلاد', 'جلسة مجانية شهرياً', 'استشاري تجميل شخصي'] } };
 
 export default function LoyaltyDashboardPage(): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

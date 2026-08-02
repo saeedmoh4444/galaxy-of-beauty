@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { api } from '@/lib/trpc';
-import { Button , ErrorAlert } from '@galaxy/shared';
+import { Button  } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const TOPICS = [

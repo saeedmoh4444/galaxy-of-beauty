@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert } from '@galaxy/shared';
+import { Card, CardSkeleton } from '@galaxy/shared';
 
 export default function BeautyFaqPage(): JSX.Element {
   const [query, setQuery] = useState('');

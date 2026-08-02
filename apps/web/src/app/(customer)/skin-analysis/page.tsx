@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, ProgressBar } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function SkinAnalysisPage(): JSX.Element {
@@ -16,8 +16,7 @@ export default function SkinAnalysisPage(): JSX.Element {
       setResult((data as Record<string, unknown>).resultJson as Record<string, unknown> || null);
       setAnalyzing(false); refetch();
     },
-    onError: () => setAnalyzing(false),
-  });
+    onError: () => setAnalyzing(false) });
 
   const histItems = (history as unknown as Record<string, unknown>)?.items as Array<Record<string, unknown>> || [];
   const totalAnalyses = (history as unknown as Record<string, unknown>)?.total as number || histItems.length;

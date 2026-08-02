@@ -8,13 +8,13 @@ const CATEGORIES: Record<string,string> = { hair: '💇‍♀️ شعر', nails:
 const INTERVALS = [7, 14, 21, 30, 60, 90];
 
 export default function BeautyRemindersPage(): JSX.Element {
-  const { data: reminders, isLoading, isError, refetch } = api.beautyReminders.myReminders.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
-  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل التذكيرات" onRetry={() => refetch()} /></div></DashboardLayout>;
+  const [title, setTitle] = useState(''); const [cat, setCat] = useState('hair'); const [interval, setInterval] = useState(30);
+  const [showForm, setShowForm] = useState(false);
   const createMut = api.beautyReminders.create.useMutation();
   const completeMut = api.beautyReminders.complete.useMutation();
   const deleteMut = api.beautyReminders.delete.useMutation();
-  const [title, setTitle] = useState(''); const [cat, setCat] = useState('hair'); const [interval, setInterval] = useState(30);
-  const [showForm, setShowForm] = useState(false);
+  const { data: reminders, isLoading, isError, refetch } = api.beautyReminders.myReminders.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل التذكيرات" onRetry={() => refetch()} /></div></DashboardLayout>;
 
   const upcoming = (reminders ?? []).filter((r: Record<string,unknown>) => new Date(r.nextDate as string) >= new Date());
   const overdue = (reminders ?? []).filter((r: Record<string,unknown>) => new Date(r.nextDate as string) < new Date());

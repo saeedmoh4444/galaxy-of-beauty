@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Pagination } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/shared';
 
 interface Tutorial {
   id: number;
@@ -90,8 +90,7 @@ export default function TutorialsPage(): JSX.Element {
             الكل
           </button>
           {categories.map((c) => (
-            <button
-              key={c.key}
+            <button key={c.key}
               onClick={() => { setCategory(c.key === category ? undefined : c.key); setPage(1); }}
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
                 category === c.key ? 'bg-brand-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
@@ -104,8 +103,7 @@ export default function TutorialsPage(): JSX.Element {
         {/* Difficulty filter */}
         <div className="flex flex-wrap justify-center gap-2">
           {difficulties.map((d) => (
-            <button
-              key={d.key}
+            <button key={d.key}
               onClick={() => { setDifficulty(d.key === difficulty ? undefined : d.key); setPage(1); }}
               className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
                 difficulty === d.key
@@ -148,7 +146,7 @@ export default function TutorialsPage(): JSX.Element {
                         <span className="text-xs mt-1 block">{t.category}</span>
                       </div>
                     )}
-                    {/* Play button overlay */}
+                    {/* Play overlay */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-gray-900 shadow-lg transition-transform group-hover:scale-110">
                         <svg className="h-5 w-5 mr-[-2px]" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/shared';
+import { Card, CardSkeleton } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/shared';
 

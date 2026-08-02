@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Card, Button, formatCurrency , ErrorAlert } from '@galaxy/shared';
+import { Card, Button, formatCurrency  } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const EMERGENCIES = [

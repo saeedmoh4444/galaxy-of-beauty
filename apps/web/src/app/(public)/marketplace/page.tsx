@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Input, formatCurrency } from '@galaxy/shared';
 
 export default function MarketplacePage(): JSX.Element {
   const [search, setSearch] = useState('');
@@ -12,8 +12,7 @@ export default function MarketplacePage(): JSX.Element {
     search: search || undefined,
     sortBy: 'newest',
     page: 1,
-    limit: 20,
-  }) as any;
+    limit: 20 }) as any;
   const categoriesQuery = api.marketplace.productCategories.useQuery() as any;
   const { data, isLoading, isError, refetch } = productsQuery;
 

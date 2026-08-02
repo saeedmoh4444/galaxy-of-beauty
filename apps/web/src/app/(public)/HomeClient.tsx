@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, ar } from '@galaxy/shared';
+import { Button, Card, ErrorAlert, EmptyState, ar } from '@galaxy/shared';
 
 interface Category {
   id: number;
@@ -27,8 +27,7 @@ export function HomeClient({
   initialCategories,
   initialServices,
   serviceTotal,
-  fetchError,
-}: HomePageProps): JSX.Element {
+  fetchError }: HomePageProps): JSX.Element {
   const categories = initialCategories;
   const svcItems = initialServices;
 

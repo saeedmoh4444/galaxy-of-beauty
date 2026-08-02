@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal, Input } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/shared';
 
 export default function AdminUsersPage(): JSX.Element {
   const [search, setSearch] = useState('');
