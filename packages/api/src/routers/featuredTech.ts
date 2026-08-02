@@ -1,22 +1,23 @@
+import { prisma } from '@galaxy/db';
 import { publicProcedure, router } from '../trpc';
 
-const FEATURED = {
-  id: 1, name: 'نورة العمري', titleAr: 'خبيرة تجميل', titleEn: 'Beauty Expert', emoji: '💄',
-  bio: 'نورة العمري خبيرة تجميل سعودية معتمدة بخبرة ١٢ سنة في المكياج الاحترافي. حاصلة على عدة جوائز في مسابقات التجميل الخليجية.',
-  highlights: ['١٢ سنة خبرة', '+٥٠٠٠ حجز مكتمل', 'تقييم ٤.٩ ⭐', 'متخصصة في مكياج الأعراس'],
-  services: ['مكياج عرايس', 'مكياج سهرة', 'مكياج طبيعي', 'دروس مكياج'],
-  portfolio: ['s1', 's2', 's3'],
-  interview: { q: 'ما سر المكياج المثالي؟', a: 'البشرة النظيفة والمرطبة هي الأساس. المكياج الجميل يبدأ بعناية!' },
-  weekOf: new Date().toISOString().slice(0, 10),
-};
-
-const PAST_TECHS = [
-  { id: 2, name: 'د. ليلى القحطاني', titleAr: 'طبيبة جلدية', emoji: '✨', weekOf: '2026-07-20' },
-  { id: 3, name: 'سارة الحربي', titleAr: 'مصففة شعر', emoji: '💇‍♀️', weekOf: '2026-07-13' },
-  { id: 4, name: 'هند المطيري', titleAr: 'أخصائية أظافر', emoji: '💅', weekOf: '2026-07-06' },
-];
-
 export const featuredTechRouter = router({
-  current: publicProcedure.query(() => FEATURED),
-  past: publicProcedure.query(() => PAST_TECHS),
+  current: publicProcedure.query(async () => {
+    const top = await prisma.technician.findFirst({ orderBy: { ratingAvg: 'desc' }, include: { user: { select: { name: true } } } });
+    if (!top) return { id: 0, name: '', titleAr: '', emoji: '💄', bio: '', highlights: [], services: [], interview: { q: '', a: '' }, weekOf: '' };
+    const completedBookings = await prisma.booking.count({ where: { technicianId: top.userId, status: 'COMPLETED' } });
+    return {
+      id: top.id, name: top.user.name, titleAr: 'خبيرة تجميل', emoji: '💄',
+      bio: `${top.user.name} خبيرة تجميل سعودية معتمدة بتقييم ${Number(top.ratingAvg).toFixed(1)} ⭐`,
+      highlights: [`تقييم ${Number(top.ratingAvg).toFixed(1)} ⭐`, `+${completedBookings} حجز مكتمل`, top.city || ''],
+      services: [],
+      interview: { q: 'ما سر جمالكِ؟', a: 'العناية اليومية والاهتمام بالتفاصيل' },
+      weekOf: new Date().toISOString().slice(0, 10),
+    };
+  }),
+
+  past: publicProcedure.query(async () => {
+    const techs = await prisma.technician.findMany({ take: 5, orderBy: { createdAt: 'desc' }, include: { user: { select: { name: true } } } });
+    return techs.slice(1).map(t => ({ id: t.id, name: t.user.name, titleAr: 'خبيرة تجميل', emoji: '💄', weekOf: t.createdAt.toISOString().slice(0, 10) }));
+  }),
 });
