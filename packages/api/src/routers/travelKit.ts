@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
 const KITS: Record<string, Array<{ nameAr: string; emoji: string; essential: boolean; size: string }>> = {
@@ -38,4 +39,15 @@ export const travelKitRouter = router({
       const dest = DESTINATIONS.find((d) => d.key === input.destination);
       return { destination: input.destination, days: input.days, items, tip: dest?.tips ?? '' };
     }),
+
+  save: customerProcedure
+    .input(z.object({ destination: z.string(), days: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const items = KITS[input.destination] ?? KITS['beach']!;
+      return prisma.travelKitItem.create({ data: { userId: ctx.user.id, destination: input.destination, days: input.days, items } });
+    }),
+
+  myKits: customerProcedure.query(({ ctx }) =>
+    prisma.travelKitItem.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } })
+  ),
 });
