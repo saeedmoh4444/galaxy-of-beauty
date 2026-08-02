@@ -1,5 +1,9 @@
 import { prisma } from '@galaxy/db';
+import { SAUDI_CITIES } from '@galaxy/shared';
 import { publicProcedure, router } from '../trpc';
+
+/** Estimated satisfaction rate (95%) — replace with real survey data. */
+const ESTIMATED_SATISFACTION_RATE = 0.95;
 
 export const beautyStatsRouter = router({
   platform: publicProcedure.query(async () => {
@@ -17,8 +21,8 @@ export const beautyStatsRouter = router({
       totalTechnicians,
       totalReviews,
       avgRating: Math.round((Number(avgRating._avg?.rating || 0)) * 10) / 10,
-      citiesCount: 16,
-      happyCustomers: Math.floor(totalBookings * 0.95),
+      citiesCount: SAUDI_CITIES.length,
+      happyCustomers: Math.floor(totalBookings * ESTIMATED_SATISFACTION_RATE),
     };
   }),
 });

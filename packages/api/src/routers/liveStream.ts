@@ -1,6 +1,9 @@
 import { z } from 'zod';
 import { publicProcedure, customerProcedure, router } from '../trpc';
 
+// MOCK DATA — replace with real streaming integration (YouTube Live / Twitch API)
+// and database-backed stream management.
+
 export interface LiveStream {
   id: number; technicianId: number; technicianName: string;
   titleAr: string; titleEn: string; category: string;

@@ -1,5 +1,8 @@
 import { adminProcedure, router } from '../trpc';
 
+// MOCK DATA — replace with real monitoring (Prometheus, Datadog, or system metrics).
+// This endpoint exists to unblock the admin dashboard UI during development.
+
 const HEALTH_SNAPSHOT = {
   timestamp: new Date().toISOString(),
   services: {

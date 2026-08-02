@@ -1,6 +1,9 @@
 import { z } from 'zod';
 import { customerProcedure, router } from '../trpc';
 
+// MOCK DATA — replace with real promotional offers from the database
+// (e.g., prisma.promotion.findMany with geo-filtering).
+
 const OFFERS = [
   { id: 1, titleAr: 'خصم ٢٠٪ على المساج', salonName: 'سبا النخيل', lat: 24.7136, lng: 46.6753, city: 'الرياض', distance: '٠.٥ كم', expiresIn: '٣ ساعات', emoji: '💆‍♀️' },
   { id: 2, titleAr: 'مانيكير مجاني مع أي خدمة', salonName: 'مركز الجمال', lat: 24.7200, lng: 46.6800, city: 'الرياض', distance: '١.٢ كم', expiresIn: '٥ ساعات', emoji: '💅' },
