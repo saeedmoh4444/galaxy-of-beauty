@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { adminProcedure, publicProcedure, router } from '../trpc';
 
 const ISSUES = [
@@ -7,14 +8,22 @@ const ISSUES = [
   { id: 3, titleAr: 'عروض العيد', subject: '🎉 عروض خاصة بمناسبة العيد', sentAt: '2026-07-01', openRate: 85, emoji: '🎉' },
 ];
 
-const SUBSCRIBERS = { total: 12500, active: 10200, unsubscribed: 2300 };
-
 export const newsletterRouter = router({
   issues: publicProcedure.query(() => ISSUES),
-  subscribers: adminProcedure.query(() => SUBSCRIBERS),
+
+  subscribers: adminProcedure.query(async () => {
+    const total = await prisma.newsletterSubscriber.count();
+    const active = await prisma.newsletterSubscriber.count({ where: { active: true } });
+    return { total, active, unsubscribed: total - active };
+  }),
+
   subscribe: publicProcedure
     .input(z.object({ email: z.string().email() }))
-    .mutation(async ({ input }) => ({ subscribed: true, email: input.email, message: 'تم الاشتراك بنجاح! 🎉' })),
+    .mutation(async ({ input }) => {
+      await prisma.newsletterSubscriber.upsert({ where: { email: input.email }, update: { active: true }, create: { email: input.email } });
+      return { subscribed: true, email: input.email, message: 'تم الاشتراك بنجاح! 🎉' };
+    }),
+
   compose: adminProcedure
     .input(z.object({ titleAr: z.string().min(1), subject: z.string().min(1), content: z.string().min(1) }))
     .mutation(async ({ input }) => {
