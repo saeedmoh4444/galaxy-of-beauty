@@ -5,9 +5,12 @@ import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function RideHailingPage(): JSX.Element {
-  const { data: providers } = api.rideHailing.providers.useQuery() as { data: Array<Record<string,unknown>> | undefined };
+  const { data: providers, isLoading, isError, refetch } = api.rideHailing.providers.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const bookMut = api.rideHailing.book.useMutation();
   const [result, setResult] = useState<Record<string,unknown> | null>(null);
+
+  if (isLoading) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><CardSkeleton /></div></DashboardLayout>;
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
 
   const list = (providers ?? []) as Array<Record<string,unknown>>;
 

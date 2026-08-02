@@ -5,10 +5,13 @@ import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/shar
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function TechWaitlistPage(): JSX.Element {
-  const { data: popular } = api.techWaitlist.popular.useQuery() as { data: Array<Record<string,unknown>> | undefined };
-  const { data: myList, refetch } = api.techWaitlist.myWaitlists.useQuery() as { data: Array<Record<string,unknown>> | undefined; refetch: () => void };
+  const { data: popular, isLoading, isError, refetch } = api.techWaitlist.popular.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: myList } = api.techWaitlist.myWaitlists.useQuery() as { data: Array<Record<string,unknown>> | undefined };
   const joinMut = api.techWaitlist.join.useMutation({ onSuccess: () => refetch() });
   const leaveMut = api.techWaitlist.leave.useMutation({ onSuccess: () => refetch() });
+
+  if (isLoading) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><CardSkeleton /></div></DashboardLayout>;
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
 
   const techs = (popular ?? []) as Array<Record<string,unknown>>;
   const my = (myList ?? []) as Array<Record<string,unknown>>;

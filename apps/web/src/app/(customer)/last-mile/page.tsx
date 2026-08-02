@@ -5,9 +5,13 @@ import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function LastMilePage(): JSX.Element {
-  const { data: products } = api.lastMileDelivery.products.useQuery() as { data: Array<Record<string,unknown>> | undefined };
+  const { data: products, isLoading, isError, refetch } = api.lastMileDelivery.products.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const orderMut = api.lastMileDelivery.order.useMutation();
   const [result, setResult] = useState<Record<string,unknown> | null>(null);
+
+  if (isLoading) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><CardSkeleton /></div></DashboardLayout>;
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
+
   const prods = (products ?? []) as Array<Record<string,unknown>>;
 
   return (

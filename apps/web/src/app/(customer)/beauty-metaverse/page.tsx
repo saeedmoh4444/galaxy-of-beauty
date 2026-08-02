@@ -5,13 +5,15 @@ import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyMetaversePage(): JSX.Element {
-  const { data: salons } = api.beautyMetaverse.salons.useQuery() as { data: Array<Record<string,unknown>> | undefined };
-  const { data: avatars } = api.beautyMetaverse.avatars.useQuery() as { data: Array<Record<string,unknown>> | undefined };
+  const { data: salons, isLoading, isError, refetch } = api.beautyMetaverse.salons.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const enterMut = api.beautyMetaverse.enter.useMutation();
   const [result, setResult] = useState<Record<string,unknown> | null>(null);
 
   const list = (salons ?? []) as Array<Record<string,unknown>>;
-  const avList = (avatars ?? []) as Array<Record<string,unknown>>;
+  if (isLoading) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-4xl space-y-6"><CardSkeleton /></div></DashboardLayout>;
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-4xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
+
+  const avList = (salons ?? []) as Array<Record<string,unknown>>;
 
   return (
     <DashboardLayout role="CUSTOMER">

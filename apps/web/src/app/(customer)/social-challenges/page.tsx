@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, Button, ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const CHALLENGES = [
@@ -12,8 +12,12 @@ const CHALLENGES = [
 ];
 
 export default function SocialChallengesPage(): JSX.Element {
-  const { data: myChallenges } = api.socialChallenges.myChallenges.useQuery() as { data: Array<Record<string,unknown>> | undefined };
+  const { data: myChallenges, isLoading, isError, refetch } = api.socialChallenges.myChallenges.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const joinMut = api.socialChallenges.join.useMutation(); const leaveMut = api.socialChallenges.leave.useMutation();
+
+  if (isLoading) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><CardSkeleton /></div></DashboardLayout>;
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
+
   const joined = (myChallenges??[]).map((c:Record<string,unknown>)=>c.challengeKey as string);
 
   return (

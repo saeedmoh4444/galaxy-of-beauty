@@ -4,9 +4,13 @@ import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function IoTSyncPage(): JSX.Element {
-  const { data: devices } = api.iotSync.devices.useQuery() as { data: Array<Record<string,unknown>> | undefined };
+  const { data: devices, isLoading, isError, refetch } = api.iotSync.devices.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const connectMut = api.iotSync.connect.useMutation();
   const syncMut = api.iotSync.syncData.useMutation();
+
+  if (isLoading) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><CardSkeleton /></div></DashboardLayout>;
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
+
   const list = (devices ?? []) as Array<Record<string,unknown>>;
 
   return (
