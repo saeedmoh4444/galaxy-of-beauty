@@ -52,8 +52,8 @@ export const adminReportsRouter = router({
   exportCSV: adminProcedure.query(async () => {
     const dashboard = await (async () => {
       const topServices = await db.category.findMany({ take: 5, include: { services: { include: { bookings: { select: { totalAmount: true } } } } } });
-      return topServices.map(c => {
-        const bookings = c.services.reduce((s, svc) => s + svc.bookings.length, 0);
+      return (topServices as any[]).map((c: any) => {
+        const bookings = c.services.reduce((s: number, svc: any) => s + (svc.bookings?.length || 0), 0);
         const revenue = c.services.reduce((s: number, svc: any) => s + (svc.bookings as any[]).reduce((bs: number, b: any) => bs + Number(b.totalAmount || 0), 0), 0);
         return { name: (c.nameJson as Record<string, string>)?.ar ?? '', revenue, bookings, pct: 0 };
       });
