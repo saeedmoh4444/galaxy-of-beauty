@@ -24,6 +24,23 @@ export const beautyFaqRouter = router({
       return results;
     }),
 
+  categories: publicProcedure
+    .query(async () => {
+      const CATEGORY_META: Record<string, { emoji: string; nameAr: string }> = {
+        makeup: { emoji: '💄', nameAr: 'مكياج' },
+        skincare: { emoji: '🧴', nameAr: 'عناية بالبشرة' },
+        hair: { emoji: '💇', nameAr: 'شعر' },
+        nails: { emoji: '💅', nameAr: 'أظافر' },
+        massage: { emoji: '💆', nameAr: 'مساج' },
+        general: { emoji: '📋', nameAr: 'عام' },
+      };
+      const rows = await prisma.beautyFaq.findMany({ select: { category: true }, distinct: ['category'] });
+      const cats = rows.length > 0
+        ? rows.map(r => r.category)
+        : Object.keys(CATEGORY_META);
+      return cats.map(key => ({ key, emoji: CATEGORY_META[key]?.emoji ?? '📋', nameAr: CATEGORY_META[key]?.nameAr ?? key }));
+    }),
+
   create: adminProcedure
     .input(z.object({ question: z.string(), answer: z.string(), category: z.string().default('general') }))
     .mutation(async ({ input }) =>
