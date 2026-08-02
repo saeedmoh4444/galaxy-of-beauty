@@ -1786,6 +1786,16 @@ model RoutineStep {
   @@map("routine_steps")
 }
 
+model QuizCertificate {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  quizId    String
+  quizName  String
+  score     Int
+  createdAt DateTime @default(now())
+  @@map("quiz_certificates")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
 const QUIZZES = [
@@ -13,9 +14,6 @@ const QUIZZES = [
   ]},
 ];
 
-const CERTIFICATES: Array<{ id: number; userId: number; quizId: string; quizName: string; score: number; date: string; }> = [];
-let certId = 1;
-
 export const certificationQuizRouter = router({
   quizzes: publicProcedure.query(() => QUIZZES.map((q) => ({ id: q.id, nameAr: q.nameAr, emoji: q.emoji, questionCount: q.questions.length }))),
   get: publicProcedure.input(z.object({ id: z.string() })).query(async ({ input }) => { const quiz = QUIZZES.find((q) => q.id === input.id); if (!quiz) throw new Error('غير موجود'); return quiz; }),
@@ -27,8 +25,13 @@ export const certificationQuizRouter = router({
       let correct = 0;
       input.answers.forEach((ans, i) => { if (quiz.questions[i]?.correct === ans) correct++; });
       const score = Math.round((correct / quiz.questions.length) * 100);
-      if (score >= 80) { const cert = { id: certId++, userId: ctx.user.id, quizId: input.quizId, quizName: quiz.nameAr, score, date: new Date().toISOString() }; CERTIFICATES.push(cert); return { passed: true, score, certificate: cert }; }
+      if (score >= 80) {
+        const cert = await prisma.quizCertificate.create({ data: { userId: ctx.user.id, quizId: input.quizId, quizName: quiz.nameAr, score } });
+        return { passed: true, score, certificate: cert };
+      }
       return { passed: false, score, certificate: null };
     }),
-  myCertificates: customerProcedure.query(async ({ ctx }) => CERTIFICATES.filter((c) => c.userId === ctx.user.id)),
+  myCertificates: customerProcedure.query(async ({ ctx }) =>
+    prisma.quizCertificate.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } })
+  ),
 });
