@@ -26,9 +26,9 @@ export const adminReportsRouter = router({
 
     const byService = (topServices as any[]).map((c: any) => {
       const bookings = c.services.reduce((s: number, svc: any) => s + (svc.bookings?.length || 0), 0);
-      const revenue = c.services.reduce((s, svc) => s + svc.bookings.reduce((bs, b) => bs + Number(b.totalAmount || 0), 0), 0);
+      const revenue = c.services.reduce((s: number, svc: any) => s + (svc.bookings as any[]).reduce((bs: number, b: any) => bs + Number(b.totalAmount || 0), 0), 0);
       return { name: (c.nameJson as Record<string, string>)?.ar ?? '', revenue, bookings, pct: 0 };
-    }).sort((a, b) => b.bookings - a.bookings);
+    }).sort((a: any, b: any) => b.bookings - a.bookings);
 
     const topTechs = (topTechnicians as any[]).map((t: any) => ({
       name: `فنية #${t.technicianId}`,
@@ -38,7 +38,7 @@ export const adminReportsRouter = router({
     })).sort((a: any, b: any) => b.bookings - a.bookings);
 
     const totalBookings = byService.reduce((s, b) => s + b.bookings, 0);
-    if (totalBookings > 0) byService.forEach(s => { s.pct = Math.round((s.bookings / totalBookings) * 100); });
+    if (totalBookings > 0) byService.forEach((s: any) => { s.pct = Math.round((s.bookings / totalBookings) * 100); });
 
     return {
       revenue: { labels: [''], data: [Number(monthRevenue._sum?.totalAmount || 0)] },
@@ -54,7 +54,7 @@ export const adminReportsRouter = router({
       const topServices = await db.category.findMany({ take: 5, include: { services: { include: { bookings: { select: { totalAmount: true } } } } } });
       return topServices.map(c => {
         const bookings = c.services.reduce((s, svc) => s + svc.bookings.length, 0);
-        const revenue = c.services.reduce((s, svc) => s + svc.bookings.reduce((bs, b) => bs + Number(b.totalAmount || 0), 0), 0);
+        const revenue = c.services.reduce((s: number, svc: any) => s + (svc.bookings as any[]).reduce((bs: number, b: any) => bs + Number(b.totalAmount || 0), 0), 0);
         return { name: (c.nameJson as Record<string, string>)?.ar ?? '', revenue, bookings, pct: 0 };
       });
     })();
