@@ -1,12 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useQueryClient } from '@tanstack/react-query';
+import { SOCKET_DEFAULT_PORT, SOCKET_RECONNECT_ATTEMPTS, SOCKET_RECONNECT_DELAY_MS, SOCKET_RECONNECT_MAX_DELAY_MS } from '@galaxy/shared';
 
 // ── Configuration ──────────────────────────────────────────
 
 const SOCKET_URL =
   (typeof process !== 'undefined' && (process.env as Record<string, string>)['EXPO_PUBLIC_SOCKET_URL']) ||
-  'http://localhost:4001';
+  `http://localhost:${SOCKET_DEFAULT_PORT}`;
 
 // ── In-memory token store (set by login flow) ──────────────
 
@@ -64,9 +65,9 @@ export function useSocket(): void {
         auth: { token },
         transports: ['websocket'],
         reconnection: true,
-        reconnectionAttempts: 10,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 30000,
+        reconnectionAttempts: SOCKET_RECONNECT_ATTEMPTS,
+        reconnectionDelay: SOCKET_RECONNECT_DELAY_MS,
+        reconnectionDelayMax: SOCKET_RECONNECT_MAX_DELAY_MS,
       });
 
       socketRef.current = socket;

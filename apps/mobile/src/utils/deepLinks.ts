@@ -1,8 +1,10 @@
+import { DEFAULT_APP_URL } from '@galaxy/shared';
+
 // Deep link configuration for Galaxy of Beauty mobile app.
 // Universal links + custom scheme: gob://
 
 export const DEEP_LINK_CONFIG = {
-  prefixes: ['gob://', 'https://galaxyofbeauty.sa'],
+  prefixes: ['gob://', DEFAULT_APP_URL],
   config: {
     screens: {
       '(tabs)': {
