@@ -1766,6 +1766,15 @@ model WarrantyClaim {
   @@map("warranty_claims")
 }
 
+model SpaPlan {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  items     Json
+  createdAt DateTime @default(now())
+  @@map("spa_plans")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================

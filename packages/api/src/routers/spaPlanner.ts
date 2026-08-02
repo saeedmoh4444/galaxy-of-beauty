@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
 const SPA_SERVICES = [
@@ -18,18 +19,18 @@ const BREAKS = [
   { id: 'snack', nameAr: 'وجبة خفيفة', durationMin: 10, emoji: '🥐' },
 ];
 
-export interface SpaDayPlan { id: number; name: string; items: Array<{ type: 'service' | 'break'; id: number | string; nameAr: string; durationMin: number; emoji: string; price?: number }>; createdAt: string; }
-type SpaPlan = SpaDayPlan;
-const plans: SpaPlan[] = []; let planId = 1;
-
 export const spaPlannerRouter = router({
   services: customerProcedure.query(() => SPA_SERVICES),
   breaks: customerProcedure.query(() => BREAKS),
-  myPlans: customerProcedure.query(() => plans),
+
+  myPlans: customerProcedure.query(({ ctx }) =>
+    prisma.spaPlan.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } })
+  ),
+
   create: customerProcedure
     .input(z.object({ name: z.string().min(1), serviceIds: z.array(z.number()).min(1), breakIds: z.array(z.string()).default([]) }))
-    .mutation(async ({ input }) => {
-      const items: SpaPlan['items'] = [];
+    .mutation(async ({ ctx, input }) => {
+      const items: Array<Record<string,unknown>> = [];
       input.serviceIds.forEach((sid) => {
         const svc = SPA_SERVICES.find((s) => s.id === sid);
         if (svc) items.push({ type: 'service', id: svc.id, nameAr: svc.nameAr, durationMin: svc.durationMin, emoji: svc.emoji, price: svc.price });
@@ -38,10 +39,6 @@ export const spaPlannerRouter = router({
         const brk = BREAKS.find((b) => b.id === bid);
         if (brk) items.push({ type: 'break', id: brk.id, nameAr: brk.nameAr, durationMin: brk.durationMin, emoji: brk.emoji });
       });
-      const totalMin = items.reduce((s, i) => s + i.durationMin, 0);
-      const totalPrice = items.filter((i) => i.type === 'service').reduce((s, i) => s + (i.price ?? 0), 0);
-      const plan: SpaPlan = { id: planId++, name: input.name, items, createdAt: new Date().toISOString() };
-      plans.push(plan);
-      return { ...plan, totalMin, totalPrice };
+      return prisma.spaPlan.create({ data: { userId: ctx.user.id, name: input.name, items } });
     }),
 });
