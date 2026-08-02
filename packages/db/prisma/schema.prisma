@@ -1709,6 +1709,20 @@ model EventRegistration {
   @@map("event_registrations")
 }
 
+model HomeServiceRequest {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  serviceId       Int
+  city            String
+  address         String
+  preferredDate   String
+  preferredTime   String
+  notes           String?
+  status          String   @default("PENDING")
+  createdAt       DateTime @default(now())
+  @@map("home_service_requests")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================
