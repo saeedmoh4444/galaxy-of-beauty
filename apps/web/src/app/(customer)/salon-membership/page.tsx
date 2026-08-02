@@ -11,10 +11,9 @@ const MEMBERSHIPS = [
 ];
 
 export default function SalonMembershipPage(): JSX.Element {
-  const { data: membership, isLoading } = api.salonMembership.myMembership.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: membership, isLoading, isError, refetch } = api.salonMembership.myMembership.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const subscribeMut = api.salonMembership.subscribe.useMutation(); const cancelMut = api.salonMembership.cancel.useMutation();
 
-  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">

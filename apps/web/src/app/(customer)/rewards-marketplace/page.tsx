@@ -17,7 +17,6 @@ export default function RewardsMarketplacePage(): JSX.Element {
   const points = account?.points as number ?? 0;
   const tier = account?.tier as string ?? 'SILVER';
 
-  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
@@ -37,7 +36,6 @@ export default function RewardsMarketplacePage(): JSX.Element {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{(rewards??[]).map((r: Record<string,unknown>) => {
             const canAfford = points >= (r.pointsCost as number);
             const isRedeemed = redeemed === r.id;
-  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
             return (
               <Card key={r.id as number} padding="lg" className={`text-center ${isRedeemed ? 'border-2 border-green-300 bg-green-50' : canAfford ? '' : 'opacity-50'}`}>
                 <span className="text-4xl">{r.rewardType === 'free_service' ? '💆‍♀️' : r.rewardType === 'discount_percent' ? '🏷️' : '💰'}</span>

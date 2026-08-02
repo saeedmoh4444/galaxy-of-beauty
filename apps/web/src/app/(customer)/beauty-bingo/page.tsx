@@ -22,14 +22,14 @@ export default function BeautyBingoPage(): JSX.Element {
             <p className="text-xs text-brand-600 mt-1">{data?.reward as string}</p>
             <div className="mt-4 grid grid-cols-3 gap-2">
               {tasks.map((t: Record<string,unknown>) => (
-                <button key={t.id as number} onClick={() => markMut.mutate()} className={`rounded-xl p-3 text-xs font-medium transition-all ${t.completed ? 'bg-green-100 dark:bg-green-900 text-green-700 line-through' : 'bg-gray-50 dark:bg-gray-800 hover:bg-brand-50'}`}>
+                <button key={t.id as number} onClick={() => markMut.mutate({ taskId: t.id as number })} className={`rounded-xl p-3 text-xs font-medium transition-all ${t.completed ? 'bg-green-100 dark:bg-green-900 text-green-700 line-through' : 'bg-gray-50 dark:bg-gray-800 hover:bg-brand-50'}`}>
                   {t.completed ? '✅' : '⬜'} {t.task as string}
                 </button>
               ))}
             </div>
           </Card>
         )}
-        <div className="text-center"><Button variant="ghost" onClick={() => markMut.mutate()}>🔄 تحديث</Button></div>
+        <div className="text-center"><Button variant="ghost" onClick={() => markMut.mutate({ taskId: 1 })}>🔄 تحديث</Button></div>
       </div>
     </DashboardLayout>
   );

@@ -13,7 +13,7 @@ const MOODS = [
 ];
 
 export default function BeautyDiaryPage(): JSX.Element {
-  const { data: journals, isLoading } = api.beautyJournal.list.useQuery({ page: 1, limit: 20 }) as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: journals, isLoading, isError, refetch } = api.beautyJournal.list.useQuery({ page: 1, limit: 20 }) as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const createMut = api.beautyJournal.create.useMutation();
   const entries = (Array.isArray(journals) ? journals : (journals as Record<string,unknown>)?.items as Array<Record<string,unknown>>) ?? [];
   const [content, setContent] = useState(''); const [mood, setMood] = useState(3); const [showForm, setShowForm] = useState(false);

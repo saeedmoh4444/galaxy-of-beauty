@@ -38,7 +38,6 @@ export default function CycleTrackerPage(): JSX.Element {
     }, { onSuccess: () => { setShowLog(false); setNotes(''); } });
   };
 
-  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
@@ -89,7 +88,6 @@ export default function CycleTrackerPage(): JSX.Element {
             <div className="flex flex-wrap gap-1">{Array.from({length:cycleLength},(_,i) => i+1).map(d => {
               const p = (() => { const adj = ((d-1) % cycleLength) + 1; if (adj<=5) return PHASES_LIST[0]; if (adj<=13) return PHASES_LIST[1]; if (adj<=16) return PHASES_LIST[2]; return PHASES_LIST[3]; })();
               const entry = entries.find((e: Record<string,unknown>) => e.dayNumber === d);
-  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
               return (
                 <div key={d} className={`w-8 h-8 rounded-full text-xs flex items-center justify-center relative ${entry ? 'ring-2 ring-offset-1' : 'bg-gray-100'}`} style={{backgroundColor: entry ? p!.color+'30' : '', borderColor: p!.color}} title={`اليوم ${d}: ${p!.name}`}>
                   <span className="text-[10px]">{d}</span>

@@ -16,7 +16,6 @@ export default function RecommendationsPage(): JSX.Element {
   const { data: together, isLoading: tLoading } = api.recommendations.frequentlyBookedTogether.useQuery({ serviceId, limit: 4 }) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const { data: complete, isLoading: cLoading } = api.recommendations.completeTheLook.useQuery({ serviceId, limit: 4 }) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
 
-  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">

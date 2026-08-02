@@ -17,7 +17,6 @@ export default function SocialPage(): JSX.Element {
   const tips = (tipsData ?? []).filter((t: Record<string,unknown>) => tipCat==='all' || (t.category as string)===tipCat);
   const feedItems = (feedData?.items as Array<Record<string,unknown>>) ?? [];
 
-  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">

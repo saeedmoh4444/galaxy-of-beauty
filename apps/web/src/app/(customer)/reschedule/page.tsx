@@ -5,7 +5,7 @@ import { Card, CardSkeleton, Button , ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function ReschedulePage(): JSX.Element {
-  const { data: bookingsData, isLoading } = api.bookings.list.useQuery({ page: 1, limit: 20 }) as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: bookingsData, isLoading, isError, refetch } = api.bookings.list.useQuery({ page: 1, limit: 20 }) as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const rescheduleMut = api.reschedule.request.useMutation();
   const bookings = (bookingsData?.bookings as Array<Record<string,unknown>>) ?? [];
   const activeBookings = bookings.filter((b: Record<string,unknown>) => (b.status as string) === 'REQUESTED' || (b.status as string) === 'ACCEPTED');

@@ -4,7 +4,7 @@ import { Card, CardSkeleton, formatCurrency , ErrorAlert } from '@galaxy/shared'
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BookingInsightsPage(): JSX.Element {
-  const { data: insights, isLoading } = api.analytics.customerInsights.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: insights, isLoading, isError, refetch } = api.analytics.customerInsights.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
 
   return (
     <DashboardLayout role="CUSTOMER">

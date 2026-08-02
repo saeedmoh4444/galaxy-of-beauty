@@ -9,7 +9,6 @@ export default function FollowingPage(): JSX.Element {
   const unfollowMut = api.technicianFollows.unfollow.useMutation();
   const follows = data ?? [];
 
-  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">

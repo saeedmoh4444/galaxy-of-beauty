@@ -13,13 +13,12 @@ const POPULAR_SERVICES = [
 
 export default function EmergencyBookingPage(): JSX.Element {
   const [serviceId, setServiceId] = useState(1);
-  const { data: avail, isLoading } = api.emergencyBooking.checkAvailability.useQuery({ serviceId }) as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: avail, isLoading, isError, refetch } = api.emergencyBooking.checkAvailability.useQuery({ serviceId }) as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const createMut = api.emergencyBooking.create.useMutation();
   const [selectedTech, setSelectedTech] = useState<number | null>(null);
   const [bookingCode, setBookingCode] = useState<string | null>(null);
   const available = (avail?.available as Array<Record<string,unknown>>) ?? [];
 
-  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">

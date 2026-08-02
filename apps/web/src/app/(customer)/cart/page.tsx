@@ -13,7 +13,6 @@ export default function CartPage(): JSX.Element {
     return sum + (Number(product?.price ?? 0) * (item.quantity as number));
   }, 0);
 
-  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">

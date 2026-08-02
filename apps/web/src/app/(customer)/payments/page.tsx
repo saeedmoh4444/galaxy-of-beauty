@@ -4,7 +4,7 @@ import { Card, CardSkeleton, formatCurrency , ErrorAlert } from '@galaxy/shared'
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function PaymentsPage(): JSX.Element {
-  const { data: txData, isLoading } = api.wallet.getTransactions.useQuery({ page: 1, limit: 50 }) as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: txData, isLoading, isError, refetch } = api.wallet.getTransactions.useQuery({ page: 1, limit: 50 }) as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const transactions = (txData?.items as Array<Record<string,unknown>>) ?? [];
   const totalSpent = transactions.filter((t: Record<string,unknown>) => (t.amount as number) < 0).reduce((s: number, t: Record<string,unknown>) => s + Math.abs(t.amount as number), 0);
 

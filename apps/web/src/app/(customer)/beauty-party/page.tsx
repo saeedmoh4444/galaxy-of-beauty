@@ -15,7 +15,6 @@ export default function BeautyPartyPage(): JSX.Element {
   const estPerPerson = 150; const total = estPerPerson * guests;
   const discount = guests>=6?20:guests>=4?10:0; const finalTotal = total - (total*discount/100);
 
-  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-3xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
