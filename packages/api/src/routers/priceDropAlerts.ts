@@ -1,9 +1,6 @@
 import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
-
-export interface PriceDropAlert { id: number; serviceName: string; targetPrice: number; currentPrice: number; emoji: string; active: boolean; createdAt: string; }
-type PriceAlert = PriceDropAlert;
-const alerts: PriceAlert[] = []; let alertId = 1;
 
 const TRACKED_SERVICES = [
   { id: 1, nameAr: 'مكياج احترافي', price: 300, prevPrice: 350, emoji: '💄', dropped: true },
@@ -13,13 +10,21 @@ const TRACKED_SERVICES = [
 
 export const priceDropAlertsRouter = router({
   tracked: customerProcedure.query(() => TRACKED_SERVICES),
-  myAlerts: customerProcedure.query(() => alerts),
+
+  myAlerts: customerProcedure.query(({ ctx }) =>
+    prisma.priceDropAlert.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } })
+  ),
+
   create: customerProcedure
     .input(z.object({ serviceName: z.string().min(1), targetPrice: z.number().min(1), currentPrice: z.number(), emoji: z.string().default('💅') }))
-    .mutation(async ({ input }) => {
-      const a: PriceAlert = { id: alertId++, serviceName: input.serviceName, targetPrice: input.targetPrice, currentPrice: input.currentPrice, emoji: input.emoji, active: true, createdAt: new Date().toISOString() };
-      alerts.push(a);
-      return a;
+    .mutation(async ({ ctx, input }) => {
+      return prisma.priceDropAlert.create({ data: { userId: ctx.user.id, ...input } });
     }),
-  delete: customerProcedure.input(z.object({ id: z.number() })).mutation(async ({ input }) => { const idx = alerts.findIndex((a) => a.id === input.id); if (idx >= 0) alerts.splice(idx, 1); return { success: true }; }),
+
+  delete: customerProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      await prisma.priceDropAlert.deleteMany({ where: { id: input.id, userId: ctx.user.id } });
+      return { success: true };
+    }),
 });

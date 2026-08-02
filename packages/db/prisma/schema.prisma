@@ -1743,6 +1743,18 @@ model ShortLike {
   @@map("short_likes")
 }
 
+model PriceDropAlert {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  serviceName  String
+  targetPrice  Float
+  currentPrice Float
+  emoji        String   @default("💅")
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  @@map("price_drop_alerts")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================
