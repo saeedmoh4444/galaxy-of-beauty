@@ -6,10 +6,10 @@ import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } fr
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function SpaPlannerPage(): JSX.Element {
-  const { data: services } = api.spaPlanner.services.useQuery() as { data: Array<Record<string,unknown>> | undefined };
-  const { data: breaks } = api.spaPlanner.breaks.useQuery() as { data: Array<Record<string,unknown>> | undefined };
-  const { data: myPlans } = api.spaPlanner.myPlans.useQuery() as { data: Array<Record<string,unknown>> | undefined };
-  const createMut = api.spaPlanner.create.useMutation();
+  const { data: services } = api.spaPlanner.services.useQuery() as any;
+  const { data: breaks } = api.spaPlanner.breaks.useQuery() as any;
+  const { data: myPlans } = api.spaPlanner.myPlans.useQuery() as any;
+  const createMut = api.spaPlanner.create.useMutation() as any;
 
   const [name, setName] = useState('');
   const [selectedSvcs, setSelectedSvcs] = useState<number[]>([]);
@@ -52,7 +52,7 @@ export default function SpaPlannerPage(): JSX.Element {
 
             <div className="flex gap-2">
               <input value={name} onChange={(e) => setName(e.target.value)} placeholder="اسم الخطة..." className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800" />
-              <Button onClick={() => { if (name.trim() && selectedSvcs.length > 0) createMut.mutate({ name: name.trim(), serviceIds: selectedSvcs, breakIds: selectedBreaks }, { onSuccess: (d) => setResult(d as Record<string,unknown>) }); }} loading={createMut.isPending}>🕯️ خططي يومي</Button>
+              <Button onClick={() => { if (name.trim() && selectedSvcs.length > 0) createMut.mutate({ name: name.trim(), serviceIds: selectedSvcs, breakIds: selectedBreaks }, { onSuccess: (d: any) => setResult(d) }); }} loading={createMut.isPending}>🕯️ خططي يومي</Button>
             </div>
           </>
         )}
