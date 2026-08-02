@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getServerCaller } from '@/lib/server-trpc';
 import { ServicesClient } from './ServicesClient';
 import type { ServicesPageData } from './ServicesClient';

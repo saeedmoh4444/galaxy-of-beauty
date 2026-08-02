@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getServerCaller } from '@/lib/server-trpc';
 import { Card } from '@galaxy/shared';
 

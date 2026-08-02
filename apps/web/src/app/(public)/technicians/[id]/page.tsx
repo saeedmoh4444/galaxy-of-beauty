@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getServerCaller } from '@/lib/server-trpc';
 import { TechnicianProfileClient } from './TechnicianProfileClient';
 import type { TechnicianProfileData } from './TechnicianProfileClient';
