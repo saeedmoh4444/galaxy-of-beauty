@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { DEFAULT_APP_URL } from '@galaxy/shared';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,6 +30,7 @@ export const referralRaceRouter = router({
     .input(z.object({ platform: z.enum(['whatsapp', 'twitter', 'copy']) }))
     .mutation(async ({ ctx }) => {
       const code = await db.referral.findFirst({ where: { referrerId: ctx.user.id }, select: { referralCode: true } });
-      return { url: `https://galaxyofbeauty.sa/register?ref=${code?.referralCode || ctx.user.id}`, message: 'انضمي لجالكسي بيوتي واكسبي جوائز!' };
+      const appUrl = process.env['NEXT_PUBLIC_APP_URL'] || DEFAULT_APP_URL;
+      return { url: `${appUrl}/register?ref=${code?.referralCode || ctx.user.id}`, message: 'انضمي لجالكسي بيوتي واكسبي جوائز!' };
     }),
 });

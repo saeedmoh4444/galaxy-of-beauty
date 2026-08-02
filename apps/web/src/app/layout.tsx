@@ -4,7 +4,7 @@ import Providers from '@/components/Providers';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { SkipLink } from '@/components/SkipLink';
 import { OfflineBanner } from '@/components/OfflineBanner';
-import { ToastProvider } from '@galaxy/shared';
+import { ToastProvider, DEFAULT_LOCAL_URL } from '@galaxy/shared';
 import './globals.css';
 
 export const dynamic = 'force-dynamic';
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
   description:
     'Secure marketplace for beauty & grooming services in Saudi Arabia — book vetted female technicians for hair, nails, skincare, makeup, massage & henna.',
-  metadataBase: new URL(process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'),
+  metadataBase: new URL(process.env['NEXT_PUBLIC_APP_URL'] || DEFAULT_LOCAL_URL),
   icons: { icon: '/logo.png', apple: '/logo.png' },
   manifest: '/manifest.json',
   openGraph: {

@@ -9,6 +9,7 @@ import {
   technicianProcedure,
   adminProcedure,
 } from '../trpc';
+import { CASHBACK_RATE } from '@galaxy/shared';
 import { emitToUser, emitToAdmin } from '../socket/index';
 import { authorizePayment, verifyWebhookSignature } from '../lib/payfort';
 
@@ -216,7 +217,7 @@ export const paymentRouter = router({
         });
 
         // 5. Cashback — credit 5% to customer's wallet
-        const cashbackAmount = Number(booking.totalAmount) * 0.05;
+        const cashbackAmount = Number(booking.totalAmount) * CASHBACK_RATE;
 
         // Ensure wallet exists for the customer
         let wallet = await prisma.wallet.findUnique({

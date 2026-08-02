@@ -1,5 +1,7 @@
 'use client';
 
+import { GOOGLE_CALENDAR_URL } from '@galaxy/shared';
+
 interface AddToCalendarProps {
   title: string;
   description?: string;
@@ -34,7 +36,7 @@ export function AddToCalendar({ title, description, startAt, endAt, location }: 
     const s = new Date(startAt).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
     const e = new Date(endAt).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
     const params = new URLSearchParams({ action: 'TEMPLATE', text: title, dates: `${s}/${e}`, details: description || '', location: location || '' });
-    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+    return `${GOOGLE_CALENDAR_URL}?${params.toString()}`;
   };
 
   return (

@@ -1,5 +1,7 @@
 'use client';
 
+import { SHARE_URLS } from '@galaxy/shared';
+
 interface ShareButtonsProps {
   title: string;
   url?: string;
@@ -12,9 +14,9 @@ export function ShareButtons({ title, url }: ShareButtonsProps): JSX.Element {
     const encoded = encodeURIComponent(shareUrl);
     const encodedTitle = encodeURIComponent(title);
     const urls: Record<string, string> = {
-      whatsapp: `https://wa.me/?text=${encodedTitle}%20${encoded}`,
-      twitter: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encoded}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encoded}`,
+      whatsapp: `${SHARE_URLS.whatsapp}${encodedTitle}%20${encoded}`,
+      twitter: `${SHARE_URLS.twitter}${encodedTitle}&url=${encoded}`,
+      facebook: `${SHARE_URLS.facebook}${encoded}`,
       copy: shareUrl,
     };
     if (platform === 'copy') {

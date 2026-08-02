@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@galaxy/shared';
+import { Button, GOOGLE_OAUTH_URL } from '@galaxy/shared';
 
 interface SocialLoginProps {
   onSuccess?: () => void;
@@ -17,7 +17,7 @@ export function SocialLogin({ onSuccess: _onSuccess }: SocialLoginProps): JSX.El
     // Google Identity Services flow
     const redirectUri = `${window.location.origin}/api/auth/google/callback`;
     const scope = 'email profile';
-    const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${encodeURIComponent(scope)}`;
+    const url = `${GOOGLE_OAUTH_URL}?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${encodeURIComponent(scope)}`;
     window.location.href = url;
   };
 

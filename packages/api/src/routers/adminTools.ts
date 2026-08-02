@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import { MAX_EXPORT_SIZE } from '@galaxy/shared';
 import { adminProcedure, router } from '../trpc';
 
 export const adminToolsRouter = router({
@@ -147,19 +148,19 @@ export const adminToolsRouter = router({
       let data: unknown[] = [];
       switch (input.entity) {
         case 'users':
-          data = await prisma.user.findMany({ where: where as never, select: { id: true, name: true, email: true, role: true, createdAt: true }, take: 10000 });
+          data = await prisma.user.findMany({ where: where as never, select: { id: true, name: true, email: true, role: true, createdAt: true }, take: MAX_EXPORT_SIZE });
           break;
         case 'bookings':
-          data = await prisma.booking.findMany({ where: where as never, take: 10000 });
+          data = await prisma.booking.findMany({ where: where as never, take: MAX_EXPORT_SIZE });
           break;
         case 'payments':
-          data = await prisma.payment.findMany({ where: where as never, take: 10000 });
+          data = await prisma.payment.findMany({ where: where as never, take: MAX_EXPORT_SIZE });
           break;
         case 'reviews':
-          data = await prisma.review.findMany({ where: where as never, take: 10000 });
+          data = await prisma.review.findMany({ where: where as never, take: MAX_EXPORT_SIZE });
           break;
         case 'technicians':
-          data = await prisma.technician.findMany({ where: where as never, include: { user: { select: { name: true, email: true } } }, take: 10000 });
+          data = await prisma.technician.findMany({ where: where as never, include: { user: { select: { name: true, email: true } } }, take: MAX_EXPORT_SIZE });
           break;
       }
 

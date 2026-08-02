@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
+import { DEFAULT_APP_URL } from '@galaxy/shared';
 
-const BASE_URL = process.env['NEXT_PUBLIC_APP_URL'] || 'https://galaxyofbeauty.sa';
+const BASE_URL = process.env['NEXT_PUBLIC_APP_URL'] || DEFAULT_APP_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const publicPages = [

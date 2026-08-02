@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Script from 'next/script';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, ErrorAlert, Button, formatCurrency } from '@galaxy/shared';
+import { Card, ErrorAlert, Button, formatCurrency, LEAFLET_TILE_URL, LEAFLET_CSS_URL, LEAFLET_JS_URL } from '@galaxy/shared';
 
 interface Technician {
   id: number;
@@ -54,7 +54,7 @@ function MapView({
       const center: [number, number] = selectedCity ? [selectedCity.lat, selectedCity.lng] : [24.7136, 46.6753];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const map = L.map(mapRef.current).setView(center, selectedCity ? 13 : 6);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      L.tileLayer(LEAFLET_TILE_URL, {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         maxZoom: 18 }).addTo(map);
       mapInstance.current = map;
@@ -118,12 +118,12 @@ export default function SalonMapPage(): JSX.Element {
       {/* Leaflet CSS + JS from CDN */}
       <link
         rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        href={LEAFLET_CSS_URL}
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
         crossOrigin=""
       />
       <Script
-        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        src={LEAFLET_JS_URL}
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossOrigin=""
         onLoad={() => setLeafletLoaded(true)}

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, Spinner } from '@galaxy/shared';
+import { Card, Spinner, VERIFY_REDIRECT_MS } from '@galaxy/shared';
 
 export default function VerifyEmailPage(): JSX.Element {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function VerifyEmailPage(): JSX.Element {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [msg, setMsg] = useState('');
   const verifyMut = api.auth.verifyEmail.useMutation({
-    onSuccess: () => { setStatus('success'); setMsg('تم تأكيد البريد الإلكتروني بنجاح!'); setTimeout(() => router.push('/login'), 3000); },
+    onSuccess: () => { setStatus('success'); setMsg('تم تأكيد البريد الإلكتروني بنجاح!'); setTimeout(() => router.push('/login'), VERIFY_REDIRECT_MS); },
     onError: (e) => { setStatus('error'); setMsg(e.message || 'فشل التحقق من البريد الإلكتروني'); },
   });
 

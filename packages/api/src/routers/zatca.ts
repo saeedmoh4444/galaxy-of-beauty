@@ -3,12 +3,13 @@ import { TRPCError } from '@trpc/server';
 import { createHash } from 'crypto';
 import { adminProcedure, protectedProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
+import { ZATCA_TEST_VAT, ZATCA_API_URL as SHARED_ZATCA_URL } from '@galaxy/shared';
 
 // ── ZATCA Configuration ───────────────────────────────────
 const VAT_RATE = 0.15; // 15% VAT in Saudi Arabia
-const VAT_NUMBER = process.env['ZATCA_VAT_NUMBER'] || '300000000000003'; // Default test VAT
-const ZATCA_API_BASE = process.env['ZATCA_API_URL'] || 'https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal';
-const SELLER_NAME_AR = 'جالكسي بيوتي';
+const VAT_NUMBER = process.env['ZATCA_VAT_NUMBER'] || (process.env['NODE_ENV'] === 'production' ? '' : ZATCA_TEST_VAT);
+const ZATCA_API_BASE = process.env['ZATCA_API_URL'] || SHARED_ZATCA_URL;
+const SELLER_NAME_AR = process.env['BUSINESS_NAME_AR'] || 'جالكسي بيوتي';
 
 // ── SHA-256 Invoice Hashing ───────────────────────────────
 function computeInvoiceHash(invoiceData: {

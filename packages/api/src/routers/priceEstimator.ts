@@ -27,7 +27,7 @@ export const priceEstimatorRouter = router({
       }
 
       const subtotal = basePrice + variantDelta;
-      const platformFee = 11; // SAR — configurable via PLATFORM_FEE_SAR env
+      const platformFee = Number(process.env['PLATFORM_FEE_SAR']) || 11;
       let discount = 0;
       let discountType = '';
       let promoValid = false;

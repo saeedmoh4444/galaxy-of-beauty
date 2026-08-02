@@ -1,5 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import crypto from 'crypto';
+import { MAX_AUTH_ATTEMPTS } from '@galaxy/shared';
 import { publicProcedure, publicMutation, protectedProcedure, protectedMutation, router } from '../trpc';
 import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
@@ -184,9 +185,7 @@ export const authRouter = router({
         // ── Rate limiting: 5 attempts per 15 minutes per email ──
         const lockoutKey = `login_attempts:${input.email}`;
         const attempts = await incrementAttempts(lockoutKey, 900); // 15 min window
-        const MAX_ATTEMPTS = 5;
-
-        if (attempts > MAX_ATTEMPTS) {
+        if (attempts > MAX_AUTH_ATTEMPTS) {
           throw new TRPCError({
             code: 'TOO_MANY_REQUESTS',
             message: 'Too many login attempts. Please try again in 15 minutes.',

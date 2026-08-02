@@ -1,15 +1,16 @@
 import { NextResponse } from 'next/server';
+import { SWAGGER_CSS_URL, SWAGGER_JS_URL } from '@galaxy/shared';
 
 const swaggerHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Galaxy of Beauty — API Docs</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css">
+  <link rel="stylesheet" href="${SWAGGER_CSS_URL}">
 </head>
 <body>
   <div id="swagger-ui"></div>
-  <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js" crossorigin></script>
+  <script src="${SWAGGER_JS_URL}" crossorigin></script>
   <script>
     SwaggerUIBundle({
       url: '/api/docs/openapi.json',

@@ -1,10 +1,13 @@
+import { DEFAULT_APP_URL } from '@galaxy/shared';
 import { publicProcedure, router } from '../trpc';
+
+const API_BASE_URL = process.env['NEXT_PUBLIC_APP_URL'] || DEFAULT_APP_URL;
 
 const API_REFERENCE = {
   version: '2.2.0',
   title: 'Galaxy of Beauty API',
-  description: 'REST-like tRPC API for the Galaxy of Beauty platform — 145 routers, 300+ procedures',
-  baseUrl: 'https://galaxyofbeauty.sa/api/trpc',
+  description: 'REST-like tRPC API for the Galaxy of Beauty platform',
+  baseUrl: `${API_BASE_URL}/api/trpc`,
   authentication: {
     type: 'JWT Bearer Token',
     header: 'Authorization: Bearer <token>',
