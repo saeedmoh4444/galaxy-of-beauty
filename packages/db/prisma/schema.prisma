@@ -1723,6 +1723,17 @@ model HomeServiceRequest {
   @@map("home_service_requests")
 }
 
+model VipMembership {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  tier      String   @default("silver")
+  expiresAt DateTime?
+  autoRenew Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("vip_memberships")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================

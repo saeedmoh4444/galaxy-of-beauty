@@ -1,4 +1,9 @@
+import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = prisma as any;
 
 const TIERS = [
   { key: 'silver', nameAr: 'فضية', emoji: '🥈', price: 0, benefits: ['خصم ٥٪ على الخدمات', 'هدية عيد ميلاد', 'نقاط ولاء ١x'], color: 'from-gray-300 to-gray-400' },
@@ -8,10 +13,16 @@ const TIERS = [
 
 export const vipMembershipRouter = router({
   tiers: customerProcedure.query(() => TIERS),
-  myTier: customerProcedure.query(async () => ({
-    currentTier: 'silver',
-    expiresAt: null,
-    autoRenew: false,
-  })),
-  upgrade: customerProcedure.mutation(async () => ({ status: 'UPGRADED', message: 'تمت الترقية بنجاح' })),
+
+  myTier: customerProcedure.query(async ({ ctx }) => {
+    const m = await db.vipMembership.findUnique({ where: { userId: ctx.user.id } });
+    return { currentTier: m?.tier || 'silver', expiresAt: m?.expiresAt || null, autoRenew: m?.autoRenew || false };
+  }),
+
+  upgrade: customerProcedure
+    .input(z.object({ tier: z.enum(['silver', 'gold', 'platinum']) }))
+    .mutation(async ({ ctx, input }) => {
+      await db.vipMembership.upsert({ where: { userId: ctx.user.id }, update: { tier: input.tier, autoRenew: true }, create: { userId: ctx.user.id, tier: input.tier } });
+      return { status: 'UPGRADED', message: 'تمت الترقية بنجاح', tier: input.tier };
+    }),
 });
