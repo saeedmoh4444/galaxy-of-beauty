@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 const LOCALE_KEY = 'gob_lang';
 
@@ -11,12 +11,15 @@ function getStoredLocale(): string {
 
 function setStoredLocale(locale: string) {
   localStorage.setItem(LOCALE_KEY, locale);
-  // Reload to apply RTL/LTR changes
   window.location.reload();
 }
 
 export function LanguageToggle(): JSX.Element {
-  const current = getStoredLocale();
+  const [current, setCurrent] = useState('ar');
+
+  useEffect(() => {
+    setCurrent(getStoredLocale());
+  }, []);
 
   return (
     <button
