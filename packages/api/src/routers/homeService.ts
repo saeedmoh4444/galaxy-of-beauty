@@ -1,16 +1,15 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { SAUDI_CITIES, HOME_SERVICE_BASE_FEE, HOME_SERVICE_TRAVEL_FEE_MAJOR, HOME_SERVICE_TRAVEL_FEE_OTHER, HOME_SERVICE_SERVICE_FEE } from '@galaxy/shared';
 import { customerProcedure, publicProcedure, router } from '../trpc';
-
-const SAUDI_CITIES = ['الرياض', 'جدة', 'مكة المكرمة', 'المدينة المنورة', 'الدمام', 'الخبر', 'الظهران', 'الطائف', 'أبها', 'بريدة', 'تبوك', 'حائل', 'الجبيل', 'ينبع'];
 
 export const homeServiceRouter = router({
   estimate: publicProcedure
     .input(z.object({ city: z.string(), serviceCategory: z.string().optional() }))
     .query(({ input }) => {
-      const baseFee = 50;
-      const travelFee = input.city === 'الرياض' || input.city === 'جدة' ? 30 : input.city ? 50 : 30;
-      const serviceFee = 100;
+      const baseFee = HOME_SERVICE_BASE_FEE;
+      const travelFee = input.city === 'الرياض' || input.city === 'جدة' ? HOME_SERVICE_TRAVEL_FEE_MAJOR : input.city ? HOME_SERVICE_TRAVEL_FEE_OTHER : HOME_SERVICE_TRAVEL_FEE_MAJOR;
+      const serviceFee = HOME_SERVICE_SERVICE_FEE;
       return { city: input.city, baseFee, travelFee, serviceFee, total: baseFee + travelFee + serviceFee, currency: 'SAR', cities: SAUDI_CITIES };
     }),
 

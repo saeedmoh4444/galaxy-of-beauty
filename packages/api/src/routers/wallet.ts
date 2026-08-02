@@ -1,5 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import { prisma, Prisma } from '@galaxy/db';
+import { MIN_WITHDRAWAL_BALANCE, WITHDRAWAL_FEE_RATE } from '@galaxy/shared';
 import {
   router,
   protectedProcedure,
@@ -9,15 +10,6 @@ import {
   walletWithdrawSchema,
   walletTransactionQuerySchema,
 } from '../validators/payment';
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-/** Minimum wallet balance required before any withdrawal can be made. */
-const MIN_WITHDRAWAL_BALANCE = 200;
-/** Fee percentage applied to each withdrawal (5 %). */
-const WITHDRAWAL_FEE_RATE = 0.05;
 
 /**
  * Return the user's wallet, creating one if it does not yet exist.

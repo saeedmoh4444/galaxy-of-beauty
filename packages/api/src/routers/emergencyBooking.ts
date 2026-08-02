@@ -1,11 +1,8 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import { EMERGENCY_SURCHARGE_SAR, EMERGENCY_WINDOW_HOURS, DEFAULT_PLATFORM_FEE_SAR } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
-
-// Emergency booking: premium same-day booking within 3 hours
-const EMERGENCY_SURCHARGE = 50; // SAR extra
-const EMERGENCY_HOURS = 3; // Bookable within N hours from now
 
 export const emergencyBookingRouter = router({
   // Check if a service is available for emergency booking
@@ -13,7 +10,7 @@ export const emergencyBookingRouter = router({
     .input(z.object({ serviceId: z.number().int().positive(), city: z.string().optional() }))
     .query(async ({ input }) => {
       const now = new Date();
-      const deadline = new Date(now.getTime() + EMERGENCY_HOURS * 3600 * 1000);
+      const deadline = new Date(now.getTime() + EMERGENCY_WINDOW_HOURS * 3600 * 1000);
 
       // Find technicians offering this service who have availability within 3 hours
       const techServices = await prisma.technicianService.findMany({
@@ -52,9 +49,9 @@ export const emergencyBookingRouter = router({
       return {
         available,
         basePrice,
-        emergencySurcharge: EMERGENCY_SURCHARGE,
-        totalEstimate: basePrice + EMERGENCY_SURCHARGE,
-        availableWithin: `${EMERGENCY_HOURS} hours`,
+        emergencySurcharge: EMERGENCY_SURCHARGE_SAR,
+        totalEstimate: basePrice + EMERGENCY_SURCHARGE_SAR,
+        availableWithin: `${EMERGENCY_WINDOW_HOURS} hours`,
         currency: 'SAR',
       };
     }),
@@ -74,13 +71,13 @@ export const emergencyBookingRouter = router({
       if (!slot || slot.isBooked) throw new TRPCError({ code: 'BAD_REQUEST', message: 'الموعد غير متاح' });
 
       const now = new Date();
-      const deadline = new Date(now.getTime() + EMERGENCY_HOURS * 3600 * 1000);
+      const deadline = new Date(now.getTime() + EMERGENCY_WINDOW_HOURS * 3600 * 1000);
       if (slot.startAt > deadline) throw new TRPCError({ code: 'BAD_REQUEST', message: 'الموعد خارج نطاق الحجز الطارئ (3 ساعات)' });
 
       const service = await prisma.service.findUnique({ where: { id: input.serviceId } });
       if (!service) throw new TRPCError({ code: 'NOT_FOUND', message: 'الخدمة غير موجودة' });
 
-      const totalAmount = Number(service.basePrice) + EMERGENCY_SURCHARGE;
+      const totalAmount = Number(service.basePrice) + EMERGENCY_SURCHARGE_SAR;
 
       const booking = await prisma.booking.create({
         data: {
@@ -93,7 +90,7 @@ export const emergencyBookingRouter = router({
           endAt: slot.endAt,
           status: 'REQUESTED',
           totalAmount,
-          platformFee: 11,
+          platformFee: DEFAULT_PLATFORM_FEE_SAR,
           notes: input.notes,
           idempotencyKey: crypto.randomUUID(),
         },
@@ -102,6 +99,6 @@ export const emergencyBookingRouter = router({
       // Mark slot as booked
       await prisma.availabilitySlot.update({ where: { id: input.slotId }, data: { isBooked: true, bookingId: booking.id } });
 
-      return { bookingCode: booking.bookingCode, totalAmount, emergencySurcharge: EMERGENCY_SURCHARGE };
+      return { bookingCode: booking.bookingCode, totalAmount, emergencySurcharge: EMERGENCY_SURCHARGE_SAR };
     }),
 });

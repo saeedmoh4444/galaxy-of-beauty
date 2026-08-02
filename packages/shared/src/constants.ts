@@ -160,6 +160,25 @@ export const WITHDRAWAL_FEE_RATE = 0.05;
 
 /** Emergency booking surcharge (SAR). */
 export const EMERGENCY_SURCHARGE_SAR = 50;
+/** Emergency booking window (hours). */
+export const EMERGENCY_WINDOW_HOURS = 3;
+
+/** Home service pricing (SAR). */
+export const HOME_SERVICE_BASE_FEE = 50;
+export const HOME_SERVICE_TRAVEL_FEE_MAJOR = 30; // Riyadh, Jeddah
+export const HOME_SERVICE_TRAVEL_FEE_OTHER = 50; // other cities
+export const HOME_SERVICE_SERVICE_FEE = 100;
+
+/** Upload size limits (bytes). */
+export const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
+export const MAX_DOC_SIZE = 10 * 1024 * 1024; // 10 MB
+
+/** Saudi cities (used across multiple routers). */
+export const SAUDI_CITIES = [
+  'الرياض', 'جدة', 'مكة المكرمة', 'المدينة المنورة', 'الدمام',
+  'الخبر', 'الظهران', 'الطائف', 'أبها', 'بريدة',
+  'تبوك', 'حائل', 'الجبيل', 'ينبع',
+] as const;
 
 /** Default VAT number (ZATCA test — must be overridden in production). */
 export const ZATCA_TEST_VAT = '300000000000003';
