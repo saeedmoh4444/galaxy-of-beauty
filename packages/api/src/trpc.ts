@@ -1,10 +1,12 @@
 import { initTRPC, TRPCError } from '@trpc/server';
 import { ZodError } from 'zod';
+import superjson from 'superjson';
 import type { Context } from './context';
 import { verifyCsrfToken } from './lib/csrf';
 import { checkRateLimit } from './lib/rateLimit';
 
 const t = initTRPC.context<Context>().create({
+  transformer: superjson,
   errorFormatter({ shape, error }) {
     return {
       ...shape,

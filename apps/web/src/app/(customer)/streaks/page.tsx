@@ -55,7 +55,7 @@ export default function StreaksPage(): JSX.Element {
                 <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">آخر حجز</p>
                 <p className="mt-1 text-lg font-semibold text-gray-700 dark:text-gray-300">
                   {streakData?.lastBookingDate
-                    ? new Date(streakData.lastBookingDate as string).toLocaleDateString('ar-SA', {
+                    ? new Date(streakData.lastBookingDate as unknown as string).toLocaleDateString('ar-SA', {
                         year: 'numeric', month: 'short', day: 'numeric',
                       })
                     : 'لا يوجد'}
