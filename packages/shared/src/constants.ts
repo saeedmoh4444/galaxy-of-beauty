@@ -169,6 +169,19 @@ export const HOME_SERVICE_TRAVEL_FEE_MAJOR = 30; // Riyadh, Jeddah
 export const HOME_SERVICE_TRAVEL_FEE_OTHER = 50; // other cities
 export const HOME_SERVICE_SERVICE_FEE = 100;
 
+/** Service warranty — credit compensation rate. */
+export const WARRANTY_CREDIT_RATE = 0.3; // 30% of booking value
+
+/** Box builder discount rates. */
+export const BOX_MONTHLY_DISCOUNT = 0.15; // 15% for monthly subscriptions
+export const BOX_REGULAR_DISCOUNT = 0.10; // 10% for one-time boxes
+
+/** BNPL (Buy Now Pay Later) limits. */
+export const BNPL_MIN_AMOUNT = 100;
+export const BNPL_MAX_AMOUNT = 8_000;
+export const BNPL_MIN_INSTALLMENTS = 3;
+export const BNPL_MAX_INSTALLMENTS = 4;
+
 /** Upload size limits (bytes). */
 export const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
 export const MAX_DOC_SIZE = 10 * 1024 * 1024; // 10 MB

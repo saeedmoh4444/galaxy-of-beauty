@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { BOX_MONTHLY_DISCOUNT, BOX_REGULAR_DISCOUNT } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 const PRODUCT_CATALOG = [
@@ -21,7 +22,7 @@ export const boxBuilderRouter = router({
     .mutation(async ({ ctx, input }) => {
       const selected = PRODUCT_CATALOG.filter((p) => input.productIds.includes(p.id));
       const subtotal = selected.reduce((s, p) => s + p.price, 0);
-      const discount = input.frequency === 'monthly' ? Math.round(subtotal * 0.15) : Math.round(subtotal * 0.1);
+      const discount = input.frequency === 'monthly' ? Math.round(subtotal * BOX_MONTHLY_DISCOUNT) : Math.round(subtotal * BOX_REGULAR_DISCOUNT);
       const box = await prisma.beautyBox.create({ data: { userId: ctx.user.id, name: input.name, products: selected, frequency: input.frequency, subtotal, discount, total: subtotal - discount } });
       return { boxId: `BOX-${box.id}`, name: input.name, products: selected, subtotal, discount, total: subtotal - discount, frequency: input.frequency };
     }),

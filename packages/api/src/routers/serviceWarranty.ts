@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { WARRANTY_CREDIT_RATE } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,7 +35,7 @@ export const serviceWarrantyRouter = router({
     .mutation(async ({ ctx, input }) => {
       const booking = await db.booking.findUnique({ where: { id: input.bookingId } });
       if (!booking || booking.customerId !== ctx.user.id) throw new Error('الحجز غير موجود');
-      const compensationMap: Record<string, number> = { redo: 0, refund: Number(booking.totalAmount || 0), credit: Math.round(Number(booking.totalAmount || 0) * 0.3) };
+      const compensationMap: Record<string, number> = { redo: 0, refund: Number(booking.totalAmount || 0), credit: Math.round(Number(booking.totalAmount || 0) * WARRANTY_CREDIT_RATE) };
       return db.warrantyClaim.create({ data: { userId: ctx.user.id, bookingId: input.bookingId, reason: input.reason, status: 'PENDING', compensation: compensationMap[input.compensationType] } });
     }),
 
