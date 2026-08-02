@@ -81,6 +81,12 @@ export const CAMPAIGN_POLL_INTERVAL_MS = 60_000; // 1 minute
 export const EVENT_POLL_INTERVAL_MS = 30_000; // 30 seconds
 export const FORTUNE_ANIMATION_MS = 1_000; // fortune cookie reveal
 
+/** Date/time duration constants (milliseconds). */
+export const MS_PER_DAY = 86_400_000;
+export const MS_PER_WEEK = 7 * MS_PER_DAY;
+export const MS_PER_30_DAYS = 30 * MS_PER_DAY;
+export const MS_PER_90_DAYS = 90 * MS_PER_DAY;
+
 // ---------------------------------------------------------------------------
 // External URLs (CDN, third‑party)
 // ---------------------------------------------------------------------------

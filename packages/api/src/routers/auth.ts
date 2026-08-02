@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import crypto from 'crypto';
-import { MAX_AUTH_ATTEMPTS } from '@galaxy/shared';
+import { MAX_AUTH_ATTEMPTS, MS_PER_DAY, MS_PER_WEEK } from '@galaxy/shared';
 import { publicProcedure, publicMutation, protectedProcedure, protectedMutation, router } from '../trpc';
 import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
@@ -53,16 +53,16 @@ function generateToken(length = 32): string {
 
 function parseExpiryToMs(expiry: string): number {
   const match = expiry.match(/^(\d+)([dhms])$/);
-  if (!match) return 7 * 86400000;
+  if (!match) return MS_PER_WEEK;
   const num = parseInt(match[1]!, 10);
   const unit = match[2]!;
   const multipliers: Record<string, number> = {
-    d: 86400000,
-    h: 3600000,
-    m: 60000,
-    s: 1000,
+    d: MS_PER_DAY,
+    h: 3_600_000,
+    m: 60_000,
+    s: 1_000,
   };
-  return num * (multipliers[unit] ?? 86400000);
+  return num * (multipliers[unit] ?? MS_PER_DAY);
 }
 
 async function storeRefreshToken(userId: number, jwtToken: string): Promise<void> {

@@ -1,4 +1,5 @@
 import { prisma } from '@galaxy/db';
+import { MS_PER_90_DAYS } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,7 +30,7 @@ export const customerAchievementsRouter = router({
 
     // Check recent 3 months for monthly streak
     const recentMonths = new Set<string>();
-    const bookings = await db.booking.findMany({ where: { customerId: userId, createdAt: { gte: new Date(Date.now() - 90 * 86400000) } }, select: { createdAt: true } });
+    const bookings = await db.booking.findMany({ where: { customerId: userId, createdAt: { gte: new Date(Date.now() - MS_PER_90_DAYS) } }, select: { createdAt: true } });
     for (const b of bookings) {
       const d = new Date(b.createdAt);
       recentMonths.add(`${d.getFullYear()}-${d.getMonth()}`);

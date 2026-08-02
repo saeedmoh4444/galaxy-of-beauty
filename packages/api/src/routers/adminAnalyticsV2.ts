@@ -1,12 +1,13 @@
 import { prisma } from '@galaxy/db';
+import { MS_PER_WEEK, MS_PER_30_DAYS } from '@galaxy/shared';
 import { adminProcedure, router } from '../trpc';
 
 export const adminAnalyticsV2Router = router({
   dashboard: adminProcedure.query(async () => {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const weekAgo = new Date(today.getTime() - 7 * 86400000);
-    const monthAgo = new Date(today.getTime() - 30 * 86400000);
+    const weekAgo = new Date(today.getTime() - MS_PER_WEEK);
+    const monthAgo = new Date(today.getTime() - MS_PER_30_DAYS);
 
     const [
       totalUsers, totalTechnicians, totalBookings,
