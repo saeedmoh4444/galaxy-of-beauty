@@ -94,6 +94,12 @@ export const RATE_LIMIT_ADMIN = 300; // admin endpoints per minute
 /** Default cache TTL (seconds). */
 export const CACHE_DEFAULT_TTL_S = 300; // 5 minutes
 
+/** AI / LLM provider configuration. */
+export const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+export const OPENAI_MODEL = 'gpt-4o-mini';
+export const OPENAI_DEFAULT_MAX_TOKENS = 600;
+export const OPENAI_DEFAULT_TEMPERATURE = 0.7;
+
 /** Date/time duration constants (milliseconds). */
 export const MS_PER_DAY = 86_400_000;
 export const MS_PER_WEEK = 7 * MS_PER_DAY;
@@ -121,6 +127,8 @@ export const SWAGGER_JS_URL = 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/sw
 
 /** Google OAuth 2.0 authorization endpoint. */
 export const GOOGLE_OAUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
+/** Google OAuth default scopes. */
+export const GOOGLE_OAUTH_SCOPE = 'email profile';
 
 // ---------------------------------------------------------------------------
 // Social share URL templates

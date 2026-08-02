@@ -9,7 +9,7 @@ import {
 import { prisma } from '@galaxy/db';
 
 // ── OpenAI API helper ─────────────────────────────────────
-const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+import { OPENAI_API_URL, OPENAI_MODEL, OPENAI_DEFAULT_MAX_TOKENS, OPENAI_DEFAULT_TEMPERATURE } from '@galaxy/shared';
 const LAYLA_SYSTEM_PROMPT = `أنتِ "ليلى"، مستشارة تجميل ذكية لمنصة "جالكسي بيوتي" السعودية. تقدمين نصائح عن:
 
 - العناية بالبشرة والشعر والأظافر
@@ -25,7 +25,7 @@ const LAYLA_SYSTEM_PROMPT = `أنتِ "ليلى"، مستشارة تجميل ذ�
 - الأسعار تبدأ من 50 ريال وتصل إلى 500+ ريال حسب الخدمة
 - الحجز يتم عبر التطبيق أو الموقع`;
 
-async function callOpenAI(messages: Array<{ role: string; content: string }>, maxTokens = 600): Promise<string | null> {
+async function callOpenAI(messages: Array<{ role: string; content: string }>, maxTokens = OPENAI_DEFAULT_MAX_TOKENS): Promise<string | null> {
   const key = process.env['OPENAI_API_KEY'];
   if (!key) return null;
 
@@ -34,13 +34,13 @@ async function callOpenAI(messages: Array<{ role: string; content: string }>, ma
       method: 'POST',
       headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: OPENAI_MODEL,
         messages: [
           { role: 'system', content: LAYLA_SYSTEM_PROMPT },
           ...messages,
         ],
         max_tokens: maxTokens,
-        temperature: 0.7,
+        temperature: OPENAI_DEFAULT_TEMPERATURE,
       }),
     });
 

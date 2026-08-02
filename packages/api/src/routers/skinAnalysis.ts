@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import { OPENAI_API_URL, OPENAI_MODEL } from '@galaxy/shared';
 import { protectedProcedure, router } from '../trpc';
 
 export const skinAnalysisRouter = router({
@@ -14,11 +15,11 @@ export const skinAnalysisRouter = router({
       const openaiKey = process.env['OPENAI_API_KEY'];
       if (openaiKey) {
         try {
-          const response = await fetch('https://api.openai.com/v1/chat/completions', {
+          const response = await fetch(OPENAI_API_URL, {
             method: 'POST',
             headers: { Authorization: `Bearer ${openaiKey}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              model: 'gpt-4o-mini',
+              model: OPENAI_MODEL,
               messages: [{
                 role: 'user',
                 content: [

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { OPENAI_API_URL, OPENAI_MODEL } from '@galaxy/shared';
 import { customerProcedure, adminProcedure, router } from '../trpc';
 
 export const aiFeaturesRouter = router({
@@ -101,11 +102,11 @@ export const aiFeaturesRouter = router({
       if (!key) return { descriptionAr: 'وصف تجريبي للخدمة', descriptionEn: 'Sample service description' };
 
       try {
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        const response = await fetch(OPENAI_API_URL, {
           method: 'POST',
           headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            model: 'gpt-4o-mini',
+            model: OPENAI_MODEL,
             messages: [{
               role: 'user',
               content: `Write a short, appealing beauty service description in Arabic and English for: ${input.serviceNameAr} / ${input.serviceNameEn}. Keywords: ${input.keywords || 'beauty, self-care, professional'}. Return JSON: { "ar": "...", "en": "..." }`,

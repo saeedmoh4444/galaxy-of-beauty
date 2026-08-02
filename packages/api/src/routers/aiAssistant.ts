@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { OPENAI_API_URL, OPENAI_MODEL } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 const FALLBACK_RESPONSES: Record<string, string> = {
@@ -26,11 +27,11 @@ export const aiAssistantRouter = router({
         try {
           const key = process.env['OPENAI_API_KEY'];
           if (key) {
-            const res = await fetch('https://api.openai.com/v1/chat/completions', {
+            const res = await fetch(OPENAI_API_URL, {
               method: 'POST',
               headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                model: 'gpt-4o-mini',
+                model: OPENAI_MODEL,
                 messages: [
                   { role: 'system', content: 'You are a Saudi beauty expert assistant. Answer in Arabic. Keep answers under 200 words. Topic: skincare, makeup, hair, wellness.' },
                   { role: 'user', content: q },
