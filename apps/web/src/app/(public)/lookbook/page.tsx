@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 
 const SEASONS = [
   { id: 'summer', nameAr: 'صيف ٢٠٢٦', nameEn: 'Summer 2026', emoji: '☀️', color: 'from-amber-400 to-orange-500' },
@@ -82,7 +83,7 @@ export default function LookbookPage(): JSX.Element {
 }
 
 function CommunityLooks(): JSX.Element {
-  const { data, isLoading } = api.lookOfTheDay.feed.useQuery({ page: 1, limit: 6 }) as { data: Record<string,unknown> | undefined; isLoading: boolean };
+  const { data, isLoading } = api.lookOfTheDay.feed.useQuery({ page: 1, limit: 6 }) as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const looks = (data?.items as Array<Record<string,unknown>>) ?? [];
   if (looks.length === 0 && !isLoading) return <></>;
   return (

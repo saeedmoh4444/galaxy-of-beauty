@@ -1,9 +1,10 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { CardSkeleton } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 
 export default function BeautyShortsPage(): JSX.Element {
-  const { data, isLoading } = api.beautyShorts.feed.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const { data, isLoading } = api.beautyShorts.feed.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const shorts = data ?? [];
   return (
     <div className="mx-auto max-w-md px-4 py-12">

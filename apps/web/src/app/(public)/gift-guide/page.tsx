@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 
 const OCCASIONS = [
   { id: 'birthday', emoji: '🎂', name: 'عيد ميلاد', desc: 'أفضل هدايا التجميل لعيد الميلاد', gifts: [
@@ -69,13 +70,13 @@ export default function GiftGuidePage(): JSX.Element {
 }
 
 function GiftQuizWidget(): JSX.Element {
-  const { data: questions, isLoading: qLoading } = api.giftQuiz.questions.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const { data: questions, isLoading: qLoading } = api.giftQuiz.questions.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const [answers, setAnswers] = useState<Record<string,string>>({});
   const [step, setStep] = useState(0);
   const { data: results, isLoading: rLoading } = api.giftQuiz.recommend.useQuery(
     { answers },
     { enabled: Object.keys(answers).length === ((questions as Array<unknown>)?.length ?? 0) && ((questions as Array<unknown>)?.length ?? 0) > 0 },
-  ) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  ) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
 
   const qs = (questions ?? []) as Array<Record<string,unknown>>;
   const currentQ = qs[step];

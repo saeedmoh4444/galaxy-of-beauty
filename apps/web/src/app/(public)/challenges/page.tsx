@@ -1,9 +1,10 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 
 export default function ChallengesPage(): JSX.Element {
-  const { data: challenges, isLoading } = api.challenges.list.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const { data: challenges, isLoading, isError, refetch } = api.challenges.list.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 space-y-6">
