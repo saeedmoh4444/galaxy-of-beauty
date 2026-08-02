@@ -1,10 +1,12 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/shared';
 
 export default function TrendingPage(): JSX.Element {
-  const { data: trending, isLoading: trLoading } = api.social.trending.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const { data: trending, isLoading: trLoading, isError: trError, refetch: trRefetch } = api.social.trending.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const { data: spotlight, isLoading: spLoading } = api.social.spotlight.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+
+  if (trError) return <div className="mx-auto max-w-5xl px-4 py-8"><ErrorAlert message="فشل تحميل المحتوى" onRetry={() => trRefetch()} /></div>;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 space-y-6">
