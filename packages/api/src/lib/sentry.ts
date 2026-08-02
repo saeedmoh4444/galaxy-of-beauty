@@ -26,7 +26,8 @@ async function getSentry(): Promise<SentryClient | null> {
 
   try {
     const SentryNode = await Function('return import("@sentry/node")')();
-    SentryNode.init({ dsn, tracesSampleRate: 0.1, environment: process.env['NODE_ENV'] || 'development' });
+    const sampleRate = parseFloat(process.env['SENTRY_TRACES_SAMPLE_RATE'] || '0.1');
+    SentryNode.init({ dsn, tracesSampleRate: sampleRate, environment: process.env['NODE_ENV'] || 'development' });
     _sentry = SentryNode as SentryClient;
     return _sentry;
   } catch {

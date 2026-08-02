@@ -81,11 +81,11 @@ async function reportToZatcaApi(invoice: {
   const apiSecret = process.env['ZATCA_API_SECRET'];
 
   if (!apiKey || !apiSecret) {
-    // In development/testing: simulate successful reporting
-    if (process.env['NODE_ENV'] === 'production') {
-      return { success: false, error: 'ZATCA API credentials not configured' };
+    // Simulate in dev/test only when explicitly opted in
+    if (process.env['ZATCA_SIMULATE'] === 'true') {
+      return { success: true, clearanceId: `sim_${invoice.invoiceHash.slice(0, 16)}` };
     }
-    return { success: true, clearanceId: `sim_${invoice.invoiceHash.slice(0, 16)}` };
+    return { success: false, error: 'ZATCA API credentials not configured' };
   }
 
   try {
