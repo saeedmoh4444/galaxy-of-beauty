@@ -1895,6 +1895,54 @@ model BingoProgress {
   @@map("bingo_progress")
 }
 
+model IngredientScan {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  barcode    String
+  productName String
+  safetyScore Int
+  createdAt  DateTime @default(now())
+  @@map("ingredient_scans")
+}
+
+model BeautyFaq {
+  id        Int      @id @default(autoincrement())
+  question  String
+  answer    String
+  category  String   @default("general")
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  @@map("beauty_faqs")
+}
+
+model ServiceRecommendation {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  answers   Json
+  result    Json
+  createdAt DateTime @default(now())
+  @@map("service_recommendations")
+}
+
+model NightModeSetting {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  enabled   Boolean  @default(false)
+  startTime String   @default("21:00")
+  createdAt DateTime @default(now())
+  @@map("night_mode_settings")
+}
+
+model TravelKitItem {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  destination String
+  days      Int
+  items     Json
+  createdAt DateTime @default(now())
+  @@map("travel_kit_items")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================
