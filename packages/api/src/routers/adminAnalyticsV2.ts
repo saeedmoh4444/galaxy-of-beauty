@@ -9,7 +9,7 @@ export const adminAnalyticsV2Router = router({
     const monthAgo = new Date(today.getTime() - 30 * 86400000);
 
     const [
-      totalUsers, totalTechnicians, totalBookings, totalServices,
+      totalUsers, totalTechnicians, totalBookings,
       bookingsToday, bookingsWeek, bookingsMonth,
       revenueToday, revenueWeek, revenueMonth,
       completedBookings, topCategories,
@@ -17,7 +17,7 @@ export const adminAnalyticsV2Router = router({
       prisma.user.count(),
       prisma.technician.count(),
       prisma.booking.count(),
-      prisma.service.count({ where: { isActive: true } }),
+      prisma.service.count(),
       prisma.booking.count({ where: { createdAt: { gte: today } } }),
       prisma.booking.count({ where: { createdAt: { gte: weekAgo } } }),
       prisma.booking.count({ where: { createdAt: { gte: monthAgo } } }),

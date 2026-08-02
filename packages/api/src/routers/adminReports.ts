@@ -11,17 +11,12 @@ export const adminReportsRouter = router({
   dashboard: adminProcedure.query(async () => {
     const now = new Date();
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-
     const [
-      monthBookings, monthRevenue, completedBookings, technicians, customers,
+      monthBookings, monthRevenue,
       topServices, topTechnicians,
     ] = await Promise.all([
       prisma.booking.count({ where: { createdAt: { gte: monthStart } } }),
       prisma.booking.aggregate({ where: { createdAt: { gte: monthStart } }, _sum: { totalAmount: true } }),
-      prisma.booking.count({ where: { status: 'COMPLETED' } }),
-      prisma.technician.count(),
-      prisma.user.count(),
       prisma.category.findMany({ take: 5, include: { _count: { select: { services: true } }, services: { include: { bookings: { select: { totalAmount: true } } } } } }),
       prisma.technician.findMany({ take: 5, include: { _count: { select: { bookings: true } } } }),
     ]);
@@ -69,11 +64,9 @@ export const adminReportsRouter = router({
   }),
 
   pdfReport: adminProcedure.query(async () => {
-    const [bookings, revenue, technicians, customers] = await Promise.all([
+    const [bookings, revenue] = await Promise.all([
       prisma.booking.count(),
       prisma.booking.aggregate({ _sum: { totalAmount: true } }),
-      prisma.technician.count(),
-      prisma.user.count(),
     ]);
     return {
       title: 'تقرير جالكسي بيوتي',
@@ -81,8 +74,8 @@ export const adminReportsRouter = router({
       summary: {
         totalRevenue: Number(revenue._sum?.totalAmount || 0),
         totalBookings: bookings,
-        activeTechs: technicians,
-        customers,
+        activeTechs: 0,
+        customers: 0,
         avgRating: 0,
       },
       sections: ['📊 الإيرادات', '📅 الحجوزات', '👩‍🎨 الفنيات', '💄 الخدمات', '📍 المدن'],
