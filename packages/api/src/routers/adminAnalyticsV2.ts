@@ -1,22 +1,68 @@
+import { prisma } from '@galaxy/db';
 import { adminProcedure, router } from '../trpc';
 
-const DASHBOARD = {
-  revenue: { today: 15750, week: 98500, month: 420000, growth: 18, chart: [420, 380, 450, 390, 470, 520, 490] },
-  bookings: { today: 47, week: 310, month: 1350, completionRate: 92, chart: [35, 42, 38, 45, 52, 48, 47] },
-  users: { total: 28500, newToday: 42, activeToday: 1250, retentionRate: 78 },
-  technicians: { total: 520, active: 480, newThisMonth: 28, avgRating: 4.7 },
-  topServices: [
-    { name: 'مكياج', bookings: 320, revenue: 96000, growth: 22 },
-    { name: 'تنظيف بشرة', bookings: 280, revenue: 56000, growth: 15 },
-    { name: 'مساج', bookings: 250, revenue: 62500, growth: 12 },
-    { name: 'مانيكير', bookings: 220, revenue: 33000, growth: 18 },
-    { name: 'تسريحة شعر', bookings: 180, revenue: 45000, growth: 8 },
-  ],
-  forecast: { nextMonthRevenue: 480000, nextMonthBookings: 1500, confidence: 85 },
-};
-
 export const adminAnalyticsV2Router = router({
-  dashboard: adminProcedure.query(() => DASHBOARD),
-  daily: adminProcedure.query(() => ({ labels: ['سبت','أحد','إثنين','ثلاثاء','أربعاء','خميس','جمعة'], revenue: [12000, 15000, 18000, 20000, 22000, 25000, 28000], bookings: [35, 42, 48, 52, 55, 60, 65] })),
-  forecast: adminProcedure.query(() => DASHBOARD.forecast),
+  dashboard: adminProcedure.query(async () => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const weekAgo = new Date(today.getTime() - 7 * 86400000);
+    const monthAgo = new Date(today.getTime() - 30 * 86400000);
+
+    const [
+      totalUsers, totalTechnicians, totalBookings, totalServices,
+      bookingsToday, bookingsWeek, bookingsMonth,
+      revenueToday, revenueWeek, revenueMonth,
+      completedBookings, topCategories,
+    ] = await Promise.all([
+      prisma.user.count(),
+      prisma.technician.count(),
+      prisma.booking.count(),
+      prisma.service.count({ where: { isActive: true } }),
+      prisma.booking.count({ where: { createdAt: { gte: today } } }),
+      prisma.booking.count({ where: { createdAt: { gte: weekAgo } } }),
+      prisma.booking.count({ where: { createdAt: { gte: monthAgo } } }),
+      prisma.booking.aggregate({ where: { createdAt: { gte: today } }, _sum: { totalAmount: true } }),
+      prisma.booking.aggregate({ where: { createdAt: { gte: weekAgo } }, _sum: { totalAmount: true } }),
+      prisma.booking.aggregate({ where: { createdAt: { gte: monthAgo } }, _sum: { totalAmount: true } }),
+      prisma.booking.count({ where: { status: 'COMPLETED' } }),
+      prisma.category.findMany({ take: 5, include: { _count: { select: { services: true } }, services: { select: { bookings: true } } } }),
+    ]);
+
+    const completionRate = totalBookings > 0 ? Math.round((completedBookings / totalBookings) * 100) : 0;
+
+    const topServices = topCategories.map(c => ({
+      name: (c.nameJson as Record<string, string>)?.ar ?? '',
+      bookings: c.services.reduce((s, svc) => s + svc.bookings.length, 0),
+      revenue: c.services.reduce((s, svc) => s + svc.bookings.reduce((bs, b) => bs + Number(b.totalAmount || 0), 0), 0),
+      growth: 0,
+    })).sort((a, b) => b.bookings - a.bookings);
+
+    return {
+      revenue: {
+        today: Number(revenueToday._sum?.totalAmount || 0),
+        week: Number(revenueWeek._sum?.totalAmount || 0),
+        month: Number(revenueMonth._sum?.totalAmount || 0),
+        growth: 0,
+        chart: [],
+      },
+      bookings: {
+        today: bookingsToday,
+        week: bookingsWeek,
+        month: bookingsMonth,
+        completionRate,
+        chart: [],
+      },
+      users: { total: totalUsers, newToday: 0, activeToday: 0, retentionRate: 0 },
+      technicians: { total: totalTechnicians, active: 0, newThisMonth: 0, avgRating: 0 },
+      topServices,
+      forecast: { nextMonthRevenue: 0, nextMonthBookings: 0, confidence: 0 },
+    };
+  }),
+
+  daily: adminProcedure.query(async () => {
+    const labels = ['سبت', 'أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة'];
+    return { labels, revenue: labels.map(() => 0), bookings: labels.map(() => 0) };
+  }),
+
+  forecast: adminProcedure.query(() => ({ nextMonthRevenue: 0, nextMonthBookings: 0, confidence: 0 })),
 });

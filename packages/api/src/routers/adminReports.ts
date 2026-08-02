@@ -1,30 +1,5 @@
+import { prisma } from '@galaxy/db';
 import { adminProcedure, router } from '../trpc';
-
-const REPORTS = {
-  revenue: { labels: ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو'], data: [320000,345000,380000,410000,395000,430000,450000] },
-  bookings: { labels: ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو'], data: [1100,1180,1350,1420,1380,1500,1550] },
-  topTechs: [
-    { name: 'نورة العمري', revenue: 96000, bookings: 320, rating: 4.9 },
-    { name: 'سارة الحربي', revenue: 82000, bookings: 280, rating: 4.8 },
-    { name: 'د. ليلى القحطاني', revenue: 75000, bookings: 250, rating: 4.9 },
-    { name: 'هند المطيري', revenue: 58000, bookings: 220, rating: 4.7 },
-    { name: 'مريم الشمري', revenue: 45000, bookings: 180, rating: 4.6 },
-  ],
-  byService: [
-    { name: 'مكياج', revenue: 96000, bookings: 320, pct: 22 },
-    { name: 'تنظيف بشرة', revenue: 56000, bookings: 280, pct: 15 },
-    { name: 'مساج', revenue: 62500, bookings: 250, pct: 14 },
-    { name: 'مانيكير', revenue: 33000, bookings: 220, pct: 10 },
-    { name: 'تسريحة شعر', revenue: 45000, bookings: 180, pct: 8 },
-  ],
-  byCity: [
-    { city: 'الرياض', bookings: 680, revenue: 210000 },
-    { city: 'جدة', bookings: 420, revenue: 130000 },
-    { city: 'الدمام', bookings: 280, revenue: 85000 },
-    { city: 'مكة المكرمة', bookings: 200, revenue: 62000 },
-    { city: 'المدينة المنورة', bookings: 150, revenue: 45000 },
-  ],
-};
 
 function generateCSV(rows: Array<Record<string, unknown>>, columns: string[]): string {
   const header = columns.join(',');
@@ -33,16 +8,84 @@ function generateCSV(rows: Array<Record<string, unknown>>, columns: string[]): s
 }
 
 export const adminReportsRouter = router({
-  dashboard: adminProcedure.query(() => REPORTS),
-  exportCSV: adminProcedure.query(() => ({
-    topTechs: generateCSV(REPORTS.topTechs as unknown as Array<Record<string, unknown>>, ['name', 'revenue', 'bookings', 'rating']),
-    byService: generateCSV(REPORTS.byService as unknown as Array<Record<string, unknown>>, ['name', 'revenue', 'bookings', 'pct']),
-    byCity: generateCSV(REPORTS.byCity as unknown as Array<Record<string, unknown>>, ['city', 'bookings', 'revenue']),
-  })),
-  pdfReport: adminProcedure.query(() => ({
-    title: 'تقرير جالكسي بيوتي — يوليو ٢٠٢٦',
-    generatedAt: new Date().toISOString(),
-    summary: { totalRevenue: '٤٥٠,٠٠٠ ر.س', totalBookings: '١,٥٥٠ حجز', activeTechs: 520, customers: '٢٨,٥٠٠ مستخدمة', avgRating: 4.7 },
-    sections: ['📊 الإيرادات', '📅 الحجوزات', '👩‍🎨 الفنيات', '💄 الخدمات', '📍 المدن'],
-  })),
+  dashboard: adminProcedure.query(async () => {
+    const now = new Date();
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+
+    const [
+      monthBookings, monthRevenue, completedBookings, technicians, customers,
+      topServices, topTechnicians,
+    ] = await Promise.all([
+      prisma.booking.count({ where: { createdAt: { gte: monthStart } } }),
+      prisma.booking.aggregate({ where: { createdAt: { gte: monthStart } }, _sum: { totalAmount: true } }),
+      prisma.booking.count({ where: { status: 'COMPLETED' } }),
+      prisma.technician.count(),
+      prisma.user.count(),
+      prisma.category.findMany({ take: 5, include: { _count: { select: { services: true } }, services: { include: { bookings: { select: { totalAmount: true } } } } } }),
+      prisma.technician.findMany({ take: 5, include: { _count: { select: { bookings: true } } } }),
+    ]);
+
+    const byService = topServices.map(c => {
+      const bookings = c.services.reduce((s, svc) => s + svc.bookings.length, 0);
+      const revenue = c.services.reduce((s, svc) => s + svc.bookings.reduce((bs, b) => bs + Number(b.totalAmount || 0), 0), 0);
+      return { name: (c.nameJson as Record<string, string>)?.ar ?? '', revenue, bookings, pct: 0 };
+    }).sort((a, b) => b.bookings - a.bookings);
+
+    const topTechs = topTechnicians.map(t => ({
+      name: `فنية #${t.id}`,
+      revenue: 0,
+      bookings: t._count.bookings,
+      rating: 0,
+    })).sort((a, b) => b.bookings - a.bookings);
+
+    const totalBookings = byService.reduce((s, b) => s + b.bookings, 0);
+    if (totalBookings > 0) byService.forEach(s => { s.pct = Math.round((s.bookings / totalBookings) * 100); });
+
+    return {
+      revenue: { labels: [''], data: [Number(monthRevenue._sum?.totalAmount || 0)] },
+      bookings: { labels: [''], data: [monthBookings] },
+      topTechs,
+      byService,
+      byCity: [],
+    };
+  }),
+
+  exportCSV: adminProcedure.query(async () => {
+    const dashboard = await (async () => {
+      const topServices = await prisma.category.findMany({ take: 5, include: { services: { include: { bookings: { select: { totalAmount: true } } } } } });
+      return topServices.map(c => {
+        const bookings = c.services.reduce((s, svc) => s + svc.bookings.length, 0);
+        const revenue = c.services.reduce((s, svc) => s + svc.bookings.reduce((bs, b) => bs + Number(b.totalAmount || 0), 0), 0);
+        return { name: (c.nameJson as Record<string, string>)?.ar ?? '', revenue, bookings, pct: 0 };
+      });
+    })();
+
+    return {
+      topTechs: generateCSV([], ['name', 'revenue', 'bookings', 'rating']),
+      byService: generateCSV(dashboard as unknown as Array<Record<string, unknown>>, ['name', 'revenue', 'bookings', 'pct']),
+      byCity: generateCSV([], ['city', 'bookings', 'revenue']),
+    };
+  }),
+
+  pdfReport: adminProcedure.query(async () => {
+    const [bookings, revenue, technicians, customers] = await Promise.all([
+      prisma.booking.count(),
+      prisma.booking.aggregate({ _sum: { totalAmount: true } }),
+      prisma.technician.count(),
+      prisma.user.count(),
+    ]);
+    return {
+      title: 'تقرير جالكسي بيوتي',
+      generatedAt: new Date().toISOString(),
+      summary: {
+        totalRevenue: Number(revenue._sum?.totalAmount || 0),
+        totalBookings: bookings,
+        activeTechs: technicians,
+        customers,
+        avgRating: 0,
+      },
+      sections: ['📊 الإيرادات', '📅 الحجوزات', '👩‍🎨 الفنيات', '💄 الخدمات', '📍 المدن'],
+    };
+  }),
 });
