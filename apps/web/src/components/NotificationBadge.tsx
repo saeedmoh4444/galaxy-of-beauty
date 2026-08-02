@@ -2,11 +2,15 @@
 
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
+import { useAuth } from '@galaxy/shared';
 
 export function NotificationBadge(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data } = (api as any).notifications?.unreadCount?.useQuery?.() as any;
-  const count = data?.count || 0;
+  const { isAuthenticated } = useAuth();
+  const { data } = api.notifications.unreadCount.useQuery(undefined, {
+    enabled: !!isAuthenticated,
+    retry: false,
+  });
+  const count = (data as any)?.count || 0;
 
   return (
     <Link href="/notifications" className="relative rounded-lg p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800" title="الإشعارات">
