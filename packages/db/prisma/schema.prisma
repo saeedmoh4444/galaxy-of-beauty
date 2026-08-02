@@ -1734,6 +1734,15 @@ model VipMembership {
   @@map("vip_memberships")
 }
 
+model ShortLike {
+  id      Int      @id @default(autoincrement())
+  shortId Int
+  userId  Int
+  createdAt DateTime @default(now())
+  @@unique([shortId, userId])
+  @@map("short_likes")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================

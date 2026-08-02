@@ -1,3 +1,5 @@
+import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
 const SHORTS = [
@@ -11,5 +13,11 @@ const SHORTS = [
 
 export const beautyShortsRouter = router({
   feed: publicProcedure.query(() => SHORTS),
-  like: customerProcedure.mutation(async () => ({ liked: true })),
+
+  like: customerProcedure
+    .input(z.object({ shortId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      await prisma.shortLike.upsert({ where: { shortId_userId: { shortId: input.shortId, userId: ctx.user.id } }, update: {}, create: { shortId: input.shortId, userId: ctx.user.id } });
+      return { liked: true, shortId: input.shortId };
+    }),
 });
