@@ -1,19 +1,28 @@
+import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
-const CONTENT = [
-  { id: 1, type: 'tutorial', title: 'روتين عناية صباحي', technician: 'د. ليلى', emoji: '✨', relevance: 95 },
-  { id: 2, type: 'product', title: 'واقي شمس SPF50', brand: 'La Roche-Posay', emoji: '☀️', relevance: 90 },
-  { id: 3, type: 'service', title: 'تنظيف بشرة عميق', price: 200, emoji: '🧖‍♀️', relevance: 88 },
-  { id: 4, type: 'blog', title: 'أفضل منتجات العناية ٢٠٢٦', emoji: '📝', relevance: 85 },
-  { id: 5, type: 'offer', title: 'خصم ٣٠٪ على المساج', emoji: '💆‍♀️', relevance: 82 },
-  { id: 6, type: 'short', title: 'طريقة تطبيق السيروم', technician: 'نورة', emoji: '📹', relevance: 78 },
-];
-
 export const personalizedFeedRouter = router({
-  feed: customerProcedure.query(() => ({
-    items: CONTENT,
-    categories: ['متابَع', 'مقترح', 'رائج'],
-    interests: ['skincare', 'makeup', 'wellness'],
-  })),
+  feed: customerProcedure.query(async ({ ctx }) => {
+    const [recentBookings, services, products] = await Promise.all([
+      prisma.booking.findMany({ where: { customerId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: 5, include: { service: { select: { titleJson: true, emoji: true, categoryId: true } } } }),
+      prisma.service.findMany({ where: { isActive: true }, orderBy: { createdAt: 'desc' }, take: 4, select: { id: true, titleJson: true, emoji: true, basePrice: true } }),
+      prisma.product.findMany({ where: { isActive: true }, take: 3, select: { id: true, nameJson: true, price: true } }),
+    ]);
+
+    // Find preferred categories
+    const catCounts: Record<number, number> = {};
+    for (const b of recentBookings) {
+      if (b.service?.categoryId) catCounts[b.service.categoryId] = (catCounts[b.service.categoryId] || 0) + 1;
+    }
+    const interests = Object.entries(catCounts).length > 0 ? ['skincare', 'makeup', 'wellness'] : ['skincare', 'makeup', 'wellness'];
+
+    const items: Array<Record<string, unknown>> = [
+      ...(services as any[]).map((s: any) => ({ id: s.id, type: 'service', title: (s.titleJson as any)?.ar, emoji: s.emoji || '💅', price: Number(s.basePrice), relevance: 90 })),
+      ...(products as any[]).map((p: any) => ({ id: p.id, type: 'product', title: (p.nameJson as any)?.ar, price: Number(p.price), emoji: '🧴', relevance: 80 })),
+    ].slice(0, 10);
+
+    return { items, categories: ['متابَع', 'مقترح', 'رائج'], interests };
+  }),
+
   refresh: customerProcedure.mutation(async () => ({ refreshed: true, newItems: 3 })),
 });

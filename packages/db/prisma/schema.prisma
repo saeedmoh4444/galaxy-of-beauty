@@ -1861,6 +1861,16 @@ model AiRoutine {
   @@map("ai_routines")
 }
 
+model DnaAnalysis {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  traits      Json
+  recommendations Json
+  bestRoutine String
+  createdAt   DateTime @default(now())
+  @@map("dna_analyses")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================
