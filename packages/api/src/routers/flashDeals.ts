@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { DEFAULT_PAGE_SIZE, SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, adminProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -11,7 +12,7 @@ export const flashDealRouter = router({
     const deals = await db.flashDeal.findMany({
       where: { isActive: true, startsAt: { lte: now }, endsAt: { gte: now } },
       orderBy: { endsAt: 'asc' },
-      take: 10,
+      take: DEFAULT_PAGE_SIZE,
     });
     // Enrich with service info
     const enriched = await Promise.all(
@@ -36,7 +37,7 @@ export const flashDealRouter = router({
     const deals = await db.flashDeal.findMany({
       where: { isActive: true, startsAt: { gt: now } },
       orderBy: { startsAt: 'asc' },
-      take: 5,
+      take: SMALL_PAGE_SIZE,
     });
     return deals.map((d: any) => ({ ...d, discountValue: Number(d.discountValue), originalPrice: Number(d.originalPrice), dealPrice: Number(d.dealPrice) }));
   }),

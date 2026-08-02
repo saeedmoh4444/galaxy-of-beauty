@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { CYCLE_TRACKER_DAYS } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -77,7 +78,7 @@ export const cycleTrackerRouter = router({
     }),
 
   myEntries: customerProcedure.query(async ({ ctx }) => {
-    const entries = await db.cycleEntry.findMany({ where: { userId: ctx.user.id }, orderBy: { dayNumber: 'asc' }, take: 45 });
+    const entries = await db.cycleEntry.findMany({ where: { userId: ctx.user.id }, orderBy: { dayNumber: 'asc' }, take: CYCLE_TRACKER_DAYS });
     const settings = await db.cycleSettings.findUnique({ where: { userId: ctx.user.id } });
     const cycleLength = settings?.cycleLength ?? 28;
     return { entries, cycleLength, phases: PHASES };

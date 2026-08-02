@@ -1,5 +1,5 @@
 import { prisma } from '@galaxy/db';
-import { MS_PER_WEEK, MS_PER_30_DAYS } from '@galaxy/shared';
+import { SMALL_PAGE_SIZE, MS_PER_WEEK, MS_PER_30_DAYS } from '@galaxy/shared';
 import { adminProcedure, router } from '../trpc';
 
 export const adminAnalyticsV2Router = router({
@@ -25,7 +25,7 @@ export const adminAnalyticsV2Router = router({
       prisma.booking.aggregate({ where: { createdAt: { gte: weekAgo } }, _sum: { totalAmount: true } }),
       prisma.booking.aggregate({ where: { createdAt: { gte: monthAgo } }, _sum: { totalAmount: true } }),
       prisma.booking.count({ where: { status: 'COMPLETED' } }),
-      prisma.category.findMany({ take: 5, include: { _count: { select: { services: true } }, services: { select: { bookings: true } } } }),
+      prisma.category.findMany({ take: SMALL_PAGE_SIZE, include: { _count: { select: { services: true } }, services: { select: { bookings: true } } } }),
     ]);
 
     const completionRate = totalBookings > 0 ? Math.round((completedBookings / totalBookings) * 100) : 0;

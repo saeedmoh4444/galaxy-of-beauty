@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { router, publicProcedure, technicianProcedure } from '../trpc';
 import { prisma } from '@galaxy/db';
+import { MAX_LIST_SIZE } from '@galaxy/shared';
 
 export const subscriptionRouter = router({
   getPlans: publicProcedure.query(async () => {
@@ -85,7 +86,7 @@ export const subscriptionRouter = router({
         plan: true,
         usage: {
           orderBy: { createdAt: 'desc' },
-          take: 100,
+          take: MAX_LIST_SIZE,
         },
       },
     });

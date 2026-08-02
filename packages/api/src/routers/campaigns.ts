@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, adminProcedure, router } from '../trpc';
 
 export const campaignRouter = router({
@@ -18,7 +19,7 @@ export const campaignRouter = router({
     return prisma.campaign.findMany({
       where: { isActive: true, startsAt: { gt: now } },
       orderBy: { startsAt: 'asc' },
-      take: 5,
+      take: SMALL_PAGE_SIZE,
     });
   }),
 

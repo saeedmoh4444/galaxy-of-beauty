@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { MEDIUM_PAGE_SIZE } from '@galaxy/shared';
 import { customerProcedure, protectedProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -19,5 +20,5 @@ export const giftRegistryRouter = router({
     }),
   publicList: protectedProcedure
     .input(z.object({ page: z.number().default(1) }))
-    .query(async ({ input }) => db.giftRegistry.findMany({ where: { status: 'ACTIVE' }, orderBy: { createdAt: 'desc' }, skip: (input.page - 1) * 12, take: 12 })),
+    .query(async ({ input }) => db.giftRegistry.findMany({ where: { status: 'ACTIVE' }, orderBy: { createdAt: 'desc' }, skip: (input.page - 1) * 12, take: MEDIUM_PAGE_SIZE })),
 });

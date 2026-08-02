@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -8,7 +9,7 @@ const db = prisma as any;
 export const eventTicketsRouter = router({
   // List events with available tickets
   available: publicProcedure.query(async () => {
-    const events = await db.beautyEvent.findMany({ where: { isPublished: true, startsAt: { gte: new Date() } }, orderBy: { startsAt: 'asc' }, take: 10 });
+    const events = await db.beautyEvent.findMany({ where: { isPublished: true, startsAt: { gte: new Date() } }, orderBy: { startsAt: 'asc' }, take: DEFAULT_PAGE_SIZE });
     return events.map((e: any) => ({ ...e, price: Number(e.price ?? 0) }));
   }),
 

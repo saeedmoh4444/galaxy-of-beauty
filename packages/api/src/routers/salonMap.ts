@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { BULK_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,7 +45,7 @@ export const salonMapRouter = router({
       const where: Record<string, unknown> = { isVerified: true };
       const technicians = await db.technician.findMany({
         where,
-        take: 50,
+        take: BULK_PAGE_SIZE,
         include: {
           user: { select: { id: true, name: true, avatarUrl: true } },
           services: { include: { service: { select: { id: true, titleJson: true, categoryId: true, basePrice: true } } } },

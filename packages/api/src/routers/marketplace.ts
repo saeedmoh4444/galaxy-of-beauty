@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import { LARGE_PAGE_SIZE, DEFAULT_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, protectedProcedure, customerProcedure, adminProcedure, router } from '../trpc';
 
 export const marketplaceRouter = router({
@@ -31,7 +32,7 @@ export const marketplaceRouter = router({
     .query(async ({ input }) => {
       const product = await prisma.product.findUnique({
         where: { id: input.id },
-        include: { vendor: true, category: true, reviews: { include: { user: { select: { name: true, avatarUrl: true } } }, take: 10 } },
+        include: { vendor: true, category: true, reviews: { include: { user: { select: { name: true, avatarUrl: true } } }, take: DEFAULT_PAGE_SIZE } },
       });
       if (!product) throw new TRPCError({ code: 'NOT_FOUND' });
       return product;
@@ -84,7 +85,7 @@ export const marketplaceRouter = router({
     .query(async ({ input }) => {
       const vendor = await prisma.vendor.findUnique({
         where: { storeSlug: input.slug },
-        include: { products: { where: { isActive: true }, take: 20 }, _count: { select: { products: true } } },
+        include: { products: { where: { isActive: true }, take: LARGE_PAGE_SIZE }, _count: { select: { products: true } } },
       });
       if (!vendor) throw new TRPCError({ code: 'NOT_FOUND' });
       return vendor;

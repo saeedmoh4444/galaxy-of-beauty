@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { MS_PER_WEEK } from '@galaxy/shared';
+import { SMALL_PAGE_SIZE, MS_PER_WEEK } from '@galaxy/shared';
 import { protectedProcedure, customerProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,6 +70,6 @@ export const communityRouter = router({
   // Trending posts (most liked this week)
   trending: protectedProcedure.query(async () => {
     const weekAgo = new Date(Date.now() - MS_PER_WEEK);
-    return db.communityPost.findMany({ where: { createdAt: { gte: weekAgo } }, orderBy: { likes: 'desc' }, take: 5, include: { user: { select: { name: true } } } });
+    return db.communityPost.findMany({ where: { createdAt: { gte: weekAgo } }, orderBy: { likes: 'desc' }, take: SMALL_PAGE_SIZE, include: { user: { select: { name: true } } } });
   }),
 });

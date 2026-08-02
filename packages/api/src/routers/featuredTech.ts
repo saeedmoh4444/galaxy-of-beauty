@@ -1,4 +1,5 @@
 import { prisma } from '@galaxy/db';
+import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, router } from '../trpc';
 
 export const featuredTechRouter = router({
@@ -17,7 +18,7 @@ export const featuredTechRouter = router({
   }),
 
   past: publicProcedure.query(async () => {
-    const techs = await prisma.technician.findMany({ take: 5, orderBy: { createdAt: 'desc' }, include: { user: { select: { name: true } } } });
+    const techs = await prisma.technician.findMany({ take: SMALL_PAGE_SIZE, orderBy: { createdAt: 'desc' }, include: { user: { select: { name: true } } } });
     return techs.slice(1).map(t => ({ id: t.id, name: t.user.name, titleAr: 'خبيرة تجميل', emoji: '💄', weekOf: t.createdAt.toISOString().slice(0, 10) }));
   }),
 });

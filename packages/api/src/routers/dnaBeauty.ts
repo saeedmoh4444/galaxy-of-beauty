@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 const DNA_TRAITS: Record<string, { recommendations: string[]; avoidProducts: string[]; bestRoutine: string }> = {
@@ -52,6 +53,6 @@ export const dnaBeautyRouter = router({
     }),
 
   myAnalyses: customerProcedure.query(({ ctx }) =>
-    prisma.dnaAnalysis.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: 5 })
+    prisma.dnaAnalysis.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: SMALL_PAGE_SIZE })
   ),
 });

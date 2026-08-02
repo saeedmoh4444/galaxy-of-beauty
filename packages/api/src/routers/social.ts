@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { MEDIUM_PAGE_SIZE, DEFAULT_PAGE_SIZE, SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, adminProcedure, router } from '../trpc';
 
 export const socialRouter = router({
@@ -10,7 +11,7 @@ export const socialRouter = router({
       where: { status: 'COMPLETED', createdAt: { gte: new Date(Date.now() - 30 * 86400000) } },
       _count: { id: true },
       orderBy: { _count: { id: 'desc' } },
-      take: 10,
+      take: DEFAULT_PAGE_SIZE,
     });
 
     const serviceIds = topServices.map((s) => s.serviceId);
@@ -32,7 +33,7 @@ export const socialRouter = router({
       _avg: { rating: true },
       _count: { id: true },
       orderBy: { _avg: { rating: 'desc' } },
-      take: 5,
+      take: SMALL_PAGE_SIZE,
     });
 
     // Get actual technicians from reviews
@@ -40,7 +41,7 @@ export const socialRouter = router({
     const techs = await prisma.technician.findMany({
       where: { userId: { in: techIds } },
       include: { user: { select: { name: true, avatarUrl: true } } },
-      take: 5,
+      take: SMALL_PAGE_SIZE,
     });
 
     return techs.map((t) => ({
@@ -58,7 +59,7 @@ export const socialRouter = router({
         where: { key: { startsWith: 'tip:' } },
         orderBy: { createdAt: 'desc' },
         skip: (input.page - 1) * 10,
-        take: 10,
+        take: DEFAULT_PAGE_SIZE,
       });
 
       return tips.map((t) => {
@@ -82,7 +83,7 @@ export const socialRouter = router({
     const items = await prisma.platformConfig.findMany({
       where: { key: { startsWith: 'lookbook:' } },
       orderBy: { createdAt: 'desc' },
-      take: 12,
+      take: MEDIUM_PAGE_SIZE,
     });
     return items.map((l) => {
       const parsed = JSON.parse(l.value);

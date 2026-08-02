@@ -1,4 +1,5 @@
 import { prisma } from '@galaxy/db';
+import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,7 +13,7 @@ export const beautyAnalyticsRouter = router({
       db.booking.count({ where: { customerId: userId } }),
       db.booking.count({ where: { customerId: userId, status: 'COMPLETED' } }),
       db.payment.aggregate({ where: { booking: { customerId: userId }, status: 'CAPTURED' }, _sum: { amount: true } }),
-      db.walletTransaction.findMany({ where: { wallet: { userId }, type: 'CREDIT' }, orderBy: { createdAt: 'desc' }, take: 5 }),
+      db.walletTransaction.findMany({ where: { wallet: { userId }, type: 'CREDIT' }, orderBy: { createdAt: 'desc' }, take: SMALL_PAGE_SIZE }),
     ]);
 
     return {

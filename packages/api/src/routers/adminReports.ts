@@ -1,4 +1,5 @@
 import { prisma } from '@galaxy/db';
+import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { adminProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,8 +21,8 @@ export const adminReportsRouter = router({
     ] = await Promise.all([
       db.booking.count({ where: { createdAt: { gte: monthStart } } }),
       db.booking.aggregate({ where: { createdAt: { gte: monthStart } }, _sum: { totalAmount: true } }),
-      db.category.findMany({ take: 5, include: { _count: { select: { services: true } }, services: { include: { bookings: { select: { totalAmount: true } } } } } }),
-      db.booking.groupBy({ by: ['technicianId'], _count: { id: true }, orderBy: { _count: { id: 'desc' } }, take: 5 }),
+      db.category.findMany({ take: SMALL_PAGE_SIZE, include: { _count: { select: { services: true } }, services: { include: { bookings: { select: { totalAmount: true } } } } } }),
+      db.booking.groupBy({ by: ['technicianId'], _count: { id: true }, orderBy: { _count: { id: 'desc' } }, take: SMALL_PAGE_SIZE }),
     ]);
 
     const byService = (topServices as any[]).map((c: any) => {
@@ -51,7 +52,7 @@ export const adminReportsRouter = router({
 
   exportCSV: adminProcedure.query(async () => {
     const dashboard = await (async () => {
-      const topServices = await db.category.findMany({ take: 5, include: { services: { include: { bookings: { select: { totalAmount: true } } } } } });
+      const topServices = await db.category.findMany({ take: SMALL_PAGE_SIZE, include: { services: { include: { bookings: { select: { totalAmount: true } } } } } });
       return (topServices as any[]).map((c: any) => {
         const bookings = c.services.reduce((s: number, svc: any) => s + (svc.bookings?.length || 0), 0);
         const revenue = c.services.reduce((s: number, svc: any) => s + (svc.bookings as any[]).reduce((bs: number, b: any) => bs + Number(b.totalAmount || 0), 0), 0);

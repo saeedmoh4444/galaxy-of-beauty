@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,7 +71,7 @@ export const postCareRouter = router({
     const recentBookings = await db.booking.findMany({
       where: { customerId: ctx.user.id, status: { in: ['COMPLETED', 'IN_PROGRESS'] } },
       orderBy: { completedAt: 'desc' },
-      take: 5,
+      take: SMALL_PAGE_SIZE,
       include: { service: { select: { titleJson: true, categoryId: true, category: { select: { nameJson: true } } } } },
     }).catch(() => []);
 

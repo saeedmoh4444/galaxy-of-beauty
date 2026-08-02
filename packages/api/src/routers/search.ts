@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, router } from '../trpc';
 
 const searchSchema = z.object({
@@ -140,7 +141,7 @@ export const searchRouter = router({
         prisma.service.findMany({
           where: { isActive: true, titleJson: { path: [locale], string_contains: query } },
           select: { id: true, titleJson: true },
-          take: 5,
+          take: SMALL_PAGE_SIZE,
         }),
         prisma.user.findMany({
           where: { role: 'TECHNICIAN', isActive: true, name: { contains: query, mode: 'insensitive' as const } },

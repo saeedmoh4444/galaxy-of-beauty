@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { LARGE_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, adminProcedure, router } from '../trpc';
 import {
   createServiceSchema,
@@ -126,7 +127,7 @@ export const serviceRouter = router({
           where: { customerId: userId, status: { in: ['COMPLETED', 'PAID'] } },
           select: { serviceId: true, createdAt: true },
           orderBy: { createdAt: 'desc' },
-          take: 20,
+          take: LARGE_PAGE_SIZE,
         }),
         prisma.wishlistItem.findMany({
           where: { userId },

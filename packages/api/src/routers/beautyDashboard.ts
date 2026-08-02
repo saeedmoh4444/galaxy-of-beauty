@@ -1,4 +1,5 @@
 import { prisma } from '@galaxy/db';
+import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -9,7 +10,7 @@ export const beautyDashboardRouter = router({
     const userId = ctx.user.id;
 
     const [bookings, streak, wallet, skinAnalysis, journals, wishlist] = await Promise.all([
-      db.booking.findMany({ where: { customerId: userId }, orderBy: { createdAt: 'desc' }, take: 5, include: { service: { select: { titleJson: true } } } }),
+      db.booking.findMany({ where: { customerId: userId }, orderBy: { createdAt: 'desc' }, take: SMALL_PAGE_SIZE, include: { service: { select: { titleJson: true } } } }),
       db.streak.findUnique({ where: { customerId: userId } }),
       db.wallet.findUnique({ where: { userId } }),
       db.skinAnalysis.findFirst({ where: { userId }, orderBy: { createdAt: 'desc' }, select: { skinType: true, concerns: true } }),

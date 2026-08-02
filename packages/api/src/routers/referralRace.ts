@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { DEFAULT_APP_URL, MS_PER_DAY } from '@galaxy/shared';
+import { BULK_PAGE_SIZE, DEFAULT_PAGE_SIZE, DEFAULT_APP_URL, MS_PER_DAY } from '@galaxy/shared';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,7 +12,7 @@ const PRIZES = ['🥇 جلسة مجانية', '🥈 خصم ٥٠٪', '🥉 خصم
 export const referralRaceRouter = router({
   leaderboard: publicProcedure.query(async () => {
     const endDate = new Date(Date.now() + CAMPAIGN_DURATION_DAYS * MS_PER_DAY);
-    const leaders = await db.referral.groupBy({ by: ['referrerId'], where: { status: 'COMPLETED' }, _count: { id: true }, orderBy: { _count: { id: 'desc' } }, take: 10 });
+    const leaders = await db.referral.groupBy({ by: ['referrerId'], where: { status: 'COMPLETED' }, _count: { id: true }, orderBy: { _count: { id: 'desc' } }, take: DEFAULT_PAGE_SIZE });
     const enriched = await Promise.all((leaders as any[]).map(async (l: any, i: number) => {
       const user = await db.user.findUnique({ where: { id: l.referrerId }, select: { name: true } });
       return { userId: l.referrerId, userName: user?.name || 'مستخدمة', referralCount: l._count.id, prize: PRIZES[i] || '', rank: i + 1 };
@@ -22,7 +22,7 @@ export const referralRaceRouter = router({
 
   myRank: customerProcedure.query(async ({ ctx }) => {
     const count = await db.referral.count({ where: { referrerId: ctx.user.id, status: 'COMPLETED' } });
-    const leaders = await db.referral.groupBy({ by: ['referrerId'], where: { status: 'COMPLETED' }, _count: { id: true }, orderBy: { _count: { id: 'desc' } }, take: 50 });
+    const leaders = await db.referral.groupBy({ by: ['referrerId'], where: { status: 'COMPLETED' }, _count: { id: true }, orderBy: { _count: { id: 'desc' } }, take: BULK_PAGE_SIZE });
     const rank = (leaders as any[]).findIndex((l: any) => l.referrerId === ctx.user.id) + 1;
     return { rank: rank || null, count, prize: rank > 0 && rank <= 3 ? PRIZES[rank - 1] : '' };
   }),

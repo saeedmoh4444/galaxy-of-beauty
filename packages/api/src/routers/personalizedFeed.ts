@@ -1,11 +1,12 @@
 import { prisma } from '@galaxy/db';
+import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 export const personalizedFeedRouter = router({
   feed: customerProcedure.query(async ({ ctx }) => {
     const [recentBookings, services, products] = await Promise.all([
-      prisma.booking.findMany({ where: { customerId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: 5, select: { service: { select: { titleJson: true, categoryId: true } } } }),
-      prisma.service.findMany({ where: { isActive: true }, orderBy: { createdAt: 'desc' }, take: 4, select: { id: true, titleJson: true, basePrice: true } }),
+      prisma.booking.findMany({ where: { customerId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: SMALL_PAGE_SIZE, select: { service: { select: { titleJson: true, categoryId: true } } } }),
+      prisma.service.findMany({ where: { isActive: true }, orderBy: { createdAt: 'desc' }, take: SMALL_PAGE_SIZE, select: { id: true, titleJson: true, basePrice: true } }),
       prisma.product.findMany({ where: { isActive: true }, take: 3, select: { id: true, nameJson: true, price: true } }),
     ]);
 

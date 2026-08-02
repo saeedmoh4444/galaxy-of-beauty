@@ -1,10 +1,11 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { LARGE_PAGE_SIZE } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 export const skinDiaryRouter = router({
   entries: customerProcedure.query(async ({ ctx }) =>
-    prisma.skinDiaryEntry.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: 30 })),
+    prisma.skinDiaryEntry.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: LARGE_PAGE_SIZE })),
 
   add: customerProcedure
     .input(z.object({ imageUrl: z.string().url(), skinCondition: z.string(), notes: z.string().optional(), hydration: z.number().min(1).max(10).default(5), concerns: z.array(z.string()).default([]) }))
@@ -22,7 +23,7 @@ export const skinDiaryRouter = router({
     const entries = await prisma.skinDiaryEntry.findMany({
       where: { userId: ctx.user.id },
       orderBy: { createdAt: 'desc' },
-      take: 30,
+      take: LARGE_PAGE_SIZE,
       select: { hydration: true, skinCondition: true, createdAt: true },
     });
     return entries.map((e) => ({ date: e.createdAt.toISOString().slice(0, 10), hydration: e.hydration, skinCondition: e.skinCondition }));

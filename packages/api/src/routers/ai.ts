@@ -7,9 +7,9 @@ import {
   technicianProcedure,
 } from '../trpc';
 import { prisma } from '@galaxy/db';
+import { OPENAI_API_URL, OPENAI_MODEL, OPENAI_DEFAULT_MAX_TOKENS, OPENAI_DEFAULT_TEMPERATURE, DEFAULT_PAGE_SIZE, LARGE_PAGE_SIZE, MAX_LIST_SIZE } from '@galaxy/shared';
 
 // ── OpenAI API helper ─────────────────────────────────────
-import { OPENAI_API_URL, OPENAI_MODEL, OPENAI_DEFAULT_MAX_TOKENS, OPENAI_DEFAULT_TEMPERATURE } from '@galaxy/shared';
 const LAYLA_SYSTEM_PROMPT = `أنتِ "ليلى"، مستشارة تجميل ذكية لمنصة "جالكسي بيوتي" السعودية. تقدمين نصائح عن:
 
 - العناية بالبشرة والشعر والأظافر
@@ -120,14 +120,14 @@ export const aiRouter = router({
       const history = await prisma.chatMessage.findMany({
         where: { senderId: userId, isAi: false, metadata: { path: ['convId'], equals: convId } } as never,
         orderBy: { createdAt: 'desc' },
-        take: 10,
+        take: DEFAULT_PAGE_SIZE,
       });
 
       // Get AI replies for context
       const aiReplies = await prisma.chatMessage.findMany({
         where: { receiverId: userId, isAi: true, metadata: { path: ['convId'], equals: convId } } as never,
         orderBy: { createdAt: 'desc' },
-        take: 10,
+        take: DEFAULT_PAGE_SIZE,
       });
 
       // Interleave user + AI messages chronologically
@@ -215,7 +215,7 @@ export const aiRouter = router({
         where: { customerId: userId, status: { in: ['COMPLETED', 'PAID'] } },
         include: { service: { select: { id: true, categoryId: true } } },
         orderBy: { createdAt: 'desc' },
-        take: 20,
+        take: LARGE_PAGE_SIZE,
       });
 
       const bookedServiceIds = new Set(recentBookings.map((b) => b.serviceId));
@@ -232,7 +232,7 @@ export const aiRouter = router({
       const wishlist = await prisma.wishlistItem.findMany({
         where: { userId },
         include: { service: { select: { id: true, categoryId: true, titleJson: true, basePrice: true } } },
-        take: 10,
+        take: DEFAULT_PAGE_SIZE,
       });
       const wishedServiceIds = new Set(wishlist.filter((w) => w.service).map((w) => w.service!.id));
       const wishedCatIds = [...new Set(wishlist.filter((w) => w.service).map((w) => w.service!.categoryId))];
@@ -454,7 +454,7 @@ export const aiRouter = router({
         plan: true,
         usage: {
           orderBy: { createdAt: 'desc' },
-          take: 100,
+          take: MAX_LIST_SIZE,
         },
       },
     });

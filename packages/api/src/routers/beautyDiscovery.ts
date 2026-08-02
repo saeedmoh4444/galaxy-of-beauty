@@ -1,4 +1,5 @@
 import { prisma } from '@galaxy/db';
+import { DISCOVERY_POPULAR_COUNT, DISCOVERY_RECOMMEND_COUNT, DISCOVERY_EVENTS_COUNT, DEFAULT_PAGE_SIZE, SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, customerProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -8,10 +9,10 @@ export const beautyDiscoveryRouter = router({
   // Public: featured content for the discover page
   featured: publicProcedure.query(async () => {
     const [topServices, newServices, upcomingEvents, activeDeals] = await Promise.all([
-      db.service.findMany({ where: { isActive: true, isPopular: true }, take: 6, select: { id: true, titleJson: true, basePrice: true, imageUrl: true, emoji: true } }),
-      db.service.findMany({ where: { isActive: true }, orderBy: { createdAt: 'desc' }, take: 6, select: { id: true, titleJson: true, basePrice: true, emoji: true } }),
-      db.beautyEvent.findMany({ where: { isPublished: true, startsAt: { gte: new Date() } }, orderBy: { startsAt: 'asc' }, take: 4, select: { id: true, nameJson: true, eventType: true, startsAt: true, location: true } }),
-      db.flashDeal.findMany({ where: { isActive: true, startsAt: { lte: new Date() }, endsAt: { gte: new Date() } }, take: 4, select: { id: true, titleAr: true, dealPrice: true, originalPrice: true, discountPercent: true, serviceId: true } }),
+      db.service.findMany({ where: { isActive: true, isPopular: true }, take: DISCOVERY_POPULAR_COUNT, select: { id: true, titleJson: true, basePrice: true, imageUrl: true, emoji: true } }),
+      db.service.findMany({ where: { isActive: true }, orderBy: { createdAt: 'desc' }, take: DISCOVERY_POPULAR_COUNT, select: { id: true, titleJson: true, basePrice: true, emoji: true } }),
+      db.beautyEvent.findMany({ where: { isPublished: true, startsAt: { gte: new Date() } }, orderBy: { startsAt: 'asc' }, take: DISCOVERY_EVENTS_COUNT, select: { id: true, nameJson: true, eventType: true, startsAt: true, location: true } }),
+      db.flashDeal.findMany({ where: { isActive: true, startsAt: { lte: new Date() }, endsAt: { gte: new Date() } }, take: DISCOVERY_EVENTS_COUNT, select: { id: true, titleAr: true, dealPrice: true, originalPrice: true, discountPercent: true, serviceId: true } }),
     ]);
 
     return {
@@ -27,9 +28,9 @@ export const beautyDiscoveryRouter = router({
     const userId = ctx.user.id;
 
     const [recentBookings, profile, wishlist] = await Promise.all([
-      db.booking.findMany({ where: { customerId: userId }, orderBy: { createdAt: 'desc' }, take: 10, select: { service: { select: { categoryId: true, id: true } } } }),
+      db.booking.findMany({ where: { customerId: userId }, orderBy: { createdAt: 'desc' }, take: DEFAULT_PAGE_SIZE, select: { service: { select: { categoryId: true, id: true } } } }),
       db.beautyProfile.findUnique({ where: { userId }, select: { skinType: true, hairType: true, concerns: true } }),
-      db.wishlistItem.findMany({ where: { userId }, take: 5, select: { service: { select: { id: true, titleJson: true, basePrice: true, emoji: true, categoryId: true } } } }),
+      db.wishlistItem.findMany({ where: { userId }, take: SMALL_PAGE_SIZE, select: { service: { select: { id: true, titleJson: true, basePrice: true, emoji: true, categoryId: true } } } }),
     ]);
 
     // Find preferred categories from booking history
@@ -43,8 +44,8 @@ export const beautyDiscoveryRouter = router({
 
     // Get recommendations from top categories
     const suggestions = topCats.length > 0
-      ? await db.service.findMany({ where: { categoryId: { in: topCats }, isActive: true }, take: 8, select: { id: true, titleJson: true, basePrice: true, emoji: true, categoryId: true } })
-      : await db.service.findMany({ where: { isActive: true, isPopular: true }, take: 8, select: { id: true, titleJson: true, basePrice: true, emoji: true, categoryId: true } });
+      ? await db.service.findMany({ where: { categoryId: { in: topCats }, isActive: true }, take: DISCOVERY_RECOMMEND_COUNT, select: { id: true, titleJson: true, basePrice: true, emoji: true, categoryId: true } })
+      : await db.service.findMany({ where: { isActive: true, isPopular: true }, take: DISCOVERY_RECOMMEND_COUNT, select: { id: true, titleJson: true, basePrice: true, emoji: true, categoryId: true } });
 
     return {
       profile: profile ? { skinType: profile.skinType, hairType: profile.hairType, concerns: profile.concerns } : null,

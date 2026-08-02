@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, customerProcedure, router } from '../trpc';
 
 // Predefined makeup color palettes — curated for Saudi beauty preferences
@@ -90,7 +91,7 @@ export const virtualTryOnRouter = router({
             isActive: true,
             tags: { hasSome: searchTerms },
           },
-          take: 4,
+          take: SMALL_PAGE_SIZE,
           orderBy: { isFeatured: 'desc' },
         });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import { LARGE_PAGE_SIZE } from '@galaxy/shared';
 import { protectedProcedure, router } from '../trpc';
 import { emitToUser } from '../socket/index';
 
@@ -64,7 +65,7 @@ export const chatRouter = router({
         technician: { select: { id: true, name: true, avatarUrl: true } },
       },
       orderBy: { updatedAt: 'desc' },
-      take: 20,
+      take: LARGE_PAGE_SIZE,
     });
 
     return bookings.map((b) => ({

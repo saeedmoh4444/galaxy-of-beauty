@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { MAX_LIST_SIZE } from '@galaxy/shared';
 import { publicProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -14,7 +15,7 @@ export const recommendationsRouter = router({
       const bookings = await db.booking.findMany({
         where: { serviceId: input.serviceId },
         select: { customerId: true },
-        take: 100,
+        take: MAX_LIST_SIZE,
       });
       const customerIds = bookings.map((b: any) => b.customerId);
       if (customerIds.length === 0) return [];

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { OPENAI_API_URL, OPENAI_MODEL } from '@galaxy/shared';
+import { DISCOVERY_RECOMMEND_COUNT, DEFAULT_PAGE_SIZE, SMALL_PAGE_SIZE, OPENAI_API_URL, OPENAI_MODEL } from '@galaxy/shared';
 import { customerProcedure, adminProcedure, router } from '../trpc';
 
 export const aiFeaturesRouter = router({
@@ -8,8 +8,8 @@ export const aiFeaturesRouter = router({
   personalizedFeed: customerProcedure.query(async ({ ctx }) => {
     // Based on booking history, wishlist, skin analysis
     const [recentBookings, wishlist, lastAnalysis] = await Promise.all([
-      prisma.booking.findMany({ where: { customerId: ctx.user.id }, include: { service: { select: { categoryId: true } } }, orderBy: { createdAt: 'desc' }, take: 5 }),
-      prisma.wishlistItem.findMany({ where: { userId: ctx.user.id }, include: { service: { select: { id: true, titleJson: true, imageUrl: true, basePrice: true } } }, take: 10 }),
+      prisma.booking.findMany({ where: { customerId: ctx.user.id }, include: { service: { select: { categoryId: true } } }, orderBy: { createdAt: 'desc' }, take: SMALL_PAGE_SIZE }),
+      prisma.wishlistItem.findMany({ where: { userId: ctx.user.id }, include: { service: { select: { id: true, titleJson: true, imageUrl: true, basePrice: true } } }, take: DEFAULT_PAGE_SIZE }),
       prisma.skinAnalysis.findFirst({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } }),
     ]);
 
@@ -22,7 +22,7 @@ export const aiFeaturesRouter = router({
       recommendations = await prisma.service.findMany({
         where: { categoryId: { in: preferredCategoryIds }, isActive: true },
         include: { category: { select: { nameJson: true } } },
-        take: 8,
+        take: DISCOVERY_RECOMMEND_COUNT,
       });
     }
 
@@ -61,12 +61,12 @@ export const aiFeaturesRouter = router({
                   startAt: { gte: targetDate, lte: endDate },
                 },
                 orderBy: { startAt: 'asc' },
-                take: 5,
+                take: SMALL_PAGE_SIZE,
               },
             },
           },
         },
-        take: 10,
+        take: DEFAULT_PAGE_SIZE,
       });
 
       // Flatten and rank by time proximity

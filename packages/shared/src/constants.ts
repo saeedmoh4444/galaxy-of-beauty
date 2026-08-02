@@ -20,6 +20,15 @@ export const SMALL_PAGE_SIZE = 5;
 /** Medium page (search results, galleries). */
 export const MEDIUM_PAGE_SIZE = 12;
 
+/** Large page (chat history, analytics lists). */
+export const LARGE_PAGE_SIZE = 20;
+
+/** Bulk page (leaderboards, maps). */
+export const BULK_PAGE_SIZE = 50;
+
+/** Max items for non-export list endpoints. */
+export const MAX_LIST_SIZE = 100;
+
 /** Maximum items returned in admin export / bulk queries. */
 export const MAX_EXPORT_SIZE = 10_000;
 

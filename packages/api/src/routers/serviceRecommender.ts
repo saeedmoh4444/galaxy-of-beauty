@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
 const QUESTIONS = [
@@ -121,6 +122,6 @@ export const serviceRecommenderRouter = router({
     }),
 
   myResults: customerProcedure.query(({ ctx }) =>
-    prisma.serviceRecommendation.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: 10 })
+    prisma.serviceRecommendation.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: DEFAULT_PAGE_SIZE })
   ),
 });

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, customerProcedure, adminProcedure, router } from '../trpc';
 
 export const promoRouter = router({
@@ -82,7 +83,7 @@ export const promoRouter = router({
 
   // Admin CRUD
   list: adminProcedure.query(async () => {
-    return prisma.promoCode.findMany({ orderBy: { createdAt: 'desc' }, include: { usages: { take: 5 } } });
+    return prisma.promoCode.findMany({ orderBy: { createdAt: 'desc' }, include: { usages: { take: SMALL_PAGE_SIZE } } });
   }),
 
   create: adminProcedure

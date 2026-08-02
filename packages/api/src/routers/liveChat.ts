@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { BULK_PAGE_SIZE } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 const AUTO_RESPONSES: Record<string, string> = {
@@ -13,7 +14,7 @@ export const liveChatRouter = router({
     prisma.liveChatMessage.findMany({
       where: { userId: ctx.user.id },
       orderBy: { createdAt: 'asc' },
-      take: 50,
+      take: BULK_PAGE_SIZE,
     })),
 
   send: customerProcedure

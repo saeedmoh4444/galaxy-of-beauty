@@ -1,5 +1,5 @@
 import { prisma } from '@galaxy/db';
-import { MS_PER_90_DAYS } from '@galaxy/shared';
+import { LARGE_PAGE_SIZE, MS_PER_90_DAYS } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,7 +25,7 @@ export const customerAchievementsRouter = router({
       db.booking.aggregate({ where: { customerId: userId, status: 'COMPLETED' }, _sum: { totalAmount: true } }),
       db.review.count({ where: { userId } }),
       db.streak.findUnique({ where: { customerId: userId } }),
-      db.booking.findMany({ where: { customerId: userId, status: 'COMPLETED' }, select: { service: { select: { categoryId: true } } }, distinct: ['serviceId'], take: 20 }),
+      db.booking.findMany({ where: { customerId: userId, status: 'COMPLETED' }, select: { service: { select: { categoryId: true } } }, distinct: ['serviceId'], take: LARGE_PAGE_SIZE }),
     ]);
 
     // Check recent 3 months for monthly streak

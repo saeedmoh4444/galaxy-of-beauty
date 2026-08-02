@@ -1,5 +1,6 @@
 import { protectedProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
+import { BULK_PAGE_SIZE } from '@galaxy/shared';
 
 export const streakRouter = router({
   get: protectedProcedure.query(async ({ ctx }) => {
@@ -99,7 +100,7 @@ export const streakRouter = router({
         },
       },
       orderBy: { startAt: 'desc' },
-      take: 50,
+      take: BULK_PAGE_SIZE,
     });
 
     return {

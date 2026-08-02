@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { LARGE_PAGE_SIZE } from '@galaxy/shared';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
 const INGREDIENT_DB: Record<string, { rating: 'safe' | 'caution' | 'avoid'; descAr: string; descEn: string }> = {
@@ -50,6 +51,6 @@ export const ingredientAnalyzerRouter = router({
     ),
 
   myScans: customerProcedure.query(({ ctx }) =>
-    prisma.ingredientScan.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: 20 })
+    prisma.ingredientScan.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: LARGE_PAGE_SIZE })
   ),
 });

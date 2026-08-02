@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -48,7 +49,7 @@ export const techCalendarRouter = router({
   listWithAvailability: publicProcedure.query(async () => {
     const technicians = await db.technician.findMany({
       where: { isVerified: true },
-      take: 10,
+      take: DEFAULT_PAGE_SIZE,
       include: { user: { select: { name: true, avatarUrl: true } } },
     }).catch(() => []);
 
