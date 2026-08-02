@@ -1,5 +1,7 @@
 import { z } from 'zod';
-import { publicProcedure, router } from '../trpc';
+import { z } from 'zod';
+import { prisma } from '@galaxy/db';
+import { customerProcedure, publicProcedure, router } from '../trpc';
 
 const INGREDIENT_DB: Record<string, { rating: 'safe' | 'caution' | 'avoid'; descAr: string; descEn: string }> = {
   'Aqua': { rating: 'safe', descAr: 'ماء — آمن تماماً', descEn: 'Water — completely safe' },
@@ -41,4 +43,14 @@ export const ingredientAnalyzerRouter = router({
 
       return { ingredients: results, stats: { total: results.length, safe, caution, avoid, score } };
     }),
+
+  scan: customerProcedure
+    .input(z.object({ barcode: z.string(), productName: z.string(), safetyScore: z.number() }))
+    .mutation(async ({ ctx, input }) =>
+      prisma.ingredientScan.create({ data: { userId: ctx.user.id, ...input } })
+    ),
+
+  myScans: customerProcedure.query(({ ctx }) =>
+    prisma.ingredientScan.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: 20 })
+  ),
 });
