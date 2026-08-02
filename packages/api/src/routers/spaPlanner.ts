@@ -39,6 +39,6 @@ export const spaPlannerRouter = router({
         const brk = BREAKS.find((b) => b.id === bid);
         if (brk) items.push({ type: 'break', id: brk.id, nameAr: brk.nameAr, durationMin: brk.durationMin, emoji: brk.emoji });
       });
-      return prisma.spaPlan.create({ data: { userId: ctx.user.id, name: input.name, items } });
+      return prisma.spaPlan.create({ data: { userId: ctx.user.id, name: input.name, items: items as any } });
     }),
 });
