@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, Button } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const POPULAR_SERVICES = [
@@ -16,7 +17,7 @@ export default function SmartSchedulePage(): JSX.Element {
   const { data, isLoading } = api.aiFeatures.smartSchedule.useQuery(
     { serviceId, datePreference: datePref || undefined },
     { enabled: !!serviceId },
-  ) as { data: Record<string,unknown> | undefined; isLoading: boolean };
+  ) as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const suggestions = (data?.suggestions as Array<Record<string,unknown>>) ?? [];
 
   return (

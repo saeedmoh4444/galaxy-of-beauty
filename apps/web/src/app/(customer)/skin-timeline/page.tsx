@@ -1,10 +1,11 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function SkinTimelinePage(): JSX.Element {
-  const { data, isLoading } = api.skinDiary.timeline.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const { data, isLoading } = api.skinDiary.timeline.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const entries = data ?? [];
 
   return (

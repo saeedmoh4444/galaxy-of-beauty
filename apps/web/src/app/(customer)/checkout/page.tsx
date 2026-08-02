@@ -2,10 +2,11 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CheckoutPage(): JSX.Element {
-  const { data: cart, isLoading } = api.marketplace.cart.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const { data: cart, isLoading } = api.marketplace.cart.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const { data: wallet } = api.wallet.getBalance.useQuery() as { data: Record<string,unknown> | undefined };
   const [method, setMethod] = useState<'wallet' | 'online'>('online');
   const [placed, setPlaced] = useState(false);

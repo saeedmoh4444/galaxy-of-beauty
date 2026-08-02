@@ -1,13 +1,14 @@
 'use client';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, Button, ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function WellnessHubPage(): JSX.Element {
-  const { data, isLoading } = api.wellnessHub.dashboard.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean };
+  const { data, isLoading, isError, refetch } = api.wellnessHub.dashboard.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
 
   if (isLoading) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-5xl space-y-6"><CardSkeleton/></div></DashboardLayout>;
+  if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-5xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
   const d = data;
 
   return (

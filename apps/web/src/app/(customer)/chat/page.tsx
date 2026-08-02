@@ -2,13 +2,14 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, Button } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function ChatPage(): JSX.Element {
-  const { data: conversations, isLoading: convLoading } = api.chat.conversations.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const { data: conversations, isLoading: convLoading } = api.chat.conversations.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const sendMut = api.chat.send.useMutation();
   const [selectedConv, setSelectedConv] = useState<number | null>(null);
-  const { data: messages, isLoading: msgLoading } = api.chat.messages.useQuery({ bookingId: selectedConv ?? 0 }, { enabled: !!selectedConv }) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const { data: messages, isLoading: msgLoading } = api.chat.messages.useQuery({ bookingId: selectedConv ?? 0 }, { enabled: !!selectedConv }) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const [content, setContent] = useState('');
   const convs = conversations ?? [];
   const msgs = messages ?? [];

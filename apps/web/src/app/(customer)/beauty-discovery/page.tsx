@@ -2,11 +2,12 @@
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
+import { ErrorAlert } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyDiscoveryPage(): JSX.Element {
-  const { data: featured, isLoading: fLoading } = api.beautyDiscovery.featured.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean };
-  const { data: forYou, isLoading: pLoading } = api.beautyDiscovery.forYou.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean };
+  const { data: featured, isLoading: fLoading } = api.beautyDiscovery.featured.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: forYou, isLoading: pLoading } = api.beautyDiscovery.forYou.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
 
   return (
     <DashboardLayout role="CUSTOMER">
