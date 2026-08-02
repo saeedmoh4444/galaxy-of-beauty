@@ -7,10 +7,9 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 const THEMES = [{key:'spa',emoji:'🧖‍♀️',name:'سبا منزلي'},{key:'makeup',emoji:'💄',name:'حفلة مكياج'},{key:'nails',emoji:'💅',name:'صالون أظافر'},{key:'bridal',emoji:'👰',name:'توديع عزوبية'},{key:'skincare',emoji:'✨',name:'روتين عناية'}];
 
 export default function BeautyPartyPage(): JSX.Element {
-  const { data, isLoading } = api.beautyParty.myParties.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data: _data } = api.beautyParty.myParties.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const createMut = api.beautyParty.create.useMutation();
   const [theme, setTheme] = useState('spa'); const [guests, setGuests] = useState(4);
-  const parties = data ?? [];
   const estPerPerson = 150; const total = estPerPerson * guests;
   const discount = guests>=6?20:guests>=4?10:0; const finalTotal = total - (total*discount/100);
 

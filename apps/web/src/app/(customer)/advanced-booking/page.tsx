@@ -20,9 +20,9 @@ const RECURRENCE_OPTS = [
 
 export default function AdvancedBookingPage(): JSX.Element {
   const [mode, setMode] = useState<'recurring' | 'bundle'>('recurring');
-  const [svcId, setSvcId] = useState(1); const [technicianId, setTechId] = useState(1);
+  const [svcId, setSvcId] = useState(1); const [technicianId] = useState(1);
   const [recurrence, setRecurrence] = useState('WEEKLY'); const [occurrences, setOccurrences] = useState(4);
-  const [startDate, setStartDate] = useState(''); const [notes, setNotes] = useState('');
+  const [startDate, setStartDate] = useState(''); const [notes] = useState('');
   const [done, setDone] = useState(false);
 
   const recurringMut = api.advancedBooking.createRecurring.useMutation();

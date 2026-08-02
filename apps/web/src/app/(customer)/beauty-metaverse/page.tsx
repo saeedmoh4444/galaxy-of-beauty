@@ -13,8 +13,6 @@ export default function BeautyMetaversePage(): JSX.Element {
   if (isLoading) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-4xl space-y-6"><CardSkeleton /></div></DashboardLayout>;
   if (isError) return <DashboardLayout role="CUSTOMER"><div className="mx-auto max-w-4xl space-y-6"><ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} /></div></DashboardLayout>;
 
-  const avList = (salons ?? []) as Array<Record<string,unknown>>;
-
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">

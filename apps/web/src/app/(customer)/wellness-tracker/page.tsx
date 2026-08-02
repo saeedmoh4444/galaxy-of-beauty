@@ -14,7 +14,7 @@ const MOODS = [
 ];
 
 export default function WellnessTrackerPage(): JSX.Element {
-  const { data: today, isLoading, refetch } = api.wellnessTracker.today.useQuery() as { data: Record<string, unknown> | null; isLoading: boolean; refetch: () => void };
+  const { data: _today, isLoading: _loading, refetch } = api.wellnessTracker.today.useQuery() as { data: Record<string, unknown> | null; isLoading: boolean; refetch: () => void };
   const { data: weekly } = api.wellnessTracker.weekly.useQuery() as { data: { week: Array<Record<string, unknown>>; avgWater: number; avgSleep: number; avgMood: number; totalSteps: number; skincareDays: number; streak: number } | undefined; };
   const checkinMut = api.wellnessTracker.checkin.useMutation({ onSuccess: () => refetch() });
 

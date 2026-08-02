@@ -17,7 +17,7 @@ export default function ComparePage(): JSX.Element {
   );
 
   const services = ((data as Record<string, unknown>)?.services as Array<Record<string, unknown>>) || [];
-  const rows = ((data as Record<string, unknown>)?.rows as Array<Record<string, unknown>>) || [];
+  const _rows = ((data as Record<string, unknown>)?.rows as Array<Record<string, unknown>>) || [];
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">

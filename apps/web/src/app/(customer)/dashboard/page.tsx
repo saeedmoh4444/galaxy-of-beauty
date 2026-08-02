@@ -11,7 +11,7 @@ export default function CustomerDashboardPage(): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const insights = api.analytics.customerInsights.useQuery() as any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const mood = api.selfCare?.todayMood?.useQuery?.() as any;
+  const _mood = api.selfCare?.todayMood?.useQuery?.() as any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const budget = (api as any).beautyBudget?.get?.useQuery?.() as any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

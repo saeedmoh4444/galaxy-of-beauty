@@ -15,7 +15,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
   const { data: policy, isLoading: pLoad } = api.serviceWarranty.policy.useQuery() as { data: Record<string, unknown> | undefined; isLoading: boolean };
   const { data: claims, isLoading: cLoad, isError, refetch } = api.serviceWarranty.myClaims.useQuery() as { data: Array<Record<string, unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const [eligibilityBookingId, setEligibilityBookingId] = useState(0);
-  const { data: eligibility, refetch: refetchElig } = api.serviceWarranty.checkEligibility.useQuery(
+  const { data: eligibility } = api.serviceWarranty.checkEligibility.useQuery(
     { bookingId: eligibilityBookingId },
     { enabled: eligibilityBookingId > 0 },
   ) as { data: Record<string, unknown> | undefined; refetch: () => void };

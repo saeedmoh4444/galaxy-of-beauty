@@ -6,7 +6,7 @@ interface SocialLoginProps {
   onSuccess?: () => void;
 }
 
-export function SocialLogin({ onSuccess }: SocialLoginProps): JSX.Element {
+export function SocialLogin({ onSuccess: _onSuccess }: SocialLoginProps): JSX.Element {
   const handleGoogleLogin = async () => {
     const clientId = process.env['NEXT_PUBLIC_GOOGLE_CLIENT_ID'] || '';
     if (!clientId) {

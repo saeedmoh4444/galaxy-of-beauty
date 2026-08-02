@@ -42,7 +42,7 @@ const TYPE_CATEGORIES: Record<MakeupType, 'lips' | 'eyes' | 'blush' | 'nails'> =
 // ---------------------------------------------------------------------------
 function useCamera(
   videoRef: React.RefObject<HTMLVideoElement | null>,
-  canvasRef: React.RefObject<HTMLCanvasElement | null>,
+  _canvasRef: React.RefObject<HTMLCanvasElement | null>,
 ) {
   const [cameraReady, setCameraReady] = useState(false);
   const [cameraError, setCameraError] = useState('');
@@ -257,7 +257,7 @@ export default function VirtualTryOnPage(): JSX.Element {
   const [selectedColor, setSelectedColor] = useState<ColorItem | null>(null);
   const [intensity, setIntensity] = useState(70);
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
-  const [showCamera, setShowCamera] = useState(true);
+  const [_showCamera, _setShowCamera] = useState(true);
 
   // Product recommendations
   const recColor = selectedColor?.hex ?? '';

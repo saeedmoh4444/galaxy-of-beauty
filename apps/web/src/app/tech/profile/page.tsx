@@ -23,7 +23,7 @@ export default function TechProfilePage(): JSX.Element {
   const tech = me?.technician as Record<string, unknown> | undefined;
   const techId = tech?.id as number | undefined;
 
-  const { data: myServices, refetch: refetchServices } = api.technicians.getServices.useQuery(
+  const { data: myServices } = api.technicians.getServices.useQuery(
     { techId: techId ?? 0 },
     { enabled: !!techId },
   );

@@ -97,7 +97,7 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
 }
 
 /** Separate client component for the interactive subscribe button. */
-function SubscribeButton({ planId, planName }: { planId: number; planName: string }) {
+function SubscribeButton({ planId, planName: _planName }: { planId: number; planName: string }) {
   const [subscribed, setSubscribed] = useState(false);
   const subscribeMut = api.subscriptionBoxes.subscribe.useMutation({
     onSuccess: () => setSubscribed(true) });

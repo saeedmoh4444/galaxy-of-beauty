@@ -11,7 +11,6 @@ import { useToast } from '@galaxy/shared';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ServiceListItem = Record<string, any>;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ServiceDetail = Record<string, any> | null;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AddressItem = Record<string, any>;
 

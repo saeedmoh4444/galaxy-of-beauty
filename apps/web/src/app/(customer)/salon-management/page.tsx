@@ -13,8 +13,8 @@ export default function SalonManagementPage(): JSX.Element {
   const [show, setShow] = useState(false); const [name, setName] = useState(''); const [role, setRole] = useState('');
 
   const s = staff ?? [];
-  const weeklyB = (dash?.weeklyBookings ?? []) as number[];
-  const weeklyR = (dash?.weeklyRevenue ?? []) as number[];
+  const _weeklyB = (dash?.weeklyBookings ?? []) as number[];
+  const _weeklyR = (dash?.weeklyRevenue ?? []) as number[];
 
   return (
     <DashboardLayout role="CUSTOMER">

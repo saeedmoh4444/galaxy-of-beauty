@@ -8,7 +8,7 @@ export default function AdminUsersPage(): JSX.Element {
   const [search, setSearch] = useState('');
   const { data, isLoading, isError, refetch } = api.admin.listCustomers.useQuery({ search: search || undefined, page: 1, limit: 20 });
   const suspendMut = api.admin.suspendUser.useMutation({ onSuccess: () => refetch() });
-  const [selected, setSelected] = useState<Record<string, unknown> | null>(null);
+  const [_selected, setSelected] = useState<Record<string, unknown> | null>(null);
 
   const customers = (data as unknown as Record<string, unknown>[]) ?? [];
 

@@ -15,7 +15,7 @@ export default function TechnicianComparePage(): JSX.Element {
   const [selected, setSelected] = useState<number[]>([]);
   const toggle = (id: number) => { if (selected.includes(id)) setSelected(selected.filter(x => x !== id)); else if (selected.length < 3) setSelected([...selected, id]); };
   const techs = TECHNICIANS.filter(t => selected.includes(t.id));
-  const maxVals = { speed: 100, quality: 100, price: 100, communication: 100 };
+  const _maxVals = { speed: 100, quality: 100, price: 100, communication: 100 };
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">

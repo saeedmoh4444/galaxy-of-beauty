@@ -54,7 +54,7 @@ export function useRetry({
           setIsRetrying(false);
           setRetryCount(0);
           return result;
-        } catch (err) {
+        } catch {
           if (attempt === maxRetries) {
             setIsRetrying(false);
             return null;

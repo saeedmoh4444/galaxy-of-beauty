@@ -12,7 +12,7 @@ const SERVICES = [
 
 export default function AdminFlashDealsPage(): JSX.Element {
   const { data: active, isLoading } = api.flashDeals.active.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
-  const { data: upcoming } = api.flashDeals.upcoming.useQuery() as { data: Array<Record<string,unknown>> | undefined };
+  const { data: _upcoming } = api.flashDeals.upcoming.useQuery() as { data: Array<Record<string,unknown>> | undefined };
   const createMut = api.flashDeals.create.useMutation();
   const [svcId, setSvcId] = useState(1); const [discount, setDiscount] = useState(30); const [hours, setHours] = useState(24); const [maxRedemptions, setMax] = useState(20);
 

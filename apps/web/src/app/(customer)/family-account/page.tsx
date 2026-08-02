@@ -31,7 +31,7 @@ const AGE_EMOJI: Record<string, string> = {
   infant: '🍼', child: '🧒', teen: '👧', adult: '👩', senior: '👵',
 };
 
-const PREF_EMOJI: Record<string, string> = {
+const _PREF_EMOJI: Record<string, string> = {
   gentle: '🌸', hypoallergenic: '🛡️', fragrance_free: '🚫', natural: '🌿', quick: '⚡', quiet: '🤫',
 };
 

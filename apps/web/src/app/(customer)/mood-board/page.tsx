@@ -4,8 +4,6 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/shared';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import Link from 'next/link';
-
 interface Pin {
   id: number;
   imageUrl: string;
@@ -31,7 +29,7 @@ export default function MoodBoardPage(): JSX.Element {
   };
   const createBoardMut = api.moodBoard.create.useMutation({ onSuccess: () => { setShowCreate(false); setNewBoardName(''); refetch(); } });
   const addPinMut = api.moodBoard.addPin.useMutation({ onSuccess: () => { setShowAddPin(0); refetch(); } });
-  const removePinMut = api.moodBoard.removePin.useMutation({ onSuccess: () => refetch() });
+  const _removePinMut = api.moodBoard.removePin.useMutation({ onSuccess: () => refetch() });
   const deleteBoardMut = api.moodBoard.delete.useMutation({ onSuccess: () => refetch() });
 
   const [showCreate, setShowCreate] = useState(false);

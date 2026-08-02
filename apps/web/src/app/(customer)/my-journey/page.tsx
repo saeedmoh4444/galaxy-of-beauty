@@ -9,9 +9,9 @@ export default function MyJourneyPage(): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: bookings, isLoading: bLoading } = api.bookings.list.useQuery({ limit: 100 }) as any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: insights } = api.analytics.customerInsights.useQuery() as any;
+  const { data: _insights } = api.analytics.customerInsights.useQuery() as any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: loyalty } = (api as any).loyalty?.myAccount?.useQuery?.() as any;
+  const { data: _loyalty } = (api as any).loyalty?.myAccount?.useQuery?.() as any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: streak } = (api as any).streaks?.get?.useQuery?.() as any;
 

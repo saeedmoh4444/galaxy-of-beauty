@@ -13,7 +13,7 @@ export default function MarketplacePage(): JSX.Element {
     sortBy: 'newest',
     page: 1,
     limit: 20 }) as any;
-  const categoriesQuery = api.marketplace.productCategories.useQuery() as any;
+  api.marketplace.productCategories.useQuery() as any;
   const { data, isLoading, isError, refetch } = productsQuery;
 
   const items: any[] = data?.items ?? [];

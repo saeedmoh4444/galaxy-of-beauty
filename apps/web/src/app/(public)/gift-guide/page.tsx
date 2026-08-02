@@ -71,7 +71,7 @@ function GiftQuizWidget(): JSX.Element {
   const { data: questions, isLoading: qLoading } = api.giftQuiz.questions.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const [answers, setAnswers] = useState<Record<string,string>>({});
   const [step, setStep] = useState(0);
-  const { data: results, isLoading: rLoading } = api.giftQuiz.recommend.useQuery(
+  const { data: results } = api.giftQuiz.recommend.useQuery(
     { answers },
     { enabled: Object.keys(answers).length === ((questions as Array<unknown>)?.length ?? 0) && ((questions as Array<unknown>)?.length ?? 0) > 0 },
   ) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
