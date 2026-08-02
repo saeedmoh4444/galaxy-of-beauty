@@ -17,7 +17,6 @@ export const adminAnalyticsV2Router = router({
       prisma.user.count(),
       prisma.technician.count(),
       prisma.booking.count(),
-      prisma.service.count(),
       prisma.booking.count({ where: { createdAt: { gte: today } } }),
       prisma.booking.count({ where: { createdAt: { gte: weekAgo } } }),
       prisma.booking.count({ where: { createdAt: { gte: monthAgo } } }),
