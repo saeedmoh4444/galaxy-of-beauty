@@ -29,7 +29,7 @@ export const promoRouter = router({
         });
       }
 
-      let discount = 0n;
+      let discount = BigInt(0);
       if (promo.discountType === 'percent') {
         discount = BigInt(Math.round(input.orderAmount * Number(promo.discountValue) / 100));
         if (promo.maxDiscount) discount = discount > BigInt(Math.round(Number(promo.maxDiscount))) ? BigInt(Math.round(Number(promo.maxDiscount))) : discount;

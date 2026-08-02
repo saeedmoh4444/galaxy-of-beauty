@@ -41,7 +41,7 @@ export default function VIPMembershipPage(): JSX.Element {
                     {isCurrent ? (
                       <span className="rounded-full bg-green-100 dark:bg-green-900 px-4 py-2 text-sm font-bold text-green-700 dark:text-green-300">عضوية نشطة</span>
                     ) : (t.price as number) > 0 ? (
-                      <Button onClick={() => upgradeMut.mutate()} loading={upgradeMut.isPending} className="w-full">✨ ترقية</Button>
+                      <Button onClick={() => upgradeMut.mutate({ tier: (t.key as string) as 'silver' | 'gold' | 'platinum' })} loading={upgradeMut.isPending} className="w-full">✨ ترقية</Button>
                     ) : null}
                   </div>
                 </Card>
