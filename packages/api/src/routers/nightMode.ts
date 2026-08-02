@@ -1,3 +1,5 @@
+import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
 const NIGHT_ROUTINE = [
@@ -14,9 +16,17 @@ const NIGHT_ROUTINE = [
 export const nightModeRouter = router({
   routine: customerProcedure.query(() => NIGHT_ROUTINE),
   tips: customerProcedure.query(() => [
-    'خفتي الأضواء قبل ساعة من النوم',
-    'درجة حرارة الغرفة المثالية ١٨-٢٢ درجة',
-    'تجنبي الكافيين بعد الساعة ٤ مساءً',
-    'استخدمي وسادة حرير لحماية الشعر والبشرة',
+    'خفتي الأضواء قبل ساعة من النوم', 'درجة حرارة الغرفة المثالية ١٨-٢٢ درجة', 'تجنبي الكافيين بعد الساعة ٤ مساءً', 'استخدمي وسادة حرير لحماية الشعر والبشرة',
   ]),
+
+  mySettings: customerProcedure.query(async ({ ctx }) => {
+    const s = await prisma.nightModeSetting.findUnique({ where: { userId: ctx.user.id } });
+    return s || { enabled: false, startTime: '21:00' };
+  }),
+
+  saveSettings: customerProcedure
+    .input(z.object({ enabled: z.boolean(), startTime: z.string() }))
+    .mutation(async ({ ctx, input }) =>
+      prisma.nightModeSetting.upsert({ where: { userId: ctx.user.id }, update: input, create: { userId: ctx.user.id, ...input } })
+    ),
 });
