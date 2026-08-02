@@ -26,6 +26,9 @@ export const LARGE_PAGE_SIZE = 20;
 /** Bulk page (leaderboards, maps). */
 export const BULK_PAGE_SIZE = 50;
 
+/** Extended page (transaction history, community feeds). */
+export const EXTENDED_PAGE_SIZE = 30;
+
 /** Max items for non-export list endpoints. */
 export const MAX_LIST_SIZE = 100;
 
