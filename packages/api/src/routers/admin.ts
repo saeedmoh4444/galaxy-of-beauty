@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
+import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { adminProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
 
@@ -26,7 +27,7 @@ export const adminRouter = router({
         _count: true,
       }),
       prisma.booking.findMany({
-        take: 5,
+        take: SMALL_PAGE_SIZE,
         orderBy: { createdAt: 'desc' },
         include: {
           customer: { select: { id: true, name: true } },
@@ -35,7 +36,7 @@ export const adminRouter = router({
         },
       }),
       prisma.technician.findMany({
-        take: 5,
+        take: SMALL_PAGE_SIZE,
         orderBy: { completedBookings: 'desc' },
         include: {
           user: { select: { id: true, name: true, email: true } },
