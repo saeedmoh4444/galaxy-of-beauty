@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/shared';
 
 const FEATURES = [
   { emoji: '💇‍♀️', title: 'احجزي خدمات التجميل', desc: 'شعر، بشرة، مكياج، أظافر والمزيد', href: '/services', color: 'from-brand-100 to-brand-200' },
@@ -55,7 +55,8 @@ export default function DiscoverPage(): JSX.Element {
 }
 
 function TrendingNow(): JSX.Element {
-  const { data: trending, isLoading } = api.social.trending.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const { data: trending, isLoading, isError, refetch } = api.social.trending.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  if (isError) return <div className="py-4"><ErrorAlert message="فشل تحميل المحتوى" onRetry={() => refetch()} /></div>;
   if (!(trending??[]).length && !isLoading) return <></>;
   return (
     <div className="mt-16">

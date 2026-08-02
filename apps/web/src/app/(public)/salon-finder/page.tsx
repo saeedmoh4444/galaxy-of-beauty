@@ -1,14 +1,15 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/shared';
 
 export default function SalonFinderPage(): JSX.Element {
   const { data: cities } = api.salonMap.cities.useQuery() as { data: Array<Record<string,unknown>> | undefined };
   const [city, setCity] = useState('');
-  const { data: results, isLoading } = api.salonMap.explore.useQuery(
+  const { data: results, isLoading, isError, refetch } = api.salonMap.explore.useQuery(
     { city: city || undefined },
-  ) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  ) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  if (isError) return <div className="mx-auto max-w-5xl px-4 py-8"><ErrorAlert message="فشل تحميل الصالونات" onRetry={() => refetch()} /></div>;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 space-y-6">
