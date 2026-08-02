@@ -1775,6 +1775,17 @@ model SpaPlan {
   @@map("spa_plans")
 }
 
+model RoutineStep {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  routineId String
+  stepIndex Int
+  done      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  @@unique([userId, routineId, stepIndex])
+  @@map("routine_steps")
+}
+
 // =============================================================================
 // Beauty Gift Registry — Friends contribute to service funds
 // =============================================================================

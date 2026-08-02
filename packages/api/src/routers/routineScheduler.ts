@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
 const PRESETS = [
@@ -9,8 +10,25 @@ const PRESETS = [
 
 export const routineSchedulerRouter = router({
   presets: customerProcedure.query(() => PRESETS),
-  myRoutines: customerProcedure.query(() => PRESETS),
+
+  myRoutines: customerProcedure.query(async ({ ctx }) => {
+    const completed = await prisma.routineStep.findMany({ where: { userId: ctx.user.id } });
+    const doneSet = new Set(completed.map((s: any) => `${s.routineId}-${s.stepIndex}`));
+    return PRESETS.map(r => ({
+      ...r,
+      steps: r.steps.map((s, i) => ({ ...s, done: doneSet.has(`${r.id}-${i}`) })),
+    }));
+  }),
+
   toggleStep: customerProcedure
     .input(z.object({ routineId: z.string(), stepIndex: z.number() }))
-    .mutation(async ({ input }) => ({ routineId: input.routineId, stepIndex: input.stepIndex, toggled: true })),
+    .mutation(async ({ ctx, input }) => {
+      const existing = await prisma.routineStep.findUnique({ where: { userId_routineId_stepIndex: { userId: ctx.user.id, routineId: input.routineId, stepIndex: input.stepIndex } } });
+      if (existing) {
+        await prisma.routineStep.update({ where: { id: existing.id }, data: { done: !existing.done } });
+        return { toggled: !existing.done };
+      }
+      await prisma.routineStep.create({ data: { userId: ctx.user.id, routineId: input.routineId, stepIndex: input.stepIndex, done: true } });
+      return { toggled: true };
+    }),
 });
