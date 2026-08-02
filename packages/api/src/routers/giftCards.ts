@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import { MS_PER_DAY } from '@galaxy/shared';
 import { protectedProcedure, customerProcedure, adminProcedure, router } from '../trpc';
 
 // Generate a gift card code: GIFT-XXXX-XXXX
@@ -31,7 +32,7 @@ export const giftCardRouter = router({
           recipientEmail: input.recipientEmail,
           recipientName: input.recipientName,
           message: input.message,
-          expiresAt: new Date(Date.now() + 365 * 24 * 3600 * 1000), // 1 year
+          expiresAt: new Date(Date.now() + 365 * MS_PER_DAY), // 1 year
         },
       });
       return { id: card.id, code: card.code, amount: Number(card.amount), message: input.message || '' };

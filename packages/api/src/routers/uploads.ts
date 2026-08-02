@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import { MAX_IMAGE_SIZE, MAX_DOC_SIZE } from '@galaxy/shared';
 import { protectedProcedure, technicianProcedure, adminProcedure, router } from '../trpc';
 import { uploadFile, deleteFile, generatePresignedUrl } from '../lib/storage';
 
@@ -19,9 +20,6 @@ const ALLOWED_DOC_TYPES = [
   'image/png',
   ...ALLOWED_IMAGE_TYPES,
 ];
-
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024;   // 5 MB
-const MAX_DOC_SIZE   = 10 * 1024 * 1024;   // 10 MB
 
 // ── Helpers ────────────────────────────────────────────────
 
