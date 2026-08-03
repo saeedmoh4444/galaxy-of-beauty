@@ -74,3 +74,6 @@ models/
 # Mobile
 apps/mobile/android/
 apps/mobile/ios/
+
+*storybook.log
+storybook-static
