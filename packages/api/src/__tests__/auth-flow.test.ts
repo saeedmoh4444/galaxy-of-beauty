@@ -47,7 +47,7 @@ describe('Auth — Registration', () => {
       email: testEmail,
       password: 'StrongPass123!',
       name: 'مختبرة التكامل',
-      phone: `+9665${Math.floor(100000000 + Math.random() * 900000000)}`,
+      phone: `+9665${String(Math.floor(10000000 + Math.random() * 90000000))}`,
       acceptedTerms: true,
     });
     expect(result).toBeDefined();
