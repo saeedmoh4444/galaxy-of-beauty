@@ -11,6 +11,10 @@ export { ProgressBar } from './ui/ProgressBar';
 export { ToastProvider, useToast } from './ui/Toast';
 export type { ToastType } from './ui/Toast';
 export { Pagination } from './ui/Pagination';
+export { StatCard } from './ui/StatCard';
+export { PageContainer } from './ui/PageContainer';
+export { Icon } from './ui/Icon';
+export type { IconName } from './ui/Icon';
 
 // Hooks
 export { useForm, useAuth, useDebounce } from './hooks';

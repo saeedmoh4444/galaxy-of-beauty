@@ -68,8 +68,11 @@ export function ToastProvider({ children }: { children: ReactNode }): JSX.Elemen
                     : 'bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-900'
             }`}
           >
-            <span>
+            <span aria-hidden="true">
               {toast.type === 'success' ? '✅' : toast.type === 'error' ? '❌' : toast.type === 'warning' ? '⚠️' : 'ℹ️'}
+            </span>
+            <span className="sr-only">
+              {toast.type === 'success' ? 'نجاح' : toast.type === 'error' ? 'خطأ' : toast.type === 'warning' ? 'تحذير' : 'معلومة'}
             </span>
             <span>{toast.message}</span>
             <button

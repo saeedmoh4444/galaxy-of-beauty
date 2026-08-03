@@ -14,7 +14,7 @@ interface ErrorAlertProps {
  * Used as the `<FeatureError>` state in every data-fetching view.
  */
 export function ErrorAlert({
-  title = 'Something went wrong',
+  title = 'حدث خطأ ما',
   message,
   onRetry,
   className = '',

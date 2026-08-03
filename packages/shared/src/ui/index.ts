@@ -10,3 +10,7 @@ export { ProgressBar } from './ProgressBar';
 export { ToastProvider, useToast } from './Toast';
 export type { ToastType } from './Toast';
 export { Pagination } from './Pagination';
+export { StatCard } from './StatCard';
+export { PageContainer } from './PageContainer';
+export { Icon } from './Icon';
+export type { IconName } from './Icon';

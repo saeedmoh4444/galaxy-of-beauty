@@ -23,7 +23,7 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps):
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page <= 1}
-        className="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 dark:text-gray-400 dark:hover:bg-gray-800"
+        className="flex h-11 w-11 items-center justify-center rounded-lg text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 dark:text-gray-400 dark:hover:bg-gray-800"
         aria-label="الصفحة السابقة"
       >
         ‹
@@ -35,7 +35,7 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps):
           <button
             key={p}
             onClick={() => onPageChange(p)}
-            className={`min-w-[2.25rem] rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+            className={`flex h-11 w-11 items-center justify-center rounded-lg text-sm font-medium transition-colors ${
               p === page
                 ? 'bg-brand-600 text-white'
                 : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
@@ -50,7 +50,7 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps):
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page >= totalPages}
-        className="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 dark:text-gray-400 dark:hover:bg-gray-800"
+        className="flex h-11 w-11 items-center justify-center rounded-lg text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 dark:text-gray-400 dark:hover:bg-gray-800"
         aria-label="الصفحة التالية"
       >
         ›
