@@ -31,7 +31,7 @@ export default function ServiceHistoryPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">📋 سجل الخدمات</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">📋 سجل الخدمات</h1>
 
         {/* Favorite Services — Reorder */}
         {favorites.length > 0 && (
@@ -43,7 +43,7 @@ export default function ServiceHistoryPage(): JSX.Element {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-semibold">{info.title}</p>
-                      <p className="text-xs text-gray-500">تم الحجز {info.count} مرات · آخر مرة {new Date(info.lastDate).toLocaleDateString('ar-SA')}</p>
+                      <p className="text-xs text-text-secondary">تم الحجز {info.count} مرات · آخر مرة {new Date(info.lastDate).toLocaleDateString('ar-SA')}</p>
                     </div>
                     <Link href={`/bookings/create?serviceId=${sid}`}><Button size="sm">أعد الحجز</Button></Link>
                   </div>
@@ -65,7 +65,7 @@ export default function ServiceHistoryPage(): JSX.Element {
                       <div className={`h-2 w-2 rounded-full ${b.status === 'COMPLETED' ? 'bg-green-500' : b.status === 'CANCELLED' ? 'bg-red-500' : 'bg-brand-500'}`} />
                       <div>
                         <p className="font-semibold text-sm">{b.bookingCode || `#${b.id}`}</p>
-                        <p className="text-xs text-gray-500">{new Date(b.createdAt).toLocaleDateString('ar-SA')}</p>
+                        <p className="text-xs text-text-secondary">{new Date(b.createdAt).toLocaleDateString('ar-SA')}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">

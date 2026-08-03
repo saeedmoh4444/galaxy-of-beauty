@@ -54,8 +54,8 @@ export default function ReviewsPage(): JSX.Element {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-semibold">{b.serviceName as string ?? 'خدمة'}</p>
-                        <p className="text-sm text-gray-500">{b.technicianName as string ?? 'فني'}</p>
-                        <p className="text-xs text-gray-400">{new Date(b.startAt as string).toLocaleDateString('ar-SA')}</p>
+                        <p className="text-sm text-text-secondary">{b.technicianName as string ?? 'فني'}</p>
+                        <p className="text-xs text-text-tertiary">{new Date(b.startAt as string).toLocaleDateString('ar-SA')}</p>
                       </div>
                       <Button size="sm" onClick={() => { setSelectedBookingId(b.id as number); setRating(0); setComment(''); }}>
                         تقييم
@@ -76,7 +76,7 @@ export default function ReviewsPage(): JSX.Element {
                     <div className="flex items-start justify-between">
                       <div className="space-y-1">
                         <p className="font-semibold">{b.serviceName as string ?? 'خدمة'}</p>
-                        <p className="text-sm text-gray-500">{b.technicianName as string ?? 'فني'}</p>
+                        <p className="text-sm text-text-secondary">{b.technicianName as string ?? 'فني'}</p>
                         <div className="flex gap-0.5">
                           {Array.from({ length: 5 }, (_, i) => (
                             <span key={i} className={`text-lg ${i < (b.reviewRating as number ?? 0) ? 'text-amber-400' : 'text-gray-300'}`}>
@@ -85,7 +85,7 @@ export default function ReviewsPage(): JSX.Element {
                           ))}
                         </div>
                         {b.reviewComment ? <p className="text-sm text-gray-600 dark:text-gray-400">&ldquo;{b.reviewComment as string}&rdquo;</p> : null}
-                        <p className="text-xs text-gray-400">{new Date(b.reviewDate as string ?? b.startAt as string).toLocaleDateString('ar-SA')}</p>
+                        <p className="text-xs text-text-tertiary">{new Date(b.reviewDate as string ?? b.startAt as string).toLocaleDateString('ar-SA')}</p>
                       </div>
                     </div>
                   </Card>

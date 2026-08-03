@@ -225,7 +225,7 @@ function ColorPalette({
             className="h-9 w-9 rounded-full border-2 border-white shadow-md transition-transform group-hover:scale-110"
             style={{ backgroundColor: c.hex }}
           />
-          <span className="text-[10px] text-gray-500 dark:text-gray-400 leading-tight text-center max-w-[48px] truncate">
+          <span className="text-[10px] text-text-secondary dark:text-gray-400 leading-tight text-center max-w-[48px] truncate">
             {c.nameAr}
           </span>
           {selectedId === c.id && (
@@ -376,8 +376,8 @@ export default function VirtualTryOnPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header */}
         <div className="text-center sm:text-right">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">🤳 تجربة المكياج الافتراضية</h1>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">🤳 تجربة المكياج الافتراضية</h1>
+          <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
             جربي ألوان المكياج مباشرة على وجهكِ قبل الشراء
           </p>
         </div>
@@ -387,7 +387,7 @@ export default function VirtualTryOnPage(): JSX.Element {
           <div className="space-y-4 lg:col-span-2">
             {/* Makeup Type Selector */}
             <Card padding="md">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">نوع المكياج</h3>
+              <h3 className="text-sm font-semibold text-text-primary dark:text-gray-300 mb-3">نوع المكياج</h3>
               <div className="grid grid-cols-2 gap-2">
                 {typeKeys.map((t) => (
                   <button
@@ -396,7 +396,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                     className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
                       makeupType === t
                         ? 'bg-brand-100 text-brand-700 ring-2 ring-brand-300 dark:bg-brand-900 dark:text-brand-300'
-                        : 'bg-gray-50 text-gray-600 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400'
+                        : 'bg-surface-muted text-gray-600 hover:bg-surface-muted dark:bg-gray-800 dark:text-gray-400'
                     }`}
                   >
                     <span className="text-lg">{TYPE_LABELS[t].emoji}</span>
@@ -408,7 +408,7 @@ export default function VirtualTryOnPage(): JSX.Element {
 
             {/* Color Palette */}
             <Card padding="md">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+              <h3 className="text-sm font-semibold text-text-primary dark:text-gray-300 mb-3">
                 🎨 الألوان {selectedColor && <span className="text-brand-600">— {selectedColor.nameAr}</span>}
               </h3>
               {palettesLoading ? (
@@ -420,7 +420,7 @@ export default function VirtualTryOnPage(): JSX.Element {
 
             {/* Intensity Slider */}
             <Card padding="md">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+              <h3 className="text-sm font-semibold text-text-primary dark:text-gray-300 mb-3">
                 الشفافية: <span className="text-brand-600">{intensity}%</span>
               </h3>
               <input
@@ -431,7 +431,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                 onChange={(e) => setIntensity(parseInt(e.target.value, 10))}
                 className="w-full accent-brand-600"
               />
-              <div className="flex justify-between text-[10px] text-gray-400 mt-1">
+              <div className="flex justify-between text-[10px] text-text-tertiary mt-1">
                 <span>شفاف</span><span>كثيف</span>
               </div>
             </Card>
@@ -542,10 +542,10 @@ export default function VirtualTryOnPage(): JSX.Element {
         {/* Product Recommendations */}
         {selectedColor && (
           <Card padding="lg">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">
+            <h3 className="text-lg font-bold text-text-primary dark:text-gray-100 mb-1">
               🛍️ منتجات مقترحة
             </h3>
-            <p className="text-sm text-gray-500 mb-4">
+            <p className="text-sm text-text-secondary mb-4">
               منتجات تناسب درجة &ldquo;{selectedColor.nameAr}&rdquo; من متجرنا
             </p>
             {recsLoading ? (
@@ -553,7 +553,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                 {Array.from({ length: 4 }, (_, i) => <CardSkeleton key={i} />)}
               </div>
             ) : !products || products.length === 0 ? (
-              <p className="text-sm text-gray-400 text-center py-4">
+              <p className="text-sm text-text-tertiary text-center py-4">
                 لا توجد منتجات مطابقة حالياً — تصفحي متجرنا للمزيد
               </p>
             ) : (
@@ -569,7 +569,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                         )}
                       </div>
                       {p.brand && <p className="text-[10px] font-medium text-brand-600 uppercase tracking-wide">{p.brand}</p>}
-                      <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100 mt-0.5 line-clamp-1">{p.nameAr}</h4>
+                      <h4 className="text-sm font-bold text-text-primary dark:text-gray-100 mt-0.5 line-clamp-1">{p.nameAr}</h4>
                       <p className="mt-1 text-sm font-extrabold text-brand-600">{formatCurrency(p.price)} ر.س</p>
                     </Card>
                   </Link>
@@ -586,7 +586,7 @@ export default function VirtualTryOnPage(): JSX.Element {
 
         {/* Tips */}
         <Card padding="lg" className="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-950 dark:to-rose-950 border-none">
-          <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3">💡 نصائح للتجربة</h3>
+          <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">💡 نصائح للتجربة</h3>
           <div className="grid gap-2 text-sm text-gray-600 dark:text-gray-400 sm:grid-cols-2">
             <p>💡 تأكدي من إضاءة وجهكِ جيداً للحصول على أفضل نتيجة</p>
             <p>📸 التقطي صورة بعد اختيار اللون لمشاركتها مع صديقاتكِ</p>

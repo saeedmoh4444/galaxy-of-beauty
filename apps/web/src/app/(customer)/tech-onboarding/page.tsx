@@ -16,13 +16,13 @@ export default function TechOnboardingPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <div><h1 className="text-2xl font-bold">📋 التسجيل كفنية</h1><p className="mt-1 text-sm text-gray-500">أكملي الخطوات لتصبحي فنية معتمدة</p></div>
+        <div><h1 className="text-2xl font-bold">📋 التسجيل كفنية</h1><p className="mt-1 text-sm text-text-secondary">أكملي الخطوات لتصبحي فنية معتمدة</p></div>
         <Card padding="lg">
           <div className="mb-4 h-2 rounded-full bg-gray-200 dark:bg-gray-700"><div className="h-2 rounded-full bg-brand-500" style={{ width: `${(completed / total) * 100}%` }} /></div>
           <p className="text-sm text-center mb-4">{completed}/{total} مكتملة</p>
           <div className="space-y-3">{steps.map((s: Record<string,unknown>) => (
-            <div key={s.key as string} className={`flex items-center gap-3 rounded-lg p-3 ${s.completed ? 'bg-green-50 dark:bg-green-950' : 'bg-gray-50 dark:bg-gray-800'}`}>
-              <span className="text-2xl">{s.emoji as string}</span><div className="flex-1"><p className="font-bold text-sm">{s.nameAr as string}</p><p className="text-xs text-gray-500">{s.desc as string}</p></div>
+            <div key={s.key as string} className={`flex items-center gap-3 rounded-lg p-3 ${s.completed ? 'bg-green-50 dark:bg-green-950' : 'bg-surface-muted dark:bg-gray-800'}`}>
+              <span className="text-2xl">{s.emoji as string}</span><div className="flex-1"><p className="font-bold text-sm">{s.nameAr as string}</p><p className="text-xs text-text-secondary">{s.desc as string}</p></div>
               {s.completed ? <span className="text-green-600">✅</span> : <Button size="sm" variant="ghost" onClick={() => { setStepKey(s.key as string); setShow(true); }}>رفع</Button>}
             </div>
           ))}</div>

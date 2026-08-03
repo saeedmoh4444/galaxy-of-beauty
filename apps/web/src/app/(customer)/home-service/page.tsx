@@ -35,7 +35,7 @@ export default function HomeServicePage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">🏠 خدمة منزلية</h1>
-          <p className="mt-1 text-sm text-gray-500">الفنيات يجين لعنوانكِ — خدمة تجميل في منزلكِ براحة وأمان</p>
+          <p className="mt-1 text-sm text-text-secondary">الفنيات يجين لعنوانكِ — خدمة تجميل في منزلكِ براحة وأمان</p>
         </div>
 
         {/* Pricing Card */}
@@ -43,9 +43,9 @@ export default function HomeServicePage(): JSX.Element {
           <Card padding="lg" className="border-2 border-brand-200 dark:border-brand-800">
             <h3 className="font-bold text-lg mb-4">💰 تقدير التكلفة — {city}</h3>
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-gray-500">رسوم الخدمة الأساسية</span><span>{formatCurrency(estimate.serviceFee as number)}</span></div>
-              <div className="flex justify-between"><span className="text-gray-500">رسوم الزيارة المنزلية</span><span>{formatCurrency(estimate.travelFee as number)}</span></div>
-              <div className="flex justify-between"><span className="text-gray-500">رسوم الحجز</span><span>{formatCurrency(estimate.baseFee as number)}</span></div>
+              <div className="flex justify-between"><span className="text-text-secondary">رسوم الخدمة الأساسية</span><span>{formatCurrency(estimate.serviceFee as number)}</span></div>
+              <div className="flex justify-between"><span className="text-text-secondary">رسوم الزيارة المنزلية</span><span>{formatCurrency(estimate.travelFee as number)}</span></div>
+              <div className="flex justify-between"><span className="text-text-secondary">رسوم الحجز</span><span>{formatCurrency(estimate.baseFee as number)}</span></div>
               <hr className="dark:border-gray-700" />
               <div className="flex justify-between text-lg"><span className="font-bold">الإجمالي التقريبي</span><span className="font-extrabold text-brand-600">{formatCurrency(estimate.total as number)} ر.س</span></div>
             </div>
@@ -56,8 +56,8 @@ export default function HomeServicePage(): JSX.Element {
           <Card padding="lg" className="text-center border-2 border-green-300 dark:border-green-700">
             <span className="text-6xl">✅</span>
             <h2 className="mt-4 text-xl font-bold text-green-700 dark:text-green-300">تم استلام طلبكِ!</h2>
-            <p className="mt-2 text-sm text-gray-500">رقم الطلب: {requested.requestId as string}</p>
-            <p className="text-sm text-gray-500">{requested.estimatedArrival as string}</p>
+            <p className="mt-2 text-sm text-text-secondary">رقم الطلب: {requested.requestId as string}</p>
+            <p className="text-sm text-text-secondary">{requested.estimatedArrival as string}</p>
             <div className="mt-4">
               <Link href="/bookings"><Button size="sm">متابعة الطلب</Button></Link>
             </div>
@@ -94,7 +94,7 @@ export default function HomeServicePage(): JSX.Element {
         )}
 
         <div className="grid gap-4 sm:grid-cols-3">
-          {[{emoji:'🏠',title:'في منزلكِ',desc:'الفنيات يأتين لعنوانكِ'},{emoji:'⏱️',title:'خلال ٦٠ دقيقة',desc:'وقت وصول سريع'},{emoji:'🛡️',title:'خدمة آمنة',desc:'جميع الفنيات موثقات'}].map((b,i) => <Card key={i} padding="md" className="text-center"><span className="text-3xl">{b.emoji}</span><h3 className="mt-2 font-semibold text-sm">{b.title}</h3><p className="text-xs text-gray-500">{b.desc}</p></Card>)}
+          {[{emoji:'🏠',title:'في منزلكِ',desc:'الفنيات يأتين لعنوانكِ'},{emoji:'⏱️',title:'خلال ٦٠ دقيقة',desc:'وقت وصول سريع'},{emoji:'🛡️',title:'خدمة آمنة',desc:'جميع الفنيات موثقات'}].map((b,i) => <Card key={i} padding="md" className="text-center"><span className="text-3xl">{b.emoji}</span><h3 className="mt-2 font-semibold text-sm">{b.title}</h3><p className="text-xs text-text-secondary">{b.desc}</p></Card>)}
         </div>
       </div>
     </DashboardLayout>

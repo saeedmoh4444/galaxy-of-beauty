@@ -40,20 +40,20 @@ export default function StreaksPage(): JSX.Element {
             <div className="grid gap-4 md:grid-cols-3">
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
                 <span className="text-5xl">🔥</span>
-                <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">الاستمرارية الحالية</p>
+                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400">الاستمرارية الحالية</p>
                 <p className="mt-1 text-4xl font-bold text-brand-600">{streakData?.currentStreak as number ?? 0}</p>
-                <p className="text-xs text-gray-400">أسابيع متتالية</p>
+                <p className="text-xs text-text-tertiary">أسابيع متتالية</p>
               </Card>
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
                 <span className="text-5xl">🏆</span>
-                <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">أطول استمرارية</p>
+                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400">أطول استمرارية</p>
                 <p className="mt-1 text-4xl font-bold text-amber-600">{streakData?.longestStreak as number ?? 0}</p>
-                <p className="text-xs text-gray-400">أسابيع</p>
+                <p className="text-xs text-text-tertiary">أسابيع</p>
               </Card>
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
                 <span className="text-5xl">📅</span>
-                <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">آخر حجز</p>
-                <p className="mt-1 text-lg font-semibold text-gray-700 dark:text-gray-300">
+                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400">آخر حجز</p>
+                <p className="mt-1 text-lg font-semibold text-text-primary dark:text-gray-300">
                   {streakData?.lastBookingDate
                     ? new Date(streakData.lastBookingDate as unknown as string).toLocaleDateString('ar-SA', {
                         year: 'numeric', month: 'short', day: 'numeric',
@@ -97,14 +97,14 @@ export default function StreaksPage(): JSX.Element {
                         </span>
                         <div className="min-w-0 flex-1">
                           <p className="font-semibold">{nameJson?.ar ?? nameJson?.en ?? ''}</p>
-                          <p className="mt-0.5 text-xs text-gray-500">{descriptionJson?.ar ?? descriptionJson?.en ?? ''}</p>
+                          <p className="mt-0.5 text-xs text-text-secondary">{descriptionJson?.ar ?? descriptionJson?.en ?? ''}</p>
                           <div className="mt-2 flex items-center gap-2">
                             {isEarned ? (
                               <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
                                 تم الإنجاز ✓
                               </span>
                             ) : (
-                              <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500 dark:bg-gray-800">
+                              <span className="rounded-full bg-surface-muted px-2.5 py-0.5 text-xs font-medium text-text-secondary dark:bg-gray-800">
                                 لم يتم بعد
                               </span>
                             )}

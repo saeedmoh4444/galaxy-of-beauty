@@ -63,9 +63,9 @@ export default function ReferralsPage(): JSX.Element {
           <>
             {/* Referral Code */}
             <Card padding="lg" className="text-center">
-              <p className="text-sm text-gray-500 dark:text-gray-400">كود الدعوة الخاص بك</p>
+              <p className="text-sm text-text-secondary dark:text-gray-400">كود الدعوة الخاص بك</p>
               <div className="my-4 flex items-center justify-center gap-3">
-                <span className="rounded-lg bg-gray-100 px-6 py-3 text-2xl font-bold tracking-widest text-brand-600 dark:bg-gray-800">
+                <span className="rounded-lg bg-surface-muted px-6 py-3 text-2xl font-bold tracking-widest text-brand-600 dark:bg-gray-800">
                   {codeData?.code as string ?? '---'}
                 </span>
                 <button
@@ -82,22 +82,22 @@ export default function ReferralsPage(): JSX.Element {
             {/* Stats */}
             <div className="grid gap-4 md:grid-cols-2">
               <Card padding="md" className="text-center">
-                <p className="text-sm text-gray-500 dark:text-gray-400">إجمالي المدعوين</p>
+                <p className="text-sm text-text-secondary dark:text-gray-400">إجمالي المدعوين</p>
                 <p className="mt-1 text-3xl font-bold text-brand-600">{statsData?.totalReferred as number ?? 0}</p>
               </Card>
               <Card padding="md" className="text-center">
-                <p className="text-sm text-gray-500 dark:text-gray-400">إجمالي المكاسب</p>
+                <p className="text-sm text-text-secondary dark:text-gray-400">إجمالي المكاسب</p>
                 <p className="mt-1 text-3xl font-bold text-green-600">{formatCurrency(Number(statsData?.totalEarned ?? 0))}</p>
               </Card>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
               <Card padding="md" className="text-center">
-                <p className="text-sm text-gray-500 dark:text-gray-400">مكتملة</p>
+                <p className="text-sm text-text-secondary dark:text-gray-400">مكتملة</p>
                 <p className="mt-1 text-2xl font-bold text-green-600">{statsData?.completedReferrals as number ?? 0}</p>
               </Card>
               <Card padding="md" className="text-center">
-                <p className="text-sm text-gray-500 dark:text-gray-400">قيد الانتظار</p>
+                <p className="text-sm text-text-secondary dark:text-gray-400">قيد الانتظار</p>
                 <p className="mt-1 text-2xl font-bold text-amber-600">{statsData?.pendingReferrals as number ?? 0}</p>
               </Card>
             </div>
@@ -135,7 +135,7 @@ export default function ReferralsPage(): JSX.Element {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-sm font-medium">{referred?.name as string}</p>
-                          <p className="text-xs text-gray-500">{new Date(r.createdAt as string).toLocaleDateString('ar-SA')}</p>
+                          <p className="text-xs text-text-secondary">{new Date(r.createdAt as string).toLocaleDateString('ar-SA')}</p>
                         </div>
                         <div className="flex items-center gap-3">
                           <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${

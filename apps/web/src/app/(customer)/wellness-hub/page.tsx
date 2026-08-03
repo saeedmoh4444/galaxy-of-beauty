@@ -15,24 +15,24 @@ export default function WellnessHubPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
-        <div><h1 className="text-2xl font-bold">🌸 مركز العافية</h1><p className="mt-1 text-sm text-gray-500">نظرة شاملة على صحتكِ وجمالكِ في مكان واحد</p></div>
+        <div><h1 className="text-2xl font-bold">🌸 مركز العافية</h1><p className="mt-1 text-sm text-text-secondary">نظرة شاملة على صحتكِ وجمالكِ في مكان واحد</p></div>
 
         {/* Cycle Card */}
         {(d?.cycle as Record<string,unknown>) && (
           <Card padding="lg" className="text-center border-2">
             <span className="text-4xl">{(d!.cycle as any).phase?.emoji}</span>
             <h3 className="font-bold text-lg mt-2">{(d!.cycle as any).phase?.name}</h3>
-            <p className="text-sm text-gray-500">اليوم {(d!.cycle as any).currentDay} من {(d!.cycle as any).cycleLength}</p>
+            <p className="text-sm text-text-secondary">اليوم {(d!.cycle as any).currentDay} من {(d!.cycle as any).cycleLength}</p>
             <p className="text-xs text-brand-600 mt-1">⏱️ الدورة القادمة بعد {(d!.cycle as any).daysUntilNext} يوم</p>
           </Card>
         )}
 
         {/* Stats Grid */}
         <div className="grid gap-4 sm:grid-cols-4">
-          <Card padding="md" className="text-center"><p className="text-2xl font-extrabold">{d?.todayMood ? (d.todayMood as any).mood + '/5' : '—'}</p><p className="text-xs text-gray-500">مزاج اليوم</p></Card>
-          <Card padding="md" className="text-center"><p className="text-2xl font-extrabold text-blue-600">{d?.todayMood ? (d.todayMood as any).energy + '/10' : '—'}</p><p className="text-xs text-gray-500">الطاقة</p></Card>
-          <Card padding="md" className="text-center"><p className="text-2xl font-extrabold text-purple-600">{d?.todayMood ? (d.todayMood as any).sleepHours + 'h' : '—'}</p><p className="text-xs text-gray-500">النوم</p></Card>
-          <Card padding="md" className="text-center"><p className="text-2xl font-extrabold text-cyan-600">{d?.todayMood ? (d.todayMood as any).waterGlasses + '💧' : '—'}</p><p className="text-xs text-gray-500">الماء</p></Card>
+          <Card padding="md" className="text-center"><p className="text-2xl font-extrabold">{d?.todayMood ? (d.todayMood as any).mood + '/5' : '—'}</p><p className="text-xs text-text-secondary">مزاج اليوم</p></Card>
+          <Card padding="md" className="text-center"><p className="text-2xl font-extrabold text-blue-600">{d?.todayMood ? (d.todayMood as any).energy + '/10' : '—'}</p><p className="text-xs text-text-secondary">الطاقة</p></Card>
+          <Card padding="md" className="text-center"><p className="text-2xl font-extrabold text-purple-600">{d?.todayMood ? (d.todayMood as any).sleepHours + 'h' : '—'}</p><p className="text-xs text-text-secondary">النوم</p></Card>
+          <Card padding="md" className="text-center"><p className="text-2xl font-extrabold text-cyan-600">{d?.todayMood ? (d.todayMood as any).waterGlasses + '💧' : '—'}</p><p className="text-xs text-text-secondary">الماء</p></Card>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
@@ -40,29 +40,29 @@ export default function WellnessHubPage(): JSX.Element {
           <Card padding="lg"><h3 className="font-bold mb-3">🔬 تحليل البشرة</h3>
             {d?.skin ? (
               <div className="space-y-2">
-                <p className="text-sm"><span className="text-gray-500">نوع البشرة:</span> <span className="font-bold">{(d.skin as any).skinType}</span></p>
+                <p className="text-sm"><span className="text-text-secondary">نوع البشرة:</span> <span className="font-bold">{(d.skin as any).skinType}</span></p>
                 <div className="flex flex-wrap gap-1">{((d.skin as any).concerns as string[] || []).map((c: string) => <span key={c} className="rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-700">{c}</span>)}</div>
               </div>
-            ) : <div><p className="text-sm text-gray-400">لم تحللي بشرتكِ بعد</p><Link href="/skin-analysis"><Button size="sm" className="mt-2">حللي بشرتكِ</Button></Link></div>}
+            ) : <div><p className="text-sm text-text-tertiary">لم تحللي بشرتكِ بعد</p><Link href="/skin-analysis"><Button size="sm" className="mt-2">حللي بشرتكِ</Button></Link></div>}
           </Card>
 
           {/* Weekly Summary */}
           <Card padding="lg"><h3 className="font-bold mb-3">📊 ملخص الأسبوع</h3>
             {d?.weekly && (d.weekly as any).checkinCount > 0 ? (
               <div className="space-y-3">
-                <div><p className="text-xs text-gray-500 mb-1">متوسط المزاج</p><div className="h-2 bg-gray-100 rounded-full"><div className="h-2 bg-amber-500 rounded-full" style={{width:`${((d.weekly as any).avgMood/5)*100}%`}}/></div></div>
-                <div><p className="text-xs text-gray-500 mb-1">متوسط الطاقة</p><div className="h-2 bg-gray-100 rounded-full"><div className="h-2 bg-blue-500 rounded-full" style={{width:`${((d.weekly as any).avgEnergy/10)*100}%`}}/></div></div>
-                <p className="text-xs text-gray-400">{(d.weekly as any).checkinCount} تقييم هذا الأسبوع</p>
+                <div><p className="text-xs text-text-secondary mb-1">متوسط المزاج</p><div className="h-2 bg-surface-muted rounded-full"><div className="h-2 bg-amber-500 rounded-full" style={{width:`${((d.weekly as any).avgMood/5)*100}%`}}/></div></div>
+                <div><p className="text-xs text-text-secondary mb-1">متوسط الطاقة</p><div className="h-2 bg-surface-muted rounded-full"><div className="h-2 bg-blue-500 rounded-full" style={{width:`${((d.weekly as any).avgEnergy/10)*100}%`}}/></div></div>
+                <p className="text-xs text-text-tertiary">{(d.weekly as any).checkinCount} تقييم هذا الأسبوع</p>
               </div>
-            ) : <p className="text-sm text-gray-400">سجلي تقييمكِ اليومي</p>}
+            ) : <p className="text-sm text-text-tertiary">سجلي تقييمكِ اليومي</p>}
           </Card>
         </div>
 
         {/* Journal */}
         <Card padding="lg"><h3 className="font-bold mb-3">📔 آخر اليوميات ({d?.journalCount as number ?? 0})</h3>
           {(d?.recentJournals as Array<Record<string,unknown>>)?.length ? (d?.recentJournals as Array<Record<string,unknown>>).map((j: Record<string,unknown>) => (
-            <div key={j.id as number} className="border-b py-2 last:border-0"><p className="text-sm">{j.content as string}</p><p className="text-xs text-gray-400 mt-1">{new Date(j.date as string).toLocaleDateString('ar-SA')} · مزاج: {j.mood as number ?? '—'}/5</p></div>
-          )) : <p className="text-sm text-gray-400">لا توجد يوميات</p>}
+            <div key={j.id as number} className="border-b py-2 last:border-0"><p className="text-sm">{j.content as string}</p><p className="text-xs text-text-tertiary mt-1">{new Date(j.date as string).toLocaleDateString('ar-SA')} · مزاج: {j.mood as number ?? '—'}/5</p></div>
+          )) : <p className="text-sm text-text-tertiary">لا توجد يوميات</p>}
           <Link href="/beauty-journal"><Button size="sm" variant="outline" className="w-full mt-3">📔 كل اليوميات</Button></Link>
         </Card>
 

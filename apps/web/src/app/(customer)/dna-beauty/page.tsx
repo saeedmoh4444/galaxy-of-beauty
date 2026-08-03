@@ -15,7 +15,7 @@ export default function DNABeautyPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <div><h1 className="text-2xl font-bold">🧬 تحليل الجينات</h1><p className="mt-1 text-sm text-gray-500">اكتشفي احتياجات بشرتكِ بناءً على سماتكِ الوراثية</p></div>
+        <div><h1 className="text-2xl font-bold">🧬 تحليل الجينات</h1><p className="mt-1 text-sm text-text-secondary">اكتشفي احتياجات بشرتكِ بناءً على سماتكِ الوراثية</p></div>
         {result ? (
           <Card padding="lg" className="text-center border-2 border-purple-300"><span className="text-6xl">🧬</span><h2 className="mt-4 text-xl font-bold">نتيجة التحليل</h2><p className="text-2xl font-extrabold text-brand-600 mt-2">{result.score as number}% تطابق</p>
             <div className="mt-3 flex flex-wrap justify-center gap-1">{(result.traits as Array<Record<string,unknown>>)?.map((t: Record<string,unknown>) => <span key={t.key as string} className="rounded-full bg-purple-100 dark:bg-purple-900 px-2 py-0.5 text-xs">{t.label as string}</span>)}</div>
@@ -26,7 +26,7 @@ export default function DNABeautyPage(): JSX.Element {
           <Card padding="lg">
             <h3 className="font-bold mb-4">🧬 أكملي الاستبيان</h3>
             <div className="space-y-3">{qs.map((q: Record<string,unknown>) => (
-              <div key={q.id as string} className="flex items-center justify-between rounded-lg bg-gray-50 dark:bg-gray-800 p-3">
+              <div key={q.id as string} className="flex items-center justify-between rounded-lg bg-surface-muted dark:bg-gray-800 p-3">
                 <span className="text-sm">{q.q as string}</span>
                 <div className="flex gap-2">
                   <button onClick={() => setAnswers({ ...answers, [q.id as string]: true })} className={`rounded-lg px-4 py-1.5 text-sm ${answers[q.id as string] === true ? 'bg-brand-600 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}>نعم</button>

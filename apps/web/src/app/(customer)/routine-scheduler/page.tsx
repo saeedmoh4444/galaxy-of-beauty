@@ -16,7 +16,7 @@ export default function RoutineSchedulerPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <div><h1 className="text-2xl font-bold">📅 جدول الروتين</h1><p className="mt-1 text-sm text-gray-500">نظمي روتين العناية اليومي والأسبوعي</p></div>
+        <div><h1 className="text-2xl font-bold">📅 جدول الروتين</h1><p className="mt-1 text-sm text-text-secondary">نظمي روتين العناية اليومي والأسبوعي</p></div>
 
         {isLoading ? <div className="space-y-4">{Array.from({length:3},(_,i)=><CardSkeleton key={i}/>)}</div> :
           allRoutines.map((r: Record<string,unknown>) => (
@@ -26,10 +26,10 @@ export default function RoutineSchedulerPage(): JSX.Element {
                 const key = `${r.id}_${i}`;
                 const done = checked.has(key);
                 return (
-                  <div key={i} className={`flex items-center gap-3 rounded-lg p-3 transition-all ${done ? 'bg-green-50 dark:bg-green-950' : 'bg-gray-50 dark:bg-gray-800'}`}>
+                  <div key={i} className={`flex items-center gap-3 rounded-lg p-3 transition-all ${done ? 'bg-green-50 dark:bg-green-950' : 'bg-surface-muted dark:bg-gray-800'}`}>
                     <span className="text-2xl">{s.emoji as string}</span>
-                    <span className="text-xs text-gray-400 w-14">{s.time as string}</span>
-                    <span className={`flex-1 font-medium text-sm ${done ? 'line-through text-gray-400' : ''}`}>{s.task as string}</span>
+                    <span className="text-xs text-text-tertiary w-14">{s.time as string}</span>
+                    <span className={`flex-1 font-medium text-sm ${done ? 'line-through text-text-tertiary' : ''}`}>{s.task as string}</span>
                     <input type="checkbox" checked={done} onChange={() => { const next = new Set(checked); next.has(key) ? next.delete(key) : next.add(key); setChecked(next); toggleMut.mutate({ routineId: r.id as string, stepIndex: i }); }} className="h-5 w-5 accent-brand-600" />
                   </div>
                 );

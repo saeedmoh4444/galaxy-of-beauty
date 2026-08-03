@@ -19,19 +19,19 @@ export default function SalonManagementPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
-        <div className="flex items-center justify-between"><div><h1 className="text-2xl font-bold">🤝 إدارة الصالون</h1><p className="mt-1 text-sm text-gray-500">أديري فريقكِ وتابعي أداء الصالون</p></div><Button onClick={() => setShow(true)}>+ موظفة</Button></div>
+        <div className="flex items-center justify-between"><div><h1 className="text-2xl font-bold">🤝 إدارة الصالون</h1><p className="mt-1 text-sm text-text-secondary">أديري فريقكِ وتابعي أداء الصالون</p></div><Button onClick={() => setShow(true)}>+ موظفة</Button></div>
 
         <div className="grid gap-4 sm:grid-cols-4">
-          <Card padding="md" className="text-center"><p className="text-3xl">📅</p><p className="text-2xl font-bold">{dash?.todayBookings as number ?? 0}</p><p className="text-xs text-gray-500">حجز اليوم</p></Card>
-          <Card padding="md" className="text-center"><p className="text-3xl">💰</p><p className="text-2xl font-bold">{formatCurrency(dash?.todayRevenue as number ?? 0)}</p><p className="text-xs text-gray-500">إيراد اليوم</p></Card>
-          <Card padding="md" className="text-center"><p className="text-3xl">👩‍🎨</p><p className="text-2xl font-bold">{dash?.activeStaff as number ?? 0}</p><p className="text-xs text-gray-500">موظفات</p></Card>
-          <Card padding="md" className="text-center"><p className="text-3xl">⭐</p><p className="text-2xl font-bold">{dash?.avgRating as number ?? 0}</p><p className="text-xs text-gray-500">التقييم</p></Card>
+          <Card padding="md" className="text-center"><p className="text-3xl">📅</p><p className="text-2xl font-bold">{dash?.todayBookings as number ?? 0}</p><p className="text-xs text-text-secondary">حجز اليوم</p></Card>
+          <Card padding="md" className="text-center"><p className="text-3xl">💰</p><p className="text-2xl font-bold">{formatCurrency(dash?.todayRevenue as number ?? 0)}</p><p className="text-xs text-text-secondary">إيراد اليوم</p></Card>
+          <Card padding="md" className="text-center"><p className="text-3xl">👩‍🎨</p><p className="text-2xl font-bold">{dash?.activeStaff as number ?? 0}</p><p className="text-xs text-text-secondary">موظفات</p></Card>
+          <Card padding="md" className="text-center"><p className="text-3xl">⭐</p><p className="text-2xl font-bold">{dash?.avgRating as number ?? 0}</p><p className="text-xs text-text-secondary">التقييم</p></Card>
         </div>
 
         <Card padding="lg"><h3 className="font-bold mb-4">👩‍🎨 فريق العمل</h3>
           <div className="space-y-2">{s.map((m: Record<string,unknown>) => (
-            <div key={m.id as number} className="flex items-center justify-between rounded-lg bg-gray-50 dark:bg-gray-800 p-3">
-              <div className="flex items-center gap-3"><span className="text-2xl">{m.emoji as string}</span><div><p className="font-bold">{m.name as string}</p><p className="text-xs text-gray-500">{m.role as string} · ⭐ {m.rating as number} · {m.bookingsToday as number} حجوزات</p></div></div>
+            <div key={m.id as number} className="flex items-center justify-between rounded-lg bg-surface-muted dark:bg-gray-800 p-3">
+              <div className="flex items-center gap-3"><span className="text-2xl">{m.emoji as string}</span><div><p className="font-bold">{m.name as string}</p><p className="text-xs text-text-secondary">{m.role as string} · ⭐ {m.rating as number} · {m.bookingsToday as number} حجوزات</p></div></div>
               <button onClick={() => removeMut.mutate({ id: m.id as number })} className="text-red-400">🗑️</button>
             </div>
           ))}</div>

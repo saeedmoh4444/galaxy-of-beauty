@@ -16,14 +16,14 @@ export default function LiveChatPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-4">
-        <div><h1 className="text-2xl font-bold">💬 الدعم المباشر</h1><p className="mt-1 text-sm text-gray-500">تحدثي مع فريق الدعم مباشرة</p></div>
+        <div><h1 className="text-2xl font-bold">💬 الدعم المباشر</h1><p className="mt-1 text-sm text-text-secondary">تحدثي مع فريق الدعم مباشرة</p></div>
         <Card padding="md" className="h-[60vh] flex flex-col">
           <div className="flex-1 overflow-y-auto space-y-3 p-2">
             {msgs.map((m: Record<string,unknown>) => (
               <div key={m.id as number} className={`flex ${m.isAgent ? 'justify-start' : 'justify-end'}`}>
-                <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${m.isAgent ? 'bg-gray-100 dark:bg-gray-800 rounded-tl-none' : 'bg-brand-600 text-white rounded-tr-none'}`}>
+                <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${m.isAgent ? 'bg-surface-muted dark:bg-gray-800 rounded-tl-none' : 'bg-brand-600 text-white rounded-tr-none'}`}>
                   <p>{m.message as string}</p>
-                  <p className={`text-[10px] mt-1 ${m.isAgent ? 'text-gray-400' : 'text-white/60'}`}>{m.userName as string} · {new Date(m.createdAt as string).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}</p>
+                  <p className={`text-[10px] mt-1 ${m.isAgent ? 'text-text-tertiary' : 'text-white/60'}`}>{m.userName as string} · {new Date(m.createdAt as string).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}</p>
                 </div>
               </div>
             ))}

@@ -43,7 +43,7 @@ export default function SavedCardsPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6 px-4 py-8">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">البطاقات المحفوظة</h1>
+          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">البطاقات المحفوظة</h1>
           <Button onClick={() => setShowAdd(true)}>إضافة بطاقة</Button>
         </div>
 
@@ -59,10 +59,10 @@ export default function SavedCardsPage(): JSX.Element {
               <div className="flex items-center gap-4">
                 <span className="text-2xl">{brandIcons[c.brand as string] || '💳'}</span>
                 <div>
-                  <p className="font-semibold text-gray-900 dark:text-gray-100">
+                  <p className="font-semibold text-text-primary dark:text-gray-100">
                     {String(c.brand).toUpperCase()} ···· {String(c.lastFour)}
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-text-tertiary">
                     {c.cardholderName as string} · {c.expMonth as number}/{c.expYear as number}
                   </p>
                 </div>
@@ -80,7 +80,7 @@ export default function SavedCardsPage(): JSX.Element {
         {showAdd && (
           <Modal open={showAdd} onClose={() => setShowAdd(false)}>
             <div className="space-y-4">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">إضافة بطاقة جديدة</h3>
+              <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">إضافة بطاقة جديدة</h3>
               <Input label="الاسم على البطاقة" value={form.cardholderName} onChange={(e) => setForm({ ...form, cardholderName: e.target.value })} />
               <Input label="آخر 4 أرقام" value={form.lastFour} onChange={(e) => setForm({ ...form, lastFour: e.target.value })} maxLength={4} />
               <div className="flex gap-3">

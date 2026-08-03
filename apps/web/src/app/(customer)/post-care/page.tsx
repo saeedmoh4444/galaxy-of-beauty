@@ -71,14 +71,14 @@ export default function PostCarePage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header */}
         <div className="text-center sm:text-right">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">💆‍♀️ العناية بعد الخدمة</h1>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">💆‍♀️ العناية بعد الخدمة</h1>
+          <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
             تعليمات مخصصة للعناية بنفسكِ بعد كل جلسة تجميل
           </p>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 rounded-xl bg-gray-100 p-1 dark:bg-gray-800">
+        <div className="flex gap-2 rounded-xl bg-surface-muted p-1 dark:bg-gray-800">
           {[
             { key: 'plan' as const, label: '📋 خطتي الشخصية' },
             { key: 'library' as const, label: '📚 مكتبة العناية' },
@@ -89,7 +89,7 @@ export default function PostCarePage(): JSX.Element {
               className={`flex-1 rounded-lg py-2.5 text-sm font-semibold transition-all ${
                 activeTab === t.key
                   ? 'bg-white text-brand-700 shadow dark:bg-gray-700 dark:text-brand-300'
-                  : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                  : 'text-text-secondary hover:text-text-primary dark:hover:text-gray-300'
               }`}
             >
               {t.label}
@@ -120,8 +120,8 @@ export default function PostCarePage(): JSX.Element {
                         💆‍♀️
                       </div>
                       <div>
-                        <h3 className="font-bold text-gray-900 dark:text-gray-100">{plan.serviceName}</h3>
-                        <p className="text-xs text-gray-500">
+                        <h3 className="font-bold text-text-primary dark:text-gray-100">{plan.serviceName}</h3>
+                        <p className="text-xs text-text-secondary">
                           {plan.completedAt ? new Date(plan.completedAt).toLocaleDateString('ar-SA', { month: 'long', day: 'numeric' }) : ''} · {plan.category}
                         </p>
                       </div>
@@ -141,7 +141,7 @@ export default function PostCarePage(): JSX.Element {
                               <div key={tip.id} className="flex gap-3 p-4">
                                 <span className="text-2xl shrink-0">{tip.emoji}</span>
                                 <div>
-                                  <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100">{tip.titleAr}</h4>
+                                  <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{tip.titleAr}</h4>
                                   <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{tip.bodyAr}</p>
                                 </div>
                               </div>
@@ -172,8 +172,8 @@ export default function PostCarePage(): JSX.Element {
                       <button key={cat.key} onClick={() => setSelectedLibCat(cat.key)}>
                         <Card padding="lg" className="text-center transition-all hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
                           <span className="text-4xl">{cat.emoji}</span>
-                          <h3 className="mt-2 text-lg font-bold text-gray-900 dark:text-gray-100">{cat.nameAr}</h3>
-                          <p className="text-xs text-gray-500">{cat.tipsCount} نصائح للعناية</p>
+                          <h3 className="mt-2 text-lg font-bold text-text-primary dark:text-gray-100">{cat.nameAr}</h3>
+                          <p className="text-xs text-text-secondary">{cat.tipsCount} نصائح للعناية</p>
                         </Card>
                       </button>
                     ))}
@@ -188,7 +188,7 @@ export default function PostCarePage(): JSX.Element {
                         <span className="text-3xl shrink-0">{tip.emoji}</span>
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <h4 className="font-bold text-gray-900 dark:text-gray-100">{tip.titleAr}</h4>
+                            <h4 className="font-bold text-text-primary dark:text-gray-100">{tip.titleAr}</h4>
                             <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
                               tip.timeframe === '24h' ? 'bg-red-100 text-red-700' :
                               tip.timeframe === '48h' ? 'bg-amber-100 text-amber-700' :
@@ -211,7 +211,7 @@ export default function PostCarePage(): JSX.Element {
 
         {/* Bottom tip */}
         <Card padding="lg" className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950 border-none text-center">
-          <p className="text-lg font-bold text-gray-900 dark:text-gray-100">💡 تذكري</p>
+          <p className="text-lg font-bold text-text-primary dark:text-gray-100">💡 تذكري</p>
           <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
             العناية بعد الخدمة تطيل من نتائج الجلسة وتحافظ على جمالكِ لفترة أطول
           </p>

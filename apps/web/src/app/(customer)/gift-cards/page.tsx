@@ -41,11 +41,11 @@ export default function GiftCardsPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">بطاقات الهدية</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">بطاقات الهدية</h1>
 
         <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
           {[{ key: 'my', label: 'بطاقاتي' }, { key: 'buy', label: 'شراء' }, { key: 'check', label: 'التحقق من الرصيد' }].map(t => (
-            <button key={t.key} onClick={() => setTab(t.key as typeof tab)} className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === t.key ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}>
+            <button key={t.key} onClick={() => setTab(t.key as typeof tab)} className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === t.key ? 'border-brand-600 text-brand-600' : 'border-transparent text-text-secondary hover:text-text-primary'}`}>
               {t.label}
             </button>
           ))}
@@ -61,10 +61,10 @@ export default function GiftCardsPage(): JSX.Element {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-mono font-bold text-brand-600">{card.code}</p>
-                    <p className="text-sm text-gray-500">الرصيد: {formatCurrency(Number(card.balance))} / {formatCurrency(Number(card.amount))}</p>
-                    {card.recipientName && <p className="text-xs text-gray-400">لـ: {card.recipientName}</p>}
+                    <p className="text-sm text-text-secondary">الرصيد: {formatCurrency(Number(card.balance))} / {formatCurrency(Number(card.amount))}</p>
+                    {card.recipientName && <p className="text-xs text-text-tertiary">لـ: {card.recipientName}</p>}
                   </div>
-                  <span className={`rounded-full px-2 py-0.5 text-xs ${card.status === 'ACTIVE' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                  <span className={`rounded-full px-2 py-0.5 text-xs ${card.status === 'ACTIVE' ? 'bg-green-100 text-green-700' : 'bg-surface-muted text-text-secondary'}`}>
                     {card.status === 'ACTIVE' ? 'نشطة' : 'مستخدمة'}
                   </span>
                 </div>
@@ -80,7 +80,7 @@ export default function GiftCardsPage(): JSX.Element {
               <Input label="المبلغ (ر.س)" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} hint="الحد الأدنى ٥٠ ر.س، الأقصى ٥٠٠٠ ر.س" />
               <Input label="البريد الإلكتروني للمستلم (اختياري)" value={recipientEmail} onChange={(e) => setRecipientEmail(e.target.value)} placeholder="friend@example.com" />
               <Input label="اسم المستلم (اختياري)" value={recipientName} onChange={(e) => setRecipientName(e.target.value)} placeholder="لأجمل صديقة" />
-              <div><label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">رسالة إهداء (اختياري)</label>
+              <div><label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">رسالة إهداء (اختياري)</label>
               <textarea className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800" rows={3} value={giftMessage} onChange={(e) => setGiftMessage(e.target.value)} placeholder="رسالة جميلة..." /></div>
               <Button onClick={() => { const a = Number(amount); if (a < 50) { addToast('warning', 'الحد الأدنى ٥٠ ر.س'); return; } buyMut.mutate({ amount: a, recipientEmail: recipientEmail || undefined, recipientName: recipientName || undefined, message: giftMessage || undefined }); }} loading={buyMut.isPending} className="w-full">🎁 شراء بطاقة هدية</Button>
             </div>

@@ -19,7 +19,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
-        <div><h1 className="text-2xl font-bold">🎁 سوق المكافآت</h1><p className="mt-1 text-sm text-gray-500">استبدلي نقاطكِ بمكافآت وخدمات حصرية</p></div>
+        <div><h1 className="text-2xl font-bold">🎁 سوق المكافآت</h1><p className="mt-1 text-sm text-text-secondary">استبدلي نقاطكِ بمكافآت وخدمات حصرية</p></div>
 
         {acctLoading ? <CardSkeleton/> : (
           <Card padding="lg" className={`text-center bg-gradient-to-r ${TIER_COLORS[tier] ?? TIER_COLORS['SILVER']!} text-white`}>
@@ -31,7 +31,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
         )}
 
         {rwLoading ? <div className="grid gap-4 sm:grid-cols-3">{Array.from({length:6},(_,i)=><CardSkeleton key={i}/>)}</div> :
-          !(rewards??[]).length ? <Card padding="lg" className="text-center py-8"><p className="text-gray-500">لا توجد مكافآت متاحة</p></Card> :
+          !(rewards??[]).length ? <Card padding="lg" className="text-center py-8"><p className="text-text-secondary">لا توجد مكافآت متاحة</p></Card> :
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{(rewards??[]).map((r: Record<string,unknown>) => {
             const canAfford = points >= (r.pointsCost as number);
             const isRedeemed = redeemed === r.id;
@@ -39,9 +39,9 @@ export default function RewardsMarketplacePage(): JSX.Element {
               <Card key={r.id as number} padding="lg" className={`text-center ${isRedeemed ? 'border-2 border-green-300 bg-green-50' : canAfford ? '' : 'opacity-50'}`}>
                 <span className="text-4xl">{r.rewardType === 'free_service' ? '💆‍♀️' : r.rewardType === 'discount_percent' ? '🏷️' : '💰'}</span>
                 <h3 className="font-bold mt-3">{(r.nameJson as Record<string,string>)?.ar}</h3>
-                <p className="text-xs text-gray-500 mt-1">{(r.descriptionJson as Record<string,string>)?.ar ?? ''}</p>
+                <p className="text-xs text-text-secondary mt-1">{(r.descriptionJson as Record<string,string>)?.ar ?? ''}</p>
                 <p className="text-2xl font-extrabold text-amber-600 mt-3">{r.pointsCost as number} نقطة</p>
-                {(r.rewardValue as number) > 0 && <p className="text-xs text-gray-500">
+                {(r.rewardValue as number) > 0 && <p className="text-xs text-text-secondary">
                   {r.rewardType === 'discount_percent' ? `خصم ${r.rewardValue as number}%` : r.rewardType === 'discount_fixed' ? `خصم ${formatCurrency(r.rewardValue as number)}` : 'خدمة مجانية'}
                 </p>}
                 {isRedeemed ? <p className="text-green-600 font-bold mt-3">✅ تم الاستبدال</p> :

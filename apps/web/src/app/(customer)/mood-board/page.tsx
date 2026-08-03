@@ -67,8 +67,8 @@ export default function MoodBoardPage(): JSX.Element {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">🎨 لوحة الإلهام</h1>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">🎨 لوحة الإلهام</h1>
+            <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
               اجمعي صور إطلالاتكِ المفضلة ونظميها في لوحات — {totalPins} صورة في {allBoards.length} لوحة
             </p>
           </div>
@@ -104,20 +104,20 @@ export default function MoodBoardPage(): JSX.Element {
 
                 {/* Info */}
                 <div className="mt-3">
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">{board.name}</h3>
-                  {board.description && <p className="text-xs text-gray-500 mt-0.5">{board.description}</p>}
+                  <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">{board.name}</h3>
+                  {board.description && <p className="text-xs text-text-secondary mt-0.5">{board.description}</p>}
                 </div>
 
                 {/* Pin thumbnails */}
                 {board.pins.length > 0 && (
                   <div className="mt-3 flex gap-1 overflow-hidden rounded-lg">
                     {board.pins.slice(0, 5).map((pin) => (
-                      <div key={pin.id} className="h-16 flex-1 overflow-hidden bg-gray-100 dark:bg-gray-800 rounded">
+                      <div key={pin.id} className="h-16 flex-1 overflow-hidden bg-surface-muted dark:bg-gray-800 rounded">
                         <img src={pin.imageUrl} alt={pin.title} className="h-full w-full object-cover" loading="lazy" />
                       </div>
                     ))}
                     {board.pins.length > 5 && (
-                      <div className="flex h-16 w-10 shrink-0 items-center justify-center rounded bg-gray-200 dark:bg-gray-700 text-xs text-gray-500">
+                      <div className="flex h-16 w-10 shrink-0 items-center justify-center rounded bg-gray-200 dark:bg-gray-700 text-xs text-text-secondary">
                         +{board.pins.length - 5}
                       </div>
                     )}
@@ -147,11 +147,11 @@ export default function MoodBoardPage(): JSX.Element {
         <Modal open={showCreate} onClose={() => setShowCreate(false)} title="لوحة جديدة">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">اسم اللوحة</label>
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">اسم اللوحة</label>
               <input type="text" value={newBoardName} onChange={(e) => setNewBoardName(e.target.value)} placeholder="مثال: إطلالات زفافي" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800" />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">الوصف (اختياري)</label>
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">الوصف (اختياري)</label>
               <textarea value={newBoardDesc} onChange={(e) => setNewBoardDesc(e.target.value)} placeholder="أفكار لإطلالة يوم الزفاف..." rows={2} className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800" />
             </div>
             <div className="flex justify-end gap-3 pt-2">
@@ -165,20 +165,20 @@ export default function MoodBoardPage(): JSX.Element {
         <Modal open={showAddPin > 0} onClose={() => setShowAddPin(0)} title="إضافة صورة">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">رابط الصورة</label>
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">رابط الصورة</label>
               <input type="url" value={pinImageUrl} onChange={(e) => setPinImageUrl(e.target.value)} placeholder="https://example.com/image.jpg" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800" />
               {pinImageUrl && (
-                <div className="mt-2 h-32 rounded-xl bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                <div className="mt-2 h-32 rounded-xl bg-surface-muted dark:bg-gray-800 overflow-hidden">
                   <img src={pinImageUrl} alt="معاينة" className="h-full w-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                 </div>
               )}
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">العنوان (اختياري)</label>
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">العنوان (اختياري)</label>
               <input type="text" value={pinTitle} onChange={(e) => setPinTitle(e.target.value)} placeholder="مكياج عيون سموكي" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800" />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">وسوم (تفصل بفواصل)</label>
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">وسوم (تفصل بفواصل)</label>
               <input type="text" value={pinTags} onChange={(e) => setPinTags(e.target.value)} placeholder="مكياج، سهرة، عيون" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800" />
             </div>
             <div className="flex justify-end gap-3 pt-2">

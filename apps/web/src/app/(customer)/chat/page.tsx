@@ -26,18 +26,18 @@ export default function ChatPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
-        <div><h1 className="text-2xl font-bold">💬 المحادثات</h1><p className="mt-1 text-sm text-gray-500">تواصلي مع الفنيات مباشرة</p></div>
+        <div><h1 className="text-2xl font-bold">💬 المحادثات</h1><p className="mt-1 text-sm text-text-secondary">تواصلي مع الفنيات مباشرة</p></div>
 
         <div className="grid gap-6 lg:grid-cols-3">
           <Card padding="lg" className="lg:col-span-1">
             <h3 className="font-bold mb-3">📋 المحادثات النشطة</h3>
-            {convLoading ? <CardSkeleton/> : convs.length === 0 ? <p className="text-sm text-gray-400">لا توجد محادثات</p> :
+            {convLoading ? <CardSkeleton/> : convs.length === 0 ? <p className="text-sm text-text-tertiary">لا توجد محادثات</p> :
               <div className="space-y-1">{convs.map((c: Record<string,unknown>) => {
                 const other = c.otherParty as Record<string,unknown> | undefined;
                 return (
-                  <button key={c.bookingId as number} onClick={() => setSelectedConv(c.bookingId as number)} className={`w-full rounded-lg p-3 text-right transition-all ${selectedConv===c.bookingId?'bg-brand-50 border-l-4 border-brand-600':'hover:bg-gray-50'}`}>
+                  <button key={c.bookingId as number} onClick={() => setSelectedConv(c.bookingId as number)} className={`w-full rounded-lg p-3 text-right transition-all ${selectedConv===c.bookingId?'bg-brand-50 border-l-4 border-brand-600':'hover:bg-surface-muted'}`}>
                     <p className="font-bold text-sm">{other?.name as string ?? 'محادثة'}</p>
-                    <p className="text-xs text-gray-500">{c.bookingCode as string}</p>
+                    <p className="text-xs text-text-secondary">{c.bookingCode as string}</p>
                   </button>
                 );
               })}</div>
@@ -45,15 +45,15 @@ export default function ChatPage(): JSX.Element {
           </Card>
 
           <Card padding="lg" className="lg:col-span-2 flex flex-col min-h-[400px]">
-            {!selectedConv ? <p className="text-sm text-gray-400 text-center py-16">اختاري محادثة من القائمة</p> :
+            {!selectedConv ? <p className="text-sm text-text-tertiary text-center py-16">اختاري محادثة من القائمة</p> :
               <>
                 <div className="flex-1 space-y-3 overflow-y-auto max-h-[500px] mb-4">
-                  {msgLoading ? <CardSkeleton/> : selectedMsgs.length === 0 ? <p className="text-sm text-gray-400 text-center">لا توجد رسائل</p> :
+                  {msgLoading ? <CardSkeleton/> : selectedMsgs.length === 0 ? <p className="text-sm text-text-tertiary text-center">لا توجد رسائل</p> :
                     selectedMsgs.map((m: Record<string,unknown>) => {
                       const sender = m.sender as Record<string,unknown> | undefined;
                       return (
                         <div key={m.id as number} className={`flex ${sender?.id === (m as any).currentUserId ? 'justify-end' : 'justify-start'}`}>
-                          <div className={`max-w-[80%] rounded-xl p-3 ${sender?.id === (m as any).currentUserId ? 'bg-brand-600 text-white' : 'bg-gray-100'}`}>
+                          <div className={`max-w-[80%] rounded-xl p-3 ${sender?.id === (m as any).currentUserId ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}>
                             <p className="text-sm">{m.content as string}</p>
                             <p className="text-xs opacity-70 mt-1">{new Date(m.createdAt as string).toLocaleTimeString('ar-SA', {hour:'2-digit', minute:'2-digit'})}</p>
                           </div>

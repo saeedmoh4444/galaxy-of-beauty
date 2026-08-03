@@ -16,18 +16,18 @@ export default function VendorPortalPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
-        <div className="flex items-center justify-between"><div><h1 className="text-2xl font-bold">🏪 بوابة البائعين</h1><p className="mt-1 text-sm text-gray-500">أديري منتجاتكِ في متجر جالكسي بيوتي</p></div><Button onClick={() => setShow(true)}>+ منتج جديد</Button></div>
+        <div className="flex items-center justify-between"><div><h1 className="text-2xl font-bold">🏪 بوابة البائعين</h1><p className="mt-1 text-sm text-text-secondary">أديري منتجاتكِ في متجر جالكسي بيوتي</p></div><Button onClick={() => setShow(true)}>+ منتج جديد</Button></div>
 
         <div className="grid gap-4 sm:grid-cols-4">
-          <Card padding="md" className="text-center"><p className="text-3xl">📦</p><p className="text-2xl font-bold">{dash?.totalProducts as number ?? 0}</p><p className="text-xs text-gray-500">منتج</p></Card>
-          <Card padding="md" className="text-center"><p className="text-3xl">🛒</p><p className="text-2xl font-bold">{dash?.totalSales as number ?? 0}</p><p className="text-xs text-gray-500">مبيعة</p></Card>
-          <Card padding="md" className="text-center"><p className="text-3xl">💰</p><p className="text-2xl font-bold">—</p><p className="text-xs text-gray-500">الإيرادات</p></Card>
-          <Card padding="md" className="text-center"><p className="text-3xl">⭐</p><p className="text-2xl font-bold">{dash?.rating as number ?? 4.8}</p><p className="text-xs text-gray-500">التقييم</p></Card>
+          <Card padding="md" className="text-center"><p className="text-3xl">📦</p><p className="text-2xl font-bold">{dash?.totalProducts as number ?? 0}</p><p className="text-xs text-text-secondary">منتج</p></Card>
+          <Card padding="md" className="text-center"><p className="text-3xl">🛒</p><p className="text-2xl font-bold">{dash?.totalSales as number ?? 0}</p><p className="text-xs text-text-secondary">مبيعة</p></Card>
+          <Card padding="md" className="text-center"><p className="text-3xl">💰</p><p className="text-2xl font-bold">—</p><p className="text-xs text-text-secondary">الإيرادات</p></Card>
+          <Card padding="md" className="text-center"><p className="text-3xl">⭐</p><p className="text-2xl font-bold">{dash?.rating as number ?? 4.8}</p><p className="text-xs text-text-secondary">التقييم</p></Card>
         </div>
 
         <div className="space-y-3">{prods.map((p: Record<string,unknown>) => (
           <Card key={p.id as number} padding="md" className="flex items-center justify-between">
-            <div className="flex items-center gap-3"><span className="text-2xl">{p.emoji as string}</span><div><p className="font-bold">{p.nameAr as string}</p><p className="text-xs text-gray-500">مخزون: {p.stock as number} · مبيعات: {p.sales as number}</p></div></div>
+            <div className="flex items-center gap-3"><span className="text-2xl">{p.emoji as string}</span><div><p className="font-bold">{p.nameAr as string}</p><p className="text-xs text-text-secondary">مخزون: {p.stock as number} · مبيعات: {p.sales as number}</p></div></div>
             <div className="flex items-center gap-3"><span className="font-bold text-brand-600">{formatCurrency(p.price as number)} ر.س</span><button onClick={() => deleteMut.mutate({ id: p.id as number })} className="text-red-400">🗑️</button></div>
           </Card>
         ))}</div>

@@ -31,7 +31,7 @@ export default function WellnessTrackerPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">🧘 متعقب العافية</h1>
-          <p className="mt-1 text-sm text-gray-500">تابعي صحتكِ وعافيتكِ اليومية — ماء، نوم، مزاج، وخطوات</p>
+          <p className="mt-1 text-sm text-text-secondary">تابعي صحتكِ وعافيتكِ اليومية — ماء، نوم، مزاج، وخطوات</p>
         </div>
 
         {/* Check-in Card */}
@@ -52,7 +52,7 @@ export default function WellnessTrackerPage(): JSX.Element {
             </div>
             <div>
               <label className="text-sm font-semibold">🧴 روتين العناية</label>
-              <button onClick={() => setSkincare(!skincare)} className={`mt-1 w-full rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${skincare ? 'bg-green-100 border-green-400 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-gray-50 border-gray-200 text-gray-500 dark:bg-gray-800 dark:border-gray-700'}`}>{skincare ? '✓ تم' : 'لم يتم'}</button>
+              <button onClick={() => setSkincare(!skincare)} className={`mt-1 w-full rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${skincare ? 'bg-green-100 border-green-400 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-surface-muted border-gray-200 text-text-secondary dark:bg-gray-800 dark:border-gray-700'}`}>{skincare ? '✓ تم' : 'لم يتم'}</button>
             </div>
             <div className="sm:col-span-2">
               <label className="text-sm font-semibold">😊 المزاج</label>
@@ -67,11 +67,11 @@ export default function WellnessTrackerPage(): JSX.Element {
         {/* Weekly Stats */}
         {w && (
           <div className="grid gap-4 sm:grid-cols-5">
-            <Card padding="md" className="text-center"><p className="text-3xl">💧</p><p className="text-2xl font-bold text-blue-600">{w.avgWater}</p><p className="text-xs text-gray-500">متوسط أكواب</p></Card>
-            <Card padding="md" className="text-center"><p className="text-3xl">😴</p><p className="text-2xl font-bold text-purple-600">{w.avgSleep}</p><p className="text-xs text-gray-500">ساعات نوم</p></Card>
-            <Card padding="md" className="text-center"><p className="text-3xl">😊</p><p className="text-2xl font-bold text-amber-600">{w.avgMood}</p><p className="text-xs text-gray-500">متوسط المزاج</p></Card>
-            <Card padding="md" className="text-center"><p className="text-3xl">🚶‍♀️</p><p className="text-2xl font-bold text-green-600">{(w.totalSteps / 1000).toFixed(1)}k</p><p className="text-xs text-gray-500">إجمالي الخطوات</p></Card>
-            <Card padding="md" className="text-center"><p className="text-3xl">🧴</p><p className="text-2xl font-bold text-pink-600">{w.skincareDays}/7</p><p className="text-xs text-gray-500">أيام العناية</p></Card>
+            <Card padding="md" className="text-center"><p className="text-3xl">💧</p><p className="text-2xl font-bold text-blue-600">{w.avgWater}</p><p className="text-xs text-text-secondary">متوسط أكواب</p></Card>
+            <Card padding="md" className="text-center"><p className="text-3xl">😴</p><p className="text-2xl font-bold text-purple-600">{w.avgSleep}</p><p className="text-xs text-text-secondary">ساعات نوم</p></Card>
+            <Card padding="md" className="text-center"><p className="text-3xl">😊</p><p className="text-2xl font-bold text-amber-600">{w.avgMood}</p><p className="text-xs text-text-secondary">متوسط المزاج</p></Card>
+            <Card padding="md" className="text-center"><p className="text-3xl">🚶‍♀️</p><p className="text-2xl font-bold text-green-600">{(w.totalSteps / 1000).toFixed(1)}k</p><p className="text-xs text-text-secondary">إجمالي الخطوات</p></Card>
+            <Card padding="md" className="text-center"><p className="text-3xl">🧴</p><p className="text-2xl font-bold text-pink-600">{w.skincareDays}/7</p><p className="text-xs text-text-secondary">أيام العناية</p></Card>
           </div>
         )}
 
@@ -87,7 +87,7 @@ export default function WellnessTrackerPage(): JSX.Element {
                 return (
                   <div key={d.date as string} className="flex-1 flex flex-col items-center gap-1">
                     <div className="w-full rounded-t bg-gradient-to-t from-brand-400 to-purple-400" style={{ height: `${h}%` }} />
-                    <span className="text-[10px] text-gray-400">{days[dayIdx]}</span>
+                    <span className="text-[10px] text-text-tertiary">{days[dayIdx]}</span>
                   </div>
                 );
               })}

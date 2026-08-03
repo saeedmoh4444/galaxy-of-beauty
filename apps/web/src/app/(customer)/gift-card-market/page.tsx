@@ -15,14 +15,14 @@ export default function GiftCardMarketPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <div className="flex items-center justify-between"><div><h1 className="text-2xl font-bold">💳 سوق البطاقات</h1><p className="mt-1 text-sm text-gray-500">اشتري وببيعي بطاقات الهدايا</p></div><Button onClick={() => setShow(true)}>بيع بطاقة</Button></div>
-        {items.length === 0 ? <Card padding="lg"><p className="text-center text-gray-400">لا توجد بطاقات حالياً</p></Card> :
+        <div className="flex items-center justify-between"><div><h1 className="text-2xl font-bold">💳 سوق البطاقات</h1><p className="mt-1 text-sm text-text-secondary">اشتري وببيعي بطاقات الهدايا</p></div><Button onClick={() => setShow(true)}>بيع بطاقة</Button></div>
+        {items.length === 0 ? <Card padding="lg"><p className="text-center text-text-tertiary">لا توجد بطاقات حالياً</p></Card> :
           <div className="grid gap-4 sm:grid-cols-2">{items.map((l: Record<string,unknown>) => (
             <Card key={l.id as number} padding="lg" className="text-center">
               <span className="text-4xl">🎁</span><p className="font-bold mt-2">بطاقة {formatCurrency(l.value as number)}</p>
-              <div className="flex items-center justify-center gap-2 mt-1"><span className="text-gray-400 line-through text-sm">{formatCurrency(l.value as number)}</span><span className="text-2xl font-extrabold text-brand-600">{formatCurrency(l.sellingPrice as number)}</span></div>
+              <div className="flex items-center justify-center gap-2 mt-1"><span className="text-text-tertiary line-through text-sm">{formatCurrency(l.value as number)}</span><span className="text-2xl font-extrabold text-brand-600">{formatCurrency(l.sellingPrice as number)}</span></div>
               <span className="rounded-full bg-green-100 dark:bg-green-900 px-2 py-0.5 text-xs font-bold text-green-700">وفر {l.discount as number}%</span>
-              <p className="text-xs text-gray-500 mt-2">{l.sellerName as string} · {l.createdAt as string}</p>
+              <p className="text-xs text-text-secondary mt-2">{l.sellerName as string} · {l.createdAt as string}</p>
               <Button size="sm" className="mt-3 w-full" onClick={() => buyMut.mutate({ listingId: l.id as number })}>💳 شراء</Button>
             </Card>
           ))}</div>

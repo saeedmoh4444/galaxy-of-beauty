@@ -15,18 +15,18 @@ export default function FranchisePortalPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
-        <div className="flex items-center justify-between"><div><h1 className="text-2xl font-bold">🤝 بوابة الامتياز</h1><p className="mt-1 text-sm text-gray-500">أديري فروع صالونكِ المتعددة</p></div><Button onClick={() => setShow(true)}>+ فرع</Button></div>
+        <div className="flex items-center justify-between"><div><h1 className="text-2xl font-bold">🤝 بوابة الامتياز</h1><p className="mt-1 text-sm text-text-secondary">أديري فروع صالونكِ المتعددة</p></div><Button onClick={() => setShow(true)}>+ فرع</Button></div>
         {isLoading ? <div className="grid gap-4 sm:grid-cols-4">{Array.from({length:4},(_,i)=><CardSkeleton key={i}/>)}</div> : (
           <div className="grid gap-4 sm:grid-cols-4">
-            <Card padding="md" className="text-center"><p className="text-3xl">💰</p><p className="text-2xl font-bold text-brand-600">{formatCurrency(dash?.totalRevenue as number ?? 0)}</p><p className="text-xs text-gray-500">الإيرادات</p></Card>
-            <Card padding="md" className="text-center"><p className="text-3xl">📅</p><p className="text-2xl font-bold">{dash?.totalBookings as number ?? 0}</p><p className="text-xs text-gray-500">حجز</p></Card>
-            <Card padding="md" className="text-center"><p className="text-3xl">👩‍🎨</p><p className="text-2xl font-bold">{dash?.totalStaff as number ?? 0}</p><p className="text-xs text-gray-500">موظفة</p></Card>
-            <Card padding="md" className="text-center"><p className="text-3xl">📈</p><p className="text-2xl font-bold text-green-600">+{dash?.growth as number ?? 0}%</p><p className="text-xs text-gray-500">نمو</p></Card>
+            <Card padding="md" className="text-center"><p className="text-3xl">💰</p><p className="text-2xl font-bold text-brand-600">{formatCurrency(dash?.totalRevenue as number ?? 0)}</p><p className="text-xs text-text-secondary">الإيرادات</p></Card>
+            <Card padding="md" className="text-center"><p className="text-3xl">📅</p><p className="text-2xl font-bold">{dash?.totalBookings as number ?? 0}</p><p className="text-xs text-text-secondary">حجز</p></Card>
+            <Card padding="md" className="text-center"><p className="text-3xl">👩‍🎨</p><p className="text-2xl font-bold">{dash?.totalStaff as number ?? 0}</p><p className="text-xs text-text-secondary">موظفة</p></Card>
+            <Card padding="md" className="text-center"><p className="text-3xl">📈</p><p className="text-2xl font-bold text-green-600">+{dash?.growth as number ?? 0}%</p><p className="text-xs text-text-secondary">نمو</p></Card>
           </div>
         )}
         <div className="space-y-3">{locs.map((l: Record<string,unknown>) => (
           <Card key={l.id as number} padding="md" className="flex items-center justify-between">
-            <div><p className="font-bold">{l.branch as string}</p><p className="text-xs text-gray-500">📍 {l.city as string} · {l.staff as number} موظفات</p></div>
+            <div><p className="font-bold">{l.branch as string}</p><p className="text-xs text-text-secondary">📍 {l.city as string} · {l.staff as number} موظفات</p></div>
             <div className="text-right flex items-center gap-4"><span>{l.bookings as number} حجز</span><span className="font-bold text-brand-600">{formatCurrency(l.revenue as number)}</span><span className={`rounded-full px-2 py-0.5 text-xs ${l.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>{l.status === 'active' ? 'نشط' : 'معلق'}</span></div>
           </Card>
         ))}</div>

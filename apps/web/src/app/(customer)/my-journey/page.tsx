@@ -38,41 +38,41 @@ export default function MyJourneyPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">🗺️ رحلتي</h1>
-        <p className="text-sm text-gray-500">قصة جمالكِ معنا — من أول حجز إلى اليوم</p>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">🗺️ رحلتي</h1>
+        <p className="text-sm text-text-secondary">قصة جمالكِ معنا — من أول حجز إلى اليوم</p>
 
         {/* Summary */}
         <div className="grid gap-4 sm:grid-cols-2">
           <Card className="text-center" padding="lg">
             <span className="text-3xl">📅</span>
             <p className="text-3xl font-extrabold text-brand-600 mt-2">{allBookings.length}</p>
-            <p className="text-sm text-gray-500">إجمالي الحجوزات</p>
+            <p className="text-sm text-text-secondary">إجمالي الحجوزات</p>
           </Card>
           <Card className="text-center" padding="lg">
             <span className="text-3xl">💖</span>
             <p className="text-3xl font-extrabold text-pink-600 mt-2">{completed.length}</p>
-            <p className="text-sm text-gray-500">حجوزات مكتملة</p>
+            <p className="text-sm text-text-secondary">حجوزات مكتملة</p>
           </Card>
           <Card className="text-center" padding="lg">
             <span className="text-3xl">💄</span>
             <p className="text-3xl font-extrabold text-purple-600 mt-2">{uniqueServices}</p>
-            <p className="text-sm text-gray-500">خدمات مختلفة</p>
+            <p className="text-sm text-text-secondary">خدمات مختلفة</p>
           </Card>
           <Card className="text-center" padding="lg">
             <span className="text-3xl">👩‍🎨</span>
             <p className="text-3xl font-extrabold text-amber-600 mt-2">{uniqueTechnicians}</p>
-            <p className="text-sm text-gray-500">فنيات مختلفات</p>
+            <p className="text-sm text-text-secondary">فنيات مختلفات</p>
           </Card>
         </div>
 
         {/* Spending & Streak */}
         <div className="grid gap-4 sm:grid-cols-2">
           <Card padding="md" className="text-center">
-            <p className="text-sm text-gray-500">إجمالي الإنفاق</p>
+            <p className="text-sm text-text-secondary">إجمالي الإنفاق</p>
             <p className="text-2xl font-extrabold text-green-600">{formatCurrency(totalSpent)}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-sm text-gray-500">أفضل استمرارية</p>
+            <p className="text-sm text-text-secondary">أفضل استمرارية</p>
             <p className="text-2xl font-extrabold text-orange-600">🔥 {streak?.longestStreak || 0} أسابيع</p>
           </Card>
         </div>
@@ -82,11 +82,11 @@ export default function MyJourneyPage(): JSX.Element {
           <h3 className="font-semibold mb-4">🏆 الإنجازات</h3>
           <div className="space-y-3">
             {milestones.map((m, i) => (
-              <div key={i} className={`flex items-center gap-3 rounded-lg p-3 ${m.achieved ? 'bg-green-50 dark:bg-green-900/20' : 'bg-gray-50 dark:bg-gray-800/50 opacity-50'}`}>
+              <div key={i} className={`flex items-center gap-3 rounded-lg p-3 ${m.achieved ? 'bg-green-50 dark:bg-green-900/20' : 'bg-surface-muted dark:bg-gray-800/50 opacity-50'}`}>
                 <span className="text-2xl">{m.achieved ? m.emoji : '🔒'}</span>
                 <div className="flex-1">
-                  <p className={`font-semibold text-sm ${m.achieved ? 'text-gray-900 dark:text-gray-100' : 'text-gray-400'}`}>{m.label}</p>
-                  {m.date && <p className="text-xs text-gray-400">{new Date(m.date).toLocaleDateString('ar-SA')}</p>}
+                  <p className={`font-semibold text-sm ${m.achieved ? 'text-text-primary dark:text-gray-100' : 'text-text-tertiary'}`}>{m.label}</p>
+                  {m.date && <p className="text-xs text-text-tertiary">{new Date(m.date).toLocaleDateString('ar-SA')}</p>}
                 </div>
                 {m.achieved && <span className="text-green-600 text-sm">✓</span>}
               </div>

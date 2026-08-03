@@ -11,10 +11,10 @@ export default function FavoritesPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <div><h1 className="text-2xl font-bold">⭐ المفضلة</h1><p className="mt-1 text-sm text-gray-500">خدماتكِ وفنياتكِ المفضلة</p></div>
+        <div><h1 className="text-2xl font-bold">⭐ المفضلة</h1><p className="mt-1 text-sm text-text-secondary">خدماتكِ وفنياتكِ المفضلة</p></div>
 
         {isLoading ? <div className="space-y-3">{Array.from({length:3},(_,i)=><CardSkeleton key={i}/>)}</div> :
-          favorites.length === 0 ? <Card padding="lg" className="text-center py-8"><p className="text-4xl mb-2">⭐</p><p className="text-gray-500">مافي مفضلات بعد — أضيفي خدماتكِ المفضلة</p></Card> :
+          favorites.length === 0 ? <Card padding="lg" className="text-center py-8"><p className="text-4xl mb-2">⭐</p><p className="text-text-secondary">مافي مفضلات بعد — أضيفي خدماتكِ المفضلة</p></Card> :
           <div className="space-y-3">{favorites.map((f: Record<string,unknown>) => (
             <Card key={f.id as number} padding="md">
               <div className="flex items-center justify-between">
@@ -22,7 +22,7 @@ export default function FavoritesPage(): JSX.Element {
                   <span className="text-2xl">💅</span>
                   <div>
                     <p className="font-bold">{f.label as string}</p>
-                    <p className="text-xs text-gray-500">خدمة #{f.serviceId as number}{f.technicianId ? ` · فنية #${f.technicianId}` : ''}</p>
+                    <p className="text-xs text-text-secondary">خدمة #{f.serviceId as number}{f.technicianId ? ` · فنية #${f.technicianId}` : ''}</p>
                   </div>
                 </div>
                 <Button size="sm" variant="ghost" onClick={() => removeMut.mutate({ id: f.id as number })} loading={removeMut.isPending} className="text-red-500">❌</Button>

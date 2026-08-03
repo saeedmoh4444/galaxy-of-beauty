@@ -26,7 +26,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">👑 برنامج الولاء</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">👑 برنامج الولاء</h1>
 
         {isLoading ? <CardSkeleton /> : isError ? <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} /> : !account ? <EmptyState title="لا يوجد حساب ولاء" description="يتم إنشاؤه تلقائياً مع أول حجز" /> : (
           <>
@@ -52,7 +52,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
             {/* Benefits */}
             <Card padding="lg">
               <h3 className="font-semibold mb-4">✨ مميزات عضويتكِ</h3>
-              <div className="space-y-2">{(TIER_BENEFITS[currentTier] ?? []).map((b: string, i: number) => <div key={i} className="flex items-center gap-3 rounded-lg bg-gray-50 p-3 text-sm dark:bg-gray-800"><span className="text-brand-600">✓</span> {b}</div>)}</div>
+              <div className="space-y-2">{(TIER_BENEFITS[currentTier] ?? []).map((b: string, i: number) => <div key={i} className="flex items-center gap-3 rounded-lg bg-surface-muted p-3 text-sm dark:bg-gray-800"><span className="text-brand-600">✓</span> {b}</div>)}</div>
             </Card>
 
             {/* All Tiers */}
@@ -61,10 +61,10 @@ export default function LoyaltyDashboardPage(): JSX.Element {
               <div className="space-y-3">{Object.entries(LOYALTY_TIERS).map(([key, t]) => (
                 <div key={key} className={`rounded-xl border-2 p-4 ${currentTier === key ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}>
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3"><span className="text-2xl">{t.emoji}</span><div><p className="font-bold text-gray-900 dark:text-gray-100">{t.nameAr}</p><p className="text-xs text-gray-500">من {t.minPoints.toLocaleString()} نقطة</p></div></div>
+                    <div className="flex items-center gap-3"><span className="text-2xl">{t.emoji}</span><div><p className="font-bold text-text-primary dark:text-gray-100">{t.nameAr}</p><p className="text-xs text-text-secondary">من {t.minPoints.toLocaleString()} نقطة</p></div></div>
                     {currentTier === key && <span className="rounded-full bg-brand-600 px-3 py-1 text-xs font-bold text-white">حالي</span>}
                   </div>
-                  <div className="mt-2 flex flex-wrap gap-1">{(TIER_BENEFITS[key] ?? []).slice(0, 3).map((b: string, i: number) => <span key={i} className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600 dark:bg-gray-800">{b}</span>)}</div>
+                  <div className="mt-2 flex flex-wrap gap-1">{(TIER_BENEFITS[key] ?? []).slice(0, 3).map((b: string, i: number) => <span key={i} className="rounded-full bg-surface-muted px-2 py-0.5 text-xs text-gray-600 dark:bg-gray-800">{b}</span>)}</div>
                 </div>
               ))}</div>
             </Card>

@@ -27,7 +27,7 @@ export default function SaleAlertsPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
-          <div><h1 className="text-2xl font-bold">🛒 تنبيهات العروض</h1><p className="mt-1 text-sm text-gray-500">اشتركي في تنبيهات العروض ولا يفوتكِ أي خصم</p></div>
+          <div><h1 className="text-2xl font-bold">🛒 تنبيهات العروض</h1><p className="mt-1 text-sm text-text-secondary">اشتركي في تنبيهات العروض ولا يفوتكِ أي خصم</p></div>
           <Button onClick={() => setShowAdd(true)}>+ تنبيه جديد</Button>
         </div>
 
@@ -41,7 +41,7 @@ export default function SaleAlertsPage(): JSX.Element {
                   <span className="text-2xl">{d.emoji as string}</span>
                   <p className="font-bold text-sm mt-1">{d.titleAr as string}</p>
                   <p className="text-xs text-red-500 font-bold mt-1">-{d.discount as number}%</p>
-                  <p className="text-[10px] text-gray-400">⏰ ينتهي خلال {d.endsIn as string}</p>
+                  <p className="text-[10px] text-text-tertiary">⏰ ينتهي خلال {d.endsIn as string}</p>
                 </div>
               ))}
             </div>
@@ -56,11 +56,11 @@ export default function SaleAlertsPage(): JSX.Element {
            {myAlerts.map((a: Record<string,unknown>) => (
              <Card key={a.id as number} padding="md" className="flex items-center justify-between">
                <div>
-                 <div className="flex flex-wrap gap-1">{(a.categories as string[])?.map((c: string) => { const cat = categories.find((x) => x.key === c); return <span key={c} className="rounded-full bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-xs">{cat?.emoji as string} {cat?.nameAr as string}</span>; })}</div>
-                 <p className="text-xs text-gray-500 mt-1">خصم من {a.maxDiscount as number}% وأكثر</p>
+                 <div className="flex flex-wrap gap-1">{(a.categories as string[])?.map((c: string) => { const cat = categories.find((x) => x.key === c); return <span key={c} className="rounded-full bg-surface-muted dark:bg-gray-800 px-2 py-0.5 text-xs">{cat?.emoji as string} {cat?.nameAr as string}</span>; })}</div>
+                 <p className="text-xs text-text-secondary mt-1">خصم من {a.maxDiscount as number}% وأكثر</p>
                </div>
                <div className="flex items-center gap-2">
-                 <button onClick={() => toggleMut.mutate({ id: a.id as number })} className={`text-sm ${a.active ? 'text-green-500' : 'text-gray-400'}`}>{a.active ? '🟢' : '⚫'}</button>
+                 <button onClick={() => toggleMut.mutate({ id: a.id as number })} className={`text-sm ${a.active ? 'text-green-500' : 'text-text-tertiary'}`}>{a.active ? '🟢' : '⚫'}</button>
                  <button onClick={() => deleteMut.mutate({ id: a.id as number })} className="text-red-400 text-sm">🗑️</button>
                </div>
              </Card>
@@ -71,7 +71,7 @@ export default function SaleAlertsPage(): JSX.Element {
         <Modal open={showAdd} onClose={() => setShowAdd(false)} title="تنبيه جديد">
           <div className="space-y-3">
             <div><label className="text-sm font-semibold mb-2 block">الفئات</label><div className="flex flex-wrap gap-2">{categories.filter((c: Record<string,unknown>) => c.key !== 'all').map((c: Record<string,unknown>) => (
-              <button key={c.key as string} onClick={() => setSelectedCats((p) => p.includes(c.key as string) ? p.filter((x) => x !== c.key) : [...p, c.key as string])} className={`rounded-full px-3 py-1.5 text-xs font-medium ${selectedCats.includes(c.key as string) ? 'bg-brand-600 text-white' : 'bg-gray-100 dark:bg-gray-800'}`}>
+              <button key={c.key as string} onClick={() => setSelectedCats((p) => p.includes(c.key as string) ? p.filter((x) => x !== c.key) : [...p, c.key as string])} className={`rounded-full px-3 py-1.5 text-xs font-medium ${selectedCats.includes(c.key as string) ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}>
                 {c.emoji as string} {c.nameAr as string}
               </button>
             ))}</div></div>

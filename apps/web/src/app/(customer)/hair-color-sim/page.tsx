@@ -17,7 +17,7 @@ export default function HairColorSimPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
-        <div><h1 className="text-2xl font-bold">💇‍♀️ محاكي لون الشعر</h1><p className="mt-1 text-sm text-gray-500">جرّبي ألوان شعر مختلفة قبل الصبغة</p></div>
+        <div><h1 className="text-2xl font-bold">💇‍♀️ محاكي لون الشعر</h1><p className="mt-1 text-sm text-text-secondary">جرّبي ألوان شعر مختلفة قبل الصبغة</p></div>
 
         <Card padding="lg">
           <h3 className="font-bold mb-3">📷 حمّلي صورتكِ</h3>
@@ -32,7 +32,7 @@ export default function HairColorSimPage(): JSX.Element {
               {allColors.map((c: Record<string,unknown>) => (
                 <button key={c.id as string} onClick={() => { setSelected(c.id as string); saveMut.mutate({ colorId: c.id as string }); }} className={`flex flex-col items-center gap-1 rounded-xl p-3 transition-all ${selected === c.id ? 'ring-2 ring-brand-500 scale-105 shadow-lg' : 'hover:scale-105'}`}>
                   <div className="h-12 w-12 rounded-full border-2 border-white shadow-md" style={{ backgroundColor: c.hex as string }} />
-                  <span className="text-[10px] text-gray-500">{c.nameAr as string}</span>
+                  <span className="text-[10px] text-text-secondary">{c.nameAr as string}</span>
                   {selected === c.id && <span className="text-brand-500 text-xs">✓</span>}
                 </button>
               ))}

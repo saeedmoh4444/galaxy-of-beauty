@@ -15,11 +15,11 @@ export default function ServiceWishlistPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <div className="flex items-center justify-between"><div><h1 className="text-2xl font-bold">📝 قائمة الخدمات</h1><p className="mt-1 text-sm text-gray-500">تابعي أسعار الخدمات اللي تبينها</p></div><Button onClick={() => setShow(true)}>+ خدمة</Button></div>
+        <div className="flex items-center justify-between"><div><h1 className="text-2xl font-bold">📝 قائمة الخدمات</h1><p className="mt-1 text-sm text-text-secondary">تابعي أسعار الخدمات اللي تبينها</p></div><Button onClick={() => setShow(true)}>+ خدمة</Button></div>
         {list.length === 0 ? <EmptyState title="لا توجد خدمات" description="أضيفي خدمات لمتابعة أسعارها" action={{ label: 'إضافة', onPress: () => setShow(true) }} /> :
           <div className="space-y-3">{list.map((i: Record<string,unknown>) => (
             <Card key={i.id as number} padding="md" className="flex items-center justify-between">
-              <div className="flex items-center gap-3"><span className="text-2xl">{i.emoji as string}</span><div><p className="font-bold">{i.serviceName as string}</p><p className="text-xs text-gray-500">أقل سعر: {formatCurrency(i.lowestPrice as number)}</p></div></div>
+              <div className="flex items-center gap-3"><span className="text-2xl">{i.emoji as string}</span><div><p className="font-bold">{i.serviceName as string}</p><p className="text-xs text-text-secondary">أقل سعر: {formatCurrency(i.lowestPrice as number)}</p></div></div>
               <div className="text-right">
                 <p className="font-bold text-brand-600">{formatCurrency(i.currentPrice as number)}</p>
                 {(i.droppedBy as number) > 0 && <span className="rounded-full bg-green-100 dark:bg-green-900 px-2 py-0.5 text-xs font-bold text-green-700">▼ {formatCurrency(i.droppedBy as number)}</span>}

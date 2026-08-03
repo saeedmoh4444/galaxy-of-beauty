@@ -15,10 +15,10 @@ export default function NewsletterPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <div><h1 className="text-2xl font-bold">📰 النشرة البريدية</h1><p className="mt-1 text-sm text-gray-500">اشتركي في نشرتنا البريدية للحصول على آخر العروض والنصائح</p></div>
+        <div><h1 className="text-2xl font-bold">📰 النشرة البريدية</h1><p className="mt-1 text-sm text-text-secondary">اشتركي في نشرتنا البريدية للحصول على آخر العروض والنصائح</p></div>
 
         {subscribed ? (
-          <Card padding="lg" className="text-center border-2 border-green-300"><span className="text-6xl">🎉</span><h2 className="mt-4 text-xl font-bold">تم الاشتراك!</h2><p className="text-gray-500">شكراً لاشتراككِ في نشرتنا البريدية</p></Card>
+          <Card padding="lg" className="text-center border-2 border-green-300"><span className="text-6xl">🎉</span><h2 className="mt-4 text-xl font-bold">تم الاشتراك!</h2><p className="text-text-secondary">شكراً لاشتراككِ في نشرتنا البريدية</p></Card>
         ) : (
           <Card padding="lg">
             <div className="flex gap-2">
@@ -33,8 +33,8 @@ export default function NewsletterPage(): JSX.Element {
           <div className="space-y-3">{list.map((i: Record<string,unknown>) => (
             <Card key={i.id as number} padding="md" className="flex items-center gap-4">
               <span className="text-3xl">{i.emoji as string}</span>
-              <div className="flex-1"><p className="font-bold">{i.titleAr as string}</p><p className="text-xs text-gray-500">{i.subject as string}</p></div>
-              <div className="text-right"><span className="text-xs text-gray-400">{i.sentAt as string}</span><p className="text-xs font-bold text-green-600">{i.openRate as number}% فتح</p></div>
+              <div className="flex-1"><p className="font-bold">{i.titleAr as string}</p><p className="text-xs text-text-secondary">{i.subject as string}</p></div>
+              <div className="text-right"><span className="text-xs text-text-tertiary">{i.sentAt as string}</span><p className="text-xs font-bold text-green-600">{i.openRate as number}% فتح</p></div>
             </Card>
           ))}</div>
         }

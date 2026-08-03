@@ -24,7 +24,7 @@ export default function RestockReminderPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <div><h1 className="text-2xl font-bold">📦 تجديد المنتجات</h1><p className="mt-1 text-sm text-gray-500">تتبعي منتجاتكِ واحصلي على تنبيهات لإعادة الشراء</p></div>
+          <div><h1 className="text-2xl font-bold">📦 تجديد المنتجات</h1><p className="mt-1 text-sm text-text-secondary">تتبعي منتجاتكِ واحصلي على تنبيهات لإعادة الشراء</p></div>
           <Button onClick={() => setShowAdd(true)}>+ منتج</Button>
         </div>
 
@@ -44,10 +44,10 @@ export default function RestockReminderPage(): JSX.Element {
                       <div className="flex items-center justify-between"><h3 className="font-bold">{item.productName as string}</h3>{needsRestock && <span className="rounded-full bg-red-100 dark:bg-red-900 px-2 py-0.5 text-xs font-bold text-red-700 dark:text-red-300">⏰ حان وقت التجديد</span>}</div>
                       <div className="mt-1 flex items-center gap-2">
                         <div className="h-2 flex-1 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden"><div className={`h-full rounded-full ${needsRestock ? 'bg-red-500' : 'bg-green-500'}`} style={{ width: `${pct}%` }} /></div>
-                        <span className="text-xs text-gray-500">{daysLeft} يوم متبقي</span>
+                        <span className="text-xs text-text-secondary">{daysLeft} يوم متبقي</span>
                       </div>
                     </div>
-                    <button onClick={() => deleteMut.mutate({ id: item.id as number })} className="text-gray-400 hover:text-red-500">🗑️</button>
+                    <button onClick={() => deleteMut.mutate({ id: item.id as number })} className="text-text-tertiary hover:text-red-500">🗑️</button>
                   </div>
                 </Card>
               );

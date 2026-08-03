@@ -20,14 +20,14 @@ export default function CertificationQuizPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <div><h1 className="text-2xl font-bold">🎓 اختبارات الشهادات</h1><p className="mt-1 text-sm text-gray-500">اختاري معلوماتكِ في التجميل واحصلي على شهادة</p></div>
+        <div><h1 className="text-2xl font-bold">🎓 اختبارات الشهادات</h1><p className="mt-1 text-sm text-text-secondary">اختاري معلوماتكِ في التجميل واحصلي على شهادة</p></div>
 
         {result ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
             <span className="text-6xl">{(result.passed as boolean) ? '🎉' : '📚'}</span>
             <h2 className="mt-4 text-xl font-bold">{(result.passed as boolean) ? 'مبروك! اجتزتِ الاختبار 🎓' : 'حاولي مرة أخرى!'}</h2>
             <p className="text-2xl font-extrabold text-brand-600 mt-2">{result.score as number}%</p>
-            {(result.certificate as Record<string,unknown>) ? <div className="mt-4 rounded-xl bg-green-50 dark:bg-green-950 p-4"><p className="font-bold">شهادة: {(result.certificate as Record<string,unknown>).quizName as string}</p><p className="text-xs text-gray-500 mt-1">{new Date((result.certificate as Record<string,unknown>).date as string).toLocaleDateString('ar-SA')}</p></div> : null}
+            {(result.certificate as Record<string,unknown>) ? <div className="mt-4 rounded-xl bg-green-50 dark:bg-green-950 p-4"><p className="font-bold">شهادة: {(result.certificate as Record<string,unknown>).quizName as string}</p><p className="text-xs text-text-secondary mt-1">{new Date((result.certificate as Record<string,unknown>).date as string).toLocaleDateString('ar-SA')}</p></div> : null}
             <Button className="mt-4" onClick={() => { setQuizId(null); setAnswers([]); setResult(null); }}>🔄 اختبار آخر</Button>
           </Card>
         ) : quizId ? (
@@ -47,7 +47,7 @@ export default function CertificationQuizPage(): JSX.Element {
             {qs.map((q: Record<string,unknown>) => (
               <button key={q.id as string} onClick={() => setQuizId(q.id as string)}>
                 <Card padding="lg" className="text-center hover:shadow-lg transition-all">
-                  <span className="text-4xl">{q.emoji as string}</span><h3 className="mt-2 font-bold">{q.nameAr as string}</h3><p className="text-xs text-gray-500">{q.questionCount as number} أسئلة</p>
+                  <span className="text-4xl">{q.emoji as string}</span><h3 className="mt-2 font-bold">{q.nameAr as string}</h3><p className="text-xs text-text-secondary">{q.questionCount as number} أسئلة</p>
                 </Card>
               </button>
             ))}
@@ -55,7 +55,7 @@ export default function CertificationQuizPage(): JSX.Element {
         )}
 
         {myCerts.length > 0 && (
-          <Card padding="lg"><h3 className="font-bold mb-3">🎓 شهاداتي</h3><div className="space-y-2">{myCerts.map((c: Record<string,unknown>) => <div key={c.id as number} className="flex items-center justify-between rounded-lg bg-green-50 dark:bg-green-950 p-3"><div><p className="font-bold text-sm">{c.quizName as string}</p><p className="text-xs text-gray-500">{new Date(c.date as string).toLocaleDateString('ar-SA')}</p></div><span className="font-bold text-green-700">{c.score as number}%</span></div>)}</div></Card>
+          <Card padding="lg"><h3 className="font-bold mb-3">🎓 شهاداتي</h3><div className="space-y-2">{myCerts.map((c: Record<string,unknown>) => <div key={c.id as number} className="flex items-center justify-between rounded-lg bg-green-50 dark:bg-green-950 p-3"><div><p className="font-bold text-sm">{c.quizName as string}</p><p className="text-xs text-text-secondary">{new Date(c.date as string).toLocaleDateString('ar-SA')}</p></div><span className="font-bold text-green-700">{c.score as number}%</span></div>)}</div></Card>
         )}
       </div>
     </DashboardLayout>

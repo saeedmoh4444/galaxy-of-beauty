@@ -34,19 +34,19 @@ export default function MySubscriptionPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">📦 اشتراكي</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">📦 اشتراكي</h1>
 
         {/* Status Card */}
         <Card padding="lg" className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950">
           <div className="text-center">
             <span className="text-5xl">📦</span>
-            <h2 className="mt-3 text-xl font-bold text-gray-900 dark:text-gray-100">{planName}</h2>
-            <p className="mt-1 text-sm text-gray-500">{servicesPerMonth} {servicesPerMonth === 1 ? 'حجز' : 'حجوزات'} شهرياً</p>
+            <h2 className="mt-3 text-xl font-bold text-text-primary dark:text-gray-100">{planName}</h2>
+            <p className="mt-1 text-sm text-text-secondary">{servicesPerMonth} {servicesPerMonth === 1 ? 'حجز' : 'حجوزات'} شهرياً</p>
             <p className="mt-1 text-lg font-bold text-brand-600">{formatCurrency(Number((plan as any).price || 0))} / شهرياً</p>
             <div className="mt-3 flex justify-center gap-4 text-sm">
-              <div className="text-center"><p className="font-bold text-brand-600">{bookingsThisMonth}</p><p className="text-gray-500">تم الحجز</p></div>
-              <div className="text-center"><p className="font-bold text-purple-600">{remaining}</p><p className="text-gray-500">متبقي</p></div>
-              <div className="text-center"><p className="font-bold text-green-600">-{(plan as any).discountPercent || 0}%</p><p className="text-gray-500">توفير</p></div>
+              <div className="text-center"><p className="font-bold text-brand-600">{bookingsThisMonth}</p><p className="text-text-secondary">تم الحجز</p></div>
+              <div className="text-center"><p className="font-bold text-purple-600">{remaining}</p><p className="text-text-secondary">متبقي</p></div>
+              <div className="text-center"><p className="font-bold text-green-600">-{(plan as any).discountPercent || 0}%</p><p className="text-text-secondary">توفير</p></div>
             </div>
           </div>
         </Card>
@@ -55,10 +55,10 @@ export default function MySubscriptionPage(): JSX.Element {
         <Card padding="lg">
           <h3 className="font-semibold mb-4">📋 تفاصيل الاشتراك</h3>
           <div className="space-y-3 text-sm">
-            <div className="flex justify-between"><span className="text-gray-500">الحالة</span><span className={`font-bold ${sub.status === 'ACTIVE' ? 'text-green-600' : sub.status === 'PAUSED' ? 'text-amber-600' : 'text-red-600'}`}>{sub.status === 'ACTIVE' ? '✅ نشط' : sub.status === 'PAUSED' ? '⏸ متوقف' : '❌ ملغي'}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">تاريخ التجديد</span><span className="font-semibold">{nextDate}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">الخصم</span><span className="text-green-600 font-bold">-{(plan as any).discountPercent || 0}%</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">الحجوزات المتبقية</span><span className="font-bold text-purple-600">{remaining} من {servicesPerMonth}</span></div>
+            <div className="flex justify-between"><span className="text-text-secondary">الحالة</span><span className={`font-bold ${sub.status === 'ACTIVE' ? 'text-green-600' : sub.status === 'PAUSED' ? 'text-amber-600' : 'text-red-600'}`}>{sub.status === 'ACTIVE' ? '✅ نشط' : sub.status === 'PAUSED' ? '⏸ متوقف' : '❌ ملغي'}</span></div>
+            <div className="flex justify-between"><span className="text-text-secondary">تاريخ التجديد</span><span className="font-semibold">{nextDate}</span></div>
+            <div className="flex justify-between"><span className="text-text-secondary">الخصم</span><span className="text-green-600 font-bold">-{(plan as any).discountPercent || 0}%</span></div>
+            <div className="flex justify-between"><span className="text-text-secondary">الحجوزات المتبقية</span><span className="font-bold text-purple-600">{remaining} من {servicesPerMonth}</span></div>
           </div>
         </Card>
 

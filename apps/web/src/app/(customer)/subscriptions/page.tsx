@@ -40,11 +40,11 @@ export default function SubscriptionsPage(): JSX.Element {
                     <p className="text-lg font-bold">{mySub.planName as string}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-sm text-gray-500">المستخدم / الحد</p>
+                    <p className="text-sm text-text-secondary">المستخدم / الحد</p>
                     <p className="font-semibold">{mySub.requestsUsed as number ?? 0} / {mySub.monthlyLimit as number ?? 0}</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-500">{mySub.autoRenew ? 'تجديد تلقائي' : 'بدون تجديد'}</span>
+                    <span className="text-sm text-text-secondary">{mySub.autoRenew ? 'تجديد تلقائي' : 'بدون تجديد'}</span>
                     {Boolean(mySub.autoRenew) && (
                       <Button size="sm" variant="outline" onClick={() => cancelMut.mutate()} loading={cancelMut.isPending}>
                         إلغاء التجديد
@@ -81,7 +81,7 @@ export default function SubscriptionsPage(): JSX.Element {
                     <div className="mb-4 text-center">
                       <p className="text-lg font-bold">{plan.name as string}</p>
                       <p className="mt-1 text-3xl font-bold text-brand-600">{formatCurrency(Number(plan.price ?? 0))}</p>
-                      <p className="text-xs text-gray-500">/ شهرياً</p>
+                      <p className="text-xs text-text-secondary">/ شهرياً</p>
                     </div>
                     <ul className="mb-6 flex-1 space-y-2 text-sm">
                       {(plan.features as string[])?.map((f: string, i: number) => (
@@ -92,7 +92,7 @@ export default function SubscriptionsPage(): JSX.Element {
                       ))}
                     </ul>
                     <div className="mb-4 text-center">
-                      <p className="text-sm text-gray-500">حد الاستخدام: <strong>{plan.monthlyLimit as number ?? 'غير محدود'}</strong> طلب</p>
+                      <p className="text-sm text-text-secondary">حد الاستخدام: <strong>{plan.monthlyLimit as number ?? 'غير محدود'}</strong> طلب</p>
                     </div>
                     {!isCurrentPlan && (
                       <Button

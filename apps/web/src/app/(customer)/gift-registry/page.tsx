@@ -26,7 +26,7 @@ export default function GiftRegistryPage(): JSX.Element {
           <h1 className="text-2xl font-bold">🎁 سجل الهدايا</h1>
           <Button onClick={() => setShowAdd(true)}>إنشاء سجل هدايا</Button>
         </div>
-        <p className="text-sm text-gray-500">أنشئي سجل هدايا لمناسبتكِ الخاصة ودعي أحبائكِ يساهمون في خدمات التجميل اللي تحلمين فيها</p>
+        <p className="text-sm text-text-secondary">أنشئي سجل هدايا لمناسبتكِ الخاصة ودعي أحبائكِ يساهمون في خدمات التجميل اللي تحلمين فيها</p>
 
         {isLoading ? <CardSkeleton /> : isError ? <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} /> : registries.length === 0 ? <EmptyState title="لا توجد سجلات هدايا" description="أنشئي سجل هدايا لمناسبتكِ القادمة" /> : (
           <div className="grid gap-4 sm:grid-cols-2">{registries.map((r: Record<string, any>) => {
@@ -36,15 +36,15 @@ export default function GiftRegistryPage(): JSX.Element {
                 <div className="text-center">
                   <p className="text-3xl">{OCCASION_LABELS[r.occasion]?.split(' ')[1] || '🎁'}</p>
                   <h3 className="mt-2 text-lg font-bold">{r.title}</h3>
-                  <p className="text-xs text-gray-500">{OCCASION_LABELS[r.occasion]?.split(' ')[0] || r.occasion}</p>
+                  <p className="text-xs text-text-secondary">{OCCASION_LABELS[r.occasion]?.split(' ')[0] || r.occasion}</p>
                 </div>
                 <div className="mt-4">
                   <div className="flex justify-between text-sm"><span>تم التجميع</span><span className="font-bold text-brand-600">{formatCurrency(Number(r.raisedAmount))}</span></div>
-                  <div className="flex justify-between text-sm text-gray-500"><span>المستهدف</span><span>{formatCurrency(Number(r.targetAmount))}</span></div>
+                  <div className="flex justify-between text-sm text-text-secondary"><span>المستهدف</span><span>{formatCurrency(Number(r.targetAmount))}</span></div>
                   <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700"><div className="h-2 rounded-full bg-brand-500 transition-all" style={{ width: `${pct}%` }} /></div>
-                  <p className="mt-1 text-center text-xs text-gray-400">{pct.toFixed(0)}%</p>
+                  <p className="mt-1 text-center text-xs text-text-tertiary">{pct.toFixed(0)}%</p>
                 </div>
-                {r.message && <p className="mt-3 text-center text-sm italic text-gray-500">&ldquo;{r.message}&rdquo;</p>}
+                {r.message && <p className="mt-3 text-center text-sm italic text-text-secondary">&ldquo;{r.message}&rdquo;</p>}
               </Card>
             );
           })}</div>

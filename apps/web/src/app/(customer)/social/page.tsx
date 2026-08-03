@@ -19,12 +19,12 @@ export default function SocialPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
-        <div><h1 className="text-2xl font-bold">🌟 مجتمع الجمال</h1><p className="mt-1 text-sm text-gray-500">اكتشفي أحدث الصيحات والفنيات المميزات</p></div>
+        <div><h1 className="text-2xl font-bold">🌟 مجتمع الجمال</h1><p className="mt-1 text-sm text-text-secondary">اكتشفي أحدث الصيحات والفنيات المميزات</p></div>
 
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Trending Services */}
           <Card padding="lg"><h3 className="font-bold mb-3">🔥 الأكثر طلباً</h3>
-            {trLoading ? <CardSkeleton/> : !(trending??[]).length ? <p className="text-sm text-gray-400">لا توجد بيانات</p> :
+            {trLoading ? <CardSkeleton/> : !(trending??[]).length ? <p className="text-sm text-text-tertiary">لا توجد بيانات</p> :
               <div className="space-y-2">{(trending??[]).slice(0,6).map((s: Record<string,unknown>) => (
                 <div key={s.serviceId as number} className="flex items-center justify-between text-sm">
                   <span>{(s.titleJson as Record<string,string>)?.ar ?? `خدمة #${s.serviceId}`}</span>
@@ -36,11 +36,11 @@ export default function SocialPage(): JSX.Element {
 
           {/* Technician Spotlight */}
           <Card padding="lg"><h3 className="font-bold mb-3">⭐ فنيات مميزات</h3>
-            {spLoading ? <CardSkeleton/> : !(spotlight??[]).length ? <p className="text-sm text-gray-400">لا توجد بيانات</p> :
+            {spLoading ? <CardSkeleton/> : !(spotlight??[]).length ? <p className="text-sm text-text-tertiary">لا توجد بيانات</p> :
               <div className="space-y-3">{(spotlight??[]).map((t: Record<string,unknown>) => (
                 <div key={t.id as number} className="flex items-center gap-3">
                   <span className="text-3xl">👩‍🎨</span>
-                  <div><p className="font-bold text-sm">{t.name as string}</p><p className="text-xs text-gray-500">{t.city as string} · ⭐{t.ratingAvg as number}</p></div>
+                  <div><p className="font-bold text-sm">{t.name as string}</p><p className="text-xs text-text-secondary">{t.city as string} · ⭐{t.ratingAvg as number}</p></div>
                 </div>
               ))}</div>
             }
@@ -50,13 +50,13 @@ export default function SocialPage(): JSX.Element {
         {/* Beauty Tips */}
         <Card padding="lg"><h3 className="font-bold mb-3">💡 نصائح تجميلية</h3>
           <div className="flex gap-2 mb-4 flex-wrap">{TIP_CATEGORIES.map(c=>(
-            <button key={c} onClick={()=>setTipCat(c)} className={`rounded-full px-3 py-1 text-xs ${tipCat===c?'bg-brand-600 text-white':'bg-gray-100'}`}>{c==='all'?'الكل':c==='skincare'?'عناية':c==='makeup'?'مكياج':c==='hair'?'شعر':'صحة'}</button>
+            <button key={c} onClick={()=>setTipCat(c)} className={`rounded-full px-3 py-1 text-xs ${tipCat===c?'bg-brand-600 text-white':'bg-surface-muted'}`}>{c==='all'?'الكل':c==='skincare'?'عناية':c==='makeup'?'مكياج':c==='hair'?'شعر':'صحة'}</button>
           ))}</div>
-          {tipsLoading ? <CardSkeleton/> : tips.length===0 ? <p className="text-sm text-gray-400">لا توجد نصائح</p> :
+          {tipsLoading ? <CardSkeleton/> : tips.length===0 ? <p className="text-sm text-text-tertiary">لا توجد نصائح</p> :
             <div className="grid gap-3 sm:grid-cols-2">{tips.map((t: Record<string,unknown>) => (
               <div key={t.id as string} className="rounded-lg border p-3">
                 <p className="font-bold text-sm">{(t.titleAr as string) ?? t.id}</p>
-                <p className="text-xs text-gray-500 mt-1 line-clamp-2">{(t.bodyAr as string) ?? ''}</p>
+                <p className="text-xs text-text-secondary mt-1 line-clamp-2">{(t.bodyAr as string) ?? ''}</p>
               </div>
             ))}</div>
           }
@@ -74,12 +74,12 @@ export default function SocialPage(): JSX.Element {
 
         {/* Before/After Feed */}
         <Card padding="lg"><h3 className="font-bold mb-3">📷 قبل وبعد</h3>
-          {feedLoading ? <CardSkeleton/> : feedItems.length===0 ? <p className="text-sm text-gray-400">لا توجد صور</p> :
+          {feedLoading ? <CardSkeleton/> : feedItems.length===0 ? <p className="text-sm text-text-tertiary">لا توجد صور</p> :
             <div className="grid gap-3 sm:grid-cols-3">{feedItems.map((f: Record<string,unknown>) => (
               <div key={f.id as number} className="rounded-lg border p-2 text-center">
                 <span className="text-3xl">📷</span>
                 <p className="text-xs mt-1">{(f.technician as Record<string,unknown>)?.city as string ?? ''}</p>
-                <p className="text-xs text-gray-400">{((f.technician as Record<string,unknown>)?.user as Record<string,unknown>)?.name as string ?? ''}</p>
+                <p className="text-xs text-text-tertiary">{((f.technician as Record<string,unknown>)?.user as Record<string,unknown>)?.name as string ?? ''}</p>
               </div>
             ))}</div>
           }

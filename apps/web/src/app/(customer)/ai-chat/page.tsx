@@ -92,7 +92,7 @@ export default function AiChatPage(): JSX.Element {
                 }`}>
                   {msg.role === 'assistant' && <span className="mb-1 block text-xs font-medium text-purple-500">لايلى</span>}
                   <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.content}</p>
-                  <p className={`mt-1 text-[10px] ${msg.role === 'user' ? 'text-white/60' : 'text-gray-400'}`}>
+                  <p className={`mt-1 text-[10px] ${msg.role === 'user' ? 'text-white/60' : 'text-text-tertiary'}`}>
                     {new Date(msg.createdAt).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>
@@ -130,7 +130,7 @@ export default function AiChatPage(): JSX.Element {
               إرسال
             </Button>
           </div>
-          <p className="mt-1 text-[10px] text-gray-400">اضغط Enter للإرسال | Shift+Enter لسطر جديد</p>
+          <p className="mt-1 text-[10px] text-text-tertiary">اضغط Enter للإرسال | Shift+Enter لسطر جديد</p>
         </div>
       </div>
     </DashboardLayout>

@@ -74,7 +74,7 @@ export default function ProductScannerPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">🔍 فحص المنتجات</h1>
-          <p className="mt-1 text-sm text-gray-500">امسحي الباركود أو ادخلي الرمز لمعرفة مكونات المنتج ومدى أمانه</p>
+          <p className="mt-1 text-sm text-text-secondary">امسحي الباركود أو ادخلي الرمز لمعرفة مكونات المنتج ومدى أمانه</p>
         </div>
 
         {/* Input — Camera or Manual */}
@@ -83,7 +83,7 @@ export default function ProductScannerPage(): JSX.Element {
             <Button variant={!cameraOn ? 'ghost' : undefined} size="sm" onClick={() => { if (cameraOn) stopCamera(); else startCamera(); }}>
               {cameraOn ? '📷 إيقاف' : '📷 مسح بالكاميرا'}
             </Button>
-            <span className="text-xs text-gray-400 self-center">أو أدخلي الرمز يدوياً:</span>
+            <span className="text-xs text-text-tertiary self-center">أو أدخلي الرمز يدوياً:</span>
           </div>
 
           {cameraOn && (
@@ -131,7 +131,7 @@ export default function ProductScannerPage(): JSX.Element {
                 </div>
                 <div className="flex-1">
                   <h2 className="text-xl font-bold">{product.nameAr}</h2>
-                  <p className="text-sm text-gray-500">{product.brand} · {product.nameEn}</p>
+                  <p className="text-sm text-text-secondary">{product.brand} · {product.nameEn}</p>
                   {/* Safety Score */}
                   <div className="mt-3 flex items-center gap-3">
                     <div className="flex-1">
@@ -170,7 +170,7 @@ export default function ProductScannerPage(): JSX.Element {
                     const isAllergen = product.allergens.includes(ing);
                     return (
                       <span key={ing} className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        isAllergen ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+                        isAllergen ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' : 'bg-surface-muted text-gray-600 dark:bg-gray-800 dark:text-gray-400'
                       }`}>
                         {ing} {isAllergen && '⚠️'}
                       </span>
@@ -186,12 +186,12 @@ export default function ProductScannerPage(): JSX.Element {
                 <h3 className="font-bold text-lg mb-4">🔄 بدائل آمنة مقترحة</h3>
                 <div className="space-y-3">
                   {alternatives.map((alt) => (
-                    <div key={alt.id} className="flex items-center justify-between rounded-xl bg-gray-50 dark:bg-gray-800 p-3">
+                    <div key={alt.id} className="flex items-center justify-between rounded-xl bg-surface-muted dark:bg-gray-800 p-3">
                       <div className="flex items-center gap-3">
                         <span className="text-2xl">{alt.emoji}</span>
                         <div>
                           <p className="font-bold text-sm">{alt.nameAr}</p>
-                          <p className="text-xs text-gray-500">{alt.brand}</p>
+                          <p className="text-xs text-text-secondary">{alt.brand}</p>
                         </div>
                       </div>
                       <Link href="/marketplace">

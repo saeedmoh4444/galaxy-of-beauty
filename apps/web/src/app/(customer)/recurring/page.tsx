@@ -25,7 +25,7 @@ export default function RecurringPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">🔄 حجوزات متكررة</h1>
+          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">🔄 حجوزات متكررة</h1>
           <Button onClick={() => setShowAdd(true)}>إضافة حجز متكرر</Button>
         </div>
         {isLoading ? <CardSkeleton /> : isError ? <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} /> : bookings.length === 0 ? <EmptyState title="لا توجد حجوزات متكررة" description="حددي حجز متكرر أسبوعي أو شهري لتوفير الوقت" /> : (
@@ -34,10 +34,10 @@ export default function RecurringPage(): JSX.Element {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-semibold">خدمة #{b.serviceId} · {FREQ_LABELS[b.frequency] || b.frequency}</p>
-                  <p className="text-sm text-gray-500">التالي: {new Date(b.nextDate).toLocaleDateString('ar-SA')}</p>
+                  <p className="text-sm text-text-secondary">التالي: {new Date(b.nextDate).toLocaleDateString('ar-SA')}</p>
                 </div>
                 <div className="flex gap-2">
-                  <span className={`rounded px-2 py-0.5 text-xs ${b.status === 'ACTIVE' ? 'bg-green-100 text-green-700' : b.status === 'PAUSED' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-500'}`}>{b.status === 'ACTIVE' ? 'نشط' : b.status === 'PAUSED' ? 'متوقف' : 'ملغي'}</span>
+                  <span className={`rounded px-2 py-0.5 text-xs ${b.status === 'ACTIVE' ? 'bg-green-100 text-green-700' : b.status === 'PAUSED' ? 'bg-amber-100 text-amber-700' : 'bg-surface-muted text-text-secondary'}`}>{b.status === 'ACTIVE' ? 'نشط' : b.status === 'PAUSED' ? 'متوقف' : 'ملغي'}</span>
                   {b.status === 'ACTIVE' && <Button size="sm" variant="outline" onClick={() => pauseMut.mutate({ id: b.id })}>⏸</Button>}
                   {b.status !== 'CANCELLED' && <Button size="sm" variant="danger" onClick={() => cancelMut.mutate({ id: b.id })}>✕</Button>}
                 </div>

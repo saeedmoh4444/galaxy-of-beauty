@@ -16,11 +16,11 @@ export default function ClinicConnectPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <div><h1 className="text-2xl font-bold">🏥 Clinic Connect</h1><p className="mt-1 text-sm text-gray-500">إحالة طبية من فنيات التجميل للعيادات المتخصصة</p></div>
+        <div><h1 className="text-2xl font-bold">🏥 Clinic Connect</h1><p className="mt-1 text-sm text-text-secondary">إحالة طبية من فنيات التجميل للعيادات المتخصصة</p></div>
         <Card padding="lg"><h3 className="font-bold mb-3">🏥 العيادات المتخصصة</h3>
           <div className="space-y-3">{list.map((c: Record<string,unknown>) => (
-            <div key={c.id as number} className="flex items-center justify-between rounded-xl bg-gray-50 dark:bg-gray-800 p-4">
-              <div className="flex items-center gap-3"><span className="text-3xl">{c.emoji as string}</span><div><p className="font-bold">{c.name as string}</p><p className="text-xs text-gray-500">📍 {c.city as string} · {c.specialty as string} · ⭐ {c.rating as number}</p></div></div>
+            <div key={c.id as number} className="flex items-center justify-between rounded-xl bg-surface-muted dark:bg-gray-800 p-4">
+              <div className="flex items-center gap-3"><span className="text-3xl">{c.emoji as string}</span><div><p className="font-bold">{c.name as string}</p><p className="text-xs text-text-secondary">📍 {c.city as string} · {c.specialty as string} · ⭐ {c.rating as number}</p></div></div>
               <Button size="sm" onClick={() => { setClinicId(c.id as number); setShow(true); }}>إحالة</Button>
             </div>
           ))}</div>

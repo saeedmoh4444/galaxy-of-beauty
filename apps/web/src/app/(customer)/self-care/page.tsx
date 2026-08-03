@@ -26,13 +26,13 @@ export default function SelfCarePage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">🌸 العناية الذاتية</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">🌸 العناية الذاتية</h1>
 
         {today ? (
           <Card padding="lg" className="text-center">
-            <p className="text-sm text-gray-500">تقييمكِ اليوم</p>
+            <p className="text-sm text-text-secondary">تقييمكِ اليوم</p>
             <p className="mt-2 text-5xl">{MOODS[today.mood - 1]}</p>
-            <p className="mt-1 text-sm text-gray-400">{MOOD_LABELS[today.mood - 1]}</p>
+            <p className="mt-1 text-sm text-text-tertiary">{MOOD_LABELS[today.mood - 1]}</p>
           </Card>
         ) : (
           <Card padding="lg">
@@ -44,7 +44,7 @@ export default function SelfCarePage(): JSX.Element {
             </div>
             <p className="mt-2 text-center text-sm text-brand-600">{MOOD_LABELS[mood - 1]}</p>
             <div className="mt-4 space-y-3">
-              <div><label className="mb-1 block text-xs text-gray-500">الطاقة (1-5)</label><input type="range" min="1" max="5" value={energy} onChange={(e) => setEnergy(Number(e.target.value))} className="w-full" /><div className="text-center text-xs text-gray-400">{energy} / 5</div></div>
+              <div><label className="mb-1 block text-xs text-text-secondary">الطاقة (1-5)</label><input type="range" min="1" max="5" value={energy} onChange={(e) => setEnergy(Number(e.target.value))} className="w-full" /><div className="text-center text-xs text-text-tertiary">{energy} / 5</div></div>
               <div className="grid grid-cols-2 gap-3">
                 <input type="number" placeholder="ساعات النوم" value={sleep} onChange={(e) => setSleep(e.target.value)} className="rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800" />
                 <input type="number" placeholder="أكواب الماء" value={water} onChange={(e) => setWater(e.target.value)} className="rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800" />
@@ -59,7 +59,7 @@ export default function SelfCarePage(): JSX.Element {
           <Card padding="md">
             <h3 className="mb-3 font-semibold">آخر ٧ أيام</h3>
             <div className="flex justify-around">
-              {history.map((h: Record<string, any>, i: number) => <div key={i} className="text-center"><div className="text-2xl">{MOODS[(h.mood || 1) - 1]}</div><div className="text-xs text-gray-400">{new Date(h.createdAt).toLocaleDateString('ar-SA', { weekday: 'short' })}</div></div>)}
+              {history.map((h: Record<string, any>, i: number) => <div key={i} className="text-center"><div className="text-2xl">{MOODS[(h.mood || 1) - 1]}</div><div className="text-xs text-text-tertiary">{new Date(h.createdAt).toLocaleDateString('ar-SA', { weekday: 'short' })}</div></div>)}
             </div>
           </Card>
         )}

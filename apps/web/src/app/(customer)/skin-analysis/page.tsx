@@ -31,17 +31,17 @@ export default function SkinAnalysisPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">🔬 تحليل البشرة بالذكاء الاصطناعي</h1>
-          <p className="mt-1 text-sm text-gray-500">حمّلي صورة لبشرتكِ واحصلي على تحليل شامل وتوصيات مخصصة</p>
+          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">🔬 تحليل البشرة بالذكاء الاصطناعي</h1>
+          <p className="mt-1 text-sm text-text-secondary">حمّلي صورة لبشرتكِ واحصلي على تحليل شامل وتوصيات مخصصة</p>
         </div>
 
         {/* Stats Dashboard */}
         {histItems.length > 0 && (
           <div className="grid gap-4 sm:grid-cols-4">
-            <Card padding="md" className="text-center"><p className="text-3xl">🔬</p><p className="mt-1 text-2xl font-bold">{totalAnalyses}</p><p className="text-xs text-gray-500">تحليل</p></Card>
-            <Card padding="md" className="text-center"><p className="text-3xl">🧬</p><p className="mt-1 text-lg font-bold">{latestSkinType}</p><p className="text-xs text-gray-500">نوع البشرة الحالي</p></Card>
-            <Card padding="md" className="text-center"><p className="text-3xl">⚠️</p><p className="mt-1 text-2xl font-bold">{topConcerns.length}</p><p className="text-xs text-gray-500">مشاكل محددة</p></Card>
-            <Card padding="md" className="text-center"><p className="text-3xl">📈</p><p className="mt-1 text-2xl font-bold">{skinTypes.length > 1 ? 'متغير' : 'ثابت'}</p><p className="text-xs text-gray-500">تطور البشرة</p></Card>
+            <Card padding="md" className="text-center"><p className="text-3xl">🔬</p><p className="mt-1 text-2xl font-bold">{totalAnalyses}</p><p className="text-xs text-text-secondary">تحليل</p></Card>
+            <Card padding="md" className="text-center"><p className="text-3xl">🧬</p><p className="mt-1 text-lg font-bold">{latestSkinType}</p><p className="text-xs text-text-secondary">نوع البشرة الحالي</p></Card>
+            <Card padding="md" className="text-center"><p className="text-3xl">⚠️</p><p className="mt-1 text-2xl font-bold">{topConcerns.length}</p><p className="text-xs text-text-secondary">مشاكل محددة</p></Card>
+            <Card padding="md" className="text-center"><p className="text-3xl">📈</p><p className="mt-1 text-2xl font-bold">{skinTypes.length > 1 ? 'متغير' : 'ثابت'}</p><p className="text-xs text-text-secondary">تطور البشرة</p></Card>
           </div>
         )}
 
@@ -49,8 +49,8 @@ export default function SkinAnalysisPage(): JSX.Element {
         <Card padding="md">
           <h3 className="mb-3 font-semibold">📸 حملي صورة جديدة لبشرتكِ</h3>
           <div className="space-y-3">
-            <input type="file" accept="image/*" className="block w-full text-sm text-gray-500 file:mr-4 file:rounded-lg file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-brand-700" />
-            <p className="text-xs text-gray-400">أو أدخلي رابط الصورة:</p>
+            <input type="file" accept="image/*" className="block w-full text-sm text-text-secondary file:mr-4 file:rounded-lg file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-brand-700" />
+            <p className="text-xs text-text-tertiary">أو أدخلي رابط الصورة:</p>
             <div className="flex gap-2">
               <input type="url" placeholder="https://..." value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800" />
               <Button onClick={() => { if (!imageUrl) return; setAnalyzing(true); setResult(null); analyzeMutation.mutate({ imageUrl }); }} loading={analyzing} disabled={!imageUrl}>تحليل 🔍</Button>
@@ -64,19 +64,19 @@ export default function SkinAnalysisPage(): JSX.Element {
             <h3 className="mb-4 font-bold text-brand-700 dark:text-brand-300 text-lg">✨ نتائج التحليل</h3>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="rounded-xl bg-white dark:bg-gray-800 p-4">
-                <p className="text-xs text-gray-500">نوع البشرة</p>
+                <p className="text-xs text-text-secondary">نوع البشرة</p>
                 <p className="text-xl font-bold text-brand-600">{(result['skinType'] as string) || 'غير محدد'}</p>
               </div>
               <div className="rounded-xl bg-white dark:bg-gray-800 p-4">
-                <p className="text-xs text-gray-500">مستوى الترطيب</p>
+                <p className="text-xs text-text-secondary">مستوى الترطيب</p>
                 <p className="text-xl font-bold text-blue-600">{((result['hydrationLevel'] as string) || '—')}</p>
               </div>
               <div className="rounded-xl bg-white dark:bg-gray-800 p-4">
-                <p className="text-xs text-gray-500">مستوى الحساسية</p>
+                <p className="text-xs text-text-secondary">مستوى الحساسية</p>
                 <p className="text-xl font-bold text-purple-600">{((result['sensitivityLevel'] as string) || '—')}</p>
               </div>
               <div className="rounded-xl bg-white dark:bg-gray-800 p-4">
-                <p className="text-xs text-gray-500">العمر التقريبي للبشرة</p>
+                <p className="text-xs text-text-secondary">العمر التقريبي للبشرة</p>
                 <p className="text-xl font-bold text-amber-600">{((result['ageEstimate'] as string) || '—')}</p>
               </div>
             </div>
@@ -98,10 +98,10 @@ export default function SkinAnalysisPage(): JSX.Element {
                   if (!recs?.length) return null;
                   return (
                     <div key={cat} className="rounded-xl bg-white dark:bg-gray-800 p-3">
-                      <p className="text-xs font-bold text-gray-500 mb-1">
+                      <p className="text-xs font-bold text-text-secondary mb-1">
                         {cat === 'services' ? '💆‍♀️ خدمات مقترحة' : cat === 'products' ? '🧴 منتجات مقترحة' : '📋 روتين مقترح'}
                       </p>
-                      <ul className="list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-0.5">
+                      <ul className="list-disc list-inside text-sm text-text-primary dark:text-gray-300 space-y-0.5">
                         {recs.map((r, i) => <li key={i}>{r}</li>)}
                       </ul>
                     </div>
@@ -130,10 +130,10 @@ export default function SkinAnalysisPage(): JSX.Element {
                    </div>
                    <div className="flex flex-wrap gap-1 mt-1">
                      {(res?.concerns as string[])?.slice(0, 3).map((c: string) => (
-                       <span key={c} className="text-[10px] text-gray-500 bg-gray-100 dark:bg-gray-800 rounded px-1.5 py-0.5">{c}</span>
+                       <span key={c} className="text-[10px] text-text-secondary bg-surface-muted dark:bg-gray-800 rounded px-1.5 py-0.5">{c}</span>
                      ))}
                    </div>
-                   <p className="text-xs text-gray-400 mt-1">{new Date(a.createdAt as string).toLocaleDateString('ar-SA', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                   <p className="text-xs text-text-tertiary mt-1">{new Date(a.createdAt as string).toLocaleDateString('ar-SA', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
                  </div>
                </Card>
              );

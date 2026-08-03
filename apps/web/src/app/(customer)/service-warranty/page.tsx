@@ -46,7 +46,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">🛡️ ضمان الخدمة</h1>
-          <p className="mt-1 text-sm text-gray-500">رضاكِ مضمون — إذا لم تكوني راضية، نضمن لكِ حقكِ</p>
+          <p className="mt-1 text-sm text-text-secondary">رضاكِ مضمون — إذا لم تكوني راضية، نضمن لكِ حقكِ</p>
         </div>
 
         {/* Coverage */}
@@ -55,10 +55,10 @@ export default function ServiceWarrantyPage(): JSX.Element {
           {pLoad ? <CardSkeleton /> : (
             <div className="grid gap-4 sm:grid-cols-3">
               {coverage.map((c: Record<string, string>, i: number) => (
-                <div key={i} className="text-center rounded-xl bg-gray-50 dark:bg-gray-800 p-4">
+                <div key={i} className="text-center rounded-xl bg-surface-muted dark:bg-gray-800 p-4">
                   <span className="text-3xl">{c.emoji}</span>
                   <h4 className="mt-2 font-bold text-sm">{c.titleAr}</h4>
-                  <p className="mt-1 text-xs text-gray-500">{c.descAr}</p>
+                  <p className="mt-1 text-xs text-text-secondary">{c.descAr}</p>
                 </div>
               ))}
             </div>
@@ -95,7 +95,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
                <div className="flex items-center justify-between">
                  <div>
                    <p className="font-bold text-sm">حجز #{c.bookingId as number}</p>
-                   <p className="text-xs text-gray-500 mt-0.5">{c.reason as string}</p>
+                   <p className="text-xs text-text-secondary mt-0.5">{c.reason as string}</p>
                  </div>
                  <div className="text-right">
                    <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
@@ -121,7 +121,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
               <div className="space-y-2">{COMPENSATION_TYPES.map((t) => (
                 <button key={t.key} type="button" onClick={() => setCompType(t.key)} className={`w-full text-right rounded-xl border p-3 text-sm transition-all ${compType === t.key ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}>
                   <span className="font-bold">{t.emoji} {t.label}</span>
-                  <p className="text-xs text-gray-500 mt-0.5">{t.desc}</p>
+                  <p className="text-xs text-text-secondary mt-0.5">{t.desc}</p>
                 </button>
               ))}</div>
             </div>

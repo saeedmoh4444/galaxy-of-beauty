@@ -24,7 +24,7 @@ export default function SavingsGoalsPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <div><h1 className="text-2xl font-bold">🎯 أهداف الادخار</h1><p className="text-sm text-gray-500 mt-1">ادخري لخدمات أحلامكِ وحققي أهدافكِ</p></div>
+          <div><h1 className="text-2xl font-bold">🎯 أهداف الادخار</h1><p className="text-sm text-text-secondary mt-1">ادخري لخدمات أحلامكِ وحققي أهدافكِ</p></div>
           <Button onClick={() => setShowAdd(true)}>هدف جديد</Button>
         </div>
 
@@ -35,8 +35,8 @@ export default function SavingsGoalsPage(): JSX.Element {
               <Card key={g.id} padding="lg" className={g.status === 'COMPLETED' ? 'border-green-500' : ''}>
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">{g.title} {g.status === 'COMPLETED' && '🎉'}</h3>
-                    <p className="text-sm text-gray-500">{formatCurrency(Number(g.savedAmount))} / {formatCurrency(Number(g.targetAmount))}</p>
+                    <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">{g.title} {g.status === 'COMPLETED' && '🎉'}</h3>
+                    <p className="text-sm text-text-secondary">{formatCurrency(Number(g.savedAmount))} / {formatCurrency(Number(g.targetAmount))}</p>
                   </div>
                   <span className={`text-sm font-bold ${g.status === 'COMPLETED' ? 'text-green-600' : 'text-brand-600'}`}>{pct.toFixed(0)}%</span>
                 </div>

@@ -28,7 +28,7 @@ export default function SkinDiaryPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
-          <div><h1 className="text-2xl font-bold">🧬 يوميات البشرة</h1><p className="mt-1 text-sm text-gray-500">تابعي تطور بشرتكِ مع الوقت — صور وملاحظات أسبوعية</p></div>
+          <div><h1 className="text-2xl font-bold">🧬 يوميات البشرة</h1><p className="mt-1 text-sm text-text-secondary">تابعي تطور بشرتكِ مع الوقت — صور وملاحظات أسبوعية</p></div>
           <Button onClick={() => setShowAdd(true)}>+ إضافة</Button>
         </div>
 
@@ -42,7 +42,7 @@ export default function SkinDiaryPage(): JSX.Element {
                 return (
                   <div key={d.date as string} className="flex-1 flex flex-col items-center gap-1">
                     <div className="w-full rounded-t bg-gradient-to-t from-blue-400 to-cyan-400" style={{ height: `${h}%` }} />
-                    <span className="text-[9px] text-gray-400">{new Date(d.date as string).toLocaleDateString('ar-SA', { month: 'short', day: 'numeric' })}</span>
+                    <span className="text-[9px] text-text-tertiary">{new Date(d.date as string).toLocaleDateString('ar-SA', { month: 'short', day: 'numeric' })}</span>
                   </div>
                 );
               })}
@@ -56,18 +56,18 @@ export default function SkinDiaryPage(): JSX.Element {
         : <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((e: Record<string,unknown>) => (
               <Card key={e.id as number} padding="md" className="group">
-                <div className="h-36 rounded-xl bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                <div className="h-36 rounded-xl bg-surface-muted dark:bg-gray-800 overflow-hidden">
                   <img src={e.imageUrl as string} alt="" className="h-full w-full object-cover" />
                 </div>
                 <div className="mt-2 flex items-center justify-between">
                   <span className="rounded-full bg-brand-100 dark:bg-brand-900 px-2 py-0.5 text-xs font-medium">{e.skinCondition as string}</span>
-                  <span className="text-xs text-gray-400">{new Date(e.date as string).toLocaleDateString('ar-SA')}</span>
+                  <span className="text-xs text-text-tertiary">{new Date(e.date as string).toLocaleDateString('ar-SA')}</span>
                 </div>
                 <div className="mt-1 flex items-center gap-1">
-                  <span className="text-xs text-gray-500">💧 {e.hydration as number}/10</span>
+                  <span className="text-xs text-text-secondary">💧 {e.hydration as number}/10</span>
                   {(e.concerns as string[])?.map((c: string) => <span key={c} className="text-[10px] text-red-500">•{c}</span>)}
                 </div>
-                {(e.notes as string) ? <p className="text-xs text-gray-400 mt-1 line-clamp-1">{e.notes as string}</p> : null}
+                {(e.notes as string) ? <p className="text-xs text-text-tertiary mt-1 line-clamp-1">{e.notes as string}</p> : null}
                 <button onClick={() => deleteMut.mutate({ id: e.id as number })} className="mt-2 text-xs text-red-400 hover:text-red-600">🗑️ حذف</button>
               </Card>
             ))}
