@@ -44,13 +44,13 @@ export default function AdvancedBookingPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <div><h1 className="text-2xl font-bold">📅 حجز متقدم</h1><p className="mt-1 text-sm text-gray-500">حجوزات متكررة أو باقات متعددة الخدمات</p></div>
+        <div><h1 className="text-2xl font-bold">📅 حجز متقدم</h1><p className="mt-1 text-sm text-text-secondary">حجوزات متكررة أو باقات متعددة الخدمات</p></div>
 
         {done ? <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50"><p className="text-3xl">✅</p><p className="font-bold text-green-700 mt-2">تم إنشاء الحجز بنجاح</p></Card> : (
           <>
             <div className="flex gap-2">
-              <button onClick={() => setMode('recurring')} className={`flex-1 rounded-lg px-4 py-3 text-sm font-medium ${mode==='recurring'?'bg-brand-600 text-white':'bg-gray-100'}`}>🔄 حجز متكرر</button>
-              <button onClick={() => setMode('bundle')} className={`flex-1 rounded-lg px-4 py-3 text-sm font-medium ${mode==='bundle'?'bg-brand-600 text-white':'bg-gray-100'}`}>📦 باقة خدمات</button>
+              <button onClick={() => setMode('recurring')} className={`flex-1 rounded-lg px-4 py-3 text-sm font-medium ${mode==='recurring'?'bg-brand-600 text-white':'bg-surface-muted'}`}>🔄 حجز متكرر</button>
+              <button onClick={() => setMode('bundle')} className={`flex-1 rounded-lg px-4 py-3 text-sm font-medium ${mode==='bundle'?'bg-brand-600 text-white':'bg-surface-muted'}`}>📦 باقة خدمات</button>
             </div>
 
             {mode === 'recurring' ? (
@@ -59,18 +59,18 @@ export default function AdvancedBookingPage(): JSX.Element {
                 <div className="space-y-3">
                   <select value={svcId} onChange={e => setSvcId(Number(e.target.value))} className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800">{SERVICES.map(s => <option key={s.id} value={s.id}>{s.emoji} {s.name} — {formatCurrency(s.price)}</option>)}</select>
                   <div className="flex gap-2">{RECURRENCE_OPTS.map(r => (
-                    <button key={r.key} onClick={() => setRecurrence(r.key)} className={`flex-1 rounded-lg px-3 py-2 text-sm ${recurrence===r.key?'bg-brand-600 text-white':'bg-gray-100'}`}>{r.emoji} {r.name}</button>
+                    <button key={r.key} onClick={() => setRecurrence(r.key)} className={`flex-1 rounded-lg px-3 py-2 text-sm ${recurrence===r.key?'bg-brand-600 text-white':'bg-surface-muted'}`}>{r.emoji} {r.name}</button>
                   ))}</div>
                   <input type="number" value={occurrences} onChange={e => setOccurrences(Number(e.target.value))} min={2} max={12} placeholder="عدد المرات" className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800" />
                   <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800" />
-                  <p className="text-sm text-gray-500">الإجمالي: {occurrences} × {formatCurrency(svc.price)} = <span className="font-bold text-brand-600">{formatCurrency(totalPrice)}</span></p>
+                  <p className="text-sm text-text-secondary">الإجمالي: {occurrences} × {formatCurrency(svc.price)} = <span className="font-bold text-brand-600">{formatCurrency(totalPrice)}</span></p>
                 </div>
                 <Button onClick={handleRecurring} loading={recurringMut.isPending} className="w-full mt-3">🔄 إنشاء حجز متكرر</Button>
               </Card>
             ) : (
               <Card padding="lg">
                 <h3 className="font-bold mb-3">📦 باقة خدمات (خصم ١٥٪)</h3>
-                <p className="text-sm text-gray-500 mb-3">اختاري ٣ خدمات واحصلي على خصم ١٥٪</p>
+                <p className="text-sm text-text-secondary mb-3">اختاري ٣ خدمات واحصلي على خصم ١٥٪</p>
                 <div className="space-y-2 mb-4">{SERVICES.slice(0,3).map(s => (
                   <div key={s.id} className="flex justify-between rounded-lg border p-3"><span>{s.emoji} {s.name}</span><span>{formatCurrency(s.price)}</span></div>
                 ))}</div>

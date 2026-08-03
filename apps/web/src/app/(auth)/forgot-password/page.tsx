@@ -20,10 +20,10 @@ export default function ForgotPasswordPage(): JSX.Element {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md" padding="lg">
-        <h1 className="mb-2 text-center text-2xl font-bold text-gray-900 dark:text-gray-100">
+        <h1 className="mb-2 text-center text-2xl font-bold text-text-primary dark:text-gray-100">
           نسيت كلمة المرور
         </h1>
-        <p className="mb-6 text-center text-sm text-gray-500">
+        <p className="mb-6 text-center text-sm text-text-secondary">
           أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور
         </p>
 
@@ -49,7 +49,7 @@ export default function ForgotPasswordPage(): JSX.Element {
             <p className="text-green-700 dark:text-green-300 font-medium">
               تم إرسال رابط إعادة تعيين كلمة المرور
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-text-secondary">
               إذا كان البريد الإلكتروني مسجلاً لدينا، ستتلقى رسالة تحتوي على رابط إعادة تعيين كلمة المرور.
             </p>
           </div>
@@ -74,7 +74,7 @@ export default function ForgotPasswordPage(): JSX.Element {
           </form>
         )}
 
-        <div className="mt-6 text-center text-sm text-gray-500">
+        <div className="mt-6 text-center text-sm text-text-secondary">
           <Link href="/login" className="text-brand-600 hover:underline">
             العودة إلى تسجيل الدخول
           </Link>

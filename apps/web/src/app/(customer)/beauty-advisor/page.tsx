@@ -41,11 +41,11 @@ export default function BeautyAdvisorPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl flex flex-col" style={{height:'calc(100vh - 120px)'}}>
-        <div><h1 className="text-2xl font-bold">🤖 ليلى — مستشارة جمالكِ</h1><p className="mt-1 text-sm text-gray-500">اسأليني عن أي شيء يخص العناية والتجميل</p></div>
+        <div><h1 className="text-2xl font-bold">🤖 ليلى — مستشارة جمالكِ</h1><p className="mt-1 text-sm text-text-secondary">اسأليني عن أي شيء يخص العناية والتجميل</p></div>
 
         <div className="flex gap-2 flex-wrap my-3">
           {TOPICS.map(t => (
-            <button key={t.key} onClick={() => handleSend(t.q)} className="rounded-full bg-gray-100 hover:bg-brand-100 px-4 py-1.5 text-xs transition-all">{t.emoji} {t.key}</button>
+            <button key={t.key} onClick={() => handleSend(t.q)} className="rounded-full bg-surface-muted hover:bg-brand-100 px-4 py-1.5 text-xs transition-all">{t.emoji} {t.key}</button>
           ))}
         </div>
 
@@ -53,10 +53,10 @@ export default function BeautyAdvisorPage(): JSX.Element {
           <div className="space-y-4">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role==='user'?'justify-end':'justify-start'}`}>
-                <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${m.role==='user'?'bg-brand-600 text-white rounded-br-md':'bg-gray-100 rounded-bl-md'}`}>{m.content}</div>
+                <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${m.role==='user'?'bg-brand-600 text-white rounded-br-md':'bg-surface-muted rounded-bl-md'}`}>{m.content}</div>
               </div>
             ))}
-            {isFetching && <div className="flex justify-start"><div className="bg-gray-100 rounded-2xl rounded-bl-md px-4 py-3 text-sm">💭 جاري الكتابة...</div></div>}
+            {isFetching && <div className="flex justify-start"><div className="bg-surface-muted rounded-2xl rounded-bl-md px-4 py-3 text-sm">💭 جاري الكتابة...</div></div>}
             <div ref={chatEndRef} />
           </div>
         </div>

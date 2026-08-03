@@ -15,7 +15,7 @@ export default function AIAssistantPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <div><h1 className="text-2xl font-bold">🧠 مساعدة الذكاء الاصطناعي</h1><p className="mt-1 text-sm text-gray-500">اسأليني أي سؤال عن الجمال والعناية</p></div>
+        <div><h1 className="text-2xl font-bold">🧠 مساعدة الذكاء الاصطناعي</h1><p className="mt-1 text-sm text-text-secondary">اسأليني أي سؤال عن الجمال والعناية</p></div>
         <Card padding="lg">
           <div className="flex gap-2 mb-4"><input value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && setSearchQ(q.trim())} placeholder="اسألي عن روتين، بشرة، مكياج..." className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800" /><Button onClick={() => setSearchQ(q.trim())}>اسألي</Button></div>
           <div className="flex flex-wrap gap-2">{topicList.map((t: Record<string,unknown>) => <button key={t.key as string} onClick={() => { setQ(t.label as string); setSearchQ(t.label as string); }} className="rounded-full bg-brand-50 dark:bg-brand-950 px-3 py-1.5 text-xs font-medium">{t.emoji as string} {t.label as string}</button>)}</div>

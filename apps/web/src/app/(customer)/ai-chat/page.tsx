@@ -103,7 +103,7 @@ export default function AiChatPage(): JSX.Element {
             <div className="flex justify-start">
               <div className="max-w-[80%] rounded-2xl rounded-bl-md border border-purple-200 bg-purple-50 px-4 py-3 dark:border-purple-800 dark:bg-purple-900/30">
                 <span className="mb-1 block text-xs font-medium text-purple-500">لايلى</span>
-                <span className="text-sm text-gray-500">...</span>
+                <span className="text-sm text-text-secondary">...</span>
               </div>
             </div>
           )}

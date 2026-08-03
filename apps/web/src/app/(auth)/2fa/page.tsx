@@ -39,10 +39,10 @@ export default function TwoFactorPage(): JSX.Element {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md" padding="lg">
-        <h1 className="mb-2 text-center text-2xl font-bold text-gray-900 dark:text-gray-100">
+        <h1 className="mb-2 text-center text-2xl font-bold text-text-primary dark:text-gray-100">
           المصادقة الثنائية
         </h1>
-        <p className="mb-6 text-center text-sm text-gray-500">
+        <p className="mb-6 text-center text-sm text-text-secondary">
           أضف طبقة أمان إضافية لحسابك
         </p>
 
@@ -66,7 +66,7 @@ export default function TwoFactorPage(): JSX.Element {
                 <p className="text-lg font-semibold text-green-700 dark:text-green-300">
                   المصادقة الثنائية مفعلة
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-text-secondary">
                   حسابك محمي بالمصادقة الثنائية. سيُطلب منك رمز التحقق عند تسجيل الدخول.
                 </p>
 
@@ -96,7 +96,7 @@ export default function TwoFactorPage(): JSX.Element {
                     🔐
                   </div>
                   <p className="text-lg font-semibold">إعداد المصادقة الثنائية</p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-text-secondary">
                     المصادقة الثنائية تضيف طبقة حماية إضافية لحسابك. عند تفعيلها، ستحتاج إلى إدخال رمز
                     تحقق من تطبيق المصادقة بالإضافة إلى كلمة المرور.
                   </p>
@@ -116,7 +116,7 @@ export default function TwoFactorPage(): JSX.Element {
               ) : (
                 /* Step 2: Show QR code placeholder + secret + verify input */
                 <div className="space-y-4">
-                  <div className="rounded-lg bg-gray-50 p-4 text-center dark:bg-gray-800">
+                  <div className="rounded-lg bg-surface-muted p-4 text-center dark:bg-gray-800">
                     <p className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                       امسح رمز QR باستخدام تطبيق المصادقة
                     </p>
@@ -126,8 +126,8 @@ export default function TwoFactorPage(): JSX.Element {
                     </div>
                   </div>
 
-                  <div className="rounded-lg bg-gray-50 p-3 dark:bg-gray-800">
-                    <p className="mb-1 text-xs font-medium text-gray-500">الرمز السري (Secret):</p>
+                  <div className="rounded-lg bg-surface-muted p-3 dark:bg-gray-800">
+                    <p className="mb-1 text-xs font-medium text-text-secondary">الرمز السري (Secret):</p>
                     <p
                       className="select-all font-mono text-sm text-gray-800 dark:text-gray-200"
                       dir="ltr"

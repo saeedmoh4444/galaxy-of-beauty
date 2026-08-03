@@ -29,7 +29,7 @@ export default function AIRoutinePage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <div><h1 className="text-2xl font-bold">🧠 روتين العناية الذكي</h1><p className="mt-1 text-sm text-gray-500">روتين يومي مخصص لبشرتكِ بالذكاء الاصطناعي</p></div>
+        <div><h1 className="text-2xl font-bold">🧠 روتين العناية الذكي</h1><p className="mt-1 text-sm text-text-secondary">روتين يومي مخصص لبشرتكِ بالذكاء الاصطناعي</p></div>
 
         {!generated ? (
           <Card padding="lg">
@@ -39,7 +39,7 @@ export default function AIRoutinePage(): JSX.Element {
                 <button key={t.key} onClick={() => setSkinType(t.key)} className={`rounded-xl border-2 p-4 text-right transition-all ${skinType === t.key ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}>
                   <span className="text-3xl">{t.emoji}</span>
                   <p className="font-bold mt-1">{t.label}</p>
-                  <p className="text-xs text-gray-500">{t.desc}</p>
+                  <p className="text-xs text-text-secondary">{t.desc}</p>
                 </button>
               ))}
             </div>
@@ -52,12 +52,12 @@ export default function AIRoutinePage(): JSX.Element {
             <div className="grid gap-6 lg:grid-cols-2">
               <Card padding="lg"><h3 className="font-bold text-lg mb-3">☀️ الصباح ({routine?.morning ? (routine.morning as Record<string,unknown>).totalTime as string : ''})</h3>
                 <div className="space-y-3">{morning.map((s: Record<string,unknown>, i: number) => (
-                  <div key={i} className="flex items-center gap-3"><span className="text-2xl">{s.emoji as string}</span><div><p className="font-semibold text-sm">{s.stepAr as string}</p><p className="text-xs text-gray-500">{s.duration as string}</p></div></div>
+                  <div key={i} className="flex items-center gap-3"><span className="text-2xl">{s.emoji as string}</span><div><p className="font-semibold text-sm">{s.stepAr as string}</p><p className="text-xs text-text-secondary">{s.duration as string}</p></div></div>
                 ))}</div>
               </Card>
               <Card padding="lg"><h3 className="font-bold text-lg mb-3">🌙 المساء ({routine?.evening ? (routine.evening as Record<string,unknown>).totalTime as string : ''})</h3>
                 <div className="space-y-3">{evening.map((s: Record<string,unknown>, i: number) => (
-                  <div key={i} className="flex items-center gap-3"><span className="text-2xl">{s.emoji as string}</span><div><p className="font-semibold text-sm">{s.stepAr as string}</p><p className="text-xs text-gray-500">{s.duration as string}</p></div></div>
+                  <div key={i} className="flex items-center gap-3"><span className="text-2xl">{s.emoji as string}</span><div><p className="font-semibold text-sm">{s.stepAr as string}</p><p className="text-xs text-text-secondary">{s.duration as string}</p></div></div>
                 ))}</div>
               </Card>
             </div>

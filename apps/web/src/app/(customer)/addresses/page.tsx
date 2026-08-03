@@ -39,7 +39,7 @@ export default function AddressesPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">العناوين</h1>
+          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">العناوين</h1>
           <Button onClick={() => setShowForm(true)}>إضافة عنوان</Button>
         </div>
 
@@ -55,7 +55,7 @@ export default function AddressesPage(): JSX.Element {
                     <p className="font-semibold">{addr.label}</p>
                     {addr.isDefault && <span className="rounded-full bg-brand-100 px-2 py-0.5 text-xs text-brand-700">افتراضي</span>}
                   </div>
-                  <p className="text-sm text-gray-500">{addr.street}، {addr.area}، {addr.city}</p>
+                  <p className="text-sm text-text-secondary">{addr.street}، {addr.area}، {addr.city}</p>
                 </div>
                 <div className="flex gap-2">
                   {!addr.isDefault && <Button size="sm" variant="outline" onClick={() => setDefaultMut.mutate({ id: addr.id })}>افتراضي</Button>}

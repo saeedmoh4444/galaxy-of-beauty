@@ -62,7 +62,7 @@ export default function RegisterPage(): JSX.Element {
           </label>
           <Button type="submit" className="w-full" loading={mutation.isPending}>إنشاء حساب</Button>
         </form>
-        <p className="mt-4 text-center text-sm text-gray-500">
+        <p className="mt-4 text-center text-sm text-text-secondary">
           لديك حساب؟ <Link href="/login" className="text-brand-600 hover:underline">تسجيل الدخول</Link>
         </p>
       </Card>
