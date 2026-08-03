@@ -29,9 +29,9 @@ export default function BeautyGoalsPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
-        <div><h1 className="text-2xl font-bold">🎯 أهداف الجمال</h1><p className="mt-1 text-sm text-gray-500">حددي أهدافكِ وتابعي تقدمكِ</p></div>
+        <div><h1 className="text-2xl font-bold">🎯 أهداف الجمال</h1><p className="mt-1 text-sm text-text-secondary">حددي أهدافكِ وتابعي تقدمكِ</p></div>
 
-        <Card padding="lg" className="text-center"><div className="h-4 bg-gray-100 rounded-full"><div className="h-4 bg-green-500 rounded-full transition-all" style={{width:`${pct}%`}}/></div><p className="text-sm text-gray-500 mt-2">{checked}/{allGoals.length} هدف — {pct}%</p></Card>
+        <Card padding="lg" className="text-center"><div className="h-4 bg-surface-muted rounded-full"><div className="h-4 bg-green-500 rounded-full transition-all" style={{width:`${pct}%`}}/></div><p className="text-sm text-text-secondary mt-2">{checked}/{allGoals.length} هدف — {pct}%</p></Card>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {GOAL_TEMPLATES.map(cat => {
@@ -39,9 +39,9 @@ export default function BeautyGoalsPage(): JSX.Element {
             const catChecked = catGoals.filter(Boolean).length;
             return (
               <Card key={cat.key} padding="lg">
-                <div className="flex items-center gap-2 mb-3"><span className="text-2xl">{cat.emoji}</span><h3 className="font-bold">{cat.name}</h3><span className="text-xs text-gray-400 mr-auto">{catChecked}/{cat.goals.length}</span></div>
+                <div className="flex items-center gap-2 mb-3"><span className="text-2xl">{cat.emoji}</span><h3 className="font-bold">{cat.name}</h3><span className="text-xs text-text-tertiary mr-auto">{catChecked}/{cat.goals.length}</span></div>
                 <div className="space-y-2">{cat.goals.map((g, i) => (
-                  <label key={i} className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-all ${catGoals[i]?'bg-green-50 line-through text-gray-400':''}`}>
+                  <label key={i} className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-all ${catGoals[i]?'bg-green-50 line-through text-text-tertiary':''}`}>
                     <input type="checkbox" checked={catGoals[i] ?? false} onChange={() => toggle(cat.key, i)} className="w-4 h-4 accent-brand-600" />
                     <span className="text-sm">{g}</span>
                   </label>

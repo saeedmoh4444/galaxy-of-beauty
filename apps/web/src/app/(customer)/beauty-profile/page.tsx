@@ -60,8 +60,8 @@ export default function BeautyProfilePage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">💄 ملفي الجمالي</h1>
-        <p className="text-sm text-gray-500">ساعدينا في تقديم توصيات مخصصة لكِ عن طريق إكمال ملفكِ الجمالي</p>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">💄 ملفي الجمالي</h1>
+        <p className="text-sm text-text-secondary">ساعدينا في تقديم توصيات مخصصة لكِ عن طريق إكمال ملفكِ الجمالي</p>
 
         {isLoading ? <CardSkeleton /> : isError ? <ErrorAlert message="فشل تحميل الملف" onRetry={() => refetch()} /> : (
           <div className="space-y-6">
@@ -72,21 +72,21 @@ export default function BeautyProfilePage(): JSX.Element {
             <Section title="أسلوب المكياج المفضل" options={[...MAKEUP_STYLES]} selected={makeupStyle} setSelected={setMakeupStyle} />
 
             <Card padding="md">
-              <h3 className="mb-3 font-semibold text-gray-900 dark:text-gray-100">المشاكل الجلدية</h3>
+              <h3 className="mb-3 font-semibold text-text-primary dark:text-gray-100">المشاكل الجلدية</h3>
               <div className="flex flex-wrap gap-2">
-                {CONCERN_OPTIONS.map(o => <button key={o} onClick={() => toggle(concerns, setConcerns, o)} className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${concerns.includes(o) ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-600 dark:bg-gray-800'}`}>{LABELS[o] || o}</button>)}
+                {CONCERN_OPTIONS.map(o => <button key={o} onClick={() => toggle(concerns, setConcerns, o)} className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${concerns.includes(o) ? 'bg-brand-600 text-white' : 'bg-surface-muted text-gray-600 dark:bg-gray-800'}`}>{LABELS[o] || o}</button>)}
               </div>
             </Card>
 
             <Card padding="md">
-              <h3 className="mb-3 font-semibold text-gray-900 dark:text-gray-100">العطور المفضلة</h3>
+              <h3 className="mb-3 font-semibold text-text-primary dark:text-gray-100">العطور المفضلة</h3>
               <div className="flex flex-wrap gap-2">
-                {SCENT_OPTIONS.map(o => <button key={o} onClick={() => toggle(scents, setScents, o)} className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${scents.includes(o) ? 'bg-accent-500 text-white' : 'bg-gray-100 text-gray-600 dark:bg-gray-800'}`}>{LABELS[o] || o}</button>)}
+                {SCENT_OPTIONS.map(o => <button key={o} onClick={() => toggle(scents, setScents, o)} className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${scents.includes(o) ? 'bg-accent-500 text-white' : 'bg-surface-muted text-gray-600 dark:bg-gray-800'}`}>{LABELS[o] || o}</button>)}
               </div>
             </Card>
 
             <Card padding="md">
-              <h3 className="mb-2 font-semibold text-gray-900 dark:text-gray-100">ملاحظات إضافية</h3>
+              <h3 className="mb-2 font-semibold text-text-primary dark:text-gray-100">ملاحظات إضافية</h3>
               <textarea className="w-full rounded-lg border border-gray-300 p-3 text-sm dark:border-gray-600 dark:bg-gray-800" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="أي حساسية، تفضيلات خاصة، أو ملاحظات للفنية..." />
             </Card>
 
@@ -101,9 +101,9 @@ export default function BeautyProfilePage(): JSX.Element {
 function Section({ title, options, selected, setSelected }: { title: string; options: readonly string[]; selected: string; setSelected: (v: string) => void }): JSX.Element {
   return (
     <Card padding="md">
-      <h3 className="mb-3 font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
+      <h3 className="mb-3 font-semibold text-text-primary dark:text-gray-100">{title}</h3>
       <div className="flex flex-wrap gap-2">
-        {options.map(o => <button key={o} onClick={() => setSelected(selected === o ? '' : o)} className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${selected === o ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700'}`}>{LABELS[o] || o}</button>)}
+        {options.map(o => <button key={o} onClick={() => setSelected(selected === o ? '' : o)} className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${selected === o ? 'bg-brand-600 text-white' : 'bg-surface-muted text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700'}`}>{LABELS[o] || o}</button>)}
       </div>
     </Card>
   );

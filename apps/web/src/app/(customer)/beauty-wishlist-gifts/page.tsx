@@ -14,7 +14,7 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <div><h1 className="text-2xl font-bold">🎁 سجل الهدايا</h1><p className="mt-1 text-sm text-gray-500">قائمة أمنياتكِ من خدمات التجميل</p></div>
+          <div><h1 className="text-2xl font-bold">🎁 سجل الهدايا</h1><p className="mt-1 text-sm text-text-secondary">قائمة أمنياتكِ من خدمات التجميل</p></div>
           <Button onClick={() => setShowForm(!showForm)}>{showForm ? '✕' : '+ سجل جديد'}</Button>
         </div>
 
@@ -33,14 +33,14 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
         {created && <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50"><p className="text-2xl">✅</p><p className="font-bold text-green-700 mt-2">تم إنشاء سجل الهدايا</p></Card>}
 
         {isLoading ? <div className="space-y-3">{Array.from({length:2},(_,i)=><CardSkeleton key={i}/>)}</div> :
-          !(registries??[]).length ? <Card padding="lg" className="text-center py-8"><p className="text-4xl mb-2">🎁</p><p className="text-gray-500">مافي سجلات هدايا بعد — أنشئي أول سجل</p></Card> :
+          !(registries??[]).length ? <Card padding="lg" className="text-center py-8"><p className="text-4xl mb-2">🎁</p><p className="text-text-secondary">مافي سجلات هدايا بعد — أنشئي أول سجل</p></Card> :
           <div className="space-y-3">{(registries??[]).map((r: Record<string,unknown>) => (
             <Card key={r.id as number} padding="md">
               <div className="flex items-center justify-between">
-                <div><p className="font-bold">{r.title as string}</p><p className="text-xs text-gray-500">{r.occasion as string} · {new Date(r.createdAt as string).toLocaleDateString('ar-SA')}</p></div>
+                <div><p className="font-bold">{r.title as string}</p><p className="text-xs text-text-secondary">{r.occasion as string} · {new Date(r.createdAt as string).toLocaleDateString('ar-SA')}</p></div>
                 <div className="text-right">
-                  <p className="text-sm text-gray-500">{formatCurrency(r.raisedAmount as number)} / {formatCurrency(r.targetAmount as number)}</p>
-                  <div className="h-2 bg-gray-100 rounded-full mt-1 w-32"><div className="h-2 bg-brand-600 rounded-full" style={{width:`${Math.min(100,((r.raisedAmount as number)/(r.targetAmount as number))*100)}%`}}/></div>
+                  <p className="text-sm text-text-secondary">{formatCurrency(r.raisedAmount as number)} / {formatCurrency(r.targetAmount as number)}</p>
+                  <div className="h-2 bg-surface-muted rounded-full mt-1 w-32"><div className="h-2 bg-brand-600 rounded-full" style={{width:`${Math.min(100,((r.raisedAmount as number)/(r.targetAmount as number))*100)}%`}}/></div>
                 </div>
               </div>
             </Card>

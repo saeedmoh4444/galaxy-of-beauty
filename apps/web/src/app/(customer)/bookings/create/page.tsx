@@ -91,18 +91,18 @@ export default function CreateBookingPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6 px-4 py-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">حجز جديد</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">حجز جديد</h1>
 
         {/* Progress steps */}
         <div className="flex items-center gap-2 text-sm">
           {['الخدمة', 'التفاصيل', 'التأكيد'].map((label, i) => (
             <div key={i} className="flex items-center gap-2">
               <span className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
-                step > i + 1 ? 'bg-green-500 text-white' : step === i + 1 ? 'bg-brand-600 text-white' : 'bg-gray-200 text-gray-500'
+                step > i + 1 ? 'bg-green-500 text-white' : step === i + 1 ? 'bg-brand-600 text-white' : 'bg-gray-200 text-text-secondary'
               }`}>
                 {step > i + 1 ? '✓' : i + 1}
               </span>
-              <span className={step === i + 1 ? 'font-bold text-brand-600' : 'text-gray-400'}>{label}</span>
+              <span className={step === i + 1 ? 'font-bold text-brand-600' : 'text-text-tertiary'}>{label}</span>
               {i < 2 && <span className="text-gray-300">→</span>}
             </div>
           ))}
@@ -110,7 +110,7 @@ export default function CreateBookingPage(): JSX.Element {
 
         {step === 1 && (
           <Card padding="md">
-            <h3 className="mb-4 font-semibold text-gray-900 dark:text-gray-100">اختر الخدمة</h3>
+            <h3 className="mb-4 font-semibold text-text-primary dark:text-gray-100">اختر الخدمة</h3>
             <div className="max-h-80 space-y-2 overflow-y-auto">
               {services.map((s) => (
                 <button
@@ -120,8 +120,8 @@ export default function CreateBookingPage(): JSX.Element {
                     serviceId === s.id ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'
                   }`}
                 >
-                  <p className="font-semibold text-gray-900 dark:text-gray-100">{ar((s as unknown as { titleJson: unknown }).titleJson)}</p>
-                  <p className="mt-1 text-sm text-gray-500">{num((s as unknown as { basePrice: unknown }).basePrice).toFixed(0)} ر.س · {num((s as unknown as { durationMin: unknown }).durationMin)} دقيقة</p>
+                  <p className="font-semibold text-text-primary dark:text-gray-100">{ar((s as unknown as { titleJson: unknown }).titleJson)}</p>
+                  <p className="mt-1 text-sm text-text-secondary">{num((s as unknown as { basePrice: unknown }).basePrice).toFixed(0)} ر.س · {num((s as unknown as { durationMin: unknown }).durationMin)} دقيقة</p>
                 </button>
               ))}
             </div>
@@ -130,7 +130,7 @@ export default function CreateBookingPage(): JSX.Element {
 
         {step === 2 && svc && (
           <Card padding="md">
-            <h3 className="mb-4 font-semibold text-gray-900 dark:text-gray-100">تفاصيل الحجز</h3>
+            <h3 className="mb-4 font-semibold text-text-primary dark:text-gray-100">تفاصيل الحجز</h3>
 
             <p className="mb-2 text-sm font-bold text-brand-600">{ar((svc as unknown as { titleJson: unknown }).titleJson)}</p>
 
@@ -197,24 +197,24 @@ export default function CreateBookingPage(): JSX.Element {
 
         {step === 3 && (
           <Card padding="md">
-            <h3 className="mb-4 font-semibold text-gray-900 dark:text-gray-100">تأكيد الحجز</h3>
+            <h3 className="mb-4 font-semibold text-text-primary dark:text-gray-100">تأكيد الحجز</h3>
 
             <div className="space-y-3 text-sm">
               <div className="flex justify-between border-b pb-2">
-                <span className="text-gray-500">الخدمة</span>
+                <span className="text-text-secondary">الخدمة</span>
                 <span className="font-semibold">{svc ? ar((svc as unknown as { titleJson: unknown }).titleJson) : ''}</span>
               </div>
               <div className="flex justify-between border-b pb-2">
-                <span className="text-gray-500">السعر</span>
+                <span className="text-text-secondary">السعر</span>
                 <span className="font-bold text-brand-600">{num((svc as unknown as { basePrice?: unknown })?.basePrice).toFixed(0)} ر.س</span>
               </div>
               <div className="flex justify-between border-b pb-2">
-                <span className="text-gray-500">المدة</span>
+                <span className="text-text-secondary">المدة</span>
                 <span>{num((svc as unknown as { durationMin?: unknown })?.durationMin)} دقيقة</span>
               </div>
             </div>
 
-            <p className="mt-4 text-sm text-gray-400">
+            <p className="mt-4 text-sm text-text-tertiary">
               * ستقوم الفنية بتأكيد الموعد النهائي بعد مراجعة الحجز.
             </p>
 

@@ -56,8 +56,8 @@ export default function BirthdayRewardsPage(): JSX.Element {
         {/* Header */}
         <div className="text-center">
           <span className="text-7xl">🎂</span>
-          <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">هدية عيد ميلادكِ</h1>
-          <p className="mt-2 text-gray-500 dark:text-gray-400">
+          <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">هدية عيد ميلادكِ</h1>
+          <p className="mt-2 text-text-secondary dark:text-gray-400">
             احتفلي معنا — مكافأة خاصة بمناسبة يوم ميلادكِ 🎉
           </p>
         </div>
@@ -78,7 +78,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
                 /* Claimed State */
                 <div className="text-center relative z-10">
                   <span className="text-6xl">🎉</span>
-                  <h2 className="mt-4 text-2xl font-extrabold text-gray-900 dark:text-gray-100">
+                  <h2 className="mt-4 text-2xl font-extrabold text-text-primary dark:text-gray-100">
                     تم استلام هديتكِ!
                   </h2>
                   <p className="mt-2 text-gray-600 dark:text-gray-400">
@@ -88,7 +88,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
                   {/* Promo Code */}
                   {reward?.promoCode && (
                     <div className="mt-4 inline-block rounded-2xl bg-white dark:bg-gray-800 px-8 py-4 shadow-lg border-2 border-dashed border-pink-300 dark:border-pink-700">
-                      <p className="text-xs text-gray-500 mb-1">🎁 كود الخصم</p>
+                      <p className="text-xs text-text-secondary mb-1">🎁 كود الخصم</p>
                       <p className="text-3xl font-mono font-extrabold tracking-widest text-brand-600">
                         {reward.promoCode}
                       </p>
@@ -104,7 +104,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
                   )}
 
                   {reward?.claimedAt && (
-                    <p className="mt-4 text-xs text-gray-400">
+                    <p className="mt-4 text-xs text-text-tertiary">
                       تاريخ الاستلام: {new Date(reward.claimedAt).toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' })}
                     </p>
                   )}
@@ -119,7 +119,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
                 /* Unclaimed — can claim */
                 <div className="text-center relative z-10">
                   <span className="text-6xl">🎁</span>
-                  <h2 className="mt-4 text-2xl font-extrabold text-gray-900 dark:text-gray-100">
+                  <h2 className="mt-4 text-2xl font-extrabold text-text-primary dark:text-gray-100">
                     هديتكِ في انتظاركِ!
                   </h2>
                   <p className="mt-2 text-gray-600 dark:text-gray-400">
@@ -150,7 +150,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
                 /* No reward yet */
                 <div className="text-center relative z-10">
                   <span className="text-6xl">📅</span>
-                  <h2 className="mt-4 text-xl font-bold text-gray-900 dark:text-gray-100">
+                  <h2 className="mt-4 text-xl font-bold text-text-primary dark:text-gray-100">
                     لم يحن موعد هديتكِ بعد
                   </h2>
                   <p className="mt-2 text-gray-600 dark:text-gray-400">
@@ -158,7 +158,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
                       ? `متبقي ${daysUntil} يوم على عيد ميلادكِ 🎂`
                       : 'هدية عيد الميلاد متاحة خلال شهر ميلادكِ'}
                   </p>
-                  <p className="mt-4 text-sm text-gray-500">
+                  <p className="mt-4 text-sm text-text-secondary">
                     تأكدي من تحديث تاريخ ميلادكِ في الملف الشخصي لتلقي الهدية في وقتها!
                   </p>
                   <div className="mt-6">
@@ -174,24 +174,24 @@ export default function BirthdayRewardsPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="md" className="text-center">
                 <span className="text-3xl">🎁</span>
-                <h3 className="mt-2 font-semibold text-gray-900 dark:text-gray-100">هدية سنوية</h3>
-                <p className="text-xs text-gray-500">مكافأة تتجدد كل عام في شهر ميلادكِ</p>
+                <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">هدية سنوية</h3>
+                <p className="text-xs text-text-secondary">مكافأة تتجدد كل عام في شهر ميلادكِ</p>
               </Card>
               <Card padding="md" className="text-center">
                 <span className="text-3xl">💎</span>
-                <h3 className="mt-2 font-semibold text-gray-900 dark:text-gray-100">لجميع العضوات</h3>
-                <p className="text-xs text-gray-500">جميع المستويات تحصل على هدية العيد</p>
+                <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">لجميع العضوات</h3>
+                <p className="text-xs text-text-secondary">جميع المستويات تحصل على هدية العيد</p>
               </Card>
               <Card padding="md" className="text-center">
                 <span className="text-3xl">📅</span>
-                <h3 className="mt-2 font-semibold text-gray-900 dark:text-gray-100">صالحة ٣٠ يوم</h3>
-                <p className="text-xs text-gray-500">استخدمي كود الخصم خلال ٣٠ يوم من الاستلام</p>
+                <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">صالحة ٣٠ يوم</h3>
+                <p className="text-xs text-text-secondary">استخدمي كود الخصم خلال ٣٠ يوم من الاستلام</p>
               </Card>
             </div>
 
             {/* Birthday Tips */}
             <Card padding="lg" className="bg-gradient-to-r from-pink-100 to-rose-100 dark:from-pink-950 dark:to-rose-950 border-none">
-              <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3">💡 أفكار لعيد ميلادكِ</h3>
+              <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">💡 أفكار لعيد ميلادكِ</h3>
               <div className="grid gap-2 text-sm text-gray-600 dark:text-gray-400 sm:grid-cols-2">
                 <p>💇‍♀️ تسريحة شعر جديدة ليومكِ الخاص</p>
                 <p>💄 جلسة مكياج احترافية</p>

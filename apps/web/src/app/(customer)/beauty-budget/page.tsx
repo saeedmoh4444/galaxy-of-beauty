@@ -21,20 +21,20 @@ export default function BeautyBudgetPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">💰 ميزانية الجمال</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">💰 ميزانية الجمال</h1>
         {isLoading ? <CardSkeleton /> : isError ? <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} /> : (
           <>
             <Card padding="lg" className="text-center">
-              <p className="text-sm text-gray-500">الميزانية الشهرية</p>
+              <p className="text-sm text-text-secondary">الميزانية الشهرية</p>
               <p className="mt-1 text-4xl font-extrabold text-brand-600">{formatCurrency(budget)}</p>
               <div className="mt-4 flex justify-around text-sm">
-                <div><p className="text-gray-500">تم الإنفاق</p><p className="font-bold text-red-500">{formatCurrency(spent)}</p></div>
-                <div><p className="text-gray-500">متبقي</p><p className={`font-bold ${remaining >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(remaining)}</p></div>
+                <div><p className="text-text-secondary">تم الإنفاق</p><p className="font-bold text-red-500">{formatCurrency(spent)}</p></div>
+                <div><p className="text-text-secondary">متبقي</p><p className={`font-bold ${remaining >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(remaining)}</p></div>
               </div>
               <div className="mt-4 h-3 rounded-full bg-gray-200 dark:bg-gray-700">
                 <div className={`h-3 rounded-full transition-all ${pct > 90 ? 'bg-red-500' : pct > 70 ? 'bg-amber-500' : 'bg-green-500'}`} style={{ width: `${pct}%` }} />
               </div>
-              <p className="mt-1 text-xs text-gray-400">{pct.toFixed(0)}% من الميزانية</p>
+              <p className="mt-1 text-xs text-text-tertiary">{pct.toFixed(0)}% من الميزانية</p>
             </Card>
             <Card padding="md">
               <h3 className="mb-3 font-semibold">تحديث الميزانية</h3>

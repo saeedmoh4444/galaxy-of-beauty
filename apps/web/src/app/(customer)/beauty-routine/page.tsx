@@ -29,13 +29,13 @@ export default function BeautyRoutinePage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">🌅 روتيني الجمالي</h1>
-        <p className="text-sm text-gray-500">روتين يومي مخصص لكِ بناءً على ملفكِ الجمالي</p>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">🌅 روتيني الجمالي</h1>
+        <p className="text-sm text-text-secondary">روتين يومي مخصص لكِ بناءً على ملفكِ الجمالي</p>
 
         {isLoading ? <CardSkeleton /> : isError ? <ErrorAlert message="فشل تحميل الملف" onRetry={() => refetch()} /> : !profile ? (
           <Card padding="lg" className="text-center">
             <span className="text-5xl">💄</span>
-            <p className="mt-4 text-gray-500">أكملي ملفكِ الجمالي للحصول على روتين مخصص</p>
+            <p className="mt-4 text-text-secondary">أكملي ملفكِ الجمالي للحصول على روتين مخصص</p>
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             <a href="/beauty-profile" className="mt-4 inline-block"><Button>أكملي ملفكِ</Button></a>
           </Card>

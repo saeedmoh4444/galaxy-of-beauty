@@ -21,7 +21,7 @@ export default function BeautyRescuePage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <div><h1 className="text-2xl font-bold">🚨 إنقاذ الجمال</h1><p className="mt-1 text-sm text-gray-500">خدمات تجميل طارئة — نصل لكِ خلال ساعة</p></div>
+        <div><h1 className="text-2xl font-bold">🚨 إنقاذ الجمال</h1><p className="mt-1 text-sm text-text-secondary">خدمات تجميل طارئة — نصل لكِ خلال ساعة</p></div>
 
         {booked && emergency ? (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
@@ -29,7 +29,7 @@ export default function BeautyRescuePage(): JSX.Element {
             <p className="font-bold text-green-700 text-xl mt-3">تم الطلب!</p>
             <p className="text-sm text-gray-600 mt-1">خبيرة التجميل في الطريق — تصل خلال {emergency.time}</p>
             <p className="text-2xl font-extrabold text-green-600 mt-3">{formatCurrency(emergency.price * surcharge)}</p>
-            <p className="text-xs text-gray-500">شامل رسوم الطوارئ</p>
+            <p className="text-xs text-text-secondary">شامل رسوم الطوارئ</p>
             <Button onClick={() => { setBooked(false); setSelected(null); }} className="mt-4">تم</Button>
           </Card>
         ) : (
@@ -41,7 +41,7 @@ export default function BeautyRescuePage(): JSX.Element {
                   <button key={e.key} onClick={() => setSelected(isSel ? null : e.key)} className={`rounded-xl border-2 p-4 text-right transition-all ${isSel?'border-red-400 bg-red-50':'border-gray-200 hover:border-gray-300'}`}>
                     <span className="text-3xl">{e.emoji}</span>
                     <h3 className="font-bold mt-2">{e.name}</h3>
-                    <p className="text-xs text-gray-500">{e.desc}</p>
+                    <p className="text-xs text-text-secondary">{e.desc}</p>
                     <p className="text-sm font-bold text-brand-600 mt-1">{formatCurrency(e.price)} · ⏱️ {e.time}</p>
                   </button>
                 );

@@ -27,8 +27,8 @@ export default function BeautyJournalPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">📓 يوميات الجمال</h1>
-        <p className="text-sm text-gray-500">دوّني رحلتكِ الجمالية — تجارب، مشاعر، وإطلالات</p>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">📓 يوميات الجمال</h1>
+        <p className="text-sm text-text-secondary">دوّني رحلتكِ الجمالية — تجارب، مشاعر، وإطلالات</p>
 
         {/* New Entry */}
         <Card padding="lg">
@@ -50,12 +50,12 @@ export default function BeautyJournalPage(): JSX.Element {
         : <div className="space-y-4">{entries.map((e: Record<string, any>) => (
           <Card key={e.id} padding="md" className="relative group">
             <button onClick={() => deleteMut.mutate({ id: e.id })} className="absolute top-2 right-2 hidden rounded-full bg-red-500 p-1 text-white text-xs group-hover:block">✕</button>
-            <div className="flex items-center gap-3 text-xs text-gray-400 mb-2">
+            <div className="flex items-center gap-3 text-xs text-text-tertiary mb-2">
               {e.mood && <span>{MOODS[e.mood - 1]}</span>}
               {e.serviceType && <span className="rounded-full bg-brand-50 px-2 py-0.5 text-brand-600">{TYPE_LABELS[e.serviceType]}</span>}
               <span>{new Date(e.createdAt).toLocaleDateString('ar-SA', { month: 'short', day: 'numeric' })}</span>
             </div>
-            {e.title && <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">{e.title}</h3>}
+            {e.title && <h3 className="font-semibold text-text-primary dark:text-gray-100 mb-1">{e.title}</h3>}
             <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-wrap">{e.content}</p>
           </Card>
         ))}</div>}

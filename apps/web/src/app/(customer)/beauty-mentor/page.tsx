@@ -27,14 +27,14 @@ export default function BeautyMentorPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
-        <div><h1 className="text-2xl font-bold">👩‍🏫 مرشدة الجمال</h1><p className="mt-1 text-sm text-gray-500">تعلمي من خبيرات التجميل — خطوة بخطوة</p></div>
+        <div><h1 className="text-2xl font-bold">👩‍🏫 مرشدة الجمال</h1><p className="mt-1 text-sm text-text-secondary">تعلمي من خبيرات التجميل — خطوة بخطوة</p></div>
 
         <div className="grid gap-3 sm:grid-cols-3">
           {LEVELS.map(l => (
             <button key={l.key} onClick={() => setLevel(l.key)} className={`rounded-xl border-2 p-4 text-center transition-all ${level===l.key?'border-brand-400 bg-brand-50 shadow-lg':'border-gray-200 hover:border-gray-300'}`}>
               <span className="text-4xl block">{l.emoji}</span>
               <p className="font-bold mt-2">{l.name}</p>
-              <p className="text-xs text-gray-500">{l.desc}</p>
+              <p className="text-xs text-text-secondary">{l.desc}</p>
             </button>
           ))}
         </div>
@@ -52,14 +52,14 @@ export default function BeautyMentorPage(): JSX.Element {
           <Card padding="lg"><h3 className="font-bold mb-3">📚 المواضيع</h3>
             <div className="flex flex-wrap gap-2 mb-4">
               {TOPICS.map(tp => (
-                <button key={tp} onClick={() => setSelectedTopic(selectedTopic===tp?null:tp)} className={`rounded-full px-4 py-2 text-sm transition-all ${selectedTopic===tp?'bg-brand-600 text-white':'bg-gray-100 hover:bg-gray-200'}`}>{tp}</button>
+                <button key={tp} onClick={() => setSelectedTopic(selectedTopic===tp?null:tp)} className={`rounded-full px-4 py-2 text-sm transition-all ${selectedTopic===tp?'bg-brand-600 text-white':'bg-surface-muted hover:bg-gray-200'}`}>{tp}</button>
               ))}
             </div>
             {selectedTopic && (
               <div className="rounded-lg border p-4">
                 <h4 className="font-bold text-brand-600 mb-3">💡 نصائح {selectedTopic}</h4>
                 <div className="space-y-2">{(TOPIC_TIPS[selectedTopic]??[]).map((tip,i) => (
-                  <p key={i} className="text-sm text-gray-700">• {tip}</p>
+                  <p key={i} className="text-sm text-text-primary">• {tip}</p>
                 ))}</div>
               </div>
             )}

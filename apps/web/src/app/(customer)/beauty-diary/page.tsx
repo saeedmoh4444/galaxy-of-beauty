@@ -27,7 +27,7 @@ export default function BeautyDiaryPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <div><h1 className="text-2xl font-bold">📔 يوميات الجمال</h1><p className="mt-1 text-sm text-gray-500">دوني رحلتكِ ومشاعركِ</p></div>
+          <div><h1 className="text-2xl font-bold">📔 يوميات الجمال</h1><p className="mt-1 text-sm text-text-secondary">دوني رحلتكِ ومشاعركِ</p></div>
           <Button onClick={() => setShowForm(!showForm)}>{showForm ? '✕' : '+ يومية'}</Button>
         </div>
 
@@ -40,14 +40,14 @@ export default function BeautyDiaryPage(): JSX.Element {
         </Card>}
 
         {isLoading ? <div className="space-y-3">{Array.from({length:3},(_,i)=><CardSkeleton key={i}/>)}</div> :
-          entries.length === 0 ? <Card padding="lg" className="text-center py-8"><p className="text-4xl mb-2">📔</p><p className="text-gray-500">مافي يوميات بعد — اكتبي أول يومية لكِ</p></Card> :
+          entries.length === 0 ? <Card padding="lg" className="text-center py-8"><p className="text-4xl mb-2">📔</p><p className="text-text-secondary">مافي يوميات بعد — اكتبي أول يومية لكِ</p></Card> :
           <div className="space-y-3">{entries.map((e: Record<string,unknown>) => {
             const moodEmoji = MOODS.find(m => m.value === (e.mood as number))?.emoji ?? '😐';
             return (
               <Card key={e.id as number} padding="md">
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">{moodEmoji}</span>
-                  <div className="flex-1"><p className="text-sm">{e.content as string}</p><p className="text-xs text-gray-400 mt-1">{new Date(e.createdAt as string).toLocaleDateString('ar-SA', {day:'numeric', month:'long', hour:'2-digit', minute:'2-digit'})}</p></div>
+                  <div className="flex-1"><p className="text-sm">{e.content as string}</p><p className="text-xs text-text-tertiary mt-1">{new Date(e.createdAt as string).toLocaleDateString('ar-SA', {day:'numeric', month:'long', hour:'2-digit', minute:'2-digit'})}</p></div>
                 </div>
               </Card>
             );

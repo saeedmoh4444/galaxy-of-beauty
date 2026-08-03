@@ -10,7 +10,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
-        <div><h1 className="text-2xl font-bold">🔍 اكتشفي</h1><p className="mt-1 text-sm text-gray-500">خدمات وعروض وفعاليات مخصصة لكِ</p></div>
+        <div><h1 className="text-2xl font-bold">🔍 اكتشفي</h1><p className="mt-1 text-sm text-text-secondary">خدمات وعروض وفعاليات مخصصة لكِ</p></div>
 
         {pLoading ? <CardSkeleton/> : (forYou?.profile as Record<string,unknown>) && (
           <Card padding="lg" className="border-2 border-purple-200 bg-purple-50">
@@ -33,7 +33,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
                 <div className="space-y-2">{(forYou?.suggestions as Array<Record<string,unknown>>).map((s: Record<string,unknown>) => (
                   <div key={s.id as number} className="flex items-center justify-between rounded-lg border p-2 text-sm"><span>{s.emoji as string} {s.name as string}</span><span className="font-bold">{formatCurrency(s.price as number)}</span></div>
                 ))}</div>
-              ) : <p className="text-sm text-gray-400">احجزي خدمات علشان نقدر نقترح لكِ</p>}
+              ) : <p className="text-sm text-text-tertiary">احجزي خدمات علشان نقدر نقترح لكِ</p>}
             </Card>
           )}
         </div>
@@ -41,7 +41,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
         {fLoading ? <CardSkeleton/> : (featured?.flashDeals as Array<Record<string,unknown>>)?.length ? (
           <Card padding="lg"><h3 className="font-bold mb-3">⚡ عروض فلاش</h3>
             <div className="grid gap-3 sm:grid-cols-2">{(featured?.flashDeals as Array<Record<string,unknown>>).slice(0,4).map((d: Record<string,unknown>) => (
-              <div key={d.id as number} className="rounded-lg border p-3"><span className="font-bold">{d.title as string ?? `عرض #${d.id}`}</span><div className="flex items-center gap-2 mt-1"><span className="text-gray-400 line-through text-sm">{formatCurrency(d.originalPrice as number)}</span><span className="font-bold text-red-600">{formatCurrency(d.dealPrice as number)}</span><span className="rounded-full bg-red-100 px-2 py-0.5 text-xs text-red-700">-{d.discount as number}%</span></div></div>
+              <div key={d.id as number} className="rounded-lg border p-3"><span className="font-bold">{d.title as string ?? `عرض #${d.id}`}</span><div className="flex items-center gap-2 mt-1"><span className="text-text-tertiary line-through text-sm">{formatCurrency(d.originalPrice as number)}</span><span className="font-bold text-red-600">{formatCurrency(d.dealPrice as number)}</span><span className="rounded-full bg-red-100 px-2 py-0.5 text-xs text-red-700">-{d.discount as number}%</span></div></div>
             ))}</div>
           </Card>
         ) : null}
@@ -49,7 +49,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
         {fLoading ? <CardSkeleton/> : (featured?.events as Array<Record<string,unknown>>)?.length ? (
           <Card padding="lg"><h3 className="font-bold mb-3">🎪 فعاليات قادمة</h3>
           <div className="grid gap-3 sm:grid-cols-2">{(featured?.events as Array<Record<string,unknown>>).map((e: Record<string,unknown>) => (
-            <div key={e.id as number} className="rounded-lg border p-3"><p className="font-bold text-sm">{e.name as string}</p><p className="text-xs text-gray-500">{e.type as string} · {e.location as string} · {new Date(e.date as string).toLocaleDateString('ar-SA')}</p></div>
+            <div key={e.id as number} className="rounded-lg border p-3"><p className="font-bold text-sm">{e.name as string}</p><p className="text-xs text-text-secondary">{e.type as string} · {e.location as string} · {new Date(e.date as string).toLocaleDateString('ar-SA')}</p></div>
           ))}</div>
         </Card>
         ) : null}

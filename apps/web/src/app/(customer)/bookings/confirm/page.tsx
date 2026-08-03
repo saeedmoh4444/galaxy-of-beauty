@@ -16,14 +16,14 @@ export default function BookingConfirmPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6 py-8 text-center">
         <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-green-100 text-6xl dark:bg-green-900">✨</div>
-        <h1 className="text-3xl font-extrabold text-gray-900 dark:text-gray-100">تم الحجز بنجاح!</h1>
-        <p className="text-gray-500">تم إنشاء حجزكِ بنجاح. سيتم تأكيد الموعد من قبل الفنية قريباً.</p>
+        <h1 className="text-3xl font-extrabold text-text-primary dark:text-gray-100">تم الحجز بنجاح!</h1>
+        <p className="text-text-secondary">تم إنشاء حجزكِ بنجاح. سيتم تأكيد الموعد من قبل الفنية قريباً.</p>
 
         <Card padding="lg" className="text-left">
           <div className="space-y-3 text-sm">
-            <div className="flex justify-between"><span className="text-gray-500">رمز الحجز</span><span className="font-mono font-bold text-brand-600">{code}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">التاريخ</span><span>{new Date(date).toLocaleDateString('ar-SA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">الوقت</span><span>{new Date(date).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}</span></div>
+            <div className="flex justify-between"><span className="text-text-secondary">رمز الحجز</span><span className="font-mono font-bold text-brand-600">{code}</span></div>
+            <div className="flex justify-between"><span className="text-text-secondary">التاريخ</span><span>{new Date(date).toLocaleDateString('ar-SA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span></div>
+            <div className="flex justify-between"><span className="text-text-secondary">الوقت</span><span>{new Date(date).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}</span></div>
           </div>
           <div className="mt-4 border-t border-gray-100 pt-4 dark:border-gray-800">
             <AddToCalendar title={`حجز جالكسي بيوتي - ${code}`} startAt={date} endAt={endDate} />

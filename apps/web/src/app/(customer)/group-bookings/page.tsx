@@ -37,12 +37,12 @@ interface Group {
   }>;
 }
 
-const DEFAULT_STATUS = { label: 'غير معروف', color: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' };
+const DEFAULT_STATUS = { label: 'غير معروف', color: 'bg-surface-muted text-text-primary dark:bg-gray-800 dark:text-gray-300' };
 const STATUS_MAP: Record<string, { label: string; color: string }> = {
   PENDING: { label: 'قيد الانتظار', color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300' },
   CONFIRMED: { label: 'مؤكد', color: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' },
   IN_PROGRESS: { label: 'جاري', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' },
-  COMPLETED: { label: 'مكتمل', color: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' },
+  COMPLETED: { label: 'مكتمل', color: 'bg-surface-muted text-text-primary dark:bg-gray-800 dark:text-gray-300' },
   CANCELLED: { label: 'ملغي', color: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' },
 };
 
@@ -128,8 +128,8 @@ export default function GroupBookingsPage(): JSX.Element {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">👯‍♀️ حجوزات المجموعات</h1>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">👯‍♀️ حجوزات المجموعات</h1>
+            <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
               احجزي لكِ ولصديقاتكِ معاً — خصم يصل إلى ٣٠٪
             </p>
           </div>
@@ -145,8 +145,8 @@ export default function GroupBookingsPage(): JSX.Element {
           ].map((b) => (
             <Card key={b.title} padding="md" className="text-center">
               <span className="text-3xl">{b.emoji}</span>
-              <h3 className="mt-2 font-semibold text-gray-900 dark:text-gray-100">{b.title}</h3>
-              <p className="text-xs text-gray-500">{b.desc}</p>
+              <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">{b.title}</h3>
+              <p className="text-xs text-text-secondary">{b.desc}</p>
             </Card>
           ))}
         </div>
@@ -173,12 +173,12 @@ export default function GroupBookingsPage(): JSX.Element {
                       <div className="flex items-center gap-4">
                         <span className="text-4xl">{THEME_EMOJI[group.theme] ?? '🎉'}</span>
                         <div>
-                          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">{group.name}</h3>
+                          <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">{group.name}</h3>
                           <div className="mt-1 flex items-center gap-3">
                             <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${statusInfo.color}`}>
                               {statusInfo.label}
                             </span>
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-text-secondary">
                               {group.members.length} عضوات · خصم {group.discountPercent}%
                             </span>
                           </div>
@@ -188,7 +188,7 @@ export default function GroupBookingsPage(): JSX.Element {
                         {Number(group.totalAmount) > 0 && (
                           <p className="text-lg font-bold text-brand-600">{formatCurrency(Number(group.totalAmount))}</p>
                         )}
-                        <p className="text-xs text-gray-400 mt-1">
+                        <p className="text-xs text-text-tertiary mt-1">
                           {new Date(group.createdAt).toLocaleDateString('ar-SA', { year: 'numeric', month: 'short', day: 'numeric' })}
                         </p>
                       </div>
@@ -205,7 +205,7 @@ export default function GroupBookingsPage(): JSX.Element {
           <div className="space-y-4">
             {/* Group Name */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">اسم المجموعة</label>
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">اسم المجموعة</label>
               <input
                 type="text"
                 value={formName}
@@ -217,7 +217,7 @@ export default function GroupBookingsPage(): JSX.Element {
 
             {/* Theme */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">المناسبة</label>
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">المناسبة</label>
               <select
                 value={formTheme}
                 onChange={(e) => setFormTheme(e.target.value)}
@@ -231,7 +231,7 @@ export default function GroupBookingsPage(): JSX.Element {
 
             {/* Discount */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
                 نسبة الخصم: <span className="text-brand-600">{formDiscount}%</span>
               </label>
               <input
@@ -242,7 +242,7 @@ export default function GroupBookingsPage(): JSX.Element {
                 onChange={(e) => setFormDiscount(parseInt(e.target.value, 10))}
                 className="w-full accent-brand-600"
               />
-              <div className="flex justify-between text-xs text-gray-400">
+              <div className="flex justify-between text-xs text-text-tertiary">
                 <span>0%</span><span>10%</span><span>20%</span><span>30%</span>
               </div>
             </div>
@@ -250,7 +250,7 @@ export default function GroupBookingsPage(): JSX.Element {
             {/* Members */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                <label className="text-sm font-semibold text-text-primary dark:text-gray-300">
                   العضوات ({members.length})
                 </label>
                 <button
@@ -265,7 +265,7 @@ export default function GroupBookingsPage(): JSX.Element {
               <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
                 {members.map((m, idx) => (
                   <div key={idx} className="flex items-center gap-2 rounded-lg border border-gray-100 p-2 dark:border-gray-700">
-                    <span className="text-xs font-bold text-gray-400 w-5">{idx + 1}</span>
+                    <span className="text-xs font-bold text-text-tertiary w-5">{idx + 1}</span>
                     <input
                       type="text"
                       value={m.name}
@@ -284,7 +284,7 @@ export default function GroupBookingsPage(): JSX.Element {
                       <button
                         type="button"
                         onClick={() => removeMember(idx)}
-                        className="text-gray-400 hover:text-red-500 p-1"
+                        className="text-text-tertiary hover:text-red-500 p-1"
                       >
                         ✕
                       </button>
