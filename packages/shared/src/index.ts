@@ -1,5 +1,5 @@
 // UI Components
-export { Skeleton, CardSkeleton, ListSkeleton } from './ui/Skeleton';
+export { Skeleton, CardSkeleton, ListSkeleton, DashboardSkeleton, CardListSkeleton, DetailSkeleton, FormSkeleton, TableSkeleton } from './ui/Skeleton';
 export { ErrorAlert } from './ui/ErrorAlert';
 export { EmptyState } from './ui/EmptyState';
 export { Button } from './ui/Button';
