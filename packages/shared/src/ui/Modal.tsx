@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useCallback } from 'react';
-import type { ReactNode, MouseEvent } from 'react';
+import type { ReactNode, MouseEvent, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { cn } from '../utils/cn';
 
 interface ModalProps {
@@ -23,6 +23,14 @@ const sizeStyles: Record<NonNullable<ModalProps['size']>, string> = {
   xl: 'max-w-xl',
 };
 
+/** CSS selector for all focusable elements inside a modal. */
+const FOCUSABLE =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function getFocusableElements(container: HTMLElement): HTMLElement[] {
+  return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE));
+}
+
 export function Modal({
   open,
   onClose,
@@ -35,23 +43,82 @@ export function Modal({
   className,
 }: ModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  // ── Focus trap ──────────────────────────────────────────
+  const trapFocus = useCallback((e: ReactKeyboardEvent | KeyboardEvent) => {
+    if (e.key !== 'Tab') return;
+
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const focusable = getFocusableElements(panel);
+    if (focusable.length === 0) return;
+
+    const first = focusable[0]!;
+    const last = focusable[focusable.length - 1]!;
+
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }, []);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        onClose();
+        return;
+      }
+      trapFocus(e);
     },
-    [onClose],
+    [onClose, trapFocus],
   );
 
+  // ── Open / close lifecycle ──────────────────────────────
   useEffect(() => {
     if (open) {
+      // Store the currently focused element so we can restore later
+      previousFocusRef.current = document.activeElement as HTMLElement | null;
+
       document.addEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'hidden';
+
+      // Move focus into the modal after the next paint
+      const raf = requestAnimationFrame(() => {
+        const panel = panelRef.current;
+        if (panel) {
+          const focusable = getFocusableElements(panel);
+          // Prefer the close button, then the first focusable, then the panel itself
+          if (focusable.length > 0) {
+            focusable[0]!.focus();
+          } else {
+            panel.focus();
+          }
+        }
+      });
+
+      return () => {
+        cancelAnimationFrame(raf);
+        document.removeEventListener('keydown', handleKeyDown);
+        document.body.style.overflow = '';
+
+        // Restore focus to the element that triggered the modal
+        requestAnimationFrame(() => {
+          previousFocusRef.current?.focus();
+          previousFocusRef.current = null;
+        });
+      };
     }
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
-    };
   }, [open, handleKeyDown]);
 
   if (!open) return null;
@@ -73,8 +140,10 @@ export function Modal({
       aria-describedby={description ? 'modal-desc' : undefined}
     >
       <div
+        ref={panelRef}
+        tabIndex={-1}
         className={cn(
-          'relative w-full rounded-2xl bg-white shadow-xl dark:bg-gray-900',
+          'relative w-full rounded-2xl bg-white shadow-xl outline-none dark:bg-gray-900',
           'animate-in zoom-in-95 duration-200',
           sizeStyles[size],
           className,
@@ -84,7 +153,7 @@ export function Modal({
           <button
             onClick={onClose}
             className="absolute end-3 top-3 flex h-11 w-11 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-            aria-label="Close"
+            aria-label="إغلاق"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
