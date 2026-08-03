@@ -2,10 +2,11 @@
  * Auth flow integration tests — register, login, 2FA, password reset.
  * Hits real tRPC procedures against the database with seed data.
  */
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
-import { generateCsrfToken, verifyCsrfToken, buildCsrfCookie } from '../lib/csrf';
+import { generateCsrfToken } from '../lib/csrf';
+import { resetAttempts } from '../lib/redis';
 import type { JwtPayload } from '../lib/jwt';
 
 // ── Helpers ──────────────────────────────────────────────────────────
@@ -138,6 +139,11 @@ describe('Auth — Token Refresh', () => {
 // ── Password reset flow ──────────────────────────────────────────────
 
 describe('Auth — Forgot / Reset Password', () => {
+  // Reset rate-limit keys before each run to avoid flaky tests
+  beforeAll(async () => {
+    await resetAttempts('forgot_pw:customer@test.com');
+    await resetAttempts('forgot_pw:ghost@test.com');
+  });
   it('should accept forgot password for existing email', async () => {
     const caller = await anonCaller();
     const result = await caller.auth.forgotPassword({ email: 'customer@test.com' });
