@@ -1,4 +1,4 @@
-import { getServerCaller } from '@/lib/server-trpc';
+import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { HomeClient } from './HomeClient';
 import type { HomePageProps } from './HomeClient';
 
@@ -24,17 +24,20 @@ export default async function HomePage(): Promise<JSX.Element> {
       caller.services.list({ sort: 'popular', limit: 6 }),
     ]);
 
-    categories = catsResult as AnyCategory[];
-    services = (svcResult as { items: AnyService[] }).items;
-    serviceTotal = (svcResult as { total: number }).total;
+    // Serialize through superjson to strip Prisma Decimal → Number
+    // before passing to Client Components (avoids Next.js RSC warnings)
+    categories = serializeForClient(catsResult as AnyCategory[]);
+    const svc = serializeForClient(svcResult as { items: AnyService[]; total: number });
+    services = svc.items;
+    serviceTotal = svc.total;
   } catch (e) {
     fetchError = (e as Error).message || 'فشل تحميل البيانات';
   }
 
   return (
     <HomeClient
-      initialCategories={categories as HomePageProps['initialCategories']}
-      initialServices={services as HomePageProps['initialServices']}
+      initialCategories={serializeForClient(categories as HomePageProps['initialCategories'])}
+      initialServices={serializeForClient(services as HomePageProps['initialServices'])}
       serviceTotal={serviceTotal}
       fetchError={fetchError}
     />
