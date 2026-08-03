@@ -36,7 +36,7 @@ export const searchRouter = router({
         OR: [
           { titleJson: { path: [locale], string_contains: query } },
           { descriptionJson: { path: [locale], string_contains: query } },
-          { tags: { some: { name: { contains: query, mode: 'insensitive' as const } } } },
+          { tags: { some: { tag: { nameJson: { path: [locale], string_contains: query } } } } },
         ],
       };
 
