@@ -70,7 +70,7 @@ export default function LoginPage(): JSX.Element {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md" padding="lg">
-        <h1 className="mb-6 text-center text-2xl font-bold text-gray-900 dark:text-gray-100">
+        <h1 className="mb-6 text-center text-2xl font-bold text-text-primary dark:text-gray-100">
           تسجيل الدخول
         </h1>
 
@@ -105,8 +105,8 @@ export default function LoginPage(): JSX.Element {
 
           {/* 2FA TOTP input — shown when 2FA required */}
           {twoFactorRequired && (
-            <div className="rounded-lg border border-brand-200 bg-brand-50 p-4 dark:border-brand-800 dark:bg-brand-950">
-              <p className="mb-3 text-sm font-medium text-brand-800 dark:text-brand-200">
+            <div className="rounded-lg border border-info/30 bg-info-subtle p-4 dark:border-brand-800 dark:bg-brand-950">
+              <p className="mb-3 text-sm font-medium text-info dark:text-brand-200">
                 تم تفعيل المصادقة الثنائية. أدخل رمز التحقق من تطبيق المصادقة:
               </p>
               <Input
@@ -139,7 +139,7 @@ export default function LoginPage(): JSX.Element {
           <div className="mt-6"><SocialLogin /></div>
         )}
         {!twoFactorRequired && (
-          <div className="mt-4 text-center text-sm text-gray-500">
+          <div className="mt-4 text-center text-sm text-text-secondary">
             <Link href="/forgot-password" className="text-brand-600 hover:underline">
               نسيت كلمة المرور؟
             </Link>
