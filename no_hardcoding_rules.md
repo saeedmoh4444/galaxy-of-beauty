@@ -55,4 +55,3 @@ const API_BASE = process.env.API_BASE_URL || "https://api.example.com/v2";
 const TIMEOUT = parseInt(process.env.REQUEST_TIMEOUT || "30", 10);
 fetch(`${API_BASE}/data`, { signal: AbortSignal.timeout(TIMEOUT) });
 
-
