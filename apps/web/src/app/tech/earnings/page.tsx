@@ -32,7 +32,7 @@ export default function TechEarningsPage(): JSX.Element {
   const payoutItems = (payoutsData?.payouts as unknown as Record<string, unknown>[]) ?? [];
 
   const statusColours: Record<string, string> = {
-    PENDING: 'bg-gray-100 text-gray-600',
+    PENDING: 'bg-surface-muted text-gray-600',
     PROCESSING: 'bg-blue-100 text-blue-700',
     COMPLETED: 'bg-green-100 text-green-700',
     FAILED: 'bg-red-100 text-red-700',
@@ -59,19 +59,19 @@ export default function TechEarningsPage(): JSX.Element {
         ) : (
           <div className="grid gap-4 md:grid-cols-3">
             <Card className="text-center">
-              <p className="text-sm text-gray-500">الرصيد الكلي</p>
+              <p className="text-sm text-text-secondary">الرصيد الكلي</p>
               <p className="text-2xl font-bold text-brand-600">
                 {formatCurrency(Number(bal?.totalBalance ?? 0))}
               </p>
             </Card>
             <Card className="text-center">
-              <p className="text-sm text-gray-500">الرصيد القابل للسحب</p>
+              <p className="text-sm text-text-secondary">الرصيد القابل للسحب</p>
               <p className="text-2xl font-bold text-green-600">
                 {formatCurrency(Number(bal?.balance ?? 0))}
               </p>
             </Card>
             <Card className="text-center">
-              <p className="text-sm text-gray-500">الرصيد المعلق</p>
+              <p className="text-sm text-text-secondary">الرصيد المعلق</p>
               <p className="text-2xl font-bold text-amber-600">
                 {formatCurrency(Number(bal?.bonusBalance ?? 0))}
               </p>
@@ -97,7 +97,7 @@ export default function TechEarningsPage(): JSX.Element {
             <EmptyState title="لا توجد أرباح في هذه الفترة" />
           ) : (
             <div className="space-y-1">
-              <div className="flex items-center justify-between border-b border-gray-100 pb-2 text-sm font-medium text-gray-500 dark:border-gray-700">
+              <div className="flex items-center justify-between border-b border-gray-100 pb-2 text-sm font-medium text-text-secondary dark:border-gray-700">
                 <span>التاريخ</span>
                 <span>الأرباح (ر.س)</span>
                 <span>عدد الحجوزات</span>
@@ -107,16 +107,16 @@ export default function TechEarningsPage(): JSX.Element {
                   key={day.date as string}
                   className="flex items-center justify-between py-1.5 text-sm"
                 >
-                  <span className="text-gray-700 dark:text-gray-300">
+                  <span className="text-text-primary dark:text-gray-300">
                     {day.date as string}
                   </span>
                   <span className="font-medium text-green-600">
                     {formatCurrency(Number(day.earnings ?? 0))}
                   </span>
-                  <span className="text-gray-500">{String(day.count ?? 0)}</span>
+                  <span className="text-text-secondary">{String(day.count ?? 0)}</span>
                 </div>
               ))}
-              <div className="flex items-center justify-between border-t border-gray-200 pt-3 font-semibold dark:border-gray-700">
+              <div className="flex items-center justify-between border-t border-edge pt-3 font-semibold dark:border-gray-700">
                 <span>الإجمالي</span>
                 <span className="text-green-600">
                   {formatCurrency(Number(earnings?.totalEarnings ?? 0))}
@@ -145,7 +145,7 @@ export default function TechEarningsPage(): JSX.Element {
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div>
                         <p className="font-medium">{formatCurrency(Number(p.amount ?? 0))}</p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-text-secondary">
                           {p.createdAt
                             ? new Date(p.createdAt as string).toLocaleDateString('ar-SA')
                             : '-'}
@@ -153,12 +153,12 @@ export default function TechEarningsPage(): JSX.Element {
                       </div>
                       <div className="flex items-center gap-3">
                         {p.reference ? (
-                          <span className="text-xs text-gray-400">
+                          <span className="text-xs text-text-tertiary">
                             مرجع: {p.reference as string}
                           </span>
                         ) : null}
                         {p.periodStart ? (
-                          <span className="text-xs text-gray-400">
+                          <span className="text-xs text-text-tertiary">
                             {new Date(p.periodStart as string).toLocaleDateString('ar-SA')}
                             {' - '}
                             {new Date(p.periodEnd as string).toLocaleDateString('ar-SA')}

@@ -37,13 +37,13 @@ export default function PregnancyBeautyPage(): JSX.Element {
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-10">
         <span className="text-6xl">🤰</span>
-        <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">عناية الحامل</h1>
-        <p className="mt-2 text-gray-500">دليل العناية بالجمال خلال فترة الحمل — آمن لكِ ولجنينكِ</p>
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">عناية الحامل</h1>
+        <p className="mt-2 text-text-secondary">دليل العناية بالجمال خلال فترة الحمل — آمن لكِ ولجنينكِ</p>
       </div>
 
       <div className="flex justify-center gap-2 mb-10 flex-wrap">
         {TRIMESTERS.map(t => (
-          <button key={t.key} onClick={() => setTrimester(t.key)} className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${trimester===t.key?'bg-brand-600 text-white':'bg-gray-100 hover:bg-gray-200'}`}>{t.emoji} {t.nameAr}</button>
+          <button key={t.key} onClick={() => setTrimester(t.key)} className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${trimester===t.key?'bg-brand-600 text-white':'bg-surface-muted hover:bg-gray-200'}`}>{t.emoji} {t.nameAr}</button>
         ))}
       </div>
 
@@ -58,7 +58,7 @@ export default function PregnancyBeautyPage(): JSX.Element {
 
       <h2 className="text-xl font-bold mb-6 text-center">{current.emoji} نصائح {current.nameAr}</h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{current.tips.map((tip, i) => (
-        <Card key={i} padding="md"><div className="flex items-start gap-3"><span className="text-2xl">{tip.icon}</span><div><h4 className="font-bold text-sm">{tip.title}</h4><p className="text-xs text-gray-500 mt-1">{tip.desc}</p></div></div></Card>
+        <Card key={i} padding="md"><div className="flex items-start gap-3"><span className="text-2xl">{tip.icon}</span><div><h4 className="font-bold text-sm">{tip.title}</h4><p className="text-xs text-text-secondary mt-1">{tip.desc}</p></div></div></Card>
       ))}</div>
     </div>
   );

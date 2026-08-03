@@ -33,7 +33,7 @@ export default function AdminBeautyEventsPage(): JSX.Element {
   return (
     <DashboardLayout role="ADMIN">
       <div className="mx-auto max-w-4xl space-y-6">
-        <div><h1 className="text-2xl font-bold">🎪 إدارة الفعاليات</h1><p className="mt-1 text-sm text-gray-500">إنشاء وإدارة فعاليات وورش التجميل</p></div>
+        <div><h1 className="text-2xl font-bold">🎪 إدارة الفعاليات</h1><p className="mt-1 text-sm text-text-secondary">إنشاء وإدارة فعاليات وورش التجميل</p></div>
 
         <Card padding="lg"><h3 className="font-bold mb-3">➕ إنشاء فعالية</h3>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -50,11 +50,11 @@ export default function AdminBeautyEventsPage(): JSX.Element {
         </Card>
 
         <Card padding="lg"><h3 className="font-bold mb-3">📋 الفعاليات</h3>
-          {isLoading ? <CardSkeleton/> : !(events??[]).length ? <p className="text-sm text-gray-400">لا توجد فعاليات</p> :
+          {isLoading ? <CardSkeleton/> : !(events??[]).length ? <p className="text-sm text-text-tertiary">لا توجد فعاليات</p> :
             <div className="space-y-2">{(events??[]).map((e: Record<string,unknown>) => (
               <div key={e.id as number} className="flex items-center justify-between rounded-lg border p-3">
-                <div><p className="font-bold">{(e.nameJson as Record<string,string>)?.ar}</p><p className="text-xs text-gray-500">{e.eventType as string} · {e.location as string} · {new Date(e.startsAt as string).toLocaleDateString('ar-SA')}</p></div>
-                <div className="text-right"><p className="font-bold">{e.price ? formatCurrency(Number(e.price)) : 'مجانية'}</p><span className={`rounded-full px-2 py-0.5 text-xs ${e.isPublished?'bg-green-100 text-green-700':'bg-gray-100'}`}>{e.isPublished ? 'منشور' : 'مخفي'}</span></div>
+                <div><p className="font-bold">{(e.nameJson as Record<string,string>)?.ar}</p><p className="text-xs text-text-secondary">{e.eventType as string} · {e.location as string} · {new Date(e.startsAt as string).toLocaleDateString('ar-SA')}</p></div>
+                <div className="text-right"><p className="font-bold">{e.price ? formatCurrency(Number(e.price)) : 'مجانية'}</p><span className={`rounded-full px-2 py-0.5 text-xs ${e.isPublished?'bg-green-100 text-green-700':'bg-surface-muted'}`}>{e.isPublished ? 'منشور' : 'مخفي'}</span></div>
               </div>
             ))}</div>
           }

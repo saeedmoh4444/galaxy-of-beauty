@@ -14,13 +14,13 @@ export default function TechWalletPage(): JSX.Element {
   return (
     <DashboardLayout role="TECHNICIAN">
       <div className="mx-auto max-w-3xl space-y-6">
-        <div><h1 className="text-2xl font-bold">💰 محفظتي</h1><p className="mt-1 text-sm text-gray-500">أرباحكِ وطلبات السحب</p></div>
+        <div><h1 className="text-2xl font-bold">💰 محفظتي</h1><p className="mt-1 text-sm text-text-secondary">أرباحكِ وطلبات السحب</p></div>
 
         {isLoading ? <CardSkeleton/> : (
           <div className="grid gap-4 sm:grid-cols-3">
-            <Card padding="lg" className="text-center"><p className="text-2xl font-extrabold">{formatCurrency(Number(wallet?.balance ?? 0))}</p><p className="text-xs text-gray-500">الرصيد</p></Card>
-            <Card padding="lg" className="text-center"><p className="text-2xl font-extrabold text-purple-600">{formatCurrency(Number(wallet?.bonusBalance ?? 0))}</p><p className="text-xs text-gray-500">مكافآت</p></Card>
-            <Card padding="lg" className="text-center"><p className="text-2xl font-extrabold text-green-600">{formatCurrency(Number(wallet?.totalEarnings ?? 0))}</p><p className="text-xs text-gray-500">إجمالي الأرباح</p></Card>
+            <Card padding="lg" className="text-center"><p className="text-2xl font-extrabold">{formatCurrency(Number(wallet?.balance ?? 0))}</p><p className="text-xs text-text-secondary">الرصيد</p></Card>
+            <Card padding="lg" className="text-center"><p className="text-2xl font-extrabold text-purple-600">{formatCurrency(Number(wallet?.bonusBalance ?? 0))}</p><p className="text-xs text-text-secondary">مكافآت</p></Card>
+            <Card padding="lg" className="text-center"><p className="text-2xl font-extrabold text-green-600">{formatCurrency(Number(wallet?.totalEarnings ?? 0))}</p><p className="text-xs text-text-secondary">إجمالي الأرباح</p></Card>
           </div>
         )}
 

@@ -17,8 +17,8 @@ export default function LiveStreamPage(): JSX.Element {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
         <span className="text-6xl">🎥</span>
-        <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">البث المباشر</h1>
-        <p className="mt-2 text-gray-500">تابعي جلسات البث المباشر من خبراء التجميل — تعلمي وتفاعلي مباشرة</p>
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">البث المباشر</h1>
+        <p className="mt-2 text-text-secondary">تابعي جلسات البث المباشر من خبراء التجميل — تعلمي وتفاعلي مباشرة</p>
       </div>
 
       {isLoading ? <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{Array.from({length:3},(_,i)=><CardSkeleton key={i}/>)}</div>
@@ -39,7 +39,7 @@ export default function LiveStreamPage(): JSX.Element {
                     </div>
                     <div className="p-4">
                       <h3 className="font-bold group-hover:text-brand-600 transition-colors">{s.titleAr as string}</h3>
-                      <p className="text-xs text-gray-500 mt-1">{s.technicianName as string}</p>
+                      <p className="text-xs text-text-secondary mt-1">{s.technicianName as string}</p>
                     </div>
                   </Card>
                 </Link>
@@ -55,7 +55,7 @@ export default function LiveStreamPage(): JSX.Element {
                 <Card key={s.id as number} padding="lg" className="opacity-70 hover:opacity-100 transition-all">
                   <div className="text-5xl text-center">📅</div>
                   <h3 className="mt-3 font-bold text-center">{s.titleAr as string}</h3>
-                  <p className="text-xs text-gray-500 text-center mt-1">{s.technicianName as string}</p>
+                  <p className="text-xs text-text-secondary text-center mt-1">{s.technicianName as string}</p>
                   <p className="text-xs text-brand-600 text-center mt-2 font-semibold">{new Date(s.startedAt as string).toLocaleDateString('ar-SA', {month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'})}</p>
                 </Card>
               ))}

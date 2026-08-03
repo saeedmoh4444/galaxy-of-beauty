@@ -22,15 +22,15 @@ export default function TechnicianComparePage(): JSX.Element {
       <div className="text-center mb-10">
         <span className="text-6xl">👩‍🎨</span>
         <h1 className="mt-4 text-3xl font-bold">مقارنة الفنيات</h1>
-        <p className="mt-2 text-gray-500">قارني بين الفنيات واختاري الأفضل لكِ (اختاري ٢-٣)</p>
+        <p className="mt-2 text-text-secondary">قارني بين الفنيات واختاري الأفضل لكِ (اختاري ٢-٣)</p>
       </div>
 
       <Card padding="lg" className="mb-8">
         <div className="grid gap-3 sm:grid-cols-2">{TECHNICIANS.map(t => {
           const isSel = selected.includes(t.id);
           return (
-            <button key={t.id} onClick={() => toggle(t.id)} className={`rounded-xl border-2 p-4 text-right transition-all ${isSel?'border-brand-400 bg-brand-50':'border-gray-200 hover:border-gray-300'}`}>
-              <div className="flex items-center gap-3"><span className="text-3xl">{t.emoji}</span><div><p className="font-bold">{t.name}</p><p className="text-xs text-gray-500">{t.specialty} · {t.city} · ⭐{t.rating} · {t.experience}</p></div>{isSel && <span className="mr-auto text-brand-600 text-xl">✅</span>}</div>
+            <button key={t.id} onClick={() => toggle(t.id)} className={`rounded-xl border-2 p-4 text-right transition-all ${isSel?'border-brand-400 bg-brand-50':'border-edge hover:border-edge'}`}>
+              <div className="flex items-center gap-3"><span className="text-3xl">{t.emoji}</span><div><p className="font-bold">{t.name}</p><p className="text-xs text-text-secondary">{t.specialty} · {t.city} · ⭐{t.rating} · {t.experience}</p></div>{isSel && <span className="mr-auto text-brand-600 text-xl">✅</span>}</div>
             </button>
           );
         })}</div>
@@ -48,10 +48,10 @@ export default function TechnicianComparePage(): JSX.Element {
                 <tr className="border-b"><td className="p-3 text-gray-600">💰 السعر</td>{techs.map(t => <td key={t.id} className="p-3 text-center font-bold text-brand-600">{t.price} ر.س</td>)}</tr>
                 <tr className="border-b"><td className="p-3 text-gray-600">📍 المدينة</td>{techs.map(t => <td key={t.id} className="p-3 text-center">{t.city}</td>)}</tr>
                 <tr className="border-b"><td className="p-3 text-gray-600">⏱️ الخبرة</td>{techs.map(t => <td key={t.id} className="p-3 text-center">{t.experience}</td>)}</tr>
-                <tr className="border-b"><td className="p-3 text-gray-600">💅 الخدمات</td>{techs.map(t => <td key={t.id} className="p-3 text-center"><div className="flex flex-wrap gap-1 justify-center">{t.services.map(s => <span key={s} className="rounded-full bg-gray-100 px-2 py-0.5 text-xs">{s}</span>)}</div></td>)}</tr>
+                <tr className="border-b"><td className="p-3 text-gray-600">💅 الخدمات</td>{techs.map(t => <td key={t.id} className="p-3 text-center"><div className="flex flex-wrap gap-1 justify-center">{t.services.map(s => <span key={s} className="rounded-full bg-surface-muted px-2 py-0.5 text-xs">{s}</span>)}</div></td>)}</tr>
                 {Object.entries(DIMS).map(([k, label]) => (
                   <tr key={k} className="border-b"><td className="p-3 text-gray-600">{label}</td>
-                    {techs.map(t => <td key={t.id} className="p-3"><div className="h-2 bg-gray-100 rounded-full"><div className="h-2 bg-brand-600 rounded-full" style={{width:`${t.features[k as keyof typeof t.features]}%`}}/></div></td>)}
+                    {techs.map(t => <td key={t.id} className="p-3"><div className="h-2 bg-surface-muted rounded-full"><div className="h-2 bg-brand-600 rounded-full" style={{width:`${t.features[k as keyof typeof t.features]}%`}}/></div></td>)}
                   </tr>
                 ))}
               </tbody>

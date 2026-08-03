@@ -17,7 +17,7 @@ export default function MonitoringPage(): JSX.Element {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 space-y-6">
-      <div><h1 className="text-2xl font-bold">📊 Monitoring Dashboard</h1><p className="mt-1 text-sm text-gray-500">صحة المنصة في الوقت الحقيقي</p></div>
+      <div><h1 className="text-2xl font-bold">📊 Monitoring Dashboard</h1><p className="mt-1 text-sm text-text-secondary">صحة المنصة في الوقت الحقيقي</p></div>
 
       {isLoading ? <div className="grid gap-4 sm:grid-cols-5">{Array.from({length:5},(_,i)=><CardSkeleton key={i}/>)}</div> : (
         <>
@@ -29,16 +29,16 @@ export default function MonitoringPage(): JSX.Element {
                   {svc.status === 'healthy' ? '✅' : '⚠️'}
                 </span>
                 <p className="font-bold text-sm mt-2">{key === 'database' ? '🗄️ قاعدة البيانات' : key === 'redis' ? '⚡ Redis' : key === 'api' ? '🔌 API' : key === 'socket' ? '📡 Socket.IO' : '💳 المدفوعات'}</p>
-                <p className="text-xs text-gray-500 mt-1">{svc.latency as string}</p>
+                <p className="text-xs text-text-secondary mt-1">{svc.latency as string}</p>
               </Card>
             ))}
           </div>
 
           {/* Performance */}
           <div className="grid gap-4 sm:grid-cols-3">
-            <Card padding="lg" className="text-center"><p className="text-3xl">⚡</p><p className="text-2xl font-bold">{perf.avgResponseTime as string}</p><p className="text-xs text-gray-500">متوسط الاستجابة</p></Card>
-            <Card padding="lg" className="text-center"><p className="text-3xl">📊</p><p className="text-2xl font-bold">{perf.p95ResponseTime as string}</p><p className="text-xs text-gray-500">p95</p></Card>
-            <Card padding="lg" className="text-center"><p className="text-3xl">🐢</p><p className="text-2xl font-bold">{perf.p99ResponseTime as string}</p><p className="text-xs text-gray-500">p99</p></Card>
+            <Card padding="lg" className="text-center"><p className="text-3xl">⚡</p><p className="text-2xl font-bold">{perf.avgResponseTime as string}</p><p className="text-xs text-text-secondary">متوسط الاستجابة</p></Card>
+            <Card padding="lg" className="text-center"><p className="text-3xl">📊</p><p className="text-2xl font-bold">{perf.p95ResponseTime as string}</p><p className="text-xs text-text-secondary">p95</p></Card>
+            <Card padding="lg" className="text-center"><p className="text-3xl">🐢</p><p className="text-2xl font-bold">{perf.p99ResponseTime as string}</p><p className="text-xs text-text-secondary">p99</p></Card>
           </div>
 
           {/* Errors */}
@@ -52,7 +52,7 @@ export default function MonitoringPage(): JSX.Element {
             <Card padding="lg">
               <h3 className="font-bold mb-3">📋 الأخطاء الأخيرة</h3>
               <div className="space-y-2">{recentErrors.map((e: Record<string,unknown>, i: number) => (
-                <div key={i} className={`rounded-lg p-2 text-xs ${(e.level as string) === 'error' ? 'bg-red-50 dark:bg-red-950 text-red-700' : 'bg-amber-50 dark:bg-amber-950 text-amber-700'}`}>{e.message as string}<span className="block text-gray-400 mt-0.5">{new Date(e.timestamp as string).toLocaleTimeString('ar-SA')}</span></div>
+                <div key={i} className={`rounded-lg p-2 text-xs ${(e.level as string) === 'error' ? 'bg-red-50 dark:bg-red-950 text-red-700' : 'bg-amber-50 dark:bg-amber-950 text-amber-700'}`}>{e.message as string}<span className="block text-text-tertiary mt-0.5">{new Date(e.timestamp as string).toLocaleTimeString('ar-SA')}</span></div>
               ))}</div>
             </Card>
           </div>
@@ -60,7 +60,7 @@ export default function MonitoringPage(): JSX.Element {
           {/* Activity Chart */}
           <Card padding="lg">
             <h3 className="font-bold mb-4">📈 النشاط اليومي</h3>
-            <div className="flex items-end gap-1 h-24">{(activity.chart as number[])?.map((v: number, i: number) => <div key={i} className="flex-1 flex flex-col items-center gap-1"><div className="w-full rounded-t bg-gradient-to-t from-brand-400 to-brand-600" style={{ height: `${Math.max(4, (v / 60) * 100)}%` }} /><span className="text-[8px] text-gray-400">{v}</span></div>)}</div>
+            <div className="flex items-end gap-1 h-24">{(activity.chart as number[])?.map((v: number, i: number) => <div key={i} className="flex-1 flex flex-col items-center gap-1"><div className="w-full rounded-t bg-gradient-to-t from-brand-400 to-brand-600" style={{ height: `${Math.max(4, (v / 60) * 100)}%` }} /><span className="text-[8px] text-text-tertiary">{v}</span></div>)}</div>
           </Card>
         </>
       )}

@@ -60,8 +60,8 @@ export default function TutorialsPage(): JSX.Element {
       {/* Header */}
       <div className="mb-10 text-center">
         <span className="text-6xl">📹</span>
-        <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">دروس الجمال</h1>
-        <p className="mt-2 text-gray-500 dark:text-gray-400">
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">دروس الجمال</h1>
+        <p className="mt-2 text-text-secondary dark:text-gray-400">
           تعلمي أسرار الجمال من خبراء معتمدين — دروس بالفيديو خطوة بخطوة
         </p>
       </div>
@@ -73,7 +73,7 @@ export default function TutorialsPage(): JSX.Element {
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(1); }}
           placeholder="🔍 ابحثي في الدروس..."
-          className="w-full max-w-md rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-gray-500"
+          className="w-full max-w-md rounded-xl border border-edge bg-surface-muted px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
         />
       </div>
 
@@ -84,7 +84,7 @@ export default function TutorialsPage(): JSX.Element {
           <button
             onClick={() => { setCategory(undefined); setPage(1); }}
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
-              !category ? 'bg-brand-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+              !category ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
             }`}
           >
             الكل
@@ -93,7 +93,7 @@ export default function TutorialsPage(): JSX.Element {
             <button key={c.key}
               onClick={() => { setCategory(c.key === category ? undefined : c.key); setPage(1); }}
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
-                category === c.key ? 'bg-brand-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                category === c.key ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
               }`}
             >
               {c.emoji} {c.nameAr}
@@ -108,7 +108,7 @@ export default function TutorialsPage(): JSX.Element {
               className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
                 difficulty === d.key
                   ? 'bg-gray-800 text-white dark:bg-white dark:text-gray-800'
-                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                  : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
               }`}
             >
               {d.nameAr}
@@ -148,7 +148,7 @@ export default function TutorialsPage(): JSX.Element {
                     )}
                     {/* Play overlay */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-gray-900 shadow-lg transition-transform group-hover:scale-110">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-text-primary shadow-lg transition-transform group-hover:scale-110">
                         <svg className="h-5 w-5 mr-[-2px]" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                       </div>
                     </div>
@@ -160,7 +160,7 @@ export default function TutorialsPage(): JSX.Element {
 
                   <div className="p-4">
                     {/* Title */}
-                    <h3 className="text-base font-bold text-gray-900 dark:text-gray-100 line-clamp-2 group-hover:text-brand-600 transition-colors">
+                    <h3 className="text-base font-bold text-text-primary dark:text-gray-100 line-clamp-2 group-hover:text-brand-600 transition-colors">
                       {t.titleAr}
                     </h3>
 
@@ -169,11 +169,11 @@ export default function TutorialsPage(): JSX.Element {
                       <div className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-100 text-xs font-bold text-brand-600 dark:bg-brand-900">
                         {t.authorName[0]}
                       </div>
-                      <span className="text-xs text-gray-500">{t.authorName}</span>
+                      <span className="text-xs text-text-secondary">{t.authorName}</span>
                     </div>
 
                     {/* Meta row */}
-                    <div className="mt-3 flex items-center justify-between text-xs text-gray-400">
+                    <div className="mt-3 flex items-center justify-between text-xs text-text-tertiary">
                       <span>{formatViews(t.views)} مشاهدة</span>
                       <span>❤️ {t.likes}</span>
                     </div>

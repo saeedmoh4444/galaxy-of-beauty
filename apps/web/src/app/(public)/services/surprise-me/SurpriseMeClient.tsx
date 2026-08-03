@@ -46,8 +46,8 @@ export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.El
     <div className="mx-auto max-w-2xl px-4 py-16 text-center">
       <div className="mb-8">
         <span className="text-6xl">🎲</span>
-        <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">فاجئيني</h1>
-        <p className="mt-2 text-gray-500 dark:text-gray-400">لا تعرفين ماذا تختارين؟ دعينا نقترح عليكِ!</p>
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">فاجئيني</h1>
+        <p className="mt-2 text-text-secondary dark:text-gray-400">لا تعرفين ماذا تختارين؟ دعينا نقترح عليكِ!</p>
       </div>
 
       {loading ? (
@@ -66,7 +66,7 @@ export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.El
         </div>
       ) : (
         <div className="space-y-4">
-          <p className="text-gray-400">لا توجد خدمات متاحة حالياً</p>
+          <p className="text-text-tertiary">لا توجد خدمات متاحة حالياً</p>
           <Link href="/services"><Button variant="outline">تصفحي الخدمات</Button></Link>
         </div>
       )}
@@ -80,8 +80,8 @@ function ServiceCard({ svc }: { svc: AnyRecord }): JSX.Element {
       <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
         💄
       </div>
-      <h2 className="mt-4 text-xl font-bold text-gray-900 dark:text-gray-100">{ar(svc.titleJson)}</h2>
-      <p className="mt-2 text-sm text-gray-500">{svc.durationMin} دقيقة</p>
+      <h2 className="mt-4 text-xl font-bold text-text-primary dark:text-gray-100">{ar(svc.titleJson)}</h2>
+      <p className="mt-2 text-sm text-text-secondary">{svc.durationMin} دقيقة</p>
       <p className="mt-2 text-2xl font-bold text-brand-600">{Number(svc.basePrice).toFixed(0)} ر.س</p>
       <div className="mt-4 flex justify-center gap-3">
         <Link href={`/services/${svc.id}`}>

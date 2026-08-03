@@ -30,7 +30,7 @@ export default function ServiceMatchmakerPage(): JSX.Element {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
-      <div className="mb-8 text-center"><span className="text-6xl">🎯</span><h1 className="mt-4 text-3xl font-bold">Service Matchmaker</h1><p className="mt-2 text-gray-500">أجيبي على ٣ أسئلة لاكتشاف الخدمة المثالية لكِ</p></div>
+      <div className="mb-8 text-center"><span className="text-6xl">🎯</span><h1 className="mt-4 text-3xl font-bold">Service Matchmaker</h1><p className="mt-2 text-text-secondary">أجيبي على ٣ أسئلة لاكتشاف الخدمة المثالية لكِ</p></div>
 
       {searchAnswers ? (
         isLoading ? <div className="space-y-3">{Array.from({length:4},(_,i)=><CardSkeleton key={i}/>)}</div> :
@@ -47,11 +47,11 @@ export default function ServiceMatchmakerPage(): JSX.Element {
       ) : currentQ ? (
         <Card padding="lg">
           <div className="flex gap-1 mb-6">{qs.map((_, i) => <div key={i} className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-500' : 'bg-gray-200 dark:bg-gray-700'}`} />)}</div>
-          <p className="text-xs text-gray-400 mb-1">السؤال {step + 1} من {qs.length}</p>
+          <p className="text-xs text-text-tertiary mb-1">السؤال {step + 1} من {qs.length}</p>
           <h2 className="text-xl font-bold mb-6">{currentQ.q as string}</h2>
           <div className="space-y-2">
             {(currentQ.opts as Array<Record<string,unknown>>).map((o: Record<string,unknown>) => (
-              <button key={o.k as string} onClick={() => handleAnswer(o.k as string)} className="w-full rounded-xl border-2 border-gray-200 dark:border-gray-700 p-4 text-right hover:border-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 transition-all">{o.l as string}</button>
+              <button key={o.k as string} onClick={() => handleAnswer(o.k as string)} className="w-full rounded-xl border-2 border-edge dark:border-gray-700 p-4 text-right hover:border-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 transition-all">{o.l as string}</button>
             ))}
           </div>
         </Card>

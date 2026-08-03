@@ -40,14 +40,14 @@ export default function AdminAreasPage(): JSX.Element {
     <DashboardLayout role="ADMIN">
       <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">إدارة المناطق</h1>
+          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">إدارة المناطق</h1>
           <Button onClick={() => setShowAdd(true)}>إضافة منطقة</Button>
         </div>
 
         {/* City filter */}
         <div className="flex gap-3">
           <select
-            className="rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+            className="rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
             value={cityFilter || ''}
             onChange={(e) => setCityFilter(Number(e.target.value) || undefined)}
           >
@@ -67,7 +67,7 @@ export default function AdminAreasPage(): JSX.Element {
         ) : (
           <Card padding="none">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+              <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400">
                 <tr>
                   <th className="p-3 text-right">المنطقة</th>
                   <th className="p-3 text-right">المدينة</th>
@@ -77,9 +77,9 @@ export default function AdminAreasPage(): JSX.Element {
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                 {areas.map((a) => (
-                  <tr key={a.id} className="hover:bg-gray-50 dark:hover:bg-gray-900">
+                  <tr key={a.id} className="hover:bg-surface-muted dark:hover:bg-gray-900">
                     <td className="p-3 font-medium">{a.nameAr}</td>
-                    <td className="p-3 text-gray-500">{a.city?.nameAr ?? ''}</td>
+                    <td className="p-3 text-text-secondary">{a.city?.nameAr ?? ''}</td>
                     <td className="p-3">
                       <span className={`rounded px-2 py-0.5 text-xs ${a.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                         {a.isActive ? 'نشط' : 'معطل'}
@@ -101,10 +101,10 @@ export default function AdminAreasPage(): JSX.Element {
         {showAdd && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={() => setShowAdd(false)}>
             <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900" onClick={(e) => e.stopPropagation()}>
-              <h3 className="mb-4 text-lg font-bold text-gray-900 dark:text-gray-100">إضافة منطقة جديدة</h3>
+              <h3 className="mb-4 text-lg font-bold text-text-primary dark:text-gray-100">إضافة منطقة جديدة</h3>
               <div className="space-y-3">
                 <select
-                  className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
                   value={newArea.cityId}
                   onChange={(e) => setNewArea({ ...newArea, cityId: e.target.value })}
                 >

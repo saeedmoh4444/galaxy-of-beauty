@@ -34,15 +34,15 @@ export default function DiscoverPage(): JSX.Element {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="text-center mb-10">
         <span className="text-6xl">🧭</span>
-        <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">اكتشفي جالكسي بيوتي</h1>
-        <p className="mt-2 text-gray-500">كل ما تحتاجينه للعناية بجمالكِ في مكان واحد</p>
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">اكتشفي جالكسي بيوتي</h1>
+        <p className="mt-2 text-text-secondary">كل ما تحتاجينه للعناية بجمالكِ في مكان واحد</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {FEATURES.map((f, i) => (
           <Link key={i} href={f.href}>
             <Card hover padding="md" className={`h-full bg-gradient-to-br ${f.color} dark:bg-none dark:bg-gray-900`}>
               <span className="text-3xl">{f.emoji}</span>
-              <h3 className="mt-3 font-bold text-sm text-gray-900 dark:text-gray-100">{f.title}</h3>
+              <h3 className="mt-3 font-bold text-sm text-text-primary dark:text-gray-100">{f.title}</h3>
               <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">{f.desc}</p>
             </Card>
           </Link>

@@ -12,7 +12,7 @@ type UserGrowthDay = NonNullable<RouterOutput['analytics']['userGrowth']>['daily
 function StatCard({ title, value, color }: { title: string; value: string; color: string }): JSX.Element {
   return (
     <Card className="text-center">
-      <p className="text-sm text-gray-500">{title}</p>
+      <p className="text-sm text-text-secondary">{title}</p>
       <p className={`text-2xl font-bold ${color}`}>{value}</p>
     </Card>
   );
@@ -84,7 +84,7 @@ export default function AdminAnalyticsPage(): JSX.Element {
                     style={{ height: `${Math.max(pct, 2)}%`, minHeight: 4 }}
                     title={`${r.date ?? ''}: ${formatCurrency(amount)}`}
                   />
-                  <span className="mt-1 text-[10px] text-gray-400">
+                  <span className="mt-1 text-[10px] text-text-tertiary">
                     {r.date?.slice(5, 10) ?? ''}
                   </span>
                 </div>
@@ -107,10 +107,10 @@ export default function AdminAnalyticsPage(): JSX.Element {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200 text-right dark:border-gray-800">
-                  <th className="pb-2 font-medium text-gray-500">الاسم</th>
-                  <th className="pb-2 font-medium text-gray-500">الحجوزات المكتملة</th>
-                  <th className="pb-2 font-medium text-gray-500">التقييم</th>
+                <tr className="border-b border-edge text-right dark:border-gray-800">
+                  <th className="pb-2 font-medium text-text-secondary">الاسم</th>
+                  <th className="pb-2 font-medium text-text-secondary">الحجوزات المكتملة</th>
+                  <th className="pb-2 font-medium text-text-secondary">التقييم</th>
                 </tr>
               </thead>
               <tbody>

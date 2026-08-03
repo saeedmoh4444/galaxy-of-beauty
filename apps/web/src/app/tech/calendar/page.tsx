@@ -30,7 +30,7 @@ export default function TechCalendarPage(): JSX.Element {
                 </div>
                 <div>
                   <p className="font-semibold text-green-700 dark:text-green-300">متصل</p>
-                  <p className="text-sm text-gray-500">{st.email as string}</p>
+                  <p className="text-sm text-text-secondary">{st.email as string}</p>
                 </div>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -60,11 +60,11 @@ export default function TechCalendarPage(): JSX.Element {
         ) : (
           <Card>
             <div className="space-y-4 text-center">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 text-3xl dark:bg-gray-800">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-surface-muted text-3xl dark:bg-gray-800">
                 📅
               </div>
               <h2 className="text-lg font-semibold">ربط تقويم قوقل</h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-text-secondary">
                 اربط تقويم قوقل الخاص بك لعرض مواعيد الحجوزات تلقائياً ومزامنتها مع تقويمك الشخصي.
               </p>
               <Button

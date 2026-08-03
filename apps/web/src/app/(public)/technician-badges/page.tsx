@@ -41,8 +41,8 @@ export default function TechnicianBadgesPage(): JSX.Element {
       {/* Header */}
       <div className="mb-10 text-center">
         <span className="text-6xl">🏅</span>
-        <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">شارات الفنيات</h1>
-        <p className="mt-2 text-gray-500 dark:text-gray-400">
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">شارات الفنيات</h1>
+        <p className="mt-2 text-text-secondary dark:text-gray-400">
           تعرفي على شارات التميز التي تحصل عليها فنياتنا — دليل على الاحترافية والجودة
         </p>
       </div>
@@ -71,8 +71,8 @@ export default function TechnicianBadgesPage(): JSX.Element {
                     meta.emoji
                   )}
                 </div>
-                <h3 className="mt-4 text-lg font-bold text-gray-900 dark:text-gray-100">{name}</h3>
-                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{desc}</p>
+                <h3 className="mt-4 text-lg font-bold text-text-primary dark:text-gray-100">{name}</h3>
+                <p className="mt-1 text-xs text-text-secondary dark:text-gray-400 leading-relaxed">{desc}</p>
                 <div className={`mt-3 inline-block rounded-full bg-gradient-to-r ${meta.gradient} px-3 py-0.5 text-[10px] font-bold text-white`}>
                   {badge.key.replace(/_/g, ' ').toUpperCase()}
                 </div>

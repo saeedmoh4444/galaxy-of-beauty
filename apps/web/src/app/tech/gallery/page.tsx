@@ -11,7 +11,7 @@ export default function TechGalleryPage(): JSX.Element {
   return (
     <DashboardLayout role="TECHNICIAN">
       <div className="mx-auto max-w-3xl space-y-6">
-        <div><h1 className="text-2xl font-bold">🖼️ معرض أعمالي</h1><p className="mt-1 text-sm text-gray-500">صور قبل وبعد لعملائكِ</p></div>
+        <div><h1 className="text-2xl font-bold">🖼️ معرض أعمالي</h1><p className="mt-1 text-sm text-text-secondary">صور قبل وبعد لعملائكِ</p></div>
 
         <Card padding="lg"><h3 className="font-bold mb-3">📤 رفع صورة جديدة</h3>
           <div className="space-y-3">

@@ -36,7 +36,7 @@ export default function TechCalendarPage(): JSX.Element {
       <div className="mb-8 text-center">
         <span className="text-6xl">📅</span>
         <h1 className="mt-4 text-3xl font-bold">تقويم المواعيد</h1>
-        <p className="mt-2 text-gray-500">تصفّحي المواعيد المتاحة للفنيات واحجزي مباشرة</p>
+        <p className="mt-2 text-text-secondary">تصفّحي المواعيد المتاحة للفنيات واحجزي مباشرة</p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -51,7 +51,7 @@ export default function TechCalendarPage(): JSX.Element {
           {isLoading ? <CardSkeleton /> :
            isError ? <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} /> : (
             <div className="grid grid-cols-7 gap-1 text-center">
-              {DAYS.map((d) => <div key={d} className="text-xs font-semibold text-gray-400 py-1">{d}</div>)}
+              {DAYS.map((d) => <div key={d} className="text-xs font-semibold text-text-tertiary py-1">{d}</div>)}
               {Array.from({ length: firstDay }, (_, i) => <div key={`e${i}`} />)}
               {Array.from({ length: daysInMonth }, (_, i) => {
                 const dateStr = `${year}-${String(month).padStart(2,'0')}-${String(i+1).padStart(2,'0')}`;
@@ -61,7 +61,7 @@ export default function TechCalendarPage(): JSX.Element {
                   <div key={i} className={`rounded-lg py-2 text-sm transition-all ${
                     available ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 font-bold cursor-pointer hover:bg-green-200' :
                     isToday ? 'bg-brand-100 dark:bg-brand-900 text-brand-700 font-semibold' :
-                    'text-gray-400'
+                    'text-text-tertiary'
                   }`}>
                     {i + 1}
                     {available && <span className="block text-[9px]">●</span>}
@@ -78,11 +78,11 @@ export default function TechCalendarPage(): JSX.Element {
           {tLoad ? <CardSkeleton /> : (
             <div className="space-y-2 max-h-96 overflow-y-auto">
               {techs.map((t: Record<string,unknown>) => (
-                <button key={t.id as number} onClick={() => setTechId(String(t.id))} className={`w-full text-right rounded-lg p-3 transition-all flex items-center gap-3 ${String(t.id) === techId ? 'bg-brand-50 dark:bg-brand-950 ring-2 ring-brand-300' : 'hover:bg-gray-50 dark:hover:bg-gray-800'}`}>
+                <button key={t.id as number} onClick={() => setTechId(String(t.id))} className={`w-full text-right rounded-lg p-3 transition-all flex items-center gap-3 ${String(t.id) === techId ? 'bg-brand-50 dark:bg-brand-950 ring-2 ring-brand-300' : 'hover:bg-surface-muted dark:hover:bg-gray-800'}`}>
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-purple-500 text-white text-sm font-bold">{(t.name as string)?.[0] ?? '👩'}</div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold truncate">{t.name as string}</p>
-                    <p className="text-xs text-gray-500">⭐ {t.rating as number}</p>
+                    <p className="text-xs text-text-secondary">⭐ {t.rating as number}</p>
                   </div>
                   {String(t.id) === techId && <span className="text-brand-500 text-xs">✓</span>}
                 </button>
@@ -94,7 +94,7 @@ export default function TechCalendarPage(): JSX.Element {
 
       {techName && (
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-500">👩‍🎨 {techName} · {availableDates.length} يوم متاح هذا الشهر</p>
+          <p className="text-sm text-text-secondary">👩‍🎨 {techName} · {availableDates.length} يوم متاح هذا الشهر</p>
           <Link href="/bookings/create" className="mt-3 inline-block"><Button size="sm">احجزي الآن ←</Button></Link>
         </div>
       )}

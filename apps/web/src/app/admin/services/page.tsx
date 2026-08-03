@@ -156,9 +156,9 @@ export default function AdminServicesPage(): JSX.Element {
           className="w-64"
         />
         <div>
-          <label className="mb-1 block text-xs text-gray-500">التصنيف</label>
+          <label className="mb-1 block text-xs text-text-secondary">التصنيف</label>
           <select
-            className="rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+            className="rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
             value={catFilter ?? ''}
             onChange={(e) => setCatFilter(e.target.value ? Number(e.target.value) : null)}
           >
@@ -174,7 +174,7 @@ export default function AdminServicesPage(): JSX.Element {
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`rounded-full px-3 py-1 text-xs font-medium ${statusFilter === s ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${statusFilter === s ? 'bg-brand-600 text-white' : 'bg-surface-muted text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}
             >
               {s === 'ALL' ? 'الكل' : s === 'ACTIVE' ? 'نشط' : 'غير نشط'}
             </button>
@@ -202,7 +202,7 @@ export default function AdminServicesPage(): JSX.Element {
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <p className="font-semibold">{titles.ar ?? ''} / {titles.en ?? ''}</p>
-                    <div className="mt-1 flex flex-wrap gap-2 text-sm text-gray-500">
+                    <div className="mt-1 flex flex-wrap gap-2 text-sm text-text-secondary">
                       <span>{catName}</span>
                       <span>{formatCurrency(Number(svc.basePrice ?? 0))}</span>
                       <span>{svc.durationMin} دقيقة</span>
@@ -228,13 +228,13 @@ export default function AdminServicesPage(): JSX.Element {
                   <div className="mt-4 border-t border-gray-100 pt-3 dark:border-gray-800">
                     <h4 className="mb-2 text-sm font-semibold">المتغيرات</h4>
                     {variantCount === 0 ? (
-                      <p className="mb-2 text-xs text-gray-500">لا توجد متغيرات</p>
+                      <p className="mb-2 text-xs text-text-secondary">لا توجد متغيرات</p>
                     ) : (
                       <div className="mb-3 space-y-1">
                         {getVariants(svc).map((v: VariantItem) => {
                           const vNames = (v.nameJson as { ar?: string; en?: string });
                           return (
-                          <div key={v.id} className="flex items-center justify-between rounded bg-gray-50 px-3 py-1.5 text-sm dark:bg-gray-900">
+                          <div key={v.id} className="flex items-center justify-between rounded bg-surface-muted px-3 py-1.5 text-sm dark:bg-gray-900">
                             <span>{vNames.ar ?? ''} / {vNames.en ?? ''}</span>
                             <span>{formatCurrency(Number(v.priceDelta ?? 0))} - {v.durationDelta ?? 0} دقيقة</span>
                             <Button size="sm" variant="danger" onClick={() => removeVariantMut.mutate({ id: v.id })}>حذف</Button>
@@ -291,9 +291,9 @@ export default function AdminServicesPage(): JSX.Element {
           <Input label="السعر الأساسي" type="number" value={form.basePrice} onChange={(e) => setForm({ ...form, basePrice: Number(e.target.value) })} />
           <Input label="المدة (دقيقة)" type="number" value={form.durationMin} onChange={(e) => setForm({ ...form, durationMin: Number(e.target.value) })} />
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">التصنيف</label>
+            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">التصنيف</label>
             <select
-              className="w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               value={form.categoryId || ''}
               onChange={(e) => setForm({ ...form, categoryId: Number(e.target.value) || 0 })}
             >
@@ -326,9 +326,9 @@ export default function AdminServicesPage(): JSX.Element {
           <Input label="السعر الأساسي" type="number" value={form.basePrice} onChange={(e) => setForm({ ...form, basePrice: Number(e.target.value) })} />
           <Input label="المدة (دقيقة)" type="number" value={form.durationMin} onChange={(e) => setForm({ ...form, durationMin: Number(e.target.value) })} />
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">التصنيف</label>
+            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">التصنيف</label>
             <select
-              className="w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               value={form.categoryId || ''}
               onChange={(e) => setForm({ ...form, categoryId: Number(e.target.value) || 0 })}
             >

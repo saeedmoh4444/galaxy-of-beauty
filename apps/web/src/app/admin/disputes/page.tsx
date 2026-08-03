@@ -15,8 +15,8 @@ const statusBadge = (status: string): { label: string; className: string } => {
     case 'UNDER_REVIEW': return { label: 'قيد المراجعة', className: 'bg-amber-100 text-amber-700' };
     case 'RESOLVED_CUSTOMER': return { label: 'لصالح العميل', className: 'bg-green-100 text-green-700' };
     case 'RESOLVED_TECHNICIAN': return { label: 'لصالح الفنية', className: 'bg-blue-100 text-blue-700' };
-    case 'CLOSED': return { label: 'مغلق', className: 'bg-gray-100 text-gray-700' };
-    default: return { label: status, className: 'bg-gray-100 text-gray-700' };
+    case 'CLOSED': return { label: 'مغلق', className: 'bg-surface-muted text-text-primary' };
+    default: return { label: status, className: 'bg-surface-muted text-text-primary' };
   }
 };
 
@@ -51,7 +51,7 @@ export default function AdminDisputesPage(): JSX.Element {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">إدارة النزاعات</h1>
-        <p className="text-sm text-gray-500">إجمالي: {disputes.length}</p>
+        <p className="text-sm text-text-secondary">إجمالي: {disputes.length}</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -61,7 +61,7 @@ export default function AdminDisputesPage(): JSX.Element {
             <button
               key={tab}
               onClick={() => setStatusTab(tab)}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium ${statusTab === tab ? 'bg-brand-600 text-white' : 'bg-gray-100 dark:bg-gray-800 dark:text-gray-300'}`}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium ${statusTab === tab ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800 dark:text-gray-300'}`}
             >
               {badge.label}
             </button>
@@ -85,7 +85,7 @@ export default function AdminDisputesPage(): JSX.Element {
                       <p className="font-semibold">{d.booking.bookingCode}</p>
                       <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${badge.className}`}>{badge.label}</span>
                     </div>
-                    <div className="mt-1 flex flex-wrap gap-3 text-sm text-gray-500">
+                    <div className="mt-1 flex flex-wrap gap-3 text-sm text-text-secondary">
                       <span>العميل: {d.raiser?.name ?? '—'}</span>
                       <span>السبب: {d.reason ?? '—'}</span>
                       <span>{d.createdAt ? new Date(d.createdAt).toLocaleDateString('ar-SA') : '—'}</span>
@@ -115,9 +115,9 @@ export default function AdminDisputesPage(): JSX.Element {
             <p className="text-sm"><strong>السبب:</strong> {selected.reason}</p>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">نتيجة النزاع</label>
+              <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">نتيجة النزاع</label>
               <select
-                className="w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+                className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 value={resolveStatus}
                 onChange={(e) => setResolveStatus(e.target.value)}
               >
@@ -128,9 +128,9 @@ export default function AdminDisputesPage(): JSX.Element {
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">تفاصيل الحل</label>
+              <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">تفاصيل الحل</label>
               <textarea
-                className="w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+                className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 rows={4}
                 value={resolutionText}
                 onChange={(e) => setResolutionText(e.target.value)}

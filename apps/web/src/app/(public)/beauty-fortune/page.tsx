@@ -47,8 +47,8 @@ export default function BeautyFortunePage(): JSX.Element {
         {!fortune && !opening && (
           <div>
             <span className="text-8xl">🥠</span>
-            <h1 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-gray-100">بسكويت الجمال</h1>
-            <p className="mt-2 text-gray-500 dark:text-gray-400">اكسري البسكويت واكتشفي رسالتكِ الجمالية اليوم</p>
+            <h1 className="mt-6 text-3xl font-extrabold text-text-primary dark:text-gray-100">بسكويت الجمال</h1>
+            <p className="mt-2 text-text-secondary dark:text-gray-400">اكسري البسكويت واكتشفي رسالتكِ الجمالية اليوم</p>
             <Button onClick={openFortune} size="lg" className="mt-8">🥠 افتحي بسكويتكِ</Button>
           </div>
         )}
@@ -56,14 +56,14 @@ export default function BeautyFortunePage(): JSX.Element {
         {opening && (
           <div className="animate-pulse">
             <span className="text-8xl">🥠</span>
-            <p className="mt-4 text-gray-500">جاري فتح البسكويت...</p>
+            <p className="mt-4 text-text-secondary">جاري فتح البسكويت...</p>
           </div>
         )}
 
         {fortune && !opening && (
           <Card padding="lg" className="bg-white/90 backdrop-blur dark:bg-gray-900/90">
             <span className="text-6xl">{fortune.emoji}</span>
-            <p className="mt-6 text-2xl font-bold text-gray-900 dark:text-gray-100 leading-relaxed">{fortune.text}</p>
+            <p className="mt-6 text-2xl font-bold text-text-primary dark:text-gray-100 leading-relaxed">{fortune.text}</p>
             <div className="mt-6 rounded-xl bg-brand-50 p-4 dark:bg-brand-950">
               <p className="text-sm font-medium text-brand-700 dark:text-brand-300">💡 نصيحة اليوم</p>
               <p className="mt-1 text-brand-600 dark:text-brand-400">{fortune.tip}</p>

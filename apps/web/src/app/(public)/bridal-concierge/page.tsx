@@ -116,8 +116,8 @@ function BridalDashboard(): JSX.Element {
     <>
       {/* Dashboard Header */}
       <div className="text-center sm:text-right">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">👰 لوحة تخطيط الزفاف</h1>
-        <p className="mt-1 text-sm text-gray-500">تابعي تقدمكِ نحو يوم زفافكِ ✨</p>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">👰 لوحة تخطيط الزفاف</h1>
+        <p className="mt-1 text-sm text-text-secondary">تابعي تقدمكِ نحو يوم زفافكِ ✨</p>
       </div>
 
       {/* Progress Steps */}
@@ -125,10 +125,10 @@ function BridalDashboard(): JSX.Element {
         <div className="grid grid-cols-4 gap-2">
           {STEPS.map((step, idx) => (
             <div key={step.key} className="text-center">
-              <div className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full text-2xl transition-all ${idx < currentStep ? 'bg-green-100 ring-2 ring-green-500 dark:bg-green-900' : idx === currentStep ? 'bg-brand-100 ring-2 ring-brand-500 animate-pulse dark:bg-brand-900' : 'bg-gray-100 dark:bg-gray-800 opacity-50'}`}>
+              <div className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full text-2xl transition-all ${idx < currentStep ? 'bg-green-100 ring-2 ring-green-500 dark:bg-green-900' : idx === currentStep ? 'bg-brand-100 ring-2 ring-brand-500 animate-pulse dark:bg-brand-900' : 'bg-surface-muted dark:bg-gray-800 opacity-50'}`}>
                 {idx < currentStep ? '✓' : step.emoji}
               </div>
-              <p className="mt-1.5 text-xs font-semibold text-gray-700 dark:text-gray-300 hidden sm:block">{step.label}</p>
+              <p className="mt-1.5 text-xs font-semibold text-text-primary dark:text-gray-300 hidden sm:block">{step.label}</p>
             </div>
           ))}
         </div>
@@ -140,7 +140,7 @@ function BridalDashboard(): JSX.Element {
       {/* Wedding Details */}
       <Card padding="lg">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">📋 تفاصيل الزفاف</h2>
+          <h2 className="text-lg font-bold text-text-primary dark:text-gray-100">📋 تفاصيل الزفاف</h2>
           <Button size="sm" variant="ghost" onClick={openProfileForm}>{hasProfile ? 'تعديل' : 'إضافة'}</Button>
         </div>
         {!hasProfile ? (
@@ -150,16 +150,16 @@ function BridalDashboard(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {concierge?.weddingDate && (
                 <div className="rounded-xl bg-brand-50 p-3 text-center dark:bg-brand-950">
-                  <p className="text-3xl">📅</p><p className="mt-1 text-xs text-gray-500">تاريخ الزفاف</p>
+                  <p className="text-3xl">📅</p><p className="mt-1 text-xs text-text-secondary">تاريخ الزفاف</p>
                   <p className="text-sm font-bold">{new Date(concierge.weddingDate).toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                   {daysUntil !== null && daysUntil > 0 && <p className="mt-1 text-xs font-semibold text-brand-600">{daysUntil} يوم متبقي</p>}
                 </div>
               )}
-              {concierge?.venue && <div className="rounded-xl bg-purple-50 p-3 text-center dark:bg-purple-950"><p className="text-3xl">📍</p><p className="mt-1 text-xs text-gray-500">المكان</p><p className="text-sm font-bold">{concierge.venue}</p></div>}
-              {concierge?.guestCount && <div className="rounded-xl bg-pink-50 p-3 text-center dark:bg-pink-950"><p className="text-3xl">👥</p><p className="mt-1 text-xs text-gray-500">الضيوف</p><p className="text-sm font-bold">{concierge.guestCount} ضيف</p></div>}
-              {concierge?.budget && <div className="rounded-xl bg-green-50 p-3 text-center dark:bg-green-950"><p className="text-3xl">💰</p><p className="mt-1 text-xs text-gray-500">الميزانية</p><p className="text-sm font-bold">{formatCurrency(concierge.budget)} ر.س</p></div>}
+              {concierge?.venue && <div className="rounded-xl bg-purple-50 p-3 text-center dark:bg-purple-950"><p className="text-3xl">📍</p><p className="mt-1 text-xs text-text-secondary">المكان</p><p className="text-sm font-bold">{concierge.venue}</p></div>}
+              {concierge?.guestCount && <div className="rounded-xl bg-pink-50 p-3 text-center dark:bg-pink-950"><p className="text-3xl">👥</p><p className="mt-1 text-xs text-text-secondary">الضيوف</p><p className="text-sm font-bold">{concierge.guestCount} ضيف</p></div>}
+              {concierge?.budget && <div className="rounded-xl bg-green-50 p-3 text-center dark:bg-green-950"><p className="text-3xl">💰</p><p className="mt-1 text-xs text-text-secondary">الميزانية</p><p className="text-sm font-bold">{formatCurrency(concierge.budget)} ر.س</p></div>}
             </div>
-            {concierge?.notes && <div className="mt-4 rounded-xl bg-gray-50 p-3 dark:bg-gray-800"><p className="text-xs text-gray-400 mb-1">📝 ملاحظات</p><p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{concierge.notes}</p></div>}
+            {concierge?.notes && <div className="mt-4 rounded-xl bg-surface-muted p-3 dark:bg-gray-800"><p className="text-xs text-text-tertiary mb-1">📝 ملاحظات</p><p className="text-sm text-text-primary dark:text-gray-300 whitespace-pre-wrap">{concierge.notes}</p></div>}
           </>
         )}
       </Card>
@@ -167,7 +167,7 @@ function BridalDashboard(): JSX.Element {
       {/* Service Trials */}
       <Card padding="lg">
         <div className="flex items-center justify-between mb-4">
-          <div><h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">💄 خدمات التجميل</h2><p className="text-xs text-gray-500">{completedTrials} / {services.length} تجربة مكتملة</p></div>
+          <div><h2 className="text-lg font-bold text-text-primary dark:text-gray-100">💄 خدمات التجميل</h2><p className="text-xs text-text-secondary">{completedTrials} / {services.length} تجربة مكتملة</p></div>
           <Button size="sm" onClick={() => setShowAddService(true)}>+ إضافة خدمة</Button>
         </div>
         {services.length === 0 ? (
@@ -177,11 +177,11 @@ function BridalDashboard(): JSX.Element {
             {services.map((svc) => (
               <div key={svc.id} className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
                 <div className="flex items-center gap-3">
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-full text-lg ${svc.isTrialDone ? 'bg-green-100 dark:bg-green-900' : 'bg-gray-100 dark:bg-gray-800'}`}>{svc.isTrialDone ? '✅' : '⏳'}</div>
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-full text-lg ${svc.isTrialDone ? 'bg-green-100 dark:bg-green-900' : 'bg-surface-muted dark:bg-gray-800'}`}>{svc.isTrialDone ? '✅' : '⏳'}</div>
                   <div>
                     <p className="text-sm font-semibold">خدمة #{svc.serviceId}</p>
-                    {svc.trialDate && <p className="text-xs text-gray-500">📅 تجربة: {new Date(svc.trialDate).toLocaleDateString('ar-SA', { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>}
-                    {svc.notes && <p className="text-xs text-gray-400 mt-0.5">📝 {svc.notes}</p>}
+                    {svc.trialDate && <p className="text-xs text-text-secondary">📅 تجربة: {new Date(svc.trialDate).toLocaleDateString('ar-SA', { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>}
+                    {svc.notes && <p className="text-xs text-text-tertiary mt-0.5">📝 {svc.notes}</p>}
                   </div>
                 </div>
                 {!svc.isTrialDone && <Button size="sm" variant="ghost" onClick={() => markTrialMut.mutate({ serviceId: svc.id })} loading={markTrialMut.isPending}>تمت التجربة ✓</Button>}
@@ -193,7 +193,7 @@ function BridalDashboard(): JSX.Element {
 
       {/* Tips */}
       <Card padding="lg" className="bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-950 dark:to-purple-950 border-none">
-        <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3">💡 نصائح للعروس</h3>
+        <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">💡 نصائح للعروس</h3>
         <div className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
           <p>✨ ابدئي جلسات العناية بالبشرة قبل ٣-٦ أشهر من الزفاف</p>
           <p>💄 احجزي تجربة المكياج قبل شهرين على الأقل</p>
@@ -205,10 +205,10 @@ function BridalDashboard(): JSX.Element {
       {/* Modals */}
       <Modal open={showProfileForm} onClose={() => setShowProfileForm(false)} title="تفاصيل الزفاف">
         <div className="space-y-4">
-          <div><label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">تاريخ الزفاف</label><input type="datetime-local" value={weddingDate} onChange={(e) => setWeddingDate(e.target.value)} className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div>
-          <div className="grid gap-4 sm:grid-cols-2"><div><label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">المكان</label><input type="text" value={venue} onChange={(e) => setVenue(e.target.value)} placeholder="قاعة الأفراح، الرياض" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div><div><label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">عدد الضيوف</label><input type="number" value={guestCount} onChange={(e) => setGuestCount(e.target.value)} placeholder="٢٠٠" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div></div>
-          <div><label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">الميزانية (ر.س)</label><input type="number" value={budget} onChange={(e) => setBudget(e.target.value)} placeholder="٥٠٠٠" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div>
-          <div><label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">ملاحظات</label><textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="أي ملاحظات أو طلبات خاصة..." rows={3} className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div>
+          <div><label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">تاريخ الزفاف</label><input type="datetime-local" value={weddingDate} onChange={(e) => setWeddingDate(e.target.value)} className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div>
+          <div className="grid gap-4 sm:grid-cols-2"><div><label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">المكان</label><input type="text" value={venue} onChange={(e) => setVenue(e.target.value)} placeholder="قاعة الأفراح، الرياض" className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div><div><label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">عدد الضيوف</label><input type="number" value={guestCount} onChange={(e) => setGuestCount(e.target.value)} placeholder="٢٠٠" className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div></div>
+          <div><label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">الميزانية (ر.س)</label><input type="number" value={budget} onChange={(e) => setBudget(e.target.value)} placeholder="٥٠٠٠" className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div>
+          <div><label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">ملاحظات</label><textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="أي ملاحظات أو طلبات خاصة..." rows={3} className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div>
           {formError && <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-950 dark:text-red-400">{formError}</div>}
           <div className="flex justify-end gap-3 pt-2"><Button variant="ghost" onClick={() => setShowProfileForm(false)}>إلغاء</Button><Button onClick={handleSaveProfile} loading={upsertMut.isPending}>💾 حفظ</Button></div>
         </div>
@@ -216,9 +216,9 @@ function BridalDashboard(): JSX.Element {
 
       <Modal open={showAddService} onClose={() => setShowAddService(false)} title="إضافة خدمة">
         <div className="space-y-4">
-          <div><label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">معرف الخدمة</label><input type="number" value={newServiceId} onChange={(e) => setNewServiceId(e.target.value)} placeholder="مثال: ١ (مكياج)" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div>
-          <div><label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">موعد التجربة (اختياري)</label><input type="datetime-local" value={newTrialDate} onChange={(e) => setNewTrialDate(e.target.value)} className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div>
-          <div><label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">ملاحظات</label><textarea value={newServiceNotes} onChange={(e) => setNewServiceNotes(e.target.value)} placeholder="أي ملاحظات عن الخدمة..." rows={2} className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div>
+          <div><label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">معرف الخدمة</label><input type="number" value={newServiceId} onChange={(e) => setNewServiceId(e.target.value)} placeholder="مثال: ١ (مكياج)" className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div>
+          <div><label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">موعد التجربة (اختياري)</label><input type="datetime-local" value={newTrialDate} onChange={(e) => setNewTrialDate(e.target.value)} className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div>
+          <div><label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">ملاحظات</label><textarea value={newServiceNotes} onChange={(e) => setNewServiceNotes(e.target.value)} placeholder="أي ملاحظات عن الخدمة..." rows={2} className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" /></div>
           {serviceError && <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-950 dark:text-red-400">{serviceError}</div>}
           <div className="flex justify-end gap-3 pt-2"><Button variant="ghost" onClick={() => setShowAddService(false)}>إلغاء</Button><Button onClick={handleAddService} loading={addServiceMut.isPending}>+ إضافة</Button></div>
         </div>
@@ -235,8 +235,8 @@ function MarketingLanding(): JSX.Element {
     <>
       <div className="text-center">
         <span className="text-7xl">👰</span>
-        <h1 className="mt-6 text-4xl font-extrabold text-gray-900 dark:text-gray-100">خدمة تخطيط زفافكِ</h1>
-        <p className="mt-4 text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
+        <h1 className="mt-6 text-4xl font-extrabold text-text-primary dark:text-gray-100">خدمة تخطيط زفافكِ</h1>
+        <p className="mt-4 text-lg text-text-secondary dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
           يوم زفافكِ يستحق الأفضل. صممنا لكِ خدمة شاملة لتخطيط إطلالتكِ من الألف إلى الياء — تجارب مكياج، عناية بالبشرة، تسريحة الشعر، والمزيد.
         </p>
         <div className="mt-6">
@@ -248,8 +248,8 @@ function MarketingLanding(): JSX.Element {
         {MARKETING_FEATURES.map((f, i) => (
           <Card key={i} padding="lg" className="text-center transition-all hover:shadow-lg">
             <div className="text-4xl">{f.icon}</div>
-            <h3 className="mt-3 text-lg font-bold text-gray-900 dark:text-gray-100">{f.title}</h3>
-            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{f.desc}</p>
+            <h3 className="mt-3 text-lg font-bold text-text-primary dark:text-gray-100">{f.title}</h3>
+            <p className="mt-2 text-sm text-text-secondary dark:text-gray-400 leading-relaxed">{f.desc}</p>
           </Card>
         ))}
       </div>

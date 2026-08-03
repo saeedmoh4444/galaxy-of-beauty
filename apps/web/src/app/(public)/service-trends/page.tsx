@@ -12,7 +12,7 @@ export default function ServiceTrendsPage(): JSX.Element {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
-      <div className="mb-8 text-center"><span className="text-6xl">📊</span><h1 className="mt-4 text-3xl font-bold">توجهات الخدمات</h1><p className="mt-2 text-gray-500">اكتشفي أكثر الخدمات طلباً حسب الموسم</p></div>
+      <div className="mb-8 text-center"><span className="text-6xl">📊</span><h1 className="mt-4 text-3xl font-bold">توجهات الخدمات</h1><p className="mt-2 text-text-secondary">اكتشفي أكثر الخدمات طلباً حسب الموسم</p></div>
 
       {isLoading ? <CardSkeleton /> : isError ? <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} /> : (
         <>
@@ -22,7 +22,7 @@ export default function ServiceTrendsPage(): JSX.Element {
               {trends.map((m: Record<string,unknown>) => (
                 <div key={m.month as string} className="flex-1 flex flex-col items-center gap-1">
                   {cats.map((cat: string) => { const val = (m[cat] as number) || 0; return <div key={cat} style={{ height: `${val * 0.3}px`, backgroundColor: CAT_COLORS[cat] ?? '#999', width: `${80 / cats.length}%` }} className="rounded-t" />; })}
-                  <span className="text-[9px] text-gray-400 mt-1">{m.month as string}</span>
+                  <span className="text-[9px] text-text-tertiary mt-1">{m.month as string}</span>
                 </div>
               ))}
             </div>
@@ -31,7 +31,7 @@ export default function ServiceTrendsPage(): JSX.Element {
 
           <Card padding="lg"><h3 className="font-bold mb-4">🔥 الأكثر طلباً هذا الشهر</h3>
             <div className="space-y-2">{top.map((t: Record<string,unknown>, i: number) => (
-              <div key={i} className="flex items-center gap-3 rounded-lg bg-gray-50 dark:bg-gray-800 p-3">
+              <div key={i} className="flex items-center gap-3 rounded-lg bg-surface-muted dark:bg-gray-800 p-3">
                 <span className="text-2xl w-10 text-center">{['🥇','🥈','🥉','4️⃣','5️⃣'][i]}</span>
                 <span className="text-2xl">{t.emoji as string}</span><span className="flex-1 font-bold">{t.nameAr as string}</span>
                 <span className="rounded-full bg-green-100 dark:bg-green-900 px-2.5 py-0.5 text-xs font-bold text-green-700">{t.growth as string}</span>

@@ -15,7 +15,7 @@ const statusBadge = (status: string): { label: string; className: string } => {
     case 'REPORTED': return { label: 'مبلغ', className: 'bg-blue-100 text-blue-700' };
     case 'CLEARED': return { label: 'مقبول', className: 'bg-green-100 text-green-700' };
     case 'REJECTED': return { label: 'مرفوض', className: 'bg-red-100 text-red-700' };
-    default: return { label: status, className: 'bg-gray-100 text-gray-700' };
+    default: return { label: status, className: 'bg-surface-muted text-text-primary' };
   }
 };
 
@@ -57,7 +57,7 @@ export default function AdminZatcaPage(): JSX.Element {
             <button
               key={tab}
               onClick={() => setStatusTab(tab)}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium ${statusTab === tab ? 'bg-brand-600 text-white' : 'bg-gray-100 dark:bg-gray-800 dark:text-gray-300'}`}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium ${statusTab === tab ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800 dark:text-gray-300'}`}
             >
               {badge.label}
             </button>
@@ -81,7 +81,7 @@ export default function AdminZatcaPage(): JSX.Element {
                       <p className="font-semibold">فاتورة #{String(inv.invoiceNumber ?? inv.id)}</p>
                       <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${badge.className}`}>{badge.label}</span>
                     </div>
-                    <div className="mt-1 flex flex-wrap gap-3 text-sm text-gray-500">
+                    <div className="mt-1 flex flex-wrap gap-3 text-sm text-text-secondary">
                       <span>الحجز: {inv.booking?.bookingCode ?? '—'}</span>
                       <span>{formatCurrency(Number(inv.booking?.totalAmount ?? 0))}</span>
                       <span>{inv.createdAt ? new Date(inv.createdAt).toLocaleDateString('ar-SA') : '—'}</span>

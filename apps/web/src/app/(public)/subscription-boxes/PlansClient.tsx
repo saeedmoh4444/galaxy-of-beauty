@@ -19,10 +19,10 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">
           📦 صناديق التجميل الشهرية
         </h1>
-        <p className="mt-3 text-gray-500 dark:text-gray-400">
+        <p className="mt-3 text-text-secondary dark:text-gray-400">
           اشتركي في باقة شهرية واحصلي على خدمات تجميل منتظمة بأسعار مخفضة
         </p>
       </div>
@@ -45,10 +45,10 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
                  ((plan.nameJson as Record<string, string>)?.ar || '').includes('فضية') ? '🥈' :
                  ((plan.nameJson as Record<string, string>)?.ar || '').includes('برونزية') ? '🥉' : '📦'}
               </div>
-              <h3 className="text-center text-lg font-bold text-gray-900 dark:text-gray-100">
+              <h3 className="text-center text-lg font-bold text-text-primary dark:text-gray-100">
                 {(plan.nameJson as Record<string, string>)?.ar || ''}
               </h3>
-              <p className="mt-2 text-center text-sm text-gray-500 dark:text-gray-400">
+              <p className="mt-2 text-center text-sm text-text-secondary dark:text-gray-400">
                 {(plan.descriptionJson as Record<string, string>)?.ar || ''}
               </p>
 
@@ -61,9 +61,9 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
 
               <div className="mt-auto pt-6 text-center">
                 <p className="text-3xl font-bold text-brand-600">
-                  {Number(plan.price).toFixed(0)} <span className="text-sm font-normal text-gray-400">ر.س</span>
+                  {Number(plan.price).toFixed(0)} <span className="text-sm font-normal text-text-tertiary">ر.س</span>
                 </p>
-                <p className="text-xs text-gray-400">/ {plan.interval === 'MONTHLY' ? 'شهرياً' : plan.interval === 'WEEKLY' ? 'أسبوعياً' : 'كل أسبوعين'}</p>
+                <p className="text-xs text-text-tertiary">/ {plan.interval === 'MONTHLY' ? 'شهرياً' : plan.interval === 'WEEKLY' ? 'أسبوعياً' : 'كل أسبوعين'}</p>
                 <div className="mt-4">
                   <SubscribeButton planId={plan.id} planName={(plan.nameJson as Record<string, string>)?.ar || ''} />
                 </div>
@@ -74,8 +74,8 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
       )}
 
       {/* How it works */}
-      <div className="mt-12 rounded-2xl bg-gray-50 p-8 dark:bg-gray-800">
-        <h3 className="mb-6 text-center text-lg font-bold text-gray-900 dark:text-gray-100">
+      <div className="mt-12 rounded-2xl bg-surface-muted p-8 dark:bg-gray-800">
+        <h3 className="mb-6 text-center text-lg font-bold text-text-primary dark:text-gray-100">
           كيف تعمل صناديق التجميل؟
         </h3>
         <div className="grid gap-6 sm:grid-cols-3">
@@ -86,8 +86,8 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
           ].map((step, i) => (
             <div key={i} className="text-center">
               <div className="text-3xl">{step.emoji}</div>
-              <h4 className="mt-2 font-semibold text-gray-900 dark:text-gray-100">{step.title}</h4>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{step.desc}</p>
+              <h4 className="mt-2 font-semibold text-text-primary dark:text-gray-100">{step.title}</h4>
+              <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">{step.desc}</p>
             </div>
           ))}
         </div>

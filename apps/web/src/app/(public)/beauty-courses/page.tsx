@@ -19,7 +19,7 @@ export default function BeautyCoursesPage(): JSX.Element {
       <div className="mb-10 text-center">
         <span className="text-6xl">🎓</span>
         <h1 className="mt-4 text-3xl font-bold">دورات التجميل</h1>
-        <p className="mt-2 text-gray-500">تعلمي من خبراء معتمدين — دورات متكاملة مع شهادات إتمام</p>
+        <p className="mt-2 text-text-secondary">تعلمي من خبراء معتمدين — دورات متكاملة مع شهادات إتمام</p>
       </div>
 
       {isLoading ? <div className="grid gap-6 sm:grid-cols-2">{Array.from({length:4},(_,i)=><CardSkeleton key={i}/>)}</div>
@@ -31,10 +31,10 @@ export default function BeautyCoursesPage(): JSX.Element {
               <div className="flex items-start gap-4">
                 <span className="text-5xl">{c.emoji as string}</span>
                 <div className="flex-1">
-                  <span className="rounded-full bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-[10px] font-medium">{(c.level as string) === 'beginner' ? 'مبتدئ' : (c.level as string) === 'intermediate' ? 'متوسط' : 'متقدم'}</span>
+                  <span className="rounded-full bg-surface-muted dark:bg-gray-800 px-2 py-0.5 text-[10px] font-medium">{(c.level as string) === 'beginner' ? 'مبتدئ' : (c.level as string) === 'intermediate' ? 'متوسط' : 'متقدم'}</span>
                   <h3 className="text-lg font-bold mt-1">{c.titleAr as string}</h3>
-                  <p className="text-xs text-gray-500 mt-1">{c.descAr as string}</p>
-                  <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
+                  <p className="text-xs text-text-secondary mt-1">{c.descAr as string}</p>
+                  <div className="mt-3 flex items-center gap-4 text-xs text-text-secondary">
                     <span>👩‍🏫 {c.instructor as string}</span>
                     <span>📚 {c.lessons as number} دروس</span>
                     <span>⏱️ {c.duration as string}</span>

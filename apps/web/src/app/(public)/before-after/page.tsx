@@ -21,7 +21,7 @@ export default function BeforeAfterPage(): JSX.Element {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
-      <div className="mb-10 text-center"><span className="text-6xl">📸</span><h1 className="mt-4 text-3xl font-bold">قبل وبعد</h1><p className="mt-2 text-gray-500">تحولات حقيقية — شوفي الفرق بنفسكِ</p></div>
+      <div className="mb-10 text-center"><span className="text-6xl">📸</span><h1 className="mt-4 text-3xl font-bold">قبل وبعد</h1><p className="mt-2 text-text-secondary">تحولات حقيقية — شوفي الفرق بنفسكِ</p></div>
 
       {user && <div className="text-center mb-6"><Button onClick={() => setShowSubmit(true)}>📸 شاركي تحولكِ</Button></div>}
 
@@ -32,11 +32,11 @@ export default function BeforeAfterPage(): JSX.Element {
           {items.map((t: Record<string,unknown>) => (
             <Card key={t.id as number} padding="md" className="group">
               <div className="grid grid-cols-2 gap-2">
-                <div><p className="text-[10px] text-gray-400 mb-1 text-center">قبل</p><div className="h-32 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-3xl">👩</div></div>
-                <div><p className="text-[10px] text-gray-400 mb-1 text-center">بعد</p><div className="h-32 rounded-xl bg-gradient-to-br from-brand-100 to-purple-100 dark:from-brand-900 dark:to-purple-900 flex items-center justify-center text-3xl">✨</div></div>
+                <div><p className="text-[10px] text-text-tertiary mb-1 text-center">قبل</p><div className="h-32 rounded-xl bg-surface-muted dark:bg-gray-800 flex items-center justify-center text-3xl">👩</div></div>
+                <div><p className="text-[10px] text-text-tertiary mb-1 text-center">بعد</p><div className="h-32 rounded-xl bg-gradient-to-br from-brand-100 to-purple-100 dark:from-brand-900 dark:to-purple-900 flex items-center justify-center text-3xl">✨</div></div>
               </div>
-              <div className="mt-3"><p className="font-bold text-sm">{t.description as string}</p><p className="text-xs text-gray-500 mt-1">👩‍🎨 {t.technicianName as string} · {t.serviceType as string}</p></div>
-              <div className="mt-2 flex items-center justify-between"><span className="text-xs text-gray-400">{t.userName as string}</span><span className="text-xs text-red-500">❤️ {t.likes as number}</span></div>
+              <div className="mt-3"><p className="font-bold text-sm">{t.description as string}</p><p className="text-xs text-text-secondary mt-1">👩‍🎨 {t.technicianName as string} · {t.serviceType as string}</p></div>
+              <div className="mt-2 flex items-center justify-between"><span className="text-xs text-text-tertiary">{t.userName as string}</span><span className="text-xs text-red-500">❤️ {t.likes as number}</span></div>
             </Card>
           ))}
         </div>

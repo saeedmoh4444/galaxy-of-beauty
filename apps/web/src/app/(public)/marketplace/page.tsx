@@ -21,7 +21,7 @@ export default function MarketplacePage(): JSX.Element {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">متجر منتجات التجميل</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">متجر منتجات التجميل</h1>
 
         <div className="flex gap-4">
           <Input
@@ -42,23 +42,23 @@ export default function MarketplacePage(): JSX.Element {
           <EmptyState title="لا توجد منتجات" description="لم يتم العثور على منتجات. حاولي تغيير البحث." />
         ) : (
           <>
-            <p className="text-sm text-gray-500">{total} منتج</p>
+            <p className="text-sm text-text-secondary">{total} منتج</p>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {items.map((p: any) => (
                 <Card key={p.id as number} padding="sm" className="group cursor-pointer hover:shadow-lg transition-shadow">
-                  <div className="aspect-square w-full rounded-lg bg-gray-100 dark:bg-gray-800 mb-3 flex items-center justify-center text-4xl">
+                  <div className="aspect-square w-full rounded-lg bg-surface-muted dark:bg-gray-800 mb-3 flex items-center justify-center text-4xl">
                     🧴
                   </div>
                   <h3 className="font-semibold text-sm truncate">
                     {((p.nameJson as Record<string, string>)?.ar) || ''}
                   </h3>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-text-secondary mt-1">
                     {((p as Record<string, unknown>).vendor as Record<string, string> | undefined)?.storeName || ''}
                   </p>
                   <div className="mt-2 flex items-center justify-between">
                     <span className="font-bold text-brand-600">{formatCurrency(Number(p.price))}</span>
                     {p.comparePrice ? (
-                      <span className="text-xs text-gray-400 line-through">{formatCurrency(Number(p.comparePrice))}</span>
+                      <span className="text-xs text-text-tertiary line-through">{formatCurrency(Number(p.comparePrice))}</span>
                     ) : null}
                   </div>
                 </Card>

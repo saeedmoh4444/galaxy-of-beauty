@@ -70,7 +70,7 @@ export default function AdminSettingsPage(): JSX.Element {
               >
                 <div className="flex-1">
                   <p className="text-sm font-medium">{key}</p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">{String(value ?? '')}</p>
+                  <p className="text-sm text-text-primary dark:text-gray-300">{String(value ?? '')}</p>
                 </div>
                 <Button size="sm" variant="outline" onClick={() => openEdit(key, value)}>تعديل</Button>
               </div>
@@ -107,7 +107,7 @@ export default function AdminSettingsPage(): JSX.Element {
           <div className="space-y-1 text-sm">
             <p><strong>الإصدار الحالي:</strong> {String(termsData?.version ?? '—')}</p>
             <p><strong>آخر تحديث:</strong> {termsData?.updatedAt ? new Date(termsData.updatedAt).toLocaleDateString('ar-SA') : '—'}</p>
-            <p className="mt-2 max-h-32 overflow-y-auto whitespace-pre-wrap rounded bg-gray-50 p-2 text-xs dark:bg-gray-900">
+            <p className="mt-2 max-h-32 overflow-y-auto whitespace-pre-wrap rounded bg-surface-muted p-2 text-xs dark:bg-gray-900">
               {typeof termsData?.content === 'object' && termsData.content !== null
                 ? String((termsData.content as { ar?: string }).ar ?? JSON.stringify(termsData.content))
                 : String(termsData?.content ?? 'لا يوجد محتوى')}
@@ -128,7 +128,7 @@ export default function AdminSettingsPage(): JSX.Element {
         ) : (
           <div className="flex flex-wrap gap-2">
             {citiesData.map((city: CityItem, i: number) => (
-              <span key={i} className="rounded-full bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">{city.nameAr}</span>
+              <span key={i} className="rounded-full bg-surface-muted px-3 py-1 text-sm dark:bg-gray-800">{city.nameAr}</span>
             ))}
           </div>
         )}
@@ -139,9 +139,9 @@ export default function AdminSettingsPage(): JSX.Element {
         <h2 className="mb-3 text-lg font-semibold">تصدير البيانات</h2>
         <div className="flex flex-wrap items-end gap-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">الصيغة</label>
+            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">الصيغة</label>
             <select
-              className="rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+              className="rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               value={exportFormat}
               onChange={(e) => setExportFormat(e.target.value as 'csv' | 'json')}
             >
@@ -165,7 +165,7 @@ export default function AdminSettingsPage(): JSX.Element {
       <Modal open={editOpen} onClose={() => { setEditOpen(false); setSelectedKey(null); }} title="تعديل الإعداد">
         <div className="space-y-4">
           <p className="text-sm"><strong>المفتاح:</strong> {selectedKey}</p>
-          <p className="text-sm text-gray-500">{editDescription}</p>
+          <p className="text-sm text-text-secondary">{editDescription}</p>
           <Input
             label="القيمة"
             value={editValue}

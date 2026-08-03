@@ -52,8 +52,8 @@ export default function OnboardingPage(): JSX.Element {
         <div className="mb-6 flex justify-center gap-1">
           {STEPS.map((_, i) => <div key={i} className={`h-1.5 w-8 rounded-full transition-all ${i <= step ? 'bg-brand-600' : 'bg-gray-200 dark:bg-gray-700'}`} />)}
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{s.title}</h1>
-        <p className="mt-4 text-gray-500 dark:text-gray-400">{s.desc}</p>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">{s.title}</h1>
+        <p className="mt-4 text-text-secondary dark:text-gray-400">{s.desc}</p>
         <div className="mt-8 flex gap-3 justify-center">
           {s.link ? (
             <Link href={s.link}><Button size="lg">{s.action}</Button></Link>
@@ -62,10 +62,10 @@ export default function OnboardingPage(): JSX.Element {
           )}
         </div>
         {step > 0 && (
-          <button onClick={() => setStep(step - 1)} className="mt-4 text-sm text-gray-400 hover:text-brand-600">← السابق</button>
+          <button onClick={() => setStep(step - 1)} className="mt-4 text-sm text-text-tertiary hover:text-brand-600">← السابق</button>
         )}
         {!s.link && step < STEPS.length - 1 && (
-          <button onClick={() => setStep(STEPS.length - 1)} className="mt-4 block w-full text-sm text-gray-400 hover:text-brand-600">تخطي</button>
+          <button onClick={() => setStep(STEPS.length - 1)} className="mt-4 block w-full text-sm text-text-tertiary hover:text-brand-600">تخطي</button>
         )}
       </Card>
     </div>

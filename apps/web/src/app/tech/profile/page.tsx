@@ -6,7 +6,7 @@ import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input } from '@gala
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const KYC_BADGES: Record<string, { colour: string; label: string }> = {
-  PENDING: { colour: 'bg-gray-100 text-gray-700', label: 'قيد الانتظار' },
+  PENDING: { colour: 'bg-surface-muted text-text-primary', label: 'قيد الانتظار' },
   SUBMITTED: { colour: 'bg-amber-100 text-amber-700', label: 'قيد المراجعة' },
   VERIFIED: { colour: 'bg-green-100 text-green-700', label: 'موثق' },
   REJECTED: { colour: 'bg-red-100 text-red-700', label: 'مرفوض' },
@@ -118,7 +118,7 @@ export default function TechProfilePage(): JSX.Element {
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-semibold">توثيق الهوية (KYC)</h2>
-                  <p className="text-sm text-gray-500">حالة التوثيق</p>
+                  <p className="text-sm text-text-secondary">حالة التوثيق</p>
                 </div>
                 <span className={`rounded-full px-4 py-1.5 text-sm font-medium ${badge.colour}`}>
                   {badge.label}
@@ -126,13 +126,13 @@ export default function TechProfilePage(): JSX.Element {
               </div>
 
               {kycStatus === 'PENDING' || kycStatus === 'REJECTED' ? (
-                <div className="mt-4 space-y-3 border-t border-gray-200 pt-4 dark:border-gray-700">
+                <div className="mt-4 space-y-3 border-t border-edge pt-4 dark:border-gray-700">
                   {kycMsg && <p className="text-sm text-amber-600">{kycMsg}</p>}
                   <div className="flex gap-3">
                     <select
                       value={docType}
                       onChange={(e) => setDocType(e.target.value)}
-                      className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-900"
+                      className="rounded-lg border border-edge bg-white px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-900"
                     >
                       <option value="NATIONAL_ID">الهوية الوطنية</option>
                       <option value="PASSPORT">جواز السفر</option>
@@ -184,14 +184,14 @@ export default function TechProfilePage(): JSX.Element {
                   onChange={(e) => setBufferMinutes(Number(e.target.value))}
                 />
                 <div className="flex items-center gap-3 self-end pb-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="text-sm font-medium text-text-primary dark:text-gray-300">
                     صديق للبيئة
                   </label>
                   <input
                     type="checkbox"
                     checked={isEcoFriendly}
                     onChange={(e) => setIsEcoFriendly(e.target.checked)}
-                    className="h-5 w-5 rounded border-gray-300 text-brand-600"
+                    className="h-5 w-5 rounded border-edge text-brand-600"
                   />
                 </div>
               </div>
@@ -212,7 +212,7 @@ export default function TechProfilePage(): JSX.Element {
                 <select
                   value={selectedServiceId ?? ''}
                   onChange={(e) => setSelectedServiceId(Number(e.target.value))}
-                  className="flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-900"
+                  className="flex-1 rounded-lg border border-edge bg-white px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-900"
                 >
                   <option value="">اختر خدمة</option>
                   {allServices.map((s) => (
@@ -242,7 +242,7 @@ export default function TechProfilePage(): JSX.Element {
                             <p className="font-medium">
                               {((svc?.titleJson as Record<string, string>)?.ar ?? '')}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-text-secondary">
                               {Number(mapping.customPrice ?? svc?.basePrice ?? 0)} ر.س
                             </p>
                           </div>

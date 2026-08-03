@@ -54,8 +54,8 @@ export default function BlogPage(): JSX.Element {
       {/* Header */}
       <div className="mb-10 text-center">
         <span className="text-6xl">📝</span>
-        <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">مدونة الجمال</h1>
-        <p className="mt-2 text-gray-500 dark:text-gray-400">
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">مدونة الجمال</h1>
+        <p className="mt-2 text-text-secondary dark:text-gray-400">
           نصائح، اتجاهات، وأسرار العناية بالجمال — كل ما تحتاجين معرفته
         </p>
       </div>
@@ -67,7 +67,7 @@ export default function BlogPage(): JSX.Element {
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(1); }}
           placeholder="🔍 ابحثي في المقالات..."
-          className="w-full max-w-md rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-gray-500"
+          className="w-full max-w-md rounded-xl border border-edge bg-surface-muted px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
         />
       </div>
 
@@ -78,7 +78,7 @@ export default function BlogPage(): JSX.Element {
           className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
             !activeTag
               ? 'bg-brand-600 text-white shadow-md'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+              : 'bg-surface-muted text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
           }`}
         >
           الكل
@@ -91,7 +91,7 @@ export default function BlogPage(): JSX.Element {
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
                 activeTag === tag
                   ? 'bg-brand-600 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                  : 'bg-surface-muted text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
               }`}
             >
               {emoji} {tag}
@@ -131,7 +131,7 @@ export default function BlogPage(): JSX.Element {
 
               return (
                 <Link key={post.id} href={`/blog/${post.slug}`} className="group">
-                  <article className="overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all hover:shadow-xl hover:-translate-y-1 dark:border-gray-800 dark:bg-gray-900">
+                  <article className="overflow-hidden rounded-2xl border border-edge bg-white transition-all hover:shadow-xl hover:-translate-y-1 dark:border-gray-800 dark:bg-gray-900">
                     {/* Image */}
                     <div className="relative flex h-48 items-center justify-center bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
                       {post.imageUrl ? (
@@ -163,12 +163,12 @@ export default function BlogPage(): JSX.Element {
                       )}
 
                       {/* Title */}
-                      <h2 className="text-lg font-bold text-gray-900 group-hover:text-brand-600 dark:text-gray-100 transition-colors line-clamp-2">
+                      <h2 className="text-lg font-bold text-text-primary group-hover:text-brand-600 dark:text-gray-100 transition-colors line-clamp-2">
                         {title}
                       </h2>
 
                       {/* Meta */}
-                      <div className="mt-3 flex items-center gap-3 text-xs text-gray-400">
+                      <div className="mt-3 flex items-center gap-3 text-xs text-text-tertiary">
                         {date && <span>📅 {date}</span>}
                         {readTime && <span>⏱️ {readTime}</span>}
                       </div>

@@ -23,7 +23,7 @@ export default function EventTicketsPage(): JSX.Element {
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-10 text-center">
         <h1 className="text-3xl font-bold">🎟️ تذاكر الفعاليات</h1>
-        <p className="mt-2 text-gray-500">احجزي مقعدكِ في أقوى فعاليات وفعاليات التجميل</p>
+        <p className="mt-2 text-text-secondary">احجزي مقعدكِ في أقوى فعاليات وفعاليات التجميل</p>
       </div>
 
       {isLoading ? <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{Array.from({ length: 3 }, (_, i) => <CardSkeleton key={i} />)}</div>
@@ -35,7 +35,7 @@ export default function EventTicketsPage(): JSX.Element {
             <Card key={e.id as number} padding="lg" className="text-center hover:shadow-xl transition-all">
               <span className="text-5xl">{['workshop','masterclass','launch','seasonal'].includes(e.eventType as string) ? {workshop:'🛠️',masterclass:'👩‍🏫',launch:'🚀',seasonal:'🌸'}[(e.eventType as string)] : '📅'}</span>
               <h3 className="mt-3 text-lg font-bold">{(e.nameJson as Record<string,string>)?.ar}</h3>
-              <p className="text-sm text-gray-500 mt-1">{new Date(e.startsAt as string).toLocaleDateString('ar-SA', { month: 'long', day: 'numeric' })}</p>
+              <p className="text-sm text-text-secondary mt-1">{new Date(e.startsAt as string).toLocaleDateString('ar-SA', { month: 'long', day: 'numeric' })}</p>
               <p className="text-2xl font-extrabold text-brand-600 mt-3">{Number(e.price) > 0 ? formatCurrency(Number(e.price)) + ' ر.س' : 'مجاناً 🎉'}</p>
               <div className="mt-4">
                 {reserved && (reserved.eventId as number) === (e.id as number) ? (

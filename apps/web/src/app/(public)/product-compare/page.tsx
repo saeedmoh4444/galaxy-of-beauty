@@ -31,7 +31,7 @@ export default function ProductComparePage(): JSX.Element {
       <div className="mb-8 text-center">
         <span className="text-6xl">⚖️</span>
         <h1 className="mt-4 text-3xl font-bold">مقارنة المنتجات</h1>
-        <p className="mt-2 text-gray-500">قارني بين منتجات التجميل جنباً إلى جنب</p>
+        <p className="mt-2 text-text-secondary">قارني بين منتجات التجميل جنباً إلى جنب</p>
       </div>
 
       {/* Product selector */}
@@ -40,12 +40,12 @@ export default function ProductComparePage(): JSX.Element {
         {pLoad ? <CardSkeleton /> : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {productsList.map((p: Record<string,unknown>) => (
-              <button key={p.id as number} onClick={() => toggle(p.id as number)} className={`rounded-xl border-2 p-3 text-center transition-all ${selected.includes(p.id as number) ? 'border-brand-400 bg-brand-50 dark:bg-brand-950 scale-105' : 'border-gray-200 dark:border-gray-700'}`}>
+              <button key={p.id as number} onClick={() => toggle(p.id as number)} className={`rounded-xl border-2 p-3 text-center transition-all ${selected.includes(p.id as number) ? 'border-brand-400 bg-brand-50 dark:bg-brand-950 scale-105' : 'border-edge dark:border-gray-700'}`}>
                 <span className="text-3xl">{p.emoji as string}</span>
                 <p className="text-xs font-bold mt-1">{p.nameAr as string}</p>
-                <p className="text-[10px] text-gray-500">{p.brand as string}</p>
+                <p className="text-[10px] text-text-secondary">{p.brand as string}</p>
                 <p className="text-xs font-bold text-brand-600 mt-0.5">{formatCurrency(p.price as number)} ر.س</p>
-                <p className="text-[10px] text-gray-400">⭐ {p.rating as number}</p>
+                <p className="text-[10px] text-text-tertiary">⭐ {p.rating as number}</p>
               </button>
             ))}
           </div>
@@ -58,32 +58,32 @@ export default function ProductComparePage(): JSX.Element {
           <table className="w-full text-sm">
             <thead>
               <tr>
-                <th className="text-right py-3 px-4 text-gray-500 font-semibold w-32">الميزة</th>
+                <th className="text-right py-3 px-4 text-text-secondary font-semibold w-32">الميزة</th>
                 {compared.map((p: Record<string,unknown>) => (
                   <th key={p.id as number} className="text-center py-3 px-4">
                     <span className="text-2xl block">{p.emoji as string}</span>
                     <span className="font-bold text-sm">{p.nameAr as string}</span>
-                    <span className="text-xs text-gray-500 block">{p.brand as string}</span>
+                    <span className="text-xs text-text-secondary block">{p.brand as string}</span>
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               <tr className="border-t dark:border-gray-700">
-                <td className="py-3 px-4 text-gray-500 font-semibold">💰 السعر</td>
+                <td className="py-3 px-4 text-text-secondary font-semibold">💰 السعر</td>
                 {compared.map((p: Record<string,unknown>) => (
                   <td key={p.id as number} className="text-center py-3 px-4 font-bold text-brand-600">{formatCurrency(p.price as number)} ر.س</td>
                 ))}
               </tr>
               <tr className="border-t dark:border-gray-700">
-                <td className="py-3 px-4 text-gray-500 font-semibold">⭐ التقييم</td>
+                <td className="py-3 px-4 text-text-secondary font-semibold">⭐ التقييم</td>
                 {compared.map((p: Record<string,unknown>) => (
                   <td key={p.id as number} className="text-center py-3 px-4">{p.rating as number}</td>
                 ))}
               </tr>
               {dimensions.map((dim) => (
                 <tr key={dim} className="border-t dark:border-gray-700">
-                  <td className="py-3 px-4 text-gray-500 font-semibold">{DIM_LABELS[dim] ?? dim}</td>
+                  <td className="py-3 px-4 text-text-secondary font-semibold">{DIM_LABELS[dim] ?? dim}</td>
                   {compared.map((p: Record<string,unknown>) => {
                     const features = p.features as Record<string,number>;
                     const val = features?.[dim] ?? 0;
@@ -101,13 +101,13 @@ export default function ProductComparePage(): JSX.Element {
                 </tr>
               ))}
               <tr className="border-t dark:border-gray-700">
-                <td className="py-3 px-4 text-gray-500 font-semibold">🐰 خالي من القسوة</td>
+                <td className="py-3 px-4 text-text-secondary font-semibold">🐰 خالي من القسوة</td>
                 {compared.map((p: Record<string,unknown>) => (
                   <td key={p.id as number} className="text-center py-3 px-4 text-lg">{p.crueltyFree ? '✅' : '❌'}</td>
                 ))}
               </tr>
               <tr className="border-t dark:border-gray-700">
-                <td className="py-3 px-4 text-gray-500 font-semibold">🌱 نباتي</td>
+                <td className="py-3 px-4 text-text-secondary font-semibold">🌱 نباتي</td>
                 {compared.map((p: Record<string,unknown>) => (
                   <td key={p.id as number} className="text-center py-3 px-4 text-lg">{p.vegan ? '✅' : '❌'}</td>
                 ))}
@@ -116,7 +116,7 @@ export default function ProductComparePage(): JSX.Element {
           </table>
         </Card>
       ) : selected.length < 2 ? (
-        <div className="text-center py-8 text-gray-400">اختر منتجين على الأقل للمقارنة</div>
+        <div className="text-center py-8 text-text-tertiary">اختر منتجين على الأقل للمقارنة</div>
       ) : null}
     </div>
   );

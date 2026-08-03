@@ -14,10 +14,10 @@ export default function AdminGiftCardsPage(): JSX.Element {
       {isLoading ? <CardSkeleton /> : isError ? <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} /> : items.length === 0 ? <EmptyState title="لا توجد بطاقات" /> : (
         <Card padding="none">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-gray-500 dark:bg-gray-800"><tr><th className="p-3 text-right">الكود</th><th className="p-3 text-right">القيمة</th><th className="p-3 text-right">الرصيد</th><th className="p-3 text-right">الحالة</th><th className="p-3 text-right">التاريخ</th></tr></thead>
+            <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800"><tr><th className="p-3 text-right">الكود</th><th className="p-3 text-right">القيمة</th><th className="p-3 text-right">الرصيد</th><th className="p-3 text-right">الحالة</th><th className="p-3 text-right">التاريخ</th></tr></thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
               {items.map((c: Record<string, any>) => (
-                <tr key={c.id}><td className="p-3 font-mono font-bold text-brand-600">{c.code}</td><td className="p-3">{formatCurrency(Number(c.amount))}</td><td className="p-3">{formatCurrency(Number(c.balance))}</td><td className="p-3"><span className={`rounded px-2 py-0.5 text-xs ${c.status === 'ACTIVE' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>{c.status === 'ACTIVE' ? 'نشطة' : 'مستخدمة'}</span></td><td className="p-3 text-gray-400">{new Date(c.createdAt).toLocaleDateString('ar-SA')}</td></tr>
+                <tr key={c.id}><td className="p-3 font-mono font-bold text-brand-600">{c.code}</td><td className="p-3">{formatCurrency(Number(c.amount))}</td><td className="p-3">{formatCurrency(Number(c.balance))}</td><td className="p-3"><span className={`rounded px-2 py-0.5 text-xs ${c.status === 'ACTIVE' ? 'bg-green-100 text-green-700' : 'bg-surface-muted text-text-secondary'}`}>{c.status === 'ACTIVE' ? 'نشطة' : 'مستخدمة'}</span></td><td className="p-3 text-text-tertiary">{new Date(c.createdAt).toLocaleDateString('ar-SA')}</td></tr>
               ))}
             </tbody>
           </table>

@@ -5,7 +5,7 @@ export default function TermsPage(): JSX.Element {
     <div className="mx-auto max-w-3xl space-y-6 px-4 py-12">
       <h1 className="text-2xl font-bold">📋 الشروط والأحكام</h1>
       <Card padding="lg">
-        <div className="space-y-4 text-sm leading-relaxed text-gray-700">
+        <div className="space-y-4 text-sm leading-relaxed text-text-primary">
           <section>
             <h2 className="font-bold text-lg mb-2">١. مقدمة</h2>
             <p>مرحباً بكِ في جالكسي بيوتي. باستخدامكِ للمنصة، فإنكِ توافقين على الشروط والأحكام التالية. يرجى قراءتها بعناية.</p>

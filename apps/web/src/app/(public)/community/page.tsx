@@ -50,16 +50,16 @@ function PostCard({
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
+          <p className="text-sm font-semibold text-text-primary dark:text-gray-100 truncate">
             {post.userName || 'مستخدم'}
           </p>
-          <p className="text-xs text-gray-400">{timeAgo}</p>
+          <p className="text-xs text-text-tertiary">{timeAgo}</p>
         </div>
         {isOwner && (
           <button
             onClick={() => onDelete(post.id)}
             disabled={deletePending}
-            className="rounded-lg p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors disabled:opacity-50"
+            className="rounded-lg p-1.5 text-text-tertiary hover:bg-red-50 hover:text-red-500 transition-colors disabled:opacity-50"
             title="حذف"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -70,7 +70,7 @@ function PostCard({
       </div>
 
       {/* Content */}
-      <p className="text-sm text-gray-900 dark:text-gray-100 whitespace-pre-wrap leading-relaxed">
+      <p className="text-sm text-text-primary dark:text-gray-100 whitespace-pre-wrap leading-relaxed">
         {post.content}
       </p>
 
@@ -94,7 +94,7 @@ function PostCard({
           className={`flex items-center gap-1.5 text-sm font-medium transition-all active:scale-95 disabled:opacity-50 ${
             isLiked
               ? 'text-red-500 hover:text-red-600'
-              : 'text-gray-400 hover:text-red-500'
+              : 'text-text-tertiary hover:text-red-500'
           }`}
         >
           <svg
@@ -112,7 +112,7 @@ function PostCard({
           </svg>
           <span>{post.likes}</span>
         </button>
-        <span className="text-xs text-gray-400">{timeAgo}</span>
+        <span className="text-xs text-text-tertiary">{timeAgo}</span>
       </div>
     </Card>
   );
@@ -205,13 +205,13 @@ export default function CommunityPage(): JSX.Element {
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">💬 مجتمع الجمال</h1>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">💬 مجتمع الجمال</h1>
+          <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
             شاركي تجاربكِ، نصائحكِ، وإطلالاتكِ مع مجتمع جالكسي بيوتي
           </p>
         </div>
         {data && (
-          <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-500 dark:bg-gray-800">
+          <span className="rounded-full bg-surface-muted px-3 py-1 text-xs font-medium text-text-secondary dark:bg-gray-800">
             {data.total} منشور
           </span>
         )}
@@ -226,7 +226,7 @@ export default function CommunityPage(): JSX.Element {
             </div>
             <div className="flex-1">
               <textarea
-                className="w-full resize-none rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm placeholder:text-gray-400 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-gray-500"
+                className="w-full resize-none rounded-xl border border-edge bg-surface-muted p-3 text-sm placeholder:text-text-tertiary focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
                 rows={3}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
@@ -235,14 +235,14 @@ export default function CommunityPage(): JSX.Element {
                 maxLength={500}
               />
               <div className="mt-2 flex items-center justify-between">
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-text-tertiary">
                   {content.length}/500 · Ctrl+Enter للنشر
                 </span>
                 <div className="flex gap-2">
                   {content.trim() && (
                     <button
                       onClick={() => setContent('')}
-                      className="rounded-lg px-3 py-1.5 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                      className="rounded-lg px-3 py-1.5 text-sm text-text-secondary hover:bg-surface-muted dark:hover:bg-gray-800 transition-colors"
                     >
                       إلغاء
                     </button>
@@ -262,7 +262,7 @@ export default function CommunityPage(): JSX.Element {
         </Card>
       ) : (
         <Card padding="lg" className="mb-6 text-center">
-          <p className="text-gray-500 dark:text-gray-400">
+          <p className="text-text-secondary dark:text-gray-400">
             👋 سجّلي الدخول للمشاركة في مجتمع الجمال
           </p>
           <Link href="/login" className="mt-3 inline-block">

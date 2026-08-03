@@ -85,8 +85,8 @@ export default function EventsPage(): JSX.Element {
       {/* Header */}
       <div className="mb-10 text-center">
         <span className="text-6xl">📅</span>
-        <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">الفعاليات والورش</h1>
-        <p className="mt-2 text-gray-500 dark:text-gray-400">
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">الفعاليات والورش</h1>
+        <p className="mt-2 text-text-secondary dark:text-gray-400">
           ورش عمل، ماستر كلاس، وفعاليات تجميل حصرية — تعلمي من أفضل الخبراء
         </p>
       </div>
@@ -98,7 +98,7 @@ export default function EventsPage(): JSX.Element {
           className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
             !activeType
               ? 'bg-purple-600 text-white shadow-md'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+              : 'bg-surface-muted text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
           }`}
         >
           الكل
@@ -113,7 +113,7 @@ export default function EventsPage(): JSX.Element {
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
                 activeType === key
                   ? 'bg-purple-600 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                  : 'bg-surface-muted text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
               }`}
             >
               {info.emoji} {info.label}
@@ -179,19 +179,19 @@ export default function EventsPage(): JSX.Element {
                 </div>
 
                 {/* Name */}
-                <h3 className="mt-2 text-lg font-bold text-gray-900 dark:text-gray-100 line-clamp-2">
+                <h3 className="mt-2 text-lg font-bold text-text-primary dark:text-gray-100 line-clamp-2">
                   {name}
                 </h3>
 
                 {/* Description */}
                 {desc && (
-                  <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
+                  <p className="mt-1 text-sm text-text-secondary dark:text-gray-400 line-clamp-2">
                     {desc}
                   </p>
                 )}
 
                 {/* Date & Location */}
-                <div className="mt-3 space-y-1 text-sm text-gray-500">
+                <div className="mt-3 space-y-1 text-sm text-text-secondary">
                   <p>
                     📅 {startDate.toLocaleDateString('ar-SA', { weekday: 'long', month: 'long', day: 'numeric' })}
                   </p>

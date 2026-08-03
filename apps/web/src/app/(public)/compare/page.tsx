@@ -21,7 +21,7 @@ export default function ComparePage(): JSX.Element {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-        <h1 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">
+        <h1 className="mb-6 text-2xl font-bold text-text-primary dark:text-gray-100">
           مقارنة الخدمات
         </h1>
 
@@ -38,10 +38,10 @@ export default function ComparePage(): JSX.Element {
           <EmptyState title="لا توجد خدمات للمقارنة" description="تأكد من اختيار خدمات صحيحة." />
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse rounded-xl border border-gray-200 dark:border-gray-700">
+            <table className="w-full border-collapse rounded-xl border border-edge dark:border-gray-700">
               <thead>
-                <tr className="bg-gray-50 dark:bg-gray-800">
-                  <th className="p-4 text-right text-sm font-semibold text-gray-500 dark:text-gray-400 min-w-[140px]">
+                <tr className="bg-surface-muted dark:bg-gray-800">
+                  <th className="p-4 text-right text-sm font-semibold text-text-secondary dark:text-gray-400 min-w-[140px]">
                     الميزة
                   </th>
                   {services.map((s) => (
@@ -50,7 +50,7 @@ export default function ComparePage(): JSX.Element {
                         <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-brand-50 text-2xl dark:bg-brand-950">
                           💄
                         </div>
-                        <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                        <p className="text-sm font-bold text-text-primary dark:text-gray-100">
                           {((s.titleJson as Record<string, string>)?.ar) || ''}
                         </p>
                       </div>
@@ -60,8 +60,8 @@ export default function ComparePage(): JSX.Element {
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                 {/* Price row */}
-                <tr className="hover:bg-gray-50 dark:hover:bg-gray-900">
-                  <td className="p-4 text-sm font-medium text-gray-700 dark:text-gray-300">السعر</td>
+                <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
+                  <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">السعر</td>
                   {services.map((s) => (
                     <td key={s.id as number} className="p-4 text-center text-lg font-bold text-brand-600">
                       {Number(s.basePrice).toFixed(0)} ر.س
@@ -69,8 +69,8 @@ export default function ComparePage(): JSX.Element {
                   ))}
                 </tr>
                 {/* Duration */}
-                <tr className="hover:bg-gray-50 dark:hover:bg-gray-900">
-                  <td className="p-4 text-sm font-medium text-gray-700 dark:text-gray-300">المدة</td>
+                <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
+                  <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">المدة</td>
                   {services.map((s) => (
                     <td key={s.id as number} className="p-4 text-center text-sm text-gray-600 dark:text-gray-400">
                       {s.durationMin as number} دقيقة
@@ -78,8 +78,8 @@ export default function ComparePage(): JSX.Element {
                   ))}
                 </tr>
                 {/* Category */}
-                <tr className="hover:bg-gray-50 dark:hover:bg-gray-900">
-                  <td className="p-4 text-sm font-medium text-gray-700 dark:text-gray-300">القسم</td>
+                <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
+                  <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">القسم</td>
                   {services.map((s) => (
                     <td key={s.id as number} className="p-4 text-center text-sm text-gray-600 dark:text-gray-400">
                       {s.category as string}
@@ -87,8 +87,8 @@ export default function ComparePage(): JSX.Element {
                   ))}
                 </tr>
                 {/* Bookings */}
-                <tr className="hover:bg-gray-50 dark:hover:bg-gray-900">
-                  <td className="p-4 text-sm font-medium text-gray-700 dark:text-gray-300">الحجوزات</td>
+                <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
+                  <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">الحجوزات</td>
                   {services.map((s) => (
                     <td key={s.id as number} className="p-4 text-center text-sm text-gray-600 dark:text-gray-400">
                       {s.bookingCount as number}
@@ -96,8 +96,8 @@ export default function ComparePage(): JSX.Element {
                   ))}
                 </tr>
                 {/* Tags */}
-                <tr className="hover:bg-gray-50 dark:hover:bg-gray-900">
-                  <td className="p-4 text-sm font-medium text-gray-700 dark:text-gray-300">الوسوم</td>
+                <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
+                  <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">الوسوم</td>
                   {services.map((s) => (
                     <td key={s.id as number} className="p-4 text-center">
                       <div className="flex flex-wrap justify-center gap-1">
@@ -114,13 +114,13 @@ export default function ComparePage(): JSX.Element {
                   ))}
                 </tr>
                 {/* Variants */}
-                <tr className="hover:bg-gray-50 dark:hover:bg-gray-900">
-                  <td className="p-4 text-sm font-medium text-gray-700 dark:text-gray-300">المتغيرات</td>
+                <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
+                  <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">المتغيرات</td>
                   {services.map((s) => (
                     <td key={s.id as number} className="p-4 text-center">
                       <div className="space-y-1">
                         {((s.variants as Array<Record<string, unknown>>) || []).map((v, i) => (
-                          <p key={i} className="text-xs text-gray-500 dark:text-gray-400">
+                          <p key={i} className="text-xs text-text-secondary dark:text-gray-400">
                             {((v.nameJson as Record<string, string>)?.ar) || ''}
                             {Number(v.priceDelta) > 0 ? ` (+${Number(v.priceDelta).toFixed(0)} ر.س)` : ''}
                           </p>

@@ -26,13 +26,13 @@ export default function PayoutsPage(): JSX.Element {
   return (
     <DashboardLayout role="ADMIN">
       <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">المدفوعات للفنيات</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">المدفوعات للفنيات</h1>
         {isLoading ? <CardSkeleton /> :
          isError ? <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} /> :
          items.length === 0 ? <EmptyState title="لا توجد مدفوعات" /> : (
           <Card padding="none">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+              <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400">
                 <tr><th className="p-3 text-right">الفنية</th><th className="p-3 text-right">المبلغ</th><th className="p-3 text-right">الحالة</th><th className="p-3 text-right">التاريخ</th><th className="p-3 text-right">إجراء</th></tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -41,7 +41,7 @@ export default function PayoutsPage(): JSX.Element {
                     <td className="p-3 font-medium">{p.technician?.name ?? '-'}</td>
                     <td className="p-3 font-bold">{formatCurrency(Number(p.amount ?? 0))}</td>
                     <td className="p-3">{statusBadge(p.status)}</td>
-                    <td className="p-3 text-gray-400">{new Date(p.createdAt).toLocaleDateString('ar-SA')}</td>
+                    <td className="p-3 text-text-tertiary">{new Date(p.createdAt).toLocaleDateString('ar-SA')}</td>
                     <td className="p-3">{p.status === 'PENDING' ? <Button size="sm" onClick={() => processMut.mutate({ payoutId: p.id })}>معالجة</Button> : null}</td>
                   </tr>
                 ))}

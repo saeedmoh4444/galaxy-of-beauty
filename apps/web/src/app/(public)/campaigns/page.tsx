@@ -54,8 +54,8 @@ export default function CampaignsPage(): JSX.Element {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
         <span className="text-6xl">🎉</span>
-        <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">العروض والحملات</h1>
-        <p className="mt-2 text-gray-500 dark:text-gray-400">عروض الموسم وخصومات حصرية — لفترة محدودة!</p>
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">العروض والحملات</h1>
+        <p className="mt-2 text-text-secondary dark:text-gray-400">عروض الموسم وخصومات حصرية — لفترة محدودة!</p>
       </div>
 
       {isLoading ? (
@@ -78,7 +78,7 @@ export default function CampaignsPage(): JSX.Element {
                     </div>
                     <div className="p-5">
                       <h3 className="text-lg font-bold">{(c.nameJson as Record<string,string>)?.ar}</h3>
-                      <p className="mt-1 text-sm text-gray-500 line-clamp-2">{(c.descriptionJson as Record<string,string>)?.ar ?? ''}</p>
+                      <p className="mt-1 text-sm text-text-secondary line-clamp-2">{(c.descriptionJson as Record<string,string>)?.ar ?? ''}</p>
                       <div className="mt-3 flex items-center justify-between">
                         <span className="text-2xl font-extrabold text-red-600">
                           {c.discountType === 'percent' ? `-${c.discountValue}%` : `-${formatCurrency(c.discountValue)}`}
@@ -86,8 +86,8 @@ export default function CampaignsPage(): JSX.Element {
                         <Countdown endsAt={c.endsAt} />
                       </div>
                       {c.promoCode && (
-                        <div className="mt-2 flex items-center gap-2 rounded-lg bg-gray-100 dark:bg-gray-800 p-2">
-                          <span className="text-xs text-gray-500">كود:</span>
+                        <div className="mt-2 flex items-center gap-2 rounded-lg bg-surface-muted dark:bg-gray-800 p-2">
+                          <span className="text-xs text-text-secondary">كود:</span>
                           <code className="font-mono font-bold text-brand-600 text-sm">{c.promoCode}</code>
                           <button onClick={() => { navigator.clipboard.writeText(c.promoCode ?? ''); }} className="mr-auto text-xs text-brand-500 hover:text-brand-700">📋 نسخ</button>
                         </div>

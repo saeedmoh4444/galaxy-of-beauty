@@ -32,19 +32,19 @@ export default function PostTreatmentPage(): JSX.Element {
       <div className="text-center mb-10">
         <span className="text-6xl">💆‍♀️</span>
         <h1 className="mt-4 text-3xl font-bold">العناية بعد الخدمة</h1>
-        <p className="mt-2 text-gray-500">نصائح للعناية بنفسكِ بعد خدمات التجميل — لنتائج تدوم أطول</p>
+        <p className="mt-2 text-text-secondary">نصائح للعناية بنفسكِ بعد خدمات التجميل — لنتائج تدوم أطول</p>
       </div>
 
       <div className="flex justify-center gap-2 mb-10 flex-wrap">
         {TREATMENTS.map(t => (
-          <button key={t.key} onClick={() => setSelected(t.key)} className={`rounded-full px-5 py-2.5 text-sm font-medium transition-all ${selected===t.key?'bg-brand-600 text-white shadow-lg':'bg-gray-100 hover:bg-gray-200'}`}>{t.emoji} {t.nameAr}</button>
+          <button key={t.key} onClick={() => setSelected(t.key)} className={`rounded-full px-5 py-2.5 text-sm font-medium transition-all ${selected===t.key?'bg-brand-600 text-white shadow-lg':'bg-surface-muted hover:bg-gray-200'}`}>{t.emoji} {t.nameAr}</button>
         ))}
       </div>
 
       <Card padding="lg" className="text-center max-w-2xl mx-auto">
         <span className="text-6xl block mb-4">{treatment.emoji}</span>
         <h2 className="text-2xl font-bold">{treatment.nameAr}</h2>
-        <p className="text-sm text-gray-500 mt-2 mb-6">اتبعي هذه النصائح للحصول على أفضل النتائج</p>
+        <p className="text-sm text-text-secondary mt-2 mb-6">اتبعي هذه النصائح للحصول على أفضل النتائج</p>
         <div className="grid gap-3 sm:grid-cols-2 text-right">
           {treatment.tips.map((tip, i) => (
             <div key={i} className="flex items-start gap-3 rounded-lg border p-3">

@@ -6,7 +6,7 @@ export default function BeautyShortsPage(): JSX.Element {
   const shorts = data ?? [];
   return (
     <div className="mx-auto max-w-md px-4 py-12">
-      <div className="mb-8 text-center"><span className="text-6xl">📹</span><h1 className="mt-4 text-3xl font-bold">Beauty Shorts</h1><p className="mt-2 text-gray-500">فيديوهات قصيرة وسريعة</p></div>
+      <div className="mb-8 text-center"><span className="text-6xl">📹</span><h1 className="mt-4 text-3xl font-bold">Beauty Shorts</h1><p className="mt-2 text-text-secondary">فيديوهات قصيرة وسريعة</p></div>
       {isLoading ? <div className="space-y-4">{Array.from({length:3},(_,i)=><CardSkeleton key={i}/>)}</div> :
         <div className="space-y-4">{shorts.map((s: Record<string,unknown>) => (
           <div key={s.id as number} className="relative rounded-2xl h-96 bg-gradient-to-br from-gray-800 to-gray-900 flex flex-col items-center justify-center text-white overflow-hidden">

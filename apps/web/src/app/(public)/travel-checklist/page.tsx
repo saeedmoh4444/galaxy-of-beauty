@@ -32,8 +32,8 @@ export default function TravelChecklistPage(): JSX.Element {
       <div className="text-center mb-10">
         <span className="text-6xl">🧳</span>
         <h1 className="mt-4 text-3xl font-bold">قائمة تحضير السفر</h1>
-        <p className="mt-2 text-gray-500">لا تنسي شيئاً من مستلزمات جمالكِ في سفركِ</p>
-        <div className="mt-4"><div className="h-3 bg-gray-100 rounded-full max-w-md mx-auto"><div className="h-3 bg-green-500 rounded-full transition-all" style={{width:`${pct}%`}}/></div><p className="text-sm text-gray-500 mt-1">{checkedCount}/{allItems.length} — {pct}%</p></div>
+        <p className="mt-2 text-text-secondary">لا تنسي شيئاً من مستلزمات جمالكِ في سفركِ</p>
+        <div className="mt-4"><div className="h-3 bg-surface-muted rounded-full max-w-md mx-auto"><div className="h-3 bg-green-500 rounded-full transition-all" style={{width:`${pct}%`}}/></div><p className="text-sm text-text-secondary mt-1">{checkedCount}/{allItems.length} — {pct}%</p></div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -41,7 +41,7 @@ export default function TravelChecklistPage(): JSX.Element {
           <Card key={cat.key} padding="lg">
             <h3 className="font-bold text-lg mb-3">{cat.nameAr}</h3>
             <div className="space-y-1">{cat.items.map(item => (
-              <label key={item} className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-all ${checked[item]?'bg-green-50 line-through text-gray-400':''}`}>
+              <label key={item} className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-all ${checked[item]?'bg-green-50 line-through text-text-tertiary':''}`}>
                 <input type="checkbox" checked={checked[item] ?? false} onChange={() => toggle(item)} className="w-4 h-4 accent-brand-600" />
                 <span className="text-sm">{item}</span>
               </label>

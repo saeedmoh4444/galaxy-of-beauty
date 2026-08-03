@@ -34,12 +34,12 @@ export default function SeasonalCalendarPage(): JSX.Element {
       <div className="text-center mb-10">
         <span className="text-6xl">📅</span>
         <h1 className="mt-4 text-3xl font-bold">تقويم الجمال السنوي</h1>
-        <p className="mt-2 text-gray-500">دليلكِ الشهري للعناية بالجمال — كل شهر له أسراره</p>
+        <p className="mt-2 text-text-secondary">دليلكِ الشهري للعناية بالجمال — كل شهر له أسراره</p>
       </div>
 
       <div className="flex justify-center gap-2 mb-10 flex-wrap">
         {SEASONS_ARR.map(s => (
-          <button key={s.key} onClick={() => setFilter(s.key)} className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${filter===s.key?'bg-brand-600 text-white':'bg-gray-100 hover:bg-gray-200'}`}>{s.emoji} {s.nameAr}</button>
+          <button key={s.key} onClick={() => setFilter(s.key)} className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${filter===s.key?'bg-brand-600 text-white':'bg-surface-muted hover:bg-gray-200'}`}>{s.emoji} {s.nameAr}</button>
         ))}
       </div>
 
@@ -47,7 +47,7 @@ export default function SeasonalCalendarPage(): JSX.Element {
         {months.map(m => (
           <Card key={m.key} padding="lg" hover>
             <div className="flex items-center gap-3 mb-3"><span className="text-3xl">{m.emoji}</span><h3 className="text-xl font-bold">{m.nameAr}</h3></div>
-            <ul className="space-y-2">{m.tips.map((tip, i) => <li key={i} className="flex items-start gap-2 text-sm text-gray-700"><span className="text-brand-600 mt-0.5">•</span>{tip}</li>)}</ul>
+            <ul className="space-y-2">{m.tips.map((tip, i) => <li key={i} className="flex items-start gap-2 text-sm text-text-primary"><span className="text-brand-600 mt-0.5">•</span>{tip}</li>)}</ul>
           </Card>
         ))}
       </div>

@@ -41,7 +41,7 @@ export default function ColorAnalysisPage(): JSX.Element {
       <div className="mx-auto max-w-3xl px-4 py-12 text-center">
         <span className="text-7xl">{result.emoji}</span>
         <h1 className="mt-6 text-4xl font-extrabold">فصل لونكِ: {result.nameAr}</h1>
-        <p className="mt-2 text-lg text-gray-500">{result.desc}</p>
+        <p className="mt-2 text-lg text-text-secondary">{result.desc}</p>
 
         <div className="mt-8 grid gap-6 sm:grid-cols-2">
           <Card padding="lg"><h3 className="font-bold text-lg mb-3">🎨 الألوان المناسبة</h3>
@@ -68,12 +68,12 @@ export default function ColorAnalysisPage(): JSX.Element {
       <div className="text-center mb-10">
         <span className="text-6xl">🎨</span>
         <h1 className="mt-4 text-3xl font-bold">تحليل الألوان</h1>
-        <p className="mt-2 text-gray-500">اكتشفي فصل لونكِ وتعرفي على الألوان اللي تليق بكِ</p>
+        <p className="mt-2 text-text-secondary">اكتشفي فصل لونكِ وتعرفي على الألوان اللي تليق بكِ</p>
       </div>
-      <div className="mb-6"><div className="flex gap-1 mb-2">{QUESTIONS.map((_, i) => <div key={i} className={`h-1.5 flex-1 rounded-full ${i<=step?'bg-brand-600':'bg-gray-200'}`}/>)}</div><p className="text-xs text-gray-400">{step+1}/{QUESTIONS.length}</p></div>
+      <div className="mb-6"><div className="flex gap-1 mb-2">{QUESTIONS.map((_, i) => <div key={i} className={`h-1.5 flex-1 rounded-full ${i<=step?'bg-brand-600':'bg-gray-200'}`}/>)}</div><p className="text-xs text-text-tertiary">{step+1}/{QUESTIONS.length}</p></div>
       <h2 className="text-xl font-bold mb-6">{q.q}</h2>
       <div className="space-y-3">{q.opts.map(o => (
-        <button key={o.k} onClick={() => handleAnswer(o.k)} className="w-full rounded-xl border-2 border-gray-200 p-4 text-right hover:border-brand-400 hover:bg-brand-50 transition-all">
+        <button key={o.k} onClick={() => handleAnswer(o.k)} className="w-full rounded-xl border-2 border-edge p-4 text-right hover:border-brand-400 hover:bg-brand-50 transition-all">
           <span className="text-lg">{o.l}</span>
         </button>
       ))}</div>

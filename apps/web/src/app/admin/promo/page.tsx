@@ -9,17 +9,17 @@ export default function AdminPromoPage(): JSX.Element {
   return (
     <DashboardLayout role="ADMIN">
       <div className="mx-auto max-w-4xl space-y-6">
-        <div><h1 className="text-2xl font-bold">🏷️ إدارة العروض الترويجية</h1><p className="mt-1 text-sm text-gray-500">أكواد الخصم والعروض النشطة</p></div>
+        <div><h1 className="text-2xl font-bold">🏷️ إدارة العروض الترويجية</h1><p className="mt-1 text-sm text-text-secondary">أكواد الخصم والعروض النشطة</p></div>
 
         {isLoading ? <div className="space-y-3">{Array.from({length:3},(_,i)=><CardSkeleton key={i}/>)}</div> :
-          !(data??[]).length ? <Card padding="lg" className="text-center py-8"><p className="text-4xl mb-2">🏷️</p><p className="text-gray-500">لا توجد عروض ترويجية</p></Card> :
+          !(data??[]).length ? <Card padding="lg" className="text-center py-8"><p className="text-4xl mb-2">🏷️</p><p className="text-text-secondary">لا توجد عروض ترويجية</p></Card> :
           <div className="space-y-3">{(data??[]).map((p: Record<string,unknown>) => (
             <Card key={p.id as number} padding="md">
               <div className="flex items-center justify-between">
-                <div><p className="font-bold font-mono">{p.code as string}</p><p className="text-xs text-gray-500">{p.description as string ?? ''}</p></div>
+                <div><p className="font-bold font-mono">{p.code as string}</p><p className="text-xs text-text-secondary">{p.description as string ?? ''}</p></div>
                 <div className="text-right">
                   <p className="font-bold text-green-600">{p.discountType === 'percent' ? `${p.discountValue as number}%` : formatCurrency(p.discountValue as number)}</p>
-                  <span className={`rounded-full px-2 py-0.5 text-xs ${p.isActive?'bg-green-100 text-green-700':'bg-gray-100'}`}>{p.isActive ? 'نشط' : 'منتهي'}</span>
+                  <span className={`rounded-full px-2 py-0.5 text-xs ${p.isActive?'bg-green-100 text-green-700':'bg-surface-muted'}`}>{p.isActive ? 'نشط' : 'منتهي'}</span>
                 </div>
               </div>
             </Card>

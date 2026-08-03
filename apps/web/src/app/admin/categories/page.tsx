@@ -71,8 +71,8 @@ export default function AdminCategoriesPage(): JSX.Element {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-semibold">{getCatName(cat, 'ar')} / {getCatName(cat, 'en')}</p>
-                    <p className="text-sm text-gray-500">المعرف: {cat.slug}</p>
-                    <p className="text-sm text-gray-500">الترتيب: {String(cat.sortOrder ?? 0)}</p>
+                    <p className="text-sm text-text-secondary">المعرف: {cat.slug}</p>
+                    <p className="text-sm text-text-secondary">الترتيب: {String(cat.sortOrder ?? 0)}</p>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className={`rounded-full px-2 py-0.5 text-xs ${Boolean(cat.isActive) ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
@@ -91,8 +91,8 @@ export default function AdminCategoriesPage(): JSX.Element {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-semibold">↳ {getCatName(child, 'ar')} / {getCatName(child, 'en')}</p>
-                        <p className="text-sm text-gray-500">المعرف: {child.slug}</p>
-                        <p className="text-sm text-gray-500">الترتيب: {String(child.sortOrder ?? 0)}</p>
+                        <p className="text-sm text-text-secondary">المعرف: {child.slug}</p>
+                        <p className="text-sm text-text-secondary">الترتيب: {String(child.sortOrder ?? 0)}</p>
                       </div>
                       <div className="flex items-center gap-3">
                         <span className={`rounded-full px-2 py-0.5 text-xs ${child.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
@@ -119,9 +119,9 @@ export default function AdminCategoriesPage(): JSX.Element {
           <Input label="الاسم (إنجليزي)" value={form.nameEn} onChange={(e) => setForm({ ...form, nameEn: e.target.value })} />
           <Input label="المعرف (Slug)" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">القسم الأب</label>
+            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">القسم الأب</label>
             <select
-              className="w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               value={form.parentId ?? ''}
               onChange={(e) => setForm({ ...form, parentId: e.target.value ? Number(e.target.value) : null })}
             >
@@ -145,9 +145,9 @@ export default function AdminCategoriesPage(): JSX.Element {
           <Input label="الاسم (إنجليزي)" value={form.nameEn} onChange={(e) => setForm({ ...form, nameEn: e.target.value })} />
           <Input label="المعرف (Slug)" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">القسم الأب</label>
+            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">القسم الأب</label>
             <select
-              className="w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               value={form.parentId ?? ''}
               onChange={(e) => setForm({ ...form, parentId: e.target.value ? Number(e.target.value) : null })}
             >

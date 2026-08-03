@@ -21,7 +21,7 @@ export default function TechSlotsPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <h1 className="text-2xl font-bold">المواعيد المتاحة</h1>
 
-        <div className="flex flex-wrap gap-2">{next7Days.map((d) => <button key={d} onClick={() => setDate(d)} className={`rounded-lg px-4 py-2 text-sm font-medium ${d === date ? 'bg-brand-600 text-white' : 'bg-gray-100 dark:bg-gray-800'}`}>{d}</button>)}</div>
+        <div className="flex flex-wrap gap-2">{next7Days.map((d) => <button key={d} onClick={() => setDate(d)} className={`rounded-lg px-4 py-2 text-sm font-medium ${d === date ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}>{d}</button>)}</div>
 
         <Card>
           <h2 className="mb-3 font-semibold">إضافة موعد</h2>

@@ -40,8 +40,8 @@ export default function ShopTheLookPage(): JSX.Element {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="text-center mb-12">
         <span className="text-6xl">🛍️</span>
-        <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">تسوقي الإطلالة</h1>
-        <p className="mt-2 text-gray-500">اختاري إطلالتكِ الكاملة واحجزي جميع الخدمات بنقرة واحدة</p>
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">تسوقي الإطلالة</h1>
+        <p className="mt-2 text-text-secondary">اختاري إطلالتكِ الكاملة واحجزي جميع الخدمات بنقرة واحدة</p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-2">
@@ -53,7 +53,7 @@ export default function ShopTheLookPage(): JSX.Element {
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-4xl">{look.emoji}</span>
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{look.name}</h2>
+                  <h2 className="text-xl font-bold text-text-primary dark:text-gray-100">{look.name}</h2>
                   <p className="text-sm text-gray-600 dark:text-gray-400">{look.desc}</p>
                 </div>
               </div>
@@ -62,17 +62,17 @@ export default function ShopTheLookPage(): JSX.Element {
                   <div key={i} className="flex items-center justify-between rounded-lg bg-white/60 dark:bg-gray-800/60 p-3">
                     <div className="flex items-center gap-2">
                       <span>{s.emoji}</span>
-                      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{s.name}</span>
-                      <span className="text-xs text-gray-500">({s.duration} د)</span>
+                      <span className="text-sm font-medium text-text-primary dark:text-gray-100">{s.name}</span>
+                      <span className="text-xs text-text-secondary">({s.duration} د)</span>
                     </div>
                     <span className="text-sm font-bold text-brand-600">{formatCurrency(s.price)}</span>
                   </div>
                 ))}
               </div>
-              <div className="flex items-center justify-between border-t border-gray-200/50 dark:border-gray-700/50 pt-4">
+              <div className="flex items-center justify-between border-t border-edge/50 dark:border-gray-700/50 pt-4">
                 <div>
-                  <p className="text-lg font-extrabold text-gray-900 dark:text-gray-100">{formatCurrency(total)}</p>
-                  <p className="text-xs text-gray-500">{totalDuration} دقيقة · {look.services.length} خدمات</p>
+                  <p className="text-lg font-extrabold text-text-primary dark:text-gray-100">{formatCurrency(total)}</p>
+                  <p className="text-xs text-text-secondary">{totalDuration} دقيقة · {look.services.length} خدمات</p>
                 </div>
                 <Link href="/bookings/create"><Button>احجزي الإطلالة</Button></Link>
               </div>

@@ -6,7 +6,7 @@ export default function BeautyStoriesPage(): JSX.Element {
   const stories = data ?? [];
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
-      <div className="mb-8 text-center"><span className="text-6xl">📖</span><h1 className="mt-4 text-3xl font-bold">Beauty Stories</h1><p className="mt-2 text-gray-500">قصص يومية من فنياتنا</p></div>
+      <div className="mb-8 text-center"><span className="text-6xl">📖</span><h1 className="mt-4 text-3xl font-bold">Beauty Stories</h1><p className="mt-2 text-text-secondary">قصص يومية من فنياتنا</p></div>
       {isLoading ? <div className="flex gap-4 justify-center">{Array.from({length:4},(_,i)=><div key={i} className="w-32 h-48"><CardSkeleton/></div>)}</div> :
         <div className="flex gap-4 justify-center flex-wrap">
           {stories.map((s: Record<string,unknown>) => (

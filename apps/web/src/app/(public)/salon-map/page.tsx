@@ -130,10 +130,10 @@ export default function SalonMapPage(): JSX.Element {
       />
 
       {/* City Selector Bar */}
-      <div className="absolute top-0 left-0 right-0 z-[1000] bg-white/90 dark:bg-gray-900/90 backdrop-blur border-b border-gray-200 dark:border-gray-800">
+      <div className="absolute top-0 left-0 right-0 z-[1000] bg-white/90 dark:bg-gray-900/90 backdrop-blur border-b border-edge dark:border-gray-800">
         <div className="mx-auto max-w-6xl px-4 py-3">
           <div className="flex items-center gap-3 overflow-x-auto pb-1">
-            <span className="text-sm font-bold text-gray-700 dark:text-gray-300 shrink-0">🗺️ المدن:</span>
+            <span className="text-sm font-bold text-text-primary dark:text-gray-300 shrink-0">🗺️ المدن:</span>
             {cities?.slice(0, 10).map((c) => (
               <button
                 key={c.key}
@@ -141,7 +141,7 @@ export default function SalonMapPage(): JSX.Element {
                 className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-all ${
                   selectedCityKey === c.key
                     ? 'bg-brand-600 text-white shadow-md'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                    : 'bg-surface-muted text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
                 }`}
               >
                 {c.nameAr}
@@ -154,14 +154,14 @@ export default function SalonMapPage(): JSX.Element {
       {/* Map */}
       <div className="h-full w-full pt-[52px]">
         {!leafletLoaded || isLoading ? (
-          <div className="flex h-full items-center justify-center bg-gray-100 dark:bg-gray-900">
+          <div className="flex h-full items-center justify-center bg-surface-muted dark:bg-gray-900">
             <div className="text-center">
               <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-brand-300 border-t-brand-600" />
-              <p className="mt-4 text-gray-500">{!leafletLoaded ? 'جاري تحميل الخريطة...' : 'جاري البحث عن فنيات...'}</p>
+              <p className="mt-4 text-text-secondary">{!leafletLoaded ? 'جاري تحميل الخريطة...' : 'جاري البحث عن فنيات...'}</p>
             </div>
           </div>
         ) : isError ? (
-          <div className="flex h-full items-center justify-center bg-gray-100 dark:bg-gray-900">
+          <div className="flex h-full items-center justify-center bg-surface-muted dark:bg-gray-900">
             <ErrorAlert message="فشل تحميل الخريطة" onRetry={() => refetch()} />
           </div>
         ) : (
@@ -180,7 +180,7 @@ export default function SalonMapPage(): JSX.Element {
           <Card padding="lg" className="shadow-2xl">
             <button
               onClick={() => setSelectedTechnician(null)}
-              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-lg"
+              className="absolute top-3 right-3 text-text-tertiary hover:text-gray-600 text-lg"
             >
               ✕
             </button>
@@ -193,8 +193,8 @@ export default function SalonMapPage(): JSX.Element {
                 )}
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 dark:text-gray-100">{selectedTechnician.name}</h3>
-                <div className="flex items-center gap-2 text-xs text-gray-500">
+                <h3 className="font-bold text-text-primary dark:text-gray-100">{selectedTechnician.name}</h3>
+                <div className="flex items-center gap-2 text-xs text-text-secondary">
                   <span>⭐ {selectedTechnician.rating}</span>
                   <span>({selectedTechnician.reviewCount})</span>
                   <span className={`h-2 w-2 rounded-full ${selectedTechnician.isAvailable ? 'bg-green-500' : 'bg-gray-400'}`} />
@@ -206,7 +206,7 @@ export default function SalonMapPage(): JSX.Element {
             <div className="mt-3 space-y-1.5 max-h-32 overflow-y-auto">
               {selectedTechnician.services.slice(0, 5).map((s) => (
                 <div key={s.id} className="flex justify-between text-xs">
-                  <span className="text-gray-700 dark:text-gray-300">{s.nameAr}</span>
+                  <span className="text-text-primary dark:text-gray-300">{s.nameAr}</span>
                   <span className="font-semibold text-brand-600">{formatCurrency(s.price)} ر.س</span>
                 </div>
               ))}
@@ -220,7 +220,7 @@ export default function SalonMapPage(): JSX.Element {
 
       {/* Stats bar */}
       <div className="absolute bottom-4 right-4 z-[1000] hidden sm:block">
-        <div className="rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur px-3 py-1.5 text-xs font-medium text-gray-500 shadow">
+        <div className="rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur px-3 py-1.5 text-xs font-medium text-text-secondary shadow">
           {techs.length} فنية · {selectedCity?.nameAr ?? ''}
         </div>
       </div>

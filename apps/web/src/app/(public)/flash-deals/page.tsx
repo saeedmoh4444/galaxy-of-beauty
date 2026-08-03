@@ -60,7 +60,7 @@ function CountdownTimer({ endsAt }: { endsAt: string }): JSX.Element {
   const isEnded = timeLeft === 'انتهى';
 
   return (
-    <span className={`inline-flex items-center gap-1 text-xs font-semibold ${isEnded ? 'text-gray-400' : 'text-orange-600 animate-pulse'}`}>
+    <span className={`inline-flex items-center gap-1 text-xs font-semibold ${isEnded ? 'text-text-tertiary' : 'text-orange-600 animate-pulse'}`}>
       ⏰ {timeLeft}
     </span>
   );
@@ -103,8 +103,8 @@ export default function FlashDealsPage(): JSX.Element {
       {/* Header */}
       <div className="mb-10 text-center">
         <span className="text-6xl">⚡</span>
-        <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">عروض فلاش</h1>
-        <p className="mt-2 text-gray-500 dark:text-gray-400">
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">عروض فلاش</h1>
+        <p className="mt-2 text-text-secondary dark:text-gray-400">
           عروض لفترة محدودة — الحقّي العرض قبل ما ينتهي!
         </p>
       </div>
@@ -158,10 +158,10 @@ export default function FlashDealsPage(): JSX.Element {
 
                   <div className="flex-1 min-w-0">
                     {/* Title */}
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                    <h3 className="text-xl font-bold text-text-primary dark:text-gray-100">
                       {title}
                     </h3>
-                    <p className="mt-0.5 text-xs text-gray-500">
+                    <p className="mt-0.5 text-xs text-text-secondary">
                       {deal.serviceNameEn && deal.serviceNameEn !== title ? deal.serviceNameEn : ''}
                     </p>
 
@@ -170,7 +170,7 @@ export default function FlashDealsPage(): JSX.Element {
                       <span className="text-3xl font-extrabold text-red-600 dark:text-red-400">
                         {formatCurrency(deal.dealPrice)}
                       </span>
-                      <span className="text-lg text-gray-400 line-through">
+                      <span className="text-lg text-text-tertiary line-through">
                         {formatCurrency(deal.originalPrice)}
                       </span>
                       <span className="rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-bold text-red-600 dark:bg-red-900 dark:text-red-300">
@@ -182,7 +182,7 @@ export default function FlashDealsPage(): JSX.Element {
                     </div>
 
                     {/* Timer + Redemption Stats */}
-                    <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-gray-500">
+                    <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-text-secondary">
                       <CountdownTimer endsAt={deal.endsAt} />
                       <span>
                         🔥 {deal.currentRedemptions} / {deal.maxRedemptions} تم الاستفادة
@@ -200,7 +200,7 @@ export default function FlashDealsPage(): JSX.Element {
                     {/* Action */}
                     <div className="mt-4 flex flex-wrap items-center gap-3">
                       {soldOut ? (
-                        <span className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-500 dark:bg-gray-800">
+                        <span className="rounded-lg bg-surface-muted px-4 py-2 text-sm font-semibold text-text-secondary dark:bg-gray-800">
                           😔 نفذت الكمية
                         </span>
                       ) : isClaimed ? (

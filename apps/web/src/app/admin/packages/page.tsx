@@ -16,7 +16,7 @@ export default function AdminPackagesPage(): JSX.Element {
     <div className="space-y-6">
       <div className="flex items-center justify-between"><h1 className="text-2xl font-bold">💅 الباقات</h1><Button onClick={() => setShowCreate(true)}>إضافة باقة</Button></div>
       {isLoading ? <CardSkeleton /> : isError ? <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} /> : packages.length === 0 ? <EmptyState title="لا توجد باقات" /> : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{packages.map((p: Record<string, any>) => <Card key={p.id} padding="md"><h3 className="font-bold">{((p.nameJson as Record<string,string>)?.ar)}</h3><p className="text-sm text-gray-500">-{p.discountPercent}% · {p.services?.length || 0} خدمات</p><span className={`rounded px-2 py-0.5 text-xs ${p.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{p.isActive ? 'نشط' : 'غير نشط'}</span></Card>)}</div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{packages.map((p: Record<string, any>) => <Card key={p.id} padding="md"><h3 className="font-bold">{((p.nameJson as Record<string,string>)?.ar)}</h3><p className="text-sm text-text-secondary">-{p.discountPercent}% · {p.services?.length || 0} خدمات</p><span className={`rounded px-2 py-0.5 text-xs ${p.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{p.isActive ? 'نشط' : 'غير نشط'}</span></Card>)}</div>
       )}
       <Modal open={showCreate} onClose={() => setShowCreate(false)} title="إضافة باقة جديدة">
         <div className="space-y-3">

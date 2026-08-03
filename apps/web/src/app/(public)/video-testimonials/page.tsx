@@ -14,14 +14,14 @@ export default function VideoTestimonialsPage(): JSX.Element {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
-      <div className="mb-8 text-center"><span className="text-6xl">🎥</span><h1 className="mt-4 text-3xl font-bold">توصيات بالفيديو</h1><p className="mt-2 text-gray-500">شوفي تجارب حقيقية من العميلات</p></div>
+      <div className="mb-8 text-center"><span className="text-6xl">🎥</span><h1 className="mt-4 text-3xl font-bold">توصيات بالفيديو</h1><p className="mt-2 text-text-secondary">شوفي تجارب حقيقية من العميلات</p></div>
       {user && <div className="text-center mb-6"><Button onClick={() => setShow(true)}>🎥 شاركي فيديوكِ</Button></div>}
       {isLoading ? <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{Array.from({length:6},(_,i)=><CardSkeleton key={i}/>)}</div> :
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{items.map((t: Record<string,unknown>) => (
           <Card key={t.id as number} padding="md">
             <div className="h-36 rounded-xl bg-gray-800 flex items-center justify-center text-4xl">▶️</div>
             <div className="mt-2 flex items-center gap-1"><span className="text-sm font-bold">{t.userName as string}</span><span className="text-amber-500">{'⭐'.repeat(t.rating as number)}</span></div>
-            <p className="text-sm mt-1">{t.comment as string}</p><p className="text-xs text-gray-500 mt-1">👩‍🎨 {t.technicianName as string} · {t.serviceName as string} · ❤️ {t.likes as number}</p>
+            <p className="text-sm mt-1">{t.comment as string}</p><p className="text-xs text-text-secondary mt-1">👩‍🎨 {t.technicianName as string} · {t.serviceName as string} · ❤️ {t.likes as number}</p>
           </Card>
         ))}</div>
       }

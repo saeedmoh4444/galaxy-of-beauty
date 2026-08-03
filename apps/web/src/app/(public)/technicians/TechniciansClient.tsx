@@ -22,8 +22,8 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
       <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">فنيات التجميل</h1>
-        <p className="mt-2 text-gray-500 dark:text-gray-400">تصفحي فنيات التجميل المعتمدات في مدينتك</p>
+        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">فنيات التجميل</h1>
+        <p className="mt-2 text-text-secondary dark:text-gray-400">تصفحي فنيات التجميل المعتمدات في مدينتك</p>
       </div>
 
       <div className="mb-6 flex flex-wrap gap-4">
@@ -58,12 +58,12 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
                       <span>👩‍🎨</span>
                     )}
                   </div>
-                  <h3 className="mt-4 text-lg font-bold text-gray-900 dark:text-gray-100">{name}</h3>
-                  <p className="text-sm text-gray-500">{cityName}</p>
-                  {bio && <p className="mt-1 line-clamp-2 text-xs text-gray-400">{bio}</p>}
+                  <h3 className="mt-4 text-lg font-bold text-text-primary dark:text-gray-100">{name}</h3>
+                  <p className="text-sm text-text-secondary">{cityName}</p>
+                  {bio && <p className="mt-1 line-clamp-2 text-xs text-text-tertiary">{bio}</p>}
                   <div className="mt-3 flex items-center gap-3 text-sm">
                     <span className="text-amber-500">⭐ {rating.toFixed(1)}</span>
-                    <span className="text-gray-400">{bookings} حجز</span>
+                    <span className="text-text-tertiary">{bookings} حجز</span>
                     {isEco && <span className="text-green-500">🌿</span>}
                   </div>
                 </Card>

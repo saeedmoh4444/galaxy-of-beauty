@@ -16,7 +16,7 @@ export default function AdminCampaignsPage(): JSX.Element {
     <div className="space-y-6">
       <div className="flex items-center justify-between"><h1 className="text-2xl font-bold">📢 الحملات</h1><Button onClick={() => setShowCreate(true)}>إضافة حملة</Button></div>
       {isLoading ? <CardSkeleton /> : isError ? <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} /> : campaigns.length === 0 ? <EmptyState title="لا توجد حملات" /> : (
-        <div className="space-y-3">{campaigns.map((c: Record<string, any>) => <Card key={c.id} padding="md"><div className="flex items-center justify-between"><div><h3 className="font-bold">{((c.nameJson as Record<string,string>)?.ar)}</h3><p className="text-sm text-gray-500">{c.discountType === 'percent' ? `-${c.discountValue}%` : `-${c.discountValue} ر.س`}</p></div><span className={`rounded px-2 py-0.5 text-xs ${c.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>{c.isActive ? 'نشط' : 'غير نشط'}</span></div></Card>)}</div>
+        <div className="space-y-3">{campaigns.map((c: Record<string, any>) => <Card key={c.id} padding="md"><div className="flex items-center justify-between"><div><h3 className="font-bold">{((c.nameJson as Record<string,string>)?.ar)}</h3><p className="text-sm text-text-secondary">{c.discountType === 'percent' ? `-${c.discountValue}%` : `-${c.discountValue} ر.س`}</p></div><span className={`rounded px-2 py-0.5 text-xs ${c.isActive ? 'bg-green-100 text-green-700' : 'bg-surface-muted text-text-secondary'}`}>{c.isActive ? 'نشط' : 'غير نشط'}</span></div></Card>)}</div>
       )}
       <Modal open={showCreate} onClose={() => setShowCreate(false)} title="إضافة حملة جديدة">
         <div className="space-y-3">

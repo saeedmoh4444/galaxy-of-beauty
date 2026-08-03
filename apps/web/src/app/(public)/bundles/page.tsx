@@ -27,13 +27,13 @@ export default function BundlesPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">📦 اصنعي باقتكِ</h1>
-        <p className="mt-2 text-gray-500">اختاري ٢-٥ خدمات واحصلي على خصم تلقائي</p>
+        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">📦 اصنعي باقتكِ</h1>
+        <p className="mt-2 text-text-secondary">اختاري ٢-٥ خدمات واحصلي على خصم تلقائي</p>
       </div>
 
       <div className="mb-6 flex justify-center gap-2">
         {[2, 3, 4, 5].map(n => (
-          <div key={n} className={`rounded-full px-4 py-1.5 text-xs font-bold ${count >= n ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}`}>
+          <div key={n} className={`rounded-full px-4 py-1.5 text-xs font-bold ${count >= n ? 'bg-green-100 text-green-700' : 'bg-surface-muted text-text-tertiary'}`}>
             {n}+ خدمات = -{BUNDLE_DISCOUNTS[n]}%
           </div>
         ))}
@@ -41,7 +41,7 @@ export default function BundlesPage(): JSX.Element {
 
       {count > 0 && (
         <div className="mb-6 text-center">
-          <p className="text-lg"><span className="text-gray-500">عدد الخدمات: </span><span className="font-bold">{count}</span> · <span className="text-gray-500">الخصم: </span><span className="font-bold text-green-600">-{discount}%</span></p>
+          <p className="text-lg"><span className="text-text-secondary">عدد الخدمات: </span><span className="font-bold">{count}</span> · <span className="text-text-secondary">الخصم: </span><span className="font-bold text-green-600">-{discount}%</span></p>
         </div>
       )}
 
@@ -51,14 +51,14 @@ export default function BundlesPage(): JSX.Element {
             const children = (cat.children as Array<Record<string, any>>) || [];
             return [...(cat.services ? [{ ...cat, _isCat: true }] : []), ...children.flatMap((child: Record<string, any>) => child.services || [])];
           }).slice(0, 30).map((svc: Record<string, any>) => svc._isCat ? null : (
-            <button key={svc.id} onClick={() => toggle(svc.id)} className={`text-right rounded-2xl border-2 p-4 transition-all ${selected.has(svc.id) ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 hover:border-brand-300 dark:border-gray-700'}`}>
+            <button key={svc.id} onClick={() => toggle(svc.id)} className={`text-right rounded-2xl border-2 p-4 transition-all ${selected.has(svc.id) ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-edge hover:border-brand-300 dark:border-gray-700'}`}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-semibold text-gray-900 dark:text-gray-100">{ar(svc.titleJson)}</p>
-                  <p className="text-sm text-gray-500">{svc.durationMin} دقيقة</p>
+                  <p className="font-semibold text-text-primary dark:text-gray-100">{ar(svc.titleJson)}</p>
+                  <p className="text-sm text-text-secondary">{svc.durationMin} دقيقة</p>
                   <p className="mt-1 font-bold text-brand-600">{formatCurrency(Number(svc.basePrice))}</p>
                 </div>
-                <div className={`h-6 w-6 rounded-full border-2 flex items-center justify-center ${selected.has(svc.id) ? 'border-brand-600 bg-brand-600' : 'border-gray-300'}`}>
+                <div className={`h-6 w-6 rounded-full border-2 flex items-center justify-center ${selected.has(svc.id) ? 'border-brand-600 bg-brand-600' : 'border-edge'}`}>
                   {selected.has(svc.id) && <span className="text-white text-xs">✓</span>}
                 </div>
               </div>

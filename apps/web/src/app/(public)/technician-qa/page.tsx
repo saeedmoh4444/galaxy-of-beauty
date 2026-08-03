@@ -24,13 +24,13 @@ export default function TechnicianQAPage(): JSX.Element {
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-10 text-center">
         <h1 className="text-3xl font-bold">💬 اسألي الفنيات</h1>
-        <p className="mt-2 text-gray-500">اسألي خبراء التجميل — تجاوب الفنيات على أسئلتكِ</p>
+        <p className="mt-2 text-text-secondary">اسألي خبراء التجميل — تجاوب الفنيات على أسئلتكِ</p>
       </div>
 
       <div className="flex items-center justify-between mb-6">
         <div className="flex flex-wrap gap-2">
-          <button onClick={() => setCategory(undefined)} className={`rounded-full px-3 py-1 text-xs font-medium ${!category ? 'bg-brand-600 text-white' : 'bg-gray-100 dark:bg-gray-800'}`}>الكل</button>
-          {categories.map((c) => <button key={c.key} onClick={() => setCategory(c.key)} className={`rounded-full px-3 py-1 text-xs font-medium ${category === c.key ? 'bg-brand-600 text-white' : 'bg-gray-100 dark:bg-gray-800'}`}>{c.emoji} {c.nameAr}</button>)}
+          <button onClick={() => setCategory(undefined)} className={`rounded-full px-3 py-1 text-xs font-medium ${!category ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}>الكل</button>
+          {categories.map((c) => <button key={c.key} onClick={() => setCategory(c.key)} className={`rounded-full px-3 py-1 text-xs font-medium ${category === c.key ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}>{c.emoji} {c.nameAr}</button>)}
         </div>
         {user && <Button size="sm" onClick={() => setShowAsk(true)}>+ اسألي</Button>}
       </div>
@@ -44,19 +44,19 @@ export default function TechnicianQAPage(): JSX.Element {
               <div className="flex items-start gap-3">
                 <span className="text-2xl">❓</span>
                 <div className="flex-1">
-                  <p className="font-bold text-sm text-gray-900 dark:text-gray-100">{item.question as string}</p>
+                  <p className="font-bold text-sm text-text-primary dark:text-gray-100">{item.question as string}</p>
                   {item.isAnswered ? (
                     <div className="mt-2 rounded-xl bg-green-50 dark:bg-green-950 p-3">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-lg">👩‍🎨</span>
                         <span className="text-xs font-bold text-green-700 dark:text-green-300">{item.technicianName as string}</span>
                       </div>
-                      <p className="text-sm text-gray-700 dark:text-gray-300">{item.answer as string}</p>
+                      <p className="text-sm text-text-primary dark:text-gray-300">{item.answer as string}</p>
                     </div>
                   ) : (
                     <p className="mt-2 text-xs text-amber-500">⏳ في انتظار الرد</p>
                   )}
-                  <p className="mt-1 text-[10px] text-gray-400">{item.userName as string} · {new Date(item.createdAt as string).toLocaleDateString('ar-SA')}</p>
+                  <p className="mt-1 text-[10px] text-text-tertiary">{item.userName as string} · {new Date(item.createdAt as string).toLocaleDateString('ar-SA')}</p>
                 </div>
               </div>
             </Card>

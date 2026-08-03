@@ -53,7 +53,7 @@ export default function AdminTechniciansPage(): JSX.Element {
           <button
             key={tab}
             onClick={() => setKycTab(tab)}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium ${kycTab === tab ? 'bg-brand-600 text-white' : 'bg-gray-100 dark:bg-gray-800 dark:text-gray-300'}`}
+            className={`rounded-full px-4 py-1.5 text-sm font-medium ${kycTab === tab ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800 dark:text-gray-300'}`}
           >
             {tab === 'ALL' ? 'الكل' : tab === 'PENDING' ? 'قيد الانتظار' : tab === 'SUBMITTED' ? 'مقدم' : tab === 'VERIFIED' ? 'موثق' : 'مرفوض'}
           </button>
@@ -74,15 +74,15 @@ export default function AdminTechniciansPage(): JSX.Element {
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="font-semibold">{tech.user.name}</p>
-                      <p className="text-sm text-gray-500">{tech.user.email}</p>
-                      <p className="text-sm text-gray-500">{tech.city ?? '—'}</p>
+                      <p className="text-sm text-text-secondary">{tech.user.email}</p>
+                      <p className="text-sm text-text-secondary">{tech.city ?? '—'}</p>
                     </div>
                     <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${badge.className}`}>
                       {badge.label}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-4 text-sm text-gray-500">
+                  <div className="flex items-center gap-4 text-sm text-text-secondary">
                     <span>⭐ {Number(tech.ratingAvg ?? 0).toFixed(1)}</span>
                     <span>{String(tech.completedBookings ?? 0)} حجوزات</span>
                   </div>
@@ -125,14 +125,14 @@ export default function AdminTechniciansPage(): JSX.Element {
                   </p>
                 ))
               ) : (
-                <p className="text-sm text-gray-500">لا توجد وثائق مرفوعة (مؤقت)</p>
+                <p className="text-sm text-text-secondary">لا توجد وثائق مرفوعة (مؤقت)</p>
               )}
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">ملاحظات</label>
+              <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">ملاحظات</label>
               <textarea
-                className="w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+                className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 rows={3}
                 value={reviewNote}
                 onChange={(e) => setReviewNote(e.target.value)}

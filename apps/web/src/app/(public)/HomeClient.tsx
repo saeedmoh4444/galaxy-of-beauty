@@ -38,7 +38,7 @@ export function HomeClient({
         <h1 className="text-3xl font-extrabold md:text-5xl">اكتشفي جمالك مع أفضل الفنيات</h1>
         <p className="mt-4 text-lg text-brand-100">احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج والمزيد</p>
         <div className="mt-8 flex justify-center gap-4">
-          <Link href="/bookings/create"><Button size="lg" className="bg-white !text-brand-700 hover:bg-gray-100">احجزي الآن</Button></Link>
+          <Link href="/bookings/create"><Button size="lg" className="bg-white !text-brand-700 hover:bg-surface-muted">احجزي الآن</Button></Link>
           <Link href="/services/surprise-me"><Button size="lg" variant="outline" className="border-white !text-white hover:bg-white/10">🎲 فاجئيني</Button></Link>
         </div>
       </section>
@@ -65,7 +65,7 @@ export function HomeClient({
       </section>
 
       {/* Popular Services */}
-      <section className="bg-gray-50 px-4 py-16 dark:bg-gray-900">
+      <section className="bg-surface-muted px-4 py-16 dark:bg-gray-900">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-8 text-2xl font-bold">الخدمات الأكثر طلباً</h2>
           {fetchError && <ErrorAlert message={fetchError} onRetry={() => window.location.reload()} />}
@@ -77,7 +77,7 @@ export function HomeClient({
                   <Card hover>
                     <div className="h-40 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100 dark:from-brand-900 dark:to-accent-900" />
                     <h3 className="mt-3 font-semibold">{ar(svc.titleJson)}</h3>
-                    <p className="mt-1 text-sm text-gray-500">{svc.durationMin} دقيقة</p>
+                    <p className="mt-1 text-sm text-text-secondary">{svc.durationMin} دقيقة</p>
                     <p className="mt-2 font-bold text-brand-600">{svc.basePrice} ر.س</p>
                   </Card>
                 </Link>
@@ -96,7 +96,7 @@ export function HomeClient({
             { label: 'خدمة', value: `+${serviceTotal || 25}` },
             { label: 'مدينة سعودية', value: '+24' },
           ].map((s) => (
-            <div key={s.label}><p className="text-3xl font-extrabold text-brand-600">{s.value}</p><p className="text-gray-500">{s.label}</p></div>
+            <div key={s.label}><p className="text-3xl font-extrabold text-brand-600">{s.value}</p><p className="text-text-secondary">{s.label}</p></div>
           ))}
         </div>
       </section>
@@ -138,7 +138,7 @@ export function HomeClient({
             <Link key={f.href} href={f.href}>
               <Card hover padding="lg" className="flex items-start gap-3 transition-all">
                 <span className="text-3xl">{f.emoji}</span>
-                <div><h3 className="font-bold text-sm">{f.title}</h3><p className="text-xs text-gray-500 mt-0.5">{f.desc}</p></div>
+                <div><h3 className="font-bold text-sm">{f.title}</h3><p className="text-xs text-text-secondary mt-0.5">{f.desc}</p></div>
               </Card>
             </Link>
           ))}

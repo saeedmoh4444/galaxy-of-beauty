@@ -19,7 +19,7 @@ export default function AdminFlashDealsPage(): JSX.Element {
   return (
     <DashboardLayout role="ADMIN">
       <div className="mx-auto max-w-4xl space-y-6">
-        <div><h1 className="text-2xl font-bold">⚡ إدارة عروض الفلاش</h1><p className="mt-1 text-sm text-gray-500">إنشاء وإدارة العروض محدودة الوقت</p></div>
+        <div><h1 className="text-2xl font-bold">⚡ إدارة عروض الفلاش</h1><p className="mt-1 text-sm text-text-secondary">إنشاء وإدارة العروض محدودة الوقت</p></div>
 
         <Card padding="lg"><h3 className="font-bold mb-3">➕ إنشاء عرض جديد</h3>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -32,15 +32,15 @@ export default function AdminFlashDealsPage(): JSX.Element {
         </Card>
 
         <Card padding="lg"><h3 className="font-bold mb-3">🔥 العروض النشطة</h3>
-          {isLoading ? <CardSkeleton/> : !(active??[]).length ? <p className="text-sm text-gray-400">لا توجد عروض نشطة</p> :
+          {isLoading ? <CardSkeleton/> : !(active??[]).length ? <p className="text-sm text-text-tertiary">لا توجد عروض نشطة</p> :
             <div className="space-y-2">{(active??[]).map((d: Record<string,unknown>) => (
               <div key={d.id as number} className="flex items-center justify-between rounded-lg border p-3">
-                <div><span className="font-bold">{d.serviceNameAr as string}</span><span className="text-xs text-gray-500 mr-2">{d.titleAr as string ?? ''}</span></div>
+                <div><span className="font-bold">{d.serviceNameAr as string}</span><span className="text-xs text-text-secondary mr-2">{d.titleAr as string ?? ''}</span></div>
                 <div className="flex items-center gap-3">
-                  <span className="text-xs text-gray-400 line-through">{formatCurrency(d.originalPrice as number)}</span>
+                  <span className="text-xs text-text-tertiary line-through">{formatCurrency(d.originalPrice as number)}</span>
                   <span className="font-bold text-red-600">{formatCurrency(d.dealPrice as number)}</span>
                   <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs text-red-700">-{d.discountPercent as number}%</span>
-                  <span className="text-xs text-gray-400">{d.currentRedemptions as number}/{d.maxRedemptions as number}</span>
+                  <span className="text-xs text-text-tertiary">{d.currentRedemptions as number}/{d.maxRedemptions as number}</span>
                 </div>
               </div>
             ))}</div>

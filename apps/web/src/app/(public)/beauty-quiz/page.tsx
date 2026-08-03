@@ -63,10 +63,10 @@ export default function BeautyQuizPage(): JSX.Element {
     return (
       <div className="mx-auto max-w-lg px-4 py-16 text-center">
         <span className="text-6xl">✨</span>
-        <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">{result.title}</h1>
-        <p className="mt-2 text-gray-500">بناءً على إجاباتكِ، نرشح لكِ:</p>
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">{result.title}</h1>
+        <p className="mt-2 text-text-secondary">بناءً على إجاباتكِ، نرشح لكِ:</p>
         <div className="mt-6 space-y-2">
-          {result.services.map(s => <Card key={s} padding="sm"><p className="font-medium text-gray-900 dark:text-gray-100">{s}</p></Card>)}
+          {result.services.map(s => <Card key={s} padding="sm"><p className="font-medium text-text-primary dark:text-gray-100">{s}</p></Card>)}
         </div>
         <div className="mt-8 flex gap-3 justify-center">
           <Link href={result.link}><Button size="lg">تصفحي الخدمات</Button></Link>
@@ -81,14 +81,14 @@ export default function BeautyQuizPage(): JSX.Element {
     <div className="mx-auto max-w-lg px-4 py-12">
       <div className="mb-8">
         <div className="mb-2 flex gap-1">{questions.map((_, i) => <div key={i} className={`h-1.5 flex-1 rounded-full transition-colors ${i <= step ? 'bg-brand-600' : 'bg-gray-200 dark:bg-gray-700'}`} />)}</div>
-        <p className="text-xs text-gray-400">{step + 1} / {questions.length}</p>
+        <p className="text-xs text-text-tertiary">{step + 1} / {questions.length}</p>
       </div>
-      <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">{q.text}</h2>
+      <h2 className="mb-6 text-2xl font-bold text-text-primary dark:text-gray-100">{q.text}</h2>
       <div className="space-y-3">
         {q.options.map(o => (
-          <button key={o.value} onClick={() => handleAnswer(q.id, o.value)} className="flex w-full items-center gap-4 rounded-xl border border-gray-200 p-4 text-right transition-all hover:border-brand-400 hover:bg-brand-50 dark:border-gray-700 dark:hover:bg-brand-950">
+          <button key={o.value} onClick={() => handleAnswer(q.id, o.value)} className="flex w-full items-center gap-4 rounded-xl border border-edge p-4 text-right transition-all hover:border-brand-400 hover:bg-brand-50 dark:border-gray-700 dark:hover:bg-brand-950">
             <span className="text-2xl">{o.icon}</span>
-            <span className="text-lg font-medium text-gray-900 dark:text-gray-100">{o.label}</span>
+            <span className="text-lg font-medium text-text-primary dark:text-gray-100">{o.label}</span>
           </button>
         ))}
       </div>

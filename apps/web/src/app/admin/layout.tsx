@@ -35,7 +35,7 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
 
   return (
     <div className="flex min-h-screen">
-      <aside className="hidden w-64 border-e border-gray-200 bg-white p-4 md:block dark:border-gray-800 dark:bg-gray-950">
+      <aside className="hidden w-64 border-e border-edge bg-white p-4 md:block dark:border-gray-800 dark:bg-gray-950">
         <Link href="/admin/dashboard" className="mb-6 block text-lg font-bold text-brand-600">
           لوحة الإدارة
         </Link>
@@ -47,7 +47,7 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
               className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                 pathname.startsWith(link.href)
                   ? 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300'
-                  : 'text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-900'
+                  : 'text-gray-600 hover:bg-surface-muted dark:text-gray-400 dark:hover:bg-gray-900'
               }`}
             >
               <span>{link.icon}</span>
@@ -55,10 +55,10 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
             </Link>
           ))}
         </nav>
-        <div className="mt-6 border-t border-gray-200 pt-4 dark:border-gray-800">
+        <div className="mt-6 border-t border-edge pt-4 dark:border-gray-800">
           <Link
             href="/dashboard"
-            className="block rounded-lg px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-900"
+            className="block rounded-lg px-3 py-2 text-sm text-gray-600 hover:bg-surface-muted dark:text-gray-400 dark:hover:bg-gray-900"
           >
             🏠 العودة للمتجر
           </Link>
@@ -70,7 +70,7 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
           </button>
         </div>
       </aside>
-      <main className="flex-1 overflow-auto bg-gray-50 p-6 dark:bg-gray-950">{children}</main>
+      <main className="flex-1 overflow-auto bg-surface-muted p-6 dark:bg-gray-950">{children}</main>
     </div>
   );
 }

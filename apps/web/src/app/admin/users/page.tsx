@@ -23,7 +23,7 @@ export default function AdminUsersPage(): JSX.Element {
       : <div className="space-y-2">{customers.map((c: Record<string, unknown>) => (
           <Card key={c.id as number} padding="md">
             <div className="flex items-center justify-between">
-              <div><p className="font-semibold">{c.name as string}</p><p className="text-sm text-gray-500">{c.email as string}</p></div>
+              <div><p className="font-semibold">{c.name as string}</p><p className="text-sm text-text-secondary">{c.email as string}</p></div>
               <div className="flex gap-2">
                 <span className={`rounded-full px-2 py-0.5 text-xs ${c.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{c.isActive ? 'نشط' : 'معلق'}</span>
                 <Button size="sm" variant={c.isActive ? 'danger' : 'primary'} onClick={() => { setSelected(c); suspendMut.mutate({ userId: c.id as number }); }}>{c.isActive ? 'تعليق' : 'تفعيل'}</Button>
