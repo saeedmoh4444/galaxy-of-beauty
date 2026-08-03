@@ -11,6 +11,7 @@ interface Toast {
   id: number;
   type: ToastType;
   message: string;
+  entering?: boolean;
   exiting?: boolean;
 }
 
@@ -37,7 +38,14 @@ export function ToastProvider({ children }: { children: ReactNode }): JSX.Elemen
   const addToast = useCallback(
     (type: ToastType, message: string) => {
       const id = ++nextId;
-      setToasts((prev) => [...prev.slice(-4), { id, type, message }]);
+      // Start with entering=true so the enter animation plays
+      setToasts((prev) => [...prev.slice(-4), { id, type, message, entering: true }]);
+      // After a frame, clear entering to trigger the enter transition
+      requestAnimationFrame(() => {
+        setToasts((prev) =>
+          prev.map((t) => (t.id === id ? { ...t, entering: false } : t)),
+        );
+      });
       setTimeout(() => removeToast(id), TOAST_DURATION_MS);
     },
     [removeToast],
@@ -57,7 +65,11 @@ export function ToastProvider({ children }: { children: ReactNode }): JSX.Elemen
             key={toast.id}
             role="status"
             className={`pointer-events-auto flex items-center gap-3 rounded-xl px-5 py-3 text-sm font-medium shadow-lg transition-all duration-300 ${
-              toast.exiting ? 'translate-y-2 opacity-0' : 'translate-y-0 opacity-100'
+              toast.entering
+                ? 'translate-y-4 opacity-0 scale-95'
+                : toast.exiting
+                  ? 'translate-y-2 opacity-0 scale-95'
+                  : 'translate-y-0 opacity-100 scale-100'
             } ${
               toast.type === 'success'
                 ? 'bg-green-600 text-white'
