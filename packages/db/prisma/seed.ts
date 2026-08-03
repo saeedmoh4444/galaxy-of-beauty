@@ -672,17 +672,38 @@ async function main() {
   }
   console.log(`✅ ${reviewCount} reviews`);
 
-  // Wallet transactions, loyalty, notifications, wishlist, flash deals, referrals
+  // Wallet transactions
   try {
     const customerWallet = await (prisma as any).wallet.findUnique({ where: { userId: customer.id } });
     if (customerWallet) {
       await (prisma as any).walletTransaction.createMany({
         data: [
-          { walletId: customerWallet.id, amount: 500, type: 'CREDIT', reason: 'top_up', referenceId: 'topup_init' },
-          { walletId: customerWallet.id, amount: 50, type: 'CREDIT', reason: 'cashback', referenceId: 'booking_1' },
+          { walletId: customerWallet.id, amount: 500, type: 'CREDIT', source: 'PLATFORM_FEE_SHARE', description: 'إيداع أولي', referenceId: 'topup_init' },
+          { walletId: customerWallet.id, amount: 50, type: 'CREDIT', source: 'CASHBACK', description: 'كاش باك من الحجز', referenceId: 'booking_1' },
         ],
       });
+      console.log('✅ Wallet transactions');
     }
+  } catch (err: any) { console.log(`   ⚠️ Wallet tx: ${err.message?.slice(0,60)}`); }
+
+  // Reviews for completed bookings
+  try {
+    const reviewComments = ['خدمة ممتازة وأنيقة!', 'رائعة جداً، سأكرر التجربة', 'محترفة ونظيفة، شكراً', 'أفضل فنية جربتها'];
+    let reviewCount = 0;
+    const allBookings = await (prisma as any).booking.findMany({ where: { status: 'COMPLETED' }, take: 4 });
+    for (let i = 0; i < allBookings.length; i++) {
+      try {
+        await (prisma as any).review.create({
+          data: { bookingId: allBookings[i].id, customerId: allBookings[i].customerId, rating: 4 + (i % 2), comment: reviewComments[i]! },
+        });
+        reviewCount++;
+      } catch { /* skip if duplicate */ }
+    }
+    if (reviewCount > 0) console.log(`✅ ${reviewCount} reviews`);
+  } catch (err: any) { console.log(`   ⚠️ Reviews: ${err.message?.slice(0,60)}`); }
+
+  // Loyalty, notifications, wishlist, flash deal
+  try {
     await (prisma as any).loyaltyAccount.create({ data: { userId: customer.id, points: 650, lifetimePoints: 1200, tier: 'GOLD' } });
     await (prisma as any).notification.createMany({
       data: [
@@ -694,10 +715,8 @@ async function main() {
     await (prisma as any).flashDeal.create({
       data: { serviceId: services[0]!.id, titleAr: 'خصم ٤٠٪', discountPercent: 40, originalPrice: Number(services[0]!.basePrice), dealPrice: Number(services[0]!.basePrice) * 0.6, discountValue: Number(services[0]!.basePrice) * 0.4, maxRedemptions: 20, startsAt: new Date(), endsAt: new Date(Date.now() + 24 * 3600000), isActive: true },
     });
-    console.log('✅ Wallet, loyalty, notifications, wishlist, flash deal');
-  } catch (err: any) {
-    console.log(`   ⚠️ Extra seed data skipped: ${err.message?.slice(0, 60)}`);
-  }
+    console.log('✅ Loyalty, notifications, wishlist, flash deal');
+  } catch (err: any) { console.log(`   ⚠️ Extra data: ${err.message?.slice(0,60)}`); }
 
   console.log('\n🎉 Seed complete! Test login: customer@test.com / Admin@123456\n');
 }
