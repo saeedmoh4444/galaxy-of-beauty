@@ -143,7 +143,7 @@ export function Modal({
         ref={panelRef}
         tabIndex={-1}
         className={cn(
-          'relative w-full rounded-2xl bg-white shadow-xl outline-none dark:bg-gray-900',
+          'relative w-full rounded-2xl bg-surface shadow-xl outline-none dark:bg-gray-900',
           'animate-in zoom-in-95 duration-200',
           sizeStyles[size],
           className,

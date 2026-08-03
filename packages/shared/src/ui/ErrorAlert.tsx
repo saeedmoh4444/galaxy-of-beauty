@@ -23,7 +23,7 @@ export function ErrorAlert({
     <div
       role="alert"
       aria-live="assertive"
-      className={`rounded-2xl border border-red-200 bg-red-50 p-6 dark:border-red-800 dark:bg-red-950 ${className}`}
+      className={`rounded-2xl border border-danger/30 bg-danger-subtle p-6 dark:border-red-800 dark:bg-red-950 ${className}`}
     >
       <div className="flex flex-col items-center gap-4 text-center">
         <div className="rounded-full bg-red-100 p-3 dark:bg-red-900">
