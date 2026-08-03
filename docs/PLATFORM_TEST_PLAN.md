@@ -302,7 +302,7 @@
 - [x] `pnpm test` — 307/307 (15 files, 100%)
 - [x] `pnpm build` — 254 pages, 10/10 tasks
 - [x] `pnpm lint` — 0 errors, 0 warnings
-- [ ] Storybook build — configured, not verified with `build-storybook`
+- [x] Storybook build — builds successfully (26s, storybook-static output)
 - [x] Mobile type-check — passes
 - [x] No Decimal warnings in server logs
 - [x] 80+ shared constants in use across web, API, mobile
