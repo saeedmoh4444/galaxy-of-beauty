@@ -84,7 +84,7 @@ export default function ReviewsPage(): JSX.Element {
                             </span>
                           ))}
                         </div>
-                        {b.reviewComment ? <p className="text-sm text-gray-600 dark:text-gray-400">&ldquo;{b.reviewComment as string}&rdquo;</p> : null}
+                        {b.reviewComment ? <p className="text-sm text-text-secondary dark:text-gray-400">&ldquo;{b.reviewComment as string}&rdquo;</p> : null}
                         <p className="text-xs text-text-tertiary">{new Date(b.reviewDate as string ?? b.startAt as string).toLocaleDateString('ar-SA')}</p>
                       </div>
                     </div>

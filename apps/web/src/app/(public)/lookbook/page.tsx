@@ -48,7 +48,7 @@ export default function LookbookPage(): JSX.Element {
 
       <div className="flex justify-center gap-3 mb-10 flex-wrap">
         {SEASONS.map(s => (
-          <button key={s.id} onClick={() => setSeason(s.id)} className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all ${season === s.id ? `bg-gradient-to-r ${s.color} text-white shadow-lg` : 'bg-surface-muted text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'}`}>
+          <button key={s.id} onClick={() => setSeason(s.id)} className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all ${season === s.id ? `bg-gradient-to-r ${s.color} text-white shadow-lg` : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'}`}>
             <span>{s.emoji}</span> {s.nameAr}
           </button>
         ))}

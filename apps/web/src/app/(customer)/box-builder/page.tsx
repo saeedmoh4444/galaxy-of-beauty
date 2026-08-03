@@ -21,7 +21,7 @@ export default function BoxBuilderPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
-        <div><h1 className="text-2xl font-bold">📦 صندوق التجميل الشهري</h1><p className="mt-1 text-sm text-gray-500">اختاري منتجاتكِ المفضلة واحصلي عليها شهرياً — ووفري حتى ١٥٪</p></div>
+        <div><h1 className="text-2xl font-bold">📦 صندوق التجميل الشهري</h1><p className="mt-1 text-sm text-text-secondary">اختاري منتجاتكِ المفضلة واحصلي عليها شهرياً — ووفري حتى ١٥٪</p></div>
 
         {result ? (
           <Card padding="lg" className="text-center border-2 border-green-300 dark:border-green-700">

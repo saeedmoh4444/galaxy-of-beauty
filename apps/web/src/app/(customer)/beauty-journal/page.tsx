@@ -56,7 +56,7 @@ export default function BeautyJournalPage(): JSX.Element {
               <span>{new Date(e.createdAt).toLocaleDateString('ar-SA', { month: 'short', day: 'numeric' })}</span>
             </div>
             {e.title && <h3 className="font-semibold text-text-primary dark:text-gray-100 mb-1">{e.title}</h3>}
-            <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-wrap">{e.content}</p>
+            <p className="text-sm text-text-secondary dark:text-gray-400 whitespace-pre-wrap">{e.content}</p>
           </Card>
         ))}</div>}
       </div>

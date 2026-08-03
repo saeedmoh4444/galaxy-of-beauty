@@ -71,7 +71,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
         <button
           onClick={() => { setCompareMode(!compareMode); setSelected(new Set()); }}
           className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-            compareMode ? 'bg-brand-600 text-white' : 'border border-edge text-gray-600 hover:bg-surface-muted dark:border-gray-600 dark:text-gray-400'
+            compareMode ? 'bg-brand-600 text-white' : 'border border-edge text-text-secondary hover:bg-surface-muted dark:border-gray-600 dark:text-gray-400'
           }`}
         >
           ⚖️ مقارنة {compareMode ? '(نشط)' : ''}

@@ -396,7 +396,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                     className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
                       makeupType === t
                         ? 'bg-brand-100 text-brand-700 ring-2 ring-brand-300 dark:bg-brand-900 dark:text-brand-300'
-                        : 'bg-surface-muted text-gray-600 hover:bg-surface-muted dark:bg-gray-800 dark:text-gray-400'
+                        : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:bg-gray-800 dark:text-gray-400'
                     }`}
                   >
                     <span className="text-lg">{TYPE_LABELS[t].emoji}</span>
@@ -587,7 +587,7 @@ export default function VirtualTryOnPage(): JSX.Element {
         {/* Tips */}
         <Card padding="lg" className="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-950 dark:to-rose-950 border-none">
           <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">💡 نصائح للتجربة</h3>
-          <div className="grid gap-2 text-sm text-gray-600 dark:text-gray-400 sm:grid-cols-2">
+          <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400 sm:grid-cols-2">
             <p>💡 تأكدي من إضاءة وجهكِ جيداً للحصول على أفضل نتيجة</p>
             <p>📸 التقطي صورة بعد اختيار اللون لمشاركتها مع صديقاتكِ</p>
             <p>🎨 جربي كل أنواع المكياج — شفاه، عيون، خدود، وأظافر</p>

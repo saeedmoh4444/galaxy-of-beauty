@@ -61,13 +61,13 @@ export default function NotificationsPage(): JSX.Element {
                     <div className="flex items-start gap-3">
                       <span className="mt-1 text-xl">{TYPE_ICONS[n.type as string] ?? '🔔'}</span>
                       <div className="min-w-0 flex-1">
-                        <p className={`text-sm ${isRead ? 'text-gray-600 dark:text-gray-400' : 'font-semibold text-gray-900 dark:text-gray-100'}`}>
+                        <p className={`text-sm ${isRead ? 'text-text-secondary dark:text-gray-400' : 'font-semibold text-text-primary dark:text-gray-100'}`}>
                           {titleJson?.ar ?? titleJson?.en ?? ''}
                         </p>
-                        <p className={`mt-0.5 text-xs ${isRead ? 'text-gray-400' : 'text-gray-500'}`}>
+                        <p className={`mt-0.5 text-xs ${isRead ? 'text-text-tertiary' : 'text-text-secondary'}`}>
                           {bodyJson?.ar ?? bodyJson?.en ?? ''}
                         </p>
-                        <p className="mt-1 text-xs text-gray-400">
+                        <p className="mt-1 text-xs text-text-tertiary">
                           {new Date(n.createdAt as string).toLocaleDateString('ar-SA', {
                             year: 'numeric', month: 'short', day: 'numeric',
                             hour: '2-digit', minute: '2-digit',
@@ -98,7 +98,7 @@ export default function NotificationsPage(): JSX.Element {
                 >
                   السابق
                 </Button>
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-text-secondary">
                   {page} من {totalPages}
                 </span>
                 <Button

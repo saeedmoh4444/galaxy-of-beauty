@@ -142,7 +142,7 @@ export default function PostCarePage(): JSX.Element {
                                 <span className="text-2xl shrink-0">{tip.emoji}</span>
                                 <div>
                                   <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{tip.titleAr}</h4>
-                                  <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{tip.bodyAr}</p>
+                                  <p className="mt-1 text-sm text-text-secondary dark:text-gray-400 leading-relaxed">{tip.bodyAr}</p>
                                 </div>
                               </div>
                             ))}
@@ -198,7 +198,7 @@ export default function PostCarePage(): JSX.Element {
                               {timeframes.find((t) => t.key === tip.timeframe)?.labelAr ?? tip.timeframe}
                             </span>
                           </div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{tip.bodyAr}</p>
+                          <p className="text-sm text-text-secondary dark:text-gray-400 leading-relaxed">{tip.bodyAr}</p>
                         </div>
                       </Card>
                     ))}
@@ -212,7 +212,7 @@ export default function PostCarePage(): JSX.Element {
         {/* Bottom tip */}
         <Card padding="lg" className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950 border-none text-center">
           <p className="text-lg font-bold text-text-primary dark:text-gray-100">💡 تذكري</p>
-          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
             العناية بعد الخدمة تطيل من نتائج الجلسة وتحافظ على جمالكِ لفترة أطول
           </p>
           <Link href="/bookings/create" className="mt-3 inline-block">

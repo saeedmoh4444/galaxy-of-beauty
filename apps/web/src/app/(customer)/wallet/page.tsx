@@ -29,9 +29,9 @@ export default function WalletPage(): JSX.Element {
         : isError ? <ErrorAlert message="فشل تحميل المحفظة" onRetry={() => refetch()} />
         : (
           <div className="grid gap-4 md:grid-cols-3">
-            <Card className="text-center"><p className="text-sm text-gray-500">الرصيد الكلي</p><p className="text-2xl font-bold text-brand-600">{formatCurrency(Number(bal?.totalBalance ?? 0))}</p></Card>
-            <Card className="text-center"><p className="text-sm text-gray-500">الرصيد القابل للسحب</p><p className="text-2xl font-bold text-green-600">{formatCurrency(Number(bal?.balance ?? 0))}</p></Card>
-            <Card className="text-center"><p className="text-sm text-gray-500">رصيد المكافآت</p><p className="text-2xl font-bold text-amber-600">{formatCurrency(Number(bal?.bonusBalance ?? 0))}</p></Card>
+            <Card className="text-center"><p className="text-sm text-text-secondary">الرصيد الكلي</p><p className="text-2xl font-bold text-brand-600">{formatCurrency(Number(bal?.totalBalance ?? 0))}</p></Card>
+            <Card className="text-center"><p className="text-sm text-text-secondary">الرصيد القابل للسحب</p><p className="text-2xl font-bold text-green-600">{formatCurrency(Number(bal?.balance ?? 0))}</p></Card>
+            <Card className="text-center"><p className="text-sm text-text-secondary">رصيد المكافآت</p><p className="text-2xl font-bold text-amber-600">{formatCurrency(Number(bal?.bonusBalance ?? 0))}</p></Card>
           </div>
         )}
 
@@ -44,7 +44,7 @@ export default function WalletPage(): JSX.Element {
         : transactions.length === 0 ? <EmptyState title="لا توجد معاملات" />
         : <div className="space-y-2">{transactions.map((t) => (
             <Card key={t.id} padding="sm">
-              <div className="flex items-center justify-between"><div><p className="text-sm font-medium">{t.description ?? ''}</p><p className="text-xs text-gray-500">{new Date(String(t.createdAt)).toLocaleDateString('ar-SA')}</p></div><p className={`text-sm font-semibold ${t.type === 'CREDIT' ? 'text-green-600' : 'text-red-600'}`}>{t.type === 'CREDIT' ? '+' : '-'}{formatCurrency(Number(t.amount))}</p></div>
+              <div className="flex items-center justify-between"><div><p className="text-sm font-medium">{t.description ?? ''}</p><p className="text-xs text-text-secondary">{new Date(String(t.createdAt)).toLocaleDateString('ar-SA')}</p></div><p className={`text-sm font-semibold ${t.type === 'CREDIT' ? 'text-green-600' : 'text-red-600'}`}>{t.type === 'CREDIT' ? '+' : '-'}{formatCurrency(Number(t.amount))}</p></div>
             </Card>
           ))}</div>
         }

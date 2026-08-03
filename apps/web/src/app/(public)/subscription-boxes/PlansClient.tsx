@@ -52,7 +52,7 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
                 {(plan.descriptionJson as Record<string, string>)?.ar || ''}
               </p>
 
-              <div className="mt-4 space-y-2 text-sm text-gray-600 dark:text-gray-400">
+              <div className="mt-4 space-y-2 text-sm text-text-secondary dark:text-gray-400">
                 <div className="flex justify-between">
                   <span>🗓 {Number(plan.servicesPerMonth)} حجز / شهر</span>
                   <span>{plan.interval === 'MONTHLY' ? 'شهرياً' : plan.interval === 'WEEKLY' ? 'أسبوعياً' : 'كل أسبوعين'}</span>

@@ -18,7 +18,7 @@ export default function VIPMembershipPage(): JSX.Element {
         <div className="text-center">
           <span className="text-6xl">💎</span>
           <h1 className="mt-4 text-3xl font-bold">عضوية VIP</h1>
-          <p className="mt-2 text-gray-500">ارتقِ بعضويتكِ واحصلي على مميزات حصرية</p>
+          <p className="mt-2 text-text-secondary">ارتقِ بعضويتكِ واحصلي على مميزات حصرية</p>
           {current !== 'silver' && <p className="mt-2 text-brand-600 font-bold">عضوية {current === 'gold' ? '🥇 ذهبية' : '💎 بلاتينية'} نشطة</p>}
         </div>
 
@@ -33,9 +33,9 @@ export default function VIPMembershipPage(): JSX.Element {
                   {isCurrent && <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-4 py-0.5 text-xs font-bold text-white">حالية</span>}
                   <span className="text-5xl">{t.emoji as string}</span>
                   <h2 className="mt-2 text-xl font-extrabold">{t.nameAr as string}</h2>
-                  <p className="mt-3 text-3xl font-extrabold text-brand-600">{(t.price as number) > 0 ? formatCurrency(t.price as number) + ' ر.س' : 'مجاناً'}<span className="text-xs text-gray-400 font-normal"> / سنة</span></p>
+                  <p className="mt-3 text-3xl font-extrabold text-brand-600">{(t.price as number) > 0 ? formatCurrency(t.price as number) + ' ر.س' : 'مجاناً'}<span className="text-xs text-text-tertiary font-normal"> / سنة</span></p>
                   <ul className="mt-4 space-y-2 text-right">
-                    {benefits.map((b: string, i: number) => <li key={i} className="flex items-center gap-2 text-sm"><span className="text-brand-500">✓</span> <span className="text-gray-700 dark:text-gray-300">{b}</span></li>)}
+                    {benefits.map((b: string, i: number) => <li key={i} className="flex items-center gap-2 text-sm"><span className="text-brand-500">✓</span> <span className="text-text-primary dark:text-gray-300">{b}</span></li>)}
                   </ul>
                   <div className="mt-6">
                     {isCurrent ? (

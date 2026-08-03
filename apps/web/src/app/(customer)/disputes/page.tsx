@@ -10,7 +10,7 @@ const STATUS_STYLES: Record<string, string> = {
   UNDER_REVIEW: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
   RESOLVED_CUSTOMER: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
   RESOLVED_TECHNICIAN: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
-  CLOSED: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
+  CLOSED: 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400',
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -67,17 +67,17 @@ export default function DisputesPage(): JSX.Element {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-semibold">{d.bookingCode as string ?? `حجز #${d.bookingId as string}`}</p>
-                        <p className="text-xs text-gray-400">{new Date(d.createdAt as string).toLocaleDateString('ar-SA')}</p>
+                        <p className="text-xs text-text-tertiary">{new Date(d.createdAt as string).toLocaleDateString('ar-SA')}</p>
                       </div>
-                      <span className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_STYLES[statusKey] ?? 'bg-gray-100 text-gray-600'}`}>
+                      <span className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_STYLES[statusKey] ?? 'bg-surface-muted text-text-secondary'}`}>
                         {STATUS_LABELS[statusKey] ?? statusKey}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{d.reason as string}</p>
+                    <p className="text-sm text-text-secondary dark:text-gray-400">{d.reason as string}</p>
                     {(d.resolution as string) && (
-                      <div className="rounded-lg bg-gray-50 p-3 dark:bg-gray-800">
-                        <p className="text-xs font-medium text-gray-500">قرار الإدارة</p>
-                        <p className="text-sm text-gray-700 dark:text-gray-300">{d.resolution as string}</p>
+                      <div className="rounded-lg bg-surface-muted p-3 dark:bg-gray-800">
+                        <p className="text-xs font-medium text-text-secondary">قرار الإدارة</p>
+                        <p className="text-sm text-text-primary dark:text-gray-300">{d.resolution as string}</p>
                       </div>
                     )}
                   </div>

@@ -71,7 +71,7 @@ export default function ReferralDashboardPage(): JSX.Element {
                  <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                    r.status === 'COMPLETED' ? 'bg-green-100 text-green-700' :
                    r.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' :
-                   'bg-surface-muted text-gray-600'
+                   'bg-surface-muted text-text-secondary'
                  }`}>
                    {r.status === 'COMPLETED' ? 'مكتمل' : r.status === 'PENDING' ? 'معلق' : r.status}
                  </span>

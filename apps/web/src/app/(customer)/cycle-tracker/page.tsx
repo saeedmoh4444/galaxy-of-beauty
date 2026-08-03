@@ -79,7 +79,7 @@ export default function CycleTrackerPage(): JSX.Element {
         </Card>}
 
         <Card padding="lg"><h3 className="font-bold mb-3">💡 توصيات الجمال — {phase?.name as string}</h3>
-          <div className="space-y-2">{(phase?.tips as string[] ?? []).map((tip: string, i: number) => <p key={i} className="text-sm text-gray-600">• {tip}</p>)}</div>
+          <div className="space-y-2">{(phase?.tips as string[] ?? []).map((tip: string, i: number) => <p key={i} className="text-sm text-text-secondary">• {tip}</p>)}</div>
         </Card>
 
         {entriesLoading ? <div className="space-y-1">{Array.from({length:28},(_,i)=><div key={i} className="h-8 bg-surface-muted rounded animate-pulse"/>)}</div> :

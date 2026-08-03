@@ -54,7 +54,7 @@ export default function ShopTheLookPage(): JSX.Element {
                 <span className="text-4xl">{look.emoji}</span>
                 <div>
                   <h2 className="text-xl font-bold text-text-primary dark:text-gray-100">{look.name}</h2>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{look.desc}</p>
+                  <p className="text-sm text-text-secondary dark:text-gray-400">{look.desc}</p>
                 </div>
               </div>
               <div className="space-y-2 mb-4">

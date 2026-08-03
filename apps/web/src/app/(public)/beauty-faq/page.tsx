@@ -37,7 +37,7 @@ export default function BeautyFaqPage(): JSX.Element {
             <Card key={i} padding="lg">
               <details className="group">
                 <summary className="cursor-pointer font-bold text-text-primary dark:text-gray-100 hover:text-brand-600 transition-colors">{f.q as string}</summary>
-                <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 leading-relaxed border-t border-gray-100 dark:border-gray-800 pt-3">{f.a as string}</p>
+                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400 leading-relaxed border-t border-gray-100 dark:border-gray-800 pt-3">{f.a as string}</p>
               </details>
             </Card>
           ))}

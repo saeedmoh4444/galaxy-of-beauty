@@ -141,7 +141,7 @@ export default function SalonMapPage(): JSX.Element {
                 className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-all ${
                   selectedCityKey === c.key
                     ? 'bg-brand-600 text-white shadow-md'
-                    : 'bg-surface-muted text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                    : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
                 }`}
               >
                 {c.nameAr}
@@ -180,7 +180,7 @@ export default function SalonMapPage(): JSX.Element {
           <Card padding="lg" className="shadow-2xl">
             <button
               onClick={() => setSelectedTechnician(null)}
-              className="absolute top-3 right-3 text-text-tertiary hover:text-gray-600 text-lg"
+              className="absolute top-3 right-3 text-text-tertiary hover:text-text-secondary text-lg"
             >
               ✕
             </button>

@@ -136,7 +136,7 @@ export default function CreateBookingPage(): JSX.Element {
 
             {variants.length > 0 && (
               <div className="mb-4">
-                <label className="mb-2 block text-sm text-gray-600">اختر المتغير</label>
+                <label className="mb-2 block text-sm text-text-secondary">اختر المتغير</label>
                 <select
                   className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
                   value={variantId || ''}
@@ -153,7 +153,7 @@ export default function CreateBookingPage(): JSX.Element {
             )}
 
             <div className="mb-4">
-              <label className="mb-2 block text-sm text-gray-600">اختر العنوان</label>
+              <label className="mb-2 block text-sm text-text-secondary">اختر العنوان</label>
               <select
                 className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
                 value={addressId || ''}
@@ -169,7 +169,7 @@ export default function CreateBookingPage(): JSX.Element {
             </div>
 
             <div className="mb-4">
-              <label className="mb-2 block text-sm text-gray-600">كود الخصم (اختياري)</label>
+              <label className="mb-2 block text-sm text-text-secondary">كود الخصم (اختياري)</label>
               <Input
                 value={promoCode}
                 onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
@@ -178,7 +178,7 @@ export default function CreateBookingPage(): JSX.Element {
             </div>
 
             <div className="mb-4">
-              <label className="mb-2 block text-sm text-gray-600">ملاحظات</label>
+              <label className="mb-2 block text-sm text-text-secondary">ملاحظات</label>
               <textarea
                 className="w-full rounded-lg border border-gray-300 p-3 text-sm dark:border-gray-600 dark:bg-gray-800"
                 rows={3}

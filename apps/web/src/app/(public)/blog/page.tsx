@@ -78,7 +78,7 @@ export default function BlogPage(): JSX.Element {
           className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
             !activeTag
               ? 'bg-brand-600 text-white shadow-md'
-              : 'bg-surface-muted text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+              : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
           }`}
         >
           الكل
@@ -91,7 +91,7 @@ export default function BlogPage(): JSX.Element {
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
                 activeTag === tag
                   ? 'bg-brand-600 text-white shadow-md'
-                  : 'bg-surface-muted text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                  : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
               }`}
             >
               {emoji} {tag}

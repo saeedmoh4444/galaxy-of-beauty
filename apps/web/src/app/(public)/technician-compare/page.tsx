@@ -43,14 +43,14 @@ export default function TechnicianComparePage(): JSX.Element {
             <table className="w-full text-sm">
               <thead><tr className="border-b"><th className="p-3 text-right">الميزة</th>{techs.map(t => <th key={t.id} className="p-3 text-center"><span className="text-2xl block">{t.emoji}</span>{t.name}</th>)}</tr></thead>
               <tbody>
-                <tr className="border-b"><td className="p-3 text-gray-600">⭐ التقييم</td>{techs.map(t => <td key={t.id} className="p-3 text-center font-bold">{t.rating}</td>)}</tr>
-                <tr className="border-b"><td className="p-3 text-gray-600">📝 المراجعات</td>{techs.map(t => <td key={t.id} className="p-3 text-center">{t.reviews}</td>)}</tr>
-                <tr className="border-b"><td className="p-3 text-gray-600">💰 السعر</td>{techs.map(t => <td key={t.id} className="p-3 text-center font-bold text-brand-600">{t.price} ر.س</td>)}</tr>
-                <tr className="border-b"><td className="p-3 text-gray-600">📍 المدينة</td>{techs.map(t => <td key={t.id} className="p-3 text-center">{t.city}</td>)}</tr>
-                <tr className="border-b"><td className="p-3 text-gray-600">⏱️ الخبرة</td>{techs.map(t => <td key={t.id} className="p-3 text-center">{t.experience}</td>)}</tr>
-                <tr className="border-b"><td className="p-3 text-gray-600">💅 الخدمات</td>{techs.map(t => <td key={t.id} className="p-3 text-center"><div className="flex flex-wrap gap-1 justify-center">{t.services.map(s => <span key={s} className="rounded-full bg-surface-muted px-2 py-0.5 text-xs">{s}</span>)}</div></td>)}</tr>
+                <tr className="border-b"><td className="p-3 text-text-secondary">⭐ التقييم</td>{techs.map(t => <td key={t.id} className="p-3 text-center font-bold">{t.rating}</td>)}</tr>
+                <tr className="border-b"><td className="p-3 text-text-secondary">📝 المراجعات</td>{techs.map(t => <td key={t.id} className="p-3 text-center">{t.reviews}</td>)}</tr>
+                <tr className="border-b"><td className="p-3 text-text-secondary">💰 السعر</td>{techs.map(t => <td key={t.id} className="p-3 text-center font-bold text-brand-600">{t.price} ر.س</td>)}</tr>
+                <tr className="border-b"><td className="p-3 text-text-secondary">📍 المدينة</td>{techs.map(t => <td key={t.id} className="p-3 text-center">{t.city}</td>)}</tr>
+                <tr className="border-b"><td className="p-3 text-text-secondary">⏱️ الخبرة</td>{techs.map(t => <td key={t.id} className="p-3 text-center">{t.experience}</td>)}</tr>
+                <tr className="border-b"><td className="p-3 text-text-secondary">💅 الخدمات</td>{techs.map(t => <td key={t.id} className="p-3 text-center"><div className="flex flex-wrap gap-1 justify-center">{t.services.map(s => <span key={s} className="rounded-full bg-surface-muted px-2 py-0.5 text-xs">{s}</span>)}</div></td>)}</tr>
                 {Object.entries(DIMS).map(([k, label]) => (
-                  <tr key={k} className="border-b"><td className="p-3 text-gray-600">{label}</td>
+                  <tr key={k} className="border-b"><td className="p-3 text-text-secondary">{label}</td>
                     {techs.map(t => <td key={t.id} className="p-3"><div className="h-2 bg-surface-muted rounded-full"><div className="h-2 bg-brand-600 rounded-full" style={{width:`${t.features[k as keyof typeof t.features]}%`}}/></div></td>)}
                   </tr>
                 ))}

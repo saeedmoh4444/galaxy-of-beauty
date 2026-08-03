@@ -54,7 +54,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
 
         {txs.length > 0 && <Card padding="lg"><h3 className="font-bold mb-3">📋 سجل النقاط</h3>
           <div className="space-y-2">{txs.slice(0,10).map((t: Record<string,unknown>) => (
-            <div key={t.id as number} className="flex justify-between text-sm border-b pb-2"><span className="text-gray-600">{t.reason as string}</span><span className={`font-bold ${(t.points as number) > 0 ? 'text-green-600' : 'text-red-600'}`}>{(t.points as number) > 0 ? '+' : ''}{t.points as number} نقطة</span></div>
+            <div key={t.id as number} className="flex justify-between text-sm border-b pb-2"><span className="text-text-secondary">{t.reason as string}</span><span className={`font-bold ${(t.points as number) > 0 ? 'text-green-600' : 'text-red-600'}`}>{(t.points as number) > 0 ? '+' : ''}{t.points as number} نقطة</span></div>
           ))}</div>
         </Card>}
       </div>

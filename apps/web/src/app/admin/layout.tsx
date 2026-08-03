@@ -47,7 +47,7 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
               className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                 pathname.startsWith(link.href)
                   ? 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300'
-                  : 'text-gray-600 hover:bg-surface-muted dark:text-gray-400 dark:hover:bg-gray-900'
+                  : 'text-text-secondary hover:bg-surface-muted dark:text-gray-400 dark:hover:bg-gray-900'
               }`}
             >
               <span>{link.icon}</span>
@@ -58,7 +58,7 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
         <div className="mt-6 border-t border-edge pt-4 dark:border-gray-800">
           <Link
             href="/dashboard"
-            className="block rounded-lg px-3 py-2 text-sm text-gray-600 hover:bg-surface-muted dark:text-gray-400 dark:hover:bg-gray-900"
+            className="block rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-surface-muted dark:text-gray-400 dark:hover:bg-gray-900"
           >
             🏠 العودة للمتجر
           </Link>

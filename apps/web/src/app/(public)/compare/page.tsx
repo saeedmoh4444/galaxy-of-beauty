@@ -72,7 +72,7 @@ export default function ComparePage(): JSX.Element {
                 <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
                   <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">المدة</td>
                   {services.map((s) => (
-                    <td key={s.id as number} className="p-4 text-center text-sm text-gray-600 dark:text-gray-400">
+                    <td key={s.id as number} className="p-4 text-center text-sm text-text-secondary dark:text-gray-400">
                       {s.durationMin as number} دقيقة
                     </td>
                   ))}
@@ -81,7 +81,7 @@ export default function ComparePage(): JSX.Element {
                 <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
                   <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">القسم</td>
                   {services.map((s) => (
-                    <td key={s.id as number} className="p-4 text-center text-sm text-gray-600 dark:text-gray-400">
+                    <td key={s.id as number} className="p-4 text-center text-sm text-text-secondary dark:text-gray-400">
                       {s.category as string}
                     </td>
                   ))}
@@ -90,7 +90,7 @@ export default function ComparePage(): JSX.Element {
                 <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
                   <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">الحجوزات</td>
                   {services.map((s) => (
-                    <td key={s.id as number} className="p-4 text-center text-sm text-gray-600 dark:text-gray-400">
+                    <td key={s.id as number} className="p-4 text-center text-sm text-text-secondary dark:text-gray-400">
                       {s.bookingCount as number}
                     </td>
                   ))}

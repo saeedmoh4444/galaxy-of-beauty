@@ -32,7 +32,7 @@ export default function TechEarningsPage(): JSX.Element {
   const payoutItems = (payoutsData?.payouts as unknown as Record<string, unknown>[]) ?? [];
 
   const statusColours: Record<string, string> = {
-    PENDING: 'bg-surface-muted text-gray-600',
+    PENDING: 'bg-surface-muted text-text-secondary',
     PROCESSING: 'bg-blue-100 text-blue-700',
     COMPLETED: 'bg-green-100 text-green-700',
     FAILED: 'bg-red-100 text-red-700',

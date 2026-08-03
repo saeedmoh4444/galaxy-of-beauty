@@ -84,7 +84,7 @@ export default function ProfilePage(): JSX.Element {
             className={`px-4 py-2 text-sm font-medium transition-colors ${
               activeTab === 'profile'
                 ? 'border-b-2 border-brand-600 text-brand-600'
-                : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                : 'text-text-secondary hover:text-text-primary dark:text-gray-400'
             }`}
           >
             المعلومات الشخصية
@@ -94,7 +94,7 @@ export default function ProfilePage(): JSX.Element {
             className={`px-4 py-2 text-sm font-medium transition-colors ${
               activeTab === 'addresses'
                 ? 'border-b-2 border-brand-600 text-brand-600'
-                : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                : 'text-text-secondary hover:text-text-primary dark:text-gray-400'
             }`}
           >
             العناوين
@@ -139,7 +139,7 @@ export default function ProfilePage(): JSX.Element {
                     onChange={(e) => setFormPhone(e.target.value)}
                   />
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">اللغة</label>
+                    <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">اللغة</label>
                     <select
                       defaultValue={userData.preferredLanguage as string}
                       onChange={(e) => setFormLang(e.target.value)}
@@ -184,8 +184,8 @@ export default function ProfilePage(): JSX.Element {
                           <p className="font-semibold">{addr.label as string}</p>
                           {Boolean(addr.isDefault) && <span className="rounded-full bg-brand-100 px-2 py-0.5 text-xs font-medium text-brand-700 dark:bg-brand-900 dark:text-brand-300">افتراضي</span>}
                         </div>
-                        <p className="mt-1 text-sm text-gray-500">{addr.city as string} - {addr.area as string}</p>
-                        <p className="text-sm text-gray-500">{addr.street as string}{addr.building ? `, مبنى ${addr.building}` : ''}</p>
+                        <p className="mt-1 text-sm text-text-secondary">{addr.city as string} - {addr.area as string}</p>
+                        <p className="text-sm text-text-secondary">{addr.street as string}{addr.building ? `, مبنى ${addr.building}` : ''}</p>
                       </div>
                       <div className="flex items-center gap-2">
                         <Button

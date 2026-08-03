@@ -243,7 +243,7 @@ export default function PriceEstimatorPage(): JSX.Element {
 
             <div className="flex justify-between">
               <span className="text-text-secondary">رسوم المنصة</span>
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-text-secondary dark:text-gray-400">
                 {formatCurrency(estimate.platformFee)}
               </span>
             </div>

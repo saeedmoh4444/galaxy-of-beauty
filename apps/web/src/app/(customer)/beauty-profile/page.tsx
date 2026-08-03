@@ -74,14 +74,14 @@ export default function BeautyProfilePage(): JSX.Element {
             <Card padding="md">
               <h3 className="mb-3 font-semibold text-text-primary dark:text-gray-100">المشاكل الجلدية</h3>
               <div className="flex flex-wrap gap-2">
-                {CONCERN_OPTIONS.map(o => <button key={o} onClick={() => toggle(concerns, setConcerns, o)} className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${concerns.includes(o) ? 'bg-brand-600 text-white' : 'bg-surface-muted text-gray-600 dark:bg-gray-800'}`}>{LABELS[o] || o}</button>)}
+                {CONCERN_OPTIONS.map(o => <button key={o} onClick={() => toggle(concerns, setConcerns, o)} className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${concerns.includes(o) ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary dark:bg-gray-800'}`}>{LABELS[o] || o}</button>)}
               </div>
             </Card>
 
             <Card padding="md">
               <h3 className="mb-3 font-semibold text-text-primary dark:text-gray-100">العطور المفضلة</h3>
               <div className="flex flex-wrap gap-2">
-                {SCENT_OPTIONS.map(o => <button key={o} onClick={() => toggle(scents, setScents, o)} className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${scents.includes(o) ? 'bg-accent-500 text-white' : 'bg-surface-muted text-gray-600 dark:bg-gray-800'}`}>{LABELS[o] || o}</button>)}
+                {SCENT_OPTIONS.map(o => <button key={o} onClick={() => toggle(scents, setScents, o)} className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${scents.includes(o) ? 'bg-accent-500 text-white' : 'bg-surface-muted text-text-secondary dark:bg-gray-800'}`}>{LABELS[o] || o}</button>)}
               </div>
             </Card>
 
@@ -103,7 +103,7 @@ function Section({ title, options, selected, setSelected }: { title: string; opt
     <Card padding="md">
       <h3 className="mb-3 font-semibold text-text-primary dark:text-gray-100">{title}</h3>
       <div className="flex flex-wrap gap-2">
-        {options.map(o => <button key={o} onClick={() => setSelected(selected === o ? '' : o)} className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${selected === o ? 'bg-brand-600 text-white' : 'bg-surface-muted text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700'}`}>{LABELS[o] || o}</button>)}
+        {options.map(o => <button key={o} onClick={() => setSelected(selected === o ? '' : o)} className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${selected === o ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700'}`}>{LABELS[o] || o}</button>)}
       </div>
     </Card>
   );

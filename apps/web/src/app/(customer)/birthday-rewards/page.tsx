@@ -81,7 +81,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
                   <h2 className="mt-4 text-2xl font-extrabold text-text-primary dark:text-gray-100">
                     تم استلام هديتكِ!
                   </h2>
-                  <p className="mt-2 text-gray-600 dark:text-gray-400">
+                  <p className="mt-2 text-text-secondary dark:text-gray-400">
                     استمتعي بمكافأة عيد ميلادكِ — الكود جاهز للاستخدام
                   </p>
 
@@ -122,7 +122,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
                   <h2 className="mt-4 text-2xl font-extrabold text-text-primary dark:text-gray-100">
                     هديتكِ في انتظاركِ!
                   </h2>
-                  <p className="mt-2 text-gray-600 dark:text-gray-400">
+                  <p className="mt-2 text-text-secondary dark:text-gray-400">
                     {discountPercent > 0
                       ? `خصم ${discountPercent}% على حجزكِ القادم`
                       : rewardValue > 0
@@ -153,7 +153,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
                   <h2 className="mt-4 text-xl font-bold text-text-primary dark:text-gray-100">
                     لم يحن موعد هديتكِ بعد
                   </h2>
-                  <p className="mt-2 text-gray-600 dark:text-gray-400">
+                  <p className="mt-2 text-text-secondary dark:text-gray-400">
                     {daysUntil <= 30
                       ? `متبقي ${daysUntil} يوم على عيد ميلادكِ 🎂`
                       : 'هدية عيد الميلاد متاحة خلال شهر ميلادكِ'}
@@ -192,7 +192,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
             {/* Birthday Tips */}
             <Card padding="lg" className="bg-gradient-to-r from-pink-100 to-rose-100 dark:from-pink-950 dark:to-rose-950 border-none">
               <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">💡 أفكار لعيد ميلادكِ</h3>
-              <div className="grid gap-2 text-sm text-gray-600 dark:text-gray-400 sm:grid-cols-2">
+              <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400 sm:grid-cols-2">
                 <p>💇‍♀️ تسريحة شعر جديدة ليومكِ الخاص</p>
                 <p>💄 جلسة مكياج احترافية</p>
                 <p>💅 مانيكير وباديكير احتفالي</p>

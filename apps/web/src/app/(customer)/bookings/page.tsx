@@ -83,7 +83,7 @@ export default function BookingsPage(): JSX.Element {
         )}
       </PageContainer>
       <Modal open={cancelId !== null} onClose={() => setCancelId(null)} title="تأكيد الإلغاء" size="sm">
-        <p className="text-sm text-gray-600 dark:text-gray-400">هل أنت متأكد من إلغاء هذا الحجز؟</p>
+        <p className="text-sm text-text-secondary dark:text-gray-400">هل أنت متأكد من إلغاء هذا الحجز؟</p>
         <div className="mt-4 flex gap-3"><Button variant="outline" onClick={() => setCancelId(null)} className="flex-1">رجوع</Button><Button variant="danger" onClick={() => cancelId && cancelMut.mutate({ id: cancelId, action: 'cancel' })} loading={cancelMut.isPending} className="flex-1">تأكيد الإلغاء</Button></div>
       </Modal>
     </DashboardLayout>

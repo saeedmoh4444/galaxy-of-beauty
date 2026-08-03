@@ -194,7 +194,7 @@ function BridalDashboard(): JSX.Element {
       {/* Tips */}
       <Card padding="lg" className="bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-950 dark:to-purple-950 border-none">
         <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">💡 نصائح للعروس</h3>
-        <div className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
+        <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400">
           <p>✨ ابدئي جلسات العناية بالبشرة قبل ٣-٦ أشهر من الزفاف</p>
           <p>💄 احجزي تجربة المكياج قبل شهرين على الأقل</p>
           <p>💇‍♀️ جربي تسريحة الشعر مع الطرحة قبل ٣ أسابيع</p>
@@ -268,7 +268,7 @@ function MarketingLanding(): JSX.Element {
       </div>
 
       <div className="mt-12 text-center">
-        <p className="text-lg text-gray-600 dark:text-gray-400">📞 تحتاجين مساعدة؟ تواصلي مع فريقنا على <span className="font-bold text-brand-600">٩٢٠٠١٣٣٣٣</span></p>
+        <p className="text-lg text-text-secondary dark:text-gray-400">📞 تحتاجين مساعدة؟ تواصلي مع فريقنا على <span className="font-bold text-brand-600">٩٢٠٠١٣٣٣٣</span></p>
       </div>
     </>
   );

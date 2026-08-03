@@ -64,7 +64,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
                     <div className="flex items-center gap-3"><span className="text-2xl">{t.emoji}</span><div><p className="font-bold text-text-primary dark:text-gray-100">{t.nameAr}</p><p className="text-xs text-text-secondary">من {t.minPoints.toLocaleString()} نقطة</p></div></div>
                     {currentTier === key && <span className="rounded-full bg-brand-600 px-3 py-1 text-xs font-bold text-white">حالي</span>}
                   </div>
-                  <div className="mt-2 flex flex-wrap gap-1">{(TIER_BENEFITS[key] ?? []).slice(0, 3).map((b: string, i: number) => <span key={i} className="rounded-full bg-surface-muted px-2 py-0.5 text-xs text-gray-600 dark:bg-gray-800">{b}</span>)}</div>
+                  <div className="mt-2 flex flex-wrap gap-1">{(TIER_BENEFITS[key] ?? []).slice(0, 3).map((b: string, i: number) => <span key={i} className="rounded-full bg-surface-muted px-2 py-0.5 text-xs text-text-secondary dark:bg-gray-800">{b}</span>)}</div>
                 </div>
               ))}</div>
             </Card>

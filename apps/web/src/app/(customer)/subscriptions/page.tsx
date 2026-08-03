@@ -85,7 +85,7 @@ export default function SubscriptionsPage(): JSX.Element {
                     </div>
                     <ul className="mb-6 flex-1 space-y-2 text-sm">
                       {(plan.features as string[])?.map((f: string, i: number) => (
-                        <li key={i} className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                        <li key={i} className="flex items-center gap-2 text-text-secondary dark:text-gray-400">
                           <span className="text-green-500">&#10003;</span>
                           {f}
                         </li>

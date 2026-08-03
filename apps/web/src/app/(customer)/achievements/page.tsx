@@ -33,7 +33,7 @@ export default function AchievementsPage(): JSX.Element {
                   <span className="text-4xl block">{a.earned ? a.emoji as string : '🔒'}</span>
                   <h3 className="font-bold mt-2">{a.nameAr as string}</h3>
                   <p className="text-xs text-text-secondary mt-1">{a.desc as string}</p>
-                  {a.earned ? <span className="mt-2 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">✅ تم</span> : <span className="mt-2 inline-block rounded-full bg-surface-muted px-2 py-0.5 text-xs text-gray-400">🔒</span>}
+                  {a.earned ? <span className="mt-2 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">✅ تم</span> : <span className="mt-2 inline-block rounded-full bg-surface-muted px-2 py-0.5 text-xs text-text-tertiary">🔒</span>}
                 </Card>
               ))}
             </div>

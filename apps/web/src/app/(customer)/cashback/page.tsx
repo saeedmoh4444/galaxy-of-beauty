@@ -28,7 +28,7 @@ export default function CashbackPage(): JSX.Element {
             transactions.length === 0 ? <p className="text-sm text-text-tertiary text-center py-4">لا توجد عمليات استرداد بعد</p> :
             <div className="space-y-2">{transactions.map((t: Record<string,unknown>, i: number) => (
               <div key={i} className="flex justify-between items-center text-sm border-b pb-2">
-                <span className="text-gray-600">{new Date(t.createdAt as string).toLocaleDateString('ar-SA')}</span>
+                <span className="text-text-secondary">{new Date(t.createdAt as string).toLocaleDateString('ar-SA')}</span>
                 <span className="font-bold text-green-600">+{formatCurrency(t.amount as number)}</span>
               </div>
             ))}</div>

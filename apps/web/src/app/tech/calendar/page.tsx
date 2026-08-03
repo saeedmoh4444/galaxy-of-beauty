@@ -33,7 +33,7 @@ export default function TechCalendarPage(): JSX.Element {
                   <p className="text-sm text-text-secondary">{st.email as string}</p>
                 </div>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-text-secondary dark:text-gray-400">
                 تقويم قوقل متصل. يمكنك مزامنة مواعيدك لنقل الحجوزات إلى تقويمك.
               </p>
               <div className="flex flex-wrap gap-3">

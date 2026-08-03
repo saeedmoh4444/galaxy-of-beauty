@@ -18,14 +18,14 @@ export default function ExpiryTrackerPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <div className="flex items-center justify-between"><div><h1 className="text-2xl font-bold">⏱️ متعقب الصلاحية</h1><p className="mt-1 text-sm text-gray-500">تتبعي تاريخ فتح منتجاتكِ وتجنبي استخدام المنتجات منتهية الصلاحية</p></div><Button onClick={() => setShowAdd(true)}>+ منتج</Button></div>
+        <div className="flex items-center justify-between"><div><h1 className="text-2xl font-bold">⏱️ متعقب الصلاحية</h1><p className="mt-1 text-sm text-text-secondary">تتبعي تاريخ فتح منتجاتكِ وتجنبي استخدام المنتجات منتهية الصلاحية</p></div><Button onClick={() => setShowAdd(true)}>+ منتج</Button></div>
 
         {isLoading ? <div className="space-y-3">{Array.from({length:3},(_,i)=><CardSkeleton key={i}/>)}</div>
         : isError ? <ErrorAlert message="فشل التحميل" onRetry={()=>refetch()} />
         : myItems.length === 0 ? <EmptyState title="لا توجد منتجات" description="أضيفي منتجاتكِ لتتبع تواريخ صلاحيتها" action={{label:'إضافة',onPress:()=>setShowAdd(true)}} />
         : <div className="space-y-3">{myItems.map((i:Record<string,unknown>) => (
             <Card key={i.id as number} padding="md" className={(i.expired as boolean) ? 'border-2 border-red-300 dark:border-red-700 opacity-70' : (i.isClose as boolean) ? 'border-2 border-amber-300 dark:border-amber-700' : ''}>
-              <div className="flex items-center gap-4"><span className="text-3xl">{i.emoji as string}</span><div className="flex-1"><h3 className="font-bold">{i.productName as string}</h3><p className="text-xs text-gray-500 mt-0.5">فتح: {new Date(i.openDate as string).toLocaleDateString('ar-SA')} · ينتهي بعد {(i.expiryMonths as number)} شهر</p></div>
+              <div className="flex items-center gap-4"><span className="text-3xl">{i.emoji as string}</span><div className="flex-1"><h3 className="font-bold">{i.productName as string}</h3><p className="text-xs text-text-secondary mt-0.5">فتح: {new Date(i.openDate as string).toLocaleDateString('ar-SA')} · ينتهي بعد {(i.expiryMonths as number)} شهر</p></div>
                 <div className="text-right">{(i.expired as boolean) ? <span className="rounded-full bg-red-100 dark:bg-red-900 px-2.5 py-0.5 text-xs font-bold text-red-700">منتهي</span> : ((i.isClose as boolean) ? <span className="rounded-full bg-amber-100 dark:bg-amber-900 px-2.5 py-0.5 text-xs font-bold text-amber-700">{(i.daysLeft as number)} يوم</span> : <span className="text-sm text-green-600 font-bold">{(i.daysLeft as number)} يوم</span>)}
                 <button onClick={()=>deleteMut.mutate({id:i.id as number})} className="block mt-1 text-xs text-red-400">🗑️</button></div>
               </div>

@@ -43,7 +43,7 @@ export default function DiscoverPage(): JSX.Element {
             <Card hover padding="md" className={`h-full bg-gradient-to-br ${f.color} dark:bg-none dark:bg-gray-900`}>
               <span className="text-3xl">{f.emoji}</span>
               <h3 className="mt-3 font-bold text-sm text-text-primary dark:text-gray-100">{f.title}</h3>
-              <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">{f.desc}</p>
+              <p className="mt-1 text-xs text-text-secondary dark:text-gray-400">{f.desc}</p>
             </Card>
           </Link>
         ))}

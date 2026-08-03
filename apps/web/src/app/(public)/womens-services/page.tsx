@@ -74,7 +74,7 @@ export default function WomensServicesPage(): JSX.Element {
               <span className="text-5xl">{category?.emoji as string}</span>
               <div>
                 <h2 className="text-xl font-bold">{category?.nameAr as string}</h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400">{category?.description as string}</p>
+                <p className="text-sm text-text-secondary dark:text-gray-400">{category?.description as string}</p>
               </div>
             </div>
           </Card>
@@ -108,7 +108,7 @@ export default function WomensServicesPage(): JSX.Element {
             <Card padding="lg" className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-none">
               <h3 className="font-bold mb-3 text-text-primary dark:text-gray-100">💡 نصائح مهمة</h3>
               <div className="space-y-2">{safetyTips.map((tip: string, i: number) => (
-                <p key={i} className="text-sm text-gray-600 dark:text-gray-400">✅ {tip}</p>
+                <p key={i} className="text-sm text-text-secondary dark:text-gray-400">✅ {tip}</p>
               ))}</div>
             </Card>
           )}

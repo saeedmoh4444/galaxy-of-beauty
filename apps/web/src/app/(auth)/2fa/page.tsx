@@ -117,12 +117,12 @@ export default function TwoFactorPage(): JSX.Element {
                 /* Step 2: Show QR code placeholder + secret + verify input */
                 <div className="space-y-4">
                   <div className="rounded-lg bg-surface-muted p-4 text-center dark:bg-gray-800">
-                    <p className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <p className="mb-2 text-sm font-medium text-text-primary dark:text-gray-300">
                       امسح رمز QR باستخدام تطبيق المصادقة
                     </p>
                     {/* QR Code placeholder */}
                     <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-900">
-                      <span className="text-xs text-gray-400">QR Code</span>
+                      <span className="text-xs text-text-tertiary">QR Code</span>
                     </div>
                   </div>
 
@@ -134,7 +134,7 @@ export default function TwoFactorPage(): JSX.Element {
                     >
                       {setupData?.secret as string}
                     </p>
-                    <p className="mt-1 text-xs text-gray-400">
+                    <p className="mt-1 text-xs text-text-tertiary">
                       أو أدخل الرمز السري يدوياً في التطبيق
                     </p>
                   </div>

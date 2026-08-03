@@ -30,8 +30,8 @@ export default function BeautyAnalyticsPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">📊 تحليلات الجمال</h1>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">ملخص إنفاقكِ وحجوزاتكِ الشخصية</p>
+          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">📊 تحليلات الجمال</h1>
+          <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">ملخص إنفاقكِ وحجوزاتكِ الشخصية</p>
         </div>
 
         {isLoading ? (
@@ -44,26 +44,26 @@ export default function BeautyAnalyticsPage(): JSX.Element {
           <>
             {/* KPI Cards */}
             <div className="grid gap-4 sm:grid-cols-4">
-              <Card padding="lg" className="text-center"><p className="text-4xl">📅</p><p className="mt-2 text-3xl font-extrabold text-brand-600">{s.totalBookings}</p><p className="text-xs text-gray-500">إجمالي الحجوزات</p></Card>
-              <Card padding="lg" className="text-center"><p className="text-4xl">✅</p><p className="mt-2 text-3xl font-extrabold text-green-600">{s.completedBookings}</p><p className="text-xs text-gray-500">مكتملة</p></Card>
-              <Card padding="lg" className="text-center"><p className="text-4xl">📈</p><p className="mt-2 text-3xl font-extrabold text-blue-600">{s.completionRate}%</p><p className="text-xs text-gray-500">نسبة الإكمال</p></Card>
-              <Card padding="lg" className="text-center"><p className="text-4xl">💰</p><p className="mt-2 text-3xl font-extrabold text-purple-600">{formatCurrency(s.totalSpent)}</p><p className="text-xs text-gray-500">إجمالي الإنفاق</p></Card>
+              <Card padding="lg" className="text-center"><p className="text-4xl">📅</p><p className="mt-2 text-3xl font-extrabold text-brand-600">{s.totalBookings}</p><p className="text-xs text-text-secondary">إجمالي الحجوزات</p></Card>
+              <Card padding="lg" className="text-center"><p className="text-4xl">✅</p><p className="mt-2 text-3xl font-extrabold text-green-600">{s.completedBookings}</p><p className="text-xs text-text-secondary">مكتملة</p></Card>
+              <Card padding="lg" className="text-center"><p className="text-4xl">📈</p><p className="mt-2 text-3xl font-extrabold text-blue-600">{s.completionRate}%</p><p className="text-xs text-text-secondary">نسبة الإكمال</p></Card>
+              <Card padding="lg" className="text-center"><p className="text-4xl">💰</p><p className="mt-2 text-3xl font-extrabold text-purple-600">{formatCurrency(s.totalSpent)}</p><p className="text-xs text-text-secondary">إجمالي الإنفاق</p></Card>
             </div>
 
             {/* Category Breakdown */}
             <Card padding="lg">
               <h3 className="font-bold text-lg mb-4">📊 الحجوزات حسب الفئة</h3>
               {categories.length === 0 ? (
-                <p className="text-sm text-gray-400 text-center py-4">لا توجد بيانات كافية</p>
+                <p className="text-sm text-text-tertiary text-center py-4">لا توجد بيانات كافية</p>
               ) : (
                 <div className="space-y-3">
                   {categories.map((cat) => (
                     <div key={cat.category}>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="font-semibold text-gray-700 dark:text-gray-300">{cat.category}</span>
-                        <span className="text-gray-500">{cat.count} حجز · {formatCurrency(cat.spent)}</span>
+                        <span className="font-semibold text-text-primary dark:text-gray-300">{cat.category}</span>
+                        <span className="text-text-secondary">{cat.count} حجز · {formatCurrency(cat.spent)}</span>
                       </div>
-                      <div className="h-3 rounded-full bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                      <div className="h-3 rounded-full bg-surface-muted dark:bg-gray-800 overflow-hidden">
                         <div className="h-full rounded-full bg-gradient-to-r from-brand-400 to-purple-500 transition-all" style={{ width: `${cat.pct}%` }} />
                       </div>
                     </div>
@@ -76,16 +76,16 @@ export default function BeautyAnalyticsPage(): JSX.Element {
             <Card padding="lg">
               <h3 className="font-bold text-lg mb-4">📈 النشاط الشهري</h3>
               {monthlyTrend.length === 0 ? (
-                <p className="text-sm text-gray-400 text-center py-4">لا توجد بيانات كافية</p>
+                <p className="text-sm text-text-tertiary text-center py-4">لا توجد بيانات كافية</p>
               ) : (
                 <div className="flex items-end gap-2 h-32">
                   {monthlyTrend.map((m) => {
                     const height = Math.max(8, (m.count / maxMonthly) * 100);
                     return (
                       <div key={m.month} className="flex-1 flex flex-col items-center gap-1">
-                        <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">{m.count}</span>
+                        <span className="text-xs font-semibold text-text-secondary dark:text-gray-400">{m.count}</span>
                         <div className="w-full rounded-t-lg bg-gradient-to-t from-brand-400 to-purple-400 transition-all" style={{ height: `${height}%` }} />
-                        <span className="text-[10px] text-gray-400">{m.month}</span>
+                        <span className="text-[10px] text-text-tertiary">{m.month}</span>
                       </div>
                     );
                   })}
@@ -100,7 +100,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
                 <div className="space-y-2">
                   {s.recentCredits.map((c, i) => (
                     <div key={i} className="flex justify-between text-sm">
-                      <span className="text-gray-500">{c.source === 'REFERRAL_BONUS' ? '🎫 مكافأة إحالة' : c.source === 'CASHBACK' ? '💵 كاش باك' : c.source}</span>
+                      <span className="text-text-secondary">{c.source === 'REFERRAL_BONUS' ? '🎫 مكافأة إحالة' : c.source === 'CASHBACK' ? '💵 كاش باك' : c.source}</span>
                       <span className="font-bold text-green-600">+{formatCurrency(c.amount)}</span>
                     </div>
                   ))}

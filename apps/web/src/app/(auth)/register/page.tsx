@@ -49,7 +49,7 @@ export default function RegisterPage(): JSX.Element {
           <Input label="كلمة المرور" type="password" value={form.password} onChange={(e) => set('password', e.target.value)} />
           <Input label="تأكيد كلمة المرور" type="password" value={form.confirmPassword} onChange={(e) => set('confirmPassword', e.target.value)} />
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">نوع الحساب</label>
+            <label className="mb-1.5 block text-sm font-medium text-text-primary dark:text-gray-300">نوع الحساب</label>
             <select value={form.role} onChange={(e) => set('role', e.target.value)} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-900">
               <option value="CUSTOMER">عميلة</option>
               <option value="TECHNICIAN">فنية</option>

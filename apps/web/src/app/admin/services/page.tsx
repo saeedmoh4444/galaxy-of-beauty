@@ -174,7 +174,7 @@ export default function AdminServicesPage(): JSX.Element {
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`rounded-full px-3 py-1 text-xs font-medium ${statusFilter === s ? 'bg-brand-600 text-white' : 'bg-surface-muted text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${statusFilter === s ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400'}`}
             >
               {s === 'ALL' ? 'الكل' : s === 'ACTIVE' ? 'نشط' : 'غير نشط'}
             </button>

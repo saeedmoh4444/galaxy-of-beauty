@@ -113,7 +113,7 @@ export function HomeClient({
             ].map((t, i) => (
               <Card key={i} padding="lg" className="text-center bg-white/80 dark:bg-gray-900/80 backdrop-blur">
                 <p className="text-3xl">{"⭐".repeat(t.rating)}</p>
-                <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">&ldquo;{t.text}&rdquo;</p>
+                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400 leading-relaxed">&ldquo;{t.text}&rdquo;</p>
                 <p className="mt-3 font-bold text-brand-600">— {t.name}</p>
               </Card>
             ))}

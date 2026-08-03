@@ -102,8 +102,8 @@ export default function FamilyAccountPage(): JSX.Element {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">👨‍👩‍👧 حساب العائلة</h1>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">👨‍👩‍👧 حساب العائلة</h1>
+            <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
               أضيفي أفراد عائلتكِ واحجزي لهم خدمات التجميل بكل سهولة
             </p>
           </div>
@@ -119,8 +119,8 @@ export default function FamilyAccountPage(): JSX.Element {
           ].map((b) => (
             <Card key={b.title} padding="md" className="text-center">
               <span className="text-3xl">{b.emoji}</span>
-              <h3 className="mt-2 font-semibold text-gray-900 dark:text-gray-100">{b.title}</h3>
-              <p className="text-xs text-gray-500">{b.desc}</p>
+              <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">{b.title}</h3>
+              <p className="text-xs text-text-secondary">{b.desc}</p>
             </Card>
           ))}
         </div>
@@ -150,8 +150,8 @@ export default function FamilyAccountPage(): JSX.Element {
                     {AGE_EMOJI[m.ageGroup] ?? '👩'}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">{m.name}</h3>
-                    <p className="text-xs text-gray-500">
+                    <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">{m.name}</h3>
+                    <p className="text-xs text-text-secondary">
                       {relationships.find((r) => r.key === m.relationship)?.nameAr ?? m.relationship}
                       {' · '}
                       {ageGroups.find((a) => a.key === m.ageGroup)?.nameAr ?? m.ageGroup}
@@ -162,14 +162,14 @@ export default function FamilyAccountPage(): JSX.Element {
                         {m.preferences.map((p) => {
                           const pref = prefsList.find((pp) => pp.key === p);
                           return (
-                            <span key={p} className="inline-flex items-center gap-0.5 rounded-full bg-gray-100 px-2 py-0.5 text-[10px] text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                            <span key={p} className="inline-flex items-center gap-0.5 rounded-full bg-surface-muted px-2 py-0.5 text-[10px] text-text-secondary dark:bg-gray-800 dark:text-gray-400">
                               {pref?.emoji} {pref?.nameAr ?? p}
                             </span>
                           );
                         })}
                       </div>
                     )}
-                    {m.notes && <p className="mt-1 text-xs text-gray-400 italic">💬 {m.notes}</p>}
+                    {m.notes && <p className="mt-1 text-xs text-text-tertiary italic">💬 {m.notes}</p>}
                     {(m.bookingCount ?? 0) > 0 && (
                       <p className="mt-1 text-xs text-brand-600 font-medium">📅 {m.bookingCount} حجز سابق</p>
                     )}
@@ -197,19 +197,19 @@ export default function FamilyAccountPage(): JSX.Element {
         >
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">الاسم</label>
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">الاسم</label>
               <input type="text" value={formName} onChange={(e) => setFormName(e.target.value)} placeholder="الاسم الكامل" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">العلاقة</label>
+                <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">العلاقة</label>
                 <select value={formRelation} onChange={(e) => setFormRelation(e.target.value)} className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800">
                   {relationships.map((r) => <option key={r.key} value={r.key}>{r.emoji} {r.nameAr}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">الفئة العمرية</label>
+                <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">الفئة العمرية</label>
                 <select value={formAge} onChange={(e) => setFormAge(e.target.value)} className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800">
                   {ageGroups.map((a) => <option key={a.key} value={a.key}>{a.emoji} {a.nameAr}</option>)}
                 </select>
@@ -217,7 +217,7 @@ export default function FamilyAccountPage(): JSX.Element {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">التفضيلات</label>
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-2">التفضيلات</label>
               <div className="flex flex-wrap gap-2">
                 {prefsList.map((p) => (
                   <button
@@ -227,7 +227,7 @@ export default function FamilyAccountPage(): JSX.Element {
                     className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
                       formPrefs.includes(p.key)
                         ? 'bg-brand-100 text-brand-700 ring-1 ring-brand-300 dark:bg-brand-900 dark:text-brand-300'
-                        : 'bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                        : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
                     }`}
                   >
                     {p.emoji} {p.nameAr}
@@ -237,7 +237,7 @@ export default function FamilyAccountPage(): JSX.Element {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">ملاحظات</label>
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">ملاحظات</label>
               <textarea value={formNotes} onChange={(e) => setFormNotes(e.target.value)} placeholder="حساسية، تفضيلات خاصة..." rows={2} className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" />
             </div>
 

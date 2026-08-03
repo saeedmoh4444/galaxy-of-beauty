@@ -51,7 +51,7 @@ export default function ColorAnalysisPage(): JSX.Element {
           <Card padding="lg"><h3 className="font-bold text-lg mb-3">⚠️ تجنبي</h3>
             <div className="space-y-1 text-sm">{result.avoid.map(c => <p key={c} className="text-red-500">❌ {c}</p>)}</div>
             <h3 className="font-bold text-lg mt-6 mb-2">🌟 مشهورات من نفس الفصل</h3>
-            {result.celebrities.map(c => <p key={c} className="text-sm text-gray-600">{c}</p>)}
+            {result.celebrities.map(c => <p key={c} className="text-sm text-text-secondary">{c}</p>)}
           </Card>
         </div>
 

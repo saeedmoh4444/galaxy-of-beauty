@@ -30,7 +30,7 @@ export default function TechWalletPage(): JSX.Element {
 
         {transactions.length > 0 && <Card padding="lg"><h3 className="font-bold mb-3">📋 المعاملات</h3>
           <div className="space-y-2">{transactions.map((t: Record<string,unknown>) => (
-            <div key={t.id as number} className="flex justify-between text-sm border-b pb-2"><span className="text-gray-600">{t.type as string} · {new Date(t.createdAt as string).toLocaleDateString('ar-SA')}</span><span className={`font-bold ${(t.amount as number) > 0 ? 'text-green-600' : 'text-red-600'}`}>{t.amount as number > 0 ? '+' : ''}{formatCurrency(Math.abs(t.amount as number))}</span></div>
+            <div key={t.id as number} className="flex justify-between text-sm border-b pb-2"><span className="text-text-secondary">{t.type as string} · {new Date(t.createdAt as string).toLocaleDateString('ar-SA')}</span><span className={`font-bold ${(t.amount as number) > 0 ? 'text-green-600' : 'text-red-600'}`}>{t.amount as number > 0 ? '+' : ''}{formatCurrency(Math.abs(t.amount as number))}</span></div>
           ))}</div>
         </Card>}
       </div>

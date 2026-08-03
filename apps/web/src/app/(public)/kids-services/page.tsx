@@ -38,7 +38,7 @@ export default function KidsServicesPage(): JSX.Element {
         <div className="space-y-6">
           <button onClick={() => setSelectedCat(null)} className="text-brand-600 text-sm font-medium">← العودة</button>
           <Card padding="lg" className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 border-none">
-            <span className="text-5xl">{category?.emoji as string}</span><h2 className="text-xl font-bold mt-2">{category?.nameAr as string}</h2><p className="text-sm text-gray-600">{category?.description as string}</p>
+            <span className="text-5xl">{category?.emoji as string}</span><h2 className="text-xl font-bold mt-2">{category?.nameAr as string}</h2><p className="text-sm text-text-secondary">{category?.description as string}</p>
           </Card>
           <div className="flex gap-3 items-end bg-surface-muted dark:bg-gray-800 rounded-xl p-4">
             <div><label className="text-xs font-semibold">اسم الطفل</label><input value={childName} onChange={(e) => setChildName(e.target.value)} placeholder="الاسم..." className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1" /></div>

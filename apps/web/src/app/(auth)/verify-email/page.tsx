@@ -27,7 +27,7 @@ export default function VerifyEmailPage(): JSX.Element {
       <Card padding="lg" className="w-full max-w-md text-center">
         <h1 className="mb-4 text-2xl font-bold text-text-primary dark:text-gray-100">تأكيد البريد الإلكتروني</h1>
         {status === 'loading' && <div className="py-8"><Spinner size="lg" label="جاري التحقق..." /></div>}
-        {status === 'success' && <div className="py-8"><span className="text-5xl">✅</span><p className="mt-4 text-lg text-green-600">{msg}</p><p className="mt-2 text-sm text-gray-400">جاري تحويلك لصفحة تسجيل الدخول...</p></div>}
+        {status === 'success' && <div className="py-8"><span className="text-5xl">✅</span><p className="mt-4 text-lg text-green-600">{msg}</p><p className="mt-2 text-sm text-text-tertiary">جاري تحويلك لصفحة تسجيل الدخول...</p></div>}
         {status === 'error' && <div className="py-8"><span className="text-5xl">❌</span><p className="mt-4 text-lg text-red-600">{msg}</p><Link href="/login" className="mt-4 inline-block text-brand-600 hover:underline">العودة لتسجيل الدخول</Link></div>}
       </Card>
     </div>

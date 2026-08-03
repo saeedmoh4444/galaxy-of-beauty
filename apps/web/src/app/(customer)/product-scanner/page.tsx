@@ -170,7 +170,7 @@ export default function ProductScannerPage(): JSX.Element {
                     const isAllergen = product.allergens.includes(ing);
                     return (
                       <span key={ing} className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        isAllergen ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' : 'bg-surface-muted text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+                        isAllergen ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' : 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400'
                       }`}>
                         {ing} {isAllergen && '⚠️'}
                       </span>
@@ -208,7 +208,7 @@ export default function ProductScannerPage(): JSX.Element {
         {/* Quick Tips */}
         <Card padding="lg" className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-none">
           <h3 className="font-bold mb-3">💡 نصائح لاختيار المنتجات</h3>
-          <div className="grid gap-2 text-sm text-gray-600 dark:text-gray-400 sm:grid-cols-2">
+          <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400 sm:grid-cols-2">
             <p>✅ اختاري منتجات خالية من البارابين والعطور</p>
             <p>✅ تأكدي من وجود واقي شمس في روتينك اليومي</p>
             <p>✅ ابحثي عن منتجات تحتوي على مكونات طبيعية</p>

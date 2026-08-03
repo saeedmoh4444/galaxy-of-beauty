@@ -27,7 +27,7 @@ export default function BeautyRescuePage(): JSX.Element {
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
             <p className="text-5xl">🚗</p>
             <p className="font-bold text-green-700 text-xl mt-3">تم الطلب!</p>
-            <p className="text-sm text-gray-600 mt-1">خبيرة التجميل في الطريق — تصل خلال {emergency.time}</p>
+            <p className="text-sm text-text-secondary mt-1">خبيرة التجميل في الطريق — تصل خلال {emergency.time}</p>
             <p className="text-2xl font-extrabold text-green-600 mt-3">{formatCurrency(emergency.price * surcharge)}</p>
             <p className="text-xs text-text-secondary">شامل رسوم الطوارئ</p>
             <Button onClick={() => { setBooked(false); setSelected(null); }} className="mt-4">تم</Button>
@@ -51,7 +51,7 @@ export default function BeautyRescuePage(): JSX.Element {
             {emergency && (
               <Card padding="lg">
                 <h3 className="font-bold mb-3">{emergency.emoji} {emergency.name}</h3>
-                <div className="space-y-2 mb-4">{emergency.tips.map((tip,i) => <p key={i} className="text-sm text-gray-600">✓ {tip}</p>)}</div>
+                <div className="space-y-2 mb-4">{emergency.tips.map((tip,i) => <p key={i} className="text-sm text-text-secondary">✓ {tip}</p>)}</div>
                 <div className="flex justify-between text-sm mb-3"><span>سعر الخدمة</span><span>{formatCurrency(emergency.price)}</span></div>
                 <div className="flex justify-between text-sm text-red-600"><span>رسوم الطوارئ (50%)</span><span>+{formatCurrency(emergency.price * 0.5)}</span></div>
                 <hr className="my-2"/>

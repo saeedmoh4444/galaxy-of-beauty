@@ -44,7 +44,7 @@ export default function WishlistPage(): JSX.Element {
                 const titleJson = service.titleJson;
                 return (
                   <Card key={item.id as number} padding="md" className="relative">
-                    <div className="mb-3 flex h-36 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
+                    <div className="mb-3 flex h-36 items-center justify-center rounded-lg bg-surface-muted dark:bg-gray-800">
                       {service.imageUrl ? (
                         <img src={service.imageUrl as string} alt="" className="h-full w-full rounded-lg object-cover" />
                       ) : (
@@ -52,7 +52,7 @@ export default function WishlistPage(): JSX.Element {
                       )}
                     </div>
                     <h3 className="font-semibold">{(titleJson as { ar?: string; en?: string })?.ar ?? (titleJson as { ar?: string; en?: string })?.en ?? ''}</h3>
-                    <p className="mt-1 text-xs text-gray-500">
+                    <p className="mt-1 text-xs text-text-secondary">
                       {(category?.nameJson as Record<string, string>)?.ar ?? ''}
                     </p>
                     <p className="mt-2 text-sm font-bold text-brand-600">
@@ -73,7 +73,7 @@ export default function WishlistPage(): JSX.Element {
                 return (
                   <Card key={item.id as number} padding="md" className="relative">
                     <div className="mb-3 flex items-center gap-3">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-surface-muted dark:bg-gray-800">
                         {user.avatarUrl ? (
                           <img src={user.avatarUrl as string} alt="" className="h-full w-full rounded-full object-cover" />
                         ) : (
@@ -82,7 +82,7 @@ export default function WishlistPage(): JSX.Element {
                       </div>
                       <div>
                         <h3 className="font-semibold">{user.name as string}</h3>
-                        <p className="text-xs text-gray-500">{technician.city as string}</p>
+                        <p className="text-xs text-text-secondary">{technician.city as string}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-1 text-sm text-amber-500">
