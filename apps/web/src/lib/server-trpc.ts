@@ -1,13 +1,42 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { appRouter, createTRPCContext } from '@galaxy/api';
-import superjson from 'superjson';
+
+/** Prisma Decimal duck-type check — avoids depending on @prisma/client directly. */
+function isDecimal(v: unknown): v is { toNumber(): number } {
+  return (
+    typeof v === 'object' &&
+    v !== null &&
+    'toNumber' in v &&
+    typeof (v as Record<string, unknown>).toNumber === 'function' &&
+    's' in v &&  // Decimal internal field
+    'e' in v
+  );
+}
 
 /**
- * Strip non-plain types (Decimal, Date, etc.) from any value so it can safely
- * cross the Server Component → Client Component boundary.
+ * Recursively convert Prisma Decimal and Date values to plain JSON-safe types
+ * so data can safely cross the Server Component → Client Component boundary.
  */
 export function serializeForClient<T>(value: T): T {
-  return superjson.parse(superjson.stringify(value)) as T;
+  if (value === null || value === undefined) return value;
+
+  if (isDecimal(value)) return Number((value as { toNumber(): number }).toNumber()) as unknown as T;
+
+  if (value instanceof Date) return value.toISOString() as unknown as T;
+
+  if (Array.isArray(value)) {
+    return value.map(serializeForClient) as unknown as T;
+  }
+
+  if (typeof value === 'object') {
+    const result: Record<string, unknown> = {};
+    for (const key of Object.keys(value as Record<string, unknown>)) {
+      result[key] = serializeForClient((value as Record<string, unknown>)[key]);
+    }
+    return result as unknown as T;
+  }
+
+  return value;
 }
 
 /**
