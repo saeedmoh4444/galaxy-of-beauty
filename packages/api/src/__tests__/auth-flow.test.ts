@@ -47,7 +47,7 @@ describe('Auth — Registration', () => {
       email: testEmail,
       password: 'StrongPass123!',
       name: 'مختبرة التكامل',
-      phone: '+966599999999',
+      phone: '+966501234567',
       acceptedTerms: true,
     });
     expect(result).toBeDefined();

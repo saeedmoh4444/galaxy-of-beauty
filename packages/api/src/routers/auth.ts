@@ -67,6 +67,8 @@ function parseExpiryToMs(expiry: string): number {
 
 async function storeRefreshToken(userId: number, jwtToken: string): Promise<void> {
   const env = getEnv();
+  // Delete any existing token for this user first (rotation)
+  await prisma.refreshToken.deleteMany({ where: { userId } });
   await prisma.refreshToken.create({
     data: {
       token: jwtToken,
