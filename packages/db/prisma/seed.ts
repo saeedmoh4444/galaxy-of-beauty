@@ -718,6 +718,32 @@ async function main() {
     console.log('✅ Loyalty, notifications, wishlist, flash deal');
   } catch (err: any) { console.log(`   ⚠️ Extra data: ${err.message?.slice(0,60)}`); }
 
+  // Promo codes
+  try {
+    await (prisma as any).promoCode.createMany({
+      data: [
+        { code: 'WELCOME20', discountType: 'percent', discountValue: 20, minOrderAmount: 100, maxUses: 100, currentUses: 12, isActive: true, validUntil: new Date(Date.now() + 30 * 86400000), createdBy: admin.id },
+        { code: 'FLASH50', discountType: 'percent', discountValue: 50, minOrderAmount: 200, maxUses: 50, currentUses: 45, isActive: true, validUntil: new Date(Date.now() + 7 * 86400000), createdBy: admin.id },
+        { code: 'SAVE50SAR', discountType: 'fixed', discountValue: 50, minOrderAmount: 150, maxUses: 200, currentUses: 87, isActive: true, validUntil: new Date(Date.now() + 60 * 86400000), createdBy: admin.id },
+        { code: 'EXPIRED10', discountType: 'percent', discountValue: 10, maxUses: 50, currentUses: 50, isActive: false, validUntil: new Date(Date.now() - 1 * 86400000), createdBy: admin.id },
+        { code: 'BIG100', discountType: 'fixed', discountValue: 100, minOrderAmount: 500, maxUses: 20, currentUses: 3, isActive: true, validUntil: new Date(Date.now() + 14 * 86400000), createdBy: admin.id },
+      ],
+    });
+    console.log('✅ 5 promo codes (active + expired)');
+  } catch (err: any) { console.log(`   ⚠️ Promo codes: ${err.message?.slice(0,60)}`); }
+
+  // Gift cards
+  try {
+    await (prisma as any).giftCard.createMany({
+      data: [
+        { code: 'GIFT-2024-001', amount: 200, balance: 200, purchaserId: customer.id, recipientEmail: 'friend@test.com', recipientName: 'مها', message: 'هدية عيد ميلاد سعيد! 🎂', status: 'ACTIVE', expiresAt: new Date(Date.now() + 365 * 86400000) },
+        { code: 'GIFT-2024-002', amount: 100, balance: 0, purchaserId: customer.id, recipientEmail: 'sister@test.com', recipientName: 'ريم', message: 'لكِ مع حبي 💝', status: 'REDEEMED', expiresAt: new Date(Date.now() + 365 * 86400000) },
+        { code: 'GIFT-2024-003', amount: 500, balance: 500, purchaserId: customers[1]!.id, recipientName: 'سارة', status: 'ACTIVE', expiresAt: new Date(Date.now() + 180 * 86400000) },
+      ],
+    });
+    console.log('✅ 3 gift cards (active + redeemed)');
+  } catch (err: any) { console.log(`   ⚠️ Gift cards: ${err.message?.slice(0,60)}`); }
+
   console.log('\n🎉 Seed complete! Test login: customer@test.com / Admin@123456\n');
 }
 
