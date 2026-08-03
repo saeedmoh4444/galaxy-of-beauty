@@ -14,3 +14,4 @@ export { StatCard } from './StatCard';
 export { PageContainer } from './PageContainer';
 export { Icon } from './Icon';
 export type { IconName } from './Icon';
+export { InlineEdit } from './InlineEdit';

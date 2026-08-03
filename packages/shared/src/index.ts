@@ -15,6 +15,7 @@ export { StatCard } from './ui/StatCard';
 export { PageContainer } from './ui/PageContainer';
 export { Icon } from './ui/Icon';
 export type { IconName } from './ui/Icon';
+export { InlineEdit } from './ui/InlineEdit';
 
 // Hooks
 export { useForm, useAuth, useDebounce } from './hooks';
