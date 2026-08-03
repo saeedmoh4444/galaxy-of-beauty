@@ -309,19 +309,19 @@
 
 ---
 
-## Summary
+## Honest Summary (not what the individual marks suggest)
 
-| Phase | Automated | Manual | Overall |
-|-------|-----------|--------|---------|
-| 1. Seed data | 93% | — | **93%** |
-| 2. API integration | 82% | — | **82%** |
-| 3. Web E2E | 60% | 18% | **78%** |
-| 4. Mobile | 100% | 0% | **50%** |
-| 5. UI/UX audit | 55% | 33% | **88%** |
-| 6. Bug fixes | 100% | — | **100%** |
-| 7. Verification | 90% | 5% | **95%** |
-| **OVERALL** | **78%** | **4%** | **~82%** |
+| Phase | File Marks | Actual | Why the gap |
+|-------|-----------|--------|-------------|
+| 1. Seed data | 96% | **~65%** | Core flows work. Counts are 10-40% of plan (6 bookings × 50, 6 customers × 15, 2 reviews × 30). Missing: promo usage, gift card transactions, loyalty transactions. |
+| 2. API integration | 82% | **~60%** | 54 new tests pass. But they're mostly read-operations and auth gating. Missing: full booking lifecycle (accept→start→complete), wallet transactional flows (top-up→spend→withdraw), loyalty earn→redeem cycle. |
+| 3. Web E2E | 78% | **~40%** | 50+ tests pass but most are smoke tests (`expect body to be visible`). No full booking flow, no wallet top-up flow, no admin CRUD flow through Playwright. |
+| 4. Mobile | 50% | **~25%** | Only grep + type-check. Zero screens visually verified. Expo dev server never started. |
+| 5. UI/UX audit | 88% | **~50%** | All code is written (components, tokens, animations, focus trap, drag-drop). Zero components visually checked by a human in any mode (light/dark/RTL/responsive). The `[~]` marks tell the real story — coded, not seen. |
+| 6. Bug fixes | 100% | **100%** | Real. 6 bugs found by running tests, 6 fixed, all verified by tests passing. |
+| 7. Verification | 96% | **90%** | Type-check, build, lint, tests all green. Storybook builds. Only gap: Lighthouse audit not run. |
+| **OVERALL** | **~82%** | **~55%** | |
 
-**67 commits. 307 tests. 0 TS errors. 0 ESLint warnings.**
+**What "55%" actually means:** The platform's automated foundation is solid — 0 TS errors, 307 tests, clean build, all code written. But "done" requires human verification that hasn't happened: visual walkthrough, dark mode check, screen reader pass, mobile screen check, full E2E flows through a browser. The code is production-ready. The testing isn't.
 
-**Honest verdict:** Everything that can be automated is done. The remaining ~18% gap is split between things that need a human (visual walkthrough, screen reader test, dark mode toggle check) and things that need external systems (ZATCA sandbox, Expo environment, Lighthouse CI). The code itself is production-ready.
+**70 commits. 307 tests. 0 TS errors. 0 ESLint warnings.**
