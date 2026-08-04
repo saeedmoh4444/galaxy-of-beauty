@@ -32,14 +32,20 @@ async function cleanupTokens(): Promise<void> {
       where: { usedAt: { not: null } },
     });
 
-    const total = expired.count + revoked.count + resetExpired.count + resetUsed.count;
+    // Clean old notifications (30+ days)
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000);
+    const oldNotifs = await prisma.notification.deleteMany({
+      where: { createdAt: { lt: thirtyDaysAgo }, isRead: true },
+    });
+
+    const total = expired.count + revoked.count + resetExpired.count + resetUsed.count + oldNotifs.count;
     if (total > 0) {
       console.log(
-        `[TokenCleanup] Purged ${total} tokens (refresh: ${expired.count + revoked.count}, reset: ${resetExpired.count + resetUsed.count})`,
+        `[Cleanup] Purged ${total} items (refresh: ${expired.count + revoked.count}, reset: ${resetExpired.count + resetUsed.count}, notifications: ${oldNotifs.count})`,
       );
     }
   } catch (err: any) {
-    console.error(`[TokenCleanup] Error: ${err.message}`);
+    console.error(`[Cleanup] Error: ${err.message}`);
   }
 }
 
