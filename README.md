@@ -4,10 +4,10 @@
 
 Galaxy of Beauty connects female customers with vetted female technicians for beauty services — hair, nails, skin care, makeup, massage, and henna. Arabic-first, Saudi-compliant (ZATCA, PDPL), and built on a modern monorepo stack.
 
-[![Type Check](https://img.shields.io/badge/type--check-8%2F8-brightgreen)](#)
-[![Lint](https://img.shields.io/badge/lint-5%2F5-brightgreen)](#)
+[![Type Check](https://img.shields.io/badge/type--check-10%2F10-brightgreen)](#)
+[![Lint](https://img.shields.io/badge/lint-7%2F7-brightgreen)](#)
 [![Build](https://img.shields.io/badge/build-5%2F5-brightgreen)](#)
-[![Docker](https://img.shields.io/badge/docker-4%2F4-brightgreen)](#)
+[![Docker](https://img.shields.io/badge/docker-5%2F5-brightgreen)](#)
 
 ---
 
@@ -63,16 +63,14 @@ docker compose down             # Stop everything
 ```
 galaxy-of-beauty/
 ├── apps/
-│   ├── web/                    # Next.js 14 App Router (84 routes, 10 SSR pages)
+│   ├── web/                    # Next.js 14 App Router (254 routes, 10 SSR pages)
 │   └── mobile/                 # Expo SDK 54 + Expo Router (47 screens)
 ├── packages/
-│   ├── api/                    # tRPC v11 — 159 routers, 400+ procedures
-│   ├── db/                     # Prisma — 87 models, 15 enums
-│   ├── shared/                 # UI kit (11 components), hooks, i18n, theme, types
+│   ├── api/                    # tRPC v11 — 163 routers, 400+ procedures
+│   ├── db/                     # Prisma — 140+ models, 15 enums
+│   ├── shared/                 # UI kit (16 components), hooks, i18n, theme, types
 │   └── config/                 # TSConfig, ESLint, Prettier, Tailwind
-├── docs/                       # ADRs, architecture docs
-├── _legacy/                    # Archived v1.0 (Express + Vite + standalone Expo)
-├── trash_stuff/                # Local env files & legacy Postman artifacts
+├── docs/                       # ADRs, architecture docs, planning
 ├── docker-compose.yml          # 5-service Docker stack with health checks
 ├── turbo.json                  # Turborepo build pipeline
 └── pnpm-workspace.yaml
@@ -89,7 +87,7 @@ galaxy-of-beauty/
 | **Database** | PostgreSQL 15 via Prisma ORM |
 | **Cache** | Redis 7 |
 | **Auth** | JWT access (15m) + refresh (7d) with rotation |
-| **Container** | Docker Compose (4 services) |
+| **Container** | Docker Compose (5 services) |
 
 ---
 
@@ -156,8 +154,8 @@ galaxy-of-beauty/
 ```bash
 pnpm type-check     # 10/10 workspaces
 pnpm lint           # 7/7 tasks
-pnpm build          # 5/5 tasks — 190+ Next.js routes
-pnpm test           # 243 tests (10 suites)
+pnpm build          # 5/5 tasks — 254 Next.js routes
+pnpm test           # 307 tests (15 suites)
 pnpm test:e2e       # 38/38 chromium (100%)
 ```
 
@@ -173,8 +171,8 @@ curl http://localhost:3000/api/trpc/health
 ```bash
 pnpm type-check   # 10/10 workspaces ✅
 pnpm lint         # 7/7 ✅
-pnpm build        # 5/5 — 90+ Next.js routes ✅
-pnpm test         # 243 tests (10 suites) ✅
+pnpm build        # 5/5 — 254 Next.js routes ✅
+pnpm test         # 307 tests (15 suites) ✅
 ```
 
 ### New Features (Post-MVP)

@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import { getEnv } from './env';
 
 export interface JwtPayload {
@@ -9,14 +10,14 @@ export interface JwtPayload {
 
 export function signAccessToken(payload: JwtPayload): string {
   const env = getEnv();
-  return jwt.sign(payload as object, env.JWT_ACCESS_SECRET, {
+  return jwt.sign({ ...payload, jti: crypto.randomUUID() } as object, env.JWT_ACCESS_SECRET, {
     expiresIn: env.JWT_ACCESS_EXPIRY as string & { __brand: never },
   } as jwt.SignOptions);
 }
 
 export function signRefreshToken(payload: JwtPayload): string {
   const env = getEnv();
-  return jwt.sign(payload as object, env.JWT_REFRESH_SECRET, {
+  return jwt.sign({ ...payload, jti: crypto.randomUUID() } as object, env.JWT_REFRESH_SECRET, {
     expiresIn: env.JWT_REFRESH_EXPIRY as string & { __brand: never },
   } as jwt.SignOptions);
 }
