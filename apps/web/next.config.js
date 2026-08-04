@@ -100,6 +100,12 @@ const nextConfig = {
   reactStrictMode: true,
 
   webpack(config, { isServer, dev }) {
+    // Suppress bullmq optional dependency warning (falls back to ioredis)
+    config.resolve = {
+      ...config.resolve,
+      alias: { ...config.resolve?.alias, '@valkey/valkey-glide': false },
+    };
+
     // Enable tree-shaking for barrel files
     // Note: do NOT set usedExports — it conflicts with Next.js's cacheUnaffected
     config.optimization = {

@@ -1,5 +1,7 @@
 'use client';
 
+/* eslint-disable jsx-a11y/aria-role */ // 'role' prop is a user role, not an ARIA attribute
+
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
