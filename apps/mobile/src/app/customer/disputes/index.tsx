@@ -1,63 +1,51 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, TextInput, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useQuery } from '@/lib/useQuery';
-import { ErrorAlert } from '@/components/ErrorAlert';
-import { SkeletonList } from '@/components/SkeletonCard';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
+const STATUS_LABELS: Record<string, string> = { OPEN: 'مفتوح', UNDER_REVIEW: 'قيد المراجعة', RESOLVED_CUSTOMER: 'محلول', RESOLVED_TECHNICIAN: 'محلول', CLOSED: 'مغلق' };
 
 export default function DisputesScreen(): JSX.Element {
-  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).disputes.list.query({}));
-  const [showCreate, setShowCreate] = useState(false);
-  const [bookingId, setBookingId] = useState('');
-  const [reason, setReason] = useState('');
-
-  if (loading) return <SkeletonList count={5} />;
-  if (error) return <ErrorAlert message="فشل تحميل النزاعات" onRetry={refetch} />;
-
-  const items = (data ?? []) as Record<string, unknown>[];
+  const disputes = (trpc as any).disputes?.list?.useQuery?.({}) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const data = disputes.data as unknown[] | undefined;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#dc2626']} />}>
-      <Text style={styles.t}>⚖️ النزاعات</Text>
-      <TouchableOpacity onPress={() => setShowCreate(!showCreate)} style={styles.addBtn}><Text style={styles.addBt}>+ نزاع جديد</Text></TouchableOpacity>
-
-      {showCreate && (
-        <View style={styles.form}>
-          <TextInput value={bookingId} onChangeText={setBookingId} placeholder="رقم الحجز" style={styles.inp} placeholderTextColor="#9ca3af" keyboardType="numeric" />
-          <TextInput value={reason} onChangeText={setReason} placeholder="سبب النزاع" style={[styles.inp, styles.ta]} placeholderTextColor="#9ca3af" multiline />
-          <TouchableOpacity style={styles.submitBtn}><Text style={styles.submitBt}>تقديم</Text></TouchableOpacity>
-        </View>
-      )}
-
-      {items.length === 0 ? <Text style={styles.e}>لا توجد نزاعات</Text> :
-        items.map((d: Record<string, unknown>, i: number) => (
-          <View key={i} style={styles.card}>
-            <View style={styles.sr}>
-              <Text style={styles.dr}>{d.reason as string}</Text>
-              <View style={[styles.db, (d.status as string) === 'PENDING' ? styles.dp : (d.status as string) === 'RESOLVED' ? styles.dres : {}]}>
-                <Text style={styles.dbt}>{(d.status as string) === 'PENDING' ? 'معلق' : (d.status as string) === 'RESOLVED' ? 'محلول' : (d.status as string)}</Text>
-              </View>
-            </View>
-            <Text style={styles.dd}>{new Date(d.createdAt as string).toLocaleDateString('ar-SA')}</Text>
+    <ScreenState
+      isLoading={disputes.isLoading}
+      isError={disputes.isError}
+      isEmpty={!data || data.length === 0}
+      errorMessage="فشل تحميل النزاعات"
+      emptyTitle="لا توجد نزاعات"
+      emptyDescription="يمكنكِ فتح نزاع على أي حجز"
+      onRetry={() => disputes.refetch()}
+    >
+      <Text style={styles.title}>⚖️ النزاعات</Text>
+      {(data as Record<string, unknown>[])?.map((d: Record<string, unknown>, i: number) => (
+        <View key={i} style={styles.card}>
+          <View style={styles.row}>
+            <Text style={styles.reason}>{d.reason as string}</Text>
+            <Text style={styles.status}>{STATUS_LABELS[d.status as string] ?? (d.status as string)}</Text>
           </View>
-        ))
-      }
-    </ScrollView>
+          {d.resolution ? <Text style={styles.resolution}>الحل: {d.resolution as string}</Text> : null}
+          <Text style={styles.date}>{new Date(d.createdAt as string).toLocaleDateString('ar-SA')}</Text>
+        </View>
+      ))}
+      <TouchableOpacity style={styles.addBtn}>
+        <Text style={styles.addText}>➕ فتح نزاع جديد</Text>
+      </TouchableOpacity>
+    </ScreenState>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fef2f2' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#dc2626', textAlign: 'center', marginBottom: 16 },
-  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
-  addBtn: { backgroundColor: '#dc2626', borderRadius: 12, padding: 12, alignItems: 'center', marginBottom: 16 },
-  addBt: { color: '#fff', fontSize: 14, fontWeight: '600' },
-  form: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 16 },
-  inp: { borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 10, padding: 12, marginBottom: 8, fontSize: 14, color: '#111827' },
-  ta: { height: 80, textAlignVertical: 'top' },
-  submitBtn: { backgroundColor: '#dc2626', borderRadius: 10, padding: 12, alignItems: 'center' }, submitBt: { color: '#fff', fontSize: 14, fontWeight: '600' },
-  card: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8 },
-  sr: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }, dr: { flex: 1, fontSize: 14, fontWeight: '600', color: '#111827' },
-  db: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, backgroundColor: '#f3f4f6' }, dp: { backgroundColor: '#fef3c7' }, dres: { backgroundColor: '#dcfce7' },
-  dbt: { fontSize: 11, fontWeight: '600' }, dd: { fontSize: 12, color: '#9ca3af', marginTop: 8 },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  card: { backgroundColor: COLORS.white, borderRadius: 14, padding: 16, marginBottom: 8, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
+  reason: { fontSize: 14, fontWeight: '600', color: COLORS.gray900 },
+  status: { fontSize: 11, fontWeight: '600', color: COLORS.brand },
+  resolution: { fontSize: 12, color: '#10b981', marginTop: 4 },
+  date: { fontSize: 10, color: COLORS.gray400, marginTop: 4 },
+  addBtn: { alignItems: 'center', padding: 16, marginTop: 8 },
+  addText: { fontSize: 15, fontWeight: '600', color: COLORS.brand },
 });

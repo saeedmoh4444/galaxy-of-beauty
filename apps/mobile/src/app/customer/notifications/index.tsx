@@ -1,79 +1,51 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useQuery } from '@/lib/useQuery';
-import { ErrorAlert } from '@/components/ErrorAlert';
-import { SkeletonList } from '@/components/SkeletonCard';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827', unread: '#f5f3ff' };
 
 export default function NotificationsScreen(): JSX.Element {
-  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.notifications.list.query({}));
-
-  const handleMarkRead = async (id: number) => {
-    await (trpc.notifications.markRead as any).mutate({ id });
-    refetch();
-  };
-
-  const handleMarkAll = async () => {
-    await (trpc.notifications.markAllRead as any).mutate({});
-    refetch();
-  };
-
-  if (loading) return <View style={styles.container}><View style={styles.header}><Text style={styles.title}>الإشعارات</Text></View><SkeletonList count={4} /></View>;
-  if (error) return <ErrorAlert message="فشل تحميل الإشعارات" onRetry={refetch} />;
-
-  const items = (data ?? []) as Record<string, unknown>[];
+  const notifs = trpc.notifications.list.useQuery({});
+  const markAll = trpc.notifications.markAllRead.useMutation();
+  const data = notifs.data as unknown[] | undefined;
 
   return (
-    <View style={styles.container}>
+    <ScreenState
+      isLoading={notifs.isLoading}
+      isError={notifs.isError}
+      isEmpty={!data || data.length === 0}
+      errorMessage="فشل تحميل الإشعارات"
+      emptyTitle="لا توجد إشعارات"
+      emptyDescription="لم تصلك أي إشعارات بعد"
+      onRetry={() => notifs.refetch()}
+      onRefresh={() => { notifs.refetch(); }}
+    >
       <View style={styles.header}>
-        <Text style={styles.title}>الإشعارات</Text>
-        {items.length > 0 && (
-          <TouchableOpacity onPress={handleMarkAll}>
+        <Text style={styles.title}>🔔 الإشعارات</Text>
+        {data && data.length > 0 && (
+          <TouchableOpacity onPress={() => { markAll.mutateAsync(); notifs.refetch(); }}>
             <Text style={styles.markAll}>تحديد الكل كمقروء</Text>
           </TouchableOpacity>
         )}
       </View>
-      {items.length === 0 ? (
-        <View style={styles.centered}>
-          <Text style={styles.emptyIcon}>🔔</Text>
-          <Text style={styles.empty}>لا توجد إشعارات</Text>
-          <Text style={styles.hint}>ستصلكِ إشعارات الحجوزات والعروض هنا</Text>
-        </View>
-      ) : (
-        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />}>
-          {items.map((n: Record<string, unknown>) => (
-            <TouchableOpacity
-              key={n.id as number}
-              style={[styles.card, !n.readAt && styles.unread]}
-              onPress={() => !n.readAt && handleMarkRead(n.id as number)}
-            >
-              <View style={styles.cardRow}>
-                <Text style={styles.notifTitle}>{n.title as string}</Text>
-                {!n.readAt && <View style={styles.dot} />}
-              </View>
-              <Text style={styles.notifBody}>{n.body as string}</Text>
-              <Text style={styles.notifTime}>{new Date(n.createdAt as string).toLocaleDateString('ar-SA')}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      )}
-    </View>
+      {(data as Record<string, unknown>[])?.map((n: Record<string, unknown>, i: number) => (
+        <TouchableOpacity key={i} style={[styles.card, !n.isRead && styles.unread]}>
+          <Text style={styles.notifTitle}>{(n.titleJson as any)?.ar ?? n.titleAr as string ?? ''}</Text>
+          <Text style={styles.notifBody}>{(n.bodyJson as any)?.ar ?? n.body as string ?? ''}</Text>
+          <Text style={styles.notifTime}>{new Date(n.createdAt as string).toLocaleString('ar-SA')}</Text>
+        </TouchableOpacity>
+      ))}
+    </ScreenState>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  title: { fontSize: 24, fontWeight: '800', color: '#111827' },
-  markAll: { color: '#7c3aed', fontSize: 14, fontWeight: '600' },
-  card: { padding: 16, marginBottom: 8, borderRadius: 12, borderWidth: 1, borderColor: '#e5e7eb' },
-  unread: { borderColor: '#c4b5fd', backgroundColor: '#faf5ff' },
-  cardRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  notifTitle: { fontSize: 16, fontWeight: '600', color: '#111827', flex: 1 },
-  dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#7c3aed' },
-  notifBody: { fontSize: 14, color: '#6b7280', marginTop: 4 },
-  notifTime: { fontSize: 12, color: '#9ca3af', marginTop: 8 },
-  centered: { alignItems: 'center', marginTop: 40 },
-  emptyIcon: { fontSize: 48, marginBottom: 12 },
-  empty: { fontSize: 18, fontWeight: '600', color: '#6b7280' },
-  hint: { fontSize: 14, color: '#9ca3af', marginTop: 4, textAlign: 'center' },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand },
+  markAll: { fontSize: 13, color: COLORS.brand, fontWeight: '600' },
+  card: { backgroundColor: COLORS.white, borderRadius: 12, padding: 14, marginBottom: 6 },
+  unread: { backgroundColor: COLORS.unread, borderLeftWidth: 3, borderLeftColor: COLORS.brand },
+  notifTitle: { fontSize: 14, fontWeight: '700', color: COLORS.gray900 },
+  notifBody: { fontSize: 12, color: COLORS.gray400, marginTop: 4 },
+  notifTime: { fontSize: 10, color: COLORS.gray400, marginTop: 8 },
 });

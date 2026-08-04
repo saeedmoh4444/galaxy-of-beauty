@@ -1,39 +1,47 @@
-import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useQuery } from '@/lib/useQuery';
-import { ErrorAlert } from '@/components/ErrorAlert';
-import { SkeletonList } from '@/components/SkeletonCard';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827', success: '#10b981' };
 
 export default function AddressesScreen(): JSX.Element {
-  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.addresses.list.query());
-
-  if (loading) return <View style={styles.c}><Text style={styles.t}>📍 عناويني</Text><SkeletonList count={3} /></View>;
-  if (error) return <ErrorAlert message="فشل تحميل العناوين" onRetry={refetch} />;
-
-  const items = (data ?? []) as Record<string, unknown>[];
+  const addresses = trpc.addresses.list.useQuery();
+  const data = addresses.data as unknown[] | undefined;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#0891b2']} />}>
-      <Text style={styles.t}>📍 عناويني</Text>
-      {items.length === 0 ? <Text style={styles.e}>لا توجد عناوين محفوظة</Text> :
-        (items as any[]).map((a: any) => (
-          <View key={a.id as number} style={styles.card}>
-            <Text style={styles.addrLabel}>{a.label as string ?? 'عنوان'}</Text>
-            <Text style={styles.addrText}>{a.city as string} · {a.area as string}</Text>
-            {a.street && <Text style={styles.addrStreet}>{a.street as string}</Text>}
+    <ScreenState
+      isLoading={addresses.isLoading}
+      isError={addresses.isError}
+      isEmpty={!data || data.length === 0}
+      errorMessage="فشل تحميل العناوين"
+      emptyTitle="لا توجد عناوين"
+      emptyDescription="أضيفي عنوانكِ الأول لتسهيل الحجز"
+      onRetry={() => addresses.refetch()}
+    >
+      <Text style={styles.title}>📍 عناويني</Text>
+      {(data as Record<string, unknown>[])?.map((a: Record<string, unknown>, i: number) => (
+        <View key={i} style={styles.card}>
+          <View style={styles.row}>
+            <Text style={styles.label}>{a.label as string}</Text>
+            {a.isDefault ? <Text style={styles.defaultBadge}>✓ افتراضي</Text> : null}
           </View>
-        ))
-      }
-    </ScrollView>
+          <Text style={styles.detail}>{a.street as string}، {a.area as string}، {a.city as string}</Text>
+        </View>
+      ))}
+      <TouchableOpacity style={styles.addBtn}>
+        <Text style={styles.addText}>➕ إضافة عنوان جديد</Text>
+      </TouchableOpacity>
+    </ScreenState>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#ecfeff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#0891b2', textAlign: 'center', marginBottom: 20 },
-  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
-  card: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8 },
-  addrLabel: { fontSize: 15, fontWeight: '700', color: '#111827' },
-  addrText: { fontSize: 13, color: '#6b7280', marginTop: 4 },
-  addrStreet: { fontSize: 12, color: '#9ca3af', marginTop: 2 },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  card: { backgroundColor: COLORS.white, borderRadius: 14, padding: 16, marginBottom: 8, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
+  label: { fontSize: 15, fontWeight: '700', color: COLORS.gray900 },
+  defaultBadge: { fontSize: 10, color: COLORS.success, fontWeight: '600' },
+  detail: { fontSize: 13, color: COLORS.gray400 },
+  addBtn: { alignItems: 'center', padding: 16, marginTop: 8 },
+  addText: { fontSize: 15, fontWeight: '600', color: COLORS.brand },
 });
