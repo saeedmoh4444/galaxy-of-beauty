@@ -9,21 +9,21 @@
  */
 
 import { startWorkers, shutdownWorkers } from './index';
+import { startTokenCleanup, stopTokenCleanup } from './tokenCleanup';
 
 // Graceful shutdown
-process.on('SIGTERM', async () => {
-  console.log('[Worker Process] SIGTERM received, shutting down...');
+async function shutdown() {
+  console.log('[Worker Process] Shutting down...');
+  stopTokenCleanup();
   await shutdownWorkers();
   process.exit(0);
-});
+}
 
-process.on('SIGINT', async () => {
-  console.log('[Worker Process] SIGINT received, shutting down...');
-  await shutdownWorkers();
-  process.exit(0);
-});
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
 
 // Start
-console.log('[Worker Process] Starting background job workers...');
+console.log('[Worker Process] Starting background job workers + token cleanup...');
 startWorkers();
-console.log('[Worker Process] Ready — processing jobs from Redis queues');
+startTokenCleanup();
+console.log('[Worker Process] Ready — processing jobs + hourly token purge');

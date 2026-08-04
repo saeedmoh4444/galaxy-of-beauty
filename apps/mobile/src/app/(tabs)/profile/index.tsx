@@ -1,32 +1,70 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { trpc } from '@/lib/api';
-import { useState, useEffect, useCallback } from 'react';
-import { SkeletonList } from '@/components/SkeletonCard';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+
+const COLORS = {
+  brand: '#7c3aed', white: '#ffffff', gray50: '#faf5ff', gray400: '#6b7280', gray900: '#111827', danger: '#dc2626',
+};
+
+const MENU_ITEMS = [
+  { label: '📅 حجوزاتي', href: '/customer/bookings' },
+  { label: '❤️ المفضلة', href: '/customer/wishlist' },
+  { label: '⭐ الولاء', href: '/customer/loyalty' },
+  { label: '👤 تعديل الملف', href: '/customer/profile' },
+  { label: '📍 العناوين', href: '/customer/addresses' },
+  { label: '💳 البطاقات المحفوظة', href: '/customer/saved-cards' },
+  { label: '🎁 الإحالات', href: '/customer/referrals' },
+  { label: '🔔 الإشعارات', href: '/customer/notifications' },
+  { label: '🤖 لايلى - المساعدة الذكية', href: '/customer/ai-chat' },
+];
 
 export default function ProfileScreen(): JSX.Element {
   const router = useRouter();
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).users.getMe.query() as any).then((d: any) => { setData(d); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
-  }, []);
-  useEffect(() => { fetch(); }, [fetch]);
-  if (loading) return <SkeletonList count={3} />;
+  const profile = (trpc as any).users?.me?.useQuery?.() ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#7c3aed']} />}>
-      <Text style={styles.t}>👤 حسابي</Text>
-      {data && <View style={styles.card}><Text style={styles.nm}>{data.name as string}</Text><Text style={styles.em}>{data.email as string}</Text></View>}
-      <View style={styles.links}>{[{l:'📅 حجوزاتي',h:'/(tabs)/bookings'},{l:'💰 المحفظة',h:'/(tabs)/wallet'},{l:'⭐ الولاء',h:'/customer/loyalty'}].map((item,i) => (<TouchableOpacity key={i} onPress={() => router.push(item.h as any)} style={styles.link}><Text style={styles.lt}>{item.l}</Text></TouchableOpacity>))}</View>
-    </ScrollView>
+    <ScreenState
+      isLoading={profile.isLoading}
+      isError={profile.isError}
+      isEmpty={false}
+      errorMessage="فشل تحميل الملف الشخصي"
+      onRetry={() => profile.refetch()}
+    >
+      <Text style={styles.title}>👤 حسابي</Text>
+      <View style={styles.profileCard}>
+        <View style={styles.avatar}>
+          <Text style={styles.avatarText}>{(profile.data as any)?.name?.[0] ?? '👤'}</Text>
+        </View>
+        <Text style={styles.userName}>{(profile.data as any)?.name ?? 'مستخدمة جالكسي بيوتي'}</Text>
+        <Text style={styles.userEmail}>{(profile.data as any)?.email ?? ''}</Text>
+      </View>
+      <ScrollView style={styles.menuList}>
+        {MENU_ITEMS.map((item, i) => (
+          <TouchableOpacity key={i} style={styles.menuItem} onPress={() => router.push(item.href as any)} activeOpacity={0.6}>
+            <Text style={styles.menuLabel}>{item.label}</Text>
+            <Text style={styles.menuArrow}>›</Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+      <TouchableOpacity style={styles.logoutBtn}>
+        <Text style={styles.logoutText}>🚪 تسجيل الخروج</Text>
+      </TouchableOpacity>
+    </ScreenState>
   );
 }
+
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#faf5ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 20 },
-  card: { backgroundColor: '#fff', borderRadius: 16, padding: 20, alignItems: 'center', marginBottom: 20 },
-  nm: { fontSize: 20, fontWeight: '700', color: '#111827' }, em: { fontSize: 14, color: '#6b7280', marginTop: 4 },
-  links: { gap: 8 }, link: { backgroundColor: '#fff', borderRadius: 14, padding: 16 }, lt: { fontSize: 15, fontWeight: '600', color: '#111827' },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  profileCard: { alignItems: 'center', marginBottom: 24, backgroundColor: COLORS.white, borderRadius: 16, padding: 24, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
+  avatar: { width: 72, height: 72, borderRadius: 36, backgroundColor: COLORS.brand, alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
+  avatarText: { fontSize: 28, color: COLORS.white, fontWeight: '700' },
+  userName: { fontSize: 18, fontWeight: '700', color: COLORS.gray900 },
+  userEmail: { fontSize: 13, color: COLORS.gray400, marginTop: 4 },
+  menuList: { marginBottom: 16 },
+  menuItem: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: COLORS.white, borderRadius: 12, padding: 16, marginBottom: 6 },
+  menuLabel: { fontSize: 15, fontWeight: '600', color: COLORS.gray900 },
+  menuArrow: { fontSize: 20, color: COLORS.gray400 },
+  logoutBtn: { alignItems: 'center', padding: 16, marginTop: 8 },
+  logoutText: { fontSize: 15, fontWeight: '600', color: COLORS.danger },
 });

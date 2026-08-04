@@ -14,16 +14,16 @@ const COMMON_PASSWORDS = new Set([
 // Password: 8+ chars, uppercase, lowercase, digit, special char
 const password = z
   .string()
-  .min(8, 'Password must be at least 8 characters')
+  .min(8, 'كلمة المرور يجب أن تكون ٨ أحرف على الأقل')
   .max(128, 'Password must be at most 128 characters')
-  .regex(/[A-Z]/, 'Must contain an uppercase letter')
-  .regex(/[a-z]/, 'Must contain a lowercase letter')
-  .regex(/[0-9]/, 'Must contain a digit')
-  .regex(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/, 'Must contain a special character')
-  .refine((pwd) => !COMMON_PASSWORDS.has(pwd), 'This password is too common. Please choose a stronger one.')
+  .regex(/[A-Z]/, 'يجب أن تحتوي على حرف كبير (A-Z)')
+  .regex(/[a-z]/, 'يجب أن تحتوي على حرف صغير (a-z)')
+  .regex(/[0-9]/, 'يجب أن تحتوي على رقم')
+  .regex(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/, 'يجب أن تحتوي على رمز خاص')
+  .refine((pwd) => !COMMON_PASSWORDS.has(pwd), 'كلمة المرور شائعة جدا. الرجاء اختيار كلمة مرور أقوى.')
   .refine(
     (pwd) => !/(.)\1{2,}/.test(pwd),
-    'Must not contain repeated characters (3+ in a row)',
+    'يجب ألا تحتوي على أحرف متكررة (٣ مرات متتالية)',
   );
 
 export const registerSchema = z.object({
