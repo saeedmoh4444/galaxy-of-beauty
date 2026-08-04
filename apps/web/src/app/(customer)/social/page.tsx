@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/shared';
+import { Card, CardSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const TIP_CATEGORIES = ['skincare','makeup','hair','wellness','all'];

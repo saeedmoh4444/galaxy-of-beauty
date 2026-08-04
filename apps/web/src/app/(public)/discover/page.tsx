@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/shared';
+import { Card, CardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
 
 const FEATURES = [
   { emoji: '💇‍♀️', title: 'احجزي خدمات التجميل', desc: 'شعر، بشرة، مكياج، أظافر والمزيد', href: '/services', color: 'from-brand-100 to-brand-200' },

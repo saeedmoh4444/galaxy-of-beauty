@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/shared';
+import { Card, CardSkeleton } from '@galaxy/ui';
 export default function ChallengesPage(): JSX.Element {
   const { data: challenges, isLoading } = api.challenges.list.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
 

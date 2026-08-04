@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useState } from 'react';
 

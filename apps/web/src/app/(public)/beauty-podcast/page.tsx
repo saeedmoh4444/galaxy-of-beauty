@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert } from '@galaxy/ui';
 
 export default function BeautyPodcastPage(): JSX.Element {
   const { data, isLoading, isError, refetch } = api.beautyPodcast.episodes.useQuery() as {

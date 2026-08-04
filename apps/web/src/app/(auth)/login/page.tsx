@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Button, Input, Card, ErrorAlert } from '@galaxy/shared';
-import { useAuth } from '@galaxy/shared';
+import { Button, Input, Card, ErrorAlert } from '@galaxy/ui';
+import { useAuth } from '@galaxy/ui';
 import { SocialLogin } from '@/components/SocialLogin';
 
 export default function LoginPage(): JSX.Element {

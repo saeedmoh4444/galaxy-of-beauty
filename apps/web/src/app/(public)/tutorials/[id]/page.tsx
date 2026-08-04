@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 
 const DEFAULT_DIFFICULTY = { label: 'غير معروف', color: 'bg-gray-100 text-gray-700' };

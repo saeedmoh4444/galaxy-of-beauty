@@ -2,7 +2,7 @@ import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, Activi
 import { trpc } from '@/lib/api';
 import { useCamera } from '@/hooks/useCamera';
 import { useState, useEffect, useCallback } from 'react';
-import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
+import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 import { useToast } from '@/components/Toast';
 
 export default function SkinAnalysisScreen() {

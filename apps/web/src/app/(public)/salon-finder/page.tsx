@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/shared';
+import { Card, CardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
 
 export default function SalonFinderPage(): JSX.Element {
   const { data: cities } = api.salonMap.cities.useQuery() as { data: Array<Record<string,unknown>> | undefined };

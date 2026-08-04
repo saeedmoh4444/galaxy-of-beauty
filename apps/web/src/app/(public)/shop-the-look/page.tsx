@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Card, Button, formatCurrency } from '@galaxy/shared';
+import { Card, Button, formatCurrency } from '@galaxy/ui';
 
 const LOOKS = [
   { id: 'bridal', emoji: '👰', name: 'إطلالة العروس', desc: 'إطلالة متكاملة ليوم زفافكِ', color: 'from-pink-100 to-rose-100 dark:from-pink-950 dark:to-rose-950', services: [

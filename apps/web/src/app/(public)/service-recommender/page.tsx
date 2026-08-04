@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, Button } from '@galaxy/ui';
 import Link from 'next/link';
 
 export default function ServiceRecommenderPage(): JSX.Element {

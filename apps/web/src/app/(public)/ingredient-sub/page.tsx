@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, Button } from '@galaxy/ui';
 
 export default function IngredientSubPage(): JSX.Element {
   const [search, setSearch] = useState(''); const [q, setQ] = useState('');

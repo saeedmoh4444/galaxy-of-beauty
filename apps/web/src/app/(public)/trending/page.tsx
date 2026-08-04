@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/shared';
+import { Card, CardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
 
 export default function TrendingPage(): JSX.Element {
   const { data: trending, isLoading: trLoading, isError: trError, refetch: trRefetch } = api.social.trending.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };

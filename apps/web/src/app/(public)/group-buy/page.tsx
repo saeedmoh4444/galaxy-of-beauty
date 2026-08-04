@@ -1,7 +1,7 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
-import { useAuth } from '@galaxy/shared';
+import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { useAuth } from '@galaxy/ui';
 
 export default function GroupBuyPage(): JSX.Element {
   const { user } = useAuth();

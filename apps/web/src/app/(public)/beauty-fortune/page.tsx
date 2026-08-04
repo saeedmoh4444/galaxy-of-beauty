@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, Button, FORTUNE_ANIMATION_MS } from '@galaxy/shared';
+import { Card, Button, FORTUNE_ANIMATION_MS } from '@galaxy/ui';
 import Link from 'next/link';
 
 const FORTUNES = [

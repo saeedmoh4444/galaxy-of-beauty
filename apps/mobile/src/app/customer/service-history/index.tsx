@@ -3,7 +3,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { MAX_LIST_SIZE } from '@galaxy/shared';
+import { MAX_LIST_SIZE } from '@galaxy/ui';
 
 export default function ServiceHistoryScreen(): JSX.Element {
   const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.bookings.list.query({ limit: MAX_LIST_SIZE }) as any);

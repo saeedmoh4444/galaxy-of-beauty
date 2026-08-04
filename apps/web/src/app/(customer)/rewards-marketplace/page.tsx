@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const TIER_COLORS: Record<string,string> = { SILVER: 'from-gray-300 to-gray-400', GOLD: 'from-yellow-400 to-amber-500', PLATINUM: 'from-purple-400 to-indigo-500' };

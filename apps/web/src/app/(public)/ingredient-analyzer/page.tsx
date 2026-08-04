@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 
 const RATING_COLORS: Record<string, string> = { safe: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300', caution: 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300', avoid: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' };
 const RATING_LABELS: Record<string, string> = { safe: '✅ آمن', caution: '⚠️ حذر', avoid: '❌ تجنب' };

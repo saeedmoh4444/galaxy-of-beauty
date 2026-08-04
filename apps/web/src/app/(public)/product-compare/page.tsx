@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
 
 const DIM_LABELS: Record<string, string> = {
   hydration: '💧 ترطيب', absorption: '🧽 امتصاص', value: '💰 قيمة', gentle: '🌸 لطف' };

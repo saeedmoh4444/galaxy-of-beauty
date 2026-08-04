@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Button, Card, CardSkeleton, ErrorAlert, Input } from '@galaxy/shared';
+import { Button, Card, CardSkeleton, ErrorAlert, Input } from '@galaxy/ui';
 
 export default function TwoFactorPage(): JSX.Element {
   const { data, isLoading, isError, refetch } = api.auth.me.useQuery();

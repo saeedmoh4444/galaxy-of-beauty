@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, GOOGLE_OAUTH_URL, GOOGLE_OAUTH_SCOPE } from '@galaxy/shared';
+import { Button, GOOGLE_OAUTH_URL, GOOGLE_OAUTH_SCOPE } from '@galaxy/ui';
 
 interface SocialLoginProps {
   onSuccess?: () => void;

@@ -1,4 +1,4 @@
-import { Card } from '@galaxy/shared';
+import { Card } from '@galaxy/ui';
 
 export default function TermsPage(): JSX.Element {
   return (

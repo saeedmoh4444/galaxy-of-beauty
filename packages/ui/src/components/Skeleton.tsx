@@ -1,4 +1,4 @@
-import type { ChildrenProps } from '../types/index';
+import type { ChildrenProps } from '@galaxy/shared';
 
 /**
  * Generic loading skeleton component.

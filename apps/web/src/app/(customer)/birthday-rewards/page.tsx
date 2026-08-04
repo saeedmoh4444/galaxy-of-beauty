@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { useAuth } from '@galaxy/shared';
+import { useAuth } from '@galaxy/ui';
 import Link from 'next/link';
 
 interface RewardData {

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Input, Card, CardSkeleton, ErrorAlert, EmptyState, ar } from '@galaxy/shared';
+import { Input, Card, CardSkeleton, ErrorAlert, EmptyState, ar } from '@galaxy/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyRecord = Record<string, any>;

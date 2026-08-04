@@ -1,7 +1,7 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/shared';
-import { useAuth } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { useAuth } from '@galaxy/ui';
 
 export default function ReferralRacePage(): JSX.Element {
   const { user } = useAuth();

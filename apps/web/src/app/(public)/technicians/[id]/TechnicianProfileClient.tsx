@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Card, EmptyState, Button, formatCurrency, ar } from '@galaxy/shared';
+import { Card, EmptyState, Button, formatCurrency, ar } from '@galaxy/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyRecord = Record<string, any>;

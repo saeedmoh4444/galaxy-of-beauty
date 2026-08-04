@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Card } from '@galaxy/shared';
+import { Card } from '@galaxy/ui';
 
 const SEASONS = [
   { key: 'winter', nameAr: 'الشتوية', emoji: '❄️', desc: 'بشرة باردة مع تباين عالي', palette: ['#1a1a2e','#e94560','#0f3460','#FFFFFF','#FFD700','#800020'], bestColors: ['أبيض ناصع', 'أسود', 'أحمر ياقوتي', 'أزرق ملكي', 'فضي'], avoid: ['برتقالي', 'بيج دافئ', 'ذهبي'], celebrities: ['آن هاثاواي', 'لوسي لو'] },

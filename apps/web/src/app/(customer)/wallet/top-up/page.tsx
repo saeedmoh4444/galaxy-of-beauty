@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { useToast } from '@galaxy/shared';
+import { useToast } from '@galaxy/ui';
 
 const PRESET_AMOUNTS = [100, 200, 500, 1000];
 

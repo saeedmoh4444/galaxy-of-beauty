@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, EmptyState, Button, Modal, formatCurrency } from '@galaxy/shared';
+import { Card, EmptyState, Button, Modal, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function ServiceWishlistPage(): JSX.Element {

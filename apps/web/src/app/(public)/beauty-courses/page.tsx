@@ -1,8 +1,8 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/shared';
-import { useAuth } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
+import { useAuth } from '@galaxy/ui';
 import Link from 'next/link';
 
 export default function BeautyCoursesPage(): JSX.Element {

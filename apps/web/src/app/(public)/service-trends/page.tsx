@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert } from '@galaxy/ui';
 
 const CAT_COLORS: Record<string, string> = { makeup: '#C41E3A', skincare: '#059669', hair: '#8B5CF6', nails: '#F59E0B', massage: '#3B82F6' };
 

@@ -19,7 +19,7 @@ import {
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { cn } from '@galaxy/shared';
+import { cn } from '@galaxy/ui';
 
 // ──────────────────────────────────────────────────────────────
 // SortableItem — individual draggable card

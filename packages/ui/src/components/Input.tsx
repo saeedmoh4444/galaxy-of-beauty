@@ -2,7 +2,7 @@
 
 import { forwardRef } from 'react';
 import type { InputHTMLAttributes } from 'react';
-import { cn } from '../utils/cn';
+import { cn } from '@galaxy/shared';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;

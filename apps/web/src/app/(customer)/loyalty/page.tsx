@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, LOYALTY_TIERS } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, LOYALTY_TIERS } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 /** UI‑only marketing copy per tier (benefits shown to the customer). */

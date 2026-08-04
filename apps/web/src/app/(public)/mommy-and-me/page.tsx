@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Card, Button } from '@galaxy/shared';
+import { Card, Button } from '@galaxy/ui';
 
 const PACKAGES = [
   { emoji: '💅', title: 'مانيكير الأم وابنتها', desc: 'جلسة مانيكير للأم مع ابنتها في وقت واحد', price: 150, services: ['مانيكير', 'طلاء أظافر'] },

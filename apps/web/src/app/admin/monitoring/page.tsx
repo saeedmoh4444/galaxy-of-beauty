@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, PageContainer, StatCard } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, PageContainer, StatCard } from '@galaxy/ui';
 
 const STATUS_COLORS: Record<string, string> = {
   healthy: 'text-green-600 bg-green-100 dark:bg-green-900 dark:text-green-300',

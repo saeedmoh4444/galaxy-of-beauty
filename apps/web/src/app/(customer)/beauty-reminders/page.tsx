@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, ErrorAlert } from '@galaxy/shared';
+import { Card, CardSkeleton, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const CATEGORIES: Record<string,string> = { hair: '💇‍♀️ شعر', nails: '💅 أظافر', skincare: '✨ بشرة', makeup: '💄 مكياج', body: '🧴 جسم', other: '📌 أخرى' };

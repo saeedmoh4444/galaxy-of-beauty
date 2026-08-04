@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { LARGE_PAGE_SIZE } from '@galaxy/shared';
+import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';

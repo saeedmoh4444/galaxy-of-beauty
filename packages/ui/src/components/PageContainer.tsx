@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { cn } from '../utils/cn';
+import { cn } from '@galaxy/shared';
 
 interface PageContainerProps {
   children: ReactNode;

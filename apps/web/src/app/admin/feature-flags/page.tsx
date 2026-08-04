@@ -1,9 +1,9 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { useToast } from '@galaxy/shared';
+import { useToast } from '@galaxy/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type FlagItem = Record<string, any>;

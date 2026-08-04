@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert } from '@galaxy/ui';
 
 const COLORS = ['bg-green-100 dark:bg-green-900/40', 'bg-green-200 dark:bg-green-800/40', 'bg-yellow-100 dark:bg-yellow-900/40', 'bg-yellow-200 dark:bg-yellow-800/40', 'bg-orange-200 dark:bg-orange-800/40', 'bg-orange-300 dark:bg-orange-700/40', 'bg-red-200 dark:bg-red-900/40', 'bg-red-300 dark:bg-red-800/40', 'bg-red-400 dark:bg-red-700/60', 'bg-red-500 dark:bg-red-600/80'];
 

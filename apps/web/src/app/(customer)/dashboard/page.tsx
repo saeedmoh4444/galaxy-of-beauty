@@ -6,7 +6,7 @@ import { api } from '@/lib/trpc';
 import {
   Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency,
   StatCard, PageContainer, Icon, DashboardSkeleton, CardListSkeleton,
-} from '@galaxy/shared';
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { RebookReminder } from '@/components/RebookReminder';
 

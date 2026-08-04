@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal, formatCurrency } from '@galaxy/shared';
-import { useAuth } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal, formatCurrency } from '@galaxy/ui';
+import { useAuth } from '@galaxy/ui';
 import Link from 'next/link';
 
 export default function EventTicketsPage(): JSX.Element {

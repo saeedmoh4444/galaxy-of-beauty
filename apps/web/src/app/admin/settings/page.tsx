@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input, Modal } from '@galaxy/shared';
+import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input, Modal } from '@galaxy/ui';
 
 type SettingsMap = RouterOutput['platform']['getSettings'];
 type TermsData = RouterOutput['platform']['getTerms'];

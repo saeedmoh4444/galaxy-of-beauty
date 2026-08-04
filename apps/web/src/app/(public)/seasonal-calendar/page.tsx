@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Card } from '@galaxy/shared';
+import { Card } from '@galaxy/ui';
 
 const MONTHS = [
   { key: 'jan', nameAr: 'يناير', emoji: '❄️', season: 'winter', tips: ['ترطيب مكثف للبشرة', 'حمام زيت للشعر أسبوعياً', 'مانيكير بألوان شتوية داكنة'] },

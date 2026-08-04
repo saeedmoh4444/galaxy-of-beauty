@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input } from '@galaxy/shared';
+import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const KYC_BADGES: Record<string, { colour: string; label: string }> = {

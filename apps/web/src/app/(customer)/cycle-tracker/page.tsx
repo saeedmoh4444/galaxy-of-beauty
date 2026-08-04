@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const SYMPTOMS_LIST = ['تقلصات','صداع','تعب','انتفاخ','غثيان','أرق','شهية مفتوحة','آلام ظهر','حساسية الصدر','تقلبات مزاجية'];

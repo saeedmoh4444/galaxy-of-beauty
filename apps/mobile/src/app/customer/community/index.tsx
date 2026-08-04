@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, TextInput, RefreshControl } from 'react-native';
 import { useState } from 'react';
-import { LARGE_PAGE_SIZE } from '@galaxy/shared';
+import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';

@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { ErrorAlert, Button } from '@galaxy/shared';
+import { ErrorAlert, Button } from '@galaxy/ui';
 import { ShareButtons } from '@/components/ShareButtons';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 

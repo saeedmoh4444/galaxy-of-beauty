@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Card } from '@galaxy/shared';
+import { Card } from '@galaxy/ui';
 
 const TECHNICIANS = [
   { id: 1, name: 'نورة العمري', specialty: 'مكياج', rating: 4.9, reviews: 234, price: 300, experience: '٨ سنوات', city: 'الرياض', emoji: '💄', services: ['مكياج عرايس', 'مكياج سهرة', 'مكياج ناعم'], features: { speed: 90, quality: 95, price: 70, communication: 92 } },

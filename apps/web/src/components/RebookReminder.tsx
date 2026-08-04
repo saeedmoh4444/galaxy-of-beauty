@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, Button, ar } from '@galaxy/shared';
+import { Card, Button, ar } from '@galaxy/ui';
 
 export function RebookReminder(): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

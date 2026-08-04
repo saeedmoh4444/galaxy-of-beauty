@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, ProgressBar, formatCurrency, COUNTDOWN_INTERVAL_MS } from '@galaxy/shared';
-import { useAuth } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, ProgressBar, formatCurrency, COUNTDOWN_INTERVAL_MS } from '@galaxy/ui';
+import { useAuth } from '@galaxy/ui';
 import Link from 'next/link';
 
 interface Deal {

@@ -1,5 +1,5 @@
 import { getServerCaller } from '@/lib/server-trpc';
-import { Card } from '@galaxy/shared';
+import { Card } from '@galaxy/ui';
 
 export default async function BeautyStatsPage(): Promise<JSX.Element> {
   let stats = { totalBookings: 0, totalServices: 0, totalTechnicians: 0, totalReviews: 0, avgRating: 0, citiesCount: 16, happyCustomers: 0 };

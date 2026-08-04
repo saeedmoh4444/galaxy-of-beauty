@@ -1,6 +1,6 @@
 'use client';
 
-import { SHARE_URLS } from '@galaxy/shared';
+import { SHARE_URLS } from '@galaxy/ui';
 
 interface ShareButtonsProps {
   title: string;

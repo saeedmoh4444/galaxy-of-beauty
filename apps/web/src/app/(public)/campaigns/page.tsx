@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, formatCurrency, CAMPAIGN_POLL_INTERVAL_MS } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, formatCurrency, CAMPAIGN_POLL_INTERVAL_MS } from '@galaxy/ui';
 import Link from 'next/link';
 
 interface Campaign {

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Button, Card, ErrorAlert, EmptyState, ar } from '@galaxy/shared';
+import { Button, Card, ErrorAlert, EmptyState, ar } from '@galaxy/ui';
 
 interface Category {
   id: number;

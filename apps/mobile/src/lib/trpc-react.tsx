@@ -15,7 +15,7 @@ import { useState } from 'react';
 import type { ReactNode } from 'react';
 import superjson from 'superjson';
 import type { AppRouter } from '@galaxy/api';
-import { DEFAULT_LOCAL_URL } from '@galaxy/shared';
+import { DEFAULT_LOCAL_URL } from '@galaxy/ui';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL ?? `${DEFAULT_LOCAL_URL}/api/trpc`;
 

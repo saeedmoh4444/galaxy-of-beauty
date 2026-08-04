@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useCallback } from 'react';
 import type { ReactNode, MouseEvent, KeyboardEvent as ReactKeyboardEvent } from 'react';
-import { cn } from '../utils/cn';
+import { cn } from '@galaxy/shared';
 
 interface ModalProps {
   open: boolean;

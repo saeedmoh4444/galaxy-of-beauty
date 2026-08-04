@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Button, Input, Card, ErrorAlert } from '@galaxy/shared';
+import { Button, Input, Card, ErrorAlert } from '@galaxy/ui';
 
 export default function ResetPasswordPage(): JSX.Element {
   const router = useRouter();

@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button } from '@galaxy/shared';
+import { Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function LiveChatPage(): JSX.Element {

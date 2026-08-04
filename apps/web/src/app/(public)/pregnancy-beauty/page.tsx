@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Card } from '@galaxy/shared';
+import { Card } from '@galaxy/ui';
 
 const TRIMESTERS = [
   { key: 'first', nameAr: 'الثلث الأول (١-٣ أشهر)', emoji: '🌱', tips: [

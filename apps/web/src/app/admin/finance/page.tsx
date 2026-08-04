@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, formatCurrency } from '@galaxy/ui';
 
 type FinancialData = RouterOutput['admin']['getFinancials'];
 type PayoutItem = NonNullable<RouterOutput['payouts']['listForAdmin']>['payouts'][number];

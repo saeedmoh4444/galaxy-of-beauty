@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useQueryClient } from '@tanstack/react-query';
-import { SOCKET_DEFAULT_PORT, SOCKET_RECONNECT_ATTEMPTS, SOCKET_RECONNECT_DELAY_MS, SOCKET_RECONNECT_MAX_DELAY_MS } from '@galaxy/shared';
+import { SOCKET_DEFAULT_PORT, SOCKET_RECONNECT_ATTEMPTS, SOCKET_RECONNECT_DELAY_MS, SOCKET_RECONNECT_MAX_DELAY_MS } from '@galaxy/ui';
 
 // ── Configuration ──────────────────────────────────────────
 

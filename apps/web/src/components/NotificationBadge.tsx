@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { useAuth } from '@galaxy/shared';
+import { useAuth } from '@galaxy/ui';
 
 export function NotificationBadge(): JSX.Element {
   const { isAuthenticated, isLoading } = useAuth();

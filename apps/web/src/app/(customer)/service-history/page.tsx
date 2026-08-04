@@ -3,7 +3,7 @@
 
 import { api } from '@/lib/trpc';
 import Link from 'next/link';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency, ar } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency, ar } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function ServiceHistoryPage(): JSX.Element {

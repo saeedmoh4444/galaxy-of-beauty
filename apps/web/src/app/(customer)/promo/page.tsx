@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, ErrorAlert, Button, Input } from '@galaxy/shared';
+import { Card, ErrorAlert, Button, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function PromoPage(): JSX.Element {

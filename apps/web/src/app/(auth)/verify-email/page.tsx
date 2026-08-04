@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, Spinner, VERIFY_REDIRECT_MS } from '@galaxy/shared';
+import { Card, Spinner, VERIFY_REDIRECT_MS } from '@galaxy/ui';
 
 export default function VerifyEmailPage(): JSX.Element {
   const router = useRouter();

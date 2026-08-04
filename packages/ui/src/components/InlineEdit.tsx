@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import type { KeyboardEvent, FocusEvent } from 'react';
-import { cn } from '../utils/cn';
+import { cn } from '@galaxy/shared';
 
 interface InlineEditProps {
   /** Current display value */

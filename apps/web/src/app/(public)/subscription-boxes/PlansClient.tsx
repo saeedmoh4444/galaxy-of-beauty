@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, ErrorAlert, EmptyState, Button } from '@galaxy/shared';
+import { Card, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type PlanItem = Record<string, any>;

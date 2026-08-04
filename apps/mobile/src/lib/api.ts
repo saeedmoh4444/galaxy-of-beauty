@@ -1,7 +1,7 @@
 import { createTRPCClient, httpBatchLink } from '@trpc/client';
 import type { AppRouter } from '@galaxy/api';
 import superjson from 'superjson';
-import { DEFAULT_LOCAL_URL } from '@galaxy/shared';
+import { DEFAULT_LOCAL_URL } from '@galaxy/ui';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL ?? `${DEFAULT_LOCAL_URL}/api/trpc`;
 

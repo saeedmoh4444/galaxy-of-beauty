@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, ErrorAlert, EmptyState, Button, Modal, PageContainer, CardListSkeleton } from '@galaxy/shared';
+import { Card, ErrorAlert, EmptyState, Button, Modal, PageContainer, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const STATUS_TABS = ['ALL', 'REQUESTED', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];

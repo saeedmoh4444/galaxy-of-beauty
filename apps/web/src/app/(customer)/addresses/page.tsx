@@ -3,9 +3,9 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { useToast } from '@galaxy/shared';
+import { useToast } from '@galaxy/ui';
 
 export default function AddressesPage(): JSX.Element {
   const { addToast } = useToast();

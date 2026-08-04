@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Button, Card, ErrorAlert, Input } from '@galaxy/shared';
+import { Button, Card, ErrorAlert, Input } from '@galaxy/ui';
 
 export default function ForgotPasswordPage(): JSX.Element {
   const [email, setEmail] = useState('');

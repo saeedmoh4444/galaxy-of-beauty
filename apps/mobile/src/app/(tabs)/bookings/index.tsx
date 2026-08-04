@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState, useCallback } from 'react';
-import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
+import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 

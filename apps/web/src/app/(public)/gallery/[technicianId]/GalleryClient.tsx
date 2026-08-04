@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, EmptyState } from '@galaxy/shared';
+import { Card, EmptyState } from '@galaxy/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type GalleryImage = Record<string, any>;

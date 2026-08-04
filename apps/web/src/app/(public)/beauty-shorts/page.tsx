@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { CardSkeleton } from '@galaxy/shared';
+import { CardSkeleton } from '@galaxy/ui';
 export default function BeautyShortsPage(): JSX.Element {
   const { data, isLoading } = api.beautyShorts.feed.useQuery() as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const shorts = data ?? [];

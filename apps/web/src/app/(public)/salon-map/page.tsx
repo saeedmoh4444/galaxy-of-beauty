@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Script from 'next/script';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, ErrorAlert, Button, formatCurrency, LEAFLET_TILE_URL, LEAFLET_CSS_URL, LEAFLET_JS_URL } from '@galaxy/shared';
+import { Card, ErrorAlert, Button, formatCurrency, LEAFLET_TILE_URL, LEAFLET_CSS_URL, LEAFLET_JS_URL } from '@galaxy/ui';
 
 interface Technician {
   id: number;

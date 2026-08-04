@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getServerCaller } from '@/lib/server-trpc';
-import { Card } from '@galaxy/shared';
+import { Card } from '@galaxy/ui';
 
 const TIER_LABELS: Record<string, { name: string; emoji: string; color: string }> = {
   SILVER: { name: 'الفضية', emoji: '🥈', color: 'from-gray-300 to-gray-400' },

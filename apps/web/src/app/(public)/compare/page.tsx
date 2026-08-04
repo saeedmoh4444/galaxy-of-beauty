@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
-import { ErrorAlert, PageSpinner, EmptyState } from '@galaxy/shared';
+import { ErrorAlert, PageSpinner, EmptyState } from '@galaxy/ui';
 
 export default function ComparePage(): JSX.Element {
   const params = useSearchParams();

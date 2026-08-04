@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { EXTENDED_PAGE_SIZE } from '@galaxy/shared';
+import { EXTENDED_PAGE_SIZE } from '@galaxy/ui';
 
 export default function InvoicesScreen(): JSX.Element {
   const [data, setData] = useState<any[]>([]);

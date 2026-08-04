@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { CardSkeleton, ErrorAlert, Button } from '@galaxy/shared';
-import { useAuth } from '@galaxy/shared';
+import { CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { useAuth } from '@galaxy/ui';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 
 export default function LiveStreamDetailPage(): JSX.Element {

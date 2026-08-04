@@ -1,6 +1,6 @@
 'use client';
 
-import { formatCurrency } from '@galaxy/shared';
+import { formatCurrency } from '@galaxy/ui';
 
 interface Addon {
   id: number;

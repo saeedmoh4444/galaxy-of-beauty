@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Button, Card } from '@galaxy/shared';
+import { Button, Card } from '@galaxy/ui';
 
 const STEPS = [
   {

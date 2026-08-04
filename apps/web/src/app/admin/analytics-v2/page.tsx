@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
 
 export default function AdminAnalyticsV2Page(): JSX.Element {
   const { data, isLoading } = api.adminAnalyticsV2.dashboard.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean };

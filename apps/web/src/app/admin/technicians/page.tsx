@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Modal } from '@galaxy/shared';
+import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Modal } from '@galaxy/ui';
 
 const KYC_TABS = ['ALL', 'PENDING', 'SUBMITTED', 'VERIFIED', 'REJECTED'] as const;
 

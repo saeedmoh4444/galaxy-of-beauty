@@ -3,9 +3,9 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button } from '@galaxy/shared';
+import { Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { useToast } from '@galaxy/shared';
+import { useToast } from '@galaxy/ui';
 
 const MOODS = ['😔', '😐', '🙂', '😊', '😍'];
 const MOOD_LABELS = ['سيء', 'متوسط', 'جيد', 'رائع', 'ممتاز'];

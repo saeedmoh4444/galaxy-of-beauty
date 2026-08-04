@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Card, DashboardSkeleton, ErrorAlert, formatCurrency, StatCard, PageContainer } from '@galaxy/shared';
+import { Card, DashboardSkeleton, ErrorAlert, formatCurrency, StatCard, PageContainer } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 type AdminHealth = RouterOutput['adminTools']['health'];

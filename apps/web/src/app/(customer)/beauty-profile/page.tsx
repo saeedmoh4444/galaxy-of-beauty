@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { useToast } from '@galaxy/shared';
+import { useToast } from '@galaxy/ui';
 
 const SKIN_TYPES = ['oily', 'dry', 'combination', 'sensitive', 'normal'] as const;
 const HAIR_TYPES = ['straight', 'wavy', 'curly', 'coily'] as const;

@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { CardSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/shared';
+import { CardSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/ui';
 
 interface BlogPost {
   id: number;

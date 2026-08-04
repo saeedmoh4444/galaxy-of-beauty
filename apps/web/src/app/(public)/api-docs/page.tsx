@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/shared';
+import { Card, CardSkeleton } from '@galaxy/ui';
 export default function ApiDocsPage(): JSX.Element {
   const { data, isLoading } = api.apiDocs.reference.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
   const { data: openapi } = api.apiDocs.openapi.useQuery() as { data: Record<string,unknown> | undefined };

@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/shared';
+import { Card, CardSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { useToast } from '@galaxy/shared';
+import { useToast } from '@galaxy/ui';
 
 const TOGGLES = [
   { key: 'bookingReminders', label: 'تذكير بالمواعيد', desc: 'إشعارات قبل موعد الحجز' },

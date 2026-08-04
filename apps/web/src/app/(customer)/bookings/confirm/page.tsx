@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Button, Card } from '@galaxy/shared';
+import { Button, Card } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { AddToCalendar } from '@/components/AddToCalendar';
 

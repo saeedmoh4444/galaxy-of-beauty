@@ -3,9 +3,9 @@
 
 import { useState, useCallback } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, ErrorAlert, EmptyState, Button, Input, PageContainer, DashboardSkeleton } from '@galaxy/shared';
+import { Card, ErrorAlert, EmptyState, Button, Input, PageContainer, DashboardSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { useToast } from '@galaxy/shared';
+import { useToast } from '@galaxy/ui';
 import { SortableGrid } from '@/components/SortableGrid';
 
 export default function InspirationPage(): JSX.Element {

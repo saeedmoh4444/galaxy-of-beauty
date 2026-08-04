@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TextInput, TouchableOpacity } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
-import { BULK_PAGE_SIZE } from '@galaxy/shared';
+import { BULK_PAGE_SIZE } from '@galaxy/ui';
 
 export default function ChatScreen(): JSX.Element {
   const [messages, setMessages] = useState<any[]>([]);

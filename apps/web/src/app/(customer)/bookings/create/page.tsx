@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
-import { Card, Button, Input } from '@galaxy/shared';
+import { Card, Button, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { useToast } from '@galaxy/shared';
+import { useToast } from '@galaxy/ui';
 
 // RouterOutput types are too deeply nested — use Record for structural access
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

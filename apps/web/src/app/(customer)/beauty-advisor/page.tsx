@@ -2,7 +2,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { api } from '@/lib/trpc';
-import { Button  } from '@galaxy/shared';
+import { Button  } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const TOPICS = [

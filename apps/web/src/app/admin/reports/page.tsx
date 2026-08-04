@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
 
 export default function AdminReportsPage(): JSX.Element {
   const { data, isLoading } = api.adminReports.dashboard.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean };

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Card } from '@galaxy/shared';
+import { Card } from '@galaxy/ui';
 
 const TREATMENTS = [
   { key: 'facial', nameAr: 'تنظيف البشرة', emoji: '✨', tips: [

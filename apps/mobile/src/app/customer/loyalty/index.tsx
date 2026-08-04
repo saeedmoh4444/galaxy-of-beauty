@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
-import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
+import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';

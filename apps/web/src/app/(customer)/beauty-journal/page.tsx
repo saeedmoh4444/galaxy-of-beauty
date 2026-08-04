@@ -3,9 +3,9 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { useToast } from '@galaxy/shared';
+import { useToast } from '@galaxy/ui';
 
 const MOODS = ['😔', '😐', '🙂', '😊', '😍'];
 const SERVICE_TYPES = ['hair', 'skin', 'makeup', 'nails', 'body'] as const;

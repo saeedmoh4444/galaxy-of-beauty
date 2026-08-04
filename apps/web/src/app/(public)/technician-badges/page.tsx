@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState } from '@galaxy/ui';
 import Link from 'next/link';
 
 interface Badge {

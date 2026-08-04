@@ -1,6 +1,6 @@
 'use client';
 
-import { GOOGLE_CALENDAR_URL } from '@galaxy/shared';
+import { GOOGLE_CALENDAR_URL } from '@galaxy/ui';
 
 interface AddToCalendarProps {
   title: string;

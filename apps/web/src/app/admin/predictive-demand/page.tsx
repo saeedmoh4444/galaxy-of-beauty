@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/shared';
+import { Card, CardSkeleton } from '@galaxy/ui';
 
 export default function PredictiveDemandPage(): JSX.Element {
   const { data, isLoading } = api.predictiveDemand.forecast.useQuery() as { data: Record<string,unknown> | undefined; isLoading: boolean };

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Card  } from '@galaxy/shared';
+import { Card  } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const LEVELS = [

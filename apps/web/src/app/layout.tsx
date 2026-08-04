@@ -4,7 +4,7 @@ import Providers from '@/components/Providers';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { SkipLink } from '@/components/SkipLink';
 import { OfflineBanner } from '@/components/OfflineBanner';
-import { ToastProvider, DEFAULT_LOCAL_URL } from '@galaxy/shared';
+import { ToastProvider, DEFAULT_LOCAL_URL } from '@galaxy/ui';
 import './globals.css';
 
 export const dynamic = 'force-dynamic';

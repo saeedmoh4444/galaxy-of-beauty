@@ -6,7 +6,7 @@ import { api } from '@/lib/trpc';
 import {
   Card, ErrorAlert, EmptyState, Button, formatCurrency,
   StatCard, PageContainer, DashboardSkeleton, CardListSkeleton,
-} from '@galaxy/shared';
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function TechDashboardPage(): JSX.Element {

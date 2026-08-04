@@ -20,6 +20,7 @@
     "@galaxy/api": "workspace:*",
     "@galaxy/db": "workspace:*",
     "@galaxy/shared": "workspace:*",
+    "@galaxy/ui": "workspace:^",
     "@tanstack/react-query": "^5.45.0",
     "@trpc/client": "^11.0.0",
     "@trpc/react-query": "^11.0.0",

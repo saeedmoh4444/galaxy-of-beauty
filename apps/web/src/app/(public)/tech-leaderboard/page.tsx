@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert } from '@galaxy/ui';
 import Link from 'next/link';
 
 export default function TechLeaderboardPage(): JSX.Element {

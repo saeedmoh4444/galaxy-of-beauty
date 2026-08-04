@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 

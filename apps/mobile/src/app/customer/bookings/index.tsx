@@ -4,7 +4,7 @@ import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
-import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
+import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 
 const STATUS_TABS = ['ALL', 'REQUESTED', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
 const STATUS_LABELS: Record<string, string> = {

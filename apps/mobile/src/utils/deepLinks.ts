@@ -1,4 +1,4 @@
-import { DEFAULT_APP_URL } from '@galaxy/shared';
+import { DEFAULT_APP_URL } from '@galaxy/ui';
 
 // Deep link configuration for Galaxy of Beauty mobile app.
 // Universal links + custom scheme: gob://

@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
-import { LARGE_PAGE_SIZE } from '@galaxy/shared';
+import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 
 const MOODS = ['😊','😌','😐','😢','🤩','😴','💪','🥰'];
 

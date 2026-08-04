@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/ui';
 
 interface Tutorial {
   id: number;

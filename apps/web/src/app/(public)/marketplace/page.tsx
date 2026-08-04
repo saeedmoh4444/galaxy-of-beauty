@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Input, formatCurrency } from '@galaxy/shared';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Input, formatCurrency } from '@galaxy/ui';
 
 export default function MarketplacePage(): JSX.Element {
   const [search, setSearch] = useState('');
