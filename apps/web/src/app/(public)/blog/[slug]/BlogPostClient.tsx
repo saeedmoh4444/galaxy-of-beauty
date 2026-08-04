@@ -32,7 +32,7 @@ export function BlogPostClient({
   initialPost: Record<string, unknown> | null;
   fetchError?: string;
 }): JSX.Element {
-  const { data: clientPost, isLoading, isError, refetch } = api.blog.getBySlug.useQuery(
+  const { data: clientPost, isLoading, isError, refetch } = (api as any).blog.getBySlug.useQuery(
     { slug },
     { enabled: !!slug, initialData: initialPost as BlogPost | null | undefined },
   ) as { data: BlogPost | null | undefined; isLoading: boolean; isError: boolean; refetch: () => void };

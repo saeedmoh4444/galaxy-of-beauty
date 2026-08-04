@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
-import { MarketplaceClient } from './MarketplaceClient';
+import MarketplaceClient from './MarketplaceClient';
 
 export default async function MarketplacePage(): Promise<JSX.Element> {
   let initialProducts: any[] = [];

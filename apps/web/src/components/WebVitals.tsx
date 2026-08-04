@@ -41,7 +41,7 @@ export function getLatestVitals(): VitalMetric[] {
 
 export function WebVitals(): null {
   useEffect(() => {
-    // Dynamic import to avoid bundling for users who don't need it
+    // Dynamic import to avoid bundling — skip gracefully if not installed
     import('web-vitals').then(({ onLCP, onCLS, onINP, onFCP, onTTFB }) => {
       const report = (metric: { name: string; value: number; delta: number }) => {
         const entry: VitalMetric = {

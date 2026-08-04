@@ -4,8 +4,8 @@ import { Card, CardSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function GeofenceOffersPage(): JSX.Element {
-  const { data: offers, isLoading } = api.geofenceOffers.nearby.useQuery({ city: 'الرياض' }) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
-  const optInMut = api.geofenceOffers.optIn.useMutation();
+  const { data: offers, isLoading } = (api as any).geofenceOffers.nearby.useQuery({ city: 'الرياض' }) as { data: Array<Record<string,unknown>> | undefined; isLoading: boolean };
+  const optInMut = (api as any).geofenceOffers.optIn.useMutation();
 
   const items = offers ?? [];
 

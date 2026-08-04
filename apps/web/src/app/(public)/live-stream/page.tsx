@@ -5,7 +5,7 @@ import { Card, CardSkeleton, ErrorAlert, EmptyState } from '@galaxy/ui';
 import Link from 'next/link';
 
 export default function LiveStreamPage(): JSX.Element {
-  const { data, isLoading, isError, refetch } = api.liveStream.list.useQuery() as {
+  const { data, isLoading, isError, refetch } = (api as any).liveStream.list.useQuery() as {
     data: { live: Array<Record<string,unknown>>; upcoming: Array<Record<string,unknown>>; categories: Array<{key:string;nameAr:string;emoji:string}> } | undefined;
     isLoading: boolean; isError: boolean; refetch: () => void;
   };

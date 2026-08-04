@@ -15,13 +15,13 @@ export default function LiveStreamDetailPage(): JSX.Element {
   const chatRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState('');
 
-  const { data: stream, isLoading, isError, refetch } = api.liveStream.get.useQuery({ id: streamId }, { enabled: !isNaN(streamId) }) as {
+  const { data: stream, isLoading, isError, refetch } = (api as any).liveStream.get.useQuery({ id: streamId }, { enabled: !isNaN(streamId) }) as {
     data: Record<string, unknown> | null | undefined; isLoading: boolean; isError: boolean; refetch: () => void;
   };
-  const { data: chat, refetch: refetchChat } = api.liveStream.chat.useQuery({ streamId }, { enabled: !isNaN(streamId), refetchInterval: 3000 }) as {
+  const { data: chat, refetch: refetchChat } = (api as any).liveStream.chat.useQuery({ streamId }, { enabled: !isNaN(streamId), refetchInterval: 3000 }) as {
     data: Array<Record<string, unknown>> | undefined; refetch: () => void;
   };
-  const sendMut = api.liveStream.sendMessage.useMutation({ onSuccess: () => { setMessage(''); refetchChat(); } });
+  const sendMut = (api as any).liveStream.sendMessage.useMutation({ onSuccess: () => { setMessage(''); refetchChat(); } });
 
   useEffect(() => { if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight; }, [chat]);
 

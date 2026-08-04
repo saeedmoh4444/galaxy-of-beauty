@@ -28,7 +28,7 @@ const EVENT_TYPES = [
 export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): JSX.Element {
   const [activeType, setActiveType] = useState<string | null>(null);
 
-  const { data, isLoading, isError, refetch } = api.beautyEvents.list.useQuery(
+  const { data, isLoading, isError, refetch } = (api as any).beautyEvents.list.useQuery(
     {},
     { initialData: initialEvents as any },
   ) as { data: Event[] | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
