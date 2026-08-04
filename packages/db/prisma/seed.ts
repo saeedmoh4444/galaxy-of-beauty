@@ -13,6 +13,23 @@ async function main() {
   // ---- Clean existing data (in dependency order) ----
   const db = prisma as any;
   await prisma.$transaction([
+    // FK children first
+    db.giftCardTransaction.deleteMany(),
+    db.promoUsage.deleteMany(),
+    db.geoPromotion.deleteMany(),
+    db.liveStream.deleteMany(),
+    db.eventRegistration.deleteMany(),
+    db.communityLike.deleteMany(),
+    db.communityComment.deleteMany(),
+    db.communityPost.deleteMany(),
+    db.courseEnrollment.deleteMany(),
+    db.beautyPackageService.deleteMany(),
+    db.groupBookingMember.deleteMany(),
+    db.bridalService.deleteMany(),
+    db.customerFavorite.deleteMany(),
+    db.moodBoardPin.deleteMany(),
+    db.challengeParticipant.deleteMany(),
+    // Parent tables
     db.walletTransaction.deleteMany(),
     db.loyaltyTransaction.deleteMany(),
     db.loyaltyReward.deleteMany(),
