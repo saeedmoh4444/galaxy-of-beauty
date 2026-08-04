@@ -1,181 +1,131 @@
 import { router, publicProcedure } from '../trpc';
 
-// Feature routers — imported as they are created
-import { authRouter } from './auth';
-import { userRouter } from './users';
+// ── Domain exports ──
+// Each domain groups related feature routers.
+// Import from domains/<name> to get all routers in that domain.
+
+// Auth
+import { authRouter, userRouter, uploadRouter } from '../domains/auth';
+
+// Booking
+import {
+  bookingRouter, slotRouter, calendarRouter, rescheduleRouter,
+  recurringBookingRouter, emergencyBookingRouter, advancedBookingRouter,
+  groupBookingRouter, waitlistRouter, calendarSyncRouter,
+  bookingChecklistRouter, bookingHeatmapRouter,
+} from '../domains/booking';
+
+// Catalog
+import {
+  categoryRouter, serviceRouter, searchRouter, galleryRouter,
+  recommendationsRouter, favoriteRouter, serviceRecommenderRouter,
+  serviceMatchmakerRouter, serviceTrendsRouter, serviceWishlistRouter,
+  serviceMenuQrRouter, priceEstimatorRouter, productCompareRouter,
+} from '../domains/catalog';
+
+// Payments
+import {
+  walletRouter, paymentRouter, payoutRouter, savedCardRouter,
+  promoRouter, giftCardRouter, giftCardMarketRouter, cashbackRouter, bnplRouter,
+} from '../domains/payments';
+
+// Loyalty
+import {
+  loyaltyRouter, streakRouter, referralRouter, customerAchievementsRouter,
+  loyaltyPunchCardRouter, birthdayRewardRouter, vipMembershipRouter, referralRaceRouter,
+} from '../domains/loyalty';
+
+// Social
+import {
+  reviewRouter, disputeRouter, communityRouter, socialRouter,
+  socialChallengesRouter, challengesRouter, inspirationRouter,
+  technicianFollowRouter, technicianQARouter, beautyPartyRouter,
+  penPalRouter, moodBoardRouter,
+} from '../domains/social';
+
+// Admin
+import {
+  adminRouter, adminAnalyticsV2Router, adminReportsRouter, adminToolsRouter,
+  analyticsRouter, cmsRouter, featureFlagRouter, monitoringRouter,
+  platformRouter, predictiveDemandRouter, smartPricingRouter,
+  performanceRouter, apiDocsRouter,
+} from '../domains/admin';
+
+// AI
+import {
+  aiRouter, aiAssistantRouter, aiFeaturesRouter, aiRoutineRouter,
+  skinAnalysisRouter, virtualTryOnRouter, hairColorSimRouter,
+  personalizedFeedRouter, styleMatchRouter, beautyAnalyticsRouter,
+} from '../domains/ai';
+
+// ZATCA
+import { zatcaRouter } from '../domains/zatca';
+
+// Realtime
+import {
+  notificationRouter, notificationPrefsRouter, chatRouter,
+  liveChatRouter, videoRouter, whatsappBotRouter, audioRoomsRouter,
+} from '../domains/realtime';
+
+// Content
+import {
+  blogRouter, campaignRouter, beautyEventRouter, tutorialsRouter,
+  liveStreamRouter, beautyCoursesRouter, beautyStoriesRouter,
+  beautyShortsRouter, beautyPodcastRouter, beautyAwardsRouter,
+  beautyExpoRouter, beautyFaqRouter, videoTestimonialsRouter,
+  beforeAfterRouter, behindScenesRouter,
+} from '../domains/content';
+
+// Market
+import {
+  marketplaceRouter, vendorPortalRouter, subscriptionRouter,
+  subscriptionBoxRouter, boxBuilderRouter, flashDealRouter,
+  groupBuyRouter, beautyPackageRouter, bridalConciergeRouter,
+  giftRegistryRouter, giftQuizRouter, beautyBingoRouter, eventTicketsRouter,
+} from '../domains/market';
+
+// Wellness
+import {
+  selfCareRouter, wellnessTrackerRouter, wellnessHubRouter,
+  beautyBudgetRouter, beautyBudgetPlannerRouter, beautyDashboardRouter,
+  beautyDiscoveryRouter, beautyExpensesRouter, beautyJournalRouter,
+  beautyProfileRouter, beautyRemindersRouter, beautyClosetRouter,
+  skinDiaryRouter, cycleTrackerRouter, spaPlannerRouter,
+  routineSchedulerRouter, expiryTrackerRouter, restockReminderRouter,
+  allergenCheckerRouter, savingsGoalRouter, nightModeRouter,
+} from '../domains/wellness';
+
+// Operations
+import {
+  addressRouter, homeServiceRouter, serviceWarrantyRouter,
+  salonManagementRouter, salonMapRouter, salonMembershipRouter,
+  rideHailingRouter, lastMileDeliveryRouter, clinicConnectRouter,
+  corporateWellnessRouter, franchisePortalRouter, virtualConsultationRouter,
+  dnaBeautyRouter, iotSyncRouter, beautyMetaverseRouter,
+  geofenceOffersRouter, ingredientAnalyzerRouter, ingredientSubRouter,
+} from '../domains/operations';
+
+// ── Additional feature routers not yet domain-grouped ──
 import { technicianRouter } from './technicians';
-import { categoryRouter } from './categories';
-import { serviceRouter } from './services';
-import { slotRouter } from './slots';
-import { bookingRouter } from './bookings';
-import { paymentRouter } from './payments';
-import { walletRouter } from './wallet';
-import { payoutRouter } from './payouts';
-import { addressRouter } from './addresses';
-import { reviewRouter } from './reviews';
-import { disputeRouter } from './disputes';
-import { notificationRouter } from './notifications';
-import { waitlistRouter } from './waitlist';
-import { wishlistRouter } from './wishlist';
-import { adminRouter } from './admin';
-import { analyticsRouter } from './analytics';
-import { aiRouter } from './ai';
-import { zatcaRouter } from './zatca';
-import { calendarRouter } from './calendar';
-import { subscriptionRouter } from './subscriptions';
-import { platformRouter } from './platform';
-import { streakRouter } from './streaks';
-import { referralRouter } from './referrals';
-import { uploadRouter } from './uploads';
-import { searchRouter } from './search';
-import { loyaltyRouter } from './loyalty';
-import { rescheduleRouter } from './reschedule';
-import { savedCardRouter } from './savedCards';
-import { galleryRouter } from './gallery';
-import { promoRouter } from './promo';
-import { subscriptionBoxRouter } from './subscriptionBoxes';
-import { featureFlagRouter } from './featureFlags';
-import { chatRouter } from './chat';
-import { performanceRouter } from './performance';
-import { cmsRouter } from './cms';
-import { videoRouter } from './video';
-import { skinAnalysisRouter } from './skinAnalysis';
-import { marketplaceRouter } from './marketplace';
-import { advancedBookingRouter } from './advancedBooking';
-import { socialRouter } from './social';
-import { aiFeaturesRouter } from './aiFeatures';
-import { adminToolsRouter } from './adminTools';
-import { giftCardRouter } from './giftCards';
-import { groupBookingRouter } from './groupBookings';
-import { beautyPackageRouter } from './beautyPackages';
-import { favoriteRouter } from './favorites';
-import { campaignRouter } from './campaigns';
-import { blogRouter } from './blog';
-import { beautyProfileRouter } from './beautyProfile';
-import { priceEstimatorRouter } from './priceEstimator';
-import { emergencyBookingRouter } from './emergencyBooking';
-import { bridalConciergeRouter } from './bridalConcierge';
 import { technicianBadgeRouter } from './technicianBadges';
-import { beautyEventRouter } from './beautyEvents';
-import { selfCareRouter } from './selfCare';
-import { beautyBudgetRouter } from './beautyBudget';
-import { inspirationRouter } from './inspiration';
-import { recurringBookingRouter } from './recurringBookings';
-import { communityRouter } from './community';
-import { giftRegistryRouter } from './giftRegistry';
-import { notificationPrefsRouter } from './notificationPrefs';
-import { birthdayRewardRouter } from './birthdayRewards';
-import { cashbackRouter } from './cashback';
-import { savingsGoalRouter } from './savingsGoals';
-import { recommendationsRouter } from './recommendations';
-import { technicianFollowRouter } from './technicianFollows';
-import { beautyJournalRouter } from './beautyJournal';
-import { challengesRouter } from './challenges';
-import { flashDealRouter } from './flashDeals';
-import { virtualTryOnRouter } from './virtualTryOn';
-import { tutorialsRouter } from './tutorials';
-import { salonMapRouter } from './salonMap';
-import { familyAccountRouter } from './familyAccount';
-import { moodBoardRouter } from './moodBoard';
-import { postCareRouter } from './postCare';
-import { beautyAnalyticsRouter } from './beautyAnalytics';
-import { wellnessTrackerRouter } from './wellnessTracker';
-import { eventTicketsRouter } from './eventTickets';
-import { technicianQARouter } from './technicianQA';
-import { homeServiceRouter } from './homeService';
-import { serviceWarrantyRouter } from './serviceWarranty';
-import { liveStreamRouter } from './liveStream';
-import { boxBuilderRouter } from './boxBuilder';
-import { aiRoutineRouter } from './aiRoutine';
-import { beautyCoursesRouter } from './beautyCourses';
-import { vipMembershipRouter } from './vipMembership';
-import { productScannerRouter } from './productScanner';
-import { styleMatchRouter } from './styleMatch';
-import { giftQuizRouter } from './giftQuiz';
 import { techCalendarRouter } from './techCalendar';
-import { productCompareRouter } from './productCompare';
-import { skinDiaryRouter } from './skinDiary';
-import { penPalRouter } from './penPal';
 import { techLeaderboardRouter } from './techLeaderboard';
-import { beforeAfterRouter } from './beforeAfter';
-import { saleAlertsRouter } from './saleAlerts';
-import { ingredientAnalyzerRouter } from './ingredientAnalyzer';
-import { bookingChecklistRouter } from './bookingChecklist';
-import { beautyPodcastRouter } from './beautyPodcast';
-import { hairColorSimRouter } from './hairColorSim';
-import { spaPlannerRouter } from './spaPlanner';
-import { restockReminderRouter } from './restockReminder';
-import { serviceMatchmakerRouter } from './serviceMatchmaker';
-import { bookingHeatmapRouter } from './bookingHeatmap';
-import { expiryTrackerRouter } from './expiryTracker';
-import { beautyFaqRouter } from './beautyFaq';
-import { priceDropAlertsRouter } from './priceDropAlerts';
-import { loyaltyPunchCardRouter } from './loyaltyPunchCard';
-import { routineSchedulerRouter } from './routineScheduler';
-import { featuredTechRouter } from './featuredTech';
-import { ingredientSubRouter } from './ingredientSub';
-import { lookOfTheDayRouter } from './lookOfTheDay';
-import { referralRaceRouter } from './referralRace';
-import { techWaitlistRouter } from './techWaitlist';
-import { videoTestimonialsRouter } from './videoTestimonials';
-import { serviceTrendsRouter } from './serviceTrends';
-import { nightModeRouter } from './nightMode';
-import { travelKitRouter } from './travelKit';
-import { liveChatRouter } from './liveChat';
-import { vendorPortalRouter } from './vendorPortal';
-import { serviceMenuQrRouter } from './serviceMenuQr';
-import { certificationQuizRouter } from './certificationQuiz';
-import { geofenceOffersRouter } from './geofenceOffers';
-import { salonManagementRouter } from './salonManagement';
-import { newsletterRouter } from './newsletter';
-import { aiAssistantRouter } from './aiAssistant';
-import { groupBuyRouter } from './groupBuy';
-import { beautyBingoRouter } from './beautyBingo';
-import { serviceWishlistRouter } from './serviceWishlist';
-import { beautyAwardsRouter } from './beautyAwards';
-import { giftCardMarketRouter } from './giftCardMarket';
-import { behindScenesRouter } from './behindScenes';
-import { beautyExpoRouter } from './beautyExpo';
-import { corporateWellnessRouter } from './corporateWellness';
 import { techOnboardingRouter } from './techOnboarding';
-import { adminAnalyticsV2Router } from './adminAnalyticsV2';
-import { calendarSyncRouter } from './calendarSync';
-import { whatsappBotRouter } from './whatsappBot';
-import { bnplRouter } from './bnpl';
-import { beautyStoriesRouter } from './beautyStories';
-import { audioRoomsRouter } from './audioRooms';
-import { beautyShortsRouter } from './beautyShorts';
-import { adminReportsRouter } from './adminReports';
-import { apiDocsRouter } from './apiDocs';
-import { dnaBeautyRouter } from './dnaBeauty';
-import { iotSyncRouter } from './iotSync';
-import { beautyMetaverseRouter } from './beautyMetaverse';
-import { franchisePortalRouter } from './franchisePortal';
-import { predictiveDemandRouter } from './predictiveDemand';
-import { personalizedFeedRouter } from './personalizedFeed';
-import { smartPricingRouter } from './smartPricing';
-import { rideHailingRouter } from './rideHailing';
-import { lastMileDeliveryRouter } from './lastMileDelivery';
-import { clinicConnectRouter } from './clinicConnect';
-import { monitoringRouter } from './monitoring';
-import { cycleTrackerRouter } from './cycleTracker';
-import { beautyClosetRouter } from './beautyCloset';
-import { beautyPartyRouter } from './beautyParty';
-import { allergenCheckerRouter } from './allergenChecker';
-import { beautyBudgetPlannerRouter } from './beautyBudgetPlanner';
-import { socialChallengesRouter } from './socialChallenges';
-import { virtualConsultationRouter } from './virtualConsultation';
-import { salonMembershipRouter } from './salonMembership';
+import { techWaitlistRouter } from './techWaitlist';
+import { featuredTechRouter } from './featuredTech';
+import { productScannerRouter } from './productScanner';
+import { wishlistRouter } from './wishlist';
+import { lookOfTheDayRouter } from './lookOfTheDay';
+import { saleAlertsRouter } from './saleAlerts';
+import { priceDropAlertsRouter } from './priceDropAlerts';
+import { newsletterRouter } from './newsletter';
+import { certificationQuizRouter } from './certificationQuiz';
+import { travelKitRouter } from './travelKit';
+import { familyAccountRouter } from './familyAccount';
+import { postCareRouter } from './postCare';
 import { womensServicesRouter } from './womensServices';
 import { kidsServicesRouter } from './kidsServices';
-import { serviceRecommenderRouter } from './serviceRecommender';
-import { beautyDashboardRouter } from './beautyDashboard';
-import { beautyRemindersRouter } from './beautyReminders';
-import { beautyExpensesRouter } from './beautyExpenses';
-import { beautyDiscoveryRouter } from './beautyDiscovery';
 import { beautyStatsRouter } from './beautyStats';
-import { customerAchievementsRouter } from './customerAchievements';
-import { wellnessHubRouter } from './wellnessHub';
 
 export const appRouter = router({
   // Health
@@ -186,182 +136,211 @@ export const appRouter = router({
     uptime: process.uptime(),
   })),
 
-  // Feature routers
+  // ── Domain routers ──
+  // Auth
   auth: authRouter,
   users: userRouter,
-  technicians: technicianRouter,
+  uploads: uploadRouter,
+
+  // Booking
+  bookings: bookingRouter,
+  slots: slotRouter,
+  calendar: calendarRouter,
+  reschedule: rescheduleRouter,
+  recurringBookings: recurringBookingRouter,
+  emergencyBooking: emergencyBookingRouter,
+  advancedBooking: advancedBookingRouter,
+  groupBookings: groupBookingRouter,
+  waitlist: waitlistRouter,
+  calendarSync: calendarSyncRouter,
+  bookingChecklist: bookingChecklistRouter,
+  bookingHeatmap: bookingHeatmapRouter,
+
+  // Catalog
   categories: categoryRouter,
   services: serviceRouter,
-  slots: slotRouter,
-  bookings: bookingRouter,
-  payments: paymentRouter,
+  search: searchRouter,
+  gallery: galleryRouter,
+  recommendations: recommendationsRouter,
+  favorites: favoriteRouter,
+  serviceRecommender: serviceRecommenderRouter,
+  serviceMatchmaker: serviceMatchmakerRouter,
+  serviceTrends: serviceTrendsRouter,
+  serviceWishlist: serviceWishlistRouter,
+  serviceMenuQr: serviceMenuQrRouter,
+  priceEstimator: priceEstimatorRouter,
+  productCompare: productCompareRouter,
+
+  // Payments
   wallet: walletRouter,
+  payments: paymentRouter,
   payouts: payoutRouter,
-  addresses: addressRouter,
-  reviews: reviewRouter,
-  disputes: disputeRouter,
-  notifications: notificationRouter,
-  waitlist: waitlistRouter,
-  wishlist: wishlistRouter,
-  admin: adminRouter,
-  analytics: analyticsRouter,
-  ai: aiRouter,
-  zatca: zatcaRouter,
-  calendar: calendarRouter,
-  subscriptions: subscriptionRouter,
-  platform: platformRouter,
+  savedCards: savedCardRouter,
+  promo: promoRouter,
+  giftCards: giftCardRouter,
+  giftCardMarket: giftCardMarketRouter,
+  cashback: cashbackRouter,
+  bnpl: bnplRouter,
+
+  // Loyalty
+  loyalty: loyaltyRouter,
   streaks: streakRouter,
   referrals: referralRouter,
-  uploads: uploadRouter,
-  search: searchRouter,
-  loyalty: loyaltyRouter,
-  reschedule: rescheduleRouter,
-  savedCards: savedCardRouter,
-  gallery: galleryRouter,
-  promo: promoRouter,
-  subscriptionBoxes: subscriptionBoxRouter,
-  featureFlags: featureFlagRouter,
-  chat: chatRouter,
-  performance: performanceRouter,
-  cms: cmsRouter,
-  video: videoRouter,
-  skinAnalysis: skinAnalysisRouter,
-  marketplace: marketplaceRouter,
-  advancedBooking: advancedBookingRouter,
-  social: socialRouter,
-  aiFeatures: aiFeaturesRouter,
-  adminTools: adminToolsRouter,
-  giftCards: giftCardRouter,
-  groupBookings: groupBookingRouter,
-  beautyPackages: beautyPackageRouter,
-  favorites: favoriteRouter,
-  campaigns: campaignRouter,
-  blog: blogRouter,
-  beautyProfile: beautyProfileRouter,
-  priceEstimator: priceEstimatorRouter,
-  emergencyBooking: emergencyBookingRouter,
-  bridalConcierge: bridalConciergeRouter,
-  technicianBadges: technicianBadgeRouter,
-  beautyEvents: beautyEventRouter,
-  selfCare: selfCareRouter,
-  beautyBudget: beautyBudgetRouter,
-  inspiration: inspirationRouter,
-  recurringBookings: recurringBookingRouter,
-  community: communityRouter,
-  giftRegistry: giftRegistryRouter,
-  notificationPrefs: notificationPrefsRouter,
+  customerAchievements: customerAchievementsRouter,
+  loyaltyPunchCard: loyaltyPunchCardRouter,
   birthdayRewards: birthdayRewardRouter,
-  cashback: cashbackRouter,
-  savingsGoals: savingsGoalRouter,
-  recommendations: recommendationsRouter,
-  technicianFollows: technicianFollowRouter,
-  beautyJournal: beautyJournalRouter,
+  vipMembership: vipMembershipRouter,
+  referralRace: referralRaceRouter,
+
+  // Social
+  reviews: reviewRouter,
+  disputes: disputeRouter,
+  community: communityRouter,
+  social: socialRouter,
+  socialChallenges: socialChallengesRouter,
   challenges: challengesRouter,
-  flashDeals: flashDealRouter,
-  virtualTryOn: virtualTryOnRouter,
-  tutorials: tutorialsRouter,
-  salonMap: salonMapRouter,
-  familyAccount: familyAccountRouter,
-  moodBoard: moodBoardRouter,
-  postCare: postCareRouter,
-  beautyAnalytics: beautyAnalyticsRouter,
-  wellnessTracker: wellnessTrackerRouter,
-  eventTickets: eventTicketsRouter,
+  inspiration: inspirationRouter,
+  technicianFollows: technicianFollowRouter,
   technicianQA: technicianQARouter,
+  beautyParty: beautyPartyRouter,
+  penPal: penPalRouter,
+  moodBoard: moodBoardRouter,
+
+  // Admin
+  admin: adminRouter,
+  adminAnalyticsV2: adminAnalyticsV2Router,
+  adminReports: adminReportsRouter,
+  adminTools: adminToolsRouter,
+  analytics: analyticsRouter,
+  cms: cmsRouter,
+  featureFlags: featureFlagRouter,
+  monitoring: monitoringRouter,
+  platform: platformRouter,
+  predictiveDemand: predictiveDemandRouter,
+  smartPricing: smartPricingRouter,
+  performance: performanceRouter,
+  apiDocs: apiDocsRouter,
+
+  // AI
+  ai: aiRouter,
+  aiAssistant: aiAssistantRouter,
+  aiFeatures: aiFeaturesRouter,
+  aiRoutine: aiRoutineRouter,
+  skinAnalysis: skinAnalysisRouter,
+  virtualTryOn: virtualTryOnRouter,
+  hairColorSim: hairColorSimRouter,
+  personalizedFeed: personalizedFeedRouter,
+  styleMatch: styleMatchRouter,
+  beautyAnalytics: beautyAnalyticsRouter,
+
+  // ZATCA
+  zatca: zatcaRouter,
+
+  // Realtime
+  notifications: notificationRouter,
+  notificationPrefs: notificationPrefsRouter,
+  chat: chatRouter,
+  liveChat: liveChatRouter,
+  video: videoRouter,
+  whatsappBot: whatsappBotRouter,
+  audioRooms: audioRoomsRouter,
+
+  // Content
+  blog: blogRouter,
+  campaigns: campaignRouter,
+  beautyEvents: beautyEventRouter,
+  tutorials: tutorialsRouter,
+  liveStream: liveStreamRouter,
+  beautyCourses: beautyCoursesRouter,
+  beautyStories: beautyStoriesRouter,
+  beautyShorts: beautyShortsRouter,
+  beautyPodcast: beautyPodcastRouter,
+  beautyAwards: beautyAwardsRouter,
+  beautyExpo: beautyExpoRouter,
+  beautyFaq: beautyFaqRouter,
+  videoTestimonials: videoTestimonialsRouter,
+  beforeAfter: beforeAfterRouter,
+  behindScenes: behindScenesRouter,
+
+  // Market
+  marketplace: marketplaceRouter,
+  vendorPortal: vendorPortalRouter,
+  subscriptions: subscriptionRouter,
+  subscriptionBoxes: subscriptionBoxRouter,
+  boxBuilder: boxBuilderRouter,
+  flashDeals: flashDealRouter,
+  groupBuy: groupBuyRouter,
+  beautyPackages: beautyPackageRouter,
+  bridalConcierge: bridalConciergeRouter,
+  giftRegistry: giftRegistryRouter,
+  giftQuiz: giftQuizRouter,
+  beautyBingo: beautyBingoRouter,
+  eventTickets: eventTicketsRouter,
+
+  // Wellness
+  selfCare: selfCareRouter,
+  wellnessTracker: wellnessTrackerRouter,
+  wellnessHub: wellnessHubRouter,
+  beautyBudget: beautyBudgetRouter,
+  beautyBudgetPlanner: beautyBudgetPlannerRouter,
+  beautyDashboard: beautyDashboardRouter,
+  beautyDiscovery: beautyDiscoveryRouter,
+  beautyExpenses: beautyExpensesRouter,
+  beautyJournal: beautyJournalRouter,
+  beautyProfile: beautyProfileRouter,
+  beautyReminders: beautyRemindersRouter,
+  beautyCloset: beautyClosetRouter,
+  skinDiary: skinDiaryRouter,
+  cycleTracker: cycleTrackerRouter,
+  spaPlanner: spaPlannerRouter,
+  routineScheduler: routineSchedulerRouter,
+  expiryTracker: expiryTrackerRouter,
+  restockReminder: restockReminderRouter,
+  allergenChecker: allergenCheckerRouter,
+  savingsGoals: savingsGoalRouter,
+  nightMode: nightModeRouter,
+
+  // Operations
+  addresses: addressRouter,
   homeService: homeServiceRouter,
   serviceWarranty: serviceWarrantyRouter,
-  liveStream: liveStreamRouter,
-  boxBuilder: boxBuilderRouter,
-  aiRoutine: aiRoutineRouter,
-  beautyCourses: beautyCoursesRouter,
-  vipMembership: vipMembershipRouter,
-  productScanner: productScannerRouter,
-  styleMatch: styleMatchRouter,
-  giftQuiz: giftQuizRouter,
-  techCalendar: techCalendarRouter,
-  productCompare: productCompareRouter,
-  skinDiary: skinDiaryRouter,
-  penPal: penPalRouter,
-  techLeaderboard: techLeaderboardRouter,
-  beforeAfter: beforeAfterRouter,
-  saleAlerts: saleAlertsRouter,
-  ingredientAnalyzer: ingredientAnalyzerRouter,
-  bookingChecklist: bookingChecklistRouter,
-  beautyPodcast: beautyPodcastRouter,
-  hairColorSim: hairColorSimRouter,
-  spaPlanner: spaPlannerRouter,
-  restockReminder: restockReminderRouter,
-  serviceMatchmaker: serviceMatchmakerRouter,
-  bookingHeatmap: bookingHeatmapRouter,
-  expiryTracker: expiryTrackerRouter,
-  beautyFaq: beautyFaqRouter,
-  priceDropAlerts: priceDropAlertsRouter,
-  loyaltyPunchCard: loyaltyPunchCardRouter,
-  routineScheduler: routineSchedulerRouter,
-  featuredTech: featuredTechRouter,
-  ingredientSub: ingredientSubRouter,
-  lookOfTheDay: lookOfTheDayRouter,
-  referralRace: referralRaceRouter,
-  techWaitlist: techWaitlistRouter,
-  videoTestimonials: videoTestimonialsRouter,
-  serviceTrends: serviceTrendsRouter,
-  nightMode: nightModeRouter,
-  travelKit: travelKitRouter,
-  liveChat: liveChatRouter,
-  vendorPortal: vendorPortalRouter,
-  serviceMenuQr: serviceMenuQrRouter,
-  certificationQuiz: certificationQuizRouter,
-  geofenceOffers: geofenceOffersRouter,
   salonManagement: salonManagementRouter,
-  newsletter: newsletterRouter,
-  aiAssistant: aiAssistantRouter,
-  groupBuy: groupBuyRouter,
-  beautyBingo: beautyBingoRouter,
-  serviceWishlist: serviceWishlistRouter,
-  beautyAwards: beautyAwardsRouter,
-  giftCardMarket: giftCardMarketRouter,
-  behindScenes: behindScenesRouter,
-  beautyExpo: beautyExpoRouter,
-  corporateWellness: corporateWellnessRouter,
-  techOnboarding: techOnboardingRouter,
-  adminAnalyticsV2: adminAnalyticsV2Router,
-  calendarSync: calendarSyncRouter,
-  whatsappBot: whatsappBotRouter,
-  bnpl: bnplRouter,
-  beautyStories: beautyStoriesRouter,
-  audioRooms: audioRoomsRouter,
-  beautyShorts: beautyShortsRouter,
-  adminReports: adminReportsRouter,
-  apiDocs: apiDocsRouter,
-  dnaBeauty: dnaBeautyRouter,
-  iotSync: iotSyncRouter,
-  beautyMetaverse: beautyMetaverseRouter,
-  franchisePortal: franchisePortalRouter,
-  predictiveDemand: predictiveDemandRouter,
-  personalizedFeed: personalizedFeedRouter,
-  smartPricing: smartPricingRouter,
+  salonMap: salonMapRouter,
+  salonMembership: salonMembershipRouter,
   rideHailing: rideHailingRouter,
   lastMileDelivery: lastMileDeliveryRouter,
   clinicConnect: clinicConnectRouter,
-  monitoring: monitoringRouter,
+  corporateWellness: corporateWellnessRouter,
+  franchisePortal: franchisePortalRouter,
+  virtualConsultation: virtualConsultationRouter,
+  dnaBeauty: dnaBeautyRouter,
+  iotSync: iotSyncRouter,
+  beautyMetaverse: beautyMetaverseRouter,
+  geofenceOffers: geofenceOffersRouter,
+  ingredientAnalyzer: ingredientAnalyzerRouter,
+  ingredientSub: ingredientSubRouter,
+
+  // ── Ungrouped feature routers ──
+  technicians: technicianRouter,
+  technicianBadges: technicianBadgeRouter,
+  techCalendar: techCalendarRouter,
+  techLeaderboard: techLeaderboardRouter,
+  techOnboarding: techOnboardingRouter,
+  techWaitlist: techWaitlistRouter,
+  featuredTech: featuredTechRouter,
+  productScanner: productScannerRouter,
+  wishlist: wishlistRouter,
+  lookOfTheDay: lookOfTheDayRouter,
+  saleAlerts: saleAlertsRouter,
+  priceDropAlerts: priceDropAlertsRouter,
+  newsletter: newsletterRouter,
+  certificationQuiz: certificationQuizRouter,
+  travelKit: travelKitRouter,
+  familyAccount: familyAccountRouter,
+  postCare: postCareRouter,
   womensServices: womensServicesRouter,
   kidsServices: kidsServicesRouter,
-  serviceRecommender: serviceRecommenderRouter,
-  cycleTracker: cycleTrackerRouter,
-  beautyCloset: beautyClosetRouter,
-  beautyParty: beautyPartyRouter,
-  allergenChecker: allergenCheckerRouter,
-  beautyBudgetPlanner: beautyBudgetPlannerRouter,
-  socialChallenges: socialChallengesRouter,
-  virtualConsultation: virtualConsultationRouter,
-  salonMembership: salonMembershipRouter,
-  beautyDashboard: beautyDashboardRouter,
-  beautyReminders: beautyRemindersRouter,
-  beautyExpenses: beautyExpensesRouter,
-  beautyDiscovery: beautyDiscoveryRouter,
   beautyStats: beautyStatsRouter,
-  customerAchievements: customerAchievementsRouter,
-  wellnessHub: wellnessHubRouter,
 });
 
 export type AppRouter = typeof appRouter;
