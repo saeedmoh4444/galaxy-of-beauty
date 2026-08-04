@@ -1,41 +1,34 @@
-import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect, useCallback } from 'react';
-import { SkeletonList } from '@/components/SkeletonCard';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
+
+const DAYS = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
 
 export default function TechCalendarScreen(): JSX.Element {
-  const [slots, setSlots] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).slots.mySlots.query({}) as any).then((d: any) => { setSlots(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
-  }, []);
-
-  useEffect(() => { fetch(); }, [fetch]);
-
-  if (loading) return <SkeletonList count={6} />;
+  const calendar = (trpc as any).calendar?.myCalendar?.useQuery?.({}) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const data = calendar.data as Record<string, unknown> | undefined;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#059669']} />}>
-      <Text style={styles.t}>📅 تقويمي</Text>
-      {slots.map((s: any, i: number) => (
-        <View key={i} style={styles.card}>
-          <Text style={styles.time}>{new Date(s.startAt as string).toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'})}</Text>
-          <View style={{flex:1}}><Text style={styles.date}>{new Date(s.startAt as string).toLocaleDateString('ar-SA')}</Text></View>
-          <View style={[styles.badge, s.isBooked ? styles.booked : styles.free]}><Text style={styles.badgeText}>{s.isBooked ? 'محجوز' : 'متاح'}</Text></View>
-        </View>
-      ))}
-    </ScrollView>
+    <ScreenState isLoading={calendar.isLoading} isError={calendar.isError} isEmpty={!data} errorMessage="فشل تحميل التقويم" onRetry={() => calendar.refetch()}>
+      <Text style={styles.title}>📆 التقويم</Text>
+      <View style={styles.daysRow}>
+        {DAYS.map((d, i) => (
+          <View key={i} style={styles.dayHeader}>
+            <Text style={styles.dayText}>{d}</Text>
+          </View>
+        ))}
+      </View>
+      <Text style={styles.syncNote}>📅 تتم مزامنة الحجوزات تلقائياً مع تقويم قوقل</Text>
+    </ScreenState>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#ecfdf5' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 20 },
-  card: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 6 },
-  time: { fontSize: 14, fontWeight: '700', color: '#111827' }, date: { fontSize: 13, color: '#374151' },
-  badge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 }, booked: { backgroundColor: '#fee2e2' }, free: { backgroundColor: '#dcfce7' },
-  badgeText: { fontSize: 11, fontWeight: '600' },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  daysRow: { flexDirection: 'row', marginBottom: 12 },
+  dayHeader: { flex: 1, padding: 8, backgroundColor: COLORS.brand, borderRadius: 8, marginHorizontal: 2, alignItems: 'center' },
+  dayText: { fontSize: 10, fontWeight: '600', color: COLORS.white },
+  syncNote: { fontSize: 13, color: COLORS.gray400, textAlign: 'center', marginTop: 24 },
 });
