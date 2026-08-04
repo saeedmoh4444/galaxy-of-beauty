@@ -1,0 +1,112 @@
+name: Mobile — EAS Build (App Store)
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Build platform'
+        required: true
+        type: choice
+        options:
+          - all
+          - ios
+          - android
+      profile:
+        description: 'EAS build profile'
+        required: false
+        type: choice
+        default: 'preview'
+        options:
+          - preview
+          - production
+  push:
+    branches: [master]
+    paths:
+      - 'apps/mobile/**'
+      - 'packages/shared/**'
+      - 'packages/api/**'
+      - 'packages/ui/**'
+
+concurrency:
+  group: mobile-eas-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── Verify mobile integrity before building ──
+  verify:
+    name: Verify (type-check + export)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: '9' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @galaxy/mobile type-check
+
+  # ── EAS Build (iOS) ──
+  build-ios:
+    name: EAS Build — iOS
+    needs: verify
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: '9' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: EAS Build iOS
+        working-directory: apps/mobile
+        run: eas build --platform ios --profile ${{ github.event.inputs.profile || 'preview' }} --non-interactive --wait
+
+  # ── EAS Build (Android) ──
+  build-android:
+    name: EAS Build — Android
+    needs: verify
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: '9' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: EAS Build Android
+        working-directory: apps/mobile
+        run: eas build --platform android --profile ${{ github.event.inputs.profile || 'preview' }} --non-interactive --wait
+
+  # ── EAS Update (OTA) ──
+  update-ota:
+    name: EAS Update (OTA)
+    needs: verify
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: '9' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Publish OTA Update
+        working-directory: apps/mobile
+        run: eas update --branch production --message "${{ github.event.head_commit.message }}"
