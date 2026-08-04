@@ -9,3 +9,10 @@ export { getEnv } from './lib/env';
 export type { Env } from './lib/env';
 export { generateCsrfToken, verifyCsrfToken, buildCsrfCookie, getCsrfCookieName, getCsrfHeaderName } from './lib/csrf';
 export { initializeSocket, getIO, emitToUser, emitToTechnician, emitToWaitlist, emitToAdmin } from './socket/index';
+
+// ── Type helpers for tRPC consumers ──
+import type { inferRouterOutputs } from '@trpc/server';
+import type { AppRouter } from './routers/index';
+
+/** Fully typed router outputs. Use: type BookingList = RouterOutputs['bookings']['list'] */
+export type RouterOutputs = inferRouterOutputs<AppRouter>;
