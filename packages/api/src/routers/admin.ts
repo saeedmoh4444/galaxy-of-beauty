@@ -481,4 +481,34 @@ export const adminRouter = router({
       },
     };
   }),
+
+  // Audit logs with filtering and pagination
+  auditLogs: adminProcedure
+    .input(
+      z.object({
+        page: z.number().default(1),
+        limit: z.number().default(20),
+        action: z.string().optional(),
+        targetType: z.string().optional(),
+        adminId: z.number().optional(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const where: Record<string, unknown> = {};
+      if (input.action) where.action = input.action;
+      if (input.targetType) where.targetType = input.targetType;
+      if (input.adminId) where.adminId = input.adminId;
+
+      const [items, total] = await Promise.all([
+        prisma.auditLog.findMany({
+          where,
+          orderBy: { createdAt: 'desc' },
+          skip: (input.page - 1) * input.limit,
+          take: input.limit,
+        }),
+        prisma.auditLog.count({ where }),
+      ]);
+
+      return { items, total, page: input.page, limit: input.limit };
+    }),
 });

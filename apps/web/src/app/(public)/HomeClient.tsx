@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button, Card, ErrorAlert, EmptyState, ar } from '@galaxy/ui';
 
 interface Category {

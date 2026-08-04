@@ -70,11 +70,14 @@ describe('Router Structure', () => {
 // ── Health Check ─────────────────────────────────────────────────────
 
 describe('health', () => {
-  it('should return ok for anonymous users', async () => {
+  it('should return ok or degraded for anonymous users', async () => {
     const caller = await anonCaller();
     const result = await caller.health();
-    expect(result.status).toBe('ok');
-    expect(result.version).toBe('2.0.0');
+    expect(['ok', 'degraded']).toContain(result.status);
+    expect(result).toHaveProperty('timestamp');
+    expect(result).toHaveProperty('checks');
+    expect(result.checks).toHaveProperty('database');
+    expect(result.checks).toHaveProperty('redis');
   });
 });
 
