@@ -66,9 +66,10 @@ galaxy-of-beauty/
 │   ├── web/                    # Next.js 14 App Router (254 routes, 10 SSR pages)
 │   └── mobile/                 # Expo SDK 54 + Expo Router (47 screens)
 ├── packages/
-│   ├── api/                    # tRPC v11 — 163 routers, 400+ procedures
-│   ├── db/                     # Prisma — 140+ models, 15 enums
-│   ├── shared/                 # UI kit (16 components), hooks, i18n, theme, types
+│   ├── api/                    # tRPC v11 — 177 routers in 14 domain modules
+│   ├── db/                     # Prisma — 140+ models, 9 migrations
+│   ├── shared/                 # Constants, types, i18n, theme (pure, no JSX)
+│   ├── ui/                     # 18 UI components, 3 hooks (JSX, for web + mobile)
 │   └── config/                 # TSConfig, ESLint, Prettier, Tailwind
 ├── docs/                       # ADRs, architecture docs, planning
 ├── docker-compose.yml          # 5-service Docker stack with health checks
@@ -155,8 +156,9 @@ galaxy-of-beauty/
 pnpm type-check     # 10/10 workspaces
 pnpm lint           # 7/7 tasks
 pnpm build          # 5/5 tasks — 254 Next.js routes
-pnpm test           # 307 tests (15 suites)
+pnpm test           # 318 tests (16 suites) — 100% pass
 pnpm test:e2e       # 38/38 chromium (100%)
+pnpm db:seed:enrich # 500+ bookings, 30+ customers, 100+ reviews
 ```
 
 ### API Health
@@ -187,7 +189,8 @@ pnpm test         # 307 tests (15 suites) ✅
 | Convenience | Recurring Bookings 🔄 · Emergency Booking 🚨 · Favorites ⭐ · Home Service 🏠 |
 | Marketing | Mommy & Me 👩‍👧 · Beauty Quiz ✨ · Rewards Catalog 🏆 · Birthday Rewards 🎂 |
 | Trust | Technician Badges 🏅 · Loyalty Tiers 👑 |
-| Platform | Language Toggle 🌐 · Social Sharing 🔗 · Add to Calendar 📅 · Salon Map 🗺️ |
+| Infrastructure | Domain Modules (14) · Job Queues (BullMQ ×4) · Real Monitoring · Rate Limiting · CSRF · Session Mgmt |
+| Platform | Language Toggle 🌐 · Social Sharing 🔗 · Add to Calendar 📅 · Salon Map 🗺️ · Web Vitals · JSON-LD SEO |
 | Innovation | Virtual Try-On AR 🤳 · AI Skin Analysis 🔬 · Beauty Analytics 📊 · Post-Service Care 💆‍♀️ |
 | Family | Family Account 👨‍👩‍👧 · Challenges 🏆 |
 | Engagement | Referral Leaderboard 🎫 · Technician Q&A 💬 · Event Ticketing 🎟️ · Beauty Events 📅 |
