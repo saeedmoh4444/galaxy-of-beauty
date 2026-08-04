@@ -1,52 +1,51 @@
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useQuery } from '@/lib/useQuery';
-import { ErrorAlert } from '@/components/ErrorAlert';
-import { SkeletonList } from '@/components/SkeletonCard';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+import { formatCurrency } from '@galaxy/ui';
+
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827', danger: '#dc2626' };
 
 export default function CartScreen(): JSX.Element {
-  const { data, loading, error, refetch, refreshing, refresh } = useQuery(() => (trpc as any).marketplace.cart.query());
-
-  const handleRemove = async (productId: number) => { try { await (trpc as any).marketplace.removeFromCart.mutate({ productId }); refetch(); } catch {} };
-
-  if (loading) return <SkeletonList count={3} />;
-  if (error) return <ErrorAlert message="فشل تحميل السلة" onRetry={refetch} />;
-
-  const items = (data ?? []) as any[];
-  const total = items.reduce((s:number, i:any) => s + (Number(i.product?.price ?? 0) * i.quantity), 0);
+  const cart = (trpc as any).marketplace?.cart?.useQuery?.() ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const data = cart.data as unknown[] | undefined;
+  const total = data ? (data as Record<string, unknown>[]).reduce((sum: number, i: Record<string, unknown>) => sum + Number(i.price ?? 0) * Number(i.quantity ?? 1), 0) : 0;
 
   return (
-    <ScrollView style={s.c} contentContainerStyle={s.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />}>
-      <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
-        <Text style={s.t}>🛒 سلة التسوق</Text>
-        {items.length > 0 && <View style={{backgroundColor:'#db2777',borderRadius:12,paddingHorizontal:10,paddingVertical:4}}><Text style={{color:'#fff',fontWeight:'700'}}>{items.length}</Text></View>}
-      </View>
-
-      {items.length === 0 && <View style={{alignItems:'center',padding:40}}><Text style={{fontSize:50}}>🛒</Text><Text style={{color:'#6b7280',marginTop:8}}>سلتكِ فاضية</Text></View>}
-
-      {items.map((item: any) => {
-        const p = item.product as any;
-        return (
-          <View key={item.id} style={s.card}>
-            <Text style={{fontSize:30}}>🧴</Text>
-            <View style={{flex:1}}><Text style={{fontWeight:'600',fontSize:14}}>{p?.nameJson?.ar ?? `منتج #${p?.id}`}</Text><Text style={{fontSize:12,color:'#6b7280'}}>الكمية: {item.quantity} · {(p?.price ?? 0).toLocaleString()} ر.س</Text></View>
-            <View style={{alignItems:'flex-end'}}><Text style={{fontWeight:'700',color:'#db2777',fontSize:15}}>{((p?.price ?? 0) * item.quantity).toLocaleString()} ر.س</Text><TouchableOpacity onPress={() => handleRemove(p?.id)} style={{marginTop:4}}><Text style={{color:'#ef4444',fontSize:18}}>❌</Text></TouchableOpacity></View>
+    <ScreenState isLoading={cart.isLoading} isError={cart.isError} isEmpty={!data || data.length === 0} errorMessage="فشل تحميل السلة" emptyTitle="السلة فارغة" emptyDescription="أضيفي منتجات من المتجر" onRetry={() => cart.refetch()}>
+      <Text style={styles.title}>🛒 سلة التسوق</Text>
+      {(data as Record<string, unknown>[])?.map((item: Record<string, unknown>, i: number) => (
+        <View key={i} style={styles.card}>
+          <View style={styles.row}>
+            <View style={styles.left}>
+              <Text style={styles.name}>{((item.nameJson as any)?.ar) ?? ''}</Text>
+              <Text style={styles.qty}>الكمية: {String(item.quantity ?? 1)}</Text>
+            </View>
+            <Text style={styles.price}>{formatCurrency(Number(item.price ?? 0))}</Text>
           </View>
-        );
-      })}
-
-      {items.length > 0 && <View style={{backgroundColor:'#fff',borderRadius:14,padding:16,marginTop:12}}>
-        <View style={{flexDirection:'row',justifyContent:'space-between',marginBottom:8}}><Text style={{color:'#6b7280',fontSize:14}}>الإجمالي</Text><Text style={{fontWeight:'800',fontSize:22,color:'#111827'}}>{total.toLocaleString()} ر.س</Text></View>
-        <TouchableOpacity style={s.btn}><Text style={s.btnText}>💳 إتمام الشراء</Text></TouchableOpacity>
-      </View>}
-    </ScrollView>
+        </View>
+      ))}
+      {data && data.length > 0 ? (
+        <View style={styles.footer}>
+          <Text style={styles.total}>الإجمالي: {formatCurrency(total)}</Text>
+          <TouchableOpacity style={styles.checkoutBtn}>
+            <Text style={styles.checkoutText}>💳 إتمام الشراء</Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
+    </ScreenState>
   );
 }
 
-const s = StyleSheet.create({
-  c:{flex:1,backgroundColor:'#fdf2f8'}, i:{padding:16,paddingBottom:40},
-  t:{fontSize:24,fontWeight:'800',color:'#111827'},
-  card:{flexDirection:'row',alignItems:'center',backgroundColor:'#fff',borderRadius:12,padding:14,marginBottom:8,gap:10},
-  btn:{backgroundColor:'#db2777',borderRadius:10,paddingVertical:14,alignItems:'center'},
-  btnText:{color:'#fff',fontSize:15,fontWeight:'700'},
+const styles = StyleSheet.create({
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  card: { backgroundColor: COLORS.white, borderRadius: 14, padding: 16, marginBottom: 8 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  left: { flex: 1 },
+  name: { fontSize: 15, fontWeight: '600', color: COLORS.gray900 },
+  qty: { fontSize: 12, color: COLORS.gray400, marginTop: 4 },
+  price: { fontSize: 14, fontWeight: '700', color: COLORS.brand },
+  footer: { marginTop: 20, padding: 16, backgroundColor: COLORS.white, borderRadius: 14, alignItems: 'center' },
+  total: { fontSize: 18, fontWeight: '800', color: COLORS.gray900, marginBottom: 12 },
+  checkoutBtn: { backgroundColor: COLORS.brand, borderRadius: 12, paddingHorizontal: 24, paddingVertical: 14, width: '100%', alignItems: 'center' },
+  checkoutText: { fontSize: 16, fontWeight: '700', color: COLORS.white },
 });
