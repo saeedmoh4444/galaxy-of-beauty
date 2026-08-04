@@ -13,6 +13,12 @@ import {
   bookingQuerySchema,
 } from '../validators/booking';
 import { emitToUser, emitToTechnician, emitToAdmin } from '../socket/index';
+import {
+  getWalletQueue,
+  getLoyaltyQueue,
+  getNotificationQueue,
+  getIntegrationQueue,
+} from '../queues';
 
 // ---------------------------------------------------------------------------
 // Booking State Machine
@@ -203,14 +209,74 @@ export const bookingRouter = router({
         include: bookingDetailInclude,
       });
 
-      // 9. Emit real-time events
+      // 9. Emit real-time events (immediate)
       if (result) {
-        // Notify the technician about the new booking request
         emitToTechnician(input.technicianId, 'new_booking_request', result);
-        // Notify the customer with confirmation
         emitToUser(ctx.user.id, 'new_booking_request', result);
-        // Notify admins
         emitToAdmin('admin_update', { type: 'new_booking', booking: result });
+      }
+
+      // 10. Enqueue async side effects (fire-and-forget)
+      const idemKey = input.idempotencyKey;
+      try {
+        const cashback = Math.round(Number(booking.totalAmount) * 0.05 * 100) / 100;
+        const points = Math.round(Number(booking.totalAmount));
+
+        await Promise.allSettled([
+          // Wallet cashback
+          getWalletQueue()?.add('cashback.accrue', {
+            userId: customerId,
+            bookingId: booking.id,
+            amount: cashback,
+            idempotencyKey: idemKey ? `${idemKey}_cashback` : undefined,
+          } as import('../workers').CashbackJob),
+
+          // Loyalty points
+          getLoyaltyQueue()?.add('points.earn', {
+            userId: customerId,
+            bookingId: booking.id,
+            points,
+            reason: 'booking',
+            idempotencyKey: idemKey ? `${idemKey}_loyalty` : undefined,
+          } as import('../workers').LoyaltyPointsJob),
+
+          // Notification to technician
+          getNotificationQueue()?.add('booking.requested', {
+            userId: input.technicianId,
+            type: 'booking_requested',
+            titleAr: 'طلب حجز جديد',
+            titleEn: 'New Booking Request',
+            bodyAr: `لديك طلب حجز جديد من ${ctx.user.email}`,
+            bodyEn: `New booking request from ${ctx.user.email}`,
+            channels: ['in_app', 'push'],
+            idempotencyKey: idemKey ? `${idemKey}_notif_tech` : undefined,
+          } as import('../workers').NotificationJob),
+
+          // Notification to customer
+          getNotificationQueue()?.add('booking.confirmed', {
+            userId: customerId,
+            type: 'booking_created',
+            titleAr: 'تم استلام طلب الحجز',
+            titleEn: 'Booking Request Received',
+            bodyAr: 'تم إرسال طلبك إلى الفنية. سنخطرك عند القبول.',
+            bodyEn: 'Your request has been sent. We will notify you upon acceptance.',
+            channels: ['in_app'],
+            idempotencyKey: idemKey ? `${idemKey}_notif_cust` : undefined,
+          } as import('../workers').NotificationJob),
+
+          // Calendar sync (if technician has Google Calendar)
+          getIntegrationQueue()?.add('calendar.create', {
+            technicianId: input.technicianId,
+            bookingId: booking.id,
+            action: 'create',
+            startAt: input.startAt,
+            endAt: input.endAt,
+            summary: `Booking #${booking.bookingCode}`,
+            idempotencyKey: idemKey ? `${idemKey}_calendar` : undefined,
+          } as import('../workers').CalendarSyncJob),
+        ]);
+      } catch {
+        // Fire-and-forget — enqueue failures should never fail the booking creation
       }
 
       return result;
