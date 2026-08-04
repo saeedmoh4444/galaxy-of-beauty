@@ -1,33 +1,65 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import { trpc } from '@/lib/api';
-import { useHaptics } from '@/hooks/useHaptics';
-import { useState, useEffect, useCallback } from 'react';
-import { SkeletonList } from '@/components/SkeletonCard';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+
+const COLORS = {
+  brand: '#7c3aed',
+  white: '#ffffff',
+  gray50: '#faf5ff',
+  gray700: '#374151',
+  gray900: '#111827',
+};
 
 export default function HomeScreen(): JSX.Element {
   const router = useRouter();
-  const { trigger } = useHaptics();
-  const [cats, setCats] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).categories.list.query() as any).then((d: any) => { setCats(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
-  }, []);
-  useEffect(() => { fetch(); }, [fetch]);
-  if (loading) return <SkeletonList count={6} />;
+  const cats = trpc.categories.list.useQuery();
+
+  const data = cats.data as unknown[] | undefined;
+
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#7c3aed']} />}>
-      <Text style={styles.t}>🏠 جالكسي بيوتي</Text>
-      <View style={styles.grid}>{cats.map((cat: any, i: number) => (<TouchableOpacity key={i} onPress={() => { trigger('light'); router.push('/public/services' as any); }} style={styles.card}><Text style={styles.ce}>{cat.emoji as string ?? '📂'}</Text><Text style={styles.cn}>{(cat.nameJson as any)?.ar as string ?? cat.nameAr as string}</Text></TouchableOpacity>))}</View>
-    </ScrollView>
+    <ScreenState
+      isLoading={cats.isLoading}
+      isError={cats.isError}
+      isEmpty={!data || data.length === 0}
+      errorMessage="فشل تحميل الأقسام"
+      emptyTitle="لا توجد أقسام"
+      onRetry={() => cats.refetch()}
+    >
+      <Text style={styles.title}>🏠 جالكسي بيوتي</Text>
+      <View style={styles.grid}>
+        {(data as Record<string, unknown>[])?.map((cat: Record<string, unknown>, i: number) => (
+          <TouchableOpacity
+            key={i}
+            style={styles.card}
+            activeOpacity={0.7}
+            onPress={() => router.push('/public/services' as any)}
+          >
+            <Text style={styles.emoji}>📂</Text>
+            <Text style={styles.name}>
+              {((cat.nameJson as Record<string, string>)?.ar) ?? (cat.nameAr as string) ?? ''}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </ScreenState>
   );
 }
+
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#faf5ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 20 },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  card: { width: '30%', backgroundColor: '#fff', borderRadius: 14, padding: 14, alignItems: 'center' },
-  ce: { fontSize: 30 }, cn: { fontSize: 11, fontWeight: '600', color: '#111827', marginTop: 6, textAlign: 'center' },
+  card: {
+    width: '30%',
+    backgroundColor: COLORS.white,
+    borderRadius: 14,
+    padding: 14,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  emoji: { fontSize: 30 },
+  name: { fontSize: 11, fontWeight: '600', color: COLORS.gray900, marginTop: 6, textAlign: 'center' },
 });

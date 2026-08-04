@@ -1,18 +1,15 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useState } from 'react';
 import SocketProvider from '@/components/SocketProvider';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ToastProvider } from '@/components/Toast';
+import { TRPCProvider } from '@/lib/trpc-react';
 
 export default function RootLayout() {
-  const [queryClient] = useState(() => new QueryClient());
-
   return (
     <ErrorBoundary>
       <ToastProvider>
-        <QueryClientProvider client={queryClient}>
+        <TRPCProvider>
         <SocketProvider>
           <StatusBar style="auto" />
           <Stack screenOptions={{ headerShown: false }}>
@@ -74,7 +71,7 @@ export default function RootLayout() {
         <Stack.Screen name="admin/settings/index" options={{ title: 'الإعدادات' }} />
       </Stack>
         </SocketProvider>
-      </QueryClientProvider>
+      </TRPCProvider>
       </ToastProvider>
     </ErrorBoundary>
   );
