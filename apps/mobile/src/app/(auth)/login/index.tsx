@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/api';
 import { setSocketToken } from '@/hooks/useSocket';
@@ -56,7 +56,12 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
       <Text style={styles.title}>تسجيل الدخول</Text>
 
       {!twoFactorRequired ? (
@@ -121,12 +126,14 @@ export default function LoginScreen() {
           <Text style={styles.link}>إنشاء حساب جديد</Text>
         </TouchableOpacity>
       )}
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 24, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#fff' },
+  scrollContent: { flexGrow: 1, justifyContent: 'center', padding: 24 },
   title: { fontSize: 28, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 32 },
   input: { borderWidth: 1, borderColor: '#d1d5db', borderRadius: 12, padding: 14, fontSize: 16, marginBottom: 16, backgroundColor: '#f9fafb' },
   button: { backgroundColor: '#7c3aed', borderRadius: 12, padding: 16, alignItems: 'center' },

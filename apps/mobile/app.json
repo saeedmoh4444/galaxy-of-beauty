@@ -48,6 +48,12 @@
     "notification": {
       "icon": "./assets/logo.png",
       "color": "#7c3aed"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/galaxy-of-beauty",
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
     }
   }
 }
