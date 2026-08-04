@@ -1,71 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
+import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
+import { MarketplaceClient } from './MarketplaceClient';
 
-import { useState } from 'react';
-import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Input, formatCurrency } from '@galaxy/ui';
+export default async function MarketplacePage(): Promise<JSX.Element> {
+  let initialProducts: any[] = [];
+  let initialTotal = 0;
 
-export default function MarketplacePage(): JSX.Element {
-  const [search, setSearch] = useState('');
-  // Cast to avoid TS2589 deep type from marketplace RouterOutput in Next.js build
-  const productsQuery = api.marketplace.products.useQuery({
-    search: search || undefined,
-    sortBy: 'newest',
-    page: 1,
-    limit: 20 }) as any;
-  api.marketplace.productCategories.useQuery() as any;
-  const { data, isLoading, isError, refetch } = productsQuery;
-
-  const items: any[] = data?.items ?? [];
-  const total: number = data?.total ?? 0;
+  try {
+    const caller = await getServerCaller();
+    const result = await caller.marketplace.products({
+      sortBy: 'newest',
+      page: 1,
+      limit: 20,
+    }) as any;
+    initialProducts = serializeForClient(result.items ?? []);
+    initialTotal = serializeForClient(result.total ?? 0);
+  } catch {
+    // Client will retry with client-side queries on error
+  }
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6 px-4 py-8">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">متجر منتجات التجميل</h1>
-
-        <div className="flex gap-4">
-          <Input
-            placeholder="ابحثي عن منتج..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="max-w-md"
-          />
-        </div>
-
-        {isLoading ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {Array.from({ length: 8 }, (_, i) => <CardSkeleton key={i} />)}
-          </div>
-        ) : isError ? (
-          <ErrorAlert message="فشل تحميل المنتجات" onRetry={() => refetch()} />
-        ) : items.length === 0 ? (
-          <EmptyState title="لا توجد منتجات" description="لم يتم العثور على منتجات. حاولي تغيير البحث." />
-        ) : (
-          <>
-            <p className="text-sm text-text-secondary">{total} منتج</p>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {items.map((p: any) => (
-                <Card key={p.id as number} padding="sm" className="group cursor-pointer hover:shadow-lg transition-shadow">
-                  <div className="aspect-square w-full rounded-lg bg-surface-muted dark:bg-gray-800 mb-3 flex items-center justify-center text-4xl">
-                    🧴
-                  </div>
-                  <h3 className="font-semibold text-sm truncate">
-                    {((p.nameJson as Record<string, string>)?.ar) || ''}
-                  </h3>
-                  <p className="text-xs text-text-secondary mt-1">
-                    {((p as Record<string, unknown>).vendor as Record<string, string> | undefined)?.storeName || ''}
-                  </p>
-                  <div className="mt-2 flex items-center justify-between">
-                    <span className="font-bold text-brand-600">{formatCurrency(Number(p.price))}</span>
-                    {p.comparePrice ? (
-                      <span className="text-xs text-text-tertiary line-through">{formatCurrency(Number(p.comparePrice))}</span>
-                    ) : null}
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </>
-        )}
-      </div>
+    <MarketplaceClient
+      initialProducts={initialProducts}
+      initialTotal={initialTotal}
+    />
   );
 }

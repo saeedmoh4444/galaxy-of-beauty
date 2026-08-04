@@ -117,6 +117,7 @@ export default function LoginPage(): JSX.Element {
                 value={totpToken}
                 onChange={(e) => setTotpToken(e.target.value.replace(/\D/g, '').slice(0, 6))}
                 placeholder="000000"
+                // eslint-disable-next-line jsx-a11y/no-autofocus -- auto-focus 2FA input for UX
                 autoFocus
                 dir="ltr"
               />

@@ -108,11 +108,11 @@ const adminLinks = [
   { href: '/admin/settings', labelAr: 'الإعدادات', labelEn: 'Settings', icon: '⚙️' },
 ];
 
-export function DashboardLayout({ children, role = 'CUSTOMER' }: { children: ReactNode; role?: string }): JSX.Element {
+export function DashboardLayout({ children, role: userRole = 'CUSTOMER' }: { children: ReactNode; role?: string }): JSX.Element {
   const pathname = usePathname();
   const router = useRouter();
   const { logout } = useAuth();
-  const links = role === 'ADMIN' ? adminLinks : role === 'TECHNICIAN' ? technicianLinks : customerLinks;
+  const links = userRole === 'ADMIN' ? adminLinks : userRole === 'TECHNICIAN' ? technicianLinks : customerLinks;
 
   const handleLogout = async () => {
     if (!window.confirm('هل أنت متأكد من تسجيل الخروج؟')) return;

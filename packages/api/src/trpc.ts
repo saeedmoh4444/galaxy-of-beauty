@@ -4,7 +4,7 @@ import superjson from 'superjson';
 import type { Context } from './context';
 import { verifyCsrfToken } from './lib/csrf';
 import { checkRateLimit } from './lib/rateLimit';
-import { incrementRequestCount, incrementErrorCount } from './lib/requestCounters';
+import { incrementRequestCount, incrementErrorCount, recordTiming } from './lib/requestCounters';
 
 const t = initTRPC.context<Context>().create({
   transformer: superjson,
@@ -20,10 +20,14 @@ const t = initTRPC.context<Context>().create({
   },
 });
 
-// ── Request Counting Middleware ──
-const requestCounter = t.middleware(async ({ next }) => {
+// ── Request Counting + Performance Middleware ──
+const requestCounter = t.middleware(async ({ next, path }) => {
   incrementRequestCount();
-  return next();
+  const t0 = performance.now();
+  const result = await next();
+  const duration = performance.now() - t0;
+  recordTiming(path, duration);
+  return result;
 });
 
 export const { router, procedure, middleware, mergeRouters } = t;

@@ -1,7 +1,7 @@
 import { adminProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
 import { getRedis, isRedisAvailable } from '../lib/redis';
-import { getRequestCount, getErrorCount } from '../lib/requestCounters';
+import { getRequestCount, getErrorCount, getPerformanceStats } from '../lib/requestCounters';
 
 function getUptime(): string {
   const s = process.uptime();
@@ -246,12 +246,7 @@ export const monitoringRouter = router({
               { type: 'Other', count: 0, pct: 0 },
             ],
       },
-      performance: {
-        avgResponseTime: 'N/A',
-        p95ResponseTime: 'N/A',
-        p99ResponseTime: 'N/A',
-        slowestEndpoints: [] as Array<{ endpoint: string; avgMs: number }>,
-      },
+      performance: getPerformanceStats(),
       activity: {
         today: {
           bookings: bookingsToday,
