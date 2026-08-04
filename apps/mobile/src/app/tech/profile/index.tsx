@@ -1,40 +1,40 @@
-import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect, useCallback } from 'react';
-import { SkeletonList } from '@/components/SkeletonCard';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827', success: '#10b981' };
 
 export default function TechProfileScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).users.getMe.query() as any).then((d: any) => { setData(d); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
-  }, []);
-
-  useEffect(() => { fetch(); }, [fetch]);
-
-  if (loading) return <SkeletonList count={3} />;
+  const profile = (trpc as any).technicians?.myProfile?.useQuery?.() ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const data = profile.data as Record<string, unknown> | undefined;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#059669']} />}>
-      <Text style={styles.t}>👩‍🎨 ملفي</Text>
-      {data && (
-        <View style={styles.card}>
-          <Text style={styles.name}>{data.name as string}</Text>
-          <Text style={styles.email}>{data.email as string}</Text>
-          {data.technician && <Text style={styles.meta}>⭐ {(data.technician as any).rating as number ?? 0}</Text>}
+    <ScreenState isLoading={profile.isLoading} isError={profile.isError} isEmpty={!data} errorMessage="فشل تحميل الملف الشخصي" onRetry={() => profile.refetch()}>
+      <Text style={styles.title}>👤 ملفي الشخصي</Text>
+      {(data ? [
+        { label: 'المدينة', value: data.city as string },
+        { label: 'التقييم', value: `⭐ ${String(data.ratingAvg ?? 0)}` },
+        { label: 'الحجوزات المكتملة', value: String(data.completedBookings ?? 0) },
+        { label: 'حالة التوثيق', value: data.kycStatus as string },
+        { label: 'منتجات صديقة للبيئة', value: data.isEcoFriendly ? '✅ نعم' : '❌ لا' },
+      ] : []).map((row, i) => (
+        <View key={i} style={styles.row}>
+          <Text style={styles.label}>{row.label}</Text>
+          <Text style={styles.value}>{row.value ?? '—'}</Text>
         </View>
-      )}
-    </ScrollView>
+      ))}
+      <TouchableOpacity style={styles.editBtn}>
+        <Text style={styles.editText}>✏️ تعديل الملف</Text>
+      </TouchableOpacity>
+    </ScreenState>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#ecfdf5' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 20 },
-  card: { backgroundColor: '#fff', borderRadius: 16, padding: 20, alignItems: 'center' },
-  name: { fontSize: 20, fontWeight: '700', color: '#111827' }, email: { fontSize: 14, color: '#6b7280', marginTop: 8 },
-  meta: { fontSize: 14, color: '#f59e0b', marginTop: 4 },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' },
+  label: { fontSize: 14, color: COLORS.gray400 },
+  value: { fontSize: 14, fontWeight: '600', color: COLORS.gray900 },
+  editBtn: { marginTop: 24, alignItems: 'center', padding: 16 },
+  editText: { fontSize: 15, fontWeight: '600', color: COLORS.brand },
 });

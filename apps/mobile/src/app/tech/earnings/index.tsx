@@ -1,40 +1,48 @@
-import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect, useCallback } from 'react';
-import { SkeletonList } from '@/components/SkeletonCard';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+import { formatCurrency } from '@galaxy/ui';
+
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827', success: '#10b981' };
 
 export default function TechEarningsScreen(): JSX.Element {
-  const [data, setData] = useState<any>({});
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).analytics.technicianDashboard.query() as any).then((d: any) => { setData(d || {}); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
-  }, []);
-
-  useEffect(() => { fetch(); }, [fetch]);
-
-  if (loading) return <SkeletonList count={4} />;
-
-  const d = data ?? {};
+  const earnings = (trpc as any).payouts?.list?.useQuery?.({}) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const data = earnings.data as Record<string, unknown> | undefined;
+  const items = data?.items as unknown[] | undefined;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#059669']} />}>
-      <Text style={styles.t}>💰 أرباحي</Text>
-      <View style={styles.kpiRow}>
-        <View style={styles.kpi}><Text style={styles.kpiEmoji}>💰</Text><Text style={styles.kpiVal}>{(d.todayEarnings as number ?? 0)?.toLocaleString()}</Text><Text style={styles.kpiLabel}>اليوم</Text></View>
-        <View style={styles.kpi}><Text style={styles.kpiEmoji}>📅</Text><Text style={[styles.kpiVal,{color:'#2563eb'}]}>{(d.weekEarnings as number ?? 0)?.toLocaleString()}</Text><Text style={styles.kpiLabel}>الأسبوع</Text></View>
-        <View style={styles.kpi}><Text style={styles.kpiEmoji}>📈</Text><Text style={[styles.kpiVal,{color:'#059669'}]}>{(d.monthEarnings as number ?? 0)?.toLocaleString()}</Text><Text style={styles.kpiLabel}>الشهر</Text></View>
+    <ScreenState isLoading={earnings.isLoading} isError={earnings.isError} isEmpty={!data} errorMessage="فشل تحميل الأرباح" onRetry={() => earnings.refetch()}>
+      <Text style={styles.title}>💰 أرباحي</Text>
+      <View style={styles.summaryCard}>
+        <Text style={styles.summaryLabel}>إجمالي الأرباح</Text>
+        <Text style={styles.summaryAmount}>{formatCurrency(Number(data?.totalEarnings ?? 0))}</Text>
       </View>
-    </ScrollView>
+      {items && items.length > 0 && (
+        <FlatList
+          data={items as any[]}
+          keyExtractor={(_, i) => String(i)}
+          renderItem={({ item }) => (
+            <View style={styles.txnRow}>
+              <View>
+                <Text style={styles.txnPeriod}>{item.periodStart ? new Date(item.periodStart).toLocaleDateString('ar-SA') : ''}</Text>
+                <Text style={styles.txnStatus}>{item.status as string}</Text>
+              </View>
+              <Text style={styles.txnAmount}>{formatCurrency(Number(item.amount ?? 0))}</Text>
+            </View>
+          )}
+        />
+      )}
+    </ScreenState>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#ecfdf5' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 20 },
-  kpiRow: { gap: 8 },
-  kpi: { backgroundColor: '#fff', borderRadius: 16, padding: 16, alignItems: 'center', marginBottom: 8 },
-  kpiEmoji: { fontSize: 28, marginBottom: 4 }, kpiVal: { fontSize: 22, fontWeight: '800', color: '#111827' }, kpiLabel: { fontSize: 11, color: '#9ca3af' },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  summaryCard: { backgroundColor: COLORS.brand, borderRadius: 16, padding: 24, alignItems: 'center', marginBottom: 24 },
+  summaryLabel: { fontSize: 13, color: 'rgba(255,255,255,0.8)' },
+  summaryAmount: { fontSize: 32, fontWeight: '800', color: COLORS.white, marginTop: 8 },
+  txnRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' },
+  txnPeriod: { fontSize: 13, fontWeight: '600', color: COLORS.gray900 },
+  txnStatus: { fontSize: 11, color: COLORS.gray400, marginTop: 2 },
+  txnAmount: { fontSize: 14, fontWeight: '700', color: COLORS.brand },
 });

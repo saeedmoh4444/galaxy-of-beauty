@@ -1,39 +1,38 @@
-import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect, useCallback } from 'react';
-import { SkeletonList } from '@/components/SkeletonCard';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827', success: '#10b981', danger: '#dc2626', info: '#3b82f6' };
+const STATUS: Record<string, string> = { REQUESTED: 'قيد الانتظار', ACCEPTED: 'مقبول', COMPLETED: 'مكتمل', CANCELLED: 'ملغي', IN_PROGRESS: 'جاري', NO_SHOW: 'لم تحضر' };
+const STATUS_COLORS: Record<string, string> = { COMPLETED: '#10b981', CANCELLED: '#dc2626', REJECTED: '#dc2626', DEFAULT: '#3b82f6' };
 
 export default function TechBookingsScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).bookings.listTech.query({}) as any).then((d: any) => { setData(d?.bookings || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
-  }, []);
-
-  useEffect(() => { fetch(); }, [fetch]);
-
-  if (loading) return <SkeletonList count={5} />;
+  const bookings = (trpc as any).bookings?.listForTechnician?.useQuery?.({ limit: 20 }) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const data = bookings.data as unknown[] | undefined;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#059669']} />}>
-      <Text style={styles.t}>📅 حجوزاتي</Text>
-      {data.map((b: any, i: number) => (
+    <ScreenState isLoading={bookings.isLoading} isError={bookings.isError} isEmpty={!data || data.length === 0} errorMessage="فشل تحميل الحجوزات" emptyTitle="لا توجد حجوزات" onRetry={() => bookings.refetch()}>
+      <Text style={styles.title}>📅 حجوزاتي</Text>
+      {(data as Record<string, unknown>[])?.map((b: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
-          <View style={{flex:1}}><Text style={styles.code}>{b.bookingCode as string}</Text><Text style={styles.date}>{new Date(b.startAt as string).toLocaleDateString('ar-SA')}</Text></View>
-          <Text style={styles.status}>{b.status as string}</Text>
+          <View style={styles.row}>
+            <Text style={styles.code}>{b.bookingCode as string}</Text>
+            <Text style={[styles.statusBadge, { color: STATUS_COLORS[b.status as string] ?? STATUS_COLORS.DEFAULT }]}>
+              {STATUS[b.status as string] ?? (b.status as string)}
+            </Text>
+          </View>
+          <Text style={styles.date}>{new Date(b.startAt as string).toLocaleString('ar-SA')}</Text>
         </View>
       ))}
-    </ScrollView>
+    </ScreenState>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#ecfdf5' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 20 },
-  card: { flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 6 },
-  code: { fontSize: 13, fontWeight: '600', color: '#111827', fontFamily: 'monospace' },
-  date: { fontSize: 12, color: '#6b7280' }, status: { fontSize: 12, fontWeight: '600', color: '#059669' },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  card: { backgroundColor: COLORS.white, borderRadius: 14, padding: 16, marginBottom: 8 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
+  code: { fontSize: 14, fontWeight: '700', color: COLORS.gray900 },
+  statusBadge: { fontSize: 12, fontWeight: '600' },
+  date: { fontSize: 12, color: COLORS.gray400 },
 });
