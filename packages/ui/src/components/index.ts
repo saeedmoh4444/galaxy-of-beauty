@@ -15,3 +15,4 @@ export { PageContainer } from './PageContainer';
 export { Icon } from './Icon';
 export type { IconName } from './Icon';
 export { InlineEdit } from './InlineEdit';
+export { FormField, FormSelect, FormTextarea } from './FormField';

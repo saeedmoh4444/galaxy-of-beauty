@@ -61,6 +61,28 @@ const nextConfig = {
         source: '/(api|login|register|dashboard|admin|bookings|wallet|profile|tech|cart|checkout|payments|2fa)/(.*)',
         headers: [{ key: 'Cache-Control', value: 'no-store, max-age=0' }],
       },
+      // Content Security Policy
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "font-src 'self' https://fonts.gstatic.com",
+              "img-src 'self' data: blob: https:",
+              "connect-src 'self' https://api.openai.com https://*.sentry.io wss:",
+              "frame-src 'self' https://www.youtube.com https://js.stripe.com",
+              "media-src 'self' blob:",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+            ].join('; '),
+          },
+        ],
+      },
     ];
   },
 

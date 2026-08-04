@@ -76,6 +76,51 @@ export const sharedMessages = {
   'misc.search': { ar: 'بحث', en: 'Search' },
   'misc.filter': { ar: 'تصفية', en: 'Filter' },
   'misc.sort': { ar: 'ترتيب', en: 'Sort' },
+
+  // Time
+  'time.today': { ar: 'اليوم', en: 'Today' },
+  'time.tomorrow': { ar: 'غداً', en: 'Tomorrow' },
+  'time.yesterday': { ar: 'أمس', en: 'Yesterday' },
+  'time.days': { ar: 'أيام', en: 'Days' },
+  'time.hours': { ar: 'ساعات', en: 'Hours' },
+  'time.minutes': { ar: 'دقائق', en: 'Minutes' },
+  'time.seconds': { ar: 'ثواني', en: 'Seconds' },
+
+  // Confirmations
+  'confirm.delete': { ar: 'هل أنت متأكدة من الحذف؟', en: 'Are you sure you want to delete?' },
+  'confirm.cancel': { ar: 'هل أنت متأكدة من الإلغاء؟', en: 'Are you sure you want to cancel?' },
+  'confirm.logout': { ar: 'هل أنت متأكدة من تسجيل الخروج؟', en: 'Are you sure you want to logout?' },
+  'confirm.unsaved': { ar: 'لديك تغييرات غير محفوظة', en: 'You have unsaved changes' },
+
+  // Status
+  'status.active': { ar: 'نشط', en: 'Active' },
+  'status.inactive': { ar: 'غير نشط', en: 'Inactive' },
+  'status.pending': { ar: 'قيد الانتظار', en: 'Pending' },
+  'status.approved': { ar: 'مقبول', en: 'Approved' },
+  'status.rejected': { ar: 'مرفوض', en: 'Rejected' },
+  'status.expired': { ar: 'منتهي', en: 'Expired' },
+
+  // Payment
+  'payment.card': { ar: 'بطاقة', en: 'Card' },
+  'payment.cash': { ar: 'نقدي', en: 'Cash' },
+  'payment.wallet': { ar: 'محفظة', en: 'Wallet' },
+  'payment.applePay': { ar: 'آبل باي', en: 'Apple Pay' },
+  'payment.mada': { ar: 'مدى', en: 'Mada' },
+
+  // Notifications
+  'notif.bookingCreated': { ar: 'تم إنشاء الحجز', en: 'Booking Created' },
+  'notif.bookingAccepted': { ar: 'تم قبول الحجز', en: 'Booking Accepted' },
+  'notif.bookingCompleted': { ar: 'تم اكتمال الحجز', en: 'Booking Completed' },
+  'notif.paymentReceived': { ar: 'تم استلام الدفع', en: 'Payment Received' },
+  'notif.newMessage': { ar: 'رسالة جديدة', en: 'New Message' },
+  'notif.promotion': { ar: 'عرض جديد', en: 'New Promotion' },
+
+  // Errors
+  'error.network': { ar: 'خطأ في الاتصال بالشبكة', en: 'Network error' },
+  'error.serverError': { ar: 'خطأ في الخادم', en: 'Server error' },
+  'error.validationError': { ar: 'خطأ في التحقق من البيانات', en: 'Validation error' },
+  'error.rateLimit': { ar: 'طلبات كثيرة. حاولي لاحقاً', en: 'Too many requests. Try again later.' },
+  'error.unauthorized': { ar: 'يجب تسجيل الدخول', en: 'Login required' },
 } as const;
 
 export type TranslationKey = keyof typeof sharedMessages;
