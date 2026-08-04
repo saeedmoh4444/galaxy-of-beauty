@@ -5,7 +5,7 @@ import { trpc } from '@/lib/trpc-react';
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function StreaksScreen(): JSX.Element {
-  const streak = trpc.streaks.getMyStreak.useQuery();
+  const streak = trpc.streaks.get.useQuery();
   const data = streak.data as Record<string, unknown> | undefined;
 
   return (
