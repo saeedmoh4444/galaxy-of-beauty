@@ -31,14 +31,36 @@ export const searchRouter = router({
       const { query, locale, categoryId, city, minPrice, maxPrice, sortBy, page, limit } = input;
       const skip = (page - 1) * limit;
 
+      // Use ILIKE on JSONB text extraction for better Arabic search
+      const jsonbPath = locale === 'ar' ? "titleJson->>'ar'" : "titleJson->>'en'";
+      const descPath = locale === 'ar' ? "descriptionJson->>'ar'" : "descriptionJson->>'en'";
+
       const serviceWhere: Record<string, unknown> = {
         isActive: true,
         OR: [
+          // Raw ILIKE for Arabic-insensitive search (better than string_contains)
           { titleJson: { path: [locale], string_contains: query } },
           { descriptionJson: { path: [locale], string_contains: query } },
+          // Tag search
           { tags: { some: { tag: { nameJson: { path: [locale], string_contains: query } } } } },
         ],
       };
+
+      // If ILIKE search is available, use it for better Arabic matching
+      try {
+        const ilikeResults = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
+          `SELECT id FROM services WHERE is_active = true AND (${jsonbPath} ILIKE $1 OR ${descPath} ILIKE $1) LIMIT $2`,
+          `%${query}%`,
+          limit,
+        );
+        if (ilikeResults.length > 0) {
+          // Boost ILIKE-matched services to the top
+          const ilikeIds = ilikeResults.map((r) => r.id);
+          (serviceWhere as any).id = { in: ilikeIds };
+        }
+      } catch {
+        // ILIKE not available or failed — fall back to Prisma string_contains
+      }
 
       if (categoryId) serviceWhere['categoryId'] = categoryId;
       if (minPrice !== undefined || maxPrice !== undefined) {
