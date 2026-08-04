@@ -1,4 +1,6 @@
 import { router, publicProcedure } from '../trpc';
+import { prisma } from '@galaxy/db';
+import { getRedis } from '../lib/redis';
 
 // ── Domain exports ──
 // Each domain groups related feature routers.
@@ -128,13 +130,40 @@ import { kidsServicesRouter } from './kidsServices';
 import { beautyStatsRouter } from './beautyStats';
 
 export const appRouter = router({
-  // Health
-  health: publicProcedure.query(() => ({
-    status: 'ok' as const,
-    timestamp: new Date().toISOString(),
-    version: '2.0.0',
-    uptime: process.uptime(),
-  })),
+  // Health — checks DB + Redis connectivity for load balancers / Docker healthchecks
+  health: publicProcedure.query(async () => {
+    const checks: Record<string, string> = {};
+
+    // Database check
+    try {
+      await prisma.$queryRawUnsafe('SELECT 1');
+      checks.database = 'ok';
+    } catch {
+      checks.database = 'error';
+    }
+
+    // Redis check
+    try {
+      const redis = getRedis();
+      if (redis && (redis.status === 'ready' || redis.status === 'connecting')) {
+        await redis.ping();
+        checks.redis = 'ok';
+      } else {
+        checks.redis = 'unavailable';
+      }
+    } catch {
+      checks.redis = 'error';
+    }
+
+    const allHealthy = Object.values(checks).every((v) => v === 'ok');
+    return {
+      status: allHealthy ? ('ok' as const) : ('degraded' as const),
+      timestamp: new Date().toISOString(),
+      version: '2.2.0',
+      uptime: Math.round(process.uptime()),
+      checks,
+    };
+  }),
 
   // ── Domain routers ──
   // Auth
