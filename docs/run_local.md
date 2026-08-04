@@ -41,24 +41,32 @@ pnpm install
 
 ### 2.2 Set Up Environment Variables
 
-Create `.env` in the project root:
+Copy the example file to create your `.env`:
 
 ```bash
-# Database — PostgreSQL connection string
+cp .env.example .env
+```
+
+The root `.env` covers all workspaces (web, api, mobile). Required variables:
+
+```bash
+# Database
 DATABASE_URL="postgresql://gob_admin:gob_secure_pass_2024@localhost:5433/Galaxy_of_Beauty_db?schema=public"
 
 # Redis
 REDIS_URL="redis://localhost:6379"
 
-# JWT Secrets — must be at least 32 characters
-JWT_ACCESS_SECRET="dev-access-secret-at-least-32-characters-long!!"
-JWT_REFRESH_SECRET="dev-refresh-secret-at-least-32-characters-long!!"
+# JWT (min 32 chars)
+JWT_ACCESS_SECRET="dev-access-secret-at-least-32-chars-long"
+JWT_REFRESH_SECRET="dev-refresh-secret-at-least-32-chars-long"
 
-# Application URL
+# App
+NODE_ENV="development"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
+EXPO_PUBLIC_API_URL="http://localhost:3000/api/trpc"
+```
 
-# Optional: AI features
-OPENAI_API_KEY="sk-your-key-here"
+> ⚠️ **Prisma note:** `packages/db` also needs a `.env` with `DATABASE_URL` for Prisma Client runtime. The seed/generate scripts handle this — but if you get `Environment variable not found: DATABASE_URL`, create `packages/db/.env` with just that one line.
 
 # Optional: Email (SMTP)
 # SMTP_HOST=smtp.example.com
