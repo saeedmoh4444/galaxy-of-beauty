@@ -4,10 +4,12 @@ import superjson from 'superjson';
 import type { Context } from './context';
 import { verifyCsrfToken } from './lib/csrf';
 import { checkRateLimit } from './lib/rateLimit';
+import { incrementRequestCount, incrementErrorCount } from './lib/requestCounters';
 
 const t = initTRPC.context<Context>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
+    incrementErrorCount();
     return {
       ...shape,
       data: {
@@ -16,6 +18,12 @@ const t = initTRPC.context<Context>().create({
       },
     };
   },
+});
+
+// ── Request Counting Middleware ──
+const requestCounter = t.middleware(async ({ next }) => {
+  incrementRequestCount();
+  return next();
 });
 
 export const { router, procedure, middleware, mergeRouters } = t;
@@ -39,8 +47,8 @@ const rateLimitGuard = middleware(async ({ ctx, next, path }) => {
 });
 
 // ---- Public (no auth) ----
-// All procedures get rate-limited by default
-export const publicProcedure = procedure.use(rateLimitGuard);
+// All procedures get request-counted and rate-limited by default
+export const publicProcedure = procedure.use(requestCounter).use(rateLimitGuard);
 
 // ---- CSRF Protection (applied to mutations) ----
 const csrfGuard = middleware(({ ctx, next }) => {
@@ -59,9 +67,9 @@ const csrfGuard = middleware(({ ctx, next }) => {
 });
 
 /**
- * Public mutation — CSRF-protected, no auth required.
+ * Public mutation — request-counted, CSRF-protected, no auth required.
  */
-export const publicMutation = procedure.use(csrfGuard);
+export const publicMutation = procedure.use(requestCounter).use(csrfGuard);
 
 // ---- Authenticated ----
 const isAuthed = middleware(({ ctx, next }) => {
