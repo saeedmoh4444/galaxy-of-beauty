@@ -220,4 +220,12 @@ export const notificationRouter = router({
 
       return notification;
     }),
+
+  // Delete all read notifications
+  deleteAllRead: protectedProcedure.mutation(async ({ ctx }) => {
+    const result = await prisma.notification.deleteMany({
+      where: { userId: ctx.user.id, isRead: true },
+    });
+    return { message: `تم حذف ${result.count} إشعار`, count: result.count };
+  }),
 });

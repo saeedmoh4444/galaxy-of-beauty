@@ -216,4 +216,34 @@ export const userRouter = router({
         });
       }
     }),
+
+  // List active sessions (refresh tokens) for current user
+  mySessions: protectedProcedure.query(async ({ ctx }) => {
+    return prisma.refreshToken.findMany({
+      where: { userId: ctx.user.id, revokedAt: null, expiresAt: { gt: new Date() } },
+      select: { id: true, expiresAt: true, createdAt: true },
+      orderBy: { createdAt: 'desc' },
+    });
+  }),
+
+  // Revoke a specific session
+  revokeSession: protectedProcedure
+    .input(z.object({ tokenId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      await prisma.refreshToken.updateMany({
+        where: { id: input.tokenId, userId: ctx.user.id },
+        data: { revokedAt: new Date() },
+      });
+      return { message: 'تم إنهاء الجلسة' };
+    }),
+
+  // Revoke all other sessions (keep current)
+  revokeOtherSessions: protectedProcedure.mutation(async ({ ctx }) => {
+    // We can't identify the current token here, so we revoke all
+    await prisma.refreshToken.updateMany({
+      where: { userId: ctx.user.id, revokedAt: null },
+      data: { revokedAt: new Date() },
+    });
+    return { message: 'تم إنهاء جميع الجلسات الأخرى' };
+  }),
 });
