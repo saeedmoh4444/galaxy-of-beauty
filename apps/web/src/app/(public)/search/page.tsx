@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Input, Card, CardSkeleton, EmptyState, Button, formatCurrency, ar } from '@galaxy/ui'
+import { Input, Card, CardSkeleton, Button, formatCurrency, ar } from '@galaxy/ui'
 ;
 export default function SearchPage(): JSX.Element {
   const [query, setQuery] = useState('');
