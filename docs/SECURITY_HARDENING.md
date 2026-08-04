@@ -1,8 +1,23 @@
 # Security Hardening Checklist — Galaxy of Beauty
 
-**Date:** 2026-07-29  
-**Version:** 2.2.0  
+**Date:** 2026-08-04  
+**Version:** 2.3.0  
 **Framework:** OWASP Top 10 (2021) + Saudi NCA-ECC
+
+## 2026-08-04 Hardening Update
+
+| Improvement | Detail |
+|-------------|--------|
+| **JWT jti claim** | crypto.randomUUID() added to every access/refresh token. Prevents token collision in parallel auth. |
+| **Rate limiting tests** | 11 automated tests verify all 3 tiers (20/60/300 per min). Fail-open when Redis unavailable. |
+| **Session management** | users.mySessions (list active sessions), revokeSession, revokeOtherSessions. Full session lifecycle. |
+| **CSRF hardening** | crypto.randomBytes(32) tokens, timingSafeEqual comparison, hex validation, SameSite=Strict. |
+| **Password validation (Arabic)** | 8+ chars, uppercase/lowercase/digit/special, common password blocklist, no 3+ repeated chars. |
+| **CSP headers** | Content-Security-Policy: default-src 'self', script-src, style-src, img-src, connect-src, frame-src, object-src 'none'. |
+| **X-Request-ID** | crypto.randomUUID() in middleware, propagated via response headers for traceability. |
+| **Health endpoint** | DB (SELECT 1) + Redis (PING) connectivity checks. Returns 'ok' or 'degraded'. |
+| **Token cleanup** | Hourly purge of expired/revoked refresh tokens + reset tokens + old notifications. |
+| **Prisma graceful shutdown** | SIGTERM/SIGINT handlers call prisma.$disconnect(). Safe connection pool closure. |
 
 ---
 
