@@ -1,421 +1,359 @@
-# PLAN.md — Galaxy of Beauty: Greenfield Rebuild
+# Galaxy of Beauty — Phase 0: Deep Audit & Plan
 
-
-> **Strategy:** Full greenfield rebuild into the target Next.js 14 + tRPC + Turborepo + pnpm monorepo stack, carrying forward all 27 features from the existing Express + React/Vite + Expo codebase.
-
----
-
-## 1. Feature Map (Web + Mobile)
-
-### Auth & Identity
-| # | Feature | Web | Mobile | Existing Code |
-|---|---------|-----|--------|--------------|
-| F1 | Register (email, phone, name, role) | ✅ | ✅ | `auth.js` service, `RegisterPage.jsx` |
-| F2 | Login with JWT (access 15m + refresh 7d) | ✅ | ✅ | `auth.js`, `LoginPage.jsx` |
-| F3 | Email verification | ✅ | ✅ | `auth.js` email verify flow |
-| F4 | Forgot / Reset password | ✅ | ✅ | `auth.js` |
-| F5 | Change password | ✅ | ✅ | `auth.js` |
-| F6 | Two-factor auth (setup + enforce at login) | ✅ | ✅ | `twoFactor.js` — **GAP: not enforced at login** |
-| F7 | JWT refresh with rotation + reuse detection | ✅ | ✅ | `auth.js`, `api.js` interceptor |
-| F8 | Role-based access (CUSTOMER / TECHNICIAN / ADMIN) | ✅ | ✅ | Middleware, `ProtectedRoute` |
-
-### Profiles & KYC
-| # | Feature | Web | Mobile | Existing Code |
-|---|---------|-----|--------|--------------|
-| F9 | User profile (view/edit name, phone, avatar, language) | ✅ | ✅ | `ProfilePage.jsx`, `users.js` routes |
-| F10 | Technician extended profile (city, area, bio, KYC) | ✅ | ✅ | `technician.js` service |
-| F11 | KYC submission & verification (admin review) | ✅ | ✅ | `technician.js`, `admin.js` |
-| F12 | Address management (CRUD, default, geolocation) | ✅ | ✅ | `address.js`, `Address` model |
-
-### Service Catalog
-| # | Feature | Web | Mobile | Existing Code |
-|---|---------|-----|--------|--------------|
-| F13 | Category tree (nested, bilingual JSONB) | ✅ | ✅ | `catalog.js`, `categories.js` routes |
-| F14 | Service listing with search, filter, sort | ✅ | ✅ | `ServicesPage.jsx`, `catalog.js` |
-| F15 | Service detail (variants, add-ons, tags) | ✅ | ✅ | `ServiceDetailPage.jsx` |
-| F16 | Technician-service mapping with custom pricing | ✅ | ✅ | `TechnicianService` model |
-| F17 | Service tags (Bridal, Organic, etc.) | ✅ | ✅ | `ServiceTag` model |
-| F18 | Saudi cities reference data | ✅ | ✅ | `SaudiCity` model |
-
-### Availability & Booking
-| # | Feature | Web | Mobile | Existing Code |
-|---|---------|-----|--------|--------------|
-| F19 | Technician availability slots (CRUD) | ✅ | ✅ | `slots.js`, `AvailabilitySlot` |
-| F20 | Booking creation with slot reservation | ✅ | ✅ | `booking.js` service, state machine |
-| F21 | Booking lifecycle state machine (10 states) | ✅ | ✅ | `booking.js` |
-| F22 | Real-time updates via WebSocket | ✅ | ✅ | `socket/`, Socket.IO |
-| F23 | Booking code generation (GOB-XXXXXX) | ✅ | ✅ | `booking.js` |
-| F24 | Waitlist for busy technicians | ✅ | ✅ | `waitlist.js` |
-
-### Payments & Wallet
-| # | Feature | Web | Mobile | Existing Code |
-|---|---------|-----|--------|--------------|
-| F25 | PayFort/APS payment (authorize → capture) | ✅ | ✅ | `payment.js`, `Payment` model |
-| F26 | Wallet balance + bonus (non-withdrawable) | ✅ | ✅ | `wallet.js`, `Wallet` model |
-| F27 | Cashback (first booking 40%, subsequent 5%) | ✅ | ✅ | `wallet.js` |
-| F28 | Platform fee split (technician earnings) | ✅ | ✅ | `wallet.js` |
-| F29 | Payouts / withdrawals (min balance, fees) | ✅ | ✅ | `payouts.js` routes |
-| F30 | Refunds | ✅ | ✅ | `payment.js` |
-| F31 | Idempotency keys (Redis-backed) | ✅ | ✅ | `wallet.js`, `payment.js` |
-
-### Reviews, Disputes & Notifications
-| # | Feature | Web | Mobile | Existing Code |
-|---|---------|-----|--------|--------------|
-| F32 | Customer reviews (1-5 stars, comment) | ✅ | ✅ | `review.js` |
-| F33 | Dispute lifecycle (open → review → resolve) | ✅ | ✅ | `dispute.js` |
-| F34 | Multi-channel notifications (email/SMS/push/in-app) | ✅ | ✅ | `notification.js` |
-| F35 | Push notification tokens (Expo) | ✅ | ✅ | Mobile `App.js` |
-
-### Compliance
-| # | Feature | Web | Mobile | Existing Code |
-|---|---------|-----|--------|--------------|
-| F36 | Terms acceptance with IP audit | ✅ | ✅ | `TermsAcceptance` model |
-| F37 | ZATCA e-invoicing (hash, QR, reporting) | ✅ | ✅ | `zatca.js` |
-| F38 | Audit logging (admin actions) | ✅ | ✅ | `AuditLog` model |
-| F39 | Maintenance mode | ✅ | ✅ | Middleware |
-
-### AI ("Layla")
-| # | Feature | Web | Mobile | Existing Code |
-|---|---------|-----|--------|--------------|
-| F40 | AI chatbot (OpenAI-backed) | ✅ | ✅ | `ai.js`, `ChatMessage` |
-| F41 | AI recommendations | ✅ | ✅ | `ai.js` |
-| F42 | Onboarding quiz | ✅ | ✅ | `CustomerQuizResponse` |
-| F43 | AI subscription plans + usage tracking | ✅ | ✅ | `AiSubscriptionPlan`, `AiUsage` |
-
-### Gamification & Growth
-| # | Feature | Web | Mobile | Existing Code |
-|---|---------|-----|--------|--------------|
-| F44 | Wishlist (services + technicians) | ✅ | ✅ | `wishlist.js`, `WishlistPage.jsx` |
-| F45 | Beauty streaks (current + longest) | ✅ | ✅ | `streaks.js` |
-| F46 | Achievements (first booking, weekly streak, etc.) | ✅ | ✅ | `Achievement` model |
-| F47 | Referral program (codes, rewards) | ✅ | ✅ | `referral.js` |
-| F48 | "Surprise Me" recommendations | ✅ | ✅ | `SurpriseMePage.jsx` |
-
-### Admin
-| # | Feature | Web | Mobile | Existing Code |
-|---|---------|-----|--------|--------------|
-| F49 | Admin dashboard (bookings, customers, techs, finance) | ✅ | ❌ | `AdminDashboard.jsx` |
-| F50 | User/technician management (suspend, verify KYC) | ✅ | ❌ | `admin.js` |
-| F51 | Category & service CRUD | ✅ | ❌ | `admin.js`, `catalog.js` |
-| F52 | Analytics & reports | ✅ | ❌ | `analytics.js` |
-| F53 | Platform configuration | ✅ | ❌ | `platform.js`, `PlatformConfig` |
-
-### Localization
-| # | Feature | Web | Mobile | Existing Code |
-|---|---------|-----|--------|--------------|
-| F54 | Arabic (ar) — default, RTL | ✅ | ✅ | `i18n/` dirs, i18next |
-| F55 | English (en) — LTR | ✅ | ✅ | `i18n/` dirs |
-| F56 | Bilingual content (JSONB `{ ar, en }`) | ✅ | ✅ | All models |
+> **Date:** 2026-08-04
+> **Status:** Audit complete — assessing current state vs target architecture
+> **Project:** جالكسي بيوتي — Saudi beauty & grooming marketplace
 
 ---
 
-## 2. Entity-Relationship Diagram (Text)
+## 1. Current State Summary
+
+### 1.1 What Exists (Already Well Beyond Scaffold)
+
+The monorepo is **fully scaffolded and heavily built out** — this is not a greenfield project. The structure matches the target architecture exactly:
 
 ```
-User 1──1 Wallet
-User 1──0..1 Technician
-User 1──0..1 Streak
-User 1──* Address
-User 1──* Booking (as Customer)
-User 1──* Booking (as Technician)
-User 1──* Notification
-User 1──* Review
-User 1──* RefreshToken
-User 1──* TermsAcceptance
-User 1──* Dispute (raised)
-User 1──* WaitlistEntry
-User 1──* ChatMessage
-User 1──* WishlistItem
-User 1──* UserAchievement
-User 1──* Referral (made)
-User 1──* Referral (received)
-User 1──* AuditLog
-User 1──* Payout
+galaxy-of-beauty/
+├── apps/
+│   ├── web/           # Next.js 14 App Router — ~84 routes, 5 route groups
+│   └── mobile/        # Expo SDK 54 + Expo Router — ~47 screens, 5 tabs
+├── packages/
+│   ├── api/           # tRPC v11 — 163 routers, 400+ procedures
+│   ├── db/            # Prisma — 87+ models, 15 enums, 8 migrations
+│   ├── shared/        # UI kit (11 components), hooks (3), i18n, theme, types
+│   └── config/        # TSConfig (4 variants), ESLint (3), Prettier, Tailwind
+├── docs/              # ADRs, architecture, deployment, security docs
+├── _legacy/           # Archived v1.0 Express + Vite codebase
+├── docker-compose.yml # 5 services with healthchecks
+├── turbo.json         # Build/lint/type-check/test pipelines
+└── pnpm-workspace.yaml
+```
 
-Technician 1──* AvailabilitySlot
-Technician 1──* TechnicianService
-Technician 1──* WaitlistEntry
-Technician 1──* WishlistItem
+### 1.2 Pipeline Health (from last known state)
 
-Category 1──0..1 Category (parent)
-Category 1──* Category (children)
-Category 1──* Service
+| Pipeline | Result | Notes |
+|----------|--------|-------|
+| Type Check | 10/10 workspaces ✅ | `pnpm type-check` passes |
+| Lint | 7/7 workspaces ✅ | `pnpm lint` passes |
+| Build | 5/5 workspaces ✅ | 84+ Next.js routes built |
+| API Tests | 243 passing (10 suites) ✅ | Vitest — tRPC integration + unit |
+| E2E Tests | 38/38 chromium ✅ | Playwright — auth, booking, security flows |
+| Docker | 5 services 🟢 | postgres, redis, web, socket, mobile |
 
-Service 1──* ServiceVariant
-Service *──* Service (addons via ServiceAddon)
-Service 1──* TechnicianService
-Service 1──* Booking
-Service 1──* WishlistItem
-Service *──* ServiceTag (via ServiceTagAssignment)
+### 1.3 Git Status (Uncommitted Changes)
 
-TechnicianService *──1 Technician
-TechnicianService *──1 Service
-
-AvailabilitySlot 1──1 Booking (optional)
-
-Booking 1──1 Payment (optional)
-Booking 1──1 Review (optional)
-Booking 1──1 Dispute (optional)
-Booking 1──1 ZatcaInvoice (optional)
-Booking *──1 Address
-
-AiSubscriptionPlan 1──* CustomerAiSubscription
-CustomerAiSubscription 1──* AiUsage
-
-Achievement 1──* UserAchievement
-
-Wallet 1──* WalletTransaction
+```
+225 files deleted (60,662 deletions) — STAGED but NOT committed:
+├── _legacy/          (entire archived v1.0 — backend, frontend, mobileapp)
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── DELIVERY_REPORT.md
+├── PLAN.md           (previous version)
+└── SENIOR_EVALUATION.md
 ```
 
 ---
 
-## 3. Route Table
+## 2. Feature Map — Web + Mobile
 
-### tRPC Router Structure (replaces REST API)
+### 2.1 Route Groups Coverage
 
-```typescript
-// packages/api/src/routers/
-auth        // register, login, logout, refreshToken, verifyEmail,
-            //   forgotPassword, resetPassword, changePassword,
-            //   2fa.setup, 2fa.verify, 2fa.disable, 2fa.enforceLogin
-users       // me, updateProfile, uploadAvatar, getById
-technicians // list, getById, getSlots, getServices,
-            //   submitKyc, updateKycStatus (admin)
-addresses   // list, create, update, delete, setDefault
-categories  // list, tree, getBySlug, create (admin), update (admin), delete (admin)
-services    // list, search, getById, getVariants, getAddons,
-            //   create (admin), update (admin), delete (admin)
-slots       // create, update, delete, getAvailability, getByTechnician
-bookings    // create, accept, reject, start, complete, cancel,
-            //   noShow, getById, list (customer/tech), timeline
-payments    // authorize, capture, refund, status, webhook
-wallet      // getBalance, transactions, cashbackHistory
-payouts     // request, list, process (admin)
-reviews     // create, update, list (by tech/booking), hide (admin)
-disputes    // create, update, resolve (admin), list
-notifications // list, markRead, markAllRead, send (admin), registerPushToken
-waitlist    // join, leave, status, notify (admin)
-wishlist    // add, remove, list
-analytics   // dashboard (admin), technicianStats, bookingReports, revenueCharts
-zatca       // generateInvoice, report, status, clearance
-ai          // chat, recommendations, quiz.submit, quiz.get
-calendar    // connectGoogle, sync, disconnect
-subscriptions // plans.list, subscribe, cancel, usage
-platform    // getConfig, setConfig (admin), maintenance.toggle, terms.get, terms.accept
-streaks     // get, history
-referrals   // getCode, apply, status, rewards
-admin       // users.list, users.suspend, technicians.verifyKyc, dashboard.stats
-uploads     // avatar, kycDocument, categoryImage, serviceImage
-```
+| Route Group | Web Routes | Mobile Screens | State Pattern | Notes |
+|-------------|-----------|----------------|---------------|-------|
+| `(public)` | 35+ pages | 35+ screens | ⚠️ Partial | Landing, services, technicians, blog, marketplace, etc. |
+| `(auth)` | 6 pages | 6 screens | ✅ Good | Login, register, 2FA, forgot/reset password, verify email |
+| `(customer)` | 70+ pages | 70+ screens | ⚠️ Mixed | Dashboard, bookings, wallet, profile, AI, social, commerce |
+| `admin` | 25+ pages | 25+ screens | ⚠️ Mixed | Dashboard, users, bookings, finance, analytics, settings |
+| `tech` | 8 pages | 6 screens | ⚠️ Mixed | Dashboard, bookings, calendar, earnings, profile, slots |
 
-### Web Route Table (Next.js App Router)
+### 2.2 Feature Categories (from plan_to_add_value.md analysis)
 
-```
-apps/web/app/
-├── (auth)/
-│   ├── login/page.tsx
-│   ├── register/page.tsx
-│   ├── forgot-password/page.tsx
-│   ├── reset-password/page.tsx
-│   └── verify-email/page.tsx
-├── (public)/
-│   ├── page.tsx                    // Landing / Home
-│   ├── services/page.tsx           // Service catalog
-│   ├── services/[slug]/page.tsx    // Service detail
-│   ├── technicians/page.tsx        // Technician search
-│   └── technicians/[id]/page.tsx   // Technician profile
-├── (customer)/
-│   ├── dashboard/page.tsx          // Customer dashboard
-│   ├── bookings/page.tsx           // Booking history
-│   ├── bookings/[id]/page.tsx      // Booking detail
-│   ├── wallet/page.tsx             // Wallet
-│   ├── wishlist/page.tsx           // Wishlist
-│   ├── notifications/page.tsx      // Notifications
-│   ├── profile/page.tsx            // Profile settings
-│   ├── addresses/page.tsx          // Address management
-│   ├── referrals/page.tsx          // Referral program
-│   ├── streaks/page.tsx            // Beauty streaks
-│   └── surprise-me/page.tsx        // AI recommendations
-├── (technician)/
-│   ├── dashboard/page.tsx          // Technician dashboard
-│   ├── slots/page.tsx              // Availability management
-│   ├── bookings/page.tsx           // Booking management
-│   ├── earnings/page.tsx           // Earnings & payouts
-│   └── profile/page.tsx            // KYC & profile
-├── (admin)/
-│   ├── dashboard/page.tsx          // Admin overview
-│   ├── users/page.tsx              // User management
-│   ├── technicians/page.tsx        // KYC verification
-│   ├── categories/page.tsx         // Category management
-│   ├── services/page.tsx           // Service management
-│   ├── bookings/page.tsx           // All bookings
-│   ├── disputes/page.tsx           // Dispute resolution
-│   ├── analytics/page.tsx          // Reports & charts
-│   ├── finance/page.tsx            // Payouts & transactions
-│   ├── platform/page.tsx           // Platform config
-│   └── zatca/page.tsx              // ZATCA invoices
-└── layout.tsx                      // Root layout (providers, i18n)
-```
+#### ✅ Complete / Production-Ready
 
-### Mobile Route Table (Expo Router)
+| Category | Features |
+|----------|----------|
+| Auth | JWT (15m access + 7d refresh), 2FA TOTP, email verification, password reset, role-based access |
+| Core Booking | Request, accept, pay, complete, cancel, no-show, reschedule, waitlist, emergency |
+| Catalog | Categories (nested), services, variants, add-ons, search, filter, sort |
+| Payments | Wallet, top-up, transactions, cashback, PayFort/APS integration |
+| Admin | User management, booking oversight, finance, KYC verification, dispute resolution |
+| ZATCA | E-invoicing with SHA-256 hash, QR codes, compliance reporting |
+| AI | Chatbot "Layla" (GPT-4o-mini), skin analysis, AI routine, AI feed |
+
+#### ⚠️ Built but Uses Mock/Hardcoded Data
+
+| Feature | Current State | Gap |
+|---------|--------------|-----|
+| Monitoring Dashboard | All health data fabricated | Need Prometheus/Grafana or real `pg_stat_activity`/Redis INFO |
+| Booking Heatmap | Queries real data but seed = 6 bookings | Need 500+ bookings in seed for meaningful display |
+| Geofence Offers | Hardcoded 3 offers with random distance | Need DB-backed `GeoPromotion` model + admin CRUD |
+| Live Streaming | Hardcoded stream list with fake viewers | Need YouTube/MUX integration + `LiveStream` DB model |
+| Beauty Stats | `happyCustomers = totalBookings * 0.95` | Need real metrics from actual bookings table |
+| Referral Race | Campaign end date resets on server restart | Need DB-backed campaigns with persistence |
+| Feature Flags | Router exists but implementation depth unclear | Verify admin CRUD + runtime evaluation |
+
+#### ⚠️ Code Complete but Not Verified
+
+| Area | Status | Gap |
+|------|--------|-----|
+| Mobile App | 47 screens written | Zero visual verification, zero E2E tests |
+| State Pattern | Shared has Skeleton/ErrorAlert/EmptyState | Not all ~200 pages consistently use the 4-state pattern |
+| SSR Pages | 10 pages server-rendered | Remaining 74 pages are `'use client'` |
+
+---
+
+## 3. Entity-Relationship Overview
+
+### 3.1 Core Domains
 
 ```
-apps/mobile/app/
-├── (auth)/
-│   ├── login.tsx
-│   ├── register.tsx
-│   ├── forgot-password.tsx
-│   └── verify-email.tsx
-├── (tabs)/
-│   ├── _layout.tsx
-│   ├── index.tsx                   // Home
-│   ├── services.tsx                // Catalog
-│   ├── bookings.tsx                // My bookings
-│   ├── wallet.tsx                  // Wallet
-│   └── profile.tsx                 // Profile
-├── services/[slug].tsx
-├── technicians/[id].tsx
-├── bookings/[id].tsx
-├── wishlist.tsx
-├── notifications.tsx
-├── addresses.tsx
-├── referrals.tsx
-├── streaks.tsx
-├── surprise-me.tsx
-├── chat.tsx                        // Layla chatbot
-├── (technician)/
-│   ├── dashboard.tsx
-│   ├── slots.tsx
-│   └── earnings.tsx
-├── (admin)/
-│   └── dashboard.tsx
-└── _layout.tsx
+┌─────────────────────────────────────────────────────────────┐
+│                        AUTH DOMAIN                          │
+│  User ──┬── Customer (profile, preferences)                │
+│         ├── Technician (KYC, portfolio, availability)       │
+│         └── Admin (permissions)                              │
+│  Session, RefreshToken, AuditLog                            │
+└─────────────────────────────────────────────────────────────┘
+         │
+┌────────▼────────────────────────────────────────────────────┐
+│                     BOOKING DOMAIN                           │
+│  Booking ──── Service (with Variants, AddOns)              │
+│     │         │                                              │
+│     ├── Technician (assigned)                               │
+│     ├── Address (location)                                  │
+│     ├── Payment (authorize → capture → refund)              │
+│     └── Review (rating + comment, bilingual)                │
+│  Slot, Waitlist, Reschedule, RecurringBooking,              │
+│  EmergencyBooking, GroupBooking, CalendarSync               │
+└─────────────────────────────────────────────────────────────┘
+         │
+┌────────▼────────────────────────────────────────────────────┐
+│                     FINANCE DOMAIN                           │
+│  Wallet ──── WalletTransaction (CREDIT/DEBIT)               │
+│  Payment (PayFort/APS — AUTHORIZED → CAPTURED → REFUNDED)  │
+│  Payout (to technicians), Cashback, SavedCard               │
+│  GiftCard, PromoCode, PromoUsage                            │
+│  ZATCAInvoice (SHA-256 hash, QR code)                       │
+└─────────────────────────────────────────────────────────────┘
+         │
+┌────────▼────────────────────────────────────────────────────┐
+│                    LOYALTY DOMAIN                            │
+│  LoyaltyAccount (points, tier: BRONZE/SILVER/GOLD/PLATINUM)│
+│  LoyaltyTransaction, Streak, Achievement, Referral          │
+│  BirthdayReward, LoyaltyPunchCard, VIPMembership            │
+└─────────────────────────────────────────────────────────────┘
+         │
+┌────────▼────────────────────────────────────────────────────┐
+│                    SOCIAL DOMAIN                             │
+│  Review, Inspiration, MoodBoard, Community, Following       │
+│  Challenges, SocialChallenge, BeautyParty                   │
+│  ReferralRace, TechLeaderboard, TechnicianQA                │
+└─────────────────────────────────────────────────────────────┘
+         │
+┌────────▼────────────────────────────────────────────────────┐
+│                    CONTENT DOMAIN                            │
+│  Blog (bilingual), Tutorial, BeforeAfter, LookOfTheDay     │
+│  BeautyStory, BeautyShorts, BeautyPodcast, AudioRoom        │
+│  BehindScenes, VideoTestimonial, LiveStream                 │
+│  Campaign (seasonal), BeautyEvent, EventTickets             │
+└─────────────────────────────────────────────────────────────┘
+         │
+┌────────▼────────────────────────────────────────────────────┐
+│                 AI & PERSONALIZATION DOMAIN                  │
+│  AISession (chat "Layla"), SkinAnalysis, HairColorSim      │
+│  VirtualTryOn, StyleMatch, ProductScanner                   │
+│  ProductCompare, IngredientAnalyzer, AllergenChecker        │
+│  PersonalizedFeed, Recommendations, ServiceRecommender      │
+│  AIAssistant, AIRoutine, BeautyProfile                      │
+└─────────────────────────────────────────────────────────────┘
+         │
+┌────────▼────────────────────────────────────────────────────┐
+│                   COMMERCE DOMAIN                            │
+│  Marketplace (products), SubscriptionBox, Subscription      │
+│  BeautyPackage, Bundle/BoxBuilder, FlashDeal, GroupBuy      │
+│  GiftRegistry, GiftCardMarket, BNPL                         │
+└─────────────────────────────────────────────────────────────┘
+         │
+┌────────▼────────────────────────────────────────────────────┐
+│                  WELLNESS DOMAIN                             │
+│  WellnessTracker, CycleTracker, SkinDiary, ExpiryTracker   │
+│  SelfCare, NightMode, BeautyBudget, BeautyExpenses         │
+│  BeautyReminders, RoutineScheduler, SpaPlanner              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 3.2 Key Stats
+
+| Metric | Count |
+|--------|-------|
+| Prisma Models | 87+ |
+| Prisma Enums | 15 |
+| tRPC Routers | 163 |
+| tRPC Procedures | 400+ |
+| Web Pages | ~84 |
+| Mobile Screens | ~47 |
+| API Tests | 243 |
+| E2E Tests | 38 |
+| DB Migrations | 8 |
+
+---
+
+## 4. Gap Analysis — What's Missing vs. Target Architecture
+
+### 4.1 Architectural Gaps (from plan_to_add_value.md)
+
+| # | Gap | Severity | Impact |
+|---|-----|----------|--------|
+| A1 | All 163 routers in flat directory — no domain separation | Medium | Harder to maintain, no clear ownership |
+| A2 | No message/job queue — everything synchronous | Medium | Booking create waits for wallet+loyalty+notification+calendar |
+| A3 | Shared package couples UI to API (JSX in shared forces DOM lib) | Low | API tsconfig has `jsx: preserve` unnecessarily |
+| A4 | Single DB — no read replicas | Low | OK for MVP; needed for 100K+ users |
+
+### 4.2 Feature Gaps (Mock Data / Low Depth)
+
+| # | Gap | Severity | Plan Reference |
+|---|-----|----------|---------------|
+| F1 | Monitoring dashboard — all mock data | Medium | plan_to_add_value §2.1 |
+| F2 | Live streaming — hardcoded stream list | Low | plan_to_add_value §2.2 |
+| F3 | Booking heatmap — sparse seed data (6 bookings) | Low | plan_to_add_value §2.3 |
+| F4 | Geofence offers — hardcoded | Low | plan_to_add_value §2.4 |
+| F5 | Seed data volume — far below realistic levels | Medium | plan_to_add_value §2.5 |
+| F6 | Referral race — campaign resets on restart | Low | plan_to_add_value §2.5 |
+
+### 4.3 Mobile Verification Gap
+
+| # | Gap | Severity |
+|---|-----|----------|
+| M1 | Zero screens visually verified | High |
+| M2 | No mobile E2E tests (Detox/Maestro) | Medium |
+| M3 | SafeAreaView / notch handling unknown | Medium |
+| M4 | Deep link handling untested | Low |
+| M5 | Push notification delivery untested | Medium |
+
+### 4.4 State Pattern Compliance
+
+The system prompt's mandatory 4-state pattern (Skeleton → Error → Empty → DataView) is partially implemented:
+- **Shared components exist**: `Skeleton`, `ErrorAlert`, `EmptyState` are in `packages/shared/src/ui/`
+- **But**: Most pages appear to have inline loading/error handling rather than using these shared components
+- **No build-time lint rule** enforces the pattern
+
+---
+
+## 5. Immediate Action Plan
+
+### 5.1 Uncommitted Changes (First Action)
+
+The working tree has 225 staged deletions that need to be committed. This cleanup removes the archived `_legacy/` directory, old documentation files, and a previous PLAN.md.
+
+### 5.2 Priority Order
+
+Based on the gap analysis, here's the recommended execution order:
+
+| Priority | Task | Effort | Value |
+|----------|------|--------|-------|
+| **P0** | Commit staged deletions (clean slate) | 5 min | Clean working tree |
+| **P1** | Verify current build health (`pnpm type-check && pnpm lint && pnpm build`) | 10 min | Confirm no regressions |
+| **P2** | Architectural hardening: domain separation + job queue | 80-120 hr | Scalability foundation |
+| **P3** | Real monitoring + production seed data | 60 hr | Replaces mock data, enables testing |
+| **P4** | Mobile verification + E2E | 40-60 hr | Mobile store-ready |
+| **P5** | Production monitoring + backups | 60-80 hr | Operational safety net |
+| **P6** | Feature deepening (streaming, geo, etc.) | 60 hr | Feature completeness |
+| **P7** | State pattern enforcement | 20 hr | UX consistency |
+
+### 5.3 What to Build NOW (This Session)
+
+Since the project is already past the scaffold phase, our work should focus on:
+
+1. **Commit the cleanup** — get the repo to a clean state
+2. **Verify all pipelines still pass** — type-check, lint, build, test
+3. **Address the highest-value gaps** from the plan_to_add_value.md, starting with:
+   - Domain reorganization of API routers
+   - Redis-based job queue (bullmq)
+   - Enriched seed data (500+ bookings, 30+ customers)
+   - Real monitoring dashboard metrics
+
+---
+
+## 6. Additional Issues Discovered
+
+### 6.1 Empty Stub Directories
+`apps/web/apps/web/src/app/` contains **empty stub route directories** (no page.tsx files):
+- `(customer)/{booking-checklist, hair-color-sim, night-mode, restock-reminder, spa-planner, tech-waitlist, travel-kit}`
+- `(public)/{api-docs, beauty-podcast, ingredient-analyzer, ingredient-sub, look-of-the-day, referral-race, service-trends, video-testimonials}`
+- `admin/` (empty sub-directory)
+
+These appear to be accidentally created placeholder directories — they produce no routes and add no value. Should be cleaned up.
+
+### 6.2 Version Skew
+| Package | React Version | Notes |
+|---------|--------------|-------|
+| `apps/web` | React 18 | Consistent with Next.js 14 |
+| `apps/mobile` | React 19.1 | Expo 54 requirement |
+| `packages/shared` | peer: `>=18.0.0` | Compatible with both |
+
+Not a bug, but worth documenting — shared components must avoid React 19-only APIs.
+
+### 6.3 Lint = Type-Check Duplication
+In `apps/web` and `apps/mobile`, the `lint` script runs `tsc --noEmit` — identical to the `type-check` script. Actual ESLint runs via the Next.js plugin (web) or a separate `.eslintrc.json` (mobile). This is functional but the turbo pipeline labels are misleading.
+
+### 6.4 Stale README References
+The README references `_legacy/` and `trash_stuff/` — neither exists on disk anymore (deleted/archived). README needs updating after the cleanup commit.
+
+### 6.5 Missing `@skills.md`
+`CLAUDE.md` line 152 references `@skills.md` which does not exist in the project.
+
+### 6.6 Historical Settings
+`.claude/settings.local.json` (39KB) contains allowlist entries referencing the old `C:\Users\saeed\Desktop\beauty project\...` path — these are stale and should be cleaned.
+
+---
+
+## 7. Risk Register
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|-----------|--------|------------|
+| Build breakage after _legacy removal | Low | High | Verify all pipelines first |
+| Domain reorg breaks imports | Medium | Medium | Incremental refactor, test after each domain |
+| Seed data script times out | Low | Low | Batch inserts, progress logging |
+| Mobile export fails | Medium | Medium | Test early in Phase 5 |
+| Docker compose conflicts | Low | Low | Use unique port mappings |
+
+---
+
+## 7. Environment Variables Needed
+
+From `.env.example` and `packages/db/.env.example`:
+
+```
+# Database
+DATABASE_URL="postgresql://gob_admin:gob_secure_pass@localhost:5432/Galaxy_of_Beauty_db"
+
+# Redis
+REDIS_URL="redis://localhost:6379"
+
+# JWT
+JWT_ACCESS_SECRET="at-least-32-characters-long-secret-key"
+JWT_REFRESH_SECRET="at-least-32-characters-long-refresh-key"
+
+# External APIs (optional for dev)
+OPENAI_API_KEY="sk-..."
+PAYFORT_MERCHANT_ID="..."
+PAYFORT_ACCESS_CODE="..."
+SENTRY_DSN="..."
 ```
 
 ---
 
-## 4. Issues Identified (from Existing Codebase — to be fixed in rebuild)
+## 8. Conclusion
 
-### 🔴 Critical
-- **None.** The existing codebase builds and runs.
+**The project is remarkably complete** — well beyond what "Phase 0" typically discovers. The monorepo architecture, tRPC API, Prisma database, Next.js web app, and Expo mobile app are all built and passing type-check/lint/build. The primary work remaining is:
 
-### 🟠 Major
-1. **2FA never enforced at login** — `auth.js` `login()` doesn't check `twoFactorEnabled`. The rebuild must require a TOTP token when 2FA is enabled. (Severity: Major / Security)
-2. **CSRF exemptions too broad** — Covers most state-changing routes. In the new tRPC architecture, we'll use proper CSRF protection with the tRPC + Next.js pattern. (Severity: Major / Security)
+1. **Architectural hardening** (domain separation, job queues)
+2. **Mock data → real data** (monitoring, seed enrichment, geo offers)
+3. **Mobile verification** (visual walkthrough, E2E tests)
+4. **Production operations** (monitoring, alerting, backup/DR)
 
-### 🟡 Minor
-3. **Secrets in working tree** — `backend/.env` has real values. Provide `.env.example` only; never commit `.env`. (Severity: Minor)
-4. **Placeholder comment in HomePage** — Cosmetic. (Severity: Minor)
-5. **Stray mangled-path directories** — 5 junk directories. Will be eliminated in rebuild. (Severity: Minor)
-6. **No git history** — The repo is uninitialized for git. Phase 0 will initialize git. (Severity: Minor)
-7. **No Prisma migrations** — Uses `db push`. For the rebuild, we'll generate proper migrations. (Severity: Minor)
-
-### 🟢 Design Gaps to Address in Rebuild
-8. **No mandatory state components** — Existing frontend lacks systematic `Skeleton | Error | Empty | Data` pattern. The rebuild enforces this.
-9. **No monorepo tooling** — No shared packages, no Turborepo caching, no unified type checking. Rebuild fixes this.
-10. **REST over tRPC** — Current REST API lacks end-to-end type safety. tRPC + Zod provides this.
-11. **No server components** — Current React SPA does all rendering client-side. Next.js App Router enables server components for improved perf.
+The existing `docs/plan_to_add_value.md` provides an excellent detailed roadmap for these items.
 
 ---
 
-## 5. Migration Strategy
-
-### From → To Map
-| Existing | Rebuild Target |
-|----------|---------------|
-| Express.js REST (27 route modules) | tRPC routers in `packages/api` |
-| Zod validators (`backend/src/validators/`) | Zod schemas in `packages/api` (reused) |
-| React 18 + Vite SPA | Next.js 14 App Router in `apps/web` |
-| React Router v6 | Next.js file-based routing |
-| Axios + interceptors | tRPC client (`@trpc/react-query`) |
-| Zustand stores | tRPC context + React Query cache |
-| Express middleware (19 files) | Next.js middleware + tRPC procedures |
-| Prisma schema (`backend/prisma/`) | Migrate to `packages/db/prisma/` |
-| Prisma client | `@galaxy/db` package |
-| UI components (Tailwind) | `packages/shared` UI kit |
-| i18n (i18next) | Same library, in `packages/shared` |
-| Expo SDK 54 + React Navigation | Expo Router (file-based) in `apps/mobile` |
-| Socket.IO | Server-Sent Events or tRPC subscriptions |
-| BullMQ + Redis queues | Keep Redis, use `bullmq` in `packages/api` |
-| Docker Compose (4 services) | Same, updated for new stack |
-| npm workspaces | pnpm workspaces + Turborepo |
-
-### Data Model: Preserved
-The Prisma schema (25+ models, 12 enums) will be migrated **as-is** to `packages/db/prisma/schema.prisma`. All models, relations, indexes, and enum values are preserved. The schema is well-designed and needs no structural changes.
-
-### API Contract: Preserved with tRPC
-Each REST endpoint maps to a tRPC procedure. Zod validators are reused directly. The tRPC router structure mirrors the current `routes/index.js` organization.
-
----
-
-## 6. Execution Plan (Phases)
-
-| Phase | Description | Files | Est. Duration |
-|-------|-------------|-------|---------------|
-| **Phase 0** | Deep Audit & PLAN.md (this document) | 1 | ✅ Done |
-| **Phase 1** | Monorepo scaffold (pnpm, turbo, config packages) | ~30 | 1 session |
-| **Phase 2** | Database & API layer (Prisma, tRPC routers, Zod) | ~60 | 2 sessions |
-| **Phase 3** | Shared layer (UI kit, hooks, i18n, state components) | ~40 | 1 session |
-| **Phase 4** | Web app (Next.js, all features, 4-state pattern) | ~80 | 3 sessions |
-| **Phase 5** | Mobile app (Expo Router, feature parity) | ~60 | 2 sessions |
-| **Phase 6** | Docker integration (dev + prod) | ~10 | 1 session |
-| **Phase 7** | Full automated audit & hardening | ~20 | 1 session |
-| **Phase 8** | Final report & DELIVERY_REPORT.md | 1 | 1 session |
-
-**Total estimated: 302 files, 12 sessions**
-
----
-
-## 7. Non-Negotiables (from System Prompt)
-
-1. ✅ Every data-fetching component exports `Skeleton | Error | Empty | DataView`
-2. ✅ Strict TypeScript (`strict: true`) everywhere
-3. ✅ Zod validation on every tRPC procedure input
-4. ✅ Environment variables: `.env.example` only, never secrets
-5. ✅ Phase-by-phase commits: `Phase X complete – N files changed, build passing`
-6. ✅ All verification via shell commands — no imagined output
-7. ✅ Arabic-first RTL + English LTR
-
----
-
-## 8. Environment Variables (from `backend/src/config/env.js`)
-
-### Required
-```
-DATABASE_URL           — PostgreSQL connection string
-JWT_ACCESS_SECRET      — ≥32 chars
-JWT_REFRESH_SECRET     — ≥32 chars
-```
-
-### Optional (with defaults)
-```
-NODE_ENV=development
-PORT=4000
-HOST=localhost
-API_PREFIX=/api
-CORS_ORIGIN=http://localhost:5173
-REDIS_URL=redis://localhost:6379
-JWT_ACCESS_EXPIRY=15m
-JWT_REFRESH_EXPIRY=7d
-PAYFORT_MERCHANT_ID=
-PAYFORT_ACCESS_KEY=
-PAYFORT_SHA_REQUEST_PHRASE=
-PAYFORT_SHA_RESPONSE_PHRASE=
-PAYFORT_SANDBOX=true
-SMTP_HOST=, SMTP_PORT=, SMTP_USER=, SMTP_PASS=, EMAIL_FROM=
-OPENAI_API_KEY=, OPENAI_MODEL=gpt-4o-mini
-GOOGLE_CLIENT_ID=, GOOGLE_CLIENT_SECRET=
-TWILIO_ACCOUNT_SID=, TWILIO_AUTH_TOKEN=, TWILIO_PHONE_NUMBER=
-AWS_ACCESS_KEY_ID=, AWS_SECRET_ACCESS_KEY=, AWS_REGION=me-south-1, AWS_S3_BUCKET=
-SENTRY_DSN=
-ZATCA_CSID=, ZATCA_PRIVATE_KEY_PATH=
-TERMS_VERSION=1.0
-PLATFORM_FEE_SAR=11
-CASHBACK_FIRST_BOOKING_PERCENT=40
-CASHBACK_SUBSEQUENT_PERCENT=5
-...
-```
-
----
-
-⏸ **PLAN READY.** Review and reply **"go"** to proceed with Phase 1 (Monorepo Scaffold).
+⏸ **PLAN READY. Review and reply 'go' to proceed.**
