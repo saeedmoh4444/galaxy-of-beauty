@@ -1,41 +1,58 @@
-import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect, useCallback } from 'react';
-import { SkeletonList } from '@/components/SkeletonCard';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function AdminDashboardScreen(): JSX.Element {
-  const [stats, setStats] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).admin.dashboardStats.query() as any).then((d: any) => { setStats(d); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
-  }, []);
-
-  useEffect(() => { fetch(); }, [fetch]);
-
-  if (loading) return <SkeletonList count={5} />;
-
-  const s = stats ?? {};
+  const router = useRouter();
+  const stats = trpc.admin.dashboardStats.useQuery();
+  const data = stats.data as Record<string, unknown> | undefined;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#6366f1']} />}>
-      <Text style={styles.t}>📊 لوحة التحكم</Text>
-      <View style={styles.kpiRow}>
-        <View style={styles.kpi}><Text style={styles.kpiEmoji}>👥</Text><Text style={styles.kpiVal}>{s.totalUsers as number ?? 0}</Text><Text style={styles.kpiLabel}>مستخدم</Text></View>
-        <View style={styles.kpi}><Text style={styles.kpiEmoji}>📅</Text><Text style={[styles.kpiVal,{color:'#2563eb'}]}>{s.totalBookings as number ?? 0}</Text><Text style={styles.kpiLabel}>حجز</Text></View>
-        <View style={styles.kpi}><Text style={styles.kpiEmoji}>💰</Text><Text style={[styles.kpiVal,{color:'#059669'}]}>{(s.totalRevenue as number ?? 0)?.toLocaleString()}</Text><Text style={styles.kpiLabel}>ر.س</Text></View>
-        <View style={styles.kpi}><Text style={styles.kpiEmoji}>👩‍🎨</Text><Text style={[styles.kpiVal,{color:'#7c3aed'}]}>{s.totalTechnicians as number ?? 0}</Text><Text style={styles.kpiLabel}>فنية</Text></View>
+    <ScreenState
+      isLoading={stats.isLoading}
+      isError={stats.isError}
+      isEmpty={!data}
+      errorMessage="فشل تحميل لوحة الإدارة"
+      onRetry={() => stats.refetch()}
+    >
+      <Text style={styles.title}>📊 لوحة الإدارة</Text>
+      <View style={styles.statsGrid}>
+        {['totalUsers', 'totalBookings', 'totalTechnicians', 'totalRevenue'].map((key) => (
+          <View key={key} style={styles.statCard}>
+            <Text style={styles.statNum}>{String(data?.[key] ?? 0)}</Text>
+            <Text style={styles.statLabel}>
+              {key === 'totalUsers' ? '👥 مستخدمين' : key === 'totalBookings' ? '📅 حجوزات' : key === 'totalTechnicians' ? '💅 فنيات' : '💰 إيرادات'}
+            </Text>
+          </View>
+        ))}
       </View>
-    </ScrollView>
+      <View style={styles.links}>
+        {[
+          { h: '/admin/users', l: '👥 المستخدمين' },
+          { h: '/admin/bookings', l: '📅 الحجوزات' },
+          { h: '/admin/technicians', l: '💅 الفنيات' },
+          { h: '/admin/finance', l: '💰 المالية' },
+          { h: '/admin/analytics', l: '📈 التحليلات' },
+        ].map((link, i) => (
+          <TouchableOpacity key={i} style={styles.linkBtn} onPress={() => router.push(link.h as any)}>
+            <Text style={styles.linkText}>{link.l}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </ScreenState>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#eef2ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#4f46e5', textAlign: 'center', marginBottom: 20 },
-  kpiRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  kpi: { flex: 1, minWidth: '45%', backgroundColor: '#fff', borderRadius: 14, padding: 14, alignItems: 'center' },
-  kpiEmoji: { fontSize: 28, marginBottom: 4 }, kpiVal: { fontSize: 24, fontWeight: '800', color: '#111827' }, kpiLabel: { fontSize: 11, color: '#9ca3af' },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  statsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 24 },
+  statCard: { width: '47%', backgroundColor: COLORS.white, borderRadius: 14, padding: 16, alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
+  statNum: { fontSize: 20, fontWeight: '800', color: COLORS.gray900 },
+  statLabel: { fontSize: 12, color: COLORS.gray400, marginTop: 4 },
+  links: { gap: 8 },
+  linkBtn: { backgroundColor: COLORS.white, borderRadius: 12, padding: 16, shadowColor: '#000', shadowOpacity: 0.03, shadowRadius: 2, elevation: 1 },
+  linkText: { fontSize: 15, fontWeight: '600', color: COLORS.gray900 },
 });

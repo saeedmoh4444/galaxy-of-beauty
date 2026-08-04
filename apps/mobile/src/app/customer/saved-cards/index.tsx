@@ -1,25 +1,46 @@
-import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useQuery } from '@/lib/useQuery';
-import { ErrorAlert } from '@/components/ErrorAlert';
-import { SkeletonList } from '@/components/SkeletonCard';
+import { View, Text, StyleSheet } from 'react-native';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
+
+const BRAND_COLORS: Record<string, string> = { visa: '#1a1f71', mastercard: '#eb001b', mada: '#00a478', amex: '#2e77bb' };
 
 export default function SavedCardsScreen(): JSX.Element {
-  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.savedCards.list.query());
-  if (loading) return <SkeletonList count={3} />;
-  if (error) return <ErrorAlert message="فشل تحميل البطاقات" onRetry={refetch} />;
-  const cards = (data ?? []) as Record<string, unknown>[];
+  const cards = trpc.savedCards.list.useQuery();
+  const data = cards.data as unknown[] | undefined;
+
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#6b7280']} />}>
-      <Text style={styles.t}>💳 البطاقات المحفوظة</Text>
-      {cards.length === 0 ? <Text style={styles.e}>لا توجد بطاقات</Text> : cards.map((c: Record<string, unknown>, i: number) => (<View key={i} style={styles.card}><Text style={styles.brand}>{(c as any).brand || 'بطاقة'}</Text><Text style={styles.last4}>**** {(c as any).last4 || '----'}</Text></View>))}
-    </ScrollView>
+    <ScreenState
+      isLoading={cards.isLoading}
+      isError={cards.isError}
+      isEmpty={!data || data.length === 0}
+      errorMessage="فشل تحميل البطاقات"
+      emptyTitle="لا توجد بطاقات محفوظة"
+      emptyDescription="أضيفي بطاقتكِ للدفع السريع"
+      onRetry={() => cards.refetch()}
+    >
+      <Text style={styles.title}>💳 البطاقات المحفوظة</Text>
+      {(data as Record<string, unknown>[])?.map((c: Record<string, unknown>, i: number) => (
+        <View key={i} style={[styles.card, { borderLeftColor: BRAND_COLORS[c.brand as string] ?? COLORS.brand }]}>
+          <View style={styles.row}>
+            <Text style={styles.cardNum}>•••• {c.lastFour as string}</Text>
+            <Text style={[styles.brand, { color: BRAND_COLORS[c.brand as string] ?? COLORS.brand }]}>
+              {c.brand as string}
+            </Text>
+          </View>
+          <Text style={styles.expiry}>تنتهي {c.expMonth as string}/{c.expYear as string}</Text>
+        </View>
+      ))}
+    </ScreenState>
   );
 }
+
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#f9fafb' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#111827', textAlign: 'center', marginBottom: 20 },
-  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
-  card: { flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 6, borderWidth: 1, borderColor: '#e5e7eb' },
-  brand: { fontSize: 14, fontWeight: '600', color: '#111827' }, last4: { fontSize: 14, color: '#6b7280', fontFamily: 'monospace' },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  card: { backgroundColor: COLORS.white, borderRadius: 14, padding: 16, marginBottom: 8, borderLeftWidth: 4, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  cardNum: { fontSize: 16, fontWeight: '700', color: COLORS.gray900, fontFamily: 'monospace' },
+  brand: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase' },
+  expiry: { fontSize: 11, color: COLORS.gray400, marginTop: 4 },
 });
