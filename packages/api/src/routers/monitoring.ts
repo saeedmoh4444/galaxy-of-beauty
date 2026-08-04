@@ -234,6 +234,10 @@ export const monitoringRouter = router({
           avgProcessingTime: paymentProcessingTime,
           totalToday: paymentsToday,
         },
+        sentry: {
+          status: process.env.SENTRY_DSN ? 'healthy' : 'warning',
+          dsn: process.env.SENTRY_DSN ? 'configured' : 'not configured',
+        },
       },
       errors: {
         last24h: errorLast24h,
