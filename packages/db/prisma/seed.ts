@@ -744,6 +744,84 @@ async function main() {
     console.log('✅ 3 gift cards (active + redeemed)');
   } catch (err: any) { console.log(`   ⚠️ Gift cards: ${err.message?.slice(0,60)}`); }
 
+  // ── Geo Promotions ──
+  try {
+    await db.geoPromotion.createMany({
+      data: [
+        {
+          titleJson: { ar: 'خصم ٣٠٪ على العناية بالبشرة', en: '30% off Skincare' },
+          descriptionJson: { ar: 'خصم خاص لسكان الرياض على جميع خدمات العناية بالبشرة', en: 'Special discount for Riyadh residents on all skincare services' },
+          city: 'الرياض', lat: 24.7136, lng: 46.6753, radiusKm: 10, discountPct: 30, maxDiscount: 100,
+          startsAt: new Date(), endsAt: new Date(Date.now() + 14 * 86400000), isActive: true, createdBy: admin.id,
+        },
+        {
+          titleJson: { ar: 'خصم ٢٥٪ على المساج', en: '25% off Massage' },
+          descriptionJson: { ar: 'استمتعي بجلسة مساج استرخائي بخصم ٢٥٪ في جدة', en: 'Enjoy a relaxation massage with 25% off in Jeddah' },
+          city: 'جدة', lat: 21.5433, lng: 39.1728, radiusKm: 8, discountPct: 25, maxDiscount: 80,
+          startsAt: new Date(), endsAt: new Date(Date.now() + 10 * 86400000), isActive: true, createdBy: admin.id,
+        },
+        {
+          titleJson: { ar: 'خصم ٤٠٪ للطلب الأول', en: '40% off First Order' },
+          descriptionJson: { ar: 'خصم ترحيبي للعميلات الجدد في جميع المدن', en: 'Welcome discount for new customers in all cities' },
+          city: 'الرياض', lat: 24.7136, lng: 46.6753, radiusKm: 50, discountPct: 40, maxDiscount: 150,
+          startsAt: new Date(), endsAt: new Date(Date.now() + 30 * 86400000), isActive: true, createdBy: admin.id,
+        },
+        {
+          titleJson: { ar: 'عرض نهاية الأسبوع', en: 'Weekend Special' },
+          descriptionJson: { ar: 'خصم ٢٠٪ على جميع خدمات التجميل في عطلة نهاية الأسبوع', en: '20% off all beauty services during the weekend' },
+          city: 'الدمام', lat: 26.4207, lng: 50.0888, radiusKm: 15, discountPct: 20, maxDiscount: 60,
+          startsAt: new Date(), endsAt: new Date(Date.now() + 7 * 86400000), isActive: true, createdBy: admin.id,
+        },
+        {
+          titleJson: { ar: 'عرض الصيف الحار', en: 'Hot Summer Deal' },
+          descriptionJson: { ar: 'خصم ١٥٪ على خدمات العناية بالشعر والأظافر', en: '15% off hair and nail care services' },
+          city: 'جدة', lat: 21.5433, lng: 39.1728, radiusKm: 20, discountPct: 15, maxDiscount: 50,
+          startsAt: new Date(Date.now() + 7 * 86400000), endsAt: new Date(Date.now() + 45 * 86400000), isActive: true, createdBy: admin.id,
+        },
+      ],
+    });
+    console.log('✅ 5 geo promotions');
+  } catch (err: any) { console.log(`   ⚠️ Geo promotions: ${err.message?.slice(0,60)}`); }
+
+  // ── Live Streams ──
+  try {
+    await db.liveStream.createMany({
+      data: [
+        {
+          technicianId: technicians[0]!.user.id,
+          titleJson: { ar: 'جلسة مكياج سهرة مباشرة', en: 'Live Evening Makeup Session' },
+          descriptionJson: { ar: 'تعلمي أساسيات مكياج السهرات مع نورة', en: 'Learn evening makeup basics with Noura' },
+          category: 'makeup', status: 'SCHEDULED', scheduledAt: new Date(Date.now() + 2 * 86400000), isFeatured: true,
+        },
+        {
+          technicianId: technicians[1]?.user.id ?? customer.id,
+          titleJson: { ar: 'أسرار العناية بالشعر', en: 'Hair Care Secrets' },
+          descriptionJson: { ar: 'اكتشفي أفضل الطرق للعناية بشعرك', en: 'Discover the best ways to care for your hair' },
+          category: 'hair', status: 'SCHEDULED', scheduledAt: new Date(Date.now() + 4 * 86400000), isFeatured: true,
+        },
+        {
+          technicianId: technicians[2]?.user.id ?? customer.id,
+          titleJson: { ar: 'روتين العناية بالبشرة', en: 'Skincare Routine' },
+          descriptionJson: { ar: 'روتين يومي للعناية بالبشرة مع د. ليلى', en: 'Daily skincare routine with Dr. Laila' },
+          category: 'skincare', status: 'LIVE', streamUrl: 'https://youtube.com/embed/example1', scheduledAt: new Date(Date.now() - 3600000), startedAt: new Date(Date.now() - 3600000), viewerCount: 234, isFeatured: true,
+        },
+        {
+          technicianId: technicians[0]!.user.id,
+          titleJson: { ar: 'فن الأظافر الاحترافي', en: 'Professional Nail Art' },
+          descriptionJson: { ar: 'تعلمي أحدث صيحات الأظافر', en: 'Learn the latest nail art trends' },
+          category: 'nails', status: 'ENDED', scheduledAt: new Date(Date.now() - 7 * 86400000), startedAt: new Date(Date.now() - 7 * 86400000), endedAt: new Date(Date.now() - 7 * 86400000 + 3600000), recordingUrl: 'https://youtube.com/watch?v=example', viewerCount: 1520,
+        },
+        {
+          technicianId: technicians[1]?.user.id ?? customer.id,
+          titleJson: { ar: 'تسريحات شعر للمناسبات', en: 'Occasion Hairstyles' },
+          descriptionJson: { ar: 'تسريحات شعر راقية للمناسبات الخاصة', en: 'Elegant hairstyles for special occasions' },
+          category: 'hair', status: 'SCHEDULED', scheduledAt: new Date(Date.now() + 5 * 86400000),
+        },
+      ],
+    });
+    console.log('✅ 5 live streams');
+  } catch (err: any) { console.log(`   ⚠️ Live streams: ${err.message?.slice(0,60)}`); }
+
   console.log('\n🎉 Seed complete! Test login: customer@test.com / Admin@123456\n');
 }
 

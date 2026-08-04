@@ -1,40 +1,27 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { publicProcedure, customerProcedure, adminProcedure, router } from '../trpc';
+import { publicProcedure, adminProcedure, router } from '../trpc';
 
-export const geofenceOffersRouter = router({
-  // Public: active promotions near a city
-  nearMe: publicProcedure
-    .input(z.object({ city: z.string().optional() }))
+export const geoPromotionsRouter = router({
+  // Public: list active promotions (optionally filtered by city)
+  list: publicProcedure
+    .input(z.object({ city: z.string().optional() }).optional())
     .query(async ({ input }) => {
       const where: Record<string, unknown> = {
         isActive: true,
         startsAt: { lte: new Date() },
         endsAt: { gte: new Date() },
       };
-      if (input.city) where.city = input.city;
+      if (input?.city) where.city = input.city;
 
       return prisma.geoPromotion.findMany({
         where,
-        orderBy: { discountPct: 'desc' },
-        take: 10,
+        orderBy: { createdAt: 'desc' },
+        take: 20,
       });
     }),
 
-  // Customer: claimed/viewed offers
-  history: customerProcedure.query(async () => {
-    // Track which promotions the customer has seen/claimed
-    return prisma.geoPromotion.findMany({
-      where: {
-        isActive: true,
-        startsAt: { lte: new Date() },
-        endsAt: { gte: new Date() },
-      },
-      take: 5,
-    });
-  }),
-
-  // Admin: list all
+  // Admin: list all promotions
   adminList: adminProcedure.query(async () => {
     return prisma.geoPromotion.findMany({ orderBy: { createdAt: 'desc' } });
   }),
@@ -55,16 +42,22 @@ export const geofenceOffersRouter = router({
       endsAt: z.string().datetime(),
     }))
     .mutation(async ({ ctx, input }) => {
-      return prisma.geoPromotion.create({ data: { ...input, createdBy: ctx.user.id } });
+      return prisma.geoPromotion.create({
+        data: { ...input, createdBy: ctx.user.id },
+      });
     }),
 
-  // Admin: toggle
-  toggle: adminProcedure
-    .input(z.object({ id: z.number(), isActive: z.boolean() }))
+  // Admin: update
+  update: adminProcedure
+    .input(z.object({
+      id: z.number(),
+      isActive: z.boolean().optional(),
+      discountPct: z.number().min(1).max(100).optional(),
+      maxDiscount: z.number().optional(),
+      endsAt: z.string().datetime().optional(),
+    }))
     .mutation(async ({ input }) => {
-      return prisma.geoPromotion.update({
-        where: { id: input.id },
-        data: { isActive: input.isActive },
-      });
+      const { id, ...data } = input;
+      return prisma.geoPromotion.update({ where: { id }, data });
     }),
 });

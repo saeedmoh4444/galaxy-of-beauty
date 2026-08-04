@@ -2594,3 +2594,51 @@ model SalonMembership {
     createdAt       DateTime @default(now())
     @@map("beauty_reminders")
   }
+
+  // ── Geo Promotions (location-based offers) ────────────────
+  model GeoPromotion {
+    id             Int      @id @default(autoincrement())
+    titleJson      Json     // { ar, en }
+    descriptionJson Json?
+    city           String   // Target city
+    lat            Float?
+    lng            Float?
+    radiusKm       Float    @default(5)
+    discountPct    Int
+    maxDiscount    Decimal? @db.Decimal(10, 2)
+    minOrderAmount Decimal? @db.Decimal(10, 2)
+    startsAt       DateTime
+    endsAt         DateTime
+    isActive       Boolean  @default(true)
+    createdBy      Int
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+
+    @@index([city, isActive])
+    @@index([startsAt, endsAt])
+    @@map("geo_promotions")
+  }
+
+  // ── Live Streams ──────────────────────────────────────────
+  model LiveStream {
+    id             Int      @id @default(autoincrement())
+    technicianId   Int
+    titleJson      Json     // { ar, en }
+    descriptionJson Json?
+    category       String   @default("makeup")
+    streamUrl      String?  // YouTube/MUX embed URL
+    thumbnailUrl   String?
+    status         String   @default("SCHEDULED") // SCHEDULED, LIVE, ENDED, CANCELLED
+    viewerCount    Int      @default(0)
+    scheduledAt    DateTime
+    startedAt      DateTime?
+    endedAt        DateTime?
+    recordingUrl   String?
+    isFeatured     Boolean  @default(false)
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+
+    @@index([status, scheduledAt])
+    @@index([technicianId])
+    @@map("live_streams")
+  }
