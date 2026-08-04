@@ -8,8 +8,12 @@ const AUTH_PATHS = ['/login', '/register', '/forgot-password', '/reset-password'
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // ── Request ID for traceability ──
+  const requestId = request.headers.get('x-request-id') ?? crypto.randomUUID();
+
   // ── Security headers applied to all responses ──
   const response = NextResponse.next();
+  response.headers.set('X-Request-ID', requestId);
 
   // Strict Transport Security (HSTS) — 1 year, include subdomains
   response.headers.set(
