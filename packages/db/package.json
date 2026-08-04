@@ -19,6 +19,7 @@
     "db:migrate:deploy": "prisma migrate deploy",
     "db:migrate:status": "prisma migrate status",
     "db:seed": "tsx prisma/seed.ts",
+    "db:seed:enrich": "tsx prisma/seed-enrich.ts",
     "db:studio": "prisma studio",
     "type-check": "tsc --noEmit"
   },
