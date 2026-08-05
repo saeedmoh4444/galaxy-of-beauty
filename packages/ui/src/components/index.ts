@@ -41,3 +41,4 @@ export { Avatar } from './Avatar';
 export { Tooltip } from './Tooltip';
 export { Badge } from './Badge';
 export { Divider } from './Divider';
+export { CopyButton } from './CopyButton';
