@@ -119,3 +119,4 @@ export { BridalJourneyTimeline } from './BridalJourneyTimeline';
 export { ScentFreeBadge } from './ScentFreeBadge';
 export { GroupDiscountBadge } from './GroupDiscountBadge';
 export { BeautyPodcastCard } from './BeautyPodcastCard';
+export { HotDrinkMenuBadge } from './HotDrinkMenuBadge';
