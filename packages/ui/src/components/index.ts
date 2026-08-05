@@ -148,3 +148,4 @@ export { SensoryMapCard } from './SensoryMapCard';
 export { TaxHelperCard } from './TaxHelperCard';
 export { FaceBlurToggle } from './FaceBlurToggle';
 export { HydrationTracker } from './HydrationTracker';
+export { CommunityEventCard } from './CommunityEventCard';
