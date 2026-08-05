@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useHaptics } from '@/hooks/useHaptics';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -13,6 +14,7 @@ const COLORS = {
 
 export default function HomeScreen(): JSX.Element {
   const router = useRouter();
+  const { trigger } = useHaptics();
   const cats = trpc.categories.list.useQuery();
 
   const data = cats.data as unknown[] | undefined;
@@ -33,7 +35,7 @@ export default function HomeScreen(): JSX.Element {
             key={i}
             style={styles.card}
             activeOpacity={0.7}
-            onPress={() => router.push('/public/services' as any)}
+            onPress={() => { trigger('light'); router.push('/public/services' as any); }}
           >
             <Text style={styles.emoji}>📂</Text>
             <Text style={styles.name}>

@@ -1,3 +1,4 @@
+import { useHaptics } from '@/hooks/useHaptics';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
@@ -20,7 +21,7 @@ const MENU_ITEMS = [
 ];
 
 export default function ProfileScreen(): JSX.Element {
-  const router = useRouter();
+  const { trigger } = useHaptics(); const router = useRouter();
   const profile = (trpc as any).users?.me?.useQuery?.() ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
 
   return (

@@ -1,3 +1,4 @@
+import { useHaptics } from '@/hooks/useHaptics';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState, useCallback } from 'react';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';

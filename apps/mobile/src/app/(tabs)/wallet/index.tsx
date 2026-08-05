@@ -1,3 +1,4 @@
+import { useHaptics } from '@/hooks/useHaptics';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
