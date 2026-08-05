@@ -58,15 +58,13 @@ export function Celebration({ duration = 3000 }: { duration?: number }): JSX.Ele
           {p.emoji}
         </span>
       ))}
-      <style jsx>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @keyframes fall {
           0% { transform: translateY(0) rotate(0deg); opacity: 1; }
           100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
-        .animate-fall {
-          animation: fall linear forwards;
-        }
-      `}</style>
+        .animate-fall { animation: fall linear forwards; }
+      `}} />
     </div>
   );
 }
