@@ -130,3 +130,4 @@ export { GoldenBeautyCard } from './GoldenBeautyCard';
 export { SignLanguageBadge } from './SignLanguageBadge';
 export { BeautySleepCard } from './BeautySleepCard';
 export { InspirationBoardCard } from './InspirationBoardCard';
+export { BeautyChallengeCard } from './BeautyChallengeCard';
