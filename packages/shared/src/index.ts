@@ -7,6 +7,7 @@ export * from './constants';
 // Utils (pure functions, no JSX)
 export { cn } from './utils/cn';
 export { formatCurrency } from './utils/formatCurrency';
+export { getSaudiSeason, getFridayBlockedHours } from './utils/saudiCalendar';
 
 // Types
 export type { ChildrenProps, AsyncState, FeatureComponentSet, Bilingual, BilingualContent, PaginatedResponse, ApiError } from './types/index';
