@@ -99,3 +99,4 @@ export { LoyaltyDividendBadge } from './LoyaltyDividendBadge';
 export { KindnessPointsBadge } from './KindnessPointsBadge';
 export { FranchiseCard } from './FranchiseCard';
 export { BrideTribeCard } from './BrideTribeCard';
+export { AcademyCertificateBadge } from './AcademyCertificateBadge';
