@@ -2684,3 +2684,40 @@ model SalonMembership {
     @@index([isActive, sortOrder])
     @@map("beauty_bundles")
   }
+
+  // ── Beauty Subscriptions ──────────────────────────────────
+  model BeautyPlan {
+    id            Int      @id @default(autoincrement())
+    nameJson      Json     // { ar, en }
+    descriptionJson Json?
+    priceMonthly  Decimal  @db.Decimal(10, 2)
+    priceAnnual   Decimal? @db.Decimal(10, 2)
+    maxBookings   Int      @default(4) // Bookings per month
+    discountPct   Int      @default(10) // Percent off additional services
+    features      Json     // ["priority_booking", "free_home_service", "dedicated_tech"]
+    isActive      Boolean  @default(true)
+    sortOrder     Int      @default(0)
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    subscriptions CustomerSubscription[]
+
+    @@map("beauty_plans")
+  }
+
+  model CustomerSubscription {
+    id            Int       @id @default(autoincrement())
+    customerId    Int
+    planId        Int
+    plan          BeautyPlan @relation(fields: [planId], references: [id])
+    status        String    @default("ACTIVE") // ACTIVE, PAUSED, CANCELLED, EXPIRED
+    startDate     DateTime  @default(now())
+    currentPeriod DateTime @default(now())
+    nextRenewal   DateTime
+    bookingsUsed  Int       @default(0)
+    autoRenew     Boolean   @default(true)
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+
+    @@unique([customerId])
+    @@map("customer_subscriptions")
+  }
