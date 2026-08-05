@@ -210,6 +210,9 @@ async function main() {
       },
     }),
     prisma.category.create({ data: { nameJson: { ar: 'علاجات الجسم', en: 'Body Treatments' }, slug: 'body-treatments', sortOrder: 9, iconUrl: '/icons/body.svg' } }),
+    prisma.category.create({ data: { nameJson: { ar: 'خدمات العرايس', en: 'Bridal Services' }, slug: 'bridal-services', sortOrder: 10, iconUrl: '/icons/bridal.svg' } }),
+    prisma.category.create({ data: { nameJson: { ar: 'العناية بالرجال', en: "Men's Grooming" }, slug: 'mens-grooming', sortOrder: 11, iconUrl: '/icons/mens.svg' } }),
+    prisma.category.create({ data: { nameJson: { ar: 'السبا والعافية', en: 'Spa & Wellness' }, slug: 'spa-wellness', sortOrder: 12, iconUrl: '/icons/spa.svg' } }),
   ]);
   console.log(`✅ ${categories.length} root categories`);
 
@@ -402,6 +405,28 @@ async function main() {
     prisma.service.create({ data: { categoryId: categories[8]!.id, titleJson: { ar: 'لفة تنظيف الجسم', en: 'Detox Body Wrap' }, basePrice: 250, durationMin: 75, sortOrder: 2 } }),
     prisma.service.create({ data: { categoryId: categories[8]!.id, titleJson: { ar: 'مساج بالزيوت العطرية', en: 'Aromatherapy Massage' }, basePrice: 280, durationMin: 90, isPopular: true, sortOrder: 3 } }),
     prisma.service.create({ data: { categoryId: categories[8]!.id, titleJson: { ar: 'مساج بالأحجار الساخنة', en: 'Hot Stone Massage' }, basePrice: 300, durationMin: 90, sortOrder: 4 } }),
+
+    // Bridal Services (4)
+    prisma.service.create({ data: { categoryId: categories[9]!.id, titleJson: { ar: 'باقة تجربة العروس', en: 'Bridal Trial Package' }, descriptionJson: { ar: 'تجربة كاملة للعروس تشمل المكياج والشعر والحناء', en: 'Full bridal trial with makeup, hair and henna' }, basePrice: 500, durationMin: 180, isPopular: true, sortOrder: 1 } }),
+    prisma.service.create({ data: { categoryId: categories[9]!.id, titleJson: { ar: 'إشراقة ما قبل الزفاف', en: 'Pre-Wedding Glow' }, basePrice: 400, durationMin: 120, sortOrder: 2 } }),
+    prisma.service.create({ data: { categoryId: categories[9]!.id, titleJson: { ar: 'تنسيق يوم الزفاف', en: 'Wedding Day Coordination' }, basePrice: 800, durationMin: 480, sortOrder: 3 } }),
+    prisma.service.create({ data: { categoryId: categories[9]!.id, titleJson: { ar: 'باقة صديقات العروس', en: 'Bridal Party Package' }, basePrice: 1200, durationMin: 240, sortOrder: 4 } }),
+
+    // Men's Grooming (4)
+    prisma.service.create({ data: { categoryId: categories[10]!.id, titleJson: { ar: 'قصة شعر راقية', en: 'Premium Haircut' }, basePrice: 100, durationMin: 30, sortOrder: 1 } }),
+    prisma.service.create({ data: { categoryId: categories[10]!.id, titleJson: { ar: 'تهذيب اللحية', en: 'Beard Trim & Shape' }, basePrice: 60, durationMin: 20, sortOrder: 2 } }),
+    prisma.service.create({ data: { categoryId: categories[10]!.id, titleJson: { ar: 'عناية بالبشرة للرجال', en: "Men's Facial" }, basePrice: 120, durationMin: 45, sortOrder: 3 } }),
+    prisma.service.create({ data: { categoryId: categories[10]!.id, titleJson: { ar: 'مانيكير رجالي', en: "Men's Manicure" }, basePrice: 80, durationMin: 30, sortOrder: 4 } }),
+
+    // Spa & Wellness (8)
+    prisma.service.create({ data: { categoryId: categories[11]!.id, titleJson: { ar: 'يوم سبا كامل', en: 'Full Spa Day' }, descriptionJson: { ar: 'يوم كامل من العناية والاسترخاء', en: 'Full day of pampering and relaxation' }, basePrice: 600, durationMin: 240, isPopular: true, sortOrder: 1 } }),
+    prisma.service.create({ data: { categoryId: categories[11]!.id, titleJson: { ar: 'مساج ثنائي', en: 'Couples Massage' }, basePrice: 500, durationMin: 90, sortOrder: 2 } }),
+    prisma.service.create({ data: { categoryId: categories[11]!.id, titleJson: { ar: 'مساج القدمين', en: 'Foot Reflexology' }, basePrice: 150, durationMin: 45, sortOrder: 3 } }),
+    prisma.service.create({ data: { categoryId: categories[11]!.id, titleJson: { ar: 'مساج تايلندي', en: 'Thai Massage' }, basePrice: 250, durationMin: 60, sortOrder: 4 } }),
+    prisma.service.create({ data: { categoryId: categories[11]!.id, titleJson: { ar: 'حجامة', en: 'Cupping Therapy (Hijama)' }, basePrice: 200, durationMin: 45, sortOrder: 5 } }),
+    prisma.service.create({ data: { categoryId: categories[11]!.id, titleJson: { ar: 'مساج بالأعشاب', en: 'Herbal Compress Massage' }, basePrice: 220, durationMin: 60, sortOrder: 6 } }),
+    prisma.service.create({ data: { categoryId: categories[11]!.id, titleJson: { ar: 'تصريف لمفاوي', en: 'Lymphatic Drainage' }, basePrice: 280, durationMin: 75, sortOrder: 7 } }),
+    prisma.service.create({ data: { categoryId: categories[11]!.id, titleJson: { ar: 'مساج الحمل', en: 'Prenatal Massage' }, basePrice: 200, durationMin: 60, sortOrder: 8 } }),
   ]);
   console.log(`✅ ${services.length} services`);
 
