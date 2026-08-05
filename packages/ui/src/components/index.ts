@@ -138,3 +138,4 @@ export { PromReadyCard } from './PromReadyCard';
 export { CareerBeautyCard } from './CareerBeautyCard';
 export { JustBecauseFlowers } from './JustBecauseFlowers';
 export { SheLeadsProgramCard } from './SheLeadsProgramCard';
+export { BeautyBookClubCard } from './BeautyBookClubCard';
