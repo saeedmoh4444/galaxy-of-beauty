@@ -770,6 +770,15 @@ async function main() {
   const addr1 = await prisma.address.create({
     data: { userId: customer.id, label: 'المنزل', city: 'الرياض', area: 'الملز', street: 'شارع التحلية', lat: 24.7136, lng: 46.6753, isDefault: true },
   });
+  await prisma.address.createMany({
+    data: [
+      { userId: customers[1]!.id, label: 'المنزل', city: 'جدة', area: 'الروضة', street: 'طريق الملك', lat: 21.5433, lng: 39.1728, isDefault: true },
+      { userId: customers[2]!.id, label: 'المنزل', city: 'الدمام', area: 'الشاطئ', street: 'شارع الأمير', lat: 26.4207, lng: 50.0888, isDefault: true },
+      { userId: customers[3]!.id, label: 'العمل', city: 'الرياض', area: 'العليا', street: 'طريق الملك فهد', lat: 24.7136, lng: 46.6753, isDefault: true },
+      { userId: customers[4]!.id, label: 'المنزل', city: 'المدينة المنورة', area: 'قربان', street: 'شارع السلام', lat: 24.5247, lng: 39.5693, isDefault: true },
+      { userId: customers[5]!.id, label: 'المنزل', city: 'الخبر', area: 'الكورنيش', street: 'طريق الملك فهد', lat: 26.2867, lng: 50.2083, isDefault: true },
+    ],
+  });
   console.log('✅ Customer address');
 
   // Bookings with various statuses
