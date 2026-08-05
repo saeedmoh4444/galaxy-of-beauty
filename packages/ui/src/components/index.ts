@@ -39,3 +39,5 @@ export { RatingStars } from './RatingStars';
 export { CountdownTimer } from './CountdownTimer';
 export { Avatar } from './Avatar';
 export { Tooltip } from './Tooltip';
+export { Badge } from './Badge';
+export { Divider } from './Divider';
