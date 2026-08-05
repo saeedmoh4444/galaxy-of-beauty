@@ -22,15 +22,6 @@ interface MommyAndMeCardProps {
   className?: string;
 }
 
-interface ExperienceDef {
-  emoji: string;
-  title: string;
-  description: string;
-  ageMin: number;
-  ageMax: number;
-  includes: string[];
-}
-
 const EXPERIENCES = {
   mini_facial: {
     emoji: '🧖‍♀️',
