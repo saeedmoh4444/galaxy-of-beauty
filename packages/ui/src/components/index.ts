@@ -152,3 +152,4 @@ export { CommunityEventCard } from './CommunityEventCard';
 export { BeautyWebinarCard } from './BeautyWebinarCard';
 export { ComplimentaryAmenityBadge } from './ComplimentaryAmenityBadge';
 export { WomenEmployerBadge } from './WomenEmployerBadge';
+export { TeenSkincareGuide } from './TeenSkincareGuide';
