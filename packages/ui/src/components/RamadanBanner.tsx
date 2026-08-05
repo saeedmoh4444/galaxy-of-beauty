@@ -1,6 +1,6 @@
 'use client';
 
-import { getSaudiSeason } from '@galaxy/shared/utils/saudiCalendar';
+import { getSaudiSeason } from '@galaxy/shared';
 
 /**
  * Ramadan/Eid themed banner — shows during Islamic seasons.
