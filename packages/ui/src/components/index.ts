@@ -72,3 +72,4 @@ export { BeautySavingsGoal } from './BeautySavingsGoal';
 export { SensoryFriendlyBadge } from './SensoryFriendlyBadge';
 export { PhotoPrivacyBadge } from './PhotoPrivacyBadge';
 export { CyclePhaseCard } from './CyclePhaseCard';
+export { BeautyCircleCard } from './BeautyCircleCard';
