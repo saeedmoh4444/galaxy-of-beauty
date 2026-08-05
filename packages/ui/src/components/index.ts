@@ -146,3 +146,4 @@ export { PricingCoachCard } from './PricingCoachCard';
 export { BeautyVlogCard } from './BeautyVlogCard';
 export { SensoryMapCard } from './SensoryMapCard';
 export { TaxHelperCard } from './TaxHelperCard';
+export { FaceBlurToggle } from './FaceBlurToggle';
