@@ -304,6 +304,60 @@ async function main() {
         sortOrder: 1,
       },
     }),
+    // Quick Win #1: 5 new services
+    prisma.service.create({
+      data: {
+        categoryId: categories[0]!.id,
+        titleJson: { ar: 'تمويج شعر', en: 'Blow-Dry & Styling' },
+        descriptionJson: { ar: 'تمويج شعر احترافي مع تصفيف', en: 'Professional blow-dry with styling' },
+        basePrice: 100,
+        durationMin: 45,
+        isPopular: true,
+        sortOrder: 3,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[0]!.id,
+        titleJson: { ar: 'علاج الشعر العميق', en: 'Deep Conditioning Treatment' },
+        descriptionJson: { ar: 'علاج ترطيب عميق للشعر التالف والجاف', en: 'Deep moisturizing treatment for damaged and dry hair' },
+        basePrice: 130,
+        durationMin: 60,
+        sortOrder: 4,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[2]!.id,
+        titleJson: { ar: 'تنظيف بشرة سريع', en: 'Express Facial' },
+        descriptionJson: { ar: 'تنظيف بشرة سريع في ٣٠ دقيقة', en: 'Quick facial cleansing in 30 minutes' },
+        basePrice: 90,
+        durationMin: 30,
+        isPopular: true,
+        sortOrder: 2,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[3]!.id,
+        titleJson: { ar: 'تجربة مكياج', en: 'Makeup Trial' },
+        descriptionJson: { ar: 'تجربة مكياج قبل المناسبة مع مناقشة الإطلالة', en: 'Pre-event makeup trial with look consultation' },
+        basePrice: 150,
+        durationMin: 60,
+        sortOrder: 3,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[5]!.id,
+        titleJson: { ar: 'حناء عرايس', en: 'Bridal Henna' },
+        descriptionJson: { ar: 'حناء عرايس فاخرة بنقوش معقدة تشمل اليدين والقدمين', en: 'Luxury bridal henna with intricate patterns covering hands and feet' },
+        basePrice: 350,
+        durationMin: 180,
+        isPopular: true,
+        sortOrder: 2,
+      },
+    }),
   ]);
   console.log(`✅ ${services.length} services`);
 
