@@ -86,3 +86,4 @@ export { BeautyJourneyTimeline } from './BeautyJourneyTimeline';
 export { LocationSharingCard } from './LocationSharingCard';
 export { FakeNameGenerator } from './FakeNameGenerator';
 export { PregnancySafeBadge } from './PregnancySafeBadge';
+export { StudentDiscountBadge } from './StudentDiscountBadge';
