@@ -2,7 +2,7 @@
 
 **Secure marketplace for beauty & grooming services in Saudi Arabia.**
 
-Galaxy of Beauty connects female customers with vetted female technicians for beauty services — hair, nails, skin care, makeup, massage, and henna. Arabic-first, Saudi-compliant (ZATCA, PDPL), and built on a modern monorepo stack.
+Galaxy of Beauty connects female customers with vetted female technicians for 45 beauty services across 12 categories — hair, nails, skin care, makeup, massage, henna, waxing, lashes, body treatments, bridal, men's grooming, and spa. Arabic-first, Saudi-compliant (ZATCA, PDPL), women-only platform built on a modern monorepo stack.
 
 [![Type Check](https://img.shields.io/badge/type--check-10%2F10-brightgreen)](#)
 [![Lint](https://img.shields.io/badge/lint-7%2F7-brightgreen)](#)
@@ -101,11 +101,14 @@ galaxy-of-beauty/
 - Role-based access (Customer / Technician / Admin)
 
 ### 🏠 Public
-- Landing page with categories
-- Service catalog with search, filter, sort
-- Service detail with variants, pricing, technicians
+- Landing page with 12 categories
+- 45 services with search, filter, sort, variants
+- Service detail with pricing, duration, technicians
 - Surprise Me — AI-powered random recommendations
-- Technician search & profiles
+- Technician search & profiles (9 verified technicians)
+- Beauty bundles (4 curated packages)
+- Dynamic pricing (weekend/peak multipliers)
+- Seasonal offers (Eid, Ramadan, Wedding, Graduation)
 
 ### 👤 Customer
 - Dashboard with stats + quick actions
@@ -181,7 +184,7 @@ pnpm test         # 307 tests (15 suites) ✅
 
 | Category | Features |
 |----------|----------|
-| Commerce | Gift Cards 🎁 · Beauty Packages 💅 · Price Estimator 💰 · Build Bundle 📦 · Flash Deals ⚡ |
+| New Categories | Waxing ✨ · Lash Extensions 👁️ · Body Treatments 🧖‍♀️ · Bridal 👰 · Men's Grooming 💇‍♂️ · Spa 🧘 |
 | Social | Group Bookings 👯‍♀️ · Community Feed 💬 · Inspiration Board 📌 · Mood Board 🎨 |
 | Wedding | Bridal Concierge 👰 · Gift Registry 🎁 |
 | Content | Beauty Blog 📝 · Seasonal Lookbook 📸 · Seasonal Campaigns 📢 · Beauty Tutorials 📹 |
