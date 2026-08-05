@@ -5,7 +5,7 @@ import { trpc } from '@/lib/trpc-react';
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function BeautyCoursesScreen(): JSX.Element {
-  const courses = trpc.beautyCourses.list.useQuery({});
+  const courses = (trpc as any).beautyCourses.list.useQuery({});
   const data = courses.data as unknown[] | undefined;
 
   return (
