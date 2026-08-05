@@ -59,3 +59,4 @@ export { LifeStageBadge } from './LifeStageBadge';
 export { BeautyTip } from './BeautyTip';
 export { PeriodFriendlyBadge } from './PeriodFriendlyBadge';
 export { SelfCareReminder } from './SelfCareReminder';
+export { TrustIndicators } from './TrustIndicators';
