@@ -212,12 +212,11 @@ export const referralRouter = router({
   getEnhancedStats: protectedProcedure.query(async ({ ctx }) => {
     const referrals = await prisma.referral.findMany({
       where: { referrerId: ctx.user.id },
-      include: { referredUser: { select: { id: true, name: true, createdAt: true } } },
       orderBy: { createdAt: 'desc' },
     });
 
-    const completed = referrals.filter((r) => r.rewardGranted);
-    const totalEarnings = completed.length * 20; // 20 SAR per successful referral
+    const completed = referrals.filter((r) => r.rewardCredited);
+    const totalEarnings = completed.reduce((sum, r) => sum + Number(r.referrerReward), 0);
     const referralCode = referrals[0]?.referralCode ?? '——';
 
     // Tiered rewards
@@ -241,9 +240,11 @@ export const referralRouter = router({
       referrerBonus,
       referredBonus,
       recentReferrals: referrals.slice(0, 5).map((r) => ({
-        name: r.referredUser?.name ?? 'مستخدمة',
+        referredId: r.referredId,
         date: r.createdAt,
-        rewarded: r.rewardGranted,
+        rewarded: r.rewardCredited,
+        referrerReward: Number(r.referrerReward),
+        referredReward: Number(r.referredReward),
       })),
     };
   }),
