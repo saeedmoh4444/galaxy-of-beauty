@@ -157,3 +157,4 @@ export { QuietHoursBadge } from './QuietHoursBadge';
 export { FamilyDiscountCard } from './FamilyDiscountCard';
 export { BeautyQuizCard } from './BeautyQuizCard';
 export { Vision2030Badge } from './Vision2030Badge';
+export { BeautyEmergencyKit } from './BeautyEmergencyKit';
