@@ -91,14 +91,14 @@ export function EmergencyBeautyFund({
 }: EmergencyBeautyFundProps): JSX.Element {
   const r = REASONS[reason];
 
-  const statusDisplay: Record<string, { emoji: string; label: string; className: string }> = {
+  const statusDisplay = {
     available: { emoji: '💚', label: 'متاح', className: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' },
     applied: { emoji: '⏳', label: 'قيد المراجعة', className: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300' },
     approved: { emoji: '✅', label: 'تمت الموافقة', className: 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300' },
     completed: { emoji: '🎉', label: 'مكتمل', className: 'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300' },
-  };
+  } as const;
 
-  const st = statusDisplay[status] ?? statusDisplay.available;
+  const st = statusDisplay[status];
 
   return (
     <div
