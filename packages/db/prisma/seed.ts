@@ -193,6 +193,14 @@ async function main() {
         iconUrl: '/icons/henna.svg',
       },
     }),
+    prisma.category.create({
+      data: {
+        nameJson: { ar: 'إزالة الشعر', en: 'Waxing & Hair Removal' },
+        slug: 'waxing',
+        sortOrder: 7,
+        iconUrl: '/icons/waxing.svg',
+      },
+    }),
   ]);
   console.log(`✅ ${categories.length} root categories`);
 
@@ -228,8 +236,10 @@ async function main() {
     prisma.category.create({
       data: { nameJson: { ar: 'حناء سوداء', en: 'Black Henna' }, slug: 'black-henna', parentId: categories[5]!.id, sortOrder: 1 },
     }),
+    prisma.category.create({ data: { nameJson: { ar: 'شمع', en: 'Waxing' }, slug: 'waxing-sub', parentId: categories[6]!.id, sortOrder: 1 } }),
+    prisma.category.create({ data: { nameJson: { ar: 'خيط', en: 'Threading' }, slug: 'threading', parentId: categories[6]!.id, sortOrder: 2 } }),
   ]);
-  console.log('✅ 10 sub-categories');
+  console.log('✅ 12 sub-categories');
 
   // ---- Services ----
   const services = await Promise.all([
@@ -361,6 +371,14 @@ async function main() {
     prisma.service.create({ data: { categoryId: categories[1]!.id, titleJson: { ar: 'مانيكير سريع', en: 'Express Manicure' }, descriptionJson: { ar: 'مانيكير سريع في ٢٠ دقيقة', en: 'Quick manicure in 20 minutes' }, basePrice: 60, durationMin: 20, sortOrder: 2 } }),
     prisma.service.create({ data: { categoryId: categories[4]!.id, titleJson: { ar: 'حمام مغربي', en: 'Moroccan Bath' }, descriptionJson: { ar: 'حمام مغربي تقليدي مع الصابون البلدي والليفة', en: 'Traditional Moroccan bath with black soap and loofah' }, basePrice: 250, durationMin: 90, isPopular: true, sortOrder: 2 } }),
     prisma.service.create({ data: { categoryId: categories[0]!.id, titleJson: { ar: 'تسريحة عرايس', en: 'Bridal Hairstyling' }, descriptionJson: { ar: 'تسريحة شعر فاخرة للعروس مع تجربة قبل الزفاف', en: 'Luxury bridal hairstyle with pre-wedding trial' }, basePrice: 400, durationMin: 120, isPopular: true, sortOrder: 5 } }),
+
+    // Phase 1: Waxing & Hair Removal (6 services)
+    prisma.service.create({ data: { categoryId: categories[6]!.id, titleJson: { ar: 'إزالة شعر كامل الجسم', en: 'Full Body Wax' }, descriptionJson: { ar: 'إزالة الشعر بالشمع لكامل الجسم', en: 'Full body waxing' }, basePrice: 300, durationMin: 90, isPopular: true, sortOrder: 1 } }),
+    prisma.service.create({ data: { categoryId: categories[6]!.id, titleJson: { ar: 'إزالة شعر نصف الساق', en: 'Half Leg Wax' }, basePrice: 80, durationMin: 20, sortOrder: 2 } }),
+    prisma.service.create({ data: { categoryId: categories[6]!.id, titleJson: { ar: 'إزالة شعر برازيلي', en: 'Brazilian Wax' }, basePrice: 150, durationMin: 30, sortOrder: 3 } }),
+    prisma.service.create({ data: { categoryId: categories[6]!.id, titleJson: { ar: 'إزالة شعر الإبط', en: 'Underarm Wax' }, basePrice: 40, durationMin: 10, sortOrder: 4 } }),
+    prisma.service.create({ data: { categoryId: categories[6]!.id, titleJson: { ar: 'إزالة شعر الوجه بالخيط', en: 'Face Threading' }, basePrice: 50, durationMin: 15, sortOrder: 5 } }),
+    prisma.service.create({ data: { categoryId: categories[6]!.id, titleJson: { ar: 'إزالة شعر الوجه بالشمع', en: 'Full Face Wax' }, basePrice: 80, durationMin: 25, sortOrder: 6 } }),
   ]);
   console.log(`✅ ${services.length} services`);
 
