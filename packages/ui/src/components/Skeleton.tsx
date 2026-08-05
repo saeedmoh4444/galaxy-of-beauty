@@ -197,6 +197,24 @@ export function FormSkeleton({ fields = 5 }: { fields?: number }) {
   );
 }
 
+/** Skeleton that matches a responsive product/service grid. */
+export function GridSkeleton({ count = 8 }: { count?: number }) {
+  return (
+    <div role="status" aria-label="جاري تحميل العناصر" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {Array.from({ length: count }, (_, i) => (
+        <div key={i} className="rounded-2xl border border-edge bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
+          <div className="animate-pulse space-y-3">
+            <div className="aspect-square w-full rounded-xl bg-gray-200 dark:bg-gray-700" />
+            <div className="h-4 w-3/4 rounded bg-gray-200 dark:bg-gray-700" />
+            <div className="h-3 w-1/2 rounded bg-gray-200 dark:bg-gray-700" />
+            <div className="h-6 w-1/3 rounded bg-gray-200 dark:bg-gray-700" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /** Skeleton that matches a full table with header and rows. */
 export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: number }) {
   return (
