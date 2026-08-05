@@ -76,3 +76,4 @@ export { BeautyCircleCard } from './BeautyCircleCard';
 export { FreeCourseCard } from './FreeCourseCard';
 export { BeautyBudgetCard } from './BeautyBudgetCard';
 export { SheLeadsBadge } from './SheLeadsBadge';
+export { PrayerRoomBadge } from './PrayerRoomBadge';
