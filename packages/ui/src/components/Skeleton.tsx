@@ -215,6 +215,11 @@ export function GridSkeleton({ count = 8 }: { count?: number }) {
   );
 }
 
+/** Inline text skeleton — matches a single line of text. */
+export function TextSkeleton({ width = '100%' }: { width?: string }) {
+  return <span className="inline-block animate-pulse rounded bg-gray-200 dark:bg-gray-700 h-4" style={{ width, minWidth: '3rem' }} />;
+}
+
 /** Skeleton that matches a full table with header and rows. */
 export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: number }) {
   return (
