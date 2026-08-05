@@ -24,6 +24,8 @@ const adminLinks = [
   { href: '/admin/monitoring', labelAr: 'مراقبة المنصة', labelEn: 'Monitoring', icon: '🖥️' },
   { href: '/admin/feature-flags', labelAr: 'إدارة الخصائص', labelEn: 'Feature Flags', icon: '🚩' },
   { href: '/admin/audit-log', labelAr: 'سجل التدقيق', labelEn: 'Audit Log', icon: '📋' },
+  { href: '/admin/reports', labelAr: 'التقارير', labelEn: 'Reports', icon: '📑' },
+  { href: '/admin/areas', labelAr: 'إدارة المناطق', labelEn: 'Areas', icon: '📍' },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }): ReactNode {
