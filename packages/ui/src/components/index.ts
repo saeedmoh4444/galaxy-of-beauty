@@ -154,3 +154,4 @@ export { ComplimentaryAmenityBadge } from './ComplimentaryAmenityBadge';
 export { WomenEmployerBadge } from './WomenEmployerBadge';
 export { TeenSkincareGuide } from './TeenSkincareGuide';
 export { QuietHoursBadge } from './QuietHoursBadge';
+export { FamilyDiscountCard } from './FamilyDiscountCard';
