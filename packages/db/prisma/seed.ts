@@ -209,6 +209,7 @@ async function main() {
         iconUrl: '/icons/lashes.svg',
       },
     }),
+    prisma.category.create({ data: { nameJson: { ar: 'علاجات الجسم', en: 'Body Treatments' }, slug: 'body-treatments', sortOrder: 9, iconUrl: '/icons/body.svg' } }),
   ]);
   console.log(`✅ ${categories.length} root categories`);
 
@@ -395,6 +396,12 @@ async function main() {
     prisma.service.create({ data: { categoryId: categories[7]!.id, titleJson: { ar: 'تركيب رموش فوليوم', en: 'Volume Lash Extensions' }, basePrice: 350, durationMin: 120, sortOrder: 2 } }),
     prisma.service.create({ data: { categoryId: categories[7]!.id, titleJson: { ar: 'رفع رموش وتلوين', en: 'Lash Lift & Tint' }, basePrice: 180, durationMin: 45, sortOrder: 3 } }),
     prisma.service.create({ data: { categoryId: categories[7]!.id, titleJson: { ar: 'مايكروبليدنج حواجب', en: 'Microblading Eyebrows' }, basePrice: 600, durationMin: 120, sortOrder: 4 } }),
+
+    // Body Treatments (4)
+    prisma.service.create({ data: { categoryId: categories[8]!.id, titleJson: { ar: 'تقشير كامل الجسم', en: 'Full Body Scrub' }, basePrice: 200, durationMin: 60, sortOrder: 1 } }),
+    prisma.service.create({ data: { categoryId: categories[8]!.id, titleJson: { ar: 'لفة تنظيف الجسم', en: 'Detox Body Wrap' }, basePrice: 250, durationMin: 75, sortOrder: 2 } }),
+    prisma.service.create({ data: { categoryId: categories[8]!.id, titleJson: { ar: 'مساج بالزيوت العطرية', en: 'Aromatherapy Massage' }, basePrice: 280, durationMin: 90, isPopular: true, sortOrder: 3 } }),
+    prisma.service.create({ data: { categoryId: categories[8]!.id, titleJson: { ar: 'مساج بالأحجار الساخنة', en: 'Hot Stone Massage' }, basePrice: 300, durationMin: 90, sortOrder: 4 } }),
   ]);
   console.log(`✅ ${services.length} services`);
 
