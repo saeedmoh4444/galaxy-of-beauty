@@ -70,3 +70,4 @@ export { BeautyJournalPrompt } from './BeautyJournalPrompt';
 export { SisterhoodWall } from './SisterhoodWall';
 export { BeautySavingsGoal } from './BeautySavingsGoal';
 export { SensoryFriendlyBadge } from './SensoryFriendlyBadge';
+export { PhotoPrivacyBadge } from './PhotoPrivacyBadge';
