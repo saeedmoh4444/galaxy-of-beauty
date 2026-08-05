@@ -127,3 +127,4 @@ export { DVSupportBadge } from './DVSupportBadge';
 export { BeautyBudgetPlanner } from './BeautyBudgetPlanner';
 export { RandomActOfBeauty } from './RandomActOfBeauty';
 export { GoldenBeautyCard } from './GoldenBeautyCard';
+export { SignLanguageBadge } from './SignLanguageBadge';
