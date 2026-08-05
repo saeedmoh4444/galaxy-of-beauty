@@ -26,3 +26,4 @@ export { EmailCapture } from './EmailCapture';
 export { SeasonalBadge } from './SeasonalBadge';
 export { AddOnSuggestions } from './AddOnSuggestions';
 export { RamadanBanner } from './RamadanBanner';
+export { SuccessIcon, PulseDot, Shimmer } from './AnimatedIcon';
