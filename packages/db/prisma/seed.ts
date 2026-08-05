@@ -448,6 +448,11 @@ async function main() {
     prisma.serviceTag.create({ data: { nameJson: { ar: 'منتجات عضوية', en: 'Organic Products' }, slug: 'organic' } }),
     prisma.serviceTag.create({ data: { nameJson: { ar: 'خدمة منزلية', en: 'Home Service' }, slug: 'home-service' } }),
     prisma.serviceTag.create({ data: { nameJson: { ar: 'نتائج سريعة', en: 'Quick Results' }, slug: 'quick' } }),
+    // Women-only tags
+    prisma.serviceTag.create({ data: { nameJson: { ar: 'آمن للحوامل', en: 'Pregnancy Safe' }, slug: 'pregnancy-safe' } }),
+    prisma.serviceTag.create({ data: { nameJson: { ar: 'مناسب للمراهقات', en: 'Teen Friendly' }, slug: 'teen-friendly' } }),
+    prisma.serviceTag.create({ data: { nameJson: { ar: 'خصوصية تامة', en: 'Full Privacy' }, slug: 'full-privacy' } }),
+    prisma.serviceTag.create({ data: { nameJson: { ar: 'نسائي فقط', en: 'Women Only' }, slug: 'women-only' } }),
   ]);
 
   await prisma.serviceTagAssignment.createMany({
@@ -455,6 +460,11 @@ async function main() {
       { serviceId: services[4]!.id, tagId: tags[0]!.id },
       { serviceId: services[1]!.id, tagId: tags[1]!.id },
       { serviceId: services[2]!.id, tagId: tags[1]!.id },
+      // Women-only tag assignments
+      { serviceId: services[5]!.id, tagId: tags[4]!.id },  // Bridal Makeup → Pregnancy Safe
+      { serviceId: services[1]!.id, tagId: tags[5]!.id },  // Full Haircut → Teen Friendly
+      { serviceId: services[3]!.id, tagId: tags[6]!.id },  // Gel Manicure → Full Privacy
+      { serviceId: services[0]!.id, tagId: tags[7]!.id },  // Full Haircut → Women Only
     ],
   });
   console.log(`✅ ${tags.length} service tags`);
