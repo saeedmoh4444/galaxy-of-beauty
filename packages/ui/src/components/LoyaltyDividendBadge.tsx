@@ -31,7 +31,7 @@ interface TierDef {
   gradient: string;
 }
 
-const TIERS: Record<string, TierDef> = {
+const TIERS: Record<'silver' | 'gold' | 'diamond', TierDef> = {
   silver: {
     emoji: '🥈',
     label: 'فضية',
@@ -66,11 +66,12 @@ export function LoyaltyDividendBadge({
   className = '',
 }: LoyaltyDividendBadgeProps): JSX.Element {
   // Auto-detect tier from spend or use provided tier
-  const detectedTier: string =
+  const detectedTier = (
     tier ??
-    (yearlySpend >= 8000 ? 'diamond' : yearlySpend >= 3000 ? 'gold' : 'silver');
+    (yearlySpend >= 8000 ? 'diamond' : yearlySpend >= 3000 ? 'gold' : 'silver')
+  ) as 'silver' | 'gold' | 'diamond';
 
-  const tierDef = TIERS[detectedTier] ?? TIERS.silver;
+  const tierDef = TIERS[detectedTier];
   const rate = cashbackRate ?? tierDef.rate;
   const cashback = Math.round(yearlySpend * (rate / 100));
 
@@ -83,15 +84,7 @@ export function LoyaltyDividendBadge({
 
   return (
     <div
-      className={cn(
-        'rounded-2xl border p-5',
-        tierDef.color.replace('border-gray-200', 'border').replace('border-amber-200', 'border').replace('border-sky-200', 'border'),
-        // Simpler: just use the color class
-        className,
-      )}
-      style={{
-        borderColor: detectedTier === 'diamond' ? undefined : detectedTier === 'gold' ? undefined : undefined,
-      }}
+      className={cn('rounded-2xl border bg-white p-5 dark:bg-gray-900', className)}
     >
       {/* Tier header */}
       <div className="flex items-center justify-between">
