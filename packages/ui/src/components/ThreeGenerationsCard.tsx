@@ -102,7 +102,7 @@ export function ThreeGenerationsCard({
               </p>
             )}
           </div>
-        )}
+        ))}
       </div>
 
       {/* Package details */}
