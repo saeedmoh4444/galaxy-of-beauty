@@ -364,7 +364,6 @@ export const analyticsRouter = router({
     const now = new Date();
     const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-    const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
 
     const [thisMonthRevenue, lastMonthRevenue, thisMonthBookings, lastMonthBookings] = await Promise.all([
       prisma.payment.aggregate({ where: { status: 'CAPTURED', createdAt: { gte: thisMonth } }, _sum: { amount: true } }),
