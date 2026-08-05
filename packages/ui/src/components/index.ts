@@ -91,3 +91,4 @@ export { IAmHomeSafe } from './IAmHomeSafe';
 export { BeautyWikiCard } from './BeautyWikiCard';
 export { ThreeGenerationsCard } from './ThreeGenerationsCard';
 export { BeautyBankCard } from './BeautyBankCard';
+export { AskDermatologistCard } from './AskDermatologistCard';
