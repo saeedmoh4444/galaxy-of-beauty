@@ -166,6 +166,7 @@ Customer takes 5-min quiz → AI builds persistent profile:
 - Display prayer times in booking calendar
 - Auto-block slots during prayer (especially Maghrib & Isha)
 - "Prayer-friendly" booking: services that fit between prayers
+- Ramadan mode: adjusted hours, pre-Iftar packages
 
 ### 4.2 Women-Only Guarantee
 
@@ -186,8 +187,10 @@ Customer takes 5-min quiz → AI builds persistent profile:
 ### 4.4 Saudi Calendar & Culture
 
 - Hijri date display alongside Gregorian
+- Ramadan special packages (pre-Iftar beauty)
 - Eid packages (Eid al-Fitr + Eid al-Adha)
 - National Day (Sep 23) promotions
+- Hajj season: pilgrim beauty packages
 - Wedding season: May-August bridal packages
 - Graduation season: special packages
 - Weekend: Thu/Fri/Sat peak pricing
