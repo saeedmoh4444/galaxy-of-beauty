@@ -103,3 +103,4 @@ export { AcademyCertificateBadge } from './AcademyCertificateBadge';
 export { MentalWellnessCard } from './MentalWellnessCard';
 export { EmergencyBeautyFund } from './EmergencyBeautyFund';
 export { BeautyMythBusterCard } from './BeautyMythBusterCard';
+export { PriceAlertBadge } from './PriceAlertBadge';
