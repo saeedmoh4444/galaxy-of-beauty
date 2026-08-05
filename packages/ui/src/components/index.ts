@@ -68,3 +68,4 @@ export { EmpowermentQuote } from './EmpowermentQuote';
 export { MotherDaughterBadge } from './MotherDaughterBadge';
 export { BeautyJournalPrompt } from './BeautyJournalPrompt';
 export { SisterhoodWall } from './SisterhoodWall';
+export { BeautySavingsGoal } from './BeautySavingsGoal';
