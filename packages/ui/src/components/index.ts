@@ -93,3 +93,4 @@ export { ThreeGenerationsCard } from './ThreeGenerationsCard';
 export { BeautyBankCard } from './BeautyBankCard';
 export { AskDermatologistCard } from './AskDermatologistCard';
 export { LifeEventCard } from './LifeEventCard';
+export { SecureCallBadge } from './SecureCallBadge';
