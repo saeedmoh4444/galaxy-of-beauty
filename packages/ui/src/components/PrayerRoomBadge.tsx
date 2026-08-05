@@ -49,8 +49,6 @@ export function PrayerRoomBadge({
 }: PrayerRoomBadgeProps): JSX.Element | null {
   if (!amenities.length) return null;
 
-  const active = AMENITIES.filter((a) => amenities.includes(a.label as PrayerAmenity));
-
   // Map the amenity key to the definition
   const getAmenity = (key: PrayerAmenity): AmenityDef | undefined =>
     AMENITIES.find((a) => {
