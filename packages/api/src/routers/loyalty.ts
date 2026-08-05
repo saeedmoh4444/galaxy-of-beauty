@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { LOYALTY_TIERS } from '@galaxy/shared';
-import { protectedProcedure, adminProcedure, router } from '../trpc';
+import { publicProcedure, protectedProcedure, adminProcedure, router } from '../trpc';
 
 // Points per 1 SAR spent (configurable)
 const POINTS_PER_SAR = 10;
