@@ -118,3 +118,4 @@ export { QuietCornerBadge } from './QuietCornerBadge';
 export { BridalJourneyTimeline } from './BridalJourneyTimeline';
 export { ScentFreeBadge } from './ScentFreeBadge';
 export { GroupDiscountBadge } from './GroupDiscountBadge';
+export { BeautyPodcastCard } from './BeautyPodcastCard';
