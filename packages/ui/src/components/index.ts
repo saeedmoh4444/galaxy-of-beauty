@@ -126,3 +126,4 @@ export { FirstFacialCard } from './FirstFacialCard';
 export { DVSupportBadge } from './DVSupportBadge';
 export { BeautyBudgetPlanner } from './BeautyBudgetPlanner';
 export { RandomActOfBeauty } from './RandomActOfBeauty';
+export { GoldenBeautyCard } from './GoldenBeautyCard';
