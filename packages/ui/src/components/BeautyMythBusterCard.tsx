@@ -14,13 +14,6 @@ import { cn } from '@galaxy/shared';
  *   />
  */
 
-interface MythBuster {
-  myth: string;
-  fact: string;
-  source?: string;
-  category?: 'skincare' | 'haircare' | 'makeup' | 'general';
-}
-
 interface BeautyMythBusterCardProps {
   myth: string;
   fact: string;
