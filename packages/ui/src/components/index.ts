@@ -50,3 +50,4 @@ export { CardGrid } from './CardGrid';
 export { ServiceCard } from './ServiceCard';
 export { TechnicianCard } from './TechnicianCard';
 export { BookingSummary } from './BookingSummary';
+export { HeroBanner } from './HeroBanner';
