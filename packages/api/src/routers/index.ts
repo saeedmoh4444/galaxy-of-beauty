@@ -49,7 +49,7 @@ import {
 import {
   adminRouter, adminAnalyticsV2Router, adminReportsRouter, adminToolsRouter,
   analyticsRouter, cmsRouter, featureFlagRouter, monitoringRouter,
-  platformRouter, predictiveDemandRouter, smartPricingRouter, pricingRulesRouter,
+  platformRouter, predictiveDemandRouter, smartPricingRouter,
   performanceRouter, apiDocsRouter,
 } from '../domains/admin';
 
