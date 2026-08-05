@@ -1,66 +1,44 @@
-import { View, Text, ScrollView, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { trpc } from '@/lib/api';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
-import { SkeletonList } from '@/components/SkeletonCard';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
 
-const RATING_COLORS: any = { safe: '#16a34a', caution: '#d97706', avoid: '#dc2626' };
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827', success: '#10b981', warning: '#f59e0b', danger: '#dc2626' };
 
-export default function IngredientAnalyzerScreen() {
-  const insets = useSafeAreaInsets();
-  const [text, setText] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
-
-  const analyze = () => {
-    if (!text.trim()) return;
-    setLoading(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.ingredientAnalyzer.analyze.query({ ingredients: text.trim() }) as any).then((d: any) => { setResult(d); setLoading(false); }).catch(() => setLoading(false));
-  };
+export default function IngredientAnalyzerScreen(): JSX.Element {
+  const [search, setSearch] = useState('');
+  const [submitted, setSubmitted] = useState('');
+  const result = (trpc as any).ingredientAnalyzer?.analyze?.useQuery?.(
+    { ingredient: submitted },
+    { enabled: submitted.length > 0 }
+  ) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}><Text style={styles.title}>🧪 تحليل المكونات</Text></View>
-      <ScrollView contentContainerStyle={styles.inner}>
-        <TextInput style={styles.input} value={text} onChangeText={setText} placeholder="الصقي قائمة المكونات..." multiline numberOfLines={4} textAlign="right" />
-        <TouchableOpacity style={styles.btn} onPress={analyze} disabled={!text.trim() || loading}><Text style={styles.btnText}>🧪 تحليل</Text></TouchableOpacity>
-        {loading ? <SkeletonList count={2} /> : result ? (
-          <View style={styles.resultCard}>
-            <View style={styles.stats}>
-              <View style={styles.stat}><Text style={[styles.statNum, { color: '#16a34a' }]}>{result.stats.safe}</Text><Text style={styles.statLabel}>آمن</Text></View>
-              <View style={styles.stat}><Text style={[styles.statNum, { color: '#d97706' }]}>{result.stats.caution}</Text><Text style={styles.statLabel}>حذر</Text></View>
-              <View style={styles.stat}><Text style={[styles.statNum, { color: '#dc2626' }]}>{result.stats.avoid}</Text><Text style={styles.statLabel}>تجنب</Text></View>
-              <View style={styles.stat}><Text style={[styles.statNum, { color: '#7c3aed' }]}>{result.stats.score}%</Text><Text style={styles.statLabel}>أمان</Text></View>
-            </View>
-            {result.ingredients.map((ing: any, i: number) => (
-              <View key={i} style={styles.ingRow}>
-                <Text style={styles.ingName}>{ing.name}</Text>
-                <View style={[styles.ingBadge, { backgroundColor: RATING_COLORS[ing.rating] + '20' }]}><Text style={[styles.ingBadgeText, { color: RATING_COLORS[ing.rating] }]}>{ing.rating === 'safe' ? '✅' : ing.rating === 'caution' ? '⚠️' : '❌'}</Text></View>
-              </View>
-            ))}
-          </View>
-        ) : null}
-      </ScrollView>
-    </View>
+    <ScreenState isLoading={submitted.length > 0 && result.isLoading} isError={result.isError} isEmpty={false} errorMessage="فشل تحليل المكون" onRetry={() => result.refetch()}>
+      <Text style={styles.title}>🔬 تحليل المكونات</Text>
+      <View style={styles.inputRow}>
+        <TextInput style={styles.input} placeholder="أدخلي اسم المكون..." value={search} onChangeText={setSearch} />
+        <TouchableOpacity style={styles.analyzeBtn} onPress={() => setSubmitted(search)}>
+          <Text style={styles.analyzeText}>تحليل</Text>
+        </TouchableOpacity>
+      </View>
+      {(result.data as any) ? (
+        <View style={[styles.resultCard, { borderLeftColor: (result.data as any)?.safety === 'safe' ? COLORS.success : (result.data as any)?.safety === 'warning' ? COLORS.warning : COLORS.danger }]}>
+          <Text style={styles.ingredientName}>{(result.data as any)?.name ?? submitted}</Text>
+          <Text style={styles.ingredientDesc}>{(result.data as any)?.description ?? ''}</Text>
+        </View>
+      ) : null}
+    </ScreenState>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  header: { padding: 16, borderBottomWidth: 1, borderBottomColor: '#e5e7eb' },
-  title: { fontSize: 22, fontWeight: '800', color: '#111827', textAlign: 'center' },
-  inner: { padding: 16, paddingBottom: 40 },
-  input: { backgroundColor: '#f9fafb', borderRadius: 14, borderWidth: 1, borderColor: '#e5e7eb', padding: 14, fontSize: 14, marginBottom: 12, minHeight: 100 },
-  btn: { backgroundColor: '#7c3aed', borderRadius: 12, padding: 14, alignItems: 'center' },
-  btnText: { color: '#fff', fontSize: 15, fontWeight: '700' },
-  resultCard: { marginTop: 20 },
-  stats: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 16 },
-  stat: { alignItems: 'center' },
-  statNum: { fontSize: 24, fontWeight: '800' },
-  statLabel: { fontSize: 11, color: '#9ca3af', marginTop: 2 },
-  ingRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' },
-  ingName: { fontSize: 14, color: '#374151', flex: 1, textAlign: 'right' },
-  ingBadge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 2 },
-  ingBadgeText: { fontSize: 14 },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  inputRow: { flexDirection: 'row', gap: 8, marginBottom: 20 },
+  input: { flex: 1, borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 12, padding: 12, fontSize: 14, backgroundColor: COLORS.white },
+  analyzeBtn: { backgroundColor: COLORS.brand, borderRadius: 12, paddingHorizontal: 20, justifyContent: 'center' },
+  analyzeText: { fontSize: 14, fontWeight: '600', color: COLORS.white },
+  resultCard: { backgroundColor: COLORS.white, borderRadius: 14, padding: 16, borderLeftWidth: 4 },
+  ingredientName: { fontSize: 16, fontWeight: '700', color: COLORS.gray900 },
+  ingredientDesc: { fontSize: 13, color: COLORS.gray400, marginTop: 4 },
 });
