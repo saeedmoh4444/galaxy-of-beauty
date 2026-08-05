@@ -115,3 +115,4 @@ export { IncognitoModeBadge } from './IncognitoModeBadge';
 export { MommyAndMeCard } from './MommyAndMeCard';
 export { NoRushBadge } from './NoRushBadge';
 export { QuietCornerBadge } from './QuietCornerBadge';
+export { BridalJourneyTimeline } from './BridalJourneyTimeline';
