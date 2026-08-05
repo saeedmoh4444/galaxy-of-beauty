@@ -133,3 +133,4 @@ export { InspirationBoardCard } from './InspirationBoardCard';
 export { BeautyChallengeCard } from './BeautyChallengeCard';
 export { HandwrittenNote } from './HandwrittenNote';
 export { ReferralRewardBadge } from './ReferralRewardBadge';
+export { MirrorStickerCard } from './MirrorStickerCard';
