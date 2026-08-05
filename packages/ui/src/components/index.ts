@@ -122,3 +122,4 @@ export { BeautyPodcastCard } from './BeautyPodcastCard';
 export { HotDrinkMenuBadge } from './HotDrinkMenuBadge';
 export { RuralOutreachCard } from './RuralOutreachCard';
 export { BeautyScholarshipCard } from './BeautyScholarshipCard';
+export { FirstFacialCard } from './FirstFacialCard';
