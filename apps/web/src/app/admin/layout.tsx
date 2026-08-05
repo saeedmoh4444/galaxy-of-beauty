@@ -20,6 +20,10 @@ const adminLinks = [
   { href: '/admin/campaigns', labelAr: 'الحملات', labelEn: 'Campaigns', icon: '📢' },
   { href: '/admin/blog', labelAr: 'المدونة', labelEn: 'Blog', icon: '📝' },
   { href: '/admin/zatca', labelAr: 'الفاتورة الإلكترونية', labelEn: 'ZATCA', icon: '🧾' },
+  { href: '/admin/analytics', labelAr: 'التحليلات المتقدمة', labelEn: 'Analytics', icon: '📈' },
+  { href: '/admin/monitoring', labelAr: 'مراقبة المنصة', labelEn: 'Monitoring', icon: '🖥️' },
+  { href: '/admin/feature-flags', labelAr: 'إدارة الخصائص', labelEn: 'Feature Flags', icon: '🚩' },
+  { href: '/admin/audit-log', labelAr: 'سجل التدقيق', labelEn: 'Audit Log', icon: '📋' },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }): ReactNode {
