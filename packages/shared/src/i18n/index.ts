@@ -154,6 +154,14 @@ export const sharedMessages = {
   'bundle.services': { ar: 'خدمات', en: 'Services' },
   'deal.flash': { ar: 'عرض فلاش', en: 'Flash Deal' },
   'deal.endsIn': { ar: 'ينتهي خلال', en: 'Ends in' },
+
+  // Women-Only Platform
+  'women.safeSpace': { ar: 'مساحة نسائية آمنة', en: 'Safe Women-Only Space' },
+  'women.privacyFirst': { ar: 'خصوصيتكِ أولاً', en: 'Your Privacy First' },
+  'women.femaleOnly': { ar: 'نسائي بالكامل', en: 'Female Only' },
+  'women.verified': { ar: 'فنيات موثقات', en: 'Verified Technicians' },
+  'women.periodKit': { ar: 'أدوات الدورة الشهرية متوفرة', en: 'Period Kit Available' },
+  'women.prayerRoom': { ar: 'غرفة صلاة متوفرة', en: 'Prayer Room Available' },
 } as const;
 
 export type TranslationKey = keyof typeof sharedMessages;
