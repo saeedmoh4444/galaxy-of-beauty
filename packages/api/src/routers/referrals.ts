@@ -207,4 +207,44 @@ export const referralRouter = router({
       shareText: 'انضمي إلى جالكسي بيوتي واحصلي على خصم ٢٠ ريال!',
     };
   }),
+
+  // Enhanced stats with tiered rewards
+  getEnhancedStats: protectedProcedure.query(async ({ ctx }) => {
+    const referrals = await prisma.referral.findMany({
+      where: { referrerId: ctx.user.id },
+      include: { referredUser: { select: { id: true, name: true, createdAt: true } } },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    const completed = referrals.filter((r) => r.rewardGranted);
+    const totalEarnings = completed.length * 20; // 20 SAR per successful referral
+    const referralCode = referrals[0]?.referralCode ?? '——';
+
+    // Tiered rewards
+    const count = completed.length;
+    const tier = count >= 10 ? '💎 الماسي' : count >= 5 ? '🥇 ذهبي' : count >= 1 ? '🥈 فضي' : '⭐ مبتدئ';
+    const nextTier = count >= 10 ? null : count >= 5 ? '💎 الماسي (١٠ إحالات)' : count >= 1 ? '🥇 ذهبي (٥ إحالات)' : '🥈 فضي (إحالة واحدة)';
+    const nextCount = count >= 10 ? 0 : count >= 5 ? 10 - count : count >= 1 ? 5 - count : 1;
+
+    // Double-sided rewards
+    const referrerBonus = count >= 10 ? 50 : count >= 5 ? 30 : 20;
+    const referredBonus = 20; // New user always gets 20 SAR
+
+    return {
+      referralCode,
+      totalReferrals: referrals.length,
+      completedReferrals: count,
+      totalEarnings,
+      tier,
+      nextTier,
+      nextCount,
+      referrerBonus,
+      referredBonus,
+      recentReferrals: referrals.slice(0, 5).map((r) => ({
+        name: r.referredUser?.name ?? 'مستخدمة',
+        date: r.createdAt,
+        rewarded: r.rewardGranted,
+      })),
+    };
+  }),
 });
