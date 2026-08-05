@@ -23,3 +23,5 @@ export { BookAgain } from './BookAgain';
 export { PopularityBadge } from './PopularityBadge';
 export { NPSSurvey } from './NPSSurvey';
 export { EmailCapture } from './EmailCapture';
+export { SeasonalBadge } from './SeasonalBadge';
+export { AddOnSuggestions } from './AddOnSuggestions';
