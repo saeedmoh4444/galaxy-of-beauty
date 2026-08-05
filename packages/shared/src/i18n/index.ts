@@ -115,12 +115,12 @@ export const sharedMessages = {
   'notif.newMessage': { ar: 'رسالة جديدة', en: 'New Message' },
   'notif.promotion': { ar: 'عرض جديد', en: 'New Promotion' },
 
-  // Errors
-  'error.network': { ar: 'خطأ في الاتصال بالشبكة', en: 'Network error' },
-  'error.serverError': { ar: 'خطأ في الخادم', en: 'Server error' },
-  'error.validationError': { ar: 'خطأ في التحقق من البيانات', en: 'Validation error' },
-  'error.rateLimit': { ar: 'طلبات كثيرة. حاولي لاحقاً', en: 'Too many requests. Try again later.' },
-  'error.unauthorized': { ar: 'يجب تسجيل الدخول', en: 'Login required' },
+  // Errors (Phase 9: Delight Messages)
+  'error.network': { ar: 'عفواً! يبدو أن الإنترنت يأخذ استراحة. حاولي مرة أخرى؟ 🌐', en: 'Oops! Looks like the internet is taking a break. Try again?' },
+  'error.serverError': { ar: 'عذراً! شيء غير متوقع حدث. فريقنا التقني تم تنبيهه تلقائياً. جربي مرة أخرى؟ 💜', en: 'Sorry! Something unexpected happened. Our tech team has been alerted. Try again?' },
+  'error.validationError': { ar: 'بعض البيانات تحتاج تعديل بسيط. راجعي الحقول المحددة ♀️', en: 'Some fields need a quick fix. Check the highlighted fields.' },
+  'error.rateLimit': { ar: 'واو! أنتِ نشيطة جداً! انتظري لحظة قبل المحاولة مرة أخرى ⏳', en: 'Wow, you are fast! Wait a moment before trying again.' },
+  'error.unauthorized': { ar: 'هذه المنطقة للأعضاء فقط. سجلي الدخول للوصول إليها 🔐', en: 'This area is for members only. Log in to access it.' },
 
   // Onboarding
   'onboarding.welcome': { ar: 'مرحباً بكِ في جالكسي بيوتي', en: 'Welcome to Galaxy of Beauty' },
