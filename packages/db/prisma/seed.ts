@@ -897,6 +897,9 @@ async function main() {
         { code: 'GIFT-2024-001', amount: 200, balance: 200, purchaserId: customer.id, recipientEmail: 'friend@test.com', recipientName: 'مها', message: 'هدية عيد ميلاد سعيد! 🎂', status: 'ACTIVE', expiresAt: new Date(Date.now() + 365 * 86400000) },
         { code: 'GIFT-2024-002', amount: 100, balance: 0, purchaserId: customer.id, recipientEmail: 'sister@test.com', recipientName: 'ريم', message: 'لكِ مع حبي 💝', status: 'REDEEMED', expiresAt: new Date(Date.now() + 365 * 86400000) },
         { code: 'GIFT-2024-003', amount: 500, balance: 500, purchaserId: customers[1]!.id, recipientName: 'سارة', status: 'ACTIVE', expiresAt: new Date(Date.now() + 180 * 86400000) },
+        { code: 'GIFT-2024-004', amount: 150, balance: 150, purchaserId: customers[2]!.id, recipientName: 'هند', message: 'شكراً لكِ 🌸', status: 'ACTIVE', expiresAt: new Date(Date.now() + 90 * 86400000) },
+        { code: 'GIFT-2024-005', amount: 300, balance: 75, purchaserId: customers[3]!.id, recipientName: 'لطيفة', message: 'عذراً على التأخير 🎁', status: 'ACTIVE', expiresAt: new Date(Date.now() + 120 * 86400000) },
+        { code: 'GIFT-2024-006', amount: 1000, balance: 1000, purchaserId: customers[0]!.id, recipientName: 'أمي الحبيبة', message: 'كل عام وأنتِ بألف خير ❤️', status: 'ACTIVE', expiresAt: new Date(Date.now() + 365 * 86400000) },
       ],
     });
     console.log('✅ 3 gift cards (active + redeemed)');
