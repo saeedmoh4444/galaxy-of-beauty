@@ -17,3 +17,5 @@ export type { IconName } from './Icon';
 export { InlineEdit } from './InlineEdit';
 export { FormField, FormSelect, FormTextarea } from './FormField';
 export { Celebration } from './Celebration';
+export { HijriDate } from './HijriDate';
+export { WhatsAppShare } from './WhatsAppShare';
