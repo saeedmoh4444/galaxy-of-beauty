@@ -43,3 +43,4 @@ export { Badge } from './Badge';
 export { Divider } from './Divider';
 export { CopyButton } from './CopyButton';
 export { Tabs } from './Tabs';
+export { Alert } from './Alert';
