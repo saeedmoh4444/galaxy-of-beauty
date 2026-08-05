@@ -20,7 +20,7 @@ const VARIANTS = {
   warning: { bg: 'bg-amber-50 dark:bg-amber-950', border: 'border-amber-200 dark:border-amber-800', text: 'text-amber-700 dark:text-amber-300', icon: '⚠️' },
 };
 
-export function Alert({ children, variant = 'info', dismissible = false, className = '' }: AlertProps): JSX.Element {
+export function Alert({ children, variant = 'info', dismissible = false, className = '' }: AlertProps): JSX.Element | null {
   const [dismissed, setDismissed] = useState(false);
   if (dismissed) return null;
 
