@@ -37,7 +37,7 @@ export function TeenBeautyCard({
   onBookWithParent,
   className = '',
 }: TeenBeautyCardProps): JSX.Element {
-  const [ageMin, ageMax] = service.ageRange.split('-').map(Number);
+  const ageMin = Number(service.ageRange.split('-')[0]) || 12;
 
   return (
     <div
