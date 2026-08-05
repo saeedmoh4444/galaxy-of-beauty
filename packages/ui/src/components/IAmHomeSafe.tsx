@@ -30,7 +30,6 @@ export function IAmHomeSafe({
   className = '',
 }: IAmHomeSafeProps): JSX.Element {
   const [checkedIn, setCheckedIn] = useState(false);
-  const [countdown, setCountdown] = useState(graceMinutes);
 
   const handleCheckIn = () => {
     setCheckedIn(true);
@@ -125,12 +124,12 @@ export function IAmHomeSafe({
         <div className="mt-2">
           <div className="flex items-center justify-between text-[9px] text-text-tertiary dark:text-gray-500">
             <span>⏰ وقت التأكيد المتبقي</span>
-            <span>{countdown} دقيقة</span>
+            <span>{graceMinutes} دقيقة</span>
           </div>
           <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-white/60 dark:bg-gray-800">
             <div
               className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-500 transition-all duration-1000"
-              style={{ width: `${(countdown / graceMinutes) * 100}%` }}
+              style={{ width: `${(graceMinutes / graceMinutes) * 100}%` }}
             />
           </div>
         </div>
