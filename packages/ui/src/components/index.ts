@@ -96,3 +96,4 @@ export { LifeEventCard } from './LifeEventCard';
 export { SecureCallBadge } from './SecureCallBadge';
 export { PanicButton } from './PanicButton';
 export { LoyaltyDividendBadge } from './LoyaltyDividendBadge';
+export { KindnessPointsBadge } from './KindnessPointsBadge';
