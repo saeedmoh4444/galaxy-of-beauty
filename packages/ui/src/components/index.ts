@@ -114,3 +114,4 @@ export { BeautyHeroBadge } from './BeautyHeroBadge';
 export { IncognitoModeBadge } from './IncognitoModeBadge';
 export { MommyAndMeCard } from './MommyAndMeCard';
 export { NoRushBadge } from './NoRushBadge';
+export { QuietCornerBadge } from './QuietCornerBadge';
