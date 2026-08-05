@@ -304,7 +304,7 @@ async function main() {
         sortOrder: 1,
       },
     }),
-    // Quick Win #1: 5 new services
+    // Phase 1: 8 new services (QW1 + 3 more)
     prisma.service.create({
       data: {
         categoryId: categories[0]!.id,
@@ -358,6 +358,9 @@ async function main() {
         sortOrder: 2,
       },
     }),
+    prisma.service.create({ data: { categoryId: categories[1]!.id, titleJson: { ar: 'مانيكير سريع', en: 'Express Manicure' }, descriptionJson: { ar: 'مانيكير سريع في ٢٠ دقيقة', en: 'Quick manicure in 20 minutes' }, basePrice: 60, durationMin: 20, sortOrder: 2 } }),
+    prisma.service.create({ data: { categoryId: categories[4]!.id, titleJson: { ar: 'حمام مغربي', en: 'Moroccan Bath' }, descriptionJson: { ar: 'حمام مغربي تقليدي مع الصابون البلدي والليفة', en: 'Traditional Moroccan bath with black soap and loofah' }, basePrice: 250, durationMin: 90, isPopular: true, sortOrder: 2 } }),
+    prisma.service.create({ data: { categoryId: categories[0]!.id, titleJson: { ar: 'تسريحة عرايس', en: 'Bridal Hairstyling' }, descriptionJson: { ar: 'تسريحة شعر فاخرة للعروس مع تجربة قبل الزفاف', en: 'Luxury bridal hairstyle with pre-wedding trial' }, basePrice: 400, durationMin: 120, isPopular: true, sortOrder: 5 } }),
   ]);
   console.log(`✅ ${services.length} services`);
 
