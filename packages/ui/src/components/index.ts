@@ -135,3 +135,4 @@ export { HandwrittenNote } from './HandwrittenNote';
 export { ReferralRewardBadge } from './ReferralRewardBadge';
 export { MirrorStickerCard } from './MirrorStickerCard';
 export { PromReadyCard } from './PromReadyCard';
+export { CareerBeautyCard } from './CareerBeautyCard';
