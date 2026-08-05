@@ -106,3 +106,4 @@ export { BeautyMythBusterCard } from './BeautyMythBusterCard';
 export { PriceAlertBadge } from './PriceAlertBadge';
 export { BodyPositiveBadge } from './BodyPositiveBadge';
 export { GalentinesCard } from './GalentinesCard';
+export { ConsentShield } from './ConsentShield';
