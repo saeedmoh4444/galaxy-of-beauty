@@ -390,4 +390,15 @@ export const platformRouter = router({
         totalPages: Math.ceil(total / input.limit),
       };
     }),
+
+  // Public stats — social proof for landing page
+  publicStats: publicProcedure.query(async () => {
+    const [totalBookings, totalCustomers, totalTechnicians, totalCities] = await Promise.all([
+      prisma.booking.count(),
+      prisma.user.count({ where: { role: 'CUSTOMER' } }),
+      prisma.technician.count(),
+      prisma.saudiCity.count(),
+    ]);
+    return { totalBookings, totalCustomers, totalTechnicians, totalCities, happyCustomers: totalBookings };
+  }),
 });
