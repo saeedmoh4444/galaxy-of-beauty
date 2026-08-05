@@ -566,6 +566,8 @@ async function main() {
       isPublished: true,
     },
   });
+  await prisma.beautyEvent.create({ data: { nameJson: { ar: 'دورة مكياج احترافي', en: 'Professional Makeup Course' }, descriptionJson: { ar: 'تعلمي أساسيات المكياج الاحترافي مع خبيرة تجميل', en: 'Learn professional makeup basics' }, eventType: 'masterclass', location: 'جدة - فندق الريتز كارلتون', price: 300, maxAttendees: 15, startsAt: new Date(Date.now() + 14 * 86400000), endsAt: new Date(Date.now() + 14 * 86400000 + 5 * 3600000), isPublished: true } });
+  await prisma.beautyEvent.create({ data: { nameJson: { ar: 'يوم سبا رمضاني', en: 'Ramadan Spa Day' }, descriptionJson: { ar: 'استرخي قبل الإفطار مع يوم سبا كامل', en: 'Relax before Iftar with a full spa day' }, eventType: 'seasonal', location: 'الرياض - سبا النخيل', price: 450, maxAttendees: 10, startsAt: new Date(Date.now() + 20 * 86400000), endsAt: new Date(Date.now() + 20 * 86400000 + 6 * 3600000), isPublished: true } });
   console.log('✅ Beauty events');
 
   // Seed campaign
