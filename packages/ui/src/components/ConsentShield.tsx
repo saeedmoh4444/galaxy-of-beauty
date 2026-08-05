@@ -84,7 +84,6 @@ export function ConsentShield({
 
   const granted = permissions.length;
   const total = Object.keys(PERMISSIONS).length;
-  const required = Object.entries(PERMISSIONS).filter(([, v]) => v.required).length;
 
   return (
     <div
