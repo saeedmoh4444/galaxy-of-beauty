@@ -111,3 +111,4 @@ export { AnnualSummitCard } from './AnnualSummitCard';
 export { IngredientGlossaryCard } from './IngredientGlossaryCard';
 export { PostpartumCareCard } from './PostpartumCareCard';
 export { BeautyHeroBadge } from './BeautyHeroBadge';
+export { IncognitoModeBadge } from './IncognitoModeBadge';
