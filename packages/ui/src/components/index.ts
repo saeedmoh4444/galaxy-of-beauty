@@ -57,3 +57,4 @@ export { SalonAmenities } from './SalonAmenities';
 export { SafetyBadge, SafetyGuarantees } from './SafetyBadge';
 export { LifeStageBadge } from './LifeStageBadge';
 export { BeautyTip } from './BeautyTip';
+export { PeriodFriendlyBadge } from './PeriodFriendlyBadge';
