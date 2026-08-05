@@ -44,3 +44,4 @@ export { Divider } from './Divider';
 export { CopyButton } from './CopyButton';
 export { Tabs } from './Tabs';
 export { Alert } from './Alert';
+export { PriceTag } from './PriceTag';
