@@ -49,7 +49,7 @@ import {
 import {
   adminRouter, adminAnalyticsV2Router, adminReportsRouter, adminToolsRouter,
   analyticsRouter, cmsRouter, featureFlagRouter, monitoringRouter,
-  platformRouter, predictiveDemandRouter, smartPricingRouter,
+  platformRouter, predictiveDemandRouter, smartPricingRouter, pricingRulesRouter,
   performanceRouter, apiDocsRouter,
 } from '../domains/admin';
 
@@ -115,6 +115,7 @@ import { techLeaderboardRouter } from './techLeaderboard';
 import { techOnboardingRouter } from './techOnboarding';
 import { techWaitlistRouter } from './techWaitlist';
 import { featuredTechRouter } from './featuredTech';
+import { pricingRulesRouter } from './pricingRules';
 import { productScannerRouter } from './productScanner';
 import { wishlistRouter } from './wishlist';
 import { lookOfTheDayRouter } from './lookOfTheDay';
@@ -357,6 +358,7 @@ export const appRouter = router({
   techOnboarding: techOnboardingRouter,
   techWaitlist: techWaitlistRouter,
   featuredTech: featuredTechRouter,
+  pricingRules: pricingRulesRouter,
   productScanner: productScannerRouter,
   wishlist: wishlistRouter,
   lookOfTheDay: lookOfTheDayRouter,
