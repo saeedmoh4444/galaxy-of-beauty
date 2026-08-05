@@ -247,16 +247,4 @@ export const userRouter = router({
     return { message: 'تم إنهاء جميع الجلسات الأخرى' };
   }),
 
-  // PDPL: Export all personal data (Right to Access)
-  exportMyData: protectedProcedure.query(async ({ ctx }) => {
-    const [user, wallet, bookings, reviews, loyalty, notifications] = await Promise.all([
-      prisma.user.findUnique({ where: { id: ctx.user.id }, select: { id: true, email: true, phone: true, name: true, role: true, preferredLanguage: true, createdAt: true } }),
-      prisma.wallet.findUnique({ where: { userId: ctx.user.id } }),
-      prisma.booking.findMany({ where: { customerId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: 100 }),
-      prisma.review.findMany({ where: { customerId: ctx.user.id } }),
-      prisma.loyaltyAccount.findUnique({ where: { userId: ctx.user.id } }),
-      prisma.notification.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: 50 }),
-    ]);
-    return { exportedAt: new Date().toISOString(), user, wallet, bookings, reviews, loyalty, notifications };
-  }),
 });
