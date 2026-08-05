@@ -79,3 +79,4 @@ export { SheLeadsBadge } from './SheLeadsBadge';
 export { PrayerRoomBadge } from './PrayerRoomBadge';
 export { TeenBeautyCard } from './TeenBeautyCard';
 export { AccessibleSalonBadge } from './AccessibleSalonBadge';
+export { LayawayBadge } from './LayawayBadge';
