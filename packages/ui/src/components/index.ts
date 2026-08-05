@@ -159,3 +159,4 @@ export { BeautyQuizCard } from './BeautyQuizCard';
 export { Vision2030Badge } from './Vision2030Badge';
 export { BeautyEmergencyKit } from './BeautyEmergencyKit';
 export { AllergySafeBadge } from './AllergySafeBadge';
+export { TechnicianCRMCard } from './TechnicianCRMCard';
