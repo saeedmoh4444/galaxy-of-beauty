@@ -38,3 +38,4 @@ export { TrustBar } from './TrustBar';
 export { RatingStars } from './RatingStars';
 export { CountdownTimer } from './CountdownTimer';
 export { Avatar } from './Avatar';
+export { Tooltip } from './Tooltip';
