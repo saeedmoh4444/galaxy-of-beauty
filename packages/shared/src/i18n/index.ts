@@ -121,6 +121,29 @@ export const sharedMessages = {
   'error.validationError': { ar: 'خطأ في التحقق من البيانات', en: 'Validation error' },
   'error.rateLimit': { ar: 'طلبات كثيرة. حاولي لاحقاً', en: 'Too many requests. Try again later.' },
   'error.unauthorized': { ar: 'يجب تسجيل الدخول', en: 'Login required' },
+
+  // Onboarding
+  'onboarding.welcome': { ar: 'مرحباً بكِ في جالكسي بيوتي', en: 'Welcome to Galaxy of Beauty' },
+  'onboarding.getStarted': { ar: 'ابدئي الآن', en: 'Get Started' },
+  'onboarding.skip': { ar: 'تخطي', en: 'Skip' },
+
+  // Booking flow
+  'booking.service': { ar: 'الخدمة', en: 'Service' },
+  'booking.technician': { ar: 'الفنية', en: 'Technician' },
+  'booking.dateTime': { ar: 'التاريخ والوقت', en: 'Date & Time' },
+  'booking.summary': { ar: 'ملخص الحجز', en: 'Booking Summary' },
+  'booking.discount': { ar: 'الخصم', en: 'Discount' },
+
+  // Profile
+  'profile.edit': { ar: 'تعديل الملف الشخصي', en: 'Edit Profile' },
+  'profile.settings': { ar: 'الإعدادات', en: 'Settings' },
+  'profile.language': { ar: 'اللغة', en: 'Language' },
+  'profile.notifications': { ar: 'تفضيلات الإشعارات', en: 'Notification Preferences' },
+
+  // Actions
+  'action.viewAll': { ar: 'عرض الكل', en: 'View All' },
+  'action.learnMore': { ar: 'معرفة المزيد', en: 'Learn More' },
+  'action.share': { ar: 'مشاركة', en: 'Share' },
 } as const;
 
 export type TranslationKey = keyof typeof sharedMessages;
