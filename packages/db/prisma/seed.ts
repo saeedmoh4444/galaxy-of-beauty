@@ -893,6 +893,19 @@ async function main() {
     console.log('✅ 5 live streams');
   } catch (err: any) { console.log(`   ⚠️ Live streams: ${err.message?.slice(0,60)}`); }
 
+  // ── Beauty Bundles ──
+  try {
+    await db.beautyBundle.createMany({
+      data: [
+        { titleJson: { ar: 'باقة العروس', en: 'Bridal Package' }, descriptionJson: { ar: 'مكياج عرايس + تسريحة شعر + حناء نقش — كل ما تحتاجينه ليومكِ الكبير', en: 'Bridal makeup + hairstyling + henna art' }, serviceIds: [5, 1, 7], discountPct: 20, totalPrice: 840, originalPrice: 1050, season: 'WEDDING', isSeasonal: true, sortOrder: 1 },
+        { titleJson: { ar: 'باقة يوم السبا', en: 'Spa Day Package' }, descriptionJson: { ar: 'تنظيف بشرة + مساج استرخائي + مانيكير جل — يوم كامل من العناية', en: 'Facial + massage + gel manicure' }, serviceIds: [4, 6, 3], discountPct: 15, totalPrice: 383, originalPrice: 450, sortOrder: 2 },
+        { titleJson: { ar: 'باقة التجديد السريع', en: 'Quick Refresh' }, descriptionJson: { ar: 'قص شعر + مانيكير جل — تجديد سريع في ساعة ونصف', en: 'Haircut + gel manicure' }, serviceIds: [1, 3], discountPct: 10, totalPrice: 162, originalPrice: 180, sortOrder: 3 },
+        { titleJson: { ar: 'باقة العيد', en: 'Eid Glam Package' }, descriptionJson: { ar: 'صبغ شعر + مكياج + حناء — إطلالة متكاملة للعيد', en: 'Hair color + makeup + henna' }, serviceIds: [2, 5, 7], discountPct: 15, totalPrice: 910, originalPrice: 1070, season: 'EID', isSeasonal: true, sortOrder: 4 },
+      ],
+    });
+    console.log('✅ 4 beauty bundles');
+  } catch (err: any) { console.log(`   ⚠️ Bundles: ${err.message?.slice(0,60)}`); }
+
   console.log('\n🎉 Seed complete! Test login: customer@test.com / Admin@123456\n');
 }
 
