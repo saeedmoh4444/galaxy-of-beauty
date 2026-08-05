@@ -74,3 +74,4 @@ export { PhotoPrivacyBadge } from './PhotoPrivacyBadge';
 export { CyclePhaseCard } from './CyclePhaseCard';
 export { BeautyCircleCard } from './BeautyCircleCard';
 export { FreeCourseCard } from './FreeCourseCard';
+export { BeautyBudgetCard } from './BeautyBudgetCard';
