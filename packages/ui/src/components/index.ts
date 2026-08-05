@@ -34,3 +34,4 @@ export { WomenOnlySeal } from './WomenOnlySeal';
 export { FloatingActionButton } from './FloatingActionButton';
 export { VerifiedBadge } from './VerifiedBadge';
 export { StatsCounter } from './StatsCounter';
+export { TrustBar } from './TrustBar';
