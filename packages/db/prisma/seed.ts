@@ -584,6 +584,7 @@ async function main() {
     },
   });
   await prisma.campaign.create({ data: { nameJson: { ar: 'عرض العيد - خصم ٢٥٪', en: 'Eid Sale - 25% Off' }, descriptionJson: { ar: 'خصم ٢٥٪ على جميع خدمات التجميل بمناسبة العيد', en: '25% off all beauty services for Eid' }, discountType: 'percent', discountValue: 25, promoCode: 'EID25', startsAt: new Date(Date.now() + 15 * 86400000), endsAt: new Date(Date.now() + 20 * 86400000), isActive: true } });
+  await prisma.campaign.create({ data: { nameJson: { ar: 'عرض التخرج - خصم ٣٠٪', en: 'Graduation Sale - 30% Off' }, descriptionJson: { ar: 'خصم ٣٠٪ للخريجات على جميع خدمات التجميل', en: '30% off for graduates on all beauty services' }, discountType: 'percent', discountValue: 30, promoCode: 'GRAD30', startsAt: new Date(), endsAt: new Date(Date.now() + 60 * 86400000), isActive: true } });
   console.log('✅ Campaigns');
 
   // ---- Beauty Courses ----
