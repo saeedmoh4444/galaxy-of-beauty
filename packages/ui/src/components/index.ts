@@ -82,3 +82,4 @@ export { AccessibleSalonBadge } from './AccessibleSalonBadge';
 export { LayawayBadge } from './LayawayBadge';
 export { WalkMeToCar } from './WalkMeToCar';
 export { SocialImpactCounter } from './SocialImpactCounter';
+export { BeautyJourneyTimeline } from './BeautyJourneyTimeline';
