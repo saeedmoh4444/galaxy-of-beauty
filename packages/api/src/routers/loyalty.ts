@@ -186,6 +186,17 @@ export const loyaltyRouter = router({
         },
       });
     }),
+
+  leaderboard: publicProcedure
+    .input(z.object({ limit: z.number().min(5).max(50).default(10) }).optional())
+    .query(async ({ input }) => {
+      const accounts = await prisma.loyaltyAccount.findMany({
+        orderBy: { lifetimePoints: 'desc' },
+        take: input?.limit ?? 10,
+        select: { points: true, lifetimePoints: true, tier: true, user: { select: { id: true, name: true } } },
+      });
+      return accounts.map((a, i) => ({ rank: i + 1, name: a.user.name, points: a.points, lifetimePoints: a.lifetimePoints, tier: a.tier }));
+    }),
 });
 
 // ── Helper: accrue points after booking completion ─────────
