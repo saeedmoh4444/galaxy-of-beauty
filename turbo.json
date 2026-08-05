@@ -17,10 +17,10 @@
       "persistent": true
     },
     "lint": {
-      "dependsOn": ["build"]
+      "dependsOn": []
     },
     "type-check": {
-      "dependsOn": ["build"]
+      "dependsOn": []
     },
     "db:generate": {
       "cache": false
@@ -41,6 +41,13 @@
     "test:e2e": {
       "dependsOn": ["^build"],
       "outputs": ["playwright-report/**", "test-results/**"]
+    },
+    "build-storybook": {
+      "outputs": ["storybook-static/**"]
+    },
+    "worker": {
+      "cache": false,
+      "persistent": true
     }
   }
 }
