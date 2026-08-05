@@ -21,3 +21,5 @@ export { HijriDate } from './HijriDate';
 export { WhatsAppShare } from './WhatsAppShare';
 export { BookAgain } from './BookAgain';
 export { PopularityBadge } from './PopularityBadge';
+export { NPSSurvey } from './NPSSurvey';
+export { EmailCapture } from './EmailCapture';
