@@ -1,9 +1,11 @@
 import { TRPCError } from '@trpc/server';
 import { prisma, Prisma } from '@galaxy/db';
 import { MIN_WITHDRAWAL_BALANCE, WITHDRAWAL_FEE_RATE } from '@galaxy/shared';
+import { z } from 'zod';
 import {
   router,
   protectedProcedure,
+  customerProcedure,
   technicianProcedure,
 } from '../trpc';
 import {
@@ -177,5 +179,45 @@ export const walletRouter = router({
           cause: err,
         });
       }
+    }),
+
+  // -----------------------------------------------------------------------
+  // topUp — Customer adds funds to their wallet
+  // -----------------------------------------------------------------------
+  topUp: customerProcedure
+    .input(
+      z.object({
+        amount: z.number().min(10).max(5000),
+        idempotencyKey: z.string().uuid(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Check idempotency
+      const existing = await prisma.walletTransaction.findFirst({
+        where: { idempotencyKey: input.idempotencyKey },
+      });
+      if (existing) {
+        const wallet = await prisma.wallet.findUnique({ where: { userId: ctx.user.id } });
+        return { balance: wallet?.balance ?? 0, message: 'Already processed' };
+      }
+
+      const wallet = await prisma.wallet.upsert({
+        where: { userId: ctx.user.id },
+        create: { userId: ctx.user.id, balance: input.amount },
+        update: { balance: { increment: input.amount } },
+      });
+
+      await prisma.walletTransaction.create({
+        data: {
+          walletId: wallet.id,
+          type: 'CREDIT',
+          source: 'PLATFORM_FEE_SHARE',
+          amount: input.amount,
+          description: 'شحن رصيد',
+          idempotencyKey: input.idempotencyKey,
+        },
+      });
+
+      return { balance: Number(wallet.balance), message: 'تم شحن الرصيد بنجاح' };
     }),
 });

@@ -1,67 +1,42 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
-import { trpc } from '@/lib/api';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+import { formatCurrency } from '@galaxy/ui';
 
-export default function PromoScreen() {
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827', success: '#10b981', danger: '#dc2626' };
+
+export default function PromoScreen(): JSX.Element {
   const [code, setCode] = useState('');
-  const [amount, setAmount] = useState('');
-  const [result, setResult] = useState<Record<string, unknown> | null>(null);
-  const [error, setError] = useState('');
-
-  const handleValidate = async () => {
-    setError(''); setResult(null);
-    if (!code || !amount) { setError('الرجاء إدخال الكود والمبلغ'); return; }
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const r = await (trpc.promo.validate.query({ code: code.toUpperCase(), orderAmount: Number(amount) }) as any as Promise<Record<string, unknown>>);
-      setResult(r);
-    } catch { setError('الكود غير صالح أو منتهي الصلاحية'); }
-  };
+  const promos = (trpc as any).promo?.listActive?.useQuery?.({}) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const data = promos.data as unknown[] | undefined;
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.inner}>
-      <Text style={styles.title}>كود الخصم</Text>
-
-      <View style={styles.card}>
-        <Text style={styles.label}>كود الخصم</Text>
-        <TextInput style={styles.input} value={code} onChangeText={(t) => setCode(t.toUpperCase())} placeholder="مثال: WELCOME20" placeholderTextColor="#9ca3af" autoCapitalize="characters" />
-        <Text style={styles.label}>قيمة الحجز (ر.س)</Text>
-        <TextInput style={styles.input} value={amount} onChangeText={setAmount} placeholder="200" keyboardType="decimal-pad" placeholderTextColor="#9ca3af" />
-        <TouchableOpacity style={styles.btn} onPress={handleValidate} activeOpacity={0.8}>
-          <Text style={styles.btnText}>تحقق من الكود</Text>
-        </TouchableOpacity>
-        {error ? <Text style={styles.error}>{error}</Text> : null}
+    <ScreenState isLoading={promos.isLoading} isError={promos.isError} isEmpty={false} errorMessage="فشل تحميل الأكواد" onRetry={() => promos.refetch()}>
+      <Text style={styles.title}>🏷️ أكواد الخصم</Text>
+      <View style={styles.inputRow}>
+        <TextInput style={styles.input} placeholder="أدخلي كود الخصم" value={code} onChangeText={setCode} autoCapitalize="characters" />
+        <TouchableOpacity style={styles.applyBtn}><Text style={styles.applyText}>تطبيق</Text></TouchableOpacity>
       </View>
-
-      {result && result.valid ? (
-        <View style={styles.resultCard}>
-          <View style={styles.row}><Text style={styles.rowLabel}>الكود</Text><Text style={styles.rowValue}>{result.code as string}</Text></View>
-          <View style={styles.row}><Text style={styles.rowLabel}>نوع الخصم</Text><Text style={styles.rowValue}>{result.discountType === 'percent' ? 'نسبة مئوية' : 'خصم ثابت'}</Text></View>
-          <View style={styles.row}><Text style={styles.rowLabel}>قيمة الخصم</Text><Text style={styles.rowValueBold}>{result.discountValue as number}{result.discountType === 'percent' ? '%' : ' ر.س'}</Text></View>
-          <View style={styles.row}><Text style={styles.rowLabel}>الخصم</Text><Text style={styles.rowValueBold}>-{Number(result.discountAmount).toFixed(2)} ر.س</Text></View>
-          <View style={[styles.row, styles.totalRow]}><Text style={styles.totalLabel}>الإجمالي</Text><Text style={styles.totalValue}>{Number(result.finalAmount).toFixed(2)} ر.س</Text></View>
+      {(data as Record<string, unknown>[])?.map((p: Record<string, unknown>, i: number) => (
+        <View key={i} style={styles.card}>
+          <Text style={styles.promoCode}>{p.code as string}</Text>
+          <Text style={styles.promoDesc}>{p.discountType === 'percent' ? `خصم ${p.discountValue as number}%` : `خصم ${formatCurrency(Number(p.discountValue))}`}</Text>
+          {p.minOrderAmount ? <Text style={styles.minOrder}>الحد الأدنى: {formatCurrency(Number(p.minOrderAmount))}</Text> : null}
         </View>
-      ) : null}
-    </ScrollView>
+      ))}
+    </ScreenState>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  inner: { padding: 16, paddingBottom: 40 },
-  title: { fontSize: 22, fontWeight: '800', color: '#111827', textAlign: 'right', marginBottom: 20 },
-  card: { borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 14, padding: 16 },
-  label: { fontSize: 13, fontWeight: '600', color: '#6b7280', textAlign: 'right', marginBottom: 6, marginTop: 12 },
-  input: { borderWidth: 1, borderColor: '#d1d5db', borderRadius: 10, padding: 12, fontSize: 15, textAlign: 'right', backgroundColor: '#f9fafb' },
-  btn: { backgroundColor: '#7c3aed', borderRadius: 10, padding: 14, alignItems: 'center', marginTop: 16 },
-  btnText: { color: '#fff', fontSize: 15, fontWeight: '600' },
-  error: { color: '#dc2626', fontSize: 13, marginTop: 12, textAlign: 'center' },
-  resultCard: { marginTop: 16, borderWidth: 1, borderColor: '#bbf7d0', borderRadius: 14, padding: 16, backgroundColor: '#f0fdf4' },
-  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#dcfce7' },
-  rowLabel: { fontSize: 13, color: '#6b7280' },
-  rowValue: { fontSize: 13, color: '#374151' },
-  rowValueBold: { fontSize: 14, fontWeight: '700', color: '#16a34a' },
-  totalRow: { borderBottomWidth: 0, marginTop: 4 },
-  totalLabel: { fontSize: 14, fontWeight: '700', color: '#111827' },
-  totalValue: { fontSize: 18, fontWeight: '800', color: '#16a34a' },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  inputRow: { flexDirection: 'row', gap: 8, marginBottom: 20 },
+  input: { flex: 1, borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 12, padding: 12, fontSize: 14, backgroundColor: COLORS.white },
+  applyBtn: { backgroundColor: COLORS.brand, borderRadius: 12, paddingHorizontal: 20, justifyContent: 'center' },
+  applyText: { fontSize: 14, fontWeight: '600', color: COLORS.white },
+  card: { backgroundColor: COLORS.white, borderRadius: 14, padding: 16, marginBottom: 8, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
+  promoCode: { fontSize: 16, fontWeight: '800', color: COLORS.gray900, fontFamily: 'monospace' },
+  promoDesc: { fontSize: 14, color: COLORS.success, fontWeight: '600', marginTop: 4 },
+  minOrder: { fontSize: 12, color: COLORS.gray400, marginTop: 4 },
 });

@@ -1,28 +1,49 @@
-import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useQuery } from '@/lib/useQuery';
-import { ErrorAlert } from '@/components/ErrorAlert';
-import { SkeletonList } from '@/components/SkeletonCard';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+import { formatCurrency } from '@galaxy/ui';
+
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827', success: '#10b981', danger: '#dc2626' };
 
 export default function WalletScreen(): JSX.Element {
-  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.wallet.getBalance.query());
-  if (loading) return <SkeletonList count={3} />;
-  if (error) return <ErrorAlert message="فشل تحميل المحفظة" onRetry={refetch} />;
-  const balance = data as Record<string, unknown> | null;
+  const router = useRouter();
+  const balance = trpc.wallet.getBalance.useQuery();
+  const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 20 });
+
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />}>
-      <Text style={styles.t}>💰 المحفظة</Text>
-      <View style={styles.bc}><Text style={styles.bl}>الرصيد الحالي</Text><Text style={styles.ba}>{((balance?.balance as number) ?? 0).toLocaleString()} ر.س</Text>
-        {((balance?.bonusBalance as number) ?? 0) > 0 && <Text style={styles.bb}>+ {(balance?.bonusBalance as number).toLocaleString()} ر.س رصيد إضافي</Text>}</View>
-      <View style={styles.actions}><View style={styles.ab}><Text style={styles.ai}>💳</Text><Text style={styles.at}>شحن</Text></View><View style={styles.ab}><Text style={styles.ai}>💸</Text><Text style={styles.at}>سحب</Text></View><View style={styles.ab}><Text style={styles.ai}>📊</Text><Text style={styles.at}>كشف</Text></View><View style={styles.ab}><Text style={styles.ai}>🎁</Text><Text style={styles.at}>كاش باك</Text></View></View>
-    </ScrollView>
+    <ScreenState isLoading={balance.isLoading} isError={balance.isError} isEmpty={!balance.data} errorMessage="فشل تحميل المحفظة" onRetry={() => balance.refetch()}>
+      <Text style={styles.title}>💰 المحفظة</Text>
+      <View style={styles.balanceCard}>
+        <Text style={styles.balanceLabel}>الرصيد المتاح</Text>
+        <Text style={styles.balanceAmount}>{formatCurrency(Number((balance.data as any)?.balance ?? 0))}</Text>
+        {(balance.data as any)?.bonusBalance > 0 ? <Text style={styles.bonusText}>+ {formatCurrency(Number((balance.data as any)?.bonusBalance))} مكافآت</Text> : null}
+        <TouchableOpacity style={styles.topUpBtn} onPress={() => router.push('/customer/wallet/top-up' as any)}>
+          <Text style={styles.topUpText}>➕ شحن رصيد</Text>
+        </TouchableOpacity>
+      </View>
+      <Text style={styles.sectionTitle}>آخر المعاملات</Text>
+      {(txns.data as any)?.items?.map((t: any, i: number) => (
+        <View key={i} style={styles.txnRow}>
+          <View><Text style={styles.txnDesc}>{t.description ?? t.source}</Text><Text style={styles.txnDate}>{new Date(t.createdAt).toLocaleDateString('ar-SA')}</Text></View>
+          <Text style={[styles.txnAmount, { color: t.type === 'CREDIT' ? COLORS.success : COLORS.danger }]}>{t.type === 'CREDIT' ? '+' : '-'}{formatCurrency(Number(t.amount))}</Text>
+        </View>
+      ))}
+    </ScreenState>
   );
 }
+
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#faf5ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#111827', textAlign: 'center', marginBottom: 20 },
-  bc: { backgroundColor: '#7c3aed', borderRadius: 20, padding: 24, alignItems: 'center', marginBottom: 20 },
-  bl: { fontSize: 13, color: '#ddd6fe', marginBottom: 4 }, ba: { fontSize: 36, fontWeight: '800', color: '#fff' }, bb: { fontSize: 13, color: '#c4b5fd', marginTop: 8 },
-  actions: { flexDirection: 'row', justifyContent: 'space-around' },
-  ab: { alignItems: 'center' }, ai: { fontSize: 28, marginBottom: 4 }, at: { fontSize: 12, color: '#6b7280', fontWeight: '600' },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  balanceCard: { backgroundColor: COLORS.brand, borderRadius: 16, padding: 24, alignItems: 'center', marginBottom: 24 },
+  balanceLabel: { fontSize: 13, color: 'rgba(255,255,255,0.8)', marginBottom: 4 },
+  balanceAmount: { fontSize: 32, fontWeight: '800', color: COLORS.white },
+  bonusText: { fontSize: 12, color: 'rgba(255,255,255,0.7)', marginTop: 4 },
+  topUpBtn: { marginTop: 16, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 10, paddingHorizontal: 20, paddingVertical: 10 },
+  topUpText: { fontSize: 14, fontWeight: '600', color: COLORS.white },
+  sectionTitle: { fontSize: 16, fontWeight: '700', color: COLORS.gray900, marginBottom: 12 },
+  txnRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' },
+  txnDesc: { fontSize: 13, fontWeight: '600', color: COLORS.gray900 },
+  txnDate: { fontSize: 11, color: COLORS.gray400, marginTop: 2 },
+  txnAmount: { fontSize: 14, fontWeight: '700' },
 });
