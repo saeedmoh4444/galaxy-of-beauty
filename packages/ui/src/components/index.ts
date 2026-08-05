@@ -151,3 +151,4 @@ export { HydrationTracker } from './HydrationTracker';
 export { CommunityEventCard } from './CommunityEventCard';
 export { BeautyWebinarCard } from './BeautyWebinarCard';
 export { ComplimentaryAmenityBadge } from './ComplimentaryAmenityBadge';
+export { WomenEmployerBadge } from './WomenEmployerBadge';
