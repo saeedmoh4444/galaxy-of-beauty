@@ -117,6 +117,7 @@ import { techWaitlistRouter } from './techWaitlist';
 import { featuredTechRouter } from './featuredTech';
 import { pricingRulesRouter } from './pricingRules';
 import { beautyBundlesRouter } from './beautyBundles';
+import { beautyPlansRouter } from './beautyPlans';
 import { productScannerRouter } from './productScanner';
 import { wishlistRouter } from './wishlist';
 import { lookOfTheDayRouter } from './lookOfTheDay';
@@ -361,6 +362,7 @@ export const appRouter = router({
   featuredTech: featuredTechRouter,
   pricingRules: pricingRulesRouter,
   beautyBundles: beautyBundlesRouter,
+  beautyPlans: beautyPlansRouter,
   productScanner: productScannerRouter,
   wishlist: wishlistRouter,
   lookOfTheDay: lookOfTheDayRouter,

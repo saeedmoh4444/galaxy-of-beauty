@@ -906,6 +906,18 @@ async function main() {
     console.log('✅ 4 beauty bundles');
   } catch (err: any) { console.log(`   ⚠️ Bundles: ${err.message?.slice(0,60)}`); }
 
+  // ── Beauty Subscription Plans ──
+  try {
+    await db.beautyPlan.createMany({
+      data: [
+        { nameJson: { ar: 'الباقة الأساسية', en: 'Basic Plan' }, descriptionJson: { ar: 'خدمتان شهرياً + خصم ١٠٪ على الخدمات الإضافية', en: '2 services/month + 10% off additional' }, priceMonthly: 199, priceAnnual: 1990, maxBookings: 2, discountPct: 10, features: ['priority_booking'], sortOrder: 1 },
+        { nameJson: { ar: 'الباقة المميزة', en: 'Premium Plan' }, descriptionJson: { ar: '٤ خدمات شهرياً + خصم ١٥٪ + أولوية الحجز', en: '4 services/month + 15% off + priority booking' }, priceMonthly: 399, priceAnnual: 3990, maxBookings: 4, discountPct: 15, features: ['priority_booking', 'free_home_service'], sortOrder: 2 },
+        { nameJson: { ar: 'الباقة الشاملة', en: 'VIP Plan' }, descriptionJson: { ar: '٨ خدمات شهرياً + خصم ٢٠٪ + فنية مخصصة + خدمة منزلية مجانية', en: '8 services/month + 20% off + dedicated tech + free home service' }, priceMonthly: 799, priceAnnual: 7990, maxBookings: 8, discountPct: 20, features: ['priority_booking', 'free_home_service', 'dedicated_tech'], sortOrder: 3 },
+      ],
+    });
+    console.log('✅ 3 beauty subscription plans');
+  } catch (err: any) { console.log(`   ⚠️ Plans: ${err.message?.slice(0,60)}`); }
+
   console.log('\n🎉 Seed complete! Test login: customer@test.com / Admin@123456\n');
 }
 
