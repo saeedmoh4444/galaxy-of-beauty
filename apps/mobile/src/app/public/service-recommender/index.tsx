@@ -1,94 +1,35 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+import { formatCurrency } from '@galaxy/ui';
 
-export default function ServiceRecommenderScreen() {
-  const [questions, setQuestions] = useState<Record<string, unknown>[]>([]);
-  const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [results, setResults] = useState<Record<string, unknown>[] | null>(null);
-  const [loading, setLoading] = useState(true);
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.serviceRecommender.questions.query() as any as Promise<Record<string, unknown>[]>)
-      .then((data) => { setQuestions(data); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, []);
-
-  const fetchResults = (ans: Record<string, string>) => {
-    setLoading(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.serviceRecommender.recommend.query({ answers: ans }) as any as Promise<Record<string, unknown>[]>)
-      .then((data) => { setResults(data); setLoading(false); })
-      .catch(() => setLoading(false));
-  };
-
-  if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
-
-  if (results) {
-    return (
-      <ScrollView style={styles.container} contentContainerStyle={styles.inner}>
-        <Text style={styles.title}>✨ خدماتكِ المثالية</Text>
-        {results.map((r: Record<string, unknown>, i: number) => (
-          <View key={i} style={styles.resultCard}>
-            <Text style={styles.resultEmoji}>{r.emoji as string}</Text>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.resultName}>{r.nameAr as string}</Text>
-              <View style={styles.resultBar}><View style={[styles.resultFill, { width: `${r.matchPct as number}%` }]} /></View>
-              <Text style={styles.resultPct}>{r.matchPct as number}% تطابق</Text>
-            </View>
-          </View>
-        ))}
-        <TouchableOpacity style={styles.resetBtn} onPress={() => { setStep(0); setAnswers({}); setResults(null); }} activeOpacity={0.8}>
-          <Text style={styles.resetText}>🔄 إعادة الاختبار</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    );
-  }
-
-  const q = questions[step];
-  if (!q) return null;
+export default function ServiceRecommenderScreen(): JSX.Element {
+  const recs = (trpc as any).serviceRecommender?.getRecommendations?.useQuery?.({}) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const data = recs.data as unknown[] | undefined;
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.inner}>
-      <Text style={styles.title}>🤖 اكتشفي خدماتكِ</Text>
-      <View style={styles.progressRow}>
-        {questions.map((_, i) => <View key={i} style={[styles.dot, i <= step && styles.dotActive]} />)}
-      </View>
-      <Text style={styles.questionNum}>السؤال {step + 1} من {questions.length}</Text>
-      <Text style={styles.question}>{q.q as string}</Text>
-      {(q.opts as Record<string, unknown>[]).map((o: Record<string, unknown>, i: number) => (
-        <TouchableOpacity key={i} style={styles.option} onPress={() => {
-          const updated = { ...answers, [q.id as string]: o.k as string };
-          setAnswers(updated);
-          if (step < questions.length - 1) setStep(step + 1);
-          else fetchResults(updated);
-        }} activeOpacity={0.7}>
-          <Text style={styles.optionText}>{o.l as string}</Text>
-        </TouchableOpacity>
+    <ScreenState isLoading={recs.isLoading} isError={recs.isError} isEmpty={!data || data.length === 0} errorMessage="فشل تحميل التوصيات" emptyTitle="لا توجد توصيات" onRetry={() => recs.refetch()}>
+      <Text style={styles.title}>✨ توصيات لكِ</Text>
+      {(data as Record<string, unknown>[])?.map((r: Record<string, unknown>, i: number) => (
+        <View key={i} style={styles.card}>
+          <Text style={styles.emoji}>{r.emoji as string ?? '💄'}</Text>
+          <View style={styles.info}>
+            <Text style={styles.name}>{(r.nameJson as any)?.ar ?? (r.nameAr as string) ?? ''}</Text>
+            <Text style={styles.price}>{r.price ? formatCurrency(Number(r.price)) : ''}</Text>
+          </View>
+        </View>
       ))}
-    </ScrollView>
+    </ScreenState>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#faf5ff' },
-  inner: { padding: 16, paddingBottom: 40 },
-  title: { fontSize: 24, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginTop: 8, marginBottom: 16 },
-  progressRow: { flexDirection: 'row', justifyContent: 'center', gap: 8, marginBottom: 12 },
-  dot: { width: 10, height: 10, borderRadius: 5, backgroundColor: '#e5e7eb' },
-  dotActive: { backgroundColor: '#7c3aed', width: 24 },
-  questionNum: { fontSize: 12, color: '#9ca3af', textAlign: 'center', marginBottom: 8 },
-  question: { fontSize: 19, fontWeight: '700', color: '#111827', textAlign: 'right', marginBottom: 20, lineHeight: 28 },
-  option: { backgroundColor: '#fff', borderRadius: 14, borderWidth: 2, borderColor: '#e5e7eb', padding: 16, marginBottom: 10 },
-  optionText: { fontSize: 15, color: '#374151', textAlign: 'right' },
-  resultCard: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10, alignItems: 'center' },
-  resultEmoji: { fontSize: 36, marginRight: 12 },
-  resultName: { fontSize: 15, fontWeight: '700', color: '#111827', textAlign: 'right' },
-  resultBar: { height: 6, backgroundColor: '#f3f4f6', borderRadius: 3, marginTop: 6, marginBottom: 4 },
-  resultFill: { height: 6, backgroundColor: '#7c3aed', borderRadius: 3 },
-  resultPct: { fontSize: 11, fontWeight: '600', color: '#7c3aed', textAlign: 'right' },
-  resetBtn: { backgroundColor: '#ede9fe', borderRadius: 12, padding: 14, alignItems: 'center', marginTop: 8 },
-  resetText: { fontSize: 14, fontWeight: '600', color: '#7c3aed' },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.white, borderRadius: 14, padding: 16, marginBottom: 8, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
+  emoji: { fontSize: 32, marginRight: 12 },
+  info: { flex: 1 },
+  name: { fontSize: 15, fontWeight: '700', color: COLORS.gray900 },
+  price: { fontSize: 14, fontWeight: '700', color: COLORS.brand, marginTop: 4 },
 });

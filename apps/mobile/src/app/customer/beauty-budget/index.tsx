@@ -1,26 +1,36 @@
-import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useQuery } from '@/lib/useQuery';
-import { ErrorAlert } from '@/components/ErrorAlert';
-import { SkeletonList } from '@/components/SkeletonCard';
+import { View, Text, StyleSheet } from 'react-native';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+import { formatCurrency } from '@galaxy/ui';
+
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827', success: '#10b981', warning: '#f59e0b', danger: '#dc2626' };
 
 export default function BeautyBudgetScreen(): JSX.Element {
-  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.beautyBudget.get.query());
-  if (loading) return <SkeletonList count={3} />;
-  if (error) return <ErrorAlert message="فشل تحميل الميزانية" onRetry={refetch} />;
+  const budget = (trpc as any).beautyBudget?.get?.useQuery?.() ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const data = budget.data as Record<string, unknown> | undefined;
+
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#059669']} />}>
-      <Text style={styles.t}>💰 ميزانية الجمال</Text>
-      {data ? (<View style={styles.card}><Text style={styles.budget}>{(data.budget as number)?.toLocaleString()} ر.س</Text><Text style={styles.spent}>تم الإنفاق: {(data.spent as number)?.toLocaleString()} ر.س</Text><View style={styles.bar}><View style={[styles.fill,{width:`${Math.min(100,((data.spent as number)/(data.budget as number||1))*100)}%`}]} /></View></View>) : <Text style={styles.e}>لا توجد بيانات</Text>}
-    </ScrollView>
+    <ScreenState isLoading={budget.isLoading} isError={budget.isError} isEmpty={!data} errorMessage="فشل تحميل الميزانية" onRetry={() => budget.refetch()}>
+      <Text style={styles.title}>💄 ميزانية الجمال</Text>
+      <View style={styles.card}>
+        <Text style={styles.label}>الميزانية الشهرية</Text>
+        <Text style={styles.amount}>{formatCurrency(Number(data?.budget ?? 0))}</Text>
+      </View>
+      <View style={styles.card}>
+        <Text style={styles.label}>الإنفاق الحالي</Text>
+        <Text style={[styles.amount, { color: Number(data?.spent ?? 0) > Number(data?.budget ?? 0) ? COLORS.danger : COLORS.success }]}>{formatCurrency(Number(data?.spent ?? 0))}</Text>
+      </View>
+      <View style={styles.card}>
+        <Text style={styles.label}>المتبقي</Text>
+        <Text style={[styles.amount, { color: COLORS.brand }]}>{formatCurrency(Math.max(0, Number(data?.budget ?? 0) - Number(data?.spent ?? 0)))}</Text>
+      </View>
+    </ScreenState>
   );
 }
+
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#ecfdf5' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
-  t: { fontSize: 24, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 20 },
-  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
-  card: { backgroundColor: '#fff', borderRadius: 16, padding: 20, alignItems: 'center' },
-  budget: { fontSize: 32, fontWeight: '800', color: '#059669' }, spent: { fontSize: 14, color: '#6b7280', marginTop: 8 },
-  bar: { height: 8, backgroundColor: '#f3f4f6', borderRadius: 4, width: '100%', marginTop: 12 },
-  fill: { height: 8, backgroundColor: '#059669', borderRadius: 4 },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  card: { backgroundColor: COLORS.white, borderRadius: 14, padding: 16, marginBottom: 8, alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
+  label: { fontSize: 13, color: COLORS.gray400, marginBottom: 4 },
+  amount: { fontSize: 24, fontWeight: '800', color: COLORS.gray900 },
 });
