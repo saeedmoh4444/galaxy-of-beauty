@@ -29,3 +29,4 @@ export { RamadanBanner } from './RamadanBanner';
 export { SuccessIcon, PulseDot, Shimmer } from './AnimatedIcon';
 export { CookieConsent } from './CookieConsent';
 export { RelatedServices } from './RelatedServices';
+export { PrayerTimes } from './PrayerTimes';
