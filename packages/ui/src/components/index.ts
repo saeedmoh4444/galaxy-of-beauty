@@ -140,3 +140,4 @@ export { JustBecauseFlowers } from './JustBecauseFlowers';
 export { SheLeadsProgramCard } from './SheLeadsProgramCard';
 export { BeautyBookClubCard } from './BeautyBookClubCard';
 export { FitnessBeautyCard } from './FitnessBeautyCard';
+export { BirthdayMonthBadge } from './BirthdayMonthBadge';
