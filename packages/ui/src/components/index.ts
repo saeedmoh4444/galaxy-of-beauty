@@ -64,3 +64,4 @@ export { MentorBadge } from './MentorBadge';
 export { FriendPackageBadge } from './FriendPackageBadge';
 export { BeautyEmergency } from './BeautyEmergency';
 export { BeautyGoalTracker } from './BeautyGoalTracker';
+export { EmpowermentQuote } from './EmpowermentQuote';
