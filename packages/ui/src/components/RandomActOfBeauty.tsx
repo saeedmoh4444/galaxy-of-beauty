@@ -35,7 +35,7 @@ export function RandomActOfBeauty({
   className = '',
 }: RandomActOfBeautyProps): JSX.Element {
   const [surpriseIndex] = useState(() => Math.floor(Math.random() * SURPRISES.length));
-  const surprise = SURPRISES[surpriseIndex] ?? SURPRISES[0];
+  const surprise = SURPRISES[surpriseIndex]!;
 
   return (
     <div
