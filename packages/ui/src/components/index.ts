@@ -129,3 +129,4 @@ export { RandomActOfBeauty } from './RandomActOfBeauty';
 export { GoldenBeautyCard } from './GoldenBeautyCard';
 export { SignLanguageBadge } from './SignLanguageBadge';
 export { BeautySleepCard } from './BeautySleepCard';
+export { InspirationBoardCard } from './InspirationBoardCard';
