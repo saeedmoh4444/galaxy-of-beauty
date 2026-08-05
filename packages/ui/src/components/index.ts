@@ -46,3 +46,4 @@ export { Tabs } from './Tabs';
 export { Alert } from './Alert';
 export { PriceTag } from './PriceTag';
 export { SectionHeading } from './SectionHeading';
+export { CardGrid } from './CardGrid';
