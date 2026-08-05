@@ -470,6 +470,11 @@ async function main() {
       publishedAt: new Date(),
     },
   });
+  const blog3 = await prisma.blogPost.create({ data: { titleJson: { ar: 'روتين العناية بالبشرة اليومي', en: 'Daily Skincare Routine' }, bodyJson: { ar: '<p>العناية اليومية بالبشرة هي أساس الجمال...</p>', en: '<p>Daily skincare is the foundation of beauty...</p>' }, slug: 'daily-skincare-routine', tags: ['skincare', 'routine'], isPublished: true, publishedAt: new Date(Date.now() - 7 * 86400000) } });
+  const blog4 = await prisma.blogPost.create({ data: { titleJson: { ar: 'أفضل زيوت الشعر الطبيعية', en: 'Best Natural Hair Oils' }, bodyJson: { ar: '<p>اكتشفي أفضل الزيوت الطبيعية لشعر صحي ولامع...</p>', en: '<p>Discover the best natural oils...</p>' }, slug: 'best-natural-hair-oils', tags: ['hair', 'natural'], isPublished: true, publishedAt: new Date(Date.now() - 10 * 86400000) } });
+  const blog5 = await prisma.blogPost.create({ data: { titleJson: { ar: 'دليل العروس لإطلالة مثالية', en: 'Bridal Beauty Guide' }, bodyJson: { ar: '<p>كل ما تحتاجين معرفته للحصول على إطلالة زفاف مثالية...</p>', en: '<p>Everything you need for a perfect wedding look...</p>' }, slug: 'bridal-beauty-guide', tags: ['bridal', 'makeup', 'skincare'], isPublished: true, publishedAt: new Date(Date.now() - 14 * 86400000) } });
+  const blog6 = await prisma.blogPost.create({ data: { titleJson: { ar: 'فوائد المساج للصحة النفسية', en: 'Massage Benefits for Mental Health' }, bodyJson: { ar: '<p>المساج ليس مجرد رفاهية، بل هو علاج للصحة النفسية...</p>', en: '<p>Massage is not just luxury...</p>' }, slug: 'massage-mental-health', tags: ['massage', 'wellness', 'health'], isPublished: true, publishedAt: new Date(Date.now() - 21 * 86400000) } });
+  const blog7 = await prisma.blogPost.create({ data: { titleJson: { ar: 'الحناء: فن وتقليد سعودي', en: 'Henna: Saudi Art & Tradition' }, bodyJson: { ar: '<p>الحناء جزء لا يتجزأ من التراث السعودي...</p>', en: '<p>Henna is an integral part of Saudi heritage...</p>' }, slug: 'henna-saudi-tradition', tags: ['henna', 'tradition', 'culture'], isPublished: true, publishedAt: new Date(Date.now() - 30 * 86400000) } });
   console.log('✅ Blog posts');
 
   // Seed technician badges
