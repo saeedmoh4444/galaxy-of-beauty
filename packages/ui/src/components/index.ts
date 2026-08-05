@@ -53,3 +53,5 @@ export { BookingSummary } from './BookingSummary';
 export { HeroBanner } from './HeroBanner';
 export { ConfirmDialog } from './ConfirmDialog';
 export { PageTitle } from './PageTitle';
+export { SalonAmenities } from './SalonAmenities';
+export { SafetyBadge, SafetyGuarantees } from './SafetyBadge';
