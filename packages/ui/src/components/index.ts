@@ -141,3 +141,4 @@ export { SheLeadsProgramCard } from './SheLeadsProgramCard';
 export { BeautyBookClubCard } from './BeautyBookClubCard';
 export { FitnessBeautyCard } from './FitnessBeautyCard';
 export { BirthdayMonthBadge } from './BirthdayMonthBadge';
+export { BeautyTriviaCard } from './BeautyTriviaCard';
