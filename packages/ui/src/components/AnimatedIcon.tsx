@@ -44,6 +44,9 @@ export function SuccessIcon({ size = 64 }: { size?: number }): JSX.Element {
         .animate-success-check { animation: drawCheck 0.4s 0.4s ease-out forwards; }
         @keyframes drawCircle { to { stroke-dashoffset: 0; } }
         @keyframes drawCheck { to { stroke-dashoffset: 0; } }
+        @media (prefers-reduced-motion: reduce) {
+          .animate-success-circle, .animate-success-check { animation: none; stroke-dashoffset: 0; }
+        }
       `}} />
     </svg>
   );
@@ -75,6 +78,7 @@ export function Shimmer({ width = '100%', height = 16 }: { width?: string; heigh
       <style dangerouslySetInnerHTML={{ __html: `
         .animate-shimmer { animation: shimmer 1.5s infinite; }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        @media (prefers-reduced-motion: reduce) { .animate-shimmer { animation: none; } }
       `}} />
     </div>
   );

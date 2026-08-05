@@ -64,6 +64,9 @@ export function Celebration({ duration = 3000 }: { duration?: number }): JSX.Ele
           100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
         .animate-fall { animation: fall linear forwards; }
+        @media (prefers-reduced-motion: reduce) {
+          .animate-fall { animation: none; opacity: 0.5; }
+        }
       `}} />
     </div>
   );
