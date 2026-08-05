@@ -107,3 +107,4 @@ export { PriceAlertBadge } from './PriceAlertBadge';
 export { BodyPositiveBadge } from './BodyPositiveBadge';
 export { GalentinesCard } from './GalentinesCard';
 export { ConsentShield } from './ConsentShield';
+export { AnnualSummitCard } from './AnnualSummitCard';
