@@ -145,3 +145,4 @@ export { BeautyTriviaCard } from './BeautyTriviaCard';
 export { PricingCoachCard } from './PricingCoachCard';
 export { BeautyVlogCard } from './BeautyVlogCard';
 export { SensoryMapCard } from './SensoryMapCard';
+export { TaxHelperCard } from './TaxHelperCard';
