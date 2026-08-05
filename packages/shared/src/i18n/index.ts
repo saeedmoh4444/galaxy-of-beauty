@@ -144,6 +144,16 @@ export const sharedMessages = {
   'action.viewAll': { ar: 'عرض الكل', en: 'View All' },
   'action.learnMore': { ar: 'معرفة المزيد', en: 'Learn More' },
   'action.share': { ar: 'مشاركة', en: 'Share' },
+
+  // New: Membership & Bundles
+  'membership.basic': { ar: 'الباقة الأساسية', en: 'Basic Plan' },
+  'membership.premium': { ar: 'الباقة المميزة', en: 'Premium Plan' },
+  'membership.vip': { ar: 'الباقة الشاملة', en: 'VIP Plan' },
+  'bundle.save': { ar: 'وفر', en: 'Save' },
+  'bundle.includes': { ar: 'تشمل', en: 'Includes' },
+  'bundle.services': { ar: 'خدمات', en: 'Services' },
+  'deal.flash': { ar: 'عرض فلاش', en: 'Flash Deal' },
+  'deal.endsIn': { ar: 'ينتهي خلال', en: 'Ends in' },
 } as const;
 
 export type TranslationKey = keyof typeof sharedMessages;
