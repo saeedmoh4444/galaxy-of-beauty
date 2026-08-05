@@ -35,7 +35,6 @@ export function JustBecauseFlowers({
 }: JustBecauseFlowersProps): JSX.Element | null {
   if (bookingsCount < 10) return null;
 
-  const eligible = bookingsCount >= 10;
   const bouquetIndex = bookingsCount % BOUQUETS.length;
   const bouquet = BOUQUETS[bouquetIndex]!;
 
