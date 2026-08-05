@@ -162,3 +162,4 @@ export { AllergySafeBadge } from './AllergySafeBadge';
 export { TechnicianCRMCard } from './TechnicianCRMCard';
 export { NewMomSupportCard } from './NewMomSupportCard';
 export { SelfieStationBadge } from './SelfieStationBadge';
+export { GreenSalonBadge } from './GreenSalonBadge';
