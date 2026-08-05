@@ -581,6 +581,7 @@ async function main() {
       isActive: true,
     },
   });
+  await prisma.campaign.create({ data: { nameJson: { ar: 'عرض العيد - خصم ٢٥٪', en: 'Eid Sale - 25% Off' }, descriptionJson: { ar: 'خصم ٢٥٪ على جميع خدمات التجميل بمناسبة العيد', en: '25% off all beauty services for Eid' }, discountType: 'percent', discountValue: 25, promoCode: 'EID25', startsAt: new Date(Date.now() + 15 * 86400000), endsAt: new Date(Date.now() + 20 * 86400000), isActive: true } });
   console.log('✅ Campaigns');
 
   // ---- Beauty Courses ----
