@@ -22,7 +22,7 @@ interface AddOnSuggestionsProps {
   className?: string;
 }
 
-export function AddOnSuggestions({ serviceId, addOns, onAdd, className = '' }: AddOnSuggestionsProps): JSX.Element | null {
+export function AddOnSuggestions({ serviceId: _serviceId, addOns, onAdd, className = '' }: AddOnSuggestionsProps): JSX.Element | null {
   if (addOns.length === 0) return null;
 
   return (
