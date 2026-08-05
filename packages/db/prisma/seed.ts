@@ -201,6 +201,14 @@ async function main() {
         iconUrl: '/icons/waxing.svg',
       },
     }),
+    prisma.category.create({
+      data: {
+        nameJson: { ar: 'الرموش والحواجب', en: 'Eyelash & Eyebrow' },
+        slug: 'lashes-brows',
+        sortOrder: 8,
+        iconUrl: '/icons/lashes.svg',
+      },
+    }),
   ]);
   console.log(`✅ ${categories.length} root categories`);
 
@@ -238,8 +246,10 @@ async function main() {
     }),
     prisma.category.create({ data: { nameJson: { ar: 'شمع', en: 'Waxing' }, slug: 'waxing-sub', parentId: categories[6]!.id, sortOrder: 1 } }),
     prisma.category.create({ data: { nameJson: { ar: 'خيط', en: 'Threading' }, slug: 'threading', parentId: categories[6]!.id, sortOrder: 2 } }),
+    prisma.category.create({ data: { nameJson: { ar: 'رموش', en: 'Lashes' }, slug: 'lashes', parentId: categories[7]!.id, sortOrder: 1 } }),
+    prisma.category.create({ data: { nameJson: { ar: 'حواجب', en: 'Brows' }, slug: 'brows', parentId: categories[7]!.id, sortOrder: 2 } }),
   ]);
-  console.log('✅ 12 sub-categories');
+  console.log('✅ 14 sub-categories');
 
   // ---- Services ----
   const services = await Promise.all([
@@ -379,6 +389,12 @@ async function main() {
     prisma.service.create({ data: { categoryId: categories[6]!.id, titleJson: { ar: 'إزالة شعر الإبط', en: 'Underarm Wax' }, basePrice: 40, durationMin: 10, sortOrder: 4 } }),
     prisma.service.create({ data: { categoryId: categories[6]!.id, titleJson: { ar: 'إزالة شعر الوجه بالخيط', en: 'Face Threading' }, basePrice: 50, durationMin: 15, sortOrder: 5 } }),
     prisma.service.create({ data: { categoryId: categories[6]!.id, titleJson: { ar: 'إزالة شعر الوجه بالشمع', en: 'Full Face Wax' }, basePrice: 80, durationMin: 25, sortOrder: 6 } }),
+
+    // Lash & Brow services (4)
+    prisma.service.create({ data: { categoryId: categories[7]!.id, titleJson: { ar: 'تركيب رموش كلاسيك', en: 'Classic Lash Extensions' }, basePrice: 250, durationMin: 90, isPopular: true, sortOrder: 1 } }),
+    prisma.service.create({ data: { categoryId: categories[7]!.id, titleJson: { ar: 'تركيب رموش فوليوم', en: 'Volume Lash Extensions' }, basePrice: 350, durationMin: 120, sortOrder: 2 } }),
+    prisma.service.create({ data: { categoryId: categories[7]!.id, titleJson: { ar: 'رفع رموش وتلوين', en: 'Lash Lift & Tint' }, basePrice: 180, durationMin: 45, sortOrder: 3 } }),
+    prisma.service.create({ data: { categoryId: categories[7]!.id, titleJson: { ar: 'مايكروبليدنج حواجب', en: 'Microblading Eyebrows' }, basePrice: 600, durationMin: 120, sortOrder: 4 } }),
   ]);
   console.log(`✅ ${services.length} services`);
 
