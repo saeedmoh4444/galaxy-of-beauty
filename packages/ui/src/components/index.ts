@@ -37,3 +37,4 @@ export { StatsCounter } from './StatsCounter';
 export { TrustBar } from './TrustBar';
 export { RatingStars } from './RatingStars';
 export { CountdownTimer } from './CountdownTimer';
+export { Avatar } from './Avatar';
