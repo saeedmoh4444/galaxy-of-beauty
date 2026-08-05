@@ -72,7 +72,7 @@ export function InspirationBoardCard({
         <div className="mt-2 flex items-center gap-1.5">
           <span className="text-[10px] text-text-tertiary dark:text-gray-500">👯‍♀️</span>
           <div className="flex -space-x-1.5">
-            {collaborators.slice(0, 4).map((name, i) => (
+            {collaborators.slice(0, 4).map((name) => (
               <span
                 key={name}
                 className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-pink-200 to-rose-200 text-[8px] font-bold text-pink-700 dark:border-gray-900 dark:from-pink-800 dark:to-rose-800 dark:text-pink-200"
