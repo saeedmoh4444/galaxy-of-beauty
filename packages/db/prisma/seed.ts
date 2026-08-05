@@ -636,6 +636,9 @@ async function main() {
     { name: 'نورة العمري', email: 'tech1@test.com', speciality: 'makeup', rating: 4.9, city: 'الرياض' },
     { name: 'سارة الحربي', email: 'tech2@test.com', speciality: 'hair', rating: 4.8, city: 'جدة' },
     { name: 'د. ليلى القحطاني', email: 'tech3@test.com', speciality: 'skincare', rating: 4.9, city: 'الدمام' },
+    { name: 'هند المطيري', email: 'tech4@test.com', speciality: 'nails', rating: 4.7, city: 'جدة' },
+    { name: 'عبير الزهراني', email: 'tech5@test.com', speciality: 'henna', rating: 4.8, city: 'الرياض' },
+    { name: 'منال السالم', email: 'tech6@test.com', speciality: 'massage', rating: 4.6, city: 'المدينة المنورة' },
   ];
   const technicians: Record<string, any>[] = [];
   for (const td of techData) {
