@@ -61,3 +61,4 @@ export { PeriodFriendlyBadge } from './PeriodFriendlyBadge';
 export { SelfCareReminder } from './SelfCareReminder';
 export { TrustIndicators } from './TrustIndicators';
 export { MentorBadge } from './MentorBadge';
+export { FriendPackageBadge } from './FriendPackageBadge';
