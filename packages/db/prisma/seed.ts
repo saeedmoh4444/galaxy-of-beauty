@@ -882,7 +882,13 @@ async function main() {
     await (prisma as any).flashDeal.create({
       data: { serviceId: services[0]!.id, titleAr: 'خصم ٤٠٪', discountPercent: 40, originalPrice: Number(services[0]!.basePrice), dealPrice: Number(services[0]!.basePrice) * 0.6, discountValue: Number(services[0]!.basePrice) * 0.4, maxRedemptions: 20, startsAt: new Date(), endsAt: new Date(Date.now() + 24 * 3600000), isActive: true },
     });
-    console.log('✅ Loyalty, notifications, wishlist, flash deal');
+    await (prisma as any).flashDeal.create({
+      data: { serviceId: services[4]!.id, titleAr: 'خصم ٣٠٪ مكياج', discountPercent: 30, originalPrice: Number(services[4]!.basePrice), dealPrice: Number(services[4]!.basePrice) * 0.7, discountValue: Number(services[4]!.basePrice) * 0.3, maxRedemptions: 10, startsAt: new Date(), endsAt: new Date(Date.now() + 48 * 3600000), isActive: true },
+    });
+    await (prisma as any).flashDeal.create({
+      data: { serviceId: services[5]!.id, titleAr: 'خصم ٣٥٪ مساج', discountPercent: 35, originalPrice: Number(services[5]!.basePrice), dealPrice: Number(services[5]!.basePrice) * 0.65, discountValue: Number(services[5]!.basePrice) * 0.35, maxRedemptions: 15, startsAt: new Date(), endsAt: new Date(Date.now() + 12 * 3600000), isActive: true },
+    });
+    console.log('✅ Loyalty, notifications, wishlist, flash deals');
   } catch (err: any) { console.log(`   ⚠️ Extra data: ${err.message?.slice(0,60)}`); }
 
   // Promo codes
