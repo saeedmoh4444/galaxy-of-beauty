@@ -31,3 +31,5 @@ export { CookieConsent } from './CookieConsent';
 export { RelatedServices } from './RelatedServices';
 export { PrayerTimes } from './PrayerTimes';
 export { WomenOnlySeal } from './WomenOnlySeal';
+export { FloatingActionButton } from './FloatingActionButton';
+export { VerifiedBadge } from './VerifiedBadge';
