@@ -31,7 +31,7 @@ interface ExperienceDef {
   includes: string[];
 }
 
-const EXPERIENCES: Record<string, ExperienceDef> = {
+const EXPERIENCES = {
   mini_facial: {
     emoji: '🧖‍♀️',
     title: 'عناية بالبشرة المصغرة',
