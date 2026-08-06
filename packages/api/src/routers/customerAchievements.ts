@@ -30,7 +30,7 @@ export const customerAchievementsRouter = router({
 
     // Check recent 3 months for monthly streak
     const recentMonths = new Set<string>();
-    const bookings = await db.booking.findMany({ where: { customerId: userId, createdAt: { gte: new Date(Date.now() - MS_PER_90_DAYS) } }, select: { createdAt: true } });
+    const bookings = await db.booking.findMany({ where: { customerId: userId, createdAt: { gte: new Date(Date.now() - MS_PER_90_DAYS) } }, select: { createdAt: true }, take: 500 });
     for (const b of bookings) {
       const d = new Date(b.createdAt);
       recentMonths.add(`${d.getFullYear()}-${d.getMonth()}`);
