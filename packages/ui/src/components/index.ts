@@ -214,3 +214,4 @@ export { ProBonoLessonCard } from './ProBonoLessonCard';
 export { BabyShowerCard } from './BabyShowerCard';
 export { BeautyGratitudeCard } from './BeautyGratitudeCard';
 export { BeautyCertificationPathCard } from './BeautyCertificationPathCard';
+export { BridalBeautyCountdown } from './BridalBeautyCountdown';
