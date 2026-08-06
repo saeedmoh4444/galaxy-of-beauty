@@ -207,3 +207,4 @@ export { ColorBlindBadge } from './ColorBlindBadge';
 export { BeautyLanguageExchangeCard } from './BeautyLanguageExchangeCard';
 export { BeautyNightOutCard } from './BeautyNightOutCard';
 export { ExportProgramCard } from './ExportProgramCard';
+export { SubscriptionGiftCard } from './SubscriptionGiftCard';
