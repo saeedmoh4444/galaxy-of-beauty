@@ -198,3 +198,4 @@ export { BeautyCareerPathCard } from './BeautyCareerPathCard';
 export { BeautySquadCard } from './BeautySquadCard';
 export { WellnessCheckCard } from './WellnessCheckCard';
 export { BeautyWeatherCard } from './BeautyWeatherCard';
+export { StartupMentorshipCard } from './StartupMentorshipCard';
