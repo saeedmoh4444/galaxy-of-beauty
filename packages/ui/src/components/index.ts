@@ -304,3 +304,8 @@ export { BeautyAntiAgingCard } from './BeautyAntiAgingCard';
 export { BeautyPregnancySkincareCard } from './BeautyPregnancySkincareCard';
 export { BeautyMenopauseSkincareCard } from './BeautyMenopauseSkincareCard';
 export { BeautyAcneGuideCard } from './BeautyAcneGuideCard';
+export { BeautyHyperpigmentationCard } from './BeautyHyperpigmentationCard';
+export { BeautyRosaceaCard } from './BeautyRosaceaCard';
+export { BeautySkinBarrierCard } from './BeautySkinBarrierCard';
+export { BeautySkinCycleCard } from './BeautySkinCycleCard';
+export { BeautySkinFastingCard } from './BeautySkinFastingCard';
