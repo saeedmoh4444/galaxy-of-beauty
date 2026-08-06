@@ -7,6 +7,10 @@ const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900
 
 export default function BeautyBudgetScreen(): JSX.Element {
   const budget = (trpc as any).beautyBudget?.get?.useQuery?.() ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  // @ts-expect-error new routers
+  const loyalty = (trpc as any).loyalty?.getAccount?.useQuery?.();
+  // @ts-expect-error new routers
+  const savings = (trpc as any).savingsGoals?.list?.useQuery?.();
   const data = budget.data as Record<string, unknown> | undefined;
 
   return (
@@ -16,6 +20,12 @@ export default function BeautyBudgetScreen(): JSX.Element {
         <Text style={styles.label}>الميزانية الشهرية</Text>
         <Text style={styles.amount}>{formatCurrency(Number(data?.budget ?? 0))}</Text>
       </View>
+      {(loyalty?.data || savings?.data) ? (
+        <View style={styles.card}>
+          {loyalty?.data && <Text style={styles.label}>⭐ نقاط الولاء: {loyalty.data.points ?? 0}</Text>}
+          {savings?.data && <Text style={styles.label}>💰 أهداف الادخار: {(savings.data as any[])?.length ?? 0}</Text>}
+        </View>
+      ) : null}
       <View style={styles.card}>
         <Text style={styles.label}>الإنفاق الحالي</Text>
         <Text style={[styles.amount, { color: Number(data?.spent ?? 0) > Number(data?.budget ?? 0) ? COLORS.danger : COLORS.success }]}>{formatCurrency(Number(data?.spent ?? 0))}</Text>
