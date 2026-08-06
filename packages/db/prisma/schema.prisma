@@ -1718,6 +1718,8 @@ model HomeServiceRequest {
   preferredDate   String
   preferredTime   String
   notes           String?
+
+  @@index([userId])
   status          String   @default("PENDING")
   createdAt       DateTime @default(now())
   @@map("home_service_requests")
@@ -1752,6 +1754,8 @@ model PriceDropAlert {
   emoji        String   @default("💅")
   active       Boolean  @default(true)
   createdAt    DateTime @default(now())
+
+  @@index([userId])
   @@map("price_drop_alerts")
 }
 
@@ -1763,6 +1767,8 @@ model WarrantyClaim {
   status      String   @default("PENDING")
   compensation Float  @default(0)
   createdAt   DateTime @default(now())
+
+  @@index([userId])
   @@map("warranty_claims")
 }
 
@@ -1772,6 +1778,8 @@ model SpaPlan {
   name      String
   items     Json
   createdAt DateTime @default(now())
+
+  @@index([userId])
   @@map("spa_plans")
 }
 
@@ -1793,6 +1801,7 @@ model QuizCertificate {
   quizName  String
   score     Int
   createdAt DateTime @default(now())
+  @@index([userId])
   @@map("quiz_certificates")
 }
 
@@ -1806,6 +1815,7 @@ model BeautyBox {
   discount  Float
   total     Float
   createdAt DateTime @default(now())
+  @@index([userId])
   @@map("beauty_boxes")
 }
 
@@ -1824,6 +1834,8 @@ model SaleAlert {
   maxDiscount Int
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())
+
+  @@index([userId])
   @@map("sale_alerts")
 }
 
@@ -1849,6 +1861,7 @@ model HairColorSim {
   colorHex  String
   imageUrl  String?
   createdAt DateTime @default(now())
+  @@index([userId])
   @@map("hair_color_sims")
 }
 
@@ -1858,6 +1871,7 @@ model AiRoutine {
   name      String
   steps     Json
   createdAt DateTime @default(now())
+  @@index([userId])
   @@map("ai_routines")
 }
 
@@ -1868,6 +1882,7 @@ model DnaAnalysis {
   recommendations Json
   bestRoutine String
   createdAt   DateTime @default(now())
+  @@index([userId])
   @@map("dna_analyses")
 }
 
@@ -1902,6 +1917,7 @@ model IngredientScan {
   productName String
   safetyScore Int
   createdAt  DateTime @default(now())
+  @@index([userId])
   @@map("ingredient_scans")
 }
 
@@ -1921,6 +1937,7 @@ model ServiceRecommendation {
   answers   Json
   result    Json
   createdAt DateTime @default(now())
+  @@index([userId])
   @@map("service_recommendations")
 }
 
@@ -1940,6 +1957,7 @@ model TravelKitItem {
   days      Int
   items     Json
   createdAt DateTime @default(now())
+  @@index([userId])
   @@map("travel_kit_items")
 }
 
@@ -2263,6 +2281,8 @@ model GiftCardListing {
   discount     Int
   emoji        String   @default("🎁")
   createdAt    DateTime @default(now())
+
+  @@index([sellerId])
 
   @@map("gift_card_listings")
 }
