@@ -16,6 +16,12 @@ export default function HomeScreen(): JSX.Element {
   const router = useRouter();
   const { trigger } = useHaptics();
   const cats = trpc.categories.list.useQuery();
+  // @ts-expect-error new routers
+  const kindness = (trpc as any).kindnessPoints?.getStatus?.useQuery?.();
+  // @ts-expect-error new routers
+  const dailyTip = (trpc as any).dailyBeautyTip?.today?.useQuery?.();
+  // @ts-expect-error new routers
+  const compliments = (trpc as any).sisterhoodCompliments?.count?.useQuery?.();
 
   const data = cats.data as unknown[] | undefined;
 
@@ -29,6 +35,29 @@ export default function HomeScreen(): JSX.Element {
       onRetry={() => cats.refetch()}
     >
       <Text style={styles.title}>🏠 جالكسي بيوتي</Text>
+
+      {/* Community Stats Bar */}
+      <View style={styles.statsRow}>
+        {kindness?.data?.points !== undefined && (
+          <View style={styles.statBadge}>
+            <Text style={styles.statEmoji}>💖</Text>
+            <Text style={styles.statText}>{kindness.data.points} نقطة</Text>
+          </View>
+        )}
+        {compliments?.data !== undefined && (
+          <View style={styles.statBadge}>
+            <Text style={styles.statEmoji}>💌</Text>
+            <Text style={styles.statText}>{compliments.data} رسالة</Text>
+          </View>
+        )}
+        {dailyTip?.data && (
+          <View style={styles.tipBar}>
+            <Text style={styles.tipEmoji}>{dailyTip.data.emoji ?? '💡'}</Text>
+            <Text style={styles.tipText} numberOfLines={1}>{dailyTip.data.tip ?? ''}</Text>
+          </View>
+        )}
+      </View>
+
       <View style={styles.grid}>
         {(data as Record<string, unknown>[])?.map((cat: Record<string, unknown>, i: number) => (
           <TouchableOpacity
@@ -64,4 +93,11 @@ const styles = StyleSheet.create({
   },
   emoji: { fontSize: 30 },
   name: { fontSize: 11, fontWeight: '600', color: COLORS.gray900, marginTop: 6, textAlign: 'center' },
+  statsRow: { marginBottom: 16, gap: 8 },
+  statBadge: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.gray50, borderRadius: 10, padding: 8, marginBottom: 4 },
+  statEmoji: { fontSize: 14, marginRight: 6 },
+  statText: { fontSize: 12, fontWeight: '600', color: COLORS.gray700 },
+  tipBar: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fef3c7', borderRadius: 10, padding: 10, marginTop: 4 },
+  tipEmoji: { fontSize: 16, marginRight: 8 },
+  tipText: { fontSize: 11, color: '#92400e', flex: 1 },
 });

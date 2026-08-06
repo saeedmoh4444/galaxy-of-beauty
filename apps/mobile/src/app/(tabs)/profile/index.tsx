@@ -16,6 +16,9 @@ const MENU_ITEMS = [
   { label: '📍 العناوين', href: '/customer/addresses' },
   { label: '💳 البطاقات المحفوظة', href: '/customer/saved-cards' },
   { label: '🎁 الإحالات', href: '/customer/referrals' },
+  { label: '👯‍♀️ مجتمع الجمال', href: '/customer/community' },
+  { label: '📚 أكاديمية الجمال', href: '/customer/beauty-academy' },
+  { label: '🌿 الصحة والعافية', href: '/customer/wellness' },
   { label: '🔔 الإشعارات', href: '/customer/notifications' },
   { label: '🤖 لايلى - المساعدة الذكية', href: '/customer/ai-chat' },
 ];
@@ -24,6 +27,10 @@ export default function ProfileScreen(): JSX.Element {
   const { trigger } = useHaptics();
   const router = useRouter();
   const profile = (trpc as any).users?.me?.useQuery?.() ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  // @ts-expect-error new routers
+  const loyalty = (trpc as any).loyalty?.getAccount?.useQuery?.();
+  // @ts-expect-error new routers
+  const kindness = (trpc as any).kindnessPoints?.getStatus?.useQuery?.();
 
   return (
     <ScreenState
@@ -40,6 +47,11 @@ export default function ProfileScreen(): JSX.Element {
         </View>
         <Text style={styles.userName}>{(profile.data as any)?.name ?? 'مستخدمة جالكسي بيوتي'}</Text>
         <Text style={styles.userEmail}>{(profile.data as any)?.email ?? ''}</Text>
+        {/* Loyalty + Kindness Stats */}
+        <View style={styles.statsRow}>
+          {loyalty?.data && <View style={styles.statItem}><Text style={styles.statVal}>{loyalty.data.points ?? 0}</Text><Text style={styles.statLbl}>⭐ نقاط</Text></View>}
+          {kindness?.data && <View style={styles.statItem}><Text style={styles.statVal}>{kindness.data.points ?? 0}</Text><Text style={styles.statLbl}>💖 لطف</Text></View>}
+        </View>
       </View>
       <ScrollView style={styles.menuList}>
         {MENU_ITEMS.map((item, i) => (
@@ -69,4 +81,8 @@ const styles = StyleSheet.create({
   menuArrow: { fontSize: 20, color: COLORS.gray400 },
   logoutBtn: { alignItems: 'center', padding: 16, marginTop: 8 },
   logoutText: { fontSize: 15, fontWeight: '600', color: COLORS.danger },
+  statsRow: { flexDirection: 'row', gap: 16, marginTop: 12 },
+  statItem: { alignItems: 'center' },
+  statVal: { fontSize: 16, fontWeight: '700', color: COLORS.brand },
+  statLbl: { fontSize: 11, color: COLORS.gray400, marginTop: 2 },
 });

@@ -1,5 +1,6 @@
 'use client';
 
+import { api } from '@/lib/trpc';
 import {
   PageContainer, PageTitle,
   TeenBeautyCard, FirstFacialCard, MommyAndMeCard, ThreeGenerationsCard,
@@ -10,6 +11,9 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function FamilyBeautyPage(): JSX.Element {
+  const familyAccount = (api as any).familyAccount?.get?.useQuery?.() as any;
+  const events = (api as any).communityEvents?.list?.useQuery?.({ limit: 2 }) as any;
+
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
@@ -48,7 +52,11 @@ export default function FamilyBeautyPage(): JSX.Element {
             {/* New Mom + Family */}
             <div className="grid gap-4 sm:grid-cols-2">
               <NewMomSupportCard babyAge={2} momName="نورة" />
-              <FamilyDiscountCard familySize={4} discount={20} familyName="آل محمد" />
+              <FamilyDiscountCard
+              familySize={familyAccount?.data?.members?.length ?? 4}
+              discount={20}
+              familyName={familyAccount?.data?.familyName ?? 'آل محمد'}
+            />
             </div>
             <DadApprovalBadge serviceName="درس مكياج" age={14} parentName="الأب" />
           </div>
