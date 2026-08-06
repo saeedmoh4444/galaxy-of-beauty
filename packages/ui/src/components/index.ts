@@ -232,3 +232,4 @@ export { BeautyLearningPathCard } from './BeautyLearningPathCard';
 export { BeautyPriceDropHistoryCard } from './BeautyPriceDropHistoryCard';
 export { BeautyReferralLeaderboardCard } from './BeautyReferralLeaderboardCard';
 export { BeautySeasonalLookbookCard } from './BeautySeasonalLookbookCard';
+export { BeautyQuickTipCard } from './BeautyQuickTipCard';
