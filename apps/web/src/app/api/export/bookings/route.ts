@@ -11,6 +11,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { prisma } from '@galaxy/db';
+import { verifyAccessToken } from '@galaxy/api';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,10 +29,19 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   const from = searchParams.get('from');
   const to = searchParams.get('to');
 
-  // Auth: Check for admin token in cookie
+  // Auth: verify JWT token and check for ADMIN role
   const token = request.cookies.get('gob_access')?.value;
   if (!token) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const decoded = verifyAccessToken(token);
+    if (!decoded || decoded.role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Forbidden — admin only' }, { status: 403 });
+    }
+  } catch {
+    return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
   }
 
   const where: Record<string, unknown> = {};

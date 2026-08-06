@@ -23,7 +23,9 @@ export const moodBoardRouter = router({
 
   removePin: customerProcedure
     .input(z.object({ boardId: z.number(), pinId: z.number() }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ ctx, input }) => {
+      const board = await prisma.moodBoard.findFirst({ where: { id: input.boardId, userId: ctx.user.id } });
+      if (!board) throw new Error('اللوحة غير موجودة');
       await prisma.moodBoardPin.deleteMany({ where: { id: input.pinId, boardId: input.boardId } });
       return { success: true };
     }),
