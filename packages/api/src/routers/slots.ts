@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { publicProcedure, technicianProcedure, router } from '../trpc';
+import { notFound, forbidden, badRequest } from '../lib/errors';
 
 export const slotRouter = router({
   /**
@@ -76,10 +77,7 @@ export const slotRouter = router({
       // Validate: no startAt after endAt
       for (const slot of slots) {
         if (slot.startAt >= slot.endAt) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'startAt must be before endAt for all slots',
-          });
+          throw badRequest('startAt must be before endAt for all slots');
         }
       }
 
@@ -151,11 +149,7 @@ export const slotRouter = router({
       // Validate
       for (const slot of slots) {
         if (slot.startAt >= slot.endAt) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'start must be before end for all time slots',
-          });
-        }
+          throw badRequest('start must be before end for all time slots');
       }
 
       // Check for overlaps with existing available slots
@@ -213,14 +207,12 @@ export const slotRouter = router({
       });
 
       if (!slot) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Slot not found' });
+        throw notFound('Slot');
       }
 
       if (slot.technicianId !== technician.id) {
         throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'Slot does not belong to you',
-        });
+        throw forbidden('Slot does not belong to you');
       }
 
       if (slot.isBooked) {
