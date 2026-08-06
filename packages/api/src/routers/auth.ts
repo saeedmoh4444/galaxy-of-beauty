@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import crypto from 'crypto';
 import { MAX_AUTH_ATTEMPTS, MS_PER_DAY, MS_PER_WEEK } from '@galaxy/shared';
@@ -324,6 +325,7 @@ export const authRouter = router({
   // Logout — revoke all active refresh tokens
   // ──────────────────────────────────────────────────────
   logout: protectedMutation
+    .input(z.object({}))
     .mutation(async ({ ctx }) => {
       try {
         await prisma.refreshToken.updateMany({
@@ -610,6 +612,7 @@ export const authRouter = router({
   // Resend email verification token
   // ──────────────────────────────────────────────────────
   resendVerification: protectedMutation
+    .input(z.object({}))
     .mutation(async ({ ctx }) => {
       try {
         const token = generateToken();
@@ -638,6 +641,7 @@ export const authRouter = router({
   // Generate 2FA secret and return otpauth URI
   // ──────────────────────────────────────────────────────
   setup2FA: protectedMutation
+    .input(z.object({}))
     .mutation(async ({ ctx }) => {
       try {
         const user = await prisma.user.findUnique({
@@ -719,6 +723,7 @@ export const authRouter = router({
   // Disable 2FA
   // ──────────────────────────────────────────────────────
   disable2FA: protectedMutation
+    .input(z.object({}))
     .mutation(async ({ ctx }) => {
       try {
         await prisma.user.update({
