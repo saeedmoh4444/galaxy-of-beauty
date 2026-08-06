@@ -314,3 +314,8 @@ export { BeautyHairOilCard } from './BeautyHairOilCard';
 export { BeautyHairWashCard } from './BeautyHairWashCard';
 export { BeautyHairBrushCard } from './BeautyHairBrushCard';
 export { BeautyHairHeatCard } from './BeautyHairHeatCard';
+export { BeautyHairColorCard } from './BeautyHairColorCard';
+export { BeautyHairCurlCard } from './BeautyHairCurlCard';
+export { BeautyHairStraightCard } from './BeautyHairStraightCard';
+export { BeautyHairWavyCard } from './BeautyHairWavyCard';
+export { BeautyHairCoilyCard } from './BeautyHairCoilyCard';
