@@ -9,6 +9,7 @@ export { getEnv } from './lib/env';
 export type { Env } from './lib/env';
 export { generateCsrfToken, verifyCsrfToken, buildCsrfCookie, getCsrfCookieName, getCsrfHeaderName } from './lib/csrf';
 export { initializeSocket, getIO, emitToUser, emitToTechnician, emitToWaitlist, emitToAdmin } from './socket/index';
+export { notFound, unauthorized, forbidden, conflict, validationError, badRequest, tooManyRequests, internalError, paymentFailed, require2FA } from './lib/errors';
 
 // ── Type helpers for tRPC consumers ──
 import type { inferRouterOutputs } from '@trpc/server';

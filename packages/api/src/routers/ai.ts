@@ -247,6 +247,7 @@ export const aiRouter = router({
       const services = await prisma.service.findMany({
         where: { isActive: true },
         include: { category: { select: { id: true, nameJson: true, slug: true } } },
+        take: 200,
       });
 
       const scored = services.map((s) => {

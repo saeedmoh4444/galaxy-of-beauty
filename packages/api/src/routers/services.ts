@@ -95,7 +95,7 @@ export const serviceRouter = router({
       if (input.categoryId) where.categoryId = input.categoryId;
       if (input.budget) where.basePrice = { lte: input.budget };
 
-      // Fetch all matching services with full data
+      // Fetch matching services with full data (capped for performance)
       const allServices = await prisma.service.findMany({
         where,
         include: {
@@ -104,6 +104,7 @@ export const serviceRouter = router({
           tags: { include: { tag: true } },
           _count: { select: { bookings: true } },
         },
+        take: 100,
       });
 
       if (allServices.length === 0) return null;

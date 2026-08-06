@@ -517,6 +517,7 @@ export const bookingRouter = router({
         status: 'REQUESTED',
       },
       orderBy: { startAt: 'asc' },
+      take: 50,
       include: {
         customer: { select: { id: true, name: true, avatarUrl: true } },
         service: true,

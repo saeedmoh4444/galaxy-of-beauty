@@ -3,8 +3,8 @@ import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
 export const giftCardMarketRouter = router({
-  listings: customerProcedure.query(() => prisma.giftCardListing.findMany({ orderBy: { createdAt: 'desc' } })),
-  myListings: customerProcedure.query(async ({ ctx }) => prisma.giftCardListing.findMany({ where: { sellerId: ctx.user.id } })),
+  listings: customerProcedure.query(() => prisma.giftCardListing.findMany({ orderBy: { createdAt: 'desc' }, take: 50 })),
+  myListings: customerProcedure.query(async ({ ctx }) => prisma.giftCardListing.findMany({ where: { sellerId: ctx.user.id }, take: 20 })),
   list: customerProcedure
     .input(z.object({ value: z.number().min(50), sellingPrice: z.number().min(10) }))
     .mutation(async ({ ctx, input }) =>
