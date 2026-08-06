@@ -194,3 +194,4 @@ export { BeautySubscriptionCard } from './BeautySubscriptionCard';
 export { BeautyMentorRequestCard } from './BeautyMentorRequestCard';
 export { HearingAssistanceBadge } from './HearingAssistanceBadge';
 export { BeautyHistoryTimeline } from './BeautyHistoryTimeline';
+export { BeautyCareerPathCard } from './BeautyCareerPathCard';
