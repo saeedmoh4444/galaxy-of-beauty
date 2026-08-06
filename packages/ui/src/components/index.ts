@@ -251,3 +251,6 @@ export { BeautyStyleMatchCard } from './BeautyStyleMatchCard';
 export { BeautySeasonalReminderCard } from './BeautySeasonalReminderCard';
 export { BeautyIngredientSpotlightCard } from './BeautyIngredientSpotlightCard';
 export { BeautyProgressPhotoCard } from './BeautyProgressPhotoCard';
+export { BeautyDailyCheckInCard } from './BeautyDailyCheckInCard';
+export { BeautyRoutineSwapCard } from './BeautyRoutineSwapCard';
+export { BeautyMoodBoardCard } from './BeautyMoodBoardCard';
