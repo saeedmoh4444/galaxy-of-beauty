@@ -244,3 +244,4 @@ export { BeautySavingsChallengeCard } from './BeautySavingsChallengeCard';
 export { BeautySkinQuizCard } from './BeautySkinQuizCard';
 export { BeautyFriendActivityCard } from './BeautyFriendActivityCard';
 export { BeautyVirtualConsultationCard } from './BeautyVirtualConsultationCard';
+export { BeautyMicroChallengeCard } from './BeautyMicroChallengeCard';
