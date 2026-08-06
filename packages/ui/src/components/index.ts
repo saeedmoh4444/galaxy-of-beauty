@@ -237,3 +237,4 @@ export { BeautyAwardBadgeCard } from './BeautyAwardBadgeCard';
 export { BeautyIngredientHighlightCard } from './BeautyIngredientHighlightCard';
 export { BeautySelfCareReminderCard } from './BeautySelfCareReminderCard';
 export { BeautyGratefulCircleCard } from './BeautyGratefulCircleCard';
+export { BeautyCouponCard } from './BeautyCouponCard';
