@@ -260,3 +260,7 @@ export { BeautyWaterIntakeCard } from './BeautyWaterIntakeCard';
 export { BeautySuncareReminderCard } from './BeautySuncareReminderCard';
 export { BeautyHairCareCard } from './BeautyHairCareCard';
 export { BeautyNailCareCard } from './BeautyNailCareCard';
+export { BeautyMakeupTipsCard } from './BeautyMakeupTipsCard';
+export { BeautyBodyCareCard } from './BeautyBodyCareCard';
+export { BeautyEyebrowCard } from './BeautyEyebrowCard';
+export { BeautyLashCard } from './BeautyLashCard';
