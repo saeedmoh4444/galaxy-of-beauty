@@ -189,3 +189,4 @@ export { BeautyRecipeCard } from './BeautyRecipeCard';
 export { BusinessDashboardCard } from './BusinessDashboardCard';
 export { LoyaltyAnniversaryCard } from './LoyaltyAnniversaryCard';
 export { PressKitCard } from './PressKitCard';
+export { AllergyTestCard } from './AllergyTestCard';
