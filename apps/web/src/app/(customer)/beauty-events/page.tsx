@@ -1,5 +1,6 @@
 'use client';
 
+import { api } from '@/lib/trpc';
 import {
   PageContainer, PageTitle,
   CommunityEventCard, GalentinesCard, BrideTribeCard, PromReadyCard,
@@ -9,6 +10,9 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyEventsPage(): JSX.Element {
+  const events = (api as any).beautyEvents?.upcoming?.useQuery?.({ limit: 4 }) as any;
+  const registrations = (api as any).beautyEvents?.myRegistrations?.useQuery?.() as any;
+
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">

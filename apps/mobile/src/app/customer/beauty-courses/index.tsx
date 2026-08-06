@@ -10,6 +10,7 @@ const LEVELS: Record<string,{label:string;color:string}> = { beginner: { label:'
 export default function BeautyCoursesScreen(): JSX.Element {
   const { data: courses, loading, error, refetch, refreshing, refresh } = useQuery(() => (trpc as any).beautyCourses.list.query());
   const { data: myCourses } = useQuery(() => (trpc as any).beautyCourses.myCourses.query());
+  const { data: expertTalks } = useQuery(() => (trpc as any).expertTalks?.upcoming?.query?.({ limit: 3 }));
   const [enrolled, setEnrolled] = useState<number[]>([]);
 
   const handleEnroll = async (courseId: number) => {
