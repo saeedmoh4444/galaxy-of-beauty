@@ -169,3 +169,4 @@ export { MicroLoanBadge } from './MicroLoanBadge';
 export { SkincareRoutineBuilder } from './SkincareRoutineBuilder';
 export { PrayerTimeReminder } from './PrayerTimeReminder';
 export { BrailleMenuCard } from './BrailleMenuCard';
+export { BeautyPenPalCard } from './BeautyPenPalCard';
