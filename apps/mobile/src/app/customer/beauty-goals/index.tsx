@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
+import { trpc as trpcReact } from '@/lib/trpc-react';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 
@@ -7,6 +8,10 @@ const GT = [{key:'glowing_skin',emoji:'✨',title:'بشرة متألقة',target
 
 export default function BeautyGoalsScreen(): JSX.Element {
   const [loading, setLoading] = useState(true);
+  // @ts-expect-error new routers
+  const habits = (trpcReact as any).beautyHabits?.myHabits?.useQuery?.();
+  // @ts-expect-error new routers
+  const visionGoals = (trpcReact as any).visionBoard?.myGoals?.useQuery?.({ limit: 6 });
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true); else setLoading(true);

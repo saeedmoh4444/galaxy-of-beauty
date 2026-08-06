@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
+import { trpc as trpcReact } from '@/lib/trpc-react';
 import { useState, useEffect, useCallback } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 
@@ -10,6 +11,8 @@ export default function BeautyDiaryScreen(): JSX.Element {
   const [, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [todayMood, setTodayMood] = useState('😊');
+  // @ts-expect-error new routers
+  const skinJournal = (trpcReact as any).skinDiary?.list?.useQuery?.({ limit: 7 });
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true); else setLoading(true);
