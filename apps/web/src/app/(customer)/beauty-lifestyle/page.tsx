@@ -1,5 +1,6 @@
 'use client';
 
+import { api } from '@/lib/trpc';
 import {
   PageContainer, PageTitle,
   BeautyRewardsCard, LoyaltyDividendBadge, LoyaltyAnniversaryCard,
@@ -11,6 +12,11 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyLifestylePage(): JSX.Element {
+  const loyalty = (api as any).loyalty?.getAccount?.useQuery?.() as any;
+  const budget = (api as any).beautyBudget?.get?.useQuery?.() as any;
+  const savings = (api as any).savingsGoals?.list?.useQuery?.() as any;
+  const alerts = (api as any).priceDropAlerts?.myAlerts?.useQuery?.() as any;
+
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
@@ -18,10 +24,10 @@ export default function BeautyLifestylePage(): JSX.Element {
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
-            <BeautyRewardsCard points={1250} tier="gold" />
+            <BeautyRewardsCard points={loyalty?.data?.points ?? 1250} tier={(loyalty?.data?.tier?.toLowerCase() as any) ?? 'gold'} />
             <div className="grid gap-4 sm:grid-cols-2">
-              <LoyaltyDividendBadge yearlySpend={4500} cashbackRate={5} tier="gold" payoutMonth="يناير" />
-              <LoyaltyAnniversaryCard years={2} joinedDate="أغسطس 2024" totalBookings={48} />
+              <LoyaltyDividendBadge yearlySpend={Number(budget?.data?.spent ?? 0) * 12 || 4500} cashbackRate={5} tier="gold" payoutMonth="يناير" />
+              <LoyaltyAnniversaryCard years={2} joinedDate="أغسطس 2024" totalBookings={loyalty?.data?.lifetimePoints ? Math.round(loyalty.data.lifetimePoints / 10) : 48} />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautySubscriptionCard tier="premium" />
