@@ -294,3 +294,8 @@ export { BeautySunscreenCard } from './BeautySunscreenCard';
 export { BeautyNightRoutineCard } from './BeautyNightRoutineCard';
 export { BeautyMorningRoutineCard } from './BeautyMorningRoutineCard';
 export { BeautyDoubleCleansingCard } from './BeautyDoubleCleansingCard';
+export { BeautyEyeCreamCard } from './BeautyEyeCreamCard';
+export { BeautyFaceOilCard } from './BeautyFaceOilCard';
+export { BeautySpotTreatmentCard } from './BeautySpotTreatmentCard';
+export { BeautyIceRollerCard } from './BeautyIceRollerCard';
+export { BeautyGuaShaCard } from './BeautyGuaShaCard';
