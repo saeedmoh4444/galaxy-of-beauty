@@ -1,5 +1,6 @@
 'use client';
 
+import { api } from '@/lib/trpc';
 import {
   PageContainer, PageTitle,
   PersonalStylingCard, BeautyTimeCapsuleCard, BeautyDreamBoardCard,
@@ -12,6 +13,10 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyExtrasPage(): JSX.Element {
+  const wishlist = (api as any).wishlist?.list?.useQuery?.() as any;
+  const referral = (api as any).referrals?.myStats?.useQuery?.() as any;
+  const styleMatch = (api as any).styleMatch?.getProfile?.useQuery?.() as any;
+
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
@@ -41,7 +46,10 @@ export default function BeautyExtrasPage(): JSX.Element {
 
             {/* Games + Social */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyReferralLeaderboardCard leaders={[{ name: 'نورة', referrals: 12, emoji: '👑' }, { name: 'مها', referrals: 8 }, { name: 'ريم', referrals: 5 }]} userRank={5} />
+              <BeautyReferralLeaderboardCard
+                leaders={(referral?.data?.leaderboard as any[])?.map((l: any) => ({ name: l.name, referrals: l.referrals, emoji: l.emoji })) ?? [{ name: 'نورة', referrals: 12, emoji: '👑' }, { name: 'مها', referrals: 8 }, { name: 'ريم', referrals: 5 }]}
+                userRank={referral?.data?.myRank ?? 5}
+              />
               <GroupDiscountBadge groupSize={3} discount={15} serviceName="مانيكير سبا" originalPrice={150} />
             </div>
 
