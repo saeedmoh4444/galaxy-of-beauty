@@ -309,3 +309,8 @@ export { BeautyRosaceaCard } from './BeautyRosaceaCard';
 export { BeautySkinBarrierCard } from './BeautySkinBarrierCard';
 export { BeautySkinCycleCard } from './BeautySkinCycleCard';
 export { BeautySkinFastingCard } from './BeautySkinFastingCard';
+export { BeautyHairMaskCard } from './BeautyHairMaskCard';
+export { BeautyHairOilCard } from './BeautyHairOilCard';
+export { BeautyHairWashCard } from './BeautyHairWashCard';
+export { BeautyHairBrushCard } from './BeautyHairBrushCard';
+export { BeautyHairHeatCard } from './BeautyHairHeatCard';
