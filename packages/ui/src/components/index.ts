@@ -183,3 +183,4 @@ export { DadApprovalBadge } from './DadApprovalBadge';
 export { SkinJournalCard } from './SkinJournalCard';
 export { BeautyComparisonCard } from './BeautyComparisonCard';
 export { MediaFeatureCard } from './MediaFeatureCard';
+export { BeautyVoiceAssistantCard } from './BeautyVoiceAssistantCard';
