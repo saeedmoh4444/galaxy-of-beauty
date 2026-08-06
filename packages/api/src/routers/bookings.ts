@@ -338,7 +338,7 @@ export const bookingRouter = router({
    * or an admin.
    */
   getById: protectedProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.number().int().positive() }))
     .query(async ({ ctx, input }) => {
       const booking = await prisma.booking.findUnique({
         where: { id: input.id },

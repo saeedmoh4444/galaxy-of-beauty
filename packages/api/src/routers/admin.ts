@@ -194,7 +194,7 @@ export const adminRouter = router({
   suspendUser: adminProcedure
     .input(
       z.object({
-        userId: z.number(),
+        userId: z.number().int().positive(),
         reason: z.string().optional(),
       }),
     )
@@ -234,7 +234,7 @@ export const adminRouter = router({
   changeUserRole: adminProcedure
     .input(
       z.object({
-        userId: z.number(),
+        userId: z.number().int().positive(),
         role: z.enum(['CUSTOMER', 'TECHNICIAN', 'ADMIN']),
       }),
     )
@@ -356,7 +356,7 @@ export const adminRouter = router({
   verifyKyc: adminProcedure
     .input(
       z.object({
-        userId: z.number(),
+        userId: z.number().int().positive(),
         status: z.enum(['VERIFIED', 'REJECTED']),
         notes: z.string().optional(),
       }),
@@ -406,7 +406,7 @@ export const adminRouter = router({
     }),
 
   toggleEcoFriendly: adminProcedure
-    .input(z.object({ userId: z.number() }))
+    .input(z.object({ userId: z.number().int().positive() }))
     .mutation(async ({ input }) => {
       const technician = await prisma.technician.findUnique({
         where: { userId: input.userId },

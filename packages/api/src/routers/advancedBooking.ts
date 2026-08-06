@@ -7,12 +7,12 @@ export const advancedBookingRouter = router({
   // ── Recurring Booking ─────────────────────────────────
   createRecurring: customerProcedure
     .input(z.object({
-      technicianId: z.number(), serviceId: z.number(), addressId: z.number(),
-      slotId: z.number(),
-      startAt: z.string(), endAt: z.string(),
+      technicianId: z.number().int().positive(), serviceId: z.number().int().positive(), addressId: z.number().int().positive(),
+      slotId: z.number().int().positive(),
+      startAt: z.string().datetime(), endAt: z.string().datetime(),
       recurrence: z.enum(['WEEKLY', 'BIWEEKLY', 'MONTHLY']),
-      occurrences: z.number().min(2).max(12),
-      notes: z.string().optional(),
+      occurrences: z.number().int().min(2).max(12),
+      notes: z.string().max(500).optional(),
     }))
     .mutation(async ({ ctx, input }) => {
       const bookings = [];
