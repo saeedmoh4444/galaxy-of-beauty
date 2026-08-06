@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import { notFound } from '../lib/errors';
 import {
   router,
   publicProcedure,
@@ -27,7 +28,7 @@ export const waitlistRouter = router({
       });
 
       if (!technician) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Technician not found' });
+        throw notFound('Technician');
       }
 
       // Check not already on waitlist for this technician
@@ -81,7 +82,7 @@ export const waitlistRouter = router({
       });
 
       if (!technician) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Technician not found' });
+        throw notFound('Technician');
       }
 
       const entry = await prisma.waitlistEntry.findUnique({
@@ -161,7 +162,7 @@ export const waitlistRouter = router({
       });
 
       if (!technician) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Technician not found' });
+        throw notFound('Technician');
       }
 
       const entry = await prisma.waitlistEntry.findUnique({
@@ -190,7 +191,7 @@ export const waitlistRouter = router({
       });
 
       if (!technician) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Technician not found' });
+        throw notFound('Technician');
       }
 
       const count = await prisma.waitlistEntry.count({
