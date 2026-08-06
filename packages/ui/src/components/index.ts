@@ -187,3 +187,4 @@ export { BeautyVoiceAssistantCard } from './BeautyVoiceAssistantCard';
 export { WheelchairAccessibleBadge } from './WheelchairAccessibleBadge';
 export { BeautyRecipeCard } from './BeautyRecipeCard';
 export { BusinessDashboardCard } from './BusinessDashboardCard';
+export { LoyaltyAnniversaryCard } from './LoyaltyAnniversaryCard';
