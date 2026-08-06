@@ -269,3 +269,8 @@ export { BeautyPerfumeCard } from './BeautyPerfumeCard';
 export { BeautyJewelryCard } from './BeautyJewelryCard';
 export { BeautyBagCard } from './BeautyBagCard';
 export { BeautyScarfCard } from './BeautyScarfCard';
+export { BeautyLipsCareCard } from './BeautyLipsCareCard';
+export { BeautyHandsCareCard } from './BeautyHandsCareCard';
+export { BeautyWellnessCornerCard } from './BeautyWellnessCornerCard';
+export { BeautyRelaxationCard } from './BeautyRelaxationCard';
+export { BeautyMeditationCard } from './BeautyMeditationCard';
