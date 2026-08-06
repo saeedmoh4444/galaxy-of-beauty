@@ -150,6 +150,7 @@ export const slotRouter = router({
       for (const slot of slots) {
         if (slot.startAt >= slot.endAt) {
           throw badRequest('start must be before end for all time slots');
+        }
       }
 
       // Check for overlaps with existing available slots
@@ -211,7 +212,6 @@ export const slotRouter = router({
       }
 
       if (slot.technicianId !== technician.id) {
-        throw new TRPCError({
         throw forbidden('Slot does not belong to you');
       }
 
