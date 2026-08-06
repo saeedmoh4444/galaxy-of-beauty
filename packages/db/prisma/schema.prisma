@@ -3532,3 +3532,12 @@ model CustomerMilestone {
   @@index([userId])
   @@map("customer_milestones")
 }
+
+model BeautyReport {
+  id        Int      @id @default(autoincrement())
+  type      String
+  data      Json
+  createdAt DateTime @default(now())
+
+  @@map("beauty_reports")
+}

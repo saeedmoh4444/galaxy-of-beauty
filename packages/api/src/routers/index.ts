@@ -61,7 +61,8 @@ import {
   adminRouter, adminAnalyticsV2Router, adminReportsRouter, adminToolsRouter,
   analyticsRouter, cmsRouter, featureFlagRouter, monitoringRouter,
   platformRouter, predictiveDemandRouter, smartPricingRouter,
-  performanceRouter, apiDocsRouter,
+  performanceRouter, apiDocsRouter, beautyReportsRouter, serviceAnalyticsRouter,
+  technicianPerformanceRouter, customerRetentionRouter,
 } from '../domains/admin';
 
 // AI
@@ -296,6 +297,10 @@ export const appRouter = router({
   smartPricing: smartPricingRouter,
   performance: performanceRouter,
   apiDocs: apiDocsRouter,
+  beautyReports: beautyReportsRouter,
+  serviceAnalytics: serviceAnalyticsRouter,
+  technicianPerformance: technicianPerformanceRouter,
+  customerRetention: customerRetentionRouter,
 
   // AI
   ai: aiRouter,

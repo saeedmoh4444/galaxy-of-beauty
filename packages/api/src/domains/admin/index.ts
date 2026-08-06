@@ -13,3 +13,7 @@ export { predictiveDemandRouter } from '../../routers/predictiveDemand';
 export { smartPricingRouter } from '../../routers/smartPricing';
 export { performanceRouter } from '../../routers/performance';
 export { apiDocsRouter } from '../../routers/apiDocs';
+export { beautyReportsRouter } from '../../routers/beautyReports';
+export { serviceAnalyticsRouter } from '../../routers/serviceAnalytics';
+export { technicianPerformanceRouter } from '../../routers/technicianPerformance';
+export { customerRetentionRouter } from '../../routers/customerRetention';
