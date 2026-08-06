@@ -17,3 +17,5 @@ export { beautyReportsRouter } from '../../routers/beautyReports';
 export { serviceAnalyticsRouter } from '../../routers/serviceAnalytics';
 export { technicianPerformanceRouter } from '../../routers/technicianPerformance';
 export { customerRetentionRouter } from '../../routers/customerRetention';
+export { technicianVerificationRouter } from '../../routers/technicianVerification';
+export { customerSegmentsRouter } from '../../routers/customerSegments';

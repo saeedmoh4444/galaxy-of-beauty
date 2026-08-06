@@ -14,7 +14,7 @@ import {
   bookingRouter, slotRouter, calendarRouter, rescheduleRouter,
   recurringBookingRouter, emergencyBookingRouter, advancedBookingRouter,
   groupBookingRouter, waitlistRouter, calendarSyncRouter,
-  bookingChecklistRouter, bookingHeatmapRouter,
+  bookingChecklistRouter, bookingHeatmapRouter, serviceQueueRouter,
 } from '../domains/booking';
 
 // Catalog
@@ -62,7 +62,8 @@ import {
   analyticsRouter, cmsRouter, featureFlagRouter, monitoringRouter,
   platformRouter, predictiveDemandRouter, smartPricingRouter,
   performanceRouter, apiDocsRouter, beautyReportsRouter, serviceAnalyticsRouter,
-  technicianPerformanceRouter, customerRetentionRouter,
+  technicianPerformanceRouter, customerRetentionRouter, technicianVerificationRouter,
+  customerSegmentsRouter,
 } from '../domains/admin';
 
 // AI
@@ -95,7 +96,7 @@ import {
   marketplaceRouter, vendorPortalRouter, subscriptionRouter,
   subscriptionBoxRouter, boxBuilderRouter, flashDealRouter,
   groupBuyRouter, beautyPackageRouter, bridalConciergeRouter,
-  giftRegistryRouter, giftQuizRouter, beautyBingoRouter, eventTicketsRouter,
+  giftRegistryRouter, giftQuizRouter, beautyBingoRouter, eventTicketsRouter, beautyCouponsRouter,
 } from '../domains/market';
 
 // Wellness
@@ -199,6 +200,7 @@ export const appRouter = router({
   calendarSync: calendarSyncRouter,
   bookingChecklist: bookingChecklistRouter,
   bookingHeatmap: bookingHeatmapRouter,
+  serviceQueue: serviceQueueRouter,
 
   // Catalog
   categories: categoryRouter,
@@ -301,6 +303,8 @@ export const appRouter = router({
   serviceAnalytics: serviceAnalyticsRouter,
   technicianPerformance: technicianPerformanceRouter,
   customerRetention: customerRetentionRouter,
+  technicianVerification: technicianVerificationRouter,
+  customerSegments: customerSegmentsRouter,
 
   // AI
   ai: aiRouter,
@@ -370,6 +374,7 @@ export const appRouter = router({
   giftQuiz: giftQuizRouter,
   beautyBingo: beautyBingoRouter,
   eventTickets: eventTicketsRouter,
+  beautyCoupons: beautyCouponsRouter,
 
   // Wellness
   selfCare: selfCareRouter,

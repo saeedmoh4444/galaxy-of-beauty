@@ -13,3 +13,4 @@ export { giftRegistryRouter } from '../../routers/giftRegistry';
 export { giftQuizRouter } from '../../routers/giftQuiz';
 export { beautyBingoRouter } from '../../routers/beautyBingo';
 export { eventTicketsRouter } from '../../routers/eventTickets';
+export { beautyCouponsRouter } from '../../routers/beautyCoupons';

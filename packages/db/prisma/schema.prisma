@@ -3541,3 +3541,39 @@ model BeautyReport {
 
   @@map("beauty_reports")
 }
+
+model BeautyCoupon {
+  id              Int      @id @default(autoincrement())
+  code            String   @unique
+  discountPercent Int
+  maxUses         Int      @default(100)
+  used            Int      @default(0)
+  isActive        Boolean  @default(true)
+  expiresAt       DateTime
+  createdAt       DateTime @default(now())
+
+  @@map("beauty_coupons")
+}
+
+model ServiceQueueEntry {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  technicianId  Int
+  serviceId     Int
+  status        String   @default("WAITING")
+  notes         String?
+  createdAt     DateTime @default(now())
+
+  @@index([technicianId, status])
+  @@map("service_queue_entries")
+}
+
+model CustomerSegment {
+  id          Int      @id @default(autoincrement())
+  name        String
+  criteria    Json
+  description String?
+  createdAt   DateTime @default(now())
+
+  @@map("customer_segments")
+}

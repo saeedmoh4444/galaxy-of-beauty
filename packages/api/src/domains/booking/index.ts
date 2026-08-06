@@ -12,3 +12,4 @@ export { waitlistRouter } from '../../routers/waitlist';
 export { calendarSyncRouter } from '../../routers/calendarSync';
 export { bookingChecklistRouter } from '../../routers/bookingChecklist';
 export { bookingHeatmapRouter } from '../../routers/bookingHeatmap';
+export { serviceQueueRouter } from '../../routers/serviceQueue';
