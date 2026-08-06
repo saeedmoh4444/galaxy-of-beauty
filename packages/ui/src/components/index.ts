@@ -178,3 +178,4 @@ export { HijabiBeautyCard } from './HijabiBeautyCard';
 export { BeautyFlashCard } from './BeautyFlashCard';
 export { BeautyConciergeCard } from './BeautyConciergeCard';
 export { CharityPartnerBadge } from './CharityPartnerBadge';
+export { SharedWishlistCard } from './SharedWishlistCard';
