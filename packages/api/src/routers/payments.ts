@@ -216,35 +216,43 @@ export const paymentRouter = router({
           data: { status: 'PAID' },
         });
 
-        // 5. Cashback — credit 5% to customer's wallet
+        // 5. Cashback — credit 5% to customer's wallet (idempotent via referenceId)
         const cashbackAmount = Number(booking.totalAmount) * CASHBACK_RATE;
+        const cashbackRefId = `capture_${booking.id}`;
 
-        // Ensure wallet exists for the customer
-        let wallet = await prisma.wallet.findUnique({
-          where: { userId: booking.customerId },
+        // Check for existing cashback to avoid double-accrual
+        const existingCashback = await prisma.walletTransaction.findFirst({
+          where: { referenceId: cashbackRefId, source: 'CASHBACK' },
         });
 
-        if (!wallet) {
-          wallet = await prisma.wallet.create({
-            data: { userId: booking.customerId },
+        if (!existingCashback) {
+          // Ensure wallet exists for the customer
+          let wallet = await prisma.wallet.findUnique({
+            where: { userId: booking.customerId },
+          });
+
+          if (!wallet) {
+            wallet = await prisma.wallet.create({
+              data: { userId: booking.customerId },
+            });
+          }
+
+          await prisma.walletTransaction.create({
+            data: {
+              walletId: wallet.id,
+              type: 'CREDIT',
+              source: 'CASHBACK',
+              amount: cashbackAmount,
+              description: `Cashback on booking #${booking.id}`,
+              referenceId: cashbackRefId,
+            },
+          });
+
+          await prisma.wallet.update({
+            where: { id: wallet.id },
+            data: { bonusBalance: { increment: cashbackAmount } },
           });
         }
-
-        await prisma.walletTransaction.create({
-          data: {
-            walletId: wallet.id,
-            type: 'CREDIT',
-            source: 'CASHBACK',
-            amount: cashbackAmount,
-            description: `Cashback on booking #${booking.id}`,
-            referenceId: String(booking.id),
-          },
-        });
-
-        await prisma.wallet.update({
-          where: { id: wallet.id },
-          data: { bonusBalance: { increment: cashbackAmount } },
-        });
 
         // Emit real-time events
         emitToUser(booking.customerId, 'payment_success', {

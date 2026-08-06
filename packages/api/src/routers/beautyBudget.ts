@@ -13,7 +13,6 @@ export const beautyBudgetRouter = router({
     const budget = await db.beautyBudget.findUnique({ where: { userId_month: { userId: ctx.user.id, month } } });
     const bookings = await db.booking.findMany({ where: { customerId: ctx.user.id, createdAt: { gte: new Date(`${month}-01`) } } });
     const spent = bookings.reduce((sum: number, b: any) => sum + Number(b.totalAmount || 0), 0);
-    if (budget) await db.beautyBudget.update({ where: { id: budget.id }, data: { spent } });
     return { month, budget: budget ? Number(budget.budget) : 0, spent, remaining: budget ? Number(budget.budget) - spent : 0 };
   }),
   set: customerProcedure

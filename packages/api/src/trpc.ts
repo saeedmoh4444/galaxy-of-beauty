@@ -73,7 +73,7 @@ const csrfGuard = middleware(({ ctx, next }) => {
 /**
  * Public mutation — request-counted, CSRF-protected, no auth required.
  */
-export const publicMutation = procedure.use(requestCounter).use(csrfGuard);
+export const publicMutation = procedure.use(requestCounter).use(rateLimitGuard).use(csrfGuard);
 
 // ---- Authenticated ----
 const isAuthed = middleware(({ ctx, next }) => {
@@ -83,7 +83,7 @@ const isAuthed = middleware(({ ctx, next }) => {
   return next({ ctx: { ...ctx, user: ctx.user } });
 });
 
-export const protectedProcedure = procedure.use(isAuthed);
+export const protectedProcedure = procedure.use(isAuthed).use(rateLimitGuard);
 
 /**
  * Protected mutation — requires auth + CSRF.

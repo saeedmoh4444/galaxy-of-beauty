@@ -23,9 +23,8 @@ function getPhase(day: number, cycleLength: number = 28) {
 
 export const cycleTrackerRouter = router({
   settings: customerProcedure.query(async ({ ctx }) => {
-    let s = await db.cycleSettings.findUnique({ where: { userId: ctx.user.id } });
-    if (!s) s = await db.cycleSettings.create({ data: { userId: ctx.user.id } });
-    return s;
+    const s = await db.cycleSettings.findUnique({ where: { userId: ctx.user.id } });
+    return s ?? { userId: ctx.user.id, cycleLength: 28, periodLength: 5, lastPeriodStart: null, createdAt: new Date(), updatedAt: new Date() };
   }),
 
   updateSettings: customerProcedure
