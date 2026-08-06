@@ -299,3 +299,8 @@ export { BeautyFaceOilCard } from './BeautyFaceOilCard';
 export { BeautySpotTreatmentCard } from './BeautySpotTreatmentCard';
 export { BeautyIceRollerCard } from './BeautyIceRollerCard';
 export { BeautyGuaShaCard } from './BeautyGuaShaCard';
+export { BeautyJadeRollerCard } from './BeautyJadeRollerCard';
+export { BeautyAntiAgingCard } from './BeautyAntiAgingCard';
+export { BeautyPregnancySkincareCard } from './BeautyPregnancySkincareCard';
+export { BeautyMenopauseSkincareCard } from './BeautyMenopauseSkincareCard';
+export { BeautyAcneGuideCard } from './BeautyAcneGuideCard';
