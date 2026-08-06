@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { notFound, forbidden } from '../lib/errors';
 import {
   publicProcedure,
   adminProcedure,
@@ -109,10 +110,7 @@ export const technicianRouter = router({
       });
 
       if (!technician) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Technician not found',
-        });
+        throw notFound('Technician');
       }
 
       return technician;
@@ -156,20 +154,14 @@ export const technicianRouter = router({
         where: { userId: ctx.user.id },
       });
       if (!technician) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Technician profile not found',
-        });
+        throw notFound('Technician profile');
       }
 
       const service = await prisma.service.findUnique({
         where: { id: input.serviceId, isActive: true },
       });
       if (!service) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Service not found',
-        });
+        throw notFound('Service');
       }
 
       const mapping = await prisma.technicianService.create({
@@ -275,10 +267,7 @@ export const technicianRouter = router({
         where: { userId: ctx.user.id },
       });
       if (!technician) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Technician profile not found',
-        });
+        throw notFound('Technician profile');
       }
 
       const updated = await prisma.technician.update({
@@ -333,10 +322,7 @@ export const technicianRouter = router({
         where: { userId: input.userId },
       });
       if (!technician) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Technician not found',
-        });
+        throw notFound('Technician');
       }
 
       const updated = await prisma.technician.update({
