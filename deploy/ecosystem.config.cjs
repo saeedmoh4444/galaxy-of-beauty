@@ -29,5 +29,15 @@ module.exports = {
       env: { NODE_ENV: 'production', SOCKET_PORT: 4001 },
       max_memory_restart: '512M',
     },
+    {
+      name: 'gob-worker',
+      cwd: APP_ROOT,
+      script: 'npx',
+      args: 'tsx packages/api/src/workers/run.ts',
+      instances: 1,
+      exec_mode: 'fork',
+      env: { NODE_ENV: 'production' },
+      max_memory_restart: '512M',
+    },
   ],
 };
