@@ -334,3 +334,8 @@ export { BeautyMakeupBlushCard } from './BeautyMakeupBlushCard';
 export { BeautyMakeupMascaraCard } from './BeautyMakeupMascaraCard';
 export { BeautyMakeupEyelinerCard } from './BeautyMakeupEyelinerCard';
 export { BeautyMakeupBrowsCard } from './BeautyMakeupBrowsCard';
+export { BeautyMakeupRemoverCard } from './BeautyMakeupRemoverCard';
+export { BeautyMakeupSpongeCard } from './BeautyMakeupSpongeCard';
+export { BeautyMakeupColorCard } from './BeautyMakeupColorCard';
+export { BeautyMakeupDayCard } from './BeautyMakeupDayCard';
+export { BeautyMakeupNightCard } from './BeautyMakeupNightCard';
