@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import { notFound, forbidden, badRequest, paymentFailed } from '../lib/errors';
 import {
   router,
   publicProcedure,
@@ -61,17 +62,11 @@ export const paymentRouter = router({
         });
 
         if (!booking) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Booking not found',
-          });
+          throw notFound('Booking');
         }
 
         if (booking.customerId !== ctx.user.id) {
-          throw new TRPCError({
-            code: 'FORBIDDEN',
-            message: 'You do not own this booking',
-          });
+          throw forbidden('You do not own this booking');
         }
 
         if (booking.status !== 'ACCEPTED') {
@@ -177,17 +172,11 @@ export const paymentRouter = router({
         });
 
         if (!booking) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Booking not found',
-          });
+          throw notFound('Booking');
         }
 
         if (booking.technicianId !== ctx.user.id) {
-          throw new TRPCError({
-            code: 'FORBIDDEN',
-            message: 'You are not the technician for this booking',
-          });
+          throw forbidden('You are not the technician for this booking');
         }
 
         if (!booking.payment) {
@@ -294,10 +283,7 @@ export const paymentRouter = router({
         });
 
         if (!payment) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Payment not found for this booking',
-          });
+          throw notFound('Payment for this booking');
         }
 
         if (payment.status !== 'CAPTURED') {
