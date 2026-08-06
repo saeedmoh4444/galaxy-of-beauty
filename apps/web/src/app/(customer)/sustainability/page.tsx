@@ -1,5 +1,6 @@
 'use client';
 
+import { api } from '@/lib/trpc';
 import {
   PageContainer, PageTitle,
   GreenSalonBadge, SensoryFriendlyBadge, SensoryMapCard, QuietHoursBadge,
@@ -15,6 +16,12 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function SustainabilityPage(): JSX.Element {
+  const greenSalons = (api as any).greenSalon?.list?.useQuery?.({ limit: 4 }) as any;
+  const sensorySalons = (api as any).sensoryFriendly?.listSalons?.useQuery?.({ limit: 4 }) as any;
+
+  const playlist = (api as any).beautyPlaylist?.list?.useQuery?.({ limit: 1 }) as any;
+  const weather = (api as any).weatherBeauty?.getAdvice?.useQuery?.({ condition: 'hot', temp: 42 }) as any;
+
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
@@ -70,7 +77,7 @@ export default function SustainabilityPage(): JSX.Element {
 
           {/* Sidebar — Delight + Weather */}
           <div className="space-y-6">
-            <BeautyWeatherCard condition="hot" temp={42} />
+            <BeautyWeatherCard condition={weather?.data?.condition ?? 'hot'} temp={weather?.data?.temp ?? 42} />
             <BeautyPlaylistCard />
             <RandomActOfBeauty />
             <JustBecauseFlowers bookingsCount={15} />

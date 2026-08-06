@@ -12,6 +12,10 @@ const COLORS = {
 export default function WalletScreen(): JSX.Element {
   const balance = trpc.wallet.getBalance.useQuery();
   const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 20 });
+  // @ts-expect-error new routers
+  const loyalty = (trpc as any).loyalty?.getAccount?.useQuery?.();
+  // @ts-expect-error new routers
+  const cashback = (trpc as any).cashback?.summary?.useQuery?.();
 
   return (
     <ScreenState
@@ -37,6 +41,26 @@ export default function WalletScreen(): JSX.Element {
           <Text style={styles.topUpText}>➕ شحن رصيد</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Loyalty + Cashback */}
+      {(loyalty?.data || cashback?.data) && (
+        <View style={styles.rewardsRow}>
+          {loyalty?.data && (
+            <View style={styles.rewardCard}>
+              <Text style={styles.rewardEmoji}>⭐</Text>
+              <Text style={styles.rewardVal}>{loyalty.data.points ?? 0}</Text>
+              <Text style={styles.rewardLbl}>نقاط ولاء</Text>
+            </View>
+          )}
+          {cashback?.data && (
+            <View style={styles.rewardCard}>
+              <Text style={styles.rewardEmoji}>💰</Text>
+              <Text style={styles.rewardVal}>{formatCurrency(cashback.data.totalCashback ?? 0)}</Text>
+              <Text style={styles.rewardLbl}>كاش باك</Text>
+            </View>
+          )}
+        </View>
+      )}
 
       <Text style={styles.sectionTitle}>آخر المعاملات</Text>
       {txns.isLoading ? null : txns.isError ? (
@@ -75,4 +99,9 @@ const styles = StyleSheet.create({
   txnAmount: { fontSize: 14, fontWeight: '700' },
   errorText: { fontSize: 13, color: COLORS.danger, textAlign: 'center', marginTop: 8 },
   emptyText: { fontSize: 13, color: COLORS.gray400, textAlign: 'center', marginTop: 8 },
+  rewardsRow: { flexDirection: 'row', gap: 10, marginBottom: 20 },
+  rewardCard: { flex: 1, backgroundColor: COLORS.white, borderRadius: 12, padding: 14, alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
+  rewardEmoji: { fontSize: 20, marginBottom: 4 },
+  rewardVal: { fontSize: 18, fontWeight: '700', color: COLORS.gray900 },
+  rewardLbl: { fontSize: 11, color: COLORS.gray400, marginTop: 2 },
 });
