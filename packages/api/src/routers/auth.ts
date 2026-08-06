@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import { MAX_AUTH_ATTEMPTS, MS_PER_DAY, MS_PER_WEEK } from '@galaxy/shared';
 import { publicProcedure, publicMutation, protectedProcedure, protectedMutation, router } from '../trpc';
 import { prisma } from '@galaxy/db';
+import { notFound, forbidden, conflict, badRequest, unauthorized, tooManyRequests } from '../lib/errors';
 import type { Prisma } from '@galaxy/db';
 import {
   hashPassword,
