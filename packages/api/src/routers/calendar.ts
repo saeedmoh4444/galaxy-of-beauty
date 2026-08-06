@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { technicianProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
+import { notFound, badRequest } from '../lib/errors';
 import {
   exchangeGoogleCode,
   refreshGoogleToken,
@@ -18,7 +19,7 @@ async function getValidAccessToken(userId: number): Promise<string> {
   });
 
   if (!tech?.googleCalendarToken) {
-    throw new TRPCError({ code: 'BAD_REQUEST', message: 'Google Calendar not connected' });
+    throw badRequest('Google Calendar not connected');
   }
 
   if (tech.googleTokenExpiry && tech.googleTokenExpiry < new Date() && tech.googleRefreshToken) {
@@ -46,7 +47,7 @@ export const calendarRouter = router({
       select: { googleCalendarToken: true, googleCalendarEmail: true, googleRefreshToken: true },
     });
 
-    if (!tech) throw new TRPCError({ code: 'NOT_FOUND', message: 'Technician profile not found' });
+    if (!tech) throw notFound('Technician profile');
 
     return {
       connected: tech.googleCalendarToken !== null,
@@ -71,7 +72,7 @@ export const calendarRouter = router({
       const tokens = await exchangeGoogleCode(input.authCode, redirectUri);
 
       if (!tokens) {
-        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Failed to exchange authorization code' });
+        throw badRequest('Failed to exchange authorization code');
       }
 
       // Store tokens in technician profile
