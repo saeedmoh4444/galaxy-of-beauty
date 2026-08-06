@@ -185,3 +185,4 @@ export { BeautyComparisonCard } from './BeautyComparisonCard';
 export { MediaFeatureCard } from './MediaFeatureCard';
 export { BeautyVoiceAssistantCard } from './BeautyVoiceAssistantCard';
 export { WheelchairAccessibleBadge } from './WheelchairAccessibleBadge';
+export { BeautyRecipeCard } from './BeautyRecipeCard';
