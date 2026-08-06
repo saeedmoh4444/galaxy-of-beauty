@@ -164,3 +164,4 @@ export { NewMomSupportCard } from './NewMomSupportCard';
 export { SelfieStationBadge } from './SelfieStationBadge';
 export { GreenSalonBadge } from './GreenSalonBadge';
 export { DailyBeautyTipCard } from './DailyBeautyTipCard';
+export { ServiceAnimalBadge } from './ServiceAnimalBadge';
