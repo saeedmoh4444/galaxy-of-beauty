@@ -32,13 +32,22 @@ export const beautyExpensesRouter = router({
       byCategory[catId]!.count += 1;
     }
 
-    // Monthly trend (last 6 months)
+    // Monthly trend (last 6 months) — single query, in-memory grouping
+    const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1);
+    const allRecentBookings = await db.booking.findMany({
+      where: { customerId: userId, createdAt: { gte: sixMonthsAgo }, status: 'COMPLETED' },
+      select: { totalAmount: true, createdAt: true },
+    });
+
     const monthlyTrend: Array<{ month: string; total: number }> = [];
     for (let i = 5; i >= 0; i--) {
       const start = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 0);
-      const monthBookings = await db.booking.findMany({ where: { customerId: userId, createdAt: { gte: start, lte: end }, status: 'COMPLETED' }, select: { totalAmount: true } });
-      monthlyTrend.push({ month: `${start.getFullYear()}-${String(start.getMonth() + 1).padStart(2, '0')}`, total: monthBookings.reduce((s: number, b: any) => s + Number(b.totalAmount || 0), 0) });
+      const monthKey = `${start.getFullYear()}-${String(start.getMonth() + 1).padStart(2, '0')}`;
+      const monthTotal = allRecentBookings
+        .filter((b) => b.createdAt >= start && b.createdAt <= end)
+        .reduce((s, b) => s + Number(b.totalAmount || 0), 0);
+      monthlyTrend.push({ month: monthKey, total: monthTotal });
     }
 
     return {
