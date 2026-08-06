@@ -173,3 +173,4 @@ export { BeautyPenPalCard } from './BeautyPenPalCard';
 export { PersonalStylingCard } from './PersonalStylingCard';
 export { SaudiBeautyHeritageCard } from './SaudiBeautyHeritageCard';
 export { SkinAnalysisCard } from './SkinAnalysisCard';
+export { BeautyInfographicCard } from './BeautyInfographicCard';
