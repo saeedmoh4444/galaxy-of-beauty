@@ -1,5 +1,6 @@
 'use client';
 
+import { api } from '@/lib/trpc';
 import {
   PageContainer, PageTitle,
   BeautyRewardsCard, LoyaltyDividendBadge, LoyaltyAnniversaryCard,
@@ -10,6 +11,10 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyRewardsPage(): JSX.Element {
+  const loyalty = (api as any).loyalty?.getAccount?.useQuery?.() as any;
+  const kindness = (api as any).kindnessPoints?.getStatus?.useQuery?.() as any;
+  const referral = (api as any).referrals?.myStats?.useQuery?.() as any;
+
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
