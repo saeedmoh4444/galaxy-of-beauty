@@ -203,3 +203,4 @@ export { BeautyRewardsCard } from './BeautyRewardsCard';
 export { BeautyExpertTalkCard } from './BeautyExpertTalkCard';
 export { BeautyAffirmationCard } from './BeautyAffirmationCard';
 export { GrandmotherPackageCard } from './GrandmotherPackageCard';
+export { ColorBlindBadge } from './ColorBlindBadge';
