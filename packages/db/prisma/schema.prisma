@@ -3074,3 +3074,76 @@ model SleepLog {
   @@index([userId])
   @@map("sleep_logs")
 }
+
+model ConciergeRequest {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  request   String
+  category  String   @default("booking")
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("concierge_requests")
+}
+
+model TimeCapsule {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  name        String
+  routineJson Json
+  openDate    String
+  opened      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@map("time_capsules")
+}
+
+model SecretSantaGroup {
+  id        Int      @id @default(autoincrement())
+  name      String
+  budget    Int
+  creatorId Int
+  drawDate  String?
+  drawn     Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  participants SecretSantaParticipant[]
+
+  @@map("secret_santa_groups")
+}
+
+model SecretSantaParticipant {
+  id         Int      @id @default(autoincrement())
+  groupId    Int
+  userId     Int
+  assignedTo Int?
+  createdAt  DateTime @default(now())
+
+  group      SecretSantaGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId])
+  @@map("secret_santa_participants")
+}
+
+model Affirmation {
+  id   Int    @id @default(autoincrement())
+  text String
+  emoji String @default("💖")
+  createdAt DateTime @default(now())
+
+  @@map("affirmations")
+}
+
+model AffirmationFavorite {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  affirmationId Int
+  createdAt     DateTime @default(now())
+
+  affirmation   Affirmation @relation(fields: [affirmationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, affirmationId])
+  @@map("affirmation_favorites")
+}

@@ -21,3 +21,7 @@ export { communityEventsRouter } from '../../routers/communityEvents';
 export { accountabilityRouter } from '../../routers/accountability';
 export { visionBoardRouter } from '../../routers/visionBoard';
 export { gratitudeRouter } from '../../routers/gratitude';
+export { conciergeRouter } from '../../routers/concierge';
+export { timeCapsuleRouter } from '../../routers/timeCapsule';
+export { secretSantaRouter } from '../../routers/secretSanta';
+export { affirmationsRouter } from '../../routers/affirmations';
