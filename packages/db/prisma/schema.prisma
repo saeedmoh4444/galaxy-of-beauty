@@ -3463,3 +3463,49 @@ model BeautyPartnerMatch {
 
   @@map("beauty_partner_matches")
 }
+
+model OnboardingResponse {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  answers   Json
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("onboarding_responses")
+}
+
+model CustomerPreference {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique
+  preferences Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("customer_preferences")
+}
+
+model TechnicianRating {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  technicianId  Int
+  bookingId     Int      @unique
+  overall       Int
+  skill         Int?
+  punctuality   Int?
+  cleanliness   Int?
+  communication Int?
+  comment       String?
+  createdAt     DateTime @default(now())
+
+  @@index([technicianId])
+  @@map("technician_ratings")
+}
+
+model BeautyTrend {
+  id        Int      @id @default(autoincrement())
+  type      String
+  data      Json
+  createdAt DateTime @default(now())
+
+  @@map("beauty_trends")
+}

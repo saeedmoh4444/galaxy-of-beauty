@@ -34,3 +34,4 @@ export { beautyScrapbookRouter } from '../../routers/beautyScrapbook';
 export { classPassRouter } from '../../routers/classPass';
 export { technicianSpotlightRouter } from '../../routers/technicianSpotlight';
 export { beautyPartnerRouter } from '../../routers/beautyPartner';
+export { technicianRatingsRouter } from '../../routers/technicianRatings';

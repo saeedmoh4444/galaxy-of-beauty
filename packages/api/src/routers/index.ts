@@ -42,7 +42,7 @@ import {
   reviewRouter, disputeRouter, communityRouter, socialRouter,
   socialChallengesRouter, challengesRouter, inspirationRouter,
   technicianFollowRouter, technicianQARouter, beautyPartyRouter,
-  penPalRouter, moodBoardRouter, beautyCirclesRouter, kindnessPointsRouter, sisterhoodComplimentsRouter, beautyBankRouter, sheLeadsRouter, communityEventsRouter, accountabilityRouter, visionBoardRouter, gratitudeRouter, conciergeRouter, timeCapsuleRouter, secretSantaRouter, affirmationsRouter, socialImpactRouter, dvSupportRouter, subscriptionGiftRouter, customerFeedbackRouter, beautySurveysRouter, beautyScrapbookRouter, classPassRouter, technicianSpotlightRouter, beautyPartnerRouter,
+  penPalRouter, moodBoardRouter, beautyCirclesRouter, kindnessPointsRouter, sisterhoodComplimentsRouter, beautyBankRouter, sheLeadsRouter, communityEventsRouter, accountabilityRouter, visionBoardRouter, gratitudeRouter, conciergeRouter, timeCapsuleRouter, secretSantaRouter, affirmationsRouter, socialImpactRouter, dvSupportRouter, subscriptionGiftRouter, customerFeedbackRouter, beautySurveysRouter, beautyScrapbookRouter, classPassRouter, technicianSpotlightRouter, beautyPartnerRouter, technicianRatingsRouter,
 } from '../domains/social';
 
 // Safety
@@ -97,7 +97,7 @@ import {
   beautyProfileRouter, beautyRemindersRouter, beautyClosetRouter,
   skinDiaryRouter, cycleTrackerRouter, spaPlannerRouter,
   routineSchedulerRouter, expiryTrackerRouter, restockReminderRouter,
-  allergenCheckerRouter, savingsGoalRouter, nightModeRouter, beautyHabitsRouter, sleepTrackerRouter, skillTreeRouter, careerBeautyRouter, savingsMilestonesRouter, beautyAchievementsRouter, beautyInsightsRouter,
+  allergenCheckerRouter, savingsGoalRouter, nightModeRouter, beautyHabitsRouter, sleepTrackerRouter, skillTreeRouter, careerBeautyRouter, savingsMilestonesRouter, beautyAchievementsRouter, beautyInsightsRouter, beautyOnboardingRouter, customerPreferencesRouter,
 } from '../domains/wellness';
 
 // Operations
@@ -107,7 +107,7 @@ import {
   rideHailingRouter, lastMileDeliveryRouter, clinicConnectRouter,
   corporateWellnessRouter, franchisePortalRouter, virtualConsultationRouter,
   dnaBeautyRouter, iotSyncRouter, beautyMetaverseRouter,
-  geofenceOffersRouter, ingredientAnalyzerRouter, ingredientSubRouter, greenSalonRouter, sensoryFriendlyRouter, ruralOutreachRouter, exportProgramRouter, investorRelationsRouter,
+  geofenceOffersRouter, ingredientAnalyzerRouter, ingredientSubRouter, greenSalonRouter, sensoryFriendlyRouter, ruralOutreachRouter, exportProgramRouter, investorRelationsRouter, beautyTrendsRouter,
 } from '../domains/operations';
 
 // ── Additional feature routers not yet domain-grouped ──
@@ -262,10 +262,12 @@ export const appRouter = router({
   classPass: classPassRouter,
   technicianSpotlight: technicianSpotlightRouter,
   beautyPartner: beautyPartnerRouter,
+  technicianRatings: technicianRatingsRouter,
   sensoryFriendly: sensoryFriendlyRouter,
   ruralOutreach: ruralOutreachRouter,
   exportProgram: exportProgramRouter,
   investorRelations: investorRelationsRouter,
+  beautyTrends: beautyTrendsRouter,
   safety: safetyRouter,
 
   // Admin
@@ -381,6 +383,8 @@ export const appRouter = router({
   savingsMilestones: savingsMilestonesRouter,
   beautyAchievements: beautyAchievementsRouter,
   beautyInsights: beautyInsightsRouter,
+  beautyOnboarding: beautyOnboardingRouter,
+  customerPreferences: customerPreferencesRouter,
 
   // Operations
   addresses: addressRouter,

@@ -28,3 +28,5 @@ export { careerBeautyRouter } from '../../routers/careerBeauty';
 export { savingsMilestonesRouter } from '../../routers/savingsMilestones';
 export { beautyAchievementsRouter } from '../../routers/beautyAchievements';
 export { beautyInsightsRouter } from '../../routers/beautyInsights';
+export { beautyOnboardingRouter } from '../../routers/beautyOnboarding';
+export { customerPreferencesRouter } from '../../routers/customerPreferences';

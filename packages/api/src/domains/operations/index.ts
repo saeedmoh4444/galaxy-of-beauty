@@ -23,3 +23,4 @@ export { sensoryFriendlyRouter } from '../../routers/sensoryFriendly';
 export { ruralOutreachRouter } from '../../routers/ruralOutreach';
 export { exportProgramRouter } from '../../routers/exportProgram';
 export { investorRelationsRouter } from '../../routers/investorRelations';
+export { beautyTrendsRouter } from '../../routers/beautyTrends';
