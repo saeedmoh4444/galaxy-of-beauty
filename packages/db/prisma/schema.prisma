@@ -2889,3 +2889,59 @@ model BeautyBank {
 
   @@map("beauty_bank_donations")
 }
+
+model SheLeadsMember {
+  id                Int      @id @default(autoincrement())
+  userId            Int      @unique
+  role              String
+  city              String?
+  yearsOfExperience Int?
+  status            String   @default("PENDING")
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+
+  @@index([isActive])
+  @@index([role])
+  @@map("she_leads_members")
+}
+
+model CommunityEvent {
+  id            Int      @id @default(autoincrement())
+  title         String
+  date          String
+  city          String
+  time          String?
+  maxAttendees  Int?
+  hostId        Int
+  createdAt     DateTime @default(now())
+
+  attendees     CommunityEventAttendee[]
+
+  @@index([date])
+  @@map("community_events")
+}
+
+model CommunityEventAttendee {
+  id        Int      @id @default(autoincrement())
+  eventId   Int
+  userId    Int
+  createdAt DateTime @default(now())
+
+  event     CommunityEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@map("community_event_attendees")
+}
+
+model SensoryFriendlySalon {
+  id          Int      @id @default(autoincrement())
+  name        String
+  features    Json
+  city        String?
+  isCertified Boolean  @default(false)
+  ownerId     Int
+  createdAt   DateTime @default(now())
+
+  @@index([isCertified])
+  @@map("sensory_friendly_salons")
+}

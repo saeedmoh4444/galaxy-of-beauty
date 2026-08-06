@@ -42,7 +42,7 @@ import {
   reviewRouter, disputeRouter, communityRouter, socialRouter,
   socialChallengesRouter, challengesRouter, inspirationRouter,
   technicianFollowRouter, technicianQARouter, beautyPartyRouter,
-  penPalRouter, moodBoardRouter, beautyCirclesRouter, kindnessPointsRouter, sisterhoodComplimentsRouter, beautyBankRouter,
+  penPalRouter, moodBoardRouter, beautyCirclesRouter, kindnessPointsRouter, sisterhoodComplimentsRouter, beautyBankRouter, sheLeadsRouter, communityEventsRouter,
 } from '../domains/social';
 
 // Safety
@@ -107,7 +107,7 @@ import {
   rideHailingRouter, lastMileDeliveryRouter, clinicConnectRouter,
   corporateWellnessRouter, franchisePortalRouter, virtualConsultationRouter,
   dnaBeautyRouter, iotSyncRouter, beautyMetaverseRouter,
-  geofenceOffersRouter, ingredientAnalyzerRouter, ingredientSubRouter, greenSalonRouter,
+  geofenceOffersRouter, ingredientAnalyzerRouter, ingredientSubRouter, greenSalonRouter, sensoryFriendlyRouter,
 } from '../domains/operations';
 
 // ── Additional feature routers not yet domain-grouped ──
@@ -244,6 +244,9 @@ export const appRouter = router({
   kindnessPoints: kindnessPointsRouter,
   sisterhoodCompliments: sisterhoodComplimentsRouter,
   beautyBank: beautyBankRouter,
+  sheLeads: sheLeadsRouter,
+  communityEvents: communityEventsRouter,
+  sensoryFriendly: sensoryFriendlyRouter,
   safety: safetyRouter,
 
   // Admin

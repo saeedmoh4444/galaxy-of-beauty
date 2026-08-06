@@ -16,3 +16,5 @@ export { beautyCirclesRouter } from '../../routers/beautyCircles';
 export { kindnessPointsRouter } from '../../routers/kindnessPoints';
 export { sisterhoodComplimentsRouter } from '../../routers/sisterhoodCompliments';
 export { beautyBankRouter } from '../../routers/beautyBank';
+export { sheLeadsRouter } from '../../routers/sheLeads';
+export { communityEventsRouter } from '../../routers/communityEvents';

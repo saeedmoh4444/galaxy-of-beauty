@@ -19,3 +19,4 @@ export { geofenceOffersRouter } from '../../routers/geofenceOffers';
 export { ingredientAnalyzerRouter } from '../../routers/ingredientAnalyzer';
 export { ingredientSubRouter } from '../../routers/ingredientSub';
 export { greenSalonRouter } from '../../routers/greenSalon';
+export { sensoryFriendlyRouter } from '../../routers/sensoryFriendly';
