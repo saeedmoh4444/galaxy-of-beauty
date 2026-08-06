@@ -20,3 +20,6 @@ export { ingredientAnalyzerRouter } from '../../routers/ingredientAnalyzer';
 export { ingredientSubRouter } from '../../routers/ingredientSub';
 export { greenSalonRouter } from '../../routers/greenSalon';
 export { sensoryFriendlyRouter } from '../../routers/sensoryFriendly';
+export { ruralOutreachRouter } from '../../routers/ruralOutreach';
+export { exportProgramRouter } from '../../routers/exportProgram';
+export { investorRelationsRouter } from '../../routers/investorRelations';

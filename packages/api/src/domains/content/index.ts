@@ -25,3 +25,6 @@ export { beautyPlaylistRouter } from '../../routers/beautyPlaylist';
 export { beautyRecipesRouter } from '../../routers/beautyRecipes';
 export { bookClubRouter } from '../../routers/bookClub';
 export { languageExchangeRouter } from '../../routers/languageExchange';
+export { nightOutRouter } from '../../routers/nightOut';
+export { expertTalksRouter } from '../../routers/expertTalks';
+export { certificationPathsRouter } from '../../routers/certificationPaths';

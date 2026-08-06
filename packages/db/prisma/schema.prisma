@@ -3235,3 +3235,76 @@ model SavingsMilestone {
   @@index([userId])
   @@map("savings_milestones")
 }
+
+model RuralOutreach {
+  id        Int      @id @default(autoincrement())
+  name      String
+  village   String
+  status    String   @default("TRAINED")
+  createdAt DateTime @default(now())
+
+  @@map("rural_outreach")
+}
+
+model ExportProduct {
+  id          Int      @id @default(autoincrement())
+  name        String
+  country     String
+  description String?
+  ownerId     Int
+  createdAt   DateTime @default(now())
+
+  @@map("export_products")
+}
+
+model InvestmentPitch {
+  id          Int      @id @default(autoincrement())
+  name        String
+  amount      Int
+  description String
+  status      String   @default("PENDING")
+  ownerId     Int
+  createdAt   DateTime @default(now())
+
+  @@map("investment_pitches")
+}
+
+model ExpertTalk {
+  id       Int      @id @default(autoincrement())
+  title    String
+  expert   String
+  date     String
+  seats    Int?
+  isFree   Boolean  @default(true)
+  emoji    String   @default("🎤")
+  createdAt DateTime @default(now())
+
+  @@map("expert_talks")
+}
+
+model CertificationPath {
+  id          Int      @id @default(autoincrement())
+  title       String
+  emoji       String   @default("📜")
+  levelsJson  Json
+  duration    String
+  accredited  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  enrollments CertificationEnrollment[]
+
+  @@map("certification_paths")
+}
+
+model CertificationEnrollment {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  pathId    Int
+  createdAt DateTime @default(now())
+
+  path      CertificationPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, pathId])
+  @@map("certification_enrollments")
+}

@@ -78,7 +78,7 @@ import {
   liveStreamRouter, beautyCoursesRouter, beautyStoriesRouter,
   beautyShortsRouter, beautyPodcastRouter, beautyAwardsRouter,
   beautyExpoRouter, beautyFaqRouter, videoTestimonialsRouter,
-  beforeAfterRouter, behindScenesRouter, beautyHeritageRouter, beautyMythsRouter, beautyQuizRouter, dailyBeautyTipRouter, lookbookRouter, weatherBeautyRouter, beautyPlaylistRouter, beautyRecipesRouter, bookClubRouter, languageExchangeRouter,
+  beforeAfterRouter, behindScenesRouter, beautyHeritageRouter, beautyMythsRouter, beautyQuizRouter, dailyBeautyTipRouter, lookbookRouter, weatherBeautyRouter, beautyPlaylistRouter, beautyRecipesRouter, bookClubRouter, languageExchangeRouter, nightOutRouter, expertTalksRouter, certificationPathsRouter,
 } from '../domains/content';
 
 // Market
@@ -107,7 +107,7 @@ import {
   rideHailingRouter, lastMileDeliveryRouter, clinicConnectRouter,
   corporateWellnessRouter, franchisePortalRouter, virtualConsultationRouter,
   dnaBeautyRouter, iotSyncRouter, beautyMetaverseRouter,
-  geofenceOffersRouter, ingredientAnalyzerRouter, ingredientSubRouter, greenSalonRouter, sensoryFriendlyRouter,
+  geofenceOffersRouter, ingredientAnalyzerRouter, ingredientSubRouter, greenSalonRouter, sensoryFriendlyRouter, ruralOutreachRouter, exportProgramRouter, investorRelationsRouter,
 } from '../domains/operations';
 
 // ── Additional feature routers not yet domain-grouped ──
@@ -254,6 +254,9 @@ export const appRouter = router({
   secretSanta: secretSantaRouter,
   affirmations: affirmationsRouter,
   sensoryFriendly: sensoryFriendlyRouter,
+  ruralOutreach: ruralOutreachRouter,
+  exportProgram: exportProgramRouter,
+  investorRelations: investorRelationsRouter,
   safety: safetyRouter,
 
   // Admin
@@ -321,6 +324,9 @@ export const appRouter = router({
   beautyRecipes: beautyRecipesRouter,
   bookClub: bookClubRouter,
   languageExchange: languageExchangeRouter,
+  nightOut: nightOutRouter,
+  expertTalks: expertTalksRouter,
+  certificationPaths: certificationPathsRouter,
 
   // Market
   marketplace: marketplaceRouter,
