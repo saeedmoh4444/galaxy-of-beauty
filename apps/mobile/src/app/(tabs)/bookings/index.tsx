@@ -37,6 +37,10 @@ export default function BookingsScreen(): JSX.Element {
   const [page] = useState(1);
   const bookings = trpc.bookings.list.useQuery({ page, limit: DEFAULT_PAGE_SIZE });
   const data = bookings.data?.bookings as unknown[] | undefined;
+  // @ts-expect-error new routers
+  const loyalty = (trpc as any).loyalty?.getAccount?.useQuery?.();
+  // @ts-expect-error new routers
+  const safety = (trpc as any).safety?.getCheckInStatus?.useQuery?.({ bookingId: 0 }) as any;
 
   return (
     <ScreenState
@@ -51,6 +55,11 @@ export default function BookingsScreen(): JSX.Element {
     >
       <View style={styles.header}>
         <Text style={styles.title}>📅 حجوزاتي</Text>
+        {loyalty?.data && (
+          <View style={styles.loyaltyBadge}>
+            <Text style={styles.loyaltyText}>⭐ {loyalty.data.points ?? 0}</Text>
+          </View>
+        )}
       </View>
       {(data as Record<string, unknown>[])?.map((b: Record<string, unknown>, i: number) => (
         <TouchableOpacity key={i} style={styles.card} activeOpacity={0.7}>
