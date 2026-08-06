@@ -38,7 +38,7 @@ export const cmsRouter = router({
 
   // ── Services CRUD ──────────────────────────────────────
   listServices: adminProcedure.query(() =>
-    prisma.service.findMany({ orderBy: { createdAt: 'desc' }, include: { category: { select: { nameJson: true } } } })
+    prisma.service.findMany({ orderBy: { createdAt: 'desc' }, take: 200, include: { category: { select: { nameJson: true } } } })
   ),
 
   upsertService: adminProcedure

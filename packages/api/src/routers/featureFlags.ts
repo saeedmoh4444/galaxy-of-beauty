@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { publicProcedure, protectedProcedure, adminProcedure, router } from '../trpc';
+import { notFound } from '../lib/errors';
 
 // In-memory cache (TTL: 30 seconds)
 const cache = new Map<string, { value: boolean; expiresAt: number }>();
@@ -46,7 +47,7 @@ export const featureFlagRouter = router({
     .input(z.object({
       key: z.string().min(1), name: z.string(), description: z.string().optional(),
       enabled: z.boolean(), rolloutPercent: z.number().int().min(0).max(100).default(0),
-      enabledFor: z.any().optional(),
+      enabledFor: z.record(z.unknown()).optional(),
     }))
     .mutation(async ({ input }) => {
       const flag = await prisma.featureFlag.upsert({
@@ -63,7 +64,7 @@ export const featureFlagRouter = router({
     .input(z.object({ key: z.string().min(1) }))
     .mutation(async ({ input }) => {
       const flag = await prisma.featureFlag.findUnique({ where: { key: input.key } });
-      if (!flag) throw new Error('Flag not found');
+      if (!flag) throw notFound('Feature flag', input.key);
       const updated = await prisma.featureFlag.update({
         where: { key: input.key },
         data: { enabled: !flag.enabled },
