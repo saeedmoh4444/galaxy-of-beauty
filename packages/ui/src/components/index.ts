@@ -259,3 +259,4 @@ export { BeautyRoutineTimelineCard } from './BeautyRoutineTimelineCard';
 export { BeautyWaterIntakeCard } from './BeautyWaterIntakeCard';
 export { BeautySuncareReminderCard } from './BeautySuncareReminderCard';
 export { BeautyHairCareCard } from './BeautyHairCareCard';
+export { BeautyNailCareCard } from './BeautyNailCareCard';
