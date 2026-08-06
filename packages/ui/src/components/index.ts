@@ -228,3 +228,4 @@ export { CycleResourceCard } from './CycleResourceCard';
 export { BeautyAccountabilityCard } from './BeautyAccountabilityCard';
 export { BeautyMoodTrackerCard } from './BeautyMoodTrackerCard';
 export { BeautyHabitTrackerCard } from './BeautyHabitTrackerCard';
+export { BeautyLearningPathCard } from './BeautyLearningPathCard';
