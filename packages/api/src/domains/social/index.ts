@@ -30,3 +30,7 @@ export { dvSupportRouter } from '../../routers/dvSupport';
 export { subscriptionGiftRouter } from '../../routers/subscriptionGift';
 export { customerFeedbackRouter } from '../../routers/customerFeedback';
 export { beautySurveysRouter } from '../../routers/beautySurveys';
+export { beautyScrapbookRouter } from '../../routers/beautyScrapbook';
+export { classPassRouter } from '../../routers/classPass';
+export { technicianSpotlightRouter } from '../../routers/technicianSpotlight';
+export { beautyPartnerRouter } from '../../routers/beautyPartner';

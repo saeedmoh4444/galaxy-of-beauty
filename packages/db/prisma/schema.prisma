@@ -3388,3 +3388,78 @@ model SurveyResponse {
   @@unique([userId, surveyId])
   @@map("survey_responses")
 }
+
+model BeautyMemory {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  title     String
+  date      String
+  emoji     String   @default("📸")
+  imageUrl  String?
+  notes     String?
+  tags      Json     @default("[]")
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("beauty_memories")
+}
+
+model ClassPass {
+  id        Int      @id @default(autoincrement())
+  name      String
+  classes   Int
+  price     Int
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  purchases ClassPassPurchase[]
+
+  @@map("class_passes")
+}
+
+model ClassPassPurchase {
+  id               Int      @id @default(autoincrement())
+  userId           Int
+  passId           Int
+  classesRemaining Int
+  expiresAt        DateTime
+  createdAt        DateTime @default(now())
+
+  pass             ClassPass @relation(fields: [passId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("class_pass_purchases")
+}
+
+model TechnicianSpotlight {
+  id            Int      @id @default(autoincrement())
+  technicianId  Int
+  story         String
+  achievement   String
+  emoji         String   @default("👩‍🎨")
+  isPublished   Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  @@map("technician_spotlights")
+}
+
+model BeautyPartner {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  interest  String
+  city      String?
+  status    String   @default("SEEKING")
+  createdAt DateTime @default(now())
+
+  @@map("beauty_partners")
+}
+
+model BeautyPartnerMatch {
+  id         Int      @id @default(autoincrement())
+  partner1Id Int
+  partner2Id Int
+  interest   String
+  createdAt  DateTime @default(now())
+
+  @@map("beauty_partner_matches")
+}

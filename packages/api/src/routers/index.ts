@@ -42,7 +42,7 @@ import {
   reviewRouter, disputeRouter, communityRouter, socialRouter,
   socialChallengesRouter, challengesRouter, inspirationRouter,
   technicianFollowRouter, technicianQARouter, beautyPartyRouter,
-  penPalRouter, moodBoardRouter, beautyCirclesRouter, kindnessPointsRouter, sisterhoodComplimentsRouter, beautyBankRouter, sheLeadsRouter, communityEventsRouter, accountabilityRouter, visionBoardRouter, gratitudeRouter, conciergeRouter, timeCapsuleRouter, secretSantaRouter, affirmationsRouter, socialImpactRouter, dvSupportRouter, subscriptionGiftRouter, customerFeedbackRouter, beautySurveysRouter,
+  penPalRouter, moodBoardRouter, beautyCirclesRouter, kindnessPointsRouter, sisterhoodComplimentsRouter, beautyBankRouter, sheLeadsRouter, communityEventsRouter, accountabilityRouter, visionBoardRouter, gratitudeRouter, conciergeRouter, timeCapsuleRouter, secretSantaRouter, affirmationsRouter, socialImpactRouter, dvSupportRouter, subscriptionGiftRouter, customerFeedbackRouter, beautySurveysRouter, beautyScrapbookRouter, classPassRouter, technicianSpotlightRouter, beautyPartnerRouter,
 } from '../domains/social';
 
 // Safety
@@ -258,6 +258,10 @@ export const appRouter = router({
   subscriptionGift: subscriptionGiftRouter,
   customerFeedback: customerFeedbackRouter,
   beautySurveys: beautySurveysRouter,
+  beautyScrapbook: beautyScrapbookRouter,
+  classPass: classPassRouter,
+  technicianSpotlight: technicianSpotlightRouter,
+  beautyPartner: beautyPartnerRouter,
   sensoryFriendly: sensoryFriendlyRouter,
   ruralOutreach: ruralOutreachRouter,
   exportProgram: exportProgramRouter,
