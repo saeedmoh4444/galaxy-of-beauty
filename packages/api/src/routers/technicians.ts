@@ -364,7 +364,7 @@ export const technicianRouter = router({
    * unavailable, and vice versa.
    * Technician only.
    */
-  toggleBusy: technicianProcedure.mutation(async ({ ctx }) => {
+  toggleBusy: technicianProcedure.input(z.object({})).mutation(async ({ ctx }) => {
     const technician = await prisma.technician.findUnique({
       where: { userId: ctx.user.id },
     });
