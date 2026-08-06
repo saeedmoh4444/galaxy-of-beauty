@@ -324,3 +324,8 @@ export { BeautyHairLossCard } from './BeautyHairLossCard';
 export { BeautyHairGrowthCard } from './BeautyHairGrowthCard';
 export { BeautyHairTrimCard } from './BeautyHairTrimCard';
 export { BeautyHairScalpCard } from './BeautyHairScalpCard';
+export { BeautyMakeupBrushCard } from './BeautyMakeupBrushCard';
+export { BeautyMakeupBaseCard } from './BeautyMakeupBaseCard';
+export { BeautyMakeupEyeCard } from './BeautyMakeupEyeCard';
+export { BeautyMakeupLipCard } from './BeautyMakeupLipCard';
+export { BeautyMakeupSettingCard } from './BeautyMakeupSettingCard';
