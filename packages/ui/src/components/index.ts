@@ -171,3 +171,4 @@ export { PrayerTimeReminder } from './PrayerTimeReminder';
 export { BrailleMenuCard } from './BrailleMenuCard';
 export { BeautyPenPalCard } from './BeautyPenPalCard';
 export { PersonalStylingCard } from './PersonalStylingCard';
+export { SaudiBeautyHeritageCard } from './SaudiBeautyHeritageCard';
