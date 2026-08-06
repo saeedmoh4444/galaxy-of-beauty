@@ -235,3 +235,4 @@ export { BeautySeasonalLookbookCard } from './BeautySeasonalLookbookCard';
 export { BeautyQuickTipCard } from './BeautyQuickTipCard';
 export { BeautyAwardBadgeCard } from './BeautyAwardBadgeCard';
 export { BeautyIngredientHighlightCard } from './BeautyIngredientHighlightCard';
+export { BeautySelfCareReminderCard } from './BeautySelfCareReminderCard';
