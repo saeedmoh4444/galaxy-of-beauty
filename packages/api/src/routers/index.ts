@@ -42,8 +42,11 @@ import {
   reviewRouter, disputeRouter, communityRouter, socialRouter,
   socialChallengesRouter, challengesRouter, inspirationRouter,
   technicianFollowRouter, technicianQARouter, beautyPartyRouter,
-  penPalRouter, moodBoardRouter,
+  penPalRouter, moodBoardRouter, beautyCirclesRouter, kindnessPointsRouter, sisterhoodComplimentsRouter,
 } from '../domains/social';
+
+// Safety
+import { safetyRouter } from '../domains/safety';
 
 // Admin
 import {
@@ -237,6 +240,10 @@ export const appRouter = router({
   beautyParty: beautyPartyRouter,
   penPal: penPalRouter,
   moodBoard: moodBoardRouter,
+  beautyCircles: beautyCirclesRouter,
+  kindnessPoints: kindnessPointsRouter,
+  sisterhoodCompliments: sisterhoodComplimentsRouter,
+  safety: safetyRouter,
 
   // Admin
   admin: adminRouter,

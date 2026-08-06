@@ -2723,3 +2723,135 @@ model SalonMembership {
     @@map("beauty_plans")
   }
 
+
+
+// =============================================================================
+// Beauty Circles — Private women-only groups (W4 Sisterhood)
+// =============================================================================
+
+model BeautyCircle {
+  id        Int      @id @default(autoincrement())
+  name      String
+  topic     String
+  city      String?
+  cover     String   @default("🌸")
+  members   Int      @default(0)
+  creatorId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  circleMembers BeautyCircleMember[]
+
+  @@index([topic])
+  @@index([members])
+  @@map("beauty_circles")
+}
+
+model BeautyCircleMember {
+  id        Int      @id @default(autoincrement())
+  circleId  Int
+  userId    Int
+  joinedAt  DateTime @default(now())
+
+  circle BeautyCircle @relation(fields: [circleId], references: [id], onDelete: Cascade)
+
+  @@unique([circleId, userId])
+  @@index([userId])
+  @@map("beauty_circle_members")
+}
+
+model KindnessAccount {
+  id             Int    @id @default(autoincrement())
+  userId         Int    @unique
+  points         Int    @default(0)
+  lifetimePoints Int    @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user           User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions   KindnessTransaction[]
+
+  @@index([points])
+  @@map("kindness_accounts")
+}
+
+model KindnessTransaction {
+  id          Int      @id @default(autoincrement())
+  accountId   Int
+  points      Int
+  reason      String
+  createdAt   DateTime @default(now())
+
+  account     KindnessAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([accountId])
+  @@map("kindness_transactions")
+}
+
+model SisterhoodCompliment {
+  id         Int      @id @default(autoincrement())
+  emoji      String   @default("💌")
+  text       String
+  senderId   Int
+  senderName String
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("sisterhood_compliments")
+}
+
+model EmergencyContact {
+  id       Int    @id @default(autoincrement())
+  userId   Int
+  name     String
+  phone    String
+  relation String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("emergency_contacts")
+}
+
+model PanicAlert {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  latitude  Float?
+  longitude Float?
+  bookingId Int?
+  createdAt DateTime @default(now())
+
+  @@map("panic_alerts")
+}
+
+model EscortRequest {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  bookingId     Int
+  technicianId  Int
+  status        String   @default("REQUESTED")
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@map("escort_requests")
+}
+
+model LocationShare {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  bookingId Int
+  active    Boolean  @default(true)
+  endedAt   DateTime?
+  createdAt DateTime @default(now())
+
+  @@map("location_shares")
+}
+
+model SafetyCheckIn {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  bookingId Int
+  type      String
+  createdAt DateTime @default(now())
+
+  @@map("safety_checkins")
+}

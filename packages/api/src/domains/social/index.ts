@@ -12,3 +12,6 @@ export { technicianQARouter } from '../../routers/technicianQA';
 export { beautyPartyRouter } from '../../routers/beautyParty';
 export { penPalRouter } from '../../routers/penPal';
 export { moodBoardRouter } from '../../routers/moodBoard';
+export { beautyCirclesRouter } from '../../routers/beautyCircles';
+export { kindnessPointsRouter } from '../../routers/kindnessPoints';
+export { sisterhoodComplimentsRouter } from '../../routers/sisterhoodCompliments';
