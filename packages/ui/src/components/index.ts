@@ -219,3 +219,4 @@ export { BeautySecretSantaCard } from './BeautySecretSantaCard';
 export { BeautyTimeCapsuleCard } from './BeautyTimeCapsuleCard';
 export { BeautySkillTreeCard } from './BeautySkillTreeCard';
 export { BeautyDreamBoardCard } from './BeautyDreamBoardCard';
+export { BreastHealthCard } from './BreastHealthCard';
