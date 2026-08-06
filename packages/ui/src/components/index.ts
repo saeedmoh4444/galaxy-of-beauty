@@ -344,3 +344,8 @@ export { BeautyNailShapeCard } from './BeautyNailShapeCard';
 export { BeautyNailHealthCard } from './BeautyNailHealthCard';
 export { BeautyNailPolishCard } from './BeautyNailPolishCard';
 export { BeautyNailGelCard } from './BeautyNailGelCard';
+export { BeautyPerfumeLayerCard } from './BeautyPerfumeLayerCard';
+export { BeautyPerfumeSeasonCard } from './BeautyPerfumeSeasonCard';
+export { BeautyPerfumeOudCard } from './BeautyPerfumeOudCard';
+export { BeautyPerfumeMuskCard } from './BeautyPerfumeMuskCard';
+export { BeautyPerfumeRoseCard } from './BeautyPerfumeRoseCard';
