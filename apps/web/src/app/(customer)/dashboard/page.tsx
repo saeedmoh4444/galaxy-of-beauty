@@ -6,6 +6,8 @@ import { api } from '@/lib/trpc';
 import {
   Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency,
   StatCard, PageContainer, Icon, DashboardSkeleton, CardListSkeleton,
+  DailyBeautyTipCard, KindnessPointsBadge, SisterhoodWall, SelfCareReminder,
+  BeautyBudgetCard, BeautyCircleCard, BeautySavingsGoal,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { RebookReminder } from '@/components/RebookReminder';
@@ -22,6 +24,14 @@ export default function CustomerDashboardPage(): JSX.Element {
   const pins = (api as any).inspiration?.list?.useQuery?.() as any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const registries = (api as any).giftRegistry?.myRegistries?.useQuery?.() as any;
+  // New wired components
+  const dailyTip = (api as any).dailyBeautyTip?.today?.useQuery?.() as any;
+  const kindnessStatus = (api as any).kindnessPoints?.getStatus?.useQuery?.() as any;
+  const compliments = (api as any).sisterhoodCompliments?.list?.useQuery?.({ limit: 4 }) as any;
+  const circles = (api as any).beautyCircles?.list?.useQuery?.({ limit: 3 }) as any;
+  const savingsGoals = (api as any).savingsGoals?.list?.useQuery?.() as any;
+  // Budget services under 100 SAR
+  const budgetServices = (api as any).services?.list?.useQuery?.({ limit: 5, maxPrice: 100 }) as any;
 
   const streakInfo = insights.data?.streakInfo as Record<string, any> | undefined;
 
@@ -207,27 +217,49 @@ export default function CustomerDashboardPage(): JSX.Element {
 
         {/* Community + Wellness row */}
         <div className="grid gap-4 sm:grid-cols-3">
-          <Link href="/self-care">
-            <Card hover padding="md" className="text-center">
-              <Icon name="heart" size="xl" className="mx-auto text-brand-500" />
-              <p className="mt-2 font-semibold text-sm text-text-primary">العناية الذاتية</p>
-              <p className="text-xs text-text-secondary">تقييم مزاجكِ اليومي</p>
-            </Card>
-          </Link>
-          <Link href="/beauty-budget">
-            <Card hover padding="md" className="text-center">
-              <Icon name="wallet" size="xl" className="mx-auto text-brand-500" />
-              <p className="mt-2 font-semibold text-sm text-text-primary">ميزانية الجمال</p>
-              <p className="text-xs text-text-secondary">تتبعي إنفاقكِ الشهري</p>
-            </Card>
-          </Link>
-          <Link href="/community">
-            <Card hover padding="md" className="text-center">
-              <Icon name="chat" size="xl" className="mx-auto text-brand-500" />
-              <p className="mt-2 font-semibold text-sm text-text-primary">مجتمع الجمال</p>
-              <p className="text-xs text-text-secondary">شاركي تجاربكِ وآرائكِ</p>
-            </Card>
-          </Link>
+          <SelfCareReminder />
+          {budget?.data && (
+            <BeautyBudgetCard
+              services={(budgetServices?.data?.items as any[])?.slice(0, 4)?.map((s: any) => ({
+                name: (s.titleJson as any)?.ar ?? '',
+                price: Number(s.basePrice),
+                category: 'facial' as const,
+                duration: `${s.durationMin} دقيقة`,
+              })) ?? []}
+            />
+          )}
+          <DailyBeautyTipCard />
+        </div>
+
+        {/* Sisterhood + Circles row */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <SisterhoodWall />
+          {circles?.data?.items?.length > 0 && (
+            <BeautyCircleCard
+              circle={{
+                name: (circles.data.items[0] as any)?.name ?? 'دائرة الجمال',
+                topic: ((circles.data.items[0] as any)?.topic ?? 'skincare') as any,
+                members: (circles.data.items[0] as any)?.members ?? 0,
+                cover: (circles.data.items[0] as any)?.cover ?? '🌸',
+              }}
+            />
+          )}
+        </div>
+
+        {/* Kindness + Savings row */}
+        <div className="grid gap-4 sm:grid-cols-2">
+          <KindnessPointsBadge points={kindnessStatus?.data?.points ?? 0} />
+          {savingsGoals?.data?.length > 0 && (
+            <BeautySavingsGoal
+              goals={(savingsGoals.data as any[]).slice(0, 2).map((g: any) => ({
+                label: g.name ?? 'هدف ادخار',
+                target: g.amount ?? 0,
+                saved: g.saved ?? 0,
+                monthly: g.monthly ?? 0,
+                emoji: g.emoji ?? '💰',
+              }))}
+            />
+          )}
         </div>
       </PageContainer>
     </DashboardLayout>
