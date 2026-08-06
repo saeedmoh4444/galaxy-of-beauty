@@ -78,7 +78,7 @@ import {
   liveStreamRouter, beautyCoursesRouter, beautyStoriesRouter,
   beautyShortsRouter, beautyPodcastRouter, beautyAwardsRouter,
   beautyExpoRouter, beautyFaqRouter, videoTestimonialsRouter,
-  beforeAfterRouter, behindScenesRouter, beautyHeritageRouter,
+  beforeAfterRouter, behindScenesRouter, beautyHeritageRouter, beautyMythsRouter, beautyQuizRouter, dailyBeautyTipRouter,
 } from '../domains/content';
 
 // Market
@@ -305,6 +305,9 @@ export const appRouter = router({
   beforeAfter: beforeAfterRouter,
   behindScenes: behindScenesRouter,
   beautyHeritage: beautyHeritageRouter,
+  beautyMyths: beautyMythsRouter,
+  beautyQuiz: beautyQuizRouter,
+  dailyBeautyTip: dailyBeautyTipRouter,
 
   // Market
   marketplace: marketplaceRouter,

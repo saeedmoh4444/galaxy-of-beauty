@@ -2945,3 +2945,48 @@ model SensoryFriendlySalon {
   @@index([isCertified])
   @@map("sensory_friendly_salons")
 }
+
+model BeautyMyth {
+  id       Int    @id @default(autoincrement())
+  myth     String
+  fact     String
+  category String @default("general")
+  source   String?
+  createdAt DateTime @default(now())
+
+  @@index([category])
+  @@map("beauty_myths")
+}
+
+model BeautyQuizQuestion {
+  id           Int    @id @default(autoincrement())
+  question     String
+  optionsJson  Json
+  correctIndex Int
+  explanation  String
+  createdAt    DateTime @default(now())
+
+  @@map("beauty_quiz_questions")
+}
+
+model BeautyQuizAttempt {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  questionId    Int
+  selectedIndex Int
+  isCorrect     Boolean
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@map("beauty_quiz_attempts")
+}
+
+model DailyBeautyTip {
+  id        Int      @id @default(autoincrement())
+  emoji     String   @default("💡")
+  tip       String
+  category  String   @default("عناية")
+  createdAt DateTime @default(now())
+
+  @@map("daily_beauty_tips")
+}

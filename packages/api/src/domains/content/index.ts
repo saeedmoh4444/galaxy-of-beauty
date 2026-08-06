@@ -16,3 +16,6 @@ export { videoTestimonialsRouter } from '../../routers/videoTestimonials';
 export { beforeAfterRouter } from '../../routers/beforeAfter';
 export { behindScenesRouter } from '../../routers/behindScenes';
 export { beautyHeritageRouter } from '../../routers/beautyHeritage';
+export { beautyMythsRouter } from '../../routers/beautyMyths';
+export { beautyQuizRouter } from '../../routers/beautyQuiz';
+export { dailyBeautyTipRouter } from '../../routers/dailyBeautyTip';
