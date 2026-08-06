@@ -218,3 +218,4 @@ export { BridalBeautyCountdown } from './BridalBeautyCountdown';
 export { BeautySecretSantaCard } from './BeautySecretSantaCard';
 export { BeautyTimeCapsuleCard } from './BeautyTimeCapsuleCard';
 export { BeautySkillTreeCard } from './BeautySkillTreeCard';
+export { BeautyDreamBoardCard } from './BeautyDreamBoardCard';
