@@ -188,10 +188,7 @@ export const technicianRouter = router({
       });
 
       if (!mapping) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Service mapping not found',
-        });
+        throw notFound('Service mapping');
       }
       if (mapping.technician.userId !== ctx.user.id) {
         throw new TRPCError({
@@ -226,10 +223,7 @@ export const technicianRouter = router({
       });
 
       if (!mapping) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Service mapping not found',
-        });
+        throw notFound('Service mapping');
       }
       if (mapping.technician.userId !== ctx.user.id) {
         throw new TRPCError({
