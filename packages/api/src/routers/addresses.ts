@@ -3,6 +3,7 @@ import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { router, protectedProcedure } from '../trpc';
 import { createAddressSchema, updateAddressSchema } from '../validators/payment';
+import { notFound, forbidden } from '../lib/errors';
 
 // ---------------------------------------------------------------------------
 // Additional input schemas
@@ -98,17 +99,11 @@ export const addressRouter = router({
         });
 
         if (!existing) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Address not found',
-          });
+          throw notFound('Address');
         }
 
         if (existing.userId !== ctx.user.id) {
-          throw new TRPCError({
-            code: 'FORBIDDEN',
-            message: 'You do not own this address',
-          });
+          throw forbidden('You do not own this address');
         }
 
         // Destructure id out, apply remaining fields as the update payload
@@ -150,17 +145,11 @@ export const addressRouter = router({
         });
 
         if (!existing) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Address not found',
-          });
+          throw notFound('Address');
         }
 
         if (existing.userId !== ctx.user.id) {
-          throw new TRPCError({
-            code: 'FORBIDDEN',
-            message: 'You do not own this address',
-          });
+          throw forbidden('You do not own this address');
         }
 
         await prisma.address.delete({
@@ -191,17 +180,11 @@ export const addressRouter = router({
         });
 
         if (!existing) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Address not found',
-          });
+          throw notFound('Address');
         }
 
         if (existing.userId !== ctx.user.id) {
-          throw new TRPCError({
-            code: 'FORBIDDEN',
-            message: 'You do not own this address',
-          });
+          throw forbidden('You do not own this address');
         }
 
         // Unset all defaults for the user
