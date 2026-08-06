@@ -22,3 +22,6 @@ export { dailyBeautyTipRouter } from '../../routers/dailyBeautyTip';
 export { lookbookRouter } from '../../routers/lookbook';
 export { weatherBeautyRouter } from '../../routers/weatherBeauty';
 export { beautyPlaylistRouter } from '../../routers/beautyPlaylist';
+export { beautyRecipesRouter } from '../../routers/beautyRecipes';
+export { bookClubRouter } from '../../routers/bookClub';
+export { languageExchangeRouter } from '../../routers/languageExchange';

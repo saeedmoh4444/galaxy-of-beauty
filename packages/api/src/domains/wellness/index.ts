@@ -25,3 +25,4 @@ export { beautyHabitsRouter } from '../../routers/beautyHabits';
 export { sleepTrackerRouter } from '../../routers/sleepTracker';
 export { skillTreeRouter } from '../../routers/skillTree';
 export { careerBeautyRouter } from '../../routers/careerBeauty';
+export { savingsMilestonesRouter } from '../../routers/savingsMilestones';

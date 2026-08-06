@@ -3171,3 +3171,67 @@ model BeautyPlaylist {
   @@index([mood])
   @@map("beauty_playlists")
 }
+
+model BeautyRecipe {
+  id             Int      @id @default(autoincrement())
+  title          String
+  ingredientsJson Json
+  stepsJson      Json
+  duration       String
+  forSkin        String?
+  emoji          String   @default("🥣")
+  createdAt      DateTime @default(now())
+
+  @@map("beauty_recipes")
+}
+
+model BookClub {
+  id        Int      @id @default(autoincrement())
+  title     String
+  author    String
+  emoji     String   @default("📖")
+  members   Int      @default(0)
+  currentChapter String?
+  nextMeeting    String?
+  createdAt DateTime @default(now())
+
+  membersRel BookClubMember[]
+
+  @@map("book_clubs")
+}
+
+model BookClubMember {
+  id       Int      @id @default(autoincrement())
+  clubId   Int
+  userId   Int
+  joinedAt DateTime @default(now())
+
+  club     BookClub @relation(fields: [clubId], references: [id], onDelete: Cascade)
+
+  @@unique([clubId, userId])
+  @@map("book_club_members")
+}
+
+model BeautyTerm {
+  id    Int    @id @default(autoincrement())
+  ar    String
+  en    String
+  emoji String @default("📝")
+  createdAt DateTime @default(now())
+
+  @@map("beauty_terms")
+}
+
+model SavingsMilestone {
+  id         Int       @id @default(autoincrement())
+  userId     Int
+  name       String
+  amount     Int
+  emoji      String    @default("💰")
+  achieved   Boolean   @default(false)
+  achievedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId])
+  @@map("savings_milestones")
+}
