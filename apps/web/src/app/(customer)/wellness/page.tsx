@@ -17,6 +17,9 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function WellnessPage(): JSX.Element {
   const cycleSettings = (api as any).cycleTracker?.settings?.useQuery?.() as any;
+  const skinAnalysis = (api as any).skinAnalysis?.latest?.useQuery?.() as any;
+  const wellnessCheck = (api as any).wellnessTracker?.latest?.useQuery?.() as any;
+  const sleepLogs = (api as any).sleepTracker?.stats?.useQuery?.() as any;
 
   return (
     <DashboardLayout role="CUSTOMER">
@@ -43,7 +46,7 @@ export default function WellnessPage(): JSX.Element {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <SkinAnalysisCard concerns={['dryness', 'dark_spots']} />
+              <SkinAnalysisCard concerns={(skinAnalysis?.data?.concerns as string[]) ?? ['dryness', 'dark_spots']} />
               <CycleResourceCard phase="follicular" />
             </div>
 
