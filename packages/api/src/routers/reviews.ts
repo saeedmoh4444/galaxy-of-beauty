@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import { notFound, forbidden } from '../lib/errors';
 import {
   router,
   publicProcedure,
@@ -28,7 +29,7 @@ export const reviewRouter = router({
       });
 
       if (!booking) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+        throw notFound('Booking');
       }
 
       if (booking.customerId !== ctx.user.id) {
@@ -144,7 +145,7 @@ export const reviewRouter = router({
       });
 
       if (!review) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Review not found' });
+        throw notFound('Review');
       }
 
       // Verify caller is a participant on the booking
@@ -158,7 +159,7 @@ export const reviewRouter = router({
         booking.customerId !== ctx.user.id &&
         booking.technicianId !== ctx.user.id
       ) {
-        throw new TRPCError({ code: 'FORBIDDEN', message: 'Access denied' });
+        throw forbidden('Access denied');
       }
 
       return { ...review };
@@ -182,7 +183,7 @@ export const reviewRouter = router({
       });
 
       if (!existing) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Review not found' });
+        throw notFound('Review');
       }
 
       if (existing.customerId !== ctx.user.id) {
@@ -244,7 +245,7 @@ export const reviewRouter = router({
       });
 
       if (!review) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Review not found' });
+        throw notFound('Review');
       }
 
       const updated = await prisma.review.update({
