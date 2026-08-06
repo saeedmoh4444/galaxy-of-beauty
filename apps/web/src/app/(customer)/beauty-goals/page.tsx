@@ -1,6 +1,10 @@
 'use client';
 import { useState } from 'react';
-import { Card } from '@galaxy/ui';
+import {
+  Card, PageContainer, PageTitle, BeautyGoalTracker, BeautyHabitTrackerCard,
+  BeautyVisionBoardCard, BeautySkillTreeCard, BeautyChallengeCard,
+  BeautyLearningPathCard, BeautyCertificationPathCard, HydrationTracker,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const GOAL_TEMPLATES = [
@@ -28,8 +32,8 @@ export default function BeautyGoalsPage(): JSX.Element {
 
   return (
     <DashboardLayout role="CUSTOMER">
-      <div className="mx-auto max-w-5xl space-y-6">
-        <div><h1 className="text-2xl font-bold">🎯 أهداف الجمال</h1><p className="mt-1 text-sm text-text-secondary">حددي أهدافكِ وتابعي تقدمكِ</p></div>
+      <PageContainer width="wide">
+        <PageTitle title="🎯 أهداف الجمال" subtitle="حددي أهدافكِ وتابعي تقدمكِ" />
 
         <Card padding="lg" className="text-center"><div className="h-4 bg-surface-muted rounded-full"><div className="h-4 bg-green-500 rounded-full transition-all" style={{width:`${pct}%`}}/></div><p className="text-sm text-text-secondary mt-2">{checked}/{allGoals.length} هدف — {pct}%</p></Card>
 
@@ -50,7 +54,22 @@ export default function BeautyGoalsPage(): JSX.Element {
             );
           })}
         </div>
-      </div>
+
+        {/* Additional wired components */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <BeautyVisionBoardCard goals={[{ emoji: '👰', text: 'إطلالة زفاف مثالية', year: '2027', achieved: false }, { emoji: '💇', text: 'شعر طويل صحي', year: '2026', achieved: true }]} />
+          <BeautySkillTreeCard skills={[{ name: 'مكياج أساسي', emoji: '💄', level: 3, max: 5 }, { name: 'عناية بالبشرة', emoji: '🧴', level: 2, max: 5 }, { name: 'تسريحات', emoji: '💇', level: 1, max: 5 }]} />
+        </div>
+        <div className="grid gap-6 lg:grid-cols-3">
+          <BeautyHabitTrackerCard habits={[{ name: 'واقي شمس', emoji: '☀️', done: true }, { name: '8 أكواب ماء', emoji: '💧', done: false }, { name: 'روتين مسائي', emoji: '🌙', done: true }]} />
+          <HydrationTracker goal={8} current={5} />
+          <BeautyChallengeCard completedDays={7} totalDays={30} />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <BeautyLearningPathCard path={{ title: 'مكياج احترافي', modules: 8, completed: 3, emoji: '💄', duration: '6 أشهر' }} />
+          <BeautyCertificationPathCard path="makeup" />
+        </div>
+      </PageContainer>
     </DashboardLayout>
   );
 }
