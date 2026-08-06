@@ -7,6 +7,11 @@ import {
   SkinAnalysisCard, HydrationTracker, BeautySleepCard, WellnessCheckCard,
   FitnessBeautyCard, CycleResourceCard, BeautyMoodTrackerCard, AllergyTestCard,
   BreastHealthCard, AllergySafeBadge,
+  BeautySmileCard, BeautyGlowCard, BeautyConfidenceCard,
+  BeautySleepHygieneCard, BeautyNutritionCard, BeautyExerciseCard,
+  BeautyStretchCard, BeautyBreathingCard, BeautyMeditationCard,
+  BeautyRelaxationCard, BeautyWellnessCornerCard, BeautyWaterIntakeCard,
+  BeautyPostureCard, BeautySuncareReminderCard, BeautyDailyCheckInCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -54,7 +59,36 @@ export default function WellnessPage(): JSX.Element {
             <AllergyTestCard lastTest="2026-07" />
             <AllergySafeBadge allergies={['fragrance', 'paraben']} />
             <BreastHealthCard lastExam="2026-07" />
+            <BeautyWaterIntakeCard goal={8} />
+            <BeautySuncareReminderCard spf={50} />
+            <BeautyDailyCheckInCard />
           </div>
+        </div>
+
+        {/* Wellness Lifestyle Row */}
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="space-y-6">
+            <BeautySmileCard />
+            <BeautyGlowCard />
+            <BeautyConfidenceCard />
+          </div>
+          <div className="space-y-6">
+            <BeautySleepHygieneCard />
+            <BeautyNutritionCard />
+            <BeautyExerciseCard />
+          </div>
+          <div className="space-y-6">
+            <BeautyStretchCard />
+            <BeautyBreathingCard />
+            <BeautyPostureCard />
+          </div>
+        </div>
+
+        {/* Mindfulness Row */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <BeautyMeditationCard />
+          <BeautyRelaxationCard />
+          <BeautyWellnessCornerCard />
         </div>
       </PageContainer>
     </DashboardLayout>
