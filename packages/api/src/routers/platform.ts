@@ -41,7 +41,7 @@ export const platformRouter = router({
       };
     }),
 
-  toggleMaintenance: adminProcedure.mutation(async () => {
+  toggleMaintenance: adminProcedure.input(z.object({})).mutation(async () => {
     const config = await prisma.platformConfig.findUnique({
       where: { key: 'MAINTENANCE_MODE' },
     });
