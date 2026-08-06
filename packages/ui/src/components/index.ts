@@ -265,3 +265,7 @@ export { BeautyBodyCareCard } from './BeautyBodyCareCard';
 export { BeautyEyebrowCard } from './BeautyEyebrowCard';
 export { BeautyLashCard } from './BeautyLashCard';
 export { BeautyFootCareCard } from './BeautyFootCareCard';
+export { BeautyPerfumeCard } from './BeautyPerfumeCard';
+export { BeautyJewelryCard } from './BeautyJewelryCard';
+export { BeautyBagCard } from './BeautyBagCard';
+export { BeautyScarfCard } from './BeautyScarfCard';
