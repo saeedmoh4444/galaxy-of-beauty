@@ -264,3 +264,4 @@ export { BeautyMakeupTipsCard } from './BeautyMakeupTipsCard';
 export { BeautyBodyCareCard } from './BeautyBodyCareCard';
 export { BeautyEyebrowCard } from './BeautyEyebrowCard';
 export { BeautyLashCard } from './BeautyLashCard';
+export { BeautyFootCareCard } from './BeautyFootCareCard';
