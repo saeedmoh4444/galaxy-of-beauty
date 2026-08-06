@@ -191,3 +191,4 @@ export { LoyaltyAnniversaryCard } from './LoyaltyAnniversaryCard';
 export { PressKitCard } from './PressKitCard';
 export { AllergyTestCard } from './AllergyTestCard';
 export { BeautySubscriptionCard } from './BeautySubscriptionCard';
+export { BeautyMentorRequestCard } from './BeautyMentorRequestCard';
