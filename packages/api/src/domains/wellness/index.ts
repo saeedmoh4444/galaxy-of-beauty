@@ -21,3 +21,4 @@ export { restockReminderRouter } from '../../routers/restockReminder';
 export { allergenCheckerRouter } from '../../routers/allergenChecker';
 export { savingsGoalRouter } from '../../routers/savingsGoals';
 export { nightModeRouter } from '../../routers/nightMode';
+export { beautyHabitsRouter } from '../../routers/beautyHabits';

@@ -2990,3 +2990,31 @@ model DailyBeautyTip {
 
   @@map("daily_beauty_tips")
 }
+
+model SeasonalLook {
+  id          Int      @id @default(autoincrement())
+  season      String
+  name        String
+  description String
+  emoji       String   @default("✨")
+  isPublished Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([season])
+  @@map("seasonal_looks")
+}
+
+model BeautyHabit {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  emoji     String   @default("✅")
+  doneToday Boolean  @default(false)
+  streak    Int      @default(0)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("beauty_habits")
+}

@@ -19,3 +19,4 @@ export { beautyHeritageRouter } from '../../routers/beautyHeritage';
 export { beautyMythsRouter } from '../../routers/beautyMyths';
 export { beautyQuizRouter } from '../../routers/beautyQuiz';
 export { dailyBeautyTipRouter } from '../../routers/dailyBeautyTip';
+export { lookbookRouter } from '../../routers/lookbook';
