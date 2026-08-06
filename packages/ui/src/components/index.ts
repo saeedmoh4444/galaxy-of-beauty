@@ -240,3 +240,4 @@ export { BeautyGratefulCircleCard } from './BeautyGratefulCircleCard';
 export { BeautyCouponCard } from './BeautyCouponCard';
 export { BeautyAlumniCard } from './BeautyAlumniCard';
 export { BeautyTechnicianQuoteCard } from './BeautyTechnicianQuoteCard';
+export { BeautySavingsChallengeCard } from './BeautySavingsChallengeCard';
