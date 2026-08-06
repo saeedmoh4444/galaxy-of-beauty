@@ -4,7 +4,7 @@ import { customerProcedure, router } from '../trpc';
 
 export const moodBoardRouter = router({
   list: customerProcedure.query(async ({ ctx }) =>
-    prisma.moodBoard.findMany({ where: { userId: ctx.user.id }, include: { pins: true }, orderBy: { createdAt: 'desc' } })),
+    prisma.moodBoard.findMany({ where: { userId: ctx.user.id }, include: { pins: true }, orderBy: { createdAt: 'desc' }, take: 20 })),
 
   create: customerProcedure
     .input(z.object({ name: z.string().min(1).max(100), description: z.string().optional() }))

@@ -437,6 +437,7 @@ export const adminRouter = router({
     // Negative wallet balances
     const negativeWallets = await prisma.wallet.findMany({
       where: { balance: { lt: 0 } },
+      take: 100,
       include: {
         user: { select: { id: true, name: true, email: true } },
       },
