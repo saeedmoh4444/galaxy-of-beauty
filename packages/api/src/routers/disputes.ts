@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import { notFound, forbidden } from '../lib/errors';
 import {
   router,
   protectedProcedure,
@@ -26,7 +27,7 @@ export const disputeRouter = router({
       });
 
       if (!booking) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+        throw notFound('Booking');
       }
 
       if (booking.customerId !== ctx.user.id && booking.technicianId !== ctx.user.id) {
@@ -67,7 +68,7 @@ export const disputeRouter = router({
       });
 
       if (!existing) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Dispute not found' });
+        throw notFound('Dispute');
       }
 
       if (existing.status === 'CLOSED') {
@@ -210,7 +211,7 @@ export const disputeRouter = router({
       });
 
       if (!dispute) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Dispute not found' });
+        throw notFound('Dispute');
       }
 
       // Only participants or admins can view
