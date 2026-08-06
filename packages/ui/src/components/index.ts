@@ -230,3 +230,4 @@ export { BeautyMoodTrackerCard } from './BeautyMoodTrackerCard';
 export { BeautyHabitTrackerCard } from './BeautyHabitTrackerCard';
 export { BeautyLearningPathCard } from './BeautyLearningPathCard';
 export { BeautyPriceDropHistoryCard } from './BeautyPriceDropHistoryCard';
+export { BeautyReferralLeaderboardCard } from './BeautyReferralLeaderboardCard';
