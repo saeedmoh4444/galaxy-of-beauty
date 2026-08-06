@@ -205,3 +205,4 @@ export { BeautyAffirmationCard } from './BeautyAffirmationCard';
 export { GrandmotherPackageCard } from './GrandmotherPackageCard';
 export { ColorBlindBadge } from './ColorBlindBadge';
 export { BeautyLanguageExchangeCard } from './BeautyLanguageExchangeCard';
+export { BeautyNightOutCard } from './BeautyNightOutCard';
