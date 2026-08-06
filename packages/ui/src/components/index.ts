@@ -234,3 +234,4 @@ export { BeautyReferralLeaderboardCard } from './BeautyReferralLeaderboardCard';
 export { BeautySeasonalLookbookCard } from './BeautySeasonalLookbookCard';
 export { BeautyQuickTipCard } from './BeautyQuickTipCard';
 export { BeautyAwardBadgeCard } from './BeautyAwardBadgeCard';
+export { BeautyIngredientHighlightCard } from './BeautyIngredientHighlightCard';
