@@ -319,3 +319,8 @@ export { BeautyHairCurlCard } from './BeautyHairCurlCard';
 export { BeautyHairStraightCard } from './BeautyHairStraightCard';
 export { BeautyHairWavyCard } from './BeautyHairWavyCard';
 export { BeautyHairCoilyCard } from './BeautyHairCoilyCard';
+export { BeautyHairDandruffCard } from './BeautyHairDandruffCard';
+export { BeautyHairLossCard } from './BeautyHairLossCard';
+export { BeautyHairGrowthCard } from './BeautyHairGrowthCard';
+export { BeautyHairTrimCard } from './BeautyHairTrimCard';
+export { BeautyHairScalpCard } from './BeautyHairScalpCard';
