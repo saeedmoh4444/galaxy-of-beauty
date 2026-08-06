@@ -220,3 +220,4 @@ export { BeautyTimeCapsuleCard } from './BeautyTimeCapsuleCard';
 export { BeautySkillTreeCard } from './BeautySkillTreeCard';
 export { BeautyDreamBoardCard } from './BeautyDreamBoardCard';
 export { BreastHealthCard } from './BreastHealthCard';
+export { AlumniNetworkCard } from './AlumniNetworkCard';
