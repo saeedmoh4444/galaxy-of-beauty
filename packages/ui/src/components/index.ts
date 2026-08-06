@@ -224,3 +224,4 @@ export { AlumniNetworkCard } from './AlumniNetworkCard';
 export { CognitiveAccessibilityBadge } from './CognitiveAccessibilityBadge';
 export { BeautyVisionBoardCard } from './BeautyVisionBoardCard';
 export { BeautySavingsMilestoneCard } from './BeautySavingsMilestoneCard';
+export { CycleResourceCard } from './CycleResourceCard';
