@@ -3308,3 +3308,36 @@ model CertificationEnrollment {
   @@unique([userId, pathId])
   @@map("certification_enrollments")
 }
+
+model SocialImpact {
+  id        Int      @id @default(autoincrement())
+  category  String
+  count     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@map("social_impact")
+}
+
+model DvSupportRequest {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  serviceType     String
+  partnerShelter  String?
+  message         String?
+  confidential    Boolean  @default(true)
+  createdAt       DateTime @default(now())
+
+  @@map("dv_support_requests")
+}
+
+model SubscriptionGift {
+  id         Int      @id @default(autoincrement())
+  senderId   Int
+  friendName String
+  months     Int
+  price      Int
+  message    String?
+  createdAt  DateTime @default(now())
+
+  @@map("subscription_gifts")
+}
