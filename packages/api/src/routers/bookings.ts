@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import crypto from 'crypto';
+import { notFound, forbidden, badRequest } from '../lib/errors';
 import {
   protectedProcedure,
   customerProcedure,
@@ -113,13 +114,10 @@ export const bookingRouter = router({
         where: { id: input.slotId },
       });
       if (!slot) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Slot not found' });
+        throw notFound('Slot');
       }
       if (slot.technicianId !== technician.id) {
-        throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'Slot does not belong to the specified technician',
-        });
+        throw forbidden('Slot does not belong to the specified technician');
       }
       if (slot.isBooked) {
         throw new TRPCError({
@@ -346,7 +344,7 @@ export const bookingRouter = router({
       });
 
       if (!booking) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+        throw notFound('Booking');
       }
 
       const userId = ctx.user.id;
@@ -396,7 +394,7 @@ export const bookingRouter = router({
       });
 
       if (!booking) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+        throw notFound('Booking');
       }
 
       // Determine new status (input.action is validated by zod enum, so this is safe)
@@ -554,7 +552,7 @@ export const bookingRouter = router({
       });
 
       if (!booking) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+        throw notFound('Booking');
       }
 
       if (booking.customerId !== userId) {
@@ -652,7 +650,7 @@ export const bookingRouter = router({
       });
 
       if (!booking) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+        throw notFound('Booking');
       }
 
       const userId = ctx.user.id;
@@ -661,7 +659,7 @@ export const bookingRouter = router({
         booking.technicianId !== userId &&
         ctx.user.role !== 'ADMIN'
       ) {
-        throw new TRPCError({ code: 'FORBIDDEN', message: 'You do not have access to this booking' });
+        throw forbidden('You do not have access to this booking');
       }
 
       const events: Array<Record<string, unknown>> = [];
