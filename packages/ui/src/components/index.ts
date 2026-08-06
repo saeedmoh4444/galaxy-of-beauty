@@ -184,3 +184,4 @@ export { SkinJournalCard } from './SkinJournalCard';
 export { BeautyComparisonCard } from './BeautyComparisonCard';
 export { MediaFeatureCard } from './MediaFeatureCard';
 export { BeautyVoiceAssistantCard } from './BeautyVoiceAssistantCard';
+export { WheelchairAccessibleBadge } from './WheelchairAccessibleBadge';
