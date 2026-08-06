@@ -28,7 +28,7 @@ export const penPalRouter = router({
   match: customerProcedure.query(async ({ ctx }) => {
     const me = await prisma.penPalProfile.findUnique({ where: { userId: ctx.user.id } });
     if (!me) return [];
-    const all = await prisma.penPalProfile.findMany({ where: { userId: { not: ctx.user.id } } });
+    const all = await prisma.penPalProfile.findMany({ where: { userId: { not: ctx.user.id } }, take: 50 });
     return all
       .map((p) => ({ ...p, score: p.interests.filter((i: string) => me.interests.includes(i)).length, userName: `مستخدمة #${p.userId}` }))
       .sort((a, b) => b.score - a.score)

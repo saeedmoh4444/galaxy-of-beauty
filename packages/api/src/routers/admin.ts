@@ -451,6 +451,7 @@ export const adminRouter = router({
     // Users who are CUSTOMER but have a Technician profile (role mismatch)
     const customerTechnicians = await prisma.technician.findMany({
       where: { user: { role: 'CUSTOMER' } },
+      take: 100,
       include: {
         user: { select: { id: true, name: true, email: true } },
       },

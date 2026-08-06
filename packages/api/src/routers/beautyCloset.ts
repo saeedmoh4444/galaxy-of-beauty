@@ -4,7 +4,7 @@ import { customerProcedure, router } from '../trpc';
 
 export const beautyClosetRouter = router({
   myProducts: customerProcedure.query(async ({ ctx }) => {
-    return prisma.beautyClosetProduct.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } });
+    return prisma.beautyClosetProduct.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: 50 });
   }),
   addProduct: customerProcedure
     .input(z.object({ name: z.string(), emoji: z.string().optional(), category: z.string().default('skincare'), openDate: z.string().optional(), expiryMonths: z.number().optional(), notes: z.string().optional() }))

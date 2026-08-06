@@ -7,7 +7,7 @@ const db = prisma as any;
 
 export const savingsGoalRouter = router({
   list: customerProcedure.query(async ({ ctx }) => {
-    const goals = await db.savingsGoal.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } });
+    const goals = await db.savingsGoal.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: 20 });
     return goals.map((g: any) => ({ ...g, targetAmount: Number(g.targetAmount), savedAmount: Number(g.savedAmount) }));
   }),
   create: customerProcedure
