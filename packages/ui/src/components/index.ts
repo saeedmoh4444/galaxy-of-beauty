@@ -209,3 +209,4 @@ export { BeautyNightOutCard } from './BeautyNightOutCard';
 export { ExportProgramCard } from './ExportProgramCard';
 export { SubscriptionGiftCard } from './SubscriptionGiftCard';
 export { BeautyPlaylistCard } from './BeautyPlaylistCard';
+export { InvestorPitchCard } from './InvestorPitchCard';
