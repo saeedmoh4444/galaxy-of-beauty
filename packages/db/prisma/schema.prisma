@@ -3509,3 +3509,26 @@ model BeautyTrend {
 
   @@map("beauty_trends")
 }
+
+model BeautyIntegration {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  provider    String
+  accessToken String?
+  status      String   @default("CONNECTED")
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, provider])
+  @@map("beauty_integrations")
+}
+
+model CustomerMilestone {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  type        String
+  description String?
+  achievedAt  DateTime @default(now())
+
+  @@index([userId])
+  @@map("customer_milestones")
+}

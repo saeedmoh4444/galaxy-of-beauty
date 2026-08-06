@@ -35,3 +35,7 @@ export { classPassRouter } from '../../routers/classPass';
 export { technicianSpotlightRouter } from '../../routers/technicianSpotlight';
 export { beautyPartnerRouter } from '../../routers/beautyPartner';
 export { technicianRatingsRouter } from '../../routers/technicianRatings';
+export { beautyIntegrationsRouter } from '../../routers/beautyIntegrations';
+export { customerJourneyRouter } from '../../routers/customerJourney';
+export { beautyGamificationRouter } from '../../routers/beautyGamification';
+export { technicianEarningsRouter } from '../../routers/technicianEarnings';

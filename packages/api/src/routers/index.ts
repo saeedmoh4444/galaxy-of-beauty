@@ -42,7 +42,15 @@ import {
   reviewRouter, disputeRouter, communityRouter, socialRouter,
   socialChallengesRouter, challengesRouter, inspirationRouter,
   technicianFollowRouter, technicianQARouter, beautyPartyRouter,
-  penPalRouter, moodBoardRouter, beautyCirclesRouter, kindnessPointsRouter, sisterhoodComplimentsRouter, beautyBankRouter, sheLeadsRouter, communityEventsRouter, accountabilityRouter, visionBoardRouter, gratitudeRouter, conciergeRouter, timeCapsuleRouter, secretSantaRouter, affirmationsRouter, socialImpactRouter, dvSupportRouter, subscriptionGiftRouter, customerFeedbackRouter, beautySurveysRouter, beautyScrapbookRouter, classPassRouter, technicianSpotlightRouter, beautyPartnerRouter, technicianRatingsRouter,
+  penPalRouter, moodBoardRouter, beautyCirclesRouter, kindnessPointsRouter,
+  sisterhoodComplimentsRouter, beautyBankRouter, sheLeadsRouter,
+  communityEventsRouter, accountabilityRouter, visionBoardRouter,
+  gratitudeRouter, conciergeRouter, timeCapsuleRouter, secretSantaRouter,
+  affirmationsRouter, socialImpactRouter, dvSupportRouter, subscriptionGiftRouter,
+  customerFeedbackRouter, beautySurveysRouter, beautyScrapbookRouter,
+  classPassRouter, technicianSpotlightRouter, beautyPartnerRouter,
+  technicianRatingsRouter, beautyIntegrationsRouter, customerJourneyRouter,
+  beautyGamificationRouter, technicianEarningsRouter,
 } from '../domains/social';
 
 // Safety
@@ -263,6 +271,10 @@ export const appRouter = router({
   technicianSpotlight: technicianSpotlightRouter,
   beautyPartner: beautyPartnerRouter,
   technicianRatings: technicianRatingsRouter,
+  beautyIntegrations: beautyIntegrationsRouter,
+  customerJourney: customerJourneyRouter,
+  beautyGamification: beautyGamificationRouter,
+  technicianEarnings: technicianEarningsRouter,
   sensoryFriendly: sensoryFriendlyRouter,
   ruralOutreach: ruralOutreachRouter,
   exportProgram: exportProgramRouter,
