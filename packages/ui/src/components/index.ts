@@ -249,3 +249,4 @@ export { BeautyQuietSpaceCard } from './BeautyQuietSpaceCard';
 export { BeautyTrendAlertCard } from './BeautyTrendAlertCard';
 export { BeautyStyleMatchCard } from './BeautyStyleMatchCard';
 export { BeautySeasonalReminderCard } from './BeautySeasonalReminderCard';
+export { BeautyIngredientSpotlightCard } from './BeautyIngredientSpotlightCard';
