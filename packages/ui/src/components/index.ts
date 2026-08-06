@@ -180,3 +180,4 @@ export { BeautyConciergeCard } from './BeautyConciergeCard';
 export { CharityPartnerBadge } from './CharityPartnerBadge';
 export { SharedWishlistCard } from './SharedWishlistCard';
 export { DadApprovalBadge } from './DadApprovalBadge';
+export { SkinJournalCard } from './SkinJournalCard';
