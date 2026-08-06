@@ -103,14 +103,19 @@ export const calendarRouter = router({
     if (syncedBookings.length > 0) {
       const accessToken = await getValidAccessToken(ctx.user.id).catch(() => null);
       if (accessToken) {
+        const cleanedIds: number[] = [];
         for (const b of syncedBookings) {
           if (b.googleEventId && (await deleteGoogleCalendarEvent(accessToken, b.googleEventId))) {
-            await prisma.booking.update({
-              where: { id: b.id },
-              data: { googleEventId: null },
-            });
+            cleanedIds.push(b.id);
             cleaned++;
           }
+        }
+        // Batch clear event IDs
+        if (cleanedIds.length > 0) {
+          await prisma.booking.updateMany({
+            where: { id: { in: cleanedIds } },
+            data: { googleEventId: null },
+          });
         }
       }
     }
@@ -140,6 +145,8 @@ export const calendarRouter = router({
     });
 
     let synced = 0;
+    const updates: Array<{ id: number; eventId: string }> = [];
+
     for (const booking of bookings) {
       if (booking.startAt && booking.endAt) {
         const serviceName = ((booking.service.titleJson as Record<string, string>)['ar']) || 'Booking';
@@ -152,13 +159,22 @@ export const calendarRouter = router({
         });
 
         if (eventId) {
-          await prisma.booking.update({
-            where: { id: booking.id },
-            data: { googleEventId: eventId },
-          });
+          updates.push({ id: booking.id, eventId });
           synced++;
         }
       }
+    }
+
+    // Batch update all synced bookings
+    if (updates.length > 0) {
+      await prisma.$transaction(
+        updates.map((u) =>
+          prisma.booking.update({
+            where: { id: u.id },
+            data: { googleEventId: u.eventId },
+          }),
+        ),
+      );
     }
 
     return { synced, message: `${synced} booking(s) synced to Google Calendar` };

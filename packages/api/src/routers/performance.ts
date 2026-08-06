@@ -45,27 +45,27 @@ export const performanceRouter = router({
   }),
 
   leaderboard: adminProcedure
-    .input(z.object({ limit: z.number().default(10), sortBy: z.enum(['bookings', 'earnings', 'rating']).default('bookings') }))
+    .input(z.object({ limit: z.number().int().min(1).max(50).default(10), sortBy: z.enum(['bookings', 'earnings', 'rating']).default('bookings') }))
     .query(async ({ input }) => {
+      // Use include with _count to avoid N+1 — single query with joins
       const techs = await prisma.technician.findMany({
         where: { kycStatus: 'VERIFIED', user: { isActive: true } },
-        include: { user: { select: { name: true, avatarUrl: true } } },
-        take: input.limit,
+        include: {
+          user: { select: { name: true, avatarUrl: true } },
+          _count: { select: { bookings: true, reviews: true } },
+          reviews: { select: { rating: true } },
+        },
+        take: 50, // fetch more than needed for in-memory sort
       });
 
-      const rows: Array<{ name: string; bookings: number; reviews: number; rating: number }> = [];
-      for (const t of techs) {
-        const [bkCount, revAgg] = await Promise.all([
-          prisma.booking.count({ where: { technicianId: t.userId } }),
-          prisma.review.aggregate({ where: { booking: { technicianId: t.userId } }, _avg: { rating: true } }),
-        ]);
-        rows.push({
-          name: t.user.name,
-          bookings: bkCount,
-          reviews: await prisma.review.count({ where: { booking: { technicianId: t.userId } } }),
-          rating: Math.round((Number(revAgg._avg?.rating || 0)) * 10) / 10,
-        });
-      }
+      const rows = techs.map((t) => ({
+        name: t.user.name,
+        bookings: t._count.bookings,
+        reviews: t._count.reviews,
+        rating: t.reviews.length > 0
+          ? Math.round((t.reviews.reduce((sum, r) => sum + r.rating, 0) / t.reviews.length) * 10) / 10
+          : 0,
+      }));
 
       if (input.sortBy === 'bookings') rows.sort((a, b) => b.bookings - a.bookings);
       else if (input.sortBy === 'rating') rows.sort((a, b) => b.rating - a.rating);
