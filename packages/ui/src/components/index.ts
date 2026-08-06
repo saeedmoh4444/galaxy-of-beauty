@@ -166,3 +166,4 @@ export { GreenSalonBadge } from './GreenSalonBadge';
 export { DailyBeautyTipCard } from './DailyBeautyTipCard';
 export { ServiceAnimalBadge } from './ServiceAnimalBadge';
 export { MicroLoanBadge } from './MicroLoanBadge';
+export { SkincareRoutineBuilder } from './SkincareRoutineBuilder';
