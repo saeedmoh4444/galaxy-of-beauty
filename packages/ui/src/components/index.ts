@@ -247,3 +247,4 @@ export { BeautyVirtualConsultationCard } from './BeautyVirtualConsultationCard';
 export { BeautyMicroChallengeCard } from './BeautyMicroChallengeCard';
 export { BeautyQuietSpaceCard } from './BeautyQuietSpaceCard';
 export { BeautyTrendAlertCard } from './BeautyTrendAlertCard';
+export { BeautyStyleMatchCard } from './BeautyStyleMatchCard';
