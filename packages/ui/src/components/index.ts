@@ -254,3 +254,4 @@ export { BeautyProgressPhotoCard } from './BeautyProgressPhotoCard';
 export { BeautyDailyCheckInCard } from './BeautyDailyCheckInCard';
 export { BeautyRoutineSwapCard } from './BeautyRoutineSwapCard';
 export { BeautyMoodBoardCard } from './BeautyMoodBoardCard';
+export { BeautyPrivacyShieldCard } from './BeautyPrivacyShieldCard';
