@@ -78,7 +78,7 @@ import {
   liveStreamRouter, beautyCoursesRouter, beautyStoriesRouter,
   beautyShortsRouter, beautyPodcastRouter, beautyAwardsRouter,
   beautyExpoRouter, beautyFaqRouter, videoTestimonialsRouter,
-  beforeAfterRouter, behindScenesRouter, beautyHeritageRouter, beautyMythsRouter, beautyQuizRouter, dailyBeautyTipRouter, lookbookRouter,
+  beforeAfterRouter, behindScenesRouter, beautyHeritageRouter, beautyMythsRouter, beautyQuizRouter, dailyBeautyTipRouter, lookbookRouter, weatherBeautyRouter, beautyPlaylistRouter,
 } from '../domains/content';
 
 // Market
@@ -97,7 +97,7 @@ import {
   beautyProfileRouter, beautyRemindersRouter, beautyClosetRouter,
   skinDiaryRouter, cycleTrackerRouter, spaPlannerRouter,
   routineSchedulerRouter, expiryTrackerRouter, restockReminderRouter,
-  allergenCheckerRouter, savingsGoalRouter, nightModeRouter, beautyHabitsRouter, sleepTrackerRouter,
+  allergenCheckerRouter, savingsGoalRouter, nightModeRouter, beautyHabitsRouter, sleepTrackerRouter, skillTreeRouter, careerBeautyRouter,
 } from '../domains/wellness';
 
 // Operations
@@ -316,6 +316,8 @@ export const appRouter = router({
   beautyQuiz: beautyQuizRouter,
   dailyBeautyTip: dailyBeautyTipRouter,
   lookbook: lookbookRouter,
+  weatherBeauty: weatherBeautyRouter,
+  beautyPlaylist: beautyPlaylistRouter,
 
   // Market
   marketplace: marketplaceRouter,
@@ -356,6 +358,8 @@ export const appRouter = router({
   nightMode: nightModeRouter,
   beautyHabits: beautyHabitsRouter,
   sleepTracker: sleepTrackerRouter,
+  skillTree: skillTreeRouter,
+  careerBeauty: careerBeautyRouter,
 
   // Operations
   addresses: addressRouter,

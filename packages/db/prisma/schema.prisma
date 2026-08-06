@@ -3147,3 +3147,27 @@ model AffirmationFavorite {
   @@unique([userId, affirmationId])
   @@map("affirmation_favorites")
 }
+
+model BeautySkill {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  emoji     String   @default("⭐")
+  level     Int      @default(0)
+  maxLevel  Int      @default(5)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("beauty_skills")
+}
+
+model BeautyPlaylist {
+  id         Int      @id @default(autoincrement())
+  title      String
+  mood       String
+  tracksJson Json
+  createdAt  DateTime @default(now())
+
+  @@index([mood])
+  @@map("beauty_playlists")
+}
