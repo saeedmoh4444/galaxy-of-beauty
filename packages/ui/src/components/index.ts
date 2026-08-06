@@ -241,3 +241,4 @@ export { BeautyCouponCard } from './BeautyCouponCard';
 export { BeautyAlumniCard } from './BeautyAlumniCard';
 export { BeautyTechnicianQuoteCard } from './BeautyTechnicianQuoteCard';
 export { BeautySavingsChallengeCard } from './BeautySavingsChallengeCard';
+export { BeautySkinQuizCard } from './BeautySkinQuizCard';
