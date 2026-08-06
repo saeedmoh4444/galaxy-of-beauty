@@ -177,3 +177,4 @@ export { BeautyInfographicCard } from './BeautyInfographicCard';
 export { HijabiBeautyCard } from './HijabiBeautyCard';
 export { BeautyFlashCard } from './BeautyFlashCard';
 export { BeautyConciergeCard } from './BeautyConciergeCard';
+export { CharityPartnerBadge } from './CharityPartnerBadge';
