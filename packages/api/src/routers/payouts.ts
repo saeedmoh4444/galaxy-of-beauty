@@ -91,17 +91,17 @@ export const payoutRouter = router({
 
         const earnings = Array.from(earningsMap.values());
 
-        // Persist — create Payout records for each technician
-        for (const entry of earnings) {
-          await prisma.payout.create({
-            data: {
+        // Persist — batch create Payout records
+        if (earnings.length > 0) {
+          await prisma.payout.createMany({
+            data: earnings.map((entry) => ({
               technicianId: entry.technicianId,
               periodStart,
               periodEnd,
               amount: entry.netEarnings,
               fee: 0, // Calculated at withdrawal time; platform fees already deducted
-              status: 'PENDING',
-            },
+              status: 'PENDING' as const,
+            })),
           });
         }
 

@@ -129,10 +129,13 @@ export const monitoringRouter = router({
       ]);
 
       const errorTypes = ['ERROR_VALIDATION', 'ERROR_AUTH', 'ERROR_PAYMENT', 'ERROR_TIMEOUT'];
-      for (const et of errorTypes) {
-        const count = await prisma.auditLog.count({
-          where: { action: et, createdAt: { gte: weekAgo } },
-        });
+      const errorCounts = await Promise.all(
+        errorTypes.map((et) =>
+          prisma.auditLog.count({ where: { action: et, createdAt: { gte: weekAgo } } }),
+        ),
+      );
+      errorTypes.forEach((et, i) => {
+        const count = errorCounts[i]!;
         if (count > 0) {
           errorByType.push({
             type: et.replace('ERROR_', ''),
@@ -140,7 +143,7 @@ export const monitoringRouter = router({
             pct: errorLastWeek > 0 ? Math.round((count / errorLastWeek) * 100) : 0,
           });
         }
-      }
+      });
     } catch { /* keep empty error list */ }
 
     // ── Business activity (real from DB) ──
@@ -161,16 +164,18 @@ export const monitoringRouter = router({
       ]);
     } catch { /* keep zeros */ }
 
-    // ── Activity chart (last 7 days of bookings) ──
+    // ── Activity chart (last 7 days of bookings) — single query, in-memory grouping
     const chart: number[] = [];
     try {
+      const sevenDaysAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6);
+      const recentBookings = await prisma.booking.findMany({
+        where: { createdAt: { gte: sevenDaysAgo } },
+        select: { createdAt: true },
+      });
       for (let d = 6; d >= 0; d--) {
         const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - d);
         const dayEnd = new Date(dayStart.getTime() + 86400000);
-        const count = await prisma.booking.count({
-          where: { createdAt: { gte: dayStart, lt: dayEnd } },
-        });
-        chart.push(count);
+        chart.push(recentBookings.filter((b) => b.createdAt >= dayStart && b.createdAt < dayEnd).length);
       }
     } catch { /* keep empty chart */ }
 
