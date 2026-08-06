@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { api } from '@/lib/trpc';
 import {
   Card, PageContainer, PageTitle, BeautyGoalTracker, BeautyHabitTrackerCard,
   BeautyVisionBoardCard, BeautySkillTreeCard, BeautyChallengeCard,
@@ -17,6 +18,8 @@ const GOAL_TEMPLATES = [
 ];
 
 export default function BeautyGoalsPage(): JSX.Element {
+  const habits = (api as any).beautyHabits?.myHabits?.useQuery?.() as any;
+  const visionGoals = (api as any).visionBoard?.myGoals?.useQuery?.({ limit: 6 }) as any;
   const [goals, setGoals] = useState<Record<string,boolean[]>>({});
   const toggle = (catKey: string, idx: number) => {
     setGoals(prev => {
@@ -57,7 +60,7 @@ export default function BeautyGoalsPage(): JSX.Element {
 
         {/* Additional wired components */}
         <div className="grid gap-6 lg:grid-cols-2">
-          <BeautyVisionBoardCard goals={[{ emoji: '👰', text: 'إطلالة زفاف مثالية', year: '2027', achieved: false }, { emoji: '💇', text: 'شعر طويل صحي', year: '2026', achieved: true }]} />
+          <BeautyVisionBoardCard goals={(visionGoals?.data as any[])?.map((g: any) => ({ emoji: g.emoji, text: g.text, year: g.year, achieved: g.achieved })) ?? [{ emoji: '👰', text: 'إطلالة زفاف', year: '2027', achieved: false }]} />
           <BeautySkillTreeCard skills={[{ name: 'مكياج أساسي', emoji: '💄', level: 3, max: 5 }, { name: 'عناية بالبشرة', emoji: '🧴', level: 2, max: 5 }, { name: 'تسريحات', emoji: '💇', level: 1, max: 5 }]} />
         </div>
         <div className="grid gap-6 lg:grid-cols-3">
