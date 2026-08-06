@@ -12,6 +12,10 @@ import {
   BeautyAcneGuideCard, BeautyHyperpigmentationCard, BeautyRosaceaCard,
   BeautySkinBarrierCard, BeautySkinCycleCard, BeautySkinFastingCard,
   BeautySelfMassageCard, BeautyRoutineTimelineCard,
+  BeautySkincareMistCard, BeautySkincareOilCard, BeautySkincareRetinolCard,
+  BeautySkincareAcidCard, BeautySkincarePeptideCard,
+  BeautySkincareAzelaicCard, BeautySkincareCeramideCard, BeautySkincareHyaluronicCard,
+  BeautySkincareNiacinamideCard, BeautySkincareVitaminCCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -53,6 +57,28 @@ export default function SkincareGuidePage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyEyeCreamCard />
               <BeautyFaceOilCard />
+            </div>
+
+            {/* Active Ingredients */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautySkincareVitaminCCard />
+              <BeautySkincareRetinolCard />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautySkincareHyaluronicCard />
+              <BeautySkincareNiacinamideCard />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautySkincareAzelaicCard />
+              <BeautySkincareCeramideCard />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautySkincarePeptideCard />
+              <BeautySkincareAcidCard />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautySkincareMistCard />
+              <BeautySkincareOilCard />
             </div>
 
             {/* Tools */}

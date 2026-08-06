@@ -1,0 +1,168 @@
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
+
+interface Tip { emoji: string; text: string; }
+
+interface IngredientCard {
+  emoji: string;
+  title: string;
+  subtitle: string;
+  color: string;
+  bg: string;
+  tips: Tip[];
+}
+
+const INGREDIENTS: IngredientCard[] = [
+  {
+    emoji: '🍊', title: 'فيتامين سي', subtitle: 'مضاد الأكسدة الأقوى',
+    color: '#ea580c', bg: '#fff7ed',
+    tips: [
+      { emoji: '☀️', text: 'صباحاً — قبل واقي الشمس' },
+      { emoji: '✨', text: 'يفتح التصبغات ويوحد اللون' },
+      { emoji: '🛡️', text: 'يعزز حماية واقي الشمس' },
+      { emoji: '🧪', text: 'L-Ascorbic Acid — أقوى صيغة' },
+    ],
+  },
+  {
+    emoji: '⏳', title: 'الريتينول', subtitle: 'المكون السحري للبشرة',
+    color: '#7c3aed', bg: '#f5f3ff',
+    tips: [
+      { emoji: '🌙', text: 'مساءً فقط — يتحسس من الشمس' },
+      { emoji: '💧', text: 'كمية حبة بازلاء — للوجه كله' },
+      { emoji: '📅', text: 'ابدئي مرة أسبوعياً — ثم زيدي تدريجياً' },
+      { emoji: '☀️', text: 'واقي شمس في الصباح — ضروري جداً' },
+    ],
+  },
+  {
+    emoji: '💧', title: 'حمض الهيالورونيك', subtitle: 'ملك الترطيب',
+    color: '#0284c7', bg: '#f0f9ff',
+    tips: [
+      { emoji: '💧', text: 'يحمل 1000 ضعف وزنه ماء' },
+      { emoji: '🧴', text: 'يطبق على بشرة رطبة — وليس جافة' },
+      { emoji: '🤝', text: 'مع فيتامين سي — ثنائي رائع' },
+      { emoji: '✨', text: 'يناسب جميع أنواع البشرة' },
+    ],
+  },
+  {
+    emoji: '💊', title: 'نياسيناميد', subtitle: 'فيتامين B3 المتعدد الفوائد',
+    color: '#0d9488', bg: '#f0fdfa',
+    tips: [
+      { emoji: '🔍', text: 'يقلص المسام — بشرة أنعم' },
+      { emoji: '✨', text: 'يوحد اللون — يقلل التصبغات' },
+      { emoji: '🛡️', text: 'يقوي حاجز البشرة' },
+      { emoji: '🤝', text: 'آمن مع معظم المكونات — صباح ومساء' },
+    ],
+  },
+  {
+    emoji: '🌿', title: 'حمض الأزيليك', subtitle: 'المكون اللطيف متعدد الفوائد',
+    color: '#e11d48', bg: '#fff1f2',
+    tips: [
+      { emoji: '🔴', text: 'يعالج حبوب الشباب والوردية' },
+      { emoji: '✨', text: 'يفتح التصبغات — آمن للحوامل' },
+      { emoji: '🌿', text: 'لطيف — مناسب للبشرة الحساسة' },
+      { emoji: '🤝', text: 'مع النياسيناميد — ثنائي مهدئ' },
+    ],
+  },
+  {
+    emoji: '🧱', title: 'السيراميد', subtitle: 'طوب بناء حاجز البشرة',
+    color: '#059669', bg: '#ecfdf5',
+    tips: [
+      { emoji: '🛡️', text: 'يعيد بناء حاجز البشرة' },
+      { emoji: '💧', text: 'يمنع فقدان الرطوبة' },
+      { emoji: '🌿', text: 'ممتاز للبشرة الحساسة والجافة' },
+      { emoji: '🤝', text: 'مع النياسيناميد — ثنائي مرمم' },
+    ],
+  },
+  {
+    emoji: '🧬', title: 'الببتيدات', subtitle: 'بروتينات صغيرة — نتائج كبيرة',
+    color: '#059669', bg: '#ecfdf5',
+    tips: [
+      { emoji: '🔬', text: 'تحفز الكولاجين — بشرة أكثر شباباً' },
+      { emoji: '☀️', text: 'يمكن استخدامها صباحاً ومساءً' },
+      { emoji: '🤝', text: 'آمنة مع معظم المكونات الأخرى' },
+      { emoji: '⏳', text: 'النتائج تحتاج 4-8 أسابيع' },
+    ],
+  },
+  {
+    emoji: '🧪', title: 'أحماض البشرة', subtitle: 'دليل AHA و BHA و PHA',
+    color: '#0d9488', bg: '#f0fdfa',
+    tips: [
+      { emoji: '🍋', text: 'AHA — يذيب السطح للتجاعيد' },
+      { emoji: '🧹', text: 'BHA — ينظف المسام للحبوب' },
+      { emoji: '🌿', text: 'PHA — لطيف للبشرة الحساسة' },
+      { emoji: '⚠️', text: 'لا تخلطي أحماض مع ريتينول معاً' },
+    ],
+  },
+  {
+    emoji: '💦', title: 'رذاذ الوجه', subtitle: 'انتعاش فوري للبشرة',
+    color: '#e11d48', bg: '#fff1f2',
+    tips: [
+      { emoji: '🌹', text: 'ماء الورد — مهدئ ومنعش طبيعي' },
+      { emoji: '💧', text: 'قبل المرطب — يمتص بشكل أفضل' },
+      { emoji: '☀️', text: 'فوق المكياج — إشراقة منتصف اليوم' },
+      { emoji: '✈️', text: 'في الطائرة — يحمي من الجفاف' },
+    ],
+  },
+  {
+    emoji: '🫒', title: 'زيوت الوجه', subtitle: 'متى وكيف تستخدمينها',
+    color: '#d97706', bg: '#fffbeb',
+    tips: [
+      { emoji: '🌙', text: 'آخر خطوة في المساء — تغلق الترطيب' },
+      { emoji: '💧', text: '2-3 قطرات فقط — بين راحة اليد' },
+      { emoji: '🫒', text: 'ثمر الورد — للتصبغات والتجاعيد' },
+      { emoji: '🥥', text: 'جوجوبا — الأقرب لزيوت البشرة' },
+    ],
+  },
+];
+
+export default function SkincareGuideScreen(): JSX.Element {
+  return (
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <Text style={styles.header}>🧴 دليل المكونات</Text>
+      <Text style={styles.subtitle}>كل ما تحتاجين معرفته عن المكونات الفعالة للعناية بالبشرة</Text>
+
+      <View style={styles.grid}>
+        {INGREDIENTS.map((ingredient, i) => (
+          <View key={i} style={[styles.card, { borderColor: ingredient.color + '30' }]}>
+            <View style={styles.cardHeader}>
+              <Text style={styles.cardEmoji}>{ingredient.emoji}</Text>
+              <View style={styles.cardTitleWrap}>
+                <Text style={[styles.cardTitle, { color: ingredient.color }]}>{ingredient.title}</Text>
+                <Text style={styles.cardSubtitle}>{ingredient.subtitle}</Text>
+              </View>
+            </View>
+            <View style={styles.tipsList}>
+              {ingredient.tips.map((tip, j) => (
+                <View key={j} style={[styles.tipRow, { backgroundColor: ingredient.bg }]}>
+                  <Text style={styles.tipEmoji}>{tip.emoji}</Text>
+                  <Text style={[styles.tipText, { color: ingredient.color }]}>{tip.text}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        ))}
+      </View>
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#fdf2f8' },
+  content: { padding: 16, paddingTop: 40, paddingBottom: 60 },
+  header: { fontSize: 24, fontWeight: '800', color: '#111827', textAlign: 'center', marginBottom: 6 },
+  subtitle: { fontSize: 13, color: '#6b7280', textAlign: 'center', marginBottom: 24, lineHeight: 22 },
+  grid: { gap: 12 },
+  card: {
+    backgroundColor: '#fff', borderRadius: 16, borderWidth: 1,
+    padding: 16, marginBottom: 4,
+    shadowColor: '#000', shadowOpacity: 0.04, shadowRadius: 8, shadowOffset: { width: 0, height: 2 },
+  },
+  cardHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 12 },
+  cardEmoji: { fontSize: 28 },
+  cardTitleWrap: { flex: 1 },
+  cardTitle: { fontSize: 15, fontWeight: '700' },
+  cardSubtitle: { fontSize: 11, color: '#9ca3af', marginTop: 2 },
+  tipsList: { gap: 6 },
+  tipRow: { flexDirection: 'row', alignItems: 'center', gap: 8, borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10 },
+  tipEmoji: { fontSize: 14, width: 20, textAlign: 'center' },
+  tipText: { fontSize: 12, fontWeight: '500', flex: 1, textAlign: 'right' },
+});
