@@ -380,7 +380,7 @@ export const bookingRouter = router({
   transition: protectedProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.number().int().positive(),
         action: z.enum(['accept', 'reject', 'cancel', 'start', 'complete', 'no_show']),
         reason: z.string().max(500).optional(),
       }),
