@@ -2855,3 +2855,37 @@ model SafetyCheckIn {
 
   @@map("safety_checkins")
 }
+
+model BeautyHeritagePractice {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  origin      String
+  description String
+  modernUse   String
+  createdAt   DateTime @default(now())
+
+  @@map("beauty_heritage_practices")
+}
+
+model GreenSalon {
+  id         Int      @id @default(autoincrement())
+  name       String
+  practices  Json
+  city       String?
+  isVerified Boolean  @default(false)
+  ownerId    Int
+  createdAt  DateTime @default(now())
+
+  @@index([isVerified])
+  @@map("green_salons")
+}
+
+model BeautyBank {
+  id        Int      @id @default(autoincrement())
+  donorId   Int
+  amount    Int
+  message   String?
+  createdAt DateTime @default(now())
+
+  @@map("beauty_bank_donations")
+}

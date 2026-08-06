@@ -15,3 +15,4 @@ export { moodBoardRouter } from '../../routers/moodBoard';
 export { beautyCirclesRouter } from '../../routers/beautyCircles';
 export { kindnessPointsRouter } from '../../routers/kindnessPoints';
 export { sisterhoodComplimentsRouter } from '../../routers/sisterhoodCompliments';
+export { beautyBankRouter } from '../../routers/beautyBank';

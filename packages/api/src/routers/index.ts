@@ -42,7 +42,7 @@ import {
   reviewRouter, disputeRouter, communityRouter, socialRouter,
   socialChallengesRouter, challengesRouter, inspirationRouter,
   technicianFollowRouter, technicianQARouter, beautyPartyRouter,
-  penPalRouter, moodBoardRouter, beautyCirclesRouter, kindnessPointsRouter, sisterhoodComplimentsRouter,
+  penPalRouter, moodBoardRouter, beautyCirclesRouter, kindnessPointsRouter, sisterhoodComplimentsRouter, beautyBankRouter,
 } from '../domains/social';
 
 // Safety
@@ -78,7 +78,7 @@ import {
   liveStreamRouter, beautyCoursesRouter, beautyStoriesRouter,
   beautyShortsRouter, beautyPodcastRouter, beautyAwardsRouter,
   beautyExpoRouter, beautyFaqRouter, videoTestimonialsRouter,
-  beforeAfterRouter, behindScenesRouter,
+  beforeAfterRouter, behindScenesRouter, beautyHeritageRouter,
 } from '../domains/content';
 
 // Market
@@ -107,7 +107,7 @@ import {
   rideHailingRouter, lastMileDeliveryRouter, clinicConnectRouter,
   corporateWellnessRouter, franchisePortalRouter, virtualConsultationRouter,
   dnaBeautyRouter, iotSyncRouter, beautyMetaverseRouter,
-  geofenceOffersRouter, ingredientAnalyzerRouter, ingredientSubRouter,
+  geofenceOffersRouter, ingredientAnalyzerRouter, ingredientSubRouter, greenSalonRouter,
 } from '../domains/operations';
 
 // ── Additional feature routers not yet domain-grouped ──
@@ -243,6 +243,7 @@ export const appRouter = router({
   beautyCircles: beautyCirclesRouter,
   kindnessPoints: kindnessPointsRouter,
   sisterhoodCompliments: sisterhoodComplimentsRouter,
+  beautyBank: beautyBankRouter,
   safety: safetyRouter,
 
   // Admin
@@ -300,6 +301,7 @@ export const appRouter = router({
   videoTestimonials: videoTestimonialsRouter,
   beforeAfter: beforeAfterRouter,
   behindScenes: behindScenesRouter,
+  beautyHeritage: beautyHeritageRouter,
 
   // Market
   marketplace: marketplaceRouter,
@@ -358,6 +360,7 @@ export const appRouter = router({
   geofenceOffers: geofenceOffersRouter,
   ingredientAnalyzer: ingredientAnalyzerRouter,
   ingredientSub: ingredientSubRouter,
+  greenSalon: greenSalonRouter,
 
   // ── Ungrouped feature routers ──
   technicians: technicianRouter,
