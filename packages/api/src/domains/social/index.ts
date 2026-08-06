@@ -18,3 +18,6 @@ export { sisterhoodComplimentsRouter } from '../../routers/sisterhoodCompliments
 export { beautyBankRouter } from '../../routers/beautyBank';
 export { sheLeadsRouter } from '../../routers/sheLeads';
 export { communityEventsRouter } from '../../routers/communityEvents';
+export { accountabilityRouter } from '../../routers/accountability';
+export { visionBoardRouter } from '../../routers/visionBoard';
+export { gratitudeRouter } from '../../routers/gratitude';

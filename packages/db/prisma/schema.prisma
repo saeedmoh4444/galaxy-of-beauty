@@ -3018,3 +3018,59 @@ model BeautyHabit {
   @@index([userId])
   @@map("beauty_habits")
 }
+
+model AccountabilityPartner {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  goal          String
+  partnerUserId Int?
+  status        String   @default("SEEKING")
+  streak        Int      @default(0)
+  lastCheckIn   DateTime?
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@index([goal])
+  @@map("accountability_partners")
+}
+
+model VisionGoal {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  emoji     String   @default("🌟")
+  text      String
+  year      String
+  achieved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("vision_goals")
+}
+
+model GratitudeNote {
+  id         Int      @id @default(autoincrement())
+  authorId   Int
+  authorName String
+  toName     String
+  message    String
+  emoji      String   @default("💕")
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("gratitude_notes")
+}
+
+model SleepLog {
+  id       Int      @id @default(autoincrement())
+  userId   Int
+  date     String
+  hours    Float
+  quality  Int?
+  bedtime  String?
+  wakeTime String?
+  createdAt DateTime @default(now())
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@map("sleep_logs")
+}

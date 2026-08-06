@@ -42,7 +42,7 @@ import {
   reviewRouter, disputeRouter, communityRouter, socialRouter,
   socialChallengesRouter, challengesRouter, inspirationRouter,
   technicianFollowRouter, technicianQARouter, beautyPartyRouter,
-  penPalRouter, moodBoardRouter, beautyCirclesRouter, kindnessPointsRouter, sisterhoodComplimentsRouter, beautyBankRouter, sheLeadsRouter, communityEventsRouter,
+  penPalRouter, moodBoardRouter, beautyCirclesRouter, kindnessPointsRouter, sisterhoodComplimentsRouter, beautyBankRouter, sheLeadsRouter, communityEventsRouter, accountabilityRouter, visionBoardRouter, gratitudeRouter,
 } from '../domains/social';
 
 // Safety
@@ -97,7 +97,7 @@ import {
   beautyProfileRouter, beautyRemindersRouter, beautyClosetRouter,
   skinDiaryRouter, cycleTrackerRouter, spaPlannerRouter,
   routineSchedulerRouter, expiryTrackerRouter, restockReminderRouter,
-  allergenCheckerRouter, savingsGoalRouter, nightModeRouter, beautyHabitsRouter,
+  allergenCheckerRouter, savingsGoalRouter, nightModeRouter, beautyHabitsRouter, sleepTrackerRouter,
 } from '../domains/wellness';
 
 // Operations
@@ -246,6 +246,9 @@ export const appRouter = router({
   beautyBank: beautyBankRouter,
   sheLeads: sheLeadsRouter,
   communityEvents: communityEventsRouter,
+  accountability: accountabilityRouter,
+  visionBoard: visionBoardRouter,
+  gratitude: gratitudeRouter,
   sensoryFriendly: sensoryFriendlyRouter,
   safety: safetyRouter,
 
@@ -348,6 +351,7 @@ export const appRouter = router({
   savingsGoals: savingsGoalRouter,
   nightMode: nightModeRouter,
   beautyHabits: beautyHabitsRouter,
+  sleepTracker: sleepTrackerRouter,
 
   // Operations
   addresses: addressRouter,
