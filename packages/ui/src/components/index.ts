@@ -195,3 +195,4 @@ export { BeautyMentorRequestCard } from './BeautyMentorRequestCard';
 export { HearingAssistanceBadge } from './HearingAssistanceBadge';
 export { BeautyHistoryTimeline } from './BeautyHistoryTimeline';
 export { BeautyCareerPathCard } from './BeautyCareerPathCard';
+export { BeautySquadCard } from './BeautySquadCard';
