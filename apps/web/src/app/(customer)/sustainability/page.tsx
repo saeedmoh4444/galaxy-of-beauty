@@ -1,0 +1,88 @@
+'use client';
+
+import {
+  PageContainer, PageTitle,
+  GreenSalonBadge, SensoryFriendlyBadge, SensoryMapCard, QuietHoursBadge,
+  AccessibleSalonBadge, WheelchairAccessibleBadge, SignLanguageBadge,
+  HearingAssistanceBadge, BrailleMenuCard, ColorBlindBadge, ServiceAnimalBadge,
+  CognitiveAccessibilityBadge, ScentFreeBadge, BodyPositiveBadge,
+  QuietCornerBadge, ComplimentaryAmenityBadge, BeautyEmergencyKit,
+  PrayerRoomBadge, NoRushBadge, HotDrinkMenuBadge, SelfieStationBadge,
+  RandomActOfBeauty, JustBecauseFlowers, MirrorStickerCard,
+  BeautyWeatherCard, BeautyPlaylistCard, HandwrittenNote, BirthdayMonthBadge,
+  BeautySubscriptionCard, BeautyConciergeCard, BeautyNightOutCard,
+} from '@galaxy/ui';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
+
+export default function SustainabilityPage(): JSX.Element {
+  return (
+    <DashboardLayout role="CUSTOMER">
+      <PageContainer width="wide">
+        <PageTitle title="🌿 الاستدامة والإتاحة" subtitle="جمال مستدام — للجميع" />
+
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2 space-y-6">
+            {/* Green + Accessible */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <GreenSalonBadge practices={['recycled', 'organic', 'energy_efficient', 'water_saving', 'plastic_free', 'local_sourcing']} />
+              <AccessibleSalonBadge features={['wheelchair', 'skin_tones', 'hair_textures', 'body_positive']} />
+            </div>
+
+            {/* Sensory */}
+            <SensoryMapCard zones={['quiet', 'dim', 'private', 'aromatherapy']} salonName="صالون الياسمين" />
+            <div className="grid gap-4 sm:grid-cols-3">
+              <SensoryFriendlyBadge features={['dim_lights', 'quiet_music', 'no_fragrance', 'silent_appointment', 'comfort_kit']} />
+              <QuietHoursBadge hours="9-11 صباحاً" days="الثلاثاء والخميس" />
+              <CognitiveAccessibilityBadge features={['simple_menu', 'visual_schedule', 'clear_signage']} />
+            </div>
+
+            {/* Physical accessibility */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <WheelchairAccessibleBadge features={['wide_doors', 'elevator', 'accessible_bathroom', 'low_counter', 'parking', 'ramp']} />
+              <div className="space-y-4">
+                <SignLanguageBadge technicians={[{ name: 'نورة', level: 'fluent', specialty: 'مكياج' }]} />
+                <HearingAssistanceBadge features={['hearing_loop', 'written_communication', 'visual_alerts']} />
+              </div>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <BrailleMenuCard languages={['arabic']} hasVoiceMenu={true} />
+              <ColorBlindBadge />
+              <ServiceAnimalBadge />
+            </div>
+
+            {/* Comfort + Amenities */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <ScentFreeBadge productTypes={['facial', 'hair', 'body']} />
+              <BodyPositiveBadge features={['real_imagery', 'size_inclusive', 'skin_inclusive']} />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <QuietCornerBadge amenities={['toys', 'coloring', 'play_area', 'baby_chair']} supervised={true} />
+              <ComplimentaryAmenityBadge amenities={['hair_tie', 'bobby_pins', 'deodorant', 'phone_charger', 'sanitary_pads']} />
+              <BeautyEmergencyKit items={['pads', 'hair_spray', 'sewing_kit', 'stain_remover', 'mints']} />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <PrayerRoomBadge amenities={['prayer_mats', 'abayas', 'qibla', 'wudu_area']} />
+              <HotDrinkMenuBadge drinks={['arabic_coffee', 'karak', 'herbal_tea', 'chamomile', 'mint_tea']} complimentary={true} />
+            </div>
+            <NoRushBadge bufferMinutes={15} hasRefreshments={true} />
+            <SelfieStationBadge hasRingLight={true} hasPhoneStand={true} hasBackdrop={true} />
+          </div>
+
+          {/* Sidebar — Delight + Weather */}
+          <div className="space-y-6">
+            <BeautyWeatherCard condition="hot" temp={42} />
+            <BeautyPlaylistCard />
+            <RandomActOfBeauty />
+            <JustBecauseFlowers bookingsCount={15} />
+            <MirrorStickerCard />
+            <HandwrittenNote bookingCount={10} technicianName="نورة" />
+            <BirthdayMonthBadge month="مارس" discount={15} daysRemaining={22} />
+            <BeautySubscriptionCard tier="premium" />
+            <BeautyConciergeCard conciergeName="سارة" />
+            <BeautyNightOutCard available={true} />
+          </div>
+        </div>
+      </PageContainer>
+    </DashboardLayout>
+  );
+}
