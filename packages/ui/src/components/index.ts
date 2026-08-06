@@ -349,3 +349,8 @@ export { BeautyPerfumeSeasonCard } from './BeautyPerfumeSeasonCard';
 export { BeautyPerfumeOudCard } from './BeautyPerfumeOudCard';
 export { BeautyPerfumeMuskCard } from './BeautyPerfumeMuskCard';
 export { BeautyPerfumeRoseCard } from './BeautyPerfumeRoseCard';
+export { BeautyPerfumeAmberCard } from './BeautyPerfumeAmberCard';
+export { BeautyPerfumeSaffronCard } from './BeautyPerfumeSaffronCard';
+export { BeautyPerfumeMixingCard } from './BeautyPerfumeMixingCard';
+export { BeautyPerfumeStorageCard } from './BeautyPerfumeStorageCard';
+export { BeautyPerfumeOccasionCard } from './BeautyPerfumeOccasionCard';
