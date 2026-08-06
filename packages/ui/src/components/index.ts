@@ -181,3 +181,4 @@ export { CharityPartnerBadge } from './CharityPartnerBadge';
 export { SharedWishlistCard } from './SharedWishlistCard';
 export { DadApprovalBadge } from './DadApprovalBadge';
 export { SkinJournalCard } from './SkinJournalCard';
+export { BeautyComparisonCard } from './BeautyComparisonCard';
