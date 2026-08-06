@@ -279,3 +279,8 @@ export { BeautyPostureCard } from './BeautyPostureCard';
 export { BeautySmileCard } from './BeautySmileCard';
 export { BeautyGlowCard } from './BeautyGlowCard';
 export { BeautyConfidenceCard } from './BeautyConfidenceCard';
+export { BeautySleepHygieneCard } from './BeautySleepHygieneCard';
+export { BeautyNutritionCard } from './BeautyNutritionCard';
+export { BeautyExerciseCard } from './BeautyExerciseCard';
+export { BeautyStretchCard } from './BeautyStretchCard';
+export { BeautyBreathingCard } from './BeautyBreathingCard';
