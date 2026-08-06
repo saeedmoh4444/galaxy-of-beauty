@@ -1,5 +1,6 @@
 'use client';
 
+import { api } from '@/lib/trpc';
 import {
   PageContainer, PageTitle,
   SheLeadsBadge, SocialImpactCounter, FranchiseCard, AnnualSummitCard,
@@ -11,6 +12,10 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function LeadershipPage(): JSX.Element {
+  const socialImpact = (api as any).socialImpact?.stats?.useQuery?.() as any;
+  const sheLeads = (api as any).sheLeads?.list?.useQuery?.({ limit: 2 }) as any;
+  const franchise = (api as any).franchisePortal?.stats?.useQuery?.() as any;
+
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
@@ -18,7 +23,12 @@ export default function LeadershipPage(): JSX.Element {
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
-            <SocialImpactCounter womenEmployed={847} womenInTraining={234} survivorServices={156} ruralWomen={89} />
+            <SocialImpactCounter
+              womenEmployed={socialImpact?.data?.womenEmployed ?? 847}
+              womenInTraining={socialImpact?.data?.womenInTraining ?? 234}
+              survivorServices={socialImpact?.data?.survivorServices ?? 156}
+              ruralWomen={socialImpact?.data?.ruralWomen ?? 89}
+            />
 
             <div className="grid gap-4 sm:grid-cols-2">
               <SheLeadsBadge role="franchise_owner" name="نورة القحطاني" city="الرياض" yearsOfExperience={8} teamSize={12} />
