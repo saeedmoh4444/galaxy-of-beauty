@@ -212,3 +212,4 @@ export { BeautyPlaylistCard } from './BeautyPlaylistCard';
 export { InvestorPitchCard } from './InvestorPitchCard';
 export { ProBonoLessonCard } from './ProBonoLessonCard';
 export { BabyShowerCard } from './BabyShowerCard';
+export { BeautyGratitudeCard } from './BeautyGratitudeCard';
