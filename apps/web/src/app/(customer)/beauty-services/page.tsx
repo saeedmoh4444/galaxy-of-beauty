@@ -1,5 +1,6 @@
 'use client';
 
+import { api } from '@/lib/trpc';
 import {
   PageContainer, PageTitle,
   BeautyTip, BeautyEmergency, PeriodFriendlyBadge, SalonAmenities,
@@ -11,6 +12,10 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyServicesPage(): JSX.Element {
+  const services = (api as any).services?.list?.useQuery?.({ limit: 10 }) as any;
+  const loyalty = (api as any).loyalty?.getAccount?.useQuery?.() as any;
+  const pricing = (api as any).pricingCoach?.suggestions?.useQuery?.() as any;
+
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
@@ -42,7 +47,7 @@ export default function BeautyServicesPage(): JSX.Element {
               <BookingSummary booking={{ code: 'GOB-1234', service: 'مانيكير سبا', technician: 'نورة', date: '15 أغسطس 2026', time: '10:00', status: 'confirmed' }} />
             </div>
 
-            <BeautyRewardsCard points={1250} tier="gold" />
+            <BeautyRewardsCard points={loyalty?.data?.points ?? 1250} tier={(loyalty?.data?.tier?.toLowerCase() as any) ?? 'gold'} />
 
             {/* Technician tools */}
             <div className="grid gap-4 sm:grid-cols-3">
