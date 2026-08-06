@@ -42,7 +42,7 @@ import {
   reviewRouter, disputeRouter, communityRouter, socialRouter,
   socialChallengesRouter, challengesRouter, inspirationRouter,
   technicianFollowRouter, technicianQARouter, beautyPartyRouter,
-  penPalRouter, moodBoardRouter, beautyCirclesRouter, kindnessPointsRouter, sisterhoodComplimentsRouter, beautyBankRouter, sheLeadsRouter, communityEventsRouter, accountabilityRouter, visionBoardRouter, gratitudeRouter, conciergeRouter, timeCapsuleRouter, secretSantaRouter, affirmationsRouter, socialImpactRouter, dvSupportRouter, subscriptionGiftRouter,
+  penPalRouter, moodBoardRouter, beautyCirclesRouter, kindnessPointsRouter, sisterhoodComplimentsRouter, beautyBankRouter, sheLeadsRouter, communityEventsRouter, accountabilityRouter, visionBoardRouter, gratitudeRouter, conciergeRouter, timeCapsuleRouter, secretSantaRouter, affirmationsRouter, socialImpactRouter, dvSupportRouter, subscriptionGiftRouter, customerFeedbackRouter, beautySurveysRouter,
 } from '../domains/social';
 
 // Safety
@@ -97,7 +97,7 @@ import {
   beautyProfileRouter, beautyRemindersRouter, beautyClosetRouter,
   skinDiaryRouter, cycleTrackerRouter, spaPlannerRouter,
   routineSchedulerRouter, expiryTrackerRouter, restockReminderRouter,
-  allergenCheckerRouter, savingsGoalRouter, nightModeRouter, beautyHabitsRouter, sleepTrackerRouter, skillTreeRouter, careerBeautyRouter, savingsMilestonesRouter,
+  allergenCheckerRouter, savingsGoalRouter, nightModeRouter, beautyHabitsRouter, sleepTrackerRouter, skillTreeRouter, careerBeautyRouter, savingsMilestonesRouter, beautyAchievementsRouter, beautyInsightsRouter,
 } from '../domains/wellness';
 
 // Operations
@@ -256,6 +256,8 @@ export const appRouter = router({
   socialImpact: socialImpactRouter,
   dvSupport: dvSupportRouter,
   subscriptionGift: subscriptionGiftRouter,
+  customerFeedback: customerFeedbackRouter,
+  beautySurveys: beautySurveysRouter,
   sensoryFriendly: sensoryFriendlyRouter,
   ruralOutreach: ruralOutreachRouter,
   exportProgram: exportProgramRouter,
@@ -373,6 +375,8 @@ export const appRouter = router({
   skillTree: skillTreeRouter,
   careerBeauty: careerBeautyRouter,
   savingsMilestones: savingsMilestonesRouter,
+  beautyAchievements: beautyAchievementsRouter,
+  beautyInsights: beautyInsightsRouter,
 
   // Operations
   addresses: addressRouter,

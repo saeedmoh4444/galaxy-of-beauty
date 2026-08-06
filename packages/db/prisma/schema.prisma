@@ -3341,3 +3341,50 @@ model SubscriptionGift {
 
   @@map("subscription_gifts")
 }
+
+model CustomerAchievement {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  achievementKey String
+  earnedAt       DateTime @default(now())
+
+  @@unique([userId, achievementKey])
+  @@map("customer_achievements")
+}
+
+model CustomerFeedback {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  category  String
+  message   String
+  rating    Int?
+  createdAt DateTime @default(now())
+
+  @@index([category])
+  @@map("customer_feedback")
+}
+
+model BeautySurvey {
+  id            Int      @id @default(autoincrement())
+  title         String
+  questionsJson Json
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  responses     SurveyResponse[]
+
+  @@map("beauty_surveys")
+}
+
+model SurveyResponse {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  surveyId    Int
+  answersJson Json
+  createdAt   DateTime @default(now())
+
+  survey      BeautySurvey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, surveyId])
+  @@map("survey_responses")
+}
