@@ -217,3 +217,4 @@ export { BeautyCertificationPathCard } from './BeautyCertificationPathCard';
 export { BridalBeautyCountdown } from './BridalBeautyCountdown';
 export { BeautySecretSantaCard } from './BeautySecretSantaCard';
 export { BeautyTimeCapsuleCard } from './BeautyTimeCapsuleCard';
+export { BeautySkillTreeCard } from './BeautySkillTreeCard';
