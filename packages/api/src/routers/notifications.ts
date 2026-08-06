@@ -85,7 +85,7 @@ export const notificationRouter = router({
     }),
 
   // ── Mark all as read ──────────────────────────────────────────────────────
-  markAllRead: protectedProcedure.mutation(async ({ ctx }) => {
+  markAllRead: protectedProcedure.input(z.object({})).mutation(async ({ ctx }) => {
     await prisma.notification.updateMany({
       where: {
         userId: ctx.user.id,
@@ -222,7 +222,7 @@ export const notificationRouter = router({
     }),
 
   // Delete all read notifications
-  deleteAllRead: protectedProcedure.mutation(async ({ ctx }) => {
+  deleteAllRead: protectedProcedure.input(z.object({})).mutation(async ({ ctx }) => {
     const result = await prisma.notification.deleteMany({
       where: { userId: ctx.user.id, isRead: true },
     });
