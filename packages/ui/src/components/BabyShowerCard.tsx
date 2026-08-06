@@ -17,7 +17,7 @@ interface BabyShowerCardProps {
   className?: string;
 }
 
-export function BabyShowerCard({ momName, guests, onBook, className = '' }: BabyShowerCardProps): JSX.Element {
+export function BabyShowerCard({ momName: _momName, guests, onBook, className = '' }: BabyShowerCardProps): JSX.Element {
   return (
     <div className={cn('rounded-2xl border border-sky-100 bg-gradient-to-br from-sky-50 to-pink-50 p-5 dark:border-sky-900 dark:from-sky-950 dark:to-pink-950', className)}>
       <div className="text-center">

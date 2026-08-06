@@ -27,7 +27,7 @@ interface BeautyLanguageExchangeCardProps {
   className?: string;
 }
 
-export function BeautyLanguageExchangeCard({ fromLang = 'ar', toLang = 'en', className = '' }: BeautyLanguageExchangeCardProps): JSX.Element {
+export function BeautyLanguageExchangeCard({ fromLang = 'ar', toLang: _toLang = 'en', className = '' }: BeautyLanguageExchangeCardProps): JSX.Element {
   const showAr = fromLang === 'ar';
 
   return (

@@ -22,7 +22,6 @@ const COLORS = ['from-amber-400 to-yellow-400', 'from-amber-500 to-orange-500', 
 export function BeautySavingsMilestoneCard({ saved, milestones, onViewSavings, className = '' }: BeautySavingsMilestoneCardProps): JSX.Element | null {
   if (!milestones.length) return null;
   const nextMilestone = milestones.find((m) => m > saved);
-  const lastAchieved = [...milestones].reverse().find((m) => m <= saved);
 
   return (
     <div className={cn('rounded-2xl border border-emerald-100 bg-white p-5 dark:border-emerald-900 dark:bg-gray-900', className)}>

@@ -58,7 +58,7 @@ export function BridalBeautyCountdown({ weddingDate, completedMilestones = [], c
 
       {!isPast && (
         <div className="mt-3 space-y-1.5">
-          {milestones.map((m, i) => (
+          {milestones.map((m, _i) => (
             <div key={m.label} className={cn('flex items-center gap-2 rounded-lg px-3 py-2', m.done ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-gray-50 dark:bg-gray-800')}>
               <span className={cn('flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs', m.done ? 'bg-emerald-200 text-emerald-700 dark:bg-emerald-800 dark:text-emerald-300' : 'bg-gray-200 text-gray-500 dark:bg-gray-700')}>
                 {m.done ? '✅' : m.emoji}
