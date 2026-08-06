@@ -48,6 +48,7 @@ export const adminToolsRouter = router({
       const users = await prisma.user.findMany({
         where: { ...userWhere, isActive: true },
         select: { id: true, preferredLanguage: true },
+        take: 500,
       });
 
       // Create notifications in batches
