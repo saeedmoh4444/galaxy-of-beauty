@@ -1,5 +1,6 @@
 'use client';
 
+import { api } from '@/lib/trpc';
 import {
   PageContainer, PageTitle,
   BeautyVoiceAssistantCard, BeautyVlogCard, BeautyPlaylistCard,
@@ -18,6 +19,10 @@ const BeautyGamificationCard = ({ challenges, className }: { challenges?: Array<
 );
 
 export default function BeautyInnovationPage(): JSX.Element {
+  const weather = (api as any).weatherBeauty?.getAdvice?.useQuery?.({ condition: 'hot', temp: 42 }) as any;
+  const concierge = (api as any).concierge?.stats?.useQuery?.() as any;
+  const vlogs = (api as any).beautyVlogs?.list?.useQuery?.({ limit: 1 }) as any;
+
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
@@ -33,7 +38,7 @@ export default function BeautyInnovationPage(): JSX.Element {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyWeatherCard condition="hot" temp={42} />
+              <BeautyWeatherCard condition={weather?.data?.condition ?? 'hot'} temp={weather?.data?.temp ?? 42} />
               <SelfieStationBadge hasRingLight={true} hasPhoneStand={true} hasBackdrop={true} />
             </div>
 
