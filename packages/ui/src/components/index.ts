@@ -226,3 +226,4 @@ export { BeautyVisionBoardCard } from './BeautyVisionBoardCard';
 export { BeautySavingsMilestoneCard } from './BeautySavingsMilestoneCard';
 export { CycleResourceCard } from './CycleResourceCard';
 export { BeautyAccountabilityCard } from './BeautyAccountabilityCard';
+export { BeautyMoodTrackerCard } from './BeautyMoodTrackerCard';
