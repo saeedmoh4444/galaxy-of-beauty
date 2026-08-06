@@ -339,3 +339,8 @@ export { BeautyMakeupSpongeCard } from './BeautyMakeupSpongeCard';
 export { BeautyMakeupColorCard } from './BeautyMakeupColorCard';
 export { BeautyMakeupDayCard } from './BeautyMakeupDayCard';
 export { BeautyMakeupNightCard } from './BeautyMakeupNightCard';
+export { BeautyNailArtCard } from './BeautyNailArtCard';
+export { BeautyNailShapeCard } from './BeautyNailShapeCard';
+export { BeautyNailHealthCard } from './BeautyNailHealthCard';
+export { BeautyNailPolishCard } from './BeautyNailPolishCard';
+export { BeautyNailGelCard } from './BeautyNailGelCard';
