@@ -7,6 +7,8 @@ import {
   BrideTribeCard, GalentinesCard, PromReadyCard, BabyShowerCard,
   NewMomSupportCard, FamilyDiscountCard, DadApprovalBadge,
   GrandmotherPackageCard,
+  BeautyBridalSkincareCard, BeautyBridalBodyCareCard, BeautyBridalEmergencyCard,
+  BeautyBridalTrialCard, BeautyBridalGlowCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -41,6 +43,17 @@ export default function FamilyBeautyPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BrideTribeCard bride="سارة" bridesmaids={[{ name: 'نورة', role: 'وصيفة أولى' }, { name: 'مها', lookAssigned: true }, { name: 'ريم' }]} weddingDate="15 مارس 2027" />
               <GrandmotherPackageCard occasion="wedding" grandmaName="أم محمد" />
+            </div>
+
+            {/* Bridal Beauty */}
+            <BeautyBridalSkincareCard />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyBridalTrialCard />
+              <BeautyBridalBodyCareCard />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyBridalGlowCard />
+              <BeautyBridalEmergencyCard />
             </div>
 
             {/* Special Events */}
