@@ -1,0 +1,35 @@
+'use client';
+
+import {
+  PageContainer, PageTitle,
+  BeautyJewelryCard, BeautyBagCard, BeautyScarfCard,
+  BeautyPerfumeCard, BeautyNailCareCard, BeautyLipsCareCard,
+} from '@galaxy/ui';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
+
+export default function AccessoriesGuidePage(): JSX.Element {
+  return (
+    <DashboardLayout role="CUSTOMER">
+      <PageContainer width="wide">
+        <PageTitle title="👛 دليل الإكسسوارات" subtitle="اللمسة الأخيرة لإطلالة متكاملة" />
+
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2 space-y-6">
+            <BeautyJewelryCard />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyBagCard />
+              <BeautyScarfCard />
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <BeautyPerfumeCard />
+            <BeautyNailCareCard />
+            <BeautyLipsCareCard />
+            <BeautyHandsCareCard />
+          </div>
+        </div>
+      </PageContainer>
+    </DashboardLayout>
+  );
+}
