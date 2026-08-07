@@ -21,6 +21,8 @@ import {
   BeautySnailMucinCard, BeautyCentellaCard,
   BeautyChemicalPeelCard, BeautyMicroneedlingCard, BeautyHydrofacialCard,
   BeautyBakuchiolCard, BeautyIngredientMixingCard,
+  BeautyOxygenFacialCard, BeautyDiamondFacialCard, BeautyGoldFacialCard,
+  BeautyVampireFacialCard, BeautyCaviarFacialCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -106,6 +108,17 @@ export default function SkincareGuidePage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyBakuchiolCard />
               <BeautyIngredientMixingCard />
+            </div>
+
+            {/* Professional Facials */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyOxygenFacialCard />
+              <BeautyDiamondFacialCard />
+            </div>
+            <BeautyGoldFacialCard />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyVampireFacialCard />
+              <BeautyCaviarFacialCard />
             </div>
 
             {/* Skin Quiz */}
