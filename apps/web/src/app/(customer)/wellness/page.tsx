@@ -14,6 +14,8 @@ import {
   BeautyPostureCard, BeautySuncareReminderCard, BeautyDailyCheckInCard,
   BeautyRamadanBeautyCard, BeautyPostWorkoutCard, BeautyTravelKitCard,
   BeautyCapsuleWardrobeCard, BeautyBedtimeRitualCard,
+  BeautyCollagenCard, BeautyBiotinCard, BeautyGlutathioneCard,
+  BeautyOmegaCard, BeautyProbioticCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -105,6 +107,17 @@ export default function WellnessPage(): JSX.Element {
         <div className="grid gap-4 sm:grid-cols-2">
           <BeautyTravelKitCard />
           <BeautyCapsuleWardrobeCard />
+        </div>
+
+        {/* Inner Beauty / Supplements */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <BeautyCollagenCard />
+          <BeautyBiotinCard />
+          <BeautyGlutathioneCard />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <BeautyOmegaCard />
+          <BeautyProbioticCard />
         </div>
       </PageContainer>
     </DashboardLayout>
