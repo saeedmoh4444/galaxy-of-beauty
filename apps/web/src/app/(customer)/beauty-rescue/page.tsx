@@ -1,6 +1,9 @@
 'use client';
 import { useState } from 'react';
-import { Card, Button, formatCurrency  } from '@galaxy/ui';
+import { Card, Button, formatCurrency,
+  BeautyBreakoutSOSCard, BeautySunburnReliefCard, BeautyPuffyEyesCard,
+  BeautyChappedLipsCard, BeautyRednessReliefCard,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const EMERGENCIES = [
@@ -61,6 +64,15 @@ export default function BeautyRescuePage(): JSX.Element {
             )}
           </>
         )}
+      </div>
+
+      {/* DIY SOS Tips */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-8">
+        <BeautyBreakoutSOSCard />
+        <BeautySunburnReliefCard />
+        <BeautyPuffyEyesCard />
+        <BeautyChappedLipsCard />
+        <BeautyRednessReliefCard />
       </div>
     </DashboardLayout>
   );
