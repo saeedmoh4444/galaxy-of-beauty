@@ -7,6 +7,8 @@ import {
   BeautySmileCard, BeautyGlowCard, BeautyConfidenceCard,
   BeautySpaBathCard, BeautyAromatherapyCard, BeautyDryBrushingCard,
   BeautyIceFacialCard, BeautySteamFacialCard,
+  BeautySilkPillowCard, BeautyHairRemovalCard, BeautyDetoxWaterCard,
+  BeautyLEDMaskCard, BeautyGuaShaRoutineCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -47,6 +49,17 @@ export default function PersonalCarePage(): JSX.Element {
               <BeautyIceFacialCard />
               <BeautySteamFacialCard />
             </div>
+
+            {/* Tools & Rituals */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautySilkPillowCard />
+              <BeautyLEDMaskCard />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyGuaShaRoutineCard />
+              <BeautyHairRemovalCard />
+            </div>
+            <BeautyDetoxWaterCard />
           </div>
 
           <div className="space-y-6">
