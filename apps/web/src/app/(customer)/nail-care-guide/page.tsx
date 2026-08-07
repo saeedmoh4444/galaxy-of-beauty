@@ -4,6 +4,8 @@ import {
   PageContainer, PageTitle,
   BeautyNailArtCard, BeautyNailShapeCard, BeautyNailHealthCard,
   BeautyNailPolishCard, BeautyNailGelCard,
+  BeautyParaffinCard, BeautyHandMaskCard, BeautyFootSoakCard,
+  BeautyNailStrengthenCard, BeautyCallusCareCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -23,6 +25,17 @@ export default function NailCareGuidePage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyNailPolishCard />
               <BeautyNailGelCard />
+            </div>
+
+            {/* Hand & Foot Care */}
+            <BeautyNailStrengthenCard />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyParaffinCard />
+              <BeautyHandMaskCard />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyFootSoakCard />
+              <BeautyCallusCareCard />
             </div>
           </div>
 
