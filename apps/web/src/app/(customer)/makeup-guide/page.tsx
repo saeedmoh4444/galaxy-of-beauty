@@ -11,6 +11,7 @@ import {
   BeautyMakeupMatteCard, BeautyMakeupDewyCard, BeautyMakeupConcealerCard,
   BeautyMakeupPowderCard, BeautyMakeupPrimerCard, BeautyMakeupMistCard,
   BeautyMakeupRemoveCard, BeautyMakeupOrganizeCard,
+  BeautyMakeupTipsCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -61,6 +62,8 @@ export default function MakeupGuidePage(): JSX.Element {
               <BeautyMakeupColorCard />
               <BeautyMakeupRemoverCard />
             </div>
+
+            <BeautyMakeupTipsCard />
 
             {/* Looks */}
             <div className="grid gap-4 sm:grid-cols-2">
