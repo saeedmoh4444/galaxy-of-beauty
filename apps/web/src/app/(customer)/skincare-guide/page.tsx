@@ -17,6 +17,8 @@ import {
   BeautySkincareAzelaicCard, BeautySkincareCeramideCard, BeautySkincareHyaluronicCard,
   BeautySkincareNiacinamideCard, BeautySkincareVitaminCCard,
   BeautySkinQuizCard,
+  BeautyGlassSkinCard, BeautySheetMaskCard, BeautyEssenceCard,
+  BeautySnailMucinCard, BeautyCentellaCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -80,6 +82,17 @@ export default function SkincareGuidePage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautySkincareMistCard />
               <BeautySkincareOilCard />
+            </div>
+
+            {/* K-Beauty */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyGlassSkinCard />
+              <BeautySheetMaskCard />
+            </div>
+            <BeautyEssenceCard />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautySnailMucinCard />
+              <BeautyCentellaCard />
             </div>
 
             {/* Skin Quiz */}
