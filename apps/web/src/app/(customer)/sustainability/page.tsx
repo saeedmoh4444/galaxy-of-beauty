@@ -12,6 +12,8 @@ import {
   RandomActOfBeauty, JustBecauseFlowers, MirrorStickerCard,
   BeautyWeatherCard, BeautyPlaylistCard, HandwrittenNote, BirthdayMonthBadge,
   BeautySubscriptionCard, BeautyConciergeCard, BeautyNightOutCard,
+  BeautyZeroWasteCard, BeautyRefillableCard, BeautyCleanBeautyCard,
+  BeautyUpcycledCard, BeautyPlasticFreeCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -88,6 +90,16 @@ export default function SustainabilityPage(): JSX.Element {
             <BeautyConciergeCard conciergeName="سارة" />
             <BeautyNightOutCard available={true} />
           </div>
+        </div>
+        {/* Green Beauty */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-6">
+          <BeautyZeroWasteCard />
+          <BeautyRefillableCard />
+          <BeautyCleanBeautyCard />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 mt-4">
+          <BeautyUpcycledCard />
+          <BeautyPlasticFreeCard />
         </div>
       </PageContainer>
     </DashboardLayout>
