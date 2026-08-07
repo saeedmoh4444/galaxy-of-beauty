@@ -9,6 +9,8 @@ import {
   BeautyHairGrowthCard, BeautyHairTrimCard, BeautyHairScalpCard,
   BeautyHairBrideCard, BeautyHairSummerCard, BeautyHairWinterCard,
   BeautyHairHijabCard,
+  BeautyBalayageCard, BeautyHairGlossCard, BeautyHairBondRepairCard,
+  BeautyHeatlessCurlsCard, BeautyHairThinningCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -61,6 +63,17 @@ export default function HairCareGuidePage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyHairSummerCard />
               <BeautyHairWinterCard />
+            </div>
+
+            {/* Techniques & Treatments */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyBalayageCard />
+              <BeautyHairGlossCard />
+            </div>
+            <BeautyHairBondRepairCard />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyHeatlessCurlsCard />
+              <BeautyHairThinningCard />
             </div>
           </div>
 
