@@ -7,6 +7,8 @@ import {
   BeautyMicroChallengeCard, BeautyQuickTipCard,
   BeautyMakeupTipsCard, BeautySuncareReminderCard,
   BeautyWaterIntakeCard, BeautyDailyCheckInCard,
+  BeautyHumidClimateCard, BeautyDryClimateCard, BeautyHotClimateCard,
+  BeautyColdClimateCard, BeautyTravelClimateCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -59,6 +61,17 @@ export default function BeautyTipsPage(): JSX.Element {
             </div>
 
             <BeautyMakeupTipsCard />
+
+            {/* Climate-Adaptive Beauty */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyHotClimateCard />
+              <BeautyHumidClimateCard />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyDryClimateCard />
+              <BeautyColdClimateCard />
+            </div>
+            <BeautyTravelClimateCard />
           </div>
 
           <div className="space-y-6">

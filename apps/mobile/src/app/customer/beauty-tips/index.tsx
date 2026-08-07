@@ -1,135 +1,28 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 
 interface Tip { emoji: string; text: string; }
-interface TipsCard { emoji: string; title: string; subtitle: string; color: string; bg: string; tips: Tip[]; }
+interface Card { emoji: string; title: string; subtitle: string; color: string; bg: string; tips: Tip[]; }
 
-const CARDS: TipsCard[] = [
-  {
-    emoji: '💡', title: 'نصائح المكياج', subtitle: 'لإطلالة تدوم طويلاً',
-    color: '#e11d48', bg: '#fff1f2',
-    tips: [
-      { emoji: '🧴', text: 'الترطيب أولاً — بشرة مرطبة = مكياج أجمل وأثبت' },
-      { emoji: '🖌️', text: 'نظفي فرشك — أسبوعياً البكتيريا تتراكم' },
-      { emoji: '📅', text: 'تاريخ الصلاحية — جددِي مكياجك كل 6-12 شهر' },
-      { emoji: '🌙', text: 'أزيلي المكياج — لا تنامي أبداً بالمكياج' },
-    ],
-  },
-  {
-    emoji: '🌸', title: 'تذكير الربيع', subtitle: 'روتينكِ يتغير مع الفصول',
-    color: '#db2777', bg: '#fdf2f8',
-    tips: [
-      { emoji: '🧹', text: 'جددي روتين التقشير — بشرة أنعم' },
-      { emoji: '🧴', text: 'انتقلي لمرطب أخف — مع ارتفاع الحرارة' },
-      { emoji: '☀️', text: 'اهتمي بالحماية من الشمس مبكراً' },
-      { emoji: '🎨', text: 'جربي ألوان باستيل — منعشة وناعمة' },
-    ],
-  },
-  {
-    emoji: '☀️', title: 'تذكير الصيف', subtitle: 'حماية وانتعاش',
-    color: '#ea580c', bg: '#fff7ed',
-    tips: [
-      { emoji: '☀️', text: 'SPF 50+ يومياً — حتى في الظل' },
-      { emoji: '💧', text: 'مرطب جل خفيف — بدل الكريم الثقيل' },
-      { emoji: '🚰', text: 'اشربي ماء كثيراً — 8 أكواب يومياً' },
-      { emoji: '🌿', text: 'تجنبي المكياج الثقيل — خففي الطبقات' },
-    ],
-  },
-  {
-    emoji: '❄️', title: 'تذكير الشتاء', subtitle: 'ترطيب وحماية',
-    color: '#0284c7', bg: '#f0f9ff',
-    tips: [
-      { emoji: '🧴', text: 'مرطب غني — يحمي من الهواء الجاف' },
-      { emoji: '💋', text: 'بلسم شفاه — ضروري في الشتاء' },
-      { emoji: '🧖', text: 'قناع ترطيب أسبوعي — بشرة نضرة' },
-      { emoji: '🧣', text: 'احمي بشرتكِ من الهواء البارد' },
-    ],
-  },
-  {
-    emoji: '📈', title: 'رائج الآن', subtitle: 'أحدث صيحات الجمال',
-    color: '#e11d48', bg: '#fff1f2',
-    tips: [
-      { emoji: '✨', text: 'البشرة الزجاجية — الترطيب قبل المكياج 🔥🔥🔥' },
-      { emoji: '🎨', text: 'ألوان الباستيل — ناعمة وأنثوية 🔥🔥' },
-      { emoji: '💋', text: 'العناية بالشفاه — تينت طبيعي 🔥' },
-      { emoji: '🌿', text: 'المكياج الطبيعي — بشرة أولى 🔥🔥' },
-    ],
-  },
-  {
-    emoji: '🧪', title: 'حمض الهيالورونيك', subtitle: 'مرطب A+ يحمل 1000 ضعف وزنه ماء',
-    color: '#d97706', bg: '#fffbeb',
-    tips: [
-      { emoji: '💧', text: 'يوجد طبيعياً في البشرة — آمن تماماً' },
-      { emoji: '✨', text: 'مناسب لجميع أنواع البشرة' },
-      { emoji: '🤝', text: 'يدمج مع جميع المكونات — ثنائي رائع' },
-      { emoji: '🧴', text: 'يطبق على بشرة رطبة — وليس جافة' },
-    ],
-  },
-  {
-    emoji: '🎯', title: 'تحليل الأسلوب', subtitle: 'اكتشفي أسلوبكِ المثالي',
-    color: '#c026d3', bg: '#fdf4ff',
-    tips: [
-      { emoji: '👗', text: 'كلاسيكي — أنيق وخالد 92%' },
-      { emoji: '✨', text: 'عصري — متجدد وجريء 78%' },
-      { emoji: '🌿', text: 'بوهيمي — ناعم وطبيعي 65%' },
-      { emoji: '💎', text: 'فاخر — فخم ومتكامل 55%' },
-    ],
-  },
-  {
-    emoji: '💧', title: 'تحدي الترطيب', subtitle: 'تحدي 5 دقائق يومياً',
-    color: '#0d9488', bg: '#f0fdfa',
-    tips: [
-      { emoji: '☀️', text: 'الصباح — مرطب + واقي شمس' },
-      { emoji: '💧', text: 'طوال اليوم — 8 أكواب ماء' },
-      { emoji: '🌙', text: 'المساء — سيروم + مرطب ليلي' },
-      { emoji: '📅', text: 'أسبوعياً — قناع ترطيب' },
-    ],
-  },
+const CARDS: Card[] = [
+  { emoji:'💡',title:'نصائح المكياج',subtitle:'لإطلالة تدوم طويلاً',color:'#e11d48',bg:'#fff1f2',tips:[{emoji:'🧴',text:'الترطيب أولاً — بشرة مرطبة = مكياج أجمل'},{emoji:'🖌️',text:'نظفي فرشك — أسبوعياً البكتيريا تتراكم'},{emoji:'📅',text:'تاريخ الصلاحية — جددِي مكياجك كل 6-12 شهر'},{emoji:'🌙',text:'أزيلي المكياج — لا تنامي أبداً بالمكياج'}]},
+  { emoji:'🌸',title:'تذكير الربيع',subtitle:'روتينكِ يتغير مع الفصول',color:'#db2777',bg:'#fdf2f8',tips:[{emoji:'🧹',text:'جددي روتين التقشير — بشرة أنعم'},{emoji:'🧴',text:'انتقلي لمرطب أخف — مع ارتفاع الحرارة'},{emoji:'☀️',text:'اهتمي بالحماية من الشمس مبكراً'},{emoji:'🎨',text:'جربي ألوان باستيل — منعشة وناعمة'}]},
+  { emoji:'☀️',title:'تذكير الصيف',subtitle:'حماية وانتعاش',color:'#ea580c',bg:'#fff7ed',tips:[{emoji:'☀️',text:'SPF 50+ يومياً — حتى في الظل'},{emoji:'💧',text:'مرطب جل خفيف — بدل الكريم الثقيل'},{emoji:'🚰',text:'اشربي ماء كثيراً — 8 أكواب يومياً'},{emoji:'🌿',text:'تجنبي المكياج الثقيل — خففي الطبقات'}]},
+  { emoji:'❄️',title:'تذكير الشتاء',subtitle:'ترطيب وحماية',color:'#0284c7',bg:'#f0f9ff',tips:[{emoji:'🧴',text:'مرطب غني — يحمي من الهواء الجاف'},{emoji:'💋',text:'بلسم شفاه — ضروري في الشتاء'},{emoji:'🧖',text:'قناع ترطيب أسبوعي — بشرة نضرة'},{emoji:'🧣',text:'احمي بشرتكِ من الهواء البارد'}]},
+  { emoji:'📈',title:'رائج الآن',subtitle:'أحدث صيحات الجمال',color:'#e11d48',bg:'#fff1f2',tips:[{emoji:'✨',text:'البشرة الزجاجية — الترطيب قبل المكياج 🔥🔥🔥'},{emoji:'🎨',text:'ألوان الباستيل — ناعمة وأنثوية 🔥🔥'},{emoji:'💋',text:'العناية بالشفاه — تينت طبيعي 🔥'},{emoji:'🌿',text:'المكياج الطبيعي — بشرة أولى 🔥🔥'}]},
+  { emoji:'🧪',title:'حمض الهيالورونيك',subtitle:'مرطب A+ يحمل 1000 ضعف وزنه ماء',color:'#d97706',bg:'#fffbeb',tips:[{emoji:'💧',text:'يوجد طبيعياً في البشرة — آمن تماماً'},{emoji:'✨',text:'مناسب لجميع أنواع البشرة'},{emoji:'🤝',text:'يدمج مع جميع المكونات — ثنائي رائع'},{emoji:'🧴',text:'يطبق على بشرة رطبة — وليس جافة'}]},
+  { emoji:'🎯',title:'تحليل الأسلوب',subtitle:'اكتشفي أسلوبكِ المثالي',color:'#c026d3',bg:'#fdf4ff',tips:[{emoji:'👗',text:'كلاسيكي — أنيق وخالد 92%'},{emoji:'✨',text:'عصري — متجدد وجريء 78%'},{emoji:'🌿',text:'بوهيمي — ناعم وطبيعي 65%'},{emoji:'💎',text:'فاخر — فخم ومتكامل 55%'}]},
+  { emoji:'💧',title:'تحدي الترطيب',subtitle:'تحدي 5 دقائق يومياً',color:'#0d9488',bg:'#f0fdfa',tips:[{emoji:'☀️',text:'الصباح — مرطب + واقي شمس'},{emoji:'💧',text:'طوال اليوم — 8 أكواب ماء'},{emoji:'🌙',text:'المساء — سيروم + مرطب ليلي'},{emoji:'📅',text:'أسبوعياً — قناع ترطيب'}]},
+  { emoji:'💦',title:'عناية في الرطوبة',subtitle:'بشرة منتعشة في الجو الرطب',color:'#0d9488',bg:'#f0fdfa',tips:[{emoji:'🧴',text:'مرطب جل — خفيف وليس كريمي'},{emoji:'🧻',text:'ورق نشاف — لإزالة اللمعان'},{emoji:'💄',text:'مكياج خفيف — بدون طبقات ثقيلة'},{emoji:'💧',text:'تونر مات — يقلل إفراز الدهون'}]},
+  { emoji:'🏜️',title:'عناية في الجفاف',subtitle:'بشرة مرطبة في المناخ الجاف',color:'#d97706',bg:'#fffbeb',tips:[{emoji:'🧴',text:'مرطب كثيف — كريم غني وليس جل'},{emoji:'💧',text:'سيروم هيالورونيك — قبل المرطب'},{emoji:'🌬️',text:'مرطب جو — أثناء النوم'},{emoji:'🛡️',text:'سيراميد — يقوي حاجز البشرة'}]},
+  { emoji:'☀️',title:'عناية في الحر',subtitle:'بشرة محمية في الصيف الحار',color:'#ea580c',bg:'#fff7ed',tips:[{emoji:'🧴',text:'SPF 50+ — جدديه كل ساعتين'},{emoji:'💧',text:'سبراي مرطب — للانتعاش'},{emoji:'🧢',text:'قبعة ونظارة — حماية إضافية'},{emoji:'🧊',text:'جل الألوفيرا مبرد — بعد الشمس'}]},
+  { emoji:'❄️',title:'عناية في البرد',subtitle:'بشرة محمية في الشتاء القارس',color:'#0284c7',bg:'#f0f9ff',tips:[{emoji:'🧴',text:'بلسم منظف — بدل الجل القاسي'},{emoji:'🛡️',text:'كريم سميك قبل الخروج'},{emoji:'🧣',text:'وشاح — يحمي الوجه من الرياح'},{emoji:'💧',text:'زيت وجه — طبقة إضافية ليلاً'}]},
+  { emoji:'✈️',title:'عناية المسافرة',subtitle:'بشرتكِ بين المناخات',color:'#7c3aed',bg:'#f5f3ff',tips:[{emoji:'🧴',text:'منتجات متعددة — ترطب وتحمي'},{emoji:'💧',text:'اشربي ماء في الطائرة'},{emoji:'🎭',text:'قناع ورقي — ترطيب فوري'},{emoji:'🔄',text:'عدلي روتينك حسب مناخ وجهتك'}]},
 ];
 
 export default function BeautyTipsScreen(): JSX.Element {
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.header}>💡 نصائح وإرشادات</Text>
-      <Text style={styles.subtitle}>كل ما تحتاجينه للعناية بجمالك</Text>
-      <View style={styles.grid}>
-        {CARDS.map((card, i) => (
-          <View key={i} style={[styles.card, { borderColor: card.color + '30' }]}>
-            <View style={styles.cardHeader}>
-              <Text style={styles.cardEmoji}>{card.emoji}</Text>
-              <View style={styles.cardTitleWrap}>
-                <Text style={[styles.cardTitle, { color: card.color }]}>{card.title}</Text>
-                <Text style={styles.cardSubtitle}>{card.subtitle}</Text>
-              </View>
-            </View>
-            <View style={styles.tipsList}>
-              {card.tips.map((tip, j) => (
-                <View key={j} style={[styles.tipRow, { backgroundColor: card.bg }]}>
-                  <Text style={styles.tipEmoji}>{tip.emoji}</Text>
-                  <Text style={[styles.tipText, { color: card.color }]}>{tip.text}</Text>
-                </View>
-              ))}
-            </View>
-          </View>
-        ))}
-      </View>
-    </ScrollView>
+    <ScrollView style={s.c} contentContainerStyle={s.i}><Text style={s.h}>💡 نصائح وإرشادات</Text><Text style={s.sub}>كل ما تحتاجينه للعناية بجمالك</Text><View style={s.grid}>{CARDS.map((c,i)=>(<View key={i} style={[s.card,{borderColor:c.color+'30'}]}><View style={s.ch}><Text style={s.ce}>{c.emoji}</Text><View style={s.cw}><Text style={[s.ct,{color:c.color}]}>{c.title}</Text><Text style={s.cs}>{c.subtitle}</Text></View></View><View style={s.tl}>{c.tips.map((t,j)=>(<View key={j} style={[s.tr,{backgroundColor:c.bg}]}><Text style={s.te}>{t.emoji}</Text><Text style={[s.tt,{color:c.color}]}>{t.text}</Text></View>))}</View></View>))}</View></ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fdf2f8' },
-  content: { padding: 16, paddingTop: 40, paddingBottom: 60 },
-  header: { fontSize: 24, fontWeight: '800', color: '#111827', textAlign: 'center', marginBottom: 6 },
-  subtitle: { fontSize: 13, color: '#6b7280', textAlign: 'center', marginBottom: 24, lineHeight: 22 },
-  grid: { gap: 12 },
-  card: { backgroundColor: '#fff', borderRadius: 16, borderWidth: 1, padding: 16, marginBottom: 4, shadowColor: '#000', shadowOpacity: 0.04, shadowRadius: 8, shadowOffset: { width: 0, height: 2 } },
-  cardHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 12 },
-  cardEmoji: { fontSize: 28 },
-  cardTitleWrap: { flex: 1 },
-  cardTitle: { fontSize: 15, fontWeight: '700' },
-  cardSubtitle: { fontSize: 11, color: '#9ca3af', marginTop: 2 },
-  tipsList: { gap: 6 },
-  tipRow: { flexDirection: 'row', alignItems: 'center', gap: 8, borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10 },
-  tipEmoji: { fontSize: 14, width: 20, textAlign: 'center' },
-  tipText: { fontSize: 12, fontWeight: '500', flex: 1, textAlign: 'right' },
-});
+const s=StyleSheet.create({c:{flex:1,backgroundColor:'#fdf2f8'},i:{padding:16,paddingTop:40,paddingBottom:60},h:{fontSize:24,fontWeight:'800',color:'#111827',textAlign:'center',marginBottom:6},sub:{fontSize:13,color:'#6b7280',textAlign:'center',marginBottom:24,lineHeight:22},grid:{gap:12},card:{backgroundColor:'#fff',borderRadius:16,borderWidth:1,padding:16,marginBottom:4},ch:{flexDirection:'row',alignItems:'center',gap:10,marginBottom:12},ce:{fontSize:28},cw:{flex:1},ct:{fontSize:15,fontWeight:'700'},cs:{fontSize:11,color:'#9ca3af',marginTop:2},tl:{gap:6},tr:{flexDirection:'row',alignItems:'center',gap:8,borderRadius:10,paddingHorizontal:12,paddingVertical:10},te:{fontSize:14,width:20,textAlign:'center'},tt:{fontSize:12,fontWeight:'500',flex:1,textAlign:'right'}});
