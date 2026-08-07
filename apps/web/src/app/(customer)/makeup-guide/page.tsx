@@ -12,6 +12,8 @@ import {
   BeautyMakeupPowderCard, BeautyMakeupPrimerCard, BeautyMakeupMistCard,
   BeautyMakeupRemoveCard, BeautyMakeupOrganizeCard,
   BeautyMakeupTipsCard,
+  BeautyFaceShapeCard, BeautyContourGuideCard, BeautyBlushPlacementCard,
+  BeautyBrowShapeCard, BeautyLipShapeCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -64,6 +66,17 @@ export default function MakeupGuidePage(): JSX.Element {
             </div>
 
             <BeautyMakeupTipsCard />
+
+            {/* Face Shape & Styling */}
+            <BeautyFaceShapeCard />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyContourGuideCard />
+              <BeautyBlushPlacementCard />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyBrowShapeCard />
+              <BeautyLipShapeCard />
+            </div>
 
             {/* Looks */}
             <div className="grid gap-4 sm:grid-cols-2">
