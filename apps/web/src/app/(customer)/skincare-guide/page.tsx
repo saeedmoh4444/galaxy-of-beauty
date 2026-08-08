@@ -27,6 +27,7 @@ import {
   BeautyEyeMassageCard, BeautyEyeSerumCard,
   BeautyAcneScarsCard, BeautyPieScarsCard, BeautyPoreRefiningCard,
   BeautyPostAcneMarksCard, BeautyScarTreatmentCard,
+  BeautyMaskneCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
