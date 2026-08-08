@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Card, Button, formatCurrency,
   BeautyBreakoutSOSCard, BeautySunburnReliefCard, BeautyPuffyEyesCard,
   BeautyChappedLipsCard, BeautyRednessReliefCard,
+  BeautyAfterBotoxCard, BeautyAfterFillerCard, BeautyAfterLaserCard,
+  BeautyAfterPeelCard, BeautyAfterWaxCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -73,6 +75,17 @@ export default function BeautyRescuePage(): JSX.Element {
         <BeautyPuffyEyesCard />
         <BeautyChappedLipsCard />
         <BeautyRednessReliefCard />
+      </div>
+
+      {/* Post-Procedure Care */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-8">
+        <BeautyAfterBotoxCard />
+        <BeautyAfterFillerCard />
+        <BeautyAfterLaserCard />
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2 mt-4">
+        <BeautyAfterPeelCard />
+        <BeautyAfterWaxCard />
       </div>
     </DashboardLayout>
   );
