@@ -7,9 +7,9 @@ const CUSTOMER: JwtPayload = { id: 1, role: 'CUSTOMER', email: 'customer@test.co
 describe('Beauty Courses — verified', () => {
   it('should list courses as public', async () => {
     const caller = (appRouter as any).createCaller({ user: null, ip: '127.0.0.1' });
-    const courses = await caller.beautyCourses.list({ page: 1, limit: 5 });
+    const courses = await caller.beautyCourses.list();
     expect(courses).toBeDefined();
-    expect(Array.isArray(courses.items)).toBe(true);
+    expect(Array.isArray(courses)).toBe(true);
   }, 15000);
 
   it('should get my courses as customer', async () => {
