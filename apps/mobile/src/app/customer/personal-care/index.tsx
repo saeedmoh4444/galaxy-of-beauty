@@ -74,6 +74,7 @@ const CARDS: CareCard[] = [
   { emoji:'📱',title:'تجاعيد الجوال',subtitle:'Tech Neck — أثر النظر للأسفل',color:'#0284c7',bg:'#f0f9ff',tips:[{emoji:'📱',text:'ارفعي الجوال — لمستوى العين'},{emoji:'🪑',text:'وضعية الجلوس — ظهر مستقيم'},{emoji:'🧘',text:'تمارين الرقبة — مد وإطالة يومياً'},{emoji:'🧴',text:'كريمات الببتيد — تحفز الكولاجين'}]},
   { emoji:'🎭',title:'قناع الرقبة',subtitle:'علاج مكثف للرقبة',color:'#7c3aed',bg:'#f5f3ff',tips:[{emoji:'🧴',text:'قناع سيليكون — يعاد استخدامه'},{emoji:'💧',text:'قناع ورقي للرقبة — مرة أسبوعياً'},{emoji:'⏱️',text:'20-30 دقيقة — وقت الاسترخاء'},{emoji:'🌙',text:'قبل النوم — البشرة تتجدد ليلاً'}]},
   { emoji:'💪',title:'شد الرقبة',subtitle:'تمارين وكريمات للرقبة المشدودة',color:'#0d9488',bg:'#f0fdfa',tips:[{emoji:'😮',text:'تمرين O —— مددي شفاهكِ — 15 مرة'},{emoji:'🦒',text:'مد الرقبة — انظري للسقف 10 ثوانٍ'},{emoji:'🧴',text:'كريمات الشد — كافيين وببتيدات'},{emoji:'💆',text:'مساج للأعلى — من الترقوة للذقن'}]},
+  { emoji:'👜',title:'حقيبة طوارئ الجمال',subtitle:'أساسيات في شنطتكِ',color:'#e11d48',bg:'#fff1f2',tips:[{emoji:'💄',text:'أحمر شفاه — لون محايد'},{emoji:'🧻',text:'ورق نشاف — يزيل اللمعان'},{emoji:'🪞',text:'مرآة صغيرة — للمسات السريعة'},{emoji:'💊',text:'لصقة حبوب — للطوارئ'}]},
 ];
 
 export default function PersonalCareScreen(): JSX.Element {

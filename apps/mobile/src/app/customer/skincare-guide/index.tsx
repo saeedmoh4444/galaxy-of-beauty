@@ -137,6 +137,9 @@ const INGREDIENTS: IngredientCard[] = [
   { emoji:'🔍',title:'تصغير المسام',subtitle:'لا تغلق — لكن تصغر',color:'#0d9488',bg:'#f0fdfa',tips:[{emoji:'🧹',text:'BHA — ينظف المسام من الداخل'},{emoji:'🔬',text:'نياسيناميد — ينظم الدهون'},{emoji:'🧊',text:'ماء بارد — يقلص مؤقتاً'},{emoji:'🧴',text:'برايمر — يملأ المسام بصرياً'}]},
   { emoji:'✨',title:'تفتيح آثار الحبوب',subtitle:'روتين لتوحيد لون البشرة',color:'#d97706',bg:'#fffbeb',tips:[{emoji:'🍊',text:'فيتامين C — صباحاً لتفتيح التصبغات'},{emoji:'🌿',text:'أزيليك أسيد — آمن للحوامل'},{emoji:'🧪',text:'أحماض ألفا — تقشير كيميائي'},{emoji:'⏱️',text:'الصبر — النتائج 8-12 أسبوعاً'}]},
   { emoji:'🔬',title:'علاجات الندبات',subtitle:'من الكريمات للإجراءات',color:'#7c3aed',bg:'#f5f3ff',tips:[{emoji:'🧴',text:'سيليكون جل — أفضل علاج موضعي'},{emoji:'💉',text:'مايكرونيدلنغ — كولاجين جديد'},{emoji:'⚡',text:'ليزر فراكشنال — يعيد سطح البشرة'},{emoji:'📅',text:'العلاج المبكر — أفضل من القديمة'}]},
+  { emoji:'😷',title:'حبوب الكمامة',subtitle:'Mask-Ne — كيف تتعاملين معها',color:'#0d9488',bg:'#f0fdfa',tips:[{emoji:'🧼',text:'غيري الكمامة يومياً'},{emoji:'🧴',text:'مرطب خفيف — حاجز حماية'},{emoji:'💄',text:'تجنبي المكياج تحت الكمامة'},{emoji:'🧹',text:'نظفي وجهك بعد نزعها'}]},
+  { emoji:'🇰🇷',title:'الروتين الكوري',subtitle:'الترتيب الصحيح للعناية',color:'#ec4899',bg:'#fdf2f8',tips:[{emoji:'1️⃣',text:'زيت + غسول — تنظيف مزدوج'},{emoji:'2️⃣',text:'مقشر — مرة أسبوعياً'},{emoji:'3️⃣',text:'تونر — يرطب ويهيئ'},{emoji:'4️⃣',text:'إسينس — قلب الروتين الكوري'}]},
+  { emoji:'🇯🇵',title:'الروتين الياباني',subtitle:'جمال هادئ — بشرة كالخزف',color:'#e11d48',bg:'#fff1f2',tips:[{emoji:'🧴',text:'طبقات خفيفة — لوشن سيروم كريم'},{emoji:'☀️',text:'واقي شمس — أساس الجمال الياباني'},{emoji:'💆',text:'مساج الوجه — يومياً'},{emoji:'🍵',text:'الشاي الأخضر — من الداخل والخارج'}]},
 ];
 
 export default function SkincareGuideScreen(): JSX.Element {
