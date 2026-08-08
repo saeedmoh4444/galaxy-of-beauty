@@ -17,6 +17,7 @@ import {
   BeautyTravelPackingCard, BeautyDeclutterCard,
   BeautyNeckCareCard, BeautyDecolletageCard, BeautyTechNeckCard,
   BeautyNeckMaskCard, BeautyNeckFirmingCard,
+  BeautyEmergencyKitCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -113,6 +114,7 @@ export default function PersonalCarePage(): JSX.Element {
               <BeautyNeckMaskCard />
               <BeautyNeckFirmingCard />
             </div>
+            <BeautyEmergencyKitCard />
           </div>
 
           <div className="space-y-6">

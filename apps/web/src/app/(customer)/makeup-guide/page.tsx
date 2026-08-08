@@ -18,6 +18,7 @@ import {
   BeautyDateNightCard, BeautyPhotoReadyCard,
   BeautyFairSkinCard, BeautyMediumSkinCard, BeautyDarkSkinCard,
   BeautyUndertoneCard, BeautySkinToneMatchCard,
+  BeautyGlassesMakeupCard, BeautyContactLensCareCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -114,6 +115,12 @@ export default function MakeupGuidePage(): JSX.Element {
               <BeautyDarkSkinCard />
             </div>
             <BeautySkinToneMatchCard />
+
+            {/* Glasses & Contacts */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyGlassesMakeupCard />
+              <BeautyContactLensCareCard />
+            </div>
 
             {/* Occasion Looks */}
             <BeautyPartyPrepCard />

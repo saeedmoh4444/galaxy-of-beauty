@@ -11,6 +11,7 @@ import {
   BeautyColdClimateCard, BeautyTravelClimateCard,
   BeautySkincareMistakesCard, BeautyMakeupMistakesCard, BeautyHairMistakesCard,
   BeautyOverExfoliatingCard, BeautyProductOverloadCard,
+  BeautyEidGlowCard, BeautyEidHairCard, BeautyEidNailsCard, BeautyEidPerfumeCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -85,6 +86,15 @@ export default function BeautyTipsPage(): JSX.Element {
               <BeautyOverExfoliatingCard />
               <BeautyProductOverloadCard />
             </div>
+
+            {/* Eid Preparation */}
+            <BeautyEidGlowCard />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyEidHairCard />
+              <BeautyEidNailsCard />
+            </div>
+            <BeautyEidPerfumeCard />
+          </div>
           </div>
 
           <div className="space-y-6">
