@@ -4,7 +4,7 @@ import { api } from '@/lib/trpc';
 import {
   PageContainer, PageTitle,
   TechnicianCRMCard, BusinessDashboardCard, PricingCoachCard,
-  TaxHelperCard, MicroloanBadge, FranchiseCard,
+  TaxHelperCard, MicroLoanBadge, FranchiseCard,
   SheLeadsBadge, SheLeadsProgramCard, BeautyRewardsCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -37,7 +37,7 @@ export default function ProToolsPage(): JSX.Element {
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <TaxHelperCard revenue={{ monthly: 8500, vat: 1275 }} quarter="الربع الثالث" />
-              <MicroloanBadge maxAmount={50000} interestRate={0} partnerBank="بنك التنمية الاجتماعية" />
+              <MicroLoanBadge maxAmount={50000} interestRate={0} partnerBank="بنك التنمية الاجتماعية" />
             </div>
             <FranchiseCard investmentRange="100,000 - 250,000 ر.س" expectedRevenue="30,000 - 80,000 ر.س" existingFranchises={12} />
             <SheLeadsProgramCard participants={34} duration="6 أشهر" />

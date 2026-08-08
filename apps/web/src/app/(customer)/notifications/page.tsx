@@ -28,7 +28,7 @@ export default function NotificationsPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">الإشعارات</h1>
-          <Button variant="outline" size="sm" onClick={() => markAllReadMut.mutate()} loading={markAllReadMut.isPending}>
+          <Button variant="outline" size="sm" onClick={() => markAllReadMut.mutate({})} loading={markAllReadMut.isPending}>
             تحديد الكل كمقروء
           </Button>
         </div>

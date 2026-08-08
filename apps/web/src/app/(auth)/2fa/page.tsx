@@ -80,7 +80,7 @@ export default function TwoFactorPage(): JSX.Element {
                 <Button
                   variant="danger"
                   className="w-full"
-                  onClick={() => disableMut.mutate()}
+                  onClick={() => disableMut.mutate({})}
                   loading={disableMut.isPending}
                 >
                   تعطيل المصادقة الثنائية
@@ -107,7 +107,7 @@ export default function TwoFactorPage(): JSX.Element {
 
                   <Button
                     className="w-full"
-                    onClick={() => setupMut.mutate()}
+                    onClick={() => setupMut.mutate({})}
                     loading={setupMut.isPending}
                   >
                     بدء الإعداد

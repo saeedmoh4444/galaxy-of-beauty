@@ -8,15 +8,10 @@ import {
   BeautyConciergeCard, RandomActOfBeauty, JustBecauseFlowers,
   HandwrittenNote, MirrorStickerCard, BirthdayMonthBadge,
   BeautyTimeCapsuleCard, BeautyDreamBoardCard, BeautySecretSantaCard,
-  BeautyGamificationCard, BeautyQuickTipCard, BeautyAffirmationCard,
+  BeautyAffirmationCard, BeautyQuickTipCard, BeautyAffirmationCard,
   BeautyReferralLeaderboardCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-
-// Placeholder for BeautyGamificationCard
-const BeautyGamificationCard = ({ challenges, className }: { challenges?: Array<{ id: string; title: string; emoji: string; points: number; days: number }>; className?: string }) => (
-  <div className={className}>🎮 Gamification — coming soon</div>
-);
 
 export default function BeautyInnovationPage(): JSX.Element {
   const weather = (api as any).weatherBeauty?.getAdvice?.useQuery?.({ condition: 'hot', temp: 42 }) as any;

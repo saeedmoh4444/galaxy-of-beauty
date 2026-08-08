@@ -6,6 +6,8 @@ import {
   BeautyNailPolishCard, BeautyNailGelCard,
   BeautyParaffinCard, BeautyHandMaskCard, BeautyFootSoakCard,
   BeautyNailStrengthenCard, BeautyCallusCareCard,
+  BeautyHandsCareCard, BeautyFootCareCard, BeautyPerfumeCard,
+  BeautyLipsCareCard, BeautyJewelryCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 

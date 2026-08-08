@@ -55,7 +55,7 @@ export default function WellnessPage(): JSX.Element {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <SkinAnalysisCard concerns={(skinAnalysis?.data?.concerns as string[]) ?? ['dryness', 'dark_spots']} />
+              <SkinAnalysisCard concerns={((skinAnalysis?.data?.concerns as string[]) ?? ['dryness', 'dark_spots']) as any} />
               <CycleResourceCard phase="follicular" />
             </div>
 

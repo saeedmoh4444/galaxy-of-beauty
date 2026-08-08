@@ -6,6 +6,8 @@ import {
   BeautyPerfumeMuskCard, BeautyPerfumeRoseCard, BeautyPerfumeAmberCard,
   BeautyPerfumeSaffronCard, BeautyPerfumeMixingCard, BeautyPerfumeStorageCard,
   BeautyPerfumeOccasionCard,
+  BeautySkincareMistCard, BeautyHairCareCard, BeautyNailCareCard,
+  BeautyLipsCareCard, BeautyJewelryCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 

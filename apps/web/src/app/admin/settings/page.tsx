@@ -88,7 +88,7 @@ export default function AdminSettingsPage(): JSX.Element {
           </span>
           <Button
             variant={maintenanceMode ? 'primary' : 'danger'}
-            onClick={() => toggleMaintenanceMut.mutate()}
+            onClick={() => toggleMaintenanceMut.mutate({})}
             loading={toggleMaintenanceMut.isPending}
           >
             {maintenanceMode ? 'إيقاف الصيانة' : 'تفعيل الصيانة'}

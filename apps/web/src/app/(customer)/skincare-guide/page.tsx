@@ -29,8 +29,9 @@ import {
   BeautyPostAcneMarksCard, BeautyScarTreatmentCard,
   BeautyMaskneCard,
   BeautyKoreanRoutineCard, BeautyJapaneseRoutineCard,
-  BeautyPerfumeCard, BeautyNailCareCard, BeautyLipsCareCard,
-  BeautyHandsCareCard, BeautyFootCareCard, BeautyTeethCareCard,
+  BeautyPerfumeCard, BeautyHairCareCard, BeautyNailCareCard,
+  BeautyLipsCareCard, BeautyHandsCareCard, BeautyFootCareCard,
+  BeautyTeethCareCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 

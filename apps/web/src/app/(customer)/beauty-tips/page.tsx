@@ -56,7 +56,7 @@ export default function BeautyTipsPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyQuickTipCard tip={{
                 emoji: '☀️', title: 'واقي الشمس', body: 'ضعي واقي الشمس كل ساعتين عند التعرض للشمس المباشرة. الكمية المناسبة: نصف ملعقة صغيرة للوجه.',
-                category: 'عناية',
+                source: 'غالاكسي بيوتي',
               }} />
               <BeautyMicroChallengeCard challenge={{
                 title: 'تحدي الترطيب', emoji: '💧', duration: '5 دقائق',

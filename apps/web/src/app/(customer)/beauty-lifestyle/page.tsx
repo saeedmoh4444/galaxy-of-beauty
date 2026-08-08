@@ -7,7 +7,7 @@ import {
   BeautySubscriptionCard, SubscriptionGiftCard, BeautyBudgetPlanner,
   BeautyPriceDropHistoryCard, PriceAlertBadge, StudentDiscountBadge,
   LayawayBadge, BeautySavingsMilestoneCard, TaxHelperCard,
-  MicroloanBadge, BeautySavingsGoal,
+  MicroLoanBadge, BeautySavingsGoal,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -41,7 +41,7 @@ export default function BeautyLifestylePage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-3">
               <StudentDiscountBadge discount={15} university="جامعة الملك سعود" />
               <LayawayBadge totalPrice={600} installments={3} installmentAmount={200} remaining={1} />
-              <MicroloanBadge maxAmount={50000} interestRate={0} />
+              <MicroLoanBadge maxAmount={50000} interestRate={0} />
             </div>
             <BeautySavingsMilestoneCard saved={1500} milestones={[500, 1000, 2000, 5000, 10000]} />
             <TaxHelperCard revenue={{ monthly: 8500, vat: 1275 }} />

@@ -18,6 +18,8 @@ import {
   BeautyNeckCareCard, BeautyDecolletageCard, BeautyTechNeckCard,
   BeautyNeckMaskCard, BeautyNeckFirmingCard,
   BeautyEmergencyKitCard,
+  BeautyJewelryCard, BeautyBagCard, BeautyScarfCard,
+  BeautyHandsCareCard, BeautyFootCareCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 

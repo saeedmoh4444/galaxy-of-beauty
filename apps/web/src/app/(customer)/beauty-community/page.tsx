@@ -8,6 +8,7 @@ import {
   BeautyLanguageExchangeCard, BeautyProgressPhotoCard,
   BeautyVirtualConsultationCard, BeautyRoutineSwapCard,
   BeautyQuietSpaceCard, BeautyPrivacyShieldCard, BeautyMoodBoardCard,
+  BeautyAffirmationCard, BeautyGratitudeCard, BeautyDailyCheckInCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -21,7 +22,7 @@ export default function BeautyCommunityPage(): JSX.Element {
           <div className="lg:col-span-2 space-y-6">
             {/* Squad & Friends */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautySquadCard squad={{ name: 'فرقة الرياض', members: 4, nextMeetup: '15 أغسطس', emoji: '💅' }} />
+              <BeautySquadCard squad={{ name: 'فرقة الرياض', members: 4, emoji: '💅' }} />
               <BeautyFriendActivityCard activities={[{ friend: 'نورة', action: 'حجزت مكياج', emoji: '💄', time: 'قبل ساعتين' }, { friend: 'مها', action: 'أنهت تحدي العناية', emoji: '✨', time: 'قبل 5 ساعات' }]} />
             </div>
 
@@ -32,33 +33,33 @@ export default function BeautyCommunityPage(): JSX.Element {
             </div>
 
             {/* Learning & Growth */}
-            <BeautyScholarshipCard program={{ name: 'دورة مكياج احترافي', value: 3000, seats: 50, deadline: '30 سبتمبر 2026' }} />
+            <BeautyScholarshipCard program={{ name: 'دورة مكياج احترافي', value: 3000, seats: 50 }} />
 
             {/* Savings & Coupons */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyCouponCard code="BEAUTY20" discount={20} expiresAt="2026-12-31" minSpend={150} />
-              <BeautySavingsChallengeCard goal={5000} saved={3200} participants={28} />
+              <BeautyCouponCard code="BEAUTY20" discount={20} expiresAt="2026-12-31" />
+              <BeautySavingsChallengeCard challenge={{ title: 'تحدي الادخار', emoji: '💰', target: 5000, current: 3200 }} />
             </div>
 
             {/* Community Features */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyTechnicianQuoteCard quote="الجمال يبدأ من الثقة — وثقتكِ تبدأ من العناية بنفسكِ" author="نورة" role="خبيرة تجميل" />
+              <BeautyTechnicianQuoteCard quote={{ text: 'الجمال يبدأ من الثقة — وثقتكِ تبدأ من العناية بنفسكِ', author: 'نورة', role: 'خبيرة تجميل' }} />
               <BeautyLanguageExchangeCard fromLang="ar" />
             </div>
 
             {/* Digital Tools */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyVirtualConsultationCard available={true} nextSlot="اليوم 4:00 مساءً" />
-              <BeautyProgressPhotoCard photos={3} startDate="2026-06-01" />
+              <BeautyVirtualConsultationCard consultant={{ name: 'د. نورة', specialty: 'بشرة', emoji: '👩‍⚕️' }} />
+              <BeautyProgressPhotoCard photos={[{ id: 1, url: '', date: '2026-06-01' }]} />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyRoutineSwapCard />
-              <BeautyQuietSpaceCard available={true} />
+              <BeautyRoutineSwapCard swaps={[{ from: 'صباح', to: 'مساء', product: 'سيروم فيتامين C', reason: 'تجنب الشمس' }]} />
+              <BeautyQuietSpaceCard features={['إضاءة خافتة', 'موسيقى هادئة', 'بدون ضوضاء']} />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyPrivacyShieldCard />
+              <BeautyPrivacyShieldCard status="active" />
               <BeautyMoodBoardCard items={[{ emoji: '🌊', label: 'أزرق محيطي' }, { emoji: '🌸', label: 'وردي ناعم' }, { emoji: '✨', label: 'ذهبي لامع' }]} />
             </div>
           </div>

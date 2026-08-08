@@ -19,6 +19,8 @@ import {
   BeautyFairSkinCard, BeautyMediumSkinCard, BeautyDarkSkinCard,
   BeautyUndertoneCard, BeautySkinToneMatchCard,
   BeautyGlassesMakeupCard, BeautyContactLensCareCard,
+  BeautySkincareVitaminCCard, BeautySkincareRetinolCard, BeautyNailCareCard,
+  BeautyPerfumeCard, BeautyLipsCareCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 

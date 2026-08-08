@@ -6,7 +6,7 @@ import {
   BeautyTip, BeautyEmergency, PeriodFriendlyBadge, SalonAmenities,
   PrayerRoomBadge, BeautyComparisonCard, BeautySubscriptionCard,
   BookingSummary, BeautyPriceDropHistoryCard, BeautyRewardsCard,
-  MicroloanBadge, PricingCoachCard, TechnicianCRMCard, BusinessDashboardCard,
+  MicroLoanBadge, PricingCoachCard, TechnicianCRMCard, BusinessDashboardCard,
   LoyaltyDividendBadge, PriceAlertBadge, LayawayBadge, SubscriptionGiftCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -25,7 +25,7 @@ export default function BeautyServicesPage(): JSX.Element {
           <div className="lg:col-span-2 space-y-6">
             <div className="grid gap-4 sm:grid-cols-3">
               <BeautyTip />
-              <BeautyEmergency />
+              <BeautyEmergency onBook={() => {}} />
               <PeriodFriendlyBadge />
             </div>
 
@@ -44,7 +44,7 @@ export default function BeautyServicesPage(): JSX.Element {
                 { service: 'مانيكير سبا', emoji: '💅', oldPrice: 150, newPrice: 99, date: '2026-08-01' },
                 { service: 'مكياج احترافي', emoji: '💄', oldPrice: 350, newPrice: 299, date: '2026-07-28' },
               ]} />
-              <BookingSummary booking={{ code: 'GOB-1234', service: 'مانيكير سبا', technician: 'نورة', date: '15 أغسطس 2026', time: '10:00', status: 'confirmed' }} />
+              <BookingSummary booking={{ code: 'GOB-1234', service: 'مانيكير سبا', technician: 'نورة', date: '15 أغسطس 2026', time: '10:00', status: 'confirmed', price: 99 }} />
             </div>
 
             <BeautyRewardsCard points={loyalty?.data?.points ?? 1250} tier={(loyalty?.data?.tier?.toLowerCase() as any) ?? 'gold'} />
@@ -57,7 +57,7 @@ export default function BeautyServicesPage(): JSX.Element {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">
-              <MicroloanBadge maxAmount={50000} interestRate={0} partnerBank="بنك التنمية الاجتماعية" />
+              <MicroLoanBadge maxAmount={50000} interestRate={0} partnerBank="بنك التنمية الاجتماعية" />
               <SubscriptionGiftCard friendName="مها" />
               <LayawayBadge totalPrice={600} installments={3} installmentAmount={200} remaining={2} />
             </div>
