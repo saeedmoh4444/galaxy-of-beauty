@@ -9,6 +9,8 @@ import {
   GrandmotherPackageCard,
   BeautyBridalSkincareCard, BeautyBridalBodyCareCard, BeautyBridalEmergencyCard,
   BeautyBridalTrialCard, BeautyBridalGlowCard,
+  BeautyFirstMakeupCard, BeautySchoolMakeupCard, BeautyTeenAcneCard,
+  BeautyTeenConfidenceCard, BeautyDaughterMomCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -72,6 +74,17 @@ export default function FamilyBeautyPage(): JSX.Element {
             />
             </div>
             <DadApprovalBadge serviceName="درس مكياج" age={14} parentName="الأب" />
+
+            {/* Teen Beauty */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyFirstMakeupCard />
+              <BeautySchoolMakeupCard />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyTeenAcneCard />
+              <BeautyTeenConfidenceCard />
+            </div>
+            <BeautyDaughterMomCard />
           </div>
         </div>
       </PageContainer>
