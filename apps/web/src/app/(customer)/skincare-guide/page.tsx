@@ -23,6 +23,8 @@ import {
   BeautyBakuchiolCard, BeautyIngredientMixingCard,
   BeautyOxygenFacialCard, BeautyDiamondFacialCard, BeautyGoldFacialCard,
   BeautyVampireFacialCard, BeautyCaviarFacialCard,
+  BeautyDarkCirclesCard, BeautyEyeBagsCard, BeautyCrowsFeetCard,
+  BeautyEyeMassageCard, BeautyEyeSerumCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -64,6 +66,17 @@ export default function SkincareGuidePage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyEyeCreamCard />
               <BeautyFaceOilCard />
+            </div>
+
+            {/* Eye Area */}
+            <BeautyDarkCirclesCard />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyEyeBagsCard />
+              <BeautyCrowsFeetCard />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyEyeSerumCard />
+              <BeautyEyeMassageCard />
             </div>
 
             {/* Active Ingredients */}
