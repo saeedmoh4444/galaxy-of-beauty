@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency, ErrorAlert } from '@galaxy/ui';
+import { Card, DashboardSkeleton, Button, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyDashboardPage(): JSX.Element {
@@ -14,7 +14,7 @@ export default function BeautyDashboardPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div><h1 className="text-2xl font-bold">🏠 لوحة الجمال</h1><p className="mt-1 text-sm text-text-secondary">نظرة شاملة على رحلتكِ الجمالية</p></div>
 
-        {isLoading ? <CardSkeleton/> : (
+        {isLoading ? <DashboardSkeleton /> : (
           <>
             <div className="grid gap-4 sm:grid-cols-4">
               <Card padding="lg" className="text-center"><p className="text-2xl font-extrabold text-brand-600">{data?.upcomingBookings as number ?? 0}</p><p className="text-xs text-text-secondary">حجوزات قادمة</p></Card>

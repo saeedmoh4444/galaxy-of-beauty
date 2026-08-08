@@ -197,6 +197,23 @@ export function FormSkeleton({ fields = 5 }: { fields?: number }) {
   );
 }
 
+/** Skeleton that matches a horizontal KPI/metric row. */
+export function KPIRowSkeleton({ count = 4 }: { count?: number }) {
+  return (
+    <div role="status" aria-label="جاري تحميل المؤشرات" className="flex gap-4">
+      {Array.from({ length: count }, (_, i) => (
+        <div key={i} className="flex-1 rounded-2xl border border-edge bg-surface p-5">
+          <div className="animate-pulse space-y-3 text-center">
+            <div className="mx-auto h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700" />
+            <div className="mx-auto h-8 w-16 rounded bg-gray-200 dark:bg-gray-700" />
+            <div className="mx-auto h-3 w-24 rounded bg-gray-200 dark:bg-gray-700" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /** Skeleton that matches a responsive product/service grid. */
 export function GridSkeleton({ count = 8 }: { count?: number }) {
   return (

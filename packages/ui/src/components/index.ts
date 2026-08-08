@@ -1,4 +1,4 @@
-export { Skeleton, CardSkeleton, ListSkeleton, TextLineSkeleton, AvatarSkeleton, TableRowSkeleton, DashboardSkeleton, CardListSkeleton, DetailSkeleton, FormSkeleton, TableSkeleton, GridSkeleton, TextSkeleton } from './Skeleton';
+export { Skeleton, CardSkeleton, ListSkeleton, TextLineSkeleton, AvatarSkeleton, TableRowSkeleton, DashboardSkeleton, CardListSkeleton, DetailSkeleton, FormSkeleton, TableSkeleton, GridSkeleton, TextSkeleton, KPIRowSkeleton } from './Skeleton';
 export { ErrorAlert } from './ErrorAlert';
 export { EmptyState } from './EmptyState';
 export { Button } from './Button';
