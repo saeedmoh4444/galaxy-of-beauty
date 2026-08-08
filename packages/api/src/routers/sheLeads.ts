@@ -22,7 +22,7 @@ export const sheLeadsRouter = router({
       return member;
     }),
 
-  apply: customerProcedure
+  register: customerProcedure
     .input(z.object({ role: z.string().min(2).max(100), city: z.string().optional(), yearsOfExperience: z.number().int().min(0).optional(), motivation: z.string().max(500).optional() }))
     .mutation(async ({ ctx, input }) => {
       return prisma.sheLeadsMember.create({ data: { userId: ctx.user.id, role: input.role, city: input.city ?? null, yearsOfExperience: input.yearsOfExperience ?? null, status: 'PENDING' } });
