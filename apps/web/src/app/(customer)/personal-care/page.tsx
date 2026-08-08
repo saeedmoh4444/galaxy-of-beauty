@@ -15,6 +15,8 @@ import {
   BeautyBodyWrapCard, BeautyLymphaticDrainageCard,
   BeautyMakeupStorageCard, BeautyShelfLifeCard, BeautyVanityOrganizationCard,
   BeautyTravelPackingCard, BeautyDeclutterCard,
+  BeautyNeckCareCard, BeautyDecolletageCard, BeautyTechNeckCard,
+  BeautyNeckMaskCard, BeautyNeckFirmingCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -100,6 +102,17 @@ export default function PersonalCarePage(): JSX.Element {
               <BeautyTravelPackingCard />
             </div>
             <BeautyDeclutterCard />
+
+            {/* Neck & Décolletage */}
+            <BeautyNeckCareCard />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyDecolletageCard />
+              <BeautyTechNeckCard />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyNeckMaskCard />
+              <BeautyNeckFirmingCard />
+            </div>
           </div>
 
           <div className="space-y-6">
