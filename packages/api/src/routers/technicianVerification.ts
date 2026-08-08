@@ -25,5 +25,5 @@ export const technicianVerificationRouter = router({
 
   createBadge: adminProcedure
     .input(z.object({ nameJson: z.record(z.string()), emoji: z.string().default('⭐'), criteria: z.string().optional() }))
-    .mutation(async ({ input }) => prisma.technicianBadge.create({ data: { nameJson: input.nameJson, emoji: input.emoji, criteria: input.criteria ?? null } })),
+    .mutation(async ({ input }) => prisma.technicianBadge.create({ data: { nameJson: input.nameJson as any, emoji: input.emoji, criteria: input.criteria ?? null } as any })),
 });

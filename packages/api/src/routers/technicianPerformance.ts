@@ -6,13 +6,12 @@ export const technicianPerformanceRouter = router({
   myStats: technicianProcedure.query(async ({ ctx }) => {
     const tech = await prisma.technician.findUnique({ where: { userId: ctx.user.id } });
     if (!tech) return null;
-    const [totalBookings, completedBookings, cancelRate, _avgResponse] = await Promise.all([
-      prisma.booking.count({ where: { technicianId: tech.id } }),
-      prisma.booking.count({ where: { technicianId: tech.id, status: 'COMPLETED' } }),
-      prisma.booking.count({ where: { technicianId: tech.id, status: 'CANCELLED' } }),
-      prisma.booking.aggregate({ where: { technicianId: tech.id, status: { in: ['ACCEPTED', 'REJECTED'] } }, _avg: { updatedAt: true } }),
+    const [totalBookings, completedBookings, cancelledBookings] = await Promise.all([
+      prisma.booking.count({ where: { technicianId: ctx.user.id } }),
+      prisma.booking.count({ where: { technicianId: ctx.user.id, status: 'COMPLETED' } }),
+      prisma.booking.count({ where: { technicianId: ctx.user.id, status: 'CANCELLED' } }),
     ]);
-    return { totalBookings, completedBookings, cancelRate: totalBookings > 0 ? Math.round((cancelRate / totalBookings) * 100) : 0, rating: tech.ratingAvg };
+    return { totalBookings, completedBookings, cancelRate: totalBookings > 0 ? Math.round((cancelledBookings / totalBookings) * 100) : 0, rating: tech.ratingAvg };
   }),
 
   leaderboard: adminProcedure

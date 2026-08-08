@@ -9,7 +9,7 @@ export const customerSegmentsRouter = router({
 
   create: adminProcedure
     .input(z.object({ name: z.string().min(2).max(100), criteria: z.record(z.unknown()), description: z.string().max(500).optional() }))
-    .mutation(async ({ input }) => prisma.customerSegment.create({ data: { name: input.name, criteria: input.criteria, description: input.description ?? null } })),
+    .mutation(async ({ input }) => prisma.customerSegment.create({ data: { name: input.name, criteria: input.criteria as any, description: input.description ?? null } })),
 
   count: adminProcedure
     .input(z.object({ segmentId: z.number().int().positive() }))

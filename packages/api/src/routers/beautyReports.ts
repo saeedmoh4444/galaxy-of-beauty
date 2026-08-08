@@ -22,5 +22,5 @@ export const beautyReportsRouter = router({
 
   save: adminProcedure
     .input(z.object({ type: z.string(), data: z.record(z.unknown()) }))
-    .mutation(async ({ input }) => prisma.beautyReport.create({ data: { type: input.type, data: input.data } })),
+    .mutation(async ({ input }) => prisma.beautyReport.create({ data: { type: input.type, data: input.data as any } })),
 });

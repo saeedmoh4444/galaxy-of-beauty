@@ -10,7 +10,7 @@ export const beautyCirclesRouter = router({
       const where: Record<string, unknown> = {};
       if (input.topic) where.topic = input.topic;
       const [items, total] = await Promise.all([
-        prisma.beautyCircle.findMany({ where, orderBy: { members: 'desc' }, skip: (input.page - 1) * input.limit, take: input.limit, include: { _count: { select: { members: true } } } }),
+        prisma.beautyCircle.findMany({ where, orderBy: { members: 'desc' }, skip: (input.page - 1) * input.limit, take: input.limit }),
         prisma.beautyCircle.count({ where }),
       ]);
       return { items, total, page: input.page, pages: Math.ceil(total / input.limit) };
@@ -19,7 +19,7 @@ export const beautyCirclesRouter = router({
   getById: customerProcedure
     .input(z.object({ id: z.number().int().positive() }))
     .query(async ({ input }) => {
-      const circle = await prisma.beautyCircle.findUnique({ where: { id: input.id }, include: { members: { select: { user: { select: { id: true, name: true, avatarUrl: true } } } } } });
+      const circle = await prisma.beautyCircle.findUnique({ where: { id: input.id }, include: { circleMembers: { select: { user: { select: { id: true, name: true, avatarUrl: true } } } } } });
       if (!circle) throw notFound('Beauty circle', input.id);
       return circle;
     }),

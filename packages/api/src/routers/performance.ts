@@ -47,24 +47,22 @@ export const performanceRouter = router({
   leaderboard: adminProcedure
     .input(z.object({ limit: z.number().int().min(1).max(50).default(10), sortBy: z.enum(['bookings', 'earnings', 'rating']).default('bookings') }))
     .query(async ({ input }) => {
-      // Use include with _count to avoid N+1 — single query with joins
+      // Use simple query — bookings/reviews counted on User, not Technician
       const techs = await prisma.technician.findMany({
         where: { kycStatus: 'VERIFIED', user: { isActive: true } },
-        include: {
+        select: {
           user: { select: { name: true, avatarUrl: true } },
-          _count: { select: { bookings: true, reviews: true } },
-          reviews: { select: { rating: true } },
+          ratingAvg: true,
+          completedBookings: true,
         },
-        take: 50, // fetch more than needed for in-memory sort
+        take: 50,
       });
 
-      const rows = techs.map((t) => ({
-        name: t.user.name,
-        bookings: t._count.bookings,
-        reviews: t._count.reviews,
-        rating: t.reviews.length > 0
-          ? Math.round((t.reviews.reduce((sum, r) => sum + r.rating, 0) / t.reviews.length) * 10) / 10
-          : 0,
+      const rows = techs.map((t: any) => ({
+        name: t.user?.name,
+        bookings: t.completedBookings,
+        reviews: 0,
+        rating: Number(t.ratingAvg) || 0,
       }));
 
       if (input.sortBy === 'bookings') rows.sort((a, b) => b.bookings - a.bookings);

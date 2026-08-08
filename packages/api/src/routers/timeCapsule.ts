@@ -6,7 +6,7 @@ export const timeCapsuleRouter = router({
   save: customerProcedure
     .input(z.object({ name: z.string().min(2).max(100), routineJson: z.record(z.unknown()), openDate: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      return prisma.timeCapsule.create({ data: { userId: ctx.user.id, name: input.name, routineJson: input.routineJson, openDate: input.openDate } });
+      return prisma.timeCapsule.create({ data: { userId: ctx.user.id, name: input.name, routineJson: input.routineJson as any, openDate: input.openDate } });
     }),
 
   myCapsules: customerProcedure

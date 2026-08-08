@@ -12,7 +12,7 @@ export const sisterhoodComplimentsRouter = router({
   send: customerProcedure
     .input(z.object({ emoji: z.string().default('💌'), text: z.string().min(1).max(200) }))
     .mutation(async ({ ctx, input }) => {
-      return prisma.sisterhoodCompliment.create({ data: { emoji: input.emoji, text: input.text, senderId: ctx.user.id, senderName: ctx.user.name } });
+      return prisma.sisterhoodCompliment.create({ data: { emoji: input.emoji, text: input.text, senderId: ctx.user.id, senderName: ctx.user.name ?? '' } });
     }),
 
   mySent: customerProcedure

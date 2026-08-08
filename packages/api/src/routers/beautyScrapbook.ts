@@ -27,5 +27,5 @@ export const beautyScrapbookRouter = router({
 
   byTag: customerProcedure
     .input(z.object({ tag: z.string(), limit: z.number().int().min(1).max(20).default(10) }))
-    .query(async ({ ctx, input }) => prisma.beautyMemory.findMany({ where: { userId: ctx.user.id, tags: { has: input.tag } }, take: input.limit, orderBy: { date: 'desc' } })),
+    .query(async ({ ctx, input }) => prisma.beautyMemory.findMany({ where: { userId: ctx.user.id, tags: { has: input.tag } as any }, take: input.limit, orderBy: { date: 'desc' } })),
 });

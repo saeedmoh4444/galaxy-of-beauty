@@ -12,7 +12,7 @@ export const gratitudeRouter = router({
   send: customerProcedure
     .input(z.object({ message: z.string().min(5).max(300), toName: z.string().min(1).max(100), emoji: z.string().default('💕') }))
     .mutation(async ({ ctx, input }) => {
-      return prisma.gratitudeNote.create({ data: { authorId: ctx.user.id, authorName: ctx.user.name, toName: input.toName, message: input.message, emoji: input.emoji } });
+      return prisma.gratitudeNote.create({ data: { authorId: ctx.user.id, authorName: ctx.user.name ?? '', toName: input.toName, message: input.message, emoji: input.emoji } });
     }),
 
   publicFeed: publicProcedure

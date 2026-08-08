@@ -11,7 +11,7 @@ export const customerPreferencesRouter = router({
   update: customerProcedure
     .input(z.object({ preferences: z.record(z.unknown()) }))
     .mutation(async ({ ctx, input }) => {
-      await prisma.customerPreference.upsert({ where: { userId: ctx.user.id }, create: { userId: ctx.user.id, preferences: input.preferences }, update: { preferences: input.preferences } });
+      await prisma.customerPreference.upsert({ where: { userId: ctx.user.id }, create: { userId: ctx.user.id, preferences: input.preferences as any }, update: { preferences: input.preferences as any } });
       return { success: true };
     }),
 

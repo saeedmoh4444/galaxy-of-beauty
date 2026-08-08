@@ -45,8 +45,8 @@ export const beautyExpensesRouter = router({
       const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 0);
       const monthKey = `${start.getFullYear()}-${String(start.getMonth() + 1).padStart(2, '0')}`;
       const monthTotal = allRecentBookings
-        .filter((b) => b.createdAt >= start && b.createdAt <= end)
-        .reduce((s, b) => s + Number(b.totalAmount || 0), 0);
+        .filter((b: any) => b.createdAt >= start && b.createdAt <= end)
+        .reduce((s: number, b: any) => s + Number(b.totalAmount || 0), 0);
       monthlyTrend.push({ month: monthKey, total: monthTotal });
     }
 

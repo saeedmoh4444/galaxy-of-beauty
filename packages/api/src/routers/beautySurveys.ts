@@ -12,7 +12,7 @@ export const beautySurveysRouter = router({
     .mutation(async ({ ctx, input }) => {
       const existing = await prisma.surveyResponse.findUnique({ where: { userId_surveyId: { userId: ctx.user.id, surveyId: input.surveyId } } });
       if (existing) return { error: 'Already responded' };
-      return prisma.surveyResponse.create({ data: { userId: ctx.user.id, surveyId: input.surveyId, answersJson: input.answersJson } });
+      return prisma.surveyResponse.create({ data: { userId: ctx.user.id, surveyId: input.surveyId, answersJson: input.answersJson as any } });
     }),
 
   myResponses: customerProcedure
@@ -21,5 +21,5 @@ export const beautySurveysRouter = router({
 
   create: adminProcedure
     .input(z.object({ title: z.string().min(3).max(200), questionsJson: z.array(z.object({ question: z.string(), type: z.enum(['text', 'rating', 'choice']), options: z.array(z.string()).optional() })) }))
-    .mutation(async ({ input }) => prisma.beautySurvey.create({ data: { title: input.title, questionsJson: input.questionsJson } })),
+    .mutation(async ({ input }) => prisma.beautySurvey.create({ data: { title: input.title, questionsJson: input.questionsJson as any } })),
 });
