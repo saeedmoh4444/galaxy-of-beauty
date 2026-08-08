@@ -8,7 +8,7 @@ import {
   BeautyConciergeCard, RandomActOfBeauty, JustBecauseFlowers,
   HandwrittenNote, MirrorStickerCard, BirthdayMonthBadge,
   BeautyTimeCapsuleCard, BeautyDreamBoardCard, BeautySecretSantaCard,
-  BeautyAffirmationCard, BeautyQuickTipCard, BeautyAffirmationCard,
+  BeautyAffirmationCard, BeautyQuickTipCard,
   BeautyReferralLeaderboardCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -48,7 +48,6 @@ export default function BeautyInnovationPage(): JSX.Element {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyReferralLeaderboardCard leaders={[{ name: 'نورة', referrals: 12 }, { name: 'مها', referrals: 8 }, { name: 'ريم', referrals: 5 }]} userRank={5} />
-              <BeautyGamificationCard />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">

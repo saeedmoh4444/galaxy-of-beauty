@@ -38,7 +38,7 @@ export default function BeautyCommunityPage(): JSX.Element {
             {/* Savings & Coupons */}
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyCouponCard code="BEAUTY20" discount={20} expiresAt="2026-12-31" />
-              <BeautySavingsChallengeCard challenge={{ title: 'تحدي الادخار', emoji: '💰', target: 5000, current: 3200 }} />
+              <BeautySavingsChallengeCard challenge={{ name: 'تحدي الادخار', emoji: '💰', target: 5000, saved: 3200, days: 30 }} />
             </div>
 
             {/* Community Features */}
@@ -49,17 +49,17 @@ export default function BeautyCommunityPage(): JSX.Element {
 
             {/* Digital Tools */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyVirtualConsultationCard consultant={{ name: 'د. نورة', specialty: 'بشرة', emoji: '👩‍⚕️' }} />
-              <BeautyProgressPhotoCard photos={[{ id: 1, url: '', date: '2026-06-01' }]} />
+              <BeautyVirtualConsultationCard specialist="د. نورة" specialty="بشرة" emoji="👩‍⚕️" />
+              <BeautyProgressPhotoCard photos={[{ date: '2026-06-01', emoji: '✨', note: 'بداية الروتين' }]} />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyRoutineSwapCard swaps={[{ from: 'صباح', to: 'مساء', product: 'سيروم فيتامين C', reason: 'تجنب الشمس' }]} />
+              <BeautyRoutineSwapCard swaps={[{ from: 'مرطب ثقيل', to: 'مرطب جل خفيف', reason: 'الصيف' }]} />
               <BeautyQuietSpaceCard features={['إضاءة خافتة', 'موسيقى هادئة', 'بدون ضوضاء']} />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyPrivacyShieldCard status="active" />
+              <BeautyPrivacyShieldCard status={{ photosEncrypted: true, locationHidden: true, dataEncrypted: true }} />
               <BeautyMoodBoardCard items={[{ emoji: '🌊', label: 'أزرق محيطي' }, { emoji: '🌸', label: 'وردي ناعم' }, { emoji: '✨', label: 'ذهبي لامع' }]} />
             </div>
           </div>
