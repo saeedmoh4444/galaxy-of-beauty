@@ -11,6 +11,8 @@ import {
   BeautyBridalTrialCard, BeautyBridalGlowCard,
   BeautyFirstMakeupCard, BeautySchoolMakeupCard, BeautyTeenAcneCard,
   BeautyTeenConfidenceCard, BeautyDaughterMomCard,
+  BeautyMaternityGlowCard, BeautyMaternityMassageCard, BeautyMaternityStyleCard,
+  BeautyNursingBeautyCard, BeautyBabyBluesCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -85,6 +87,17 @@ export default function FamilyBeautyPage(): JSX.Element {
               <BeautyTeenConfidenceCard />
             </div>
             <BeautyDaughterMomCard />
+
+            {/* Maternity Beauty */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyMaternityGlowCard />
+              <BeautyMaternityStyleCard />
+            </div>
+            <BeautyMaternityMassageCard />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyNursingBeautyCard />
+              <BeautyBabyBluesCard />
+            </div>
           </div>
         </div>
       </PageContainer>
