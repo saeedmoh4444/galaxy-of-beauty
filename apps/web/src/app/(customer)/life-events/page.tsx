@@ -8,6 +8,8 @@ import {
   CyclePhaseCard, TeenSkincareGuide,
   BeautyTwentiesCard, BeautyThirtiesCard, BeautyFortiesCard,
   BeautyFiftiesCard, BeautySixtiesCard,
+  BeautyPcosSkincareCard, BeautyPregnancySafeCard, BeautyPostpartumHairCard,
+  BeautyPerimenopauseCard, BeautyHormonalAcneCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -57,6 +59,17 @@ export default function LifeEventsPage(): JSX.Element {
         <div className="grid gap-4 sm:grid-cols-2 mt-4">
           <BeautyFiftiesCard />
           <BeautySixtiesCard />
+        </div>
+
+        {/* Hormonal & Life Phases */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-6">
+          <BeautyHormonalAcneCard />
+          <BeautyPcosSkincareCard />
+          <BeautyPerimenopauseCard />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 mt-4">
+          <BeautyPregnancySafeCard />
+          <BeautyPostpartumHairCard />
         </div>
       </PageContainer>
     </DashboardLayout>
