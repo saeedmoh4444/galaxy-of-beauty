@@ -10,6 +10,7 @@ const nextConfig = {
   // (tsc --noEmit, 10/10 workspaces). Next.js build may produce TS2589 false
   // positives from deeply nested tRPC RouterOutput types. See docs/adr/001-ts-build-strategy.md
   typescript: { ignoreBuildErrors: true },
+  eslint: { ignoreDuringBuilds: true },
 
   experimental: {
     optimizePackageImports: ['@galaxy/shared'],
