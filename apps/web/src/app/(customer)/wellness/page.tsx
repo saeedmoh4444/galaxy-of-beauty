@@ -18,6 +18,8 @@ import {
   BeautyOmegaCard, BeautyProbioticCard,
   BeautyGreenTeaCard, BeautyMatchaCard, BeautyTurmericLatteCard,
   BeautyChlorophyllCard, BeautyBeetrootCard,
+  BeautyFaceYogaCard, BeautyBarreCard, BeautySweatProofCard,
+  BeautyPostWorkoutHairCard, BeautyFitnessGlowCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -131,6 +133,17 @@ export default function WellnessPage(): JSX.Element {
         <div className="grid gap-4 sm:grid-cols-2">
           <BeautyChlorophyllCard />
           <BeautyBeetrootCard />
+        </div>
+
+        {/* Fitness & Training */}
+        <BeautyFaceYogaCard />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <BeautyBarreCard />
+          <BeautyFitnessGlowCard />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <BeautySweatProofCard />
+          <BeautyPostWorkoutHairCard />
         </div>
       </PageContainer>
     </DashboardLayout>
