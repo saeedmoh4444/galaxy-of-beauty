@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { prisma } from '@galaxy/db';
 import { publicProcedure, router } from '../trpc';
 
 const PROFILES: Record<string, { emoji: string; title: string; services: string[] }> = {

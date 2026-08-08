@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, publicProcedure, router } from '../trpc';
-import { notFound, forbidden } from '../lib/errors';
+import { notFound } from '../lib/errors';
 
 export const beautyCirclesRouter = router({
   list: publicProcedure

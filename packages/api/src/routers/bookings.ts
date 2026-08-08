@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import crypto from 'crypto';
-import { notFound, forbidden, badRequest } from '../lib/errors';
+import { notFound, forbidden } from '../lib/errors';
 import {
   protectedProcedure,
   customerProcedure,

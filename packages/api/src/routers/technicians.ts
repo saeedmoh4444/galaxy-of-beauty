@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { notFound, forbidden } from '../lib/errors';
+import { notFound } from '../lib/errors';
 import {
   publicProcedure,
   adminProcedure,

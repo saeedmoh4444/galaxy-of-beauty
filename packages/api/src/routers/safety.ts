@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { customerProcedure, technicianProcedure, router } from '../trpc';
+import { customerProcedure, router } from '../trpc';
 import { notFound } from '../lib/errors';
 
 export const safetyRouter = router({

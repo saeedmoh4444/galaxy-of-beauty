@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
-import { notFound, forbidden } from '../lib/errors';
+import { notFound } from '../lib/errors';
 import {
   router,
   protectedProcedure,

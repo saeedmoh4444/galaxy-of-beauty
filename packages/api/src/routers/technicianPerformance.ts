@@ -6,7 +6,7 @@ export const technicianPerformanceRouter = router({
   myStats: technicianProcedure.query(async ({ ctx }) => {
     const tech = await prisma.technician.findUnique({ where: { userId: ctx.user.id } });
     if (!tech) return null;
-    const [totalBookings, completedBookings, cancelRate, avgResponse] = await Promise.all([
+    const [totalBookings, completedBookings, cancelRate, _avgResponse] = await Promise.all([
       prisma.booking.count({ where: { technicianId: tech.id } }),
       prisma.booking.count({ where: { technicianId: tech.id, status: 'COMPLETED' } }),
       prisma.booking.count({ where: { technicianId: tech.id, status: 'CANCELLED' } }),
