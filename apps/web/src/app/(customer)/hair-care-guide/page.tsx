@@ -11,6 +11,8 @@ import {
   BeautyHairHijabCard,
   BeautyBalayageCard, BeautyHairGlossCard, BeautyHairBondRepairCard,
   BeautyHeatlessCurlsCard, BeautyHairThinningCard,
+  BeautyPerfumeCard, BeautySkincareMistCard, BeautyNailCareCard,
+  BeautyLipsCareCard, BeautyHandsCareCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
