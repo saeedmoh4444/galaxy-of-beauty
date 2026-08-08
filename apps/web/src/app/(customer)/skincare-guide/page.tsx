@@ -25,6 +25,8 @@ import {
   BeautyVampireFacialCard, BeautyCaviarFacialCard,
   BeautyDarkCirclesCard, BeautyEyeBagsCard, BeautyCrowsFeetCard,
   BeautyEyeMassageCard, BeautyEyeSerumCard,
+  BeautyAcneScarsCard, BeautyPieScarsCard, BeautyPoreRefiningCard,
+  BeautyPostAcneMarksCard, BeautyScarTreatmentCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -156,6 +158,15 @@ export default function SkincareGuidePage(): JSX.Element {
             </div>
             <BeautyRosaceaCard />
             <BeautySpotTreatmentCard />
+
+            {/* Acne Scars & Marks */}
+            <BeautyAcneScarsCard />
+            <BeautyPieScarsCard />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BeautyPoreRefiningCard />
+              <BeautyPostAcneMarksCard />
+            </div>
+            <BeautyScarTreatmentCard />
 
             {/* Life stages */}
             <div className="grid gap-4 sm:grid-cols-2">
