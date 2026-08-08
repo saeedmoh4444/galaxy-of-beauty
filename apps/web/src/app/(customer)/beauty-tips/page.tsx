@@ -65,7 +65,7 @@ export default function BeautyTipsPage(): JSX.Element {
 
             <BeautyMakeupTipsCard />
 
-            {/* Climate-Adaptive Beauty */}
+            {/* Climate-Adaptive */}
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyHotClimateCard />
               <BeautyHumidClimateCard />
@@ -94,7 +94,6 @@ export default function BeautyTipsPage(): JSX.Element {
               <BeautyEidNailsCard />
             </div>
             <BeautyEidPerfumeCard />
-          </div>
           </div>
 
           <div className="space-y-6">
