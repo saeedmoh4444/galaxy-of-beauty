@@ -29,6 +29,7 @@ import {
   BeautyPostAcneMarksCard, BeautyScarTreatmentCard,
   BeautyMaskneCard,
   BeautyKoreanRoutineCard, BeautyJapaneseRoutineCard,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function SkincareGuidePage(): JSX.Element {
