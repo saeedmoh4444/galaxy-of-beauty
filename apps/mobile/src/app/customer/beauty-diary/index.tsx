@@ -11,7 +11,6 @@ export default function BeautyDiaryScreen(): JSX.Element {
   const [, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [todayMood, setTodayMood] = useState('😊');
-  // @ts-expect-error new routers
   const skinJournal = (trpcReact as any).skinDiary?.list?.useQuery?.({ limit: 7 });
 
   const fetch = useCallback((isRefresh = false) => {

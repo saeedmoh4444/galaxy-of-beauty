@@ -11,7 +11,6 @@ const MENTOR_LEVELS = [
 const TOPICS = ['العناية بالبشرة','المكياج','العناية بالشعر','الأظافر','العطور','التغذية'];
 
 export default function BeautyMentorScreen(): JSX.Element {
-  // @ts-expect-error new routers
   const { data: mentorsData } = (trpc as any).beautyCircles?.list?.useQuery?.({ limit: 3 }) ?? { data: null };
   const [level, setLevel] = useState('beginner');
   const [selectedTopic, setSelectedTopic] = useState<string|null>(null);

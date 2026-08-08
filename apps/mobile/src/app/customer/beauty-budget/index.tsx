@@ -7,9 +7,7 @@ const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900
 
 export default function BeautyBudgetScreen(): JSX.Element {
   const budget = (trpc as any).beautyBudget?.get?.useQuery?.() ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
-  // @ts-expect-error new routers
   const loyalty = (trpc as any).loyalty?.getAccount?.useQuery?.();
-  // @ts-expect-error new routers
   const savings = (trpc as any).savingsGoals?.list?.useQuery?.();
   const data = budget.data as Record<string, unknown> | undefined;
 

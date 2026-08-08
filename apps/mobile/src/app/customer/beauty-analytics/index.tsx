@@ -10,9 +10,7 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
   const [trend, setTrend] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  // @ts-expect-error new routers
   const kindness = (trpcReact as any).kindnessPoints?.getStatus?.useQuery?.();
-  // @ts-expect-error new routers
   const loyalty = (trpcReact as any).loyalty?.getAccount?.useQuery?.();
 
   const fetch = useCallback((isRefresh = false) => {

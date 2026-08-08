@@ -16,11 +16,8 @@ export default function HomeScreen(): JSX.Element {
   const router = useRouter();
   const { trigger } = useHaptics();
   const cats = trpc.categories.list.useQuery();
-  // @ts-expect-error new routers
   const kindness = (trpc as any).kindnessPoints?.getStatus?.useQuery?.();
-  // @ts-expect-error new routers
   const dailyTip = (trpc as any).dailyBeautyTip?.today?.useQuery?.();
-  // @ts-expect-error new routers
   const compliments = (trpc as any).sisterhoodCompliments?.count?.useQuery?.();
 
   const data = cats.data as unknown[] | undefined;

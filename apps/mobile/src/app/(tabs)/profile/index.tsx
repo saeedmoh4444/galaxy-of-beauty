@@ -27,9 +27,7 @@ export default function ProfileScreen(): JSX.Element {
   const { trigger } = useHaptics();
   const router = useRouter();
   const profile = (trpc as any).users?.me?.useQuery?.() ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
-  // @ts-expect-error new routers
   const loyalty = (trpc as any).loyalty?.getAccount?.useQuery?.();
-  // @ts-expect-error new routers
   const kindness = (trpc as any).kindnessPoints?.getStatus?.useQuery?.();
 
   return (

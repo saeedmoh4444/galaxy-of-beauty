@@ -7,7 +7,6 @@ const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900
 export default function ReferralsScreen(): JSX.Element {
   const code = trpc.referrals.getMyCode.useQuery();
   const stats = (trpc as any).referrals?.getStats?.useQuery?.() ?? { data: null };
-  // @ts-expect-error new routers
   const kindness = (trpc as any).kindnessPoints?.getStatus?.useQuery?.();
 
   return (

@@ -12,9 +12,7 @@ const COLORS = {
 export default function WalletScreen(): JSX.Element {
   const balance = trpc.wallet.getBalance.useQuery();
   const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 20 });
-  // @ts-expect-error new routers
   const loyalty = (trpc as any).loyalty?.getAccount?.useQuery?.();
-  // @ts-expect-error new routers
   const cashback = (trpc as any).cashback?.summary?.useQuery?.();
 
   return (

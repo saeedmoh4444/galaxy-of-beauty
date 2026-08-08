@@ -6,7 +6,6 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function AchievementsScreen(): JSX.Element {
-  // @ts-expect-error new routers
   const { data: achievementsData } = (trpcReact as any).beautyAchievements?.myAchievements?.useQuery?.() ?? { data: null };
   const { data, loading, error, refetch, refreshing, refresh } = useQuery(() => (trpc as any).customerAchievements.myAchievements.query());
 

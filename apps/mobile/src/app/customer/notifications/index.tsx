@@ -23,7 +23,7 @@ export default function NotificationsScreen(): JSX.Element {
       <View style={styles.header}>
         <Text style={styles.title}>🔔 الإشعارات</Text>
         {data && data.length > 0 && (
-          <TouchableOpacity onPress={() => { markAll.mutateAsync(); notifs.refetch(); }}>
+          <TouchableOpacity onPress={() => { markAll.mutateAsync({}); notifs.refetch(); }}>
             <Text style={styles.markAll}>تحديد الكل كمقروء</Text>
           </TouchableOpacity>
         )}

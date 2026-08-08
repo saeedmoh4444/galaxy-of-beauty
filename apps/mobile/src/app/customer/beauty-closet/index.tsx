@@ -10,7 +10,6 @@ export default function BeautyClosetScreen(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [filter, setFilter] = useState<string|null>(null);
-  // @ts-expect-error new routers
   const loyalty = (trpcReact as any).loyalty?.getAccount?.useQuery?.();
 
   const fetch = useCallback((isRefresh = false) => {

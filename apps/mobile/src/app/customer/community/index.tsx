@@ -2,7 +2,6 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, TextInput, Refres
 import { useState } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { trpc } from '@/lib/trpc-react';
-import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -11,11 +10,8 @@ export default function CommunityScreen(): JSX.Element {
   const { data: feedData, loading, error, refetch, refreshing, refresh } = useQuery(() => (trpc as any).community.feed.query({ page: 1, limit: LARGE_PAGE_SIZE }));
   const { data: myLikes } = useQuery(() => (trpc as any).community.myLikes.query());
   const { data: trending } = useQuery(() => (trpc as any).community.trending.query());
-  // @ts-expect-error new routers
   const { data: kindnessData } = useQuery(() => (trpc as any).kindnessPoints?.getStatus?.query?.());
-  // @ts-expect-error new routers
   const { data: circlesData } = useQuery(() => (trpc as any).beautyCircles?.list?.query?.({ limit: 3 }));
-  // @ts-expect-error new routers
   const { data: complimentsData } = useQuery(() => (trpc as any).sisterhoodCompliments?.count?.query?.());
   const [content, setContent] = useState('');
   const [showCreate, setShowCreate] = useState(false);

@@ -8,9 +8,7 @@ const GT = [{key:'glowing_skin',emoji:'✨',title:'بشرة متألقة',target
 
 export default function BeautyGoalsScreen(): JSX.Element {
   const [loading, setLoading] = useState(true);
-  // @ts-expect-error new routers
   const habits = (trpcReact as any).beautyHabits?.myHabits?.useQuery?.();
-  // @ts-expect-error new routers
   const visionGoals = (trpcReact as any).visionBoard?.myGoals?.useQuery?.({ limit: 6 });
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {

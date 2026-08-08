@@ -37,9 +37,7 @@ export default function BookingsScreen(): JSX.Element {
   const [page] = useState(1);
   const bookings = trpc.bookings.list.useQuery({ page, limit: DEFAULT_PAGE_SIZE });
   const data = bookings.data?.bookings as unknown[] | undefined;
-  // @ts-expect-error new routers
   const loyalty = (trpc as any).loyalty?.getAccount?.useQuery?.();
-  // @ts-expect-error new routers
   const safety = (trpc as any).safety?.getCheckInStatus?.useQuery?.({ bookingId: 0 }) as any;
 
   return (
@@ -110,4 +108,6 @@ const styles = StyleSheet.create({
   code: { fontSize: 14, fontWeight: '700', color: COLORS.gray900 },
   date: { fontSize: 12, color: COLORS.gray400, marginTop: 4 },
   status: { fontSize: 13, fontWeight: '600' },
+  loyaltyBadge: { backgroundColor: '#fef3c7', borderRadius: 16, paddingHorizontal: 12, paddingVertical: 4, alignSelf: 'flex-start', marginTop: 4 },
+  loyaltyText: { fontSize: 13, fontWeight: '700', color: '#d97706' },
 });
