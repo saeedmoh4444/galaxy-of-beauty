@@ -170,6 +170,7 @@ model User {
   achievements      UserAchievement[]
   referralsMade     Referral[]         @relation("ReferralsMade")
   referralsReceived Referral[]         @relation("ReferralsReceived")
+  kindnessAccount   KindnessAccount?
 
   @@index([role, isActive])
   @@index([phone])
@@ -3132,6 +3133,8 @@ model Affirmation {
   text String
   emoji String @default("💖")
   createdAt DateTime @default(now())
+
+  favorites AffirmationFavorite[]
 
   @@map("affirmations")
 }
