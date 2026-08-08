@@ -14,6 +14,8 @@ import {
   BeautySubscriptionCard, BeautyConciergeCard, BeautyNightOutCard,
   BeautyZeroWasteCard, BeautyRefillableCard, BeautyCleanBeautyCard,
   BeautyUpcycledCard, BeautyPlasticFreeCard,
+  BeautyVeganBeautyCard, BeautyHalalBeautyCard, BeautyGlutenFreeCard,
+  BeautyCrueltyFreeCard, BeautyFragranceFreeCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -100,6 +102,17 @@ export default function SustainabilityPage(): JSX.Element {
         <div className="grid gap-4 sm:grid-cols-2 mt-4">
           <BeautyUpcycledCard />
           <BeautyPlasticFreeCard />
+        </div>
+
+        {/* Ethical & Clean Beauty */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-6">
+          <BeautyVeganBeautyCard />
+          <BeautyHalalBeautyCard />
+          <BeautyCrueltyFreeCard />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 mt-4">
+          <BeautyGlutenFreeCard />
+          <BeautyFragranceFreeCard />
         </div>
       </PageContainer>
     </DashboardLayout>
