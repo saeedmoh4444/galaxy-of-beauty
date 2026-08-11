@@ -12,6 +12,8 @@ export interface TRPCContext {
   isProduction: boolean;
   /** Set auth cookies on the response (called by auth router) */
   setCookies: (cookies: string[]) => void;
+  /** Client IP for rate limiting (privacy: only used for rate-limit key derivation) */
+  clientIp: string | null;
 }
 
 export interface CreateContextOptions {
@@ -20,6 +22,7 @@ export interface CreateContextOptions {
   csrfHeader?: string | null;
   isProduction?: boolean;
   setCookies?: (cookies: string[]) => void;
+  clientIp?: string | null;
 }
 
 export async function createTRPCContext(opts?: CreateContextOptions): Promise<TRPCContext> {
@@ -30,6 +33,7 @@ export async function createTRPCContext(opts?: CreateContextOptions): Promise<TR
     csrfHeader: opts?.csrfHeader ?? null,
     isProduction: opts?.isProduction ?? false,
     setCookies: opts?.setCookies ?? (() => {}),
+    clientIp: opts?.clientIp ?? null,
   };
 }
 

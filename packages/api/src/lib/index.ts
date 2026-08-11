@@ -26,3 +26,5 @@ export {
   getGoogleAuthUrl,
 } from './googleCalendar';
 export { accrueBookingPoints } from '../routers/loyalty';
+export { audit } from './audit';
+export type { SecurityEventType } from './audit';

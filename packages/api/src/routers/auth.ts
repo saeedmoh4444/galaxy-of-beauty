@@ -23,6 +23,7 @@ import {
   sendPasswordResetEmail,
   incrementAttempts,
   resetAttempts,
+  audit,
 } from '../lib';
 import {
   registerSchema,
@@ -237,6 +238,13 @@ export const authRouter = router({
       const lockoutKey = `login_attempts:${input.email}`;
       const attempts = await incrementAttempts(lockoutKey, 900); // 15 min window
       if (attempts > MAX_AUTH_ATTEMPTS) {
+        audit({
+          event: 'LOGIN_LOCKOUT',
+          targetType: 'User',
+          outcome: 'failure',
+          metadata: { email: input.email },
+          clientIp: ctx.clientIp,
+        });
         throw new TRPCError({
           code: 'TOO_MANY_REQUESTS',
           message: 'Too many login attempts. Please try again in 15 minutes.',
@@ -290,6 +298,15 @@ export const authRouter = router({
 
       // ── Reset rate limit on successful login ──
       await resetAttempts(lockoutKey);
+
+      // ── Audit: successful login ──
+      audit({
+        event: 'LOGIN_SUCCESS',
+        actorId: user.id,
+        actorRole: user.role,
+        outcome: 'success',
+        clientIp: ctx.clientIp,
+      });
 
       // ── Update last login timestamp ──
       await prisma.user.update({
@@ -353,9 +370,16 @@ export const authRouter = router({
       // If the token is already revoked, someone may be replaying a stolen token.
       // Revoke the entire token family to prevent further abuse.
       if (stored.revokedAt) {
+        const familyId = stored.familyId;
         await prisma.refreshToken.updateMany({
-          where: { familyId: stored.familyId, revokedAt: null },
+          where: { familyId, revokedAt: null },
           data: { revokedAt: new Date() },
+        });
+        audit({
+          event: 'TOKEN_REUSE_DETECTED',
+          actorId: payload.id,
+          outcome: 'failure',
+          metadata: { familyId },
         });
         throw new TRPCError({
           code: 'UNAUTHORIZED',
@@ -506,6 +530,13 @@ export const authRouter = router({
       // Clear auth cookies
       ctx.setCookies?.(buildClearAuthCookies());
 
+      audit({
+        event: 'PASSWORD_CHANGED',
+        actorId: ctx.user.id,
+        outcome: 'success',
+        clientIp: ctx.clientIp,
+      });
+
       return { message: 'Password changed successfully. All other sessions have been revoked.' };
     } catch (error) {
       if (error instanceof TRPCError) throw error;
@@ -619,6 +650,13 @@ export const authRouter = router({
       await prisma.refreshToken.updateMany({
         where: { userId: resetToken.userId, revokedAt: null },
         data: { revokedAt: new Date() },
+      });
+
+      audit({
+        event: 'PASSWORD_RESET_COMPLETED',
+        targetId: resetToken.userId,
+        targetType: 'User',
+        outcome: 'success',
       });
 
       return { message: 'Password reset successfully. All sessions revoked. You can now log in.' };

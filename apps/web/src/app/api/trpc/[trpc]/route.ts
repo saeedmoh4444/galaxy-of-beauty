@@ -33,6 +33,12 @@ const handler = async (req: NextRequest) => {
     }
   }
 
+  // ── Extract client IP (for rate limiting) ──
+  // X-Forwarded-For is set by reverse proxies (nginx, load balancers).
+  // Take the first IP in the chain (original client).
+  const forwardedFor = req.headers.get('x-forwarded-for');
+  const clientIp = forwardedFor?.split(',')[0]?.trim() ?? req.headers.get('x-real-ip') ?? '127.0.0.1';
+
   // ── Extract CSRF tokens from cookie and header ──
   const csrfCookie = req.cookies.get(CSRF_COOKIE_NAME)?.value ?? null;
   const csrfHeader = req.headers.get('x-csrf-token') ?? null;
@@ -54,6 +60,7 @@ const handler = async (req: NextRequest) => {
         csrfCookie,
         csrfHeader,
         isProduction,
+        clientIp,
         setCookies: (cookies: string[]) => {
           cookiesToSet.push(...cookies);
         },
