@@ -28,6 +28,21 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm format:check
 
+  # ── Dependency Audit ──────────────────────────────────────
+  audit:
+    name: Dependency Audit
+    runs-on: ubuntu-latest
+    continue-on-error: true # Non-blocking for now; will be required after Phase 6 completion
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '${{ env.NODE_VERSION }}'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --prod
+
   # ── Type Check ────────────────────────────────────────────
   type-check:
     name: Type Check
