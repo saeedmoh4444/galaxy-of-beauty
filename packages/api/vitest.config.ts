@@ -14,5 +14,24 @@ export default defineConfig({
       JWT_REFRESH_SECRET:
         process.env['JWT_REFRESH_SECRET'] || 'dev-refresh-secret-at-least-32-chars-long',
     },
+    // ── Coverage (TEST-005) ──────────────────────────────
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      reportsDirectory: './coverage',
+      include: ['src/**/*.ts'],
+      exclude: [
+        'src/__tests__/**',
+        'src/**/*.test.ts',
+        'src/routers/index.ts', // barrel file
+      ],
+      // Initial thresholds — ratchet upward over time
+      thresholds: {
+        statements: 40,
+        branches: 30,
+        functions: 35,
+        lines: 40,
+      },
+    },
   },
 });
