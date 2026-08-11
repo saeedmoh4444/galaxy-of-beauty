@@ -174,7 +174,6 @@ model User {
   beautyCircleMembers BeautyCircleMember[]
 
   @@index([role, isActive])
-  @@index([phone])
   @@index([createdAt])
   @@map("users")
 }
@@ -191,7 +190,6 @@ model RefreshToken {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
-  @@index([token])
   @@index([expiresAt])
   @@index([familyId])
   @@map("refresh_tokens")
@@ -208,7 +206,6 @@ model ResetToken {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
-  @@index([token])
   @@index([expiresAt])
   @@map("reset_tokens")
 }
@@ -599,8 +596,6 @@ model Booking {
 
   @@index([customerId, status, createdAt])
   @@index([technicianId, status, startAt])
-  @@index([bookingCode])
-  @@index([idempotencyKey])
   @@index([status, createdAt])
   @@map("bookings")
 }
