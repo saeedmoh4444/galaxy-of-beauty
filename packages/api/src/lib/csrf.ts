@@ -73,7 +73,9 @@ export function isCsrfRequired(method: string): boolean {
  * Build a Set-Cookie header value for the CSRF cookie.
  * The cookie is NOT httpOnly so the SPA can read it and send it back as a header.
  */
-export function buildCsrfCookie(token: string): string {
+export function buildCsrfCookie(token: string, isProduction = false): string {
   // 24-hour expiry, not httpOnly (JS must read it), SameSite=Strict
-  return `${CSRF_COOKIE_NAME}=${token}; Path=/; Max-Age=86400; SameSite=Strict`;
+  // Secure flag required in production (HTTPS only)
+  const secure = isProduction ? '; Secure' : '';
+  return `${CSRF_COOKIE_NAME}=${token}; Path=/; Max-Age=86400; SameSite=Strict${secure}`;
 }

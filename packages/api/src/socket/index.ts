@@ -16,6 +16,22 @@ interface AuthenticatedSocket {
 
 let io: Server | null = null;
 
+// ── Helpers ────────────────────────────────────────────────
+
+/**
+ * Parse cookies from a raw cookie header string.
+ */
+function parseCookies(cookieHeader: string): Record<string, string> {
+  const cookies: Record<string, string> = {};
+  cookieHeader.split(';').forEach((pair) => {
+    const idx = pair.indexOf('=');
+    if (idx > 0) {
+      cookies[pair.substring(0, idx).trim()] = pair.substring(idx + 1).trim();
+    }
+  });
+  return cookies;
+}
+
 // ── Public API ─────────────────────────────────────────────
 
 /**
@@ -25,7 +41,7 @@ let io: Server | null = null;
  * Room scheme:
  *   user:<userId>         — Personal notifications & wallet updates
  *   technician:<techId>   — Booking requests for a specific technician
- *   waitlist:<techId>     — Waitlist position updates
+ *   waitlist:<techId>     — Waitlist position updates (authorized access only)
  *   admin                 — Admin dashboard live updates
  */
 export function initializeSocket(httpServer: HttpServer): Server {
@@ -44,16 +60,37 @@ export function initializeSocket(httpServer: HttpServer): Server {
   // ── Authentication middleware ──────────────────────────
   io.use((socket, next) => {
     try {
-      const token =
-        ((socket.handshake.auth as Record<string, unknown>).token as string | undefined) ||
-        (socket.handshake.query as Record<string, string>).token;
+      let token: string | undefined;
+
+      // 1. Try explicit auth token (mobile / legacy clients)
+      token =
+        (socket.handshake.auth as Record<string, unknown>).token as string | undefined;
+
+      // 2. Try query param (mobile fallback)
+      if (!token) {
+        token = (socket.handshake.query as Record<string, string>).token;
+      }
+
+      // 3. Try HttpOnly cookie (web same-origin connections)
+      if (!token) {
+        const rawCookie = socket.handshake.headers.cookie;
+        if (rawCookie) {
+          const cookies = parseCookies(rawCookie);
+          token = cookies['gob_access'];
+        }
+      }
 
       if (!token) {
         return next(new Error('Authentication required'));
       }
 
       const decoded = verifyAccessToken(token) as unknown as JwtPayload;
-      (socket as unknown as Record<string, unknown>).user = decoded;
+      // Normalize: JWT uses `id`, socket code uses `userId`
+      (socket as unknown as Record<string, unknown>).user = {
+        userId: decoded.id,
+        role: decoded.role,
+        email: decoded.email,
+      };
       next();
     } catch {
       next(new Error('Invalid or expired token'));
@@ -63,7 +100,8 @@ export function initializeSocket(httpServer: HttpServer): Server {
   // ── Connection handler ─────────────────────────────────
   io.on('connection', (socket) => {
     const user = (socket as unknown as Record<string, unknown>).user as
-      AuthenticatedSocket | undefined;
+      | AuthenticatedSocket
+      | undefined;
     if (!user) {
       socket.disconnect(true);
       return;
@@ -86,8 +124,17 @@ export function initializeSocket(httpServer: HttpServer): Server {
       socket.join('admin');
     }
 
-    // Waitlist subscription (technician-specific)
+    // ── Waitlist subscription (authorized) ──
+    // Only customers can join another technician's waitlist.
+    // Technicians can only join their own waitlist room.
     socket.on('join:waitlist', (technicianId: number) => {
+      // Technicians: only join their own waitlist room
+      if (role === 'TECHNICIAN' && technicianId !== userId) {
+        // eslint-disable-next-line no-console
+        console.warn(`[Socket] Unauthorized waitlist join: tech ${userId} → tech ${technicianId}`);
+        return;
+      }
+      // Customers: allowed to join any waitlist room (public channel)
       socket.join(`waitlist:${technicianId}`);
     });
 

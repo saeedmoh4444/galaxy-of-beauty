@@ -182,6 +182,7 @@ model User {
 model RefreshToken {
   id        Int      @id @default(autoincrement())
   token     String   @unique
+  familyId  String   @default("")
   userId    Int
   expiresAt DateTime
   createdAt DateTime @default(now())
@@ -192,6 +193,7 @@ model RefreshToken {
   @@index([userId])
   @@index([token])
   @@index([expiresAt])
+  @@index([familyId])
   @@map("refresh_tokens")
 }
 

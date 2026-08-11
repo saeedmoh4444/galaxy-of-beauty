@@ -23,22 +23,15 @@ export default function RegisterPage(): JSX.Element {
   const [accepted, setAccepted] = useState(false);
   const mutation = api.auth.register.useMutation({
     onSuccess: async (data) => {
+      // Tokens are now set as HttpOnly cookies by the server — no localStorage needed.
       const u = (data as unknown as Record<string, unknown>).user as unknown as Record<
         string,
         unknown
       >;
-      localStorage.setItem(
-        'gob_access',
-        (data as unknown as Record<string, unknown>).accessToken as string,
-      );
-      localStorage.setItem(
-        'gob_refresh',
-        (data as unknown as Record<string, unknown>).refreshToken as string,
-      );
       await login(
         {
-          accessToken: (data as unknown as Record<string, unknown>).accessToken as string,
-          refreshToken: (data as unknown as Record<string, unknown>).refreshToken as string,
+          accessToken: '', // Tokens are in HttpOnly cookies now
+          refreshToken: '',
         },
         {
           id: u.id as number,

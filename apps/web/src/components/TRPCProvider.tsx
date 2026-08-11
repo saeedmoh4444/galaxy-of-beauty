@@ -18,10 +18,8 @@ function getAuthHeaders(): Record<string, string> {
   const headers: Record<string, string> = {};
 
   if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('gob_access');
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
+    // Auth token is now an HttpOnly cookie — sent automatically by the browser.
+    // No need to read from localStorage.
 
     // Include CSRF token header
     const csrfToken = getCsrfToken();

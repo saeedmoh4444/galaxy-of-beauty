@@ -3,7 +3,6 @@ import { TRPCError } from '@trpc/server';
 import crypto from 'crypto';
 import { MAX_AUTH_ATTEMPTS, MS_PER_DAY, MS_PER_WEEK } from '@galaxy/shared';
 import {
-  publicProcedure,
   publicMutation,
   protectedProcedure,
   protectedMutation,
@@ -17,6 +16,7 @@ import {
   signAccessToken,
   signRefreshToken,
   verifyRefreshToken,
+  generateTokenFamilyId,
   getEnv,
   generateTotpSecret,
   verifyTotpToken,
@@ -72,17 +72,58 @@ function parseExpiryToMs(expiry: string): number {
   return num * (multipliers[unit] ?? MS_PER_DAY);
 }
 
-async function storeRefreshToken(userId: number, jwtToken: string): Promise<void> {
+/**
+ * Store a new refresh token with family ID for rotation lineage.
+ * Previous token in the same family must be revoked BEFORE calling this.
+ */
+async function createRefreshToken(
+  userId: number,
+  jwtToken: string,
+  familyId: string,
+): Promise<void> {
   const env = getEnv();
-  // Delete any existing token for this user first (rotation)
-  await prisma.refreshToken.deleteMany({ where: { userId } });
   await prisma.refreshToken.create({
     data: {
       token: jwtToken,
+      familyId,
       userId,
       expiresAt: new Date(Date.now() + parseExpiryToMs(env.JWT_REFRESH_EXPIRY)),
     },
   });
+}
+
+// ── Cookie Helpers ──────────────────────────────────────
+
+const COOKIE_ACCESS = 'gob_access';
+const COOKIE_REFRESH = 'gob_refresh';
+
+interface AuthCookies {
+  accessToken: string;
+  refreshToken: string;
+}
+
+/**
+ * Build Set-Cookie headers for auth tokens.
+ * Access: 15min, Lax, HttpOnly, Secure in prod
+ * Refresh: 7d, Strict, HttpOnly, Secure in prod, path-scoped to /api/trpc
+ */
+export function buildAuthCookies(tokens: AuthCookies, isProduction = false): string[] {
+  const secure = isProduction ? '; Secure' : '';
+  const accessMaxAge = 900; // 15 minutes
+  const refreshMaxAge = 604800; // 7 days
+
+  return [
+    `${COOKIE_ACCESS}=${tokens.accessToken}; Path=/; Max-Age=${accessMaxAge}; SameSite=Lax; HttpOnly${secure}`,
+    `${COOKIE_REFRESH}=${tokens.refreshToken}; Path=/api/trpc; Max-Age=${refreshMaxAge}; SameSite=Strict; HttpOnly${secure}`,
+  ];
+}
+
+/** Build cookie-clearing headers for logout. */
+export function buildClearAuthCookies(): string[] {
+  return [
+    `${COOKIE_ACCESS}=; Path=/; Max-Age=0; HttpOnly`,
+    `${COOKIE_REFRESH}=; Path=/api/trpc; Max-Age=0; HttpOnly`,
+  ];
 }
 
 // ── Router ──────────────────────────────────────────────
@@ -91,7 +132,7 @@ export const authRouter = router({
   // ──────────────────────────────────────────────────────
   // Register a new user account
   // ──────────────────────────────────────────────────────
-  register: publicMutation.input(registerSchema).mutation(async ({ input }) => {
+  register: publicMutation.input(registerSchema).mutation(async ({ input, ctx }) => {
     try {
       // ── Rate limiting: 3 registrations per email per hour ──
       const registerKey = `register:${input.email}`;
@@ -166,11 +207,16 @@ export const authRouter = router({
         });
       }
 
-      // Sign tokens
+      // Sign tokens with family ID for rotation tracking
       const payload = { id: user.id, role: user.role, email: user.email };
       const accessToken = signAccessToken(payload);
       const refreshTokenJwt = signRefreshToken(payload);
-      await storeRefreshToken(user.id, refreshTokenJwt);
+      const familyId = generateTokenFamilyId();
+      await createRefreshToken(user.id, refreshTokenJwt, familyId);
+
+      // Set cookies on response
+      const isProduction = ctx.isProduction ?? false;
+      ctx.setCookies?.(buildAuthCookies({ accessToken, refreshToken: refreshTokenJwt }, isProduction));
 
       return { user, accessToken, refreshToken: refreshTokenJwt };
     } catch (error) {
@@ -185,7 +231,7 @@ export const authRouter = router({
   // ──────────────────────────────────────────────────────
   // Login with email and password
   // ──────────────────────────────────────────────────────
-  login: publicMutation.input(loginSchema).mutation(async ({ input }) => {
+  login: publicMutation.input(loginSchema).mutation(async ({ input, ctx }) => {
     try {
       // ── Rate limiting: 5 attempts per 15 minutes per email ──
       const lockoutKey = `login_attempts:${input.email}`;
@@ -255,10 +301,15 @@ export const authRouter = router({
       const payload = { id: user.id, role: user.role, email: user.email };
       const accessToken = signAccessToken(payload);
       const refreshTokenJwt = signRefreshToken(payload);
-      await storeRefreshToken(user.id, refreshTokenJwt);
+      const familyId = generateTokenFamilyId();
+      await createRefreshToken(user.id, refreshTokenJwt, familyId);
 
       // Strip password hash from response
       const { passwordHash: _, ...safeUser } = user;
+
+      // Set cookies on response
+      const isProduction = ctx.isProduction ?? false;
+      ctx.setCookies?.(buildAuthCookies({ accessToken, refreshToken: refreshTokenJwt }, isProduction));
 
       return { user: safeUser, accessToken, refreshToken: refreshTokenJwt };
     } catch (error) {
@@ -271,18 +322,14 @@ export const authRouter = router({
   }),
 
   // ──────────────────────────────────────────────────────
-  // Refresh access token using a valid refresh token
+  // Refresh access token — CSRF-protected
   // ──────────────────────────────────────────────────────
-  refresh: publicProcedure.input(refreshTokenSchema).mutation(async ({ input }) => {
+  refresh: publicMutation.input(refreshTokenSchema).mutation(async ({ input, ctx }) => {
     try {
       // Verify the JWT signature
       let payload: { id: number; role: 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN'; email: string };
       try {
-        payload = verifyRefreshToken(input.refreshToken) as unknown as {
-          id: number;
-          role: 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN';
-          email: string;
-        };
+        payload = verifyRefreshToken(input.refreshToken);
       } catch {
         throw new TRPCError({
           code: 'UNAUTHORIZED',
@@ -290,29 +337,47 @@ export const authRouter = router({
         });
       }
 
-      // Look up the stored token and check revocation
+      // Look up the stored token
       const stored = await prisma.refreshToken.findUnique({
         where: { token: input.refreshToken },
       });
 
-      if (!stored || stored.revokedAt || stored.expiresAt < new Date()) {
+      if (!stored || stored.expiresAt < new Date()) {
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'Refresh token has been revoked or expired',
         });
       }
 
-      // Rotate: revoke old token
+      // ── Reuse detection ──
+      // If the token is already revoked, someone may be replaying a stolen token.
+      // Revoke the entire token family to prevent further abuse.
+      if (stored.revokedAt) {
+        await prisma.refreshToken.updateMany({
+          where: { familyId: stored.familyId, revokedAt: null },
+          data: { revokedAt: new Date() },
+        });
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'Token reuse detected — all sessions revoked for security',
+        });
+      }
+
+      // Rotate: revoke the current token
       await prisma.refreshToken.update({
         where: { id: stored.id },
         data: { revokedAt: new Date() },
       });
 
-      // Issue new tokens
+      // Issue new tokens in the same family
       const newPayload = { id: payload.id, role: payload.role, email: payload.email };
       const accessToken = signAccessToken(newPayload);
       const refreshTokenJwt = signRefreshToken(newPayload);
-      await storeRefreshToken(payload.id, refreshTokenJwt);
+      await createRefreshToken(payload.id, refreshTokenJwt, stored.familyId);
+
+      // Set new cookies
+      const isProduction = ctx.isProduction ?? false;
+      ctx.setCookies?.(buildAuthCookies({ accessToken, refreshToken: refreshTokenJwt }, isProduction));
 
       return { accessToken, refreshToken: refreshTokenJwt };
     } catch (error) {
@@ -336,6 +401,9 @@ export const authRouter = router({
         },
         data: { revokedAt: new Date() },
       });
+
+      // Clear auth cookies
+      ctx.setCookies?.(buildClearAuthCookies());
 
       return { message: 'Logged out successfully' };
     } catch (error) {
@@ -434,6 +502,9 @@ export const authRouter = router({
         where: { userId: ctx.user.id, revokedAt: null },
         data: { revokedAt: new Date() },
       });
+
+      // Clear auth cookies
+      ctx.setCookies?.(buildClearAuthCookies());
 
       return { message: 'Password changed successfully. All other sessions have been revoked.' };
     } catch (error) {
