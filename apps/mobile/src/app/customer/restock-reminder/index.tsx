@@ -9,21 +9,48 @@ export default function RestockReminderScreen(): JSX.Element {
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).restockReminder.list.query() as any).then((d: any) => { setData(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+    if (isRefresh) setRefreshing(true);
+    else setLoading(true);
+    ((trpc as any).restockReminder.list.query() as any)
+      .then((d: any) => {
+        setData(d || []);
+        setLoading(false);
+        setRefreshing(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        setRefreshing(false);
+      });
   }, []);
 
-  useEffect(() => { fetch(); }, [fetch]);
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
 
   if (loading) return <SkeletonList count={4} />;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#f59e0b']} />}>
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={() => fetch(true)}
+          colors={['#f59e0b']}
+        />
+      }
+    >
       <Text style={styles.t}>📦 تذكير بإعادة الطلب</Text>
       {data.map((r: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{r.emoji as string ?? '🧴'}</Text>
-          <View style={{flex:1}}><Text style={styles.name}>{r.productName as string}</Text><Text style={styles.date}>آخر طلب: {new Date(r.lastOrdered as string).toLocaleDateString('ar-SA')}</Text></View>
+          <Text style={styles.emoji}>{(r.emoji as string) ?? '🧴'}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.name}>{r.productName as string}</Text>
+            <Text style={styles.date}>
+              آخر طلب: {new Date(r.lastOrdered as string).toLocaleDateString('ar-SA')}
+            </Text>
+          </View>
         </View>
       ))}
     </ScrollView>
@@ -31,9 +58,19 @@ export default function RestockReminderScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fffbeb' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#fffbeb' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#d97706', textAlign: 'center', marginBottom: 20 },
-  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 6 },
-  emoji: { fontSize: 28 }, name: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 6,
+  },
+  emoji: { fontSize: 28 },
+  name: { fontSize: 14, fontWeight: '600', color: '#111827' },
   date: { fontSize: 12, color: '#6b7280', marginTop: 2 },
 });

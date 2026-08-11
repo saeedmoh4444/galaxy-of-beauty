@@ -19,21 +19,49 @@ interface FlashCard {
 }
 
 const CARDS: FlashCard[] = [
-  { term: 'كولاجين', emoji: '🧬', definition: 'بروتين طبيعي في البشرة يمنحها المرونة والشباب. يقل إنتاجه مع التقدم في العمر.', category: 'مكونات' },
-  { term: 'هيالورونيك أسيد', emoji: '💧', definition: 'مادة طبيعية في البشرة تجذب الرطوبة وتحتفظ بها. الملعقة الواحدة تحمل 6 لترات ماء!', category: 'مكونات' },
-  { term: 'نياسيناميد', emoji: '✨', definition: 'فيتامين B3 — يعالج حبوب الشباب، يفتح التصبغات، يقلص المسام، ويقوي حاجز البشرة.', category: 'مكونات' },
-  { term: 'ريتينول', emoji: '⏳', definition: 'فيتامين A — أقوى مضاد للتجاعيد. يستخدم مساءً فقط لأنه حساس للشمس.', category: 'مكونات' },
-  { term: 'SPF', emoji: '☀️', definition: 'Sun Protection Factor — مقياس حماية من أشعة الشمس. الحد الأدنى الموصى به: SPF 30.', category: 'حماية' },
-  { term: 'فيتزباتريك', emoji: '🎨', definition: 'مقياس يقسم ألوان البشرة إلى 6 أنواع. البشرة السعودية غالباً من النوع 3-5.', category: 'علمي' },
+  {
+    term: 'كولاجين',
+    emoji: '🧬',
+    definition: 'بروتين طبيعي في البشرة يمنحها المرونة والشباب. يقل إنتاجه مع التقدم في العمر.',
+    category: 'مكونات',
+  },
+  {
+    term: 'هيالورونيك أسيد',
+    emoji: '💧',
+    definition: 'مادة طبيعية في البشرة تجذب الرطوبة وتحتفظ بها. الملعقة الواحدة تحمل 6 لترات ماء!',
+    category: 'مكونات',
+  },
+  {
+    term: 'نياسيناميد',
+    emoji: '✨',
+    definition: 'فيتامين B3 — يعالج حبوب الشباب، يفتح التصبغات، يقلص المسام، ويقوي حاجز البشرة.',
+    category: 'مكونات',
+  },
+  {
+    term: 'ريتينول',
+    emoji: '⏳',
+    definition: 'فيتامين A — أقوى مضاد للتجاعيد. يستخدم مساءً فقط لأنه حساس للشمس.',
+    category: 'مكونات',
+  },
+  {
+    term: 'SPF',
+    emoji: '☀️',
+    definition: 'Sun Protection Factor — مقياس حماية من أشعة الشمس. الحد الأدنى الموصى به: SPF 30.',
+    category: 'حماية',
+  },
+  {
+    term: 'فيتزباتريك',
+    emoji: '🎨',
+    definition: 'مقياس يقسم ألوان البشرة إلى 6 أنواع. البشرة السعودية غالباً من النوع 3-5.',
+    category: 'علمي',
+  },
 ];
 
 interface BeautyFlashCardProps {
   className?: string;
 }
 
-export function BeautyFlashCard({
-  className = '',
-}: BeautyFlashCardProps): JSX.Element {
+export function BeautyFlashCard({ className = '' }: BeautyFlashCardProps): JSX.Element {
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
 
@@ -45,10 +73,17 @@ export function BeautyFlashCard({
   };
 
   return (
-    <div className={cn('rounded-2xl border border-purple-100 bg-white p-4 dark:border-purple-900 dark:bg-gray-900', className)}>
+    <div
+      className={cn(
+        'rounded-2xl border border-purple-100 bg-white p-4 dark:border-purple-900 dark:bg-gray-900',
+        className,
+      )}
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true">🃏</span>
+          <span className="text-lg" aria-hidden="true">
+            🃏
+          </span>
           <div>
             <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">
               بطاقة تعليمية
@@ -76,7 +111,9 @@ export function BeautyFlashCard({
       >
         {!flipped ? (
           <>
-            <span className="text-3xl" aria-hidden="true">{card.emoji}</span>
+            <span className="text-3xl" aria-hidden="true">
+              {card.emoji}
+            </span>
             <p className="mt-2 text-lg font-bold text-purple-800 dark:text-purple-200">
               {card.term}
             </p>
@@ -95,7 +132,10 @@ export function BeautyFlashCard({
       <div className="mt-3 flex gap-2">
         <button
           type="button"
-          onClick={() => { setFlipped(false); setIndex((p) => (p - 1 + CARDS.length) % CARDS.length); }}
+          onClick={() => {
+            setFlipped(false);
+            setIndex((p) => (p - 1 + CARDS.length) % CARDS.length);
+          }}
           className="flex-1 rounded-lg border border-purple-200 py-1.5 text-[10px] font-bold text-purple-600 hover:bg-purple-50 dark:border-purple-800 dark:text-purple-400"
         >
           ← السابقة

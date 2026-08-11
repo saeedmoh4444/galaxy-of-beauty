@@ -22,12 +22,22 @@ interface BeautyVirtualConsultationCardProps {
 }
 
 export function BeautyVirtualConsultationCard({
-  specialist, specialty, price = 150, duration = '30 دقيقة',
-  availableSlots = ['10:00', '14:00', '16:30'], emoji = '👩‍⚕️',
-  onBook, className = '',
+  specialist,
+  specialty,
+  price = 150,
+  duration = '30 دقيقة',
+  availableSlots = ['10:00', '14:00', '16:30'],
+  emoji = '👩‍⚕️',
+  onBook,
+  className = '',
 }: BeautyVirtualConsultationCardProps): JSX.Element {
   return (
-    <div className={cn('rounded-2xl border border-blue-100 bg-white p-5 dark:border-blue-900 dark:bg-gray-900', className)}>
+    <div
+      className={cn(
+        'rounded-2xl border border-blue-100 bg-white p-5 dark:border-blue-900 dark:bg-gray-900',
+        className,
+      )}
+    >
       <div className="flex items-start gap-3">
         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-sky-100 text-2xl dark:from-blue-900 dark:to-sky-900">
           {emoji}
@@ -57,14 +67,21 @@ export function BeautyVirtualConsultationCard({
         <p className="text-[10px] font-bold text-blue-700 dark:text-blue-300">📅 مواعيد متاحة</p>
         <div className="mt-1.5 flex flex-wrap gap-1.5">
           {availableSlots.map((slot) => (
-            <span key={slot} className="rounded-full bg-white px-2.5 py-1 text-[10px] font-medium text-blue-700 dark:bg-gray-800 dark:text-blue-300">
+            <span
+              key={slot}
+              className="rounded-full bg-white px-2.5 py-1 text-[10px] font-medium text-blue-700 dark:bg-gray-800 dark:text-blue-300"
+            >
               🕐 {slot}
             </span>
           ))}
         </div>
       </div>
 
-      <button type="button" onClick={onBook} className="mt-3 w-full rounded-xl bg-blue-600 py-2.5 text-xs font-bold text-white hover:bg-blue-700 active:scale-[0.98] transition-all">
+      <button
+        type="button"
+        onClick={onBook}
+        className="mt-3 w-full rounded-xl bg-blue-600 py-2.5 text-xs font-bold text-white hover:bg-blue-700 active:scale-[0.98] transition-all"
+      >
         احجزي استشارة 💻
       </button>
     </div>

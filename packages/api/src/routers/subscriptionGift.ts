@@ -4,16 +4,36 @@ import { customerProcedure, router } from '../trpc';
 
 export const subscriptionGiftRouter = router({
   send: customerProcedure
-    .input(z.object({ friendName: z.string().min(2).max(100), months: z.number().int().min(1).max(12), message: z.string().max(300).optional() }))
+    .input(
+      z.object({
+        friendName: z.string().min(2).max(100),
+        months: z.number().int().min(1).max(12),
+        message: z.string().max(300).optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const prices: Record<number, number> = { 1: 99, 3: 269, 6: 499 };
       const price = prices[input.months] ?? input.months * 99;
-      return prisma.subscriptionGift.create({ data: { senderId: ctx.user.id, friendName: input.friendName, months: input.months, price, message: input.message ?? null } });
+      return prisma.subscriptionGift.create({
+        data: {
+          senderId: ctx.user.id,
+          friendName: input.friendName,
+          months: input.months,
+          price,
+          message: input.message ?? null,
+        },
+      });
     }),
 
   mySentGifts: customerProcedure
     .input(z.object({ limit: z.number().int().min(1).max(20).default(10) }))
-    .query(async ({ ctx, input }) => prisma.subscriptionGift.findMany({ where: { senderId: ctx.user.id }, take: input.limit, orderBy: { createdAt: 'desc' } })),
+    .query(async ({ ctx, input }) =>
+      prisma.subscriptionGift.findMany({
+        where: { senderId: ctx.user.id },
+        take: input.limit,
+        orderBy: { createdAt: 'desc' },
+      }),
+    ),
 
   options: customerProcedure.query(() => ({
     tiers: [

@@ -80,14 +80,28 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
 
 const TIER_STYLES: Record<RoleDef['tier'], string> = {
   gold: 'border-amber-300 bg-gradient-to-br from-amber-50 to-yellow-50 dark:border-amber-800 dark:from-amber-950 dark:to-yellow-950',
-  silver: 'border-gray-300 bg-gradient-to-br from-gray-50 to-slate-50 dark:border-gray-700 dark:from-gray-900 dark:to-slate-900',
-  bronze: 'border-orange-300 bg-gradient-to-br from-orange-50 to-amber-50 dark:border-orange-800 dark:from-orange-950 dark:to-amber-950',
+  silver:
+    'border-gray-300 bg-gradient-to-br from-gray-50 to-slate-50 dark:border-gray-700 dark:from-gray-900 dark:to-slate-900',
+  bronze:
+    'border-orange-300 bg-gradient-to-br from-orange-50 to-amber-50 dark:border-orange-800 dark:from-orange-950 dark:to-amber-950',
 };
 
 const TIER_BADGE: Record<RoleDef['tier'], { emoji: string; label: string; className: string }> = {
-  gold: { emoji: '🥇', label: 'ذهبي', className: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200' },
-  silver: { emoji: '🥈', label: 'فضي', className: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' },
-  bronze: { emoji: '🥉', label: 'برونزي', className: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200' },
+  gold: {
+    emoji: '🥇',
+    label: 'ذهبي',
+    className: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200',
+  },
+  silver: {
+    emoji: '🥈',
+    label: 'فضي',
+    className: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
+  },
+  bronze: {
+    emoji: '🥉',
+    label: 'برونزي',
+    className: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+  },
 };
 
 interface SheLeadsBadgeProps {
@@ -120,12 +134,7 @@ export function SheLeadsBadge({
 
   return (
     <div
-      className={cn(
-        'rounded-2xl border p-4',
-        TIER_STYLES[roleDef.tier],
-        isSm && 'p-3',
-        className,
-      )}
+      className={cn('rounded-2xl border p-4', TIER_STYLES[roleDef.tier], isSm && 'p-3', className)}
     >
       {/* Top row: role emoji + tier badge */}
       <div className="flex items-center justify-between">
@@ -144,7 +153,12 @@ export function SheLeadsBadge({
 
       {/* Name + title */}
       <div className="mt-2">
-        <h4 className={cn('font-bold text-text-primary dark:text-gray-100', isSm ? 'text-xs' : 'text-sm')}>
+        <h4
+          className={cn(
+            'font-bold text-text-primary dark:text-gray-100',
+            isSm ? 'text-xs' : 'text-sm',
+          )}
+        >
           {name}
         </h4>
         <p className="text-[10px] font-medium text-text-tertiary dark:text-gray-400">
@@ -153,7 +167,12 @@ export function SheLeadsBadge({
       </div>
 
       {/* Description */}
-      <p className={cn('mt-1 text-text-secondary dark:text-gray-300', isSm ? 'text-[10px]' : 'text-xs')}>
+      <p
+        className={cn(
+          'mt-1 text-text-secondary dark:text-gray-300',
+          isSm ? 'text-[10px]' : 'text-xs',
+        )}
+      >
         {roleDef.description}
       </p>
 

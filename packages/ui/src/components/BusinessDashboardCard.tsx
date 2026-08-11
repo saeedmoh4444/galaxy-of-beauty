@@ -38,22 +38,24 @@ export function BusinessDashboardCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true">📊</span>
+          <span className="text-xl" aria-hidden="true">
+            📊
+          </span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
               لوحة الأعمال
             </h4>
-            <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
-              {month}
-            </p>
+            <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{month}</p>
           </div>
         </div>
-        <span className={cn(
-          'rounded-full px-2 py-0.5 text-[10px] font-bold',
-          growth >= 0
-            ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
-            : 'bg-rose-50 text-rose-700 dark:bg-rose-950 dark:text-rose-300',
-        )}>
+        <span
+          className={cn(
+            'rounded-full px-2 py-0.5 text-[10px] font-bold',
+            growth >= 0
+              ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+              : 'bg-rose-50 text-rose-700 dark:bg-rose-950 dark:text-rose-300',
+          )}
+        >
           {growth >= 0 ? '📈' : '📉'} {growth}%
         </span>
       </div>

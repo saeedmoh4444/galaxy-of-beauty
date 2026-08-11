@@ -22,7 +22,11 @@ const ROUTINES: Record<TeenSkinType, SkinRoutine> = {
   oily: {
     morning: ['غسول لطيف', 'تونر خالٍ من الكحول', 'مرطب خفيف (جل)', 'واقي شمس'],
     evening: ['مزيل مكياج (إذا استخدمتِ)', 'غسول', 'تونر', 'مرطب خفيف'],
-    tips: ['لا تغسلي وجهكِ أكثر من مرتين يومياً', 'استخدمي منتجات "خالية من الزيوت"', 'أوراق التنشيف صديقتكِ'],
+    tips: [
+      'لا تغسلي وجهكِ أكثر من مرتين يومياً',
+      'استخدمي منتجات "خالية من الزيوت"',
+      'أوراق التنشيف صديقتكِ',
+    ],
   },
   dry: {
     morning: ['غسول كريمي', 'سيروم مرطب', 'مرطب غني', 'واقي شمس'],
@@ -32,7 +36,11 @@ const ROUTINES: Record<TeenSkinType, SkinRoutine> = {
   combination: {
     morning: ['غسول متوازن', 'تونر', 'مرطب جل في T-zone', 'واقي شمس'],
     evening: ['مزيل مكياج', 'غسول', 'مرطب خفيف على كامل الوجه'],
-    tips: ['استخدمي منتجات مختلفة للمناطق المختلفة', 'المنطقة الدهنية تحتاج عناية أخف', 'لا تفرطي في تجفيف البشرة'],
+    tips: [
+      'استخدمي منتجات مختلفة للمناطق المختلفة',
+      'المنطقة الدهنية تحتاج عناية أخف',
+      'لا تفرطي في تجفيف البشرة',
+    ],
   },
   normal: {
     morning: ['غسول لطيف', 'مرطب خفيف', 'واقي شمس'],
@@ -42,7 +50,11 @@ const ROUTINES: Record<TeenSkinType, SkinRoutine> = {
   acne_prone: {
     morning: ['غسول بحمض الساليسيليك', 'مرطب خالٍ من الزيوت', 'واقي شمس (جل)'],
     evening: ['مزيل مكياج', 'غسول لطيف', 'علاج حبوب (حسب وصف الطبيب)', 'مرطب خفيف'],
-    tips: ['لا تعبثي بالحبوب أبداً', 'غيري غطاء الوسادة أسبوعياً', 'استشيري طبيبة جلدية للحالات الشديدة'],
+    tips: [
+      'لا تعبثي بالحبوب أبداً',
+      'غيري غطاء الوسادة أسبوعياً',
+      'استشيري طبيبة جلدية للحالات الشديدة',
+    ],
   },
 };
 
@@ -78,7 +90,9 @@ export function TeenSkincareGuide({
     >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-2xl" aria-hidden="true">{skin.emoji}</span>
+          <span className="text-2xl" aria-hidden="true">
+            {skin.emoji}
+          </span>
           <div>
             <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">
               دليل العناية بالبشرة
@@ -97,7 +111,10 @@ export function TeenSkincareGuide({
         </p>
         <div className="mt-1 flex flex-wrap gap-1">
           {routine.morning.map((step, i) => (
-            <span key={i} className="inline-flex items-center gap-1 rounded-full bg-white px-2 py-0.5 text-[9px] text-amber-800 dark:bg-gray-800 dark:text-amber-200">
+            <span
+              key={i}
+              className="inline-flex items-center gap-1 rounded-full bg-white px-2 py-0.5 text-[9px] text-amber-800 dark:bg-gray-800 dark:text-amber-200"
+            >
               {i + 1}. {step}
             </span>
           ))}
@@ -111,7 +128,10 @@ export function TeenSkincareGuide({
         </p>
         <div className="mt-1 flex flex-wrap gap-1">
           {routine.evening.map((step, i) => (
-            <span key={i} className="inline-flex items-center gap-1 rounded-full bg-white px-2 py-0.5 text-[9px] text-indigo-800 dark:bg-gray-800 dark:text-indigo-200">
+            <span
+              key={i}
+              className="inline-flex items-center gap-1 rounded-full bg-white px-2 py-0.5 text-[9px] text-indigo-800 dark:bg-gray-800 dark:text-indigo-200"
+            >
               {i + 1}. {step}
             </span>
           ))}
@@ -120,9 +140,7 @@ export function TeenSkincareGuide({
 
       {/* Tips */}
       <div className="mt-2 rounded-xl bg-pink-50 p-3 dark:bg-pink-950">
-        <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">
-          💡 نصائح لبشرتكِ
-        </p>
+        <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">💡 نصائح لبشرتكِ</p>
         <ul className="mt-1 space-y-0.5">
           {routine.tips.map((tip) => (
             <li key={tip} className="text-[10px] text-pink-800 dark:text-pink-200">

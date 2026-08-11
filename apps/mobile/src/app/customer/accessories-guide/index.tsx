@@ -1,12 +1,25 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 
-interface Tip { emoji: string; text: string; }
-interface AccCard { emoji: string; title: string; subtitle: string; color: string; bg: string; tips: Tip[]; }
+interface Tip {
+  emoji: string;
+  text: string;
+}
+interface AccCard {
+  emoji: string;
+  title: string;
+  subtitle: string;
+  color: string;
+  bg: string;
+  tips: Tip[];
+}
 
 const CARDS: AccCard[] = [
   {
-    emoji: '💍', title: 'تنسيق الإكسسوارات', subtitle: 'اللمسة الأخيرة لإطلالتك',
-    color: '#d97706', bg: '#fffbeb',
+    emoji: '💍',
+    title: 'تنسيق الإكسسوارات',
+    subtitle: 'اللمسة الأخيرة لإطلالتك',
+    color: '#d97706',
+    bg: '#fffbeb',
     tips: [
       { emoji: '👂', text: 'أقراط — طويلة = وجه أنحف' },
       { emoji: '📿', text: 'عقد — يناسب فتحة الرقبة' },
@@ -15,8 +28,11 @@ const CARDS: AccCard[] = [
     ],
   },
   {
-    emoji: '👜', title: 'حقيبة الجمال', subtitle: 'أساسيات لا تستغني عنها',
-    color: '#4f46e5', bg: '#eef2ff',
+    emoji: '👜',
+    title: 'حقيبة الجمال',
+    subtitle: 'أساسيات لا تستغني عنها',
+    color: '#4f46e5',
+    bg: '#eef2ff',
     tips: [
       { emoji: '💄', text: 'أحمر شفاه — لون ناعم للإطلالة اليومية' },
       { emoji: '🪞', text: 'مرآة صغيرة — للمسات السريعة' },
@@ -25,8 +41,11 @@ const CARDS: AccCard[] = [
     ],
   },
   {
-    emoji: '🧕', title: 'أناقة الحجاب', subtitle: 'أفكار لتنسيق حجابك',
-    color: '#059669', bg: '#ecfdf5',
+    emoji: '🧕',
+    title: 'أناقة الحجاب',
+    subtitle: 'أفكار لتنسيق حجابك',
+    color: '#059669',
+    bg: '#ecfdf5',
     tips: [
       { emoji: '🎨', text: 'ألوان متناسقة — الحجاب مع لون الفستان' },
       { emoji: '🧷', text: 'تثبيت محكم — دبابيس غير ظاهرة' },
@@ -69,17 +88,46 @@ export default function AccessoriesGuideScreen(): JSX.Element {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fdf4ff' },
   content: { padding: 16, paddingTop: 40, paddingBottom: 60 },
-  header: { fontSize: 24, fontWeight: '800', color: '#111827', textAlign: 'center', marginBottom: 6 },
-  subtitle: { fontSize: 13, color: '#6b7280', textAlign: 'center', marginBottom: 24, lineHeight: 22 },
+  header: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#111827',
+    textAlign: 'center',
+    marginBottom: 6,
+  },
+  subtitle: {
+    fontSize: 13,
+    color: '#6b7280',
+    textAlign: 'center',
+    marginBottom: 24,
+    lineHeight: 22,
+  },
   grid: { gap: 12 },
-  card: { backgroundColor: '#fff', borderRadius: 16, borderWidth: 1, padding: 16, marginBottom: 4, shadowColor: '#000', shadowOpacity: 0.04, shadowRadius: 8, shadowOffset: { width: 0, height: 2 } },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    borderWidth: 1,
+    padding: 16,
+    marginBottom: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.04,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+  },
   cardHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 12 },
   cardEmoji: { fontSize: 28 },
   cardTitleWrap: { flex: 1 },
   cardTitle: { fontSize: 15, fontWeight: '700' },
   cardSubtitle: { fontSize: 11, color: '#9ca3af', marginTop: 2 },
   tipsList: { gap: 6 },
-  tipRow: { flexDirection: 'row', alignItems: 'center', gap: 8, borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10 },
+  tipRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
   tipEmoji: { fontSize: 14, width: 20, textAlign: 'center' },
   tipText: { fontSize: 12, fontWeight: '500', flex: 1, textAlign: 'right' },
 });

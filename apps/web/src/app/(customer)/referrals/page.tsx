@@ -2,7 +2,15 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, formatCurrency } from '@galaxy/ui';
+import {
+  Card,
+  CardSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  Input,
+  formatCurrency,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function ReferralsPage(): JSX.Element {
@@ -14,7 +22,9 @@ export default function ReferralsPage(): JSX.Element {
   const statsQ = api.referrals.getStats.useQuery();
   const applyMut = api.referrals.applyCode.useMutation({
     onSuccess: (res) => {
-      setApplyMsg(`تم تطبيق الكود! مكافأة: ${formatCurrency(Number((res as unknown as Record<string, unknown>).referrerBonus))}`);
+      setApplyMsg(
+        `تم تطبيق الكود! مكافأة: ${formatCurrency(Number((res as unknown as Record<string, unknown>).referrerBonus))}`,
+      );
       setApplyCode('');
     },
     onError: (err) => {
@@ -44,7 +54,11 @@ export default function ReferralsPage(): JSX.Element {
   const handleShare = async () => {
     const text = `استخدم كود الدعوة الخاص بي: ${codeData?.code ?? ''} واحصل على خصم!`;
     if (navigator.share) {
-      try { await navigator.share({ title: 'دعوة', text }); } catch { /* ignore */ }
+      try {
+        await navigator.share({ title: 'دعوة', text });
+      } catch {
+        /* ignore */
+      }
     } else {
       handleCopy();
     }
@@ -56,9 +70,19 @@ export default function ReferralsPage(): JSX.Element {
         <h1 className="text-2xl font-bold">دعوة الأصدقاء</h1>
 
         {isLoading ? (
-          <div className="space-y-4">{Array.from({ length: 3 }, (_, i) => <CardSkeleton key={i} />)}</div>
+          <div className="space-y-4">
+            {Array.from({ length: 3 }, (_, i) => (
+              <CardSkeleton key={i} />
+            ))}
+          </div>
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل بيانات الدعوة" onRetry={() => { codeQ.refetch(); statsQ.refetch(); }} />
+          <ErrorAlert
+            message="فشل تحميل بيانات الدعوة"
+            onRetry={() => {
+              codeQ.refetch();
+              statsQ.refetch();
+            }}
+          />
         ) : (
           <>
             {/* Referral Code */}
@@ -66,7 +90,7 @@ export default function ReferralsPage(): JSX.Element {
               <p className="text-sm text-text-secondary dark:text-gray-400">كود الدعوة الخاص بك</p>
               <div className="my-4 flex items-center justify-center gap-3">
                 <span className="rounded-lg bg-surface-muted px-6 py-3 text-2xl font-bold tracking-widest text-brand-600 dark:bg-gray-800">
-                  {codeData?.code as string ?? '---'}
+                  {(codeData?.code as string) ?? '---'}
                 </span>
                 <button
                   onClick={handleCopy}
@@ -76,29 +100,39 @@ export default function ReferralsPage(): JSX.Element {
                 </button>
               </div>
               {copyMsg && <p className="text-sm text-green-600">{copyMsg}</p>}
-              <Button className="mt-4" onClick={handleShare}>مشاركة الكود</Button>
+              <Button className="mt-4" onClick={handleShare}>
+                مشاركة الكود
+              </Button>
             </Card>
 
             {/* Stats */}
             <div className="grid gap-4 md:grid-cols-2">
               <Card padding="md" className="text-center">
                 <p className="text-sm text-text-secondary dark:text-gray-400">إجمالي المدعوين</p>
-                <p className="mt-1 text-3xl font-bold text-brand-600">{statsData?.totalReferred as number ?? 0}</p>
+                <p className="mt-1 text-3xl font-bold text-brand-600">
+                  {(statsData?.totalReferred as number) ?? 0}
+                </p>
               </Card>
               <Card padding="md" className="text-center">
                 <p className="text-sm text-text-secondary dark:text-gray-400">إجمالي المكاسب</p>
-                <p className="mt-1 text-3xl font-bold text-green-600">{formatCurrency(Number(statsData?.totalEarned ?? 0))}</p>
+                <p className="mt-1 text-3xl font-bold text-green-600">
+                  {formatCurrency(Number(statsData?.totalEarned ?? 0))}
+                </p>
               </Card>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
               <Card padding="md" className="text-center">
                 <p className="text-sm text-text-secondary dark:text-gray-400">مكتملة</p>
-                <p className="mt-1 text-2xl font-bold text-green-600">{statsData?.completedReferrals as number ?? 0}</p>
+                <p className="mt-1 text-2xl font-bold text-green-600">
+                  {(statsData?.completedReferrals as number) ?? 0}
+                </p>
               </Card>
               <Card padding="md" className="text-center">
                 <p className="text-sm text-text-secondary dark:text-gray-400">قيد الانتظار</p>
-                <p className="mt-1 text-2xl font-bold text-amber-600">{statsData?.pendingReferrals as number ?? 0}</p>
+                <p className="mt-1 text-2xl font-bold text-amber-600">
+                  {(statsData?.pendingReferrals as number) ?? 0}
+                </p>
               </Card>
             </div>
 
@@ -135,15 +169,23 @@ export default function ReferralsPage(): JSX.Element {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-sm font-medium">{referred?.name as string}</p>
-                          <p className="text-xs text-text-secondary">{new Date(r.createdAt as string).toLocaleDateString('ar-SA')}</p>
+                          <p className="text-xs text-text-secondary">
+                            {new Date(r.createdAt as string).toLocaleDateString('ar-SA')}
+                          </p>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                            r.status === 'COMPLETED' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300'
-                          }`}>
+                          <span
+                            className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                              r.status === 'COMPLETED'
+                                ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
+                                : 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300'
+                            }`}
+                          >
                             {r.status === 'COMPLETED' ? 'مكتملة' : 'قيد الانتظار'}
                           </span>
-                          <span className="text-sm font-semibold text-green-600">{formatCurrency(Number(r.referrerReward))}</span>
+                          <span className="text-sm font-semibold text-green-600">
+                            {formatCurrency(Number(r.referrerReward))}
+                          </span>
                         </div>
                       </div>
                     </Card>

@@ -32,7 +32,10 @@ export function LoyaltyAnniversaryCard({
   onClaimGift,
   className = '',
 }: LoyaltyAnniversaryCardProps): JSX.Element {
-  const closestMilestone = Object.keys(YEAR_MESSAGES).map(Number).filter((m) => m <= years).sort((a, b) => b - a)[0];
+  const closestMilestone = Object.keys(YEAR_MESSAGES)
+    .map(Number)
+    .filter((m) => m <= years)
+    .sort((a, b) => b - a)[0];
   const celebration = YEAR_MESSAGES[closestMilestone || 1]!;
 
   return (
@@ -43,20 +46,18 @@ export function LoyaltyAnniversaryCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">{celebration.emoji}</span>
+        <span className="text-3xl" aria-hidden="true">
+          {celebration.emoji}
+        </span>
         <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">
           {celebration.title}
         </h4>
-        <p className="text-[10px] text-pink-500 dark:text-pink-400">
-          منذ {joinedDate}
-        </p>
+        <p className="text-[10px] text-pink-500 dark:text-pink-400">منذ {joinedDate}</p>
       </div>
 
       {/* Years */}
       <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
-        <p className="text-3xl font-bold text-pink-700 dark:text-pink-300">
-          {years}
-        </p>
+        <p className="text-3xl font-bold text-pink-700 dark:text-pink-300">{years}</p>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">
           {years === 1 ? 'سنة' : years <= 10 ? 'سنوات' : 'سنة'} من جمالكِ معنا
         </p>
@@ -69,9 +70,7 @@ export function LoyaltyAnniversaryCard({
 
       {/* Gift */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">
-          🎁 هديتكِ
-        </p>
+        <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">🎁 هديتكِ</p>
         <p className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">
           {celebration.gift}
         </p>

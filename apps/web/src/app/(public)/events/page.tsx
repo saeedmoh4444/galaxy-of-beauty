@@ -7,7 +7,9 @@ export default async function EventsPage(): Promise<JSX.Element> {
   try {
     const caller = await getServerCaller();
     initialEvents = serializeForClient(await (caller as any).beautyEvents.list({}));
-  } catch { /* client will retry */ }
+  } catch {
+    /* client will retry */
+  }
 
   return <EventsClient initialEvents={initialEvents} />;
 }

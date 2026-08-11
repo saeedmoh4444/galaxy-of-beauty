@@ -94,11 +94,11 @@ export function PanicButton({
           onClick={handlePress}
           className="flex w-full items-center gap-3 rounded-xl border-2 border-red-200 bg-red-50 p-4 text-left transition-all hover:border-red-300 hover:bg-red-100 active:scale-[0.98] dark:border-red-900 dark:bg-red-950 dark:hover:bg-red-900"
         >
-          <span className="text-2xl shrink-0" aria-hidden="true">🆘</span>
+          <span className="text-2xl shrink-0" aria-hidden="true">
+            🆘
+          </span>
           <div>
-            <p className="text-sm font-bold text-red-700 dark:text-red-300">
-              زر الطوارئ
-            </p>
+            <p className="text-sm font-bold text-red-700 dark:text-red-300">زر الطوارئ</p>
             <p className="text-[10px] text-red-500 dark:text-red-400">
               اضغطي في حالة الطوارئ — سيتم إشعار جهات اتصالكِ فوراً
             </p>
@@ -110,11 +110,11 @@ export function PanicButton({
       {stage === 'confirm' && (
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <span className="text-2xl" aria-hidden="true">⚠️</span>
+            <span className="text-2xl" aria-hidden="true">
+              ⚠️
+            </span>
             <div>
-              <p className="text-sm font-bold text-red-700 dark:text-red-300">
-                تأكيد الطوارئ
-              </p>
+              <p className="text-sm font-bold text-red-700 dark:text-red-300">تأكيد الطوارئ</p>
               <p className="text-[10px] text-red-500 dark:text-red-400">
                 سيتم إرسال موقعكِ الحالي إلى جهات اتصالكِ
               </p>
@@ -128,7 +128,10 @@ export function PanicButton({
             </p>
             <div className="mt-1 space-y-1">
               {contacts.map((c) => (
-                <div key={c.phone} className="flex items-center gap-1.5 text-[10px] text-text-secondary dark:text-gray-300">
+                <div
+                  key={c.phone}
+                  className="flex items-center gap-1.5 text-[10px] text-text-secondary dark:text-gray-300"
+                >
                   <span>{c.relation === 'mother' ? '👩' : '👤'}</span>
                   <span className="font-bold">{c.name}</span>
                   <span className="text-text-tertiary">{c.phone}</span>
@@ -144,9 +147,7 @@ export function PanicButton({
 
           {/* Address context */}
           {address && (
-            <p className="text-[10px] text-red-600 dark:text-red-400">
-              📍 الموقع: {address}
-            </p>
+            <p className="text-[10px] text-red-600 dark:text-red-400">📍 الموقع: {address}</p>
           )}
           {technicianName && (
             <p className="text-[10px] text-red-600 dark:text-red-400">
@@ -178,26 +179,26 @@ export function PanicButton({
       {stage === 'activated' && (
         <div className="text-center space-y-3">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
-            <span className="text-3xl animate-pulse" aria-hidden="true">🚨</span>
+            <span className="text-3xl animate-pulse" aria-hidden="true">
+              🚨
+            </span>
           </div>
           <div>
-            <p className="text-sm font-bold text-red-700 dark:text-red-300">
-              تم إرسال الطوارئ!
-            </p>
+            <p className="text-sm font-bold text-red-700 dark:text-red-300">تم إرسال الطوارئ!</p>
             <p className="text-[10px] text-red-500 dark:text-red-400">
               تم إشعار {contacts.length + 1} جهات اتصال بموقعكِ الحالي
             </p>
           </div>
-          <div className="text-2xl font-bold text-red-700 dark:text-red-300">
-            {countdown}
-          </div>
+          <div className="text-2xl font-bold text-red-700 dark:text-red-300">{countdown}</div>
         </div>
       )}
 
       {/* Done state */}
       {stage === 'done' && (
         <div className="text-center space-y-2">
-          <span className="text-3xl" aria-hidden="true">🤲</span>
+          <span className="text-3xl" aria-hidden="true">
+            🤲
+          </span>
           <p className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             المساعدة في الطريق
           </p>

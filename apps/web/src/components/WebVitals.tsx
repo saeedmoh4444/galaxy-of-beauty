@@ -18,11 +18,11 @@ interface VitalMetric {
 }
 
 const THRESHOLDS: Record<string, [number, number]> = {
-  LCP: [2500, 4000],  // < 2.5s good, < 4s needs-improvement
-  CLS: [0.1, 0.25],   // < 0.1 good, < 0.25 needs-improvement
-  INP: [200, 500],    // < 200ms good, < 500ms needs-improvement
-  FCP: [1800, 3000],  // < 1.8s good, < 3s needs-improvement
-  TTFB: [800, 1800],  // < 800ms good, < 1.8s needs-improvement
+  LCP: [2500, 4000], // < 2.5s good, < 4s needs-improvement
+  CLS: [0.1, 0.25], // < 0.1 good, < 0.25 needs-improvement
+  INP: [200, 500], // < 200ms good, < 500ms needs-improvement
+  FCP: [1800, 3000], // < 1.8s good, < 3s needs-improvement
+  TTFB: [800, 1800], // < 800ms good, < 1.8s needs-improvement
 };
 
 function getRating(name: string, value: number): VitalMetric['rating'] {
@@ -43,34 +43,37 @@ export function WebVitals(): null {
   useEffect(() => {
     // Dynamic import to avoid bundling — skip gracefully if not installed
     // @ts-ignore — web-vitals is an optional dependency
-    import('web-vitals').then(({ onLCP, onCLS, onINP, onFCP, onTTFB }: any) => {
-      const report = (metric: { name: string; value: number; delta: number }) => {
-        const entry: VitalMetric = {
-          name: metric.name,
-          value: Math.round(metric.value * 100) / 100,
-          rating: getRating(metric.name, metric.value),
-          delta: Math.round(metric.delta * 100) / 100,
+    import('web-vitals')
+      .then(({ onLCP, onCLS, onINP, onFCP, onTTFB }: any) => {
+        const report = (metric: { name: string; value: number; delta: number }) => {
+          const entry: VitalMetric = {
+            name: metric.name,
+            value: Math.round(metric.value * 100) / 100,
+            rating: getRating(metric.name, metric.value),
+            delta: Math.round(metric.delta * 100) / 100,
+          };
+
+          // Keep last 20 entries
+          vitalsBuffer.push(entry);
+          if (vitalsBuffer.length > 20) vitalsBuffer.shift();
+
+          // Log in development
+          if (process.env.NODE_ENV === 'development') {
+            const emoji =
+              entry.rating === 'good' ? '🟢' : entry.rating === 'needs-improvement' ? '🟡' : '🔴';
+            console.log(`[WebVitals] ${emoji} ${entry.name}: ${entry.value}`);
+          }
         };
 
-        // Keep last 20 entries
-        vitalsBuffer.push(entry);
-        if (vitalsBuffer.length > 20) vitalsBuffer.shift();
-
-        // Log in development
-        if (process.env.NODE_ENV === 'development') {
-          const emoji = entry.rating === 'good' ? '🟢' : entry.rating === 'needs-improvement' ? '🟡' : '🔴';
-          console.log(`[WebVitals] ${emoji} ${entry.name}: ${entry.value}`);
-        }
-      };
-
-      onLCP(report);
-      onCLS(report);
-      onINP(report);
-      onFCP(report);
-      onTTFB(report);
-    }).catch(() => {
-      // web-vitals not installed — skip silently
-    });
+        onLCP(report);
+        onCLS(report);
+        onINP(report);
+        onFCP(report);
+        onTTFB(report);
+      })
+      .catch(() => {
+        // web-vitals not installed — skip silently
+      });
   }, []);
 
   return null;

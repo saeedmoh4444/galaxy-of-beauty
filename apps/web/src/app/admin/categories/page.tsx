@@ -15,14 +15,31 @@ function getCatName(cat: CategoryItem, lang: 'ar' | 'en'): string {
 
 export default function AdminCategoriesPage(): JSX.Element {
   const { data, isLoading, isError, refetch } = api.categories.all.useQuery();
-  const createMut = api.categories.create.useMutation({ onSuccess: () => { refetch(); setCreateOpen(false); setForm({ nameAr: '', nameEn: '', slug: '', parentId: null }); } });
-  const updateMut = api.categories.update.useMutation({ onSuccess: () => { refetch(); setEditOpen(false); setSelected(null); } });
+  const createMut = api.categories.create.useMutation({
+    onSuccess: () => {
+      refetch();
+      setCreateOpen(false);
+      setForm({ nameAr: '', nameEn: '', slug: '', parentId: null });
+    },
+  });
+  const updateMut = api.categories.update.useMutation({
+    onSuccess: () => {
+      refetch();
+      setEditOpen(false);
+      setSelected(null);
+    },
+  });
   const deleteMut = api.categories.delete.useMutation({ onSuccess: () => refetch() });
 
   const [createOpen, setCreateOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [selected, setSelected] = useState<CategoryItem | null>(null);
-  const [form, setForm] = useState({ nameAr: '', nameEn: '', slug: '', parentId: null as number | null });
+  const [form, setForm] = useState({
+    nameAr: '',
+    nameEn: '',
+    slug: '',
+    parentId: null as number | null,
+  });
 
   const categories: CategoryItem[] = data ?? [];
 
@@ -45,7 +62,12 @@ export default function AdminCategoriesPage(): JSX.Element {
   const openEdit = (cat: CategoryItem) => {
     setSelected(cat);
     const nameJson = cat.nameJson as { ar?: string; en?: string };
-    setForm({ nameAr: nameJson.ar ?? '', nameEn: nameJson.en ?? '', slug: cat.slug, parentId: cat.parentId ?? null });
+    setForm({
+      nameAr: nameJson.ar ?? '',
+      nameEn: nameJson.en ?? '',
+      slug: cat.slug,
+      parentId: cat.parentId ?? null,
+    });
     setEditOpen(true);
   };
 
@@ -53,15 +75,27 @@ export default function AdminCategoriesPage(): JSX.Element {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">إدارة الأقسام</h1>
-        <Button variant="primary" onClick={() => { setForm({ nameAr: '', nameEn: '', slug: '', parentId: null }); setCreateOpen(true); }}>إضافة قسم</Button>
+        <Button
+          variant="primary"
+          onClick={() => {
+            setForm({ nameAr: '', nameEn: '', slug: '', parentId: null });
+            setCreateOpen(true);
+          }}
+        >
+          إضافة قسم
+        </Button>
       </div>
 
-      {isLoading ? <CardSkeleton />
-      : isError ? <ErrorAlert message="فشل تحميل الأقسام" onRetry={() => refetch()} />
-      : categories.length === 0 ? (
+      {isLoading ? (
+        <CardSkeleton />
+      ) : isError ? (
+        <ErrorAlert message="فشل تحميل الأقسام" onRetry={() => refetch()} />
+      ) : categories.length === 0 ? (
         <>
           <EmptyState title="لا توجد أقسام" />
-          <Button variant="primary" onClick={() => setCreateOpen(true)}>إضافة القسم الأول</Button>
+          <Button variant="primary" onClick={() => setCreateOpen(true)}>
+            إضافة القسم الأول
+          </Button>
         </>
       ) : (
         <div className="space-y-2">
@@ -70,17 +104,27 @@ export default function AdminCategoriesPage(): JSX.Element {
               <Card padding="md">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-semibold">{getCatName(cat, 'ar')} / {getCatName(cat, 'en')}</p>
+                    <p className="font-semibold">
+                      {getCatName(cat, 'ar')} / {getCatName(cat, 'en')}
+                    </p>
                     <p className="text-sm text-text-secondary">المعرف: {cat.slug}</p>
-                    <p className="text-sm text-text-secondary">الترتيب: {String(cat.sortOrder ?? 0)}</p>
+                    <p className="text-sm text-text-secondary">
+                      الترتيب: {String(cat.sortOrder ?? 0)}
+                    </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className={`rounded-full px-2 py-0.5 text-xs ${Boolean(cat.isActive) ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-xs ${Boolean(cat.isActive) ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
+                    >
                       {Boolean(cat.isActive) ? 'نشط' : 'غير نشط'}
                     </span>
-                    <Button size="sm" variant="outline" onClick={() => openEdit(cat)}>تعديل</Button>
+                    <Button size="sm" variant="outline" onClick={() => openEdit(cat)}>
+                      تعديل
+                    </Button>
                     {Boolean(cat.isActive) && (
-                      <Button size="sm" variant="danger" onClick={() => handleDelete(cat)}>حذف</Button>
+                      <Button size="sm" variant="danger" onClick={() => handleDelete(cat)}>
+                        حذف
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -90,17 +134,27 @@ export default function AdminCategoriesPage(): JSX.Element {
                   <Card padding="md">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-semibold">↳ {getCatName(child, 'ar')} / {getCatName(child, 'en')}</p>
+                        <p className="font-semibold">
+                          ↳ {getCatName(child, 'ar')} / {getCatName(child, 'en')}
+                        </p>
                         <p className="text-sm text-text-secondary">المعرف: {child.slug}</p>
-                        <p className="text-sm text-text-secondary">الترتيب: {String(child.sortOrder ?? 0)}</p>
+                        <p className="text-sm text-text-secondary">
+                          الترتيب: {String(child.sortOrder ?? 0)}
+                        </p>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className={`rounded-full px-2 py-0.5 text-xs ${child.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                        <span
+                          className={`rounded-full px-2 py-0.5 text-xs ${child.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
+                        >
                           {child.isActive ? 'نشط' : 'غير نشط'}
                         </span>
-                        <Button size="sm" variant="outline" onClick={() => openEdit(child)}>تعديل</Button>
+                        <Button size="sm" variant="outline" onClick={() => openEdit(child)}>
+                          تعديل
+                        </Button>
                         {Boolean(child.isActive) && (
-                          <Button size="sm" variant="danger" onClick={() => handleDelete(child)}>حذف</Button>
+                          <Button size="sm" variant="danger" onClick={() => handleDelete(child)}>
+                            حذف
+                          </Button>
                         )}
                       </div>
                     </div>
@@ -115,25 +169,47 @@ export default function AdminCategoriesPage(): JSX.Element {
       {/* Create Modal */}
       <Modal open={createOpen} onClose={() => setCreateOpen(false)} title="إضافة قسم جديد">
         <div className="space-y-4">
-          <Input label="الاسم (عربي)" value={form.nameAr} onChange={(e) => setForm({ ...form, nameAr: e.target.value })} />
-          <Input label="الاسم (إنجليزي)" value={form.nameEn} onChange={(e) => setForm({ ...form, nameEn: e.target.value })} />
-          <Input label="المعرف (Slug)" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
+          <Input
+            label="الاسم (عربي)"
+            value={form.nameAr}
+            onChange={(e) => setForm({ ...form, nameAr: e.target.value })}
+          />
+          <Input
+            label="الاسم (إنجليزي)"
+            value={form.nameEn}
+            onChange={(e) => setForm({ ...form, nameEn: e.target.value })}
+          />
+          <Input
+            label="المعرف (Slug)"
+            value={form.slug}
+            onChange={(e) => setForm({ ...form, slug: e.target.value })}
+          />
           <div>
-            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">القسم الأب</label>
+            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+              القسم الأب
+            </label>
             <select
               className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               value={form.parentId ?? ''}
-              onChange={(e) => setForm({ ...form, parentId: e.target.value ? Number(e.target.value) : null })}
+              onChange={(e) =>
+                setForm({ ...form, parentId: e.target.value ? Number(e.target.value) : null })
+              }
             >
               <option value="">-- لا يوجد (قسم رئيسي) --</option>
               {categories.map((c) => (
-                <option key={c.id} value={c.id}>{getCatName(c, 'ar')}</option>
+                <option key={c.id} value={c.id}>
+                  {getCatName(c, 'ar')}
+                </option>
               ))}
             </select>
           </div>
           <div className="flex gap-2">
-            <Button variant="primary" onClick={handleCreate} loading={createMut.isPending}>حفظ</Button>
-            <Button variant="secondary" onClick={() => setCreateOpen(false)}>إلغاء</Button>
+            <Button variant="primary" onClick={handleCreate} loading={createMut.isPending}>
+              حفظ
+            </Button>
+            <Button variant="secondary" onClick={() => setCreateOpen(false)}>
+              إلغاء
+            </Button>
           </div>
         </div>
       </Modal>
@@ -141,25 +217,47 @@ export default function AdminCategoriesPage(): JSX.Element {
       {/* Edit Modal */}
       <Modal open={editOpen} onClose={() => setEditOpen(false)} title="تعديل القسم">
         <div className="space-y-4">
-          <Input label="الاسم (عربي)" value={form.nameAr} onChange={(e) => setForm({ ...form, nameAr: e.target.value })} />
-          <Input label="الاسم (إنجليزي)" value={form.nameEn} onChange={(e) => setForm({ ...form, nameEn: e.target.value })} />
-          <Input label="المعرف (Slug)" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
+          <Input
+            label="الاسم (عربي)"
+            value={form.nameAr}
+            onChange={(e) => setForm({ ...form, nameAr: e.target.value })}
+          />
+          <Input
+            label="الاسم (إنجليزي)"
+            value={form.nameEn}
+            onChange={(e) => setForm({ ...form, nameEn: e.target.value })}
+          />
+          <Input
+            label="المعرف (Slug)"
+            value={form.slug}
+            onChange={(e) => setForm({ ...form, slug: e.target.value })}
+          />
           <div>
-            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">القسم الأب</label>
+            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+              القسم الأب
+            </label>
             <select
               className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               value={form.parentId ?? ''}
-              onChange={(e) => setForm({ ...form, parentId: e.target.value ? Number(e.target.value) : null })}
+              onChange={(e) =>
+                setForm({ ...form, parentId: e.target.value ? Number(e.target.value) : null })
+              }
             >
               <option value="">-- لا يوجد (قسم رئيسي) --</option>
               {categories.map((c) => (
-                <option key={c.id} value={c.id}>{getCatName(c, 'ar')}</option>
+                <option key={c.id} value={c.id}>
+                  {getCatName(c, 'ar')}
+                </option>
               ))}
             </select>
           </div>
           <div className="flex gap-2">
-            <Button variant="primary" onClick={handleUpdate} loading={updateMut.isPending}>تحديث</Button>
-            <Button variant="secondary" onClick={() => setEditOpen(false)}>إلغاء</Button>
+            <Button variant="primary" onClick={handleUpdate} loading={updateMut.isPending}>
+              تحديث
+            </Button>
+            <Button variant="secondary" onClick={() => setEditOpen(false)}>
+              إلغاء
+            </Button>
           </div>
         </div>
       </Modal>

@@ -44,24 +44,36 @@ export function SocialImpactCounter({
       current: womenEmployed,
       target: 1000,
     },
-    ...(womenInTraining ? [{
-      emoji: '📚',
-      label: 'متدربة',
-      current: womenInTraining,
-      target: 500,
-    }] : []),
-    ...(survivorServices ? [{
-      emoji: '🤲',
-      label: 'خدمة مجانية',
-      current: survivorServices,
-      target: 500,
-    }] : []),
-    ...(ruralWomen ? [{
-      emoji: '🏡',
-      label: 'امرأة ريفية',
-      current: ruralWomen,
-      target: 200,
-    }] : []),
+    ...(womenInTraining
+      ? [
+          {
+            emoji: '📚',
+            label: 'متدربة',
+            current: womenInTraining,
+            target: 500,
+          },
+        ]
+      : []),
+    ...(survivorServices
+      ? [
+          {
+            emoji: '🤲',
+            label: 'خدمة مجانية',
+            current: survivorServices,
+            target: 500,
+          },
+        ]
+      : []),
+    ...(ruralWomen
+      ? [
+          {
+            emoji: '🏡',
+            label: 'امرأة ريفية',
+            current: ruralWomen,
+            target: 200,
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -73,9 +85,7 @@ export function SocialImpactCounter({
     >
       {/* Header */}
       <div className="text-center">
-        <h4 className="text-sm font-bold text-amber-800 dark:text-amber-200">
-          🌍 أثرنا الاجتماعي
-        </h4>
+        <h4 className="text-sm font-bold text-amber-800 dark:text-amber-200">🌍 أثرنا الاجتماعي</h4>
         <p className="mt-0.5 text-[10px] text-amber-600 dark:text-amber-400">
           معاً نحو تمكين 1000 امرأة بحلول 2028
         </p>
@@ -97,7 +107,9 @@ export function SocialImpactCounter({
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm" aria-hidden="true">{metric.emoji}</span>
+                  <span className="text-sm" aria-hidden="true">
+                    {metric.emoji}
+                  </span>
                   <span className="text-[10px] font-bold text-text-primary dark:text-gray-100">
                     {metric.label}
                   </span>
@@ -112,9 +124,7 @@ export function SocialImpactCounter({
                 <div
                   className={cn(
                     'h-full rounded-full bg-gradient-to-r transition-all duration-1000',
-                    isMain
-                      ? 'from-amber-500 to-yellow-500'
-                      : 'from-amber-400 to-amber-500',
+                    isMain ? 'from-amber-500 to-yellow-500' : 'from-amber-400 to-amber-500',
                   )}
                   style={{ width: `${pct}%` }}
                 />
@@ -122,10 +132,12 @@ export function SocialImpactCounter({
 
               {/* Count */}
               <div className="mt-1 flex items-baseline justify-between">
-                <span className={cn(
-                  'font-bold text-amber-800 dark:text-amber-200',
-                  isMain ? 'text-lg' : 'text-sm',
-                )}>
+                <span
+                  className={cn(
+                    'font-bold text-amber-800 dark:text-amber-200',
+                    isMain ? 'text-lg' : 'text-sm',
+                  )}
+                >
                   {metric.current.toLocaleString('ar-SA')}
                 </span>
                 <span className="text-[10px] text-text-tertiary dark:text-gray-500">
@@ -140,7 +152,9 @@ export function SocialImpactCounter({
       {/* Year target */}
       <div className="mt-3 text-center">
         <div className="inline-flex items-center gap-1 rounded-full bg-white/60 px-3 py-1 dark:bg-black/20">
-          <span className="text-xs" aria-hidden="true">🎯</span>
+          <span className="text-xs" aria-hidden="true">
+            🎯
+          </span>
           <span className="text-[10px] font-bold text-amber-800 dark:text-amber-200">
             {Math.round((womenEmployed / 1000) * 100)}% من هدف 2028
           </span>

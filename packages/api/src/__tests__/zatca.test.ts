@@ -58,8 +58,8 @@ describe('ZATCA Invoice Hashing', () => {
       const hash = computeInvoiceHash({
         invoiceNumber: 'GOB-INV-TEST-0001',
         timestamp: '2026-07-14T10:00:00.000Z',
-        totalWithVat: 115.00,
-        vatAmount: 15.00,
+        totalWithVat: 115.0,
+        vatAmount: 15.0,
         previousHash: '0'.repeat(64),
       });
       expect(hash).toMatch(/^[a-f0-9]{64}$/);
@@ -106,8 +106,8 @@ describe('ZATCA Invoice Hashing', () => {
       const input = {
         invoiceNumber: 'INV-DET-001',
         timestamp: '2026-07-14T10:00:00.000Z',
-        totalWithVat: 115.00,
-        vatAmount: 15.00,
+        totalWithVat: 115.0,
+        vatAmount: 15.0,
         previousHash: 'a'.repeat(64),
       };
       expect(computeInvoiceHash(input)).toBe(computeInvoiceHash(input));
@@ -120,8 +120,8 @@ describe('ZATCA Invoice Hashing', () => {
         sellerName: 'جالكسي بيوتي',
         vatNumber: '300000000000003',
         timestamp: '2026-07-14T10:00:00.000Z',
-        totalWithVat: 115.00,
-        vatAmount: 15.00,
+        totalWithVat: 115.0,
+        vatAmount: 15.0,
         invoiceHash: 'a'.repeat(64),
       });
       expect(qr).toBeTruthy();
@@ -191,7 +191,7 @@ describe('ZATCA Invoice Hashing', () => {
     it('should calculate correct 15% VAT', () => {
       const totalWithVat = 115;
       const vatRate = 0.15;
-      const vatAmount = totalWithVat * vatRate / (1 + vatRate);
+      const vatAmount = (totalWithVat * vatRate) / (1 + vatRate);
       const subtotal = totalWithVat - vatAmount;
 
       expect(vatAmount).toBeCloseTo(15, 2);
@@ -200,7 +200,7 @@ describe('ZATCA Invoice Hashing', () => {
 
     it('should handle zero amount', () => {
       const totalWithVat = 0;
-      const vatAmount = totalWithVat * 0.15 / 1.15;
+      const vatAmount = (totalWithVat * 0.15) / 1.15;
       expect(vatAmount).toBe(0);
     });
   });

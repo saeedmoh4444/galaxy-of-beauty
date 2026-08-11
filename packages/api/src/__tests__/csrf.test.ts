@@ -52,7 +52,9 @@ describe('CSRF Token', () => {
     });
 
     it('should reject non-hex strings', () => {
-      expect(verifyCsrfToken('not-a-valid-hex-token-with-64-chars-length-here!!', 'a'.repeat(64))).toBe(false);
+      expect(
+        verifyCsrfToken('not-a-valid-hex-token-with-64-chars-length-here!!', 'a'.repeat(64)),
+      ).toBe(false);
     });
 
     it('should reject tokens of wrong length', () => {

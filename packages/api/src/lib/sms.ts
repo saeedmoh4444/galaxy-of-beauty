@@ -17,10 +17,7 @@ function getTwilioConfig(): SmsConfig | null {
 
 // ── SMS Sending ────────────────────────────────────────────
 
-export async function sendSms(
-  to: string,
-  message: string,
-): Promise<boolean> {
+export async function sendSms(to: string, message: string): Promise<boolean> {
   const config = getTwilioConfig();
 
   if (!config) {
@@ -67,9 +64,10 @@ export async function sendBookingConfirmationSms(
   date: string,
   locale: 'ar' | 'en' = 'ar',
 ): Promise<void> {
-  const message = locale === 'ar'
-    ? `تم تأكيد حجزك في جالكسي بيوتي!\nرمز الحجز: ${bookingCode}\nالتاريخ: ${date}\nشكراً لثقتك`
-    : `Your Galaxy of Beauty booking is confirmed!\nBooking code: ${bookingCode}\nDate: ${date}\nThank you!`;
+  const message =
+    locale === 'ar'
+      ? `تم تأكيد حجزك في جالكسي بيوتي!\nرمز الحجز: ${bookingCode}\nالتاريخ: ${date}\nشكراً لثقتك`
+      : `Your Galaxy of Beauty booking is confirmed!\nBooking code: ${bookingCode}\nDate: ${date}\nThank you!`;
 
   await sendSms(phone, message);
 }
@@ -80,17 +78,15 @@ export async function sendBookingReminderSms(
   hoursUntil: number,
   locale: 'ar' | 'en' = 'ar',
 ): Promise<void> {
-  const message = locale === 'ar'
-    ? `تذكير: حجزك (${bookingCode}) بعد ${hoursUntil} ساعة. جالكسي بيوتي`
-    : `Reminder: Your booking (${bookingCode}) is in ${hoursUntil} hours. Galaxy of Beauty`;
+  const message =
+    locale === 'ar'
+      ? `تذكير: حجزك (${bookingCode}) بعد ${hoursUntil} ساعة. جالكسي بيوتي`
+      : `Reminder: Your booking (${bookingCode}) is in ${hoursUntil} hours. Galaxy of Beauty`;
 
   await sendSms(phone, message);
 }
 
-export async function sendOtpSms(
-  phone: string,
-  code: string,
-): Promise<void> {
+export async function sendOtpSms(phone: string, code: string): Promise<void> {
   const message = `رمز التحقق الخاص بك في جالكسي بيوتي: ${code}\nYour Galaxy of Beauty verification code: ${code}`;
   await sendSms(phone, message);
 }

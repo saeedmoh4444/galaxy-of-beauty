@@ -3,7 +3,9 @@ import Link from 'next/link';
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { BlogPostClient } from './BlogPostClient';
 
-interface Props { params: Promise<{ slug: string }> }
+interface Props {
+  params: Promise<{ slug: string }>;
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -19,7 +21,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         openGraph: { title, description: body.replace(/<[^>]+>/g, '').slice(0, 160) },
       };
     }
-  } catch { /* fall through */ }
+  } catch {
+    /* fall through */
+  }
   return { title: 'المقال | مدونة الجمال' };
 }
 

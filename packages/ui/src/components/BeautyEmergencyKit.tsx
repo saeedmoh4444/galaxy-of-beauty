@@ -10,7 +10,17 @@ import { cn } from '@galaxy/shared';
  *   <BeautyEmergencyKit items={['pads', 'hair_spray', 'sewing_kit']} />
  */
 
-type KitItem = 'pads' | 'tampons' | 'hair_spray' | 'bobby_pins' | 'hair_tie' | 'deodorant' | 'sewing_kit' | 'stain_remover' | 'nail_file' | 'mints';
+type KitItem =
+  | 'pads'
+  | 'tampons'
+  | 'hair_spray'
+  | 'bobby_pins'
+  | 'hair_tie'
+  | 'deodorant'
+  | 'sewing_kit'
+  | 'stain_remover'
+  | 'nail_file'
+  | 'mints';
 
 interface ItemDef {
   emoji: string;
@@ -49,11 +59,11 @@ export function BeautyEmergencyKit({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">🎒</span>
+        <span className="text-xl" aria-hidden="true">
+          🎒
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">
-            حقيبة الطوارئ
-          </h4>
+          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">حقيبة الطوارئ</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">
             كل ما تحتاجينه في الحالات الطارئة — متوفر في دورة المياه
           </p>
@@ -69,7 +79,9 @@ export function BeautyEmergencyKit({
               key={item}
               className="flex items-center gap-2 rounded-lg bg-rose-50 px-2.5 py-2 dark:bg-rose-950"
             >
-              <span className="text-sm shrink-0" aria-hidden="true">{def.emoji}</span>
+              <span className="text-sm shrink-0" aria-hidden="true">
+                {def.emoji}
+              </span>
               <span className="text-[10px] font-medium text-rose-800 dark:text-rose-200">
                 {def.label}
               </span>

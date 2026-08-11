@@ -50,7 +50,9 @@ export default function HomeScreen(): JSX.Element {
         {dailyTip?.data && (
           <View style={styles.tipBar}>
             <Text style={styles.tipEmoji}>{dailyTip.data.emoji ?? '💡'}</Text>
-            <Text style={styles.tipText} numberOfLines={1}>{dailyTip.data.tip ?? ''}</Text>
+            <Text style={styles.tipText} numberOfLines={1}>
+              {dailyTip.data.tip ?? ''}
+            </Text>
           </View>
         )}
       </View>
@@ -61,11 +63,14 @@ export default function HomeScreen(): JSX.Element {
             key={i}
             style={styles.card}
             activeOpacity={0.7}
-            onPress={() => { trigger('light'); router.push('/public/services' as any); }}
+            onPress={() => {
+              trigger('light');
+              router.push('/public/services' as any);
+            }}
           >
             <Text style={styles.emoji}>📂</Text>
             <Text style={styles.name}>
-              {((cat.nameJson as Record<string, string>)?.ar) ?? (cat.nameAr as string) ?? ''}
+              {(cat.nameJson as Record<string, string>)?.ar ?? (cat.nameAr as string) ?? ''}
             </Text>
           </TouchableOpacity>
         ))}
@@ -75,7 +80,13 @@ export default function HomeScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.brand,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   card: {
     width: '30%',
@@ -89,12 +100,32 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   emoji: { fontSize: 30 },
-  name: { fontSize: 11, fontWeight: '600', color: COLORS.gray900, marginTop: 6, textAlign: 'center' },
+  name: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: COLORS.gray900,
+    marginTop: 6,
+    textAlign: 'center',
+  },
   statsRow: { marginBottom: 16, gap: 8 },
-  statBadge: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.gray50, borderRadius: 10, padding: 8, marginBottom: 4 },
+  statBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.gray50,
+    borderRadius: 10,
+    padding: 8,
+    marginBottom: 4,
+  },
   statEmoji: { fontSize: 14, marginRight: 6 },
   statText: { fontSize: 12, fontWeight: '600', color: COLORS.gray700 },
-  tipBar: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fef3c7', borderRadius: 10, padding: 10, marginTop: 4 },
+  tipBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fef3c7',
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 4,
+  },
   tipEmoji: { fontSize: 16, marginRight: 8 },
   tipText: { fontSize: 11, color: '#92400e', flex: 1 },
 });

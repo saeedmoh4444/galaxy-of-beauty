@@ -3,14 +3,17 @@
 ## App Store Connect (iOS)
 
 ### App Name
+
 - **Primary:** Galaxy of Beauty
 - **Arabic:** جالكسي بيوتي
 
 ### Subtitle (30 chars)
+
 - EN: "Beauty & Grooming Marketplace"
 - AR: "منصة خدمات التجميل والعناية"
 
 ### Description
+
 ```
 [EN]
 Galaxy of Beauty connects women in Saudi Arabia with vetted female beauty
@@ -59,12 +62,14 @@ SECURITY:
 ```
 
 ### Keywords (100 chars)
+
 ```
 beauty,makeup,hair,nails,skincare,henna,massage,booking,salon,
 spa,saudi,arabia,جمال,مكياج,شعر,أظافر,حجز,صالون,سبا,سعودية
 ```
 
 ### Screenshots (6.9" iPhone)
+
 1. Home screen with categories
 2. Service catalog with search
 3. Booking flow (select service → technician → time)
@@ -75,17 +80,21 @@ spa,saudi,arabia,جمال,مكياج,شعر,أظافر,حجز,صالون,سبا,
 ## Google Play Console (Android)
 
 ### Short Description (80 chars)
+
 ```
 Beauty marketplace — book vetted female technicians in Saudi Arabia
 منصة تجميل — احجزي فنيات موثوقات في السعودية
 ```
 
 ### Full Description
+
 (Same as iOS description above)
 
 ### Screenshots
+
 Same 6 screenshots, 16:9 aspect ratio for Android.
 
 ### Content Rating
+
 - Target audience: 18+ (beauty services)
 - No user-generated content moderation needed (technicians are vetted)

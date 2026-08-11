@@ -4,10 +4,21 @@ import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
-const STATUS_LABELS: Record<string, string> = { OPEN: 'مفتوح', UNDER_REVIEW: 'قيد المراجعة', RESOLVED_CUSTOMER: 'محلول', RESOLVED_TECHNICIAN: 'محلول', CLOSED: 'مغلق' };
+const STATUS_LABELS: Record<string, string> = {
+  OPEN: 'مفتوح',
+  UNDER_REVIEW: 'قيد المراجعة',
+  RESOLVED_CUSTOMER: 'محلول',
+  RESOLVED_TECHNICIAN: 'محلول',
+  CLOSED: 'مغلق',
+};
 
 export default function DisputesScreen(): JSX.Element {
-  const disputes = (trpc as any).disputes?.list?.useQuery?.({}) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const disputes = (trpc as any).disputes?.list?.useQuery?.({}) ?? {
+    data: null,
+    isLoading: false,
+    isError: false,
+    refetch: () => {},
+  };
   const data = disputes.data as unknown[] | undefined;
 
   return (
@@ -25,10 +36,16 @@ export default function DisputesScreen(): JSX.Element {
         <View key={i} style={styles.card}>
           <View style={styles.row}>
             <Text style={styles.reason}>{d.reason as string}</Text>
-            <Text style={styles.status}>{STATUS_LABELS[d.status as string] ?? (d.status as string)}</Text>
+            <Text style={styles.status}>
+              {STATUS_LABELS[d.status as string] ?? (d.status as string)}
+            </Text>
           </View>
-          {d.resolution ? <Text style={styles.resolution}>الحل: {d.resolution as string}</Text> : null}
-          <Text style={styles.date}>{new Date(d.createdAt as string).toLocaleDateString('ar-SA')}</Text>
+          {d.resolution ? (
+            <Text style={styles.resolution}>الحل: {d.resolution as string}</Text>
+          ) : null}
+          <Text style={styles.date}>
+            {new Date(d.createdAt as string).toLocaleDateString('ar-SA')}
+          </Text>
         </View>
       ))}
       <TouchableOpacity style={styles.addBtn}>
@@ -39,9 +56,29 @@ export default function DisputesScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
-  card: { backgroundColor: COLORS.white, borderRadius: 14, padding: 16, marginBottom: 8, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.brand,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  card: {
+    backgroundColor: COLORS.white,
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
   reason: { fontSize: 14, fontWeight: '600', color: COLORS.gray900 },
   status: { fontSize: 11, fontWeight: '600', color: COLORS.brand },
   resolution: { fontSize: 12, color: '#10b981', marginTop: 4 },

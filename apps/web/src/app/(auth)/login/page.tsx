@@ -26,7 +26,13 @@ export default function LoginPage(): JSX.Element {
       localStorage.setItem('gob_refresh', data.refreshToken);
       await login(
         { accessToken: data.accessToken, refreshToken: data.refreshToken },
-        { id: u.id as number, email: u.email as string, name: u.name as string, role: (u.role as string) as 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN', preferredLanguage: 'ar' },
+        {
+          id: u.id as number,
+          email: u.email as string,
+          name: u.name as string,
+          role: u.role as string as 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN',
+          preferredLanguage: 'ar',
+        },
       );
       const role = u.role as string;
       if (role === 'ADMIN') router.push('/admin/dashboard');
@@ -137,7 +143,9 @@ export default function LoginPage(): JSX.Element {
         </form>
 
         {!twoFactorRequired && (
-          <div className="mt-6"><SocialLogin /></div>
+          <div className="mt-6">
+            <SocialLogin />
+          </div>
         )}
         {!twoFactorRequired && (
           <div className="mt-4 text-center text-sm text-text-secondary">

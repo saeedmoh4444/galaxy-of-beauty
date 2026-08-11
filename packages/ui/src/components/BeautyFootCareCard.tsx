@@ -9,11 +9,18 @@ const TIPS = [
   { emoji: '💅', title: 'عناية بالأظافر', desc: 'قص مستقيم لمنع الانغراس' },
 ];
 
-interface BeautyFootCareCardProps { className?: string; }
+interface BeautyFootCareCardProps {
+  className?: string;
+}
 
 export function BeautyFootCareCard({ className = '' }: BeautyFootCareCardProps): JSX.Element {
   return (
-    <div className={cn('rounded-2xl border border-teal-100 bg-white p-4 dark:border-teal-900 dark:bg-gray-900', className)}>
+    <div
+      className={cn(
+        'rounded-2xl border border-teal-100 bg-white p-4 dark:border-teal-900 dark:bg-gray-900',
+        className,
+      )}
+    >
       <div className="flex items-center gap-2">
         <span className="text-xl">🦶</span>
         <div>
@@ -25,7 +32,9 @@ export function BeautyFootCareCard({ className = '' }: BeautyFootCareCardProps):
         {TIPS.map((t) => (
           <div key={t.title} className="rounded-lg bg-teal-50 px-2.5 py-2 dark:bg-teal-950">
             <span className="text-sm">{t.emoji}</span>
-            <p className="mt-0.5 text-[10px] font-bold text-teal-800 dark:text-teal-200">{t.title}</p>
+            <p className="mt-0.5 text-[10px] font-bold text-teal-800 dark:text-teal-200">
+              {t.title}
+            </p>
             <p className="text-[9px] text-teal-600 dark:text-teal-400">{t.desc}</p>
           </div>
         ))}

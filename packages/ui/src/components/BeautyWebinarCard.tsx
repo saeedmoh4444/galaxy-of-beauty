@@ -34,7 +34,10 @@ export function BeautyWebinarCard({
   onRegister,
   className = '',
 }: BeautyWebinarCardProps): JSX.Element {
-  const isFull = webinar.maxSeats !== undefined && webinar.registered !== undefined && webinar.registered >= webinar.maxSeats;
+  const isFull =
+    webinar.maxSeats !== undefined &&
+    webinar.registered !== undefined &&
+    webinar.registered >= webinar.maxSeats;
 
   return (
     <div

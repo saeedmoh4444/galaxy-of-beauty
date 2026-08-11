@@ -28,15 +28,18 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const [toast, setToast] = useState<ToastItem | null>(null);
   const opacity = useRef(new Animated.Value(0)).current;
 
-  const showToast = useCallback((type: ToastType, message: string) => {
-    const id = ++nextId;
-    setToast({ id, type, message });
-    Animated.sequence([
-      Animated.timing(opacity, { toValue: 1, duration: 200, useNativeDriver: true }),
-      Animated.delay(3000),
-      Animated.timing(opacity, { toValue: 0, duration: 200, useNativeDriver: true }),
-    ]).start(() => setToast(null));
-  }, [opacity]);
+  const showToast = useCallback(
+    (type: ToastType, message: string) => {
+      const id = ++nextId;
+      setToast({ id, type, message });
+      Animated.sequence([
+        Animated.timing(opacity, { toValue: 1, duration: 200, useNativeDriver: true }),
+        Animated.delay(3000),
+        Animated.timing(opacity, { toValue: 0, duration: 200, useNativeDriver: true }),
+      ]).start(() => setToast(null));
+    },
+    [opacity],
+  );
 
   return (
     <Ctx.Provider value={{ showToast }}>
@@ -44,7 +47,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       {toast && (
         <Animated.View style={[styles.toast, { backgroundColor: COLORS[toast.type].bg, opacity }]}>
           <Text style={styles.icon}>{COLORS[toast.type].icon}</Text>
-          <Text style={styles.message} numberOfLines={2}>{toast.message}</Text>
+          <Text style={styles.message} numberOfLines={2}>
+            {toast.message}
+          </Text>
           <TouchableOpacity onPress={() => setToast(null)}>
             <Text style={styles.close}>✕</Text>
           </TouchableOpacity>
@@ -60,11 +65,21 @@ export function useToast(): ToastCtx {
 
 const styles = StyleSheet.create({
   toast: {
-    position: 'absolute', bottom: 24, left: 16, right: 16,
-    flexDirection: 'row', alignItems: 'center',
-    borderRadius: 14, padding: 14, gap: 10,
-    shadowColor: '#000', shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2, shadowRadius: 8, elevation: 8, zIndex: 999,
+    position: 'absolute',
+    bottom: 24,
+    left: 16,
+    right: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 14,
+    padding: 14,
+    gap: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 8,
+    zIndex: 999,
   },
   icon: { fontSize: 18 },
   message: { flex: 1, fontSize: 14, fontWeight: '600', color: '#fff', textAlign: 'right' },

@@ -7,19 +7,9 @@ import { uploadFile, deleteFile, generatePresignedUrl } from '../lib/storage';
 
 // ── Allowed MIME types ────────────────────────────────────
 
-const ALLOWED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/avif',
-];
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
 
-const ALLOWED_DOC_TYPES = [
-  'application/pdf',
-  'image/jpeg',
-  'image/png',
-  ...ALLOWED_IMAGE_TYPES,
-];
+const ALLOWED_DOC_TYPES = ['application/pdf', 'image/jpeg', 'image/png', ...ALLOWED_IMAGE_TYPES];
 
 // ── Helpers ────────────────────────────────────────────────
 
@@ -71,7 +61,12 @@ export const uploadRouter = router({
       }
 
       const { buffer } = decodeBase64File(input.file);
-      const result = await uploadFile(buffer, input.file.name, `avatars/${ctx.user.id}`, input.file.type);
+      const result = await uploadFile(
+        buffer,
+        input.file.name,
+        `avatars/${ctx.user.id}`,
+        input.file.type,
+      );
 
       // Update user avatar URL
       await prisma.user.update({
@@ -190,7 +185,8 @@ export const uploadRouter = router({
     .mutation(async ({ ctx, input }) => {
       // Only allow deletion of files in the user's folder or admin
       const isAdmin = ctx.user.role === 'ADMIN';
-      const isOwner = input.key.startsWith(`avatars/${ctx.user.id}/`) ||
+      const isOwner =
+        input.key.startsWith(`avatars/${ctx.user.id}/`) ||
         input.key.startsWith(`kyc/${ctx.user.id}/`);
 
       if (!isAdmin && !isOwner) {

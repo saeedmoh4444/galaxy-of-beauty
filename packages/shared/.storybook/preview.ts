@@ -1,5 +1,6 @@
-import type { Preview } from "@storybook/react";
-import "../src/ui/index";
+import type { Preview } from '@storybook/react';
+// Global styles for Storybook — import shared styles only (no UI dependency)
+import '../src/index';
 
 const preview: Preview = {
   parameters: {
@@ -10,35 +11,35 @@ const preview: Preview = {
       },
     },
     a11y: {
-      element: "#storybook-root",
+      element: '#storybook-root',
       config: {},
       options: {},
     },
     backgrounds: {
-      default: "light",
+      default: 'light',
       values: [
-        { name: "light", value: "#ffffff" },
-        { name: "dark", value: "#111827" },
+        { name: 'light', value: '#ffffff' },
+        { name: 'dark', value: '#111827' },
       ],
     },
   },
   globalTypes: {
     locale: {
-      name: "Locale",
-      description: "RTL / LTR",
-      defaultValue: "ar",
+      name: 'Locale',
+      description: 'RTL / LTR',
+      defaultValue: 'ar',
       toolbar: {
-        icon: "globe",
+        icon: 'globe',
         items: [
-          { value: "ar", title: "العربية (RTL)", right: "→" },
-          { value: "en", title: "English (LTR)", right: "→" },
+          { value: 'ar', title: 'العربية (RTL)', right: '→' },
+          { value: 'en', title: 'English (LTR)', right: '→' },
         ],
       },
     },
   },
   decorators: [
     (Story, context) => {
-      const dir = context.globals.locale === "ar" ? "rtl" : "ltr";
+      const dir = context.globals.locale === 'ar' ? 'rtl' : 'ltr';
       document.documentElement.dir = dir;
       document.documentElement.lang = context.globals.locale;
       return Story();

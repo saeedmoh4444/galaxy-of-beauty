@@ -26,10 +26,24 @@ let adminCaller: any;
 
 beforeAll(async () => {
   const anon = await anonCaller();
-  const customerLogin = await anon.auth.login({ email: 'customer@test.com', password: 'Admin@123456' });
-  const adminLogin = await anon.auth.login({ email: 'admin@galaxyofbeauty.sa', password: 'Admin@123456' });
-  customerCaller = await authCaller({ id: customerLogin.user.id, role: customerLogin.user.role, email: customerLogin.user.email });
-  adminCaller = await authCaller({ id: adminLogin.user.id, role: adminLogin.user.role, email: adminLogin.user.email });
+  const customerLogin = await anon.auth.login({
+    email: 'customer@test.com',
+    password: 'Admin@123456',
+  });
+  const adminLogin = await anon.auth.login({
+    email: 'admin@galaxyofbeauty.sa',
+    password: 'Admin@123456',
+  });
+  customerCaller = await authCaller({
+    id: customerLogin.user.id,
+    role: customerLogin.user.role,
+    email: customerLogin.user.email,
+  });
+  adminCaller = await authCaller({
+    id: adminLogin.user.id,
+    role: adminLogin.user.role,
+    email: adminLogin.user.email,
+  });
 }, 30000);
 
 // ── Referral ─────────────────────────────────────────────────────────
@@ -87,7 +101,9 @@ describe('Admin — Dashboard & Users', () => {
   });
 
   it('should prevent customer from listing customers', async () => {
-    await expect(customerCaller.admin.listCustomers({ search: '', page: 1, limit: 10 })).rejects.toThrow();
+    await expect(
+      customerCaller.admin.listCustomers({ search: '', page: 1, limit: 10 }),
+    ).rejects.toThrow();
   });
 
   it('should access analytics', async () => {
@@ -122,9 +138,7 @@ describe('Error & Edge Cases', () => {
     // Create context without CSRF
     const ctx = await createTRPCContext();
     const noCsrfCaller = (appRouter as any).createCaller(ctx);
-    await expect(
-      noCsrfCaller.auth.forgotPassword({ email: 'test@test.com' }),
-    ).rejects.toThrow();
+    await expect(noCsrfCaller.auth.forgotPassword({ email: 'test@test.com' })).rejects.toThrow();
   });
 
   it('health endpoint should be public', async () => {

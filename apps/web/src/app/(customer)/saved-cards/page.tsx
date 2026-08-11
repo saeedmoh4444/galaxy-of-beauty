@@ -15,17 +15,35 @@ export default function SavedCardsPage(): JSX.Element {
   const cards: SavedCardItem[] = data ?? [];
 
   const [showAdd, setShowAdd] = useState(false);
-  const [form, setForm] = useState({ lastFour: '', brand: 'visa' as const, expMonth: '1', expYear: '2026', cardholderName: '' });
+  const [form, setForm] = useState({
+    lastFour: '',
+    brand: 'visa' as const,
+    expMonth: '1',
+    expYear: '2026',
+    cardholderName: '',
+  });
 
   const addMut = api.savedCards.add.useMutation({
-    onSuccess: () => { setShowAdd(false); refetch(); addToast('success', 'تمت إضافة البطاقة'); },
+    onSuccess: () => {
+      setShowAdd(false);
+      refetch();
+      addToast('success', 'تمت إضافة البطاقة');
+    },
     onError: () => addToast('error', 'فشلت إضافة البطاقة'),
   });
   const deleteMut = api.savedCards.delete.useMutation({
-    onSuccess: () => { refetch(); addToast('success', 'تم حذف البطاقة'); },
+    onSuccess: () => {
+      refetch();
+      addToast('success', 'تم حذف البطاقة');
+    },
   });
 
-  const brandIcons: Record<string, string> = { visa: '💳', mastercard: '💳', mada: '🏦', amex: '💳' };
+  const brandIcons: Record<string, string> = {
+    visa: '💳',
+    mastercard: '💳',
+    mada: '🏦',
+    amex: '💳',
+  };
 
   const handleAdd = () => {
     addMut.mutate({
@@ -43,7 +61,9 @@ export default function SavedCardsPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6 px-4 py-8">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">البطاقات المحفوظة</h1>
+          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
+            البطاقات المحفوظة
+          </h1>
           <Button onClick={() => setShowAdd(true)}>إضافة بطاقة</Button>
         </div>
 
@@ -52,7 +72,10 @@ export default function SavedCardsPage(): JSX.Element {
         ) : isError ? (
           <ErrorAlert message="فشل تحميل البطاقات" onRetry={() => refetch()} />
         ) : cards.length === 0 ? (
-          <EmptyState title="لا توجد بطاقات محفوظة" description="أضف بطاقة دفع لتسريع عملية الحجز" />
+          <EmptyState
+            title="لا توجد بطاقات محفوظة"
+            description="أضف بطاقة دفع لتسريع عملية الحجز"
+          />
         ) : (
           cards.map((c) => (
             <Card key={c.id as number} padding="md" className="flex items-center justify-between">
@@ -68,8 +91,16 @@ export default function SavedCardsPage(): JSX.Element {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                {c.isDefault ? <span className="rounded bg-green-100 px-2 py-0.5 text-xs text-green-700 dark:bg-green-900 dark:text-green-300">افتراضي</span> : null}
-                <Button variant="outline" size="sm" onClick={() => deleteMut.mutate({ cardId: c.id })}>
+                {c.isDefault ? (
+                  <span className="rounded bg-green-100 px-2 py-0.5 text-xs text-green-700 dark:bg-green-900 dark:text-green-300">
+                    افتراضي
+                  </span>
+                ) : null}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => deleteMut.mutate({ cardId: c.id })}
+                >
                   حذف
                 </Button>
               </div>
@@ -80,24 +111,57 @@ export default function SavedCardsPage(): JSX.Element {
         {showAdd && (
           <Modal open={showAdd} onClose={() => setShowAdd(false)}>
             <div className="space-y-4">
-              <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">إضافة بطاقة جديدة</h3>
-              <Input label="الاسم على البطاقة" value={form.cardholderName} onChange={(e) => setForm({ ...form, cardholderName: e.target.value })} />
-              <Input label="آخر 4 أرقام" value={form.lastFour} onChange={(e) => setForm({ ...form, lastFour: e.target.value })} maxLength={4} />
+              <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
+                إضافة بطاقة جديدة
+              </h3>
+              <Input
+                label="الاسم على البطاقة"
+                value={form.cardholderName}
+                onChange={(e) => setForm({ ...form, cardholderName: e.target.value })}
+              />
+              <Input
+                label="آخر 4 أرقام"
+                value={form.lastFour}
+                onChange={(e) => setForm({ ...form, lastFour: e.target.value })}
+                maxLength={4}
+              />
               <div className="flex gap-3">
-                <select className="flex-1 rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800" value={form.brand} onChange={(e) => setForm({ ...form, brand: e.target.value as typeof form.brand })}>
+                <select
+                  className="flex-1 rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800"
+                  value={form.brand}
+                  onChange={(e) => setForm({ ...form, brand: e.target.value as typeof form.brand })}
+                >
                   <option value="visa">Visa</option>
                   <option value="mastercard">Mastercard</option>
                   <option value="mada">Mada</option>
                   <option value="amex">Amex</option>
                 </select>
-                <select className="w-20 rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800" value={form.expMonth} onChange={(e) => setForm({ ...form, expMonth: e.target.value })}>
-                  {Array.from({ length: 12 }, (_, i) => <option key={i+1} value={i+1}>{String(i+1).padStart(2,'0')}</option>)}
+                <select
+                  className="w-20 rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800"
+                  value={form.expMonth}
+                  onChange={(e) => setForm({ ...form, expMonth: e.target.value })}
+                >
+                  {Array.from({ length: 12 }, (_, i) => (
+                    <option key={i + 1} value={i + 1}>
+                      {String(i + 1).padStart(2, '0')}
+                    </option>
+                  ))}
                 </select>
-                <select className="w-24 rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800" value={form.expYear} onChange={(e) => setForm({ ...form, expYear: e.target.value })}>
-                  {Array.from({ length: 15 }, (_, i) => <option key={2026+i} value={2026+i}>{2026+i}</option>)}
+                <select
+                  className="w-24 rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800"
+                  value={form.expYear}
+                  onChange={(e) => setForm({ ...form, expYear: e.target.value })}
+                >
+                  {Array.from({ length: 15 }, (_, i) => (
+                    <option key={2026 + i} value={2026 + i}>
+                      {2026 + i}
+                    </option>
+                  ))}
                 </select>
               </div>
-              <Button onClick={handleAdd} loading={addMut.isPending} className="w-full">حفظ البطاقة</Button>
+              <Button onClick={handleAdd} loading={addMut.isPending} className="w-full">
+                حفظ البطاقة
+              </Button>
             </div>
           </Modal>
         )}

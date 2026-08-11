@@ -33,7 +33,13 @@ interface BookingSummaryProps {
 
 export function BookingSummary({ booking, className = '' }: BookingSummaryProps): JSX.Element {
   const total = booking.total ?? booking.price - (booking.discount ?? 0);
-  const statusVariant = booking.statusVariant ?? (booking.status === 'COMPLETED' ? 'success' : booking.status === 'CANCELLED' ? 'danger' : 'info');
+  const statusVariant =
+    booking.statusVariant ??
+    (booking.status === 'COMPLETED'
+      ? 'success'
+      : booking.status === 'CANCELLED'
+        ? 'danger'
+        : 'info');
 
   return (
     <Card padding="lg" className={className}>
@@ -47,16 +53,22 @@ export function BookingSummary({ booking, className = '' }: BookingSummaryProps)
       <div className="space-y-2 text-sm">
         <div className="flex justify-between">
           <span className="text-text-secondary dark:text-gray-400">كود الحجز</span>
-          <span className="font-mono font-semibold text-text-primary dark:text-gray-100">{booking.code}</span>
+          <span className="font-mono font-semibold text-text-primary dark:text-gray-100">
+            {booking.code}
+          </span>
         </div>
         <div className="flex justify-between">
           <span className="text-text-secondary dark:text-gray-400">الخدمة</span>
-          <span className="font-semibold text-text-primary dark:text-gray-100">{booking.service}</span>
+          <span className="font-semibold text-text-primary dark:text-gray-100">
+            {booking.service}
+          </span>
         </div>
         {booking.technician ? (
           <div className="flex justify-between">
             <span className="text-text-secondary dark:text-gray-400">الفنية</span>
-            <span className="font-semibold text-text-primary dark:text-gray-100">{booking.technician}</span>
+            <span className="font-semibold text-text-primary dark:text-gray-100">
+              {booking.technician}
+            </span>
           </div>
         ) : null}
         <div className="flex justify-between">

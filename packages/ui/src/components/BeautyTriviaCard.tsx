@@ -26,9 +26,7 @@ interface BeautyTriviaCardProps {
   className?: string;
 }
 
-export function BeautyTriviaCard({
-  className = '',
-}: BeautyTriviaCardProps): JSX.Element {
+export function BeautyTriviaCard({ className = '' }: BeautyTriviaCardProps): JSX.Element {
   const [index, setIndex] = useState(() => Math.floor(Math.random() * TRIVIA.length));
   const trivia = TRIVIA[index]!;
 
@@ -44,11 +42,11 @@ export function BeautyTriviaCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true">💡</span>
+        <span className="text-lg" aria-hidden="true">
+          💡
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">
-            هل تعلمين؟
-          </h4>
+          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">هل تعلمين؟</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">
             معلومة جمالية {index + 1}/{TRIVIA.length}
           </p>
@@ -57,7 +55,9 @@ export function BeautyTriviaCard({
 
       {/* Fact card */}
       <div className="mt-3 rounded-xl bg-teal-50 p-4 text-center dark:bg-teal-950">
-        <span className="text-3xl" aria-hidden="true">{trivia.emoji}</span>
+        <span className="text-3xl" aria-hidden="true">
+          {trivia.emoji}
+        </span>
         <p className="mt-2 text-xs leading-relaxed text-teal-800 dark:text-teal-200">
           {trivia.fact}
         </p>

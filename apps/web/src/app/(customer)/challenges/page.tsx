@@ -21,12 +21,17 @@ export default function ChallengesPage(): JSX.Element {
   const fetch = useCallback(() => {
     setLoading(true);
     Promise.all([(api as any).challenges.list.query(), (api as any).challenges.progress.query()])
-      .then(([c, p]: any[]) => { setChallenges(c ?? []); setProgress(p); })
+      .then(([c, p]: any[]) => {
+        setChallenges(c ?? []);
+        setProgress(p);
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => { fetch(); }, [fetch]);
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
 
   const join = (challengeId: string) => {
     (api as any).challenges.join.mutate({ challengeId }).then(() => fetch());
@@ -45,11 +50,29 @@ export default function ChallengesPage(): JSX.Element {
               <Card key={c.id} className="flex items-center gap-4 p-5">
                 <span className="text-4xl">{cfg.emoji}</span>
                 <div className="flex-1">
-                  <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{cfg.label}</h4>
-                  {prog && <p className="mt-1 text-xs text-text-tertiary dark:text-gray-500">{prog.current}/{prog.total} — {Math.round((prog.current / prog.total) * 100)}%</p>}
-                  {prog && <div className="mt-2 h-2 w-full rounded-full bg-gray-100 dark:bg-gray-800"><div className="h-full rounded-full transition-all" style={{ width: `${Math.round((prog.current / prog.total) * 100)}%`, backgroundColor: cfg.color }} /></div>}
+                  <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
+                    {cfg.label}
+                  </h4>
+                  {prog && (
+                    <p className="mt-1 text-xs text-text-tertiary dark:text-gray-500">
+                      {prog.current}/{prog.total} — {Math.round((prog.current / prog.total) * 100)}%
+                    </p>
+                  )}
+                  {prog && (
+                    <div className="mt-2 h-2 w-full rounded-full bg-gray-100 dark:bg-gray-800">
+                      <div
+                        className="h-full rounded-full transition-all"
+                        style={{
+                          width: `${Math.round((prog.current / prog.total) * 100)}%`,
+                          backgroundColor: cfg.color,
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
-                <Button onClick={() => join(c.id)} className="shrink-0">انضمي</Button>
+                <Button onClick={() => join(c.id)} className="shrink-0">
+                  انضمي
+                </Button>
               </Card>
             );
           })}

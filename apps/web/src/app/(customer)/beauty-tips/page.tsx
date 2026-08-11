@@ -1,17 +1,32 @@
 'use client';
 
 import {
-  PageContainer, PageTitle,
-  BeautySeasonalReminderCard, BeautyIngredientSpotlightCard,
-  BeautyTrendAlertCard, BeautyStyleMatchCard,
-  BeautyMicroChallengeCard, BeautyQuickTipCard,
-  BeautyMakeupTipsCard, BeautySuncareReminderCard,
-  BeautyWaterIntakeCard, BeautyDailyCheckInCard,
-  BeautyHumidClimateCard, BeautyDryClimateCard, BeautyHotClimateCard,
-  BeautyColdClimateCard, BeautyTravelClimateCard,
-  BeautySkincareMistakesCard, BeautyMakeupMistakesCard, BeautyHairMistakesCard,
-  BeautyOverExfoliatingCard, BeautyProductOverloadCard,
-  BeautyEidGlowCard, BeautyEidHairCard, BeautyEidNailsCard, BeautyEidPerfumeCard,
+  PageContainer,
+  PageTitle,
+  BeautySeasonalReminderCard,
+  BeautyIngredientSpotlightCard,
+  BeautyTrendAlertCard,
+  BeautyStyleMatchCard,
+  BeautyMicroChallengeCard,
+  BeautyQuickTipCard,
+  BeautyMakeupTipsCard,
+  BeautySuncareReminderCard,
+  BeautyWaterIntakeCard,
+  BeautyDailyCheckInCard,
+  BeautyHumidClimateCard,
+  BeautyDryClimateCard,
+  BeautyHotClimateCard,
+  BeautyColdClimateCard,
+  BeautyTravelClimateCard,
+  BeautySkincareMistakesCard,
+  BeautyMakeupMistakesCard,
+  BeautyHairMistakesCard,
+  BeautyOverExfoliatingCard,
+  BeautyProductOverloadCard,
+  BeautyEidGlowCard,
+  BeautyEidHairCard,
+  BeautyEidNailsCard,
+  BeautyEidPerfumeCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -31,36 +46,54 @@ export default function BeautyTipsPage(): JSX.Element {
 
             {/* Trends & Style */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyTrendAlertCard trends={[
-                { name: 'ألوان الباستيل', emoji: '🎨', heat: '🔥🔥' },
-                { name: 'البشرة الزجاجية', emoji: '✨', heat: '🔥🔥🔥' },
-                { name: 'العناية بالشفاه', emoji: '💋', heat: '🔥' },
-                { name: 'المكياج الطبيعي', emoji: '🌿', heat: '🔥🔥' },
-              ]} />
-              <BeautyStyleMatchCard matches={[
-                { style: 'كلاسيكي', emoji: '👗', match: 92 },
-                { style: 'عصري', emoji: '✨', match: 78 },
-                { style: 'بوهيمي', emoji: '🌿', match: 65 },
-              ]} />
+              <BeautyTrendAlertCard
+                trends={[
+                  { name: 'ألوان الباستيل', emoji: '🎨', heat: '🔥🔥' },
+                  { name: 'البشرة الزجاجية', emoji: '✨', heat: '🔥🔥🔥' },
+                  { name: 'العناية بالشفاه', emoji: '💋', heat: '🔥' },
+                  { name: 'المكياج الطبيعي', emoji: '🌿', heat: '🔥🔥' },
+                ]}
+              />
+              <BeautyStyleMatchCard
+                matches={[
+                  { style: 'كلاسيكي', emoji: '👗', match: 92 },
+                  { style: 'عصري', emoji: '✨', match: 78 },
+                  { style: 'بوهيمي', emoji: '🌿', match: 65 },
+                ]}
+              />
             </div>
 
             {/* Ingredients */}
-            <BeautyIngredientSpotlightCard ingredient={{
-              name: 'حمض الهيالورونيك', emoji: '💧', type: 'مرطب', rating: 'A+',
-              description: 'يحمل 1000 ضعف وزنه ماء. يوجد طبيعياً في البشرة. يرطب بدون انسداد المسام.',
-              suitableFor: ['جميع أنواع البشرة', 'البشرة الجافة', 'البشرة الحساسة'],
-              avoidWith: [],
-            }} />
+            <BeautyIngredientSpotlightCard
+              ingredient={{
+                name: 'حمض الهيالورونيك',
+                emoji: '💧',
+                type: 'مرطب',
+                rating: 'A+',
+                description:
+                  'يحمل 1000 ضعف وزنه ماء. يوجد طبيعياً في البشرة. يرطب بدون انسداد المسام.',
+                suitableFor: ['جميع أنواع البشرة', 'البشرة الجافة', 'البشرة الحساسة'],
+                avoidWith: [],
+              }}
+            />
 
             {/* Tips & Challenges */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyQuickTipCard tip={{
-                emoji: '☀️', title: 'واقي الشمس', body: 'ضعي واقي الشمس كل ساعتين عند التعرض للشمس المباشرة. الكمية المناسبة: نصف ملعقة صغيرة للوجه.',
-                source: 'غالاكسي بيوتي',
-              }} />
-              <BeautyMicroChallengeCard challenge={{
-                title: 'تحدي الترطيب', emoji: '💧', duration: '5 دقائق',
-              }} />
+              <BeautyQuickTipCard
+                tip={{
+                  emoji: '☀️',
+                  title: 'واقي الشمس',
+                  body: 'ضعي واقي الشمس كل ساعتين عند التعرض للشمس المباشرة. الكمية المناسبة: نصف ملعقة صغيرة للوجه.',
+                  source: 'غالاكسي بيوتي',
+                }}
+              />
+              <BeautyMicroChallengeCard
+                challenge={{
+                  title: 'تحدي الترطيب',
+                  emoji: '💧',
+                  duration: '5 دقائق',
+                }}
+              />
             </div>
 
             <BeautyMakeupTipsCard />

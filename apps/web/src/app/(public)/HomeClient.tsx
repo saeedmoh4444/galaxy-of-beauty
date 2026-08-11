@@ -28,7 +28,8 @@ export function HomeClient({
   initialCategories,
   initialServices,
   serviceTotal,
-  fetchError }: HomePageProps): JSX.Element {
+  fetchError,
+}: HomePageProps): JSX.Element {
   const categories = initialCategories;
   const svcItems = initialServices;
 
@@ -37,10 +38,24 @@ export function HomeClient({
       {/* Hero */}
       <section className="bg-gradient-to-br from-brand-600 to-brand-800 px-4 py-24 text-center text-white">
         <h1 className="text-3xl font-extrabold md:text-5xl">اكتشفي جمالك مع أفضل الفنيات</h1>
-        <p className="mt-4 text-lg text-brand-100">احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج والمزيد</p>
+        <p className="mt-4 text-lg text-brand-100">
+          احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج والمزيد
+        </p>
         <div className="mt-8 flex justify-center gap-4">
-          <Link href="/bookings/create"><Button size="lg" className="bg-white !text-brand-700 hover:bg-surface-muted">احجزي الآن</Button></Link>
-          <Link href="/services/surprise-me"><Button size="lg" variant="outline" className="border-white !text-white hover:bg-white/10">🎲 فاجئيني</Button></Link>
+          <Link href="/bookings/create">
+            <Button size="lg" className="bg-white !text-brand-700 hover:bg-surface-muted">
+              احجزي الآن
+            </Button>
+          </Link>
+          <Link href="/services/surprise-me">
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-white !text-white hover:bg-white/10"
+            >
+              🎲 فاجئيني
+            </Button>
+          </Link>
         </div>
       </section>
 
@@ -69,7 +84,9 @@ export function HomeClient({
       <section className="bg-surface-muted px-4 py-16 dark:bg-gray-900">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-8 text-2xl font-bold">الخدمات الأكثر طلباً</h2>
-          {fetchError && <ErrorAlert message={fetchError} onRetry={() => window.location.reload()} />}
+          {fetchError && (
+            <ErrorAlert message={fetchError} onRetry={() => window.location.reload()} />
+          )}
           {!fetchError && svcItems.length === 0 && <EmptyState title="لا توجد خدمات" />}
           {svcItems.length > 0 && (
             <div className="grid gap-6 md:grid-cols-3">
@@ -97,7 +114,10 @@ export function HomeClient({
             { label: 'خدمة', value: `+${serviceTotal || 25}` },
             { label: 'مدينة سعودية', value: '+24' },
           ].map((s) => (
-            <div key={s.label}><p className="text-3xl font-extrabold text-brand-600">{s.value}</p><p className="text-text-secondary">{s.label}</p></div>
+            <div key={s.label}>
+              <p className="text-3xl font-extrabold text-brand-600">{s.value}</p>
+              <p className="text-text-secondary">{s.label}</p>
+            </div>
           ))}
         </div>
       </section>
@@ -108,13 +128,31 @@ export function HomeClient({
           <h2 className="mb-8 text-center text-2xl font-bold">💬 ماذا تقول عميلاتنا؟</h2>
           <div className="grid gap-6 md:grid-cols-3">
             {[
-              { name: 'سارة', text: 'أفضل تجربة تجميل! حجزت مكياج ليوم زفافي وكانت النتيجة خيالية. الفنانة نورة أبدعت! 👰', rating: 5 },
-              { name: 'مريم', text: 'جلسات تنظيف البشرة غيرت بشرتي تماماً. د. ليلى محترفة وتستخدم أفضل المنتجات ✨', rating: 5 },
-              { name: 'نورة', text: 'المنصة سهلة والتطبيق رائع. أقدر أحجز لأمي وأختي من حساب واحد. شكراً جالكسي بيوتي! 💝', rating: 5 },
+              {
+                name: 'سارة',
+                text: 'أفضل تجربة تجميل! حجزت مكياج ليوم زفافي وكانت النتيجة خيالية. الفنانة نورة أبدعت! 👰',
+                rating: 5,
+              },
+              {
+                name: 'مريم',
+                text: 'جلسات تنظيف البشرة غيرت بشرتي تماماً. د. ليلى محترفة وتستخدم أفضل المنتجات ✨',
+                rating: 5,
+              },
+              {
+                name: 'نورة',
+                text: 'المنصة سهلة والتطبيق رائع. أقدر أحجز لأمي وأختي من حساب واحد. شكراً جالكسي بيوتي! 💝',
+                rating: 5,
+              },
             ].map((t, i) => (
-              <Card key={i} padding="lg" className="text-center bg-white/80 dark:bg-gray-900/80 backdrop-blur">
-                <p className="text-3xl">{"⭐".repeat(t.rating)}</p>
-                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400 leading-relaxed">&ldquo;{t.text}&rdquo;</p>
+              <Card
+                key={i}
+                padding="lg"
+                className="text-center bg-white/80 dark:bg-gray-900/80 backdrop-blur"
+              >
+                <p className="text-3xl">{'⭐'.repeat(t.rating)}</p>
+                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400 leading-relaxed">
+                  &ldquo;{t.text}&rdquo;
+                </p>
                 <p className="mt-3 font-bold text-brand-600">— {t.name}</p>
               </Card>
             ))}
@@ -127,10 +165,25 @@ export function HomeClient({
         <h2 className="mb-8 text-center text-2xl font-bold">اكتشفي المزيد</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { href: '/virtual-try-on', emoji: '🤳', title: 'تجربة افتراضية', desc: 'جربي المكياج قبل الشراء' },
+            {
+              href: '/virtual-try-on',
+              emoji: '🤳',
+              title: 'تجربة افتراضية',
+              desc: 'جربي المكياج قبل الشراء',
+            },
             { href: '/tutorials', emoji: '📹', title: 'دروس الجمال', desc: 'تعلمي من الخبراء' },
-            { href: '/salon-map', emoji: '🗺️', title: 'خريطة الصالونات', desc: 'اكتشفي الفنيات القريبات' },
-            { href: '/beauty-courses', emoji: '🎓', title: 'دورات تجميل', desc: 'احصلي على شهادات' },
+            {
+              href: '/salon-map',
+              emoji: '🗺️',
+              title: 'خريطة الصالونات',
+              desc: 'اكتشفي الفنيات القريبات',
+            },
+            {
+              href: '/beauty-courses',
+              emoji: '🎓',
+              title: 'دورات تجميل',
+              desc: 'احصلي على شهادات',
+            },
             { href: '/blog', emoji: '📝', title: 'المدونة', desc: 'نصائح وأسرار الجمال' },
             { href: '/live-stream', emoji: '🎥', title: 'بث مباشر', desc: 'تابعي الخبراء مباشرة' },
             { href: '/flash-deals', emoji: '⚡', title: 'عروض فلاش', desc: 'خصومات لفترة محدودة' },
@@ -139,7 +192,10 @@ export function HomeClient({
             <Link key={f.href} href={f.href}>
               <Card hover padding="lg" className="flex items-start gap-3 transition-all">
                 <span className="text-3xl">{f.emoji}</span>
-                <div><h3 className="font-bold text-sm">{f.title}</h3><p className="text-xs text-text-secondary mt-0.5">{f.desc}</p></div>
+                <div>
+                  <h3 className="font-bold text-sm">{f.title}</h3>
+                  <p className="text-xs text-text-secondary mt-0.5">{f.desc}</p>
+                </div>
               </Card>
             </Link>
           ))}

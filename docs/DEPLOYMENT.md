@@ -2,15 +2,15 @@
 
 ## Infrastructure Overview
 
-| Component | Technology | Port | Purpose |
-|-----------|-----------|------|---------|
-| Web Server | Next.js 14 (PM2) | 3000 | Customer/Admin/Technician web app |
-| Mobile | Expo (PM2) | 8081 | React Native mobile app |
-| API | tRPC v11 (embedded in Next.js) | 3000 | Type-safe API layer |
-| Database | PostgreSQL 15 | 5432 | Primary data store |
-| Cache | Redis 7 | 6379 | Sessions, rate limiting, caching |
-| WebSocket | Socket.IO (PM2) | 4001 | Real-time notifications |
-| Proxy | Nginx | 80/443 | Reverse proxy, TLS termination |
+| Component  | Technology                     | Port   | Purpose                           |
+| ---------- | ------------------------------ | ------ | --------------------------------- |
+| Web Server | Next.js 14 (PM2)               | 3000   | Customer/Admin/Technician web app |
+| Mobile     | Expo (PM2)                     | 8081   | React Native mobile app           |
+| API        | tRPC v11 (embedded in Next.js) | 3000   | Type-safe API layer               |
+| Database   | PostgreSQL 15                  | 5432   | Primary data store                |
+| Cache      | Redis 7                        | 6379   | Sessions, rate limiting, caching  |
+| WebSocket  | Socket.IO (PM2)                | 4001   | Real-time notifications           |
+| Proxy      | Nginx                          | 80/443 | Reverse proxy, TLS termination    |
 
 ## Prerequisites
 

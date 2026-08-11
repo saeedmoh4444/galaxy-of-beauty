@@ -92,7 +92,10 @@ interface PromoCode {
   validUntil?: Date;
 }
 
-function validatePromo(promo: PromoCode | null, orderAmount: number): {
+function validatePromo(
+  promo: PromoCode | null,
+  orderAmount: number,
+): {
   valid: boolean;
   error?: string;
   discountAmount?: number;
@@ -100,15 +103,18 @@ function validatePromo(promo: PromoCode | null, orderAmount: number): {
 } {
   if (!promo) return { valid: false, error: 'كود غير موجود' };
   if (!promo.isActive) return { valid: false, error: 'الكود غير نشط' };
-  if (promo.validUntil && new Date(promo.validUntil) < new Date()) return { valid: false, error: 'الكود منتهي الصلاحية' };
-  if (promo.maxUses && promo.currentUses >= promo.maxUses) return { valid: false, error: 'تم استنفاذ الكود' };
+  if (promo.validUntil && new Date(promo.validUntil) < new Date())
+    return { valid: false, error: 'الكود منتهي الصلاحية' };
+  if (promo.maxUses && promo.currentUses >= promo.maxUses)
+    return { valid: false, error: 'تم استنفاذ الكود' };
   if (promo.minOrderAmount && orderAmount < promo.minOrderAmount) {
     return { valid: false, error: `الحد الأدنى للطلب ${promo.minOrderAmount} ر.س` };
   }
 
-  let discount = promo.discountType === 'percent'
-    ? orderAmount * (promo.discountValue / 100)
-    : promo.discountValue;
+  let discount =
+    promo.discountType === 'percent'
+      ? orderAmount * (promo.discountValue / 100)
+      : promo.discountValue;
 
   if (promo.maxDiscount && discount > promo.maxDiscount) {
     discount = promo.maxDiscount;
@@ -123,8 +129,12 @@ function validatePromo(promo: PromoCode | null, orderAmount: number): {
 
 describe('Promo Code Validation', () => {
   const activePromo: PromoCode = {
-    code: 'TEST20', discountType: 'percent', discountValue: 20,
-    isActive: true, currentUses: 0, minOrderAmount: 100,
+    code: 'TEST20',
+    discountType: 'percent',
+    discountValue: 20,
+    isActive: true,
+    currentUses: 0,
+    minOrderAmount: 100,
   };
 
   it('validates a valid promo code', () => {
@@ -154,8 +164,11 @@ describe('Promo Code Validation', () => {
 
   it('handles fixed discount', () => {
     const promo: PromoCode = {
-      code: 'FLAT50', discountType: 'fixed', discountValue: 50,
-      isActive: true, currentUses: 0,
+      code: 'FLAT50',
+      discountType: 'fixed',
+      discountValue: 50,
+      isActive: true,
+      currentUses: 0,
     };
     const result = validatePromo(promo, 200);
     expect(result.discountAmount).toBe(50);
@@ -225,7 +238,9 @@ describe('Booking Timeline', () => {
   it('includes creation event for every booking', () => {
     const now = new Date();
     const timeline = generateBookingTimeline({
-      createdAt: now, updatedAt: now, status: 'REQUESTED',
+      createdAt: now,
+      updatedAt: now,
+      status: 'REQUESTED',
     });
     expect(timeline.length).toBeGreaterThanOrEqual(1);
     expect(timeline[0]!.type).toBe('BOOKING_CREATED');
@@ -234,7 +249,9 @@ describe('Booking Timeline', () => {
   it('includes cancellation event when cancelled', () => {
     const now = new Date();
     const timeline = generateBookingTimeline({
-      createdAt: now, updatedAt: now, status: 'CANCELLED',
+      createdAt: now,
+      updatedAt: now,
+      status: 'CANCELLED',
       cancelledAt: new Date(now.getTime() + 3600000),
       cancelReason: 'Changed mind',
     });
@@ -245,7 +262,9 @@ describe('Booking Timeline', () => {
   it('does not include cancellation for active bookings', () => {
     const now = new Date();
     const timeline = generateBookingTimeline({
-      createdAt: now, updatedAt: now, status: 'PAID',
+      createdAt: now,
+      updatedAt: now,
+      status: 'PAID',
     });
     expect(timeline.find((e) => e.type === 'BOOKING_CANCELLED')).toBeUndefined();
   });
@@ -253,12 +272,15 @@ describe('Booking Timeline', () => {
   it('sorts events chronologically', () => {
     const now = new Date();
     const timeline = generateBookingTimeline({
-      createdAt: now, updatedAt: now, status: 'CANCELLED',
+      createdAt: now,
+      updatedAt: now,
+      status: 'CANCELLED',
       cancelledAt: new Date(now.getTime() + 3600000),
     });
     for (let i = 1; i < timeline.length; i++) {
-      expect(new Date(timeline[i]!.timestamp).getTime())
-        .toBeGreaterThanOrEqual(new Date(timeline[i-1]!.timestamp).getTime());
+      expect(new Date(timeline[i]!.timestamp).getTime()).toBeGreaterThanOrEqual(
+        new Date(timeline[i - 1]!.timestamp).getTime(),
+      );
     }
   });
 });
@@ -350,7 +372,10 @@ describe('Booking State Machine', () => {
 
 describe('Referral Codes', () => {
   function generateReferralCode(name: string): string {
-    const prefix = name.replace(/[^a-zA-Z0-9]/g, '').slice(0, 4).toUpperCase();
+    const prefix = name
+      .replace(/[^a-zA-Z0-9]/g, '')
+      .slice(0, 4)
+      .toUpperCase();
     const random = Math.random().toString(36).slice(2, 6).toUpperCase();
     return `${prefix}${random}`;
   }

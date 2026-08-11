@@ -86,13 +86,15 @@ export async function uploadFile(
 
   try {
     const sdk = await Function('return import("@aws-sdk/client-s3")')();
-    await s3.send(new sdk.PutObjectCommand({
-      Bucket: bucket,
-      Key: key,
-      Body: buffer,
-      ContentType: mimeType,
-      CacheControl: 'public, max-age=31536000, immutable',
-    }));
+    await s3.send(
+      new sdk.PutObjectCommand({
+        Bucket: bucket,
+        Key: key,
+        Body: buffer,
+        ContentType: mimeType,
+        CacheControl: 'public, max-age=31536000, immutable',
+      }),
+    );
 
     return {
       url: `https://${bucket}.s3.${getS3Region()}.amazonaws.com/${key}`,

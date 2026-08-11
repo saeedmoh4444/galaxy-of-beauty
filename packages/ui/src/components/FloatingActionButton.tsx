@@ -12,7 +12,12 @@ interface FloatingActionButtonProps {
   className?: string;
 }
 
-export function FloatingActionButton({ label, onClick, icon = '✨', className = '' }: FloatingActionButtonProps): JSX.Element {
+export function FloatingActionButton({
+  label,
+  onClick,
+  icon = '✨',
+  className = '',
+}: FloatingActionButtonProps): JSX.Element {
   return (
     <button
       onClick={onClick}

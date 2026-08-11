@@ -24,21 +24,44 @@ export const spaPlannerRouter = router({
   breaks: customerProcedure.query(() => BREAKS),
 
   myPlans: customerProcedure.query(({ ctx }) =>
-    prisma.spaPlan.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } })
+    prisma.spaPlan.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } }),
   ),
 
   create: customerProcedure
-    .input(z.object({ name: z.string().min(1), serviceIds: z.array(z.number()).min(1), breakIds: z.array(z.string()).default([]) }))
+    .input(
+      z.object({
+        name: z.string().min(1),
+        serviceIds: z.array(z.number()).min(1),
+        breakIds: z.array(z.string()).default([]),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
-      const items: Array<Record<string,unknown>> = [];
+      const items: Array<Record<string, unknown>> = [];
       input.serviceIds.forEach((sid) => {
         const svc = SPA_SERVICES.find((s) => s.id === sid);
-        if (svc) items.push({ type: 'service', id: svc.id, nameAr: svc.nameAr, durationMin: svc.durationMin, emoji: svc.emoji, price: svc.price });
+        if (svc)
+          items.push({
+            type: 'service',
+            id: svc.id,
+            nameAr: svc.nameAr,
+            durationMin: svc.durationMin,
+            emoji: svc.emoji,
+            price: svc.price,
+          });
       });
       input.breakIds.forEach((bid) => {
         const brk = BREAKS.find((b) => b.id === bid);
-        if (brk) items.push({ type: 'break', id: brk.id, nameAr: brk.nameAr, durationMin: brk.durationMin, emoji: brk.emoji });
+        if (brk)
+          items.push({
+            type: 'break',
+            id: brk.id,
+            nameAr: brk.nameAr,
+            durationMin: brk.durationMin,
+            emoji: brk.emoji,
+          });
       });
-      return prisma.spaPlan.create({ data: { userId: ctx.user.id, name: input.name, items: items as any } });
+      return prisma.spaPlan.create({
+        data: { userId: ctx.user.id, name: input.name, items: items as any },
+      });
     }),
 });

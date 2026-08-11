@@ -4,10 +4,16 @@ import { publicProcedure, adminProcedure, router } from '../trpc';
 
 export const beautyPlaylistRouter = router({
   list: publicProcedure
-    .input(z.object({ mood: z.string().optional(), limit: z.number().int().min(1).max(50).default(10) }))
+    .input(
+      z.object({ mood: z.string().optional(), limit: z.number().int().min(1).max(50).default(10) }),
+    )
     .query(async ({ input }) => {
       const where = input.mood ? { mood: input.mood } : {};
-      return prisma.beautyPlaylist.findMany({ where, orderBy: { createdAt: 'desc' }, take: input.limit });
+      return prisma.beautyPlaylist.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        take: input.limit,
+      });
     }),
 
   moods: publicProcedure.query(async () => {
@@ -16,8 +22,18 @@ export const beautyPlaylistRouter = router({
   }),
 
   create: adminProcedure
-    .input(z.object({ title: z.string().min(2).max(200), mood: z.string(), tracksJson: z.array(z.object({ title: z.string(), duration: z.string(), emoji: z.string() })) }))
+    .input(
+      z.object({
+        title: z.string().min(2).max(200),
+        mood: z.string(),
+        tracksJson: z.array(
+          z.object({ title: z.string(), duration: z.string(), emoji: z.string() }),
+        ),
+      }),
+    )
     .mutation(async ({ input }) => {
-      return prisma.beautyPlaylist.create({ data: { title: input.title, mood: input.mood, tracksJson: input.tracksJson } });
+      return prisma.beautyPlaylist.create({
+        data: { title: input.title, mood: input.mood, tracksJson: input.tracksJson },
+      });
     }),
 });

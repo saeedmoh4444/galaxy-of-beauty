@@ -10,7 +10,15 @@ import { cn } from '@galaxy/shared';
  *   <GreenSalonBadge practices={['recycled', 'organic', 'energy_efficient']} />
  */
 
-type GreenPractice = 'recycled' | 'organic' | 'energy_efficient' | 'water_saving' | 'vegan_products' | 'plastic_free' | 'local_sourcing' | 'carbon_neutral';
+type GreenPractice =
+  | 'recycled'
+  | 'organic'
+  | 'energy_efficient'
+  | 'water_saving'
+  | 'vegan_products'
+  | 'plastic_free'
+  | 'local_sourcing'
+  | 'carbon_neutral';
 
 interface PracticeDef {
   emoji: string;
@@ -47,11 +55,11 @@ export function GreenSalonBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">🌿</span>
+        <span className="text-xl" aria-hidden="true">
+          🌿
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-green-700 dark:text-green-300">
-            صالون أخضر
-          </h4>
+          <h4 className="text-sm font-bold text-green-700 dark:text-green-300">صالون أخضر</h4>
           <p className="text-[10px] text-green-500 dark:text-green-400">
             نمارس الاستدامة في كل خطوة
           </p>
@@ -67,7 +75,9 @@ export function GreenSalonBadge({
               key={p}
               className="flex items-center gap-2 rounded-lg bg-white/60 px-2.5 py-2 dark:bg-gray-800/60"
             >
-              <span className="text-sm" aria-hidden="true">{def.emoji}</span>
+              <span className="text-sm" aria-hidden="true">
+                {def.emoji}
+              </span>
               <span className="text-[10px] font-medium text-green-800 dark:text-green-200">
                 {def.label}
               </span>

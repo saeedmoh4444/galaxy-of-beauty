@@ -1,4 +1,12 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import { trpc } from '@/lib/api';
 import { useCamera } from '@/hooks/useCamera';
 import { useState, useEffect, useCallback } from 'react';
@@ -32,7 +40,10 @@ export default function SkinAnalysisScreen() {
   const fetchHistory = useCallback(async () => {
     setLoadingHistory(true);
     try {
-      const data = (await trpc.skinAnalysis.history.query({ page: 1, limit: DEFAULT_PAGE_SIZE })) as Record<string, unknown>;
+      const data = (await trpc.skinAnalysis.history.query({
+        page: 1,
+        limit: DEFAULT_PAGE_SIZE,
+      })) as Record<string, unknown>;
       setHistory((data.items as Record<string, unknown>[]) || []);
     } catch {
       // keep stale
@@ -53,7 +64,10 @@ export default function SkinAnalysisScreen() {
     setAnalyzing(true);
     setResult(null);
     try {
-      const data = (await trpc.skinAnalysis.analyze.mutate({ imageUrl })) as Record<string, unknown>;
+      const data = (await trpc.skinAnalysis.analyze.mutate({ imageUrl })) as Record<
+        string,
+        unknown
+      >;
       const resultJson = (data.resultJson as Record<string, unknown>) || null;
       setResult(resultJson);
       fetchHistory();
@@ -84,8 +98,14 @@ export default function SkinAnalysisScreen() {
         <View style={styles.uploadZone}>
           <Text style={styles.uploadEmoji}>📸</Text>
           <Text style={styles.uploadHint}>التقطي صورة أو أدخلي رابط الصورة</Text>
-          <TouchableOpacity style={styles.cameraBtn} onPress={handleCameraCapture} activeOpacity={0.8}>
-            <Text style={styles.cameraBtnText}>{showCamera ? '📷 جاري التصوير...' : '📷 التقاط صورة'}</Text>
+          <TouchableOpacity
+            style={styles.cameraBtn}
+            onPress={handleCameraCapture}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.cameraBtnText}>
+              {showCamera ? '📷 جاري التصوير...' : '📷 التقاط صورة'}
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -122,26 +142,30 @@ export default function SkinAnalysisScreen() {
             <View style={styles.resultItem}>
               <Text style={styles.resultLabel}>نوع البشرة</Text>
               <Text style={styles.resultValue}>
-                {skinTypeLabels[(result.skinType as string) || 'unknown'] || (result.skinType as string) || 'غير محدد'}
+                {skinTypeLabels[(result.skinType as string) || 'unknown'] ||
+                  (result.skinType as string) ||
+                  'غير محدد'}
               </Text>
             </View>
             <View style={styles.resultItem}>
               <Text style={styles.resultLabel}>المشاكل</Text>
               <Text style={styles.resultValue}>
-                {(result.concerns as string[])?.length ? (result.concerns as string[]).join('، ') : '-'}
+                {(result.concerns as string[])?.length
+                  ? (result.concerns as string[]).join('، ')
+                  : '-'}
               </Text>
             </View>
             <View style={styles.resultItem}>
               <Text style={styles.resultLabel}>مستوى الترطيب</Text>
-              <Text style={styles.resultValue}>{result.hydrationLevel as string || '-'}</Text>
+              <Text style={styles.resultValue}>{(result.hydrationLevel as string) || '-'}</Text>
             </View>
             <View style={styles.resultItem}>
               <Text style={styles.resultLabel}>مستوى الحساسية</Text>
-              <Text style={styles.resultValue}>{result.sensitivityLevel as string || '-'}</Text>
+              <Text style={styles.resultValue}>{(result.sensitivityLevel as string) || '-'}</Text>
             </View>
             <View style={styles.resultItem}>
               <Text style={styles.resultLabel}>العمر التقديري</Text>
-              <Text style={styles.resultValue}>{result.ageEstimate as string || '-'}</Text>
+              <Text style={styles.resultValue}>{(result.ageEstimate as string) || '-'}</Text>
             </View>
           </View>
 
@@ -177,11 +201,15 @@ export default function SkinAnalysisScreen() {
             </View>
             <View style={styles.histInfo}>
               <Text style={styles.histType}>
-                {skinTypeLabels[((a.resultJson as Record<string, unknown>)?.skinType as string) || 'unknown'] || 'تحليل'}
+                {skinTypeLabels[
+                  ((a.resultJson as Record<string, unknown>)?.skinType as string) || 'unknown'
+                ] || 'تحليل'}
               </Text>
               <Text style={styles.histDate}>
                 {new Date(a.createdAt as string).toLocaleDateString('ar-SA', {
-                  year: 'numeric', month: 'long', day: 'numeric',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
                 })}
               </Text>
             </View>
@@ -196,52 +224,127 @@ export default function SkinAnalysisScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   contentInner: { padding: 16, paddingBottom: 40 },
-  title: { fontSize: 22, fontWeight: '800', color: '#111827', textAlign: 'right', marginBottom: 20 },
+  title: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#111827',
+    textAlign: 'right',
+    marginBottom: 20,
+  },
 
-  card: { backgroundColor: '#fff', borderRadius: 14, borderWidth: 1, borderColor: '#e5e7eb', padding: 16, marginBottom: 16 },
-  cardTitle: { fontSize: 16, fontWeight: '700', color: '#111827', textAlign: 'right', marginBottom: 14 },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    padding: 16,
+    marginBottom: 16,
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#111827',
+    textAlign: 'right',
+    marginBottom: 14,
+  },
 
   uploadZone: {
-    borderWidth: 2, borderColor: '#e5e7eb', borderStyle: 'dashed',
-    borderRadius: 12, padding: 28, alignItems: 'center', marginBottom: 14,
+    borderWidth: 2,
+    borderColor: '#e5e7eb',
+    borderStyle: 'dashed',
+    borderRadius: 12,
+    padding: 28,
+    alignItems: 'center',
+    marginBottom: 14,
   },
   uploadEmoji: { fontSize: 40, marginBottom: 8 },
   uploadHint: { fontSize: 13, color: '#9ca3af', marginBottom: 12 },
-  cameraBtn: { backgroundColor: '#ec4899', borderRadius: 10, paddingHorizontal: 20, paddingVertical: 10 },
+  cameraBtn: {
+    backgroundColor: '#ec4899',
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
   cameraBtnText: { color: '#fff', fontSize: 14, fontWeight: '600' },
 
   urlInput: {
-    borderWidth: 1, borderColor: '#d1d5db', borderRadius: 10,
-    padding: 12, fontSize: 14, textAlign: 'left', backgroundColor: '#f9fafb', marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 10,
+    padding: 12,
+    fontSize: 14,
+    textAlign: 'left',
+    backgroundColor: '#f9fafb',
+    marginBottom: 12,
   },
 
   analyzeBtn: {
-    backgroundColor: '#7c3aed', borderRadius: 10, padding: 14,
-    alignItems: 'center', justifyContent: 'center', minHeight: 48,
+    backgroundColor: '#7c3aed',
+    borderRadius: 10,
+    padding: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 48,
   },
   analyzeBtnDisabled: { backgroundColor: '#c4b5fd' },
   analyzeBtnText: { color: '#fff', fontSize: 16, fontWeight: '700' },
 
   resultCard: { borderColor: '#c4b5fd', backgroundColor: '#faf5ff' },
-  resultTitle: { fontSize: 16, fontWeight: '700', color: '#7c3aed', textAlign: 'right', marginBottom: 12 },
+  resultTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#7c3aed',
+    textAlign: 'right',
+    marginBottom: 12,
+  },
   resultGrid: { gap: 10 },
   resultItem: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   resultLabel: { fontSize: 13, color: '#6b7280' },
-  resultValue: { fontSize: 14, fontWeight: '600', color: '#111827', maxWidth: '60%', textAlign: 'right' },
+  resultValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#111827',
+    maxWidth: '60%',
+    textAlign: 'right',
+  },
 
   recos: { marginTop: 14, borderTopWidth: 1, borderTopColor: '#e9d5ff', paddingTop: 12 },
-  recosTitle: { fontSize: 14, fontWeight: '700', color: '#7c3aed', textAlign: 'right', marginBottom: 6 },
+  recosTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#7c3aed',
+    textAlign: 'right',
+    marginBottom: 6,
+  },
   recosText: { fontSize: 12, color: '#4b5563', textAlign: 'right', lineHeight: 18 },
 
-  sectionTitle: { fontSize: 18, fontWeight: '700', color: '#111827', textAlign: 'right', marginBottom: 12, marginTop: 8 },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#111827',
+    textAlign: 'right',
+    marginBottom: 12,
+    marginTop: 8,
+  },
 
   historyCard: {
-    flexDirection: 'row', alignItems: 'center', padding: 14,
-    backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#e5e7eb', marginBottom: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 14,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    marginBottom: 8,
   },
   histIcon: {
-    width: 44, height: 44, borderRadius: 10, backgroundColor: '#f9fafb',
-    justifyContent: 'center', alignItems: 'center', marginRight: 12,
+    width: 44,
+    height: 44,
+    borderRadius: 10,
+    backgroundColor: '#f9fafb',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
   },
   histEmoji: { fontSize: 20 },
   histInfo: { flex: 1 },

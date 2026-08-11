@@ -87,10 +87,10 @@ export function BridalJourneyTimeline({
     <div className={cn('rounded-2xl bg-white p-5 dark:bg-gray-900', className)}>
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">👰‍♀️</span>
-        <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">
-          رحلة العروس
-        </h4>
+        <span className="text-3xl" aria-hidden="true">
+          👰‍♀️
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">رحلة العروس</h4>
         <p className="text-[10px] text-rose-500 dark:text-rose-400">
           خطة متكاملة لـ 6 أشهر قبل الزفاف
         </p>
@@ -106,9 +106,10 @@ export function BridalJourneyTimeline({
         {MILESTONES.map((m, i) => {
           const isCompleted = completedMonths.includes(m.month);
           const isPast = completedMonths.length > 0 && m.month > Math.max(...completedMonths);
-          const isCurrent = completedMonths.length > 0
-            ? m.month === Math.max(...completedMonths) + 1
-            : m.month === 6;
+          const isCurrent =
+            completedMonths.length > 0
+              ? m.month === Math.max(...completedMonths) + 1
+              : m.month === 6;
 
           return (
             <div key={m.month} className="relative">

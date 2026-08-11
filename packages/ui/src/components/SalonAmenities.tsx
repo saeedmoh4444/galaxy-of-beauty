@@ -28,7 +28,10 @@ interface SalonAmenitiesProps {
   className?: string;
 }
 
-export function SalonAmenities({ amenities, className = '' }: SalonAmenitiesProps): JSX.Element | null {
+export function SalonAmenities({
+  amenities,
+  className = '',
+}: SalonAmenitiesProps): JSX.Element | null {
   if (!amenities.length) return null;
 
   return (
@@ -37,7 +40,11 @@ export function SalonAmenities({ amenities, className = '' }: SalonAmenitiesProp
         const a = AMENITIES[key];
         if (!a) return null;
         return (
-          <span key={key} className="inline-flex items-center gap-1 rounded-full bg-pink-50 px-2.5 py-1 text-xs font-medium text-pink-700 dark:bg-pink-950 dark:text-pink-300" title={a.label}>
+          <span
+            key={key}
+            className="inline-flex items-center gap-1 rounded-full bg-pink-50 px-2.5 py-1 text-xs font-medium text-pink-700 dark:bg-pink-950 dark:text-pink-300"
+            title={a.label}
+          >
             {a.emoji} {a.label}
           </span>
         );

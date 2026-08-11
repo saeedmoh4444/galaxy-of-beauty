@@ -9,9 +9,23 @@ export default function ServiceComparePage(): JSX.Element {
   const [services, setServices] = useState<any[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
-  const fetch = useCallback(() => { setLoading(true); (api as any).services.list.query({}).then((d: any) => { setServices(d?.items ?? []); setLoading(false); }).catch(() => setLoading(false)); }, []);
-  useEffect(() => { fetch(); }, [fetch]);
-  const toggle = (id: number) => { if (selected.includes(id)) setSelected(selected.filter((x) => x !== id)); else if (selected.length < 3) setSelected([...selected, id]); };
+  const fetch = useCallback(() => {
+    setLoading(true);
+    (api as any).services.list
+      .query({})
+      .then((d: any) => {
+        setServices(d?.items ?? []);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+  const toggle = (id: number) => {
+    if (selected.includes(id)) setSelected(selected.filter((x) => x !== id));
+    else if (selected.length < 3) setSelected([...selected, id]);
+  };
   const compareItems = services.filter((s: any) => selected.includes(s.id));
 
   return (
@@ -23,10 +37,19 @@ export default function ServiceComparePage(): JSX.Element {
           {services.slice(0, 12).map((s: any) => {
             const isSel = selected.includes(s.id);
             return (
-              <button key={s.id} type="button" onClick={() => toggle(s.id)} className={`rounded-2xl border-2 p-4 text-center transition-all ${isSel ? 'border-cyan-400 bg-cyan-50 dark:border-cyan-600 dark:bg-cyan-950' : 'border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900'}`}>
+              <button
+                key={s.id}
+                type="button"
+                onClick={() => toggle(s.id)}
+                className={`rounded-2xl border-2 p-4 text-center transition-all ${isSel ? 'border-cyan-400 bg-cyan-50 dark:border-cyan-600 dark:bg-cyan-950' : 'border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900'}`}
+              >
                 <span className="text-3xl">{s.emoji ?? '💆‍♀️'}</span>
-                <p className="mt-2 text-xs font-bold text-text-primary dark:text-gray-100">{(s.titleJson as any)?.ar ?? s.nameAr}</p>
-                <p className="mt-1 text-sm font-bold text-cyan-600 dark:text-cyan-400">{(s.basePrice as number)?.toLocaleString()} ر.س</p>
+                <p className="mt-2 text-xs font-bold text-text-primary dark:text-gray-100">
+                  {(s.titleJson as any)?.ar ?? s.nameAr}
+                </p>
+                <p className="mt-1 text-sm font-bold text-cyan-600 dark:text-cyan-400">
+                  {(s.basePrice as number)?.toLocaleString()} ر.س
+                </p>
               </button>
             );
           })}
@@ -39,10 +62,22 @@ export default function ServiceComparePage(): JSX.Element {
               {compareItems.map((s: any) => (
                 <div key={s.id} className="rounded-xl bg-gray-50 p-4 dark:bg-gray-800">
                   <span className="text-2xl">{s.emoji}</span>
-                  <h4 className="mt-2 text-sm font-bold text-text-primary dark:text-gray-100">{(s.titleJson as any)?.ar}</h4>
+                  <h4 className="mt-2 text-sm font-bold text-text-primary dark:text-gray-100">
+                    {(s.titleJson as any)?.ar}
+                  </h4>
                   <div className="mt-3 space-y-2 text-sm text-text-secondary dark:text-gray-400">
-                    <div className="flex justify-between"><span>💰 السعر</span><span className="font-bold text-text-primary dark:text-gray-100">{(s.basePrice as number)?.toLocaleString()} ر.س</span></div>
-                    <div className="flex justify-between"><span>⏱️ المدة</span><span className="font-bold text-text-primary dark:text-gray-100">{s.durationMin as number} دقيقة</span></div>
+                    <div className="flex justify-between">
+                      <span>💰 السعر</span>
+                      <span className="font-bold text-text-primary dark:text-gray-100">
+                        {(s.basePrice as number)?.toLocaleString()} ر.س
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>⏱️ المدة</span>
+                      <span className="font-bold text-text-primary dark:text-gray-100">
+                        {s.durationMin as number} دقيقة
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}

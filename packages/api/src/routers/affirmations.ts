@@ -19,13 +19,19 @@ export const affirmationsRouter = router({
   myFavorites: customerProcedure
     .input(z.object({ limit: z.number().int().min(1).max(30).default(10) }))
     .query(async ({ ctx, input }) => {
-      return prisma.affirmationFavorite.findMany({ where: { userId: ctx.user.id }, include: { affirmation: true }, take: input.limit });
+      return prisma.affirmationFavorite.findMany({
+        where: { userId: ctx.user.id },
+        include: { affirmation: true },
+        take: input.limit,
+      });
     }),
 
   save: customerProcedure
     .input(z.object({ affirmationId: z.number().int().positive() }))
     .mutation(async ({ ctx, input }) => {
-      await prisma.affirmationFavorite.create({ data: { userId: ctx.user.id, affirmationId: input.affirmationId } });
+      await prisma.affirmationFavorite.create({
+        data: { userId: ctx.user.id, affirmationId: input.affirmationId },
+      });
       return { success: true };
     }),
 });

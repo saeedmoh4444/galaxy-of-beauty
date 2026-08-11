@@ -12,8 +12,18 @@ export function SkeletonCard({ lines = 3, height = 80 }: SkeletonCardProps): JSX
   useEffect(() => {
     const anim = Animated.loop(
       Animated.sequence([
-        Animated.timing(pulse, { toValue: 1, duration: 800, easing: Easing.ease, useNativeDriver: true }),
-        Animated.timing(pulse, { toValue: 0, duration: 800, easing: Easing.ease, useNativeDriver: true }),
+        Animated.timing(pulse, {
+          toValue: 1,
+          duration: 800,
+          easing: Easing.ease,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulse, {
+          toValue: 0,
+          duration: 800,
+          easing: Easing.ease,
+          useNativeDriver: true,
+        }),
       ]),
     );
     anim.start();

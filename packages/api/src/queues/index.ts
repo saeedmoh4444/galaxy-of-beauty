@@ -19,8 +19,8 @@ import { getRedis } from '../lib/redis';
 const defaultOpts: JobsOptions = {
   attempts: 3,
   backoff: { type: 'exponential', delay: 1000 },
-  removeOnComplete: { age: 3600 * 24 },  // keep completed jobs for 24h
-  removeOnFail: { age: 3600 * 24 * 7 },   // keep failed jobs for 7 days
+  removeOnComplete: { age: 3600 * 24 }, // keep completed jobs for 24h
+  removeOnFail: { age: 3600 * 24 * 7 }, // keep failed jobs for 7 days
 };
 
 function createQueue(name: string): Queue {
@@ -42,22 +42,42 @@ let _integrationQueue: Queue | null = null;
 
 export function getWalletQueue(): Queue | null {
   if (_walletQueue) return _walletQueue;
-  try { _walletQueue = createQueue('gob-wallet'); return _walletQueue; } catch { return null; }
+  try {
+    _walletQueue = createQueue('gob-wallet');
+    return _walletQueue;
+  } catch {
+    return null;
+  }
 }
 
 export function getLoyaltyQueue(): Queue | null {
   if (_loyaltyQueue) return _loyaltyQueue;
-  try { _loyaltyQueue = createQueue('gob-loyalty'); return _loyaltyQueue; } catch { return null; }
+  try {
+    _loyaltyQueue = createQueue('gob-loyalty');
+    return _loyaltyQueue;
+  } catch {
+    return null;
+  }
 }
 
 export function getNotificationQueue(): Queue | null {
   if (_notificationQueue) return _notificationQueue;
-  try { _notificationQueue = createQueue('gob-notifications'); return _notificationQueue; } catch { return null; }
+  try {
+    _notificationQueue = createQueue('gob-notifications');
+    return _notificationQueue;
+  } catch {
+    return null;
+  }
 }
 
 export function getIntegrationQueue(): Queue | null {
   if (_integrationQueue) return _integrationQueue;
-  try { _integrationQueue = createQueue('gob-integrations'); return _integrationQueue; } catch { return null; }
+  try {
+    _integrationQueue = createQueue('gob-integrations');
+    return _integrationQueue;
+  } catch {
+    return null;
+  }
 }
 
 // Convenience: all queues

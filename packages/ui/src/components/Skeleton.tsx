@@ -42,7 +42,13 @@ export function ListSkeleton({ rows = 5 }: { rows?: number }) {
 }
 
 /** Text line skeleton for paragraph placeholders */
-export function TextLineSkeleton({ width = 'full', className = '' }: { width?: string; className?: string }) {
+export function TextLineSkeleton({
+  width = 'full',
+  className = '',
+}: {
+  width?: string;
+  className?: string;
+}) {
   return (
     <div
       role="status"
@@ -70,10 +76,7 @@ export function TableRowSkeleton({ cols = 4 }: { cols?: number }) {
   return (
     <div className="flex gap-4 py-3" role="status" aria-label="Loading table row">
       {Array.from({ length: cols }, (_, i) => (
-        <div
-          key={i}
-          className="animate-pulse rounded bg-gray-200 dark:bg-gray-700 h-4 flex-1"
-        />
+        <div key={i} className="animate-pulse rounded bg-gray-200 dark:bg-gray-700 h-4 flex-1" />
       ))}
     </div>
   );
@@ -182,7 +185,11 @@ export function DetailSkeleton() {
 /** Skeleton that matches a form inside a card. */
 export function FormSkeleton({ fields = 5 }: { fields?: number }) {
   return (
-    <div role="status" aria-label="جاري تحميل النموذج" className="rounded-2xl border border-edge bg-surface p-6">
+    <div
+      role="status"
+      aria-label="جاري تحميل النموذج"
+      className="rounded-2xl border border-edge bg-surface p-6"
+    >
       <div className="animate-pulse space-y-5">
         <div className="h-6 w-36 rounded bg-gray-200 dark:bg-gray-700" />
         {Array.from({ length: fields }, (_, i) => (
@@ -217,9 +224,16 @@ export function KPIRowSkeleton({ count = 4 }: { count?: number }) {
 /** Skeleton that matches a responsive product/service grid. */
 export function GridSkeleton({ count = 8 }: { count?: number }) {
   return (
-    <div role="status" aria-label="جاري تحميل العناصر" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div
+      role="status"
+      aria-label="جاري تحميل العناصر"
+      className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+    >
       {Array.from({ length: count }, (_, i) => (
-        <div key={i} className="rounded-2xl border border-edge bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
+        <div
+          key={i}
+          className="rounded-2xl border border-edge bg-white p-4 dark:border-gray-700 dark:bg-gray-900"
+        >
           <div className="animate-pulse space-y-3">
             <div className="aspect-square w-full rounded-xl bg-gray-200 dark:bg-gray-700" />
             <div className="h-4 w-3/4 rounded bg-gray-200 dark:bg-gray-700" />
@@ -234,13 +248,22 @@ export function GridSkeleton({ count = 8 }: { count?: number }) {
 
 /** Inline text skeleton — matches a single line of text. */
 export function TextSkeleton({ width = '100%' }: { width?: string }) {
-  return <span className="inline-block animate-pulse rounded bg-gray-200 dark:bg-gray-700 h-4" style={{ width, minWidth: '3rem' }} />;
+  return (
+    <span
+      className="inline-block animate-pulse rounded bg-gray-200 dark:bg-gray-700 h-4"
+      style={{ width, minWidth: '3rem' }}
+    />
+  );
 }
 
 /** Skeleton that matches a full table with header and rows. */
 export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: number }) {
   return (
-    <div role="status" aria-label="جاري تحميل الجدول" className="rounded-2xl border border-edge bg-surface">
+    <div
+      role="status"
+      aria-label="جاري تحميل الجدول"
+      className="rounded-2xl border border-edge bg-surface"
+    >
       {/* Header */}
       <div className="border-b border-edge px-6 py-3">
         <div className="animate-pulse flex gap-4">

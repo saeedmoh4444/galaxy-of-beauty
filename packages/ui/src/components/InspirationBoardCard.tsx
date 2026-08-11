@@ -44,11 +44,11 @@ export function InspirationBoardCard({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true">📌</span>
+          <span className="text-lg" aria-hidden="true">
+            📌
+          </span>
           <div>
-            <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">
-              {boardName}
-            </h4>
+            <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{boardName}</h4>
             <p className="text-[10px] text-rose-500 dark:text-rose-400">
               {pins.length} إلهام
               {collaborators && collaborators.length > 0 && ` · ${collaborators.length} مشاركة`}
@@ -61,7 +61,13 @@ export function InspirationBoardCard({
           className="rounded-full bg-rose-100 p-1.5 text-rose-600 hover:bg-rose-200 dark:bg-rose-950 dark:text-rose-400"
           aria-label="أضيفي إلهاماً"
         >
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+          >
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m-7-7h14" />
           </svg>
         </button>
@@ -103,9 +109,7 @@ export function InspirationBoardCard({
               {pin.title}
             </p>
             {pin.savedBy && (
-              <p className="text-[9px] text-text-tertiary dark:text-gray-500">
-                📌 {pin.savedBy}
-              </p>
+              <p className="text-[9px] text-text-tertiary dark:text-gray-500">📌 {pin.savedBy}</p>
             )}
             {pin.note && (
               <p className="mt-0.5 text-[9px] italic text-text-tertiary dark:text-gray-500 truncate">
@@ -122,7 +126,13 @@ export function InspirationBoardCard({
             onClick={onAddPin}
             className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-rose-200 p-3 text-rose-400 hover:border-rose-300 hover:text-rose-500 dark:border-rose-800 dark:hover:border-rose-700 transition-colors"
           >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m-7-7h14" />
             </svg>
             <span className="mt-1 text-[10px]">أضيفي</span>

@@ -6,14 +6,14 @@
 // Approximate Ramadan/Eid dates for 2026-2028 (Hijri 1447-1450)
 // Accurate to ±1 day. Update yearly.
 const RAMADAN_DATES: Array<{ start: string; end: string; eidAlFitr: string; eidAlAdha: string }> = [
-  { start: '2026-02-17', end: '2026-03-19', eidAlFitr: '2026-03-20', eidAlAdha: '2026-05-27' },  // 1447
-  { start: '2027-02-07', end: '2027-03-08', eidAlFitr: '2027-03-09', eidAlAdha: '2027-05-16' },  // 1448
-  { start: '2028-01-27', end: '2028-02-25', eidAlFitr: '2028-02-26', eidAlAdha: '2028-05-05' },  // 1449
+  { start: '2026-02-17', end: '2026-03-19', eidAlFitr: '2026-03-20', eidAlAdha: '2026-05-27' }, // 1447
+  { start: '2027-02-07', end: '2027-03-08', eidAlFitr: '2027-03-09', eidAlAdha: '2027-05-16' }, // 1448
+  { start: '2028-01-27', end: '2028-02-25', eidAlFitr: '2028-02-26', eidAlAdha: '2028-05-05' }, // 1449
 ];
 
 const FRIDAY = 5; // JS getDay() — 0=Sun, 5=Fri
 const FRIDAY_PRAYER_START = 11; // 11:00 AM
-const FRIDAY_PRAYER_END = 14;   // 2:00 PM
+const FRIDAY_PRAYER_END = 14; // 2:00 PM
 
 export function getSaudiSeason(date: Date = new Date()): {
   isRamadan: boolean;
@@ -55,17 +55,35 @@ export function getSaudiSeason(date: Date = new Date()): {
   let seasonLabel: string | null = null;
   let seasonEmoji: string | null = null;
 
-  if (isRamadan) { seasonLabel = 'رمضان كريم'; seasonEmoji = '🌙'; }
-  else if (isEidAlFitr) { seasonLabel = 'عيد الفطر'; seasonEmoji = '🎊'; }
-  else if (isEidAlAdha) { seasonLabel = 'عيد الأضحى'; seasonEmoji = '🐑'; }
+  if (isRamadan) {
+    seasonLabel = 'رمضان كريم';
+    seasonEmoji = '🌙';
+  } else if (isEidAlFitr) {
+    seasonLabel = 'عيد الفطر';
+    seasonEmoji = '🎊';
+  } else if (isEidAlAdha) {
+    seasonLabel = 'عيد الأضحى';
+    seasonEmoji = '🐑';
+  }
 
-  return { isRamadan, isEidAlFitr, isEidAlAdha, isHajj, isFriday, isFridayPrayer, seasonLabel, seasonEmoji };
+  return {
+    isRamadan,
+    isEidAlFitr,
+    isEidAlAdha,
+    isHajj,
+    isFriday,
+    isFridayPrayer,
+    seasonLabel,
+    seasonEmoji,
+  };
 }
 
 /**
  * Get Friday prayer blocked hours — slots during Jummah should be unavailable.
  */
-export function getFridayBlockedHours(date: Date = new Date()): { start: number; end: number } | null {
+export function getFridayBlockedHours(
+  date: Date = new Date(),
+): { start: number; end: number } | null {
   if (date.getDay() !== FRIDAY) return null;
   return { start: FRIDAY_PRAYER_START, end: FRIDAY_PRAYER_END };
 }

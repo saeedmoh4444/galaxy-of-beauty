@@ -17,21 +17,36 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const query = api.technicians.list.useQuery({ city: city || undefined }) as any;
-  const techs: AnyRecord[] = Array.isArray(query.data) ? query.data : Array.isArray(data.initialTechnicians) ? data.initialTechnicians : [];
+  const techs: AnyRecord[] = Array.isArray(query.data)
+    ? query.data
+    : Array.isArray(data.initialTechnicians)
+      ? data.initialTechnicians
+      : [];
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">فنيات التجميل</h1>
-        <p className="mt-2 text-text-secondary dark:text-gray-400">تصفحي فنيات التجميل المعتمدات في مدينتك</p>
+        <p className="mt-2 text-text-secondary dark:text-gray-400">
+          تصفحي فنيات التجميل المعتمدات في مدينتك
+        </p>
       </div>
 
       <div className="mb-6 flex flex-wrap gap-4">
-        <Input placeholder="المدينة" value={city} onChange={(e) => setCity(e.target.value)} className="max-w-xs" />
+        <Input
+          placeholder="المدينة"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          className="max-w-xs"
+        />
       </div>
 
       {query.isLoading && techs.length === 0 ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{Array.from({ length: 6 }, (_, i) => <CardSkeleton key={i} />)}</div>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }, (_, i) => (
+            <CardSkeleton key={i} />
+          ))}
+        </div>
       ) : query.isError ? (
         <ErrorAlert message="فشل تحميل الفنيات" onRetry={() => query.refetch()} />
       ) : techs.length === 0 ? (
@@ -53,12 +68,19 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
                 <Card hover padding="lg" className="flex flex-col items-center text-center">
                   <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-3xl dark:from-brand-900 dark:to-accent-900">
                     {avatarUrl ? (
-                      <img src={avatarUrl} alt={name} className="h-full w-full rounded-full object-cover" loading="lazy" />
+                      <img
+                        src={avatarUrl}
+                        alt={name}
+                        className="h-full w-full rounded-full object-cover"
+                        loading="lazy"
+                      />
                     ) : (
                       <span>👩‍🎨</span>
                     )}
                   </div>
-                  <h3 className="mt-4 text-lg font-bold text-text-primary dark:text-gray-100">{name}</h3>
+                  <h3 className="mt-4 text-lg font-bold text-text-primary dark:text-gray-100">
+                    {name}
+                  </h3>
                   <p className="text-sm text-text-secondary">{cityName}</p>
                   {bio && <p className="mt-1 line-clamp-2 text-xs text-text-tertiary">{bio}</p>}
                   <div className="mt-3 flex items-center gap-3 text-sm">

@@ -26,11 +26,20 @@ export function StartupMentorshipCard({
   className = '',
 }: StartupMentorshipCardProps): JSX.Element {
   return (
-    <div className={cn('rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50 to-yellow-50 p-5 dark:border-amber-900 dark:from-amber-950 dark:to-yellow-950', className)}>
+    <div
+      className={cn(
+        'rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50 to-yellow-50 p-5 dark:border-amber-900 dark:from-amber-950 dark:to-yellow-950',
+        className,
+      )}
+    >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">🚀</span>
+        <span className="text-3xl" aria-hidden="true">
+          🚀
+        </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">حاضنة الجمال</h4>
-        <p className="text-[10px] text-amber-600 dark:text-amber-400">دعم وتمويل لرائدات الأعمال في التجميل</p>
+        <p className="text-[10px] text-amber-600 dark:text-amber-400">
+          دعم وتمويل لرائدات الأعمال في التجميل
+        </p>
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-2">
@@ -55,8 +64,20 @@ export function StartupMentorshipCard({
       </div>
 
       <div className="mt-3 flex gap-2">
-        <button type="button" onClick={onApplyStartup} className="flex-1 rounded-xl bg-amber-600 py-2 text-[10px] font-bold text-white hover:bg-amber-700 active:scale-[0.98] transition-all">قدمي مشروعكِ 🚀</button>
-        <button type="button" onClick={onApplyMentor} className="rounded-xl border border-amber-200 bg-white px-3 py-2 text-[10px] font-bold text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:bg-gray-800 dark:text-amber-300">كوني مرشدة</button>
+        <button
+          type="button"
+          onClick={onApplyStartup}
+          className="flex-1 rounded-xl bg-amber-600 py-2 text-[10px] font-bold text-white hover:bg-amber-700 active:scale-[0.98] transition-all"
+        >
+          قدمي مشروعكِ 🚀
+        </button>
+        <button
+          type="button"
+          onClick={onApplyMentor}
+          className="rounded-xl border border-amber-200 bg-white px-3 py-2 text-[10px] font-bold text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:bg-gray-800 dark:text-amber-300"
+        >
+          كوني مرشدة
+        </button>
       </div>
     </div>
   );

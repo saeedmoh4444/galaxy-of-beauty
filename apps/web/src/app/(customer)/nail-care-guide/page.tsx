@@ -1,13 +1,23 @@
 'use client';
 
 import {
-  PageContainer, PageTitle,
-  BeautyNailArtCard, BeautyNailShapeCard, BeautyNailHealthCard,
-  BeautyNailPolishCard, BeautyNailGelCard,
-  BeautyParaffinCard, BeautyHandMaskCard, BeautyFootSoakCard,
-  BeautyNailStrengthenCard, BeautyCallusCareCard,
-  BeautyHandsCareCard, BeautyFootCareCard, BeautyPerfumeCard,
-  BeautyLipsCareCard, BeautyJewelryCard,
+  PageContainer,
+  PageTitle,
+  BeautyNailArtCard,
+  BeautyNailShapeCard,
+  BeautyNailHealthCard,
+  BeautyNailPolishCard,
+  BeautyNailGelCard,
+  BeautyParaffinCard,
+  BeautyHandMaskCard,
+  BeautyFootSoakCard,
+  BeautyNailStrengthenCard,
+  BeautyCallusCareCard,
+  BeautyHandsCareCard,
+  BeautyFootCareCard,
+  BeautyPerfumeCard,
+  BeautyLipsCareCard,
+  BeautyJewelryCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 

@@ -1,1 +1,40 @@
-'use client';import { cn } from '@galaxy/shared';export function BeautyDarkCirclesCard({ className = '' }: { className?: string }): JSX.Element {return (<div className={cn('rounded-2xl border border-purple-100 bg-white p-4 dark:border-purple-900 dark:bg-gray-900', className)}><div className="flex items-center gap-2"><span className="text-xl">👁️</span><div><h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">الهالات السوداء</h4><p className="text-[10px] text-purple-500 dark:text-purple-400">أسبابها وعلاجها من جذورها</p></div></div><div className="mt-3 grid grid-cols-2 gap-1.5">{[{ emoji:'💤',label:'قلة النوم',tip:'السبب الأول — نامي 7-8 ساعات' },{ emoji:'🩸',label:'نقص الحديد',tip:'سبب شائع — فحص دم' },{ emoji:'🧬',label:'وراثة',tip:'ميل طبيعي — كريمات خاصة' },{ emoji:'💧',label:'جفاف',tip:'البشرة الرقيقة تحت العين' }].map((t,i)=>(<div key={i} className="rounded-lg bg-purple-50 px-2.5 py-2 dark:bg-purple-950"><span className="text-sm">{t.emoji}</span><p className="mt-0.5 text-[10px] font-bold text-purple-800 dark:text-purple-200">{t.label}</p><p className="text-[9px] text-purple-600 dark:text-purple-400">{t.tip}</p></div>))}</div></div>);}
+'use client';
+import { cn } from '@galaxy/shared';
+export function BeautyDarkCirclesCard({ className = '' }: { className?: string }): JSX.Element {
+  return (
+    <div
+      className={cn(
+        'rounded-2xl border border-purple-100 bg-white p-4 dark:border-purple-900 dark:bg-gray-900',
+        className,
+      )}
+    >
+      <div className="flex items-center gap-2">
+        <span className="text-xl">👁️</span>
+        <div>
+          <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">
+            الهالات السوداء
+          </h4>
+          <p className="text-[10px] text-purple-500 dark:text-purple-400">
+            أسبابها وعلاجها من جذورها
+          </p>
+        </div>
+      </div>
+      <div className="mt-3 grid grid-cols-2 gap-1.5">
+        {[
+          { emoji: '💤', label: 'قلة النوم', tip: 'السبب الأول — نامي 7-8 ساعات' },
+          { emoji: '🩸', label: 'نقص الحديد', tip: 'سبب شائع — فحص دم' },
+          { emoji: '🧬', label: 'وراثة', tip: 'ميل طبيعي — كريمات خاصة' },
+          { emoji: '💧', label: 'جفاف', tip: 'البشرة الرقيقة تحت العين' },
+        ].map((t, i) => (
+          <div key={i} className="rounded-lg bg-purple-50 px-2.5 py-2 dark:bg-purple-950">
+            <span className="text-sm">{t.emoji}</span>
+            <p className="mt-0.5 text-[10px] font-bold text-purple-800 dark:text-purple-200">
+              {t.label}
+            </p>
+            <p className="text-[9px] text-purple-600 dark:text-purple-400">{t.tip}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

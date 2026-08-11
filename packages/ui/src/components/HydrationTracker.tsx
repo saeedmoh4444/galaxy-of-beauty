@@ -44,11 +44,11 @@ export function HydrationTracker({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true">💧</span>
+          <span className="text-xl" aria-hidden="true">
+            💧
+          </span>
           <div>
-            <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">
-              متعقب الماء
-            </h4>
+            <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">متعقب الماء</h4>
             <p className="text-[10px] text-sky-500 dark:text-sky-400">
               {current}/{goal} أكواب
             </p>

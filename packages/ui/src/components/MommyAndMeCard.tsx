@@ -87,13 +87,11 @@ export function MommyAndMeCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">👩‍👧</span>
-        <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">
-          ماما وأنا
-        </h4>
-        <p className="text-[10px] text-pink-500 dark:text-pink-400">
-          وقت خاص بين الأم وابنتها
-        </p>
+        <span className="text-3xl" aria-hidden="true">
+          👩‍👧
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">ماما وأنا</h4>
+        <p className="text-[10px] text-pink-500 dark:text-pink-400">وقت خاص بين الأم وابنتها</p>
       </div>
 
       {/* Participants */}
@@ -102,13 +100,13 @@ export function MommyAndMeCard({
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-200 to-rose-200 text-lg dark:from-pink-800 dark:to-rose-800">
             👩
           </div>
-          <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
-            {mom}
-          </p>
+          <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">{mom}</p>
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">ماما</p>
         </div>
 
-        <span className="text-pink-400 text-lg" aria-hidden="true">💕</span>
+        <span className="text-pink-400 text-lg" aria-hidden="true">
+          💕
+        </span>
 
         <div className="text-center">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-purple-200 to-violet-200 text-lg dark:from-purple-800 dark:to-violet-800">
@@ -124,25 +122,25 @@ export function MommyAndMeCard({
       {/* Experience card */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true">{exp.emoji}</span>
+          <span className="text-xl" aria-hidden="true">
+            {exp.emoji}
+          </span>
           <div>
-            <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-              {exp.title}
-            </p>
-            <p className="text-[10px] text-text-secondary dark:text-gray-300">
-              {exp.description}
-            </p>
+            <p className="text-xs font-bold text-text-primary dark:text-gray-100">{exp.title}</p>
+            <p className="text-[10px] text-text-secondary dark:text-gray-300">{exp.description}</p>
           </div>
         </div>
 
         {/* Age range badge */}
         <div className="mt-1.5 flex items-center gap-1.5">
-          <span className={cn(
-            'rounded-full px-2 py-0.5 text-[9px] font-medium',
-            isAgeAppropriate
-              ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
-              : 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
-          )}>
+          <span
+            className={cn(
+              'rounded-full px-2 py-0.5 text-[9px] font-medium',
+              isAgeAppropriate
+                ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                : 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
+            )}
+          >
             {exp.ageMin}-{exp.ageMax} سنة
           </span>
           {!isAgeAppropriate && (
@@ -169,15 +167,11 @@ export function MommyAndMeCard({
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">المدة</p>
-          <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-            {duration}
-          </p>
+          <p className="text-xs font-bold text-text-primary dark:text-gray-100">{duration}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">السعر للشخصين</p>
-          <p className="text-xs font-bold text-pink-700 dark:text-pink-400">
-            {totalPrice} ر.س
-          </p>
+          <p className="text-xs font-bold text-pink-700 dark:text-pink-400">{totalPrice} ر.س</p>
         </div>
       </div>
 

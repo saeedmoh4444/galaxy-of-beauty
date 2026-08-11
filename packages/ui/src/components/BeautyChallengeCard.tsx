@@ -62,7 +62,9 @@ export function BeautyChallengeCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">📅</span>
+        <span className="text-3xl" aria-hidden="true">
+          📅
+        </span>
         <h4 className="mt-1 text-sm font-bold text-emerald-700 dark:text-emerald-300">
           تحدي 30 يوم
         </h4>
@@ -92,11 +94,11 @@ export function BeautyChallengeCard({
       {/* Today's task */}
       {todayTask && (
         <div className="mt-3 rounded-xl bg-gradient-to-r from-emerald-50 to-green-50 p-4 text-center dark:from-emerald-950 dark:to-green-950">
-          <p className="text-[10px] text-emerald-600 dark:text-emerald-400">
-            🌟 مهمة اليوم
-          </p>
+          <p className="text-[10px] text-emerald-600 dark:text-emerald-400">🌟 مهمة اليوم</p>
           <div className="mt-1 flex items-center justify-center gap-2">
-            <span className="text-2xl" aria-hidden="true">{todayTask.emoji}</span>
+            <span className="text-2xl" aria-hidden="true">
+              {todayTask.emoji}
+            </span>
             <p className="text-sm font-bold text-emerald-800 dark:text-emerald-200">
               {todayTask.task}
             </p>
@@ -131,9 +133,7 @@ export function BeautyChallengeCard({
               >
                 {isCompleted ? '✅' : d.emoji}
               </div>
-              <p className="mt-0.5 text-[8px] text-text-tertiary dark:text-gray-500">
-                يوم {d.day}
-              </p>
+              <p className="mt-0.5 text-[8px] text-text-tertiary dark:text-gray-500">يوم {d.day}</p>
             </div>
           );
         })}

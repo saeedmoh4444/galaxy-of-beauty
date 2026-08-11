@@ -9,6 +9,10 @@ export const allergenCheckerRouter = router({
   saveProfile: customerProcedure
     .input(z.object({ allergens: z.array(z.string()) }))
     .mutation(async ({ ctx, input }) => {
-      return prisma.allergenProfile.upsert({ where: { userId: ctx.user.id }, create: { userId: ctx.user.id, allergens: input.allergens }, update: { allergens: input.allergens } });
+      return prisma.allergenProfile.upsert({
+        where: { userId: ctx.user.id },
+        create: { userId: ctx.user.id, allergens: input.allergens },
+        update: { allergens: input.allergens },
+      });
     }),
 });

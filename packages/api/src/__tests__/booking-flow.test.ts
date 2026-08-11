@@ -135,15 +135,20 @@ describe('Booking — Status Transitions', () => {
     expect(list.bookings).toBeInstanceOf(Array);
     // Verify statuses are valid
     for (const b of list.bookings) {
-      expect(['REQUESTED','ACCEPTED','IN_PROGRESS','COMPLETED','CANCELLED','REJECTED']).toContain(b.status);
+      expect([
+        'REQUESTED',
+        'ACCEPTED',
+        'IN_PROGRESS',
+        'COMPLETED',
+        'CANCELLED',
+        'REJECTED',
+      ]).toContain(b.status);
     }
   });
 
   it('should not allow customer to access technician-only endpoints', async () => {
     const caller = await authCaller(CUSTOMER);
-    await expect(
-      caller.bookings.transition({ id: 1, action: 'accept' }),
-    ).rejects.toThrow();
+    await expect(caller.bookings.transition({ id: 1, action: 'accept' })).rejects.toThrow();
   });
 });
 

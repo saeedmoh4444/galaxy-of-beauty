@@ -83,36 +83,68 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <Link href="/" className="flex items-center gap-2">
-                <img src="/logo.png" alt="جالكسي بيوتي" className="h-10 w-10 rounded-lg object-cover" />
+                <img
+                  src="/logo.png"
+                  alt="جالكسي بيوتي"
+                  className="h-10 w-10 rounded-lg object-cover"
+                />
                 <span className="text-lg font-bold text-brand-600">جالكسي بيوتي</span>
               </Link>
-              <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">منصتكِ للجمال والعناية — احجزي خدمات التجميل المنزلية بكل سهولة</p>
+              <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
+                منصتكِ للجمال والعناية — احجزي خدمات التجميل المنزلية بكل سهولة
+              </p>
             </div>
             <div>
               <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">تصفحي</h4>
               <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
-                <Link href="/services" className="block hover:text-brand-600">الخدمات</Link>
-                <Link href="/technicians" className="block hover:text-brand-600">الفنيات</Link>
-                <Link href="/marketplace" className="block hover:text-brand-600">المتجر</Link>
-                <Link href="/blog" className="block hover:text-brand-600">المدونة</Link>
+                <Link href="/services" className="block hover:text-brand-600">
+                  الخدمات
+                </Link>
+                <Link href="/technicians" className="block hover:text-brand-600">
+                  الفنيات
+                </Link>
+                <Link href="/marketplace" className="block hover:text-brand-600">
+                  المتجر
+                </Link>
+                <Link href="/blog" className="block hover:text-brand-600">
+                  المدونة
+                </Link>
               </div>
             </div>
             <div>
               <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">المساعدة</h4>
               <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
-                <Link href="/ai-chat" className="block hover:text-brand-600">تحدثي مع ليلى</Link>
-                <Link href="/bookings/create" className="block hover:text-brand-600">احجزي الآن</Link>
-                <Link href="/subscription-boxes" className="block hover:text-brand-600">الصناديق الشهرية</Link>
-                <Link href="/services/surprise-me" className="block hover:text-brand-600">🎲 فاجئيني</Link>
+                <Link href="/ai-chat" className="block hover:text-brand-600">
+                  تحدثي مع ليلى
+                </Link>
+                <Link href="/bookings/create" className="block hover:text-brand-600">
+                  احجزي الآن
+                </Link>
+                <Link href="/subscription-boxes" className="block hover:text-brand-600">
+                  الصناديق الشهرية
+                </Link>
+                <Link href="/services/surprise-me" className="block hover:text-brand-600">
+                  🎲 فاجئيني
+                </Link>
               </div>
             </div>
             <div>
-              <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">روابط سريعة</h4>
+              <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">
+                روابط سريعة
+              </h4>
               <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
-                <Link href="/login" className="block hover:text-brand-600">تسجيل الدخول</Link>
-                <Link href="/register" className="block hover:text-brand-600">إنشاء حساب</Link>
-                <Link href="/dashboard" className="block hover:text-brand-600">لوحة التحكم</Link>
-                <Link href="/gift-cards" className="block hover:text-brand-600">بطاقات الهدية</Link>
+                <Link href="/login" className="block hover:text-brand-600">
+                  تسجيل الدخول
+                </Link>
+                <Link href="/register" className="block hover:text-brand-600">
+                  إنشاء حساب
+                </Link>
+                <Link href="/dashboard" className="block hover:text-brand-600">
+                  لوحة التحكم
+                </Link>
+                <Link href="/gift-cards" className="block hover:text-brand-600">
+                  بطاقات الهدية
+                </Link>
               </div>
             </div>
           </div>

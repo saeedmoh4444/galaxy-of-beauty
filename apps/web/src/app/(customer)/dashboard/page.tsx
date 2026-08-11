@@ -4,10 +4,24 @@
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import {
-  Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency,
-  StatCard, PageContainer, Icon, DashboardSkeleton, CardListSkeleton,
-  DailyBeautyTipCard, KindnessPointsBadge, SisterhoodWall, SelfCareReminder,
-  BeautyBudgetCard, BeautyCircleCard, BeautySavingsGoal,
+  Card,
+  CardSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  formatCurrency,
+  StatCard,
+  PageContainer,
+  Icon,
+  DashboardSkeleton,
+  CardListSkeleton,
+  DailyBeautyTipCard,
+  KindnessPointsBadge,
+  SisterhoodWall,
+  SelfCareReminder,
+  BeautyBudgetCard,
+  BeautyCircleCard,
+  BeautySavingsGoal,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { RebookReminder } from '@/components/RebookReminder';
@@ -31,7 +45,10 @@ export default function CustomerDashboardPage(): JSX.Element {
   const circles = (api as any).beautyCircles?.list?.useQuery?.({ limit: 3 }) as any;
   const savingsGoals = (api as any).savingsGoals?.list?.useQuery?.() as any;
   // Budget services under 100 SAR
-  const budgetServices = (api as any).services?.list?.useQuery?.({ limit: 5, maxPrice: 100 }) as any;
+  const budgetServices = (api as any).services?.list?.useQuery?.({
+    limit: 5,
+    maxPrice: 100,
+  }) as any;
 
   const streakInfo = insights.data?.streakInfo as Record<string, any> | undefined;
 
@@ -56,11 +73,7 @@ export default function CustomerDashboardPage(): JSX.Element {
           <ErrorAlert message="فشل تحميل الإحصائيات" onRetry={() => insights.refetch()} />
         ) : (
           <div className="grid gap-4 md:grid-cols-4">
-            <StatCard
-              label="الحجوزات"
-              value={insights.data?.bookingCount ?? 0}
-              icon="📅"
-            />
+            <StatCard label="الحجوزات" value={insights.data?.bookingCount ?? 0} icon="📅" />
             <StatCard
               label="الإنفاق"
               value={formatCurrency(Number(insights.data?.totalSpent ?? 0))}
@@ -128,27 +141,33 @@ export default function CustomerDashboardPage(): JSX.Element {
               <EmptyState title="لا توجد حجوزات" description="ابدئي رحلتكِ مع أول حجز" />
             ) : (
               <div className="space-y-2">
-                {(bookings.data.bookings as unknown as Record<string, unknown>[]).slice(0, 3).map((b: Record<string, unknown>) => (
-                  <Card key={b.id as number} padding="sm" hover>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-semibold text-sm text-text-primary">{b.bookingCode as string}</p>
-                        <p className="text-xs text-text-secondary">
-                          {new Date(b.startAt as string).toLocaleDateString('ar-SA')}
-                        </p>
+                {(bookings.data.bookings as unknown as Record<string, unknown>[])
+                  .slice(0, 3)
+                  .map((b: Record<string, unknown>) => (
+                    <Card key={b.id as number} padding="sm" hover>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-semibold text-sm text-text-primary">
+                            {b.bookingCode as string}
+                          </p>
+                          <p className="text-xs text-text-secondary">
+                            {new Date(b.startAt as string).toLocaleDateString('ar-SA')}
+                          </p>
+                        </div>
+                        <span
+                          className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                            b.status === 'COMPLETED'
+                              ? 'bg-success-subtle text-success'
+                              : b.status === 'CANCELLED'
+                                ? 'bg-danger-subtle text-danger'
+                                : 'bg-info-subtle text-info'
+                          }`}
+                        >
+                          {b.status as string}
+                        </span>
                       </div>
-                      <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                        b.status === 'COMPLETED'
-                          ? 'bg-success-subtle text-success'
-                          : b.status === 'CANCELLED'
-                            ? 'bg-danger-subtle text-danger'
-                            : 'bg-info-subtle text-info'
-                      }`}>
-                        {b.status as string}
-                      </span>
-                    </div>
-                  </Card>
-                ))}
+                    </Card>
+                  ))}
               </div>
             )}
           </div>
@@ -164,20 +183,25 @@ export default function CustomerDashboardPage(): JSX.Element {
                   </Link>
                 </div>
                 <div className="flex gap-2 overflow-x-auto pb-2">
-                  {(pins.data as Array<Record<string, any>>).slice(0, 3).map((p: Record<string, any>) => (
-                    <div
-                      key={p.id}
-                      className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-surface-muted dark:bg-gray-800"
-                    >
-                      {p.imageUrl ? (
-                        <img src={p.imageUrl} alt="" className="h-full w-full object-cover" />
-                      ) : (
-                        <div className="flex h-full items-center justify-center text-2xl" aria-hidden="true">
-                          ✨
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                  {(pins.data as Array<Record<string, any>>)
+                    .slice(0, 3)
+                    .map((p: Record<string, any>) => (
+                      <div
+                        key={p.id}
+                        className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-surface-muted dark:bg-gray-800"
+                      >
+                        {p.imageUrl ? (
+                          <img src={p.imageUrl} alt="" className="h-full w-full object-cover" />
+                        ) : (
+                          <div
+                            className="flex h-full items-center justify-center text-2xl"
+                            aria-hidden="true"
+                          >
+                            ✨
+                          </div>
+                        )}
+                      </div>
+                    ))}
                 </div>
               </div>
             )}
@@ -190,22 +214,27 @@ export default function CustomerDashboardPage(): JSX.Element {
                   </Link>
                 </div>
                 {registries.data.slice(0, 2).map((r: Record<string, any>) => {
-                  const pct = r.targetAmount > 0
-                    ? Math.min(100, (Number(r.raisedAmount) / Number(r.targetAmount)) * 100)
-                    : 0;
+                  const pct =
+                    r.targetAmount > 0
+                      ? Math.min(100, (Number(r.raisedAmount) / Number(r.targetAmount)) * 100)
+                      : 0;
                   return (
                     <Card key={r.id} padding="sm" className="mb-2">
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="font-semibold text-sm text-text-primary">{r.title}</p>
                           <p className="text-xs text-text-secondary">
-                            {formatCurrency(Number(r.raisedAmount))} / {formatCurrency(Number(r.targetAmount))}
+                            {formatCurrency(Number(r.raisedAmount))} /{' '}
+                            {formatCurrency(Number(r.targetAmount))}
                           </p>
                         </div>
                         <span className="text-xs font-bold text-brand-600">{pct.toFixed(0)}%</span>
                       </div>
                       <div className="mt-1 h-1.5 rounded-full bg-surface-muted dark:bg-gray-700">
-                        <div className="h-1.5 rounded-full bg-brand-500" style={{ width: `${pct}%` }} />
+                        <div
+                          className="h-1.5 rounded-full bg-brand-500"
+                          style={{ width: `${pct}%` }}
+                        />
                       </div>
                     </Card>
                   );
@@ -220,12 +249,14 @@ export default function CustomerDashboardPage(): JSX.Element {
           <SelfCareReminder />
           {budget?.data && (
             <BeautyBudgetCard
-              services={(budgetServices?.data?.items as any[])?.slice(0, 4)?.map((s: any) => ({
-                name: (s.titleJson as any)?.ar ?? '',
-                price: Number(s.basePrice),
-                category: 'facial' as const,
-                duration: `${s.durationMin} دقيقة`,
-              })) ?? []}
+              services={
+                (budgetServices?.data?.items as any[])?.slice(0, 4)?.map((s: any) => ({
+                  name: (s.titleJson as any)?.ar ?? '',
+                  price: Number(s.basePrice),
+                  category: 'facial' as const,
+                  duration: `${s.durationMin} دقيقة`,
+                })) ?? []
+              }
             />
           )}
           <DailyBeautyTipCard />

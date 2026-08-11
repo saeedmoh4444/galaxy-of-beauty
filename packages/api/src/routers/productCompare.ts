@@ -7,13 +7,15 @@ const db = prisma as any;
 
 export const productCompareRouter = router({
   list: publicProcedure.query(() =>
-    db.compareProduct.findMany({ where: { isActive: true }, orderBy: { createdAt: 'desc' } })
+    db.compareProduct.findMany({ where: { isActive: true }, orderBy: { createdAt: 'desc' } }),
   ),
 
   compare: publicProcedure
     .input(z.object({ ids: z.array(z.number()).min(2).max(4) }))
     .query(async ({ input }) => {
-      const products = await db.compareProduct.findMany({ where: { id: { in: input.ids }, isActive: true } });
+      const products = await db.compareProduct.findMany({
+        where: { id: { in: input.ids }, isActive: true },
+      });
       return { products, dimensions: ['hydration', 'absorption', 'value', 'gentle'] };
     }),
 });

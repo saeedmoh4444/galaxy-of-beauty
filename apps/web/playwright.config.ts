@@ -26,7 +26,9 @@ export default defineConfig({
         env: {
           JWT_ACCESS_SECRET: 'test-access-secret-at-least-32-chars-long!!',
           JWT_REFRESH_SECRET: 'test-refresh-secret-at-least-32-chars-long!!',
-          DATABASE_URL: process.env['DATABASE_URL'] || 'postgresql://gob_admin:gob_secure_pass_2024@localhost:5433/Galaxy_of_Beauty_db',
+          DATABASE_URL:
+            process.env['DATABASE_URL'] ||
+            'postgresql://gob_admin:gob_secure_pass_2024@localhost:5433/Galaxy_of_Beauty_db',
         },
         timeout: 30000,
       },

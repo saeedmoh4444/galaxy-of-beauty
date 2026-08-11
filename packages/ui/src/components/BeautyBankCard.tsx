@@ -40,10 +40,10 @@ export function BeautyBankCard({
     >
       {/* Heart icon */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">💝</span>
-        <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">
-          بنك الجمال
-        </h4>
+        <span className="text-3xl" aria-hidden="true">
+          💝
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">بنك الجمال</h4>
         <p className="text-[10px] text-pink-600 dark:text-pink-400">
           المجتمع يمكّن المجتمع — ادفعي الثمن لامرأة لا تستطيع
         </p>
@@ -55,9 +55,7 @@ export function BeautyBankCard({
           <span className="text-[10px] font-bold text-pink-700 dark:text-pink-300">
             🎁 خدمات ممولة هذا الشهر
           </span>
-          <span className="text-xs font-bold text-pink-700 dark:text-pink-300">
-            {pct}%
-          </span>
+          <span className="text-xs font-bold text-pink-700 dark:text-pink-300">{pct}%</span>
         </div>
 
         <div className="mt-1.5 h-3 overflow-hidden rounded-full bg-pink-100 dark:bg-pink-900">
@@ -68,12 +66,8 @@ export function BeautyBankCard({
         </div>
 
         <div className="mt-1 flex items-baseline justify-between">
-          <span className="text-lg font-bold text-pink-800 dark:text-pink-200">
-            {funded}
-          </span>
-          <span className="text-[10px] text-pink-500 dark:text-pink-400">
-            الهدف {goal}
-          </span>
+          <span className="text-lg font-bold text-pink-800 dark:text-pink-200">{funded}</span>
+          <span className="text-[10px] text-pink-500 dark:text-pink-400">الهدف {goal}</span>
         </div>
       </div>
 
@@ -93,22 +87,26 @@ export function BeautyBankCard({
 
       {/* Impact examples */}
       <div className="mt-2 space-y-1">
-        <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">
-          💖 كيف تساعدين
-        </p>
+        <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">💖 كيف تساعدين</p>
         <div className="grid grid-cols-3 gap-1.5 text-center text-[9px]">
           <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
-            <p className="text-lg" aria-hidden="true">💇</p>
+            <p className="text-lg" aria-hidden="true">
+              💇
+            </p>
             <p className="font-bold text-pink-800 dark:text-pink-200">50 ر.س</p>
             <p className="text-pink-500 dark:text-pink-400">قصة شعر</p>
           </div>
           <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
-            <p className="text-lg" aria-hidden="true">💄</p>
+            <p className="text-lg" aria-hidden="true">
+              💄
+            </p>
             <p className="font-bold text-pink-800 dark:text-pink-200">150 ر.س</p>
             <p className="text-pink-500 dark:text-pink-400">مكياج مقابلة</p>
           </div>
           <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
-            <p className="text-lg" aria-hidden="true">✨</p>
+            <p className="text-lg" aria-hidden="true">
+              ✨
+            </p>
             <p className="font-bold text-pink-800 dark:text-pink-200">300 ر.س</p>
             <p className="text-pink-500 dark:text-pink-400">يوم سبا</p>
           </div>

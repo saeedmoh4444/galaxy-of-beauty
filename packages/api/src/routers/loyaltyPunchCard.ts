@@ -6,7 +6,9 @@ const PUNCH_TOTAL = 10;
 
 export const loyaltyPunchCardRouter = router({
   myCard: customerProcedure.query(async ({ ctx }) => {
-    const completedBookings = await prisma.booking.count({ where: { customerId: ctx.user.id, status: 'COMPLETED' } });
+    const completedBookings = await prisma.booking.count({
+      where: { customerId: ctx.user.id, status: 'COMPLETED' },
+    });
     const stamps = completedBookings % PUNCH_TOTAL;
     const earnedFree = stamps === 0 && completedBookings > 0;
     return {
@@ -15,7 +17,9 @@ export const loyaltyPunchCardRouter = router({
       remaining: PUNCH_TOTAL - stamps,
       totalCompleted: completedBookings,
       earnedFree,
-      message: earnedFree ? '🎉 لكِ جلسة مجانية!' : `متبقي ${PUNCH_TOTAL - stamps} حجوزات للجلسة المجانية`,
+      message: earnedFree
+        ? '🎉 لكِ جلسة مجانية!'
+        : `متبقي ${PUNCH_TOTAL - stamps} حجوزات للجلسة المجانية`,
     };
   }),
 });

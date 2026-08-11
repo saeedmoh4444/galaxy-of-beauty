@@ -2,10 +2,7 @@
 
 import { api } from '@/lib/trpc';
 import { useState } from 'react';
-import {
-  PageContainer, PageTitle,
-  Card, Button,
-} from '@galaxy/ui';
+import { PageContainer, PageTitle, Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CorporateWellnessPage(): JSX.Element {
@@ -21,7 +18,12 @@ export default function CorporateWellnessPage(): JSX.Element {
   const handleEnquire = async () => {
     if (!companyName || !contactName || !email) return;
     try {
-      await (api as any).corporateWellness.enquire.mutate({ companyName, contactName, email, planId });
+      await (api as any).corporateWellness.enquire.mutate({
+        companyName,
+        contactName,
+        email,
+        planId,
+      });
       setSubmitted(true);
       setShowForm(false);
     } catch {}
@@ -40,7 +42,9 @@ export default function CorporateWellnessPage(): JSX.Element {
             {submitted && (
               <div className="rounded-2xl bg-emerald-50 p-6 text-center dark:bg-emerald-950">
                 <span className="text-4xl">✅</span>
-                <p className="mt-3 font-bold text-emerald-700 dark:text-emerald-300">تم استلام طلبكِ وسنتواصل معكِ</p>
+                <p className="mt-3 font-bold text-emerald-700 dark:text-emerald-300">
+                  تم استلام طلبكِ وسنتواصل معكِ
+                </p>
               </div>
             )}
 
@@ -54,12 +58,26 @@ export default function CorporateWellnessPage(): JSX.Element {
                 >
                   <span className="text-4xl shrink-0">{p.emoji}</span>
                   <div className="flex-1">
-                    <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{p.nameAr}</h4>
-                    <p className="mt-1 text-lg font-extrabold text-rose-600 dark:text-rose-400">{(p.price as number)?.toLocaleString()} ر.س <span className="text-xs font-normal text-text-tertiary dark:text-gray-500">/ سنوياً</span></p>
-                    <p className="mt-1 text-xs text-text-tertiary dark:text-gray-500">👥 حتى {p.employees} موظفة</p>
+                    <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
+                      {p.nameAr}
+                    </h4>
+                    <p className="mt-1 text-lg font-extrabold text-rose-600 dark:text-rose-400">
+                      {(p.price as number)?.toLocaleString()} ر.س{' '}
+                      <span className="text-xs font-normal text-text-tertiary dark:text-gray-500">
+                        / سنوياً
+                      </span>
+                    </p>
+                    <p className="mt-1 text-xs text-text-tertiary dark:text-gray-500">
+                      👥 حتى {p.employees} موظفة
+                    </p>
                     <div className="mt-2 flex flex-wrap gap-1">
                       {(p.services as string[])?.map((svc: string, i: number) => (
-                        <span key={i} className="text-[11px] text-emerald-600 dark:text-emerald-400">✓ {svc}</span>
+                        <span
+                          key={i}
+                          className="text-[11px] text-emerald-600 dark:text-emerald-400"
+                        >
+                          ✓ {svc}
+                        </span>
                       ))}
                     </div>
                   </div>
@@ -110,12 +128,18 @@ export default function CorporateWellnessPage(): JSX.Element {
           <div className="space-y-6">
             {enquiryItems.length > 0 && (
               <Card className="p-4">
-                <h3 className="text-sm font-bold text-text-primary dark:text-gray-100">📋 طلباتي السابقة</h3>
+                <h3 className="text-sm font-bold text-text-primary dark:text-gray-100">
+                  📋 طلباتي السابقة
+                </h3>
                 <div className="mt-3 space-y-2">
                   {enquiryItems.map((e: any, i: number) => (
                     <div key={i} className="rounded-lg bg-gray-50 p-3 dark:bg-gray-800">
-                      <p className="text-sm font-semibold text-text-primary dark:text-gray-100">{e.companyName}</p>
-                      <p className="text-xs text-text-tertiary dark:text-gray-500">{e.planId} · {new Date(e.createdAt).toLocaleDateString('ar-SA')}</p>
+                      <p className="text-sm font-semibold text-text-primary dark:text-gray-100">
+                        {e.companyName}
+                      </p>
+                      <p className="text-xs text-text-tertiary dark:text-gray-500">
+                        {e.planId} · {new Date(e.createdAt).toLocaleDateString('ar-SA')}
+                      </p>
                     </div>
                   ))}
                 </div>

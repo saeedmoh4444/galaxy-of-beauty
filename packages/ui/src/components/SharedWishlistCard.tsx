@@ -45,11 +45,11 @@ export function SharedWishlistCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true">💝</span>
+          <span className="text-xl" aria-hidden="true">
+            💝
+          </span>
           <div>
-            <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">
-              قائمة أمنياتي
-            </h4>
+            <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">قائمة أمنياتي</h4>
             <p className="text-[10px] text-pink-500 dark:text-pink-400">
               {items.length} أمنية · {gifted > 0 && `${gifted} مُهداة`}
             </p>
@@ -64,9 +64,7 @@ export function SharedWishlistCard({
             key={i}
             className={cn(
               'flex items-center gap-2 rounded-lg px-3 py-2',
-              item.isGifted
-                ? 'bg-emerald-50 dark:bg-emerald-950'
-                : 'bg-gray-50 dark:bg-gray-800',
+              item.isGifted ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-gray-50 dark:bg-gray-800',
             )}
           >
             <span className="text-sm shrink-0" aria-hidden="true">
@@ -75,10 +73,14 @@ export function SharedWishlistCard({
             <span className="flex-1 text-[10px] font-medium text-text-primary dark:text-gray-100">
               {item.name}
             </span>
-            <span className={cn(
-              'text-[10px] font-bold',
-              item.isGifted ? 'text-emerald-600 dark:text-emerald-400' : 'text-pink-600 dark:text-pink-400',
-            )}>
+            <span
+              className={cn(
+                'text-[10px] font-bold',
+                item.isGifted
+                  ? 'text-emerald-600 dark:text-emerald-400'
+                  : 'text-pink-600 dark:text-pink-400',
+              )}
+            >
               {item.isGifted ? '🎁' : `${item.price} ر.س`}
             </span>
           </div>
@@ -87,19 +89,13 @@ export function SharedWishlistCard({
 
       {/* Total */}
       <div className="mt-2 flex items-center justify-between rounded-lg bg-pink-50 px-3 py-2 dark:bg-pink-950">
-        <span className="text-[10px] font-bold text-pink-700 dark:text-pink-300">
-          💰 المجموع
-        </span>
-        <span className="text-xs font-bold text-pink-800 dark:text-pink-200">
-          {total} ر.س
-        </span>
+        <span className="text-[10px] font-bold text-pink-700 dark:text-pink-300">💰 المجموع</span>
+        <span className="text-xs font-bold text-pink-800 dark:text-pink-200">{total} ر.س</span>
       </div>
 
       {/* Shared with */}
       <div className="mt-2">
-        <span className="text-[10px] text-text-tertiary dark:text-gray-500">
-          👯‍♀️ مشاركة مع
-        </span>
+        <span className="text-[10px] text-text-tertiary dark:text-gray-500">👯‍♀️ مشاركة مع</span>
         <div className="mt-1 flex flex-wrap gap-1">
           {sharedWith.map((name) => (
             <span

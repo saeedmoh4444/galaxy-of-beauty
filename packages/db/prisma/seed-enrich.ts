@@ -48,14 +48,50 @@ function randomDate(daysAgo: number, hour?: number): Date {
 
 const PASSWORD_HASH = '$2b$12$WLl1knNaSSoIuae5Pjcd9.5IlMOPSEb8w5dd/22Kyxmkw5Sei2Wvi'; // Admin@123456
 
-const CITIES = ['الرياض', 'جدة', 'الدمام', 'الخبر', 'المدينة المنورة', 'الطائف', 'أبها', 'تبوك', 'بريدة', 'حائل'];
+const CITIES = [
+  'الرياض',
+  'جدة',
+  'الدمام',
+  'الخبر',
+  'المدينة المنورة',
+  'الطائف',
+  'أبها',
+  'تبوك',
+  'بريدة',
+  'حائل',
+];
 
 const CUSTOMER_NAMES = [
-  'نورة العمري', 'سارة الحربي', 'مها القحطاني', 'ريم المطيري', 'هند الشمري', 'لطيفة العتيبي',
-  'عبير الزهراني', 'منال الغامدي', 'دلال السبيعي', 'نوف الرشيد', 'أمل الخالدي', 'غادة الدوسري',
-  'شهد السالم', 'رغد العنزي', 'جواهر المالكي', 'بسمة الفيصل', 'أروى الشهري', 'دانه الجهني',
-  'هيا البلوي', 'نورة السديري', 'ملاك العسيري', 'لين القحطاني', 'سلمى المطيري', 'ديما الشمري',
-  'نوف العتيبي', 'رزان الحربي', 'أسيل الزهراني', 'جود الغامدي', 'تالا السبيعي', 'لمى الرشيد',
+  'نورة العمري',
+  'سارة الحربي',
+  'مها القحطاني',
+  'ريم المطيري',
+  'هند الشمري',
+  'لطيفة العتيبي',
+  'عبير الزهراني',
+  'منال الغامدي',
+  'دلال السبيعي',
+  'نوف الرشيد',
+  'أمل الخالدي',
+  'غادة الدوسري',
+  'شهد السالم',
+  'رغد العنزي',
+  'جواهر المالكي',
+  'بسمة الفيصل',
+  'أروى الشهري',
+  'دانه الجهني',
+  'هيا البلوي',
+  'نورة السديري',
+  'ملاك العسيري',
+  'لين القحطاني',
+  'سلمى المطيري',
+  'ديما الشمري',
+  'نوف العتيبي',
+  'رزان الحربي',
+  'أسيل الزهراني',
+  'جود الغامدي',
+  'تالا السبيعي',
+  'لمى الرشيد',
 ];
 
 const TECH_NAMES = [
@@ -101,13 +137,15 @@ async function main() {
   const allServices = await db.service.findMany({ include: { variants: true } });
   const allCategories = await db.category.findMany();
 
-  console.log(`   Found: ${existingCustomers.length} customers, ${existingTechs.length} techs, ${allServices.length} services`);
+  console.log(
+    `   Found: ${existingCustomers.length} customers, ${existingTechs.length} techs, ${allServices.length} services`,
+  );
 
   // ═══════════════════════════════════════════════════════════════
   // 1. ADD 24 MORE CUSTOMERS
   // ═══════════════════════════════════════════════════════════════
   const remainingNames = CUSTOMER_NAMES.filter(
-    n => !existingCustomers.some((c: any) => c.name === n),
+    (n) => !existingCustomers.some((c: any) => c.name === n),
   );
   const newCustomerIds: number[] = [];
 
@@ -139,8 +177,26 @@ async function main() {
   // ═══════════════════════════════════════════════════════════════
   // 1b. CREATE ADDRESSES for all customers (required for bookings)
   // ═══════════════════════════════════════════════════════════════
-  const AREAS = ['الملز', 'الروضة', 'النسيم', 'الشفا', 'العليا', 'الحمراء', 'البحر', 'النخيل', 'الورود', 'المروج'];
-  const STREETS = ['شارع التحلية', 'طريق الملك فهد', 'شارع الأمير سلطان', 'طريق الملك عبدالله', 'شارع التخصصي', 'شارع العليا العام'];
+  const AREAS = [
+    'الملز',
+    'الروضة',
+    'النسيم',
+    'الشفا',
+    'العليا',
+    'الحمراء',
+    'البحر',
+    'النخيل',
+    'الورود',
+    'المروج',
+  ];
+  const STREETS = [
+    'شارع التحلية',
+    'طريق الملك فهد',
+    'شارع الأمير سلطان',
+    'طريق الملك عبدالله',
+    'شارع التخصصي',
+    'شارع العليا العام',
+  ];
 
   for (const cust of existingCustomers) {
     const hasAddress = await db.address.findFirst({ where: { userId: cust.id } });
@@ -161,7 +217,9 @@ async function main() {
           isDefault: true,
         },
       });
-    } catch { /* skip */ }
+    } catch {
+      /* skip */
+    }
   }
   const addressCount = await db.address.count();
   console.log(`✅ Addresses created (total: ${addressCount})`);
@@ -170,7 +228,7 @@ async function main() {
   // 2. ADD 9 MORE TECHNICIANS (target: 12 total, 3 per city)
   // ═══════════════════════════════════════════════════════════════
   const remainingTechs = TECH_NAMES.filter(
-    t => !existingTechs.some((et: any) => et.user.name === t.name),
+    (t) => !existingTechs.some((et: any) => et.user.name === t.name),
   );
   const newTechRecords: any[] = [];
 
@@ -202,7 +260,10 @@ async function main() {
         completedBookings: randomInt(5, 200),
         kycStatus: Math.random() > 0.2 ? 'VERIFIED' : 'SUBMITTED',
         hourlyRate: randomInt(50, 200),
-        bioJson: { ar: `خبيرة ${td.speciality} مع ${randomInt(2, 10)} سنوات خبرة`, en: `${td.speciality} expert` },
+        bioJson: {
+          ar: `خبيرة ${td.speciality} مع ${randomInt(2, 10)} سنوات خبرة`,
+          en: `${td.speciality} expert`,
+        },
         bufferMinutes: 15,
         isEcoFriendly: Math.random() > 0.6,
       },
@@ -221,7 +282,9 @@ async function main() {
             isActive: true,
           },
         });
-      } catch { /* duplicate, skip */ }
+      } catch {
+        /* duplicate, skip */
+      }
     }
     newTechRecords.push({ ...tech, user: u });
   }
@@ -248,10 +311,18 @@ async function main() {
         const end = new Date(start.getTime() + 60 * 60000);
         try {
           await db.availabilitySlot.create({
-            data: { technicianId: tech.id, startAt: start, endAt: end, isAvailable: true, isBooked: false },
+            data: {
+              technicianId: tech.id,
+              startAt: start,
+              endAt: end,
+              isAvailable: true,
+              isBooked: false,
+            },
           });
           newSlotCount++;
-        } catch { /* skip collisions */ }
+        } catch {
+          /* skip collisions */
+        }
       }
     }
   }
@@ -282,9 +353,8 @@ async function main() {
         const customer = pick(existingCustomers);
         const tech = pick(allTechs);
         const service = pick(allServices);
-        const variant = service.variants?.length > 0 && Math.random() > 0.6
-          ? pick(service.variants)
-          : null;
+        const variant =
+          service.variants?.length > 0 && Math.random() > 0.6 ? pick(service.variants) : null;
 
         // Date/time with peak-hour bias
         let daysAgo = randomInt(0, bucket.daysAgo);
@@ -362,7 +432,9 @@ async function main() {
         },
       });
       reviewCount++;
-    } catch { /* duplicate booking review, skip */ }
+    } catch {
+      /* duplicate booking review, skip */
+    }
   }
   console.log(`✅ ${reviewCount} reviews`);
 
@@ -416,9 +488,12 @@ async function main() {
       if (existing) continue;
 
       const tier = pick(TIERS);
-      const lifetimePoints = tier === 'PLATINUM' ? randomInt(2000, 5000)
-        : tier === 'GOLD' ? randomInt(500, 1999)
-        : randomInt(0, 499);
+      const lifetimePoints =
+        tier === 'PLATINUM'
+          ? randomInt(2000, 5000)
+          : tier === 'GOLD'
+            ? randomInt(500, 1999)
+            : randomInt(0, 499);
 
       await db.loyaltyAccount.create({
         data: {
@@ -429,7 +504,9 @@ async function main() {
         },
       });
       loyaltyCount++;
-    } catch { /* already exists */ }
+    } catch {
+      /* already exists */
+    }
   }
   console.log(`✅ ${loyaltyCount} loyalty accounts (total now ~${loyaltyCount + 1})`);
 
@@ -454,7 +531,14 @@ async function main() {
           userId: customer.id,
           type: tmpl.type,
           titleJson: { ar: tmpl.titleAr, en: tmpl.titleAr },
-          bodyJson: { ar: tmpl.bodyAr.replace('{tech}', pick(TECH_NAMES).name).replace('{time}', `${randomInt(9, 21)}:00`).replace('{pct}', `${randomInt(10, 50)}`).replace('{amount}', `${randomInt(10, 100)}`), en: '' },
+          bodyJson: {
+            ar: tmpl.bodyAr
+              .replace('{tech}', pick(TECH_NAMES).name)
+              .replace('{time}', `${randomInt(9, 21)}:00`)
+              .replace('{pct}', `${randomInt(10, 50)}`)
+              .replace('{amount}', `${randomInt(10, 100)}`),
+            en: '',
+          },
           isRead: Math.random() > 0.4,
           readAt: Math.random() > 0.4 ? randomDate(7) : null,
           sentVia: pick([['in_app'], ['email', 'in_app'], ['push', 'in_app']]),
@@ -462,7 +546,9 @@ async function main() {
         },
       });
       notifCount++;
-    } catch { /* skip */ }
+    } catch {
+      /* skip */
+    }
   }
   console.log(`✅ ${notifCount} notifications`);
 
@@ -487,7 +573,9 @@ async function main() {
         },
       });
       promoUsageCount++;
-    } catch { /* duplicate, skip */ }
+    } catch {
+      /* duplicate, skip */
+    }
   }
   console.log(`✅ ${promoUsageCount} promo code usages`);
 
@@ -511,7 +599,9 @@ async function main() {
         },
       });
       giftCardTxCount++;
-    } catch { /* skip */ }
+    } catch {
+      /* skip */
+    }
   }
   console.log(`✅ ${giftCardTxCount} gift card transactions`);
 
@@ -543,7 +633,9 @@ async function main() {
 }
 
 main()
-  .then(async () => { await prisma.$disconnect(); })
+  .then(async () => {
+    await prisma.$disconnect();
+  })
   .catch(async (e) => {
     console.error('Enrichment failed:', e);
     await prisma.$disconnect();

@@ -17,8 +17,17 @@ interface NPSSurveyProps {
 }
 
 const SCORE_LABELS: Record<number, string> = {
-  0: '😡', 1: '😤', 2: '😞', 3: '😕', 4: '😐',
-  5: '🤔', 6: '🙂', 7: '😊', 8: '😄', 9: '😍', 10: '🤩',
+  0: '😡',
+  1: '😤',
+  2: '😞',
+  3: '😕',
+  4: '😐',
+  5: '🤔',
+  6: '🙂',
+  7: '😊',
+  8: '😄',
+  9: '😍',
+  10: '🤩',
 };
 
 export function NPSSurvey({ onSubmit, onDismiss, className = '' }: NPSSurveyProps): JSX.Element {
@@ -26,10 +35,10 @@ export function NPSSurvey({ onSubmit, onDismiss, className = '' }: NPSSurveyProp
   const [feedback, setFeedback] = useState('');
 
   return (
-    <div className={`rounded-2xl border border-edge bg-white p-6 dark:border-gray-700 dark:bg-gray-900 ${className}`}>
-      <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
-        كيف كانت تجربتك؟
-      </h3>
+    <div
+      className={`rounded-2xl border border-edge bg-white p-6 dark:border-gray-700 dark:bg-gray-900 ${className}`}
+    >
+      <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">كيف كانت تجربتك؟</h3>
       <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
         ما مدى احتمالية أن توصي صديقاتك بجالكسي بيوتي؟
       </p>
@@ -53,7 +62,11 @@ export function NPSSurvey({ onSubmit, onDismiss, className = '' }: NPSSurveyProp
           <div className="text-center">
             <span className="text-4xl">{SCORE_LABELS[score]}</span>
             <p className="mt-1 text-sm font-semibold text-text-primary dark:text-gray-100">
-              {score >= 9 ? 'رائع! شكراً لكِ 🌟' : score >= 7 ? 'شكراً لتقييمكِ 😊' : 'نعتذر عن التجربة 😔'}
+              {score >= 9
+                ? 'رائع! شكراً لكِ 🌟'
+                : score >= 7
+                  ? 'شكراً لتقييمكِ 😊'
+                  : 'نعتذر عن التجربة 😔'}
             </p>
           </div>
           <textarea

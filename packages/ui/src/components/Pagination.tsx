@@ -6,7 +6,11 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-export function Pagination({ page, totalPages, onPageChange }: PaginationProps): JSX.Element | null {
+export function Pagination({
+  page,
+  totalPages,
+  onPageChange,
+}: PaginationProps): JSX.Element | null {
   if (totalPages <= 1) return null;
 
   const pages: (number | '...')[] = [];
@@ -30,7 +34,9 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps):
       </button>
       {pages.map((p, i) =>
         p === '...' ? (
-          <span key={`dots-${i}`} className="px-2 text-gray-400">…</span>
+          <span key={`dots-${i}`} className="px-2 text-gray-400">
+            …
+          </span>
         ) : (
           <button
             key={p}

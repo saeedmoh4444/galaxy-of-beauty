@@ -2,7 +2,16 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Input, Button, Pagination, PageContainer } from '@galaxy/ui';
+import {
+  Card,
+  CardSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Input,
+  Button,
+  Pagination,
+  PageContainer,
+} from '@galaxy/ui';
 
 const ACTION_OPTIONS = [
   { value: '', label: 'الكل' },
@@ -32,7 +41,10 @@ export default function AuditLogPage(): JSX.Element {
   };
 
   const { data, isLoading, isError, refetch } = (api as any).admin.auditLogs?.useQuery?.(input) ?? {
-    data: undefined, isLoading: false, isError: false, refetch: () => {},
+    data: undefined,
+    isLoading: false,
+    isError: false,
+    refetch: () => {},
   };
 
   const logs: Array<Record<string, unknown>> = data?.items ?? [];
@@ -54,11 +66,16 @@ export default function AuditLogPage(): JSX.Element {
               <label className="mb-1 block text-xs font-medium text-text-secondary">الإجراء</label>
               <select
                 value={actionFilter}
-                onChange={(e) => { setActionFilter(e.target.value); setPage(1); }}
+                onChange={(e) => {
+                  setActionFilter(e.target.value);
+                  setPage(1);
+                }}
                 className="w-full rounded-lg border border-edge bg-surface px-3 py-2 text-sm"
               >
                 {ACTION_OPTIONS.map((o) => (
-                  <option key={o.value} value={o.value}>{o.label}</option>
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
                 ))}
               </select>
             </div>
@@ -66,16 +83,31 @@ export default function AuditLogPage(): JSX.Element {
               label="نوع الهدف"
               placeholder="مثال: User, Booking"
               value={targetFilter}
-              onChange={(e) => { setTargetFilter(e.target.value); setPage(1); }}
+              onChange={(e) => {
+                setTargetFilter(e.target.value);
+                setPage(1);
+              }}
             />
             <Input
               label="رقم المشرف"
               placeholder="Admin ID"
               value={adminFilter}
-              onChange={(e) => { setAdminFilter(e.target.value); setPage(1); }}
+              onChange={(e) => {
+                setAdminFilter(e.target.value);
+                setPage(1);
+              }}
             />
             <div className="flex items-end">
-              <Button variant="outline" size="sm" onClick={() => { setActionFilter(''); setTargetFilter(''); setAdminFilter(''); setPage(1); }}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setActionFilter('');
+                  setTargetFilter('');
+                  setAdminFilter('');
+                  setPage(1);
+                }}
+              >
                 مسح الفلاتر
               </Button>
             </div>
@@ -109,17 +141,23 @@ export default function AuditLogPage(): JSX.Element {
                       <tr key={i} className="hover:bg-surface-muted transition-colors">
                         <td className="px-4 py-2.5 text-text-tertiary">{log.id as number}</td>
                         <td className="px-4 py-2.5">
-                          <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                            (log.action as string)?.startsWith('ERROR_')
-                              ? 'bg-red-100 text-red-700'
-                              : 'bg-blue-100 text-blue-700'
-                          }`}>
+                          <span
+                            className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                              (log.action as string)?.startsWith('ERROR_')
+                                ? 'bg-red-100 text-red-700'
+                                : 'bg-blue-100 text-blue-700'
+                            }`}
+                          >
                             {log.action as string}
                           </span>
                         </td>
-                        <td className="px-4 py-2.5 text-text-secondary">{log.targetType as string}</td>
+                        <td className="px-4 py-2.5 text-text-secondary">
+                          {log.targetType as string}
+                        </td>
                         <td className="px-4 py-2.5 font-mono text-xs">{log.targetId as string}</td>
-                        <td className="px-4 py-2.5 text-text-secondary">#{log.adminId as number}</td>
+                        <td className="px-4 py-2.5 text-text-secondary">
+                          #{log.adminId as number}
+                        </td>
                         <td className="px-4 py-2.5 text-xs text-text-tertiary" dir="ltr">
                           {new Date(log.createdAt as string).toLocaleString('ar-SA')}
                         </td>

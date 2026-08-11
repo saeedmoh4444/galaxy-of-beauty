@@ -2,7 +2,15 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal, formatCurrency } from '@galaxy/ui';
+import {
+  Card,
+  CardSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  Modal,
+  formatCurrency,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 
@@ -37,21 +45,45 @@ interface Group {
   }>;
 }
 
-const DEFAULT_STATUS = { label: 'غير معروف', color: 'bg-surface-muted text-text-primary dark:bg-gray-800 dark:text-gray-300' };
+const DEFAULT_STATUS = {
+  label: 'غير معروف',
+  color: 'bg-surface-muted text-text-primary dark:bg-gray-800 dark:text-gray-300',
+};
 const STATUS_MAP: Record<string, { label: string; color: string }> = {
-  PENDING: { label: 'قيد الانتظار', color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300' },
-  CONFIRMED: { label: 'مؤكد', color: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' },
-  IN_PROGRESS: { label: 'جاري', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' },
-  COMPLETED: { label: 'مكتمل', color: 'bg-surface-muted text-text-primary dark:bg-gray-800 dark:text-gray-300' },
+  PENDING: {
+    label: 'قيد الانتظار',
+    color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300',
+  },
+  CONFIRMED: {
+    label: 'مؤكد',
+    color: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
+  },
+  IN_PROGRESS: {
+    label: 'جاري',
+    color: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
+  },
+  COMPLETED: {
+    label: 'مكتمل',
+    color: 'bg-surface-muted text-text-primary dark:bg-gray-800 dark:text-gray-300',
+  },
   CANCELLED: { label: 'ملغي', color: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' },
 };
 
 const THEME_EMOJI: Record<string, string> = {
-  bridal: '👰', birthday: '🎂', girls_night: '🌙', family: '👨‍👩‍👧‍👦', other: '🎉',
+  bridal: '👰',
+  birthday: '🎂',
+  girls_night: '🌙',
+  family: '👨‍👩‍👧‍👦',
+  other: '🎉',
 };
 
 export default function GroupBookingsPage(): JSX.Element {
-  const { data: groups, isLoading, isError, refetch } = api.groupBookings.myGroups.useQuery() as {
+  const {
+    data: groups,
+    isLoading,
+    isError,
+    refetch,
+  } = api.groupBookings.myGroups.useQuery() as {
     data: Group[] | undefined;
     isLoading: boolean;
     isError: boolean;
@@ -80,7 +112,10 @@ export default function GroupBookingsPage(): JSX.Element {
     setFormName('');
     setFormTheme('other');
     setFormDiscount(10);
-    setMembers([{ name: '', serviceId: '', technicianId: '' }, { name: '', serviceId: '', technicianId: '' }]);
+    setMembers([
+      { name: '', serviceId: '', technicianId: '' },
+      { name: '', serviceId: '', technicianId: '' },
+    ]);
     setCreateError('');
   };
 
@@ -104,15 +139,21 @@ export default function GroupBookingsPage(): JSX.Element {
 
   const handleCreate = () => {
     setCreateError('');
-    if (!formName.trim()) { setCreateError('يرجى إدخال اسم المجموعة'); return; }
-    const invalidMember = members.find(m => !m.name.trim() || !m.serviceId);
-    if (invalidMember) { setCreateError('يرجى إدخال اسم وخدمة لكل عضوة'); return; }
+    if (!formName.trim()) {
+      setCreateError('يرجى إدخال اسم المجموعة');
+      return;
+    }
+    const invalidMember = members.find((m) => !m.name.trim() || !m.serviceId);
+    if (invalidMember) {
+      setCreateError('يرجى إدخال اسم وخدمة لكل عضوة');
+      return;
+    }
 
     createMut.mutate({
       name: formName.trim(),
       theme: formTheme as 'bridal' | 'birthday' | 'girls_night' | 'family' | 'other',
       discountPercent: formDiscount,
-      members: members.map(m => ({
+      members: members.map((m) => ({
         name: m.name.trim(),
         serviceId: parseInt(m.serviceId, 10),
         technicianId: m.technicianId ? parseInt(m.technicianId, 10) : undefined,
@@ -128,7 +169,9 @@ export default function GroupBookingsPage(): JSX.Element {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">👯‍♀️ حجوزات المجموعات</h1>
+            <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
+              👯‍♀️ حجوزات المجموعات
+            </h1>
             <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
               احجزي لكِ ولصديقاتكِ معاً — خصم يصل إلى ٣٠٪
             </p>
@@ -153,7 +196,11 @@ export default function GroupBookingsPage(): JSX.Element {
 
         {/* My Groups */}
         {isLoading ? (
-          <div className="space-y-4">{Array.from({ length: 3 }, (_, i) => <CardSkeleton key={i} />)}</div>
+          <div className="space-y-4">
+            {Array.from({ length: 3 }, (_, i) => (
+              <CardSkeleton key={i} />
+            ))}
+          </div>
         ) : isError ? (
           <ErrorAlert message="فشل تحميل حجوزات المجموعات" onRetry={() => refetch()} />
         ) : allGroups.length === 0 ? (
@@ -168,14 +215,21 @@ export default function GroupBookingsPage(): JSX.Element {
               const statusInfo = STATUS_MAP[group.status] ?? DEFAULT_STATUS;
               return (
                 <Link key={group.id} href={`/group-bookings/${group.id}`}>
-                  <Card padding="lg" className="cursor-pointer transition-all hover:shadow-md hover:border-brand-300 dark:hover:border-brand-700">
+                  <Card
+                    padding="lg"
+                    className="cursor-pointer transition-all hover:shadow-md hover:border-brand-300 dark:hover:border-brand-700"
+                  >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
                         <span className="text-4xl">{THEME_EMOJI[group.theme] ?? '🎉'}</span>
                         <div>
-                          <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">{group.name}</h3>
+                          <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
+                            {group.name}
+                          </h3>
                           <div className="mt-1 flex items-center gap-3">
-                            <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${statusInfo.color}`}>
+                            <span
+                              className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${statusInfo.color}`}
+                            >
                               {statusInfo.label}
                             </span>
                             <span className="text-xs text-text-secondary">
@@ -186,10 +240,16 @@ export default function GroupBookingsPage(): JSX.Element {
                       </div>
                       <div className="text-right">
                         {Number(group.totalAmount) > 0 && (
-                          <p className="text-lg font-bold text-brand-600">{formatCurrency(Number(group.totalAmount))}</p>
+                          <p className="text-lg font-bold text-brand-600">
+                            {formatCurrency(Number(group.totalAmount))}
+                          </p>
                         )}
                         <p className="text-xs text-text-tertiary mt-1">
-                          {new Date(group.createdAt).toLocaleDateString('ar-SA', { year: 'numeric', month: 'short', day: 'numeric' })}
+                          {new Date(group.createdAt).toLocaleDateString('ar-SA', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                          })}
                         </p>
                       </div>
                     </div>
@@ -201,11 +261,20 @@ export default function GroupBookingsPage(): JSX.Element {
         )}
 
         {/* Create Group Modal */}
-        <Modal open={showCreate} onClose={() => { setShowCreate(false); resetForm(); }} title="إنشاء مجموعة جديدة">
+        <Modal
+          open={showCreate}
+          onClose={() => {
+            setShowCreate(false);
+            resetForm();
+          }}
+          title="إنشاء مجموعة جديدة"
+        >
           <div className="space-y-4">
             {/* Group Name */}
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">اسم المجموعة</label>
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+                اسم المجموعة
+              </label>
               <input
                 type="text"
                 value={formName}
@@ -217,14 +286,18 @@ export default function GroupBookingsPage(): JSX.Element {
 
             {/* Theme */}
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">المناسبة</label>
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+                المناسبة
+              </label>
               <select
                 value={formTheme}
                 onChange={(e) => setFormTheme(e.target.value)}
                 className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
               >
                 {THEMES.map((t) => (
-                  <option key={t.value} value={t.value}>{t.label}</option>
+                  <option key={t.value} value={t.value}>
+                    {t.label}
+                  </option>
                 ))}
               </select>
             </div>
@@ -243,7 +316,10 @@ export default function GroupBookingsPage(): JSX.Element {
                 className="w-full accent-brand-600"
               />
               <div className="flex justify-between text-xs text-text-tertiary">
-                <span>0%</span><span>10%</span><span>20%</span><span>30%</span>
+                <span>0%</span>
+                <span>10%</span>
+                <span>20%</span>
+                <span>30%</span>
               </div>
             </div>
 
@@ -264,7 +340,10 @@ export default function GroupBookingsPage(): JSX.Element {
               </div>
               <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
                 {members.map((m, idx) => (
-                  <div key={idx} className="flex items-center gap-2 rounded-lg border border-gray-100 p-2 dark:border-gray-700">
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2 rounded-lg border border-gray-100 p-2 dark:border-gray-700"
+                  >
                     <span className="text-xs font-bold text-text-tertiary w-5">{idx + 1}</span>
                     <input
                       type="text"
@@ -303,7 +382,13 @@ export default function GroupBookingsPage(): JSX.Element {
 
             {/* Actions */}
             <div className="flex justify-end gap-3 pt-2">
-              <Button variant="ghost" onClick={() => { setShowCreate(false); resetForm(); }}>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setShowCreate(false);
+                  resetForm();
+                }}
+              >
                 إلغاء
               </Button>
               <Button onClick={handleCreate} loading={createMut.isPending}>

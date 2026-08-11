@@ -24,10 +24,7 @@ const KIT_ITEMS = [
   { emoji: '🎨', label: 'دليل الهوية البصرية', format: 'PDF' },
 ];
 
-export function PressKitCard({
-  onDownload,
-  className = '',
-}: PressKitCardProps): JSX.Element {
+export function PressKitCard({ onDownload, className = '' }: PressKitCardProps): JSX.Element {
   return (
     <div
       className={cn(
@@ -36,11 +33,11 @@ export function PressKitCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">📰</span>
+        <span className="text-xl" aria-hidden="true">
+          📰
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">
-            الملف الصحفي
-          </h4>
+          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">الملف الصحفي</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">
             كل ما يحتاجه الإعلام للكتابة عنا
           </p>
@@ -54,14 +51,12 @@ export function PressKitCard({
             key={item.label}
             className="flex items-start gap-2 rounded-lg bg-sky-50 px-2.5 py-2 dark:bg-sky-950"
           >
-            <span className="text-sm shrink-0" aria-hidden="true">{item.emoji}</span>
+            <span className="text-sm shrink-0" aria-hidden="true">
+              {item.emoji}
+            </span>
             <div>
-              <p className="text-[10px] font-bold text-sky-800 dark:text-sky-200">
-                {item.label}
-              </p>
-              <p className="text-[9px] text-sky-600 dark:text-sky-400">
-                {item.format}
-              </p>
+              <p className="text-[10px] font-bold text-sky-800 dark:text-sky-200">{item.label}</p>
+              <p className="text-[9px] text-sky-600 dark:text-sky-400">{item.format}</p>
             </div>
           </div>
         ))}

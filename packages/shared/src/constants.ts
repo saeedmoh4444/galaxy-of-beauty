@@ -181,9 +181,30 @@ export const VAT_RATE = 0.15;
 
 /** Loyalty tier thresholds and multipliers — single source of truth for API + UI. */
 export const LOYALTY_TIERS = {
-  SILVER:   { minPoints: 0,    pointMultiplier: 1,   nameAr: 'فضية',     nameEn: 'Silver',   emoji: '🥈', color: 'from-gray-300 to-gray-400' },
-  GOLD:     { minPoints: 500,  pointMultiplier: 1.5, nameAr: 'ذهبية',   nameEn: 'Gold',     emoji: '🥇', color: 'from-yellow-400 to-amber-500' },
-  PLATINUM: { minPoints: 2000, pointMultiplier: 2,   nameAr: 'بلاتينية', nameEn: 'Platinum', emoji: '💎', color: 'from-purple-400 to-indigo-500' },
+  SILVER: {
+    minPoints: 0,
+    pointMultiplier: 1,
+    nameAr: 'فضية',
+    nameEn: 'Silver',
+    emoji: '🥈',
+    color: 'from-gray-300 to-gray-400',
+  },
+  GOLD: {
+    minPoints: 500,
+    pointMultiplier: 1.5,
+    nameAr: 'ذهبية',
+    nameEn: 'Gold',
+    emoji: '🥇',
+    color: 'from-yellow-400 to-amber-500',
+  },
+  PLATINUM: {
+    minPoints: 2000,
+    pointMultiplier: 2,
+    nameAr: 'بلاتينية',
+    nameEn: 'Platinum',
+    emoji: '💎',
+    color: 'from-purple-400 to-indigo-500',
+  },
 } as const;
 
 /** Wallet minimum withdrawal balance (SAR). */
@@ -207,7 +228,7 @@ export const WARRANTY_CREDIT_RATE = 0.3; // 30% of booking value
 
 /** Box builder discount rates. */
 export const BOX_MONTHLY_DISCOUNT = 0.15; // 15% for monthly subscriptions
-export const BOX_REGULAR_DISCOUNT = 0.10; // 10% for one-time boxes
+export const BOX_REGULAR_DISCOUNT = 0.1; // 10% for one-time boxes
 
 /** BNPL (Buy Now Pay Later) limits. */
 export const BNPL_MIN_AMOUNT = 100;
@@ -221,9 +242,20 @@ export const MAX_DOC_SIZE = 10 * 1024 * 1024; // 10 MB
 
 /** Saudi cities (used across multiple routers). */
 export const SAUDI_CITIES = [
-  'الرياض', 'جدة', 'مكة المكرمة', 'المدينة المنورة', 'الدمام',
-  'الخبر', 'الظهران', 'الطائف', 'أبها', 'بريدة',
-  'تبوك', 'حائل', 'الجبيل', 'ينبع',
+  'الرياض',
+  'جدة',
+  'مكة المكرمة',
+  'المدينة المنورة',
+  'الدمام',
+  'الخبر',
+  'الظهران',
+  'الطائف',
+  'أبها',
+  'بريدة',
+  'تبوك',
+  'حائل',
+  'الجبيل',
+  'ينبع',
 ] as const;
 
 /** Default VAT number (ZATCA test — must be overridden in production). */

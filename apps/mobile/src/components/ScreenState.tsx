@@ -102,9 +102,7 @@ export function ScreenState({
       <View style={styles.centered}>
         <Text style={styles.emptyEmoji}>📭</Text>
         <Text style={styles.emptyTitle}>{emptyTitle}</Text>
-        {emptyDescription && (
-          <Text style={styles.emptyDescription}>{emptyDescription}</Text>
-        )}
+        {emptyDescription && <Text style={styles.emptyDescription}>{emptyDescription}</Text>}
         {emptyAction && (
           <TouchableOpacity onPress={emptyAction.onPress} style={styles.emptyBtn}>
             <Text style={styles.emptyBtnText}>{emptyAction.label}</Text>

@@ -46,14 +46,17 @@ export function BeautyComparisonCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true">⚖️</span>
-        <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">
-          {title}
-        </h4>
+        <span className="text-lg" aria-hidden="true">
+          ⚖️
+        </span>
+        <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
       </div>
 
       {/* Comparison columns */}
-      <div className="mt-3 grid gap-2" style={{ gridTemplateColumns: `repeat(${items.length}, 1fr)` }}>
+      <div
+        className="mt-3 grid gap-2"
+        style={{ gridTemplateColumns: `repeat(${items.length}, 1fr)` }}
+      >
         {items.map((item) => (
           <div
             key={item.name}
@@ -64,17 +67,17 @@ export function BeautyComparisonCard({
                 : 'bg-gray-50 dark:bg-gray-800',
             )}
           >
-            {item.emoji && <span className="text-2xl" aria-hidden="true">{item.emoji}</span>}
+            {item.emoji && (
+              <span className="text-2xl" aria-hidden="true">
+                {item.emoji}
+              </span>
+            )}
             <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
               {item.name}
             </p>
-            <p className="text-xs font-bold text-blue-700 dark:text-blue-300">
-              {item.price} ر.س
-            </p>
+            <p className="text-xs font-bold text-blue-700 dark:text-blue-300">{item.price} ر.س</p>
             {item.rating && (
-              <p className="text-[10px] text-amber-600 dark:text-amber-400">
-                ⭐ {item.rating}
-              </p>
+              <p className="text-[10px] text-amber-600 dark:text-amber-400">⭐ {item.rating}</p>
             )}
             {item.best && (
               <span className="mt-1 inline-block rounded-full bg-blue-100 px-2 py-0.5 text-[9px] font-bold text-blue-700 dark:bg-blue-800 dark:text-blue-200">

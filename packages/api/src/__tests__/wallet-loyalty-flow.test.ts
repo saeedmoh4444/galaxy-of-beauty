@@ -26,7 +26,9 @@ beforeAll(async () => {
   const anon = await anonCaller();
   const login = await anon.auth.login({ email: 'customer@test.com', password: 'Admin@123456' });
   customerCaller = await authCaller({
-    id: login.user.id, role: login.user.role, email: login.user.email,
+    id: login.user.id,
+    role: login.user.role,
+    email: login.user.email,
   });
 }, 15000);
 

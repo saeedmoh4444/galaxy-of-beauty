@@ -24,11 +24,7 @@ import {
   twoFactorVerifySchema,
   updateProfileSchema,
 } from '../validators/auth';
-import {
-  createBookingSchema,
-  createSlotSchema,
-  bookingStatusSchema,
-} from '../validators/booking';
+import { createBookingSchema, createSlotSchema, bookingStatusSchema } from '../validators/booking';
 import {
   paymentAuthorizeSchema,
   walletWithdrawSchema,
@@ -96,7 +92,9 @@ describe('Auth Contract — loginSchema', () => {
 
 describe('Auth Contract — changePasswordSchema', () => {
   it('requires currentPassword and newPassword', () => {
-    expect(accepts(changePasswordSchema, { currentPassword: 'old', newPassword: 'NewP@ss1' })).toBe(true);
+    expect(accepts(changePasswordSchema, { currentPassword: 'old', newPassword: 'NewP@ss1' })).toBe(
+      true,
+    );
     expect(accepts(changePasswordSchema, { newPassword: 'NewP@ss1' })).toBe(false);
     expect(accepts(changePasswordSchema, { currentPassword: 'old' })).toBe(false);
   });
@@ -174,7 +172,9 @@ describe('Catalog Contract — createServiceSchema', () => {
 
   it('accepts optional fields', () => {
     expect(accepts(createServiceSchema, { ...valid, descriptionAr: 'وصف' })).toBe(true);
-    expect(accepts(createServiceSchema, { ...valid, imageUrl: 'https://img.com/pic.jpg' })).toBe(true);
+    expect(accepts(createServiceSchema, { ...valid, imageUrl: 'https://img.com/pic.jpg' })).toBe(
+      true,
+    );
     expect(accepts(createServiceSchema, { ...valid, isPopular: true })).toBe(true);
   });
 });
@@ -187,9 +187,14 @@ describe('Catalog Contract — createVariantSchema', () => {
   });
 
   it('accepts optional priceDelta and durationDelta', () => {
-    expect(accepts(createVariantSchema, {
-      nameAr: 'طويل', nameEn: 'Long', priceDelta: 10, durationDelta: 15,
-    })).toBe(true);
+    expect(
+      accepts(createVariantSchema, {
+        nameAr: 'طويل',
+        nameEn: 'Long',
+        priceDelta: 10,
+        durationDelta: 15,
+      }),
+    ).toBe(true);
   });
 
   it('field names are priceDelta and durationDelta (NOT price, durationMin)', () => {
@@ -211,9 +216,15 @@ describe('Catalog Contract — serviceQuerySchema', () => {
   });
 
   it('accepts search, categoryId, sort, page, limit', () => {
-    expect(accepts(serviceQuerySchema, {
-      search: 'hair', categoryId: 1, sort: 'price_asc', page: 1, limit: 12,
-    })).toBe(true);
+    expect(
+      accepts(serviceQuerySchema, {
+        search: 'hair',
+        categoryId: 1,
+        sort: 'price_asc',
+        page: 1,
+        limit: 12,
+      }),
+    ).toBe(true);
   });
 
   it('rejects invalid sort value', () => {
@@ -242,9 +253,14 @@ describe('Booking Contract — createBookingSchema', () => {
   });
 
   it('accepts optional variantId, slotId, notes', () => {
-    expect(accepts(createBookingSchema, {
-      ...valid, variantId: 1, slotId: 5, notes: 'front door',
-    })).toBe(true);
+    expect(
+      accepts(createBookingSchema, {
+        ...valid,
+        variantId: 1,
+        slotId: 5,
+        notes: 'front door',
+      }),
+    ).toBe(true);
   });
 
   it('idempotencyKey must be UUID format', () => {
@@ -254,10 +270,12 @@ describe('Booking Contract — createBookingSchema', () => {
 
 describe('Booking Contract — createSlotSchema', () => {
   it('requires startAt and endAt', () => {
-    expect(accepts(createSlotSchema, {
-      startAt: '2026-08-01T09:00:00.000Z',
-      endAt: '2026-08-01T17:00:00.000Z',
-    })).toBe(true);
+    expect(
+      accepts(createSlotSchema, {
+        startAt: '2026-08-01T09:00:00.000Z',
+        endAt: '2026-08-01T17:00:00.000Z',
+      }),
+    ).toBe(true);
   });
 });
 
@@ -283,51 +301,71 @@ describe('Booking Contract — bookingStatusSchema', () => {
 
 describe('Payment Contract — paymentAuthorizeSchema', () => {
   it('requires method and idempotencyKey (UUID)', () => {
-    expect(accepts(paymentAuthorizeSchema, {
-      method: 'online',
-      idempotencyKey: crypto.randomUUID(),
-    })).toBe(true);
+    expect(
+      accepts(paymentAuthorizeSchema, {
+        method: 'online',
+        idempotencyKey: crypto.randomUUID(),
+      }),
+    ).toBe(true);
   });
 
   it('rejects invalid method', () => {
-    expect(accepts(paymentAuthorizeSchema, {
-      method: 'bitcoin',
-      idempotencyKey: crypto.randomUUID(),
-    })).toBe(false);
+    expect(
+      accepts(paymentAuthorizeSchema, {
+        method: 'bitcoin',
+        idempotencyKey: crypto.randomUUID(),
+      }),
+    ).toBe(false);
   });
 });
 
 describe('Payment Contract — walletWithdrawSchema', () => {
   it('requires amount (min 100) and idempotencyKey', () => {
-    expect(accepts(walletWithdrawSchema, {
-      amount: 200,
-      idempotencyKey: crypto.randomUUID(),
-    })).toBe(true);
+    expect(
+      accepts(walletWithdrawSchema, {
+        amount: 200,
+        idempotencyKey: crypto.randomUUID(),
+      }),
+    ).toBe(true);
   });
 
   it('rejects amount below 100', () => {
-    expect(accepts(walletWithdrawSchema, {
-      amount: 50,
-      idempotencyKey: crypto.randomUUID(),
-    })).toBe(false);
+    expect(
+      accepts(walletWithdrawSchema, {
+        amount: 50,
+        idempotencyKey: crypto.randomUUID(),
+      }),
+    ).toBe(false);
   });
 });
 
 describe('Payment Contract — createAddressSchema', () => {
   it('requires label, city, area, street', () => {
-    expect(accepts(createAddressSchema, {
-      label: 'Home',
-      city: 'Riyadh',
-      area: 'Al Olaya',
-      street: 'King Fahd Rd',
-    })).toBe(true);
+    expect(
+      accepts(createAddressSchema, {
+        label: 'Home',
+        city: 'Riyadh',
+        area: 'Al Olaya',
+        street: 'King Fahd Rd',
+      }),
+    ).toBe(true);
   });
 
   it('accepts optional building, floor, apartment, lat, lng, isDefault', () => {
-    expect(accepts(createAddressSchema, {
-      label: 'Home', city: 'Riyadh', area: 'Al Olaya', street: 'King Fahd Rd',
-      building: '12', floor: '3', apartment: '5B', lat: 24.7, lng: 46.7, isDefault: true,
-    })).toBe(true);
+    expect(
+      accepts(createAddressSchema, {
+        label: 'Home',
+        city: 'Riyadh',
+        area: 'Al Olaya',
+        street: 'King Fahd Rd',
+        building: '12',
+        floor: '3',
+        apartment: '5B',
+        lat: 24.7,
+        lng: 46.7,
+        isDefault: true,
+      }),
+    ).toBe(true);
   });
 });
 
@@ -338,12 +376,23 @@ describe('Field Name Safety — verify no common mismatches', () => {
     // These were the field names that caused bugs in the audit
     const schema = createServiceSchema;
     // createServiceSchema uses categoryId (a number), NOT categoryId as null
-    expect(accepts(schema, { categoryId: null, titleAr: 'x', titleEn: 'x', basePrice: 10, durationMin: 10 })).toBe(false);
+    expect(
+      accepts(schema, {
+        categoryId: null,
+        titleAr: 'x',
+        titleEn: 'x',
+        basePrice: 10,
+        durationMin: 10,
+      }),
+    ).toBe(false);
   });
 
   it('createVariantSchema uses priceDelta/durationDelta (not price/durationMin)', () => {
     const result = createVariantSchema.safeParse({
-      nameAr: 'x', nameEn: 'x', priceDelta: 10, durationDelta: 10,
+      nameAr: 'x',
+      nameEn: 'x',
+      priceDelta: 10,
+      durationDelta: 10,
     });
     expect(result.success).toBe(true);
   });

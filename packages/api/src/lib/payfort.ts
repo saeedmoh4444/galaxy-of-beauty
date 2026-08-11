@@ -47,10 +47,7 @@ function getBaseUrl(sandbox: boolean): string {
  * 2. Append the SHA phrase at the end
  * 3. SHA-256 hash the result
  */
-export function generateRequestSignature(
-  params: Record<string, string>,
-  phrase: string,
-): string {
+export function generateRequestSignature(params: Record<string, string>, phrase: string): string {
   const sorted = Object.keys(params)
     .filter((k) => k !== 'signature' && params[k] !== undefined && params[k] !== '')
     .sort();
@@ -70,10 +67,7 @@ export function verifyResponseSignature(
   receivedSignature: string,
 ): boolean {
   const calculated = generateRequestSignature(params, phrase);
-  return crypto.timingSafeEqual(
-    Buffer.from(calculated),
-    Buffer.from(receivedSignature),
-  );
+  return crypto.timingSafeEqual(Buffer.from(calculated), Buffer.from(receivedSignature));
 }
 
 // ── Authorization ──────────────────────────────────────────

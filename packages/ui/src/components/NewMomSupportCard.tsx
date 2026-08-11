@@ -34,7 +34,9 @@ export function NewMomSupportCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">👶</span>
+        <span className="text-3xl" aria-hidden="true">
+          👶
+        </span>
         <h4 className="mt-1 text-sm font-bold text-sky-800 dark:text-sky-200">
           {isNewborn ? 'أهلاً بالأم الجديدة' : 'عودة الأم'}
         </h4>
@@ -46,15 +48,14 @@ export function NewMomSupportCard({
       {/* Baby age */}
       <div className="mt-3 rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
         <p className="text-[10px] text-sky-700 dark:text-sky-300">
-          👶 عمر الطفل: {babyAge < 1 ? 'أقل من شهر' : `${babyAge} ${babyAge === 1 ? 'شهر' : 'أشهر'}`}
+          👶 عمر الطفل:{' '}
+          {babyAge < 1 ? 'أقل من شهر' : `${babyAge} ${babyAge === 1 ? 'شهر' : 'أشهر'}`}
         </p>
       </div>
 
       {/* What we offer */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-sky-800 dark:text-sky-200">
-          💙 خدمات مناسبة لكِ
-        </p>
+        <p className="text-[10px] font-bold text-sky-800 dark:text-sky-200">💙 خدمات مناسبة لكِ</p>
         <div className="mt-1.5 space-y-1 text-[10px] text-text-secondary dark:text-gray-300">
           <p>• خدمات سريعة (30-45 دقيقة)</p>
           <p>• ركن أطفال مع مراقبة</p>
@@ -68,7 +69,10 @@ export function NewMomSupportCard({
       {/* Encouragement */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
         <p className="text-[10px] text-sky-700 dark:text-sky-300">
-          💙 {isNewborn ? 'أنتِ تقومين بعمل رائع — دللي نفسكِ' : 'عودي إلى روتين جمالكِ — أنتِ تستحقين'}
+          💙{' '}
+          {isNewborn
+            ? 'أنتِ تقومين بعمل رائع — دللي نفسكِ'
+            : 'عودي إلى روتين جمالكِ — أنتِ تستحقين'}
         </p>
       </div>
 

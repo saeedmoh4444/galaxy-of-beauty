@@ -81,7 +81,11 @@ export function useAuth(options?: UseAuthOptions): UseAuthReturn {
           setTokens({ accessToken, refreshToken });
         }
         if (userJson) {
-          try { setUserState(JSON.parse(userJson)); } catch { /* ignore corrupt */ }
+          try {
+            setUserState(JSON.parse(userJson));
+          } catch {
+            /* ignore corrupt */
+          }
         }
       } finally {
         setIsLoading(false);

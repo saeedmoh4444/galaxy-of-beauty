@@ -40,9 +40,7 @@ export function BeautyVoiceAssistantCard({
         <h4 className="mt-2 text-sm font-bold text-violet-800 dark:text-violet-200">
           المساعد الصوتي
         </h4>
-        <p className="text-[10px] text-violet-500 dark:text-violet-400">
-          تحدثي — ونحن ننفذ
-        </p>
+        <p className="text-[10px] text-violet-500 dark:text-violet-400">تحدثي — ونحن ننفذ</p>
       </div>
 
       {/* Voice button */}
@@ -56,16 +54,16 @@ export function BeautyVoiceAssistantCard({
 
       {/* Example commands */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-violet-700 dark:text-violet-300">
-          💬 جربي قول
-        </p>
+        <p className="text-[10px] font-bold text-violet-700 dark:text-violet-300">💬 جربي قول</p>
         <div className="mt-1.5 space-y-1">
           {COMMANDS.map((cmd) => (
             <div
               key={cmd.text}
               className="flex items-center gap-2 rounded-lg bg-white/50 px-2.5 py-1.5 dark:bg-gray-800/50"
             >
-              <span className="text-xs" aria-hidden="true">{cmd.emoji}</span>
+              <span className="text-xs" aria-hidden="true">
+                {cmd.emoji}
+              </span>
               <span className="text-[10px] text-text-secondary dark:text-gray-300 italic">
                 &ldquo;{cmd.text}&rdquo;
               </span>

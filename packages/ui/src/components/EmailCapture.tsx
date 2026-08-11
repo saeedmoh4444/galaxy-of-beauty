@@ -18,12 +18,19 @@ interface EmailCaptureProps {
   className?: string;
 }
 
-export function EmailCapture({ discount = '١٠٪', onSubmit, onDismiss, className = '' }: EmailCaptureProps): JSX.Element {
+export function EmailCapture({
+  discount = '١٠٪',
+  onSubmit,
+  onDismiss,
+  className = '',
+}: EmailCaptureProps): JSX.Element {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <div className={`rounded-2xl bg-gradient-to-br from-brand-600 to-brand-800 p-6 text-center text-white ${className}`}>
+    <div
+      className={`rounded-2xl bg-gradient-to-br from-brand-600 to-brand-800 p-6 text-center text-white ${className}`}
+    >
       {submitted ? (
         <div>
           <span className="text-4xl">🎉</span>
@@ -47,13 +54,20 @@ export function EmailCapture({ discount = '١٠٪', onSubmit, onDismiss, classNa
             <Button
               variant="secondary"
               size="sm"
-              onClick={() => { if (email.includes('@')) { onSubmit(email); setSubmitted(true); } }}
+              onClick={() => {
+                if (email.includes('@')) {
+                  onSubmit(email);
+                  setSubmitted(true);
+                }
+              }}
             >
               تسجيل
             </Button>
           </div>
           {onDismiss ? (
-            <button onClick={onDismiss} className="mt-3 text-xs text-brand-300 hover:text-white">لاحقاً</button>
+            <button onClick={onDismiss} className="mt-3 text-xs text-brand-300 hover:text-white">
+              لاحقاً
+            </button>
           ) : null}
         </div>
       )}

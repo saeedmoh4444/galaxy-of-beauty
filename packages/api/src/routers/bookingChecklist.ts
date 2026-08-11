@@ -10,16 +10,24 @@ const CHECKLISTS: Record<string, Array<{ emoji: string; textAr: string; textEn: 
   ],
   hair: [
     { emoji: '📸', textAr: 'صوري تسريحات تعجبكِ', textEn: 'Bring hairstyle reference photos' },
-    { emoji: '🧴', textAr: 'لا تستخدمي منتجات تصفيف ثقيلة', textEn: 'Avoid heavy styling products before' },
+    {
+      emoji: '🧴',
+      textAr: 'لا تستخدمي منتجات تصفيف ثقيلة',
+      textEn: 'Avoid heavy styling products before',
+    },
     { emoji: '💆‍♀️', textAr: 'اغسلي شعركِ قبل ٢٤ ساعة', textEn: 'Wash hair 24 hours before' },
   ],
   skincare: [
     { emoji: '🧼', textAr: 'نظفي وجهكِ قبل الجلسة', textEn: 'Cleanse face before session' },
     { emoji: '☀️', textAr: 'تجنبي الشمس قبل ٤٨ ساعة', textEn: 'Avoid sun exposure 48h before' },
-    { emoji: '📋', textAr: 'أحضري قائمة منتجاتكِ الحالية', textEn: 'Bring list of current products' },
+    {
+      emoji: '📋',
+      textAr: 'أحضري قائمة منتجاتكِ الحالية',
+      textEn: 'Bring list of current products',
+    },
   ],
   nails: [
-    { emoji: '💅', textAr: 'لا تقصي أظافركِ قبل الموعد', textEn: 'Don\'t trim nails before' },
+    { emoji: '💅', textAr: 'لا تقصي أظافركِ قبل الموعد', textEn: "Don't trim nails before" },
     { emoji: '🧤', textAr: 'تجنبي الماء الساخن قبل الموعد', textEn: 'Avoid hot water before' },
   ],
   massage: [
@@ -29,12 +37,10 @@ const CHECKLISTS: Record<string, Array<{ emoji: string; textAr: string; textEn: 
 };
 
 export const bookingChecklistRouter = router({
-  get: customerProcedure
-    .input(z.object({ category: z.string() }))
-    .query(async ({ input }) => ({
-      category: input.category,
-      items: CHECKLISTS[input.category] ?? CHECKLISTS['makeup']!,
-    })),
+  get: customerProcedure.input(z.object({ category: z.string() })).query(async ({ input }) => ({
+    category: input.category,
+    items: CHECKLISTS[input.category] ?? CHECKLISTS['makeup']!,
+  })),
   categories: customerProcedure.query(() => [
     { key: 'makeup', nameAr: 'مكياج', emoji: '💄' },
     { key: 'hair', nameAr: 'شعر', emoji: '💇‍♀️' },

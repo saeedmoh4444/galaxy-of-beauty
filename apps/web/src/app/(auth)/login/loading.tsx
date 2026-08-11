@@ -1,7 +1,10 @@
 import type { JSX } from 'react';
 export default function LoginLoading(): JSX.Element {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-50 to-purple-50 px-4 dark:from-gray-950 dark:to-gray-900" dir="rtl">
+    <div
+      className="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-50 to-purple-50 px-4 dark:from-gray-950 dark:to-gray-900"
+      dir="rtl"
+    >
       <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-700 dark:bg-gray-900">
         <div className="space-y-6">
           <div className="space-y-2 text-center">

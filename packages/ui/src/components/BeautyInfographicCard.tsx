@@ -34,7 +34,12 @@ export function BeautyInfographicCard({
   source,
   className = '',
 }: BeautyInfographicCardProps): JSX.Element {
-  const colors = ['from-pink-400 to-rose-400', 'from-blue-400 to-sky-400', 'from-emerald-400 to-green-400', 'from-amber-400 to-orange-400'];
+  const colors = [
+    'from-pink-400 to-rose-400',
+    'from-blue-400 to-sky-400',
+    'from-emerald-400 to-green-400',
+    'from-amber-400 to-orange-400',
+  ];
 
   return (
     <div
@@ -44,14 +49,12 @@ export function BeautyInfographicCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">{emoji}</span>
+        <span className="text-xl" aria-hidden="true">
+          {emoji}
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">
-            {topic}
-          </h4>
-          <p className="text-[10px] text-indigo-500 dark:text-indigo-400">
-            معلومات بصرية سريعة
-          </p>
+          <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{topic}</h4>
+          <p className="text-[10px] text-indigo-500 dark:text-indigo-400">معلومات بصرية سريعة</p>
         </div>
       </div>
 
@@ -62,18 +65,18 @@ export function BeautyInfographicCard({
             key={stat.label}
             className="rounded-xl bg-indigo-50 p-3 text-center dark:bg-indigo-950"
           >
-            <p className={cn(
-              'text-2xl font-bold bg-gradient-to-r bg-clip-text text-transparent',
-              colors[i % colors.length],
-            )}>
+            <p
+              className={cn(
+                'text-2xl font-bold bg-gradient-to-r bg-clip-text text-transparent',
+                colors[i % colors.length],
+              )}
+            >
               {stat.value}
             </p>
             <p className="mt-0.5 text-[10px] font-bold text-indigo-800 dark:text-indigo-200">
               {stat.label}
             </p>
-            <p className="text-[9px] text-indigo-600 dark:text-indigo-400">
-              {stat.desc}
-            </p>
+            <p className="text-[9px] text-indigo-600 dark:text-indigo-400">{stat.desc}</p>
           </div>
         ))}
       </div>

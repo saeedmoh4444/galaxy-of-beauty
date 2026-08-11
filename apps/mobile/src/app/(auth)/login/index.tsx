@@ -1,5 +1,15 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/api';
 import { setSocketToken } from '@/hooks/useSocket';
@@ -62,70 +72,68 @@ export default function LoginScreen() {
       keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
     >
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-      <Text style={styles.title}>تسجيل الدخول</Text>
+        <Text style={styles.title}>تسجيل الدخول</Text>
 
-      {!twoFactorRequired ? (
-        <>
-          <TextInput
-            style={styles.input}
-            placeholder="البريد الإلكتروني"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="كلمة المرور"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-        </>
-      ) : (
-        <View style={styles.totpContainer}>
-          <Text style={styles.totpLabel}>
-            تم تفعيل المصادقة الثنائية. أدخل رمز التحقق من تطبيق المصادقة:
-          </Text>
-          <TextInput
-            style={[styles.input, styles.totpInput]}
-            placeholder="000000"
-            value={totpToken}
-            onChangeText={(t) => setTotpToken(t.replace(/[^0-9]/g, '').slice(0, 6))}
-            keyboardType="number-pad"
-            maxLength={6}
-            autoFocus
-          />
-          <TouchableOpacity onPress={handleCancel2FA}>
-            <Text style={styles.cancelLink}>← العودة لتسجيل الدخول</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {isAvailable && !twoFactorRequired && (
-        <TouchableOpacity onPress={handleBiometricLogin} style={styles.biometricBtn}>
-          <Text style={styles.biometricText}>🔐 دخول سريع</Text>
-        </TouchableOpacity>
-      )}
-      <TouchableOpacity
-        style={[styles.button, loading && styles.buttonDisabled]}
-        onPress={handleLogin}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator color="#fff" />
+        {!twoFactorRequired ? (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="البريد الإلكتروني"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="كلمة المرور"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
+          </>
         ) : (
-          <Text style={styles.buttonText}>
-            {twoFactorRequired ? 'تحقق' : 'دخول'}
-          </Text>
+          <View style={styles.totpContainer}>
+            <Text style={styles.totpLabel}>
+              تم تفعيل المصادقة الثنائية. أدخل رمز التحقق من تطبيق المصادقة:
+            </Text>
+            <TextInput
+              style={[styles.input, styles.totpInput]}
+              placeholder="000000"
+              value={totpToken}
+              onChangeText={(t) => setTotpToken(t.replace(/[^0-9]/g, '').slice(0, 6))}
+              keyboardType="number-pad"
+              maxLength={6}
+              autoFocus
+            />
+            <TouchableOpacity onPress={handleCancel2FA}>
+              <Text style={styles.cancelLink}>← العودة لتسجيل الدخول</Text>
+            </TouchableOpacity>
+          </View>
         )}
-      </TouchableOpacity>
 
-      {!twoFactorRequired && (
-        <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
-          <Text style={styles.link}>إنشاء حساب جديد</Text>
+        {isAvailable && !twoFactorRequired && (
+          <TouchableOpacity onPress={handleBiometricLogin} style={styles.biometricBtn}>
+            <Text style={styles.biometricText}>🔐 دخول سريع</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          style={[styles.button, loading && styles.buttonDisabled]}
+          onPress={handleLogin}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>{twoFactorRequired ? 'تحقق' : 'دخول'}</Text>
+          )}
         </TouchableOpacity>
-      )}
+
+        {!twoFactorRequired && (
+          <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
+            <Text style={styles.link}>إنشاء حساب جديد</Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -134,12 +142,34 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   scrollContent: { flexGrow: 1, justifyContent: 'center', padding: 24 },
-  title: { fontSize: 28, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 32 },
-  input: { borderWidth: 1, borderColor: '#d1d5db', borderRadius: 12, padding: 14, fontSize: 16, marginBottom: 16, backgroundColor: '#f9fafb' },
+  title: {
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#7c3aed',
+    textAlign: 'center',
+    marginBottom: 32,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    padding: 14,
+    fontSize: 16,
+    marginBottom: 16,
+    backgroundColor: '#f9fafb',
+  },
   button: { backgroundColor: '#7c3aed', borderRadius: 12, padding: 16, alignItems: 'center' },
   buttonDisabled: { opacity: 0.6 },
   buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
-  biometricBtn: { backgroundColor: '#f5f3ff', borderRadius: 12, padding: 14, alignItems: 'center', borderWidth: 1, borderColor: '#c4b5fd', marginBottom: 8 },
+  biometricBtn: {
+    backgroundColor: '#f5f3ff',
+    borderRadius: 12,
+    padding: 14,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#c4b5fd',
+    marginBottom: 8,
+  },
   biometricText: { color: '#7c3aed', fontSize: 14, fontWeight: '600' },
   link: { color: '#7c3aed', textAlign: 'center', marginTop: 16, fontSize: 14 },
   totpContainer: {

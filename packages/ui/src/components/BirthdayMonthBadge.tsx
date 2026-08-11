@@ -33,10 +33,10 @@ export function BirthdayMonthBadge({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">🎂</span>
-        <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">
-          شهر ميلادكِ
-        </h4>
+        <span className="text-3xl" aria-hidden="true">
+          🎂
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">شهر ميلادكِ</h4>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">
           {discount}% خصم طوال شهر {month}
         </p>
@@ -45,9 +45,7 @@ export function BirthdayMonthBadge({
       {/* Countdown */}
       {daysRemaining !== undefined && daysRemaining > 0 && (
         <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
-          <p className="text-3xl font-bold text-pink-700 dark:text-pink-300">
-            {daysRemaining}
-          </p>
+          <p className="text-3xl font-bold text-pink-700 dark:text-pink-300">{daysRemaining}</p>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">
             يوم متبقي للاستفادة من خصمكِ
           </p>

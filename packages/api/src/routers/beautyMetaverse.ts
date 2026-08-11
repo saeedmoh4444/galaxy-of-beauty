@@ -3,8 +3,22 @@ import { customerProcedure, publicProcedure, router } from '../trpc';
 
 const SALONS = [
   { id: 1, name: 'صالون نورة', technician: 'نورة العمري', emoji: '💄', visitors: 450, rating: 4.9 },
-  { id: 2, name: 'استوديو سارة', technician: 'سارة الحربي', emoji: '💇‍♀️', visitors: 320, rating: 4.8 },
-  { id: 3, name: 'عيادة د. ليلى', technician: 'د. ليلى القحطاني', emoji: '✨', visitors: 280, rating: 4.9 },
+  {
+    id: 2,
+    name: 'استوديو سارة',
+    technician: 'سارة الحربي',
+    emoji: '💇‍♀️',
+    visitors: 320,
+    rating: 4.8,
+  },
+  {
+    id: 3,
+    name: 'عيادة د. ليلى',
+    technician: 'د. ليلى القحطاني',
+    emoji: '✨',
+    visitors: 280,
+    rating: 4.9,
+  },
 ];
 
 const AVATARS = [

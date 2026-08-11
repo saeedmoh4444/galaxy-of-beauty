@@ -89,7 +89,10 @@ export const sharedMessages = {
   // Confirmations
   'confirm.delete': { ar: 'هل أنت متأكدة من الحذف؟', en: 'Are you sure you want to delete?' },
   'confirm.cancel': { ar: 'هل أنت متأكدة من الإلغاء؟', en: 'Are you sure you want to cancel?' },
-  'confirm.logout': { ar: 'هل أنت متأكدة من تسجيل الخروج؟', en: 'Are you sure you want to logout?' },
+  'confirm.logout': {
+    ar: 'هل أنت متأكدة من تسجيل الخروج؟',
+    en: 'Are you sure you want to logout?',
+  },
   'confirm.unsaved': { ar: 'لديك تغييرات غير محفوظة', en: 'You have unsaved changes' },
 
   // Status
@@ -116,11 +119,26 @@ export const sharedMessages = {
   'notif.promotion': { ar: 'عرض جديد', en: 'New Promotion' },
 
   // Errors (Phase 9: Delight Messages)
-  'error.network': { ar: 'عفواً! يبدو أن الإنترنت يأخذ استراحة. حاولي مرة أخرى؟ 🌐', en: 'Oops! Looks like the internet is taking a break. Try again?' },
-  'error.serverError': { ar: 'عذراً! شيء غير متوقع حدث. فريقنا التقني تم تنبيهه تلقائياً. جربي مرة أخرى؟ 💜', en: 'Sorry! Something unexpected happened. Our tech team has been alerted. Try again?' },
-  'error.validationError': { ar: 'بعض البيانات تحتاج تعديل بسيط. راجعي الحقول المحددة ♀️', en: 'Some fields need a quick fix. Check the highlighted fields.' },
-  'error.rateLimit': { ar: 'واو! أنتِ نشيطة جداً! انتظري لحظة قبل المحاولة مرة أخرى ⏳', en: 'Wow, you are fast! Wait a moment before trying again.' },
-  'error.unauthorized': { ar: 'هذه المنطقة للأعضاء فقط. سجلي الدخول للوصول إليها 🔐', en: 'This area is for members only. Log in to access it.' },
+  'error.network': {
+    ar: 'عفواً! يبدو أن الإنترنت يأخذ استراحة. حاولي مرة أخرى؟ 🌐',
+    en: 'Oops! Looks like the internet is taking a break. Try again?',
+  },
+  'error.serverError': {
+    ar: 'عذراً! شيء غير متوقع حدث. فريقنا التقني تم تنبيهه تلقائياً. جربي مرة أخرى؟ 💜',
+    en: 'Sorry! Something unexpected happened. Our tech team has been alerted. Try again?',
+  },
+  'error.validationError': {
+    ar: 'بعض البيانات تحتاج تعديل بسيط. راجعي الحقول المحددة ♀️',
+    en: 'Some fields need a quick fix. Check the highlighted fields.',
+  },
+  'error.rateLimit': {
+    ar: 'واو! أنتِ نشيطة جداً! انتظري لحظة قبل المحاولة مرة أخرى ⏳',
+    en: 'Wow, you are fast! Wait a moment before trying again.',
+  },
+  'error.unauthorized': {
+    ar: 'هذه المنطقة للأعضاء فقط. سجلي الدخول للوصول إليها 🔐',
+    en: 'This area is for members only. Log in to access it.',
+  },
 
   // Onboarding
   'onboarding.welcome': { ar: 'مرحباً بكِ في جالكسي بيوتي', en: 'Welcome to Galaxy of Beauty' },

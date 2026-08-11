@@ -10,7 +10,15 @@ import { cn } from '@galaxy/shared';
  *   <ComplimentaryAmenityBadge amenities={['hair_tie', 'bobby_pins', 'deodorant', 'phone_charger']} />
  */
 
-type Amenity = 'hair_tie' | 'bobby_pins' | 'deodorant' | 'phone_charger' | 'sanitary_pads' | 'perfume' | 'wet_wipes' | 'sewing_kit';
+type Amenity =
+  | 'hair_tie'
+  | 'bobby_pins'
+  | 'deodorant'
+  | 'phone_charger'
+  | 'sanitary_pads'
+  | 'perfume'
+  | 'wet_wipes'
+  | 'sewing_kit';
 
 interface AmenityDef {
   emoji: string;
@@ -51,7 +59,9 @@ export function ComplimentaryAmenityBadge({
     sewing_kit: 'عدة خياطة',
   };
 
-  const active = amenities.map((k) => AMENITIES.find((a) => a.label === map[k])).filter(Boolean) as AmenityDef[];
+  const active = amenities
+    .map((k) => AMENITIES.find((a) => a.label === map[k]))
+    .filter(Boolean) as AmenityDef[];
 
   return (
     <div
@@ -61,11 +71,11 @@ export function ComplimentaryAmenityBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">🎀</span>
+        <span className="text-xl" aria-hidden="true">
+          🎀
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">
-            كماليات مجانية
-          </h4>
+          <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">كماليات مجانية</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">
             كل ما تحتاجينه في غرفة التغيير — مجاناً
           </p>
@@ -79,14 +89,14 @@ export function ComplimentaryAmenityBadge({
             key={a.label}
             className="flex items-center gap-2 rounded-lg bg-pink-50 px-2.5 py-2 dark:bg-pink-950"
           >
-            <span className="text-sm shrink-0" aria-hidden="true">{a.emoji}</span>
+            <span className="text-sm shrink-0" aria-hidden="true">
+              {a.emoji}
+            </span>
             <div className="min-w-0">
               <p className="text-[10px] font-bold text-pink-800 dark:text-pink-200 truncate">
                 {a.label}
               </p>
-              <p className="text-[9px] text-pink-600 dark:text-pink-400 truncate">
-                {a.detail}
-              </p>
+              <p className="text-[9px] text-pink-600 dark:text-pink-400 truncate">{a.detail}</p>
             </div>
           </div>
         ))}

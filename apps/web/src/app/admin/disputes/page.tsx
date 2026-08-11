@@ -5,18 +5,30 @@ import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
 import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Modal } from '@galaxy/ui';
 
-const STATUS_TABS = ['OPEN', 'UNDER_REVIEW', 'RESOLVED_CUSTOMER', 'RESOLVED_TECHNICIAN', 'CLOSED'] as const;
+const STATUS_TABS = [
+  'OPEN',
+  'UNDER_REVIEW',
+  'RESOLVED_CUSTOMER',
+  'RESOLVED_TECHNICIAN',
+  'CLOSED',
+] as const;
 
 type DisputeItem = NonNullable<RouterOutput['disputes']['listAdmin']>['items'][number];
 
 const statusBadge = (status: string): { label: string; className: string } => {
   switch (status) {
-    case 'OPEN': return { label: 'مفتوح', className: 'bg-red-100 text-red-700' };
-    case 'UNDER_REVIEW': return { label: 'قيد المراجعة', className: 'bg-amber-100 text-amber-700' };
-    case 'RESOLVED_CUSTOMER': return { label: 'لصالح العميل', className: 'bg-green-100 text-green-700' };
-    case 'RESOLVED_TECHNICIAN': return { label: 'لصالح الفنية', className: 'bg-blue-100 text-blue-700' };
-    case 'CLOSED': return { label: 'مغلق', className: 'bg-surface-muted text-text-primary' };
-    default: return { label: status, className: 'bg-surface-muted text-text-primary' };
+    case 'OPEN':
+      return { label: 'مفتوح', className: 'bg-red-100 text-red-700' };
+    case 'UNDER_REVIEW':
+      return { label: 'قيد المراجعة', className: 'bg-amber-100 text-amber-700' };
+    case 'RESOLVED_CUSTOMER':
+      return { label: 'لصالح العميل', className: 'bg-green-100 text-green-700' };
+    case 'RESOLVED_TECHNICIAN':
+      return { label: 'لصالح الفنية', className: 'bg-blue-100 text-blue-700' };
+    case 'CLOSED':
+      return { label: 'مغلق', className: 'bg-surface-muted text-text-primary' };
+    default:
+      return { label: status, className: 'bg-surface-muted text-text-primary' };
   }
 };
 
@@ -27,16 +39,25 @@ export default function AdminDisputesPage(): JSX.Element {
   const [resolveStatus, setResolveStatus] = useState<string>('RESOLVED_CUSTOMER');
   const [resolutionText, setResolutionText] = useState('');
 
-  const { data, isLoading, isError, refetch } = api.disputes.listAdmin.useQuery({ page: 1, limit: 20 });
+  const { data, isLoading, isError, refetch } = api.disputes.listAdmin.useQuery({
+    page: 1,
+    limit: 20,
+  });
   const resolveMut = api.disputes.resolve.useMutation({
-    onSuccess: () => { refetch(); setResolveOpen(false); setSelected(null); setResolutionText(''); },
+    onSuccess: () => {
+      refetch();
+      setResolveOpen(false);
+      setSelected(null);
+      setResolutionText('');
+    },
   });
 
   const disputes = data?.items ?? [];
 
-  const filtered = statusTab === 'OPEN'
-    ? disputes.filter((d) => d.status === 'OPEN')
-    : disputes.filter((d) => d.status === statusTab);
+  const filtered =
+    statusTab === 'OPEN'
+      ? disputes.filter((d) => d.status === 'OPEN')
+      : disputes.filter((d) => d.status === statusTab);
 
   const handleResolve = () => {
     if (!selected) return;
@@ -69,10 +90,14 @@ export default function AdminDisputesPage(): JSX.Element {
         })}
       </div>
 
-      {isLoading ? <CardSkeleton />
-      : isError ? <ErrorAlert message="فشل تحميل النزاعات" onRetry={() => refetch()} />
-      : filtered.length === 0 ? (
-        <EmptyState title={`لا توجد نزاعات في حالة "${statusTab === 'OPEN' ? 'مفتوح' : statusTab === 'UNDER_REVIEW' ? 'قيد المراجعة' : statusTab === 'RESOLVED_CUSTOMER' ? 'لصالح العميل' : statusTab === 'RESOLVED_TECHNICIAN' ? 'لصالح الفنية' : 'مغلق'}"`} />
+      {isLoading ? (
+        <CardSkeleton />
+      ) : isError ? (
+        <ErrorAlert message="فشل تحميل النزاعات" onRetry={() => refetch()} />
+      ) : filtered.length === 0 ? (
+        <EmptyState
+          title={`لا توجد نزاعات في حالة "${statusTab === 'OPEN' ? 'مفتوح' : statusTab === 'UNDER_REVIEW' ? 'قيد المراجعة' : statusTab === 'RESOLVED_CUSTOMER' ? 'لصالح العميل' : statusTab === 'RESOLVED_TECHNICIAN' ? 'لصالح الفنية' : 'مغلق'}"`}
+        />
       ) : (
         <div className="space-y-2">
           {filtered.map((d: DisputeItem) => {
@@ -83,19 +108,30 @@ export default function AdminDisputesPage(): JSX.Element {
                   <div className="flex-1">
                     <div className="flex items-center gap-3">
                       <p className="font-semibold">{d.booking.bookingCode}</p>
-                      <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${badge.className}`}>{badge.label}</span>
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs font-medium ${badge.className}`}
+                      >
+                        {badge.label}
+                      </span>
                     </div>
                     <div className="mt-1 flex flex-wrap gap-3 text-sm text-text-secondary">
                       <span>العميل: {d.raiser?.name ?? '—'}</span>
                       <span>السبب: {d.reason ?? '—'}</span>
-                      <span>{d.createdAt ? new Date(d.createdAt).toLocaleDateString('ar-SA') : '—'}</span>
+                      <span>
+                        {d.createdAt ? new Date(d.createdAt).toLocaleDateString('ar-SA') : '—'}
+                      </span>
                     </div>
                   </div>
                   {d.status !== 'CLOSED' && (
                     <Button
                       size="sm"
                       variant="primary"
-                      onClick={() => { setSelected(d); setResolveStatus('RESOLVED_CUSTOMER'); setResolutionText(''); setResolveOpen(true); }}
+                      onClick={() => {
+                        setSelected(d);
+                        setResolveStatus('RESOLVED_CUSTOMER');
+                        setResolutionText('');
+                        setResolveOpen(true);
+                      }}
                     >
                       حل النزاع
                     </Button>
@@ -108,14 +144,28 @@ export default function AdminDisputesPage(): JSX.Element {
       )}
 
       {/* Resolve Modal */}
-      <Modal open={resolveOpen} onClose={() => { setResolveOpen(false); setSelected(null); setResolutionText(''); }} title="حل النزاع">
+      <Modal
+        open={resolveOpen}
+        onClose={() => {
+          setResolveOpen(false);
+          setSelected(null);
+          setResolutionText('');
+        }}
+        title="حل النزاع"
+      >
         {selected && (
           <div className="space-y-4">
-            <p className="text-sm"><strong>رمز الحجز:</strong> {selected.booking.bookingCode}</p>
-            <p className="text-sm"><strong>السبب:</strong> {selected.reason}</p>
+            <p className="text-sm">
+              <strong>رمز الحجز:</strong> {selected.booking.bookingCode}
+            </p>
+            <p className="text-sm">
+              <strong>السبب:</strong> {selected.reason}
+            </p>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">نتيجة النزاع</label>
+              <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+                نتيجة النزاع
+              </label>
               <select
                 className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 value={resolveStatus}
@@ -128,7 +178,9 @@ export default function AdminDisputesPage(): JSX.Element {
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">تفاصيل الحل</label>
+              <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+                تفاصيل الحل
+              </label>
               <textarea
                 className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 rows={4}
@@ -139,8 +191,18 @@ export default function AdminDisputesPage(): JSX.Element {
             </div>
 
             <div className="flex gap-2">
-              <Button variant="primary" onClick={handleResolve} loading={resolveMut.isPending}>تأكيد الحل</Button>
-              <Button variant="secondary" onClick={() => { setResolveOpen(false); setSelected(null); }}>إلغاء</Button>
+              <Button variant="primary" onClick={handleResolve} loading={resolveMut.isPending}>
+                تأكيد الحل
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setResolveOpen(false);
+                  setSelected(null);
+                }}
+              >
+                إلغاء
+              </Button>
             </div>
           </div>
         )}

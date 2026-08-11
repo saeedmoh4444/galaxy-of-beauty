@@ -35,9 +35,7 @@ export function BeautyMentorRequestCard({
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-purple-200 to-pink-200 text-3xl dark:from-purple-800 dark:to-pink-800">
           🤝
         </div>
-        <h4 className="mt-2 text-sm font-bold text-purple-800 dark:text-purple-200">
-          أخت كبيرة
-        </h4>
+        <h4 className="mt-2 text-sm font-bold text-purple-800 dark:text-purple-200">أخت كبيرة</h4>
         <p className="text-[10px] text-purple-500 dark:text-purple-400">
           خبيرة ترشدكِ في رحلتكِ الجمالية
         </p>
@@ -45,9 +43,7 @@ export function BeautyMentorRequestCard({
 
       {/* Interests */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-purple-700 dark:text-purple-300">
-          💜 اهتماماتكِ
-        </p>
+        <p className="text-[10px] font-bold text-purple-700 dark:text-purple-300">💜 اهتماماتكِ</p>
         <div className="mt-1.5 flex flex-wrap gap-1">
           {interests.map((interest) => (
             <span

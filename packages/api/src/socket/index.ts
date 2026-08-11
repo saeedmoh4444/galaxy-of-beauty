@@ -45,7 +45,7 @@ export function initializeSocket(httpServer: HttpServer): Server {
   io.use((socket, next) => {
     try {
       const token =
-        (socket.handshake.auth as Record<string, unknown>).token as string | undefined ||
+        ((socket.handshake.auth as Record<string, unknown>).token as string | undefined) ||
         (socket.handshake.query as Record<string, string>).token;
 
       if (!token) {
@@ -62,7 +62,8 @@ export function initializeSocket(httpServer: HttpServer): Server {
 
   // ── Connection handler ─────────────────────────────────
   io.on('connection', (socket) => {
-    const user = (socket as unknown as Record<string, unknown>).user as AuthenticatedSocket | undefined;
+    const user = (socket as unknown as Record<string, unknown>).user as
+      AuthenticatedSocket | undefined;
     if (!user) {
       socket.disconnect(true);
       return;

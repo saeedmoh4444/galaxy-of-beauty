@@ -58,10 +58,7 @@ export function isRedisAvailable(): boolean {
  *
  * @returns The current attempt count after incrementing
  */
-export async function incrementAttempts(
-  key: string,
-  windowSeconds: number,
-): Promise<number> {
+export async function incrementAttempts(key: string, windowSeconds: number): Promise<number> {
   const r = getRedis();
   if (!r) {
     // Redis unavailable — allow the request (fail open for availability)

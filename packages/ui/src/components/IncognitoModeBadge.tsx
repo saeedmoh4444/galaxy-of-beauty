@@ -51,8 +51,7 @@ export function IncognitoModeBadge({
             <p className="text-[10px] text-indigo-500 dark:text-indigo-400">
               {active
                 ? 'لا يتم حفظ سجل التصفح — أنتِ مخفية تماماً'
-                : 'تصفحي بدون حفظ السجل أو الاقتراحات'
-              }
+                : 'تصفحي بدون حفظ السجل أو الاقتراحات'}
             </p>
           </div>
         </div>
@@ -88,7 +87,9 @@ export function IncognitoModeBadge({
                 key={f.label}
                 className="flex items-center gap-1.5 rounded-lg bg-white/60 px-2.5 py-1.5 dark:bg-gray-800/60"
               >
-                <span className="text-xs" aria-hidden="true">{f.emoji}</span>
+                <span className="text-xs" aria-hidden="true">
+                  {f.emoji}
+                </span>
                 <span className="text-[10px] font-medium text-indigo-800 dark:text-indigo-200">
                   {f.label}
                 </span>
@@ -107,10 +108,11 @@ export function IncognitoModeBadge({
 
       {/* Privacy note */}
       <div className="mt-2 flex items-start gap-1.5 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
-        <span className="text-xs shrink-0" aria-hidden="true">🔒</span>
+        <span className="text-xs shrink-0" aria-hidden="true">
+          🔒
+        </span>
         <p className="text-[9px] text-text-tertiary dark:text-gray-500">
-          وضع التخفي يمنع حفظ سجل التصفح والبحث على جهازكِ. مزود الخدمة لا يزال يرى
-          النشاط للفوترة.
+          وضع التخفي يمنع حفظ سجل التصفح والبحث على جهازكِ. مزود الخدمة لا يزال يرى النشاط للفوترة.
         </p>
       </div>
     </div>

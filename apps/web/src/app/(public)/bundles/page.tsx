@@ -14,9 +14,9 @@ export default function BundlesPage(): JSX.Element {
   const [selected, setSelected] = useState<Set<number>>(new Set());
 
   const toggle = (id: number) => {
-    setSelected(prev => {
+    setSelected((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : (next.size < 5 && next.add(id));
+      next.has(id) ? next.delete(id) : next.size < 5 && next.add(id);
       return next;
     });
   };
@@ -32,8 +32,11 @@ export default function BundlesPage(): JSX.Element {
       </div>
 
       <div className="mb-6 flex justify-center gap-2">
-        {[2, 3, 4, 5].map(n => (
-          <div key={n} className={`rounded-full px-4 py-1.5 text-xs font-bold ${count >= n ? 'bg-green-100 text-green-700' : 'bg-surface-muted text-text-tertiary'}`}>
+        {[2, 3, 4, 5].map((n) => (
+          <div
+            key={n}
+            className={`rounded-full px-4 py-1.5 text-xs font-bold ${count >= n ? 'bg-green-100 text-green-700' : 'bg-surface-muted text-text-tertiary'}`}
+          >
             {n}+ خدمات = -{BUNDLE_DISCOUNTS[n]}%
           </div>
         ))}
@@ -41,29 +44,58 @@ export default function BundlesPage(): JSX.Element {
 
       {count > 0 && (
         <div className="mb-6 text-center">
-          <p className="text-lg"><span className="text-text-secondary">عدد الخدمات: </span><span className="font-bold">{count}</span> · <span className="text-text-secondary">الخصم: </span><span className="font-bold text-green-600">-{discount}%</span></p>
+          <p className="text-lg">
+            <span className="text-text-secondary">عدد الخدمات: </span>
+            <span className="font-bold">{count}</span> ·{' '}
+            <span className="text-text-secondary">الخصم: </span>
+            <span className="font-bold text-green-600">-{discount}%</span>
+          </p>
         </div>
       )}
 
-      {isLoading ? <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{Array.from({ length: 9 }, (_, i) => <CardSkeleton key={i} />)}</div> : (
+      {isLoading ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {services.flatMap((cat: Record<string, any>) => {
-            const children = (cat.children as Array<Record<string, any>>) || [];
-            return [...(cat.services ? [{ ...cat, _isCat: true }] : []), ...children.flatMap((child: Record<string, any>) => child.services || [])];
-          }).slice(0, 30).map((svc: Record<string, any>) => svc._isCat ? null : (
-            <button key={svc.id} onClick={() => toggle(svc.id)} className={`text-right rounded-2xl border-2 p-4 transition-all ${selected.has(svc.id) ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-edge hover:border-brand-300 dark:border-gray-700'}`}>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-semibold text-text-primary dark:text-gray-100">{ar(svc.titleJson)}</p>
-                  <p className="text-sm text-text-secondary">{svc.durationMin} دقيقة</p>
-                  <p className="mt-1 font-bold text-brand-600">{formatCurrency(Number(svc.basePrice))}</p>
-                </div>
-                <div className={`h-6 w-6 rounded-full border-2 flex items-center justify-center ${selected.has(svc.id) ? 'border-brand-600 bg-brand-600' : 'border-edge'}`}>
-                  {selected.has(svc.id) && <span className="text-white text-xs">✓</span>}
-                </div>
-              </div>
-            </button>
+          {Array.from({ length: 9 }, (_, i) => (
+            <CardSkeleton key={i} />
           ))}
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {services
+            .flatMap((cat: Record<string, any>) => {
+              const children = (cat.children as Array<Record<string, any>>) || [];
+              return [
+                ...(cat.services ? [{ ...cat, _isCat: true }] : []),
+                ...children.flatMap((child: Record<string, any>) => child.services || []),
+              ];
+            })
+            .slice(0, 30)
+            .map((svc: Record<string, any>) =>
+              svc._isCat ? null : (
+                <button
+                  key={svc.id}
+                  onClick={() => toggle(svc.id)}
+                  className={`text-right rounded-2xl border-2 p-4 transition-all ${selected.has(svc.id) ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-edge hover:border-brand-300 dark:border-gray-700'}`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-semibold text-text-primary dark:text-gray-100">
+                        {ar(svc.titleJson)}
+                      </p>
+                      <p className="text-sm text-text-secondary">{svc.durationMin} دقيقة</p>
+                      <p className="mt-1 font-bold text-brand-600">
+                        {formatCurrency(Number(svc.basePrice))}
+                      </p>
+                    </div>
+                    <div
+                      className={`h-6 w-6 rounded-full border-2 flex items-center justify-center ${selected.has(svc.id) ? 'border-brand-600 bg-brand-600' : 'border-edge'}`}
+                    >
+                      {selected.has(svc.id) && <span className="text-white text-xs">✓</span>}
+                    </div>
+                  </div>
+                </button>
+              ),
+            )}
         </div>
       )}
 

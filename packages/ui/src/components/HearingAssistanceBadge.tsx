@@ -10,7 +10,13 @@ import { cn } from '@galaxy/shared';
  *   <HearingAssistanceBadge features={['hearing_loop', 'written_communication', 'visual_alerts']} />
  */
 
-type HearingFeature = 'hearing_loop' | 'written_communication' | 'visual_alerts' | 'lip_reading' | 'sign_language' | 'quiet_environment';
+type HearingFeature =
+  | 'hearing_loop'
+  | 'written_communication'
+  | 'visual_alerts'
+  | 'lip_reading'
+  | 'sign_language'
+  | 'quiet_environment';
 
 interface FeatureDef {
   emoji: string;
@@ -46,11 +52,11 @@ export function HearingAssistanceBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">🦻</span>
+        <span className="text-xl" aria-hidden="true">
+          🦻
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">
-            مساعدة سمعية
-          </h4>
+          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">مساعدة سمعية</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">
             {features.length} وسائل دعم سمعي
           </p>
@@ -61,8 +67,13 @@ export function HearingAssistanceBadge({
         {features.map((f) => {
           const def = FEATURES[f];
           return (
-            <div key={f} className="flex items-start gap-2 rounded-lg bg-sky-50 px-2.5 py-2 dark:bg-sky-950">
-              <span className="text-sm shrink-0" aria-hidden="true">{def.emoji}</span>
+            <div
+              key={f}
+              className="flex items-start gap-2 rounded-lg bg-sky-50 px-2.5 py-2 dark:bg-sky-950"
+            >
+              <span className="text-sm shrink-0" aria-hidden="true">
+                {def.emoji}
+              </span>
               <div>
                 <p className="text-[10px] font-bold text-sky-800 dark:text-sky-200">{def.label}</p>
                 <p className="text-[9px] text-sky-600 dark:text-sky-400">{def.detail}</p>

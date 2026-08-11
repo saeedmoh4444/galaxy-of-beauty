@@ -1,37 +1,358 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 
-interface Tip { emoji: string; text: string; }
-interface Card { emoji: string; title: string; subtitle: string; color: string; bg: string; tips: Tip[]; }
+interface Tip {
+  emoji: string;
+  text: string;
+}
+interface Card {
+  emoji: string;
+  title: string;
+  subtitle: string;
+  color: string;
+  bg: string;
+  tips: Tip[];
+}
 
 const CARDS: Card[] = [
-  { emoji:'💡',title:'نصائح المكياج',subtitle:'لإطلالة تدوم طويلاً',color:'#e11d48',bg:'#fff1f2',tips:[{emoji:'🧴',text:'الترطيب أولاً — بشرة مرطبة = مكياج أجمل'},{emoji:'🖌️',text:'نظفي فرشك — أسبوعياً البكتيريا تتراكم'},{emoji:'📅',text:'تاريخ الصلاحية — جددِي مكياجك كل 6-12 شهر'},{emoji:'🌙',text:'أزيلي المكياج — لا تنامي أبداً بالمكياج'}]},
-  { emoji:'🌸',title:'تذكير الربيع',subtitle:'روتينكِ يتغير مع الفصول',color:'#db2777',bg:'#fdf2f8',tips:[{emoji:'🧹',text:'جددي روتين التقشير — بشرة أنعم'},{emoji:'🧴',text:'انتقلي لمرطب أخف — مع ارتفاع الحرارة'},{emoji:'☀️',text:'اهتمي بالحماية من الشمس مبكراً'},{emoji:'🎨',text:'جربي ألوان باستيل — منعشة وناعمة'}]},
-  { emoji:'☀️',title:'تذكير الصيف',subtitle:'حماية وانتعاش',color:'#ea580c',bg:'#fff7ed',tips:[{emoji:'☀️',text:'SPF 50+ يومياً — حتى في الظل'},{emoji:'💧',text:'مرطب جل خفيف — بدل الكريم الثقيل'},{emoji:'🚰',text:'اشربي ماء كثيراً — 8 أكواب يومياً'},{emoji:'🌿',text:'تجنبي المكياج الثقيل — خففي الطبقات'}]},
-  { emoji:'❄️',title:'تذكير الشتاء',subtitle:'ترطيب وحماية',color:'#0284c7',bg:'#f0f9ff',tips:[{emoji:'🧴',text:'مرطب غني — يحمي من الهواء الجاف'},{emoji:'💋',text:'بلسم شفاه — ضروري في الشتاء'},{emoji:'🧖',text:'قناع ترطيب أسبوعي — بشرة نضرة'},{emoji:'🧣',text:'احمي بشرتكِ من الهواء البارد'}]},
-  { emoji:'📈',title:'رائج الآن',subtitle:'أحدث صيحات الجمال',color:'#e11d48',bg:'#fff1f2',tips:[{emoji:'✨',text:'البشرة الزجاجية — الترطيب قبل المكياج 🔥🔥🔥'},{emoji:'🎨',text:'ألوان الباستيل — ناعمة وأنثوية 🔥🔥'},{emoji:'💋',text:'العناية بالشفاه — تينت طبيعي 🔥'},{emoji:'🌿',text:'المكياج الطبيعي — بشرة أولى 🔥🔥'}]},
-  { emoji:'🧪',title:'حمض الهيالورونيك',subtitle:'مرطب A+ يحمل 1000 ضعف وزنه ماء',color:'#d97706',bg:'#fffbeb',tips:[{emoji:'💧',text:'يوجد طبيعياً في البشرة — آمن تماماً'},{emoji:'✨',text:'مناسب لجميع أنواع البشرة'},{emoji:'🤝',text:'يدمج مع جميع المكونات — ثنائي رائع'},{emoji:'🧴',text:'يطبق على بشرة رطبة — وليس جافة'}]},
-  { emoji:'🎯',title:'تحليل الأسلوب',subtitle:'اكتشفي أسلوبكِ المثالي',color:'#c026d3',bg:'#fdf4ff',tips:[{emoji:'👗',text:'كلاسيكي — أنيق وخالد 92%'},{emoji:'✨',text:'عصري — متجدد وجريء 78%'},{emoji:'🌿',text:'بوهيمي — ناعم وطبيعي 65%'},{emoji:'💎',text:'فاخر — فخم ومتكامل 55%'}]},
-  { emoji:'💧',title:'تحدي الترطيب',subtitle:'تحدي 5 دقائق يومياً',color:'#0d9488',bg:'#f0fdfa',tips:[{emoji:'☀️',text:'الصباح — مرطب + واقي شمس'},{emoji:'💧',text:'طوال اليوم — 8 أكواب ماء'},{emoji:'🌙',text:'المساء — سيروم + مرطب ليلي'},{emoji:'📅',text:'أسبوعياً — قناع ترطيب'}]},
-  { emoji:'💦',title:'عناية في الرطوبة',subtitle:'بشرة منتعشة في الجو الرطب',color:'#0d9488',bg:'#f0fdfa',tips:[{emoji:'🧴',text:'مرطب جل — خفيف وليس كريمي'},{emoji:'🧻',text:'ورق نشاف — لإزالة اللمعان'},{emoji:'💄',text:'مكياج خفيف — بدون طبقات ثقيلة'},{emoji:'💧',text:'تونر مات — يقلل إفراز الدهون'}]},
-  { emoji:'🏜️',title:'عناية في الجفاف',subtitle:'بشرة مرطبة في المناخ الجاف',color:'#d97706',bg:'#fffbeb',tips:[{emoji:'🧴',text:'مرطب كثيف — كريم غني وليس جل'},{emoji:'💧',text:'سيروم هيالورونيك — قبل المرطب'},{emoji:'🌬️',text:'مرطب جو — أثناء النوم'},{emoji:'🛡️',text:'سيراميد — يقوي حاجز البشرة'}]},
-  { emoji:'☀️',title:'عناية في الحر',subtitle:'بشرة محمية في الصيف الحار',color:'#ea580c',bg:'#fff7ed',tips:[{emoji:'🧴',text:'SPF 50+ — جدديه كل ساعتين'},{emoji:'💧',text:'سبراي مرطب — للانتعاش'},{emoji:'🧢',text:'قبعة ونظارة — حماية إضافية'},{emoji:'🧊',text:'جل الألوفيرا مبرد — بعد الشمس'}]},
-  { emoji:'❄️',title:'عناية في البرد',subtitle:'بشرة محمية في الشتاء القارس',color:'#0284c7',bg:'#f0f9ff',tips:[{emoji:'🧴',text:'بلسم منظف — بدل الجل القاسي'},{emoji:'🛡️',text:'كريم سميك قبل الخروج'},{emoji:'🧣',text:'وشاح — يحمي الوجه من الرياح'},{emoji:'💧',text:'زيت وجه — طبقة إضافية ليلاً'}]},
-  { emoji:'✈️',title:'عناية المسافرة',subtitle:'بشرتكِ بين المناخات',color:'#7c3aed',bg:'#f5f3ff',tips:[{emoji:'🧴',text:'منتجات متعددة — ترطب وتحمي'},{emoji:'💧',text:'اشربي ماء في الطائرة'},{emoji:'🎭',text:'قناع ورقي — ترطيب فوري'},{emoji:'🔄',text:'عدلي روتينك حسب مناخ وجهتك'}]},
-  { emoji:'⚠️',title:'أخطاء العناية',subtitle:'توقفي عنها فوراً',color:'#ef4444',bg:'#fef2f2',tips:[{emoji:'🧼',text:'غسل الوجه بماء ساخن — يجرد البشرة'},{emoji:'🧴',text:'تخطي المرطب — حتى الدهنية تحتاج ترطيب'},{emoji:'☀️',text:'عدم استخدام واقي شمس — سبب الشيخوخة'},{emoji:'🔄',text:'تغيير المنتجات كل أسبوع — 6-8 أسابيع'}]},
-  { emoji:'💄',title:'أخطاء المكياج',subtitle:'أخطاء شائعة — حلول بسيطة',color:'#e11d48',bg:'#fff1f2',tips:[{emoji:'🎨',text:'فاونديشن أفتح — جربي على خط الفك'},{emoji:'🖌️',text:'عدم تنظيف الفرش — بكتيريا تسبب الحبوب'},{emoji:'💋',text:'تحديد الشفاه بلون أغمق بكثير'},{emoji:'👁️',text:'عيون ثقيلة + شفاه ثقيلة — اختاري واحداً'}]},
-  { emoji:'💇',title:'أخطاء الشعر',subtitle:'توقفي عنها — شعركِ سيشكركِ',color:'#ea580c',bg:'#fff7ed',tips:[{emoji:'🔥',text:'حرارة بدون واقي — تلف دائم للشعر'},{emoji:'💆',text:'بلسم على الجذور — يسد ويثقل الشعر'},{emoji:'🪥',text:'تمشيط الشعر المبلل بقوة — يتكسر'},{emoji:'💤',text:'النوم بشعر مبلل — فطريات وتقصف'}]},
-  { emoji:'🛑',title:'الإفراط في التقشير',subtitle:'علامات التحذير والحل',color:'#d97706',bg:'#fffbeb',tips:[{emoji:'🔴',text:'علامات: احمرار حرقان لمعان حساسية'},{emoji:'🛑',text:'توقفي فوراً — كل المنتجات النشطة'},{emoji:'🧴',text:'العلاج: مرطب بسيط + سيراميد فقط'},{emoji:'📅',text:'أسبوعين راحة — ثم عودي تدريجياً'}]},
-  { emoji:'🧪',title:'تحميل المنتجات',subtitle:'كثرة المنتجات — ضرر أكثر',color:'#7c3aed',bg:'#f5f3ff',tips:[{emoji:'⚠️',text:'لا تخلطي أكثر من 3 منتجات نشطة'},{emoji:'📋',text:'منتج فعال واحد صباحاً وآخر مساءً'},{emoji:'🔄',text:'نظام التدوير: ريتينول — تقشير — راحة'},{emoji:'✨',text:'البشرة تفضل البساطة — الأقل هو الأكثر'}]},
-  { emoji:'🌙',title:'إشراقة العيد',subtitle:'خطة جمالية متكاملة للعيد',color:'#d97706',bg:'#fffbeb',tips:[{emoji:'📅',text:'قبل بأسبوع: فيشل + حواجب + مانيكير'},{emoji:'💤',text:'ليلة العيد: حمام زيت + مرطب + نوم'},{emoji:'✨',text:'صباح العيد: مكياج ناعم + عطر'},{emoji:'📸',text:'صوري إطلالتك — ذكريات العيد'}]},
-  { emoji:'💇',title:'تسريحة العيد',subtitle:'تسريحات تناسب عباءة العيد',color:'#7c3aed',bg:'#f5f3ff',tips:[{emoji:'👑',text:'كعكة منخفضة — أنيقة مع الطرحة'},{emoji:'🌊',text:'ويفي ناعم — مع لفّة حجاب'},{emoji:'✨',text:'ضفيرة جانبية — عصرية ومريحة'},{emoji:'💆',text:'حمام زيت قبلها بيوم — لمعان'}]},
-  { emoji:'💅',title:'أظافر العيد',subtitle:'ألوان وتصاميم تناسب العيد',color:'#e11d48',bg:'#fff1f2',tips:[{emoji:'🌸',text:'ألوان باستيل — وردي لافندر بيج'},{emoji:'✨',text:'جليتر خفيف — لمسة احتفالية'},{emoji:'🌙',text:'هلال ذهبي — تصميم العيد'},{emoji:'📅',text:'قبل العيد بيومين — لتكون مثالية'}]},
-  { emoji:'🌸',title:'عطر العيد',subtitle:'العطر المثالي ليوم العيد',color:'#4f46e5',bg:'#eef2ff',tips:[{emoji:'🌹',text:'عود وورد — كلاسيكية العيد'},{emoji:'💎',text:'طبقات — قاعدة + قلب + نفحة'},{emoji:'🧴',text:'قبل الخروج بساعة — ليثبت'},{emoji:'🎁',text:'عطر جديد للعيد — تقليد جميل'}]},
+  {
+    emoji: '💡',
+    title: 'نصائح المكياج',
+    subtitle: 'لإطلالة تدوم طويلاً',
+    color: '#e11d48',
+    bg: '#fff1f2',
+    tips: [
+      { emoji: '🧴', text: 'الترطيب أولاً — بشرة مرطبة = مكياج أجمل' },
+      { emoji: '🖌️', text: 'نظفي فرشك — أسبوعياً البكتيريا تتراكم' },
+      { emoji: '📅', text: 'تاريخ الصلاحية — جددِي مكياجك كل 6-12 شهر' },
+      { emoji: '🌙', text: 'أزيلي المكياج — لا تنامي أبداً بالمكياج' },
+    ],
+  },
+  {
+    emoji: '🌸',
+    title: 'تذكير الربيع',
+    subtitle: 'روتينكِ يتغير مع الفصول',
+    color: '#db2777',
+    bg: '#fdf2f8',
+    tips: [
+      { emoji: '🧹', text: 'جددي روتين التقشير — بشرة أنعم' },
+      { emoji: '🧴', text: 'انتقلي لمرطب أخف — مع ارتفاع الحرارة' },
+      { emoji: '☀️', text: 'اهتمي بالحماية من الشمس مبكراً' },
+      { emoji: '🎨', text: 'جربي ألوان باستيل — منعشة وناعمة' },
+    ],
+  },
+  {
+    emoji: '☀️',
+    title: 'تذكير الصيف',
+    subtitle: 'حماية وانتعاش',
+    color: '#ea580c',
+    bg: '#fff7ed',
+    tips: [
+      { emoji: '☀️', text: 'SPF 50+ يومياً — حتى في الظل' },
+      { emoji: '💧', text: 'مرطب جل خفيف — بدل الكريم الثقيل' },
+      { emoji: '🚰', text: 'اشربي ماء كثيراً — 8 أكواب يومياً' },
+      { emoji: '🌿', text: 'تجنبي المكياج الثقيل — خففي الطبقات' },
+    ],
+  },
+  {
+    emoji: '❄️',
+    title: 'تذكير الشتاء',
+    subtitle: 'ترطيب وحماية',
+    color: '#0284c7',
+    bg: '#f0f9ff',
+    tips: [
+      { emoji: '🧴', text: 'مرطب غني — يحمي من الهواء الجاف' },
+      { emoji: '💋', text: 'بلسم شفاه — ضروري في الشتاء' },
+      { emoji: '🧖', text: 'قناع ترطيب أسبوعي — بشرة نضرة' },
+      { emoji: '🧣', text: 'احمي بشرتكِ من الهواء البارد' },
+    ],
+  },
+  {
+    emoji: '📈',
+    title: 'رائج الآن',
+    subtitle: 'أحدث صيحات الجمال',
+    color: '#e11d48',
+    bg: '#fff1f2',
+    tips: [
+      { emoji: '✨', text: 'البشرة الزجاجية — الترطيب قبل المكياج 🔥🔥🔥' },
+      { emoji: '🎨', text: 'ألوان الباستيل — ناعمة وأنثوية 🔥🔥' },
+      { emoji: '💋', text: 'العناية بالشفاه — تينت طبيعي 🔥' },
+      { emoji: '🌿', text: 'المكياج الطبيعي — بشرة أولى 🔥🔥' },
+    ],
+  },
+  {
+    emoji: '🧪',
+    title: 'حمض الهيالورونيك',
+    subtitle: 'مرطب A+ يحمل 1000 ضعف وزنه ماء',
+    color: '#d97706',
+    bg: '#fffbeb',
+    tips: [
+      { emoji: '💧', text: 'يوجد طبيعياً في البشرة — آمن تماماً' },
+      { emoji: '✨', text: 'مناسب لجميع أنواع البشرة' },
+      { emoji: '🤝', text: 'يدمج مع جميع المكونات — ثنائي رائع' },
+      { emoji: '🧴', text: 'يطبق على بشرة رطبة — وليس جافة' },
+    ],
+  },
+  {
+    emoji: '🎯',
+    title: 'تحليل الأسلوب',
+    subtitle: 'اكتشفي أسلوبكِ المثالي',
+    color: '#c026d3',
+    bg: '#fdf4ff',
+    tips: [
+      { emoji: '👗', text: 'كلاسيكي — أنيق وخالد 92%' },
+      { emoji: '✨', text: 'عصري — متجدد وجريء 78%' },
+      { emoji: '🌿', text: 'بوهيمي — ناعم وطبيعي 65%' },
+      { emoji: '💎', text: 'فاخر — فخم ومتكامل 55%' },
+    ],
+  },
+  {
+    emoji: '💧',
+    title: 'تحدي الترطيب',
+    subtitle: 'تحدي 5 دقائق يومياً',
+    color: '#0d9488',
+    bg: '#f0fdfa',
+    tips: [
+      { emoji: '☀️', text: 'الصباح — مرطب + واقي شمس' },
+      { emoji: '💧', text: 'طوال اليوم — 8 أكواب ماء' },
+      { emoji: '🌙', text: 'المساء — سيروم + مرطب ليلي' },
+      { emoji: '📅', text: 'أسبوعياً — قناع ترطيب' },
+    ],
+  },
+  {
+    emoji: '💦',
+    title: 'عناية في الرطوبة',
+    subtitle: 'بشرة منتعشة في الجو الرطب',
+    color: '#0d9488',
+    bg: '#f0fdfa',
+    tips: [
+      { emoji: '🧴', text: 'مرطب جل — خفيف وليس كريمي' },
+      { emoji: '🧻', text: 'ورق نشاف — لإزالة اللمعان' },
+      { emoji: '💄', text: 'مكياج خفيف — بدون طبقات ثقيلة' },
+      { emoji: '💧', text: 'تونر مات — يقلل إفراز الدهون' },
+    ],
+  },
+  {
+    emoji: '🏜️',
+    title: 'عناية في الجفاف',
+    subtitle: 'بشرة مرطبة في المناخ الجاف',
+    color: '#d97706',
+    bg: '#fffbeb',
+    tips: [
+      { emoji: '🧴', text: 'مرطب كثيف — كريم غني وليس جل' },
+      { emoji: '💧', text: 'سيروم هيالورونيك — قبل المرطب' },
+      { emoji: '🌬️', text: 'مرطب جو — أثناء النوم' },
+      { emoji: '🛡️', text: 'سيراميد — يقوي حاجز البشرة' },
+    ],
+  },
+  {
+    emoji: '☀️',
+    title: 'عناية في الحر',
+    subtitle: 'بشرة محمية في الصيف الحار',
+    color: '#ea580c',
+    bg: '#fff7ed',
+    tips: [
+      { emoji: '🧴', text: 'SPF 50+ — جدديه كل ساعتين' },
+      { emoji: '💧', text: 'سبراي مرطب — للانتعاش' },
+      { emoji: '🧢', text: 'قبعة ونظارة — حماية إضافية' },
+      { emoji: '🧊', text: 'جل الألوفيرا مبرد — بعد الشمس' },
+    ],
+  },
+  {
+    emoji: '❄️',
+    title: 'عناية في البرد',
+    subtitle: 'بشرة محمية في الشتاء القارس',
+    color: '#0284c7',
+    bg: '#f0f9ff',
+    tips: [
+      { emoji: '🧴', text: 'بلسم منظف — بدل الجل القاسي' },
+      { emoji: '🛡️', text: 'كريم سميك قبل الخروج' },
+      { emoji: '🧣', text: 'وشاح — يحمي الوجه من الرياح' },
+      { emoji: '💧', text: 'زيت وجه — طبقة إضافية ليلاً' },
+    ],
+  },
+  {
+    emoji: '✈️',
+    title: 'عناية المسافرة',
+    subtitle: 'بشرتكِ بين المناخات',
+    color: '#7c3aed',
+    bg: '#f5f3ff',
+    tips: [
+      { emoji: '🧴', text: 'منتجات متعددة — ترطب وتحمي' },
+      { emoji: '💧', text: 'اشربي ماء في الطائرة' },
+      { emoji: '🎭', text: 'قناع ورقي — ترطيب فوري' },
+      { emoji: '🔄', text: 'عدلي روتينك حسب مناخ وجهتك' },
+    ],
+  },
+  {
+    emoji: '⚠️',
+    title: 'أخطاء العناية',
+    subtitle: 'توقفي عنها فوراً',
+    color: '#ef4444',
+    bg: '#fef2f2',
+    tips: [
+      { emoji: '🧼', text: 'غسل الوجه بماء ساخن — يجرد البشرة' },
+      { emoji: '🧴', text: 'تخطي المرطب — حتى الدهنية تحتاج ترطيب' },
+      { emoji: '☀️', text: 'عدم استخدام واقي شمس — سبب الشيخوخة' },
+      { emoji: '🔄', text: 'تغيير المنتجات كل أسبوع — 6-8 أسابيع' },
+    ],
+  },
+  {
+    emoji: '💄',
+    title: 'أخطاء المكياج',
+    subtitle: 'أخطاء شائعة — حلول بسيطة',
+    color: '#e11d48',
+    bg: '#fff1f2',
+    tips: [
+      { emoji: '🎨', text: 'فاونديشن أفتح — جربي على خط الفك' },
+      { emoji: '🖌️', text: 'عدم تنظيف الفرش — بكتيريا تسبب الحبوب' },
+      { emoji: '💋', text: 'تحديد الشفاه بلون أغمق بكثير' },
+      { emoji: '👁️', text: 'عيون ثقيلة + شفاه ثقيلة — اختاري واحداً' },
+    ],
+  },
+  {
+    emoji: '💇',
+    title: 'أخطاء الشعر',
+    subtitle: 'توقفي عنها — شعركِ سيشكركِ',
+    color: '#ea580c',
+    bg: '#fff7ed',
+    tips: [
+      { emoji: '🔥', text: 'حرارة بدون واقي — تلف دائم للشعر' },
+      { emoji: '💆', text: 'بلسم على الجذور — يسد ويثقل الشعر' },
+      { emoji: '🪥', text: 'تمشيط الشعر المبلل بقوة — يتكسر' },
+      { emoji: '💤', text: 'النوم بشعر مبلل — فطريات وتقصف' },
+    ],
+  },
+  {
+    emoji: '🛑',
+    title: 'الإفراط في التقشير',
+    subtitle: 'علامات التحذير والحل',
+    color: '#d97706',
+    bg: '#fffbeb',
+    tips: [
+      { emoji: '🔴', text: 'علامات: احمرار حرقان لمعان حساسية' },
+      { emoji: '🛑', text: 'توقفي فوراً — كل المنتجات النشطة' },
+      { emoji: '🧴', text: 'العلاج: مرطب بسيط + سيراميد فقط' },
+      { emoji: '📅', text: 'أسبوعين راحة — ثم عودي تدريجياً' },
+    ],
+  },
+  {
+    emoji: '🧪',
+    title: 'تحميل المنتجات',
+    subtitle: 'كثرة المنتجات — ضرر أكثر',
+    color: '#7c3aed',
+    bg: '#f5f3ff',
+    tips: [
+      { emoji: '⚠️', text: 'لا تخلطي أكثر من 3 منتجات نشطة' },
+      { emoji: '📋', text: 'منتج فعال واحد صباحاً وآخر مساءً' },
+      { emoji: '🔄', text: 'نظام التدوير: ريتينول — تقشير — راحة' },
+      { emoji: '✨', text: 'البشرة تفضل البساطة — الأقل هو الأكثر' },
+    ],
+  },
+  {
+    emoji: '🌙',
+    title: 'إشراقة العيد',
+    subtitle: 'خطة جمالية متكاملة للعيد',
+    color: '#d97706',
+    bg: '#fffbeb',
+    tips: [
+      { emoji: '📅', text: 'قبل بأسبوع: فيشل + حواجب + مانيكير' },
+      { emoji: '💤', text: 'ليلة العيد: حمام زيت + مرطب + نوم' },
+      { emoji: '✨', text: 'صباح العيد: مكياج ناعم + عطر' },
+      { emoji: '📸', text: 'صوري إطلالتك — ذكريات العيد' },
+    ],
+  },
+  {
+    emoji: '💇',
+    title: 'تسريحة العيد',
+    subtitle: 'تسريحات تناسب عباءة العيد',
+    color: '#7c3aed',
+    bg: '#f5f3ff',
+    tips: [
+      { emoji: '👑', text: 'كعكة منخفضة — أنيقة مع الطرحة' },
+      { emoji: '🌊', text: 'ويفي ناعم — مع لفّة حجاب' },
+      { emoji: '✨', text: 'ضفيرة جانبية — عصرية ومريحة' },
+      { emoji: '💆', text: 'حمام زيت قبلها بيوم — لمعان' },
+    ],
+  },
+  {
+    emoji: '💅',
+    title: 'أظافر العيد',
+    subtitle: 'ألوان وتصاميم تناسب العيد',
+    color: '#e11d48',
+    bg: '#fff1f2',
+    tips: [
+      { emoji: '🌸', text: 'ألوان باستيل — وردي لافندر بيج' },
+      { emoji: '✨', text: 'جليتر خفيف — لمسة احتفالية' },
+      { emoji: '🌙', text: 'هلال ذهبي — تصميم العيد' },
+      { emoji: '📅', text: 'قبل العيد بيومين — لتكون مثالية' },
+    ],
+  },
+  {
+    emoji: '🌸',
+    title: 'عطر العيد',
+    subtitle: 'العطر المثالي ليوم العيد',
+    color: '#4f46e5',
+    bg: '#eef2ff',
+    tips: [
+      { emoji: '🌹', text: 'عود وورد — كلاسيكية العيد' },
+      { emoji: '💎', text: 'طبقات — قاعدة + قلب + نفحة' },
+      { emoji: '🧴', text: 'قبل الخروج بساعة — ليثبت' },
+      { emoji: '🎁', text: 'عطر جديد للعيد — تقليد جميل' },
+    ],
+  },
 ];
 
 export default function BeautyTipsScreen(): JSX.Element {
   return (
-    <ScrollView style={s.c} contentContainerStyle={s.i}><Text style={s.h}>💡 نصائح وإرشادات</Text><Text style={s.sub}>كل ما تحتاجينه للعناية بجمالك</Text><View style={s.grid}>{CARDS.map((c,i)=>(<View key={i} style={[s.card,{borderColor:c.color+'30'}]}><View style={s.ch}><Text style={s.ce}>{c.emoji}</Text><View style={s.cw}><Text style={[s.ct,{color:c.color}]}>{c.title}</Text><Text style={s.cs}>{c.subtitle}</Text></View></View><View style={s.tl}>{c.tips.map((t,j)=>(<View key={j} style={[s.tr,{backgroundColor:c.bg}]}><Text style={s.te}>{t.emoji}</Text><Text style={[s.tt,{color:c.color}]}>{t.text}</Text></View>))}</View></View>))}</View></ScrollView>
+    <ScrollView style={s.c} contentContainerStyle={s.i}>
+      <Text style={s.h}>💡 نصائح وإرشادات</Text>
+      <Text style={s.sub}>كل ما تحتاجينه للعناية بجمالك</Text>
+      <View style={s.grid}>
+        {CARDS.map((c, i) => (
+          <View key={i} style={[s.card, { borderColor: c.color + '30' }]}>
+            <View style={s.ch}>
+              <Text style={s.ce}>{c.emoji}</Text>
+              <View style={s.cw}>
+                <Text style={[s.ct, { color: c.color }]}>{c.title}</Text>
+                <Text style={s.cs}>{c.subtitle}</Text>
+              </View>
+            </View>
+            <View style={s.tl}>
+              {c.tips.map((t, j) => (
+                <View key={j} style={[s.tr, { backgroundColor: c.bg }]}>
+                  <Text style={s.te}>{t.emoji}</Text>
+                  <Text style={[s.tt, { color: c.color }]}>{t.text}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        ))}
+      </View>
+    </ScrollView>
   );
 }
 
-const s=StyleSheet.create({c:{flex:1,backgroundColor:'#fdf2f8'},i:{padding:16,paddingTop:40,paddingBottom:60},h:{fontSize:24,fontWeight:'800',color:'#111827',textAlign:'center',marginBottom:6},sub:{fontSize:13,color:'#6b7280',textAlign:'center',marginBottom:24,lineHeight:22},grid:{gap:12},card:{backgroundColor:'#fff',borderRadius:16,borderWidth:1,padding:16,marginBottom:4},ch:{flexDirection:'row',alignItems:'center',gap:10,marginBottom:12},ce:{fontSize:28},cw:{flex:1},ct:{fontSize:15,fontWeight:'700'},cs:{fontSize:11,color:'#9ca3af',marginTop:2},tl:{gap:6},tr:{flexDirection:'row',alignItems:'center',gap:8,borderRadius:10,paddingHorizontal:12,paddingVertical:10},te:{fontSize:14,width:20,textAlign:'center'},tt:{fontSize:12,fontWeight:'500',flex:1,textAlign:'right'}});
+const s = StyleSheet.create({
+  c: { flex: 1, backgroundColor: '#fdf2f8' },
+  i: { padding: 16, paddingTop: 40, paddingBottom: 60 },
+  h: { fontSize: 24, fontWeight: '800', color: '#111827', textAlign: 'center', marginBottom: 6 },
+  sub: { fontSize: 13, color: '#6b7280', textAlign: 'center', marginBottom: 24, lineHeight: 22 },
+  grid: { gap: 12 },
+  card: { backgroundColor: '#fff', borderRadius: 16, borderWidth: 1, padding: 16, marginBottom: 4 },
+  ch: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 12 },
+  ce: { fontSize: 28 },
+  cw: { flex: 1 },
+  ct: { fontSize: 15, fontWeight: '700' },
+  cs: { fontSize: 11, color: '#9ca3af', marginTop: 2 },
+  tl: { gap: 6 },
+  tr: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  te: { fontSize: 14, width: 20, textAlign: 'center' },
+  tt: { fontSize: 12, fontWeight: '500', flex: 1, textAlign: 'right' },
+});

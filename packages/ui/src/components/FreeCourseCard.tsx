@@ -22,9 +22,21 @@ interface LevelDef {
 }
 
 const LEVELS: Record<CourseLevel, LevelDef> = {
-  beginner: { emoji: '🌱', label: 'مبتدئة', color: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' },
-  intermediate: { emoji: '🌿', label: 'متوسطة', color: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300' },
-  advanced: { emoji: '🌳', label: 'متقدمة', color: 'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300' },
+  beginner: {
+    emoji: '🌱',
+    label: 'مبتدئة',
+    color: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
+  },
+  intermediate: {
+    emoji: '🌿',
+    label: 'متوسطة',
+    color: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
+  },
+  advanced: {
+    emoji: '🌳',
+    label: 'متقدمة',
+    color: 'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
+  },
 };
 
 interface FreeCourse {
@@ -79,9 +91,7 @@ export function FreeCourseCard({
           {course.emoji || '📚'}
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-            {course.title}
-          </h4>
+          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{course.title}</h4>
           <div className="mt-1 flex flex-wrap items-center gap-1.5">
             <span className={cn('rounded-full px-2 py-0.5 text-[10px] font-medium', level.color)}>
               {level.emoji} {level.label}
@@ -127,7 +137,9 @@ export function FreeCourseCard({
       {/* Progress / Certificate row */}
       {course.hasCertificate && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-teal-50 px-2 py-1 dark:bg-teal-950">
-          <span className="text-xs" aria-hidden="true">📜</span>
+          <span className="text-xs" aria-hidden="true">
+            📜
+          </span>
           <span className="text-[10px] font-medium text-teal-700 dark:text-teal-300">
             شهادة معتمدة عند الإكمال
           </span>

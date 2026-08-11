@@ -11,14 +11,14 @@ Galaxy of Beauty isn't just a beauty platform — it's **Saudi Arabia's first fu
 
 ### Core Principles
 
-| Principle | Manifestation |
-|-----------|--------------|
-| **Safety First** | Privacy-by-design, verified female technicians only, secure photo sharing |
-| **Sisterhood** | Community features that connect women, not compete |
-| **Empowerment** | Education, financial independence for technicians, beauty entrepreneurship |
-| **Life Stages** | Beauty evolves — we serve women from 15 to 75 |
-| **Body Positivity** | Celebrate all body types, skin tones, hair textures |
-| **Privacy Sacred** | Your data, your photos, your choices — never shared without consent |
+| Principle           | Manifestation                                                              |
+| ------------------- | -------------------------------------------------------------------------- |
+| **Safety First**    | Privacy-by-design, verified female technicians only, secure photo sharing  |
+| **Sisterhood**      | Community features that connect women, not compete                         |
+| **Empowerment**     | Education, financial independence for technicians, beauty entrepreneurship |
+| **Life Stages**     | Beauty evolves — we serve women from 15 to 75                              |
+| **Body Positivity** | Celebrate all body types, skin tones, hair textures                        |
+| **Privacy Sacred**  | Your data, your photos, your choices — never shared without consent        |
 
 ---
 
@@ -29,6 +29,7 @@ Galaxy of Beauty isn't just a beauty platform — it's **Saudi Arabia's first fu
 **Problem:** Women share personal photos (skin analysis, before/after, virtual try-on). These are sensitive.
 
 **Solution:**
+
 - `PrivacyLevel` model: `{ photoId, level: 'PUBLIC' | 'TECHNICIAN_ONLY' | 'PRIVATE', expiresAt }`
 - Auto-blur faces in public gallery using ONNX face detection (client-side, no server upload)
 - Photos auto-delete after 30 days unless user opts in
@@ -99,15 +100,15 @@ Age 55+: Golden Beauty
 
 ### W2.2 Life Event Packages
 
-| Event | Package | Contents |
-|-------|---------|----------|
-| 🎓 Graduation | "Graduate Glow" | Makeup + hair + nails + photography |
-| 💼 New Job | "First Day Ready" | Professional makeup tutorial + outfit consultation |
-| 👰 Wedding | "Bridal Journey" | 6-month plan: skin prep → trial → henna → wedding day |
-| 🤰 Pregnancy | "Glowing Mom" | Prenatal massage + safe facial + body butter |
-| 👶 New Mother | "Mommy Refresh" | Express facial + quick haircut (baby-friendly salon) |
-| 🎂 40th/50th | "Fabulous at..." | Full spa day + makeup + photoshoot |
-| 🕌 Hajj/Umrah | "Pilgrim Glow" | Pre-pilgrimage grooming + post-pilgrimage recovery |
+| Event         | Package           | Contents                                              |
+| ------------- | ----------------- | ----------------------------------------------------- |
+| 🎓 Graduation | "Graduate Glow"   | Makeup + hair + nails + photography                   |
+| 💼 New Job    | "First Day Ready" | Professional makeup tutorial + outfit consultation    |
+| 👰 Wedding    | "Bridal Journey"  | 6-month plan: skin prep → trial → henna → wedding day |
+| 🤰 Pregnancy  | "Glowing Mom"     | Prenatal massage + safe facial + body butter          |
+| 👶 New Mother | "Mommy Refresh"   | Express facial + quick haircut (baby-friendly salon)  |
+| 🎂 40th/50th  | "Fabulous at..."  | Full spa day + makeup + photoshoot                    |
+| 🕌 Hajj/Umrah | "Pilgrim Glow"    | Pre-pilgrimage grooming + post-pilgrimage recovery    |
 
 ---
 
@@ -339,33 +340,33 @@ Age 55+: Golden Beauty
 
 ## Implementation Priority
 
-| # | Feature | Effort | Impact | Prerequisite |
-|---|---------|--------|--------|-------------|
-| 1 | Life Stage Beauty packages | 4h | High | None |
-| 2 | Privacy-first photo system | 8h | High | None |
-| 3 | Beauty Circles (groups) | 6h | High | None |
-| 4 | Women-Only Safety features | 4h | Critical | None |
-| 5 | CycleSync™ integration | 8h | High | Health API |
-| 6 | Galaxy Beauty Academy | 12h | High | None |
-| 7 | Technician Entrepreneurship | 8h | High | None |
-| 8 | Mother-Daughter packages | 4h | Medium | None |
+| #   | Feature                     | Effort | Impact   | Prerequisite |
+| --- | --------------------------- | ------ | -------- | ------------ |
+| 1   | Life Stage Beauty packages  | 4h     | High     | None         |
+| 2   | Privacy-first photo system  | 8h     | High     | None         |
+| 3   | Beauty Circles (groups)     | 6h     | High     | None         |
+| 4   | Women-Only Safety features  | 4h     | Critical | None         |
+| 5   | CycleSync™ integration      | 8h     | High     | Health API   |
+| 6   | Galaxy Beauty Academy       | 12h    | High     | None         |
+| 7   | Technician Entrepreneurship | 8h     | High     | None         |
+| 8   | Mother-Daughter packages    | 4h     | Medium   | None         |
 
 ---
 
 ## Total Investment
 
-| Category | Effort | External Cost |
-|----------|--------|---------------|
-| Safety & Privacy | 16h | $0 |
-| Life Stages | 12h | $0 |
-| Health & Wellness | 16h | Health API (free) |
-| Community | 12h | $0 |
-| Financial | 12h | $0 |
-| Education | 16h | $0 |
-| Family | 8h | $0 |
-| Accessibility | 12h | $0 |
-| Details & Delight | 8h | $0 |
-| Leadership | 12h | $0 |
-| **TOTAL** | **~124h** | **$0** |
+| Category          | Effort    | External Cost     |
+| ----------------- | --------- | ----------------- |
+| Safety & Privacy  | 16h       | $0                |
+| Life Stages       | 12h       | $0                |
+| Health & Wellness | 16h       | Health API (free) |
+| Community         | 12h       | $0                |
+| Financial         | 12h       | $0                |
+| Education         | 16h       | $0                |
+| Family            | 8h        | $0                |
+| Accessibility     | 12h       | $0                |
+| Details & Delight | 8h        | $0                |
+| Leadership        | 12h       | $0                |
+| **TOTAL**         | **~124h** | **$0**            |
 
 **Platform value with women-only differentiation: $500K → $1M+**

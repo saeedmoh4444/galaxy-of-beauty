@@ -15,8 +15,18 @@ export const beforeAfterRouter = router({
     }),
 
   submit: customerProcedure
-    .input(z.object({ beforeUrl: z.string(), afterUrl: z.string(), serviceType: z.string(), technicianName: z.string(), description: z.string().max(300) }))
+    .input(
+      z.object({
+        beforeUrl: z.string(),
+        afterUrl: z.string(),
+        serviceType: z.string(),
+        technicianName: z.string(),
+        description: z.string().max(300),
+      }),
+    )
     .mutation(async ({ ctx, input }) =>
-      prisma.beforeAfter.create({ data: { userId: ctx.user.id, userName: ctx.user.email || 'مستخدمة', ...input } })
+      prisma.beforeAfter.create({
+        data: { userId: ctx.user.id, userName: ctx.user.email || 'مستخدمة', ...input },
+      }),
     ),
 });

@@ -12,26 +12,34 @@ describe('Booking Creation Flow', () => {
   });
 
   it('requires addressId to be provided', () => {
-    const isValid = (addressId: number | undefined) => typeof addressId === 'number' && addressId > 0;
+    const isValid = (addressId: number | undefined) =>
+      typeof addressId === 'number' && addressId > 0;
     expect(isValid(1)).toBe(true);
     expect(isValid(undefined)).toBe(false);
     expect(isValid(0)).toBe(false);
   });
 
   it('generates unique idempotency keys', () => {
-    const keys = new Set(Array.from({ length: 20 }, () => `web_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`));
+    const keys = new Set(
+      Array.from(
+        { length: 20 },
+        () => `web_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
+      ),
+    );
     expect(keys.size).toBeGreaterThan(15);
   });
 
   it('auto-assigns technician from available list', () => {
     const techs = [{ technician: { userId: 5, name: 'Noura' } }];
-    const techId = techs.length > 0 ? (techs[0]!.technician as Record<string, unknown>).userId as number : 0;
+    const techId =
+      techs.length > 0 ? ((techs[0]!.technician as Record<string, unknown>).userId as number) : 0;
     expect(techId).toBe(5);
   });
 
   it('returns 0 when no technicians available', () => {
     const techs: Array<Record<string, unknown>> = [];
-    const techId = techs.length > 0 ? (techs[0]!.technician as Record<string, unknown>).userId as number : 0;
+    const techId =
+      techs.length > 0 ? ((techs[0]!.technician as Record<string, unknown>).userId as number) : 0;
     expect(techId).toBe(0);
   });
 
@@ -144,30 +152,89 @@ describe('Loyalty Reward Redemption', () => {
   }
 
   it('allows redemption with sufficient points', () => {
-    expect(canRedeem({ points: 500, tier: 'GOLD' }, { id: 1, pointsCost: 200, rewardType: 'discount_percent', rewardValue: 10, minTier: 'SILVER' })).toBe(true);
+    expect(
+      canRedeem(
+        { points: 500, tier: 'GOLD' },
+        {
+          id: 1,
+          pointsCost: 200,
+          rewardType: 'discount_percent',
+          rewardValue: 10,
+          minTier: 'SILVER',
+        },
+      ),
+    ).toBe(true);
   });
 
   it('rejects when insufficient points', () => {
-    expect(canRedeem({ points: 100, tier: 'GOLD' }, { id: 1, pointsCost: 200, rewardType: 'discount_percent', rewardValue: 10, minTier: 'SILVER' })).toBe(false);
+    expect(
+      canRedeem(
+        { points: 100, tier: 'GOLD' },
+        {
+          id: 1,
+          pointsCost: 200,
+          rewardType: 'discount_percent',
+          rewardValue: 10,
+          minTier: 'SILVER',
+        },
+      ),
+    ).toBe(false);
   });
 
   it('rejects when tier too low', () => {
-    expect(canRedeem({ points: 1000, tier: 'SILVER' }, { id: 1, pointsCost: 200, rewardType: 'discount_percent', rewardValue: 10, minTier: 'GOLD' })).toBe(false);
+    expect(
+      canRedeem(
+        { points: 1000, tier: 'SILVER' },
+        {
+          id: 1,
+          pointsCost: 200,
+          rewardType: 'discount_percent',
+          rewardValue: 10,
+          minTier: 'GOLD',
+        },
+      ),
+    ).toBe(false);
   });
 
   it('allows exact points match', () => {
-    expect(canRedeem({ points: 200, tier: 'SILVER' }, { id: 1, pointsCost: 200, rewardType: 'discount_percent', rewardValue: 10, minTier: 'SILVER' })).toBe(true);
+    expect(
+      canRedeem(
+        { points: 200, tier: 'SILVER' },
+        {
+          id: 1,
+          pointsCost: 200,
+          rewardType: 'discount_percent',
+          rewardValue: 10,
+          minTier: 'SILVER',
+        },
+      ),
+    ).toBe(true);
   });
 
   it('PLATINUM can redeem any tier reward', () => {
-    expect(canRedeem({ points: 5000, tier: 'PLATINUM' }, { id: 1, pointsCost: 2000, rewardType: 'free_service', rewardValue: 1, minTier: 'PLATINUM' })).toBe(true);
+    expect(
+      canRedeem(
+        { points: 5000, tier: 'PLATINUM' },
+        {
+          id: 1,
+          pointsCost: 2000,
+          rewardType: 'free_service',
+          rewardValue: 1,
+          minTier: 'PLATINUM',
+        },
+      ),
+    ).toBe(true);
   });
 });
 
 // ── Payment Webhook Signature ─────────────────────────────
 
 describe('Payment Webhook Verification', () => {
-  function verifySignature(params: Record<string, string>, secret: string, receivedSig: string): boolean {
+  function verifySignature(
+    params: Record<string, string>,
+    secret: string,
+    receivedSig: string,
+  ): boolean {
     const sorted = Object.keys(params).sort();
     const payload = sorted.map((k) => `${k}=${params[k]}`).join('') + secret;
     const { createHash } = require('crypto');
@@ -191,7 +258,10 @@ describe('Payment Webhook Verification', () => {
 
   it('rejects tampered params', () => {
     const secret = 's';
-    const sig = require('crypto').createHash('sha256').update('amount=100ref=X' + secret, 'utf8').digest('hex');
+    const sig = require('crypto')
+      .createHash('sha256')
+      .update('amount=100ref=X' + secret, 'utf8')
+      .digest('hex');
     // Verify with different params
     expect(verifySignature({ ref: 'X', amount: '200' }, secret, sig)).toBe(false);
   });

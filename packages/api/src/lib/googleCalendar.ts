@@ -17,7 +17,10 @@ function getGoogleConfig() {
 
 // ── OAuth2 Token Exchange ──────────────────────────────────
 
-export async function exchangeGoogleCode(code: string, redirectUri: string): Promise<GoogleTokens | null> {
+export async function exchangeGoogleCode(
+  code: string,
+  redirectUri: string,
+): Promise<GoogleTokens | null> {
   const config = getGoogleConfig();
   if (!config) return null;
 
@@ -84,7 +87,7 @@ interface CalendarEvent {
   summary: string;
   description?: string;
   start: string; // ISO 8601 date-time
-  end: string;   // ISO 8601 date-time
+  end: string; // ISO 8601 date-time
   timezone?: string;
 }
 

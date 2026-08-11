@@ -46,26 +46,22 @@ export function BrideTribeCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">👰‍♀️💐</span>
-        <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">
-          قبيلة العروس
-        </h4>
-        <p className="text-[10px] text-rose-500 dark:text-rose-400">
-          إطلالات متناسقة لكل وصيفاتكِ
-        </p>
+        <span className="text-3xl" aria-hidden="true">
+          👰‍♀️💐
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">قبيلة العروس</h4>
+        <p className="text-[10px] text-rose-500 dark:text-rose-400">إطلالات متناسقة لكل وصيفاتكِ</p>
       </div>
 
       {/* Bride */}
       <div className="mt-3 rounded-xl bg-gradient-to-r from-rose-50 to-pink-50 p-3 dark:from-rose-950 dark:to-pink-950">
         <div className="flex items-center gap-2">
-          <span className="text-2xl" aria-hidden="true">👰</span>
+          <span className="text-2xl" aria-hidden="true">
+            👰
+          </span>
           <div>
-            <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-              {bride}
-            </p>
-            <p className="text-[10px] text-rose-600 dark:text-rose-400">
-              العروس ✨
-            </p>
+            <p className="text-xs font-bold text-text-primary dark:text-gray-100">{bride}</p>
+            <p className="text-[10px] text-rose-600 dark:text-rose-400">العروس ✨</p>
           </div>
           {weddingDate && (
             <span className="ml-auto text-[10px] text-text-tertiary dark:text-gray-400">
@@ -89,13 +85,9 @@ export function BrideTribeCard({
               {i + 1}
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-semibold text-text-primary dark:text-gray-100">
-                {b.name}
-              </p>
+              <p className="text-xs font-semibold text-text-primary dark:text-gray-100">{b.name}</p>
               {b.role && (
-                <p className="text-[10px] text-text-tertiary dark:text-gray-500">
-                  {b.role}
-                </p>
+                <p className="text-[10px] text-text-tertiary dark:text-gray-500">{b.role}</p>
               )}
             </div>
             {b.lookAssigned ? (
@@ -114,9 +106,7 @@ export function BrideTribeCard({
       {/* Progress */}
       <div className="mt-3">
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-text-secondary dark:text-gray-300">
-            تقدم التنسيق
-          </span>
+          <span className="text-text-secondary dark:text-gray-300">تقدم التنسيق</span>
           <span className="font-bold text-rose-600 dark:text-rose-400">
             {assigned}/{bridesmaids.length}
           </span>
@@ -124,7 +114,9 @@ export function BrideTribeCard({
         <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
           <div
             className="h-full rounded-full bg-gradient-to-r from-rose-400 to-pink-500 transition-all"
-            style={{ width: `${bridesmaids.length > 0 ? Math.round((assigned / bridesmaids.length) * 100) : 0}%` }}
+            style={{
+              width: `${bridesmaids.length > 0 ? Math.round((assigned / bridesmaids.length) * 100) : 0}%`,
+            }}
           />
         </div>
       </div>
@@ -133,15 +125,11 @@ export function BrideTribeCard({
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-rose-50 p-2 text-center dark:bg-rose-950">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">الإجمالي</p>
-          <p className="text-sm font-bold text-rose-700 dark:text-rose-300">
-            {totalPrice} ر.س
-          </p>
+          <p className="text-sm font-bold text-rose-700 dark:text-rose-300">{totalPrice} ر.س</p>
         </div>
         <div className="rounded-xl bg-rose-50 p-2 text-center dark:bg-rose-950">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">للفرد</p>
-          <p className="text-sm font-bold text-rose-700 dark:text-rose-300">
-            {pricePerPerson} ر.س
-          </p>
+          <p className="text-sm font-bold text-rose-700 dark:text-rose-300">{pricePerPerson} ر.س</p>
         </div>
       </div>
 

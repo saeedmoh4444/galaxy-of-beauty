@@ -61,9 +61,7 @@ export function BeautyPodcastCard({
 
       {/* Episode card */}
       <div className="mt-3 rounded-xl bg-rose-50 p-3 dark:bg-rose-950">
-        <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-          {episode.title}
-        </p>
+        <p className="text-xs font-bold text-text-primary dark:text-gray-100">{episode.title}</p>
 
         {/* Guest */}
         <div className="mt-1.5 flex items-center gap-2">

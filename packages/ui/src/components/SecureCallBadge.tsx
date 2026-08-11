@@ -41,7 +41,9 @@ export function SecureCallBadge({
       {/* Header */}
       <div className="flex items-center gap-2">
         <div className="relative">
-          <span className="text-xl" aria-hidden="true">📞</span>
+          <span className="text-xl" aria-hidden="true">
+            📞
+          </span>
           {isActive && (
             <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -50,9 +52,7 @@ export function SecureCallBadge({
           )}
         </div>
         <div>
-          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-            اتصال آمن
-          </h4>
+          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">اتصال آمن</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
             رقمكِ الحقيقي يبقى مخفياً — نستخدم رقم وسيط
           </p>
@@ -67,10 +67,11 @@ export function SecureCallBadge({
       {/* Proxy number */}
       {isActive && proxyNumber && (
         <div className="mt-3 rounded-xl bg-emerald-50 p-3 text-center dark:bg-emerald-950">
-          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">
-            رقم الاتصال المؤقت
-          </p>
-          <p className="mt-0.5 text-lg font-mono font-bold text-emerald-800 dark:text-emerald-200" dir="ltr">
+          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">رقم الاتصال المؤقت</p>
+          <p
+            className="mt-0.5 text-lg font-mono font-bold text-emerald-800 dark:text-emerald-200"
+            dir="ltr"
+          >
             {proxyNumber}
           </p>
           <p className="mt-1 text-[9px] text-emerald-500 dark:text-emerald-400">
@@ -91,7 +92,9 @@ export function SecureCallBadge({
             key={f.label}
             className="flex items-center gap-1.5 rounded-lg bg-emerald-50/50 px-2.5 py-1.5 dark:bg-emerald-950/30"
           >
-            <span className="text-xs" aria-hidden="true">{f.emoji}</span>
+            <span className="text-xs" aria-hidden="true">
+              {f.emoji}
+            </span>
             <span className="text-[10px] font-medium text-emerald-800 dark:text-emerald-200">
               {f.label}
             </span>
@@ -101,12 +104,10 @@ export function SecureCallBadge({
 
       {/* How it works */}
       <div className="mt-2 rounded-lg bg-gray-50 p-2.5 dark:bg-gray-800">
-        <p className="text-[10px] font-bold text-text-secondary dark:text-gray-300">
-          💡 كيف يعمل؟
-        </p>
+        <p className="text-[10px] font-bold text-text-secondary dark:text-gray-300">💡 كيف يعمل؟</p>
         <p className="mt-0.5 text-[9px] leading-relaxed text-text-tertiary dark:text-gray-500">
-          عندما تتصل الخبيرة، يمر الاتصال عبر رقم وسيط (Twilio). ترين رقمها المؤقت، وترى
-          رقمكِ المؤقت. بعد انتهاء الموعد بـ {expiresIn}، تُحذف الأرقام تلقائياً.
+          عندما تتصل الخبيرة، يمر الاتصال عبر رقم وسيط (Twilio). ترين رقمها المؤقت، وترى رقمكِ
+          المؤقت. بعد انتهاء الموعد بـ {expiresIn}، تُحذف الأرقام تلقائياً.
         </p>
       </div>
 

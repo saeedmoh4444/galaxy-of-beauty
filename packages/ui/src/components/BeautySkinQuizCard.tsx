@@ -55,7 +55,10 @@ interface BeautySkinQuizCardProps {
   className?: string;
 }
 
-export function BeautySkinQuizCard({ onComplete, className = '' }: BeautySkinQuizCardProps): JSX.Element {
+export function BeautySkinQuizCard({
+  onComplete,
+  className = '',
+}: BeautySkinQuizCardProps): JSX.Element {
   const [step, setStep] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({});
   const [result, setResult] = useState<string | null>(null);
@@ -73,7 +76,11 @@ export function BeautySkinQuizCard({ onComplete, className = '' }: BeautySkinQui
       const finalScores = { ...newScores };
       const winner = Object.entries(finalScores).sort(([, a], [, b]) => b - a)[0]?.[0] ?? 'normal';
       const labels: Record<string, string> = {
-        oily: 'دهنية ✨', dry: 'جافة 💧', combination: 'مختلطة 🎭', normal: 'طبيعية 🌸', sensitive: 'حساسة 🌿',
+        oily: 'دهنية ✨',
+        dry: 'جافة 💧',
+        combination: 'مختلطة 🎭',
+        normal: 'طبيعية 🌸',
+        sensitive: 'حساسة 🌿',
       };
       setResult(labels[winner] ?? 'طبيعية 🌸');
       onComplete?.(winner);
@@ -82,11 +89,26 @@ export function BeautySkinQuizCard({ onComplete, className = '' }: BeautySkinQui
 
   if (result) {
     return (
-      <div className={cn('rounded-2xl border border-teal-100 bg-white p-5 text-center dark:border-teal-900 dark:bg-gray-900', className)}>
-        <span className="text-4xl" aria-hidden="true">🧬</span>
+      <div
+        className={cn(
+          'rounded-2xl border border-teal-100 bg-white p-5 text-center dark:border-teal-900 dark:bg-gray-900',
+          className,
+        )}
+      >
+        <span className="text-4xl" aria-hidden="true">
+          🧬
+        </span>
         <h4 className="mt-2 text-sm font-bold text-teal-700 dark:text-teal-300">نوع بشرتكِ</h4>
         <p className="mt-2 text-2xl font-bold text-teal-800 dark:text-teal-200">{result}</p>
-        <button type="button" onClick={() => { setStep(0); setScores({}); setResult(null); }} className="mt-3 rounded-xl bg-teal-600 px-4 py-2 text-xs font-bold text-white hover:bg-teal-700">
+        <button
+          type="button"
+          onClick={() => {
+            setStep(0);
+            setScores({});
+            setResult(null);
+          }}
+          className="mt-3 rounded-xl bg-teal-600 px-4 py-2 text-xs font-bold text-white hover:bg-teal-700"
+        >
           جربي مرة أخرى 🔄
         </button>
       </div>
@@ -96,15 +118,27 @@ export function BeautySkinQuizCard({ onComplete, className = '' }: BeautySkinQui
   const q = QUESTIONS[step]!;
 
   return (
-    <div className={cn('rounded-2xl border border-teal-100 bg-white p-4 dark:border-teal-900 dark:bg-gray-900', className)}>
+    <div
+      className={cn(
+        'rounded-2xl border border-teal-100 bg-white p-4 dark:border-teal-900 dark:bg-gray-900',
+        className,
+      )}
+    >
       <div className="flex items-center justify-between">
         <span className="text-lg">{q.emoji}</span>
-        <span className="text-[10px] text-text-tertiary dark:text-gray-500">{step + 1}/{QUESTIONS.length}</span>
+        <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+          {step + 1}/{QUESTIONS.length}
+        </span>
       </div>
       <p className="mt-2 text-xs font-bold text-text-primary dark:text-gray-100">{q.question}</p>
       <div className="mt-3 space-y-1.5">
         {q.options.map((opt, i) => (
-          <button key={i} type="button" onClick={() => handleAnswer(opt.score)} className="w-full rounded-lg bg-teal-50 px-3 py-2.5 text-left text-[10px] font-medium text-teal-800 hover:bg-teal-100 dark:bg-teal-950 dark:text-teal-200 dark:hover:bg-teal-900 transition-colors">
+          <button
+            key={i}
+            type="button"
+            onClick={() => handleAnswer(opt.score)}
+            className="w-full rounded-lg bg-teal-50 px-3 py-2.5 text-left text-[10px] font-medium text-teal-800 hover:bg-teal-100 dark:bg-teal-950 dark:text-teal-200 dark:hover:bg-teal-900 transition-colors"
+          >
             {opt.text}
           </button>
         ))}

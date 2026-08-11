@@ -24,9 +24,15 @@ export default function AiChatPage(): JSX.Element {
       const reply = res as unknown as Record<string, unknown>;
       setMessages((prev) => [
         ...prev,
-        { id: crypto.randomUUID(), role: 'assistant', content: (reply.response as string) ?? (reply.message as string) ?? '', createdAt: new Date().toISOString() },
+        {
+          id: crypto.randomUUID(),
+          role: 'assistant',
+          content: (reply.response as string) ?? (reply.message as string) ?? '',
+          createdAt: new Date().toISOString(),
+        },
       ]);
-    } });
+    },
+  });
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -35,7 +41,12 @@ export default function AiChatPage(): JSX.Element {
   const handleSend = () => {
     const trimmed = input.trim();
     if (!trimmed || sendMut.isPending) return;
-    const userMsg: ChatMessage = { id: crypto.randomUUID(), role: 'user', content: trimmed, createdAt: new Date().toISOString() };
+    const userMsg: ChatMessage = {
+      id: crypto.randomUUID(),
+      role: 'user',
+      content: trimmed,
+      createdAt: new Date().toISOString(),
+    };
     setMessages((prev) => [...prev, userMsg]);
     setInput('');
     sendMut.mutate({ message: trimmed });
@@ -84,16 +95,28 @@ export default function AiChatPage(): JSX.Element {
             </div>
           ) : (
             messages.map((msg) => (
-              <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                  msg.role === 'user'
-                    ? 'rounded-br-md bg-brand-600 text-white'
-                    : 'rounded-bl-md border border-purple-200 bg-purple-50 text-gray-800 dark:border-purple-800 dark:bg-purple-900/30 dark:text-gray-200'
-                }`}>
-                  {msg.role === 'assistant' && <span className="mb-1 block text-xs font-medium text-purple-500">لايلى</span>}
+              <div
+                key={msg.id}
+                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                <div
+                  className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                    msg.role === 'user'
+                      ? 'rounded-br-md bg-brand-600 text-white'
+                      : 'rounded-bl-md border border-purple-200 bg-purple-50 text-gray-800 dark:border-purple-800 dark:bg-purple-900/30 dark:text-gray-200'
+                  }`}
+                >
+                  {msg.role === 'assistant' && (
+                    <span className="mb-1 block text-xs font-medium text-purple-500">لايلى</span>
+                  )}
                   <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.content}</p>
-                  <p className={`mt-1 text-[10px] ${msg.role === 'user' ? 'text-white/60' : 'text-text-tertiary'}`}>
-                    {new Date(msg.createdAt).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}
+                  <p
+                    className={`mt-1 text-[10px] ${msg.role === 'user' ? 'text-white/60' : 'text-text-tertiary'}`}
+                  >
+                    {new Date(msg.createdAt).toLocaleTimeString('ar-SA', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
                   </p>
                 </div>
               </div>
@@ -130,7 +153,9 @@ export default function AiChatPage(): JSX.Element {
               إرسال
             </Button>
           </div>
-          <p className="mt-1 text-[10px] text-text-tertiary">اضغط Enter للإرسال | Shift+Enter لسطر جديد</p>
+          <p className="mt-1 text-[10px] text-text-tertiary">
+            اضغط Enter للإرسال | Shift+Enter لسطر جديد
+          </p>
         </div>
       </div>
     </DashboardLayout>

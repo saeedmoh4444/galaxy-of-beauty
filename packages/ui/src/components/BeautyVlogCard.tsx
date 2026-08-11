@@ -38,7 +38,9 @@ export function BeautyVlogCard({
     >
       {/* Thumbnail placeholder */}
       <div className="relative rounded-xl bg-gradient-to-br from-rose-200 to-pink-200 p-8 text-center dark:from-rose-900 dark:to-pink-900">
-        <span className="text-4xl" aria-hidden="true">🎬</span>
+        <span className="text-4xl" aria-hidden="true">
+          🎬
+        </span>
         <button
           type="button"
           onClick={onWatch}
@@ -55,9 +57,7 @@ export function BeautyVlogCard({
 
       {/* Info */}
       <div className="mt-2">
-        <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-          {vlog.title}
-        </p>
+        <p className="text-xs font-bold text-text-primary dark:text-gray-100">{vlog.title}</p>
         <div className="mt-1 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-gray-500">
           <span>👩‍🎨 {vlog.technician}</span>
           {vlog.category && <span>· {vlog.category}</span>}

@@ -62,13 +62,8 @@ export const referralRouter = router({
       }),
     ]);
 
-    const completedReferrals = referralsMade.filter(
-      (r) => r.status === 'COMPLETED',
-    );
-    const totalEarned = creditsReceived.reduce(
-      (sum, t) => sum + t.amount.toNumber(),
-      0,
-    );
+    const completedReferrals = referralsMade.filter((r) => r.status === 'COMPLETED');
+    const totalEarned = creditsReceived.reduce((sum, t) => sum + t.amount.toNumber(), 0);
     const pendingRewards = referralsMade
       .filter((r) => r.status === 'PENDING' && !r.rewardCredited)
       .reduce((sum, r) => sum + r.referrerReward.toNumber(), 0);
@@ -76,8 +71,7 @@ export const referralRouter = router({
     return {
       totalReferred: referralsMade.length,
       completedReferrals: completedReferrals.length,
-      pendingReferrals:
-        referralsMade.length - completedReferrals.length,
+      pendingReferrals: referralsMade.length - completedReferrals.length,
       totalEarned,
       pendingRewards,
       referrals: referralsMade.map((r) => ({
@@ -199,7 +193,10 @@ export const referralRouter = router({
 
   // ── Share card ────────────────────────────────────────
   shareCard: protectedProcedure.query(async ({ ctx }) => {
-    const ref = await prisma.referral.findFirst({ where: { referrerId: ctx.user.id }, select: { referralCode: true } });
+    const ref = await prisma.referral.findFirst({
+      where: { referrerId: ctx.user.id },
+      select: { referralCode: true },
+    });
     const code = ref?.referralCode || `GOB-${ctx.user.id}`;
     return {
       code,
@@ -221,8 +218,16 @@ export const referralRouter = router({
 
     // Tiered rewards
     const count = completed.length;
-    const tier = count >= 10 ? '💎 الماسي' : count >= 5 ? '🥇 ذهبي' : count >= 1 ? '🥈 فضي' : '⭐ مبتدئ';
-    const nextTier = count >= 10 ? null : count >= 5 ? '💎 الماسي (١٠ إحالات)' : count >= 1 ? '🥇 ذهبي (٥ إحالات)' : '🥈 فضي (إحالة واحدة)';
+    const tier =
+      count >= 10 ? '💎 الماسي' : count >= 5 ? '🥇 ذهبي' : count >= 1 ? '🥈 فضي' : '⭐ مبتدئ';
+    const nextTier =
+      count >= 10
+        ? null
+        : count >= 5
+          ? '💎 الماسي (١٠ إحالات)'
+          : count >= 1
+            ? '🥇 ذهبي (٥ إحالات)'
+            : '🥈 فضي (إحالة واحدة)';
     const nextCount = count >= 10 ? 0 : count >= 5 ? 10 - count : count >= 1 ? 5 - count : 1;
 
     // Double-sided rewards

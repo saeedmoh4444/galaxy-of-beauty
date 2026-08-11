@@ -12,7 +12,8 @@ import { cn } from '@galaxy/shared';
  *   />
  */
 
-type IngredientType = 'active' | 'moisturizer' | 'exfoliant' | 'antioxidant' | 'sunscreen' | 'oil' | 'natural';
+type IngredientType =
+  'active' | 'moisturizer' | 'exfoliant' | 'antioxidant' | 'sunscreen' | 'oil' | 'natural';
 
 interface TypeDef {
   emoji: string;
@@ -21,13 +22,41 @@ interface TypeDef {
 }
 
 const TYPES: Record<IngredientType, TypeDef> = {
-  active: { emoji: '⚡', label: 'مادة فعالة', color: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300' },
-  moisturizer: { emoji: '💧', label: 'مرطب', color: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300' },
-  exfoliant: { emoji: '🔄', label: 'مقشر', color: 'bg-orange-50 text-orange-700 dark:bg-orange-950 dark:text-orange-300' },
-  antioxidant: { emoji: '🛡️', label: 'مضاد أكسدة', color: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' },
-  sunscreen: { emoji: '☀️', label: 'واقي شمس', color: 'bg-yellow-50 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300' },
-  oil: { emoji: '🫒', label: 'زيت', color: 'bg-lime-50 text-lime-700 dark:bg-lime-950 dark:text-lime-300' },
-  natural: { emoji: '🌿', label: 'طبيعي', color: 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300' },
+  active: {
+    emoji: '⚡',
+    label: 'مادة فعالة',
+    color: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
+  },
+  moisturizer: {
+    emoji: '💧',
+    label: 'مرطب',
+    color: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
+  },
+  exfoliant: {
+    emoji: '🔄',
+    label: 'مقشر',
+    color: 'bg-orange-50 text-orange-700 dark:bg-orange-950 dark:text-orange-300',
+  },
+  antioxidant: {
+    emoji: '🛡️',
+    label: 'مضاد أكسدة',
+    color: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
+  },
+  sunscreen: {
+    emoji: '☀️',
+    label: 'واقي شمس',
+    color: 'bg-yellow-50 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300',
+  },
+  oil: {
+    emoji: '🫒',
+    label: 'زيت',
+    color: 'bg-lime-50 text-lime-700 dark:bg-lime-950 dark:text-lime-300',
+  },
+  natural: {
+    emoji: '🌿',
+    label: 'طبيعي',
+    color: 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300',
+  },
 };
 
 interface Ingredient {
@@ -76,7 +105,12 @@ export function IngredientGlossaryCard({
               {ingredient.arabicName}
             </p>
           )}
-          <span className={cn('mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium', type.color)}>
+          <span
+            className={cn(
+              'mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium',
+              type.color,
+            )}
+          >
             {type.emoji} {type.label}
           </span>
         </div>
@@ -84,9 +118,7 @@ export function IngredientGlossaryCard({
 
       {/* Benefits */}
       <div className="mt-3 rounded-xl bg-emerald-50 p-3 dark:bg-emerald-950">
-        <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
-          ✨ الفوائد
-        </p>
+        <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">✨ الفوائد</p>
         <div className="mt-1 flex flex-wrap gap-1">
           {ingredient.benefits.map((b) => (
             <span
@@ -102,9 +134,7 @@ export function IngredientGlossaryCard({
       {/* Suitable for */}
       {ingredient.suitableFor && ingredient.suitableFor.length > 0 && (
         <div className="mt-2 rounded-xl bg-sky-50 p-2.5 dark:bg-sky-950">
-          <p className="text-[10px] font-bold text-sky-700 dark:text-sky-300">
-            👍 مناسب لـ
-          </p>
+          <p className="text-[10px] font-bold text-sky-700 dark:text-sky-300">👍 مناسب لـ</p>
           <p className="mt-0.5 text-[10px] text-sky-600 dark:text-sky-400">
             {ingredient.suitableFor.join(' · ')}
           </p>
@@ -114,9 +144,7 @@ export function IngredientGlossaryCard({
       {/* Warnings */}
       {ingredient.warnings && ingredient.warnings.length > 0 && (
         <div className="mt-2 rounded-xl bg-rose-50 p-2.5 dark:bg-rose-950">
-          <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300">
-            ⚠️ تحذيرات
-          </p>
+          <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300">⚠️ تحذيرات</p>
           <ul className="mt-0.5 space-y-0.5">
             {ingredient.warnings.map((w) => (
               <li key={w} className="text-[10px] text-rose-600 dark:text-rose-400">

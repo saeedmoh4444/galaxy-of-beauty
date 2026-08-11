@@ -27,26 +27,33 @@ export default function LoyaltyScreen(): JSX.Element {
 
       {/* Tier Card */}
       <View style={styles.tierCard}>
-        <Text style={styles.tierEmoji}>{TIERS[acc?.tier as string ?? 'SILVER']?.emoji ?? '🥈'}</Text>
-        <Text style={styles.tierLabel}>{TIERS[acc?.tier as string ?? 'SILVER']?.label ?? 'فضية'}</Text>
-        <Text style={styles.points}>{acc?.points as number ?? 0} نقطة</Text>
-        <Text style={styles.lifetime}>إجمالي: {acc?.lifetimePoints as number ?? 0} نقطة</Text>
+        <Text style={styles.tierEmoji}>
+          {TIERS[(acc?.tier as string) ?? 'SILVER']?.emoji ?? '🥈'}
+        </Text>
+        <Text style={styles.tierLabel}>
+          {TIERS[(acc?.tier as string) ?? 'SILVER']?.label ?? 'فضية'}
+        </Text>
+        <Text style={styles.points}>{(acc?.points as number) ?? 0} نقطة</Text>
+        <Text style={styles.lifetime}>إجمالي: {(acc?.lifetimePoints as number) ?? 0} نقطة</Text>
       </View>
 
       {/* Recent Transactions */}
       <Text style={styles.sectionTitle}>آخر العمليات</Text>
       {txs.isLoading ? null : (
         <FlatList
-          data={(txs.data as any)?.items as any[] ?? []}
+          data={((txs.data as any)?.items as any[]) ?? []}
           keyExtractor={(_, i) => String(i)}
           renderItem={({ item }) => (
             <View style={styles.txnRow}>
               <View>
                 <Text style={styles.txnReason}>{item.reason ?? 'عملية'}</Text>
-                <Text style={styles.txnDate}>{new Date(item.createdAt).toLocaleDateString('ar-SA')}</Text>
+                <Text style={styles.txnDate}>
+                  {new Date(item.createdAt).toLocaleDateString('ar-SA')}
+                </Text>
               </View>
               <Text style={[styles.txnPoints, { color: item.points > 0 ? '#10b981' : '#dc2626' }]}>
-                {item.points > 0 ? '+' : ''}{item.points}
+                {item.points > 0 ? '+' : ''}
+                {item.points}
               </Text>
             </View>
           )}
@@ -57,14 +64,33 @@ export default function LoyaltyScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 24, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 20 },
-  tierCard: { backgroundColor: '#7c3aed', borderRadius: 16, padding: 24, alignItems: 'center', marginBottom: 24 },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#7c3aed',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  tierCard: {
+    backgroundColor: '#7c3aed',
+    borderRadius: 16,
+    padding: 24,
+    alignItems: 'center',
+    marginBottom: 24,
+  },
   tierEmoji: { fontSize: 48, marginBottom: 8 },
   tierLabel: { fontSize: 20, fontWeight: '800', color: '#ffffff' },
   points: { fontSize: 28, fontWeight: '800', color: '#ffffff', marginTop: 8 },
   lifetime: { fontSize: 13, color: 'rgba(255,255,255,0.7)', marginTop: 4 },
   sectionTitle: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 12 },
-  txnRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' },
+  txnRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f3f4f6',
+  },
   txnReason: { fontSize: 13, fontWeight: '600', color: '#111827' },
   txnDate: { fontSize: 11, color: '#6b7280', marginTop: 2 },
   txnPoints: { fontSize: 14, fontWeight: '700' },

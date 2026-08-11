@@ -13,7 +13,9 @@ export function RebookReminder(): JSX.Element {
 
   if (completed.length === 0) return <></>;
 
-  const lastBooking = completed.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+  const lastBooking = completed.sort(
+    (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  )[0];
   if (!lastBooking) return <></>;
 
   const daysSince = Math.floor((Date.now() - new Date(lastBooking.createdAt).getTime()) / 86400000);
@@ -24,14 +26,21 @@ export function RebookReminder(): JSX.Element {
   const serviceId = lastBooking.serviceId;
 
   return (
-    <Card padding="md" className="bg-gradient-to-r from-brand-50 to-accent-50 border border-brand-200 dark:from-brand-950 dark:to-accent-950 dark:border-brand-800">
+    <Card
+      padding="md"
+      className="bg-gradient-to-r from-brand-50 to-accent-50 border border-brand-200 dark:from-brand-950 dark:to-accent-950 dark:border-brand-800"
+    >
       <div className="flex items-center gap-4">
         <span className="text-3xl">⏰</span>
         <div className="flex-1">
-          <p className="font-semibold text-gray-900 dark:text-gray-100 text-sm">مرّ {weeksSince} {weeksSince === 1 ? 'أسبوع' : 'أسابيع'} على آخر {serviceName}</p>
+          <p className="font-semibold text-gray-900 dark:text-gray-100 text-sm">
+            مرّ {weeksSince} {weeksSince === 1 ? 'أسبوع' : 'أسابيع'} على آخر {serviceName}
+          </p>
           <p className="text-xs text-gray-500 mt-0.5">مستعدة لتجديد إطلالتكِ؟</p>
         </div>
-        <Link href={`/bookings/create?serviceId=${serviceId}`}><Button size="sm">أعيدي الحجز</Button></Link>
+        <Link href={`/bookings/create?serviceId=${serviceId}`}>
+          <Button size="sm">أعيدي الحجز</Button>
+        </Link>
       </div>
     </Card>
   );

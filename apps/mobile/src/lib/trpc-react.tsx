@@ -32,15 +32,18 @@ function getAuthHeaders(): Record<string, string> {
 }
 
 export function TRPCProvider({ children }: { children: ReactNode }): ReactNode {
-  const [queryClient] = useState(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 30_000,       // 30s before refetch
-        retry: 2,
-        refetchOnWindowFocus: false, // mobile doesn't have window focus
-      },
-    },
-  }));
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 30_000, // 30s before refetch
+            retry: 2,
+            refetchOnWindowFocus: false, // mobile doesn't have window focus
+          },
+        },
+      }),
+  );
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
@@ -55,9 +58,7 @@ export function TRPCProvider({ children }: { children: ReactNode }): ReactNode {
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </trpc.Provider>
   );
 }

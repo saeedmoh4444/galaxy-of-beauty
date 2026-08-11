@@ -29,8 +29,16 @@ export const recommendationsRouter = router({
       });
 
       const serviceIds = related.map((r: any) => r.serviceId);
-      const services = await db.service.findMany({ where: { id: { in: serviceIds }, isActive: true } });
-      return services.map((s: any) => ({ id: s.id, title: (s.titleJson as any)?.ar || '', basePrice: Number(s.basePrice), durationMin: s.durationMin, bookedTogether: related.find((r: any) => r.serviceId === s.id)?._count?.serviceId || 0 }));
+      const services = await db.service.findMany({
+        where: { id: { in: serviceIds }, isActive: true },
+      });
+      return services.map((s: any) => ({
+        id: s.id,
+        title: (s.titleJson as any)?.ar || '',
+        basePrice: Number(s.basePrice),
+        durationMin: s.durationMin,
+        bookedTogether: related.find((r: any) => r.serviceId === s.id)?._count?.serviceId || 0,
+      }));
     }),
 
   // "Complete the look" — complementary services based on category
@@ -41,18 +49,51 @@ export const recommendationsRouter = router({
       if (!service) return [];
 
       const categoryId = service.categoryId;
-      const sameCategory = await db.service.findMany({ where: { categoryId, id: { not: input.serviceId }, isActive: true }, take: input.limit });
-      if (sameCategory.length >= input.limit) return sameCategory.map((s: any) => ({ id: s.id, title: (s.titleJson as any)?.ar || '', basePrice: Number(s.basePrice), durationMin: s.durationMin, reason: 'same_category' }));
+      const sameCategory = await db.service.findMany({
+        where: { categoryId, id: { not: input.serviceId }, isActive: true },
+        take: input.limit,
+      });
+      if (sameCategory.length >= input.limit)
+        return sameCategory.map((s: any) => ({
+          id: s.id,
+          title: (s.titleJson as any)?.ar || '',
+          basePrice: Number(s.basePrice),
+          durationMin: s.durationMin,
+          reason: 'same_category',
+        }));
 
-      const otherServices = await db.service.findMany({ where: { id: { not: input.serviceId }, isActive: true, isPopular: true }, take: input.limit });
-      return otherServices.map((s: any) => ({ id: s.id, title: (s.titleJson as any)?.ar || '', basePrice: Number(s.basePrice), durationMin: s.durationMin, reason: 'popular' }));
+      const otherServices = await db.service.findMany({
+        where: { id: { not: input.serviceId }, isActive: true, isPopular: true },
+        take: input.limit,
+      });
+      return otherServices.map((s: any) => ({
+        id: s.id,
+        title: (s.titleJson as any)?.ar || '',
+        basePrice: Number(s.basePrice),
+        durationMin: s.durationMin,
+        reason: 'popular',
+      }));
     }),
 
   // "Because you viewed" — based on beauty profile
   forYou: publicProcedure
-    .input(z.object({ skinType: z.string().optional(), hairType: z.string().optional(), limit: z.number().default(4) }))
+    .input(
+      z.object({
+        skinType: z.string().optional(),
+        hairType: z.string().optional(),
+        limit: z.number().default(4),
+      }),
+    )
     .query(async ({ input }) => {
-      const services = await db.service.findMany({ where: { isActive: true }, take: input.limit * 2 });
-      return services.slice(0, input.limit).map((s: any) => ({ id: s.id, title: (s.titleJson as any)?.ar || '', basePrice: Number(s.basePrice), durationMin: s.durationMin }));
+      const services = await db.service.findMany({
+        where: { isActive: true },
+        take: input.limit * 2,
+      });
+      return services.slice(0, input.limit).map((s: any) => ({
+        id: s.id,
+        title: (s.titleJson as any)?.ar || '',
+        basePrice: Number(s.basePrice),
+        durationMin: s.durationMin,
+      }));
     }),
 });

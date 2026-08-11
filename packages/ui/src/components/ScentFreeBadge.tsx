@@ -49,11 +49,11 @@ export function ScentFreeBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">🌿</span>
+        <span className="text-xl" aria-hidden="true">
+          🌿
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-green-700 dark:text-green-300">
-            خالٍ من العطور
-          </h4>
+          <h4 className="text-sm font-bold text-green-700 dark:text-green-300">خالٍ من العطور</h4>
           <p className="text-[10px] text-green-500 dark:text-green-400">
             {fullyScentFree
               ? 'صالون خالٍ تماماً من العطور القوية'

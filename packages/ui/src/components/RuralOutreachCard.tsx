@@ -40,7 +40,9 @@ export function RuralOutreachCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">🏡</span>
+        <span className="text-3xl" aria-hidden="true">
+          🏡
+        </span>
         <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">
           تمكين المرأة الريفية
         </h4>
@@ -52,24 +54,24 @@ export function RuralOutreachCard({
       {/* Stats */}
       <div className="mt-3 grid grid-cols-3 gap-2">
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-lg" aria-hidden="true">🎓</p>
-          <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">
-            {trained}
+          <p className="text-lg" aria-hidden="true">
+            🎓
           </p>
+          <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{trained}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">متدربة</p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-lg" aria-hidden="true">💼</p>
-          <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">
-            {employed}
+          <p className="text-lg" aria-hidden="true">
+            💼
           </p>
+          <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{employed}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">موظفة</p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-lg" aria-hidden="true">📍</p>
-          <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">
-            {villages}
+          <p className="text-lg" aria-hidden="true">
+            📍
           </p>
+          <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{villages}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">قرية</p>
         </div>
       </div>
@@ -80,9 +82,7 @@ export function RuralOutreachCard({
           <span className="text-emerald-700 dark:text-emerald-300">
             🎯 هدف توظيف {target} امرأة ريفية
           </span>
-          <span className="font-bold text-emerald-800 dark:text-emerald-200">
-            {employPct}%
-          </span>
+          <span className="font-bold text-emerald-800 dark:text-emerald-200">{employPct}%</span>
         </div>
         <div className="mt-1.5 h-2.5 overflow-hidden rounded-full bg-emerald-100 dark:bg-emerald-900">
           <div

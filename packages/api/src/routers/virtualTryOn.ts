@@ -5,10 +5,22 @@ import { publicProcedure, customerProcedure, router } from '../trpc';
 
 // Predefined makeup color palettes — curated for Saudi beauty preferences
 const LIP_COLORS = [
-  { id: 'lip_rose', nameAr: 'وردي طبيعي', nameEn: 'Natural Rose', hex: '#D4737C', category: 'nude' },
+  {
+    id: 'lip_rose',
+    nameAr: 'وردي طبيعي',
+    nameEn: 'Natural Rose',
+    hex: '#D4737C',
+    category: 'nude',
+  },
   { id: 'lip_berry', nameAr: 'توتي غامق', nameEn: 'Deep Berry', hex: '#8B2252', category: 'bold' },
   { id: 'lip_coral', nameAr: 'مرجاني', nameEn: 'Coral', hex: '#E8735A', category: 'warm' },
-  { id: 'lip_red', nameAr: 'أحمر كلاسيكي', nameEn: 'Classic Red', hex: '#C41E3A', category: 'classic' },
+  {
+    id: 'lip_red',
+    nameAr: 'أحمر كلاسيكي',
+    nameEn: 'Classic Red',
+    hex: '#C41E3A',
+    category: 'classic',
+  },
   { id: 'lip_pink', nameAr: 'وردي فاتح', nameEn: 'Soft Pink', hex: '#F2A0B6', category: 'soft' },
   { id: 'lip_mauve', nameAr: 'موف هادئ', nameEn: 'Dusty Mauve', hex: '#915F6D', category: 'nude' },
   { id: 'lip_plum', nameAr: 'خوخي', nameEn: 'Plum', hex: '#673147', category: 'bold' },
@@ -18,18 +30,48 @@ const LIP_COLORS = [
 const EYE_COLORS = [
   { id: 'eye_gold', nameAr: 'ذهبي', nameEn: 'Gold', hex: '#D4A843', category: 'shimmer' },
   { id: 'eye_bronze', nameAr: 'برونزي', nameEn: 'Bronze', hex: '#8B6914', category: 'warm' },
-  { id: 'eye_rosegold', nameAr: 'روز قولد', nameEn: 'Rose Gold', hex: '#B76E79', category: 'shimmer' },
-  { id: 'eye_brown', nameAr: 'بني دخاني', nameEn: 'Smokey Brown', hex: '#6B4423', category: 'matte' },
+  {
+    id: 'eye_rosegold',
+    nameAr: 'روز قولد',
+    nameEn: 'Rose Gold',
+    hex: '#B76E79',
+    category: 'shimmer',
+  },
+  {
+    id: 'eye_brown',
+    nameAr: 'بني دخاني',
+    nameEn: 'Smokey Brown',
+    hex: '#6B4423',
+    category: 'matte',
+  },
   { id: 'eye_plum', nameAr: 'برقوقي', nameEn: 'Plum', hex: '#5E2A4A', category: 'bold' },
-  { id: 'eye_champagne', nameAr: 'شامبين', nameEn: 'Champagne', hex: '#E8D5B7', category: 'shimmer' },
-  { id: 'eye_taupe', nameAr: 'رمادي هادئ', nameEn: 'Soft Taupe', hex: '#8B7D6B', category: 'matte' },
+  {
+    id: 'eye_champagne',
+    nameAr: 'شامبين',
+    nameEn: 'Champagne',
+    hex: '#E8D5B7',
+    category: 'shimmer',
+  },
+  {
+    id: 'eye_taupe',
+    nameAr: 'رمادي هادئ',
+    nameEn: 'Soft Taupe',
+    hex: '#8B7D6B',
+    category: 'matte',
+  },
   { id: 'eye_navy', nameAr: 'كحلي', nameEn: 'Navy', hex: '#1B2A4A', category: 'bold' },
 ];
 
 const BLUSH_COLORS = [
   { id: 'blush_peach', nameAr: 'خوخي', nameEn: 'Peach', hex: '#F4A460', category: 'warm' },
   { id: 'blush_pink', nameAr: 'وردي', nameEn: 'Pink', hex: '#F2A0B6', category: 'soft' },
-  { id: 'blush_rose', nameAr: 'وردي غامق', nameEn: 'Deep Rose', hex: '#D4737C', category: 'classic' },
+  {
+    id: 'blush_rose',
+    nameAr: 'وردي غامق',
+    nameEn: 'Deep Rose',
+    hex: '#D4737C',
+    category: 'classic',
+  },
   { id: 'blush_coral', nameAr: 'مرجاني', nameEn: 'Coral', hex: '#E8735A', category: 'warm' },
   { id: 'blush_mauve', nameAr: 'موف', nameEn: 'Mauve', hex: '#915F6D', category: 'soft' },
   { id: 'blush_bronze', nameAr: 'برونزي', nameEn: 'Bronze', hex: '#CD853F', category: 'warm' },

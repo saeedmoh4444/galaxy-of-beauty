@@ -19,11 +19,19 @@ const AsyncStorage = (() => {
     const store = new Map<string, string>();
     return {
       getItem: async (k: string) => store.get(k) ?? null,
-      setItem: async (k: string, v: string) => { store.set(k, v); },
-      removeItem: async (k: string) => { store.delete(k); },
+      setItem: async (k: string, v: string) => {
+        store.set(k, v);
+      },
+      removeItem: async (k: string) => {
+        store.delete(k);
+      },
     };
   }
-})() as { getItem(k: string): Promise<string | null>; setItem(k: string, v: string): Promise<void>; removeItem(k: string): Promise<void> };
+})() as {
+  getItem(k: string): Promise<string | null>;
+  setItem(k: string, v: string): Promise<void>;
+  removeItem(k: string): Promise<void>;
+};
 
 const QUEUE_KEY = 'gob_offline_queue';
 
@@ -53,13 +61,12 @@ export function getOnlineStatus(): boolean {
 
 export function onSyncComplete(cb: () => void): () => void {
   listeners.push(cb);
-  return () => { listeners = listeners.filter((l) => l !== cb); };
+  return () => {
+    listeners = listeners.filter((l) => l !== cb);
+  };
 }
 
-export async function enqueueAction(
-  type: string,
-  payload: Record<string, unknown>,
-): Promise<void> {
+export async function enqueueAction(type: string, payload: Record<string, unknown>): Promise<void> {
   const queue = await getQueue();
   queue.push({
     id: `${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,

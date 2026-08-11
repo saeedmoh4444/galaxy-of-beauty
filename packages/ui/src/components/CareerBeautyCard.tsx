@@ -10,7 +10,8 @@ import { cn } from '@galaxy/shared';
  *   <CareerBeautyCard profession="office" onBook={() => {}} />
  */
 
-type Profession = 'office' | 'healthcare' | 'education' | 'entrepreneur' | 'media' | 'customer_facing';
+type Profession =
+  'office' | 'healthcare' | 'education' | 'entrepreneur' | 'media' | 'customer_facing';
 
 interface ProfDef {
   emoji: string;
@@ -20,12 +21,42 @@ interface ProfDef {
 }
 
 const PROFS: Record<Profession, ProfDef> = {
-  office: { emoji: '💼', title: 'مكتبية', look: 'مكياج ناعم احترافي', services: ['مكياج يومي سريع', 'تسريحة عملية', 'مانيكير'] },
-  healthcare: { emoji: '🩺', title: 'طبية', look: 'إطلالة عملية ونظيفة', services: ['عناية بالبشرة', 'حواجب مرتبة', 'أظافر قصيرة'] },
-  education: { emoji: '📚', title: 'تعليمية', look: 'مكياج خفيف ولطيف', services: ['تنظيف بشرة', 'ترطيب', 'مكياج خفيف'] },
-  entrepreneur: { emoji: '💎', title: 'رائدة أعمال', look: 'إطلالة قوية وواثقة', services: ['مكياج احترافي', 'تسريحة قوية', 'استشارة ألوان'] },
-  media: { emoji: '🎥', title: 'إعلامية', look: 'مكياج كاميرا', services: ['مكياج HD', 'تسريحة', 'مانيكير وباديكير'] },
-  customer_facing: { emoji: '🤝', title: 'خدمة عملاء', look: 'إطلالة ودودة وجذابة', services: ['مكياج طبيعي', 'ابتسامة هوليوود', 'عناية بالأظافر'] },
+  office: {
+    emoji: '💼',
+    title: 'مكتبية',
+    look: 'مكياج ناعم احترافي',
+    services: ['مكياج يومي سريع', 'تسريحة عملية', 'مانيكير'],
+  },
+  healthcare: {
+    emoji: '🩺',
+    title: 'طبية',
+    look: 'إطلالة عملية ونظيفة',
+    services: ['عناية بالبشرة', 'حواجب مرتبة', 'أظافر قصيرة'],
+  },
+  education: {
+    emoji: '📚',
+    title: 'تعليمية',
+    look: 'مكياج خفيف ولطيف',
+    services: ['تنظيف بشرة', 'ترطيب', 'مكياج خفيف'],
+  },
+  entrepreneur: {
+    emoji: '💎',
+    title: 'رائدة أعمال',
+    look: 'إطلالة قوية وواثقة',
+    services: ['مكياج احترافي', 'تسريحة قوية', 'استشارة ألوان'],
+  },
+  media: {
+    emoji: '🎥',
+    title: 'إعلامية',
+    look: 'مكياج كاميرا',
+    services: ['مكياج HD', 'تسريحة', 'مانيكير وباديكير'],
+  },
+  customer_facing: {
+    emoji: '🤝',
+    title: 'خدمة عملاء',
+    look: 'إطلالة ودودة وجذابة',
+    services: ['مكياج طبيعي', 'ابتسامة هوليوود', 'عناية بالأظافر'],
+  },
 };
 
 interface CareerBeautyCardProps {
@@ -53,9 +84,7 @@ export function CareerBeautyCard({
           {prof.emoji}
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">
-            جمال المهنة
-          </h4>
+          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">جمال المهنة</h4>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">
             {prof.title} — {prof.look}
           </p>
@@ -69,7 +98,10 @@ export function CareerBeautyCard({
         </p>
         <div className="mt-1 flex flex-wrap gap-1">
           {prof.services.map((s) => (
-            <span key={s} className="rounded-full bg-white px-2 py-0.5 text-[9px] text-sky-700 dark:bg-gray-800 dark:text-sky-300">
+            <span
+              key={s}
+              className="rounded-full bg-white px-2 py-0.5 text-[9px] text-sky-700 dark:bg-gray-800 dark:text-sky-300"
+            >
               {s}
             </span>
           ))}
@@ -80,7 +112,9 @@ export function CareerBeautyCard({
       <div className="mt-2 rounded-xl bg-gradient-to-r from-sky-100 to-blue-100 p-3 dark:from-sky-900 dark:to-blue-900">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
-            <span className="text-sm" aria-hidden="true">🕐</span>
+            <span className="text-sm" aria-hidden="true">
+              🕐
+            </span>
             <div>
               <p className="text-[10px] font-bold text-sky-800 dark:text-sky-200">
                 خدمة استراحة الغداء

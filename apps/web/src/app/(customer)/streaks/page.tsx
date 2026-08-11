@@ -29,25 +29,47 @@ export default function StreaksPage(): JSX.Element {
 
         {isLoading ? (
           <div className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-3">{Array.from({ length: 3 }, (_, i) => <CardSkeleton key={i} />)}</div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{Array.from({ length: 3 }, (_, i) => <CardSkeleton key={i} />)}</div>
+            <div className="grid gap-4 md:grid-cols-3">
+              {Array.from({ length: 3 }, (_, i) => (
+                <CardSkeleton key={i} />
+              ))}
+            </div>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 3 }, (_, i) => (
+                <CardSkeleton key={i} />
+              ))}
+            </div>
           </div>
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل بيانات الاستمرارية" onRetry={() => { streakQ.refetch(); achievementsQ.refetch(); }} />
+          <ErrorAlert
+            message="فشل تحميل بيانات الاستمرارية"
+            onRetry={() => {
+              streakQ.refetch();
+              achievementsQ.refetch();
+            }}
+          />
         ) : (
           <>
             {/* Current Streak */}
             <div className="grid gap-4 md:grid-cols-3">
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
                 <span className="text-5xl">🔥</span>
-                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400">الاستمرارية الحالية</p>
-                <p className="mt-1 text-4xl font-bold text-brand-600">{streakData?.currentStreak as number ?? 0}</p>
+                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400">
+                  الاستمرارية الحالية
+                </p>
+                <p className="mt-1 text-4xl font-bold text-brand-600">
+                  {(streakData?.currentStreak as number) ?? 0}
+                </p>
                 <p className="text-xs text-text-tertiary">أسابيع متتالية</p>
               </Card>
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
                 <span className="text-5xl">🏆</span>
-                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400">أطول استمرارية</p>
-                <p className="mt-1 text-4xl font-bold text-amber-600">{streakData?.longestStreak as number ?? 0}</p>
+                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400">
+                  أطول استمرارية
+                </p>
+                <p className="mt-1 text-4xl font-bold text-amber-600">
+                  {(streakData?.longestStreak as number) ?? 0}
+                </p>
                 <p className="text-xs text-text-tertiary">أسابيع</p>
               </Card>
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
@@ -55,9 +77,14 @@ export default function StreaksPage(): JSX.Element {
                 <p className="mt-3 text-sm text-text-secondary dark:text-gray-400">آخر حجز</p>
                 <p className="mt-1 text-lg font-semibold text-text-primary dark:text-gray-300">
                   {streakData?.lastBookingDate
-                    ? new Date(streakData.lastBookingDate as unknown as string).toLocaleDateString('ar-SA', {
-                        year: 'numeric', month: 'short', day: 'numeric',
-                      })
+                    ? new Date(streakData.lastBookingDate as unknown as string).toLocaleDateString(
+                        'ar-SA',
+                        {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        },
+                      )
                     : 'لا يوجد'}
                 </p>
               </Card>
@@ -88,7 +115,11 @@ export default function StreaksPage(): JSX.Element {
                       <div className="flex items-start gap-3">
                         <span className="text-3xl">
                           {ach.iconUrl ? (
-                            <img src={ach.iconUrl as string} alt="" className="h-10 w-10 rounded-full object-cover" />
+                            <img
+                              src={ach.iconUrl as string}
+                              alt=""
+                              className="h-10 w-10 rounded-full object-cover"
+                            />
                           ) : isEarned ? (
                             '🏅'
                           ) : (
@@ -97,7 +128,9 @@ export default function StreaksPage(): JSX.Element {
                         </span>
                         <div className="min-w-0 flex-1">
                           <p className="font-semibold">{nameJson?.ar ?? nameJson?.en ?? ''}</p>
-                          <p className="mt-0.5 text-xs text-text-secondary">{descriptionJson?.ar ?? descriptionJson?.en ?? ''}</p>
+                          <p className="mt-0.5 text-xs text-text-secondary">
+                            {descriptionJson?.ar ?? descriptionJson?.en ?? ''}
+                          </p>
                           <div className="mt-2 flex items-center gap-2">
                             {isEarned ? (
                               <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">

@@ -63,14 +63,14 @@ export function PriceAlertBadge({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true">🔔</span>
+          <span className="text-lg" aria-hidden="true">
+            🔔
+          </span>
           <div>
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
               {serviceName}
             </h4>
-            <p className="text-[10px] text-text-tertiary dark:text-gray-400">
-              تنبيه السعر
-            </p>
+            <p className="text-[10px] text-text-tertiary dark:text-gray-400">تنبيه السعر</p>
           </div>
         </div>
 
@@ -102,16 +102,18 @@ export function PriceAlertBadge({
         </div>
         <div className="rounded-xl bg-gray-50 p-2 text-center dark:bg-gray-800">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">السعر المستهدف</p>
-          <p className="text-xs font-bold text-green-700 dark:text-green-400">
-            {target} ر.س
-          </p>
+          <p className="text-xs font-bold text-green-700 dark:text-green-400">{target} ر.س</p>
         </div>
         <div className="rounded-xl bg-gray-50 p-2 text-center dark:bg-gray-800">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">الفرق</p>
-          <p className={cn(
-            'text-xs font-bold',
-            isBelow ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400',
-          )}>
+          <p
+            className={cn(
+              'text-xs font-bold',
+              isBelow
+                ? 'text-emerald-600 dark:text-emerald-400'
+                : 'text-rose-600 dark:text-rose-400',
+            )}
+          >
             {isBelow ? '✅' : '📉'} {Math.abs(currentPrice - target)} ر.س
           </p>
         </div>
@@ -129,7 +131,9 @@ export function PriceAlertBadge({
       {/* Target reached */}
       {isActive && isBelow && (
         <div className="mt-2 rounded-xl bg-emerald-100 p-3 text-center dark:bg-emerald-900">
-          <p className="text-sm" aria-hidden="true">🎉</p>
+          <p className="text-sm" aria-hidden="true">
+            🎉
+          </p>
           <p className="text-xs font-bold text-emerald-800 dark:text-emerald-200">
             وصل السعر لهدفكِ!
           </p>

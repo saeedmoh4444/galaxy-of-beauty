@@ -2,17 +2,35 @@
 
 import { api } from '@/lib/trpc';
 import {
-  PageContainer, PageTitle,
-  TeenBeautyCard, FirstFacialCard, MommyAndMeCard, ThreeGenerationsCard,
-  BrideTribeCard, GalentinesCard, PromReadyCard, BabyShowerCard,
-  NewMomSupportCard, FamilyDiscountCard, DadApprovalBadge,
+  PageContainer,
+  PageTitle,
+  TeenBeautyCard,
+  FirstFacialCard,
+  MommyAndMeCard,
+  ThreeGenerationsCard,
+  BrideTribeCard,
+  GalentinesCard,
+  PromReadyCard,
+  BabyShowerCard,
+  NewMomSupportCard,
+  FamilyDiscountCard,
+  DadApprovalBadge,
   GrandmotherPackageCard,
-  BeautyBridalSkincareCard, BeautyBridalBodyCareCard, BeautyBridalEmergencyCard,
-  BeautyBridalTrialCard, BeautyBridalGlowCard,
-  BeautyFirstMakeupCard, BeautySchoolMakeupCard, BeautyTeenAcneCard,
-  BeautyTeenConfidenceCard, BeautyDaughterMomCard,
-  BeautyMaternityGlowCard, BeautyMaternityMassageCard, BeautyMaternityStyleCard,
-  BeautyNursingBeautyCard, BeautyBabyBluesCard,
+  BeautyBridalSkincareCard,
+  BeautyBridalBodyCareCard,
+  BeautyBridalEmergencyCard,
+  BeautyBridalTrialCard,
+  BeautyBridalGlowCard,
+  BeautyFirstMakeupCard,
+  BeautySchoolMakeupCard,
+  BeautyTeenAcneCard,
+  BeautyTeenConfidenceCard,
+  BeautyDaughterMomCard,
+  BeautyMaternityGlowCard,
+  BeautyMaternityMassageCard,
+  BeautyMaternityStyleCard,
+  BeautyNursingBeautyCard,
+  BeautyBabyBluesCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -29,13 +47,35 @@ export default function FamilyBeautyPage(): JSX.Element {
           <div className="lg:col-span-2 space-y-6">
             {/* Mom + Kids */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <MommyAndMeCard mom="نورة" daughter="سارة" daughterAge={8} experience="mini_facial" totalPrice={250} />
-              <ThreeGenerationsCard generations={{ grandma: { name: 'أم خالد', emoji: '👵' }, mom: { name: 'نورة', emoji: '👩' }, daughter: { name: 'سارة', emoji: '👧' } }} />
+              <MommyAndMeCard
+                mom="نورة"
+                daughter="سارة"
+                daughterAge={8}
+                experience="mini_facial"
+                totalPrice={250}
+              />
+              <ThreeGenerationsCard
+                generations={{
+                  grandma: { name: 'أم خالد', emoji: '👵' },
+                  mom: { name: 'نورة', emoji: '👩' },
+                  daughter: { name: 'سارة', emoji: '👧' },
+                }}
+              />
             </div>
 
             {/* Teens */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <TeenBeautyCard service={{ name: 'أول درس مكياج', ageRange: '12-15', price: 150, emoji: '💄', description: 'تعلم أساسيات المكياج بطريقة آمنة وممتعة', learningPoints: ['تنظيف البشرة', 'ترطيب', 'مكياج خفيف جداً', 'نصائح للعناية'], parentRequired: true }} />
+              <TeenBeautyCard
+                service={{
+                  name: 'أول درس مكياج',
+                  ageRange: '12-15',
+                  price: 150,
+                  emoji: '💄',
+                  description: 'تعلم أساسيات المكياج بطريقة آمنة وممتعة',
+                  learningPoints: ['تنظيف البشرة', 'ترطيب', 'مكياج خفيف جداً', 'نصائح للعناية'],
+                  parentRequired: true,
+                }}
+              />
               <FirstFacialCard age={14} momName="نورة" skinType="combination" />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -45,7 +85,15 @@ export default function FamilyBeautyPage(): JSX.Element {
 
             {/* Weddings + Events */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <BrideTribeCard bride="سارة" bridesmaids={[{ name: 'نورة', role: 'وصيفة أولى' }, { name: 'مها', lookAssigned: true }, { name: 'ريم' }]} weddingDate="15 مارس 2027" />
+              <BrideTribeCard
+                bride="سارة"
+                bridesmaids={[
+                  { name: 'نورة', role: 'وصيفة أولى' },
+                  { name: 'مها', lookAssigned: true },
+                  { name: 'ريم' },
+                ]}
+                weddingDate="15 مارس 2027"
+              />
               <GrandmotherPackageCard occasion="wedding" grandmaName="أم محمد" />
             </div>
 
@@ -62,7 +110,12 @@ export default function FamilyBeautyPage(): JSX.Element {
 
             {/* Special Events */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <GalentinesCard friends={['نورة', 'مها']} date="13 فبراير" discount={20} totalPrice={450} />
+              <GalentinesCard
+                friends={['نورة', 'مها']}
+                date="13 فبراير"
+                discount={20}
+                totalPrice={450}
+              />
               <BabyShowerCard momName="نورة" guests={12} />
             </div>
 
@@ -70,10 +123,10 @@ export default function FamilyBeautyPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <NewMomSupportCard babyAge={2} momName="نورة" />
               <FamilyDiscountCard
-              familySize={familyAccount?.data?.members?.length ?? 4}
-              discount={20}
-              familyName={familyAccount?.data?.familyName ?? 'آل محمد'}
-            />
+                familySize={familyAccount?.data?.members?.length ?? 4}
+                discount={20}
+                familyName={familyAccount?.data?.familyName ?? 'آل محمد'}
+              />
             </div>
             <DadApprovalBadge serviceName="درس مكياج" age={14} parentName="الأب" />
 

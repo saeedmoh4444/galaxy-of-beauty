@@ -15,9 +15,17 @@ interface HeroBannerProps {
   className?: string;
 }
 
-export function HeroBanner({ title, subtitle, cta, onCta, className = '' }: HeroBannerProps): JSX.Element {
+export function HeroBanner({
+  title,
+  subtitle,
+  cta,
+  onCta,
+  className = '',
+}: HeroBannerProps): JSX.Element {
   return (
-    <div className={`relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-600 via-brand-700 to-accent-600 px-8 py-16 text-center text-white md:py-24 ${className}`}>
+    <div
+      className={`relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-600 via-brand-700 to-accent-600 px-8 py-16 text-center text-white md:py-24 ${className}`}
+    >
       {/* Decorative circles */}
       <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/5" />
       <div className="pointer-events-none absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-white/5" />

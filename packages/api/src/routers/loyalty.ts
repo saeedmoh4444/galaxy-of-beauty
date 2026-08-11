@@ -37,18 +37,27 @@ export const loyaltyRouter = router({
       tierNameEn: tier.nameEn,
       lifetimePoints: account.lifetimePoints,
       multiplier: tier.pointMultiplier,
-      nextTier: account.tier === 'PLATINUM' ? null : {
-        name: account.tier === 'SILVER' ? 'GOLD' : 'PLATINUM',
-        pointsNeeded: account.tier === 'SILVER'
-          ? LOYALTY_TIERS.GOLD.minPoints - account.lifetimePoints
-          : LOYALTY_TIERS.PLATINUM.minPoints - account.lifetimePoints,
-      },
+      nextTier:
+        account.tier === 'PLATINUM'
+          ? null
+          : {
+              name: account.tier === 'SILVER' ? 'GOLD' : 'PLATINUM',
+              pointsNeeded:
+                account.tier === 'SILVER'
+                  ? LOYALTY_TIERS.GOLD.minPoints - account.lifetimePoints
+                  : LOYALTY_TIERS.PLATINUM.minPoints - account.lifetimePoints,
+            },
     };
   }),
 
   // ── Transaction history ─────────────────────────────────
   myTransactions: protectedProcedure
-    .input(z.object({ page: z.number().min(1).default(1), limit: z.number().min(1).max(50).default(20) }))
+    .input(
+      z.object({
+        page: z.number().min(1).default(1),
+        limit: z.number().min(1).max(50).default(20),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       const account = await prisma.loyaltyAccount.findUnique({ where: { userId: ctx.user.id } });
       if (!account) return { items: [], total: 0, page: 1, limit: input.limit };
@@ -58,7 +67,8 @@ export const loyaltyRouter = router({
         prisma.loyaltyTransaction.findMany({
           where: { accountId: account.id },
           orderBy: { createdAt: 'desc' },
-          skip, take: input.limit,
+          skip,
+          take: input.limit,
         }),
         prisma.loyaltyTransaction.count({ where: { accountId: account.id } }),
       ]);
@@ -99,7 +109,10 @@ export const loyaltyRouter = router({
 
       const tierLevels = ['SILVER', 'GOLD', 'PLATINUM'];
       if (tierLevels.indexOf(account.tier) < tierLevels.indexOf(reward.minTier)) {
-        throw new TRPCError({ code: 'BAD_REQUEST', message: `Requires ${reward.minTier} tier or higher` });
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Requires ${reward.minTier} tier or higher`,
+        });
       }
 
       // Deduct points and create transaction
@@ -127,11 +140,13 @@ export const loyaltyRouter = router({
 
   // ── Admin: credit/debit points ──────────────────────────
   adjustPoints: adminProcedure
-    .input(z.object({
-      userId: z.number().int().positive(),
-      points: z.number().int(),
-      reason: z.string().min(1),
-    }))
+    .input(
+      z.object({
+        userId: z.number().int().positive(),
+        points: z.number().int(),
+        reason: z.string().min(1),
+      }),
+    )
     .mutation(async ({ input }) => {
       const account = await getOrCreateAccount(input.userId);
 
@@ -140,12 +155,8 @@ export const loyaltyRouter = router({
           where: { id: account.id },
           data: {
             points: { increment: input.points },
-            lifetimePoints: input.points > 0
-              ? { increment: input.points }
-              : undefined,
-            tier: input.points > 0
-              ? getTier(account.lifetimePoints + input.points)
-              : account.tier,
+            lifetimePoints: input.points > 0 ? { increment: input.points } : undefined,
+            tier: input.points > 0 ? getTier(account.lifetimePoints + input.points) : account.tier,
           },
         }),
         prisma.loyaltyTransaction.create({
@@ -166,14 +177,18 @@ export const loyaltyRouter = router({
   }),
 
   createReward: adminProcedure
-    .input(z.object({
-      nameAr: z.string(), nameEn: z.string(),
-      descriptionAr: z.string().optional(), descriptionEn: z.string().optional(),
-      pointsCost: z.number().int().positive(),
-      rewardType: z.enum(['discount_percent', 'discount_fixed', 'free_service']),
-      rewardValue: z.number().positive(),
-      minTier: z.enum(['SILVER', 'GOLD', 'PLATINUM']).default('SILVER'),
-    }))
+    .input(
+      z.object({
+        nameAr: z.string(),
+        nameEn: z.string(),
+        descriptionAr: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        pointsCost: z.number().int().positive(),
+        rewardType: z.enum(['discount_percent', 'discount_fixed', 'free_service']),
+        rewardValue: z.number().positive(),
+        minTier: z.enum(['SILVER', 'GOLD', 'PLATINUM']).default('SILVER'),
+      }),
+    )
     .mutation(async ({ input }) => {
       return prisma.loyaltyReward.create({
         data: {
@@ -193,15 +208,30 @@ export const loyaltyRouter = router({
       const accounts = await prisma.loyaltyAccount.findMany({
         orderBy: { lifetimePoints: 'desc' },
         take: input?.limit ?? 10,
-        select: { points: true, lifetimePoints: true, tier: true, user: { select: { id: true, name: true } } },
+        select: {
+          points: true,
+          lifetimePoints: true,
+          tier: true,
+          user: { select: { id: true, name: true } },
+        },
       });
-      return accounts.map((a, i) => ({ rank: i + 1, name: a.user.name, points: a.points, lifetimePoints: a.lifetimePoints, tier: a.tier }));
+      return accounts.map((a, i) => ({
+        rank: i + 1,
+        name: a.user.name,
+        points: a.points,
+        lifetimePoints: a.lifetimePoints,
+        tier: a.tier,
+      }));
     }),
 });
 
 // ── Helper: accrue points after booking completion ─────────
 
-export async function accrueBookingPoints(bookingId: number, userId: number, amountSar: number): Promise<void> {
+export async function accrueBookingPoints(
+  bookingId: number,
+  userId: number,
+  amountSar: number,
+): Promise<void> {
   try {
     const account = await getOrCreateAccount(userId);
     const tierKey = account.tier as keyof typeof LOYALTY_TIERS;

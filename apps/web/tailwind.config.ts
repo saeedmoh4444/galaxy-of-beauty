@@ -2,10 +2,7 @@ import type { Config } from 'tailwindcss';
 import shared from '@galaxy/config/tailwind';
 
 const config: Config = {
-  content: [
-    './src/**/*.{js,ts,jsx,tsx,mdx}',
-    '../../packages/shared/src/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}', '../../packages/shared/src/**/*.{js,ts,jsx,tsx}'],
   presets: [shared],
   theme: {
     extend: {
@@ -20,7 +17,7 @@ const config: Config = {
         'text-primary': 'var(--color-text-primary)',
         'text-secondary': 'var(--color-text-secondary)',
         'text-tertiary': 'var(--color-text-tertiary)',
-        'edge': {
+        edge: {
           DEFAULT: 'var(--color-border-default)',
           muted: 'var(--color-border-muted)',
         },

@@ -17,7 +17,7 @@ Galaxy of Beauty connects female customers with vetted female technicians for 45
 
 - **Node.js** v20+
 - **pnpm** 9+ (`corepack enable && corepack prepare pnpm@9 --activate`)
-- **PostgreSQL** 15+ 
+- **PostgreSQL** 15+
 - **Redis** 7+
 - **Docker Desktop** (optional, for containerized dev)
 
@@ -48,13 +48,13 @@ docker compose ps               # Check health
 docker compose down             # Stop everything
 ```
 
-| Service | Container | Port | Status |
-|---------|-----------|------|--------|
-| Web (Next.js) | `gob-web` | 3000 | 🟢 |
-| Socket.IO (Real-time) | `gob-socket` | 4001 | 🟢 |
-| Mobile (Expo) | `gob-mobile` | 8081 | 🟢 |
-| PostgreSQL 15 | `gob-postgres` | 5432 | 🟢 |
-| Redis 7 | `gob-redis` | 6379 | 🟢 |
+| Service               | Container      | Port | Status |
+| --------------------- | -------------- | ---- | ------ |
+| Web (Next.js)         | `gob-web`      | 3000 | 🟢     |
+| Socket.IO (Real-time) | `gob-socket`   | 4001 | 🟢     |
+| Mobile (Expo)         | `gob-mobile`   | 8081 | 🟢     |
+| PostgreSQL 15         | `gob-postgres` | 5432 | 🟢     |
+| Redis 7               | `gob-redis`    | 6379 | 🟢     |
 
 ---
 
@@ -79,28 +79,30 @@ galaxy-of-beauty/
 
 ### Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| **Monorepo** | Turborepo + pnpm workspaces |
-| **Web** | Next.js 14 App Router, Tailwind CSS, React 18 |
-| **Mobile** | Expo SDK 54, Expo Router, React Native 0.81 |
-| **API** | tRPC v11 with Zod validation |
-| **Database** | PostgreSQL 15 via Prisma ORM |
-| **Cache** | Redis 7 |
-| **Auth** | JWT access (15m) + refresh (7d) with rotation |
-| **Container** | Docker Compose (5 services) |
+| Layer         | Technology                                    |
+| ------------- | --------------------------------------------- |
+| **Monorepo**  | Turborepo + pnpm workspaces                   |
+| **Web**       | Next.js 14 App Router, Tailwind CSS, React 18 |
+| **Mobile**    | Expo SDK 54, Expo Router, React Native 0.81   |
+| **API**       | tRPC v11 with Zod validation                  |
+| **Database**  | PostgreSQL 15 via Prisma ORM                  |
+| **Cache**     | Redis 7                                       |
+| **Auth**      | JWT access (15m) + refresh (7d) with rotation |
+| **Container** | Docker Compose (5 services)                   |
 
 ---
 
 ## ✨ Features (50+ Total)
 
 ### 🔐 Auth & Identity
+
 - Register (Customer/Technician), Login with JWT
 - Email verification, Forgot/Reset password
 - 2FA with authenticator app (TOTP)
 - Role-based access (Customer / Technician / Admin)
 
 ### 🏠 Public
+
 - Landing page with 12 categories
 - 45 services with search, filter, sort, variants
 - Service detail with pricing, duration, technicians
@@ -111,6 +113,7 @@ galaxy-of-beauty/
 - Seasonal offers (Eid, Ramadan, Wedding, Graduation)
 
 ### 👤 Customer
+
 - Dashboard with stats + quick actions
 - Booking management (request, track, cancel)
 - Wallet (balance, transactions, cashback, withdraw)
@@ -126,6 +129,7 @@ galaxy-of-beauty/
 - AI subscription plans & usage
 
 ### 💇 Technician
+
 - Dashboard + pending bookings
 - Availability slot management
 - Booking actions (accept, start, complete, no-show)
@@ -134,6 +138,7 @@ galaxy-of-beauty/
 - Google Calendar sync
 
 ### 🛡️ Admin
+
 - Dashboard with real-time KPIs
 - User management (list, suspend)
 - Booking oversight (all bookings, filter by status)
@@ -147,6 +152,7 @@ galaxy-of-beauty/
 - Platform settings + maintenance mode
 
 ### 🌍 Localization
+
 - Arabic (ar) — default, RTL
 - English (en) — LTR
 - Bilingual content (JSONB `{ ar, en }`)
@@ -182,21 +188,21 @@ pnpm test         # 307 tests (15 suites) ✅
 
 ### New Features (Post-MVP)
 
-| Category | Features |
-|----------|----------|
-| New Categories | Waxing ✨ · Lash Extensions 👁️ · Body Treatments 🧖‍♀️ · Bridal 👰 · Men's Grooming 💇‍♂️ · Spa 🧘 |
-| Social | Group Bookings 👯‍♀️ · Community Feed 💬 · Inspiration Board 📌 · Mood Board 🎨 |
-| Wedding | Bridal Concierge 👰 · Gift Registry 🎁 |
-| Content | Beauty Blog 📝 · Seasonal Lookbook 📸 · Seasonal Campaigns 📢 · Beauty Tutorials 📹 |
-| Wellness | Self-Care Tracker 🌸 · Beauty Budget 💰 · Beauty Profile 💄 · Wellness Tracker 🧘 |
-| Convenience | Recurring Bookings 🔄 · Emergency Booking 🚨 · Favorites ⭐ · Home Service 🏠 |
-| Marketing | Mommy & Me 👩‍👧 · Beauty Quiz ✨ · Rewards Catalog 🏆 · Birthday Rewards 🎂 |
-| Trust | Technician Badges 🏅 · Loyalty Tiers 👑 |
-| Infrastructure | Domain Modules (14) · Job Queues (BullMQ ×4) · Real Monitoring · Rate Limiting · CSRF · Session Mgmt |
-| Platform | Language Toggle 🌐 · Social Sharing 🔗 · Add to Calendar 📅 · Salon Map 🗺️ · Web Vitals · JSON-LD SEO |
-| Innovation | Virtual Try-On AR 🤳 · AI Skin Analysis 🔬 · Beauty Analytics 📊 · Post-Service Care 💆‍♀️ |
-| Family | Family Account 👨‍👩‍👧 · Challenges 🏆 |
-| Engagement | Referral Leaderboard 🎫 · Technician Q&A 💬 · Event Ticketing 🎟️ · Beauty Events 📅 |
+| Category       | Features                                                                                              |
+| -------------- | ----------------------------------------------------------------------------------------------------- |
+| New Categories | Waxing ✨ · Lash Extensions 👁️ · Body Treatments 🧖‍♀️ · Bridal 👰 · Men's Grooming 💇‍♂️ · Spa 🧘          |
+| Social         | Group Bookings 👯‍♀️ · Community Feed 💬 · Inspiration Board 📌 · Mood Board 🎨                          |
+| Wedding        | Bridal Concierge 👰 · Gift Registry 🎁                                                                |
+| Content        | Beauty Blog 📝 · Seasonal Lookbook 📸 · Seasonal Campaigns 📢 · Beauty Tutorials 📹                   |
+| Wellness       | Self-Care Tracker 🌸 · Beauty Budget 💰 · Beauty Profile 💄 · Wellness Tracker 🧘                     |
+| Convenience    | Recurring Bookings 🔄 · Emergency Booking 🚨 · Favorites ⭐ · Home Service 🏠                         |
+| Marketing      | Mommy & Me 👩‍👧 · Beauty Quiz ✨ · Rewards Catalog 🏆 · Birthday Rewards 🎂                             |
+| Trust          | Technician Badges 🏅 · Loyalty Tiers 👑                                                               |
+| Infrastructure | Domain Modules (14) · Job Queues (BullMQ ×4) · Real Monitoring · Rate Limiting · CSRF · Session Mgmt  |
+| Platform       | Language Toggle 🌐 · Social Sharing 🔗 · Add to Calendar 📅 · Salon Map 🗺️ · Web Vitals · JSON-LD SEO |
+| Innovation     | Virtual Try-On AR 🤳 · AI Skin Analysis 🔬 · Beauty Analytics 📊 · Post-Service Care 💆‍♀️               |
+| Family         | Family Account 👨‍👩‍👧 · Challenges 🏆                                                                     |
+| Engagement     | Referral Leaderboard 🎫 · Technician Q&A 💬 · Event Ticketing 🎟️ · Beauty Events 📅                   |
 
 ---
 
@@ -217,18 +223,18 @@ pnpm test         # 307 tests (15 suites) ✅
 
 ## 📦 Scripts
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start all dev servers |
-| `pnpm build` | Build all workspaces |
-| `pnpm type-check` | TypeScript check all |
-| `pnpm lint` | Lint all workspaces |
-| `pnpm test` | Run API tests (189 tests) |
-| `pnpm --filter @galaxy/web test:e2e` | Playwright E2E tests |
-| `pnpm db:generate` | Regenerate Prisma client |
-| `pnpm db:push` | Push schema to database |
-| `pnpm db:seed` | Seed the database |
-| `pnpm clean` | Clean all build outputs |
+| Command                              | Description               |
+| ------------------------------------ | ------------------------- |
+| `pnpm dev`                           | Start all dev servers     |
+| `pnpm build`                         | Build all workspaces      |
+| `pnpm type-check`                    | TypeScript check all      |
+| `pnpm lint`                          | Lint all workspaces       |
+| `pnpm test`                          | Run API tests (189 tests) |
+| `pnpm --filter @galaxy/web test:e2e` | Playwright E2E tests      |
+| `pnpm db:generate`                   | Regenerate Prisma client  |
+| `pnpm db:push`                       | Push schema to database   |
+| `pnpm db:seed`                       | Seed the database         |
+| `pnpm clean`                         | Clean all build outputs   |
 
 ---
 

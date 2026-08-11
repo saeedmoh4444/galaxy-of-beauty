@@ -39,16 +39,25 @@ export function ServiceCard({ service, onBook, className = '' }: ServiceCardProp
       {/* Image / Emoji */}
       <div className="mb-3 flex aspect-square items-center justify-center rounded-xl bg-gradient-to-br from-brand-50 to-brand-100 text-5xl dark:from-brand-950 dark:to-brand-900">
         {service.imageUrl ? (
-          <img src={service.imageUrl} alt={service.title} className="h-full w-full rounded-xl object-cover" loading="lazy" />
+          <img
+            src={service.imageUrl}
+            alt={service.title}
+            className="h-full w-full rounded-xl object-cover"
+            loading="lazy"
+          />
         ) : (
           <span>{service.emoji ?? '💄'}</span>
         )}
       </div>
 
       {/* Title + Description */}
-      <h3 className="text-sm font-bold text-text-primary dark:text-gray-100 line-clamp-1">{service.title}</h3>
+      <h3 className="text-sm font-bold text-text-primary dark:text-gray-100 line-clamp-1">
+        {service.title}
+      </h3>
       {service.description ? (
-        <p className="mt-1 text-xs text-text-secondary dark:text-gray-400 line-clamp-2">{service.description}</p>
+        <p className="mt-1 text-xs text-text-secondary dark:text-gray-400 line-clamp-2">
+          {service.description}
+        </p>
       ) : null}
 
       {/* Rating */}

@@ -69,7 +69,10 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
             🏠 العودة للمتجر
           </Link>
           <button
-            onClick={async () => { await logout(); router.push('/login'); }}
+            onClick={async () => {
+              await logout();
+              router.push('/login');
+            }}
             className="mt-1 w-full rounded-lg px-3 py-2 text-start text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950"
           >
             تسجيل الخروج

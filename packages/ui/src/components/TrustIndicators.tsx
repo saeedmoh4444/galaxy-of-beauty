@@ -16,7 +16,10 @@ export function TrustIndicators({ className = '' }: { className?: string }): JSX
   return (
     <div className={`flex justify-center gap-3 ${className}`}>
       {items.map((item, i) => (
-        <div key={i} className="flex items-center gap-2 rounded-lg bg-green-50 px-3 py-2 dark:bg-green-950">
+        <div
+          key={i}
+          className="flex items-center gap-2 rounded-lg bg-green-50 px-3 py-2 dark:bg-green-950"
+        >
           <span className="text-lg">{item.emoji}</span>
           <div>
             <p className="text-xs font-bold text-green-800 dark:text-green-200">{item.label}</p>

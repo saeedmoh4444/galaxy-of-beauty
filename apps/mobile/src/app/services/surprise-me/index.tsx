@@ -8,22 +8,51 @@ export default function SurpriseMeScreen(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const surprise = useCallback(() => {
     setLoading(true);
-    ((trpc as any).services.surpriseMe.query() as any).then((d: any) => { setResult(d); setLoading(false); }).catch(() => setLoading(false));
+    ((trpc as any).services.surpriseMe.query() as any)
+      .then((d: any) => {
+        setResult(d);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
   if (loading) return <SkeletonList count={3} />;
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
       <Text style={styles.t}>🎲 فاجئيني</Text>
-      {!result ? (<View style={styles.centered}><Text style={styles.emoji}>🎰</Text><Text style={styles.hint}>اضغطي للاستكشاف!</Text><TouchableOpacity onPress={surprise} style={styles.btn}><Text style={styles.bt}>🎲 اختر لي</Text></TouchableOpacity></View>) : (
-        <View style={styles.card}><Text style={styles.re}>{result.emoji as string ?? '💆‍♀️'}</Text><Text style={styles.rn}>{(result.titleJson as any)?.ar as string}</Text><Text style={styles.rp}>{(result.basePrice as number)?.toLocaleString()} ر.س</Text><Text style={styles.rd}>{result.reason as string}</Text><TouchableOpacity onPress={surprise} style={styles.btn}><Text style={styles.bt}>🔄 جربي مرة أخرى</Text></TouchableOpacity></View>)}
+      {!result ? (
+        <View style={styles.centered}>
+          <Text style={styles.emoji}>🎰</Text>
+          <Text style={styles.hint}>اضغطي للاستكشاف!</Text>
+          <TouchableOpacity onPress={surprise} style={styles.btn}>
+            <Text style={styles.bt}>🎲 اختر لي</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.card}>
+          <Text style={styles.re}>{(result.emoji as string) ?? '💆‍♀️'}</Text>
+          <Text style={styles.rn}>{(result.titleJson as any)?.ar as string}</Text>
+          <Text style={styles.rp}>{(result.basePrice as number)?.toLocaleString()} ر.س</Text>
+          <Text style={styles.rd}>{result.reason as string}</Text>
+          <TouchableOpacity onPress={surprise} style={styles.btn}>
+            <Text style={styles.bt}>🔄 جربي مرة أخرى</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </ScrollView>
   );
 }
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#fdf2f8' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 20 },
-  centered: { alignItems: 'center', marginTop: 40 }, emoji: { fontSize: 64, marginBottom: 12 }, hint: { fontSize: 14, color: '#9ca3af', marginBottom: 16 },
-  btn: { backgroundColor: '#db2777', borderRadius: 14, padding: 16, alignItems: 'center' }, bt: { color: '#fff', fontSize: 16, fontWeight: '700' },
+  centered: { alignItems: 'center', marginTop: 40 },
+  emoji: { fontSize: 64, marginBottom: 12 },
+  hint: { fontSize: 14, color: '#9ca3af', marginBottom: 16 },
+  btn: { backgroundColor: '#db2777', borderRadius: 14, padding: 16, alignItems: 'center' },
+  bt: { color: '#fff', fontSize: 16, fontWeight: '700' },
   card: { backgroundColor: '#fff', borderRadius: 20, padding: 24, alignItems: 'center' },
-  re: { fontSize: 48 }, rn: { fontSize: 18, fontWeight: '700', color: '#111827', marginTop: 8 }, rp: { fontSize: 22, fontWeight: '800', color: '#db2777', marginTop: 4 }, rd: { fontSize: 13, color: '#6b7280', marginTop: 8, textAlign: 'center' },
+  re: { fontSize: 48 },
+  rn: { fontSize: 18, fontWeight: '700', color: '#111827', marginTop: 8 },
+  rp: { fontSize: 22, fontWeight: '800', color: '#db2777', marginTop: 4 },
+  rd: { fontSize: 13, color: '#6b7280', marginTop: 8, textAlign: 'center' },
 });

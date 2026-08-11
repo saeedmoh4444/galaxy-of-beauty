@@ -7,11 +7,11 @@
 
 ## The Blueprint (Macro Architecture)
 
-### 1. Software Engineering Paradigm — *What academic term describes this system?*
+### 1. Software Engineering Paradigm — _What academic term describes this system?_
 
 **Paradigm: Feature-Driven, Domain-Modular Monolith**
 
-We practice **Feature-Driven Design (FDD)** at the project level and **Domain-Driven Design (DDD) Lite** at the code level. The system is a **modular monolith** — not microservices, but organized so each domain *could* be extracted independently.
+We practice **Feature-Driven Design (FDD)** at the project level and **Domain-Driven Design (DDD) Lite** at the code level. The system is a **modular monolith** — not microservices, but organized so each domain _could_ be extracted independently.
 
 ```
 Academic classification:
@@ -23,11 +23,12 @@ Academic classification:
 ```
 
 **Why not Microservices?**
+
 - Team size: 1-3 developers. Microservices overhead would kill velocity.
 - 14 domain modules give us 80% of the benefit at 5% of the cost.
 - We can extract a domain into a service later if needed (the barrel pattern enables this).
 
-### 2. Software Anatomy — *What organs does this system have?*
+### 2. Software Anatomy — _What organs does this system have?_
 
 ```
 galaxy-of-beauty/                    # The Body
@@ -45,23 +46,23 @@ galaxy-of-beauty/                    # The Body
 └── pnpm-workspace.yaml              # The Skeleton
 ```
 
-### 3. Structural Blueprint — *What industry metaphor fits?*
+### 3. Structural Blueprint — _What industry metaphor fits?_
 
 **Metaphor: The Shopping Mall**
 
-| Layer | Mall Equivalent | Our Implementation |
-|-------|----------------|-------------------|
-| Storefronts | Pages/Routes | 254 Next.js routes (public stores) |
-| Back Offices | Admin Panel | `/admin/*` — 25 management pages |
-| Loading Docks | API Layer | tRPC — goods come in and out |
-| Warehouse | Database | PostgreSQL — inventory, orders, users |
-| Security Office | Auth Middleware | JWT + CSRF + rate limiting |
-| Delivery Fleet | Job Queues | BullMQ — async order processing |
-| Mall Directory | Domain Modules | 14 domains — organized by department |
-| Mall Map | Sitemap | 41 SEO pages |
-| Security Cameras | Monitoring | Real DB/Redis/perf metrics |
+| Layer            | Mall Equivalent | Our Implementation                    |
+| ---------------- | --------------- | ------------------------------------- |
+| Storefronts      | Pages/Routes    | 254 Next.js routes (public stores)    |
+| Back Offices     | Admin Panel     | `/admin/*` — 25 management pages      |
+| Loading Docks    | API Layer       | tRPC — goods come in and out          |
+| Warehouse        | Database        | PostgreSQL — inventory, orders, users |
+| Security Office  | Auth Middleware | JWT + CSRF + rate limiting            |
+| Delivery Fleet   | Job Queues      | BullMQ — async order processing       |
+| Mall Directory   | Domain Modules  | 14 domains — organized by department  |
+| Mall Map         | Sitemap         | 41 SEO pages                          |
+| Security Cameras | Monitoring      | Real DB/Redis/perf metrics            |
 
-### 4. Software Architecture and Design — *The standard CS term*
+### 4. Software Architecture and Design — _The standard CS term_
 
 **Architecture Style: Layered + Domain-Modular Monolith**
 
@@ -100,47 +101,47 @@ galaxy-of-beauty/                    # The Body
 
 ### Patterns We Use (and Why)
 
-| Pattern | Where | Why We Chose It |
-|---------|-------|----------------|
-| **Repository** | Prisma client in `packages/db` | Single data access point. Swap DB without touching business logic. |
-| **Middleware Pipeline** | tRPC middleware chain | `rateLimitGuard → isAuthed → hasRole → csrfGuard → handler`. Composable, testable. |
-| **State Machine** | Booking lifecycle | 10 states, 6 actions, role-gated transitions. Impossible to reach invalid states. |
-| **Observer** | Socket.IO events | `emitToUser()`, `emitToTechnician()` — decoupled real-time notifications. |
-| **Command** | BullMQ jobs | `walletQueue.add('cashback.accrue', {...})` — fire and forget. |
-| **Factory** | Queue/Worker creation | `createQueue(name)`, `createWorker(name, handler)` — consistent Redis connection handling. |
-| **Strategy** | Rate limiting tiers | Anonymous (20/min), Authenticated (60/min), Admin (300/min). Swappable per tier. |
-| **Decorator** | tRPC middleware | `customerProcedure = protectedProcedure.use(hasRole('CUSTOMER'))`. Wraps behavior. |
-| **Module** | Barrel exports | 14 `domains/<name>/index.ts` — clean imports, single entry point. |
-| **Facade** | Domain modules | `import { bookingRouter, slotRouter } from '../domains/booking'` — hides 12 individual imports. |
-| **Adapter** | `useAuth` storage | Pluggable `AuthStorage` interface — localStorage (web) or SecureStore (mobile). |
-| **Singleton** | Prisma client, Redis client | `globalForPrisma.prisma` — one connection pool per process. |
-| **Circuit Breaker** | Rate limiter fail-open | `if (!redis) return { allowed: true }` — availability over consistency. |
+| Pattern                 | Where                          | Why We Chose It                                                                                 |
+| ----------------------- | ------------------------------ | ----------------------------------------------------------------------------------------------- |
+| **Repository**          | Prisma client in `packages/db` | Single data access point. Swap DB without touching business logic.                              |
+| **Middleware Pipeline** | tRPC middleware chain          | `rateLimitGuard → isAuthed → hasRole → csrfGuard → handler`. Composable, testable.              |
+| **State Machine**       | Booking lifecycle              | 10 states, 6 actions, role-gated transitions. Impossible to reach invalid states.               |
+| **Observer**            | Socket.IO events               | `emitToUser()`, `emitToTechnician()` — decoupled real-time notifications.                       |
+| **Command**             | BullMQ jobs                    | `walletQueue.add('cashback.accrue', {...})` — fire and forget.                                  |
+| **Factory**             | Queue/Worker creation          | `createQueue(name)`, `createWorker(name, handler)` — consistent Redis connection handling.      |
+| **Strategy**            | Rate limiting tiers            | Anonymous (20/min), Authenticated (60/min), Admin (300/min). Swappable per tier.                |
+| **Decorator**           | tRPC middleware                | `customerProcedure = protectedProcedure.use(hasRole('CUSTOMER'))`. Wraps behavior.              |
+| **Module**              | Barrel exports                 | 14 `domains/<name>/index.ts` — clean imports, single entry point.                               |
+| **Facade**              | Domain modules                 | `import { bookingRouter, slotRouter } from '../domains/booking'` — hides 12 individual imports. |
+| **Adapter**             | `useAuth` storage              | Pluggable `AuthStorage` interface — localStorage (web) or SecureStore (mobile).                 |
+| **Singleton**           | Prisma client, Redis client    | `globalForPrisma.prisma` — one connection pool per process.                                     |
+| **Circuit Breaker**     | Rate limiter fail-open         | `if (!redis) return { allowed: true }` — availability over consistency.                         |
 
 ### Patterns We Don't Use (and Why)
 
-| Pattern | Why We Skip It |
-|---------|---------------|
-| **CQRS** | No read/write separation. Single PostgreSQL. Premature optimization at our scale (1K-10K users). *Will need it at 100K+ users.* |
-| **Event Sourcing** | Massive complexity. We use simple AuditLog instead. Event sourcing only justified for financial ledgers or compliance-critical systems. |
-| **Saga** | No distributed transactions. All mutations are single-DB. If we extract microservices later, we'll need Sagas. |
-| **Clean Architecture** | Overkill. Our domain modules + Prisma repository give us 90% of Clean Architecture benefits at 20% of the boilerplate. |
-| **Mediator** | tRPC is already a mediator. Adding MediatR/CQRS library would be redundant. |
-| **Specification** | Prisma `where` clauses are already composable. A specification pattern would add abstraction without value. |
-| **Unit of Work** | Prisma `$transaction` handles this. Explicit UoW would duplicate what Prisma already does. |
-| **Proxy** | No need. tRPC client is already a type-safe proxy to the server. |
+| Pattern                | Why We Skip It                                                                                                                          |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **CQRS**               | No read/write separation. Single PostgreSQL. Premature optimization at our scale (1K-10K users). _Will need it at 100K+ users._         |
+| **Event Sourcing**     | Massive complexity. We use simple AuditLog instead. Event sourcing only justified for financial ledgers or compliance-critical systems. |
+| **Saga**               | No distributed transactions. All mutations are single-DB. If we extract microservices later, we'll need Sagas.                          |
+| **Clean Architecture** | Overkill. Our domain modules + Prisma repository give us 90% of Clean Architecture benefits at 20% of the boilerplate.                  |
+| **Mediator**           | tRPC is already a mediator. Adding MediatR/CQRS library would be redundant.                                                             |
+| **Specification**      | Prisma `where` clauses are already composable. A specification pattern would add abstraction without value.                             |
+| **Unit of Work**       | Prisma `$transaction` handles this. Explicit UoW would duplicate what Prisma already does.                                              |
+| **Proxy**              | No need. tRPC client is already a type-safe proxy to the server.                                                                        |
 
 ### Patterns We Must Adopt (Production Hardening)
 
-| Pattern | What | Why We Need It | Priority |
-|---------|------|---------------|----------|
-| **Read Replica / CQRS-lite** | Route reads to replica, writes to primary | Analytics queries (heatmaps, reports) will hammer the primary DB at scale. | 🔴 P0 at 10K+ users |
-| **Saga / Outbox** | Guarantee cross-domain consistency | Booking create → wallet + loyalty + notification. If one fails, we need compensation. Currently fire-and-forget (at-least-once). | 🟡 P1 at 50K+ users |
-| **Retry with Backoff** | Exponential backoff on external API calls | PayFort, OpenAI, ZATCA, SMS gateways fail. Currently 3 retries on BullMQ. Need circuit breaker for external APIs. | 🟡 P1 |
-| **Correlation ID / Distributed Tracing** | Trace a request across services | Currently we have request counting but no end-to-end tracing. Needed for debugging production issues. | 🟡 P2 |
-| **Feature Toggle Service** | Runtime feature flags without redeploy | We have a FeatureFlag table + tRPC middleware. Need admin UI + gradual rollout (0%→100%). | 🟢 P2 |
-| **API Versioning** | `/api/v1/`, `/api/v2/` or header-based | tRPC doesn't need URL versioning (types are the contract). But mobile app needs backward-compatible API changes. | 🟢 P3 |
-| **Bulkhead** | Isolate resource pools per domain | If `ai.chatbot` exhausts OpenAI rate limit, it shouldn't block `bookings.create`. Separate queue per external dependency. | 🟡 P2 |
-| **Health Check Hierarchy** | Deep health checks (DB + Redis + external APIs) | Docker healthchecks currently ping the tRPC health endpoint. Production needs: liveness (process alive) vs readiness (dependencies ready). | 🟡 P1 |
+| Pattern                                  | What                                            | Why We Need It                                                                                                                             | Priority            |
+| ---------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------- |
+| **Read Replica / CQRS-lite**             | Route reads to replica, writes to primary       | Analytics queries (heatmaps, reports) will hammer the primary DB at scale.                                                                 | 🔴 P0 at 10K+ users |
+| **Saga / Outbox**                        | Guarantee cross-domain consistency              | Booking create → wallet + loyalty + notification. If one fails, we need compensation. Currently fire-and-forget (at-least-once).           | 🟡 P1 at 50K+ users |
+| **Retry with Backoff**                   | Exponential backoff on external API calls       | PayFort, OpenAI, ZATCA, SMS gateways fail. Currently 3 retries on BullMQ. Need circuit breaker for external APIs.                          | 🟡 P1               |
+| **Correlation ID / Distributed Tracing** | Trace a request across services                 | Currently we have request counting but no end-to-end tracing. Needed for debugging production issues.                                      | 🟡 P2               |
+| **Feature Toggle Service**               | Runtime feature flags without redeploy          | We have a FeatureFlag table + tRPC middleware. Need admin UI + gradual rollout (0%→100%).                                                  | 🟢 P2               |
+| **API Versioning**                       | `/api/v1/`, `/api/v2/` or header-based          | tRPC doesn't need URL versioning (types are the contract). But mobile app needs backward-compatible API changes.                           | 🟢 P3               |
+| **Bulkhead**                             | Isolate resource pools per domain               | If `ai.chatbot` exhausts OpenAI rate limit, it shouldn't block `bookings.create`. Separate queue per external dependency.                  | 🟡 P2               |
+| **Health Check Hierarchy**               | Deep health checks (DB + Redis + external APIs) | Docker healthchecks currently ping the tRPC health endpoint. Production needs: liveness (process alive) vs readiness (dependencies ready). | 🟡 P1               |
 
 ---
 
@@ -244,56 +245,57 @@ Every data-fetching page:
 
 ### What We Use and Why
 
-| Tech | Reason | Would We Choose Again? |
-|------|--------|----------------------|
-| **tRPC v11** | End-to-end type safety without code generation. Zod validation built in. | ✅ Yes — best decision in the stack. |
-| **Next.js 14 App Router** | Hybrid SSR/CSR. ISR for static pages. Middleware for auth. | ✅ Yes — but v15 with Turbopack would be faster. |
-| **Prisma** | Type-safe queries, migrations, great DX. | ⚠️ Maybe — Drizzle ORM is lighter. Prisma cold start is slow. |
-| **Expo SDK 54** | Write once, deploy to iOS + Android + Web. | ⚠️ Maybe — React Native has rough edges. Flutter for better mobile UX. |
-| **BullMQ** | Redis-backed job queues. Exactly what we needed. | ✅ Yes — but need monitoring dashboard for queues. |
-| **Tailwind CSS** | Utility-first, no CSS files, great with RTL. | ✅ Yes — production build is tiny (purged). |
-| **PostgreSQL** | Rock solid, JSONB for Arabic content, full-text search. | ✅ Yes — no reason to use anything else. |
-| **Redis** | Cache, rate limiting, job queues, session store. | ✅ Yes — single Redis does everything we need. |
-| **Zod** | Runtime validation that infers TypeScript types. | ✅ Yes — essential for API safety. |
-| **Socket.IO** | Real-time events, fallback to polling. | ⚠️ Maybe — could use tRPC WebSocket subscriptions instead. |
-| **pnpm** | Fast, strict, disk-efficient. | ✅ Yes — beats npm and yarn. |
-| **Turborepo** | Build caching, parallel execution. | ✅ Yes — saves minutes on CI. |
+| Tech                      | Reason                                                                   | Would We Choose Again?                                                 |
+| ------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| **tRPC v11**              | End-to-end type safety without code generation. Zod validation built in. | ✅ Yes — best decision in the stack.                                   |
+| **Next.js 14 App Router** | Hybrid SSR/CSR. ISR for static pages. Middleware for auth.               | ✅ Yes — but v15 with Turbopack would be faster.                       |
+| **Prisma**                | Type-safe queries, migrations, great DX.                                 | ⚠️ Maybe — Drizzle ORM is lighter. Prisma cold start is slow.          |
+| **Expo SDK 54**           | Write once, deploy to iOS + Android + Web.                               | ⚠️ Maybe — React Native has rough edges. Flutter for better mobile UX. |
+| **BullMQ**                | Redis-backed job queues. Exactly what we needed.                         | ✅ Yes — but need monitoring dashboard for queues.                     |
+| **Tailwind CSS**          | Utility-first, no CSS files, great with RTL.                             | ✅ Yes — production build is tiny (purged).                            |
+| **PostgreSQL**            | Rock solid, JSONB for Arabic content, full-text search.                  | ✅ Yes — no reason to use anything else.                               |
+| **Redis**                 | Cache, rate limiting, job queues, session store.                         | ✅ Yes — single Redis does everything we need.                         |
+| **Zod**                   | Runtime validation that infers TypeScript types.                         | ✅ Yes — essential for API safety.                                     |
+| **Socket.IO**             | Real-time events, fallback to polling.                                   | ⚠️ Maybe — could use tRPC WebSocket subscriptions instead.             |
+| **pnpm**                  | Fast, strict, disk-efficient.                                            | ✅ Yes — beats npm and yarn.                                           |
+| **Turborepo**             | Build caching, parallel execution.                                       | ✅ Yes — saves minutes on CI.                                          |
 
 ### What We Don't Use and Why
 
-| Tech | Why We Skip It |
-|------|---------------|
-| **GraphQL** | tRPC gives us type safety without schema stitching, codegen, or N+1 problems. GraphQL adds complexity we don't need. |
-| **REST** | tRPC is strictly better for TypeScript-only stacks. REST only needed for public/external APIs. |
-| **gRPC** | Overkill. tRPC + HTTP/2 gives enough performance. gRPC needed for polyglot microservices. |
-| **Redux / Zustand** | TanStack Query (via tRPC) handles server state. No complex client state to manage. |
-| **React Native Web** | We use Expo web export for mobile preview, but web gets its own Next.js app. Better UX. |
-| **Kubernetes** | Overkill at our scale. Docker Compose + PM2 handles 1-10 servers perfectly. Re-evaluate at 100K+ users. |
-| **Terraform / Pulumi** | We don't have cloud infra yet. When we move to AWS, we'll need IaC. |
-| **Elasticsearch** | PostgreSQL full-text search with ILIKE handles Arabic well enough. Re-evaluate if search becomes a bottleneck. |
-| **Apache Kafka** | BullMQ on Redis handles our async workload. Kafka needed only for event streaming at massive scale. |
-| **Sentry** (configured but not active) | We have the SDK integrated (`@sentry/nextjs`) but no DSN configured. Should activate for production. |
+| Tech                                   | Why We Skip It                                                                                                       |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **GraphQL**                            | tRPC gives us type safety without schema stitching, codegen, or N+1 problems. GraphQL adds complexity we don't need. |
+| **REST**                               | tRPC is strictly better for TypeScript-only stacks. REST only needed for public/external APIs.                       |
+| **gRPC**                               | Overkill. tRPC + HTTP/2 gives enough performance. gRPC needed for polyglot microservices.                            |
+| **Redux / Zustand**                    | TanStack Query (via tRPC) handles server state. No complex client state to manage.                                   |
+| **React Native Web**                   | We use Expo web export for mobile preview, but web gets its own Next.js app. Better UX.                              |
+| **Kubernetes**                         | Overkill at our scale. Docker Compose + PM2 handles 1-10 servers perfectly. Re-evaluate at 100K+ users.              |
+| **Terraform / Pulumi**                 | We don't have cloud infra yet. When we move to AWS, we'll need IaC.                                                  |
+| **Elasticsearch**                      | PostgreSQL full-text search with ILIKE handles Arabic well enough. Re-evaluate if search becomes a bottleneck.       |
+| **Apache Kafka**                       | BullMQ on Redis handles our async workload. Kafka needed only for event streaming at massive scale.                  |
+| **Sentry** (configured but not active) | We have the SDK integrated (`@sentry/nextjs`) but no DSN configured. Should activate for production.                 |
 
 ### What We Must Add (Production Checklist)
 
-| Priority | Item | Why | Effort |
-|----------|------|-----|--------|
-| 🔴 P0 | **Sentry DSN** | Error tracking in production. Already integrated, just needs env var. | 5 min |
-| 🔴 P0 | **Database Backups** | `pg_dump` cron job or RDS automated snapshots. No backups = business risk. | 1 hr |
-| 🔴 P0 | **SSL Certificates** | Let's Encrypt + Nginx. HTTPS is non-negotiable for a payment platform. | 2 hr |
-| 🟡 P1 | **Prometheus + Grafana** | Replace our in-memory monitoring with real metrics. Prometheus for scraping, Grafana for dashboards. | 8 hr |
-| 🟡 P1 | **Alerting** | PagerDuty or Slack webhooks. Alert on: error rate >5%, DB down, payment failures, disk >80%. | 4 hr |
-| 🟡 P1 | **Read Replicas** | Route analytics/reports/list queries to read replica. Primary DB for writes only. | 16 hr |
-| 🟡 P1 | **CDN** | Cloudflare or CloudFront for static assets, images, and API caching. | 4 hr |
-| 🟢 P2 | **Load Testing** | Run k6 script against staging with real traffic patterns. Find breaking point. | 4 hr |
-| 🟢 P2 | **Penetration Testing** | OWASP ZAP or manual pentest. Verify CSRF, XSS, SQL injection protection. | 8 hr |
-| 🟢 P3 | **Blue-Green Deployments** | Zero-downtime deploys. PM2 reload is fast but not zero-downtime for DB migrations. | 8 hr |
+| Priority | Item                       | Why                                                                                                  | Effort |
+| -------- | -------------------------- | ---------------------------------------------------------------------------------------------------- | ------ |
+| 🔴 P0    | **Sentry DSN**             | Error tracking in production. Already integrated, just needs env var.                                | 5 min  |
+| 🔴 P0    | **Database Backups**       | `pg_dump` cron job or RDS automated snapshots. No backups = business risk.                           | 1 hr   |
+| 🔴 P0    | **SSL Certificates**       | Let's Encrypt + Nginx. HTTPS is non-negotiable for a payment platform.                               | 2 hr   |
+| 🟡 P1    | **Prometheus + Grafana**   | Replace our in-memory monitoring with real metrics. Prometheus for scraping, Grafana for dashboards. | 8 hr   |
+| 🟡 P1    | **Alerting**               | PagerDuty or Slack webhooks. Alert on: error rate >5%, DB down, payment failures, disk >80%.         | 4 hr   |
+| 🟡 P1    | **Read Replicas**          | Route analytics/reports/list queries to read replica. Primary DB for writes only.                    | 16 hr  |
+| 🟡 P1    | **CDN**                    | Cloudflare or CloudFront for static assets, images, and API caching.                                 | 4 hr   |
+| 🟢 P2    | **Load Testing**           | Run k6 script against staging with real traffic patterns. Find breaking point.                       | 4 hr   |
+| 🟢 P2    | **Penetration Testing**    | OWASP ZAP or manual pentest. Verify CSRF, XSS, SQL injection protection.                             | 8 hr   |
+| 🟢 P3    | **Blue-Green Deployments** | Zero-downtime deploys. PM2 reload is fast but not zero-downtime for DB migrations.                   | 8 hr   |
 
 ---
 
 ## The Honest Verdict
 
 ### Strengths
+
 - **Type safety**: tRPC + Zod + TypeScript strict. Zero runtime type errors in production paths.
 - **Domain separation**: 14 modules with clear boundaries. A new developer can understand `domains/booking/` without reading `domains/loyalty/`.
 - **Testing**: 318 tests cover all critical paths. Rate limiting, CSRF, auth flows, booking state machine.
@@ -301,6 +303,7 @@ Every data-fetching page:
 - **Mobile parity**: 27 screens use the same tRPC API as web. Single source of truth.
 
 ### Weaknesses
+
 - **`as any` usage**: ~47 web pages still use type assertions. tRPC's deeply nested RouterOutput types hit TypeScript limits. Mitigated by Zod runtime validation.
 - **Mobile implementation depth**: 27 screens are solid. The remaining 230+ are placeholder-level. Works but not production-polished.
 - **No staging environment**: Testing against production DB is risky. Need a proper staging clone.

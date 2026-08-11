@@ -1,6 +1,12 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { DISCOVERY_RECOMMEND_COUNT, DEFAULT_PAGE_SIZE, SMALL_PAGE_SIZE, OPENAI_API_URL, OPENAI_MODEL } from '@galaxy/shared';
+import {
+  DISCOVERY_RECOMMEND_COUNT,
+  DEFAULT_PAGE_SIZE,
+  SMALL_PAGE_SIZE,
+  OPENAI_API_URL,
+  OPENAI_MODEL,
+} from '@galaxy/shared';
 import { customerProcedure, adminProcedure, router } from '../trpc';
 
 export const aiFeaturesRouter = router({
@@ -8,9 +14,23 @@ export const aiFeaturesRouter = router({
   personalizedFeed: customerProcedure.query(async ({ ctx }) => {
     // Based on booking history, wishlist, skin analysis
     const [recentBookings, wishlist, lastAnalysis] = await Promise.all([
-      prisma.booking.findMany({ where: { customerId: ctx.user.id }, include: { service: { select: { categoryId: true } } }, orderBy: { createdAt: 'desc' }, take: SMALL_PAGE_SIZE }),
-      prisma.wishlistItem.findMany({ where: { userId: ctx.user.id }, include: { service: { select: { id: true, titleJson: true, imageUrl: true, basePrice: true } } }, take: DEFAULT_PAGE_SIZE }),
-      prisma.skinAnalysis.findFirst({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } }),
+      prisma.booking.findMany({
+        where: { customerId: ctx.user.id },
+        include: { service: { select: { categoryId: true } } },
+        orderBy: { createdAt: 'desc' },
+        take: SMALL_PAGE_SIZE,
+      }),
+      prisma.wishlistItem.findMany({
+        where: { userId: ctx.user.id },
+        include: {
+          service: { select: { id: true, titleJson: true, imageUrl: true, basePrice: true } },
+        },
+        take: DEFAULT_PAGE_SIZE,
+      }),
+      prisma.skinAnalysis.findFirst({
+        where: { userId: ctx.user.id },
+        orderBy: { createdAt: 'desc' },
+      }),
     ]);
 
     // Get category preferences from booking history
@@ -30,11 +50,16 @@ export const aiFeaturesRouter = router({
       preferredCategories: preferredCategoryIds,
       wishlistItems: wishlist.map((w) => w.service),
       recommendations,
-      skinProfile: lastAnalysis ? {
-        skinType: lastAnalysis.skinType,
-        concerns: lastAnalysis.concerns,
-      } : null,
-      message: recommendations.length > 0 ? 'Based on your preferences' : 'Browse our services to get started',
+      skinProfile: lastAnalysis
+        ? {
+            skinType: lastAnalysis.skinType,
+            concerns: lastAnalysis.concerns,
+          }
+        : null,
+      message:
+        recommendations.length > 0
+          ? 'Based on your preferences'
+          : 'Browse our services to get started',
     };
   }),
 
@@ -96,10 +121,17 @@ export const aiFeaturesRouter = router({
 
   // ── Service Description Generator (AI) ─────────────────
   generateDescription: adminProcedure
-    .input(z.object({ serviceNameAr: z.string(), serviceNameEn: z.string(), keywords: z.string().optional() }))
+    .input(
+      z.object({
+        serviceNameAr: z.string(),
+        serviceNameEn: z.string(),
+        keywords: z.string().optional(),
+      }),
+    )
     .mutation(async ({ input }) => {
       const key = process.env['OPENAI_API_KEY'];
-      if (!key) return { descriptionAr: 'وصف تجريبي للخدمة', descriptionEn: 'Sample service description' };
+      if (!key)
+        return { descriptionAr: 'وصف تجريبي للخدمة', descriptionEn: 'Sample service description' };
 
       try {
         const response = await fetch(OPENAI_API_URL, {
@@ -107,19 +139,24 @@ export const aiFeaturesRouter = router({
           headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({
             model: OPENAI_MODEL,
-            messages: [{
-              role: 'user',
-              content: `Write a short, appealing beauty service description in Arabic and English for: ${input.serviceNameAr} / ${input.serviceNameEn}. Keywords: ${input.keywords || 'beauty, self-care, professional'}. Return JSON: { "ar": "...", "en": "..." }`,
-            }],
+            messages: [
+              {
+                role: 'user',
+                content: `Write a short, appealing beauty service description in Arabic and English for: ${input.serviceNameAr} / ${input.serviceNameEn}. Keywords: ${input.keywords || 'beauty, self-care, professional'}. Return JSON: { "ar": "...", "en": "..." }`,
+              },
+            ],
             max_tokens: 300,
           }),
         });
         const data = (await response.json()) as Record<string, unknown>;
-        const content = (data['choices'] as Array<Record<string, unknown>>)?.[0]?.['message'] as Record<string, unknown> | undefined;
+        const content = (data['choices'] as Array<Record<string, unknown>>)?.[0]?.['message'] as
+          Record<string, unknown> | undefined;
         if (content?.['content']) {
           return JSON.parse(content['content'] as string);
         }
-      } catch { /* fall through to fallback */ }
+      } catch {
+        /* fall through to fallback */
+      }
       return { descriptionAr: 'وصف تجريبي للخدمة', descriptionEn: 'Sample service description' };
     }),
 
@@ -131,7 +168,16 @@ export const aiFeaturesRouter = router({
       if (!review?.comment) return { sentiment: 'neutral', score: 0 };
 
       // Simple keyword-based sentiment (production: use OpenAI)
-      const positiveWords = ['ممتاز', 'رائع', 'جميل', 'great', 'excellent', 'love', 'amazing', 'perfect'];
+      const positiveWords = [
+        'ممتاز',
+        'رائع',
+        'جميل',
+        'great',
+        'excellent',
+        'love',
+        'amazing',
+        'perfect',
+      ];
       const negativeWords = ['سيء', 'مخيب', 'bad', 'terrible', 'poor', 'worst', 'disappointed'];
 
       const text = review.comment.toLowerCase();

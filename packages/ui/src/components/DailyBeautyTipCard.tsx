@@ -13,22 +13,40 @@ import { cn } from '@galaxy/shared';
 
 const TIPS = [
   { emoji: '💧', tip: 'اشربي كوب ماء قبل قهوتكِ الصباحية — بشرتكِ ستشكركِ', category: 'عناية' },
-  { emoji: '☀️', tip: 'واقي الشمس حتى في الأيام الغائمة — الأشعة فوق البنفسجية تخترق الغيوم', category: 'حماية' },
-  { emoji: '😴', tip: 'نامي على ظهركِ — يمنع تجاعيد الوجه ويحافظ على نضارة البشرة', category: 'صحة' },
+  {
+    emoji: '☀️',
+    tip: 'واقي الشمس حتى في الأيام الغائمة — الأشعة فوق البنفسجية تخترق الغيوم',
+    category: 'حماية',
+  },
+  {
+    emoji: '😴',
+    tip: 'نامي على ظهركِ — يمنع تجاعيد الوجه ويحافظ على نضارة البشرة',
+    category: 'صحة',
+  },
   { emoji: '🧴', tip: 'طبقي المرطب على بشرة رطبة — يمتص بشكل أفضل', category: 'عناية' },
-  { emoji: '💄', tip: 'جددِي مكياجكِ كل 6 أشهر — المنتجات القديمة تجمع البكتيريا', category: 'صحة' },
+  {
+    emoji: '💄',
+    tip: 'جددِي مكياجكِ كل 6 أشهر — المنتجات القديمة تجمع البكتيريا',
+    category: 'صحة',
+  },
   { emoji: '🥒', tip: 'شرائح الخيار الباردة تقلل انتفاخ العينين في 10 دقائق', category: 'طبيعي' },
-  { emoji: '🧖‍♀️', tip: 'لا تغسلي وجهكِ بالماء الساخن — الماء الفاتر أفضل للبشرة', category: 'عناية' },
-  { emoji: '🍵', tip: 'الشاي الأخضر قبل النوم يساعد في محاربة الالتهابات وتجديد البشرة', category: 'صحة' },
+  {
+    emoji: '🧖‍♀️',
+    tip: 'لا تغسلي وجهكِ بالماء الساخن — الماء الفاتر أفضل للبشرة',
+    category: 'عناية',
+  },
+  {
+    emoji: '🍵',
+    tip: 'الشاي الأخضر قبل النوم يساعد في محاربة الالتهابات وتجديد البشرة',
+    category: 'صحة',
+  },
 ];
 
 interface DailyBeautyTipCardProps {
   className?: string;
 }
 
-export function DailyBeautyTipCard({
-  className = '',
-}: DailyBeautyTipCardProps): JSX.Element {
+export function DailyBeautyTipCard({ className = '' }: DailyBeautyTipCardProps): JSX.Element {
   const [index] = useState(() => Math.floor(Math.random() * TIPS.length));
   const tip = TIPS[index]!;
 
@@ -40,23 +58,21 @@ export function DailyBeautyTipCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true">💡</span>
+        <span className="text-lg" aria-hidden="true">
+          💡
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">
-            نصيحة اليوم
-          </h4>
-          <p className="text-[10px] text-amber-500 dark:text-amber-400">
-            {tip.category}
-          </p>
+          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">نصيحة اليوم</h4>
+          <p className="text-[10px] text-amber-500 dark:text-amber-400">{tip.category}</p>
         </div>
       </div>
 
       {/* Tip card */}
       <div className="mt-3 rounded-xl bg-amber-50 p-4 text-center dark:bg-amber-950">
-        <span className="text-3xl" aria-hidden="true">{tip.emoji}</span>
-        <p className="mt-2 text-xs leading-relaxed text-amber-800 dark:text-amber-200">
-          {tip.tip}
-        </p>
+        <span className="text-3xl" aria-hidden="true">
+          {tip.emoji}
+        </span>
+        <p className="mt-2 text-xs leading-relaxed text-amber-800 dark:text-amber-200">{tip.tip}</p>
       </div>
 
       {/* Rotating indicator */}

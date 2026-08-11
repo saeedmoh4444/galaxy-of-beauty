@@ -3,16 +3,8 @@ import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import crypto from 'crypto';
 import { notFound, forbidden } from '../lib/errors';
-import {
-  protectedProcedure,
-  customerProcedure,
-  technicianProcedure,
-  router,
-} from '../trpc';
-import {
-  createBookingSchema,
-  bookingQuerySchema,
-} from '../validators/booking';
+import { protectedProcedure, customerProcedure, technicianProcedure, router } from '../trpc';
+import { createBookingSchema, bookingQuerySchema } from '../validators/booking';
 import { emitToUser, emitToTechnician, emitToAdmin } from '../socket/index';
 import {
   getWalletQueue,
@@ -86,199 +78,197 @@ export const bookingRouter = router({
    *  4. Calculate totalAmount from service basePrice + variant priceDelta
    *  5. Generate human-readable bookingCode
    */
-  create: customerProcedure
-    .input(createBookingSchema)
-    .mutation(async ({ ctx, input }) => {
-      const customerId = ctx.user.id;
+  create: customerProcedure.input(createBookingSchema).mutation(async ({ ctx, input }) => {
+    const customerId = ctx.user.id;
 
-      // 1. Idempotency check
-      const existing = await prisma.booking.findUnique({
-        where: { idempotencyKey: input.idempotencyKey },
-        include: bookingDetailInclude,
+    // 1. Idempotency check
+    const existing = await prisma.booking.findUnique({
+      where: { idempotencyKey: input.idempotencyKey },
+      include: bookingDetailInclude,
+    });
+    if (existing) return existing;
+
+    // 2a. Look up technician (User ID → Technician record)
+    const technician = await prisma.technician.findUnique({
+      where: { userId: input.technicianId },
+    });
+    if (!technician) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Technician not found',
       });
-      if (existing) return existing;
+    }
 
-      // 2a. Look up technician (User ID → Technician record)
-      const technician = await prisma.technician.findUnique({
-        where: { userId: input.technicianId },
+    // 2b. Look up slot
+    const slot = await prisma.availabilitySlot.findUnique({
+      where: { id: input.slotId },
+    });
+    if (!slot) {
+      throw notFound('Slot');
+    }
+    if (slot.technicianId !== technician.id) {
+      throw forbidden('Slot does not belong to the specified technician');
+    }
+    if (slot.isBooked) {
+      throw new TRPCError({
+        code: 'CONFLICT',
+        message: 'Slot is already booked',
       });
-      if (!technician) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Technician not found',
-        });
-      }
+    }
 
-      // 2b. Look up slot
-      const slot = await prisma.availabilitySlot.findUnique({
+    // 3. Atomic create
+    const booking = await prisma.$transaction(async (tx) => {
+      // Re-check slot inside transaction to avoid races
+      const currentSlot = await tx.availabilitySlot.findUnique({
         where: { id: input.slotId },
       });
-      if (!slot) {
-        throw notFound('Slot');
-      }
-      if (slot.technicianId !== technician.id) {
-        throw forbidden('Slot does not belong to the specified technician');
-      }
-      if (slot.isBooked) {
+      if (!currentSlot || currentSlot.isBooked) {
         throw new TRPCError({
           code: 'CONFLICT',
-          message: 'Slot is already booked',
+          message: 'Slot is no longer available',
         });
       }
 
-      // 3. Atomic create
-      const booking = await prisma.$transaction(async (tx) => {
-        // Re-check slot inside transaction to avoid races
-        const currentSlot = await tx.availabilitySlot.findUnique({
-          where: { id: input.slotId },
+      // 4. Calculate totalAmount
+      const service = await tx.service.findUnique({
+        where: { id: input.serviceId },
+      });
+      if (!service) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Service not found',
         });
-        if (!currentSlot || currentSlot.isBooked) {
-          throw new TRPCError({
-            code: 'CONFLICT',
-            message: 'Slot is no longer available',
-          });
-        }
+      }
 
-        // 4. Calculate totalAmount
-        const service = await tx.service.findUnique({
-          where: { id: input.serviceId },
+      let totalAmount = Number(service.basePrice);
+
+      if (input.variantId) {
+        const variant = await tx.serviceVariant.findUnique({
+          where: { id: input.variantId },
         });
-        if (!service) {
+        if (!variant || variant.serviceId !== input.serviceId) {
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message: 'Service not found',
+            message: 'Service variant not found or does not belong to this service',
           });
         }
-
-        let totalAmount = Number(service.basePrice);
-
-        if (input.variantId) {
-          const variant = await tx.serviceVariant.findUnique({
-            where: { id: input.variantId },
-          });
-          if (!variant || variant.serviceId !== input.serviceId) {
-            throw new TRPCError({
-              code: 'NOT_FOUND',
-              message: 'Service variant not found or does not belong to this service',
-            });
-          }
-          totalAmount += Number(variant.priceDelta);
-        }
-
-        // 5. Generate booking code
-        const bookingCode = `GOB-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
-
-        // 6. Create booking
-        const newBooking = await tx.booking.create({
-          data: {
-            bookingCode,
-            customerId,
-            technicianId: input.technicianId,
-            serviceId: input.serviceId,
-            variantId: input.variantId ?? null,
-            addressId: input.addressId,
-            startAt: new Date(input.startAt),
-            endAt: new Date(input.endAt),
-            status: 'REQUESTED',
-            totalAmount,
-            platformFee: 0,
-            paymentFee: 0,
-            cashHandlingFee: 0,
-            notes: input.notes ?? null,
-            idempotencyKey: input.idempotencyKey,
-          },
-        });
-
-        // 7. Mark slot as booked and link to booking
-        await tx.availabilitySlot.update({
-          where: { id: input.slotId },
-          data: {
-            isBooked: true,
-            bookingId: newBooking.id,
-          },
-        });
-
-        return newBooking;
-      });
-
-      // 8. Return full booking with relations
-      const result = await prisma.booking.findUnique({
-        where: { id: booking.id },
-        include: bookingDetailInclude,
-      });
-
-      // 9. Emit real-time events (immediate)
-      if (result) {
-        emitToTechnician(input.technicianId, 'new_booking_request', result);
-        emitToUser(ctx.user.id, 'new_booking_request', result);
-        emitToAdmin('admin_update', { type: 'new_booking', booking: result });
+        totalAmount += Number(variant.priceDelta);
       }
 
-      // 10. Enqueue async side effects (fire-and-forget)
-      const idemKey = input.idempotencyKey;
-      try {
-        const cashback = Math.round(Number(booking.totalAmount) * 0.05 * 100) / 100;
-        const points = Math.round(Number(booking.totalAmount));
+      // 5. Generate booking code
+      const bookingCode = `GOB-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
 
-        await Promise.allSettled([
-          // Wallet cashback
-          getWalletQueue()?.add('cashback.accrue', {
-            userId: customerId,
-            bookingId: booking.id,
-            amount: cashback,
-            idempotencyKey: idemKey ? `${idemKey}_cashback` : undefined,
-          } as import('../workers').CashbackJob),
+      // 6. Create booking
+      const newBooking = await tx.booking.create({
+        data: {
+          bookingCode,
+          customerId,
+          technicianId: input.technicianId,
+          serviceId: input.serviceId,
+          variantId: input.variantId ?? null,
+          addressId: input.addressId,
+          startAt: new Date(input.startAt),
+          endAt: new Date(input.endAt),
+          status: 'REQUESTED',
+          totalAmount,
+          platformFee: 0,
+          paymentFee: 0,
+          cashHandlingFee: 0,
+          notes: input.notes ?? null,
+          idempotencyKey: input.idempotencyKey,
+        },
+      });
 
-          // Loyalty points
-          getLoyaltyQueue()?.add('points.earn', {
-            userId: customerId,
-            bookingId: booking.id,
-            points,
-            reason: 'booking',
-            idempotencyKey: idemKey ? `${idemKey}_loyalty` : undefined,
-          } as import('../workers').LoyaltyPointsJob),
+      // 7. Mark slot as booked and link to booking
+      await tx.availabilitySlot.update({
+        where: { id: input.slotId },
+        data: {
+          isBooked: true,
+          bookingId: newBooking.id,
+        },
+      });
 
-          // Notification to technician
-          getNotificationQueue()?.add('booking.requested', {
-            userId: input.technicianId,
-            type: 'booking_requested',
-            titleAr: 'طلب حجز جديد',
-            titleEn: 'New Booking Request',
-            bodyAr: `لديك طلب حجز جديد من ${ctx.user.email}`,
-            bodyEn: `New booking request from ${ctx.user.email}`,
-            channels: ['in_app', 'push'],
-            idempotencyKey: idemKey ? `${idemKey}_notif_tech` : undefined,
-          } as import('../workers').NotificationJob),
+      return newBooking;
+    });
 
-          // Notification to customer
-          getNotificationQueue()?.add('booking.confirmed', {
-            userId: customerId,
-            type: 'booking_created',
-            titleAr: 'تم استلام طلب الحجز',
-            titleEn: 'Booking Request Received',
-            bodyAr: 'تم إرسال طلبك إلى الفنية. سنخطرك عند القبول.',
-            bodyEn: 'Your request has been sent. We will notify you upon acceptance.',
-            channels: ['in_app'],
-            idempotencyKey: idemKey ? `${idemKey}_notif_cust` : undefined,
-          } as import('../workers').NotificationJob),
+    // 8. Return full booking with relations
+    const result = await prisma.booking.findUnique({
+      where: { id: booking.id },
+      include: bookingDetailInclude,
+    });
 
-          // Calendar sync (if technician has Google Calendar)
-          getIntegrationQueue()?.add('calendar.create', {
-            technicianId: input.technicianId,
-            bookingId: booking.id,
-            action: 'create',
-            startAt: input.startAt,
-            endAt: input.endAt,
-            summary: `Booking #${booking.bookingCode}`,
-            idempotencyKey: idemKey ? `${idemKey}_calendar` : undefined,
-          } as import('../workers').CalendarSyncJob),
-        ]);
-      } catch {
-        // Fire-and-forget — enqueue failures should never fail the booking creation
-      }
+    // 9. Emit real-time events (immediate)
+    if (result) {
+      emitToTechnician(input.technicianId, 'new_booking_request', result);
+      emitToUser(ctx.user.id, 'new_booking_request', result);
+      emitToAdmin('admin_update', { type: 'new_booking', booking: result });
+    }
 
-      return result;
-    }),
+    // 10. Enqueue async side effects (fire-and-forget)
+    const idemKey = input.idempotencyKey;
+    try {
+      const cashback = Math.round(Number(booking.totalAmount) * 0.05 * 100) / 100;
+      const points = Math.round(Number(booking.totalAmount));
+
+      await Promise.allSettled([
+        // Wallet cashback
+        getWalletQueue()?.add('cashback.accrue', {
+          userId: customerId,
+          bookingId: booking.id,
+          amount: cashback,
+          idempotencyKey: idemKey ? `${idemKey}_cashback` : undefined,
+        } as import('../workers').CashbackJob),
+
+        // Loyalty points
+        getLoyaltyQueue()?.add('points.earn', {
+          userId: customerId,
+          bookingId: booking.id,
+          points,
+          reason: 'booking',
+          idempotencyKey: idemKey ? `${idemKey}_loyalty` : undefined,
+        } as import('../workers').LoyaltyPointsJob),
+
+        // Notification to technician
+        getNotificationQueue()?.add('booking.requested', {
+          userId: input.technicianId,
+          type: 'booking_requested',
+          titleAr: 'طلب حجز جديد',
+          titleEn: 'New Booking Request',
+          bodyAr: `لديك طلب حجز جديد من ${ctx.user.email}`,
+          bodyEn: `New booking request from ${ctx.user.email}`,
+          channels: ['in_app', 'push'],
+          idempotencyKey: idemKey ? `${idemKey}_notif_tech` : undefined,
+        } as import('../workers').NotificationJob),
+
+        // Notification to customer
+        getNotificationQueue()?.add('booking.confirmed', {
+          userId: customerId,
+          type: 'booking_created',
+          titleAr: 'تم استلام طلب الحجز',
+          titleEn: 'Booking Request Received',
+          bodyAr: 'تم إرسال طلبك إلى الفنية. سنخطرك عند القبول.',
+          bodyEn: 'Your request has been sent. We will notify you upon acceptance.',
+          channels: ['in_app'],
+          idempotencyKey: idemKey ? `${idemKey}_notif_cust` : undefined,
+        } as import('../workers').NotificationJob),
+
+        // Calendar sync (if technician has Google Calendar)
+        getIntegrationQueue()?.add('calendar.create', {
+          technicianId: input.technicianId,
+          bookingId: booking.id,
+          action: 'create',
+          startAt: input.startAt,
+          endAt: input.endAt,
+          summary: `Booking #${booking.bookingCode}`,
+          idempotencyKey: idemKey ? `${idemKey}_calendar` : undefined,
+        } as import('../workers').CalendarSyncJob),
+      ]);
+    } catch {
+      // Fire-and-forget — enqueue failures should never fail the booking creation
+    }
+
+    return result;
+  }),
 
   /**
    * List bookings for the current user.
@@ -287,48 +277,46 @@ export const bookingRouter = router({
    * - Admins see all bookings.
    * Supports pagination and optional status filter.
    */
-  list: protectedProcedure
-    .input(bookingQuerySchema)
-    .query(async ({ ctx, input }) => {
-      const userId = ctx.user.id;
-      const role = ctx.user.role;
+  list: protectedProcedure.input(bookingQuerySchema).query(async ({ ctx, input }) => {
+    const userId = ctx.user.id;
+    const role = ctx.user.role;
 
-      const where: Record<string, unknown> = {};
+    const where: Record<string, unknown> = {};
 
-      if (role === 'CUSTOMER') {
-        where.customerId = userId;
-      } else if (role === 'TECHNICIAN') {
-        where.technicianId = userId;
-      }
-      // ADMIN sees all (no additional filter)
+    if (role === 'CUSTOMER') {
+      where.customerId = userId;
+    } else if (role === 'TECHNICIAN') {
+      where.technicianId = userId;
+    }
+    // ADMIN sees all (no additional filter)
 
-      if (input.status) {
-        where.status = input.status;
-      }
+    if (input.status) {
+      where.status = input.status;
+    }
 
-      const skip = (input.page - 1) * input.limit;
+    const skip = (input.page - 1) * input.limit;
 
-      const [bookings, total] = await Promise.all([
-        prisma.booking.findMany({
-          where,
-          skip,
-          take: input.limit,
-          orderBy: { createdAt: 'desc' },
-          include: bookingListInclude,
-        }),
-        prisma.booking.count({ where }),
-      ]);
+    const [bookings, total] = await Promise.all([
+      prisma.booking.findMany({
+        where,
+        skip,
+        take: input.limit,
+        orderBy: { createdAt: 'desc' },
+        include: bookingListInclude,
+      }),
+      prisma.booking.count({ where }),
+    ]);
 
-      return {
-        bookings,
-        pagination: {
-          page: input.page,
-          limit: input.limit,
-          total,
-          totalPages: Math.ceil(total / input.limit),
-        },
-      };
-    }),
+    return {
+      bookings,
+      pagination: {
+        page: input.page,
+        limit: input.limit,
+        total,
+        totalPages: Math.ceil(total / input.limit),
+      },
+    };
+  }),
 
   /**
    * Get a single booking by ID.
@@ -408,7 +396,11 @@ export const bookingRouter = router({
       let authorized = false;
       if (role === 'ADMIN') {
         authorized = true;
-      } else if (role === 'TECHNICIAN' && isInvolvedTechnician && allowedRoles.includes('technician')) {
+      } else if (
+        role === 'TECHNICIAN' &&
+        isInvolvedTechnician &&
+        allowedRoles.includes('technician')
+      ) {
         authorized = true;
       } else if (role === 'CUSTOMER' && isInvolvedCustomer && allowedRoles.includes('customer')) {
         authorized = true;
@@ -699,7 +691,10 @@ export const bookingRouter = router({
         NO_SHOW: { ar: 'لم يحضر', en: 'No-show' },
       };
 
-      const currentLabel = statusLabels[booking.status] || { ar: booking.status, en: booking.status };
+      const currentLabel = statusLabels[booking.status] || {
+        ar: booking.status,
+        en: booking.status,
+      };
 
       // Cancelled event
       if (booking.cancelledAt) {
@@ -745,7 +740,10 @@ export const bookingRouter = router({
       }
 
       // Sort chronologically
-      events.sort((a, b) => new Date(a.timestamp as string).getTime() - new Date(b.timestamp as string).getTime());
+      events.sort(
+        (a, b) =>
+          new Date(a.timestamp as string).getTime() - new Date(b.timestamp as string).getTime(),
+      );
 
       return {
         bookingId: input.bookingId,

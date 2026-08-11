@@ -2,16 +2,8 @@ import { TRPCError } from '@trpc/server';
 import { prisma, Prisma } from '@galaxy/db';
 import { MIN_WITHDRAWAL_BALANCE, WITHDRAWAL_FEE_RATE } from '@galaxy/shared';
 import { z } from 'zod';
-import {
-  router,
-  protectedProcedure,
-  customerProcedure,
-  technicianProcedure,
-} from '../trpc';
-import {
-  walletWithdrawSchema,
-  walletTransactionQuerySchema,
-} from '../validators/payment';
+import { router, protectedProcedure, customerProcedure, technicianProcedure } from '../trpc';
+import { walletWithdrawSchema, walletTransactionQuerySchema } from '../validators/payment';
 
 /**
  * Return the user's wallet, creating one if it does not yet exist.
@@ -33,7 +25,6 @@ async function ensureWallet(userId: number) {
 // ---------------------------------------------------------------------------
 
 export const walletRouter = router({
-
   // -----------------------------------------------------------------------
   // getBalance — Current user's wallet summary
   // -----------------------------------------------------------------------
@@ -104,82 +95,80 @@ export const walletRouter = router({
   // -----------------------------------------------------------------------
   // withdraw — Technician requests a payout from their wallet
   // -----------------------------------------------------------------------
-  withdraw: technicianProcedure
-    .input(walletWithdrawSchema)
-    .mutation(async ({ ctx, input }) => {
-      try {
-        // 1. Ensure wallet exists and check minimum balance
-        const wallet = await ensureWallet(ctx.user.id);
+  withdraw: technicianProcedure.input(walletWithdrawSchema).mutation(async ({ ctx, input }) => {
+    try {
+      // 1. Ensure wallet exists and check minimum balance
+      const wallet = await ensureWallet(ctx.user.id);
 
-        if (Number(wallet.balance) < MIN_WITHDRAWAL_BALANCE) {
-          throw new TRPCError({
-            code: 'PRECONDITION_FAILED',
-            message: `Minimum wallet balance of ${MIN_WITHDRAWAL_BALANCE} SAR required to withdraw. Current balance: ${Number(wallet.balance).toFixed(2)} SAR`,
-          });
-        }
-
-        // 2. Check minimum withdrawal amount (100 SAR — validated by zod,
-        //    but double-check in case the schema rules change)
-        if (input.amount < 100) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Minimum withdrawal amount is 100 SAR',
-          });
-        }
-
-        // 3. Check sufficient balance
-        if (Number(wallet.balance) < input.amount) {
-          throw new TRPCError({
-            code: 'PRECONDITION_FAILED',
-            message: `Insufficient balance. Available: ${Number(wallet.balance).toFixed(2)} SAR, Requested: ${input.amount} SAR`,
-          });
-        }
-
-        // 4. Calculate fee and net amount
-        const fee = Math.round(input.amount * WITHDRAWAL_FEE_RATE * 100) / 100;
-        const netAmount = input.amount - fee;
-
-        // 5. Deduct from wallet balance
-        await prisma.wallet.update({
-          where: { id: wallet.id },
-          data: { balance: { decrement: input.amount } },
-        });
-
-        // 6. Create wallet transaction (DEBIT, WITHDRAWAL)
-        const transaction = await prisma.walletTransaction.create({
-          data: {
-            walletId: wallet.id,
-            type: 'DEBIT',
-            source: 'WITHDRAWAL',
-            amount: input.amount,
-            description: `Withdrawal of ${input.amount} SAR (fee: ${fee} SAR, net: ${netAmount} SAR)`,
-            idempotencyKey: input.idempotencyKey,
-          },
-        });
-
-        // 7. Create Payout record (PENDING)
-        await prisma.payout.create({
-          data: {
-            technicianId: ctx.user.id,
-            periodStart: new Date(),
-            periodEnd: new Date(),
-            amount: netAmount,
-            fee,
-            status: 'PENDING',
-            reference: null,
-          },
-        });
-
-        return transaction;
-      } catch (err) {
-        if (err instanceof TRPCError) throw err;
+      if (Number(wallet.balance) < MIN_WITHDRAWAL_BALANCE) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to process withdrawal',
-          cause: err,
+          code: 'PRECONDITION_FAILED',
+          message: `Minimum wallet balance of ${MIN_WITHDRAWAL_BALANCE} SAR required to withdraw. Current balance: ${Number(wallet.balance).toFixed(2)} SAR`,
         });
       }
-    }),
+
+      // 2. Check minimum withdrawal amount (100 SAR — validated by zod,
+      //    but double-check in case the schema rules change)
+      if (input.amount < 100) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Minimum withdrawal amount is 100 SAR',
+        });
+      }
+
+      // 3. Check sufficient balance
+      if (Number(wallet.balance) < input.amount) {
+        throw new TRPCError({
+          code: 'PRECONDITION_FAILED',
+          message: `Insufficient balance. Available: ${Number(wallet.balance).toFixed(2)} SAR, Requested: ${input.amount} SAR`,
+        });
+      }
+
+      // 4. Calculate fee and net amount
+      const fee = Math.round(input.amount * WITHDRAWAL_FEE_RATE * 100) / 100;
+      const netAmount = input.amount - fee;
+
+      // 5. Deduct from wallet balance
+      await prisma.wallet.update({
+        where: { id: wallet.id },
+        data: { balance: { decrement: input.amount } },
+      });
+
+      // 6. Create wallet transaction (DEBIT, WITHDRAWAL)
+      const transaction = await prisma.walletTransaction.create({
+        data: {
+          walletId: wallet.id,
+          type: 'DEBIT',
+          source: 'WITHDRAWAL',
+          amount: input.amount,
+          description: `Withdrawal of ${input.amount} SAR (fee: ${fee} SAR, net: ${netAmount} SAR)`,
+          idempotencyKey: input.idempotencyKey,
+        },
+      });
+
+      // 7. Create Payout record (PENDING)
+      await prisma.payout.create({
+        data: {
+          technicianId: ctx.user.id,
+          periodStart: new Date(),
+          periodEnd: new Date(),
+          amount: netAmount,
+          fee,
+          status: 'PENDING',
+          reference: null,
+        },
+      });
+
+      return transaction;
+    } catch (err) {
+      if (err instanceof TRPCError) throw err;
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to process withdrawal',
+        cause: err,
+      });
+    }
+  }),
 
   // -----------------------------------------------------------------------
   // topUp — Customer adds funds to their wallet

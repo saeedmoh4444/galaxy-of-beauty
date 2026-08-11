@@ -2,12 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { notFound } from '../lib/errors';
-import {
-  router,
-  publicProcedure,
-  customerProcedure,
-  technicianProcedure,
-} from '../trpc';
+import { router, publicProcedure, customerProcedure, technicianProcedure } from '../trpc';
 import { sendPushToUser } from '../lib/push';
 
 export const waitlistRouter = router({
@@ -127,30 +122,29 @@ export const waitlistRouter = router({
     }),
 
   // ── List my waitlist entries ──────────────────────────────────────────────
-  listMyEntries: customerProcedure
-    .query(async ({ ctx }) => {
-      const entries = await prisma.waitlistEntry.findMany({
-        where: { customerId: ctx.user.id },
-        orderBy: { createdAt: 'desc' },
-        include: {
-          technician: {
-            include: {
-              user: { select: { id: true, name: true } },
-            },
+  listMyEntries: customerProcedure.query(async ({ ctx }) => {
+    const entries = await prisma.waitlistEntry.findMany({
+      where: { customerId: ctx.user.id },
+      orderBy: { createdAt: 'desc' },
+      include: {
+        technician: {
+          include: {
+            user: { select: { id: true, name: true } },
           },
         },
-      });
+      },
+    });
 
-      return entries.map((e) => ({
-        id: e.id,
-        status: e.status,
-        position: e.position,
-        createdAt: e.createdAt,
-        technicianId: e.technicianId,
-        technicianName: e.technician.user.name,
-        serviceName: null as string | null,
-      }));
-    }),
+    return entries.map((e) => ({
+      id: e.id,
+      status: e.status,
+      position: e.position,
+      createdAt: e.createdAt,
+      technicianId: e.technicianId,
+      technicianName: e.technician.user.name,
+      serviceName: null as string | null,
+    }));
+  }),
 
   // ── Get my position ───────────────────────────────────────────────────────
   getMyPosition: customerProcedure

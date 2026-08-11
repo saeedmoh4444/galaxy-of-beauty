@@ -34,9 +34,7 @@ export const { router, procedure, middleware, mergeRouters } = t;
 
 // ---- Rate Limiting Middleware ----
 const rateLimitGuard = middleware(async ({ ctx, next, path }) => {
-  const tier = ctx.user
-    ? ctx.user.role === 'ADMIN' ? 'admin' : 'authenticated'
-    : 'anonymous';
+  const tier = ctx.user ? (ctx.user.role === 'ADMIN' ? 'admin' : 'authenticated') : 'anonymous';
   const key = ctx.user ? `user:${ctx.user.id}` : `anon:${path}`;
 
   const result = await checkRateLimit(key, tier as 'anonymous' | 'authenticated' | 'admin');

@@ -35,20 +35,45 @@ export default function ProfilePage(): JSX.Element {
   const [msg, setMsg] = useState('');
 
   // -- Profile tab --
-  const { data: user, isLoading: userLoading, isError: userError, refetch: refetchUser } = api.auth.me.useQuery();
+  const {
+    data: user,
+    isLoading: userLoading,
+    isError: userError,
+    refetch: refetchUser,
+  } = api.auth.me.useQuery();
   const updateProfileMut = api.auth.updateProfile.useMutation({
-    onSuccess: () => { setMsg('تم تحديث الملف الشخصي بنجاح'); refetchUser(); },
+    onSuccess: () => {
+      setMsg('تم تحديث الملف الشخصي بنجاح');
+      refetchUser();
+    },
   });
   const [formName, setFormName] = useState('');
   const [formPhone, setFormPhone] = useState('');
   const [formLang, setFormLang] = useState('ar');
 
   // -- Addresses tab --
-  const { data: addresses, isLoading: addrLoading, isError: addrError, refetch: refetchAddr } = api.addresses.list.useQuery();
-  const createAddrMut = api.addresses.create.useMutation({ onSuccess: () => { closeAddrModal(); refetchAddr(); } });
-  const updateAddrMut = api.addresses.update.useMutation({ onSuccess: () => { closeAddrModal(); refetchAddr(); } });
+  const {
+    data: addresses,
+    isLoading: addrLoading,
+    isError: addrError,
+    refetch: refetchAddr,
+  } = api.addresses.list.useQuery();
+  const createAddrMut = api.addresses.create.useMutation({
+    onSuccess: () => {
+      closeAddrModal();
+      refetchAddr();
+    },
+  });
+  const updateAddrMut = api.addresses.update.useMutation({
+    onSuccess: () => {
+      closeAddrModal();
+      refetchAddr();
+    },
+  });
   const deleteAddrMut = api.addresses.delete.useMutation({ onSuccess: () => refetchAddr() });
-  const setDefaultAddrMut = api.addresses.setDefault.useMutation({ onSuccess: () => refetchAddr() });
+  const setDefaultAddrMut = api.addresses.setDefault.useMutation({
+    onSuccess: () => refetchAddr(),
+  });
 
   const [showAddrModal, setShowAddrModal] = useState(false);
   const [editingAddrId, setEditingAddrId] = useState<number | null>(null);
@@ -101,7 +126,11 @@ export default function ProfilePage(): JSX.Element {
           </button>
         </div>
 
-        {msg && <p className="rounded-lg bg-green-50 p-3 text-sm text-green-700 dark:bg-green-950 dark:text-green-300">{msg}</p>}
+        {msg && (
+          <p className="rounded-lg bg-green-50 p-3 text-sm text-green-700 dark:bg-green-950 dark:text-green-300">
+            {msg}
+          </p>
+        )}
 
         {/* Tab 1: Profile */}
         {activeTab === 'profile' && (
@@ -113,7 +142,11 @@ export default function ProfilePage(): JSX.Element {
             ) : !userData ? (
               <div>
                 <EmptyState title="لا توجد بيانات" />
-                <div className="text-center"><Link href="/login"><Button>تسجيل الدخول</Button></Link></div>
+                <div className="text-center">
+                  <Link href="/login">
+                    <Button>تسجيل الدخول</Button>
+                  </Link>
+                </div>
               </div>
             ) : (
               <Card padding="lg">
@@ -139,7 +172,9 @@ export default function ProfilePage(): JSX.Element {
                     onChange={(e) => setFormPhone(e.target.value)}
                   />
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">اللغة</label>
+                    <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+                      اللغة
+                    </label>
                     <select
                       defaultValue={userData.preferredLanguage as string}
                       onChange={(e) => setFormLang(e.target.value)}
@@ -149,7 +184,9 @@ export default function ProfilePage(): JSX.Element {
                       <option value="en">English</option>
                     </select>
                   </div>
-                  <Button type="submit" loading={updateProfileMut.isPending}>حفظ التغييرات</Button>
+                  <Button type="submit" loading={updateProfileMut.isPending}>
+                    حفظ التغييرات
+                  </Button>
                 </form>
               </Card>
             )}
@@ -164,12 +201,19 @@ export default function ProfilePage(): JSX.Element {
             </div>
 
             {addrLoading ? (
-              <div className="space-y-3">{Array.from({ length: 3 }, (_, i) => <CardSkeleton key={i} />)}</div>
+              <div className="space-y-3">
+                {Array.from({ length: 3 }, (_, i) => (
+                  <CardSkeleton key={i} />
+                ))}
+              </div>
             ) : addrError ? (
               <ErrorAlert message="فشل تحميل العناوين" onRetry={() => refetchAddr()} />
             ) : addrList.length === 0 ? (
               <div>
-                <EmptyState title="لا توجد عناوين" description="أضف عنوانك الأول ليسهل عملية الحجز" />
+                <EmptyState
+                  title="لا توجد عناوين"
+                  description="أضف عنوانك الأول ليسهل عملية الحجز"
+                />
                 <div className="text-center">
                   <Button onClick={() => setShowAddrModal(true)}>إضافة عنوان</Button>
                 </div>
@@ -177,15 +221,28 @@ export default function ProfilePage(): JSX.Element {
             ) : (
               <div className="space-y-3">
                 {addrList.map((addr: Record<string, unknown>) => (
-                  <Card key={addr.id as number} padding="md" className={addr.isDefault ? 'border-brand-500' : ''}>
+                  <Card
+                    key={addr.id as number}
+                    padding="md"
+                    className={addr.isDefault ? 'border-brand-500' : ''}
+                  >
                     <div className="flex items-start justify-between">
                       <div>
                         <div className="flex items-center gap-2">
                           <p className="font-semibold">{addr.label as string}</p>
-                          {Boolean(addr.isDefault) && <span className="rounded-full bg-brand-100 px-2 py-0.5 text-xs font-medium text-brand-700 dark:bg-brand-900 dark:text-brand-300">افتراضي</span>}
+                          {Boolean(addr.isDefault) && (
+                            <span className="rounded-full bg-brand-100 px-2 py-0.5 text-xs font-medium text-brand-700 dark:bg-brand-900 dark:text-brand-300">
+                              افتراضي
+                            </span>
+                          )}
                         </div>
-                        <p className="mt-1 text-sm text-text-secondary">{addr.city as string} - {addr.area as string}</p>
-                        <p className="text-sm text-text-secondary">{addr.street as string}{addr.building ? `, مبنى ${addr.building}` : ''}</p>
+                        <p className="mt-1 text-sm text-text-secondary">
+                          {addr.city as string} - {addr.area as string}
+                        </p>
+                        <p className="text-sm text-text-secondary">
+                          {addr.street as string}
+                          {addr.building ? `, مبنى ${addr.building}` : ''}
+                        </p>
                       </div>
                       <div className="flex items-center gap-2">
                         <Button
@@ -209,7 +266,11 @@ export default function ProfilePage(): JSX.Element {
                         </Button>
                         {!addr.isDefault && (
                           <>
-                            <Button variant="outline" size="sm" onClick={() => setDefaultAddrMut.mutate({ id: addr.id as number })}>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setDefaultAddrMut.mutate({ id: addr.id as number })}
+                            >
                               تعيين افتراضي
                             </Button>
                             <Button
@@ -232,20 +293,57 @@ export default function ProfilePage(): JSX.Element {
               </div>
             )}
 
-            <Modal open={showAddrModal} onClose={closeAddrModal} title={editingAddrId ? 'تعديل عنوان' : 'إضافة عنوان'} size="md">
+            <Modal
+              open={showAddrModal}
+              onClose={closeAddrModal}
+              title={editingAddrId ? 'تعديل عنوان' : 'إضافة عنوان'}
+              size="md"
+            >
               <div className="space-y-4">
-                <Input label="تسمية (مثال: المنزل، العمل)" value={addrForm.label} onChange={(e) => setAddrForm({ ...addrForm, label: e.target.value })} />
+                <Input
+                  label="تسمية (مثال: المنزل، العمل)"
+                  value={addrForm.label}
+                  onChange={(e) => setAddrForm({ ...addrForm, label: e.target.value })}
+                />
                 <div className="grid grid-cols-2 gap-3">
-                  <Input label="المدينة" value={addrForm.city} onChange={(e) => setAddrForm({ ...addrForm, city: e.target.value })} />
-                  <Input label="المنطقة" value={addrForm.area} onChange={(e) => setAddrForm({ ...addrForm, area: e.target.value })} />
+                  <Input
+                    label="المدينة"
+                    value={addrForm.city}
+                    onChange={(e) => setAddrForm({ ...addrForm, city: e.target.value })}
+                  />
+                  <Input
+                    label="المنطقة"
+                    value={addrForm.area}
+                    onChange={(e) => setAddrForm({ ...addrForm, area: e.target.value })}
+                  />
                 </div>
-                <Input label="الشارع" value={addrForm.street} onChange={(e) => setAddrForm({ ...addrForm, street: e.target.value })} />
+                <Input
+                  label="الشارع"
+                  value={addrForm.street}
+                  onChange={(e) => setAddrForm({ ...addrForm, street: e.target.value })}
+                />
                 <div className="grid grid-cols-3 gap-3">
-                  <Input label="المبنى" value={addrForm.building} onChange={(e) => setAddrForm({ ...addrForm, building: e.target.value })} />
-                  <Input label="الطابق" value={addrForm.floor} onChange={(e) => setAddrForm({ ...addrForm, floor: e.target.value })} />
-                  <Input label="الشقة" value={addrForm.apartment} onChange={(e) => setAddrForm({ ...addrForm, apartment: e.target.value })} />
+                  <Input
+                    label="المبنى"
+                    value={addrForm.building}
+                    onChange={(e) => setAddrForm({ ...addrForm, building: e.target.value })}
+                  />
+                  <Input
+                    label="الطابق"
+                    value={addrForm.floor}
+                    onChange={(e) => setAddrForm({ ...addrForm, floor: e.target.value })}
+                  />
+                  <Input
+                    label="الشقة"
+                    value={addrForm.apartment}
+                    onChange={(e) => setAddrForm({ ...addrForm, apartment: e.target.value })}
+                  />
                 </div>
-                <Button className="w-full" onClick={handleAddrSave} loading={createAddrMut.isPending || updateAddrMut.isPending}>
+                <Button
+                  className="w-full"
+                  onClick={handleAddrSave}
+                  loading={createAddrMut.isPending || updateAddrMut.isPending}
+                >
                   {editingAddrId ? 'تحديث العنوان' : 'إضافة العنوان'}
                 </Button>
               </div>

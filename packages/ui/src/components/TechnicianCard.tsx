@@ -30,14 +30,20 @@ interface TechnicianCardProps {
   className?: string;
 }
 
-export function TechnicianCard({ tech, onSelect, className = '' }: TechnicianCardProps): JSX.Element {
+export function TechnicianCard({
+  tech,
+  onSelect,
+  className = '',
+}: TechnicianCardProps): JSX.Element {
   return (
     <Card padding="md" hover className={`text-center ${className}`}>
       <Avatar src={tech.avatarUrl} name={tech.name} size="xl" className="mx-auto" />
       <h3 className="mt-3 text-sm font-bold text-text-primary dark:text-gray-100">{tech.name}</h3>
 
       {tech.speciality ? (
-        <Badge variant="brand" size="sm" className="mt-1">{tech.speciality}</Badge>
+        <Badge variant="brand" size="sm" className="mt-1">
+          {tech.speciality}
+        </Badge>
       ) : null}
 
       <div className="mt-2 flex items-center justify-center gap-2">
@@ -52,7 +58,9 @@ export function TechnicianCard({ tech, onSelect, className = '' }: TechnicianCar
       ) : null}
 
       {tech.minPrice ? (
-        <p className="mt-1 text-xs text-text-secondary dark:text-gray-400">من {tech.minPrice} ر.س</p>
+        <p className="mt-1 text-xs text-text-secondary dark:text-gray-400">
+          من {tech.minPrice} ر.س
+        </p>
       ) : null}
 
       <button

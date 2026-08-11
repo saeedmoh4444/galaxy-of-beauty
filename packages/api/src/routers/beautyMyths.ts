@@ -5,11 +5,22 @@ import { notFound } from '../lib/errors';
 
 export const beautyMythsRouter = router({
   list: publicProcedure
-    .input(z.object({ page: z.number().int().min(1).default(1), limit: z.number().int().min(1).max(50).default(10), category: z.string().optional() }))
+    .input(
+      z.object({
+        page: z.number().int().min(1).default(1),
+        limit: z.number().int().min(1).max(50).default(10),
+        category: z.string().optional(),
+      }),
+    )
     .query(async ({ input }) => {
       const where = input.category ? { category: input.category } : {};
       const [items, total] = await Promise.all([
-        prisma.beautyMyth.findMany({ where, orderBy: { createdAt: 'desc' }, skip: (input.page - 1) * input.limit, take: input.limit }),
+        prisma.beautyMyth.findMany({
+          where,
+          orderBy: { createdAt: 'desc' },
+          skip: (input.page - 1) * input.limit,
+          take: input.limit,
+        }),
         prisma.beautyMyth.count({ where }),
       ]);
       return { items, total, page: input.page, pages: Math.ceil(total / input.limit) };
@@ -22,9 +33,23 @@ export const beautyMythsRouter = router({
   }),
 
   create: adminProcedure
-    .input(z.object({ myth: z.string().min(5).max(500), fact: z.string().min(5).max(1000), category: z.string().default('general'), source: z.string().optional() }))
+    .input(
+      z.object({
+        myth: z.string().min(5).max(500),
+        fact: z.string().min(5).max(1000),
+        category: z.string().default('general'),
+        source: z.string().optional(),
+      }),
+    )
     .mutation(async ({ input }) => {
-      return prisma.beautyMyth.create({ data: { myth: input.myth, fact: input.fact, category: input.category, source: input.source ?? null } });
+      return prisma.beautyMyth.create({
+        data: {
+          myth: input.myth,
+          fact: input.fact,
+          category: input.category,
+          source: input.source ?? null,
+        },
+      });
     }),
 
   delete: adminProcedure

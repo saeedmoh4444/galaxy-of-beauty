@@ -5,11 +5,13 @@ import { publicProcedure, router } from '../trpc';
 export const priceEstimatorRouter = router({
   // Estimate total cost for a booking
   estimate: publicProcedure
-    .input(z.object({
-      serviceId: z.number().int().positive(),
-      variantId: z.number().int().positive().optional(),
-      promoCode: z.string().optional(),
-    }))
+    .input(
+      z.object({
+        serviceId: z.number().int().positive(),
+        variantId: z.number().int().positive().optional(),
+        promoCode: z.string().optional(),
+      }),
+    )
     .query(async ({ input }) => {
       const service = await prisma.service.findUnique({ where: { id: input.serviceId } });
       if (!service) throw new Error('الخدمة غير موجودة');
@@ -34,10 +36,12 @@ export const priceEstimatorRouter = router({
 
       // Check promo code
       if (input.promoCode) {
-        const promo = await prisma.promoCode.findUnique({ where: { code: input.promoCode.toUpperCase() } });
+        const promo = await prisma.promoCode.findUnique({
+          where: { code: input.promoCode.toUpperCase() },
+        });
         if (promo && promo.isActive && (!promo.validUntil || promo.validUntil > new Date())) {
           if (promo.discountType === 'percent') {
-            discount = Math.round(subtotal * Number(promo.discountValue) / 100);
+            discount = Math.round((subtotal * Number(promo.discountValue)) / 100);
             if (promo.maxDiscount) discount = Math.min(discount, Number(promo.maxDiscount));
           } else {
             discount = Number(promo.discountValue);

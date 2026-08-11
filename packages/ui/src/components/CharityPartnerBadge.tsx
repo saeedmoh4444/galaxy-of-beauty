@@ -39,22 +39,18 @@ export function CharityPartnerBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">{charity.emoji || '🤝'}</span>
+        <span className="text-xl" aria-hidden="true">
+          {charity.emoji || '🤝'}
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">
-            شراكة مجتمعية
-          </h4>
-          <p className="text-[10px] text-rose-500 dark:text-rose-400">
-            مع {charity.name}
-          </p>
+          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">شراكة مجتمعية</h4>
+          <p className="text-[10px] text-rose-500 dark:text-rose-400">مع {charity.name}</p>
         </div>
       </div>
 
       {/* Cause */}
       <div className="mt-3 rounded-xl bg-rose-50 p-3 text-center dark:bg-rose-950">
-        <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300">
-          💜 {charity.cause}
-        </p>
+        <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300">💜 {charity.cause}</p>
       </div>
 
       {/* Raised amount */}

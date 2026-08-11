@@ -1,6 +1,7 @@
 # Galaxy of Beauty — Production Deployment Guide
 
 ## Prerequisites
+
 - Ubuntu 22.04 LTS (or newer)
 - Node.js 20 LTS
 - PostgreSQL 15+

@@ -12,10 +12,15 @@ type TechnicianItem = Record<string, any>;
 
 const kycBadge = (status: string): { label: string; className: string } => {
   switch (status) {
-    case 'VERIFIED': return { label: 'موثق', className: 'bg-green-100 text-green-700' };
-    case 'SUBMITTED': return { label: 'مقدم', className: 'bg-blue-100 text-blue-700' };
-    case 'REJECTED': return { label: 'مرفوض', className: 'bg-red-100 text-red-700' };
-    case 'PENDING': default: return { label: 'قيد الانتظار', className: 'bg-amber-100 text-amber-700' };
+    case 'VERIFIED':
+      return { label: 'موثق', className: 'bg-green-100 text-green-700' };
+    case 'SUBMITTED':
+      return { label: 'مقدم', className: 'bg-blue-100 text-blue-700' };
+    case 'REJECTED':
+      return { label: 'مرفوض', className: 'bg-red-100 text-red-700' };
+    case 'PENDING':
+    default:
+      return { label: 'قيد الانتظار', className: 'bg-amber-100 text-amber-700' };
   }
 };
 
@@ -25,21 +30,31 @@ export default function AdminTechniciansPage(): JSX.Element {
   const [reviewNote, setReviewNote] = useState('');
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = api.admin.listTechnicians.useQuery({ page: 1, limit: 50 }) as any;
-  const verifyMut = api.technicians.verifyKyc.useMutation({ onSuccess: () => { refetch(); setReviewTech(null); setReviewNote(''); } });
+  const { data, isLoading, isError, refetch } = api.admin.listTechnicians.useQuery({
+    page: 1,
+    limit: 50,
+  }) as any;
+  const verifyMut = api.technicians.verifyKyc.useMutation({
+    onSuccess: () => {
+      refetch();
+      setReviewTech(null);
+      setReviewNote('');
+    },
+  });
   const suspendMut = api.admin.suspendUser.useMutation({ onSuccess: () => refetch() });
 
   const technicians: Array<Record<string, any>> = data?.items ?? [];
 
-  const filtered = kycTab === 'ALL'
-    ? technicians
-    : technicians.filter((t: Record<string, any>) => t.kycStatus === kycTab);
+  const filtered =
+    kycTab === 'ALL'
+      ? technicians
+      : technicians.filter((t: Record<string, any>) => t.kycStatus === kycTab);
 
   const handleVerify = (approved: boolean) => {
     if (!reviewTech) return;
     verifyMut.mutate({
       userId: reviewTech.userId,
-      status: approved ? 'VERIFIED' as const : 'REJECTED' as const,
+      status: approved ? ('VERIFIED' as const) : ('REJECTED' as const),
       notes: reviewNote || undefined,
     });
   };
@@ -55,14 +70,24 @@ export default function AdminTechniciansPage(): JSX.Element {
             onClick={() => setKycTab(tab)}
             className={`rounded-full px-4 py-1.5 text-sm font-medium ${kycTab === tab ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800 dark:text-gray-300'}`}
           >
-            {tab === 'ALL' ? 'الكل' : tab === 'PENDING' ? 'قيد الانتظار' : tab === 'SUBMITTED' ? 'مقدم' : tab === 'VERIFIED' ? 'موثق' : 'مرفوض'}
+            {tab === 'ALL'
+              ? 'الكل'
+              : tab === 'PENDING'
+                ? 'قيد الانتظار'
+                : tab === 'SUBMITTED'
+                  ? 'مقدم'
+                  : tab === 'VERIFIED'
+                    ? 'موثق'
+                    : 'مرفوض'}
           </button>
         ))}
       </div>
 
-      {isLoading ? <CardSkeleton />
-      : isError ? <ErrorAlert message="فشل تحميل الفنيات" onRetry={() => refetch()} />
-      : filtered.length === 0 ? (
+      {isLoading ? (
+        <CardSkeleton />
+      ) : isError ? (
+        <ErrorAlert message="فشل تحميل الفنيات" onRetry={() => refetch()} />
+      ) : filtered.length === 0 ? (
         <EmptyState title="لا توجد فنيات" />
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
@@ -77,7 +102,9 @@ export default function AdminTechniciansPage(): JSX.Element {
                       <p className="text-sm text-text-secondary">{tech.user.email}</p>
                       <p className="text-sm text-text-secondary">{tech.city ?? '—'}</p>
                     </div>
-                    <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${badge.className}`}>
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-xs font-medium ${badge.className}`}
+                    >
                       {badge.label}
                     </span>
                   </div>
@@ -109,28 +136,45 @@ export default function AdminTechniciansPage(): JSX.Element {
       )}
 
       {/* KYC Review Modal */}
-      <Modal open={!!reviewTech} onClose={() => { setReviewTech(null); setReviewNote(''); }} title="مراجعة توثيق الفنية">
+      <Modal
+        open={!!reviewTech}
+        onClose={() => {
+          setReviewTech(null);
+          setReviewNote('');
+        }}
+        title="مراجعة توثيق الفنية"
+      >
         {reviewTech && (
           <div className="space-y-4">
-            <p className="text-sm"><strong>الاسم:</strong> {reviewTech.user.name}</p>
-            <p className="text-sm"><strong>البريد:</strong> {reviewTech.user.email}</p>
-            <p className="text-sm"><strong>حالة التوثيق:</strong> {reviewTech.kycStatus}</p>
+            <p className="text-sm">
+              <strong>الاسم:</strong> {reviewTech.user.name}
+            </p>
+            <p className="text-sm">
+              <strong>البريد:</strong> {reviewTech.user.email}
+            </p>
+            <p className="text-sm">
+              <strong>حالة التوثيق:</strong> {reviewTech.kycStatus}
+            </p>
 
             <div>
               <p className="mb-1 text-sm font-medium">الوثائق المقدمة:</p>
               {((reviewTech.kycDocuments as { type: string; url: string }[]) ?? []).length > 0 ? (
-                (reviewTech.kycDocuments as { type: string; url: string }[]).map((doc, i: number) => (
-                  <p key={i} className="text-sm text-blue-600 hover:underline cursor-pointer">
-                    {doc.type ?? `مستند ${i + 1}`}
-                  </p>
-                ))
+                (reviewTech.kycDocuments as { type: string; url: string }[]).map(
+                  (doc, i: number) => (
+                    <p key={i} className="text-sm text-blue-600 hover:underline cursor-pointer">
+                      {doc.type ?? `مستند ${i + 1}`}
+                    </p>
+                  ),
+                )
               ) : (
                 <p className="text-sm text-text-secondary">لا توجد وثائق مرفوعة (مؤقت)</p>
               )}
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">ملاحظات</label>
+              <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+                ملاحظات
+              </label>
               <textarea
                 className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 rows={3}
@@ -141,9 +185,29 @@ export default function AdminTechniciansPage(): JSX.Element {
             </div>
 
             <div className="flex gap-2">
-              <Button variant="primary" onClick={() => handleVerify(true)} loading={verifyMut.isPending}>اعتماد التوثيق</Button>
-              <Button variant="danger" onClick={() => handleVerify(false)} loading={verifyMut.isPending}>رفض التوثيق</Button>
-              <Button variant="secondary" onClick={() => { setReviewTech(null); setReviewNote(''); }}>إلغاء</Button>
+              <Button
+                variant="primary"
+                onClick={() => handleVerify(true)}
+                loading={verifyMut.isPending}
+              >
+                اعتماد التوثيق
+              </Button>
+              <Button
+                variant="danger"
+                onClick={() => handleVerify(false)}
+                loading={verifyMut.isPending}
+              >
+                رفض التوثيق
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setReviewTech(null);
+                  setReviewNote('');
+                }}
+              >
+                إلغاء
+              </Button>
             </div>
           </div>
         )}

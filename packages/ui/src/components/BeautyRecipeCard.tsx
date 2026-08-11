@@ -26,10 +26,7 @@ interface BeautyRecipeCardProps {
   className?: string;
 }
 
-export function BeautyRecipeCard({
-  recipe,
-  className = '',
-}: BeautyRecipeCardProps): JSX.Element {
+export function BeautyRecipeCard({ recipe, className = '' }: BeautyRecipeCardProps): JSX.Element {
   return (
     <div
       className={cn(
@@ -38,7 +35,9 @@ export function BeautyRecipeCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">🥣</span>
+        <span className="text-xl" aria-hidden="true">
+          🥣
+        </span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             {recipe.title}
@@ -52,9 +51,7 @@ export function BeautyRecipeCard({
 
       {/* Ingredients */}
       <div className="mt-3 rounded-xl bg-emerald-50 p-3 dark:bg-emerald-950">
-        <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
-          🛒 المكونات
-        </p>
+        <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">🛒 المكونات</p>
         <div className="mt-1 flex flex-wrap gap-1">
           {recipe.ingredients.map((ing) => (
             <span
@@ -69,9 +66,7 @@ export function BeautyRecipeCard({
 
       {/* Steps */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          📝 الطريقة
-        </p>
+        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">📝 الطريقة</p>
         <div className="mt-1 space-y-1">
           {recipe.steps.map((step, i) => (
             <div key={i} className="flex items-start gap-1.5">

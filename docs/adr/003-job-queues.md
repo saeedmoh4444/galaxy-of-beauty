@@ -6,6 +6,7 @@
 ## Context
 
 Booking creation was fully synchronous. The `booking.create` procedure waited for:
+
 - Wallet cashback accrual
 - Loyalty points earning
 - Notification dispatch (email, SMS, push)
@@ -17,12 +18,12 @@ This made booking creation take 1-3 seconds. Every side effect failure blocked t
 
 Use BullMQ (Redis-backed job queues) for fire-and-forget async processing. Create 4 queues:
 
-| Queue | Purpose | Example Jobs |
-|-------|---------|-------------|
-| `gob-wallet` | Cashback, bonuses, referral rewards | `cashback.accrue` |
-| `gob-loyalty` | Points, tier upgrades, streaks | `points.earn` |
-| `gob-notifications` | Email, SMS, push | `booking.requested`, `promotion.new` |
-| `gob-integrations` | Calendar sync, ZATCA, webhooks | `calendar.create` |
+| Queue               | Purpose                             | Example Jobs                         |
+| ------------------- | ----------------------------------- | ------------------------------------ |
+| `gob-wallet`        | Cashback, bonuses, referral rewards | `cashback.accrue`                    |
+| `gob-loyalty`       | Points, tier upgrades, streaks      | `points.earn`                        |
+| `gob-notifications` | Email, SMS, push                    | `booking.requested`, `promotion.new` |
+| `gob-integrations`  | Calendar sync, ZATCA, webhooks      | `calendar.create`                    |
 
 ## Architecture
 
@@ -50,12 +51,14 @@ booking.create
 ## Consequences
 
 **Positive:**
+
 - Booking creation response time dropped from 1-3s to <500ms
 - Side effect failures don't block the main flow
 - Jobs are retried automatically (at-least-once delivery)
 - Workers can be scaled independently
 
 **Negative:**
+
 - At-least-once delivery (not exactly-once) — need idempotency keys on all job handlers
 - Added operational complexity (4 queues to monitor)
 - Redis is now a critical dependency (was optional before)

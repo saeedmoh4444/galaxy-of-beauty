@@ -31,10 +31,10 @@ export function Vision2030Badge({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">🇸🇦</span>
-        <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">
-          رؤية 2030
-        </h4>
+        <span className="text-3xl" aria-hidden="true">
+          🇸🇦
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">رؤية 2030</h4>
         <p className="text-[10px] text-emerald-600 dark:text-emerald-400">
           نساهم في تمكين المرأة السعودية
         </p>
@@ -67,7 +67,9 @@ export function Vision2030Badge({
           { emoji: '🌍', label: 'ريادة عالمية' },
         ].map((p) => (
           <div key={p.label} className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
-            <span className="text-lg" aria-hidden="true">{p.emoji}</span>
+            <span className="text-lg" aria-hidden="true">
+              {p.emoji}
+            </span>
             <p className="text-[9px] font-bold text-emerald-700 dark:text-emerald-300 mt-0.5">
               {p.label}
             </p>

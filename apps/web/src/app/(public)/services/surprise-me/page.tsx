@@ -9,7 +9,7 @@ export default async function SurpriseMePage(): Promise<JSX.Element> {
   try {
     const caller = await getServerCaller();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const services = await caller.services.list({ sort: 'popular', page: 1, limit: 50 }) as any;
+    const services = (await caller.services.list({ sort: 'popular', page: 1, limit: 50 })) as any;
     const items = services.items as unknown[];
     if (items.length > 0) {
       // Pick a random service on the server

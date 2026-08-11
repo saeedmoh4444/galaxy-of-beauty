@@ -24,25 +24,29 @@ const PRIVACY: Record<PrivacyLevel, PrivacyConfig> = {
     emoji: '🌐',
     label: 'عام',
     description: 'ظاهرة في المعرض العام',
-    colorClass: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800',
+    colorClass:
+      'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800',
   },
   TECHNICIAN_ONLY: {
     emoji: '👩‍🎨',
     label: 'للخبيرة فقط',
     description: 'لا تظهر إلا للخبيرة المعتمدة',
-    colorClass: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800',
+    colorClass:
+      'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800',
   },
   PRIVATE: {
     emoji: '🔒',
     label: 'خاصة',
     description: 'لكِ فقط — غير مرئية لأحد',
-    colorClass: 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-800',
+    colorClass:
+      'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-800',
   },
   VIEW_ONCE: {
     emoji: '👁️',
     label: 'مرة واحدة',
     description: 'تختفي بعد مشاهدتها',
-    colorClass: 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950 dark:text-rose-300 dark:border-rose-800',
+    colorClass:
+      'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950 dark:text-rose-300 dark:border-rose-800',
   },
 };
 
@@ -83,19 +87,18 @@ export function PhotoPrivacyBadge({
         <span className={cn('shrink-0', isSm ? 'text-xs' : 'text-sm')} aria-hidden="true">
           {config.emoji}
         </span>
-        <span className={cn('font-bold', isSm ? 'text-[10px]' : 'text-xs')}>
-          {config.label}
-        </span>
+        <span className={cn('font-bold', isSm ? 'text-[10px]' : 'text-xs')}>{config.label}</span>
         {level === 'VIEW_ONCE' && (
-          <span className="inline-flex h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" aria-hidden="true" />
+          <span
+            className="inline-flex h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse"
+            aria-hidden="true"
+          />
         )}
       </div>
 
       {/* Description */}
       {showDescription && (
-        <p className={cn('text-[10px] opacity-70', isSm && 'text-[9px]')}>
-          {config.description}
-        </p>
+        <p className={cn('text-[10px] opacity-70', isSm && 'text-[9px]')}>{config.description}</p>
       )}
 
       {/* Auto-delete countdown */}
@@ -115,9 +118,7 @@ export function PhotoPrivacyBadge({
               isExpiringSoon ? 'text-rose-700 dark:text-rose-300' : 'opacity-70',
             )}
           >
-            {expiresInDays === 1
-              ? 'تحذف غداً'
-              : `تحذف بعد ${expiresInDays} يوم`}
+            {expiresInDays === 1 ? 'تحذف غداً' : `تحذف بعد ${expiresInDays} يوم`}
           </span>
         </div>
       )}
@@ -125,7 +126,9 @@ export function PhotoPrivacyBadge({
       {/* Indefinite badge */}
       {!hasExpiry && level !== 'VIEW_ONCE' && (
         <div className="flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 dark:bg-black/20">
-          <span className="text-[10px]" aria-hidden="true">♾️</span>
+          <span className="text-[10px]" aria-hidden="true">
+            ♾️
+          </span>
           <span className="text-[10px] font-medium opacity-70">لا تنتهي</span>
         </div>
       )}

@@ -40,7 +40,9 @@ export function PrayerTimeReminder({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true">🕌</span>
+          <span className="text-xl" aria-hidden="true">
+            🕌
+          </span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
               موعد الصلاة
@@ -60,12 +62,8 @@ export function PrayerTimeReminder({
       {/* Countdown */}
       {minutesUntil !== undefined && (
         <div className="mt-2 rounded-xl bg-emerald-50 p-2.5 text-center dark:bg-emerald-950">
-          <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">
-            {minutesUntil}
-          </p>
-          <p className="text-[10px] text-emerald-600 dark:text-emerald-400">
-            دقيقة حتى الأذان
-          </p>
+          <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{minutesUntil}</p>
+          <p className="text-[10px] text-emerald-600 dark:text-emerald-400">دقيقة حتى الأذان</p>
         </div>
       )}
 

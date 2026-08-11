@@ -5,7 +5,12 @@ import { trpc } from '@/lib/trpc-react';
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function FavoritesScreen(): JSX.Element {
-  const favs = (trpc as any).favorites?.list?.useQuery?.() ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const favs = (trpc as any).favorites?.list?.useQuery?.() ?? {
+    data: null,
+    isLoading: false,
+    isError: false,
+    refetch: () => {},
+  };
   const data = favs.data as unknown[] | undefined;
 
   return (
@@ -32,8 +37,23 @@ export default function FavoritesScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
-  card: { backgroundColor: COLORS.white, borderRadius: 14, padding: 16, marginBottom: 8, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.brand,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  card: {
+    backgroundColor: COLORS.white,
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   label: { fontSize: 15, fontWeight: '600', color: COLORS.gray900 },
   serviceId: { fontSize: 12, color: COLORS.gray400 },

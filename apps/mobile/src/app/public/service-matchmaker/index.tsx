@@ -1,25 +1,44 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState } from 'react';
 
 const QUESTIONS = [
-  { id: 'mood', text: 'ما مزاجك اليوم؟', options: [
-    { label: 'استرخاء', value: 'relax', emoji: '🧖‍♀️' },
-    { label: 'تجديد', value: 'refresh', emoji: '✨' },
-    { label: 'جرأة', value: 'bold', emoji: '💄' },
-    { label: 'عناية', value: 'care', emoji: '💆‍♀️' },
-  ]},
-  { id: 'focus', text: 'على ماذا تركزين؟', options: [
-    { label: 'البشرة', value: 'skin', emoji: '🌸' },
-    { label: 'الشعر', value: 'hair', emoji: '💇‍♀️' },
-    { label: 'الأظافر', value: 'nails', emoji: '💅' },
-    { label: 'المكياج', value: 'makeup', emoji: '💄' },
-  ]},
-  { id: 'budget', text: 'ميزانيتك؟', options: [
-    { label: 'اقتصادية', value: 'low', emoji: '💰' },
-    { label: 'متوسطة', value: 'mid', emoji: '💵' },
-    { label: 'فاخرة', value: 'high', emoji: '💎' },
-  ]},
+  {
+    id: 'mood',
+    text: 'ما مزاجك اليوم؟',
+    options: [
+      { label: 'استرخاء', value: 'relax', emoji: '🧖‍♀️' },
+      { label: 'تجديد', value: 'refresh', emoji: '✨' },
+      { label: 'جرأة', value: 'bold', emoji: '💄' },
+      { label: 'عناية', value: 'care', emoji: '💆‍♀️' },
+    ],
+  },
+  {
+    id: 'focus',
+    text: 'على ماذا تركزين؟',
+    options: [
+      { label: 'البشرة', value: 'skin', emoji: '🌸' },
+      { label: 'الشعر', value: 'hair', emoji: '💇‍♀️' },
+      { label: 'الأظافر', value: 'nails', emoji: '💅' },
+      { label: 'المكياج', value: 'makeup', emoji: '💄' },
+    ],
+  },
+  {
+    id: 'budget',
+    text: 'ميزانيتك؟',
+    options: [
+      { label: 'اقتصادية', value: 'low', emoji: '💰' },
+      { label: 'متوسطة', value: 'mid', emoji: '💵' },
+      { label: 'فاخرة', value: 'high', emoji: '💎' },
+    ],
+  },
 ];
 
 export default function ServiceMatchmakerScreen(): JSX.Element {
@@ -36,7 +55,12 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
       setStep(step + 1);
     } else {
       setLoading(true);
-      ((trpc as any).serviceMatchmaker.match.query(next) as any).then((d: any) => { setResult(d); setLoading(false); }).catch(() => setLoading(false));
+      ((trpc as any).serviceMatchmaker.match.query(next) as any)
+        .then((d: any) => {
+          setResult(d);
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
     }
   };
 
@@ -51,19 +75,28 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
           <Text style={styles.resultTitle}>خدماتكِ المثالية</Text>
           {(result.matches as any[])?.map((m: any, i: number) => (
             <View key={i} style={styles.match}>
-              <Text style={styles.matchEmoji}>{m.emoji as string ?? '💆‍♀️'}</Text>
-              <View style={{flex:1}}>
+              <Text style={styles.matchEmoji}>{(m.emoji as string) ?? '💆‍♀️'}</Text>
+              <View style={{ flex: 1 }}>
                 <Text style={styles.matchName}>{m.nameAr as string}</Text>
                 <Text style={styles.matchWhy}>{m.whyAr as string}</Text>
               </View>
-              <View style={{alignItems:'flex-end'}}>
-                <Text style={styles.matchScore}>{(m.score as number)}%</Text>
+              <View style={{ alignItems: 'flex-end' }}>
+                <Text style={styles.matchScore}>{m.score as number}%</Text>
                 <Text style={styles.matchPrice}>{(m.price as number)?.toLocaleString()} ر.س</Text>
               </View>
             </View>
           ))}
         </View>
-        <TouchableOpacity onPress={() => { setStep(0); setAnswers({}); setResult(null); }} style={styles.resetBtn}><Text style={styles.resetBtnText}>🔄 إعادة</Text></TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setStep(0);
+            setAnswers({});
+            setResult(null);
+          }}
+          style={styles.resetBtn}
+        >
+          <Text style={styles.resetBtnText}>🔄 إعادة</Text>
+        </TouchableOpacity>
       </ScrollView>
     );
   }
@@ -73,8 +106,14 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
       <Text style={styles.t}>🎯 Service Matchmaker</Text>
-      <Text style={styles.progress}>{step + 1}/{QUESTIONS.length}</Text>
-      <View style={styles.progressBar}><View style={[styles.progressFill, {width: `${((step+1)/QUESTIONS.length)*100}%`}]} /></View>
+      <Text style={styles.progress}>
+        {step + 1}/{QUESTIONS.length}
+      </Text>
+      <View style={styles.progressBar}>
+        <View
+          style={[styles.progressFill, { width: `${((step + 1) / QUESTIONS.length) * 100}%` }]}
+        />
+      </View>
       <Text style={styles.question}>{q.text}</Text>
       {q.options.map((o) => (
         <TouchableOpacity key={o.value} onPress={() => select(o.value)} style={styles.option}>
@@ -87,20 +126,61 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#fdf2f8' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 8 },
   progress: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 8 },
   progressBar: { height: 6, backgroundColor: '#f3f4f6', borderRadius: 3, marginBottom: 20 },
   progressFill: { height: 6, backgroundColor: '#db2777', borderRadius: 3 },
-  question: { fontSize: 20, fontWeight: '700', color: '#111827', textAlign: 'center', marginBottom: 20 },
-  option: { flexDirection: 'row', alignItems: 'center', gap: 14, backgroundColor: '#fff', borderRadius: 14, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: '#f3f4f6' },
-  optionEmoji: { fontSize: 30 }, optionLabel: { fontSize: 15, fontWeight: '600', color: '#111827' },
+  question: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#111827',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  option: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#f3f4f6',
+  },
+  optionEmoji: { fontSize: 30 },
+  optionLabel: { fontSize: 15, fontWeight: '600', color: '#111827' },
   resultCard: { backgroundColor: '#fff', borderRadius: 20, padding: 20 },
-  resultEmoji: { fontSize: 48, textAlign: 'center' }, resultTitle: { fontSize: 18, fontWeight: '700', color: '#111827', textAlign: 'center', marginTop: 8, marginBottom: 16 },
-  match: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' },
-  matchEmoji: { fontSize: 28 }, matchName: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  resultEmoji: { fontSize: 48, textAlign: 'center' },
+  resultTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#111827',
+    textAlign: 'center',
+    marginTop: 8,
+    marginBottom: 16,
+  },
+  match: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f3f4f6',
+  },
+  matchEmoji: { fontSize: 28 },
+  matchName: { fontSize: 14, fontWeight: '600', color: '#111827' },
   matchWhy: { fontSize: 12, color: '#6b7280', marginTop: 2 },
-  matchScore: { fontSize: 16, fontWeight: '800', color: '#db2777' }, matchPrice: { fontSize: 12, color: '#6b7280' },
-  resetBtn: { backgroundColor: '#f3f4f6', borderRadius: 14, padding: 14, alignItems: 'center', marginTop: 16 },
+  matchScore: { fontSize: 16, fontWeight: '800', color: '#db2777' },
+  matchPrice: { fontSize: 12, color: '#6b7280' },
+  resetBtn: {
+    backgroundColor: '#f3f4f6',
+    borderRadius: 14,
+    padding: 14,
+    alignItems: 'center',
+    marginTop: 16,
+  },
   resetBtnText: { color: '#6b7280', fontSize: 14, fontWeight: '600' },
 });

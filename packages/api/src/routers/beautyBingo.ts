@@ -18,15 +18,19 @@ export const beautyBingoRouter = router({
   card: customerProcedure.query(async ({ ctx }) => {
     const progress = await prisma.bingoProgress.findMany({ where: { userId: ctx.user.id } });
     const completedIds = new Set(progress.map((p: any) => p.taskId));
-    const tasks = BINGO_CARD.map(t => ({ ...t, completed: completedIds.has(t.id) }));
-    const completed = tasks.filter(t => t.completed).length;
+    const tasks = BINGO_CARD.map((t) => ({ ...t, completed: completedIds.has(t.id) }));
+    const completed = tasks.filter((t) => t.completed).length;
     return { tasks, completed, total: 9, reward: '٣ خطوط = جلسة مجانية! 🎉' };
   }),
 
   mark: customerProcedure
     .input(z.object({ taskId: z.number() }))
     .mutation(async ({ ctx, input }) => {
-      await prisma.bingoProgress.upsert({ where: { userId_taskId: { userId: ctx.user.id, taskId: input.taskId } }, update: {}, create: { userId: ctx.user.id, taskId: input.taskId } });
+      await prisma.bingoProgress.upsert({
+        where: { userId_taskId: { userId: ctx.user.id, taskId: input.taskId } },
+        update: {},
+        create: { userId: ctx.user.id, taskId: input.taskId },
+      });
       return { success: true };
     }),
 });

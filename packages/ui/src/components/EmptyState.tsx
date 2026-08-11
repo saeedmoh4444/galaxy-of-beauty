@@ -17,13 +17,7 @@ interface EmptyStateProps {
  * Empty state component with optional call-to-action.
  * Used as the `<FeatureEmpty>` state in every data-fetching view.
  */
-export function EmptyState({
-  icon,
-  title,
-  description,
-  action,
-  className = '',
-}: EmptyStateProps) {
+export function EmptyState({ icon, title, description, action, className = '' }: EmptyStateProps) {
   return (
     <div className={`flex flex-col items-center justify-center py-16 text-center ${className}`}>
       {icon ?? (
@@ -45,7 +39,9 @@ export function EmptyState({
       )}
       <h3 className="text-lg font-semibold text-text-primary dark:text-gray-100">{title}</h3>
       {description && (
-        <p className="mt-2 max-w-sm text-sm text-text-secondary dark:text-gray-400">{description}</p>
+        <p className="mt-2 max-w-sm text-sm text-text-secondary dark:text-gray-400">
+          {description}
+        </p>
       )}
       {action && (
         <button

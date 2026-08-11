@@ -20,7 +20,9 @@ async function anonCaller() {
 
 const CUSTOMER_ID = 99990;
 const TEST_CUSTOMER: JwtPayload = {
-  id: CUSTOMER_ID, role: 'CUSTOMER', email: 'flow-test@test.com',
+  id: CUSTOMER_ID,
+  role: 'CUSTOMER',
+  email: 'flow-test@test.com',
 };
 
 // ── Registration ─────────────────────────────────────────────────────
@@ -108,9 +110,7 @@ describe('Auth — Login', () => {
 
   it('should reject login with empty password', async () => {
     const caller = await anonCaller();
-    await expect(
-      caller.auth.login({ email: 'customer@test.com', password: '' }),
-    ).rejects.toThrow();
+    await expect(caller.auth.login({ email: 'customer@test.com', password: '' })).rejects.toThrow();
   });
 });
 
@@ -130,9 +130,7 @@ describe('Auth — Token Refresh', () => {
 
   it('should reject refresh with invalid token', async () => {
     const caller = await anonCaller();
-    await expect(
-      caller.auth.refresh({ refreshToken: 'invalid-token' }),
-    ).rejects.toThrow();
+    await expect(caller.auth.refresh({ refreshToken: 'invalid-token' })).rejects.toThrow();
   });
 });
 

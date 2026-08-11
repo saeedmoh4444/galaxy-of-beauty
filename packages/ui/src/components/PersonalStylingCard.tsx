@@ -42,7 +42,9 @@ export function PersonalStylingCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">👗</span>
+        <span className="text-3xl" aria-hidden="true">
+          👗
+        </span>
         <h4 className="mt-1 text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">
           استشارة الإطلالة
         </h4>
@@ -63,7 +65,9 @@ export function PersonalStylingCard({
             key={item.label}
             className="flex items-center gap-2 rounded-lg bg-fuchsia-50 px-2.5 py-2 dark:bg-fuchsia-950"
           >
-            <span className="text-sm shrink-0" aria-hidden="true">{item.emoji}</span>
+            <span className="text-sm shrink-0" aria-hidden="true">
+              {item.emoji}
+            </span>
             <span className="text-[10px] font-medium text-fuchsia-800 dark:text-fuchsia-200">
               {item.label}
             </span>
@@ -75,15 +79,11 @@ export function PersonalStylingCard({
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-fuchsia-50 p-2.5 text-center dark:bg-fuchsia-950">
           <p className="text-[9px] text-fuchsia-600 dark:text-fuchsia-400">السعر</p>
-          <p className="text-sm font-bold text-fuchsia-800 dark:text-fuchsia-200">
-            {price} ر.س
-          </p>
+          <p className="text-sm font-bold text-fuchsia-800 dark:text-fuchsia-200">{price} ر.س</p>
         </div>
         <div className="rounded-xl bg-fuchsia-50 p-2.5 text-center dark:bg-fuchsia-950">
           <p className="text-[9px] text-fuchsia-600 dark:text-fuchsia-400">المدة</p>
-          <p className="text-sm font-bold text-fuchsia-800 dark:text-fuchsia-200">
-            {duration}
-          </p>
+          <p className="text-sm font-bold text-fuchsia-800 dark:text-fuchsia-200">{duration}</p>
         </div>
       </div>
 

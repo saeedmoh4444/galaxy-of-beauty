@@ -32,7 +32,7 @@ export function useBiometric() {
       }
 
       // Determine biometric type
-      const types: number[] = await LocalAuth.supportedAuthenticationTypesAsync?.() || [];
+      const types: number[] = (await LocalAuth.supportedAuthenticationTypesAsync?.()) || [];
       if (types.includes(LocalAuth.AuthenticationType?.FACIAL_RECOGNITION)) {
         setBiometricType('facial');
       } else if (types.includes(LocalAuth.AuthenticationType?.FINGERPRINT)) {

@@ -20,8 +20,16 @@ export default function AdminSettingsPage(): JSX.Element {
   const settingsMap = data as SettingsMap | undefined;
   const settingsEntries = Object.entries(settingsMap ?? {});
 
-  const updateMut = api.platform.updateSetting.useMutation({ onSuccess: () => { refetch(); setEditOpen(false); setSelectedKey(null); } });
-  const toggleMaintenanceMut = api.platform.toggleMaintenance.useMutation({ onSuccess: () => refetch() });
+  const updateMut = api.platform.updateSetting.useMutation({
+    onSuccess: () => {
+      refetch();
+      setEditOpen(false);
+      setSelectedKey(null);
+    },
+  });
+  const toggleMaintenanceMut = api.platform.toggleMaintenance.useMutation({
+    onSuccess: () => refetch(),
+  });
   const termsQuery = api.platform.getTerms.useQuery();
   const citiesQuery = api.platform.getCities.useQuery();
   const exportBookingsQuery = api.platform.exportBookings.useQuery({ format: exportFormat });
@@ -70,9 +78,13 @@ export default function AdminSettingsPage(): JSX.Element {
               >
                 <div className="flex-1">
                   <p className="text-sm font-medium">{key}</p>
-                  <p className="text-sm text-text-primary dark:text-gray-300">{String(value ?? '')}</p>
+                  <p className="text-sm text-text-primary dark:text-gray-300">
+                    {String(value ?? '')}
+                  </p>
                 </div>
-                <Button size="sm" variant="outline" onClick={() => openEdit(key, value)}>تعديل</Button>
+                <Button size="sm" variant="outline" onClick={() => openEdit(key, value)}>
+                  تعديل
+                </Button>
               </div>
             ))}
           </div>
@@ -83,7 +95,9 @@ export default function AdminSettingsPage(): JSX.Element {
       <Card>
         <h2 className="mb-3 text-lg font-semibold">وضع الصيانة</h2>
         <div className="flex items-center gap-4">
-          <span className={`rounded-full px-3 py-1 text-sm font-medium ${maintenanceMode ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+          <span
+            className={`rounded-full px-3 py-1 text-sm font-medium ${maintenanceMode ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}
+          >
             {maintenanceMode ? 'نشط' : 'غير نشط'}
           </span>
           <Button
@@ -105,11 +119,20 @@ export default function AdminSettingsPage(): JSX.Element {
           <ErrorAlert message="فشل تحميل الشروط" onRetry={() => termsQuery.refetch()} />
         ) : (
           <div className="space-y-1 text-sm">
-            <p><strong>الإصدار الحالي:</strong> {String(termsData?.version ?? '—')}</p>
-            <p><strong>آخر تحديث:</strong> {termsData?.updatedAt ? new Date(termsData.updatedAt).toLocaleDateString('ar-SA') : '—'}</p>
+            <p>
+              <strong>الإصدار الحالي:</strong> {String(termsData?.version ?? '—')}
+            </p>
+            <p>
+              <strong>آخر تحديث:</strong>{' '}
+              {termsData?.updatedAt
+                ? new Date(termsData.updatedAt).toLocaleDateString('ar-SA')
+                : '—'}
+            </p>
             <p className="mt-2 max-h-32 overflow-y-auto whitespace-pre-wrap rounded bg-surface-muted p-2 text-xs dark:bg-gray-900">
               {typeof termsData?.content === 'object' && termsData.content !== null
-                ? String((termsData.content as { ar?: string }).ar ?? JSON.stringify(termsData.content))
+                ? String(
+                    (termsData.content as { ar?: string }).ar ?? JSON.stringify(termsData.content),
+                  )
                 : String(termsData?.content ?? 'لا يوجد محتوى')}
             </p>
           </div>
@@ -128,7 +151,12 @@ export default function AdminSettingsPage(): JSX.Element {
         ) : (
           <div className="flex flex-wrap gap-2">
             {citiesData.map((city: CityItem, i: number) => (
-              <span key={i} className="rounded-full bg-surface-muted px-3 py-1 text-sm dark:bg-gray-800">{city.nameAr}</span>
+              <span
+                key={i}
+                className="rounded-full bg-surface-muted px-3 py-1 text-sm dark:bg-gray-800"
+              >
+                {city.nameAr}
+              </span>
             ))}
           </div>
         )}
@@ -139,7 +167,9 @@ export default function AdminSettingsPage(): JSX.Element {
         <h2 className="mb-3 text-lg font-semibold">تصدير البيانات</h2>
         <div className="flex flex-wrap items-end gap-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">الصيغة</label>
+            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+              الصيغة
+            </label>
             <select
               className="rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               value={exportFormat}
@@ -152,7 +182,11 @@ export default function AdminSettingsPage(): JSX.Element {
           <Button variant="primary" onClick={handleExport} loading={exportBookingsQuery.isFetching}>
             تصدير الحجوزات
           </Button>
-          <Button variant="outline" onClick={() => exportBookingsQuery.refetch()} loading={exportBookingsQuery.isFetching}>
+          <Button
+            variant="outline"
+            onClick={() => exportBookingsQuery.refetch()}
+            loading={exportBookingsQuery.isFetching}
+          >
             تصدير المستخدمين
           </Button>
         </div>
@@ -162,18 +196,33 @@ export default function AdminSettingsPage(): JSX.Element {
       </Card>
 
       {/* Edit Setting Modal */}
-      <Modal open={editOpen} onClose={() => { setEditOpen(false); setSelectedKey(null); }} title="تعديل الإعداد">
+      <Modal
+        open={editOpen}
+        onClose={() => {
+          setEditOpen(false);
+          setSelectedKey(null);
+        }}
+        title="تعديل الإعداد"
+      >
         <div className="space-y-4">
-          <p className="text-sm"><strong>المفتاح:</strong> {selectedKey}</p>
+          <p className="text-sm">
+            <strong>المفتاح:</strong> {selectedKey}
+          </p>
           <p className="text-sm text-text-secondary">{editDescription}</p>
-          <Input
-            label="القيمة"
-            value={editValue}
-            onChange={(e) => setEditValue(e.target.value)}
-          />
+          <Input label="القيمة" value={editValue} onChange={(e) => setEditValue(e.target.value)} />
           <div className="flex gap-2">
-            <Button variant="primary" onClick={handleUpdate} loading={updateMut.isPending}>حفظ</Button>
-            <Button variant="secondary" onClick={() => { setEditOpen(false); setSelectedKey(null); }}>إلغاء</Button>
+            <Button variant="primary" onClick={handleUpdate} loading={updateMut.isPending}>
+              حفظ
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setEditOpen(false);
+                setSelectedKey(null);
+              }}
+            >
+              إلغاء
+            </Button>
           </div>
         </div>
       </Modal>

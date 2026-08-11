@@ -69,25 +69,23 @@ export const userRouter = router({
   // ──────────────────────────────────────────────────────
   // Update the authenticated user's profile (alias for auth.updateProfile)
   // ──────────────────────────────────────────────────────
-  updateMe: protectedProcedure
-    .input(updateProfileSchema)
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const user = await prisma.user.update({
-          where: { id: ctx.user.id },
-          data: input,
-          select: userSelect,
-        });
+  updateMe: protectedProcedure.input(updateProfileSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const user = await prisma.user.update({
+        where: { id: ctx.user.id },
+        data: input,
+        select: userSelect,
+      });
 
-        return user;
-      } catch (error) {
-        if (error instanceof TRPCError) throw error;
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to update profile',
-        });
-      }
-    }),
+      return user;
+    } catch (error) {
+      if (error instanceof TRPCError) throw error;
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to update profile',
+      });
+    }
+  }),
 
   // ──────────────────────────────────────────────────────
   // Delete account (GDPR right to erasure)
@@ -246,5 +244,4 @@ export const userRouter = router({
     });
     return { message: 'تم إنهاء جميع الجلسات الأخرى' };
   }),
-
 });

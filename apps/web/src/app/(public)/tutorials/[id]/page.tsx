@@ -8,8 +8,14 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 
 const DEFAULT_DIFFICULTY = { label: 'غير معروف', color: 'bg-gray-100 text-gray-700' };
 const DIFFICULTY_META: Record<string, { label: string; color: string }> = {
-  beginner: { label: 'مبتدئ', color: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' },
-  intermediate: { label: 'متوسط', color: 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300' },
+  beginner: {
+    label: 'مبتدئ',
+    color: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
+  },
+  intermediate: {
+    label: 'متوسط',
+    color: 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300',
+  },
   advanced: { label: 'متقدم', color: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' },
 };
 
@@ -29,10 +35,12 @@ export default function TutorialDetailPage(): JSX.Element {
   const params = useParams();
   const id = parseInt(params?.id as string, 10);
 
-  const { data: tutorial, isLoading, isError, refetch } = api.tutorials.getById.useQuery(
-    { id },
-    { enabled: !isNaN(id) },
-  ) as {
+  const {
+    data: tutorial,
+    isLoading,
+    isError,
+    refetch,
+  } = api.tutorials.getById.useQuery({ id }, { enabled: !isNaN(id) }) as {
     data: Record<string, unknown> | null | undefined;
     isLoading: boolean;
     isError: boolean;
@@ -43,7 +51,9 @@ export default function TutorialDetailPage(): JSX.Element {
     return (
       <div className="mx-auto max-w-4xl px-4 py-24 text-center">
         <ErrorAlert message="معرف الدرس غير صالح" />
-        <Link href="/tutorials" className="mt-4 inline-block"><Button size="sm">العودة للدروس</Button></Link>
+        <Link href="/tutorials" className="mt-4 inline-block">
+          <Button size="sm">العودة للدروس</Button>
+        </Link>
       </div>
     );
   }
@@ -60,8 +70,13 @@ export default function TutorialDetailPage(): JSX.Element {
   if (isError || !tutorial) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-24 text-center">
-        <ErrorAlert message={isError ? 'فشل تحميل الدرس' : 'الدرس غير موجود'} onRetry={isError ? () => refetch() : undefined} />
-        <Link href="/tutorials" className="mt-4 inline-block"><Button size="sm">العودة للدروس</Button></Link>
+        <ErrorAlert
+          message={isError ? 'فشل تحميل الدرس' : 'الدرس غير موجود'}
+          onRetry={isError ? () => refetch() : undefined}
+        />
+        <Link href="/tutorials" className="mt-4 inline-block">
+          <Button size="sm">العودة للدروس</Button>
+        </Link>
       </div>
     );
   }
@@ -85,7 +100,10 @@ export default function TutorialDetailPage(): JSX.Element {
       <Breadcrumbs items={[{ label: 'الدروس', href: '/tutorials' }, { label: title }]} />
 
       {/* Video Player */}
-      <div className="relative w-full overflow-hidden rounded-2xl bg-black shadow-2xl" style={{ paddingBottom: '56.25%' }}>
+      <div
+        className="relative w-full overflow-hidden rounded-2xl bg-black shadow-2xl"
+        style={{ paddingBottom: '56.25%' }}
+      >
         {videoUrl ? (
           <iframe
             src={videoUrl}
@@ -141,7 +159,10 @@ export default function TutorialDetailPage(): JSX.Element {
         {tags.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
             {tags.map((t) => (
-              <span key={t} className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+              <span
+                key={t}
+                className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+              >
                 #{t}
               </span>
             ))}
@@ -151,8 +172,12 @@ export default function TutorialDetailPage(): JSX.Element {
         {/* Description */}
         {desc && (
           <div className="mt-6 rounded-2xl bg-gray-50 p-5 dark:bg-gray-900">
-            <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">📝 وصف الدرس</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-wrap">{desc}</p>
+            <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+              📝 وصف الدرس
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-wrap">
+              {desc}
+            </p>
           </div>
         )}
       </div>

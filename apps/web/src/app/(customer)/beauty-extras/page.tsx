@@ -2,13 +2,25 @@
 
 import { api } from '@/lib/trpc';
 import {
-  PageContainer, PageTitle,
-  PersonalStylingCard, BeautyTimeCapsuleCard, BeautyDreamBoardCard,
-  BeautySecretSantaCard, BeautyVlogCard, BeautyPenPalCard,
-  BeautyAccountabilityCard, BeautyGratefulCircleCard, BeautyAffirmationCard,
-  BeautyGratitudeCard, BeautyReferralLeaderboardCard, GroupDiscountBadge,
-  ReferralRewardBadge, InspirationBoardCard, SharedWishlistCard,
-  BeautySeasonalLookbookCard, BridalBeautyCountdown,
+  PageContainer,
+  PageTitle,
+  PersonalStylingCard,
+  BeautyTimeCapsuleCard,
+  BeautyDreamBoardCard,
+  BeautySecretSantaCard,
+  BeautyVlogCard,
+  BeautyPenPalCard,
+  BeautyAccountabilityCard,
+  BeautyGratefulCircleCard,
+  BeautyAffirmationCard,
+  BeautyGratitudeCard,
+  BeautyReferralLeaderboardCard,
+  GroupDiscountBadge,
+  ReferralRewardBadge,
+  InspirationBoardCard,
+  SharedWishlistCard,
+  BeautySeasonalLookbookCard,
+  BridalBeautyCountdown,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -30,14 +42,26 @@ export default function BeautyExtrasPage(): JSX.Element {
               <BeautyTimeCapsuleCard savedDate="2026-08-06" />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyDreamBoardCard dreams={[{ emoji: '💇', text: 'شعر طويل صحي' }, { emoji: '👰', text: 'إطلالة زفاف مثالية' }, { emoji: '💄', text: 'إتقان المكياج' }, { emoji: '🧘', text: 'روتين عناية يومي' }]} />
+              <BeautyDreamBoardCard
+                dreams={[
+                  { emoji: '💇', text: 'شعر طويل صحي' },
+                  { emoji: '👰', text: 'إطلالة زفاف مثالية' },
+                  { emoji: '💄', text: 'إتقان المكياج' },
+                  { emoji: '🧘', text: 'روتين عناية يومي' },
+                ]}
+              />
               <BeautySecretSantaCard group="عرايس الرياض" budget={200} participants={12} />
             </div>
 
             {/* Social */}
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyAccountabilityCard partner="نورة" goal="روتين عناية يومي" streak={12} />
-              <BeautyGratefulCircleCard thanks={[{ from: 'نورة', to: 'مها', message: 'شكراً لنصيحة العناية بالبشرة!' }, { from: 'مها', to: 'ريم', message: 'أنتِ ملهمة دائماً' }]} />
+              <BeautyGratefulCircleCard
+                thanks={[
+                  { from: 'نورة', to: 'مها', message: 'شكراً لنصيحة العناية بالبشرة!' },
+                  { from: 'مها', to: 'ريم', message: 'أنتِ ملهمة دائماً' },
+                ]}
+              />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyAffirmationCard />
@@ -47,17 +71,45 @@ export default function BeautyExtrasPage(): JSX.Element {
             {/* Games + Social */}
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyReferralLeaderboardCard
-                leaders={(referral?.data?.leaderboard as any[])?.map((l: any) => ({ name: l.name, referrals: l.referrals, emoji: l.emoji })) ?? [{ name: 'نورة', referrals: 12, emoji: '👑' }, { name: 'مها', referrals: 8 }, { name: 'ريم', referrals: 5 }]}
+                leaders={
+                  (referral?.data?.leaderboard as any[])?.map((l: any) => ({
+                    name: l.name,
+                    referrals: l.referrals,
+                    emoji: l.emoji,
+                  })) ?? [
+                    { name: 'نورة', referrals: 12, emoji: '👑' },
+                    { name: 'مها', referrals: 8 },
+                    { name: 'ريم', referrals: 5 },
+                  ]
+                }
                 userRank={referral?.data?.myRank ?? 5}
               />
-              <GroupDiscountBadge groupSize={3} discount={15} serviceName="مانيكير سبا" originalPrice={150} />
+              <GroupDiscountBadge
+                groupSize={3}
+                discount={15}
+                serviceName="مانيكير سبا"
+                originalPrice={150}
+              />
             </div>
 
             {/* Lookbook + Inspiration */}
             <BeautySeasonalLookbookCard season="summer" />
             <div className="grid gap-4 sm:grid-cols-2">
-              <InspirationBoardCard pins={[{ emoji: '💇', title: 'تسريحة ناعمة', savedBy: 'نورة' }, { emoji: '💄', title: 'مكياج السهرة', savedBy: 'مها' }, { emoji: '💅', title: 'أظافر فرنسية', savedBy: 'ريم' }]} collaborators={['نورة', 'مها']} />
-              <SharedWishlistCard items={[{ name: 'مانيكير سبا', price: 150, emoji: '💅' }, { name: 'مكياج احترافي', price: 350, emoji: '💄' }]} sharedWith={['نورة', 'أمي']} />
+              <InspirationBoardCard
+                pins={[
+                  { emoji: '💇', title: 'تسريحة ناعمة', savedBy: 'نورة' },
+                  { emoji: '💄', title: 'مكياج السهرة', savedBy: 'مها' },
+                  { emoji: '💅', title: 'أظافر فرنسية', savedBy: 'ريم' },
+                ]}
+                collaborators={['نورة', 'مها']}
+              />
+              <SharedWishlistCard
+                items={[
+                  { name: 'مانيكير سبا', price: 150, emoji: '💅' },
+                  { name: 'مكياج احترافي', price: 350, emoji: '💄' },
+                ]}
+                sharedWith={['نورة', 'أمي']}
+              />
             </div>
 
             <BridalBeautyCountdown weddingDate="2027-06-15" />
@@ -65,7 +117,15 @@ export default function BeautyExtrasPage(): JSX.Element {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            <BeautyVlogCard vlog={{ title: 'يوم في حياة نورة', technician: 'نورة', duration: '8 دقائق', views: 1234, category: 'مكياج' }} />
+            <BeautyVlogCard
+              vlog={{
+                title: 'يوم في حياة نورة',
+                technician: 'نورة',
+                duration: '8 دقائق',
+                views: 1234,
+                category: 'مكياج',
+              }}
+            />
             <BeautyPenPalCard match={{ city: 'جدة', interest: 'مكياج', emoji: '💄' }} />
             <ReferralRewardBadge referralCode="SARA123" referrals={5} discount={15} />
           </div>

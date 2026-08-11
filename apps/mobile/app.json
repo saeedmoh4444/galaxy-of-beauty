@@ -34,12 +34,7 @@
       "favicon": "./assets/logo.png",
       "bundler": "metro"
     },
-    "plugins": [
-      "expo-router",
-      "expo-camera",
-      "expo-location",
-      "expo-notifications"
-    ],
+    "plugins": ["expo-router", "expo-camera", "expo-location", "expo-notifications"],
     "extra": {
       "eas": {
         "projectId": "galaxy-of-beauty"

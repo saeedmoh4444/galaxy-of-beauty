@@ -49,7 +49,9 @@ export function BeautyBudgetPlanner({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true">💎</span>
+          <span className="text-xl" aria-hidden="true">
+            💎
+          </span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
               ميزانية الجمال
@@ -110,7 +112,9 @@ export function BeautyBudgetPlanner({
           const amount = Math.round(beautyBudget * (cat.percentage / 100));
           return (
             <div key={cat.name} className="flex items-center gap-2">
-              <span className="text-xs w-5 text-center" aria-hidden="true">{cat.emoji}</span>
+              <span className="text-xs w-5 text-center" aria-hidden="true">
+                {cat.emoji}
+              </span>
               <span className="text-[10px] text-text-secondary dark:text-gray-300 w-24 truncate">
                 {cat.name}
               </span>

@@ -35,7 +35,9 @@ export function ReferralRewardBadge({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">💌</span>
+        <span className="text-3xl" aria-hidden="true">
+          💌
+        </span>
         <h4 className="mt-1 text-sm font-bold text-fuchsia-800 dark:text-fuchsia-200">
           دعوة صديقة
         </h4>
@@ -66,9 +68,7 @@ export function ReferralRewardBadge({
       {/* Stats */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-lg font-bold text-fuchsia-700 dark:text-fuchsia-300">
-            {referrals}
-          </p>
+          <p className="text-lg font-bold text-fuchsia-700 dark:text-fuchsia-300">{referrals}</p>
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">صديقة مدعوة</p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">

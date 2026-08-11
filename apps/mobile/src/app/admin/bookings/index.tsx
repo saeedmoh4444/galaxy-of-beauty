@@ -10,20 +10,47 @@ export default function AdminBookingsScreen(): JSX.Element {
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).bookings.list.query({ page: 1, limit: BULK_PAGE_SIZE }) as any).then((d: any) => { setData(d?.bookings || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+    if (isRefresh) setRefreshing(true);
+    else setLoading(true);
+    ((trpc as any).bookings.list.query({ page: 1, limit: BULK_PAGE_SIZE }) as any)
+      .then((d: any) => {
+        setData(d?.bookings || []);
+        setLoading(false);
+        setRefreshing(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        setRefreshing(false);
+      });
   }, []);
 
-  useEffect(() => { fetch(); }, [fetch]);
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
 
   if (loading) return <SkeletonList count={6} />;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#6366f1']} />}>
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={() => fetch(true)}
+          colors={['#6366f1']}
+        />
+      }
+    >
       <Text style={styles.t}>📅 الحجوزات</Text>
       {data.map((b: any, i: number) => (
         <View key={i} style={styles.card}>
-          <View style={{flex:1}}><Text style={styles.code}>{b.bookingCode as string}</Text><Text style={styles.date}>{new Date(b.startAt as string).toLocaleDateString('ar-SA')}</Text></View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.code}>{b.bookingCode as string}</Text>
+            <Text style={styles.date}>
+              {new Date(b.startAt as string).toLocaleDateString('ar-SA')}
+            </Text>
+          </View>
           <Text style={styles.status}>{b.status as string}</Text>
         </View>
       ))}
@@ -32,9 +59,18 @@ export default function AdminBookingsScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#eef2ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#eef2ff' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#4f46e5', textAlign: 'center', marginBottom: 20 },
-  card: { flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 6 },
+  card: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 6,
+  },
   code: { fontSize: 13, fontWeight: '600', color: '#111827', fontFamily: 'monospace' },
-  date: { fontSize: 12, color: '#6b7280' }, status: { fontSize: 12, fontWeight: '600', color: '#4f46e5' },
+  date: { fontSize: 12, color: '#6b7280' },
+  status: { fontSize: 12, fontWeight: '600', color: '#4f46e5' },
 });

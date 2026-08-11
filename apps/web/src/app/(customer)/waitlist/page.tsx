@@ -37,7 +37,8 @@ export default function WaitlistPage(): JSX.Element {
   const leaveMut = api.waitlist.leave.useMutation({ onSuccess: () => refetch() });
 
   const entries = (data as unknown as Record<string, unknown>[]) ?? [];
-  const technicians = ((techsQuery.data as unknown as Record<string, unknown>[]) ?? []) as unknown as Record<string, unknown>[];
+  const technicians = ((techsQuery.data as unknown as Record<string, unknown>[]) ??
+    []) as unknown as Record<string, unknown>[];
 
   return (
     <DashboardLayout role="CUSTOMER">
@@ -66,19 +67,35 @@ export default function WaitlistPage(): JSX.Element {
                 <Card key={e.id as number} padding="md">
                   <div className="flex items-center justify-between">
                     <div className="space-y-1">
-                      <p className="font-semibold">{e.technicianName as string ?? 'فني'}</p>
+                      <p className="font-semibold">{(e.technicianName as string) ?? 'فني'}</p>
                       <div className="flex items-center gap-3 text-sm text-text-secondary">
-                        <span>الترتيب: <strong className="text-brand-600">#{e.position as number}</strong></span>
-                        {(e.serviceName as string | null) ? <span>الخدمة: {e.serviceName as string}</span> : null}
+                        <span>
+                          الترتيب:{' '}
+                          <strong className="text-brand-600">#{e.position as number}</strong>
+                        </span>
+                        {(e.serviceName as string | null) ? (
+                          <span>الخدمة: {e.serviceName as string}</span>
+                        ) : null}
                       </div>
-                      <p className="text-xs text-text-tertiary">{new Date(e.createdAt as string).toLocaleDateString('ar-SA')}</p>
+                      <p className="text-xs text-text-tertiary">
+                        {new Date(e.createdAt as string).toLocaleDateString('ar-SA')}
+                      </p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_STYLES[statusKey] ?? 'bg-surface-muted text-text-secondary'}`}>
+                      <span
+                        className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_STYLES[statusKey] ?? 'bg-surface-muted text-text-secondary'}`}
+                      >
                         {STATUS_LABELS[statusKey] ?? statusKey}
                       </span>
                       {statusKey === 'WAITING' && (
-                        <Button size="sm" variant="danger" onClick={() => leaveMut.mutate({ technicianId: e.technicianId as number })} loading={leaveMut.isPending}>
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          onClick={() =>
+                            leaveMut.mutate({ technicianId: e.technicianId as number })
+                          }
+                          loading={leaveMut.isPending}
+                        >
                           مغادرة
                         </Button>
                       )}
@@ -91,7 +108,12 @@ export default function WaitlistPage(): JSX.Element {
         )}
       </div>
 
-      <Modal open={showJoin} onClose={() => setShowJoin(false)} title="انضمام لقائمة الانتظار" size="sm">
+      <Modal
+        open={showJoin}
+        onClose={() => setShowJoin(false)}
+        title="انضمام لقائمة الانتظار"
+        size="sm"
+      >
         <div className="space-y-4">
           <div>
             <label className="mb-1 block text-sm font-medium">اختر الفني</label>
@@ -102,12 +124,24 @@ export default function WaitlistPage(): JSX.Element {
             >
               <option value="">-- اختر فني --</option>
               {technicians.map((t: Record<string, unknown>) => (
-                <option key={t.id as number} value={t.id as number}>{t.name as string}</option>
+                <option key={t.id as number} value={t.id as number}>
+                  {t.name as string}
+                </option>
               ))}
             </select>
           </div>
-          <Input label="الخدمة (اختياري)" value={serviceName} onChange={(e) => setServiceName(e.target.value)} placeholder="اسم الخدمة إن وجد" />
-          <Button className="w-full" loading={joinMut.isPending} disabled={!selectedTechId} onClick={() => joinMut.mutate({ technicianId: Number(selectedTechId) })}>
+          <Input
+            label="الخدمة (اختياري)"
+            value={serviceName}
+            onChange={(e) => setServiceName(e.target.value)}
+            placeholder="اسم الخدمة إن وجد"
+          />
+          <Button
+            className="w-full"
+            loading={joinMut.isPending}
+            disabled={!selectedTechId}
+            onClick={() => joinMut.mutate({ technicianId: Number(selectedTechId) })}
+          >
             تأكيد الانضمام
           </Button>
         </div>

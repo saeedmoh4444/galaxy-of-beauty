@@ -31,28 +31,22 @@ export function QuietHoursBadge({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">🤫</span>
-        <h4 className="mt-1 text-sm font-bold text-purple-800 dark:text-purple-200">
-          ساعات هادئة
-        </h4>
-        <p className="text-[10px] text-purple-500 dark:text-purple-400">
-          أوقات مخصصة لراحة الحواس
-        </p>
+        <span className="text-3xl" aria-hidden="true">
+          🤫
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-purple-800 dark:text-purple-200">ساعات هادئة</h4>
+        <p className="text-[10px] text-purple-500 dark:text-purple-400">أوقات مخصصة لراحة الحواس</p>
       </div>
 
       {/* Schedule */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-purple-600 dark:text-purple-400">التوقيت</p>
-          <p className="text-sm font-bold text-purple-800 dark:text-purple-200">
-            🕐 {hours}
-          </p>
+          <p className="text-sm font-bold text-purple-800 dark:text-purple-200">🕐 {hours}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-purple-600 dark:text-purple-400">الأيام</p>
-          <p className="text-sm font-bold text-purple-800 dark:text-purple-200">
-            📅 {days}
-          </p>
+          <p className="text-sm font-bold text-purple-800 dark:text-purple-200">📅 {days}</p>
         </div>
       </div>
 

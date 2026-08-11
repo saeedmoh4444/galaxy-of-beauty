@@ -35,13 +35,25 @@ export function PWAInstallPrompt(): JSX.Element {
       <div className="flex items-center gap-4">
         <img src="/logo.png" alt="جالكسي بيوتي" className="h-12 w-12 rounded-xl" />
         <div className="flex-1">
-          <p className="font-bold text-gray-900 dark:text-gray-100 text-sm">أضيفي التطبيق للشاشة الرئيسية</p>
+          <p className="font-bold text-gray-900 dark:text-gray-100 text-sm">
+            أضيفي التطبيق للشاشة الرئيسية
+          </p>
           <p className="text-xs text-gray-500 mt-0.5">وصول أسرع لحجوزاتكِ وخدماتكِ</p>
         </div>
       </div>
       <div className="mt-3 flex gap-2">
-        <button onClick={install} className="flex-1 rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">تثبيت</button>
-        <button onClick={() => setDismissed(true)} className="rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800">لاحقاً</button>
+        <button
+          onClick={install}
+          className="flex-1 rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
+        >
+          تثبيت
+        </button>
+        <button
+          onClick={() => setDismissed(true)}
+          className="rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+        >
+          لاحقاً
+        </button>
       </div>
     </div>
   );

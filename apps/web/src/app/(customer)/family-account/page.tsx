@@ -24,27 +24,56 @@ interface MetaData {
 }
 
 const RELATIONSHIP_EMOJI: Record<string, string> = {
-  child: '👶', spouse: '💑', parent: '👵', sibling: '👫', other: '👤',
+  child: '👶',
+  spouse: '💑',
+  parent: '👵',
+  sibling: '👫',
+  other: '👤',
 };
 
 const AGE_EMOJI: Record<string, string> = {
-  infant: '🍼', child: '🧒', teen: '👧', adult: '👩', senior: '👵',
+  infant: '🍼',
+  child: '🧒',
+  teen: '👧',
+  adult: '👩',
+  senior: '👵',
 };
 
 const _PREF_EMOJI: Record<string, string> = {
-  gentle: '🌸', hypoallergenic: '🛡️', fragrance_free: '🚫', natural: '🌿', quick: '⚡', quiet: '🤫',
+  gentle: '🌸',
+  hypoallergenic: '🛡️',
+  fragrance_free: '🚫',
+  natural: '🌿',
+  quick: '⚡',
+  quiet: '🤫',
 };
 
 export default function FamilyAccountPage(): JSX.Element {
-  const { data: members, isLoading, isError, refetch } = api.familyAccount.list.useQuery() as {
+  const {
+    data: members,
+    isLoading,
+    isError,
+    refetch,
+  } = api.familyAccount.list.useQuery() as {
     data: FamilyMember[] | undefined;
     isLoading: boolean;
     isError: boolean;
     refetch: () => void;
   };
   const { data: meta } = api.familyAccount.meta.useQuery() as { data: MetaData | undefined };
-  const addMut = api.familyAccount.add.useMutation({ onSuccess: () => { setShowAdd(false); resetForm(); refetch(); } });
-  const updateMut = api.familyAccount.update.useMutation({ onSuccess: () => { setShowEdit(null); refetch(); } });
+  const addMut = api.familyAccount.add.useMutation({
+    onSuccess: () => {
+      setShowAdd(false);
+      resetForm();
+      refetch();
+    },
+  });
+  const updateMut = api.familyAccount.update.useMutation({
+    onSuccess: () => {
+      setShowEdit(null);
+      refetch();
+    },
+  });
   const removeMut = api.familyAccount.remove.useMutation({ onSuccess: () => refetch() });
 
   const [showAdd, setShowAdd] = useState(false);
@@ -57,8 +86,12 @@ export default function FamilyAccountPage(): JSX.Element {
   const [formError, setFormError] = useState('');
 
   const resetForm = () => {
-    setFormName(''); setFormRelation('child'); setFormAge('adult');
-    setFormPrefs([]); setFormNotes(''); setFormError('');
+    setFormName('');
+    setFormRelation('child');
+    setFormAge('adult');
+    setFormPrefs([]);
+    setFormNotes('');
+    setFormError('');
   };
 
   const openEdit = (m: FamilyMember) => {
@@ -71,19 +104,35 @@ export default function FamilyAccountPage(): JSX.Element {
   };
 
   const togglePref = (key: string) => {
-    setFormPrefs((prev) => prev.includes(key) ? prev.filter((p) => p !== key) : [...prev, key]);
+    setFormPrefs((prev) => (prev.includes(key) ? prev.filter((p) => p !== key) : [...prev, key]));
   };
 
   const handleAdd = () => {
     setFormError('');
-    if (!formName.trim()) { setFormError('الرجاء إدخال الاسم'); return; }
-    addMut.mutate({ name: formName.trim(), relationship: formRelation, ageGroup: formAge, preferences: formPrefs, notes: formNotes.trim() || undefined });
+    if (!formName.trim()) {
+      setFormError('الرجاء إدخال الاسم');
+      return;
+    }
+    addMut.mutate({
+      name: formName.trim(),
+      relationship: formRelation,
+      ageGroup: formAge,
+      preferences: formPrefs,
+      notes: formNotes.trim() || undefined,
+    });
   };
 
   const handleUpdate = () => {
     if (!editTarget) return;
     setFormError('');
-    updateMut.mutate({ id: editTarget.id, name: formName.trim() || undefined, relationship: formRelation, ageGroup: formAge, preferences: formPrefs, notes: formNotes.trim() || undefined });
+    updateMut.mutate({
+      id: editTarget.id,
+      name: formName.trim() || undefined,
+      relationship: formRelation,
+      ageGroup: formAge,
+      preferences: formPrefs,
+      notes: formNotes.trim() || undefined,
+    });
   };
 
   const handleRemove = (id: number, name: string) => {
@@ -102,12 +151,21 @@ export default function FamilyAccountPage(): JSX.Element {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">👨‍👩‍👧 حساب العائلة</h1>
+            <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
+              👨‍👩‍👧 حساب العائلة
+            </h1>
             <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
               أضيفي أفراد عائلتكِ واحجزي لهم خدمات التجميل بكل سهولة
             </p>
           </div>
-          <Button onClick={() => { resetForm(); setShowAdd(true); }}>+ إضافة فرد</Button>
+          <Button
+            onClick={() => {
+              resetForm();
+              setShowAdd(true);
+            }}
+          >
+            + إضافة فرد
+          </Button>
         </div>
 
         {/* Benefits */}
@@ -127,7 +185,11 @@ export default function FamilyAccountPage(): JSX.Element {
 
         {/* Members List */}
         {isLoading ? (
-          <div className="space-y-4">{Array.from({ length: 3 }, (_, i) => <CardSkeleton key={i} />)}</div>
+          <div className="space-y-4">
+            {Array.from({ length: 3 }, (_, i) => (
+              <CardSkeleton key={i} />
+            ))}
+          </div>
         ) : isError ? (
           <ErrorAlert message="فشل تحميل أفراد العائلة" onRetry={() => refetch()} />
         ) : allMembers.length === 0 ? (
@@ -150,9 +212,12 @@ export default function FamilyAccountPage(): JSX.Element {
                     {AGE_EMOJI[m.ageGroup] ?? '👩'}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">{m.name}</h3>
+                    <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
+                      {m.name}
+                    </h3>
                     <p className="text-xs text-text-secondary">
-                      {relationships.find((r) => r.key === m.relationship)?.nameAr ?? m.relationship}
+                      {relationships.find((r) => r.key === m.relationship)?.nameAr ??
+                        m.relationship}
                       {' · '}
                       {ageGroups.find((a) => a.key === m.ageGroup)?.nameAr ?? m.ageGroup}
                     </p>
@@ -162,27 +227,48 @@ export default function FamilyAccountPage(): JSX.Element {
                         {m.preferences.map((p) => {
                           const pref = prefsList.find((pp) => pp.key === p);
                           return (
-                            <span key={p} className="inline-flex items-center gap-0.5 rounded-full bg-surface-muted px-2 py-0.5 text-[10px] text-text-secondary dark:bg-gray-800 dark:text-gray-400">
+                            <span
+                              key={p}
+                              className="inline-flex items-center gap-0.5 rounded-full bg-surface-muted px-2 py-0.5 text-[10px] text-text-secondary dark:bg-gray-800 dark:text-gray-400"
+                            >
                               {pref?.emoji} {pref?.nameAr ?? p}
                             </span>
                           );
                         })}
                       </div>
                     )}
-                    {m.notes && <p className="mt-1 text-xs text-text-tertiary italic">💬 {m.notes}</p>}
+                    {m.notes && (
+                      <p className="mt-1 text-xs text-text-tertiary italic">💬 {m.notes}</p>
+                    )}
                     {(m.bookingCount ?? 0) > 0 && (
-                      <p className="mt-1 text-xs text-brand-600 font-medium">📅 {m.bookingCount} حجز سابق</p>
+                      <p className="mt-1 text-xs text-brand-600 font-medium">
+                        📅 {m.bookingCount} حجز سابق
+                      </p>
                     )}
                   </div>
                 </div>
 
                 {/* Actions */}
                 <div className="mt-4 flex gap-2 border-t border-gray-100 pt-3 dark:border-gray-800">
-                  <Link href={`/bookings/create?for=${encodeURIComponent(m.name)}`} className="flex-1">
-                    <Button size="sm" className="w-full">📅 احجزي لـ{m.name}</Button>
+                  <Link
+                    href={`/bookings/create?for=${encodeURIComponent(m.name)}`}
+                    className="flex-1"
+                  >
+                    <Button size="sm" className="w-full">
+                      📅 احجزي لـ{m.name}
+                    </Button>
                   </Link>
-                  <Button size="sm" variant="ghost" onClick={() => openEdit(m)}>✏️</Button>
-                  <Button size="sm" variant="ghost" onClick={() => handleRemove(m.id, m.name)} className="text-red-500 hover:text-red-700">🗑️</Button>
+                  <Button size="sm" variant="ghost" onClick={() => openEdit(m)}>
+                    ✏️
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => handleRemove(m.id, m.name)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    🗑️
+                  </Button>
                 </div>
               </Card>
             ))}
@@ -192,32 +278,66 @@ export default function FamilyAccountPage(): JSX.Element {
         {/* Add/Edit Modal */}
         <Modal
           open={showAdd || !!editTarget}
-          onClose={() => { setShowAdd(false); setShowEdit(null); resetForm(); }}
+          onClose={() => {
+            setShowAdd(false);
+            setShowEdit(null);
+            resetForm();
+          }}
           title={editTarget ? `تعديل — ${editTarget.name}` : 'إضافة فرد للعائلة'}
         >
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">الاسم</label>
-              <input type="text" value={formName} onChange={(e) => setFormName(e.target.value)} placeholder="الاسم الكامل" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" />
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+                الاسم
+              </label>
+              <input
+                type="text"
+                value={formName}
+                onChange={(e) => setFormName(e.target.value)}
+                placeholder="الاسم الكامل"
+                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+              />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">العلاقة</label>
-                <select value={formRelation} onChange={(e) => setFormRelation(e.target.value)} className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800">
-                  {relationships.map((r) => <option key={r.key} value={r.key}>{r.emoji} {r.nameAr}</option>)}
+                <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+                  العلاقة
+                </label>
+                <select
+                  value={formRelation}
+                  onChange={(e) => setFormRelation(e.target.value)}
+                  className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                >
+                  {relationships.map((r) => (
+                    <option key={r.key} value={r.key}>
+                      {r.emoji} {r.nameAr}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">الفئة العمرية</label>
-                <select value={formAge} onChange={(e) => setFormAge(e.target.value)} className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800">
-                  {ageGroups.map((a) => <option key={a.key} value={a.key}>{a.emoji} {a.nameAr}</option>)}
+                <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+                  الفئة العمرية
+                </label>
+                <select
+                  value={formAge}
+                  onChange={(e) => setFormAge(e.target.value)}
+                  className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                >
+                  {ageGroups.map((a) => (
+                    <option key={a.key} value={a.key}>
+                      {a.emoji} {a.nameAr}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-2">التفضيلات</label>
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-2">
+                التفضيلات
+              </label>
               <div className="flex flex-wrap gap-2">
                 {prefsList.map((p) => (
                   <button
@@ -237,15 +357,39 @@ export default function FamilyAccountPage(): JSX.Element {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">ملاحظات</label>
-              <textarea value={formNotes} onChange={(e) => setFormNotes(e.target.value)} placeholder="حساسية، تفضيلات خاصة..." rows={2} className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800" />
+              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+                ملاحظات
+              </label>
+              <textarea
+                value={formNotes}
+                onChange={(e) => setFormNotes(e.target.value)}
+                placeholder="حساسية، تفضيلات خاصة..."
+                rows={2}
+                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+              />
             </div>
 
-            {formError && <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-950 dark:text-red-400">{formError}</div>}
+            {formError && (
+              <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-950 dark:text-red-400">
+                {formError}
+              </div>
+            )}
 
             <div className="flex justify-end gap-3 pt-2">
-              <Button variant="ghost" onClick={() => { setShowAdd(false); setShowEdit(null); resetForm(); }}>إلغاء</Button>
-              <Button onClick={editTarget ? handleUpdate : handleAdd} loading={addMut.isPending || updateMut.isPending}>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setShowAdd(false);
+                  setShowEdit(null);
+                  resetForm();
+                }}
+              >
+                إلغاء
+              </Button>
+              <Button
+                onClick={editTarget ? handleUpdate : handleAdd}
+                loading={addMut.isPending || updateMut.isPending}
+              >
                 {editTarget ? '💾 حفظ التعديلات' : '👨‍👩‍👧 إضافة'}
               </Button>
             </div>

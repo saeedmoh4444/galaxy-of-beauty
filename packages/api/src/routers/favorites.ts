@@ -14,11 +14,13 @@ export const favoriteRouter = router({
 
   // Add a favorite
   add: customerProcedure
-    .input(z.object({
-      serviceId: z.number().int().positive(),
-      technicianId: z.number().int().positive().optional(),
-      label: z.string().max(100).optional(),
-    }))
+    .input(
+      z.object({
+        serviceId: z.number().int().positive(),
+        technicianId: z.number().int().positive().optional(),
+        label: z.string().max(100).optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const fav = await prisma.customerFavorite.create({
         data: {

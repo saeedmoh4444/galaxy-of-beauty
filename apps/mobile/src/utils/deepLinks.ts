@@ -26,7 +26,7 @@ export const DEEP_LINK_CONFIG = {
           '2fa': '2fa',
         },
       },
-      'services': {
+      services: {
         screens: {
           '[id]': 'services/:id',
           'surprise-me': 'services/surprise-me',
