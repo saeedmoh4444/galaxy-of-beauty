@@ -14,6 +14,8 @@ export interface TRPCContext {
   setCookies: (cookies: string[]) => void;
   /** Client IP for rate limiting (privacy: only used for rate-limit key derivation) */
   clientIp: string | null;
+  /** Correlation ID for request tracing across services */
+  correlationId: string | null;
 }
 
 export interface CreateContextOptions {
@@ -23,6 +25,7 @@ export interface CreateContextOptions {
   isProduction?: boolean;
   setCookies?: (cookies: string[]) => void;
   clientIp?: string | null;
+  correlationId?: string | null;
 }
 
 export async function createTRPCContext(opts?: CreateContextOptions): Promise<TRPCContext> {
@@ -34,6 +37,7 @@ export async function createTRPCContext(opts?: CreateContextOptions): Promise<TR
     isProduction: opts?.isProduction ?? false,
     setCookies: opts?.setCookies ?? (() => {}),
     clientIp: opts?.clientIp ?? null,
+    correlationId: opts?.correlationId ?? null,
   };
 }
 

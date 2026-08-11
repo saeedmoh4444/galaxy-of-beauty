@@ -39,6 +39,9 @@ const handler = async (req: NextRequest) => {
   const forwardedFor = req.headers.get('x-forwarded-for');
   const clientIp = forwardedFor?.split(',')[0]?.trim() ?? req.headers.get('x-real-ip') ?? '127.0.0.1';
 
+  // ── Correlation ID for request tracing ──
+  const correlationId = req.headers.get('x-request-id') ?? crypto.randomUUID?.() ?? 'unknown';
+
   // ── Extract CSRF tokens from cookie and header ──
   const csrfCookie = req.cookies.get(CSRF_COOKIE_NAME)?.value ?? null;
   const csrfHeader = req.headers.get('x-csrf-token') ?? null;
@@ -61,6 +64,7 @@ const handler = async (req: NextRequest) => {
         csrfHeader,
         isProduction,
         clientIp,
+        correlationId,
         setCookies: (cookies: string[]) => {
           cookiesToSet.push(...cookies);
         },
