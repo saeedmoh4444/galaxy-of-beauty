@@ -21,6 +21,7 @@
   "dependencies": {
     "@galaxy/db": "workspace:*",
     "@galaxy/shared": "workspace:*",
+    "@socket.io/redis-adapter": "^8.3.0",
     "@trpc/server": "^11.0.0",
     "bcryptjs": "^3.0.3",
     "bullmq": "^6.0.7",
