@@ -12,7 +12,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "build": "tsc --noEmit",
-    "lint": "tsc --noEmit",
+    "lint": "eslint . --ext .ts,.tsx --max-warnings 200",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf .expo .turbo dist"
   },

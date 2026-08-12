@@ -21,7 +21,8 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:seed:enrich": "tsx prisma/seed-enrich.ts",
     "db:studio": "prisma studio",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext .ts --max-warnings 20"
   },
   "dependencies": {
     "@prisma/client": "^5.15.0"

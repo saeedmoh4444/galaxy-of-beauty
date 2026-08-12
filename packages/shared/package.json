@@ -17,6 +17,7 @@
     "build": "tsc",
     "clean": "rm -rf .turbo dist",
     "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext .ts --max-warnings 10",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },

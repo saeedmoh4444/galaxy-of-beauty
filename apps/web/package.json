@@ -7,7 +7,7 @@
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "tsc --noEmit",
+    "lint": "eslint . --ext .ts,.tsx --max-warnings 100",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf .next .turbo",
     "test:e2e": "playwright test"
