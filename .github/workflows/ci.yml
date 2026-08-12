@@ -32,7 +32,8 @@ jobs:
   audit:
     name: Dependency Audit
     runs-on: ubuntu-latest
-    continue-on-error: true # Non-blocking for now; will be required after Phase 6 completion
+    # Blocking: all 8 remaining high findings are accepted in SECURITY.md.
+    # New critical/high findings will block the PR.
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4

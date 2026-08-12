@@ -267,5 +267,32 @@ export const SAUDI_CITIES = [
 
 /** Default VAT number (ZATCA test — must be overridden in production). */
 export const ZATCA_TEST_VAT = '300000000000003';
+
+// ---------------------------------------------------------------------------
+// Feature Flags — Experimental / Beta Routes
+// ---------------------------------------------------------------------------
+
+/**
+ * Experimental routes that should be gated behind feature flags.
+ * Add new experimental routes here before deploying to production.
+ *
+ * Usage in a router:
+ *   import { requireFeatureFlag } from '../trpc';
+ *   myProcedure.use(requireFeatureFlag('ENABLE_SKIN_ANALYSIS'));
+ */
+export const EXPERIMENTAL_FEATURES = {
+  SKIN_ANALYSIS: 'ENABLE_SKIN_ANALYSIS',
+  VIRTUAL_TRY_ON: 'ENABLE_VIRTUAL_TRYON',
+  AI_CHAT: 'ENABLE_AI_CHAT',
+  PRODUCT_SCANNER: 'ENABLE_PRODUCT_SCANNER',
+  PREDICTIVE_DEMAND: 'ENABLE_PREDICTIVE_DEMAND',
+  BEAUTY_TRENDS: 'ENABLE_BEAUTY_TRENDS',
+  BEAUTY_INNOVATION: 'ENABLE_BEAUTY_INNOVATION',
+  SECRET_SANTA: 'ENABLE_SECRET_SANTA',
+  TIME_CAPSULE: 'ENABLE_TIME_CAPSULE',
+  CONCIERGE: 'ENABLE_CONCIERGE',
+  BEAUTY_METAVERSE: 'ENABLE_BEAUTY_METAVERSE',
+  BEAUTY_BINGO: 'ENABLE_BEAUTY_BINGO',
+} as const;
 /** ZATCA API base URL. */
 export const ZATCA_API_URL = 'https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal';
