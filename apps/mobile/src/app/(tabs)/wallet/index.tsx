@@ -1,4 +1,3 @@
-import { useHaptics } from '@/hooks/useHaptics';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
@@ -14,11 +13,35 @@ const COLORS = {
   danger: '#ef4444',
 };
 
+interface BalanceData {
+  balance?: number;
+  bonusBalance?: number;
+}
+
+interface TransactionItem {
+  id?: number;
+  description?: string;
+  source?: string;
+  amount?: number;
+  type?: string;
+  createdAt?: string;
+}
+
+interface TxnPage {
+  items?: TransactionItem[];
+}
+
 export default function WalletScreen(): JSX.Element {
   const balance = trpc.wallet.getBalance.useQuery();
   const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 20 });
+  // Experimental routes — not yet in the typed tRPC router
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const loyalty = (trpc as any).loyalty?.getAccount?.useQuery?.();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const cashback = (trpc as any).cashback?.summary?.useQuery?.();
+
+  const balData = balance.data as BalanceData | undefined;
+  const txnData = txns.data as TxnPage | undefined;
 
   return (
     <ScreenState
@@ -28,20 +51,20 @@ export default function WalletScreen(): JSX.Element {
       errorMessage="فشل تحميل المحفظة"
       onRetry={() => balance.refetch()}
     >
-      <Text style={styles.title}> المحفظة</Text>
+      <Text style={styles.title}>المحفظة</Text>
 
       <View style={styles.balanceCard}>
         <Text style={styles.balanceLabel}>الرصيد المتاح</Text>
         <Text style={styles.balanceAmount}>
-          {formatCurrency(Number((balance.data as any)?.balance ?? 0))}
+          {formatCurrency(Number(balData?.balance ?? 0))}
         </Text>
-        {(balance.data as any)?.bonusBalance > 0 && (
+        {(balData?.bonusBalance ?? 0) > 0 && (
           <Text style={styles.bonusText}>
-            + {formatCurrency(Number((balance.data as any)?.bonusBalance))} رصيد مكافآت
+            + {formatCurrency(Number(balData?.bonusBalance))} رصيد مكافآت
           </Text>
         )}
         <TouchableOpacity style={styles.topUpBtn}>
-          <Text style={styles.topUpText}> شحن رصيد</Text>
+          <Text style={styles.topUpText}>شحن رصيد</Text>
         </TouchableOpacity>
       </View>
 
@@ -50,16 +73,24 @@ export default function WalletScreen(): JSX.Element {
         <View style={styles.rewardsRow}>
           {loyalty?.data && (
             <View style={styles.rewardCard}>
-              <Text style={styles.rewardEmoji}></Text>
-              <Text style={styles.rewardVal}>{loyalty.data.points ?? 0}</Text>
+              <View style={styles.rewardIcon}>
+                <Text style={styles.rewardIconText}>L</Text>
+              </View>
+              <Text style={styles.rewardVal}>
+                {(loyalty.data as Record<string, unknown>)?.points as number ?? 0}
+              </Text>
               <Text style={styles.rewardLbl}>نقاط ولاء</Text>
             </View>
           )}
           {cashback?.data && (
             <View style={styles.rewardCard}>
-              <Text style={styles.rewardEmoji}></Text>
+              <View style={styles.rewardIcon}>
+                <Text style={styles.rewardIconText}>C</Text>
+              </View>
               <Text style={styles.rewardVal}>
-                {formatCurrency(cashback.data.totalCashback ?? 0)}
+                {formatCurrency(
+                  (cashback.data as Record<string, unknown>)?.totalCashback as number ?? 0,
+                )}
               </Text>
               <Text style={styles.rewardLbl}>كاش باك</Text>
             </View>
@@ -70,25 +101,22 @@ export default function WalletScreen(): JSX.Element {
       <Text style={styles.sectionTitle}>آخر المعاملات</Text>
       {txns.isLoading ? null : txns.isError ? (
         <Text style={styles.errorText}>فشل تحميل المعاملات</Text>
-      ) : (((txns.data as any)?.items as any[]) || []).length === 0 ? (
+      ) : (txnData?.items ?? []).length === 0 ? (
         <Text style={styles.emptyText}>لا توجد معاملات</Text>
       ) : (
-        (((txns.data as any)?.items as any[]) || []).map((t: any, i: number) => (
+        (txnData?.items ?? []).map((t, i) => (
           <View key={i} style={styles.txnRow}>
             <View>
               <Text style={styles.txnDesc}>{t.description ?? t.source}</Text>
-              <Text style={styles.txnDate}>
-                {new Date(t.createdAt).toLocaleDateString('ar-SA')}
-              </Text>
+              <Text style={styles.txnDate}>{t.createdAt}</Text>
             </View>
             <Text
               style={[
                 styles.txnAmount,
-                { color: t.type === 'CREDIT' ? COLORS.success : COLORS.danger },
+                { color: t.type === 'DEPOSIT' ? COLORS.success : COLORS.danger },
               ]}
             >
-              {t.type === 'CREDIT' ? '+' : '-'}
-              {formatCurrency(Number(t.amount))}
+              {t.type === 'DEPOSIT' ? '+' : '-'} {formatCurrency(t.amount ?? 0)}
             </Text>
           </View>
         ))
@@ -98,58 +126,56 @@ export default function WalletScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: COLORS.brand,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
+  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
   balanceCard: {
     backgroundColor: COLORS.brand,
     borderRadius: 16,
-    padding: 24,
+    padding: 20,
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: 16,
   },
-  balanceLabel: { fontSize: 13, color: 'rgba(255,255,255,0.8)', marginBottom: 4 },
-  balanceAmount: { fontSize: 32, fontWeight: '800', color: COLORS.white },
-  bonusText: { fontSize: 12, color: 'rgba(255,255,255,0.7)', marginTop: 4 },
+  balanceLabel: { color: 'rgba(255,255,255,0.8)', fontSize: 13 },
+  balanceAmount: { color: COLORS.white, fontSize: 32, fontWeight: '800', marginTop: 4 },
+  bonusText: { color: '#fef3c7', fontSize: 13, marginTop: 4 },
   topUpBtn: {
-    marginTop: 16,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: COLORS.white,
     borderRadius: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
     paddingVertical: 10,
+    marginTop: 12,
   },
-  topUpText: { fontSize: 14, fontWeight: '600', color: COLORS.white },
-  sectionTitle: { fontSize: 16, fontWeight: '700', color: COLORS.gray900, marginBottom: 12 },
+  topUpText: { color: COLORS.brand, fontWeight: '600' },
+  rewardsRow: { flexDirection: 'row', gap: 12, marginBottom: 16 },
+  rewardCard: {
+    flex: 1,
+    backgroundColor: COLORS.gray50,
+    borderRadius: 12,
+    padding: 12,
+    alignItems: 'center',
+  },
+  rewardIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#ede9fe',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 6,
+  },
+  rewardIconText: { fontSize: 12, fontWeight: '700', color: COLORS.brand },
+  rewardVal: { fontSize: 18, fontWeight: '700', color: COLORS.gray900 },
+  rewardLbl: { fontSize: 10, color: COLORS.gray400, marginTop: 2 },
+  sectionTitle: { fontSize: 16, fontWeight: '700', color: COLORS.gray900, marginBottom: 10 },
+  emptyText: { color: COLORS.gray400, textAlign: 'center', marginTop: 12 },
+  errorText: { color: COLORS.danger, textAlign: 'center', marginTop: 12 },
   txnRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
+    borderBottomColor: COLORS.gray50,
   },
-  txnDesc: { fontSize: 13, fontWeight: '600', color: COLORS.gray900 },
-  txnDate: { fontSize: 11, color: COLORS.gray400, marginTop: 2 },
-  txnAmount: { fontSize: 14, fontWeight: '700' },
-  errorText: { fontSize: 13, color: COLORS.danger, textAlign: 'center', marginTop: 8 },
-  emptyText: { fontSize: 13, color: COLORS.gray400, textAlign: 'center', marginTop: 8 },
-  rewardsRow: { flexDirection: 'row', gap: 10, marginBottom: 20 },
-  rewardCard: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
-    padding: 14,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  rewardEmoji: { fontSize: 20, marginBottom: 4 },
-  rewardVal: { fontSize: 18, fontWeight: '700', color: COLORS.gray900 },
-  rewardLbl: { fontSize: 11, color: COLORS.gray400, marginTop: 2 },
+  txnDesc: { fontWeight: '600', color: COLORS.gray900, fontSize: 13 },
+  txnDate: { fontSize: 10, color: COLORS.gray400, marginTop: 2 },
+  txnAmount: { fontWeight: '600', fontSize: 13 },
 });
