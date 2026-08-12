@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { publicProcedure, router } from '../trpc';
+import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
+import { publicProcedure, router , requireFeatureFlag } from '../trpc';
 
 // Curated beauty product database with ingredient safety info
 const PRODUCTS = [
@@ -168,10 +169,11 @@ const SAFETY_TIPS: Record<string, string> = {
   'Mineral Oil': 'قد يسد المسام لبعض أنواع البشرة',
 };
 
+const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.PRODUCT_SCANNER);
+
 export const productScannerRouter = router({
   // Lookup product by barcode
-  lookup: publicProcedure
-    .input(z.object({ barcode: z.string().min(8).max(20) }))
+  lookup: publicProcedure.use(flag).input(z.object({ barcode: z.string().min(8).max(20) }))
     .query(async ({ input }) => {
       const product = PRODUCTS.find((p) => p.barcode === input.barcode);
       if (!product) return { found: false, message: 'المنتج غير موجود في قاعدة البيانات' };
@@ -189,7 +191,7 @@ export const productScannerRouter = router({
     }),
 
   // Search by name
-  search: publicProcedure.input(z.object({ query: z.string().min(2) })).query(async ({ input }) => {
+  search: publicProcedure.use(flag).input(z.object({ query: z.string().min(2) })).query(async ({ input }) => {
     const q = input.query.toLowerCase();
     return PRODUCTS.filter(
       (p) =>
@@ -201,8 +203,7 @@ export const productScannerRouter = router({
   }),
 
   // Ingredient safety info
-  checkIngredient: publicProcedure
-    .input(z.object({ ingredient: z.string() }))
+  checkIngredient: publicProcedure.use(flag).input(z.object({ ingredient: z.string() }))
     .query(async ({ input }) => {
       const name = input.ingredient.trim();
       const tip = SAFETY_TIPS[name] ?? 'لا توجد معلومات كافية عن هذه المادة';

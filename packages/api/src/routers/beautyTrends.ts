@@ -1,10 +1,12 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { publicProcedure, adminProcedure, router } from '../trpc';
+import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
+import { publicProcedure, adminProcedure, router , requireFeatureFlag } from '../trpc';
+
+const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.BEAUTY_TRENDS);
 
 export const beautyTrendsRouter = router({
-  topServices: publicProcedure
-    .input(
+  topServices: publicProcedure.use(flag).input(
       z.object({
         limit: z.number().int().min(1).max(20).default(10),
         period: z.enum(['week', 'month', 'year']).default('month'),
@@ -23,8 +25,7 @@ export const beautyTrendsRouter = router({
       return trending;
     }),
 
-  topTechnicians: publicProcedure
-    .input(z.object({ limit: z.number().int().min(1).max(20).default(10) }))
+  topTechnicians: publicProcedure.use(flag).input(z.object({ limit: z.number().int().min(1).max(20).default(10) }))
     .query(async ({ input }) => {
       const topRated = await prisma.technician.findMany({
         where: { kycStatus: 'VERIFIED' },
@@ -40,8 +41,7 @@ export const beautyTrendsRouter = router({
       return topRated;
     }),
 
-  topCategories: publicProcedure
-    .input(z.object({ limit: z.number().int().min(1).max(10).default(5) }))
+  topCategories: publicProcedure.use(flag).input(z.object({ limit: z.number().int().min(1).max(10).default(5) }))
     .query(async ({ input }) => {
       const now = new Date();
       const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, 1);

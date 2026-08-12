@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { OPENAI_API_URL, OPENAI_MODEL } from '@galaxy/shared';
-import { customerProcedure, router } from '../trpc';
+import { OPENAI_API_URL, OPENAI_MODEL , EXPERIMENTAL_FEATURES } from '@galaxy/shared';
+import { customerProcedure, router , requireFeatureFlag } from '../trpc';
 
 const FALLBACK_RESPONSES: Record<string, string> = {
   روتين:
@@ -15,9 +15,10 @@ const FALLBACK_RESPONSES: Record<string, string> = {
     'شكراً لسؤالكِ! يمكنني مساعدتكِ في: روتين العناية، نصائح البشرة، المكياج، العناية بالشعر، تحضيرات الزواج، والعناية الصيفية. ما الموضوع الذي تهتمين به؟ ',
 };
 
+const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.AI_CHAT);
+
 export const aiAssistantRouter = router({
-  ask: customerProcedure
-    .input(z.object({ question: z.string().min(2).max(500) }))
+  ask: customerProcedure.use(flag).input(z.object({ question: z.string().min(2).max(500) }))
     .query(async ({ input }) => {
       const q = input.question;
       let answer = '';
@@ -69,7 +70,7 @@ export const aiAssistantRouter = router({
         aiPowered: answer !== FALLBACK_RESPONSES['default'],
       };
     }),
-  topics: customerProcedure.query(() =>
+  topics: customerProcedure.use(flag).query(() =>
     Object.keys(FALLBACK_RESPONSES)
       .filter((k) => k !== 'default')
       .map((k) => ({

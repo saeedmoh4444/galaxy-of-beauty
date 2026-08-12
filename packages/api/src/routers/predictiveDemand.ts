@@ -1,4 +1,5 @@
-import { adminProcedure, customerProcedure, router } from '../trpc';
+import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
+import { adminProcedure, customerProcedure, router , requireFeatureFlag } from '../trpc';
 
 const FORECAST = {
   nextWeek: {
@@ -22,9 +23,11 @@ const FORECAST = {
   ],
 };
 
+const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.PREDICTIVE_DEMAND);
+
 export const predictiveDemandRouter = router({
   forecast: adminProcedure.query(() => FORECAST),
-  myInsights: customerProcedure.query(() => ({
+  myInsights: customerProcedure.use(flag).query(() => ({
     bestTimeToBook: 'الثلاثاء ١٠ صباحاً — أقل ازدحاماً',
     popularThisWeek: ['مكياج طبيعي', 'تنظيف بشرة', 'مساج استرخائي'],
     tip: 'احجزي قبل ٣ أيام للحصول على موعدكِ المفضل ',

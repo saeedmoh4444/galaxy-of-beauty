@@ -1,12 +1,14 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
-import { OPENAI_API_URL, OPENAI_MODEL } from '@galaxy/shared';
-import { protectedProcedure, router } from '../trpc';
+import { OPENAI_API_URL, OPENAI_MODEL, EXPERIMENTAL_FEATURES } from '@galaxy/shared';
+import { protectedProcedure, router, requireFeatureFlag } from '../trpc';
+
+const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.SKIN_ANALYSIS);
 
 export const skinAnalysisRouter = router({
   // Submit a photo for analysis
-  analyze: protectedProcedure
+  analyze: protectedProcedure.use(flag)
     .input(z.object({ imageUrl: z.string().url() }))
     .mutation(async ({ ctx, input }) => {
       // Call OpenAI Vision API for skin analysis
@@ -67,7 +69,7 @@ export const skinAnalysisRouter = router({
     }),
 
   // Get analysis history
-  history: protectedProcedure
+  history: protectedProcedure.use(flag)
     .input(z.object({ page: z.number().default(1), limit: z.number().default(10) }))
     .query(async ({ ctx, input }) => {
       const skip = (input.page - 1) * input.limit;
@@ -84,7 +86,7 @@ export const skinAnalysisRouter = router({
     }),
 
   // Get a specific analysis
-  getById: protectedProcedure
+  getById: protectedProcedure.use(flag)
     .input(z.object({ id: z.number().int().positive() }))
     .query(async ({ ctx, input }) => {
       const analysis = await prisma.skinAnalysis.findUnique({ where: { id: input.id } });

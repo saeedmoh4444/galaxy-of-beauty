@@ -1,10 +1,12 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { customerProcedure, router } from '../trpc';
+import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
+import { customerProcedure, router , requireFeatureFlag } from '../trpc';
+
+const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.SECRET_SANTA);
 
 export const secretSantaRouter = router({
-  createGroup: customerProcedure
-    .input(
+  createGroup: customerProcedure.use(flag).input(
       z.object({
         name: z.string().min(2).max(100),
         budget: z.number().int().positive(),
@@ -22,8 +24,7 @@ export const secretSantaRouter = router({
       });
     }),
 
-  join: customerProcedure
-    .input(z.object({ groupId: z.number().int().positive() }))
+  join: customerProcedure.use(flag).input(z.object({ groupId: z.number().int().positive() }))
     .mutation(async ({ ctx, input }) => {
       await prisma.secretSantaParticipant.create({
         data: { groupId: input.groupId, userId: ctx.user.id },
@@ -31,8 +32,7 @@ export const secretSantaRouter = router({
       return { success: true };
     }),
 
-  myGroups: customerProcedure
-    .input(z.object({ limit: z.number().int().min(1).max(20).default(10) }))
+  myGroups: customerProcedure.use(flag).input(z.object({ limit: z.number().int().min(1).max(20).default(10) }))
     .query(async ({ ctx, input }) => {
       return prisma.secretSantaParticipant.findMany({
         where: { userId: ctx.user.id },
@@ -41,8 +41,7 @@ export const secretSantaRouter = router({
       });
     }),
 
-  draw: customerProcedure
-    .input(z.object({ groupId: z.number().int().positive() }))
+  draw: customerProcedure.use(flag).input(z.object({ groupId: z.number().int().positive() }))
     .mutation(async ({ ctx, input }) => {
       const group = await prisma.secretSantaGroup.findFirst({
         where: { id: input.groupId, creatorId: ctx.user.id },
@@ -66,8 +65,7 @@ export const secretSantaRouter = router({
       return { success: true, matches: participants.length };
     }),
 
-  getAssignment: customerProcedure
-    .input(z.object({ groupId: z.number().int().positive() }))
+  getAssignment: customerProcedure.use(flag).input(z.object({ groupId: z.number().int().positive() }))
     .query(async ({ ctx, input }) => {
       const participant = await prisma.secretSantaParticipant.findFirst({
         where: { groupId: input.groupId, userId: ctx.user.id },

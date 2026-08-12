@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { customerProcedure, router } from '../trpc';
+import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
+import { customerProcedure, router , requireFeatureFlag } from '../trpc';
 
 const BINGO_CARD = [
   { id: 1, task: 'روتين عناية يومي كامل ' },
@@ -14,8 +15,10 @@ const BINGO_CARD = [
   { id: 9, task: 'تدليك وجه ‍️' },
 ];
 
+const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.BEAUTY_BINGO);
+
 export const beautyBingoRouter = router({
-  card: customerProcedure.query(async ({ ctx }) => {
+  card: customerProcedure.use(flag).query(async ({ ctx }) => {
     const progress = await prisma.bingoProgress.findMany({ where: { userId: ctx.user.id } });
     const completedIds = new Set(progress.map((p: any) => p.taskId));
     const tasks = BINGO_CARD.map((t) => ({ ...t, completed: completedIds.has(t.id) }));
@@ -23,8 +26,7 @@ export const beautyBingoRouter = router({
     return { tasks, completed, total: 9, reward: '٣ خطوط = جلسة مجانية! ' };
   }),
 
-  mark: customerProcedure
-    .input(z.object({ taskId: z.number() }))
+  mark: customerProcedure.use(flag).input(z.object({ taskId: z.number() }))
     .mutation(async ({ ctx, input }) => {
       await prisma.bingoProgress.upsert({
         where: { userId_taskId: { userId: ctx.user.id, taskId: input.taskId } },

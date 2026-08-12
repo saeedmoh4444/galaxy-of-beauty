@@ -1,10 +1,12 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { customerProcedure, router } from '../trpc';
+import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
+import { customerProcedure, router , requireFeatureFlag } from '../trpc';
+
+const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.TIME_CAPSULE);
 
 export const timeCapsuleRouter = router({
-  save: customerProcedure
-    .input(
+  save: customerProcedure.use(flag).input(
       z.object({
         name: z.string().min(2).max(100),
         routineJson: z.record(z.unknown()),
@@ -22,8 +24,7 @@ export const timeCapsuleRouter = router({
       });
     }),
 
-  myCapsules: customerProcedure
-    .input(z.object({ limit: z.number().int().min(1).max(20).default(5) }))
+  myCapsules: customerProcedure.use(flag).input(z.object({ limit: z.number().int().min(1).max(20).default(5) }))
     .query(async ({ ctx, input }) => {
       return prisma.timeCapsule.findMany({
         where: { userId: ctx.user.id },
@@ -32,8 +33,7 @@ export const timeCapsuleRouter = router({
       });
     }),
 
-  open: customerProcedure
-    .input(z.object({ capsuleId: z.number().int().positive() }))
+  open: customerProcedure.use(flag).input(z.object({ capsuleId: z.number().int().positive() }))
     .mutation(async ({ ctx, input }) => {
       const capsule = await prisma.timeCapsule.findFirst({
         where: { id: input.capsuleId, userId: ctx.user.id },
@@ -43,8 +43,7 @@ export const timeCapsuleRouter = router({
       return capsule;
     }),
 
-  upcoming: customerProcedure
-    .input(z.object({ limit: z.number().int().min(1).max(10).default(3) }))
+  upcoming: customerProcedure.use(flag).input(z.object({ limit: z.number().int().min(1).max(10).default(3) }))
     .query(async ({ ctx, input }) => {
       return prisma.timeCapsule.findMany({
         where: {
