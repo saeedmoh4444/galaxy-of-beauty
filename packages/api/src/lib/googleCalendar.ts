@@ -1,3 +1,10 @@
+import {
+  GOOGLE_TOKEN_URL,
+  GOOGLE_CALENDAR_API_URL,
+  GOOGLE_OAUTH_URL,
+  GOOGLE_OAUTH_SCOPE,
+} from '@galaxy/shared';
+
 // ── Types ──────────────────────────────────────────────────
 
 interface GoogleTokens {
@@ -25,7 +32,7 @@ export async function exchangeGoogleCode(
   if (!config) return null;
 
   try {
-    const response = await fetch('https://oauth2.googleapis.com/token', {
+    const response = await fetch(GOOGLE_TOKEN_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
@@ -56,7 +63,7 @@ export async function refreshGoogleToken(refreshToken: string): Promise<GoogleTo
   if (!config) return null;
 
   try {
-    const response = await fetch('https://oauth2.googleapis.com/token', {
+    const response = await fetch(GOOGLE_TOKEN_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
@@ -97,7 +104,7 @@ export async function createGoogleCalendarEvent(
 ): Promise<string | null> {
   try {
     const response = await fetch(
-      'https://www.googleapis.com/calendar/v3/calendars/primary/events',
+      `${GOOGLE_CALENDAR_API_URL}/calendars/primary/events`,
       {
         method: 'POST',
         headers: {
@@ -134,7 +141,7 @@ export async function deleteGoogleCalendarEvent(
 ): Promise<boolean> {
   try {
     const response = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/primary/events/${encodeURIComponent(eventId)}`,
+      `${GOOGLE_CALENDAR_API_URL}/calendars/primary/events/${encodeURIComponent(eventId)}`,
       {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -157,11 +164,11 @@ export function getGoogleAuthUrl(redirectUri: string, state: string): string | n
     client_id: config.clientId,
     redirect_uri: redirectUri,
     response_type: 'code',
-    scope: 'https://www.googleapis.com/auth/calendar.events',
+    scope: GOOGLE_OAUTH_SCOPE,
     access_type: 'offline',
     prompt: 'consent',
     state,
   });
 
-  return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+  return `${GOOGLE_OAUTH_URL}?${params.toString()}`;
 }

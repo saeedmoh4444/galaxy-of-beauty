@@ -139,8 +139,15 @@ export const SWAGGER_JS_URL = 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/sw
 
 /** Google OAuth 2.0 authorization endpoint. */
 export const GOOGLE_OAUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
+/** Google OAuth token exchange endpoint. */
+export const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
+/** Google Calendar API base. */
+export const GOOGLE_CALENDAR_API_URL = 'https://www.googleapis.com/calendar/v3';
 /** Google OAuth default scopes. */
-export const GOOGLE_OAUTH_SCOPE = 'email profile';
+export const GOOGLE_OAUTH_SCOPE = 'email profile https://www.googleapis.com/auth/calendar.events';
+
+/** Twilio API base URL. */
+export const TWILIO_API_URL = 'https://api.twilio.com/2010-04-01';
 
 // ---------------------------------------------------------------------------
 // Social share URL templates

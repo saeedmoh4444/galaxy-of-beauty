@@ -1,3 +1,5 @@
+import { TWILIO_API_URL } from '@galaxy/shared';
+
 // ── Types ──────────────────────────────────────────────────
 
 interface SmsConfig {
@@ -37,7 +39,7 @@ export async function sendSms(to: string, message: string): Promise<boolean> {
     }).toString();
 
     const response = await fetch(
-      `https://api.twilio.com/2010-04-01/Accounts/${config.accountSid}/Messages.json`,
+      `${TWILIO_API_URL}/Accounts/${config.accountSid}/Messages.json`,
       {
         method: 'POST',
         headers: {
