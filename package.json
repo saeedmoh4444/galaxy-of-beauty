@@ -24,8 +24,8 @@
     "verify": "pnpm format:check && pnpm lint && pnpm type-check && pnpm db:validate && pnpm test:unit && pnpm build"
   },
   "devDependencies": {
-    "prettier": "^3.3.0",
-    "turbo": "^2.0.0",
+    "prettier": "^3.9.6",
+    "turbo": "^2.10.9",
     "typescript": "^5.5.0"
   },
   "engines": {
