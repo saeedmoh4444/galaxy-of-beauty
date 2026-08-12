@@ -1,8 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
-import { Button, Card, ErrorAlert, EmptyState, ar } from '@galaxy/ui';
+import { Button, Card, ErrorAlert, EmptyState, ServiceImage, ar } from '@galaxy/ui';
 
 interface Category {
   id: number;
@@ -22,6 +21,15 @@ export interface HomePageProps {
   initialServices: Service[];
   serviceTotal: number;
   fetchError?: string;
+}
+
+function categoryImageKey(slug: string): string {
+  const map: Record<string, string> = {
+    hair: 'hair', nails: 'nails', skincare: 'skincare', makeup: 'makeup',
+    massage: 'massage', henna: 'henna', waxing: 'waxing', lashes: 'lashes',
+    body: 'bodyTreatments', spa: 'spa', bridal: 'bridal', men: 'mensGrooming',
+  };
+  return map[slug] ?? 'default';
 }
 
 export function HomeClient({
@@ -53,7 +61,7 @@ export function HomeClient({
               variant="outline"
               className="border-white !text-white hover:bg-white/10"
             >
-              🎲 فاجئيني
+              فاجئيني
             </Button>
           </Link>
         </div>
@@ -69,9 +77,11 @@ export function HomeClient({
             {categories.map((c) => (
               <Link key={c.id} href={`/services?categoryId=${c.id}`}>
                 <Card hover padding="lg" className="flex flex-col items-center text-center">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-100 text-2xl text-brand-600 dark:bg-brand-900">
-                    {ar(c.nameJson).charAt(0) || '✨'}
-                  </div>
+                  <ServiceImage
+                    service={categoryImageKey(c.slug)}
+                    size="lg"
+                    alt={ar(c.nameJson)}
+                  />
                   <h3 className="mt-3 text-sm font-semibold">{ar(c.nameJson)}</h3>
                 </Card>
               </Link>
@@ -93,7 +103,12 @@ export function HomeClient({
               {svcItems.map((svc) => (
                 <Link key={svc.id} href={`/services/${svc.id}`}>
                   <Card hover>
-                    <div className="h-40 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100 dark:from-brand-900 dark:to-accent-900" />
+                    <ServiceImage
+                      service={String(svc.id)}
+                      size="full"
+                      alt={ar(svc.titleJson)}
+                      className="h-40"
+                    />
                     <h3 className="mt-3 font-semibold">{ar(svc.titleJson)}</h3>
                     <p className="mt-1 text-sm text-text-secondary">{svc.durationMin} دقيقة</p>
                     <p className="mt-2 font-bold text-brand-600">{svc.basePrice} ر.س</p>
@@ -125,22 +140,22 @@ export function HomeClient({
       {/* Testimonials */}
       <section className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950 px-4 py-16">
         <div className="mx-auto max-w-5xl">
-          <h2 className="mb-8 text-center text-2xl font-bold">💬 ماذا تقول عميلاتنا؟</h2>
+          <h2 className="mb-8 text-center text-2xl font-bold">ماذا تقول عميلاتنا؟</h2>
           <div className="grid gap-6 md:grid-cols-3">
             {[
               {
                 name: 'سارة',
-                text: 'أفضل تجربة تجميل! حجزت مكياج ليوم زفافي وكانت النتيجة خيالية. الفنانة نورة أبدعت! 👰',
+                text: 'أفضل تجربة تجميل! حجزت مكياج ليوم زفافي وكانت النتيجة خيالية. الفنانة نورة أبدعت!',
                 rating: 5,
               },
               {
                 name: 'مريم',
-                text: 'جلسات تنظيف البشرة غيرت بشرتي تماماً. د. ليلى محترفة وتستخدم أفضل المنتجات ✨',
+                text: 'جلسات تنظيف البشرة غيرت بشرتي تماماً. د. ليلى محترفة وتستخدم أفضل المنتجات.',
                 rating: 5,
               },
               {
                 name: 'نورة',
-                text: 'المنصة سهلة والتطبيق رائع. أقدر أحجز لأمي وأختي من حساب واحد. شكراً جالكسي بيوتي! 💝',
+                text: 'المنصة سهلة والتطبيق رائع. أقدر أحجز لأمي وأختي من حساب واحد. شكراً جالكسي بيوتي!',
                 rating: 5,
               },
             ].map((t, i) => (
@@ -149,7 +164,9 @@ export function HomeClient({
                 padding="lg"
                 className="text-center bg-white/80 dark:bg-gray-900/80 backdrop-blur"
               >
-                <p className="text-3xl">{'⭐'.repeat(t.rating)}</p>
+                <p className="text-lg font-bold text-yellow-500">
+                  {'★'.repeat(t.rating)}{'☆'.repeat(5 - t.rating)}
+                </p>
                 <p className="mt-3 text-sm text-text-secondary dark:text-gray-400 leading-relaxed">
                   &ldquo;{t.text}&rdquo;
                 </p>
@@ -165,33 +182,22 @@ export function HomeClient({
         <h2 className="mb-8 text-center text-2xl font-bold">اكتشفي المزيد</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            {
-              href: '/virtual-try-on',
-              emoji: '🤳',
-              title: 'تجربة افتراضية',
-              desc: 'جربي المكياج قبل الشراء',
-            },
-            { href: '/tutorials', emoji: '📹', title: 'دروس الجمال', desc: 'تعلمي من الخبراء' },
-            {
-              href: '/salon-map',
-              emoji: '🗺️',
-              title: 'خريطة الصالونات',
-              desc: 'اكتشفي الفنيات القريبات',
-            },
-            {
-              href: '/beauty-courses',
-              emoji: '🎓',
-              title: 'دورات تجميل',
-              desc: 'احصلي على شهادات',
-            },
-            { href: '/blog', emoji: '📝', title: 'المدونة', desc: 'نصائح وأسرار الجمال' },
-            { href: '/live-stream', emoji: '🎥', title: 'بث مباشر', desc: 'تابعي الخبراء مباشرة' },
-            { href: '/flash-deals', emoji: '⚡', title: 'عروض فلاش', desc: 'خصومات لفترة محدودة' },
-            { href: '/community', emoji: '💬', title: 'مجتمع الجمال', desc: 'شاركي تجاربكِ' },
+            { href: '/virtual-try-on', title: 'تجربة افتراضية', desc: 'جربي المكياج قبل الشراء' },
+            { href: '/tutorials', title: 'دروس الجمال', desc: 'تعلمي من الخبراء' },
+            { href: '/services', title: 'خريطة الصالونات', desc: 'اكتشفي الفنيات القريبات' },
+            { href: '/beauty-courses', title: 'دورات تجميل', desc: 'احصلي على شهادات' },
+            { href: '/blog', title: 'المدونة', desc: 'نصائح وأسرار الجمال' },
+            { href: '/flash-deals', title: 'عروض فلاش', desc: 'خصومات لفترة محدودة' },
+            { href: '/community', title: 'مجتمع الجمال', desc: 'شاركي تجاربكِ' },
+            { href: '/beauty-tips', title: 'نصائح يومية', desc: 'روتين العناية بالجمال' },
           ].map((f) => (
             <Link key={f.href} href={f.href}>
               <Card hover padding="lg" className="flex items-start gap-3 transition-all">
-                <span className="text-3xl">{f.emoji}</span>
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-purple-100 dark:from-brand-900 dark:to-purple-900">
+                  <span className="text-lg font-bold text-brand-600 dark:text-brand-300">
+                    {f.title.charAt(0)}
+                  </span>
+                </div>
                 <div>
                   <h3 className="font-bold text-sm">{f.title}</h3>
                   <p className="text-xs text-text-secondary mt-0.5">{f.desc}</p>

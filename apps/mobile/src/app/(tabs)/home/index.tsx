@@ -31,25 +31,25 @@ export default function HomeScreen(): JSX.Element {
       emptyTitle="لا توجد أقسام"
       onRetry={() => cats.refetch()}
     >
-      <Text style={styles.title}>🏠 جالكسي بيوتي</Text>
+      <Text style={styles.title}>جالكسي بيوتي</Text>
 
       {/* Community Stats Bar */}
       <View style={styles.statsRow}>
         {kindness?.data?.points !== undefined && (
           <View style={styles.statBadge}>
-            <Text style={styles.statEmoji}>💖</Text>
+            <View style={styles.statIcon}><Text style={styles.statIconText}>K</Text></View>
             <Text style={styles.statText}>{kindness.data.points} نقطة</Text>
           </View>
         )}
         {compliments?.data !== undefined && (
           <View style={styles.statBadge}>
-            <Text style={styles.statEmoji}>💌</Text>
+            <View style={styles.statIcon}><Text style={styles.statIconText}>M</Text></View>
             <Text style={styles.statText}>{compliments.data} رسالة</Text>
           </View>
         )}
         {dailyTip?.data && (
           <View style={styles.tipBar}>
-            <Text style={styles.tipEmoji}>{dailyTip.data.emoji ?? '💡'}</Text>
+            <View style={styles.tipIcon}><Text style={styles.tipIconText}>!</Text></View>
             <Text style={styles.tipText} numberOfLines={1}>
               {dailyTip.data.tip ?? ''}
             </Text>
@@ -68,7 +68,11 @@ export default function HomeScreen(): JSX.Element {
               router.push('/public/services' as any);
             }}
           >
-            <Text style={styles.emoji}>📂</Text>
+            <View style={styles.cardIcon}>
+              <Text style={styles.cardIconText}>
+                {(cat.nameJson as Record<string, string>)?.ar?.charAt(0) ?? 'B'}
+              </Text>
+            </View>
             <Text style={styles.name}>
               {(cat.nameJson as Record<string, string>)?.ar ?? (cat.nameAr as string) ?? ''}
             </Text>
@@ -99,7 +103,15 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  emoji: { fontSize: 30 },
+  cardIcon: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#f5f3ff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cardIconText: { fontSize: 20, fontWeight: '700', color: COLORS.brand },
   name: {
     fontSize: 11,
     fontWeight: '600',
@@ -116,7 +128,16 @@ const styles = StyleSheet.create({
     padding: 8,
     marginBottom: 4,
   },
-  statEmoji: { fontSize: 14, marginRight: 6 },
+  statIcon: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#ede9fe',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+  },
+  statIconText: { fontSize: 12, fontWeight: '700', color: COLORS.brand },
   statText: { fontSize: 12, fontWeight: '600', color: COLORS.gray700 },
   tipBar: {
     flexDirection: 'row',
@@ -126,6 +147,15 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 4,
   },
-  tipEmoji: { fontSize: 16, marginRight: 8 },
+  tipIcon: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#fde68a',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+  },
+  tipIconText: { fontSize: 12, fontWeight: '700', color: '#92400e' },
   tipText: { fontSize: 11, color: '#92400e', flex: 1 },
 });
