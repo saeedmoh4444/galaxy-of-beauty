@@ -5,7 +5,11 @@ import type { ServicesPageData } from './ServicesClient';
 
 export default async function ServicesPage(): Promise<JSX.Element> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const data: ServicesPageData = { initialServices: [] as any[], initialCategories: [] as any[], initialTotal: 0 };
+  const data: ServicesPageData = {
+    initialServices: [] as any[],
+    initialCategories: [] as any[],
+    initialTotal: 0,
+  };
 
   try {
     const caller = await getServerCaller();

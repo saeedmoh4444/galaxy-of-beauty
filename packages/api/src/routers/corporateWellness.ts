@@ -19,12 +19,22 @@ function formatPlan(p: any) {
 
 export const corporateWellnessRouter = router({
   plans: publicProcedure.query(async () => {
-    const plans = await db.corporatePlan.findMany({ where: { isActive: true }, orderBy: { sortOrder: 'asc' } });
+    const plans = await db.corporatePlan.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: 'asc' },
+    });
     return plans.map(formatPlan);
   }),
 
   enquire: publicProcedure
-    .input(z.object({ companyName: z.string().min(1), contactName: z.string().min(1), email: z.string().email(), planId: z.string() }))
+    .input(
+      z.object({
+        companyName: z.string().min(1),
+        contactName: z.string().min(1),
+        email: z.string().email(),
+        planId: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       await db.corporateEnquiry.create({
         data: {
@@ -39,6 +49,9 @@ export const corporateWellnessRouter = router({
     }),
 
   myEnquiries: customerProcedure.query(async ({ ctx }) => {
-    return db.corporateEnquiry.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } });
+    return db.corporateEnquiry.findMany({
+      where: { userId: ctx.user.id },
+      orderBy: { createdAt: 'desc' },
+    });
   }),
 });

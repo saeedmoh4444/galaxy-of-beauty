@@ -10,7 +10,8 @@ import { cn } from '@galaxy/shared';
  *   <BeautyJourneyTimeline activeStage="discovery" />
  */
 
-type LifeStage = 'first_steps' | 'discovery' | 'career' | 'wedding_motherhood' | 'confidence' | 'golden';
+type LifeStage =
+  'first_steps' | 'discovery' | 'career' | 'wedding_motherhood' | 'confidence' | 'golden';
 
 interface StageDef {
   emoji: string;
@@ -145,9 +146,7 @@ export function BeautyJourneyTimeline({
                     color: isActive ? undefined : undefined,
                   }}
                 >
-                  <span className={cn(isFuture && 'opacity-40')}>
-                    {def.emoji}
-                  </span>
+                  <span className={cn(isFuture && 'opacity-40')}>{def.emoji}</span>
                 </div>
 
                 {/* Vertical line */}
@@ -164,16 +163,24 @@ export function BeautyJourneyTimeline({
               </div>
 
               {/* Content */}
-              <div className={cn(
-                'pb-3 flex-1 rounded-lg px-3 py-1.5 transition-all',
-                isActive && 'bg-gray-50 dark:bg-gray-800',
-              )}>
+              <div
+                className={cn(
+                  'pb-3 flex-1 rounded-lg px-3 py-1.5 transition-all',
+                  isActive && 'bg-gray-50 dark:bg-gray-800',
+                )}
+              >
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className={cn(
-                      'text-xs font-bold',
-                      isActive ? def.color : isFuture ? 'text-text-tertiary dark:text-gray-500' : 'text-text-secondary dark:text-gray-300',
-                    )}>
+                    <span
+                      className={cn(
+                        'text-xs font-bold',
+                        isActive
+                          ? def.color
+                          : isFuture
+                            ? 'text-text-tertiary dark:text-gray-500'
+                            : 'text-text-secondary dark:text-gray-300',
+                      )}
+                    >
                       {def.title}
                     </span>
                     <span className="ml-2 text-[10px] text-text-tertiary dark:text-gray-500">

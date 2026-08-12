@@ -1,12 +1,12 @@
 import { Card } from '@galaxy/ui';
 
 const FEATURES = [
-  { emoji:'📅', title:'حجز سريع', desc:'احجزي موعدكِ عبر واتساب في ثواني' },
-  { emoji:'🔔', title:'تذكير تلقائي', desc:'تذكير بموعدكِ قبل 24 ساعة وساعة' },
-  { emoji:'💬', title:'استشارة فورية', desc:'اسألي عن الخدمات والأسعار' },
-  { emoji:'⭐', title:'تقييم سهل', desc:'قيّمي الخدمة بعد الجلسة مباشرة' },
-  { emoji:'🎁', title:'عروض حصرية', desc:'عروض وكوبونات عبر الواتساب فقط' },
-  { emoji:'📍', title:'أقرب صالون', desc:'اعرفي أقرب صالون متاح' },
+  { emoji: '📅', title: 'حجز سريع', desc: 'احجزي موعدكِ عبر واتساب في ثواني' },
+  { emoji: '🔔', title: 'تذكير تلقائي', desc: 'تذكير بموعدكِ قبل 24 ساعة وساعة' },
+  { emoji: '💬', title: 'استشارة فورية', desc: 'اسألي عن الخدمات والأسعار' },
+  { emoji: '⭐', title: 'تقييم سهل', desc: 'قيّمي الخدمة بعد الجلسة مباشرة' },
+  { emoji: '🎁', title: 'عروض حصرية', desc: 'عروض وكوبونات عبر الواتساب فقط' },
+  { emoji: '📍', title: 'أقرب صالون', desc: 'اعرفي أقرب صالون متاح' },
 ];
 
 export default function WhatsAppBotPage(): JSX.Element {
@@ -15,7 +15,9 @@ export default function WhatsAppBotPage(): JSX.Element {
       <div className="text-center mb-12">
         <span className="text-7xl">💬</span>
         <h1 className="mt-6 text-4xl font-extrabold">بوت الواتساب</h1>
-        <p className="mt-4 text-lg text-text-secondary max-w-2xl mx-auto">احجزي، استفسري، وتابعي حجوزاتكِ — كل شيء عبر واتساب</p>
+        <p className="mt-4 text-lg text-text-secondary max-w-2xl mx-auto">
+          احجزي، استفسري، وتابعي حجوزاتكِ — كل شيء عبر واتساب
+        </p>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-12">

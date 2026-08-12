@@ -35,7 +35,13 @@ export function ThreeGenerationsCard({
   onBook,
   className = '',
 }: ThreeGenerationsCardProps): JSX.Element {
-  const members: { key: string; data: GenerationMember; label: string; color: string; gradient: string }[] = [
+  const members: {
+    key: string;
+    data: GenerationMember;
+    label: string;
+    color: string;
+    gradient: string;
+  }[] = [
     {
       key: 'grandma',
       data: generations.grandma,
@@ -68,7 +74,9 @@ export function ThreeGenerationsCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">👵👩👧</span>
+        <span className="text-3xl" aria-hidden="true">
+          👵👩👧
+        </span>
         <h4 className="mt-1 text-sm font-bold text-text-primary dark:text-gray-100">
           ثلاث أجيال من الجمال
         </h4>
@@ -82,17 +90,13 @@ export function ThreeGenerationsCard({
         {members.map((member) => (
           <div
             key={member.key}
-            className={cn(
-              'rounded-xl bg-gradient-to-br p-3 text-center',
-              member.gradient,
-            )}
+            className={cn('rounded-xl bg-gradient-to-br p-3 text-center', member.gradient)}
           >
             <span className="text-2xl" aria-hidden="true">
-              {member.data.emoji || (member.key === 'grandma' ? '👵' : member.key === 'mom' ? '👩' : '👧')}
+              {member.data.emoji ||
+                (member.key === 'grandma' ? '👵' : member.key === 'mom' ? '👩' : '👧')}
             </span>
-            <p className={cn('mt-1 text-[10px] font-bold', member.color)}>
-              {member.label}
-            </p>
+            <p className={cn('mt-1 text-[10px] font-bold', member.color)}>{member.label}</p>
             <p className="text-[10px] font-semibold text-text-primary dark:text-gray-100">
               {member.data.name}
             </p>
@@ -109,15 +113,11 @@ export function ThreeGenerationsCard({
       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">المدة</p>
-          <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-            {duration}
-          </p>
+          <p className="text-xs font-bold text-text-primary dark:text-gray-100">{duration}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">السعر</p>
-          <p className="text-xs font-bold text-rose-700 dark:text-rose-400">
-            {totalPrice} ر.س
-          </p>
+          <p className="text-xs font-bold text-rose-700 dark:text-rose-400">{totalPrice} ر.س</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">للفرد</p>
@@ -129,9 +129,7 @@ export function ThreeGenerationsCard({
 
       {/* What's included */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          ✨ تشمل الباقة
-        </p>
+        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">✨ تشمل الباقة</p>
         <div className="mt-1.5 grid grid-cols-2 gap-1 text-[10px] text-text-secondary dark:text-gray-300">
           <span>• عناية بالبشرة للثلاثة</span>
           <span>• مانيكير وباديكير</span>

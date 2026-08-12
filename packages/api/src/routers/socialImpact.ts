@@ -7,7 +7,10 @@ export const socialImpactRouter = router({
     const [womenEmployed, womenInTraining, survivorServices, ruralWomen] = await Promise.all([
       prisma.socialImpact.aggregate({ where: { category: 'EMPLOYED' }, _sum: { count: true } }),
       prisma.socialImpact.aggregate({ where: { category: 'TRAINING' }, _sum: { count: true } }),
-      prisma.socialImpact.aggregate({ where: { category: 'SURVIVOR_SERVICE' }, _sum: { count: true } }),
+      prisma.socialImpact.aggregate({
+        where: { category: 'SURVIVOR_SERVICE' },
+        _sum: { count: true },
+      }),
       prisma.socialImpact.aggregate({ where: { category: 'RURAL' }, _sum: { count: true } }),
     ]);
     return {
@@ -21,5 +24,7 @@ export const socialImpactRouter = router({
 
   milestones: publicProcedure
     .input(z.object({ limit: z.number().int().min(1).max(20).default(10) }))
-    .query(async ({ input }) => prisma.socialImpact.findMany({ orderBy: { createdAt: 'desc' }, take: input.limit })),
+    .query(async ({ input }) =>
+      prisma.socialImpact.findMany({ orderBy: { createdAt: 'desc' }, take: input.limit }),
+    ),
 });

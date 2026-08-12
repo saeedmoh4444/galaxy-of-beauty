@@ -17,13 +17,29 @@ interface ExportProgramCardProps {
   className?: string;
 }
 
-export function ExportProgramCard({ products, countries, onLearnMore, className = '' }: ExportProgramCardProps): JSX.Element {
+export function ExportProgramCard({
+  products,
+  countries,
+  onLearnMore,
+  className = '',
+}: ExportProgramCardProps): JSX.Element {
   return (
-    <div className={cn('rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-green-50 p-5 dark:border-emerald-900 dark:from-emerald-950 dark:to-green-950', className)}>
+    <div
+      className={cn(
+        'rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-green-50 p-5 dark:border-emerald-900 dark:from-emerald-950 dark:to-green-950',
+        className,
+      )}
+    >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">🌍</span>
-        <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">برنامج التصدير</h4>
-        <p className="text-[10px] text-emerald-600 dark:text-emerald-400">منتجات سعودية إلى العالم</p>
+        <span className="text-3xl" aria-hidden="true">
+          🌍
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">
+          برنامج التصدير
+        </h4>
+        <p className="text-[10px] text-emerald-600 dark:text-emerald-400">
+          منتجات سعودية إلى العالم
+        </p>
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-2">
@@ -46,7 +62,11 @@ export function ExportProgramCard({ products, countries, onLearnMore, className 
         </div>
       </div>
 
-      <button type="button" onClick={onLearnMore} className="mt-3 w-full rounded-xl bg-emerald-600 py-2 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all">
+      <button
+        type="button"
+        onClick={onLearnMore}
+        className="mt-3 w-full rounded-xl bg-emerald-600 py-2 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
+      >
         صدري منتجكِ 🌍
       </button>
     </div>

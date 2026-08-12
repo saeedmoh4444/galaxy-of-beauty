@@ -22,15 +22,27 @@ export const customerAchievementsRouter = router({
 
     const [completedCount, totalSpent, reviewsCount, streak, serviceTypes] = await Promise.all([
       db.booking.count({ where: { customerId: userId, status: 'COMPLETED' } }),
-      db.booking.aggregate({ where: { customerId: userId, status: 'COMPLETED' }, _sum: { totalAmount: true } }),
+      db.booking.aggregate({
+        where: { customerId: userId, status: 'COMPLETED' },
+        _sum: { totalAmount: true },
+      }),
       db.review.count({ where: { userId } }),
       db.streak.findUnique({ where: { customerId: userId } }),
-      db.booking.findMany({ where: { customerId: userId, status: 'COMPLETED' }, select: { service: { select: { categoryId: true } } }, distinct: ['serviceId'], take: LARGE_PAGE_SIZE }),
+      db.booking.findMany({
+        where: { customerId: userId, status: 'COMPLETED' },
+        select: { service: { select: { categoryId: true } } },
+        distinct: ['serviceId'],
+        take: LARGE_PAGE_SIZE,
+      }),
     ]);
 
     // Check recent 3 months for monthly streak
     const recentMonths = new Set<string>();
-    const bookings = await db.booking.findMany({ where: { customerId: userId, createdAt: { gte: new Date(Date.now() - MS_PER_90_DAYS) } }, select: { createdAt: true }, take: 500 });
+    const bookings = await db.booking.findMany({
+      where: { customerId: userId, createdAt: { gte: new Date(Date.now() - MS_PER_90_DAYS) } },
+      select: { createdAt: true },
+      take: 500,
+    });
     for (const b of bookings) {
       const d = new Date(b.createdAt);
       recentMonths.add(`${d.getFullYear()}-${d.getMonth()}`);
@@ -44,10 +56,11 @@ export const customerAchievementsRouter = router({
     if (Number(totalSpent._sum?.totalAmount || 0) >= 1000) earned.push('big_spender');
     if (reviewsCount >= 1) earned.push('reviewer');
     if ((streak?.currentStreak || 0) >= 7) earned.push('streak_7');
-    if (new Set(serviceTypes.map((b: any) => b.service?.categoryId)).size >= 5) earned.push('explorer');
+    if (new Set(serviceTypes.map((b: any) => b.service?.categoryId)).size >= 5)
+      earned.push('explorer');
 
     return {
-      achievements: ACHIEVEMENTS.map(a => ({ ...a, earned: earned.includes(a.key) })),
+      achievements: ACHIEVEMENTS.map((a) => ({ ...a, earned: earned.includes(a.key) })),
       stats: {
         totalBookings: completedCount,
         totalSpent: Number(totalSpent._sum?.totalAmount || 0),

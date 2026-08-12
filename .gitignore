@@ -77,3 +77,12 @@ apps/mobile/ios/
 
 *storybook.log
 storybook-static
+
+# Editor history
+.history/
+
+# Remediation backups
+backups/
+
+# Generated reports (local only)
+*.report.md.tmp

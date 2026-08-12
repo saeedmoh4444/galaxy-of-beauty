@@ -40,11 +40,11 @@ export function FaceBlurToggle({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true">😶‍🌫️</span>
+          <span className="text-xl" aria-hidden="true">
+            😶‍🌫️
+          </span>
           <div>
-            <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">
-              تعتيم الوجه
-            </h4>
+            <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">تعتيم الوجه</h4>
             <p className="text-[10px] text-blue-500 dark:text-blue-400">
               {enabled
                 ? 'يتم تعتيم الوجوه تلقائياً — خصوصيتكِ أولاً'
@@ -72,12 +72,10 @@ export function FaceBlurToggle({
 
       {/* How it works */}
       <div className="mt-3 rounded-xl bg-blue-50 p-3 dark:bg-blue-950">
-        <p className="text-[10px] font-bold text-blue-700 dark:text-blue-300">
-          🤖 كيف يعمل؟
-        </p>
+        <p className="text-[10px] font-bold text-blue-700 dark:text-blue-300">🤖 كيف يعمل؟</p>
         <p className="mt-0.5 text-[10px] text-blue-600 dark:text-blue-400">
-          ذكاء اصطناعي على جهازكِ يتعرف على الوجوه ويعتمها تلقائياً. لا يتم رفع صوركِ إلى
-          أي خادم — كل شيء على جهازكِ.
+          ذكاء اصطناعي على جهازكِ يتعرف على الوجوه ويعتمها تلقائياً. لا يتم رفع صوركِ إلى أي خادم —
+          كل شيء على جهازكِ.
         </p>
       </div>
 

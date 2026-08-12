@@ -14,7 +14,12 @@ interface BookAgainProps {
   className?: string;
 }
 
-export function BookAgain({ serviceName, technicianName, onBook, className = '' }: BookAgainProps): JSX.Element {
+export function BookAgain({
+  serviceName,
+  technicianName,
+  onBook,
+  className = '',
+}: BookAgainProps): JSX.Element {
   return (
     <button
       onClick={onBook}

@@ -9,13 +9,23 @@ const db = prisma as any;
 export const eventTicketsRouter = router({
   // List events with available tickets
   available: publicProcedure.query(async () => {
-    const events = await db.beautyEvent.findMany({ where: { isPublished: true, startsAt: { gte: new Date() } }, orderBy: { startsAt: 'asc' }, take: DEFAULT_PAGE_SIZE });
+    const events = await db.beautyEvent.findMany({
+      where: { isPublished: true, startsAt: { gte: new Date() } },
+      orderBy: { startsAt: 'asc' },
+      take: DEFAULT_PAGE_SIZE,
+    });
     return events.map((e: any) => ({ ...e, price: Number(e.price ?? 0) }));
   }),
 
   // Purchase/reserve a ticket
   reserve: customerProcedure
-    .input(z.object({ eventId: z.number(), attendeeName: z.string().min(1), notes: z.string().optional() }))
+    .input(
+      z.object({
+        eventId: z.number(),
+        attendeeName: z.string().min(1),
+        notes: z.string().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const event = await db.beautyEvent.findUnique({ where: { id: input.eventId } });
       if (!event) throw new Error('الفعالية غير موجودة');

@@ -14,9 +14,7 @@ interface ServiceAnimalBadgeProps {
   className?: string;
 }
 
-export function ServiceAnimalBadge({
-  className = '',
-}: ServiceAnimalBadgeProps): JSX.Element {
+export function ServiceAnimalBadge({ className = '' }: ServiceAnimalBadgeProps): JSX.Element {
   return (
     <div
       className={cn(
@@ -25,7 +23,9 @@ export function ServiceAnimalBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">🐕‍🦺</span>
+        <span className="text-xl" aria-hidden="true">
+          🐕‍🦺
+        </span>
         <div>
           <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">
             حيوانات الخدمة مرحب بها

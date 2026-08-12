@@ -16,7 +16,9 @@ export default function TechProfilePage(): JSX.Element {
   const { data, isLoading, isError, refetch } = api.auth.me.useQuery();
   const servicesQ = api.services.list.useQuery({ limit: 50 });
   const addServiceMut = api.technicians.addService.useMutation({ onSuccess: () => refetch() });
-  const removeServiceMut = api.technicians.removeService.useMutation({ onSuccess: () => refetch() });
+  const removeServiceMut = api.technicians.removeService.useMutation({
+    onSuccess: () => refetch(),
+  });
   const submitKycMut = api.technicians.submitKyc.useMutation({ onSuccess: () => refetch() });
 
   const me = data as unknown as Record<string, unknown>;
@@ -66,13 +68,19 @@ export default function TechProfilePage(): JSX.Element {
 
   /* ---------- KYC upload ---------- */
   const handleKycSubmit = () => {
-    if (!docUrl) { setKycMsg('يرجى إدخال رابط المستند'); return; }
+    if (!docUrl) {
+      setKycMsg('يرجى إدخال رابط المستند');
+      return;
+    }
     submitKycMut.mutate({ documents: [{ type: docType, url: docUrl }] });
   };
 
   /* ---------- Profile save ---------- */
   const profileMut = api.auth.updateProfile.useMutation({
-    onSuccess: () => { setProfileMsg('تم حفظ التغييرات'); refetch(); },
+    onSuccess: () => {
+      setProfileMsg('تم حفظ التغييرات');
+      refetch();
+    },
     onError: (e) => setProfileMsg(e.message),
   });
 
@@ -150,9 +158,7 @@ export default function TechProfilePage(): JSX.Element {
                   </Button>
                 </div>
               ) : kycStatus === 'SUBMITTED' ? (
-                <p className="mt-2 text-sm text-amber-600">
-                  المستندات قيد المراجعة من قبل الإدارة
-                </p>
+                <p className="mt-2 text-sm text-amber-600">المستندات قيد المراجعة من قبل الإدارة</p>
               ) : (
                 <p className="mt-2 text-sm text-green-600">تم توثيق الهوية بنجاح</p>
               )}
@@ -162,7 +168,9 @@ export default function TechProfilePage(): JSX.Element {
             <Card>
               <h2 className="mb-4 text-lg font-semibold">المعلومات الشخصية</h2>
               {profileMsg && (
-                <p className={`mb-3 text-sm ${profileMut.isError ? 'text-red-600' : 'text-green-600'}`}>
+                <p
+                  className={`mb-3 text-sm ${profileMut.isError ? 'text-red-600' : 'text-green-600'}`}
+                >
                   {profileMsg}
                 </p>
               )}
@@ -172,10 +180,18 @@ export default function TechProfilePage(): JSX.Element {
                 <Input label="المدينة" value={city} onChange={(e) => setCity(e.target.value)} />
                 <Input label="المنطقة" value={area} onChange={(e) => setArea(e.target.value)} />
                 <div className="md:col-span-2">
-                  <Input label="السيرة الذاتية (عربي)" value={bioAr} onChange={(e) => setBioAr(e.target.value)} />
+                  <Input
+                    label="السيرة الذاتية (عربي)"
+                    value={bioAr}
+                    onChange={(e) => setBioAr(e.target.value)}
+                  />
                 </div>
                 <div className="md:col-span-2">
-                  <Input label="السيرة الذاتية (إنجليزي)" value={bioEn} onChange={(e) => setBioEn(e.target.value)} />
+                  <Input
+                    label="السيرة الذاتية (إنجليزي)"
+                    value={bioEn}
+                    onChange={(e) => setBioEn(e.target.value)}
+                  />
                 </div>
                 <Input
                   label="وقت التحضير (دقائق)"
@@ -217,11 +233,15 @@ export default function TechProfilePage(): JSX.Element {
                   <option value="">اختر خدمة</option>
                   {allServices.map((s) => (
                     <option key={s.id as number} value={s.id as number}>
-                      {((s.titleJson as Record<string, string>)?.ar ?? '')}
+                      {(s.titleJson as Record<string, string>)?.ar ?? ''}
                     </option>
                   ))}
                 </select>
-                <Button onClick={handleAddService} loading={addServiceMut.isPending} disabled={!selectedServiceId}>
+                <Button
+                  onClick={handleAddService}
+                  loading={addServiceMut.isPending}
+                  disabled={!selectedServiceId}
+                >
                   + إضافة
                 </Button>
               </div>
@@ -240,7 +260,7 @@ export default function TechProfilePage(): JSX.Element {
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="font-medium">
-                              {((svc?.titleJson as Record<string, string>)?.ar ?? '')}
+                              {(svc?.titleJson as Record<string, string>)?.ar ?? ''}
                             </p>
                             <p className="text-xs text-text-secondary">
                               {Number(mapping.customPrice ?? svc?.basePrice ?? 0)} ر.س
@@ -250,7 +270,10 @@ export default function TechProfilePage(): JSX.Element {
                             size="sm"
                             variant="danger"
                             onClick={() => handleRemoveService(mapping.id as number)}
-                            loading={removeServiceMut.isPending && removeServiceMut.variables?.mappingId === mapping.id}
+                            loading={
+                              removeServiceMut.isPending &&
+                              removeServiceMut.variables?.mappingId === mapping.id
+                            }
                           >
                             إزالة
                           </Button>

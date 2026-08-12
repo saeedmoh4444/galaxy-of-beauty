@@ -52,9 +52,7 @@ export function BeautyScholarshipCard({
           {program.emoji || '🎓'}
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">
-            منحة دراسية
-          </h4>
+          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">منحة دراسية</h4>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100 mt-0.5">
             {program.name}
           </p>
@@ -103,21 +101,15 @@ export function BeautyScholarshipCard({
       <div className="mt-2">
         <div className="flex items-center justify-between text-[10px]">
           <span className="text-text-tertiary dark:text-gray-500">
-            {remaining > 0
-              ? `باقي ${remaining} مقعد`
-              : 'اكتملت المقاعد'}
+            {remaining > 0 ? `باقي ${remaining} مقعد` : 'اكتملت المقاعد'}
           </span>
-          <span className="font-bold text-teal-700 dark:text-teal-300">
-            {pct}%
-          </span>
+          <span className="font-bold text-teal-700 dark:text-teal-300">{pct}%</span>
         </div>
         <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
           <div
             className={cn(
               'h-full rounded-full bg-gradient-to-r transition-all',
-              remaining > 0
-                ? 'from-teal-400 to-emerald-500'
-                : 'from-amber-400 to-orange-500',
+              remaining > 0 ? 'from-teal-400 to-emerald-500' : 'from-amber-400 to-orange-500',
             )}
             style={{ width: `${Math.min(100, pct)}%` }}
           />

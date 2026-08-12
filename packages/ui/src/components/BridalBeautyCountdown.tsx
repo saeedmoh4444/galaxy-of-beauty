@@ -33,10 +33,17 @@ const MILESTONES: Omit<Milestone, 'done'>[] = [
   { label: 'يوم الزفاف', emoji: '💒', daysBefore: 0 },
 ];
 
-export function BridalBeautyCountdown({ weddingDate, completedMilestones = [], className = '' }: BridalBeautyCountdownProps): JSX.Element {
+export function BridalBeautyCountdown({
+  weddingDate,
+  completedMilestones = [],
+  className = '',
+}: BridalBeautyCountdownProps): JSX.Element {
   const today = new Date();
   const wedding = new Date(weddingDate);
-  const daysLeft = Math.max(0, Math.ceil((wedding.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)));
+  const daysLeft = Math.max(
+    0,
+    Math.ceil((wedding.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)),
+  );
   const isPast = daysLeft === 0;
 
   const milestones: Milestone[] = MILESTONES.map((m) => ({
@@ -45,9 +52,16 @@ export function BridalBeautyCountdown({ weddingDate, completedMilestones = [], c
   }));
 
   return (
-    <div className={cn('rounded-2xl border border-rose-100 bg-white p-5 dark:border-rose-900 dark:bg-gray-900', className)}>
+    <div
+      className={cn(
+        'rounded-2xl border border-rose-100 bg-white p-5 dark:border-rose-900 dark:bg-gray-900',
+        className,
+      )}
+    >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">{isPast ? '💒' : '👰'}</span>
+        <span className="text-3xl" aria-hidden="true">
+          {isPast ? '💒' : '👰'}
+        </span>
         <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">
           {isPast ? 'يوم الزفاف!' : 'العد التنازلي للزفاف'}
         </h4>
@@ -59,12 +73,36 @@ export function BridalBeautyCountdown({ weddingDate, completedMilestones = [], c
       {!isPast && (
         <div className="mt-3 space-y-1.5">
           {milestones.map((m, _i) => (
-            <div key={m.label} className={cn('flex items-center gap-2 rounded-lg px-3 py-2', m.done ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-gray-50 dark:bg-gray-800')}>
-              <span className={cn('flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs', m.done ? 'bg-emerald-200 text-emerald-700 dark:bg-emerald-800 dark:text-emerald-300' : 'bg-gray-200 text-gray-500 dark:bg-gray-700')}>
+            <div
+              key={m.label}
+              className={cn(
+                'flex items-center gap-2 rounded-lg px-3 py-2',
+                m.done ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-gray-50 dark:bg-gray-800',
+              )}
+            >
+              <span
+                className={cn(
+                  'flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs',
+                  m.done
+                    ? 'bg-emerald-200 text-emerald-700 dark:bg-emerald-800 dark:text-emerald-300'
+                    : 'bg-gray-200 text-gray-500 dark:bg-gray-700',
+                )}
+              >
                 {m.done ? '✅' : m.emoji}
               </span>
-              <span className={cn('flex-1 text-[10px]', m.done ? 'text-emerald-700 dark:text-emerald-300' : 'text-text-secondary dark:text-gray-300')}>{m.label}</span>
-              <span className="text-[9px] text-text-tertiary dark:text-gray-500">{m.daysBefore} يوم</span>
+              <span
+                className={cn(
+                  'flex-1 text-[10px]',
+                  m.done
+                    ? 'text-emerald-700 dark:text-emerald-300'
+                    : 'text-text-secondary dark:text-gray-300',
+                )}
+              >
+                {m.label}
+              </span>
+              <span className="text-[9px] text-text-tertiary dark:text-gray-500">
+                {m.daysBefore} يوم
+              </span>
             </div>
           ))}
         </div>
@@ -72,8 +110,12 @@ export function BridalBeautyCountdown({ weddingDate, completedMilestones = [], c
 
       {isPast && (
         <div className="mt-3 rounded-xl bg-rose-50 p-4 text-center dark:bg-rose-950">
-          <p className="text-lg" aria-hidden="true">🎉</p>
-          <p className="text-xs font-bold text-rose-700 dark:text-rose-300">ألف مبروك! رحلة الجمال اكتملت</p>
+          <p className="text-lg" aria-hidden="true">
+            🎉
+          </p>
+          <p className="text-xs font-bold text-rose-700 dark:text-rose-300">
+            ألف مبروك! رحلة الجمال اكتملت
+          </p>
         </div>
       )}
     </div>

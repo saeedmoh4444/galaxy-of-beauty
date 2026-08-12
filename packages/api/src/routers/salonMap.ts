@@ -14,10 +14,10 @@ const CITY_COORDS: Record<string, { lat: number; lng: number; nameAr: string; na
   madinah: { lat: 24.5247, lng: 39.5692, nameAr: 'المدينة المنورة', nameEn: 'Medina' },
   dammam: { lat: 26.4207, lng: 50.0888, nameAr: 'الدمام', nameEn: 'Dammam' },
   khobar: { lat: 26.2172, lng: 50.1971, nameAr: 'الخبر', nameEn: 'Khobar' },
-  dhahran: { lat: 26.2667, lng: 50.1500, nameAr: 'الظهران', nameEn: 'Dhahran' },
+  dhahran: { lat: 26.2667, lng: 50.15, nameAr: 'الظهران', nameEn: 'Dhahran' },
   taif: { lat: 21.2703, lng: 40.4158, nameAr: 'الطائف', nameEn: 'Taif' },
   abha: { lat: 18.2164, lng: 42.5053, nameAr: 'أبها', nameEn: 'Abha' },
-  buraydah: { lat: 26.3260, lng: 43.9750, nameAr: 'بريدة', nameEn: 'Buraydah' },
+  buraydah: { lat: 26.326, lng: 43.975, nameAr: 'بريدة', nameEn: 'Buraydah' },
   tabuk: { lat: 28.3998, lng: 36.5715, nameAr: 'تبوك', nameEn: 'Tabuk' },
   hail: { lat: 27.5114, lng: 41.7208, nameAr: 'حائل', nameEn: 'Hail' },
   jubail: { lat: 27.0174, lng: 49.4685, nameAr: 'الجبيل', nameEn: 'Jubail' },
@@ -48,7 +48,11 @@ export const salonMapRouter = router({
         take: BULK_PAGE_SIZE,
         include: {
           user: { select: { id: true, name: true, avatarUrl: true } },
-          services: { include: { service: { select: { id: true, titleJson: true, categoryId: true, basePrice: true } } } },
+          services: {
+            include: {
+              service: { select: { id: true, titleJson: true, categoryId: true, basePrice: true } },
+            },
+          },
         },
       });
 
@@ -68,7 +72,10 @@ export const salonMapRouter = router({
         });
 
         // Filter by category if requested
-        if (input.categoryId && !servicesList.some((s: Record<string, unknown>) => s.categoryId === input.categoryId)) {
+        if (
+          input.categoryId &&
+          !servicesList.some((s: Record<string, unknown>) => s.categoryId === input.categoryId)
+        ) {
           return null;
         }
 
@@ -76,8 +83,8 @@ export const salonMapRouter = router({
         const cityKey = input.city ?? 'riyadh';
         const baseCoord = CITY_COORDS[cityKey] ?? CITY_COORDS['riyadh']!;
         const tId = (t.id as number) ?? 1;
-        const jitterLat = ((tId * 7) % 100 - 50) * 0.002;
-        const jitterLng = ((tId * 13) % 100 - 50) * 0.002;
+        const jitterLat = (((tId * 7) % 100) - 50) * 0.002;
+        const jitterLng = (((tId * 13) % 100) - 50) * 0.002;
 
         return {
           id: t.id,

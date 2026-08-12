@@ -77,14 +77,12 @@ export function AcademyCertificateBadge({
       {/* Certificate seal */}
       <div className="text-center">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-sky-100 dark:from-blue-800 dark:to-sky-800">
-          <span className="text-3xl" aria-hidden="true">📜</span>
+          <span className="text-3xl" aria-hidden="true">
+            📜
+          </span>
         </div>
-        <h4 className="mt-2 text-sm font-bold text-blue-800 dark:text-blue-200">
-          شهادة معتمدة
-        </h4>
-        <p className="text-[10px] text-blue-500 dark:text-blue-400">
-          أكاديمية جالاكسي بيوتي
-        </p>
+        <h4 className="mt-2 text-sm font-bold text-blue-800 dark:text-blue-200">شهادة معتمدة</h4>
+        <p className="text-[10px] text-blue-500 dark:text-blue-400">أكاديمية جالاكسي بيوتي</p>
       </div>
 
       {/* Course name */}
@@ -93,14 +91,16 @@ export function AcademyCertificateBadge({
           {certificate.course}
         </p>
         <div className="mt-1.5 flex items-center justify-center gap-2">
-          <span className={cn(
-            'inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-medium',
-            certificate.level === 'master'
-              ? 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
-              : certificate.level === 'professional'
-                ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
-                : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300',
-          )}>
+          <span
+            className={cn(
+              'inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-medium',
+              certificate.level === 'master'
+                ? 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
+                : certificate.level === 'professional'
+                  ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
+                  : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300',
+            )}
+          >
             {level.emoji} {level.label}
           </span>
           <span className="text-[10px] text-text-tertiary dark:text-gray-500">
@@ -122,7 +122,9 @@ export function AcademyCertificateBadge({
       {/* Blockchain verification */}
       {certificate.isBlockchainVerified && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1.5 dark:bg-emerald-950">
-          <span className="text-xs" aria-hidden="true">🔗</span>
+          <span className="text-xs" aria-hidden="true">
+            🔗
+          </span>
           <div>
             <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
               موثقة بتقنية البلوك تشين

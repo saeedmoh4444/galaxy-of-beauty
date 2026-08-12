@@ -18,7 +18,8 @@ export const expiryTrackerRouter = router({
     const now = new Date();
     return items.map((i) => {
       const opened = new Date(i.openDate);
-      const expires = new Date(opened); expires.setMonth(expires.getMonth() + i.expiryMonths);
+      const expires = new Date(opened);
+      expires.setMonth(expires.getMonth() + i.expiryMonths);
       const daysLeft = Math.ceil((expires.getTime() - now.getTime()) / 86400000);
       return { ...i, daysLeft, expired: daysLeft <= 0, isClose: daysLeft > 0 && daysLeft <= 30 };
     });
@@ -27,7 +28,15 @@ export const expiryTrackerRouter = router({
     .input(z.object({ productName: z.string().min(1), category: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const cat = CATEGORIES.find((c) => c.key === input.category);
-      return prisma.expiryTrackerItem.create({ data: { userId: ctx.user.id, productName: input.productName, category: input.category, expiryMonths: cat?.months ?? 12, emoji: cat?.emoji ?? '📦' } });
+      return prisma.expiryTrackerItem.create({
+        data: {
+          userId: ctx.user.id,
+          productName: input.productName,
+          category: input.category,
+          expiryMonths: cat?.months ?? 12,
+          emoji: cat?.emoji ?? '📦',
+        },
+      });
     }),
   delete: customerProcedure.input(z.object({ id: z.number() })).mutation(async ({ ctx, input }) => {
     await prisma.expiryTrackerItem.deleteMany({ where: { id: input.id, userId: ctx.user.id } });

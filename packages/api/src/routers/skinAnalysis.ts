@@ -20,18 +20,24 @@ export const skinAnalysisRouter = router({
             headers: { Authorization: `Bearer ${openaiKey}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({
               model: OPENAI_MODEL,
-              messages: [{
-                role: 'user',
-                content: [
-                  { type: 'text', text: 'Analyze this skin photo. Return JSON: { skinType, concerns[], hydrationLevel, sensitivityLevel, ageEstimate, recommendations: { services: [], products: [], routine: [] } }. Arabic + English.' },
-                  { type: 'image_url', image_url: { url: input.imageUrl } },
-                ],
-              }],
+              messages: [
+                {
+                  role: 'user',
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'Analyze this skin photo. Return JSON: { skinType, concerns[], hydrationLevel, sensitivityLevel, ageEstimate, recommendations: { services: [], products: [], routine: [] } }. Arabic + English.',
+                    },
+                    { type: 'image_url', image_url: { url: input.imageUrl } },
+                  ],
+                },
+              ],
               max_tokens: 1000,
             }),
           });
           const data = (await response.json()) as Record<string, unknown>;
-          const content = (data['choices'] as Array<Record<string, unknown>>)?.[0]?.['message'] as Record<string, unknown> | undefined;
+          const content = (data['choices'] as Array<Record<string, unknown>>)?.[0]?.['message'] as
+            Record<string, unknown> | undefined;
           if (content?.['content']) {
             try {
               analysisResult = JSON.parse(content['content'] as string);
@@ -53,8 +59,8 @@ export const skinAnalysisRouter = router({
           userId: ctx.user.id,
           imageUrl: input.imageUrl,
           resultJson: analysisResult,
-          skinType: analysisResult['skinType'] as string || null,
-          concerns: analysisResult['concerns'] as string[] || [],
+          skinType: (analysisResult['skinType'] as string) || null,
+          concerns: (analysisResult['concerns'] as string[]) || [],
           recommendations: analysisResult['recommendations'] || undefined,
         },
       });
@@ -69,7 +75,8 @@ export const skinAnalysisRouter = router({
         prisma.skinAnalysis.findMany({
           where: { userId: ctx.user.id },
           orderBy: { createdAt: 'desc' },
-          skip, take: input.limit,
+          skip,
+          take: input.limit,
         }),
         prisma.skinAnalysis.count({ where: { userId: ctx.user.id } }),
       ]);

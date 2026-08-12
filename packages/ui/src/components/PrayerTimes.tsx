@@ -32,7 +32,11 @@ function getCurrentPrayer(): { current: string | null; next: string; nextTime: s
     }
   }
 
-  return { current: PRAYERS[5]!.name, next: PRAYERS[0]!.name, nextTime: `${String(PRAYERS[0]!.hour).padStart(2, '0')}:${String(PRAYERS[0]!.minute).padStart(2, '0')}` };
+  return {
+    current: PRAYERS[5]!.name,
+    next: PRAYERS[0]!.name,
+    nextTime: `${String(PRAYERS[0]!.hour).padStart(2, '0')}:${String(PRAYERS[0]!.minute).padStart(2, '0')}`,
+  };
 }
 
 export function PrayerTimes(): JSX.Element {
@@ -46,7 +50,9 @@ export function PrayerTimes(): JSX.Element {
   return (
     <div className="rounded-xl border border-edge bg-surface-muted p-3 dark:border-gray-700 dark:bg-gray-900">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-text-primary dark:text-gray-100">🕌 مواقيت الصلاة</span>
+        <span className="text-xs font-semibold text-text-primary dark:text-gray-100">
+          🕌 مواقيت الصلاة
+        </span>
         {prayer.next ? (
           <span className="text-[10px] text-text-secondary dark:text-gray-400">
             القادمة: {prayer.next} {prayer.nextTime}
@@ -54,7 +60,9 @@ export function PrayerTimes(): JSX.Element {
         ) : null}
       </div>
       <div className="mt-2 flex gap-1">
-        {PRAYERS.filter((p) => ['الفجر', 'الظهر', 'العصر', 'المغرب', 'العشاء'].includes(p.name)).map((p) => (
+        {PRAYERS.filter((p) =>
+          ['الفجر', 'الظهر', 'العصر', 'المغرب', 'العشاء'].includes(p.name),
+        ).map((p) => (
           <span
             key={p.name}
             className={`flex-1 rounded-md px-1 py-1 text-center text-[9px] font-medium ${
@@ -64,7 +72,9 @@ export function PrayerTimes(): JSX.Element {
             }`}
           >
             <div>{p.name}</div>
-            <div className="text-[8px]">{String(p.hour).padStart(2, '0')}:{String(p.minute).padStart(2, '0')}</div>
+            <div className="text-[8px]">
+              {String(p.hour).padStart(2, '0')}:{String(p.minute).padStart(2, '0')}
+            </div>
           </span>
         ))}
       </div>

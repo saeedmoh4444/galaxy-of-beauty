@@ -7,7 +7,10 @@ export const technicianVerificationRouter = router({
   myBadges: technicianProcedure.query(async ({ ctx }) => {
     const tech = await prisma.technician.findUnique({ where: { userId: ctx.user.id } });
     if (!tech) throw notFound('Technician profile');
-    return prisma.technicianBadgeAssignment.findMany({ where: { technicianId: tech.id }, include: { badge: true } });
+    return prisma.technicianBadgeAssignment.findMany({
+      where: { technicianId: tech.id },
+      include: { badge: true },
+    });
   }),
 
   requestBadge: technicianProcedure
@@ -15,7 +18,9 @@ export const technicianVerificationRouter = router({
     .mutation(async ({ ctx, input }) => {
       const tech = await prisma.technician.findUnique({ where: { userId: ctx.user.id } });
       if (!tech) throw notFound('Technician profile');
-      await prisma.technicianBadgeAssignment.create({ data: { technicianId: tech.id, badgeId: input.badgeId } });
+      await prisma.technicianBadgeAssignment.create({
+        data: { technicianId: tech.id, badgeId: input.badgeId },
+      });
       return { success: true };
     }),
 
@@ -24,6 +29,20 @@ export const technicianVerificationRouter = router({
     .query(async ({ input }) => prisma.technicianBadge.findMany({ take: input.limit })),
 
   createBadge: adminProcedure
-    .input(z.object({ nameJson: z.record(z.string()), emoji: z.string().default('⭐'), criteria: z.string().optional() }))
-    .mutation(async ({ input }) => prisma.technicianBadge.create({ data: { nameJson: input.nameJson as any, emoji: input.emoji, criteria: input.criteria ?? null } as any })),
+    .input(
+      z.object({
+        nameJson: z.record(z.string()),
+        emoji: z.string().default('⭐'),
+        criteria: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ input }) =>
+      prisma.technicianBadge.create({
+        data: {
+          nameJson: input.nameJson as any,
+          emoji: input.emoji,
+          criteria: input.criteria ?? null,
+        } as any,
+      }),
+    ),
 });

@@ -14,7 +14,14 @@
     "db:migrate:dev": "turbo run db:migrate:dev",
     "db:migrate:deploy": "turbo run db:migrate:deploy",
     "db:migrate:status": "turbo run db:migrate:status",
-    "db:seed": "turbo run db:seed"
+    "db:seed": "turbo run db:seed",
+    "db:validate": "turbo run db:validate",
+    "test": "turbo run test",
+    "test:unit": "turbo run test:unit",
+    "test:integration": "turbo run test:integration",
+    "test:e2e": "turbo run test:e2e",
+    "audit:prod": "pnpm audit --prod",
+    "verify": "pnpm format:check && pnpm lint && pnpm type-check && pnpm db:validate && pnpm test:unit && pnpm build"
   },
   "devDependencies": {
     "prettier": "^3.3.0",
@@ -25,5 +32,12 @@
     "node": ">=20.0.0",
     "pnpm": ">=9.0.0"
   },
-  "packageManager": "pnpm@9.15.4"
+  "packageManager": "pnpm@9.15.4",
+  "pnpm": {
+    "overrides": {
+      "brace-expansion": ">=1.1.17",
+      "postcss": ">=8.5.18",
+      "nanoid": ">=3.3.9"
+    }
+  }
 }

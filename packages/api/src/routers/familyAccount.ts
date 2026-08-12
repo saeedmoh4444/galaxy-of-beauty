@@ -28,20 +28,54 @@ const PREFERENCES = [
 ];
 
 export const familyAccountRouter = router({
-  meta: customerProcedure.query(() => ({ relationships: RELATIONSHIPS, ageGroups: AGE_GROUPS, preferences: PREFERENCES })),
+  meta: customerProcedure.query(() => ({
+    relationships: RELATIONSHIPS,
+    ageGroups: AGE_GROUPS,
+    preferences: PREFERENCES,
+  })),
 
   list: customerProcedure.query(async ({ ctx }) => {
-    const members = await prisma.familyMember.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } });
+    const members = await prisma.familyMember.findMany({
+      where: { userId: ctx.user.id },
+      orderBy: { createdAt: 'desc' },
+    });
     return members.map((m) => ({ ...m, preferences: m.preferences ?? [], bookingCount: 0 }));
   }),
 
   add: customerProcedure
-    .input(z.object({ name: z.string().min(2).max(100), relationship: z.string(), ageGroup: z.string(), preferences: z.array(z.string()).default([]), notes: z.string().optional() }))
+    .input(
+      z.object({
+        name: z.string().min(2).max(100),
+        relationship: z.string(),
+        ageGroup: z.string(),
+        preferences: z.array(z.string()).default([]),
+        notes: z.string().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) =>
-      prisma.familyMember.create({ data: { userId: ctx.user.id, name: input.name, relationship: input.relationship, ageGroup: input.ageGroup, preferences: input.preferences, notes: input.notes ?? '' } })),
+      prisma.familyMember.create({
+        data: {
+          userId: ctx.user.id,
+          name: input.name,
+          relationship: input.relationship,
+          ageGroup: input.ageGroup,
+          preferences: input.preferences,
+          notes: input.notes ?? '',
+        },
+      }),
+    ),
 
   update: customerProcedure
-    .input(z.object({ id: z.number(), name: z.string().optional(), relationship: z.string().optional(), ageGroup: z.string().optional(), preferences: z.array(z.string()).optional(), notes: z.string().optional() }))
+    .input(
+      z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        relationship: z.string().optional(),
+        ageGroup: z.string().optional(),
+        preferences: z.array(z.string()).optional(),
+        notes: z.string().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const { id, ...data } = input;
       const member = await prisma.familyMember.findFirst({ where: { id, userId: ctx.user.id } });
@@ -49,14 +83,16 @@ export const familyAccountRouter = router({
       return prisma.familyMember.update({ where: { id }, data });
     }),
 
-  remove: customerProcedure
-    .input(z.object({ id: z.number() }))
-    .mutation(async ({ ctx, input }) => {
-      await prisma.familyMember.deleteMany({ where: { id: input.id, userId: ctx.user.id } });
-      return { success: true };
-    }),
+  remove: customerProcedure.input(z.object({ id: z.number() })).mutation(async ({ ctx, input }) => {
+    await prisma.familyMember.deleteMany({ where: { id: input.id, userId: ctx.user.id } });
+    return { success: true };
+  }),
 
   memberHistory: customerProcedure
     .input(z.object({ memberName: z.string() }))
-    .query(async ({ ctx }) => ({ memberName: ctx.user.email, totalBookings: 0, recentBookings: [] })),
+    .query(async ({ ctx }) => ({
+      memberName: ctx.user.email,
+      totalBookings: 0,
+      recentBookings: [],
+    })),
 });

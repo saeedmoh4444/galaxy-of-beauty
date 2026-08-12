@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
+import { cookies } from 'next/headers';
 import Providers from '@/components/Providers';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { SkipLink } from '@/components/SkipLink';
@@ -51,8 +52,13 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }): ReactNode {
+  // Read locale from cookie (default: Arabic)
+  const cookieStore = cookies();
+  const locale = cookieStore.get('gob_lang')?.value || 'ar';
+  const isRTL = locale === 'ar';
+
   return (
-    <html lang="ar" dir="rtl" suppressHydrationWarning>
+    <html lang={locale} dir={isRTL ? 'rtl' : 'ltr'} suppressHydrationWarning>
       <body className="min-h-screen bg-white font-sans text-text-primary antialiased dark:bg-gray-950 dark:text-gray-100">
         <SkipLink />
         <OfflineBanner />

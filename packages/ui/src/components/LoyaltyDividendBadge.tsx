@@ -37,7 +37,8 @@ const TIERS: Record<'silver' | 'gold' | 'diamond', TierDef> = {
     label: 'فضية',
     minSpend: 1000,
     rate: 3,
-    color: 'bg-gray-50 text-gray-700 border-gray-200 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700',
+    color:
+      'bg-gray-50 text-gray-700 border-gray-200 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700',
     gradient: 'from-gray-400 to-slate-500',
   },
   gold: {
@@ -45,7 +46,8 @@ const TIERS: Record<'silver' | 'gold' | 'diamond', TierDef> = {
     label: 'ذهبية',
     minSpend: 3000,
     rate: 5,
-    color: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800',
+    color:
+      'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800',
     gradient: 'from-amber-400 to-yellow-500',
   },
   diamond: {
@@ -53,7 +55,8 @@ const TIERS: Record<'silver' | 'gold' | 'diamond', TierDef> = {
     label: 'ماسية',
     minSpend: 8000,
     rate: 8,
-    color: 'bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-950 dark:text-sky-300 dark:border-sky-800',
+    color:
+      'bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-950 dark:text-sky-300 dark:border-sky-800',
     gradient: 'from-sky-400 to-blue-500',
   },
 };
@@ -66,39 +69,37 @@ export function LoyaltyDividendBadge({
   className = '',
 }: LoyaltyDividendBadgeProps): JSX.Element {
   // Auto-detect tier from spend or use provided tier
-  const detectedTier = (
-    tier ??
-    (yearlySpend >= 8000 ? 'diamond' : yearlySpend >= 3000 ? 'gold' : 'silver')
-  ) as 'silver' | 'gold' | 'diamond';
+  const detectedTier = (tier ??
+    (yearlySpend >= 8000 ? 'diamond' : yearlySpend >= 3000 ? 'gold' : 'silver')) as
+    'silver' | 'gold' | 'diamond';
 
   const tierDef = TIERS[detectedTier];
   const rate = cashbackRate ?? tierDef.rate;
   const cashback = Math.round(yearlySpend * (rate / 100));
 
   // Progress toward next tier
-  const nextTierKey = detectedTier === 'silver' ? 'gold' : detectedTier === 'gold' ? 'diamond' : null;
+  const nextTierKey =
+    detectedTier === 'silver' ? 'gold' : detectedTier === 'gold' ? 'diamond' : null;
   const nextTier = nextTierKey ? TIERS[nextTierKey] : null;
   const progressToNext = nextTier
     ? Math.min(100, Math.round((yearlySpend / nextTier.minSpend) * 100))
     : 100;
 
   return (
-    <div
-      className={cn('rounded-2xl border bg-white p-5 dark:bg-gray-900', className)}
-    >
+    <div className={cn('rounded-2xl border bg-white p-5 dark:bg-gray-900', className)}>
       {/* Tier header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className={cn(
-            'flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br text-lg text-white',
-            tierDef.gradient,
-          )}>
+          <span
+            className={cn(
+              'flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br text-lg text-white',
+              tierDef.gradient,
+            )}
+          >
             {tierDef.emoji}
           </span>
           <div>
-            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-              أرباح الولاء
-            </h4>
+            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">أرباح الولاء</h4>
             <p className="text-[10px] text-text-tertiary dark:text-gray-400">
               المرتبة {tierDef.label} · {rate}% استرداد نقدي
             </p>
@@ -107,12 +108,8 @@ export function LoyaltyDividendBadge({
 
         {/* Cashback amount */}
         <div className="text-center">
-          <p className="text-lg font-bold text-text-primary dark:text-gray-100">
-            {cashback} ر.س
-          </p>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">
-            أرباحكِ السنوية
-          </p>
+          <p className="text-lg font-bold text-text-primary dark:text-gray-100">{cashback} ر.س</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">أرباحكِ السنوية</p>
         </div>
       </div>
 
@@ -126,15 +123,11 @@ export function LoyaltyDividendBadge({
         </div>
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">الاسترداد</p>
-          <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
-            {rate}%
-          </p>
+          <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400">{rate}%</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">الدفع</p>
-          <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-            {payoutMonth}
-          </p>
+          <p className="text-xs font-bold text-text-primary dark:text-gray-100">{payoutMonth}</p>
         </div>
       </div>
 
@@ -151,12 +144,19 @@ export function LoyaltyDividendBadge({
           </div>
           <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
             <div
-              className={cn('h-full rounded-full bg-gradient-to-r transition-all duration-700', nextTier.gradient)}
+              className={cn(
+                'h-full rounded-full bg-gradient-to-r transition-all duration-700',
+                nextTier.gradient,
+              )}
               style={{ width: `${progressToNext}%` }}
             />
           </div>
           <p className="mt-1 text-[9px] text-text-tertiary dark:text-gray-500">
-            متبقي {nextTier.minSpend - yearlySpend > 0 ? (nextTier.minSpend - yearlySpend).toLocaleString('ar-SA') : 0} ر.س للترقية ✨
+            متبقي{' '}
+            {nextTier.minSpend - yearlySpend > 0
+              ? (nextTier.minSpend - yearlySpend).toLocaleString('ar-SA')
+              : 0}{' '}
+            ر.س للترقية ✨
           </p>
         </div>
       )}

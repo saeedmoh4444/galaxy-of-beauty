@@ -21,7 +21,9 @@ export interface AuthTokens {
 }
 
 // ---------------------------------------------------------------------------
-// Storage adapters — web uses localStorage, mobile can inject SecureStore
+// Storage adapters
+// Web: tokens are HttpOnly cookies (sent automatically). Only user data is cached.
+// Mobile: tokens stored via adapter (e.g., Expo SecureStore).
 // ---------------------------------------------------------------------------
 const defaultStorage = {
   getItem: (key: string) => {
@@ -47,6 +49,8 @@ export interface AuthStorage {
 // ---------------------------------------------------------------------------
 interface UseAuthOptions {
   storage?: AuthStorage;
+  /** If true, tokens are stored server-side (HttpOnly cookies). Default: true. */
+  serverTokens?: boolean;
 }
 
 interface UseAuthReturn {
@@ -64,6 +68,7 @@ const KEYS = { ACCESS: 'gob_access', REFRESH: 'gob_refresh', USER: 'gob_user' };
 
 export function useAuth(options?: UseAuthOptions): UseAuthReturn {
   const storage = options?.storage ?? defaultStorage;
+  const serverTokens = options?.serverTokens ?? true;
   const [user, setUserState] = useState<AuthUser | null>(null);
   const [tokens, setTokens] = useState<AuthTokens | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -72,45 +77,74 @@ export function useAuth(options?: UseAuthOptions): UseAuthReturn {
   useEffect(() => {
     (async () => {
       try {
-        const [accessToken, refreshToken, userJson] = await Promise.all([
-          storage.getItem(KEYS.ACCESS),
-          storage.getItem(KEYS.REFRESH),
-          storage.getItem(KEYS.USER),
-        ]);
-        if (accessToken && refreshToken) {
-          setTokens({ accessToken, refreshToken });
-        }
-        if (userJson) {
-          try { setUserState(JSON.parse(userJson)); } catch { /* ignore corrupt */ }
+        if (serverTokens) {
+          // Web: tokens are HttpOnly cookies. Only hydrate user data.
+          const userJson = await storage.getItem(KEYS.USER);
+          if (userJson) {
+            try {
+              setUserState(JSON.parse(userJson));
+              // Mark as having tokens (cookies handle this)
+              setTokens({ accessToken: '', refreshToken: '' });
+            } catch {
+              /* ignore corrupt */
+            }
+          }
+        } else {
+          // Mobile: read tokens + user from secure storage
+          const [accessToken, refreshToken, userJson] = await Promise.all([
+            storage.getItem(KEYS.ACCESS),
+            storage.getItem(KEYS.REFRESH),
+            storage.getItem(KEYS.USER),
+          ]);
+          if (accessToken && refreshToken) {
+            setTokens({ accessToken, refreshToken });
+          }
+          if (userJson) {
+            try {
+              setUserState(JSON.parse(userJson));
+            } catch {
+              /* ignore corrupt */
+            }
+          }
         }
       } finally {
         setIsLoading(false);
       }
     })();
-  }, []);
+  }, [storage, serverTokens]);
 
   const login = useCallback(
     async (newTokens: AuthTokens, newUser: AuthUser) => {
-      await Promise.all([
-        storage.setItem(KEYS.ACCESS, newTokens.accessToken),
-        storage.setItem(KEYS.REFRESH, newTokens.refreshToken),
-        storage.setItem(KEYS.USER, JSON.stringify(newUser)),
-      ]);
+      // Always cache user data
+      await storage.setItem(KEYS.USER, JSON.stringify(newUser));
+
+      if (!serverTokens) {
+        // Mobile: store tokens in secure storage
+        await Promise.all([
+          storage.setItem(KEYS.ACCESS, newTokens.accessToken),
+          storage.setItem(KEYS.REFRESH, newTokens.refreshToken),
+        ]);
+      }
+
       setTokens(newTokens);
       setUserState(newUser);
     },
-    [storage],
+    [storage, serverTokens],
   );
 
   const logout = useCallback(async () => {
-    await Promise.all([
-      storage.removeItem(KEYS.ACCESS),
-      storage.removeItem(KEYS.REFRESH),
-      storage.removeItem(KEYS.USER),
-    ]);
+    await storage.removeItem(KEYS.USER);
+
+    if (!serverTokens) {
+      await Promise.all([
+        storage.removeItem(KEYS.ACCESS),
+        storage.removeItem(KEYS.REFRESH),
+      ]);
+    }
+
     setTokens(null);
     setUserState(null);
-  }, [storage]);
+  }, [storage, serverTokens]);
 
   const setUserFn = useCallback(
     async (updated: AuthUser) => {
@@ -128,7 +162,7 @@ export function useAuth(options?: UseAuthOptions): UseAuthReturn {
   return {
     user,
     tokens,
-    isAuthenticated: !!tokens && !!user,
+    isAuthenticated: !!user,
     isLoading,
     login,
     logout,

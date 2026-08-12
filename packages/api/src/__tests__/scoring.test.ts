@@ -59,7 +59,8 @@ function scoreService(
 
   if (context.quizStyle === 'luxury' && s.basePrice > 200) score += 10;
   if (context.quizStyle === 'budget' && s.basePrice < 100) score += 10;
-  if (context.quizStyle === 'natural' && /طبيعي|عضوي|organic|natural/i.test(titleAr + titleEn)) score += 10;
+  if (context.quizStyle === 'natural' && /طبيعي|عضوي|organic|natural/i.test(titleAr + titleEn))
+    score += 10;
 
   score += 7.5; // midpoint of random 0-15
   return score;
@@ -68,18 +69,79 @@ function scoreService(
 // ── Fixtures ────────────────────────────────────────────────
 
 const svc = (overrides: Partial<ScoredService> = {}): ScoredService => ({
-  id: 1, categoryId: 1, titleAr: 'خدمة', titleEn: 'Service',
-  basePrice: 100, bookings: 0, ...overrides,
+  id: 1,
+  categoryId: 1,
+  titleAr: 'خدمة',
+  titleEn: 'Service',
+  basePrice: 100,
+  bookings: 0,
+  ...overrides,
 });
 
-const haircut     = svc({ id: 1, categoryId: 1, titleAr: 'قص شعر', titleEn: 'Haircut', basePrice: 80, bookings: 3 });
-const facial      = svc({ id: 2, categoryId: 2, titleAr: 'تنظيف بشرة', titleEn: 'Facial Cleansing', basePrice: 120, bookings: 15 });
-const massage     = svc({ id: 3, categoryId: 3, titleAr: 'مساج استرخاء', titleEn: 'Relaxation Massage', basePrice: 250, bookings: 20 });
-const moisturize  = svc({ id: 4, categoryId: 2, titleAr: 'ترطيب البشرة', titleEn: 'Skin Moisturizing', basePrice: 100, bookings: 5 });
-const makeup      = svc({ id: 5, categoryId: 4, titleAr: 'مكياج كامل', titleEn: 'Full Makeup', basePrice: 250, bookings: 8 });
-const organic     = svc({ id: 6, categoryId: 2, titleAr: 'قناع طبيعي للوجه', titleEn: 'Organic Natural Face Mask', basePrice: 90, bookings: 3 });
-const deepClean   = svc({ id: 7, categoryId: 2, titleAr: 'تنظيف عميق للبشرة', titleEn: 'Deep Clean Facial', basePrice: 150, bookings: 12 });
-const gentle      = svc({ id: 8, categoryId: 2, titleAr: 'عناية لطيفة بالبشرة', titleEn: 'Gentle Soothing Facial', basePrice: 110, bookings: 6 });
+const haircut = svc({
+  id: 1,
+  categoryId: 1,
+  titleAr: 'قص شعر',
+  titleEn: 'Haircut',
+  basePrice: 80,
+  bookings: 3,
+});
+const facial = svc({
+  id: 2,
+  categoryId: 2,
+  titleAr: 'تنظيف بشرة',
+  titleEn: 'Facial Cleansing',
+  basePrice: 120,
+  bookings: 15,
+});
+const massage = svc({
+  id: 3,
+  categoryId: 3,
+  titleAr: 'مساج استرخاء',
+  titleEn: 'Relaxation Massage',
+  basePrice: 250,
+  bookings: 20,
+});
+const moisturize = svc({
+  id: 4,
+  categoryId: 2,
+  titleAr: 'ترطيب البشرة',
+  titleEn: 'Skin Moisturizing',
+  basePrice: 100,
+  bookings: 5,
+});
+const makeup = svc({
+  id: 5,
+  categoryId: 4,
+  titleAr: 'مكياج كامل',
+  titleEn: 'Full Makeup',
+  basePrice: 250,
+  bookings: 8,
+});
+const organic = svc({
+  id: 6,
+  categoryId: 2,
+  titleAr: 'قناع طبيعي للوجه',
+  titleEn: 'Organic Natural Face Mask',
+  basePrice: 90,
+  bookings: 3,
+});
+const deepClean = svc({
+  id: 7,
+  categoryId: 2,
+  titleAr: 'تنظيف عميق للبشرة',
+  titleEn: 'Deep Clean Facial',
+  basePrice: 150,
+  bookings: 12,
+});
+const gentle = svc({
+  id: 8,
+  categoryId: 2,
+  titleAr: 'عناية لطيفة بالبشرة',
+  titleEn: 'Gentle Soothing Facial',
+  basePrice: 110,
+  bookings: 6,
+});
 
 const empty = {
   wishedIds: new Set<number>(),
@@ -145,15 +207,19 @@ describe('Scoring Algorithm', () => {
       const old = new Date(Date.now() - 15 * 86400000);
       const recent = new Date(Date.now() - 2 * 86400000);
       const scoreOld = scoreService(haircut, { ...empty, categoryRecency: new Map([[1, old]]) });
-      const scoreRecent = scoreService(haircut, { ...empty, categoryRecency: new Map([[1, recent]]) });
+      const scoreRecent = scoreService(haircut, {
+        ...empty,
+        categoryRecency: new Map([[1, recent]]),
+      });
       expect(scoreOld).toBeGreaterThan(scoreRecent);
     });
 
     it('caps recency boost at 20', () => {
       const veryOld = new Date(Date.now() - 100 * 86400000); // 100 days → 200 but capped at 20
       const old = new Date(Date.now() - 30 * 86400000); // 30 days → 60 but capped at 20
-      expect(scoreService(haircut, { ...empty, categoryRecency: new Map([[1, veryOld]]) }))
-        .toBe(scoreService(haircut, { ...empty, categoryRecency: new Map([[1, old]]) }));
+      expect(scoreService(haircut, { ...empty, categoryRecency: new Map([[1, veryOld]]) })).toBe(
+        scoreService(haircut, { ...empty, categoryRecency: new Map([[1, old]]) }),
+      );
     });
   });
 
@@ -165,24 +231,34 @@ describe('Scoring Algorithm', () => {
     });
 
     it('boosts deep clean for oily skin', () => {
-      expect(scoreService(deepClean, { ...empty, skinType: 'oily' }))
-        .toBeGreaterThan(scoreService(deepClean, empty));
+      expect(scoreService(deepClean, { ...empty, skinType: 'oily' })).toBeGreaterThan(
+        scoreService(deepClean, empty),
+      );
     });
 
     it('boosts gentle for sensitive skin', () => {
-      expect(scoreService(gentle, { ...empty, skinType: 'sensitive' }))
-        .toBeGreaterThan(scoreService(gentle, empty));
+      expect(scoreService(gentle, { ...empty, skinType: 'sensitive' })).toBeGreaterThan(
+        scoreService(gentle, empty),
+      );
     });
 
     it('does not boost moisturizing for oily skin', () => {
-      expect(scoreService(moisturize, { ...empty, skinType: 'oily' }))
-        .toBe(scoreService(moisturize, empty));
+      expect(scoreService(moisturize, { ...empty, skinType: 'oily' })).toBe(
+        scoreService(moisturize, empty),
+      );
     });
 
     it('boosts combination skin matching', () => {
-      const combo = svc({ id: 9, categoryId: 2, titleAr: 'روتين متوازن', titleEn: 'Balanced Routine', bookings: 0 });
-      expect(scoreService(combo, { ...empty, skinType: 'combination' }))
-        .toBeGreaterThan(scoreService(combo, empty));
+      const combo = svc({
+        id: 9,
+        categoryId: 2,
+        titleAr: 'روتين متوازن',
+        titleEn: 'Balanced Routine',
+        bookings: 0,
+      });
+      expect(scoreService(combo, { ...empty, skinType: 'combination' })).toBeGreaterThan(
+        scoreService(combo, empty),
+      );
     });
   });
 
@@ -271,7 +347,7 @@ describe('VAT Calculation', () => {
   const VAT = 0.15;
 
   function calcVat(total: number) {
-    const vat = total * VAT / (1 + VAT);
+    const vat = (total * VAT) / (1 + VAT);
     return { subtotal: total - vat, vat };
   }
 

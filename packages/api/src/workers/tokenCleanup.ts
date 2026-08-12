@@ -38,7 +38,8 @@ async function cleanupTokens(): Promise<void> {
       where: { createdAt: { lt: thirtyDaysAgo }, isRead: true },
     });
 
-    const total = expired.count + revoked.count + resetExpired.count + resetUsed.count + oldNotifs.count;
+    const total =
+      expired.count + revoked.count + resetExpired.count + resetUsed.count + oldNotifs.count;
     if (total > 0) {
       console.log(
         `[Cleanup] Purged ${total} items (refresh: ${expired.count + revoked.count}, reset: ${resetExpired.count + resetUsed.count}, notifications: ${oldNotifs.count})`,

@@ -2,14 +2,27 @@
 
 import { api } from '@/lib/trpc';
 import {
-  PageContainer, PageTitle,
-  BeautyJourneyTimeline, LifeEventCard, BridalJourneyTimeline, BridalBeautyCountdown,
-  GoldenBeautyCard, CareerBeautyCard, PostpartumCareCard,
-  CyclePhaseCard, TeenSkincareGuide,
-  BeautyTwentiesCard, BeautyThirtiesCard, BeautyFortiesCard,
-  BeautyFiftiesCard, BeautySixtiesCard,
-  BeautyPcosSkincareCard, BeautyPregnancySafeCard, BeautyPostpartumHairCard,
-  BeautyPerimenopauseCard, BeautyHormonalAcneCard,
+  PageContainer,
+  PageTitle,
+  BeautyJourneyTimeline,
+  LifeEventCard,
+  BridalJourneyTimeline,
+  BridalBeautyCountdown,
+  GoldenBeautyCard,
+  CareerBeautyCard,
+  PostpartumCareCard,
+  CyclePhaseCard,
+  TeenSkincareGuide,
+  BeautyTwentiesCard,
+  BeautyThirtiesCard,
+  BeautyFortiesCard,
+  BeautyFiftiesCard,
+  BeautySixtiesCard,
+  BeautyPcosSkincareCard,
+  BeautyPregnancySafeCard,
+  BeautyPostpartumHairCard,
+  BeautyPerimenopauseCard,
+  BeautyHormonalAcneCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 

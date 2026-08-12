@@ -9,7 +9,15 @@ type BookingStats = RouterOutput['analytics']['bookingStats'];
 type TopTechnician = RouterOutput['analytics']['topTechnicians'][number];
 type UserGrowthDay = NonNullable<RouterOutput['analytics']['userGrowth']>['dailyGrowth'][number];
 
-function StatCard({ title, value, color }: { title: string; value: string; color: string }): JSX.Element {
+function StatCard({
+  title,
+  value,
+  color,
+}: {
+  title: string;
+  value: string;
+  color: string;
+}): JSX.Element {
   return (
     <Card className="text-center">
       <p className="text-sm text-text-secondary">{title}</p>
@@ -46,15 +54,38 @@ export default function AdminAnalyticsPage(): JSX.Element {
       <div>
         <h2 className="mb-3 text-lg font-semibold">إحصائيات الحجوزات</h2>
         {bookingStatsQuery.isLoading ? (
-          <div className="grid gap-4 md:grid-cols-4">{Array.from({ length: 4 }, (_, i) => <CardSkeleton key={i} />)}</div>
+          <div className="grid gap-4 md:grid-cols-4">
+            {Array.from({ length: 4 }, (_, i) => (
+              <CardSkeleton key={i} />
+            ))}
+          </div>
         ) : bookingStatsQuery.isError ? (
-          <ErrorAlert message="فشل تحميل إحصائيات الحجوزات" onRetry={() => bookingStatsQuery.refetch()} />
+          <ErrorAlert
+            message="فشل تحميل إحصائيات الحجوزات"
+            onRetry={() => bookingStatsQuery.refetch()}
+          />
         ) : (
           <div className="grid gap-4 md:grid-cols-4">
-            <StatCard title="إجمالي الحجوزات" value={String(bookingStats?.total ?? 0)} color="text-brand-600" />
-            <StatCard title="مكتملة" value={String(byStatusMap['COMPLETED'] ?? 0)} color="text-green-600" />
-            <StatCard title="قيد الانتظار" value={String(byStatusMap['REQUESTED'] ?? 0)} color="text-amber-600" />
-            <StatCard title="ملغية" value={String(byStatusMap['CANCELLED'] ?? 0)} color="text-red-600" />
+            <StatCard
+              title="إجمالي الحجوزات"
+              value={String(bookingStats?.total ?? 0)}
+              color="text-brand-600"
+            />
+            <StatCard
+              title="مكتملة"
+              value={String(byStatusMap['COMPLETED'] ?? 0)}
+              color="text-green-600"
+            />
+            <StatCard
+              title="قيد الانتظار"
+              value={String(byStatusMap['REQUESTED'] ?? 0)}
+              color="text-amber-600"
+            />
+            <StatCard
+              title="ملغية"
+              value={String(byStatusMap['CANCELLED'] ?? 0)}
+              color="text-red-600"
+            />
           </div>
         )}
       </div>
@@ -133,13 +164,19 @@ export default function AdminAnalyticsPage(): JSX.Element {
         {userGrowthQuery.isLoading ? (
           <CardSkeleton />
         ) : userGrowthQuery.isError ? (
-          <ErrorAlert message="فشل تحميل نمو المستخدمين" onRetry={() => userGrowthQuery.refetch()} />
+          <ErrorAlert
+            message="فشل تحميل نمو المستخدمين"
+            onRetry={() => userGrowthQuery.refetch()}
+          />
         ) : userGrowth.length === 0 ? (
           <EmptyState title="لا توجد بيانات نمو" />
         ) : (
           <div className="space-y-1">
             {userGrowth.map((u: UserGrowthDay, i: number) => (
-              <div key={i} className="flex items-center justify-between border-b border-gray-100 pb-1 text-sm dark:border-gray-800">
+              <div
+                key={i}
+                className="flex items-center justify-between border-b border-gray-100 pb-1 text-sm dark:border-gray-800"
+              >
                 <span>{u.date ?? '—'}</span>
                 <span className="font-medium text-brand-600">+{String(u.total ?? 0)}</span>
               </div>

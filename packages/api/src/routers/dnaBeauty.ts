@@ -3,12 +3,35 @@ import { prisma } from '@galaxy/db';
 import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
-const DNA_TRAITS: Record<string, { recommendations: string[]; avoidProducts: string[]; bestRoutine: string }> = {
-  'collagen_low': { recommendations: ['سيروم فيتامين C', 'كريم كولاجين', 'مكملات كولاجين'], avoidProducts: ['مقشرات قوية', 'ريتينول عالي'], bestRoutine: 'صباحاً: فيتامين C + مرطب. مساءً: كولاجين + كريم ليلي' },
-  'melanin_high': { recommendations: ['واقي شمس SPF50+', 'سيروم نياسيناميد', 'كريم تفتيح'], avoidProducts: ['أحماض قوية', 'هيدروكينون'], bestRoutine: 'صباحاً: نياسيناميد + واقي شمس. مساءً: سيروم تفتيح + مرطب' },
-  'sensitive_yes': { recommendations: ['غسول لطيف', 'مرطب خالي من العطور', 'سيروم سيراميد'], avoidProducts: ['عطور', 'كحول', 'أحماض'], bestRoutine: 'صباحاً: غسول لطيف + مرطب. مساءً: سيراميد + كريم مهدئ' },
-  'oxidation_high': { recommendations: ['سيروم فيتامين E', 'مضادات أكسدة', 'أوميغا 3'], avoidProducts: ['زيوت معدنية', 'منتجات مؤكسدة'], bestRoutine: 'صباحاً: مضاد أكسدة + واقي شمس. مساءً: فيتامين E + مرطب ليلي' },
-  'elasticity_low': { recommendations: ['حمض الهيالورونيك', 'ببتيدات', 'مساج وجه'], avoidProducts: ['منتجات تجفيف', 'صابون قاسي'], bestRoutine: 'صباحاً: هيالورونيك + ببتيدات. مساءً: مساج + كريم مرطب' },
+const DNA_TRAITS: Record<
+  string,
+  { recommendations: string[]; avoidProducts: string[]; bestRoutine: string }
+> = {
+  collagen_low: {
+    recommendations: ['سيروم فيتامين C', 'كريم كولاجين', 'مكملات كولاجين'],
+    avoidProducts: ['مقشرات قوية', 'ريتينول عالي'],
+    bestRoutine: 'صباحاً: فيتامين C + مرطب. مساءً: كولاجين + كريم ليلي',
+  },
+  melanin_high: {
+    recommendations: ['واقي شمس SPF50+', 'سيروم نياسيناميد', 'كريم تفتيح'],
+    avoidProducts: ['أحماض قوية', 'هيدروكينون'],
+    bestRoutine: 'صباحاً: نياسيناميد + واقي شمس. مساءً: سيروم تفتيح + مرطب',
+  },
+  sensitive_yes: {
+    recommendations: ['غسول لطيف', 'مرطب خالي من العطور', 'سيروم سيراميد'],
+    avoidProducts: ['عطور', 'كحول', 'أحماض'],
+    bestRoutine: 'صباحاً: غسول لطيف + مرطب. مساءً: سيراميد + كريم مهدئ',
+  },
+  oxidation_high: {
+    recommendations: ['سيروم فيتامين E', 'مضادات أكسدة', 'أوميغا 3'],
+    avoidProducts: ['زيوت معدنية', 'منتجات مؤكسدة'],
+    bestRoutine: 'صباحاً: مضاد أكسدة + واقي شمس. مساءً: فيتامين E + مرطب ليلي',
+  },
+  elasticity_low: {
+    recommendations: ['حمض الهيالورونيك', 'ببتيدات', 'مساج وجه'],
+    avoidProducts: ['منتجات تجفيف', 'صابون قاسي'],
+    bestRoutine: 'صباحاً: هيالورونيك + ببتيدات. مساءً: مساج + كريم مرطب',
+  },
 };
 
 const TRAIT_QUESTIONS = [
@@ -44,7 +67,17 @@ export const dnaBeautyRouter = router({
       });
 
       return {
-        traits: traits.map((t) => ({ key: t, label: { collagen_low: 'كولاجين منخفض', melanin_high: 'ميلانين مرتفع', sensitive_yes: 'بشرة حساسة', oxidation_high: 'أكسدة مرتفعة', elasticity_low: 'مرونة منخفضة' }[t] ?? t })),
+        traits: traits.map((t) => ({
+          key: t,
+          label:
+            {
+              collagen_low: 'كولاجين منخفض',
+              melanin_high: 'ميلانين مرتفع',
+              sensitive_yes: 'بشرة حساسة',
+              oxidation_high: 'أكسدة مرتفعة',
+              elasticity_low: 'مرونة منخفضة',
+            }[t] ?? t,
+        })),
         recommendations: Array.from(allRecs),
         avoid: Array.from(allAvoids),
         routine: routines.join('\n'),
@@ -53,6 +86,10 @@ export const dnaBeautyRouter = router({
     }),
 
   myAnalyses: customerProcedure.query(({ ctx }) =>
-    prisma.dnaAnalysis.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' }, take: SMALL_PAGE_SIZE })
+    prisma.dnaAnalysis.findMany({
+      where: { userId: ctx.user.id },
+      orderBy: { createdAt: 'desc' },
+      take: SMALL_PAGE_SIZE,
+    }),
   ),
 });

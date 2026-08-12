@@ -15,31 +15,65 @@ export const adminReportsRouter = router({
   dashboard: adminProcedure.query(async () => {
     const now = new Date();
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    const [
-      monthBookings, monthRevenue,
-      topServices, topTechnicians,
-    ] = await Promise.all([
+    const [monthBookings, monthRevenue, topServices, topTechnicians] = await Promise.all([
       db.booking.count({ where: { createdAt: { gte: monthStart } } }),
-      db.booking.aggregate({ where: { createdAt: { gte: monthStart } }, _sum: { totalAmount: true } }),
-      db.category.findMany({ take: SMALL_PAGE_SIZE, include: { _count: { select: { services: true } }, services: { include: { bookings: { select: { totalAmount: true } } } } } }),
-      db.booking.groupBy({ by: ['technicianId'], _count: { id: true }, orderBy: { _count: { id: 'desc' } }, take: SMALL_PAGE_SIZE }),
+      db.booking.aggregate({
+        where: { createdAt: { gte: monthStart } },
+        _sum: { totalAmount: true },
+      }),
+      db.category.findMany({
+        take: SMALL_PAGE_SIZE,
+        include: {
+          _count: { select: { services: true } },
+          services: { include: { bookings: { select: { totalAmount: true } } } },
+        },
+      }),
+      db.booking.groupBy({
+        by: ['technicianId'],
+        _count: { id: true },
+        orderBy: { _count: { id: 'desc' } },
+        take: SMALL_PAGE_SIZE,
+      }),
     ]);
 
-    const byService = (topServices as any[]).map((c: any) => {
-      const bookings = c.services.reduce((s: number, svc: any) => s + (svc.bookings?.length || 0), 0);
-      const revenue = c.services.reduce((s: number, svc: any) => s + (svc.bookings as any[]).reduce((bs: number, b: any) => bs + Number(b.totalAmount || 0), 0), 0);
-      return { name: (c.nameJson as Record<string, string>)?.ar ?? '', revenue, bookings, pct: 0 };
-    }).sort((a: any, b: any) => b.bookings - a.bookings);
+    const byService = (topServices as any[])
+      .map((c: any) => {
+        const bookings = c.services.reduce(
+          (s: number, svc: any) => s + (svc.bookings?.length || 0),
+          0,
+        );
+        const revenue = c.services.reduce(
+          (s: number, svc: any) =>
+            s +
+            (svc.bookings as any[]).reduce(
+              (bs: number, b: any) => bs + Number(b.totalAmount || 0),
+              0,
+            ),
+          0,
+        );
+        return {
+          name: (c.nameJson as Record<string, string>)?.ar ?? '',
+          revenue,
+          bookings,
+          pct: 0,
+        };
+      })
+      .sort((a: any, b: any) => b.bookings - a.bookings);
 
-    const topTechs = (topTechnicians as any[]).map((t: any) => ({
-      name: `فنية #${t.technicianId}`,
-      revenue: 0,
-      bookings: t._count?.id || 0,
-      rating: 0,
-    })).sort((a: any, b: any) => b.bookings - a.bookings);
+    const topTechs = (topTechnicians as any[])
+      .map((t: any) => ({
+        name: `فنية #${t.technicianId}`,
+        revenue: 0,
+        bookings: t._count?.id || 0,
+        rating: 0,
+      }))
+      .sort((a: any, b: any) => b.bookings - a.bookings);
 
     const totalBookings = byService.reduce((s, b) => s + b.bookings, 0);
-    if (totalBookings > 0) byService.forEach((s: any) => { s.pct = Math.round((s.bookings / totalBookings) * 100); });
+    if (totalBookings > 0)
+      byService.forEach((s: any) => {
+        s.pct = Math.round((s.bookings / totalBookings) * 100);
+      });
 
     return {
       revenue: { labels: [''], data: [Number(monthRevenue._sum?.totalAmount || 0)] },
@@ -52,17 +86,41 @@ export const adminReportsRouter = router({
 
   exportCSV: adminProcedure.query(async () => {
     const dashboard = await (async () => {
-      const topServices = await db.category.findMany({ take: SMALL_PAGE_SIZE, include: { services: { include: { bookings: { select: { totalAmount: true } } } } } });
+      const topServices = await db.category.findMany({
+        take: SMALL_PAGE_SIZE,
+        include: { services: { include: { bookings: { select: { totalAmount: true } } } } },
+      });
       return (topServices as any[]).map((c: any) => {
-        const bookings = c.services.reduce((s: number, svc: any) => s + (svc.bookings?.length || 0), 0);
-        const revenue = c.services.reduce((s: number, svc: any) => s + (svc.bookings as any[]).reduce((bs: number, b: any) => bs + Number(b.totalAmount || 0), 0), 0);
-        return { name: (c.nameJson as Record<string, string>)?.ar ?? '', revenue, bookings, pct: 0 };
+        const bookings = c.services.reduce(
+          (s: number, svc: any) => s + (svc.bookings?.length || 0),
+          0,
+        );
+        const revenue = c.services.reduce(
+          (s: number, svc: any) =>
+            s +
+            (svc.bookings as any[]).reduce(
+              (bs: number, b: any) => bs + Number(b.totalAmount || 0),
+              0,
+            ),
+          0,
+        );
+        return {
+          name: (c.nameJson as Record<string, string>)?.ar ?? '',
+          revenue,
+          bookings,
+          pct: 0,
+        };
       });
     })();
 
     return {
       topTechs: generateCSV([], ['name', 'revenue', 'bookings', 'rating']),
-      byService: generateCSV(dashboard as unknown as Array<Record<string, unknown>>, ['name', 'revenue', 'bookings', 'pct']),
+      byService: generateCSV(dashboard as unknown as Array<Record<string, unknown>>, [
+        'name',
+        'revenue',
+        'bookings',
+        'pct',
+      ]),
       byCity: generateCSV([], ['city', 'bookings', 'revenue']),
     };
   }),

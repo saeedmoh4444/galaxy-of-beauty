@@ -10,7 +10,8 @@ import { cn } from '@galaxy/shared';
  *   <AllergySafeBadge allergies={['fragrance', 'nuts', 'dairy', 'gluten']} />
  */
 
-type Allergy = 'fragrance' | 'nuts' | 'dairy' | 'gluten' | 'paraben' | 'sulfate' | 'alcohol' | 'essential_oils';
+type Allergy =
+  'fragrance' | 'nuts' | 'dairy' | 'gluten' | 'paraben' | 'sulfate' | 'alcohol' | 'essential_oils';
 
 interface AllergyDef {
   emoji: string;
@@ -47,7 +48,9 @@ export function AllergySafeBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">🛡️</span>
+        <span className="text-xl" aria-hidden="true">
+          🛡️
+        </span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             خالٍ من مسببات الحساسية

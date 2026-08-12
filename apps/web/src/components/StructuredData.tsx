@@ -44,17 +44,11 @@ export function OrganizationSchema(): JSX.Element {
       contactType: 'customer service',
       availableLanguage: ['Arabic', 'English'],
     },
-    sameAs: [
-      'https://twitter.com/galaxyofbeauty',
-      'https://instagram.com/galaxyofbeauty',
-    ],
+    sameAs: ['https://twitter.com/galaxyofbeauty', 'https://instagram.com/galaxyofbeauty'],
   };
 
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
   );
 }
 
@@ -79,10 +73,7 @@ export function ServiceSchema({ service }: { service: ServiceData }): JSX.Elemen
   };
 
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
   );
 }
 
@@ -109,9 +100,6 @@ export function EventSchema({ event }: { event: EventData }): JSX.Element {
   };
 
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
   );
 }

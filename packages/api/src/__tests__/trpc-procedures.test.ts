@@ -13,13 +13,9 @@
 import { describe, it, expect } from 'vitest';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
-import {
-  hashPassword, verifyPassword,
-} from '../lib/password';
+import { hashPassword, verifyPassword } from '../lib/password';
 import { signAccessToken } from '../lib/jwt';
-import {
-  generateCsrfToken, verifyCsrfToken, buildCsrfCookie,
-} from '../lib/csrf';
+import { generateCsrfToken, verifyCsrfToken, buildCsrfCookie } from '../lib/csrf';
 import type { JwtPayload } from '../lib/jwt';
 
 // ── Helpers ──────────────────────────────────────────────────────────
@@ -37,13 +33,19 @@ async function authCaller(user: JwtPayload) {
 }
 
 const TEST_USER: JwtPayload = {
-  id: 99999, role: 'CUSTOMER', email: 'integration-test@galaxyofbeauty.sa',
+  id: 99999,
+  role: 'CUSTOMER',
+  email: 'integration-test@galaxyofbeauty.sa',
 };
 const TEST_TECH: JwtPayload = {
-  id: 99998, role: 'TECHNICIAN', email: 'integration-tech@galaxyofbeauty.sa',
+  id: 99998,
+  role: 'TECHNICIAN',
+  email: 'integration-tech@galaxyofbeauty.sa',
 };
 const TEST_ADMIN: JwtPayload = {
-  id: 99997, role: 'ADMIN', email: 'integration-admin@galaxyofbeauty.sa',
+  id: 99997,
+  role: 'ADMIN',
+  email: 'integration-admin@galaxyofbeauty.sa',
 };
 
 // ── Router Structure ─────────────────────────────────────────────────
@@ -56,8 +58,19 @@ describe('Router Structure', () => {
   });
 
   const required = [
-    'health', 'auth', 'users', 'categories', 'services', 'bookings',
-    'payments', 'wallet', 'payouts', 'admin', 'analytics', 'ai', 'zatca',
+    'health',
+    'auth',
+    'users',
+    'categories',
+    'services',
+    'bookings',
+    'payments',
+    'wallet',
+    'payouts',
+    'admin',
+    'analytics',
+    'ai',
+    'zatca',
   ];
 
   for (const r of required) {
@@ -107,8 +120,11 @@ describe('Role-Based Access', () => {
     const caller = await authCaller(TEST_TECH);
     await expect(
       caller.bookings.create({
-        technicianId: 1, serviceId: 1, addressId: 1,
-        startAt: new Date().toISOString(), endAt: new Date().toISOString(),
+        technicianId: 1,
+        serviceId: 1,
+        addressId: 1,
+        startAt: new Date().toISOString(),
+        endAt: new Date().toISOString(),
         idempotencyKey: crypto.randomUUID(),
       }),
     ).rejects.toMatchObject({ code: 'FORBIDDEN' });
@@ -183,9 +199,9 @@ describe('Zod Validation', () => {
 
   it('should reject invalid sort value', async () => {
     const caller = await anonCaller();
-    await expect(
-      caller.services.list({ sort: 'invalid_sort' as 'newest' }),
-    ).rejects.toMatchObject({ code: 'BAD_REQUEST' });
+    await expect(caller.services.list({ sort: 'invalid_sort' as 'newest' })).rejects.toMatchObject({
+      code: 'BAD_REQUEST',
+    });
   });
 });
 
@@ -194,7 +210,9 @@ describe('Zod Validation', () => {
 describe('Error Handling', () => {
   it('should return NOT_FOUND for non-existent service', async () => {
     const caller = await anonCaller();
-    await expect(caller.services.getById({ id: 99999999 })).rejects.toMatchObject({ code: 'NOT_FOUND' });
+    await expect(caller.services.getById({ id: 99999999 })).rejects.toMatchObject({
+      code: 'NOT_FOUND',
+    });
   });
 });
 

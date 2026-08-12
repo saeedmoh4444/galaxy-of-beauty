@@ -52,7 +52,9 @@ export function FranchiseCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">🏪</span>
+        <span className="text-3xl" aria-hidden="true">
+          🏪
+        </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">
           برنامج الامتياز
         </h4>
@@ -65,9 +67,7 @@ export function FranchiseCard({
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">الاستثمار</p>
-          <p className="text-xs font-bold text-amber-800 dark:text-amber-200">
-            {investmentRange}
-          </p>
+          <p className="text-xs font-bold text-amber-800 dark:text-amber-200">{investmentRange}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">العائد المتوقع</p>
@@ -87,26 +87,21 @@ export function FranchiseCard({
       {/* Benefits grid */}
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {BENEFITS.map((b) => (
-          <div
-            key={b.title}
-            className="rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60"
-          >
-            <span className="text-lg" aria-hidden="true">{b.emoji}</span>
+          <div key={b.title} className="rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
+            <span className="text-lg" aria-hidden="true">
+              {b.emoji}
+            </span>
             <p className="mt-0.5 text-[10px] font-bold text-text-primary dark:text-gray-100">
               {b.title}
             </p>
-            <p className="text-[9px] text-text-tertiary dark:text-gray-400">
-              {b.description}
-            </p>
+            <p className="text-[9px] text-text-tertiary dark:text-gray-400">{b.description}</p>
           </div>
         ))}
       </div>
 
       {/* How to qualify */}
       <div className="mt-3 rounded-xl bg-gradient-to-r from-amber-100 to-yellow-100 p-3 dark:from-amber-900 dark:to-yellow-900">
-        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">
-          📋 شروط التأهل
-        </p>
+        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">📋 شروط التأهل</p>
         <div className="mt-1 space-y-0.5 text-[10px] text-amber-700 dark:text-amber-300">
           <p>• سنتين خبرة كخبيرة تجميل على منصتنا</p>
           <p>• تقييم 4.5 نجوم فأعلى</p>

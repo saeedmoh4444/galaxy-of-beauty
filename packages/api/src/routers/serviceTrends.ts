@@ -19,5 +19,9 @@ const TOP_THIS_MONTH = [
 ];
 
 export const serviceTrendsRouter = router({
-  trends: publicProcedure.query(() => ({ monthly: TRENDS, top: TOP_THIS_MONTH, categories: ['makeup', 'skincare', 'hair', 'nails', 'massage'] })),
+  trends: publicProcedure.query(() => ({
+    monthly: TRENDS,
+    top: TOP_THIS_MONTH,
+    categories: ['makeup', 'skincare', 'hair', 'nails', 'massage'],
+  })),
 });

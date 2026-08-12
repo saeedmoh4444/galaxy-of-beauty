@@ -23,19 +23,21 @@ export const beautyBundlesRouter = router({
 
   // Admin: create
   create: adminProcedure
-    .input(z.object({
-      titleJson: z.object({ ar: z.string(), en: z.string() }),
-      descriptionJson: z.object({ ar: z.string(), en: z.string() }).optional(),
-      serviceIds: z.array(z.number()).min(2),
-      discountPct: z.number().min(5).max(50),
-      totalPrice: z.number().positive(),
-      originalPrice: z.number().positive(),
-      imageUrl: z.string().optional(),
-      isSeasonal: z.boolean().default(false),
-      season: z.string().optional(),
-      validUntil: z.string().datetime().optional(),
-      sortOrder: z.number().default(0),
-    }))
+    .input(
+      z.object({
+        titleJson: z.object({ ar: z.string(), en: z.string() }),
+        descriptionJson: z.object({ ar: z.string(), en: z.string() }).optional(),
+        serviceIds: z.array(z.number()).min(2),
+        discountPct: z.number().min(5).max(50),
+        totalPrice: z.number().positive(),
+        originalPrice: z.number().positive(),
+        imageUrl: z.string().optional(),
+        isSeasonal: z.boolean().default(false),
+        season: z.string().optional(),
+        validUntil: z.string().datetime().optional(),
+        sortOrder: z.number().default(0),
+      }),
+    )
     .mutation(async ({ input }) => {
       return prisma.beautyBundle.create({ data: input });
     }),

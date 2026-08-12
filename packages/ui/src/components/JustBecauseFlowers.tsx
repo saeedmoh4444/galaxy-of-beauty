@@ -46,7 +46,9 @@ export function JustBecauseFlowers({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">{bouquet.emoji}</span>
+        <span className="text-3xl" aria-hidden="true">
+          {bouquet.emoji}
+        </span>
         <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">
           {received ? 'لقد أرسلنا لكِ!' : 'فقط لأنكِ رائعة'}
         </h4>
@@ -60,7 +62,9 @@ export function JustBecauseFlowers({
       {/* Status */}
       {received && lastReceived ? (
         <div className="mt-3 rounded-xl bg-rose-50 p-3 text-center dark:bg-rose-950">
-          <span className="text-2xl" aria-hidden="true">{bouquet.emoji}</span>
+          <span className="text-2xl" aria-hidden="true">
+            {bouquet.emoji}
+          </span>
           <p className="mt-1 text-xs text-rose-700 dark:text-rose-300">
             أرسلنا لكِ {bouquet.name} في {lastReceived}
           </p>

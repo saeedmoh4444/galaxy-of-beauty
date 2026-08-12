@@ -3,7 +3,14 @@
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Card, DashboardSkeleton, ErrorAlert, formatCurrency, StatCard, PageContainer } from '@galaxy/ui';
+import {
+  Card,
+  DashboardSkeleton,
+  ErrorAlert,
+  formatCurrency,
+  StatCard,
+  PageContainer,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 type AdminHealth = RouterOutput['adminTools']['health'];
@@ -52,17 +59,45 @@ export default function AdminDashboardPage(): JSX.Element {
 
         {/* Stats Grid */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard label="إجمالي المستخدمين" value={Number(stats?.users ?? 0).toLocaleString('ar-SA')} icon="👥" />
-          <StatCard label="الفنيات" value={Number(stats?.technicians ?? 0).toLocaleString('ar-SA')} icon="👩‍🎨" />
-          <StatCard label="الخدمات النشطة" value={Number(stats?.services ?? 0).toLocaleString('ar-SA')} icon="💄" />
-          <StatCard label="نزاعات مفتوحة" value={Number(stats?.openDisputes ?? 0).toLocaleString('ar-SA')} icon="⚡" />
+          <StatCard
+            label="إجمالي المستخدمين"
+            value={Number(stats?.users ?? 0).toLocaleString('ar-SA')}
+            icon="👥"
+          />
+          <StatCard
+            label="الفنيات"
+            value={Number(stats?.technicians ?? 0).toLocaleString('ar-SA')}
+            icon="👩‍🎨"
+          />
+          <StatCard
+            label="الخدمات النشطة"
+            value={Number(stats?.services ?? 0).toLocaleString('ar-SA')}
+            icon="💄"
+          />
+          <StatCard
+            label="نزاعات مفتوحة"
+            value={Number(stats?.openDisputes ?? 0).toLocaleString('ar-SA')}
+            icon="⚡"
+          />
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard label="إجمالي الحجوزات" value={Number(stats?.totalBookings ?? 0).toLocaleString('ar-SA')} icon="📅" />
-          <StatCard label="حجوزات اليوم" value={Number(stats?.bookingsToday ?? 0).toLocaleString('ar-SA')} icon="📆" />
+          <StatCard
+            label="إجمالي الحجوزات"
+            value={Number(stats?.totalBookings ?? 0).toLocaleString('ar-SA')}
+            icon="📅"
+          />
+          <StatCard
+            label="حجوزات اليوم"
+            value={Number(stats?.bookingsToday ?? 0).toLocaleString('ar-SA')}
+            icon="📆"
+          />
           <StatCard label="نسبة الإكمال" value={`${stats?.completionRate ?? 0}%`} icon="✅" />
-          <StatCard label="الإيرادات" value={formatCurrency(Number(stats?.totalRevenue ?? 0))} icon="💰" />
+          <StatCard
+            label="الإيرادات"
+            value={formatCurrency(Number(stats?.totalRevenue ?? 0))}
+            icon="💰"
+          />
         </div>
 
         {/* Quick Links */}
@@ -88,11 +123,15 @@ export default function AdminDashboardPage(): JSX.Element {
           <div className="grid gap-3 text-sm sm:grid-cols-3">
             <div className="rounded-lg bg-surface-muted p-3 dark:bg-gray-800">
               <span className="text-text-secondary">Node.js</span>
-              <p className="font-mono font-semibold text-text-primary">{String(stats?.nodeVersion ?? '-')}</p>
+              <p className="font-mono font-semibold text-text-primary">
+                {String(stats?.nodeVersion ?? '-')}
+              </p>
             </div>
             <div className="rounded-lg bg-surface-muted p-3 dark:bg-gray-800">
               <span className="text-text-secondary">مدة التشغيل</span>
-              <p className="font-semibold text-text-primary">{Math.round(Number(stats?.uptime ?? 0) / 60)} دقيقة</p>
+              <p className="font-semibold text-text-primary">
+                {Math.round(Number(stats?.uptime ?? 0) / 60)} دقيقة
+              </p>
             </div>
             <div className="rounded-lg bg-surface-muted p-3 dark:bg-gray-800">
               <span className="text-text-secondary">قاعدة البيانات</span>

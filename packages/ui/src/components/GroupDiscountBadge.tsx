@@ -32,9 +32,8 @@ export function GroupDiscountBadge({
   const priceAfterDiscount = originalPrice
     ? Math.round(originalPrice * (1 - discount / 100))
     : null;
-  const savingsPerPerson = originalPrice && priceAfterDiscount
-    ? originalPrice - priceAfterDiscount
-    : null;
+  const savingsPerPerson =
+    originalPrice && priceAfterDiscount ? originalPrice - priceAfterDiscount : null;
 
   return (
     <div
@@ -45,7 +44,9 @@ export function GroupDiscountBadge({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">👯‍♀️</span>
+        <span className="text-3xl" aria-hidden="true">
+          👯‍♀️
+        </span>
         <h4 className="mt-1 text-sm font-bold text-violet-800 dark:text-violet-200">
           خصم المجموعة
         </h4>
@@ -60,9 +61,7 @@ export function GroupDiscountBadge({
           <span className="text-3xl font-bold text-violet-700 dark:text-violet-300">
             {discount}%
           </span>
-          <span className="text-sm font-bold text-violet-500 dark:text-violet-400">
-            خصم
-          </span>
+          <span className="text-sm font-bold text-violet-500 dark:text-violet-400">خصم</span>
         </div>
         <p className="mt-1 text-[10px] text-text-secondary dark:text-gray-300">
           عند حجز {groupSize} أشخاص معاً

@@ -24,7 +24,13 @@ export const lastMileDeliveryRouter = router({
       };
     }),
   order: customerProcedure
-    .input(z.object({ productId: z.number(), address: z.string(), paymentMethod: z.enum(['wallet', 'cod']) }))
+    .input(
+      z.object({
+        productId: z.number(),
+        address: z.string(),
+        paymentMethod: z.enum(['wallet', 'cod']),
+      }),
+    )
     .mutation(async ({ input }) => {
       const product = PRODUCTS.find((p) => p.id === input.productId);
       return {

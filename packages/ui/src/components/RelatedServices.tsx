@@ -21,7 +21,11 @@ interface RelatedServicesProps {
   className?: string;
 }
 
-export function RelatedServices({ services, onSelect, className = '' }: RelatedServicesProps): JSX.Element | null {
+export function RelatedServices({
+  services,
+  onSelect,
+  className = '',
+}: RelatedServicesProps): JSX.Element | null {
   if (services.length === 0) return null;
 
   return (
@@ -38,10 +42,14 @@ export function RelatedServices({ services, onSelect, className = '' }: RelatedS
           >
             <span className="text-2xl">{s.emoji ?? '💄'}</span>
             <div className="flex-1">
-              <p className="text-sm font-semibold text-text-primary dark:text-gray-100">{s.title}</p>
+              <p className="text-sm font-semibold text-text-primary dark:text-gray-100">
+                {s.title}
+              </p>
               <div className="mt-1 flex items-center gap-2">
                 <span className="text-sm font-bold text-brand-600">{s.price} ر.س</span>
-                {s.duration ? <span className="text-xs text-text-tertiary">{s.duration}</span> : null}
+                {s.duration ? (
+                  <span className="text-xs text-text-tertiary">{s.duration}</span>
+                ) : null}
               </div>
             </div>
             <span className="text-lg text-text-tertiary">›</span>

@@ -10,7 +10,15 @@ import { cn } from '@galaxy/shared';
  *   <WheelchairAccessibleBadge features={['wide_doors', 'elevator', 'accessible_bathroom']} />
  */
 
-type AccessFeature = 'wide_doors' | 'elevator' | 'accessible_bathroom' | 'low_counter' | 'parking' | 'ramp' | 'turning_space' | 'staff_assistance';
+type AccessFeature =
+  | 'wide_doors'
+  | 'elevator'
+  | 'accessible_bathroom'
+  | 'low_counter'
+  | 'parking'
+  | 'ramp'
+  | 'turning_space'
+  | 'staff_assistance';
 
 interface FeatureDef {
   emoji: string;
@@ -48,7 +56,9 @@ export function WheelchairAccessibleBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">♿</span>
+        <span className="text-xl" aria-hidden="true">
+          ♿
+        </span>
         <div>
           <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">
             مهيأ للكراسي المتحركة
@@ -67,14 +77,14 @@ export function WheelchairAccessibleBadge({
               key={f}
               className="flex items-start gap-2 rounded-lg bg-blue-50 px-2.5 py-2 dark:bg-blue-950"
             >
-              <span className="text-sm shrink-0" aria-hidden="true">{def.emoji}</span>
+              <span className="text-sm shrink-0" aria-hidden="true">
+                {def.emoji}
+              </span>
               <div>
                 <p className="text-[10px] font-bold text-blue-800 dark:text-blue-200">
                   {def.label}
                 </p>
-                <p className="text-[9px] text-blue-600 dark:text-blue-400">
-                  {def.detail}
-                </p>
+                <p className="text-[9px] text-blue-600 dark:text-blue-400">{def.detail}</p>
               </div>
             </div>
           );

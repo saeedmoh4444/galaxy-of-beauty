@@ -22,7 +22,9 @@ export default function WishlistPage(): JSX.Element {
 
         {isLoading ? (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }, (_, i) => <CardSkeleton key={i} />)}
+            {Array.from({ length: 6 }, (_, i) => (
+              <CardSkeleton key={i} />
+            ))}
           </div>
         ) : isError ? (
           <ErrorAlert message="فشل تحميل المفضلة" onRetry={() => refetch()} />
@@ -30,7 +32,9 @@ export default function WishlistPage(): JSX.Element {
           <div>
             <EmptyState title="المفضلة فارغة" description="لم تقم بإضافة أي عنصر إلى المفضلة بعد" />
             <div className="text-center">
-              <Link href="/services"><Button>تصفح الخدمات</Button></Link>
+              <Link href="/services">
+                <Button>تصفح الخدمات</Button>
+              </Link>
             </div>
           </div>
         ) : (
@@ -46,12 +50,20 @@ export default function WishlistPage(): JSX.Element {
                   <Card key={item.id as number} padding="md" className="relative">
                     <div className="mb-3 flex h-36 items-center justify-center rounded-lg bg-surface-muted dark:bg-gray-800">
                       {service.imageUrl ? (
-                        <img src={service.imageUrl as string} alt="" className="h-full w-full rounded-lg object-cover" />
+                        <img
+                          src={service.imageUrl as string}
+                          alt=""
+                          className="h-full w-full rounded-lg object-cover"
+                        />
                       ) : (
                         <span className="text-4xl text-gray-300">📷</span>
                       )}
                     </div>
-                    <h3 className="font-semibold">{(titleJson as { ar?: string; en?: string })?.ar ?? (titleJson as { ar?: string; en?: string })?.en ?? ''}</h3>
+                    <h3 className="font-semibold">
+                      {(titleJson as { ar?: string; en?: string })?.ar ??
+                        (titleJson as { ar?: string; en?: string })?.en ??
+                        ''}
+                    </h3>
                     <p className="mt-1 text-xs text-text-secondary">
                       {(category?.nameJson as Record<string, string>)?.ar ?? ''}
                     </p>
@@ -75,7 +87,11 @@ export default function WishlistPage(): JSX.Element {
                     <div className="mb-3 flex items-center gap-3">
                       <div className="flex h-16 w-16 items-center justify-center rounded-full bg-surface-muted dark:bg-gray-800">
                         {user.avatarUrl ? (
-                          <img src={user.avatarUrl as string} alt="" className="h-full w-full rounded-full object-cover" />
+                          <img
+                            src={user.avatarUrl as string}
+                            alt=""
+                            className="h-full w-full rounded-full object-cover"
+                          />
                         ) : (
                           <span className="text-2xl text-gray-300">👤</span>
                         )}

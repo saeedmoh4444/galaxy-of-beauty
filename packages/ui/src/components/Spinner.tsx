@@ -16,9 +16,17 @@ const sizeMap = {
  * Accessible loading spinner with optional label.
  * Uses border-based animation for GPU-accelerated rendering.
  */
-export function Spinner({ size = 'md', className = '', label = 'جاري التحميل...' }: SpinnerProps): JSX.Element {
+export function Spinner({
+  size = 'md',
+  className = '',
+  label = 'جاري التحميل...',
+}: SpinnerProps): JSX.Element {
   return (
-    <div role="status" aria-label={label} className={`inline-flex flex-col items-center gap-2 ${className}`}>
+    <div
+      role="status"
+      aria-label={label}
+      className={`inline-flex flex-col items-center gap-2 ${className}`}
+    >
       <div
         className={`${sizeMap[size]} animate-spin rounded-full border-gray-200 border-t-brand-600 dark:border-gray-700 dark:border-t-brand-400`}
         aria-hidden="true"

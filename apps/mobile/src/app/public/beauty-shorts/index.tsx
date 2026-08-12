@@ -5,7 +5,14 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 export default function BeautyShortsScreen(): JSX.Element {
-  const { data: shorts, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).beautyShorts.list.query());
+  const {
+    data: shorts,
+    loading,
+    error,
+    refreshing,
+    refetch,
+    refresh,
+  } = useQuery(() => (trpc as any).beautyShorts.list.query());
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الفيديوهات" onRetry={refetch} />;
@@ -13,32 +20,52 @@ export default function BeautyShortsScreen(): JSX.Element {
   const items = (shorts ?? []) as any[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />}>
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+      }
+    >
       <Text style={styles.t}>📹 فيديوهات قصيرة</Text>
       <Text style={styles.sub}>أحدث فيديوهات التجميل القصيرة</Text>
-      {items.length === 0 ? <Text style={styles.e}>لا توجد فيديوهات</Text> :
+      {items.length === 0 ? (
+        <Text style={styles.e}>لا توجد فيديوهات</Text>
+      ) : (
         items.map((s: any, i: number) => (
           <TouchableOpacity key={s.id ?? i} style={styles.card}>
-            <Text style={styles.shortEmoji}>{s.emoji as string ?? '🎬'}</Text>
-            <View style={{flex:1}}>
-              <Text style={styles.shortTitle}>{s.titleAr as string ?? s.title as string}</Text>
-              <Text style={styles.shortMeta}>{s.creator as string} · {s.duration as string} · 👁 {s.views as number}</Text>
+            <Text style={styles.shortEmoji}>{(s.emoji as string) ?? '🎬'}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.shortTitle}>{(s.titleAr as string) ?? (s.title as string)}</Text>
+              <Text style={styles.shortMeta}>
+                {s.creator as string} · {s.duration as string} · 👁 {s.views as number}
+              </Text>
             </View>
             <Text style={styles.playBtn}>▶️</Text>
           </TouchableOpacity>
         ))
-      }
+      )}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#fdf2f8' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 4 },
   sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 20 },
   e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
-  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8 },
-  shortEmoji: { fontSize: 32 }, shortTitle: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 8,
+  },
+  shortEmoji: { fontSize: 32 },
+  shortTitle: { fontSize: 14, fontWeight: '600', color: '#111827' },
   shortMeta: { fontSize: 11, color: '#6b7280', marginTop: 2 },
   playBtn: { fontSize: 24 },
 });

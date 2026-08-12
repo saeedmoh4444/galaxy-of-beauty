@@ -2,25 +2,59 @@
 
 import { api } from '@/lib/trpc';
 import {
-  PageContainer, PageTitle,
-  CyclePhaseCard, SelfCareReminder, MentalWellnessCard, PregnancySafeBadge,
-  SkinAnalysisCard, HydrationTracker, BeautySleepCard, WellnessCheckCard,
-  FitnessBeautyCard, CycleResourceCard, BeautyMoodTrackerCard, AllergyTestCard,
-  BreastHealthCard, AllergySafeBadge,
-  BeautySmileCard, BeautyGlowCard, BeautyConfidenceCard,
-  BeautySleepHygieneCard, BeautyNutritionCard, BeautyExerciseCard,
-  BeautyStretchCard, BeautyBreathingCard, BeautyMeditationCard,
-  BeautyRelaxationCard, BeautyWellnessCornerCard, BeautyWaterIntakeCard,
-  BeautyPostureCard, BeautySuncareReminderCard, BeautyDailyCheckInCard,
-  BeautyRamadanBeautyCard, BeautyPostWorkoutCard, BeautyTravelKitCard,
-  BeautyCapsuleWardrobeCard, BeautyBedtimeRitualCard,
-  BeautyCollagenCard, BeautyBiotinCard, BeautyGlutathioneCard,
-  BeautyOmegaCard, BeautyProbioticCard,
-  BeautyGreenTeaCard, BeautyMatchaCard, BeautyTurmericLatteCard,
-  BeautyChlorophyllCard, BeautyBeetrootCard,
-  BeautyFaceYogaCard, BeautyBarreCard, BeautySweatProofCard,
-  BeautyPostWorkoutHairCard, BeautyFitnessGlowCard,
-  BeautySleepPositionCard, BeautySleepRoutineCard,
+  PageContainer,
+  PageTitle,
+  CyclePhaseCard,
+  SelfCareReminder,
+  MentalWellnessCard,
+  PregnancySafeBadge,
+  SkinAnalysisCard,
+  HydrationTracker,
+  BeautySleepCard,
+  WellnessCheckCard,
+  FitnessBeautyCard,
+  CycleResourceCard,
+  BeautyMoodTrackerCard,
+  AllergyTestCard,
+  BreastHealthCard,
+  AllergySafeBadge,
+  BeautySmileCard,
+  BeautyGlowCard,
+  BeautyConfidenceCard,
+  BeautySleepHygieneCard,
+  BeautyNutritionCard,
+  BeautyExerciseCard,
+  BeautyStretchCard,
+  BeautyBreathingCard,
+  BeautyMeditationCard,
+  BeautyRelaxationCard,
+  BeautyWellnessCornerCard,
+  BeautyWaterIntakeCard,
+  BeautyPostureCard,
+  BeautySuncareReminderCard,
+  BeautyDailyCheckInCard,
+  BeautyRamadanBeautyCard,
+  BeautyPostWorkoutCard,
+  BeautyTravelKitCard,
+  BeautyCapsuleWardrobeCard,
+  BeautyBedtimeRitualCard,
+  BeautyCollagenCard,
+  BeautyBiotinCard,
+  BeautyGlutathioneCard,
+  BeautyOmegaCard,
+  BeautyProbioticCard,
+  BeautyGreenTeaCard,
+  BeautyMatchaCard,
+  BeautyTurmericLatteCard,
+  BeautyChlorophyllCard,
+  BeautyBeetrootCard,
+  BeautyFaceYogaCard,
+  BeautyBarreCard,
+  BeautySweatProofCard,
+  BeautyPostWorkoutHairCard,
+  BeautyFitnessGlowCard,
+  BeautySleepPositionCard,
+  BeautySleepRoutineCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -55,7 +89,11 @@ export default function WellnessPage(): JSX.Element {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <SkinAnalysisCard concerns={((skinAnalysis?.data?.concerns as string[]) ?? ['dryness', 'dark_spots']) as any} />
+              <SkinAnalysisCard
+                concerns={
+                  ((skinAnalysis?.data?.concerns as string[]) ?? ['dryness', 'dark_spots']) as any
+                }
+              />
               <CycleResourceCard phase="follicular" />
             </div>
 

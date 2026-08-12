@@ -39,9 +39,14 @@ export default function ReviewsPage(): JSX.Element {
           <ErrorAlert message="فشل تحميل التقييمات" onRetry={() => refetch()} />
         ) : reviewed.length === 0 && unreviewed.length === 0 ? (
           <div>
-            <EmptyState title="لا توجد تقييمات" description="قم بإكمال حجز لتتمكن من تقييم الخدمة" />
+            <EmptyState
+              title="لا توجد تقييمات"
+              description="قم بإكمال حجز لتتمكن من تقييم الخدمة"
+            />
             <div className="text-center">
-              <Link href="/services"><Button>تصفح الخدمات</Button></Link>
+              <Link href="/services">
+                <Button>تصفح الخدمات</Button>
+              </Link>
             </div>
           </div>
         ) : (
@@ -53,11 +58,22 @@ export default function ReviewsPage(): JSX.Element {
                   <Card key={b.id as number} padding="md">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-semibold">{b.serviceName as string ?? 'خدمة'}</p>
-                        <p className="text-sm text-text-secondary">{b.technicianName as string ?? 'فني'}</p>
-                        <p className="text-xs text-text-tertiary">{new Date(b.startAt as string).toLocaleDateString('ar-SA')}</p>
+                        <p className="font-semibold">{(b.serviceName as string) ?? 'خدمة'}</p>
+                        <p className="text-sm text-text-secondary">
+                          {(b.technicianName as string) ?? 'فني'}
+                        </p>
+                        <p className="text-xs text-text-tertiary">
+                          {new Date(b.startAt as string).toLocaleDateString('ar-SA')}
+                        </p>
                       </div>
-                      <Button size="sm" onClick={() => { setSelectedBookingId(b.id as number); setRating(0); setComment(''); }}>
+                      <Button
+                        size="sm"
+                        onClick={() => {
+                          setSelectedBookingId(b.id as number);
+                          setRating(0);
+                          setComment('');
+                        }}
+                      >
                         تقييم
                       </Button>
                     </div>
@@ -75,17 +91,30 @@ export default function ReviewsPage(): JSX.Element {
                   <Card key={b.id as number} padding="md">
                     <div className="flex items-start justify-between">
                       <div className="space-y-1">
-                        <p className="font-semibold">{b.serviceName as string ?? 'خدمة'}</p>
-                        <p className="text-sm text-text-secondary">{b.technicianName as string ?? 'فني'}</p>
+                        <p className="font-semibold">{(b.serviceName as string) ?? 'خدمة'}</p>
+                        <p className="text-sm text-text-secondary">
+                          {(b.technicianName as string) ?? 'فني'}
+                        </p>
                         <div className="flex gap-0.5">
                           {Array.from({ length: 5 }, (_, i) => (
-                            <span key={i} className={`text-lg ${i < (b.reviewRating as number ?? 0) ? 'text-amber-400' : 'text-gray-300'}`}>
+                            <span
+                              key={i}
+                              className={`text-lg ${i < ((b.reviewRating as number) ?? 0) ? 'text-amber-400' : 'text-gray-300'}`}
+                            >
                               &#9733;
                             </span>
                           ))}
                         </div>
-                        {b.reviewComment ? <p className="text-sm text-text-secondary dark:text-gray-400">&ldquo;{b.reviewComment as string}&rdquo;</p> : null}
-                        <p className="text-xs text-text-tertiary">{new Date(b.reviewDate as string ?? b.startAt as string).toLocaleDateString('ar-SA')}</p>
+                        {b.reviewComment ? (
+                          <p className="text-sm text-text-secondary dark:text-gray-400">
+                            &ldquo;{b.reviewComment as string}&rdquo;
+                          </p>
+                        ) : null}
+                        <p className="text-xs text-text-tertiary">
+                          {new Date(
+                            (b.reviewDate as string) ?? (b.startAt as string),
+                          ).toLocaleDateString('ar-SA')}
+                        </p>
                       </div>
                     </div>
                   </Card>
@@ -96,7 +125,12 @@ export default function ReviewsPage(): JSX.Element {
         )}
       </div>
 
-      <Modal open={selectedBookingId !== null} onClose={() => setSelectedBookingId(null)} title="تقييم الخدمة" size="sm">
+      <Modal
+        open={selectedBookingId !== null}
+        onClose={() => setSelectedBookingId(null)}
+        title="تقييم الخدمة"
+        size="sm"
+      >
         <div className="space-y-4">
           <div>
             <p className="mb-2 text-sm font-medium">التقييم</p>

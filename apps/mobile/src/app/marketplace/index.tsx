@@ -8,23 +8,71 @@ export default function MarketplaceScreen(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).marketplace.products.query({}) as any).then((d: any) => { setProducts(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+    if (isRefresh) setRefreshing(true);
+    else setLoading(true);
+    ((trpc as any).marketplace.products.query({}) as any)
+      .then((d: any) => {
+        setProducts(d || []);
+        setLoading(false);
+        setRefreshing(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        setRefreshing(false);
+      });
   }, []);
-  useEffect(() => { fetch(); }, [fetch]);
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
   if (loading) return <SkeletonList count={4} />;
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#db2777']} />}>
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={() => fetch(true)}
+          colors={['#db2777']}
+        />
+      }
+    >
       <Text style={styles.t}>🛍️ المتجر</Text>
-      <View style={styles.grid}>{products.map((p: any) => (<TouchableOpacity key={p.id} style={styles.card}><View style={styles.ci}><Text style={styles.ce}>{p.emoji as string ?? '🧴'}</Text></View><Text style={styles.ct}>{p.nameAr as string ?? p.titleAr as string}</Text><Text style={styles.cp}>{(p.price as number)?.toLocaleString()} ر.س</Text></TouchableOpacity>))}</View>
+      <View style={styles.grid}>
+        {products.map((p: any) => (
+          <TouchableOpacity key={p.id} style={styles.card}>
+            <View style={styles.ci}>
+              <Text style={styles.ce}>{(p.emoji as string) ?? '🧴'}</Text>
+            </View>
+            <Text style={styles.ct}>{(p.nameAr as string) ?? (p.titleAr as string)}</Text>
+            <Text style={styles.cp}>{(p.price as number)?.toLocaleString()} ر.س</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
     </ScrollView>
   );
 }
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#fdf2f8' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 20 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  card: { width: '47%', backgroundColor: '#fff', borderRadius: 16, padding: 10, overflow: 'hidden' },
-  ci: { height: 120, borderRadius: 12, backgroundColor: '#fce7f3', alignItems: 'center', justifyContent: 'center', marginBottom: 8 }, ce: { fontSize: 40 },
-  ct: { fontSize: 13, fontWeight: '700', color: '#111827', textAlign: 'right' }, cp: { fontSize: 14, fontWeight: '800', color: '#db2777', textAlign: 'right', marginTop: 4 },
+  card: {
+    width: '47%',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 10,
+    overflow: 'hidden',
+  },
+  ci: {
+    height: 120,
+    borderRadius: 12,
+    backgroundColor: '#fce7f3',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  ce: { fontSize: 40 },
+  ct: { fontSize: 13, fontWeight: '700', color: '#111827', textAlign: 'right' },
+  cp: { fontSize: 14, fontWeight: '800', color: '#db2777', textAlign: 'right', marginTop: 4 },
 });

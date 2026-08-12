@@ -11,22 +11,24 @@
 
 Split into two packages:
 
-| Package | Contains | JSX? | Imported by |
-|---------|----------|------|------------|
-| `@galaxy/shared` | Types, constants, i18n, theme tokens, utils (cn, formatCurrency) | ❌ No | API, web, mobile |
-| `@galaxy/ui` | 18 UI components, 3 React hooks | ✅ Yes | Web, mobile |
+| Package          | Contains                                                         | JSX?   | Imported by      |
+| ---------------- | ---------------------------------------------------------------- | ------ | ---------------- |
+| `@galaxy/shared` | Types, constants, i18n, theme tokens, utils (cn, formatCurrency) | ❌ No  | API, web, mobile |
+| `@galaxy/ui`     | 18 UI components, 3 React hooks                                  | ✅ Yes | Web, mobile      |
 
 `@galaxy/ui` re-exports everything from `@galaxy/shared` for convenience. Most pages only need one import: `from '@galaxy/ui'`.
 
 ## Consequences
 
 **Positive:**
+
 - API package no longer depends on React/DOM types
 - Clean separation of concerns — pure logic vs. presentation
 - ~250 web files + ~150 mobile files updated to `from '@galaxy/ui'`
 - Future: `@galaxy/shared` can be used by non-React consumers (CLI tools, workers)
 
 **Negative:**
+
 - 2 packages to maintain instead of 1
 - Import change across 400+ files (one-time cost, automated)
 - Storybook config needed updating

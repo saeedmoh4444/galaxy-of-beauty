@@ -17,65 +17,63 @@ export const serviceRouter = router({
    * Public.
    * Supports: categoryId, search (in titleJson), price range, sorting.
    */
-  list: publicProcedure
-    .input(serviceQuerySchema)
-    .query(async ({ input }) => {
-      const { search, categoryId, minPrice, maxPrice, sort, page, limit } = input;
-      const skip = (page - 1) * limit;
+  list: publicProcedure.input(serviceQuerySchema).query(async ({ input }) => {
+    const { search, categoryId, minPrice, maxPrice, sort, page, limit } = input;
+    const skip = (page - 1) * limit;
 
-      const where: Record<string, unknown> = { isActive: true };
+    const where: Record<string, unknown> = { isActive: true };
 
-      if (categoryId) {
-        where.categoryId = categoryId;
+    if (categoryId) {
+      where.categoryId = categoryId;
+    }
+
+    if (minPrice !== undefined || maxPrice !== undefined) {
+      const priceFilter: Record<string, unknown> = {};
+      if (minPrice !== undefined) priceFilter.gte = minPrice;
+      if (maxPrice !== undefined) priceFilter.lte = maxPrice;
+      where.basePrice = priceFilter;
+    }
+
+    if (search) {
+      where.OR = [
+        { titleJson: { path: ['en'], string_contains: search } },
+        { titleJson: { path: ['ar'], string_contains: search } },
+      ];
+    }
+
+    const orderBy: Record<string, unknown> | Record<string, unknown>[] = (() => {
+      switch (sort) {
+        case 'price_asc':
+          return { basePrice: 'asc' as const };
+        case 'price_desc':
+          return { basePrice: 'desc' as const };
+        case 'popular':
+          return [{ isPopular: 'desc' as const }, { sortOrder: 'asc' as const }];
+        case 'duration':
+          return { durationMin: 'asc' as const };
+        case 'newest':
+        default:
+          return { createdAt: 'desc' as const };
       }
+    })();
 
-      if (minPrice !== undefined || maxPrice !== undefined) {
-        const priceFilter: Record<string, unknown> = {};
-        if (minPrice !== undefined) priceFilter.gte = minPrice;
-        if (maxPrice !== undefined) priceFilter.lte = maxPrice;
-        where.basePrice = priceFilter;
-      }
+    const [items, total] = await Promise.all([
+      prisma.service.findMany({
+        where,
+        orderBy,
+        skip,
+        take: limit,
+        include: {
+          category: { select: { id: true, nameJson: true, slug: true } },
+          variants: { where: { isActive: true } },
+          tags: { include: { tag: true } },
+        },
+      }),
+      prisma.service.count({ where }),
+    ]);
 
-      if (search) {
-        where.OR = [
-          { titleJson: { path: ['en'], string_contains: search } },
-          { titleJson: { path: ['ar'], string_contains: search } },
-        ];
-      }
-
-      const orderBy: Record<string, unknown> | Record<string, unknown>[] = (() => {
-        switch (sort) {
-          case 'price_asc':
-            return { basePrice: 'asc' as const };
-          case 'price_desc':
-            return { basePrice: 'desc' as const };
-          case 'popular':
-            return [{ isPopular: 'desc' as const }, { sortOrder: 'asc' as const }];
-          case 'duration':
-            return { durationMin: 'asc' as const };
-          case 'newest':
-          default:
-            return { createdAt: 'desc' as const };
-        }
-      })();
-
-      const [items, total] = await Promise.all([
-        prisma.service.findMany({
-          where,
-          orderBy,
-          skip,
-          take: limit,
-          include: {
-            category: { select: { id: true, nameJson: true, slug: true } },
-            variants: { where: { isActive: true } },
-            tags: { include: { tag: true } },
-          },
-        }),
-        prisma.service.count({ where }),
-      ]);
-
-      return { items, total, page, limit };
-    }),
+    return { items, total, page, limit };
+  }),
 
   /**
    * surpriseMe — Smart personalized service picker.
@@ -118,7 +116,9 @@ export const serviceRouter = router({
           const weight = Math.max(1, Math.ceil((s._count.bookings / maxBookings) * 5));
           return Array<number>(weight).fill(s.id);
         });
-        const pick = allServices.find((s) => s.id === weighted[Math.floor(Math.random() * weighted.length)]);
+        const pick = allServices.find(
+          (s) => s.id === weighted[Math.floor(Math.random() * weighted.length)],
+        );
         return pick ?? allServices[Math.floor(Math.random() * allServices.length)]!;
       }
 
@@ -187,8 +187,10 @@ export const serviceRouter = router({
           const skinType = lastAnalysis.skinType.toLowerCase();
           if (skinType === 'dry' && /ترطيب|مرطب|مويست|هيدرا/i.test(titleAr)) score += 20;
           if (skinType === 'oily' && /تنظيف|مقشر|deep clean/i.test(titleAr)) score += 20;
-          if (skinType === 'sensitive' && /لطيف|مهدئ|حساس|gentle|soothing/i.test(titleAr)) score += 20;
-          if (lastAnalysis.skinType === 'combination' && /متوازن|balance/i.test(titleAr)) score += 15;
+          if (skinType === 'sensitive' && /لطيف|مهدئ|حساس|gentle|soothing/i.test(titleAr))
+            score += 20;
+          if (lastAnalysis.skinType === 'combination' && /متوازن|balance/i.test(titleAr))
+            score += 15;
         }
 
         // Trending bonus
@@ -203,8 +205,10 @@ export const serviceRouter = router({
 
         // Time-of-day context
         const hour = new Date().getHours();
-        if (hour >= 6 && hour < 12 && /morning|صباح|تنظيف|facial/i.test(titleAr + titleEn)) score += 5;
-        if (hour >= 17 && hour < 22 && /مساج|massage|استرخاء|relax/i.test(titleAr + titleEn)) score += 8;
+        if (hour >= 6 && hour < 12 && /morning|صباح|تنظيف|facial/i.test(titleAr + titleEn))
+          score += 5;
+        if (hour >= 17 && hour < 22 && /مساج|massage|استرخاء|relax/i.test(titleAr + titleEn))
+          score += 8;
         if (hour >= 20 && /مسائي|evening|مكياج|makeup/i.test(titleAr + titleEn)) score += 5;
 
         // Quiz-based boost
@@ -213,7 +217,8 @@ export const serviceRouter = router({
           const preferredStyle = (responses['preferredStyle'] as string) || '';
           if (preferredStyle === 'luxury' && s.basePrice.toNumber() > 200) score += 10;
           if (preferredStyle === 'budget' && s.basePrice.toNumber() < 100) score += 10;
-          if (preferredStyle === 'natural' && /طبيعي|عضوي|organic|natural/i.test(titleAr + titleEn)) score += 10;
+          if (preferredStyle === 'natural' && /طبيعي|عضوي|organic|natural/i.test(titleAr + titleEn))
+            score += 10;
         }
 
         // Small random factor for diversity (stochastic selection)
@@ -283,10 +288,13 @@ export const serviceRouter = router({
       });
 
       // Fetch booking→service mapping for the aggregated reviews
-      const bookingServices = ratingAggs.length > 0 ? await prisma.booking.findMany({
-        where: { id: { in: ratingAggs.map((r) => r.bookingId) } },
-        select: { id: true, serviceId: true },
-      }) : [];
+      const bookingServices =
+        ratingAggs.length > 0
+          ? await prisma.booking.findMany({
+              where: { id: { in: ratingAggs.map((r) => r.bookingId) } },
+              select: { id: true, serviceId: true },
+            })
+          : [];
       const serviceRatings = new Map<number, number[]>();
       for (const agg of ratingAggs) {
         const booking = bookingServices.find((b) => b.id === agg.bookingId);
@@ -299,28 +307,29 @@ export const serviceRouter = router({
 
       const comparison = services.map((s) => {
         const ratings = serviceRatings.get(s.id) || [];
-        const avg = ratings.length > 0
-          ? Math.round((ratings.reduce((a, b) => a + b, 0) / ratings.length) * 10) / 10
-          : 0;
+        const avg =
+          ratings.length > 0
+            ? Math.round((ratings.reduce((a, b) => a + b, 0) / ratings.length) * 10) / 10
+            : 0;
         return {
-        id: s.id,
-        titleJson: s.titleJson,
-        imageUrl: s.imageUrl,
-        basePrice: s.basePrice.toNumber(),
-        durationMin: s.durationMin,
-        category: (s.category.nameJson as Record<string, string>)?.ar || '',
-        ratingAvg: avg,
-        reviewCount: ratings.length,
-        bookingCount: s._count.bookings,
-        wishlistCount: s._count.wishlistItems,
-        variants: s.variants.map((v) => ({
-          nameJson: v.nameJson,
-          priceDelta: v.priceDelta.toNumber(),
-          durationDelta: v.durationDelta,
-        })),
-        tags: s.tags.map((t) => (t.tag.nameJson as Record<string, string>)?.ar || ''),
-      };
-    });
+          id: s.id,
+          titleJson: s.titleJson,
+          imageUrl: s.imageUrl,
+          basePrice: s.basePrice.toNumber(),
+          durationMin: s.durationMin,
+          category: (s.category.nameJson as Record<string, string>)?.ar || '',
+          ratingAvg: avg,
+          reviewCount: ratings.length,
+          bookingCount: s._count.bookings,
+          wishlistCount: s._count.wishlistItems,
+          variants: s.variants.map((v) => ({
+            nameJson: v.nameJson,
+            priceDelta: v.priceDelta.toNumber(),
+            durationDelta: v.durationDelta,
+          })),
+          tags: s.tags.map((t) => (t.tag.nameJson as Record<string, string>)?.ar || ''),
+        };
+      });
 
       return {
         services: comparison,
@@ -414,25 +423,25 @@ export const serviceRouter = router({
    * Builds titleJson / descriptionJson from ar/en fields.
    * Admin only.
    */
-  create: adminProcedure
-    .input(createServiceSchema)
-    .mutation(async ({ input }) => {
-      const { titleAr, titleEn, descriptionAr, descriptionEn, ...rest } = input;
+  create: adminProcedure.input(createServiceSchema).mutation(async ({ input }) => {
+    const { titleAr, titleEn, descriptionAr, descriptionEn, ...rest } = input;
 
-      const data: Record<string, unknown> = {
-        ...rest,
-        titleJson: { ar: titleAr, en: titleEn },
+    const data: Record<string, unknown> = {
+      ...rest,
+      titleJson: { ar: titleAr, en: titleEn },
+    };
+    if (descriptionAr !== undefined || descriptionEn !== undefined) {
+      data.descriptionJson = {
+        ar: descriptionAr ?? '',
+        en: descriptionEn ?? '',
       };
-      if (descriptionAr !== undefined || descriptionEn !== undefined) {
-        data.descriptionJson = {
-          ar: descriptionAr ?? '',
-          en: descriptionEn ?? '',
-        };
-      }
+    }
 
-      const service = await prisma.service.create({ data: data as Parameters<typeof prisma.service.create>[0]['data'] });
-      return service;
-    }),
+    const service = await prisma.service.create({
+      data: data as Parameters<typeof prisma.service.create>[0]['data'],
+    });
+    return service;
+  }),
 
   /**
    * update — update an existing service.
@@ -694,20 +703,18 @@ export const serviceRouter = router({
    * createTag — create a new service tag.
    * Admin only.
    */
-  createTag: adminProcedure
-    .input(createTagSchema)
-    .mutation(async ({ input }) => {
-      const { nameAr, nameEn, slug } = input;
+  createTag: adminProcedure.input(createTagSchema).mutation(async ({ input }) => {
+    const { nameAr, nameEn, slug } = input;
 
-      const tag = await prisma.serviceTag.create({
-        data: {
-          nameJson: { ar: nameAr, en: nameEn },
-          slug,
-        },
-      });
+    const tag = await prisma.serviceTag.create({
+      data: {
+        nameJson: { ar: nameAr, en: nameEn },
+        slug,
+      },
+    });
 
-      return tag;
-    }),
+    return tag;
+  }),
 
   /**
    * assignTag — assign a tag to a service.

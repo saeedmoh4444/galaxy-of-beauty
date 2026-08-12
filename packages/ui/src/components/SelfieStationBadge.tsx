@@ -40,11 +40,11 @@ export function SelfieStationBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">📸</span>
+        <span className="text-xl" aria-hidden="true">
+          📸
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">
-            ركن التصوير
-          </h4>
+          <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">ركن التصوير</h4>
           <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">
             التقطي صوراً رائعة لإطلالتكِ الجديدة
           </p>
@@ -63,16 +63,20 @@ export function SelfieStationBadge({
                 : 'bg-gray-50 opacity-40 dark:bg-gray-800',
             )}
           >
-            <span className="text-sm" aria-hidden="true">{f.emoji}</span>
-            <span className={cn(
-              'text-[10px] font-medium',
-              f.available ? 'text-fuchsia-800 dark:text-fuchsia-200' : 'text-gray-400 dark:text-gray-600',
-            )}>
+            <span className="text-sm" aria-hidden="true">
+              {f.emoji}
+            </span>
+            <span
+              className={cn(
+                'text-[10px] font-medium',
+                f.available
+                  ? 'text-fuchsia-800 dark:text-fuchsia-200'
+                  : 'text-gray-400 dark:text-gray-600',
+              )}
+            >
               {f.label}
             </span>
-            <span className="ml-auto text-[9px]">
-              {f.available ? '✅' : '—'}
-            </span>
+            <span className="ml-auto text-[9px]">{f.available ? '✅' : '—'}</span>
           </div>
         ))}
       </div>

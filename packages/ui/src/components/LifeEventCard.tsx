@@ -120,36 +120,26 @@ interface LifeEventCardProps {
   className?: string;
 }
 
-export function LifeEventCard({
-  event,
-  onBook,
-  className = '',
-}: LifeEventCardProps): JSX.Element {
+export function LifeEventCard({ event, onBook, className = '' }: LifeEventCardProps): JSX.Element {
   const e = EVENTS[event];
 
   return (
     <div
-      className={cn(
-        'rounded-2xl border p-5 transition-shadow hover:shadow-md',
-        e.color,
-        className,
-      )}
+      className={cn('rounded-2xl border p-5 transition-shadow hover:shadow-md', e.color, className)}
     >
       {/* Event header */}
       <div className="flex items-center gap-3">
-        <div className={cn(
-          'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br text-2xl text-white',
-          e.gradient,
-        )}>
+        <div
+          className={cn(
+            'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br text-2xl text-white',
+            e.gradient,
+          )}
+        >
           {e.emoji}
         </div>
         <div>
-          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-            {e.title}
-          </h4>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-400">
-            {e.description}
-          </p>
+          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{e.title}</h4>
+          <p className="text-[10px] text-text-tertiary dark:text-gray-400">{e.description}</p>
         </div>
       </div>
 
@@ -171,9 +161,7 @@ export function LifeEventCard({
       <div className="mt-3 flex items-center justify-between">
         <div>
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">السعر</p>
-          <p className="text-lg font-bold text-text-primary dark:text-gray-100">
-            {e.price} ر.س
-          </p>
+          <p className="text-lg font-bold text-text-primary dark:text-gray-100">{e.price} ر.س</p>
         </div>
         <button
           type="button"

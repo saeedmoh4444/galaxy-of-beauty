@@ -46,9 +46,18 @@ export default function TutorialsPage(): JSX.Element {
   const { data: filtersData } = api.tutorials.filters.useQuery() as {
     data: { categories: FilterMeta[]; difficulties: FilterMeta[] } | undefined;
   };
-  const { data, isLoading, isError, refetch } = api.tutorials.list.useQuery(
-    { page, limit: TUTORIALS_PER_PAGE, category, difficulty, search: search || undefined },
-  ) as { data: { items: Tutorial[]; total: number } | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data, isLoading, isError, refetch } = api.tutorials.list.useQuery({
+    page,
+    limit: TUTORIALS_PER_PAGE,
+    category,
+    difficulty,
+    search: search || undefined,
+  }) as {
+    data: { items: Tutorial[]; total: number } | undefined;
+    isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
+  };
 
   const tutorials: Tutorial[] = data?.items ?? [];
   const totalPages = data ? Math.ceil(data.total / TUTORIALS_PER_PAGE) : 1;
@@ -60,7 +69,9 @@ export default function TutorialsPage(): JSX.Element {
       {/* Header */}
       <div className="mb-10 text-center">
         <span className="text-6xl">📹</span>
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">دروس الجمال</h1>
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
+          دروس الجمال
+        </h1>
         <p className="mt-2 text-text-secondary dark:text-gray-400">
           تعلمي أسرار الجمال من خبراء معتمدين — دروس بالفيديو خطوة بخطوة
         </p>
@@ -71,7 +82,10 @@ export default function TutorialsPage(): JSX.Element {
         <input
           type="text"
           value={search}
-          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }}
           placeholder="🔍 ابحثي في الدروس..."
           className="w-full max-w-md rounded-xl border border-edge bg-surface-muted px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
         />
@@ -82,18 +96,29 @@ export default function TutorialsPage(): JSX.Element {
         {/* Category filter */}
         <div className="flex flex-wrap justify-center gap-2">
           <button
-            onClick={() => { setCategory(undefined); setPage(1); }}
+            onClick={() => {
+              setCategory(undefined);
+              setPage(1);
+            }}
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
-              !category ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+              !category
+                ? 'bg-brand-600 text-white shadow-md'
+                : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
             }`}
           >
             الكل
           </button>
           {categories.map((c) => (
-            <button key={c.key}
-              onClick={() => { setCategory(c.key === category ? undefined : c.key); setPage(1); }}
+            <button
+              key={c.key}
+              onClick={() => {
+                setCategory(c.key === category ? undefined : c.key);
+                setPage(1);
+              }}
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
-                category === c.key ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                category === c.key
+                  ? 'bg-brand-600 text-white shadow-md'
+                  : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
               }`}
             >
               {c.emoji} {c.nameAr}
@@ -103,8 +128,12 @@ export default function TutorialsPage(): JSX.Element {
         {/* Difficulty filter */}
         <div className="flex flex-wrap justify-center gap-2">
           {difficulties.map((d) => (
-            <button key={d.key}
-              onClick={() => { setDifficulty(d.key === difficulty ? undefined : d.key); setPage(1); }}
+            <button
+              key={d.key}
+              onClick={() => {
+                setDifficulty(d.key === difficulty ? undefined : d.key);
+                setPage(1);
+              }}
               className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
                 difficulty === d.key
                   ? 'bg-gray-800 text-white dark:bg-white dark:text-gray-800'
@@ -120,26 +149,50 @@ export default function TutorialsPage(): JSX.Element {
       {/* Tutorials Grid */}
       {isLoading ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }, (_, i) => <CardSkeleton key={i} />)}
+          {Array.from({ length: 6 }, (_, i) => (
+            <CardSkeleton key={i} />
+          ))}
         </div>
       ) : isError ? (
         <ErrorAlert message="فشل تحميل الدروس" onRetry={() => refetch()} />
       ) : tutorials.length === 0 ? (
         <EmptyState
           title={category || difficulty ? 'لا توجد دروس تطابق الفلتر' : 'لا توجد دروس بعد'}
-          description={category || difficulty ? 'جربي تغيير معايير التصفية' : 'لم ننشر أي دروس بعد. تابعي الصفحة قريباً!'}
-          action={category || difficulty ? { label: 'عرض الكل', onPress: () => { setCategory(undefined); setDifficulty(undefined); } } : undefined}
+          description={
+            category || difficulty
+              ? 'جربي تغيير معايير التصفية'
+              : 'لم ننشر أي دروس بعد. تابعي الصفحة قريباً!'
+          }
+          action={
+            category || difficulty
+              ? {
+                  label: 'عرض الكل',
+                  onPress: () => {
+                    setCategory(undefined);
+                    setDifficulty(undefined);
+                  },
+                }
+              : undefined
+          }
         />
       ) : (
         <>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {tutorials.map((t) => (
               <Link key={t.id} href={`/tutorials/${t.id}`} className="group">
-                <Card padding="none" className="overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
+                <Card
+                  padding="none"
+                  className="overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1"
+                >
                   {/* Thumbnail */}
                   <div className="relative flex h-44 items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
                     {t.thumbnailUrl ? (
-                      <img src={t.thumbnailUrl} alt={t.titleAr} className="h-full w-full object-cover transition-transform group-hover:scale-105" loading="lazy" />
+                      <img
+                        src={t.thumbnailUrl}
+                        alt={t.titleAr}
+                        className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                        loading="lazy"
+                      />
                     ) : (
                       <div className="text-center text-white/60">
                         <span className="text-5xl block">📹</span>
@@ -149,7 +202,9 @@ export default function TutorialsPage(): JSX.Element {
                     {/* Play overlay */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-text-primary shadow-lg transition-transform group-hover:scale-110">
-                        <svg className="h-5 w-5 mr-[-2px]" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                        <svg className="h-5 w-5 mr-[-2px]" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
                       </div>
                     </div>
                     {/* Duration badge */}

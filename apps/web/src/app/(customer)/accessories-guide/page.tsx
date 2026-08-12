@@ -1,9 +1,15 @@
 'use client';
 
 import {
-  PageContainer, PageTitle,
-  BeautyJewelryCard, BeautyBagCard, BeautyScarfCard,
-  BeautyPerfumeCard, BeautyNailCareCard, BeautyLipsCareCard, BeautyHandsCareCard,
+  PageContainer,
+  PageTitle,
+  BeautyJewelryCard,
+  BeautyBagCard,
+  BeautyScarfCard,
+  BeautyPerfumeCard,
+  BeautyNailCareCard,
+  BeautyLipsCareCard,
+  BeautyHandsCareCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 

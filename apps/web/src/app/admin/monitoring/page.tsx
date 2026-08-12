@@ -18,7 +18,12 @@ const SERVICE_LABELS_AR: Record<string, string> = {
 };
 
 export default function MonitoringPage(): JSX.Element {
-  const { data: health, isLoading, isError, refetch } = api.monitoring.health.useQuery() as {
+  const {
+    data: health,
+    isLoading,
+    isError,
+    refetch,
+  } = api.monitoring.health.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
     isError: boolean;
@@ -42,13 +47,15 @@ export default function MonitoringPage(): JSX.Element {
         <div>
           <h1 className="text-2xl font-bold">📊 مراقبة المنصة</h1>
           <p className="mt-1 text-sm text-text-secondary">
-            صحة المنصة في الوقت الحقيقي — يعمل منذ {h.uptime as string ?? '...'}
+            صحة المنصة في الوقت الحقيقي — يعمل منذ {(h.uptime as string) ?? '...'}
           </p>
         </div>
 
         {isLoading ? (
           <div className="grid gap-4 sm:grid-cols-5">
-            {Array.from({ length: 5 }, (_, i) => <CardSkeleton key={i} />)}
+            {Array.from({ length: 5 }, (_, i) => (
+              <CardSkeleton key={i} />
+            ))}
           </div>
         ) : isError ? (
           <ErrorAlert message="فشل تحميل بيانات المراقبة" onRetry={() => refetch()} />
@@ -65,23 +72,21 @@ export default function MonitoringPage(): JSX.Element {
                   >
                     {svc.status === 'healthy' ? '✅' : svc.status === 'warning' ? '⚠️' : '❌'}
                   </span>
-                  <p className="font-bold text-sm mt-2">
-                    {SERVICE_LABELS_AR[key] ?? key}
-                  </p>
-                  <p className="text-xs text-text-secondary mt-1">
-                    {svc.latency as string}
-                  </p>
+                  <p className="font-bold text-sm mt-2">{SERVICE_LABELS_AR[key] ?? key}</p>
+                  <p className="text-xs text-text-secondary mt-1">{svc.latency as string}</p>
                   {/* Extra detail per service */}
                   {key === 'database' && svc.connections !== undefined && (
                     <p className="text-[10px] text-text-tertiary mt-0.5">
                       {svc.connections as number} / {svc.maxConnections as number} اتصال
                     </p>
                   )}
-                  {key === 'redis' && svc.memoryUsed !== undefined && svc.memoryUsed !== 'unavailable' && (
-                    <p className="text-[10px] text-text-tertiary mt-0.5">
-                      {svc.memoryUsed as string} / {svc.memoryTotal as string}
-                    </p>
-                  )}
+                  {key === 'redis' &&
+                    svc.memoryUsed !== undefined &&
+                    svc.memoryUsed !== 'unavailable' && (
+                      <p className="text-[10px] text-text-tertiary mt-0.5">
+                        {svc.memoryUsed as string} / {svc.memoryTotal as string}
+                      </p>
+                    )}
                   {key === 'api' && svc.requestsPerMinute !== undefined && (
                     <p className="text-[10px] text-text-tertiary mt-0.5">
                       {svc.requestsPerMinute as number} طلب/دقيقة
@@ -98,24 +103,12 @@ export default function MonitoringPage(): JSX.Element {
 
             {/* ── Real-time Stats Row ── */}
             <div className="grid gap-4 sm:grid-cols-4">
-              <StatCard
-                label="الحجوزات اليوم"
-                value={today.bookings ?? 0}
-                icon="📅"
-              />
-              <StatCard
-                label="تسجيلات الدخول"
-                value={today.logins ?? 0}
-                icon="👤"
-              />
-              <StatCard
-                label="المدفوعات اليوم"
-                value={today.payments ?? 0}
-                icon="💳"
-              />
+              <StatCard label="الحجوزات اليوم" value={today.bookings ?? 0} icon="📅" />
+              <StatCard label="تسجيلات الدخول" value={today.logins ?? 0} icon="👤" />
+              <StatCard label="المدفوعات اليوم" value={today.payments ?? 0} icon="💳" />
               <StatCard
                 label="معدل الأخطاء"
-                value={`${errData.apiErrorsToday as number ?? 0}`}
+                value={`${(errData.apiErrorsToday as number) ?? 0}`}
                 icon="⚠️"
               />
             </div>
@@ -124,9 +117,7 @@ export default function MonitoringPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="lg" className="text-center">
                 <p className="text-3xl">⚡</p>
-                <p className="text-2xl font-bold">
-                  {perf.avgResponseTime as string}
-                </p>
+                <p className="text-2xl font-bold">{perf.avgResponseTime as string}</p>
                 <p className="text-xs text-text-secondary">متوسط الاستجابة</p>
               </Card>
               <Card padding="lg" className="text-center">
@@ -145,7 +136,7 @@ export default function MonitoringPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <Card padding="lg">
                 <h3 className="font-bold mb-3">
-                  ❌ الأخطاء (آخر ٢٤ ساعة: {errData.last24h as number ?? 0})
+                  ❌ الأخطاء (آخر ٢٤ ساعة: {(errData.last24h as number) ?? 0})
                 </h3>
                 <div className="space-y-2">
                   {(errData.byType as Array<Record<string, unknown>>)?.map(

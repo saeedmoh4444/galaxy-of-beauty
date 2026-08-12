@@ -110,11 +110,18 @@ const adminLinks = [
   { href: '/admin/settings', labelAr: 'الإعدادات', labelEn: 'Settings', icon: '⚙️' },
 ];
 
-export function DashboardLayout({ children, role: userRole = 'CUSTOMER' }: { children: ReactNode; role?: string }): JSX.Element {
+export function DashboardLayout({
+  children,
+  role: userRole = 'CUSTOMER',
+}: {
+  children: ReactNode;
+  role?: string;
+}): JSX.Element {
   const pathname = usePathname();
   const router = useRouter();
   const { logout } = useAuth();
-  const links = userRole === 'ADMIN' ? adminLinks : userRole === 'TECHNICIAN' ? technicianLinks : customerLinks;
+  const links =
+    userRole === 'ADMIN' ? adminLinks : userRole === 'TECHNICIAN' ? technicianLinks : customerLinks;
 
   const handleLogout = async () => {
     if (!window.confirm('هل أنت متأكد من تسجيل الخروج؟')) return;
@@ -155,7 +162,12 @@ export function DashboardLayout({ children, role: userRole = 'CUSTOMER' }: { chi
       </aside>
 
       {/* Content */}
-      <main data-testid="dashboard-content" className="flex-1 overflow-auto bg-gray-50 p-4 pb-20 md:p-6 md:pb-6 dark:bg-gray-950 animate-fade-in">{children}</main>
+      <main
+        data-testid="dashboard-content"
+        className="flex-1 overflow-auto bg-gray-50 p-4 pb-20 md:p-6 md:pb-6 dark:bg-gray-950 animate-fade-in"
+      >
+        {children}
+      </main>
 
       {/* Mobile Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950 md:hidden">
@@ -165,9 +177,7 @@ export function DashboardLayout({ children, role: userRole = 'CUSTOMER' }: { chi
               key={link.href}
               href={link.href}
               className={`flex min-w-[64px] flex-1 flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-medium transition-colors ${
-                pathname.startsWith(link.href)
-                  ? 'text-brand-600'
-                  : 'text-gray-400'
+                pathname.startsWith(link.href) ? 'text-brand-600' : 'text-gray-400'
               }`}
             >
               <span className="text-lg">{link.icon}</span>

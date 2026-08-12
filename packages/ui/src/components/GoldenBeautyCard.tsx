@@ -19,11 +19,41 @@ interface GoldenService {
 }
 
 const SERVICES: GoldenService[] = [
-  { emoji: '🧖‍♀️', name: 'عناية لطيفة بالبشرة', description: 'تنظيف وترطيب عميق للبشرة الناضجة', price: 200, duration: '60 دقيقة' },
-  { emoji: '💆‍♀️', name: 'مساج كلاسيكي', description: 'مساج لطيف للعضلات والمفاصل', price: 180, duration: '45 دقيقة' },
-  { emoji: '💇', name: 'تسريحة كلاسيكية', description: 'تسريحة ناعمة تليق بجمالكِ', price: 150, duration: '45 دقيقة' },
-  { emoji: '💄', name: 'مكياج ناعم', description: 'مكياج خفيف يبرز جمالكِ الطبيعي', price: 160, duration: '40 دقيقة' },
-  { emoji: '💅', name: 'مانيكير لطيف', description: 'عناية بالأظافر مع ترطيب', price: 100, duration: '30 دقيقة' },
+  {
+    emoji: '🧖‍♀️',
+    name: 'عناية لطيفة بالبشرة',
+    description: 'تنظيف وترطيب عميق للبشرة الناضجة',
+    price: 200,
+    duration: '60 دقيقة',
+  },
+  {
+    emoji: '💆‍♀️',
+    name: 'مساج كلاسيكي',
+    description: 'مساج لطيف للعضلات والمفاصل',
+    price: 180,
+    duration: '45 دقيقة',
+  },
+  {
+    emoji: '💇',
+    name: 'تسريحة كلاسيكية',
+    description: 'تسريحة ناعمة تليق بجمالكِ',
+    price: 150,
+    duration: '45 دقيقة',
+  },
+  {
+    emoji: '💄',
+    name: 'مكياج ناعم',
+    description: 'مكياج خفيف يبرز جمالكِ الطبيعي',
+    price: 160,
+    duration: '40 دقيقة',
+  },
+  {
+    emoji: '💅',
+    name: 'مانيكير لطيف',
+    description: 'عناية بالأظافر مع ترطيب',
+    price: 100,
+    duration: '30 دقيقة',
+  },
 ];
 
 interface GoldenBeautyCardProps {
@@ -48,23 +78,21 @@ export function GoldenBeautyCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">✨</span>
-        <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">
-          الجمال الذهبي
-        </h4>
+        <span className="text-3xl" aria-hidden="true">
+          ✨
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">الجمال الذهبي</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
-          {isGolden
-            ? `عناية خاصة تناسب جمالكِ في سن ${age}`
-            : 'عناية لطيفة للبشرة الناضجة'}
+          {isGolden ? `عناية خاصة تناسب جمالكِ في سن ${age}` : 'عناية لطيفة للبشرة الناضجة'}
         </p>
       </div>
 
       {/* Special discount */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-        <p className="text-lg" aria-hidden="true">🌺</p>
-        <p className="text-sm font-bold text-amber-800 dark:text-amber-200">
-          خصم الساعة الذهبية
+        <p className="text-lg" aria-hidden="true">
+          🌺
         </p>
+        <p className="text-sm font-bold text-amber-800 dark:text-amber-200">خصم الساعة الذهبية</p>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
           20% خصم على جميع الخدمات من 9 صباحاً إلى 12 ظهراً
         </p>
@@ -80,19 +108,17 @@ export function GoldenBeautyCard({
             key={s.name}
             className="flex items-center gap-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60"
           >
-            <span className="text-xl shrink-0" aria-hidden="true">{s.emoji}</span>
+            <span className="text-xl shrink-0" aria-hidden="true">
+              {s.emoji}
+            </span>
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-                {s.name}
-              </p>
+              <p className="text-xs font-bold text-text-primary dark:text-gray-100">{s.name}</p>
               <p className="text-[10px] text-text-tertiary dark:text-gray-400">
                 {s.description} · {s.duration}
               </p>
             </div>
             <div className="shrink-0 text-right">
-              <p className="text-xs font-bold text-amber-800 dark:text-amber-200">
-                {s.price} ر.س
-              </p>
+              <p className="text-xs font-bold text-amber-800 dark:text-amber-200">{s.price} ر.س</p>
               <button
                 type="button"
                 onClick={() => onBook?.(s.name)}

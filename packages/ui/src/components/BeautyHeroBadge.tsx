@@ -43,10 +43,10 @@ export function BeautyHeroBadge({
     >
       {/* Crown + title */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">👑</span>
-        <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">
-          بطلة الجمال
-        </h4>
+        <span className="text-3xl" aria-hidden="true">
+          👑
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">بطلة الجمال</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
           {member.month ? `🌟 ${member.month}` : '🌟 هذا الشهر'}
         </p>
@@ -57,13 +57,9 @@ export function BeautyHeroBadge({
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-yellow-200 text-3xl dark:from-amber-800 dark:to-yellow-800">
           {member.emoji || '👩'}
         </div>
-        <p className="mt-2 text-sm font-bold text-text-primary dark:text-gray-100">
-          {member.name}
-        </p>
+        <p className="mt-2 text-sm font-bold text-text-primary dark:text-gray-100">{member.name}</p>
         {member.city && (
-          <p className="text-[10px] text-text-tertiary dark:text-gray-500">
-            📍 {member.city}
-          </p>
+          <p className="text-[10px] text-text-tertiary dark:text-gray-500">📍 {member.city}</p>
         )}
         <p className="mt-2 text-xs leading-relaxed text-text-secondary dark:text-gray-300">
           &ldquo;{member.story}&rdquo;
@@ -73,14 +69,12 @@ export function BeautyHeroBadge({
       {/* Achievement */}
       <div className="mt-2 rounded-xl bg-gradient-to-r from-amber-100 to-yellow-100 p-3 dark:from-amber-900 dark:to-yellow-900">
         <div className="flex items-center gap-2">
-          <span className="text-lg shrink-0" aria-hidden="true">🏆</span>
+          <span className="text-lg shrink-0" aria-hidden="true">
+            🏆
+          </span>
           <div>
-            <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">
-              إنجازها
-            </p>
-            <p className="text-[10px] text-amber-700 dark:text-amber-300">
-              {member.achievement}
-            </p>
+            <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">إنجازها</p>
+            <p className="text-[10px] text-amber-700 dark:text-amber-300">{member.achievement}</p>
           </div>
         </div>
       </div>

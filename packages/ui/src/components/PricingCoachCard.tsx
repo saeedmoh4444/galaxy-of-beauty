@@ -49,11 +49,11 @@ export function PricingCoachCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">🤖</span>
+        <span className="text-xl" aria-hidden="true">
+          🤖
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">
-            مدرب التسعير
-          </h4>
+          <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">مدرب التسعير</h4>
           <p className="text-[10px] text-blue-500 dark:text-blue-400">
             ذكاء اصطناعي يساعدكِ في تسعير خدماتكِ
           </p>
@@ -62,9 +62,7 @@ export function PricingCoachCard({
 
       {/* Service */}
       <div className="mt-3 rounded-xl bg-blue-50 p-3 dark:bg-blue-950">
-        <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-          {service.name}
-        </p>
+        <p className="text-xs font-bold text-text-primary dark:text-gray-100">{service.name}</p>
         <div className="mt-2 flex items-center justify-between">
           <div className="text-center">
             <p className="text-[9px] text-text-tertiary dark:text-gray-500">سعركِ الحالي</p>
@@ -72,7 +70,9 @@ export function PricingCoachCard({
               {service.currentPrice} ر.س
             </p>
           </div>
-          <span className="text-blue-400" aria-hidden="true">→</span>
+          <span className="text-blue-400" aria-hidden="true">
+            →
+          </span>
           <div className="text-center">
             <p className="text-[9px] text-blue-600 dark:text-blue-400">السعر المقترح</p>
             <p className="text-lg font-bold text-blue-700 dark:text-blue-300">
@@ -102,9 +102,7 @@ export function PricingCoachCard({
       {demand && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
           <span>{demand.emoji}</span>
-          <span className={cn('text-[10px] font-medium', demand.color)}>
-            {demand.label}
-          </span>
+          <span className={cn('text-[10px] font-medium', demand.color)}>{demand.label}</span>
         </div>
       )}
 

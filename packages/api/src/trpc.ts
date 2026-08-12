@@ -34,10 +34,13 @@ export const { router, procedure, middleware, mergeRouters } = t;
 
 // ---- Rate Limiting Middleware ----
 const rateLimitGuard = middleware(async ({ ctx, next, path }) => {
-  const tier = ctx.user
-    ? ctx.user.role === 'ADMIN' ? 'admin' : 'authenticated'
-    : 'anonymous';
-  const key = ctx.user ? `user:${ctx.user.id}` : `anon:${path}`;
+  const tier = ctx.user ? (ctx.user.role === 'ADMIN' ? 'admin' : 'authenticated') : 'anonymous';
+
+  // Anonymous: key by client IP + path to prevent one client exhausting the bucket
+  // Authenticated: key by user ID
+  // Admin: key by user ID (separate, higher limit)
+  const clientId = ctx.user ? `${ctx.user.id}` : (ctx.clientIp || 'unknown');
+  const key = `${clientId}:${path}`;
 
   const result = await checkRateLimit(key, tier as 'anonymous' | 'authenticated' | 'admin');
   if (!result.allowed) {
@@ -113,6 +116,51 @@ export const staffProcedure = protectedProcedure.use(hasRole('TECHNICIAN', 'ADMI
 export const customerMutation = customerProcedure.use(csrfGuard);
 export const technicianMutation = technicianProcedure.use(csrfGuard);
 export const adminMutation = adminProcedure.use(csrfGuard);
+
+// ---- Resource Ownership ----
+
+/**
+ * Ensures the authenticated user owns the resource identified by the given
+ * owner-extraction function. Throws FORBIDDEN if not the owner.
+ *
+ * Admins always bypass the ownership check (they can access any user's data
+ * for support/audit purposes).
+ *
+ * Usage:
+ *   protectedProcedure
+ *     .input(z.object({ bookingId: z.number() }))
+ *     .use(requireOwnership(async ({ ctx, input }) => {
+ *       const booking = await prisma.booking.findUnique({ where: { id: input.bookingId } });
+ *       return booking?.customerId ?? null;
+ *     }))
+ *     .query(...)
+ */
+export function requireOwnership(
+  getOwnerId: (opts: {
+    ctx: Context;
+  }) => Promise<number | null> | number | null,
+) {
+  return middleware(async ({ ctx, next }) => {
+    if (!ctx.user) {
+      throw new TRPCError({ code: 'UNAUTHORIZED' });
+    }
+
+    // Admins bypass ownership checks (support/audit access)
+    if (ctx.user.role === 'ADMIN') return next();
+
+    const ownerId = await getOwnerId({ ctx });
+
+    if (ownerId === null) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Resource not found' });
+    }
+
+    if (ownerId !== ctx.user.id) {
+      throw new TRPCError({ code: 'FORBIDDEN', message: 'Access denied — not your resource' });
+    }
+
+    return next();
+  });
+}
 
 // ---- Feature Flags ----
 

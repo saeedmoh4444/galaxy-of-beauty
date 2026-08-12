@@ -11,7 +11,15 @@ import { cn } from '@galaxy/shared';
  *   <QuietCornerBadge amenities={['toys', 'coloring', 'tablet', 'play_area']} />
  */
 
-type CornerAmenity = 'toys' | 'coloring' | 'tablet' | 'play_area' | 'baby_chair' | 'changing_table' | 'nursing_area' | 'kids_drinks';
+type CornerAmenity =
+  | 'toys'
+  | 'coloring'
+  | 'tablet'
+  | 'play_area'
+  | 'baby_chair'
+  | 'changing_table'
+  | 'nursing_area'
+  | 'kids_drinks';
 
 interface AmenityDef {
   emoji: string;
@@ -55,7 +63,9 @@ export function QuietCornerBadge({
     kids_drinks: 'مشروبات أطفال',
   };
 
-  const active = amenities.map((k) => AMENITIES.find((a) => a.label === map[k])).filter(Boolean) as AmenityDef[];
+  const active = amenities
+    .map((k) => AMENITIES.find((a) => a.label === map[k]))
+    .filter(Boolean) as AmenityDef[];
 
   return (
     <div
@@ -66,11 +76,11 @@ export function QuietCornerBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">🧒</span>
+        <span className="text-xl" aria-hidden="true">
+          🧒
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">
-            ركن الأطفال
-          </h4>
+          <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">ركن الأطفال</h4>
           <p className="text-[10px] text-orange-500 dark:text-orange-400">
             لأن الأم تحتاج وقتاً لنفسها
           </p>
@@ -89,14 +99,14 @@ export function QuietCornerBadge({
             key={a.label}
             className="flex items-center gap-1.5 rounded-lg bg-orange-50 px-2.5 py-2 dark:bg-orange-950"
           >
-            <span className="text-sm" aria-hidden="true">{a.emoji}</span>
+            <span className="text-sm" aria-hidden="true">
+              {a.emoji}
+            </span>
             <div>
               <p className="text-[10px] font-bold text-orange-800 dark:text-orange-200">
                 {a.label}
               </p>
-              <p className="text-[9px] text-orange-600 dark:text-orange-400">
-                {a.detail}
-              </p>
+              <p className="text-[9px] text-orange-600 dark:text-orange-400">{a.detail}</p>
             </div>
           </div>
         ))}

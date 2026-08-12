@@ -45,7 +45,9 @@ export function RandomActOfBeauty({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">🎁</span>
+        <span className="text-3xl" aria-hidden="true">
+          🎁
+        </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">
           {hasWon ? 'أنتِ الفائزة!' : 'لفتة جمال'}
         </h4>
@@ -60,7 +62,9 @@ export function RandomActOfBeauty({
       <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
         {hasWon ? (
           <>
-            <span className="text-4xl" aria-hidden="true">{surprise.emoji}</span>
+            <span className="text-4xl" aria-hidden="true">
+              {surprise.emoji}
+            </span>
             <p className="mt-1 text-lg font-bold text-amber-800 dark:text-amber-200">
               {surprise.text}
             </p>
@@ -70,13 +74,18 @@ export function RandomActOfBeauty({
           </>
         ) : (
           <>
-            <span className="text-4xl" aria-hidden="true">🎲</span>
+            <span className="text-4xl" aria-hidden="true">
+              🎲
+            </span>
             <p className="mt-1 text-xs text-text-secondary dark:text-gray-300">
               أي خدمة قد تكون مجانية لكِ هذا الشهر
             </p>
             <div className="mt-2 flex flex-wrap justify-center gap-1">
               {SURPRISES.map((s) => (
-                <span key={s.text} className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] text-amber-700 dark:bg-amber-900 dark:text-amber-300">
+                <span
+                  key={s.text}
+                  className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] text-amber-700 dark:bg-amber-900 dark:text-amber-300"
+                >
                   {s.emoji} {s.text}
                 </span>
               ))}

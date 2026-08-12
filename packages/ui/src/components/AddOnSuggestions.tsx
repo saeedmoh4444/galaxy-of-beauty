@@ -22,11 +22,18 @@ interface AddOnSuggestionsProps {
   className?: string;
 }
 
-export function AddOnSuggestions({ serviceId: _serviceId, addOns, onAdd, className = '' }: AddOnSuggestionsProps): JSX.Element | null {
+export function AddOnSuggestions({
+  serviceId: _serviceId,
+  addOns,
+  onAdd,
+  className = '',
+}: AddOnSuggestionsProps): JSX.Element | null {
   if (addOns.length === 0) return null;
 
   return (
-    <div className={`rounded-2xl border border-edge bg-surface-muted p-4 dark:border-gray-700 dark:bg-gray-900 ${className}`}>
+    <div
+      className={`rounded-2xl border border-edge bg-surface-muted p-4 dark:border-gray-700 dark:bg-gray-900 ${className}`}
+    >
       <h4 className="text-sm font-semibold text-text-primary dark:text-gray-100">
         💡 العناية تقترح عليكِ
       </h4>
@@ -35,10 +42,14 @@ export function AddOnSuggestions({ serviceId: _serviceId, addOns, onAdd, classNa
       </p>
       <div className="mt-3 space-y-2">
         {addOns.map((addOn) => (
-          <div key={addOn.id} className="flex items-center justify-between rounded-lg bg-white p-3 dark:bg-gray-800">
+          <div
+            key={addOn.id}
+            className="flex items-center justify-between rounded-lg bg-white p-3 dark:bg-gray-800"
+          >
             <div>
               <span className="text-sm font-medium text-text-primary dark:text-gray-100">
-                {addOn.emoji ? `${addOn.emoji} ` : ''}{addOn.name}
+                {addOn.emoji ? `${addOn.emoji} ` : ''}
+                {addOn.name}
               </span>
               {addOn.popularity ? (
                 <span className="ml-2 text-[10px] text-amber-600">🔥 {addOn.popularity}+ حجز</span>

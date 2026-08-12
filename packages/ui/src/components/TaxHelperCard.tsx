@@ -40,7 +40,9 @@ export function TaxHelperCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">📊</span>
+        <span className="text-xl" aria-hidden="true">
+          📊
+        </span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             مساعد الزكاة والضرائب
@@ -70,7 +72,14 @@ export function TaxHelperCard({
       {/* Growth */}
       {growth !== null && (
         <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60">
-          <p className={cn('text-[10px] font-bold', growth >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400')}>
+          <p
+            className={cn(
+              'text-[10px] font-bold',
+              growth >= 0
+                ? 'text-emerald-600 dark:text-emerald-400'
+                : 'text-rose-600 dark:text-rose-400',
+            )}
+          >
             {growth >= 0 ? `📈 نمو ${growth}%` : `📉 انخفاض ${Math.abs(growth)}%`} عن {quarter}
           </p>
         </div>
@@ -78,9 +87,7 @@ export function TaxHelperCard({
 
       {/* Quarter info */}
       <div className="mt-2 rounded-lg bg-emerald-50 p-2 text-center dark:bg-emerald-950">
-        <p className="text-[10px] text-emerald-700 dark:text-emerald-300">
-          📅 {quarter}
-        </p>
+        <p className="text-[10px] text-emerald-700 dark:text-emerald-300">📅 {quarter}</p>
       </div>
 
       {/* CTAs */}

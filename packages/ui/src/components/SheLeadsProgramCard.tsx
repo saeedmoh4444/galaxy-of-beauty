@@ -40,10 +40,10 @@ export function SheLeadsProgramCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">🚀</span>
-        <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">
-          She Leads
-        </h4>
+        <span className="text-3xl" aria-hidden="true">
+          🚀
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">She Leads</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
           من خبيرة إلى قائدة — برنامج المسار السريع للإدارة
         </p>
@@ -53,15 +53,11 @@ export function SheLeadsProgramCard({
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">المدة</p>
-          <p className="text-sm font-bold text-amber-800 dark:text-amber-200">
-            {duration}
-          </p>
+          <p className="text-sm font-bold text-amber-800 dark:text-amber-200">{duration}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">الملتحقات</p>
-          <p className="text-sm font-bold text-amber-800 dark:text-amber-200">
-            {participants}+
-          </p>
+          <p className="text-sm font-bold text-amber-800 dark:text-amber-200">{participants}+</p>
         </div>
       </div>
 
@@ -69,13 +65,13 @@ export function SheLeadsProgramCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {MODULES.map((m) => (
           <div key={m.title} className="rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
-            <span className="text-lg" aria-hidden="true">{m.emoji}</span>
+            <span className="text-lg" aria-hidden="true">
+              {m.emoji}
+            </span>
             <p className="mt-0.5 text-[10px] font-bold text-text-primary dark:text-gray-100">
               {m.title}
             </p>
-            <p className="text-[9px] text-text-tertiary dark:text-gray-400">
-              {m.desc}
-            </p>
+            <p className="text-[9px] text-text-tertiary dark:text-gray-400">{m.desc}</p>
           </div>
         ))}
       </div>

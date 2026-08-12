@@ -21,10 +21,16 @@ const ICONS = {
   trending: '📈',
 };
 
-export function PopularityBadge({ count, label = 'حجز هذا الأسبوع', variant = 'fire', className = '' }: PopularityBadgeProps): JSX.Element | null {
+export function PopularityBadge({
+  count,
+  label = 'حجز هذا الأسبوع',
+  variant = 'fire',
+  className = '',
+}: PopularityBadgeProps): JSX.Element | null {
   if (count < 5) return null;
 
-  const displayCount = count >= 100 ? '100+' : count >= 50 ? '50+' : count >= 20 ? '20+' : `${count}+`;
+  const displayCount =
+    count >= 100 ? '100+' : count >= 50 ? '50+' : count >= 20 ? '20+' : `${count}+`;
 
   return (
     <span

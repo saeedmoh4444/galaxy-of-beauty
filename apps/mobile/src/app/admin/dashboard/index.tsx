@@ -24,7 +24,13 @@ export default function AdminDashboardScreen(): JSX.Element {
           <View key={key} style={styles.statCard}>
             <Text style={styles.statNum}>{String(data?.[key] ?? 0)}</Text>
             <Text style={styles.statLabel}>
-              {key === 'totalUsers' ? '👥 مستخدمين' : key === 'totalBookings' ? '📅 حجوزات' : key === 'totalTechnicians' ? '💅 فنيات' : '💰 إيرادات'}
+              {key === 'totalUsers'
+                ? '👥 مستخدمين'
+                : key === 'totalBookings'
+                  ? '📅 حجوزات'
+                  : key === 'totalTechnicians'
+                    ? '💅 فنيات'
+                    : '💰 إيرادات'}
             </Text>
           </View>
         ))}
@@ -37,7 +43,11 @@ export default function AdminDashboardScreen(): JSX.Element {
           { h: '/admin/finance', l: '💰 المالية' },
           { h: '/admin/analytics', l: '📈 التحليلات' },
         ].map((link, i) => (
-          <TouchableOpacity key={i} style={styles.linkBtn} onPress={() => router.push(link.h as any)}>
+          <TouchableOpacity
+            key={i}
+            style={styles.linkBtn}
+            onPress={() => router.push(link.h as any)}
+          >
             <Text style={styles.linkText}>{link.l}</Text>
           </TouchableOpacity>
         ))}
@@ -47,12 +57,36 @@ export default function AdminDashboardScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.brand,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
   statsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 24 },
-  statCard: { width: '47%', backgroundColor: COLORS.white, borderRadius: 14, padding: 16, alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
+  statCard: {
+    width: '47%',
+    backgroundColor: COLORS.white,
+    borderRadius: 14,
+    padding: 16,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
   statNum: { fontSize: 20, fontWeight: '800', color: COLORS.gray900 },
   statLabel: { fontSize: 12, color: COLORS.gray400, marginTop: 4 },
   links: { gap: 8 },
-  linkBtn: { backgroundColor: COLORS.white, borderRadius: 12, padding: 16, shadowColor: '#000', shadowOpacity: 0.03, shadowRadius: 2, elevation: 1 },
+  linkBtn: {
+    backgroundColor: COLORS.white,
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOpacity: 0.03,
+    shadowRadius: 2,
+    elevation: 1,
+  },
   linkText: { fontSize: 15, fontWeight: '600', color: COLORS.gray900 },
 });

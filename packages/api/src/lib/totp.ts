@@ -47,11 +47,7 @@ function generateToken(secret: string, counter: number): string {
     return '000000';
   }
 
-  const binary =
-    ((b0 & 0x7f) << 24) |
-    ((b1 & 0xff) << 16) |
-    ((b2 & 0xff) << 8) |
-    (b3 & 0xff);
+  const binary = ((b0 & 0x7f) << 24) | ((b1 & 0xff) << 16) | ((b2 & 0xff) << 8) | (b3 & 0xff);
 
   // Mod 10^DIGITS
   const token = binary % 10 ** TOTP_DIGITS;
@@ -73,10 +69,7 @@ export function verifyTotpToken(token: string, secret: string): boolean {
     // Check tokens within the allowed window (current step ± drift)
     for (let offset = -TOTP_WINDOW; offset <= TOTP_WINDOW; offset++) {
       const expectedToken = generateToken(secret, counter + offset);
-      if (crypto.timingSafeEqual(
-        Buffer.from(token),
-        Buffer.from(expectedToken),
-      )) {
+      if (crypto.timingSafeEqual(Buffer.from(token), Buffer.from(expectedToken))) {
         return true;
       }
     }

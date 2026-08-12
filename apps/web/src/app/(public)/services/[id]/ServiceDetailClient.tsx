@@ -20,11 +20,7 @@ export interface ServiceDetailData {
   fetchError?: string;
 }
 
-export function ServiceDetailClient({
-  svc,
-}: {
-  svc: ServiceDetailData;
-}): JSX.Element {
+export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.Element {
   const title = svc.titleJson?.ar ?? '';
   const desc = svc.descriptionJson?.ar ?? '';
   const variants = svc.variants ?? [];
@@ -58,7 +54,10 @@ export function ServiceDetailClient({
       {tags.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-2">
           {tags.map((t, i) => (
-            <span key={i} className="rounded-full bg-brand-50 px-3 py-1 text-xs text-brand-700 dark:bg-brand-950 dark:text-brand-300">
+            <span
+              key={i}
+              className="rounded-full bg-brand-50 px-3 py-1 text-xs text-brand-700 dark:bg-brand-950 dark:text-brand-300"
+            >
               {t.tag.nameJson?.ar || ''}
             </span>
           ))}
@@ -66,19 +65,25 @@ export function ServiceDetailClient({
       )}
 
       <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">{title}</h1>
-      <p className="mt-1 text-sm text-gray-500">{cat.nameAr as string || ''}</p>
+      <p className="mt-1 text-sm text-gray-500">{(cat.nameAr as string) || ''}</p>
       {desc && <p className="mt-3 text-gray-600 dark:text-gray-400">{desc}</p>}
 
       {/* Share */}
       <div className="mt-3 flex gap-2">
         <button
-          onClick={() => navigator.share?.({ title, url: window.location.href }).catch(() => navigator.clipboard.writeText(window.location.href))}
+          onClick={() =>
+            navigator
+              .share?.({ title, url: window.location.href })
+              .catch(() => navigator.clipboard.writeText(window.location.href))
+          }
           className="rounded-lg border border-gray-200 px-3 py-1 text-xs text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
         >
           📤 مشاركة
         </button>
         <button
-          onClick={() => { navigator.clipboard.writeText(window.location.href); }}
+          onClick={() => {
+            navigator.clipboard.writeText(window.location.href);
+          }}
           className="rounded-lg border border-gray-200 px-3 py-1 text-xs text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
         >
           📋 نسخ الرابط
@@ -86,8 +91,16 @@ export function ServiceDetailClient({
       </div>
 
       <div className="mt-6 flex gap-8">
-        <div><span className="text-sm text-gray-500">السعر</span><p className="text-2xl font-bold text-brand-600">{formatCurrency(Number(svc.basePrice))}</p></div>
-        <div><span className="text-sm text-gray-500">المدة</span><p className="text-2xl font-bold">{svc.durationMin} دقيقة</p></div>
+        <div>
+          <span className="text-sm text-gray-500">السعر</span>
+          <p className="text-2xl font-bold text-brand-600">
+            {formatCurrency(Number(svc.basePrice))}
+          </p>
+        </div>
+        <div>
+          <span className="text-sm text-gray-500">المدة</span>
+          <p className="text-2xl font-bold">{svc.durationMin} دقيقة</p>
+        </div>
       </div>
 
       {/* Variants */}
@@ -96,7 +109,10 @@ export function ServiceDetailClient({
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">الخيارات</h2>
           <div className="mt-2 flex flex-wrap gap-2">
             {variants.map((v: AnyRecord) => (
-              <span key={v.id} className="rounded-full bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
+              <span
+                key={v.id}
+                className="rounded-full bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800"
+              >
                 {v.nameJson?.ar}
                 {Number(v.priceDelta) > 0 ? ` (+${formatCurrency(Number(v.priceDelta))})` : ''}
               </span>
@@ -111,14 +127,18 @@ export function ServiceDetailClient({
           <Button size="lg">احجزي الآن</Button>
         </Link>
         <Link href={`/compare?ids=${id}`}>
-          <Button size="lg" variant="outline">مقارنة</Button>
+          <Button size="lg" variant="outline">
+            مقارنة
+          </Button>
         </Link>
       </div>
 
       {/* Technicians */}
       {techs.length > 0 && (
         <div className="mt-10">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">الفنيات المتاحات</h2>
+          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">
+            الفنيات المتاحات
+          </h2>
           <div className="grid gap-4 md:grid-cols-2">
             {techs.map((ts: AnyRecord) => {
               const tech = ts.technician ?? {};
@@ -156,16 +176,22 @@ export function ServiceDetailClient({
       {/* Related */}
       {related.length > 0 && (
         <div className="mt-12">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">خدمات مشابهة</h2>
+          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">
+            خدمات مشابهة
+          </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((r: AnyRecord) => (
               <Link key={r.id} href={`/services/${r.id}`}>
                 <Card hover padding="sm">
-                  <div className="flex h-24 items-center justify-center rounded-lg bg-gray-100 text-3xl dark:bg-gray-800">💄</div>
+                  <div className="flex h-24 items-center justify-center rounded-lg bg-gray-100 text-3xl dark:bg-gray-800">
+                    💄
+                  </div>
                   <p className="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
                     {r.titleJson?.ar || ''}
                   </p>
-                  <p className="mt-1 text-xs font-bold text-brand-600">{formatCurrency(Number(r.basePrice))}</p>
+                  <p className="mt-1 text-xs font-bold text-brand-600">
+                    {formatCurrency(Number(r.basePrice))}
+                  </p>
                 </Card>
               </Link>
             ))}

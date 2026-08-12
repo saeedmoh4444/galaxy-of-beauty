@@ -16,24 +16,41 @@ export default function AdminAreasPage(): JSX.Element {
   const [showAdd, setShowAdd] = useState(false);
   const [newArea, setNewArea] = useState({ cityId: '', nameAr: '', nameEn: '' });
 
-  const { data: areasData, isLoading, isError, refetch } = api.platform.listAreas.useQuery(
-    cityFilter ? { cityId: cityFilter } : {},
-  );
+  const {
+    data: areasData,
+    isLoading,
+    isError,
+    refetch,
+  } = api.platform.listAreas.useQuery(cityFilter ? { cityId: cityFilter } : {});
   const { data: citiesData } = api.platform.getCities.useQuery();
   const areas: AreaItem[] = areasData ?? [];
   const cities: CityItem[] = citiesData ?? [];
 
   const createMut = api.platform.createArea.useMutation({
-    onSuccess: () => { setShowAdd(false); refetch(); addToast('success', 'تمت إضافة المنطقة'); },
+    onSuccess: () => {
+      setShowAdd(false);
+      refetch();
+      addToast('success', 'تمت إضافة المنطقة');
+    },
     onError: () => addToast('error', 'فشلت الإضافة'),
   });
   const deleteMut = api.platform.deleteArea.useMutation({
-    onSuccess: () => { refetch(); addToast('success', 'تم تعطيل المنطقة'); },
+    onSuccess: () => {
+      refetch();
+      addToast('success', 'تم تعطيل المنطقة');
+    },
   });
 
   const handleAdd = () => {
-    if (!newArea.cityId || !newArea.nameAr) { addToast('warning', 'الرجاء إدخال البيانات'); return; }
-    createMut.mutate({ cityId: Number(newArea.cityId), nameAr: newArea.nameAr, nameEn: newArea.nameEn || newArea.nameAr });
+    if (!newArea.cityId || !newArea.nameAr) {
+      addToast('warning', 'الرجاء إدخال البيانات');
+      return;
+    }
+    createMut.mutate({
+      cityId: Number(newArea.cityId),
+      nameAr: newArea.nameAr,
+      nameEn: newArea.nameEn || newArea.nameAr,
+    });
   };
 
   return (
@@ -53,7 +70,9 @@ export default function AdminAreasPage(): JSX.Element {
           >
             <option value="">كل المدن</option>
             {cities.map((c) => (
-              <option key={c.id} value={c.id}>{c.nameAr}</option>
+              <option key={c.id} value={c.id}>
+                {c.nameAr}
+              </option>
             ))}
           </select>
         </div>
@@ -81,12 +100,18 @@ export default function AdminAreasPage(): JSX.Element {
                     <td className="p-3 font-medium">{a.nameAr}</td>
                     <td className="p-3 text-text-secondary">{a.city?.nameAr ?? ''}</td>
                     <td className="p-3">
-                      <span className={`rounded px-2 py-0.5 text-xs ${a.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                      <span
+                        className={`rounded px-2 py-0.5 text-xs ${a.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
+                      >
                         {a.isActive ? 'نشط' : 'معطل'}
                       </span>
                     </td>
                     <td className="p-3">
-                      <Button variant="outline" size="sm" onClick={() => deleteMut.mutate({ id: a.id })}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => deleteMut.mutate({ id: a.id })}
+                      >
                         تعطيل
                       </Button>
                     </td>
@@ -99,9 +124,17 @@ export default function AdminAreasPage(): JSX.Element {
 
         {/* Add modal */}
         {showAdd && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={() => setShowAdd(false)}>
-            <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900" onClick={(e) => e.stopPropagation()}>
-              <h3 className="mb-4 text-lg font-bold text-text-primary dark:text-gray-100">إضافة منطقة جديدة</h3>
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+            onClick={() => setShowAdd(false)}
+          >
+            <div
+              className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className="mb-4 text-lg font-bold text-text-primary dark:text-gray-100">
+                إضافة منطقة جديدة
+              </h3>
               <div className="space-y-3">
                 <select
                   className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
@@ -110,14 +143,28 @@ export default function AdminAreasPage(): JSX.Element {
                 >
                   <option value="">اختر المدينة</option>
                   {cities.map((c) => (
-                    <option key={c.id} value={c.id}>{c.nameAr}</option>
+                    <option key={c.id} value={c.id}>
+                      {c.nameAr}
+                    </option>
                   ))}
                 </select>
-                <Input value={newArea.nameAr} onChange={(e) => setNewArea({ ...newArea, nameAr: e.target.value })} placeholder="اسم المنطقة (عربي)" />
-                <Input value={newArea.nameEn} onChange={(e) => setNewArea({ ...newArea, nameEn: e.target.value })} placeholder="اسم المنطقة (إنجليزي)" />
+                <Input
+                  value={newArea.nameAr}
+                  onChange={(e) => setNewArea({ ...newArea, nameAr: e.target.value })}
+                  placeholder="اسم المنطقة (عربي)"
+                />
+                <Input
+                  value={newArea.nameEn}
+                  onChange={(e) => setNewArea({ ...newArea, nameEn: e.target.value })}
+                  placeholder="اسم المنطقة (إنجليزي)"
+                />
                 <div className="flex gap-3">
-                  <Button onClick={handleAdd} loading={createMut.isPending} className="flex-1">حفظ</Button>
-                  <Button variant="outline" onClick={() => setShowAdd(false)}>إلغاء</Button>
+                  <Button onClick={handleAdd} loading={createMut.isPending} className="flex-1">
+                    حفظ
+                  </Button>
+                  <Button variant="outline" onClick={() => setShowAdd(false)}>
+                    إلغاء
+                  </Button>
                 </div>
               </div>
             </div>

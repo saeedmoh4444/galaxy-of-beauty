@@ -2,12 +2,7 @@ import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { notFound } from '../lib/errors';
-import {
-  publicProcedure,
-  adminProcedure,
-  technicianProcedure,
-  router,
-} from '../trpc';
+import { publicProcedure, adminProcedure, technicianProcedure, router } from '../trpc';
 import { addTechnicianServiceSchema } from '../validators/catalog';
 
 /** Shared pagination / filter input for the technician list endpoint. */
@@ -25,48 +20,46 @@ export const technicianRouter = router({
    * Optionally filters by city and/or a service the technician offers.
    * Ordered by average rating descending.
    */
-  list: publicProcedure
-    .input(technicianListSchema)
-    .query(async ({ input }) => {
-      const { city, serviceId, page, limit } = input;
-      const skip = (page - 1) * limit;
+  list: publicProcedure.input(technicianListSchema).query(async ({ input }) => {
+    const { city, serviceId, page, limit } = input;
+    const skip = (page - 1) * limit;
 
-      const where: Record<string, unknown> = { kycStatus: 'VERIFIED' };
+    const where: Record<string, unknown> = { kycStatus: 'VERIFIED' };
 
-      if (city) {
-        where.city = city;
-      }
+    if (city) {
+      where.city = city;
+    }
 
-      if (serviceId) {
-        where.technicianServices = {
-          some: {
-            serviceId,
-            isActive: true,
-          },
-        };
-      }
+    if (serviceId) {
+      where.technicianServices = {
+        some: {
+          serviceId,
+          isActive: true,
+        },
+      };
+    }
 
-      const [items, total] = await Promise.all([
-        prisma.technician.findMany({
-          where,
-          orderBy: { ratingAvg: 'desc' },
-          skip,
-          take: limit,
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                avatarUrl: true,
-              },
+    const [items, total] = await Promise.all([
+      prisma.technician.findMany({
+        where,
+        orderBy: { ratingAvg: 'desc' },
+        skip,
+        take: limit,
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              avatarUrl: true,
             },
           },
-        }),
-        prisma.technician.count({ where }),
-      ]);
+        },
+      }),
+      prisma.technician.count({ where }),
+    ]);
 
-      return { items, total, page, limit };
-    }),
+    return { items, total, page, limit };
+  }),
 
   /**
    * getById — full technician profile by user ID.

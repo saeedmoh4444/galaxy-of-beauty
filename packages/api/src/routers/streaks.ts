@@ -35,12 +35,8 @@ export const streakRouter = router({
       }),
     ]);
 
-    const earnedIds = new Set(
-      earnedAchievements.map((e) => e.achievementId),
-    );
-    const earnedMap = new Map(
-      earnedAchievements.map((e) => [e.achievementId, e.awardedAt]),
-    );
+    const earnedIds = new Set(earnedAchievements.map((e) => e.achievementId));
+    const earnedMap = new Map(earnedAchievements.map((e) => [e.achievementId, e.awardedAt]));
 
     return {
       all: allAchievements.map((a) => ({

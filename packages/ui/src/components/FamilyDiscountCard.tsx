@@ -33,7 +33,9 @@ export function FamilyDiscountCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">👨‍👩‍👧‍👦</span>
+        <span className="text-3xl" aria-hidden="true">
+          👨‍👩‍👧‍👦
+        </span>
         <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">
           خصم العائلة
         </h4>

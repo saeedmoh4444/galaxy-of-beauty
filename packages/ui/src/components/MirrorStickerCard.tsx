@@ -28,9 +28,7 @@ interface MirrorStickerCardProps {
   className?: string;
 }
 
-export function MirrorStickerCard({
-  className = '',
-}: MirrorStickerCardProps): JSX.Element {
+export function MirrorStickerCard({ className = '' }: MirrorStickerCardProps): JSX.Element {
   const [index] = useState(() => Math.floor(Math.random() * AFFIRMATIONS.length));
   const affirmation = AFFIRMATIONS[index]!;
 
@@ -42,13 +40,11 @@ export function MirrorStickerCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">🪞</span>
-        <h4 className="mt-1 text-sm font-bold text-pink-700 dark:text-pink-300">
-          مرآة الجمال
-        </h4>
-        <p className="text-[10px] text-pink-500 dark:text-pink-400">
-          انظري في المرآة واقرئي
-        </p>
+        <span className="text-3xl" aria-hidden="true">
+          🪞
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-pink-700 dark:text-pink-300">مرآة الجمال</h4>
+        <p className="text-[10px] text-pink-500 dark:text-pink-400">انظري في المرآة واقرئي</p>
       </div>
 
       {/* Mirror frame */}
@@ -59,7 +55,9 @@ export function MirrorStickerCard({
         >
           &ldquo;{affirmation}&rdquo;
         </p>
-        <p className="mt-2 text-2xl" aria-hidden="true">💖</p>
+        <p className="mt-2 text-2xl" aria-hidden="true">
+          💖
+        </p>
       </div>
 
       {/* Context */}

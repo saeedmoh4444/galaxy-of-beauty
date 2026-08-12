@@ -12,44 +12,129 @@ async function main() {
     where: { email: 'admin@galaxyofbeauty.sa' },
     update: {},
     create: {
-      email: 'admin@galaxyofbeauty.sa', phone: '+966500000001',
+      email: 'admin@galaxyofbeauty.sa',
+      phone: '+966500000001',
       passwordHash: '$2a$10$placeholder', // Use bcrypt in real seed
-      name: 'مدير النظام', role: 'ADMIN', emailVerified: true,
+      name: 'مدير النظام',
+      role: 'ADMIN',
+      emailVerified: true,
     },
   });
   console.log(`  Admin: ${admin.email}`);
 
   // ── Saudi Cities ────────────────────────────────────────
   const cities = [
-    'الرياض', 'جدة', 'مكة المكرمة', 'المدينة المنورة', 'الدمام',
-    'الخبر', 'الطائف', 'تبوك', 'بريدة', 'أبها', 'خميس مشيط',
-    'حائل', 'نجران', 'جازان', 'سكاكا', 'عرعر', 'الباحة', 'ينبع',
-    'الجبيل', 'الأحساء', 'القطيف', 'الظهران', 'حفر الباطن', 'عنيزة',
+    'الرياض',
+    'جدة',
+    'مكة المكرمة',
+    'المدينة المنورة',
+    'الدمام',
+    'الخبر',
+    'الطائف',
+    'تبوك',
+    'بريدة',
+    'أبها',
+    'خميس مشيط',
+    'حائل',
+    'نجران',
+    'جازان',
+    'سكاكا',
+    'عرعر',
+    'الباحة',
+    'ينبع',
+    'الجبيل',
+    'الأحساء',
+    'القطيف',
+    'الظهران',
+    'حفر الباطن',
+    'عنيزة',
   ];
 
   await prisma.saudiCity.createMany({
-    data: cities.map((c) => ({ nameAr: c, nameEn: c, regionAr: 'المملكة العربية السعودية', regionEn: 'Saudi Arabia' })),
+    data: cities.map((c) => ({
+      nameAr: c,
+      nameEn: c,
+      regionAr: 'المملكة العربية السعودية',
+      regionEn: 'Saudi Arabia',
+    })),
     skipDuplicates: true,
   });
   console.log(`  ${cities.length} cities seeded`);
 
   // ── Areas (linked to cities) ──────────────────────────────
   const areaMap: Record<string, string[]> = {
-    'الرياض': ['الملز', 'الروضة', 'السليمانية', 'الملقا', 'النرجس', 'الياسمين', 'العقيق', 'القدس', 'الربوة', 'العليا'],
-    'جدة': ['الروضة', 'السلامة', 'الزهراء', 'الحمراء', 'الشاطئ', 'الأندلس', 'الصفا', 'الفيصلية', 'النعيم', 'البساتين'],
-    'مكة المكرمة': ['العزيزية', 'الشرائع', 'العوالي', 'المسفلة', 'الزاهر', 'التنعيم', 'الرصيفة', 'الكعكية'],
-    'المدينة المنورة': ['قباء', 'العوالي', 'البدراني', 'الخالدية', 'العزيزية', 'السلام', 'الحرة الشرقية', 'الدائري'],
-    'الدمام': ['الشاطئ', 'الفيصلية', 'النزهة', 'الروضة', 'المنار', 'الندى', 'الجبيل', 'الفردوس'],
-    'الخبر': ['العقربية', 'الخبر الشمالية', 'الخبر الجنوبية', 'الكورنيش', 'البندرية', 'الراكة', 'مدينة العمال'],
-    'الطائف': ['الشهداء', 'الوسام', 'الفيصلية', 'الحوية', 'الشفا', 'الهدا', 'السلامة', 'النسيم'],
-    'أبها': ['الموظفين', 'النميص', 'المنهل', 'المفتاحة', 'الشرفية', 'الضباب', 'النسيم', 'الخالدية'],
-    'بريدة': ['الصفراء', 'النهضة', 'المنار', 'الربيع', 'الخضر', 'المطار', 'سلطانة', 'الفايزية'],
-    'تبوك': ['الروضة', 'الفيصلية', 'النزهة', 'الورود', 'المروج', 'العزيزية', 'النهضة', 'الخالدية'],
-    'حائل': ['الجامعيين', 'المنتزه', 'الشفاء', 'الزهراء', 'الخزامى', 'النقرة', 'الروضة', 'النسيم'],
-    'نجران': ['الفيصلية', 'الأثايبة', 'العريسة', 'المشعلية', 'الشرافة', 'الحضن', 'الروضة'],
-    'جازان': ['الروضة', 'النسيم', 'الشاطئ', 'الصفا', 'الخالدية', 'السويس', 'المطار', 'المحمدية'],
-    'ينبع': ['البحيرة', 'السميري', 'الروضة', 'النخيل', 'الفيصلية', 'المنار', 'الجابرية', 'الربوة'],
-    'الأحساء': ['الهفوف', 'المبرز', 'المعظمية', 'الراشدية', 'النسيم', 'الفيصلية', 'النايفية', 'الربوة'],
+    الرياض: [
+      'الملز',
+      'الروضة',
+      'السليمانية',
+      'الملقا',
+      'النرجس',
+      'الياسمين',
+      'العقيق',
+      'القدس',
+      'الربوة',
+      'العليا',
+    ],
+    جدة: [
+      'الروضة',
+      'السلامة',
+      'الزهراء',
+      'الحمراء',
+      'الشاطئ',
+      'الأندلس',
+      'الصفا',
+      'الفيصلية',
+      'النعيم',
+      'البساتين',
+    ],
+    'مكة المكرمة': [
+      'العزيزية',
+      'الشرائع',
+      'العوالي',
+      'المسفلة',
+      'الزاهر',
+      'التنعيم',
+      'الرصيفة',
+      'الكعكية',
+    ],
+    'المدينة المنورة': [
+      'قباء',
+      'العوالي',
+      'البدراني',
+      'الخالدية',
+      'العزيزية',
+      'السلام',
+      'الحرة الشرقية',
+      'الدائري',
+    ],
+    الدمام: ['الشاطئ', 'الفيصلية', 'النزهة', 'الروضة', 'المنار', 'الندى', 'الجبيل', 'الفردوس'],
+    الخبر: [
+      'العقربية',
+      'الخبر الشمالية',
+      'الخبر الجنوبية',
+      'الكورنيش',
+      'البندرية',
+      'الراكة',
+      'مدينة العمال',
+    ],
+    الطائف: ['الشهداء', 'الوسام', 'الفيصلية', 'الحوية', 'الشفا', 'الهدا', 'السلامة', 'النسيم'],
+    أبها: ['الموظفين', 'النميص', 'المنهل', 'المفتاحة', 'الشرفية', 'الضباب', 'النسيم', 'الخالدية'],
+    بريدة: ['الصفراء', 'النهضة', 'المنار', 'الربيع', 'الخضر', 'المطار', 'سلطانة', 'الفايزية'],
+    تبوك: ['الروضة', 'الفيصلية', 'النزهة', 'الورود', 'المروج', 'العزيزية', 'النهضة', 'الخالدية'],
+    حائل: ['الجامعيين', 'المنتزه', 'الشفاء', 'الزهراء', 'الخزامى', 'النقرة', 'الروضة', 'النسيم'],
+    نجران: ['الفيصلية', 'الأثايبة', 'العريسة', 'المشعلية', 'الشرافة', 'الحضن', 'الروضة'],
+    جازان: ['الروضة', 'النسيم', 'الشاطئ', 'الصفا', 'الخالدية', 'السويس', 'المطار', 'المحمدية'],
+    ينبع: ['البحيرة', 'السميري', 'الروضة', 'النخيل', 'الفيصلية', 'المنار', 'الجابرية', 'الربوة'],
+    الأحساء: [
+      'الهفوف',
+      'المبرز',
+      'المعظمية',
+      'الراشدية',
+      'النسيم',
+      'الفيصلية',
+      'النايفية',
+      'الربوة',
+    ],
   };
 
   const cityRecords = await prisma.saudiCity.findMany({ select: { id: true, nameAr: true } });
@@ -88,7 +173,12 @@ async function main() {
   ];
 
   await prisma.category.createMany({
-    data: categoryData.map((c) => ({ nameJson: { ar: c.ar, en: c.en }, slug: c.slug, imageUrl: null, sortOrder: 0 })),
+    data: categoryData.map((c) => ({
+      nameJson: { ar: c.ar, en: c.en },
+      slug: c.slug,
+      imageUrl: null,
+      sortOrder: 0,
+    })),
     skipDuplicates: true,
   });
   console.log(`  ${categoryData.length} categories seeded`);
@@ -131,8 +221,11 @@ async function main() {
       where: { slug },
       update: { titleJson: { ar: s.ar, en: s.en }, basePrice: s.price, categoryId: catId },
       create: {
-        categoryId: catId, titleJson: { ar: s.ar, en: s.en }, basePrice: s.price,
-        durationMin: s.min, slug,
+        categoryId: catId,
+        titleJson: { ar: s.ar, en: s.en },
+        basePrice: s.price,
+        durationMin: s.min,
+        slug,
         descriptionJson: { ar: `خدمة ${s.ar} احترافية`, en: `Professional ${s.en} service` },
       },
     });
@@ -153,26 +246,40 @@ async function main() {
       where: { email: t.email },
       update: { name: t.name, role: 'TECHNICIAN' },
       create: {
-        email: t.email, phone: `+9665${Math.floor(Math.random() * 100000000).toString().padStart(8, '0')}`,
-        passwordHash: '$2a$10$placeholder', name: t.name, role: 'TECHNICIAN', emailVerified: true,
+        email: t.email,
+        phone: `+9665${Math.floor(Math.random() * 100000000)
+          .toString()
+          .padStart(8, '0')}`,
+        passwordHash: '$2a$10$placeholder',
+        name: t.name,
+        role: 'TECHNICIAN',
+        emailVerified: true,
       },
     });
 
-    await prisma.wallet.upsert({ where: { userId: user.id }, update: {}, create: { userId: user.id } });
+    await prisma.wallet.upsert({
+      where: { userId: user.id },
+      update: {},
+      create: { userId: user.id },
+    });
 
     await prisma.technician.upsert({
       where: { userId: user.id },
       update: { city: t.city, area: t.area, kycStatus: 'VERIFIED' },
       create: {
         userId: user.id,
-        city: t.city, area: t.area,
+        city: t.city,
+        area: t.area,
         kycStatus: 'VERIFIED',
         completedBookings: Math.floor(Math.random() * 100),
         totalReviews: Math.floor(Math.random() * 50),
         ratingAvg: 4 + Math.random(),
         hourlyRate: 100 + Math.floor(Math.random() * 200),
         isEcoFriendly: Math.random() > 0.5,
-        bioJson: { ar: `خبيرة تجميل محترفة في ${t.city}`, en: `Professional beautician in ${t.city}` },
+        bioJson: {
+          ar: `خبيرة تجميل محترفة في ${t.city}`,
+          en: `Professional beautician in ${t.city}`,
+        },
         latitude: 24.7 + Math.random() * 4,
         longitude: 42 + Math.random() * 8,
       },
@@ -183,10 +290,41 @@ async function main() {
   // ── Loyalty Rewards ──────────────────────────────────────
   await prisma.loyaltyReward.createMany({
     data: [
-      { nameJson: { ar: 'خصم ١٠٪', en: '10% Discount' }, descriptionJson: { ar: 'خصم على الحجز', en: 'Discount on booking' }, pointsCost: 200, rewardType: 'discount_percent', rewardValue: 10, minTier: 'SILVER' },
-      { nameJson: { ar: 'خصم ٢٠٪', en: '20% Discount' }, descriptionJson: { ar: 'خصم على الحجز', en: 'Discount on booking' }, pointsCost: 500, rewardType: 'discount_percent', rewardValue: 20, minTier: 'GOLD' },
-      { nameJson: { ar: 'خدمة مجانية', en: 'Free Service' }, descriptionJson: { ar: 'خدمة مجانية حتى ١٠٠ ر.س', en: 'Free service up to 100 SAR' }, pointsCost: 800, rewardType: 'free_service', rewardValue: 100, minTier: 'GOLD' },
-      { nameJson: { ar: 'خصم ٥٠٪ بلاتيني', en: '50% Platinum Discount' }, descriptionJson: { ar: 'خصم خاص للأعضاء البلاتينيين', en: 'Exclusive platinum member discount' }, pointsCost: 1500, rewardType: 'discount_percent', rewardValue: 50, minTier: 'PLATINUM' },
+      {
+        nameJson: { ar: 'خصم ١٠٪', en: '10% Discount' },
+        descriptionJson: { ar: 'خصم على الحجز', en: 'Discount on booking' },
+        pointsCost: 200,
+        rewardType: 'discount_percent',
+        rewardValue: 10,
+        minTier: 'SILVER',
+      },
+      {
+        nameJson: { ar: 'خصم ٢٠٪', en: '20% Discount' },
+        descriptionJson: { ar: 'خصم على الحجز', en: 'Discount on booking' },
+        pointsCost: 500,
+        rewardType: 'discount_percent',
+        rewardValue: 20,
+        minTier: 'GOLD',
+      },
+      {
+        nameJson: { ar: 'خدمة مجانية', en: 'Free Service' },
+        descriptionJson: { ar: 'خدمة مجانية حتى ١٠٠ ر.س', en: 'Free service up to 100 SAR' },
+        pointsCost: 800,
+        rewardType: 'free_service',
+        rewardValue: 100,
+        minTier: 'GOLD',
+      },
+      {
+        nameJson: { ar: 'خصم ٥٠٪ بلاتيني', en: '50% Platinum Discount' },
+        descriptionJson: {
+          ar: 'خصم خاص للأعضاء البلاتينيين',
+          en: 'Exclusive platinum member discount',
+        },
+        pointsCost: 1500,
+        rewardType: 'discount_percent',
+        rewardValue: 50,
+        minTier: 'PLATINUM',
+      },
     ],
   });
   console.log('  4 loyalty rewards seeded');
@@ -194,9 +332,30 @@ async function main() {
   // ── Subscription Plans ────────────────────────────────────
   await prisma.subscriptionPlan.createMany({
     data: [
-      { nameJson: { ar: 'الباقة الفضية', en: 'Silver Plan' }, descriptionJson: { ar: 'حجز واحد شهرياً', en: '1 booking/month' }, interval: 'MONTHLY', price: 150, servicesPerMonth: 1, discountPercent: 10 },
-      { nameJson: { ar: 'الباقة الذهبية', en: 'Gold Plan' }, descriptionJson: { ar: 'حجزين شهرياً', en: '2 bookings/month' }, interval: 'MONTHLY', price: 280, servicesPerMonth: 2, discountPercent: 15 },
-      { nameJson: { ar: 'الباقة البلاتينية', en: 'Platinum Plan' }, descriptionJson: { ar: '٤ حجوزات شهرياً', en: '4 bookings/month' }, interval: 'MONTHLY', price: 500, servicesPerMonth: 4, discountPercent: 25 },
+      {
+        nameJson: { ar: 'الباقة الفضية', en: 'Silver Plan' },
+        descriptionJson: { ar: 'حجز واحد شهرياً', en: '1 booking/month' },
+        interval: 'MONTHLY',
+        price: 150,
+        servicesPerMonth: 1,
+        discountPercent: 10,
+      },
+      {
+        nameJson: { ar: 'الباقة الذهبية', en: 'Gold Plan' },
+        descriptionJson: { ar: 'حجزين شهرياً', en: '2 bookings/month' },
+        interval: 'MONTHLY',
+        price: 280,
+        servicesPerMonth: 2,
+        discountPercent: 15,
+      },
+      {
+        nameJson: { ar: 'الباقة البلاتينية', en: 'Platinum Plan' },
+        descriptionJson: { ar: '٤ حجوزات شهرياً', en: '4 bookings/month' },
+        interval: 'MONTHLY',
+        price: 500,
+        servicesPerMonth: 4,
+        discountPercent: 25,
+      },
     ],
   });
   console.log('  3 subscription plans seeded');
@@ -204,9 +363,33 @@ async function main() {
   // ── Promo Codes ───────────────────────────────────────────
   await prisma.promoCode.createMany({
     data: [
-      { code: 'WELCOME20', discountType: 'percent', discountValue: 20, maxUses: 100, maxDiscount: 50, isActive: true, createdBy: admin.id },
-      { code: 'RAMADAN50', discountType: 'fixed', discountValue: 50, maxUses: 200, minOrderAmount: 200, validUntil: new Date('2026-12-31'), isActive: true, createdBy: admin.id },
-      { code: 'VIP100', discountType: 'fixed', discountValue: 100, maxUses: 50, isActive: true, createdBy: admin.id },
+      {
+        code: 'WELCOME20',
+        discountType: 'percent',
+        discountValue: 20,
+        maxUses: 100,
+        maxDiscount: 50,
+        isActive: true,
+        createdBy: admin.id,
+      },
+      {
+        code: 'RAMADAN50',
+        discountType: 'fixed',
+        discountValue: 50,
+        maxUses: 200,
+        minOrderAmount: 200,
+        validUntil: new Date('2026-12-31'),
+        isActive: true,
+        createdBy: admin.id,
+      },
+      {
+        code: 'VIP100',
+        discountType: 'fixed',
+        discountValue: 100,
+        maxUses: 50,
+        isActive: true,
+        createdBy: admin.id,
+      },
     ],
     skipDuplicates: true,
   });
@@ -215,7 +398,12 @@ async function main() {
   // ── Feature Flags ─────────────────────────────────────────
   await prisma.featureFlag.createMany({
     data: [
-      { key: 'video_consultations', name: 'Video Consultations', enabled: true, rolloutPercent: 100 },
+      {
+        key: 'video_consultations',
+        name: 'Video Consultations',
+        enabled: true,
+        rolloutPercent: 100,
+      },
       { key: 'ai_skin_analysis', name: 'AI Skin Analysis', enabled: true, rolloutPercent: 50 },
       { key: 'marketplace', name: 'Beauty Product Marketplace', enabled: true, rolloutPercent: 30 },
       { key: 'subscription_boxes', name: 'Subscription Boxes', enabled: true, rolloutPercent: 100 },
@@ -231,5 +419,10 @@ async function main() {
 }
 
 main()
-  .catch((e) => { console.error(e); process.exit(1); })
-  .finally(async () => { await prisma.$disconnect(); });
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

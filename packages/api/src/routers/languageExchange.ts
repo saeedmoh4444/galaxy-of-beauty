@@ -13,23 +13,40 @@ const DEFAULT_TERMS = [
 
 export const languageExchangeRouter = router({
   getTerms: publicProcedure
-    .input(z.object({ fromLang: z.enum(['ar', 'en']).default('ar'), toLang: z.enum(['ar', 'en']).default('en') }))
+    .input(
+      z.object({
+        fromLang: z.enum(['ar', 'en']).default('ar'),
+        toLang: z.enum(['ar', 'en']).default('en'),
+      }),
+    )
     .query(async ({ input }) => {
       const custom = await prisma.beautyTerm.findMany({ take: 50 });
-      const terms = custom.length > 0 ? custom : DEFAULT_TERMS.map((t) => ({ ar: t.ar, en: t.en, emoji: t.emoji }));
+      const terms =
+        custom.length > 0
+          ? custom
+          : DEFAULT_TERMS.map((t) => ({ ar: t.ar, en: t.en, emoji: t.emoji }));
       return { terms, fromLang: input.fromLang, toLang: input.toLang };
     }),
 
   suggest: customerProcedure
-    .input(z.object({ ar: z.string().min(1).max(100), en: z.string().min(1).max(100), emoji: z.string().default('📝') }))
+    .input(
+      z.object({
+        ar: z.string().min(1).max(100),
+        en: z.string().min(1).max(100),
+        emoji: z.string().default('📝'),
+      }),
+    )
     .mutation(async ({ input }) => {
       return prisma.beautyTerm.create({ data: { ar: input.ar, en: input.en, emoji: input.emoji } });
     }),
 
   search: publicProcedure
-    .input(z.object({ query: z.string().min(1).max(100), lang: z.enum(['ar', 'en']).default('ar') }))
+    .input(
+      z.object({ query: z.string().min(1).max(100), lang: z.enum(['ar', 'en']).default('ar') }),
+    )
     .query(async ({ input }) => {
-      const where = input.lang === 'ar' ? { ar: { contains: input.query } } : { en: { contains: input.query } };
+      const where =
+        input.lang === 'ar' ? { ar: { contains: input.query } } : { en: { contains: input.query } };
       return prisma.beautyTerm.findMany({ where, take: 10 });
     }),
 });

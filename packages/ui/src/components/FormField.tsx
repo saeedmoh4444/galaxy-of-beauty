@@ -17,7 +17,10 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
     const inputId = id ?? label.toLowerCase().replace(/\s+/g, '-');
     return (
       <div className="w-full">
-        <label htmlFor={inputId} className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label
+          htmlFor={inputId}
+          className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300"
+        >
           {label}
         </label>
         <input
@@ -37,10 +40,14 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
           {...props}
         />
         {hint && !error && (
-          <p id={`${inputId}-hint`} className="mt-1 text-xs text-gray-500 dark:text-gray-400">{hint}</p>
+          <p id={`${inputId}-hint`} className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+            {hint}
+          </p>
         )}
         {error && (
-          <p id={`${inputId}-error`} className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>
+          <p id={`${inputId}-error`} className="mt-1 text-xs text-red-600 dark:text-red-400">
+            {error}
+          </p>
         )}
       </div>
     );
@@ -57,11 +64,22 @@ interface FormSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   options: Array<{ value: string; label: string }>;
 }
 
-export function FormSelect({ label, error, hint, options, className, id, ...props }: FormSelectProps): JSX.Element {
+export function FormSelect({
+  label,
+  error,
+  hint,
+  options,
+  className,
+  id,
+  ...props
+}: FormSelectProps): JSX.Element {
   const selectId = id ?? label.toLowerCase().replace(/\s+/g, '-');
   return (
     <div className="w-full">
-      <label htmlFor={selectId} className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+      <label
+        htmlFor={selectId}
+        className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300"
+      >
         {label}
       </label>
       <select
@@ -70,22 +88,22 @@ export function FormSelect({ label, error, hint, options, className, id, ...prop
           'w-full rounded-lg border px-3 py-2 text-sm transition-colors',
           'focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent',
           'disabled:cursor-not-allowed disabled:bg-gray-100',
-          error ? 'border-red-500' : 'border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100',
+          error
+            ? 'border-red-500'
+            : 'border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100',
           className,
         )}
         aria-invalid={error ? 'true' : undefined}
         {...props}
       >
         {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>{opt.label}</option>
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
         ))}
       </select>
-      {hint && !error && (
-        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{hint}</p>
-      )}
-      {error && (
-        <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>
-      )}
+      {hint && !error && <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{hint}</p>}
+      {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
     </div>
   );
 }
@@ -98,11 +116,21 @@ interface FormTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> 
   hint?: string;
 }
 
-export function FormTextarea({ label, error, hint, className, id, ...props }: FormTextareaProps): JSX.Element {
+export function FormTextarea({
+  label,
+  error,
+  hint,
+  className,
+  id,
+  ...props
+}: FormTextareaProps): JSX.Element {
   const textareaId = id ?? label.toLowerCase().replace(/\s+/g, '-');
   return (
     <div className="w-full">
-      <label htmlFor={textareaId} className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+      <label
+        htmlFor={textareaId}
+        className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300"
+      >
         {label}
       </label>
       <textarea
@@ -119,12 +147,8 @@ export function FormTextarea({ label, error, hint, className, id, ...props }: Fo
         aria-invalid={error ? 'true' : undefined}
         {...props}
       />
-      {hint && !error && (
-        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{hint}</p>
-      )}
-      {error && (
-        <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>
-      )}
+      {hint && !error && <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{hint}</p>}
+      {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
     </div>
   );
 }

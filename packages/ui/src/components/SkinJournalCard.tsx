@@ -36,14 +36,12 @@ export function SkinJournalCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-2xl" aria-hidden="true">📖</span>
+          <span className="text-2xl" aria-hidden="true">
+            📖
+          </span>
           <div>
-            <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">
-              يوميات بشرتي
-            </h4>
-            <p className="text-[10px] text-purple-500 dark:text-purple-400">
-              تابعي رحلة بشرتكِ
-            </p>
+            <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">يوميات بشرتي</h4>
+            <p className="text-[10px] text-purple-500 dark:text-purple-400">تابعي رحلة بشرتكِ</p>
           </div>
         </div>
       </div>
@@ -51,21 +49,15 @@ export function SkinJournalCard({
       {/* Stats */}
       <div className="mt-3 grid grid-cols-3 gap-2">
         <div className="rounded-xl bg-purple-50 p-2.5 text-center dark:bg-purple-950">
-          <p className="text-lg font-bold text-purple-800 dark:text-purple-200">
-            {entries}
-          </p>
+          <p className="text-lg font-bold text-purple-800 dark:text-purple-200">{entries}</p>
           <p className="text-[9px] text-purple-600 dark:text-purple-400">مدخل</p>
         </div>
         <div className="rounded-xl bg-amber-50 p-2.5 text-center dark:bg-amber-950">
-          <p className="text-lg font-bold text-amber-800 dark:text-amber-200">
-            🔥 {streak}
-          </p>
+          <p className="text-lg font-bold text-amber-800 dark:text-amber-200">🔥 {streak}</p>
           <p className="text-[9px] text-amber-600 dark:text-amber-400">يوم متتالي</p>
         </div>
         <div className="rounded-xl bg-pink-50 p-2.5 text-center dark:bg-pink-950">
-          <p className="text-lg">
-            {lastMood || '—'}
-          </p>
+          <p className="text-lg">{lastMood || '—'}</p>
           <p className="text-[9px] text-pink-600 dark:text-pink-400">آخر مزاج</p>
         </div>
       </div>

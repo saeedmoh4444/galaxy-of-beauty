@@ -7,7 +7,7 @@ const db = prisma as any;
 
 export const serviceMatchmakerRouter = router({
   questions: publicProcedure.query(() =>
-    db.matchmakerQuestion.findMany({ where: { isActive: true }, orderBy: { sortOrder: 'asc' } })
+    db.matchmakerQuestion.findMany({ where: { isActive: true }, orderBy: { sortOrder: 'asc' } }),
   ),
 
   match: publicProcedure
@@ -26,7 +26,10 @@ export const serviceMatchmakerRouter = router({
       const scored = (services as any[]).map((s: any) => {
         const tags = (s.tags as string[]) ?? [];
         const matches = tags.filter((t: string) => userTags.includes(t)).length;
-        return { ...s, score: Math.min(100, Math.round((matches / Math.max(1, userTags.length)) * 100)) };
+        return {
+          ...s,
+          score: Math.min(100, Math.round((matches / Math.max(1, userTags.length)) * 100)),
+        };
       });
 
       return scored.sort((a: any, b: any) => b.score - a.score).slice(0, 4);

@@ -116,9 +116,7 @@ export function SensoryFriendlyBadge({
             🧠
           </span>
           <div>
-            <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">
-              صديق للحواس
-            </h4>
+            <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">صديق للحواس</h4>
             <p className="text-[10px] text-purple-500 dark:text-purple-400">
               {active.length} خيارات حسية متوفرة
             </p>
@@ -165,16 +163,13 @@ export function SensoryFriendlyBadge({
                 <p className="text-xs font-semibold text-text-primary dark:text-gray-100">
                   {f.label}
                 </p>
-                <p className="text-[10px] text-text-tertiary dark:text-gray-400">
-                  {f.description}
-                </p>
+                <p className="text-[10px] text-text-tertiary dark:text-gray-400">{f.description}</p>
               </div>
             </div>
           ))}
 
           <p className="!mt-3 text-[10px] leading-relaxed text-purple-500 dark:text-purple-400">
-            💜 نحن نهتم براحتكِ الحسية. أخبرينا باحتياجاتكِ عند الحجز وسنقوم بتجهيز كل شيء
-            مسبقاً.
+            💜 نحن نهتم براحتكِ الحسية. أخبرينا باحتياجاتكِ عند الحجز وسنقوم بتجهيز كل شيء مسبقاً.
           </p>
         </div>
       )}

@@ -85,13 +85,7 @@ export function CyclePhaseCard({
   const phases: CyclePhase[] = ['menstrual', 'follicular', 'ovulation', 'luteal'];
 
   return (
-    <div
-      className={cn(
-        'rounded-2xl border p-5',
-        data.colorClass,
-        className,
-      )}
-    >
+    <div className={cn('rounded-2xl border p-5', data.colorClass, className)}>
       {/* Header */}
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2">
@@ -99,9 +93,7 @@ export function CyclePhaseCard({
             {data.emoji}
           </span>
           <div>
-            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-              {data.title}
-            </h4>
+            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{data.title}</h4>
             <p className="text-[10px] text-text-tertiary dark:text-gray-400">
               {data.days}
               {day && ` — اليوم ${day}`}
@@ -112,15 +104,9 @@ export function CyclePhaseCard({
         {/* Cycle day indicator */}
         {day && (
           <div className="text-right">
-            <span className="text-[10px] text-text-tertiary dark:text-gray-400">
-              يوم
-            </span>
-            <div className="text-lg font-bold text-text-primary dark:text-gray-100">
-              {day}
-            </div>
-            <span className="text-[10px] text-text-tertiary dark:text-gray-400">
-              / 28
-            </span>
+            <span className="text-[10px] text-text-tertiary dark:text-gray-400">يوم</span>
+            <div className="text-lg font-bold text-text-primary dark:text-gray-100">{day}</div>
+            <span className="text-[10px] text-text-tertiary dark:text-gray-400">/ 28</span>
           </div>
         )}
       </div>
@@ -138,18 +124,20 @@ export function CyclePhaseCard({
               key={p}
               className={cn(
                 'h-1.5 flex-1 rounded-full transition-all',
-                p === phase
-                  ? 'bg-current opacity-80'
-                  : 'bg-gray-200 dark:bg-gray-700',
+                p === phase ? 'bg-current opacity-80' : 'bg-gray-200 dark:bg-gray-700',
               )}
               style={{
                 backgroundColor: p === phase ? undefined : undefined,
-                color: p === phase
-                  ? phase === 'menstrual' ? '#e11d48'
-                  : phase === 'follicular' ? '#ec4899'
-                  : phase === 'ovulation' ? '#f59e0b'
-                  : '#6366f1'
-                  : undefined,
+                color:
+                  p === phase
+                    ? phase === 'menstrual'
+                      ? '#e11d48'
+                      : phase === 'follicular'
+                        ? '#ec4899'
+                        : phase === 'ovulation'
+                          ? '#f59e0b'
+                          : '#6366f1'
+                    : undefined,
               }}
             />
           ))}
@@ -188,9 +176,7 @@ export function CyclePhaseCard({
       <div className="mt-3 grid grid-cols-2 gap-2">
         {/* Recommended */}
         <div className="rounded-xl bg-white/70 p-2.5 dark:bg-gray-800/70">
-          <h5 className="text-[10px] font-bold text-success dark:text-green-400">
-            ✅ ينصح بها
-          </h5>
+          <h5 className="text-[10px] font-bold text-success dark:text-green-400">✅ ينصح بها</h5>
           <ul className="mt-1 space-y-0.5">
             {data.recommended.map((r) => (
               <li key={r} className="text-[10px] text-text-secondary dark:text-gray-300">
@@ -202,9 +188,7 @@ export function CyclePhaseCard({
 
         {/* Avoid */}
         <div className="rounded-xl bg-white/70 p-2.5 dark:bg-gray-800/70">
-          <h5 className="text-[10px] font-bold text-danger dark:text-red-400">
-            ⚠️ تجنبي
-          </h5>
+          <h5 className="text-[10px] font-bold text-danger dark:text-red-400">⚠️ تجنبي</h5>
           <ul className="mt-1 space-y-0.5">
             {data.avoid.map((a) => (
               <li key={a} className="text-[10px] text-text-secondary dark:text-gray-300">

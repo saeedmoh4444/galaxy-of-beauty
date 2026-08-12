@@ -1,12 +1,6 @@
 import { Component } from 'react';
 import type { ReactNode, ErrorInfo } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -51,16 +45,18 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             <Text style={styles.iconEmoji}>⚠️</Text>
           </View>
           <Text style={styles.title}>حدث خطأ غير متوقع</Text>
-          <Text style={styles.subtitle}>
-            نأسف على هذا الخطأ. يرجى المحاولة لاحقاً.
-          </Text>
+          <Text style={styles.subtitle}>نأسف على هذا الخطأ. يرجى المحاولة لاحقاً.</Text>
           {this.state.error && (
             <Text style={styles.errorMsg} numberOfLines={3}>
               {this.state.error.message}
             </Text>
           )}
           <View style={styles.actions}>
-            <TouchableOpacity style={styles.retryBtn} onPress={this.handleReset} activeOpacity={0.8}>
+            <TouchableOpacity
+              style={styles.retryBtn}
+              onPress={this.handleReset}
+              activeOpacity={0.8}
+            >
               <Text style={styles.retryText}>المحاولة مرة أخرى</Text>
             </TouchableOpacity>
             <TouchableOpacity

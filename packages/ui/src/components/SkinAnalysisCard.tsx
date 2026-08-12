@@ -10,7 +10,15 @@ import { cn } from '@galaxy/shared';
  *   <SkinAnalysisCard concerns={['dryness', 'dark_spots']} />
  */
 
-type SkinConcern = 'dryness' | 'dark_spots' | 'acne' | 'wrinkles' | 'redness' | 'large_pores' | 'dullness' | 'oiliness';
+type SkinConcern =
+  | 'dryness'
+  | 'dark_spots'
+  | 'acne'
+  | 'wrinkles'
+  | 'redness'
+  | 'large_pores'
+  | 'dullness'
+  | 'oiliness';
 
 interface ConcernDef {
   emoji: string;
@@ -19,14 +27,42 @@ interface ConcernDef {
 }
 
 const CONCERNS: Record<SkinConcern, ConcernDef> = {
-  dryness: { emoji: '🏜️', label: 'جفاف', recommendation: 'سيروم هيالورونيك أسيد + مرطب غني بالسيراميد' },
-  dark_spots: { emoji: '🔆', label: 'تصبغات', recommendation: 'فيتامين سي صباحاً + نياسيناميد مساءً + واقي شمس' },
-  acne: { emoji: '🔴', label: 'حبوب', recommendation: 'حمض الساليسيليك + نياسيناميد + مرطب خالٍ من الزيوت' },
-  wrinkles: { emoji: '⏳', label: 'تجاعيد', recommendation: 'ريتينول مساءً + ببتيدات + واقي شمس يومي' },
+  dryness: {
+    emoji: '🏜️',
+    label: 'جفاف',
+    recommendation: 'سيروم هيالورونيك أسيد + مرطب غني بالسيراميد',
+  },
+  dark_spots: {
+    emoji: '🔆',
+    label: 'تصبغات',
+    recommendation: 'فيتامين سي صباحاً + نياسيناميد مساءً + واقي شمس',
+  },
+  acne: {
+    emoji: '🔴',
+    label: 'حبوب',
+    recommendation: 'حمض الساليسيليك + نياسيناميد + مرطب خالٍ من الزيوت',
+  },
+  wrinkles: {
+    emoji: '⏳',
+    label: 'تجاعيد',
+    recommendation: 'ريتينول مساءً + ببتيدات + واقي شمس يومي',
+  },
   redness: { emoji: '😳', label: 'احمرار', recommendation: 'سيراميد + أزيلينك أسيد + مرطب مهدئ' },
-  large_pores: { emoji: '🔍', label: 'مسام واسعة', recommendation: 'نياسيناميد + مقشر كيميائي لطيف أسبوعياً' },
-  dullness: { emoji: '😔', label: 'بهتان', recommendation: 'مقشر إنزيمي + فيتامين سي + ترطيب عميق' },
-  oiliness: { emoji: '✨', label: 'دهون زائدة', recommendation: 'نياسيناميد + تونر خالٍ من الكحول + مرطب جل' },
+  large_pores: {
+    emoji: '🔍',
+    label: 'مسام واسعة',
+    recommendation: 'نياسيناميد + مقشر كيميائي لطيف أسبوعياً',
+  },
+  dullness: {
+    emoji: '😔',
+    label: 'بهتان',
+    recommendation: 'مقشر إنزيمي + فيتامين سي + ترطيب عميق',
+  },
+  oiliness: {
+    emoji: '✨',
+    label: 'دهون زائدة',
+    recommendation: 'نياسيناميد + تونر خالٍ من الكحول + مرطب جل',
+  },
 };
 
 interface SkinAnalysisCardProps {
@@ -50,10 +86,10 @@ export function SkinAnalysisCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">🔬</span>
-        <h4 className="mt-1 text-sm font-bold text-blue-700 dark:text-blue-300">
-          تحليل البشرة
-        </h4>
+        <span className="text-3xl" aria-hidden="true">
+          🔬
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-blue-700 dark:text-blue-300">تحليل البشرة</h4>
         <p className="text-[10px] text-blue-500 dark:text-blue-400">
           تحليل ذكي لبشرتكِ مع توصيات مخصصة
         </p>
@@ -64,12 +100,11 @@ export function SkinAnalysisCard({
         {concerns.map((concern) => {
           const c = CONCERNS[concern];
           return (
-            <div
-              key={concern}
-              className="rounded-xl bg-blue-50 p-3 dark:bg-blue-950"
-            >
+            <div key={concern} className="rounded-xl bg-blue-50 p-3 dark:bg-blue-950">
               <div className="flex items-center gap-2">
-                <span className="text-lg" aria-hidden="true">{c.emoji}</span>
+                <span className="text-lg" aria-hidden="true">
+                  {c.emoji}
+                </span>
                 <span className="text-xs font-bold text-blue-800 dark:text-blue-200">
                   {c.label}
                 </span>

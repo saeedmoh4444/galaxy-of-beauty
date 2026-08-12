@@ -86,9 +86,7 @@ export function TeenBeautyCard({
               <span className="text-[10px] text-purple-400" aria-hidden="true">
                 ✨
               </span>
-              <span className="text-[10px] text-text-secondary dark:text-gray-300">
-                {point}
-              </span>
+              <span className="text-[10px] text-text-secondary dark:text-gray-300">{point}</span>
             </div>
           ))}
         </div>
@@ -97,11 +95,11 @@ export function TeenBeautyCard({
       {/* Parent notice */}
       {service.parentRequired && (
         <div className="mt-3 flex items-start gap-2 rounded-xl bg-amber-50 p-2.5 dark:bg-amber-950">
-          <span className="text-sm" aria-hidden="true">👩‍👧</span>
+          <span className="text-sm" aria-hidden="true">
+            👩‍👧
+          </span>
           <div>
-            <p className="text-[10px] font-bold text-amber-700 dark:text-amber-300">
-              بموافقة الأم
-            </p>
+            <p className="text-[10px] font-bold text-amber-700 dark:text-amber-300">بموافقة الأم</p>
             <p className="text-[10px] text-amber-600 dark:text-amber-400">
               تحتاجين موافقة والدتكِ قبل الحجز. يمكنها الموافقة من خلال تطبيق الأهل.
             </p>
@@ -111,7 +109,9 @@ export function TeenBeautyCard({
 
       {/* Age-appropriate reminder */}
       <div className="mt-2 flex items-start gap-2 rounded-xl bg-purple-50 p-2.5 dark:bg-purple-950">
-        <span className="text-sm" aria-hidden="true">🌸</span>
+        <span className="text-sm" aria-hidden="true">
+          🌸
+        </span>
         <div>
           <p className="text-[10px] font-bold text-purple-700 dark:text-purple-300">
             مناسبة لعمركِ

@@ -66,18 +66,28 @@ export default function DisputesPage(): JSX.Element {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-semibold">{d.bookingCode as string ?? `حجز #${d.bookingId as string}`}</p>
-                        <p className="text-xs text-text-tertiary">{new Date(d.createdAt as string).toLocaleDateString('ar-SA')}</p>
+                        <p className="font-semibold">
+                          {(d.bookingCode as string) ?? `حجز #${d.bookingId as string}`}
+                        </p>
+                        <p className="text-xs text-text-tertiary">
+                          {new Date(d.createdAt as string).toLocaleDateString('ar-SA')}
+                        </p>
                       </div>
-                      <span className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_STYLES[statusKey] ?? 'bg-surface-muted text-text-secondary'}`}>
+                      <span
+                        className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_STYLES[statusKey] ?? 'bg-surface-muted text-text-secondary'}`}
+                      >
                         {STATUS_LABELS[statusKey] ?? statusKey}
                       </span>
                     </div>
-                    <p className="text-sm text-text-secondary dark:text-gray-400">{d.reason as string}</p>
+                    <p className="text-sm text-text-secondary dark:text-gray-400">
+                      {d.reason as string}
+                    </p>
                     {(d.resolution as string) && (
                       <div className="rounded-lg bg-surface-muted p-3 dark:bg-gray-800">
                         <p className="text-xs font-medium text-text-secondary">قرار الإدارة</p>
-                        <p className="text-sm text-text-primary dark:text-gray-300">{d.resolution as string}</p>
+                        <p className="text-sm text-text-primary dark:text-gray-300">
+                          {d.resolution as string}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -90,7 +100,12 @@ export default function DisputesPage(): JSX.Element {
 
       <Modal open={showCreate} onClose={() => setShowCreate(false)} title="فتح نزاع جديد" size="sm">
         <div className="space-y-4">
-          <Input label="رقم الحجز" value={bookingId} onChange={(e) => setBookingId(e.target.value)} placeholder="أدخل رقم الحجز" />
+          <Input
+            label="رقم الحجز"
+            value={bookingId}
+            onChange={(e) => setBookingId(e.target.value)}
+            placeholder="أدخل رقم الحجز"
+          />
           <div>
             <label className="mb-1 block text-sm font-medium">سبب النزاع</label>
             <textarea
@@ -101,7 +116,12 @@ export default function DisputesPage(): JSX.Element {
               placeholder="اشرح سبب النزاع بالتفصيل..."
             />
           </div>
-          <Button className="w-full" loading={createMut.isPending} disabled={!bookingId || !reason} onClick={() => createMut.mutate({ bookingId: Number(bookingId), reason })}>
+          <Button
+            className="w-full"
+            loading={createMut.isPending}
+            disabled={!bookingId || !reason}
+            onClick={() => createMut.mutate({ bookingId: Number(bookingId), reason })}
+          >
             إرسال النزاع
           </Button>
         </div>

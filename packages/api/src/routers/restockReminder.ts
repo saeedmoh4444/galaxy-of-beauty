@@ -25,10 +25,26 @@ export const restockReminderRouter = router({
     });
   }),
   add: customerProcedure
-    .input(z.object({ productName: z.string().min(1), category: z.string(), lifespanDays: z.number().optional(), notifyDays: z.number().default(7) }))
+    .input(
+      z.object({
+        productName: z.string().min(1),
+        category: z.string(),
+        lifespanDays: z.number().optional(),
+        notifyDays: z.number().default(7),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const cat = CATEGORIES.find((c) => c.key === input.category);
-      return prisma.restockReminderItem.create({ data: { userId: ctx.user.id, productName: input.productName, category: input.category, lifespanDays: input.lifespanDays ?? cat?.lifespan ?? 60, notifyDays: input.notifyDays, emoji: cat?.emoji ?? '📦' } });
+      return prisma.restockReminderItem.create({
+        data: {
+          userId: ctx.user.id,
+          productName: input.productName,
+          category: input.category,
+          lifespanDays: input.lifespanDays ?? cat?.lifespan ?? 60,
+          notifyDays: input.notifyDays,
+          emoji: cat?.emoji ?? '📦',
+        },
+      });
     }),
   delete: customerProcedure.input(z.object({ id: z.number() })).mutation(async ({ ctx, input }) => {
     await prisma.restockReminderItem.deleteMany({ where: { id: input.id, userId: ctx.user.id } });

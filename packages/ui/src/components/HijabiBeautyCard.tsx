@@ -16,18 +16,39 @@ interface HijabiBeautyCardProps {
 }
 
 const TIPS = [
-  { emoji: '🧕', title: 'عناية بالشعر تحت الحجاب', desc: 'جلسات ترطيب عميق أسبوعياً — لأن شعركِ يحتاج عناية إضافية تحت الحجاب' },
-  { emoji: '💆‍♀️', title: 'تدليك فروة الرأس', desc: 'يحسن الدورة الدموية ويمنع تساقط الشعر الناتج عن الحجاب' },
-  { emoji: '💄', title: 'مكياج يناسب الحجاب', desc: 'تركيز على العينين والحواجب — لأنها نافذة وجهكِ' },
-  { emoji: '🧴', title: 'روتين مسائي للشعر', desc: 'فك الشعر فور العودة للمنزل وترطيبه ليسترجع حيويته' },
-  { emoji: '👒', title: 'بطانة حجاب حريرية', desc: 'تحمي الشعر من التكسر وتقلل الاحتكاك — متوفرة في صالوناتنا' },
-  { emoji: '🌸', title: 'عناية بالبشرة', desc: 'تركيز على منطقة الجبهة والذقن — الأكثر تأثراً بالحجاب' },
+  {
+    emoji: '🧕',
+    title: 'عناية بالشعر تحت الحجاب',
+    desc: 'جلسات ترطيب عميق أسبوعياً — لأن شعركِ يحتاج عناية إضافية تحت الحجاب',
+  },
+  {
+    emoji: '💆‍♀️',
+    title: 'تدليك فروة الرأس',
+    desc: 'يحسن الدورة الدموية ويمنع تساقط الشعر الناتج عن الحجاب',
+  },
+  {
+    emoji: '💄',
+    title: 'مكياج يناسب الحجاب',
+    desc: 'تركيز على العينين والحواجب — لأنها نافذة وجهكِ',
+  },
+  {
+    emoji: '🧴',
+    title: 'روتين مسائي للشعر',
+    desc: 'فك الشعر فور العودة للمنزل وترطيبه ليسترجع حيويته',
+  },
+  {
+    emoji: '👒',
+    title: 'بطانة حجاب حريرية',
+    desc: 'تحمي الشعر من التكسر وتقلل الاحتكاك — متوفرة في صالوناتنا',
+  },
+  {
+    emoji: '🌸',
+    title: 'عناية بالبشرة',
+    desc: 'تركيز على منطقة الجبهة والذقن — الأكثر تأثراً بالحجاب',
+  },
 ];
 
-export function HijabiBeautyCard({
-  onBook,
-  className = '',
-}: HijabiBeautyCardProps): JSX.Element {
+export function HijabiBeautyCard({ onBook, className = '' }: HijabiBeautyCardProps): JSX.Element {
   return (
     <div
       className={cn(
@@ -36,13 +57,11 @@ export function HijabiBeautyCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">🧕</span>
-        <h4 className="mt-1 text-sm font-bold text-teal-800 dark:text-teal-200">
-          جمال المحجبات
-        </h4>
-        <p className="text-[10px] text-teal-600 dark:text-teal-400">
-          عناية متخصصة للمرأة المحجبة
-        </p>
+        <span className="text-3xl" aria-hidden="true">
+          🧕
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-teal-800 dark:text-teal-200">جمال المحجبات</h4>
+        <p className="text-[10px] text-teal-600 dark:text-teal-400">عناية متخصصة للمرأة المحجبة</p>
       </div>
 
       {/* Tips */}
@@ -52,14 +71,12 @@ export function HijabiBeautyCard({
             key={tip.title}
             className="flex items-start gap-2.5 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60"
           >
-            <span className="text-lg shrink-0 mt-0.5" aria-hidden="true">{tip.emoji}</span>
+            <span className="text-lg shrink-0 mt-0.5" aria-hidden="true">
+              {tip.emoji}
+            </span>
             <div>
-              <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-                {tip.title}
-              </p>
-              <p className="text-[10px] text-text-secondary dark:text-gray-300">
-                {tip.desc}
-              </p>
+              <p className="text-xs font-bold text-text-primary dark:text-gray-100">{tip.title}</p>
+              <p className="text-[10px] text-text-secondary dark:text-gray-300">{tip.desc}</p>
             </div>
           </div>
         ))}

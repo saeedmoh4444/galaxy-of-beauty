@@ -8,22 +8,74 @@ export default function SalonFinderScreen(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).salonMap.locations.query({ city: 'الرياض' /* TODO */ }) as any).then((d: any) => { setSalons(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+    if (isRefresh) setRefreshing(true);
+    else setLoading(true);
+    ((trpc as any).salonMap.locations.query({ city: 'الرياض' /* TODO */ }) as any)
+      .then((d: any) => {
+        setSalons(d || []);
+        setLoading(false);
+        setRefreshing(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        setRefreshing(false);
+      });
   }, []);
-  useEffect(() => { fetch(); }, [fetch]);
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
   if (loading) return <SkeletonList count={4} />;
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#db2777']} />}>
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={() => fetch(true)}
+          colors={['#db2777']}
+        />
+      }
+    >
       <Text style={styles.t}>📍 صالونات قريبة</Text>
-      {salons.map((s: any) => (<View key={s.id} style={styles.card}><Text style={styles.se}>💇‍♀️</Text><View style={{flex:1}}><Text style={styles.sn}>{s.nameAr as string ?? s.name as string}</Text><Text style={styles.sm}>📍 {s.city as string}{s.distance ? ` · ${s.distance as string}` : ''}</Text><Text style={styles.sr}>⭐ {s.rating as number ?? 0} · 👩‍🎨 {s.technicianCount as number ?? 0} فنيات</Text></View><TouchableOpacity style={styles.vb}><Text style={styles.vt}>عرض</Text></TouchableOpacity></View>))}
+      {salons.map((s: any) => (
+        <View key={s.id} style={styles.card}>
+          <Text style={styles.se}>💇‍♀️</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.sn}>{(s.nameAr as string) ?? (s.name as string)}</Text>
+            <Text style={styles.sm}>
+              📍 {s.city as string}
+              {s.distance ? ` · ${s.distance as string}` : ''}
+            </Text>
+            <Text style={styles.sr}>
+              ⭐ {(s.rating as number) ?? 0} · 👩‍🎨 {(s.technicianCount as number) ?? 0} فنيات
+            </Text>
+          </View>
+          <TouchableOpacity style={styles.vb}>
+            <Text style={styles.vt}>عرض</Text>
+          </TouchableOpacity>
+        </View>
+      ))}
     </ScrollView>
   );
 }
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#fdf2f8' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 20 },
-  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8 },
-  se: { fontSize: 36 }, sn: { fontSize: 15, fontWeight: '700', color: '#111827' }, sm: { fontSize: 12, color: '#6b7280', marginTop: 2 }, sr: { fontSize: 12, color: '#6b7280', marginTop: 4 },
-  vb: { backgroundColor: '#db2777', borderRadius: 10, paddingHorizontal: 16, paddingVertical: 8 }, vt: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 8,
+  },
+  se: { fontSize: 36 },
+  sn: { fontSize: 15, fontWeight: '700', color: '#111827' },
+  sm: { fontSize: 12, color: '#6b7280', marginTop: 2 },
+  sr: { fontSize: 12, color: '#6b7280', marginTop: 4 },
+  vb: { backgroundColor: '#db2777', borderRadius: 10, paddingHorizontal: 16, paddingVertical: 8 },
+  vt: { color: '#fff', fontSize: 13, fontWeight: '600' },
 });

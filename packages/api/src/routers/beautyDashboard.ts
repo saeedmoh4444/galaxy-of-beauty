@@ -10,16 +10,29 @@ export const beautyDashboardRouter = router({
     const userId = ctx.user.id;
 
     const [bookings, streak, wallet, skinAnalysis, journals, wishlist] = await Promise.all([
-      db.booking.findMany({ where: { customerId: userId }, orderBy: { createdAt: 'desc' }, take: SMALL_PAGE_SIZE, include: { service: { select: { titleJson: true } } } }),
+      db.booking.findMany({
+        where: { customerId: userId },
+        orderBy: { createdAt: 'desc' },
+        take: SMALL_PAGE_SIZE,
+        include: { service: { select: { titleJson: true } } },
+      }),
       db.streak.findUnique({ where: { customerId: userId } }),
       db.wallet.findUnique({ where: { userId } }),
-      db.skinAnalysis.findFirst({ where: { userId }, orderBy: { createdAt: 'desc' }, select: { skinType: true, concerns: true } }),
+      db.skinAnalysis.findFirst({
+        where: { userId },
+        orderBy: { createdAt: 'desc' },
+        select: { skinType: true, concerns: true },
+      }),
       db.beautyJournal.count({ where: { userId } }),
       db.wishlistItem.count({ where: { userId } }),
     ]);
 
-    const upcomingBookings = (bookings as any[]).filter((b: any) => ['REQUESTED', 'ACCEPTED'].includes(b.status)).length;
-    const completedBookings = (bookings as any[]).filter((b: any) => b.status === 'COMPLETED').length;
+    const upcomingBookings = (bookings as any[]).filter((b: any) =>
+      ['REQUESTED', 'ACCEPTED'].includes(b.status),
+    ).length;
+    const completedBookings = (bookings as any[]).filter(
+      (b: any) => b.status === 'COMPLETED',
+    ).length;
     const recentBookings = (bookings as any[]).slice(0, 3).map((b: any) => ({
       id: b.id,
       serviceName: (b.service?.titleJson as Record<string, string>)?.ar ?? '',

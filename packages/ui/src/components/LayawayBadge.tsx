@@ -48,7 +48,9 @@ export function LayawayBadge({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true">🗓️</span>
+          <span className="text-lg" aria-hidden="true">
+            🗓️
+          </span>
           <div>
             <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">
               احجزي الآن وادفعي لاحقاً
@@ -69,9 +71,7 @@ export function LayawayBadge({
       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
         <div className="rounded-xl bg-violet-50 p-2 dark:bg-violet-950">
           <p className="text-[10px] text-violet-500 dark:text-violet-400">الإجمالي</p>
-          <p className="text-sm font-bold text-violet-800 dark:text-violet-200">
-            {totalPrice} ر.س
-          </p>
+          <p className="text-sm font-bold text-violet-800 dark:text-violet-200">{totalPrice} ر.س</p>
         </div>
         <div className="rounded-xl bg-violet-50 p-2 dark:bg-violet-950">
           <p className="text-[10px] text-violet-500 dark:text-violet-400">الدفعة</p>
@@ -81,9 +81,7 @@ export function LayawayBadge({
         </div>
         <div className="rounded-xl bg-violet-50 p-2 dark:bg-violet-950">
           <p className="text-[10px] text-violet-500 dark:text-violet-400">الدفعات</p>
-          <p className="text-sm font-bold text-violet-800 dark:text-violet-200">
-            {installments}x
-          </p>
+          <p className="text-sm font-bold text-violet-800 dark:text-violet-200">{installments}x</p>
         </div>
       </div>
 
@@ -110,7 +108,9 @@ export function LayawayBadge({
       {/* Next payment */}
       {nextPaymentDate && remaining && remaining > 0 && (
         <div className="mt-2 flex items-center gap-2 rounded-lg bg-amber-50 px-2.5 py-1.5 dark:bg-amber-950">
-          <span className="text-xs" aria-hidden="true">📅</span>
+          <span className="text-xs" aria-hidden="true">
+            📅
+          </span>
           <span className="text-[10px] text-amber-700 dark:text-amber-300">
             الدفعة القادمة: {nextPaymentDate}
           </span>

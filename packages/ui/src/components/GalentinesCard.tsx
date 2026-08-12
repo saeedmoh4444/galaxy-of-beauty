@@ -43,12 +43,8 @@ export function GalentinesCard({
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-pink-200 to-rose-200 text-2xl dark:from-pink-800 dark:to-rose-800">
           💕
         </div>
-        <h4 className="mt-2 text-sm font-bold text-pink-800 dark:text-pink-200">
-          يوم الصديقات
-        </h4>
-        <p className="text-[10px] text-pink-500 dark:text-pink-400">
-          {date} — احتفلي بصداقاتكِ
-        </p>
+        <h4 className="mt-2 text-sm font-bold text-pink-800 dark:text-pink-200">يوم الصديقات</h4>
+        <p className="text-[10px] text-pink-500 dark:text-pink-400">{date} — احتفلي بصداقاتكِ</p>
       </div>
 
       {/* Friend list */}
@@ -73,9 +69,7 @@ export function GalentinesCard({
 
       {/* What's included */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">
-          🎀 الباقة تشمل
-        </p>
+        <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">🎀 الباقة تشمل</p>
         <div className="mt-1 grid grid-cols-2 gap-1 text-[10px] text-text-secondary dark:text-gray-300">
           <span>• مانيكير للجميع</span>
           <span>• ماسك وجه</span>
@@ -90,21 +84,15 @@ export function GalentinesCard({
       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">الإجمالي</p>
-          <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-            {totalPrice} ر.س
-          </p>
+          <p className="text-xs font-bold text-text-primary dark:text-gray-100">{totalPrice} ر.س</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">للفرد</p>
-          <p className="text-xs font-bold text-pink-700 dark:text-pink-400">
-            {pricePerPerson} ر.س
-          </p>
+          <p className="text-xs font-bold text-pink-700 dark:text-pink-400">{pricePerPerson} ر.س</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">الخصم</p>
-          <p className="text-xs font-bold text-rose-600 dark:text-rose-400">
-            -{discount}%
-          </p>
+          <p className="text-xs font-bold text-rose-600 dark:text-rose-400">-{discount}%</p>
         </div>
       </div>
 

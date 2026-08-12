@@ -1,8 +1,19 @@
 import { adminProcedure, customerProcedure, router } from '../trpc';
 
 const FORECAST = {
-  nextWeek: { predictedBookings: 380, confidence: 85, peakDay: 'الخميس', peakTime: '٤-٨ مساءً', recommendations: ['زيادة عدد الفنيات يوم الخميس', 'توفير عروض للأيام الهادئة'] },
-  nextMonth: { predictedBookings: 1650, confidence: 78, growth: 12, topServices: ['مكياج', 'تنظيف بشرة', 'مساج'] },
+  nextWeek: {
+    predictedBookings: 380,
+    confidence: 85,
+    peakDay: 'الخميس',
+    peakTime: '٤-٨ مساءً',
+    recommendations: ['زيادة عدد الفنيات يوم الخميس', 'توفير عروض للأيام الهادئة'],
+  },
+  nextMonth: {
+    predictedBookings: 1650,
+    confidence: 78,
+    growth: 12,
+    topServices: ['مكياج', 'تنظيف بشرة', 'مساج'],
+  },
   byService: [
     { name: 'مكياج', currentDemand: 85, trend: 'up', prediction: '+١٥٪' },
     { name: 'تنظيف بشرة', currentDemand: 72, trend: 'stable', prediction: '+٥٪' },

@@ -40,7 +40,9 @@ export function BeautyTip({ className = '' }: { className?: string }): JSX.Eleme
 
   const tip = TIPS[index]!;
   return (
-    <div className={`rounded-xl border border-pink-100 bg-pink-50 p-4 dark:border-pink-900 dark:bg-pink-950 ${className}`}>
+    <div
+      className={`rounded-xl border border-pink-100 bg-pink-50 p-4 dark:border-pink-900 dark:bg-pink-950 ${className}`}
+    >
       <p className="text-xs font-semibold text-pink-600 dark:text-pink-400">💡 نصيحة جمال</p>
       <p className="mt-2 text-sm text-pink-800 dark:text-pink-200">
         <span className="mr-2 text-lg">{tip.emoji}</span>

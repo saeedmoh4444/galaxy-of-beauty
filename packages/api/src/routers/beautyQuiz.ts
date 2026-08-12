@@ -10,12 +10,24 @@ export const beautyQuizRouter = router({
     }),
 
   submitAnswer: customerProcedure
-    .input(z.object({ questionId: z.number().int().positive(), answerIndex: z.number().int().min(0).max(3) }))
+    .input(
+      z.object({
+        questionId: z.number().int().positive(),
+        answerIndex: z.number().int().min(0).max(3),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const q = await prisma.beautyQuizQuestion.findUnique({ where: { id: input.questionId } });
       if (!q) return { correct: false };
       const isCorrect = input.answerIndex === q.correctIndex;
-      await prisma.beautyQuizAttempt.create({ data: { userId: ctx.user.id, questionId: input.questionId, selectedIndex: input.answerIndex, isCorrect } });
+      await prisma.beautyQuizAttempt.create({
+        data: {
+          userId: ctx.user.id,
+          questionId: input.questionId,
+          selectedIndex: input.answerIndex,
+          isCorrect,
+        },
+      });
       return { correct: isCorrect, explanation: q.explanation };
     }),
 

@@ -59,7 +59,8 @@ export default function CreateBookingPage(): JSX.Element {
     onError: () => {
       addToast('error', 'فشل إنشاء الحجز');
       setSubmitting(false);
-    } });
+    },
+  });
 
   const handleSubmit = async () => {
     if (!serviceId || !addressId) {
@@ -69,7 +70,9 @@ export default function CreateBookingPage(): JSX.Element {
     setSubmitting(true);
     // Auto-assign first available technician for this service
     let technicianId = 0;
-    const techs = (svc as unknown as { technicianServices?: Array<{ technician?: { userId?: number } }> })?.technicianServices ?? [];
+    const techs =
+      (svc as unknown as { technicianServices?: Array<{ technician?: { userId?: number } }> })
+        ?.technicianServices ?? [];
     if (techs.length > 0) {
       technicianId = techs[0]?.technician?.userId ?? 0;
     }
@@ -80,12 +83,19 @@ export default function CreateBookingPage(): JSX.Element {
     }
 
     createMut.mutate({
-      serviceId, variantId, addressId,
+      serviceId,
+      variantId,
+      addressId,
       technicianId,
       idempotencyKey: crypto.randomUUID(),
       notes: notes || undefined,
       startAt: new Date(Date.now() + 86400000).toISOString(),
-      endAt: new Date(Date.now() + 86400000 + (num(svc ? (svc as unknown as { durationMin?: number }).durationMin : 60, 60)) * 60000).toISOString() });
+      endAt: new Date(
+        Date.now() +
+          86400000 +
+          num(svc ? (svc as unknown as { durationMin?: number }).durationMin : 60, 60) * 60000,
+      ).toISOString(),
+    });
   };
 
   return (
@@ -97,12 +107,20 @@ export default function CreateBookingPage(): JSX.Element {
         <div className="flex items-center gap-2 text-sm">
           {['الخدمة', 'التفاصيل', 'التأكيد'].map((label, i) => (
             <div key={i} className="flex items-center gap-2">
-              <span className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
-                step > i + 1 ? 'bg-green-500 text-white' : step === i + 1 ? 'bg-brand-600 text-white' : 'bg-gray-200 text-text-secondary'
-              }`}>
+              <span
+                className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
+                  step > i + 1
+                    ? 'bg-green-500 text-white'
+                    : step === i + 1
+                      ? 'bg-brand-600 text-white'
+                      : 'bg-gray-200 text-text-secondary'
+                }`}
+              >
                 {step > i + 1 ? '✓' : i + 1}
               </span>
-              <span className={step === i + 1 ? 'font-bold text-brand-600' : 'text-text-tertiary'}>{label}</span>
+              <span className={step === i + 1 ? 'font-bold text-brand-600' : 'text-text-tertiary'}>
+                {label}
+              </span>
               {i < 2 && <span className="text-gray-300">→</span>}
             </div>
           ))}
@@ -115,13 +133,23 @@ export default function CreateBookingPage(): JSX.Element {
               {services.map((s) => (
                 <button
                   key={s.id}
-                  onClick={() => { setServiceId(s.id); setStep(2); }}
+                  onClick={() => {
+                    setServiceId(s.id);
+                    setStep(2);
+                  }}
                   className={`w-full rounded-lg border p-4 text-right transition-colors hover:border-brand-400 ${
-                    serviceId === s.id ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'
+                    serviceId === s.id
+                      ? 'border-brand-500 bg-brand-50 dark:bg-brand-950'
+                      : 'border-gray-200 dark:border-gray-700'
                   }`}
                 >
-                  <p className="font-semibold text-text-primary dark:text-gray-100">{ar((s as unknown as { titleJson: unknown }).titleJson)}</p>
-                  <p className="mt-1 text-sm text-text-secondary">{num((s as unknown as { basePrice: unknown }).basePrice).toFixed(0)} ر.س · {num((s as unknown as { durationMin: unknown }).durationMin)} دقيقة</p>
+                  <p className="font-semibold text-text-primary dark:text-gray-100">
+                    {ar((s as unknown as { titleJson: unknown }).titleJson)}
+                  </p>
+                  <p className="mt-1 text-sm text-text-secondary">
+                    {num((s as unknown as { basePrice: unknown }).basePrice).toFixed(0)} ر.س ·{' '}
+                    {num((s as unknown as { durationMin: unknown }).durationMin)} دقيقة
+                  </p>
                 </button>
               ))}
             </div>
@@ -130,9 +158,13 @@ export default function CreateBookingPage(): JSX.Element {
 
         {step === 2 && svc && (
           <Card padding="md">
-            <h3 className="mb-4 font-semibold text-text-primary dark:text-gray-100">تفاصيل الحجز</h3>
+            <h3 className="mb-4 font-semibold text-text-primary dark:text-gray-100">
+              تفاصيل الحجز
+            </h3>
 
-            <p className="mb-2 text-sm font-bold text-brand-600">{ar((svc as unknown as { titleJson: unknown }).titleJson)}</p>
+            <p className="mb-2 text-sm font-bold text-brand-600">
+              {ar((svc as unknown as { titleJson: unknown }).titleJson)}
+            </p>
 
             {variants.length > 0 && (
               <div className="mb-4">
@@ -189,8 +221,12 @@ export default function CreateBookingPage(): JSX.Element {
             </div>
 
             <div className="flex gap-3">
-              <Button onClick={() => setStep(1)} variant="outline">السابق</Button>
-              <Button onClick={() => setStep(3)} className="flex-1">التالي</Button>
+              <Button onClick={() => setStep(1)} variant="outline">
+                السابق
+              </Button>
+              <Button onClick={() => setStep(3)} className="flex-1">
+                التالي
+              </Button>
             </div>
           </Card>
         )}
@@ -202,11 +238,15 @@ export default function CreateBookingPage(): JSX.Element {
             <div className="space-y-3 text-sm">
               <div className="flex justify-between border-b pb-2">
                 <span className="text-text-secondary">الخدمة</span>
-                <span className="font-semibold">{svc ? ar((svc as unknown as { titleJson: unknown }).titleJson) : ''}</span>
+                <span className="font-semibold">
+                  {svc ? ar((svc as unknown as { titleJson: unknown }).titleJson) : ''}
+                </span>
               </div>
               <div className="flex justify-between border-b pb-2">
                 <span className="text-text-secondary">السعر</span>
-                <span className="font-bold text-brand-600">{num((svc as unknown as { basePrice?: unknown })?.basePrice).toFixed(0)} ر.س</span>
+                <span className="font-bold text-brand-600">
+                  {num((svc as unknown as { basePrice?: unknown })?.basePrice).toFixed(0)} ر.س
+                </span>
               </div>
               <div className="flex justify-between border-b pb-2">
                 <span className="text-text-secondary">المدة</span>
@@ -219,7 +259,9 @@ export default function CreateBookingPage(): JSX.Element {
             </p>
 
             <div className="mt-6 flex gap-3">
-              <Button onClick={() => setStep(2)} variant="outline">السابق</Button>
+              <Button onClick={() => setStep(2)} variant="outline">
+                السابق
+              </Button>
               <Button onClick={handleSubmit} loading={submitting} className="flex-1">
                 تأكيد الحجز
               </Button>

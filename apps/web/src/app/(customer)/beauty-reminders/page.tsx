@@ -2,11 +2,21 @@
 
 import { api } from '@/lib/trpc';
 import {
-  PageContainer, PageTitle,
-  BeautySelfCareReminderCard, BeautySleepCard, WellnessCheckCard,
-  HydrationTracker, BeautyHabitTrackerCard, CycleResourceCard,
-  PrayerTimeReminder, DailyBeautyTipCard, BeautyAffirmationCard,
-  BeautyGratitudeCard, SkinJournalCard, AllergyTestCard, BreastHealthCard,
+  PageContainer,
+  PageTitle,
+  BeautySelfCareReminderCard,
+  BeautySleepCard,
+  WellnessCheckCard,
+  HydrationTracker,
+  BeautyHabitTrackerCard,
+  CycleResourceCard,
+  PrayerTimeReminder,
+  DailyBeautyTipCard,
+  BeautyAffirmationCard,
+  BeautyGratitudeCard,
+  SkinJournalCard,
+  AllergyTestCard,
+  BreastHealthCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -21,11 +31,21 @@ export default function BeautyRemindersPage(): JSX.Element {
         <PageTitle title="⏰ التذكيرات" subtitle="اعتني بنفسكِ — كل يوم" />
         <div className="grid gap-6 lg:grid-cols-2">
           <div className="space-y-6">
-            <BeautySelfCareReminderCard reminder="خذي 5 دقائق للتنفس العميق والاسترخاء" emoji="🧘" time="10:00 صباحاً" />
+            <BeautySelfCareReminderCard
+              reminder="خذي 5 دقائق للتنفس العميق والاسترخاء"
+              emoji="🧘"
+              time="10:00 صباحاً"
+            />
             <BeautySleepCard bedtime="22:30" wakeTime="06:30" />
             <HydrationTracker goal={8} current={3} />
             <WellnessCheckCard lastCheck="2026-07" />
-            <BeautyHabitTrackerCard habits={[{ name: 'واقي شمس', emoji: '☀️', done: true }, { name: '8 أكواب ماء', emoji: '💧', done: false }, { name: 'روتين مسائي', emoji: '🌙', done: true }]} />
+            <BeautyHabitTrackerCard
+              habits={[
+                { name: 'واقي شمس', emoji: '☀️', done: true },
+                { name: '8 أكواب ماء', emoji: '💧', done: false },
+                { name: 'روتين مسائي', emoji: '🌙', done: true },
+              ]}
+            />
           </div>
           <div className="space-y-6">
             <PrayerTimeReminder nextPrayer="العصر" time="15:30" minutesUntil={45} />

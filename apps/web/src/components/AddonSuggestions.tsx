@@ -34,7 +34,8 @@ const ADDONS_BY_CATEGORY: Record<string, Addon[]> = {
   default: [
     { id: 13, title: 'مساج سريع (١٥ دقيقة)', price: 40, emoji: '💆‍♀️' },
     { id: 14, title: 'مشروب ترحيبي', price: 15, emoji: '🍵' },
-  ] };
+  ],
+};
 
 interface AddonSuggestionsProps {
   category?: string;
@@ -42,25 +43,36 @@ interface AddonSuggestionsProps {
   selected: number[];
 }
 
-export function AddonSuggestions({ category, onSelect, selected }: AddonSuggestionsProps): JSX.Element {
+export function AddonSuggestions({
+  category,
+  onSelect,
+  selected,
+}: AddonSuggestionsProps): JSX.Element {
   const addons = ADDONS_BY_CATEGORY[category || 'default'] || ADDONS_BY_CATEGORY['default']!;
 
   return (
     <div>
-      <h4 className="mb-3 text-sm font-semibold text-gray-900 dark:text-gray-100">✨ أضيفي إلى حجزكِ</h4>
+      <h4 className="mb-3 text-sm font-semibold text-gray-900 dark:text-gray-100">
+        ✨ أضيفي إلى حجزكِ
+      </h4>
       <div className="grid gap-2 sm:grid-cols-2">
-        {addons.map(a => {
+        {addons.map((a) => {
           const isSelected = selected.includes(a.id);
           return (
-            <button key={a.id}
+            <button
+              key={a.id}
               onClick={() => onSelect(a)}
               className={`flex items-center gap-3 rounded-xl border-2 p-3 text-right transition-all ${
-                isSelected ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 hover:border-brand-300 dark:border-gray-700'
+                isSelected
+                  ? 'border-brand-500 bg-brand-50 dark:bg-brand-950'
+                  : 'border-gray-200 hover:border-brand-300 dark:border-gray-700'
               }`}
             >
               <span className="text-2xl">{a.emoji}</span>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{a.title}</p>
+                <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                  {a.title}
+                </p>
                 <p className="text-xs font-bold text-brand-600">+{formatCurrency(a.price)}</p>
               </div>
               {isSelected && <span className="text-brand-600 text-sm">✓</span>}

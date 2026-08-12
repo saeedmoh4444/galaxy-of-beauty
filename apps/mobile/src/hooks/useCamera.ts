@@ -17,7 +17,7 @@ export function useCamera() {
     try {
       const Camera = require('expo-camera');
 
-      const { status } = await Camera.requestCameraPermissionsAsync?.() || { status: 'denied' };
+      const { status } = (await Camera.requestCameraPermissionsAsync?.()) || { status: 'denied' };
 
       const granted = status === 'granted';
       setHasPermission(granted);
@@ -51,7 +51,14 @@ export function useCamera() {
         return null;
       }
 
-      const takePic = (cameraRef.current as Record<string, (opts?: Record<string, unknown>) => Promise<{ uri: string; width: number; height: number; base64?: string }>>).takePictureAsync;
+      const takePic = (
+        cameraRef.current as Record<
+          string,
+          (
+            opts?: Record<string, unknown>,
+          ) => Promise<{ uri: string; width: number; height: number; base64?: string }>
+        >
+      ).takePictureAsync;
       if (!takePic) return null;
 
       const photo = await takePic({

@@ -21,7 +21,9 @@ export function SelfCareReminder({ className = '' }: { className?: string }): JS
   const reminder = REMINDERS[today % REMINDERS.length]!;
 
   return (
-    <div className={`rounded-xl border border-purple-100 bg-purple-50 p-4 dark:border-purple-900 dark:bg-purple-950 ${className}`}>
+    <div
+      className={`rounded-xl border border-purple-100 bg-purple-50 p-4 dark:border-purple-900 dark:bg-purple-950 ${className}`}
+    >
       <p className="text-xs font-semibold text-purple-600 dark:text-purple-400">🌿 تذكير يومي</p>
       <p className="mt-2 text-sm text-purple-800 dark:text-purple-200">
         <span className="mr-2 text-xl">{reminder.emoji}</span>

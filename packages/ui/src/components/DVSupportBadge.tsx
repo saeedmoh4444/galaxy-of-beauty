@@ -35,7 +35,9 @@ export function DVSupportBadge({
     >
       {/* Header - subtle, no obvious labeling */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">🤲</span>
+        <span className="text-3xl" aria-hidden="true">
+          🤲
+        </span>
         <h4 className="mt-1 text-sm font-bold text-purple-700 dark:text-purple-300">
           يداً بيد ننهض
         </h4>
@@ -46,9 +48,7 @@ export function DVSupportBadge({
 
       {/* Services offered */}
       <div className="mt-3 rounded-xl bg-purple-50 p-3 dark:bg-purple-950">
-        <p className="text-[10px] font-bold text-purple-800 dark:text-purple-200">
-          🤲 نقدم مجاناً
-        </p>
+        <p className="text-[10px] font-bold text-purple-800 dark:text-purple-200">🤲 نقدم مجاناً</p>
         <div className="mt-1.5 grid grid-cols-2 gap-1 text-[10px] text-purple-700 dark:text-purple-300">
           <span>• عناية بالبشرة</span>
           <span>• مكياج تعليمي</span>
@@ -62,14 +62,14 @@ export function DVSupportBadge({
       {/* Partner */}
       <div className="mt-2 rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true">🤝</span>
+          <span className="text-lg" aria-hidden="true">
+            🤝
+          </span>
           <div>
             <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
               بالشراكة مع
             </p>
-            <p className="text-xs text-purple-700 dark:text-purple-300">
-              {partnerShelter}
-            </p>
+            <p className="text-xs text-purple-700 dark:text-purple-300">{partnerShelter}</p>
           </div>
         </div>
       </div>

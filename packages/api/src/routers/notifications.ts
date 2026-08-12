@@ -1,10 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import {
-  router,
-  protectedProcedure,
-  adminProcedure,
-} from '../trpc';
+import { router, protectedProcedure, adminProcedure } from '../trpc';
 import { emitToUser } from '../socket/index';
 import { sendPushToUser } from '../lib/push';
 import { sendEmail } from '../lib/email';
@@ -197,7 +193,9 @@ export const notificationRouter = router({
           to: user.email,
           subject: locale === 'en' ? titleEn : titleAr,
           html: `<div dir="${locale === 'ar' ? 'rtl' : 'ltr'}" style="font-family:sans-serif;padding:20px;max-width:600px"><h2>${locale === 'en' ? titleEn : titleAr}</h2><p>${locale === 'en' ? bodyEn : bodyAr}</p>${link ? `<p><a href="${link}">${locale === 'en' ? 'View details' : 'عرض التفاصيل'}</a></p>` : ''}</div>`,
-        }).catch(() => { /* non-critical */ });
+        }).catch(() => {
+          /* non-critical */
+        });
         channels.push('email');
       }
 

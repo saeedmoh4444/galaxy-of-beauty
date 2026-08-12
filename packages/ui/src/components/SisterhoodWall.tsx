@@ -28,9 +28,13 @@ export function SisterhoodWall({ className = '' }: { className?: string }): JSX.
   };
 
   return (
-    <div className={`rounded-2xl border border-pink-100 bg-white p-5 dark:border-pink-900 dark:bg-gray-900 ${className}`}>
+    <div
+      className={`rounded-2xl border border-pink-100 bg-white p-5 dark:border-pink-900 dark:bg-gray-900 ${className}`}
+    >
       <h3 className="text-sm font-bold text-pink-700 dark:text-pink-300">👯‍♀️ جدار الأختية</h3>
-      <p className="mt-1 text-xs text-pink-500 dark:text-pink-400">اتركي رسالة إيجابية لأخت مجهولة</p>
+      <p className="mt-1 text-xs text-pink-500 dark:text-pink-400">
+        اتركي رسالة إيجابية لأخت مجهولة
+      </p>
 
       <div className="mt-3 flex gap-2">
         <input
@@ -50,7 +54,10 @@ export function SisterhoodWall({ className = '' }: { className?: string }): JSX.
 
       <div className="mt-3 space-y-2">
         {compliments.slice(0, 4).map((c, i) => (
-          <div key={i} className="flex items-start gap-2 rounded-lg bg-pink-50 p-2 dark:bg-pink-950">
+          <div
+            key={i}
+            className="flex items-start gap-2 rounded-lg bg-pink-50 p-2 dark:bg-pink-950"
+          >
             <span className="text-lg">{c.emoji}</span>
             <p className="text-xs text-pink-800 dark:text-pink-200">{c.text}</p>
           </div>

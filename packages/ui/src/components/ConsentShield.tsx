@@ -14,7 +14,13 @@ import { cn } from '@galaxy/shared';
  *   />
  */
 
-type Permission = 'photo_gallery' | 'before_after' | 'testimonial' | 'data_analytics' | 'marketing_email' | 'location_sharing';
+type Permission =
+  | 'photo_gallery'
+  | 'before_after'
+  | 'testimonial'
+  | 'data_analytics'
+  | 'marketing_email'
+  | 'location_sharing';
 
 interface PermDef {
   emoji: string;
@@ -94,11 +100,11 @@ export function ConsentShield({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">🛡️</span>
+        <span className="text-xl" aria-hidden="true">
+          🛡️
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-            درع الموافقة
-          </h4>
+          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">درع الموافقة</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
             أنتِ تتحكمين ببياناتكِ — لا نشارك شيئاً بدون إذنكِ
           </p>
@@ -124,7 +130,9 @@ export function ConsentShield({
                   : 'border-gray-100 bg-gray-50 dark:border-gray-800 dark:bg-gray-800',
               )}
             >
-              <span className="text-lg shrink-0" aria-hidden="true">{def.emoji}</span>
+              <span className="text-lg shrink-0" aria-hidden="true">
+                {def.emoji}
+              </span>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
                   <p className="text-xs font-bold text-text-primary dark:text-gray-100">
@@ -148,9 +156,7 @@ export function ConsentShield({
                 disabled={isRequired}
                 className={cn(
                   'relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors',
-                  isGranted || isRequired
-                    ? 'bg-emerald-500'
-                    : 'bg-gray-300 dark:bg-gray-600',
+                  isGranted || isRequired ? 'bg-emerald-500' : 'bg-gray-300 dark:bg-gray-600',
                   isRequired && 'opacity-80 cursor-not-allowed',
                 )}
               >
@@ -172,8 +178,8 @@ export function ConsentShield({
           🔒 تعهد الخصوصية
         </p>
         <p className="mt-0.5 text-[9px] text-emerald-600 dark:text-emerald-400">
-          بياناتكِ ملككِ وحدكِ. يمكنكِ تغيير هذه الإعدادات في أي وقت. نحن لا نبيع بياناتكِ
-          لأي طرف ثالث.
+          بياناتكِ ملككِ وحدكِ. يمكنكِ تغيير هذه الإعدادات في أي وقت. نحن لا نبيع بياناتكِ لأي طرف
+          ثالث.
         </p>
       </div>
     </div>

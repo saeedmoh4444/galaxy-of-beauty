@@ -10,10 +10,17 @@ export const adminAnalyticsV2Router = router({
     const monthAgo = new Date(today.getTime() - MS_PER_30_DAYS);
 
     const [
-      totalUsers, totalTechnicians, totalBookings,
-      bookingsToday, bookingsWeek, bookingsMonth,
-      revenueToday, revenueWeek, revenueMonth,
-      completedBookings, topCategories,
+      totalUsers,
+      totalTechnicians,
+      totalBookings,
+      bookingsToday,
+      bookingsWeek,
+      bookingsMonth,
+      revenueToday,
+      revenueWeek,
+      revenueMonth,
+      completedBookings,
+      topCategories,
     ] = await Promise.all([
       prisma.user.count(),
       prisma.technician.count(),
@@ -21,21 +28,42 @@ export const adminAnalyticsV2Router = router({
       prisma.booking.count({ where: { createdAt: { gte: today } } }),
       prisma.booking.count({ where: { createdAt: { gte: weekAgo } } }),
       prisma.booking.count({ where: { createdAt: { gte: monthAgo } } }),
-      prisma.booking.aggregate({ where: { createdAt: { gte: today } }, _sum: { totalAmount: true } }),
-      prisma.booking.aggregate({ where: { createdAt: { gte: weekAgo } }, _sum: { totalAmount: true } }),
-      prisma.booking.aggregate({ where: { createdAt: { gte: monthAgo } }, _sum: { totalAmount: true } }),
+      prisma.booking.aggregate({
+        where: { createdAt: { gte: today } },
+        _sum: { totalAmount: true },
+      }),
+      prisma.booking.aggregate({
+        where: { createdAt: { gte: weekAgo } },
+        _sum: { totalAmount: true },
+      }),
+      prisma.booking.aggregate({
+        where: { createdAt: { gte: monthAgo } },
+        _sum: { totalAmount: true },
+      }),
       prisma.booking.count({ where: { status: 'COMPLETED' } }),
-      prisma.category.findMany({ take: SMALL_PAGE_SIZE, include: { _count: { select: { services: true } }, services: { select: { bookings: true } } } }),
+      prisma.category.findMany({
+        take: SMALL_PAGE_SIZE,
+        include: {
+          _count: { select: { services: true } },
+          services: { select: { bookings: true } },
+        },
+      }),
     ]);
 
-    const completionRate = totalBookings > 0 ? Math.round((completedBookings / totalBookings) * 100) : 0;
+    const completionRate =
+      totalBookings > 0 ? Math.round((completedBookings / totalBookings) * 100) : 0;
 
-    const topServices = topCategories.map(c => ({
-      name: (c.nameJson as Record<string, string>)?.ar ?? '',
-      bookings: c.services.reduce((s, svc) => s + svc.bookings.length, 0),
-      revenue: c.services.reduce((s, svc) => s + svc.bookings.reduce((bs, b) => bs + Number(b.totalAmount || 0), 0), 0),
-      growth: 0,
-    })).sort((a, b) => b.bookings - a.bookings);
+    const topServices = topCategories
+      .map((c) => ({
+        name: (c.nameJson as Record<string, string>)?.ar ?? '',
+        bookings: c.services.reduce((s, svc) => s + svc.bookings.length, 0),
+        revenue: c.services.reduce(
+          (s, svc) => s + svc.bookings.reduce((bs, b) => bs + Number(b.totalAmount || 0), 0),
+          0,
+        ),
+        growth: 0,
+      }))
+      .sort((a, b) => b.bookings - a.bookings);
 
     return {
       revenue: {
@@ -64,5 +92,9 @@ export const adminAnalyticsV2Router = router({
     return { labels, revenue: labels.map(() => 0), bookings: labels.map(() => 0) };
   }),
 
-  forecast: adminProcedure.query(() => ({ nextMonthRevenue: 0, nextMonthBookings: 0, confidence: 0 })),
+  forecast: adminProcedure.query(() => ({
+    nextMonthRevenue: 0,
+    nextMonthBookings: 0,
+    confidence: 0,
+  })),
 });

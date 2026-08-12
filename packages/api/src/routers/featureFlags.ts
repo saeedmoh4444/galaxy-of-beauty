@@ -44,32 +44,48 @@ export const featureFlagRouter = router({
 
   // Admin: upsert a flag
   upsert: adminProcedure
-    .input(z.object({
-      key: z.string().min(1), name: z.string(), description: z.string().optional(),
-      enabled: z.boolean(), rolloutPercent: z.number().int().min(0).max(100).default(0),
-      enabledFor: z.record(z.unknown()).optional(),
-    }))
+    .input(
+      z.object({
+        key: z.string().min(1),
+        name: z.string(),
+        description: z.string().optional(),
+        enabled: z.boolean(),
+        rolloutPercent: z.number().int().min(0).max(100).default(0),
+        enabledFor: z.record(z.unknown()).optional(),
+      }),
+    )
     .mutation(async ({ input }) => {
       const flag = await prisma.featureFlag.upsert({
         where: { key: input.key },
-        update: { name: input.name, description: input.description, enabled: input.enabled, rolloutPercent: input.rolloutPercent, enabledFor: input.enabledFor as never },
-        create: { key: input.key, name: input.name, description: input.description, enabled: input.enabled, rolloutPercent: input.rolloutPercent, enabledFor: input.enabledFor as never },
+        update: {
+          name: input.name,
+          description: input.description,
+          enabled: input.enabled,
+          rolloutPercent: input.rolloutPercent,
+          enabledFor: input.enabledFor as never,
+        },
+        create: {
+          key: input.key,
+          name: input.name,
+          description: input.description,
+          enabled: input.enabled,
+          rolloutPercent: input.rolloutPercent,
+          enabledFor: input.enabledFor as never,
+        },
       });
       cache.delete(input.key);
       return flag;
     }),
 
   // Admin: toggle
-  toggle: adminProcedure
-    .input(z.object({ key: z.string().min(1) }))
-    .mutation(async ({ input }) => {
-      const flag = await prisma.featureFlag.findUnique({ where: { key: input.key } });
-      if (!flag) throw notFound('Feature flag', input.key);
-      const updated = await prisma.featureFlag.update({
-        where: { key: input.key },
-        data: { enabled: !flag.enabled },
-      });
-      cache.delete(input.key);
-      return updated;
-    }),
+  toggle: adminProcedure.input(z.object({ key: z.string().min(1) })).mutation(async ({ input }) => {
+    const flag = await prisma.featureFlag.findUnique({ where: { key: input.key } });
+    if (!flag) throw notFound('Feature flag', input.key);
+    const updated = await prisma.featureFlag.update({
+      where: { key: input.key },
+      data: { enabled: !flag.enabled },
+    });
+    cache.delete(input.key);
+    return updated;
+  }),
 });

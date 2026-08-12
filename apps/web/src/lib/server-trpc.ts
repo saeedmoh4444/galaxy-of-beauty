@@ -8,7 +8,7 @@ function isDecimal(v: unknown): v is { toNumber(): number } {
     v !== null &&
     'toNumber' in v &&
     typeof (v as Record<string, unknown>).toNumber === 'function' &&
-    's' in v &&  // Decimal internal field
+    's' in v && // Decimal internal field
     'e' in v
   );
 }

@@ -31,16 +31,56 @@ interface TopicDef {
 }
 
 const TOPICS: Record<CircleTopic, TopicDef> = {
-  wedding: { emoji: '👰', label: 'عرايس', color: 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300' },
-  new_mom: { emoji: '👶', label: 'أمهات جدد', color: 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300' },
-  curly_hair: { emoji: '🦱', label: 'شعر مجعد', color: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300' },
-  skincare: { emoji: '🧴', label: 'عناية بالبشرة', color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' },
-  makeup: { emoji: '💄', label: 'مكياج', color: 'bg-pink-100 text-pink-700 dark:bg-pink-950 dark:text-pink-300' },
-  teen_beauty: { emoji: '🎀', label: 'جمال المراهقات', color: 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300' },
-  wellness: { emoji: '🧘', label: 'صحة شاملة', color: 'bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300' },
-  professional: { emoji: '💼', label: 'خبيرات تجميل', color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300' },
-  hijabi_beauty: { emoji: '🧕', label: 'جمال المحجبات', color: 'bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300' },
-  budget_beauty: { emoji: '💰', label: 'جمال اقتصادي', color: 'bg-lime-100 text-lime-700 dark:bg-lime-950 dark:text-lime-300' },
+  wedding: {
+    emoji: '👰',
+    label: 'عرايس',
+    color: 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300',
+  },
+  new_mom: {
+    emoji: '👶',
+    label: 'أمهات جدد',
+    color: 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
+  },
+  curly_hair: {
+    emoji: '🦱',
+    label: 'شعر مجعد',
+    color: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
+  },
+  skincare: {
+    emoji: '🧴',
+    label: 'عناية بالبشرة',
+    color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
+  },
+  makeup: {
+    emoji: '💄',
+    label: 'مكياج',
+    color: 'bg-pink-100 text-pink-700 dark:bg-pink-950 dark:text-pink-300',
+  },
+  teen_beauty: {
+    emoji: '🎀',
+    label: 'جمال المراهقات',
+    color: 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
+  },
+  wellness: {
+    emoji: '🧘',
+    label: 'صحة شاملة',
+    color: 'bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300',
+  },
+  professional: {
+    emoji: '💼',
+    label: 'خبيرات تجميل',
+    color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300',
+  },
+  hijabi_beauty: {
+    emoji: '🧕',
+    label: 'جمال المحجبات',
+    color: 'bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300',
+  },
+  budget_beauty: {
+    emoji: '💰',
+    label: 'جمال اقتصادي',
+    color: 'bg-lime-100 text-lime-700 dark:bg-lime-950 dark:text-lime-300',
+  },
 };
 
 interface BeautyCircle {
@@ -151,7 +191,9 @@ export function BeautyCircleCard({
       {/* Next meetup */}
       {circle.nextMeetup && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-pink-50 px-2.5 py-1.5 dark:bg-pink-950">
-          <span className="text-xs" aria-hidden="true">📅</span>
+          <span className="text-xs" aria-hidden="true">
+            📅
+          </span>
           <span className="text-[10px] text-text-secondary dark:text-gray-300">
             اللقاء القادم: {circle.nextMeetup}
           </span>

@@ -206,6 +206,7 @@ throw new TRPCError({ code: 'NOT_FOUND' });  // Inconsistent messages
 ```
 
 **Exception:** `$queryRawUnsafe` is allowed ONLY for:
+
 - Health checks (`SELECT 1`)
 - Performance queries (`pg_stat_activity`)
 - Full-text search ILIKE fallback
@@ -425,6 +426,7 @@ Rules are defaults, not dogma. You can break a rule IF:
 4. **You plan to fix it** — there's a ticket to bring it back into compliance
 
 Examples of valid exceptions:
+
 - Raw SQL for PostgreSQL full-text search (Prisma doesn't support it)
 - `as any` for deeply nested tRPC RouterOutput types (TypeScript TS2589 limit)
 - Skipping EmptyState on a form page (no list to be empty)

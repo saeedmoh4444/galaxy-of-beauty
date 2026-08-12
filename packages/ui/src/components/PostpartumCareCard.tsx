@@ -78,15 +78,16 @@ export function PostpartumCareCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">👶</span>
+        <span className="text-3xl" aria-hidden="true">
+          👶
+        </span>
         <h4 className="mt-1 text-sm font-bold text-purple-700 dark:text-purple-300">
           عناية النفاس
         </h4>
         <p className="text-[10px] text-purple-500 dark:text-purple-400">
           {isNifasComplete
             ? '🎉 اكتملت الأربعون — ألف مبروك!'
-            : `اليوم ${daysSinceBirth} من النفاس — ${40 - daysSinceBirth} يوم متبقي`
-          }
+            : `اليوم ${daysSinceBirth} من النفاس — ${40 - daysSinceBirth} يوم متبقي`}
         </p>
       </div>
 
@@ -129,7 +130,9 @@ export function PostpartumCareCard({
                   : 'border-gray-100 bg-gray-50 opacity-60 dark:border-gray-800 dark:bg-gray-800',
               )}
             >
-              <span className="text-lg shrink-0" aria-hidden="true">{service.emoji}</span>
+              <span className="text-lg shrink-0" aria-hidden="true">
+                {service.emoji}
+              </span>
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-bold text-text-primary dark:text-gray-100">
                   {service.name}

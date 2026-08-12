@@ -64,7 +64,9 @@ export function LocationSharingCard({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true">📍</span>
+        <span className="text-lg" aria-hidden="true">
+          📍
+        </span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">
             مشاركة الموقع المباشر
@@ -134,7 +136,11 @@ export function LocationSharingCard({
             >
               <div className="flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-teal-100 to-emerald-100 text-sm dark:from-teal-900 dark:to-emerald-900">
-                  {contact.relation === 'mother' ? '👩' : contact.relation === 'sister' ? '👧' : '👤'}
+                  {contact.relation === 'mother'
+                    ? '👩'
+                    : contact.relation === 'sister'
+                      ? '👧'
+                      : '👤'}
                 </div>
                 <div>
                   <p className="text-xs font-bold text-text-primary dark:text-gray-100">
@@ -154,9 +160,7 @@ export function LocationSharingCard({
               ) : isSharingThis ? (
                 <div className="flex items-center gap-1.5">
                   <div className="h-3 w-3 animate-spin rounded-full border-2 border-teal-500 border-t-transparent" />
-                  <span className="text-[10px] text-teal-600 dark:text-teal-400">
-                    جاري...
-                  </span>
+                  <span className="text-[10px] text-teal-600 dark:text-teal-400">جاري...</span>
                 </div>
               ) : (
                 <button

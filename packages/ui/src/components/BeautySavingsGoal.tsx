@@ -39,7 +39,10 @@ function formatSAR(amount: number): string {
   }).format(amount);
 }
 
-export function BeautySavingsGoal({ goals, className = '' }: BeautySavingsGoalProps): JSX.Element | null {
+export function BeautySavingsGoal({
+  goals,
+  className = '',
+}: BeautySavingsGoalProps): JSX.Element | null {
   const [contribute, setContribute] = useState<Record<number, string>>({});
 
   if (!goals.length) return null;
@@ -48,7 +51,12 @@ export function BeautySavingsGoal({ goals, className = '' }: BeautySavingsGoalPr
   const totalSaved = goals.reduce((sum, g) => sum + g.saved, 0);
 
   return (
-    <div className={cn('rounded-2xl border border-amber-100 bg-white p-5 dark:border-amber-900 dark:bg-gray-900', className)}>
+    <div
+      className={cn(
+        'rounded-2xl border border-amber-100 bg-white p-5 dark:border-amber-900 dark:bg-gray-900',
+        className,
+      )}
+    >
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -94,7 +102,8 @@ export function BeautySavingsGoal({ goals, className = '' }: BeautySavingsGoalPr
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-text-primary dark:text-gray-100">
-                  {goal.emoji ? `${goal.emoji} ` : ''}{goal.label}
+                  {goal.emoji ? `${goal.emoji} ` : ''}
+                  {goal.label}
                 </span>
                 <span
                   className={cn(
@@ -121,7 +130,9 @@ export function BeautySavingsGoal({ goals, className = '' }: BeautySavingsGoalPr
                     style={{ width: `${pct}%` }}
                   />
                 </div>
-                <span className="text-xs font-bold text-text-secondary dark:text-gray-300">{pct}%</span>
+                <span className="text-xs font-bold text-text-secondary dark:text-gray-300">
+                  {pct}%
+                </span>
               </div>
 
               {/* SAR labels */}
@@ -156,9 +167,7 @@ export function BeautySavingsGoal({ goals, className = '' }: BeautySavingsGoalPr
                     min={1}
                     max={remaining}
                     value={currentContribute}
-                    onChange={(e) =>
-                      setContribute((prev) => ({ ...prev, [i]: e.target.value }))
-                    }
+                    onChange={(e) => setContribute((prev) => ({ ...prev, [i]: e.target.value }))}
                     placeholder="أضف مبلغ..."
                     className="flex-1 rounded-lg border border-amber-200 bg-amber-50 px-2 py-1 text-xs dark:border-amber-800 dark:bg-amber-950 dark:text-amber-100 dark:placeholder:text-amber-700"
                   />

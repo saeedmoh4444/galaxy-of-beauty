@@ -49,14 +49,14 @@ export function BeautyMythBusterCard({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true">🔍</span>
+        <span className="text-lg" aria-hidden="true">
+          🔍
+        </span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">
             {CAT_EMOJIS[category]} خرافة أم حقيقة؟
           </h4>
-          <p className="text-[10px] text-rose-500 dark:text-rose-400">
-            نكشف لكِ الحقيقة العلمية
-          </p>
+          <p className="text-[10px] text-rose-500 dark:text-rose-400">نكشف لكِ الحقيقة العلمية</p>
         </div>
       </div>
 
@@ -86,10 +86,10 @@ export function BeautyMythBusterCard({
         <div className="mt-3 space-y-3">
           {/* Verdict */}
           <div className="rounded-xl bg-emerald-50 p-4 text-center dark:bg-emerald-950">
-            <p className="text-2xl" aria-hidden="true">❌</p>
-            <p className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">
-              خرافة!
+            <p className="text-2xl" aria-hidden="true">
+              ❌
             </p>
+            <p className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">خرافة!</p>
             <p className="mt-1 text-xs leading-relaxed text-emerald-700 dark:text-emerald-300">
               {fact}
             </p>

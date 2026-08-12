@@ -58,7 +58,9 @@ export function BeautyConciergeCard({
             key={s.label}
             className="flex items-center gap-2 rounded-xl bg-white/60 px-2.5 py-2 dark:bg-gray-800/60"
           >
-            <span className="text-sm" aria-hidden="true">{s.emoji}</span>
+            <span className="text-sm" aria-hidden="true">
+              {s.emoji}
+            </span>
             <span className="text-[10px] font-medium text-amber-800 dark:text-amber-200">
               {s.label}
             </span>

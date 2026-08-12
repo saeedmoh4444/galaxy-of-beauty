@@ -123,14 +123,12 @@ export function MentalWellnessCard({
       {/* Mood indicator */}
       <div className={cn('rounded-xl bg-gradient-to-br p-4', m.color)}>
         <div className="flex items-center gap-3">
-          <span className="text-3xl" aria-hidden="true">{m.emoji}</span>
+          <span className="text-3xl" aria-hidden="true">
+            {m.emoji}
+          </span>
           <div>
-            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-              {m.title}
-            </h4>
-            <p className="text-[10px] text-text-secondary dark:text-gray-300">
-              {m.description}
-            </p>
+            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{m.title}</h4>
+            <p className="text-[10px] text-text-secondary dark:text-gray-300">{m.description}</p>
           </div>
         </div>
       </div>
@@ -143,7 +141,9 @@ export function MentalWellnessCard({
         <div className="mt-1.5 space-y-0.5">
           {m.recommendations.map((r) => (
             <div key={r} className="flex items-center gap-1.5">
-              <span className="text-[10px] text-text-tertiary" aria-hidden="true">✨</span>
+              <span className="text-[10px] text-text-tertiary" aria-hidden="true">
+                ✨
+              </span>
               <span className="text-[10px] text-text-secondary dark:text-gray-300">{r}</span>
             </div>
           ))}
@@ -154,9 +154,7 @@ export function MentalWellnessCard({
       <div className="mt-3 flex items-center justify-between">
         <div>
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">السعر</p>
-          <p className="text-lg font-bold text-text-primary dark:text-gray-100">
-            {m.price} ر.س
-          </p>
+          <p className="text-lg font-bold text-text-primary dark:text-gray-100">{m.price} ر.س</p>
         </div>
         <button
           type="button"

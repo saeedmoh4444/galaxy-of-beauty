@@ -7,11 +7,16 @@ import { adminProcedure, router } from '../trpc';
 export const adminToolsRouter = router({
   // ── Audit Log Viewer ──────────────────────────────────
   auditLog: adminProcedure
-    .input(z.object({
-      page: z.number().default(1), limit: z.number().default(50),
-      userId: z.number().optional(), action: z.string().optional(),
-      fromDate: z.string().optional(), toDate: z.string().optional(),
-    }))
+    .input(
+      z.object({
+        page: z.number().default(1),
+        limit: z.number().default(50),
+        userId: z.number().optional(),
+        action: z.string().optional(),
+        fromDate: z.string().optional(),
+        toDate: z.string().optional(),
+      }),
+    )
     .query(async ({ input }) => {
       const where: Record<string, unknown> = {};
       if (input.userId) where['userId'] = input.userId;
@@ -27,7 +32,8 @@ export const adminToolsRouter = router({
         prisma.auditLog.findMany({
           where: where as never,
           orderBy: { createdAt: 'desc' },
-          skip, take: input.limit,
+          skip,
+          take: input.limit,
         }),
         prisma.auditLog.count({ where: where as never }),
       ]);
@@ -37,12 +43,16 @@ export const adminToolsRouter = router({
 
   // ── Bulk Operations ────────────────────────────────────
   bulkNotify: adminProcedure
-    .input(z.object({
-      role: z.enum(['CUSTOMER', 'TECHNICIAN', 'ALL']),
-      titleAr: z.string(), titleEn: z.string(),
-      bodyAr: z.string(), bodyEn: z.string(),
-      channel: z.enum(['in_app', 'push', 'email']).default('in_app'),
-    }))
+    .input(
+      z.object({
+        role: z.enum(['CUSTOMER', 'TECHNICIAN', 'ALL']),
+        titleAr: z.string(),
+        titleEn: z.string(),
+        bodyAr: z.string(),
+        bodyEn: z.string(),
+        channel: z.enum(['in_app', 'push', 'email']).default('in_app'),
+      }),
+    )
     .mutation(async ({ input }) => {
       const userWhere = input.role === 'ALL' ? {} : { role: input.role };
       const users = await prisma.user.findMany({
@@ -101,7 +111,16 @@ export const adminToolsRouter = router({
 
   // ── System Health ──────────────────────────────────────
   health: adminProcedure.query(async () => {
-    const [userCount, bookingCount, revenueAgg, activeToday, techCount, serviceCount, disputeCount, completedCount] = await Promise.all([
+    const [
+      userCount,
+      bookingCount,
+      revenueAgg,
+      activeToday,
+      techCount,
+      serviceCount,
+      disputeCount,
+      completedCount,
+    ] = await Promise.all([
       prisma.user.count(),
       prisma.booking.count(),
       prisma.booking.aggregate({ where: { status: 'COMPLETED' }, _sum: { totalAmount: true } }),
@@ -132,11 +151,14 @@ export const adminToolsRouter = router({
 
   // ── Data Export Hub ────────────────────────────────────
   exportData: adminProcedure
-    .input(z.object({
-      entity: z.enum(['users', 'bookings', 'payments', 'reviews', 'technicians']),
-      format: z.enum(['json', 'csv']).default('json'),
-      fromDate: z.string().optional(), toDate: z.string().optional(),
-    }))
+    .input(
+      z.object({
+        entity: z.enum(['users', 'bookings', 'payments', 'reviews', 'technicians']),
+        format: z.enum(['json', 'csv']).default('json'),
+        fromDate: z.string().optional(),
+        toDate: z.string().optional(),
+      }),
+    )
     .mutation(async ({ input }) => {
       const where: Record<string, unknown> = {};
       if (input.fromDate || input.toDate) {
@@ -149,7 +171,11 @@ export const adminToolsRouter = router({
       let data: unknown[] = [];
       switch (input.entity) {
         case 'users':
-          data = await prisma.user.findMany({ where: where as never, select: { id: true, name: true, email: true, role: true, createdAt: true }, take: MAX_EXPORT_SIZE });
+          data = await prisma.user.findMany({
+            where: where as never,
+            select: { id: true, name: true, email: true, role: true, createdAt: true },
+            take: MAX_EXPORT_SIZE,
+          });
           break;
         case 'bookings':
           data = await prisma.booking.findMany({ where: where as never, take: MAX_EXPORT_SIZE });
@@ -161,14 +187,22 @@ export const adminToolsRouter = router({
           data = await prisma.review.findMany({ where: where as never, take: MAX_EXPORT_SIZE });
           break;
         case 'technicians':
-          data = await prisma.technician.findMany({ where: where as never, include: { user: { select: { name: true, email: true } } }, take: MAX_EXPORT_SIZE });
+          data = await prisma.technician.findMany({
+            where: where as never,
+            include: { user: { select: { name: true, email: true } } },
+            take: MAX_EXPORT_SIZE,
+          });
           break;
       }
 
       if (input.format === 'csv') {
         if (data.length === 0) return { csv: '', count: 0 };
         const headers = Object.keys(data[0] as Record<string, unknown>).join(',');
-        const rows = data.map((r) => Object.values(r as Record<string, unknown>).map((v) => `"${String(v).replace(/"/g, '""')}"`).join(','));
+        const rows = data.map((r) =>
+          Object.values(r as Record<string, unknown>)
+            .map((v) => `"${String(v).replace(/"/g, '""')}"`)
+            .join(','),
+        );
         return { csv: [headers, ...rows].join('\n'), count: data.length };
       }
 
@@ -183,10 +217,14 @@ export const adminToolsRouter = router({
   }),
 
   createAbTest: adminProcedure
-    .input(z.object({
-      name: z.string(), variantA: z.string(), variantB: z.string(),
-      trafficSplit: z.number().min(1).max(99).default(50),
-    }))
+    .input(
+      z.object({
+        name: z.string(),
+        variantA: z.string(),
+        variantB: z.string(),
+        trafficSplit: z.number().min(1).max(99).default(50),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       await prisma.platformConfig.create({
         data: {

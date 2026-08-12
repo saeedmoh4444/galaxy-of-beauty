@@ -24,7 +24,10 @@ export function Tabs({ tabs, active, onChange, className = '' }: TabsProps): JSX
       {tabs.map((tab) => (
         <button
           key={tab}
-          onClick={() => { setSelected(tab); onChange(tab); }}
+          onClick={() => {
+            setSelected(tab);
+            onChange(tab);
+          }}
           className={`whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
             (active ?? selected) === tab
               ? 'bg-brand-600 text-white shadow-sm'

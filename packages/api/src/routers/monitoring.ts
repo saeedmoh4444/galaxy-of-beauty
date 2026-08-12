@@ -53,7 +53,9 @@ export const monitoringRouter = router({
         `SELECT setting FROM pg_settings WHERE name = 'max_connections'`,
       );
       if (maxResult?.setting) dbMaxConnections = Number(maxResult.setting);
-    } catch { /* keep default */ }
+    } catch {
+      /* keep default */
+    }
 
     // ── Redis metrics ──
     let redisStatus = 'unknown';
@@ -94,9 +96,8 @@ export const monitoringRouter = router({
     // ── API metrics ──
     const apiStatus = 'healthy';
     const totalReqs = getRequestCount();
-    const requestsPerMinute = totalReqs > 0
-      ? Math.round((totalReqs / Math.max(process.uptime(), 1)) * 60)
-      : 0;
+    const requestsPerMinute =
+      totalReqs > 0 ? Math.round((totalReqs / Math.max(process.uptime(), 1)) * 60) : 0;
 
     // ── Socket metrics (basic — real check can be added) ──
     const socketStatus = 'healthy'; // Socket.IO state tracked separately
@@ -112,7 +113,9 @@ export const monitoringRouter = router({
       if (paymentsTotal > 0) {
         paymentSuccessRate = Math.round((paymentsSuccessful / paymentsTotal) * 1000) / 10;
       }
-    } catch { /* keep default */ }
+    } catch {
+      /* keep default */
+    }
 
     // ── Error breakdown from audit logs (last 24h) ──
     let errorLast24h = 0;
@@ -124,8 +127,12 @@ export const monitoringRouter = router({
       const weekAgo = new Date(now.getTime() - 7 * 86400000);
 
       [errorLast24h, errorLastWeek] = await Promise.all([
-        prisma.auditLog.count({ where: { action: { startsWith: 'ERROR_' }, createdAt: { gte: dayAgo } } }),
-        prisma.auditLog.count({ where: { action: { startsWith: 'ERROR_' }, createdAt: { gte: weekAgo } } }),
+        prisma.auditLog.count({
+          where: { action: { startsWith: 'ERROR_' }, createdAt: { gte: dayAgo } },
+        }),
+        prisma.auditLog.count({
+          where: { action: { startsWith: 'ERROR_' }, createdAt: { gte: weekAgo } },
+        }),
       ]);
 
       const errorTypes = ['ERROR_VALIDATION', 'ERROR_AUTH', 'ERROR_PAYMENT', 'ERROR_TIMEOUT'];
@@ -144,7 +151,9 @@ export const monitoringRouter = router({
           });
         }
       });
-    } catch { /* keep empty error list */ }
+    } catch {
+      /* keep empty error list */
+    }
 
     // ── Business activity (real from DB) ──
     let bookingsToday = 0;
@@ -162,7 +171,9 @@ export const monitoringRouter = router({
           },
         }),
       ]);
-    } catch { /* keep zeros */ }
+    } catch {
+      /* keep zeros */
+    }
 
     // ── Activity chart (last 7 days of bookings) — single query, in-memory grouping
     const chart: number[] = [];
@@ -175,9 +186,13 @@ export const monitoringRouter = router({
       for (let d = 6; d >= 0; d--) {
         const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - d);
         const dayEnd = new Date(dayStart.getTime() + 86400000);
-        chart.push(recentBookings.filter((b) => b.createdAt >= dayStart && b.createdAt < dayEnd).length);
+        chart.push(
+          recentBookings.filter((b) => b.createdAt >= dayStart && b.createdAt < dayEnd).length,
+        );
       }
-    } catch { /* keep empty chart */ }
+    } catch {
+      /* keep empty chart */
+    }
 
     // ── Recent error feed (from audit logs) ──
     const recent: Array<{
@@ -188,7 +203,10 @@ export const monitoringRouter = router({
     }> = [];
     try {
       const recentErrors = await prisma.auditLog.findMany({
-        where: { action: { startsWith: 'ERROR_' }, createdAt: { gte: new Date(now.getTime() - 24 * 3600000) } },
+        where: {
+          action: { startsWith: 'ERROR_' },
+          createdAt: { gte: new Date(now.getTime() - 24 * 3600000) },
+        },
         orderBy: { createdAt: 'desc' },
         take: 10,
       });
@@ -200,7 +218,9 @@ export const monitoringRouter = router({
           timestamp: e.createdAt.toISOString(),
         });
       }
-    } catch { /* keep empty */ }
+    } catch {
+      /* keep empty */
+    }
 
     return {
       timestamp: now.toISOString(),
@@ -248,12 +268,13 @@ export const monitoringRouter = router({
         last24h: errorLast24h,
         lastWeek: errorLastWeek,
         apiErrorsToday: getErrorCount(),
-        byType: errorByType.length > 0
-          ? errorByType
-          : [
-              { type: 'ValidationError', count: getErrorCount(), pct: 100 },
-              { type: 'Other', count: 0, pct: 0 },
-            ],
+        byType:
+          errorByType.length > 0
+            ? errorByType
+            : [
+                { type: 'ValidationError', count: getErrorCount(), pct: 100 },
+                { type: 'Other', count: 0, pct: 0 },
+              ],
       },
       performance: getPerformanceStats(),
       activity: {
@@ -295,7 +316,9 @@ export const monitoringRouter = router({
       if (recentError) {
         lastIncident = `${recentError.targetType} — ${recentError.action.replace('ERROR_', '')}`;
       }
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
 
     return {
       allHealthy,
@@ -337,7 +360,9 @@ export const monitoringRouter = router({
 
       for (const log of logs) {
         const level = log.action.startsWith('ERROR_')
-          ? (log.action === 'ERROR_PAYMENT' ? 'error' : 'warning')
+          ? log.action === 'ERROR_PAYMENT'
+            ? 'error'
+            : 'warning'
           : 'info';
         recent.push({
           id: log.id,
@@ -346,7 +371,9 @@ export const monitoringRouter = router({
           timestamp: log.createdAt.toISOString(),
         });
       }
-    } catch { /* return empty */ }
+    } catch {
+      /* return empty */
+    }
 
     // If no real errors exist, return an informational note
     if (recent.length === 0) {

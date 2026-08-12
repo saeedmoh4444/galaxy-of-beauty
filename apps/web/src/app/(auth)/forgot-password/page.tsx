@@ -43,14 +43,19 @@ export default function ForgotPasswordPage(): JSX.Element {
                 strokeWidth={2}
                 stroke="currentColor"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+                />
               </svg>
             </div>
             <p className="text-green-700 dark:text-green-300 font-medium">
               تم إرسال رابط إعادة تعيين كلمة المرور
             </p>
             <p className="text-sm text-text-secondary">
-              إذا كان البريد الإلكتروني مسجلاً لدينا، ستتلقى رسالة تحتوي على رابط إعادة تعيين كلمة المرور.
+              إذا كان البريد الإلكتروني مسجلاً لدينا، ستتلقى رسالة تحتوي على رابط إعادة تعيين كلمة
+              المرور.
             </p>
           </div>
         ) : (
@@ -63,12 +68,7 @@ export default function ForgotPasswordPage(): JSX.Element {
               placeholder="example@email.com"
               disabled={mutation.isPending}
             />
-            <Button
-              type="submit"
-              className="w-full"
-              loading={mutation.isPending}
-              disabled={!email}
-            >
+            <Button type="submit" className="w-full" loading={mutation.isPending} disabled={!email}>
               إرسال رابط إعادة التعيين
             </Button>
           </form>

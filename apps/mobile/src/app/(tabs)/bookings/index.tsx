@@ -108,6 +108,13 @@ const styles = StyleSheet.create({
   code: { fontSize: 14, fontWeight: '700', color: COLORS.gray900 },
   date: { fontSize: 12, color: COLORS.gray400, marginTop: 4 },
   status: { fontSize: 13, fontWeight: '600' },
-  loyaltyBadge: { backgroundColor: '#fef3c7', borderRadius: 16, paddingHorizontal: 12, paddingVertical: 4, alignSelf: 'flex-start', marginTop: 4 },
+  loyaltyBadge: {
+    backgroundColor: '#fef3c7',
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    alignSelf: 'flex-start',
+    marginTop: 4,
+  },
   loyaltyText: { fontSize: 13, fontWeight: '700', color: '#d97706' },
 });

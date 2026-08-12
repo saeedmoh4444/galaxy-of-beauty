@@ -7,14 +7,19 @@ export const performanceRouter = router({
     const [totalBookings, completedBookings, reviews, earnings] = await Promise.all([
       prisma.booking.count({ where: { technicianId: ctx.user.id } }),
       prisma.booking.count({ where: { technicianId: ctx.user.id, status: 'COMPLETED' } }),
-      prisma.review.aggregate({ where: { booking: { technicianId: ctx.user.id } }, _avg: { rating: true }, _count: true }),
+      prisma.review.aggregate({
+        where: { booking: { technicianId: ctx.user.id } },
+        _avg: { rating: true },
+        _count: true,
+      }),
       prisma.booking.aggregate({
         where: { technicianId: ctx.user.id, status: 'COMPLETED' },
         _sum: { totalAmount: true },
       }),
     ]);
 
-    const completionRate = totalBookings > 0 ? Math.round((completedBookings / totalBookings) * 100) : 0;
+    const completionRate =
+      totalBookings > 0 ? Math.round((completedBookings / totalBookings) * 100) : 0;
 
     // Monthly earnings trend (last 6 months)
     const now = new Date();
@@ -24,7 +29,11 @@ export const performanceRouter = router({
       const start = new Date(d.getFullYear(), d.getMonth(), 1);
       const end = new Date(d.getFullYear(), d.getMonth() + 1, 0);
       const agg = await prisma.booking.aggregate({
-        where: { technicianId: ctx.user.id, status: 'COMPLETED', updatedAt: { gte: start, lte: end } },
+        where: {
+          technicianId: ctx.user.id,
+          status: 'COMPLETED',
+          updatedAt: { gte: start, lte: end },
+        },
         _sum: { totalAmount: true },
         _count: true,
       });
@@ -36,8 +45,10 @@ export const performanceRouter = router({
     }
 
     return {
-      totalBookings, completedBookings, completionRate,
-      avgRating: Math.round((Number(reviews._avg?.rating || 0)) * 10) / 10,
+      totalBookings,
+      completedBookings,
+      completionRate,
+      avgRating: Math.round(Number(reviews._avg?.rating || 0) * 10) / 10,
       totalReviews: reviews._count,
       totalEarnings: Number(earnings._sum?.totalAmount || 0),
       monthlyEarnings,
@@ -45,7 +56,12 @@ export const performanceRouter = router({
   }),
 
   leaderboard: adminProcedure
-    .input(z.object({ limit: z.number().int().min(1).max(50).default(10), sortBy: z.enum(['bookings', 'earnings', 'rating']).default('bookings') }))
+    .input(
+      z.object({
+        limit: z.number().int().min(1).max(50).default(10),
+        sortBy: z.enum(['bookings', 'earnings', 'rating']).default('bookings'),
+      }),
+    )
     .query(async ({ input }) => {
       // Use simple query — bookings/reviews counted on User, not Technician
       const techs = await prisma.technician.findMany({

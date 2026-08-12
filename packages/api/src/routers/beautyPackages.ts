@@ -40,20 +40,24 @@ export const beautyPackageRouter = router({
 
   // Admin: create package
   create: adminProcedure
-    .input(z.object({
-      nameAr: z.string().min(1),
-      nameEn: z.string().min(1),
-      descriptionAr: z.string().optional(),
-      descriptionEn: z.string().optional(),
-      imageUrl: z.string().optional(),
-      discountPercent: z.number().min(0).max(100).default(15),
-      serviceIds: z.array(z.number().int().positive()).min(2),
-    }))
+    .input(
+      z.object({
+        nameAr: z.string().min(1),
+        nameEn: z.string().min(1),
+        descriptionAr: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        imageUrl: z.string().optional(),
+        discountPercent: z.number().min(0).max(100).default(15),
+        serviceIds: z.array(z.number().int().positive()).min(2),
+      }),
+    )
     .mutation(async ({ input }) => {
       const pkg = await db.beautyPackage.create({
         data: {
           nameJson: { ar: input.nameAr, en: input.nameEn },
-          descriptionJson: input.descriptionAr ? { ar: input.descriptionAr, en: input.descriptionEn || input.descriptionAr } : undefined,
+          descriptionJson: input.descriptionAr
+            ? { ar: input.descriptionAr, en: input.descriptionEn || input.descriptionAr }
+            : undefined,
           imageUrl: input.imageUrl,
           discountPercent: input.discountPercent,
           services: {

@@ -42,10 +42,12 @@ export default function PriceEstimatorPage(): JSX.Element {
     isLoading: estimateLoading,
     isError,
     error,
-    refetch } = api.priceEstimator.estimate.useQuery(
+    refetch,
+  } = api.priceEstimator.estimate.useQuery(
     {
       serviceId: selectedServiceId ?? 0,
-      promoCode: promoCode.trim() || undefined },
+      promoCode: promoCode.trim() || undefined,
+    },
     { enabled: !!selectedServiceId && !isNaN(selectedServiceId) },
   ) as {
     data: EstimateResult | undefined;
@@ -69,14 +71,17 @@ export default function PriceEstimatorPage(): JSX.Element {
   };
 
   const savings = estimate && estimate.discount > 0 ? estimate.discount : 0;
-  const hasPromoError = promoCode.trim() && estimate && !estimate.promoValid && estimate.discount === 0;
+  const hasPromoError =
+    promoCode.trim() && estimate && !estimate.promoValid && estimate.discount === 0;
 
   return (
     <div className="mx-auto max-w-lg px-4 py-12">
       {/* Header */}
       <div className="mb-8 text-center">
         <span className="text-6xl">💰</span>
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">حاسبة التكلفة</h1>
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
+          حاسبة التكلفة
+        </h1>
         <p className="mt-2 text-text-secondary dark:text-gray-400">
           احسبي تكلفة حجزكِ قبل التأكيد — السعر الأساسي، الرسوم، والخصومات
         </p>
@@ -97,7 +102,9 @@ export default function PriceEstimatorPage(): JSX.Element {
                   <span className="text-2xl">💅</span>
                   <div>
                     <p className="text-sm font-bold text-text-primary dark:text-gray-100">
-                      {selectedService.titleJson?.ar ?? selectedService.titleJson?.en ?? `خدمة #${selectedService.id}`}
+                      {selectedService.titleJson?.ar ??
+                        selectedService.titleJson?.en ??
+                        `خدمة #${selectedService.id}`}
                     </p>
                     <p className="text-xs text-brand-600 font-semibold">
                       {formatCurrency(Number(selectedService.basePrice))}
@@ -162,19 +169,29 @@ export default function PriceEstimatorPage(): JSX.Element {
                 className="w-full rounded-xl border border-edge bg-surface-muted px-4 py-3 text-sm uppercase tracking-wider focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
               />
               {promoCode && estimate?.promoValid && (
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-green-500 text-sm font-bold">✓ صالح</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-green-500 text-sm font-bold">
+                  ✓ صالح
+                </span>
               )}
               {hasPromoError && (
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-red-400 text-xs">غير صالح</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-red-400 text-xs">
+                  غير صالح
+                </span>
               )}
             </div>
           </div>
 
           {/* Quick Info */}
           <div className="rounded-xl bg-surface-muted p-3 dark:bg-gray-800 text-xs text-text-secondary space-y-1">
-            <p>📌 <strong>السعر الأساسي</strong> — سعر الخدمة قبل أي إضافات</p>
-            <p>📌 <strong>رسوم المنصة</strong> — ١١ ر.س ثابتة لكل حجز</p>
-            <p>📌 <strong>الخصم</strong> — يطبق تلقائياً عند إدخال كود خصم صالح</p>
+            <p>
+              📌 <strong>السعر الأساسي</strong> — سعر الخدمة قبل أي إضافات
+            </p>
+            <p>
+              📌 <strong>رسوم المنصة</strong> — ١١ ر.س ثابتة لكل حجز
+            </p>
+            <p>
+              📌 <strong>الخصم</strong> — يطبق تلقائياً عند إدخال كود خصم صالح
+            </p>
           </div>
         </div>
       </Card>
@@ -199,9 +216,7 @@ export default function PriceEstimatorPage(): JSX.Element {
         <Card
           padding="lg"
           className={`mt-6 transition-all ${
-            savings > 0
-              ? 'border-2 border-green-300 dark:border-green-700'
-              : ''
+            savings > 0 ? 'border-2 border-green-300 dark:border-green-700' : ''
           }`}
         >
           {/* Service Title */}
@@ -287,7 +302,9 @@ export default function PriceEstimatorPage(): JSX.Element {
             <Button
               size="lg"
               className="w-full"
-              onClick={() => window.location.assign(`/bookings/create?serviceId=${selectedServiceId}`)}
+              onClick={() =>
+                window.location.assign(`/bookings/create?serviceId=${selectedServiceId}`)
+              }
             >
               احجزي الآن ←
             </Button>

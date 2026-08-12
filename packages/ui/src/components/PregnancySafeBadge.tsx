@@ -76,23 +76,15 @@ export function PregnancySafeBadge({
   const t = TRIMESTERS[trimester];
 
   return (
-    <div
-      className={cn(
-        'rounded-2xl border p-4',
-        t.color,
-        className,
-      )}
-    >
+    <div className={cn('rounded-2xl border p-4', t.color, className)}>
       {/* Trimester indicator */}
       <div className="flex items-center gap-2">
-        <span className="text-2xl" aria-hidden="true">{t.emoji}</span>
+        <span className="text-2xl" aria-hidden="true">
+          {t.emoji}
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-            {t.label}
-          </h4>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-400">
-            {t.description}
-          </p>
+          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{t.label}</h4>
+          <p className="text-[10px] text-text-tertiary dark:text-gray-400">{t.description}</p>
         </div>
         <span className="ml-auto shrink-0 rounded-full bg-white/70 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-black/20 dark:text-emerald-300">
           ✅ آمن للحمل
@@ -103,9 +95,7 @@ export function PregnancySafeBadge({
       {service && (
         <div className="mt-3 rounded-xl bg-white/70 p-3 dark:bg-gray-800/70">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-              {service.name}
-            </p>
+            <p className="text-xs font-bold text-text-primary dark:text-gray-100">{service.name}</p>
             <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">
               {service.price} ر.س
             </span>
@@ -121,9 +111,7 @@ export function PregnancySafeBadge({
       {/* Allowed & Avoid */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/70 p-2.5 dark:bg-gray-800/70">
-          <h5 className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-            ✅ مسموح
-          </h5>
+          <h5 className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">✅ مسموح</h5>
           <ul className="mt-1 space-y-0.5">
             {t.allowed.map((item) => (
               <li key={item} className="text-[10px] text-text-secondary dark:text-gray-300">
@@ -133,9 +121,7 @@ export function PregnancySafeBadge({
           </ul>
         </div>
         <div className="rounded-xl bg-white/70 p-2.5 dark:bg-gray-800/70">
-          <h5 className="text-[10px] font-bold text-rose-600 dark:text-rose-400">
-            ⚠️ غير مناسب
-          </h5>
+          <h5 className="text-[10px] font-bold text-rose-600 dark:text-rose-400">⚠️ غير مناسب</h5>
           <ul className="mt-1 space-y-0.5">
             {t.avoid.map((item) => (
               <li key={item} className="text-[10px] text-text-secondary dark:text-gray-300">

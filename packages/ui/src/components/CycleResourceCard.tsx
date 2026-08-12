@@ -12,7 +12,11 @@ import { cn } from '@galaxy/shared';
 
 type CyclePhase = 'menstrual' | 'follicular' | 'ovulation' | 'luteal';
 
-interface Resource { emoji: string; title: string; detail: string; }
+interface Resource {
+  emoji: string;
+  title: string;
+  detail: string;
+}
 
 const RESOURCES: Record<CyclePhase, Resource[]> = {
   menstrual: [
@@ -37,7 +41,10 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
   ],
 };
 
-interface CycleResourceCardProps { phase: CyclePhase; className?: string; }
+interface CycleResourceCardProps {
+  phase: CyclePhase;
+  className?: string;
+}
 
 const PHASE_LABELS: Record<CyclePhase, { emoji: string; title: string }> = {
   menstrual: { emoji: '🩸', title: 'الدورة الشهرية' },
@@ -51,7 +58,12 @@ export function CycleResourceCard({ phase, className = '' }: CycleResourceCardPr
   const label = PHASE_LABELS[phase];
 
   return (
-    <div className={cn('rounded-2xl border border-purple-100 bg-white p-4 dark:border-purple-900 dark:bg-gray-900', className)}>
+    <div
+      className={cn(
+        'rounded-2xl border border-purple-100 bg-white p-4 dark:border-purple-900 dark:bg-gray-900',
+        className,
+      )}
+    >
       <div className="flex items-center gap-2">
         <span className="text-xl">{label.emoji}</span>
         <div>
@@ -61,10 +73,15 @@ export function CycleResourceCard({ phase, className = '' }: CycleResourceCardPr
       </div>
       <div className="mt-3 space-y-2">
         {resources.map((r) => (
-          <div key={r.title} className="flex items-start gap-2 rounded-lg bg-purple-50 px-3 py-2.5 dark:bg-purple-950">
+          <div
+            key={r.title}
+            className="flex items-start gap-2 rounded-lg bg-purple-50 px-3 py-2.5 dark:bg-purple-950"
+          >
             <span className="text-sm shrink-0">{r.emoji}</span>
             <div>
-              <p className="text-[10px] font-bold text-purple-800 dark:text-purple-200">{r.title}</p>
+              <p className="text-[10px] font-bold text-purple-800 dark:text-purple-200">
+                {r.title}
+              </p>
               <p className="text-[9px] text-purple-600 dark:text-purple-400">{r.detail}</p>
             </div>
           </div>

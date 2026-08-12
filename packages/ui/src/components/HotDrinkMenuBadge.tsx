@@ -10,7 +10,15 @@ import { cn } from '@galaxy/shared';
  *   <HotDrinkMenuBadge drinks={['arabic_coffee', 'karak', 'herbal_tea']} />
  */
 
-type Drink = 'arabic_coffee' | 'karak' | 'herbal_tea' | 'green_tea' | 'chamomile' | 'mint_tea' | 'latte' | 'hot_chocolate';
+type Drink =
+  | 'arabic_coffee'
+  | 'karak'
+  | 'herbal_tea'
+  | 'green_tea'
+  | 'chamomile'
+  | 'mint_tea'
+  | 'latte'
+  | 'hot_chocolate';
 
 interface DrinkDef {
   emoji: string;
@@ -19,7 +27,11 @@ interface DrinkDef {
 }
 
 const DRINKS: Record<Drink, DrinkDef> = {
-  arabic_coffee: { emoji: '☕', name: 'قهوة عربية', description: 'قهوة سعودية أصيلة بالهيل والزعفران' },
+  arabic_coffee: {
+    emoji: '☕',
+    name: 'قهوة عربية',
+    description: 'قهوة سعودية أصيلة بالهيل والزعفران',
+  },
   karak: { emoji: '🍵', name: 'كرك', description: 'شاي كرك هندي بالحليب والتوابل' },
   herbal_tea: { emoji: '🌿', name: 'شاي أعشاب', description: 'مزيج أعشاب طبيعي مهدئ' },
   green_tea: { emoji: '🍃', name: 'شاي أخضر', description: 'شاي أخضر منعش مع نعناع' },
@@ -52,11 +64,11 @@ export function HotDrinkMenuBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">☕</span>
+        <span className="text-xl" aria-hidden="true">
+          ☕
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">
-            قائمة المشروبات
-          </h4>
+          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">قائمة المشروبات</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">
             {complimentary ? 'مجاناً مع كل خدمة' : 'متوفرة حسب الطلب'}
           </p>
@@ -77,7 +89,9 @@ export function HotDrinkMenuBadge({
               key={d}
               className="flex items-center gap-2 rounded-lg bg-amber-50 px-2.5 py-2 dark:bg-amber-950"
             >
-              <span className="text-lg shrink-0" aria-hidden="true">{drink.emoji}</span>
+              <span className="text-lg shrink-0" aria-hidden="true">
+                {drink.emoji}
+              </span>
               <div className="min-w-0">
                 <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200 truncate">
                   {drink.name}

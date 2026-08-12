@@ -10,7 +10,8 @@ import { cn } from '@galaxy/shared';
  *   <BeautyBudgetCard services={[{ name: 'مانيكير سريع', price: 49, category: 'nails' }]} />
  */
 
-type BudgetCategory = 'nails' | 'hair' | 'facial' | 'massage' | 'makeup' | 'henna' | 'brows' | 'waxing';
+type BudgetCategory =
+  'nails' | 'hair' | 'facial' | 'massage' | 'makeup' | 'henna' | 'brows' | 'waxing';
 
 interface CategoryDef {
   emoji: string;
@@ -63,7 +64,9 @@ export function BeautyBudgetCard({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true">💰</span>
+          <span className="text-lg" aria-hidden="true">
+            💰
+          </span>
           <div>
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
               جمال بالميزانية

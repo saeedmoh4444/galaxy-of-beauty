@@ -78,9 +78,7 @@ export function WalkMeToCar({
             {isHomeService ? 'أمان الخدمة المنزلية' : 'توصيل للسيارة'}
           </h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">
-            {isDark
-              ? '🌙 موعد مسائي — سلامتكِ أولاً'
-              : '☀️ خدمة متاحة في أي وقت تحتاجينها'}
+            {isDark ? '🌙 موعد مسائي — سلامتكِ أولاً' : '☀️ خدمة متاحة في أي وقت تحتاجينها'}
           </p>
         </div>
       </div>
@@ -89,7 +87,9 @@ export function WalkMeToCar({
       {escorting && (
         <div className="mt-3 rounded-xl bg-indigo-100 p-3 dark:bg-indigo-900">
           <div className="flex items-center gap-2">
-            <span className="animate-pulse text-lg" aria-hidden="true">🚶‍♀️</span>
+            <span className="animate-pulse text-lg" aria-hidden="true">
+              🚶‍♀️
+            </span>
             <div>
               <p className="text-xs font-bold text-indigo-700 dark:text-indigo-200">
                 الخبيرة في طريقها لمرافقتكِ

@@ -2,7 +2,16 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, ProgressBar, formatCurrency, COUNTDOWN_INTERVAL_MS } from '@galaxy/ui';
+import {
+  Card,
+  CardSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  ProgressBar,
+  formatCurrency,
+  COUNTDOWN_INTERVAL_MS,
+} from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import Link from 'next/link';
 
@@ -60,7 +69,9 @@ function CountdownTimer({ endsAt }: { endsAt: string }): JSX.Element {
   const isEnded = timeLeft === 'انتهى';
 
   return (
-    <span className={`inline-flex items-center gap-1 text-xs font-semibold ${isEnded ? 'text-text-tertiary' : 'text-orange-600 animate-pulse'}`}>
+    <span
+      className={`inline-flex items-center gap-1 text-xs font-semibold ${isEnded ? 'text-text-tertiary' : 'text-orange-600 animate-pulse'}`}
+    >
       ⏰ {timeLeft}
     </span>
   );
@@ -68,7 +79,12 @@ function CountdownTimer({ endsAt }: { endsAt: string }): JSX.Element {
 
 export default function FlashDealsPage(): JSX.Element {
   const { user } = useAuth();
-  const { data: deals, isLoading, isError, refetch } = api.flashDeals.active.useQuery() as {
+  const {
+    data: deals,
+    isLoading,
+    isError,
+    refetch,
+  } = api.flashDeals.active.useQuery() as {
     data: Deal[] | undefined;
     isLoading: boolean;
     isError: boolean;
@@ -127,7 +143,8 @@ export default function FlashDealsPage(): JSX.Element {
       ) : (
         <div className="space-y-6">
           {allDeals.map((deal) => {
-            const pct = deal.maxRedemptions > 0 ? (deal.currentRedemptions / deal.maxRedemptions) * 100 : 0;
+            const pct =
+              deal.maxRedemptions > 0 ? (deal.currentRedemptions / deal.maxRedemptions) * 100 : 0;
             const soldOut = deal.currentRedemptions >= deal.maxRedemptions;
             const isClaimed = claimedIds.has(deal.id);
             const savings = deal.originalPrice - deal.dealPrice;
@@ -191,10 +208,7 @@ export default function FlashDealsPage(): JSX.Element {
 
                     {/* Progress Bar */}
                     <div className="mt-2">
-                      <ProgressBar
-                        value={pct}
-                        className="[&>div]:bg-red-500"
-                      />
+                      <ProgressBar value={pct} className="[&>div]:bg-red-500" />
                     </div>
 
                     {/* Action */}

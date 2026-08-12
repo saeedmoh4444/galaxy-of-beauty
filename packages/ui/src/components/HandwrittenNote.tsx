@@ -47,7 +47,9 @@ export function HandwrittenNote({
   className = '',
 }: HandwrittenNoteProps): JSX.Element | null {
   // Find the relevant milestone
-  const milestones = Object.keys(MILESTONE_MESSAGES).map(Number).sort((a, b) => a - b);
+  const milestones = Object.keys(MILESTONE_MESSAGES)
+    .map(Number)
+    .sort((a, b) => a - b);
   const milestone = milestones.find((m) => bookingCount >= m && bookingCount < m + 15);
 
   if (!milestone) return null;
@@ -64,10 +66,10 @@ export function HandwrittenNote({
     >
       {/* Paper texture feel */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">{note.emoji}</span>
-        <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">
-          {note.title}
-        </h4>
+        <span className="text-3xl" aria-hidden="true">
+          {note.emoji}
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">{note.title}</h4>
       </div>
 
       {/* Handwritten-style message */}

@@ -32,10 +32,20 @@ export function BlogPostClient({
   initialPost: Record<string, unknown> | null;
   fetchError?: string;
 }): JSX.Element {
-  const { data: clientPost, isLoading, isError, refetch } = (api as any).blog.getBySlug.useQuery(
+  const {
+    data: clientPost,
+    isLoading,
+    isError,
+    refetch,
+  } = (api as any).blog.getBySlug.useQuery(
     { slug },
     { enabled: !!slug, initialData: initialPost as BlogPost | null | undefined },
-  ) as { data: BlogPost | null | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  ) as {
+    data: BlogPost | null | undefined;
+    isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
+  };
 
   const post = clientPost ?? (initialPost as BlogPost | null);
 
@@ -52,7 +62,9 @@ export function BlogPostClient({
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
         <span className="text-6xl">📝</span>
         <h1 className="mt-4 text-2xl font-bold">رابط غير صالح</h1>
-        <Link href="/blog" className="mt-4 inline-block"><Button size="sm">العودة للمدونة</Button></Link>
+        <Link href="/blog" className="mt-4 inline-block">
+          <Button size="sm">العودة للمدونة</Button>
+        </Link>
       </div>
     );
   }
@@ -83,7 +95,9 @@ export function BlogPostClient({
         <span className="text-6xl">📝</span>
         <h1 className="mt-4 text-2xl font-bold">المقال غير موجود</h1>
         <p className="mt-2 text-gray-500">ربما تم حذفه أو نقله</p>
-        <Link href="/blog" className="mt-4 inline-block"><Button size="sm">العودة للمدونة</Button></Link>
+        <Link href="/blog" className="mt-4 inline-block">
+          <Button size="sm">العودة للمدونة</Button>
+        </Link>
       </div>
     );
   }
@@ -94,7 +108,10 @@ export function BlogPostClient({
   const readTime = readingTime(body);
   const date = (post as BlogPost).publishedAt
     ? new Date((post as BlogPost).publishedAt!).toLocaleDateString('ar-SA', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
       })
     : '';
 
@@ -104,24 +121,41 @@ export function BlogPostClient({
 
       <article className="mt-6">
         {(post as BlogPost).imageUrl ? (
-          <img src={(post as BlogPost).imageUrl!} alt={title} className="mb-8 h-64 w-full rounded-2xl object-cover shadow-lg sm:h-80" />
+          <img
+            src={(post as BlogPost).imageUrl!}
+            alt={title}
+            className="mb-8 h-64 w-full rounded-2xl object-cover shadow-lg sm:h-80"
+          />
         ) : (
-          <div className="mb-8 flex h-48 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-accent-100 text-7xl dark:from-brand-900 dark:to-accent-900 sm:h-64">✨</div>
+          <div className="mb-8 flex h-48 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-accent-100 text-7xl dark:from-brand-900 dark:to-accent-900 sm:h-64">
+            ✨
+          </div>
         )}
 
         <div className="mb-4 flex flex-wrap gap-2">
           {tags.map((t) => (
-            <Link key={t} href={`/blog?tag=${encodeURIComponent(t)}`} className="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-600 hover:bg-brand-100 transition-colors dark:bg-brand-950 dark:hover:bg-brand-900">{t}</Link>
+            <Link
+              key={t}
+              href={`/blog?tag=${encodeURIComponent(t)}`}
+              className="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-600 hover:bg-brand-100 transition-colors dark:bg-brand-950 dark:hover:bg-brand-900"
+            >
+              {t}
+            </Link>
           ))}
         </div>
 
-        <h1 className="text-3xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-4xl leading-tight">{title}</h1>
+        <h1 className="text-3xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-4xl leading-tight">
+          {title}
+        </h1>
         <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
           {date && <span>📅 {date}</span>}
           <span>⏱️ {readTime} قراءة</span>
         </div>
 
-        <div className="prose prose-brand mt-8 max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: body }} />
+        <div
+          className="prose prose-brand mt-8 max-w-none dark:prose-invert"
+          dangerouslySetInnerHTML={{ __html: body }}
+        />
 
         <div className="mt-10 rounded-2xl border border-gray-200 bg-gray-50 p-6 dark:border-gray-800 dark:bg-gray-900">
           <p className="mb-3 text-sm font-semibold">📤 أعجبكِ المقال؟ شاركيه مع صديقاتكِ</p>
@@ -130,7 +164,11 @@ export function BlogPostClient({
       </article>
 
       <div className="mt-10 text-center">
-        <Link href="/blog"><Button variant="ghost" size="sm">← تصفحي المزيد من المقالات</Button></Link>
+        <Link href="/blog">
+          <Button variant="ghost" size="sm">
+            ← تصفحي المزيد من المقالات
+          </Button>
+        </Link>
       </div>
     </div>
   );

@@ -1,4 +1,11 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
@@ -12,7 +19,10 @@ export default function ForgotPasswordScreen() {
   const [sent, setSent] = useState(false);
 
   const handleSubmit = async () => {
-    if (!email) { setError('يرجى إدخال البريد الإلكتروني'); return; }
+    if (!email) {
+      setError('يرجى إدخال البريد الإلكتروني');
+      return;
+    }
     setError('');
     setLoading(true);
     try {
@@ -66,10 +76,24 @@ export default function ForgotPasswordScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', padding: 24, justifyContent: 'center' },
-  title: { fontSize: 28, fontWeight: '800', color: '#111827', textAlign: 'center', marginBottom: 8 },
+  title: {
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#111827',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
   sub: { fontSize: 14, color: '#6b7280', textAlign: 'center', marginBottom: 24 },
   form: { gap: 12 },
-  input: { borderWidth: 1, borderColor: '#d1d5db', borderRadius: 12, padding: 14, fontSize: 16, backgroundColor: '#f9fafb', textAlign: 'right' },
+  input: {
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    padding: 14,
+    fontSize: 16,
+    backgroundColor: '#f9fafb',
+    textAlign: 'right',
+  },
   btn: { backgroundColor: '#7c3aed', borderRadius: 12, padding: 14, alignItems: 'center' },
   btnText: { color: '#fff', fontSize: 16, fontWeight: '600' },
   link: { color: '#7c3aed', textAlign: 'center', marginTop: 12, fontSize: 14 },

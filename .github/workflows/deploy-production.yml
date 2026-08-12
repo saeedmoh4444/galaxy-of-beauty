@@ -11,7 +11,6 @@ concurrency:
 
 env:
   NODE_VERSION: '20'
-  PNPM_VERSION: '9'
 
 jobs:
   verify:
@@ -21,8 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+        with: {}
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -78,8 +76,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+        with: {}
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -94,7 +91,19 @@ jobs:
           pnpm db:seed
         env:
           DATABASE_URL: postgresql://gob_admin:${{ secrets.DB_PASSWORD }}@localhost:5432/Galaxy_of_Beauty_db
-      
+
+      - name: Start Next.js Server
+        run: |
+          pnpm --filter @galaxy/web exec next start --port 3000 &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3000/api/trpc/health && break
+            sleep 1
+          done
+        env:
+          DATABASE_URL: postgresql://gob_admin:${{ secrets.DB_PASSWORD }}@localhost:5432/Galaxy_of_Beauty_db
+          JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
+          JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
+
       - name: Run E2E Tests
         run: pnpm --filter @galaxy/web test:e2e
         env:

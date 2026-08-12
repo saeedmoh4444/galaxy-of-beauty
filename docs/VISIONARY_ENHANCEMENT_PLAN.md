@@ -9,70 +9,76 @@
 
 ### 1.1 New Service Categories (6 → 12)
 
-| # | New Category | Arabic | Rationale |
-|---|-------------|--------|-----------|
-| 7 | Waxing & Hair Removal | إزالة الشعر | #1 requested service in Saudi |
-| 8 | Eyelash & Eyebrow | الرموش والحواجب | Lash extensions, microblading |
-| 9 | Body Treatments | علاجات الجسم | Scrubs, wraps, tanning |
-| 10 | Bridal Services | خدمات العرايس | Dedicated bridal category |
-| 11 | Men's Grooming | عناية الرجال | Expanding market (barber services) |
-| 12 | Spa & Wellness | السبا والعافية | Full spa experiences |
+| #   | New Category          | Arabic          | Rationale                          |
+| --- | --------------------- | --------------- | ---------------------------------- |
+| 7   | Waxing & Hair Removal | إزالة الشعر     | #1 requested service in Saudi      |
+| 8   | Eyelash & Eyebrow     | الرموش والحواجب | Lash extensions, microblading      |
+| 9   | Body Treatments       | علاجات الجسم    | Scrubs, wraps, tanning             |
+| 10  | Bridal Services       | خدمات العرايس   | Dedicated bridal category          |
+| 11  | Men's Grooming        | عناية الرجال    | Expanding market (barber services) |
+| 12  | Spa & Wellness        | السبا والعافية  | Full spa experiences               |
 
 ### 1.2 30 New Services (15 → 45)
 
 **Waxing & Hair Removal (6):**
-| Service | Price | Duration |
-|---------|-------|----------|
-| Full Body Wax | 300 SAR | 90 min |
-| Half Leg Wax | 80 SAR | 20 min |
-| Brazilian Wax | 150 SAR | 30 min |
-| Underarm Wax | 40 SAR | 10 min |
-| Face Threading | 50 SAR | 15 min |
-| Full Face Wax | 80 SAR | 25 min |
+
+| Service        | Price   | Duration |
+| -------------- | ------- | -------- |
+| Full Body Wax  | 300 SAR | 90 min   |
+| Half Leg Wax   | 80 SAR  | 20 min   |
+| Brazilian Wax  | 150 SAR | 30 min   |
+| Underarm Wax   | 40 SAR  | 10 min   |
+| Face Threading | 50 SAR  | 15 min   |
+| Full Face Wax  | 80 SAR  | 25 min   |
 
 **Eyelash & Eyebrow (4):**
-| Service | Price | Duration |
-|---------|-------|----------|
-| Classic Lash Extensions | 250 SAR | 90 min |
-| Volume Lash Extensions | 350 SAR | 120 min |
-| Lash Lift & Tint | 180 SAR | 45 min |
-| Microblading Eyebrows | 600 SAR | 120 min |
+
+| Service                 | Price   | Duration |
+| ----------------------- | ------- | -------- |
+| Classic Lash Extensions | 250 SAR | 90 min   |
+| Volume Lash Extensions  | 350 SAR | 120 min  |
+| Lash Lift & Tint        | 180 SAR | 45 min   |
+| Microblading Eyebrows   | 600 SAR | 120 min  |
 
 **Body Treatments (4):**
-| Service | Price | Duration |
-|---------|-------|----------|
-| Full Body Scrub | 200 SAR | 60 min |
-| Detox Body Wrap | 250 SAR | 75 min |
-| Aromatherapy Massage | 280 SAR | 90 min |
-| Hot Stone Massage | 300 SAR | 90 min |
+
+| Service              | Price   | Duration |
+| -------------------- | ------- | -------- |
+| Full Body Scrub      | 200 SAR | 60 min   |
+| Detox Body Wrap      | 250 SAR | 75 min   |
+| Aromatherapy Massage | 280 SAR | 90 min   |
+| Hot Stone Massage    | 300 SAR | 90 min   |
 
 **Bridal Services (4):**
-| Service | Price | Duration |
-|---------|-------|----------|
-| Bridal Trial Package | 500 SAR | 180 min |
-| Pre-Wedding Glow | 400 SAR | 120 min |
-| Wedding Day Coordination | 800 SAR | All day |
-| Bridal Party Package | 1200 SAR | 4 hrs |
+
+| Service                  | Price    | Duration |
+| ------------------------ | -------- | -------- |
+| Bridal Trial Package     | 500 SAR  | 180 min  |
+| Pre-Wedding Glow         | 400 SAR  | 120 min  |
+| Wedding Day Coordination | 800 SAR  | All day  |
+| Bridal Party Package     | 1200 SAR | 4 hrs    |
 
 **Men's Grooming (4):**
-| Service | Price | Duration |
-|---------|-------|----------|
-| Premium Haircut | 100 SAR | 30 min |
-| Beard Trim & Shape | 60 SAR | 20 min |
-| Men's Facial | 120 SAR | 45 min |
-| Men's Manicure | 80 SAR | 30 min |
+
+| Service            | Price   | Duration |
+| ------------------ | ------- | -------- |
+| Premium Haircut    | 100 SAR | 30 min   |
+| Beard Trim & Shape | 60 SAR  | 20 min   |
+| Men's Facial       | 120 SAR | 45 min   |
+| Men's Manicure     | 80 SAR  | 30 min   |
 
 **Spa & Wellness (8):**
-| Service | Price | Duration |
-|---------|-------|----------|
-| Full Spa Day | 600 SAR | 4 hrs |
-| Couples Massage | 500 SAR | 90 min |
-| Foot Reflexology | 150 SAR | 45 min |
-| Thai Massage | 250 SAR | 60 min |
-| Cupping Therapy (Hijama) | 200 SAR | 45 min |
-| Herbal Compress Massage | 220 SAR | 60 min |
-| Lymphatic Drainage | 280 SAR | 75 min |
-| Prenatal Massage | 200 SAR | 60 min |
+
+| Service                  | Price   | Duration |
+| ------------------------ | ------- | -------- |
+| Full Spa Day             | 600 SAR | 4 hrs    |
+| Couples Massage          | 500 SAR | 90 min   |
+| Foot Reflexology         | 150 SAR | 45 min   |
+| Thai Massage             | 250 SAR | 60 min   |
+| Cupping Therapy (Hijama) | 200 SAR | 45 min   |
+| Herbal Compress Massage  | 220 SAR | 60 min   |
+| Lymphatic Drainage       | 280 SAR | 75 min   |
+| Prenatal Massage         | 200 SAR | 60 min   |
 
 ---
 
@@ -80,18 +86,18 @@
 
 ### 2.1 Micro-Interaction System (Every Touch Point)
 
-| Interaction | Where | Effect |
-|------------|-------|--------|
-| Button press | All CTAs | Scale 0.97 → 1.0 bounce, haptic on mobile |
-| Card hover | All cards | Elevate 4px + subtle glow |
-| Success action | Booking confirm, payment, register | Celebration confetti + checkmark animation |
-| Error state | Validation, API errors | Gentle shake animation + red pulse |
-| Loading state | Every async operation | Branded skeleton with logo shimmer |
-| Empty state | Every empty list | Illustrated character + helpful CTA |
-| Pull-to-refresh | Every list page | Custom branded animation (stars → galaxy) |
-| Tab switch | Mobile tabs | Slide + fade transition, 200ms |
-| Modal open | All modals | Scale from 0.95 → 1.0 + fade backdrop |
-| Notification | New notification | Slide-in from right + auto-dismiss |
+| Interaction     | Where                              | Effect                                     |
+| --------------- | ---------------------------------- | ------------------------------------------ |
+| Button press    | All CTAs                           | Scale 0.97 → 1.0 bounce, haptic on mobile  |
+| Card hover      | All cards                          | Elevate 4px + subtle glow                  |
+| Success action  | Booking confirm, payment, register | Celebration confetti + checkmark animation |
+| Error state     | Validation, API errors             | Gentle shake animation + red pulse         |
+| Loading state   | Every async operation              | Branded skeleton with logo shimmer         |
+| Empty state     | Every empty list                   | Illustrated character + helpful CTA        |
+| Pull-to-refresh | Every list page                    | Custom branded animation (stars → galaxy)  |
+| Tab switch      | Mobile tabs                        | Slide + fade transition, 200ms             |
+| Modal open      | All modals                         | Scale from 0.95 → 1.0 + fade backdrop      |
+| Notification    | New notification                   | Slide-in from right + auto-dismiss         |
 
 ### 2.2 Dark Mode Perfection (256 Pages)
 
@@ -112,14 +118,14 @@
 
 ### 2.4 Performance Targets
 
-| Metric | Current | Target |
-|--------|---------|--------|
-| LCP (Largest Contentful Paint) | ~3s | < 2.5s |
-| CLS (Cumulative Layout Shift) | ~0.15 | < 0.1 |
-| INP (Interaction to Next Paint) | ~300ms | < 200ms |
-| Mobile 3G load | ~5s | < 3s |
-| JS bundle size | ~200KB | < 150KB |
-| Image optimization | Mixed | All AVIF/WebP |
+| Metric                          | Current | Target        |
+| ------------------------------- | ------- | ------------- |
+| LCP (Largest Contentful Paint)  | ~3s     | < 2.5s        |
+| CLS (Cumulative Layout Shift)   | ~0.15   | < 0.1         |
+| INP (Interaction to Next Paint) | ~300ms  | < 200ms       |
+| Mobile 3G load                  | ~5s     | < 3s          |
+| JS bundle size                  | ~200KB  | < 150KB       |
+| Image optimization              | Mixed   | All AVIF/WebP |
 
 ---
 
@@ -128,6 +134,7 @@
 ### 3.1 Beauty DNA Profile
 
 Customer takes 5-min quiz → AI builds persistent profile:
+
 - Skin type (oily/dry/combination/sensitive)
 - Hair type (straight/wavy/curly/coily, thickness, porosity)
 - Skin tone (Fitzpatrick scale, undertone)
@@ -205,10 +212,10 @@ Customer takes 5-min quiz → AI builds persistent profile:
 
 ### 5.1 Membership Tiers (3 Levels)
 
-| Tier | Monthly | Benefits |
-|------|---------|----------|
-| SILVER | 199 SAR | 2 services, 10% off additional |
-| GOLD | 399 SAR | 4 services, 15% off, priority booking |
+| Tier     | Monthly | Benefits                                                     |
+| -------- | ------- | ------------------------------------------------------------ |
+| SILVER   | 199 SAR | 2 services, 10% off additional                               |
+| GOLD     | 399 SAR | 4 services, 15% off, priority booking                        |
 | PLATINUM | 799 SAR | 8 services, 20% off, dedicated technician, free home service |
 
 ### 5.2 Corporate Wellness Program
@@ -339,14 +346,17 @@ Customer takes 5-min quiz → AI builds persistent profile:
 ### 9.2 Error Messages That Delight
 
 Instead of "Error 500":
+
 > "عذراً! شيء غير متوقع حدث. فريقنا التقني تم تنبيهه تلقائياً. جربي مرة أخرى؟"
 
 Instead of "Not found":
+
 > "هذه الصفحة ذهبت إلى صالون تجميل ونسيت العودة! جربي صفحة أخرى؟"
 
 ### 9.3 Empty States That Guide
 
 Instead of blank "No bookings":
+
 > "رحلة جمالكِ تبدأ هنا! احجزي موعدكِ الأول واحصلي على خصم ٢٠٪. هل نبدأ؟"
 
 ### 9.4 Loading States That Entertain
@@ -386,35 +396,35 @@ Instead of blank "No bookings":
 
 ## Priority Execution Order
 
-| # | Task | Effort | Impact | Deps |
-|---|------|--------|--------|------|
-| 1 | 30 new services (Phase 1.2) | 4h | High | None |
-| 2 | Dark mode perfection (2.2) | 4h | Medium | None |
-| 3 | Prayer time integration (4.1) | 4h | High | None |
-| 4 | Micro-interactions (2.1) | 8h | Medium | None |
-| 5 | Membership tiers (5.1) | 8h | High | None |
-| 6 | WhatsApp API (4.5) | 4h | High | WhatsApp Business |
-| 7 | AI Beauty DNA (3.1) | 12h | High | OpenAI |
-| 8 | 30 more services | 4h | High | None |
-| 9 | Offline-first mobile (6.2) | 8h | Medium | None |
-| 10 | Beauty tourism (5.3) | 8h | Medium | None |
+| #   | Task                          | Effort | Impact | Deps              |
+| --- | ----------------------------- | ------ | ------ | ----------------- |
+| 1   | 30 new services (Phase 1.2)   | 4h     | High   | None              |
+| 2   | Dark mode perfection (2.2)    | 4h     | Medium | None              |
+| 3   | Prayer time integration (4.1) | 4h     | High   | None              |
+| 4   | Micro-interactions (2.1)      | 8h     | Medium | None              |
+| 5   | Membership tiers (5.1)        | 8h     | High   | None              |
+| 6   | WhatsApp API (4.5)            | 4h     | High   | WhatsApp Business |
+| 7   | AI Beauty DNA (3.1)           | 12h    | High   | OpenAI            |
+| 8   | 30 more services              | 4h     | High   | None              |
+| 9   | Offline-first mobile (6.2)    | 8h     | Medium | None              |
+| 10  | Beauty tourism (5.3)          | 8h     | Medium | None              |
 
 ---
 
 ## Cost to Build Everything
 
-| Phase | Effort | External Cost |
-|-------|--------|---------------|
-| 1 (Services) | 4h | $0 |
-| 2 (UX/UI) | 16h | $0 |
-| 3 (AI) | 20h | OpenAI API (~$50/mo) |
-| 4 (Saudi Market) | 16h | WhatsApp API (~$100/mo) |
-| 5 (Business) | 20h | Payment gateway fees |
-| 6 (Mobile) | 16h | $0 |
-| 7 (Social) | 20h | $0 |
-| 8 (Technical) | 20h | AWS (~$100/mo) |
-| 9 (Details) | 8h | $0 |
-| 10 (Growth) | 12h | $0 |
-| **TOTAL** | **~152h** | **~$250/mo** |
+| Phase            | Effort    | External Cost           |
+| ---------------- | --------- | ----------------------- |
+| 1 (Services)     | 4h        | $0                      |
+| 2 (UX/UI)        | 16h       | $0                      |
+| 3 (AI)           | 20h       | OpenAI API (~$50/mo)    |
+| 4 (Saudi Market) | 16h       | WhatsApp API (~$100/mo) |
+| 5 (Business)     | 20h       | Payment gateway fees    |
+| 6 (Mobile)       | 16h       | $0                      |
+| 7 (Social)       | 20h       | $0                      |
+| 8 (Technical)    | 20h       | AWS (~$100/mo)          |
+| 9 (Details)      | 8h        | $0                      |
+| 10 (Growth)      | 12h       | $0                      |
+| **TOTAL**        | **~152h** | **~$250/mo**            |
 
 **Platform value after: $250K → $500K+**

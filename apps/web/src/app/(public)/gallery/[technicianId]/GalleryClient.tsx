@@ -16,9 +16,7 @@ export function GalleryClient({ data }: { data: GalleryPageData }): JSX.Element 
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-        معرض الأعمال
-      </h1>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">معرض الأعمال</h1>
 
       {fetchError ? (
         <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-800 dark:bg-red-950">
@@ -36,7 +34,7 @@ export function GalleryClient({ data }: { data: GalleryPageData }): JSX.Element 
                   {img.imageUrl ? (
                     <img
                       src={String(img.imageUrl)}
-                      alt={((img.captionJson as { ar?: string })?.ar) || 'Gallery image'}
+                      alt={(img.captionJson as { ar?: string })?.ar || 'Gallery image'}
                       className="h-full w-full object-cover"
                       loading="lazy"
                     />
@@ -44,7 +42,7 @@ export function GalleryClient({ data }: { data: GalleryPageData }): JSX.Element 
                     <span>🖼️</span>
                   )}
                 </div>
-                {((img.captionJson as { ar?: string })?.ar) ? (
+                {(img.captionJson as { ar?: string })?.ar ? (
                   <div className="p-3">
                     <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                       {String((img.captionJson as { ar?: string }).ar)}

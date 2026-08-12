@@ -10,21 +10,48 @@ export default function AdminGiftCardsScreen(): JSX.Element {
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).giftCards.listAll.query({ page: 1, limit: BULK_PAGE_SIZE }) as any).then((d: any) => { setData(d?.items || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
+    if (isRefresh) setRefreshing(true);
+    else setLoading(true);
+    ((trpc as any).giftCards.listAll.query({ page: 1, limit: BULK_PAGE_SIZE }) as any)
+      .then((d: any) => {
+        setData(d?.items || []);
+        setLoading(false);
+        setRefreshing(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        setRefreshing(false);
+      });
   }, []);
 
-  useEffect(() => { fetch(); }, [fetch]);
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
 
   if (loading) return <SkeletonList count={5} />;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#ec4899']} />}>
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={() => fetch(true)}
+          colors={['#ec4899']}
+        />
+      }
+    >
       <Text style={styles.t}>🎁 بطاقات الهدية</Text>
       {data.map((c: any, i: number) => (
         <View key={i} style={styles.card}>
-          <View style={{flex:1}}><Text style={styles.code}>{c.code as string}</Text><Text style={styles.meta}>{(c.amount as number)?.toLocaleString()} ر.س</Text></View>
-          <View style={[styles.badge, c.status === 'ACTIVE' ? styles.active : styles.used]}><Text style={styles.badgeText}>{c.status === 'ACTIVE' ? 'نشطة' : 'مستخدمة'}</Text></View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.code}>{c.code as string}</Text>
+            <Text style={styles.meta}>{(c.amount as number)?.toLocaleString()} ر.س</Text>
+          </View>
+          <View style={[styles.badge, c.status === 'ACTIVE' ? styles.active : styles.used]}>
+            <Text style={styles.badgeText}>{c.status === 'ACTIVE' ? 'نشطة' : 'مستخدمة'}</Text>
+          </View>
         </View>
       ))}
     </ScrollView>
@@ -32,11 +59,22 @@ export default function AdminGiftCardsScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#fdf2f8' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 20 },
-  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 6 },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 6,
+  },
   code: { fontSize: 13, fontWeight: '700', color: '#db2777', fontFamily: 'monospace' },
   meta: { fontSize: 12, color: '#6b7280', marginTop: 2 },
-  badge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 }, active: { backgroundColor: '#dcfce7' }, used: { backgroundColor: '#f3f4f6' },
+  badge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
+  active: { backgroundColor: '#dcfce7' },
+  used: { backgroundColor: '#f3f4f6' },
   badgeText: { fontSize: 11, fontWeight: '600' },
 });

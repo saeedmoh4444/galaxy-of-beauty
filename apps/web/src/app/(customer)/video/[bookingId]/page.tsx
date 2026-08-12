@@ -12,10 +12,12 @@ export default function VideoSessionPage(): JSX.Element {
   const bid = Number(bookingId);
   const [joining, setJoining] = useState(false);
 
-  const { data: session, isLoading, isError, refetch } = api.video.getByBooking.useQuery(
-    { bookingId: bid },
-    { enabled: !isNaN(bid) },
-  );
+  const {
+    data: session,
+    isLoading,
+    isError,
+    refetch,
+  } = api.video.getByBooking.useQuery({ bookingId: bid }, { enabled: !isNaN(bid) });
 
   const startMut = api.video.startSession.useMutation({
     onSuccess: () => refetch(),
@@ -41,9 +43,7 @@ export default function VideoSessionPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6 px-4 py-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-          استشارة فيديو
-        </h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">استشارة فيديو</h1>
 
         {isLoading ? (
           <CardSkeleton />
@@ -65,10 +65,15 @@ export default function VideoSessionPage(): JSX.Element {
             </div>
           </Card>
         ) : sess.status === 'WAITING' ? (
-          <Card padding="md" className="text-center border-brand-200 bg-brand-50 dark:border-brand-800 dark:bg-brand-950">
+          <Card
+            padding="md"
+            className="text-center border-brand-200 bg-brand-50 dark:border-brand-800 dark:bg-brand-950"
+          >
             <div className="mb-4 text-5xl">⏳</div>
             <h3 className="font-semibold text-brand-700">في انتظار الطرف الآخر...</h3>
-            <p className="mt-2 text-sm text-brand-500">تم إرسال إشعار. سيتم الاتصال عند الانضمام.</p>
+            <p className="mt-2 text-sm text-brand-500">
+              تم إرسال إشعار. سيتم الاتصال عند الانضمام.
+            </p>
             <div className="mt-4">
               <Button onClick={() => router.push(`/video/${bookingId}/room?room=${sess.roomId}`)}>
                 الانضمام للغرفة
@@ -83,7 +88,10 @@ export default function VideoSessionPage(): JSX.Element {
               <Button onClick={() => router.push(`/video/${bookingId}/room?room=${sess.roomId}`)}>
                 العودة للغرفة
               </Button>
-              <Button variant="outline" onClick={() => endMut.mutate({ roomId: sess.roomId as string })}>
+              <Button
+                variant="outline"
+                onClick={() => endMut.mutate({ roomId: sess.roomId as string })}
+              >
                 إنهاء
               </Button>
             </div>

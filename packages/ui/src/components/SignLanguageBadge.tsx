@@ -13,9 +13,21 @@ import { cn } from '@galaxy/shared';
 type SignLevel = 'basic' | 'intermediate' | 'fluent';
 
 const LEVELS: Record<SignLevel, { emoji: string; label: string; color: string }> = {
-  basic: { emoji: '🌱', label: 'أساسي', color: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300' },
-  intermediate: { emoji: '🌿', label: 'متوسط', color: 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300' },
-  fluent: { emoji: '🌳', label: 'متقن', color: 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300' },
+  basic: {
+    emoji: '🌱',
+    label: 'أساسي',
+    color: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
+  },
+  intermediate: {
+    emoji: '🌿',
+    label: 'متوسط',
+    color: 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300',
+  },
+  fluent: {
+    emoji: '🌳',
+    label: 'متقن',
+    color: 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300',
+  },
 };
 
 interface SLTechnician {
@@ -47,11 +59,11 @@ export function SignLanguageBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">🤟</span>
+        <span className="text-xl" aria-hidden="true">
+          🤟
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">
-            لغة الإشارة متوفرة
-          </h4>
+          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">لغة الإشارة متوفرة</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">
             {technicians.length} خبيرات مدربات على لغة الإشارة
           </p>
@@ -80,7 +92,12 @@ export function SignLanguageBadge({
                   </p>
                 )}
               </div>
-              <span className={cn('shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium', level.color)}>
+              <span
+                className={cn(
+                  'shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium',
+                  level.color,
+                )}
+              >
                 {level.emoji} {level.label}
               </span>
             </div>

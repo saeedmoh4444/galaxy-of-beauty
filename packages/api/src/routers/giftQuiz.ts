@@ -36,7 +36,10 @@ function formatRecommendation(r: any) {
 
 export const giftQuizRouter = router({
   questions: publicProcedure.query(async () => {
-    const questions = await db.giftQuizQuestion.findMany({ where: { isActive: true }, orderBy: { sortOrder: 'asc' } });
+    const questions = await db.giftQuizQuestion.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: 'asc' },
+    });
     return questions.map(formatQuestion);
   }),
 

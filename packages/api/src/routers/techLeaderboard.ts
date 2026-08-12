@@ -23,10 +23,19 @@ export const techLeaderboardRouter = router({
         include: { user: { select: { name: true } } },
         orderBy: input.category === 'rating' ? { ratingAvg: 'desc' } : { createdAt: 'desc' },
       });
-      const bookingCounts = await db.booking.groupBy({ by: ['technicianId'], _count: { id: true } });
-      const countMap = new Map((bookingCounts as any[]).map((b: any) => [b.technicianId, b._count.id]));
+      const bookingCounts = await db.booking.groupBy({
+        by: ['technicianId'],
+        _count: { id: true },
+      });
+      const countMap = new Map(
+        (bookingCounts as any[]).map((b: any) => [b.technicianId, b._count.id]),
+      );
       return (techs as any[]).map((t: any) => ({
-        id: t.id, name: t.user?.name || '', rating: Number(t.ratingAvg || 0), totalBookings: countMap.get(t.id) || 0, city: t.city || '',
+        id: t.id,
+        name: t.user?.name || '',
+        rating: Number(t.ratingAvg || 0),
+        totalBookings: countMap.get(t.id) || 0,
+        city: t.city || '',
       }));
     }),
 });

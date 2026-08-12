@@ -11,13 +11,7 @@ import { cn } from '@galaxy/shared';
  */
 
 type WikiCategory =
-  | 'ingredient'
-  | 'skincare'
-  | 'haircare'
-  | 'makeup'
-  | 'tradition'
-  | 'myth'
-  | 'health';
+  'ingredient' | 'skincare' | 'haircare' | 'makeup' | 'tradition' | 'myth' | 'health';
 
 interface CategoryDef {
   emoji: string;
@@ -94,9 +88,7 @@ export function BeautyWikiCard({
       </div>
 
       {/* Title */}
-      <h4 className="mt-2 text-sm font-bold text-text-primary dark:text-gray-100">
-        {entry.title}
-      </h4>
+      <h4 className="mt-2 text-sm font-bold text-text-primary dark:text-gray-100">{entry.title}</h4>
 
       {/* Excerpt */}
       <p className="mt-1 text-xs leading-relaxed text-text-secondary dark:text-gray-300 line-clamp-3">
@@ -106,15 +98,9 @@ export function BeautyWikiCard({
       {/* Meta row */}
       <div className="mt-2 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-gray-500">
         {entry.readTime && (
-          <span className="flex items-center gap-1">
-            📖 {entry.readTime} دقائق قراءة
-          </span>
+          <span className="flex items-center gap-1">📖 {entry.readTime} دقائق قراءة</span>
         )}
-        {entry.author && (
-          <span className="flex items-center gap-1">
-            ✍️ {entry.author}
-          </span>
-        )}
+        {entry.author && <span className="flex items-center gap-1">✍️ {entry.author}</span>}
         {entry.isArabicOriginal && (
           <span className="rounded bg-teal-50 px-1.5 py-0.5 text-teal-700 dark:bg-teal-950 dark:text-teal-300">
             🇸🇦 محتوى عربي أصلي

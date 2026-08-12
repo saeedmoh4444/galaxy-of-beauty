@@ -29,9 +29,7 @@ export function StudentDiscountBadge({
   originalPrice,
   className = '',
 }: StudentDiscountBadgeProps): JSX.Element {
-  const discountedPrice = originalPrice
-    ? Math.round(originalPrice * (1 - discount / 100))
-    : null;
+  const discountedPrice = originalPrice ? Math.round(originalPrice * (1 - discount / 100)) : null;
 
   return (
     <div
@@ -43,11 +41,11 @@ export function StudentDiscountBadge({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true">🎓</span>
+          <span className="text-lg" aria-hidden="true">
+            🎓
+          </span>
           <div>
-            <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">
-              خصم الطالبات
-            </h4>
+            <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">خصم الطالبات</h4>
             <p className="text-[10px] text-orange-500 dark:text-orange-400">
               {discount}% خصم لطالبات الجامعة
             </p>
@@ -67,7 +65,9 @@ export function StudentDiscountBadge({
               {originalPrice} ر.س
             </p>
           </div>
-          <span className="text-orange-400" aria-hidden="true">→</span>
+          <span className="text-orange-400" aria-hidden="true">
+            →
+          </span>
           <div className="text-center">
             <p className="text-[10px] text-orange-600 dark:text-orange-400">سعر الطالبات</p>
             <p className="text-lg font-bold text-orange-700 dark:text-orange-300">
@@ -80,17 +80,19 @@ export function StudentDiscountBadge({
       {/* University */}
       {university && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-orange-50 px-2.5 py-1.5 dark:bg-orange-950">
-          <span className="text-xs" aria-hidden="true">🏛️</span>
-          <span className="text-[10px] text-orange-700 dark:text-orange-300">
-            {university}
+          <span className="text-xs" aria-hidden="true">
+            🏛️
           </span>
+          <span className="text-[10px] text-orange-700 dark:text-orange-300">{university}</span>
         </div>
       )}
 
       {/* Verification */}
       {requiresVerification && (
         <div className="mt-2 flex items-start gap-1.5 rounded-lg bg-amber-50 p-2 dark:bg-amber-950">
-          <span className="text-xs shrink-0" aria-hidden="true">📧</span>
+          <span className="text-xs shrink-0" aria-hidden="true">
+            📧
+          </span>
           <div>
             <p className="text-[10px] font-bold text-amber-700 dark:text-amber-300">
               مطلوب بريد جامعي (.edu.sa)

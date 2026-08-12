@@ -37,14 +37,22 @@ function calcTimeLeft(expiresAt: Date): TimeLeft {
   };
 }
 
-export function CountdownTimer({ expiresAt, onExpire, showLabels = true, className = '' }: CountdownTimerProps): JSX.Element {
+export function CountdownTimer({
+  expiresAt,
+  onExpire,
+  showLabels = true,
+  className = '',
+}: CountdownTimerProps): JSX.Element {
   const [time, setTime] = useState<TimeLeft>(calcTimeLeft(expiresAt));
 
   useEffect(() => {
     const timer = setInterval(() => {
       const t = calcTimeLeft(expiresAt);
       setTime(t);
-      if (t.expired && onExpire) { onExpire(); clearInterval(timer); }
+      if (t.expired && onExpire) {
+        onExpire();
+        clearInterval(timer);
+      }
     }, 1000);
     return () => clearInterval(timer);
   }, [expiresAt, onExpire]);
@@ -60,7 +68,10 @@ export function CountdownTimer({ expiresAt, onExpire, showLabels = true, classNa
   parts.push({ v: pad(time.seconds), l: 'ثانية' });
 
   return (
-    <span className={`inline-flex items-center gap-1 font-mono text-sm font-bold text-brand-600 dark:text-brand-400 ${className}`} dir="ltr">
+    <span
+      className={`inline-flex items-center gap-1 font-mono text-sm font-bold text-brand-600 dark:text-brand-400 ${className}`}
+      dir="ltr"
+    >
       {parts.map((p, i) => (
         <span key={i} className="flex items-center gap-1">
           <span className="rounded bg-brand-50 px-1.5 py-0.5 dark:bg-brand-950">{p.v}</span>

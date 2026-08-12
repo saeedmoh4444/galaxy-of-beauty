@@ -44,13 +44,13 @@ export function FirstFacialCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">🌸</span>
+        <span className="text-3xl" aria-hidden="true">
+          🌸
+        </span>
         <h4 className="mt-1 text-sm font-bold text-pink-700 dark:text-pink-300">
           أول عناية بالبشرة
         </h4>
-        <p className="text-[10px] text-pink-500 dark:text-pink-400">
-          تجربة لطيفة وممتعة لأول مرة
-        </p>
+        <p className="text-[10px] text-pink-500 dark:text-pink-400">تجربة لطيفة وممتعة لأول مرة</p>
         {!isAgeAppropriate && (
           <p className="mt-1 text-[10px] text-amber-600 dark:text-amber-400">
             ⚠️ مناسب للأعمار 10-17 سنة
@@ -60,9 +60,7 @@ export function FirstFacialCard({
 
       {/* What we'll do */}
       <div className="mt-3 rounded-xl bg-pink-50 p-3 dark:bg-pink-950">
-        <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">
-          ✨ ماذا سنفعل
-        </p>
+        <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">✨ ماذا سنفعل</p>
         <div className="mt-1.5 space-y-1">
           {[
             { emoji: '🔍', text: 'تحليل بشرتكِ بلطف' },

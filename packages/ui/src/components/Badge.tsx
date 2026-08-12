@@ -26,10 +26,17 @@ const VARIANT_CLASSES: Record<BadgeVariant, string> = {
   brand: 'bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300',
 };
 
-export function Badge({ children, variant = 'default', size = 'sm', className = '' }: BadgeProps): JSX.Element {
+export function Badge({
+  children,
+  variant = 'default',
+  size = 'sm',
+  className = '',
+}: BadgeProps): JSX.Element {
   const sizeClass = size === 'sm' ? 'px-2 py-0.5 text-xs' : 'px-3 py-1 text-sm';
   return (
-    <span className={`inline-flex items-center rounded-full font-semibold ${sizeClass} ${VARIANT_CLASSES[variant]} ${className}`}>
+    <span
+      className={`inline-flex items-center rounded-full font-semibold ${sizeClass} ${VARIANT_CLASSES[variant]} ${className}`}
+    >
       {children}
     </span>
   );

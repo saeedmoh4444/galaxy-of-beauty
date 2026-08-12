@@ -12,7 +12,7 @@ export const colors = {
     300: '#c4b5fd',
     400: '#a78bfa',
     500: '#8b5cf6',
-    600: '#7c3aed',   // primary
+    600: '#7c3aed', // primary
     700: '#6d28d9',
     800: '#5b21b6',
     900: '#4c1d95',

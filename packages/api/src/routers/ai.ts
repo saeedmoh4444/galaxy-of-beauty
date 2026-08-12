@@ -1,13 +1,16 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
-import {
-  router,
-  publicProcedure,
-  protectedProcedure,
-  technicianProcedure,
-} from '../trpc';
+import { router, publicProcedure, protectedProcedure, technicianProcedure } from '../trpc';
 import { prisma } from '@galaxy/db';
-import { OPENAI_API_URL, OPENAI_MODEL, OPENAI_DEFAULT_MAX_TOKENS, OPENAI_DEFAULT_TEMPERATURE, DEFAULT_PAGE_SIZE, LARGE_PAGE_SIZE, MAX_LIST_SIZE } from '@galaxy/shared';
+import {
+  OPENAI_API_URL,
+  OPENAI_MODEL,
+  OPENAI_DEFAULT_MAX_TOKENS,
+  OPENAI_DEFAULT_TEMPERATURE,
+  DEFAULT_PAGE_SIZE,
+  LARGE_PAGE_SIZE,
+  MAX_LIST_SIZE,
+} from '@galaxy/shared';
 
 // ── OpenAI API helper ─────────────────────────────────────
 const LAYLA_SYSTEM_PROMPT = `أنتِ "ليلى"، مستشارة تجميل ذكية لمنصة "جالكسي بيوتي" السعودية. تقدمين نصائح عن:
@@ -25,7 +28,10 @@ const LAYLA_SYSTEM_PROMPT = `أنتِ "ليلى"، مستشارة تجميل ذ�
 - الأسعار تبدأ من 50 ريال وتصل إلى 500+ ريال حسب الخدمة
 - الحجز يتم عبر التطبيق أو الموقع`;
 
-async function callOpenAI(messages: Array<{ role: string; content: string }>, maxTokens = OPENAI_DEFAULT_MAX_TOKENS): Promise<string | null> {
+async function callOpenAI(
+  messages: Array<{ role: string; content: string }>,
+  maxTokens = OPENAI_DEFAULT_MAX_TOKENS,
+): Promise<string | null> {
   const key = process.env['OPENAI_API_KEY'];
   if (!key) return null;
 
@@ -35,10 +41,7 @@ async function callOpenAI(messages: Array<{ role: string; content: string }>, ma
       headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: OPENAI_MODEL,
-        messages: [
-          { role: 'system', content: LAYLA_SYSTEM_PROMPT },
-          ...messages,
-        ],
+        messages: [{ role: 'system', content: LAYLA_SYSTEM_PROMPT }, ...messages],
         max_tokens: maxTokens,
         temperature: OPENAI_DEFAULT_TEMPERATURE,
       }),
@@ -47,14 +50,17 @@ async function callOpenAI(messages: Array<{ role: string; content: string }>, ma
     if (!response.ok) return null;
 
     const data = (await response.json()) as Record<string, unknown>;
-    const content = (data['choices'] as Array<Record<string, unknown>>)?.[0]?.['message'] as Record<string, unknown> | undefined;
+    const content = (data['choices'] as Array<Record<string, unknown>>)?.[0]?.['message'] as
+      Record<string, unknown> | undefined;
     return (content?.['content'] as string) || null;
   } catch {
     return null;
   }
 }
 
-async function checkAiQuota(userId: number): Promise<{ allowed: boolean; subscription?: Record<string, unknown> }> {
+async function checkAiQuota(
+  userId: number,
+): Promise<{ allowed: boolean; subscription?: Record<string, unknown> }> {
   const sub = await prisma.customerAiSubscription.findUnique({
     where: { userId },
     include: { plan: true, usage: true },
@@ -71,18 +77,31 @@ async function checkAiQuota(userId: number): Promise<{ allowed: boolean; subscri
     .reduce((sum, u) => sum + u.requestCount, 0);
 
   if (monthlyRequests >= sub.plan.monthlyLimit) {
-    return { allowed: false, subscription: { planName: sub.plan.nameJson, limit: sub.plan.monthlyLimit, used: monthlyRequests } };
+    return {
+      allowed: false,
+      subscription: {
+        planName: sub.plan.nameJson,
+        limit: sub.plan.monthlyLimit,
+        used: monthlyRequests,
+      },
+    };
   }
 
   return { allowed: true, subscription: { id: sub.id, planId: sub.planId } };
 }
 
-async function trackAiUsage(subscriptionId: number, feature: 'CHATBOT' | 'RECOMMENDATIONS' | 'ONBOARDING_QUIZ', tokens: number): Promise<void> {
+async function trackAiUsage(
+  subscriptionId: number,
+  feature: 'CHATBOT' | 'RECOMMENDATIONS' | 'ONBOARDING_QUIZ',
+  tokens: number,
+): Promise<void> {
   try {
     await prisma.aiUsage.create({
       data: { subscriptionId, feature, tokensUsed: tokens, requestCount: 1 },
     });
-  } catch { /* non-critical */ }
+  } catch {
+    /* non-critical */
+  }
 }
 
 // ── Helper: create a unique conversation slug ─────────────
@@ -118,14 +137,22 @@ export const aiRouter = router({
 
       // Fetch recent conversation context (last 10 messages)
       const history = await prisma.chatMessage.findMany({
-        where: { senderId: userId, isAi: false, metadata: { path: ['convId'], equals: convId } } as never,
+        where: {
+          senderId: userId,
+          isAi: false,
+          metadata: { path: ['convId'], equals: convId },
+        } as never,
         orderBy: { createdAt: 'desc' },
         take: DEFAULT_PAGE_SIZE,
       });
 
       // Get AI replies for context
       const aiReplies = await prisma.chatMessage.findMany({
-        where: { receiverId: userId, isAi: true, metadata: { path: ['convId'], equals: convId } } as never,
+        where: {
+          receiverId: userId,
+          isAi: true,
+          metadata: { path: ['convId'], equals: convId },
+        } as never,
         orderBy: { createdAt: 'desc' },
         take: DEFAULT_PAGE_SIZE,
       });
@@ -150,7 +177,8 @@ export const aiRouter = router({
 
       if (!aiReply) {
         // Fallback reply when API is unavailable
-        const fallback = 'عذراً، أواجه مشكلة تقنية حالياً. يرجى المحاولة لاحقاً أو التواصل مع خدمة العملاء للمساعدة الفورية. 💜';
+        const fallback =
+          'عذراً، أواجه مشكلة تقنية حالياً. يرجى المحاولة لاحقاً أو التواصل مع خدمة العملاء للمساعدة الفورية. 💜';
         await prisma.chatMessage.create({
           data: {
             senderId: userId,
@@ -231,11 +259,15 @@ export const aiRouter = router({
       // 2. Get wishlist for signals
       const wishlist = await prisma.wishlistItem.findMany({
         where: { userId },
-        include: { service: { select: { id: true, categoryId: true, titleJson: true, basePrice: true } } },
+        include: {
+          service: { select: { id: true, categoryId: true, titleJson: true, basePrice: true } },
+        },
         take: DEFAULT_PAGE_SIZE,
       });
       const wishedServiceIds = new Set(wishlist.filter((w) => w.service).map((w) => w.service!.id));
-      const wishedCatIds = [...new Set(wishlist.filter((w) => w.service).map((w) => w.service!.categoryId))];
+      const wishedCatIds = [
+        ...new Set(wishlist.filter((w) => w.service).map((w) => w.service!.categoryId)),
+      ];
 
       // 3. Get skin analysis profile
       const lastAnalysis = await prisma.skinAnalysis.findFirst({
@@ -271,9 +303,21 @@ export const aiRouter = router({
           const titleEn = (s.titleJson as Record<string, string>)?.en || '';
           const skinType = lastAnalysis.skinType?.toLowerCase() || '';
 
-          if (skinType === 'dry' && (titleAr.includes('ترطيب') || titleEn.toLowerCase().includes('moistur'))) score += 15;
-          if (skinType === 'oily' && (titleAr.includes('تنظيف') || titleEn.toLowerCase().includes('deep clean'))) score += 15;
-          if (skinType === 'sensitive' && (titleAr.includes('لطيف') || titleEn.toLowerCase().includes('gentle'))) score += 15;
+          if (
+            skinType === 'dry' &&
+            (titleAr.includes('ترطيب') || titleEn.toLowerCase().includes('moistur'))
+          )
+            score += 15;
+          if (
+            skinType === 'oily' &&
+            (titleAr.includes('تنظيف') || titleEn.toLowerCase().includes('deep clean'))
+          )
+            score += 15;
+          if (
+            skinType === 'sensitive' &&
+            (titleAr.includes('لطيف') || titleEn.toLowerCase().includes('gentle'))
+          )
+            score += 15;
         }
 
         // Small randomness for diversity
@@ -300,7 +344,9 @@ export const aiRouter = router({
         context: {
           preferredCategories: preferredCatIds.length,
           wishlistItems: wishedServiceIds.size,
-          skinProfile: lastAnalysis ? { skinType: lastAnalysis.skinType, concerns: lastAnalysis.concerns } : null,
+          skinProfile: lastAnalysis
+            ? { skinType: lastAnalysis.skinType, concerns: lastAnalysis.concerns }
+            : null,
         },
       };
     }),
@@ -470,13 +516,8 @@ export const aiRouter = router({
     // Calculate current month usage
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const monthlyUsage = subscription.usage.filter(
-      (u) => u.createdAt >= startOfMonth,
-    );
-    const totalRequests = monthlyUsage.reduce(
-      (sum, u) => sum + u.requestCount,
-      0,
-    );
+    const monthlyUsage = subscription.usage.filter((u) => u.createdAt >= startOfMonth);
+    const totalRequests = monthlyUsage.reduce((sum, u) => sum + u.requestCount, 0);
 
     return {
       id: subscription.id,
@@ -494,9 +535,10 @@ export const aiRouter = router({
       usage: {
         currentMonth: totalRequests,
         limit: subscription.plan.monthlyLimit,
-        percentage: subscription.plan.monthlyLimit > 0
-          ? Math.round((totalRequests / subscription.plan.monthlyLimit) * 100)
-          : 0,
+        percentage:
+          subscription.plan.monthlyLimit > 0
+            ? Math.round((totalRequests / subscription.plan.monthlyLimit) * 100)
+            : 0,
       },
       recentActivity: monthlyUsage.slice(0, 10).map((u) => ({
         feature: u.feature,

@@ -42,9 +42,7 @@ export function ToastProvider({ children }: { children: ReactNode }): JSX.Elemen
       setToasts((prev) => [...prev.slice(-4), { id, type, message, entering: true }]);
       // After a frame, clear entering to trigger the enter transition
       requestAnimationFrame(() => {
-        setToasts((prev) =>
-          prev.map((t) => (t.id === id ? { ...t, entering: false } : t)),
-        );
+        setToasts((prev) => prev.map((t) => (t.id === id ? { ...t, entering: false } : t)));
       });
       setTimeout(() => removeToast(id), TOAST_DURATION_MS);
     },
@@ -81,10 +79,22 @@ export function ToastProvider({ children }: { children: ReactNode }): JSX.Elemen
             }`}
           >
             <span aria-hidden="true">
-              {toast.type === 'success' ? '✅' : toast.type === 'error' ? '❌' : toast.type === 'warning' ? '⚠️' : 'ℹ️'}
+              {toast.type === 'success'
+                ? '✅'
+                : toast.type === 'error'
+                  ? '❌'
+                  : toast.type === 'warning'
+                    ? '⚠️'
+                    : 'ℹ️'}
             </span>
             <span className="sr-only">
-              {toast.type === 'success' ? 'نجاح' : toast.type === 'error' ? 'خطأ' : toast.type === 'warning' ? 'تحذير' : 'معلومة'}
+              {toast.type === 'success'
+                ? 'نجاح'
+                : toast.type === 'error'
+                  ? 'خطأ'
+                  : toast.type === 'warning'
+                    ? 'تحذير'
+                    : 'معلومة'}
             </span>
             <span>{toast.message}</span>
             <button

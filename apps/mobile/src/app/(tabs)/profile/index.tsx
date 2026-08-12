@@ -5,7 +5,12 @@ import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 
 const COLORS = {
-  brand: '#7c3aed', white: '#ffffff', gray50: '#faf5ff', gray400: '#6b7280', gray900: '#111827', danger: '#dc2626',
+  brand: '#7c3aed',
+  white: '#ffffff',
+  gray50: '#faf5ff',
+  gray400: '#6b7280',
+  gray900: '#111827',
+  danger: '#dc2626',
 };
 
 const MENU_ITEMS = [
@@ -26,7 +31,12 @@ const MENU_ITEMS = [
 export default function ProfileScreen(): JSX.Element {
   const { trigger } = useHaptics();
   const router = useRouter();
-  const profile = (trpc as any).users?.me?.useQuery?.() ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const profile = (trpc as any).users?.me?.useQuery?.() ?? {
+    data: null,
+    isLoading: false,
+    isError: false,
+    refetch: () => {},
+  };
   const loyalty = (trpc as any).loyalty?.getAccount?.useQuery?.();
   const kindness = (trpc as any).kindnessPoints?.getStatus?.useQuery?.();
 
@@ -47,13 +57,28 @@ export default function ProfileScreen(): JSX.Element {
         <Text style={styles.userEmail}>{(profile.data as any)?.email ?? ''}</Text>
         {/* Loyalty + Kindness Stats */}
         <View style={styles.statsRow}>
-          {loyalty?.data && <View style={styles.statItem}><Text style={styles.statVal}>{loyalty.data.points ?? 0}</Text><Text style={styles.statLbl}>⭐ نقاط</Text></View>}
-          {kindness?.data && <View style={styles.statItem}><Text style={styles.statVal}>{kindness.data.points ?? 0}</Text><Text style={styles.statLbl}>💖 لطف</Text></View>}
+          {loyalty?.data && (
+            <View style={styles.statItem}>
+              <Text style={styles.statVal}>{loyalty.data.points ?? 0}</Text>
+              <Text style={styles.statLbl}>⭐ نقاط</Text>
+            </View>
+          )}
+          {kindness?.data && (
+            <View style={styles.statItem}>
+              <Text style={styles.statVal}>{kindness.data.points ?? 0}</Text>
+              <Text style={styles.statLbl}>💖 لطف</Text>
+            </View>
+          )}
         </View>
       </View>
       <ScrollView style={styles.menuList}>
         {MENU_ITEMS.map((item, i) => (
-          <TouchableOpacity key={i} style={styles.menuItem} onPress={() => router.push(item.href as any)} activeOpacity={0.6}>
+          <TouchableOpacity
+            key={i}
+            style={styles.menuItem}
+            onPress={() => router.push(item.href as any)}
+            activeOpacity={0.6}
+          >
             <Text style={styles.menuLabel}>{item.label}</Text>
             <Text style={styles.menuArrow}>›</Text>
           </TouchableOpacity>
@@ -67,14 +92,46 @@ export default function ProfileScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
-  profileCard: { alignItems: 'center', marginBottom: 24, backgroundColor: COLORS.white, borderRadius: 16, padding: 24, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
-  avatar: { width: 72, height: 72, borderRadius: 36, backgroundColor: COLORS.brand, alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.brand,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  profileCard: {
+    alignItems: 'center',
+    marginBottom: 24,
+    backgroundColor: COLORS.white,
+    borderRadius: 16,
+    padding: 24,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  avatar: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    backgroundColor: COLORS.brand,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
   avatarText: { fontSize: 28, color: COLORS.white, fontWeight: '700' },
   userName: { fontSize: 18, fontWeight: '700', color: COLORS.gray900 },
   userEmail: { fontSize: 13, color: COLORS.gray400, marginTop: 4 },
   menuList: { marginBottom: 16 },
-  menuItem: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: COLORS.white, borderRadius: 12, padding: 16, marginBottom: 6 },
+  menuItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 6,
+  },
   menuLabel: { fontSize: 15, fontWeight: '600', color: COLORS.gray900 },
   menuArrow: { fontSize: 20, color: COLORS.gray400 },
   logoutBtn: { alignItems: 'center', padding: 16, marginTop: 8 },

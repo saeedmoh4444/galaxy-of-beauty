@@ -69,8 +69,7 @@ export function IAmHomeSafe({
           <p className="text-[10px] text-text-tertiary dark:text-gray-400">
             {checkedIn
               ? 'الحمد لله على سلامتِك — تم إشعار جهة الاتصال'
-              : `سيتم إشعار جهة اتصالكِ إذا لم تؤكدي وصولكِ قبل ${getAlertTime()}`
-            }
+              : `سيتم إشعار جهة اتصالكِ إذا لم تؤكدي وصولكِ قبل ${getAlertTime()}`}
           </p>
         </div>
       </div>
@@ -90,7 +89,9 @@ export function IAmHomeSafe({
       {checkedIn && (
         <div className="mt-3 space-y-2">
           <div className="rounded-xl bg-emerald-100 p-3 text-center dark:bg-emerald-900">
-            <p className="text-lg" aria-hidden="true">🤲</p>
+            <p className="text-lg" aria-hidden="true">
+              🤲
+            </p>
             <p className="text-xs font-bold text-emerald-800 dark:text-emerald-200">
               الحمد لله على سلامتِك
             </p>
@@ -112,7 +113,9 @@ export function IAmHomeSafe({
       {/* Alert contact info */}
       {alertContact && !checkedIn && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-white/60 p-2 dark:bg-black/20">
-          <span className="text-xs" aria-hidden="true">📞</span>
+          <span className="text-xs" aria-hidden="true">
+            📞
+          </span>
           <span className="text-[10px] text-text-secondary dark:text-gray-300">
             سيتم إشعار {alertContact.name} ({alertContact.phone}) إذا لم تؤكدي وصولكِ
           </span>

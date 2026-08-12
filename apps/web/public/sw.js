@@ -2,22 +2,18 @@ const CACHE_NAME = 'gob-v2';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) =>
-      cache.addAll([
-        '/',
-        '/services',
-        '/offline',
-      ])
-    )
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(['/', '/services', '/offline'])),
   );
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-    )
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))),
+      ),
   );
   self.clients.claim();
 });
@@ -39,6 +35,6 @@ self.addEventListener('fetch', (event) => {
         .catch(() => cached || caches.match('/offline'));
 
       return cached || fetched;
-    })
+    }),
   );
 });

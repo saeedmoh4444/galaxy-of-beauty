@@ -3,7 +3,13 @@ import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
-const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827', danger: '#dc2626' };
+const COLORS = {
+  brand: '#7c3aed',
+  white: '#ffffff',
+  gray400: '#6b7280',
+  gray900: '#111827',
+  danger: '#dc2626',
+};
 
 export default function WishlistScreen(): JSX.Element {
   const wishlist = trpc.wishlist.list.useQuery();
@@ -25,11 +31,19 @@ export default function WishlistScreen(): JSX.Element {
       {(data as Record<string, unknown>[])?.map((w: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.left}>
-            <Text style={styles.name}>{(w.serviceTitle as string) ?? `خدمة #${w.serviceId as number}`}</Text>
+            <Text style={styles.name}>
+              {(w.serviceTitle as string) ?? `خدمة #${w.serviceId as number}`}
+            </Text>
             {w.price ? <Text style={styles.price}>{formatCurrency(Number(w.price))}</Text> : null}
           </View>
           {remove && (
-            <TouchableOpacity onPress={() => remove.mutateAsync({ wishlistItemId: w.id as number }).then(() => wishlist.refetch())}>
+            <TouchableOpacity
+              onPress={() =>
+                remove
+                  .mutateAsync({ wishlistItemId: w.id as number })
+                  .then(() => wishlist.refetch())
+              }
+            >
               <Text style={styles.removeBtn}>❌</Text>
             </TouchableOpacity>
           )}
@@ -40,8 +54,22 @@ export default function WishlistScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
-  card: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: COLORS.white, borderRadius: 14, padding: 16, marginBottom: 8 },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.brand,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  card: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 8,
+  },
   left: { flex: 1 },
   name: { fontSize: 15, fontWeight: '700', color: COLORS.gray900 },
   price: { fontSize: 13, color: COLORS.brand, fontWeight: '600', marginTop: 4 },

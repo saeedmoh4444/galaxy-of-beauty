@@ -21,14 +21,22 @@ export default function LoginPage(): JSX.Element {
 
   const mutation = api.auth.login.useMutation({
     onSuccess: async (data) => {
-      const u = data.user as unknown as Record<string, unknown>;
-      localStorage.setItem('gob_access', data.accessToken);
-      localStorage.setItem('gob_refresh', data.refreshToken);
+      // Tokens are now set as HttpOnly cookies by the server — no localStorage needed.
+      // Hydrate user state from the response body (server no longer returns tokens in body).
+      const userData = data.user as unknown as Record<string, unknown>;
       await login(
-        { accessToken: data.accessToken, refreshToken: data.refreshToken },
-        { id: u.id as number, email: u.email as string, name: u.name as string, role: (u.role as string) as 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN', preferredLanguage: 'ar' },
+        { accessToken: '', refreshToken: '' }, // Tokens are in HttpOnly cookies now
+        {
+          id: userData.id as number,
+          email: userData.email as string,
+          name: userData.name as string,
+          role: userData.role as string as 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN',
+          preferredLanguage: (userData.preferredLanguage as 'ar' | 'en') || 'ar',
+          phone: userData.phone as string | undefined,
+          avatarUrl: userData.avatarUrl as string | undefined,
+        },
       );
-      const role = u.role as string;
+      const role = userData.role as string;
       if (role === 'ADMIN') router.push('/admin/dashboard');
       else if (role === 'TECHNICIAN') router.push('/tech/dashboard');
       else router.push('/dashboard');
@@ -137,7 +145,9 @@ export default function LoginPage(): JSX.Element {
         </form>
 
         {!twoFactorRequired && (
-          <div className="mt-6"><SocialLogin /></div>
+          <div className="mt-6">
+            <SocialLogin />
+          </div>
         )}
         {!twoFactorRequired && (
           <div className="mt-4 text-center text-sm text-text-secondary">

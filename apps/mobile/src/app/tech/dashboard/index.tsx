@@ -7,17 +7,36 @@ const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900
 
 export default function TechDashboardScreen(): JSX.Element {
   const router = useRouter();
-  const stats = (trpc as any).technicians?.myStats?.useQuery?.() ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const stats = (trpc as any).technicians?.myStats?.useQuery?.() ?? {
+    data: null,
+    isLoading: false,
+    isError: false,
+    refetch: () => {},
+  };
   const data = stats.data as Record<string, unknown> | undefined;
 
   return (
-    <ScreenState isLoading={stats.isLoading} isError={stats.isError} isEmpty={!data} errorMessage="فشل تحميل لوحة التحكم" onRetry={() => stats.refetch()}>
+    <ScreenState
+      isLoading={stats.isLoading}
+      isError={stats.isError}
+      isEmpty={!data}
+      errorMessage="فشل تحميل لوحة التحكم"
+      onRetry={() => stats.refetch()}
+    >
       <Text style={styles.title}>📊 لوحة الفنية</Text>
       <View style={styles.statsGrid}>
         {[
           { key: 'pendingBookings', label: '📅 معلقة', val: String(data?.pendingBookings ?? 0) },
-          { key: 'completedBookings', label: '✅ مكتملة', val: String(data?.completedBookings ?? 0) },
-          { key: 'totalEarnings', label: '💰 الأرباح', val: `${String(data?.totalEarnings ?? 0)} ر.س` },
+          {
+            key: 'completedBookings',
+            label: '✅ مكتملة',
+            val: String(data?.completedBookings ?? 0),
+          },
+          {
+            key: 'totalEarnings',
+            label: '💰 الأرباح',
+            val: `${String(data?.totalEarnings ?? 0)} ر.س`,
+          },
           { key: 'rating', label: '⭐ التقييم', val: String(data?.rating ?? 0) },
         ].map((s, i) => (
           <View key={i} style={styles.statCard}>
@@ -43,9 +62,25 @@ export default function TechDashboardScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.brand,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
   statsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 24 },
-  statCard: { width: '47%', backgroundColor: COLORS.white, borderRadius: 14, padding: 16, alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
+  statCard: {
+    width: '47%',
+    backgroundColor: COLORS.white,
+    borderRadius: 14,
+    padding: 16,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
   statNum: { fontSize: 18, fontWeight: '800', color: COLORS.gray900 },
   statLabel: { fontSize: 12, color: COLORS.gray400, marginTop: 4 },
   links: { gap: 8 },

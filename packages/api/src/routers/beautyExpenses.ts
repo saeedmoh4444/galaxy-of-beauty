@@ -14,20 +14,47 @@ export const beautyExpensesRouter = router({
     const thisYear = new Date(now.getFullYear(), 0, 1);
 
     const [thisMonthBookings, lastMonthBookings, thisYearBookings] = await Promise.all([
-      db.booking.findMany({ where: { customerId: userId, createdAt: { gte: thisMonth }, status: 'COMPLETED' }, select: { totalAmount: true, service: { select: { categoryId: true, titleJson: true } } } }),
-      db.booking.findMany({ where: { customerId: userId, createdAt: { gte: lastMonth, lt: thisMonth }, status: 'COMPLETED' }, select: { totalAmount: true } }),
-      db.booking.findMany({ where: { customerId: userId, createdAt: { gte: thisYear }, status: 'COMPLETED' }, select: { totalAmount: true, createdAt: true, service: { select: { categoryId: true } } } }),
+      db.booking.findMany({
+        where: { customerId: userId, createdAt: { gte: thisMonth }, status: 'COMPLETED' },
+        select: { totalAmount: true, service: { select: { categoryId: true, titleJson: true } } },
+      }),
+      db.booking.findMany({
+        where: {
+          customerId: userId,
+          createdAt: { gte: lastMonth, lt: thisMonth },
+          status: 'COMPLETED',
+        },
+        select: { totalAmount: true },
+      }),
+      db.booking.findMany({
+        where: { customerId: userId, createdAt: { gte: thisYear }, status: 'COMPLETED' },
+        select: { totalAmount: true, createdAt: true, service: { select: { categoryId: true } } },
+      }),
     ]);
 
-    const thisMonthTotal = thisMonthBookings.reduce((s: number, b: any) => s + Number(b.totalAmount || 0), 0);
-    const lastMonthTotal = lastMonthBookings.reduce((s: number, b: any) => s + Number(b.totalAmount || 0), 0);
-    const thisYearTotal = thisYearBookings.reduce((s: number, b: any) => s + Number(b.totalAmount || 0), 0);
+    const thisMonthTotal = thisMonthBookings.reduce(
+      (s: number, b: any) => s + Number(b.totalAmount || 0),
+      0,
+    );
+    const lastMonthTotal = lastMonthBookings.reduce(
+      (s: number, b: any) => s + Number(b.totalAmount || 0),
+      0,
+    );
+    const thisYearTotal = thisYearBookings.reduce(
+      (s: number, b: any) => s + Number(b.totalAmount || 0),
+      0,
+    );
 
     // Category breakdown for this month
     const byCategory: Record<number, { total: number; count: number; name: string }> = {};
     for (const b of thisMonthBookings) {
       const catId = b.service?.categoryId ?? 0;
-      if (!byCategory[catId]) byCategory[catId] = { total: 0, count: 0, name: (b.service?.titleJson as any)?.ar ?? 'أخرى' };
+      if (!byCategory[catId])
+        byCategory[catId] = {
+          total: 0,
+          count: 0,
+          name: (b.service?.titleJson as any)?.ar ?? 'أخرى',
+        };
       byCategory[catId]!.total += Number(b.totalAmount || 0);
       byCategory[catId]!.count += 1;
     }
@@ -51,11 +78,20 @@ export const beautyExpensesRouter = router({
     }
 
     return {
-      thisMonthTotal, lastMonthTotal, thisYearTotal,
-      monthOverMonth: lastMonthTotal > 0 ? Math.round(((thisMonthTotal - lastMonthTotal) / lastMonthTotal) * 100) : 0,
+      thisMonthTotal,
+      lastMonthTotal,
+      thisYearTotal,
+      monthOverMonth:
+        lastMonthTotal > 0
+          ? Math.round(((thisMonthTotal - lastMonthTotal) / lastMonthTotal) * 100)
+          : 0,
       totalBookingsThisMonth: thisMonthBookings.length,
-      avgPerBooking: thisMonthBookings.length > 0 ? Math.round(thisMonthTotal / thisMonthBookings.length) : 0,
-      byCategory: Object.entries(byCategory).map(([catId, data]) => ({ categoryId: Number(catId), ...data })),
+      avgPerBooking:
+        thisMonthBookings.length > 0 ? Math.round(thisMonthTotal / thisMonthBookings.length) : 0,
+      byCategory: Object.entries(byCategory).map(([catId, data]) => ({
+        categoryId: Number(catId),
+        ...data,
+      })),
       monthlyTrend,
     };
   }),

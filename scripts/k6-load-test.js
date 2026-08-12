@@ -27,7 +27,7 @@ const RAMP_TIME = __ENV.RAMP_TIME || '5s';
 export const options = {
   thresholds: {
     http_req_duration: ['p(95)<2000'], // 95% of requests under 2s
-    errors: ['rate<0.1'],              // Error rate under 10%
+    errors: ['rate<0.1'], // Error rate under 10%
   },
   scenarios: {
     ramping_load: {
@@ -47,7 +47,7 @@ const COMMON_HEADERS = {
   'Accept-Language': 'ar',
 };
 
-function trpcCall(procedure: string, input?: Record<string, unknown>) {
+function trpcCall(procedure, input) {
   const url = `${BASE_URL}/${procedure}`;
   const payload = input ? JSON.stringify(input) : undefined;
   const params = { headers: COMMON_HEADERS };
@@ -77,9 +77,11 @@ export default function () {
     check(res, {
       'health returns ok': (r) => {
         try {
-          const data = JSON.parse(r.body as string);
+          const data = JSON.parse(r.body);
           return data?.result?.data?.status === 'ok';
-        } catch { return false; }
+        } catch {
+          return false;
+        }
       },
     });
     sleep(0.5);
@@ -151,7 +153,7 @@ export function handleSummary(data) {
   };
 
   return {
-    'stdout': `\n📊 Load Test Complete
+    stdout: `\n📊 Load Test Complete
    Duration:  ${summary.duration_seconds.toFixed(1)}s
    VUs max:   ${summary.vus_max}
    Requests:  ${summary.http_reqs}

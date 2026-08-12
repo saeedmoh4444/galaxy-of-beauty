@@ -36,7 +36,10 @@ export function CommunityEventCard({
   onRegister,
   className = '',
 }: CommunityEventCardProps): JSX.Element {
-  const isFull = event.maxAttendees !== undefined && event.attendees !== undefined && event.attendees >= event.maxAttendees;
+  const isFull =
+    event.maxAttendees !== undefined &&
+    event.attendees !== undefined &&
+    event.attendees >= event.maxAttendees;
 
   return (
     <div
@@ -50,9 +53,7 @@ export function CommunityEventCard({
           {event.emoji || '👯‍♀️'}
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">
-            {event.title}
-          </h4>
+          <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{event.title}</h4>
           <div className="mt-0.5 flex flex-wrap gap-x-2 gap-y-0.5 text-[10px] text-text-tertiary dark:text-gray-500">
             <span>📅 {event.date}</span>
             <span>📍 {event.city}</span>

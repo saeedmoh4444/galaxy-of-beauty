@@ -9,7 +9,9 @@ export const promoRouter = router({
   validate: publicProcedure
     .input(z.object({ code: z.string().min(1), orderAmount: z.number().positive() }))
     .query(async ({ input }) => {
-      const promo = await prisma.promoCode.findUnique({ where: { code: input.code.toUpperCase() } });
+      const promo = await prisma.promoCode.findUnique({
+        where: { code: input.code.toUpperCase() },
+      });
 
       if (!promo || !promo.isActive) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Invalid or expired promo code' });
@@ -32,8 +34,12 @@ export const promoRouter = router({
 
       let discount = BigInt(0);
       if (promo.discountType === 'percent') {
-        discount = BigInt(Math.round(input.orderAmount * Number(promo.discountValue) / 100));
-        if (promo.maxDiscount) discount = discount > BigInt(Math.round(Number(promo.maxDiscount))) ? BigInt(Math.round(Number(promo.maxDiscount))) : discount;
+        discount = BigInt(Math.round((input.orderAmount * Number(promo.discountValue)) / 100));
+        if (promo.maxDiscount)
+          discount =
+            discount > BigInt(Math.round(Number(promo.maxDiscount)))
+              ? BigInt(Math.round(Number(promo.maxDiscount)))
+              : discount;
       } else {
         discount = BigInt(Math.round(Number(promo.discountValue)));
       }
@@ -53,15 +59,19 @@ export const promoRouter = router({
     .input(z.object({ code: z.string().min(1), bookingId: z.number().int().positive() }))
     .mutation(async ({ ctx, input }) => {
       const booking = await prisma.booking.findUnique({ where: { id: input.bookingId } });
-      if (!booking || booking.customerId !== ctx.user.id) throw new TRPCError({ code: 'NOT_FOUND' });
+      if (!booking || booking.customerId !== ctx.user.id)
+        throw new TRPCError({ code: 'NOT_FOUND' });
 
-      const promo = await prisma.promoCode.findUnique({ where: { code: input.code.toUpperCase() } });
-      if (!promo || !promo.isActive) throw new TRPCError({ code: 'NOT_FOUND', message: 'Invalid promo code' });
+      const promo = await prisma.promoCode.findUnique({
+        where: { code: input.code.toUpperCase() },
+      });
+      if (!promo || !promo.isActive)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Invalid promo code' });
 
       // Calculate discount
       let discount: number;
       if (promo.discountType === 'percent') {
-        discount = Number(booking.totalAmount) * Number(promo.discountValue) / 100;
+        discount = (Number(booking.totalAmount) * Number(promo.discountValue)) / 100;
         if (promo.maxDiscount) discount = Math.min(discount, Number(promo.maxDiscount));
       } else {
         discount = Math.min(Number(promo.discountValue), Number(booking.totalAmount));
@@ -69,9 +79,17 @@ export const promoRouter = router({
 
       await prisma.$transaction([
         prisma.promoUsage.create({
-          data: { promoCodeId: promo.id, userId: ctx.user.id, bookingId: booking.id, discountAmount: discount },
+          data: {
+            promoCodeId: promo.id,
+            userId: ctx.user.id,
+            bookingId: booking.id,
+            discountAmount: discount,
+          },
         }),
-        prisma.promoCode.update({ where: { id: promo.id }, data: { currentUses: { increment: 1 } } }),
+        prisma.promoCode.update({
+          where: { id: promo.id },
+          data: { currentUses: { increment: 1 } },
+        }),
         prisma.booking.update({
           where: { id: booking.id },
           data: { totalAmount: { decrement: discount } },
@@ -83,20 +101,25 @@ export const promoRouter = router({
 
   // Admin CRUD
   list: adminProcedure.query(async () => {
-    return prisma.promoCode.findMany({ orderBy: { createdAt: 'desc' }, include: { usages: { take: SMALL_PAGE_SIZE } } });
+    return prisma.promoCode.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: { usages: { take: SMALL_PAGE_SIZE } },
+    });
   }),
 
   create: adminProcedure
-    .input(z.object({
-      code: z.string().min(3).max(20),
-      discountType: z.enum(['percent', 'fixed']),
-      discountValue: z.number().positive(),
-      minOrderAmount: z.number().optional(),
-      maxDiscount: z.number().optional(),
-      maxUses: z.number().int().optional(),
-      validUntil: z.string().datetime().optional(),
-      appliesTo: z.string().optional(),
-    }))
+    .input(
+      z.object({
+        code: z.string().min(3).max(20),
+        discountType: z.enum(['percent', 'fixed']),
+        discountValue: z.number().positive(),
+        minOrderAmount: z.number().optional(),
+        maxDiscount: z.number().optional(),
+        maxUses: z.number().int().optional(),
+        validUntil: z.string().datetime().optional(),
+        appliesTo: z.string().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       return prisma.promoCode.create({
         data: { ...input, code: input.code.toUpperCase(), createdBy: ctx.user.id },

@@ -10,7 +10,13 @@ import { cn } from '@galaxy/shared';
  *   <BodyPositiveBadge features={['real_imagery', 'size_inclusive', 'skin_inclusive']} />
  */
 
-type BodyPosFeature = 'real_imagery' | 'size_inclusive' | 'skin_inclusive' | 'age_positive' | 'scar_friendly' | 'no_retouching';
+type BodyPosFeature =
+  | 'real_imagery'
+  | 'size_inclusive'
+  | 'skin_inclusive'
+  | 'age_positive'
+  | 'scar_friendly'
+  | 'no_retouching';
 
 interface FeatureDef {
   emoji: string;
@@ -23,7 +29,11 @@ const FEATURES: FeatureDef[] = [
   { emoji: '👗', label: 'شامل الأحجام', detail: 'روبات، كراسي، ومناشف لكل أحجام الأجسام' },
   { emoji: '🎨', label: 'كل ألوان البشرة', detail: 'خبيرات متدربات على كل درجات البشرة' },
   { emoji: '🌺', label: 'إيجابية العمر', detail: 'الجمال ليس له عمر — كل مرحلة عمرية جميلة' },
-  { emoji: '🤍', label: 'صديق للندبات', detail: 'لا نحكم على الندبات أو علامات التمدد — بل نحتضنها' },
+  {
+    emoji: '🤍',
+    label: 'صديق للندبات',
+    detail: 'لا نحكم على الندبات أو علامات التمدد — بل نحتضنها',
+  },
   { emoji: '✨', label: 'بدون تنقيح', detail: 'صور قبل/بعد حقيقية 100% — لا فوتوشوب' },
 ];
 
@@ -47,7 +57,9 @@ export function BodyPositiveBadge({
     no_retouching: 'بدون تنقيح',
   };
 
-  const active = features.map((k) => FEATURES.find((f) => f.label === map[k])).filter(Boolean) as FeatureDef[];
+  const active = features
+    .map((k) => FEATURES.find((f) => f.label === map[k]))
+    .filter(Boolean) as FeatureDef[];
 
   return (
     <div
@@ -58,7 +70,9 @@ export function BodyPositiveBadge({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">💜</span>
+        <span className="text-3xl" aria-hidden="true">
+          💜
+        </span>
         <h4 className="mt-1 text-sm font-bold text-purple-700 dark:text-purple-300">
           إيجابية الجسد
         </h4>
@@ -74,14 +88,12 @@ export function BodyPositiveBadge({
             key={f.label}
             className="flex items-start gap-2.5 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60"
           >
-            <span className="text-lg shrink-0" aria-hidden="true">{f.emoji}</span>
+            <span className="text-lg shrink-0" aria-hidden="true">
+              {f.emoji}
+            </span>
             <div>
-              <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-                {f.label}
-              </p>
-              <p className="text-[10px] text-text-secondary dark:text-gray-300">
-                {f.detail}
-              </p>
+              <p className="text-xs font-bold text-text-primary dark:text-gray-100">{f.label}</p>
+              <p className="text-[10px] text-text-secondary dark:text-gray-300">{f.detail}</p>
             </div>
           </div>
         ))}
@@ -89,12 +101,10 @@ export function BodyPositiveBadge({
 
       {/* Pledge */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-        <p className="text-xs font-bold text-purple-700 dark:text-purple-300">
-          ✨ تعهدنا لكِ
-        </p>
+        <p className="text-xs font-bold text-purple-700 dark:text-purple-300">✨ تعهدنا لكِ</p>
         <p className="mt-1 text-[10px] leading-relaxed text-purple-600 dark:text-purple-400">
-          نؤمن أن الجمال الحقيقي هو أن تكوني على طبيعتكِ. لن نطلب منكِ أبداً تغيير شكل
-          جسدكِ أو لون بشرتكِ أو ملامحكِ. نحن هنا لنبرز جمالكِ الطبيعي — ليس لنغيره.
+          نؤمن أن الجمال الحقيقي هو أن تكوني على طبيعتكِ. لن نطلب منكِ أبداً تغيير شكل جسدكِ أو لون
+          بشرتكِ أو ملامحكِ. نحن هنا لنبرز جمالكِ الطبيعي — ليس لنغيره.
         </p>
       </div>
 

@@ -2,7 +2,16 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal, Input, formatCurrency } from '@galaxy/ui';
+import {
+  Card,
+  CardSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  Modal,
+  Input,
+  formatCurrency,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function TechEarningsPage(): JSX.Element {
@@ -52,7 +61,9 @@ export default function TechEarningsPage(): JSX.Element {
         {/* ── Balance Cards ── */}
         {balanceQ.isLoading ? (
           <div className="grid gap-4 md:grid-cols-3">
-            {Array.from({ length: 3 }, (_, i) => <CardSkeleton key={i} />)}
+            {Array.from({ length: 3 }, (_, i) => (
+              <CardSkeleton key={i} />
+            ))}
           </div>
         ) : balanceQ.isError ? (
           <ErrorAlert message="فشل تحميل الرصيد" onRetry={() => balanceQ.refetch()} />
@@ -107,9 +118,7 @@ export default function TechEarningsPage(): JSX.Element {
                   key={day.date as string}
                   className="flex items-center justify-between py-1.5 text-sm"
                 >
-                  <span className="text-text-primary dark:text-gray-300">
-                    {day.date as string}
-                  </span>
+                  <span className="text-text-primary dark:text-gray-300">{day.date as string}</span>
                   <span className="font-medium text-green-600">
                     {formatCurrency(Number(day.earnings ?? 0))}
                   </span>
@@ -164,7 +173,9 @@ export default function TechEarningsPage(): JSX.Element {
                             {new Date(p.periodEnd as string).toLocaleDateString('ar-SA')}
                           </span>
                         ) : null}
-                        <span className={`rounded-full px-3 py-1 text-xs font-medium ${statusColours[st]}`}>
+                        <span
+                          className={`rounded-full px-3 py-1 text-xs font-medium ${statusColours[st]}`}
+                        >
                           {statusLabels[st] ?? st}
                         </span>
                       </div>

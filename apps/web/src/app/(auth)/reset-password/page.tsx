@@ -25,16 +25,44 @@ export default function ResetPasswordPage(): JSX.Element {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card padding="lg" className="w-full max-w-md">
-        <h1 className="mb-6 text-center text-2xl font-bold text-text-primary dark:text-gray-100">إعادة تعيين كلمة المرور</h1>
+        <h1 className="mb-6 text-center text-2xl font-bold text-text-primary dark:text-gray-100">
+          إعادة تعيين كلمة المرور
+        </h1>
         {msg && <p className="mb-4 rounded-lg bg-green-50 p-3 text-sm text-green-700">{msg}</p>}
         {error && <ErrorAlert message={error} />}
-        <form onSubmit={(e) => { e.preventDefault(); if (password !== confirm) { setError('كلمتا المرور غير متطابقتين'); return; } resetMut.mutate({ token, newPassword: password }); }} className="space-y-4">
-          <Input type="password" label="كلمة المرور الجديدة" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
-          <Input type="password" label="تأكيد كلمة المرور" value={confirm} onChange={(e) => setConfirm(e.target.value)} placeholder="••••••••" />
-          <Button type="submit" className="w-full" loading={resetMut.isPending}>إعادة تعيين</Button>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (password !== confirm) {
+              setError('كلمتا المرور غير متطابقتين');
+              return;
+            }
+            resetMut.mutate({ token, newPassword: password });
+          }}
+          className="space-y-4"
+        >
+          <Input
+            type="password"
+            label="كلمة المرور الجديدة"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+          />
+          <Input
+            type="password"
+            label="تأكيد كلمة المرور"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+            placeholder="••••••••"
+          />
+          <Button type="submit" className="w-full" loading={resetMut.isPending}>
+            إعادة تعيين
+          </Button>
         </form>
         <p className="mt-4 text-center text-sm text-text-secondary">
-          <Link href="/login" className="text-brand-600 hover:underline">العودة لتسجيل الدخول</Link>
+          <Link href="/login" className="text-brand-600 hover:underline">
+            العودة لتسجيل الدخول
+          </Link>
         </p>
       </Card>
     </div>

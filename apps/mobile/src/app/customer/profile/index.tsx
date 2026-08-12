@@ -9,15 +9,35 @@ export default function CustomerProfileScreen(): JSX.Element {
   const data = user.data as Record<string, unknown> | undefined;
 
   return (
-    <ScreenState isLoading={user.isLoading} isError={user.isError} isEmpty={!data} errorMessage="فشل تحميل الملف الشخصي" onRetry={() => user.refetch()}>
+    <ScreenState
+      isLoading={user.isLoading}
+      isError={user.isError}
+      isEmpty={!data}
+      errorMessage="فشل تحميل الملف الشخصي"
+      onRetry={() => user.refetch()}
+    >
       <Text style={styles.title}>👤 حسابي</Text>
-      {(data ? [
-        { label: 'الاسم', value: data.name as string },
-        { label: 'البريد', value: data.email as string },
-        { label: 'الهاتف', value: data.phone as string },
-        { label: 'الدور', value: data.role as string === 'CUSTOMER' ? 'عميلة' : data.role as string === 'TECHNICIAN' ? 'فنية' : 'مشرفة' },
-        { label: 'اللغة', value: data.preferredLanguage as string === 'ar' ? 'العربية' : 'English' },
-      ] : []).map((row, i) => (
+      {(data
+        ? [
+            { label: 'الاسم', value: data.name as string },
+            { label: 'البريد', value: data.email as string },
+            { label: 'الهاتف', value: data.phone as string },
+            {
+              label: 'الدور',
+              value:
+                (data.role as string) === 'CUSTOMER'
+                  ? 'عميلة'
+                  : (data.role as string) === 'TECHNICIAN'
+                    ? 'فنية'
+                    : 'مشرفة',
+            },
+            {
+              label: 'اللغة',
+              value: (data.preferredLanguage as string) === 'ar' ? 'العربية' : 'English',
+            },
+          ]
+        : []
+      ).map((row, i) => (
         <View key={i} style={styles.row}>
           <Text style={styles.label}>{row.label}</Text>
           <Text style={styles.value}>{row.value ?? '—'}</Text>
@@ -31,8 +51,20 @@ export default function CustomerProfileScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.brand,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f3f4f6',
+  },
   label: { fontSize: 14, color: COLORS.gray400 },
   value: { fontSize: 14, fontWeight: '600', color: COLORS.gray900 },
   editBtn: { marginTop: 24, alignItems: 'center', padding: 16 },

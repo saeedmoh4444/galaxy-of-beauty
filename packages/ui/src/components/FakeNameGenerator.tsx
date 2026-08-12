@@ -12,10 +12,26 @@ import { cn } from '@galaxy/shared';
  */
 
 const SAUDI_NAMES = [
-  'سارة', 'نورة', 'مها', 'ريم', 'لطيفة',
-  'هند', 'الجوهرة', 'دلال', 'غادة', 'عهود',
-  'بسمة', 'أثير', 'لمى', 'رغد', 'سلمى',
-  'مياسة', 'تالة', 'نجود', 'ريناد', 'وسن',
+  'سارة',
+  'نورة',
+  'مها',
+  'ريم',
+  'لطيفة',
+  'هند',
+  'الجوهرة',
+  'دلال',
+  'غادة',
+  'عهود',
+  'بسمة',
+  'أثير',
+  'لمى',
+  'رغد',
+  'سلمى',
+  'مياسة',
+  'تالة',
+  'نجود',
+  'ريناد',
+  'وسن',
 ];
 
 interface FakeNameGeneratorProps {
@@ -51,7 +67,9 @@ export function FakeNameGenerator({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true">🎭</span>
+        <span className="text-lg" aria-hidden="true">
+          🎭
+        </span>
         <div>
           <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">
             احجزي باسم مستعار
@@ -95,9 +113,7 @@ export function FakeNameGenerator({
           {/* Generated name */}
           {generated && (
             <div className="mt-3 rounded-xl bg-fuchsia-50 p-3 text-center dark:bg-fuchsia-950">
-              <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">
-                نقترح عليكِ
-              </p>
+              <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">نقترح عليكِ</p>
               <p className="mt-1 text-xl font-bold text-fuchsia-700 dark:text-fuchsia-300">
                 {generated}
               </p>
@@ -143,10 +159,11 @@ export function FakeNameGenerator({
 
       {/* Privacy note */}
       <div className="mt-3 flex items-start gap-1.5 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
-        <span className="text-xs shrink-0" aria-hidden="true">🔒</span>
+        <span className="text-xs shrink-0" aria-hidden="true">
+          🔒
+        </span>
         <p className="text-[9px] text-text-tertiary dark:text-gray-500">
-          اسمكِ الحقيقي يبقى محمياً. الاسم المستعار يُستخدم فقط للتواصل مع الخبيرة أثناء
-          الموعد.
+          اسمكِ الحقيقي يبقى محمياً. الاسم المستعار يُستخدم فقط للتواصل مع الخبيرة أثناء الموعد.
         </p>
       </div>
     </div>

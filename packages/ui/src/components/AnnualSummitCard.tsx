@@ -58,34 +58,33 @@ export function AnnualSummitCard({
         <h4 className="mt-2 text-sm font-bold text-amber-800 dark:text-amber-200">
           ملتقى المرأة في الجمال
         </h4>
-        <p className="text-[10px] text-amber-600 dark:text-amber-400">
-          النسخة السنوية {year}
-        </p>
+        <p className="text-[10px] text-amber-600 dark:text-amber-400">النسخة السنوية {year}</p>
       </div>
 
       {/* Event details */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">المدينة</p>
-          <p className="text-xs font-bold text-amber-800 dark:text-amber-200">
-            📍 {city}
-          </p>
+          <p className="text-xs font-bold text-amber-800 dark:text-amber-200">📍 {city}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">التاريخ</p>
-          <p className="text-xs font-bold text-amber-800 dark:text-amber-200">
-            📅 {date}
-          </p>
+          <p className="text-xs font-bold text-amber-800 dark:text-amber-200">📅 {date}</p>
         </div>
       </div>
 
       {/* Topics */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">
-          🎤 محاور الملتقى
-        </p>
+        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">🎤 محاور الملتقى</p>
         <div className="mt-1 flex flex-wrap gap-1">
-          {['ريادة الأعمال', 'تقنيات التجميل', 'الاستدامة', 'التمكين المالي', 'الصحة والجمال', 'التسويق الرقمي'].map((t) => (
+          {[
+            'ريادة الأعمال',
+            'تقنيات التجميل',
+            'الاستدامة',
+            'التمكين المالي',
+            'الصحة والجمال',
+            'التسويق الرقمي',
+          ].map((t) => (
             <span
               key={t}
               className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-medium text-amber-700 dark:bg-amber-900 dark:text-amber-300"
@@ -99,9 +98,7 @@ export function AnnualSummitCard({
       {/* Speakers */}
       {speakers.length > 0 && (
         <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-          <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">
-            🎙️ متحدثات
-          </p>
+          <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">🎙️ متحدثات</p>
           <div className="mt-1.5 space-y-1.5">
             {speakers.map((s) => (
               <div key={s.name} className="flex items-center gap-2">
@@ -112,9 +109,7 @@ export function AnnualSummitCard({
                   <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
                     {s.name}
                   </p>
-                  <p className="text-[9px] text-text-tertiary dark:text-gray-500">
-                    {s.title}
-                  </p>
+                  <p className="text-[9px] text-text-tertiary dark:text-gray-500">{s.title}</p>
                 </div>
               </div>
             ))}
@@ -134,9 +129,7 @@ export function AnnualSummitCard({
       {/* Pricing + CTA */}
       <div className="mt-3 flex items-center justify-between">
         <div>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">
-            🐦 الحجز المبكر
-          </p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">🐦 الحجز المبكر</p>
           <p className="text-lg font-bold text-amber-800 dark:text-amber-200">
             {earlyBirdPrice} ر.س
           </p>

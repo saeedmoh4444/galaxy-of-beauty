@@ -10,10 +10,7 @@ export const liveStreamRouter = router({
       const now = new Date();
       return prisma.liveStream.findMany({
         where: {
-          OR: [
-            { status: 'LIVE' },
-            { status: 'SCHEDULED', scheduledAt: { gte: now } },
-          ],
+          OR: [{ status: 'LIVE' }, { status: 'SCHEDULED', scheduledAt: { gte: now } }],
         },
         orderBy: [{ status: 'asc' }, { scheduledAt: 'asc' }],
         take: input?.limit ?? 6,
@@ -38,25 +35,29 @@ export const liveStreamRouter = router({
 
   // Admin: create
   create: adminProcedure
-    .input(z.object({
-      technicianId: z.number(),
-      titleJson: z.object({ ar: z.string(), en: z.string() }),
-      descriptionJson: z.object({ ar: z.string(), en: z.string() }).optional(),
-      category: z.string().default('makeup'),
-      scheduledAt: z.string().datetime(),
-      isFeatured: z.boolean().default(false),
-    }))
+    .input(
+      z.object({
+        technicianId: z.number(),
+        titleJson: z.object({ ar: z.string(), en: z.string() }),
+        descriptionJson: z.object({ ar: z.string(), en: z.string() }).optional(),
+        category: z.string().default('makeup'),
+        scheduledAt: z.string().datetime(),
+        isFeatured: z.boolean().default(false),
+      }),
+    )
     .mutation(async ({ input }) => {
       return prisma.liveStream.create({ data: input });
     }),
 
   // Admin: update status
   updateStatus: adminProcedure
-    .input(z.object({
-      id: z.number(),
-      status: z.enum(['SCHEDULED', 'LIVE', 'ENDED', 'CANCELLED']),
-      streamUrl: z.string().optional(),
-    }))
+    .input(
+      z.object({
+        id: z.number(),
+        status: z.enum(['SCHEDULED', 'LIVE', 'ENDED', 'CANCELLED']),
+        streamUrl: z.string().optional(),
+      }),
+    )
     .mutation(async ({ input }) => {
       const { id, ...data } = input;
       const updateData: Record<string, unknown> = { ...data };

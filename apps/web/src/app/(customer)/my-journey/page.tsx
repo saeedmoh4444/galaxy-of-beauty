@@ -21,19 +21,41 @@ export default function MyJourneyPage(): JSX.Element {
   const firstBooking = allBookings[allBookings.length - 1];
   const totalSpent = completed.reduce((sum: number, b: any) => sum + Number(b.totalAmount || 0), 0);
   const uniqueServices = new Set(completed.map((b: any) => b.serviceId)).size;
-  const uniqueTechnicians = new Set(completed.filter((b: any) => b.technicianId).map((b: any) => b.technicianId)).size;
+  const uniqueTechnicians = new Set(
+    completed.filter((b: any) => b.technicianId).map((b: any) => b.technicianId),
+  ).size;
 
   // Milestones
   const milestones = [
-    { label: 'أول حجز', achieved: allBookings.length > 0, emoji: '🎉', date: firstBooking?.createdAt },
-    { label: '٥ حجوزات', achieved: completed.length >= 5, emoji: '⭐', date: completed.length >= 5 ? completed[4]?.createdAt : null },
-    { label: '١٠ حجوزات', achieved: completed.length >= 10, emoji: '💎', date: completed.length >= 10 ? completed[9]?.createdAt : null },
+    {
+      label: 'أول حجز',
+      achieved: allBookings.length > 0,
+      emoji: '🎉',
+      date: firstBooking?.createdAt,
+    },
+    {
+      label: '٥ حجوزات',
+      achieved: completed.length >= 5,
+      emoji: '⭐',
+      date: completed.length >= 5 ? completed[4]?.createdAt : null,
+    },
+    {
+      label: '١٠ حجوزات',
+      achieved: completed.length >= 10,
+      emoji: '💎',
+      date: completed.length >= 10 ? completed[9]?.createdAt : null,
+    },
     { label: 'توفير ١٠٠٠ ر.س', achieved: totalSpent >= 1000, emoji: '💰' },
     { label: '٣ فنيات مختلفات', achieved: uniqueTechnicians >= 3, emoji: '👩‍🎨' },
     { label: '٥ خدمات مختلفة', achieved: uniqueServices >= 5, emoji: '✨' },
   ];
 
-  if (bLoading) return <DashboardLayout role="CUSTOMER"><CardSkeleton /></DashboardLayout>;
+  if (bLoading)
+    return (
+      <DashboardLayout role="CUSTOMER">
+        <CardSkeleton />
+      </DashboardLayout>
+    );
 
   return (
     <DashboardLayout role="CUSTOMER">
@@ -73,7 +95,9 @@ export default function MyJourneyPage(): JSX.Element {
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-sm text-text-secondary">أفضل استمرارية</p>
-            <p className="text-2xl font-extrabold text-orange-600">🔥 {streak?.longestStreak || 0} أسابيع</p>
+            <p className="text-2xl font-extrabold text-orange-600">
+              🔥 {streak?.longestStreak || 0} أسابيع
+            </p>
           </Card>
         </div>
 
@@ -82,11 +106,22 @@ export default function MyJourneyPage(): JSX.Element {
           <h3 className="font-semibold mb-4">🏆 الإنجازات</h3>
           <div className="space-y-3">
             {milestones.map((m, i) => (
-              <div key={i} className={`flex items-center gap-3 rounded-lg p-3 ${m.achieved ? 'bg-green-50 dark:bg-green-900/20' : 'bg-surface-muted dark:bg-gray-800/50 opacity-50'}`}>
+              <div
+                key={i}
+                className={`flex items-center gap-3 rounded-lg p-3 ${m.achieved ? 'bg-green-50 dark:bg-green-900/20' : 'bg-surface-muted dark:bg-gray-800/50 opacity-50'}`}
+              >
                 <span className="text-2xl">{m.achieved ? m.emoji : '🔒'}</span>
                 <div className="flex-1">
-                  <p className={`font-semibold text-sm ${m.achieved ? 'text-text-primary dark:text-gray-100' : 'text-text-tertiary'}`}>{m.label}</p>
-                  {m.date && <p className="text-xs text-text-tertiary">{new Date(m.date).toLocaleDateString('ar-SA')}</p>}
+                  <p
+                    className={`font-semibold text-sm ${m.achieved ? 'text-text-primary dark:text-gray-100' : 'text-text-tertiary'}`}
+                  >
+                    {m.label}
+                  </p>
+                  {m.date && (
+                    <p className="text-xs text-text-tertiary">
+                      {new Date(m.date).toLocaleDateString('ar-SA')}
+                    </p>
+                  )}
                 </div>
                 {m.achieved && <span className="text-green-600 text-sm">✓</span>}
               </div>
@@ -95,7 +130,9 @@ export default function MyJourneyPage(): JSX.Element {
         </Card>
 
         <div className="text-center">
-          <Link href="/bookings/create"><Button>استمري في رحلتكِ ✨</Button></Link>
+          <Link href="/bookings/create">
+            <Button>استمري في رحلتكِ ✨</Button>
+          </Link>
         </div>
       </div>
     </DashboardLayout>

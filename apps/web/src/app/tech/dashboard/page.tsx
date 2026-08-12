@@ -4,8 +4,15 @@
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import {
-  Card, ErrorAlert, EmptyState, Button, formatCurrency,
-  StatCard, PageContainer, DashboardSkeleton, CardListSkeleton,
+  Card,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  formatCurrency,
+  StatCard,
+  PageContainer,
+  DashboardSkeleton,
+  CardListSkeleton,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -15,7 +22,11 @@ export default function TechDashboardPage(): JSX.Element {
   const earnings = api.analytics.technicianEarnings.useQuery({ days: 30 }) as any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: profile } = api.auth.me.useQuery() as any;
-  const transition = api.bookings.transition.useMutation({ onSuccess: () => { pending.refetch(); } });
+  const transition = api.bookings.transition.useMutation({
+    onSuccess: () => {
+      pending.refetch();
+    },
+  });
 
   const todayEarnings = earnings.data?.today || 0;
   const weekEarnings = earnings.data?.week || 0;
@@ -36,7 +47,11 @@ export default function TechDashboardPage(): JSX.Element {
         ) : (
           <div className="grid gap-4 md:grid-cols-4">
             <StatCard label="أرباح اليوم" value={formatCurrency(Number(todayEarnings))} icon="💰" />
-            <StatCard label="أرباح الأسبوع" value={formatCurrency(Number(weekEarnings))} icon="📊" />
+            <StatCard
+              label="أرباح الأسبوع"
+              value={formatCurrency(Number(weekEarnings))}
+              icon="📊"
+            />
             <StatCard label="أرباح الشهر" value={formatCurrency(Number(monthEarnings))} icon="📈" />
             <StatCard label="التقييم" value={`⭐ ${Number(rating).toFixed(1)}`} icon="⭐" />
           </div>
@@ -55,10 +70,18 @@ export default function TechDashboardPage(): JSX.Element {
 
         {/* Quick Actions */}
         <div className="flex flex-wrap gap-2">
-          <Link href="/tech/slots"><Button variant="outline">📅 إدارة المواعيد</Button></Link>
-          <Link href="/tech/profile"><Button variant="outline">👤 تعديل الملف</Button></Link>
-          <Link href="/tech/earnings"><Button variant="outline">💰 الأرباح</Button></Link>
-          <Link href="/tech/calendar"><Button variant="outline">📆 تقويم</Button></Link>
+          <Link href="/tech/slots">
+            <Button variant="outline">📅 إدارة المواعيد</Button>
+          </Link>
+          <Link href="/tech/profile">
+            <Button variant="outline">👤 تعديل الملف</Button>
+          </Link>
+          <Link href="/tech/earnings">
+            <Button variant="outline">💰 الأرباح</Button>
+          </Link>
+          <Link href="/tech/calendar">
+            <Button variant="outline">📆 تقويم</Button>
+          </Link>
         </div>
 
         {/* Pending Bookings */}
@@ -71,35 +94,38 @@ export default function TechDashboardPage(): JSX.Element {
           <EmptyState title="لا توجد طلبات معلقة" />
         ) : (
           <div className="space-y-3">
-            {(pending.data as unknown as Array<Record<string, any>>).slice(0, 10).map((b: Record<string, any>) => (
-              <Card key={b.id} padding="md">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-semibold text-text-primary">{b.bookingCode}</p>
-                    <p className="text-sm text-text-secondary">
-                      {new Date(b.startAt).toLocaleDateString('ar-SA')} · {formatCurrency(Number(b.totalAmount))}
-                    </p>
+            {(pending.data as unknown as Array<Record<string, any>>)
+              .slice(0, 10)
+              .map((b: Record<string, any>) => (
+                <Card key={b.id} padding="md">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-semibold text-text-primary">{b.bookingCode}</p>
+                      <p className="text-sm text-text-secondary">
+                        {new Date(b.startAt).toLocaleDateString('ar-SA')} ·{' '}
+                        {formatCurrency(Number(b.totalAmount))}
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        onClick={() => transition.mutate({ id: b.id as number, action: 'accept' })}
+                        loading={transition.isPending}
+                      >
+                        قبول
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        onClick={() => transition.mutate({ id: b.id as number, action: 'reject' })}
+                        loading={transition.isPending}
+                      >
+                        رفض
+                      </Button>
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      onClick={() => transition.mutate({ id: b.id as number, action: 'accept' })}
-                      loading={transition.isPending}
-                    >
-                      قبول
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="danger"
-                      onClick={() => transition.mutate({ id: b.id as number, action: 'reject' })}
-                      loading={transition.isPending}
-                    >
-                      رفض
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              ))}
           </div>
         )}
       </PageContainer>

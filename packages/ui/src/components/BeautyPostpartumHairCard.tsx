@@ -1,1 +1,38 @@
-'use client';import { cn } from '@galaxy/shared';export function BeautyPostpartumHairCard({ className = '' }: { className?: string }): JSX.Element {return (<div className={cn('rounded-2xl border border-purple-100 bg-white p-4 dark:border-purple-900 dark:bg-gray-900', className)}><div className="flex items-center gap-2"><span className="text-xl">👶</span><div><h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">شعر ما بعد الولادة</h4><p className="text-[10px] text-purple-500 dark:text-purple-400">تساقط طبيعي — لا تقلقي</p></div></div><div className="mt-3 space-y-1">{[{ emoji:'📅',text:'يبدأ بعد 3-6 أشهر — يستمر 3-6 أشهر' },{ emoji:'💆',text:'تدليك الفروة — يحفز نمو شعر جديد' },{ emoji:'💊',text:'فيتامينات ما بعد الولادة — حديد وزنك' },{ emoji:'✂️',text:'قصة أقصر — تخفف الثقل وتشجع النمو' }].map((t,i)=>(<div key={i} className="flex items-center gap-2 rounded-lg bg-purple-50 px-3 py-2 dark:bg-purple-950"><span className="text-sm shrink-0">{t.emoji}</span><span className="text-[10px] text-purple-800 dark:text-purple-200">{t.text}</span></div>))}</div></div>);}
+'use client';
+import { cn } from '@galaxy/shared';
+export function BeautyPostpartumHairCard({ className = '' }: { className?: string }): JSX.Element {
+  return (
+    <div
+      className={cn(
+        'rounded-2xl border border-purple-100 bg-white p-4 dark:border-purple-900 dark:bg-gray-900',
+        className,
+      )}
+    >
+      <div className="flex items-center gap-2">
+        <span className="text-xl">👶</span>
+        <div>
+          <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">
+            شعر ما بعد الولادة
+          </h4>
+          <p className="text-[10px] text-purple-500 dark:text-purple-400">تساقط طبيعي — لا تقلقي</p>
+        </div>
+      </div>
+      <div className="mt-3 space-y-1">
+        {[
+          { emoji: '📅', text: 'يبدأ بعد 3-6 أشهر — يستمر 3-6 أشهر' },
+          { emoji: '💆', text: 'تدليك الفروة — يحفز نمو شعر جديد' },
+          { emoji: '💊', text: 'فيتامينات ما بعد الولادة — حديد وزنك' },
+          { emoji: '✂️', text: 'قصة أقصر — تخفف الثقل وتشجع النمو' },
+        ].map((t, i) => (
+          <div
+            key={i}
+            className="flex items-center gap-2 rounded-lg bg-purple-50 px-3 py-2 dark:bg-purple-950"
+          >
+            <span className="text-sm shrink-0">{t.emoji}</span>
+            <span className="text-[10px] text-purple-800 dark:text-purple-200">{t.text}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

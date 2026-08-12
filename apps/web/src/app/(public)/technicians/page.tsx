@@ -9,7 +9,7 @@ export default async function TechniciansPage(): Promise<JSX.Element> {
   try {
     const caller = await getServerCaller();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result = await caller.technicians.list({}) as any[];
+    const result = (await caller.technicians.list({})) as any[];
     data.initialTechnicians = result;
   } catch {
     // Client will retry on error

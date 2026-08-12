@@ -50,7 +50,7 @@ export function AskDermatologistCard({
     day: 'numeric',
   });
 
-  const isSoon = (new Date(nextSession).getTime() - Date.now()) < 7 * 24 * 60 * 60 * 1000;
+  const isSoon = new Date(nextSession).getTime() - Date.now() < 7 * 24 * 60 * 60 * 1000;
 
   return (
     <div
@@ -65,16 +65,10 @@ export function AskDermatologistCard({
           👩‍⚕️
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-            {doctor.name}
-          </h4>
-          <p className="text-[10px] text-text-secondary dark:text-gray-300">
-            {doctor.specialty}
-          </p>
+          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{doctor.name}</h4>
+          <p className="text-[10px] text-text-secondary dark:text-gray-300">{doctor.specialty}</p>
           {doctor.credentials && (
-            <p className="text-[9px] text-text-tertiary dark:text-gray-500">
-              {doctor.credentials}
-            </p>
+            <p className="text-[9px] text-text-tertiary dark:text-gray-500">{doctor.credentials}</p>
           )}
           <span className="mt-1 inline-block rounded-full bg-blue-50 px-2 py-0.5 text-[9px] font-bold text-blue-600 dark:bg-blue-950 dark:text-blue-400">
             🩺 استشارية معتمدة
@@ -86,7 +80,9 @@ export function AskDermatologistCard({
       <div className="mt-3 rounded-xl bg-gradient-to-r from-blue-50 to-sky-50 p-3 dark:from-blue-950 dark:to-sky-950">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
-            <span className="text-sm" aria-hidden="true">📅</span>
+            <span className="text-sm" aria-hidden="true">
+              📅
+            </span>
             <span className="text-[10px] font-bold text-blue-700 dark:text-blue-300">
               الجلسة القادمة
             </span>
@@ -97,9 +93,7 @@ export function AskDermatologistCard({
             </span>
           )}
         </div>
-        <p className="mt-1 text-xs font-bold text-blue-800 dark:text-blue-200">
-          {arabicDate}
-        </p>
+        <p className="mt-1 text-xs font-bold text-blue-800 dark:text-blue-200">{arabicDate}</p>
         <p className="text-[10px] text-blue-500 dark:text-blue-400">
           🕐 8:00 مساءً — مباشر على المنصة
         </p>
@@ -107,11 +101,11 @@ export function AskDermatologistCard({
 
       {/* Questions counter */}
       <div className="mt-2 flex items-center gap-2 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
-        <span className="text-sm" aria-hidden="true">💬</span>
+        <span className="text-sm" aria-hidden="true">
+          💬
+        </span>
         <span className="text-[10px] text-text-secondary dark:text-gray-300">
-          {questionsCount > 0
-            ? `${questionsCount} سؤال مقدّم من المجتمع`
-            : 'كوني أول من تسأل!'}
+          {questionsCount > 0 ? `${questionsCount} سؤال مقدّم من المجتمع` : 'كوني أول من تسأل!'}
         </span>
       </div>
 

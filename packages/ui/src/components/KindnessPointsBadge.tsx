@@ -80,7 +80,13 @@ export function KindnessPointsBadge({
   // Auto-detect level
   const detectedLevel: KindnessLevel =
     level ??
-    (points >= 1000 ? 'angel' : points >= 300 ? 'generous' : points >= 100 ? 'supporter' : 'helper');
+    (points >= 1000
+      ? 'angel'
+      : points >= 300
+        ? 'generous'
+        : points >= 100
+          ? 'supporter'
+          : 'helper');
 
   const levelDef = LEVELS[detectedLevel];
 
@@ -90,7 +96,12 @@ export function KindnessPointsBadge({
   const nextLevel = currentIdx < levels.length - 1 ? levels[currentIdx + 1] : null;
   const nextDef = nextLevel ? LEVELS[nextLevel] : null;
   const progressToNext = nextDef
-    ? Math.min(100, Math.round(((points - levelDef.minPoints) / (nextDef.minPoints - levelDef.minPoints)) * 100))
+    ? Math.min(
+        100,
+        Math.round(
+          ((points - levelDef.minPoints) / (nextDef.minPoints - levelDef.minPoints)) * 100,
+        ),
+      )
     : 100;
 
   return (
@@ -103,16 +114,16 @@ export function KindnessPointsBadge({
       {/* Level header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className={cn(
-            'flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br text-xl text-white',
-            levelDef.gradient,
-          )}>
+          <div
+            className={cn(
+              'flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br text-xl text-white',
+              levelDef.gradient,
+            )}
+          >
             {levelDef.emoji}
           </div>
           <div>
-            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-              نقاط اللطف
-            </h4>
+            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">نقاط اللطف</h4>
             <p className={cn('text-[10px] font-medium', levelDef.color)}>
               {levelDef.emoji} {levelDef.title}
             </p>
@@ -124,9 +135,7 @@ export function KindnessPointsBadge({
           <p className="text-xl font-bold text-pink-700 dark:text-pink-300">
             {points.toLocaleString('ar-SA')}
           </p>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">
-            نقطة
-          </p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">نقطة</p>
         </div>
       </div>
 
@@ -137,13 +146,14 @@ export function KindnessPointsBadge({
             <span className="text-text-secondary dark:text-gray-300">
               🎯 للوصول إلى {nextDef.title}
             </span>
-            <span className="font-bold text-pink-700 dark:text-pink-300">
-              {progressToNext}%
-            </span>
+            <span className="font-bold text-pink-700 dark:text-pink-300">{progressToNext}%</span>
           </div>
           <div className="mt-1 h-2 overflow-hidden rounded-full bg-pink-100 dark:bg-pink-900">
             <div
-              className={cn('h-full rounded-full bg-gradient-to-r transition-all', nextDef.gradient)}
+              className={cn(
+                'h-full rounded-full bg-gradient-to-r transition-all',
+                nextDef.gradient,
+              )}
               style={{ width: `${progressToNext}%` }}
             />
           </div>
@@ -163,9 +173,7 @@ export function KindnessPointsBadge({
             key={a.action}
             className="flex items-center justify-between rounded-lg bg-gray-50 px-2.5 py-1.5 dark:bg-gray-800"
           >
-            <span className="text-[10px] text-text-secondary dark:text-gray-300">
-              {a.action}
-            </span>
+            <span className="text-[10px] text-text-secondary dark:text-gray-300">{a.action}</span>
             <span className="text-[10px] font-bold text-pink-600 dark:text-pink-400">
               +{a.points}
             </span>
