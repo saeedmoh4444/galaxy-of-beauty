@@ -15,21 +15,17 @@ We aim to acknowledge reports within 48 hours and provide an initial assessment 
 
 ## Dependency Audit (August 2026)
 
-As of 2026-08-11, `pnpm audit --prod` reports **15 high findings** across the following packages:
+As of 2026-08-12, `pnpm audit --prod` reports **8 high findings** across the following packages:
 
-### Next.js (8 findings)
+### Next.js — ✅ RESOLVED
 
-- **CVE**: GHSA-h25m-26qc-wcjf, GHSA-q4gf-8mx6-v5v3, GHSA-8h8q-6873-q5fj, GHSA-rv87-rfhg-6mq9, GHSA-9wqv-6cfc-4mvj, GHSA-3h98-hf5c-cfjw, GHSA-g648-62x6-rvgq, GHSA-j98j-h76m-ph7p
-- **Type**: DoS via request deserialization, SSRF in rewrites/server actions, middleware bypass
-- **Affected**: Next.js 14.2.35 (patched in 15.5.16+)
-- **Status**: ✅ **Accepted risk** — Next.js 15 migration is planned (see below)
-- **Compensating controls**:
-  - All user input validated via Zod at tRPC boundaries
-  - Middleware does NOT forward unauthenticated requests to Server Components on protected routes
-  - Server Actions are gated behind CSRF + auth checks
-  - Strict CORS allowlist (not origin reflection)
-  - Rate limiting per-client IP prevents abuse
-  - CSP headers restrict script/style/frame sources
+All 8 Next.js 14.2.35 advisories were resolved by upgrading to **Next.js 15.5.23** (commit `c3fa2ea`).
+
+### sharp / libvips (1 finding)
+
+- **Type**: Inherited vulnerabilities in libvips image processing library
+- **Status**: ✅ **Accepted risk** — sharp is a transitive dependency used by Next.js 15 for image optimization
+- **Compensating controls**: `images.remotePatterns` restricts remote image sources to known CDN/object storage
 
 ### Socket.IO (1 finding)
 
@@ -70,7 +66,7 @@ As of 2026-08-11, `pnpm audit --prod` reports **15 high findings** across the fo
 
 | Priority | Package | Action | Timeline |
 |---|---|---|---|
-| P0 | Next.js 15 | Migration from 14.2.35 → 15.5.x | Q4 2026 |
+| ✅ Complete | Next.js 15 | Migrated 14.2.35 → 15.5.23 | Aug 2026 |
 | P1 | Socket.IO | Upgrade parser to patched version | Q4 2026 |
 | P2 | Expo SDK | Resolve peer dependency alignment | Q4 2026 |
 
