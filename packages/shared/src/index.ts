@@ -29,3 +29,6 @@ export type { Locale, TranslationKey } from './i18n';
 export { colors, typography, spacing, borderRadius, shadows, breakpoints } from './theme';
 export { default as theme } from './theme';
 export type { Theme } from './theme';
+
+// Images
+export { serviceImages, categoryImages, heroImages, dashboardImages, getServiceImage, getCategoryImage } from './images';

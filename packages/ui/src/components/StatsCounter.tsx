@@ -4,16 +4,18 @@ import { useEffect, useState } from 'react';
 
 /**
  * Animated stats counter — counts up to target when visible.
- * Used on landing page for social proof.
+ * Uses real images instead of emojis for professional appearance.
  *
  * Usage:
- *   <StatsCounter stats={[{ label: 'حجز', value: 500, emoji: '📅' }]} />
+ *   <StatsCounter stats={[
+ *     { label: 'حجز', value: 500, image: '/images/stats/bookings.webp' }
+ *   ]} />
  */
 
 interface Stat {
   label: string;
   value: number;
-  emoji?: string;
+  image?: string;
   suffix?: string;
 }
 
@@ -43,7 +45,18 @@ function CountUpItem({ stat }: { stat: Stat }) {
   const count = useCountUp(stat.value);
   return (
     <div className="text-center">
-      <span className="text-2xl">{stat.emoji ?? '✨'}</span>
+      {stat.image ? (
+        <img
+          src={stat.image}
+          alt={stat.label}
+          className="mx-auto mb-2 h-10 w-10 rounded-lg object-cover"
+          loading="lazy"
+        />
+      ) : (
+        <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 dark:bg-brand-900">
+          <span className="text-lg font-bold text-brand-500">{stat.label[0]}</span>
+        </div>
+      )}
       <div className="mt-1 text-3xl font-extrabold text-brand-600 dark:text-brand-400">
         {count.toLocaleString('ar-SA')}
         {stat.suffix ?? '+'}

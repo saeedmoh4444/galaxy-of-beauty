@@ -49,6 +49,7 @@ export { WomenOnlySeal } from './WomenOnlySeal';
 export { FloatingActionButton } from './FloatingActionButton';
 export { VerifiedBadge } from './VerifiedBadge';
 export { StatsCounter } from './StatsCounter';
+export { ServiceImage } from './ServiceImage';
 export { TrustBar } from './TrustBar';
 export { RatingStars } from './RatingStars';
 export { CountdownTimer } from './CountdownTimer';
