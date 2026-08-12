@@ -36,7 +36,7 @@ export function BeautyRoutineTimelineCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true">
-            ⏰
+            
           </span>
           <div>
             <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">روتيني اليومي</h4>
@@ -49,7 +49,7 @@ export function BeautyRoutineTimelineCard({
         {/* Morning */}
         <div>
           <div className="flex items-center gap-1.5 mb-2">
-            <span className="text-sm">☀️</span>
+            <span className="text-sm">️</span>
             <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300">صباحاً</span>
           </div>
           <div className="space-y-1">
@@ -67,7 +67,7 @@ export function BeautyRoutineTimelineCard({
         {/* Evening */}
         <div>
           <div className="flex items-center gap-1.5 mb-2">
-            <span className="text-sm">🌙</span>
+            <span className="text-sm"></span>
             <span className="text-[10px] font-bold text-indigo-700 dark:text-indigo-300">
               مساءً
             </span>

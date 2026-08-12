@@ -9,7 +9,7 @@ export function BeautyProductOverloadCard({ className = '' }: { className?: stri
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🧪</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">تحميل المنتجات</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">
@@ -19,10 +19,10 @@ export function BeautyProductOverloadCard({ className = '' }: { className?: stri
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '⚠️', text: 'لا تخلطي أكثر من 3 منتجات نشطة في الجلسة' },
-          { emoji: '📋', text: 'قاعدة: منتج فعال واحد في الصباح — وآخر في المساء' },
-          { emoji: '🔄', text: 'نظام التدوير: يوم ريتينول — يوم تقشير — يوم راحة' },
-          { emoji: '✨', text: 'البشرة تفضل البساطة — الأقل هو الأكثر' },
+          { emoji: '', text: 'لا تخلطي أكثر من 3 منتجات نشطة في الجلسة' },
+          { emoji: '', text: 'قاعدة: منتج فعال واحد في الصباح — وآخر في المساء' },
+          { emoji: '', text: 'نظام التدوير: يوم ريتينول — يوم تقشير — يوم راحة' },
+          { emoji: '', text: 'البشرة تفضل البساطة — الأقل هو الأكثر' },
         ].map((t, i) => (
           <div
             key={i}

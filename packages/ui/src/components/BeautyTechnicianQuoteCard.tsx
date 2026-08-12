@@ -37,7 +37,7 @@ export function BeautyTechnicianQuoteCard({
     >
       <div className="flex items-start gap-3">
         <span className="text-3xl shrink-0" aria-hidden="true">
-          {quote.emoji || '💬'}
+          {quote.emoji || ''}
         </span>
         <div>
           <p className="text-sm leading-relaxed italic text-amber-800 dark:text-amber-200">
@@ -45,7 +45,7 @@ export function BeautyTechnicianQuoteCard({
           </p>
           <div className="mt-2 flex items-center gap-2">
             <div className="h-8 w-8 rounded-full bg-amber-200 dark:bg-amber-800 flex items-center justify-center text-sm">
-              👩‍🎨
+              ‍
             </div>
             <div>
               <p className="text-xs font-bold text-amber-700 dark:text-amber-300">{quote.author}</p>

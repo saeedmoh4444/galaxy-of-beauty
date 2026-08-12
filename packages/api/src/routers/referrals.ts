@@ -219,15 +219,15 @@ export const referralRouter = router({
     // Tiered rewards
     const count = completed.length;
     const tier =
-      count >= 10 ? '💎 الماسي' : count >= 5 ? '🥇 ذهبي' : count >= 1 ? '🥈 فضي' : '⭐ مبتدئ';
+      count >= 10 ? ' الماسي' : count >= 5 ? ' ذهبي' : count >= 1 ? ' فضي' : ' مبتدئ';
     const nextTier =
       count >= 10
         ? null
         : count >= 5
-          ? '💎 الماسي (١٠ إحالات)'
+          ? ' الماسي (١٠ إحالات)'
           : count >= 1
-            ? '🥇 ذهبي (٥ إحالات)'
-            : '🥈 فضي (إحالة واحدة)';
+            ? ' ذهبي (٥ إحالات)'
+            : ' فضي (إحالة واحدة)';
     const nextCount = count >= 10 ? 0 : count >= 5 ? 10 - count : count >= 1 ? 5 - count : 1;
 
     // Double-sided rewards

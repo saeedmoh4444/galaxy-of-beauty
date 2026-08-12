@@ -6,26 +6,26 @@ import type { ReactNode } from 'react';
 import { useAuth } from '@galaxy/ui';
 
 const adminLinks = [
-  { href: '/admin/dashboard', labelAr: 'لوحة التحكم', labelEn: 'Dashboard', icon: '📊' },
-  { href: '/admin/users', labelAr: 'المستخدمين', labelEn: 'Users', icon: '👥' },
-  { href: '/admin/technicians', labelAr: 'الفنيات', labelEn: 'Technicians', icon: '💅' },
-  { href: '/admin/categories', labelAr: 'الأقسام', labelEn: 'Categories', icon: '📂' },
-  { href: '/admin/services', labelAr: 'الخدمات', labelEn: 'Services', icon: '✨' },
-  { href: '/admin/bookings', labelAr: 'الحجوزات', labelEn: 'Bookings', icon: '📅' },
-  { href: '/admin/disputes', labelAr: 'النزاعات', labelEn: 'Disputes', icon: '⚖️' },
-  { href: '/admin/finance', labelAr: 'المالية', labelEn: 'Finance', icon: '💰' },
-  { href: '/admin/settings', labelAr: 'الإعدادات', labelEn: 'Settings', icon: '⚙️' },
-  { href: '/admin/gift-cards', labelAr: 'بطاقات الهدية', labelEn: 'Gift Cards', icon: '🎁' },
-  { href: '/admin/packages', labelAr: 'الباقات', labelEn: 'Packages', icon: '💅' },
-  { href: '/admin/campaigns', labelAr: 'الحملات', labelEn: 'Campaigns', icon: '📢' },
-  { href: '/admin/blog', labelAr: 'المدونة', labelEn: 'Blog', icon: '📝' },
-  { href: '/admin/zatca', labelAr: 'الفاتورة الإلكترونية', labelEn: 'ZATCA', icon: '🧾' },
-  { href: '/admin/analytics', labelAr: 'التحليلات المتقدمة', labelEn: 'Analytics', icon: '📈' },
-  { href: '/admin/monitoring', labelAr: 'مراقبة المنصة', labelEn: 'Monitoring', icon: '🖥️' },
-  { href: '/admin/feature-flags', labelAr: 'إدارة الخصائص', labelEn: 'Feature Flags', icon: '🚩' },
-  { href: '/admin/audit-log', labelAr: 'سجل التدقيق', labelEn: 'Audit Log', icon: '📋' },
-  { href: '/admin/reports', labelAr: 'التقارير', labelEn: 'Reports', icon: '📑' },
-  { href: '/admin/areas', labelAr: 'إدارة المناطق', labelEn: 'Areas', icon: '📍' },
+  { href: '/admin/dashboard', labelAr: 'لوحة التحكم', labelEn: 'Dashboard', icon: '' },
+  { href: '/admin/users', labelAr: 'المستخدمين', labelEn: 'Users', icon: '' },
+  { href: '/admin/technicians', labelAr: 'الفنيات', labelEn: 'Technicians', icon: '' },
+  { href: '/admin/categories', labelAr: 'الأقسام', labelEn: 'Categories', icon: '' },
+  { href: '/admin/services', labelAr: 'الخدمات', labelEn: 'Services', icon: '' },
+  { href: '/admin/bookings', labelAr: 'الحجوزات', labelEn: 'Bookings', icon: '' },
+  { href: '/admin/disputes', labelAr: 'النزاعات', labelEn: 'Disputes', icon: '️' },
+  { href: '/admin/finance', labelAr: 'المالية', labelEn: 'Finance', icon: '' },
+  { href: '/admin/settings', labelAr: 'الإعدادات', labelEn: 'Settings', icon: '️' },
+  { href: '/admin/gift-cards', labelAr: 'بطاقات الهدية', labelEn: 'Gift Cards', icon: '' },
+  { href: '/admin/packages', labelAr: 'الباقات', labelEn: 'Packages', icon: '' },
+  { href: '/admin/campaigns', labelAr: 'الحملات', labelEn: 'Campaigns', icon: '' },
+  { href: '/admin/blog', labelAr: 'المدونة', labelEn: 'Blog', icon: '' },
+  { href: '/admin/zatca', labelAr: 'الفاتورة الإلكترونية', labelEn: 'ZATCA', icon: '' },
+  { href: '/admin/analytics', labelAr: 'التحليلات المتقدمة', labelEn: 'Analytics', icon: '' },
+  { href: '/admin/monitoring', labelAr: 'مراقبة المنصة', labelEn: 'Monitoring', icon: '️' },
+  { href: '/admin/feature-flags', labelAr: 'إدارة الخصائص', labelEn: 'Feature Flags', icon: '' },
+  { href: '/admin/audit-log', labelAr: 'سجل التدقيق', labelEn: 'Audit Log', icon: '' },
+  { href: '/admin/reports', labelAr: 'التقارير', labelEn: 'Reports', icon: '' },
+  { href: '/admin/areas', labelAr: 'إدارة المناطق', labelEn: 'Areas', icon: '' },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }): ReactNode {
@@ -66,7 +66,7 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
             href="/dashboard"
             className="block rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-surface-muted dark:text-gray-400 dark:hover:bg-gray-900"
           >
-            🏠 العودة للمتجر
+             العودة للمتجر
           </Link>
           <button
             onClick={async () => {

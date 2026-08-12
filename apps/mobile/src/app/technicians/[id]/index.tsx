@@ -48,13 +48,13 @@ export default function TechnicianDetailScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>👩‍🎨 {data.name as string}</Text>
+      <Text style={styles.t}>‍ {data.name as string}</Text>
       <View style={styles.card}>
         <Text style={styles.spec}>
           {(data.specialtyAr as string) ?? (data.specialty as string)}
         </Text>
-        <Text style={styles.rating}>⭐ {(data.rating as number) ?? 0}</Text>
-        <Text style={styles.city}>📍 {data.city as string}</Text>
+        <Text style={styles.rating}> {(data.rating as number) ?? 0}</Text>
+        <Text style={styles.city}> {data.city as string}</Text>
       </View>
     </ScrollView>
   );

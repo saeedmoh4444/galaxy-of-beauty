@@ -18,7 +18,7 @@ export const gratitudeRouter = router({
       z.object({
         message: z.string().min(5).max(300),
         toName: z.string().min(1).max(100),
-        emoji: z.string().default('💕'),
+        emoji: z.string().default(''),
       }),
     )
     .mutation(async ({ ctx, input }) => {

@@ -37,16 +37,16 @@ export default function TechniciansScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>👩‍🎨 الفنيات</Text>
+      <Text style={styles.t}>‍ الفنيات</Text>
       {techs.map((t: any) => (
         <View key={t.id} style={styles.card}>
-          <Text style={styles.av}>👩‍🎨</Text>
+          <Text style={styles.av}>‍</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.tn}>{t.name as string}</Text>
             <Text style={styles.ts}>{(t.specialtyAr as string) ?? (t.specialty as string)}</Text>
             <View style={styles.tm}>
-              <Text style={styles.tr}>⭐ {(t.rating as number) ?? 0}</Text>
-              <Text style={styles.tb}>📅 {(t.totalBookings as number) ?? 0} حجز</Text>
+              <Text style={styles.tr}> {(t.rating as number) ?? 0}</Text>
+              <Text style={styles.tb}> {(t.totalBookings as number) ?? 0} حجز</Text>
               <Text style={styles.tp}>{(t.startingPrice as number)?.toLocaleString()} ر.س</Text>
             </View>
           </View>

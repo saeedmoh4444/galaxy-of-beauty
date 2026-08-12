@@ -19,7 +19,7 @@ export default function IngredientSubPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🧴</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">بدائل المكونات</h1>
         <p className="mt-2 text-text-secondary">اكتشفي بدائل آمنة وطبيعية للمواد الضارة</p>
       </div>
@@ -37,7 +37,7 @@ export default function IngredientSubPage(): JSX.Element {
         <CardSkeleton />
       ) : subs.length > 0 ? (
         <Card padding="lg">
-          <h3 className="font-bold mb-3">🔄 بدائل {result?.ingredient as string}</h3>
+          <h3 className="font-bold mb-3"> بدائل {result?.ingredient as string}</h3>
           <div className="space-y-3">
             {subs.map((s: Record<string, unknown>, i: number) => (
               <div
@@ -56,7 +56,7 @@ export default function IngredientSubPage(): JSX.Element {
         </Card>
       ) : items.length > 0 ? (
         <Card padding="lg">
-          <h3 className="font-bold mb-3">📋 المواد الضارة الشائعة</h3>
+          <h3 className="font-bold mb-3"> المواد الضارة الشائعة</h3>
           <div className="flex flex-wrap gap-2">
             {items.map((item: Record<string, unknown>) => (
               <button

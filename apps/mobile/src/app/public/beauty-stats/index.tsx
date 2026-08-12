@@ -21,40 +21,40 @@ export default function BeautyStatsScreen(): JSX.Element {
 
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.b}>🏆</Text>
+      <Text style={s.b}></Text>
       <Text style={s.h}>جالكسي بيوتي في أرقام</Text>
       <Text style={s.sub}>المنصة الأولى لحجز خدمات التجميل في المملكة</Text>
       <View style={s.grid}>
         <View style={s.card}>
-          <Text style={s.ce}>📅</Text>
+          <Text style={s.ce}></Text>
           <Text style={s.cv}>{stats.totalBookings.toLocaleString('ar-SA')}+</Text>
           <Text style={s.cl}>حجز مكتمل</Text>
         </View>
         <View style={s.card}>
-          <Text style={s.ce}>👩‍🎨</Text>
+          <Text style={s.ce}>‍</Text>
           <Text style={s.cv}>{stats.totalTechnicians.toLocaleString('ar-SA')}+</Text>
           <Text style={s.cl}>فنية معتمدة</Text>
         </View>
         <View style={s.card}>
-          <Text style={s.ce}>💄</Text>
+          <Text style={s.ce}></Text>
           <Text style={s.cv}>{stats.totalServices.toLocaleString('ar-SA')}+</Text>
           <Text style={s.cl}>خدمة تجميل</Text>
         </View>
         <View style={s.card}>
-          <Text style={s.ce}>😊</Text>
+          <Text style={s.ce}></Text>
           <Text style={s.cv}>{stats.happyCustomers.toLocaleString('ar-SA')}+</Text>
           <Text style={s.cl}>عميلة سعيدة</Text>
         </View>
       </View>
       <View style={[s.card, { marginTop: 12 }]}>
-        <Text style={s.ce}>⭐</Text>
+        <Text style={s.ce}></Text>
         <Text style={s.cv}>{stats.avgRating}</Text>
         <Text style={s.cl}>
           متوسط التقييمات — من {stats.totalReviews.toLocaleString('ar-SA')}+ تقييم
         </Text>
       </View>
       <View style={[s.card, { marginTop: 8 }]}>
-        <Text style={s.ce}>📍</Text>
+        <Text style={s.ce}></Text>
         <Text style={s.cv}>{stats.citiesCount}+</Text>
         <Text style={s.cl}>مدينة سعودية</Text>
       </View>

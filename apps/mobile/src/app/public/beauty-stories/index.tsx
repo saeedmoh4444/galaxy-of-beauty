@@ -27,17 +27,17 @@ export default function BeautyStoriesScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />
       }
     >
-      <Text style={styles.t}>📖 القصص</Text>
+      <Text style={styles.t}> القصص</Text>
       <Text style={styles.sub}>قصص نجاح وتحولات الجمال</Text>
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد قصص</Text>
       ) : (
         items.map((s: any, i: number) => (
           <View key={s.id ?? i} style={styles.card}>
-            <Text style={styles.storyEmoji}>{(s.emoji as string) ?? '📖'}</Text>
+            <Text style={styles.storyEmoji}>{(s.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.storyTitle}>{(s.titleAr as string) ?? (s.title as string)}</Text>
-              <Text style={styles.storyAuthor}>✍️ {s.author as string}</Text>
+              <Text style={styles.storyAuthor}>️ {s.author as string}</Text>
               <Text style={styles.storyPreview}>
                 {((s.preview as string) ?? (s.descAr as string))?.substring(0, 80)}...
               </Text>

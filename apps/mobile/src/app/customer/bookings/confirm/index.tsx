@@ -9,7 +9,7 @@ export default function BookingConfirmScreen(): JSX.Element {
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
       <View style={styles.iconCircle}>
-        <Text style={styles.iconEmoji}>✨</Text>
+        <Text style={styles.iconEmoji}></Text>
       </View>
       <Text style={styles.t}>تم الحجز بنجاح!</Text>
       <Text style={styles.sub}>تم إنشاء حجزكِ بنجاح. سيتم تأكيد الموعد من قبل الفنية قريباً.</Text>
@@ -42,10 +42,10 @@ export default function BookingConfirmScreen(): JSX.Element {
       </View>
 
       <TouchableOpacity style={styles.viewBtn}>
-        <Text style={styles.viewBtnText}>📅 عرض حجوزاتي</Text>
+        <Text style={styles.viewBtnText}> عرض حجوزاتي</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.bookBtn}>
-        <Text style={styles.bookBtnText}>💆‍♀️ احجزي خدمة أخرى</Text>
+        <Text style={styles.bookBtnText}>‍️ احجزي خدمة أخرى</Text>
       </TouchableOpacity>
     </ScrollView>
   );

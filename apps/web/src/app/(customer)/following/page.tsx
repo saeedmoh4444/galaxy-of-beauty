@@ -17,7 +17,7 @@ export default function FollowingPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">👩‍🎨 متابعة الفنيات</h1>
+          <h1 className="text-2xl font-bold">‍ متابعة الفنيات</h1>
           <p className="mt-1 text-sm text-text-secondary">الفنيات اللي تتابعينهم</p>
         </div>
 
@@ -29,7 +29,7 @@ export default function FollowingPage(): JSX.Element {
           </div>
         ) : follows.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">👩‍🎨</p>
+            <p className="text-4xl mb-2">‍</p>
             <p className="text-text-secondary">مافي فنيات متابعات بعد</p>
           </Card>
         ) : (
@@ -38,7 +38,7 @@ export default function FollowingPage(): JSX.Element {
               <Card key={f.id as number} padding="md">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl">👩‍🎨</span>
+                    <span className="text-3xl">‍</span>
                     <div>
                       <p className="font-bold">فنية #{f.technicianId as number}</p>
                       <p className="text-xs text-text-secondary">

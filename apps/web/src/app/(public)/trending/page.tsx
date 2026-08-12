@@ -29,13 +29,13 @@ export default function TrendingPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 space-y-6">
       <div className="text-center">
-        <h1 className="text-3xl font-bold">🔥 الأكثر رواجاً</h1>
+        <h1 className="text-3xl font-bold"> الأكثر رواجاً</h1>
         <p className="mt-2 text-text-secondary">أكثر الخدمات طلباً والفنيات تميزاً</p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Card padding="lg">
-          <h3 className="font-bold mb-3 text-lg">🔥 الخدمات الأكثر طلباً</h3>
+          <h3 className="font-bold mb-3 text-lg"> الخدمات الأكثر طلباً</h3>
           {trLoading ? (
             <CardSkeleton />
           ) : !(trending ?? []).length ? (
@@ -65,7 +65,7 @@ export default function TrendingPage(): JSX.Element {
         </Card>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3 text-lg">⭐ فنيات مميزات</h3>
+          <h3 className="font-bold mb-3 text-lg"> فنيات مميزات</h3>
           {spLoading ? (
             <CardSkeleton />
           ) : !(spotlight ?? []).length ? (
@@ -74,11 +74,11 @@ export default function TrendingPage(): JSX.Element {
             <div className="space-y-3">
               {(spotlight ?? []).map((t: Record<string, unknown>) => (
                 <div key={t.id as number} className="flex items-center gap-4 rounded-lg border p-3">
-                  <span className="text-4xl">👩‍🎨</span>
+                  <span className="text-4xl">‍</span>
                   <div>
                     <p className="font-bold">{t.name as string}</p>
                     <p className="text-xs text-text-secondary">
-                      {t.city as string} · ⭐{t.ratingAvg as number}
+                      {t.city as string} · {t.ratingAvg as number}
                     </p>
                   </div>
                 </div>

@@ -78,7 +78,7 @@ export default function PriceEstimatorPage(): JSX.Element {
     <div className="mx-auto max-w-lg px-4 py-12">
       {/* Header */}
       <div className="mb-8 text-center">
-        <span className="text-6xl">💰</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           حاسبة التكلفة
         </h1>
@@ -99,7 +99,7 @@ export default function PriceEstimatorPage(): JSX.Element {
             {selectedService ? (
               <div className="flex items-center justify-between rounded-xl border-2 border-brand-300 bg-brand-50 p-3 dark:border-brand-700 dark:bg-brand-950">
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl">💅</span>
+                  <span className="text-2xl"></span>
                   <div>
                     <p className="text-sm font-bold text-text-primary dark:text-gray-100">
                       {selectedService.titleJson?.ar ??
@@ -116,7 +116,7 @@ export default function PriceEstimatorPage(): JSX.Element {
                   className="text-text-tertiary hover:text-red-500 p-1 transition-colors"
                   title="تغيير الخدمة"
                 >
-                  ✕
+                  
                 </button>
               </div>
             ) : (
@@ -130,7 +130,7 @@ export default function PriceEstimatorPage(): JSX.Element {
                 />
                 {servicesLoading && search.length > 0 && (
                   <div className="absolute top-full mt-1 w-full rounded-xl border border-edge bg-white p-4 text-center text-sm text-text-tertiary dark:border-gray-700 dark:bg-gray-900 z-10 shadow-lg">
-                    🔍 جاري البحث...
+                     جاري البحث...
                   </div>
                 )}
                 {search.length > 0 && !servicesLoading && serviceList.length > 0 && (
@@ -170,7 +170,7 @@ export default function PriceEstimatorPage(): JSX.Element {
               />
               {promoCode && estimate?.promoValid && (
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-green-500 text-sm font-bold">
-                  ✓ صالح
+                   صالح
                 </span>
               )}
               {hasPromoError && (
@@ -184,13 +184,13 @@ export default function PriceEstimatorPage(): JSX.Element {
           {/* Quick Info */}
           <div className="rounded-xl bg-surface-muted p-3 dark:bg-gray-800 text-xs text-text-secondary space-y-1">
             <p>
-              📌 <strong>السعر الأساسي</strong> — سعر الخدمة قبل أي إضافات
+               <strong>السعر الأساسي</strong> — سعر الخدمة قبل أي إضافات
             </p>
             <p>
-              📌 <strong>رسوم المنصة</strong> — ١١ ر.س ثابتة لكل حجز
+               <strong>رسوم المنصة</strong> — ١١ ر.س ثابتة لكل حجز
             </p>
             <p>
-              📌 <strong>الخصم</strong> — يطبق تلقائياً عند إدخال كود خصم صالح
+               <strong>الخصم</strong> — يطبق تلقائياً عند إدخال كود خصم صالح
             </p>
           </div>
         </div>
@@ -266,7 +266,7 @@ export default function PriceEstimatorPage(): JSX.Element {
             {estimate.discount > 0 && (
               <div className="flex justify-between rounded-lg bg-green-50 p-2 dark:bg-green-950">
                 <span className="text-green-700 dark:text-green-300 font-medium">
-                  🏷️ الخصم {estimate.discountType === 'percent' ? `(${promoCode})` : ''}
+                  ️ الخصم {estimate.discountType === 'percent' ? `(${promoCode})` : ''}
                 </span>
                 <span className="text-green-700 dark:text-green-300 font-bold">
                   -{formatCurrency(estimate.discount)}
@@ -276,7 +276,7 @@ export default function PriceEstimatorPage(): JSX.Element {
 
             {hasPromoError && (
               <div className="rounded-lg bg-red-50 p-2 text-center text-xs text-red-600 dark:bg-red-950 dark:text-red-400">
-                ⚠️ كود الخصم &ldquo;{promoCode}&rdquo; غير صالح أو منتهي الصلاحية
+                 كود الخصم &ldquo;{promoCode}&rdquo; غير صالح أو منتهي الصلاحية
               </div>
             )}
 
@@ -292,7 +292,7 @@ export default function PriceEstimatorPage(): JSX.Element {
 
             {savings > 0 && (
               <div className="rounded-full bg-green-100 px-4 py-1.5 text-center text-xs font-bold text-green-700 dark:bg-green-900 dark:text-green-300">
-                🎉 وفرتِ {formatCurrency(savings)} ر.س!
+                 وفرتِ {formatCurrency(savings)} ر.س!
               </div>
             )}
           </div>

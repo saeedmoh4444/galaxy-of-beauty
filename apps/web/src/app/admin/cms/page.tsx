@@ -19,7 +19,7 @@ export default function AdminCmsPage(): JSX.Element {
     <DashboardLayout role="ADMIN">
       <div className="mx-auto max-w-6xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📝 إدارة المحتوى</h1>
+          <h1 className="text-2xl font-bold"> إدارة المحتوى</h1>
           <p className="mt-1 text-sm text-text-secondary">إدارة الفئات والخدمات</p>
         </div>
 
@@ -28,13 +28,13 @@ export default function AdminCmsPage(): JSX.Element {
             onClick={() => setTab('categories')}
             className={`rounded-lg px-4 py-2 text-sm ${tab === 'categories' ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
           >
-            📂 الفئات
+             الفئات
           </button>
           <button
             onClick={() => setTab('services')}
             className={`rounded-lg px-4 py-2 text-sm ${tab === 'services' ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
           >
-            💅 الخدمات
+             الخدمات
           </button>
         </div>
 
@@ -46,7 +46,7 @@ export default function AdminCmsPage(): JSX.Element {
               {(categories ?? []).map((c: Record<string, unknown>) => (
                 <Card key={c.id as number} padding="md">
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl">{c.imageUrl ? '🖼' : '📂'}</span>
+                    <span className="text-3xl">{c.imageUrl ? '' : ''}</span>
                     <div>
                       <p className="font-bold">{(c.nameJson as Record<string, string>)?.ar}</p>
                       <p className="text-xs text-text-secondary">

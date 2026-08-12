@@ -28,7 +28,7 @@ export default function TechLeaderboardPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🏆</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">لوحة المتصدرين</h1>
         <p className="mt-2 text-text-secondary">أفضل الفنيات في منصتنا</p>
       </div>
@@ -59,7 +59,7 @@ export default function TechLeaderboardPage(): JSX.Element {
             <Link key={t.id as number} href={`/technicians/${t.id}`}>
               <Card padding="md" className="flex items-center gap-4 hover:shadow-md transition-all">
                 <span className="text-2xl w-10 text-center font-bold">
-                  {[, '🥇', '🥈', '🥉'][idx + 1] ?? `#${idx + 1}`}
+                  {[, '', '', ''][idx + 1] ?? `#${idx + 1}`}
                 </span>
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-purple-500 text-white font-bold">
                   {((t.name as string) || '')[0]}
@@ -67,7 +67,7 @@ export default function TechLeaderboardPage(): JSX.Element {
                 <div className="flex-1">
                   <p className="font-bold">{t.name as string}</p>
                   <p className="text-xs text-text-secondary">
-                    ⭐ {t.rating as number} · {t.reviewCount as number} مراجعة
+                     {t.rating as number} · {t.reviewCount as number} مراجعة
                   </p>
                 </div>
                 <div className="text-right">
@@ -76,7 +76,7 @@ export default function TechLeaderboardPage(): JSX.Element {
                       ? `${t.bookingCount as number} حجز`
                       : category === 'speed'
                         ? `${t.responseTime as number} د`
-                        : `⭐ ${t.rating as number}`}
+                        : ` ${t.rating as number}`}
                   </p>
                 </div>
               </Card>

@@ -12,7 +12,7 @@ export default function BeautyShortsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-md px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">📹</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">Beauty Shorts</h1>
         <p className="mt-2 text-text-secondary">فيديوهات قصيرة وسريعة</p>
       </div>
@@ -32,11 +32,11 @@ export default function BeautyShortsPage(): JSX.Element {
               <span className="text-6xl">{s.emoji as string}</span>
               <h3 className="font-bold mt-4 text-center px-4">{s.title as string}</h3>
               <p className="text-white/60 text-sm mt-1">
-                👩‍🎨 {s.technician as string} · ⏱️ {s.duration as string}
+                ‍ {s.technician as string} · ️ {s.duration as string}
               </p>
               <div className="absolute bottom-4 left-4 right-4 flex justify-between text-sm">
-                <span>❤️ {s.likes as number}</span>
-                <span>👁️ {(s.views as number).toLocaleString()}</span>
+                <span>️ {s.likes as number}</span>
+                <span>️ {(s.views as number).toLocaleString()}</span>
               </div>
             </div>
           ))}

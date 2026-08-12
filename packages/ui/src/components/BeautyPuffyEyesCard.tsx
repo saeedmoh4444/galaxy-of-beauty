@@ -9,7 +9,7 @@ export function BeautyPuffyEyesCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">👀</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">انتفاخ العيون</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">صباح منتفخ — حل سريع</p>
@@ -17,10 +17,10 @@ export function BeautyPuffyEyesCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🥄', text: 'ملعقتان باردتان — على الجفون 5 دقائق' },
+          { emoji: '', text: 'ملعقتان باردتان — على الجفون 5 دقائق' },
           { emoji: '🫖', text: 'أكياس شاي أخضر — كافيين يقلص الانتفاخ' },
-          { emoji: '🛏️', text: 'نامي على وسادة مرتفعة — تقلل تجمع السوائل' },
-          { emoji: '🧴', text: 'كريم عيون بكافيين — نتائج فورية' },
+          { emoji: '️', text: 'نامي على وسادة مرتفعة — تقلل تجمع السوائل' },
+          { emoji: '', text: 'كريم عيون بكافيين — نتائج فورية' },
         ].map((t, i) => (
           <div
             key={i}

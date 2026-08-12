@@ -23,7 +23,7 @@ export default function ReferralRacePage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🎫</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">سباق الإحالات</h1>
         <p className="mt-2 text-text-secondary">
           تنافسي مع صديقاتكِ واكسبي جوائز! متبقي {days} يوم
@@ -53,12 +53,12 @@ export default function ReferralRacePage(): JSX.Element {
                 className="flex items-center gap-3 rounded-lg bg-surface-muted dark:bg-gray-800 p-3"
               >
                 <span className="text-xl w-8 text-center">
-                  {['🥇', '🥈', '🥉'][idx] ?? `#${idx + 1}`}
+                  {['', '', ''][idx] ?? `#${idx + 1}`}
                 </span>
                 <div className="flex-1">
                   <span className="font-bold">{l.userName as string}</span>
                 </div>
-                <span className="font-bold text-brand-600">{l.referralCount as number} 👥</span>
+                <span className="font-bold text-brand-600">{l.referralCount as number} </span>
               </div>
             ))}
           </div>
@@ -75,7 +75,7 @@ export default function ReferralRacePage(): JSX.Element {
       )}
       {user && (
         <div className="mt-4 text-center">
-          <Button onClick={() => shareMut.mutate({ platform: 'whatsapp' })}>📤 شاركي الرابط</Button>
+          <Button onClick={() => shareMut.mutate({ platform: 'whatsapp' })}> شاركي الرابط</Button>
         </div>
       )}
     </div>

@@ -27,18 +27,18 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />
       }
     >
-      <Text style={styles.t}>📦 الصناديق الشهرية</Text>
+      <Text style={styles.t}> الصناديق الشهرية</Text>
       <Text style={styles.sub}>صندوق جمال شهري لباب بيتكِ</Text>
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد صناديق</Text>
       ) : (
         items.map((b: any) => (
           <View key={b.id} style={styles.card}>
-            <Text style={styles.boxEmoji}>{(b.emoji as string) ?? '📦'}</Text>
+            <Text style={styles.boxEmoji}>{(b.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.boxName}>{b.nameAr as string}</Text>
               <Text style={styles.boxDesc}>{(b.descAr as string)?.substring(0, 80)}</Text>
-              <Text style={styles.boxItems}>📦 {b.itemCount as number} منتجات</Text>
+              <Text style={styles.boxItems}> {b.itemCount as number} منتجات</Text>
             </View>
             <View style={{ alignItems: 'flex-end' }}>
               <Text style={styles.boxPrice}>{(b.price as number)?.toLocaleString()} ر.س</Text>

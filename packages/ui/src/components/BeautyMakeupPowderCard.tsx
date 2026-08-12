@@ -9,7 +9,7 @@ export function BeautyMakeupPowderCard({ className = '' }: { className?: string 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">📝</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">البودرة</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">أنواعها واستخداماتها</p>
@@ -17,10 +17,10 @@ export function BeautyMakeupPowderCard({ className = '' }: { className?: string 
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '✨', label: 'شفافة', tip: 'تثبت بدون لون' },
-          { emoji: '🎨', label: 'ملونة', tip: 'تغطية إضافية' },
-          { emoji: '💧', label: 'مدمجة', tip: 'كريم + بودرة' },
-          { emoji: '🌿', label: 'طبيعية', tip: 'مكونات نباتية' },
+          { emoji: '', label: 'شفافة', tip: 'تثبت بدون لون' },
+          { emoji: '', label: 'ملونة', tip: 'تغطية إضافية' },
+          { emoji: '', label: 'مدمجة', tip: 'كريم + بودرة' },
+          { emoji: '', label: 'طبيعية', tip: 'مكونات نباتية' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-pink-50 px-2.5 py-2 dark:bg-pink-950">
             <span className="text-sm">{t.emoji}</span>

@@ -9,7 +9,7 @@ export function BeautyIceRollerCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🧊</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">آيس رولر</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">فوائد الثلج للبشرة</p>
@@ -17,10 +17,10 @@ export function BeautyIceRollerCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '⬇️', label: 'يقلص المسام', tip: 'يغلق المسام بعد التنظيف' },
-          { emoji: '😌', label: 'يهدئ البشرة', tip: 'يخفف الاحمرار والالتهاب' },
-          { emoji: '✨', label: 'ينشط الدورة', tip: 'يمنح البشرة إشراقة فورية' },
-          { emoji: '⏰', label: '3 دقائق', tip: 'صباحاً — قبل المكياج' },
+          { emoji: '️', label: 'يقلص المسام', tip: 'يغلق المسام بعد التنظيف' },
+          { emoji: '', label: 'يهدئ البشرة', tip: 'يخفف الاحمرار والالتهاب' },
+          { emoji: '', label: 'ينشط الدورة', tip: 'يمنح البشرة إشراقة فورية' },
+          { emoji: '', label: '3 دقائق', tip: 'صباحاً — قبل المكياج' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-sky-50 px-2.5 py-2 dark:bg-sky-950">
             <span className="text-sm">{t.emoji}</span>

@@ -15,14 +15,14 @@ export default function GeofenceOffersPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📍 عروض بالقرب منك</h1>
+          <h1 className="text-2xl font-bold"> عروض بالقرب منك</h1>
           <p className="mt-1 text-sm text-text-secondary">
             عروض حصرية من الصالونات القريبة من موقعك
           </p>
         </div>
 
         <Button onClick={() => optInMut.mutate()} loading={optInMut.isPending} className="w-full">
-          🔔 فعلي التنبيهات القريبة
+           فعلي التنبيهات القريبة
         </Button>
 
         {isLoading ? (
@@ -48,7 +48,7 @@ export default function GeofenceOffersPage(): JSX.Element {
                 </div>
                 <div className="text-right">
                   <span className="rounded-full bg-red-100 dark:bg-red-900 px-2.5 py-0.5 text-xs font-bold text-red-700">
-                    ⏰ {o.expiresIn as string}
+                     {o.expiresIn as string}
                   </span>
                 </div>
               </Card>

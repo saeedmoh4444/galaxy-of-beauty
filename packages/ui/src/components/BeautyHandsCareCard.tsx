@@ -15,7 +15,7 @@ export function BeautyHandsCareCard({ className = '' }: BeautyHandsCareCardProps
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🤲</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">عناية باليدين</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">أيدي ناعمة وجميلة</p>
@@ -23,10 +23,10 @@ export function BeautyHandsCareCard({ className = '' }: BeautyHandsCareCardProps
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '🧴', label: 'كريم بعد الغسيل', tip: 'كل مرة تغسلين يديك' },
-          { emoji: '🧤', label: 'قفازات', tip: 'للتنظيف والغسيل' },
-          { emoji: '☀️', label: 'واقي شمس', tip: 'ظهر اليدين يظهر العمر' },
-          { emoji: '💅', label: 'تقليم منتظم', tip: 'أسبوعياً للحفاظ على الشكل' },
+          { emoji: '', label: 'كريم بعد الغسيل', tip: 'كل مرة تغسلين يديك' },
+          { emoji: '', label: 'قفازات', tip: 'للتنظيف والغسيل' },
+          { emoji: '️', label: 'واقي شمس', tip: 'ظهر اليدين يظهر العمر' },
+          { emoji: '', label: 'تقليم منتظم', tip: 'أسبوعياً للحفاظ على الشكل' },
         ].map((t) => (
           <div key={t.label} className="rounded-lg bg-sky-50 px-2.5 py-2 dark:bg-sky-950">
             <span className="text-sm">{t.emoji}</span>

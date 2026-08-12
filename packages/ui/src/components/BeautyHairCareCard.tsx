@@ -65,7 +65,7 @@ export function BeautyHairCareCard({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          💇
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">عناية بالشعر</h4>

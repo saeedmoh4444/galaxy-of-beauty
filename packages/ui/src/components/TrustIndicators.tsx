@@ -8,9 +8,9 @@
 
 export function TrustIndicators({ className = '' }: { className?: string }): JSX.Element {
   const items = [
-    { emoji: '👩‍🎨', label: 'فنيات فقط', desc: 'جميع الفنيات نساء' },
-    { emoji: '✅', label: 'موثقات', desc: 'تم التحقق من هوياتهن' },
-    { emoji: '🔒', label: 'خصوصية تامة', desc: 'بياناتكِ محمية بالكامل' },
+    { emoji: '‍', label: 'فنيات فقط', desc: 'جميع الفنيات نساء' },
+    { emoji: '', label: 'موثقات', desc: 'تم التحقق من هوياتهن' },
+    { emoji: '', label: 'خصوصية تامة', desc: 'بياناتكِ محمية بالكامل' },
   ];
 
   return (

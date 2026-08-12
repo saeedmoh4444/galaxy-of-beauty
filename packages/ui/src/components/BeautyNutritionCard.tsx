@@ -15,7 +15,7 @@ export function BeautyNutritionCard({ className = '' }: BeautyNutritionCardProps
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🥗</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">تغذية الجمال</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">طعامكِ هو جمالكِ</p>
@@ -23,10 +23,10 @@ export function BeautyNutritionCard({ className = '' }: BeautyNutritionCardProps
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '🥑', label: 'دهون صحية', tip: 'أفوكادو، مكسرات، زيت زيتون' },
-          { emoji: '🍓', label: 'مضادات أكسدة', tip: 'توت، فراولة، رمان' },
-          { emoji: '🥬', label: 'خضروات ورقية', tip: 'سبانخ، كيل، جرجير' },
-          { emoji: '🐟', label: 'أوميغا 3', tip: 'سلمون، سردين، بذور كتان' },
+          { emoji: '', label: 'دهون صحية', tip: 'أفوكادو، مكسرات، زيت زيتون' },
+          { emoji: '', label: 'مضادات أكسدة', tip: 'توت، فراولة، رمان' },
+          { emoji: '', label: 'خضروات ورقية', tip: 'سبانخ، كيل، جرجير' },
+          { emoji: '', label: 'أوميغا 3', tip: 'سلمون، سردين، بذور كتان' },
         ].map((t) => (
           <div key={t.label} className="rounded-lg bg-emerald-50 px-2.5 py-2 dark:bg-emerald-950">
             <span className="text-sm">{t.emoji}</span>

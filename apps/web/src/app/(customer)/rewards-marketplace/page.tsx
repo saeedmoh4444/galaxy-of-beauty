@@ -36,7 +36,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🎁 سوق المكافآت</h1>
+          <h1 className="text-2xl font-bold"> سوق المكافآت</h1>
           <p className="mt-1 text-sm text-text-secondary">استبدلي نقاطكِ بمكافآت وخدمات حصرية</p>
         </div>
 
@@ -84,10 +84,10 @@ export default function RewardsMarketplacePage(): JSX.Element {
                 >
                   <span className="text-4xl">
                     {r.rewardType === 'free_service'
-                      ? '💆‍♀️'
+                      ? '‍️'
                       : r.rewardType === 'discount_percent'
-                        ? '🏷️'
-                        : '💰'}
+                        ? '️'
+                        : ''}
                   </span>
                   <h3 className="font-bold mt-3">{(r.nameJson as Record<string, string>)?.ar}</h3>
                   <p className="text-xs text-text-secondary mt-1">
@@ -106,7 +106,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
                     </p>
                   )}
                   {isRedeemed ? (
-                    <p className="text-green-600 font-bold mt-3">✅ تم الاستبدال</p>
+                    <p className="text-green-600 font-bold mt-3"> تم الاستبدال</p>
                   ) : (
                     <Button
                       size="sm"
@@ -120,7 +120,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
                       disabled={!canAfford}
                       className="w-full mt-3"
                     >
-                      {canAfford ? '🎁 استبدلي' : '🔒 نقاط غير كافية'}
+                      {canAfford ? ' استبدلي' : ' نقاط غير كافية'}
                     </Button>
                   )}
                 </Card>
@@ -131,7 +131,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
 
         {txs.length > 0 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">📋 سجل النقاط</h3>
+            <h3 className="font-bold mb-3"> سجل النقاط</h3>
             <div className="space-y-2">
               {txs.slice(0, 10).map((t: Record<string, unknown>) => (
                 <div key={t.id as number} className="flex justify-between text-sm border-b pb-2">

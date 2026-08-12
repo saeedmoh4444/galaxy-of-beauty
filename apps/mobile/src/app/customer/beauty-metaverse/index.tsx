@@ -34,9 +34,9 @@ export default function BeautyMetaverseScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}>🎮 عالم الجمال الافتراضي</Text>
+        <Text style={styles.t}> عالم الجمال الافتراضي</Text>
         <View style={[styles.card, styles.resultCard]}>
-          <Text style={styles.resultEmoji}>🌐</Text>
+          <Text style={styles.resultEmoji}></Text>
           <Text style={styles.resultTitle}>{result.welcomeMessage as string}</Text>
           <TouchableOpacity onPress={() => setResult(null)} style={styles.exitBtn}>
             <Text style={styles.exitBtnText}>خروج</Text>
@@ -56,7 +56,7 @@ export default function BeautyMetaverseScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🎮 عالم الجمال الافتراضي</Text>
+      <Text style={styles.t}> عالم الجمال الافتراضي</Text>
       <View style={styles.grid}>
         {salons.map((s: any) => (
           <TouchableOpacity key={s.id} onPress={() => enter(s.id)} style={styles.salon}>

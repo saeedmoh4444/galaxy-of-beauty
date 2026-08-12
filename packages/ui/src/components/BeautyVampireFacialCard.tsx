@@ -17,10 +17,10 @@ export function BeautyVampireFacialCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💉', text: 'تسحب عينة دم — ثم تستخلص البلازما' },
-          { emoji: '🔬', text: 'حقن البلازما — تحفز الكولاجين بقوة' },
-          { emoji: '✨', text: 'نتائج طبيعية 100% — من جسمكِ' },
-          { emoji: '⏱️', text: '3-4 جلسات — بينها شهر' },
+          { emoji: '', text: 'تسحب عينة دم — ثم تستخلص البلازما' },
+          { emoji: '', text: 'حقن البلازما — تحفز الكولاجين بقوة' },
+          { emoji: '', text: 'نتائج طبيعية 100% — من جسمكِ' },
+          { emoji: '️', text: '3-4 جلسات — بينها شهر' },
         ].map((t, i) => (
           <div
             key={i}

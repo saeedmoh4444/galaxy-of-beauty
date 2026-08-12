@@ -20,35 +20,35 @@ interface GoldenService {
 
 const SERVICES: GoldenService[] = [
   {
-    emoji: '🧖‍♀️',
+    emoji: '‍️',
     name: 'عناية لطيفة بالبشرة',
     description: 'تنظيف وترطيب عميق للبشرة الناضجة',
     price: 200,
     duration: '60 دقيقة',
   },
   {
-    emoji: '💆‍♀️',
+    emoji: '‍️',
     name: 'مساج كلاسيكي',
     description: 'مساج لطيف للعضلات والمفاصل',
     price: 180,
     duration: '45 دقيقة',
   },
   {
-    emoji: '💇',
+    emoji: '',
     name: 'تسريحة كلاسيكية',
     description: 'تسريحة ناعمة تليق بجمالكِ',
     price: 150,
     duration: '45 دقيقة',
   },
   {
-    emoji: '💄',
+    emoji: '',
     name: 'مكياج ناعم',
     description: 'مكياج خفيف يبرز جمالكِ الطبيعي',
     price: 160,
     duration: '40 دقيقة',
   },
   {
-    emoji: '💅',
+    emoji: '',
     name: 'مانيكير لطيف',
     description: 'عناية بالأظافر مع ترطيب',
     price: 100,
@@ -79,7 +79,7 @@ export function GoldenBeautyCard({
       {/* Header */}
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          ✨
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">الجمال الذهبي</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
@@ -90,7 +90,7 @@ export function GoldenBeautyCard({
       {/* Special discount */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
         <p className="text-lg" aria-hidden="true">
-          🌺
+          
         </p>
         <p className="text-sm font-bold text-amber-800 dark:text-amber-200">خصم الساعة الذهبية</p>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
@@ -101,7 +101,7 @@ export function GoldenBeautyCard({
       {/* Services */}
       <div className="mt-3 space-y-2">
         <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">
-          🌸 خدمات مختارة لكِ
+           خدمات مختارة لكِ
         </p>
         {SERVICES.map((s) => (
           <div
@@ -134,12 +134,12 @@ export function GoldenBeautyCard({
       {/* Gentle promise */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <p className="text-center text-[10px] font-medium text-amber-700 dark:text-amber-300">
-          💛 نعدكِ: لا منتجات قاسية · لا استعجال · احترام كامل لراحتكِ
+           نعدكِ: لا منتجات قاسية · لا استعجال · احترام كامل لراحتكِ
         </p>
       </div>
 
       <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">
-        ✨ الجمال ليس له عمر — وأنتِ أجمل في كل مرحلة
+         الجمال ليس له عمر — وأنتِ أجمل في كل مرحلة
       </p>
     </div>
   );

@@ -12,12 +12,12 @@ import { useState, useRef } from 'react';
 import { trpc } from '@/lib/api';
 
 const TOPICS = [
-  { key: 'روتين', emoji: '🧴', q: 'كيف أبني روتين عناية يومي؟' },
-  { key: 'بشرة', emoji: '✨', q: 'كيف أحدد نوع بشرتي؟' },
-  { key: 'مكياج', emoji: '💄', q: 'كيف أختار كريم الأساس المناسب؟' },
-  { key: 'شعر', emoji: '💇‍♀️', q: 'كيف أعتني بشعري حسب نوعه؟' },
-  { key: 'زواج', emoji: '👰', q: 'كيف أخطط لجمالي قبل الزفاف؟' },
-  { key: 'صيف', emoji: '☀️', q: 'كيف أحمي بشرتي في الصيف؟' },
+  { key: 'روتين', emoji: '', q: 'كيف أبني روتين عناية يومي؟' },
+  { key: 'بشرة', emoji: '', q: 'كيف أحدد نوع بشرتي؟' },
+  { key: 'مكياج', emoji: '', q: 'كيف أختار كريم الأساس المناسب؟' },
+  { key: 'شعر', emoji: '‍️', q: 'كيف أعتني بشعري حسب نوعه؟' },
+  { key: 'زواج', emoji: '', q: 'كيف أخطط لجمالي قبل الزفاف؟' },
+  { key: 'صيف', emoji: '️', q: 'كيف أحمي بشرتي في الصيف؟' },
 ];
 
 export default function BeautyAdvisorScreen(): JSX.Element {
@@ -25,7 +25,7 @@ export default function BeautyAdvisorScreen(): JSX.Element {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: '👋 مرحباً! أنا ليلى، مستشارة جمالكِ الشخصية. اسأليني أي سؤال عن العناية والتجميل!',
+      content: ' مرحباً! أنا ليلى، مستشارة جمالكِ الشخصية. اسأليني أي سؤال عن العناية والتجميل!',
     },
   ]);
   const [input, setInput] = useState('');
@@ -55,7 +55,7 @@ export default function BeautyAdvisorScreen(): JSX.Element {
   return (
     <KeyboardAvoidingView style={s.c} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View style={s.header}>
-        <Text style={s.t}>🤖 ليلى</Text>
+        <Text style={s.t}> ليلى</Text>
         <Text style={s.sub}>مستشارة جمالكِ الشخصية</Text>
       </View>
 
@@ -97,7 +97,7 @@ export default function BeautyAdvisorScreen(): JSX.Element {
         {loading && (
           <View style={{ alignItems: 'flex-start', marginBottom: 12 }}>
             <View style={[s.bubble, s.assistantBubble]}>
-              <Text style={[s.bubbleText, { color: '#9ca3af' }]}>💭 جاري الكتابة...</Text>
+              <Text style={[s.bubbleText, { color: '#9ca3af' }]}> جاري الكتابة...</Text>
             </View>
           </View>
         )}
@@ -113,7 +113,7 @@ export default function BeautyAdvisorScreen(): JSX.Element {
           onSubmitEditing={() => handleSend()}
         />
         <TouchableOpacity onPress={() => handleSend()} style={s.sendBtn}>
-          <Text style={s.sendText}>📤</Text>
+          <Text style={s.sendText}></Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

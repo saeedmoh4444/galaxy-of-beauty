@@ -9,7 +9,7 @@ export function BeautyTurmericLatteCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🥛</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">لاتيه الكركم</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">الحليب الذهبي للبشرة</p>
@@ -17,10 +17,10 @@ export function BeautyTurmericLatteCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '✨', text: 'كركمين — أقوى مضاد التهاب طبيعي' },
-          { emoji: '🧯', text: 'يهدئ البشرة — ممتاز للحبوب والوردية' },
-          { emoji: '🥛', text: 'حليب + كركم + فلفل أسود + عسل' },
-          { emoji: '🌙', text: 'قبل النوم — يهدئ ويساعد على الاسترخاء' },
+          { emoji: '', text: 'كركمين — أقوى مضاد التهاب طبيعي' },
+          { emoji: '', text: 'يهدئ البشرة — ممتاز للحبوب والوردية' },
+          { emoji: '', text: 'حليب + كركم + فلفل أسود + عسل' },
+          { emoji: '', text: 'قبل النوم — يهدئ ويساعد على الاسترخاء' },
         ].map((t, i) => (
           <div
             key={i}

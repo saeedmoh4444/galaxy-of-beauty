@@ -56,12 +56,12 @@ export default function AdminBeautyEventsPage(): JSX.Element {
     <DashboardLayout role="ADMIN">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🎪 إدارة الفعاليات</h1>
+          <h1 className="text-2xl font-bold"> إدارة الفعاليات</h1>
           <p className="mt-1 text-sm text-text-secondary">إنشاء وإدارة فعاليات وورش التجميل</p>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3">➕ إنشاء فعالية</h3>
+          <h3 className="font-bold mb-3"> إنشاء فعالية</h3>
           <div className="grid gap-3 sm:grid-cols-2">
             <input
               value={nameAr}
@@ -120,12 +120,12 @@ export default function AdminBeautyEventsPage(): JSX.Element {
             />
           </div>
           <Button onClick={handleCreate} loading={createMut.isPending} className="w-full mt-3">
-            🎪 إنشاء الفعالية
+             إنشاء الفعالية
           </Button>
         </Card>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3">📋 الفعاليات</h3>
+          <h3 className="font-bold mb-3"> الفعاليات</h3>
           {isLoading ? (
             <CardSkeleton />
           ) : !(events ?? []).length ? (

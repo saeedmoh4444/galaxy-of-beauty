@@ -31,7 +31,7 @@ export default function GiftCardsScreen(): JSX.Element {
       emptyDescription="اشتري بطاقة هدية لأصدقائك"
       onRetry={() => cards.refetch()}
     >
-      <Text style={styles.title}>🎁 بطاقات الهدية</Text>
+      <Text style={styles.title}> بطاقات الهدية</Text>
       {(data as Record<string, unknown>[])?.map((gc: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.row}>
@@ -42,7 +42,7 @@ export default function GiftCardsScreen(): JSX.Element {
                 { color: gc.status === 'ACTIVE' ? COLORS.active : COLORS.redeemed },
               ]}
             >
-              {(gc.status as string) === 'ACTIVE' ? '🟢 نشطة' : '⭐ مستخدمة'}
+              {(gc.status as string) === 'ACTIVE' ? ' نشطة' : ' مستخدمة'}
             </Text>
           </View>
           <Text style={styles.balance}>

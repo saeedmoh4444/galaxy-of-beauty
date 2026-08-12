@@ -56,7 +56,7 @@ export default function RescheduleScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={s.t}>🔄 إعادة جدولة</Text>
+      <Text style={s.t}> إعادة جدولة</Text>
       <Text style={s.sub}>غيري موعد حجوزاتكِ القادمة</Text>
 
       {done && (
@@ -69,7 +69,7 @@ export default function RescheduleScreen(): JSX.Element {
             alignItems: 'center',
           }}
         >
-          <Text style={{ fontSize: 32 }}>✅</Text>
+          <Text style={{ fontSize: 32 }}></Text>
           <Text style={{ fontWeight: '700', color: '#059669', marginTop: 8 }}>
             تمت إعادة الجدولة بنجاح
           </Text>
@@ -78,7 +78,7 @@ export default function RescheduleScreen(): JSX.Element {
 
       {active.length === 0 && (
         <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}>📅</Text>
+          <Text style={{ fontSize: 40 }}></Text>
           <Text style={{ color: '#6b7280', marginTop: 8 }}>مافي حجوزات قابلة لإعادة الجدولة</Text>
         </View>
       )}
@@ -125,7 +125,7 @@ export default function RescheduleScreen(): JSX.Element {
           style={{ backgroundColor: '#fff', borderRadius: 14, padding: 14, marginTop: 16, gap: 10 }}
         >
           <Text style={{ fontWeight: '700', fontSize: 15, color: '#111827' }}>
-            📅 اختر الموعد الجديد
+             اختر الموعد الجديد
           </Text>
           <TextInput
             value={newDate}
@@ -152,7 +152,7 @@ export default function RescheduleScreen(): JSX.Element {
             onPress={handleReschedule}
             style={[s.btn, (!newDate || !newTime) && { opacity: 0.5 }]}
           >
-            <Text style={s.btnText}>🔄 تأكيد إعادة الجدولة</Text>
+            <Text style={s.btnText}> تأكيد إعادة الجدولة</Text>
           </TouchableOpacity>
         </View>
       )}

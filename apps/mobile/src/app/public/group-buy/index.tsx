@@ -37,10 +37,10 @@ export default function GroupBuyScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>👥 شراء جماعي</Text>
+      <Text style={styles.t}> شراء جماعي</Text>
       {deals.map((d: any) => (
         <View key={d.id} style={styles.card}>
-          <Text style={styles.de}>{(d.emoji as string) ?? '👥'}</Text>
+          <Text style={styles.de}>{(d.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.dn}>{d.nameAr as string}</Text>
             <Text style={styles.dp}>{(d.price as number)?.toLocaleString()} ر.س</Text>

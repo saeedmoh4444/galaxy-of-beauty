@@ -27,7 +27,7 @@ export default function SafetyPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="🛡️ الأمان" subtitle="سلامتكِ أولاً — دائماً" />
+        <PageTitle title="️ الأمان" subtitle="سلامتكِ أولاً — دائماً" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

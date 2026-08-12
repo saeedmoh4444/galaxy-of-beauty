@@ -87,7 +87,7 @@ export const EmptyExample = {
 // ── Spinner / Progress / StatCard ──
 export const SpinnerExample = { render: () => <Spinner /> };
 export const ProgressExample = { render: () => <ProgressBar value={65} label="اكتمال الملف" /> };
-export const StatCardExample = { render: () => <StatCard label="الحجوزات" value={42} icon="📅" /> };
+export const StatCardExample = { render: () => <StatCard label="الحجوزات" value={42} icon="" /> };
 
 // ── Pagination ──
 export const PaginationExample = {

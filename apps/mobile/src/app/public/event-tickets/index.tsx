@@ -42,14 +42,14 @@ export default function EventTicketsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🎟️ تذاكر الفعاليات</Text>
+      <Text style={styles.t}>️ تذاكر الفعاليات</Text>
       <Text style={styles.sub}>احجزي تذكرتكِ لأقرب فعالية</Text>
       {events.length === 0 ? (
         <Text style={styles.e}>لا توجد فعاليات</Text>
       ) : (
         events.map((e: any, i: number) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.eventEmoji}>{(e.emoji as string) ?? '🎪'}</Text>
+            <Text style={styles.eventEmoji}>{(e.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.eventName}>{e.nameAr as string}</Text>
               <Text style={styles.eventDate}>

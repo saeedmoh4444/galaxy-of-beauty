@@ -41,7 +41,7 @@ export default function CertificationQuizScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📜 اختبار الشهادة</Text>
+      <Text style={styles.t}> اختبار الشهادة</Text>
       {data.map((q: any, i: number) => (
         <View key={i} style={styles.card}>
           <Text style={styles.qTitle}>{q.titleAr as string}</Text>

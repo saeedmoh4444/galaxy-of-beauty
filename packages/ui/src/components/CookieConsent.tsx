@@ -35,7 +35,7 @@ export function CookieConsent(): JSX.Element | null {
     >
       <div className="mx-auto flex max-w-6xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex-1 text-sm text-text-secondary dark:text-gray-400">
-          <p className="font-semibold text-text-primary dark:text-gray-100">🔒 خصوصيتك تهمنا</p>
+          <p className="font-semibold text-text-primary dark:text-gray-100"> خصوصيتك تهمنا</p>
           <p className="mt-1">
             نستخدم ملفات تعريف الارتباط لتحسين تجربتكِ على المنصة، وتحليل الاستخدام، وتقديم محتوى
             مخصص. بموافقتكِ، نلتزم بحماية بياناتكِ وفقاً لنظام حماية البيانات الشخصية السعودي

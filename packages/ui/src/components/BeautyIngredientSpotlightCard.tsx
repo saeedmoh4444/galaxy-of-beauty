@@ -38,7 +38,7 @@ export function BeautyIngredientSpotlightCard({
     >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-3xl">{ingredient.emoji || '🧪'}</span>
+          <span className="text-3xl">{ingredient.emoji || ''}</span>
           <div>
             <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">
               {ingredient.name}
@@ -60,7 +60,7 @@ export function BeautyIngredientSpotlightCard({
       {ingredient.suitableFor && (
         <div className="mt-2">
           <p className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-            ✅ مناسب لـ
+             مناسب لـ
           </p>
           <div className="mt-1 flex flex-wrap gap-1">
             {ingredient.suitableFor.map((s) => (
@@ -77,7 +77,7 @@ export function BeautyIngredientSpotlightCard({
 
       {ingredient.avoidWith && (
         <div className="mt-2">
-          <p className="text-[10px] font-bold text-rose-600 dark:text-rose-400">⚠️ لا يخلط مع</p>
+          <p className="text-[10px] font-bold text-rose-600 dark:text-rose-400"> لا يخلط مع</p>
           <div className="mt-1 flex flex-wrap gap-1">
             {ingredient.avoidWith.map((a) => (
               <span

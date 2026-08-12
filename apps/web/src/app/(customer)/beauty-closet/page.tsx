@@ -22,7 +22,7 @@ export default function BeautyClosetPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">👗 خزانة الجمال</h1>
+            <h1 className="text-2xl font-bold"> خزانة الجمال</h1>
             <p className="mt-1 text-sm text-text-secondary">منتجاتكِ ومستحضراتكِ الشخصية</p>
           </div>
           <Button onClick={() => setShowAdd(true)}>+ منتج</Button>

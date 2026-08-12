@@ -35,7 +35,7 @@ export const dailyBeautyTipRouter = router({
   create: adminProcedure
     .input(
       z.object({
-        emoji: z.string().default('💡'),
+        emoji: z.string().default(''),
         tip: z.string().min(5).max(300),
         category: z.string().default('عناية'),
       }),

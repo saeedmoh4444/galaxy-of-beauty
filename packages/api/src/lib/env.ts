@@ -93,15 +93,15 @@ function validateProductionSecrets(env: Env): void {
   const weakRefresh = WEAK_SECRETS.some((s) => env.JWT_REFRESH_SECRET.includes(s));
 
   if (weakAccess) {
-    console.error('❌ PRODUCTION SAFETY: JWT_ACCESS_SECRET contains a known weak/default value.');
+    console.error(' PRODUCTION SAFETY: JWT_ACCESS_SECRET contains a known weak/default value.');
     process.exit(1);
   }
   if (weakRefresh) {
-    console.error('❌ PRODUCTION SAFETY: JWT_REFRESH_SECRET contains a known weak/default value.');
+    console.error(' PRODUCTION SAFETY: JWT_REFRESH_SECRET contains a known weak/default value.');
     process.exit(1);
   }
   if (env.JWT_ACCESS_SECRET === env.JWT_REFRESH_SECRET) {
-    console.error('❌ PRODUCTION SAFETY: JWT_ACCESS_SECRET and JWT_REFRESH_SECRET must be different.');
+    console.error(' PRODUCTION SAFETY: JWT_ACCESS_SECRET and JWT_REFRESH_SECRET must be different.');
     process.exit(1);
   }
 }
@@ -110,7 +110,7 @@ export function getEnv(): Env {
   if (!_env) {
     const parsed = envSchema.safeParse(process.env);
     if (!parsed.success) {
-      console.error('❌ Invalid environment variables:', parsed.error.flatten().fieldErrors);
+      console.error(' Invalid environment variables:', parsed.error.flatten().fieldErrors);
       process.exit(1);
     }
     _env = parsed.data;

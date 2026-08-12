@@ -13,13 +13,13 @@ export default function AdminLoyaltyPage(): JSX.Element {
     <DashboardLayout role="ADMIN">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🏆 إدارة الولاء</h1>
+          <h1 className="text-2xl font-bold"> إدارة الولاء</h1>
           <p className="mt-1 text-sm text-text-secondary">برامج الولاء والمكافآت</p>
         </div>
 
         <div>
           <Card padding="lg">
-            <h3 className="font-bold mb-3">🎁 المكافآت المتاحة</h3>
+            <h3 className="font-bold mb-3"> المكافآت المتاحة</h3>
             {rwLoading ? (
               <CardSkeleton />
             ) : !(rewards ?? []).length ? (

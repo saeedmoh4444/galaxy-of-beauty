@@ -39,7 +39,7 @@ export default function PenPalPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">💌 Beauty Pen Pal</h1>
+          <h1 className="text-2xl font-bold"> Beauty Pen Pal</h1>
           <p className="mt-1 text-sm text-text-secondary">
             تواصلي مع عضوات يشاركنكِ نفس اهتمامات الجمال
           </p>
@@ -47,7 +47,7 @@ export default function PenPalPage(): JSX.Element {
 
         {!registered ? (
           <Card padding="lg">
-            <h3 className="font-bold mb-4">✨ اختاري اهتماماتكِ (٢ على الأقل)</h3>
+            <h3 className="font-bold mb-4"> اختاري اهتماماتكِ (٢ على الأقل)</h3>
             <div className="flex flex-wrap gap-2 mb-4">
               {allInterests.map((i: Record<string, unknown>) => (
                 <button
@@ -78,7 +78,7 @@ export default function PenPalPage(): JSX.Element {
               loading={registerMut.isPending}
               className="w-full"
             >
-              💌 ابحثي عن صديقات
+               ابحثي عن صديقات
             </Button>
           </Card>
         ) : isLoading ? (
@@ -92,7 +92,7 @@ export default function PenPalPage(): JSX.Element {
             {pals.map((p: Record<string, unknown>) => (
               <Card key={p.userId as number} padding="lg" className="text-center">
                 <div className="flex h-14 w-14 mx-auto items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-purple-500 text-white text-xl font-bold">
-                  {(p.userName as string)?.[0] ?? '👤'}
+                  {(p.userName as string)?.[0] ?? ''}
                 </div>
                 <div className="mt-2 flex justify-center">
                   <span className="rounded-full bg-green-100 dark:bg-green-900 px-3 py-0.5 text-xs font-bold text-green-700">
@@ -105,7 +105,7 @@ export default function PenPalPage(): JSX.Element {
                 <div className="mt-2 flex flex-wrap justify-center gap-1">
                   {(p.interests as string[])?.map((i: string) => (
                     <span key={i} className="text-lg">
-                      {(allInterests.find((x) => x.key === i)?.emoji as string) ?? '💬'}
+                      {(allInterests.find((x) => x.key === i)?.emoji as string) ?? ''}
                     </span>
                   ))}
                 </div>

@@ -4,11 +4,11 @@ export default function OfflineScreen(): JSX.Element {
   return (
     <View style={styles.c}>
       <View style={styles.card}>
-        <Text style={styles.emoji}>📡</Text>
+        <Text style={styles.emoji}></Text>
         <Text style={styles.title}>أنت غير متصل</Text>
         <Text style={styles.desc}>يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى</Text>
         <TouchableOpacity onPress={() => {}} style={styles.btn}>
-          <Text style={styles.btnText}>🔄 إعادة المحاولة</Text>
+          <Text style={styles.btnText}> إعادة المحاولة</Text>
         </TouchableOpacity>
       </View>
     </View>

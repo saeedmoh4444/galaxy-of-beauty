@@ -9,7 +9,7 @@ export function BeautyPerfumeOccasionCard({ className = '' }: { className?: stri
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🎯</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">العطر والمناسبة</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">أي عطر لأي وقت</p>
@@ -17,10 +17,10 @@ export function BeautyPerfumeOccasionCard({ className = '' }: { className?: stri
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '💼', label: 'عمل', tip: 'خفيف، نظيف، غير مزعج' },
-          { emoji: '🌙', label: 'سهرة', tip: 'شرقي، قوي، جذاب' },
-          { emoji: '☀️', label: 'نهار', tip: 'حمضيات، أزهار' },
-          { emoji: '💒', label: 'مناسبة', tip: 'فاخر، مميز، يدوم' },
+          { emoji: '', label: 'عمل', tip: 'خفيف، نظيف، غير مزعج' },
+          { emoji: '', label: 'سهرة', tip: 'شرقي، قوي، جذاب' },
+          { emoji: '️', label: 'نهار', tip: 'حمضيات، أزهار' },
+          { emoji: '', label: 'مناسبة', tip: 'فاخر، مميز، يدوم' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-pink-50 px-2.5 py-2 dark:bg-pink-950">
             <span className="text-sm">{t.emoji}</span>

@@ -93,7 +93,7 @@ export default function LiveStreamDetailPage(): JSX.Element {
             />
           ) : (
             <div className="text-center text-white/40">
-              <span className="text-8xl">🎥</span>
+              <span className="text-8xl"></span>
               <p className="mt-4">انتظري بدء البث...</p>
             </div>
           )}
@@ -105,7 +105,7 @@ export default function LiveStreamDetailPage(): JSX.Element {
           <div className="border-b border-gray-200 dark:border-gray-800 p-4">
             <div className="flex items-center gap-2">
               {isLive && <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />}
-              <h2 className="font-bold text-sm">{isLive ? '🔴 مباشر' : '📅 قادم'}</h2>
+              <h2 className="font-bold text-sm">{isLive ? ' مباشر' : ' قادم'}</h2>
             </div>
             <p className="text-xs text-gray-500 mt-0.5">{stream.technicianName as string}</p>
             {isLive && (

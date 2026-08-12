@@ -24,7 +24,7 @@ export default function LiveStreamPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl">🎥</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           البث المباشر
         </h1>
@@ -47,7 +47,7 @@ export default function LiveStreamPage(): JSX.Element {
         <>
           {live.length > 0 && (
             <div className="mb-12">
-              <h2 className="mb-6 text-xl font-bold">🔴 مباشر الآن</h2>
+              <h2 className="mb-6 text-xl font-bold"> مباشر الآن</h2>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {live.map((s: Record<string, unknown>) => (
                   <Link key={s.id as number} href={`/live-stream/${s.id}`}>
@@ -57,10 +57,10 @@ export default function LiveStreamPage(): JSX.Element {
                     >
                       <div className="relative flex h-44 items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
                         <div className="text-center text-white/60">
-                          <span className="text-6xl">🎥</span>
+                          <span className="text-6xl"></span>
                         </div>
                         <span className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-red-600 px-3 py-1 text-xs font-bold text-white animate-pulse">
-                          🔴 مباشر
+                           مباشر
                         </span>
                         <span className="absolute bottom-2 right-2 rounded bg-black/70 px-2 py-0.5 text-xs text-white">
                           {s.viewerCount as number} مشاهد
@@ -82,7 +82,7 @@ export default function LiveStreamPage(): JSX.Element {
           )}
           {upcoming.length > 0 && (
             <div>
-              <h2 className="mb-6 text-xl font-bold">📅 قادم</h2>
+              <h2 className="mb-6 text-xl font-bold"> قادم</h2>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {upcoming.map((s: Record<string, unknown>) => (
                   <Card
@@ -90,7 +90,7 @@ export default function LiveStreamPage(): JSX.Element {
                     padding="lg"
                     className="opacity-70 hover:opacity-100 transition-all"
                   >
-                    <div className="text-5xl text-center">📅</div>
+                    <div className="text-5xl text-center"></div>
                     <h3 className="mt-3 font-bold text-center">{s.titleAr as string}</h3>
                     <p className="text-xs text-text-secondary text-center mt-1">
                       {s.technicianName as string}

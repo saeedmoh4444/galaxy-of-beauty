@@ -14,7 +14,7 @@ export default function PersonalizedFeedPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🎯 خلاصتي</h1>
+          <h1 className="text-2xl font-bold"> خلاصتي</h1>
           <p className="mt-1 text-sm text-text-secondary">محتوى مخصص لكِ بناءً على اهتماماتكِ</p>
         </div>
         {isLoading ? (
@@ -36,10 +36,10 @@ export default function PersonalizedFeedPage(): JSX.Element {
                   <p className="font-bold text-sm">{item.title as string}</p>
                   <p className="text-xs text-text-secondary">
                     {item.technician
-                      ? `👩‍🎨 ${item.technician}`
+                      ? `‍ ${item.technician}`
                       : item.brand
-                        ? `🏷️ ${item.brand}`
-                        : `💰 ${item.price as number} ر.س`}
+                        ? `️ ${item.brand}`
+                        : ` ${item.price as number} ر.س`}
                   </p>
                 </div>
                 <span className="rounded-full bg-brand-100 dark:bg-brand-900 px-2 py-0.5 text-xs font-bold text-brand-700">

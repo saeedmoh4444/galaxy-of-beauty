@@ -9,7 +9,7 @@ export function BeautyDoubleCleansingCard({ className = '' }: { className?: stri
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🧼</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">التنظيف المزدوج</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">السر الكوري لبشرة نظيفة</p>
@@ -18,9 +18,9 @@ export function BeautyDoubleCleansingCard({ className = '' }: { className?: stri
       <div className="mt-3 space-y-1">
         {[
           { emoji: '🫒', text: 'الخطوة 1: منظف زيتي — يذيب المكياج والواقي' },
-          { emoji: '🧴', text: 'الخطوة 2: منظف مائي — ينظف البشرة بعمق' },
-          { emoji: '🌙', text: 'مساءً فقط — صباحاً اكتفي بغسول واحد' },
-          { emoji: '✨', text: 'النتيجة: بشرة أنظف وأكثر إشراقاً' },
+          { emoji: '', text: 'الخطوة 2: منظف مائي — ينظف البشرة بعمق' },
+          { emoji: '', text: 'مساءً فقط — صباحاً اكتفي بغسول واحد' },
+          { emoji: '', text: 'النتيجة: بشرة أنظف وأكثر إشراقاً' },
         ].map((t, i) => (
           <div
             key={i}

@@ -39,7 +39,7 @@ export default function ExpiryTrackerPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">⏱️ متعقب الصلاحية</h1>
+            <h1 className="text-2xl font-bold">️ متعقب الصلاحية</h1>
             <p className="mt-1 text-sm text-text-secondary">
               تتبعي تاريخ فتح منتجاتكِ وتجنبي استخدام المنتجات منتهية الصلاحية
             </p>
@@ -102,7 +102,7 @@ export default function ExpiryTrackerPage(): JSX.Element {
                       onClick={() => deleteMut.mutate({ id: i.id as number })}
                       className="block mt-1 text-xs text-red-400"
                     >
-                      🗑️
+                      ️
                     </button>
                   </div>
                 </div>
@@ -137,7 +137,7 @@ export default function ExpiryTrackerPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-              ⏱️ إضافة
+              ️ إضافة
             </Button>
           </div>
         </Modal>

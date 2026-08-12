@@ -6,73 +6,73 @@ const TRIMESTERS = [
   {
     key: 'first',
     nameAr: 'الثلث الأول (١-٣ أشهر)',
-    emoji: '🌱',
+    emoji: '',
     tips: [
       {
         title: 'تجنبي العلاجات الكيميائية القوية',
         desc: 'ابتعدي عن التقشير الكيميائي والليزر خلال هذه الفترة',
-        icon: '⚠️',
+        icon: '',
       },
       {
         title: 'استخدمي منتجات طبيعية',
         desc: 'اختاري كريمات خالية من الريتينول والأحماض القوية',
-        icon: '🌿',
+        icon: '',
       },
       {
         title: 'العناية بالغثيان الصباحي',
         desc: 'جلسات مساج خفيف بالزيوت العطرية الآمنة للحامل',
-        icon: '💆‍♀️',
+        icon: '‍️',
       },
-      { title: 'ترطيب مكثف', desc: 'زيت الجوجوبا وزبدة الشيا لمنع تشققات البطن', icon: '🧴' },
+      { title: 'ترطيب مكثف', desc: 'زيت الجوجوبا وزبدة الشيا لمنع تشققات البطن', icon: '' },
       {
         title: 'تجنبي صبغات الشعر',
         desc: 'انتظري حتى الثلث الثاني لصبغ الشعر بمنتجات خالية من الأمونيا',
-        icon: '🎨',
+        icon: '',
       },
     ],
   },
   {
     key: 'second',
     nameAr: 'الثلث الثاني (٤-٦ أشهر)',
-    emoji: '🌸',
+    emoji: '',
     tips: [
-      { title: 'مساج الحمل', desc: 'مساج متخصص للحامل — يخفف آلام الظهر ويحسن النوم', icon: '💆‍♀️' },
+      { title: 'مساج الحمل', desc: 'مساج متخصص للحامل — يخفف آلام الظهر ويحسن النوم', icon: '‍️' },
       {
         title: 'مانيكير وباديكير آمن',
         desc: 'استخدمي منتجات خالية من المواد الكيميائية الضارة',
-        icon: '💅',
+        icon: '',
       },
       {
         title: 'عناية بالبشرة المتوهجة',
         desc: 'استغلي توهج الحمل مع روتين عناية لطيف',
-        icon: '✨',
+        icon: '',
       },
-      { title: 'صبغات شعر آمنة', desc: 'يمكنكِ صبغ شعركِ بمنتجات خالية من الأمونيا', icon: '💇‍♀️' },
+      { title: 'صبغات شعر آمنة', desc: 'يمكنكِ صبغ شعركِ بمنتجات خالية من الأمونيا', icon: '‍️' },
       {
         title: 'حمام دافئ (وليس ساخناً)',
         desc: 'جلسات استرخاء بالماء الدافئ مع الأملاح الطبيعية',
-        icon: '🛁',
+        icon: '',
       },
     ],
   },
   {
     key: 'third',
     nameAr: 'الثلث الثالث (٧-٩ أشهر)',
-    emoji: '👶',
+    emoji: '',
     tips: [
-      { title: 'جلسات استرخاء وتحضير للولادة', desc: 'مساج خفيف مع تقنيات تنفس', icon: '🧘' },
+      { title: 'جلسات استرخاء وتحضير للولادة', desc: 'مساج خفيف مع تقنيات تنفس', icon: '' },
       {
         title: 'عناية بالقدمين',
         desc: 'باديكير لطيف مع تدليك للتخفيف من تورم القدمين',
-        icon: '🦶',
+        icon: '',
       },
-      { title: 'تحضير بشرة الوجه', desc: 'تنظيف وترطيب عميق استعداداً للولادة', icon: '✨' },
+      { title: 'تحضير بشرة الوجه', desc: 'تنظيف وترطيب عميق استعداداً للولادة', icon: '' },
       {
         title: 'تجنبي الاستلقاء على الظهر',
         desc: 'اختاري جلسات عناية بوضعية الجلوس أو الجانب',
-        icon: '⚠️',
+        icon: '',
       },
-      { title: 'قص الشعر فقط', desc: 'تجنبي الصبغات في الأسابيع الأخيرة', icon: '✂️' },
+      { title: 'قص الشعر فقط', desc: 'تجنبي الصبغات في الأسابيع الأخيرة', icon: '️' },
     ],
   },
 ];
@@ -103,7 +103,7 @@ export default function PregnancyBeautyPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-10">
-        <span className="text-6xl">🤰</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           عناية الحامل
         </h1>
@@ -126,7 +126,7 @@ export default function PregnancyBeautyPage(): JSX.Element {
 
       <div className="grid gap-6 lg:grid-cols-2 mb-10">
         <Card padding="lg">
-          <h3 className="font-bold text-lg mb-4">✅ مكونات آمنة</h3>
+          <h3 className="font-bold text-lg mb-4"> مكونات آمنة</h3>
           <div className="flex flex-wrap gap-2">
             {SAFE_INGREDIENTS.map((i) => (
               <span key={i} className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
@@ -136,7 +136,7 @@ export default function PregnancyBeautyPage(): JSX.Element {
           </div>
         </Card>
         <Card padding="lg">
-          <h3 className="font-bold text-lg mb-4">🚫 مكونات يجب تجنبها</h3>
+          <h3 className="font-bold text-lg mb-4"> مكونات يجب تجنبها</h3>
           <div className="flex flex-wrap gap-2">
             {AVOID_INGREDIENTS.map((i) => (
               <span key={i} className="rounded-full bg-red-100 px-3 py-1 text-sm text-red-700">

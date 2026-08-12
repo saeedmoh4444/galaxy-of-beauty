@@ -9,7 +9,7 @@ export function BeautyCallusCareCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🦶</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">عناية بالكالو</h4>
           <p className="text-[10px] text-orange-500 dark:text-orange-400">
@@ -20,9 +20,9 @@ export function BeautyCallusCareCard({ className = '' }: { className?: string })
       <div className="mt-3 space-y-1">
         {[
           { emoji: '🪨', text: 'حجر الخفاف — بعد النقع مباشرة' },
-          { emoji: '🧴', text: 'كريم يوريا — يرطب ويزيل الجلد الميت' },
-          { emoji: '🧦', text: 'جوارب قطنية — بعد الكريم طوال الليل' },
-          { emoji: '📅', text: 'مرتين أسبوعياً — للصيف خصوصاً' },
+          { emoji: '', text: 'كريم يوريا — يرطب ويزيل الجلد الميت' },
+          { emoji: '', text: 'جوارب قطنية — بعد الكريم طوال الليل' },
+          { emoji: '', text: 'مرتين أسبوعياً — للصيف خصوصاً' },
         ].map((t, i) => (
           <div
             key={i}

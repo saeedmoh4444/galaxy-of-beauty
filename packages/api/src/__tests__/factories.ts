@@ -90,7 +90,7 @@ export function buildCategory(overrides?: BuildCategoryOverrides) {
   return {
     nameJson: overrides?.nameJson ?? { ar: `تصنيف ${s}`, en: `Category ${s}` },
     slug: overrides?.slug ?? `category-${uid()}-${s}`,
-    icon: overrides?.icon ?? '💄',
+    icon: overrides?.icon ?? '',
   };
 }
 

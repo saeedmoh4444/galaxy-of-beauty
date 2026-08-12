@@ -47,7 +47,7 @@ export default function NewsletterScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📰 النشرة البريدية</Text>
+      <Text style={styles.t}> النشرة البريدية</Text>
       {!subscribed ? (
         <View style={styles.card}>
           <View style={styles.sr}>
@@ -71,7 +71,7 @@ export default function NewsletterScreen(): JSX.Element {
         </View>
       ) : (
         <View style={[styles.card, styles.sc]}>
-          <Text style={{ fontSize: 48 }}>🎉</Text>
+          <Text style={{ fontSize: 48 }}></Text>
           <Text style={styles.st}>تم الاشتراك!</Text>
         </View>
       )}

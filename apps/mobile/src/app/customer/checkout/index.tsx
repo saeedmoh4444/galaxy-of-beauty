@@ -4,10 +4,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 const PAYMENT_METHODS = [
-  { key: 'wallet', emoji: '👛', label: 'المحفظة' },
-  { key: 'card', emoji: '💳', label: 'بطاقة' },
-  { key: 'apple_pay', emoji: '🍎', label: 'Apple Pay' },
-  { key: 'bnpl', emoji: '🏦', label: 'تقسيط' },
+  { key: 'wallet', emoji: '', label: 'المحفظة' },
+  { key: 'card', emoji: '', label: 'بطاقة' },
+  { key: 'apple_pay', emoji: '', label: 'Apple Pay' },
+  { key: 'bnpl', emoji: '', label: 'تقسيط' },
 ];
 
 export default function CheckoutScreen(): JSX.Element {
@@ -48,7 +48,7 @@ export default function CheckoutScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>💳 الدفع</Text>
+      <Text style={styles.t}> الدفع</Text>
 
       <View style={styles.bc}>
         <Text style={styles.bl}>رصيد المحفظة</Text>
@@ -87,7 +87,7 @@ export default function CheckoutScreen(): JSX.Element {
       </View>
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}>💳 ادفع الآن 230 ر.س</Text>
+        <Text style={styles.bt}> ادفع الآن 230 ر.س</Text>
       </TouchableOpacity>
     </ScrollView>
   );

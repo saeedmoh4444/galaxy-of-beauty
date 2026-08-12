@@ -19,7 +19,7 @@ export default function VideoRoomScreen() {
       <Text style={styles.title}>غرفة الفيديو</Text>
 
       <View style={styles.card}>
-        <Text style={styles.emoji}>📹</Text>
+        <Text style={styles.emoji}></Text>
         <Text style={styles.roomLabel}>رقم الغرفة</Text>
         <Text style={styles.roomId}>{room || 'غير معروف'}</Text>
         <Text style={styles.bookingLabel}>الحجز: {bookingId}</Text>
@@ -30,7 +30,7 @@ export default function VideoRoomScreen() {
         </View>
 
         <TouchableOpacity style={styles.copyBtn} onPress={copyRoomId} activeOpacity={0.8}>
-          <Text style={styles.copyText}>{copied ? '✅ تم النسخ' : 'نسخ رقم الغرفة'}</Text>
+          <Text style={styles.copyText}>{copied ? ' تم النسخ' : 'نسخ رقم الغرفة'}</Text>
         </TouchableOpacity>
       </View>
     </View>

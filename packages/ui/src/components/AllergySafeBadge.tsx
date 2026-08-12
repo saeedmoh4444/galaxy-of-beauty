@@ -19,13 +19,13 @@ interface AllergyDef {
 }
 
 const ALLERGIES: Record<Allergy, AllergyDef> = {
-  fragrance: { emoji: '🌸', label: 'عطور' },
-  nuts: { emoji: '🥜', label: 'مكسرات' },
-  dairy: { emoji: '🥛', label: 'ألبان' },
-  gluten: { emoji: '🌾', label: 'جلوتين' },
-  paraben: { emoji: '🧪', label: 'بارابين' },
+  fragrance: { emoji: '', label: 'عطور' },
+  nuts: { emoji: '', label: 'مكسرات' },
+  dairy: { emoji: '', label: 'ألبان' },
+  gluten: { emoji: '', label: 'جلوتين' },
+  paraben: { emoji: '', label: 'بارابين' },
   sulfate: { emoji: '🫧', label: 'سلفات' },
-  alcohol: { emoji: '🧴', label: 'كحول' },
+  alcohol: { emoji: '', label: 'كحول' },
   essential_oils: { emoji: '🫒', label: 'زيوت عطرية' },
 };
 
@@ -49,7 +49,7 @@ export function AllergySafeBadge({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🛡️
+          ️
         </span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
@@ -79,7 +79,7 @@ export function AllergySafeBadge({
       {/* How we handle */}
       <div className="mt-3 rounded-xl bg-emerald-50 p-3 dark:bg-emerald-950">
         <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-200">
-          ✅ كيف نضمن سلامتكِ
+           كيف نضمن سلامتكِ
         </p>
         <div className="mt-1 space-y-0.5 text-[10px] text-emerald-700 dark:text-emerald-300">
           <p>• نسألكِ عن الحساسية عند الحجز</p>

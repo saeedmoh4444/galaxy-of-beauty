@@ -50,8 +50,8 @@ export default function MonitoringScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📊 Monitoring</Text>
-      <Text style={styles.sectionTitle}>🟢 الخدمات</Text>
+      <Text style={styles.t}> Monitoring</Text>
+      <Text style={styles.sectionTitle}> الخدمات</Text>
       <View style={styles.grid}>
         {Object.entries(services).map(([key, svc]) => (
           <View
@@ -61,7 +61,7 @@ export default function MonitoringScreen(): JSX.Element {
               { borderColor: STATUS_COLORS[svc.status as string] ?? '#6b7280' },
             ]}
           >
-            <Text style={styles.svcEmoji}>{svc.status === 'healthy' ? '✅' : '⚠️'}</Text>
+            <Text style={styles.svcEmoji}>{svc.status === 'healthy' ? '' : ''}</Text>
             <Text style={styles.svcKey}>{key}</Text>
             <Text style={styles.svcPing}>{svc.ping as number}ms</Text>
           </View>
@@ -69,12 +69,12 @@ export default function MonitoringScreen(): JSX.Element {
       </View>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>⚡</Text>
+          <Text style={styles.kpiEmoji}></Text>
           <Text style={styles.kpiVal}>{(perf.avgResponseMs as number) ?? 0}ms</Text>
           <Text style={styles.kpiLabel}>الاستجابة</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>👥</Text>
+          <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#2563eb' }]}>
             {(perf.activeSessions as number) ?? 0}
           </Text>

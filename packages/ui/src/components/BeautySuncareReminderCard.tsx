@@ -35,7 +35,7 @@ export function BeautySuncareReminderCard({
       )}
     >
       <div className="flex items-center gap-3">
-        <span className="text-3xl shrink-0">☀️</span>
+        <span className="text-3xl shrink-0">️</span>
         <div className="flex-1 min-w-0">
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">واقي الشمس</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">
@@ -44,7 +44,7 @@ export function BeautySuncareReminderCard({
         </div>
         {needsReapply && (
           <span className="shrink-0 animate-pulse rounded-full bg-amber-200 px-2.5 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-800 dark:text-amber-200">
-            ⏰ أعيدي
+             أعيدي
           </span>
         )}
       </div>
@@ -53,10 +53,10 @@ export function BeautySuncareReminderCard({
         onClick={onReapply}
         className="mt-3 w-full rounded-xl bg-amber-600 py-2 text-xs font-bold text-white hover:bg-amber-700 active:scale-[0.98] transition-all"
       >
-        سجلت تطبيق واقي الشمس ✅
+        سجلت تطبيق واقي الشمس 
       </button>
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        ☀️ أعيدي التطبيق كل ساعتين
+        ️ أعيدي التطبيق كل ساعتين
       </p>
     </div>
   );

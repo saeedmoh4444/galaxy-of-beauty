@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { trpc } from '@/lib/trpc-react';
 
 const MENTOR_LEVELS = [
-  { key: 'beginner', emoji: '🌱', name: 'مبتدئة', desc: 'اكتشفي أساسيات العناية' },
-  { key: 'intermediate', emoji: '🌸', name: 'متوسطة', desc: 'طوري روتينكِ' },
-  { key: 'advanced', emoji: '✨', name: 'متقدمة', desc: 'أتقني فنون التجميل' },
+  { key: 'beginner', emoji: '', name: 'مبتدئة', desc: 'اكتشفي أساسيات العناية' },
+  { key: 'intermediate', emoji: '', name: 'متوسطة', desc: 'طوري روتينكِ' },
+  { key: 'advanced', emoji: '', name: 'متقدمة', desc: 'أتقني فنون التجميل' },
 ];
 
 const TOPICS = ['العناية بالبشرة', 'المكياج', 'العناية بالشعر', 'الأظافر', 'العطور', 'التغذية'];
@@ -21,10 +21,10 @@ export default function BeautyMentorScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>👩‍🏫 مرشدة الجمال</Text>
+      <Text style={styles.t}>‍ مرشدة الجمال</Text>
       <Text style={styles.sub}>تعلمي من خبيرات التجميل</Text>
 
-      <Text style={styles.st}>📊 مستواكِ</Text>
+      <Text style={styles.st}> مستواكِ</Text>
       <View style={styles.levels}>
         {MENTOR_LEVELS.map((l) => (
           <TouchableOpacity
@@ -39,7 +39,7 @@ export default function BeautyMentorScreen(): JSX.Element {
         ))}
       </View>
 
-      <Text style={styles.st}>📚 المواضيع</Text>
+      <Text style={styles.st}> المواضيع</Text>
       <View style={styles.topics}>
         {TOPICS.map((tp) => (
           <TouchableOpacity
@@ -52,7 +52,7 @@ export default function BeautyMentorScreen(): JSX.Element {
         ))}
       </View>
 
-      <Text style={styles.st}>📋 خطة التعلم — {currentLevel.name}</Text>
+      <Text style={styles.st}> خطة التعلم — {currentLevel.name}</Text>
       <View style={styles.plan}>
         {[
           {
@@ -77,7 +77,7 @@ export default function BeautyMentorScreen(): JSX.Element {
       </View>
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}>👩‍🏫 ابدئي رحلة التعلم</Text>
+        <Text style={styles.bt}>‍ ابدئي رحلة التعلم</Text>
       </TouchableOpacity>
     </ScrollView>
   );

@@ -39,7 +39,7 @@ export default function AIAssistantScreen(): JSX.Element {
   if (loading)
     return (
       <View style={styles.c}>
-        <Text style={styles.t}>🤖 المساعد الذكي</Text>
+        <Text style={styles.t}> المساعد الذكي</Text>
         <SkeletonList count={4} />
       </View>
     );
@@ -57,7 +57,7 @@ export default function AIAssistantScreen(): JSX.Element {
           />
         }
       >
-        <Text style={styles.t}>🤖 المساعد الذكي</Text>
+        <Text style={styles.t}> المساعد الذكي</Text>
         {messages.map((m: any, i: number) => (
           <View key={i} style={[styles.msg, m.role === 'user' ? styles.user : styles.bot]}>
             <Text style={styles.msgText}>{m.content as string}</Text>
@@ -73,7 +73,7 @@ export default function AIAssistantScreen(): JSX.Element {
           placeholderTextColor="#9ca3af"
         />
         <TouchableOpacity style={styles.sendBtn}>
-          <Text style={styles.sendBtnText}>📤</Text>
+          <Text style={styles.sendBtnText}></Text>
         </TouchableOpacity>
       </View>
     </View>

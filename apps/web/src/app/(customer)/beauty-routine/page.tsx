@@ -60,7 +60,7 @@ export default function BeautyRoutinePage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          🌅 روتيني الجمالي
+           روتيني الجمالي
         </h1>
         <p className="text-sm text-text-secondary">روتين يومي مخصص لكِ بناءً على ملفكِ الجمالي</p>
 
@@ -70,7 +70,7 @@ export default function BeautyRoutinePage(): JSX.Element {
           <ErrorAlert message="فشل تحميل الملف" onRetry={() => refetch()} />
         ) : !profile ? (
           <Card padding="lg" className="text-center">
-            <span className="text-5xl">💄</span>
+            <span className="text-5xl"></span>
             <p className="mt-4 text-text-secondary">أكملي ملفكِ الجمالي للحصول على روتين مخصص</p>
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             <a href="/beauty-profile" className="mt-4 inline-block">
@@ -82,7 +82,7 @@ export default function BeautyRoutinePage(): JSX.Element {
             {/* Skin Routine */}
             <Card padding="lg">
               <h3 className="text-lg font-bold mb-4">
-                ✨ روتين البشرة (
+                 روتين البشرة (
                 {profile.skinType === 'oily'
                   ? 'دهنية'
                   : profile.skinType === 'dry'
@@ -96,7 +96,7 @@ export default function BeautyRoutinePage(): JSX.Element {
               </h3>
               <div className="grid gap-4 sm:grid-cols-3">
                 <div>
-                  <h4 className="font-semibold text-sm mb-2 text-amber-600">☀️ الصباح</h4>
+                  <h4 className="font-semibold text-sm mb-2 text-amber-600">️ الصباح</h4>
                   <ul className="space-y-1">
                     {skinRoutine?.morning.map((s, i) => (
                       <li
@@ -109,7 +109,7 @@ export default function BeautyRoutinePage(): JSX.Element {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-sm mb-2 text-indigo-600">🌙 المساء</h4>
+                  <h4 className="font-semibold text-sm mb-2 text-indigo-600"> المساء</h4>
                   <ul className="space-y-1">
                     {skinRoutine?.evening.map((s, i) => (
                       <li
@@ -122,7 +122,7 @@ export default function BeautyRoutinePage(): JSX.Element {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-sm mb-2 text-purple-600">📅 أسبوعي</h4>
+                  <h4 className="font-semibold text-sm mb-2 text-purple-600"> أسبوعي</h4>
                   <ul className="space-y-1">
                     {skinRoutine?.weekly.map((s, i) => (
                       <li
@@ -141,7 +141,7 @@ export default function BeautyRoutinePage(): JSX.Element {
             {hairRoutine && (
               <Card padding="lg">
                 <h3 className="text-lg font-bold mb-4">
-                  💇‍♀️ روتين الشعر (
+                  ‍️ روتين الشعر (
                   {profile.hairType === 'straight'
                     ? 'مستقيم'
                     : profile.hairType === 'wavy'

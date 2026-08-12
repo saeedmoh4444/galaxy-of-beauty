@@ -25,7 +25,7 @@ export default function ApiDocsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">📚</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">API Documentation</h1>
         <p className="mt-2 text-text-secondary">{data?.description as string}</p>
       </div>
@@ -48,11 +48,11 @@ export default function ApiDocsPage(): JSX.Element {
                 onClick={downloadJSON}
                 className="rounded-lg bg-brand-600 px-4 py-2 text-sm text-white"
               >
-                📥 OpenAPI JSON
+                 OpenAPI JSON
               </button>
             </div>
             <div className="mt-4 rounded-xl bg-surface-muted dark:bg-gray-800 p-4">
-              <p className="text-xs font-bold text-text-secondary mb-2">🔐 Authentication</p>
+              <p className="text-xs font-bold text-text-secondary mb-2"> Authentication</p>
               <code className="text-xs break-all">
                 {(data?.authentication as Record<string, string>)?.header}
               </code>

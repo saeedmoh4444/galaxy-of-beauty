@@ -41,10 +41,10 @@ export default function FamilyAccountScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>👨‍👩‍👧 حساب العائلة</Text>
+      <Text style={styles.t}>‍‍ حساب العائلة</Text>
       {data.map((m: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.avatar}>👤</Text>
+          <Text style={styles.avatar}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{m.name as string}</Text>
             <Text style={styles.relation}>{m.relation as string}</Text>

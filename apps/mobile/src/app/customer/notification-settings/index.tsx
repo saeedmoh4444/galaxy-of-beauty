@@ -41,17 +41,17 @@ export default function NotificationSettingsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🔔 إعدادات الإشعارات</Text>
+      <Text style={styles.t}> إعدادات الإشعارات</Text>
       {['bookings', 'promo', 'chat', 'reviews'].map((key) => (
         <View key={key} style={styles.row}>
           <Text style={styles.label}>
             {key === 'bookings'
-              ? '📅 الحجوزات'
+              ? ' الحجوزات'
               : key === 'promo'
-                ? '📢 العروض'
+                ? ' العروض'
                 : key === 'chat'
-                  ? '💬 المحادثة'
-                  : '⭐ التقييمات'}
+                  ? ' المحادثة'
+                  : ' التقييمات'}
           </Text>
           <Switch
             value={(data as any)[key] ?? true}

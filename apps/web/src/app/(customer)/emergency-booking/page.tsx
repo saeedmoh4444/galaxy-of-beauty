@@ -5,12 +5,12 @@ import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const POPULAR_SERVICES = [
-  { id: 1, name: 'مانيكير', emoji: '💅' },
-  { id: 2, name: 'باديكير', emoji: '🦶' },
-  { id: 3, name: 'تنظيف بشرة', emoji: '✨' },
-  { id: 4, name: 'مساج', emoji: '💆‍♀️' },
-  { id: 5, name: 'صبغ شعر', emoji: '🎨' },
-  { id: 6, name: 'مكياج', emoji: '💄' },
+  { id: 1, name: 'مانيكير', emoji: '' },
+  { id: 2, name: 'باديكير', emoji: '' },
+  { id: 3, name: 'تنظيف بشرة', emoji: '' },
+  { id: 4, name: 'مساج', emoji: '‍️' },
+  { id: 5, name: 'صبغ شعر', emoji: '' },
+  { id: 6, name: 'مكياج', emoji: '' },
 ];
 
 export default function EmergencyBookingPage(): JSX.Element {
@@ -32,13 +32,13 @@ export default function EmergencyBookingPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🚨 حجز طارئ</h1>
+          <h1 className="text-2xl font-bold"> حجز طارئ</h1>
           <p className="mt-1 text-sm text-text-secondary">حجز فوري خلال ٣ ساعات مع رسوم إضافية</p>
         </div>
 
         <Card padding="lg" className="border-2 border-red-300 bg-red-50">
           <div className="flex items-center gap-3">
-            <span className="text-3xl">⚠️</span>
+            <span className="text-3xl"></span>
             <div>
               <p className="font-bold text-red-700">
                 رسوم الطوارئ: {formatCurrency((avail?.emergencySurcharge as number) ?? 50)}
@@ -52,7 +52,7 @@ export default function EmergencyBookingPage(): JSX.Element {
         </Card>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3">💅 اختاري الخدمة</h3>
+          <h3 className="font-bold mb-3"> اختاري الخدمة</h3>
           <div className="flex flex-wrap gap-2 mb-4">
             {POPULAR_SERVICES.map((s) => (
               <button
@@ -73,7 +73,7 @@ export default function EmergencyBookingPage(): JSX.Element {
             <CardSkeleton />
           ) : available.length === 0 ? (
             <p className="text-sm text-text-tertiary text-center py-4">
-              😔 لا توجد فنيات متاحات حالياً لهذه الخدمة
+               لا توجد فنيات متاحات حالياً لهذه الخدمة
             </p>
           ) : (
             <div className="space-y-2">
@@ -91,10 +91,10 @@ export default function EmergencyBookingPage(): JSX.Element {
                   </div>
                   <div className="flex justify-between text-xs text-text-secondary mt-1">
                     <span>
-                      ⭐ {t.rating as number} · {t.city as string}
+                       {t.rating as number} · {t.city as string}
                     </span>
                     <span>
-                      🕐{' '}
+                      {' '}
                       {t.nextSlot
                         ? new Date(t.nextSlot as string).toLocaleTimeString('ar-SA', {
                             hour: '2-digit',
@@ -111,7 +111,7 @@ export default function EmergencyBookingPage(): JSX.Element {
 
         {bookingCode ? (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-3xl">✅</p>
+            <p className="text-3xl"></p>
             <p className="font-bold text-green-700 mt-2">تم الحجز الطارئ</p>
             <p className="text-sm text-text-secondary">
               رمز الحجز: <span className="font-mono font-bold">{bookingCode}</span>
@@ -147,7 +147,7 @@ export default function EmergencyBookingPage(): JSX.Element {
               loading={createMut.isPending}
               className="w-full"
             >
-              🚨 احجزي الآن — {formatCurrency((avail?.totalEstimate as number) ?? 0)}
+               احجزي الآن — {formatCurrency((avail?.totalEstimate as number) ?? 0)}
             </Button>
           )
         )}

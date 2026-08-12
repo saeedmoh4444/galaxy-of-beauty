@@ -16,12 +16,12 @@ const PALETTE_PRESETS = [
 ];
 
 const CATEGORIES = [
-  { key: '', nameAr: 'الكل', emoji: '✨' },
-  { key: 'daily', nameAr: 'يومي', emoji: '☀️' },
-  { key: 'evening', nameAr: 'سهرة', emoji: '🌙' },
-  { key: 'party', nameAr: 'حفلات', emoji: '🎉' },
-  { key: 'bridal', nameAr: 'عرايس', emoji: '👰' },
-  { key: 'traditional', nameAr: 'تقليدي', emoji: '🧕' },
+  { key: '', nameAr: 'الكل', emoji: '' },
+  { key: 'daily', nameAr: 'يومي', emoji: '️' },
+  { key: 'evening', nameAr: 'سهرة', emoji: '' },
+  { key: 'party', nameAr: 'حفلات', emoji: '' },
+  { key: 'bridal', nameAr: 'عرايس', emoji: '' },
+  { key: 'traditional', nameAr: 'تقليدي', emoji: '' },
 ];
 
 export default function StyleMatchPage(): JSX.Element {
@@ -75,7 +75,7 @@ export default function StyleMatchPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📸 Style Match</h1>
+          <h1 className="text-2xl font-bold"> Style Match</h1>
           <p className="mt-1 text-sm text-text-secondary">
             حمّلي صورة إطلالتكِ أو اختاري ألوانكِ المفضلة لاكتشاف إطلالات مشابهة
           </p>
@@ -85,7 +85,7 @@ export default function StyleMatchPage(): JSX.Element {
           {/* Left — Photo Upload + Colors */}
           <div className="space-y-4">
             <Card padding="lg">
-              <h3 className="font-bold mb-3">📷 حمّلي صورة</h3>
+              <h3 className="font-bold mb-3"> حمّلي صورة</h3>
               <input
                 ref={fileRef}
                 type="file"
@@ -101,7 +101,7 @@ export default function StyleMatchPage(): JSX.Element {
             </Card>
 
             <Card padding="lg">
-              <h3 className="font-bold mb-2">🎨 الألوان ({customColors.length})</h3>
+              <h3 className="font-bold mb-2"> الألوان ({customColors.length})</h3>
               <div className="flex flex-wrap gap-2 mb-3">
                 {PALETTE_PRESETS.map((p) => (
                   <button
@@ -136,7 +136,7 @@ export default function StyleMatchPage(): JSX.Element {
                         onClick={() => removeColor(i)}
                         className="text-text-tertiary hover:text-red-500 text-xs"
                       >
-                        ✕
+                        
                       </button>
                     )}
                   </div>
@@ -159,14 +159,14 @@ export default function StyleMatchPage(): JSX.Element {
                 className="w-full"
                 size="lg"
               >
-                🔍 ابحثي عن إطلالات مشابهة
+                 ابحثي عن إطلالات مشابهة
               </Button>
             </div>
           </div>
 
           {/* Right — Category filter */}
           <Card padding="lg">
-            <h3 className="font-bold mb-3">🏷️ نوع الإطلالة</h3>
+            <h3 className="font-bold mb-3">️ نوع الإطلالة</h3>
             <div className="flex flex-wrap gap-2">
               {CATEGORIES.map((c) => (
                 <button
@@ -197,7 +197,7 @@ export default function StyleMatchPage(): JSX.Element {
           />
         ) : resultsList.length > 0 ? (
           <div>
-            <h3 className="font-bold text-lg mb-4">✨ إطلالات مشابهة</h3>
+            <h3 className="font-bold text-lg mb-4"> إطلالات مشابهة</h3>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {resultsList.map((r: Record<string, unknown>) => (
                 <Card
@@ -217,16 +217,16 @@ export default function StyleMatchPage(): JSX.Element {
                     ].includes(r.category as string)
                       ? (
                           {
-                            daily: '☀️',
-                            evening: '🌙',
-                            party: '🎉',
-                            bridal: '👰',
-                            summer: '🌴',
-                            winter: '❄️',
-                            traditional: '🧕',
+                            daily: '️',
+                            evening: '',
+                            party: '',
+                            bridal: '',
+                            summer: '',
+                            winter: '️',
+                            traditional: '',
                           } as Record<string, string>
                         )[r.category as string]
-                      : '✨'}
+                      : ''}
                   </div>
                   <div className="mt-3">
                     <div className="flex items-center justify-between">
@@ -244,7 +244,7 @@ export default function StyleMatchPage(): JSX.Element {
                       {r.titleAr as string}
                     </h3>
                     <div className="mt-2 flex items-center gap-2">
-                      <span className="text-xs text-text-secondary">⭐ {r.rating as number}</span>
+                      <span className="text-xs text-text-secondary"> {r.rating as number}</span>
                       <div className="flex gap-0.5">
                         {(r.dominantColors as string[])?.map((c: string) => (
                           <span
@@ -273,7 +273,7 @@ export default function StyleMatchPage(): JSX.Element {
                         className="mt-3 inline-block"
                       >
                         <Button size="sm" variant="ghost">
-                          📹 شاهدي الدرس
+                           شاهدي الدرس
                         </Button>
                       </Link>
                     )}

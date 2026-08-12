@@ -30,7 +30,7 @@ export default function TechSlotsScreen(): JSX.Element {
       emptyDescription="أضيفي مواعيدك المتاحة"
       onRetry={() => slots.refetch()}
     >
-      <Text style={styles.title}>⏰ المواعيد المتاحة</Text>
+      <Text style={styles.title}> المواعيد المتاحة</Text>
       {(data as Record<string, unknown>[])?.map((s: Record<string, unknown>, i: number) => (
         <View
           key={i}
@@ -39,7 +39,7 @@ export default function TechSlotsScreen(): JSX.Element {
           <View style={styles.row}>
             <Text style={styles.time}>{new Date(s.startAt as string).toLocaleString('ar-SA')}</Text>
             <Text style={[styles.status, { color: s.isBooked ? COLORS.booked : COLORS.available }]}>
-              {s.isBooked ? '🔴 محجوز' : '🟢 متاح'}
+              {s.isBooked ? ' محجوز' : ' متاح'}
             </Text>
           </View>
         </View>

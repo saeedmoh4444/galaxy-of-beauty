@@ -17,10 +17,10 @@ export function BeautyJadeRollerCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '❄️', text: 'احفظيها في الثلاجة — تأثير منعش' },
-          { emoji: '⬆️', text: 'دحرجي للأعلى وللخارج' },
-          { emoji: '🧴', text: 'بعد السيروم — لتسهيل الامتصاص' },
-          { emoji: '☀️', text: 'صباحاً — لتقليل الانتفاخ' },
+          { emoji: '️', text: 'احفظيها في الثلاجة — تأثير منعش' },
+          { emoji: '️', text: 'دحرجي للأعلى وللخارج' },
+          { emoji: '', text: 'بعد السيروم — لتسهيل الامتصاص' },
+          { emoji: '️', text: 'صباحاً — لتقليل الانتفاخ' },
         ].map((t, i) => (
           <div
             key={i}

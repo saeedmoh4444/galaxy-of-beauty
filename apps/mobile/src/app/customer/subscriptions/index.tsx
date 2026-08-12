@@ -31,13 +31,13 @@ export default function SubscriptionsScreen(): JSX.Element {
       errorMessage="فشل تحميل الاشتراكات"
       onRetry={() => sub.refetch()}
     >
-      <Text style={styles.title}>📦 اشتراكاتي</Text>
+      <Text style={styles.title}> اشتراكاتي</Text>
       {subscription ? (
         <View style={styles.activeCard}>
           <Text style={styles.activeLabel}>الاشتراك الحالي</Text>
           <Text style={styles.planName}>{(subscription.plan as any)?.nameJson?.ar ?? 'خطة'}</Text>
           <Text style={styles.status}>
-            {(subscription.status as string) === 'ACTIVE' ? '🟢 نشط' : '⏸️ متوقف'}
+            {(subscription.status as string) === 'ACTIVE' ? ' نشط' : '️ متوقف'}
           </Text>
           <Text style={styles.date}>
             ينتهي: {new Date(subscription.currentPeriodEnd as string).toLocaleDateString('ar-SA')}

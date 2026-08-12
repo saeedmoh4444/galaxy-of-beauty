@@ -15,7 +15,7 @@ export default function BeautyPodcastPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🎙️</span>
+        <span className="text-6xl">️</span>
         <h1 className="mt-4 text-3xl font-bold">بودكاست الجمال</h1>
         <p className="mt-2 text-text-secondary">استمعي لأحدث حلقات خبراء التجميل</p>
       </div>
@@ -39,13 +39,13 @@ export default function BeautyPodcastPage(): JSX.Element {
               <span className="text-4xl">
                 {(
                   {
-                    skincare: '✨',
-                    makeup: '💄',
-                    hair: '💇‍♀️',
-                    natural: '🌿',
-                    bridal: '👰',
+                    skincare: '',
+                    makeup: '',
+                    hair: '‍️',
+                    natural: '',
+                    bridal: '',
                   } as Record<string, string>
-                )[ep.category as string] ?? '🎙️'}
+                )[ep.category as string] ?? '️'}
               </span>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
@@ -54,7 +54,7 @@ export default function BeautyPodcastPage(): JSX.Element {
                   </span>
                 </div>
                 <h3 className="font-bold mt-1">{ep.titleAr as string}</h3>
-                <p className="text-xs text-text-secondary mt-1">🎤 {ep.host as string}</p>
+                <p className="text-xs text-text-secondary mt-1"> {ep.host as string}</p>
                 <p className="text-xs text-text-tertiary mt-0.5">{ep.description as string}</p>
               </div>
               <button className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-600 text-white text-lg">

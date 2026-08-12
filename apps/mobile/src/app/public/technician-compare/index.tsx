@@ -43,7 +43,7 @@ export default function TechnicianCompareScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>⚖️ مقارنة الفنيات</Text>
+      <Text style={styles.t}>️ مقارنة الفنيات</Text>
       <View style={styles.grid}>
         {techs.slice(0, 12).map((t: any) => {
           const isSel = selected.includes(t.id);
@@ -53,36 +53,36 @@ export default function TechnicianCompareScreen(): JSX.Element {
               onPress={() => toggle(t.id)}
               style={[styles.ch, isSel && styles.cha]}
             >
-              <Text style={styles.ce}>👩‍🎨</Text>
+              <Text style={styles.ce}>‍</Text>
               <Text style={[styles.cn, isSel && styles.cna]}>{t.name as string}</Text>
-              <Text style={styles.cr}>⭐ {(t.rating as number) ?? 0}</Text>
+              <Text style={styles.cr}> {(t.rating as number) ?? 0}</Text>
             </TouchableOpacity>
           );
         })}
       </View>
       {ct.length === 2 && (
         <View style={styles.tbl}>
-          <Text style={styles.ttl}>📊 المقارنة</Text>
+          <Text style={styles.ttl}> المقارنة</Text>
           {ct.map((t: any) => (
             <View key={t.id} style={styles.tc}>
               <Text style={styles.tcn}>{t.name as string}</Text>
               <View style={styles.tr}>
-                <Text style={styles.tl}>⭐</Text>
+                <Text style={styles.tl}></Text>
                 <Text style={styles.tv}>{(t.rating as number) ?? 0}</Text>
               </View>
               <View style={styles.tr}>
-                <Text style={styles.tl}>📅</Text>
+                <Text style={styles.tl}></Text>
                 <Text style={styles.tv}>{(t.totalBookings as number) ?? 0} حجز</Text>
               </View>
               <View style={styles.tr}>
-                <Text style={styles.tl}>💰</Text>
+                <Text style={styles.tl}></Text>
                 <Text style={styles.tv}>{(t.startingPrice as number)?.toLocaleString()} ر.س</Text>
               </View>
             </View>
           ))}
           <View style={styles.w}>
             <Text style={styles.wt}>
-              🏆 الأفضل:{' '}
+               الأفضل:{' '}
               {ct[0].rating > ct[1].rating
                 ? ct[0].name
                 : ct[0].rating < ct[1].rating

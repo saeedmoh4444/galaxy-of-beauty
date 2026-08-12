@@ -6,7 +6,7 @@ import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
 const OCCASIONS = [
   {
     id: 'birthday',
-    emoji: '🎂',
+    emoji: '',
     name: 'عيد ميلاد',
     desc: 'أفضل هدايا التجميل لعيد الميلاد',
     gifts: [
@@ -14,28 +14,28 @@ const OCCASIONS = [
         title: 'باقة عناية بالبشرة',
         price: '٢٥٠ ر.س',
         desc: 'جلسة تنظيف وترطيب مع ماسك',
-        emoji: '✨',
+        emoji: '',
         link: '/services',
       },
       {
         title: 'بطاقة هدية',
         price: 'من ١٠٠ ر.س',
         desc: 'لأي خدمة تجميل تختارها',
-        emoji: '🎁',
+        emoji: '',
         link: '/gift-cards',
       },
       {
         title: 'مانيكير وباديكير',
         price: '١٥٠ ر.س',
         desc: 'طلاء أظافر مع مساج',
-        emoji: '💅',
+        emoji: '',
         link: '/services',
       },
     ],
   },
   {
     id: 'wedding',
-    emoji: '👰',
+    emoji: '',
     name: 'زفاف',
     desc: 'هدايا للعروس وصديقاتها',
     gifts: [
@@ -43,28 +43,28 @@ const OCCASIONS = [
         title: 'باقة العروس',
         price: '٥٠٠ ر.س',
         desc: 'مكياج + شعر + أظافر',
-        emoji: '👰',
+        emoji: '',
         link: '/bridal-concierge',
       },
       {
         title: 'جلسة تصوير',
         price: '٣٠٠ ر.س',
         desc: 'مكياج احترافي للتصوير',
-        emoji: '📸',
+        emoji: '',
         link: '/services',
       },
       {
         title: 'بطاقة هدية للعروس',
         price: 'من ٢٠٠ ر.س',
         desc: 'لتختار ما يناسبها',
-        emoji: '🎁',
+        emoji: '',
         link: '/gift-cards',
       },
     ],
   },
   {
     id: 'mom',
-    emoji: '👩‍👧',
+    emoji: '‍',
     name: 'عيد الأم',
     desc: 'دللي أمكِ بأجمل الهدايا',
     gifts: [
@@ -72,28 +72,28 @@ const OCCASIONS = [
         title: 'يوم عناية كامل',
         price: '٤٠٠ ر.س',
         desc: 'مساج + عناية + مكياج',
-        emoji: '🧖‍♀️',
+        emoji: '‍️',
         link: '/mommy-and-me',
       },
       {
         title: 'باقة أم وابنتها',
         price: '٣٠٠ ر.س',
         desc: 'جلسة عناية مشتركة',
-        emoji: '👩‍👧',
+        emoji: '‍',
         link: '/mommy-and-me',
       },
       {
         title: 'سجل هدايا',
         price: 'حسب اختيارك',
         desc: 'لتدلعي أمك باختيارها',
-        emoji: '🎁',
+        emoji: '',
         link: '/gift-registry',
       },
     ],
   },
   {
     id: 'eid',
-    emoji: '🌙',
+    emoji: '',
     name: 'العيد',
     desc: 'هدايا العيد لأحبابك',
     gifts: [
@@ -101,21 +101,21 @@ const OCCASIONS = [
         title: 'بطاقة هدية العيد',
         price: 'من ١٠٠ ر.س',
         desc: 'هدية مثالية للعيد',
-        emoji: '🎁',
+        emoji: '',
         link: '/gift-cards',
       },
       {
         title: 'حناء العيد',
         price: '١٠٠ ر.س',
         desc: 'نقوش حناء عصرية',
-        emoji: '🌿',
+        emoji: '',
         link: '/services',
       },
       {
         title: 'مكياج العيد',
         price: '٢٠٠ ر.س',
         desc: 'إطلالة متألقة للعيد',
-        emoji: '💄',
+        emoji: '',
         link: '/services',
       },
     ],
@@ -126,7 +126,7 @@ export default function GiftGuidePage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-12">
-        <span className="text-6xl">🎁</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           دليل الهدايا
         </h1>
@@ -159,11 +159,11 @@ export default function GiftGuidePage(): JSX.Element {
 
       <div className="text-center mt-12 p-8 bg-gradient-to-r from-pink-50 to-purple-50 rounded-3xl dark:from-pink-950 dark:to-purple-950">
         <h2 className="text-xl font-bold text-text-primary dark:text-gray-100">
-          💝 لم تجدي ما تبحثين عنه؟
+           لم تجدي ما تبحثين عنه؟
         </h2>
         <p className="mt-2 text-text-secondary">أنشئي بطاقة هدية بالمبلغ اللي تختارينه</p>
         <Link href="/gift-cards" className="mt-4 inline-block">
-          <Button size="lg">🎁 إنشاء بطاقة هدية</Button>
+          <Button size="lg"> إنشاء بطاقة هدية</Button>
         </Link>
       </div>
 
@@ -208,7 +208,7 @@ function GiftQuizWidget(): JSX.Element {
 
   return (
     <div className="mt-16 text-center">
-      <h2 className="text-2xl font-bold">🤖 مستشار الهدايا الذكي</h2>
+      <h2 className="text-2xl font-bold"> مستشار الهدايا الذكي</h2>
       <p className="mt-2 text-text-secondary">جاوبي على الأسئلة وبنقترح عليكِ أفضل الهدايا</p>
 
       {qLoading ? (
@@ -234,7 +234,7 @@ function GiftQuizWidget(): JSX.Element {
             ))}
           </div>
           <Button onClick={reset} variant="outline" className="mt-4">
-            🔄 إعادة الاختبار
+             إعادة الاختبار
           </Button>
         </div>
       ) : currentQ ? (

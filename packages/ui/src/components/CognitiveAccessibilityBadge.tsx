@@ -25,12 +25,12 @@ interface CogDef {
 }
 
 const FEATURES: CogDef[] = [
-  { emoji: '📋', label: 'قائمة مبسطة', detail: 'خيارات واضحة بدون تعقيد' },
-  { emoji: '🖼️', label: 'جدول مرئي', detail: 'صور توضح كل خطوة قبل البدء' },
-  { emoji: '🚦', label: 'لافتات واضحة', detail: 'إشارات بسيطة ومفهومة' },
-  { emoji: '🤫', label: 'مساحة هادئة', detail: 'مكان للاستراحة عند الحاجة' },
-  { emoji: '👩‍🎨', label: 'طاقم مألوف', detail: 'نفس الخبيرة في كل زيارة' },
-  { emoji: '⏰', label: 'وقت ممتد', detail: 'مواعيد أطول بدون استعجال' },
+  { emoji: '', label: 'قائمة مبسطة', detail: 'خيارات واضحة بدون تعقيد' },
+  { emoji: '️', label: 'جدول مرئي', detail: 'صور توضح كل خطوة قبل البدء' },
+  { emoji: '', label: 'لافتات واضحة', detail: 'إشارات بسيطة ومفهومة' },
+  { emoji: '', label: 'مساحة هادئة', detail: 'مكان للاستراحة عند الحاجة' },
+  { emoji: '‍', label: 'طاقم مألوف', detail: 'نفس الخبيرة في كل زيارة' },
+  { emoji: '', label: 'وقت ممتد', detail: 'مواعيد أطول بدون استعجال' },
 ];
 
 interface CognitiveAccessibilityBadgeProps {
@@ -66,7 +66,7 @@ export function CognitiveAccessibilityBadge({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🧠
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">صديق للإدراك</h4>
@@ -90,7 +90,7 @@ export function CognitiveAccessibilityBadge({
         ))}
       </div>
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🧠 كل عقل جميل بطريقته
+         كل عقل جميل بطريقته
       </p>
     </div>
   );

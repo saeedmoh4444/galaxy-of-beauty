@@ -5,10 +5,10 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 const TYPES: Record<string, string> = {
-  workshop: '🎓 ورشة',
-  masterclass: '👑 ماستر كلاس',
-  launch: '🚀 إطلاق',
-  seasonal: '🌸 موسمي',
+  workshop: ' ورشة',
+  masterclass: ' ماستر كلاس',
+  launch: ' إطلاق',
+  seasonal: ' موسمي',
 };
 
 export default function BeautyEventsScreen(): JSX.Element {
@@ -50,7 +50,7 @@ export default function BeautyEventsScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={s.t}>🎪 فعاليات وورش</Text>
+      <Text style={s.t}> فعاليات وورش</Text>
       <Text style={s.sub}>سجلي في ورش العمل والفعاليات الحصرية</Text>
 
       {myRegs.length > 0 && (
@@ -58,7 +58,7 @@ export default function BeautyEventsScreen(): JSX.Element {
           style={{ backgroundColor: '#ecfdf5', borderRadius: 12, padding: 12, marginBottom: 16 }}
         >
           <Text style={{ fontWeight: '700', color: '#059669', marginBottom: 4 }}>
-            ✅ مسجلة في {myRegs.length} فعاليات
+             مسجلة في {myRegs.length} فعاليات
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
             {myRegs.map((r: any) => (
@@ -80,7 +80,7 @@ export default function BeautyEventsScreen(): JSX.Element {
 
       {items.length === 0 && (
         <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}>🎪</Text>
+          <Text style={{ fontSize: 40 }}></Text>
           <Text style={{ color: '#6b7280', marginTop: 8 }}>لا توجد فعاليات قادمة</Text>
         </View>
       )}
@@ -90,7 +90,7 @@ export default function BeautyEventsScreen(): JSX.Element {
         return (
           <View key={e.id} style={s.card}>
             <View style={{ alignItems: 'center' }}>
-              <Text style={{ fontSize: 36 }}>{TYPES[e.eventType]?.split(' ')[0] ?? '🎪'}</Text>
+              <Text style={{ fontSize: 36 }}>{TYPES[e.eventType]?.split(' ')[0] ?? ''}</Text>
               <Text style={{ fontWeight: '800', fontSize: 16, marginTop: 8 }}>
                 {e.nameJson?.ar}
               </Text>
@@ -109,7 +109,7 @@ export default function BeautyEventsScreen(): JSX.Element {
               style={[s.btn, isReg && { backgroundColor: '#e5e7eb' }]}
             >
               <Text style={[s.btnText, isReg && { color: '#374151' }]}>
-                {isReg ? '✅ مسجلة — إلغاء' : '📝 سجلي الآن'}
+                {isReg ? ' مسجلة — إلغاء' : ' سجلي الآن'}
               </Text>
             </TouchableOpacity>
           </View>

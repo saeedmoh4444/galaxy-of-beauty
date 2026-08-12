@@ -6,11 +6,11 @@ import { Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const MOODS = [
-  { value: 1, emoji: '😞', label: 'سيء' },
-  { value: 2, emoji: '😕', label: 'متوسط' },
-  { value: 3, emoji: '😐', label: 'عادي' },
-  { value: 4, emoji: '🙂', label: 'جيد' },
-  { value: 5, emoji: '😄', label: 'ممتاز' },
+  { value: 1, emoji: '', label: 'سيء' },
+  { value: 2, emoji: '', label: 'متوسط' },
+  { value: 3, emoji: '', label: 'عادي' },
+  { value: 4, emoji: '', label: 'جيد' },
+  { value: 5, emoji: '', label: 'ممتاز' },
 ];
 
 export default function WellnessTrackerPage(): JSX.Element {
@@ -50,7 +50,7 @@ export default function WellnessTrackerPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🧘 متعقب العافية</h1>
+          <h1 className="text-2xl font-bold"> متعقب العافية</h1>
           <p className="mt-1 text-sm text-text-secondary">
             تابعي صحتكِ وعافيتكِ اليومية — ماء، نوم، مزاج، وخطوات
           </p>
@@ -58,10 +58,10 @@ export default function WellnessTrackerPage(): JSX.Element {
 
         {/* Check-in Card */}
         <Card padding="lg">
-          <h3 className="font-bold text-lg mb-4">📝 تسجيل اليوم</h3>
+          <h3 className="font-bold text-lg mb-4"> تسجيل اليوم</h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="text-sm font-semibold">💧 الماء (أكواب)</label>
+              <label className="text-sm font-semibold"> الماء (أكواب)</label>
               <input
                 type="number"
                 min={0}
@@ -72,7 +72,7 @@ export default function WellnessTrackerPage(): JSX.Element {
               />
             </div>
             <div>
-              <label className="text-sm font-semibold">😴 النوم (ساعات)</label>
+              <label className="text-sm font-semibold"> النوم (ساعات)</label>
               <input
                 type="number"
                 min={0}
@@ -83,7 +83,7 @@ export default function WellnessTrackerPage(): JSX.Element {
               />
             </div>
             <div>
-              <label className="text-sm font-semibold">🚶‍♀️ الخطوات</label>
+              <label className="text-sm font-semibold">‍️ الخطوات</label>
               <input
                 type="number"
                 min={0}
@@ -93,16 +93,16 @@ export default function WellnessTrackerPage(): JSX.Element {
               />
             </div>
             <div>
-              <label className="text-sm font-semibold">🧴 روتين العناية</label>
+              <label className="text-sm font-semibold"> روتين العناية</label>
               <button
                 onClick={() => setSkincare(!skincare)}
                 className={`mt-1 w-full rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${skincare ? 'bg-green-100 border-green-400 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-surface-muted border-gray-200 text-text-secondary dark:bg-gray-800 dark:border-gray-700'}`}
               >
-                {skincare ? '✓ تم' : 'لم يتم'}
+                {skincare ? ' تم' : 'لم يتم'}
               </button>
             </div>
             <div className="sm:col-span-2">
-              <label className="text-sm font-semibold">😊 المزاج</label>
+              <label className="text-sm font-semibold"> المزاج</label>
               <div className="mt-1 flex gap-2">
                 {MOODS.map((m) => (
                   <button
@@ -123,7 +123,7 @@ export default function WellnessTrackerPage(): JSX.Element {
               loading={checkinMut.isPending}
               className="w-full"
             >
-              💾 حفظ
+               حفظ
             </Button>
           </div>
         </Card>
@@ -132,29 +132,29 @@ export default function WellnessTrackerPage(): JSX.Element {
         {w && (
           <div className="grid gap-4 sm:grid-cols-5">
             <Card padding="md" className="text-center">
-              <p className="text-3xl">💧</p>
+              <p className="text-3xl"></p>
               <p className="text-2xl font-bold text-blue-600">{w.avgWater}</p>
               <p className="text-xs text-text-secondary">متوسط أكواب</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl">😴</p>
+              <p className="text-3xl"></p>
               <p className="text-2xl font-bold text-purple-600">{w.avgSleep}</p>
               <p className="text-xs text-text-secondary">ساعات نوم</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl">😊</p>
+              <p className="text-3xl"></p>
               <p className="text-2xl font-bold text-amber-600">{w.avgMood}</p>
               <p className="text-xs text-text-secondary">متوسط المزاج</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl">🚶‍♀️</p>
+              <p className="text-3xl">‍️</p>
               <p className="text-2xl font-bold text-green-600">
                 {(w.totalSteps / 1000).toFixed(1)}k
               </p>
               <p className="text-xs text-text-secondary">إجمالي الخطوات</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl">🧴</p>
+              <p className="text-3xl"></p>
               <p className="text-2xl font-bold text-pink-600">{w.skincareDays}/7</p>
               <p className="text-xs text-text-secondary">أيام العناية</p>
             </Card>
@@ -164,7 +164,7 @@ export default function WellnessTrackerPage(): JSX.Element {
         {/* Weekly Chart */}
         {w && (
           <Card padding="lg">
-            <h3 className="font-bold mb-4">📈 الأسبوع</h3>
+            <h3 className="font-bold mb-4"> الأسبوع</h3>
             <div className="flex items-end gap-1 h-24">
               {w.week.map((d: Record<string, unknown>) => {
                 const h = Math.max(4, ((d.mood as number) || 0) * 20);

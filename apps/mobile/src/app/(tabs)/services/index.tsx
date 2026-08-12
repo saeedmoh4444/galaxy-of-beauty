@@ -31,10 +31,10 @@ export default function ServicesScreen(): JSX.Element {
       emptyTitle="لا توجد خدمات"
       onRetry={() => services.refetch()}
     >
-      <Text style={styles.title}>✨ الخدمات</Text>
+      <Text style={styles.title}> الخدمات</Text>
       <TextInput
         style={styles.search}
-        placeholder="🔍 بحث عن خدمة..."
+        placeholder=" بحث عن خدمة..."
         value={search}
         onChangeText={(t) => {
           setSearch(t);

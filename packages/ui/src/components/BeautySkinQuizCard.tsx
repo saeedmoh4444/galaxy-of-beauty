@@ -20,7 +20,7 @@ interface Question {
 const QUESTIONS: Question[] = [
   {
     question: 'كيف تبدو بشرتكِ بعد غسلها؟',
-    emoji: '🧴',
+    emoji: '',
     options: [
       { text: 'مشدودة وجافة', score: { dry: 3 } },
       { text: 'لامعة ودهنية', score: { oily: 3 } },
@@ -30,7 +30,7 @@ const QUESTIONS: Question[] = [
   },
   {
     question: 'كيف تتصرف بشرتكِ في الطقس الحار؟',
-    emoji: '☀️',
+    emoji: '️',
     options: [
       { text: 'تصبح دهنية جداً', score: { oily: 3 } },
       { text: 'تبقى جافة', score: { dry: 3 } },
@@ -40,7 +40,7 @@ const QUESTIONS: Question[] = [
   },
   {
     question: 'هل بشرتكِ حساسة للمنتجات الجديدة؟',
-    emoji: '🧪',
+    emoji: '',
     options: [
       { text: 'نعم، تحمر بسرعة', score: { sensitive: 4 } },
       { text: 'أحياناً', score: { sensitive: 2 } },
@@ -76,13 +76,13 @@ export function BeautySkinQuizCard({
       const finalScores = { ...newScores };
       const winner = Object.entries(finalScores).sort(([, a], [, b]) => b - a)[0]?.[0] ?? 'normal';
       const labels: Record<string, string> = {
-        oily: 'دهنية ✨',
-        dry: 'جافة 💧',
-        combination: 'مختلطة 🎭',
-        normal: 'طبيعية 🌸',
-        sensitive: 'حساسة 🌿',
+        oily: 'دهنية ',
+        dry: 'جافة ',
+        combination: 'مختلطة ',
+        normal: 'طبيعية ',
+        sensitive: 'حساسة ',
       };
-      setResult(labels[winner] ?? 'طبيعية 🌸');
+      setResult(labels[winner] ?? 'طبيعية ');
       onComplete?.(winner);
     }
   };
@@ -96,7 +96,7 @@ export function BeautySkinQuizCard({
         )}
       >
         <span className="text-4xl" aria-hidden="true">
-          🧬
+          
         </span>
         <h4 className="mt-2 text-sm font-bold text-teal-700 dark:text-teal-300">نوع بشرتكِ</h4>
         <p className="mt-2 text-2xl font-bold text-teal-800 dark:text-teal-200">{result}</p>
@@ -109,7 +109,7 @@ export function BeautySkinQuizCard({
           }}
           className="mt-3 rounded-xl bg-teal-600 px-4 py-2 text-xs font-bold text-white hover:bg-teal-700"
         >
-          جربي مرة أخرى 🔄
+          جربي مرة أخرى 
         </button>
       </div>
     );

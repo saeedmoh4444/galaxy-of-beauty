@@ -23,13 +23,13 @@ export default function VideoTestimonialsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🎥</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">توصيات بالفيديو</h1>
         <p className="mt-2 text-text-secondary">شوفي تجارب حقيقية من العميلات</p>
       </div>
       {user && (
         <div className="text-center mb-6">
-          <Button onClick={() => setShow(true)}>🎥 شاركي فيديوكِ</Button>
+          <Button onClick={() => setShow(true)}> شاركي فيديوكِ</Button>
         </div>
       )}
       {isLoading ? (
@@ -47,11 +47,11 @@ export default function VideoTestimonialsPage(): JSX.Element {
               </div>
               <div className="mt-2 flex items-center gap-1">
                 <span className="text-sm font-bold">{t.userName as string}</span>
-                <span className="text-amber-500">{'⭐'.repeat(t.rating as number)}</span>
+                <span className="text-amber-500">{''.repeat(t.rating as number)}</span>
               </div>
               <p className="text-sm mt-1">{t.comment as string}</p>
               <p className="text-xs text-text-secondary mt-1">
-                👩‍🎨 {t.technicianName as string} · {t.serviceName as string} · ❤️ {t.likes as number}
+                ‍ {t.technicianName as string} · {t.serviceName as string} · ️ {t.likes as number}
               </p>
             </Card>
           ))}
@@ -87,7 +87,7 @@ export default function VideoTestimonialsPage(): JSX.Element {
                 onClick={() => setRating(s)}
                 className={`text-2xl ${s <= rating ? 'text-amber-500' : 'text-gray-300'}`}
               >
-                ★
+                
               </button>
             ))}
           </div>
@@ -113,7 +113,7 @@ export default function VideoTestimonialsPage(): JSX.Element {
             loading={submitMut.isPending}
             className="w-full"
           >
-            🎥 نشر
+             نشر
           </Button>
         </div>
       </Modal>

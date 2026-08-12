@@ -40,7 +40,7 @@ export default function ServiceWishlistScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📝 قائمة الخدمات</Text>
+      <Text style={styles.t}> قائمة الخدمات</Text>
       {items.map((i: any) => (
         <View key={i.id} style={styles.card}>
           <Text style={styles.em}>{i.emoji as string}</Text>
@@ -53,7 +53,7 @@ export default function ServiceWishlistScreen(): JSX.Element {
           <View style={{ alignItems: 'flex-end' }}>
             <Text style={styles.cp}>{(i.currentPrice as number)?.toLocaleString()} ر.س</Text>
             <TouchableOpacity onPress={() => remove(i.id)}>
-              <Text style={styles.del}>🗑️</Text>
+              <Text style={styles.del}>️</Text>
             </TouchableOpacity>
           </View>
         </View>

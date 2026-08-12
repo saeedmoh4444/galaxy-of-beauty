@@ -110,7 +110,7 @@ const TECH_NAMES = [
 ];
 
 const REVIEW_COMMENTS_AR = [
-  'خدمة ممتازة وأنيقة! أنصح بها بشدة 🌟',
+  'خدمة ممتازة وأنيقة! أنصح بها بشدة ',
   'رائعة جداً، سأكرر التجربة بالتأكيد',
   'محترفة ونظيفة، شكراً جزيلاً',
   'أفضل فنية جربتها في الرياض',
@@ -128,7 +128,7 @@ const REVIEW_COMMENTS_AR = [
 ];
 
 async function main() {
-  console.log('🌱 Enriching Galaxy of Beauty database...\n');
+  console.log(' Enriching Galaxy of Beauty database...\n');
 
   // ── Get existing data ──
   const existingUsers = await db.user.findMany({ include: { wallet: true } });
@@ -172,7 +172,7 @@ async function main() {
     existingCustomers.push(u);
     newCustomerIds.push(u.id);
   }
-  console.log(`✅ ${newCustomerIds.length} new customers (total: ${existingCustomers.length})`);
+  console.log(` ${newCustomerIds.length} new customers (total: ${existingCustomers.length})`);
 
   // ═══════════════════════════════════════════════════════════════
   // 1b. CREATE ADDRESSES for all customers (required for bookings)
@@ -222,7 +222,7 @@ async function main() {
     }
   }
   const addressCount = await db.address.count();
-  console.log(`✅ Addresses created (total: ${addressCount})`);
+  console.log(` Addresses created (total: ${addressCount})`);
 
   // ═══════════════════════════════════════════════════════════════
   // 2. ADD 9 MORE TECHNICIANS (target: 12 total, 3 per city)
@@ -289,7 +289,7 @@ async function main() {
     newTechRecords.push({ ...tech, user: u });
   }
   const allTechs = [...existingTechs.map((t: any) => ({ ...t, user: t.user })), ...newTechRecords];
-  console.log(`✅ ${newTechRecords.length} new technicians (total: ${allTechs.length})`);
+  console.log(` ${newTechRecords.length} new technicians (total: ${allTechs.length})`);
 
   // ═══════════════════════════════════════════════════════════════
   // 3. GENERATE SLOTS for new techs (next 14 days)
@@ -326,7 +326,7 @@ async function main() {
       }
     }
   }
-  console.log(`✅ ${newSlotCount} new availability slots`);
+  console.log(` ${newSlotCount} new availability slots`);
 
   // ═══════════════════════════════════════════════════════════════
   // 4. GENERATE 500 BOOKINGS (realistic patterns)
@@ -403,11 +403,11 @@ async function main() {
         newBookingCount++;
       } catch (err: any) {
         // Skip individual booking errors (missing address, etc.)
-        if (i < 5) console.log(`   ⚠️ Booking skipped: ${err.message?.slice(0, 60)}`);
+        if (i < 5) console.log(`    Booking skipped: ${err.message?.slice(0, 60)}`);
       }
     }
   }
-  console.log(`✅ ${newBookingCount} bookings (target: 500, across 30 days)`);
+  console.log(` ${newBookingCount} bookings (target: 500, across 30 days)`);
 
   // ═══════════════════════════════════════════════════════════════
   // 5. GENERATE 100 REVIEWS
@@ -436,7 +436,7 @@ async function main() {
       /* duplicate booking review, skip */
     }
   }
-  console.log(`✅ ${reviewCount} reviews`);
+  console.log(` ${reviewCount} reviews`);
 
   // ═══════════════════════════════════════════════════════════════
   // 6. GENERATE 80 WALLET TRANSACTIONS
@@ -471,10 +471,10 @@ async function main() {
       });
       walletTxCount++;
     } catch (err: any) {
-      if (i < 3) console.log(`   ⚠️ Wallet tx skipped: ${err.message?.slice(0, 60)}`);
+      if (i < 3) console.log(`    Wallet tx skipped: ${err.message?.slice(0, 60)}`);
     }
   }
-  console.log(`✅ ${walletTxCount} wallet transactions`);
+  console.log(` ${walletTxCount} wallet transactions`);
 
   // ═══════════════════════════════════════════════════════════════
   // 7. LOYALTY ACCOUNTS for all customers (1→20)
@@ -508,7 +508,7 @@ async function main() {
       /* already exists */
     }
   }
-  console.log(`✅ ${loyaltyCount} loyalty accounts (total now ~${loyaltyCount + 1})`);
+  console.log(` ${loyaltyCount} loyalty accounts (total now ~${loyaltyCount + 1})`);
 
   // ═══════════════════════════════════════════════════════════════
   // 8. GENERATE 50 NOTIFICATIONS
@@ -550,7 +550,7 @@ async function main() {
       /* skip */
     }
   }
-  console.log(`✅ ${notifCount} notifications`);
+  console.log(` ${notifCount} notifications`);
 
   // ═══════════════════════════════════════════════════════════════
   // 9. GENERATE 40 PROMO CODE USAGES
@@ -577,7 +577,7 @@ async function main() {
       /* duplicate, skip */
     }
   }
-  console.log(`✅ ${promoUsageCount} promo code usages`);
+  console.log(` ${promoUsageCount} promo code usages`);
 
   // ═══════════════════════════════════════════════════════════════
   // 10. GENERATE 10 GIFT CARD TRANSACTIONS
@@ -603,7 +603,7 @@ async function main() {
       /* skip */
     }
   }
-  console.log(`✅ ${giftCardTxCount} gift card transactions`);
+  console.log(` ${giftCardTxCount} gift card transactions`);
 
   // ═══════════════════════════════════════════════════════════════
   // SUMMARY
@@ -619,7 +619,7 @@ async function main() {
   const finalPromoUsages = await db.promoUsage.count();
   const finalGiftCardTxs = await db.giftCardTransaction.count();
 
-  console.log('\n📊 FINAL COUNTS:');
+  console.log('\n FINAL COUNTS:');
   console.log(`   Customers:      ${finalCustomers}`);
   console.log(`   Technicians:    ${finalTechs}`);
   console.log(`   Bookings:       ${finalBookings}`);
@@ -629,7 +629,7 @@ async function main() {
   console.log(`   Notifications:  ${finalNotifs}`);
   console.log(`   Promo Usages:   ${finalPromoUsages}`);
   console.log(`   Gift Card Txns: ${finalGiftCardTxs}`);
-  console.log('\n🎉 Seed enrichment complete!\n');
+  console.log('\n Seed enrichment complete!\n');
 }
 
 main()

@@ -19,7 +19,7 @@ export default function NightModePage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🌙 الروتين الليلي</h1>
+          <h1 className="text-2xl font-bold"> الروتين الليلي</h1>
           <p className="mt-1 text-sm text-text-secondary">
             روتين مسائي للاسترخاء والعناية بالبشرة قبل النوم
           </p>
@@ -70,11 +70,11 @@ export default function NightModePage(): JSX.Element {
             padding="lg"
             className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950 dark:to-purple-950 border-none"
           >
-            <h3 className="font-bold mb-3">💡 نصائح لنوم أفضل</h3>
+            <h3 className="font-bold mb-3"> نصائح لنوم أفضل</h3>
             <div className="space-y-2">
               {allTips.map((t: string, i: number) => (
                 <p key={i} className="text-sm">
-                  🌙 {t}
+                   {t}
                 </p>
               ))}
             </div>

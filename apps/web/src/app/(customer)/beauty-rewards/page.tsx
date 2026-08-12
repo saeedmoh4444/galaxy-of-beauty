@@ -27,7 +27,7 @@ export default function BeautyRewardsPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="🎁 المكافآت" subtitle="تقديراً لكونكِ جزءاً من عائلتنا" />
+        <PageTitle title=" المكافآت" subtitle="تقديراً لكونكِ جزءاً من عائلتنا" />
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
             <BeautyRewardsCard points={1250} tier="gold" />

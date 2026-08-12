@@ -25,7 +25,7 @@ export default function BeautyExpensesScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={s.t}>💰 تحليل الإنفاق</Text>
+      <Text style={s.t}> تحليل الإنفاق</Text>
       <Text style={s.sub}>تتبعي مصاريفكِ على خدمات التجميل</Text>
 
       <View style={s.statsRow}>
@@ -58,7 +58,7 @@ export default function BeautyExpensesScreen(): JSX.Element {
 
       {byCategory.length > 0 && (
         <View style={{ marginTop: 16 }}>
-          <Text style={s.st}>📊 توزيع الإنفاق</Text>
+          <Text style={s.st}> توزيع الإنفاق</Text>
           {byCategory.map((c: any) => {
             const pct = Math.round((c.total / (d?.thisMonthTotal || 1)) * 100);
             return (
@@ -89,7 +89,7 @@ export default function BeautyExpensesScreen(): JSX.Element {
 
       {monthlyTrend.length > 0 && (
         <View style={{ marginTop: 16 }}>
-          <Text style={s.st}>📈 الاتجاه الشهري</Text>
+          <Text style={s.st}> الاتجاه الشهري</Text>
           {monthlyTrend.map((m: any) => {
             const pct = Math.round((m.total / maxVal) * 100);
             return (

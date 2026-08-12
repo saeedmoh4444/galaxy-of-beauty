@@ -19,22 +19,22 @@ interface HandwrittenNoteProps {
 
 const MILESTONE_MESSAGES: Record<number, { emoji: string; title: string; message: string }> = {
   10: {
-    emoji: '💌',
+    emoji: '',
     title: '10 حجوزات!',
     message: 'شكراً لكِ على ثقتكِ بنا. أنتِ جزء من عائلة جالاكسي بيوتي الآن.',
   },
   25: {
-    emoji: '💐',
+    emoji: '',
     title: '25 حجوزات!',
     message: 'أنتِ من أروع عميلاتنا. شكراً لوجودكِ معنا في كل مرة.',
   },
   50: {
-    emoji: '👑',
+    emoji: '',
     title: '50 حجوزات!',
     message: 'لا نجد كلمات توفيكِ حقكِ. شكراً من القلب — أنتِ ملكة جالاكسي بيوتي.',
   },
   100: {
-    emoji: '💎',
+    emoji: '',
     title: '100 حجوزات!',
     message: 'مئة مرة! أنتِ لستِ عميلة — أنتِ أخت وصديقة. شكراً لكل مرة.',
   },
@@ -82,7 +82,7 @@ export function HandwrittenNote({
         </p>
         {technicianName && (
           <p className="mt-2 text-center text-xs text-text-tertiary dark:text-gray-400">
-            ✍️ مع حب، {technicianName}
+            ️ مع حب، {technicianName}
           </p>
         )}
       </div>
@@ -90,19 +90,19 @@ export function HandwrittenNote({
       {/* Booking count */}
       <div className="mt-2 text-center">
         <span className="rounded-full bg-rose-50 px-3 py-1 text-[10px] font-bold text-rose-600 dark:bg-rose-950 dark:text-rose-400">
-          🎀 حجز #{bookingCount}
+           حجز #{bookingCount}
         </span>
       </div>
 
       {/* Next milestone */}
       {bookingCount < 100 && (
         <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-          💕 {milestone + 15 - bookingCount} حجوزات متبقية لمفاجأتكِ القادمة
+           {milestone + 15 - bookingCount} حجوزات متبقية لمفاجأتكِ القادمة
         </p>
       )}
 
       <p className="mt-1 text-center text-[9px] italic text-rose-500 dark:text-rose-400">
-        ✨ لأن كل حجز هو قصة جميلة بيننا
+         لأن كل حجز هو قصة جميلة بيننا
       </p>
     </div>
   );

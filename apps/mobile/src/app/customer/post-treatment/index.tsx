@@ -6,7 +6,7 @@ const TREATMENTS: Record<
   { emoji: string; aftercare: string[]; timeline: { day: string; action: string }[] }
 > = {
   facial: {
-    emoji: '✨',
+    emoji: '',
     aftercare: ['لا تلمسي وجهكِ', 'تجنبي المكياج ٢٤ ساعة', 'استخدمي واقي شمس', 'اشربي ماء بكثرة'],
     timeline: [
       { day: 'اليوم 1', action: 'لا تغسلي وجهكِ — اتركي المنتجات' },
@@ -15,7 +15,7 @@ const TREATMENTS: Record<
     ],
   },
   waxing: {
-    emoji: '🕯️',
+    emoji: '️',
     aftercare: ['تجنبي الشمس ٤٨ ساعة', 'لا تستخدمي مقشر', 'ارتدي ملابس قطنية', 'رطبي المنطقة'],
     timeline: [
       { day: 'اليوم 1', action: 'لا تلمسي المنطقة — تجنبي الحرارة' },
@@ -24,7 +24,7 @@ const TREATMENTS: Record<
     ],
   },
   hair_color: {
-    emoji: '💇‍♀️',
+    emoji: '‍️',
     aftercare: [
       'لا تغسلي شعركِ ٤٨ ساعة',
       'استخدمي شامبو خالي من الكبريتات',
@@ -38,7 +38,7 @@ const TREATMENTS: Record<
     ],
   },
   nails: {
-    emoji: '💅',
+    emoji: '',
     aftercare: [
       'تجنبي الماء الساخن',
       'استخدمي كريم يدين',
@@ -67,7 +67,7 @@ export default function PostTreatmentScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>💆‍♀️ متابعة ما بعد العلاج</Text>
+      <Text style={styles.t}>‍️ متابعة ما بعد العلاج</Text>
       <Text style={styles.sub}>تعليمات العناية بعد كل خدمة</Text>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 20 }}>
@@ -103,17 +103,17 @@ export default function PostTreatmentScreen(): JSX.Element {
         </View>
       </View>
 
-      <Text style={styles.st}>📋 التعليمات</Text>
+      <Text style={styles.st}> التعليمات</Text>
       <View style={styles.card}>
         {t.aftercare.map((a, i) => (
           <View key={i} style={styles.ac}>
-            <Text style={styles.acb}>✓</Text>
+            <Text style={styles.acb}></Text>
             <Text style={styles.act}>{a}</Text>
           </View>
         ))}
       </View>
 
-      <Text style={styles.st}>📅 الجدول الزمني</Text>
+      <Text style={styles.st}> الجدول الزمني</Text>
       {t.timeline.map((tl) => {
         const isDone = completed.includes(tl.day);
         return (
@@ -123,7 +123,7 @@ export default function PostTreatmentScreen(): JSX.Element {
             style={[styles.tl, isDone && styles.tlDone]}
           >
             <View style={[styles.tlc, isDone && styles.tlcDone]}>
-              <Text style={styles.tlct}>{isDone ? '✓' : '○'}</Text>
+              <Text style={styles.tlct}>{isDone ? '' : '○'}</Text>
             </View>
             <View style={{ flex: 1 }}>
               <Text style={[styles.tld, isDone && styles.tldDone]}>{tl.day}</Text>

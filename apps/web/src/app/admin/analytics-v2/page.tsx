@@ -12,7 +12,7 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">📊 التحليلات المتقدمة</h1>
+        <h1 className="text-2xl font-bold"> التحليلات المتقدمة</h1>
       </div>
       {isLoading ? (
         <div className="grid gap-4 sm:grid-cols-4">
@@ -24,28 +24,28 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
         <>
           <div className="grid gap-4 sm:grid-cols-4">
             <Card padding="lg" className="text-center">
-              <p className="text-3xl">💰</p>
+              <p className="text-3xl"></p>
               <p className="text-2xl font-bold text-brand-600">
                 {formatCurrency((d.revenue as Record<string, number>)?.today ?? 0)}
               </p>
               <p className="text-xs text-text-secondary">إيراد اليوم</p>
             </Card>
             <Card padding="lg" className="text-center">
-              <p className="text-3xl">📅</p>
+              <p className="text-3xl"></p>
               <p className="text-2xl font-bold">
                 {(d.bookings as Record<string, number>)?.today ?? 0}
               </p>
               <p className="text-xs text-text-secondary">حجز اليوم</p>
             </Card>
             <Card padding="lg" className="text-center">
-              <p className="text-3xl">👥</p>
+              <p className="text-3xl"></p>
               <p className="text-2xl font-bold">
                 {(d.users as Record<string, number>)?.activeToday ?? 0}
               </p>
               <p className="text-xs text-text-secondary">مستخدم نشط</p>
             </Card>
             <Card padding="lg" className="text-center">
-              <p className="text-3xl">👩‍🎨</p>
+              <p className="text-3xl">‍</p>
               <p className="text-2xl font-bold">
                 {(d.technicians as Record<string, number>)?.active ?? 0}
               </p>
@@ -53,7 +53,7 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
             </Card>
           </div>
           <Card padding="lg">
-            <h3 className="font-bold mb-4">📈 الإيرادات الأسبوعية</h3>
+            <h3 className="font-bold mb-4"> الإيرادات الأسبوعية</h3>
             <div className="flex items-end gap-2 h-32">
               {(d.revenue as Record<string, number[]>)?.chart?.map((v: number, i: number) => (
                 <div key={i} className="flex-1 flex flex-col items-center gap-1">
@@ -67,7 +67,7 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
             </div>
           </Card>
           <Card padding="lg">
-            <h3 className="font-bold mb-4">🔥 الخدمات الأعلى</h3>
+            <h3 className="font-bold mb-4"> الخدمات الأعلى</h3>
             <div className="space-y-2">
               {(d.topServices as Array<Record<string, unknown>>)?.map(
                 (s: Record<string, unknown>, i: number) => (
@@ -90,7 +90,7 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
             </div>
           </Card>
           <Card padding="lg" className="text-center">
-            <p className="font-bold">📊 توقعات الشهر القادم</p>
+            <p className="font-bold"> توقعات الشهر القادم</p>
             <p className="text-2xl font-extrabold text-brand-600 mt-2">
               {formatCurrency((d.forecast as Record<string, number>)?.nextMonthRevenue ?? 0)}
             </p>

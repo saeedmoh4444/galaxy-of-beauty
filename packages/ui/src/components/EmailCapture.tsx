@@ -33,14 +33,14 @@ export function EmailCapture({
     >
       {submitted ? (
         <div>
-          <span className="text-4xl">🎉</span>
+          <span className="text-4xl"></span>
           <h3 className="mt-3 text-lg font-bold">تم التسجيل بنجاح!</h3>
           <p className="mt-1 text-sm text-brand-200">كود الخصم: WELCOME10</p>
           <p className="mt-2 text-xs text-brand-300">استخدميه في أول حجز لكِ</p>
         </div>
       ) : (
         <div>
-          <span className="text-4xl">💌</span>
+          <span className="text-4xl"></span>
           <h3 className="mt-3 text-lg font-bold">احصلي على خصم {discount}</h3>
           <p className="mt-1 text-sm text-brand-200">على أول حجز لكِ عند التسجيل</p>
           <div className="mt-4 flex gap-2">

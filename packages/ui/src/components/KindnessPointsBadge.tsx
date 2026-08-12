@@ -22,28 +22,28 @@ interface LevelDef {
 
 const LEVELS: Record<KindnessLevel, LevelDef> = {
   helper: {
-    emoji: '🌸',
+    emoji: '',
     title: 'مساعدة',
     minPoints: 0,
     color: 'text-pink-600 dark:text-pink-300',
     gradient: 'from-pink-400 to-rose-400',
   },
   supporter: {
-    emoji: '🌺',
+    emoji: '',
     title: 'داعمة',
     minPoints: 100,
     color: 'text-rose-600 dark:text-rose-300',
     gradient: 'from-rose-400 to-red-400',
   },
   generous: {
-    emoji: '💖',
+    emoji: '',
     title: 'كريمة',
     minPoints: 300,
     color: 'text-purple-600 dark:text-purple-300',
     gradient: 'from-purple-400 to-violet-400',
   },
   angel: {
-    emoji: '👼',
+    emoji: '',
     title: 'ملاك',
     minPoints: 1000,
     color: 'text-amber-600 dark:text-amber-300',
@@ -144,7 +144,7 @@ export function KindnessPointsBadge({
         <div className="mt-3 rounded-xl bg-pink-50 p-2.5 dark:bg-pink-950">
           <div className="flex items-center justify-between text-[10px]">
             <span className="text-text-secondary dark:text-gray-300">
-              🎯 للوصول إلى {nextDef.title}
+               للوصول إلى {nextDef.title}
             </span>
             <span className="font-bold text-pink-700 dark:text-pink-300">{progressToNext}%</span>
           </div>
@@ -158,7 +158,7 @@ export function KindnessPointsBadge({
             />
           </div>
           <p className="mt-1 text-[9px] text-text-tertiary dark:text-gray-500">
-            متبقي {nextDef.minPoints - points} نقطة للترقية ✨
+            متبقي {nextDef.minPoints - points} نقطة للترقية 
           </p>
         </div>
       )}
@@ -166,7 +166,7 @@ export function KindnessPointsBadge({
       {/* Activity list */}
       <div className="mt-3 space-y-1">
         <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          🤝 كيف تكسبين النقاط
+           كيف تكسبين النقاط
         </p>
         {ACTIVITIES.map((a) => (
           <div
@@ -187,12 +187,12 @@ export function KindnessPointsBadge({
         onClick={onViewRewards}
         className="mt-3 w-full rounded-xl border border-pink-200 bg-pink-50 py-2 text-xs font-bold text-pink-700 hover:bg-pink-100 dark:border-pink-800 dark:bg-pink-950 dark:text-pink-300 transition-colors"
       >
-        🎁 استبدلي نقاطكِ بمكافآت
+         استبدلي نقاطكِ بمكافآت
       </button>
 
       {/* Sisterhood message */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        💕 كل نقطة تكتسبينها تعني أنكِ ساعدتِ أختاً
+         كل نقطة تكتسبينها تعني أنكِ ساعدتِ أختاً
       </p>
     </div>
   );

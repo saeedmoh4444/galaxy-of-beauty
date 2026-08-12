@@ -9,7 +9,7 @@ export function BeautyFitnessGlowCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">✨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">إشراقة الرياضة</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">توهج طبيعي بعد التمرين</p>
@@ -18,9 +18,9 @@ export function BeautyFitnessGlowCard({ className = '' }: { className?: string }
       <div className="mt-3 space-y-1">
         {[
           { emoji: '🩸', text: 'الرياضة تحسن الدورة — بشرة وردية طبيعية' },
-          { emoji: '💧', text: 'العرق ينظف المسام — بشرة أنقى' },
-          { emoji: '🧴', text: 'نظفي وجهك بعد التمرين — خلال 10 دقائق' },
-          { emoji: '🥤', text: 'اشربي ماء — الرياضة تجفف الجسم' },
+          { emoji: '', text: 'العرق ينظف المسام — بشرة أنقى' },
+          { emoji: '', text: 'نظفي وجهك بعد التمرين — خلال 10 دقائق' },
+          { emoji: '', text: 'اشربي ماء — الرياضة تجفف الجسم' },
         ].map((t, i) => (
           <div
             key={i}

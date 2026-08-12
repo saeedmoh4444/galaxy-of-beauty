@@ -5,13 +5,13 @@ export default function NotFoundScreen(): JSX.Element {
   const router = useRouter();
   return (
     <View style={styles.c}>
-      <Text style={styles.emoji}>🔍</Text>
+      <Text style={styles.emoji}></Text>
       <Text style={styles.code}>٤٠٤</Text>
       <Text style={styles.t}>عذراً، الصفحة التي تبحثين عنها غير موجودة</Text>
       <Text style={styles.sub}>ربما تم نقلها أو حذفها</Text>
       <View style={styles.btns}>
         <TouchableOpacity onPress={() => router.replace('/')} style={styles.homeBtn}>
-          <Text style={styles.homeBt}>🏠 الرئيسية</Text>
+          <Text style={styles.homeBt}> الرئيسية</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
           <Text style={styles.backBt}>↩️ رجوع</Text>

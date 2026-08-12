@@ -9,7 +9,7 @@ export function BeautyHairSummerCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🏖️</span>
+        <span className="text-xl">️</span>
         <div>
           <h4 className="text-sm font-bold text-yellow-700 dark:text-yellow-300">الشعر في الصيف</h4>
           <p className="text-[10px] text-yellow-500 dark:text-yellow-400">
@@ -19,10 +19,10 @@ export function BeautyHairSummerCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '☀️', text: 'واقي شعر SPF — قبل التعرض للشمس' },
-          { emoji: '🧢', text: 'قبعة واسعة — تحمي الشعر وفروة الرأس' },
-          { emoji: '🌊', text: 'اشطفي الشعر بماء عذب قبل وبعد البحر' },
-          { emoji: '💧', text: 'ترطيب مكثف — الشمس تجفف الشعر' },
+          { emoji: '️', text: 'واقي شعر SPF — قبل التعرض للشمس' },
+          { emoji: '', text: 'قبعة واسعة — تحمي الشعر وفروة الرأس' },
+          { emoji: '', text: 'اشطفي الشعر بماء عذب قبل وبعد البحر' },
+          { emoji: '', text: 'ترطيب مكثف — الشمس تجفف الشعر' },
         ].map((t, i) => (
           <div
             key={i}

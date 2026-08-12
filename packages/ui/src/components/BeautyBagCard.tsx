@@ -19,7 +19,7 @@ export function BeautyBagCard({ className = '' }: BeautyBagCardProps): JSX.Eleme
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">👜</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">حقيبة الجمال</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">أساسيات لا تستغني عنها</p>
@@ -27,10 +27,10 @@ export function BeautyBagCard({ className = '' }: BeautyBagCardProps): JSX.Eleme
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '💄', label: 'أحمر شفاه', tip: 'لون ناعم للإطلالة اليومية' },
+          { emoji: '', label: 'أحمر شفاه', tip: 'لون ناعم للإطلالة اليومية' },
           { emoji: '🪞', label: 'مرآة صغيرة', tip: 'للمسات السريعة' },
-          { emoji: '🧴', label: 'مرطب سفر', tip: 'حجم صغير للطوارئ' },
-          { emoji: '☀️', label: 'واقي شمس', tip: 'Mini size للشنطة' },
+          { emoji: '', label: 'مرطب سفر', tip: 'حجم صغير للطوارئ' },
+          { emoji: '️', label: 'واقي شمس', tip: 'Mini size للشنطة' },
         ].map((t) => (
           <div key={t.label} className="rounded-lg bg-indigo-50 px-2.5 py-2 dark:bg-indigo-950">
             <span className="text-sm">{t.emoji}</span>

@@ -24,10 +24,10 @@ interface BeautyMythBusterCardProps {
 }
 
 const CAT_EMOJIS = {
-  skincare: '🧴',
-  haircare: '💇',
-  makeup: '💄',
-  general: '🔍',
+  skincare: '',
+  haircare: '',
+  makeup: '',
+  general: '',
 };
 
 export function BeautyMythBusterCard({
@@ -50,7 +50,7 @@ export function BeautyMythBusterCard({
       {/* Header */}
       <div className="flex items-center gap-2">
         <span className="text-lg" aria-hidden="true">
-          🔍
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">
@@ -63,7 +63,7 @@ export function BeautyMythBusterCard({
       {/* Myth */}
       <div className="mt-3 rounded-xl bg-rose-50 p-4 dark:bg-rose-950">
         <p className="text-center text-[10px] font-bold text-rose-500 dark:text-rose-400">
-          🗣️ الخرافة الشائعة
+          ️ الخرافة الشائعة
         </p>
         <p className="mt-1 text-center text-sm font-bold text-rose-800 dark:text-rose-200">
           &ldquo;{myth}&rdquo;
@@ -77,7 +77,7 @@ export function BeautyMythBusterCard({
           onClick={() => setRevealed(true)}
           className="mt-3 w-full rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 py-2.5 text-xs font-bold text-white hover:from-rose-600 hover:to-pink-600 active:scale-[0.98] transition-all shadow-sm"
         >
-          اكشفي الحقيقة 🔍
+          اكشفي الحقيقة 
         </button>
       )}
 
@@ -87,7 +87,7 @@ export function BeautyMythBusterCard({
           {/* Verdict */}
           <div className="rounded-xl bg-emerald-50 p-4 text-center dark:bg-emerald-950">
             <p className="text-2xl" aria-hidden="true">
-              ❌
+              
             </p>
             <p className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">خرافة!</p>
             <p className="mt-1 text-xs leading-relaxed text-emerald-700 dark:text-emerald-300">
@@ -99,7 +99,7 @@ export function BeautyMythBusterCard({
           {source && (
             <div className="rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
               <p className="text-[10px] text-text-tertiary dark:text-gray-500">
-                📚 المصدر: {source}
+                 المصدر: {source}
               </p>
             </div>
           )}
@@ -120,7 +120,7 @@ export function BeautyMythBusterCard({
 
           {/* Knowledge tip */}
           <p className="text-center text-[9px] text-text-tertiary dark:text-gray-500">
-            💡 المعرفة قوة — لا تصدقي كل ما تسمعينه عن الجمال
+             المعرفة قوة — لا تصدقي كل ما تسمعينه عن الجمال
           </p>
         </div>
       )}

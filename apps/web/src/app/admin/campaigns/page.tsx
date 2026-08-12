@@ -28,7 +28,7 @@ export default function AdminCampaignsPage(): JSX.Element {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">📢 الحملات</h1>
+        <h1 className="text-2xl font-bold"> الحملات</h1>
         <Button onClick={() => setShowCreate(true)}>إضافة حملة</Button>
       </div>
       {isLoading ? (

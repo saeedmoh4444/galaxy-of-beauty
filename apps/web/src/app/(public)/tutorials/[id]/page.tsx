@@ -20,10 +20,10 @@ const DIFFICULTY_META: Record<string, { label: string; color: string }> = {
 };
 
 const CATEGORY_META: Record<string, { label: string; emoji: string }> = {
-  makeup: { label: 'مكياج', emoji: '💄' },
-  hair: { label: 'شعر', emoji: '💇‍♀️' },
-  skincare: { label: 'عناية بالبشرة', emoji: '✨' },
-  nails: { label: 'أظافر', emoji: '💅' },
+  makeup: { label: 'مكياج', emoji: '' },
+  hair: { label: 'شعر', emoji: '‍️' },
+  skincare: { label: 'عناية بالبشرة', emoji: '' },
+  nails: { label: 'أظافر', emoji: '' },
 };
 
 function formatViews(n: number): string {
@@ -93,7 +93,7 @@ export default function TutorialDetailPage(): JSX.Element {
   const views = (tutorial.views as number) ?? 0;
   const likes = (tutorial.likes as number) ?? 0;
   const diffMeta = DIFFICULTY_META[difficulty] ?? DEFAULT_DIFFICULTY;
-  const catMeta = CATEGORY_META[category] ?? { label: category, emoji: '📹' };
+  const catMeta = CATEGORY_META[category] ?? { label: category, emoji: '' };
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
@@ -115,7 +115,7 @@ export default function TutorialDetailPage(): JSX.Element {
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-white/40">
             <div className="text-center">
-              <span className="text-6xl">📹</span>
+              <span className="text-6xl"></span>
               <p className="mt-2">الفيديو غير متوفر</p>
             </div>
           </div>
@@ -137,9 +137,9 @@ export default function TutorialDetailPage(): JSX.Element {
               <span className="text-sm text-gray-500">
                 {catMeta.emoji} {catMeta.label}
               </span>
-              <span className="text-sm text-gray-500">⏱️ {duration}</span>
-              <span className="text-sm text-gray-500">👁️ {formatViews(views)} مشاهدة</span>
-              <span className="text-sm text-gray-500">❤️ {likes}</span>
+              <span className="text-sm text-gray-500">️ {duration}</span>
+              <span className="text-sm text-gray-500">️ {formatViews(views)} مشاهدة</span>
+              <span className="text-sm text-gray-500">️ {likes}</span>
             </div>
           </div>
         </div>
@@ -173,7 +173,7 @@ export default function TutorialDetailPage(): JSX.Element {
         {desc && (
           <div className="mt-6 rounded-2xl bg-gray-50 p-5 dark:bg-gray-900">
             <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
-              📝 وصف الدرس
+               وصف الدرس
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-wrap">
               {desc}
@@ -184,7 +184,7 @@ export default function TutorialDetailPage(): JSX.Element {
 
       {/* Bottom CTA */}
       <div className="mt-10 rounded-2xl bg-gradient-to-r from-brand-500 to-purple-500 p-6 text-center text-white">
-        <p className="text-xl font-bold">🎓 تعلمي المزيد!</p>
+        <p className="text-xl font-bold"> تعلمي المزيد!</p>
         <p className="mt-1 text-white/80">تصفحي جميع دروس الجمال وتعلمي من أفضل الخبراء</p>
         <Link href="/tutorials" className="mt-4 inline-block">
           <span className="inline-flex items-center gap-2 rounded-xl bg-white/20 px-5 py-2 text-sm font-bold backdrop-blur hover:bg-white/30 transition-colors">

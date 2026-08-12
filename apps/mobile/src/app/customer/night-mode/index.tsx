@@ -46,7 +46,7 @@ export default function NightModeScreen(): JSX.Element {
         />
       }
     >
-      <Text style={[styles.t, enabled && styles.tDark]}>🌙 الوضع الليلي</Text>
+      <Text style={[styles.t, enabled && styles.tDark]}> الوضع الليلي</Text>
 
       <View style={[styles.row, enabled && styles.rowDark]}>
         <Text style={[styles.label, enabled && styles.labelDark]}>تفعيل الوضع الليلي</Text>
@@ -58,7 +58,7 @@ export default function NightModeScreen(): JSX.Element {
       </View>
 
       <View style={[styles.section, enabled && styles.sectionDark]}>
-        <Text style={[styles.st, enabled && styles.stDark]}>🎨 الألوان</Text>
+        <Text style={[styles.st, enabled && styles.stDark]}> الألوان</Text>
         <Text style={[styles.desc, enabled && styles.descDark]}>
           خلفيات داكنة ونصوص فاتحة لتجربة مريحة للعين في الإضاءة المنخفضة
         </Text>
@@ -72,7 +72,7 @@ export default function NightModeScreen(): JSX.Element {
       </View>
 
       <Text style={[styles.hint, enabled && styles.hintDark]}>
-        💡 الوضع الليلي يقلل إجهاد العين ويوفر البطارية
+         الوضع الليلي يقلل إجهاد العين ويوفر البطارية
       </Text>
     </ScrollView>
   );

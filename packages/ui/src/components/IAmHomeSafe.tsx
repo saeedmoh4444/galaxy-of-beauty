@@ -60,7 +60,7 @@ export function IAmHomeSafe({
       {/* Status */}
       <div className="flex items-center gap-2">
         <span className="text-2xl" aria-hidden="true">
-          {checkedIn ? '✅' : '🏠'}
+          {checkedIn ? '' : ''}
         </span>
         <div>
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
@@ -81,7 +81,7 @@ export function IAmHomeSafe({
           onClick={handleCheckIn}
           className="mt-3 w-full rounded-xl bg-emerald-600 py-3 text-sm font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all shadow-sm shadow-emerald-200 dark:shadow-emerald-900"
         >
-          ✅ وصلت للمنزل بأمان
+           وصلت للمنزل بأمان
         </button>
       )}
 
@@ -90,7 +90,7 @@ export function IAmHomeSafe({
         <div className="mt-3 space-y-2">
           <div className="rounded-xl bg-emerald-100 p-3 text-center dark:bg-emerald-900">
             <p className="text-lg" aria-hidden="true">
-              🤲
+              
             </p>
             <p className="text-xs font-bold text-emerald-800 dark:text-emerald-200">
               الحمد لله على سلامتِك
@@ -105,7 +105,7 @@ export function IAmHomeSafe({
             type="button"
             className="w-full rounded-xl border border-emerald-200 bg-white py-2 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:bg-gray-800 dark:text-emerald-300"
           >
-            ⭐ قيّمي تجربتكِ
+             قيّمي تجربتكِ
           </button>
         </div>
       )}
@@ -114,7 +114,7 @@ export function IAmHomeSafe({
       {alertContact && !checkedIn && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-white/60 p-2 dark:bg-black/20">
           <span className="text-xs" aria-hidden="true">
-            📞
+            
           </span>
           <span className="text-[10px] text-text-secondary dark:text-gray-300">
             سيتم إشعار {alertContact.name} ({alertContact.phone}) إذا لم تؤكدي وصولكِ
@@ -126,7 +126,7 @@ export function IAmHomeSafe({
       {!checkedIn && (
         <div className="mt-2">
           <div className="flex items-center justify-between text-[9px] text-text-tertiary dark:text-gray-500">
-            <span>⏰ وقت التأكيد المتبقي</span>
+            <span> وقت التأكيد المتبقي</span>
             <span>{graceMinutes} دقيقة</span>
           </div>
           <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-white/60 dark:bg-gray-800">

@@ -6,7 +6,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 const CHALLENGES = [
   {
     key: '7day_mask',
-    emoji: '✨',
+    emoji: '',
     name: 'تحدي ٧ أيام قناع',
     desc: 'قناع يومي للبشرة لمدة أسبوع',
     participants: 234,
@@ -15,7 +15,7 @@ const CHALLENGES = [
   },
   {
     key: 'selfie_30',
-    emoji: '📸',
+    emoji: '',
     name: 'تحدي ٣٠ يوم بدون مكياج',
     desc: 'صوري بشرتكِ يومياً بدون مكياج',
     participants: 156,
@@ -24,7 +24,7 @@ const CHALLENGES = [
   },
   {
     key: 'water_challenge',
-    emoji: '💧',
+    emoji: '',
     name: 'تحدي ٨ أكواب ماء',
     desc: 'اشربي ٨ أكواب ماء يومياً',
     participants: 412,
@@ -33,7 +33,7 @@ const CHALLENGES = [
   },
   {
     key: 'night_routine',
-    emoji: '🌙',
+    emoji: '',
     name: 'تحدي الروتين الليلي',
     desc: 'التزمي بروتينكِ الليلي لمدة ٢١ يوم',
     participants: 189,
@@ -42,7 +42,7 @@ const CHALLENGES = [
   },
   {
     key: 'natural_hair',
-    emoji: '💇‍♀️',
+    emoji: '‍️',
     name: 'تحدي شعر طبيعي',
     desc: 'تجنبي الحرارة لمدة أسبوعين',
     participants: 98,
@@ -89,12 +89,12 @@ export default function SocialChallengesPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🏆 تحديات اجتماعية</h1>
+          <h1 className="text-2xl font-bold"> تحديات اجتماعية</h1>
           <p className="mt-1 text-sm text-text-secondary">انضمي للتحديات الجماعية وكسبي مكافآت</p>
         </div>
         {joined.length > 0 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">⭐ تحدياتي ({joined.length})</h3>
+            <h3 className="font-bold mb-3"> تحدياتي ({joined.length})</h3>
             <div className="flex flex-wrap gap-2">
               {joined.map((k) => {
                 const c = CHALLENGES.find((x) => x.key === k);
@@ -118,9 +118,9 @@ export default function SocialChallengesPage(): JSX.Element {
                     <h3 className="font-bold text-lg">{c.name}</h3>
                     <p className="text-sm text-text-secondary">{c.desc}</p>
                     <div className="mt-2 flex gap-4 text-xs text-text-secondary">
-                      <span>👥 {c.participants}</span>
-                      <span>⏱️ {c.duration}</span>
-                      <span>🎁 {c.prize}</span>
+                      <span> {c.participants}</span>
+                      <span>️ {c.duration}</span>
+                      <span> {c.prize}</span>
                     </div>
                   </div>
                   <Button
@@ -132,7 +132,7 @@ export default function SocialChallengesPage(): JSX.Element {
                         : joinMut.mutate({ challengeKey: c.key })
                     }
                   >
-                    {isJoined ? '✅ منضم' : 'انضمام'}
+                    {isJoined ? ' منضم' : 'انضمام'}
                   </Button>
                 </div>
               </Card>

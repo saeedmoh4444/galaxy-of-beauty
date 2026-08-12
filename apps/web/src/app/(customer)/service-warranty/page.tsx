@@ -16,19 +16,19 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 const COMPENSATION_TYPES = [
   {
     key: 'redo' as const,
-    emoji: '🔄',
+    emoji: '',
     label: 'إعادة الخدمة مجاناً',
     desc: 'سنقوم بإعادة الخدمة بدون تكلفة إضافية',
   },
   {
     key: 'refund' as const,
-    emoji: '💰',
+    emoji: '',
     label: 'استرداد المبلغ',
     desc: 'استرداد كامل لقيمة الخدمة',
   },
   {
     key: 'credit' as const,
-    emoji: '🎫',
+    emoji: '',
     label: 'رصيد تعويضي',
     desc: 'رصيد في المحفظة بنسبة ٣٠٪ من قيمة الخدمة',
   },
@@ -93,7 +93,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🛡️ ضمان الخدمة</h1>
+          <h1 className="text-2xl font-bold">️ ضمان الخدمة</h1>
           <p className="mt-1 text-sm text-text-secondary">
             رضاكِ مضمون — إذا لم تكوني راضية، نضمن لكِ حقكِ
           </p>
@@ -101,7 +101,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
 
         {/* Coverage */}
         <Card padding="lg">
-          <h3 className="font-bold text-lg mb-4">✨ ماذا يغطي الضمان؟</h3>
+          <h3 className="font-bold text-lg mb-4"> ماذا يغطي الضمان؟</h3>
           {pLoad ? (
             <CardSkeleton />
           ) : (
@@ -122,7 +122,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
 
         {/* Eligibility Check */}
         <Card padding="lg">
-          <h3 className="font-bold text-lg mb-4">🔍 التحقق من الأهلية</h3>
+          <h3 className="font-bold text-lg mb-4"> التحقق من الأهلية</h3>
           <div className="flex gap-2">
             <input
               type="number"
@@ -138,8 +138,8 @@ export default function ServiceWarrantyPage(): JSX.Element {
               className={`mt-3 rounded-lg p-3 text-sm ${(eligibility.eligible as boolean) ? 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300' : 'bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-400'}`}
             >
               {(eligibility.eligible as boolean)
-                ? '✅ الحجز مؤهل للضمان'
-                : `❌ ${eligibility.reason as string}`}
+                ? ' الحجز مؤهل للضمان'
+                : ` ${eligibility.reason as string}`}
               {(eligibility.eligible as boolean) && (
                 <div className="mt-2">
                   <Button size="sm" onClick={() => setShowClaim(true)}>
@@ -152,7 +152,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
         </Card>
 
         {/* My Claims */}
-        <h3 className="text-lg font-bold">📋 مطالباتي</h3>
+        <h3 className="text-lg font-bold"> مطالباتي</h3>
         {cLoad ? (
           <CardSkeleton />
         ) : isError ? (
@@ -240,7 +240,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
                 إلغاء
               </Button>
               <Button onClick={handleClaim} loading={claimMut.isPending}>
-                🛡️ تقديم المطالبة
+                ️ تقديم المطالبة
               </Button>
             </div>
           </div>

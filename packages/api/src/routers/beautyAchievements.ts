@@ -3,17 +3,17 @@ import { prisma } from '@galaxy/db';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
 const ACHIEVEMENTS = [
-  { key: 'first_booking', emoji: '🌟', title: 'أول حجز', description: 'أكملتِ أول حجز لكِ' },
-  { key: 'five_bookings', emoji: '⭐', title: '5 حجوزات', description: 'أكملتِ 5 حجوزات' },
-  { key: 'ten_bookings', emoji: '💫', title: '10 حجوزات', description: 'أكملتِ 10 حجوزات' },
-  { key: 'first_review', emoji: '📝', title: 'أول تقييم', description: 'كتبتِ أول تقييم' },
+  { key: 'first_booking', emoji: '', title: 'أول حجز', description: 'أكملتِ أول حجز لكِ' },
+  { key: 'five_bookings', emoji: '', title: '5 حجوزات', description: 'أكملتِ 5 حجوزات' },
+  { key: 'ten_bookings', emoji: '', title: '10 حجوزات', description: 'أكملتِ 10 حجوزات' },
+  { key: 'first_review', emoji: '', title: 'أول تقييم', description: 'كتبتِ أول تقييم' },
   {
     key: 'streak_7',
-    emoji: '🔥',
+    emoji: '',
     title: '7 أيام متتالية',
     description: 'حافظتِ على روتينك 7 أيام',
   },
-  { key: 'referral_3', emoji: '👯', title: '3 دعوات', description: 'دعوتِ 3 صديقات' },
+  { key: 'referral_3', emoji: '', title: '3 دعوات', description: 'دعوتِ 3 صديقات' },
 ];
 
 export const beautyAchievementsRouter = router({

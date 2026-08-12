@@ -41,14 +41,14 @@ export default function AdminTechniciansScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>👩‍🎨 الفنيات</Text>
+      <Text style={styles.t}>‍ الفنيات</Text>
       {data.map((t: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.avatar}>👩‍🎨</Text>
+          <Text style={styles.avatar}>‍</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{t.name as string}</Text>
             <Text style={styles.meta}>
-              ⭐ {(t.rating as number) ?? 0} · {t.city as string}
+               {(t.rating as number) ?? 0} · {t.city as string}
             </Text>
           </View>
         </View>

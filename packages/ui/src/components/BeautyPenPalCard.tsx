@@ -38,7 +38,7 @@ export function BeautyPenPalCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          ✉️
+          ️
         </span>
         <h4 className="mt-1 text-sm font-bold text-purple-700 dark:text-purple-300">
           صديقة الجمال
@@ -53,16 +53,16 @@ export function BeautyPenPalCard({
         <div className="flex items-center justify-center gap-4">
           <div className="text-center">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-purple-200 text-lg dark:bg-purple-800">
-              👩
+              
             </div>
             <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">أنتِ</p>
           </div>
           <span className="text-purple-400 text-xl" aria-hidden="true">
-            💌
+            
           </span>
           <div className="text-center">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-pink-200 text-lg dark:bg-pink-800">
-              👩‍🎨
+              ‍
             </div>
             <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
               صديقتكِ
@@ -75,12 +75,12 @@ export function BeautyPenPalCard({
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-purple-50 p-2.5 text-center dark:bg-purple-950">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">المدينة</p>
-          <p className="text-xs font-bold text-purple-700 dark:text-purple-300">📍 {match.city}</p>
+          <p className="text-xs font-bold text-purple-700 dark:text-purple-300"> {match.city}</p>
         </div>
         <div className="rounded-xl bg-purple-50 p-2.5 text-center dark:bg-purple-950">
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">الاهتمام</p>
           <p className="text-xs font-bold text-purple-700 dark:text-purple-300">
-            {match.emoji || '💄'} {match.interest}
+            {match.emoji || ''} {match.interest}
           </p>
         </div>
       </div>
@@ -107,11 +107,11 @@ export function BeautyPenPalCard({
         onClick={onConnect}
         className="mt-3 w-full rounded-xl bg-purple-600 py-2.5 text-xs font-bold text-white hover:bg-purple-700 active:scale-[0.98] transition-all"
       >
-        تواصلي معها 💌
+        تواصلي معها 
       </button>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        💕 الصداقة أجمل هدية — من الرياض إلى جدة إلى الدمام
+         الصداقة أجمل هدية — من الرياض إلى جدة إلى الدمام
       </p>
     </div>
   );

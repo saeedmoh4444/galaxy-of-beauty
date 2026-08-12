@@ -5,9 +5,9 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 const STEPS = [
-  { key: 'consultation', emoji: '💬', title: 'استشارة', desc: 'تحديد احتياجات العروس' },
-  { key: 'trial', emoji: '🧪', title: 'تجربة', desc: 'تجربة المكياج والتسريحة' },
-  { key: 'final', emoji: '👰', title: 'اليوم الكبير', desc: 'يوم الزفاف' },
+  { key: 'consultation', emoji: '', title: 'استشارة', desc: 'تحديد احتياجات العروس' },
+  { key: 'trial', emoji: '', title: 'تجربة', desc: 'تجربة المكياج والتسريحة' },
+  { key: 'final', emoji: '', title: 'اليوم الكبير', desc: 'يوم الزفاف' },
 ];
 
 export default function BridalConciergeScreen(): JSX.Element {
@@ -28,10 +28,10 @@ export default function BridalConciergeScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={styles.t}>👰 كونسيرج العروس</Text>
+      <Text style={styles.t}> كونسيرج العروس</Text>
       <Text style={styles.sub}>خططي ليوم زفافك المثالي</Text>
       <View style={styles.progressCard}>
-        <Text style={styles.progressEmoji}>💍</Text>
+        <Text style={styles.progressEmoji}></Text>
         <Text style={styles.progressTitle}>تقدم التحضيرات</Text>
         <View style={styles.progressBar}>
           <View
@@ -52,17 +52,17 @@ export default function BridalConciergeScreen(): JSX.Element {
               <Text style={styles.stepDesc}>{step.desc}</Text>
               {stepData?.date && (
                 <Text style={styles.stepDate}>
-                  📅 {new Date(stepData.date as string).toLocaleDateString('ar-SA')}
+                   {new Date(stepData.date as string).toLocaleDateString('ar-SA')}
                 </Text>
               )}
             </View>
-            <Text style={styles.stepStatus}>{stepData?.completed ? '✅' : '⏳'}</Text>
+            <Text style={styles.stepStatus}>{stepData?.completed ? '' : ''}</Text>
           </View>
         );
       })}
       {d.weddingDate && (
         <View style={styles.countdown}>
-          <Text style={styles.countdownEmoji}>⏳</Text>
+          <Text style={styles.countdownEmoji}></Text>
           <Text style={styles.countdownText}>الأيام المتبقية: {d.daysUntil as number}</Text>
         </View>
       )}

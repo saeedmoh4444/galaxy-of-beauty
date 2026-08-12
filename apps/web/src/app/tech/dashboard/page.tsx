@@ -46,46 +46,46 @@ export default function TechDashboardPage(): JSX.Element {
           <ErrorAlert message="فشل التحميل" onRetry={() => earnings.refetch()} />
         ) : (
           <div className="grid gap-4 md:grid-cols-4">
-            <StatCard label="أرباح اليوم" value={formatCurrency(Number(todayEarnings))} icon="💰" />
+            <StatCard label="أرباح اليوم" value={formatCurrency(Number(todayEarnings))} icon="" />
             <StatCard
               label="أرباح الأسبوع"
               value={formatCurrency(Number(weekEarnings))}
-              icon="📊"
+              icon=""
             />
-            <StatCard label="أرباح الشهر" value={formatCurrency(Number(monthEarnings))} icon="📈" />
-            <StatCard label="التقييم" value={`⭐ ${Number(rating).toFixed(1)}`} icon="⭐" />
+            <StatCard label="أرباح الشهر" value={formatCurrency(Number(monthEarnings))} icon="" />
+            <StatCard label="التقييم" value={` ${Number(rating).toFixed(1)}`} icon="" />
           </div>
         )}
 
         {/* Performance Summary */}
         <div className="grid gap-4 md:grid-cols-3">
-          <StatCard label="حجوزات مكتملة" value={completedBookings} icon="📅" />
-          <StatCard label="تقييم العملاء" value={Number(rating).toFixed(1)} icon="⭐" />
+          <StatCard label="حجوزات مكتملة" value={completedBookings} icon="" />
+          <StatCard label="تقييم العملاء" value={Number(rating).toFixed(1)} icon="" />
           <StatCard
             label="حالة التوثيق"
             value={profile?.technician?.kycStatus === 'VERIFIED' ? 'موثقة' : 'قيد المراجعة'}
-            icon="✅"
+            icon=""
           />
         </div>
 
         {/* Quick Actions */}
         <div className="flex flex-wrap gap-2">
           <Link href="/tech/slots">
-            <Button variant="outline">📅 إدارة المواعيد</Button>
+            <Button variant="outline"> إدارة المواعيد</Button>
           </Link>
           <Link href="/tech/profile">
-            <Button variant="outline">👤 تعديل الملف</Button>
+            <Button variant="outline"> تعديل الملف</Button>
           </Link>
           <Link href="/tech/earnings">
-            <Button variant="outline">💰 الأرباح</Button>
+            <Button variant="outline"> الأرباح</Button>
           </Link>
           <Link href="/tech/calendar">
-            <Button variant="outline">📆 تقويم</Button>
+            <Button variant="outline"> تقويم</Button>
           </Link>
         </div>
 
         {/* Pending Bookings */}
-        <h2 className="text-lg font-semibold text-text-primary">📋 طلبات الحجز المعلقة</h2>
+        <h2 className="text-lg font-semibold text-text-primary"> طلبات الحجز المعلقة</h2>
         {pending.isLoading ? (
           <CardListSkeleton count={3} />
         ) : pending.isError ? (

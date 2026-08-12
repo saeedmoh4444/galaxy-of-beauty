@@ -43,7 +43,7 @@ export default function CompareScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>⚖️ مقارنة الخدمات</Text>
+      <Text style={styles.t}>️ مقارنة الخدمات</Text>
       <View style={styles.grid}>
         {services.map((s: any) => {
           const isSel = selected.includes(s.id);
@@ -53,7 +53,7 @@ export default function CompareScreen(): JSX.Element {
               onPress={() => toggle(s.id)}
               style={[styles.ch, isSel && styles.cha]}
             >
-              <Text style={styles.ce}>{(s.emoji as string) ?? '💆‍♀️'}</Text>
+              <Text style={styles.ce}>{(s.emoji as string) ?? '‍️'}</Text>
               <Text style={[styles.cn, isSel && styles.cna]}>{s.nameAr as string}</Text>
               <Text style={styles.cp}>{(s.price as number)?.toLocaleString()} ر.س</Text>
             </TouchableOpacity>
@@ -62,16 +62,16 @@ export default function CompareScreen(): JSX.Element {
       </View>
       {ci.length > 0 && (
         <View style={styles.tbl}>
-          <Text style={styles.ttl}>📊 المقارنة</Text>
+          <Text style={styles.ttl}> المقارنة</Text>
           {ci.map((s: any) => (
             <View key={s.id} style={styles.tc}>
               <Text style={styles.tcn}>{s.nameAr as string}</Text>
               <View style={styles.tr}>
-                <Text style={styles.tl}>💰</Text>
+                <Text style={styles.tl}></Text>
                 <Text style={styles.tv}>{(s.price as number)?.toLocaleString()} ر.س</Text>
               </View>
               <View style={styles.tr}>
-                <Text style={styles.tl}>⏱️</Text>
+                <Text style={styles.tl}>️</Text>
                 <Text style={styles.tv}>{s.duration as string}</Text>
               </View>
             </View>

@@ -76,7 +76,7 @@ export function BeautyQuizCard({ className = '' }: BeautyQuizCardProps): JSX.Ele
         )}
       >
         <span className="text-4xl" aria-hidden="true">
-          🏆
+          
         </span>
         <h4 className="mt-2 text-sm font-bold text-teal-700 dark:text-teal-300">انتهى الاختبار!</h4>
         <p className="mt-1 text-lg font-bold text-teal-800 dark:text-teal-200">
@@ -84,10 +84,10 @@ export function BeautyQuizCard({ className = '' }: BeautyQuizCardProps): JSX.Ele
         </p>
         <p className="text-[10px] text-text-tertiary dark:text-gray-400 mt-1">
           {score === QUESTIONS.length
-            ? 'ممتاز! أنتِ خبيرة جمال 👑'
+            ? 'ممتاز! أنتِ خبيرة جمال '
             : score >= 2
-              ? 'جيد! واصلي التعلم 🌟'
-              : 'لا بأس — تعلمي المزيد 🌱'}
+              ? 'جيد! واصلي التعلم '
+              : 'لا بأس — تعلمي المزيد '}
         </p>
         <button
           type="button"
@@ -99,7 +99,7 @@ export function BeautyQuizCard({ className = '' }: BeautyQuizCardProps): JSX.Ele
           }}
           className="mt-3 rounded-xl bg-teal-600 px-4 py-2 text-xs font-bold text-white hover:bg-teal-700"
         >
-          حاولي مرة أخرى 🔄
+          حاولي مرة أخرى 
         </button>
       </div>
     );
@@ -115,7 +115,7 @@ export function BeautyQuizCard({ className = '' }: BeautyQuizCardProps): JSX.Ele
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-lg" aria-hidden="true">
-            🧠
+            
           </span>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">اختبار الجمال</h4>
         </div>
@@ -151,8 +151,8 @@ export function BeautyQuizCard({ className = '' }: BeautyQuizCardProps): JSX.Ele
               )}
             >
               <span className="font-bold">{['أ', 'ب', 'ج', 'د'][i]}.</span> {opt}
-              {selected !== null && i === q.correct && <span className="float-right">✅</span>}
-              {selected === i && i !== q.correct && <span className="float-right">❌</span>}
+              {selected !== null && i === q.correct && <span className="float-right"></span>}
+              {selected === i && i !== q.correct && <span className="float-right"></span>}
             </button>
           );
         })}
@@ -162,7 +162,7 @@ export function BeautyQuizCard({ className = '' }: BeautyQuizCardProps): JSX.Ele
       {selected !== null && (
         <div className="mt-2 rounded-lg bg-teal-50 p-2.5 dark:bg-teal-950">
           <p className="text-[10px] text-teal-800 dark:text-teal-200">
-            {isCorrect ? '✅ صحيح! ' : '❌ خطأ! '}
+            {isCorrect ? ' صحيح! ' : ' خطأ! '}
             {q.explanation}
           </p>
         </div>
@@ -175,7 +175,7 @@ export function BeautyQuizCard({ className = '' }: BeautyQuizCardProps): JSX.Ele
           onClick={next}
           className="mt-2 w-full rounded-xl bg-teal-600 py-2 text-xs font-bold text-white hover:bg-teal-700"
         >
-          {qIndex < QUESTIONS.length - 1 ? 'السؤال التالي ←' : 'النتيجة 🏆'}
+          {qIndex < QUESTIONS.length - 1 ? 'السؤال التالي ←' : 'النتيجة '}
         </button>
       )}
     </div>

@@ -19,7 +19,7 @@ export const beautyHabitsRouter = router({
       });
       if (!habit)
         return prisma.beautyHabit.create({
-          data: { userId: ctx.user.id, name: 'عادة جديدة', emoji: '✅', doneToday: true },
+          data: { userId: ctx.user.id, name: 'عادة جديدة', emoji: '', doneToday: true },
         });
 
       await prisma.beautyHabit.update({
@@ -33,7 +33,7 @@ export const beautyHabitsRouter = router({
     }),
 
   create: customerProcedure
-    .input(z.object({ name: z.string().min(1).max(100), emoji: z.string().default('✅') }))
+    .input(z.object({ name: z.string().min(1).max(100), emoji: z.string().default('') }))
     .mutation(async ({ ctx, input }) => {
       return prisma.beautyHabit.create({
         data: { userId: ctx.user.id, name: input.name, emoji: input.emoji },

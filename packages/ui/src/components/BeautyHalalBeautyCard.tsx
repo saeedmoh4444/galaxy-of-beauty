@@ -9,7 +9,7 @@ export function BeautyHalalBeautyCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">☪️</span>
+        <span className="text-xl">️</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             الجمال الحلال
@@ -21,10 +21,10 @@ export function BeautyHalalBeautyCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: 'خالٍ من الكحول والمواد المحرمة' },
-          { emoji: '💧', text: 'قابل للوضوء — يسمح بمرور الماء للبشرة' },
-          { emoji: '🔍', text: 'ابحثي عن شهادة حلال معتمدة' },
-          { emoji: '🇸🇦', text: 'يزداد الطلب — منتجات حلال سعودية' },
+          { emoji: '', text: 'خالٍ من الكحول والمواد المحرمة' },
+          { emoji: '', text: 'قابل للوضوء — يسمح بمرور الماء للبشرة' },
+          { emoji: '', text: 'ابحثي عن شهادة حلال معتمدة' },
+          { emoji: '', text: 'يزداد الطلب — منتجات حلال سعودية' },
         ].map((t, i) => (
           <div
             key={i}

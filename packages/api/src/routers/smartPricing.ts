@@ -9,7 +9,7 @@ const DYNAMIC_PRICES = [
     demand: 'medium',
     discount: 7,
     reason: 'الطلب متوسط — خصم ٧٪',
-    emoji: '💄',
+    emoji: '',
   },
   {
     service: 'تنظيف بشرة',
@@ -18,7 +18,7 @@ const DYNAMIC_PRICES = [
     demand: 'high',
     discount: 0,
     reason: 'طلب مرتفع — السعر الأساسي',
-    emoji: '✨',
+    emoji: '',
   },
   {
     service: 'مساج',
@@ -27,7 +27,7 @@ const DYNAMIC_PRICES = [
     demand: 'low',
     discount: 10,
     reason: 'الطلب منخفض — خصم ١٠٪',
-    emoji: '💆‍♀️',
+    emoji: '‍️',
   },
   {
     service: 'مانيكير',
@@ -36,7 +36,7 @@ const DYNAMIC_PRICES = [
     demand: 'low',
     discount: 10,
     reason: 'عرض الأحد — خصم ١٠٪',
-    emoji: '💅',
+    emoji: '',
   },
 ];
 

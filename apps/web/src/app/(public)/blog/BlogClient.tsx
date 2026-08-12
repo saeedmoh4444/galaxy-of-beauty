@@ -68,7 +68,7 @@ export function BlogClient({
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl">📝</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           مدونة الجمال
         </h1>
@@ -85,7 +85,7 @@ export function BlogClient({
             setSearch(e.target.value);
             setPage(1);
           }}
-          placeholder="🔍 ابحثي في المقالات..."
+          placeholder=" ابحثي في المقالات..."
           className="w-full max-w-md rounded-xl border border-edge bg-surface-muted px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
         />
       </div>
@@ -125,7 +125,7 @@ export function BlogClient({
       ) : posts.length === 0 ? (
         <EmptyState
           title="لا توجد مقالات بعد"
-          description="لم ننشر مقالات بعد. تابعي المدونة قريباً! 📝"
+          description="لم ننشر مقالات بعد. تابعي المدونة قريباً! "
         />
       ) : filteredPosts.length === 0 ? (
         <EmptyState
@@ -158,7 +158,7 @@ export function BlogClient({
                           loading="lazy"
                         />
                       ) : (
-                        <span>✨</span>
+                        <span></span>
                       )}
                     </div>
                     <div className="p-5">
@@ -166,8 +166,8 @@ export function BlogClient({
                         {title}
                       </h2>
                       <div className="mt-3 flex items-center gap-3 text-xs text-text-tertiary">
-                        {date && <span>📅 {date}</span>}
-                        {body && <span>⏱️ {readingTime(body)}</span>}
+                        {date && <span> {date}</span>}
+                        {body && <span>️ {readingTime(body)}</span>}
                       </div>
                     </div>
                   </article>

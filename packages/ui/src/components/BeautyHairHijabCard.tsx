@@ -9,7 +9,7 @@ export function BeautyHairHijabCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🧕</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             الشعر تحت الحجاب
@@ -21,10 +21,10 @@ export function BeautyHairHijabCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: 'بطانة حرير — تقلل الاحتكاك وتكسر الشعر' },
-          { emoji: '💨', text: 'فكي الشعر فور العودة — دعيه يتنفس' },
-          { emoji: '💆', text: 'تدليك فروة الرأس — يحسن الدورة' },
-          { emoji: '🌿', text: 'زيت خفيف — قبل لف الحجاب بساعة' },
+          { emoji: '', text: 'بطانة حرير — تقلل الاحتكاك وتكسر الشعر' },
+          { emoji: '', text: 'فكي الشعر فور العودة — دعيه يتنفس' },
+          { emoji: '', text: 'تدليك فروة الرأس — يحسن الدورة' },
+          { emoji: '', text: 'زيت خفيف — قبل لف الحجاب بساعة' },
         ].map((t, i) => (
           <div
             key={i}

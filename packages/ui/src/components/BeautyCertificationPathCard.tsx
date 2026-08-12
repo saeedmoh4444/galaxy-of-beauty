@@ -22,35 +22,35 @@ interface PathDef {
 
 const PATHS: Record<CertPath, PathDef> = {
   makeup: {
-    emoji: '💄',
+    emoji: '',
     title: 'مكياج احترافي',
     levels: ['أساسي', 'متقدم', 'ماستر'],
     duration: '6-12 شهر',
     accredited: true,
   },
   skincare: {
-    emoji: '🧴',
+    emoji: '',
     title: 'عناية بالبشرة',
     levels: ['أساسي', 'متقدم', 'أخصائي'],
     duration: '9-18 شهر',
     accredited: true,
   },
   henna: {
-    emoji: '🤚',
+    emoji: '',
     title: 'فن الحناء',
     levels: ['تقليدي', 'عصري', 'مناسبات'],
     duration: '3-6 شهر',
     accredited: false,
   },
   salon_management: {
-    emoji: '🏪',
+    emoji: '',
     title: 'إدارة الصالونات',
     levels: ['مشرفة', 'مديرة', 'مالكة'],
     duration: '12 شهر',
     accredited: true,
   },
   lash_tech: {
-    emoji: '👁️',
+    emoji: '️',
     title: 'تقنية الرموش',
     levels: ['كلاسيك', 'فوليوم', 'هايبريد'],
     duration: '3-6 شهر',
@@ -88,7 +88,7 @@ export function BeautyCertificationPathCard({
         </div>
         {p.accredited && (
           <span className="shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[9px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-            🏛️ معتمد
+            ️ معتمد
           </span>
         )}
       </div>
@@ -111,7 +111,7 @@ export function BeautyCertificationPathCard({
         onClick={onEnroll}
         className="mt-3 w-full rounded-xl bg-blue-600 py-2 text-xs font-bold text-white hover:bg-blue-700 active:scale-[0.98] transition-all"
       >
-        سجلي في المسار 📜
+        سجلي في المسار 
       </button>
     </div>
   );

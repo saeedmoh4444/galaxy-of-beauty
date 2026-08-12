@@ -31,7 +31,7 @@ export default function VendorPortalPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">🏪 بوابة البائعين</h1>
+            <h1 className="text-2xl font-bold"> بوابة البائعين</h1>
             <p className="mt-1 text-sm text-text-secondary">أديري منتجاتكِ في متجر جالكسي بيوتي</p>
           </div>
           <Button onClick={() => setShow(true)}>+ منتج جديد</Button>
@@ -39,22 +39,22 @@ export default function VendorPortalPage(): JSX.Element {
 
         <div className="grid gap-4 sm:grid-cols-4">
           <Card padding="md" className="text-center">
-            <p className="text-3xl">📦</p>
+            <p className="text-3xl"></p>
             <p className="text-2xl font-bold">{(dash?.totalProducts as number) ?? 0}</p>
             <p className="text-xs text-text-secondary">منتج</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl">🛒</p>
+            <p className="text-3xl"></p>
             <p className="text-2xl font-bold">{(dash?.totalSales as number) ?? 0}</p>
             <p className="text-xs text-text-secondary">مبيعة</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl">💰</p>
+            <p className="text-3xl"></p>
             <p className="text-2xl font-bold">—</p>
             <p className="text-xs text-text-secondary">الإيرادات</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl">⭐</p>
+            <p className="text-3xl"></p>
             <p className="text-2xl font-bold">{(dash?.rating as number) ?? 4.8}</p>
             <p className="text-xs text-text-secondary">التقييم</p>
           </Card>
@@ -80,7 +80,7 @@ export default function VendorPortalPage(): JSX.Element {
                   onClick={() => deleteMut.mutate({ id: p.id as number })}
                   className="text-red-400"
                 >
-                  🗑️
+                  ️
                 </button>
               </div>
             </Card>
@@ -116,7 +116,7 @@ export default function VendorPortalPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-              📦 إضافة
+               إضافة
             </Button>
           </div>
         </Modal>

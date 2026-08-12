@@ -37,17 +37,17 @@ export default function TutorialsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📹 دروس الجمال</Text>
+      <Text style={styles.t}> دروس الجمال</Text>
       {tutorials.map((t: any) => (
         <View key={t.id} style={styles.card}>
-          <Text style={styles.te}>{(t.emoji as string) ?? '📹'}</Text>
+          <Text style={styles.te}>{(t.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.tt}>{t.titleAr as string}</Text>
             <Text style={styles.tm}>
-              {t.categoryAr as string} · {t.difficultyAr as string} · ⏱️ {t.duration as string}
+              {t.categoryAr as string} · {t.difficultyAr as string} · ️ {t.duration as string}
             </Text>
           </View>
-          <Text style={styles.tv}>👁 {t.views as number}</Text>
+          <Text style={styles.tv}> {t.views as number}</Text>
         </View>
       ))}
     </ScrollView>

@@ -9,7 +9,7 @@ export function BeautyBridalGlowCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">✨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             إشراقة العروس
@@ -21,10 +21,10 @@ export function BeautyBridalGlowCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💧', text: '8 أكواب ماء يومياً — لمدة شهر قبل الزفاف' },
-          { emoji: '🥑', text: 'غذاء صحي — أفوكادو، سلمون، مكسرات' },
-          { emoji: '😴', text: '8 ساعات نوم — أهم سر للبشرة' },
-          { emoji: '🧘', text: 'تأمل 10 دقائق — هدوء وثقة في يومكِ' },
+          { emoji: '', text: '8 أكواب ماء يومياً — لمدة شهر قبل الزفاف' },
+          { emoji: '', text: 'غذاء صحي — أفوكادو، سلمون، مكسرات' },
+          { emoji: '', text: '8 ساعات نوم — أهم سر للبشرة' },
+          { emoji: '', text: 'تأمل 10 دقائق — هدوء وثقة في يومكِ' },
         ].map((t, i) => (
           <div
             key={i}

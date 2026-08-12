@@ -20,10 +20,10 @@ interface OccasionDef {
 }
 
 const OCCASIONS: Record<Occasion, OccasionDef> = {
-  wedding: { emoji: '👰', title: 'جدة العروس', look: 'مكياج كلاسيكي + تسريحة أنيقة', price: 350 },
-  graduation: { emoji: '🎓', title: 'جدة الخريجة', look: 'مكياج ناعم + لمسة أناقة', price: 250 },
-  aqeeqah: { emoji: '👶', title: 'جدة المولود', look: 'إطلالة دافئة ومبهجة', price: 200 },
-  eid: { emoji: '🌙', title: 'إطلالة العيد', look: 'مكياج راقٍ + تسريحة تقليدية', price: 300 },
+  wedding: { emoji: '', title: 'جدة العروس', look: 'مكياج كلاسيكي + تسريحة أنيقة', price: 350 },
+  graduation: { emoji: '', title: 'جدة الخريجة', look: 'مكياج ناعم + لمسة أناقة', price: 250 },
+  aqeeqah: { emoji: '', title: 'جدة المولود', look: 'إطلالة دافئة ومبهجة', price: 200 },
+  eid: { emoji: '', title: 'إطلالة العيد', look: 'مكياج راقٍ + تسريحة تقليدية', price: 300 },
 };
 
 interface GrandmotherPackageCardProps {
@@ -50,7 +50,7 @@ export function GrandmotherPackageCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          👵
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">{o.title}</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
@@ -60,7 +60,7 @@ export function GrandmotherPackageCard({
       </div>
 
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">✨ تشمل الباقة</p>
+        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200"> تشمل الباقة</p>
         <div className="mt-1 grid grid-cols-2 gap-1 text-[10px] text-amber-700 dark:text-amber-300">
           <span>• مكياج راقٍ</span>
           <span>• تسريحة</span>
@@ -78,7 +78,7 @@ export function GrandmotherPackageCard({
           onClick={onBook}
           className="rounded-xl bg-amber-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-amber-700 active:scale-[0.98] transition-all"
         >
-          احجزي 💛
+          احجزي 
         </button>
       </div>
     </div>

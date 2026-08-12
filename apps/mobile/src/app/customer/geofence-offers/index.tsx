@@ -44,9 +44,9 @@ export default function GeofenceOffersScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📍 عروض بالقرب منك</Text>
+      <Text style={styles.t}> عروض بالقرب منك</Text>
       <TouchableOpacity onPress={optIn} style={styles.ob}>
-        <Text style={styles.ot}>🔔 فعلي التنبيهات القريبة</Text>
+        <Text style={styles.ot}> فعلي التنبيهات القريبة</Text>
       </TouchableOpacity>
       {offers.map((o: any) => (
         <View key={o.id} style={styles.card}>
@@ -58,7 +58,7 @@ export default function GeofenceOffersScreen(): JSX.Element {
             </Text>
           </View>
           <View style={styles.ex}>
-            <Text style={styles.ext}>⏰ {o.expiresIn as string}</Text>
+            <Text style={styles.ext}> {o.expiresIn as string}</Text>
           </View>
         </View>
       ))}

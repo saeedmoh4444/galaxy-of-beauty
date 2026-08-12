@@ -9,7 +9,7 @@ export function BeautyMicrocurrentCard({ className = '' }: { className?: string 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">⚡</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">المايكروكرنت</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">تيار كهربائي خفيف — شد فوري</p>
@@ -17,10 +17,10 @@ export function BeautyMicrocurrentCard({ className = '' }: { className?: string 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💪', text: 'يحفز العضلات — يشد ملامح الوجه' },
-          { emoji: '⬆️', text: 'يحرك للأعلى وللخارج — ضد الجاذبية' },
-          { emoji: '⏱️', text: '5-10 دقائق — 3-4 مرات أسبوعياً' },
-          { emoji: '🧴', text: 'جل موصل — ضروري لتوصيل التيار' },
+          { emoji: '', text: 'يحفز العضلات — يشد ملامح الوجه' },
+          { emoji: '️', text: 'يحرك للأعلى وللخارج — ضد الجاذبية' },
+          { emoji: '️', text: '5-10 دقائق — 3-4 مرات أسبوعياً' },
+          { emoji: '', text: 'جل موصل — ضروري لتوصيل التيار' },
         ].map((t, i) => (
           <div
             key={i}

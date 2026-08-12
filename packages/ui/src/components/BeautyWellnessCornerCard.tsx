@@ -17,7 +17,7 @@ export function BeautyWellnessCornerCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl">🧘</span>
+        <span className="text-3xl"></span>
         <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">
           ركن العافية
         </h4>
@@ -27,10 +27,10 @@ export function BeautyWellnessCornerCard({
       </div>
       <div className="mt-3 space-y-1.5">
         {[
-          { emoji: '🕯️', text: 'أشعلي شمعة واسترخي 5 دقائق' },
-          { emoji: '🎵', text: 'استمعي لموسيقى هادئة' },
-          { emoji: '🍵', text: 'اشربي شاي أعشاب دافئ' },
-          { emoji: '📖', text: 'اقرئي صفحة من كتابكِ المفضل' },
+          { emoji: '️', text: 'أشعلي شمعة واسترخي 5 دقائق' },
+          { emoji: '', text: 'استمعي لموسيقى هادئة' },
+          { emoji: '', text: 'اشربي شاي أعشاب دافئ' },
+          { emoji: '', text: 'اقرئي صفحة من كتابكِ المفضل' },
         ].map((t) => (
           <div
             key={t.text}

@@ -23,7 +23,7 @@ interface TrimesterDef {
 
 const TRIMESTERS: Record<Trimester, TrimesterDef> = {
   1: {
-    emoji: '🌱',
+    emoji: '',
     label: 'الثلث الأول',
     description: 'الأشهر 1-3 — فترة حساسة، عناية لطيفة فقط',
     allowed: ['عناية بالبشرة خفيفة', 'ترطيب', 'استشارة جمالية'],
@@ -31,7 +31,7 @@ const TRIMESTERS: Record<Trimester, TrimesterDef> = {
     color: 'border-rose-200 bg-rose-50/50 dark:border-rose-900 dark:bg-rose-950/30',
   },
   2: {
-    emoji: '🌸',
+    emoji: '',
     label: 'الثلث الثاني',
     description: 'الأشهر 4-6 — الفترة الذهبية للعناية',
     allowed: ['مساج ما قبل الولادة', 'صبغة شعر خالية من الأمونيا', 'باديكير', 'عناية بالبشرة'],
@@ -39,7 +39,7 @@ const TRIMESTERS: Record<Trimester, TrimesterDef> = {
     color: 'border-emerald-200 bg-emerald-50/50 dark:border-emerald-900 dark:bg-emerald-950/30',
   },
   3: {
-    emoji: '🌙',
+    emoji: '',
     label: 'الثلث الثالث',
     description: 'الأشهر 7-9 — راحة واستعداد للولادة',
     allowed: ['مساج قدمين', 'تدليك ظهر خفيف', 'ترطيب عميق', 'استرخاء'],
@@ -47,7 +47,7 @@ const TRIMESTERS: Record<Trimester, TrimesterDef> = {
     color: 'border-purple-200 bg-purple-50/50 dark:border-purple-900 dark:bg-purple-950/30',
   },
   postpartum: {
-    emoji: '👶',
+    emoji: '',
     label: 'ما بعد الولادة',
     description: 'الأربعين يوماً — عناية النفاس التقليدية',
     allowed: ['ربط البطن', 'علاج تساقط الشعر', 'مساج استرخاء', 'ماسك مرطب'],
@@ -87,7 +87,7 @@ export function PregnancySafeBadge({
           <p className="text-[10px] text-text-tertiary dark:text-gray-400">{t.description}</p>
         </div>
         <span className="ml-auto shrink-0 rounded-full bg-white/70 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-black/20 dark:text-emerald-300">
-          ✅ آمن للحمل
+           آمن للحمل
         </span>
       </div>
 
@@ -102,7 +102,7 @@ export function PregnancySafeBadge({
           </div>
           {service.duration && (
             <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-gray-400">
-              ⏱️ {service.duration}
+              ️ {service.duration}
             </p>
           )}
         </div>
@@ -111,7 +111,7 @@ export function PregnancySafeBadge({
       {/* Allowed & Avoid */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/70 p-2.5 dark:bg-gray-800/70">
-          <h5 className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">✅ مسموح</h5>
+          <h5 className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400"> مسموح</h5>
           <ul className="mt-1 space-y-0.5">
             {t.allowed.map((item) => (
               <li key={item} className="text-[10px] text-text-secondary dark:text-gray-300">
@@ -121,7 +121,7 @@ export function PregnancySafeBadge({
           </ul>
         </div>
         <div className="rounded-xl bg-white/70 p-2.5 dark:bg-gray-800/70">
-          <h5 className="text-[10px] font-bold text-rose-600 dark:text-rose-400">⚠️ غير مناسب</h5>
+          <h5 className="text-[10px] font-bold text-rose-600 dark:text-rose-400"> غير مناسب</h5>
           <ul className="mt-1 space-y-0.5">
             {t.avoid.map((item) => (
               <li key={item} className="text-[10px] text-text-secondary dark:text-gray-300">

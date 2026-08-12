@@ -120,23 +120,23 @@ export const sharedMessages = {
 
   // Errors (Phase 9: Delight Messages)
   'error.network': {
-    ar: 'عفواً! يبدو أن الإنترنت يأخذ استراحة. حاولي مرة أخرى؟ 🌐',
+    ar: 'عفواً! يبدو أن الإنترنت يأخذ استراحة. حاولي مرة أخرى؟ ',
     en: 'Oops! Looks like the internet is taking a break. Try again?',
   },
   'error.serverError': {
-    ar: 'عذراً! شيء غير متوقع حدث. فريقنا التقني تم تنبيهه تلقائياً. جربي مرة أخرى؟ 💜',
+    ar: 'عذراً! شيء غير متوقع حدث. فريقنا التقني تم تنبيهه تلقائياً. جربي مرة أخرى؟ ',
     en: 'Sorry! Something unexpected happened. Our tech team has been alerted. Try again?',
   },
   'error.validationError': {
-    ar: 'بعض البيانات تحتاج تعديل بسيط. راجعي الحقول المحددة ♀️',
+    ar: 'بعض البيانات تحتاج تعديل بسيط. راجعي الحقول المحددة ️',
     en: 'Some fields need a quick fix. Check the highlighted fields.',
   },
   'error.rateLimit': {
-    ar: 'واو! أنتِ نشيطة جداً! انتظري لحظة قبل المحاولة مرة أخرى ⏳',
+    ar: 'واو! أنتِ نشيطة جداً! انتظري لحظة قبل المحاولة مرة أخرى ',
     en: 'Wow, you are fast! Wait a moment before trying again.',
   },
   'error.unauthorized': {
-    ar: 'هذه المنطقة للأعضاء فقط. سجلي الدخول للوصول إليها 🔐',
+    ar: 'هذه المنطقة للأعضاء فقط. سجلي الدخول للوصول إليها ',
     en: 'This area is for members only. Log in to access it.',
   },
 

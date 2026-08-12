@@ -29,7 +29,7 @@ export default function WomensServicesScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#be185d']} />
       }
     >
-      <Text style={styles.t}>🌸 خدمات نسائية</Text>
+      <Text style={styles.t}> خدمات نسائية</Text>
       <Text style={styles.sub}>خدمات تجميلية متكاملة للمرأة</Text>
       <View style={styles.catGrid}>
         {categories.map((cat: Record<string, unknown>) => (

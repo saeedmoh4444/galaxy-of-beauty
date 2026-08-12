@@ -38,26 +38,26 @@ export default function SkinTimelineScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📸 تطور البشرة</Text>
+      <Text style={styles.t}> تطور البشرة</Text>
       <Text style={styles.sub}>تابعي رحلة بشرتكِ عبر الزمن</Text>
 
       <TouchableOpacity onPress={() => setCompareMode(!compareMode)} style={styles.compareBtn}>
-        <Text style={styles.compareBt}>{compareMode ? 'إلغاء المقارنة' : '📊 مقارنة أسبوعية'}</Text>
+        <Text style={styles.compareBt}>{compareMode ? 'إلغاء المقارنة' : ' مقارنة أسبوعية'}</Text>
       </TouchableOpacity>
 
       {compareMode ? (
         <View style={styles.compareGrid}>
           <View style={[styles.compareCard, styles.before]}>
-            <Text style={styles.compareLabel}>📸 الأسبوع الماضي</Text>
+            <Text style={styles.compareLabel}> الأسبوع الماضي</Text>
             <View style={styles.imgPlaceholder}>
-              <Text style={{ fontSize: 40 }}>📸</Text>
+              <Text style={{ fontSize: 40 }}></Text>
             </View>
           </View>
           <Text style={styles.compareVs}>VS</Text>
           <View style={[styles.compareCard, styles.after]}>
-            <Text style={styles.compareLabel}>✨ هذا الأسبوع</Text>
+            <Text style={styles.compareLabel}> هذا الأسبوع</Text>
             <View style={styles.imgPlaceholder}>
-              <Text style={{ fontSize: 40 }}>✨</Text>
+              <Text style={{ fontSize: 40 }}></Text>
             </View>
           </View>
         </View>
@@ -76,8 +76,8 @@ export default function SkinTimelineScreen(): JSX.Element {
                 </Text>
                 <Text style={styles.entryTitle}>{(e.title as string) ?? 'تحديث البشرة'}</Text>
                 <View style={styles.entryMetrics}>
-                  {e.hydration && <Text style={styles.metric}>💧 {e.hydration as number}%</Text>}
-                  {e.glow && <Text style={styles.metric}>✨ {e.glow as number}/10</Text>}
+                  {e.hydration && <Text style={styles.metric}> {e.hydration as number}%</Text>}
+                  {e.glow && <Text style={styles.metric}> {e.glow as number}/10</Text>}
                 </View>
               </View>
             </View>
@@ -86,20 +86,20 @@ export default function SkinTimelineScreen(): JSX.Element {
       )}
 
       <View style={styles.stats}>
-        <Text style={styles.st}>📊 إحصائيات</Text>
+        <Text style={styles.st}> إحصائيات</Text>
         <View style={styles.statRow}>
           <View style={styles.stat}>
-            <Text style={styles.statVal}>💧</Text>
+            <Text style={styles.statVal}></Text>
             <Text style={styles.statLabel}>تحسن الترطيب</Text>
             <Text style={styles.statPct}>+15%</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statVal}>✨</Text>
+            <Text style={styles.statVal}></Text>
             <Text style={styles.statLabel}>تحسن النضارة</Text>
             <Text style={styles.statPct}>+20%</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statVal}>📸</Text>
+            <Text style={styles.statVal}></Text>
             <Text style={styles.statLabel}>تحديثات</Text>
             <Text style={styles.statPct}>{entries.length}</Text>
           </View>

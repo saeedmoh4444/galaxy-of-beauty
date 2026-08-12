@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W9: The Small Details — Delightful Surprises.
  *
  * Usage:
- *   <BeautyVisionBoardCard goals={[{ emoji: '👰', text: 'إطلالة زفاف مثالية', year: '2027' }]} />
+ *   <BeautyVisionBoardCard goals={[{ emoji: '', text: 'إطلالة زفاف مثالية', year: '2027' }]} />
  */
 
 interface VisionGoal {
@@ -40,7 +40,7 @@ export function BeautyVisionBoardCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true">
-            🌟
+            
           </span>
           <div>
             <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">لوحة الرؤية</h4>
@@ -74,7 +74,7 @@ export function BeautyVisionBoardCard({
               </p>
               <p className="text-[9px] text-text-tertiary dark:text-gray-500">{goal.year}</p>
             </div>
-            <span className="text-xs">{goal.achieved ? '✅' : '⏳'}</span>
+            <span className="text-xs">{goal.achieved ? '' : ''}</span>
           </div>
         ))}
       </div>
@@ -88,7 +88,7 @@ export function BeautyVisionBoardCard({
       </button>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🌟 ارسمي مستقبل جمالكِ — وحققيه
+         ارسمي مستقبل جمالكِ — وحققيه
       </p>
     </div>
   );

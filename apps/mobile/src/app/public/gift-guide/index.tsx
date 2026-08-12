@@ -27,14 +27,14 @@ export default function GiftGuideScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={styles.t}>🎁 دليل الهدايا</Text>
+      <Text style={styles.t}> دليل الهدايا</Text>
       <Text style={styles.sub}>أفكار هدايا لكل المناسبات</Text>
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد أدلة</Text>
       ) : (
         items.map((g: any) => (
           <View key={g.id} style={styles.card}>
-            <Text style={styles.guideEmoji}>{(g.emoji as string) ?? '🎁'}</Text>
+            <Text style={styles.guideEmoji}>{(g.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.guideTitle}>{g.titleAr as string}</Text>
               <Text style={styles.guideOccasion}>{g.occasionAr as string}</Text>

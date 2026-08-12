@@ -27,9 +27,9 @@ interface PricingCoachCardProps {
 }
 
 const DEMAND_LABELS: Record<string, { emoji: string; label: string; color: string }> = {
-  high: { emoji: '🔥', label: 'طلب عالي', color: 'text-rose-600 dark:text-rose-400' },
-  medium: { emoji: '👍', label: 'طلب متوسط', color: 'text-amber-600 dark:text-amber-400' },
-  low: { emoji: '📉', label: 'طلب منخفض', color: 'text-gray-500 dark:text-gray-400' },
+  high: { emoji: '', label: 'طلب عالي', color: 'text-rose-600 dark:text-rose-400' },
+  medium: { emoji: '', label: 'طلب متوسط', color: 'text-amber-600 dark:text-amber-400' },
+  low: { emoji: '', label: 'طلب منخفض', color: 'text-gray-500 dark:text-gray-400' },
 };
 
 export function PricingCoachCard({
@@ -50,7 +50,7 @@ export function PricingCoachCard({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🤖
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">مدرب التسعير</h4>
@@ -112,11 +112,11 @@ export function PricingCoachCard({
         onClick={onApplySuggestion}
         className="mt-3 w-full rounded-xl bg-blue-600 py-2 text-xs font-bold text-white hover:bg-blue-700 active:scale-[0.98] transition-all"
       >
-        تطبيق السعر المقترح 💰
+        تطبيق السعر المقترح 
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        📊 بناءً على تحليل الطلب والمنافسة ومهاراتكِ
+         بناءً على تحليل الطلب والمنافسة ومهاراتكِ
       </p>
     </div>
   );

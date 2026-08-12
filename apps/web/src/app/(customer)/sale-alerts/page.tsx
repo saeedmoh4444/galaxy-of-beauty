@@ -46,7 +46,7 @@ export default function SaleAlertsPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">🛒 تنبيهات العروض</h1>
+            <h1 className="text-2xl font-bold"> تنبيهات العروض</h1>
             <p className="mt-1 text-sm text-text-secondary">
               اشتركي في تنبيهات العروض ولا يفوتكِ أي خصم
             </p>
@@ -60,7 +60,7 @@ export default function SaleAlertsPage(): JSX.Element {
             padding="lg"
             className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950 dark:to-orange-950 border-none"
           >
-            <h3 className="font-bold mb-3">⚡ عروض نشطة الآن</h3>
+            <h3 className="font-bold mb-3"> عروض نشطة الآن</h3>
             <div className="grid gap-3 sm:grid-cols-3">
               {activeDeals.map((d: Record<string, unknown>) => (
                 <div
@@ -71,7 +71,7 @@ export default function SaleAlertsPage(): JSX.Element {
                   <p className="font-bold text-sm mt-1">{d.titleAr as string}</p>
                   <p className="text-xs text-red-500 font-bold mt-1">-{d.discount as number}%</p>
                   <p className="text-[10px] text-text-tertiary">
-                    ⏰ ينتهي خلال {d.endsIn as string}
+                     ينتهي خلال {d.endsIn as string}
                   </p>
                 </div>
               ))}
@@ -117,13 +117,13 @@ export default function SaleAlertsPage(): JSX.Element {
                     onClick={() => toggleMut.mutate({ id: a.id as number })}
                     className={`text-sm ${a.active ? 'text-green-500' : 'text-text-tertiary'}`}
                   >
-                    {a.active ? '🟢' : '⚫'}
+                    {a.active ? '' : ''}
                   </button>
                   <button
                     onClick={() => deleteMut.mutate({ id: a.id as number })}
                     className="text-red-400 text-sm"
                   >
-                    🗑️
+                    ️
                   </button>
                 </div>
               </Card>
@@ -175,7 +175,7 @@ export default function SaleAlertsPage(): JSX.Element {
               loading={createMut.isPending}
               className="w-full"
             >
-              🔔 تفعيل التنبيه
+               تفعيل التنبيه
             </Button>
           </div>
         </Modal>

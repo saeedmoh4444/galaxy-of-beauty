@@ -9,7 +9,7 @@ export function BeautyAromatherapyCard({ className = '' }: { className?: string 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌿</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">
             العلاج بالروائح
@@ -21,10 +21,10 @@ export function BeautyAromatherapyCard({ className = '' }: { className?: string 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🌸', text: 'اللافندر — للاسترخاء والنوم العميق' },
-          { emoji: '🍋', text: 'الليمون — منعش ومنشط للطاقة' },
-          { emoji: '🌹', text: 'الورد — مهدئ للبشرة الحساسة' },
-          { emoji: '🍃', text: 'النعناع — للصداع وتنشيط الدورة الدموية' },
+          { emoji: '', text: 'اللافندر — للاسترخاء والنوم العميق' },
+          { emoji: '', text: 'الليمون — منعش ومنشط للطاقة' },
+          { emoji: '', text: 'الورد — مهدئ للبشرة الحساسة' },
+          { emoji: '', text: 'النعناع — للصداع وتنشيط الدورة الدموية' },
         ].map((t, i) => (
           <div
             key={i}

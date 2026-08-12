@@ -45,7 +45,7 @@ export default function FeatureFlagsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🚩 Feature Flags</Text>
+      <Text style={styles.t}> Feature Flags</Text>
       {data.map((f: any, i: number) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>

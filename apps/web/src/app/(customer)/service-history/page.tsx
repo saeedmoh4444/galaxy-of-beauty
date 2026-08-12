@@ -43,12 +43,12 @@ export default function ServiceHistoryPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-8">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">📋 سجل الخدمات</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100"> سجل الخدمات</h1>
 
         {/* Favorite Services — Reorder */}
         {favorites.length > 0 && (
           <div>
-            <h2 className="mb-4 text-lg font-semibold">💖 خدماتكِ المفضلة</h2>
+            <h2 className="mb-4 text-lg font-semibold"> خدماتكِ المفضلة</h2>
             <div className="grid gap-3 sm:grid-cols-2">
               {favorites.map(([sid, info]) => (
                 <Card key={sid} padding="md" hover>
@@ -72,7 +72,7 @@ export default function ServiceHistoryPage(): JSX.Element {
 
         {/* Timeline */}
         <div>
-          <h2 className="mb-4 text-lg font-semibold">📅 آخر الحجوزات</h2>
+          <h2 className="mb-4 text-lg font-semibold"> آخر الحجوزات</h2>
           {isLoading ? (
             <CardSkeleton />
           ) : isError ? (
@@ -101,9 +101,7 @@ export default function ServiceHistoryPage(): JSX.Element {
                       </span>
                       {b.status === 'COMPLETED' && (
                         <Link href={`/bookings/create?serviceId=${b.serviceId}`}>
-                          <Button size="sm" variant="outline">
-                            🔄
-                          </Button>
+                          <Button size="sm" variant="outline">إعادة حجز</Button>
                         </Link>
                       )}
                     </div>

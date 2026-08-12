@@ -17,17 +17,17 @@ export default function BeautyCoursesScreen(): JSX.Element {
       emptyTitle="لا توجد دورات"
       onRetry={() => courses.refetch()}
     >
-      <Text style={styles.title}>🎓 دورات التجميل</Text>
+      <Text style={styles.title}> دورات التجميل</Text>
       {(data as Record<string, unknown>[])?.map((c: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(c.emoji as string) ?? '💄'}</Text>
+          <Text style={styles.emoji}>{(c.emoji as string) ?? ''}</Text>
           <View style={styles.info}>
             <Text style={styles.name}>{(c.titleJson as any)?.ar ?? ''}</Text>
             <Text style={styles.instructor}>
               {c.instructor as string} • {c.lessons as number} دروس
             </Text>
             <Text style={styles.detail}>
-              {c.level as string} • {c.duration as string} • ⭐ {c.rating as number}
+              {c.level as string} • {c.duration as string} •  {c.rating as number}
             </Text>
           </View>
         </View>

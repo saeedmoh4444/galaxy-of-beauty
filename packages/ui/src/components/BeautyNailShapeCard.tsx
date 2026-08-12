@@ -9,7 +9,7 @@ export function BeautyNailShapeCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">📐</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">أشكال الأظافر</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">أي شكل يناسب يدك؟</p>
@@ -17,10 +17,10 @@ export function BeautyNailShapeCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '🟤', label: 'دائري', tip: 'لأصابع قصيرة' },
+          { emoji: '', label: 'دائري', tip: 'لأصابع قصيرة' },
           { emoji: '⬜', label: 'مربع', tip: 'لأصابع طويلة' },
-          { emoji: '🥚', label: 'بيضاوي', tip: 'يناسب الجميع' },
-          { emoji: '💎', label: 'لوزي', tip: 'يطول الأصابع' },
+          { emoji: '', label: 'بيضاوي', tip: 'يناسب الجميع' },
+          { emoji: '', label: 'لوزي', tip: 'يطول الأصابع' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-rose-50 px-2.5 py-2 dark:bg-rose-950">
             <span className="text-sm">{t.emoji}</span>

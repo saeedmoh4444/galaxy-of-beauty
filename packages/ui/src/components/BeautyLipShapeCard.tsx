@@ -9,7 +9,7 @@ export function BeautyLipShapeCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💋</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">تحديد الشفاه</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">تقنيات لشفاه أجمل</p>
@@ -17,10 +17,10 @@ export function BeautyLipShapeCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '✏️', text: 'تحديد فوق الخط الطبيعي بقليل — شفاه ممتلئة' },
-          { emoji: '✨', text: 'هايلايتر فوق قوس كيوبيد — يبرز الشفاه' },
-          { emoji: '🎨', text: 'لونين — فاتح بالوسط وداكن بالأطراف' },
-          { emoji: '💧', text: 'غلوس على المركز فقط — يعطي عمقاً بصرياً' },
+          { emoji: '️', text: 'تحديد فوق الخط الطبيعي بقليل — شفاه ممتلئة' },
+          { emoji: '', text: 'هايلايتر فوق قوس كيوبيد — يبرز الشفاه' },
+          { emoji: '', text: 'لونين — فاتح بالوسط وداكن بالأطراف' },
+          { emoji: '', text: 'غلوس على المركز فقط — يعطي عمقاً بصرياً' },
         ].map((t, i) => (
           <div
             key={i}

@@ -13,7 +13,7 @@ export function BeautyIngredientMixingCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">⚗️</span>
+        <span className="text-xl">️</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">خلط المكونات</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">ما يصلح معاً — وما لا يصلح</p>
@@ -21,10 +21,10 @@ export function BeautyIngredientMixingCard({
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '✅', label: 'فيتامين C + واقي شمس', tip: 'ثنائي الحماية المثالي' },
-          { emoji: '✅', label: 'ريتينول + ببتيدات', tip: 'مضاد شيخوخة قوي' },
-          { emoji: '❌', label: 'ريتينول + أحماض', tip: 'تهيج شديد — لا تخلطيهم' },
-          { emoji: '❌', label: 'فيتامين C + أحماض', tip: 'يبطل مفعولهم — استخدمي منفصل' },
+          { emoji: '', label: 'فيتامين C + واقي شمس', tip: 'ثنائي الحماية المثالي' },
+          { emoji: '', label: 'ريتينول + ببتيدات', tip: 'مضاد شيخوخة قوي' },
+          { emoji: '', label: 'ريتينول + أحماض', tip: 'تهيج شديد — لا تخلطيهم' },
+          { emoji: '', label: 'فيتامين C + أحماض', tip: 'يبطل مفعولهم — استخدمي منفصل' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-rose-50 px-2.5 py-2 dark:bg-rose-950">
             <span className="text-sm">{t.emoji}</span>

@@ -41,7 +41,7 @@ export default function FamilyBeautyPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="👨‍👩‍👧‍👦 جمال العائلة" subtitle="لحظات جميلة تجمع الأحباب" />
+        <PageTitle title="‍‍‍ جمال العائلة" subtitle="لحظات جميلة تجمع الأحباب" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -56,9 +56,9 @@ export default function FamilyBeautyPage(): JSX.Element {
               />
               <ThreeGenerationsCard
                 generations={{
-                  grandma: { name: 'أم خالد', emoji: '👵' },
-                  mom: { name: 'نورة', emoji: '👩' },
-                  daughter: { name: 'سارة', emoji: '👧' },
+                  grandma: { name: 'أم خالد', emoji: '' },
+                  mom: { name: 'نورة', emoji: '' },
+                  daughter: { name: 'سارة', emoji: '' },
                 }}
               />
             </div>
@@ -70,7 +70,7 @@ export default function FamilyBeautyPage(): JSX.Element {
                   name: 'أول درس مكياج',
                   ageRange: '12-15',
                   price: 150,
-                  emoji: '💄',
+                  emoji: '',
                   description: 'تعلم أساسيات المكياج بطريقة آمنة وممتعة',
                   learningPoints: ['تنظيف البشرة', 'ترطيب', 'مكياج خفيف جداً', 'نصائح للعناية'],
                   parentRequired: true,

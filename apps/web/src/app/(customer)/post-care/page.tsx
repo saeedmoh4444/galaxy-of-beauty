@@ -40,10 +40,10 @@ interface LibraryCategory {
 }
 
 const TIMEFRAME_ICONS: Record<string, string> = {
-  '24h': '🔴',
-  '48h': '🟡',
-  '1w': '🟢',
-  ongoing: '🔵',
+  '24h': '',
+  '48h': '',
+  '1w': '',
+  ongoing: '',
 };
 
 export default function PostCarePage(): JSX.Element {
@@ -91,7 +91,7 @@ export default function PostCarePage(): JSX.Element {
         {/* Header */}
         <div className="text-center sm:text-right">
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            💆‍♀️ العناية بعد الخدمة
+            ‍️ العناية بعد الخدمة
           </h1>
           <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
             تعليمات مخصصة للعناية بنفسكِ بعد كل جلسة تجميل
@@ -101,8 +101,8 @@ export default function PostCarePage(): JSX.Element {
         {/* Tabs */}
         <div className="flex gap-2 rounded-xl bg-surface-muted p-1 dark:bg-gray-800">
           {[
-            { key: 'plan' as const, label: '📋 خطتي الشخصية' },
-            { key: 'library' as const, label: '📚 مكتبة العناية' },
+            { key: 'plan' as const, label: ' خطتي الشخصية' },
+            { key: 'library' as const, label: ' مكتبة العناية' },
           ].map((t) => (
             <button
               key={t.key}
@@ -132,7 +132,7 @@ export default function PostCarePage(): JSX.Element {
             ) : plans.length === 0 ? (
               <EmptyState
                 title="لا توجد خدمات مكتملة بعد"
-                description="بعد إتمام أول حجز، ستظهر تعليمات العناية هنا تلقائياً ✨"
+                description="بعد إتمام أول حجز، ستظهر تعليمات العناية هنا تلقائياً "
                 action={{
                   label: 'احجزي الآن',
                   onPress: () => window.location.assign('/bookings/create'),
@@ -145,7 +145,7 @@ export default function PostCarePage(): JSX.Element {
                     {/* Plan Header */}
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-purple-500 text-white text-lg">
-                        💆‍♀️
+                        ‍️
                       </div>
                       <div>
                         <h3 className="font-bold text-text-primary dark:text-gray-100">
@@ -175,7 +175,7 @@ export default function PostCarePage(): JSX.Element {
                           <div
                             className={`bg-gradient-to-r ${tf.color} px-4 py-2 text-white text-sm font-bold`}
                           >
-                            {TIMEFRAME_ICONS[tf.key] ?? '⏰'} {tf.labelAr}
+                            {TIMEFRAME_ICONS[tf.key] ?? ''} {tf.labelAr}
                           </div>
                           <div className="divide-y divide-gray-100 dark:divide-gray-800">
                             {tfTips.map((tip) => (
@@ -283,12 +283,12 @@ export default function PostCarePage(): JSX.Element {
           padding="lg"
           className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950 border-none text-center"
         >
-          <p className="text-lg font-bold text-text-primary dark:text-gray-100">💡 تذكري</p>
+          <p className="text-lg font-bold text-text-primary dark:text-gray-100"> تذكري</p>
           <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
             العناية بعد الخدمة تطيل من نتائج الجلسة وتحافظ على جمالكِ لفترة أطول
           </p>
           <Link href="/bookings/create" className="mt-3 inline-block">
-            <Button size="sm">احجزي جلستكِ القادمة ✨</Button>
+            <Button size="sm">احجزي جلستكِ القادمة </Button>
           </Link>
         </Card>
       </div>

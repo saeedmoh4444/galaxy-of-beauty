@@ -20,7 +20,7 @@ export const serviceWishlistRouter = router({
       z.object({
         serviceName: z.string().min(1),
         currentPrice: z.number(),
-        emoji: z.string().default('💅'),
+        emoji: z.string().default(''),
       }),
     )
     .mutation(async ({ ctx, input }) =>

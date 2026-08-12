@@ -28,38 +28,38 @@ interface ConcernDef {
 
 const CONCERNS: Record<SkinConcern, ConcernDef> = {
   dryness: {
-    emoji: '🏜️',
+    emoji: '️',
     label: 'جفاف',
     recommendation: 'سيروم هيالورونيك أسيد + مرطب غني بالسيراميد',
   },
   dark_spots: {
-    emoji: '🔆',
+    emoji: '',
     label: 'تصبغات',
     recommendation: 'فيتامين سي صباحاً + نياسيناميد مساءً + واقي شمس',
   },
   acne: {
-    emoji: '🔴',
+    emoji: '',
     label: 'حبوب',
     recommendation: 'حمض الساليسيليك + نياسيناميد + مرطب خالٍ من الزيوت',
   },
   wrinkles: {
-    emoji: '⏳',
+    emoji: '',
     label: 'تجاعيد',
     recommendation: 'ريتينول مساءً + ببتيدات + واقي شمس يومي',
   },
-  redness: { emoji: '😳', label: 'احمرار', recommendation: 'سيراميد + أزيلينك أسيد + مرطب مهدئ' },
+  redness: { emoji: '', label: 'احمرار', recommendation: 'سيراميد + أزيلينك أسيد + مرطب مهدئ' },
   large_pores: {
-    emoji: '🔍',
+    emoji: '',
     label: 'مسام واسعة',
     recommendation: 'نياسيناميد + مقشر كيميائي لطيف أسبوعياً',
   },
   dullness: {
-    emoji: '😔',
+    emoji: '',
     label: 'بهتان',
     recommendation: 'مقشر إنزيمي + فيتامين سي + ترطيب عميق',
   },
   oiliness: {
-    emoji: '✨',
+    emoji: '',
     label: 'دهون زائدة',
     recommendation: 'نياسيناميد + تونر خالٍ من الكحول + مرطب جل',
   },
@@ -87,7 +87,7 @@ export function SkinAnalysisCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🔬
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-blue-700 dark:text-blue-300">تحليل البشرة</h4>
         <p className="text-[10px] text-blue-500 dark:text-blue-400">
@@ -110,7 +110,7 @@ export function SkinAnalysisCard({
                 </span>
               </div>
               <p className="mt-1 text-[10px] text-blue-700 dark:text-blue-300">
-                💡 {c.recommendation}
+                 {c.recommendation}
               </p>
             </div>
           );
@@ -120,7 +120,7 @@ export function SkinAnalysisCard({
       {/* Disclaimer */}
       <div className="mt-2 rounded-lg bg-amber-50 p-2 dark:bg-amber-950">
         <p className="text-center text-[10px] text-amber-700 dark:text-amber-300">
-          🤖 هذا التحليل مبدئي بالذكاء الاصطناعي — استشيري طبيبة جلدية للتشخيص الدقيق
+           هذا التحليل مبدئي بالذكاء الاصطناعي — استشيري طبيبة جلدية للتشخيص الدقيق
         </p>
       </div>
 

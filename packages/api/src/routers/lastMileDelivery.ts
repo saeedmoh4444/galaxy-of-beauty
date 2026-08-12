@@ -2,9 +2,9 @@ import { z } from 'zod';
 import { customerProcedure, router } from '../trpc';
 
 const PRODUCTS = [
-  { id: 1, nameAr: 'واقي شمس SPF50', emoji: '☀️', price: 120, deliveryTime: 'خلال ساعتين' },
-  { id: 2, nameAr: 'سيروم فيتامين C', emoji: '✨', price: 145, deliveryTime: 'خلال ساعة' },
-  { id: 3, nameAr: 'مرطب يومي', emoji: '🧴', price: 89, deliveryTime: 'خلال ساعتين' },
+  { id: 1, nameAr: 'واقي شمس SPF50', emoji: '️', price: 120, deliveryTime: 'خلال ساعتين' },
+  { id: 2, nameAr: 'سيروم فيتامين C', emoji: '', price: 145, deliveryTime: 'خلال ساعة' },
+  { id: 3, nameAr: 'مرطب يومي', emoji: '', price: 89, deliveryTime: 'خلال ساعتين' },
   { id: 4, nameAr: 'زيت شعر طبيعي', emoji: '🫒', price: 95, deliveryTime: 'خلال ساعة' },
 ];
 

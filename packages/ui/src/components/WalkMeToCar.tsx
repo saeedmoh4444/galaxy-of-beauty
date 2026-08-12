@@ -64,7 +64,7 @@ export function WalkMeToCar({
       <div className="flex items-center gap-2">
         <div className="relative">
           <span className="text-xl" aria-hidden="true">
-            {isHomeService ? '🏠' : '🚗'}
+            {isHomeService ? '' : ''}
           </span>
           {escorting && (
             <span className="absolute -bottom-0.5 -right-0.5 flex h-3 w-3">
@@ -78,7 +78,7 @@ export function WalkMeToCar({
             {isHomeService ? 'أمان الخدمة المنزلية' : 'توصيل للسيارة'}
           </h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">
-            {isDark ? '🌙 موعد مسائي — سلامتكِ أولاً' : '☀️ خدمة متاحة في أي وقت تحتاجينها'}
+            {isDark ? ' موعد مسائي — سلامتكِ أولاً' : '️ خدمة متاحة في أي وقت تحتاجينها'}
           </p>
         </div>
       </div>
@@ -88,7 +88,7 @@ export function WalkMeToCar({
         <div className="mt-3 rounded-xl bg-indigo-100 p-3 dark:bg-indigo-900">
           <div className="flex items-center gap-2">
             <span className="animate-pulse text-lg" aria-hidden="true">
-              🚶‍♀️
+              ‍️
             </span>
             <div>
               <p className="text-xs font-bold text-indigo-700 dark:text-indigo-200">
@@ -126,15 +126,15 @@ export function WalkMeToCar({
               : 'bg-gray-100 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 dark:bg-gray-800 dark:text-gray-300',
           )}
         >
-          {isHomeService ? 'شاركي موقعكِ المباشر' : 'رافقيني للسيارة 🚶‍♀️'}
+          {isHomeService ? 'شاركي موقعكِ المباشر' : 'رافقيني للسيارة ‍️'}
         </button>
       )}
 
       {/* Safety features footer */}
       <div className="mt-2 flex items-center justify-center gap-3 text-[9px] text-text-tertiary dark:text-gray-500">
-        <span>🔒 اتصال آمن</span>
-        <span>📍 موقع مباشر</span>
-        <span>👩 خبيرة موثقة</span>
+        <span> اتصال آمن</span>
+        <span> موقع مباشر</span>
+        <span> خبيرة موثقة</span>
       </div>
     </div>
   );

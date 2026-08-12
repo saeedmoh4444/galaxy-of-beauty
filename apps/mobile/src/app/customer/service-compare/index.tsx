@@ -43,7 +43,7 @@ export default function ServiceCompareScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>⚖️ مقارنة الخدمات</Text>
+      <Text style={styles.t}>️ مقارنة الخدمات</Text>
       <View style={styles.grid}>
         {services.slice(0, 12).map((s: any) => {
           const isSel = selected.includes(s.id);
@@ -53,7 +53,7 @@ export default function ServiceCompareScreen(): JSX.Element {
               onPress={() => toggle(s.id)}
               style={[styles.ch, isSel && styles.cha]}
             >
-              <Text style={styles.ce}>{(s.emoji as string) ?? '💆‍♀️'}</Text>
+              <Text style={styles.ce}>{(s.emoji as string) ?? '‍️'}</Text>
               <Text style={[styles.cn, isSel && styles.cna]}>
                 {((s.titleJson as any)?.ar as string) ?? (s.nameAr as string)}
               </Text>
@@ -64,16 +64,16 @@ export default function ServiceCompareScreen(): JSX.Element {
       </View>
       {compareItems.length >= 2 && (
         <View style={styles.tbl}>
-          <Text style={styles.ttl}>📊 المقارنة</Text>
+          <Text style={styles.ttl}> المقارنة</Text>
           {compareItems.map((s: any) => (
             <View key={s.id} style={styles.cc}>
               <Text style={styles.ct}>{(s.titleJson as any)?.ar as string}</Text>
               <View style={styles.cr}>
-                <Text style={styles.cl}>💰</Text>
+                <Text style={styles.cl}></Text>
                 <Text style={styles.cv}>{(s.basePrice as number)?.toLocaleString()} ر.س</Text>
               </View>
               <View style={styles.cr}>
-                <Text style={styles.cl}>⏱️</Text>
+                <Text style={styles.cl}>️</Text>
                 <Text style={styles.cv}>{s.durationMin as number} دقيقة</Text>
               </View>
             </View>

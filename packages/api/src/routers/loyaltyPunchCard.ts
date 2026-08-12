@@ -18,7 +18,7 @@ export const loyaltyPunchCardRouter = router({
       totalCompleted: completedBookings,
       earnedFree,
       message: earnedFree
-        ? '🎉 لكِ جلسة مجانية!'
+        ? ' لكِ جلسة مجانية!'
         : `متبقي ${PUNCH_TOTAL - stamps} حجوزات للجلسة المجانية`,
     };
   }),

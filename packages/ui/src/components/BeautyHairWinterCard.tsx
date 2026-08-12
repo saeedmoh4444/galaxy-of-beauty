@@ -9,7 +9,7 @@ export function BeautyHairWinterCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">❄️</span>
+        <span className="text-xl">️</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">الشعر في الشتاء</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">حماية من الجفاف والكهرباء</p>
@@ -17,10 +17,10 @@ export function BeautyHairWinterCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💧', text: 'زيت شعر قبل الغسيل — لمقاومة الجفاف' },
-          { emoji: '🧣', text: 'لا تخرجي بشعر مبلل — يتجمد ويتكسر' },
-          { emoji: '🧴', text: 'بلسم يترك على الشعر — حماية إضافية' },
-          { emoji: '⚡', text: 'مشط خشب — يقلل الكهرباء الساكنة' },
+          { emoji: '', text: 'زيت شعر قبل الغسيل — لمقاومة الجفاف' },
+          { emoji: '', text: 'لا تخرجي بشعر مبلل — يتجمد ويتكسر' },
+          { emoji: '', text: 'بلسم يترك على الشعر — حماية إضافية' },
+          { emoji: '', text: 'مشط خشب — يقلل الكهرباء الساكنة' },
         ].map((t, i) => (
           <div
             key={i}

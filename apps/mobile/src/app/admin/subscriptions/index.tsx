@@ -4,7 +4,7 @@ const SUBS = [
     id: 1,
     customer: 'نورة',
     plan: 'Premium',
-    emoji: '👩',
+    emoji: '',
     price: 99,
     status: 'active',
     since: 'يناير 2026',
@@ -14,7 +14,7 @@ const SUBS = [
     id: 2,
     customer: 'مها',
     plan: 'Platinum',
-    emoji: '👩',
+    emoji: '',
     price: 299,
     status: 'active',
     since: 'مارس 2026',
@@ -24,7 +24,7 @@ const SUBS = [
     id: 3,
     customer: 'ريم',
     plan: 'Basic',
-    emoji: '👩',
+    emoji: '',
     price: 0,
     status: 'active',
     since: 'يونيو 2026',
@@ -34,7 +34,7 @@ const SUBS = [
     id: 4,
     customer: 'سارة',
     plan: 'Premium',
-    emoji: '👩',
+    emoji: '',
     price: 99,
     status: 'cancelled',
     since: 'فبراير 2026',
@@ -44,7 +44,7 @@ const SUBS = [
 export default function AdminSubscriptionsScreen(): JSX.Element {
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>🔄 الاشتراكات</Text>
+      <Text style={s.h}> الاشتراكات</Text>
       <Text style={s.sub}>إدارة اشتراكات العضوية</Text>
       <View
         style={{
@@ -88,8 +88,8 @@ export default function AdminSubscriptionsScreen(): JSX.Element {
             </View>
           </View>
           <View style={{ flexDirection: 'row', gap: 12, marginTop: 6 }}>
-            <Text style={s.cl}>📅 منذ {sb.since}</Text>
-            <Text style={s.cl}>🔄 {sb.nextBilling}</Text>
+            <Text style={s.cl}> منذ {sb.since}</Text>
+            <Text style={s.cl}> {sb.nextBilling}</Text>
           </View>
         </View>
       ))}

@@ -41,7 +41,7 @@ export default function MoodBoardScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🎨 لوحة المود</Text>
+      <Text style={styles.t}> لوحة المود</Text>
       <View style={styles.grid}>
         {data.map((p: any, i: number) => (
           <View key={i} style={styles.pin}>
@@ -49,7 +49,7 @@ export default function MoodBoardScreen(): JSX.Element {
               <Image source={{ uri: p.imageUrl as string }} style={styles.img} />
             ) : (
               <View style={styles.placeholder}>
-                <Text style={{ fontSize: 28 }}>🖼️</Text>
+                <Text style={{ fontSize: 28 }}>️</Text>
               </View>
             )}
           </View>

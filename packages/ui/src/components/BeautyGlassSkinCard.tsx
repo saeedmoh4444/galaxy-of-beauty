@@ -9,7 +9,7 @@ export function BeautyGlassSkinCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">✨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">البشرة الزجاجية</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">سر البشرة الكورية الصافية</p>
@@ -17,10 +17,10 @@ export function BeautyGlassSkinCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💧', text: '7 طبقات ترطيب — تونر خفيف يطبق 7 مرات' },
-          { emoji: '✨', text: 'طبقات رقيقة — كل طبقة تمتص قبل التالية' },
-          { emoji: '🧖', text: 'تقشير منتظم — أساس البشرة الزجاجية' },
-          { emoji: '☀️', text: 'واقي شمس يومي — حماية من التصبغات' },
+          { emoji: '', text: '7 طبقات ترطيب — تونر خفيف يطبق 7 مرات' },
+          { emoji: '', text: 'طبقات رقيقة — كل طبقة تمتص قبل التالية' },
+          { emoji: '', text: 'تقشير منتظم — أساس البشرة الزجاجية' },
+          { emoji: '️', text: 'واقي شمس يومي — حماية من التصبغات' },
         ].map((t, i) => (
           <div
             key={i}

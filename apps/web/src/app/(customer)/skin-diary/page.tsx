@@ -44,7 +44,7 @@ export default function SkinDiaryPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">🧬 يوميات البشرة</h1>
+            <h1 className="text-2xl font-bold"> يوميات البشرة</h1>
             <p className="mt-1 text-sm text-text-secondary">
               تابعي تطور بشرتكِ مع الوقت — صور وملاحظات أسبوعية
             </p>
@@ -55,7 +55,7 @@ export default function SkinDiaryPage(): JSX.Element {
         {/* Timeline Chart */}
         {timelineData.length > 1 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-4">📈 مستوى الترطيب</h3>
+            <h3 className="font-bold mb-4"> مستوى الترطيب</h3>
             <div className="flex items-end gap-1 h-24">
               {timelineData
                 .slice(0, 14)
@@ -111,7 +111,7 @@ export default function SkinDiaryPage(): JSX.Element {
                   </span>
                 </div>
                 <div className="mt-1 flex items-center gap-1">
-                  <span className="text-xs text-text-secondary">💧 {e.hydration as number}/10</span>
+                  <span className="text-xs text-text-secondary"> {e.hydration as number}/10</span>
                   {(e.concerns as string[])?.map((c: string) => (
                     <span key={c} className="text-[10px] text-red-500">
                       •{c}
@@ -127,7 +127,7 @@ export default function SkinDiaryPage(): JSX.Element {
                   onClick={() => deleteMut.mutate({ id: e.id as number })}
                   className="mt-2 text-xs text-red-400 hover:text-red-600"
                 >
-                  🗑️ حذف
+                  ️ حذف
                 </button>
               </Card>
             ))}
@@ -190,7 +190,7 @@ export default function SkinDiaryPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-              💾 حفظ
+               حفظ
             </Button>
           </div>
         </Modal>

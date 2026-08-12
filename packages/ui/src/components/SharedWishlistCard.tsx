@@ -8,7 +8,7 @@ import { cn } from '@galaxy/shared';
  *
  * Usage:
  *   <SharedWishlistCard
- *     items={[{ name: 'مانيكير سبا', price: 150, emoji: '💅' }]}
+ *     items={[{ name: 'مانيكير سبا', price: 150, emoji: '' }]}
  *     sharedWith={['نورة', 'أمي']}
  *   />
  */
@@ -46,7 +46,7 @@ export function SharedWishlistCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true">
-            💝
+            
           </span>
           <div>
             <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">قائمة أمنياتي</h4>
@@ -68,7 +68,7 @@ export function SharedWishlistCard({
             )}
           >
             <span className="text-sm shrink-0" aria-hidden="true">
-              {item.isGifted ? '🎁' : item.emoji || '💄'}
+              {item.isGifted ? '' : item.emoji || ''}
             </span>
             <span className="flex-1 text-[10px] font-medium text-text-primary dark:text-gray-100">
               {item.name}
@@ -81,7 +81,7 @@ export function SharedWishlistCard({
                   : 'text-pink-600 dark:text-pink-400',
               )}
             >
-              {item.isGifted ? '🎁' : `${item.price} ر.س`}
+              {item.isGifted ? '' : `${item.price} ر.س`}
             </span>
           </div>
         ))}
@@ -89,13 +89,13 @@ export function SharedWishlistCard({
 
       {/* Total */}
       <div className="mt-2 flex items-center justify-between rounded-lg bg-pink-50 px-3 py-2 dark:bg-pink-950">
-        <span className="text-[10px] font-bold text-pink-700 dark:text-pink-300">💰 المجموع</span>
+        <span className="text-[10px] font-bold text-pink-700 dark:text-pink-300"> المجموع</span>
         <span className="text-xs font-bold text-pink-800 dark:text-pink-200">{total} ر.س</span>
       </div>
 
       {/* Shared with */}
       <div className="mt-2">
-        <span className="text-[10px] text-text-tertiary dark:text-gray-500">👯‍♀️ مشاركة مع</span>
+        <span className="text-[10px] text-text-tertiary dark:text-gray-500">‍️ مشاركة مع</span>
         <div className="mt-1 flex flex-wrap gap-1">
           {sharedWith.map((name) => (
             <span
@@ -117,7 +117,7 @@ export function SharedWishlistCard({
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        💝 شاركي أمنياتكِ — ودعي أحبابكِ يدللونكِ
+         شاركي أمنياتكِ — ودعي أحبابكِ يدللونكِ
       </p>
     </div>
   );

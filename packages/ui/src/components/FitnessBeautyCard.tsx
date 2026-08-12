@@ -20,7 +20,7 @@ interface WorkoutDef {
 
 const WORKOUTS: Record<WorkoutType, WorkoutDef> = {
   gym: {
-    emoji: '🏋️',
+    emoji: '️',
     title: 'تمارين القوة',
     tips: [
       'اغسلي وجهكِ فوراً بعد التمرين',
@@ -30,7 +30,7 @@ const WORKOUTS: Record<WorkoutType, WorkoutDef> = {
     ],
   },
   yoga: {
-    emoji: '🧘',
+    emoji: '',
     title: 'يوغا',
     tips: [
       'نظفي بشرتكِ قبل الجلسة',
@@ -40,7 +40,7 @@ const WORKOUTS: Record<WorkoutType, WorkoutDef> = {
     ],
   },
   running: {
-    emoji: '🏃',
+    emoji: '',
     title: 'جري',
     tips: [
       'ضعي واقي شمس قبل الخروج',
@@ -50,7 +50,7 @@ const WORKOUTS: Record<WorkoutType, WorkoutDef> = {
     ],
   },
   swimming: {
-    emoji: '🏊',
+    emoji: '',
     title: 'سباحة',
     tips: [
       'اشطفي شعركِ قبل النزول للمسبح',
@@ -60,7 +60,7 @@ const WORKOUTS: Record<WorkoutType, WorkoutDef> = {
     ],
   },
   crossfit: {
-    emoji: '💪',
+    emoji: '',
     title: 'تدريب مكثف',
     tips: [
       'اربطي شعركِ بإحكام',
@@ -119,7 +119,7 @@ export function FitnessBeautyCard({
       {/* Quick product recs */}
       <div className="mt-3 rounded-xl bg-emerald-50 p-3 dark:bg-emerald-950">
         <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
-          🧴 منتجات مقترحة
+           منتجات مقترحة
         </p>
         <div className="mt-1 flex flex-wrap gap-1">
           {['منظف لطيف', 'تونر منعش', 'مرطب خفيف', 'واقي شمس'].map((p) => (
@@ -134,7 +134,7 @@ export function FitnessBeautyCard({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        💚 الجمال والصحة وجهان لعملة واحدة
+         الجمال والصحة وجهان لعملة واحدة
       </p>
     </div>
   );

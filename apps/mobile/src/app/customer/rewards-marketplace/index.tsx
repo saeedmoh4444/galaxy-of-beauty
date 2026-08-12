@@ -53,7 +53,7 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={s.t}>🎁 سوق المكافآت</Text>
+      <Text style={s.t}> سوق المكافآت</Text>
       <Text style={s.sub}>استبدلي نقاطكِ بمكافآت حصرية</Text>
 
       <View style={[s.pointsCard, { backgroundColor: tierColors[0] }]}>
@@ -96,10 +96,10 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
             <View style={{ alignItems: 'center' }}>
               <Text style={{ fontSize: 36 }}>
                 {r.rewardType === 'free_service'
-                  ? '💆‍♀️'
+                  ? '‍️'
                   : r.rewardType === 'discount_percent'
-                    ? '🏷️'
-                    : '💰'}
+                    ? '️'
+                    : ''}
               </Text>
               <Text style={{ fontWeight: '700', fontSize: 16, marginTop: 8 }}>
                 {r.nameJson?.ar}
@@ -115,7 +115,7 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
               <Text
                 style={{ color: '#059669', fontWeight: '700', textAlign: 'center', marginTop: 10 }}
               >
-                ✅ تم الاستبدال
+                 تم الاستبدال
               </Text>
             ) : (
               <TouchableOpacity
@@ -123,7 +123,7 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
                 style={[s.btn, { marginTop: 12 }, !canAfford && { backgroundColor: '#d1d5db' }]}
                 disabled={!canAfford}
               >
-                <Text style={s.btnText}>{canAfford ? '🎁 استبدلي' : '🔒 نقاط غير كافية'}</Text>
+                <Text style={s.btnText}>{canAfford ? ' استبدلي' : ' نقاط غير كافية'}</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -133,7 +133,7 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
       {transactions.length > 0 && (
         <View style={{ marginTop: 12 }}>
           <Text style={{ fontWeight: '700', fontSize: 15, color: '#111827', marginBottom: 8 }}>
-            📋 سجل النقاط
+             سجل النقاط
           </Text>
           {transactions.slice(0, 10).map((t: any, i: number) => (
             <View

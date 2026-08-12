@@ -33,7 +33,7 @@ export function BeautyWaterIntakeCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl">💧</span>
+          <span className="text-xl"></span>
           <div>
             <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">الماء</h4>
             <p className="text-[10px] text-sky-500 dark:text-sky-400">
@@ -56,7 +56,7 @@ export function BeautyWaterIntakeCard({
                 : 'bg-gray-100 text-gray-400 hover:bg-sky-50 dark:bg-gray-800',
             )}
           >
-            💧
+            
           </button>
         ))}
       </div>

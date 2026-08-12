@@ -13,7 +13,7 @@ export default function AdminPromoPage(): JSX.Element {
     <DashboardLayout role="ADMIN">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🏷️ إدارة العروض الترويجية</h1>
+          <h1 className="text-2xl font-bold">️ إدارة العروض الترويجية</h1>
           <p className="mt-1 text-sm text-text-secondary">أكواد الخصم والعروض النشطة</p>
         </div>
 
@@ -25,7 +25,7 @@ export default function AdminPromoPage(): JSX.Element {
           </div>
         ) : !(data ?? []).length ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">🏷️</p>
+            <p className="text-4xl mb-2">️</p>
             <p className="text-text-secondary">لا توجد عروض ترويجية</p>
           </Card>
         ) : (

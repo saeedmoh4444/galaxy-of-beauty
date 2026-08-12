@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W6: Education & Empowerment — Galaxy Beauty Academy.
  *
  * Usage:
- *   <BeautyLearningPathCard path={{ title: 'مكياج احترافي', modules: 8, completed: 3, emoji: '💄' }} />
+ *   <BeautyLearningPathCard path={{ title: 'مكياج احترافي', modules: 8, completed: 3, emoji: '' }} />
  */
 
 interface LearningPath {
@@ -74,8 +74,8 @@ export function BeautyLearningPathCard({
         {path.completed === 0
           ? 'ابدئي المسار'
           : path.completed === path.modules
-            ? '✅ مكتمل — راجعي'
-            : 'واصلي التعلم 📚'}
+            ? ' مكتمل — راجعي'
+            : 'واصلي التعلم '}
       </button>
     </div>
   );

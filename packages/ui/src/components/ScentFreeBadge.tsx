@@ -18,12 +18,12 @@ interface TypeDef {
 }
 
 const TYPES: Record<ProductType, TypeDef> = {
-  facial: { emoji: '🧴', label: 'عناية بالبشرة' },
-  hair: { emoji: '💇', label: 'عناية بالشعر' },
-  body: { emoji: '🧖', label: 'عناية بالجسم' },
-  makeup: { emoji: '💄', label: 'مكياج' },
-  nail: { emoji: '💅', label: 'أظافر' },
-  wax: { emoji: '🕯️', label: 'إزالة شعر' },
+  facial: { emoji: '', label: 'عناية بالبشرة' },
+  hair: { emoji: '', label: 'عناية بالشعر' },
+  body: { emoji: '', label: 'عناية بالجسم' },
+  makeup: { emoji: '', label: 'مكياج' },
+  nail: { emoji: '', label: 'أظافر' },
+  wax: { emoji: '️', label: 'إزالة شعر' },
 };
 
 interface ScentFreeBadgeProps {
@@ -50,7 +50,7 @@ export function ScentFreeBadge({
       {/* Header */}
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🌿
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-green-700 dark:text-green-300">خالٍ من العطور</h4>
@@ -62,7 +62,7 @@ export function ScentFreeBadge({
         </div>
         {fullyScentFree && (
           <span className="ml-auto shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-bold text-green-700 dark:bg-green-950 dark:text-green-300">
-            🌿 100%
+             100%
           </span>
         )}
       </div>
@@ -85,7 +85,7 @@ export function ScentFreeBadge({
       {/* Benefits */}
       <div className="mt-3 rounded-xl bg-green-50 p-3 dark:bg-green-950">
         <p className="text-[10px] font-bold text-green-800 dark:text-green-200">
-          💚 لماذا خالٍ من العطور؟
+           لماذا خالٍ من العطور؟
         </p>
         <div className="mt-1 space-y-0.5 text-[10px] text-green-700 dark:text-green-300">
           <p>• مناسب للبشرة الحساسة والحوامل</p>
@@ -99,13 +99,13 @@ export function ScentFreeBadge({
       {!fullyScentFree && (
         <div className="mt-2 rounded-lg bg-amber-50 p-2 dark:bg-amber-950">
           <p className="text-center text-[10px] text-amber-700 dark:text-amber-300">
-            💡 اطلبي &ldquo;خالٍ من العطور&rdquo; عند الحجز — سنجهز كل شيء مسبقاً
+             اطلبي &ldquo;خالٍ من العطور&rdquo; عند الحجز — سنجهز كل شيء مسبقاً
           </p>
         </div>
       )}
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🌿 الجمال الطبيعي لا يحتاج إلى عطور قوية
+         الجمال الطبيعي لا يحتاج إلى عطور قوية
       </p>
     </div>
   );

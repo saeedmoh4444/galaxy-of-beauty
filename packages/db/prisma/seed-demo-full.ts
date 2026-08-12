@@ -5,7 +5,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Seeding Galaxy of Beauty demo data...');
+  console.log(' Seeding Galaxy of Beauty demo data...');
 
   // ── Create admin ────────────────────────────────────────
   const admin = await prisma.user.upsert({
@@ -413,7 +413,7 @@ async function main() {
   });
   console.log('  5 feature flags seeded');
 
-  console.log('✅ Demo data seeding complete!');
+  console.log(' Demo data seeding complete!');
   console.log('   Admin login: admin@galaxyofbeauty.sa / Admin@123456');
   console.log('   Demo technicians: noura@demo.sa, sara@demo.sa, etc.');
 }

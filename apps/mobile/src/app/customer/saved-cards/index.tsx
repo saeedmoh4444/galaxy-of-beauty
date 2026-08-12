@@ -25,7 +25,7 @@ export default function SavedCardsScreen(): JSX.Element {
       emptyDescription="أضيفي بطاقتكِ للدفع السريع"
       onRetry={() => cards.refetch()}
     >
-      <Text style={styles.title}>💳 البطاقات المحفوظة</Text>
+      <Text style={styles.title}> البطاقات المحفوظة</Text>
       {(data as Record<string, unknown>[])?.map((c: Record<string, unknown>, i: number) => (
         <View
           key={i}

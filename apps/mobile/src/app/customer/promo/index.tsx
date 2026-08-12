@@ -31,7 +31,7 @@ export default function PromoScreen(): JSX.Element {
       errorMessage="فشل تحميل الأكواد"
       onRetry={() => promos.refetch()}
     >
-      <Text style={styles.title}>🏷️ أكواد الخصم</Text>
+      <Text style={styles.title}>️ أكواد الخصم</Text>
       <View style={styles.inputRow}>
         <TextInput
           style={styles.input}

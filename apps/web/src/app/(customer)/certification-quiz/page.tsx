@@ -29,7 +29,7 @@ export default function CertificationQuizPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🎓 اختبارات الشهادات</h1>
+          <h1 className="text-2xl font-bold"> اختبارات الشهادات</h1>
           <p className="mt-1 text-sm text-text-secondary">
             اختاري معلوماتكِ في التجميل واحصلي على شهادة
           </p>
@@ -37,9 +37,9 @@ export default function CertificationQuizPage(): JSX.Element {
 
         {result ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
-            <span className="text-6xl">{(result.passed as boolean) ? '🎉' : '📚'}</span>
+            <span className="text-6xl">{(result.passed as boolean) ? '' : ''}</span>
             <h2 className="mt-4 text-xl font-bold">
-              {(result.passed as boolean) ? 'مبروك! اجتزتِ الاختبار 🎓' : 'حاولي مرة أخرى!'}
+              {(result.passed as boolean) ? 'مبروك! اجتزتِ الاختبار ' : 'حاولي مرة أخرى!'}
             </h2>
             <p className="text-2xl font-extrabold text-brand-600 mt-2">{result.score as number}%</p>
             {(result.certificate as Record<string, unknown>) ? (
@@ -62,7 +62,7 @@ export default function CertificationQuizPage(): JSX.Element {
                 setResult(null);
               }}
             >
-              🔄 اختبار آخر
+               اختبار آخر
             </Button>
           </Card>
         ) : quizId ? (
@@ -100,7 +100,7 @@ export default function CertificationQuizPage(): JSX.Element {
               loading={submitMut.isPending}
               className="w-full mt-4"
             >
-              تقديم ✓
+              تقديم 
             </Button>
           </Card>
         ) : isLoading ? (
@@ -121,7 +121,7 @@ export default function CertificationQuizPage(): JSX.Element {
 
         {myCerts.length > 0 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">🎓 شهاداتي</h3>
+            <h3 className="font-bold mb-3"> شهاداتي</h3>
             <div className="space-y-2">
               {myCerts.map((c: Record<string, unknown>) => (
                 <div

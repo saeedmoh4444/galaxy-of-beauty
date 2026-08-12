@@ -29,11 +29,11 @@ export default function TrendingScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={styles.t}>🔥 الأكثر رواجاً</Text>
+      <Text style={styles.t}> الأكثر رواجاً</Text>
       <Text style={styles.sub}>الخدمات والفنيات الأكثر طلباً هذا الشهر</Text>
       {trendingItems.length > 0 && (
         <>
-          <Text style={styles.sectionTitle}>💆‍♀️ الخدمات الرائجة</Text>
+          <Text style={styles.sectionTitle}>‍️ الخدمات الرائجة</Text>
           {trendingItems.map((s: any, i: number) => (
             <View key={s.id ?? i} style={styles.card}>
               <View style={styles.rank}>
@@ -52,16 +52,16 @@ export default function TrendingScreen(): JSX.Element {
       )}
       {spotlightItems.length > 0 && (
         <>
-          <Text style={styles.sectionTitle}>⭐ فنيات مميزات</Text>
+          <Text style={styles.sectionTitle}> فنيات مميزات</Text>
           {spotlightItems.map((t: any, i: number) => (
             <View key={t.id ?? i} style={styles.card}>
               <Text style={styles.techEmoji}>
-                {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '👩‍🎨'}
+                {i === 0 ? '' : i === 1 ? '' : i === 2 ? '' : '‍'}
               </Text>
               <View style={{ flex: 1 }}>
                 <Text style={styles.techName}>{t.name as string}</Text>
                 <Text style={styles.techMeta}>
-                  📍 {t.city as string} · ⭐ {t.ratingAvg as number}
+                   {t.city as string} ·  {t.ratingAvg as number}
                 </Text>
               </View>
             </View>

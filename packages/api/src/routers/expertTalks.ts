@@ -27,7 +27,7 @@ export const expertTalksRouter = router({
         date: z.string(),
         seats: z.number().int().positive().optional(),
         isFree: z.boolean().default(true),
-        emoji: z.string().default('🎤'),
+        emoji: z.string().default(''),
       }),
     )
     .mutation(async ({ input }) =>

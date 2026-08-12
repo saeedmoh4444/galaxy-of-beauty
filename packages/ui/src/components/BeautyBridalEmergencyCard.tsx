@@ -17,10 +17,10 @@ export function BeautyBridalEmergencyCard({ className = '' }: { className?: stri
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '💊', label: 'حبة حساسية', tip: 'لأي تحسس مفاجئ' },
+          { emoji: '', label: 'حبة حساسية', tip: 'لأي تحسس مفاجئ' },
           { emoji: '🩹', label: 'لصقات', tip: 'للكعب من الحذاء' },
-          { emoji: '🧻', label: 'ورق نشاف', tip: 'لإزالة اللمعان' },
-          { emoji: '💄', label: 'أحمر شفاه', tip: 'للمسات سريعة' },
+          { emoji: '', label: 'ورق نشاف', tip: 'لإزالة اللمعان' },
+          { emoji: '', label: 'أحمر شفاه', tip: 'للمسات سريعة' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-purple-50 px-2.5 py-2 dark:bg-purple-950">
             <span className="text-sm">{t.emoji}</span>

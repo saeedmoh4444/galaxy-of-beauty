@@ -15,7 +15,7 @@ export default function BookingInsightsPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📊 تحليلات الحجوزات</h1>
+          <h1 className="text-2xl font-bold"> تحليلات الحجوزات</h1>
           <p className="mt-1 text-sm text-text-secondary">إحصائيات حجوزاتكِ وتفضيلاتكِ</p>
         </div>
 
@@ -46,13 +46,13 @@ export default function BookingInsightsPage(): JSX.Element {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <Card padding="lg" className="text-center">
-                <p className="text-sm text-text-secondary">🔥 عدد مرات متتالية</p>
+                <p className="text-sm text-text-secondary"> عدد مرات متتالية</p>
                 <p className="text-3xl font-extrabold text-amber-600 mt-1">
                   {((insights?.streak as Record<string, unknown>)?.currentStreak as number) ?? 0}
                 </p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-sm text-text-secondary">⭐ القسم المفضل</p>
+                <p className="text-sm text-text-secondary"> القسم المفضل</p>
                 <p className="text-xl font-bold text-brand-600 mt-1">
                   {insights?.favoriteCategory
                     ? (insights?.favoriteCategoryName as Record<string, string>)?.ar
@@ -65,7 +65,7 @@ export default function BookingInsightsPage(): JSX.Element {
             </div>
 
             <Card padding="lg">
-              <h3 className="font-bold mb-3">📈 ملخص</h3>
+              <h3 className="font-bold mb-3"> ملخص</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span>الحجوزات المكتملة</span>

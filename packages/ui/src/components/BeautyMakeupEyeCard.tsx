@@ -9,7 +9,7 @@ export function BeautyMakeupEyeCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">👁️</span>
+        <span className="text-xl">️</span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">مكياج العيون</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">تقنيات أساسية</p>
@@ -17,10 +17,10 @@ export function BeautyMakeupEyeCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🎨', text: 'اللون الفاتح — على كامل الجفن' },
-          { emoji: '🌑', text: 'اللون المتوسط — على الثنية' },
-          { emoji: '✨', text: 'اللون اللامع — في الزاوية الداخلية' },
-          { emoji: '🖌️', text: 'ادمجي جيداً — لا خطوط قاسية' },
+          { emoji: '', text: 'اللون الفاتح — على كامل الجفن' },
+          { emoji: '', text: 'اللون المتوسط — على الثنية' },
+          { emoji: '', text: 'اللون اللامع — في الزاوية الداخلية' },
+          { emoji: '️', text: 'ادمجي جيداً — لا خطوط قاسية' },
         ].map((t, i) => (
           <div
             key={i}

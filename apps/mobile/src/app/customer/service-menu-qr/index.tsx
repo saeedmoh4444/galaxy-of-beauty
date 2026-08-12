@@ -43,7 +43,7 @@ export default function ServiceMenuQRScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📋 QR قائمة الخدمات</Text>
+      <Text style={styles.t}> QR قائمة الخدمات</Text>
       {techs.map((t: any) => (
         <View key={t.id} style={styles.card}>
           <View style={{ flex: 1 }}>
@@ -57,7 +57,7 @@ export default function ServiceMenuQRScreen(): JSX.Element {
       ))}
       {result && (
         <View style={styles.rc}>
-          <Text style={styles.re}>📱</Text>
+          <Text style={styles.re}></Text>
           <Text style={styles.rt}>تم توليد QR!</Text>
           <Text style={styles.ru}>{(result.qrUrl ?? result.url) as string}</Text>
         </View>

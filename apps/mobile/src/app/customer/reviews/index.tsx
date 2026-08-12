@@ -24,11 +24,11 @@ export default function ReviewsScreen(): JSX.Element {
       emptyDescription="قيمي الخدمات التي حصلتِ عليها"
       onRetry={() => reviews.refetch()}
     >
-      <Text style={styles.title}>⭐ تقييماتي</Text>
+      <Text style={styles.title}> تقييماتي</Text>
       {(data as Record<string, unknown>[])?.map((r: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.row}>
-            <Text style={styles.stars}>{'⭐'.repeat(Number(r.rating) || 0)}</Text>
+            <Text style={styles.stars}>{''.repeat(Number(r.rating) || 0)}</Text>
             <Text style={styles.date}>
               {new Date(r.createdAt as string).toLocaleDateString('ar-SA')}
             </Text>

@@ -9,7 +9,7 @@ export function BeautyRednessReliefCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🔴</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             تهدئة الاحمرار
@@ -19,10 +19,10 @@ export function BeautyRednessReliefCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧊', text: 'ماء بارد — يغسل الوجه ويقلص الأوعية' },
-          { emoji: '🌿', text: 'جل الألوفيرا — مهدئ طبيعي فوري' },
-          { emoji: '🛑', text: 'أوقفي كل المنتجات النشطة — يوم راحة' },
-          { emoji: '🧴', text: 'مرطب بسيط — بدون عطور أو أحماض' },
+          { emoji: '', text: 'ماء بارد — يغسل الوجه ويقلص الأوعية' },
+          { emoji: '', text: 'جل الألوفيرا — مهدئ طبيعي فوري' },
+          { emoji: '', text: 'أوقفي كل المنتجات النشطة — يوم راحة' },
+          { emoji: '', text: 'مرطب بسيط — بدون عطور أو أحماض' },
         ].map((t, i) => (
           <div
             key={i}

@@ -9,7 +9,7 @@ export function BeautyTwentiesCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌱</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">العناية في العشرينات</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">أساس قوي لمستقبل بشرتك</p>
@@ -17,10 +17,10 @@ export function BeautyTwentiesCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '☀️', text: 'واقي شمس يومي — أهم استثمار لبشرتك' },
-          { emoji: '🧴', text: 'روتين أساسي — منظف، مرطب، واقي شمس' },
-          { emoji: '✨', text: 'فيتامين C — ابدئي مبكراً لمضادات الأكسدة' },
-          { emoji: '🚫', text: 'لا ريبتينول بعد — بشرتك تنتجه طبيعياً' },
+          { emoji: '️', text: 'واقي شمس يومي — أهم استثمار لبشرتك' },
+          { emoji: '', text: 'روتين أساسي — منظف، مرطب، واقي شمس' },
+          { emoji: '', text: 'فيتامين C — ابدئي مبكراً لمضادات الأكسدة' },
+          { emoji: '', text: 'لا ريبتينول بعد — بشرتك تنتجه طبيعياً' },
         ].map((t, i) => (
           <div
             key={i}

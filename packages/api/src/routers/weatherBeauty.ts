@@ -2,11 +2,11 @@ import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
 
 const TIPS: Record<string, { emoji: string; tips: string[] }> = {
-  hot: { emoji: '☀️', tips: ['SPF 50+', 'مرطب جل', 'ماء كثير', 'تجنبي المكياج الثقيل'] },
-  mild: { emoji: '🌤️', tips: ['SPF 30', 'روتينك المعتاد', 'جربي إطلالة جديدة'] },
-  cold: { emoji: '❄️', tips: ['مرطب غني', 'بلسم شفاه', 'قناع ترطيب', 'ماء دافئ للوجه'] },
-  humid: { emoji: '💦', tips: ['منتجات خالية من الزيوت', 'مثبت مكياج', 'ورق نشاف'] },
-  dusty: { emoji: '🌪️', tips: ['غسول عميق', 'قناع منقي', 'تجنبي التقشير'] },
+  hot: { emoji: '️', tips: ['SPF 50+', 'مرطب جل', 'ماء كثير', 'تجنبي المكياج الثقيل'] },
+  mild: { emoji: '️', tips: ['SPF 30', 'روتينك المعتاد', 'جربي إطلالة جديدة'] },
+  cold: { emoji: '️', tips: ['مرطب غني', 'بلسم شفاه', 'قناع ترطيب', 'ماء دافئ للوجه'] },
+  humid: { emoji: '', tips: ['منتجات خالية من الزيوت', 'مثبت مكياج', 'ورق نشاف'] },
+  dusty: { emoji: '️', tips: ['غسول عميق', 'قناع منقي', 'تجنبي التقشير'] },
 };
 
 export const weatherBeautyRouter = router({

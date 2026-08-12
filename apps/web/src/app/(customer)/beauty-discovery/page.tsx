@@ -21,7 +21,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🔍 اكتشفي</h1>
+          <h1 className="text-2xl font-bold"> اكتشفي</h1>
           <p className="mt-1 text-sm text-text-secondary">خدمات وعروض وفعاليات مخصصة لكِ</p>
         </div>
 
@@ -31,7 +31,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
           (forYou?.profile as Record<string, unknown>) && (
             <Card padding="lg" className="border-2 border-purple-200 bg-purple-50">
               <div className="flex items-center gap-3">
-                <span className="text-2xl">🧬</span>
+                <span className="text-2xl"></span>
                 <div>
                   <p className="font-bold text-purple-700">ملفكِ الشخصي</p>
                   <p className="text-sm text-purple-600">
@@ -52,7 +52,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
             <CardSkeleton />
           ) : (
             <Card padding="lg">
-              <h3 className="font-bold mb-3">🔥 الأكثر طلباً</h3>
+              <h3 className="font-bold mb-3"> الأكثر طلباً</h3>
               <div className="space-y-2">
                 {(
                   (Array.isArray(featured?.popularServices)
@@ -77,7 +77,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
             <CardSkeleton />
           ) : (
             <Card padding="lg">
-              <h3 className="font-bold mb-3">💝 لكِ خصيصاً</h3>
+              <h3 className="font-bold mb-3"> لكِ خصيصاً</h3>
               {(forYou?.suggestions as Array<Record<string, unknown>>)?.length ? (
                 <div className="space-y-2">
                   {(forYou?.suggestions as Array<Record<string, unknown>>).map(
@@ -105,7 +105,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
           <CardSkeleton />
         ) : (featured?.flashDeals as Array<Record<string, unknown>>)?.length ? (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">⚡ عروض فلاش</h3>
+            <h3 className="font-bold mb-3"> عروض فلاش</h3>
             <div className="grid gap-3 sm:grid-cols-2">
               {(featured?.flashDeals as Array<Record<string, unknown>>)
                 .slice(0, 4)
@@ -133,7 +133,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
           <CardSkeleton />
         ) : (featured?.events as Array<Record<string, unknown>>)?.length ? (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">🎪 فعاليات قادمة</h3>
+            <h3 className="font-bold mb-3"> فعاليات قادمة</h3>
             <div className="grid gap-3 sm:grid-cols-2">
               {(featured?.events as Array<Record<string, unknown>>).map(
                 (e: Record<string, unknown>) => (

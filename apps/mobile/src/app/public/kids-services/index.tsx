@@ -29,7 +29,7 @@ export default function KidsServicesScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#f59e0b']} />
       }
     >
-      <Text style={styles.t}>🧒 خدمات الأطفال</Text>
+      <Text style={styles.t}> خدمات الأطفال</Text>
       <Text style={styles.sub}>خدمات تجميل للأطفال والصغار</Text>
       <View style={styles.catGrid}>
         {categories.map((cat: Record<string, unknown>) => (

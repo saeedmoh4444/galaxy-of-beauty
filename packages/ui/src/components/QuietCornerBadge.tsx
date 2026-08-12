@@ -28,14 +28,14 @@ interface AmenityDef {
 }
 
 const AMENITIES: AmenityDef[] = [
-  { emoji: '🧸', label: 'ألعاب', detail: 'ألعاب آمنة ومناسبة للأطفال' },
-  { emoji: '🎨', label: 'تلوين', detail: 'دفاتر تلوين وأقلام ملونة' },
-  { emoji: '📱', label: 'تابلت', detail: 'تابلت تعليمي مع سماعات' },
-  { emoji: '🏰', label: 'ركن ألعاب', detail: 'مساحة لعب آمنة ومرئية' },
+  { emoji: '', label: 'ألعاب', detail: 'ألعاب آمنة ومناسبة للأطفال' },
+  { emoji: '', label: 'تلوين', detail: 'دفاتر تلوين وأقلام ملونة' },
+  { emoji: '', label: 'تابلت', detail: 'تابلت تعليمي مع سماعات' },
+  { emoji: '', label: 'ركن ألعاب', detail: 'مساحة لعب آمنة ومرئية' },
   { emoji: '🪑', label: 'كرسي أطفال', detail: 'كرسي طعام للأطفال الصغار' },
-  { emoji: '👶', label: 'طاولة تغيير', detail: 'طاولة تغيير حفاضات نظيفة' },
-  { emoji: '🤱', label: 'ركن رضاعة', detail: 'مكان خاص ومريح للرضاعة' },
-  { emoji: '🧃', label: 'مشروبات أطفال', detail: 'عصائر وحليب مجاني للأطفال' },
+  { emoji: '', label: 'طاولة تغيير', detail: 'طاولة تغيير حفاضات نظيفة' },
+  { emoji: '', label: 'ركن رضاعة', detail: 'مكان خاص ومريح للرضاعة' },
+  { emoji: '', label: 'مشروبات أطفال', detail: 'عصائر وحليب مجاني للأطفال' },
 ];
 
 interface QuietCornerBadgeProps {
@@ -77,7 +77,7 @@ export function QuietCornerBadge({
       {/* Header */}
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🧒
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">ركن الأطفال</h4>
@@ -87,7 +87,7 @@ export function QuietCornerBadge({
         </div>
         {supervised && (
           <span className="ml-auto shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-            👩‍👧 مراقب
+            ‍ مراقب
           </span>
         )}
       </div>
@@ -116,14 +116,14 @@ export function QuietCornerBadge({
       {supervised && (
         <div className="mt-2 rounded-lg bg-emerald-50 p-2 dark:bg-emerald-950">
           <p className="text-center text-[10px] text-emerald-700 dark:text-emerald-300">
-            👩‍👧 موظفة مخصصة لمراقبة الأطفال — اطمئني على صغاركِ
+            ‍ موظفة مخصصة لمراقبة الأطفال — اطمئني على صغاركِ
           </p>
         </div>
       )}
 
       {/* Mom encouragement */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🧡 أنتِ تستحقين وقتاً لنفسكِ — وصغاركِ في أيدٍ أمينة
+         أنتِ تستحقين وقتاً لنفسكِ — وصغاركِ في أيدٍ أمينة
       </p>
     </div>
   );

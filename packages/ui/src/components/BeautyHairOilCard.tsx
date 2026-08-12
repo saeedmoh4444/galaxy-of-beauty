@@ -17,10 +17,10 @@ export function BeautyHairOilCard({ className = '' }: { className?: string }): J
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '🥥', label: 'جوز الهند', tip: 'يخترق الشعرة — ترطيب عميق' },
+          { emoji: '', label: 'جوز الهند', tip: 'يخترق الشعرة — ترطيب عميق' },
           { emoji: '🫒', label: 'الأرغان', tip: 'ذهبي — للمعان وتغذية' },
-          { emoji: '🌿', label: 'إكليل الجبل', tip: 'يحفز نمو الشعر' },
-          { emoji: '💧', label: 'الجوجوبا', tip: 'يشبه زيوت فروة الرأس' },
+          { emoji: '', label: 'إكليل الجبل', tip: 'يحفز نمو الشعر' },
+          { emoji: '', label: 'الجوجوبا', tip: 'يشبه زيوت فروة الرأس' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-amber-50 px-2.5 py-2 dark:bg-amber-950">
             <span className="text-sm">{t.emoji}</span>

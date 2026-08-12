@@ -90,7 +90,7 @@ export function AllergyTestCard({
             : 'bg-emerald-600 text-white hover:bg-emerald-700',
         )}
       >
-        {isDue ? '⏰ موعد الاختبار' : 'احجزي اختبار حساسية'}
+        {isDue ? ' موعد الاختبار' : 'احجزي اختبار حساسية'}
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">

@@ -2,9 +2,9 @@ import { z } from 'zod';
 import { customerProcedure, router } from '../trpc';
 
 const EXPRESS_SERVICES = [
-  { emoji: '💄', name: 'مكياج سريع', time: '30 دقيقة', price: 150 },
-  { emoji: '💇', name: 'تسريحة سهرة', time: '20 دقيقة', price: 100 },
-  { emoji: '💅', name: 'مانيكير سريع', time: '20 دقيقة', price: 80 },
+  { emoji: '', name: 'مكياج سريع', time: '30 دقيقة', price: 150 },
+  { emoji: '', name: 'تسريحة سهرة', time: '20 دقيقة', price: 100 },
+  { emoji: '', name: 'مانيكير سريع', time: '20 دقيقة', price: 80 },
 ];
 
 export const nightOutRouter = router({

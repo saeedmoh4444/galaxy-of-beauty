@@ -57,13 +57,13 @@ export function getSaudiSeason(date: Date = new Date()): {
 
   if (isRamadan) {
     seasonLabel = 'رمضان كريم';
-    seasonEmoji = '🌙';
+    seasonEmoji = '';
   } else if (isEidAlFitr) {
     seasonLabel = 'عيد الفطر';
-    seasonEmoji = '🎊';
+    seasonEmoji = '';
   } else if (isEidAlAdha) {
     seasonLabel = 'عيد الأضحى';
-    seasonEmoji = '🐑';
+    seasonEmoji = '';
   }
 
   return {

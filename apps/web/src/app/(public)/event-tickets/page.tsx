@@ -49,7 +49,7 @@ export default function EventTicketsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-10 text-center">
-        <h1 className="text-3xl font-bold">🎟️ تذاكر الفعاليات</h1>
+        <h1 className="text-3xl font-bold">️ تذاكر الفعاليات</h1>
         <p className="mt-2 text-text-secondary">احجزي مقعدكِ في أقوى فعاليات وفعاليات التجميل</p>
       </div>
 
@@ -73,10 +73,10 @@ export default function EventTicketsPage(): JSX.Element {
             >
               <span className="text-5xl">
                 {['workshop', 'masterclass', 'launch', 'seasonal'].includes(e.eventType as string)
-                  ? { workshop: '🛠️', masterclass: '👩‍🏫', launch: '🚀', seasonal: '🌸' }[
+                  ? { workshop: '️', masterclass: '‍', launch: '', seasonal: '' }[
                       e.eventType as string
                     ]
-                  : '📅'}
+                  : ''}
               </span>
               <h3 className="mt-3 text-lg font-bold">
                 {(e.nameJson as Record<string, string>)?.ar}
@@ -88,12 +88,12 @@ export default function EventTicketsPage(): JSX.Element {
                 })}
               </p>
               <p className="text-2xl font-extrabold text-brand-600 mt-3">
-                {Number(e.price) > 0 ? formatCurrency(Number(e.price)) + ' ر.س' : 'مجاناً 🎉'}
+                {Number(e.price) > 0 ? formatCurrency(Number(e.price)) + ' ر.س' : 'مجاناً '}
               </p>
               <div className="mt-4">
                 {reserved && (reserved.eventId as number) === (e.id as number) ? (
                   <span className="rounded-full bg-green-100 px-4 py-2 text-sm font-bold text-green-700 dark:bg-green-900 dark:text-green-300">
-                    ✓ تم الحجز
+                     تم الحجز
                   </span>
                 ) : user ? (
                   <Button
@@ -103,7 +103,7 @@ export default function EventTicketsPage(): JSX.Element {
                       setName(user.name ?? '');
                     }}
                   >
-                    🎫 احجزي مقعداً
+                     احجزي مقعداً
                   </Button>
                 ) : (
                   <Link href="/login">
@@ -135,7 +135,7 @@ export default function EventTicketsPage(): JSX.Element {
               إلغاء
             </Button>
             <Button onClick={handleReserve} loading={reserveMut.isPending}>
-              🎫 تأكيد الحجز
+               تأكيد الحجز
             </Button>
           </div>
         </div>

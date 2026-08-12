@@ -3,10 +3,10 @@
 import { cn } from '@galaxy/shared';
 
 const TIPS = [
-  { emoji: '💪', title: 'نقاط النبض', desc: 'المعصم، خلف الأذن، المرفق' },
-  { emoji: '🧴', title: 'رطبي أولاً', desc: 'البشرة المرطبة تثبت العطر أطول' },
-  { emoji: '🚫', title: 'لا تفركي', desc: 'الفرك يكسر جزيئات العطر' },
-  { emoji: '🌡️', title: 'تخزين صحيح', desc: 'مكان بارد ومظلم — ليس الحمام' },
+  { emoji: '', title: 'نقاط النبض', desc: 'المعصم، خلف الأذن، المرفق' },
+  { emoji: '', title: 'رطبي أولاً', desc: 'البشرة المرطبة تثبت العطر أطول' },
+  { emoji: '', title: 'لا تفركي', desc: 'الفرك يكسر جزيئات العطر' },
+  { emoji: '️', title: 'تخزين صحيح', desc: 'مكان بارد ومظلم — ليس الحمام' },
 ];
 
 interface BeautyPerfumeCardProps {
@@ -22,7 +22,7 @@ export function BeautyPerfumeCard({ className = '' }: BeautyPerfumeCardProps): J
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌸</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">أسرار العطر</h4>
           <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">كيف تجعلين عطرك يدوم</p>

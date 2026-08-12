@@ -27,7 +27,7 @@ export default function WishlistScreen(): JSX.Element {
       emptyDescription="أضيفي خدماتكِ المفضلة لتجديها بسرعة"
       onRetry={() => wishlist.refetch()}
     >
-      <Text style={styles.title}>❤️ المفضلة</Text>
+      <Text style={styles.title}>️ المفضلة</Text>
       {(data as Record<string, unknown>[])?.map((w: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.left}>
@@ -44,7 +44,7 @@ export default function WishlistScreen(): JSX.Element {
                   .then(() => wishlist.refetch())
               }
             >
-              <Text style={styles.removeBtn}>❌</Text>
+              <Text style={styles.removeBtn}></Text>
             </TouchableOpacity>
           )}
         </View>

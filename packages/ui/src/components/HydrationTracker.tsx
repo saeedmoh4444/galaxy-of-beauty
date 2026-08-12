@@ -45,7 +45,7 @@ export function HydrationTracker({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true">
-            💧
+            
           </span>
           <div>
             <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">متعقب الماء</h4>
@@ -74,7 +74,7 @@ export function HydrationTracker({
                 : 'bg-gray-100 text-gray-400 hover:bg-sky-50 dark:bg-gray-800 dark:hover:bg-gray-700',
             )}
           >
-            💧
+            
           </button>
         ))}
       </div>
@@ -83,7 +83,7 @@ export function HydrationTracker({
       <div className="mt-2">
         <div className="flex items-center justify-between text-[10px]">
           <span className="text-text-tertiary dark:text-gray-500">
-            {pct >= 100 ? '🎉 أكملتِ الهدف!' : `باقي ${goal - current} أكواب`}
+            {pct >= 100 ? ' أكملتِ الهدف!' : `باقي ${goal - current} أكواب`}
           </span>
           <span className="font-bold text-sky-700 dark:text-sky-300">{pct}%</span>
         </div>
@@ -108,7 +108,7 @@ export function HydrationTracker({
               : 'bg-sky-600 text-white hover:bg-sky-700',
           )}
         >
-          + كوب 💧
+          + كوب 
         </button>
         <button
           type="button"
@@ -122,7 +122,7 @@ export function HydrationTracker({
       {/* Skin benefit */}
       <div className="mt-2 rounded-lg bg-sky-50 p-2 dark:bg-sky-950">
         <p className="text-center text-[10px] text-sky-700 dark:text-sky-300">
-          💡 {goal} أكواب ماء = بشرة أكثر نضارة ومرونة
+           {goal} أكواب ماء = بشرة أكثر نضارة ومرونة
         </p>
       </div>
     </div>

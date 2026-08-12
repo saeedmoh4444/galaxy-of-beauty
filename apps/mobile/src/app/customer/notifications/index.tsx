@@ -29,7 +29,7 @@ export default function NotificationsScreen(): JSX.Element {
       }}
     >
       <View style={styles.header}>
-        <Text style={styles.title}>🔔 الإشعارات</Text>
+        <Text style={styles.title}> الإشعارات</Text>
         {data && data.length > 0 && (
           <TouchableOpacity
             onPress={() => {

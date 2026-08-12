@@ -39,7 +39,7 @@ export function BeautySquadCard({
     >
       <div className="text-center">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-fuchsia-200 to-purple-200 text-2xl dark:from-fuchsia-800 dark:to-purple-800">
-          {squad.emoji || '👯‍♀️'}
+          {squad.emoji || '‍️'}
         </div>
         <h4 className="mt-2 text-sm font-bold text-fuchsia-800 dark:text-fuchsia-200">
           {squad.name}
@@ -49,7 +49,7 @@ export function BeautySquadCard({
 
       {squad.nextEvent && (
         <div className="mt-3 rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[10px] text-fuchsia-700 dark:text-fuchsia-300">📅 اللقاء القادم</p>
+          <p className="text-[10px] text-fuchsia-700 dark:text-fuchsia-300"> اللقاء القادم</p>
           <p className="text-xs font-bold text-fuchsia-800 dark:text-fuchsia-200">
             {squad.nextEvent}
           </p>
@@ -62,19 +62,19 @@ export function BeautySquadCard({
           onClick={onCreateEvent}
           className="flex-1 rounded-xl bg-fuchsia-600 py-2 text-[10px] font-bold text-white hover:bg-fuchsia-700 active:scale-[0.98] transition-all"
         >
-          📅 لقاء جديد
+           لقاء جديد
         </button>
         <button
           type="button"
           onClick={onInvite}
           className="rounded-xl border border-fuchsia-200 bg-white px-4 py-2 text-[10px] font-bold text-fuchsia-700 hover:bg-fuchsia-50 dark:border-fuchsia-800 dark:bg-gray-800 dark:text-fuchsia-300"
         >
-          💌 دعوة
+           دعوة
         </button>
       </div>
 
       <p className="mt-2 text-center text-[9px] text-fuchsia-500 dark:text-fuchsia-400">
-        💜 صديقاتكِ هن عائلتكِ المختارة
+         صديقاتكِ هن عائلتكِ المختارة
       </p>
     </div>
   );

@@ -9,7 +9,7 @@ export function BeautyDeclutterCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🧹</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">ترتيب وتنظيف</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
@@ -19,10 +19,10 @@ export function BeautyDeclutterCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🗑️', text: 'تخلصي من: منتجات تغير لونها أو رائحتها أو قوامها' },
-          { emoji: '📅', text: 'كل 3 أشهر — راجعي مجموعتكِ' },
-          { emoji: '❤️', text: 'احتفظي بما تستخدمينه فعلاً — وليس ما تتمنين' },
-          { emoji: '🎁', text: 'تبرعي بالجديد غير المستخدم — لصديقة أو جمعية' },
+          { emoji: '️', text: 'تخلصي من: منتجات تغير لونها أو رائحتها أو قوامها' },
+          { emoji: '', text: 'كل 3 أشهر — راجعي مجموعتكِ' },
+          { emoji: '️', text: 'احتفظي بما تستخدمينه فعلاً — وليس ما تتمنين' },
+          { emoji: '', text: 'تبرعي بالجديد غير المستخدم — لصديقة أو جمعية' },
         ].map((t, i) => (
           <div
             key={i}

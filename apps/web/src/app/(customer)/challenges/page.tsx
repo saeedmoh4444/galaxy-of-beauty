@@ -6,11 +6,11 @@ import { PageContainer, PageTitle, Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const CH: Record<string, { emoji: string; color: string; label: string }> = {
-  '7day_skincare': { emoji: '✨', color: '#ec4899', label: '7 أيام عناية' },
-  '5bookings': { emoji: '💇‍♀️', color: '#f59e0b', label: '5 حجوزات' },
-  first_review: { emoji: '⭐', color: '#3b82f6', label: 'أول تقييم' },
-  streak_4weeks: { emoji: '🔥', color: '#8b5cf6', label: '4 أسابيع متواصلة' },
-  refer_3friends: { emoji: '👯‍♀️', color: '#10b981', label: '3 إحالات' },
+  '7day_skincare': { emoji: '', color: '#ec4899', label: '7 أيام عناية' },
+  '5bookings': { emoji: '‍️', color: '#f59e0b', label: '5 حجوزات' },
+  first_review: { emoji: '', color: '#3b82f6', label: 'أول تقييم' },
+  streak_4weeks: { emoji: '', color: '#8b5cf6', label: '4 أسابيع متواصلة' },
+  refer_3friends: { emoji: '‍️', color: '#10b981', label: '3 إحالات' },
 };
 
 export default function ChallengesPage(): JSX.Element {
@@ -40,11 +40,11 @@ export default function ChallengesPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="default">
-        <PageTitle title="🎯 التحديات" subtitle="تحديات ممتعة لجمالكِ" />
+        <PageTitle title=" التحديات" subtitle="تحديات ممتعة لجمالكِ" />
 
         <div className="space-y-4">
           {challenges.map((c: any) => {
-            const cfg = CH[c.type] ?? { emoji: '🎯', color: '#6b7280', label: c.type };
+            const cfg = CH[c.type] ?? { emoji: '', color: '#6b7280', label: c.type };
             const prog = (progress as any)?.[c.type];
             return (
               <Card key={c.id} className="flex items-center gap-4 p-5">

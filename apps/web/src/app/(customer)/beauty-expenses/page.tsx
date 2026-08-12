@@ -23,7 +23,7 @@ export default function BeautyExpensesPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">💰 تحليل الإنفاق</h1>
+          <h1 className="text-2xl font-bold"> تحليل الإنفاق</h1>
           <p className="mt-1 text-sm text-text-secondary">تتبعي مصاريفكِ على خدمات التجميل</p>
         </div>
 
@@ -62,7 +62,7 @@ export default function BeautyExpensesPage(): JSX.Element {
 
             <div className="grid gap-6 lg:grid-cols-2">
               <Card padding="lg">
-                <h3 className="font-bold mb-3">📊 توزيع الإنفاق</h3>
+                <h3 className="font-bold mb-3"> توزيع الإنفاق</h3>
                 {(data?.byCategory as Array<Record<string, unknown>>)?.length ? (
                   (data?.byCategory as Array<Record<string, unknown>>).map(
                     (c: Record<string, unknown>) => {
@@ -94,7 +94,7 @@ export default function BeautyExpensesPage(): JSX.Element {
               </Card>
 
               <Card padding="lg">
-                <h3 className="font-bold mb-3">📈 الاتجاه الشهري</h3>
+                <h3 className="font-bold mb-3"> الاتجاه الشهري</h3>
                 {(data?.monthlyTrend as Array<Record<string, unknown>>)?.length ? (
                   <div className="space-y-3">
                     {(data?.monthlyTrend as Array<Record<string, unknown>>).map(

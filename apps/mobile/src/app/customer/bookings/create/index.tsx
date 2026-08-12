@@ -118,7 +118,7 @@ export default function CreateBookingScreen() {
               ]}
             >
               <Text style={[styles.stepNum, step === i + 1 && { color: '#fff' }]}>
-                {step > i + 1 ? '✓' : i + 1}
+                {step > i + 1 ? '' : i + 1}
               </Text>
             </View>
             <Text
@@ -159,7 +159,7 @@ export default function CreateBookingScreen() {
         <View>
           <Text style={styles.sectionTitle}>تفاصيل الحجز</Text>
           <Text style={styles.selectedService}>
-            ✨ {(svc.titleJson as Record<string, string>)?.ar || ''}
+             {(svc.titleJson as Record<string, string>)?.ar || ''}
           </Text>
 
           {variants.length > 0 && (

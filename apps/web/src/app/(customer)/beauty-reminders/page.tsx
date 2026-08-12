@@ -28,12 +28,12 @@ export default function BeautyRemindersPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="⏰ التذكيرات" subtitle="اعتني بنفسكِ — كل يوم" />
+        <PageTitle title=" التذكيرات" subtitle="اعتني بنفسكِ — كل يوم" />
         <div className="grid gap-6 lg:grid-cols-2">
           <div className="space-y-6">
             <BeautySelfCareReminderCard
               reminder="خذي 5 دقائق للتنفس العميق والاسترخاء"
-              emoji="🧘"
+              emoji=""
               time="10:00 صباحاً"
             />
             <BeautySleepCard bedtime="22:30" wakeTime="06:30" />
@@ -41,9 +41,9 @@ export default function BeautyRemindersPage(): JSX.Element {
             <WellnessCheckCard lastCheck="2026-07" />
             <BeautyHabitTrackerCard
               habits={[
-                { name: 'واقي شمس', emoji: '☀️', done: true },
-                { name: '8 أكواب ماء', emoji: '💧', done: false },
-                { name: 'روتين مسائي', emoji: '🌙', done: true },
+                { name: 'واقي شمس', emoji: '️', done: true },
+                { name: '8 أكواب ماء', emoji: '', done: false },
+                { name: 'روتين مسائي', emoji: '', done: true },
               ]}
             />
           </div>
@@ -52,7 +52,7 @@ export default function BeautyRemindersPage(): JSX.Element {
             <DailyBeautyTipCard />
             <BeautyAffirmationCard />
             <BeautyGratitudeCard entries={15} />
-            <SkinJournalCard entries={14} streak={5} lastMood="✨" />
+            <SkinJournalCard entries={14} streak={5} lastMood="" />
             <CycleResourceCard phase="luteal" />
             <div className="grid gap-4 sm:grid-cols-2">
               <AllergyTestCard lastTest="2026-07" nextDue="2026-12" />

@@ -36,7 +36,7 @@ export function NoRushBadge({
       {/* Header */}
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          ⏰
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">بدون استعجال</h4>
@@ -45,7 +45,7 @@ export function NoRushBadge({
           </p>
         </div>
         <span className="ml-auto rounded-full bg-teal-50 px-2.5 py-0.5 text-[10px] font-bold text-teal-700 dark:bg-teal-950 dark:text-teal-300">
-          🧘 مريح
+           مريح
         </span>
       </div>
 
@@ -53,24 +53,24 @@ export function NoRushBadge({
       <div className="mt-3 space-y-2">
         {[
           {
-            emoji: '⏱️',
+            emoji: '️',
             title: `${bufferMinutes} دقيقة إضافية`,
             description: 'نضيف وقتاً إضافياً بين المواعيد حتى لا تشعري بالاستعجال',
           },
           {
-            emoji: '☕',
+            emoji: '',
             title: hasRefreshments ? 'مشروبات مجانية' : 'بيئة مريحة',
             description: hasRefreshments
               ? 'قهوة عربية، كرك، شاي أعشاب — مجاناً مع كل خدمة'
               : 'أجواء هادئة ومريحة لتستمتعي بوقتكِ',
           },
           {
-            emoji: '📱',
+            emoji: '',
             title: 'شاحن جوال',
             description: 'شاحن متوفر في كل محطة — لا داعي للقلق على بطاريتكِ',
           },
           {
-            emoji: '💆‍♀️',
+            emoji: '‍️',
             title: 'لا داعي للعجلة',
             description: 'استرخي بعد الخدمة — لا نطلب منكِ المغادرة فوراً',
           },
@@ -94,14 +94,14 @@ export function NoRushBadge({
       {salonName && (
         <div className="mt-2 rounded-lg bg-teal-50 p-2 text-center dark:bg-teal-950">
           <p className="text-[10px] text-teal-700 dark:text-teal-300">
-            💚 {salonName} — راحتكِ أولاً
+             {salonName} — راحتكِ أولاً
           </p>
         </div>
       )}
 
       {/* Footer */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🧘 جمالكِ يستحق وقتكِ — لا تستعجلي
+         جمالكِ يستحق وقتكِ — لا تستعجلي
       </p>
     </div>
   );

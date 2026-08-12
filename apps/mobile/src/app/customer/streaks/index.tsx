@@ -16,9 +16,9 @@ export default function StreaksScreen(): JSX.Element {
       errorMessage="فشل تحميل الاستمرارية"
       onRetry={() => streak.refetch()}
     >
-      <Text style={styles.title}>🔥 الاستمرارية</Text>
+      <Text style={styles.title}> الاستمرارية</Text>
       <View style={styles.card}>
-        <Text style={styles.fire}>🔥</Text>
+        <Text style={styles.fire}></Text>
         <Text style={styles.current}>
           الاستمرارية الحالية: {String(data?.currentStreak ?? 0)} أيام
         </Text>

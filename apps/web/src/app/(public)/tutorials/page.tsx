@@ -68,7 +68,7 @@ export default function TutorialsPage(): JSX.Element {
     <div className="mx-auto max-w-6xl px-4 py-12">
       {/* Header */}
       <div className="mb-10 text-center">
-        <span className="text-6xl">📹</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           دروس الجمال
         </h1>
@@ -86,7 +86,7 @@ export default function TutorialsPage(): JSX.Element {
             setSearch(e.target.value);
             setPage(1);
           }}
-          placeholder="🔍 ابحثي في الدروس..."
+          placeholder=" ابحثي في الدروس..."
           className="w-full max-w-md rounded-xl border border-edge bg-surface-muted px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
         />
       </div>
@@ -195,7 +195,7 @@ export default function TutorialsPage(): JSX.Element {
                       />
                     ) : (
                       <div className="text-center text-white/60">
-                        <span className="text-5xl block">📹</span>
+                        <span className="text-5xl block"></span>
                         <span className="text-xs mt-1 block">{t.category}</span>
                       </div>
                     )}
@@ -230,7 +230,7 @@ export default function TutorialsPage(): JSX.Element {
                     {/* Meta row */}
                     <div className="mt-3 flex items-center justify-between text-xs text-text-tertiary">
                       <span>{formatViews(t.views)} مشاهدة</span>
-                      <span>❤️ {t.likes}</span>
+                      <span>️ {t.likes}</span>
                     </div>
                   </div>
                 </Card>

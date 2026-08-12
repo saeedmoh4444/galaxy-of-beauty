@@ -20,7 +20,7 @@ interface BeautySelfCareReminderCardProps {
 
 export function BeautySelfCareReminderCard({
   reminder,
-  emoji = '💆‍♀️',
+  emoji = '‍️',
   time,
   onSnooze,
   className = '',
@@ -40,7 +40,7 @@ export function BeautySelfCareReminderCard({
             {reminder}
           </p>
           {time && (
-            <p className="mt-1 text-[10px] text-purple-500 dark:text-purple-400">⏰ {time}</p>
+            <p className="mt-1 text-[10px] text-purple-500 dark:text-purple-400"> {time}</p>
           )}
         </div>
       </div>
@@ -50,7 +50,7 @@ export function BeautySelfCareReminderCard({
           onClick={onSnooze}
           className="mt-2 w-full rounded-lg border border-purple-200 py-1.5 text-[10px] font-bold text-purple-600 hover:bg-white/60 dark:border-purple-800 dark:text-purple-400 transition-colors"
         >
-          ذكّريني لاحقاً ⏰
+          ذكّريني لاحقاً 
         </button>
       )}
     </div>

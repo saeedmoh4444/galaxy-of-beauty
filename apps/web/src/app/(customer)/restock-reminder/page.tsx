@@ -40,7 +40,7 @@ export default function RestockReminderPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">📦 تجديد المنتجات</h1>
+            <h1 className="text-2xl font-bold"> تجديد المنتجات</h1>
             <p className="mt-1 text-sm text-text-secondary">
               تتبعي منتجاتكِ واحصلي على تنبيهات لإعادة الشراء
             </p>
@@ -84,7 +84,7 @@ export default function RestockReminderPage(): JSX.Element {
                         <h3 className="font-bold">{item.productName as string}</h3>
                         {needsRestock && (
                           <span className="rounded-full bg-red-100 dark:bg-red-900 px-2 py-0.5 text-xs font-bold text-red-700 dark:text-red-300">
-                            ⏰ حان وقت التجديد
+                             حان وقت التجديد
                           </span>
                         )}
                       </div>
@@ -102,7 +102,7 @@ export default function RestockReminderPage(): JSX.Element {
                       onClick={() => deleteMut.mutate({ id: item.id as number })}
                       className="text-text-tertiary hover:text-red-500"
                     >
-                      🗑️
+                      ️
                     </button>
                   </div>
                 </Card>
@@ -144,7 +144,7 @@ export default function RestockReminderPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-              📦 إضافة
+               إضافة
             </Button>
           </div>
         </Modal>

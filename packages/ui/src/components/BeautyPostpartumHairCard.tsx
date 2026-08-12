@@ -9,7 +9,7 @@ export function BeautyPostpartumHairCard({ className = '' }: { className?: strin
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">👶</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">
             شعر ما بعد الولادة
@@ -19,10 +19,10 @@ export function BeautyPostpartumHairCard({ className = '' }: { className?: strin
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '📅', text: 'يبدأ بعد 3-6 أشهر — يستمر 3-6 أشهر' },
-          { emoji: '💆', text: 'تدليك الفروة — يحفز نمو شعر جديد' },
-          { emoji: '💊', text: 'فيتامينات ما بعد الولادة — حديد وزنك' },
-          { emoji: '✂️', text: 'قصة أقصر — تخفف الثقل وتشجع النمو' },
+          { emoji: '', text: 'يبدأ بعد 3-6 أشهر — يستمر 3-6 أشهر' },
+          { emoji: '', text: 'تدليك الفروة — يحفز نمو شعر جديد' },
+          { emoji: '', text: 'فيتامينات ما بعد الولادة — حديد وزنك' },
+          { emoji: '️', text: 'قصة أقصر — تخفف الثقل وتشجع النمو' },
         ].map((t, i) => (
           <div
             key={i}

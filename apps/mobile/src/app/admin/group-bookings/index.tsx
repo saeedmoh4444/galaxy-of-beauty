@@ -34,7 +34,7 @@ const GROUPS = [
 export default function AdminGroupBookingsScreen(): JSX.Element {
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>👥 حجوزات جماعية</Text>
+      <Text style={s.h}> حجوزات جماعية</Text>
       <Text style={s.sub}>إدارة حجوزات المجموعات</Text>
       {GROUPS.map((g) => (
         <View key={g.id} style={s.card}>
@@ -51,12 +51,12 @@ export default function AdminGroupBookingsScreen(): JSX.Element {
             </View>
           </View>
           <View style={{ flexDirection: 'row', gap: 12, marginTop: 8 }}>
-            <Text style={s.cl}>👤 {g.organizer}</Text>
-            <Text style={s.cl}>👥 {g.size} أشخاص</Text>
+            <Text style={s.cl}> {g.organizer}</Text>
+            <Text style={s.cl}> {g.size} أشخاص</Text>
           </View>
           <View style={{ flexDirection: 'row', gap: 12, marginTop: 4 }}>
-            <Text style={s.cl}>📅 {g.date}</Text>
-            <Text style={s.cl}>💄 {g.service}</Text>
+            <Text style={s.cl}> {g.date}</Text>
+            <Text style={s.cl}> {g.service}</Text>
           </View>
           <Text style={s.cp}>{g.total.toLocaleString()} ر.س</Text>
         </View>

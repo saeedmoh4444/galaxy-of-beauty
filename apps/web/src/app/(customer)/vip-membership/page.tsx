@@ -21,12 +21,12 @@ export default function VIPMembershipPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="text-center">
-          <span className="text-6xl">💎</span>
+          <span className="text-6xl"></span>
           <h1 className="mt-4 text-3xl font-bold">عضوية VIP</h1>
           <p className="mt-2 text-text-secondary">ارتقِ بعضويتكِ واحصلي على مميزات حصرية</p>
           {current !== 'silver' && (
             <p className="mt-2 text-brand-600 font-bold">
-              عضوية {current === 'gold' ? '🥇 ذهبية' : '💎 بلاتينية'} نشطة
+              عضوية {current === 'gold' ? ' ذهبية' : ' بلاتينية'} نشطة
             </p>
           )}
         </div>
@@ -66,7 +66,7 @@ export default function VIPMembershipPage(): JSX.Element {
                   <ul className="mt-4 space-y-2 text-right">
                     {benefits.map((b: string, i: number) => (
                       <li key={i} className="flex items-center gap-2 text-sm">
-                        <span className="text-brand-500">✓</span>{' '}
+                        <span className="text-brand-500"></span>{' '}
                         <span className="text-text-primary dark:text-gray-300">{b}</span>
                       </li>
                     ))}
@@ -86,7 +86,7 @@ export default function VIPMembershipPage(): JSX.Element {
                         loading={upgradeMut.isPending}
                         className="w-full"
                       >
-                        ✨ ترقية
+                         ترقية
                       </Button>
                     ) : null}
                   </div>

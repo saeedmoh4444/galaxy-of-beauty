@@ -9,7 +9,7 @@ export function BeautyCapsuleWardrobeCard({ className = '' }: { className?: stri
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🎯</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">كبسولة الجمال</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">الأقل هو الأكثر</p>
@@ -17,10 +17,10 @@ export function BeautyCapsuleWardrobeCard({ className = '' }: { className?: stri
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: '5 منتجات فقط — منظف، مرطب، واقي، سيروم، مقشر' },
-          { emoji: '💄', text: '3 مستحضرات — BB كريم، ماسكارا، أحمر شفاه' },
-          { emoji: '🔄', text: 'منتج متعدد = مساحة أقل — زيت للوجه والجسم' },
-          { emoji: '📦', text: 'كل 3 أشهر — راجعي منتجاتك وتخلصي من القديم' },
+          { emoji: '', text: '5 منتجات فقط — منظف، مرطب، واقي، سيروم، مقشر' },
+          { emoji: '', text: '3 مستحضرات — BB كريم، ماسكارا، أحمر شفاه' },
+          { emoji: '', text: 'منتج متعدد = مساحة أقل — زيت للوجه والجسم' },
+          { emoji: '', text: 'كل 3 أشهر — راجعي منتجاتك وتخلصي من القديم' },
         ].map((t, i) => (
           <div
             key={i}

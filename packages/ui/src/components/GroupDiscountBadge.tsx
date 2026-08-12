@@ -45,7 +45,7 @@ export function GroupDiscountBadge({
       {/* Header */}
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          👯‍♀️
+          ‍️
         </span>
         <h4 className="mt-1 text-sm font-bold text-violet-800 dark:text-violet-200">
           خصم المجموعة
@@ -85,7 +85,7 @@ export function GroupDiscountBadge({
             )}
           >
             <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-              {tier.size}+ 👤
+              {tier.size}+ 
             </p>
             <p className="text-[10px] font-bold text-violet-700 dark:text-violet-300">
               -{tier.off}%
@@ -123,11 +123,11 @@ export function GroupDiscountBadge({
         onClick={onInvite}
         className="mt-3 w-full rounded-xl bg-violet-600 py-2.5 text-xs font-bold text-white hover:bg-violet-700 active:scale-[0.98] transition-all shadow-sm"
       >
-        ادعي صديقاتكِ 💌
+        ادعي صديقاتكِ 
       </button>
 
       <p className="mt-2 text-center text-[9px] text-violet-500 dark:text-violet-400">
-        💜 الجمال أحلى مع الصديقات
+         الجمال أحلى مع الصديقات
       </p>
     </div>
   );

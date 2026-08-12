@@ -9,7 +9,7 @@ export function BeautyRamadanBeautyCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌙</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">عناية رمضان</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">
@@ -19,10 +19,10 @@ export function BeautyRamadanBeautyCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💧', text: 'اشربي الماء بين الفطور والسحور — 8 أكواب' },
-          { emoji: '🌙', text: 'روتين ليلي بسيط — مرطب كثيف قبل النوم' },
-          { emoji: '☀️', text: 'واقي شمس — حتى في رمضان' },
-          { emoji: '🧴', text: 'سيروم مرطب — الجفاف هو العدو الأول' },
+          { emoji: '', text: 'اشربي الماء بين الفطور والسحور — 8 أكواب' },
+          { emoji: '', text: 'روتين ليلي بسيط — مرطب كثيف قبل النوم' },
+          { emoji: '️', text: 'واقي شمس — حتى في رمضان' },
+          { emoji: '', text: 'سيروم مرطب — الجفاف هو العدو الأول' },
         ].map((t, i) => (
           <div
             key={i}

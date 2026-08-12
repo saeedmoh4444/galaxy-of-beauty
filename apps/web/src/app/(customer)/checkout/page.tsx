@@ -30,7 +30,7 @@ export default function CheckoutPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">💳 إتمام الشراء</h1>
+          <h1 className="text-2xl font-bold"> إتمام الشراء</h1>
           <p className="mt-1 text-sm text-text-secondary">مراجعة الطلب واختيار طريقة الدفع</p>
         </div>
 
@@ -38,19 +38,19 @@ export default function CheckoutPage(): JSX.Element {
           <CardSkeleton />
         ) : cartItems.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">🛒</p>
+            <p className="text-4xl mb-2"></p>
             <p className="text-text-secondary">سلتكِ فاضية</p>
           </Card>
         ) : placed ? (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-3xl">✅</p>
+            <p className="text-3xl"></p>
             <p className="font-bold text-green-700 mt-2">تم تقديم الطلب بنجاح</p>
             <p className="text-sm text-text-secondary mt-1">سنتواصل معكِ لتأكيد الطلب</p>
           </Card>
         ) : (
           <>
             <Card padding="lg">
-              <h3 className="font-bold mb-3">📦 ملخص الطلب</h3>
+              <h3 className="font-bold mb-3"> ملخص الطلب</h3>
               <div className="space-y-2">
                 {cartItems.map((item: Record<string, unknown>) => {
                   const p = item.product as Record<string, unknown>;
@@ -85,13 +85,13 @@ export default function CheckoutPage(): JSX.Element {
             </Card>
 
             <Card padding="lg">
-              <h3 className="font-bold mb-3">💳 طريقة الدفع</h3>
+              <h3 className="font-bold mb-3"> طريقة الدفع</h3>
               <div className="space-y-2">
                 <button
                   onClick={() => setMethod('online')}
                   className={`w-full rounded-xl border-2 p-3 text-right ${method === 'online' ? 'border-brand-400 bg-brand-50' : 'border-gray-200'}`}
                 >
-                  <span className="font-bold">🏦 دفع إلكتروني</span>
+                  <span className="font-bold"> دفع إلكتروني</span>
                   <p className="text-xs text-text-secondary">مدى · فيزا · ماستركارد · Apple Pay</p>
                 </button>
                 <button
@@ -99,7 +99,7 @@ export default function CheckoutPage(): JSX.Element {
                   className={`w-full rounded-xl border-2 p-3 text-right ${method === 'wallet' ? 'border-brand-400 bg-brand-50' : 'border-gray-200'}`}
                   disabled={walletBalance < total}
                 >
-                  <span className="font-bold">👛 المحفظة</span>
+                  <span className="font-bold"> المحفظة</span>
                   <p className="text-xs text-text-secondary">
                     رصيدكِ: {formatCurrency(walletBalance)}{' '}
                     {walletBalance < total ? '(الرصيد غير كاف)' : ''}
@@ -109,7 +109,7 @@ export default function CheckoutPage(): JSX.Element {
             </Card>
 
             <Button onClick={() => setPlaced(true)} className="w-full" size="lg">
-              💳 ادفعي {formatCurrency(total)}
+               ادفعي {formatCurrency(total)}
             </Button>
           </>
         )}

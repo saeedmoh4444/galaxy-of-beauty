@@ -41,22 +41,22 @@ export default function WhatsAppBotScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>💬 واتساب</Text>
+      <Text style={styles.t}> واتساب</Text>
       <Text style={styles.sub}>احجزي خدماتكِ عبر الواتساب</Text>
 
       <View style={styles.card}>
-        <Text style={styles.emoji}>📱</Text>
+        <Text style={styles.emoji}></Text>
         <Text style={styles.ct}>اربطي حسابكِ بالواتساب للحجز السريع</Text>
         <Text style={styles.cd}>احصلي على تأكيد فوري وتذكيرات عبر الواتساب</Text>
       </View>
 
       <View style={styles.features}>
-        <Text style={styles.ft}>✨ المميزات</Text>
+        <Text style={styles.ft}> المميزات</Text>
         {[
-          { emoji: '📅', text: 'حجز سريع عبر رسالة واتساب' },
-          { emoji: '🔔', text: 'تذكير تلقائي قبل الموعد' },
-          { emoji: '💬', text: 'محادثة مباشرة مع الفنية' },
-          { emoji: '📋', text: 'استعراض الخدمات والأسعار' },
+          { emoji: '', text: 'حجز سريع عبر رسالة واتساب' },
+          { emoji: '', text: 'تذكير تلقائي قبل الموعد' },
+          { emoji: '', text: 'محادثة مباشرة مع الفنية' },
+          { emoji: '', text: 'استعراض الخدمات والأسعار' },
         ].map((f, i) => (
           <View key={i} style={styles.fr}>
             <Text style={styles.fe}>{f.emoji}</Text>
@@ -66,7 +66,7 @@ export default function WhatsAppBotScreen(): JSX.Element {
       </View>
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}>💬 اربطي الواتساب الآن</Text>
+        <Text style={styles.bt}> اربطي الواتساب الآن</Text>
       </TouchableOpacity>
     </ScrollView>
   );

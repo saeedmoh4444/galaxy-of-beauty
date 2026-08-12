@@ -9,7 +9,7 @@ export function BeautyFootSoakCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🦶</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">نقع القدمين</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">طقس استرخاء للقدمين</p>
@@ -17,10 +17,10 @@ export function BeautyFootSoakCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '🧂', label: 'ملح إبسوم', tip: 'يخفف الآلام ويريح العضلات' },
-          { emoji: '🌸', label: 'لافندر', tip: 'للاسترخاء قبل النوم' },
-          { emoji: '🍋', label: 'ليمون', tip: 'منعش — يزيل الروائح' },
-          { emoji: '🥛', label: 'حليب + عسل', tip: 'ترطيب فاخر للقدمين' },
+          { emoji: '', label: 'ملح إبسوم', tip: 'يخفف الآلام ويريح العضلات' },
+          { emoji: '', label: 'لافندر', tip: 'للاسترخاء قبل النوم' },
+          { emoji: '', label: 'ليمون', tip: 'منعش — يزيل الروائح' },
+          { emoji: '', label: 'حليب + عسل', tip: 'ترطيب فاخر للقدمين' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-teal-50 px-2.5 py-2 dark:bg-teal-950">
             <span className="text-sm">{t.emoji}</span>

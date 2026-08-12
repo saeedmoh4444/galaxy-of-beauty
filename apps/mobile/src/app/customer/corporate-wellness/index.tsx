@@ -57,7 +57,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={s.t}>🏢 عافية الشركات</Text>
+      <Text style={s.t}> عافية الشركات</Text>
       <Text style={s.sub}>باقات تجميل وعناية لمنسوبات الشركات</Text>
 
       {submitted && (
@@ -70,7 +70,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
             alignItems: 'center',
           }}
         >
-          <Text style={{ fontSize: 32 }}>✅</Text>
+          <Text style={{ fontSize: 32 }}></Text>
           <Text style={{ fontWeight: '700', color: '#059669', marginTop: 8 }}>
             تم استلام طلبكِ وسنتواصل معكِ
           </Text>
@@ -90,11 +90,11 @@ export default function CorporateWellnessScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={s.cTitle}>{p.nameAr}</Text>
             <Text style={s.cPrice}>{(p.price as number).toLocaleString()} ر.س / سنوياً</Text>
-            <Text style={s.cSub}>👥 حتى {p.employees} موظفة</Text>
+            <Text style={s.cSub}> حتى {p.employees} موظفة</Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 6 }}>
               {(p.services as string[]).map((svc, i) => (
                 <Text key={i} style={{ fontSize: 11, color: '#059669' }}>
-                  ✓ {svc}
+                   {svc}
                 </Text>
               ))}
             </View>
@@ -103,7 +103,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
       ))}
 
       <TouchableOpacity onPress={() => setShowForm(!showForm)} style={[s.btn, { marginTop: 16 }]}>
-        <Text style={s.btnText}>{showForm ? '✕ إغلاق' : '📩 تقديم طلب'}</Text>
+        <Text style={s.btnText}>{showForm ? ' إغلاق' : ' تقديم طلب'}</Text>
       </TouchableOpacity>
 
       {showForm && (
@@ -139,7 +139,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
       {(enquiries as any[])?.length > 0 && (
         <View style={{ marginTop: 20 }}>
           <Text style={{ fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 }}>
-            📋 طلباتي السابقة
+             طلباتي السابقة
           </Text>
           {(enquiries as any[]).map((e: any, i: number) => (
             <View

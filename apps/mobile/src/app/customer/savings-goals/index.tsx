@@ -37,10 +37,10 @@ export default function SavingsGoalsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🎯 أهداف التوفير</Text>
+      <Text style={styles.t}> أهداف التوفير</Text>
       {data.map((g: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(g.emoji as string) ?? '🎯'}</Text>
+          <Text style={styles.emoji}>{(g.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{g.nameAr as string}</Text>
             <Text style={styles.progress}>

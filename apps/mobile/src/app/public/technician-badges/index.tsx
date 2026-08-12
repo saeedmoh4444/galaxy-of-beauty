@@ -41,19 +41,19 @@ export default function TechnicianBadgesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🏅 شارات الفنيات</Text>
+      <Text style={styles.t}> شارات الفنيات</Text>
       <Text style={styles.sub}>شارات التميز والاعتماد للفنيات</Text>
       {badges.length === 0 ? (
         <Text style={styles.e}>لا توجد شارات</Text>
       ) : (
         badges.map((b: any) => (
           <View key={b.id} style={styles.card}>
-            <Text style={styles.badgeEmoji}>{(b.emoji as string) ?? '🏅'}</Text>
+            <Text style={styles.badgeEmoji}>{(b.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.badgeName}>{b.nameAr as string}</Text>
               <Text style={styles.badgeDesc}>{b.descAr as string}</Text>
               <Text style={styles.badgeCount}>
-                👩‍🎨 {b.technicianCount as number} فنيات حاصلات عليها
+                ‍ {b.technicianCount as number} فنيات حاصلات عليها
               </Text>
             </View>
             <View style={styles.badgeRarity}>

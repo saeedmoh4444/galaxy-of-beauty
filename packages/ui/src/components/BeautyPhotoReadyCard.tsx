@@ -9,7 +9,7 @@ export function BeautyPhotoReadyCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">📸</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">جاهزة للصور</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">
@@ -19,10 +19,10 @@ export function BeautyPhotoReadyCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🔆', text: 'تجنبي SPF العالي — يسبب وميض أبيض في الفلاش' },
-          { emoji: '✨', text: 'هايلايتر بودرة — وليس كريمي' },
-          { emoji: '💄', text: 'ألوان معتدلة — الفلاش يفتح الألوان أكثر' },
-          { emoji: '🧴', text: 'بخاخ تثبيت — آخر خطوة قبل الصور' },
+          { emoji: '', text: 'تجنبي SPF العالي — يسبب وميض أبيض في الفلاش' },
+          { emoji: '', text: 'هايلايتر بودرة — وليس كريمي' },
+          { emoji: '', text: 'ألوان معتدلة — الفلاش يفتح الألوان أكثر' },
+          { emoji: '', text: 'بخاخ تثبيت — آخر خطوة قبل الصور' },
         ].map((t, i) => (
           <div
             key={i}

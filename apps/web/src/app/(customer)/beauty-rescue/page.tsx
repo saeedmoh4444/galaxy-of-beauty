@@ -20,7 +20,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 const EMERGENCIES = [
   {
     key: 'pimple',
-    emoji: '🔴',
+    emoji: '',
     name: 'بثرة طارئة',
     desc: 'ظهور بثرة قبل مناسبة',
     price: 50,
@@ -29,7 +29,7 @@ const EMERGENCIES = [
   },
   {
     key: 'smudge',
-    emoji: '💄',
+    emoji: '',
     name: 'مكياج متلطخ',
     desc: 'تلطخ المكياج فجأة',
     price: 40,
@@ -38,7 +38,7 @@ const EMERGENCIES = [
   },
   {
     key: 'hair',
-    emoji: '💇‍♀️',
+    emoji: '‍️',
     name: 'شعر طارئ',
     desc: 'تسريحة تفسد فجأة',
     price: 60,
@@ -47,7 +47,7 @@ const EMERGENCIES = [
   },
   {
     key: 'nail',
-    emoji: '💅',
+    emoji: '',
     name: 'ظفر مكسور',
     desc: 'كسر ظفر قبل مناسبة',
     price: 35,
@@ -56,7 +56,7 @@ const EMERGENCIES = [
   },
   {
     key: 'dry',
-    emoji: '🏜️',
+    emoji: '️',
     name: 'بشرة جافة',
     desc: 'جفاف مفاجئ للبشرة',
     price: 45,
@@ -65,7 +65,7 @@ const EMERGENCIES = [
   },
   {
     key: 'redness',
-    emoji: '🔴',
+    emoji: '',
     name: 'احمرار البشرة',
     desc: 'احمرار أو تهيج مفاجئ',
     price: 55,
@@ -84,13 +84,13 @@ export default function BeautyRescuePage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🚨 إنقاذ الجمال</h1>
+          <h1 className="text-2xl font-bold"> إنقاذ الجمال</h1>
           <p className="mt-1 text-sm text-text-secondary">خدمات تجميل طارئة — نصل لكِ خلال ساعة</p>
         </div>
 
         {booked && emergency ? (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-5xl">🚗</p>
+            <p className="text-5xl"></p>
             <p className="font-bold text-green-700 text-xl mt-3">تم الطلب!</p>
             <p className="text-sm text-text-secondary mt-1">
               خبيرة التجميل في الطريق — تصل خلال {emergency.time}
@@ -124,7 +124,7 @@ export default function BeautyRescuePage(): JSX.Element {
                     <h3 className="font-bold mt-2">{e.name}</h3>
                     <p className="text-xs text-text-secondary">{e.desc}</p>
                     <p className="text-sm font-bold text-brand-600 mt-1">
-                      {formatCurrency(e.price)} · ⏱️ {e.time}
+                      {formatCurrency(e.price)} · ️ {e.time}
                     </p>
                   </button>
                 );
@@ -139,7 +139,7 @@ export default function BeautyRescuePage(): JSX.Element {
                 <div className="space-y-2 mb-4">
                   {emergency.tips.map((tip, i) => (
                     <p key={i} className="text-sm text-text-secondary">
-                      ✓ {tip}
+                       {tip}
                     </p>
                   ))}
                 </div>
@@ -157,7 +157,7 @@ export default function BeautyRescuePage(): JSX.Element {
                   <span>{formatCurrency(emergency.price * surcharge)}</span>
                 </div>
                 <Button onClick={() => setBooked(true)} className="w-full mt-4">
-                  🚨 اطلبي الإنقاذ
+                   اطلبي الإنقاذ
                 </Button>
               </Card>
             )}

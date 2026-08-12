@@ -9,7 +9,7 @@ export function BeautyBreakoutSOSCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🚨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-red-700 dark:text-red-300">طوارئ الحبوب</h4>
           <p className="text-[10px] text-red-500 dark:text-red-400">ظهور مفاجئ — حل سريع</p>
@@ -17,10 +17,10 @@ export function BeautyBreakoutSOSCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧊', text: 'كمادة ثلج — 5 دقائق لتقليل الالتهاب' },
-          { emoji: '💊', text: 'لصقة حبوب — تجفف وتحمي من العبث' },
-          { emoji: '🚫', text: 'لا تضغطي — يزيد الالتهاب ويترك أثراً' },
-          { emoji: '🧴', text: 'كريم بنزويل بيروكسايد — للطوارئ فقط' },
+          { emoji: '', text: 'كمادة ثلج — 5 دقائق لتقليل الالتهاب' },
+          { emoji: '', text: 'لصقة حبوب — تجفف وتحمي من العبث' },
+          { emoji: '', text: 'لا تضغطي — يزيد الالتهاب ويترك أثراً' },
+          { emoji: '', text: 'كريم بنزويل بيروكسايد — للطوارئ فقط' },
         ].map((t, i) => (
           <div
             key={i}

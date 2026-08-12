@@ -3,9 +3,9 @@ import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
 const TRACKED_SERVICES = [
-  { id: 1, nameAr: 'مكياج احترافي', price: 300, prevPrice: 350, emoji: '💄', dropped: true },
-  { id: 2, nameAr: 'تنظيف بشرة', price: 200, prevPrice: 220, emoji: '✨', dropped: true },
-  { id: 3, nameAr: 'مساج استرخائي', price: 250, prevPrice: 250, emoji: '💆‍♀️', dropped: false },
+  { id: 1, nameAr: 'مكياج احترافي', price: 300, prevPrice: 350, emoji: '', dropped: true },
+  { id: 2, nameAr: 'تنظيف بشرة', price: 200, prevPrice: 220, emoji: '', dropped: true },
+  { id: 3, nameAr: 'مساج استرخائي', price: 250, prevPrice: 250, emoji: '‍️', dropped: false },
 ];
 
 export const priceDropAlertsRouter = router({
@@ -24,7 +24,7 @@ export const priceDropAlertsRouter = router({
         serviceName: z.string().min(1),
         targetPrice: z.number().min(1),
         currentPrice: z.number(),
-        emoji: z.string().default('💅'),
+        emoji: z.string().default(''),
       }),
     )
     .mutation(async ({ ctx, input }) => {

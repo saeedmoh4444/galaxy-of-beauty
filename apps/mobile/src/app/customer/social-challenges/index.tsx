@@ -4,7 +4,7 @@ import { useState } from 'react';
 const CHALLENGES = [
   {
     key: '7day_mask',
-    emoji: '✨',
+    emoji: '',
     name: 'تحدي ٧ أيام قناع',
     desc: 'قناع يومي للبشرة لمدة أسبوع',
     participants: 234,
@@ -13,7 +13,7 @@ const CHALLENGES = [
   },
   {
     key: 'selfie_30',
-    emoji: '📸',
+    emoji: '',
     name: 'تحدي ٣٠ يوم بدون مكياج',
     desc: 'صوري بشرتكِ يومياً بدون مكياج',
     participants: 156,
@@ -22,7 +22,7 @@ const CHALLENGES = [
   },
   {
     key: 'water_challenge',
-    emoji: '💧',
+    emoji: '',
     name: 'تحدي ٨ أكواب ماء',
     desc: 'اشربي ٨ أكواب ماء يومياً',
     participants: 412,
@@ -31,7 +31,7 @@ const CHALLENGES = [
   },
   {
     key: 'night_routine',
-    emoji: '🌙',
+    emoji: '',
     name: 'تحدي الروتين الليلي',
     desc: 'التزمي بروتينكِ الليلي لمدة ٢١ يوم',
     participants: 189,
@@ -40,7 +40,7 @@ const CHALLENGES = [
   },
   {
     key: 'natural_hair',
-    emoji: '💇‍♀️',
+    emoji: '‍️',
     name: 'تحدي شعر طبيعي',
     desc: 'تجنبي الحرارة لمدة أسبوعين',
     participants: 98,
@@ -59,11 +59,11 @@ export default function SocialChallengesScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>🏆 تحديات اجتماعية</Text>
+      <Text style={styles.t}> تحديات اجتماعية</Text>
       <Text style={styles.sub}>انضمي للتحديات الجماعية وكسبي مكافآت</Text>
 
       <View style={styles.myChallenges}>
-        <Text style={styles.mct}>⭐ تحدياتي ({joined.length})</Text>
+        <Text style={styles.mct}> تحدياتي ({joined.length})</Text>
         {joined.length === 0 ? (
           <Text style={styles.mce}>لم تنضمي لأي تحدي بعد</Text>
         ) : (
@@ -92,9 +92,9 @@ export default function SocialChallengesScreen(): JSX.Element {
             </View>
             <View style={styles.cm}>
               <Text style={styles.cmi}>
-                👥 {c.participants} · ⏱️ {c.duration}
+                 {c.participants} · ️ {c.duration}
               </Text>
-              <Text style={styles.cmi}>🎁 {c.prize}</Text>
+              <Text style={styles.cmi}> {c.prize}</Text>
             </View>
             <View style={styles.cb}>
               <View
@@ -106,7 +106,7 @@ export default function SocialChallengesScreen(): JSX.Element {
               style={[styles.jb, isJoined && styles.jbJoined]}
             >
               <Text style={[styles.jt, isJoined && styles.jtJoined]}>
-                {isJoined ? '✅ منضم' : 'انضمام'}
+                {isJoined ? ' منضم' : 'انضمام'}
               </Text>
             </TouchableOpacity>
           </View>

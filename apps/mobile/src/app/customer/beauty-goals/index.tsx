@@ -5,10 +5,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 const GT = [
-  { key: 'glowing_skin', emoji: '✨', title: 'بشرة متألقة', target: 12 },
-  { key: 'hair_care', emoji: '💇‍♀️', title: 'عناية بالشعر', target: 8 },
-  { key: 'selfcare', emoji: '🧖‍♀️', title: 'عناية ذاتية', target: 20 },
-  { key: 'nails', emoji: '💅', title: 'أظافر مثالية', target: 24 },
+  { key: 'glowing_skin', emoji: '', title: 'بشرة متألقة', target: 12 },
+  { key: 'hair_care', emoji: '‍️', title: 'عناية بالشعر', target: 8 },
+  { key: 'selfcare', emoji: '‍️', title: 'عناية ذاتية', target: 20 },
+  { key: 'nails', emoji: '', title: 'أظافر مثالية', target: 24 },
 ];
 
 export default function BeautyGoalsScreen(): JSX.Element {
@@ -45,7 +45,7 @@ export default function BeautyGoalsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🎯 أهداف الجمال</Text>
+      <Text style={styles.t}> أهداف الجمال</Text>
       <View style={styles.grid}>
         {GT.map((g) => {
           const pct = Math.min(100, Math.floor(Math.random() * 100));

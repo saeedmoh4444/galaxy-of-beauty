@@ -43,22 +43,22 @@ export default function AdminAnalyticsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📊 التحليلات</Text>
+      <Text style={styles.t}> التحليلات</Text>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>👥</Text>
+          <Text style={styles.kpiEmoji}></Text>
           <Text style={styles.kpiVal}>{(d.totalUsers as number) ?? 0}</Text>
           <Text style={styles.kpiLabel}>مستخدم</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>📅</Text>
+          <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#2563eb' }]}>
             {(d.totalBookings as number) ?? 0}
           </Text>
           <Text style={styles.kpiLabel}>حجز</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>💰</Text>
+          <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#059669' }]}>
             {((d.totalRevenue as number) ?? 0)?.toLocaleString()}
           </Text>

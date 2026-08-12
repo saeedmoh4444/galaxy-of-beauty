@@ -48,7 +48,7 @@ export const lookbookRouter = router({
         season: z.enum(['spring', 'summer', 'autumn', 'winter', 'ramadan', 'eid']),
         name: z.string().min(2).max(200),
         description: z.string().max(500),
-        emoji: z.string().default('✨'),
+        emoji: z.string().default(''),
       }),
     )
     .mutation(async ({ input }) => {

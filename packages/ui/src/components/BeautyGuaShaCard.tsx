@@ -19,10 +19,10 @@ export function BeautyGuaShaCard({ className = '' }: { className?: string }): JS
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🔄', text: 'حركات للأعلى وللخارج دائماً' },
+          { emoji: '', text: 'حركات للأعلى وللخارج دائماً' },
           { emoji: '🫒', text: 'استخدمي زيت وجه — لتسهيل الانزلاق' },
-          { emoji: '📐', text: 'زاوية 15 درجة — ليست عمودية' },
-          { emoji: '⏰', text: '5 دقائق — 3 مرات أسبوعياً' },
+          { emoji: '', text: 'زاوية 15 درجة — ليست عمودية' },
+          { emoji: '', text: '5 دقائق — 3 مرات أسبوعياً' },
         ].map((t, i) => (
           <div
             key={i}

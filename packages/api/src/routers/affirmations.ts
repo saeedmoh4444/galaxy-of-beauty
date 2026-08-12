@@ -5,7 +5,7 @@ import { publicProcedure, customerProcedure, router } from '../trpc';
 export const affirmationsRouter = router({
   random: publicProcedure.query(async () => {
     const count = await prisma.affirmation.count();
-    if (count === 0) return { text: 'أنتِ جميلة كما أنتِ', emoji: '💖' };
+    if (count === 0) return { text: 'أنتِ جميلة كما أنتِ', emoji: '' };
     const skip = Math.floor(Math.random() * count);
     return prisma.affirmation.findFirst({ skip, take: 1 });
   }),

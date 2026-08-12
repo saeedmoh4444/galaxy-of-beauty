@@ -9,7 +9,7 @@ export function BeautyCryoStickCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">❄️</span>
+        <span className="text-xl">️</span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">عصا الكرايو</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">
@@ -19,10 +19,10 @@ export function BeautyCryoStickCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧊', text: 'يقلص المسام — بشرة أنعم وأكثر إشراقاً' },
-          { emoji: '💆', text: 'تدليك بارد — يقلل الانتفاخ تحت العين' },
-          { emoji: '🌅', text: 'صباحاً — ينشط الدورة الدموية' },
-          { emoji: '⏱️', text: '3-5 دقائق — لا تطيلي على منطقة واحدة' },
+          { emoji: '', text: 'يقلص المسام — بشرة أنعم وأكثر إشراقاً' },
+          { emoji: '', text: 'تدليك بارد — يقلل الانتفاخ تحت العين' },
+          { emoji: '', text: 'صباحاً — ينشط الدورة الدموية' },
+          { emoji: '️', text: '3-5 دقائق — لا تطيلي على منطقة واحدة' },
         ].map((t, i) => (
           <div
             key={i}

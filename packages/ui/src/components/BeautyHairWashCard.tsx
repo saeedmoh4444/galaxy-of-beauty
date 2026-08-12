@@ -9,7 +9,7 @@ export function BeautyHairWashCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🚿</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">غسيل الشعر</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">الطريقة الصحيحة</p>
@@ -17,10 +17,10 @@ export function BeautyHairWashCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💧', text: 'بللي الشعر تماماً — 1-2 دقيقة' },
-          { emoji: '🧴', text: 'الشامبو لفروة الرأس فقط' },
-          { emoji: '💆', text: 'البلسم للأطراف فقط — وليس الجذور' },
-          { emoji: '❄️', text: 'اشطفي بماء بارد — يغلق البشرة ويضيف لمعان' },
+          { emoji: '', text: 'بللي الشعر تماماً — 1-2 دقيقة' },
+          { emoji: '', text: 'الشامبو لفروة الرأس فقط' },
+          { emoji: '', text: 'البلسم للأطراف فقط — وليس الجذور' },
+          { emoji: '️', text: 'اشطفي بماء بارد — يغلق البشرة ويضيف لمعان' },
         ].map((t, i) => (
           <div
             key={i}

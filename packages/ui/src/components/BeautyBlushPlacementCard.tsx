@@ -9,7 +9,7 @@ export function BeautyBlushPlacementCard({ className = '' }: { className?: strin
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌸</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">موضع البلاشر</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">ارفعي — لا تنزلي</p>
@@ -17,10 +17,10 @@ export function BeautyBlushPlacementCard({ className = '' }: { className?: strin
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🥚', text: 'بيضاوي: على تفاحة الخد — للأعلى نحو الصدغ' },
-          { emoji: '🟤', text: 'دائري: أعلى الخد — بزاوية حادة للأعلى' },
+          { emoji: '', text: 'بيضاوي: على تفاحة الخد — للأعلى نحو الصدغ' },
+          { emoji: '', text: 'دائري: أعلى الخد — بزاوية حادة للأعلى' },
           { emoji: '⬜', text: 'مربع: مركز الخد — دائري لتليين الزوايا' },
-          { emoji: '❤️', text: 'قلب: منخفض — تحت تفاحة الخد' },
+          { emoji: '️', text: 'قلب: منخفض — تحت تفاحة الخد' },
         ].map((t, i) => (
           <div
             key={i}

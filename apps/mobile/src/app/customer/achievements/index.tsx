@@ -31,7 +31,7 @@ export default function AchievementsScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={s.t}>🏆 الإنجازات</Text>
+      <Text style={s.t}> الإنجازات</Text>
       <Text style={s.sub}>ميداليات وجوائز رحلتكِ الجمالية</Text>
 
       <View style={s.progressBar}>
@@ -53,7 +53,7 @@ export default function AchievementsScreen(): JSX.Element {
           <Text style={s.statLabel}>إنفاق</Text>
         </View>
         <View style={s.stat}>
-          <Text style={[s.statNum, { color: '#d97706' }]}>🔥{stats.streakDays ?? 0}</Text>
+          <Text style={[s.statNum, { color: '#d97706' }]}>{stats.streakDays ?? 0}</Text>
           <Text style={s.statLabel}>أيام</Text>
         </View>
       </View>
@@ -67,7 +67,7 @@ export default function AchievementsScreen(): JSX.Element {
               a.earned ? { borderColor: '#f59e0b', backgroundColor: '#fffbeb' } : { opacity: 0.4 },
             ]}
           >
-            <Text style={{ fontSize: 32, textAlign: 'center' }}>{a.earned ? a.emoji : '🔒'}</Text>
+            <Text style={{ fontSize: 32, textAlign: 'center' }}>{a.earned ? a.emoji : ''}</Text>
             <Text style={{ fontWeight: '700', fontSize: 13, textAlign: 'center', marginTop: 6 }}>
               {a.nameAr}
             </Text>

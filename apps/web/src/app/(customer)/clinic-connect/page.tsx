@@ -24,13 +24,13 @@ export default function ClinicConnectPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🏥 Clinic Connect</h1>
+          <h1 className="text-2xl font-bold"> Clinic Connect</h1>
           <p className="mt-1 text-sm text-text-secondary">
             إحالة طبية من فنيات التجميل للعيادات المتخصصة
           </p>
         </div>
         <Card padding="lg">
-          <h3 className="font-bold mb-3">🏥 العيادات المتخصصة</h3>
+          <h3 className="font-bold mb-3"> العيادات المتخصصة</h3>
           <div className="space-y-3">
             {list.map((c: Record<string, unknown>) => (
               <div
@@ -42,7 +42,7 @@ export default function ClinicConnectPage(): JSX.Element {
                   <div>
                     <p className="font-bold">{c.name as string}</p>
                     <p className="text-xs text-text-secondary">
-                      📍 {c.city as string} · {c.specialty as string} · ⭐ {c.rating as number}
+                       {c.city as string} · {c.specialty as string} ·  {c.rating as number}
                     </p>
                   </div>
                 </div>
@@ -61,7 +61,7 @@ export default function ClinicConnectPage(): JSX.Element {
         </Card>
         {refs.length > 0 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">📋 إحالاتي</h3>
+            <h3 className="font-bold mb-3"> إحالاتي</h3>
             <div className="space-y-2">
               {refs.map((r: Record<string, unknown>) => (
                 <div key={r.id as number} className="flex justify-between text-sm">

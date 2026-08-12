@@ -62,12 +62,12 @@ export default function BirthdayRewardsPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         {/* Header */}
         <div className="text-center">
-          <span className="text-7xl">🎂</span>
+          <span className="text-7xl"></span>
           <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
             هدية عيد ميلادكِ
           </h1>
           <p className="mt-2 text-text-secondary dark:text-gray-400">
-            احتفلي معنا — مكافأة خاصة بمناسبة يوم ميلادكِ 🎉
+            احتفلي معنا — مكافأة خاصة بمناسبة يوم ميلادكِ 
           </p>
         </div>
 
@@ -83,13 +83,13 @@ export default function BirthdayRewardsPage(): JSX.Element {
               className="relative overflow-hidden bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-950 dark:to-purple-950 border-2 border-pink-200 dark:border-pink-800"
             >
               {/* Decorative */}
-              <div className="absolute -top-6 -right-6 text-6xl opacity-20">🎂</div>
-              <div className="absolute -bottom-6 -left-6 text-6xl opacity-20">🎁</div>
+              <div className="absolute -top-6 -right-6 text-6xl opacity-20"></div>
+              <div className="absolute -bottom-6 -left-6 text-6xl opacity-20"></div>
 
               {isClaimed ? (
                 /* Claimed State */
                 <div className="text-center relative z-10">
-                  <span className="text-6xl">🎉</span>
+                  <span className="text-6xl"></span>
                   <h2 className="mt-4 text-2xl font-extrabold text-text-primary dark:text-gray-100">
                     تم استلام هديتكِ!
                   </h2>
@@ -100,7 +100,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
                   {/* Promo Code */}
                   {reward?.promoCode && (
                     <div className="mt-4 inline-block rounded-2xl bg-white dark:bg-gray-800 px-8 py-4 shadow-lg border-2 border-dashed border-pink-300 dark:border-pink-700">
-                      <p className="text-xs text-text-secondary mb-1">🎁 كود الخصم</p>
+                      <p className="text-xs text-text-secondary mb-1"> كود الخصم</p>
                       <p className="text-3xl font-mono font-extrabold tracking-widest text-brand-600">
                         {reward.promoCode}
                       </p>
@@ -110,7 +110,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
                         }}
                         className="mt-2 text-xs text-brand-600 hover:text-brand-700 font-medium"
                       >
-                        📋 نسخ الكود
+                         نسخ الكود
                       </button>
                     </div>
                   )}
@@ -128,14 +128,14 @@ export default function BirthdayRewardsPage(): JSX.Element {
 
                   <div className="mt-6">
                     <Link href="/bookings/create">
-                      <Button size="lg">💅 احجزي واستخدمي الكود</Button>
+                      <Button size="lg"> احجزي واستخدمي الكود</Button>
                     </Link>
                   </div>
                 </div>
               ) : hasReward ? (
                 /* Unclaimed — can claim */
                 <div className="text-center relative z-10">
-                  <span className="text-6xl">🎁</span>
+                  <span className="text-6xl"></span>
                   <h2 className="mt-4 text-2xl font-extrabold text-text-primary dark:text-gray-100">
                     هديتكِ في انتظاركِ!
                   </h2>
@@ -155,20 +155,20 @@ export default function BirthdayRewardsPage(): JSX.Element {
 
                   <div className="mt-6">
                     <Button size="lg" onClick={handleClaim} loading={claimMut.isPending}>
-                      🎂 استلمي هديتكِ
+                       استلمي هديتكِ
                     </Button>
                   </div>
                 </div>
               ) : (
                 /* No reward yet */
                 <div className="text-center relative z-10">
-                  <span className="text-6xl">📅</span>
+                  <span className="text-6xl"></span>
                   <h2 className="mt-4 text-xl font-bold text-text-primary dark:text-gray-100">
                     لم يحن موعد هديتكِ بعد
                   </h2>
                   <p className="mt-2 text-text-secondary dark:text-gray-400">
                     {daysUntil <= 30
-                      ? `متبقي ${daysUntil} يوم على عيد ميلادكِ 🎂`
+                      ? `متبقي ${daysUntil} يوم على عيد ميلادكِ `
                       : 'هدية عيد الميلاد متاحة خلال شهر ميلادكِ'}
                   </p>
                   <p className="mt-4 text-sm text-text-secondary">
@@ -188,21 +188,21 @@ export default function BirthdayRewardsPage(): JSX.Element {
             {/* Info Cards */}
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="md" className="text-center">
-                <span className="text-3xl">🎁</span>
+                <span className="text-3xl"></span>
                 <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">
                   هدية سنوية
                 </h3>
                 <p className="text-xs text-text-secondary">مكافأة تتجدد كل عام في شهر ميلادكِ</p>
               </Card>
               <Card padding="md" className="text-center">
-                <span className="text-3xl">💎</span>
+                <span className="text-3xl"></span>
                 <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">
                   لجميع العضوات
                 </h3>
                 <p className="text-xs text-text-secondary">جميع المستويات تحصل على هدية العيد</p>
               </Card>
               <Card padding="md" className="text-center">
-                <span className="text-3xl">📅</span>
+                <span className="text-3xl"></span>
                 <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">
                   صالحة ٣٠ يوم
                 </h3>
@@ -218,17 +218,17 @@ export default function BirthdayRewardsPage(): JSX.Element {
               className="bg-gradient-to-r from-pink-100 to-rose-100 dark:from-pink-950 dark:to-rose-950 border-none"
             >
               <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">
-                💡 أفكار لعيد ميلادكِ
+                 أفكار لعيد ميلادكِ
               </h3>
               <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400 sm:grid-cols-2">
-                <p>💇‍♀️ تسريحة شعر جديدة ليومكِ الخاص</p>
-                <p>💄 جلسة مكياج احترافية</p>
-                <p>💅 مانيكير وباديكير احتفالي</p>
-                <p>✨ عناية بالبشرة لتتألقي</p>
+                <p>‍️ تسريحة شعر جديدة ليومكِ الخاص</p>
+                <p> جلسة مكياج احترافية</p>
+                <p> مانيكير وباديكير احتفالي</p>
+                <p> عناية بالبشرة لتتألقي</p>
               </div>
               <div className="mt-4 text-center">
                 <Link href="/bookings/create">
-                  <Button size="sm">احجزي إطلالة عيد ميلادكِ 🎂</Button>
+                  <Button size="sm">احجزي إطلالة عيد ميلادكِ </Button>
                 </Link>
               </div>
             </Card>

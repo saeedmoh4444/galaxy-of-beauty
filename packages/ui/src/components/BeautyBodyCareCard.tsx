@@ -3,10 +3,10 @@
 import { cn } from '@galaxy/shared';
 
 const TIPS = [
-  { emoji: '🧖', title: 'تقشير أسبوعي', desc: 'يزيل الخلايا الميتة ويجدد البشرة' },
-  { emoji: '🧴', title: 'ترطيب بعد الاستحمام', desc: 'البشرة تمتص المرطب أفضل وهي رطبة' },
-  { emoji: '☀️', title: 'واقي للجسم', desc: 'لا تنسي رقبتك ويديك وقدميك' },
-  { emoji: '💧', title: 'شرب الماء', desc: 'بشرة الجسم تحتاج ترطيب من الداخل' },
+  { emoji: '', title: 'تقشير أسبوعي', desc: 'يزيل الخلايا الميتة ويجدد البشرة' },
+  { emoji: '', title: 'ترطيب بعد الاستحمام', desc: 'البشرة تمتص المرطب أفضل وهي رطبة' },
+  { emoji: '️', title: 'واقي للجسم', desc: 'لا تنسي رقبتك ويديك وقدميك' },
+  { emoji: '', title: 'شرب الماء', desc: 'بشرة الجسم تحتاج ترطيب من الداخل' },
 ];
 
 interface BeautyBodyCareCardProps {
@@ -22,7 +22,7 @@ export function BeautyBodyCareCard({ className = '' }: BeautyBodyCareCardProps):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🧖</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">عناية بالجسم</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">

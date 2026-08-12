@@ -14,7 +14,7 @@ export default function AdminGroupBookingsPage(): JSX.Element {
     <DashboardLayout role="ADMIN">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">👥 الحجوزات الجماعية</h1>
+          <h1 className="text-2xl font-bold"> الحجوزات الجماعية</h1>
           <p className="mt-1 text-sm text-text-secondary">إدارة حجوزات المجموعات</p>
         </div>
 
@@ -26,7 +26,7 @@ export default function AdminGroupBookingsPage(): JSX.Element {
           </div>
         ) : groups.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">👥</p>
+            <p className="text-4xl mb-2"></p>
             <p className="text-text-secondary">لا توجد حجوزات جماعية</p>
           </Card>
         ) : (

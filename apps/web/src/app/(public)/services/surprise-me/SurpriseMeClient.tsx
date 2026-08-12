@@ -49,7 +49,7 @@ export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.El
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 text-center">
       <div className="mb-8">
-        <span className="text-6xl">🎲</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">فاجئيني</h1>
         <p className="mt-2 text-text-secondary dark:text-gray-400">
           لا تعرفين ماذا تختارين؟ دعينا نقترح عليكِ!
@@ -69,7 +69,7 @@ export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.El
         <div className="space-y-6">
           <ServiceCard svc={svc} />
           <Button onClick={pickRandom} size="lg" className="mx-auto">
-            🎲 اقتراح آخر
+             اقتراح آخر
           </Button>
         </div>
       ) : (
@@ -88,7 +88,7 @@ function ServiceCard({ svc }: { svc: AnyRecord }): JSX.Element {
   return (
     <Card padding="lg" className="mx-auto max-w-sm text-center">
       <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
-        💄
+        
       </div>
       <h2 className="mt-4 text-xl font-bold text-text-primary dark:text-gray-100">
         {ar(svc.titleJson)}

@@ -37,7 +37,7 @@ export default function VirtualTryOnScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🤳 تجربة افتراضية</Text>
+      <Text style={styles.t}> تجربة افتراضية</Text>
       <Text style={styles.sub}>جربي ألوان المكياج افتراضياً</Text>
       {data.map((p: any, i: number) => (
         <TouchableOpacity key={i} style={styles.card}>

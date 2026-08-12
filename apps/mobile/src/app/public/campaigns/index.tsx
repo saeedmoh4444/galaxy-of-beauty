@@ -27,14 +27,14 @@ export default function CampaignsScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#f59e0b']} />
       }
     >
-      <Text style={styles.t}>📢 العروض والحملات</Text>
+      <Text style={styles.t}> العروض والحملات</Text>
       <Text style={styles.sub}>أحدث العروض والتخفيضات</Text>
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد حملات</Text>
       ) : (
         items.map((c: any) => (
           <View key={c.id} style={styles.card}>
-            <Text style={styles.campEmoji}>{(c.emoji as string) ?? '🎯'}</Text>
+            <Text style={styles.campEmoji}>{(c.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.campTitle}>{(c.titleAr as string) ?? (c.title as string)}</Text>
               <Text style={styles.campDesc}>

@@ -322,11 +322,11 @@ export const monitoringRouter = router({
 
     return {
       allHealthy,
-      database: dbHealthy ? '🟢' : '🔴',
-      redis: redisHealthy ? '🟢' : '🔴',
-      api: '🟢',
-      socket: '🟢',
-      payments: '🟢',
+      database: dbHealthy ? '' : '',
+      redis: redisHealthy ? '' : '',
+      api: '',
+      socket: '',
+      payments: '',
       lastIncident,
       uptime: getUptime(),
       version: '2.2.0',
@@ -381,7 +381,7 @@ export const monitoringRouter = router({
         recent: [
           {
             id: 0,
-            message: 'لا توجد أخطاء حديثة — النظام مستقر ✅',
+            message: 'لا توجد أخطاء حديثة — النظام مستقر ',
             level: 'info',
             timestamp: now.toISOString(),
           },

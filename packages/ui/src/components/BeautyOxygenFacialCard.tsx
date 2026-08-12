@@ -9,7 +9,7 @@ export function BeautyOxygenFacialCard({ className = '' }: { className?: string 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">فيشل الأكسجين</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">أكسجين مضغوط — بشرة مشرقة</p>
@@ -17,10 +17,10 @@ export function BeautyOxygenFacialCard({ className = '' }: { className?: string 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '✨', text: 'يرش الأكسجين — مع سيروم مغذي للبشرة' },
-          { emoji: '💧', text: 'ترطيب فوري — بشرة ممتلئة ومشرقة' },
-          { emoji: '⏱️', text: '30-45 دقيقة — بدون ألم أو احمرار' },
-          { emoji: '🌟', text: 'قبل المناسبات — نتيجة فورية' },
+          { emoji: '', text: 'يرش الأكسجين — مع سيروم مغذي للبشرة' },
+          { emoji: '', text: 'ترطيب فوري — بشرة ممتلئة ومشرقة' },
+          { emoji: '️', text: '30-45 دقيقة — بدون ألم أو احمرار' },
+          { emoji: '', text: 'قبل المناسبات — نتيجة فورية' },
         ].map((t, i) => (
           <div
             key={i}

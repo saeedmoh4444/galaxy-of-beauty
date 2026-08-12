@@ -53,7 +53,7 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
                 className="h-full w-full rounded-full object-cover"
               />
             ) : (
-              <span>👩‍🎨</span>
+              <span>‍</span>
             )}
           </div>
           <div className="flex-1 text-center sm:text-right">
@@ -61,12 +61,12 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
               <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{name}</h1>
               {kycStatus === 'VERIFIED' && (
                 <span className="text-green-500" title="موثقة">
-                  ✅
+                  
                 </span>
               )}
               {isEco && (
                 <span className="text-green-500" title="منتجات صديقة للبيئة">
-                  🌿
+                  
                 </span>
               )}
             </div>
@@ -75,7 +75,7 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
               {area ? `، ${area}` : ''}
             </p>
             <div className="mt-2 flex items-center justify-center gap-4 sm:justify-start">
-              <span className="text-amber-500">⭐ {rating.toFixed(1)}</span>
+              <span className="text-amber-500"> {rating.toFixed(1)}</span>
               <span className="text-gray-400">{completed} حجز مكتمل</span>
             </div>
             {bio && <p className="mt-3 text-sm text-gray-600 dark:text-gray-400">{bio}</p>}
@@ -131,7 +131,7 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
                     loading="lazy"
                   />
                 ) : (
-                  <span className="text-2xl">🖼️</span>
+                  <span className="text-2xl">️</span>
                 )}
               </div>
             ))}

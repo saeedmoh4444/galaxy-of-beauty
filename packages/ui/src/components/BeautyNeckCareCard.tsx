@@ -9,7 +9,7 @@ export function BeautyNeckCareCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🦢</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">عناية الرقبة</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">
@@ -19,10 +19,10 @@ export function BeautyNeckCareCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '⬆️', text: 'مددي منتجات الوجه للأسفل — الرقبة والصدر' },
-          { emoji: '🧴', text: 'كريمات مشدودة — ببتيدات وريتينول' },
-          { emoji: '☀️', text: 'واقي شمس — للرقبة أيضاً' },
-          { emoji: '🛏️', text: 'نامي على الظهر — تجاعيد النوم على الجانب' },
+          { emoji: '️', text: 'مددي منتجات الوجه للأسفل — الرقبة والصدر' },
+          { emoji: '', text: 'كريمات مشدودة — ببتيدات وريتينول' },
+          { emoji: '️', text: 'واقي شمس — للرقبة أيضاً' },
+          { emoji: '️', text: 'نامي على الظهر — تجاعيد النوم على الجانب' },
         ].map((t, i) => (
           <div
             key={i}

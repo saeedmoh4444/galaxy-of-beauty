@@ -7,7 +7,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 const DESTINATIONS = [
   {
     key: 'beach',
-    emoji: '🏖️',
+    emoji: '️',
     name: 'شاطئ',
     color: '#0891b2',
     bg: 'from-cyan-50 to-teal-50 dark:from-cyan-950 dark:to-teal-950',
@@ -25,7 +25,7 @@ const DESTINATIONS = [
   },
   {
     key: 'city',
-    emoji: '🏙️',
+    emoji: '️',
     name: 'مدينة',
     color: '#6366f1',
     bg: 'from-indigo-50 to-violet-50 dark:from-indigo-950 dark:to-violet-950',
@@ -43,7 +43,7 @@ const DESTINATIONS = [
   },
   {
     key: 'mountain',
-    emoji: '⛰️',
+    emoji: '️',
     name: 'جبال',
     color: '#059669',
     bg: 'from-emerald-50 to-green-50 dark:from-emerald-950 dark:to-green-950',
@@ -76,7 +76,7 @@ export default function TravelChecklistPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="default">
-        <PageTitle title="🧳 حقيبة الجمال" subtitle="لا تنسي شيئاً في سفركِ" />
+        <PageTitle title=" حقيبة الجمال" subtitle="لا تنسي شيئاً في سفركِ" />
 
         <div className="mb-6 flex gap-2">
           {DESTINATIONS.map((dt) => (
@@ -100,11 +100,11 @@ export default function TravelChecklistPage(): JSX.Element {
             {d.emoji} {d.name}
           </h3>
           <p className="mt-2 rounded-xl bg-white/60 p-3 text-sm text-text-secondary dark:bg-gray-800/60 dark:text-gray-300">
-            💡 {d.tips}
+             {d.tips}
           </p>
 
           <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
-            🎒 الأساسيات (8 عناصر)
+             الأساسيات (8 عناصر)
           </h4>
           <div className="mt-3 space-y-2">
             {d.essentials.map((item, i) => (
@@ -117,7 +117,7 @@ export default function TravelChecklistPage(): JSX.Element {
                 <span
                   className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-sm ${checked.has(item) ? 'bg-emerald-500 text-white' : 'border-2 border-gray-300 dark:border-gray-600'}`}
                 >
-                  {checked.has(item) ? '✓' : ''}
+                  {checked.has(item) ? '' : ''}
                 </span>
                 <span
                   className={`text-sm ${checked.has(item) ? 'text-emerald-700 line-through dark:text-emerald-300' : 'text-text-primary dark:text-gray-200'}`}
@@ -129,7 +129,7 @@ export default function TravelChecklistPage(): JSX.Element {
           </div>
 
           <p className="mt-4 text-center text-sm font-bold text-text-primary dark:text-gray-100">
-            ✅ {checked.size} / {d.essentials.length} تم تجهيزها
+             {checked.size} / {d.essentials.length} تم تجهيزها
           </p>
         </div>
       </PageContainer>

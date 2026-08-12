@@ -41,10 +41,10 @@ export default function PriceDropAlertsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📉 تنبيهات الأسعار</Text>
+      <Text style={styles.t}> تنبيهات الأسعار</Text>
       {data.map((a: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(a.emoji as string) ?? '📉'}</Text>
+          <Text style={styles.emoji}>{(a.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{a.serviceName as string}</Text>
             <Text style={styles.drop}>▼ {(a.droppedBy as number)?.toLocaleString()} ر.س</Text>

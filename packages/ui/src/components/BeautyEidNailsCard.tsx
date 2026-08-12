@@ -9,7 +9,7 @@ export function BeautyEidNailsCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💅</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">أظافر العيد</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">ألوان وتصاميم تناسب العيد</p>
@@ -17,10 +17,10 @@ export function BeautyEidNailsCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🌸', text: 'ألوان باستيل — وردي، لافندر، بيج' },
-          { emoji: '✨', text: 'جليتر خفيف — لمسة احتفالية' },
-          { emoji: '🌙', text: 'هلال ذهبي — تصميم العيد' },
-          { emoji: '📅', text: 'قبل العيد بيومين — لتكون مثالية' },
+          { emoji: '', text: 'ألوان باستيل — وردي، لافندر، بيج' },
+          { emoji: '', text: 'جليتر خفيف — لمسة احتفالية' },
+          { emoji: '', text: 'هلال ذهبي — تصميم العيد' },
+          { emoji: '', text: 'قبل العيد بيومين — لتكون مثالية' },
         ].map((t, i) => (
           <div
             key={i}

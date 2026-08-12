@@ -9,7 +9,7 @@ const TREATMENTS: Record<
   { emoji: string; label: string; aftercare: string[]; timeline: { day: string; action: string }[] }
 > = {
   facial: {
-    emoji: '✨',
+    emoji: '',
     label: 'عناية بالبشرة',
     aftercare: ['لا تلمسي وجهكِ', 'تجنبي المكياج ٢٤ ساعة', 'استخدمي واقي شمس', 'اشربي ماء بكثرة'],
     timeline: [
@@ -19,7 +19,7 @@ const TREATMENTS: Record<
     ],
   },
   waxing: {
-    emoji: '🕯️',
+    emoji: '️',
     label: 'إزالة شعر',
     aftercare: ['تجنبي الشمس ٤٨ ساعة', 'لا تستخدمي مقشر', 'ارتدي ملابس قطنية', 'رطبي المنطقة'],
     timeline: [
@@ -29,7 +29,7 @@ const TREATMENTS: Record<
     ],
   },
   hair_color: {
-    emoji: '💇‍♀️',
+    emoji: '‍️',
     label: 'صبغ شعر',
     aftercare: [
       'لا تغسلي شعركِ ٤٨ ساعة',
@@ -44,7 +44,7 @@ const TREATMENTS: Record<
     ],
   },
   nails: {
-    emoji: '💅',
+    emoji: '',
     label: 'أظافر',
     aftercare: [
       'تجنبي الماء الساخن',
@@ -73,7 +73,7 @@ export default function PostTreatmentPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="default">
-        <PageTitle title="💆‍♀️ متابعة ما بعد العلاج" subtitle="تعليمات العناية بعد كل خدمة" />
+        <PageTitle title="‍️ متابعة ما بعد العلاج" subtitle="تعليمات العناية بعد كل خدمة" />
 
         <div className="mb-6 flex gap-2">
           {Object.entries(TREATMENTS).map(([key, val]) => (
@@ -115,7 +115,7 @@ export default function PostTreatmentPage(): JSX.Element {
           </div>
 
           <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
-            ⚠️ تعليمات مهمة
+             تعليمات مهمة
           </h4>
           <div className="mt-2 space-y-1">
             {t.aftercare.map((a, i) => (
@@ -129,7 +129,7 @@ export default function PostTreatmentPage(): JSX.Element {
           </div>
 
           <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
-            📅 الجدول الزمني
+             الجدول الزمني
           </h4>
           <div className="mt-2 space-y-2">
             {t.timeline.map((tl, i) => (
@@ -142,7 +142,7 @@ export default function PostTreatmentPage(): JSX.Element {
                 <span
                   className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-sm ${completed.includes(tl.day) ? 'bg-emerald-500 text-white' : 'border-2 border-gray-300 dark:border-gray-600'}`}
                 >
-                  {completed.includes(tl.day) ? '✓' : ''}
+                  {completed.includes(tl.day) ? '' : ''}
                 </span>
                 <div>
                   <p

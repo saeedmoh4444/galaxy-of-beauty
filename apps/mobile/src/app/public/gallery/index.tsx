@@ -37,7 +37,7 @@ export default function GalleryScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🖼️ معرض الصور</Text>
+      <Text style={styles.t}>️ معرض الصور</Text>
       <View style={styles.grid}>
         {photos.map((p: any, i: number) => (
           <View key={p.id ?? i} style={styles.pc}>
@@ -45,12 +45,12 @@ export default function GalleryScreen(): JSX.Element {
               <Image source={{ uri: p.imageUrl as string }} style={styles.img} />
             ) : (
               <View style={styles.ph}>
-                <Text style={{ fontSize: 32 }}>🖼️</Text>
+                <Text style={{ fontSize: 32 }}>️</Text>
               </View>
             )}
             <View style={styles.pi}>
               <Text style={styles.pt}>{(p.title as string) ?? '—'}</Text>
-              <Text style={styles.pb}>👩‍🎨 {p.technician as string}</Text>
+              <Text style={styles.pb}>‍ {p.technician as string}</Text>
             </View>
           </View>
         ))}

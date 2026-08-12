@@ -22,7 +22,7 @@ export default function PaymentsPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">💳 المدفوعات</h1>
+          <h1 className="text-2xl font-bold"> المدفوعات</h1>
           <p className="mt-1 text-sm text-text-secondary">سجل مدفوعاتكِ ومعاملاتكِ المالية</p>
         </div>
 
@@ -39,7 +39,7 @@ export default function PaymentsPage(): JSX.Element {
           </div>
         ) : transactions.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">💳</p>
+            <p className="text-4xl mb-2"></p>
             <p className="text-text-secondary">لا توجد معاملات بعد</p>
           </Card>
         ) : (

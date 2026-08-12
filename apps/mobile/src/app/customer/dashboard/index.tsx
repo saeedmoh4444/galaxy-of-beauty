@@ -24,7 +24,7 @@ export default function DashboardScreen(): JSX.Element {
       errorMessage="فشل تحميل لوحة التحكم"
       onRetry={() => insights.refetch()}
     >
-      <Text style={styles.title}>📊 لوحة التحكم</Text>
+      <Text style={styles.title}> لوحة التحكم</Text>
       <View style={styles.statsRow}>
         <View style={styles.statCard}>
           <Text style={styles.statNum}>{String(data?.bookingCount ?? 0)}</Text>
@@ -36,19 +36,19 @@ export default function DashboardScreen(): JSX.Element {
         </View>
         <View style={styles.statCard}>
           <Text style={styles.statNum}>
-            🔥 {String((data?.streakInfo as any)?.currentStreak ?? 0)}
+             {String((data?.streakInfo as any)?.currentStreak ?? 0)}
           </Text>
           <Text style={styles.statLabel}>الاستمرارية</Text>
         </View>
       </View>
       <View style={styles.quickLinks}>
         {[
-          { h: '/(tabs)/bookings', l: '📅 حجوزاتي', c: '#7c3aed' },
-          { h: '/customer/wallet', l: '💰 المحفظة', c: '#059669' },
-          { h: '/customer/wishlist', l: '❤️ المفضلة', c: '#dc2626' },
-          { h: '/customer/loyalty', l: '⭐ الولاء', c: '#d97706' },
-          { h: '/customer/ai-chat', l: '🤖 لايلى', c: '#2563eb' },
-          { h: '/customer/profile', l: '👤 حسابي', c: '#7c3aed' },
+          { h: '/(tabs)/bookings', l: ' حجوزاتي', c: '#7c3aed' },
+          { h: '/customer/wallet', l: ' المحفظة', c: '#059669' },
+          { h: '/customer/wishlist', l: '️ المفضلة', c: '#dc2626' },
+          { h: '/customer/loyalty', l: ' الولاء', c: '#d97706' },
+          { h: '/customer/ai-chat', l: ' لايلى', c: '#2563eb' },
+          { h: '/customer/profile', l: ' حسابي', c: '#7c3aed' },
         ].map((ql, i) => (
           <TouchableOpacity
             key={i}

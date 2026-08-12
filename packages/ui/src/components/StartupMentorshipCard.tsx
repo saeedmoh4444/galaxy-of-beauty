@@ -34,7 +34,7 @@ export function StartupMentorshipCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🚀
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">حاضنة الجمال</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
@@ -54,7 +54,7 @@ export function StartupMentorshipCard({
       </div>
 
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">🎯 نقدم</p>
+        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200"> نقدم</p>
         <div className="mt-1 space-y-0.5 text-[10px] text-amber-700 dark:text-amber-300">
           <p>• إرشاد من خبيرات في المجال</p>
           <p>• مساحة عمل مشتركة</p>
@@ -69,7 +69,7 @@ export function StartupMentorshipCard({
           onClick={onApplyStartup}
           className="flex-1 rounded-xl bg-amber-600 py-2 text-[10px] font-bold text-white hover:bg-amber-700 active:scale-[0.98] transition-all"
         >
-          قدمي مشروعكِ 🚀
+          قدمي مشروعكِ 
         </button>
         <button
           type="button"

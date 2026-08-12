@@ -24,7 +24,7 @@ export default function ServiceTrendsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">📊</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">توجهات الخدمات</h1>
         <p className="mt-2 text-text-secondary">اكتشفي أكثر الخدمات طلباً حسب الموسم</p>
       </div>
@@ -36,7 +36,7 @@ export default function ServiceTrendsPage(): JSX.Element {
       ) : (
         <>
           <Card padding="lg" className="mb-6">
-            <h3 className="font-bold mb-4">📈 الإقبال الشهري</h3>
+            <h3 className="font-bold mb-4"> الإقبال الشهري</h3>
             <div className="h-48 flex items-end gap-1">
               {trends.map((m: Record<string, unknown>) => (
                 <div key={m.month as string} className="flex-1 flex flex-col items-center gap-1">
@@ -72,7 +72,7 @@ export default function ServiceTrendsPage(): JSX.Element {
           </Card>
 
           <Card padding="lg">
-            <h3 className="font-bold mb-4">🔥 الأكثر طلباً هذا الشهر</h3>
+            <h3 className="font-bold mb-4"> الأكثر طلباً هذا الشهر</h3>
             <div className="space-y-2">
               {top.map((t: Record<string, unknown>, i: number) => (
                 <div
@@ -80,7 +80,7 @@ export default function ServiceTrendsPage(): JSX.Element {
                   className="flex items-center gap-3 rounded-lg bg-surface-muted dark:bg-gray-800 p-3"
                 >
                   <span className="text-2xl w-10 text-center">
-                    {['🥇', '🥈', '🥉', '4️⃣', '5️⃣'][i]}
+                    {['', '', '', '4️⃣', '5️⃣'][i]}
                   </span>
                   <span className="text-2xl">{t.emoji as string}</span>
                   <span className="flex-1 font-bold">{t.nameAr as string}</span>

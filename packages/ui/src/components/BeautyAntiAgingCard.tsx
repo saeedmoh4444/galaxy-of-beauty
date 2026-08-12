@@ -9,7 +9,7 @@ export function BeautyAntiAgingCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">⏳</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">
             مكافحة الشيخوخة
@@ -21,10 +21,10 @@ export function BeautyAntiAgingCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '☀️', text: 'واقي شمس يومياً — يمنع 80% من التجاعيد' },
-          { emoji: '🧪', text: 'ريتينول — المكون الذهبي لمكافحة الشيخوخة' },
-          { emoji: '💧', text: 'ترطيب — بشرة رطبة = بشرة شابة' },
-          { emoji: '😴', text: 'نوم كافٍ — وقت إصلاح البشرة الطبيعي' },
+          { emoji: '️', text: 'واقي شمس يومياً — يمنع 80% من التجاعيد' },
+          { emoji: '', text: 'ريتينول — المكون الذهبي لمكافحة الشيخوخة' },
+          { emoji: '', text: 'ترطيب — بشرة رطبة = بشرة شابة' },
+          { emoji: '', text: 'نوم كافٍ — وقت إصلاح البشرة الطبيعي' },
         ].map((t, i) => (
           <div
             key={i}

@@ -5,11 +5,11 @@ import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 const TE: Record<string, string> = {
-  bridal: '👰',
-  birthday: '🎂',
-  girls_night: '🌙',
-  family: '👨‍👩‍👧‍👦',
-  other: '🎉',
+  bridal: '',
+  birthday: '',
+  girls_night: '',
+  family: '‍‍‍',
+  other: '',
 };
 const SM: Record<string, { label: string; color: string; bg: string }> = {
   PENDING: { label: 'قيد الانتظار', color: '#d97706', bg: '#fef3c7' },
@@ -65,13 +65,13 @@ export default function GroupBookingDetailScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>
-        {TE[data.theme as string] ?? '🎉'} {data.name as string}
+        {TE[data.theme as string] ?? ''} {data.name as string}
       </Text>
       <View style={[styles.sb, { backgroundColor: s.bg }]}>
         <Text style={[styles.sbt, { color: s.color }]}>{s.label}</Text>
       </View>
       <View style={styles.sec}>
-        <Text style={styles.secT}>💰 المبلغ</Text>
+        <Text style={styles.secT}> المبلغ</Text>
         <Text style={styles.ta}>{(data.totalAmount as number)?.toLocaleString()} ر.س</Text>
         <Text style={styles.td}>خصم: {data.discountPercent as number}%</Text>
       </View>

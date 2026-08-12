@@ -37,7 +37,7 @@ export const beautyRecipesRouter = router({
         stepsJson: z.array(z.string()),
         duration: z.string(),
         forSkin: z.string().optional(),
-        emoji: z.string().default('🥣'),
+        emoji: z.string().default(''),
       }),
     )
     .mutation(async ({ input }) =>

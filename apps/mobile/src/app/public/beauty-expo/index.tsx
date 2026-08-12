@@ -22,7 +22,7 @@ export default function BeautyExpoScreen(): JSX.Element {
       emptyTitle="لا توجد فعاليات"
       onRetry={() => expo.refetch()}
     >
-      <Text style={styles.title}>🎪 معرض التجميل</Text>
+      <Text style={styles.title}> معرض التجميل</Text>
       {(data as Record<string, unknown>[])?.map((e: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <Text style={styles.name}>{(e.nameJson as any)?.ar ?? ''}</Text>

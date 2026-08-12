@@ -9,7 +9,7 @@ export function BeautyPregnancySafeCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🤰</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">الآمن للحامل</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">منتجات آمنة لكِ ولطفلكِ</p>
@@ -17,9 +17,9 @@ export function BeautyPregnancySafeCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '✅', label: 'مسموح', tip: 'فيتامين C، حمض الأزيليك، هيالورونيك' },
-          { emoji: '⚠️', label: 'بحذر', tip: 'حمض الساليسيليك — أقل من 2%' },
-          { emoji: '❌', label: 'ممنوع', tip: 'ريتينول، هيدروكينون، بوتوكس' },
+          { emoji: '', label: 'مسموح', tip: 'فيتامين C، حمض الأزيليك، هيالورونيك' },
+          { emoji: '', label: 'بحذر', tip: 'حمض الساليسيليك — أقل من 2%' },
+          { emoji: '', label: 'ممنوع', tip: 'ريتينول، هيدروكينون، بوتوكس' },
           { emoji: '🩺', label: 'اسألي', tip: 'طبيبتك قبل أي منتج جديد' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-pink-50 px-2.5 py-2 dark:bg-pink-950">

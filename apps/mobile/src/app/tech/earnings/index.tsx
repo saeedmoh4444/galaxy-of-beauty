@@ -29,7 +29,7 @@ export default function TechEarningsScreen(): JSX.Element {
       errorMessage="فشل تحميل الأرباح"
       onRetry={() => earnings.refetch()}
     >
-      <Text style={styles.title}>💰 أرباحي</Text>
+      <Text style={styles.title}> أرباحي</Text>
       <View style={styles.summaryCard}>
         <Text style={styles.summaryLabel}>إجمالي الأرباح</Text>
         <Text style={styles.summaryAmount}>{formatCurrency(Number(data?.totalEarnings ?? 0))}</Text>

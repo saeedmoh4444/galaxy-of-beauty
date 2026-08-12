@@ -16,10 +16,10 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
 const OCCASION_LABELS: Record<string, string> = {
-  wedding: 'زفاف 👰',
-  birthday: 'عيد ميلاد 🎂',
-  baby_shower: 'استقبال مولود 👶',
-  other: 'أخرى 🎁',
+  wedding: 'زفاف ',
+  birthday: 'عيد ميلاد ',
+  baby_shower: 'استقبال مولود ',
+  other: 'أخرى ',
 };
 
 export default function GiftRegistryPage(): JSX.Element {
@@ -48,7 +48,7 @@ export default function GiftRegistryPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">🎁 سجل الهدايا</h1>
+          <h1 className="text-2xl font-bold"> سجل الهدايا</h1>
           <Button onClick={() => setShowAdd(true)}>إنشاء سجل هدايا</Button>
         </div>
         <p className="text-sm text-text-secondary">
@@ -71,7 +71,7 @@ export default function GiftRegistryPage(): JSX.Element {
               return (
                 <Card key={r.id} padding="lg">
                   <div className="text-center">
-                    <p className="text-3xl">{OCCASION_LABELS[r.occasion]?.split(' ')[1] || '🎁'}</p>
+                    <p className="text-3xl">{OCCASION_LABELS[r.occasion]?.split(' ')[1] || ''}</p>
                     <h3 className="mt-2 text-lg font-bold">{r.title}</h3>
                     <p className="text-xs text-text-secondary">
                       {OCCASION_LABELS[r.occasion]?.split(' ')[0] || r.occasion}
@@ -128,10 +128,10 @@ export default function GiftRegistryPage(): JSX.Element {
                   onChange={(e) => setForm({ ...form, occasion: e.target.value })}
                   className="w-full rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800"
                 >
-                  <option value="wedding">زفاف 👰</option>
-                  <option value="birthday">عيد ميلاد 🎂</option>
-                  <option value="baby_shower">استقبال مولود 👶</option>
-                  <option value="other">أخرى 🎁</option>
+                  <option value="wedding">زفاف </option>
+                  <option value="birthday">عيد ميلاد </option>
+                  <option value="baby_shower">استقبال مولود </option>
+                  <option value="other">أخرى </option>
                 </select>
                 <Input
                   type="number"

@@ -9,7 +9,7 @@ export function BeautyAfterBotoxCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💉</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">بعد البوتوكس</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">تعليمات ما بعد الحقن</p>
@@ -17,10 +17,10 @@ export function BeautyAfterBotoxCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🚫', text: 'لا تلمسي — لا تدلكي المنطقة 24 ساعة' },
-          { emoji: '🧍', text: 'ابقِ رأسك مرفوعاً — 4 ساعات بعد الحقن' },
-          { emoji: '🏃', text: 'لا رياضة — 24 ساعة' },
-          { emoji: '⏱️', text: 'النتيجة النهائية — بعد 10-14 يوم' },
+          { emoji: '', text: 'لا تلمسي — لا تدلكي المنطقة 24 ساعة' },
+          { emoji: '', text: 'ابقِ رأسك مرفوعاً — 4 ساعات بعد الحقن' },
+          { emoji: '', text: 'لا رياضة — 24 ساعة' },
+          { emoji: '️', text: 'النتيجة النهائية — بعد 10-14 يوم' },
         ].map((t, i) => (
           <div
             key={i}

@@ -18,9 +18,9 @@ const Ctx = createContext<ToastCtx>({ showToast: () => {} });
 let nextId = 0;
 
 const COLORS: Record<ToastType, { bg: string; icon: string }> = {
-  success: { bg: '#16a34a', icon: '✅' },
-  error: { bg: '#dc2626', icon: '❌' },
-  warning: { bg: '#f59e0b', icon: '⚠️' },
+  success: { bg: '#16a34a', icon: '' },
+  error: { bg: '#dc2626', icon: '' },
+  warning: { bg: '#f59e0b', icon: '' },
   info: { bg: '#374151', icon: 'ℹ️' },
 };
 
@@ -51,7 +51,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             {toast.message}
           </Text>
           <TouchableOpacity onPress={() => setToast(null)}>
-            <Text style={styles.close}>✕</Text>
+            <Text style={styles.close}></Text>
           </TouchableOpacity>
         </Animated.View>
       )}

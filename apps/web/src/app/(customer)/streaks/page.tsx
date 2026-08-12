@@ -53,7 +53,7 @@ export default function StreaksPage(): JSX.Element {
             {/* Current Streak */}
             <div className="grid gap-4 md:grid-cols-3">
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
-                <span className="text-5xl">🔥</span>
+                <span className="text-5xl"></span>
                 <p className="mt-3 text-sm text-text-secondary dark:text-gray-400">
                   الاستمرارية الحالية
                 </p>
@@ -63,7 +63,7 @@ export default function StreaksPage(): JSX.Element {
                 <p className="text-xs text-text-tertiary">أسابيع متتالية</p>
               </Card>
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
-                <span className="text-5xl">🏆</span>
+                <span className="text-5xl"></span>
                 <p className="mt-3 text-sm text-text-secondary dark:text-gray-400">
                   أطول استمرارية
                 </p>
@@ -73,7 +73,7 @@ export default function StreaksPage(): JSX.Element {
                 <p className="text-xs text-text-tertiary">أسابيع</p>
               </Card>
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
-                <span className="text-5xl">📅</span>
+                <span className="text-5xl"></span>
                 <p className="mt-3 text-sm text-text-secondary dark:text-gray-400">آخر حجز</p>
                 <p className="mt-1 text-lg font-semibold text-text-primary dark:text-gray-300">
                   {streakData?.lastBookingDate
@@ -121,9 +121,9 @@ export default function StreaksPage(): JSX.Element {
                               className="h-10 w-10 rounded-full object-cover"
                             />
                           ) : isEarned ? (
-                            '🏅'
+                            ''
                           ) : (
-                            '🔒'
+                            ''
                           )}
                         </span>
                         <div className="min-w-0 flex-1">
@@ -134,7 +134,7 @@ export default function StreaksPage(): JSX.Element {
                           <div className="mt-2 flex items-center gap-2">
                             {isEarned ? (
                               <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                                تم الإنجاز ✓
+                                تم الإنجاز 
                               </span>
                             ) : (
                               <span className="rounded-full bg-surface-muted px-2.5 py-0.5 text-xs font-medium text-text-secondary dark:bg-gray-800">

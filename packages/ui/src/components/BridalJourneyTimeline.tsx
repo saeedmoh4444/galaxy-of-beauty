@@ -22,7 +22,7 @@ interface Milestone {
 const MILESTONES: Milestone[] = [
   {
     month: 6,
-    emoji: '📋',
+    emoji: '',
     title: 'خطة العناية',
     description: 'نضع خطة عناية متكاملة لبشرتكِ قبل الزفاف',
     services: ['استشارة جمالية', 'تحليل بشرة', 'خطة تغذية'],
@@ -30,7 +30,7 @@ const MILESTONES: Milestone[] = [
   },
   {
     month: 5,
-    emoji: '🧴',
+    emoji: '',
     title: 'روتين العناية',
     description: 'بناء روتين عناية يومي بالبشرة',
     services: ['تنظيف شهري', 'تقشير لطيف', 'سيروم فيتامين سي'],
@@ -38,7 +38,7 @@ const MILESTONES: Milestone[] = [
   },
   {
     month: 4,
-    emoji: '💆‍♀️',
+    emoji: '‍️',
     title: 'علاجات متقدمة',
     description: 'بدء العلاجات التجميلية المتقدمة',
     services: ['تقشير كيميائي', 'ميزوثيرابي', 'عناية بالرقبة'],
@@ -46,7 +46,7 @@ const MILESTONES: Milestone[] = [
   },
   {
     month: 3,
-    emoji: '👰',
+    emoji: '',
     title: 'تجربة الإطلالة',
     description: 'تجربة كاملة لإطلالة الزفاف',
     services: ['تجربة مكياج', 'تجربة تسريحة', 'تجربة فستان'],
@@ -54,7 +54,7 @@ const MILESTONES: Milestone[] = [
   },
   {
     month: 2,
-    emoji: '💅',
+    emoji: '',
     title: 'اللمسات النهائية',
     description: 'التركيز على التفاصيل الدقيقة',
     services: ['تبييض أسنان', 'عناية بالأظافر', 'تشقير حواجب'],
@@ -62,7 +62,7 @@ const MILESTONES: Milestone[] = [
   },
   {
     month: 1,
-    emoji: '✨',
+    emoji: '',
     title: 'الأسبوع الأخير',
     description: 'الاستعداد النهائي والاسترخاء',
     services: ['تنظيف عميق', 'ماسك ذهبي', 'مساج استرخاء'],
@@ -88,7 +88,7 @@ export function BridalJourneyTimeline({
       {/* Header */}
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          👰‍♀️
+          ‍️
         </span>
         <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">رحلة العروس</h4>
         <p className="text-[10px] text-rose-500 dark:text-rose-400">
@@ -96,7 +96,7 @@ export function BridalJourneyTimeline({
         </p>
         {weddingDate && (
           <p className="mt-0.5 text-[10px] font-bold text-rose-600 dark:text-rose-400">
-            💒 تاريخ الزفاف: {weddingDate}
+             تاريخ الزفاف: {weddingDate}
           </p>
         )}
       </div>
@@ -128,7 +128,7 @@ export function BridalJourneyTimeline({
                     )}
                   >
                     <span className={cn(isPast && !isCurrent && 'opacity-40')}>
-                      {isCompleted ? '✅' : m.emoji}
+                      {isCompleted ? '' : m.emoji}
                     </span>
                   </div>
                   {i < MILESTONES.length - 1 && (
@@ -179,7 +179,7 @@ export function BridalJourneyTimeline({
 
                   {/* Tip */}
                   <p className="mt-1 text-[9px] italic text-text-tertiary dark:text-gray-500">
-                    💡 {m.tip}
+                     {m.tip}
                   </p>
 
                   {/* Book button for current */}
@@ -201,7 +201,7 @@ export function BridalJourneyTimeline({
 
       {/* Footer */}
       <p className="mt-2 text-center text-[9px] text-rose-500 dark:text-rose-400">
-        💒 &ldquo;يوم زفافكِ هو بداية أجمل قصة&rdquo;
+         &ldquo;يوم زفافكِ هو بداية أجمل قصة&rdquo;
       </p>
     </div>
   );

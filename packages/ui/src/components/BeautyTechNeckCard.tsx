@@ -9,7 +9,7 @@ export function BeautyTechNeckCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">📱</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">تجاعيد الجوال</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">Tech Neck — أثر النظر للأسفل</p>
@@ -17,10 +17,10 @@ export function BeautyTechNeckCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '📱', text: 'ارفعي الجوال — لمستوى العين وليس للأسفل' },
+          { emoji: '', text: 'ارفعي الجوال — لمستوى العين وليس للأسفل' },
           { emoji: '🪑', text: 'وضعية الجلوس — ظهر مستقيم وشاشة مرتفعة' },
-          { emoji: '🧘', text: 'تمارين الرقبة — مد وإطالة يومياً' },
-          { emoji: '🧴', text: 'كريمات الببتيد — تحفز الكولاجين' },
+          { emoji: '', text: 'تمارين الرقبة — مد وإطالة يومياً' },
+          { emoji: '', text: 'كريمات الببتيد — تحفز الكولاجين' },
         ].map((t, i) => (
           <div
             key={i}

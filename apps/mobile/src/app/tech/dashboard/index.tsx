@@ -23,21 +23,21 @@ export default function TechDashboardScreen(): JSX.Element {
       errorMessage="فشل تحميل لوحة التحكم"
       onRetry={() => stats.refetch()}
     >
-      <Text style={styles.title}>📊 لوحة الفنية</Text>
+      <Text style={styles.title}> لوحة الفنية</Text>
       <View style={styles.statsGrid}>
         {[
-          { key: 'pendingBookings', label: '📅 معلقة', val: String(data?.pendingBookings ?? 0) },
+          { key: 'pendingBookings', label: ' معلقة', val: String(data?.pendingBookings ?? 0) },
           {
             key: 'completedBookings',
-            label: '✅ مكتملة',
+            label: ' مكتملة',
             val: String(data?.completedBookings ?? 0),
           },
           {
             key: 'totalEarnings',
-            label: '💰 الأرباح',
+            label: ' الأرباح',
             val: `${String(data?.totalEarnings ?? 0)} ر.س`,
           },
-          { key: 'rating', label: '⭐ التقييم', val: String(data?.rating ?? 0) },
+          { key: 'rating', label: ' التقييم', val: String(data?.rating ?? 0) },
         ].map((s, i) => (
           <View key={i} style={styles.statCard}>
             <Text style={styles.statNum}>{s.val}</Text>
@@ -47,10 +47,10 @@ export default function TechDashboardScreen(): JSX.Element {
       </View>
       <View style={styles.links}>
         {[
-          { h: '/tech/bookings', l: '📅 الحجوزات' },
-          { h: '/tech/earnings', l: '💰 الأرباح' },
-          { h: '/tech/slots', l: '⏰ المواعيد' },
-          { h: '/tech/profile', l: '👤 ملفي' },
+          { h: '/tech/bookings', l: ' الحجوزات' },
+          { h: '/tech/earnings', l: ' الأرباح' },
+          { h: '/tech/slots', l: ' المواعيد' },
+          { h: '/tech/profile', l: ' ملفي' },
         ].map((l, i) => (
           <TouchableOpacity key={i} style={styles.linkBtn} onPress={() => router.push(l.h as any)}>
             <Text style={styles.linkText}>{l.l}</Text>

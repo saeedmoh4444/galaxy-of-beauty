@@ -9,7 +9,7 @@ export function BeautyHighFrequencyCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">⚡</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">التردد العالي</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">
@@ -19,10 +19,10 @@ export function BeautyHighFrequencyCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🔴', text: 'يجفف الحبوب — يقتل البكتيريا المسببة' },
-          { emoji: '✨', text: 'يحسن الدورة الدموية — بشرة متوهجة' },
-          { emoji: '🧴', text: 'على بشرة جافة — مع شاش واقي' },
-          { emoji: '⏱️', text: '3-5 دقائق لكل منطقة — مرتين أسبوعياً' },
+          { emoji: '', text: 'يجفف الحبوب — يقتل البكتيريا المسببة' },
+          { emoji: '', text: 'يحسن الدورة الدموية — بشرة متوهجة' },
+          { emoji: '', text: 'على بشرة جافة — مع شاش واقي' },
+          { emoji: '️', text: '3-5 دقائق لكل منطقة — مرتين أسبوعياً' },
         ].map((t, i) => (
           <div
             key={i}

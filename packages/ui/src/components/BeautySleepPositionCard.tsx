@@ -9,7 +9,7 @@ export function BeautySleepPositionCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">😴</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">وضعية النوم</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">
@@ -19,10 +19,10 @@ export function BeautySleepPositionCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🛏️', text: 'على الظهر — الأفضل للبشرة والرقبة' },
+          { emoji: '️', text: 'على الظهر — الأفضل للبشرة والرقبة' },
           { emoji: '🫂', text: 'على الجانب — يسبب تجاعيد الوجه' },
-          { emoji: '🙅', text: 'على البطن — الأسوأ للرقبة والظهر' },
-          { emoji: '🧴', text: 'وسادة حرير — تقلل احتكاك البشرة' },
+          { emoji: '', text: 'على البطن — الأسوأ للرقبة والظهر' },
+          { emoji: '', text: 'وسادة حرير — تقلل احتكاك البشرة' },
         ].map((t, i) => (
           <div
             key={i}

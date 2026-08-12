@@ -9,7 +9,7 @@ export function BeautySleepRoutineCard({ className = '' }: { className?: string 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌙</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">
             روتين ما قبل النوم
@@ -21,10 +21,10 @@ export function BeautySleepRoutineCard({ className = '' }: { className?: string 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧹', text: 'نظفي وجهك — إزالة المكياج بالكامل' },
-          { emoji: '🧴', text: 'سيروم + مرطب ليلي — بشرة تتجدد ليلاً' },
-          { emoji: '📵', text: 'أطفئي الجوال — 30 دقيقة قبل النوم' },
-          { emoji: '🕯️', text: 'أجواء هادئة — شمعة، كتاب، تأمل' },
+          { emoji: '', text: 'نظفي وجهك — إزالة المكياج بالكامل' },
+          { emoji: '', text: 'سيروم + مرطب ليلي — بشرة تتجدد ليلاً' },
+          { emoji: '', text: 'أطفئي الجوال — 30 دقيقة قبل النوم' },
+          { emoji: '️', text: 'أجواء هادئة — شمعة، كتاب، تأمل' },
         ].map((t, i) => (
           <div
             key={i}

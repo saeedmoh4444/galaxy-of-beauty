@@ -36,14 +36,14 @@ export function BeautyRecipeCard({ recipe, className = '' }: BeautyRecipeCardPro
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🥣
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             {recipe.title}
           </h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
-            🕐 {recipe.duration} · 🌿 طبيعي 100%
+             {recipe.duration} ·  طبيعي 100%
             {recipe.forSkin && ` · ${recipe.forSkin}`}
           </p>
         </div>
@@ -51,7 +51,7 @@ export function BeautyRecipeCard({ recipe, className = '' }: BeautyRecipeCardPro
 
       {/* Ingredients */}
       <div className="mt-3 rounded-xl bg-emerald-50 p-3 dark:bg-emerald-950">
-        <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">🛒 المكونات</p>
+        <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300"> المكونات</p>
         <div className="mt-1 flex flex-wrap gap-1">
           {recipe.ingredients.map((ing) => (
             <span
@@ -66,7 +66,7 @@ export function BeautyRecipeCard({ recipe, className = '' }: BeautyRecipeCardPro
 
       {/* Steps */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">📝 الطريقة</p>
+        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100"> الطريقة</p>
         <div className="mt-1 space-y-1">
           {recipe.steps.map((step, i) => (
             <div key={i} className="flex items-start gap-1.5">
@@ -81,7 +81,7 @@ export function BeautyRecipeCard({ recipe, className = '' }: BeautyRecipeCardPro
 
       {/* Caution */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        ⚠️ اختبري على جزء صغير من بشرتكِ قبل الاستخدام
+         اختبري على جزء صغير من بشرتكِ قبل الاستخدام
       </p>
     </div>
   );

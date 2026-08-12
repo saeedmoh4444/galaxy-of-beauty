@@ -29,7 +29,7 @@ export default function InvoicesScreen(): JSX.Element {
       emptyTitle="لا توجد فواتير"
       onRetry={() => invoices.refetch()}
     >
-      <Text style={styles.title}>🧾 الفواتير الإلكترونية</Text>
+      <Text style={styles.title}> الفواتير الإلكترونية</Text>
       <FlatList
         data={data as any[]}
         keyExtractor={(_, i) => String(i)}

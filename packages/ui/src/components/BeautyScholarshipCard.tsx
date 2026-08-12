@@ -49,7 +49,7 @@ export function BeautyScholarshipCard({
       {/* Header */}
       <div className="flex items-start gap-3">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-teal-100 to-emerald-100 text-xl dark:from-teal-900 dark:to-emerald-900">
-          {program.emoji || '🎓'}
+          {program.emoji || ''}
         </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">منحة دراسية</h4>
@@ -58,7 +58,7 @@ export function BeautyScholarshipCard({
           </p>
         </div>
         <span className="shrink-0 rounded-full bg-teal-50 px-2.5 py-0.5 text-[10px] font-bold text-teal-700 dark:bg-teal-950 dark:text-teal-300">
-          🎓 مجانية
+           مجانية
         </span>
       </div>
 
@@ -82,7 +82,7 @@ export function BeautyScholarshipCard({
       {program.includes && program.includes.length > 0 && (
         <div className="mt-2 rounded-xl bg-gray-50 p-2.5 dark:bg-gray-800">
           <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-            📦 تشمل المنحة
+             تشمل المنحة
           </p>
           <div className="mt-1 flex flex-wrap gap-1">
             {program.includes.map((item) => (
@@ -119,7 +119,7 @@ export function BeautyScholarshipCard({
       {/* Duration */}
       {program.duration && (
         <p className="mt-1.5 text-[10px] text-text-tertiary dark:text-gray-500">
-          ⏱️ المدة: {program.duration}
+          ️ المدة: {program.duration}
         </p>
       )}
 
@@ -143,12 +143,12 @@ export function BeautyScholarshipCard({
           onClick={onSponsor}
           className="rounded-xl border border-teal-200 bg-white px-3 py-2 text-[10px] font-bold text-teal-700 hover:bg-teal-50 dark:border-teal-800 dark:bg-gray-800 dark:text-teal-300"
         >
-          🤝 راعي
+           راعي
         </button>
       </div>
 
       <p className="mt-2 text-center text-[9px] text-teal-600 dark:text-teal-400">
-        💚 التعليم حق للجميع — لا تدعي الظروف تمنع حلمكِ
+         التعليم حق للجميع — لا تدعي الظروف تمنع حلمكِ
       </p>
     </div>
   );

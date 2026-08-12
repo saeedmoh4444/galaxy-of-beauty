@@ -12,22 +12,22 @@ interface VerifiedBadgeProps {
 
 const STATUS_CONFIG: Record<string, { emoji: string; labelAr: string; color: string }> = {
   VERIFIED: {
-    emoji: '✅',
+    emoji: '',
     labelAr: 'موثقة',
     color: 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300',
   },
   SUBMITTED: {
-    emoji: '⏳',
+    emoji: '',
     labelAr: 'قيد المراجعة',
     color: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
   },
   PENDING: {
-    emoji: '📋',
+    emoji: '',
     labelAr: 'بانتظار التوثيق',
     color: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
   },
   REJECTED: {
-    emoji: '❌',
+    emoji: '',
     labelAr: 'مرفوض',
     color: 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300',
   },

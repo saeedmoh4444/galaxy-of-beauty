@@ -9,7 +9,7 @@ export function BeautyChlorophyllCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌿</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">الكلوروفيل</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">
@@ -19,10 +19,10 @@ export function BeautyChlorophyllCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💧', text: 'ينقي البشرة من الداخل — يقلل الحبوب' },
+          { emoji: '', text: 'ينقي البشرة من الداخل — يقلل الحبوب' },
           { emoji: '🩸', text: 'يشبه الهيموجلوبين — ينقي الدم' },
-          { emoji: '🥤', text: '15 قطرة في كوب ماء — صباحاً' },
-          { emoji: '🌱', text: 'طبيعي 100% — مستخلص من البرسيم' },
+          { emoji: '', text: '15 قطرة في كوب ماء — صباحاً' },
+          { emoji: '', text: 'طبيعي 100% — مستخلص من البرسيم' },
         ].map((t, i) => (
           <div
             key={i}

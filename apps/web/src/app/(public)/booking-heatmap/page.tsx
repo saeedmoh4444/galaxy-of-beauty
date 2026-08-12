@@ -27,7 +27,7 @@ export default function BookingHeatmapPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">📊</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">خريطة الحجوزات</h1>
         <p className="mt-2 text-text-secondary">أوقات الذروة والمواعيد المتاحة</p>
       </div>
@@ -66,12 +66,12 @@ export default function BookingHeatmapPage(): JSX.Element {
             </div>
           </div>
           <div className="mt-4 flex items-center justify-center gap-2 text-xs text-text-tertiary">
-            <span>🟢 هادئ</span>
+            <span> هادئ</span>
             <div className="w-4 h-3 rounded bg-green-200" />
             <div className="w-4 h-3 rounded bg-yellow-200" />
             <div className="w-4 h-3 rounded bg-orange-300" />
             <div className="w-4 h-3 rounded bg-red-400" />
-            <span>🔴 مزدحم</span>
+            <span> مزدحم</span>
           </div>
         </Card>
       ) : null}

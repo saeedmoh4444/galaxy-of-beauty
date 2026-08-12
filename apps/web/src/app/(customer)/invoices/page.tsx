@@ -21,7 +21,7 @@ export default function InvoicesPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🧾 الفواتير</h1>
+          <h1 className="text-2xl font-bold"> الفواتير</h1>
           <p className="mt-1 text-sm text-text-secondary">سجل مدفوعاتكِ وفواتيركِ</p>
         </div>
 
@@ -44,7 +44,7 @@ export default function InvoicesPage(): JSX.Element {
           </div>
         ) : completed.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">🧾</p>
+            <p className="text-4xl mb-2"></p>
             <p className="text-text-secondary">لا توجد فواتير بعد</p>
           </Card>
         ) : (
@@ -72,7 +72,7 @@ export default function InvoicesPage(): JSX.Element {
                         {formatCurrency(Number(b.totalAmount) || 0)}
                       </p>
                       <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-700">
-                        ✅ مدفوعة
+                         مدفوعة
                       </span>
                     </div>
                   </div>

@@ -47,7 +47,7 @@ export function BeautyComparisonCard({
     >
       <div className="flex items-center gap-2">
         <span className="text-lg" aria-hidden="true">
-          ⚖️
+          ️
         </span>
         <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
       </div>
@@ -77,11 +77,11 @@ export function BeautyComparisonCard({
             </p>
             <p className="text-xs font-bold text-blue-700 dark:text-blue-300">{item.price} ر.س</p>
             {item.rating && (
-              <p className="text-[10px] text-amber-600 dark:text-amber-400">⭐ {item.rating}</p>
+              <p className="text-[10px] text-amber-600 dark:text-amber-400"> {item.rating}</p>
             )}
             {item.best && (
               <span className="mt-1 inline-block rounded-full bg-blue-100 px-2 py-0.5 text-[9px] font-bold text-blue-700 dark:bg-blue-800 dark:text-blue-200">
-                🏆 الأفضل
+                 الأفضل
               </span>
             )}
 
@@ -89,12 +89,12 @@ export function BeautyComparisonCard({
             <div className="mt-2 space-y-1 text-left">
               {item.pros.map((p) => (
                 <p key={p} className="text-[9px] text-emerald-600 dark:text-emerald-400">
-                  ✅ {p}
+                   {p}
                 </p>
               ))}
               {item.cons.map((c) => (
                 <p key={c} className="text-[9px] text-rose-600 dark:text-rose-400">
-                  ❌ {c}
+                   {c}
                 </p>
               ))}
             </div>
@@ -103,7 +103,7 @@ export function BeautyComparisonCard({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        ⚖️ قارني قبل ما تقرري
+        ️ قارني قبل ما تقرري
       </p>
     </div>
   );

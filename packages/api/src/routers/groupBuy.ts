@@ -22,7 +22,7 @@ export const groupBuyRouter = router({
       ...updated,
       joined: true,
       message: reached
-        ? '🎉 تم تفعيل الصفقة!'
+        ? ' تم تفعيل الصفقة!'
         : `متبقي ${updated.minBuyers - updated.currentBuyers} مشتركات`,
     };
   }),

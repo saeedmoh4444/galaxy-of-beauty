@@ -15,7 +15,7 @@ export function BeautyConfidenceCard({ className = '' }: BeautyConfidenceCardPro
       )}
     >
       <div className="text-center">
-        <span className="text-4xl">💪</span>
+        <span className="text-4xl"></span>
         <h4 className="mt-1 text-sm font-bold text-fuchsia-800 dark:text-fuchsia-200">ثقة وجمال</h4>
         <p className="mt-2 text-xs leading-relaxed text-fuchsia-700 dark:text-fuchsia-300">
           الجمال الحقيقي يبدأ من الداخل. ثقتكِ بنفسكِ هي أجمل ما يمكن أن ترتديه.

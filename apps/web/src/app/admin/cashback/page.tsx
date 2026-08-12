@@ -12,18 +12,18 @@ export default function AdminCashbackPage(): JSX.Element {
     <DashboardLayout role="ADMIN">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">💸 إدارة الكاش باك</h1>
+          <h1 className="text-2xl font-bold"> إدارة الكاش باك</h1>
           <p className="mt-1 text-sm text-text-secondary">تعديل نسبة الاسترداد النقدي</p>
         </div>
 
         <Card padding="lg" className="text-center">
-          <p className="text-6xl mb-4">💸</p>
+          <p className="text-6xl mb-4"></p>
           <p className="text-sm text-text-secondary">نسبة الكاش باك الحالية</p>
           <p className="text-4xl font-extrabold text-brand-600 mt-2">{rate}%</p>
         </Card>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3">⚙️ تعديل النسبة</h3>
+          <h3 className="font-bold mb-3">️ تعديل النسبة</h3>
           <div className="flex gap-3">
             <input
               type="number"

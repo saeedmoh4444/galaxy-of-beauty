@@ -44,7 +44,7 @@ function Countdown({ endsAt }: { endsAt: string }) {
     const i = setInterval(update, CAMPAIGN_POLL_INTERVAL_MS);
     return () => clearInterval(i);
   }, [endsAt]);
-  return <span className="text-xs font-semibold text-red-500 animate-pulse">⏰ {label}</span>;
+  return <span className="text-xs font-semibold text-red-500 animate-pulse"> {label}</span>;
 }
 
 export default function CampaignsPage(): JSX.Element {
@@ -72,7 +72,7 @@ export default function CampaignsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl">🎉</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           العروض والحملات
         </h1>
@@ -92,14 +92,14 @@ export default function CampaignsPage(): JSX.Element {
       ) : isEmpty ? (
         <EmptyState
           title="لا توجد حملات حالياً"
-          description="تابعينا للموسم القادم! 🎉"
+          description="تابعينا للموسم القادم! "
           action={{ label: 'تصفحي الخدمات', onPress: () => window.location.assign('/services') }}
         />
       ) : (
         <>
           {activeList.length > 0 && (
             <div className="mb-12">
-              <h2 className="mb-6 text-xl font-bold">🔥 عروض نشطة الآن</h2>
+              <h2 className="mb-6 text-xl font-bold"> عروض نشطة الآن</h2>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {activeList.map((c) => (
                   <Card
@@ -111,7 +111,7 @@ export default function CampaignsPage(): JSX.Element {
                       {c.imageUrl ? (
                         <img src={c.imageUrl} alt="" className="h-full w-full object-cover" />
                       ) : (
-                        <span>🎉</span>
+                        <span></span>
                       )}
                       <span className="absolute top-3 right-3 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white animate-pulse">
                         نشط
@@ -144,7 +144,7 @@ export default function CampaignsPage(): JSX.Element {
                             }}
                             className="mr-auto text-xs text-brand-500 hover:text-brand-700"
                           >
-                            📋 نسخ
+                             نسخ
                           </button>
                         </div>
                       )}
@@ -163,7 +163,7 @@ export default function CampaignsPage(): JSX.Element {
 
           {upcomingList.length > 0 && (
             <div>
-              <h2 className="mb-6 text-xl font-bold">📅 قريباً</h2>
+              <h2 className="mb-6 text-xl font-bold"> قريباً</h2>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {upcomingList.map((c) => (
                   <Card
@@ -172,7 +172,7 @@ export default function CampaignsPage(): JSX.Element {
                     className="overflow-hidden opacity-70 hover:opacity-100 transition-all"
                   >
                     <div className="flex h-36 items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-950 dark:to-purple-950 text-5xl">
-                      <span>📅</span>
+                      <span></span>
                     </div>
                     <div className="p-5">
                       <h3 className="text-lg font-bold">

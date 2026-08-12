@@ -38,9 +38,9 @@ export default function RideHailingScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}>🚗 توصيل للموعد</Text>
+        <Text style={styles.t}> توصيل للموعد</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}>🚗</Text>
+          <Text style={styles.re}></Text>
           <Text style={styles.rt}>تم الحجز!</Text>
           <Text style={styles.rn}>
             {result.driverName as string} · {result.carModel as string}
@@ -63,14 +63,14 @@ export default function RideHailingScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🚗 توصيل للموعد</Text>
+      <Text style={styles.t}> توصيل للموعد</Text>
       {providers.map((p: any) => (
         <View key={p.key} style={styles.card}>
           <Text style={styles.pe}>{p.emoji as string}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.pn}>{p.nameAr as string}</Text>
             <Text style={styles.pm}>
-              ⏱️ {p.estimatedTime as string} · {(p.estimatedPrice as number)?.toLocaleString()} ر.س
+              ️ {p.estimatedTime as string} · {(p.estimatedPrice as number)?.toLocaleString()} ر.س
             </Text>
           </View>
           <TouchableOpacity onPress={() => book(p.key as string)} style={styles.bb}>

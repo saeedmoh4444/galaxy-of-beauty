@@ -41,7 +41,7 @@ export default function SmartPricingScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>💡 الأسعار الذكية</Text>
+      <Text style={styles.t}> الأسعار الذكية</Text>
       <Text style={styles.sub}>أسعار متغيرة حسب الطلب — احجزي في الوقت المناسب ووفري!</Text>
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد خدمات</Text>

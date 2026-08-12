@@ -3,28 +3,28 @@ import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
 const RELATIONSHIPS = [
-  { key: 'child', nameAr: 'طفل/طفلة', nameEn: 'Child', emoji: '👶' },
-  { key: 'spouse', nameAr: 'زوج/زوجة', nameEn: 'Spouse', emoji: '💑' },
-  { key: 'parent', nameAr: 'أم/أب', nameEn: 'Parent', emoji: '👵' },
-  { key: 'sibling', nameAr: 'أخ/أخت', nameEn: 'Sibling', emoji: '👫' },
-  { key: 'other', nameAr: 'آخر', nameEn: 'Other', emoji: '👤' },
+  { key: 'child', nameAr: 'طفل/طفلة', nameEn: 'Child', emoji: '' },
+  { key: 'spouse', nameAr: 'زوج/زوجة', nameEn: 'Spouse', emoji: '' },
+  { key: 'parent', nameAr: 'أم/أب', nameEn: 'Parent', emoji: '' },
+  { key: 'sibling', nameAr: 'أخ/أخت', nameEn: 'Sibling', emoji: '' },
+  { key: 'other', nameAr: 'آخر', nameEn: 'Other', emoji: '' },
 ];
 
 const AGE_GROUPS = [
-  { key: 'infant', nameAr: 'رضيع (0-2)', nameEn: 'Infant', emoji: '🍼' },
-  { key: 'child', nameAr: 'طفل (3-12)', nameEn: 'Child', emoji: '🧒' },
-  { key: 'teen', nameAr: 'مراهق (13-17)', nameEn: 'Teen', emoji: '👧' },
-  { key: 'adult', nameAr: 'بالغ (18-59)', nameEn: 'Adult', emoji: '👩' },
-  { key: 'senior', nameAr: 'كبير سن (60+)', nameEn: 'Senior', emoji: '👵' },
+  { key: 'infant', nameAr: 'رضيع (0-2)', nameEn: 'Infant', emoji: '' },
+  { key: 'child', nameAr: 'طفل (3-12)', nameEn: 'Child', emoji: '' },
+  { key: 'teen', nameAr: 'مراهق (13-17)', nameEn: 'Teen', emoji: '' },
+  { key: 'adult', nameAr: 'بالغ (18-59)', nameEn: 'Adult', emoji: '' },
+  { key: 'senior', nameAr: 'كبير سن (60+)', nameEn: 'Senior', emoji: '' },
 ];
 
 const PREFERENCES = [
-  { key: 'gentle', nameAr: 'منتجات لطيفة', nameEn: 'Gentle Products', emoji: '🌸' },
-  { key: 'hypoallergenic', nameAr: 'مضاد للحساسية', nameEn: 'Hypoallergenic', emoji: '🛡️' },
-  { key: 'fragrance_free', nameAr: 'خالي من العطور', nameEn: 'Fragrance Free', emoji: '🚫' },
-  { key: 'natural', nameAr: 'منتجات طبيعية', nameEn: 'Natural Products', emoji: '🌿' },
-  { key: 'quick', nameAr: 'جلسات سريعة', nameEn: 'Quick Sessions', emoji: '⚡' },
-  { key: 'quiet', nameAr: 'بيئة هادئة', nameEn: 'Quiet Environment', emoji: '🤫' },
+  { key: 'gentle', nameAr: 'منتجات لطيفة', nameEn: 'Gentle Products', emoji: '' },
+  { key: 'hypoallergenic', nameAr: 'مضاد للحساسية', nameEn: 'Hypoallergenic', emoji: '️' },
+  { key: 'fragrance_free', nameAr: 'خالي من العطور', nameEn: 'Fragrance Free', emoji: '' },
+  { key: 'natural', nameAr: 'منتجات طبيعية', nameEn: 'Natural Products', emoji: '' },
+  { key: 'quick', nameAr: 'جلسات سريعة', nameEn: 'Quick Sessions', emoji: '' },
+  { key: 'quiet', nameAr: 'بيئة هادئة', nameEn: 'Quiet Environment', emoji: '' },
 ];
 
 export const familyAccountRouter = router({

@@ -23,7 +23,7 @@ export default function FavoritesScreen(): JSX.Element {
       emptyDescription="أضيفي خدماتكِ المفضلة للوصول السريع"
       onRetry={() => favs.refetch()}
     >
-      <Text style={styles.title}>⭐ المفضلة السريعة</Text>
+      <Text style={styles.title}> المفضلة السريعة</Text>
       {(data as Record<string, unknown>[])?.map((f: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.row}>

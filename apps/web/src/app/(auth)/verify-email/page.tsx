@@ -45,14 +45,14 @@ export default function VerifyEmailPage(): JSX.Element {
         )}
         {status === 'success' && (
           <div className="py-8">
-            <span className="text-5xl">✅</span>
+            <span className="text-5xl"></span>
             <p className="mt-4 text-lg text-green-600">{msg}</p>
             <p className="mt-2 text-sm text-text-tertiary">جاري تحويلك لصفحة تسجيل الدخول...</p>
           </div>
         )}
         {status === 'error' && (
           <div className="py-8">
-            <span className="text-5xl">❌</span>
+            <span className="text-5xl"></span>
             <p className="mt-4 text-lg text-red-600">{msg}</p>
             <Link href="/login" className="mt-4 inline-block text-brand-600 hover:underline">
               العودة لتسجيل الدخول

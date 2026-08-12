@@ -46,13 +46,13 @@ export default function BnplScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}>🏦 تقسيط المدفوعات</Text>
+        <Text style={styles.t}> تقسيط المدفوعات</Text>
         <View style={[styles.card, styles.sc]}>
-          <Text style={styles.se}>✅</Text>
+          <Text style={styles.se}></Text>
           <Text style={styles.stt}>تمت الموافقة!</Text>
           <Text style={styles.ta}>{(result.totalAmount as number)?.toLocaleString()} ر.س</Text>
           <TouchableOpacity onPress={() => setResult(null)} style={styles.rst}>
-            <Text style={styles.rstt}>🔄 إعادة</Text>
+            <Text style={styles.rstt}> إعادة</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -69,7 +69,7 @@ export default function BnplScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🏦 تقسيط المدفوعات</Text>
+      <Text style={styles.t}> تقسيط المدفوعات</Text>
       <View style={styles.pr}>
         {providers.map((p: any) => (
           <TouchableOpacity

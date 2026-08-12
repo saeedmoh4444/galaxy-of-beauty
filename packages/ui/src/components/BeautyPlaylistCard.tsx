@@ -17,10 +17,10 @@ interface Track {
 }
 
 const TRACKS: Track[] = [
-  { title: 'أمواج البحر', duration: '4:30', emoji: '🌊' },
-  { title: 'صوت المطر', duration: '5:15', emoji: '🌧️' },
-  { title: 'عود هادئ', duration: '3:45', emoji: '🎵' },
-  { title: 'تأمل الصباح', duration: '6:00', emoji: '🧘' },
+  { title: 'أمواج البحر', duration: '4:30', emoji: '' },
+  { title: 'صوت المطر', duration: '5:15', emoji: '️' },
+  { title: 'عود هادئ', duration: '3:45', emoji: '' },
+  { title: 'تأمل الصباح', duration: '6:00', emoji: '' },
 ];
 
 interface BeautyPlaylistCardProps {
@@ -37,7 +37,7 @@ export function BeautyPlaylistCard({ className = '' }: BeautyPlaylistCardProps):
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🎵
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">موسيقى الجمال</h4>
@@ -75,7 +75,7 @@ export function BeautyPlaylistCard({ className = '' }: BeautyPlaylistCardProps):
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🎵 اختاري الموسيقى التي تحبينها لجلسة مثالية
+         اختاري الموسيقى التي تحبينها لجلسة مثالية
       </p>
     </div>
   );

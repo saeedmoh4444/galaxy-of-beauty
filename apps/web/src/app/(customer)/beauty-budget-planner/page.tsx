@@ -4,12 +4,12 @@ import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const CATEGORIES = [
-  { key: 'hair', emoji: '💇‍♀️', name: 'الشعر', budget: 200, color: '#ec4899' },
-  { key: 'skin', emoji: '✨', name: 'البشرة', budget: 300, color: '#8b5cf6' },
-  { key: 'nails', emoji: '💅', name: 'الأظافر', budget: 100, color: '#f59e0b' },
-  { key: 'makeup', emoji: '💄', name: 'المكياج', budget: 150, color: '#db2777' },
-  { key: 'spa', emoji: '🧖‍♀️', name: 'السبا', budget: 250, color: '#059669' },
-  { key: 'products', emoji: '🧴', name: 'منتجات', budget: 200, color: '#0891b2' },
+  { key: 'hair', emoji: '‍️', name: 'الشعر', budget: 200, color: '#ec4899' },
+  { key: 'skin', emoji: '', name: 'البشرة', budget: 300, color: '#8b5cf6' },
+  { key: 'nails', emoji: '', name: 'الأظافر', budget: 100, color: '#f59e0b' },
+  { key: 'makeup', emoji: '', name: 'المكياج', budget: 150, color: '#db2777' },
+  { key: 'spa', emoji: '‍️', name: 'السبا', budget: 250, color: '#059669' },
+  { key: 'products', emoji: '', name: 'منتجات', budget: 200, color: '#0891b2' },
 ];
 
 export default function BeautyBudgetPlannerPage(): JSX.Element {
@@ -30,7 +30,7 @@ export default function BeautyBudgetPlannerPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📊 مخطط الميزانية</h1>
+          <h1 className="text-2xl font-bold"> مخطط الميزانية</h1>
           <p className="mt-1 text-sm text-text-secondary">خططي لمصاريف جمالكِ السنوية</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-3">

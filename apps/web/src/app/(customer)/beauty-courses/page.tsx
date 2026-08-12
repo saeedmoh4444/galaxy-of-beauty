@@ -38,14 +38,14 @@ export default function BeautyCoursesPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="📚 دورات تجميل" subtitle="تعلمي مهارات التجميل من الخبيرات" />
+        <PageTitle title=" دورات تجميل" subtitle="تعلمي مهارات التجميل من الخبيرات" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
             {myItems.length > 0 && (
               <div className="rounded-2xl bg-emerald-50 p-4 dark:bg-emerald-950">
                 <h3 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-                  ✅ دوراتي ({myItems.length})
+                   دوراتي ({myItems.length})
                 </h3>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {myItems.map((c: any, i: number) => (
@@ -79,9 +79,9 @@ export default function BeautyCoursesPage(): JSX.Element {
                         {c.descAr}
                       </p>
                       <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-text-tertiary dark:text-gray-500">
-                        <span>👩‍🏫 {c.instructor}</span>
-                        <span>📖 {c.lessons} دروس</span>
-                        <span>⭐ {c.rating}</span>
+                        <span>‍ {c.instructor}</span>
+                        <span> {c.lessons} دروس</span>
+                        <span> {c.rating}</span>
                         <span
                           className="rounded-lg px-2 py-0.5 text-[11px] font-semibold"
                           style={{ backgroundColor: level.color + '20', color: level.color }}
@@ -95,7 +95,7 @@ export default function BeautyCoursesPage(): JSX.Element {
                         disabled={isEnrolled}
                         className={`mt-3 rounded-xl px-5 py-2.5 text-xs font-bold transition-all ${isEnrolled ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300' : 'bg-rose-600 text-white hover:bg-rose-700'}`}
                       >
-                        {isEnrolled ? '✅ مسجلة' : '📝 سجلي الآن'}
+                        {isEnrolled ? ' مسجلة' : ' سجلي الآن'}
                       </button>
                     </div>
                   </div>
@@ -121,7 +121,7 @@ export default function BeautyCoursesPage(): JSX.Element {
                 expert: 'م. سارة',
                 date: '15 سبتمبر',
                 isFree: true,
-                emoji: '💼',
+                emoji: '',
               }}
             />
             <BeautyLearningPathCard
@@ -129,7 +129,7 @@ export default function BeautyCoursesPage(): JSX.Element {
                 title: 'مكياج احترافي',
                 modules: 8,
                 completed: 0,
-                emoji: '💄',
+                emoji: '',
                 duration: '6 أشهر',
               }}
             />

@@ -15,7 +15,7 @@ export default function TechPerformancePage(): JSX.Element {
     <DashboardLayout role="TECHNICIAN">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📊 أدائي</h1>
+          <h1 className="text-2xl font-bold"> أدائي</h1>
           <p className="mt-1 text-sm text-text-secondary">إحصائيات وأرباحكِ</p>
         </div>
 
@@ -42,7 +42,7 @@ export default function TechPerformancePage(): JSX.Element {
               </Card>
               <Card padding="lg" className="text-center">
                 <p className="text-2xl font-extrabold text-amber-600">
-                  ⭐{data?.avgRating as number}
+                  {data?.avgRating as number}
                 </p>
                 <p className="text-xs text-text-secondary">
                   التقييم ({data?.totalReviews as number} تقييم)
@@ -59,7 +59,7 @@ export default function TechPerformancePage(): JSX.Element {
 
             {monthlyEarnings.length > 0 && (
               <Card padding="lg">
-                <h3 className="font-bold mb-4">📈 الأرباح الشهرية</h3>
+                <h3 className="font-bold mb-4"> الأرباح الشهرية</h3>
                 <div className="space-y-3">
                   {monthlyEarnings.map((m: Record<string, unknown>, i: number) => {
                     const maxTotal = Math.max(...monthlyEarnings.map((x) => x.total as number), 1);

@@ -25,7 +25,7 @@ export default function FeaturedTechPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🌟</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">فنية الأسبوع</h1>
         <p className="mt-2 text-text-secondary">نسلط الضوء على أفضل الفنيات في منصتنا</p>
       </div>
@@ -44,7 +44,7 @@ export default function FeaturedTechPage(): JSX.Element {
               {current.emoji as string}
             </div>
             <p className="text-xs text-amber-600 font-bold mt-3">
-              🌟 فنية الأسبوع —{' '}
+               فنية الأسبوع —{' '}
               {new Date(current.weekOf as string).toLocaleDateString('ar-SA', {
                 month: 'long',
                 day: 'numeric',
@@ -55,7 +55,7 @@ export default function FeaturedTechPage(): JSX.Element {
           </div>
 
           <div className="mt-6">
-            <h3 className="font-bold mb-2">✨ الإنجازات</h3>
+            <h3 className="font-bold mb-2"> الإنجازات</h3>
             <div className="flex flex-wrap gap-2">
               {(current.highlights as string[])?.map((h: string, i: number) => (
                 <span
@@ -69,7 +69,7 @@ export default function FeaturedTechPage(): JSX.Element {
           </div>
 
           <div className="mt-4">
-            <h3 className="font-bold mb-2">💄 الخدمات</h3>
+            <h3 className="font-bold mb-2"> الخدمات</h3>
             <div className="flex flex-wrap gap-2">
               {(current.services as string[])?.map((s: string, i: number) => (
                 <span
@@ -83,7 +83,7 @@ export default function FeaturedTechPage(): JSX.Element {
           </div>
 
           <div className="mt-6 rounded-xl bg-white dark:bg-gray-800 p-4">
-            <p className="text-sm font-bold text-brand-600">💬 مقابلة سريعة</p>
+            <p className="text-sm font-bold text-brand-600"> مقابلة سريعة</p>
             <p className="text-xs text-text-secondary mt-1">
               س: {(current.interview as Record<string, string>)?.q}
             </p>
@@ -100,7 +100,7 @@ export default function FeaturedTechPage(): JSX.Element {
 
       {pastTechs.length > 0 && (
         <div className="mt-8">
-          <h3 className="font-bold text-lg mb-4">⭐ فنيات سابقات</h3>
+          <h3 className="font-bold text-lg mb-4"> فنيات سابقات</h3>
           <div className="flex flex-wrap gap-3">
             {pastTechs.map((t: Record<string, unknown>) => (
               <Link key={t.id as number} href={`/technicians/${t.id}`}>

@@ -35,14 +35,14 @@ export default function BeforeAfterPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl">📸</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">قبل وبعد</h1>
         <p className="mt-2 text-text-secondary">تحولات حقيقية — شوفي الفرق بنفسكِ</p>
       </div>
 
       {user && (
         <div className="text-center mb-6">
-          <Button onClick={() => setShowSubmit(true)}>📸 شاركي تحولكِ</Button>
+          <Button onClick={() => setShowSubmit(true)}> شاركي تحولكِ</Button>
         </div>
       )}
 
@@ -64,25 +64,25 @@ export default function BeforeAfterPage(): JSX.Element {
                 <div>
                   <p className="text-[10px] text-text-tertiary mb-1 text-center">قبل</p>
                   <div className="h-32 rounded-xl bg-surface-muted dark:bg-gray-800 flex items-center justify-center text-3xl">
-                    👩
+                    
                   </div>
                 </div>
                 <div>
                   <p className="text-[10px] text-text-tertiary mb-1 text-center">بعد</p>
                   <div className="h-32 rounded-xl bg-gradient-to-br from-brand-100 to-purple-100 dark:from-brand-900 dark:to-purple-900 flex items-center justify-center text-3xl">
-                    ✨
+                    
                   </div>
                 </div>
               </div>
               <div className="mt-3">
                 <p className="font-bold text-sm">{t.description as string}</p>
                 <p className="text-xs text-text-secondary mt-1">
-                  👩‍🎨 {t.technicianName as string} · {t.serviceType as string}
+                  ‍ {t.technicianName as string} · {t.serviceType as string}
                 </p>
               </div>
               <div className="mt-2 flex items-center justify-between">
                 <span className="text-xs text-text-tertiary">{t.userName as string}</span>
-                <span className="text-xs text-red-500">❤️ {t.likes as number}</span>
+                <span className="text-xs text-red-500">️ {t.likes as number}</span>
               </div>
             </Card>
           ))}
@@ -158,7 +158,7 @@ export default function BeforeAfterPage(): JSX.Element {
             loading={submitMut.isPending}
             className="w-full"
           >
-            📸 نشر
+             نشر
           </Button>
         </div>
       </Modal>

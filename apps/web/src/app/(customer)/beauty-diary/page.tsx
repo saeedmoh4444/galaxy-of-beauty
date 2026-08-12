@@ -5,11 +5,11 @@ import { Card, CardSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const MOODS = [
-  { value: 5, emoji: '😍', label: 'ممتاز' },
-  { value: 4, emoji: '😊', label: 'جيد' },
-  { value: 3, emoji: '😐', label: 'عادي' },
-  { value: 2, emoji: '😔', label: 'سيء' },
-  { value: 1, emoji: '😢', label: 'مزعج' },
+  { value: 5, emoji: '', label: 'ممتاز' },
+  { value: 4, emoji: '', label: 'جيد' },
+  { value: 3, emoji: '', label: 'عادي' },
+  { value: 2, emoji: '', label: 'سيء' },
+  { value: 1, emoji: '', label: 'مزعج' },
 ];
 
 export default function BeautyDiaryPage(): JSX.Element {
@@ -47,10 +47,10 @@ export default function BeautyDiaryPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">📔 يوميات الجمال</h1>
+            <h1 className="text-2xl font-bold"> يوميات الجمال</h1>
             <p className="mt-1 text-sm text-text-secondary">دوني رحلتكِ ومشاعركِ</p>
           </div>
-          <Button onClick={() => setShowForm(!showForm)}>{showForm ? '✕' : '+ يومية'}</Button>
+          <Button onClick={() => setShowForm(!showForm)}>{showForm ? '' : '+ يومية'}</Button>
         </div>
 
         {showForm && (
@@ -75,7 +75,7 @@ export default function BeautyDiaryPage(): JSX.Element {
               ))}
             </div>
             <Button onClick={handleCreate} loading={createMut.isPending} className="w-full mt-3">
-              💾 حفظ
+               حفظ
             </Button>
           </Card>
         )}
@@ -88,13 +88,13 @@ export default function BeautyDiaryPage(): JSX.Element {
           </div>
         ) : entries.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">📔</p>
+            <p className="text-4xl mb-2"></p>
             <p className="text-text-secondary">مافي يوميات بعد — اكتبي أول يومية لكِ</p>
           </Card>
         ) : (
           <div className="space-y-3">
             {entries.map((e: Record<string, unknown>) => {
-              const moodEmoji = MOODS.find((m) => m.value === (e.mood as number))?.emoji ?? '😐';
+              const moodEmoji = MOODS.find((m) => m.value === (e.mood as number))?.emoji ?? '';
               return (
                 <Card key={e.id as number} padding="md">
                   <div className="flex items-start gap-3">

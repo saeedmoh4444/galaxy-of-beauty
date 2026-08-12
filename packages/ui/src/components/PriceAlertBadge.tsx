@@ -64,7 +64,7 @@ export function PriceAlertBadge({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-lg" aria-hidden="true">
-            🔔
+            
           </span>
           <div>
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
@@ -114,7 +114,7 @@ export function PriceAlertBadge({
                 : 'text-rose-600 dark:text-rose-400',
             )}
           >
-            {isBelow ? '✅' : '📉'} {Math.abs(currentPrice - target)} ر.س
+            {isBelow ? '' : ''} {Math.abs(currentPrice - target)} ر.س
           </p>
         </div>
       </div>
@@ -123,7 +123,7 @@ export function PriceAlertBadge({
       {originalPrice && discount > 0 && (
         <div className="mt-2 rounded-lg bg-rose-50 px-2.5 py-1.5 text-center dark:bg-rose-950">
           <span className="text-[10px] font-bold text-rose-700 dark:text-rose-300">
-            🎉 مخفض {discount}% — من {originalPrice} إلى {currentPrice} ر.س
+             مخفض {discount}% — من {originalPrice} إلى {currentPrice} ر.س
           </span>
         </div>
       )}
@@ -132,7 +132,7 @@ export function PriceAlertBadge({
       {isActive && isBelow && (
         <div className="mt-2 rounded-xl bg-emerald-100 p-3 text-center dark:bg-emerald-900">
           <p className="text-sm" aria-hidden="true">
-            🎉
+            
           </p>
           <p className="text-xs font-bold text-emerald-800 dark:text-emerald-200">
             وصل السعر لهدفكِ!

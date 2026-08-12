@@ -41,7 +41,7 @@ export default function MySubscriptionScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>💎 اشتراكي</Text>
+      <Text style={styles.t}> اشتراكي</Text>
       {data ? (
         <View style={styles.card}>
           <Text style={styles.plan}>{(data.planName as string) ?? 'غير مشترك'}</Text>

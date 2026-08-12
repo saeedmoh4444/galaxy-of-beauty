@@ -3,7 +3,7 @@ const PROMOS = [
   {
     id: 1,
     code: 'SUMMER30',
-    emoji: '☀️',
+    emoji: '️',
     discount: 30,
     type: 'percentage',
     uses: 45,
@@ -14,7 +14,7 @@ const PROMOS = [
   {
     id: 2,
     code: 'WELCOME50',
-    emoji: '🎁',
+    emoji: '',
     discount: 50,
     type: 'fixed',
     uses: 120,
@@ -25,7 +25,7 @@ const PROMOS = [
   {
     id: 3,
     code: 'RAMADAN20',
-    emoji: '🌙',
+    emoji: '',
     discount: 20,
     type: 'percentage',
     uses: 200,
@@ -37,7 +37,7 @@ const PROMOS = [
 export default function AdminPromoScreen(): JSX.Element {
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>🎫 إدارة العروض</Text>
+      <Text style={s.h}> إدارة العروض</Text>
       <Text style={s.sub}>أكواد خصم وحملات ترويجية</Text>
       {PROMOS.map((p) => (
         <View key={p.id} style={[s.card, { opacity: p.active ? 1 : 0.6 }]}>
@@ -60,12 +60,12 @@ export default function AdminPromoScreen(): JSX.Element {
             <View style={[s.pf, { width: `${(p.uses / p.maxUses) * 100}%` }]} />
           </View>
           <Text style={s.pu}>
-            ✅ {p.uses}/{p.maxUses} استخدام
+             {p.uses}/{p.maxUses} استخدام
           </Text>
         </View>
       ))}
       <TouchableOpacity style={s.btn}>
-        <Text style={s.btnText}>➕ إضافة كود خصم</Text>
+        <Text style={s.btnText}> إضافة كود خصم</Text>
       </TouchableOpacity>
     </ScrollView>
   );

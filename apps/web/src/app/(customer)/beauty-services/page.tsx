@@ -33,7 +33,7 @@ export default function BeautyServicesPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="💅 خدمات الجمال" subtitle="اكتشفي كل ما تحتاجينه" />
+        <PageTitle title=" خدمات الجمال" subtitle="اكتشفي كل ما تحتاجينه" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -63,7 +63,7 @@ export default function BeautyServicesPage(): JSX.Element {
                 items={[
                   {
                     name: 'كريم A',
-                    emoji: '🧴',
+                    emoji: '',
                     price: 120,
                     rating: 4.5,
                     pros: ['ترطيب عميق', 'يدوم 24 ساعة'],
@@ -72,7 +72,7 @@ export default function BeautyServicesPage(): JSX.Element {
                   },
                   {
                     name: 'كريم B',
-                    emoji: '🧴',
+                    emoji: '',
                     price: 80,
                     rating: 4.0,
                     pros: ['خفيف', 'سريع الامتصاص'],
@@ -87,14 +87,14 @@ export default function BeautyServicesPage(): JSX.Element {
                 drops={[
                   {
                     service: 'مانيكير سبا',
-                    emoji: '💅',
+                    emoji: '',
                     oldPrice: 150,
                     newPrice: 99,
                     date: '2026-08-01',
                   },
                   {
                     service: 'مكياج احترافي',
-                    emoji: '💄',
+                    emoji: '',
                     oldPrice: 350,
                     newPrice: 299,
                     date: '2026-07-28',

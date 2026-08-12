@@ -39,7 +39,7 @@ export function SocialImpactCounter({
 }: SocialImpactCounterProps): JSX.Element {
   const metrics: ImpactMetric[] = [
     {
-      emoji: '👩‍🎨',
+      emoji: '‍',
       label: 'امرأة عاملة',
       current: womenEmployed,
       target: 1000,
@@ -47,7 +47,7 @@ export function SocialImpactCounter({
     ...(womenInTraining
       ? [
           {
-            emoji: '📚',
+            emoji: '',
             label: 'متدربة',
             current: womenInTraining,
             target: 500,
@@ -57,7 +57,7 @@ export function SocialImpactCounter({
     ...(survivorServices
       ? [
           {
-            emoji: '🤲',
+            emoji: '',
             label: 'خدمة مجانية',
             current: survivorServices,
             target: 500,
@@ -67,7 +67,7 @@ export function SocialImpactCounter({
     ...(ruralWomen
       ? [
           {
-            emoji: '🏡',
+            emoji: '',
             label: 'امرأة ريفية',
             current: ruralWomen,
             target: 200,
@@ -85,7 +85,7 @@ export function SocialImpactCounter({
     >
       {/* Header */}
       <div className="text-center">
-        <h4 className="text-sm font-bold text-amber-800 dark:text-amber-200">🌍 أثرنا الاجتماعي</h4>
+        <h4 className="text-sm font-bold text-amber-800 dark:text-amber-200"> أثرنا الاجتماعي</h4>
         <p className="mt-0.5 text-[10px] text-amber-600 dark:text-amber-400">
           معاً نحو تمكين 1000 امرأة بحلول 2028
         </p>
@@ -153,7 +153,7 @@ export function SocialImpactCounter({
       <div className="mt-3 text-center">
         <div className="inline-flex items-center gap-1 rounded-full bg-white/60 px-3 py-1 dark:bg-black/20">
           <span className="text-xs" aria-hidden="true">
-            🎯
+            
           </span>
           <span className="text-[10px] font-bold text-amber-800 dark:text-amber-200">
             {Math.round((womenEmployed / 1000) * 100)}% من هدف 2028
@@ -163,7 +163,7 @@ export function SocialImpactCounter({
 
       {/* Pledge */}
       <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">
-        💛 نؤمن بأن تمكين المرأة اقتصادياً يبني مستقبلاً أفضل للجميع
+         نؤمن بأن تمكين المرأة اقتصادياً يبني مستقبلاً أفضل للجميع
       </p>
     </div>
   );

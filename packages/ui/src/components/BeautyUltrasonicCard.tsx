@@ -9,7 +9,7 @@ export function BeautyUltrasonicCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🔊</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">
             الموجات فوق الصوتية
@@ -19,10 +19,10 @@ export function BeautyUltrasonicCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧹', text: 'اهتزازات عالية — تطرد الرؤوس السوداء' },
-          { emoji: '💧', text: 'على بشرة رطبة — أفضل نتائج' },
-          { emoji: '⬆️', text: 'حركي للأعلى — بطول المسام' },
-          { emoji: '📅', text: 'مرة أسبوعياً — لا تفرطي في الاستخدام' },
+          { emoji: '', text: 'اهتزازات عالية — تطرد الرؤوس السوداء' },
+          { emoji: '', text: 'على بشرة رطبة — أفضل نتائج' },
+          { emoji: '️', text: 'حركي للأعلى — بطول المسام' },
+          { emoji: '', text: 'مرة أسبوعياً — لا تفرطي في الاستخدام' },
         ].map((t, i) => (
           <div
             key={i}

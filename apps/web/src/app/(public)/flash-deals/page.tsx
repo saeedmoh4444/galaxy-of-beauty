@@ -72,7 +72,7 @@ function CountdownTimer({ endsAt }: { endsAt: string }): JSX.Element {
     <span
       className={`inline-flex items-center gap-1 text-xs font-semibold ${isEnded ? 'text-text-tertiary' : 'text-orange-600 animate-pulse'}`}
     >
-      ⏰ {timeLeft}
+       {timeLeft}
     </span>
   );
 }
@@ -118,7 +118,7 @@ export default function FlashDealsPage(): JSX.Element {
     <div className="mx-auto max-w-5xl px-4 py-12">
       {/* Header */}
       <div className="mb-10 text-center">
-        <span className="text-6xl">⚡</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">عروض فلاش</h1>
         <p className="mt-2 text-text-secondary dark:text-gray-400">
           عروض لفترة محدودة — الحقّي العرض قبل ما ينتهي!
@@ -137,7 +137,7 @@ export default function FlashDealsPage(): JSX.Element {
       ) : allDeals.length === 0 ? (
         <EmptyState
           title="لا توجد عروض فلاش حالياً"
-          description="تحققي لاحقاً — العروض تتجدد باستمرار! ⚡"
+          description="تحققي لاحقاً — العروض تتجدد باستمرار! "
           action={{ label: 'تصفح الخدمات', onPress: () => window.location.assign('/services') }}
         />
       ) : (
@@ -164,7 +164,7 @@ export default function FlashDealsPage(): JSX.Element {
                     soldOut ? 'bg-gray-400' : 'bg-red-500 animate-pulse'
                   }`}
                 >
-                  {soldOut ? 'نفذت الكمية' : '⚡ عرض فلاش'}
+                  {soldOut ? 'نفذت الكمية' : ' عرض فلاش'}
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-start gap-5">
@@ -202,7 +202,7 @@ export default function FlashDealsPage(): JSX.Element {
                     <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-text-secondary">
                       <CountdownTimer endsAt={deal.endsAt} />
                       <span>
-                        🔥 {deal.currentRedemptions} / {deal.maxRedemptions} تم الاستفادة
+                         {deal.currentRedemptions} / {deal.maxRedemptions} تم الاستفادة
                       </span>
                     </div>
 
@@ -215,11 +215,11 @@ export default function FlashDealsPage(): JSX.Element {
                     <div className="mt-4 flex flex-wrap items-center gap-3">
                       {soldOut ? (
                         <span className="rounded-lg bg-surface-muted px-4 py-2 text-sm font-semibold text-text-secondary dark:bg-gray-800">
-                          😔 نفذت الكمية
+                           نفذت الكمية
                         </span>
                       ) : isClaimed ? (
                         <span className="rounded-lg bg-green-100 px-4 py-2 text-sm font-semibold text-green-700 dark:bg-green-900 dark:text-green-300">
-                          ✓ تم الاستفادة من العرض
+                           تم الاستفادة من العرض
                         </span>
                       ) : user ? (
                         <Button
@@ -227,7 +227,7 @@ export default function FlashDealsPage(): JSX.Element {
                           loading={claimingId === deal.id}
                           size="sm"
                         >
-                          ⚡ احجزي الآن
+                           احجزي الآن
                         </Button>
                       ) : (
                         <Link href={`/login?redirect=/flash-deals`}>
@@ -251,7 +251,7 @@ export default function FlashDealsPage(): JSX.Element {
       {/* Bottom CTA */}
       {allDeals.length > 0 && (
         <div className="mt-10 rounded-2xl bg-gradient-to-r from-red-500 to-orange-500 p-6 text-center text-white">
-          <p className="text-2xl font-bold">⚡ لا تفوّتي العروض!</p>
+          <p className="text-2xl font-bold"> لا تفوّتي العروض!</p>
           <p className="mt-1 text-white/80">العروض تتجدد يومياً — تابعي صفحة العروض أول بأول</p>
         </div>
       )}

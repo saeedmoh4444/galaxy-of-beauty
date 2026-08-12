@@ -11,10 +11,10 @@ export default function AdminToolsScreen(): JSX.Element {
   }, []);
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>🛠️ أدوات المشرف</Text>
+      <Text style={s.h}>️ أدوات المشرف</Text>
       <Text style={s.sub}>إدارة إعدادات المنصة والميزات</Text>
       <View style={s.card}>
-        <Text style={s.ct}>🚩 إدارة الميزات</Text>
+        <Text style={s.ct}> إدارة الميزات</Text>
         {flags.map((f: any) => (
           <View key={f.key} style={s.row}>
             <View>

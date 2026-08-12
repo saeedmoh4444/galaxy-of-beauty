@@ -8,14 +8,14 @@ const QUESTIONS = [
   {
     key: 'occasion',
     q: 'ما هي المناسبة؟',
-    options: ['🎂 عيد ميلاد', '👰 زفاف', '🎓 تخرج', '💐 شكر', '🎁 بدون مناسبة'],
+    options: [' عيد ميلاد', ' زفاف', ' تخرج', ' شكر', ' بدون مناسبة'],
   },
   {
     key: 'recipient',
     q: 'لمن الهدية؟',
-    options: ['👯‍♀️ صديقة', '👩‍👧 أمي', '👭 أختي', '💑 زوجتي', '💝 نفسي'],
+    options: ['‍️ صديقة', '‍ أمي', ' أختي', ' زوجتي', ' نفسي'],
   },
-  { key: 'budget', q: 'ميزانيتك؟', options: ['💰 اقتصادية', '💵 متوسطة', '💎 فاخرة'] },
+  { key: 'budget', q: 'ميزانيتك؟', options: [' اقتصادية', ' متوسطة', ' فاخرة'] },
 ];
 
 export default function GiftQuizScreen(): JSX.Element {
@@ -33,7 +33,7 @@ export default function GiftQuizScreen(): JSX.Element {
       errorMessage="فشل تحميل التوصيات"
       onRetry={() => recommendations.refetch()}
     >
-      <Text style={styles.title}>🎁 محدد الهدايا</Text>
+      <Text style={styles.title}> محدد الهدايا</Text>
       {step < QUESTIONS.length ? (
         <View style={styles.card}>
           <Text style={styles.question}>{QUESTIONS[step]!.q}</Text>
@@ -52,10 +52,10 @@ export default function GiftQuizScreen(): JSX.Element {
         </View>
       ) : (
         <View>
-          <Text style={styles.resultTitle}>✨ توصياتنا لكِ</Text>
+          <Text style={styles.resultTitle}> توصياتنا لكِ</Text>
           {((recommendations.data as unknown[]) || []).map((r: any, i: number) => (
             <View key={i} style={styles.recCard}>
-              <Text style={styles.recEmoji}>{r.emoji ?? '🎁'}</Text>
+              <Text style={styles.recEmoji}>{r.emoji ?? ''}</Text>
               <View style={styles.recInfo}>
                 <Text style={styles.recName}>{(r.nameJson as any)?.ar ?? ''}</Text>
                 <Text style={styles.recPrice}>{r.price ? `${r.price} ر.س` : ''}</Text>
@@ -69,7 +69,7 @@ export default function GiftQuizScreen(): JSX.Element {
               setAnswers({});
             }}
           >
-            <Text style={styles.restartText}>🔄 إعادة الاختبار</Text>
+            <Text style={styles.restartText}> إعادة الاختبار</Text>
           </TouchableOpacity>
         </View>
       )}

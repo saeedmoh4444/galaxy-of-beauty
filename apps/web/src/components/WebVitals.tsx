@@ -60,7 +60,7 @@ export function WebVitals(): null {
           // Log in development
           if (process.env.NODE_ENV === 'development') {
             const emoji =
-              entry.rating === 'good' ? '🟢' : entry.rating === 'needs-improvement' ? '🟡' : '🔴';
+              entry.rating === 'good' ? '' : entry.rating === 'needs-improvement' ? '' : '';
             console.log(`[WebVitals] ${emoji} ${entry.name}: ${entry.value}`);
           }
         };

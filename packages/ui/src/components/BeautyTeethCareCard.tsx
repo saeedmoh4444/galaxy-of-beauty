@@ -15,7 +15,7 @@ export function BeautyTeethCareCard({ className = '' }: BeautyTeethCareCardProps
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🦷</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">ابتسامة مشرقة</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">
@@ -26,9 +26,9 @@ export function BeautyTeethCareCard({ className = '' }: BeautyTeethCareCardProps
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           { emoji: '🪥', label: 'تنظيف مرتين', tip: 'صباحاً ومساءً — دقيقتان' },
-          { emoji: '🦷', label: 'خيط الأسنان', tip: 'يومياً — يمنع التسوس' },
-          { emoji: '🍓', label: 'تبييض طبيعي', tip: 'فراولة + بيكربونات' },
-          { emoji: '👩‍⚕️', label: 'فحص دوري', tip: 'كل 6 أشهر عند الطبيب' },
+          { emoji: '', label: 'خيط الأسنان', tip: 'يومياً — يمنع التسوس' },
+          { emoji: '', label: 'تبييض طبيعي', tip: 'فراولة + بيكربونات' },
+          { emoji: '‍️', label: 'فحص دوري', tip: 'كل 6 أشهر عند الطبيب' },
         ].map((t) => (
           <div key={t.label} className="rounded-lg bg-sky-50 px-2.5 py-2 dark:bg-sky-950">
             <span className="text-sm">{t.emoji}</span>

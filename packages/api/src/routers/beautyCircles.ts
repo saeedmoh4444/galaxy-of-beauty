@@ -57,7 +57,7 @@ export const beautyCirclesRouter = router({
           name: input.name,
           topic: input.topic,
           city: input.city ?? null,
-          cover: input.cover ?? '🌸',
+          cover: input.cover ?? '',
           creatorId: ctx.user.id,
         },
       });

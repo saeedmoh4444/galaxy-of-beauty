@@ -9,7 +9,7 @@ export function BeautyPoreRefiningCard({ className = '' }: { className?: string 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🔍</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">تصغير المسام</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">
@@ -19,10 +19,10 @@ export function BeautyPoreRefiningCard({ className = '' }: { className?: string 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧹', text: 'BHA — ينظف المسام من الداخل' },
-          { emoji: '🔬', text: 'نياسيناميد — ينظم إفراز الدهون' },
-          { emoji: '🧊', text: 'ماء بارد — يقلص المسام مؤقتاً' },
-          { emoji: '🧴', text: 'برايمر — يملأ المسام بصرياً' },
+          { emoji: '', text: 'BHA — ينظف المسام من الداخل' },
+          { emoji: '', text: 'نياسيناميد — ينظم إفراز الدهون' },
+          { emoji: '', text: 'ماء بارد — يقلص المسام مؤقتاً' },
+          { emoji: '', text: 'برايمر — يملأ المسام بصرياً' },
         ].map((t, i) => (
           <div
             key={i}

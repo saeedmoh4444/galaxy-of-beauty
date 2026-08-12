@@ -39,7 +39,7 @@ export function BusinessDashboardCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true">
-            📊
+            
           </span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
@@ -56,7 +56,7 @@ export function BusinessDashboardCard({
               : 'bg-rose-50 text-rose-700 dark:bg-rose-950 dark:text-rose-300',
           )}
         >
-          {growth >= 0 ? '📈' : '📉'} {growth}%
+          {growth >= 0 ? '' : ''} {growth}%
         </span>
       </div>
 
@@ -101,7 +101,7 @@ export function BusinessDashboardCard({
         onClick={onViewFull}
         className="mt-3 w-full rounded-lg border border-emerald-200 py-1.5 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-300"
       >
-        📊 التقرير الكامل
+         التقرير الكامل
       </button>
     </div>
   );

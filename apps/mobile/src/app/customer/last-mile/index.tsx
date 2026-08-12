@@ -38,13 +38,13 @@ export default function LastMileScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}>📦 توصيل سريع</Text>
+        <Text style={styles.t}> توصيل سريع</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}>✅</Text>
+          <Text style={styles.re}></Text>
           <Text style={styles.rtt}>تم الطلب!</Text>
           <Text style={styles.rp}>{result.product as string}</Text>
           <Text style={styles.rm}>
-            📦 {result.estimatedDelivery as string} · {(result.total as number)?.toLocaleString()}{' '}
+             {result.estimatedDelivery as string} · {(result.total as number)?.toLocaleString()}{' '}
             ر.س
           </Text>
         </View>
@@ -62,13 +62,13 @@ export default function LastMileScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📦 توصيل سريع</Text>
+      <Text style={styles.t}> توصيل سريع</Text>
       {products.map((p: any) => (
         <View key={p.id} style={styles.card}>
           <Text style={styles.pe}>{p.emoji as string}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.pn}>{p.nameAr as string}</Text>
-            <Text style={styles.pd}>⏱️ {p.deliveryTime as string}</Text>
+            <Text style={styles.pd}>️ {p.deliveryTime as string}</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
             <Text style={styles.pp}>{(p.price as number)?.toLocaleString()} ر.س</Text>

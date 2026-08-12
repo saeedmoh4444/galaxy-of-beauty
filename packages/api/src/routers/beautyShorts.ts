@@ -11,7 +11,7 @@ const SHORTS = [
     views: 5200,
     likes: 890,
     category: 'makeup',
-    emoji: '💄',
+    emoji: '',
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ const SHORTS = [
     views: 3800,
     likes: 650,
     category: 'skincare',
-    emoji: '✨',
+    emoji: '',
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ const SHORTS = [
     views: 4100,
     likes: 720,
     category: 'hair',
-    emoji: '💇‍♀️',
+    emoji: '‍️',
   },
   {
     id: 4,
@@ -41,7 +41,7 @@ const SHORTS = [
     views: 2900,
     likes: 480,
     category: 'nails',
-    emoji: '💅',
+    emoji: '',
   },
   {
     id: 5,
@@ -51,7 +51,7 @@ const SHORTS = [
     views: 6800,
     likes: 1200,
     category: 'skincare',
-    emoji: '☀️',
+    emoji: '️',
   },
   {
     id: 6,
@@ -61,7 +61,7 @@ const SHORTS = [
     views: 3500,
     likes: 580,
     category: 'hair',
-    emoji: '🌿',
+    emoji: '',
   },
 ];
 

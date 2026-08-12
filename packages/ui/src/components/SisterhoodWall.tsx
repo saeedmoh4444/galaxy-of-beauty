@@ -8,9 +8,9 @@ import { useState } from 'react';
  */
 
 const SEED_COMPLIMENTS = [
-  { emoji: '💖', text: 'أنتِ أقوى مما تتصورين. استمري!' },
-  { emoji: '🌸', text: 'ابتسامتكِ تضيء العالم من حولكِ' },
-  { emoji: '✨', text: 'جمالكِ الداخلي هو ما يجعلكِ مميزة' },
+  { emoji: '', text: 'أنتِ أقوى مما تتصورين. استمري!' },
+  { emoji: '', text: 'ابتسامتكِ تضيء العالم من حولكِ' },
+  { emoji: '', text: 'جمالكِ الداخلي هو ما يجعلكِ مميزة' },
   { emoji: '🫶', text: 'كوني فخورة بنفسكِ — أنتِ تقومين بعمل رائع' },
 ];
 
@@ -21,7 +21,7 @@ export function SisterhoodWall({ className = '' }: { className?: string }): JSX.
 
   const send = () => {
     if (!input.trim()) return;
-    setCompliments([{ emoji: '💌', text: input.trim() }, ...compliments.slice(0, 9)]);
+    setCompliments([{ emoji: '', text: input.trim() }, ...compliments.slice(0, 9)]);
     setInput('');
     setSent(true);
     setTimeout(() => setSent(false), 2000);
@@ -31,7 +31,7 @@ export function SisterhoodWall({ className = '' }: { className?: string }): JSX.
     <div
       className={`rounded-2xl border border-pink-100 bg-white p-5 dark:border-pink-900 dark:bg-gray-900 ${className}`}
     >
-      <h3 className="text-sm font-bold text-pink-700 dark:text-pink-300">👯‍♀️ جدار الأختية</h3>
+      <h3 className="text-sm font-bold text-pink-700 dark:text-pink-300">‍️ جدار الأختية</h3>
       <p className="mt-1 text-xs text-pink-500 dark:text-pink-400">
         اتركي رسالة إيجابية لأخت مجهولة
       </p>
@@ -48,7 +48,7 @@ export function SisterhoodWall({ className = '' }: { className?: string }): JSX.
           onClick={send}
           className="rounded-lg bg-pink-600 px-3 py-2 text-xs font-bold text-white hover:bg-pink-700"
         >
-          {sent ? '✅' : 'إرسال'}
+          {sent ? '' : 'إرسال'}
         </button>
       </div>
 

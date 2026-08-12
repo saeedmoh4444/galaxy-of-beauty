@@ -34,7 +34,7 @@ export default function BookingsScreen(): JSX.Element {
       emptyDescription="ابدئي رحلتكِ مع أول حجز"
       onRetry={() => bookings.refetch()}
     >
-      <Text style={styles.title}>📅 حجوزاتي</Text>
+      <Text style={styles.title}> حجوزاتي</Text>
       <View style={styles.tabs}>
         {STATUS_TABS.map((s) => (
           <TouchableOpacity

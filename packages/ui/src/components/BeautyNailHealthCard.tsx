@@ -17,8 +17,8 @@ export function BeautyNailHealthCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '⚪', text: 'بقع بيضاء — نقص زنك أو إصابة' },
-          { emoji: '🟡', text: 'اصفرار — فطريات أو طلاء بدون base coat' },
+          { emoji: '', text: 'بقع بيضاء — نقص زنك أو إصابة' },
+          { emoji: '', text: 'اصفرار — فطريات أو طلاء بدون base coat' },
           { emoji: '〰️', text: 'خطوط أفقية — إجهاد أو مرض' },
           { emoji: '🩺', text: 'تغيرات مستمرة — راجعي الطبيب' },
         ].map((t, i) => (

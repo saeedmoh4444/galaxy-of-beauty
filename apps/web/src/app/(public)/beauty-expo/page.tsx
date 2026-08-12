@@ -12,7 +12,7 @@ export default function BeautyExpoPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🎪</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">معرض التجميل الافتراضي</h1>
         <p className="mt-2 text-text-secondary">تجولي في أجنحة أشهر الماركات العالمية</p>
       </div>
@@ -43,7 +43,7 @@ export default function BeautyExpoPage(): JSX.Element {
                   </span>
                 ))}
               </div>
-              <p className="text-xs text-text-tertiary mt-3">👥 {b.visitors as number} زائر</p>
+              <p className="text-xs text-text-tertiary mt-3"> {b.visitors as number} زائر</p>
             </Card>
           ))}
         </div>

@@ -17,17 +17,17 @@ interface NPSSurveyProps {
 }
 
 const SCORE_LABELS: Record<number, string> = {
-  0: '😡',
-  1: '😤',
-  2: '😞',
-  3: '😕',
-  4: '😐',
-  5: '🤔',
-  6: '🙂',
-  7: '😊',
-  8: '😄',
-  9: '😍',
-  10: '🤩',
+  0: '',
+  1: '',
+  2: '',
+  3: '',
+  4: '',
+  5: '',
+  6: '',
+  7: '',
+  8: '',
+  9: '',
+  10: '',
 };
 
 export function NPSSurvey({ onSubmit, onDismiss, className = '' }: NPSSurveyProps): JSX.Element {
@@ -63,10 +63,10 @@ export function NPSSurvey({ onSubmit, onDismiss, className = '' }: NPSSurveyProp
             <span className="text-4xl">{SCORE_LABELS[score]}</span>
             <p className="mt-1 text-sm font-semibold text-text-primary dark:text-gray-100">
               {score >= 9
-                ? 'رائع! شكراً لكِ 🌟'
+                ? 'رائع! شكراً لكِ '
                 : score >= 7
-                  ? 'شكراً لتقييمكِ 😊'
-                  : 'نعتذر عن التجربة 😔'}
+                  ? 'شكراً لتقييمكِ '
+                  : 'نعتذر عن التجربة '}
             </p>
           </div>
           <textarea

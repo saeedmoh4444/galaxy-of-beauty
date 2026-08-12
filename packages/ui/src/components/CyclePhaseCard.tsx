@@ -35,7 +35,7 @@ const PHASES: Record<CyclePhase, PhaseData> = {
     gradientClass: 'from-rose-200 to-rose-300 dark:from-rose-800 dark:to-rose-700',
   },
   follicular: {
-    emoji: '🌸',
+    emoji: '',
     title: 'المرحلة الجرابية',
     days: 'الأيام 6-14',
     description: 'طاقتكِ في ذروتها! أفضل وقت للعناية المكثفة والتجديد.',
@@ -45,7 +45,7 @@ const PHASES: Record<CyclePhase, PhaseData> = {
     gradientClass: 'from-pink-300 to-rose-300 dark:from-pink-800 dark:to-rose-700',
   },
   ovulation: {
-    emoji: '✨',
+    emoji: '',
     title: 'الإباضة',
     days: 'اليوم 14 تقريباً',
     description: 'بشرتكِ في أجمل حالاتها! الوقت المثالي للمناسبات والصور.',
@@ -55,7 +55,7 @@ const PHASES: Record<CyclePhase, PhaseData> = {
     gradientClass: 'from-amber-300 to-yellow-300 dark:from-amber-800 dark:to-yellow-700',
   },
   luteal: {
-    emoji: '🌙',
+    emoji: '',
     title: 'المرحلة الأصفرية',
     days: 'الأيام 15-28',
     description: 'بشرتكِ قد تكون حساسة. اختاري علاجات مهدئة ولطيفة.',
@@ -176,7 +176,7 @@ export function CyclePhaseCard({
       <div className="mt-3 grid grid-cols-2 gap-2">
         {/* Recommended */}
         <div className="rounded-xl bg-white/70 p-2.5 dark:bg-gray-800/70">
-          <h5 className="text-[10px] font-bold text-success dark:text-green-400">✅ ينصح بها</h5>
+          <h5 className="text-[10px] font-bold text-success dark:text-green-400"> ينصح بها</h5>
           <ul className="mt-1 space-y-0.5">
             {data.recommended.map((r) => (
               <li key={r} className="text-[10px] text-text-secondary dark:text-gray-300">
@@ -188,7 +188,7 @@ export function CyclePhaseCard({
 
         {/* Avoid */}
         <div className="rounded-xl bg-white/70 p-2.5 dark:bg-gray-800/70">
-          <h5 className="text-[10px] font-bold text-danger dark:text-red-400">⚠️ تجنبي</h5>
+          <h5 className="text-[10px] font-bold text-danger dark:text-red-400"> تجنبي</h5>
           <ul className="mt-1 space-y-0.5">
             {data.avoid.map((a) => (
               <li key={a} className="text-[10px] text-text-secondary dark:text-gray-300">
@@ -201,7 +201,7 @@ export function CyclePhaseCard({
 
       {/* Footer tip */}
       <p className="mt-2 text-center text-[9px] italic text-text-tertiary dark:text-gray-500">
-        💡 CycleSync™ — لأن جمالكِ مرتبط بصحتكِ
+         CycleSync™ — لأن جمالكِ مرتبط بصحتكِ
       </p>
     </div>
   );

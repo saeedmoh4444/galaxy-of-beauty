@@ -31,7 +31,7 @@ export default function DisputesScreen(): JSX.Element {
       emptyDescription="يمكنكِ فتح نزاع على أي حجز"
       onRetry={() => disputes.refetch()}
     >
-      <Text style={styles.title}>⚖️ النزاعات</Text>
+      <Text style={styles.title}>️ النزاعات</Text>
       {(data as Record<string, unknown>[])?.map((d: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.row}>
@@ -49,7 +49,7 @@ export default function DisputesScreen(): JSX.Element {
         </View>
       ))}
       <TouchableOpacity style={styles.addBtn}>
-        <Text style={styles.addText}>➕ فتح نزاع جديد</Text>
+        <Text style={styles.addText}> فتح نزاع جديد</Text>
       </TouchableOpacity>
     </ScreenState>
   );

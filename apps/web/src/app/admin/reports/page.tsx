@@ -30,19 +30,19 @@ export default function AdminReportsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">📊 التقارير</h1>
+        <h1 className="text-2xl font-bold"> التقارير</h1>
         <div className="flex gap-2">
           {csv && (
             <Button
               size="sm"
               onClick={() => downloadCSV(csv.topTechs as string, 'top-technicians.csv')}
             >
-              📥 CSV فنيات
+               CSV فنيات
             </Button>
           )}
           {csv && (
             <Button size="sm" onClick={() => downloadCSV(csv.byService as string, 'services.csv')}>
-              📥 CSV خدمات
+               CSV خدمات
             </Button>
           )}
         </div>
@@ -58,7 +58,7 @@ export default function AdminReportsPage(): JSX.Element {
         <>
           <div className="grid gap-4 sm:grid-cols-2">
             <Card padding="lg">
-              <h3 className="font-bold mb-4">📈 الإيرادات الشهرية</h3>
+              <h3 className="font-bold mb-4"> الإيرادات الشهرية</h3>
               <div className="flex items-end gap-1 h-32">
                 {(revenueData.data as number[])?.map((v: number, i: number) => (
                   <div key={i} className="flex-1 flex flex-col items-center gap-1">
@@ -74,7 +74,7 @@ export default function AdminReportsPage(): JSX.Element {
               </div>
             </Card>
             <Card padding="lg">
-              <h3 className="font-bold mb-4">📅 الحجوزات الشهرية</h3>
+              <h3 className="font-bold mb-4"> الحجوزات الشهرية</h3>
               <div className="flex items-end gap-1 h-32">
                 {(bookingsData.data as number[])?.map((v: number, i: number) => (
                   <div key={i} className="flex-1 flex flex-col items-center gap-1">
@@ -91,7 +91,7 @@ export default function AdminReportsPage(): JSX.Element {
             </Card>
           </div>
           <Card padding="lg">
-            <h3 className="font-bold mb-4">👩‍🎨 أفضل الفنيات</h3>
+            <h3 className="font-bold mb-4">‍ أفضل الفنيات</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -108,7 +108,7 @@ export default function AdminReportsPage(): JSX.Element {
                       <td className="py-2 px-3 font-bold">{t.name as string}</td>
                       <td className="py-2 px-3">{formatCurrency(t.revenue as number)}</td>
                       <td className="py-2 px-3">{t.bookings as number}</td>
-                      <td className="py-2 px-3">⭐ {t.rating as number}</td>
+                      <td className="py-2 px-3"> {t.rating as number}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -117,7 +117,7 @@ export default function AdminReportsPage(): JSX.Element {
           </Card>
           <div className="grid gap-4 sm:grid-cols-2">
             <Card padding="lg">
-              <h3 className="font-bold mb-4">💄 حسب الخدمة</h3>
+              <h3 className="font-bold mb-4"> حسب الخدمة</h3>
               <div className="space-y-2">
                 {byService.map((s: Record<string, unknown>, i: number) => (
                   <div key={i} className="flex items-center gap-2">
@@ -134,7 +134,7 @@ export default function AdminReportsPage(): JSX.Element {
               </div>
             </Card>
             <Card padding="lg">
-              <h3 className="font-bold mb-4">📍 حسب المدينة</h3>
+              <h3 className="font-bold mb-4"> حسب المدينة</h3>
               <div className="space-y-2">
                 {byCity.map((c: Record<string, unknown>, i: number) => (
                   <div key={i} className="flex justify-between text-sm">

@@ -3,42 +3,42 @@ import { Card, Button } from '@galaxy/ui';
 
 const PACKAGES = [
   {
-    emoji: '💅',
+    emoji: '',
     title: 'مانيكير الأم وابنتها',
     desc: 'جلسة مانيكير للأم مع ابنتها في وقت واحد',
     price: 150,
     services: ['مانيكير', 'طلاء أظافر'],
   },
   {
-    emoji: '💇‍♀️',
+    emoji: '‍️',
     title: 'تسريحة الأم وابنتها',
     desc: 'تسريحتين متناسقتين لمناسبتكِ الخاصة',
     price: 200,
     services: ['تسريحة شعر'],
   },
   {
-    emoji: '✨',
+    emoji: '',
     title: 'عناية بالبشرة للأم وابنتها',
     desc: 'جلسة تنظيف وترطيب للبشرة معاً',
     price: 250,
     services: ['تنظيف بشرة', 'ماسك وجه'],
   },
   {
-    emoji: '👰',
+    emoji: '',
     title: 'إطلالة الزفاف للأم والعروس',
     desc: 'مكياج وتسريحة للأم وبنتها يوم الزفاف',
     price: 500,
     services: ['مكياج', 'تسريحة شعر', 'مانيكير'],
   },
   {
-    emoji: '🎂',
+    emoji: '',
     title: 'حفلة أعياد الميلاد',
     desc: 'باقة تجميل لحفلة عيد ميلاد الأم أو البنت',
     price: 300,
     services: ['مكياج', 'تسريحة شعر', 'مانيكير'],
   },
   {
-    emoji: '🧖‍♀️',
+    emoji: '‍️',
     title: 'يوم منتجع صحي للأم وابنتها',
     desc: 'يوم كامل من الاسترخاء والعناية معاً',
     price: 600,
@@ -50,7 +50,7 @@ export default function MommyAndMePage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-10">
-        <span className="text-7xl">👩‍👧</span>
+        <span className="text-7xl">‍</span>
         <h1 className="mt-6 text-4xl font-extrabold text-text-primary dark:text-gray-100">
           Mommy & Me
         </h1>
@@ -90,12 +90,12 @@ export default function MommyAndMePage(): JSX.Element {
       </div>
 
       <div className="mt-16 text-center bg-gradient-to-r from-pink-50 to-purple-50 rounded-3xl p-12 dark:from-pink-950 dark:to-purple-950">
-        <h2 className="text-2xl font-bold text-text-primary dark:text-gray-100">💝 هدية مثالية</h2>
+        <h2 className="text-2xl font-bold text-text-primary dark:text-gray-100"> هدية مثالية</h2>
         <p className="mt-3 text-text-secondary max-w-md mx-auto">
           اشتري بطاقة هدية Mommy & Me واهدِ أمكِ أو ابنتكِ يوماً لا يُنسى من العناية والجمال
         </p>
         <Link href="/gift-cards" className="mt-6 inline-block">
-          <Button size="lg">🎁 اشتري بطاقة هدية</Button>
+          <Button size="lg"> اشتري بطاقة هدية</Button>
         </Link>
       </div>
     </div>

@@ -9,7 +9,7 @@ export function BeautyNeckFirmingCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💪</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">شد الرقبة</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">
@@ -19,10 +19,10 @@ export function BeautyNeckFirmingCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '😮', text: 'تمرين O —— مددي شفاهكِ — 15 مرة' },
-          { emoji: '🦒', text: 'مد الرقبة — انظري للسقف 10 ثوانٍ' },
-          { emoji: '🧴', text: 'كريمات الشد — كافيين وببتيدات' },
-          { emoji: '💆', text: 'مساج للأعلى — من الترقوة للذقن' },
+          { emoji: '', text: 'تمرين O —— مددي شفاهكِ — 15 مرة' },
+          { emoji: '', text: 'مد الرقبة — انظري للسقف 10 ثوانٍ' },
+          { emoji: '', text: 'كريمات الشد — كافيين وببتيدات' },
+          { emoji: '', text: 'مساج للأعلى — من الترقوة للذقن' },
         ].map((t, i) => (
           <div
             key={i}

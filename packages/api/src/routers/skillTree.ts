@@ -29,7 +29,7 @@ export const skillTreeRouter = router({
     .input(
       z.object({
         name: z.string().min(2).max(100),
-        emoji: z.string().default('⭐'),
+        emoji: z.string().default(''),
         maxLevel: z.number().int().min(1).max(5).default(5),
       }),
     )

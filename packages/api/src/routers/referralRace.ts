@@ -7,7 +7,7 @@ import { customerProcedure, publicProcedure, router } from '../trpc';
 const db = prisma as any;
 
 const CAMPAIGN_DURATION_DAYS = 14;
-const PRIZES = ['🥇 جلسة مجانية', '🥈 خصم ٥٠٪', '🥉 خصم ٣٠٪'];
+const PRIZES = [' جلسة مجانية', ' خصم ٥٠٪', ' خصم ٣٠٪'];
 
 /** Returns the fixed campaign end date. Uses REFERRAL_CAMPAIGN_START env var
  *  (ISO date string) to anchor the campaign, defaulting to the first time this

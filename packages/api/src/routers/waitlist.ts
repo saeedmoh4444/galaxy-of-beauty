@@ -245,7 +245,7 @@ export const waitlistRouter = router({
       });
 
       sendPushToUser(entry.customerId, {
-        title: 'تم توفر موعد! 🔔',
+        title: 'تم توفر موعد! ',
         body: technician?.name
           ? `الفنية ${technician.name} أصبحت متاحة للحجز. بادري بحجز موعدك الآن!`
           : 'أصبحت الفنية متاحة للحجز. بادري بحجز موعدك الآن!',
@@ -264,7 +264,7 @@ export const waitlistRouter = router({
         data: {
           userId: entry.customerId,
           type: 'WAITLIST',
-          titleJson: { ar: 'تم توفر موعد! 🔔', en: 'Slot Available! 🔔' },
+          titleJson: { ar: 'تم توفر موعد! ', en: 'Slot Available! ' },
           bodyJson: { ar: bodyAr, en: bodyEn },
           link: `/technicians/${entry.technicianId}`,
           sentVia: ['push', 'in_app'],

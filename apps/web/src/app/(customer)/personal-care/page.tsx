@@ -53,7 +53,7 @@ export default function PersonalCarePage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="✨ العناية الشخصية" subtitle="تفاصيل صغيرة — تأثير كبير" />
+        <PageTitle title=" العناية الشخصية" subtitle="تفاصيل صغيرة — تأثير كبير" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

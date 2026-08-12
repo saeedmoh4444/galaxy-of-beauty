@@ -9,7 +9,7 @@ export function BeautyEmergencyKitCard({ className = '' }: { className?: string 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">👜</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">حقيبة طوارئ الجمال</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">أساسيات في شنطتكِ</p>
@@ -17,10 +17,10 @@ export function BeautyEmergencyKitCard({ className = '' }: { className?: string 
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '💄', label: 'أحمر شفاه', tip: 'لون محايد — يناسب كل شيء' },
-          { emoji: '🧻', label: 'ورق نشاف', tip: 'يزيل اللمعان بدون مكياج' },
+          { emoji: '', label: 'أحمر شفاه', tip: 'لون محايد — يناسب كل شيء' },
+          { emoji: '', label: 'ورق نشاف', tip: 'يزيل اللمعان بدون مكياج' },
           { emoji: '🪞', label: 'مرآة صغيرة', tip: 'للمسات السريعة' },
-          { emoji: '💊', label: 'لصقة حبوب', tip: 'للطوارئ — غير مرئية' },
+          { emoji: '', label: 'لصقة حبوب', tip: 'للطوارئ — غير مرئية' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-rose-50 px-2.5 py-2 dark:bg-rose-950">
             <span className="text-sm">{t.emoji}</span>

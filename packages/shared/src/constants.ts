@@ -186,7 +186,7 @@ export const LOYALTY_TIERS = {
     pointMultiplier: 1,
     nameAr: 'فضية',
     nameEn: 'Silver',
-    emoji: '🥈',
+    emoji: '',
     color: 'from-gray-300 to-gray-400',
   },
   GOLD: {
@@ -194,7 +194,7 @@ export const LOYALTY_TIERS = {
     pointMultiplier: 1.5,
     nameAr: 'ذهبية',
     nameEn: 'Gold',
-    emoji: '🥇',
+    emoji: '',
     color: 'from-yellow-400 to-amber-500',
   },
   PLATINUM: {
@@ -202,7 +202,7 @@ export const LOYALTY_TIERS = {
     pointMultiplier: 2,
     nameAr: 'بلاتينية',
     nameEn: 'Platinum',
-    emoji: '💎',
+    emoji: '',
     color: 'from-purple-400 to-indigo-500',
   },
 } as const;

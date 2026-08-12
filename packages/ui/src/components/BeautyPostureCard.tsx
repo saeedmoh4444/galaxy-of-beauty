@@ -15,7 +15,7 @@ export function BeautyPostureCard({ className = '' }: BeautyPostureCardProps): J
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🧍‍♀️</span>
+        <span className="text-xl">‍️</span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">قوام جميل</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">
@@ -25,10 +25,10 @@ export function BeautyPostureCard({ className = '' }: BeautyPostureCardProps): J
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '⬆️', label: 'ارفعي ذقنك', tip: 'موازية للأرض' },
+          { emoji: '️', label: 'ارفعي ذقنك', tip: 'موازية للأرض' },
           { emoji: '↩️', label: 'أكتاف للخلف', tip: 'تفتح الصدر' },
-          { emoji: '🧍', label: 'ظهر مستقيم', tip: 'لا تنحني للأمام' },
-          { emoji: '👣', label: 'وزن متوازن', tip: 'على القدمين بالتساوي' },
+          { emoji: '', label: 'ظهر مستقيم', tip: 'لا تنحني للأمام' },
+          { emoji: '', label: 'وزن متوازن', tip: 'على القدمين بالتساوي' },
         ].map((t) => (
           <div key={t.label} className="rounded-lg bg-purple-50 px-2.5 py-2 dark:bg-purple-950">
             <span className="text-sm">{t.emoji}</span>

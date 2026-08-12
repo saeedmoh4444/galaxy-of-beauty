@@ -9,7 +9,7 @@ export function BeautyMaternityStyleCard({ className = '' }: { className?: strin
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">👗</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">أناقة الحامل</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">جميلة — في كل مرحلة</p>
@@ -17,10 +17,10 @@ export function BeautyMaternityStyleCard({ className = '' }: { className?: strin
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '👗', text: 'فساتين Empire — تبرز الجمال وليس البطن' },
-          { emoji: '💍', text: 'إكسسوارات — تشتت الانتباه بأناقة' },
-          { emoji: '💄', text: 'مكياج خفيف — ركزي على العيون' },
-          { emoji: '📸', text: 'صوري حملكِ — ذكريات جميلة' },
+          { emoji: '', text: 'فساتين Empire — تبرز الجمال وليس البطن' },
+          { emoji: '', text: 'إكسسوارات — تشتت الانتباه بأناقة' },
+          { emoji: '', text: 'مكياج خفيف — ركزي على العيون' },
+          { emoji: '', text: 'صوري حملكِ — ذكريات جميلة' },
         ].map((t, i) => (
           <div
             key={i}

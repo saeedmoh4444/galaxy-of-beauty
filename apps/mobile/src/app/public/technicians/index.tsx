@@ -27,22 +27,22 @@ export default function TechniciansScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={styles.t}>👩‍🎨 الفنيات</Text>
+      <Text style={styles.t}>‍ الفنيات</Text>
       <Text style={styles.sub}>تعرفي على نخبة فنيات التجميل</Text>
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد فنيات</Text>
       ) : (
         items.map((t: any) => (
           <View key={t.id} style={styles.card}>
-            <Text style={styles.avatar}>👩‍🎨</Text>
+            <Text style={styles.avatar}>‍</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.techName}>{t.name as string}</Text>
               <Text style={styles.techSpecialty}>
                 {(t.specialtyAr as string) ?? (t.specialty as string)}
               </Text>
               <View style={styles.techMeta}>
-                <Text style={styles.rating}>⭐ {(t.rating as number) ?? 0}</Text>
-                <Text style={styles.bookings}>📅 {(t.totalBookings as number) ?? 0} حجز</Text>
+                <Text style={styles.rating}> {(t.rating as number) ?? 0}</Text>
+                <Text style={styles.bookings}> {(t.totalBookings as number) ?? 0} حجز</Text>
                 <Text style={styles.price}>
                   {(t.startingPrice as number)?.toLocaleString()} ر.س
                 </Text>

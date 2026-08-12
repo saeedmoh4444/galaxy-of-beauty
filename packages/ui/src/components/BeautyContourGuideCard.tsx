@@ -9,7 +9,7 @@ export function BeautyContourGuideCard({ className = '' }: { className?: string 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🎨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">دليل الكونتور</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">نحت الوجه حسب الشكل</p>
@@ -17,10 +17,10 @@ export function BeautyContourGuideCard({ className = '' }: { className?: string 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🥚', text: 'بيضاوي: خفيف تحت عظمة الخد — وفوق الجبهة' },
-          { emoji: '🟤', text: 'دائري: تحت الخد بكثافة — جوانب الجبهة' },
+          { emoji: '', text: 'بيضاوي: خفيف تحت عظمة الخد — وفوق الجبهة' },
+          { emoji: '', text: 'دائري: تحت الخد بكثافة — جوانب الجبهة' },
           { emoji: '⬜', text: 'مربع: زوايا الفك — لتحديد وتنعيم' },
-          { emoji: '❤️', text: 'قلب: الذقن — لتقليصه بصرياً' },
+          { emoji: '️', text: 'قلب: الذقن — لتقليصه بصرياً' },
         ].map((t, i) => (
           <div
             key={i}

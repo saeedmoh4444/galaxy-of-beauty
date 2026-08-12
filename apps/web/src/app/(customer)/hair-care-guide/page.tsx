@@ -39,7 +39,7 @@ export default function HairCareGuidePage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="💇‍♀️ دليل العناية بالشعر" subtitle="كل ما تحتاجينه لشعر صحي وجميل" />
+        <PageTitle title="‍️ دليل العناية بالشعر" subtitle="كل ما تحتاجينه لشعر صحي وجميل" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

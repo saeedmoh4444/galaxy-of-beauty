@@ -42,12 +42,12 @@ export default function RideHailingPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🚗 توصيل للموعد</h1>
+          <h1 className="text-2xl font-bold"> توصيل للموعد</h1>
           <p className="mt-1 text-sm text-text-secondary">احجزي توصيل لمشواركِ لصالون التجميل</p>
         </div>
         {result ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
-            <span className="text-6xl">🚗</span>
+            <span className="text-6xl"></span>
             <h2 className="mt-4 text-xl font-bold">تم الحجز!</h2>
             <p className="font-bold mt-1">
               {result.driverName as string} · {result.carModel as string}
@@ -70,7 +70,7 @@ export default function RideHailingPage(): JSX.Element {
                     <div>
                       <p className="font-bold">{p.nameAr as string}</p>
                       <p className="text-xs text-text-secondary">
-                        ⏱️ {p.estimatedTime as string} ·{' '}
+                        ️ {p.estimatedTime as string} ·{' '}
                         {formatCurrency(p.estimatedPrice as number)} ر.س
                       </p>
                     </div>

@@ -6,31 +6,31 @@ const questions = [
     id: 'occasion',
     text: 'ما المناسبة؟',
     options: [
-      { label: 'يومي', value: 'daily', icon: '☀️' },
-      { label: 'مناسبة خاصة', value: 'special', icon: '✨' },
-      { label: 'زفاف', value: 'wedding', icon: '👰' },
-      { label: 'استرخاء', value: 'relax', icon: '🧖‍♀️' },
-      { label: 'تجربة جديدة', value: 'new', icon: '🎨' },
+      { label: 'يومي', value: 'daily', icon: '️' },
+      { label: 'مناسبة خاصة', value: 'special', icon: '' },
+      { label: 'زفاف', value: 'wedding', icon: '' },
+      { label: 'استرخاء', value: 'relax', icon: '‍️' },
+      { label: 'تجربة جديدة', value: 'new', icon: '' },
     ],
   },
   {
     id: 'budget',
     text: 'ميزانيتك؟',
     options: [
-      { label: 'اقتصادية', value: 'low', icon: '💰' },
-      { label: 'متوسطة', value: 'mid', icon: '💵' },
-      { label: 'فاخرة', value: 'high', icon: '💎' },
-      { label: 'بدون حدود', value: 'unlimited', icon: '👑' },
+      { label: 'اقتصادية', value: 'low', icon: '' },
+      { label: 'متوسطة', value: 'mid', icon: '' },
+      { label: 'فاخرة', value: 'high', icon: '' },
+      { label: 'بدون حدود', value: 'unlimited', icon: '' },
     ],
   },
   {
     id: 'style',
     text: 'أسلوبك المفضل؟',
     options: [
-      { label: 'طبيعي', value: 'natural', icon: '🌿' },
-      { label: 'جريء', value: 'bold', icon: '🎯' },
-      { label: 'كلاسيكي', value: 'classic', icon: '👗' },
-      { label: 'عصري', value: 'modern', icon: '📱' },
+      { label: 'طبيعي', value: 'natural', icon: '' },
+      { label: 'جريء', value: 'bold', icon: '' },
+      { label: 'كلاسيكي', value: 'classic', icon: '' },
+      { label: 'عصري', value: 'modern', icon: '' },
     ],
   },
 ];
@@ -54,9 +54,9 @@ export default function BeautyQuizScreen(): JSX.Element {
   if (done) {
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}>✨ نتيجة الاختبار</Text>
+        <Text style={styles.t}> نتيجة الاختبار</Text>
         <View style={styles.resultCard}>
-          <Text style={styles.resultEmoji}>🎉</Text>
+          <Text style={styles.resultEmoji}></Text>
           <Text style={styles.resultTitle}>شكراً لمشاركتك!</Text>
           <Text style={styles.resultDesc}>بناءً على إجاباتك، سنرشح لكِ أفضل الخدمات</Text>
           <View style={styles.answers}>
@@ -79,7 +79,7 @@ export default function BeautyQuizScreen(): JSX.Element {
           }}
           style={styles.btn}
         >
-          <Text style={styles.btnText}>🔄 إعادة</Text>
+          <Text style={styles.btnText}> إعادة</Text>
         </TouchableOpacity>
       </ScrollView>
     );
@@ -89,7 +89,7 @@ export default function BeautyQuizScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>💄 اختبار الجمال</Text>
+      <Text style={styles.t}> اختبار الجمال</Text>
       <Text style={styles.progress}>
         {step + 1}/{questions.length}
       </Text>

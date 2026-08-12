@@ -15,7 +15,7 @@ export default function VideoRoomPage(): JSX.Element {
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">غرفة الفيديو</h1>
 
         <Card padding="lg" className="text-center">
-          <div className="mb-6 text-6xl">📹</div>
+          <div className="mb-6 text-6xl"></div>
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
             رقم الغرفة:{' '}
             <code className="rounded bg-gray-100 px-2 py-1 text-xs dark:bg-gray-800">{roomId}</code>

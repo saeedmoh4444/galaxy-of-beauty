@@ -37,16 +37,16 @@ export default function MommyAndMeScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>👩‍👧 أمي وأنا</Text>
+      <Text style={styles.t}>‍ أمي وأنا</Text>
       {services.map((s: any) => (
         <View key={s.id} style={styles.card}>
-          <Text style={styles.se}>{(s.emoji as string) ?? '💆‍♀️'}</Text>
+          <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.sn}>{s.nameAr as string}</Text>
             <Text style={styles.sd}>{s.descAr as string}</Text>
             <View style={styles.sm}>
               <Text style={styles.sp}>{(s.price as number)?.toLocaleString()} ر.س</Text>
-              <Text style={styles.sdu}>⏱️ {s.duration as string}</Text>
+              <Text style={styles.sdu}>️ {s.duration as string}</Text>
             </View>
           </View>
           <TouchableOpacity style={styles.bb}>

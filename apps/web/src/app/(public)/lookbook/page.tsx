@@ -9,28 +9,28 @@ const SEASONS = [
     id: 'summer',
     nameAr: 'صيف ٢٠٢٦',
     nameEn: 'Summer 2026',
-    emoji: '☀️',
+    emoji: '️',
     color: 'from-amber-400 to-orange-500',
   },
   {
     id: 'eid',
     nameAr: 'أناقة العيد',
     nameEn: 'Eid Elegance',
-    emoji: '🌙',
+    emoji: '',
     color: 'from-emerald-400 to-teal-600',
   },
   {
     id: 'wedding',
     nameAr: 'موسم الأعراس',
     nameEn: 'Wedding Season',
-    emoji: '👰',
+    emoji: '',
     color: 'from-pink-400 to-rose-500',
   },
   {
     id: 'ramadan',
     nameAr: 'رمضان كريم',
     nameEn: 'Ramadan',
-    emoji: '✨',
+    emoji: '',
     color: 'from-purple-400 to-indigo-600',
   },
 ];
@@ -43,21 +43,21 @@ const LOOKS: Record<
     {
       title: 'إطلالة شاطئية منعشة',
       desc: 'مكياج خفيف مقاوم للماء مع تسريحة شاطئية',
-      image: '🧴',
+      image: '',
       tags: ['مكياج', 'شعر', 'عناية'],
       link: '/services',
     },
     {
       title: 'عناية بالبشرة قبل الصيف',
       desc: 'تقشير وترطيب عميق لبشرة متألقة',
-      image: '✨',
+      image: '',
       tags: ['بشرة', 'عناية'],
       link: '/services',
     },
     {
       title: 'ألوان الصيف الجريئة',
       desc: 'مانيكير وباديكير بألوان الموسم',
-      image: '💅',
+      image: '',
       tags: ['أظافر', 'مانيكير'],
       link: '/services',
     },
@@ -66,21 +66,21 @@ const LOOKS: Record<
     {
       title: 'إطلالة العيد الفاخرة',
       desc: 'مكياج سهرة مع تسريحة أنيقة',
-      image: '💄',
+      image: '',
       tags: ['مكياج', 'شعر'],
       link: '/services',
     },
     {
       title: 'حناء العيد',
       desc: 'نقوش حناء عصرية للمناسبات',
-      image: '🌿',
+      image: '',
       tags: ['حناء', 'مناسبات'],
       link: '/services',
     },
     {
       title: 'بشرة متألقة للعيد',
       desc: 'جلسة عناية متكاملة قبل العيد',
-      image: '✨',
+      image: '',
       tags: ['بشرة', 'عناية'],
       link: '/services',
     },
@@ -89,21 +89,21 @@ const LOOKS: Record<
     {
       title: 'إطلالة العروس الكاملة',
       desc: 'مكياج، شعر، وأظافر ليومكِ الكبير',
-      image: '👰',
+      image: '',
       tags: ['عرايس', 'مكياج', 'شعر'],
       link: '/bridal-concierge',
     },
     {
       title: 'جلسة تصوير العروس',
       desc: 'مكياج احترافي يدوم طوال اليوم',
-      image: '📸',
+      image: '',
       tags: ['مكياج', 'تصوير'],
       link: '/services',
     },
     {
       title: 'إطلالة أم العروس',
       desc: 'مكياج ناعم وأنيق لأم العروس',
-      image: '💐',
+      image: '',
       tags: ['مكياج', 'مناسبات'],
       link: '/services',
     },
@@ -112,14 +112,14 @@ const LOOKS: Record<
     {
       title: 'عناية مسائية في رمضان',
       desc: 'جلسات عناية بالبشرة بعد الإفطار',
-      image: '🌙',
+      image: '',
       tags: ['بشرة', 'عناية'],
       link: '/services',
     },
     {
       title: 'إطلالة السحور',
       desc: 'مكياج ناعم وطبيعي للسهرات الرمضانية',
-      image: '✨',
+      image: '',
       tags: ['مكياج', 'سهرات'],
       link: '/services',
     },
@@ -135,7 +135,7 @@ export default function LookbookPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">📸 لوك بوك</h1>
+        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100"> لوك بوك</h1>
         <p className="mt-2 text-text-secondary">
           استلهمي إطلالتكِ من أحدث صيحات الجمال لكل المناسبات
         </p>
@@ -204,7 +204,7 @@ function CommunityLooks(): JSX.Element {
   return (
     <div className="mt-16">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold">💖 إطلالات المجتمع</h2>
+        <h2 className="text-2xl font-bold"> إطلالات المجتمع</h2>
         <p className="mt-2 text-text-secondary">أحدث الإطلالات من مجتمع جالكسي بيوتي</p>
       </div>
       {isLoading ? (
@@ -219,19 +219,19 @@ function CommunityLooks(): JSX.Element {
             <Card key={l.id as number} padding="lg" className="text-center">
               <span className="text-5xl">
                 {l.category === 'makeup'
-                  ? '💄'
+                  ? ''
                   : l.category === 'hair'
-                    ? '💇‍♀️'
+                    ? '‍️'
                     : l.category === 'nails'
-                      ? '💅'
-                      : '✨'}
+                      ? ''
+                      : ''}
               </span>
               <h3 className="font-bold mt-3">{l.title as string}</h3>
               <p className="text-xs text-text-secondary mt-1">
-                {l.userName as string} · 👩‍🎨 {l.technicianName as string}
+                {l.userName as string} · ‍ {l.technicianName as string}
               </p>
               <p className="text-xs text-text-tertiary mt-1">
-                ❤️ {l.votes as number} · {new Date(l.date as string).toLocaleDateString('ar-SA')}
+                ️ {l.votes as number} · {new Date(l.date as string).toLocaleDateString('ar-SA')}
               </p>
             </Card>
           ))}

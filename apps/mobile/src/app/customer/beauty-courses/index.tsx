@@ -47,7 +47,7 @@ export default function BeautyCoursesScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={s.t}>📚 دورات تجميل</Text>
+      <Text style={s.t}> دورات تجميل</Text>
       <Text style={s.sub}>تعلمي مهارات التجميل من الخبيرات</Text>
 
       {myItems.length > 0 && (
@@ -55,7 +55,7 @@ export default function BeautyCoursesScreen(): JSX.Element {
           style={{ marginBottom: 16, backgroundColor: '#ecfdf5', borderRadius: 12, padding: 12 }}
         >
           <Text style={{ fontWeight: '700', color: '#059669', marginBottom: 8 }}>
-            ✅ دوراتي ({myItems.length})
+             دوراتي ({myItems.length})
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
             {myItems.map((c: any, i: number) => (
@@ -87,9 +87,9 @@ export default function BeautyCoursesScreen(): JSX.Element {
               <Text style={s.cTitle}>{c.titleAr}</Text>
               <Text style={s.cDesc}>{c.descAr}</Text>
               <View style={s.tags}>
-                <Text style={{ fontSize: 11, color: '#6b7280' }}>👩‍🏫 {c.instructor}</Text>
-                <Text style={{ fontSize: 11, color: '#6b7280' }}>📖 {c.lessons} دروس</Text>
-                <Text style={{ fontSize: 11, color: '#6b7280' }}>⭐{c.rating}</Text>
+                <Text style={{ fontSize: 11, color: '#6b7280' }}>‍ {c.instructor}</Text>
+                <Text style={{ fontSize: 11, color: '#6b7280' }}> {c.lessons} دروس</Text>
+                <Text style={{ fontSize: 11, color: '#6b7280' }}>{c.rating}</Text>
                 <View
                   style={{
                     backgroundColor: level.color + '20',
@@ -109,7 +109,7 @@ export default function BeautyCoursesScreen(): JSX.Element {
                 style={[s.btn, isEnrolled && { backgroundColor: '#d1fae5' }]}
               >
                 <Text style={[s.btnText, isEnrolled && { color: '#047857' }]}>
-                  {isEnrolled ? '✅ مسجلة' : '📝 سجلي الآن'}
+                  {isEnrolled ? ' مسجلة' : ' سجلي الآن'}
                 </Text>
               </TouchableOpacity>
             </View>

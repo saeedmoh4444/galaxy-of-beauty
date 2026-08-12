@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W6: Education & Empowerment — Knowledge Hub.
  *
  * Usage:
- *   <BeautyQuickTipCard tip={{ emoji: '💧', title: 'الماء أولاً', body: 'اشربي كوب ماء قبل قهوتك الصباحية.' }} />
+ *   <BeautyQuickTipCard tip={{ emoji: '', title: 'الماء أولاً', body: 'اشربي كوب ماء قبل قهوتك الصباحية.' }} />
  */
 
 interface QuickTip {
@@ -42,7 +42,7 @@ export function BeautyQuickTipCard({
         <h4 className="mt-2 text-sm font-bold text-teal-800 dark:text-teal-200">{tip.title}</h4>
         <p className="mt-2 text-sm leading-relaxed text-teal-700 dark:text-teal-300">{tip.body}</p>
         {tip.source && (
-          <p className="mt-1 text-[9px] text-teal-500 dark:text-teal-400">📚 {tip.source}</p>
+          <p className="mt-1 text-[9px] text-teal-500 dark:text-teal-400"> {tip.source}</p>
         )}
       </div>
       {onNextTip && (

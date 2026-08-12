@@ -68,7 +68,7 @@ export default function HomeServicePage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🏠 خدمة منزلية</h1>
+          <h1 className="text-2xl font-bold"> خدمة منزلية</h1>
           <p className="mt-1 text-sm text-text-secondary">
             الفنيات يجين لعنوانكِ — خدمة تجميل في منزلكِ براحة وأمان
           </p>
@@ -77,7 +77,7 @@ export default function HomeServicePage(): JSX.Element {
         {/* Pricing Card */}
         {estimate && (
           <Card padding="lg" className="border-2 border-brand-200 dark:border-brand-800">
-            <h3 className="font-bold text-lg mb-4">💰 تقدير التكلفة — {city}</h3>
+            <h3 className="font-bold text-lg mb-4"> تقدير التكلفة — {city}</h3>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-text-secondary">رسوم الخدمة الأساسية</span>
@@ -107,7 +107,7 @@ export default function HomeServicePage(): JSX.Element {
             padding="lg"
             className="text-center border-2 border-green-300 dark:border-green-700"
           >
-            <span className="text-6xl">✅</span>
+            <span className="text-6xl"></span>
             <h2 className="mt-4 text-xl font-bold text-green-700 dark:text-green-300">
               تم استلام طلبكِ!
             </h2>
@@ -123,7 +123,7 @@ export default function HomeServicePage(): JSX.Element {
           </Card>
         ) : (
           <Card padding="lg">
-            <h3 className="font-bold text-lg mb-4">📝 طلب خدمة منزلية</h3>
+            <h3 className="font-bold text-lg mb-4"> طلب خدمة منزلية</h3>
             <div className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
@@ -202,7 +202,7 @@ export default function HomeServicePage(): JSX.Element {
                 className="w-full"
                 size="lg"
               >
-                🏠 أرسلي الطلب
+                 أرسلي الطلب
               </Button>
             </div>
           </Card>
@@ -210,9 +210,9 @@ export default function HomeServicePage(): JSX.Element {
 
         <div className="grid gap-4 sm:grid-cols-3">
           {[
-            { emoji: '🏠', title: 'في منزلكِ', desc: 'الفنيات يأتين لعنوانكِ' },
-            { emoji: '⏱️', title: 'خلال ٦٠ دقيقة', desc: 'وقت وصول سريع' },
-            { emoji: '🛡️', title: 'خدمة آمنة', desc: 'جميع الفنيات موثقات' },
+            { emoji: '', title: 'في منزلكِ', desc: 'الفنيات يأتين لعنوانكِ' },
+            { emoji: '️', title: 'خلال ٦٠ دقيقة', desc: 'وقت وصول سريع' },
+            { emoji: '️', title: 'خدمة آمنة', desc: 'جميع الفنيات موثقات' },
           ].map((b, i) => (
             <Card key={i} padding="md" className="text-center">
               <span className="text-3xl">{b.emoji}</span>

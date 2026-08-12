@@ -39,10 +39,10 @@ export default function SavedCardsPage(): JSX.Element {
   });
 
   const brandIcons: Record<string, string> = {
-    visa: '💳',
-    mastercard: '💳',
-    mada: '🏦',
-    amex: '💳',
+    visa: '',
+    mastercard: '',
+    mada: '',
+    amex: '',
   };
 
   const handleAdd = () => {
@@ -80,7 +80,7 @@ export default function SavedCardsPage(): JSX.Element {
           cards.map((c) => (
             <Card key={c.id as number} padding="md" className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <span className="text-2xl">{brandIcons[c.brand as string] || '💳'}</span>
+                <span className="text-2xl">{brandIcons[c.brand as string] || ''}</span>
                 <div>
                   <p className="font-semibold text-text-primary dark:text-gray-100">
                     {String(c.brand).toUpperCase()} ···· {String(c.lastFour)}

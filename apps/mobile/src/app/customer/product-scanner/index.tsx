@@ -27,14 +27,14 @@ export default function ProductScannerScreen(): JSX.Element {
       errorMessage="لم يتم العثور على المنتج"
       onRetry={() => result.refetch()}
     >
-      <Text style={styles.title}>🔍 فحص المنتجات</Text>
+      <Text style={styles.title}> فحص المنتجات</Text>
       <TouchableOpacity
         style={styles.scanBtn}
         onPress={() => {
           setScanned(true);
         }}
       >
-        <Text style={styles.scanText}>📷 مسح الباركود</Text>
+        <Text style={styles.scanText}> مسح الباركود</Text>
       </TouchableOpacity>
       {(result.data as any) ? (
         <View style={styles.result}>

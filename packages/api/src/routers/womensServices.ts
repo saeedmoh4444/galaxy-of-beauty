@@ -6,7 +6,7 @@ const SERVICES = {
   pregnancy_safe: {
     nameAr: 'عناية الحامل',
     nameEn: 'Pregnancy-Safe Beauty',
-    emoji: '🤰',
+    emoji: '',
     description: 'خدمات آمنة للحامل — منتجات طبيعية خالية من المواد الضارة',
     subServices: [
       {
@@ -15,7 +15,7 @@ const SERVICES = {
         nameEn: 'Safe Pregnancy Massage',
         price: 250,
         durationMin: 45,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'ثلاثي الحمل الثاني والثالث فقط',
       },
       {
@@ -24,7 +24,7 @@ const SERVICES = {
         nameEn: 'Pregnancy-Safe Facial',
         price: 180,
         durationMin: 40,
-        emoji: '✨',
+        emoji: '',
         precautions: 'منتجات طبيعية ١٠٠٪',
       },
       {
@@ -33,7 +33,7 @@ const SERVICES = {
         nameEn: 'Pregnancy-Safe Pedicure',
         price: 120,
         durationMin: 30,
-        emoji: '🦶',
+        emoji: '',
         precautions: 'بدون تدليك عميق',
       },
     ],
@@ -41,7 +41,7 @@ const SERVICES = {
   postpartum: {
     nameAr: 'عناية ما بعد الولادة',
     nameEn: 'Postpartum Care',
-    emoji: '🤱',
+    emoji: '',
     description: 'خدمات عناية خاصة للأمهات الجدد — استعادة النشاط والجمال',
     subServices: [
       {
@@ -50,7 +50,7 @@ const SERVICES = {
         nameEn: 'Recovery Massage',
         price: 280,
         durationMin: 60,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'بعد ٦ أسابيع من الولادة',
       },
       {
@@ -59,7 +59,7 @@ const SERVICES = {
         nameEn: 'Stretch Mark Treatment',
         price: 350,
         durationMin: 45,
-        emoji: '🧴',
+        emoji: '',
         precautions: 'بعد ٣ أشهر من الولادة',
       },
       {
@@ -68,7 +68,7 @@ const SERVICES = {
         nameEn: 'Postpartum Facial',
         price: 200,
         durationMin: 45,
-        emoji: '✨',
+        emoji: '',
         precautions: 'مناسبة للرضاعة',
       },
     ],
@@ -76,7 +76,7 @@ const SERVICES = {
   henna: {
     nameAr: 'فن الحناء',
     nameEn: 'Henna Art',
-    emoji: '🌿',
+    emoji: '',
     description: 'تصاميم حناء تقليدية وعصرية — طبيعية وآمنة',
     subServices: [
       {
@@ -85,7 +85,7 @@ const SERVICES = {
         nameEn: 'Full Bridal Henna',
         price: 500,
         durationMin: 120,
-        emoji: '👰',
+        emoji: '',
         precautions: 'حناء طبيعية سوداء',
       },
       {
@@ -94,7 +94,7 @@ const SERVICES = {
         nameEn: 'Hands Henna',
         price: 180,
         durationMin: 45,
-        emoji: '🤲',
+        emoji: '',
         precautions: '',
       },
       {
@@ -103,7 +103,7 @@ const SERVICES = {
         nameEn: 'Feet Henna',
         price: 150,
         durationMin: 40,
-        emoji: '🦶',
+        emoji: '',
         precautions: '',
       },
       {
@@ -112,7 +112,7 @@ const SERVICES = {
         nameEn: 'Occasion Henna',
         price: 250,
         durationMin: 60,
-        emoji: '🎉',
+        emoji: '',
         precautions: '',
       },
     ],
@@ -120,7 +120,7 @@ const SERVICES = {
   brows_lashes: {
     nameAr: 'حواجب ورموش',
     nameEn: 'Brows & Lashes',
-    emoji: '👁️',
+    emoji: '️',
     description: 'خدمات الحواجب والرموش — تشكيل، صبغ، وتركيب',
     subServices: [
       {
@@ -129,7 +129,7 @@ const SERVICES = {
         nameEn: 'Eyebrow Shaping',
         price: 80,
         durationMin: 20,
-        emoji: '✂️',
+        emoji: '️',
         precautions: '',
       },
       {
@@ -138,7 +138,7 @@ const SERVICES = {
         nameEn: 'Eyebrow Tinting',
         price: 100,
         durationMin: 20,
-        emoji: '🎨',
+        emoji: '',
         precautions: '',
       },
       {
@@ -147,7 +147,7 @@ const SERVICES = {
         nameEn: 'Microblading',
         price: 800,
         durationMin: 120,
-        emoji: '🖋️',
+        emoji: '️',
         precautions: 'جلسة تصحيح بعد شهر',
       },
       {
@@ -156,7 +156,7 @@ const SERVICES = {
         nameEn: 'Lash Extensions',
         price: 350,
         durationMin: 90,
-        emoji: '✨',
+        emoji: '',
         precautions: 'يدوم ٣-٤ أسابيع',
       },
       {
@@ -165,7 +165,7 @@ const SERVICES = {
         nameEn: 'Lash Lift',
         price: 200,
         durationMin: 45,
-        emoji: '⬆️',
+        emoji: '️',
         precautions: '',
       },
     ],
@@ -173,7 +173,7 @@ const SERVICES = {
   body_contouring: {
     nameAr: 'نحت الجسم',
     nameEn: 'Body Contouring',
-    emoji: '💪',
+    emoji: '',
     description: 'خدمات نحت وتشكيل الجسم غير جراحية',
     subServices: [
       {
@@ -182,7 +182,7 @@ const SERVICES = {
         nameEn: 'Cavitation',
         price: 400,
         durationMin: 60,
-        emoji: '🔊',
+        emoji: '',
         precautions: '٦-٨ جلسات للنتيجة',
       },
       {
@@ -191,7 +191,7 @@ const SERVICES = {
         nameEn: 'Radiofrequency',
         price: 450,
         durationMin: 45,
-        emoji: '📡',
+        emoji: '',
         precautions: '٤-٦ جلسات',
       },
       {
@@ -200,7 +200,7 @@ const SERVICES = {
         nameEn: 'Lymphatic Drainage',
         price: 300,
         durationMin: 60,
-        emoji: '💧',
+        emoji: '',
         precautions: '',
       },
       {
@@ -209,7 +209,7 @@ const SERVICES = {
         nameEn: 'Thread Lifting',
         price: 1200,
         durationMin: 90,
-        emoji: '🧵',
+        emoji: '',
         precautions: 'نتيجة فورية',
       },
     ],
@@ -217,7 +217,7 @@ const SERVICES = {
   intimate_care: {
     nameAr: 'عناية شخصية',
     nameEn: 'Intimate Care',
-    emoji: '🌸',
+    emoji: '',
     description: 'خدمات عناية شخصية نسائية — بخصوصية وأمان تام',
     subServices: [
       {
@@ -226,7 +226,7 @@ const SERVICES = {
         nameEn: 'Intimate Whitening',
         price: 350,
         durationMin: 45,
-        emoji: '✨',
+        emoji: '',
         precautions: 'منتجات طبية آمنة',
       },
       {
@@ -235,7 +235,7 @@ const SERVICES = {
         nameEn: 'Full Body Scrub',
         price: 250,
         durationMin: 50,
-        emoji: '🧖‍♀️',
+        emoji: '‍️',
         precautions: '',
       },
       {
@@ -244,7 +244,7 @@ const SERVICES = {
         nameEn: 'V-Steam',
         price: 180,
         durationMin: 30,
-        emoji: '♨️',
+        emoji: '️',
         precautions: 'أعشاب طبيعية',
       },
     ],
@@ -252,7 +252,7 @@ const SERVICES = {
   mommy_makeover: {
     nameAr: 'تجديد الأمومة',
     nameEn: 'Mommy Makeover',
-    emoji: '👩‍👧',
+    emoji: '‍',
     description: 'باقة متكاملة لاستعادة جمالكِ بعد الولادة',
     subServices: [
       {
@@ -261,7 +261,7 @@ const SERVICES = {
         nameEn: 'Mommy Makeover Package',
         price: 1200,
         durationMin: 180,
-        emoji: '💝',
+        emoji: '',
         precautions: '٣ خدمات في جلسة واحدة',
       },
       {
@@ -270,7 +270,7 @@ const SERVICES = {
         nameEn: 'Mom Relaxation Session',
         price: 350,
         durationMin: 90,
-        emoji: '🧘‍♀️',
+        emoji: '‍️',
         precautions: 'مساج + قناع + عناية',
       },
     ],
@@ -278,7 +278,7 @@ const SERVICES = {
   teen_beauty: {
     nameAr: 'تجميل المراهقات',
     nameEn: 'Teen Beauty',
-    emoji: '👧',
+    emoji: '',
     description: 'خدمات مناسبة للشابات — عناية لطيفة ومناسبة للعمر',
     subServices: [
       {
@@ -287,7 +287,7 @@ const SERVICES = {
         nameEn: 'Teen Facial',
         price: 120,
         durationMin: 30,
-        emoji: '✨',
+        emoji: '',
         precautions: 'منتجات لطيفة',
       },
       {
@@ -296,7 +296,7 @@ const SERVICES = {
         nameEn: 'Occasion Makeup',
         price: 180,
         durationMin: 45,
-        emoji: '💄',
+        emoji: '',
         precautions: 'إطلالة طبيعية',
       },
       {
@@ -305,7 +305,7 @@ const SERVICES = {
         nameEn: 'Gentle Cleansing',
         price: 100,
         durationMin: 25,
-        emoji: '🧼',
+        emoji: '',
         precautions: '',
       },
     ],
@@ -313,7 +313,7 @@ const SERVICES = {
   menopause: {
     nameAr: 'عناية سن اليأس',
     nameEn: 'Menopause Care',
-    emoji: '🦋',
+    emoji: '',
     description: 'عناية متخصصة للبشرة والجسم خلال مرحلة انقطاع الطمث',
     subServices: [
       {
@@ -322,7 +322,7 @@ const SERVICES = {
         nameEn: 'Menopause Facial',
         price: 220,
         durationMin: 50,
-        emoji: '✨',
+        emoji: '',
         precautions: 'منتجات غنية بالكولاجين',
       },
       {
@@ -331,7 +331,7 @@ const SERVICES = {
         nameEn: 'Hormonal Balance Massage',
         price: 280,
         durationMin: 60,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'زيوت طبيعية متوازنة',
       },
       {
@@ -340,7 +340,7 @@ const SERVICES = {
         nameEn: 'Dryness Treatment',
         price: 200,
         durationMin: 45,
-        emoji: '💧',
+        emoji: '',
         precautions: 'ترطيب مكثف',
       },
     ],
@@ -348,7 +348,7 @@ const SERVICES = {
   hijab_care: {
     nameAr: 'عناية المحجبة',
     nameEn: 'Hijab-Friendly Haircare',
-    emoji: '🧕',
+    emoji: '',
     description: 'عناية متخصصة بالشعر للمحجبات — جلسات خاصة وخصوصية تامة',
     subServices: [
       {
@@ -357,7 +357,7 @@ const SERVICES = {
         nameEn: 'Hair Loss Treatment',
         price: 300,
         durationMin: 60,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'جلسات شهرية',
       },
       {
@@ -375,7 +375,7 @@ const SERVICES = {
         nameEn: 'Hijab-Friendly Styling',
         price: 150,
         durationMin: 30,
-        emoji: '💇‍♀️',
+        emoji: '‍️',
         precautions: 'خصوصية تامة',
       },
       {
@@ -384,7 +384,7 @@ const SERVICES = {
         nameEn: 'Hydrating Hair Mask',
         price: 160,
         durationMin: 35,
-        emoji: '🧴',
+        emoji: '',
         precautions: 'لفروة الرأس الصحية',
       },
     ],
@@ -401,7 +401,7 @@ const SERVICES = {
         nameEn: 'Oily Skin Facial',
         price: 200,
         durationMin: 45,
-        emoji: '✨',
+        emoji: '',
         precautions: 'منظفات طبية',
       },
       {
@@ -410,7 +410,7 @@ const SERVICES = {
         nameEn: 'Hormonal Acne Treatment',
         price: 250,
         durationMin: 50,
-        emoji: '🔬',
+        emoji: '',
         precautions: 'بإشراف طبي',
       },
       {
@@ -419,7 +419,7 @@ const SERVICES = {
         nameEn: 'Excess Hair Removal',
         price: 300,
         durationMin: 60,
-        emoji: '🌸',
+        emoji: '',
         precautions: 'بشرة حساسة',
       },
     ],
@@ -427,7 +427,7 @@ const SERVICES = {
   bridal_prep: {
     nameAr: 'تحضير العروس',
     nameEn: 'Bridal Preparation',
-    emoji: '👰‍♀️',
+    emoji: '‍️',
     description: 'برنامج متكامل لتحضير العروس — من ٦ أشهر حتى يوم الزفاف',
     subServices: [
       {
@@ -436,7 +436,7 @@ const SERVICES = {
         nameEn: 'Golden Bride Package',
         price: 3500,
         durationMin: 300,
-        emoji: '👑',
+        emoji: '',
         precautions: '٦ جلسات على ٣ أشهر',
       },
       {
@@ -445,7 +445,7 @@ const SERVICES = {
         nameEn: 'Silver Bride Package',
         price: 2000,
         durationMin: 200,
-        emoji: '💍',
+        emoji: '',
         precautions: '٤ جلسات على شهرين',
       },
       {
@@ -454,7 +454,7 @@ const SERVICES = {
         nameEn: 'Makeup & Hair Trial',
         price: 400,
         durationMin: 90,
-        emoji: '💄',
+        emoji: '',
         precautions: 'جلسة تجربة قبل الزفاف',
       },
       {
@@ -463,7 +463,7 @@ const SERVICES = {
         nameEn: 'Teeth Whitening',
         price: 600,
         durationMin: 60,
-        emoji: '😁',
+        emoji: '',
         precautions: 'تبييض آمن',
       },
     ],
@@ -471,7 +471,7 @@ const SERVICES = {
   working_woman: {
     nameAr: 'المرأة العاملة',
     nameEn: 'Working Woman Express',
-    emoji: '💼',
+    emoji: '',
     description: 'خدمات سريعة تناسب جدول المرأة العاملة — خلال استراحة الغداء',
     subServices: [
       {
@@ -480,7 +480,7 @@ const SERVICES = {
         nameEn: '20-Min Express Makeup',
         price: 120,
         durationMin: 20,
-        emoji: '💄',
+        emoji: '',
         precautions: '',
       },
       {
@@ -489,7 +489,7 @@ const SERVICES = {
         nameEn: 'Express Manicure',
         price: 80,
         durationMin: 20,
-        emoji: '💅',
+        emoji: '',
         precautions: '',
       },
       {
@@ -498,7 +498,7 @@ const SERVICES = {
         nameEn: 'Express Styling',
         price: 100,
         durationMin: 25,
-        emoji: '💇‍♀️',
+        emoji: '‍️',
         precautions: '',
       },
       {
@@ -507,7 +507,7 @@ const SERVICES = {
         nameEn: 'Working Woman Bundle',
         price: 250,
         durationMin: 60,
-        emoji: '⏱️',
+        emoji: '️',
         precautions: 'مكياج + أظافر + شعر',
       },
     ],
@@ -515,7 +515,7 @@ const SERVICES = {
   first_beauty: {
     nameAr: 'أول مرة',
     nameEn: 'First Beauty Experience',
-    emoji: '🦋',
+    emoji: '',
     description: 'تجربة تجميل أولى للشابات — استشارة وتعليم بلطف',
     subServices: [
       {
@@ -524,7 +524,7 @@ const SERVICES = {
         nameEn: 'First Beauty Consultation',
         price: 80,
         durationMin: 30,
-        emoji: '💬',
+        emoji: '',
         precautions: 'تعليم روتين العناية',
       },
       {
@@ -533,7 +533,7 @@ const SERVICES = {
         nameEn: 'Makeup Tutorial Session',
         price: 200,
         durationMin: 60,
-        emoji: '📚',
+        emoji: '',
         precautions: 'تعلم خطوة بخطوة',
       },
       {
@@ -542,7 +542,7 @@ const SERVICES = {
         nameEn: 'First Facial',
         price: 100,
         durationMin: 35,
-        emoji: '✨',
+        emoji: '',
         precautions: 'منتجات لطيفة جداً',
       },
     ],
@@ -550,7 +550,7 @@ const SERVICES = {
   breastfeeding_safe: {
     nameAr: 'عناية المرضعة',
     nameEn: 'Breastfeeding-Safe Beauty',
-    emoji: '🍼',
+    emoji: '',
     description: 'خدمات تجميل آمنة أثناء فترة الرضاعة الطبيعية',
     subServices: [
       {
@@ -559,7 +559,7 @@ const SERVICES = {
         nameEn: 'Nursing-Safe Facial',
         price: 180,
         durationMin: 40,
-        emoji: '✨',
+        emoji: '',
         precautions: 'خالي من الريتينول والساليسيليك',
       },
       {
@@ -568,7 +568,7 @@ const SERVICES = {
         nameEn: 'Relaxation Massage',
         price: 250,
         durationMin: 50,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'وضعية جانبية آمنة',
       },
       {
@@ -577,7 +577,7 @@ const SERVICES = {
         nameEn: 'Safe Manicure',
         price: 100,
         durationMin: 30,
-        emoji: '💅',
+        emoji: '',
         precautions: 'منتجات غير سامة',
       },
     ],
@@ -585,7 +585,7 @@ const SERVICES = {
   fertility_wellness: {
     nameAr: 'عناية الخصوبة',
     nameEn: 'Fertility Wellness',
-    emoji: '🌱',
+    emoji: '',
     description: 'عناية متكاملة لتحضير الجسم للحمل — صحة وجمال',
     subServices: [
       {
@@ -594,7 +594,7 @@ const SERVICES = {
         nameEn: 'Fertility Massage',
         price: 300,
         durationMin: 60,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'تقنيات لطيفة',
       },
       {
@@ -603,7 +603,7 @@ const SERVICES = {
         nameEn: 'Natural Skincare',
         price: 200,
         durationMin: 45,
-        emoji: '🌿',
+        emoji: '',
         precautions: 'منتجات عضوية ١٠٠٪',
       },
       {
@@ -612,7 +612,7 @@ const SERVICES = {
         nameEn: 'Relaxation & Meditation',
         price: 250,
         durationMin: 75,
-        emoji: '🧘‍♀️',
+        emoji: '‍️',
         precautions: 'تقليل التوتر',
       },
     ],
@@ -620,7 +620,7 @@ const SERVICES = {
   post_surgery: {
     nameAr: 'عناية بعد العمليات',
     nameEn: 'Post-Surgery Recovery',
-    emoji: '🏥',
+    emoji: '',
     description: 'عناية متخصصة بعد عمليات التجميل — استشفاء آمن وسريع',
     subServices: [
       {
@@ -629,7 +629,7 @@ const SERVICES = {
         nameEn: 'Lymphatic Drainage',
         price: 350,
         durationMin: 60,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'بعد موافقة الطبيب',
       },
       {
@@ -647,7 +647,7 @@ const SERVICES = {
         nameEn: 'Cold Compress Therapy',
         price: 150,
         durationMin: 30,
-        emoji: '🧊',
+        emoji: '',
         precautions: 'لتقليل التورم',
       },
     ],
@@ -655,7 +655,7 @@ const SERVICES = {
   cycle_synced: {
     nameAr: 'عناية الدورة الشهرية',
     nameEn: 'Cycle-Synced Beauty',
-    emoji: '📅',
+    emoji: '',
     description: 'خدمات عناية متزامنة مع دورتكِ الشهرية لكل مرحلة',
     subServices: [
       {
@@ -664,7 +664,7 @@ const SERVICES = {
         nameEn: 'Cramp Relief Massage',
         price: 250,
         durationMin: 50,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'زيوت دافئة',
       },
       {
@@ -673,7 +673,7 @@ const SERVICES = {
         nameEn: 'Soothing Facial Mask',
         price: 120,
         durationMin: 25,
-        emoji: '🎭',
+        emoji: '',
         precautions: 'مكونات مهدئة',
       },
       {
@@ -682,7 +682,7 @@ const SERVICES = {
         nameEn: 'Herbal Warm Bath',
         price: 180,
         durationMin: 40,
-        emoji: '🛁',
+        emoji: '',
         precautions: 'أعشاب طبية',
       },
     ],
@@ -690,7 +690,7 @@ const SERVICES = {
   mature_skin: {
     nameAr: 'عناية البشرة الناضجة',
     nameEn: 'Mature Skin Care (50+)',
-    emoji: '✨',
+    emoji: '',
     description: 'عناية متخصصة للبشرة فوق ٥٠ عاماً — مضادات شيخوخة وترطيب عميق',
     subServices: [
       {
@@ -699,7 +699,7 @@ const SERVICES = {
         nameEn: 'Collagen Lifting',
         price: 350,
         durationMin: 60,
-        emoji: '⬆️',
+        emoji: '️',
         precautions: 'نتيجة فورية',
       },
       {
@@ -708,7 +708,7 @@ const SERVICES = {
         nameEn: 'Deep Hydration',
         price: 280,
         durationMin: 50,
-        emoji: '💧',
+        emoji: '',
         precautions: 'حمض الهيالورونيك',
       },
       {
@@ -717,7 +717,7 @@ const SERVICES = {
         nameEn: 'Wrinkle Treatment',
         price: 400,
         durationMin: 55,
-        emoji: '🔬',
+        emoji: '',
         precautions: 'ببتيدات مركزة',
       },
     ],
@@ -725,7 +725,7 @@ const SERVICES = {
   ramadan_beauty: {
     nameAr: 'عناية رمضان',
     nameEn: 'Ramadan Beauty',
-    emoji: '🌙',
+    emoji: '',
     description: 'خدمات عناية مصممة خصيصاً لشهر رمضان — قبل الإفطار وبعده',
     subServices: [
       {
@@ -734,7 +734,7 @@ const SERVICES = {
         nameEn: 'Pre-Iftar Refresh',
         price: 150,
         durationMin: 30,
-        emoji: '☀️',
+        emoji: '️',
         precautions: 'منعشة وسريعة',
       },
       {
@@ -743,7 +743,7 @@ const SERVICES = {
         nameEn: 'Post-Taraweeh Facial',
         price: 200,
         durationMin: 45,
-        emoji: '🌙',
+        emoji: '',
         precautions: 'مرطبة ومهدئة',
       },
       {
@@ -752,7 +752,7 @@ const SERVICES = {
         nameEn: 'Ramadan Henna',
         price: 150,
         durationMin: 35,
-        emoji: '🌿',
+        emoji: '',
         precautions: 'تصاميم رمضانية',
       },
     ],
@@ -760,7 +760,7 @@ const SERVICES = {
   eid_prep: {
     nameAr: 'تحضير العيد',
     nameEn: 'Eid Preparation',
-    emoji: '🎊',
+    emoji: '',
     description: 'باقة متكاملة لتحضير إطلالة العيد — شعر، مكياج، وأظافر',
     subServices: [
       {
@@ -769,7 +769,7 @@ const SERVICES = {
         nameEn: 'Full Eid Package',
         price: 600,
         durationMin: 150,
-        emoji: '🌟',
+        emoji: '',
         precautions: 'شعر + مكياج + أظافر',
       },
       {
@@ -778,7 +778,7 @@ const SERVICES = {
         nameEn: 'Express Eid Package',
         price: 350,
         durationMin: 90,
-        emoji: '⚡',
+        emoji: '',
         precautions: 'مكياج + شعر',
       },
       {
@@ -787,7 +787,7 @@ const SERVICES = {
         nameEn: 'Eid Makeup',
         price: 250,
         durationMin: 60,
-        emoji: '💄',
+        emoji: '',
         precautions: 'إطلالة احتفالية',
       },
     ],
@@ -795,7 +795,7 @@ const SERVICES = {
   new_bride: {
     nameAr: 'العروس الجديدة',
     nameEn: 'New Bride (First Year)',
-    emoji: '💝',
+    emoji: '',
     description: 'عناية خاصة للسنة الأولى من الزواج — تألقي في كل المناسبات',
     subServices: [
       {
@@ -804,7 +804,7 @@ const SERVICES = {
         nameEn: 'First Year Package',
         price: 2500,
         durationMin: 300,
-        emoji: '💑',
+        emoji: '',
         precautions: '١٢ جلسة على مدار السنة',
       },
       {
@@ -813,7 +813,7 @@ const SERVICES = {
         nameEn: 'Romantic Dinner Look',
         price: 300,
         durationMin: 60,
-        emoji: '🌹',
+        emoji: '',
         precautions: '',
       },
       {
@@ -822,7 +822,7 @@ const SERVICES = {
         nameEn: 'Pre-Honeymoon Prep',
         price: 500,
         durationMin: 120,
-        emoji: '🏖️',
+        emoji: '️',
         precautions: 'باقة شاملة للسفر',
       },
     ],
@@ -830,7 +830,7 @@ const SERVICES = {
   student_beauty: {
     nameAr: 'عناية الطالبات',
     nameEn: 'Student Beauty',
-    emoji: '📚',
+    emoji: '',
     description: 'خدمات تجميل بأسعار مخفضة للطالبات الجامعيات',
     subServices: [
       {
@@ -839,7 +839,7 @@ const SERVICES = {
         nameEn: 'Student Facial',
         price: 80,
         durationMin: 30,
-        emoji: '✨',
+        emoji: '',
         precautions: 'سعر مخفض للطالبات',
       },
       {
@@ -848,7 +848,7 @@ const SERVICES = {
         nameEn: 'Graduation Makeup',
         price: 150,
         durationMin: 45,
-        emoji: '🎓',
+        emoji: '',
         precautions: '',
       },
       {
@@ -857,7 +857,7 @@ const SERVICES = {
         nameEn: 'Student Manicure',
         price: 50,
         durationMin: 25,
-        emoji: '💅',
+        emoji: '',
         precautions: 'سعر مخفض',
       },
     ],
@@ -865,7 +865,7 @@ const SERVICES = {
   fresh_start: {
     nameAr: 'بداية جديدة',
     nameEn: 'Fresh Start Glow Up',
-    emoji: '🦋',
+    emoji: '',
     description: 'باقات تجميل لبداية جديدة— تدللي واستعيدي ثقتكِ بنفسكِ',
     subServices: [
       {
@@ -874,7 +874,7 @@ const SERVICES = {
         nameEn: 'Fresh Start Package',
         price: 800,
         durationMin: 180,
-        emoji: '🌟',
+        emoji: '',
         precautions: 'شعر + بشرة + مكياج + أظافر',
       },
       {
@@ -883,7 +883,7 @@ const SERVICES = {
         nameEn: 'Style Transformation',
         price: 350,
         durationMin: 90,
-        emoji: '✨',
+        emoji: '',
         precautions: 'استشارة شاملة',
       },
       {
@@ -892,7 +892,7 @@ const SERVICES = {
         nameEn: 'Pampering Session',
         price: 400,
         durationMin: 120,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'مساج + عناية بالبشرة',
       },
     ],
@@ -900,7 +900,7 @@ const SERVICES = {
   athlete_beauty: {
     nameAr: 'عناية الرياضيات',
     nameEn: 'Athlete Woman Beauty',
-    emoji: '🏃‍♀️',
+    emoji: '‍️',
     description: 'خدمات عناية مصممة للمرأة النشطة — بعد التمرين وقبل المنافسات',
     subServices: [
       {
@@ -909,7 +909,7 @@ const SERVICES = {
         nameEn: 'Sports Massage',
         price: 300,
         durationMin: 60,
-        emoji: '💪',
+        emoji: '',
         precautions: 'مثالي بعد التمرين',
       },
       {
@@ -918,7 +918,7 @@ const SERVICES = {
         nameEn: 'Sweat-Proof Facial',
         price: 220,
         durationMin: 45,
-        emoji: '💦',
+        emoji: '',
         precautions: 'منتجات مقاومة للتعرق',
       },
       {
@@ -927,7 +927,7 @@ const SERVICES = {
         nameEn: 'Athletic Pedicure',
         price: 150,
         durationMin: 35,
-        emoji: '🦶',
+        emoji: '',
         precautions: 'عناية بالأقدام المتعبة',
       },
     ],
@@ -935,7 +935,7 @@ const SERVICES = {
   chronic_care: {
     nameAr: 'عناية المريضات',
     nameEn: 'Chronic Illness Care',
-    emoji: '💜',
+    emoji: '',
     description: 'خدمات تجميل لطيفة للنساء المصابات بأمراض مزمنة — عناية برفق',
     subServices: [
       {
@@ -944,7 +944,7 @@ const SERVICES = {
         nameEn: 'Gentle Massage',
         price: 250,
         durationMin: 45,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'ضغط خفيف جداً',
       },
       {
@@ -953,7 +953,7 @@ const SERVICES = {
         nameEn: 'Soothing Facial',
         price: 200,
         durationMin: 40,
-        emoji: '🌸',
+        emoji: '',
         precautions: 'منتجات مضادة للحساسية',
       },
       {
@@ -962,7 +962,7 @@ const SERVICES = {
         nameEn: 'Relaxation Session',
         price: 180,
         durationMin: 50,
-        emoji: '🧘‍♀️',
+        emoji: '‍️',
         precautions: 'بدون مجهود',
       },
     ],
@@ -970,7 +970,7 @@ const SERVICES = {
   plus_size_beauty: {
     nameAr: 'جمال المرأة الممتلئة',
     nameEn: 'Plus Size Beauty',
-    emoji: '💖',
+    emoji: '',
     description: 'خدمات تجميل شاملة للمرأة الممتلئة — كل جسم جميل',
     subServices: [
       {
@@ -979,7 +979,7 @@ const SERVICES = {
         nameEn: 'Plus Size Massage',
         price: 300,
         durationMin: 60,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'طاولة واسعة',
       },
       {
@@ -988,7 +988,7 @@ const SERVICES = {
         nameEn: 'Body-Positive Facial',
         price: 220,
         durationMin: 45,
-        emoji: '✨',
+        emoji: '',
         precautions: 'منتجات مناسبة',
       },
       {
@@ -997,7 +997,7 @@ const SERVICES = {
         nameEn: 'Volumizing Styling',
         price: 200,
         durationMin: 45,
-        emoji: '💇‍♀️',
+        emoji: '‍️',
         precautions: 'تسريحات تناسب الوجه',
       },
     ],
@@ -1005,7 +1005,7 @@ const SERVICES = {
   natural_beauty: {
     nameAr: 'الجمال الطبيعي',
     nameEn: 'Natural Beauty',
-    emoji: '🌿',
+    emoji: '',
     description: 'خدمات تجميل ١٠٠٪ طبيعية — بدون أي مواد كيميائية',
     subServices: [
       {
@@ -1014,7 +1014,7 @@ const SERVICES = {
         nameEn: 'Organic Facial',
         price: 250,
         durationMin: 50,
-        emoji: '🌱',
+        emoji: '',
         precautions: 'منتجات عضوية معتمدة',
       },
       {
@@ -1023,7 +1023,7 @@ const SERVICES = {
         nameEn: 'Natural Hair Dye',
         price: 300,
         durationMin: 90,
-        emoji: '🍂',
+        emoji: '',
         precautions: 'حناء وأعشاب طبيعية',
       },
       {
@@ -1032,7 +1032,7 @@ const SERVICES = {
         nameEn: 'Natural Face Mask',
         price: 120,
         durationMin: 25,
-        emoji: '🥑',
+        emoji: '',
         precautions: 'مكونات طازجة',
       },
       {
@@ -1041,7 +1041,7 @@ const SERVICES = {
         nameEn: 'Essential Oil Therapy',
         price: 180,
         durationMin: 40,
-        emoji: '🌸',
+        emoji: '',
         precautions: 'زيوت نقية ١٠٠٪',
       },
     ],
@@ -1049,7 +1049,7 @@ const SERVICES = {
   luxury_spa: {
     nameAr: 'يوم سبا فاخر',
     nameEn: 'Luxury Spa Day',
-    emoji: '👑',
+    emoji: '',
     description: 'تجربة سبا فاخرة — يوم كامل من التدليل والرفاهية',
     subServices: [
       {
@@ -1058,7 +1058,7 @@ const SERVICES = {
         nameEn: 'Royal Spa Day',
         price: 2500,
         durationMin: 360,
-        emoji: '👸',
+        emoji: '',
         precautions: 'باقة كاملة ٦ ساعات',
       },
       {
@@ -1067,7 +1067,7 @@ const SERVICES = {
         nameEn: 'Half-Day Spa',
         price: 1200,
         durationMin: 180,
-        emoji: '💎',
+        emoji: '',
         precautions: 'مساج + عناية + غداء',
       },
       {
@@ -1076,7 +1076,7 @@ const SERVICES = {
         nameEn: 'Evening Spa',
         price: 800,
         durationMin: 120,
-        emoji: '🌆',
+        emoji: '',
         precautions: 'مساج + عشاء خفيف',
       },
     ],
@@ -1084,7 +1084,7 @@ const SERVICES = {
   homemaker_beauty: {
     nameAr: 'عناية ربات البيوت',
     nameEn: 'Homemaker Beauty',
-    emoji: '🏠',
+    emoji: '',
     description: 'باقات عناية تناسب جدول ربة المنزل — سريعة وفعالة',
     subServices: [
       {
@@ -1093,7 +1093,7 @@ const SERVICES = {
         nameEn: 'Homemaker Package',
         price: 350,
         durationMin: 90,
-        emoji: '🏡',
+        emoji: '',
         precautions: 'شعر + أظافر + بشرة',
       },
       {
@@ -1102,7 +1102,7 @@ const SERVICES = {
         nameEn: 'Hand Care Treatment',
         price: 120,
         durationMin: 30,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'للأيدي المتعبة من العمل',
       },
       {
@@ -1111,7 +1111,7 @@ const SERVICES = {
         nameEn: 'At-Home Relaxation',
         price: 400,
         durationMin: 120,
-        emoji: '🛋️',
+        emoji: '️',
         precautions: 'زيارة منزلية',
       },
     ],
@@ -1119,7 +1119,7 @@ const SERVICES = {
   cancer_survivor: {
     nameAr: 'عناية المتعافيات',
     nameEn: 'Cancer Survivor Beauty',
-    emoji: '🎗️',
+    emoji: '️',
     description: 'خدمات تجميل لطيفة للمتعافيات من السرطان — عناية بكل حب',
     subServices: [
       {
@@ -1128,7 +1128,7 @@ const SERVICES = {
         nameEn: 'Ultra-Gentle Facial',
         price: 220,
         durationMin: 40,
-        emoji: '🌸',
+        emoji: '',
         precautions: 'منتجات خالية من المهيجات',
       },
       {
@@ -1137,7 +1137,7 @@ const SERVICES = {
         nameEn: 'Gentle Hair Styling',
         price: 180,
         durationMin: 35,
-        emoji: '💇‍♀️',
+        emoji: '‍️',
         precautions: 'للشعر الخفيف',
       },
       {
@@ -1146,7 +1146,7 @@ const SERVICES = {
         nameEn: 'Beauty Support Session',
         price: 200,
         durationMin: 50,
-        emoji: '💝',
+        emoji: '',
         precautions: 'دعم وتشجيع',
       },
     ],
@@ -1154,7 +1154,7 @@ const SERVICES = {
   single_mother: {
     nameAr: 'عناية الأم العزباء',
     nameEn: 'Single Mother Beauty',
-    emoji: '💪',
+    emoji: '',
     description: 'خدمات سريعة وبأسعار مناسبة للأمهات العازبات — أنتِ تستحقين',
     subServices: [
       {
@@ -1163,7 +1163,7 @@ const SERVICES = {
         nameEn: 'Single Mom Package',
         price: 250,
         durationMin: 75,
-        emoji: '💝',
+        emoji: '',
         precautions: 'شعر + بشرة + أظافر',
       },
       {
@@ -1172,7 +1172,7 @@ const SERVICES = {
         nameEn: 'Evening Service',
         price: 150,
         durationMin: 30,
-        emoji: '🌙',
+        emoji: '',
         precautions: 'بعد نوم الأطفال',
       },
       {
@@ -1181,7 +1181,7 @@ const SERVICES = {
         nameEn: 'Quick Relaxation',
         price: 100,
         durationMin: 25,
-        emoji: '☕',
+        emoji: '',
         precautions: 'استراحة أمومة',
       },
     ],
@@ -1189,7 +1189,7 @@ const SERVICES = {
   accessible_beauty: {
     nameAr: 'عناية ذوات الاحتياجات',
     nameEn: 'Accessible Beauty',
-    emoji: '♿',
+    emoji: '',
     description: 'خدمات تجميل مهيأة لذوات الاحتياجات الخاصة — وصول سهل وراحة تامة',
     subServices: [
       {
@@ -1198,7 +1198,7 @@ const SERVICES = {
         nameEn: 'Accessible Beauty Session',
         price: 250,
         durationMin: 60,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'مداخل واسعة وكراسي متحركة',
       },
       {
@@ -1207,7 +1207,7 @@ const SERVICES = {
         nameEn: 'Home Visit Service',
         price: 350,
         durationMin: 90,
-        emoji: '🏠',
+        emoji: '',
         precautions: 'الفنية تأتي إليكِ',
       },
       {
@@ -1216,7 +1216,7 @@ const SERVICES = {
         nameEn: 'Beauty Consultation',
         price: 100,
         durationMin: 30,
-        emoji: '💬',
+        emoji: '',
         precautions: 'منتجات مناسبة لاحتياجاتكِ',
       },
     ],
@@ -1224,7 +1224,7 @@ const SERVICES = {
   diabetic_care: {
     nameAr: 'عناية مريضات السكر',
     nameEn: 'Diabetic-Safe Beauty',
-    emoji: '💉',
+    emoji: '',
     description: 'خدمات آمنة لمريضات السكري — عناية بالأقدام والبشرة الحساسة',
     subServices: [
       {
@@ -1233,7 +1233,7 @@ const SERVICES = {
         nameEn: 'Diabetic-Safe Pedicure',
         price: 200,
         durationMin: 45,
-        emoji: '🦶',
+        emoji: '',
         precautions: 'تعقيم طبي وتعامل لطيف',
       },
       {
@@ -1242,7 +1242,7 @@ const SERVICES = {
         nameEn: 'Foot Care Treatment',
         price: 250,
         durationMin: 50,
-        emoji: '👣',
+        emoji: '',
         precautions: 'ترطيب مكثف بدون جروح',
       },
       {
@@ -1251,7 +1251,7 @@ const SERVICES = {
         nameEn: 'Gentle Skincare',
         price: 180,
         durationMin: 40,
-        emoji: '✨',
+        emoji: '',
         precautions: 'منتجات طبية آمنة',
       },
     ],
@@ -1268,7 +1268,7 @@ const SERVICES = {
         nameEn: 'Back & Shoulder Massage',
         price: 200,
         durationMin: 40,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'لتخفيف آلام الوقوف الطويل',
       },
       {
@@ -1277,7 +1277,7 @@ const SERVICES = {
         nameEn: 'Healthcare Hand Care',
         price: 150,
         durationMin: 30,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'للأيدي المتعبة من الغسيل المتكرر',
       },
       {
@@ -1286,7 +1286,7 @@ const SERVICES = {
         nameEn: 'Quick Recovery Session',
         price: 180,
         durationMin: 35,
-        emoji: '⚡',
+        emoji: '',
         precautions: 'قبل أو بعد المناوبة',
       },
     ],
@@ -1294,7 +1294,7 @@ const SERVICES = {
   teacher_beauty: {
     nameAr: 'عناية المعلمات',
     nameEn: 'Teacher Beauty',
-    emoji: '🍎',
+    emoji: '',
     description: 'خدمات تناسب جدول المعلمات — بعد الدوام المدرسي وفي العطل',
     subServices: [
       {
@@ -1303,7 +1303,7 @@ const SERVICES = {
         nameEn: 'Teacher Package',
         price: 300,
         durationMin: 90,
-        emoji: '📚',
+        emoji: '',
         precautions: 'شعر + بشرة + أظافر',
       },
       {
@@ -1312,7 +1312,7 @@ const SERVICES = {
         nameEn: 'Voice & Throat Care',
         price: 120,
         durationMin: 30,
-        emoji: '🗣️',
+        emoji: '️',
         precautions: 'مساج واسترخاء',
       },
       {
@@ -1321,7 +1321,7 @@ const SERVICES = {
         nameEn: 'School Day Look',
         price: 150,
         durationMin: 40,
-        emoji: '💄',
+        emoji: '',
         precautions: 'مكياج طبيعي خفيف',
       },
     ],
@@ -1329,7 +1329,7 @@ const SERVICES = {
   entrepreneur_beauty: {
     nameAr: 'عناية رائدات الأعمال',
     nameEn: 'Entrepreneur Woman Beauty',
-    emoji: '💼',
+    emoji: '',
     description: 'إطلالات قوية للمرأة القيادية — مظهر يعكس نجاحكِ',
     subServices: [
       {
@@ -1338,7 +1338,7 @@ const SERVICES = {
         nameEn: 'Power Look Package',
         price: 500,
         durationMin: 120,
-        emoji: '👩‍💼',
+        emoji: '‍',
         precautions: 'مكياج + شعر + استشارة',
       },
       {
@@ -1347,7 +1347,7 @@ const SERVICES = {
         nameEn: 'Meeting Ready Look',
         price: 300,
         durationMin: 60,
-        emoji: '📊',
+        emoji: '',
         precautions: 'إطلالة احترافية',
       },
       {
@@ -1356,7 +1356,7 @@ const SERVICES = {
         nameEn: 'Business Travel Package',
         price: 400,
         durationMin: 90,
-        emoji: '✈️',
+        emoji: '️',
         precautions: 'إطلالة تدوم طوال اليوم',
       },
     ],
@@ -1364,7 +1364,7 @@ const SERVICES = {
   night_shift_beauty: {
     nameAr: 'عناية الليليات',
     nameEn: 'Night Shift Beauty',
-    emoji: '🌙',
+    emoji: '',
     description: 'خدمات تناسب العاملات ليلاً — مواعيد صباحية ومسائية مرنة',
     subServices: [
       {
@@ -1373,7 +1373,7 @@ const SERVICES = {
         nameEn: 'Post-Shift Recovery',
         price: 250,
         durationMin: 60,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'للاسترخاء بعد ليلة عمل',
       },
       {
@@ -1382,7 +1382,7 @@ const SERVICES = {
         nameEn: 'Dark Circle Treatment',
         price: 180,
         durationMin: 30,
-        emoji: '👁️',
+        emoji: '️',
         precautions: 'لإخفاء آثار السهر',
       },
       {
@@ -1391,7 +1391,7 @@ const SERVICES = {
         nameEn: 'Night Worker Bundle',
         price: 350,
         durationMin: 100,
-        emoji: '🌃',
+        emoji: '',
         precautions: 'مساج + بشرة + استرخاء',
       },
     ],
@@ -1399,7 +1399,7 @@ const SERVICES = {
   grandmother_beauty: {
     nameAr: 'عناية الجدات',
     nameEn: 'Grandmother Beauty (60+)',
-    emoji: '👵',
+    emoji: '',
     description: 'عناية لطيفة وراقية للأمهات الكبيرات — لأن الجمال ليس له عمر',
     subServices: [
       {
@@ -1408,7 +1408,7 @@ const SERVICES = {
         nameEn: 'Grandmother Package',
         price: 350,
         durationMin: 100,
-        emoji: '💐',
+        emoji: '',
         precautions: 'شعر + بشرة + أظافر',
       },
       {
@@ -1417,7 +1417,7 @@ const SERVICES = {
         nameEn: 'Senior Skincare',
         price: 250,
         durationMin: 50,
-        emoji: '✨',
+        emoji: '',
         precautions: 'ترطيب عميق',
       },
       {
@@ -1426,7 +1426,7 @@ const SERVICES = {
         nameEn: 'Grandma-Granddaughter',
         price: 500,
         durationMin: 150,
-        emoji: '👩‍👧',
+        emoji: '‍',
         precautions: 'جلسة مشتركة مميزة',
       },
     ],
@@ -1434,7 +1434,7 @@ const SERVICES = {
   mother_of_bride: {
     nameAr: 'عناية أم العروس',
     nameEn: 'Mother of the Bride',
-    emoji: '👩‍👧',
+    emoji: '‍',
     description: 'إطلالة مميزة لأم العروس في يوم الزفاف — أنتِ نجمة أيضاً',
     subServices: [
       {
@@ -1443,7 +1443,7 @@ const SERVICES = {
         nameEn: 'MOB Complete Look',
         price: 600,
         durationMin: 150,
-        emoji: '👑',
+        emoji: '',
         precautions: 'مكياج + شعر + بشرة',
       },
       {
@@ -1452,7 +1452,7 @@ const SERVICES = {
         nameEn: 'MOB Package',
         price: 1200,
         durationMin: 250,
-        emoji: '💎',
+        emoji: '',
         precautions: '٣ جلسات قبل الزفاف',
       },
       {
@@ -1461,7 +1461,7 @@ const SERVICES = {
         nameEn: 'MOB Makeup Trial',
         price: 300,
         durationMin: 60,
-        emoji: '💄',
+        emoji: '',
         precautions: 'جلسة تجربة',
       },
     ],
@@ -1469,7 +1469,7 @@ const SERVICES = {
   baby_shower: {
     nameAr: 'عناية الحامل قبل الولادة',
     nameEn: 'Baby Shower Beauty',
-    emoji: '🎀',
+    emoji: '',
     description: 'إطلالة متألقة لحفل استقبال المولود — احتفلي بقرب وصول طفلكِ',
     subServices: [
       {
@@ -1478,7 +1478,7 @@ const SERVICES = {
         nameEn: 'Baby Shower Look',
         price: 300,
         durationMin: 90,
-        emoji: '🤰',
+        emoji: '',
         precautions: 'مكياج + شعر',
       },
       {
@@ -1487,7 +1487,7 @@ const SERVICES = {
         nameEn: 'Mama-to-Be Package',
         price: 450,
         durationMin: 150,
-        emoji: '🎁',
+        emoji: '',
         precautions: 'مساج حمل + عناية + مكياج',
       },
       {
@@ -1496,7 +1496,7 @@ const SERVICES = {
         nameEn: 'Baby Shower Henna',
         price: 200,
         durationMin: 50,
-        emoji: '🌿',
+        emoji: '',
         precautions: 'حناء طبيعية آمنة',
       },
     ],
@@ -1504,7 +1504,7 @@ const SERVICES = {
   bridal_party: {
     nameAr: 'وصيفات العروس',
     nameEn: 'Bridal Party Beauty',
-    emoji: '👯‍♀️',
+    emoji: '‍️',
     description: 'باقات جماعية لوصيفات العروس — إطلالات متناسقة بأفضل الأسعار',
     subServices: [
       {
@@ -1513,7 +1513,7 @@ const SERVICES = {
         nameEn: 'Bridesmaid Trio',
         price: 750,
         durationMin: 180,
-        emoji: '💝',
+        emoji: '',
         precautions: '٣ إطلالات متطابقة',
       },
       {
@@ -1522,7 +1522,7 @@ const SERVICES = {
         nameEn: 'Bridesmaid Group (5)',
         price: 1200,
         durationMin: 300,
-        emoji: '🌸',
+        emoji: '',
         precautions: '٥ إطلالات',
       },
       {
@@ -1531,7 +1531,7 @@ const SERVICES = {
         nameEn: 'Single Bridesmaid',
         price: 280,
         durationMin: 60,
-        emoji: '💄',
+        emoji: '',
         precautions: 'إطلالة فردية',
       },
     ],
@@ -1539,7 +1539,7 @@ const SERVICES = {
   retirement_beauty: {
     nameAr: 'عناية المتقاعدات',
     nameEn: 'Retirement Beauty',
-    emoji: '🏖️',
+    emoji: '️',
     description: 'باقات عناية للمرأة بعد التقاعد — اكتشفي نفسكِ من جديد',
     subServices: [
       {
@@ -1548,7 +1548,7 @@ const SERVICES = {
         nameEn: 'Retirement Package',
         price: 600,
         durationMin: 150,
-        emoji: '🌺',
+        emoji: '',
         precautions: 'تجديد شامل',
       },
       {
@@ -1557,7 +1557,7 @@ const SERVICES = {
         nameEn: 'Lifestyle Consultation',
         price: 250,
         durationMin: 60,
-        emoji: '💬',
+        emoji: '',
         precautions: 'روتين جديد',
       },
       {
@@ -1566,7 +1566,7 @@ const SERVICES = {
         nameEn: 'Retirement Relaxation',
         price: 350,
         durationMin: 90,
-        emoji: '🧘‍♀️',
+        emoji: '‍️',
         precautions: 'يوم تدليل',
       },
     ],
@@ -1574,7 +1574,7 @@ const SERVICES = {
   expat_beauty: {
     nameAr: 'عناية الوافدات',
     nameEn: 'Expat Woman Beauty',
-    emoji: '🌍',
+    emoji: '',
     description: 'خدمات تجميل ترحيبية للوافدات إلى المملكة — أهلاً بكِ',
     subServices: [
       {
@@ -1583,7 +1583,7 @@ const SERVICES = {
         nameEn: 'Welcome Package',
         price: 400,
         durationMin: 120,
-        emoji: '🤝',
+        emoji: '',
         precautions: 'تعريف بالمنتجات المحلية',
       },
       {
@@ -1592,7 +1592,7 @@ const SERVICES = {
         nameEn: 'Climate Adaptation',
         price: 200,
         durationMin: 45,
-        emoji: '☀️',
+        emoji: '️',
         precautions: 'عناية مناسبة للمناخ',
       },
       {
@@ -1601,7 +1601,7 @@ const SERVICES = {
         nameEn: 'Saudi Look',
         price: 300,
         durationMin: 60,
-        emoji: '🇸🇦',
+        emoji: '',
         precautions: 'مكياج خليجي',
       },
     ],
@@ -1609,7 +1609,7 @@ const SERVICES = {
   police_firefighter: {
     nameAr: 'عناية البطلات',
     nameEn: 'Women in Uniform Beauty',
-    emoji: '👮‍♀️',
+    emoji: '‍️',
     description: 'خدمات عناية للعاملات في المجالات العسكرية والأمنية — أنتن بطلات',
     subServices: [
       {
@@ -1618,7 +1618,7 @@ const SERVICES = {
         nameEn: 'Deep Muscle Recovery',
         price: 280,
         durationMin: 60,
-        emoji: '💪',
+        emoji: '',
         precautions: 'للاسترخاء بعد المهام',
       },
       {
@@ -1627,7 +1627,7 @@ const SERVICES = {
         nameEn: 'Quick Beauty Refresh',
         price: 150,
         durationMin: 30,
-        emoji: '⚡',
+        emoji: '',
         precautions: 'قبل أو بعد الدوام',
       },
       {
@@ -1636,7 +1636,7 @@ const SERVICES = {
         nameEn: 'Hero Package',
         price: 450,
         durationMin: 120,
-        emoji: '🎖️',
+        emoji: '️',
         precautions: 'مساج + بشرة + شعر',
       },
     ],
@@ -1644,7 +1644,7 @@ const SERVICES = {
   journalist_beauty: {
     nameAr: 'عناية الإعلاميات',
     nameEn: 'Media Woman Beauty',
-    emoji: '🎤',
+    emoji: '',
     description: 'إطلالات جاهزة للكاميرا — للصحفيات والمذيعات والمؤثرات',
     subServices: [
       {
@@ -1653,7 +1653,7 @@ const SERVICES = {
         nameEn: 'Camera-Ready Makeup',
         price: 350,
         durationMin: 60,
-        emoji: '📺',
+        emoji: '',
         precautions: 'يدوم تحت الأضواء',
       },
       {
@@ -1662,7 +1662,7 @@ const SERVICES = {
         nameEn: 'Interview Look',
         price: 250,
         durationMin: 50,
-        emoji: '🎙️',
+        emoji: '️',
         precautions: 'طبيعي واحترافي',
       },
       {
@@ -1671,7 +1671,7 @@ const SERVICES = {
         nameEn: 'Media Appearance Pack',
         price: 500,
         durationMin: 100,
-        emoji: '🌟',
+        emoji: '',
         precautions: 'مكياج + شعر + استشارة',
       },
     ],
@@ -1679,7 +1679,7 @@ const SERVICES = {
   artist_beauty: {
     nameAr: 'عناية الفنانات',
     nameEn: 'Artist Woman Beauty',
-    emoji: '🎨',
+    emoji: '',
     description: 'خدمات تجميل للفنانات والمبدعات — لأن الإبداع يبدأ من داخلكِ',
     subServices: [
       {
@@ -1688,7 +1688,7 @@ const SERVICES = {
         nameEn: 'Gallery Opening Look',
         price: 350,
         durationMin: 60,
-        emoji: '🖼️',
+        emoji: '️',
         precautions: 'إطلالة فنية مميزة',
       },
       {
@@ -1697,7 +1697,7 @@ const SERVICES = {
         nameEn: 'Artist Hand Care',
         price: 180,
         durationMin: 35,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'للرسامات والنحاتات',
       },
       {
@@ -1706,7 +1706,7 @@ const SERVICES = {
         nameEn: 'Inspiration Session',
         price: 250,
         durationMin: 80,
-        emoji: '✨',
+        emoji: '',
         precautions: 'مساج + تأمل + إبداع',
       },
     ],
@@ -1714,7 +1714,7 @@ const SERVICES = {
   tech_woman: {
     nameAr: 'عناية التقنيات',
     nameEn: 'Tech Woman Beauty',
-    emoji: '💻',
+    emoji: '',
     description: 'خدمات تجميل للمبرمجات والمهندسات — لأن التقنية والجمال معاً',
     subServices: [
       {
@@ -1723,7 +1723,7 @@ const SERVICES = {
         nameEn: 'Screen-Time Eye Care',
         price: 200,
         durationMin: 35,
-        emoji: '👁️',
+        emoji: '️',
         precautions: 'لتخفيف إجهاد الشاشات',
       },
       {
@@ -1732,7 +1732,7 @@ const SERVICES = {
         nameEn: 'Tech Neck Massage',
         price: 220,
         durationMin: 40,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'لتخفيف آلام الجلوس',
       },
       {
@@ -1741,7 +1741,7 @@ const SERVICES = {
         nameEn: 'Techie Manicure',
         price: 130,
         durationMin: 30,
-        emoji: '💅',
+        emoji: '',
         precautions: 'أظافر قصيرة وعملية',
       },
     ],
@@ -1749,7 +1749,7 @@ const SERVICES = {
   nomad_beauty: {
     nameAr: 'جمال البدويات',
     nameEn: 'Bedouin Woman Beauty',
-    emoji: '🐪',
+    emoji: '',
     description: 'خدمات تجميل تقليدية مستوحاة من تراث البادية — أصالة وجمال',
     subServices: [
       {
@@ -1758,7 +1758,7 @@ const SERVICES = {
         nameEn: 'Bedouin Henna',
         price: 250,
         durationMin: 60,
-        emoji: '🌿',
+        emoji: '',
         precautions: 'نقوش تقليدية أصيلة',
       },
       {
@@ -1767,7 +1767,7 @@ const SERVICES = {
         nameEn: 'Bedouin Herbal Mix',
         price: 200,
         durationMin: 50,
-        emoji: '🌵',
+        emoji: '',
         precautions: 'أعشاب صحراوية',
       },
       {
@@ -1776,7 +1776,7 @@ const SERVICES = {
         nameEn: 'Bedouin Look',
         price: 300,
         durationMin: 75,
-        emoji: '🏜️',
+        emoji: '️',
         precautions: 'مكياج + حناء + عطور',
       },
     ],
@@ -1784,7 +1784,7 @@ const SERVICES = {
   kbeauty_inspired: {
     nameAr: 'جمال كوري',
     nameEn: 'K-Beauty Inspired',
-    emoji: '🇰🇷',
+    emoji: '',
     description: 'إطلالات مستوحاة من الجمال الكوري — نضارة وإشراقة',
     subServices: [
       {
@@ -1793,7 +1793,7 @@ const SERVICES = {
         nameEn: 'K-Beauty Routine',
         price: 280,
         durationMin: 60,
-        emoji: '✨',
+        emoji: '',
         precautions: '١٠ خطوات للعناية',
       },
       {
@@ -1802,7 +1802,7 @@ const SERVICES = {
         nameEn: 'K-Beauty Makeup',
         price: 250,
         durationMin: 50,
-        emoji: '💄',
+        emoji: '',
         precautions: 'إطلالة طبيعية ناعمة',
       },
       {
@@ -1811,7 +1811,7 @@ const SERVICES = {
         nameEn: 'Korean Sheet Mask',
         price: 100,
         durationMin: 20,
-        emoji: '🎭',
+        emoji: '',
         precautions: 'ورق كوري أصلي',
       },
     ],
@@ -1819,7 +1819,7 @@ const SERVICES = {
   eco_beauty: {
     nameAr: 'الجمال المستدام',
     nameEn: 'Eco-Conscious Beauty',
-    emoji: '🌍',
+    emoji: '',
     description: 'خدمات تجميل صديقة للبيئة — جميلة أنتِ وجميلة الأرض',
     subServices: [
       {
@@ -1828,7 +1828,7 @@ const SERVICES = {
         nameEn: 'Eco-Friendly Facial',
         price: 250,
         durationMin: 50,
-        emoji: '🌱',
+        emoji: '',
         precautions: 'منتجات قابلة للتحلل',
       },
       {
@@ -1837,7 +1837,7 @@ const SERVICES = {
         nameEn: 'Plant-Based Hair Color',
         price: 300,
         durationMin: 90,
-        emoji: '🍃',
+        emoji: '',
         precautions: 'خالي من الأمونيا',
       },
       {
@@ -1846,7 +1846,7 @@ const SERVICES = {
         nameEn: 'Green Package',
         price: 450,
         durationMin: 120,
-        emoji: '♻️',
+        emoji: '️',
         precautions: 'بصمة كربونية منخفضة',
       },
     ],
@@ -1854,7 +1854,7 @@ const SERVICES = {
   volunteer_beauty: {
     nameAr: 'عناية المتطوعات',
     nameEn: 'Volunteer Woman Beauty',
-    emoji: '🤝',
+    emoji: '',
     description: 'خدمات مخصصة للمتطوعات — شكراً لعطائكِ',
     subServices: [
       {
@@ -1863,7 +1863,7 @@ const SERVICES = {
         nameEn: 'Volunteer Package',
         price: 200,
         durationMin: 75,
-        emoji: '💝',
+        emoji: '',
         precautions: 'خصم خاص للمتطوعات',
       },
       {
@@ -1872,7 +1872,7 @@ const SERVICES = {
         nameEn: 'Relaxation Session',
         price: 150,
         durationMin: 45,
-        emoji: '🧘‍♀️',
+        emoji: '‍️',
         precautions: 'بعد يوم تطوعي',
       },
       {
@@ -1881,7 +1881,7 @@ const SERVICES = {
         nameEn: 'Charity Event Look',
         price: 180,
         durationMin: 50,
-        emoji: '🎗️',
+        emoji: '️',
         precautions: 'لحضور الفعاليات',
       },
     ],
@@ -1889,7 +1889,7 @@ const SERVICES = {
   gamer_beauty: {
     nameAr: 'عناية اللاعبات',
     nameEn: 'Gamer Girl Beauty',
-    emoji: '🎮',
+    emoji: '',
     description: 'خدمات تجميل لمحبات الألعاب — إطلالات مستوحاة من عالم الألعاب',
     subServices: [
       {
@@ -1898,7 +1898,7 @@ const SERVICES = {
         nameEn: 'Gamer Nail Art',
         price: 180,
         durationMin: 40,
-        emoji: '💅',
+        emoji: '',
         precautions: 'تصاميم شخصيات الألعاب',
       },
       {
@@ -1907,7 +1907,7 @@ const SERVICES = {
         nameEn: 'Gamer Eye Care',
         price: 150,
         durationMin: 30,
-        emoji: '👁️',
+        emoji: '️',
         precautions: 'لتخفيف إجهاد الشاشة',
       },
       {
@@ -1916,7 +1916,7 @@ const SERVICES = {
         nameEn: 'Tournament Look',
         price: 250,
         durationMin: 50,
-        emoji: '🏆',
+        emoji: '',
         precautions: 'للظهور في البطولات',
       },
     ],
@@ -1924,7 +1924,7 @@ const SERVICES = {
   writer_beauty: {
     nameAr: 'عناية الكاتبات',
     nameEn: 'Writer Woman Beauty',
-    emoji: '✍️',
+    emoji: '️',
     description: 'خدمات تجميل للكاتبات والمؤلفات — لأن الكلمات الجميلة تبدأ من روح جميلة',
     subServices: [
       {
@@ -1933,7 +1933,7 @@ const SERVICES = {
         nameEn: 'Writing Session',
         price: 200,
         durationMin: 60,
-        emoji: '📝',
+        emoji: '',
         precautions: 'مساج + وقت كتابة',
       },
       {
@@ -1942,7 +1942,7 @@ const SERVICES = {
         nameEn: 'Book Signing Look',
         price: 300,
         durationMin: 60,
-        emoji: '📚',
+        emoji: '',
         precautions: 'إطلالة أدبية راقية',
       },
       {
@@ -1951,7 +1951,7 @@ const SERVICES = {
         nameEn: 'Writer Hand Care',
         price: 150,
         durationMin: 30,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'للأيدي المتعبة من الكتابة',
       },
     ],
@@ -1959,7 +1959,7 @@ const SERVICES = {
   photographer_beauty: {
     nameAr: 'عناية المصورات',
     nameEn: 'Photographer Woman Beauty',
-    emoji: '📷',
+    emoji: '',
     description: 'خدمات تجميل للمصورات — لأنكِ خلف الكاميرا تستحقين الظهور',
     subServices: [
       {
@@ -1968,7 +1968,7 @@ const SERVICES = {
         nameEn: 'Behind-the-Lens Look',
         price: 280,
         durationMin: 55,
-        emoji: '📸',
+        emoji: '',
         precautions: 'للمناسبات الخاصة',
       },
       {
@@ -1977,7 +1977,7 @@ const SERVICES = {
         nameEn: 'Photographer Hand Care',
         price: 150,
         durationMin: 30,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'للأيدي الحاملة للكاميرا',
       },
       {
@@ -1986,7 +1986,7 @@ const SERVICES = {
         nameEn: 'Shoulder Massage',
         price: 200,
         durationMin: 35,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'لتخفيف حمل المعدات',
       },
     ],
@@ -1994,7 +1994,7 @@ const SERVICES = {
   chef_beauty: {
     nameAr: 'عناية الطباخات',
     nameEn: 'Chef Woman Beauty',
-    emoji: '👩‍🍳',
+    emoji: '‍',
     description: 'خدمات تجميل للطباخات والشيفات — لأن المطبخ والجمال يلتقيان',
     subServices: [
       {
@@ -2003,7 +2003,7 @@ const SERVICES = {
         nameEn: 'Chef Hand Care',
         price: 180,
         durationMin: 35,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'ترطيب مكثف',
       },
       {
@@ -2012,7 +2012,7 @@ const SERVICES = {
         nameEn: 'Heat-Resistant Facial',
         price: 220,
         durationMin: 45,
-        emoji: '🔥',
+        emoji: '',
         precautions: 'للبشرة المعرضة للحرارة',
       },
       {
@@ -2021,7 +2021,7 @@ const SERVICES = {
         nameEn: 'Restaurant Look',
         price: 250,
         durationMin: 50,
-        emoji: '🍽️',
+        emoji: '️',
         precautions: 'للظهور في المطعم',
       },
     ],
@@ -2029,7 +2029,7 @@ const SERVICES = {
   dancer_beauty: {
     nameAr: 'عناية الراقصات',
     nameEn: 'Dancer Woman Beauty',
-    emoji: '💃',
+    emoji: '',
     description: 'خدمات تجميل للراقصات — مرونة وجمال في كل حركة',
     subServices: [
       {
@@ -2038,7 +2038,7 @@ const SERVICES = {
         nameEn: 'Flexibility Massage',
         price: 300,
         durationMin: 60,
-        emoji: '🤸‍♀️',
+        emoji: '‍️',
         precautions: 'زيوت دافئة',
       },
       {
@@ -2047,7 +2047,7 @@ const SERVICES = {
         nameEn: 'Performance Look',
         price: 350,
         durationMin: 70,
-        emoji: '🎭',
+        emoji: '',
         precautions: 'مكياج يدوم طويلاً',
       },
       {
@@ -2056,7 +2056,7 @@ const SERVICES = {
         nameEn: 'Dancer Foot Care',
         price: 200,
         durationMin: 40,
-        emoji: '🦶',
+        emoji: '',
         precautions: 'للأقدام المتعبة',
       },
     ],
@@ -2064,7 +2064,7 @@ const SERVICES = {
   designer_beauty: {
     nameAr: 'عناية المصممات',
     nameEn: 'Fashion Designer Beauty',
-    emoji: '👗',
+    emoji: '',
     description: 'خدمات تجميل لمصممات الأزياء — لأن الأناقة تبدأ منكِ',
     subServices: [
       {
@@ -2073,7 +2073,7 @@ const SERVICES = {
         nameEn: 'Fashion Show Look',
         price: 400,
         durationMin: 80,
-        emoji: '👠',
+        emoji: '',
         precautions: 'إطلالة راقية',
       },
       {
@@ -2082,7 +2082,7 @@ const SERVICES = {
         nameEn: 'Color Consultation',
         price: 250,
         durationMin: 50,
-        emoji: '🎨',
+        emoji: '',
         precautions: 'تحليل ألوان البشرة',
       },
       {
@@ -2091,7 +2091,7 @@ const SERVICES = {
         nameEn: 'Designer Package',
         price: 600,
         durationMin: 150,
-        emoji: '✨',
+        emoji: '',
         precautions: 'شعر + مكياج + أظافر',
       },
     ],
@@ -2099,7 +2099,7 @@ const SERVICES = {
   florist_beauty: {
     nameAr: 'عناية بائعات الزهور',
     nameEn: 'Florist Woman Beauty',
-    emoji: '💐',
+    emoji: '',
     description: 'خدمات تجميل لمحبات وبائعات الزهور — جمال الطبيعة في عنايتكِ',
     subServices: [
       {
@@ -2108,7 +2108,7 @@ const SERVICES = {
         nameEn: 'Florist Hand Care',
         price: 150,
         durationMin: 30,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'ترميم الأيدي المتعبة',
       },
       {
@@ -2117,7 +2117,7 @@ const SERVICES = {
         nameEn: 'Flowers & Facial',
         price: 350,
         durationMin: 90,
-        emoji: '🌸',
+        emoji: '',
         precautions: 'باقة ورد + عناية بالبشرة',
       },
       {
@@ -2126,7 +2126,7 @@ const SERVICES = {
         nameEn: 'Shop Look',
         price: 200,
         durationMin: 45,
-        emoji: '🏪',
+        emoji: '',
         precautions: 'إطلالة منعشة',
       },
     ],
@@ -2134,7 +2134,7 @@ const SERVICES = {
   interpreter_beauty: {
     nameAr: 'عناية المترجمات',
     nameEn: 'Interpreter Woman Beauty',
-    emoji: '🗣️',
+    emoji: '️',
     description: 'خدمات عناية للمترجمات — لأن صوتكِ الجميل يستحق إطلالة أجمل',
     subServices: [
       {
@@ -2143,7 +2143,7 @@ const SERVICES = {
         nameEn: 'Voice Care',
         price: 150,
         durationMin: 30,
-        emoji: '🎤',
+        emoji: '',
         precautions: 'مساج حنجرة وأعشاب',
       },
       {
@@ -2152,7 +2152,7 @@ const SERVICES = {
         nameEn: 'Conference Look',
         price: 300,
         durationMin: 60,
-        emoji: '🏛️',
+        emoji: '️',
         precautions: 'احترافية وأنيقة',
       },
       {
@@ -2161,7 +2161,7 @@ const SERVICES = {
         nameEn: 'Interpreter Relaxation',
         price: 220,
         durationMin: 50,
-        emoji: '🧘‍♀️',
+        emoji: '‍️',
         precautions: 'لتخفيف ضغط العمل',
       },
     ],
@@ -2169,7 +2169,7 @@ const SERVICES = {
   musician_beauty: {
     nameAr: 'عناية الموسيقيات',
     nameEn: 'Musician Woman Beauty',
-    emoji: '🎵',
+    emoji: '',
     description: 'خدمات تجميل للموسيقيات — لأن الموسيقى والجمال لحن واحد',
     subServices: [
       {
@@ -2178,7 +2178,7 @@ const SERVICES = {
         nameEn: 'Musician Hand Care',
         price: 200,
         durationMin: 35,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'للعازفات على الآلات',
       },
       {
@@ -2187,7 +2187,7 @@ const SERVICES = {
         nameEn: 'Concert Look',
         price: 350,
         durationMin: 70,
-        emoji: '🎼',
+        emoji: '',
         precautions: 'مكياج + شعر',
       },
       {
@@ -2196,7 +2196,7 @@ const SERVICES = {
         nameEn: 'Musician Relaxation',
         price: 250,
         durationMin: 50,
-        emoji: '🎶',
+        emoji: '',
         precautions: 'بعد البروفات',
       },
     ],
@@ -2204,7 +2204,7 @@ const SERVICES = {
   actress_beauty: {
     nameAr: 'عناية الممثلات',
     nameEn: 'Actress Woman Beauty',
-    emoji: '🎭',
+    emoji: '',
     description: 'خدمات تجميل للممثلات — من خشبة المسرح للشاشة',
     subServices: [
       {
@@ -2213,7 +2213,7 @@ const SERVICES = {
         nameEn: 'Stage Makeup',
         price: 400,
         durationMin: 75,
-        emoji: '🎪',
+        emoji: '',
         precautions: 'يدوم تحت الأضواء',
       },
       {
@@ -2222,7 +2222,7 @@ const SERVICES = {
         nameEn: 'Premiere Look',
         price: 500,
         durationMin: 90,
-        emoji: '🌟',
+        emoji: '',
         precautions: 'إطلالة السجادة الحمراء',
       },
       {
@@ -2231,7 +2231,7 @@ const SERVICES = {
         nameEn: 'Actor Skincare',
         price: 280,
         durationMin: 50,
-        emoji: '✨',
+        emoji: '',
         precautions: 'للبشرة بعد المكياج الثقيل',
       },
     ],
@@ -2239,7 +2239,7 @@ const SERVICES = {
   architect_beauty: {
     nameAr: 'عناية المعماريات',
     nameEn: 'Architect Woman Beauty',
-    emoji: '🏗️',
+    emoji: '️',
     description: 'خدمات تجميل للمعماريات — لأنكِ تصممين الجمال حولكِ',
     subServices: [
       {
@@ -2248,7 +2248,7 @@ const SERVICES = {
         nameEn: 'Architect Hand Care',
         price: 180,
         durationMin: 30,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'للأيدي العاملة على المخططات',
       },
       {
@@ -2257,7 +2257,7 @@ const SERVICES = {
         nameEn: 'Project Pitch Look',
         price: 300,
         durationMin: 60,
-        emoji: '📐',
+        emoji: '',
         precautions: 'احترافية وواثقة',
       },
       {
@@ -2266,7 +2266,7 @@ const SERVICES = {
         nameEn: 'Back Massage',
         price: 250,
         durationMin: 45,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'لتخفيف آلام الجلوس',
       },
     ],
@@ -2274,7 +2274,7 @@ const SERVICES = {
   pilot_beauty: {
     nameAr: 'عناية الطيارات',
     nameEn: 'Pilot Woman Beauty',
-    emoji: '✈️',
+    emoji: '️',
     description: 'خدمات تجميل للطيارات والمضيفات — الجمال في الأجواء',
     subServices: [
       {
@@ -2283,7 +2283,7 @@ const SERVICES = {
         nameEn: 'Hydration Facial',
         price: 250,
         durationMin: 50,
-        emoji: '💧',
+        emoji: '',
         precautions: 'لبشرة الطائرة الجافة',
       },
       {
@@ -2292,7 +2292,7 @@ const SERVICES = {
         nameEn: 'Flight Ready Look',
         price: 200,
         durationMin: 40,
-        emoji: '🛫',
+        emoji: '',
         precautions: 'يدوم طوال الرحلة',
       },
       {
@@ -2301,7 +2301,7 @@ const SERVICES = {
         nameEn: 'Transit Relaxation',
         price: 300,
         durationMin: 60,
-        emoji: '🌍',
+        emoji: '',
         precautions: 'بين الرحلات',
       },
     ],
@@ -2309,7 +2309,7 @@ const SERVICES = {
   farmer_beauty: {
     nameAr: 'عناية المزارعات',
     nameEn: 'Farmer Woman Beauty',
-    emoji: '👩‍🌾',
+    emoji: '‍',
     description: 'خدمات تجميل للمرأة العاملة في الأرض — جمال الطبيعة',
     subServices: [
       {
@@ -2318,7 +2318,7 @@ const SERVICES = {
         nameEn: 'Farmer Hand Care',
         price: 180,
         durationMin: 35,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'ترميم وترطيب عميق',
       },
       {
@@ -2327,7 +2327,7 @@ const SERVICES = {
         nameEn: 'Natural Facial',
         price: 200,
         durationMin: 45,
-        emoji: '🌾',
+        emoji: '',
         precautions: 'منتجات من الطبيعة',
       },
       {
@@ -2336,7 +2336,7 @@ const SERVICES = {
         nameEn: 'Back Massage',
         price: 250,
         durationMin: 50,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'لتخفيف آلام العمل',
       },
     ],
@@ -2344,7 +2344,7 @@ const SERVICES = {
   librarian_beauty: {
     nameAr: 'عناية أمينات المكتبات',
     nameEn: 'Librarian Woman Beauty',
-    emoji: '📚',
+    emoji: '',
     description: 'خدمات تجميل لأمينات المكتبات — أناقة المعرفة',
     subServices: [
       {
@@ -2353,7 +2353,7 @@ const SERVICES = {
         nameEn: 'Quiet Elegance Look',
         price: 200,
         durationMin: 45,
-        emoji: '📖',
+        emoji: '',
         precautions: 'مكياج ناعم',
       },
       {
@@ -2362,7 +2362,7 @@ const SERVICES = {
         nameEn: 'Reading Relaxation',
         price: 300,
         durationMin: 80,
-        emoji: '☕',
+        emoji: '',
         precautions: 'مساج + كتاب + شاي',
       },
       {
@@ -2371,7 +2371,7 @@ const SERVICES = {
         nameEn: 'Librarian Hand Care',
         price: 150,
         durationMin: 30,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'للأيدي المتعاملة مع الكتب',
       },
     ],
@@ -2379,7 +2379,7 @@ const SERVICES = {
   sailor_beauty: {
     nameAr: 'عناية البحريات',
     nameEn: 'Sailor Woman Beauty',
-    emoji: '⚓',
+    emoji: '',
     description: 'خدمات تجميل للعاملات في البحر — جمال يقاوم الملوحة',
     subServices: [
       {
@@ -2388,7 +2388,7 @@ const SERVICES = {
         nameEn: 'Salt-Resistant Facial',
         price: 280,
         durationMin: 50,
-        emoji: '🌊',
+        emoji: '',
         precautions: 'حماية من海水',
       },
       {
@@ -2397,7 +2397,7 @@ const SERVICES = {
         nameEn: 'Marine Hair Care',
         price: 250,
         durationMin: 55,
-        emoji: '💇‍♀️',
+        emoji: '‍️',
         precautions: 'ترميم من أضرار الملوحة',
       },
       {
@@ -2406,7 +2406,7 @@ const SERVICES = {
         nameEn: 'Marine Massage',
         price: 300,
         durationMin: 60,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'بأملاح البحر الميت',
       },
     ],
@@ -2414,7 +2414,7 @@ const SERVICES = {
   veterinarian_beauty: {
     nameAr: 'عناية الطبيبات البيطريات',
     nameEn: 'Veterinarian Beauty',
-    emoji: '🐾',
+    emoji: '',
     description: 'خدمات تجميل للطبيبات البيطريات — لأنكِ تعتنين بالجميع إلا نفسكِ',
     subServices: [
       {
@@ -2423,7 +2423,7 @@ const SERVICES = {
         nameEn: 'Vet Hand Care',
         price: 200,
         durationMin: 35,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'تعقيم وترميم',
       },
       {
@@ -2432,7 +2432,7 @@ const SERVICES = {
         nameEn: 'Back Recovery Massage',
         price: 280,
         durationMin: 50,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'لتخفيف آلام الانحناء',
       },
       {
@@ -2441,7 +2441,7 @@ const SERVICES = {
         nameEn: 'Veterinarian Package',
         price: 400,
         durationMin: 100,
-        emoji: '🐱',
+        emoji: '',
         precautions: 'مساج + بشرة + أظافر',
       },
     ],
@@ -2449,7 +2449,7 @@ const SERVICES = {
   pharmacist_beauty: {
     nameAr: 'عناية الصيدلانيات',
     nameEn: 'Pharmacist Woman Beauty',
-    emoji: '💊',
+    emoji: '',
     description: 'خدمات تجميل للصيدلانيات — أنتِ خبيرة التركيبات',
     subServices: [
       {
@@ -2458,7 +2458,7 @@ const SERVICES = {
         nameEn: 'Pharmacist Hand Care',
         price: 180,
         durationMin: 30,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'ترميم من جفاف المعقمات',
       },
       {
@@ -2467,7 +2467,7 @@ const SERVICES = {
         nameEn: 'Pharmacy Look',
         price: 200,
         durationMin: 45,
-        emoji: '💄',
+        emoji: '',
         precautions: 'مكياج خفيف وطبيعي',
       },
       {
@@ -2476,7 +2476,7 @@ const SERVICES = {
         nameEn: 'Post-Shift Relaxation',
         price: 250,
         durationMin: 55,
-        emoji: '🧘‍♀️',
+        emoji: '‍️',
         precautions: 'بعد وقوف طويل',
       },
     ],
@@ -2484,7 +2484,7 @@ const SERVICES = {
   dentist_beauty: {
     nameAr: 'عناية طبيبات الأسنان',
     nameEn: 'Dentist Woman Beauty',
-    emoji: '🦷',
+    emoji: '',
     description: 'خدمات تجميل لطبيبات الأسنان — ابتسامة جميلة تستحقينها',
     subServices: [
       {
@@ -2493,7 +2493,7 @@ const SERVICES = {
         nameEn: 'Dentist Hand Care',
         price: 200,
         durationMin: 35,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'للأيدي الدقيقة',
       },
       {
@@ -2502,7 +2502,7 @@ const SERVICES = {
         nameEn: 'Neck & Shoulder Massage',
         price: 250,
         durationMin: 45,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'لتخفيف آلام الانحناء',
       },
       {
@@ -2511,7 +2511,7 @@ const SERVICES = {
         nameEn: 'Clinic Look',
         price: 280,
         durationMin: 55,
-        emoji: '😁',
+        emoji: '',
         precautions: 'احترافية وأنيقة',
       },
     ],
@@ -2519,7 +2519,7 @@ const SERVICES = {
   psychologist_beauty: {
     nameAr: 'عناية المعالجات النفسيات',
     nameEn: 'Psychologist Woman Beauty',
-    emoji: '🧠',
+    emoji: '',
     description: 'خدمات عناية للمعالجات النفسيات — لأنكِ تستمعين للجميع، استمعي لجسدكِ',
     subServices: [
       {
@@ -2528,7 +2528,7 @@ const SERVICES = {
         nameEn: 'Deep Relaxation',
         price: 300,
         durationMin: 60,
-        emoji: '🧘‍♀️',
+        emoji: '‍️',
         precautions: 'لتفريغ الطاقة',
       },
       {
@@ -2537,7 +2537,7 @@ const SERVICES = {
         nameEn: 'Meditation Massage',
         price: 350,
         durationMin: 75,
-        emoji: '🕯️',
+        emoji: '️',
         precautions: 'زيوت مهدئة',
       },
       {
@@ -2546,7 +2546,7 @@ const SERVICES = {
         nameEn: 'Practice Look',
         price: 250,
         durationMin: 50,
-        emoji: '💼',
+        emoji: '',
         precautions: 'مريحة واحترافية',
       },
     ],
@@ -2554,7 +2554,7 @@ const SERVICES = {
   dietitian_beauty: {
     nameAr: 'عناية أخصائيات التغذية',
     nameEn: 'Dietitian Woman Beauty',
-    emoji: '🥗',
+    emoji: '',
     description: 'خدمات تجميل لأخصائيات التغذية — جمال من الداخل والخارج',
     subServices: [
       {
@@ -2563,7 +2563,7 @@ const SERVICES = {
         nameEn: 'Nourishing Facial',
         price: 250,
         durationMin: 50,
-        emoji: '✨',
+        emoji: '',
         precautions: 'مكونات طبيعية',
       },
       {
@@ -2572,7 +2572,7 @@ const SERVICES = {
         nameEn: 'Health & Beauty Package',
         price: 400,
         durationMin: 100,
-        emoji: '🥑',
+        emoji: '',
         precautions: 'عناية + استشارة غذائية',
       },
       {
@@ -2581,7 +2581,7 @@ const SERVICES = {
         nameEn: 'Clinic Consultation Look',
         price: 200,
         durationMin: 45,
-        emoji: '💄',
+        emoji: '',
         precautions: 'طبيعي ومنعش',
       },
     ],
@@ -2589,7 +2589,7 @@ const SERVICES = {
   social_worker_beauty: {
     nameAr: 'عناية الأخصائيات الاجتماعيات',
     nameEn: 'Social Worker Beauty',
-    emoji: '🤲',
+    emoji: '',
     description: 'خدمات عناية للأخصائيات الاجتماعيات — لأنكِ تقدمين للآخرين كل يوم',
     subServices: [
       {
@@ -2598,7 +2598,7 @@ const SERVICES = {
         nameEn: 'Social Worker Relaxation',
         price: 220,
         durationMin: 55,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'لتخفيف الضغط',
       },
       {
@@ -2607,7 +2607,7 @@ const SERVICES = {
         nameEn: 'Giver Package',
         price: 350,
         durationMin: 100,
-        emoji: '💝',
+        emoji: '',
         precautions: 'خصم خاص',
       },
       {
@@ -2616,7 +2616,7 @@ const SERVICES = {
         nameEn: 'Field Visit Look',
         price: 180,
         durationMin: 40,
-        emoji: '🏘️',
+        emoji: '️',
         precautions: 'عملية ومريحة',
       },
     ],
@@ -2624,7 +2624,7 @@ const SERVICES = {
   physiotherapist_beauty: {
     nameAr: 'عناية المعالجات الطبيعيات',
     nameEn: 'Physiotherapist Beauty',
-    emoji: '💪',
+    emoji: '',
     description: 'خدمات تجميل للمعالجات الطبيعيات — لأنكِ تعالجين الأجسام، عالجي جسدكِ',
     subServices: [
       {
@@ -2633,7 +2633,7 @@ const SERVICES = {
         nameEn: 'Deep Tissue Massage',
         price: 300,
         durationMin: 60,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'لتخفيف إجهاد العضلات',
       },
       {
@@ -2642,7 +2642,7 @@ const SERVICES = {
         nameEn: 'Therapist Hand Care',
         price: 200,
         durationMin: 35,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'للأيدي القوية',
       },
       {
@@ -2651,7 +2651,7 @@ const SERVICES = {
         nameEn: 'Therapist Package',
         price: 450,
         durationMin: 120,
-        emoji: '🏋️‍♀️',
+        emoji: '️‍️',
         precautions: 'مساج + بشرة + أظافر',
       },
     ],
@@ -2659,7 +2659,7 @@ const SERVICES = {
   gardener_beauty: {
     nameAr: 'عناية البستانيات',
     nameEn: 'Gardener Woman Beauty',
-    emoji: '🌻',
+    emoji: '',
     description: 'خدمات تجميل لمحبات الزراعة والبستنة — جمال الطبيعة في يديكِ',
     subServices: [
       {
@@ -2668,7 +2668,7 @@ const SERVICES = {
         nameEn: 'Gardener Hand Care',
         price: 180,
         durationMin: 35,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'ترميم وترطيب عميق',
       },
       {
@@ -2677,7 +2677,7 @@ const SERVICES = {
         nameEn: 'Nature Package',
         price: 300,
         durationMin: 90,
-        emoji: '🌺',
+        emoji: '',
         precautions: 'بشرة + شعر بمنتجات نباتية',
       },
       {
@@ -2686,7 +2686,7 @@ const SERVICES = {
         nameEn: 'Garden Party Look',
         price: 250,
         durationMin: 50,
-        emoji: '🏡',
+        emoji: '',
         precautions: 'إطلالة منعشة وطبيعية',
       },
     ],
@@ -2694,7 +2694,7 @@ const SERVICES = {
   yoga_instructor: {
     nameAr: 'عناية مدربات اليوغا',
     nameEn: 'Yoga Instructor Beauty',
-    emoji: '🧘‍♀️',
+    emoji: '‍️',
     description: 'خدمات تجميل لمدربات اليوغا — توازن الجسد والروح',
     subServices: [
       {
@@ -2703,7 +2703,7 @@ const SERVICES = {
         nameEn: 'Flexibility Massage',
         price: 300,
         durationMin: 60,
-        emoji: '🤸‍♀️',
+        emoji: '‍️',
         precautions: 'زيوت أيورفيدا',
       },
       {
@@ -2712,7 +2712,7 @@ const SERVICES = {
         nameEn: 'Zen Look',
         price: 200,
         durationMin: 40,
-        emoji: '🕉️',
+        emoji: '️',
         precautions: 'مكياج طبيعي جداً',
       },
       {
@@ -2721,7 +2721,7 @@ const SERVICES = {
         nameEn: 'Meditation Session',
         price: 350,
         durationMin: 90,
-        emoji: '🕯️',
+        emoji: '️',
         precautions: 'مساج + تأمل + شاي',
       },
     ],
@@ -2729,7 +2729,7 @@ const SERVICES = {
   horse_rider: {
     nameAr: 'عناية الفارسات',
     nameEn: 'Horse Rider Beauty',
-    emoji: '🐴',
+    emoji: '',
     description: 'خدمات تجميل للفارسات وراكبات الخيل',
     subServices: [
       {
@@ -2738,7 +2738,7 @@ const SERVICES = {
         nameEn: 'Rider Back Massage',
         price: 300,
         durationMin: 60,
-        emoji: '🏇',
+        emoji: '',
         precautions: 'لتخفيف آلام الركوب',
       },
       {
@@ -2747,7 +2747,7 @@ const SERVICES = {
         nameEn: 'Rider Hand Care',
         price: 200,
         durationMin: 35,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'لليدين بعد اللجام',
       },
       {
@@ -2756,7 +2756,7 @@ const SERVICES = {
         nameEn: 'Race Day Look',
         price: 350,
         durationMin: 60,
-        emoji: '🏆',
+        emoji: '',
         precautions: 'لأيام السباقات',
       },
     ],
@@ -2764,7 +2764,7 @@ const SERVICES = {
   swimmer_beauty: {
     nameAr: 'عناية السباحات',
     nameEn: 'Swimmer Woman Beauty',
-    emoji: '🏊‍♀️',
+    emoji: '‍️',
     description: 'خدمات تجميل للسباحات — جمال يقاوم الكلور',
     subServices: [
       {
@@ -2773,7 +2773,7 @@ const SERVICES = {
         nameEn: 'Chlorine-Resistant Facial',
         price: 250,
         durationMin: 50,
-        emoji: '💧',
+        emoji: '',
         precautions: 'حماية من الكلور',
       },
       {
@@ -2782,7 +2782,7 @@ const SERVICES = {
         nameEn: 'Swimmer Hair Care',
         price: 280,
         durationMin: 55,
-        emoji: '💇‍♀️',
+        emoji: '‍️',
         precautions: 'ترميم من الكلور',
       },
       {
@@ -2791,7 +2791,7 @@ const SERVICES = {
         nameEn: 'Swimmer Muscle Massage',
         price: 300,
         durationMin: 60,
-        emoji: '💪',
+        emoji: '',
         precautions: 'استرخاء العضلات',
       },
     ],
@@ -2799,7 +2799,7 @@ const SERVICES = {
   boxer_beauty: {
     nameAr: 'عناية الملاكمات',
     nameEn: 'Boxer Woman Beauty',
-    emoji: '🥊',
+    emoji: '',
     description: 'خدمات تجميل للملاكمات — قوة وجمال',
     subServices: [
       {
@@ -2808,7 +2808,7 @@ const SERVICES = {
         nameEn: 'Deep Recovery Massage',
         price: 350,
         durationMin: 60,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'استرخاء عميق',
       },
       {
@@ -2817,7 +2817,7 @@ const SERVICES = {
         nameEn: 'Post-Training Facial',
         price: 280,
         durationMin: 50,
-        emoji: '✨',
+        emoji: '',
         precautions: 'تهدئة البشرة',
       },
       {
@@ -2826,7 +2826,7 @@ const SERVICES = {
         nameEn: 'Fight Night Look',
         price: 300,
         durationMin: 55,
-        emoji: '🏟️',
+        emoji: '️',
         precautions: 'للظهور الإعلامي',
       },
     ],
@@ -2834,7 +2834,7 @@ const SERVICES = {
   runner_beauty: {
     nameAr: 'عناية العداءات',
     nameEn: 'Runner Woman Beauty',
-    emoji: '🏃‍♀️',
+    emoji: '‍️',
     description: 'خدمات تجميل للعداءات — جمال في الحركة',
     subServices: [
       {
@@ -2843,7 +2843,7 @@ const SERVICES = {
         nameEn: 'Runner Foot Care',
         price: 250,
         durationMin: 50,
-        emoji: '🦶',
+        emoji: '',
         precautions: 'لأقدام العداءات',
       },
       {
@@ -2852,7 +2852,7 @@ const SERVICES = {
         nameEn: 'Runner Muscle Massage',
         price: 300,
         durationMin: 60,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'استرخاء بعد الماراثون',
       },
       {
@@ -2861,7 +2861,7 @@ const SERVICES = {
         nameEn: 'Race Day Look',
         price: 200,
         durationMin: 40,
-        emoji: '🏅',
+        emoji: '',
         precautions: 'للظهور في السباقات',
       },
     ],
@@ -2869,7 +2869,7 @@ const SERVICES = {
   weightlifter_beauty: {
     nameAr: 'عناية رافعات الأثقال',
     nameEn: 'Weightlifter Beauty',
-    emoji: '🏋️‍♀️',
+    emoji: '️‍️',
     description: 'خدمات تجميل لرافعات الأثقال — قوة وأنوثة',
     subServices: [
       {
@@ -2878,7 +2878,7 @@ const SERVICES = {
         nameEn: 'Deep Muscle Recovery',
         price: 350,
         durationMin: 60,
-        emoji: '💪',
+        emoji: '',
         precautions: 'استرخاء العضلات',
       },
       {
@@ -2887,7 +2887,7 @@ const SERVICES = {
         nameEn: 'Lifter Hand Care',
         price: 200,
         durationMin: 35,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'ترميم الأيدي',
       },
       {
@@ -2896,7 +2896,7 @@ const SERVICES = {
         nameEn: 'Competition Look',
         price: 300,
         durationMin: 55,
-        emoji: '🏆',
+        emoji: '',
         precautions: 'للظهور في البطولات',
       },
     ],
@@ -2904,7 +2904,7 @@ const SERVICES = {
   cyclist_beauty: {
     nameAr: 'عناية الدراجات',
     nameEn: 'Cyclist Woman Beauty',
-    emoji: '🚴‍♀️',
+    emoji: '‍️',
     description: 'خدمات تجميل لراكبات الدراجات — جمال على الطريق',
     subServices: [
       {
@@ -2913,7 +2913,7 @@ const SERVICES = {
         nameEn: 'Leg Recovery Massage',
         price: 300,
         durationMin: 55,
-        emoji: '🦵',
+        emoji: '',
         precautions: 'استرخاء بعد الدراجة',
       },
       {
@@ -2922,7 +2922,7 @@ const SERVICES = {
         nameEn: 'Wind-Resistant Facial',
         price: 250,
         durationMin: 45,
-        emoji: '🌬️',
+        emoji: '️',
         precautions: 'حماية من الرياح',
       },
       {
@@ -2931,7 +2931,7 @@ const SERVICES = {
         nameEn: 'Race Look',
         price: 200,
         durationMin: 40,
-        emoji: '🚲',
+        emoji: '',
         precautions: 'للظهور في السباقات',
       },
     ],
@@ -2939,7 +2939,7 @@ const SERVICES = {
   climber_beauty: {
     nameAr: 'عناية المتسلقات',
     nameEn: 'Climber Woman Beauty',
-    emoji: '🧗‍♀️',
+    emoji: '‍️',
     description: 'خدمات تجميل لمتسلقات الجبال — جمال القمم',
     subServices: [
       {
@@ -2948,7 +2948,7 @@ const SERVICES = {
         nameEn: 'Climber Hand Care',
         price: 220,
         durationMin: 40,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'ترميم عميق',
       },
       {
@@ -2957,7 +2957,7 @@ const SERVICES = {
         nameEn: 'Full Body Recovery',
         price: 350,
         durationMin: 60,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'استرخاء كامل',
       },
       {
@@ -2966,7 +2966,7 @@ const SERVICES = {
         nameEn: 'Summit Look',
         price: 250,
         durationMin: 45,
-        emoji: '⛰️',
+        emoji: '️',
         precautions: 'للاحتفال بالقمة',
       },
     ],
@@ -2974,7 +2974,7 @@ const SERVICES = {
   lawyer_beauty: {
     nameAr: 'عناية المحاميات',
     nameEn: 'Lawyer Woman Beauty',
-    emoji: '⚖️',
+    emoji: '️',
     description: 'إطلالات قوية للمحاميات — ثقة أمام القاضي',
     subServices: [
       {
@@ -2983,7 +2983,7 @@ const SERVICES = {
         nameEn: 'Courtroom Look',
         price: 350,
         durationMin: 65,
-        emoji: '🏛️',
+        emoji: '️',
         precautions: 'احترافية ورسمية',
       },
       {
@@ -2992,7 +2992,7 @@ const SERVICES = {
         nameEn: 'Client Meeting Look',
         price: 280,
         durationMin: 50,
-        emoji: '💼',
+        emoji: '',
         precautions: 'ثقة واحترافية',
       },
       {
@@ -3001,7 +3001,7 @@ const SERVICES = {
         nameEn: 'Post-Case Relaxation',
         price: 350,
         durationMin: 80,
-        emoji: '🧘‍♀️',
+        emoji: '‍️',
         precautions: 'لتخفيف التوتر',
       },
     ],
@@ -3009,7 +3009,7 @@ const SERVICES = {
   banker_beauty: {
     nameAr: 'عناية المصرفيات',
     nameEn: 'Banker Woman Beauty',
-    emoji: '🏦',
+    emoji: '',
     description: 'إطلالات أنيقة للمصرفيات — ثقة في كل معاملة',
     subServices: [
       {
@@ -3018,7 +3018,7 @@ const SERVICES = {
         nameEn: 'Banking Look',
         price: 300,
         durationMin: 55,
-        emoji: '💳',
+        emoji: '',
         precautions: 'أنيقة ومحترفة',
       },
       {
@@ -3027,7 +3027,7 @@ const SERVICES = {
         nameEn: 'Banker Hand Care',
         price: 200,
         durationMin: 30,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'أظافر أنيقة',
       },
       {
@@ -3036,7 +3036,7 @@ const SERVICES = {
         nameEn: 'Post-Shift Relax',
         price: 280,
         durationMin: 55,
-        emoji: '🧘‍♀️',
+        emoji: '‍️',
         precautions: 'لتخفيف الضغط',
       },
     ],
@@ -3044,7 +3044,7 @@ const SERVICES = {
   wedding_planner: {
     nameAr: 'عناية منظمات الحفلات',
     nameEn: 'Wedding Planner Beauty',
-    emoji: '💒',
+    emoji: '',
     description: 'خدمات تجميل لمنظمات الأفراح — أنتِ وراء كل زفاف جميل',
     subServices: [
       {
@@ -3053,7 +3053,7 @@ const SERVICES = {
         nameEn: 'Wedding Day Look',
         price: 350,
         durationMin: 60,
-        emoji: '👰',
+        emoji: '',
         precautions: 'للظهور يوم الزفاف',
       },
       {
@@ -3062,7 +3062,7 @@ const SERVICES = {
         nameEn: 'Back Recovery',
         price: 300,
         durationMin: 55,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'بعد يوم طويل',
       },
       {
@@ -3071,7 +3071,7 @@ const SERVICES = {
         nameEn: 'Planner Package',
         price: 500,
         durationMin: 120,
-        emoji: '💝',
+        emoji: '',
         precautions: 'شعر + مكياج + استرخاء',
       },
     ],
@@ -3079,7 +3079,7 @@ const SERVICES = {
   call_center_beauty: {
     nameAr: 'عناية موظفات الاتصالات',
     nameEn: 'Call Center Beauty',
-    emoji: '📞',
+    emoji: '',
     description: 'خدمات عناية لموظفات خدمة العملاء — صوت جميل وإطلالة أجمل',
     subServices: [
       {
@@ -3088,7 +3088,7 @@ const SERVICES = {
         nameEn: 'Voice Care Treatment',
         price: 150,
         durationMin: 30,
-        emoji: '🗣️',
+        emoji: '️',
         precautions: 'أعشاب ومرطبات',
       },
       {
@@ -3097,7 +3097,7 @@ const SERVICES = {
         nameEn: 'Neck & Head Massage',
         price: 220,
         durationMin: 40,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'لتخفيف آلام السماعة',
       },
       {
@@ -3106,7 +3106,7 @@ const SERVICES = {
         nameEn: 'Post-Shift Relaxation',
         price: 250,
         durationMin: 55,
-        emoji: '🧘‍♀️',
+        emoji: '‍️',
         precautions: 'لتفريغ ضغط المكالمات',
       },
     ],
@@ -3114,7 +3114,7 @@ const SERVICES = {
   real_estate_beauty: {
     nameAr: 'عناية العقاريات',
     nameEn: 'Real Estate Beauty',
-    emoji: '🏘️',
+    emoji: '️',
     description: 'إطلالات جاهزة للقاء العملاء — بيعي بأجمل إطلالة',
     subServices: [
       {
@@ -3123,7 +3123,7 @@ const SERVICES = {
         nameEn: 'Client Ready Look',
         price: 300,
         durationMin: 55,
-        emoji: '🤝',
+        emoji: '',
         precautions: 'واثقة وجذابة',
       },
       {
@@ -3132,7 +3132,7 @@ const SERVICES = {
         nameEn: 'Open House Look',
         price: 250,
         durationMin: 45,
-        emoji: '🏠',
+        emoji: '',
         precautions: 'منعشة وطبيعية',
       },
       {
@@ -3141,7 +3141,7 @@ const SERVICES = {
         nameEn: 'Post-Sale Relax',
         price: 350,
         durationMin: 75,
-        emoji: '🥂',
+        emoji: '',
         precautions: 'احتفال بالإنجاز',
       },
     ],
@@ -3149,7 +3149,7 @@ const SERVICES = {
   accountant_beauty: {
     nameAr: 'عناية المحاسبات',
     nameEn: 'Accountant Woman Beauty',
-    emoji: '📊',
+    emoji: '',
     description: 'خدمات عناية للمحاسبات — دقة وجمال في الأرقام',
     subServices: [
       {
@@ -3158,7 +3158,7 @@ const SERVICES = {
         nameEn: 'Back & Neck Massage',
         price: 280,
         durationMin: 50,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'لتخفيف آلام الجلوس',
       },
       {
@@ -3167,7 +3167,7 @@ const SERVICES = {
         nameEn: 'Screen-Time Eye Care',
         price: 200,
         durationMin: 30,
-        emoji: '👁️',
+        emoji: '️',
         precautions: 'لتخفيف إجهاد الأرقام',
       },
       {
@@ -3176,7 +3176,7 @@ const SERVICES = {
         nameEn: 'Tax Season Relief',
         price: 400,
         durationMin: 100,
-        emoji: '🧘‍♀️',
+        emoji: '‍️',
         precautions: 'لتخفيف ضغط الموسم',
       },
     ],
@@ -3184,7 +3184,7 @@ const SERVICES = {
   event_host_beauty: {
     nameAr: 'عناية مقدمات الحفلات',
     nameEn: 'Event Host Beauty',
-    emoji: '🎤',
+    emoji: '',
     description: 'إطلالات مبهرة لمقدمات الحفلات والمناسبات',
     subServices: [
       {
@@ -3193,7 +3193,7 @@ const SERVICES = {
         nameEn: 'Stage Look',
         price: 400,
         durationMin: 70,
-        emoji: '🎪',
+        emoji: '',
         precautions: 'يدوم تحت الأضواء',
       },
       {
@@ -3202,7 +3202,7 @@ const SERVICES = {
         nameEn: 'Event Look',
         price: 350,
         durationMin: 60,
-        emoji: '🎉',
+        emoji: '',
         precautions: 'أنيقة وجذابة',
       },
       {
@@ -3211,7 +3211,7 @@ const SERVICES = {
         nameEn: 'Voice Care',
         price: 180,
         durationMin: 30,
-        emoji: '🗣️',
+        emoji: '️',
         precautions: 'أعشاب ومرطبات للحنجرة',
       },
     ],
@@ -3219,7 +3219,7 @@ const SERVICES = {
   grandmother_bride: {
     nameAr: 'عناية الجدة العروس',
     nameEn: 'Grandmother Bride Beauty',
-    emoji: '💍',
+    emoji: '',
     description: 'عناية خاصة للجدات المتزوجات — الحب ليس له عمر',
     subServices: [
       {
@@ -3228,7 +3228,7 @@ const SERVICES = {
         nameEn: 'Wedding Look',
         price: 400,
         durationMin: 80,
-        emoji: '👰',
+        emoji: '',
         precautions: 'راقية ومناسبة للعمر',
       },
       {
@@ -3237,7 +3237,7 @@ const SERVICES = {
         nameEn: 'Grandma Bride Package',
         price: 700,
         durationMin: 160,
-        emoji: '💝',
+        emoji: '',
         precautions: 'شعر + مكياج + أظافر',
       },
       {
@@ -3246,7 +3246,7 @@ const SERVICES = {
         nameEn: 'Bridal Skincare',
         price: 300,
         durationMin: 55,
-        emoji: '✨',
+        emoji: '',
         precautions: 'ترطيب مكثف',
       },
     ],
@@ -3254,7 +3254,7 @@ const SERVICES = {
   twins_mom: {
     nameAr: 'عناية أم التوائم',
     nameEn: 'Twins Mother Beauty',
-    emoji: '👯',
+    emoji: '',
     description: 'خدمات سريعة لأمهات التوائم — لأن وقتكِ ثمين',
     subServices: [
       {
@@ -3263,7 +3263,7 @@ const SERVICES = {
         nameEn: 'Express Package',
         price: 350,
         durationMin: 60,
-        emoji: '⚡',
+        emoji: '',
         precautions: '٣ خدمات في ساعة',
       },
       {
@@ -3272,7 +3272,7 @@ const SERVICES = {
         nameEn: 'Home Visit',
         price: 500,
         durationMin: 120,
-        emoji: '🏠',
+        emoji: '',
         precautions: 'الفنية تأتي إليكِ',
       },
       {
@@ -3281,7 +3281,7 @@ const SERVICES = {
         nameEn: 'Motherhood Relaxation',
         price: 280,
         durationMin: 50,
-        emoji: '🧘‍♀️',
+        emoji: '‍️',
         precautions: 'استراحة تستحقينها',
       },
     ],
@@ -3289,7 +3289,7 @@ const SERVICES = {
   makeup_artist_self: {
     nameAr: 'عناية خبيرات التجميل',
     nameEn: 'MUA Self-Care',
-    emoji: '💄',
+    emoji: '',
     description: 'خدمات عناية لخبيرات التجميل أنفسهن — لأنكِ تستحقين العناية أيضاً',
     subServices: [
       {
@@ -3298,7 +3298,7 @@ const SERVICES = {
         nameEn: 'MUA Hand Care',
         price: 200,
         durationMin: 35,
-        emoji: '🤲',
+        emoji: '',
         precautions: 'للأيدي المبدعة',
       },
       {
@@ -3307,7 +3307,7 @@ const SERVICES = {
         nameEn: 'Back Recovery',
         price: 300,
         durationMin: 55,
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         precautions: 'بعد يوم طويل من العمل',
       },
       {
@@ -3316,7 +3316,7 @@ const SERVICES = {
         nameEn: 'MUA Package',
         price: 400,
         durationMin: 100,
-        emoji: '✨',
+        emoji: '',
         precautions: 'بشرة + شعر + أظافر',
       },
     ],
@@ -3324,7 +3324,7 @@ const SERVICES = {
   influencer_beauty: {
     nameAr: 'عناية المؤثرات',
     nameEn: 'Influencer Beauty',
-    emoji: '📱',
+    emoji: '',
     description: 'إطلالات جاهزة للتصوير — للمؤثرات وصانعات المحتوى',
     subServices: [
       {
@@ -3333,7 +3333,7 @@ const SERVICES = {
         nameEn: 'Content Shoot Look',
         price: 350,
         durationMin: 65,
-        emoji: '📸',
+        emoji: '',
         precautions: 'يدوم تحت الإضاءة',
       },
       {
@@ -3342,7 +3342,7 @@ const SERVICES = {
         nameEn: 'Story-Ready Look',
         price: 200,
         durationMin: 35,
-        emoji: '📱',
+        emoji: '',
         precautions: 'سريعة ومنعشة',
       },
       {
@@ -3351,7 +3351,7 @@ const SERVICES = {
         nameEn: 'Content Package',
         price: 600,
         durationMin: 150,
-        emoji: '🌟',
+        emoji: '',
         precautions: '٣ إطلالات في جلسة',
       },
     ],
@@ -3405,7 +3405,7 @@ export const womensServicesRouter = router({
           input.postpartumWeeks ? `أسابيع بعد الولادة: ${input.postpartumWeeks}` : null,
           input.specialNotes,
         ].filter(Boolean),
-        message: 'تم الحجز بنجاح! سنراعي جميع احتياجاتكِ الخاصة 🌸',
+        message: 'تم الحجز بنجاح! سنراعي جميع احتياجاتكِ الخاصة ',
       };
     }),
 

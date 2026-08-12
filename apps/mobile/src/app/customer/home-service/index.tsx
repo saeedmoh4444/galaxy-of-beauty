@@ -34,14 +34,14 @@ export default function HomeServiceScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🏠 خدمة منزلية</Text>
+      <Text style={styles.t}> خدمة منزلية</Text>
       <TouchableOpacity onPress={() => fetch(false)} style={styles.btn}>
-        <Text style={styles.bt}>💰 تقدير التكلفة — الرياض</Text>
+        <Text style={styles.bt}> تقدير التكلفة — الرياض</Text>
       </TouchableOpacity>
       {estimate && (
         <View style={styles.card}>
           <Text style={styles.ep}>{(estimate.totalEstimate as number)?.toLocaleString()} ر.س</Text>
-          <Text style={styles.em}>⏱️ {estimate.estimatedDuration as string}</Text>
+          <Text style={styles.em}>️ {estimate.estimatedDuration as string}</Text>
         </View>
       )}
     </ScrollView>

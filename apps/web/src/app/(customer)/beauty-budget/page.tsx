@@ -51,7 +51,7 @@ export default function BeautyBudgetPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="💰 ميزانية الجمال" subtitle="خططي لإنفاقكِ الجمالي بذكاء" />
+        <PageTitle title=" ميزانية الجمال" subtitle="خططي لإنفاقكِ الجمالي بذكاء" />
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Left column */}
           <div className="space-y-6">

@@ -40,7 +40,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          👑 برنامج الولاء
+           برنامج الولاء
         </h1>
 
         {isLoading ? (
@@ -81,14 +81,14 @@ export default function LoyaltyDashboardPage(): JSX.Element {
 
             {/* Benefits */}
             <Card padding="lg">
-              <h3 className="font-semibold mb-4">✨ مميزات عضويتكِ</h3>
+              <h3 className="font-semibold mb-4"> مميزات عضويتكِ</h3>
               <div className="space-y-2">
                 {(TIER_BENEFITS[currentTier] ?? []).map((b: string, i: number) => (
                   <div
                     key={i}
                     className="flex items-center gap-3 rounded-lg bg-surface-muted p-3 text-sm dark:bg-gray-800"
                   >
-                    <span className="text-brand-600">✓</span> {b}
+                    <span className="text-brand-600"></span> {b}
                   </div>
                 ))}
               </div>
@@ -96,7 +96,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
 
             {/* All Tiers */}
             <Card padding="lg">
-              <h3 className="font-semibold mb-4">📊 جميع المستويات</h3>
+              <h3 className="font-semibold mb-4"> جميع المستويات</h3>
               <div className="space-y-3">
                 {Object.entries(LOYALTY_TIERS).map(([key, t]) => (
                   <div

@@ -15,7 +15,7 @@ export function BeautyRelaxationCard({ className = '' }: BeautyRelaxationCardPro
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🛁</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">طقوس الاسترخاء</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">روتين مسائي للاسترخاء</p>
@@ -23,10 +23,10 @@ export function BeautyRelaxationCard({ className = '' }: BeautyRelaxationCardPro
       </div>
       <div className="mt-3 space-y-1.5">
         {[
-          { emoji: '🛁', step: 'حمام دافئ بملح إنكليزي', time: '20 دقيقة' },
-          { emoji: '🕯️', step: 'إطفاء الأضواء وإشعال شمعة', time: '—' },
-          { emoji: '🧴', step: 'ترطيب الجسم بالكامل', time: '5 دقائق' },
-          { emoji: '😴', step: 'الاستعداد للنوم العميق', time: '8 ساعات' },
+          { emoji: '', step: 'حمام دافئ بملح إنكليزي', time: '20 دقيقة' },
+          { emoji: '️', step: 'إطفاء الأضواء وإشعال شمعة', time: '—' },
+          { emoji: '', step: 'ترطيب الجسم بالكامل', time: '5 دقائق' },
+          { emoji: '', step: 'الاستعداد للنوم العميق', time: '8 ساعات' },
         ].map((s, i) => (
           <div
             key={i}

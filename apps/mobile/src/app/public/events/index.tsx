@@ -4,10 +4,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 const ET: Record<string, { label: string; emoji: string }> = {
-  workshop: { label: 'ورشة عمل', emoji: '🛠️' },
-  masterclass: { label: 'ماستر كلاس', emoji: '👩‍🏫' },
-  launch: { label: 'إطلاق منتج', emoji: '🚀' },
-  seasonal: { label: 'موسمي', emoji: '🌸' },
+  workshop: { label: 'ورشة عمل', emoji: '️' },
+  masterclass: { label: 'ماستر كلاس', emoji: '‍' },
+  launch: { label: 'إطلاق منتج', emoji: '' },
+  seasonal: { label: 'موسمي', emoji: '' },
 };
 
 export default function EventsScreen(): JSX.Element {
@@ -46,7 +46,7 @@ export default function EventsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📅 الفعاليات</Text>
+      <Text style={styles.t}> الفعاليات</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
         <View style={{ flexDirection: 'row', gap: 8 }}>
           <TouchableOpacity
@@ -69,7 +69,7 @@ export default function EventsScreen(): JSX.Element {
         </View>
       </ScrollView>
       {filtered.map((e: any) => {
-        const et = ET[e.eventType as string] ?? { label: e.eventType, emoji: '📅' };
+        const et = ET[e.eventType as string] ?? { label: e.eventType, emoji: '' };
         return (
           <View key={e.id} style={styles.card}>
             <Text style={styles.ee}>{et.emoji}</Text>

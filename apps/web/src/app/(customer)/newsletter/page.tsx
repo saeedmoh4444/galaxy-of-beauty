@@ -19,7 +19,7 @@ export default function NewsletterPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📰 النشرة البريدية</h1>
+          <h1 className="text-2xl font-bold"> النشرة البريدية</h1>
           <p className="mt-1 text-sm text-text-secondary">
             اشتركي في نشرتنا البريدية للحصول على آخر العروض والنصائح
           </p>
@@ -27,7 +27,7 @@ export default function NewsletterPage(): JSX.Element {
 
         {subscribed ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
-            <span className="text-6xl">🎉</span>
+            <span className="text-6xl"></span>
             <h2 className="mt-4 text-xl font-bold">تم الاشتراك!</h2>
             <p className="text-text-secondary">شكراً لاشتراككِ في نشرتنا البريدية</p>
           </Card>
@@ -54,7 +54,7 @@ export default function NewsletterPage(): JSX.Element {
           </Card>
         )}
 
-        <h3 className="font-bold text-lg">📬 النشرات السابقة</h3>
+        <h3 className="font-bold text-lg"> النشرات السابقة</h3>
         {isLoading ? (
           <div className="space-y-3">
             {Array.from({ length: 3 }, (_, i) => (

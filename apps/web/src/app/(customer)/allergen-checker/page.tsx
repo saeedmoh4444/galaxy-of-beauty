@@ -7,44 +7,44 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 const COMMON_ALLERGENS = [
   {
     key: 'fragrance',
-    emoji: '🌸',
+    emoji: '',
     name: 'العطور',
     risk: 'medium',
     desc: 'قد تسبب تهيج البشرة الحساسة',
   },
-  { key: 'alcohol', emoji: '🧪', name: 'الكحول', risk: 'high', desc: 'يجفف البشرة ويهيجها' },
+  { key: 'alcohol', emoji: '', name: 'الكحول', risk: 'high', desc: 'يجفف البشرة ويهيجها' },
   {
     key: 'parabens',
-    emoji: '⚠️',
+    emoji: '',
     name: 'البارابين',
     risk: 'medium',
     desc: 'مواد حافظة قد تسبب حساسية',
   },
   {
     key: 'sulfates',
-    emoji: '🧼',
+    emoji: '',
     name: 'الكبريتات',
     risk: 'high',
     desc: 'منظفات قاسية على البشرة',
   },
-  { key: 'silicones', emoji: '🔬', name: 'السيليكون', risk: 'low', desc: 'يسد المسام عند البعض' },
+  { key: 'silicones', emoji: '', name: 'السيليكون', risk: 'low', desc: 'يسد المسام عند البعض' },
   {
     key: 'essential_oils',
-    emoji: '🌿',
+    emoji: '',
     name: 'زيوت عطرية',
     risk: 'medium',
     desc: 'قد تسبب حساسية للبشرة الحساسة',
   },
   {
     key: 'lanolin',
-    emoji: '🐑',
+    emoji: '',
     name: 'اللانولين',
     risk: 'medium',
     desc: 'دهن صوفي قد يسبب حساسية',
   },
   {
     key: 'formaldehyde',
-    emoji: '☠️',
+    emoji: '️',
     name: 'الفورمالديهايد',
     risk: 'high',
     desc: 'مادة حافظة ضارة',
@@ -68,13 +68,13 @@ export default function AllergenCheckerPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🔬 فاحص الحساسية</h1>
+          <h1 className="text-2xl font-bold"> فاحص الحساسية</h1>
           <p className="mt-1 text-sm text-text-secondary">
             تجنبي المكونات اللي تسبب حساسية لبشرتكِ
           </p>
         </div>
         <Card padding="lg">
-          <h3 className="font-bold mb-4">⚠️ مسببات الحساسية لديّ</h3>
+          <h3 className="font-bold mb-4"> مسببات الحساسية لديّ</h3>
           <div className="grid gap-3 sm:grid-cols-2">
             {COMMON_ALLERGENS.map((a) => {
               const isChecked = checked.includes(a.key);
@@ -101,7 +101,7 @@ export default function AllergenCheckerPage(): JSX.Element {
           loading={saveMut.isPending}
           className="w-full"
         >
-          💾 حفظ الملف
+           حفظ الملف
         </Button>
       </div>
     </DashboardLayout>

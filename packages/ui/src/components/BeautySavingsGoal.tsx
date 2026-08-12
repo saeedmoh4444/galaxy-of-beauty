@@ -61,7 +61,7 @@ export function BeautySavingsGoal({
       <div className="flex items-center justify-between">
         <div>
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-            💎 حصالتي التجميلية
+             حصالتي التجميلية
           </h4>
           <p className="mt-0.5 text-xs text-text-tertiary dark:text-gray-400">
             ادخري لهواياتكِ الجمالية
@@ -113,7 +113,7 @@ export function BeautySavingsGoal({
                       : 'text-amber-600 dark:text-amber-400',
                   )}
                 >
-                  {remaining <= 0 ? '🎉 اكتمل!' : `باقي ${formatSAR(remaining)}`}
+                  {remaining <= 0 ? ' اكتمل!' : `باقي ${formatSAR(remaining)}`}
                 </span>
               </div>
 
@@ -145,7 +145,7 @@ export function BeautySavingsGoal({
               {goal.monthly && remaining > 0 && (
                 <div className="mt-2 flex items-center gap-2 border-t border-gray-100 pt-2 dark:border-gray-700">
                   <span className="text-[10px] text-text-tertiary dark:text-gray-500">
-                    💰 شهرياً {formatSAR(goal.monthly)}
+                     شهرياً {formatSAR(goal.monthly)}
                   </span>
                   <div className="h-1 flex-1 rounded-full bg-amber-50 dark:bg-amber-950">
                     <div
@@ -191,12 +191,12 @@ export function BeautySavingsGoal({
       {/* Footer encouragement */}
       {totalSaved < totalTarget && (
         <p className="mt-3 text-center text-[10px] text-text-tertiary dark:text-gray-500">
-          ✨ كل ريال يقرّبكِ من جمالكِ — استمري!
+           كل ريال يقرّبكِ من جمالكِ — استمري!
         </p>
       )}
       {totalSaved >= totalTarget && (
         <p className="mt-3 text-center text-[10px] font-bold text-success dark:text-green-400">
-          🎉 مبروك! حققتِ هدفكِ — استمتعي بجمالكِ!
+           مبروك! حققتِ هدفكِ — استمتعي بجمالكِ!
         </p>
       )}
     </div>

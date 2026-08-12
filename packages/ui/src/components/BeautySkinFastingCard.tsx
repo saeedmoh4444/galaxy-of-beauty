@@ -9,7 +9,7 @@ export function BeautySkinFastingCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🍃</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">صيام البشرة</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">اتركي بشرتك تتنفس</p>
@@ -17,10 +17,10 @@ export function BeautySkinFastingCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🚫', text: 'يوم في الأسبوع — بدون أي منتجات' },
-          { emoji: '💧', text: 'ماء فقط — للتنظيف' },
-          { emoji: '🧘', text: 'دعي بشرتك تتوازن طبيعياً' },
-          { emoji: '✨', text: 'مناسب لجميع أنواع البشرة' },
+          { emoji: '', text: 'يوم في الأسبوع — بدون أي منتجات' },
+          { emoji: '', text: 'ماء فقط — للتنظيف' },
+          { emoji: '', text: 'دعي بشرتك تتوازن طبيعياً' },
+          { emoji: '', text: 'مناسب لجميع أنواع البشرة' },
         ].map((t, i) => (
           <div
             key={i}

@@ -37,7 +37,7 @@ export default function ApiDocsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📚 API Docs</Text>
+      <Text style={styles.t}> API Docs</Text>
       {data && (
         <View style={styles.card}>
           <Text style={styles.ttl}>

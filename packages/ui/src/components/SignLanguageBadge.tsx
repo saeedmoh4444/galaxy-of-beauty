@@ -14,17 +14,17 @@ type SignLevel = 'basic' | 'intermediate' | 'fluent';
 
 const LEVELS: Record<SignLevel, { emoji: string; label: string; color: string }> = {
   basic: {
-    emoji: '🌱',
+    emoji: '',
     label: 'أساسي',
     color: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
   },
   intermediate: {
-    emoji: '🌿',
+    emoji: '',
     label: 'متوسط',
     color: 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300',
   },
   fluent: {
-    emoji: '🌳',
+    emoji: '',
     label: 'متقن',
     color: 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300',
   },
@@ -60,7 +60,7 @@ export function SignLanguageBadge({
       {/* Header */}
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🤟
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">لغة الإشارة متوفرة</h4>
@@ -80,7 +80,7 @@ export function SignLanguageBadge({
               className="flex items-center gap-3 rounded-xl bg-sky-50 p-3 dark:bg-sky-950"
             >
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-sm dark:bg-gray-700">
-                👩‍🎨
+                ‍
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-bold text-text-primary dark:text-gray-100">
@@ -108,13 +108,13 @@ export function SignLanguageBadge({
       {/* Advance notice */}
       <div className="mt-2 rounded-lg bg-amber-50 p-2 dark:bg-amber-950">
         <p className="text-center text-[10px] text-amber-700 dark:text-amber-300">
-          💡 يُفضل الحجز قبل {advanceNotice} لضمان توفر خبيرة لغة الإشارة
+           يُفضل الحجز قبل {advanceNotice} لضمان توفر خبيرة لغة الإشارة
         </p>
       </div>
 
       {/* Inclusivity footer */}
       <p className="mt-2 text-center text-[9px] text-sky-600 dark:text-sky-400">
-        🤟 الجمال لغة نفهمها جميعاً
+         الجمال لغة نفهمها جميعاً
       </p>
     </div>
   );

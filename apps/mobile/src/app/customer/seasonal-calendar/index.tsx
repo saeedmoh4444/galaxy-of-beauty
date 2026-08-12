@@ -4,58 +4,58 @@ import { useState } from 'react';
 const SEASONS = [
   {
     key: 'winter',
-    emoji: '❄️',
+    emoji: '️',
     name: 'الشتاء',
     months: 'ديسمبر - فبراير',
     color: '#3b82f6',
     tips: 'البشرة تميل للجفاف — ركزي على الترطيب العميق',
     services: [
-      { emoji: '🧖‍♀️', name: 'ترطيب عميق', why: 'لمكافحة جفاف الشتاء' },
-      { emoji: '💆‍♀️', name: 'مساج بالزيوت', why: 'تنشيط الدورة الدموية' },
-      { emoji: '💇‍♀️', name: 'علاج الشعر', why: 'حماية من التقصف' },
-      { emoji: '💅', name: 'أظافر شتوية', why: 'ألوان داكنة للموسم' },
+      { emoji: '‍️', name: 'ترطيب عميق', why: 'لمكافحة جفاف الشتاء' },
+      { emoji: '‍️', name: 'مساج بالزيوت', why: 'تنشيط الدورة الدموية' },
+      { emoji: '‍️', name: 'علاج الشعر', why: 'حماية من التقصف' },
+      { emoji: '', name: 'أظافر شتوية', why: 'ألوان داكنة للموسم' },
     ],
   },
   {
     key: 'spring',
-    emoji: '🌸',
+    emoji: '',
     name: 'الربيع',
     months: 'مارس - مايو',
     color: '#ec4899',
     tips: 'وقت التجديد — بشرة متجددة بعد الشتاء',
     services: [
-      { emoji: '✨', name: 'تقشير البشرة', why: 'إزالة خلايا الشتاء الميتة' },
-      { emoji: '💇‍♀️', name: 'قص الشعر', why: 'تجديد بعد جفاف الشتاء' },
-      { emoji: '💄', name: 'مكياج ربيعي', why: 'ألوان باستيل منعشة' },
-      { emoji: '🌿', name: 'علاجات طبيعية', why: 'موسم التجدد الطبيعي' },
+      { emoji: '', name: 'تقشير البشرة', why: 'إزالة خلايا الشتاء الميتة' },
+      { emoji: '‍️', name: 'قص الشعر', why: 'تجديد بعد جفاف الشتاء' },
+      { emoji: '', name: 'مكياج ربيعي', why: 'ألوان باستيل منعشة' },
+      { emoji: '', name: 'علاجات طبيعية', why: 'موسم التجدد الطبيعي' },
     ],
   },
   {
     key: 'summer',
-    emoji: '☀️',
+    emoji: '️',
     name: 'الصيف',
     months: 'يونيو - أغسطس',
     color: '#f59e0b',
     tips: 'حماية من الشمس أساسية — البشرة الدهنية تحتاج عناية',
     services: [
-      { emoji: '🧴', name: 'واقي شمس طبي', why: 'حماية من الأشعة الضارة' },
-      { emoji: '💅', name: 'باديكير صيفي', why: 'أقدام جاهزة للصيف' },
-      { emoji: '🕯️', name: 'إزالة شعر', why: 'بشرة ناعمة للبحر' },
-      { emoji: '💇‍♀️', name: 'تسريحات صيفية', why: 'شعر مريح للحر' },
+      { emoji: '', name: 'واقي شمس طبي', why: 'حماية من الأشعة الضارة' },
+      { emoji: '', name: 'باديكير صيفي', why: 'أقدام جاهزة للصيف' },
+      { emoji: '️', name: 'إزالة شعر', why: 'بشرة ناعمة للبحر' },
+      { emoji: '‍️', name: 'تسريحات صيفية', why: 'شعر مريح للحر' },
     ],
   },
   {
     key: 'autumn',
-    emoji: '🍂',
+    emoji: '',
     name: 'الخريف',
     months: 'سبتمبر - نوفمبر',
     color: '#d97706',
     tips: 'إصلاح أضرار الصيف — تحضير للشتاء',
     services: [
-      { emoji: '✨', name: 'علاج التصبغات', why: 'إصلاح أضرار شمس الصيف' },
-      { emoji: '💆‍♀️', name: 'مساج استرخاء', why: 'عودة للروتين بعد الإجازة' },
-      { emoji: '💇‍♀️', name: 'علاج الشعر', why: 'ترميم بعد ملح البحر والكلور' },
-      { emoji: '🧖‍♀️', name: 'قناع مغذي', why: 'تحضير البشرة للشتاء' },
+      { emoji: '', name: 'علاج التصبغات', why: 'إصلاح أضرار شمس الصيف' },
+      { emoji: '‍️', name: 'مساج استرخاء', why: 'عودة للروتين بعد الإجازة' },
+      { emoji: '‍️', name: 'علاج الشعر', why: 'ترميم بعد ملح البحر والكلور' },
+      { emoji: '‍️', name: 'قناع مغذي', why: 'تحضير البشرة للشتاء' },
     ],
   },
 ];
@@ -69,7 +69,7 @@ export default function SeasonalCalendarScreen(): JSX.Element {
       style={[styles.c, { backgroundColor: s.color + '10' }]}
       contentContainerStyle={styles.i}
     >
-      <Text style={[styles.t, { color: s.color }]}>📅 تقويم الجمال</Text>
+      <Text style={[styles.t, { color: s.color }]}> تقويم الجمال</Text>
       <Text style={styles.sub}>خدمات موسمية مصممة لبشرتكِ</Text>
 
       <View style={styles.tabs}>
@@ -90,10 +90,10 @@ export default function SeasonalCalendarScreen(): JSX.Element {
         <Text style={styles.cardTitle}>
           {s.name} — {s.months}
         </Text>
-        <Text style={styles.cardTip}>💡 {s.tips}</Text>
+        <Text style={styles.cardTip}> {s.tips}</Text>
       </View>
 
-      <Text style={styles.st}>💆‍♀️ خدمات الموسم</Text>
+      <Text style={styles.st}>‍️ خدمات الموسم</Text>
       {s.services.map((sv, i) => (
         <View key={i} style={styles.svc}>
           <Text style={styles.se}>{sv.emoji}</Text>
@@ -105,7 +105,7 @@ export default function SeasonalCalendarScreen(): JSX.Element {
       ))}
 
       <TouchableOpacity style={[styles.btn, { backgroundColor: s.color }]}>
-        <Text style={styles.bt}>📅 احجزي خدمات الموسم</Text>
+        <Text style={styles.bt}> احجزي خدمات الموسم</Text>
       </TouchableOpacity>
     </ScrollView>
   );

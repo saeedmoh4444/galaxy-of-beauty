@@ -11,7 +11,7 @@ const CYCLE_PHASES = [
   },
   {
     key: 'follicular',
-    emoji: '🌸',
+    emoji: '',
     name: 'الجريبي',
     days: '6-13',
     tips: [
@@ -22,14 +22,14 @@ const CYCLE_PHASES = [
   },
   {
     key: 'ovulation',
-    emoji: '✨',
+    emoji: '',
     name: 'الإباضة',
     days: '14-16',
     tips: ['البشرة في أفضل حالاتها', 'مكياج خفيف يكفي', 'وقت مثالي للمناسبات'],
   },
   {
     key: 'luteal',
-    emoji: '🌙',
+    emoji: '',
     name: 'الأصفري',
     days: '17-28',
     tips: [
@@ -49,7 +49,7 @@ export default function CycleTrackerScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>📅 متعقب الدورة</Text>
+      <Text style={styles.t}> متعقب الدورة</Text>
       <Text style={styles.sub}>توصيات جمالية حسب يوم دورتكِ</Text>
 
       <View style={styles.daySelector}>
@@ -87,7 +87,7 @@ export default function CycleTrackerScreen(): JSX.Element {
         <Text style={styles.phaseDays}>الأيام {currentPhase!.days}</Text>
       </View>
 
-      <Text style={styles.tipsTitle}>💡 توصيات الجمال</Text>
+      <Text style={styles.tipsTitle}> توصيات الجمال</Text>
       {currentPhase!.tips.map((tip, i) => (
         <View key={i} style={styles.tip}>
           <Text style={styles.tipBullet}>•</Text>
@@ -95,7 +95,7 @@ export default function CycleTrackerScreen(): JSX.Element {
         </View>
       ))}
 
-      <Text style={styles.tipsTitle}>💆‍♀️ الخدمات المناسبة</Text>
+      <Text style={styles.tipsTitle}>‍️ الخدمات المناسبة</Text>
       {[
         currentPhase!.key === 'menstrual'
           ? ['مساج استرخاء', 'ترطيب عميق', 'حمام بخار']
@@ -106,7 +106,7 @@ export default function CycleTrackerScreen(): JSX.Element {
               : ['تنظيف البشرة', 'قناع الطين', 'إزالة الرؤوس السوداء'],
       ].map((s, i) => (
         <View key={i} style={styles.svc}>
-          <Text style={styles.svcEmoji}>💆‍♀️</Text>
+          <Text style={styles.svcEmoji}>‍️</Text>
           <Text style={styles.svcName}>{s}</Text>
         </View>
       ))}

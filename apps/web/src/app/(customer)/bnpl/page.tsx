@@ -23,14 +23,14 @@ export default function BNPLPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🏦 تقسيط المدفوعات</h1>
+          <h1 className="text-2xl font-bold"> تقسيط المدفوعات</h1>
           <p className="mt-1 text-sm text-text-secondary">
             ادفعيServices على أقساط مريحة بدون فوائد
           </p>
         </div>
         {result ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
-            <span className="text-6xl">✅</span>
+            <span className="text-6xl"></span>
             <h2 className="mt-4 text-xl font-bold">تمت الموافقة!</h2>
             <p className="text-2xl font-extrabold mt-2">
               {formatCurrency(result.totalAmount as number)} ر.س
@@ -49,7 +49,7 @@ export default function BNPLPage(): JSX.Element {
               )}
             </div>
             <Button variant="ghost" className="mt-4" onClick={() => setResult(null)}>
-              🔄 إعادة
+               إعادة
             </Button>
           </Card>
         ) : (

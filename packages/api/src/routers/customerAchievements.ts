@@ -6,14 +6,14 @@ import { customerProcedure, router } from '../trpc';
 const db = prisma as any;
 
 const ACHIEVEMENTS = [
-  { key: 'first_booking', nameAr: 'أول حجز', emoji: '🎉', desc: 'أكملي أول حجز تجميل' },
-  { key: 'five_bookings', nameAr: 'خمس حجوزات', emoji: '⭐', desc: 'أكملي ٥ حجوزات' },
-  { key: 'ten_bookings', nameAr: 'عشر حجوزات', emoji: '🌟', desc: 'أكملي ١٠ حجوزات' },
-  { key: 'loyal_month', nameAr: 'الولاء الشهري', emoji: '📅', desc: 'حجز في ٣ أشهر متتالية' },
-  { key: 'big_spender', nameAr: 'مدللة', emoji: '💎', desc: 'أنفقتِ أكثر من ١٠٠٠ ر.س' },
-  { key: 'reviewer', nameAr: 'مراجعة', emoji: '📝', desc: 'كتبتِ أول مراجعة' },
-  { key: 'streak_7', nameAr: 'أسبوع متواصل', emoji: '🔥', desc: '٧ أيام متتالية من العناية' },
-  { key: 'explorer', nameAr: 'مستكشفة', emoji: '🔍', desc: 'جربتِ ٥ خدمات مختلفة' },
+  { key: 'first_booking', nameAr: 'أول حجز', emoji: '', desc: 'أكملي أول حجز تجميل' },
+  { key: 'five_bookings', nameAr: 'خمس حجوزات', emoji: '', desc: 'أكملي ٥ حجوزات' },
+  { key: 'ten_bookings', nameAr: 'عشر حجوزات', emoji: '', desc: 'أكملي ١٠ حجوزات' },
+  { key: 'loyal_month', nameAr: 'الولاء الشهري', emoji: '', desc: 'حجز في ٣ أشهر متتالية' },
+  { key: 'big_spender', nameAr: 'مدللة', emoji: '', desc: 'أنفقتِ أكثر من ١٠٠٠ ر.س' },
+  { key: 'reviewer', nameAr: 'مراجعة', emoji: '', desc: 'كتبتِ أول مراجعة' },
+  { key: 'streak_7', nameAr: 'أسبوع متواصل', emoji: '', desc: '٧ أيام متتالية من العناية' },
+  { key: 'explorer', nameAr: 'مستكشفة', emoji: '', desc: 'جربتِ ٥ خدمات مختلفة' },
 ];
 
 export const customerAchievementsRouter = router({

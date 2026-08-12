@@ -37,14 +37,14 @@ export default function SalonMapScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🗺️ خريطة الصالونات</Text>
+      <Text style={styles.t}> خريطة الصالونات</Text>
       {salons.map((s: any) => (
         <View key={s.id} style={styles.card}>
-          <Text style={styles.se}>💇‍♀️</Text>
+          <Text style={styles.se}>‍️</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.sn}>{(s.nameAr as string) ?? (s.name as string)}</Text>
-            <Text style={styles.sm}>📍 {s.city as string}</Text>
-            <Text style={styles.sr}>⭐ {(s.rating as number) ?? 0}</Text>
+            <Text style={styles.sm}> {s.city as string}</Text>
+            <Text style={styles.sr}> {(s.rating as number) ?? 0}</Text>
           </View>
           <TouchableOpacity style={styles.vb}>
             <Text style={styles.vt}>عرض</Text>

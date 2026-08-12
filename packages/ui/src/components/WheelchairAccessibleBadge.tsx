@@ -27,14 +27,14 @@ interface FeatureDef {
 }
 
 const FEATURES: Record<AccessFeature, FeatureDef> = {
-  wide_doors: { emoji: '🚪', label: 'أبواب واسعة', detail: '90 سم عرض الأبواب' },
-  elevator: { emoji: '🛗', label: 'مصعد', detail: 'مصعد يتسع للكرسي' },
-  accessible_bathroom: { emoji: '🚻', label: 'دورة مياه مجهزة', detail: 'مقابض ومساحة للكرسي' },
-  low_counter: { emoji: '📋', label: 'طاولة منخفضة', detail: 'طاولة استقبال منخفضة' },
+  wide_doors: { emoji: '', label: 'أبواب واسعة', detail: '90 سم عرض الأبواب' },
+  elevator: { emoji: '', label: 'مصعد', detail: 'مصعد يتسع للكرسي' },
+  accessible_bathroom: { emoji: '', label: 'دورة مياه مجهزة', detail: 'مقابض ومساحة للكرسي' },
+  low_counter: { emoji: '', label: 'طاولة منخفضة', detail: 'طاولة استقبال منخفضة' },
   parking: { emoji: '🅿️', label: 'موقف مخصص', detail: 'موقف قريب من المدخل' },
-  ramp: { emoji: '📐', label: 'منحدر', detail: 'منحدر بديل عن الدرج' },
-  turning_space: { emoji: '🔄', label: 'مساحة دوران', detail: 'مساحة 150 سم للدوران' },
-  staff_assistance: { emoji: '👩‍🦽', label: 'مساعدة الموظفات', detail: 'موظفات مدربات للمساعدة' },
+  ramp: { emoji: '', label: 'منحدر', detail: 'منحدر بديل عن الدرج' },
+  turning_space: { emoji: '', label: 'مساحة دوران', detail: 'مساحة 150 سم للدوران' },
+  staff_assistance: { emoji: '‍', label: 'مساعدة الموظفات', detail: 'موظفات مدربات للمساعدة' },
 };
 
 interface WheelchairAccessibleBadgeProps {
@@ -57,7 +57,7 @@ export function WheelchairAccessibleBadge({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          ♿
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">
@@ -92,7 +92,7 @@ export function WheelchairAccessibleBadge({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-blue-600 dark:text-blue-400">
-        ♿ الوصول حق للجميع — بدون استثناء
+         الوصول حق للجميع — بدون استثناء
       </p>
     </div>
   );

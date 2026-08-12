@@ -20,11 +20,11 @@ interface JustBecauseFlowersProps {
 }
 
 const BOUQUETS = [
-  { emoji: '💐', name: 'باقة ورد جوري', color: 'من حدائق الطائف' },
-  { emoji: '🌹', name: 'وردة حمراء', color: 'ملكة الزهور' },
-  { emoji: '🌸', name: 'باقة زهور الربيع', color: 'ألوان مبهجة' },
-  { emoji: '🌺', name: 'زهرة استوائية', color: 'لون دافئ' },
-  { emoji: '🌻', name: 'عباد شمس', color: 'إشراقة صفراء' },
+  { emoji: '', name: 'باقة ورد جوري', color: 'من حدائق الطائف' },
+  { emoji: '', name: 'وردة حمراء', color: 'ملكة الزهور' },
+  { emoji: '', name: 'باقة زهور الربيع', color: 'ألوان مبهجة' },
+  { emoji: '', name: 'زهرة استوائية', color: 'لون دافئ' },
+  { emoji: '', name: 'عباد شمس', color: 'إشراقة صفراء' },
 ];
 
 export function JustBecauseFlowers({
@@ -69,17 +69,17 @@ export function JustBecauseFlowers({
             أرسلنا لكِ {bouquet.name} في {lastReceived}
           </p>
           <p className="mt-0.5 text-[10px] text-rose-500 dark:text-rose-400">
-            💕 شكراً لأنكِ جزء من عائلتنا
+             شكراً لأنكِ جزء من عائلتنا
           </p>
         </div>
       ) : (
         <div className="mt-3 rounded-xl bg-rose-50 p-3 text-center dark:bg-rose-950">
           <p className="text-xs text-rose-700 dark:text-rose-300">
             {bookingsCount >= 100
-              ? '🌹 أنتِ من أكثر عميلاتنا وفاءً — توقعي مفاجأة قريباً!'
+              ? ' أنتِ من أكثر عميلاتنا وفاءً — توقعي مفاجأة قريباً!'
               : bookingsCount >= 50
-                ? '💐 أنتِ عميلة رائعة — باقة زهور في طريقها إليكِ!'
-                : '🌸 قد تصلكِ باقة زهور في أي لحظة — فقط لأنكِ رائعة'}
+                ? ' أنتِ عميلة رائعة — باقة زهور في طريقها إليكِ!'
+                : ' قد تصلكِ باقة زهور في أي لحظة — فقط لأنكِ رائعة'}
           </p>
         </div>
       )}
@@ -87,12 +87,12 @@ export function JustBecauseFlowers({
       {/* Booking counter */}
       <div className="mt-2 text-center">
         <span className="rounded-full bg-rose-50 px-3 py-1 text-[10px] font-bold text-rose-600 dark:bg-rose-950 dark:text-rose-400">
-          🎀 {bookingsCount} حجز
+           {bookingsCount} حجز
         </span>
       </div>
 
       <p className="mt-2 text-center text-[9px] text-rose-500 dark:text-rose-400">
-        💐 بعض الأيام تحتاج زهوراً — بدون سبب
+         بعض الأيام تحتاج زهوراً — بدون سبب
       </p>
     </div>
   );

@@ -25,7 +25,7 @@ export default function NailCareGuidePage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="💅 دليل العناية بالأظافر" subtitle="كل ما تحتاجينه لأظافر جميلة وصحية" />
+        <PageTitle title=" دليل العناية بالأظافر" subtitle="كل ما تحتاجينه لأظافر جميلة وصحية" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

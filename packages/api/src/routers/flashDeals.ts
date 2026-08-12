@@ -26,7 +26,7 @@ export const flashDealRouter = router({
           dealPrice: Number(d.dealPrice),
           serviceNameAr: nameJson?.ar ?? '',
           serviceNameEn: nameJson?.en ?? '',
-          serviceEmoji: service?.emoji ?? '💅',
+          serviceEmoji: service?.emoji ?? '',
         };
       }),
     );

@@ -17,10 +17,10 @@ export function BeautyStretchMarksCard({ className = '' }: { className?: string 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: 'زبدة الكاكاو — ترطيب يومي أثناء الحمل' },
-          { emoji: '💧', text: 'زيت ثمر الورد — يحسن مظهر العلامات' },
-          { emoji: '🔬', text: 'مايكرونيدلنغ — لتحفيز الكولاجين' },
-          { emoji: '⏰', text: 'العلاج المبكر — أفضل النتائج' },
+          { emoji: '', text: 'زبدة الكاكاو — ترطيب يومي أثناء الحمل' },
+          { emoji: '', text: 'زيت ثمر الورد — يحسن مظهر العلامات' },
+          { emoji: '', text: 'مايكرونيدلنغ — لتحفيز الكولاجين' },
+          { emoji: '', text: 'العلاج المبكر — أفضل النتائج' },
         ].map((t, i) => (
           <div
             key={i}

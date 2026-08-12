@@ -14,7 +14,7 @@ export default function TechWaitlistPage(): JSX.Element {
     <DashboardLayout role="TECHNICIAN">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📋 طلبات معلقة</h1>
+          <h1 className="text-2xl font-bold"> طلبات معلقة</h1>
           <p className="mt-1 text-sm text-text-secondary">الحجوزات اللي تنتظر موافقتكِ</p>
         </div>
 
@@ -26,7 +26,7 @@ export default function TechWaitlistPage(): JSX.Element {
           </div>
         ) : bookings.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">📋</p>
+            <p className="text-4xl mb-2"></p>
             <p className="text-text-secondary">مافي طلبات معلقة</p>
           </Card>
         ) : (
@@ -51,7 +51,7 @@ export default function TechWaitlistPage(): JSX.Element {
                       </p>
                     </div>
                     <span className="rounded-full bg-yellow-100 px-3 py-1 text-xs text-yellow-700">
-                      ⏳ معلق
+                       معلق
                     </span>
                   </div>
                 </Card>

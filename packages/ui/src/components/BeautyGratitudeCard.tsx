@@ -39,7 +39,7 @@ export function BeautyGratitudeCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🙏
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">
           يوميات الامتنان
@@ -49,7 +49,7 @@ export function BeautyGratitudeCard({
 
       <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
         <p className="text-lg" aria-hidden="true">
-          ✍️
+          ️
         </p>
         <p className="mt-1 text-sm font-bold leading-relaxed text-amber-800 dark:text-amber-200">
           &ldquo;{prompt}&rdquo;
@@ -61,11 +61,11 @@ export function BeautyGratitudeCard({
         onClick={onAddEntry}
         className="mt-3 w-full rounded-xl bg-amber-600 py-2.5 text-xs font-bold text-white hover:bg-amber-700 active:scale-[0.98] transition-all"
       >
-        ✍️ اكتبي اليوم
+        ️ اكتبي اليوم
       </button>
 
       <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">
-        🙏 الامتنان يجعل الجمال يدوم
+         الامتنان يجعل الجمال يدوم
       </p>
     </div>
   );

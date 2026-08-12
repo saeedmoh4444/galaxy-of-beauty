@@ -37,7 +37,7 @@ export function BeautyRoutineSwapCard({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🔄
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">تبديل الروتين</h4>
@@ -50,7 +50,7 @@ export function BeautyRoutineSwapCard({
             key={i}
             className="flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2.5 dark:bg-amber-950"
           >
-            <span className="text-sm shrink-0">{s.emoji || '🔄'}</span>
+            <span className="text-sm shrink-0">{s.emoji || ''}</span>
             <div className="flex-1 min-w-0 text-center">
               <span className="text-[10px] text-gray-400 line-through dark:text-gray-600">
                 {s.from}

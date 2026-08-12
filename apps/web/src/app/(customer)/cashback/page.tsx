@@ -25,7 +25,7 @@ export default function CashbackPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">💸 استرداد نقدي</h1>
+          <h1 className="text-2xl font-bold"> استرداد نقدي</h1>
           <p className="mt-1 text-sm text-text-secondary">كاش باك على كل حجوزاتكِ</p>
         </div>
 
@@ -59,14 +59,14 @@ export default function CashbackPage(): JSX.Element {
         {(info?.isFirstBooking as boolean) && (
           <Card padding="lg" className="border-2 border-amber-300 bg-amber-50 text-center">
             <p className="font-bold text-amber-700">
-              🎁 مكافأة أول حجز: {formatCurrency(info?.firstBookingBonus as number)} إضافية على أول
+               مكافأة أول حجز: {formatCurrency(info?.firstBookingBonus as number)} إضافية على أول
               حجز لكِ!
             </p>
           </Card>
         )}
 
         <Card padding="lg">
-          <h3 className="font-bold mb-4">📋 سجل الاسترداد</h3>
+          <h3 className="font-bold mb-4"> سجل الاسترداد</h3>
           {histLoading ? (
             <CardSkeleton />
           ) : transactions.length === 0 ? (

@@ -9,7 +9,7 @@ export function BeautyMakeupMascaraCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🖤</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">الماسكارا</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">رموش طويلة وكثيفة</p>
@@ -18,9 +18,9 @@ export function BeautyMakeupMascaraCard({ className = '' }: { className?: string
       <div className="mt-3 space-y-1">
         {[
           { emoji: '〰️', text: 'حركي العصا بشكل متعرج — من الجذور للأطراف' },
-          { emoji: '📅', text: 'جددِي الماسكارا كل 3 أشهر' },
-          { emoji: '🚫', text: 'لا تضخي الهواء في الأنبوب — يجففها' },
-          { emoji: '💧', text: 'ماسكارا مقاومة للماء = مزيل زيتي' },
+          { emoji: '', text: 'جددِي الماسكارا كل 3 أشهر' },
+          { emoji: '', text: 'لا تضخي الهواء في الأنبوب — يجففها' },
+          { emoji: '', text: 'ماسكارا مقاومة للماء = مزيل زيتي' },
         ].map((t, i) => (
           <div
             key={i}

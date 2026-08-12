@@ -49,7 +49,7 @@ export default function MarketplaceScreen(): JSX.Element {
         }}
       >
         <View>
-          <Text style={s.t}>🛍️ متجر الجمال</Text>
+          <Text style={s.t}>️ متجر الجمال</Text>
           <Text style={s.sub}>منتجات تجميل أصلية</Text>
         </View>
         <TouchableOpacity
@@ -60,21 +60,21 @@ export default function MarketplaceScreen(): JSX.Element {
             paddingVertical: 6,
           }}
         >
-          <Text>🛒 {cartCount}</Text>
+          <Text> {cartCount}</Text>
         </TouchableOpacity>
       </View>
 
       <TextInput
         value={search}
         onChangeText={setSearch}
-        placeholder="🔍 ابحثي عن منتج..."
+        placeholder=" ابحثي عن منتج..."
         style={s.inp}
         placeholderTextColor="#9ca3af"
       />
 
       {products.length === 0 && (
         <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}>🛍️</Text>
+          <Text style={{ fontSize: 40 }}>️</Text>
           <Text style={{ color: '#6b7280', marginTop: 8 }}>لا توجد منتجات</Text>
         </View>
       )}
@@ -82,7 +82,7 @@ export default function MarketplaceScreen(): JSX.Element {
       <View style={s.grid}>
         {products.map((p: any) => (
           <TouchableOpacity key={p.id} style={s.prod} onPress={() => handleAddToCart(p.id)}>
-            <Text style={{ fontSize: 36, textAlign: 'center' }}>🧴</Text>
+            <Text style={{ fontSize: 36, textAlign: 'center' }}></Text>
             <Text
               style={{ fontWeight: '600', fontSize: 13, textAlign: 'center', marginTop: 6 }}
               numberOfLines={1}
@@ -110,7 +110,7 @@ export default function MarketplaceScreen(): JSX.Element {
               }}
             >
               <Text style={{ color: '#fff', textAlign: 'center', fontSize: 12, fontWeight: '600' }}>
-                🛒 أضيفي
+                 أضيفي
               </Text>
             </View>
           </TouchableOpacity>

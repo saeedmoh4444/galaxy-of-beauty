@@ -32,7 +32,7 @@ export default function BeautyBudgetScreen(): JSX.Element {
       errorMessage="فشل تحميل الميزانية"
       onRetry={() => budget.refetch()}
     >
-      <Text style={styles.title}>💄 ميزانية الجمال</Text>
+      <Text style={styles.title}> ميزانية الجمال</Text>
       <View style={styles.card}>
         <Text style={styles.label}>الميزانية الشهرية</Text>
         <Text style={styles.amount}>{formatCurrency(Number(data?.budget ?? 0))}</Text>
@@ -40,11 +40,11 @@ export default function BeautyBudgetScreen(): JSX.Element {
       {loyalty?.data || savings?.data ? (
         <View style={styles.card}>
           {loyalty?.data && (
-            <Text style={styles.label}>⭐ نقاط الولاء: {loyalty.data.points ?? 0}</Text>
+            <Text style={styles.label}> نقاط الولاء: {loyalty.data.points ?? 0}</Text>
           )}
           {savings?.data && (
             <Text style={styles.label}>
-              💰 أهداف الادخار: {(savings.data as any[])?.length ?? 0}
+               أهداف الادخار: {(savings.data as any[])?.length ?? 0}
             </Text>
           )}
         </View>

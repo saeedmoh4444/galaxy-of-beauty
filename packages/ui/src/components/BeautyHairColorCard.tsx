@@ -9,7 +9,7 @@ export function BeautyHairColorCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🎨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">صبغ الشعر</h4>
           <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">
@@ -19,10 +19,10 @@ export function BeautyHairColorCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '🧪', label: 'اختبار الحساسية', tip: 'قبل 48 ساعة من الصبغة' },
-          { emoji: '🚫', label: 'لا تغسلي', tip: 'لا تغسلي شعرك قبل الصبغة بيوم' },
-          { emoji: '💜', label: 'شامبو بنفسجي', tip: 'للشعر الأشقر — يمنع الاصفرار' },
-          { emoji: '🧴', label: 'بلسم عميق', tip: 'بعد الصبغة — لتثبيت اللون' },
+          { emoji: '', label: 'اختبار الحساسية', tip: 'قبل 48 ساعة من الصبغة' },
+          { emoji: '', label: 'لا تغسلي', tip: 'لا تغسلي شعرك قبل الصبغة بيوم' },
+          { emoji: '', label: 'شامبو بنفسجي', tip: 'للشعر الأشقر — يمنع الاصفرار' },
+          { emoji: '', label: 'بلسم عميق', tip: 'بعد الصبغة — لتثبيت اللون' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-fuchsia-50 px-2.5 py-2 dark:bg-fuchsia-950">
             <span className="text-sm">{t.emoji}</span>

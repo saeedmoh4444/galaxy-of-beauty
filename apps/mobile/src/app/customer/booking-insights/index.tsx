@@ -46,27 +46,27 @@ export default function BookingInsightsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📊 رؤى الحجوزات</Text>
+      <Text style={styles.t}> رؤى الحجوزات</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
-          <Text style={styles.ke}>💰</Text>
+          <Text style={styles.ke}></Text>
           <Text style={styles.kv}>{totalSpent.toLocaleString()}</Text>
           <Text style={styles.kl}>ر.س إنفاق</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}>📅</Text>
+          <Text style={styles.ke}></Text>
           <Text style={[styles.kv, { color: '#2563eb' }]}>{totalBookings}</Text>
           <Text style={styles.kl}>حجز</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}>📊</Text>
+          <Text style={styles.ke}></Text>
           <Text style={[styles.kv, { color: '#059669' }]}>{avgPerBooking.toLocaleString()}</Text>
           <Text style={styles.kl}>متوسط</Text>
         </View>
       </View>
       {byCat.length > 0 && (
         <View style={styles.sec}>
-          <Text style={styles.st}>💆‍♀️ توزيع الفئات</Text>
+          <Text style={styles.st}>‍️ توزيع الفئات</Text>
           {byCat.map((cat: any, i: number) => (
             <View key={i} style={styles.cr}>
               <Text style={styles.cn}>{cat.category as string}</Text>
@@ -80,14 +80,14 @@ export default function BookingInsightsScreen(): JSX.Element {
         </View>
       )}
       <View style={styles.ic}>
-        <Text style={styles.ie}>💡</Text>
+        <Text style={styles.ie}></Text>
         <Text style={styles.it}>نصيحة ذكية</Text>
         <Text style={styles.ix}>
           {totalBookings < 5
-            ? 'احجزي ٥ خدمات للفئة الذهبية ✨'
+            ? 'احجزي ٥ خدمات للفئة الذهبية '
             : avgPerBooking > 300
-              ? 'أنتِ تستثمرين في الجودة 👑'
-              : 'احجزي باقات للخصم 📦'}
+              ? 'أنتِ تستثمرين في الجودة '
+              : 'احجزي باقات للخصم '}
         </Text>
       </View>
     </ScrollView>

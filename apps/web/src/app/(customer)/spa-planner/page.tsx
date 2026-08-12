@@ -30,7 +30,7 @@ export default function SpaPlannerPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🕯️ مخطط يوم سبا</h1>
+          <h1 className="text-2xl font-bold">️ مخطط يوم سبا</h1>
           <p className="mt-1 text-sm text-text-secondary">
             خططي ليوم سبا متكامل مع خدمات واستراحات
           </p>
@@ -38,7 +38,7 @@ export default function SpaPlannerPage(): JSX.Element {
 
         {result ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
-            <span className="text-6xl">🧖‍♀️</span>
+            <span className="text-6xl">‍️</span>
             <h2 className="mt-4 text-xl font-bold">تم تخطيط يومكِ!</h2>
             <p className="text-2xl font-extrabold text-brand-600 mt-2">
               {result.totalMin as number} دقيقة · {formatCurrency(result.totalPrice as number)} ر.س
@@ -55,13 +55,13 @@ export default function SpaPlannerPage(): JSX.Element {
               )}
             </div>
             <Button className="mt-4" onClick={() => setResult(null)}>
-              🔄 تخطيط جديد
+               تخطيط جديد
             </Button>
           </Card>
         ) : (
           <>
             <Card padding="lg">
-              <h3 className="font-bold mb-3">💆‍♀️ اختاري الخدمات</h3>
+              <h3 className="font-bold mb-3">‍️ اختاري الخدمات</h3>
               <div className="grid gap-2 sm:grid-cols-2">
                 {svcs.map((s: Record<string, unknown>) => (
                   <button
@@ -80,7 +80,7 @@ export default function SpaPlannerPage(): JSX.Element {
             </Card>
 
             <Card padding="lg">
-              <h3 className="font-bold mb-3">☕ استراحات</h3>
+              <h3 className="font-bold mb-3"> استراحات</h3>
               <div className="flex flex-wrap gap-2">
                 {brks.map((b: Record<string, unknown>) => (
                   <button
@@ -111,7 +111,7 @@ export default function SpaPlannerPage(): JSX.Element {
                 }}
                 loading={createMut.isPending}
               >
-                🕯️ خططي يومي
+                ️ خططي يومي
               </Button>
             </div>
           </>
@@ -119,7 +119,7 @@ export default function SpaPlannerPage(): JSX.Element {
 
         {plans.length > 0 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">📋 خططي السابقة</h3>
+            <h3 className="font-bold mb-3"> خططي السابقة</h3>
             <div className="space-y-2">
               {plans.map((p: Record<string, unknown>) => (
                 <div key={p.id as number} className="flex justify-between text-sm">

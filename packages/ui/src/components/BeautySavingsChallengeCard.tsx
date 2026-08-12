@@ -42,7 +42,7 @@ export function BeautySavingsChallengeCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          {challenge.emoji || '🐷'}
+          {challenge.emoji || ''}
         </span>
         <h4 className="mt-1 text-sm font-bold text-emerald-700 dark:text-emerald-300">
           {challenge.name}
@@ -94,13 +94,13 @@ export function BeautySavingsChallengeCard({
           onClick={onAddSavings}
           className="mt-3 w-full rounded-xl bg-emerald-600 py-2 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
         >
-          أضيفي {Math.min(dailyTarget, remaining)} ر.س 💰
+          أضيفي {Math.min(dailyTarget, remaining)} ر.س 
         </button>
       )}
       {remaining <= 0 && (
         <div className="mt-3 rounded-lg bg-emerald-100 p-2 text-center dark:bg-emerald-900">
           <p className="text-xs font-bold text-emerald-700 dark:text-emerald-300">
-            🎉 أكملتِ التحدي!
+             أكملتِ التحدي!
           </p>
         </div>
       )}

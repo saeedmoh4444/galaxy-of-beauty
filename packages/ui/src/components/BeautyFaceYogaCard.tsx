@@ -9,7 +9,7 @@ export function BeautyFaceYogaCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🧘</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">يوغا الوجه</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">
@@ -19,10 +19,10 @@ export function BeautyFaceYogaCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '😮', text: 'تمرين O —— افتحي فمكِ 5 ثوانٍ — 10 مرات' },
-          { emoji: '😗', text: 'تمرين القبلة —— مدي شفاهكِ للأمام — 10 مرات' },
-          { emoji: '😊', text: 'رفع الخدود —— ابتسمي بدون عيون — 15 مرة' },
-          { emoji: '⏱️', text: '5 دقائق يومياً — نتائج بعد 4-6 أسابيع' },
+          { emoji: '', text: 'تمرين O —— افتحي فمكِ 5 ثوانٍ — 10 مرات' },
+          { emoji: '', text: 'تمرين القبلة —— مدي شفاهكِ للأمام — 10 مرات' },
+          { emoji: '', text: 'رفع الخدود —— ابتسمي بدون عيون — 15 مرة' },
+          { emoji: '️', text: '5 دقائق يومياً — نتائج بعد 4-6 أسابيع' },
         ].map((t, i) => (
           <div
             key={i}

@@ -73,13 +73,13 @@ function createWorker(
   });
 
   worker.on('completed', (job) => {
-    console.log(`[Worker] ✅ ${queueName} #${job.id} completed (${job.name})`);
+    console.log(`[Worker]  ${queueName} #${job.id} completed (${job.name})`);
   });
   worker.on('failed', (job, err) => {
-    console.error(`[Worker] ❌ ${queueName} #${job?.id} failed: ${err.message}`);
+    console.error(`[Worker]  ${queueName} #${job?.id} failed: ${err.message}`);
   });
   worker.on('error', (err) => {
-    console.error(`[Worker] ⚠️ ${queueName} error: ${err.message}`);
+    console.error(`[Worker]  ${queueName} error: ${err.message}`);
   });
 
   return worker;

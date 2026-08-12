@@ -29,7 +29,7 @@ const CARE_LIBRARY: Record<
       bodyEn:
         'After color or protein treatment, wait at least 48 hours before washing to preserve color and treatment.',
       timeframe: '48h',
-      emoji: '🚿',
+      emoji: '',
     },
     {
       id: 'hair_2',
@@ -39,7 +39,7 @@ const CARE_LIBRARY: Record<
         'الكبريتات تزيل الزيوت الطبيعية وتسبب بهتان اللون. اختاري شامبو لطيف خالي من الكبريتات.',
       bodyEn: 'Sulfates strip natural oils and fade color. Choose a gentle sulfate-free shampoo.',
       timeframe: '1w',
-      emoji: '🧴',
+      emoji: '',
     },
     {
       id: 'hair_3',
@@ -49,7 +49,7 @@ const CARE_LIBRARY: Record<
       bodyEn:
         'Minimize flat iron and dryer use for a week. If needed, always use a heat protectant.',
       timeframe: '1w',
-      emoji: '🔥',
+      emoji: '',
     },
   ],
   skincare: [
@@ -62,7 +62,7 @@ const CARE_LIBRARY: Record<
       bodyEn:
         'After facial treatment, your skin is sensitive. Use SPF50 sunscreen and avoid sun for 48 hours.',
       timeframe: '48h',
-      emoji: '☀️',
+      emoji: '️',
     },
     {
       id: 'skin_2',
@@ -71,7 +71,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'تجنبي لمس الوجه أو وضع المكياج لمدة ٢٤ ساعة للسماح للمسام بالتنفس.',
       bodyEn: 'Avoid touching your face or applying makeup for 24 hours to let pores breathe.',
       timeframe: '24h',
-      emoji: '🤚',
+      emoji: '',
     },
     {
       id: 'skin_3',
@@ -80,7 +80,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'اشربي ٨-١٠ أكواب من الماء يومياً للحفاظ على ترطيب بشرتكِ من الداخل.',
       bodyEn: 'Drink 8-10 glasses of water daily to maintain skin hydration from within.',
       timeframe: 'ongoing',
-      emoji: '💧',
+      emoji: '',
     },
   ],
   makeup: [
@@ -92,7 +92,7 @@ const CARE_LIBRARY: Record<
       bodyEn:
         'Remove makeup with a gentle remover, then wash with a cleanser suitable for your skin type before bed.',
       timeframe: '24h',
-      emoji: '🧼',
+      emoji: '',
     },
     {
       id: 'makeup_2',
@@ -101,7 +101,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'بعد إزالة المكياج، طبقي مرطب غني للحفاظ على نضارة البشرة.',
       bodyEn: 'After removing makeup, apply a rich moisturizer to maintain skin freshness.',
       timeframe: '24h',
-      emoji: '✨',
+      emoji: '',
     },
   ],
   nails: [
@@ -112,7 +112,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'الماء الساخن يضعف طلاء الأظافر. استخدمي ماء فاتر وارتدي قفازات للغسيل.',
       bodyEn: 'Hot water weakens nail polish. Use lukewarm water and wear gloves for washing.',
       timeframe: '48h',
-      emoji: '🧤',
+      emoji: '',
     },
     {
       id: 'nails_2',
@@ -121,7 +121,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'ضعي زيت البشرة يومياً حول الأظافر لمنع الجفاف والتشقق.',
       bodyEn: 'Apply cuticle oil daily around nails to prevent dryness and cracking.',
       timeframe: 'ongoing',
-      emoji: '💧',
+      emoji: '',
     },
   ],
   massage: [
@@ -132,7 +132,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'المساج يحرر السموم — اشربي الكثير من الماء للمساعدة في طردها.',
       bodyEn: 'Massage releases toxins — drink plenty of water to help flush them out.',
       timeframe: '24h',
-      emoji: '💧',
+      emoji: '',
     },
     {
       id: 'massage_2',
@@ -141,7 +141,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'حمام دافئ مع أملاح إبسوم يساعد على استرخاء العضلات بعد المساج.',
       bodyEn: 'A warm bath with Epsom salts helps relax muscles after massage.',
       timeframe: '24h',
-      emoji: '🛁',
+      emoji: '',
     },
   ],
   waxing: [
@@ -152,7 +152,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'لا تقشري المنطقة المعالجة لمدة ٤٨ ساعة لتجنب التهيج.',
       bodyEn: 'Do not exfoliate the treated area for 48 hours to avoid irritation.',
       timeframe: '48h',
-      emoji: '🚫',
+      emoji: '',
     },
   ],
 };
@@ -248,18 +248,18 @@ export const postCareRouter = router({
   library: customerProcedure.query(() => ({
     categories: Object.entries(CARE_LIBRARY).map(([key, tips]) => {
       const names: Record<string, { ar: string; en: string; emoji: string }> = {
-        hair: { ar: 'الشعر', en: 'Hair', emoji: '💇‍♀️' },
-        skincare: { ar: 'البشرة', en: 'Skincare', emoji: '✨' },
-        makeup: { ar: 'المكياج', en: 'Makeup', emoji: '💄' },
-        nails: { ar: 'الأظافر', en: 'Nails', emoji: '💅' },
-        massage: { ar: 'المساج', en: 'Massage', emoji: '💆‍♀️' },
-        waxing: { ar: 'إزالة الشعر', en: 'Waxing', emoji: '🌸' },
+        hair: { ar: 'الشعر', en: 'Hair', emoji: '‍️' },
+        skincare: { ar: 'البشرة', en: 'Skincare', emoji: '' },
+        makeup: { ar: 'المكياج', en: 'Makeup', emoji: '' },
+        nails: { ar: 'الأظافر', en: 'Nails', emoji: '' },
+        massage: { ar: 'المساج', en: 'Massage', emoji: '‍️' },
+        waxing: { ar: 'إزالة الشعر', en: 'Waxing', emoji: '' },
       };
       return {
         key,
         nameAr: names[key]?.ar ?? key,
         nameEn: names[key]?.en ?? key,
-        emoji: names[key]?.emoji ?? '💆‍♀️',
+        emoji: names[key]?.emoji ?? '‍️',
         tipsCount: tips.length,
       };
     }),

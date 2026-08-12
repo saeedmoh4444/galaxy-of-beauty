@@ -11,9 +11,9 @@ export interface SalonStaffMember {
 }
 type SalonStaff = SalonStaffMember;
 const STAFF: SalonStaff[] = [
-  { id: 1, name: 'نورة العمري', role: 'خبيرة تجميل', rating: 4.9, bookingsToday: 8, emoji: '💄' },
-  { id: 2, name: 'سارة الحربي', role: 'مصففة شعر', rating: 4.8, bookingsToday: 6, emoji: '💇‍♀️' },
-  { id: 3, name: 'هند المطيري', role: 'أخصائية أظافر', rating: 4.7, bookingsToday: 5, emoji: '💅' },
+  { id: 1, name: 'نورة العمري', role: 'خبيرة تجميل', rating: 4.9, bookingsToday: 8, emoji: '' },
+  { id: 2, name: 'سارة الحربي', role: 'مصففة شعر', rating: 4.8, bookingsToday: 6, emoji: '‍️' },
+  { id: 3, name: 'هند المطيري', role: 'أخصائية أظافر', rating: 4.7, bookingsToday: 5, emoji: '' },
 ];
 
 const SALON_STATS = {
@@ -29,7 +29,7 @@ export const salonManagementRouter = router({
   dashboard: customerProcedure.query(() => SALON_STATS),
   staff: customerProcedure.query(() => STAFF),
   addStaff: customerProcedure
-    .input(z.object({ name: z.string().min(1), role: z.string(), emoji: z.string().default('👩‍🎨') }))
+    .input(z.object({ name: z.string().min(1), role: z.string(), emoji: z.string().default('‍') }))
     .mutation(async ({ input }) => {
       const s: SalonStaff = {
         id: STAFF.length + 1,

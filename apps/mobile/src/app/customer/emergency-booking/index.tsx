@@ -52,9 +52,9 @@ export default function EmergencyBookingScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}>🚨 حجز طارئ</Text>
+        <Text style={styles.t}> حجز طارئ</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}>✅</Text>
+          <Text style={styles.re}></Text>
           <Text style={styles.rt}>تم الحجز الطارئ!</Text>
           <Text style={styles.rcode}>{(result.bookingCode as string) ?? '—'}</Text>
         </View>
@@ -73,11 +73,11 @@ export default function EmergencyBookingScreen(): JSX.Element {
           />
         }
       >
-        <Text style={styles.t}>🚨 حجز طارئ</Text>
+        <Text style={styles.t}> حجز طارئ</Text>
         <Text style={styles.sub}>حجز فوري خلال ٣ ساعات — رسوم إضافية ٥٠ ر.س</Text>
         {services.slice(0, 10).map((s: any) => (
           <TouchableOpacity key={s.id} onPress={() => check(s.id)} style={styles.sc}>
-            <Text style={styles.se}>{(s.emoji as string) ?? '💆‍♀️'}</Text>
+            <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
             <Text style={styles.sn}>
               {((s.titleJson as any)?.ar as string) ?? (s.nameAr as string)}
             </Text>
@@ -89,19 +89,19 @@ export default function EmergencyBookingScreen(): JSX.Element {
   if (checking) return <SkeletonList count={4} />;
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>🚨 حجز طارئ</Text>
+      <Text style={styles.t}> حجز طارئ</Text>
       <View style={styles.ec}>
-        <Text style={styles.et}>💰 التكلفة التقديرية</Text>
+        <Text style={styles.et}> التكلفة التقديرية</Text>
         <Text style={styles.ev}>
           {(availability.totalEstimate as number)?.toLocaleString()} ر.س
         </Text>
       </View>
       {(availability.available as any[])?.map((t: any) => (
         <View key={t.technicianId} style={styles.card}>
-          <Text style={styles.te}>👩‍🎨</Text>
+          <Text style={styles.te}>‍</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.tn}>{t.name as string}</Text>
-            <Text style={styles.tm}>⭐ {t.rating as number}</Text>
+            <Text style={styles.tm}> {t.rating as number}</Text>
           </View>
           <TouchableOpacity onPress={() => book(t.technicianId, 1)} style={styles.bb}>
             <Text style={styles.bt}>احجز الآن</Text>
@@ -115,7 +115,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
         }}
         style={styles.back}
       >
-        <Text style={styles.backt}>🔄 تغيير الخدمة</Text>
+        <Text style={styles.backt}> تغيير الخدمة</Text>
       </TouchableOpacity>
     </ScrollView>
   );

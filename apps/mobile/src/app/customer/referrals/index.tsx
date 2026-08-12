@@ -23,12 +23,12 @@ export default function ReferralsScreen(): JSX.Element {
       errorMessage="فشل تحميل الإحالات"
       onRetry={() => code.refetch()}
     >
-      <Text style={styles.title}>🎁 الإحالات</Text>
+      <Text style={styles.title}> الإحالات</Text>
       <View style={styles.codeCard}>
         <Text style={styles.codeLabel}>كود الإحالة الخاص بكِ</Text>
         <Text style={styles.codeValue}>{(code.data as any)?.referralCode ?? '———'}</Text>
         <TouchableOpacity style={styles.copyBtn} onPress={() => {}}>
-          <Text style={styles.copyText}>📋 نسخ الكود</Text>
+          <Text style={styles.copyText}> نسخ الكود</Text>
         </TouchableOpacity>
       </View>
       {stats.data && (

@@ -20,7 +20,7 @@ const DEVICES: Array<{
   {
     key: 'skin_scanner',
     nameAr: 'ماسح بشرة',
-    emoji: '🔬',
+    emoji: '',
     status: 'disconnected',
     lastSync: null,
     features: ['قياس الترطيب', 'تحليل المسام', 'تقييم التجاعيد'],
@@ -28,7 +28,7 @@ const DEVICES: Array<{
   {
     key: 'led_mask',
     nameAr: 'قناع LED',
-    emoji: '😷',
+    emoji: '',
     status: 'disconnected',
     lastSync: null,
     features: ['علاج ضوء أزرق', 'علاج ضوء أحمر', 'جلسات مجدولة'],
@@ -56,6 +56,6 @@ export const iotSyncRouter = router({
       deviceKey: input.deviceKey,
       metrics: input.metrics ?? { hydration: 72, elasticity: 65, poreSize: 45 },
       timestamp: new Date().toISOString(),
-      insights: 'بشرتكِ بحالة جيدة! نسبة الترطيب ٧٢٪ — استمري على روتينكِ الحالي ✨',
+      insights: 'بشرتكِ بحالة جيدة! نسبة الترطيب ٧٢٪ — استمري على روتينكِ الحالي ',
     })),
 });

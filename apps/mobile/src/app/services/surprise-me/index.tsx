@@ -18,23 +18,23 @@ export default function SurpriseMeScreen(): JSX.Element {
   if (loading) return <SkeletonList count={3} />;
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>🎲 فاجئيني</Text>
+      <Text style={styles.t}> فاجئيني</Text>
       {!result ? (
         <View style={styles.centered}>
-          <Text style={styles.emoji}>🎰</Text>
+          <Text style={styles.emoji}></Text>
           <Text style={styles.hint}>اضغطي للاستكشاف!</Text>
           <TouchableOpacity onPress={surprise} style={styles.btn}>
-            <Text style={styles.bt}>🎲 اختر لي</Text>
+            <Text style={styles.bt}> اختر لي</Text>
           </TouchableOpacity>
         </View>
       ) : (
         <View style={styles.card}>
-          <Text style={styles.re}>{(result.emoji as string) ?? '💆‍♀️'}</Text>
+          <Text style={styles.re}>{(result.emoji as string) ?? '‍️'}</Text>
           <Text style={styles.rn}>{(result.titleJson as any)?.ar as string}</Text>
           <Text style={styles.rp}>{(result.basePrice as number)?.toLocaleString()} ر.س</Text>
           <Text style={styles.rd}>{result.reason as string}</Text>
           <TouchableOpacity onPress={surprise} style={styles.btn}>
-            <Text style={styles.bt}>🔄 جربي مرة أخرى</Text>
+            <Text style={styles.bt}> جربي مرة أخرى</Text>
           </TouchableOpacity>
         </View>
       )}

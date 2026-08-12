@@ -21,23 +21,23 @@ interface Resource {
 const RESOURCES: Record<CyclePhase, Resource[]> = {
   menstrual: [
     { emoji: '🩸', title: 'فهم الدورة', detail: 'الجسم يتخلص من بطانة الرحم — طبيعي تماماً' },
-    { emoji: '🍫', title: 'تغذية', detail: 'أطعمة غنية بالحديد: سبانخ، عدس، لحم أحمر' },
-    { emoji: '🧘', title: 'حركة', detail: 'مشي خفيف ويوغا لطيفة — لا تمارين قاسية' },
+    { emoji: '', title: 'تغذية', detail: 'أطعمة غنية بالحديد: سبانخ، عدس، لحم أحمر' },
+    { emoji: '', title: 'حركة', detail: 'مشي خفيف ويوغا لطيفة — لا تمارين قاسية' },
   ],
   follicular: [
-    { emoji: '⚡', title: 'طاقة متجددة', detail: 'الإستروجين يرتفع — طاقتكِ في الذروة' },
-    { emoji: '🥗', title: 'تغذية', detail: 'بروتينات خفيفة وخضروات طازجة' },
-    { emoji: '🏃', title: 'حركة', detail: 'أفضل وقت للتمارين القوية والنشاط' },
+    { emoji: '', title: 'طاقة متجددة', detail: 'الإستروجين يرتفع — طاقتكِ في الذروة' },
+    { emoji: '', title: 'تغذية', detail: 'بروتينات خفيفة وخضروات طازجة' },
+    { emoji: '', title: 'حركة', detail: 'أفضل وقت للتمارين القوية والنشاط' },
   ],
   ovulation: [
-    { emoji: '✨', title: 'إشراقة', detail: 'البشرة في أفضل حالاتها — وقت المناسبات' },
-    { emoji: '💧', title: 'ترطيب', detail: 'اشربي ماء كثيراً — بشرتكِ تشكركِ' },
-    { emoji: '📸', title: 'ثقة', detail: 'أعلى درجات الثقة — وقت التصوير والمناسبات' },
+    { emoji: '', title: 'إشراقة', detail: 'البشرة في أفضل حالاتها — وقت المناسبات' },
+    { emoji: '', title: 'ترطيب', detail: 'اشربي ماء كثيراً — بشرتكِ تشكركِ' },
+    { emoji: '', title: 'ثقة', detail: 'أعلى درجات الثقة — وقت التصوير والمناسبات' },
   ],
   luteal: [
-    { emoji: '🌙', title: 'استعداد', detail: 'الجسم يستعد للدورة القادمة — خذي الأمور بهدوء' },
-    { emoji: '🍵', title: 'تغذية', detail: 'مغنيسيوم: مكسرات، موز، شوكولاتة داكنة' },
-    { emoji: '🛁', title: 'استرخاء', detail: 'حمام دافئ، تأمل، قراءة — دللي نفسكِ' },
+    { emoji: '', title: 'استعداد', detail: 'الجسم يستعد للدورة القادمة — خذي الأمور بهدوء' },
+    { emoji: '', title: 'تغذية', detail: 'مغنيسيوم: مكسرات، موز، شوكولاتة داكنة' },
+    { emoji: '', title: 'استرخاء', detail: 'حمام دافئ، تأمل، قراءة — دللي نفسكِ' },
   ],
 };
 
@@ -48,9 +48,9 @@ interface CycleResourceCardProps {
 
 const PHASE_LABELS: Record<CyclePhase, { emoji: string; title: string }> = {
   menstrual: { emoji: '🩸', title: 'الدورة الشهرية' },
-  follicular: { emoji: '🌸', title: 'المرحلة الجرابية' },
-  ovulation: { emoji: '✨', title: 'الإباضة' },
-  luteal: { emoji: '🌙', title: 'المرحلة الأصفرية' },
+  follicular: { emoji: '', title: 'المرحلة الجرابية' },
+  ovulation: { emoji: '', title: 'الإباضة' },
+  luteal: { emoji: '', title: 'المرحلة الأصفرية' },
 };
 
 export function CycleResourceCard({ phase, className = '' }: CycleResourceCardProps): JSX.Element {

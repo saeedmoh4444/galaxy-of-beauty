@@ -16,7 +16,7 @@ export const visionBoardRouter = router({
   create: customerProcedure
     .input(
       z.object({
-        emoji: z.string().default('🌟'),
+        emoji: z.string().default(''),
         text: z.string().min(3).max(300),
         year: z.string(),
       }),

@@ -18,12 +18,12 @@ interface BeautyConciergeCardProps {
 }
 
 const SERVICES = [
-  { emoji: '📅', label: 'تنظيم المواعيد' },
-  { emoji: '💡', label: 'اقتراح خدمات' },
-  { emoji: '🎁', label: 'تنسيق المفاجآت' },
-  { emoji: '🚗', label: 'ترتيب التوصيل' },
-  { emoji: '💬', label: 'استشارة سريعة' },
-  { emoji: '⭐', label: 'أولوية الحجز' },
+  { emoji: '', label: 'تنظيم المواعيد' },
+  { emoji: '', label: 'اقتراح خدمات' },
+  { emoji: '', label: 'تنسيق المفاجآت' },
+  { emoji: '', label: 'ترتيب التوصيل' },
+  { emoji: '', label: 'استشارة سريعة' },
+  { emoji: '', label: 'أولوية الحجز' },
 ];
 
 export function BeautyConciergeCard({
@@ -41,7 +41,7 @@ export function BeautyConciergeCard({
     >
       <div className="text-center">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-yellow-200 text-3xl dark:from-amber-800 dark:to-yellow-800">
-          👩‍💼
+          ‍
         </div>
         <h4 className="mt-2 text-sm font-bold text-amber-800 dark:text-amber-200">
           مرشدة الجمال الخاصة
@@ -75,19 +75,19 @@ export function BeautyConciergeCard({
           onClick={onChat}
           className="flex-1 rounded-xl bg-amber-600 py-2.5 text-xs font-bold text-white hover:bg-amber-700 active:scale-[0.98] transition-all"
         >
-          💬 محادثة
+           محادثة
         </button>
         <button
           type="button"
           onClick={onCall}
           className="rounded-xl border border-amber-200 bg-white px-4 py-2.5 text-xs font-bold text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:bg-gray-800 dark:text-amber-300"
         >
-          📞 اتصال
+           اتصال
         </button>
       </div>
 
       <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">
-        💫 &ldquo;دللي نفسكِ — ونحن نتولى الباقي&rdquo;
+         &ldquo;دللي نفسكِ — ونحن نتولى الباقي&rdquo;
       </p>
     </div>
   );

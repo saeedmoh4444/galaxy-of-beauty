@@ -14,29 +14,29 @@ const QUESTIONS = [
     id: 'mood',
     text: 'ما مزاجك اليوم؟',
     options: [
-      { label: 'استرخاء', value: 'relax', emoji: '🧖‍♀️' },
-      { label: 'تجديد', value: 'refresh', emoji: '✨' },
-      { label: 'جرأة', value: 'bold', emoji: '💄' },
-      { label: 'عناية', value: 'care', emoji: '💆‍♀️' },
+      { label: 'استرخاء', value: 'relax', emoji: '‍️' },
+      { label: 'تجديد', value: 'refresh', emoji: '' },
+      { label: 'جرأة', value: 'bold', emoji: '' },
+      { label: 'عناية', value: 'care', emoji: '‍️' },
     ],
   },
   {
     id: 'focus',
     text: 'على ماذا تركزين؟',
     options: [
-      { label: 'البشرة', value: 'skin', emoji: '🌸' },
-      { label: 'الشعر', value: 'hair', emoji: '💇‍♀️' },
-      { label: 'الأظافر', value: 'nails', emoji: '💅' },
-      { label: 'المكياج', value: 'makeup', emoji: '💄' },
+      { label: 'البشرة', value: 'skin', emoji: '' },
+      { label: 'الشعر', value: 'hair', emoji: '‍️' },
+      { label: 'الأظافر', value: 'nails', emoji: '' },
+      { label: 'المكياج', value: 'makeup', emoji: '' },
     ],
   },
   {
     id: 'budget',
     text: 'ميزانيتك؟',
     options: [
-      { label: 'اقتصادية', value: 'low', emoji: '💰' },
-      { label: 'متوسطة', value: 'mid', emoji: '💵' },
-      { label: 'فاخرة', value: 'high', emoji: '💎' },
+      { label: 'اقتصادية', value: 'low', emoji: '' },
+      { label: 'متوسطة', value: 'mid', emoji: '' },
+      { label: 'فاخرة', value: 'high', emoji: '' },
     ],
   },
 ];
@@ -69,13 +69,13 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
   if (result) {
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}>🎯 النتائج</Text>
+        <Text style={styles.t}> النتائج</Text>
         <View style={styles.resultCard}>
-          <Text style={styles.resultEmoji}>✨</Text>
+          <Text style={styles.resultEmoji}></Text>
           <Text style={styles.resultTitle}>خدماتكِ المثالية</Text>
           {(result.matches as any[])?.map((m: any, i: number) => (
             <View key={i} style={styles.match}>
-              <Text style={styles.matchEmoji}>{(m.emoji as string) ?? '💆‍♀️'}</Text>
+              <Text style={styles.matchEmoji}>{(m.emoji as string) ?? '‍️'}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={styles.matchName}>{m.nameAr as string}</Text>
                 <Text style={styles.matchWhy}>{m.whyAr as string}</Text>
@@ -95,7 +95,7 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
           }}
           style={styles.resetBtn}
         >
-          <Text style={styles.resetBtnText}>🔄 إعادة</Text>
+          <Text style={styles.resetBtnText}> إعادة</Text>
         </TouchableOpacity>
       </ScrollView>
     );
@@ -105,7 +105,7 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>🎯 Service Matchmaker</Text>
+      <Text style={styles.t}> Service Matchmaker</Text>
       <Text style={styles.progress}>
         {step + 1}/{QUESTIONS.length}
       </Text>

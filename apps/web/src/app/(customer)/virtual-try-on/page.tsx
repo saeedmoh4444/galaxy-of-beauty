@@ -29,10 +29,10 @@ interface ProductRec {
 type MakeupType = 'lips' | 'eyes' | 'blush' | 'nails';
 
 const TYPE_LABELS: Record<MakeupType, { label: string; emoji: string }> = {
-  lips: { label: 'أحمر شفاه', emoji: '💄' },
-  eyes: { label: 'ظلال عيون', emoji: '👁️' },
-  blush: { label: 'أحمر خدود', emoji: '😊' },
-  nails: { label: 'أظافر', emoji: '💅' },
+  lips: { label: 'أحمر شفاه', emoji: '' },
+  eyes: { label: 'ظلال عيون', emoji: '️' },
+  blush: { label: 'أحمر خدود', emoji: '' },
+  nails: { label: 'أظافر', emoji: '' },
 };
 
 const TYPE_CATEGORIES: Record<MakeupType, 'lips' | 'eyes' | 'blush' | 'nails'> = {
@@ -240,7 +240,7 @@ function ColorPalette({
           </span>
           {selectedId === c.id && (
             <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] text-white">
-              ✓
+              
             </span>
           )}
         </button>
@@ -392,7 +392,7 @@ export default function VirtualTryOnPage(): JSX.Element {
         {/* Header */}
         <div className="text-center sm:text-right">
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            🤳 تجربة المكياج الافتراضية
+             تجربة المكياج الافتراضية
           </h1>
           <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
             جربي ألوان المكياج مباشرة على وجهكِ قبل الشراء
@@ -431,7 +431,7 @@ export default function VirtualTryOnPage(): JSX.Element {
             {/* Color Palette */}
             <Card padding="md">
               <h3 className="text-sm font-semibold text-text-primary dark:text-gray-300 mb-3">
-                🎨 الألوان{' '}
+                 الألوان{' '}
                 {selectedColor && <span className="text-brand-600">— {selectedColor.nameAr}</span>}
               </h3>
               {palettesLoading ? (
@@ -470,7 +470,7 @@ export default function VirtualTryOnPage(): JSX.Element {
 
             {/* Capture Button */}
             <Button onClick={takePhoto} disabled={!cameraReady} className="w-full" size="lg">
-              📸 التقطي صورة
+               التقطي صورة
             </Button>
           </div>
 
@@ -522,7 +522,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                         className="rounded-full bg-black/50 p-2 text-white text-sm backdrop-blur hover:bg-black/70 transition-colors"
                         title="قلب الكاميرا"
                       >
-                        🔄
+                        
                       </button>
                     </div>
 
@@ -530,7 +530,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                     {cameraError && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/80">
                         <div className="text-center p-6">
-                          <p className="text-white text-lg mb-2">📷</p>
+                          <p className="text-white text-lg mb-2"></p>
                           <p className="text-white/80 text-sm mb-3">{cameraError}</p>
                           <Button size="sm" onClick={() => startCamera('user')}>
                             إعادة المحاولة
@@ -558,7 +558,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                             }}
                             className="flex-1"
                           >
-                            💾 تحميل
+                             تحميل
                           </Button>
                           <Button
                             size="sm"
@@ -566,7 +566,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                             onClick={() => setCapturedPhoto(null)}
                             className="flex-1 bg-white/20 text-white hover:bg-white/30"
                           >
-                            📸 إعادة التصوير
+                             إعادة التصوير
                           </Button>
                         </div>
                       </div>
@@ -589,7 +589,7 @@ export default function VirtualTryOnPage(): JSX.Element {
         {selectedColor && (
           <Card padding="lg">
             <h3 className="text-lg font-bold text-text-primary dark:text-gray-100 mb-1">
-              🛍️ منتجات مقترحة
+              ️ منتجات مقترحة
             </h3>
             <p className="text-sm text-text-secondary mb-4">
               منتجات تناسب درجة &ldquo;{selectedColor.nameAr}&rdquo; من متجرنا
@@ -621,7 +621,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                             loading="lazy"
                           />
                         ) : (
-                          <span className="text-4xl">💄</span>
+                          <span className="text-4xl"></span>
                         )}
                       </div>
                       {p.brand && (
@@ -655,12 +655,12 @@ export default function VirtualTryOnPage(): JSX.Element {
           padding="lg"
           className="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-950 dark:to-rose-950 border-none"
         >
-          <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">💡 نصائح للتجربة</h3>
+          <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3"> نصائح للتجربة</h3>
           <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400 sm:grid-cols-2">
-            <p>💡 تأكدي من إضاءة وجهكِ جيداً للحصول على أفضل نتيجة</p>
-            <p>📸 التقطي صورة بعد اختيار اللون لمشاركتها مع صديقاتكِ</p>
-            <p>🎨 جربي كل أنواع المكياج — شفاه، عيون، خدود، وأظافر</p>
-            <p>🛍️ بعد اختيار لونكِ المفضل، تصفحي المنتجات المتطابقة في متجرنا</p>
+            <p> تأكدي من إضاءة وجهكِ جيداً للحصول على أفضل نتيجة</p>
+            <p> التقطي صورة بعد اختيار اللون لمشاركتها مع صديقاتكِ</p>
+            <p> جربي كل أنواع المكياج — شفاه، عيون، خدود، وأظافر</p>
+            <p>️ بعد اختيار لونكِ المفضل، تصفحي المنتجات المتطابقة في متجرنا</p>
           </div>
         </Card>
       </div>

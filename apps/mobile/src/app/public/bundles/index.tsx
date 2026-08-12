@@ -47,11 +47,11 @@ export default function BundlesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📦 اصنعي باقتكِ</Text>
+      <Text style={styles.t}> اصنعي باقتكِ</Text>
       {count > 0 && (
         <View style={styles.db}>
           <Text style={styles.dt}>
-            🎉 خصم {discount}% على {count} خدمات!
+             خصم {discount}% على {count} خدمات!
           </Text>
         </View>
       )}
@@ -63,7 +63,7 @@ export default function BundlesScreen(): JSX.Element {
             onPress={() => toggle(s.id)}
             style={[styles.card, isSel && styles.ca]}
           >
-            <Text style={styles.se}>{(s.emoji as string) ?? '💆‍♀️'}</Text>
+            <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.sn}>
                 {((s.nameJson as any)?.ar as string) ?? (s.nameAr as string) ?? s.slug}
@@ -71,7 +71,7 @@ export default function BundlesScreen(): JSX.Element {
               <Text style={styles.sm}>{(s._count?.services ?? 0) as number} خدمات</Text>
             </View>
             <View style={[styles.ch, isSel && styles.cha]}>
-              <Text style={[styles.cht, isSel && styles.chta]}>{isSel ? '✓' : '+'}</Text>
+              <Text style={[styles.cht, isSel && styles.chta]}>{isSel ? '' : '+'}</Text>
             </View>
           </TouchableOpacity>
         );

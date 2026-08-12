@@ -42,9 +42,9 @@ export default function BeautyBingoScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🎮 Beauty Bingo</Text>
+      <Text style={styles.t}> Beauty Bingo</Text>
       <View style={styles.card}>
-        <Text style={styles.em}>🎮</Text>
+        <Text style={styles.em}></Text>
         <Text style={styles.pr}>
           {data?.completed ?? 0}/{data?.total ?? 9} مكتملة
         </Text>
@@ -56,7 +56,7 @@ export default function BeautyBingoScreen(): JSX.Element {
               style={[styles.task, t.completed && styles.td]}
             >
               <Text style={styles.tt}>
-                {t.completed ? '✅' : '⬜'} {t.task as string}
+                {t.completed ? '' : '⬜'} {t.task as string}
               </Text>
             </TouchableOpacity>
           ))}

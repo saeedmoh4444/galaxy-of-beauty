@@ -9,7 +9,7 @@ export function BeautyEidGlowCard({ className = '' }: { className?: string }): J
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌙</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">إشراقة العيد</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">خطة جمالية متكاملة للعيد</p>
@@ -17,10 +17,10 @@ export function BeautyEidGlowCard({ className = '' }: { className?: string }): J
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '📅', text: 'قبل بأسبوع: فيشل + حواجب + مانيكير' },
-          { emoji: '💤', text: 'ليلة العيد: حمام زيت + مرطب + نوم مبكر' },
-          { emoji: '✨', text: 'صباح العيد: مكياج ناعم + عطر العيد' },
-          { emoji: '📸', text: 'صوري إطلالتك — ذكريات العيد' },
+          { emoji: '', text: 'قبل بأسبوع: فيشل + حواجب + مانيكير' },
+          { emoji: '', text: 'ليلة العيد: حمام زيت + مرطب + نوم مبكر' },
+          { emoji: '', text: 'صباح العيد: مكياج ناعم + عطر العيد' },
+          { emoji: '', text: 'صوري إطلالتك — ذكريات العيد' },
         ].map((t, i) => (
           <div
             key={i}

@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W9: The Small Details.
  *
  * Usage:
- *   <BeautyStyleMatchCard matches={[{ style: 'كلاسيكي', emoji: '👗', match: 92 }]} />
+ *   <BeautyStyleMatchCard matches={[{ style: 'كلاسيكي', emoji: '', match: 92 }]} />
  */
 
 interface StyleMatch {
@@ -39,7 +39,7 @@ export function BeautyStyleMatchCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🎯
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">
           تحليل الأسلوب

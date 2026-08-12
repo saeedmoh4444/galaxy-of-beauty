@@ -9,7 +9,7 @@ export function BeautyOmegaCard({ className = '' }: { className?: string }): JSX
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🐟</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">أوميغا 3</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">دهون صحية لبشرة جميلة</p>
@@ -17,10 +17,10 @@ export function BeautyOmegaCard({ className = '' }: { className?: string }): JSX
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💧', text: 'يرطب البشرة — يقوي حاجز الدهون الطبيعي' },
-          { emoji: '🧯', text: 'يقلل الالتهابات — ممتاز لحبوب والوردية' },
-          { emoji: '🐟', text: 'سلمون، تونة، سردين — أو كبسولات' },
-          { emoji: '🥜', text: 'مصادر نباتية — جوز، بذور كتان، شيا' },
+          { emoji: '', text: 'يرطب البشرة — يقوي حاجز الدهون الطبيعي' },
+          { emoji: '', text: 'يقلل الالتهابات — ممتاز لحبوب والوردية' },
+          { emoji: '', text: 'سلمون، تونة، سردين — أو كبسولات' },
+          { emoji: '', text: 'مصادر نباتية — جوز، بذور كتان، شيا' },
         ].map((t, i) => (
           <div
             key={i}

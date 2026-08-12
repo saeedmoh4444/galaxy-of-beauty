@@ -10,16 +10,16 @@
 
 const SAFETY_TYPES: Record<string, { emoji: string; label: string; desc: string }> = {
   female_verified: {
-    emoji: '✅',
+    emoji: '',
     label: 'فنية موثقة',
     desc: 'تم التحقق من هويتها عبر مكالمة فيديو',
   },
-  privacy_first: { emoji: '🔒', label: 'خصوصية تامة', desc: 'صوركِ ومعلوماتكِ محمية ولا تشارك' },
-  safe_space: { emoji: '🛡️', label: 'مساحة آمنة', desc: 'منصة نسائية بالكامل — لا رجال' },
-  secure_payment: { emoji: '💳', label: 'دفع آمن', desc: 'مشفّر بالكامل عبر PayFort' },
+  privacy_first: { emoji: '', label: 'خصوصية تامة', desc: 'صوركِ ومعلوماتكِ محمية ولا تشارك' },
+  safe_space: { emoji: '️', label: 'مساحة آمنة', desc: 'منصة نسائية بالكامل — لا رجال' },
+  secure_payment: { emoji: '', label: 'دفع آمن', desc: 'مشفّر بالكامل عبر PayFort' },
   emergency_support: { emoji: '🆘', label: 'دعم طارئ', desc: 'فريق دعم متاح ٢٤/٧ للطوارئ' },
   pdpl_compliant: {
-    emoji: '📜',
+    emoji: '',
     label: 'متوافقة مع PDPL',
     desc: 'نظام حماية البيانات الشخصية السعودي',
   },

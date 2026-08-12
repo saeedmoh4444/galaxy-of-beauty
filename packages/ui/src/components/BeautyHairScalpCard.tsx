@@ -9,7 +9,7 @@ export function BeautyHairScalpCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💆‍♀️</span>
+        <span className="text-xl">‍️</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">فروة الرأس</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">بشرة صحية = شعر صحي</p>
@@ -17,10 +17,10 @@ export function BeautyHairScalpCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧹', text: 'تقشير فروة الرأس — مرة شهرياً' },
-          { emoji: '💆', text: 'تدليك يومي — 5 دقائق بزيت دافئ' },
-          { emoji: '🌡️', text: 'ماء فاتر — ليس ساخناً' },
-          { emoji: '🧴', text: 'سيروم لفروة الرأس — قبل النوم' },
+          { emoji: '', text: 'تقشير فروة الرأس — مرة شهرياً' },
+          { emoji: '', text: 'تدليك يومي — 5 دقائق بزيت دافئ' },
+          { emoji: '️', text: 'ماء فاتر — ليس ساخناً' },
+          { emoji: '', text: 'سيروم لفروة الرأس — قبل النوم' },
         ].map((t, i) => (
           <div
             key={i}

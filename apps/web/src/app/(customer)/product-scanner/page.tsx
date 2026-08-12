@@ -88,7 +88,7 @@ export default function ProductScannerPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🔍 فحص المنتجات</h1>
+          <h1 className="text-2xl font-bold"> فحص المنتجات</h1>
           <p className="mt-1 text-sm text-text-secondary">
             امسحي الباركود أو ادخلي الرمز لمعرفة مكونات المنتج ومدى أمانه
           </p>
@@ -105,7 +105,7 @@ export default function ProductScannerPage(): JSX.Element {
                 else startCamera();
               }}
             >
-              {cameraOn ? '📷 إيقاف' : '📷 مسح بالكاميرا'}
+              {cameraOn ? ' إيقاف' : ' مسح بالكاميرا'}
             </Button>
             <span className="text-xs text-text-tertiary self-center">أو أدخلي الرمز يدوياً:</span>
           </div>
@@ -139,7 +139,7 @@ export default function ProductScannerPage(): JSX.Element {
               dir="ltr"
             />
             <Button onClick={handleLookup} loading={isLoading} disabled={barcode.length < 8}>
-              فحص 🔍
+              فحص 
             </Button>
           </div>
         </Card>
@@ -161,10 +161,10 @@ export default function ProductScannerPage(): JSX.Element {
               <div className="flex items-start gap-4">
                 <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-purple-100 text-3xl dark:from-brand-900 dark:to-purple-900">
                   {product.category === 'skincare'
-                    ? '🧴'
+                    ? ''
                     : product.category === 'makeup'
-                      ? '💄'
-                      : '💆‍♀️'}
+                      ? ''
+                      : '‍️'}
                 </div>
                 <div className="flex-1">
                   <h2 className="text-xl font-bold">{product.nameAr}</h2>
@@ -200,7 +200,7 @@ export default function ProductScannerPage(): JSX.Element {
               {product.safetyDetails && product.safetyDetails.length > 0 && (
                 <div className="mt-4 rounded-xl bg-red-50 dark:bg-red-950 p-4">
                   <h4 className="text-sm font-bold text-red-700 dark:text-red-300 mb-2">
-                    ⚠️ تنبيهات
+                     تنبيهات
                   </h4>
                   <div className="space-y-2">
                     {product.safetyDetails.map((d, i) => (
@@ -214,7 +214,7 @@ export default function ProductScannerPage(): JSX.Element {
 
               {/* Ingredients */}
               <div className="mt-4">
-                <h4 className="text-sm font-bold mb-2">🧪 المكونات</h4>
+                <h4 className="text-sm font-bold mb-2"> المكونات</h4>
                 <div className="flex flex-wrap gap-1.5">
                   {product.ingredients.map((ing) => {
                     const isAllergen = product.allergens.includes(ing);
@@ -227,7 +227,7 @@ export default function ProductScannerPage(): JSX.Element {
                             : 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400'
                         }`}
                       >
-                        {ing} {isAllergen && '⚠️'}
+                        {ing} {isAllergen && ''}
                       </span>
                     );
                   })}
@@ -238,7 +238,7 @@ export default function ProductScannerPage(): JSX.Element {
             {/* Alternatives */}
             {alternatives.length > 0 && (
               <Card padding="lg">
-                <h3 className="font-bold text-lg mb-4">🔄 بدائل آمنة مقترحة</h3>
+                <h3 className="font-bold text-lg mb-4"> بدائل آمنة مقترحة</h3>
                 <div className="space-y-3">
                   {alternatives.map((alt) => (
                     <div
@@ -270,12 +270,12 @@ export default function ProductScannerPage(): JSX.Element {
           padding="lg"
           className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-none"
         >
-          <h3 className="font-bold mb-3">💡 نصائح لاختيار المنتجات</h3>
+          <h3 className="font-bold mb-3"> نصائح لاختيار المنتجات</h3>
           <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400 sm:grid-cols-2">
-            <p>✅ اختاري منتجات خالية من البارابين والعطور</p>
-            <p>✅ تأكدي من وجود واقي شمس في روتينك اليومي</p>
-            <p>✅ ابحثي عن منتجات تحتوي على مكونات طبيعية</p>
-            <p>✅ تجنبي المنتجات التي تحتوي على الكحول للبشرة الجافة</p>
+            <p> اختاري منتجات خالية من البارابين والعطور</p>
+            <p> تأكدي من وجود واقي شمس في روتينك اليومي</p>
+            <p> ابحثي عن منتجات تحتوي على مكونات طبيعية</p>
+            <p> تجنبي المنتجات التي تحتوي على الكحول للبشرة الجافة</p>
           </div>
         </Card>
       </div>

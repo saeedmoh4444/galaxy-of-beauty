@@ -9,7 +9,7 @@ export function BeautyFirstMakeupCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💄</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">أول مكياج</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">
@@ -19,10 +19,10 @@ export function BeautyFirstMakeupCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: 'BB كريم — بدل الفاونديشن الثقيل' },
-          { emoji: '👁️', text: 'ماسكارا شفافة — طبيعية وناعمة' },
-          { emoji: '💋', text: 'بلسم شفاه ملون — بدل الروج' },
-          { emoji: '✨', text: 'الأقل هو الأكثر — بشرة شابة جميلة' },
+          { emoji: '', text: 'BB كريم — بدل الفاونديشن الثقيل' },
+          { emoji: '️', text: 'ماسكارا شفافة — طبيعية وناعمة' },
+          { emoji: '', text: 'بلسم شفاه ملون — بدل الروج' },
+          { emoji: '', text: 'الأقل هو الأكثر — بشرة شابة جميلة' },
         ].map((t, i) => (
           <div
             key={i}

@@ -9,13 +9,13 @@ const SUBSTITUTIONS: Record<
     {
       nameAr: 'فينوكسي إيثانول',
       nameEn: 'Phenoxyethanol',
-      emoji: '🧪',
+      emoji: '',
       descAr: 'مادة حافظة آمنة معتمدة من الاتحاد الأوروبي',
     },
     {
       nameAr: 'سوربات البوتاسيوم',
       nameEn: 'Potassium Sorbate',
-      emoji: '🧂',
+      emoji: '',
       descAr: 'حافظ طبيعي من أصل نباتي',
     },
   ],
@@ -23,13 +23,13 @@ const SUBSTITUTIONS: Record<
     {
       nameAr: 'كوكو غلوكوسايد',
       nameEn: 'Coco Glucoside',
-      emoji: '🥥',
+      emoji: '',
       descAr: 'منظف لطيف من زيت جوز الهند',
     },
     {
       nameAr: 'صوديوم كوكويل إيسيثيونات',
       nameEn: 'Sodium Cocoyl Isethionate',
-      emoji: '🧼',
+      emoji: '',
       descAr: 'منظف معتدل لا يسبب جفاف',
     },
   ],
@@ -43,7 +43,7 @@ const SUBSTITUTIONS: Record<
     {
       nameAr: 'سكوالين نباتي',
       nameEn: 'Plant Squalane',
-      emoji: '🌿',
+      emoji: '',
       descAr: 'مرطب طبيعي خفيف لا يسد المسام',
     },
   ],
@@ -51,22 +51,22 @@ const SUBSTITUTIONS: Record<
     {
       nameAr: 'كحول سيتريل',
       nameEn: 'Cetearyl Alcohol',
-      emoji: '🧴',
+      emoji: '',
       descAr: 'كحول دهني مرطب وآمن للبشرة',
     },
-    { nameAr: 'جل الألوفيرا', nameEn: 'Aloe Vera Gel', emoji: '🌵', descAr: 'مرطب طبيعي مهدئ' },
+    { nameAr: 'جل الألوفيرا', nameEn: 'Aloe Vera Gel', emoji: '', descAr: 'مرطب طبيعي مهدئ' },
   ],
   Fragrance: [
     {
       nameAr: 'زيوت عطرية طبيعية',
       nameEn: 'Essential Oils',
-      emoji: '🌸',
+      emoji: '',
       descAr: 'عطور من مصادر نباتية طبيعية',
     },
     {
       nameAr: 'منتجات خالية من العطور',
       nameEn: 'Fragrance-Free',
-      emoji: '🚫',
+      emoji: '',
       descAr: 'مناسبة للبشرة الحساسة',
     },
   ],

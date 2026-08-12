@@ -9,7 +9,7 @@ export function BeautyHairGlossCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">✨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">غلوس الشعر</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">
@@ -19,10 +19,10 @@ export function BeautyHairGlossCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💎', text: 'لمعان زجاجي — يعكس الضوء بشكل جميل' },
-          { emoji: '🎨', text: 'شفاف أو ملون — ينعش لون شعركِ' },
-          { emoji: '⏱️', text: '20 دقيقة — في الصالون أو في البيت' },
-          { emoji: '📅', text: 'كل 4-6 أسابيع — للحفاظ على اللمعان' },
+          { emoji: '', text: 'لمعان زجاجي — يعكس الضوء بشكل جميل' },
+          { emoji: '', text: 'شفاف أو ملون — ينعش لون شعركِ' },
+          { emoji: '️', text: '20 دقيقة — في الصالون أو في البيت' },
+          { emoji: '', text: 'كل 4-6 أسابيع — للحفاظ على اللمعان' },
         ].map((t, i) => (
           <div
             key={i}

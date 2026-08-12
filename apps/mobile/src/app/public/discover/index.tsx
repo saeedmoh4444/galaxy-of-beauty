@@ -29,11 +29,11 @@ export default function DiscoverScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={styles.t}>🔍 اكتشف</Text>
+      <Text style={styles.t}> اكتشف</Text>
       <Text style={styles.sub}>اكتشفي خدمات وأفكار جديدة</Text>
       {catItems.length > 0 && (
         <>
-          <Text style={styles.sectionTitle}>📂 الفئات</Text>
+          <Text style={styles.sectionTitle}> الفئات</Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -42,7 +42,7 @@ export default function DiscoverScreen(): JSX.Element {
             <View style={{ flexDirection: 'row', gap: 10 }}>
               {catItems.map((cat: any) => (
                 <TouchableOpacity key={cat.id ?? cat.key} style={styles.catChip}>
-                  <Text style={styles.catEmoji}>{(cat.emoji as string) ?? '📂'}</Text>
+                  <Text style={styles.catEmoji}>{(cat.emoji as string) ?? ''}</Text>
                   <Text style={styles.catName}>{cat.nameAr as string}</Text>
                 </TouchableOpacity>
               ))}
@@ -50,13 +50,13 @@ export default function DiscoverScreen(): JSX.Element {
           </ScrollView>
         </>
       )}
-      <Text style={styles.sectionTitle}>🔥 الأكثر رواجاً</Text>
+      <Text style={styles.sectionTitle}> الأكثر رواجاً</Text>
       {trendingItems.length === 0 ? (
         <Text style={styles.e}>لا توجد نتائج</Text>
       ) : (
         trendingItems.map((t: any) => (
           <View key={t.id} style={styles.card}>
-            <Text style={styles.cardEmoji}>{(t.emoji as string) ?? '✨'}</Text>
+            <Text style={styles.cardEmoji}>{(t.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.cardTitle}>{(t.nameAr as string) ?? (t.titleAr as string)}</Text>
               <Text style={styles.cardDesc}>
@@ -64,7 +64,7 @@ export default function DiscoverScreen(): JSX.Element {
               </Text>
               <View style={styles.cardMeta}>
                 <Text style={styles.price}>{(t.price as number)?.toLocaleString()} ر.س</Text>
-                <Text style={styles.rating}>⭐ {(t.rating as number) ?? 0}</Text>
+                <Text style={styles.rating}> {(t.rating as number) ?? 0}</Text>
               </View>
             </View>
           </View>

@@ -21,31 +21,31 @@ interface EventDef {
 
 const EVENTS: Record<Event, EventDef> = {
   prom: {
-    emoji: '💃',
+    emoji: '',
     title: 'حفلة موسيقية',
     description: 'إطلالة راقية تخطف الأنظار',
     look: 'مكياج سهرة ناعم + تسريحة راقية',
   },
   graduation: {
-    emoji: '🎓',
+    emoji: '',
     title: 'حفل تخرج',
     description: 'إشراقة تليق بإنجازكِ',
     look: 'مكياج طبيعي + تسريحة أنيقة',
   },
   eid: {
-    emoji: '🌙',
+    emoji: '',
     title: 'عيد',
     description: 'إطلالة مبهجة للعيد',
     look: 'مكياج ناعم + ضفائر عصرية',
   },
   wedding_guest: {
-    emoji: '💒',
+    emoji: '',
     title: 'حضور زفاف',
     description: 'إطلالة أنيقة تليق بالمناسبة',
     look: 'مكياج راقٍ + تسريحة كلاسيكية',
   },
   birthday_party: {
-    emoji: '🎂',
+    emoji: '',
     title: 'حفلة ميلاد',
     description: 'إطلالة مميزة ليومكِ الخاص',
     look: 'مكياج لامع + تسريحة مميزة',
@@ -85,20 +85,20 @@ export function PromReadyCard({
         <p className="text-[10px] text-purple-500 dark:text-purple-400">{ev.description}</p>
         {isTeen && (
           <span className="mt-1 inline-block rounded-full bg-purple-100 px-2 py-0.5 text-[9px] font-medium text-purple-700 dark:bg-purple-900 dark:text-purple-300">
-            🌸 مناسب لعمر {age} سنة
+             مناسب لعمر {age} سنة
           </span>
         )}
       </div>
 
       {/* The look */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-purple-700 dark:text-purple-300">✨ الإطلالة</p>
+        <p className="text-[10px] font-bold text-purple-700 dark:text-purple-300"> الإطلالة</p>
         <p className="mt-1 text-xs text-text-primary dark:text-gray-100">{ev.look}</p>
       </div>
 
       {/* What's included */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-purple-700 dark:text-purple-300">🎀 تشمل الباقة</p>
+        <p className="text-[10px] font-bold text-purple-700 dark:text-purple-300"> تشمل الباقة</p>
         <div className="mt-1 grid grid-cols-2 gap-1 text-[10px] text-text-secondary dark:text-gray-300">
           <span>• مكياج احترافي</span>
           <span>• تسريحة شعر</span>
@@ -120,12 +120,12 @@ export function PromReadyCard({
           onClick={onBook}
           className="rounded-xl bg-purple-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-purple-700 active:scale-[0.98] transition-all"
         >
-          احجزي إطلالتكِ ✨
+          احجزي إطلالتكِ 
         </button>
       </div>
 
       <p className="mt-2 text-center text-[9px] text-purple-500 dark:text-purple-400">
-        🌟 اجعلي مناسبتكِ الخاصة لا تُنسى
+         اجعلي مناسبتكِ الخاصة لا تُنسى
       </p>
     </div>
   );

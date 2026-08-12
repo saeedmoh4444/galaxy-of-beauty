@@ -41,26 +41,26 @@ export default function TechnicianQAScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>💬 اسألي الفنيات</Text>
+      <Text style={styles.t}> اسألي الفنيات</Text>
       <Text style={styles.sub}>اطرحي أسئلتك على خبراء التجميل</Text>
       {questions.length === 0 ? (
         <Text style={styles.e}>لا توجد أسئلة</Text>
       ) : (
         questions.map((q: any) => (
           <View key={q.id} style={styles.card}>
-            <Text style={styles.qEmoji}>{(q.emoji as string) ?? '❓'}</Text>
+            <Text style={styles.qEmoji}>{(q.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.qText}>{q.questionAr as string}</Text>
               <Text style={styles.qMeta}>
-                {q.categoryAr as string} · 👩‍🎨 {q.technicianName as string}
+                {q.categoryAr as string} · ‍ {q.technicianName as string}
               </Text>
               {q.answerAr ? (
                 <View style={styles.answer}>
-                  <Text style={styles.answerLabel}>💡 الإجابة:</Text>
+                  <Text style={styles.answerLabel}> الإجابة:</Text>
                   <Text style={styles.answerText}>{q.answerAr as string}</Text>
                 </View>
               ) : (
-                <Text style={styles.waiting}>⏳ في انتظار الرد...</Text>
+                <Text style={styles.waiting}> في انتظار الرد...</Text>
               )}
             </View>
           </View>

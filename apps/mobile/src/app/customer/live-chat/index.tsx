@@ -17,7 +17,7 @@ export default function LiveChatScreen() {
 
   return (
     <View style={styles.c}>
-      <Text style={styles.t}>💬 الدعم المباشر</Text>
+      <Text style={styles.t}> الدعم المباشر</Text>
       <ScrollView style={styles.list} contentContainerStyle={{ padding: 12, paddingBottom: 8 }}>
         {messages.map((m: Record<string, unknown>, i: number) => (
           <View key={i} style={[styles.bubble, m.isAgent ? styles.agent : styles.user]}>

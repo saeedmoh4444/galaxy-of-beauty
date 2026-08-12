@@ -40,7 +40,7 @@ export default function ExpiryTrackerScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>⏱️ متعقب الصلاحية</Text>
+      <Text style={styles.t}>️ متعقب الصلاحية</Text>
       {items.map((i: any) => (
         <View key={i.id} style={[styles.card, i.expired && styles.exp, i.isClose && styles.close]}>
           <Text style={styles.em}>{i.emoji as string}</Text>
@@ -49,7 +49,7 @@ export default function ExpiryTrackerScreen(): JSX.Element {
             <Text style={styles.meta}>ينتهي بعد {i.expiryMonths as number} شهر</Text>
           </View>
           <TouchableOpacity onPress={() => remove(i.id)}>
-            <Text style={styles.del}>🗑️</Text>
+            <Text style={styles.del}>️</Text>
           </TouchableOpacity>
         </View>
       ))}

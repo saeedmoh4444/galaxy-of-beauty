@@ -40,7 +40,7 @@ export default function IoTSyncScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📡 الأجهزة الذكية</Text>
+      <Text style={styles.t}> الأجهزة الذكية</Text>
       <View style={styles.grid}>
         {devices.map((d: any) => (
           <View key={d.key} style={styles.card}>
@@ -52,7 +52,7 @@ export default function IoTSyncScreen(): JSX.Element {
                 d.status === 'connected' ? { color: '#059669' } : { color: '#9ca3af' },
               ]}
             >
-              {d.status === 'connected' ? '🟢 متصل' : '⚫ غير متصل'}
+              {d.status === 'connected' ? ' متصل' : ' غير متصل'}
             </Text>
             <TouchableOpacity onPress={() => connect(d.key as string)} style={styles.db}>
               <Text style={styles.dbt}>{d.status === 'connected' ? 'مزامنة' : 'ربط'}</Text>

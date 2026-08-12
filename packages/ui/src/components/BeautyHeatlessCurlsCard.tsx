@@ -9,7 +9,7 @@ export function BeautyHeatlessCurlsCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌀</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">تمويج بدون حرارة</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">شعر مموج — بدون ضرر</p>
@@ -17,10 +17,10 @@ export function BeautyHeatlessCurlsCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '🧦', label: 'الجوارب', tip: 'طريقة سهلة — لفات ناعمة' },
-          { emoji: '🎀', label: 'الروبن', tip: 'شريط طويل — تموجات مثالية' },
-          { emoji: '🧻', label: 'لفات القماش', tip: 'طرية للنوم — مريحة' },
-          { emoji: '💤', label: 'قبل النوم', tip: 'تصفيفة الليل = شعر الصباح' },
+          { emoji: '', label: 'الجوارب', tip: 'طريقة سهلة — لفات ناعمة' },
+          { emoji: '', label: 'الروبن', tip: 'شريط طويل — تموجات مثالية' },
+          { emoji: '', label: 'لفات القماش', tip: 'طرية للنوم — مريحة' },
+          { emoji: '', label: 'قبل النوم', tip: 'تصفيفة الليل = شعر الصباح' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-rose-50 px-2.5 py-2 dark:bg-rose-950">
             <span className="text-sm">{t.emoji}</span>

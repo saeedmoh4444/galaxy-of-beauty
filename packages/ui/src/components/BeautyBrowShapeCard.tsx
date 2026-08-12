@@ -9,7 +9,7 @@ export function BeautyBrowShapeCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">✨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">شكل الحواجب</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">
@@ -19,10 +19,10 @@ export function BeautyBrowShapeCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '🥚', label: 'بيضاوي', tip: 'حواجب طبيعية — قوس ناعم' },
-          { emoji: '🟤', label: 'دائري', tip: 'قوس مرتفع — يطيل الوجه' },
+          { emoji: '', label: 'بيضاوي', tip: 'حواجب طبيعية — قوس ناعم' },
+          { emoji: '', label: 'دائري', tip: 'قوس مرتفع — يطيل الوجه' },
           { emoji: '⬜', label: 'مربع', tip: 'زوايا حادة — توازن الفك' },
-          { emoji: '❤️', label: 'قلب', tip: 'حواجب مقوسة — تلطف الجبهة' },
+          { emoji: '️', label: 'قلب', tip: 'حواجب مقوسة — تلطف الجبهة' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-amber-50 px-2.5 py-2 dark:bg-amber-950">
             <span className="text-sm">{t.emoji}</span>

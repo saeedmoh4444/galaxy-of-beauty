@@ -37,10 +37,10 @@ export default function WaitlistScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📋 قائمة الانتظار</Text>
+      <Text style={styles.t}> قائمة الانتظار</Text>
       {data.map((w: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>⏳</Text>
+          <Text style={styles.emoji}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{w.serviceName as string}</Text>
             <Text style={styles.pos}>الموقع: #{w.position as number}</Text>

@@ -7,14 +7,14 @@ import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
-const MOODS = ['😔', '😐', '🙂', '😊', '😍'];
+const MOODS = ['', '', '', '', ''];
 const SERVICE_TYPES = ['hair', 'skin', 'makeup', 'nails', 'body'] as const;
 const TYPE_LABELS: Record<string, string> = {
-  hair: '💇‍♀️ شعر',
-  skin: '✨ بشرة',
-  makeup: '💄 مكياج',
-  nails: '💅 أظافر',
-  body: '🧴 جسم',
+  hair: '‍️ شعر',
+  skin: ' بشرة',
+  makeup: ' مكياج',
+  nails: ' أظافر',
+  body: ' جسم',
 };
 
 export default function BeautyJournalPage(): JSX.Element {
@@ -51,7 +51,7 @@ export default function BeautyJournalPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          📓 يوميات الجمال
+           يوميات الجمال
         </h1>
         <p className="text-sm text-text-secondary">
           دوّني رحلتكِ الجمالية — تجارب، مشاعر، وإطلالات
@@ -111,7 +111,7 @@ export default function BeautyJournalPage(): JSX.Element {
               className="w-full"
               size="sm"
             >
-              ✍️ تدوين
+              ️ تدوين
             </Button>
           </div>
         </Card>
@@ -135,7 +135,7 @@ export default function BeautyJournalPage(): JSX.Element {
                   onClick={() => deleteMut.mutate({ id: e.id })}
                   className="absolute top-2 right-2 hidden rounded-full bg-red-500 p-1 text-white text-xs group-hover:block"
                 >
-                  ✕
+                  
                 </button>
                 <div className="flex items-center gap-3 text-xs text-text-tertiary mb-2">
                   {e.mood && <span>{MOODS[e.mood - 1]}</span>}

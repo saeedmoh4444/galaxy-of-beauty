@@ -49,11 +49,11 @@ export default function ServiceDetailScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>
-        {(data.emoji as string) ?? '💆‍♀️'} {(data.titleJson as any)?.ar as string}
+        {(data.emoji as string) ?? '‍️'} {(data.titleJson as any)?.ar as string}
       </Text>
       <View style={styles.card}>
         <Text style={styles.price}>{(data.basePrice as number)?.toLocaleString()} ر.س</Text>
-        <Text style={styles.dur}>⏱️ {data.durationMin as number} دقيقة</Text>
+        <Text style={styles.dur}>️ {data.durationMin as number} دقيقة</Text>
       </View>
       {data.descriptionJson && (
         <Text style={styles.desc}>{(data.descriptionJson as any)?.ar as string}</Text>

@@ -3,20 +3,20 @@ import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
 const SPA_SERVICES = [
-  { id: 1, nameAr: 'مساج استرخائي', durationMin: 60, price: 250, emoji: '💆‍♀️', category: 'massage' },
-  { id: 2, nameAr: 'تنظيف بشرة', durationMin: 45, price: 200, emoji: '✨', category: 'skincare' },
-  { id: 3, nameAr: 'مانيكير', durationMin: 30, price: 100, emoji: '💅', category: 'nails' },
-  { id: 4, nameAr: 'باديكير', durationMin: 40, price: 120, emoji: '🦶', category: 'nails' },
-  { id: 5, nameAr: 'مكياج', durationMin: 60, price: 300, emoji: '💄', category: 'makeup' },
-  { id: 6, nameAr: 'تسريحة شعر', durationMin: 45, price: 200, emoji: '💇‍♀️', category: 'hair' },
-  { id: 7, nameAr: 'حمام مغربي', durationMin: 60, price: 350, emoji: '🧖‍♀️', category: 'body' },
-  { id: 8, nameAr: 'قناع وجه', durationMin: 20, price: 80, emoji: '🎭', category: 'skincare' },
+  { id: 1, nameAr: 'مساج استرخائي', durationMin: 60, price: 250, emoji: '‍️', category: 'massage' },
+  { id: 2, nameAr: 'تنظيف بشرة', durationMin: 45, price: 200, emoji: '', category: 'skincare' },
+  { id: 3, nameAr: 'مانيكير', durationMin: 30, price: 100, emoji: '', category: 'nails' },
+  { id: 4, nameAr: 'باديكير', durationMin: 40, price: 120, emoji: '', category: 'nails' },
+  { id: 5, nameAr: 'مكياج', durationMin: 60, price: 300, emoji: '', category: 'makeup' },
+  { id: 6, nameAr: 'تسريحة شعر', durationMin: 45, price: 200, emoji: '‍️', category: 'hair' },
+  { id: 7, nameAr: 'حمام مغربي', durationMin: 60, price: 350, emoji: '‍️', category: 'body' },
+  { id: 8, nameAr: 'قناع وجه', durationMin: 20, price: 80, emoji: '', category: 'skincare' },
 ];
 
 const BREAKS = [
-  { id: 'tea', nameAr: 'استراحة شاي', durationMin: 15, emoji: '🍵' },
-  { id: 'lunch', nameAr: 'غداء', durationMin: 30, emoji: '🥗' },
-  { id: 'snack', nameAr: 'وجبة خفيفة', durationMin: 10, emoji: '🥐' },
+  { id: 'tea', nameAr: 'استراحة شاي', durationMin: 15, emoji: '' },
+  { id: 'lunch', nameAr: 'غداء', durationMin: 30, emoji: '' },
+  { id: 'snack', nameAr: 'وجبة خفيفة', durationMin: 10, emoji: '' },
 ];
 
 export const spaPlannerRouter = router({

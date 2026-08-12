@@ -9,7 +9,7 @@ export function BeautyPostAcneMarksCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">✨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">
             تفتيح آثار الحبوب
@@ -19,10 +19,10 @@ export function BeautyPostAcneMarksCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🍊', text: 'فيتامين C — صباحاً لتفتيح التصبغات' },
-          { emoji: '🌿', text: 'أزيليك أسيد — آمن للحوامل' },
-          { emoji: '🧪', text: 'أحماض ألفا هيدروكسي — تقشير كيميائي' },
-          { emoji: '⏱️', text: 'الصبر — النتائج تحتاج 8-12 أسبوعاً' },
+          { emoji: '', text: 'فيتامين C — صباحاً لتفتيح التصبغات' },
+          { emoji: '', text: 'أزيليك أسيد — آمن للحوامل' },
+          { emoji: '', text: 'أحماض ألفا هيدروكسي — تقشير كيميائي' },
+          { emoji: '️', text: 'الصبر — النتائج تحتاج 8-12 أسبوعاً' },
         ].map((t, i) => (
           <div
             key={i}

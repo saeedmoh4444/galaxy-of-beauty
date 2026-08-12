@@ -5,7 +5,7 @@
  *
  * Usage:
  *   <PopularityBadge count={52} label="حجز هذا الأسبوع" />
- *   → "🔥 52+ حجز هذا الأسبوع"
+ *   → " 52+ حجز هذا الأسبوع"
  */
 
 interface PopularityBadgeProps {
@@ -16,9 +16,9 @@ interface PopularityBadgeProps {
 }
 
 const ICONS = {
-  fire: '🔥',
-  star: '⭐',
-  trending: '📈',
+  fire: '',
+  star: '',
+  trending: '',
 };
 
 export function PopularityBadge({

@@ -9,7 +9,7 @@ export function BeautyHairWavyCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌊</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">الشعر المموج</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">أبرزي تموجاتك الطبيعية</p>
@@ -17,10 +17,10 @@ export function BeautyHairWavyCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🤚', text: 'جففي بالهواء — أو بالناشر' },
-          { emoji: '🧴', text: 'منتجات خفيفة — لا تثقل التموجات' },
-          { emoji: '🧂', text: 'رذاذ ملح — لتعريف التموجات' },
-          { emoji: '💆', text: 'Scrunching — ارفعي الشعر للأعلى' },
+          { emoji: '', text: 'جففي بالهواء — أو بالناشر' },
+          { emoji: '', text: 'منتجات خفيفة — لا تثقل التموجات' },
+          { emoji: '', text: 'رذاذ ملح — لتعريف التموجات' },
+          { emoji: '', text: 'Scrunching — ارفعي الشعر للأعلى' },
         ].map((t, i) => (
           <div
             key={i}

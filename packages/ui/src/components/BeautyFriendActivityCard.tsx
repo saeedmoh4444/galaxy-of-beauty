@@ -37,7 +37,7 @@ export function BeautyFriendActivityCard({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          👯‍♀️
+          ‍️
         </span>
         <div>
           <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">
@@ -55,7 +55,7 @@ export function BeautyFriendActivityCard({
             key={i}
             className="flex items-center gap-2 rounded-lg bg-fuchsia-50 px-3 py-2 dark:bg-fuchsia-950"
           >
-            <span className="text-sm">{a.emoji || '👩'}</span>
+            <span className="text-sm">{a.emoji || ''}</span>
             <div className="flex-1 min-w-0">
               <p className="text-[10px] text-fuchsia-800 dark:text-fuchsia-200">
                 <span className="font-bold">{a.friend}</span> {a.action}

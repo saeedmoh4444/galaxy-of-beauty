@@ -21,12 +21,12 @@ export default function HairColorSimPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">💇‍♀️ محاكي لون الشعر</h1>
+          <h1 className="text-2xl font-bold">‍️ محاكي لون الشعر</h1>
           <p className="mt-1 text-sm text-text-secondary">جرّبي ألوان شعر مختلفة قبل الصبغة</p>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3">📷 حمّلي صورتكِ</h3>
+          <h3 className="font-bold mb-3"> حمّلي صورتكِ</h3>
           <input
             type="file"
             accept="image/*"
@@ -42,7 +42,7 @@ export default function HairColorSimPage(): JSX.Element {
         </Card>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-4">🎨 اختاري لوناً</h3>
+          <h3 className="font-bold mb-4"> اختاري لوناً</h3>
           {isLoading ? (
             <CardSkeleton />
           ) : (
@@ -61,7 +61,7 @@ export default function HairColorSimPage(): JSX.Element {
                     style={{ backgroundColor: c.hex as string }}
                   />
                   <span className="text-[10px] text-text-secondary">{c.nameAr as string}</span>
-                  {selected === c.id && <span className="text-brand-500 text-xs">✓</span>}
+                  {selected === c.id && <span className="text-brand-500 text-xs"></span>}
                 </button>
               ))}
             </div>
@@ -71,7 +71,7 @@ export default function HairColorSimPage(): JSX.Element {
         {selected && (
           <div className="text-center">
             <Link href="/bookings/create">
-              <Button size="lg">💇‍♀️ احجزي صبغة الآن</Button>
+              <Button size="lg">‍️ احجزي صبغة الآن</Button>
             </Link>
           </div>
         )}

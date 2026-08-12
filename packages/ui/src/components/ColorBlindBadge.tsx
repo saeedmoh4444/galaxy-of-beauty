@@ -24,7 +24,7 @@ export function ColorBlindBadge({ className = '' }: ColorBlindBadgeProps): JSX.E
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          👁️
+          ️
         </span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">
@@ -37,9 +37,9 @@ export function ColorBlindBadge({ className = '' }: ColorBlindBadgeProps): JSX.E
       </div>
       <div className="mt-3 space-y-1.5 text-[10px] text-purple-700 dark:text-purple-300">
         {[
-          { emoji: '🎨', label: 'ألوان عالية التباين', desc: 'نستخدم تبايناً عالياً في اللوحات' },
-          { emoji: '📝', label: 'رموز مع النصوص', desc: 'كل لون مصحوب برمز أو نص' },
-          { emoji: '💡', label: 'إضاءة جيدة', desc: 'إضاءة كافية لتمييز التفاصيل' },
+          { emoji: '', label: 'ألوان عالية التباين', desc: 'نستخدم تبايناً عالياً في اللوحات' },
+          { emoji: '', label: 'رموز مع النصوص', desc: 'كل لون مصحوب برمز أو نص' },
+          { emoji: '', label: 'إضاءة جيدة', desc: 'إضاءة كافية لتمييز التفاصيل' },
         ].map((f) => (
           <div
             key={f.label}
@@ -56,7 +56,7 @@ export function ColorBlindBadge({ className = '' }: ColorBlindBadgeProps): JSX.E
         ))}
       </div>
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        👁️ الوضوح للجميع — ليس مجرد ألوان
+        ️ الوضوح للجميع — ليس مجرد ألوان
       </p>
     </div>
   );

@@ -13,7 +13,7 @@ export function BeautySkincareMistakesCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">⚠️</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-red-700 dark:text-red-300">أخطاء العناية</h4>
           <p className="text-[10px] text-red-500 dark:text-red-400">توقفي عنها فوراً</p>
@@ -21,10 +21,10 @@ export function BeautySkincareMistakesCard({
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧼', text: 'غسل الوجه بالماء الساخن — يجرد البشرة من زيوتها' },
-          { emoji: '🧴', text: 'تخطي المرطب — حتى البشرة الدهنية تحتاج ترطيب' },
-          { emoji: '☀️', text: 'عدم استخدام واقي شمس — السبب الأول للشيخوخة' },
-          { emoji: '🔄', text: 'تغيير المنتجات كل أسبوع — أعطيها 6-8 أسابيع' },
+          { emoji: '', text: 'غسل الوجه بالماء الساخن — يجرد البشرة من زيوتها' },
+          { emoji: '', text: 'تخطي المرطب — حتى البشرة الدهنية تحتاج ترطيب' },
+          { emoji: '️', text: 'عدم استخدام واقي شمس — السبب الأول للشيخوخة' },
+          { emoji: '', text: 'تغيير المنتجات كل أسبوع — أعطيها 6-8 أسابيع' },
         ].map((t, i) => (
           <div
             key={i}

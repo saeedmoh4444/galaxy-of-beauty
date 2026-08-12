@@ -52,10 +52,10 @@ export default function BookingsScreen(): JSX.Element {
       onRetry={() => bookings.refetch()}
     >
       <View style={styles.header}>
-        <Text style={styles.title}>📅 حجوزاتي</Text>
+        <Text style={styles.title}> حجوزاتي</Text>
         {loyalty?.data && (
           <View style={styles.loyaltyBadge}>
-            <Text style={styles.loyaltyText}>⭐ {loyalty.data.points ?? 0}</Text>
+            <Text style={styles.loyaltyText}> {loyalty.data.points ?? 0}</Text>
           </View>
         )}
       </View>

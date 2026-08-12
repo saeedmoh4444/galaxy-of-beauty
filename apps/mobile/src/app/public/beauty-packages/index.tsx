@@ -27,14 +27,14 @@ export default function BeautyPackagesScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={styles.t}>📦 باقات التجميل</Text>
+      <Text style={styles.t}> باقات التجميل</Text>
       <Text style={styles.sub}>باقات مجمعة بأسعار مخفضة</Text>
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد باقات</Text>
       ) : (
         items.map((p: any) => (
           <View key={p.id} style={styles.card}>
-            <Text style={styles.pkgEmoji}>{(p.emoji as string) ?? '📦'}</Text>
+            <Text style={styles.pkgEmoji}>{(p.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.pkgName}>{p.nameAr as string}</Text>
               <Text style={styles.pkgServices}>

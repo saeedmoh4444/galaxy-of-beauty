@@ -21,9 +21,9 @@ export default function StreakCalendarScreen(): JSX.Element {
       errorMessage="فشل تحميل التقويم"
       onRetry={() => streak.refetch()}
     >
-      <Text style={styles.title}>🔥 تقويم الاستمرارية</Text>
+      <Text style={styles.title}> تقويم الاستمرارية</Text>
       <View style={styles.card}>
-        <Text style={styles.fire}>🔥</Text>
+        <Text style={styles.fire}></Text>
         <Text style={styles.current}>
           الأسبوع الحالي: {String((streak.data as any)?.currentStreak ?? 0)} أيام
         </Text>

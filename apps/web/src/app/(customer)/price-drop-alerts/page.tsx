@@ -32,14 +32,14 @@ export default function PriceDropAlertsPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🔔 تنبيهات الأسعار</h1>
+          <h1 className="text-2xl font-bold"> تنبيهات الأسعار</h1>
           <p className="mt-1 text-sm text-text-secondary">
             تابعي أسعار الخدمات واحصلي على تنبيه عند انخفاضها
           </p>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-4">📉 خدمات انخفض سعرها</h3>
+          <h3 className="font-bold mb-4"> خدمات انخفض سعرها</h3>
           <div className="grid gap-3 sm:grid-cols-3">
             {services.map((s: Record<string, unknown>) => (
               <div
@@ -63,7 +63,7 @@ export default function PriceDropAlertsPage(): JSX.Element {
 
         <Card padding="lg">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold">🔔 تنبيهاتي</h3>
+            <h3 className="font-bold"> تنبيهاتي</h3>
             <Button size="sm" onClick={() => setShow(true)}>
               + إضافة
             </Button>
@@ -89,7 +89,7 @@ export default function PriceDropAlertsPage(): JSX.Element {
                       onClick={() => deleteMut.mutate({ id: a.id as number })}
                       className="text-red-400"
                     >
-                      🗑️
+                      ️
                     </button>
                   </div>
                 </div>
@@ -130,7 +130,7 @@ export default function PriceDropAlertsPage(): JSX.Element {
               loading={createMut.isPending}
               className="w-full"
             >
-              🔔 تفعيل
+               تفعيل
             </Button>
           </div>
         </Modal>

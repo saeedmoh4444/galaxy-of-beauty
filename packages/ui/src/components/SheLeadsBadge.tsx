@@ -29,49 +29,49 @@ interface RoleDef {
 
 const ROLES: Record<LeadershipRole, RoleDef> = {
   franchise_owner: {
-    emoji: '👑',
+    emoji: '',
     title: 'مالكة امتياز',
     description: 'تملك وتدير فرعها الخاص من جالاكسي بيوتي',
     tier: 'gold',
   },
   salon_manager: {
-    emoji: '🏪',
+    emoji: '',
     title: 'مديرة صالون',
     description: 'تقود فريقاً من الخبيرات في صالونها',
     tier: 'silver',
   },
   master_technician: {
-    emoji: '⭐',
+    emoji: '',
     title: 'خبيرة رئيسية',
     description: 'أعلى مستوى من المهارة والخبرة',
     tier: 'gold',
   },
   academy_instructor: {
-    emoji: '📖',
+    emoji: '',
     title: 'مدربة أكاديمية',
     description: 'تعلّم الجيل القادم من خبيرات التجميل',
     tier: 'silver',
   },
   mentor: {
-    emoji: '🤝',
+    emoji: '',
     title: 'مرشدة',
     description: 'تشارك خبرتها مع الأخت الصغرى في برنامج الإرشاد',
     tier: 'bronze',
   },
   advisory_board: {
-    emoji: '🏛️',
+    emoji: '️',
     title: 'المجلس الاستشاري',
     description: 'قائدة في مجال التجميل والأعمال والتقنية',
     tier: 'gold',
   },
   community_leader: {
-    emoji: '💪',
+    emoji: '',
     title: 'قائدة مجتمعية',
     description: 'تنظم فعاليات المجتمع وتدعم الأخوات',
     tier: 'bronze',
   },
   top_earner: {
-    emoji: '💎',
+    emoji: '',
     title: 'الأعلى دخلاً',
     description: 'من بين الأعلى دخلاً على المنصة هذا الشهر',
     tier: 'gold',
@@ -88,17 +88,17 @@ const TIER_STYLES: Record<RoleDef['tier'], string> = {
 
 const TIER_BADGE: Record<RoleDef['tier'], { emoji: string; label: string; className: string }> = {
   gold: {
-    emoji: '🥇',
+    emoji: '',
     label: 'ذهبي',
     className: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200',
   },
   silver: {
-    emoji: '🥈',
+    emoji: '',
     label: 'فضي',
     className: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
   },
   bronze: {
-    emoji: '🥉',
+    emoji: '',
     label: 'برونزي',
     className: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
   },
@@ -180,17 +180,17 @@ export function SheLeadsBadge({
       <div className="mt-2 flex flex-wrap gap-1.5">
         {city && (
           <span className="inline-flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 text-[10px] dark:bg-black/20 dark:text-gray-300">
-            📍 {city}
+             {city}
           </span>
         )}
         {yearsOfExperience && (
           <span className="inline-flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 text-[10px] dark:bg-black/20 dark:text-gray-300">
-            🕰️ {yearsOfExperience} سنوات خبرة
+            ️ {yearsOfExperience} سنوات خبرة
           </span>
         )}
         {teamSize && (
           <span className="inline-flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 text-[10px] dark:bg-black/20 dark:text-gray-300">
-            👥 فريق من {teamSize}
+             فريق من {teamSize}
           </span>
         )}
       </div>
@@ -198,7 +198,7 @@ export function SheLeadsBadge({
       {/* She Leads tagline */}
       <div className="mt-3 border-t border-amber-200 pt-2 dark:border-amber-800">
         <p className="text-center text-[9px] font-bold text-amber-700 dark:text-amber-400">
-          ✨ She Leads — لأن القيادة تبدأ من الداخل ✨
+           She Leads — لأن القيادة تبدأ من الداخل 
         </p>
       </div>
     </div>

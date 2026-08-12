@@ -24,12 +24,12 @@ export default function AddressesScreen(): JSX.Element {
       emptyDescription="أضيفي عنوانكِ الأول لتسهيل الحجز"
       onRetry={() => addresses.refetch()}
     >
-      <Text style={styles.title}>📍 عناويني</Text>
+      <Text style={styles.title}> عناويني</Text>
       {(data as Record<string, unknown>[])?.map((a: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.row}>
             <Text style={styles.label}>{a.label as string}</Text>
-            {a.isDefault ? <Text style={styles.defaultBadge}>✓ افتراضي</Text> : null}
+            {a.isDefault ? <Text style={styles.defaultBadge}> افتراضي</Text> : null}
           </View>
           <Text style={styles.detail}>
             {a.street as string}، {a.area as string}، {a.city as string}
@@ -37,7 +37,7 @@ export default function AddressesScreen(): JSX.Element {
         </View>
       ))}
       <TouchableOpacity style={styles.addBtn}>
-        <Text style={styles.addText}>➕ إضافة عنوان جديد</Text>
+        <Text style={styles.addText}> إضافة عنوان جديد</Text>
       </TouchableOpacity>
     </ScreenState>
   );

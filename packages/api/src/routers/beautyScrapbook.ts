@@ -28,7 +28,7 @@ export const beautyScrapbookRouter = router({
       z.object({
         title: z.string().min(2).max(200),
         date: z.string(),
-        emoji: z.string().default('📸'),
+        emoji: z.string().default(''),
         imageUrl: z.string().optional(),
         notes: z.string().max(500).optional(),
         tags: z.array(z.string()).default([]),

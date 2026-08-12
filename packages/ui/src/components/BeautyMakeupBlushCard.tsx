@@ -9,7 +9,7 @@ export function BeautyMakeupBlushCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">😊</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">أحمر الخدود</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">لمسة حيوية لوجهك</p>
@@ -17,10 +17,10 @@ export function BeautyMakeupBlushCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🍎', text: 'ابتسمي — ضعيه على تفاحة الخد' },
-          { emoji: '⬆️', text: 'ادمجيه للأعلى — نحو الصدغ' },
-          { emoji: '🎨', text: 'كريمي للبشرة الجافة — بودرة للدهنية' },
-          { emoji: '💡', text: 'القليل كثير — ابدئي بكمية صغيرة' },
+          { emoji: '', text: 'ابتسمي — ضعيه على تفاحة الخد' },
+          { emoji: '️', text: 'ادمجيه للأعلى — نحو الصدغ' },
+          { emoji: '', text: 'كريمي للبشرة الجافة — بودرة للدهنية' },
+          { emoji: '', text: 'القليل كثير — ابدئي بكمية صغيرة' },
         ].map((t, i) => (
           <div
             key={i}

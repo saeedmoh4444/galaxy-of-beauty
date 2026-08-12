@@ -9,7 +9,7 @@ export function BeautyHairTrimCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">✂️</span>
+        <span className="text-xl">️</span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">قص الأطراف</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">كم مرة ولماذا</p>
@@ -17,10 +17,10 @@ export function BeautyHairTrimCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '📅', text: 'كل 8-12 أسبوع — حتى لو تطولينه' },
-          { emoji: '🔍', text: 'الأطراف المتقصفة لا تصلح — قصيها' },
-          { emoji: '✨', text: 'القص المنتظم = شعر أكثر كثافة' },
-          { emoji: '💰', text: 'لا تحتاجين صالون — يمكنكِ قصه في البيت' },
+          { emoji: '', text: 'كل 8-12 أسبوع — حتى لو تطولينه' },
+          { emoji: '', text: 'الأطراف المتقصفة لا تصلح — قصيها' },
+          { emoji: '', text: 'القص المنتظم = شعر أكثر كثافة' },
+          { emoji: '', text: 'لا تحتاجين صالون — يمكنكِ قصه في البيت' },
         ].map((t, i) => (
           <div
             key={i}

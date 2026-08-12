@@ -7,7 +7,7 @@ import { Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
-const MOODS = ['😔', '😐', '🙂', '😊', '😍'];
+const MOODS = ['', '', '', '', ''];
 const MOOD_LABELS = ['سيء', 'متوسط', 'جيد', 'رائع', 'ممتاز'];
 
 export default function SelfCarePage(): JSX.Element {
@@ -19,7 +19,7 @@ export default function SelfCarePage(): JSX.Element {
   const [notes, setNotes] = useState('');
   const checkinMut = api.selfCare.checkin.useMutation({
     onSuccess: () => {
-      addToast('success', 'تم تسجيل تقييمكِ اليومي 🌸');
+      addToast('success', 'تم تسجيل تقييمكِ اليومي ');
       setNotes('');
     },
   });
@@ -32,7 +32,7 @@ export default function SelfCarePage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          🌸 العناية الذاتية
+           العناية الذاتية
         </h1>
 
         {today ? (
@@ -105,7 +105,7 @@ export default function SelfCarePage(): JSX.Element {
               loading={checkinMut.isPending}
               className="mt-4 w-full"
             >
-              🌸 حفظ التقييم
+               حفظ التقييم
             </Button>
           </Card>
         )}

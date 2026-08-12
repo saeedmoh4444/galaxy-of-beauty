@@ -15,11 +15,11 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 
 const THEMES = [
-  { value: 'bridal', label: '👰 عروس / توديع عزوبية', emoji: '👰' },
-  { value: 'birthday', label: '🎂 عيد ميلاد', emoji: '🎂' },
-  { value: 'girls_night', label: '🌙 ليلة بنات', emoji: '🌙' },
-  { value: 'family', label: '👨‍👩‍👧‍👦 عائلية', emoji: '👨‍👩‍👧‍👦' },
-  { value: 'other', label: '🎉 أخرى', emoji: '🎉' },
+  { value: 'bridal', label: ' عروس / توديع عزوبية', emoji: '' },
+  { value: 'birthday', label: ' عيد ميلاد', emoji: '' },
+  { value: 'girls_night', label: ' ليلة بنات', emoji: '' },
+  { value: 'family', label: '‍‍‍ عائلية', emoji: '‍‍‍' },
+  { value: 'other', label: ' أخرى', emoji: '' },
 ];
 
 interface MemberInput {
@@ -70,11 +70,11 @@ const STATUS_MAP: Record<string, { label: string; color: string }> = {
 };
 
 const THEME_EMOJI: Record<string, string> = {
-  bridal: '👰',
-  birthday: '🎂',
-  girls_night: '🌙',
-  family: '👨‍👩‍👧‍👦',
-  other: '🎉',
+  bridal: '',
+  birthday: '',
+  girls_night: '',
+  family: '‍‍‍',
+  other: '',
 };
 
 export default function GroupBookingsPage(): JSX.Element {
@@ -170,7 +170,7 @@ export default function GroupBookingsPage(): JSX.Element {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-              👯‍♀️ حجوزات المجموعات
+              ‍️ حجوزات المجموعات
             </h1>
             <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
               احجزي لكِ ولصديقاتكِ معاً — خصم يصل إلى ٣٠٪
@@ -182,9 +182,9 @@ export default function GroupBookingsPage(): JSX.Element {
         {/* Benefits Cards */}
         <div className="grid gap-4 sm:grid-cols-3">
           {[
-            { emoji: '💰', title: 'خصم جماعي', desc: 'خصم يصل إلى ٣٠٪' },
-            { emoji: '👯‍♀️', title: 'حتى ٢٠ شخص', desc: 'كلما زاد العدد زاد الخصم' },
-            { emoji: '🎉', title: 'أي مناسبة', desc: 'أعراس · أعياد · لقاءات' },
+            { emoji: '', title: 'خصم جماعي', desc: 'خصم يصل إلى ٣٠٪' },
+            { emoji: '‍️', title: 'حتى ٢٠ شخص', desc: 'كلما زاد العدد زاد الخصم' },
+            { emoji: '', title: 'أي مناسبة', desc: 'أعراس · أعياد · لقاءات' },
           ].map((b) => (
             <Card key={b.title} padding="md" className="text-center">
               <span className="text-3xl">{b.emoji}</span>
@@ -221,7 +221,7 @@ export default function GroupBookingsPage(): JSX.Element {
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <span className="text-4xl">{THEME_EMOJI[group.theme] ?? '🎉'}</span>
+                        <span className="text-4xl">{THEME_EMOJI[group.theme] ?? ''}</span>
                         <div>
                           <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
                             {group.name}
@@ -365,7 +365,7 @@ export default function GroupBookingsPage(): JSX.Element {
                         onClick={() => removeMember(idx)}
                         className="text-text-tertiary hover:text-red-500 p-1"
                       >
-                        ✕
+                        
                       </button>
                     )}
                   </div>
@@ -392,7 +392,7 @@ export default function GroupBookingsPage(): JSX.Element {
                 إلغاء
               </Button>
               <Button onClick={handleCreate} loading={createMut.isPending}>
-                🎉 إنشاء المجموعة
+                 إنشاء المجموعة
               </Button>
             </div>
           </div>

@@ -27,23 +27,23 @@ export default function MarketplacePage(): JSX.Element {
       <PageContainer width="wide">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <PageTitle title="🛍️ متجر الجمال" subtitle="منتجات تجميل أصلية" />
+            <PageTitle title="️ متجر الجمال" subtitle="منتجات تجميل أصلية" />
           </div>
           <span className="rounded-full bg-gray-100 px-4 py-2 text-sm font-bold text-text-primary dark:bg-gray-800 dark:text-gray-100">
-            🛒 {cartCount}
+             {cartCount}
           </span>
         </div>
 
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="🔍 ابحثي عن منتج..."
+          placeholder=" ابحثي عن منتج..."
           className="mb-6 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-right dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
         />
 
         {items.length === 0 ? (
           <div className="py-20 text-center">
-            <span className="text-5xl">🛍️</span>
+            <span className="text-5xl">️</span>
             <p className="mt-4 text-text-secondary dark:text-gray-400">لا توجد منتجات</p>
           </div>
         ) : (
@@ -69,7 +69,7 @@ export default function MarketplacePage(): JSX.Element {
                     onClick={() => handleAddToCart(p.id)}
                     className="rounded-xl bg-rose-600 px-4 py-2 text-xs font-bold text-white hover:bg-rose-700 transition-colors"
                   >
-                    🛒 أضيفي
+                     أضيفي
                   </button>
                 </div>
               </div>

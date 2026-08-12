@@ -37,14 +37,14 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📦 الصناديق الشهرية</Text>
+      <Text style={styles.t}> الصناديق الشهرية</Text>
       {boxes.map((b: any) => (
         <View key={b.id} style={styles.card}>
-          <Text style={styles.be}>{(b.emoji as string) ?? '📦'}</Text>
+          <Text style={styles.be}>{(b.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.bn}>{b.nameAr as string}</Text>
             <Text style={styles.bd}>{(b.descAr as string)?.substring(0, 80)}</Text>
-            <Text style={styles.bi}>📦 {b.itemCount as number} منتجات</Text>
+            <Text style={styles.bi}> {b.itemCount as number} منتجات</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
             <Text style={styles.bp}>{(b.price as number)?.toLocaleString()} ر.س</Text>

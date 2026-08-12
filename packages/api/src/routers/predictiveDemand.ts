@@ -27,6 +27,6 @@ export const predictiveDemandRouter = router({
   myInsights: customerProcedure.query(() => ({
     bestTimeToBook: 'الثلاثاء ١٠ صباحاً — أقل ازدحاماً',
     popularThisWeek: ['مكياج طبيعي', 'تنظيف بشرة', 'مساج استرخائي'],
-    tip: 'احجزي قبل ٣ أيام للحصول على موعدكِ المفضل ✨',
+    tip: 'احجزي قبل ٣ أيام للحصول على موعدكِ المفضل ',
   })),
 });

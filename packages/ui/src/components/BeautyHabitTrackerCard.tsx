@@ -8,7 +8,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W3: Health & Wellness — Mental Wellness & Beauty.
  *
  * Usage:
- *   <BeautyHabitTrackerCard habits={[{ name: 'واقي شمس', emoji: '☀️', done: true }]} />
+ *   <BeautyHabitTrackerCard habits={[{ name: 'واقي شمس', emoji: '️', done: true }]} />
  */
 
 interface Habit {
@@ -47,7 +47,7 @@ export function BeautyHabitTrackerCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true">
-            ✅
+            
           </span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
@@ -95,7 +95,7 @@ export function BeautyHabitTrackerCard({
                 h.done ? 'text-emerald-500' : 'text-gray-300 dark:text-gray-600',
               )}
             >
-              {h.done ? '✅' : '○'}
+              {h.done ? '' : '○'}
             </span>
           </button>
         ))}

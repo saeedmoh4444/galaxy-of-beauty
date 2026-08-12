@@ -23,7 +23,7 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
       </div>
       {packages.length === 0 ? (
         <div className="py-16 text-center text-gray-400">
-          <span className="text-5xl">💅</span>
+          <span className="text-5xl"></span>
           <p className="mt-4">لا توجد باقات حالياً. تابعينا قريباً!</p>
           <Link href="/services" className="mt-4 inline-block text-brand-600 hover:underline">
             تصفحي جميع الخدمات
@@ -45,7 +45,7 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
                   {pkg.imageUrl ? (
                     <img src={pkg.imageUrl} alt={name} className="h-full w-full object-cover" />
                   ) : (
-                    <span>💅</span>
+                    <span></span>
                   )}
                 </div>
                 <div className="p-5">
@@ -62,7 +62,7 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
                         key={s.id}
                         className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"
                       >
-                        <span>✨</span>
+                        <span></span>
                         {/* serviceId is the foreign key — service title not joined */}
                         <span>خدمة #{s.serviceId}</span>
                       </div>

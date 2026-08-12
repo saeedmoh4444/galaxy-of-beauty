@@ -4,11 +4,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 const CH: Record<string, { emoji: string; color: string }> = {
-  '7day_skincare': { emoji: '✨', color: '#ec4899' },
-  '5bookings': { emoji: '💇‍♀️', color: '#f59e0b' },
-  first_review: { emoji: '⭐', color: '#3b82f6' },
-  streak_4weeks: { emoji: '🔥', color: '#8b5cf6' },
-  refer_3friends: { emoji: '👯‍♀️', color: '#10b981' },
+  '7day_skincare': { emoji: '', color: '#ec4899' },
+  '5bookings': { emoji: '‍️', color: '#f59e0b' },
+  first_review: { emoji: '', color: '#3b82f6' },
+  streak_4weeks: { emoji: '', color: '#8b5cf6' },
+  refer_3friends: { emoji: '‍️', color: '#10b981' },
 };
 
 export default function ChallengesScreen(): JSX.Element {
@@ -53,9 +53,9 @@ export default function ChallengesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🏆 تحديات الجمال</Text>
+      <Text style={styles.t}> تحديات الجمال</Text>
       {challenges.map((ch: any) => {
-        const s = CH[ch.id as string] ?? { emoji: '🎯', color: '#6b7280' };
+        const s = CH[ch.id as string] ?? { emoji: '', color: '#6b7280' };
         const pct = Math.min(
           100,
           ((progress?.bookingCount || 0) / ((ch.target as number) || 1)) * 100,
@@ -73,7 +73,7 @@ export default function ChallengesScreen(): JSX.Element {
               <View style={[styles.pf, { width: `${pct}%`, backgroundColor: s.color }]} />
             </View>
             <View style={styles.cf}>
-              <Text style={styles.rt}>🎁 {ch.reward as string}</Text>
+              <Text style={styles.rt}> {ch.reward as string}</Text>
               <TouchableOpacity
                 onPress={() => join(ch.id as string)}
                 style={[styles.jb, { backgroundColor: s.color }]}

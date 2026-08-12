@@ -37,14 +37,14 @@ export default function MarketplaceScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🛍️ المتجر</Text>
+      <Text style={styles.t}>️ المتجر</Text>
       <View style={styles.grid}>
         {products.length === 0
           ? [
-              { emoji: '🧴', title: 'منتجات العناية', desc: 'تصفحي المنتجات' },
-              { emoji: '💄', title: 'مستحضرات تجميل', desc: 'أفضل الماركات' },
-              { emoji: '💇‍♀️', title: 'منتجات الشعر', desc: 'عناية متكاملة' },
-              { emoji: '💅', title: 'منتجات الأظافر', desc: 'ألوان رائعة' },
+              { emoji: '', title: 'منتجات العناية', desc: 'تصفحي المنتجات' },
+              { emoji: '', title: 'مستحضرات تجميل', desc: 'أفضل الماركات' },
+              { emoji: '‍️', title: 'منتجات الشعر', desc: 'عناية متكاملة' },
+              { emoji: '', title: 'منتجات الأظافر', desc: 'ألوان رائعة' },
             ].map((item, i) => (
               <View key={i} style={styles.card}>
                 <View style={styles.ci}>
@@ -57,7 +57,7 @@ export default function MarketplaceScreen(): JSX.Element {
           : products.map((p: any) => (
               <TouchableOpacity key={p.id} style={styles.card}>
                 <View style={styles.ci}>
-                  <Text style={styles.ce}>{(p.emoji as string) ?? '🧴'}</Text>
+                  <Text style={styles.ce}>{(p.emoji as string) ?? ''}</Text>
                 </View>
                 <Text style={styles.ct}>{(p.nameAr as string) ?? (p.titleAr as string)}</Text>
                 <Text style={styles.cp}>{(p.price as number)?.toLocaleString()} ر.س</Text>

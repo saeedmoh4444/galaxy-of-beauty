@@ -8,7 +8,7 @@ function generateBookingCode(): string {
 }
 
 async function main() {
-  console.log('🌱 Seeding Galaxy of Beauty database...\n');
+  console.log(' Seeding Galaxy of Beauty database...\n');
 
   // ---- Clean existing data (in dependency order) ----
   const db = prisma as any;
@@ -84,7 +84,7 @@ async function main() {
     db.saudiCity.deleteMany(),
   ]);
 
-  console.log('✅ Cleaned existing data');
+  console.log(' Cleaned existing data');
 
   // ---- Saudi Cities ----
   const cities = [
@@ -118,7 +118,7 @@ async function main() {
   for (const city of cities) {
     await prisma.saudiCity.create({ data: city });
   }
-  console.log(`✅ ${cities.length} Saudi cities`);
+  console.log(` ${cities.length} Saudi cities`);
 
   // ---- Admin User ----
   // Password: Admin@123456
@@ -140,7 +140,7 @@ async function main() {
   await prisma.wallet.create({
     data: { userId: admin.id, balance: 0, bonusBalance: 0 },
   });
-  console.log('✅ Admin user created (admin@galaxyofbeauty.sa / password masked)');
+  console.log(' Admin user created (admin@galaxyofbeauty.sa / password masked)');
 
   // ---- Platform Config ----
   await prisma.platformConfig.createMany({
@@ -201,7 +201,7 @@ async function main() {
       },
     ],
   });
-  console.log('✅ Platform configuration');
+  console.log(' Platform configuration');
 
   // ---- Categories (6 root categories) ----
   const categories = await Promise.all([
@@ -302,7 +302,7 @@ async function main() {
       },
     }),
   ]);
-  console.log(`✅ ${categories.length} root categories`);
+  console.log(` ${categories.length} root categories`);
 
   // ---- Sub-categories ----
   await Promise.all([
@@ -419,7 +419,7 @@ async function main() {
       },
     }),
   ]);
-  console.log('✅ 14 sub-categories');
+  console.log(' 14 sub-categories');
 
   // ---- Services ----
   const services = await Promise.all([
@@ -907,7 +907,7 @@ async function main() {
       },
     }),
   ]);
-  console.log(`✅ ${services.length} services`);
+  console.log(` ${services.length} services`);
 
   // ---- Service Variants ----
   await prisma.serviceVariant.createMany({
@@ -944,7 +944,7 @@ async function main() {
       },
     ],
   });
-  console.log('✅ Service variants');
+  console.log(' Service variants');
 
   // ---- Service Tags ----
   const tags = await Promise.all([
@@ -987,7 +987,7 @@ async function main() {
       { serviceId: services[0]!.id, tagId: tags[7]!.id }, // Full Haircut → Women Only
     ],
   });
-  console.log(`✅ ${tags.length} service tags`);
+  console.log(` ${tags.length} service tags`);
 
   // ---- Achievements ----
   const achievements = await Promise.all([
@@ -1019,7 +1019,7 @@ async function main() {
       },
     }),
   ]);
-  console.log(`✅ ${achievements.length} achievements`);
+  console.log(` ${achievements.length} achievements`);
 
   // ---- AI Subscription Plans ----
   await prisma.aiSubscriptionPlan.createMany({
@@ -1044,7 +1044,7 @@ async function main() {
       },
     ],
   });
-  console.log('✅ AI subscription plans');
+  console.log(' AI subscription plans');
 
   // ---- New Features (Post-MVP) ----
 
@@ -1179,7 +1179,7 @@ async function main() {
       publishedAt: new Date(Date.now() - 1 * 86400000),
     },
   });
-  console.log('✅ Blog posts');
+  console.log(' Blog posts');
 
   // Seed technician badges
   const badge1 = await prisma.technicianBadge.create({
@@ -1191,7 +1191,7 @@ async function main() {
   const badge3 = await prisma.technicianBadge.create({
     data: { key: 'celebrity_stylist', nameJson: { ar: 'مصففة مشاهير', en: 'Celebrity Stylist' } },
   });
-  console.log('✅ Technician badges');
+  console.log(' Technician badges');
 
   // Seed beauty events
   await prisma.beautyEvent.create({
@@ -1242,7 +1242,7 @@ async function main() {
       isPublished: true,
     },
   });
-  console.log('✅ Beauty events');
+  console.log(' Beauty events');
 
   // Seed campaign
   await prisma.campaign.create({
@@ -1290,7 +1290,7 @@ async function main() {
       isActive: true,
     },
   });
-  console.log('✅ Campaigns');
+  console.log(' Campaigns');
 
   // ---- Beauty Courses ----
   const courses = await Promise.all([
@@ -1302,7 +1302,7 @@ async function main() {
         duration: '٤ ساعات',
         level: 'beginner',
         category: 'makeup',
-        emoji: '💄',
+        emoji: '',
         rating: 4.8,
       },
     }),
@@ -1314,7 +1314,7 @@ async function main() {
         duration: '٣ ساعات',
         level: 'beginner',
         category: 'skincare',
-        emoji: '✨',
+        emoji: '',
         rating: 4.9,
       },
     }),
@@ -1326,7 +1326,7 @@ async function main() {
         duration: '٥ ساعات',
         level: 'intermediate',
         category: 'hair',
-        emoji: '💇‍♀️',
+        emoji: '‍️',
         rating: 4.7,
       },
     }),
@@ -1338,7 +1338,7 @@ async function main() {
         duration: '٢.٥ ساعة',
         level: 'advanced',
         category: 'nails',
-        emoji: '💅',
+        emoji: '',
         rating: 4.6,
       },
     }),
@@ -1354,7 +1354,7 @@ async function main() {
         price: 5000,
         employees: 10,
         services: ['مانيكير', 'مساج سريع', 'استشارة عناية'],
-        emoji: '🌱',
+        emoji: '',
       },
       {
         key: 'growth',
@@ -1362,7 +1362,7 @@ async function main() {
         price: 12000,
         employees: 50,
         services: ['مانيكير', 'باديكير', 'مساج', 'تنظيف بشرة', 'استشارة'],
-        emoji: '🌿',
+        emoji: '',
       },
       {
         key: 'enterprise',
@@ -1370,7 +1370,7 @@ async function main() {
         price: 25000,
         employees: 200,
         services: ['كل الخدمات', 'يوم سبا', 'ورش عناية', 'مدير حساب'],
-        emoji: '🌳',
+        emoji: '',
       },
     ],
   });
@@ -1384,22 +1384,22 @@ async function main() {
         options: [
           {
             key: 'birthday',
-            labelAr: 'عيد ميلاد 🎂',
+            labelAr: 'عيد ميلاد ',
             labelEn: 'Birthday',
             tags: ['احتفالي', 'شخصي'],
           },
-          { key: 'wedding', labelAr: 'زفاف 👰', labelEn: 'Wedding', tags: ['راقي', 'فخم'] },
-          { key: 'graduation', labelAr: 'تخرج 🎓', labelEn: 'Graduation', tags: ['شبابي', 'عصري'] },
+          { key: 'wedding', labelAr: 'زفاف ', labelEn: 'Wedding', tags: ['راقي', 'فخم'] },
+          { key: 'graduation', labelAr: 'تخرج ', labelEn: 'Graduation', tags: ['شبابي', 'عصري'] },
           {
             key: 'thankyou',
-            labelAr: 'شكر وامتنان 💐',
+            labelAr: 'شكر وامتنان ',
             labelEn: 'Thank You',
             tags: ['لطيف', 'راقي'],
           },
-          { key: 'baby', labelAr: 'بيبي شاور 👶', labelEn: 'Baby Shower', tags: ['لطيف', 'عناية'] },
+          { key: 'baby', labelAr: 'بيبي شاور ', labelEn: 'Baby Shower', tags: ['لطيف', 'عناية'] },
           {
             key: 'justbecause',
-            labelAr: 'بدون مناسبة 🎁',
+            labelAr: 'بدون مناسبة ',
             labelEn: 'Just Because',
             tags: ['متنوع', 'شخصي'],
           },
@@ -1409,11 +1409,11 @@ async function main() {
         questionKey: 'recipient',
         questionJson: { ar: 'لمن الهدية؟', en: 'Who is the gift for?' },
         options: [
-          { key: 'friend', labelAr: 'صديقة 👯‍♀️', labelEn: 'Friend', tags: ['عصري', 'مرح'] },
-          { key: 'mom', labelAr: 'أمي 👩‍👧', labelEn: 'Mom', tags: ['فخم', 'عناية'] },
-          { key: 'sister', labelAr: 'أختي 👭', labelEn: 'Sister', tags: ['شبابي', 'شخصي'] },
-          { key: 'wife', labelAr: 'زوجتي 💑', labelEn: 'Wife', tags: ['رومانسي', 'فخم'] },
-          { key: 'self', labelAr: 'نفسي 💝', labelEn: 'Myself', tags: ['شخصي', 'متنوع'] },
+          { key: 'friend', labelAr: 'صديقة ‍️', labelEn: 'Friend', tags: ['عصري', 'مرح'] },
+          { key: 'mom', labelAr: 'أمي ‍', labelEn: 'Mom', tags: ['فخم', 'عناية'] },
+          { key: 'sister', labelAr: 'أختي ', labelEn: 'Sister', tags: ['شبابي', 'شخصي'] },
+          { key: 'wife', labelAr: 'زوجتي ', labelEn: 'Wife', tags: ['رومانسي', 'فخم'] },
+          { key: 'self', labelAr: 'نفسي ', labelEn: 'Myself', tags: ['شخصي', 'متنوع'] },
         ],
       },
       {
@@ -1422,19 +1422,19 @@ async function main() {
         options: [
           {
             key: 'low',
-            labelAr: 'اقتصادية (حتى ٢٠٠ ر.س) 💰',
+            labelAr: 'اقتصادية (حتى ٢٠٠ ر.س) ',
             labelEn: 'Budget (up to 200 SAR)',
             tags: ['اقتصادي'],
           },
           {
             key: 'mid',
-            labelAr: 'متوسطة (٢٠٠-٥٠٠ ر.س) 💵',
+            labelAr: 'متوسطة (٢٠٠-٥٠٠ ر.س) ',
             labelEn: 'Mid (200-500 SAR)',
             tags: ['متوسط'],
           },
           {
             key: 'high',
-            labelAr: 'فاخرة (٥٠٠+ ر.س) 💎',
+            labelAr: 'فاخرة (٥٠٠+ ر.س) ',
             labelEn: 'Premium (500+ SAR)',
             tags: ['فاخر'],
           },
@@ -1446,21 +1446,21 @@ async function main() {
         options: [
           {
             key: 'skincare',
-            labelAr: 'العناية بالبشرة ✨',
+            labelAr: 'العناية بالبشرة ',
             labelEn: 'Skincare',
             tags: ['عناية', 'بشرة'],
           },
-          { key: 'makeup', labelAr: 'المكياج 💄', labelEn: 'Makeup', tags: ['مكياج', 'عصري'] },
+          { key: 'makeup', labelAr: 'المكياج ', labelEn: 'Makeup', tags: ['مكياج', 'عصري'] },
           {
             key: 'hair',
-            labelAr: 'العناية بالشعر 💇‍♀️',
+            labelAr: 'العناية بالشعر ‍️',
             labelEn: 'Hair Care',
             tags: ['شعر', 'عناية'],
           },
-          { key: 'fragrance', labelAr: 'العطور 🌸', labelEn: 'Fragrance', tags: ['عطور', 'فاخر'] },
+          { key: 'fragrance', labelAr: 'العطور ', labelEn: 'Fragrance', tags: ['عطور', 'فاخر'] },
           {
             key: 'wellness',
-            labelAr: 'الاسترخاء والعناية 🧘',
+            labelAr: 'الاسترخاء والعناية ',
             labelEn: 'Wellness & Relaxation',
             tags: ['استرخاء', 'صحة'],
           },
@@ -1476,7 +1476,7 @@ async function main() {
         descJson: { ar: 'مجموعة متكاملة من كريم وسيروم وتونر' },
         price: 450,
         category: 'skincare',
-        emoji: '✨',
+        emoji: '',
         tags: ['فاخر', 'عناية', 'بشرة'],
       },
       {
@@ -1484,7 +1484,7 @@ async function main() {
         descJson: { ar: '١٨ لون ظلال عيون + ٦ ألوان أحمر شفاه' },
         price: 320,
         category: 'makeup',
-        emoji: '💄',
+        emoji: '',
         tags: ['مكياج', 'عصري', 'شبابي'],
       },
       {
@@ -1492,7 +1492,7 @@ async function main() {
         descJson: { ar: 'جلسة مساج ٦٠ دقيقة مع زيوت عطرية' },
         price: 250,
         category: 'wellness',
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         tags: ['استرخاء', 'صحة'],
       },
       {
@@ -1500,7 +1500,7 @@ async function main() {
         descJson: { ar: 'قيمة ٣٠٠ ر.س' },
         price: 300,
         category: 'giftcard',
-        emoji: '🎁',
+        emoji: '',
         tags: ['مرن', 'شخصي', 'متوسط'],
       },
     ],
@@ -1516,7 +1516,7 @@ async function main() {
         minBuyers: 5,
         currentBuyers: 3,
         endsIn: '٣ أيام',
-        emoji: '💄',
+        emoji: '',
         savings: 100,
       },
       {
@@ -1526,7 +1526,7 @@ async function main() {
         minBuyers: 3,
         currentBuyers: 2,
         endsIn: 'يومين',
-        emoji: '✨',
+        emoji: '',
         savings: 60,
       },
       {
@@ -1536,7 +1536,7 @@ async function main() {
         minBuyers: 4,
         currentBuyers: 4,
         endsIn: 'يوم',
-        emoji: '💆‍♀️',
+        emoji: '‍️',
         savings: 70,
       },
     ],
@@ -1578,7 +1578,7 @@ async function main() {
         price: 89,
         rating: 4.5,
         category: 'skincare',
-        emoji: '🧴',
+        emoji: '',
         features: { hydration: 85, absorption: 80, value: 90, gentle: 75 },
         ingredients: 12,
         crueltyFree: false,
@@ -1590,7 +1590,7 @@ async function main() {
         price: 120,
         rating: 4.8,
         category: 'skincare',
-        emoji: '🌿',
+        emoji: '',
         features: { hydration: 92, absorption: 88, value: 75, gentle: 95 },
         ingredients: 6,
         crueltyFree: true,
@@ -1602,7 +1602,7 @@ async function main() {
         price: 145,
         rating: 4.9,
         category: 'skincare',
-        emoji: '✨',
+        emoji: '',
         features: { hydration: 70, absorption: 95, value: 85, gentle: 80 },
         ingredients: 8,
         crueltyFree: true,
@@ -1614,7 +1614,7 @@ async function main() {
         price: 110,
         rating: 4.3,
         category: 'makeup',
-        emoji: '💄',
+        emoji: '',
         features: { hydration: 60, absorption: 70, value: 65, gentle: 60 },
         ingredients: 18,
         crueltyFree: false,
@@ -1630,31 +1630,31 @@ async function main() {
         questionKey: 'occasion',
         question: 'ما هي المناسبة؟',
         options: [
-          { k: 'daily', l: 'يومي ☀️', t: ['basic'] },
-          { k: 'work', l: 'عمل 💼', t: ['natural'] },
-          { k: 'party', l: 'حفلة 🎉', t: ['glam'] },
-          { k: 'wedding', l: 'زفاف 👰', t: ['luxury'] },
-          { k: 'date', l: 'موعد رومانسي 💑', t: ['elegant'] },
+          { k: 'daily', l: 'يومي ️', t: ['basic'] },
+          { k: 'work', l: 'عمل ', t: ['natural'] },
+          { k: 'party', l: 'حفلة ', t: ['glam'] },
+          { k: 'wedding', l: 'زفاف ', t: ['luxury'] },
+          { k: 'date', l: 'موعد رومانسي ', t: ['elegant'] },
         ],
       },
       {
         questionKey: 'budget',
         question: 'ميزانيتك؟',
         options: [
-          { k: 'low', l: 'اقتصادية 💰', t: ['budget'] },
-          { k: 'mid', l: 'متوسطة 💵', t: ['standard'] },
-          { k: 'high', l: 'فاخرة 💎', t: ['premium'] },
+          { k: 'low', l: 'اقتصادية ', t: ['budget'] },
+          { k: 'mid', l: 'متوسطة ', t: ['standard'] },
+          { k: 'high', l: 'فاخرة ', t: ['premium'] },
         ],
       },
       {
         questionKey: 'area',
         question: 'ما تهتمين به؟',
         options: [
-          { k: 'face', l: 'وجه ✨', t: ['skincare', 'makeup'] },
-          { k: 'hair', l: 'شعر 💇‍♀️', t: ['hair'] },
-          { k: 'body', l: 'جسم 🧖‍♀️', t: ['massage', 'spa'] },
-          { k: 'nails', l: 'أظافر 💅', t: ['nails'] },
-          { k: 'all', l: 'كل شيء 🌟', t: ['full'] },
+          { k: 'face', l: 'وجه ', t: ['skincare', 'makeup'] },
+          { k: 'hair', l: 'شعر ‍️', t: ['hair'] },
+          { k: 'body', l: 'جسم ‍️', t: ['massage', 'spa'] },
+          { k: 'nails', l: 'أظافر ', t: ['nails'] },
+          { k: 'all', l: 'كل شيء ', t: ['full'] },
         ],
       },
     ],
@@ -1664,29 +1664,29 @@ async function main() {
     data: [
       {
         nameAr: 'مكياج احترافي',
-        emoji: '💄',
+        emoji: '',
         price: 300,
         tags: ['glam', 'luxury', 'makeup', 'premium'],
       },
       {
         nameAr: 'تنظيف بشرة عميق',
-        emoji: '✨',
+        emoji: '',
         price: 200,
         tags: ['skincare', 'standard', 'basic'],
       },
-      { nameAr: 'تسريحة شعر', emoji: '💇‍♀️', price: 200, tags: ['hair', 'elegant', 'standard'] },
-      { nameAr: 'مساج استرخائي', emoji: '💆‍♀️', price: 250, tags: ['massage', 'spa', 'standard'] },
-      { nameAr: 'مانيكير وباديكير', emoji: '💅', price: 180, tags: ['nails', 'basic', 'budget'] },
-      { nameAr: 'حمام مغربي', emoji: '🧖‍♀️', price: 350, tags: ['spa', 'luxury', 'full', 'premium'] },
+      { nameAr: 'تسريحة شعر', emoji: '‍️', price: 200, tags: ['hair', 'elegant', 'standard'] },
+      { nameAr: 'مساج استرخائي', emoji: '‍️', price: 250, tags: ['massage', 'spa', 'standard'] },
+      { nameAr: 'مانيكير وباديكير', emoji: '', price: 180, tags: ['nails', 'basic', 'budget'] },
+      { nameAr: 'حمام مغربي', emoji: '‍️', price: 350, tags: ['spa', 'luxury', 'full', 'premium'] },
       {
         nameAr: 'مكياج طبيعي',
-        emoji: '🌸',
+        emoji: '',
         price: 200,
         tags: ['natural', 'makeup', 'daily', 'budget'],
       },
       {
         nameAr: 'عناية بالبشرة',
-        emoji: '🧴',
+        emoji: '',
         price: 150,
         tags: ['skincare', 'basic', 'daily', 'budget'],
       },
@@ -1721,7 +1721,7 @@ async function main() {
   await prisma.streak.create({
     data: { customerId: customer.id, currentStreak: 3, longestStreak: 5 },
   });
-  console.log('✅ Test customer (customer@test.com / Admin@123456)');
+  console.log(' Test customer (customer@test.com / Admin@123456)');
 
   // More customers
   const names = ['سارة الحربي', 'مها القحطاني', 'ريم المطيري', 'هند الشمري', 'لطيفة العتيبي'];
@@ -1741,7 +1741,7 @@ async function main() {
     await prisma.wallet.create({ data: { userId: c.id, balance: 200 + i * 100, bonusBalance: 0 } });
     customers.push(c);
   }
-  console.log(`✅ ${customers.length} customers`);
+  console.log(` ${customers.length} customers`);
 
   // Technicians
   const techData = [
@@ -1825,7 +1825,7 @@ async function main() {
     });
     technicians.push({ ...tech, user: u });
   }
-  console.log(`✅ ${technicians.length} technicians`);
+  console.log(` ${technicians.length} technicians`);
 
   // Availability slots for next 7 days
   let slotCount = 0;
@@ -1850,7 +1850,7 @@ async function main() {
       }
     }
   }
-  console.log(`✅ ${slotCount} availability slots`);
+  console.log(` ${slotCount} availability slots`);
 
   // Addresses for first customer
   const addr1 = await prisma.address.create({
@@ -1919,7 +1919,7 @@ async function main() {
       },
     ],
   });
-  console.log('✅ Customer address');
+  console.log(' Customer address');
 
   // Bookings with various statuses
   const bookingStatuses: Array<{
@@ -1958,10 +1958,10 @@ async function main() {
       });
       bookingCount++;
     } catch (err: any) {
-      console.log(`   ⚠️ Booking ${bs.status} skipped: ${err.message?.slice(0, 80)}`);
+      console.log(`    Booking ${bs.status} skipped: ${err.message?.slice(0, 80)}`);
     }
   }
-  console.log(`✅ ${bookingCount} bookings`);
+  console.log(` ${bookingCount} bookings`);
 
   // Reviews
   let reviewCount = 0;
@@ -1987,7 +1987,7 @@ async function main() {
       /* skip if booking reference missing */
     }
   }
-  console.log(`✅ ${reviewCount} reviews`);
+  console.log(` ${reviewCount} reviews`);
 
   // Wallet transactions
   try {
@@ -2015,10 +2015,10 @@ async function main() {
           },
         ],
       });
-      console.log('✅ Wallet transactions');
+      console.log(' Wallet transactions');
     }
   } catch (err: any) {
-    console.log(`   ⚠️ Wallet tx: ${err.message?.slice(0, 60)}`);
+    console.log(`    Wallet tx: ${err.message?.slice(0, 60)}`);
   }
 
   // Reviews for completed bookings
@@ -2049,9 +2049,9 @@ async function main() {
         /* skip if duplicate */
       }
     }
-    if (reviewCount > 0) console.log(`✅ ${reviewCount} reviews`);
+    if (reviewCount > 0) console.log(` ${reviewCount} reviews`);
   } catch (err: any) {
-    console.log(`   ⚠️ Reviews: ${err.message?.slice(0, 60)}`);
+    console.log(`    Reviews: ${err.message?.slice(0, 60)}`);
   }
 
   // Loyalty, notifications, wishlist, flash deal
@@ -2122,9 +2122,9 @@ async function main() {
         isActive: true,
       },
     });
-    console.log('✅ Loyalty, notifications, wishlist, flash deals');
+    console.log(' Loyalty, notifications, wishlist, flash deals');
   } catch (err: any) {
-    console.log(`   ⚠️ Extra data: ${err.message?.slice(0, 60)}`);
+    console.log(`    Extra data: ${err.message?.slice(0, 60)}`);
   }
 
   // Promo codes
@@ -2187,9 +2187,9 @@ async function main() {
         },
       ],
     });
-    console.log('✅ 5 promo codes (active + expired)');
+    console.log(' 5 promo codes (active + expired)');
   } catch (err: any) {
-    console.log(`   ⚠️ Promo codes: ${err.message?.slice(0, 60)}`);
+    console.log(`    Promo codes: ${err.message?.slice(0, 60)}`);
   }
 
   // Gift cards
@@ -2203,7 +2203,7 @@ async function main() {
           purchaserId: customer.id,
           recipientEmail: 'friend@test.com',
           recipientName: 'مها',
-          message: 'هدية عيد ميلاد سعيد! 🎂',
+          message: 'هدية عيد ميلاد سعيد! ',
           status: 'ACTIVE',
           expiresAt: new Date(Date.now() + 365 * 86400000),
         },
@@ -2214,7 +2214,7 @@ async function main() {
           purchaserId: customer.id,
           recipientEmail: 'sister@test.com',
           recipientName: 'ريم',
-          message: 'لكِ مع حبي 💝',
+          message: 'لكِ مع حبي ',
           status: 'REDEEMED',
           expiresAt: new Date(Date.now() + 365 * 86400000),
         },
@@ -2233,7 +2233,7 @@ async function main() {
           balance: 150,
           purchaserId: customers[2]!.id,
           recipientName: 'هند',
-          message: 'شكراً لكِ 🌸',
+          message: 'شكراً لكِ ',
           status: 'ACTIVE',
           expiresAt: new Date(Date.now() + 90 * 86400000),
         },
@@ -2243,7 +2243,7 @@ async function main() {
           balance: 75,
           purchaserId: customers[3]!.id,
           recipientName: 'لطيفة',
-          message: 'عذراً على التأخير 🎁',
+          message: 'عذراً على التأخير ',
           status: 'ACTIVE',
           expiresAt: new Date(Date.now() + 120 * 86400000),
         },
@@ -2253,15 +2253,15 @@ async function main() {
           balance: 1000,
           purchaserId: customers[0]!.id,
           recipientName: 'أمي الحبيبة',
-          message: 'كل عام وأنتِ بألف خير ❤️',
+          message: 'كل عام وأنتِ بألف خير ️',
           status: 'ACTIVE',
           expiresAt: new Date(Date.now() + 365 * 86400000),
         },
       ],
     });
-    console.log('✅ 3 gift cards (active + redeemed)');
+    console.log(' 3 gift cards (active + redeemed)');
   } catch (err: any) {
-    console.log(`   ⚠️ Gift cards: ${err.message?.slice(0, 60)}`);
+    console.log(`    Gift cards: ${err.message?.slice(0, 60)}`);
   }
 
   // ── Geo Promotions ──
@@ -2355,9 +2355,9 @@ async function main() {
         },
       ],
     });
-    console.log('✅ 5 geo promotions');
+    console.log(' 5 geo promotions');
   } catch (err: any) {
-    console.log(`   ⚠️ Geo promotions: ${err.message?.slice(0, 60)}`);
+    console.log(`    Geo promotions: ${err.message?.slice(0, 60)}`);
   }
 
   // ── Live Streams ──
@@ -2431,9 +2431,9 @@ async function main() {
         },
       ],
     });
-    console.log('✅ 5 live streams');
+    console.log(' 5 live streams');
   } catch (err: any) {
-    console.log(`   ⚠️ Live streams: ${err.message?.slice(0, 60)}`);
+    console.log(`    Live streams: ${err.message?.slice(0, 60)}`);
   }
 
   // ── Beauty Bundles ──
@@ -2537,9 +2537,9 @@ async function main() {
         },
       ],
     });
-    console.log('✅ 7 beauty bundles');
+    console.log(' 7 beauty bundles');
   } catch (err: any) {
-    console.log(`   ⚠️ Bundles: ${err.message?.slice(0, 60)}`);
+    console.log(`    Bundles: ${err.message?.slice(0, 60)}`);
   }
 
   // ── Beauty Subscription Plans ──
@@ -2587,12 +2587,12 @@ async function main() {
         },
       ],
     });
-    console.log('✅ 3 beauty subscription plans');
+    console.log(' 3 beauty subscription plans');
   } catch (err: any) {
-    console.log(`   ⚠️ Plans: ${err.message?.slice(0, 60)}`);
+    console.log(`    Plans: ${err.message?.slice(0, 60)}`);
   }
 
-  console.log('\n🎉 Seed complete! Test login: customer@test.com / Admin@123456\n');
+  console.log('\n Seed complete! Test login: customer@test.com / Admin@123456\n');
 }
 
 main()

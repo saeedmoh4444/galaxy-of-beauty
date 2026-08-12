@@ -29,7 +29,7 @@ export default function SalonFinderPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 space-y-6">
       <div className="text-center">
-        <h1 className="text-3xl font-bold">🗺️ صالونات قريبة منكِ</h1>
+        <h1 className="text-3xl font-bold"> صالونات قريبة منكِ</h1>
         <p className="mt-2 text-text-secondary">اكتشفي صالونات التجميل القريبة في مدينتكِ</p>
       </div>
 
@@ -59,7 +59,7 @@ export default function SalonFinderPage(): JSX.Element {
         </div>
       ) : !(results ?? []).length ? (
         <Card padding="lg" className="text-center py-8">
-          <p className="text-4xl mb-2">🗺️</p>
+          <p className="text-4xl mb-2"></p>
           <p className="text-text-secondary">لا توجد صالونات في هذه المدينة حالياً</p>
         </Card>
       ) : (
@@ -69,10 +69,10 @@ export default function SalonFinderPage(): JSX.Element {
             const services = (t.services as Array<Record<string, unknown>>) ?? [];
             return (
               <Card key={t.id as number} padding="lg" className="text-center">
-                <span className="text-5xl">💇‍♀️</span>
+                <span className="text-5xl">‍️</span>
                 <h3 className="font-bold mt-3">{(user?.name as string) ?? `فنية #${t.id}`}</h3>
                 <p className="text-xs text-text-secondary mt-1">
-                  {t.city as string} · ⭐{(t.ratingAvg as number) ?? '—'}
+                  {t.city as string} · {(t.ratingAvg as number) ?? '—'}
                 </p>
                 <div className="mt-3 flex flex-wrap gap-1 justify-center">
                   {services.slice(0, 3).map((s: Record<string, unknown>) => {

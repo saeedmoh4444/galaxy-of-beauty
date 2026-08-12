@@ -9,7 +9,7 @@ export function BeautyMakeupEyelinerCard({ className = '' }: { className?: strin
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">✒️</span>
+        <span className="text-xl">️</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">الآيلاينر</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">تقنيات لرسمة مثالية</p>
@@ -17,10 +17,10 @@ export function BeautyMakeupEyelinerCard({ className = '' }: { className?: strin
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '📐', text: 'ابدئي من المنتصف — ثم ارسمي الجناح' },
-          { emoji: '✏️', text: 'القلم أسهل للمبتدئات — جففي بعد الرسم' },
-          { emoji: '👁️', text: 'ارفعي الجفن قليلاً — لخط مستقيم' },
-          { emoji: '🧹', text: 'عود قطني بمزيل — لتصحيح الأخطاء' },
+          { emoji: '', text: 'ابدئي من المنتصف — ثم ارسمي الجناح' },
+          { emoji: '️', text: 'القلم أسهل للمبتدئات — جففي بعد الرسم' },
+          { emoji: '️', text: 'ارفعي الجفن قليلاً — لخط مستقيم' },
+          { emoji: '', text: 'عود قطني بمزيل — لتصحيح الأخطاء' },
         ].map((t, i) => (
           <div
             key={i}

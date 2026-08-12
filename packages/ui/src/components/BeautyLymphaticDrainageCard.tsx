@@ -13,7 +13,7 @@ export function BeautyLymphaticDrainageCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💆</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">التصريف اللمفاوي</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">مساج لإزالة السموم</p>
@@ -21,10 +21,10 @@ export function BeautyLymphaticDrainageCard({
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🔄', text: 'حركات خفيفة — باتجاه الغدد اللمفاوية' },
-          { emoji: '💧', text: 'يقلل احتباس السوائل — جسم أنحف' },
-          { emoji: '🛡️', text: 'يقوي المناعة — ينشط الجهاز اللمفاوي' },
-          { emoji: '📅', text: 'مرة أسبوعياً — أو قبل المناسبات' },
+          { emoji: '', text: 'حركات خفيفة — باتجاه الغدد اللمفاوية' },
+          { emoji: '', text: 'يقلل احتباس السوائل — جسم أنحف' },
+          { emoji: '️', text: 'يقوي المناعة — ينشط الجهاز اللمفاوي' },
+          { emoji: '', text: 'مرة أسبوعياً — أو قبل المناسبات' },
         ].map((t, i) => (
           <div
             key={i}

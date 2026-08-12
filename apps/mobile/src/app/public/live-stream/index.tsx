@@ -39,15 +39,15 @@ export default function LiveStreamScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🎥 البث المباشر</Text>
-      {live.length > 0 && <Text style={styles.st}>🔴 مباشر الآن</Text>}
+      <Text style={styles.t}> البث المباشر</Text>
+      {live.length > 0 && <Text style={styles.st}> مباشر الآن</Text>}
       {live.map((s: any) => (
         <View key={s.id} style={[styles.card, styles.lc]}>
-          <Text style={styles.se}>🎥</Text>
+          <Text style={styles.se}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.sn}>{(s.titleAr as string) ?? (s.title as string)}</Text>
             <Text style={styles.sm}>
-              👩‍🎨 {s.host as string} · 👁 {s.viewers as number}
+              ‍ {s.host as string} ·  {s.viewers as number}
             </Text>
           </View>
           <TouchableOpacity style={styles.wb}>
@@ -55,14 +55,14 @@ export default function LiveStreamScreen(): JSX.Element {
           </TouchableOpacity>
         </View>
       ))}
-      {upcoming.length > 0 && <Text style={styles.st}>📅 قادم</Text>}
+      {upcoming.length > 0 && <Text style={styles.st}> قادم</Text>}
       {upcoming.map((s: any) => (
         <View key={s.id} style={styles.card}>
-          <Text style={styles.se}>📺</Text>
+          <Text style={styles.se}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.sn}>{(s.titleAr as string) ?? (s.title as string)}</Text>
             <Text style={styles.sm}>
-              👩‍🎨 {s.host as string} ·{' '}
+              ‍ {s.host as string} ·{' '}
               {new Date(s.scheduledAt as string).toLocaleDateString('ar-SA', {
                 month: 'short',
                 day: 'numeric',
@@ -72,7 +72,7 @@ export default function LiveStreamScreen(): JSX.Element {
             </Text>
           </View>
           <View style={styles.rb}>
-            <Text style={styles.rt}>🔔</Text>
+            <Text style={styles.rt}></Text>
           </View>
         </View>
       ))}

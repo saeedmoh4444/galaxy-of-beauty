@@ -17,12 +17,12 @@ interface Term {
 }
 
 const TERMS: Term[] = [
-  { ar: 'مكياج', en: 'Makeup', emoji: '💄' },
-  { ar: 'عناية بالبشرة', en: 'Skincare', emoji: '🧴' },
-  { ar: 'حناء', en: 'Henna', emoji: '🤚' },
-  { ar: 'عطر', en: 'Perfume', emoji: '🌸' },
+  { ar: 'مكياج', en: 'Makeup', emoji: '' },
+  { ar: 'عناية بالبشرة', en: 'Skincare', emoji: '' },
+  { ar: 'حناء', en: 'Henna', emoji: '' },
+  { ar: 'عطر', en: 'Perfume', emoji: '' },
   { ar: 'زيت', en: 'Oil', emoji: '🫒' },
-  { ar: 'جمال', en: 'Beauty', emoji: '✨' },
+  { ar: 'جمال', en: 'Beauty', emoji: '' },
 ];
 
 interface BeautyLanguageExchangeCardProps {
@@ -47,12 +47,12 @@ export function BeautyLanguageExchangeCard({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🌐
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">قاموس الجمال</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">
-            {fromLang === 'ar' ? '🇸🇦 عربي → 🇬🇧 English' : '🇬🇧 English → 🇸🇦 عربي'}
+            {fromLang === 'ar' ? ' عربي →  English' : ' English →  عربي'}
           </p>
         </div>
       </div>
@@ -75,7 +75,7 @@ export function BeautyLanguageExchangeCard({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🌐 الجمال لغة عالمية
+         الجمال لغة عالمية
       </p>
     </div>
   );

@@ -17,10 +17,10 @@ export function BeautySkincareOilCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🌙', text: 'آخر خطوة في المساء — تغلق الترطيب' },
-          { emoji: '💧', text: '2-3 قطرات فقط — بين راحة اليد' },
+          { emoji: '', text: 'آخر خطوة في المساء — تغلق الترطيب' },
+          { emoji: '', text: '2-3 قطرات فقط — بين راحة اليد' },
           { emoji: '🫒', text: 'ثمر الورد — للتصبغات والتجاعيد' },
-          { emoji: '🥥', text: 'جوجوبا — الأقرب لزيوت البشرة' },
+          { emoji: '', text: 'جوجوبا — الأقرب لزيوت البشرة' },
         ].map((t, i) => (
           <div
             key={i}

@@ -9,7 +9,7 @@ export function BeautyFiftiesCard({ className = '' }: { className?: string }): J
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">👑</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">
             العناية في الخمسينات
@@ -19,10 +19,10 @@ export function BeautyFiftiesCard({ className = '' }: { className?: string }): J
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💧', text: 'زيوت غنية — سكوالين، زيت الأرغان، ثمر الورد' },
-          { emoji: '🧴', text: 'مرطبات كثيفة — كريمات وليس جل' },
+          { emoji: '', text: 'زيوت غنية — سكوالين، زيت الأرغان، ثمر الورد' },
+          { emoji: '', text: 'مرطبات كثيفة — كريمات وليس جل' },
           { emoji: '🩺', text: 'فحوصات هرمونية — الجمال بعد انقطاع الطمث' },
-          { emoji: '✨', text: 'الجمال الحقيقي — الثقة والعناية الذاتية' },
+          { emoji: '', text: 'الجمال الحقيقي — الثقة والعناية الذاتية' },
         ].map((t, i) => (
           <div
             key={i}

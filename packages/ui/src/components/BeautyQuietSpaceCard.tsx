@@ -16,12 +16,12 @@ interface BeautyQuietSpaceCardProps {
 }
 
 const FEATURES_MAP: Record<string, { emoji: string; label: string }> = {
-  meditation_cushions: { emoji: '🧘', label: 'وسائد تأمل' },
-  sound_machine: { emoji: '🎵', label: 'جهاز أصوات مهدئة' },
-  dim_lights: { emoji: '💡', label: 'إضاءة خافتة' },
-  aromatherapy: { emoji: '🌿', label: 'علاج بالروائح' },
-  weighted_blanket: { emoji: '🛌', label: 'بطانية ثقيلة' },
-  tea_station: { emoji: '🍵', label: 'ركن شاي' },
+  meditation_cushions: { emoji: '', label: 'وسائد تأمل' },
+  sound_machine: { emoji: '', label: 'جهاز أصوات مهدئة' },
+  dim_lights: { emoji: '', label: 'إضاءة خافتة' },
+  aromatherapy: { emoji: '', label: 'علاج بالروائح' },
+  weighted_blanket: { emoji: '', label: 'بطانية ثقيلة' },
+  tea_station: { emoji: '', label: 'ركن شاي' },
 };
 
 export function BeautyQuietSpaceCard({
@@ -39,7 +39,7 @@ export function BeautyQuietSpaceCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🧘
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-purple-800 dark:text-purple-200">
           المساحة الهادئة
@@ -63,7 +63,7 @@ export function BeautyQuietSpaceCard({
         })}
       </div>
       <p className="mt-2 text-center text-[9px] text-purple-500 dark:text-purple-400">
-        🧘 خذي لحظة لنفسكِ
+         خذي لحظة لنفسكِ
       </p>
     </div>
   );

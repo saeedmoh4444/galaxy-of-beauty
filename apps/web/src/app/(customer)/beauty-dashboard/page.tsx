@@ -25,7 +25,7 @@ export default function BeautyDashboardPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🏠 لوحة الجمال</h1>
+          <h1 className="text-2xl font-bold"> لوحة الجمال</h1>
           <p className="mt-1 text-sm text-text-secondary">نظرة شاملة على رحلتكِ الجمالية</p>
         </div>
 
@@ -48,7 +48,7 @@ export default function BeautyDashboardPage(): JSX.Element {
               </Card>
               <Card padding="lg" className="text-center">
                 <p className="text-2xl font-extrabold text-amber-600">
-                  🔥 {(data?.streakDays as number) ?? 0}
+                   {(data?.streakDays as number) ?? 0}
                 </p>
                 <p className="text-xs text-text-secondary">أيام متتالية</p>
               </Card>
@@ -62,7 +62,7 @@ export default function BeautyDashboardPage(): JSX.Element {
 
             <div className="grid gap-6 lg:grid-cols-2">
               <Card padding="lg">
-                <h3 className="font-bold mb-3">📅 آخر الحجوزات</h3>
+                <h3 className="font-bold mb-3"> آخر الحجوزات</h3>
                 {(data?.recentBookings as Array<Record<string, unknown>>)?.length ? (
                   (data?.recentBookings as Array<Record<string, unknown>>).map(
                     (b: Record<string, unknown>) => (
@@ -90,7 +90,7 @@ export default function BeautyDashboardPage(): JSX.Element {
               </Card>
 
               <Card padding="lg">
-                <h3 className="font-bold mb-3">✨ لمحة عن بشرتكِ</h3>
+                <h3 className="font-bold mb-3"> لمحة عن بشرتكِ</h3>
                 {data?.skinType ? (
                   <div className="space-y-3">
                     <p className="text-sm">
@@ -131,21 +131,21 @@ export default function BeautyDashboardPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-3">
               <Link href="/beauty-journal">
                 <Card hover padding="md" className="text-center">
-                  <span className="text-3xl">📔</span>
+                  <span className="text-3xl"></span>
                   <p className="font-bold mt-2">{(data?.journalCount as number) ?? 0}</p>
                   <p className="text-xs text-text-secondary">يوميات الجمال</p>
                 </Card>
               </Link>
               <Link href="/wishlist">
                 <Card hover padding="md" className="text-center">
-                  <span className="text-3xl">❤️</span>
+                  <span className="text-3xl">️</span>
                   <p className="font-bold mt-2">{(data?.wishlistCount as number) ?? 0}</p>
                   <p className="text-xs text-text-secondary">قائمة الأمنيات</p>
                 </Card>
               </Link>
               <Link href="/wallet">
                 <Card hover padding="md" className="text-center">
-                  <span className="text-3xl">🎁</span>
+                  <span className="text-3xl"></span>
                   <p className="font-bold mt-2">
                     {formatCurrency((data?.bonusBalance as number) ?? 0)}
                   </p>

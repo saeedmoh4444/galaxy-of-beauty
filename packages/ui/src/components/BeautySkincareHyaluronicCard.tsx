@@ -13,7 +13,7 @@ export function BeautySkincareHyaluronicCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💧</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">حمض الهيالورونيك</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">ملك الترطيب</p>
@@ -21,10 +21,10 @@ export function BeautySkincareHyaluronicCard({
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💧', text: 'يحمل 1000 ضعف وزنه ماء' },
-          { emoji: '🧴', text: 'يطبق على بشرة رطبة — وليس جافة' },
-          { emoji: '🤝', text: 'مع فيتامين سي — ثنائي رائع' },
-          { emoji: '✨', text: 'يناسب جميع أنواع البشرة' },
+          { emoji: '', text: 'يحمل 1000 ضعف وزنه ماء' },
+          { emoji: '', text: 'يطبق على بشرة رطبة — وليس جافة' },
+          { emoji: '', text: 'مع فيتامين سي — ثنائي رائع' },
+          { emoji: '', text: 'يناسب جميع أنواع البشرة' },
         ].map((t, i) => (
           <div
             key={i}

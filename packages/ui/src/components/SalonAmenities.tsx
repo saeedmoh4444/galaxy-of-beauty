@@ -9,18 +9,18 @@
  */
 
 const AMENITIES: Record<string, { emoji: string; label: string }> = {
-  prayer_room: { emoji: '🕌', label: 'غرفة صلاة' },
+  prayer_room: { emoji: '', label: 'غرفة صلاة' },
   period_kit: { emoji: '🩸', label: 'أدوات الدورة الشهرية' },
-  child_friendly: { emoji: '👶', label: 'مناسب للأطفال' },
-  phone_charger: { emoji: '🔌', label: 'شاحن جوال' },
-  wifi: { emoji: '📶', label: 'واي فاي مجاني' },
-  coffee_tea: { emoji: '☕', label: 'مشروبات ساخنة' },
-  wheelchair: { emoji: '♿', label: 'مناسب لذوي الاحتياجات' },
-  private_room: { emoji: '🚪', label: 'غرفة خاصة' },
+  child_friendly: { emoji: '', label: 'مناسب للأطفال' },
+  phone_charger: { emoji: '', label: 'شاحن جوال' },
+  wifi: { emoji: '', label: 'واي فاي مجاني' },
+  coffee_tea: { emoji: '', label: 'مشروبات ساخنة' },
+  wheelchair: { emoji: '', label: 'مناسب لذوي الاحتياجات' },
+  private_room: { emoji: '', label: 'غرفة خاصة' },
   parking: { emoji: '🅿️', label: 'مواقف سيارات' },
-  luxury_robe: { emoji: '👘', label: 'روب فاخر' },
-  makeup_touchup: { emoji: '💄', label: 'تعديل مكياج مجاني' },
-  sensory_friendly: { emoji: '🧘', label: 'مناسب للحساسية الحسية' },
+  luxury_robe: { emoji: '', label: 'روب فاخر' },
+  makeup_touchup: { emoji: '', label: 'تعديل مكياج مجاني' },
+  sensory_friendly: { emoji: '', label: 'مناسب للحساسية الحسية' },
 };
 
 interface SalonAmenitiesProps {

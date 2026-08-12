@@ -40,7 +40,7 @@ export const certificationPathsRouter = router({
     .input(
       z.object({
         title: z.string().min(3).max(200),
-        emoji: z.string().default('📜'),
+        emoji: z.string().default(''),
         levelsJson: z.array(z.string()),
         duration: z.string(),
         accredited: z.boolean().default(false),

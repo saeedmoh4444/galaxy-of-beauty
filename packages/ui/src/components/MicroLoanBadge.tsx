@@ -34,7 +34,7 @@ export function MicroLoanBadge({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🏦
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
@@ -63,7 +63,7 @@ export function MicroLoanBadge({
 
       <div className="mt-2 rounded-xl bg-emerald-50 p-3 dark:bg-emerald-950">
         <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-200">
-          🤝 بالشراكة مع {partnerBank}
+           بالشراكة مع {partnerBank}
         </p>
         <div className="mt-1.5 space-y-0.5 text-[10px] text-emerald-700 dark:text-emerald-300">
           <p>• بدون فوائد — تمويل متوافق مع الشريعة</p>
@@ -78,11 +78,11 @@ export function MicroLoanBadge({
         onClick={onLearnMore}
         className="mt-3 w-full rounded-xl bg-emerald-600 py-2 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
       >
-        تقديم على التمويل 🏦
+        تقديم على التمويل 
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        💚 ندعم حلمكِ — من فكرة إلى مشروع
+         ندعم حلمكِ — من فكرة إلى مشروع
       </p>
     </div>
   );

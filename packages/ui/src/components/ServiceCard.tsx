@@ -46,7 +46,7 @@ export function ServiceCard({ service, onBook, className = '' }: ServiceCardProp
             loading="lazy"
           />
         ) : (
-          <span>{service.emoji ?? '💄'}</span>
+          <span>{service.emoji ?? ''}</span>
         )}
       </div>
 

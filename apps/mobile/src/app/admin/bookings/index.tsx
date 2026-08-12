@@ -42,7 +42,7 @@ export default function AdminBookingsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📅 الحجوزات</Text>
+      <Text style={styles.t}> الحجوزات</Text>
       {data.map((b: any, i: number) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>

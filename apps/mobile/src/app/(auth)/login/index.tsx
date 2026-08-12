@@ -114,7 +114,7 @@ export default function LoginScreen() {
 
         {isAvailable && !twoFactorRequired && (
           <TouchableOpacity onPress={handleBiometricLogin} style={styles.biometricBtn}>
-            <Text style={styles.biometricText}>🔐 دخول سريع</Text>
+            <Text style={styles.biometricText}> دخول سريع</Text>
           </TouchableOpacity>
         )}
         <TouchableOpacity

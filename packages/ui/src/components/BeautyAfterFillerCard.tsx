@@ -9,7 +9,7 @@ export function BeautyAfterFillerCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💉</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">بعد الفيلر</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">عناية ما بعد التعبئة</p>
@@ -17,10 +17,10 @@ export function BeautyAfterFillerCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧊', text: 'كمادات باردة — لتقليل التورم أول 24 ساعة' },
-          { emoji: '🚫', text: 'تجنبي الضغط — لا تنامي على الوجه' },
-          { emoji: '💄', text: 'لا مكياج — 24 ساعة على المنطقة' },
-          { emoji: '⏱️', text: 'النتيجة النهائية — بعد أسبوعين' },
+          { emoji: '', text: 'كمادات باردة — لتقليل التورم أول 24 ساعة' },
+          { emoji: '', text: 'تجنبي الضغط — لا تنامي على الوجه' },
+          { emoji: '', text: 'لا مكياج — 24 ساعة على المنطقة' },
+          { emoji: '️', text: 'النتيجة النهائية — بعد أسبوعين' },
         ].map((t, i) => (
           <div
             key={i}

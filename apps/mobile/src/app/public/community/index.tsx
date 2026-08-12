@@ -56,7 +56,7 @@ export default function CommunityScreen(): JSX.Element {
           <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />
         }
       >
-        <Text style={styles.t}>💬 مجتمع الجمال</Text>
+        <Text style={styles.t}> مجتمع الجمال</Text>
         <Text style={styles.sub}>شاركي تجاربكِ وآراءكِ</Text>
         <View style={styles.composer}>
           <TextInput
@@ -76,12 +76,12 @@ export default function CommunityScreen(): JSX.Element {
           </TouchableOpacity>
         </View>
         {items.length === 0 ? (
-          <Text style={styles.e}>لا توجد منشورات بعد. كوني الأولى! ✨</Text>
+          <Text style={styles.e}>لا توجد منشورات بعد. كوني الأولى! </Text>
         ) : (
           items.map((p: any) => (
             <View key={p.id} style={styles.card}>
               <View style={styles.cardHeader}>
-                <Text style={styles.avatar}>👩‍🎨</Text>
+                <Text style={styles.avatar}>‍</Text>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.userName}>{(p.userName as string) ?? 'مستخدم'}</Text>
                   <Text style={styles.date}>
@@ -91,7 +91,7 @@ export default function CommunityScreen(): JSX.Element {
               </View>
               <Text style={styles.postContent}>{p.content as string}</Text>
               <TouchableOpacity onPress={() => toggleLike(p.id as number)} style={styles.likeBtn}>
-                <Text style={styles.likeText}>❤️ {(p.likes as number) ?? 0}</Text>
+                <Text style={styles.likeText}>️ {(p.likes as number) ?? 0}</Text>
               </TouchableOpacity>
             </View>
           ))

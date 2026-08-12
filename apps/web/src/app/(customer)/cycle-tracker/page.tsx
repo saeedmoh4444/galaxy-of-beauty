@@ -16,7 +16,7 @@ const SYMPTOMS_LIST = [
   'حساسية الصدر',
   'تقلبات مزاجية',
 ];
-const MOODS = ['😍', '😊', '😐', '😔', '😢'];
+const MOODS = ['', '', '', '', ''];
 
 export default function CycleTrackerPage(): JSX.Element {
   const { data: today, isLoading: todayLoading } = api.cycleTracker.today.useQuery() as {
@@ -39,7 +39,7 @@ export default function CycleTrackerPage(): JSX.Element {
   const settingsMut = api.cycleTracker.updateSettings.useMutation();
 
   const [showLog, setShowLog] = useState(false);
-  const [mood, setMood] = useState('😊');
+  const [mood, setMood] = useState('');
   const [flow, setFlow] = useState('');
   const [symptoms, setSymptoms] = useState<string[]>([]);
   const [notes, setNotes] = useState('');
@@ -75,7 +75,7 @@ export default function CycleTrackerPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">📅 متعقب الدورة</h1>
+            <h1 className="text-2xl font-bold"> متعقب الدورة</h1>
             <p className="mt-1 text-sm text-text-secondary">توصيات جمالية حسب يوم دورتكِ</p>
           </div>
           <Button
@@ -94,13 +94,13 @@ export default function CycleTrackerPage(): JSX.Element {
               }
             }}
           >
-            ⚙️
+            ️
           </Button>
         </div>
 
         {showSettings && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">⚙️ إعدادات الدورة</h3>
+            <h3 className="font-bold mb-3">️ إعدادات الدورة</h3>
             <div className="grid gap-3 sm:grid-cols-3">
               <div>
                 <label className="text-xs text-text-secondary">مدة الدورة</label>
@@ -144,7 +144,7 @@ export default function CycleTrackerPage(): JSX.Element {
               loading={settingsMut.isPending}
               className="w-full mt-3"
             >
-              💾 حفظ
+               حفظ
             </Button>
           </Card>
         )}
@@ -153,19 +153,19 @@ export default function CycleTrackerPage(): JSX.Element {
           <CardSkeleton />
         ) : (
           <Card padding="lg" className={`text-center border-2`}>
-            <span className="text-5xl">{(phase?.emoji as string) ?? '📅'}</span>
+            <span className="text-5xl">{(phase?.emoji as string) ?? ''}</span>
             <h2 className="text-xl font-bold mt-2">{phase?.name as string}</h2>
             <p className="text-sm text-text-secondary">
               اليوم {today?.currentDay as number} من {cycleLength}
             </p>
             {(today?.hasSettings as boolean) && (today?.daysUntilNext as number) != null && (
               <p className="text-xs text-brand-600 mt-1">
-                ⏱️ متبقي {today?.daysUntilNext as number} يوم على الدورة القادمة
+                ️ متبقي {today?.daysUntilNext as number} يوم على الدورة القادمة
               </p>
             )}
             {!today?.hasSettings && (
               <p className="text-xs text-amber-600 mt-2">
-                ⚠️ اضبطي إعدادات الدورة للحصول على توقعات دقيقة
+                 اضبطي إعدادات الدورة للحصول على توقعات دقيقة
               </p>
             )}
           </Card>
@@ -173,7 +173,7 @@ export default function CycleTrackerPage(): JSX.Element {
 
         <div className="flex gap-2">
           <Button onClick={() => setShowLog(!showLog)} className="flex-1">
-            {showLog ? '✕' : '📝 سجلي اليوم'}
+            {showLog ? '' : ' سجلي اليوم'}
           </Button>
         </div>
 
@@ -240,14 +240,14 @@ export default function CycleTrackerPage(): JSX.Element {
                 className="w-full rounded-lg border px-3 py-2 text-xs dark:border-gray-700 dark:bg-gray-800"
               />
               <Button onClick={handleLog} loading={logMut.isPending} className="w-full">
-                💾 حفظ اليوم
+                 حفظ اليوم
               </Button>
             </div>
           </Card>
         )}
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3">💡 توصيات الجمال — {phase?.name as string}</h3>
+          <h3 className="font-bold mb-3"> توصيات الجمال — {phase?.name as string}</h3>
           <div className="space-y-2">
             {((phase?.tips as string[]) ?? []).map((tip: string, i: number) => (
               <p key={i} className="text-sm text-text-secondary">
@@ -265,7 +265,7 @@ export default function CycleTrackerPage(): JSX.Element {
           </div>
         ) : (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">🗓️ أيام الدورة</h3>
+            <h3 className="font-bold mb-3">️ أيام الدورة</h3>
             <div className="flex flex-wrap gap-1">
               {Array.from({ length: cycleLength }, (_, i) => i + 1).map((d) => {
                 const p = (() => {

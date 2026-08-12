@@ -33,7 +33,7 @@ interface EventDef {
 
 const EVENTS: Record<LifeEvent, EventDef> = {
   graduation: {
-    emoji: '🎓',
+    emoji: '',
     title: 'تخرج',
     description: 'انطلاقة جديدة تليق بإنجازكِ',
     packageName: 'إشراقة الخريجة',
@@ -43,7 +43,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     gradient: 'from-amber-500 to-yellow-500',
   },
   new_job: {
-    emoji: '💼',
+    emoji: '',
     title: 'وظيفة جديدة',
     description: 'انطباع أول لا يُنسى',
     packageName: 'جاهزة ليومي الأول',
@@ -53,7 +53,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     gradient: 'from-blue-500 to-sky-500',
   },
   wedding: {
-    emoji: '👰',
+    emoji: '',
     title: 'زواج',
     description: 'رحلة متكاملة ليوم العمر',
     packageName: 'رحلة العروس',
@@ -63,7 +63,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     gradient: 'from-rose-500 to-pink-500',
   },
   pregnancy: {
-    emoji: '🤰',
+    emoji: '',
     title: 'حمل',
     description: 'عناية خاصة بكِ وبطفلكِ',
     packageName: 'الأم المتوهجة',
@@ -73,7 +73,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     gradient: 'from-purple-500 to-violet-500',
   },
   new_mother: {
-    emoji: '👶',
+    emoji: '',
     title: 'أمومة جديدة',
     description: 'استعيدي نضارتكِ بعد الولادة',
     packageName: 'انتعاشة الأم',
@@ -83,7 +83,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     gradient: 'from-emerald-500 to-teal-500',
   },
   birthday: {
-    emoji: '🎂',
+    emoji: '',
     title: 'عيد ميلاد',
     description: 'احتفلي بنفسكِ بأجمل إطلالة',
     packageName: 'متألقة في يومي',
@@ -93,7 +93,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     gradient: 'from-pink-500 to-fuchsia-500',
   },
   hajj_umrah: {
-    emoji: '🕋',
+    emoji: '',
     title: 'حج / عمرة',
     description: 'استعداد روحي وجمالي للرحلة المباركة',
     packageName: 'إشراقة الحاجّة',
@@ -103,7 +103,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     gradient: 'from-teal-500 to-emerald-500',
   },
   divorce_recovery: {
-    emoji: '🦋',
+    emoji: '',
     title: 'بداية جديدة',
     description: 'انطلاقة جديدة بعد التغيير',
     packageName: 'بداية جديدة',
@@ -146,12 +146,12 @@ export function LifeEventCard({ event, onBook, className = '' }: LifeEventCardPr
       {/* Package name */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          🎁 {e.packageName}
+           {e.packageName}
         </p>
         <ul className="mt-1.5 grid grid-cols-2 gap-x-2 gap-y-0.5">
           {e.contents.map((item) => (
             <li key={item} className="text-[10px] text-text-secondary dark:text-gray-300">
-              ✨ {item}
+               {item}
             </li>
           ))}
         </ul>

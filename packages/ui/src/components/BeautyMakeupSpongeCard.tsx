@@ -9,7 +9,7 @@ export function BeautyMakeupSpongeCard({ className = '' }: { className?: string 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🧽</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">إسفنجة المكياج</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">سر بشرة flawless</p>
@@ -17,10 +17,10 @@ export function BeautyMakeupSpongeCard({ className = '' }: { className?: string 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💧', text: 'بلليها بالماء — تصبح أكبر وأنعم' },
-          { emoji: '🤚', text: 'اضغطي — لا تمسحي' },
-          { emoji: '🧼', text: 'اغسليها بعد كل استخدام' },
-          { emoji: '📅', text: 'استبدليها كل 3 أشهر' },
+          { emoji: '', text: 'بلليها بالماء — تصبح أكبر وأنعم' },
+          { emoji: '', text: 'اضغطي — لا تمسحي' },
+          { emoji: '', text: 'اغسليها بعد كل استخدام' },
+          { emoji: '', text: 'استبدليها كل 3 أشهر' },
         ].map((t, i) => (
           <div
             key={i}

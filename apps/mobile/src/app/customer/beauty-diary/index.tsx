@@ -4,13 +4,13 @@ import { trpc as trpcReact } from '@/lib/trpc-react';
 import { useState, useEffect, useCallback } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 
-const MOODS = ['😊', '😌', '😐', '😢', '🤩', '😴', '💪', '🥰'];
+const MOODS = ['', '', '', '', '', '', '', ''];
 
 export default function BeautyDiaryScreen(): JSX.Element {
   const [entries, setEntries] = useState<any[]>([]);
   const [, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [todayMood, setTodayMood] = useState('😊');
+  const [todayMood, setTodayMood] = useState('');
   const skinJournal = (trpcReact as any).skinDiary?.list?.useQuery?.({ limit: 7 });
 
   const fetch = useCallback((isRefresh = false) => {
@@ -43,7 +43,7 @@ export default function BeautyDiaryScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📔 يوميات الجمال</Text>
+      <Text style={styles.t}> يوميات الجمال</Text>
       <Text style={styles.sub}>اربطي مزاجكِ بروتين جمالكِ</Text>
 
       <View style={styles.moodCard}>
@@ -62,36 +62,36 @@ export default function BeautyDiaryScreen(): JSX.Element {
       </View>
 
       <View style={styles.stats}>
-        <Text style={styles.st}>📊 إحصائيات المزاج</Text>
+        <Text style={styles.st}> إحصائيات المزاج</Text>
         <View style={styles.statRow}>
           <View style={styles.stat}>
-            <Text style={styles.statVal}>😊</Text>
+            <Text style={styles.statVal}></Text>
             <Text style={styles.statPct}>45%</Text>
             <Text style={styles.statLabel}>سعيدة</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statVal}>😌</Text>
+            <Text style={styles.statVal}></Text>
             <Text style={styles.statPct}>30%</Text>
             <Text style={styles.statLabel}>هادئة</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statVal}>🤩</Text>
+            <Text style={styles.statVal}></Text>
             <Text style={styles.statPct}>15%</Text>
             <Text style={styles.statLabel}>متحمسة</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statVal}>😴</Text>
+            <Text style={styles.statVal}></Text>
             <Text style={styles.statPct}>10%</Text>
             <Text style={styles.statLabel}>متعب</Text>
           </View>
         </View>
       </View>
 
-      <Text style={styles.st}>📝 آخر المدخلات</Text>
+      <Text style={styles.st}> آخر المدخلات</Text>
       {entries.slice(0, 5).map((e: any, i: number) => (
         <View key={i} style={styles.entry}>
           <View style={styles.entryHeader}>
-            <Text style={styles.entryMood}>😊</Text>
+            <Text style={styles.entryMood}></Text>
             <Text style={styles.entryDate}>
               {new Date((e.createdAt as string) ?? Date.now()).toLocaleDateString('ar-SA', {
                 weekday: 'long',
@@ -102,14 +102,14 @@ export default function BeautyDiaryScreen(): JSX.Element {
           </View>
           <Text style={styles.entryText}>{(e.title as string) ?? 'يوميات الجمال'}</Text>
           <View style={styles.entryMeta}>
-            <Text style={styles.entryMetaItem}>💆‍♀️ خدمة اليوم</Text>
-            <Text style={styles.entryMetaItem}>✨ بشرة متألقة</Text>
+            <Text style={styles.entryMetaItem}>‍️ خدمة اليوم</Text>
+            <Text style={styles.entryMetaItem}> بشرة متألقة</Text>
           </View>
         </View>
       ))}
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}>✍️ تدوين اليوم</Text>
+        <Text style={styles.bt}>️ تدوين اليوم</Text>
       </TouchableOpacity>
     </ScrollView>
   );

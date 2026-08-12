@@ -50,14 +50,14 @@ export default function SocialPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🌟 مجتمع الجمال</h1>
+          <h1 className="text-2xl font-bold"> مجتمع الجمال</h1>
           <p className="mt-1 text-sm text-text-secondary">اكتشفي أحدث الصيحات والفنيات المميزات</p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Trending Services */}
           <Card padding="lg">
-            <h3 className="font-bold mb-3">🔥 الأكثر طلباً</h3>
+            <h3 className="font-bold mb-3"> الأكثر طلباً</h3>
             {trLoading ? (
               <CardSkeleton />
             ) : !(trending ?? []).length ? (
@@ -83,7 +83,7 @@ export default function SocialPage(): JSX.Element {
 
           {/* Technician Spotlight */}
           <Card padding="lg">
-            <h3 className="font-bold mb-3">⭐ فنيات مميزات</h3>
+            <h3 className="font-bold mb-3"> فنيات مميزات</h3>
             {spLoading ? (
               <CardSkeleton />
             ) : !(spotlight ?? []).length ? (
@@ -92,11 +92,11 @@ export default function SocialPage(): JSX.Element {
               <div className="space-y-3">
                 {(spotlight ?? []).map((t: Record<string, unknown>) => (
                   <div key={t.id as number} className="flex items-center gap-3">
-                    <span className="text-3xl">👩‍🎨</span>
+                    <span className="text-3xl">‍</span>
                     <div>
                       <p className="font-bold text-sm">{t.name as string}</p>
                       <p className="text-xs text-text-secondary">
-                        {t.city as string} · ⭐{t.ratingAvg as number}
+                        {t.city as string} · {t.ratingAvg as number}
                       </p>
                     </div>
                   </div>
@@ -108,7 +108,7 @@ export default function SocialPage(): JSX.Element {
 
         {/* Beauty Tips */}
         <Card padding="lg">
-          <h3 className="font-bold mb-3">💡 نصائح تجميلية</h3>
+          <h3 className="font-bold mb-3"> نصائح تجميلية</h3>
           <div className="flex gap-2 mb-4 flex-wrap">
             {TIP_CATEGORIES.map((c) => (
               <button
@@ -149,11 +149,11 @@ export default function SocialPage(): JSX.Element {
         {/* Lookbook */}
         {!lbLoading && (lookbook ?? []).length > 0 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">📸 لوك بوك الموسم</h3>
+            <h3 className="font-bold mb-3"> لوك بوك الموسم</h3>
             <div className="grid gap-3 sm:grid-cols-4">
               {(lookbook ?? []).map((l: Record<string, unknown>) => (
                 <div key={l.id as string} className="rounded-lg border p-2 text-center">
-                  <span className="text-3xl">📸</span>
+                  <span className="text-3xl"></span>
                   <p className="text-xs font-bold mt-1">{(l.titleAr as string) ?? l.id}</p>
                 </div>
               ))}
@@ -163,7 +163,7 @@ export default function SocialPage(): JSX.Element {
 
         {/* Before/After Feed */}
         <Card padding="lg">
-          <h3 className="font-bold mb-3">📷 قبل وبعد</h3>
+          <h3 className="font-bold mb-3"> قبل وبعد</h3>
           {feedLoading ? (
             <CardSkeleton />
           ) : feedItems.length === 0 ? (
@@ -172,7 +172,7 @@ export default function SocialPage(): JSX.Element {
             <div className="grid gap-3 sm:grid-cols-3">
               {feedItems.map((f: Record<string, unknown>) => (
                 <div key={f.id as number} className="rounded-lg border p-2 text-center">
-                  <span className="text-3xl">📷</span>
+                  <span className="text-3xl"></span>
                   <p className="text-xs mt-1">
                     {((f.technician as Record<string, unknown>)?.city as string) ?? ''}
                   </p>

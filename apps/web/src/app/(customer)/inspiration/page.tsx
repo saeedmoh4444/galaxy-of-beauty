@@ -118,7 +118,7 @@ export default function InspirationPage(): JSX.Element {
                     className="mb-3 flex h-40 items-center justify-center rounded-xl bg-surface-muted text-4xl dark:bg-gray-800"
                     aria-hidden="true"
                   >
-                    ✨
+                    
                   </div>
                 )}
 

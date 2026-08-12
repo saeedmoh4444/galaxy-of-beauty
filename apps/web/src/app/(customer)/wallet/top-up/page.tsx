@@ -28,7 +28,7 @@ export default function WalletTopUpPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">💳 شحن المحفظة</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100"> شحن المحفظة</h1>
         {isLoading ? (
           <CardSkeleton />
         ) : (
@@ -75,7 +75,7 @@ export default function WalletTopUpPage(): JSX.Element {
             className="w-full rounded-lg border border-gray-300 p-3 text-center text-lg dark:border-gray-600 dark:bg-gray-800"
           />
           <Button onClick={handleTopUp} size="lg" className="w-full mt-4">
-            💳 شحن {formatCurrency(selected || Number(amount) || 0)}
+             شحن {formatCurrency(selected || Number(amount) || 0)}
           </Button>
         </Card>
         <div className="text-center">

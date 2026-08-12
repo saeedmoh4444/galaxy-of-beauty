@@ -40,7 +40,7 @@ export function BeautyPriceDropHistoryCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true">
-            📉
+            
           </span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
@@ -59,7 +59,7 @@ export function BeautyPriceDropHistoryCard({
             key={i}
             className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 dark:bg-emerald-950"
           >
-            <span className="text-sm">{d.emoji || '💅'}</span>
+            <span className="text-sm">{d.emoji || ''}</span>
             <span className="flex-1 text-[10px] text-text-primary dark:text-gray-100 truncate">
               {d.service}
             </span>

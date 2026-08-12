@@ -1,14 +1,14 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 const TIERS = [
-  { name: 'برونزي', emoji: '🥉', points: 0, color: '#d97706', discount: 0, members: 1250 },
-  { name: 'فضي', emoji: '🥈', points: 500, color: '#9ca3af', discount: 10, members: 680 },
-  { name: 'ذهبي', emoji: '🥇', points: 2000, color: '#f59e0b', discount: 15, members: 320 },
-  { name: 'بلاتيني', emoji: '💎', points: 5000, color: '#7c3aed', discount: 20, members: 85 },
+  { name: 'برونزي', emoji: '', points: 0, color: '#d97706', discount: 0, members: 1250 },
+  { name: 'فضي', emoji: '', points: 500, color: '#9ca3af', discount: 10, members: 680 },
+  { name: 'ذهبي', emoji: '', points: 2000, color: '#f59e0b', discount: 15, members: 320 },
+  { name: 'بلاتيني', emoji: '', points: 5000, color: '#7c3aed', discount: 20, members: 85 },
 ];
 export default function AdminLoyaltyScreen(): JSX.Element {
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>⭐ برنامج الولاء</Text>
+      <Text style={s.h}> برنامج الولاء</Text>
       <Text style={s.sub}>إدارة مستويات العضوية والمكافآت</Text>
       {TIERS.map((t) => (
         <View key={t.name} style={[s.card, { borderLeftColor: t.color, borderLeftWidth: 4 }]}>
@@ -25,7 +25,7 @@ export default function AdminLoyaltyScreen(): JSX.Element {
         </View>
       ))}
       <View style={[s.card, { marginTop: 16 }]}>
-        <Text style={s.cn}>📊 إحصائيات</Text>
+        <Text style={s.cn}> إحصائيات</Text>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
           <View style={s.stat}>
             <Text style={s.sv}>2,335</Text>

@@ -60,7 +60,7 @@ export default function AiChatScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.chatHeader}>
-        <Text style={styles.avatar}>🌸</Text>
+        <Text style={styles.avatar}></Text>
         <View>
           <Text style={styles.chatTitle}>لايلى</Text>
           <Text style={styles.chatSub}>مستشارة التجميل الذكية</Text>
@@ -74,7 +74,7 @@ export default function AiChatScreen() {
       >
         {messages.length === 0 && (
           <View style={styles.centered}>
-            <Text style={styles.emptyIcon}>🌸</Text>
+            <Text style={styles.emptyIcon}></Text>
             <Text style={styles.empty}>مرحباً بك في لايلى!</Text>
             <Text style={styles.hint}>أنا مستشارة التجميل الذكية، اسأليني عن أي شيء</Text>
           </View>

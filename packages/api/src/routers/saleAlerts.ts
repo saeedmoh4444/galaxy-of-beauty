@@ -3,12 +3,12 @@ import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
 const CATEGORIES = [
-  { key: 'makeup', nameAr: 'مكياج', emoji: '💄' },
-  { key: 'hair', nameAr: 'شعر', emoji: '💇‍♀️' },
-  { key: 'skincare', nameAr: 'بشرة', emoji: '✨' },
-  { key: 'nails', nameAr: 'أظافر', emoji: '💅' },
-  { key: 'massage', nameAr: 'مساج', emoji: '💆‍♀️' },
-  { key: 'all', nameAr: 'الكل', emoji: '🎯' },
+  { key: 'makeup', nameAr: 'مكياج', emoji: '' },
+  { key: 'hair', nameAr: 'شعر', emoji: '‍️' },
+  { key: 'skincare', nameAr: 'بشرة', emoji: '' },
+  { key: 'nails', nameAr: 'أظافر', emoji: '' },
+  { key: 'massage', nameAr: 'مساج', emoji: '‍️' },
+  { key: 'all', nameAr: 'الكل', emoji: '' },
 ];
 
 const ACTIVE_DEALS = [
@@ -18,7 +18,7 @@ const ACTIVE_DEALS = [
     category: 'makeup',
     discount: 40,
     endsIn: 'ساعتين',
-    emoji: '💄',
+    emoji: '',
   },
   {
     id: 2,
@@ -26,7 +26,7 @@ const ACTIVE_DEALS = [
     category: 'skincare',
     discount: 30,
     endsIn: '٤ ساعات',
-    emoji: '✨',
+    emoji: '',
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ const ACTIVE_DEALS = [
     category: 'hair',
     discount: 25,
     endsIn: '٦ ساعات',
-    emoji: '💇‍♀️',
+    emoji: '‍️',
   },
 ];
 

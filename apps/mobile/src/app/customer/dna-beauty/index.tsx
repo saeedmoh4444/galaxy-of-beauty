@@ -46,9 +46,9 @@ export default function DNABeautyScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}>🧬 تحليل الجينات</Text>
+        <Text style={styles.t}> تحليل الجينات</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}>🧬</Text>
+          <Text style={styles.re}></Text>
           <Text style={styles.rt}>نتيجة التحليل</Text>
           <Text style={styles.score}>{result.score as number}% تطابق</Text>
           <TouchableOpacity
@@ -58,7 +58,7 @@ export default function DNABeautyScreen(): JSX.Element {
             }}
             style={styles.rst}
           >
-            <Text style={styles.rstText}>🔄 إعادة</Text>
+            <Text style={styles.rstText}> إعادة</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -75,7 +75,7 @@ export default function DNABeautyScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🧬 تحليل الجينات</Text>
+      <Text style={styles.t}> تحليل الجينات</Text>
       <View style={styles.card}>
         <Text style={styles.qt}>أكملي الاستبيان</Text>
         {questions.map((q: any) => (
@@ -102,7 +102,7 @@ export default function DNABeautyScreen(): JSX.Element {
           </View>
         ))}
         <TouchableOpacity onPress={analyze} style={styles.ab}>
-          <Text style={styles.abt}>🧬 تحليل</Text>
+          <Text style={styles.abt}> تحليل</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

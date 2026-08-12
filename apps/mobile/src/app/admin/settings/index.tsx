@@ -44,10 +44,10 @@ export default function AdminSettingsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>⚙️ الإعدادات</Text>
+      <Text style={styles.t}>️ الإعدادات</Text>
 
       <View style={styles.section}>
-        <Text style={styles.st}>📊 رسوم المنصة</Text>
+        <Text style={styles.st}> رسوم المنصة</Text>
         <View style={styles.row}>
           <Text style={styles.l}>نسبة المنصة</Text>
           <Text style={styles.v}>{(config.platformFee as string) ?? '10%'}</Text>
@@ -61,7 +61,7 @@ export default function AdminSettingsScreen(): JSX.Element {
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.st}>💰 الكاش باك</Text>
+        <Text style={styles.st}> الكاش باك</Text>
         <View style={styles.row}>
           <Text style={styles.l}>نسبة الاسترداد</Text>
           <Text style={styles.v}>{(config.cashbackRate as number) ?? 5}%</Text>
@@ -73,7 +73,7 @@ export default function AdminSettingsScreen(): JSX.Element {
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.st}>🔧 الصيانة</Text>
+        <Text style={styles.st}> الصيانة</Text>
         <View style={styles.row}>
           <Text style={styles.l}>وضع الصيانة</Text>
           <View style={[styles.badge, config.maintenanceMode ? styles.bon : styles.boff]}>

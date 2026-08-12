@@ -38,20 +38,20 @@ export default function WellnessTrackerScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🧘 متعقب الصحة</Text>
+      <Text style={styles.t}> متعقب الصحة</Text>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>💧</Text>
+          <Text style={styles.kpiEmoji}></Text>
           <Text style={styles.kpiVal}>{(d.water as number) ?? 0}</Text>
           <Text style={styles.kpiLabel}>أكواب</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>😴</Text>
+          <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#2563eb' }]}>{(d.sleep as number) ?? 0}h</Text>
           <Text style={styles.kpiLabel}>نوم</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>🚶</Text>
+          <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#059669' }]}>{(d.steps as number) ?? 0}</Text>
           <Text style={styles.kpiLabel}>خطوة</Text>
         </View>

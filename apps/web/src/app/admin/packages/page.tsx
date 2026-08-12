@@ -20,7 +20,7 @@ export default function AdminPackagesPage(): JSX.Element {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">💅 الباقات</h1>
+        <h1 className="text-2xl font-bold"> الباقات</h1>
         <Button onClick={() => setShowCreate(true)}>إضافة باقة</Button>
       </div>
       {isLoading ? (

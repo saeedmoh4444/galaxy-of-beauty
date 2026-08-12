@@ -9,7 +9,7 @@ export function BeautyDarkCirclesCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">👁️</span>
+        <span className="text-xl">️</span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">
             الهالات السوداء
@@ -21,10 +21,10 @@ export function BeautyDarkCirclesCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '💤', label: 'قلة النوم', tip: 'السبب الأول — نامي 7-8 ساعات' },
+          { emoji: '', label: 'قلة النوم', tip: 'السبب الأول — نامي 7-8 ساعات' },
           { emoji: '🩸', label: 'نقص الحديد', tip: 'سبب شائع — فحص دم' },
-          { emoji: '🧬', label: 'وراثة', tip: 'ميل طبيعي — كريمات خاصة' },
-          { emoji: '💧', label: 'جفاف', tip: 'البشرة الرقيقة تحت العين' },
+          { emoji: '', label: 'وراثة', tip: 'ميل طبيعي — كريمات خاصة' },
+          { emoji: '', label: 'جفاف', tip: 'البشرة الرقيقة تحت العين' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-purple-50 px-2.5 py-2 dark:bg-purple-950">
             <span className="text-sm">{t.emoji}</span>

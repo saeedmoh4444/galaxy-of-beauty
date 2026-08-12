@@ -4,19 +4,19 @@ const LOGS = [
     action: 'إضافة خدمة جديدة',
     user: 'م. سارة',
     time: 'قبل 10 دقائق',
-    emoji: '➕',
+    emoji: '',
     type: 'create',
   },
-  { action: 'تعديل سعر الخدمة', user: 'أ. نورة', time: 'قبل ساعة', emoji: '✏️', type: 'update' },
-  { action: 'تعطيل حساب فنية', user: 'م. سارة', time: 'قبل 3 ساعات', emoji: '🚫', type: 'delete' },
-  { action: 'تفعيل ميزة جديدة', user: 'أ. نورة', time: 'قبل 5 ساعات', emoji: '✅', type: 'update' },
-  { action: 'إضافة قسيمة خصم', user: 'م. سارة', time: 'قبل يوم', emoji: '🎫', type: 'create' },
-  { action: 'تصدير تقرير مالي', user: 'أ. نورة', time: 'قبل يومين', emoji: '📊', type: 'export' },
+  { action: 'تعديل سعر الخدمة', user: 'أ. نورة', time: 'قبل ساعة', emoji: '️', type: 'update' },
+  { action: 'تعطيل حساب فنية', user: 'م. سارة', time: 'قبل 3 ساعات', emoji: '', type: 'delete' },
+  { action: 'تفعيل ميزة جديدة', user: 'أ. نورة', time: 'قبل 5 ساعات', emoji: '', type: 'update' },
+  { action: 'إضافة قسيمة خصم', user: 'م. سارة', time: 'قبل يوم', emoji: '', type: 'create' },
+  { action: 'تصدير تقرير مالي', user: 'أ. نورة', time: 'قبل يومين', emoji: '', type: 'export' },
 ];
 export default function AuditLogScreen(): JSX.Element {
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>📋 سجل التدقيق</Text>
+      <Text style={s.h}> سجل التدقيق</Text>
       <Text style={s.sub}>مراقبة جميع التغييرات في المنصة</Text>
       {LOGS.map((l, i) => (
         <View key={i} style={s.card}>
@@ -24,8 +24,8 @@ export default function AuditLogScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={s.cn}>{l.action}</Text>
             <View style={{ flexDirection: 'row', gap: 8, marginTop: 2 }}>
-              <Text style={s.cu}>👤 {l.user}</Text>
-              <Text style={s.ct}>🕐 {l.time}</Text>
+              <Text style={s.cu}> {l.user}</Text>
+              <Text style={s.ct}> {l.time}</Text>
             </View>
           </View>
           <View

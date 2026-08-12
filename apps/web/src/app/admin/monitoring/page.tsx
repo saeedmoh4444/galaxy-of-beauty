@@ -10,11 +10,11 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 const SERVICE_LABELS_AR: Record<string, string> = {
-  database: '🗄️ قاعدة البيانات',
-  redis: '⚡ Redis',
-  api: '🔌 API',
-  socket: '📡 Socket.IO',
-  payments: '💳 المدفوعات',
+  database: '️ قاعدة البيانات',
+  redis: ' Redis',
+  api: ' API',
+  socket: ' Socket.IO',
+  payments: ' المدفوعات',
 };
 
 export default function MonitoringPage(): JSX.Element {
@@ -45,7 +45,7 @@ export default function MonitoringPage(): JSX.Element {
     <PageContainer width="wide">
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📊 مراقبة المنصة</h1>
+          <h1 className="text-2xl font-bold"> مراقبة المنصة</h1>
           <p className="mt-1 text-sm text-text-secondary">
             صحة المنصة في الوقت الحقيقي — يعمل منذ {(h.uptime as string) ?? '...'}
           </p>
@@ -70,7 +70,7 @@ export default function MonitoringPage(): JSX.Element {
                   <span
                     className={`inline-flex items-center justify-center h-10 w-10 rounded-full text-lg ${STATUS_COLORS[(svc.status as string) ?? 'unknown']}`}
                   >
-                    {svc.status === 'healthy' ? '✅' : svc.status === 'warning' ? '⚠️' : '❌'}
+                    {svc.status === 'healthy' ? '' : svc.status === 'warning' ? '' : ''}
                   </span>
                   <p className="font-bold text-sm mt-2">{SERVICE_LABELS_AR[key] ?? key}</p>
                   <p className="text-xs text-text-secondary mt-1">{svc.latency as string}</p>
@@ -103,30 +103,30 @@ export default function MonitoringPage(): JSX.Element {
 
             {/* ── Real-time Stats Row ── */}
             <div className="grid gap-4 sm:grid-cols-4">
-              <StatCard label="الحجوزات اليوم" value={today.bookings ?? 0} icon="📅" />
-              <StatCard label="تسجيلات الدخول" value={today.logins ?? 0} icon="👤" />
-              <StatCard label="المدفوعات اليوم" value={today.payments ?? 0} icon="💳" />
+              <StatCard label="الحجوزات اليوم" value={today.bookings ?? 0} icon="" />
+              <StatCard label="تسجيلات الدخول" value={today.logins ?? 0} icon="" />
+              <StatCard label="المدفوعات اليوم" value={today.payments ?? 0} icon="" />
               <StatCard
                 label="معدل الأخطاء"
                 value={`${(errData.apiErrorsToday as number) ?? 0}`}
-                icon="⚠️"
+                icon=""
               />
             </div>
 
             {/* ── Performance ── */}
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="lg" className="text-center">
-                <p className="text-3xl">⚡</p>
+                <p className="text-3xl"></p>
                 <p className="text-2xl font-bold">{perf.avgResponseTime as string}</p>
                 <p className="text-xs text-text-secondary">متوسط الاستجابة</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-3xl">📊</p>
+                <p className="text-3xl"></p>
                 <p className="text-2xl font-bold">{perf.p95ResponseTime as string}</p>
                 <p className="text-xs text-text-secondary">p95</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-3xl">🐢</p>
+                <p className="text-3xl"></p>
                 <p className="text-2xl font-bold">{perf.p99ResponseTime as string}</p>
                 <p className="text-xs text-text-secondary">p99</p>
               </Card>
@@ -136,7 +136,7 @@ export default function MonitoringPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <Card padding="lg">
                 <h3 className="font-bold mb-3">
-                  ❌ الأخطاء (آخر ٢٤ ساعة: {(errData.last24h as number) ?? 0})
+                   الأخطاء (آخر ٢٤ ساعة: {(errData.last24h as number) ?? 0})
                 </h3>
                 <div className="space-y-2">
                   {(errData.byType as Array<Record<string, unknown>>)?.map(
@@ -154,12 +154,12 @@ export default function MonitoringPage(): JSX.Element {
                     ),
                   )}
                   {(!errData.byType || (errData.byType as unknown[]).length === 0) && (
-                    <p className="text-sm text-text-secondary">لا توجد أخطاء مسجلة 🎉</p>
+                    <p className="text-sm text-text-secondary">لا توجد أخطاء مسجلة </p>
                   )}
                 </div>
               </Card>
               <Card padding="lg">
-                <h3 className="font-bold mb-3">📋 السجل الأخير</h3>
+                <h3 className="font-bold mb-3"> السجل الأخير</h3>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
                   {recentErrors.map((e: Record<string, unknown>, i: number) => (
                     <div
@@ -187,7 +187,7 @@ export default function MonitoringPage(): JSX.Element {
 
             {/* ── Activity Chart (7-day bookings) ── */}
             <Card padding="lg">
-              <h3 className="font-bold mb-4">📈 النشاط اليومي (آخر ٧ أيام)</h3>
+              <h3 className="font-bold mb-4"> النشاط اليومي (آخر ٧ أيام)</h3>
               {(activity.chart as number[])?.length > 0 ? (
                 <div className="flex items-end gap-1 h-24">
                   {(activity.chart as number[]).map((v: number, i: number) => (

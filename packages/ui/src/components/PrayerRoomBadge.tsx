@@ -20,13 +20,13 @@ interface AmenityDef {
 }
 
 const AMENITIES: AmenityDef[] = [
-  { emoji: '🕌', label: 'سجادات صلاة', description: 'سجادات نظيفة ومعطرة' },
-  { emoji: '🧥', label: 'عبايات', description: 'عبايات نظيفة للإعارة' },
-  { emoji: '📖', label: 'مصحف', description: 'قرآن كريم متوفر' },
-  { emoji: '🧭', label: 'اتجاه القبلة', description: 'علامة اتجاه القبلة واضحة' },
-  { emoji: '💧', label: 'مكان وضوء', description: 'مكان مخصص للوضوء' },
-  { emoji: '🚪', label: 'مساحة خاصة', description: 'غرفة منفصلة للصلاة' },
-  { emoji: '🕐', label: 'مواقيت الصلاة', description: 'منبه لمواقيت الصلاة' },
+  { emoji: '', label: 'سجادات صلاة', description: 'سجادات نظيفة ومعطرة' },
+  { emoji: '', label: 'عبايات', description: 'عبايات نظيفة للإعارة' },
+  { emoji: '', label: 'مصحف', description: 'قرآن كريم متوفر' },
+  { emoji: '', label: 'اتجاه القبلة', description: 'علامة اتجاه القبلة واضحة' },
+  { emoji: '', label: 'مكان وضوء', description: 'مكان مخصص للوضوء' },
+  { emoji: '', label: 'مساحة خاصة', description: 'غرفة منفصلة للصلاة' },
+  { emoji: '', label: 'مواقيت الصلاة', description: 'منبه لمواقيت الصلاة' },
 ];
 
 interface PrayerRoomBadgeProps {
@@ -69,7 +69,7 @@ export function PrayerRoomBadge({
       {/* Header */}
       <div className="flex items-center gap-2">
         <span className="text-lg" aria-hidden="true">
-          🕌
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">مصلى متوفر</h4>
@@ -106,7 +106,7 @@ export function PrayerRoomBadge({
         <div className="mt-3 flex items-center justify-between rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 p-2.5 dark:from-emerald-950 dark:to-teal-950">
           <div className="flex items-center gap-2">
             <span className="text-sm" aria-hidden="true">
-              🕐
+              
             </span>
             <div>
               <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-200">
@@ -125,7 +125,7 @@ export function PrayerRoomBadge({
 
       {/* Footer */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🤲 راحتكِ الروحية جزء من جمالكِ
+         راحتكِ الروحية جزء من جمالكِ
       </p>
     </div>
   );

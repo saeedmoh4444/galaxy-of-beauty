@@ -91,7 +91,7 @@ function MapView({
             display: flex; align-items: center; justify-content: center;
             font-size: ${isSelected ? '18px' : '14px'}; color: white;
             transition: all 0.2s; cursor: pointer;
-          ">💅</div>`,
+          "></div>`,
           iconSize: [isSelected ? 40 : 32, isSelected ? 40 : 32],
           iconAnchor: [isSelected ? 20 : 16, isSelected ? 20 : 16],
         });
@@ -103,7 +103,7 @@ function MapView({
         if (isSelected) {
           marker
             .bindPopup(
-              `<div style="font-family:system-ui;text-align:right;min-width:200px"><strong>${t.name}</strong><br/><span style="font-size:12px;color:#666">⭐ ${t.rating} (${t.reviewCount})</span><br/><span style="font-size:12px;color:#666">📍 ${t.city}</span></div>`,
+              `<div style="font-family:system-ui;text-align:right;min-width:200px"><strong>${t.name}</strong><br/><span style="font-size:12px;color:#666"> ${t.rating} (${t.reviewCount})</span><br/><span style="font-size:12px;color:#666"> ${t.city}</span></div>`,
             )
             .openPopup();
         }
@@ -162,7 +162,7 @@ export default function SalonMapPage(): JSX.Element {
         <div className="mx-auto max-w-6xl px-4 py-3">
           <div className="flex items-center gap-3 overflow-x-auto pb-1">
             <span className="text-sm font-bold text-text-primary dark:text-gray-300 shrink-0">
-              🗺️ المدن:
+               المدن:
             </span>
             {cities?.slice(0, 10).map((c) => (
               <button
@@ -217,7 +217,7 @@ export default function SalonMapPage(): JSX.Element {
               onClick={() => setSelectedTechnician(null)}
               className="absolute top-3 right-3 text-text-tertiary hover:text-text-secondary text-lg"
             >
-              ✕
+              
             </button>
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-white text-lg font-bold">
@@ -236,7 +236,7 @@ export default function SalonMapPage(): JSX.Element {
                   {selectedTechnician.name}
                 </h3>
                 <div className="flex items-center gap-2 text-xs text-text-secondary">
-                  <span>⭐ {selectedTechnician.rating}</span>
+                  <span> {selectedTechnician.rating}</span>
                   <span>({selectedTechnician.reviewCount})</span>
                   <span
                     className={`h-2 w-2 rounded-full ${selectedTechnician.isAvailable ? 'bg-green-500' : 'bg-gray-400'}`}

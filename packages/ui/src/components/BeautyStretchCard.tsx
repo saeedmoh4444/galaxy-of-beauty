@@ -15,7 +15,7 @@ export function BeautyStretchCard({ className = '' }: BeautyStretchCardProps): J
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🤸</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">تمارين الإطالة</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">
@@ -25,9 +25,9 @@ export function BeautyStretchCard({ className = '' }: BeautyStretchCardProps): J
       </div>
       <div className="mt-3 space-y-1.5">
         {[
-          { emoji: '🙆', name: 'إطالة الرقبة', desc: 'إمالة بطيئة يمين ويسار — 30 ثانية' },
-          { emoji: '🤲', name: 'إطالة الكتف', desc: 'لف الكتفين للخلف 10 مرات' },
-          { emoji: '🧍', name: 'لمس القدمين', desc: 'انحناء للأمام — 20 ثانية' },
+          { emoji: '', name: 'إطالة الرقبة', desc: 'إمالة بطيئة يمين ويسار — 30 ثانية' },
+          { emoji: '', name: 'إطالة الكتف', desc: 'لف الكتفين للخلف 10 مرات' },
+          { emoji: '', name: 'لمس القدمين', desc: 'انحناء للأمام — 20 ثانية' },
           { emoji: '🪑', name: 'إطالة الظهر', desc: 'لف الجذع يمين ويسار — 10 مرات' },
         ].map((t, i) => (
           <div

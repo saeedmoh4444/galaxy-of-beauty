@@ -10,10 +10,10 @@ import { trpc } from '@/lib/api';
 import { useState } from 'react';
 
 const SKIN_TYPES = [
-  { key: 'dry', emoji: '🏜️', label: 'جافة' },
-  { key: 'oily', emoji: '💧', label: 'دهنية' },
-  { key: 'combination', emoji: '🔄', label: 'مختلطة' },
-  { key: 'normal', emoji: '✨', label: 'عادية' },
+  { key: 'dry', emoji: '️', label: 'جافة' },
+  { key: 'oily', emoji: '', label: 'دهنية' },
+  { key: 'combination', emoji: '', label: 'مختلطة' },
+  { key: 'normal', emoji: '', label: 'عادية' },
 ];
 
 export default function AIRoutineScreen(): JSX.Element {
@@ -36,7 +36,7 @@ export default function AIRoutineScreen(): JSX.Element {
   if (!generated) {
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}>🧠 روتين العناية الذكي</Text>
+        <Text style={styles.t}> روتين العناية الذكي</Text>
         <Text style={styles.sub}>اختاري نوع بشرتكِ لتوليد روتين مخصص</Text>
         <View style={styles.grid}>
           {SKIN_TYPES.map((t) => (
@@ -53,7 +53,7 @@ export default function AIRoutineScreen(): JSX.Element {
           ))}
         </View>
         <TouchableOpacity onPress={generate} style={styles.genBtn}>
-          <Text style={styles.genBtnText}>🧠 توليد الروتين</Text>
+          <Text style={styles.genBtnText}> توليد الروتين</Text>
         </TouchableOpacity>
       </ScrollView>
     );
@@ -67,9 +67,9 @@ export default function AIRoutineScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>🧠 روتين العناية الذكي</Text>
+      <Text style={styles.t}> روتين العناية الذكي</Text>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>☀️ الصباح ({data?.morning?.totalTime ?? '—'})</Text>
+        <Text style={styles.sectionTitle}>️ الصباح ({data?.morning?.totalTime ?? '—'})</Text>
         {morning.map((s: any, i: number) => (
           <View key={i} style={styles.step}>
             <Text style={styles.stepEmoji}>{s.emoji}</Text>
@@ -81,7 +81,7 @@ export default function AIRoutineScreen(): JSX.Element {
         ))}
       </View>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>🌙 المساء ({data?.evening?.totalTime ?? '—'})</Text>
+        <Text style={styles.sectionTitle}> المساء ({data?.evening?.totalTime ?? '—'})</Text>
         {evening.map((s: any, i: number) => (
           <View key={i} style={styles.step}>
             <Text style={styles.stepEmoji}>{s.emoji}</Text>
@@ -94,7 +94,7 @@ export default function AIRoutineScreen(): JSX.Element {
       </View>
       {tips.length > 0 && (
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>💡 نصائح</Text>
+          <Text style={styles.sectionTitle}> نصائح</Text>
           {tips.map((tip: string, i: number) => (
             <Text key={i} style={styles.tip}>
               • {tip}
@@ -109,7 +109,7 @@ export default function AIRoutineScreen(): JSX.Element {
         }}
         style={styles.resetBtn}
       >
-        <Text style={styles.resetBtnText}>🔄 إعادة</Text>
+        <Text style={styles.resetBtnText}> إعادة</Text>
       </TouchableOpacity>
     </ScrollView>
   );

@@ -54,7 +54,7 @@ export default function ResetPasswordScreen() {
         <ActivityIndicator color="#7c3aed" style={{ marginTop: 32 }} />
       ) : done ? (
         <View style={styles.successBox}>
-          <Text style={styles.successIcon}>✅</Text>
+          <Text style={styles.successIcon}></Text>
           <Text style={styles.successText}>{msg}</Text>
           <TouchableOpacity style={styles.btn} onPress={() => router.replace('/(auth)/login')}>
             <Text style={styles.btnText}>تسجيل الدخول</Text>

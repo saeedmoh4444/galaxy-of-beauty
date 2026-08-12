@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W3: Health & Wellness & W1: Privacy.
  *
  * Usage:
- *   <BeautyProgressPhotoCard photos={[{ date: '2026-01', emoji: '🧴', note: 'بداية الروتين' }]} />
+ *   <BeautyProgressPhotoCard photos={[{ date: '2026-01', emoji: '', note: 'بداية الروتين' }]} />
  */
 
 interface ProgressPhoto {
@@ -38,7 +38,7 @@ export function BeautyProgressPhotoCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true">
-            📸
+            
           </span>
           <div>
             <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">صور التقدم</h4>

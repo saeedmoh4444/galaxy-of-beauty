@@ -9,7 +9,7 @@ export function BeautyPerfumeRoseCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌹</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">الورد الطائفي</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">ذهب الطائف السائل</p>
@@ -17,10 +17,10 @@ export function BeautyPerfumeRoseCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🏔️', text: 'يزرع في جبال الطائف — 2000 متر فوق البحر' },
-          { emoji: '🌅', text: 'يقطف عند الفجر — لأعلى تركيز عطري' },
-          { emoji: '💧', text: 'ماء الورد — تونر طبيعي ومنعش' },
-          { emoji: '🇸🇦', text: 'من أندر وأغلى الزيوت العطرية في العالم' },
+          { emoji: '️', text: 'يزرع في جبال الطائف — 2000 متر فوق البحر' },
+          { emoji: '', text: 'يقطف عند الفجر — لأعلى تركيز عطري' },
+          { emoji: '', text: 'ماء الورد — تونر طبيعي ومنعش' },
+          { emoji: '', text: 'من أندر وأغلى الزيوت العطرية في العالم' },
         ].map((t, i) => (
           <div
             key={i}

@@ -21,37 +21,37 @@ interface ZoneDef {
 
 const ZONES: Record<ZoneType, ZoneDef> = {
   quiet: {
-    emoji: '🤫',
+    emoji: '',
     label: 'منطقة هادئة',
     description: 'موسيقى منخفضة، أحاديث قليلة',
     color: 'bg-sky-100 border-sky-300 dark:bg-sky-950 dark:border-sky-800',
   },
   dim: {
-    emoji: '💡',
+    emoji: '',
     label: 'إضاءة خافتة',
     description: 'أضواء دافئة وخافتة',
     color: 'bg-amber-100 border-amber-300 dark:bg-amber-950 dark:border-amber-800',
   },
   bright: {
-    emoji: '☀️',
+    emoji: '️',
     label: 'إضاءة طبيعية',
     description: 'نوافذ كبيرة، إضاءة نهارية',
     color: 'bg-yellow-100 border-yellow-300 dark:bg-yellow-950 dark:border-yellow-800',
   },
   social: {
-    emoji: '💬',
+    emoji: '',
     label: 'منطقة اجتماعية',
     description: 'مساحة مفتوحة للحديث والتواصل',
     color: 'bg-pink-100 border-pink-300 dark:bg-pink-950 dark:border-pink-800',
   },
   private: {
-    emoji: '🚪',
+    emoji: '',
     label: 'غرفة خاصة',
     description: 'غرفة منفصلة بخصوصية تامة',
     color: 'bg-purple-100 border-purple-300 dark:bg-purple-950 dark:border-purple-800',
   },
   aromatherapy: {
-    emoji: '🌿',
+    emoji: '',
     label: 'علاج بالروائح',
     description: 'زيوت عطرية طبيعية مهدئة',
     color: 'bg-emerald-100 border-emerald-300 dark:bg-emerald-950 dark:border-emerald-800',
@@ -80,7 +80,7 @@ export function SensoryMapCard({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🗺️
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">
@@ -119,12 +119,12 @@ export function SensoryMapCard({
       {/* Preference note */}
       <div className="mt-3 rounded-xl bg-purple-50 p-3 dark:bg-purple-950">
         <p className="text-center text-[10px] text-purple-700 dark:text-purple-300">
-          💜 أخبرينا بالمنطقة التي تفضلينها عند الحجز — وسنجهزها لكِ
+           أخبرينا بالمنطقة التي تفضلينها عند الحجز — وسنجهزها لكِ
         </p>
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🧠 راحتكِ الحسية أولويتنا
+         راحتكِ الحسية أولويتنا
       </p>
     </div>
   );

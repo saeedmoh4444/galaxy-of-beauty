@@ -27,14 +27,14 @@ export default function TechProfileScreen(): JSX.Element {
       errorMessage="فشل تحميل الملف الشخصي"
       onRetry={() => profile.refetch()}
     >
-      <Text style={styles.title}>👤 ملفي الشخصي</Text>
+      <Text style={styles.title}> ملفي الشخصي</Text>
       {(data
         ? [
             { label: 'المدينة', value: data.city as string },
-            { label: 'التقييم', value: `⭐ ${String(data.ratingAvg ?? 0)}` },
+            { label: 'التقييم', value: ` ${String(data.ratingAvg ?? 0)}` },
             { label: 'الحجوزات المكتملة', value: String(data.completedBookings ?? 0) },
             { label: 'حالة التوثيق', value: data.kycStatus as string },
-            { label: 'منتجات صديقة للبيئة', value: data.isEcoFriendly ? '✅ نعم' : '❌ لا' },
+            { label: 'منتجات صديقة للبيئة', value: data.isEcoFriendly ? ' نعم' : ' لا' },
           ]
         : []
       ).map((row, i) => (
@@ -44,7 +44,7 @@ export default function TechProfileScreen(): JSX.Element {
         </View>
       ))}
       <TouchableOpacity style={styles.editBtn}>
-        <Text style={styles.editText}>✏️ تعديل الملف</Text>
+        <Text style={styles.editText}>️ تعديل الملف</Text>
       </TouchableOpacity>
     </ScreenState>
   );

@@ -40,10 +40,10 @@ export default function FollowingScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>👩‍🎨 متابعة الفنيات</Text>
+      <Text style={styles.t}>‍ متابعة الفنيات</Text>
       {follows.map((f: any) => (
         <View key={f.technicianId} style={styles.card}>
-          <Text style={styles.av}>👩‍🎨</Text>
+          <Text style={styles.av}>‍</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>فنية #{f.technicianId as number}</Text>
             <Text style={styles.meta}>

@@ -12,7 +12,7 @@ export default function PredictiveDemandPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">📊 توقعات الطلب</h1>
+        <h1 className="text-2xl font-bold"> توقعات الطلب</h1>
       </div>
       {isLoading ? (
         <CardSkeleton />
@@ -20,12 +20,12 @@ export default function PredictiveDemandPage(): JSX.Element {
         <>
           <div className="grid gap-4 sm:grid-cols-2">
             <Card padding="lg">
-              <h3 className="font-bold mb-3">📅 الأسبوع القادم</h3>
+              <h3 className="font-bold mb-3"> الأسبوع القادم</h3>
               <p className="text-2xl font-extrabold">
                 {(f.nextWeek as Record<string, unknown>)?.predictedBookings as number} حجز
               </p>
               <p className="text-sm text-text-secondary">
-                🔝 الذروة: {(f.nextWeek as Record<string, unknown>)?.peakDay as string}{' '}
+                 الذروة: {(f.nextWeek as Record<string, unknown>)?.peakDay as string}{' '}
                 {(f.nextWeek as Record<string, unknown>)?.peakTime as string}
               </p>
               <p className="text-xs text-text-tertiary mt-2">
@@ -37,7 +37,7 @@ export default function PredictiveDemandPage(): JSX.Element {
               </p>
             </Card>
             <Card padding="lg">
-              <h3 className="font-bold mb-3">📈 الشهر القادم</h3>
+              <h3 className="font-bold mb-3"> الشهر القادم</h3>
               <p className="text-2xl font-extrabold">
                 {(f.nextMonth as Record<string, unknown>)?.predictedBookings as number} حجز
               </p>
@@ -48,7 +48,7 @@ export default function PredictiveDemandPage(): JSX.Element {
             </Card>
           </div>
           <Card padding="lg">
-            <h3 className="font-bold mb-3">💄 حسب الخدمة</h3>
+            <h3 className="font-bold mb-3"> حسب الخدمة</h3>
             <div className="space-y-2">
               {(f.byService as Array<Record<string, unknown>>)?.map(
                 (s: Record<string, unknown>, i: number) => (

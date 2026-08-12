@@ -16,12 +16,12 @@ interface PressKitCardProps {
 }
 
 const KIT_ITEMS = [
-  { emoji: '🖼️', label: 'شعار المنصة', format: 'PNG, SVG' },
-  { emoji: '📸', label: 'صور عالية الدقة', format: '10 صور' },
-  { emoji: '📄', label: 'البيان الصحفي', format: 'PDF' },
-  { emoji: '📊', label: 'إحصائيات وأرقام', format: 'PDF' },
-  { emoji: '👩‍🎨', label: 'صور المؤسسات', format: '5 صور' },
-  { emoji: '🎨', label: 'دليل الهوية البصرية', format: 'PDF' },
+  { emoji: '️', label: 'شعار المنصة', format: 'PNG, SVG' },
+  { emoji: '', label: 'صور عالية الدقة', format: '10 صور' },
+  { emoji: '', label: 'البيان الصحفي', format: 'PDF' },
+  { emoji: '', label: 'إحصائيات وأرقام', format: 'PDF' },
+  { emoji: '‍', label: 'صور المؤسسات', format: '5 صور' },
+  { emoji: '', label: 'دليل الهوية البصرية', format: 'PDF' },
 ];
 
 export function PressKitCard({ onDownload, className = '' }: PressKitCardProps): JSX.Element {
@@ -34,7 +34,7 @@ export function PressKitCard({ onDownload, className = '' }: PressKitCardProps):
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          📰
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">الملف الصحفي</h4>
@@ -68,11 +68,11 @@ export function PressKitCard({ onDownload, className = '' }: PressKitCardProps):
         onClick={onDownload}
         className="mt-3 w-full rounded-xl bg-sky-600 py-2 text-xs font-bold text-white hover:bg-sky-700 active:scale-[0.98] transition-all"
       >
-        📥 تحميل الملف الصحفي
+         تحميل الملف الصحفي
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-sky-500 dark:text-sky-400">
-        📰 للإعلام والصحافة — للتواصل: press@galaxyofbeauty.com
+         للإعلام والصحافة — للتواصل: press@galaxyofbeauty.com
       </p>
     </div>
   );

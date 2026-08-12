@@ -26,11 +26,11 @@ interface MediaFeatureCardProps {
 }
 
 const TYPE_ICONS: Record<string, string> = {
-  tv: '📺',
-  newspaper: '📰',
-  podcast: '🎙️',
-  magazine: '📖',
-  online: '🌐',
+  tv: '',
+  newspaper: '',
+  podcast: '️',
+  magazine: '',
+  online: '',
 };
 
 export function MediaFeatureCard({
@@ -58,7 +58,7 @@ export function MediaFeatureCard({
             <span>
               {TYPE_ICONS[feature.type || 'online']} {feature.outlet}
             </span>
-            <span>📅 {feature.date}</span>
+            <span> {feature.date}</span>
           </div>
         </div>
       </div>
@@ -68,11 +68,11 @@ export function MediaFeatureCard({
         onClick={onRead}
         className="mt-3 w-full rounded-xl border border-sky-200 py-2 text-[10px] font-bold text-sky-700 hover:bg-sky-50 dark:border-sky-800 dark:text-sky-300 dark:hover:bg-sky-950 transition-colors"
       >
-        اقرئي التغطية كاملة 📰
+        اقرئي التغطية كاملة 
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🏆 قصتنا تُروى في الإعلام
+         قصتنا تُروى في الإعلام
       </p>
     </div>
   );

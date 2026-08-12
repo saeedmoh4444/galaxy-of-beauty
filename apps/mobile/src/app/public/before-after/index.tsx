@@ -22,12 +22,12 @@ export default function BeforeAfterScreen(): JSX.Element {
       emptyTitle="لا توجد صور"
       onRetry={() => gallery.refetch()}
     >
-      <Text style={styles.title}>📸 قبل وبعد</Text>
+      <Text style={styles.title}> قبل وبعد</Text>
       <View style={styles.grid}>
         {(data as Record<string, unknown>[])?.map((item: Record<string, unknown>, i: number) => (
           <View key={i} style={styles.card}>
             <View style={styles.imagePlaceholder}>
-              <Text style={styles.imageText}>📸</Text>
+              <Text style={styles.imageText}></Text>
             </View>
             <Text style={styles.label}>{(item.titleJson as any)?.ar ?? ''}</Text>
           </View>

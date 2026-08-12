@@ -9,7 +9,7 @@ export function BeautyZeroWasteCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">♻️</span>
+        <span className="text-xl">️</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             الجمال بدون نفايات
@@ -19,10 +19,10 @@ export function BeautyZeroWasteCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧼', text: 'شامبو صلب — يدوم 3 شهور بدون بلاستيك' },
-          { emoji: '🧻', text: 'فوط قماش — بدل القطن أحادي الاستخدام' },
-          { emoji: '🔄', text: 'اشتري عبوات كبيرة — وأعيدي تعبئة الصغيرة' },
-          { emoji: '🌱', text: 'منتجات قابلة للتحلل — تغليف ورقي' },
+          { emoji: '', text: 'شامبو صلب — يدوم 3 شهور بدون بلاستيك' },
+          { emoji: '', text: 'فوط قماش — بدل القطن أحادي الاستخدام' },
+          { emoji: '', text: 'اشتري عبوات كبيرة — وأعيدي تعبئة الصغيرة' },
+          { emoji: '', text: 'منتجات قابلة للتحلل — تغليف ورقي' },
         ].map((t, i) => (
           <div
             key={i}

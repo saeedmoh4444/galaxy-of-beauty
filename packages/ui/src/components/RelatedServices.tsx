@@ -31,7 +31,7 @@ export function RelatedServices({
   return (
     <div className={className}>
       <h3 className="mb-3 text-lg font-bold text-text-primary dark:text-gray-100">
-        💡 قد يعجبكِ أيضاً
+         قد يعجبكِ أيضاً
       </h3>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((s) => (
@@ -40,7 +40,7 @@ export function RelatedServices({
             onClick={() => onSelect(s)}
             className="flex items-center gap-3 rounded-xl border border-edge bg-white p-4 text-right transition-all hover:border-brand-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-900 dark:hover:border-brand-700"
           >
-            <span className="text-2xl">{s.emoji ?? '💄'}</span>
+            <span className="text-2xl">{s.emoji ?? ''}</span>
             <div className="flex-1">
               <p className="text-sm font-semibold text-text-primary dark:text-gray-100">
                 {s.title}

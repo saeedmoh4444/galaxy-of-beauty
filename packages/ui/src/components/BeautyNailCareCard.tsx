@@ -11,10 +11,10 @@ import { cn } from '@galaxy/shared';
  */
 
 const TIPS = [
-  { emoji: '💅', title: 'ترطيب يومي', desc: 'زيت الأظافر يومياً للحفاظ على الترطيب' },
-  { emoji: '📏', title: 'برد باتجاه واحد', desc: 'لا تبردي ذهاباً وإياباً — يضعف الظفر' },
-  { emoji: '🧤', title: 'قفازات الحماية', desc: 'احمي أظافركِ من المواد الكيميائية' },
-  { emoji: '🥗', title: 'تغذية', desc: 'بيوتين وزنك وزنك — غذاء الأظافر' },
+  { emoji: '', title: 'ترطيب يومي', desc: 'زيت الأظافر يومياً للحفاظ على الترطيب' },
+  { emoji: '', title: 'برد باتجاه واحد', desc: 'لا تبردي ذهاباً وإياباً — يضعف الظفر' },
+  { emoji: '', title: 'قفازات الحماية', desc: 'احمي أظافركِ من المواد الكيميائية' },
+  { emoji: '', title: 'تغذية', desc: 'بيوتين وزنك وزنك — غذاء الأظافر' },
 ];
 
 interface BeautyNailCareCardProps {
@@ -31,7 +31,7 @@ export function BeautyNailCareCard({ className = '' }: BeautyNailCareCardProps):
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          💅
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">عناية بالأظافر</h4>

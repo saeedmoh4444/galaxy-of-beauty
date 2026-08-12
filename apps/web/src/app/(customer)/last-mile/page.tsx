@@ -42,16 +42,16 @@ export default function LastMilePage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📦 توصيل سريع</h1>
+          <h1 className="text-2xl font-bold"> توصيل سريع</h1>
           <p className="mt-1 text-sm text-text-secondary">منتجات تجميل توصل لباب بيتكِ</p>
         </div>
         {result ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
-            <span className="text-6xl">✅</span>
+            <span className="text-6xl"></span>
             <h2 className="mt-4 text-xl font-bold">تم الطلب!</h2>
             <p className="font-bold mt-1">{result.product as string}</p>
             <p className="text-sm text-text-secondary">
-              📦 {result.estimatedDelivery as string} · {formatCurrency(result.total as number)} ر.س
+               {result.estimatedDelivery as string} · {formatCurrency(result.total as number)} ر.س
             </p>
           </Card>
         ) : (
@@ -62,7 +62,7 @@ export default function LastMilePage(): JSX.Element {
                   <span className="text-3xl">{p.emoji as string}</span>
                   <div>
                     <p className="font-bold">{p.nameAr as string}</p>
-                    <p className="text-xs text-text-secondary">⏱️ {p.deliveryTime as string}</p>
+                    <p className="text-xs text-text-secondary">️ {p.deliveryTime as string}</p>
                   </div>
                 </div>
                 <div className="text-right">

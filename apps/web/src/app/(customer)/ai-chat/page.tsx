@@ -5,7 +5,7 @@ import { api } from '@/lib/trpc';
 import { CardSkeleton, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
-const LAYLA_AVATAR = '🌸';
+const LAYLA_AVATAR = '';
 
 interface ChatMessage {
   id: string;

@@ -24,13 +24,13 @@ interface BridalBeautyCountdownProps {
 }
 
 const MILESTONES: Omit<Milestone, 'done'>[] = [
-  { label: 'خطة العناية', emoji: '📋', daysBefore: 180 },
-  { label: 'روتين يومي', emoji: '🧴', daysBefore: 150 },
-  { label: 'علاجات متقدمة', emoji: '💆‍♀️', daysBefore: 120 },
-  { label: 'تجربة الإطلالة', emoji: '👰', daysBefore: 90 },
-  { label: 'اللمسات النهائية', emoji: '💅', daysBefore: 60 },
-  { label: 'الاستعداد الأخير', emoji: '✨', daysBefore: 30 },
-  { label: 'يوم الزفاف', emoji: '💒', daysBefore: 0 },
+  { label: 'خطة العناية', emoji: '', daysBefore: 180 },
+  { label: 'روتين يومي', emoji: '', daysBefore: 150 },
+  { label: 'علاجات متقدمة', emoji: '‍️', daysBefore: 120 },
+  { label: 'تجربة الإطلالة', emoji: '', daysBefore: 90 },
+  { label: 'اللمسات النهائية', emoji: '', daysBefore: 60 },
+  { label: 'الاستعداد الأخير', emoji: '', daysBefore: 30 },
+  { label: 'يوم الزفاف', emoji: '', daysBefore: 0 },
 ];
 
 export function BridalBeautyCountdown({
@@ -60,13 +60,13 @@ export function BridalBeautyCountdown({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          {isPast ? '💒' : '👰'}
+          {isPast ? '' : ''}
         </span>
         <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">
           {isPast ? 'يوم الزفاف!' : 'العد التنازلي للزفاف'}
         </h4>
         <p className="text-[10px] text-rose-500 dark:text-rose-400">
-          {isPast ? 'مبروك! 🎉' : `${daysLeft} يوم متبقي`}
+          {isPast ? 'مبروك! ' : `${daysLeft} يوم متبقي`}
         </p>
       </div>
 
@@ -88,7 +88,7 @@ export function BridalBeautyCountdown({
                     : 'bg-gray-200 text-gray-500 dark:bg-gray-700',
                 )}
               >
-                {m.done ? '✅' : m.emoji}
+                {m.done ? '' : m.emoji}
               </span>
               <span
                 className={cn(
@@ -111,7 +111,7 @@ export function BridalBeautyCountdown({
       {isPast && (
         <div className="mt-3 rounded-xl bg-rose-50 p-4 text-center dark:bg-rose-950">
           <p className="text-lg" aria-hidden="true">
-            🎉
+            
           </p>
           <p className="text-xs font-bold text-rose-700 dark:text-rose-300">
             ألف مبروك! رحلة الجمال اكتملت

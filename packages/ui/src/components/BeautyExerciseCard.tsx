@@ -15,7 +15,7 @@ export function BeautyExerciseCard({ className = '' }: BeautyExerciseCardProps):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🏃‍♀️</span>
+        <span className="text-xl">‍️</span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">رياضة الجمال</h4>
           <p className="text-[10px] text-orange-500 dark:text-orange-400">الحركة تغذي بشرتك</p>
@@ -23,10 +23,10 @@ export function BeautyExerciseCard({ className = '' }: BeautyExerciseCardProps):
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '🚶', label: 'مشي 30 دقيقة', tip: 'ينشط الدورة الدموية' },
-          { emoji: '🧘', label: 'يوغا', tip: 'تقلل التوتر = بشرة أفضل' },
-          { emoji: '🏊', label: 'سباحة', tip: 'تمرين كامل للجسم' },
-          { emoji: '💃', label: 'رقص', tip: 'يفرز هرمونات السعادة' },
+          { emoji: '', label: 'مشي 30 دقيقة', tip: 'ينشط الدورة الدموية' },
+          { emoji: '', label: 'يوغا', tip: 'تقلل التوتر = بشرة أفضل' },
+          { emoji: '', label: 'سباحة', tip: 'تمرين كامل للجسم' },
+          { emoji: '', label: 'رقص', tip: 'يفرز هرمونات السعادة' },
         ].map((t) => (
           <div key={t.label} className="rounded-lg bg-orange-50 px-2.5 py-2 dark:bg-orange-950">
             <span className="text-sm">{t.emoji}</span>

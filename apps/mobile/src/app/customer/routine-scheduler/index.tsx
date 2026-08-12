@@ -41,10 +41,10 @@ export default function RoutineSchedulerScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📅 جدول الروتين</Text>
+      <Text style={styles.t}> جدول الروتين</Text>
       {data.map((r: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(r.emoji as string) ?? '📅'}</Text>
+          <Text style={styles.emoji}>{(r.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{r.nameAr as string}</Text>
             <Text style={styles.time}>

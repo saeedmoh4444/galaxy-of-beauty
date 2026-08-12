@@ -41,7 +41,7 @@ export default function TechLeaderboardScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🏆 لوحة المتصدرين</Text>
+      <Text style={styles.t}> لوحة المتصدرين</Text>
       <Text style={styles.sub}>أفضل الفنيات حسب التقييمات والحجوزات</Text>
       {board.length === 0 ? (
         <Text style={styles.e}>لا توجد بيانات</Text>
@@ -52,15 +52,15 @@ export default function TechLeaderboardScreen(): JSX.Element {
               <Text style={[styles.rankText, i === 0 && styles.rankTextTop]}>{i + 1}</Text>
             </View>
             <Text style={styles.rankEmoji}>
-              {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '👩‍🎨'}
+              {i === 0 ? '' : i === 1 ? '' : i === 2 ? '' : '‍'}
             </Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.techName}>{t.name as string}</Text>
               <Text style={styles.techMeta}>
-                ⭐ {t.rating as number} · 📅 {t.bookings as number} حجز
+                 {t.rating as number} ·  {t.bookings as number} حجز
               </Text>
             </View>
-            {i === 0 && <Text style={styles.crown}>👑</Text>}
+            {i === 0 && <Text style={styles.crown}></Text>}
           </View>
         ))
       )}

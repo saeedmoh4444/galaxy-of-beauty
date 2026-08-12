@@ -30,7 +30,7 @@ export default function BeautyLifestylePage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="💎 نمط الحياة" subtitle="الجمال جزء من أسلوب حياتكِ" />
+        <PageTitle title=" نمط الحياة" subtitle="الجمال جزء من أسلوب حياتكِ" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -61,8 +61,8 @@ export default function BeautyLifestylePage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyPriceDropHistoryCard
                 drops={[
-                  { service: 'مانيكير سبا', emoji: '💅', oldPrice: 150, newPrice: 99 },
-                  { service: 'مكياج', emoji: '💄', oldPrice: 350, newPrice: 299 },
+                  { service: 'مانيكير سبا', emoji: '', oldPrice: 150, newPrice: 99 },
+                  { service: 'مكياج', emoji: '', oldPrice: 350, newPrice: 299 },
                 ]}
               />
               <PriceAlertBadge serviceName="مانيكير سبا" currentPrice={120} targetPrice={80} />
@@ -81,8 +81,8 @@ export default function BeautyLifestylePage(): JSX.Element {
             <TaxHelperCard revenue={{ monthly: 8500, vat: 1275 }} />
             <BeautySavingsGoal
               goals={[
-                { label: 'باقة عناية', target: 500, saved: 325, monthly: 100, emoji: '🧴' },
-                { label: 'جهاز مكياج', target: 1200, saved: 450, monthly: 200, emoji: '💄' },
+                { label: 'باقة عناية', target: 500, saved: 325, monthly: 100, emoji: '' },
+                { label: 'جهاز مكياج', target: 1200, saved: 450, monthly: 200, emoji: '' },
               ]}
             />
           </div>

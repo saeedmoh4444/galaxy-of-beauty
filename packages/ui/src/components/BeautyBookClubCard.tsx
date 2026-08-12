@@ -41,14 +41,14 @@ export function BeautyBookClubCard({
     >
       <div className="flex items-start gap-3">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-100 to-yellow-100 text-2xl dark:from-amber-900 dark:to-yellow-900">
-          {book.emoji || '📖'}
+          {book.emoji || ''}
         </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">نادي الكتاب</h4>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100 mt-0.5">
             {book.title}
           </p>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-500">✍️ {book.author}</p>
+          <p className="text-[10px] text-text-tertiary dark:text-gray-500">️ {book.author}</p>
         </div>
       </div>
 
@@ -70,7 +70,7 @@ export function BeautyBookClubCard({
       {book.nextMeeting && (
         <div className="mt-2 rounded-lg bg-amber-50 p-2 dark:bg-amber-950">
           <p className="text-center text-[10px] text-amber-700 dark:text-amber-300">
-            📅 اللقاء القادم: {book.nextMeeting}
+             اللقاء القادم: {book.nextMeeting}
           </p>
         </div>
       )}
@@ -81,11 +81,11 @@ export function BeautyBookClubCard({
         onClick={onJoin}
         className="mt-3 w-full rounded-xl bg-amber-600 py-2 text-xs font-bold text-white hover:bg-amber-700 active:scale-[0.98] transition-all"
       >
-        انضمي للنادي 📖
+        انضمي للنادي 
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        📚 نقرأ معاً لنرتقي معاً
+         نقرأ معاً لنرتقي معاً
       </p>
     </div>
   );

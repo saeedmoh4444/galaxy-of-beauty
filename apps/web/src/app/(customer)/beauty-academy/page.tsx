@@ -41,7 +41,7 @@ export default function BeautyAcademyPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="📚 أكاديمية الجمال" subtitle="تعلمي، اكتشفي، وتطوري" />
+        <PageTitle title=" أكاديمية الجمال" subtitle="تعلمي، اكتشفي، وتطوري" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -57,7 +57,7 @@ export default function BeautyAcademyPage(): JSX.Element {
                     lessons: c.lessons ?? 6,
                     instructor: c.instructor,
                     enrolled: c.enrolled,
-                    emoji: c.emoji ?? '📚',
+                    emoji: c.emoji ?? '',
                     hasCertificate: c.hasCertificate,
                   }}
                 />
@@ -71,7 +71,7 @@ export default function BeautyAcademyPage(): JSX.Element {
                       lessons: 6,
                       instructor: 'د. نورة',
                       enrolled: 1234,
-                      emoji: '🧴',
+                      emoji: '',
                     }}
                   />
                   <FreeCourseCard
@@ -81,7 +81,7 @@ export default function BeautyAcademyPage(): JSX.Element {
                       duration: '90 دقيقة',
                       lessons: 12,
                       hasCertificate: true,
-                      emoji: '💄',
+                      emoji: '',
                     }}
                   />
                 </>
@@ -117,7 +117,7 @@ export default function BeautyAcademyPage(): JSX.Element {
                       expert: 'م. سارة',
                       date: '15 سبتمبر',
                       isFree: true,
-                      emoji: '💼',
+                      emoji: '',
                     }}
                   />
                 </>
@@ -212,7 +212,7 @@ export default function BeautyAcademyPage(): JSX.Element {
             <SaudiBeautyHeritageCard practice="henna" />
             <BeautyInfographicCard
               topic="الحماية من الشمس"
-              emoji="☀️"
+              emoji="️"
               stats={[
                 { label: 'أشعة UVA', value: '95%', desc: 'تخترق الغيوم والزجاج' },
                 { label: 'SPF 30', value: '97%', desc: 'نسبة الحماية' },
@@ -221,7 +221,7 @@ export default function BeautyAcademyPage(): JSX.Element {
             />
             <BeautyQuickTipCard
               tip={{
-                emoji: dailyTip?.data?.emoji ?? '💧',
+                emoji: dailyTip?.data?.emoji ?? '',
                 title: dailyTip?.data?.category ?? 'الماء أولاً',
                 body: dailyTip?.data?.tip ?? 'اشربي كوب ماء قبل قهوتكِ الصباحية — بشرتكِ ستشكركِ',
                 source: 'أكاديمية الجمال',
@@ -242,7 +242,7 @@ export default function BeautyAcademyPage(): JSX.Element {
                 title: 'مكياج احترافي',
                 modules: 8,
                 completed: 3,
-                emoji: '💄',
+                emoji: '',
                 duration: '6 أشهر',
               }}
             />

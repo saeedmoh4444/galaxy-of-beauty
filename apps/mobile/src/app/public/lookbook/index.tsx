@@ -2,10 +2,10 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-nati
 import { useState } from 'react';
 
 const SEASONS = [
-  { id: 'summer', nameAr: 'صيف ٢٠٢٦', emoji: '☀️', color: '#f59e0b' },
-  { id: 'eid', nameAr: 'أناقة العيد', emoji: '🌙', color: '#10b981' },
-  { id: 'wedding', nameAr: 'موسم الأعراس', emoji: '👰', color: '#ec4899' },
-  { id: 'ramadan', nameAr: 'رمضان كريم', emoji: '✨', color: '#7c3aed' },
+  { id: 'summer', nameAr: 'صيف ٢٠٢٦', emoji: '️', color: '#f59e0b' },
+  { id: 'eid', nameAr: 'أناقة العيد', emoji: '', color: '#10b981' },
+  { id: 'wedding', nameAr: 'موسم الأعراس', emoji: '', color: '#ec4899' },
+  { id: 'ramadan', nameAr: 'رمضان كريم', emoji: '', color: '#7c3aed' },
 ];
 
 const LOOKS: Record<string, { title: string; desc: string; emoji: string; tags: string[] }[]> = {
@@ -13,19 +13,19 @@ const LOOKS: Record<string, { title: string; desc: string; emoji: string; tags: 
     {
       title: 'إطلالة شاطئية منعشة',
       desc: 'مكياج خفيف مقاوم للماء مع تسريحة شاطئية',
-      emoji: '🧴',
+      emoji: '',
       tags: ['مكياج', 'شعر', 'عناية'],
     },
     {
       title: 'عناية بالبشرة قبل الصيف',
       desc: 'تقشير وترطيب عميق لبشرة متألقة',
-      emoji: '✨',
+      emoji: '',
       tags: ['بشرة', 'عناية'],
     },
     {
       title: 'ألوان الصيف الجريئة',
       desc: 'مانيكير وباديكير بألوان الموسم',
-      emoji: '💅',
+      emoji: '',
       tags: ['أظافر', 'مانيكير'],
     },
   ],
@@ -33,19 +33,19 @@ const LOOKS: Record<string, { title: string; desc: string; emoji: string; tags: 
     {
       title: 'إطلالة العيد الفاخرة',
       desc: 'مكياج سهرة مع تسريحة أنيقة',
-      emoji: '💄',
+      emoji: '',
       tags: ['مكياج', 'شعر'],
     },
     {
       title: 'حناء العيد',
       desc: 'نقوش حناء عصرية للمناسبات',
-      emoji: '🌿',
+      emoji: '',
       tags: ['حناء', 'مناسبات'],
     },
     {
       title: 'بشرة متألقة للعيد',
       desc: 'جلسة عناية متكاملة قبل العيد',
-      emoji: '✨',
+      emoji: '',
       tags: ['بشرة', 'عناية'],
     },
   ],
@@ -53,19 +53,19 @@ const LOOKS: Record<string, { title: string; desc: string; emoji: string; tags: 
     {
       title: 'إطلالة العروس الكاملة',
       desc: 'مكياج، شعر، وأظافر ليومكِ الكبير',
-      emoji: '👰',
+      emoji: '',
       tags: ['عرايس', 'مكياج', 'شعر'],
     },
     {
       title: 'جلسة تصوير العروس',
       desc: 'مكياج احترافي يدوم طوال اليوم',
-      emoji: '📸',
+      emoji: '',
       tags: ['مكياج', 'تصوير'],
     },
     {
       title: 'إطلالة أم العروس',
       desc: 'مكياج ناعم وأنيق لأم العروس',
-      emoji: '💐',
+      emoji: '',
       tags: ['مكياج', 'مناسبات'],
     },
   ],
@@ -73,16 +73,16 @@ const LOOKS: Record<string, { title: string; desc: string; emoji: string; tags: 
     {
       title: 'إطلالة رمضانية راقية',
       desc: 'مكياج ناعم للسهرات الرمضانية',
-      emoji: '✨',
+      emoji: '',
       tags: ['مكياج', 'سهرة'],
     },
     {
       title: 'عناية رمضانية',
       desc: 'روتين عناية ليلي للصائمات',
-      emoji: '🌙',
+      emoji: '',
       tags: ['بشرة', 'عناية'],
     },
-    { title: 'تسريحة السحور', desc: 'تسريحة سريعة وأنيقة', emoji: '💇‍♀️', tags: ['شعر', 'تسريحة'] },
+    { title: 'تسريحة السحور', desc: 'تسريحة سريعة وأنيقة', emoji: '‍️', tags: ['شعر', 'تسريحة'] },
   ],
 };
 
@@ -92,7 +92,7 @@ export default function LookbookScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>📸 لوك بوك</Text>
+      <Text style={styles.t}> لوك بوك</Text>
       <Text style={styles.sub}>أحدث إطلالات وصيحات الجمال</Text>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 20 }}>

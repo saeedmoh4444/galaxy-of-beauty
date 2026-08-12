@@ -32,7 +32,7 @@ export const vendorPortalRouter = router({
         nameAr: z.string().min(1),
         price: z.number().min(1),
         stock: z.number().min(0).default(10),
-        emoji: z.string().default('📦'),
+        emoji: z.string().default(''),
       }),
     )
     .mutation(async ({ ctx, input }) => {

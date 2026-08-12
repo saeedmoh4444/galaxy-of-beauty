@@ -16,7 +16,7 @@ export default function BlogScreen(): JSX.Element {
       emptyTitle="لا توجد مقالات"
       onRetry={() => blog.refetch()}
     >
-      <Text style={styles.title}>📝 مدونة الجمال</Text>
+      <Text style={styles.title}> مدونة الجمال</Text>
       {(((blog.data as any)?.items as unknown[]) || []).map((post: any, i: number) => (
         <View key={i} style={styles.card}>
           <Text style={styles.postTitle}>{(post.titleJson as any)?.ar ?? ''}</Text>

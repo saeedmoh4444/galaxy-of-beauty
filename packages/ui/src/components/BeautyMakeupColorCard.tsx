@@ -9,7 +9,7 @@ export function BeautyMakeupColorCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🎨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">نظرية الألوان</h4>
           <p className="text-[10px] text-violet-500 dark:text-violet-400">
@@ -19,10 +19,10 @@ export function BeautyMakeupColorCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🟠', text: 'البشرة الدافئة: ألوان ذهبية، برونزية، خوخية' },
-          { emoji: '🔵', text: 'البشرة الباردة: وردي، بنفسجي، فضي' },
-          { emoji: '🟢', text: 'البشرة الزيتونية: ألوان ترابية، زيتوني' },
-          { emoji: '⚪', text: 'البشرة المحايدة: جميع الألوان تناسبك' },
+          { emoji: '', text: 'البشرة الدافئة: ألوان ذهبية، برونزية، خوخية' },
+          { emoji: '', text: 'البشرة الباردة: وردي، بنفسجي، فضي' },
+          { emoji: '', text: 'البشرة الزيتونية: ألوان ترابية، زيتوني' },
+          { emoji: '', text: 'البشرة المحايدة: جميع الألوان تناسبك' },
         ].map((t, i) => (
           <div
             key={i}

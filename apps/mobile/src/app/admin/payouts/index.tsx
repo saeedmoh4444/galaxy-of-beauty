@@ -52,7 +52,7 @@ export default function AdminPayoutsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>💸 المدفوعات للفنيات</Text>
+      <Text style={styles.t}> المدفوعات للفنيات</Text>
       {data.map((p: any, i: number) => {
         const s = STATUS_MAP[p.status as string] ?? {
           label: p.status,
@@ -62,7 +62,7 @@ export default function AdminPayoutsScreen(): JSX.Element {
         return (
           <View key={i} style={styles.card}>
             <View style={{ flex: 1 }}>
-              <Text style={styles.tech}>👩‍🎨 {p.technicianName as string}</Text>
+              <Text style={styles.tech}>‍ {p.technicianName as string}</Text>
               <Text style={styles.amount}>{(p.amount as number)?.toLocaleString()} ر.س</Text>
             </View>
             <View style={[styles.badge, { backgroundColor: s.bg }]}>

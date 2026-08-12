@@ -26,7 +26,7 @@ export const serviceBundlesRouter = router({
     .input(
       z.object({
         name: z.string().min(3).max(200),
-        emoji: z.string().default('🎁'),
+        emoji: z.string().default(''),
         price: z.number().int().positive(),
         serviceIds: z.array(z.number().int().positive()),
         description: z.string().max(500).optional(),

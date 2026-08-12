@@ -9,7 +9,7 @@ export function BeautyFairSkinCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🤍</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">البشرة الفاتحة</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">عناية خاصة بالبشرة الفاتحة</p>
@@ -17,10 +17,10 @@ export function BeautyFairSkinCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '☀️', text: 'SPF 50+ — البشرة الفاتحة تحترق بسرعة' },
-          { emoji: '🔴', text: 'ميل للاحمرار — منتجات مهدئة بالسنيتلا' },
-          { emoji: '💄', text: 'ألوان: وردي، خوخي، بيج فاتح — تجنبي البرونزي' },
-          { emoji: '✨', text: 'هايلايتر شمباني — وليس ذهبي' },
+          { emoji: '️', text: 'SPF 50+ — البشرة الفاتحة تحترق بسرعة' },
+          { emoji: '', text: 'ميل للاحمرار — منتجات مهدئة بالسنيتلا' },
+          { emoji: '', text: 'ألوان: وردي، خوخي، بيج فاتح — تجنبي البرونزي' },
+          { emoji: '', text: 'هايلايتر شمباني — وليس ذهبي' },
         ].map((t, i) => (
           <div
             key={i}

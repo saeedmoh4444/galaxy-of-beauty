@@ -32,7 +32,7 @@ export default function BeautyExtrasPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="✨ المزيد" subtitle="كل ما يجعل رحلتكِ الجمالية مميزة" />
+        <PageTitle title=" المزيد" subtitle="كل ما يجعل رحلتكِ الجمالية مميزة" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -44,10 +44,10 @@ export default function BeautyExtrasPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyDreamBoardCard
                 dreams={[
-                  { emoji: '💇', text: 'شعر طويل صحي' },
-                  { emoji: '👰', text: 'إطلالة زفاف مثالية' },
-                  { emoji: '💄', text: 'إتقان المكياج' },
-                  { emoji: '🧘', text: 'روتين عناية يومي' },
+                  { emoji: '', text: 'شعر طويل صحي' },
+                  { emoji: '', text: 'إطلالة زفاف مثالية' },
+                  { emoji: '', text: 'إتقان المكياج' },
+                  { emoji: '', text: 'روتين عناية يومي' },
                 ]}
               />
               <BeautySecretSantaCard group="عرايس الرياض" budget={200} participants={12} />
@@ -77,7 +77,7 @@ export default function BeautyExtrasPage(): JSX.Element {
                     referrals: l.referrals,
                     emoji: l.emoji,
                   })) ?? [
-                    { name: 'نورة', referrals: 12, emoji: '👑' },
+                    { name: 'نورة', referrals: 12, emoji: '' },
                     { name: 'مها', referrals: 8 },
                     { name: 'ريم', referrals: 5 },
                   ]
@@ -97,16 +97,16 @@ export default function BeautyExtrasPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <InspirationBoardCard
                 pins={[
-                  { emoji: '💇', title: 'تسريحة ناعمة', savedBy: 'نورة' },
-                  { emoji: '💄', title: 'مكياج السهرة', savedBy: 'مها' },
-                  { emoji: '💅', title: 'أظافر فرنسية', savedBy: 'ريم' },
+                  { emoji: '', title: 'تسريحة ناعمة', savedBy: 'نورة' },
+                  { emoji: '', title: 'مكياج السهرة', savedBy: 'مها' },
+                  { emoji: '', title: 'أظافر فرنسية', savedBy: 'ريم' },
                 ]}
                 collaborators={['نورة', 'مها']}
               />
               <SharedWishlistCard
                 items={[
-                  { name: 'مانيكير سبا', price: 150, emoji: '💅' },
-                  { name: 'مكياج احترافي', price: 350, emoji: '💄' },
+                  { name: 'مانيكير سبا', price: 150, emoji: '' },
+                  { name: 'مكياج احترافي', price: 350, emoji: '' },
                 ]}
                 sharedWith={['نورة', 'أمي']}
               />
@@ -126,7 +126,7 @@ export default function BeautyExtrasPage(): JSX.Element {
                 category: 'مكياج',
               }}
             />
-            <BeautyPenPalCard match={{ city: 'جدة', interest: 'مكياج', emoji: '💄' }} />
+            <BeautyPenPalCard match={{ city: 'جدة', interest: 'مكياج', emoji: '' }} />
             <ReferralRewardBadge referralCode="SARA123" referrals={5} discount={15} />
           </div>
         </div>

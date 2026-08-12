@@ -9,7 +9,7 @@ export function BeautyNursingBeautyCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🤱</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">جمال المرضعة</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">عناية آمنة أثناء الرضاعة</p>
@@ -17,10 +17,10 @@ export function BeautyNursingBeautyCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💧', text: 'اشربي ماء أكثر — الرضاعة تجفف الجسم' },
-          { emoji: '🧴', text: 'كريمات آمنة — بدون ريتينول أو ساليسيليك' },
-          { emoji: '💇', text: 'شعركِ قد يتساقط — فيتامينات ومكملات' },
-          { emoji: '⏱️', text: 'روتين سريع — 5 دقائق تكفي' },
+          { emoji: '', text: 'اشربي ماء أكثر — الرضاعة تجفف الجسم' },
+          { emoji: '', text: 'كريمات آمنة — بدون ريتينول أو ساليسيليك' },
+          { emoji: '', text: 'شعركِ قد يتساقط — فيتامينات ومكملات' },
+          { emoji: '️', text: 'روتين سريع — 5 دقائق تكفي' },
         ].map((t, i) => (
           <div
             key={i}

@@ -39,7 +39,7 @@ export function GalleryClient({ data }: { data: GalleryPageData }): JSX.Element 
                       loading="lazy"
                     />
                   ) : (
-                    <span>🖼️</span>
+                    <span>️</span>
                   )}
                 </div>
                 {(img.captionJson as { ar?: string })?.ar ? (

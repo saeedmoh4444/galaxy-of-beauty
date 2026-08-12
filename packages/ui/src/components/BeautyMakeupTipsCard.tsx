@@ -3,10 +3,10 @@
 import { cn } from '@galaxy/shared';
 
 const TIPS = [
-  { emoji: '🧴', title: 'الترطيب أولاً', desc: 'بشرة مرطبة = مكياج أجمل وأثبت' },
-  { emoji: '🖌️', title: 'نظفي فرشك', desc: 'أسبوعياً — البكتيريا تتراكم' },
-  { emoji: '📅', title: 'تاريخ الصلاحية', desc: 'جددِي مكياجك كل 6-12 شهر' },
-  { emoji: '🌙', title: 'أزيلي المكياج', desc: 'لا تنامي أبداً بالمكياج' },
+  { emoji: '', title: 'الترطيب أولاً', desc: 'بشرة مرطبة = مكياج أجمل وأثبت' },
+  { emoji: '️', title: 'نظفي فرشك', desc: 'أسبوعياً — البكتيريا تتراكم' },
+  { emoji: '', title: 'تاريخ الصلاحية', desc: 'جددِي مكياجك كل 6-12 شهر' },
+  { emoji: '', title: 'أزيلي المكياج', desc: 'لا تنامي أبداً بالمكياج' },
 ];
 
 interface BeautyMakeupTipsCardProps {
@@ -22,7 +22,7 @@ export function BeautyMakeupTipsCard({ className = '' }: BeautyMakeupTipsCardPro
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💄</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">نصائح المكياج</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">لإطلالة تدوم طويلاً</p>

@@ -16,7 +16,7 @@ export default function CustomerProfileScreen(): JSX.Element {
       errorMessage="فشل تحميل الملف الشخصي"
       onRetry={() => user.refetch()}
     >
-      <Text style={styles.title}>👤 حسابي</Text>
+      <Text style={styles.title}> حسابي</Text>
       {(data
         ? [
             { label: 'الاسم', value: data.name as string },
@@ -44,7 +44,7 @@ export default function CustomerProfileScreen(): JSX.Element {
         </View>
       ))}
       <TouchableOpacity style={styles.editBtn}>
-        <Text style={styles.editText}>✏️ تعديل الملف</Text>
+        <Text style={styles.editText}>️ تعديل الملف</Text>
       </TouchableOpacity>
     </ScreenState>
   );

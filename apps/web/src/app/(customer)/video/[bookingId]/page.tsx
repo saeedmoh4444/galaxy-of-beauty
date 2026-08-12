@@ -51,7 +51,7 @@ export default function VideoSessionPage(): JSX.Element {
           <ErrorAlert message="فشل تحميل الجلسة" onRetry={() => refetch()} />
         ) : !sess ? (
           <Card padding="md" className="text-center">
-            <div className="mb-4 text-5xl">📹</div>
+            <div className="mb-4 text-5xl"></div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
               استشارة عبر الفيديو
             </h3>
@@ -69,7 +69,7 @@ export default function VideoSessionPage(): JSX.Element {
             padding="md"
             className="text-center border-brand-200 bg-brand-50 dark:border-brand-800 dark:bg-brand-950"
           >
-            <div className="mb-4 text-5xl">⏳</div>
+            <div className="mb-4 text-5xl"></div>
             <h3 className="font-semibold text-brand-700">في انتظار الطرف الآخر...</h3>
             <p className="mt-2 text-sm text-brand-500">
               تم إرسال إشعار. سيتم الاتصال عند الانضمام.
@@ -82,7 +82,7 @@ export default function VideoSessionPage(): JSX.Element {
           </Card>
         ) : sess.status === 'IN_PROGRESS' ? (
           <Card padding="md" className="text-center">
-            <div className="mb-4 text-5xl">🟢</div>
+            <div className="mb-4 text-5xl"></div>
             <h3 className="font-semibold text-green-700">الجلسة نشطة</h3>
             <div className="mt-4 flex gap-3 justify-center">
               <Button onClick={() => router.push(`/video/${bookingId}/room?room=${sess.roomId}`)}>
@@ -98,7 +98,7 @@ export default function VideoSessionPage(): JSX.Element {
           </Card>
         ) : (
           <Card padding="md" className="text-center">
-            <div className="mb-4 text-5xl">✅</div>
+            <div className="mb-4 text-5xl"></div>
             <h3 className="font-semibold text-gray-500">انتهت الجلسة</h3>
             {sess.durationSec ? (
               <p className="mt-2 text-sm text-gray-400">

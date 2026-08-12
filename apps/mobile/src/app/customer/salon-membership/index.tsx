@@ -7,7 +7,7 @@ import { SkeletonList } from '@/components/SkeletonCard';
 const MEMBERSHIPS = [
   {
     key: 'basic',
-    emoji: '🥈',
+    emoji: '',
     name: 'الأساسية',
     price: 0,
     color: '#9ca3af',
@@ -16,7 +16,7 @@ const MEMBERSHIPS = [
   },
   {
     key: 'premium',
-    emoji: '🥇',
+    emoji: '',
     name: 'المميزة',
     price: 99,
     color: '#f59e0b',
@@ -32,7 +32,7 @@ const MEMBERSHIPS = [
   },
   {
     key: 'platinum',
-    emoji: '💎',
+    emoji: '',
     name: 'البلاتينية',
     price: 299,
     color: '#7c3aed',
@@ -86,7 +86,7 @@ export default function SalonMembershipScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={s.t}>💳 عضويات الصالون</Text>
+      <Text style={s.t}> عضويات الصالون</Text>
       <Text style={s.sub}>اختاري العضوية اللي تناسبكِ</Text>
 
       {current?.tier && (
@@ -113,10 +113,10 @@ export default function SalonMembershipScreen(): JSX.Element {
             }}
           >
             {current.tier === 'platinum'
-              ? '💎 بلاتينية'
+              ? ' بلاتينية'
               : current.tier === 'premium'
-                ? '🥇 مميزة'
-                : '🥈 أساسية'}
+                ? ' مميزة'
+                : ' أساسية'}
           </Text>
           {current.autoRenew && (
             <TouchableOpacity
@@ -148,11 +148,11 @@ export default function SalonMembershipScreen(): JSX.Element {
           </Text>
           <View style={{ marginTop: 12, gap: 4 }}>
             <Text style={{ fontWeight: '600', color: '#374151', marginBottom: 4 }}>
-              ✅ المميزات
+               المميزات
             </Text>
             {m.benefits.map((b, i) => (
               <Text key={i} style={{ color: '#059669', fontSize: 12 }}>
-                ✓ {b}
+                 {b}
               </Text>
             ))}
             {m.notIncluded.length > 0 && (
@@ -160,11 +160,11 @@ export default function SalonMembershipScreen(): JSX.Element {
                 <Text
                   style={{ fontWeight: '600', color: '#9ca3af', marginTop: 8, marginBottom: 4 }}
                 >
-                  🚫 غير متضمن
+                   غير متضمن
                 </Text>
                 {m.notIncluded.map((b, i) => (
                   <Text key={i} style={{ color: '#d1d5db', fontSize: 12 }}>
-                    ✗ {b}
+                     {b}
                   </Text>
                 ))}
               </>

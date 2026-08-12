@@ -45,12 +45,12 @@ export default function TechWaitlistPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📋 قائمة الانتظار</h1>
+          <h1 className="text-2xl font-bold"> قائمة الانتظار</h1>
           <p className="mt-1 text-sm text-text-secondary">انضمي لقائمة انتظار الفنيات المشغولات</p>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-4">🔥 الفنيات الأكثر طلباً</h3>
+          <h3 className="font-bold mb-4"> الفنيات الأكثر طلباً</h3>
           <div className="space-y-3">
             {techs.map((t: Record<string, unknown>) => (
               <div
@@ -82,7 +82,7 @@ export default function TechWaitlistPage(): JSX.Element {
           </div>
         </Card>
 
-        <h3 className="font-bold">📋 قوائم انتظاري</h3>
+        <h3 className="font-bold"> قوائم انتظاري</h3>
         {my.length === 0 ? (
           <EmptyState title="لا توجد قوائم انتظار" description="انضمي لقائمة انتظار فنية مشغولة" />
         ) : (
@@ -93,7 +93,7 @@ export default function TechWaitlistPage(): JSX.Element {
                   <p className="font-bold">{w.technicianName as string}</p>
                   <p className="text-xs text-text-secondary">
                     {new Date(w.createdAt as string).toLocaleDateString('ar-SA')} ·{' '}
-                    {(w.status as string) === 'WAITING' ? '⏳ في الانتظار' : (w.status as string)}
+                    {(w.status as string) === 'WAITING' ? ' في الانتظار' : (w.status as string)}
                   </p>
                 </div>
                 <button

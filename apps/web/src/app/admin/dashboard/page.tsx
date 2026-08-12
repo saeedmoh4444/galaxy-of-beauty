@@ -16,16 +16,16 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 type AdminHealth = RouterOutput['adminTools']['health'];
 
 const QUICK_LINKS = [
-  { href: '/admin/users', label: 'إدارة المستخدمين', icon: '👥' },
-  { href: '/admin/technicians', label: 'إدارة الفنيات', icon: '👩‍🎨' },
-  { href: '/admin/services', label: 'إدارة الخدمات', icon: '💄' },
-  { href: '/admin/categories', label: 'إدارة الأقسام', icon: '📂' },
-  { href: '/admin/bookings', label: 'الحجوزات', icon: '📅' },
-  { href: '/admin/finance', label: 'المالية', icon: '💰' },
-  { href: '/admin/disputes', label: 'النزاعات', icon: '⚡' },
-  { href: '/admin/zatca', label: 'زاتكا', icon: '🧾' },
-  { href: '/admin/analytics', label: 'التحليلات', icon: '📈' },
-  { href: '/admin/settings', label: 'الإعدادات', icon: '⚙️' },
+  { href: '/admin/users', label: 'إدارة المستخدمين', icon: '' },
+  { href: '/admin/technicians', label: 'إدارة الفنيات', icon: '‍' },
+  { href: '/admin/services', label: 'إدارة الخدمات', icon: '' },
+  { href: '/admin/categories', label: 'إدارة الأقسام', icon: '' },
+  { href: '/admin/bookings', label: 'الحجوزات', icon: '' },
+  { href: '/admin/finance', label: 'المالية', icon: '' },
+  { href: '/admin/disputes', label: 'النزاعات', icon: '' },
+  { href: '/admin/zatca', label: 'زاتكا', icon: '' },
+  { href: '/admin/analytics', label: 'التحليلات', icon: '' },
+  { href: '/admin/settings', label: 'الإعدادات', icon: '️' },
 ] as const;
 
 export default function AdminDashboardPage(): JSX.Element {
@@ -62,22 +62,22 @@ export default function AdminDashboardPage(): JSX.Element {
           <StatCard
             label="إجمالي المستخدمين"
             value={Number(stats?.users ?? 0).toLocaleString('ar-SA')}
-            icon="👥"
+            icon=""
           />
           <StatCard
             label="الفنيات"
             value={Number(stats?.technicians ?? 0).toLocaleString('ar-SA')}
-            icon="👩‍🎨"
+            icon="‍"
           />
           <StatCard
             label="الخدمات النشطة"
             value={Number(stats?.services ?? 0).toLocaleString('ar-SA')}
-            icon="💄"
+            icon=""
           />
           <StatCard
             label="نزاعات مفتوحة"
             value={Number(stats?.openDisputes ?? 0).toLocaleString('ar-SA')}
-            icon="⚡"
+            icon=""
           />
         </div>
 
@@ -85,18 +85,18 @@ export default function AdminDashboardPage(): JSX.Element {
           <StatCard
             label="إجمالي الحجوزات"
             value={Number(stats?.totalBookings ?? 0).toLocaleString('ar-SA')}
-            icon="📅"
+            icon=""
           />
           <StatCard
             label="حجوزات اليوم"
             value={Number(stats?.bookingsToday ?? 0).toLocaleString('ar-SA')}
-            icon="📆"
+            icon=""
           />
-          <StatCard label="نسبة الإكمال" value={`${stats?.completionRate ?? 0}%`} icon="✅" />
+          <StatCard label="نسبة الإكمال" value={`${stats?.completionRate ?? 0}%`} icon="" />
           <StatCard
             label="الإيرادات"
             value={formatCurrency(Number(stats?.totalRevenue ?? 0))}
-            icon="💰"
+            icon=""
           />
         </div>
 

@@ -9,7 +9,7 @@ export function BeautyDaughterMomCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">👩‍👧</span>
+        <span className="text-xl">‍</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">أم وابنتها</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">
@@ -19,10 +19,10 @@ export function BeautyDaughterMomCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💄', text: 'علميها أساسيات العناية — بالحب' },
+          { emoji: '', text: 'علميها أساسيات العناية — بالحب' },
           { emoji: '🪞', text: 'جلسة مكياج معاً — وقت خاص لكما' },
-          { emoji: '💅', text: 'مانيكير مشترك — تجربة ممتعة' },
-          { emoji: '📸', text: 'صوري اللحظة — ذكريات تدوم' },
+          { emoji: '', text: 'مانيكير مشترك — تجربة ممتعة' },
+          { emoji: '', text: 'صوري اللحظة — ذكريات تدوم' },
         ].map((t, i) => (
           <div
             key={i}

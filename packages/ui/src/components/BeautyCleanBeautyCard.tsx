@@ -9,7 +9,7 @@ export function BeautyCleanBeautyCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌿</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">الجمال النظيف</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">منتجات آمنة — بدون سموم</p>
@@ -17,10 +17,10 @@ export function BeautyCleanBeautyCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🚫', text: 'بدون: بارابين، سلفات، فثالات، فورمالديهايد' },
-          { emoji: '🌱', text: 'مكونات نباتية — غير مختبرة على الحيوانات' },
-          { emoji: '🔍', text: 'اقرئي الملصق — أول 5 مكونات هي الأساس' },
-          { emoji: '✅', text: 'شهادات: EWG Verified، COSMOS، Leaping Bunny' },
+          { emoji: '', text: 'بدون: بارابين، سلفات، فثالات، فورمالديهايد' },
+          { emoji: '', text: 'مكونات نباتية — غير مختبرة على الحيوانات' },
+          { emoji: '', text: 'اقرئي الملصق — أول 5 مكونات هي الأساس' },
+          { emoji: '', text: 'شهادات: EWG Verified، COSMOS، Leaping Bunny' },
         ].map((t, i) => (
           <div
             key={i}

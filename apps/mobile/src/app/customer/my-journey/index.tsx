@@ -22,7 +22,7 @@ export default function MyJourneyScreen(): JSX.Element {
       emptyTitle="لا توجد بيانات"
       onRetry={() => journey.refetch()}
     >
-      <Text style={styles.title}>🗺️ رحلتي</Text>
+      <Text style={styles.title}> رحلتي</Text>
       {(data as Record<string, unknown>[])?.map((item: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.dot} />

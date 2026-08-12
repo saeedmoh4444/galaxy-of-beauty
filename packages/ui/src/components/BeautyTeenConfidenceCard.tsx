@@ -9,7 +9,7 @@ export function BeautyTeenConfidenceCard({ className = '' }: { className?: strin
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌟</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">ثقة المراهقة</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">
@@ -19,10 +19,10 @@ export function BeautyTeenConfidenceCard({ className = '' }: { className?: strin
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💖', text: 'أنتِ جميلة — بدون مكياج' },
+          { emoji: '', text: 'أنتِ جميلة — بدون مكياج' },
           { emoji: '🪞', text: 'قفي أمام المرآة — قولي شيئاً إيجابياً' },
-          { emoji: '📵', text: 'لا تقارني نفسكِ — بمواقع التواصل' },
-          { emoji: '👩', text: 'تحدثي مع أمكِ — أو أختكِ الكبيرة' },
+          { emoji: '', text: 'لا تقارني نفسكِ — بمواقع التواصل' },
+          { emoji: '', text: 'تحدثي مع أمكِ — أو أختكِ الكبيرة' },
         ].map((t, i) => (
           <div
             key={i}

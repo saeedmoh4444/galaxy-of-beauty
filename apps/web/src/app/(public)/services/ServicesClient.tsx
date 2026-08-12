@@ -65,7 +65,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
           href="/services/surprise-me"
           className="rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white hover:bg-accent-600 transition-colors"
         >
-          🎲 فاجئيني
+           فاجئيني
         </Link>
       </div>
       <div className="mb-6 flex flex-wrap gap-4">
@@ -115,7 +115,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
               : 'border border-edge text-text-secondary hover:bg-surface-muted dark:border-gray-600 dark:text-gray-400'
           }`}
         >
-          ⚖️ مقارنة {compareMode ? '(نشط)' : ''}
+          ️ مقارنة {compareMode ? '(نشط)' : ''}
         </button>
         {compareMode && selected.size >= 2 && (
           <Link

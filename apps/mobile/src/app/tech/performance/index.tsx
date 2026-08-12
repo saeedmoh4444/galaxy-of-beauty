@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native';
 export default function TechPerformanceScreen(): JSX.Element {
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>📊 أدائي</Text>
+      <Text style={s.h}> أدائي</Text>
       <Text style={s.sub}>تحليلات وإحصائيات</Text>
       <View style={s.row}>
         <View style={s.stat}>
@@ -11,7 +11,7 @@ export default function TechPerformanceScreen(): JSX.Element {
         </View>
         <View style={s.stat}>
           <Text style={s.sv}>4.8</Text>
-          <Text style={s.sl}>⭐ التقييم</Text>
+          <Text style={s.sl}> التقييم</Text>
         </View>
       </View>
       <View style={s.row}>
@@ -25,7 +25,7 @@ export default function TechPerformanceScreen(): JSX.Element {
         </View>
       </View>
       <View style={s.card}>
-        <Text style={s.ct}>📈 اتجاه الحجوزات</Text>
+        <Text style={s.ct}> اتجاه الحجوزات</Text>
         <View
           style={{
             flexDirection: 'row',
@@ -54,11 +54,11 @@ export default function TechPerformanceScreen(): JSX.Element {
         </View>
       </View>
       <View style={s.card}>
-        <Text style={s.ct}>🏆 خدماتي الأكثر طلباً</Text>
+        <Text style={s.ct}> خدماتي الأكثر طلباً</Text>
         {[
-          { name: 'مكياج', count: 15, emoji: '💄' },
-          { name: 'تسريحة شعر', count: 12, emoji: '💇' },
-          { name: 'مانيكير', count: 8, emoji: '💅' },
+          { name: 'مكياج', count: 15, emoji: '' },
+          { name: 'تسريحة شعر', count: 12, emoji: '' },
+          { name: 'مانيكير', count: 8, emoji: '' },
         ].map((sv, i) => (
           <View
             key={i}

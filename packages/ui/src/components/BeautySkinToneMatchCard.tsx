@@ -9,7 +9,7 @@ export function BeautySkinToneMatchCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💄</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">مطابقة الألوان</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">اختاري الدرجة المثالية</p>
@@ -18,9 +18,9 @@ export function BeautySkinToneMatchCard({ className = '' }: { className?: string
       <div className="mt-3 space-y-1">
         {[
           { emoji: '🪞', text: 'جربي على خط الفك — ليس اليد أو الرسغ' },
-          { emoji: '☀️', text: 'اختاري في ضوء طبيعي — إضاءة المحل تخدع' },
-          { emoji: '⏱️', text: 'انتظري 5 دقائق — لون الفاونديشن يتغير' },
-          { emoji: '🎨', text: 'درجتين: الصيف أغمق — الشتاء أفتح' },
+          { emoji: '️', text: 'اختاري في ضوء طبيعي — إضاءة المحل تخدع' },
+          { emoji: '️', text: 'انتظري 5 دقائق — لون الفاونديشن يتغير' },
+          { emoji: '', text: 'درجتين: الصيف أغمق — الشتاء أفتح' },
         ].map((t, i) => (
           <div
             key={i}

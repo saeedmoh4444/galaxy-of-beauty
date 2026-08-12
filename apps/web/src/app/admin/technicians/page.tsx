@@ -110,7 +110,7 @@ export default function AdminTechniciansPage(): JSX.Element {
                   </div>
 
                   <div className="flex items-center gap-4 text-sm text-text-secondary">
-                    <span>⭐ {Number(tech.ratingAvg ?? 0).toFixed(1)}</span>
+                    <span> {Number(tech.ratingAvg ?? 0).toFixed(1)}</span>
                     <span>{String(tech.completedBookings ?? 0)} حجوزات</span>
                   </div>
 

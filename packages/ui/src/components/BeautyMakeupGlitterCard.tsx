@@ -9,7 +9,7 @@ export function BeautyMakeupGlitterCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">✨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-yellow-700 dark:text-yellow-300">مكياج لامع</h4>
           <p className="text-[10px] text-yellow-500 dark:text-yellow-400">لمسة بريق للمناسبات</p>
@@ -17,10 +17,10 @@ export function BeautyMakeupGlitterCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '👁️', text: 'جليتر على الجفن — فقط في المنتصف' },
-          { emoji: '✨', text: 'هايلايتر — أعلى الوجنة' },
-          { emoji: '💡', text: 'قاعدة لاصقة — تثبت الجليتر' },
-          { emoji: '🧹', text: 'شريط لاصق — لإزالة الجليتر بسهولة' },
+          { emoji: '️', text: 'جليتر على الجفن — فقط في المنتصف' },
+          { emoji: '', text: 'هايلايتر — أعلى الوجنة' },
+          { emoji: '', text: 'قاعدة لاصقة — تثبت الجليتر' },
+          { emoji: '', text: 'شريط لاصق — لإزالة الجليتر بسهولة' },
         ].map((t, i) => (
           <div
             key={i}

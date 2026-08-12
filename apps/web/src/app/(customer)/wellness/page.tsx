@@ -67,7 +67,7 @@ export default function WellnessPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="🌿 الصحة والعافية" subtitle="جمالكِ يبدأ من صحتكِ" />
+        <PageTitle title=" الصحة والعافية" subtitle="جمالكِ يبدأ من صحتكِ" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Main */}

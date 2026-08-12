@@ -60,7 +60,7 @@ export function BlogPostClient({
   if (!slug) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
-        <span className="text-6xl">📝</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-2xl font-bold">رابط غير صالح</h1>
         <Link href="/blog" className="mt-4 inline-block">
           <Button size="sm">العودة للمدونة</Button>
@@ -92,7 +92,7 @@ export function BlogPostClient({
   if (!post) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
-        <span className="text-6xl">📝</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-2xl font-bold">المقال غير موجود</h1>
         <p className="mt-2 text-gray-500">ربما تم حذفه أو نقله</p>
         <Link href="/blog" className="mt-4 inline-block">
@@ -128,7 +128,7 @@ export function BlogPostClient({
           />
         ) : (
           <div className="mb-8 flex h-48 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-accent-100 text-7xl dark:from-brand-900 dark:to-accent-900 sm:h-64">
-            ✨
+            
           </div>
         )}
 
@@ -148,8 +148,8 @@ export function BlogPostClient({
           {title}
         </h1>
         <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-          {date && <span>📅 {date}</span>}
-          <span>⏱️ {readTime} قراءة</span>
+          {date && <span> {date}</span>}
+          <span>️ {readTime} قراءة</span>
         </div>
 
         <div
@@ -158,7 +158,7 @@ export function BlogPostClient({
         />
 
         <div className="mt-10 rounded-2xl border border-gray-200 bg-gray-50 p-6 dark:border-gray-800 dark:bg-gray-900">
-          <p className="mb-3 text-sm font-semibold">📤 أعجبكِ المقال؟ شاركيه مع صديقاتكِ</p>
+          <p className="mb-3 text-sm font-semibold"> أعجبكِ المقال؟ شاركيه مع صديقاتكِ</p>
           <ShareButtons title={title} />
         </div>
       </article>

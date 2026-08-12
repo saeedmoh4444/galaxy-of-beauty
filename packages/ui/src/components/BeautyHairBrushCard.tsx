@@ -17,10 +17,10 @@ export function BeautyHairBrushCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💆', text: 'فكي التشابك من الأطراف للجذور' },
-          { emoji: '🚫', text: 'لا تمشطي الشعر وهو مبلل — يتكسر' },
-          { emoji: '🛡️', text: 'رذاذ حماية من الحرارة قبل التصفيف' },
-          { emoji: '😴', text: 'ضفيرة فضفاضة قبل النوم' },
+          { emoji: '', text: 'فكي التشابك من الأطراف للجذور' },
+          { emoji: '', text: 'لا تمشطي الشعر وهو مبلل — يتكسر' },
+          { emoji: '️', text: 'رذاذ حماية من الحرارة قبل التصفيف' },
+          { emoji: '', text: 'ضفيرة فضفاضة قبل النوم' },
         ].map((t, i) => (
           <div
             key={i}

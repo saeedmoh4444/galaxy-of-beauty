@@ -15,7 +15,7 @@ export function BeautySelfMassageCard({ className = '' }: BeautySelfMassageCardP
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💆‍♀️</span>
+        <span className="text-xl">‍️</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">مساج ذاتي</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">5 دقائق يومياً لبشرة مشرقة</p>
@@ -23,10 +23,10 @@ export function BeautySelfMassageCard({ className = '' }: BeautySelfMassageCardP
       </div>
       <div className="mt-3 space-y-1.5">
         {[
-          { emoji: '🔄', name: 'تدليك دائري', desc: 'بأطراف الأصابع على الوجنتين' },
-          { emoji: '⬆️', name: 'رفع الجبهة', desc: 'من الحواجب لأعلى — 10 مرات' },
-          { emoji: '👄', name: 'تدليك الفك', desc: 'حركات دائرية على مفصل الفك' },
-          { emoji: '👁️', name: 'منطقة العين', desc: 'تربيت خفيف — لا تسحبِ' },
+          { emoji: '', name: 'تدليك دائري', desc: 'بأطراف الأصابع على الوجنتين' },
+          { emoji: '️', name: 'رفع الجبهة', desc: 'من الحواجب لأعلى — 10 مرات' },
+          { emoji: '', name: 'تدليك الفك', desc: 'حركات دائرية على مفصل الفك' },
+          { emoji: '️', name: 'منطقة العين', desc: 'تربيت خفيف — لا تسحبِ' },
         ].map((t, i) => (
           <div
             key={i}

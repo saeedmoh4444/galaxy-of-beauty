@@ -39,7 +39,7 @@ export function LanguageToggle(): JSX.Element {
       title={current === 'ar' ? 'Switch to English' : 'التبديل إلى العربية'}
       aria-label={current === 'ar' ? 'Switch to English' : 'Switch to Arabic'}
     >
-      <span>{current === 'ar' ? '🇸🇦 AR' : '🇬🇧 EN'}</span>
+      <span>{current === 'ar' ? ' AR' : ' EN'}</span>
     </button>
   );
 }

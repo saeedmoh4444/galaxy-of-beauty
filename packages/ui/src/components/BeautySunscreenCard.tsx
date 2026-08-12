@@ -9,7 +9,7 @@ export function BeautySunscreenCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">☀️</span>
+        <span className="text-xl">️</span>
         <div>
           <h4 className="text-sm font-bold text-yellow-700 dark:text-yellow-300">
             دليل واقي الشمس
@@ -19,10 +19,10 @@ export function BeautySunscreenCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🔢', text: 'SPF 30 كحد أدنى — SPF 50 أفضل' },
-          { emoji: '🔄', text: 'جددي كل ساعتين — خاصة في الصيف' },
-          { emoji: '💧', text: 'كمية كافية — ملعقة شاي للوجه' },
-          { emoji: '🌧️', text: 'حتى في الغيوم — الأشعة تخترق' },
+          { emoji: '', text: 'SPF 30 كحد أدنى — SPF 50 أفضل' },
+          { emoji: '', text: 'جددي كل ساعتين — خاصة في الصيف' },
+          { emoji: '', text: 'كمية كافية — ملعقة شاي للوجه' },
+          { emoji: '️', text: 'حتى في الغيوم — الأشعة تخترق' },
         ].map((t, i) => (
           <div
             key={i}

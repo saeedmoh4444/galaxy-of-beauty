@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W9: The Small Details & W6: Education.
  *
  * Usage:
- *   <BeautyTrendAlertCard trends={[{ name: 'ألوان الباستيل', emoji: '🎨', heat: '🔥' }]} />
+ *   <BeautyTrendAlertCard trends={[{ name: 'ألوان الباستيل', emoji: '', heat: '' }]} />
  */
 
 interface Trend {
@@ -37,7 +37,7 @@ export function BeautyTrendAlertCard({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          📈
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">رائج الآن</h4>

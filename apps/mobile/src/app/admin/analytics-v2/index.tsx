@@ -46,20 +46,20 @@ export default function AdminAnalyticsV2Screen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📊 التحليلات المتقدمة</Text>
+      <Text style={styles.t}> التحليلات المتقدمة</Text>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>💰</Text>
+          <Text style={styles.kpiEmoji}></Text>
           <Text style={styles.kpiVal}>{(revenue.today ?? 0)?.toLocaleString()}</Text>
           <Text style={styles.kpiLabel}>إيراد اليوم</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>📅</Text>
+          <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#2563eb' }]}>{bookings.today ?? 0}</Text>
           <Text style={styles.kpiLabel}>حجز اليوم</Text>
         </View>
       </View>
-      {top.length > 0 && <Text style={styles.sectionTitle}>🔥 الأعلى</Text>}
+      {top.length > 0 && <Text style={styles.sectionTitle}> الأعلى</Text>}
       {top.map((s: any, i: number) => (
         <View key={i} style={styles.row}>
           <Text style={styles.rank}>#{i + 1}</Text>

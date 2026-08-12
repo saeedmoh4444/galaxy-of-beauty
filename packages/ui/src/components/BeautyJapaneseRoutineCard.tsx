@@ -9,7 +9,7 @@ export function BeautyJapaneseRoutineCard({ className = '' }: { className?: stri
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🇯🇵</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">الروتين الياباني</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">جمال هادئ — بشرة كالخزف</p>
@@ -17,10 +17,10 @@ export function BeautyJapaneseRoutineCard({ className = '' }: { className?: stri
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: 'طبقات خفيفة — لوشن، سيروم، كريم' },
-          { emoji: '☀️', text: 'واقي شمس — أساس الجمال الياباني' },
-          { emoji: '💆', text: 'مساج الوجه — يومياً لتصريف السوائل' },
-          { emoji: '🍵', text: 'الشاي الأخضر — من الداخل والخارج' },
+          { emoji: '', text: 'طبقات خفيفة — لوشن، سيروم، كريم' },
+          { emoji: '️', text: 'واقي شمس — أساس الجمال الياباني' },
+          { emoji: '', text: 'مساج الوجه — يومياً لتصريف السوائل' },
+          { emoji: '', text: 'الشاي الأخضر — من الداخل والخارج' },
         ].map((t, i) => (
           <div
             key={i}

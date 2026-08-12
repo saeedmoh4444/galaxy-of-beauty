@@ -40,7 +40,7 @@ export const personalizedFeedRouter = router({
         id: s.id,
         type: 'service',
         title: (s.titleJson as any)?.ar,
-        emoji: s.emoji || '💅',
+        emoji: s.emoji || '',
         price: Number(s.basePrice),
         relevance: 90,
       })),
@@ -49,7 +49,7 @@ export const personalizedFeedRouter = router({
         type: 'product',
         title: (p.nameJson as any)?.ar,
         price: Number(p.price),
-        emoji: '🧴',
+        emoji: '',
         relevance: 80,
       })),
     ].slice(0, 10);

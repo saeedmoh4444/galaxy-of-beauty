@@ -10,7 +10,7 @@ const PRODUCT_CATALOG = [
     nameEn: 'Daily Moisturizer',
     price: 89,
     category: 'skincare',
-    emoji: '🧴',
+    emoji: '',
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ const PRODUCT_CATALOG = [
     nameEn: 'Vitamin C Serum',
     price: 129,
     category: 'skincare',
-    emoji: '✨',
+    emoji: '',
   },
   {
     id: 3,
@@ -26,7 +26,7 @@ const PRODUCT_CATALOG = [
     nameEn: 'Natural Face Mask',
     price: 59,
     category: 'skincare',
-    emoji: '🎭',
+    emoji: '',
   },
   {
     id: 4,
@@ -34,7 +34,7 @@ const PRODUCT_CATALOG = [
     nameEn: 'Matte Lipstick',
     price: 75,
     category: 'makeup',
-    emoji: '💄',
+    emoji: '',
   },
   {
     id: 5,
@@ -42,7 +42,7 @@ const PRODUCT_CATALOG = [
     nameEn: 'Waterproof Mascara',
     price: 95,
     category: 'makeup',
-    emoji: '👁️',
+    emoji: '️',
   },
   {
     id: 6,
@@ -50,7 +50,7 @@ const PRODUCT_CATALOG = [
     nameEn: 'Natural Hair Oil',
     price: 65,
     category: 'hair',
-    emoji: '💆‍♀️',
+    emoji: '‍️',
   },
   {
     id: 7,
@@ -58,7 +58,7 @@ const PRODUCT_CATALOG = [
     nameEn: 'Sulfate-Free Shampoo',
     price: 85,
     category: 'hair',
-    emoji: '🧴',
+    emoji: '',
   },
   {
     id: 8,
@@ -66,7 +66,7 @@ const PRODUCT_CATALOG = [
     nameEn: 'Nail Care Set',
     price: 110,
     category: 'nails',
-    emoji: '💅',
+    emoji: '',
   },
 ];
 

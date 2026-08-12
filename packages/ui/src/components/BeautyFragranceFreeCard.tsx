@@ -9,7 +9,7 @@ export function BeautyFragranceFreeCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌸</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">بدون عطور</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">للبشرة الحساسة والمتحسسة</p>
@@ -17,10 +17,10 @@ export function BeautyFragranceFreeCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🚫', text: 'العطور — السبب الأول لتحسس البشرة' },
-          { emoji: '🔍', text: 'Fragrance-free ≠ Unscented — انتبهي للفرق' },
-          { emoji: '✅', text: 'مناسب للبشرة الحساسة والإكزيما' },
-          { emoji: '🧴', text: 'منتجات طبية — غالباً خالية من العطور' },
+          { emoji: '', text: 'العطور — السبب الأول لتحسس البشرة' },
+          { emoji: '', text: 'Fragrance-free ≠ Unscented — انتبهي للفرق' },
+          { emoji: '', text: 'مناسب للبشرة الحساسة والإكزيما' },
+          { emoji: '', text: 'منتجات طبية — غالباً خالية من العطور' },
         ].map((t, i) => (
           <div
             key={i}

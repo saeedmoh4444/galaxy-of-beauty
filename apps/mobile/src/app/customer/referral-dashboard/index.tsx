@@ -43,15 +43,15 @@ export default function ReferralDashboardScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📊 لوحة الإحالات</Text>
+      <Text style={styles.t}> لوحة الإحالات</Text>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>👯‍♀️</Text>
+          <Text style={styles.kpiEmoji}>‍️</Text>
           <Text style={styles.kpiVal}>{(d.totalReferrals as number) ?? 0}</Text>
           <Text style={styles.kpiLabel}>إحالة</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>💰</Text>
+          <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#059669' }]}>
             {((d.totalEarnings as number) ?? 0)?.toLocaleString()}
           </Text>

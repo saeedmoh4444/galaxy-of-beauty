@@ -32,7 +32,7 @@ export function Vision2030Badge({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🇸🇦
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">رؤية 2030</h4>
         <p className="text-[10px] text-emerald-600 dark:text-emerald-400">
@@ -62,9 +62,9 @@ export function Vision2030Badge({
       {/* Vision pillars */}
       <div className="mt-2 grid grid-cols-3 gap-1.5 text-center">
         {[
-          { emoji: '👩‍💼', label: 'تمكين المرأة' },
-          { emoji: '📈', label: 'تنويع الاقتصاد' },
-          { emoji: '🌍', label: 'ريادة عالمية' },
+          { emoji: '‍', label: 'تمكين المرأة' },
+          { emoji: '', label: 'تنويع الاقتصاد' },
+          { emoji: '', label: 'ريادة عالمية' },
         ].map((p) => (
           <div key={p.label} className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
             <span className="text-lg" aria-hidden="true">
@@ -78,7 +78,7 @@ export function Vision2030Badge({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-emerald-600 dark:text-emerald-400">
-        🇸🇦 معاً نحو مستقبل أكثر إشراقاً للمرأة السعودية
+         معاً نحو مستقبل أكثر إشراقاً للمرأة السعودية
       </p>
     </div>
   );

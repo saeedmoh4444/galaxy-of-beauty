@@ -17,7 +17,7 @@ export default function FavoritesPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">⭐ المفضلة</h1>
+          <h1 className="text-2xl font-bold"> المفضلة</h1>
           <p className="mt-1 text-sm text-text-secondary">خدماتكِ وفنياتكِ المفضلة</p>
         </div>
 
@@ -29,7 +29,7 @@ export default function FavoritesPage(): JSX.Element {
           </div>
         ) : favorites.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">⭐</p>
+            <p className="text-4xl mb-2"></p>
             <p className="text-text-secondary">مافي مفضلات بعد — أضيفي خدماتكِ المفضلة</p>
           </Card>
         ) : (
@@ -38,7 +38,7 @@ export default function FavoritesPage(): JSX.Element {
               <Card key={f.id as number} padding="md">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">💅</span>
+                    <span className="text-2xl"></span>
                     <div>
                       <p className="font-bold">{f.label as string}</p>
                       <p className="text-xs text-text-secondary">
@@ -53,9 +53,7 @@ export default function FavoritesPage(): JSX.Element {
                     onClick={() => removeMut.mutate({ id: f.id as number })}
                     loading={removeMut.isPending}
                     className="text-red-500"
-                  >
-                    ❌
-                  </Button>
+                  >حذف</Button>
                 </div>
               </Card>
             ))}

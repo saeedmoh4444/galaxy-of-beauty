@@ -24,28 +24,28 @@ interface MetaData {
 }
 
 const RELATIONSHIP_EMOJI: Record<string, string> = {
-  child: '👶',
-  spouse: '💑',
-  parent: '👵',
-  sibling: '👫',
-  other: '👤',
+  child: '',
+  spouse: '',
+  parent: '',
+  sibling: '',
+  other: '',
 };
 
 const AGE_EMOJI: Record<string, string> = {
-  infant: '🍼',
-  child: '🧒',
-  teen: '👧',
-  adult: '👩',
-  senior: '👵',
+  infant: '',
+  child: '',
+  teen: '',
+  adult: '',
+  senior: '',
 };
 
 const _PREF_EMOJI: Record<string, string> = {
-  gentle: '🌸',
-  hypoallergenic: '🛡️',
-  fragrance_free: '🚫',
-  natural: '🌿',
-  quick: '⚡',
-  quiet: '🤫',
+  gentle: '',
+  hypoallergenic: '️',
+  fragrance_free: '',
+  natural: '',
+  quick: '',
+  quiet: '',
 };
 
 export default function FamilyAccountPage(): JSX.Element {
@@ -152,7 +152,7 @@ export default function FamilyAccountPage(): JSX.Element {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-              👨‍👩‍👧 حساب العائلة
+              ‍‍ حساب العائلة
             </h1>
             <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
               أضيفي أفراد عائلتكِ واحجزي لهم خدمات التجميل بكل سهولة
@@ -171,9 +171,9 @@ export default function FamilyAccountPage(): JSX.Element {
         {/* Benefits */}
         <div className="grid gap-4 sm:grid-cols-3">
           {[
-            { emoji: '👶', title: 'للأطفال', desc: 'قصات شعر وجلسات عناية للأطفال' },
-            { emoji: '👵', title: 'للوالدين', desc: 'خدمات مريحة لكبار السن' },
-            { emoji: '💑', title: 'للزوج', desc: 'حلاقة وعناية شخصية للرجال' },
+            { emoji: '', title: 'للأطفال', desc: 'قصات شعر وجلسات عناية للأطفال' },
+            { emoji: '', title: 'للوالدين', desc: 'خدمات مريحة لكبار السن' },
+            { emoji: '', title: 'للزوج', desc: 'حلاقة وعناية شخصية للرجال' },
           ].map((b) => (
             <Card key={b.title} padding="md" className="text-center">
               <span className="text-3xl">{b.emoji}</span>
@@ -204,12 +204,12 @@ export default function FamilyAccountPage(): JSX.Element {
               <Card key={m.id} padding="lg" className="relative">
                 {/* Relationship badge */}
                 <span className="absolute top-3 right-3 text-2xl">
-                  {RELATIONSHIP_EMOJI[m.relationship] ?? '👤'}
+                  {RELATIONSHIP_EMOJI[m.relationship] ?? ''}
                 </span>
 
                 <div className="flex items-start gap-4">
                   <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-purple-100 text-2xl dark:from-brand-900 dark:to-purple-900">
-                    {AGE_EMOJI[m.ageGroup] ?? '👩'}
+                    {AGE_EMOJI[m.ageGroup] ?? ''}
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
@@ -238,11 +238,11 @@ export default function FamilyAccountPage(): JSX.Element {
                       </div>
                     )}
                     {m.notes && (
-                      <p className="mt-1 text-xs text-text-tertiary italic">💬 {m.notes}</p>
+                      <p className="mt-1 text-xs text-text-tertiary italic"> {m.notes}</p>
                     )}
                     {(m.bookingCount ?? 0) > 0 && (
                       <p className="mt-1 text-xs text-brand-600 font-medium">
-                        📅 {m.bookingCount} حجز سابق
+                         {m.bookingCount} حجز سابق
                       </p>
                     )}
                   </div>
@@ -255,11 +255,11 @@ export default function FamilyAccountPage(): JSX.Element {
                     className="flex-1"
                   >
                     <Button size="sm" className="w-full">
-                      📅 احجزي لـ{m.name}
+                       احجزي لـ{m.name}
                     </Button>
                   </Link>
                   <Button size="sm" variant="ghost" onClick={() => openEdit(m)}>
-                    ✏️
+                    ️
                   </Button>
                   <Button
                     size="sm"
@@ -267,7 +267,7 @@ export default function FamilyAccountPage(): JSX.Element {
                     onClick={() => handleRemove(m.id, m.name)}
                     className="text-red-500 hover:text-red-700"
                   >
-                    🗑️
+                    ️
                   </Button>
                 </div>
               </Card>
@@ -390,7 +390,7 @@ export default function FamilyAccountPage(): JSX.Element {
                 onClick={editTarget ? handleUpdate : handleAdd}
                 loading={addMut.isPending || updateMut.isPending}
               >
-                {editTarget ? '💾 حفظ التعديلات' : '👨‍👩‍👧 إضافة'}
+                {editTarget ? ' حفظ التعديلات' : '‍‍ إضافة'}
               </Button>
             </div>
           </div>

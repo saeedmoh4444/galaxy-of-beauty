@@ -9,7 +9,7 @@ export function BeautyBakuchiolCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌱</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">الباكوتشيول</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
@@ -19,10 +19,10 @@ export function BeautyBakuchiolCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🌿', text: 'نباتي 100% — مستخلص من نبات البسوراليا' },
-          { emoji: '☀️', text: 'آمن نهاراً — لا يتحسس من الشمس' },
-          { emoji: '🤰', text: 'آمن للحوامل — بديل ممتاز للريتينول' },
-          { emoji: '✨', text: 'يحفز الكولاجين — بدون تهيج أو تقشير' },
+          { emoji: '', text: 'نباتي 100% — مستخلص من نبات البسوراليا' },
+          { emoji: '️', text: 'آمن نهاراً — لا يتحسس من الشمس' },
+          { emoji: '', text: 'آمن للحوامل — بديل ممتاز للريتينول' },
+          { emoji: '', text: 'يحفز الكولاجين — بدون تهيج أو تقشير' },
         ].map((t, i) => (
           <div
             key={i}

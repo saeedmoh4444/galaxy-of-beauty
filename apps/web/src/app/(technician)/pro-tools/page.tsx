@@ -24,7 +24,7 @@ export default function ProToolsPage(): JSX.Element {
   return (
     <DashboardLayout role="TECHNICIAN">
       <PageContainer width="wide">
-        <PageTitle title="💼 أدوات المحترفات" subtitle="أدوات احترافية لإدارة أعمالكِ" />
+        <PageTitle title=" أدوات المحترفات" subtitle="أدوات احترافية لإدارة أعمالكِ" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

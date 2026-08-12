@@ -51,16 +51,16 @@ export default function CalendarSyncScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🗓️ مزامنة التقويم</Text>
+      <Text style={styles.t}>️ مزامنة التقويم</Text>
       <View style={styles.card}>
-        <Text style={styles.se}>{connected ? '✅' : '📅'}</Text>
+        <Text style={styles.se}>{connected ? '' : ''}</Text>
         <Text style={styles.st}>{connected ? 'التقويم مربوط' : 'لم يتم ربط التقويم بعد'}</Text>
         <TouchableOpacity
           onPress={connected ? disconnect : connect}
           style={[styles.cb, connected && styles.cbd]}
         >
           <Text style={[styles.cbt, connected && styles.cbdt]}>
-            {connected ? 'قطع الاتصال' : '🔗 ربط تقويم قوقل'}
+            {connected ? 'قطع الاتصال' : ' ربط تقويم قوقل'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -71,7 +71,7 @@ export default function CalendarSyncScreen(): JSX.Element {
               <Text style={styles.ee}>{e.emoji as string}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={styles.et}>{e.title as string}</Text>
-                <Text style={styles.em}>👩‍🎨 {e.technician as string}</Text>
+                <Text style={styles.em}>‍ {e.technician as string}</Text>
               </View>
               <Text style={styles.ed}>
                 {new Date(e.date as string).toLocaleDateString('ar-SA', {

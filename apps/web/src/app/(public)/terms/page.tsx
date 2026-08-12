@@ -3,7 +3,7 @@ import { Card } from '@galaxy/ui';
 export default function TermsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl space-y-6 px-4 py-12">
-      <h1 className="text-2xl font-bold">📋 الشروط والأحكام</h1>
+      <h1 className="text-2xl font-bold"> الشروط والأحكام</h1>
       <Card padding="lg">
         <div className="space-y-4 text-sm leading-relaxed text-text-primary">
           <section>

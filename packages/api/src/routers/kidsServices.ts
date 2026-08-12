@@ -5,7 +5,7 @@ const KIDS_CATEGORIES = {
   baby: {
     nameAr: 'عناية الرضع (0-2)',
     nameEn: 'Baby Care (0-2)',
-    emoji: '🍼',
+    emoji: '',
     description: 'خدمات لطيفة وآمنة للرضع — منتجات طبيعية ١٠٠٪',
     subServices: [
       {
@@ -15,7 +15,7 @@ const KIDS_CATEGORIES = {
         price: 80,
         durationMin: 15,
         ageMin: 0,
-        emoji: '✂️',
+        emoji: '️',
       },
       {
         id: 'bb2',
@@ -24,7 +24,7 @@ const KIDS_CATEGORIES = {
         price: 120,
         durationMin: 25,
         ageMin: 1,
-        emoji: '🤲',
+        emoji: '',
       },
       {
         id: 'bb3',
@@ -33,14 +33,14 @@ const KIDS_CATEGORIES = {
         price: 60,
         durationMin: 15,
         ageMin: 0,
-        emoji: '💅',
+        emoji: '',
       },
     ],
   },
   toddler: {
     nameAr: 'عناية الأطفال (3-6)',
     nameEn: 'Toddler Care (3-6)',
-    emoji: '🧒',
+    emoji: '',
     description: 'خدمات ممتعة وآمنة للأطفال الصغار',
     subServices: [
       {
@@ -50,7 +50,7 @@ const KIDS_CATEGORIES = {
         price: 70,
         durationMin: 20,
         ageMin: 3,
-        emoji: '💇',
+        emoji: '',
       },
       {
         id: 'td2',
@@ -59,7 +59,7 @@ const KIDS_CATEGORIES = {
         price: 100,
         durationMin: 25,
         ageMin: 3,
-        emoji: '🎀',
+        emoji: '',
       },
       {
         id: 'td3',
@@ -68,7 +68,7 @@ const KIDS_CATEGORIES = {
         price: 60,
         durationMin: 20,
         ageMin: 4,
-        emoji: '💅',
+        emoji: '',
       },
       {
         id: 'td4',
@@ -77,14 +77,14 @@ const KIDS_CATEGORIES = {
         price: 50,
         durationMin: 15,
         ageMin: 3,
-        emoji: '🎨',
+        emoji: '',
       },
     ],
   },
   kids: {
     nameAr: 'عناية البنات (7-12)',
     nameEn: 'Girls Care (7-12)',
-    emoji: '👧',
+    emoji: '',
     description: 'أولى خطوات العناية بالجمال — تعليم ومرح',
     subServices: [
       {
@@ -94,7 +94,7 @@ const KIDS_CATEGORIES = {
         price: 90,
         durationMin: 30,
         ageMin: 7,
-        emoji: '💇‍♀️',
+        emoji: '‍️',
       },
       {
         id: 'kd2',
@@ -103,7 +103,7 @@ const KIDS_CATEGORIES = {
         price: 70,
         durationMin: 25,
         ageMin: 7,
-        emoji: '💅',
+        emoji: '',
       },
       {
         id: 'kd3',
@@ -112,7 +112,7 @@ const KIDS_CATEGORIES = {
         price: 120,
         durationMin: 40,
         ageMin: 7,
-        emoji: '📚',
+        emoji: '',
       },
       {
         id: 'kd4',
@@ -121,14 +121,14 @@ const KIDS_CATEGORIES = {
         price: 110,
         durationMin: 30,
         ageMin: 7,
-        emoji: '🎉',
+        emoji: '',
       },
     ],
   },
   teens: {
     nameAr: 'عناية المراهقات (13-17)',
     nameEn: 'Teen Care (13-17)',
-    emoji: '👩',
+    emoji: '',
     description: 'خدمات عناية مناسبة للمراهقات — بشرة وشعر وأظافر',
     subServices: [
       {
@@ -138,7 +138,7 @@ const KIDS_CATEGORIES = {
         price: 120,
         durationMin: 35,
         ageMin: 13,
-        emoji: '✨',
+        emoji: '',
       },
       {
         id: 'tn2',
@@ -147,7 +147,7 @@ const KIDS_CATEGORIES = {
         price: 130,
         durationMin: 35,
         ageMin: 14,
-        emoji: '💄',
+        emoji: '',
       },
       {
         id: 'tn3',
@@ -156,7 +156,7 @@ const KIDS_CATEGORIES = {
         price: 100,
         durationMin: 35,
         ageMin: 13,
-        emoji: '💇‍♀️',
+        emoji: '‍️',
       },
       {
         id: 'tn4',
@@ -165,7 +165,7 @@ const KIDS_CATEGORIES = {
         price: 80,
         durationMin: 25,
         ageMin: 13,
-        emoji: '💅',
+        emoji: '',
       },
       {
         id: 'tn5',
@@ -174,7 +174,7 @@ const KIDS_CATEGORIES = {
         price: 80,
         durationMin: 25,
         ageMin: 13,
-        emoji: '💬',
+        emoji: '',
       },
     ],
   },
@@ -220,7 +220,7 @@ export const kidsServicesRouter = router({
         price: svc.price,
         durationMin: svc.durationMin,
         status: 'CONFIRMED',
-        message: `تم حجز "${svc.nameAr}" لـ ${input.childName} بنجاح! 🌸`,
+        message: `تم حجز "${svc.nameAr}" لـ ${input.childName} بنجاح! `,
         tip: svc.ageMin > 0 ? `مناسبة من عمر ${svc.ageMin} سنوات` : 'مناسبة لجميع الأعمار',
       };
     }),

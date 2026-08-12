@@ -50,24 +50,24 @@ export default function RecommendationsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>💡 توصيات ذكية</Text>
+      <Text style={styles.t}> توصيات ذكية</Text>
       {services.slice(0, 10).map((s: any) => (
         <TouchableOpacity
           key={s.id}
           onPress={() => getRelated(s.id)}
           style={[styles.sc, selectedId === s.id && styles.sca]}
         >
-          <Text style={styles.se}>{(s.emoji as string) ?? '💆‍♀️'}</Text>
+          <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
           <Text style={styles.sn}>
             {((s.titleJson as any)?.ar as string) ?? (s.nameAr as string)}
           </Text>
         </TouchableOpacity>
       ))}
       {relatedLoading && <SkeletonList count={3} />}
-      {related.length > 0 && !relatedLoading && <Text style={styles.st}>🔗 غالباً تُحجز مع:</Text>}
+      {related.length > 0 && !relatedLoading && <Text style={styles.st}> غالباً تُحجز مع:</Text>}
       {related.map((r: any) => (
         <View key={r.id} style={styles.card}>
-          <Text style={styles.re}>🔗</Text>
+          <Text style={styles.re}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.rn}>{r.title as string}</Text>
             <Text style={styles.rp}>{(r.basePrice as number)?.toLocaleString()} ر.س</Text>

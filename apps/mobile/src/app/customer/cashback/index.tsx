@@ -44,7 +44,7 @@ export default function CashbackScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>💰 استرداد نقدي</Text>
+      <Text style={styles.t}> استرداد نقدي</Text>
       <View style={styles.br}>
         <View style={styles.bc}>
           <Text style={styles.bl}>رصيد الكاش باك</Text>
@@ -59,7 +59,7 @@ export default function CashbackScreen(): JSX.Element {
       </View>
       {items.map((t: any) => (
         <View key={t.id} style={styles.card}>
-          <Text style={styles.em}>💵</Text>
+          <Text style={styles.em}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.ta}>+{(t.amount as number)?.toLocaleString()} ر.س</Text>
             <Text style={styles.td}>

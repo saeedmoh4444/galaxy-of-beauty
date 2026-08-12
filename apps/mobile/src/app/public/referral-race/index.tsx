@@ -37,7 +37,7 @@ export default function ReferralRaceScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🏁 سباق الإحالات</Text>
+      <Text style={styles.t}> سباق الإحالات</Text>
       {data.map((r: any, i: number) => (
         <View key={i} style={styles.card}>
           <View style={[styles.rk, i === 0 && styles.rk1]}>
@@ -47,7 +47,7 @@ export default function ReferralRaceScreen(): JSX.Element {
             <Text style={styles.rn}>{r.name as string}</Text>
             <Text style={styles.rc}>{r.referrals as number} إحالة</Text>
           </View>
-          {i === 0 && <Text style={styles.cr}>👑</Text>}
+          {i === 0 && <Text style={styles.cr}></Text>}
         </View>
       ))}
     </ScrollView>

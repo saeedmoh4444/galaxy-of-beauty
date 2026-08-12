@@ -18,7 +18,7 @@ export default function BeautyJournalScreen(): JSX.Element {
   if (loading)
     return (
       <View style={styles.c}>
-        <Text style={styles.t}>📔 يوميات الجمال</Text>
+        <Text style={styles.t}> يوميات الجمال</Text>
         <SkeletonList count={4} />
       </View>
     );
@@ -34,7 +34,7 @@ export default function BeautyJournalScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#8b5cf6']} />
       }
     >
-      <Text style={styles.t}>📔 يوميات الجمال</Text>
+      <Text style={styles.t}> يوميات الجمال</Text>
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد مدخلات</Text>
       ) : (

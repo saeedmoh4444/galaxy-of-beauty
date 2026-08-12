@@ -9,7 +9,7 @@ export function BeautyThirtiesCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌸</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">
             العناية في الثلاثينات
@@ -21,10 +21,10 @@ export function BeautyThirtiesCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '⏳', text: 'ابدئي الريتينول — الكولاجين يبدأ بالانخفاض' },
-          { emoji: '👁️', text: 'كريم عيون — أولى علامات الخطوط الرفيعة' },
-          { emoji: '🧖', text: 'تقشير منتظم — مرة أسبوعياً AHA/BHA' },
-          { emoji: '💧', text: 'سيروم هيالورونيك — ترطيب مكثف' },
+          { emoji: '', text: 'ابدئي الريتينول — الكولاجين يبدأ بالانخفاض' },
+          { emoji: '️', text: 'كريم عيون — أولى علامات الخطوط الرفيعة' },
+          { emoji: '', text: 'تقشير منتظم — مرة أسبوعياً AHA/BHA' },
+          { emoji: '', text: 'سيروم هيالورونيك — ترطيب مكثف' },
         ].map((t, i) => (
           <div
             key={i}

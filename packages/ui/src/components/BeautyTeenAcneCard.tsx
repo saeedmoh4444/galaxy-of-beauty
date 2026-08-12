@@ -9,7 +9,7 @@ export function BeautyTeenAcneCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🔴</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">حبوب المراهقات</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">طبيعية — ومؤقتة</p>
@@ -17,9 +17,9 @@ export function BeautyTeenAcneCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: 'غسول لطيف — مرتين يومياً' },
-          { emoji: '🚫', text: 'لا تضغطي — تترك أثراً وندبات' },
-          { emoji: '💧', text: 'مرطب خالٍ من الزيوت — ضروري' },
+          { emoji: '', text: 'غسول لطيف — مرتين يومياً' },
+          { emoji: '', text: 'لا تضغطي — تترك أثراً وندبات' },
+          { emoji: '', text: 'مرطب خالٍ من الزيوت — ضروري' },
           { emoji: '🩺', text: 'إذا كانت شديدة — راجعي طبيبة جلدية' },
         ].map((t, i) => (
           <div

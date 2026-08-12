@@ -177,7 +177,7 @@ export default function GiftCardsPage(): JSX.Element {
                 loading={buyMut.isPending}
                 className="w-full"
               >
-                🎁 شراء بطاقة هدية
+                 شراء بطاقة هدية
               </Button>
             </div>
           </Card>

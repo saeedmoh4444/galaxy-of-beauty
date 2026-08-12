@@ -27,14 +27,14 @@ export default function FlashDealsScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#dc2626']} />
       }
     >
-      <Text style={styles.t}>⚡ عروض فلاش</Text>
+      <Text style={styles.t}> عروض فلاش</Text>
       <Text style={styles.sub}>عروض لفترة محدودة — سارعي!</Text>
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد عروض حالية</Text>
       ) : (
         items.map((d: Record<string, unknown>, i: number) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.dealEmoji}>{(d.emoji as string) ?? '⚡'}</Text>
+            <Text style={styles.dealEmoji}>{(d.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.dealName}>{d.nameAr as string}</Text>
               <View style={styles.priceRow}>

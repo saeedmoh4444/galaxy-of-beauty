@@ -44,7 +44,7 @@ export default function TechBookingsScreen(): JSX.Element {
       emptyTitle="لا توجد حجوزات"
       onRetry={() => bookings.refetch()}
     >
-      <Text style={styles.title}>📅 حجوزاتي</Text>
+      <Text style={styles.title}> حجوزاتي</Text>
       {(data as Record<string, unknown>[])?.map((b: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.row}>

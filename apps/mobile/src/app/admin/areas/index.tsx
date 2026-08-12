@@ -45,7 +45,7 @@ export default function AdminAreasScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📍 المناطق</Text>
+      <Text style={styles.t}> المناطق</Text>
       {data.map((a: any, i: number) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
@@ -53,7 +53,7 @@ export default function AdminAreasScreen(): JSX.Element {
             <Text style={styles.meta}>{a.nameEn as string}</Text>
           </View>
           <TouchableOpacity onPress={() => remove(a.id)}>
-            <Text style={styles.del}>🗑️</Text>
+            <Text style={styles.del}>️</Text>
           </TouchableOpacity>
         </View>
       ))}

@@ -9,7 +9,7 @@ export function BeautyPerfumeSaffronCard({ className = '' }: { className?: strin
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌸</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">الزعفران</h4>
           <p className="text-[10px] text-orange-500 dark:text-orange-400">الذهب الأحمر في العطور</p>
@@ -17,10 +17,10 @@ export function BeautyPerfumeSaffronCard({ className = '' }: { className?: strin
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🌍', text: 'أغلى توابل العالم — يستخدم في العطور الفاخرة' },
-          { emoji: '🔥', text: 'رائحة حارة ومعدنية — أنيقة ومميزة' },
-          { emoji: '✨', text: 'يستخدم في ماسكات الوجه — لتفتيح البشرة' },
-          { emoji: '🇸🇦', text: 'العربية السعودية — تاريخ طويل مع الزعفران' },
+          { emoji: '', text: 'أغلى توابل العالم — يستخدم في العطور الفاخرة' },
+          { emoji: '', text: 'رائحة حارة ومعدنية — أنيقة ومميزة' },
+          { emoji: '', text: 'يستخدم في ماسكات الوجه — لتفتيح البشرة' },
+          { emoji: '', text: 'العربية السعودية — تاريخ طويل مع الزعفران' },
         ].map((t, i) => (
           <div
             key={i}

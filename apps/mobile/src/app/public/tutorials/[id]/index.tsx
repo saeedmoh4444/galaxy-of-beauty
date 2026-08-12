@@ -52,17 +52,17 @@ export default function TutorialDetailScreen(): JSX.Element {
         <Text style={styles.pi}>▶️</Text>
       </View>
       <Text style={styles.t}>
-        {(data.emoji as string) ?? '📹'} {data.titleAr as string}
+        {(data.emoji as string) ?? ''} {data.titleAr as string}
       </Text>
       <View style={styles.meta}>
         <Text style={styles.mi}>{data.categoryAr as string}</Text>
         <Text style={styles.mi}>{data.difficultyAr as string}</Text>
-        <Text style={styles.mi}>⏱️ {data.duration as string}</Text>
+        <Text style={styles.mi}>️ {data.duration as string}</Text>
       </View>
       <Text style={styles.desc}>{data.descAr as string}</Text>
       {data.steps && (
         <View style={styles.sec}>
-          <Text style={styles.st}>📋 الخطوات</Text>
+          <Text style={styles.st}> الخطوات</Text>
           {(data.steps as any[]).map((s: any, i: number) => (
             <View key={i} style={styles.step}>
               <View style={styles.sn}>

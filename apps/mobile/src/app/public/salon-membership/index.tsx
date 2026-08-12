@@ -4,7 +4,7 @@ import { useState } from 'react';
 const MEMBERSHIPS = [
   {
     key: 'basic',
-    emoji: '🥈',
+    emoji: '',
     name: 'الأساسية',
     price: 0,
     color: '#9ca3af',
@@ -13,7 +13,7 @@ const MEMBERSHIPS = [
   },
   {
     key: 'premium',
-    emoji: '🥇',
+    emoji: '',
     name: 'المميزة',
     price: 99,
     color: '#f59e0b',
@@ -29,7 +29,7 @@ const MEMBERSHIPS = [
   },
   {
     key: 'platinum',
-    emoji: '💎',
+    emoji: '',
     name: 'البلاتينية',
     price: 299,
     color: '#7c3aed',
@@ -52,7 +52,7 @@ export default function SalonMembershipScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>💳 عضويات الصالون</Text>
+      <Text style={styles.t}> عضويات الصالون</Text>
       <Text style={styles.sub}>اختاري العضوية اللي تناسبكِ</Text>
 
       <View style={styles.cards}>
@@ -72,21 +72,21 @@ export default function SalonMembershipScreen(): JSX.Element {
                 </Text>
               </View>
               <View style={styles.cardBody}>
-                <Text style={styles.cbTitle}>✅ المميزات</Text>
+                <Text style={styles.cbTitle}> المميزات</Text>
                 {m.benefits.map((b, i) => (
                   <View key={i} style={styles.benefit}>
-                    <Text style={styles.benefitBullet}>✓</Text>
+                    <Text style={styles.benefitBullet}></Text>
                     <Text style={styles.benefitText}>{b}</Text>
                   </View>
                 ))}
                 {m.notIncluded.length > 0 && (
                   <>
                     <Text style={[styles.cbTitle, { color: '#9ca3af', marginTop: 12 }]}>
-                      🚫 غير متضمن
+                       غير متضمن
                     </Text>
                     {m.notIncluded.map((b, i) => (
                       <View key={i} style={styles.benefit}>
-                        <Text style={styles.benefitBulletX}>✗</Text>
+                        <Text style={styles.benefitBulletX}></Text>
                         <Text style={[styles.benefitText, { color: '#9ca3af' }]}>{b}</Text>
                       </View>
                     ))}
@@ -99,7 +99,7 @@ export default function SalonMembershipScreen(): JSX.Element {
       </View>
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}>💳 اشتركي الآن</Text>
+        <Text style={styles.bt}> اشتركي الآن</Text>
       </TouchableOpacity>
     </ScrollView>
   );

@@ -9,7 +9,7 @@ export function BeautyBalayageCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🎨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">البلياج</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">تقنية فرنسية — لون طبيعي</p>
@@ -17,10 +17,10 @@ export function BeautyBalayageCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🖌️', text: 'تلوين يدوي — خصل مرسومة بالفرشاة' },
-          { emoji: '🌿', text: 'مظهر طبيعي — جذور أغمق وأطراف أفتح' },
-          { emoji: '📅', text: 'يدوم 3-4 أشهر — نمو الجذور غير ملحوظ' },
-          { emoji: '💰', text: 'أغلى من الصبغة — لكن صيانة أقل' },
+          { emoji: '️', text: 'تلوين يدوي — خصل مرسومة بالفرشاة' },
+          { emoji: '', text: 'مظهر طبيعي — جذور أغمق وأطراف أفتح' },
+          { emoji: '', text: 'يدوم 3-4 أشهر — نمو الجذور غير ملحوظ' },
+          { emoji: '', text: 'أغلى من الصبغة — لكن صيانة أقل' },
         ].map((t, i) => (
           <div
             key={i}

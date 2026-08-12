@@ -13,7 +13,7 @@ export function BeautyMaternityMassageCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💆</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">مساج الحامل</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">آمن — بعد الشهر الثالث</p>
@@ -21,10 +21,10 @@ export function BeautyMaternityMassageCard({
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🛏️', text: 'الاستلقاء على الجانب — ليس على البطن' },
-          { emoji: '🤰', text: 'بعد الشهر الثالث — بأمان' },
-          { emoji: '🚫', text: 'تجنبي الزيوت القوية — النعناع والقرفة' },
-          { emoji: '💆', text: 'يخفف آلام الظهر — ويحسن النوم' },
+          { emoji: '️', text: 'الاستلقاء على الجانب — ليس على البطن' },
+          { emoji: '', text: 'بعد الشهر الثالث — بأمان' },
+          { emoji: '', text: 'تجنبي الزيوت القوية — النعناع والقرفة' },
+          { emoji: '', text: 'يخفف آلام الظهر — ويحسن النوم' },
         ].map((t, i) => (
           <div
             key={i}

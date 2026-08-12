@@ -3,9 +3,9 @@ import { getServerCaller } from '@/lib/server-trpc';
 import { Card } from '@galaxy/ui';
 
 const TIER_LABELS: Record<string, { name: string; emoji: string; color: string }> = {
-  SILVER: { name: 'الفضية', emoji: '🥈', color: 'from-gray-300 to-gray-400' },
-  GOLD: { name: 'الذهبية', emoji: '🥇', color: 'from-yellow-400 to-amber-500' },
-  PLATINUM: { name: 'البلاتينية', emoji: '💎', color: 'from-purple-400 to-indigo-500' },
+  SILVER: { name: 'الفضية', emoji: '', color: 'from-gray-300 to-gray-400' },
+  GOLD: { name: 'الذهبية', emoji: '', color: 'from-yellow-400 to-amber-500' },
+  PLATINUM: { name: 'البلاتينية', emoji: '', color: 'from-purple-400 to-indigo-500' },
 };
 
 export default async function RewardsPage(): Promise<JSX.Element> {
@@ -23,7 +23,7 @@ export default async function RewardsPage(): Promise<JSX.Element> {
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-10">
         <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">
-          🏆 برنامج المكافآت
+           برنامج المكافآت
         </h1>
         <p className="mt-2 text-text-secondary">اكسبي نقاط مع كل حجز واستبدليها بمكافآت حصرية</p>
       </div>
@@ -68,10 +68,10 @@ export default async function RewardsPage(): Promise<JSX.Element> {
                 <div className="text-center pt-4">
                   <span className="text-4xl">
                     {r.rewardType === 'discount_percent'
-                      ? '🏷️'
+                      ? '️'
                       : r.rewardType === 'free_service'
-                        ? '🎁'
-                        : '💰'}
+                        ? ''
+                        : ''}
                   </span>
                   <h3 className="mt-3 text-lg font-bold">{name}</h3>
                   <p className="mt-1 text-sm text-text-secondary">{desc}</p>

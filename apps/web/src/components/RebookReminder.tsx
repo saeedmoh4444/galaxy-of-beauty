@@ -31,7 +31,7 @@ export function RebookReminder(): JSX.Element {
       className="bg-gradient-to-r from-brand-50 to-accent-50 border border-brand-200 dark:from-brand-950 dark:to-accent-950 dark:border-brand-800"
     >
       <div className="flex items-center gap-4">
-        <span className="text-3xl">⏰</span>
+        <span className="text-3xl"></span>
         <div className="flex-1">
           <p className="font-semibold text-gray-900 dark:text-gray-100 text-sm">
             مرّ {weeksSince} {weeksSince === 1 ? 'أسبوع' : 'أسابيع'} على آخر {serviceName}

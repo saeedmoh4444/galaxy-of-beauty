@@ -9,7 +9,7 @@ export function BeautyHumidClimateCard({ className = '' }: { className?: string 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💦</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">عناية في الرطوبة</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">بشرة منتعشة في الجو الرطب</p>
@@ -17,10 +17,10 @@ export function BeautyHumidClimateCard({ className = '' }: { className?: string 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: 'مرطب جل — خفيف وليس كريمي' },
-          { emoji: '🧻', text: 'ورق نشاف — لإزالة اللمعان الزائد' },
-          { emoji: '💄', text: 'مكياج خفيف — بدون طبقات ثقيلة' },
-          { emoji: '💧', text: 'تونر مات — يقلل إفراز الدهون' },
+          { emoji: '', text: 'مرطب جل — خفيف وليس كريمي' },
+          { emoji: '', text: 'ورق نشاف — لإزالة اللمعان الزائد' },
+          { emoji: '', text: 'مكياج خفيف — بدون طبقات ثقيلة' },
+          { emoji: '', text: 'تونر مات — يقلل إفراز الدهون' },
         ].map((t, i) => (
           <div
             key={i}

@@ -26,7 +26,7 @@ export default function WalletScreen(): JSX.Element {
       errorMessage="فشل تحميل المحفظة"
       onRetry={() => balance.refetch()}
     >
-      <Text style={styles.title}>💰 المحفظة</Text>
+      <Text style={styles.title}> المحفظة</Text>
       <View style={styles.balanceCard}>
         <Text style={styles.balanceLabel}>الرصيد المتاح</Text>
         <Text style={styles.balanceAmount}>
@@ -41,7 +41,7 @@ export default function WalletScreen(): JSX.Element {
           style={styles.topUpBtn}
           onPress={() => router.push('/customer/wallet/top-up' as any)}
         >
-          <Text style={styles.topUpText}>➕ شحن رصيد</Text>
+          <Text style={styles.topUpText}> شحن رصيد</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.sectionTitle}>آخر المعاملات</Text>

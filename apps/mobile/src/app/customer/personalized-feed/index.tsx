@@ -38,7 +38,7 @@ export default function PersonalizedFeedScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🎯 خلاصتي</Text>
+      <Text style={styles.t}> خلاصتي</Text>
       {items.map((item: any) => (
         <View key={item.id} style={styles.card}>
           <Text style={styles.em}>{item.emoji as string}</Text>
@@ -46,10 +46,10 @@ export default function PersonalizedFeedScreen(): JSX.Element {
             <Text style={styles.nm}>{item.title as string}</Text>
             <Text style={styles.meta}>
               {item.technician
-                ? `👩‍🎨 ${item.technician}`
+                ? `‍ ${item.technician}`
                 : item.brand
-                  ? `🏷️ ${item.brand}`
-                  : `💰 ${item.price as number} ر.س`}
+                  ? `️ ${item.brand}`
+                  : ` ${item.price as number} ر.س`}
             </Text>
           </View>
           <View style={styles.rb}>

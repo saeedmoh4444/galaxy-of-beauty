@@ -34,7 +34,7 @@ export function ProBonoLessonCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🤲
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-teal-800 dark:text-teal-200">دروس مجتمعية</h4>
         <p className="text-[10px] text-teal-600 dark:text-teal-400">خبيرات يتطوعن لتعليم المجتمع</p>
@@ -69,7 +69,7 @@ export function ProBonoLessonCard({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-teal-600 dark:text-teal-400">
-        🤲 العلم صدقة جارية
+         العلم صدقة جارية
       </p>
     </div>
   );

@@ -41,10 +41,10 @@ export default function AdminUsersScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>👥 المستخدمين</Text>
+      <Text style={styles.t}> المستخدمين</Text>
       {data.map((u: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.avatar}>👤</Text>
+          <Text style={styles.avatar}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{u.name as string}</Text>
             <Text style={styles.email}>{u.email as string}</Text>

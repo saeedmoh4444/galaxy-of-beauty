@@ -17,12 +17,12 @@ export default function AdminAiFeaturesPage(): JSX.Element {
     <DashboardLayout role="ADMIN">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🤖 أدوات الذكاء الاصطناعي</h1>
+          <h1 className="text-2xl font-bold"> أدوات الذكاء الاصطناعي</h1>
           <p className="mt-1 text-sm text-text-secondary">تحليل المشاعر وتوليد الوصف</p>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3">💬 تحليل مشاعر المراجعة</h3>
+          <h3 className="font-bold mb-3"> تحليل مشاعر المراجعة</h3>
           <div className="flex gap-3">
             <input
               value={reviewId}
@@ -46,10 +46,10 @@ export default function AdminAiFeaturesPage(): JSX.Element {
             <div className="mt-3 rounded-lg border p-3 flex items-center gap-3">
               <span className="text-3xl">
                 {result.sentiment === 'positive'
-                  ? '😊'
+                  ? ''
                   : result.sentiment === 'negative'
-                    ? '😔'
-                    : '😐'}
+                    ? ''
+                    : ''}
               </span>
               <div>
                 <p className="font-bold">{result.sentiment as string}</p>
@@ -60,7 +60,7 @@ export default function AdminAiFeaturesPage(): JSX.Element {
         </Card>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3">📝 توليد وصف خدمة</h3>
+          <h3 className="font-bold mb-3"> توليد وصف خدمة</h3>
           <div className="space-y-3">
             <input
               value={svcAr}

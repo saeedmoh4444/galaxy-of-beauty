@@ -6,9 +6,9 @@ const db = prisma as any;
 
 const PHASES = [
   { key: 'menstrual', emoji: '🩸', name: 'الدورة', color: '#ec4899' },
-  { key: 'follicular', emoji: '🌸', name: 'الجريبي', color: '#f59e0b' },
-  { key: 'ovulation', emoji: '✨', name: 'الإباضة', color: '#8b5cf6' },
-  { key: 'luteal', emoji: '🌙', name: 'الأصفري', color: '#059669' },
+  { key: 'follicular', emoji: '', name: 'الجريبي', color: '#f59e0b' },
+  { key: 'ovulation', emoji: '', name: 'الإباضة', color: '#8b5cf6' },
+  { key: 'luteal', emoji: '', name: 'الأصفري', color: '#059669' },
 ];
 
 function getPhase(day: number, cycleLength: number = 28) {

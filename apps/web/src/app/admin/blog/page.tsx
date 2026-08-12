@@ -31,7 +31,7 @@ export default function AdminBlogPage(): JSX.Element {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">📝 المدونة</h1>
+        <h1 className="text-2xl font-bold"> المدونة</h1>
         <Button onClick={() => setShowCreate(true)}>مقال جديد</Button>
       </div>
       {isLoading ? (

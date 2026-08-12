@@ -41,10 +41,10 @@ export default function RecurringScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🔄 حجوزات متكررة</Text>
+      <Text style={styles.t}> حجوزات متكررة</Text>
       {data.map((r: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>🔄</Text>
+          <Text style={styles.emoji}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{r.serviceName as string}</Text>
             <Text style={styles.freq}>

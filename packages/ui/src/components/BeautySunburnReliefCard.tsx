@@ -9,7 +9,7 @@ export function BeautySunburnReliefCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🦞</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">
             علاج حروق الشمس
@@ -21,10 +21,10 @@ export function BeautySunburnReliefCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '❄️', text: 'كمادات باردة — 15 دقيقة كل ساعة' },
-          { emoji: '🌿', text: 'جل الألوفيرا — مبرد في الثلاجة' },
-          { emoji: '💧', text: 'اشربي ماء كثيراً — الترطيب من الداخل' },
-          { emoji: '🚫', text: 'لا تقشري — اتركي الجلد يتجدد طبيعياً' },
+          { emoji: '️', text: 'كمادات باردة — 15 دقيقة كل ساعة' },
+          { emoji: '', text: 'جل الألوفيرا — مبرد في الثلاجة' },
+          { emoji: '', text: 'اشربي ماء كثيراً — الترطيب من الداخل' },
+          { emoji: '', text: 'لا تقشري — اتركي الجلد يتجدد طبيعياً' },
         ].map((t, i) => (
           <div
             key={i}

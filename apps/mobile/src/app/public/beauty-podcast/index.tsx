@@ -27,18 +27,18 @@ export default function BeautyPodcastScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />
       }
     >
-      <Text style={styles.t}>🎙️ بودكاست الجمال</Text>
+      <Text style={styles.t}>️ بودكاست الجمال</Text>
       <Text style={styles.sub}>حلقات شيقة عن الجمال والعناية</Text>
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد حلقات</Text>
       ) : (
         items.map((e: Record<string, unknown>, i: number) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.epEmoji}>{(e.emoji as string) ?? '🎙️'}</Text>
+            <Text style={styles.epEmoji}>{(e.emoji as string) ?? '️'}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.epTitle}>{e.titleAr as string}</Text>
-              <Text style={styles.epHost}>🎤 {e.host as string}</Text>
-              <Text style={styles.epDuration}>⏱️ {e.duration as string}</Text>
+              <Text style={styles.epHost}> {e.host as string}</Text>
+              <Text style={styles.epDuration}>️ {e.duration as string}</Text>
             </View>
           </View>
         ))

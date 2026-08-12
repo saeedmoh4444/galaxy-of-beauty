@@ -14,18 +14,18 @@ const COLORS = {
 };
 
 const MENU_ITEMS = [
-  { label: '📅 حجوزاتي', href: '/customer/bookings' },
-  { label: '❤️ المفضلة', href: '/customer/wishlist' },
-  { label: '⭐ الولاء', href: '/customer/loyalty' },
-  { label: '👤 تعديل الملف', href: '/customer/profile' },
-  { label: '📍 العناوين', href: '/customer/addresses' },
-  { label: '💳 البطاقات المحفوظة', href: '/customer/saved-cards' },
-  { label: '🎁 الإحالات', href: '/customer/referrals' },
-  { label: '👯‍♀️ مجتمع الجمال', href: '/customer/community' },
-  { label: '📚 أكاديمية الجمال', href: '/customer/beauty-academy' },
-  { label: '🌿 الصحة والعافية', href: '/customer/wellness' },
-  { label: '🔔 الإشعارات', href: '/customer/notifications' },
-  { label: '🤖 لايلى - المساعدة الذكية', href: '/customer/ai-chat' },
+  { label: ' حجوزاتي', href: '/customer/bookings' },
+  { label: '️ المفضلة', href: '/customer/wishlist' },
+  { label: ' الولاء', href: '/customer/loyalty' },
+  { label: ' تعديل الملف', href: '/customer/profile' },
+  { label: ' العناوين', href: '/customer/addresses' },
+  { label: ' البطاقات المحفوظة', href: '/customer/saved-cards' },
+  { label: ' الإحالات', href: '/customer/referrals' },
+  { label: '‍️ مجتمع الجمال', href: '/customer/community' },
+  { label: ' أكاديمية الجمال', href: '/customer/beauty-academy' },
+  { label: ' الصحة والعافية', href: '/customer/wellness' },
+  { label: ' الإشعارات', href: '/customer/notifications' },
+  { label: ' لايلى - المساعدة الذكية', href: '/customer/ai-chat' },
 ];
 
 export default function ProfileScreen(): JSX.Element {
@@ -48,10 +48,10 @@ export default function ProfileScreen(): JSX.Element {
       errorMessage="فشل تحميل الملف الشخصي"
       onRetry={() => profile.refetch()}
     >
-      <Text style={styles.title}>👤 حسابي</Text>
+      <Text style={styles.title}> حسابي</Text>
       <View style={styles.profileCard}>
         <View style={styles.avatar}>
-          <Text style={styles.avatarText}>{(profile.data as any)?.name?.[0] ?? '👤'}</Text>
+          <Text style={styles.avatarText}>{(profile.data as any)?.name?.[0] ?? ''}</Text>
         </View>
         <Text style={styles.userName}>{(profile.data as any)?.name ?? 'مستخدمة جالكسي بيوتي'}</Text>
         <Text style={styles.userEmail}>{(profile.data as any)?.email ?? ''}</Text>
@@ -60,13 +60,13 @@ export default function ProfileScreen(): JSX.Element {
           {loyalty?.data && (
             <View style={styles.statItem}>
               <Text style={styles.statVal}>{loyalty.data.points ?? 0}</Text>
-              <Text style={styles.statLbl}>⭐ نقاط</Text>
+              <Text style={styles.statLbl}> نقاط</Text>
             </View>
           )}
           {kindness?.data && (
             <View style={styles.statItem}>
               <Text style={styles.statVal}>{kindness.data.points ?? 0}</Text>
-              <Text style={styles.statLbl}>💖 لطف</Text>
+              <Text style={styles.statLbl}> لطف</Text>
             </View>
           )}
         </View>
@@ -85,7 +85,7 @@ export default function ProfileScreen(): JSX.Element {
         ))}
       </ScrollView>
       <TouchableOpacity style={styles.logoutBtn}>
-        <Text style={styles.logoutText}>🚪 تسجيل الخروج</Text>
+        <Text style={styles.logoutText}> تسجيل الخروج</Text>
       </TouchableOpacity>
     </ScreenState>
   );

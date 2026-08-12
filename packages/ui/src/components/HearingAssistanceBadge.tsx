@@ -25,12 +25,12 @@ interface FeatureDef {
 }
 
 const FEATURES: Record<HearingFeature, FeatureDef> = {
-  hearing_loop: { emoji: '🦻', label: 'حلقة سمعية', detail: 'نظام تضخيم صوت للأجهزة السمعية' },
-  written_communication: { emoji: '📝', label: 'تواصل كتابي', detail: 'ورقة وقلم للتواصل الكتابي' },
-  visual_alerts: { emoji: '💡', label: 'تنبيهات بصرية', detail: 'إشعارات ضوئية بدل الصوتية' },
-  lip_reading: { emoji: '👄', label: 'قراءة شفاه', detail: 'خبيرات يتحدثن بوضوح للقراءة' },
-  sign_language: { emoji: '🤟', label: 'لغة إشارة', detail: 'خبيرات بلغة الإشارة' },
-  quiet_environment: { emoji: '🤫', label: 'بيئة هادئة', detail: 'ضوضاء منخفضة للتركيز' },
+  hearing_loop: { emoji: '', label: 'حلقة سمعية', detail: 'نظام تضخيم صوت للأجهزة السمعية' },
+  written_communication: { emoji: '', label: 'تواصل كتابي', detail: 'ورقة وقلم للتواصل الكتابي' },
+  visual_alerts: { emoji: '', label: 'تنبيهات بصرية', detail: 'إشعارات ضوئية بدل الصوتية' },
+  lip_reading: { emoji: '', label: 'قراءة شفاه', detail: 'خبيرات يتحدثن بوضوح للقراءة' },
+  sign_language: { emoji: '', label: 'لغة إشارة', detail: 'خبيرات بلغة الإشارة' },
+  quiet_environment: { emoji: '', label: 'بيئة هادئة', detail: 'ضوضاء منخفضة للتركيز' },
 };
 
 interface HearingAssistanceBadgeProps {
@@ -53,7 +53,7 @@ export function HearingAssistanceBadge({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🦻
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">مساعدة سمعية</h4>
@@ -84,7 +84,7 @@ export function HearingAssistanceBadge({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-sky-600 dark:text-sky-400">
-        🦻 نسمعكِ بكل الطرق — الجمال للجميع
+         نسمعكِ بكل الطرق — الجمال للجميع
       </p>
     </div>
   );

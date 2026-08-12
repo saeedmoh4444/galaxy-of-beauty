@@ -48,11 +48,11 @@ export default function TechWaitlistScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📋 قائمة الانتظار</Text>
-      {myList.length > 0 && <Text style={styles.st}>⭐ قوائمي</Text>}
+      <Text style={styles.t}> قائمة الانتظار</Text>
+      {myList.length > 0 && <Text style={styles.st}> قوائمي</Text>}
       {myList.map((t: any) => (
         <View key={t.id} style={styles.card}>
-          <Text style={styles.te}>👩‍🎨</Text>
+          <Text style={styles.te}>‍</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.tn}>{t.name as string}</Text>
             <Text style={styles.tm}>الموقع: {(t.position as number) ?? '—'}</Text>
@@ -62,14 +62,14 @@ export default function TechWaitlistScreen(): JSX.Element {
           </TouchableOpacity>
         </View>
       ))}
-      <Text style={styles.st}>🔥 الفنيات الأكثر طلباً</Text>
+      <Text style={styles.st}> الفنيات الأكثر طلباً</Text>
       {popular.map((t: any) => (
         <View key={t.id} style={styles.card}>
-          <Text style={styles.te}>👩‍🎨</Text>
+          <Text style={styles.te}>‍</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.tn}>{t.name as string}</Text>
             <Text style={styles.tm}>
-              ⭐ {(t.rating as number) ?? 0} · {(t.waitlistCount as number) ?? 0} في الانتظار
+               {(t.rating as number) ?? 0} · {(t.waitlistCount as number) ?? 0} في الانتظار
             </Text>
           </View>
           <TouchableOpacity onPress={() => join(t.id)} style={styles.jb}>

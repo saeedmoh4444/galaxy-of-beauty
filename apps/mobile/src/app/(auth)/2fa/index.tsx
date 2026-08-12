@@ -88,7 +88,7 @@ export default function TwoFactorScreen() {
 
       {enabled ? (
         <View style={styles.card}>
-          <Text style={styles.checkIcon}>✅</Text>
+          <Text style={styles.checkIcon}></Text>
           <Text style={styles.successText}>المصادقة الثنائية مفعلة</Text>
           <Text style={styles.hint}>حسابك محمي برمز تحقق إضافي عند تسجيل الدخول</Text>
           <TouchableOpacity
@@ -135,7 +135,7 @@ export default function TwoFactorScreen() {
         </View>
       ) : (
         <View style={styles.card}>
-          <Text style={styles.lockIcon}>🔐</Text>
+          <Text style={styles.lockIcon}></Text>
           <Text style={styles.subTitle}>إعداد المصادقة الثنائية</Text>
           <Text style={styles.hint}>أضف طبقة حماية إضافية لحسابك باستخدام تطبيق المصادقة</Text>
           <TouchableOpacity style={styles.btn} onPress={handleSetup} disabled={actionLoading}>

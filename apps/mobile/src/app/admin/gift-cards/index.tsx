@@ -42,7 +42,7 @@ export default function AdminGiftCardsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🎁 بطاقات الهدية</Text>
+      <Text style={styles.t}> بطاقات الهدية</Text>
       {data.map((c: any, i: number) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>

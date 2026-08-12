@@ -27,28 +27,28 @@ const SERVICES: PostpartumService[] = [
     availableFromDay: 3,
   },
   {
-    emoji: '💆‍♀️',
+    emoji: '‍️',
     name: 'مساج النفاس',
     description: 'مساج لطيف للجسم بالزيوت الدافئة لتخفيف الآلام',
     price: 200,
     availableFromDay: 7,
   },
   {
-    emoji: '💇‍♀️',
+    emoji: '‍️',
     name: 'علاج تساقط الشعر',
     description: 'علاج طبيعي لتساقط الشعر بعد الولادة',
     price: 180,
     availableFromDay: 30,
   },
   {
-    emoji: '🧖‍♀️',
+    emoji: '‍️',
     name: 'عناية بالبشرة للنفاس',
     description: 'ترطيب عميق وتوحيد لون البشرة بعد التغيرات الهرمونية',
     price: 160,
     availableFromDay: 14,
   },
   {
-    emoji: '🌸',
+    emoji: '',
     name: 'إطلالة الخروج الأولى',
     description: 'مكياج ناعم وتصفيفة شعر لأول خروج بعد النفاس',
     price: 250,
@@ -79,14 +79,14 @@ export function PostpartumCareCard({
       {/* Header */}
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          👶
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-purple-700 dark:text-purple-300">
           عناية النفاس
         </h4>
         <p className="text-[10px] text-purple-500 dark:text-purple-400">
           {isNifasComplete
-            ? '🎉 اكتملت الأربعون — ألف مبروك!'
+            ? ' اكتملت الأربعون — ألف مبروك!'
             : `اليوم ${daysSinceBirth} من النفاس — ${40 - daysSinceBirth} يوم متبقي`}
         </p>
       </div>
@@ -114,7 +114,7 @@ export function PostpartumCareCard({
       {/* Services */}
       <div className="mt-3 space-y-2">
         <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          🎀 خدمات النفاس المتاحة
+           خدمات النفاس المتاحة
         </p>
         {SERVICES.map((service) => {
           const isAvailable = daysSinceBirth >= service.availableFromDay;
@@ -169,7 +169,7 @@ export function PostpartumCareCard({
       {/* Traditional wisdom */}
       <div className="mt-3 rounded-xl bg-gradient-to-r from-purple-50 to-rose-50 p-3 dark:from-purple-950 dark:to-rose-950">
         <p className="text-center text-[10px] font-medium text-purple-700 dark:text-purple-300">
-          🤲 &ldquo;الأربعين يوم راحة وتعافي — اعتني بنفسكِ كما تعتنين بطفلكِ&rdquo;
+           &ldquo;الأربعين يوم راحة وتعافي — اعتني بنفسكِ كما تعتنين بطفلكِ&rdquo;
         </p>
       </div>
     </div>

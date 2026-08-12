@@ -9,7 +9,7 @@ export function BeautyPostWorkoutCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🏋️</span>
+        <span className="text-xl">️</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             عناية بعد الرياضة
@@ -21,10 +21,10 @@ export function BeautyPostWorkoutCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧼', text: 'اغسلي وجهك فوراً — العرق يسد المسام' },
-          { emoji: '💧', text: 'ماء بارد — يغلق المسام ويهدئ البشرة' },
-          { emoji: '🧴', text: 'مرطب خفيف — البشرة تمتصه أفضل' },
-          { emoji: '👚', text: 'غيري ملابسك — البكتيريا تتراكم على القماش' },
+          { emoji: '', text: 'اغسلي وجهك فوراً — العرق يسد المسام' },
+          { emoji: '', text: 'ماء بارد — يغلق المسام ويهدئ البشرة' },
+          { emoji: '', text: 'مرطب خفيف — البشرة تمتصه أفضل' },
+          { emoji: '', text: 'غيري ملابسك — البكتيريا تتراكم على القماش' },
         ].map((t, i) => (
           <div
             key={i}

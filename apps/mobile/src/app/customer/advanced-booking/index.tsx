@@ -4,9 +4,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 const REC = [
-  { key: 'WEEKLY', emoji: '📅', label: 'أسبوعي' },
-  { key: 'BIWEEKLY', emoji: '📆', label: 'كل أسبوعين' },
-  { key: 'MONTHLY', emoji: '🗓️', label: 'شهري' },
+  { key: 'WEEKLY', emoji: '', label: 'أسبوعي' },
+  { key: 'BIWEEKLY', emoji: '', label: 'كل أسبوعين' },
+  { key: 'MONTHLY', emoji: '️', label: 'شهري' },
 ];
 
 export default function AdvancedBookingScreen(): JSX.Element {
@@ -55,9 +55,9 @@ export default function AdvancedBookingScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}>🔄 حجز متكرر</Text>
+        <Text style={styles.t}> حجز متكرر</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}>✅</Text>
+          <Text style={styles.re}></Text>
           <Text style={styles.rtt}>تم!</Text>
           <Text style={styles.rcnt}>
             {(result.bookings as any[])?.length ?? occurrences} حجوزات
@@ -77,20 +77,20 @@ export default function AdvancedBookingScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🔄 حجز متكرر</Text>
+      <Text style={styles.t}> حجز متكرر</Text>
       {services.slice(0, 10).map((s: any) => (
         <TouchableOpacity
           key={s.id}
           onPress={() => setSelectedSvc(s.id)}
           style={[styles.sc, selectedSvc === s.id && styles.sca]}
         >
-          <Text style={styles.se}>{(s.emoji as string) ?? '💆‍♀️'}</Text>
+          <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
           <Text style={styles.sn}>
             {((s.titleJson as any)?.ar as string) ?? (s.nameAr as string)}
           </Text>
         </TouchableOpacity>
       ))}
-      <Text style={styles.st}>🔁 التكرار</Text>
+      <Text style={styles.st}> التكرار</Text>
       <View style={styles.rg}>
         {REC.map((r) => (
           <TouchableOpacity
@@ -103,7 +103,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
           </TouchableOpacity>
         ))}
       </View>
-      <Text style={styles.st}>🔢 عدد المرات: {occurrences}</Text>
+      <Text style={styles.st}> عدد المرات: {occurrences}</Text>
       <View style={styles.or}>
         {[2, 4, 6, 8, 12].map((n) => (
           <TouchableOpacity
@@ -120,7 +120,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
         disabled={!selectedSvc}
         style={[styles.cb, !selectedSvc && { opacity: 0.5 }]}
       >
-        <Text style={styles.cbt}>🔄 إنشاء {occurrences} حجوزات</Text>
+        <Text style={styles.cbt}> إنشاء {occurrences} حجوزات</Text>
       </TouchableOpacity>
     </ScrollView>
   );

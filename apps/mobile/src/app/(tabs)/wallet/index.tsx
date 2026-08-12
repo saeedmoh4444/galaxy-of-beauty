@@ -28,7 +28,7 @@ export default function WalletScreen(): JSX.Element {
       errorMessage="فشل تحميل المحفظة"
       onRetry={() => balance.refetch()}
     >
-      <Text style={styles.title}>💰 المحفظة</Text>
+      <Text style={styles.title}> المحفظة</Text>
 
       <View style={styles.balanceCard}>
         <Text style={styles.balanceLabel}>الرصيد المتاح</Text>
@@ -41,7 +41,7 @@ export default function WalletScreen(): JSX.Element {
           </Text>
         )}
         <TouchableOpacity style={styles.topUpBtn}>
-          <Text style={styles.topUpText}>➕ شحن رصيد</Text>
+          <Text style={styles.topUpText}> شحن رصيد</Text>
         </TouchableOpacity>
       </View>
 
@@ -50,14 +50,14 @@ export default function WalletScreen(): JSX.Element {
         <View style={styles.rewardsRow}>
           {loyalty?.data && (
             <View style={styles.rewardCard}>
-              <Text style={styles.rewardEmoji}>⭐</Text>
+              <Text style={styles.rewardEmoji}></Text>
               <Text style={styles.rewardVal}>{loyalty.data.points ?? 0}</Text>
               <Text style={styles.rewardLbl}>نقاط ولاء</Text>
             </View>
           )}
           {cashback?.data && (
             <View style={styles.rewardCard}>
-              <Text style={styles.rewardEmoji}>💰</Text>
+              <Text style={styles.rewardEmoji}></Text>
               <Text style={styles.rewardVal}>
                 {formatCurrency(cashback.data.totalCashback ?? 0)}
               </Text>

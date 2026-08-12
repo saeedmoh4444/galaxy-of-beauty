@@ -22,14 +22,14 @@ export default function BeautyAwardsScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#f59e0b']} />
       }
     >
-      <Text style={styles.t}>🏆 جوائز التجميل</Text>
+      <Text style={styles.t}> جوائز التجميل</Text>
       <Text style={styles.sub}>أفضل الخدمات والفنيات لهذا العام</Text>
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد جوائز</Text>
       ) : (
         items.map((a: Record<string, unknown>, i: number) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.awardEmoji}>{(a.emoji as string) ?? '🏆'}</Text>
+            <Text style={styles.awardEmoji}>{(a.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.awardName}>{a.nameAr as string}</Text>
               <Text style={styles.awardWinner}>{a.winner as string}</Text>

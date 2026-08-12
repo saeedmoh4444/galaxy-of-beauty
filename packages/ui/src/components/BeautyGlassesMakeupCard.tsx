@@ -9,7 +9,7 @@ export function BeautyGlassesMakeupCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">👓</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">مكياج النظارات</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">إطلالة جميلة مع النظارة</p>
@@ -17,10 +17,10 @@ export function BeautyGlassesMakeupCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '👁️', text: 'رموش مرفوعة — لا تلمس العدسات' },
-          { emoji: '✨', text: 'هايلايتر تحت الحاجب — يبرز العين' },
-          { emoji: '🎨', text: 'ظلال مات — ليس لامعاً' },
-          { emoji: '🖌️', text: 'حاجبين مرتبين — الإطار يبرزهما' },
+          { emoji: '️', text: 'رموش مرفوعة — لا تلمس العدسات' },
+          { emoji: '', text: 'هايلايتر تحت الحاجب — يبرز العين' },
+          { emoji: '', text: 'ظلال مات — ليس لامعاً' },
+          { emoji: '️', text: 'حاجبين مرتبين — الإطار يبرزهما' },
         ].map((t, i) => (
           <div
             key={i}

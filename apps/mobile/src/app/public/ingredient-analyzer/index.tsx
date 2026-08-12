@@ -29,7 +29,7 @@ export default function IngredientAnalyzerScreen(): JSX.Element {
       errorMessage="فشل تحليل المكون"
       onRetry={() => result.refetch()}
     >
-      <Text style={styles.title}>🔬 تحليل المكونات</Text>
+      <Text style={styles.title}> تحليل المكونات</Text>
       <View style={styles.inputRow}>
         <TextInput
           style={styles.input}

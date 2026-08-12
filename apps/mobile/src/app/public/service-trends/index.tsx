@@ -37,10 +37,10 @@ export default function ServiceTrendsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📈 اتجاهات الخدمات</Text>
+      <Text style={styles.t}> اتجاهات الخدمات</Text>
       {data.map((s: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.em}>{(s.emoji as string) ?? '📈'}</Text>
+          <Text style={styles.em}>{(s.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>{s.nameAr as string}</Text>
             <Text style={styles.meta}>

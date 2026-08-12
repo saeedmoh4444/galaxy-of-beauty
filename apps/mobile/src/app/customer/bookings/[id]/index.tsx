@@ -43,7 +43,7 @@ export default function BookingDetailScreen(): JSX.Element {
       onRetry={() => detail.refetch()}
     >
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.title}>📅 تفاصيل الحجز</Text>
+        <Text style={styles.title}> تفاصيل الحجز</Text>
         {(data
           ? [
               { label: 'كود الحجز', value: data.bookingCode as string },

@@ -49,7 +49,7 @@ export default function ShopTheLookScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🛍️ تسوقي الإطلالة</Text>
+      <Text style={styles.t}>️ تسوقي الإطلالة</Text>
       <Text style={styles.sub}>تسوقي منتجات مستوحاة من إطلالات الفنانات</Text>
       {looks.length === 0 ? (
         <Text style={styles.e}>لا توجد إطلالات</Text>
@@ -61,18 +61,18 @@ export default function ShopTheLookScreen(): JSX.Element {
                 <Image source={{ uri: l.imageUrl as string }} style={styles.lookImage} />
               ) : (
                 <View style={styles.lookPlaceholder}>
-                  <Text style={{ fontSize: 32 }}>🛍️</Text>
+                  <Text style={{ fontSize: 32 }}>️</Text>
                 </View>
               )}
               <View style={{ flex: 1 }}>
                 <Text style={styles.lookTitle}>{l.titleAr as string}</Text>
-                <Text style={styles.lookBy}>👩‍🎨 {l.technician as string}</Text>
+                <Text style={styles.lookBy}>‍ {l.technician as string}</Text>
               </View>
             </View>
-            <Text style={styles.productsTitle}>🛒 المنتجات</Text>
+            <Text style={styles.productsTitle}> المنتجات</Text>
             {(l.products as any[])?.map((p: any) => (
               <View key={p.id} style={styles.product}>
-                <Text style={styles.prodEmoji}>{(p.emoji as string) ?? '🧴'}</Text>
+                <Text style={styles.prodEmoji}>{(p.emoji as string) ?? ''}</Text>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.prodName}>{p.nameAr as string}</Text>
                   <Text style={styles.prodBrand}>{p.brand as string}</Text>

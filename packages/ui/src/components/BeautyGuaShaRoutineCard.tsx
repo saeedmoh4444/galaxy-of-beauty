@@ -9,7 +9,7 @@ export function BeautyGuaShaRoutineCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💎</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">روتين القواشا</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">تدليك يومي — 5 دقائق فقط</p>
@@ -17,10 +17,10 @@ export function BeautyGuaShaRoutineCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: '1. زيت أو سيروم — لتزلق الأداة على البشرة' },
-          { emoji: '⬆️', text: '2. دائماً للأعلى وللخارج — ضد الجاذبية' },
-          { emoji: '💆', text: '3. 5 تمريرات لكل منطقة — بلطف وليس بقوة' },
-          { emoji: '❄️', text: '4. خزني الحجر في الثلاجة — لانتعاش إضافي' },
+          { emoji: '', text: '1. زيت أو سيروم — لتزلق الأداة على البشرة' },
+          { emoji: '️', text: '2. دائماً للأعلى وللخارج — ضد الجاذبية' },
+          { emoji: '', text: '3. 5 تمريرات لكل منطقة — بلطف وليس بقوة' },
+          { emoji: '️', text: '4. خزني الحجر في الثلاجة — لانتعاش إضافي' },
         ].map((t, i) => (
           <div
             key={i}

@@ -41,14 +41,14 @@ export default function CorporateWellnessScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🏢 عروض الشركات</Text>
+      <Text style={styles.t}> عروض الشركات</Text>
       <Text style={styles.sub}>باقات تجميل للشركات والمؤسسات</Text>
       {plans.length === 0 ? (
         <Text style={styles.e}>لا توجد باقات</Text>
       ) : (
         plans.map((p: any, i: number) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.planEmoji}>{(p.emoji as string) ?? '🏢'}</Text>
+            <Text style={styles.planEmoji}>{(p.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.planName}>{p.nameAr as string}</Text>
               <Text style={styles.planDesc}>{p.descAr as string}</Text>

@@ -18,7 +18,7 @@ export const savingsMilestonesRouter = router({
       z.object({
         name: z.string().min(2).max(100),
         amount: z.number().int().positive(),
-        emoji: z.string().default('💰'),
+        emoji: z.string().default(''),
       }),
     )
     .mutation(async ({ ctx, input }) => {

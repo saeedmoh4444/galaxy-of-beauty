@@ -9,7 +9,7 @@ export function BeautyAfterLaserCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">⚡</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-red-700 dark:text-red-300">بعد الليزر</h4>
           <p className="text-[10px] text-red-500 dark:text-red-400">عناية خاصة بعد جلسة الليزر</p>
@@ -17,10 +17,10 @@ export function BeautyAfterLaserCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '☀️', text: 'تجنبي الشمس — أسبوع كامل بعد الجلسة' },
-          { emoji: '🧴', text: 'SPF 50+ — ضرورة مطلقة' },
-          { emoji: '🚫', text: 'لا تقشري — لا منتجات قوية 5 أيام' },
-          { emoji: '💧', text: 'مرطب لطيف — ألوفيرا أو بانثينول' },
+          { emoji: '️', text: 'تجنبي الشمس — أسبوع كامل بعد الجلسة' },
+          { emoji: '', text: 'SPF 50+ — ضرورة مطلقة' },
+          { emoji: '', text: 'لا تقشري — لا منتجات قوية 5 أيام' },
+          { emoji: '', text: 'مرطب لطيف — ألوفيرا أو بانثينول' },
         ].map((t, i) => (
           <div
             key={i}

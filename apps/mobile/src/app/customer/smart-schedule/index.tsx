@@ -51,14 +51,14 @@ export default function SmartScheduleScreen(): JSX.Element {
           />
         }
       >
-        <Text style={styles.t}>📅 جدولة ذكية</Text>
+        <Text style={styles.t}> جدولة ذكية</Text>
         {services.slice(0, 10).map((s: any) => (
           <TouchableOpacity
             key={s.id}
             onPress={() => findSlots(s.id)}
             style={[styles.sc, selectedSvc === s.id && styles.sca]}
           >
-            <Text style={styles.se}>{(s.emoji as string) ?? '💆‍♀️'}</Text>
+            <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
             <Text style={styles.sn}>
               {((s.titleJson as any)?.ar as string) ?? (s.nameAr as string)}
             </Text>
@@ -69,7 +69,7 @@ export default function SmartScheduleScreen(): JSX.Element {
   if (searching) return <SkeletonList count={4} />;
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>📅 جدولة ذكية</Text>
+      <Text style={styles.t}> جدولة ذكية</Text>
       {(slots.suggestions as any[])?.map((s: any, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.rk}>
@@ -90,7 +90,7 @@ export default function SmartScheduleScreen(): JSX.Element {
               })}
             </Text>
             <Text style={styles.sr}>
-              👩‍🎨 #{s.technicianId as number} · ⭐ {s.rating as number}
+              ‍ #{s.technicianId as number} ·  {s.rating as number}
             </Text>
           </View>
           <TouchableOpacity style={styles.bb}>
@@ -105,7 +105,7 @@ export default function SmartScheduleScreen(): JSX.Element {
         }}
         style={styles.back}
       >
-        <Text style={styles.backt}>🔄 تغيير الخدمة</Text>
+        <Text style={styles.backt}> تغيير الخدمة</Text>
       </TouchableOpacity>
     </ScrollView>
   );

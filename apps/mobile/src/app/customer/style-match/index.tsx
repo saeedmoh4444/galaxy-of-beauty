@@ -18,18 +18,18 @@ export default function StyleMatchScreen(): JSX.Element {
   if (loading) return <SkeletonList count={3} />;
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>👗 مطابقة الأسلوب</Text>
+      <Text style={styles.t}> مطابقة الأسلوب</Text>
       {!result ? (
         <View style={styles.centered}>
-          <Text style={styles.emoji}>✨</Text>
+          <Text style={styles.emoji}></Text>
           <Text style={styles.hint}>اكتشفي أسلوبكِ المثالي</Text>
           <TouchableOpacity onPress={match} style={styles.btn}>
-            <Text style={styles.bt}>✨ حللي أسلوبي</Text>
+            <Text style={styles.bt}> حللي أسلوبي</Text>
           </TouchableOpacity>
         </View>
       ) : (
         <View style={styles.card}>
-          <Text style={styles.se}>{(result.styleEmoji as string) ?? '✨'}</Text>
+          <Text style={styles.se}>{(result.styleEmoji as string) ?? ''}</Text>
           <Text style={styles.sn}>{result.styleNameAr as string}</Text>
           <Text style={styles.sd}>{result.descriptionAr as string}</Text>
         </View>

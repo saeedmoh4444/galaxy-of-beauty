@@ -25,7 +25,7 @@ export const technicianSpotlightRouter = router({
         technicianId: z.number().int().positive(),
         story: z.string().min(10).max(2000),
         achievement: z.string().max(500),
-        emoji: z.string().default('👩‍🎨'),
+        emoji: z.string().default('‍'),
       }),
     )
     .mutation(async ({ input }) =>

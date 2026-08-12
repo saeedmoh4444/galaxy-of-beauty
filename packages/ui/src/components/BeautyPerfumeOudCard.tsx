@@ -17,10 +17,10 @@ export function BeautyPerfumeOudCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💧', text: 'ضعيه على نقاط النبض — قطرة صغيرة تكفي' },
-          { emoji: '🌡️', text: 'دفء الجسم — يفوح العطر طوال اليوم' },
-          { emoji: '🇸🇦', text: 'العود السعودي — من أفخر الأنواع' },
-          { emoji: '💎', text: 'استثمار — العود الحقيقي ثمين ويدوم' },
+          { emoji: '', text: 'ضعيه على نقاط النبض — قطرة صغيرة تكفي' },
+          { emoji: '️', text: 'دفء الجسم — يفوح العطر طوال اليوم' },
+          { emoji: '', text: 'العود السعودي — من أفخر الأنواع' },
+          { emoji: '', text: 'استثمار — العود الحقيقي ثمين ويدوم' },
         ].map((t, i) => (
           <div
             key={i}

@@ -9,7 +9,7 @@ export function BeautyOverExfoliatingCard({ className = '' }: { className?: stri
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🛑</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">
             الإفراط في التقشير
@@ -19,10 +19,10 @@ export function BeautyOverExfoliatingCard({ className = '' }: { className?: stri
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🔴', text: 'علامات: احمرار، حرقان، لمعان زائد، حساسية' },
-          { emoji: '🛑', text: 'توقفي فوراً — كل المنتجات النشطة' },
-          { emoji: '🧴', text: 'العلاج: مرطب بسيط + سيراميد فقط' },
-          { emoji: '📅', text: 'أسبوعين راحة — ثم عودي تدريجياً' },
+          { emoji: '', text: 'علامات: احمرار، حرقان، لمعان زائد، حساسية' },
+          { emoji: '', text: 'توقفي فوراً — كل المنتجات النشطة' },
+          { emoji: '', text: 'العلاج: مرطب بسيط + سيراميد فقط' },
+          { emoji: '', text: 'أسبوعين راحة — ثم عودي تدريجياً' },
         ].map((t, i) => (
           <div
             key={i}

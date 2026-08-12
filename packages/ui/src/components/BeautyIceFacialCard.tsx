@@ -9,7 +9,7 @@ export function BeautyIceFacialCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🧊</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">مكعبات الثلج للوجه</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">سر إشراقة الصباح</p>
@@ -17,10 +17,10 @@ export function BeautyIceFacialCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '✨', text: 'يقلص المسام — بشرة أنعم فوراً' },
-          { emoji: '🌅', text: 'صباحاً — يقلل الانتفاخ تحت العين' },
-          { emoji: '🌸', text: 'ثلج ماء الورد — مهدئ للبشرة' },
-          { emoji: '⏱️', text: '30 ثانية لكل منطقة — لا تطيلي' },
+          { emoji: '', text: 'يقلص المسام — بشرة أنعم فوراً' },
+          { emoji: '', text: 'صباحاً — يقلل الانتفاخ تحت العين' },
+          { emoji: '', text: 'ثلج ماء الورد — مهدئ للبشرة' },
+          { emoji: '️', text: '30 ثانية لكل منطقة — لا تطيلي' },
         ].map((t, i) => (
           <div
             key={i}

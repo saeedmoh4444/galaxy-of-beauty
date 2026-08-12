@@ -9,7 +9,7 @@ export function BeautyHairMistakesCard({ className = '' }: { className?: string 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💇</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">أخطاء الشعر</h4>
           <p className="text-[10px] text-orange-500 dark:text-orange-400">
@@ -19,10 +19,10 @@ export function BeautyHairMistakesCard({ className = '' }: { className?: string 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🔥', text: 'استخدام الحرارة بدون واقي — تلف دائم للشعر' },
-          { emoji: '💆', text: 'وضع البلسم على الجذور — يسد المسام ويثقل الشعر' },
+          { emoji: '', text: 'استخدام الحرارة بدون واقي — تلف دائم للشعر' },
+          { emoji: '', text: 'وضع البلسم على الجذور — يسد المسام ويثقل الشعر' },
           { emoji: '🪥', text: 'تمشيط الشعر المبلل بقوة — يتكسر بسهولة' },
-          { emoji: '💤', text: 'النوم بشعر مبلل — فطريات وتقصف' },
+          { emoji: '', text: 'النوم بشعر مبلل — فطريات وتقصف' },
         ].map((t, i) => (
           <div
             key={i}

@@ -27,7 +27,7 @@ export default function IngredientSubScreen(): JSX.Element {
       errorMessage="فشل البحث عن بدائل"
       onRetry={() => result.refetch()}
     >
-      <Text style={styles.title}>🔄 بدائل المكونات</Text>
+      <Text style={styles.title}> بدائل المكونات</Text>
       <View style={styles.inputRow}>
         <TextInput
           style={styles.input}

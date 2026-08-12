@@ -22,9 +22,9 @@ export function BeautyBreathingCard({ className = '' }: BeautyBreathingCardProps
       <div className="mt-3 space-y-2">
         {[
           { emoji: '🫁', step: 'شهيق من الأنف', count: '4 ثوانٍ' },
-          { emoji: '✋', step: 'احبسي النفس', count: '7 ثوانٍ' },
-          { emoji: '😮', step: 'زفير من الفم', count: '8 ثوانٍ' },
-          { emoji: '🔄', step: 'كرري 4 مرات', count: 'دقيقتان' },
+          { emoji: '', step: 'احبسي النفس', count: '7 ثوانٍ' },
+          { emoji: '', step: 'زفير من الفم', count: '8 ثوانٍ' },
+          { emoji: '', step: 'كرري 4 مرات', count: 'دقيقتان' },
         ].map((s, i) => (
           <div
             key={i}

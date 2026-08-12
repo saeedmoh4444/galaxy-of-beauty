@@ -15,7 +15,7 @@ interface FloatingActionButtonProps {
 export function FloatingActionButton({
   label,
   onClick,
-  icon = '✨',
+  icon = '',
   className = '',
 }: FloatingActionButtonProps): JSX.Element {
   return (

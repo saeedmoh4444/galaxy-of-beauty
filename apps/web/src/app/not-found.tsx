@@ -11,7 +11,7 @@ export default function NotFound(): JSX.Element {
         alt="جالكسي بيوتي"
         className="mb-8 h-20 w-20 rounded-2xl object-cover shadow-lg opacity-60"
       />
-      <div className="mb-4 text-7xl">🔍</div>
+      <div className="mb-4 text-7xl"></div>
       <h1 className="text-4xl font-extrabold text-gray-900 dark:text-gray-100">٤٠٤</h1>
       <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">
         عذراً، الصفحة التي تبحثين عنها غير موجودة

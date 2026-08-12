@@ -37,14 +37,14 @@ export default function LookOfTheDayScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🌟 إطلالة اليوم</Text>
+      <Text style={styles.t}> إطلالة اليوم</Text>
       {looks.map((l: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.le}>{(l.emoji as string) ?? '✨'}</Text>
+          <Text style={styles.le}>{(l.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.lt}>{l.titleAr as string}</Text>
             <Text style={styles.ld}>{l.descAr as string}</Text>
-            <Text style={styles.lb}>👩‍🎨 {l.technician as string}</Text>
+            <Text style={styles.lb}>‍ {l.technician as string}</Text>
           </View>
         </View>
       ))}

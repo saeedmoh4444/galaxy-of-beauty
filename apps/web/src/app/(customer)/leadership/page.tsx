@@ -33,7 +33,7 @@ export default function LeadershipPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle
-          title="👑 القيادة والأثر"
+          title=" القيادة والأثر"
           subtitle="معاً نبني مستقبل المرأة السعودية في التجميل"
         />
 
@@ -86,7 +86,7 @@ export default function LeadershipPage(): JSX.Element {
                 charity={{
                   name: 'جمعية حماية الأسرة',
                   cause: 'دعم الناجيات من العنف الأسري',
-                  emoji: '🤲',
+                  emoji: '',
                 }}
                 raised={45000}
               />
@@ -125,10 +125,10 @@ export default function LeadershipPage(): JSX.Element {
                 {
                   name: 'أفضل منصة تجميل نسائية',
                   year: '2026',
-                  emoji: '🏆',
+                  emoji: '',
                   description: 'ملتقى المرأة في الجمال',
                 },
-                { name: 'أفضل مبادرة تمكين', year: '2025', emoji: '🌟' },
+                { name: 'أفضل مبادرة تمكين', year: '2025', emoji: '' },
               ]}
             />
             <AlumniNetworkCard graduates={234} />

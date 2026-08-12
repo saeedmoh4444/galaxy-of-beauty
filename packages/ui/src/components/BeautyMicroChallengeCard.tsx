@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W6: Education & Empowerment.
  *
  * Usage:
- *   <BeautyMicroChallengeCard challenge={{ title: 'تحدي الترطيب', emoji: '💧', duration: '5 دقائق' }} />
+ *   <BeautyMicroChallengeCard challenge={{ title: 'تحدي الترطيب', emoji: '', duration: '5 دقائق' }} />
  */
 
 interface MicroChallenge {
@@ -44,10 +44,10 @@ export function BeautyMicroChallengeCard({
             {challenge.title}
           </h4>
           <p className="text-[10px] text-text-tertiary dark:text-gray-500">
-            ⏱️ {challenge.duration}
+            ️ {challenge.duration}
           </p>
         </div>
-        {challenge.completed && <span className="text-lg shrink-0">✅</span>}
+        {challenge.completed && <span className="text-lg shrink-0"></span>}
       </div>
       <div className="mt-3 flex gap-2">
         <button
@@ -55,7 +55,7 @@ export function BeautyMicroChallengeCard({
           onClick={onComplete}
           className="flex-1 rounded-lg bg-teal-600 py-2 text-[10px] font-bold text-white hover:bg-teal-700 active:scale-[0.98] transition-all"
         >
-          ✅ أنجزتها!
+           أنجزتها!
         </button>
         <button
           type="button"

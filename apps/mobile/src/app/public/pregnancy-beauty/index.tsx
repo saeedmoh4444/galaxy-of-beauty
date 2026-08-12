@@ -4,7 +4,7 @@ import { useState } from 'react';
 const TRIMESTERS = [
   {
     key: 'first',
-    emoji: '🌱',
+    emoji: '',
     name: 'الأول',
     weeks: '1-13',
     color: '#10b981',
@@ -14,7 +14,7 @@ const TRIMESTERS = [
   },
   {
     key: 'second',
-    emoji: '🌸',
+    emoji: '',
     name: 'الثاني',
     weeks: '14-26',
     color: '#8b5cf6',
@@ -24,7 +24,7 @@ const TRIMESTERS = [
   },
   {
     key: 'third',
-    emoji: '🌺',
+    emoji: '',
     name: 'الثالث',
     weeks: '27-40',
     color: '#ec4899',
@@ -45,7 +45,7 @@ export default function PregnancyBeautyScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>🤰 جمال الحامل</Text>
+      <Text style={styles.t}> جمال الحامل</Text>
       <Text style={styles.sub}>خدمات آمنة لكل مرحلة من الحمل</Text>
 
       <View style={styles.tabs}>
@@ -66,7 +66,7 @@ export default function PregnancyBeautyScreen(): JSX.Element {
       </View>
 
       <View style={[styles.card, { borderColor: t.color }]}>
-        <Text style={styles.cardTitle}>💡 نصائح</Text>
+        <Text style={styles.cardTitle}> نصائح</Text>
         {t.tips.map((tip, i) => (
           <View key={i} style={styles.row}>
             <Text style={styles.bullet}>•</Text>
@@ -76,22 +76,22 @@ export default function PregnancyBeautyScreen(): JSX.Element {
       </View>
 
       <View style={styles.card}>
-        <Text style={[styles.cardTitle, { color: '#059669' }]}>✅ آمن</Text>
+        <Text style={[styles.cardTitle, { color: '#059669' }]}> آمن</Text>
         <View style={styles.grid}>
           {t.safe.map((s, i) => (
             <View key={i} style={styles.chip}>
-              <Text style={styles.chipText}>✨ {s}</Text>
+              <Text style={styles.chipText}> {s}</Text>
             </View>
           ))}
         </View>
       </View>
 
       <View style={styles.card}>
-        <Text style={[styles.cardTitle, { color: '#dc2626' }]}>🚫 تجنبي</Text>
+        <Text style={[styles.cardTitle, { color: '#dc2626' }]}> تجنبي</Text>
         <View style={styles.grid}>
           {t.avoid.map((s, i) => (
             <View key={i} style={[styles.chip, styles.chipAvoid]}>
-              <Text style={[styles.chipText, { color: '#dc2626' }]}>⚠️ {s}</Text>
+              <Text style={[styles.chipText, { color: '#dc2626' }]}> {s}</Text>
             </View>
           ))}
         </View>

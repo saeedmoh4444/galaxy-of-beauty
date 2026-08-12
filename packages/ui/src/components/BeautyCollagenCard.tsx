@@ -9,7 +9,7 @@ export function BeautyCollagenCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">✨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">الكولاجين</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">
@@ -19,10 +19,10 @@ export function BeautyCollagenCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🥤', text: 'كولاجين سائل — أسرع امتصاصاً من الحبوب' },
-          { emoji: '🍊', text: 'مع فيتامين C — ضروري لامتصاص الكولاجين' },
-          { emoji: '📅', text: 'بعد 25 سنة — الإنتاج الطبيعي يبدأ بالانخفاض' },
-          { emoji: '🦴', text: 'يفيد البشرة، الشعر، الأظافر والمفاصل' },
+          { emoji: '', text: 'كولاجين سائل — أسرع امتصاصاً من الحبوب' },
+          { emoji: '', text: 'مع فيتامين C — ضروري لامتصاص الكولاجين' },
+          { emoji: '', text: 'بعد 25 سنة — الإنتاج الطبيعي يبدأ بالانخفاض' },
+          { emoji: '', text: 'يفيد البشرة، الشعر، الأظافر والمفاصل' },
         ].map((t, i) => (
           <div
             key={i}

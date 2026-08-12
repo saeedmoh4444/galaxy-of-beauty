@@ -18,7 +18,7 @@ interface SkinJournalCardProps {
   className?: string;
 }
 
-const MOODS = ['✨', '😊', '😐', '😔', '🌟'];
+const MOODS = ['', '', '', '', ''];
 
 export function SkinJournalCard({
   entries,
@@ -37,7 +37,7 @@ export function SkinJournalCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-2xl" aria-hidden="true">
-            📖
+            
           </span>
           <div>
             <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">يوميات بشرتي</h4>
@@ -53,7 +53,7 @@ export function SkinJournalCard({
           <p className="text-[9px] text-purple-600 dark:text-purple-400">مدخل</p>
         </div>
         <div className="rounded-xl bg-amber-50 p-2.5 text-center dark:bg-amber-950">
-          <p className="text-lg font-bold text-amber-800 dark:text-amber-200">🔥 {streak}</p>
+          <p className="text-lg font-bold text-amber-800 dark:text-amber-200"> {streak}</p>
           <p className="text-[9px] text-amber-600 dark:text-amber-400">يوم متتالي</p>
         </div>
         <div className="rounded-xl bg-pink-50 p-2.5 text-center dark:bg-pink-950">
@@ -85,11 +85,11 @@ export function SkinJournalCard({
         onClick={onAddEntry}
         className="mt-3 w-full rounded-xl bg-purple-600 py-2.5 text-xs font-bold text-white hover:bg-purple-700 active:scale-[0.98] transition-all"
       >
-        ✍️ أضيفي مدخلاً جديداً
+        ️ أضيفي مدخلاً جديداً
       </button>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        📖 تتبعي بشرتكِ يومياً — التغييرات الصغيرة تصنع فرقاً كبيراً
+         تتبعي بشرتكِ يومياً — التغييرات الصغيرة تصنع فرقاً كبيراً
       </p>
     </div>
   );

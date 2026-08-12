@@ -9,7 +9,7 @@ export function BeautyMakeupNightCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌙</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">مكياج السهرة</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">إطلالة جريئة للمناسبات</p>
@@ -17,10 +17,10 @@ export function BeautyMakeupNightCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🎨', text: 'فاونديشن كامل التغطية — يتحمل التصوير' },
-          { emoji: '🌑', text: 'سموكي آيز — جريء وجذاب' },
-          { emoji: '✨', text: 'هايلايتر — على أعلى نقاط الوجه' },
-          { emoji: '💄', text: 'أحمر شفاه مطفي — يدوم طوال السهرة' },
+          { emoji: '', text: 'فاونديشن كامل التغطية — يتحمل التصوير' },
+          { emoji: '', text: 'سموكي آيز — جريء وجذاب' },
+          { emoji: '', text: 'هايلايتر — على أعلى نقاط الوجه' },
+          { emoji: '', text: 'أحمر شفاه مطفي — يدوم طوال السهرة' },
         ].map((t, i) => (
           <div
             key={i}

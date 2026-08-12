@@ -80,11 +80,11 @@ export function ToastProvider({ children }: { children: ReactNode }): JSX.Elemen
           >
             <span aria-hidden="true">
               {toast.type === 'success'
-                ? '✅'
+                ? ''
                 : toast.type === 'error'
-                  ? '❌'
+                  ? ''
                   : toast.type === 'warning'
-                    ? '⚠️'
+                    ? ''
                     : 'ℹ️'}
             </span>
             <span className="sr-only">
@@ -102,7 +102,7 @@ export function ToastProvider({ children }: { children: ReactNode }): JSX.Elemen
               className="ml-2 opacity-70 hover:opacity-100"
               aria-label="إغلاق"
             >
-              ✕
+              
             </button>
           </div>
         ))}

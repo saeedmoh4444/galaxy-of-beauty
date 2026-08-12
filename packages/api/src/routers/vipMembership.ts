@@ -9,7 +9,7 @@ const TIERS = [
   {
     key: 'silver',
     nameAr: 'فضية',
-    emoji: '🥈',
+    emoji: '',
     price: 0,
     benefits: ['خصم ٥٪ على الخدمات', 'هدية عيد ميلاد', 'نقاط ولاء ١x'],
     color: 'from-gray-300 to-gray-400',
@@ -17,7 +17,7 @@ const TIERS = [
   {
     key: 'gold',
     nameAr: 'ذهبية',
-    emoji: '🥇',
+    emoji: '',
     price: 199,
     benefits: [
       'خصم ١٥٪ على الخدمات',
@@ -31,7 +31,7 @@ const TIERS = [
   {
     key: 'platinum',
     nameAr: 'بلاتينية',
-    emoji: '💎',
+    emoji: '',
     price: 499,
     benefits: [
       'خصم ٢٥٪ على الخدمات',

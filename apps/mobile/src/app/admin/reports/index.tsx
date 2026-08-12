@@ -45,8 +45,8 @@ export default function AdminReportsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📊 التقارير</Text>
-      {topTechs.length > 0 && <Text style={styles.st}>👩‍🎨 أفضل الفنيات</Text>}
+      <Text style={styles.t}> التقارير</Text>
+      {topTechs.length > 0 && <Text style={styles.st}>‍ أفضل الفنيات</Text>}
       {topTechs.map((t: any, i: number) => (
         <View key={i} style={styles.row}>
           <Text style={styles.r}>#{i + 1}</Text>
@@ -54,7 +54,7 @@ export default function AdminReportsScreen(): JSX.Element {
           <Text style={styles.s}>{t.bookings as number} حجز</Text>
         </View>
       ))}
-      {byService.length > 0 && <Text style={styles.st}>💄 حسب الخدمة</Text>}
+      {byService.length > 0 && <Text style={styles.st}> حسب الخدمة</Text>}
       {byService.map((s: any, i: number) => (
         <View key={i} style={styles.row}>
           <Text style={styles.r}>#{i + 1}</Text>

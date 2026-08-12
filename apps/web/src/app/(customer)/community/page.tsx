@@ -76,7 +76,7 @@ export default function CommunityPage(): JSX.Element {
                           name: c.name,
                           topic: c.topic || 'skincare',
                           members: c.members ?? 0,
-                          cover: c.cover ?? '🌸',
+                          cover: c.cover ?? '',
                           city: c.city,
                           groupDiscount: c.groupDiscount,
                         }}
@@ -110,8 +110,8 @@ export default function CommunityPage(): JSX.Element {
                 />
                 <InspirationBoardCard
                   pins={[
-                    { emoji: '💇', title: 'تسريحة ناعمة', savedBy: 'نورة' },
-                    { emoji: '💄', title: 'مكياج السهرة', savedBy: 'مها' },
+                    { emoji: '', title: 'تسريحة ناعمة', savedBy: 'نورة' },
+                    { emoji: '', title: 'مكياج السهرة', savedBy: 'مها' },
                   ]}
                 />
               </div>
@@ -133,7 +133,7 @@ export default function CommunityPage(): JSX.Element {
                 }}
               />
               <MentorBadge />
-              <BeautyPenPalCard match={{ city: 'جدة', interest: 'مكياج', emoji: '💄' }} />
+              <BeautyPenPalCard match={{ city: 'جدة', interest: 'مكياج', emoji: '' }} />
               <HijabiBeautyCard />
             </div>
           </div>

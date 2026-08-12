@@ -9,7 +9,7 @@ export function BeautyBabyBluesCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💙</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">
             عناية الأم بعد الولادة
@@ -20,9 +20,9 @@ export function BeautyBabyBluesCard({ className = '' }: { className?: string }):
       <div className="mt-3 space-y-1">
         {[
           { emoji: '🪞', text: '5 دقائق لكِ — غسل وجه وتنفس عميق' },
-          { emoji: '👯', text: 'لا تنعزلي — تحدثي مع صديقة أو أخت' },
+          { emoji: '', text: 'لا تنعزلي — تحدثي مع صديقة أو أخت' },
           { emoji: '🩺', text: 'اكتئاب ما بعد الولادة — ليس ضعفاً' },
-          { emoji: '💖', text: 'أنتِ أم رائعة — لا تقسي على نفسكِ' },
+          { emoji: '', text: 'أنتِ أم رائعة — لا تقسي على نفسكِ' },
         ].map((t, i) => (
           <div
             key={i}

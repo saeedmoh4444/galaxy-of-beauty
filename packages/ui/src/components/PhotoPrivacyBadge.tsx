@@ -21,28 +21,28 @@ interface PrivacyConfig {
 
 const PRIVACY: Record<PrivacyLevel, PrivacyConfig> = {
   PUBLIC: {
-    emoji: '🌐',
+    emoji: '',
     label: 'عام',
     description: 'ظاهرة في المعرض العام',
     colorClass:
       'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800',
   },
   TECHNICIAN_ONLY: {
-    emoji: '👩‍🎨',
+    emoji: '‍',
     label: 'للخبيرة فقط',
     description: 'لا تظهر إلا للخبيرة المعتمدة',
     colorClass:
       'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800',
   },
   PRIVATE: {
-    emoji: '🔒',
+    emoji: '',
     label: 'خاصة',
     description: 'لكِ فقط — غير مرئية لأحد',
     colorClass:
       'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-800',
   },
   VIEW_ONCE: {
-    emoji: '👁️',
+    emoji: '️',
     label: 'مرة واحدة',
     description: 'تختفي بعد مشاهدتها',
     colorClass:
@@ -110,7 +110,7 @@ export function PhotoPrivacyBadge({
           )}
         >
           <span className="text-[10px]" aria-hidden="true">
-            {isExpiringSoon ? '⚠️' : '🗓️'}
+            {isExpiringSoon ? '' : '️'}
           </span>
           <span
             className={cn(
@@ -127,7 +127,7 @@ export function PhotoPrivacyBadge({
       {!hasExpiry && level !== 'VIEW_ONCE' && (
         <div className="flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 dark:bg-black/20">
           <span className="text-[10px]" aria-hidden="true">
-            ♾️
+            ️
           </span>
           <span className="text-[10px] font-medium opacity-70">لا تنتهي</span>
         </div>

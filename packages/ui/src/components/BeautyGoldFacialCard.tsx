@@ -9,7 +9,7 @@ export function BeautyGoldFacialCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">👑</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">فيشل الذهب</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">
@@ -19,10 +19,10 @@ export function BeautyGoldFacialCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '✨', text: 'رقائق ذهب حقيقية — توضع على الوجه' },
-          { emoji: '💫', text: 'يحسن مرونة البشرة — يبطئ الشيخوخة' },
-          { emoji: '🌟', text: 'يعكس الضوء — بشرة متوهجة فوراً' },
-          { emoji: '💰', text: 'فاخر — للمناسبات الخاصة' },
+          { emoji: '', text: 'رقائق ذهب حقيقية — توضع على الوجه' },
+          { emoji: '', text: 'يحسن مرونة البشرة — يبطئ الشيخوخة' },
+          { emoji: '', text: 'يعكس الضوء — بشرة متوهجة فوراً' },
+          { emoji: '', text: 'فاخر — للمناسبات الخاصة' },
         ].map((t, i) => (
           <div
             key={i}

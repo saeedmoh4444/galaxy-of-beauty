@@ -22,7 +22,7 @@ export default function BeautyEventsPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="🎉 المناسبات" subtitle="احتفلي بكل لحظة جميلة" />
+        <PageTitle title=" المناسبات" subtitle="احتفلي بكل لحظة جميلة" />
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
             <BeautySeasonalLookbookCard season="eid" />

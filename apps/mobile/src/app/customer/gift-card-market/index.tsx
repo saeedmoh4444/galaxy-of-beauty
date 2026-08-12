@@ -40,17 +40,17 @@ export default function GiftCardMarketScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>💳 سوق البطاقات</Text>
+      <Text style={styles.t}> سوق البطاقات</Text>
       <View style={styles.grid}>
         {listings.map((l: any) => (
           <View key={l.id} style={styles.card}>
-            <Text style={styles.ce}>🎁</Text>
+            <Text style={styles.ce}></Text>
             <Text style={styles.cv}>{(l.value as number)?.toLocaleString()} ر.س</Text>
             <Text style={styles.op}>{(l.value as number)?.toLocaleString()}</Text>
             <Text style={styles.sp}>{(l.sellingPrice as number)?.toLocaleString()} ر.س</Text>
             <Text style={styles.db}>وفر {l.discount as number}%</Text>
             <TouchableOpacity onPress={() => buy(l.id as number)} style={styles.bb}>
-              <Text style={styles.bt}>💳 شراء</Text>
+              <Text style={styles.bt}> شراء</Text>
             </TouchableOpacity>
           </View>
         ))}

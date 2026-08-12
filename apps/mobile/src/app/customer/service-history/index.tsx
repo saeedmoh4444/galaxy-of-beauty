@@ -25,7 +25,7 @@ export default function ServiceHistoryScreen(): JSX.Element {
       emptyDescription="ستظهر خدماتكِ السابقة هنا"
       onRetry={() => bookings.refetch()}
     >
-      <Text style={styles.title}>📋 سجل الخدمات</Text>
+      <Text style={styles.title}> سجل الخدمات</Text>
       <FlatList
         data={data as any[]}
         keyExtractor={(_, i) => String(i)}

@@ -25,13 +25,13 @@ const VARIANTS = {
     bg: 'bg-green-50 dark:bg-green-950',
     border: 'border-green-200 dark:border-green-800',
     text: 'text-green-700 dark:text-green-300',
-    icon: '✅',
+    icon: '',
   },
   warning: {
     bg: 'bg-amber-50 dark:bg-amber-950',
     border: 'border-amber-200 dark:border-amber-800',
     text: 'text-amber-700 dark:text-amber-300',
-    icon: '⚠️',
+    icon: '',
   },
 };
 
@@ -57,7 +57,7 @@ export function Alert({
           onClick={() => setDismissed(true)}
           className="text-current opacity-50 hover:opacity-100"
         >
-          ✕
+          
         </button>
       ) : null}
     </div>

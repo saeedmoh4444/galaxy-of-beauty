@@ -13,7 +13,7 @@ export function BeautySkincareVitaminCCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🍊</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">فيتامين سي</h4>
           <p className="text-[10px] text-orange-500 dark:text-orange-400">مضاد الأكسدة الأقوى</p>
@@ -21,10 +21,10 @@ export function BeautySkincareVitaminCCard({
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '☀️', text: 'صباحاً — قبل واقي الشمس' },
-          { emoji: '✨', text: 'يفتح التصبغات ويوحد اللون' },
-          { emoji: '🛡️', text: 'يعزز حماية واقي الشمس' },
-          { emoji: '🧪', text: 'L-Ascorbic Acid — أقوى صيغة' },
+          { emoji: '️', text: 'صباحاً — قبل واقي الشمس' },
+          { emoji: '', text: 'يفتح التصبغات ويوحد اللون' },
+          { emoji: '️', text: 'يعزز حماية واقي الشمس' },
+          { emoji: '', text: 'L-Ascorbic Acid — أقوى صيغة' },
         ].map((t, i) => (
           <div
             key={i}

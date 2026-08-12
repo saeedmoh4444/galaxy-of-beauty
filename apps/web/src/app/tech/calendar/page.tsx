@@ -26,7 +26,7 @@ export default function TechCalendarPage(): JSX.Element {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-xl dark:bg-green-900">
-                  📅
+                  
                 </div>
                 <div>
                   <p className="font-semibold text-green-700 dark:text-green-300">متصل</p>
@@ -61,7 +61,7 @@ export default function TechCalendarPage(): JSX.Element {
           <Card>
             <div className="space-y-4 text-center">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-surface-muted text-3xl dark:bg-gray-800">
-                📅
+                
               </div>
               <h2 className="text-lg font-semibold">ربط تقويم قوقل</h2>
               <p className="text-sm text-text-secondary">

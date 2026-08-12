@@ -9,7 +9,7 @@ const VIDEOS = [
     category: 'makeup',
     thumbnail: '',
     views: 3200,
-    emoji: '👰',
+    emoji: '',
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const VIDEOS = [
     category: 'makeup',
     thumbnail: '',
     views: 1800,
-    emoji: '🧹',
+    emoji: '',
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ const VIDEOS = [
     category: 'salon',
     thumbnail: '',
     views: 4500,
-    emoji: '🏠',
+    emoji: '',
   },
   {
     id: 4,
@@ -39,7 +39,7 @@ const VIDEOS = [
     category: 'unboxing',
     thumbnail: '',
     views: 2100,
-    emoji: '📦',
+    emoji: '',
   },
   {
     id: 5,
@@ -49,7 +49,7 @@ const VIDEOS = [
     category: 'shopping',
     thumbnail: '',
     views: 2800,
-    emoji: '🛍️',
+    emoji: '️',
   },
 ];
 

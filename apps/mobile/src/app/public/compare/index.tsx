@@ -48,7 +48,7 @@ export default function CompareScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>⚖️ مقارنة الخدمات</Text>
+      <Text style={styles.t}>️ مقارنة الخدمات</Text>
       <Text style={styles.sub}>اختاري حتى ٣ خدمات للمقارنة</Text>
       <View style={styles.grid}>
         {services.map((s: any) => {
@@ -59,7 +59,7 @@ export default function CompareScreen(): JSX.Element {
               onPress={() => toggle(s.id)}
               style={[styles.chip, isSel && styles.chipActive]}
             >
-              <Text style={styles.chipEmoji}>{(s.emoji as string) ?? '💆‍♀️'}</Text>
+              <Text style={styles.chipEmoji}>{(s.emoji as string) ?? '‍️'}</Text>
               <Text style={[styles.chipName, isSel && styles.chipNameActive]}>
                 {s.nameAr as string}
               </Text>
@@ -70,16 +70,16 @@ export default function CompareScreen(): JSX.Element {
       </View>
       {compareItems.length > 0 && (
         <View style={styles.table}>
-          <Text style={styles.tableTitle}>📊 المقارنة</Text>
+          <Text style={styles.tableTitle}> المقارنة</Text>
           {compareItems.map((s: any) => (
             <View key={s.id} style={styles.compareCard}>
               <Text style={styles.cTitle}>{s.nameAr as string}</Text>
               <View style={styles.cRow}>
-                <Text style={styles.cLabel}>💰</Text>
+                <Text style={styles.cLabel}></Text>
                 <Text style={styles.cVal}>{(s.price as number)?.toLocaleString()} ر.س</Text>
               </View>
               <View style={styles.cRow}>
-                <Text style={styles.cLabel}>⏱️</Text>
+                <Text style={styles.cLabel}>️</Text>
                 <Text style={styles.cVal}>{s.duration as string}</Text>
               </View>
             </View>

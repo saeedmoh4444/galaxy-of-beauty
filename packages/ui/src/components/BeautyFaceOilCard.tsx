@@ -17,9 +17,9 @@ export function BeautyFaceOilCard({ className = '' }: { className?: string }): J
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '✨', label: 'دهنية', tip: 'تجنبي — أو زيت خفيف جداً' },
-          { emoji: '💧', label: 'جافة', tip: 'ممتاز — زيوت غنية' },
-          { emoji: '🌙', label: 'وقت الاستخدام', tip: 'آخر خطوة في المساء' },
+          { emoji: '', label: 'دهنية', tip: 'تجنبي — أو زيت خفيف جداً' },
+          { emoji: '', label: 'جافة', tip: 'ممتاز — زيوت غنية' },
+          { emoji: '', label: 'وقت الاستخدام', tip: 'آخر خطوة في المساء' },
           { emoji: '🫒', label: 'أنواع', tip: 'أرغان، جوجوبا، ثمر الورد' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-amber-50 px-2.5 py-2 dark:bg-amber-950">

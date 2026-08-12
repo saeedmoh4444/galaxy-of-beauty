@@ -19,7 +19,7 @@ export default function SearchScreen(): JSX.Element {
   };
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>🔍 بحث</Text>
+      <Text style={styles.t}> بحث</Text>
       <View style={styles.sr}>
         <TextInput
           value={query}
@@ -31,18 +31,18 @@ export default function SearchScreen(): JSX.Element {
           returnKeyType="search"
         />
         <TouchableOpacity onPress={doSearch} style={styles.sb}>
-          <Text style={styles.sbt}>🔍</Text>
+          <Text style={styles.sbt}></Text>
         </TouchableOpacity>
       </View>
       {loading && <SkeletonList count={4} />}
       {results && !loading && (
         <>
           {((results.services as any[]) ?? []).length > 0 && (
-            <Text style={styles.st}>💆‍♀️ خدمات</Text>
+            <Text style={styles.st}>‍️ خدمات</Text>
           )}
           {(results.services as any[])?.map((s: any) => (
             <View key={s.id} style={styles.card}>
-              <Text style={styles.ce}>{(s.emoji as string) ?? '💆‍♀️'}</Text>
+              <Text style={styles.ce}>{(s.emoji as string) ?? '‍️'}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={styles.cn}>{s.nameAr as string}</Text>
                 <Text style={styles.cm}>{(s.price as number)?.toLocaleString()} ر.س</Text>

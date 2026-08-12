@@ -48,7 +48,7 @@ export default function InspirationScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📌 لوحة الإلهام</Text>
+      <Text style={styles.t}> لوحة الإلهام</Text>
       <View style={styles.grid}>
         {pins.map((p: any) => (
           <View key={p.id} style={styles.card}>
@@ -56,13 +56,13 @@ export default function InspirationScreen(): JSX.Element {
               <Image source={{ uri: p.imageUrl as string }} style={styles.img} />
             ) : (
               <View style={styles.ph}>
-                <Text style={{ fontSize: 36 }}>🖼️</Text>
+                <Text style={{ fontSize: 36 }}>️</Text>
               </View>
             )}
             <View style={styles.cb}>
               <Text style={styles.pt}>{p.title as string}</Text>
               <TouchableOpacity onPress={() => remove(p.id)}>
-                <Text>🗑️</Text>
+                <Text>️</Text>
               </TouchableOpacity>
             </View>
           </View>

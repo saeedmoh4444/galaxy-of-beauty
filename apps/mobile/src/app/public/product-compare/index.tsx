@@ -43,7 +43,7 @@ export default function ProductCompareScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📊 مقارنة المنتجات</Text>
+      <Text style={styles.t}> مقارنة المنتجات</Text>
       <View style={styles.grid}>
         {products.map((p: any) => {
           const isSel = selected.includes(p.id);
@@ -53,7 +53,7 @@ export default function ProductCompareScreen(): JSX.Element {
               onPress={() => toggle(p.id)}
               style={[styles.ch, isSel && styles.cha]}
             >
-              <Text style={styles.ce}>{(p.emoji as string) ?? '🧴'}</Text>
+              <Text style={styles.ce}>{(p.emoji as string) ?? ''}</Text>
               <Text style={[styles.cn, isSel && styles.cna]}>{p.nameAr as string}</Text>
               <Text style={styles.cp}>{(p.price as number)?.toLocaleString()} ر.س</Text>
             </TouchableOpacity>
@@ -62,20 +62,20 @@ export default function ProductCompareScreen(): JSX.Element {
       </View>
       {ci.length > 0 && (
         <View style={styles.tbl}>
-          <Text style={styles.ttl}>📊 المقارنة</Text>
+          <Text style={styles.ttl}> المقارنة</Text>
           {ci.map((p: any) => (
             <View key={p.id} style={styles.tc}>
               <Text style={styles.tcn}>{p.nameAr as string}</Text>
               <View style={styles.tr}>
-                <Text style={styles.tl}>💰</Text>
+                <Text style={styles.tl}></Text>
                 <Text style={styles.tv}>{(p.price as number)?.toLocaleString()} ر.س</Text>
               </View>
               <View style={styles.tr}>
-                <Text style={styles.tl}>🏷️</Text>
+                <Text style={styles.tl}>️</Text>
                 <Text style={styles.tv}>{p.brand as string}</Text>
               </View>
               <View style={styles.tr}>
-                <Text style={styles.tl}>⭐</Text>
+                <Text style={styles.tl}></Text>
                 <Text style={styles.tv}>{p.rating as string}</Text>
               </View>
             </View>

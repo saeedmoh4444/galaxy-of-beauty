@@ -65,7 +65,7 @@ export function LocationSharingCard({
       {/* Header */}
       <div className="flex items-center gap-2">
         <span className="text-lg" aria-hidden="true">
-          📍
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">
@@ -91,7 +91,7 @@ export function LocationSharingCard({
         <div className="mt-2 space-y-1 rounded-lg bg-gray-50 p-2.5 dark:bg-gray-800">
           {technicianName && (
             <div className="flex items-center gap-1.5 text-[10px]">
-              <span aria-hidden="true">👩‍🎨</span>
+              <span aria-hidden="true">‍</span>
               <span className="text-text-secondary dark:text-gray-300">
                 الخبيرة: <span className="font-bold">{technicianName}</span>
               </span>
@@ -99,13 +99,13 @@ export function LocationSharingCard({
           )}
           {address && (
             <div className="flex items-center gap-1.5 text-[10px]">
-              <span aria-hidden="true">🏠</span>
+              <span aria-hidden="true"></span>
               <span className="text-text-secondary dark:text-gray-300">{address}</span>
             </div>
           )}
           {estimatedEnd && (
             <div className="flex items-center gap-1.5 text-[10px]">
-              <span aria-hidden="true">⏰</span>
+              <span aria-hidden="true"></span>
               <span className="text-text-secondary dark:text-gray-300">
                 الوقت المتوقع للانتهاء: {estimatedEnd}
               </span>
@@ -117,7 +117,7 @@ export function LocationSharingCard({
       {/* Contacts */}
       <div className="mt-3 space-y-1.5">
         <p className="text-[10px] font-bold text-text-tertiary dark:text-gray-400">
-          👥 جهات اتصال موثوقة
+           جهات اتصال موثوقة
         </p>
         {contacts.map((contact) => {
           const isThisContact = selectedContact === contact.name;
@@ -137,10 +137,10 @@ export function LocationSharingCard({
               <div className="flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-teal-100 to-emerald-100 text-sm dark:from-teal-900 dark:to-emerald-900">
                   {contact.relation === 'mother'
-                    ? '👩'
+                    ? ''
                     : contact.relation === 'sister'
-                      ? '👧'
-                      : '👤'}
+                      ? ''
+                      : ''}
                 </div>
                 <div>
                   <p className="text-xs font-bold text-text-primary dark:text-gray-100">
@@ -155,7 +155,7 @@ export function LocationSharingCard({
 
               {isSharedThis ? (
                 <span className="rounded-full bg-teal-100 px-3 py-1 text-[10px] font-bold text-teal-700 dark:bg-teal-900 dark:text-teal-300">
-                  ✅ تشارك الآن
+                   تشارك الآن
                 </span>
               ) : isSharingThis ? (
                 <div className="flex items-center gap-1.5">
@@ -184,14 +184,14 @@ export function LocationSharingCard({
           onClick={handleStop}
           className="mt-2 w-full rounded-xl border border-rose-200 bg-rose-50 py-1.5 text-[10px] font-bold text-rose-600 hover:bg-rose-100 dark:border-rose-800 dark:bg-rose-950 dark:text-rose-400"
         >
-          ⏹️ إيقاف المشاركة
+          ️ إيقاف المشاركة
         </button>
       )}
 
       {/* Auto-stop reminder */}
       {shared && (
         <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-          🔒 ستتوقف المشاركة تلقائياً بعد انتهاء الموعد
+           ستتوقف المشاركة تلقائياً بعد انتهاء الموعد
         </p>
       )}
     </div>

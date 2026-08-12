@@ -9,7 +9,7 @@ export function BeautyPartyPrepCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🎉</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">تحضير الحفلة</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">
@@ -19,10 +19,10 @@ export function BeautyPartyPrepCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '📅', text: 'قبل بأسبوع: فيشل + حواجب + إزالة شعر' },
-          { emoji: '💤', text: 'قبل بيوم: عناية بالبشرة — نامي 8 ساعات' },
-          { emoji: '💄', text: 'يوم الحفلة: مكياج قبلها بـ 3 ساعات' },
-          { emoji: '👜', text: 'حقيبة طوارئ: أحمر شفاه + ورق نشاف' },
+          { emoji: '', text: 'قبل بأسبوع: فيشل + حواجب + إزالة شعر' },
+          { emoji: '', text: 'قبل بيوم: عناية بالبشرة — نامي 8 ساعات' },
+          { emoji: '', text: 'يوم الحفلة: مكياج قبلها بـ 3 ساعات' },
+          { emoji: '', text: 'حقيبة طوارئ: أحمر شفاه + ورق نشاف' },
         ].map((t, i) => (
           <div
             key={i}

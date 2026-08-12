@@ -39,7 +39,7 @@ export function BeautyAlumniCard({
     >
       <div className="flex items-start gap-3">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-200 to-indigo-200 text-xl dark:from-purple-800 dark:to-indigo-800">
-          {alumna.emoji || '🎓'}
+          {alumna.emoji || ''}
         </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">{alumna.name}</h4>
@@ -47,8 +47,8 @@ export function BeautyAlumniCard({
             {alumna.currentRole}
           </p>
           <p className="text-[10px] text-text-tertiary dark:text-gray-500">
-            🎓 خريجة {alumna.graduationYear}
-            {alumna.city && ` · 📍 ${alumna.city}`}
+             خريجة {alumna.graduationYear}
+            {alumna.city && ` ·  ${alumna.city}`}
           </p>
         </div>
       </div>
@@ -64,7 +64,7 @@ export function BeautyAlumniCard({
         onClick={onViewProfile}
         className="mt-3 w-full rounded-lg border border-purple-200 py-1.5 text-[10px] font-bold text-purple-700 hover:bg-purple-50 dark:border-purple-800 dark:text-purple-300 transition-colors"
       >
-        شاهدِي قصتها 🎓
+        شاهدِي قصتها 
       </button>
     </div>
   );

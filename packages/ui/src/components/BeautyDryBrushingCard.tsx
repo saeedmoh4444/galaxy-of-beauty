@@ -17,10 +17,10 @@ export function BeautyDryBrushingCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '⬆️', text: 'من الأسفل للأعلى — دائماً باتجاه القلب' },
-          { emoji: '☀️', text: 'قبل الاستحمام — على بشرة جافة تماماً' },
-          { emoji: '📅', text: '2-3 مرات أسبوعياً — لا يومياً' },
-          { emoji: '🧴', text: 'بعدها — زيت أو كريم مرطب فوراً' },
+          { emoji: '️', text: 'من الأسفل للأعلى — دائماً باتجاه القلب' },
+          { emoji: '️', text: 'قبل الاستحمام — على بشرة جافة تماماً' },
+          { emoji: '', text: '2-3 مرات أسبوعياً — لا يومياً' },
+          { emoji: '', text: 'بعدها — زيت أو كريم مرطب فوراً' },
         ].map((t, i) => (
           <div
             key={i}

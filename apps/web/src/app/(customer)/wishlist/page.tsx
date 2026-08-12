@@ -56,7 +56,7 @@ export default function WishlistPage(): JSX.Element {
                           className="h-full w-full rounded-lg object-cover"
                         />
                       ) : (
-                        <span className="text-4xl text-gray-300">📷</span>
+                        <span className="text-4xl text-gray-300"></span>
                       )}
                     </div>
                     <h3 className="font-semibold">
@@ -93,7 +93,7 @@ export default function WishlistPage(): JSX.Element {
                             className="h-full w-full rounded-full object-cover"
                           />
                         ) : (
-                          <span className="text-2xl text-gray-300">👤</span>
+                          <span className="text-2xl text-gray-300"></span>
                         )}
                       </div>
                       <div>
@@ -102,7 +102,7 @@ export default function WishlistPage(): JSX.Element {
                       </div>
                     </div>
                     <div className="flex items-center gap-1 text-sm text-amber-500">
-                      <span>⭐</span>
+                      <span></span>
                       <span>{Number(technician.ratingAvg).toFixed(1)}</span>
                     </div>
                     <button

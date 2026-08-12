@@ -5,12 +5,12 @@ import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const POPULAR_SERVICES = [
-  { id: 1, name: 'مانيكير', emoji: '💅' },
-  { id: 2, name: 'باديكير', emoji: '🦶' },
-  { id: 3, name: 'تنظيف بشرة', emoji: '✨' },
-  { id: 4, name: 'مساج', emoji: '💆‍♀️' },
-  { id: 5, name: 'صبغ شعر', emoji: '🎨' },
-  { id: 6, name: 'مكياج', emoji: '💄' },
+  { id: 1, name: 'مانيكير', emoji: '' },
+  { id: 2, name: 'باديكير', emoji: '' },
+  { id: 3, name: 'تنظيف بشرة', emoji: '' },
+  { id: 4, name: 'مساج', emoji: '‍️' },
+  { id: 5, name: 'صبغ شعر', emoji: '' },
+  { id: 6, name: 'مكياج', emoji: '' },
 ];
 
 export default function RecommendationsPage(): JSX.Element {
@@ -36,12 +36,12 @@ export default function RecommendationsPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🔮 توصيات</h1>
+          <h1 className="text-2xl font-bold"> توصيات</h1>
           <p className="mt-1 text-sm text-text-secondary">اكتشفي خدمات تناسب ذوقكِ</p>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3">💅 اختاري خدمة</h3>
+          <h3 className="font-bold mb-3"> اختاري خدمة</h3>
           <div className="flex flex-wrap gap-2">
             {POPULAR_SERVICES.map((s) => (
               <button
@@ -56,7 +56,7 @@ export default function RecommendationsPage(): JSX.Element {
         </Card>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-4">🔗 تحجز مع بعض</h3>
+          <h3 className="font-bold mb-4"> تحجز مع بعض</h3>
           {tLoading ? (
             <CardSkeleton />
           ) : !(together ?? []).length ? (
@@ -84,7 +84,7 @@ export default function RecommendationsPage(): JSX.Element {
         </Card>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-4">✨ كملي الطلة</h3>
+          <h3 className="font-bold mb-4"> كملي الطلة</h3>
           {cLoading ? (
             <CardSkeleton />
           ) : !(complete ?? []).length ? (
@@ -99,7 +99,7 @@ export default function RecommendationsPage(): JSX.Element {
                   </p>
                   {s.reason === 'popular' && (
                     <span className="mt-1 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">
-                      🔥 الأكثر طلباً
+                       الأكثر طلباً
                     </span>
                   )}
                 </div>

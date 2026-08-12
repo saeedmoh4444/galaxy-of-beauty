@@ -37,14 +37,14 @@ export default function SpaPlannerScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🧖‍♀️ مخطط السبا</Text>
+      <Text style={styles.t}>‍️ مخطط السبا</Text>
       {data.map((s: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(s.emoji as string) ?? '🧖‍♀️'}</Text>
+          <Text style={styles.emoji}>{(s.emoji as string) ?? '‍️'}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{s.nameAr as string}</Text>
             <Text style={styles.dur}>
-              ⏱️ {s.duration as string} · {(s.price as number)?.toLocaleString()} ر.س
+              ️ {s.duration as string} · {(s.price as number)?.toLocaleString()} ر.س
             </Text>
           </View>
         </View>

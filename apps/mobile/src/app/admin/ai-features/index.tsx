@@ -3,28 +3,28 @@ export default function AIFeaturesScreen(): JSX.Element {
   const features = [
     {
       key: 'ai_routine',
-      emoji: '🤖',
+      emoji: '',
       name: 'روتين ذكي',
       desc: 'توليد روتين عناية مخصص',
       enabled: true,
     },
     {
       key: 'ai_advisor',
-      emoji: '💬',
+      emoji: '',
       name: 'مستشارة AI',
       desc: 'محادثات ذكية للإجابة',
       enabled: true,
     },
     {
       key: 'ai_color',
-      emoji: '🎨',
+      emoji: '',
       name: 'تحليل ألوان AI',
       desc: 'تحليل لون البشرة آلياً',
       enabled: false,
     },
     {
       key: 'ai_skin',
-      emoji: '🔬',
+      emoji: '',
       name: 'تحليل بشرة AI',
       desc: 'تشخيص مشاكل البشرة',
       enabled: true,
@@ -32,7 +32,7 @@ export default function AIFeaturesScreen(): JSX.Element {
   ];
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>🤖 ميزات الذكاء الاصطناعي</Text>
+      <Text style={s.h}> ميزات الذكاء الاصطناعي</Text>
       <Text style={s.sub}>إدارة خوارزميات AI في المنصة</Text>
       {features.map((f) => (
         <View key={f.key} style={s.card}>

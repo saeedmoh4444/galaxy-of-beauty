@@ -2,12 +2,12 @@ import { z } from 'zod';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
 const SALONS = [
-  { id: 1, name: 'صالون نورة', technician: 'نورة العمري', emoji: '💄', visitors: 450, rating: 4.9 },
+  { id: 1, name: 'صالون نورة', technician: 'نورة العمري', emoji: '', visitors: 450, rating: 4.9 },
   {
     id: 2,
     name: 'استوديو سارة',
     technician: 'سارة الحربي',
-    emoji: '💇‍♀️',
+    emoji: '‍️',
     visitors: 320,
     rating: 4.8,
   },
@@ -15,16 +15,16 @@ const SALONS = [
     id: 3,
     name: 'عيادة د. ليلى',
     technician: 'د. ليلى القحطاني',
-    emoji: '✨',
+    emoji: '',
     visitors: 280,
     rating: 4.9,
   },
 ];
 
 const AVATARS = [
-  { id: 'skin1', name: 'بشرة فاتحة', emoji: '🏻' },
-  { id: 'skin2', name: 'بشرة متوسطة', emoji: '🏽' },
-  { id: 'skin3', name: 'بشرة غامقة', emoji: '🏿' },
+  { id: 'skin1', name: 'بشرة فاتحة', emoji: '' },
+  { id: 'skin2', name: 'بشرة متوسطة', emoji: '' },
+  { id: 'skin3', name: 'بشرة غامقة', emoji: '' },
 ];
 
 export const beautyMetaverseRouter = router({
@@ -38,7 +38,7 @@ export const beautyMetaverseRouter = router({
         sessionId: `META-${Date.now()}`,
         salon: salon?.name,
         avatar: input.avatar,
-        welcomeMessage: `أهلاً بكِ في ${salon?.name}! ${salon?.technician} في انتظاركِ ✨`,
+        welcomeMessage: `أهلاً بكِ في ${salon?.name}! ${salon?.technician} في انتظاركِ `,
         availableActions: ['تجربة مكياج', 'استشارة', 'جولة في الصالون', 'حجز موعد'],
       };
     }),

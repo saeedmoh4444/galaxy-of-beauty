@@ -1,21 +1,21 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 const TRANSACTIONS = [
-  { id: 1, type: 'credit', amount: 350, desc: 'حجز — مكياج سارة', date: '15 أغسطس', emoji: '💄' },
-  { id: 2, type: 'credit', amount: 150, desc: 'حجز — مانيكير نورة', date: '14 أغسطس', emoji: '💅' },
-  { id: 3, type: 'debit', amount: 200, desc: 'سحب للمحفظة البنكية', date: '10 أغسطس', emoji: '🏦' },
-  { id: 4, type: 'credit', amount: 500, desc: 'حجز — مساج مجموعة', date: '5 أغسطس', emoji: '💆' },
-  { id: 5, type: 'bonus', amount: 50, desc: 'مكافأة تقييم 5 نجوم', date: '1 أغسطس', emoji: '⭐' },
+  { id: 1, type: 'credit', amount: 350, desc: 'حجز — مكياج سارة', date: '15 أغسطس', emoji: '' },
+  { id: 2, type: 'credit', amount: 150, desc: 'حجز — مانيكير نورة', date: '14 أغسطس', emoji: '' },
+  { id: 3, type: 'debit', amount: 200, desc: 'سحب للمحفظة البنكية', date: '10 أغسطس', emoji: '' },
+  { id: 4, type: 'credit', amount: 500, desc: 'حجز — مساج مجموعة', date: '5 أغسطس', emoji: '' },
+  { id: 5, type: 'bonus', amount: 50, desc: 'مكافأة تقييم 5 نجوم', date: '1 أغسطس', emoji: '' },
 ];
 export default function TechWalletScreen(): JSX.Element {
   const balance = 4850;
   const pending = 750;
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>💰 المحفظة</Text>
+      <Text style={s.h}> المحفظة</Text>
       <View style={s.bc}>
         <Text style={s.bl}>الرصيد الحالي</Text>
         <Text style={s.bv}>{balance.toLocaleString()} ر.س</Text>
-        <Text style={s.bp}>💰 {pending.toLocaleString()} ر.س قيد التسوية</Text>
+        <Text style={s.bp}> {pending.toLocaleString()} ر.س قيد التسوية</Text>
       </View>
       <View style={{ flexDirection: 'row', gap: 10, marginBottom: 16 }}>
         <View style={[s.stat, { backgroundColor: '#d1fae5' }]}>
@@ -27,7 +27,7 @@ export default function TechWalletScreen(): JSX.Element {
           <Text style={s.sl}>حجز مكتمل</Text>
         </View>
       </View>
-      <Text style={s.ct}>📋 آخر المعاملات</Text>
+      <Text style={s.ct}> آخر المعاملات</Text>
       {TRANSACTIONS.map((t) => (
         <View key={t.id} style={s.card}>
           <Text style={s.ce}>{t.emoji}</Text>

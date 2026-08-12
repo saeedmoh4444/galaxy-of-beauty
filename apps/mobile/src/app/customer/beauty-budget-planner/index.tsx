@@ -2,12 +2,12 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-nati
 import { useState } from 'react';
 
 const CATEGORIES = [
-  { key: 'hair', emoji: '💇‍♀️', name: 'الشعر', budget: 200, color: '#ec4899' },
-  { key: 'skin', emoji: '✨', name: 'البشرة', budget: 300, color: '#8b5cf6' },
-  { key: 'nails', emoji: '💅', name: 'الأظافر', budget: 100, color: '#f59e0b' },
-  { key: 'makeup', emoji: '💄', name: 'المكياج', budget: 150, color: '#db2777' },
-  { key: 'spa', emoji: '🧖‍♀️', name: 'السبا', budget: 250, color: '#059669' },
-  { key: 'products', emoji: '🧴', name: 'منتجات', budget: 200, color: '#0891b2' },
+  { key: 'hair', emoji: '‍️', name: 'الشعر', budget: 200, color: '#ec4899' },
+  { key: 'skin', emoji: '', name: 'البشرة', budget: 300, color: '#8b5cf6' },
+  { key: 'nails', emoji: '', name: 'الأظافر', budget: 100, color: '#f59e0b' },
+  { key: 'makeup', emoji: '', name: 'المكياج', budget: 150, color: '#db2777' },
+  { key: 'spa', emoji: '‍️', name: 'السبا', budget: 250, color: '#059669' },
+  { key: 'products', emoji: '', name: 'منتجات', budget: 200, color: '#0891b2' },
 ];
 
 export default function BeautyBudgetPlannerScreen(): JSX.Element {
@@ -20,7 +20,7 @@ export default function BeautyBudgetPlannerScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>📊 مخطط الميزانية</Text>
+      <Text style={styles.t}> مخطط الميزانية</Text>
       <Text style={styles.sub}>خططي لمصاريف جمالكِ السنوية</Text>
 
       <View style={styles.summaryRow}>
@@ -38,7 +38,7 @@ export default function BeautyBudgetPlannerScreen(): JSX.Element {
         </View>
       </View>
 
-      <Text style={styles.st}>💆‍♀️ الفئات</Text>
+      <Text style={styles.st}>‍️ الفئات</Text>
       {CATEGORIES.map((c) => {
         const pct = Math.min(100, Math.round(((monthly[c.key] ?? 0) / c.budget) * 100));
         const isOver = (monthly[c.key] ?? 0) > c.budget;
@@ -69,7 +69,7 @@ export default function BeautyBudgetPlannerScreen(): JSX.Element {
       })}
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}>💾 حفظ الميزانية</Text>
+        <Text style={styles.bt}> حفظ الميزانية</Text>
       </TouchableOpacity>
     </ScrollView>
   );

@@ -9,7 +9,7 @@ export function BeautyEidPerfumeCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌸</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">عطر العيد</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">
@@ -19,10 +19,10 @@ export function BeautyEidPerfumeCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🌹', text: 'عود وورد — كلاسيكية العيد' },
-          { emoji: '💎', text: 'طبقات العطر — قاعدة + قلب + نفحة عليا' },
-          { emoji: '🧴', text: 'قبل الخروج بساعة — ليثبت العطر' },
-          { emoji: '🎁', text: 'عطر جديد للعيد — تقليد جميل' },
+          { emoji: '', text: 'عود وورد — كلاسيكية العيد' },
+          { emoji: '', text: 'طبقات العطر — قاعدة + قلب + نفحة عليا' },
+          { emoji: '', text: 'قبل الخروج بساعة — ليثبت العطر' },
+          { emoji: '', text: 'عطر جديد للعيد — تقليد جميل' },
         ].map((t, i) => (
           <div
             key={i}

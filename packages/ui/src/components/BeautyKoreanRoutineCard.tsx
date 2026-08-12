@@ -9,7 +9,7 @@ export function BeautyKoreanRoutineCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🇰🇷</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">
             الروتين الكوري — 10 خطوات

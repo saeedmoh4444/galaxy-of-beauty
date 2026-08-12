@@ -10,21 +10,21 @@ export const serviceWarrantyRouter = router({
   policy: customerProcedure.query(() => ({
     coverage: [
       {
-        emoji: '🔄',
+        emoji: '',
         titleAr: 'إعادة الخدمة مجاناً',
         titleEn: 'Free Re-do',
         descAr: 'إذا لم تكوني راضية عن النتيجة، سنعيد الخدمة مجاناً خلال ٤٨ ساعة',
         descEn: 'If unsatisfied, we redo the service free within 48 hours',
       },
       {
-        emoji: '💰',
+        emoji: '',
         titleAr: 'استرداد كامل',
         titleEn: 'Full Refund',
         descAr: 'استرداد كامل للمبلغ في حالة عدم الرضا التام',
         descEn: 'Full refund in case of complete dissatisfaction',
       },
       {
-        emoji: '🎫',
+        emoji: '',
         titleAr: 'رصيد تعويضي',
         titleEn: 'Compensation Credit',
         descAr: 'رصيد إضافي في محفظتكِ للاستخدام في الخدمات المستقبلية',

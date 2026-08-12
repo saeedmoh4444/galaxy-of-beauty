@@ -13,7 +13,7 @@ export default function AdminSubscriptionsPage(): JSX.Element {
     <DashboardLayout role="ADMIN">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📦 خطط الاشتراكات</h1>
+          <h1 className="text-2xl font-bold"> خطط الاشتراكات</h1>
           <p className="mt-1 text-sm text-text-secondary">إدارة خطط وباقات الاشتراك</p>
         </div>
 
@@ -25,14 +25,14 @@ export default function AdminSubscriptionsPage(): JSX.Element {
           </div>
         ) : !(plans ?? []).length ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">📦</p>
+            <p className="text-4xl mb-2"></p>
             <p className="text-text-secondary">لا توجد خطط اشتراك</p>
           </Card>
         ) : (
           <div className="grid gap-4 sm:grid-cols-3">
             {(plans ?? []).map((p: Record<string, unknown>) => (
               <Card key={p.id as number} padding="lg" className="text-center">
-                <span className="text-4xl">📦</span>
+                <span className="text-4xl"></span>
                 <h3 className="font-bold mt-3">{(p.nameJson as Record<string, string>)?.ar}</h3>
                 <p className="text-xs text-text-secondary mt-1">{p.feature as string}</p>
                 <p className="text-2xl font-extrabold mt-3">

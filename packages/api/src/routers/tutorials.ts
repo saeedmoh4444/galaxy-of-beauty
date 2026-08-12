@@ -166,10 +166,10 @@ const TUTORIALS = [
 ];
 
 const CATEGORIES = [
-  { key: 'makeup', nameAr: 'مكياج', nameEn: 'Makeup', emoji: '💄' },
-  { key: 'hair', nameAr: 'شعر', nameEn: 'Hair', emoji: '💇‍♀️' },
-  { key: 'skincare', nameAr: 'عناية بالبشرة', nameEn: 'Skincare', emoji: '✨' },
-  { key: 'nails', nameAr: 'أظافر', nameEn: 'Nails', emoji: '💅' },
+  { key: 'makeup', nameAr: 'مكياج', nameEn: 'Makeup', emoji: '' },
+  { key: 'hair', nameAr: 'شعر', nameEn: 'Hair', emoji: '‍️' },
+  { key: 'skincare', nameAr: 'عناية بالبشرة', nameEn: 'Skincare', emoji: '' },
+  { key: 'nails', nameAr: 'أظافر', nameEn: 'Nails', emoji: '' },
 ];
 
 const DIFFICULTIES = [

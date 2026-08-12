@@ -9,7 +9,7 @@ export function BeautySerumCard({ className = '' }: { className?: string }): JSX
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🧪</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">دليل السيروم</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">الترتيب الصحيح للسيروم</p>
@@ -17,10 +17,10 @@ export function BeautySerumCard({ className = '' }: { className?: string }): JSX
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💧', text: '1. هيالورونيك — على بشرة رطبة' },
-          { emoji: '✨', text: '2. فيتامين سي — صباحاً' },
-          { emoji: '🌙', text: '3. ريتينول — مساءً فقط' },
-          { emoji: '🛡️', text: '4. نياسيناميد — صباح ومساء' },
+          { emoji: '', text: '1. هيالورونيك — على بشرة رطبة' },
+          { emoji: '', text: '2. فيتامين سي — صباحاً' },
+          { emoji: '', text: '3. ريتينول — مساءً فقط' },
+          { emoji: '️', text: '4. نياسيناميد — صباح ومساء' },
         ].map((t, i) => (
           <div
             key={i}

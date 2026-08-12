@@ -9,7 +9,7 @@ export function BeautyProbioticCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🦠</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">البروبيوتيك</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">بكتيريا نافعة — بشرة صافية</p>
@@ -17,10 +17,10 @@ export function BeautyProbioticCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🔬', text: 'صحة الأمعاء = بشرة نقية — اتصال مباشر' },
-          { emoji: '🧯', text: 'يقلل الالتهابات — مفيد للحبوب والإكزيما' },
-          { emoji: '🥛', text: 'زبادي، كفير، مخللات — مصادر طبيعية' },
-          { emoji: '💊', text: 'كبسولات بروبيوتيك — تركيز أعلى' },
+          { emoji: '', text: 'صحة الأمعاء = بشرة نقية — اتصال مباشر' },
+          { emoji: '', text: 'يقلل الالتهابات — مفيد للحبوب والإكزيما' },
+          { emoji: '', text: 'زبادي، كفير، مخللات — مصادر طبيعية' },
+          { emoji: '', text: 'كبسولات بروبيوتيك — تركيز أعلى' },
         ].map((t, i) => (
           <div
             key={i}

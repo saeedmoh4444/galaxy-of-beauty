@@ -9,7 +9,7 @@ export function BeautyMicroneedlingCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🔬</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">المايكرونيدلنغ</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">
@@ -19,10 +19,10 @@ export function BeautyMicroneedlingCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '✨', text: 'يحفز الكولاجين — إبر دقيقة تخترق الجلد' },
-          { emoji: '🔬', text: 'يعالج الندبات والمسام الواسعة' },
-          { emoji: '⏱️', text: 'جلسة كل 4-6 أسابيع — 3-6 جلسات' },
-          { emoji: '🧴', text: 'بعد الجلسة — سيروم هيالورونيك أسيد فقط' },
+          { emoji: '', text: 'يحفز الكولاجين — إبر دقيقة تخترق الجلد' },
+          { emoji: '', text: 'يعالج الندبات والمسام الواسعة' },
+          { emoji: '️', text: 'جلسة كل 4-6 أسابيع — 3-6 جلسات' },
+          { emoji: '', text: 'بعد الجلسة — سيروم هيالورونيك أسيد فقط' },
         ].map((t, i) => (
           <div
             key={i}

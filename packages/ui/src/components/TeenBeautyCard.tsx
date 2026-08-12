@@ -50,14 +50,14 @@ export function TeenBeautyCard({
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 text-xl dark:from-purple-900 dark:to-pink-900">
-            {service.emoji || '🎀'}
+            {service.emoji || ''}
           </div>
           <div>
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
               {service.name}
             </h4>
             <p className="text-[10px] text-text-tertiary dark:text-gray-400">
-              ⏱️ {service.duration || '45 دقيقة'}
+              ️ {service.duration || '45 دقيقة'}
             </p>
           </div>
         </div>
@@ -79,12 +79,12 @@ export function TeenBeautyCard({
       {service.learningPoints && service.learningPoints.length > 0 && (
         <div className="mt-2 space-y-1">
           <p className="text-[10px] font-bold text-purple-600 dark:text-purple-400">
-            📝 راح تتعلم:
+             راح تتعلم:
           </p>
           {service.learningPoints.map((point, i) => (
             <div key={i} className="flex items-center gap-1.5">
               <span className="text-[10px] text-purple-400" aria-hidden="true">
-                ✨
+                
               </span>
               <span className="text-[10px] text-text-secondary dark:text-gray-300">{point}</span>
             </div>
@@ -96,7 +96,7 @@ export function TeenBeautyCard({
       {service.parentRequired && (
         <div className="mt-3 flex items-start gap-2 rounded-xl bg-amber-50 p-2.5 dark:bg-amber-950">
           <span className="text-sm" aria-hidden="true">
-            👩‍👧
+            ‍
           </span>
           <div>
             <p className="text-[10px] font-bold text-amber-700 dark:text-amber-300">بموافقة الأم</p>
@@ -110,7 +110,7 @@ export function TeenBeautyCard({
       {/* Age-appropriate reminder */}
       <div className="mt-2 flex items-start gap-2 rounded-xl bg-purple-50 p-2.5 dark:bg-purple-950">
         <span className="text-sm" aria-hidden="true">
-          🌸
+          
         </span>
         <div>
           <p className="text-[10px] font-bold text-purple-700 dark:text-purple-300">
@@ -141,7 +141,7 @@ export function TeenBeautyCard({
           onClick={onBookWithParent}
           className="rounded-xl bg-purple-600 px-3 py-1.5 text-[10px] font-bold text-white hover:bg-purple-700 active:scale-[0.98] transition-all"
         >
-          احجزي مع أمكِ 👩‍👧
+          احجزي مع أمكِ ‍
         </button>
       </div>
     </div>

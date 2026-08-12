@@ -9,7 +9,7 @@ export function BeautyHairCoilyCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🦱</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">الشعر المتعرج</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">عناية خاصة للشعر الكثيف</p>
@@ -17,10 +17,10 @@ export function BeautyHairCoilyCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💧', text: 'ترطيب مكثف — أهم خطوة' },
-          { emoji: '🧈', text: 'زبدة الشيا — للترطيب العميق' },
-          { emoji: '🔪', text: 'تقسيم الشعر لأجزاء — للعناية' },
-          { emoji: '🛏️', text: 'Pineapple — رفع الشعر قبل النوم' },
+          { emoji: '', text: 'ترطيب مكثف — أهم خطوة' },
+          { emoji: '', text: 'زبدة الشيا — للترطيب العميق' },
+          { emoji: '', text: 'تقسيم الشعر لأجزاء — للعناية' },
+          { emoji: '️', text: 'Pineapple — رفع الشعر قبل النوم' },
         ].map((t, i) => (
           <div
             key={i}

@@ -9,7 +9,7 @@ export function BeautyHairGrowthCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌱</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">تطويل الشعر</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">أسرار شعر أطول وأقوى</p>
@@ -17,10 +17,10 @@ export function BeautyHairGrowthCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💆', text: 'تدليك فروة الرأس — يحفز البصيلات' },
-          { emoji: '🌿', text: 'زيت إكليل الجبل — فعال مثل المينوكسيديل' },
-          { emoji: '✂️', text: 'قص الأطراف كل 3 أشهر' },
-          { emoji: '💊', text: 'بيوتين وزنك — بعد استشارة الطبيب' },
+          { emoji: '', text: 'تدليك فروة الرأس — يحفز البصيلات' },
+          { emoji: '', text: 'زيت إكليل الجبل — فعال مثل المينوكسيديل' },
+          { emoji: '️', text: 'قص الأطراف كل 3 أشهر' },
+          { emoji: '', text: 'بيوتين وزنك — بعد استشارة الطبيب' },
         ].map((t, i) => (
           <div
             key={i}

@@ -7,7 +7,7 @@ const AWARDS = {
     {
       key: 'best_makeup',
       nameAr: 'أفضل فنية مكياج',
-      emoji: '💄',
+      emoji: '',
       nominees: [
         { id: 1, name: 'نورة العمري', votes: 450 },
         { id: 2, name: 'سارة الحربي', votes: 320 },
@@ -16,7 +16,7 @@ const AWARDS = {
     {
       key: 'best_skincare',
       nameAr: 'أفضل فنية عناية',
-      emoji: '✨',
+      emoji: '',
       nominees: [
         { id: 3, name: 'د. ليلى القحطاني', votes: 520 },
         { id: 4, name: 'مريم الشمري', votes: 280 },
@@ -25,7 +25,7 @@ const AWARDS = {
     {
       key: 'best_transform',
       nameAr: 'أفضل تحول',
-      emoji: '📸',
+      emoji: '',
       nominees: [
         { id: 5, name: 'ريم', votes: 380, desc: 'تحول مكياج عرايس' },
         { id: 6, name: 'مها', votes: 310, desc: 'عناية بالبشرة ٣ أشهر' },
@@ -34,7 +34,7 @@ const AWARDS = {
     {
       key: 'best_newcomer',
       nameAr: 'أفضل فنية جديدة',
-      emoji: '🌱',
+      emoji: '',
       nominees: [
         { id: 7, name: 'هند المطيري', votes: 290 },
         { id: 8, name: 'أمل الشهري', votes: 210 },

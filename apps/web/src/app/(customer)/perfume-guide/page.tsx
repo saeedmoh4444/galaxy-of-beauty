@@ -26,7 +26,7 @@ export default function PerfumeGuidePage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle
-          title="🌸 دليل العطور"
+          title=" دليل العطور"
           subtitle="كل ما تحتاجينه عن عالم العطور الشرقية والغربية"
         />
 

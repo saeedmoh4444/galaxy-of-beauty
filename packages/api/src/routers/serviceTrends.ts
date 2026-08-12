@@ -11,11 +11,11 @@ const TRENDS = [
 ];
 
 const TOP_THIS_MONTH = [
-  { rank: 1, nameAr: 'مكياج عرايس', emoji: '👰', growth: '+٢٥٪' },
-  { rank: 2, nameAr: 'تنظيف بشرة عميق', emoji: '✨', growth: '+١٨٪' },
-  { rank: 3, nameAr: 'مساج استرخائي', emoji: '💆‍♀️', growth: '+١٥٪' },
-  { rank: 4, nameAr: 'مانيكير جل', emoji: '💅', growth: '+١٢٪' },
-  { rank: 5, nameAr: 'صبغة شعر', emoji: '💇‍♀️', growth: '+١٠٪' },
+  { rank: 1, nameAr: 'مكياج عرايس', emoji: '', growth: '+٢٥٪' },
+  { rank: 2, nameAr: 'تنظيف بشرة عميق', emoji: '', growth: '+١٨٪' },
+  { rank: 3, nameAr: 'مساج استرخائي', emoji: '‍️', growth: '+١٥٪' },
+  { rank: 4, nameAr: 'مانيكير جل', emoji: '', growth: '+١٢٪' },
+  { rank: 5, nameAr: 'صبغة شعر', emoji: '‍️', growth: '+١٠٪' },
 ];
 
 export const serviceTrendsRouter = router({

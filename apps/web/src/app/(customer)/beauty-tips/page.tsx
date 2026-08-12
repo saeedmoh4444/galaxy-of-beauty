@@ -34,7 +34,7 @@ export default function BeautyTipsPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="💡 نصائح وإرشادات" subtitle="كل ما تحتاجينه للعناية بجمالك" />
+        <PageTitle title=" نصائح وإرشادات" subtitle="كل ما تحتاجينه للعناية بجمالك" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -48,17 +48,17 @@ export default function BeautyTipsPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyTrendAlertCard
                 trends={[
-                  { name: 'ألوان الباستيل', emoji: '🎨', heat: '🔥🔥' },
-                  { name: 'البشرة الزجاجية', emoji: '✨', heat: '🔥🔥🔥' },
-                  { name: 'العناية بالشفاه', emoji: '💋', heat: '🔥' },
-                  { name: 'المكياج الطبيعي', emoji: '🌿', heat: '🔥🔥' },
+                  { name: 'ألوان الباستيل', emoji: '', heat: '' },
+                  { name: 'البشرة الزجاجية', emoji: '', heat: '' },
+                  { name: 'العناية بالشفاه', emoji: '', heat: '' },
+                  { name: 'المكياج الطبيعي', emoji: '', heat: '' },
                 ]}
               />
               <BeautyStyleMatchCard
                 matches={[
-                  { style: 'كلاسيكي', emoji: '👗', match: 92 },
-                  { style: 'عصري', emoji: '✨', match: 78 },
-                  { style: 'بوهيمي', emoji: '🌿', match: 65 },
+                  { style: 'كلاسيكي', emoji: '', match: 92 },
+                  { style: 'عصري', emoji: '', match: 78 },
+                  { style: 'بوهيمي', emoji: '', match: 65 },
                 ]}
               />
             </div>
@@ -67,7 +67,7 @@ export default function BeautyTipsPage(): JSX.Element {
             <BeautyIngredientSpotlightCard
               ingredient={{
                 name: 'حمض الهيالورونيك',
-                emoji: '💧',
+                emoji: '',
                 type: 'مرطب',
                 rating: 'A+',
                 description:
@@ -81,7 +81,7 @@ export default function BeautyTipsPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyQuickTipCard
                 tip={{
-                  emoji: '☀️',
+                  emoji: '️',
                   title: 'واقي الشمس',
                   body: 'ضعي واقي الشمس كل ساعتين عند التعرض للشمس المباشرة. الكمية المناسبة: نصف ملعقة صغيرة للوجه.',
                   source: 'غالاكسي بيوتي',
@@ -90,7 +90,7 @@ export default function BeautyTipsPage(): JSX.Element {
               <BeautyMicroChallengeCard
                 challenge={{
                   title: 'تحدي الترطيب',
-                  emoji: '💧',
+                  emoji: '',
                   duration: '5 دقائق',
                 }}
               />

@@ -27,13 +27,13 @@ interface AmenityDef {
 }
 
 const AMENITIES: AmenityDef[] = [
-  { emoji: '🎀', label: 'ربطة شعر', detail: 'ربطات شعر جديدة' },
-  { emoji: '📌', label: 'دبابيس شعر', detail: 'بكل الأحجام' },
-  { emoji: '🌸', label: 'مزيل عرق', detail: 'أنواع خالية من العطور' },
-  { emoji: '🔌', label: 'شاحن جوال', detail: 'جميع أنواع الشواحن' },
+  { emoji: '', label: 'ربطة شعر', detail: 'ربطات شعر جديدة' },
+  { emoji: '', label: 'دبابيس شعر', detail: 'بكل الأحجام' },
+  { emoji: '', label: 'مزيل عرق', detail: 'أنواع خالية من العطور' },
+  { emoji: '', label: 'شاحن جوال', detail: 'جميع أنواع الشواحن' },
   { emoji: '🩹', label: 'فوط صحية', detail: 'مجاناً في دورة المياه' },
-  { emoji: '✨', label: 'عطر', detail: 'عطور فاخرة للمسة أخيرة' },
-  { emoji: '🧻', label: 'مناديل مبللة', detail: 'مناديل منعشة' },
+  { emoji: '', label: 'عطر', detail: 'عطور فاخرة للمسة أخيرة' },
+  { emoji: '', label: 'مناديل مبللة', detail: 'مناديل منعشة' },
   { emoji: '🪡', label: 'عدة خياطة', detail: 'للطوارئ الصغيرة' },
 ];
 
@@ -72,7 +72,7 @@ export function ComplimentaryAmenityBadge({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🎀
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">كماليات مجانية</h4>
@@ -103,7 +103,7 @@ export function ComplimentaryAmenityBadge({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🎀 لأن التفاصيل الصغيرة تصنع الفرق
+         لأن التفاصيل الصغيرة تصنع الفرق
       </p>
     </div>
   );

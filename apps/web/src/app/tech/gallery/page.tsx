@@ -14,12 +14,12 @@ export default function TechGalleryPage(): JSX.Element {
     <DashboardLayout role="TECHNICIAN">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🖼️ معرض أعمالي</h1>
+          <h1 className="text-2xl font-bold">️ معرض أعمالي</h1>
           <p className="mt-1 text-sm text-text-secondary">صور قبل وبعد لعملائكِ</p>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3">📤 رفع صورة جديدة</h3>
+          <h3 className="font-bold mb-3"> رفع صورة جديدة</h3>
           <div className="space-y-3">
             <input
               value={url}
@@ -50,14 +50,14 @@ export default function TechGalleryPage(): JSX.Element {
               loading={uploadMut.isPending}
               className="w-full"
             >
-              📤 رفع الصورة
+               رفع الصورة
             </Button>
           </div>
         </Card>
 
         {uploaded && (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-2xl">✅</p>
+            <p className="text-2xl"></p>
             <p className="font-bold text-green-700 mt-2">تم رفع الصورة بنجاح</p>
           </Card>
         )}

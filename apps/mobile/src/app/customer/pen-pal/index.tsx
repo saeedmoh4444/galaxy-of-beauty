@@ -41,10 +41,10 @@ export default function PenPalScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>💌 صديقة الجمال</Text>
+      <Text style={styles.t}> صديقة الجمال</Text>
       {data ? (
         <View style={styles.card}>
-          <Text style={styles.emoji}>👩‍🎨</Text>
+          <Text style={styles.emoji}>‍</Text>
           <Text style={styles.name}>{data.name as string}</Text>
           <Text style={styles.match}>{data.matchReason as string}</Text>
         </View>

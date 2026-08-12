@@ -43,22 +43,22 @@ export default function AdminFinanceScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>💰 المالية</Text>
+      <Text style={styles.t}> المالية</Text>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>💰</Text>
+          <Text style={styles.kpiEmoji}></Text>
           <Text style={styles.kpiVal}>{((d.totalRevenue as number) ?? 0)?.toLocaleString()}</Text>
           <Text style={styles.kpiLabel}>الإيرادات</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>💸</Text>
+          <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#dc2626' }]}>
             {((d.totalPayouts as number) ?? 0)?.toLocaleString()}
           </Text>
           <Text style={styles.kpiLabel}>المدفوعات</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>📊</Text>
+          <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#059669' }]}>
             {((d.platformFees as number) ?? 0)?.toLocaleString()}
           </Text>

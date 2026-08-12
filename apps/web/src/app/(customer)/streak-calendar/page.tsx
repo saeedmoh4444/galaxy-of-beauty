@@ -7,11 +7,11 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 
 const MILESTONES: Record<number, { emoji: string; reward: string }> = {
-  5: { emoji: '🌟', reward: 'خصم ١٠٪ على الحجز التالي' },
-  10: { emoji: '💎', reward: 'جلسة عناية مجانية' },
-  20: { emoji: '👑', reward: 'باقة تجميل متكاملة' },
-  30: { emoji: '🏆', reward: 'عضوية ذهبية لمدة شهر' },
-  50: { emoji: '✨', reward: 'يوم تجميل كامل مجاناً' },
+  5: { emoji: '', reward: 'خصم ١٠٪ على الحجز التالي' },
+  10: { emoji: '', reward: 'جلسة عناية مجانية' },
+  20: { emoji: '', reward: 'باقة تجميل متكاملة' },
+  30: { emoji: '', reward: 'عضوية ذهبية لمدة شهر' },
+  50: { emoji: '', reward: 'يوم تجميل كامل مجاناً' },
 };
 
 export default function StreakCalendarPage(): JSX.Element {
@@ -60,7 +60,7 @@ export default function StreakCalendarPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          🔥 تقويم الاستمرارية
+           تقويم الاستمرارية
         </h1>
 
         {isLoading ? (
@@ -74,7 +74,7 @@ export default function StreakCalendarPage(): JSX.Element {
               padding="lg"
               className="text-center bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950 dark:to-orange-950"
             >
-              <p className="text-6xl">🔥</p>
+              <p className="text-6xl"></p>
               <p className="mt-2 text-sm text-text-secondary">الاستمرارية الحالية</p>
               <p className="text-4xl font-extrabold text-orange-600 mt-1">{currentStreak} أسبوع</p>
               <p className="text-xs text-text-tertiary mt-1">
@@ -82,7 +82,7 @@ export default function StreakCalendarPage(): JSX.Element {
               </p>
               {milestone && (
                 <div className="mt-4 rounded-lg bg-white/80 p-3 dark:bg-gray-800/80">
-                  <p className="text-sm">🎯 الهدف القادم: {nextMilestone} أسابيع</p>
+                  <p className="text-sm"> الهدف القادم: {nextMilestone} أسابيع</p>
                   <p className="text-xs text-brand-600 mt-1">
                     {milestone.emoji} {milestone.reward}
                   </p>
@@ -105,7 +105,7 @@ export default function StreakCalendarPage(): JSX.Element {
                     key={i}
                     className={`rounded-lg p-3 text-center text-xs transition-all ${w.booked ? 'bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700' : 'bg-surface-muted dark:bg-gray-800 border border-gray-200 dark:border-gray-700'} ${w.isCurrent ? 'ring-2 ring-brand-500' : ''}`}
                   >
-                    <div className="text-lg">{w.booked ? '✅' : '—'}</div>
+                    <div className="text-lg">{w.booked ? '' : '—'}</div>
                     <div className="mt-1 text-text-secondary">{w.label}</div>
                   </div>
                 ))}
@@ -122,7 +122,7 @@ export default function StreakCalendarPage(): JSX.Element {
 
             {/* Milestones */}
             <Card padding="lg">
-              <h3 className="mb-4 font-semibold">🏆 المكافآت القادمة</h3>
+              <h3 className="mb-4 font-semibold"> المكافآت القادمة</h3>
               <div className="space-y-2">
                 {Object.entries(MILESTONES).map(([weeks, m]) => (
                   <div
@@ -137,7 +137,7 @@ export default function StreakCalendarPage(): JSX.Element {
                       </div>
                     </div>
                     {Number(weeks) <= currentStreak ? (
-                      <span className="text-green-600 text-xs font-bold">✓ تم</span>
+                      <span className="text-green-600 text-xs font-bold"> تم</span>
                     ) : (
                       <span className="text-text-tertiary text-xs">
                         {Number(weeks) - currentStreak} أسبوع متبقي
@@ -150,7 +150,7 @@ export default function StreakCalendarPage(): JSX.Element {
 
             <div className="text-center">
               <Link href="/bookings/create">
-                <Button>احجزي الآن وحافظي على استمراريتكِ 🔥</Button>
+                <Button>احجزي الآن وحافظي على استمراريتكِ </Button>
               </Link>
             </div>
           </>

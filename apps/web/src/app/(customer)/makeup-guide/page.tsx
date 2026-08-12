@@ -59,7 +59,7 @@ export default function MakeupGuidePage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="💄 دليل المكياج" subtitle="كل ما تحتاجينه لإطلالة مثالية" />
+        <PageTitle title=" دليل المكياج" subtitle="كل ما تحتاجينه لإطلالة مثالية" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

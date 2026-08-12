@@ -13,7 +13,7 @@ export function BeautyHyperpigmentationCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🔆</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">التصبغات</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">أنواعها وعلاجها</p>
@@ -21,10 +21,10 @@ export function BeautyHyperpigmentationCard({
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '☀️', text: 'السبب: الشمس — واقي الشمس هو الحل الأول' },
-          { emoji: '✨', text: 'فيتامين سي — يفتح التصبغات صباحاً' },
-          { emoji: '🧪', text: 'نياسيناميد — يقلل إنتاج الميلانين' },
-          { emoji: '⏳', text: 'الصبر — النتائج تحتاج 8-12 أسبوع' },
+          { emoji: '️', text: 'السبب: الشمس — واقي الشمس هو الحل الأول' },
+          { emoji: '', text: 'فيتامين سي — يفتح التصبغات صباحاً' },
+          { emoji: '', text: 'نياسيناميد — يقلل إنتاج الميلانين' },
+          { emoji: '', text: 'الصبر — النتائج تحتاج 8-12 أسبوع' },
         ].map((t, i) => (
           <div
             key={i}

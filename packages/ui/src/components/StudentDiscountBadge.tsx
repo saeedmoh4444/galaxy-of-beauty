@@ -42,7 +42,7 @@ export function StudentDiscountBadge({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-lg" aria-hidden="true">
-            🎓
+            
           </span>
           <div>
             <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">خصم الطالبات</h4>
@@ -81,7 +81,7 @@ export function StudentDiscountBadge({
       {university && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-orange-50 px-2.5 py-1.5 dark:bg-orange-950">
           <span className="text-xs" aria-hidden="true">
-            🏛️
+            ️
           </span>
           <span className="text-[10px] text-orange-700 dark:text-orange-300">{university}</span>
         </div>
@@ -91,7 +91,7 @@ export function StudentDiscountBadge({
       {requiresVerification && (
         <div className="mt-2 flex items-start gap-1.5 rounded-lg bg-amber-50 p-2 dark:bg-amber-950">
           <span className="text-xs shrink-0" aria-hidden="true">
-            📧
+            
           </span>
           <div>
             <p className="text-[10px] font-bold text-amber-700 dark:text-amber-300">
@@ -109,12 +109,12 @@ export function StudentDiscountBadge({
         type="button"
         className="mt-3 w-full rounded-xl bg-orange-600 py-2 text-xs font-bold text-white hover:bg-orange-700 active:scale-[0.98] transition-all"
       >
-        تحققي من أهليتكِ 🎓
+        تحققي من أهليتكِ 
       </button>
 
       {/* Footer */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🧡 الجمال للجميع — بما فيهن الطالبات
+         الجمال للجميع — بما فيهن الطالبات
       </p>
     </div>
   );

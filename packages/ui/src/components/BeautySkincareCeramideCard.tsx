@@ -13,7 +13,7 @@ export function BeautySkincareCeramideCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🧱</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">السيراميد</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">طوب بناء حاجز البشرة</p>
@@ -21,10 +21,10 @@ export function BeautySkincareCeramideCard({
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🛡️', text: 'يعيد بناء حاجز البشرة' },
-          { emoji: '💧', text: 'يمنع فقدان الرطوبة' },
-          { emoji: '🌿', text: 'ممتاز للبشرة الحساسة والجافة' },
-          { emoji: '🤝', text: 'مع النياسيناميد — ثنائي مرمم' },
+          { emoji: '️', text: 'يعيد بناء حاجز البشرة' },
+          { emoji: '', text: 'يمنع فقدان الرطوبة' },
+          { emoji: '', text: 'ممتاز للبشرة الحساسة والجافة' },
+          { emoji: '', text: 'مع النياسيناميد — ثنائي مرمم' },
         ].map((t, i) => (
           <div
             key={i}

@@ -6,7 +6,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 const MEMBERSHIPS = [
   {
     key: 'basic',
-    emoji: '🥈',
+    emoji: '',
     name: 'الأساسية',
     price: 0,
     color: '#9ca3af',
@@ -15,7 +15,7 @@ const MEMBERSHIPS = [
   },
   {
     key: 'premium',
-    emoji: '🥇',
+    emoji: '',
     name: 'المميزة',
     price: 99,
     color: '#f59e0b',
@@ -31,7 +31,7 @@ const MEMBERSHIPS = [
   },
   {
     key: 'platinum',
-    emoji: '💎',
+    emoji: '',
     name: 'البلاتينية',
     price: 299,
     color: '#7c3aed',
@@ -63,7 +63,7 @@ export default function SalonMembershipPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">💳 عضويات الصالون</h1>
+          <h1 className="text-2xl font-bold"> عضويات الصالون</h1>
           <p className="mt-1 text-sm text-text-secondary">اختاري العضوية اللي تناسبكِ</p>
         </div>
         {isLoading ? (
@@ -74,10 +74,10 @@ export default function SalonMembershipPage(): JSX.Element {
               <p className="text-sm text-text-secondary">عضويتكِ الحالية</p>
               <p className="text-3xl font-extrabold text-purple-600 mt-1">
                 {(membership?.tier as string) === 'platinum'
-                  ? '💎 بلاتينية'
+                  ? ' بلاتينية'
                   : (membership?.tier as string) === 'premium'
-                    ? '🥇 مميزة'
-                    : '🥈 أساسية'}
+                    ? ' مميزة'
+                    : ' أساسية'}
               </p>
               {(membership?.autoRenew as boolean) && (
                 <Button
@@ -102,18 +102,18 @@ export default function SalonMembershipPage(): JSX.Element {
                 {m.price === 0 ? 'مجانية' : formatCurrency(m.price) + ' / شهرياً'}
               </p>
               <div className="mt-4 space-y-2 text-sm text-right">
-                <p className="font-semibold text-text-primary">✅ المميزات</p>
+                <p className="font-semibold text-text-primary"> المميزات</p>
                 {m.benefits.map((b, i) => (
                   <p key={i} className="text-green-600">
-                    ✓ {b}
+                     {b}
                   </p>
                 ))}
                 {m.notIncluded.length > 0 && (
                   <>
-                    <p className="font-semibold text-text-tertiary mt-3">🚫 غير متضمن</p>
+                    <p className="font-semibold text-text-tertiary mt-3"> غير متضمن</p>
                     {m.notIncluded.map((b, i) => (
                       <p key={i} className="text-text-tertiary">
-                        ✗ {b}
+                         {b}
                       </p>
                     ))}
                   </>

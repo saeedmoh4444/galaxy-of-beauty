@@ -14,12 +14,12 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 const CATS: Record<string, string> = {
-  hair: '💇‍♀️ شعر',
-  nails: '💅 أظافر',
-  skincare: '✨ بشرة',
-  makeup: '💄 مكياج',
-  body: '🧴 جسم',
-  other: '📌 أخرى',
+  hair: '‍️ شعر',
+  nails: ' أظافر',
+  skincare: ' بشرة',
+  makeup: ' مكياج',
+  body: ' جسم',
+  other: ' أخرى',
 };
 const INTERVALS = [7, 14, 30, 60, 90];
 
@@ -82,7 +82,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
         }}
       >
         <View>
-          <Text style={s.t}>⏰ تذكيرات الجمال</Text>
+          <Text style={s.t}> تذكيرات الجمال</Text>
           <Text style={s.sub}>لا تنسي مواعيد عنايتكِ</Text>
         </View>
         <TouchableOpacity
@@ -94,7 +94,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
             paddingVertical: 6,
           }}
         >
-          <Text style={{ color: '#fff', fontWeight: '700' }}>{showForm ? '✕' : '+ تذكير'}</Text>
+          <Text style={{ color: '#fff', fontWeight: '700' }}>{showForm ? '' : '+ تذكير'}</Text>
         </TouchableOpacity>
       </View>
 
@@ -145,7 +145,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
 
       {reminders.length === 0 && (
         <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}>⏰</Text>
+          <Text style={{ fontSize: 40 }}></Text>
           <Text style={{ color: '#6b7280', marginTop: 8 }}>مافي تذكيرات</Text>
         </View>
       )}
@@ -153,7 +153,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
       {overdue.length > 0 && (
         <View style={{ marginBottom: 16 }}>
           <Text style={{ fontWeight: '700', color: '#ef4444', fontSize: 15, marginBottom: 8 }}>
-            ⚠️ فات موعدها
+             فات موعدها
           </Text>
           {overdue.map((r: any) => (
             <View
@@ -167,10 +167,10 @@ export default function BeautyRemindersScreen(): JSX.Element {
                 </Text>
               </View>
               <TouchableOpacity onPress={() => handleComplete(r.id)} style={s.smBtn}>
-                <Text style={{ color: '#fff', fontSize: 12, fontWeight: '600' }}>✅ تم</Text>
+                <Text style={{ color: '#fff', fontSize: 12, fontWeight: '600' }}> تم</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => handleDelete(r.id)}>
-                <Text style={{ color: '#ef4444', fontSize: 18, marginLeft: 6 }}>🗑</Text>
+                <Text style={{ color: '#ef4444', fontSize: 18, marginLeft: 6 }}></Text>
               </TouchableOpacity>
             </View>
           ))}
@@ -180,7 +180,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
       {upcoming.length > 0 && (
         <View>
           <Text style={{ fontWeight: '700', color: '#111827', fontSize: 15, marginBottom: 8 }}>
-            📅 قادمة
+             قادمة
           </Text>
           {upcoming.map((r: any) => (
             <View key={r.id} style={s.remCard}>
@@ -192,7 +192,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
                 </Text>
               </View>
               <TouchableOpacity onPress={() => handleDelete(r.id)}>
-                <Text style={{ color: '#ef4444', fontSize: 18 }}>🗑</Text>
+                <Text style={{ color: '#ef4444', fontSize: 18 }}></Text>
               </TouchableOpacity>
             </View>
           ))}

@@ -44,13 +44,13 @@ export default function ReschedulePage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🔄 إعادة جدولة</h1>
+          <h1 className="text-2xl font-bold"> إعادة جدولة</h1>
           <p className="mt-1 text-sm text-text-secondary">غيري موعد حجوزاتكِ القادمة</p>
         </div>
 
         {done && (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-2xl">✅</p>
+            <p className="text-2xl"></p>
             <p className="font-bold text-green-700 mt-2">تمت إعادة الجدولة بنجاح</p>
           </Card>
         )}
@@ -63,7 +63,7 @@ export default function ReschedulePage(): JSX.Element {
           </div>
         ) : activeBookings.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">📅</p>
+            <p className="text-4xl mb-2"></p>
             <p className="text-text-secondary">مافي حجوزات قابلة لإعادة الجدولة</p>
           </Card>
         ) : (
@@ -94,7 +94,7 @@ export default function ReschedulePage(): JSX.Element {
                     </span>
                   </div>
                   <p className="text-xs text-text-secondary mt-1">
-                    🕐{' '}
+                    {' '}
                     {new Date(b.startAt as string).toLocaleDateString('ar-SA', {
                       day: 'numeric',
                       month: 'long',
@@ -110,7 +110,7 @@ export default function ReschedulePage(): JSX.Element {
 
         {selectedId && (
           <Card padding="lg">
-            <h3 className="font-bold mb-4">📅 اختر الموعد الجديد</h3>
+            <h3 className="font-bold mb-4"> اختر الموعد الجديد</h3>
             <div className="grid gap-3 sm:grid-cols-2">
               <input
                 type="date"
@@ -137,7 +137,7 @@ export default function ReschedulePage(): JSX.Element {
               disabled={!newDate || !newTime}
               className="w-full mt-3"
             >
-              🔄 تأكيد إعادة الجدولة
+               تأكيد إعادة الجدولة
             </Button>
           </Card>
         )}

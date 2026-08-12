@@ -21,7 +21,7 @@ export default function AIAssistantPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🧠 مساعدة الذكاء الاصطناعي</h1>
+          <h1 className="text-2xl font-bold"> مساعدة الذكاء الاصطناعي</h1>
           <p className="mt-1 text-sm text-text-secondary">اسأليني أي سؤال عن الجمال والعناية</p>
         </div>
         <Card padding="lg">
@@ -58,7 +58,7 @@ export default function AIAssistantPage(): JSX.Element {
             className="border-2 border-brand-200 dark:border-brand-800 bg-gradient-to-br from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950"
           >
             <div className="flex items-start gap-3">
-              <span className="text-3xl">🤖</span>
+              <span className="text-3xl"></span>
               <div>
                 <p className="font-bold text-sm mb-2">
                   {(answer as Record<string, unknown>).question as string}

@@ -7,7 +7,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 const SEASONS = [
   {
     key: 'winter',
-    emoji: '❄️',
+    emoji: '️',
     name: 'شتوية',
     desc: 'ألوان باردة وعميقة',
     colors: ['#1e1b4b', '#312e81', '#831843', '#ffffff', '#000000', '#dc2626', '#4c1d95'],
@@ -17,7 +17,7 @@ const SEASONS = [
   },
   {
     key: 'summer',
-    emoji: '🌸',
+    emoji: '',
     name: 'صيفية',
     desc: 'ألوان ناعمة وباستيل',
     colors: ['#fbcfe8', '#ddd6fe', '#bfdbfe', '#d1d5db', '#ec4899', '#8b5cf6', '#93c5fd'],
@@ -27,7 +27,7 @@ const SEASONS = [
   },
   {
     key: 'autumn',
-    emoji: '🍂',
+    emoji: '',
     name: 'خريفية',
     desc: 'ألوان دافئة وغنية',
     colors: ['#fef3c7', '#fed7aa', '#fde68a', '#d97706', '#b45309', '#92400e', '#78350f'],
@@ -37,7 +37,7 @@ const SEASONS = [
   },
   {
     key: 'spring',
-    emoji: '🌱',
+    emoji: '',
     name: 'ربيعية',
     desc: 'ألوان مشرقة ودافئة',
     colors: ['#fef08a', '#fde047', '#86efac', '#fca5a5', '#fb923c', '#22c55e', '#fbbf24'],
@@ -54,7 +54,7 @@ export default function ColorAnalysisPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="default">
-        <PageTitle title="🎨 تحليل الألوان" subtitle="اكتشفي الألوان اللي تناسب بشرتكِ" />
+        <PageTitle title=" تحليل الألوان" subtitle="اكتشفي الألوان اللي تناسب بشرتكِ" />
 
         <div className="mb-6 flex gap-2">
           {SEASONS.map((sc) => (
@@ -78,10 +78,10 @@ export default function ColorAnalysisPage(): JSX.Element {
           <h3 className="text-xl font-bold text-text-primary dark:text-gray-100">
             {s.emoji} {s.name} — {s.desc}
           </h3>
-          <p className="mt-2 text-sm text-text-secondary dark:text-gray-400">🎨 {s.skin}</p>
+          <p className="mt-2 text-sm text-text-secondary dark:text-gray-400"> {s.skin}</p>
 
           <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
-            🎨 لوحة الألوان
+             لوحة الألوان
           </h4>
           <div className="mt-3 flex gap-2">
             {s.colors.map((c, i) => (
@@ -94,7 +94,7 @@ export default function ColorAnalysisPage(): JSX.Element {
           </div>
 
           <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
-            💄 المكياج المناسب
+             المكياج المناسب
           </h4>
           <div className="mt-2 space-y-2">
             {s.makeup.map((m, i) => (
@@ -102,14 +102,14 @@ export default function ColorAnalysisPage(): JSX.Element {
                 key={i}
                 className="flex items-center gap-3 rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-800"
               >
-                <span>💄</span>
+                <span></span>
                 <span className="text-sm text-text-secondary dark:text-gray-300">{m}</span>
               </div>
             ))}
           </div>
 
           <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4 dark:border-gray-800">
-            <span className="text-sm text-text-tertiary dark:text-gray-500">💍 المجوهرات</span>
+            <span className="text-sm text-text-tertiary dark:text-gray-500"> المجوهرات</span>
             <span className="text-lg font-bold text-amber-500">{s.jewelry}</span>
           </div>
         </div>
@@ -118,7 +118,7 @@ export default function ColorAnalysisPage(): JSX.Element {
           type="button"
           className="mt-6 w-full rounded-2xl bg-rose-600 py-4 text-center text-base font-bold text-white hover:bg-rose-700 transition-colors"
         >
-          📸 حللي بشرتكِ
+           حللي بشرتكِ
         </button>
       </PageContainer>
     </DashboardLayout>

@@ -9,7 +9,7 @@ export function BeautyPerfumeMixingCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🧪</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">مزج العطور</h4>
           <p className="text-[10px] text-violet-500 dark:text-violet-400">اصنعي عطرك الخاص</p>
@@ -17,10 +17,10 @@ export function BeautyPerfumeMixingCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '📝', text: 'القاعدة: قاعدة + قلب + نفحة عليا' },
-          { emoji: '🧪', text: 'النسب: 50% قاعدة، 30% قلب، 20% عليا' },
-          { emoji: '⏰', text: 'اتركيه 48 ساعة — لتتجانس المكونات' },
-          { emoji: '💧', text: 'زيت جوجوبا — حامل مثالي للزيوت العطرية' },
+          { emoji: '', text: 'القاعدة: قاعدة + قلب + نفحة عليا' },
+          { emoji: '', text: 'النسب: 50% قاعدة، 30% قلب، 20% عليا' },
+          { emoji: '', text: 'اتركيه 48 ساعة — لتتجانس المكونات' },
+          { emoji: '', text: 'زيت جوجوبا — حامل مثالي للزيوت العطرية' },
         ].map((t, i) => (
           <div
             key={i}

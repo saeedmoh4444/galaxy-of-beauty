@@ -23,10 +23,10 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">🎁 سجل الهدايا</h1>
+            <h1 className="text-2xl font-bold"> سجل الهدايا</h1>
             <p className="mt-1 text-sm text-text-secondary">قائمة أمنياتكِ من خدمات التجميل</p>
           </div>
-          <Button onClick={() => setShowForm(!showForm)}>{showForm ? '✕' : '+ سجل جديد'}</Button>
+          <Button onClick={() => setShowForm(!showForm)}>{showForm ? '' : '+ سجل جديد'}</Button>
         </div>
 
         {showForm && (
@@ -42,10 +42,10 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
               onChange={(e) => setOccasion(e.target.value)}
               className="w-full rounded-lg border px-3 py-2 text-sm mb-3 dark:border-gray-700 dark:bg-gray-800"
             >
-              <option value="wedding">👰 زفاف</option>
-              <option value="birthday">🎂 عيد ميلاد</option>
-              <option value="baby_shower">👶 بيبي شاور</option>
-              <option value="other">🎁 مناسبة أخرى</option>
+              <option value="wedding"> زفاف</option>
+              <option value="birthday"> عيد ميلاد</option>
+              <option value="baby_shower"> بيبي شاور</option>
+              <option value="other"> مناسبة أخرى</option>
             </select>
             <input
               type="number"
@@ -76,14 +76,14 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
               loading={createMut.isPending}
               className="w-full"
             >
-              🎁 إنشاء السجل
+               إنشاء السجل
             </Button>
           </Card>
         )}
 
         {created && (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-2xl">✅</p>
+            <p className="text-2xl"></p>
             <p className="font-bold text-green-700 mt-2">تم إنشاء سجل الهدايا</p>
           </Card>
         )}
@@ -96,7 +96,7 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
           </div>
         ) : !(registries ?? []).length ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">🎁</p>
+            <p className="text-4xl mb-2"></p>
             <p className="text-text-secondary">مافي سجلات هدايا بعد — أنشئي أول سجل</p>
           </Card>
         ) : (

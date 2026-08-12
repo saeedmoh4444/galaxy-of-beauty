@@ -52,7 +52,7 @@ export default function RecurringPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            🔄 حجوزات متكررة
+             حجوزات متكررة
           </h1>
           <Button onClick={() => setShowAdd(true)}>إضافة حجز متكرر</Button>
         </div>
@@ -89,18 +89,14 @@ export default function RecurringPage(): JSX.Element {
                         size="sm"
                         variant="outline"
                         onClick={() => pauseMut.mutate({ id: b.id })}
-                      >
-                        ⏸
-                      </Button>
+                      >إيقاف</Button>
                     )}
                     {b.status !== 'CANCELLED' && (
                       <Button
                         size="sm"
                         variant="danger"
                         onClick={() => cancelMut.mutate({ id: b.id })}
-                      >
-                        ✕
-                      </Button>
+                      >إلغاء</Button>
                     )}
                   </div>
                 </div>

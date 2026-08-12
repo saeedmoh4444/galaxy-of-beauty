@@ -5,12 +5,12 @@ import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const SERVICES = [
-  { id: 1, name: 'مانيكير', emoji: '💅' },
-  { id: 2, name: 'باديكير', emoji: '🦶' },
-  { id: 3, name: 'تنظيف بشرة', emoji: '✨' },
-  { id: 4, name: 'مساج', emoji: '💆‍♀️' },
-  { id: 5, name: 'صبغ شعر', emoji: '🎨' },
-  { id: 6, name: 'مكياج', emoji: '💄' },
+  { id: 1, name: 'مانيكير', emoji: '' },
+  { id: 2, name: 'باديكير', emoji: '' },
+  { id: 3, name: 'تنظيف بشرة', emoji: '' },
+  { id: 4, name: 'مساج', emoji: '‍️' },
+  { id: 5, name: 'صبغ شعر', emoji: '' },
+  { id: 6, name: 'مكياج', emoji: '' },
 ];
 
 export default function AdminFlashDealsPage(): JSX.Element {
@@ -31,12 +31,12 @@ export default function AdminFlashDealsPage(): JSX.Element {
     <DashboardLayout role="ADMIN">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">⚡ إدارة عروض الفلاش</h1>
+          <h1 className="text-2xl font-bold"> إدارة عروض الفلاش</h1>
           <p className="mt-1 text-sm text-text-secondary">إنشاء وإدارة العروض محدودة الوقت</p>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3">➕ إنشاء عرض جديد</h3>
+          <h3 className="font-bold mb-3"> إنشاء عرض جديد</h3>
           <div className="grid gap-3 sm:grid-cols-2">
             <select
               value={svcId}
@@ -88,12 +88,12 @@ export default function AdminFlashDealsPage(): JSX.Element {
             loading={createMut.isPending}
             className="w-full mt-3"
           >
-            ⚡ إنشاء العرض
+             إنشاء العرض
           </Button>
         </Card>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3">🔥 العروض النشطة</h3>
+          <h3 className="font-bold mb-3"> العروض النشطة</h3>
           {isLoading ? (
             <CardSkeleton />
           ) : !(active ?? []).length ? (

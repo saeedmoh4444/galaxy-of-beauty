@@ -4,7 +4,7 @@ import { useState } from 'react';
 const CONSULTANTS = [
   {
     key: 'skincare',
-    emoji: '👩‍⚕️',
+    emoji: '‍️',
     name: 'اخصائية بشرة',
     specialty: 'تحليل البشرة وتشخيص المشاكل',
     price: 150,
@@ -13,7 +13,7 @@ const CONSULTANTS = [
   },
   {
     key: 'makeup',
-    emoji: '💄',
+    emoji: '',
     name: 'خبيرة مكياج',
     specialty: 'استشارة مكياج للمناسبات',
     price: 120,
@@ -22,7 +22,7 @@ const CONSULTANTS = [
   },
   {
     key: 'hair',
-    emoji: '💇‍♀️',
+    emoji: '‍️',
     name: 'مصففة شعر',
     specialty: 'استشارة تسريحات وعناية',
     price: 100,
@@ -31,7 +31,7 @@ const CONSULTANTS = [
   },
   {
     key: 'nutrition',
-    emoji: '🥗',
+    emoji: '',
     name: 'اخصائية تغذية',
     specialty: 'تغذية البشرة والشعر',
     price: 130,
@@ -49,17 +49,17 @@ export default function VirtualConsultationScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>📹 استشارة افتراضية</Text>
+      <Text style={styles.t}> استشارة افتراضية</Text>
       <Text style={styles.sub}>استشيري خبيرات التجميل عبر الفيديو</Text>
 
       {booked && consultant ? (
         <View style={styles.confirmed}>
-          <Text style={styles.cfEmoji}>📹</Text>
+          <Text style={styles.cfEmoji}></Text>
           <Text style={styles.cfTitle}>تم حجز الاستشارة!</Text>
           <Text style={styles.cfText}>
             {consultant.emoji} {consultant.name}
           </Text>
-          <Text style={styles.cfSlot}>📅 {selectedSlot} — الرابط سيصلكِ عبر الإيميل</Text>
+          <Text style={styles.cfSlot}> {selectedSlot} — الرابط سيصلكِ عبر الإيميل</Text>
           <TouchableOpacity
             onPress={() => {
               setBooked(false);
@@ -88,7 +88,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
                 <Text style={styles.cs}>{c.specialty}</Text>
                 <View style={styles.cm}>
                   <Text style={styles.cp}>{c.price} ر.س</Text>
-                  <Text style={styles.cr}>⭐ {c.rating}</Text>
+                  <Text style={styles.cr}> {c.rating}</Text>
                 </View>
               </TouchableOpacity>
             ))}
@@ -97,7 +97,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
           {consultant && (
             <View style={styles.slots}>
               <Text style={styles.st}>
-                📅 اختر الوقت — {consultant.emoji} {consultant.name}
+                 اختر الوقت — {consultant.emoji} {consultant.name}
               </Text>
               <View style={styles.slotGrid}>
                 {consultant.slots.map((s) => (
@@ -112,7 +112,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
               </View>
               {selectedSlot && (
                 <TouchableOpacity onPress={() => setBooked(true)} style={styles.btn}>
-                  <Text style={styles.bt}>📹 احجزي الاستشارة — {consultant.price} ر.س</Text>
+                  <Text style={styles.bt}> احجزي الاستشارة — {consultant.price} ر.س</Text>
                 </TouchableOpacity>
               )}
             </View>

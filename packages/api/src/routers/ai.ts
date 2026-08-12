@@ -178,7 +178,7 @@ export const aiRouter = router({
       if (!aiReply) {
         // Fallback reply when API is unavailable
         const fallback =
-          'عذراً، أواجه مشكلة تقنية حالياً. يرجى المحاولة لاحقاً أو التواصل مع خدمة العملاء للمساعدة الفورية. 💜';
+          'عذراً، أواجه مشكلة تقنية حالياً. يرجى المحاولة لاحقاً أو التواصل مع خدمة العملاء للمساعدة الفورية. ';
         await prisma.chatMessage.create({
           data: {
             senderId: userId,

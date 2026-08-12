@@ -37,12 +37,12 @@ export default function MarketplaceScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🛍️ المتجر</Text>
+      <Text style={styles.t}>️ المتجر</Text>
       <View style={styles.grid}>
         {products.map((p: any) => (
           <TouchableOpacity key={p.id} style={styles.card}>
             <View style={styles.ci}>
-              <Text style={styles.ce}>{(p.emoji as string) ?? '🧴'}</Text>
+              <Text style={styles.ce}>{(p.emoji as string) ?? ''}</Text>
             </View>
             <Text style={styles.ct}>{(p.nameAr as string) ?? (p.titleAr as string)}</Text>
             <Text style={styles.cp}>{(p.price as number)?.toLocaleString()} ر.س</Text>

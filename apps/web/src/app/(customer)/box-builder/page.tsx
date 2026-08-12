@@ -28,7 +28,7 @@ export default function BoxBuilderPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📦 صندوق التجميل الشهري</h1>
+          <h1 className="text-2xl font-bold"> صندوق التجميل الشهري</h1>
           <p className="mt-1 text-sm text-text-secondary">
             اختاري منتجاتكِ المفضلة واحصلي عليها شهرياً — ووفري حتى ١٥٪
           </p>
@@ -39,7 +39,7 @@ export default function BoxBuilderPage(): JSX.Element {
             padding="lg"
             className="text-center border-2 border-green-300 dark:border-green-700"
           >
-            <span className="text-6xl">🎉</span>
+            <span className="text-6xl"></span>
             <h2 className="mt-4 text-xl font-bold">تم بناء صندوقكِ!</h2>
             <p className="text-2xl font-extrabold text-brand-600 mt-2">
               {formatCurrency(result.total as number)} ر.س /{' '}
@@ -61,7 +61,7 @@ export default function BoxBuilderPage(): JSX.Element {
         ) : (
           <>
             <Card padding="lg">
-              <h3 className="font-bold mb-3">🛍️ اختاري منتجاتكِ (٣-٦)</h3>
+              <h3 className="font-bold mb-3">️ اختاري منتجاتكِ (٣-٦)</h3>
               {isLoading ? (
                 <CardSkeleton />
               ) : (
@@ -100,7 +100,7 @@ export default function BoxBuilderPage(): JSX.Element {
                         onClick={() => setFreq(f)}
                         className={`flex-1 rounded-lg border py-2 text-sm font-medium ${freq === f ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}
                       >
-                        {f === 'monthly' ? '📅 شهري (خصم ١٥٪)' : '📦 ربع سنوي (خصم ١٠٪)'}
+                        {f === 'monthly' ? ' شهري (خصم ١٥٪)' : ' ربع سنوي (خصم ١٠٪)'}
                       </button>
                     ))}
                   </div>
@@ -126,7 +126,7 @@ export default function BoxBuilderPage(): JSX.Element {
                     className="w-full"
                     size="lg"
                   >
-                    🎁 بناء الصندوق
+                     بناء الصندوق
                   </Button>
                 </div>
               </Card>

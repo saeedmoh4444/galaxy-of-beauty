@@ -9,7 +9,7 @@ export function BeautyMakeupOrganizeCard({ className = '' }: { className?: strin
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">📦</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">تنظيم المكياج</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">حافظي على مكياجك منظماً</p>
@@ -17,10 +17,10 @@ export function BeautyMakeupOrganizeCard({ className = '' }: { className?: strin
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '📅', text: 'تخلصي من المكياج منتهي الصلاحية' },
-          { emoji: '🧹', text: 'نظفي الدرج مرة في الشهر' },
-          { emoji: '📂', text: 'قسمي حسب النوع — عيون، شفاه، وجه' },
-          { emoji: '🌡️', text: 'احفظيه في مكان بارد — وليس الحمام' },
+          { emoji: '', text: 'تخلصي من المكياج منتهي الصلاحية' },
+          { emoji: '', text: 'نظفي الدرج مرة في الشهر' },
+          { emoji: '', text: 'قسمي حسب النوع — عيون، شفاه، وجه' },
+          { emoji: '️', text: 'احفظيه في مكان بارد — وليس الحمام' },
         ].map((t, i) => (
           <div
             key={i}

@@ -7,11 +7,11 @@ import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const TYPE_ICONS: Record<string, string> = {
-  BOOKING: '📅',
-  PAYMENT: '💰',
-  REWARD: '⭐',
-  PROMO: '🎉',
-  SYSTEM: '🔔',
+  BOOKING: '',
+  PAYMENT: '',
+  REWARD: '',
+  PROMO: '',
+  SYSTEM: '',
 };
 
 export default function NotificationsPage(): JSX.Element {
@@ -77,7 +77,7 @@ export default function NotificationsPage(): JSX.Element {
                     }
                   >
                     <div className="flex items-start gap-3">
-                      <span className="mt-1 text-xl">{TYPE_ICONS[n.type as string] ?? '🔔'}</span>
+                      <span className="mt-1 text-xl">{TYPE_ICONS[n.type as string] ?? ''}</span>
                       <div className="min-w-0 flex-1">
                         <p
                           className={`text-sm ${isRead ? 'text-text-secondary dark:text-gray-400' : 'font-semibold text-text-primary dark:text-gray-100'}`}

@@ -23,7 +23,7 @@ export default function TechCalendarScreen(): JSX.Element {
       errorMessage="فشل تحميل التقويم"
       onRetry={() => calendar.refetch()}
     >
-      <Text style={styles.title}>📆 التقويم</Text>
+      <Text style={styles.title}> التقويم</Text>
       <View style={styles.daysRow}>
         {DAYS.map((d, i) => (
           <View key={i} style={styles.dayHeader}>
@@ -31,7 +31,7 @@ export default function TechCalendarScreen(): JSX.Element {
           </View>
         ))}
       </View>
-      <Text style={styles.syncNote}>📅 تتم مزامنة الحجوزات تلقائياً مع تقويم قوقل</Text>
+      <Text style={styles.syncNote}> تتم مزامنة الحجوزات تلقائياً مع تقويم قوقل</Text>
     </ScreenState>
   );
 }

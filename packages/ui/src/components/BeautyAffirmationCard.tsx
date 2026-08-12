@@ -39,7 +39,7 @@ export function BeautyAffirmationCard({ className = '' }: BeautyAffirmationCardP
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          💖
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">توكيدات إيجابية</h4>
       </div>
@@ -49,7 +49,7 @@ export function BeautyAffirmationCard({ className = '' }: BeautyAffirmationCardP
           &ldquo;{affirmation}&rdquo;
         </p>
         <p className="mt-2 text-2xl" aria-hidden="true">
-          💖
+          
         </p>
       </div>
 

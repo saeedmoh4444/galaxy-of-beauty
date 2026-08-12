@@ -50,14 +50,14 @@ export function CommunityEventCard({
     >
       <div className="flex items-start gap-3">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-100 to-purple-100 text-2xl dark:from-violet-900 dark:to-purple-900">
-          {event.emoji || '👯‍♀️'}
+          {event.emoji || '‍️'}
         </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{event.title}</h4>
           <div className="mt-0.5 flex flex-wrap gap-x-2 gap-y-0.5 text-[10px] text-text-tertiary dark:text-gray-500">
-            <span>📅 {event.date}</span>
-            <span>📍 {event.city}</span>
-            {event.time && <span>🕐 {event.time}</span>}
+            <span> {event.date}</span>
+            <span> {event.city}</span>
+            {event.time && <span> {event.time}</span>}
           </div>
         </div>
       </div>
@@ -67,12 +67,12 @@ export function CommunityEventCard({
         <div className="mt-2">
           <div className="flex items-center justify-between text-[10px]">
             <span className="text-text-tertiary dark:text-gray-500">
-              👥 {event.attendees} مسجلة
+               {event.attendees} مسجلة
               {event.maxAttendees && ` / ${event.maxAttendees}`}
             </span>
             {isFull && (
               <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[9px] font-bold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
-                ⚠️ اكتمل
+                 اكتمل
               </span>
             )}
           </div>
@@ -90,7 +90,7 @@ export function CommunityEventCard({
       {/* Host */}
       {event.host && (
         <p className="mt-1.5 text-[10px] text-text-tertiary dark:text-gray-500">
-          👩‍🎨 تستضيفها: {event.host}
+          ‍ تستضيفها: {event.host}
         </p>
       )}
 
@@ -108,11 +108,11 @@ export function CommunityEventCard({
               : 'bg-violet-600 text-white hover:bg-violet-700',
         )}
       >
-        {isRegistered ? '✅ مسجلة' : isFull ? 'القائمة مكتملة' : 'سجّلي الآن'}
+        {isRegistered ? ' مسجلة' : isFull ? 'القائمة مكتملة' : 'سجّلي الآن'}
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        💜 لقاءات حقيقية لنساء حقيقيات
+         لقاءات حقيقية لنساء حقيقيات
       </p>
     </div>
   );

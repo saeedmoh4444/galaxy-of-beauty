@@ -22,7 +22,7 @@ export default function WellnessHubScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={s.title}>🌸 مركز العافية</Text>
+      <Text style={s.title}> مركز العافية</Text>
       <Text style={s.sub}>نظرة شاملة على صحتكِ وجمالكِ</Text>
 
       {d?.cycle && (
@@ -43,7 +43,7 @@ export default function WellnessHubScreen(): JSX.Element {
             اليوم {d.cycle.currentDay} من {d.cycle.cycleLength}
           </Text>
           <Text style={{ textAlign: 'center', color: '#db2777', fontSize: 12, marginTop: 4 }}>
-            ⏱️ الدورة القادمة بعد {d.cycle.daysUntilNext} يوم
+            ️ الدورة القادمة بعد {d.cycle.daysUntilNext} يوم
           </Text>
         </View>
       )}
@@ -69,7 +69,7 @@ export default function WellnessHubScreen(): JSX.Element {
 
       {d?.skin && (
         <View style={s.card}>
-          <Text style={s.st}>🔬 تحليل البشرة</Text>
+          <Text style={s.st}> تحليل البشرة</Text>
           <Text style={{ fontSize: 14, color: '#374151', marginTop: 4 }}>
             النوع: <Text style={{ fontWeight: '700' }}>{d.skin.skinType}</Text>
           </Text>
@@ -93,7 +93,7 @@ export default function WellnessHubScreen(): JSX.Element {
 
       {d?.weekly?.checkinCount > 0 && (
         <View style={s.card}>
-          <Text style={s.st}>📊 ملخص الأسبوع</Text>
+          <Text style={s.st}> ملخص الأسبوع</Text>
           <View style={{ marginTop: 8 }}>
             <Text style={{ fontSize: 12, color: '#6b7280' }}>
               متوسط المزاج: {d.weekly.avgMood}/5
@@ -125,7 +125,7 @@ export default function WellnessHubScreen(): JSX.Element {
 
       {(d?.recentJournals as any[])?.length > 0 && (
         <View style={s.card}>
-          <Text style={s.st}>📔 آخر اليوميات</Text>
+          <Text style={s.st}> آخر اليوميات</Text>
           {(d.recentJournals as any[]).map((j: any, i: number) => (
             <View
               key={j.id ?? i}
@@ -142,19 +142,19 @@ export default function WellnessHubScreen(): JSX.Element {
 
       <View style={s.actions}>
         <TouchableOpacity style={s.actBtn}>
-          <Text style={{ fontSize: 24 }}>🌸</Text>
+          <Text style={{ fontSize: 24 }}></Text>
           <Text style={s.actLabel}>تقييم</Text>
         </TouchableOpacity>
         <TouchableOpacity style={s.actBtn}>
-          <Text style={{ fontSize: 24 }}>📅</Text>
+          <Text style={{ fontSize: 24 }}></Text>
           <Text style={s.actLabel}>الدورة</Text>
         </TouchableOpacity>
         <TouchableOpacity style={s.actBtn}>
-          <Text style={{ fontSize: 24 }}>🔬</Text>
+          <Text style={{ fontSize: 24 }}></Text>
           <Text style={s.actLabel}>بشرة</Text>
         </TouchableOpacity>
         <TouchableOpacity style={s.actBtn}>
-          <Text style={{ fontSize: 24 }}>🧘</Text>
+          <Text style={{ fontSize: 24 }}></Text>
           <Text style={s.actLabel}>عافية</Text>
         </TouchableOpacity>
       </View>

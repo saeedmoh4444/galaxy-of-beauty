@@ -4,11 +4,11 @@ import { trpc as trpcReact } from '@/lib/trpc-react';
 import { useState, useEffect, useCallback } from 'react';
 
 const THEMES = [
-  { key: 'spa', emoji: '🧖‍♀️', name: 'سبا منزلي', desc: 'مساج وأقنعة واسترخاء' },
-  { key: 'makeup', emoji: '💄', name: 'حفلة مكياج', desc: 'تجربة مكياج جماعي' },
-  { key: 'nails', emoji: '💅', name: 'صالون أظافر', desc: 'مانيكير وباديكير جماعي' },
-  { key: 'bridal', emoji: '👰', name: 'توديع عزوبية', desc: 'عناية متكاملة للعروس' },
-  { key: 'skincare', emoji: '✨', name: 'روتين عناية', desc: 'أقنعة وعناية بالبشرة' },
+  { key: 'spa', emoji: '‍️', name: 'سبا منزلي', desc: 'مساج وأقنعة واسترخاء' },
+  { key: 'makeup', emoji: '', name: 'حفلة مكياج', desc: 'تجربة مكياج جماعي' },
+  { key: 'nails', emoji: '', name: 'صالون أظافر', desc: 'مانيكير وباديكير جماعي' },
+  { key: 'bridal', emoji: '', name: 'توديع عزوبية', desc: 'عناية متكاملة للعروس' },
+  { key: 'skincare', emoji: '', name: 'روتين عناية', desc: 'أقنعة وعناية بالبشرة' },
 ];
 
 export default function BeautyPartyScreen(): JSX.Element {
@@ -56,10 +56,10 @@ export default function BeautyPartyScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🎉 حفلة تجميل</Text>
+      <Text style={styles.t}> حفلة تجميل</Text>
       <Text style={styles.sub}>خططي لحفلة تجميل لكِ ولصديقاتكِ</Text>
 
-      <Text style={styles.st}>🎨 اختاري الثيم</Text>
+      <Text style={styles.st}> اختاري الثيم</Text>
       <View style={styles.themes}>
         {THEMES.map((th) => (
           <TouchableOpacity
@@ -74,7 +74,7 @@ export default function BeautyPartyScreen(): JSX.Element {
         ))}
       </View>
 
-      <Text style={styles.st}>👯‍♀️ عدد الصديقات: {guests}</Text>
+      <Text style={styles.st}>‍️ عدد الصديقات: {guests}</Text>
       <View style={styles.guests}>
         {[2, 3, 4, 5, 6, 8, 10].map((g) => (
           <TouchableOpacity
@@ -88,7 +88,7 @@ export default function BeautyPartyScreen(): JSX.Element {
       </View>
 
       <View style={styles.summary}>
-        <Text style={styles.st}>💰 التكلفة التقديرية</Text>
+        <Text style={styles.st}> التكلفة التقديرية</Text>
         <View style={styles.sr}>
           <Text style={styles.sl}>
             {guests} أشخاص × {estPerPerson} ر.س
@@ -97,7 +97,7 @@ export default function BeautyPartyScreen(): JSX.Element {
         </View>
         {discount > 0 && (
           <View style={styles.sr}>
-            <Text style={[styles.sl, { color: '#059669' }]}>🎉 خصم المجموعة {discount}%</Text>
+            <Text style={[styles.sl, { color: '#059669' }]}> خصم المجموعة {discount}%</Text>
             <Text style={[styles.sv, { color: '#059669' }]}>
               -{((total * discount) / 100).toLocaleString()} ر.س
             </Text>
@@ -113,7 +113,7 @@ export default function BeautyPartyScreen(): JSX.Element {
       </View>
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}>🎉 احجزي حفلتكِ الآن</Text>
+        <Text style={styles.bt}> احجزي حفلتكِ الآن</Text>
       </TouchableOpacity>
     </ScrollView>
   );

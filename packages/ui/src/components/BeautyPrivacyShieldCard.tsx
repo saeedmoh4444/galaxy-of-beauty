@@ -29,12 +29,12 @@ export function BeautyPrivacyShieldCard({
   className = '',
 }: BeautyPrivacyShieldCardProps): JSX.Element {
   const items = [
-    { key: 'photosEncrypted', emoji: '🔒', label: 'الصور مشفرة', active: status.photosEncrypted },
-    { key: 'locationHidden', emoji: '📍', label: 'الموقع مخفي', active: status.locationHidden },
-    { key: 'dataEncrypted', emoji: '🛡️', label: 'البيانات مشفرة', active: status.dataEncrypted },
+    { key: 'photosEncrypted', emoji: '', label: 'الصور مشفرة', active: status.photosEncrypted },
+    { key: 'locationHidden', emoji: '', label: 'الموقع مخفي', active: status.locationHidden },
+    { key: 'dataEncrypted', emoji: '️', label: 'البيانات مشفرة', active: status.dataEncrypted },
     {
       key: 'anonymousMode',
-      emoji: '🕶️',
+      emoji: '️',
       label: 'وضع التخفي',
       active: status.anonymousMode ?? false,
     },
@@ -51,7 +51,7 @@ export function BeautyPrivacyShieldCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-2xl" aria-hidden="true">
-            🛡️
+            ️
           </span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
@@ -85,7 +85,7 @@ export function BeautyPrivacyShieldCard({
             >
               {item.label}
             </span>
-            <span className="text-xs">{item.active ? '✅' : '—'}</span>
+            <span className="text-xs">{item.active ? '' : '—'}</span>
           </div>
         ))}
       </div>
@@ -94,7 +94,7 @@ export function BeautyPrivacyShieldCard({
         onClick={onManageSettings}
         className="mt-3 w-full rounded-xl bg-emerald-600 py-2 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
       >
-        إدارة الخصوصية 🔒
+        إدارة الخصوصية 
       </button>
     </div>
   );

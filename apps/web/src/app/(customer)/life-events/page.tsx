@@ -33,7 +33,7 @@ export default function LifeEventsPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="🌸 مراحل الحياة" subtitle="لكل مرحلة عمرية جمالها الخاص" />
+        <PageTitle title=" مراحل الحياة" subtitle="لكل مرحلة عمرية جمالها الخاص" />
 
         <div className="grid gap-6 lg:grid-cols-2">
           <BeautyJourneyTimeline userAge={28} />

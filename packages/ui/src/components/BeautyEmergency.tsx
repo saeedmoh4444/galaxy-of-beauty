@@ -9,11 +9,11 @@
  */
 
 const EMERGENCIES = [
-  { emoji: '💼', label: 'مقابلة عمل غداً' },
-  { emoji: '👰', label: 'مناسبة مفاجئة' },
-  { emoji: '📸', label: 'جلسة تصوير' },
-  { emoji: '🎉', label: 'حفلة الليلة' },
-  { emoji: '😢', label: 'يوم سيء — أحتاج عناية' },
+  { emoji: '', label: 'مقابلة عمل غداً' },
+  { emoji: '', label: 'مناسبة مفاجئة' },
+  { emoji: '', label: 'جلسة تصوير' },
+  { emoji: '', label: 'حفلة الليلة' },
+  { emoji: '', label: 'يوم سيء — أحتاج عناية' },
 ];
 
 interface BeautyEmergencyProps {
@@ -27,7 +27,7 @@ export function BeautyEmergency({ onBook, className = '' }: BeautyEmergencyProps
       className={`rounded-2xl border-2 border-pink-200 bg-pink-50 p-5 dark:border-pink-800 dark:bg-pink-950 ${className}`}
     >
       <div className="flex items-center gap-2">
-        <span className="text-2xl">🚨</span>
+        <span className="text-2xl"></span>
         <div>
           <h3 className="text-sm font-bold text-pink-800 dark:text-pink-200">طوارئ التجميل</h3>
           <p className="text-xs text-pink-600 dark:text-pink-400">

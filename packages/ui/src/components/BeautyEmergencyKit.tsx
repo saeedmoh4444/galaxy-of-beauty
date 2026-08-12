@@ -30,14 +30,14 @@ interface ItemDef {
 const ITEMS: Record<KitItem, ItemDef> = {
   pads: { emoji: '🩹', label: 'فوط صحية' },
   tampons: { emoji: '🩹', label: 'سدادات قطنية' },
-  hair_spray: { emoji: '💨', label: 'مثبت شعر' },
-  bobby_pins: { emoji: '📌', label: 'دبابيس شعر' },
-  hair_tie: { emoji: '🎀', label: 'ربطة شعر' },
-  deodorant: { emoji: '🌸', label: 'مزيل عرق' },
+  hair_spray: { emoji: '', label: 'مثبت شعر' },
+  bobby_pins: { emoji: '', label: 'دبابيس شعر' },
+  hair_tie: { emoji: '', label: 'ربطة شعر' },
+  deodorant: { emoji: '', label: 'مزيل عرق' },
   sewing_kit: { emoji: '🪡', label: 'عدة خياطة' },
-  stain_remover: { emoji: '🧼', label: 'مزيل بقع' },
-  nail_file: { emoji: '💅', label: 'مبرد أظافر' },
-  mints: { emoji: '🍬', label: 'منعش نفس' },
+  stain_remover: { emoji: '', label: 'مزيل بقع' },
+  nail_file: { emoji: '', label: 'مبرد أظافر' },
+  mints: { emoji: '', label: 'منعش نفس' },
 };
 
 interface BeautyEmergencyKitProps {
@@ -60,7 +60,7 @@ export function BeautyEmergencyKit({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🎒
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">حقيبة الطوارئ</h4>
@@ -93,12 +93,12 @@ export function BeautyEmergencyKit({
       {/* Always free */}
       <div className="mt-2 rounded-lg bg-rose-50 p-2 text-center dark:bg-rose-950">
         <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300">
-          🎀 مجاناً — لا حاجة للسؤال
+           مجاناً — لا حاجة للسؤال
         </p>
       </div>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        💝 لأن الطوارئ لا تخبرنا قبل أن تأتي
+         لأن الطوارئ لا تخبرنا قبل أن تأتي
       </p>
     </div>
   );

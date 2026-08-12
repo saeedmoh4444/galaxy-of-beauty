@@ -73,22 +73,22 @@ export default function CustomerDashboardPage(): JSX.Element {
           <ErrorAlert message="فشل تحميل الإحصائيات" onRetry={() => insights.refetch()} />
         ) : (
           <div className="grid gap-4 md:grid-cols-4">
-            <StatCard label="الحجوزات" value={insights.data?.bookingCount ?? 0} icon="📅" />
+            <StatCard label="الحجوزات" value={insights.data?.bookingCount ?? 0} icon="" />
             <StatCard
               label="الإنفاق"
               value={formatCurrency(Number(insights.data?.totalSpent ?? 0))}
-              icon="💰"
+              icon=""
             />
             <StatCard
               label="الاستمرارية"
-              value={`🔥 ${streakInfo?.currentStreak ?? 0} أسابيع`}
-              icon="🔥"
+              value={` ${streakInfo?.currentStreak ?? 0} أسابيع`}
+              icon=""
             />
             {budget?.data ? (
               <StatCard
                 label="الميزانية"
                 value={formatCurrency(Number(budget.data.remaining))}
-                icon="💳"
+                icon=""
               />
             ) : (
               <CardSkeleton />
@@ -197,7 +197,7 @@ export default function CustomerDashboardPage(): JSX.Element {
                             className="flex h-full items-center justify-center text-2xl"
                             aria-hidden="true"
                           >
-                            ✨
+                            
                           </div>
                         )}
                       </div>
@@ -271,7 +271,7 @@ export default function CustomerDashboardPage(): JSX.Element {
                 name: (circles.data.items[0] as any)?.name ?? 'دائرة الجمال',
                 topic: ((circles.data.items[0] as any)?.topic ?? 'skincare') as any,
                 members: (circles.data.items[0] as any)?.members ?? 0,
-                cover: (circles.data.items[0] as any)?.cover ?? '🌸',
+                cover: (circles.data.items[0] as any)?.cover ?? '',
               }}
             />
           )}
@@ -287,7 +287,7 @@ export default function CustomerDashboardPage(): JSX.Element {
                 target: g.amount ?? 0,
                 saved: g.saved ?? 0,
                 monthly: g.monthly ?? 0,
-                emoji: g.emoji ?? '💰',
+                emoji: g.emoji ?? '',
               }))}
             />
           )}

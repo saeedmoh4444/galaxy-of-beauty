@@ -49,7 +49,7 @@ export default function VideoBookingScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📹 جلسة فيديو</Text>
+      <Text style={styles.t}> جلسة فيديو</Text>
       <View style={styles.card}>
         <Text style={styles.code}>{(data.roomId as string) ?? '—'}</Text>
         <Text style={styles.stat}>{data.status as string}</Text>
@@ -58,7 +58,7 @@ export default function VideoBookingScreen(): JSX.Element {
         onPress={() => router.push(`/customer/video/${bookingId}/room` as any)}
         style={styles.btn}
       >
-        <Text style={styles.bt}>🎥 دخول الغرفة</Text>
+        <Text style={styles.bt}> دخول الغرفة</Text>
       </TouchableOpacity>
     </ScrollView>
   );

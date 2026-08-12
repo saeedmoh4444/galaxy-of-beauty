@@ -9,7 +9,7 @@ export function BeautyMakeupRemoverCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🧹</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">إزالة المكياج</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">الطريقة الصحيحة واللطيفة</p>
@@ -18,9 +18,9 @@ export function BeautyMakeupRemoverCard({ className = '' }: { className?: string
       <div className="mt-3 space-y-1">
         {[
           { emoji: '🫒', text: 'زيت أو ماء ميسيلار — يذيب المكياج' },
-          { emoji: '🧴', text: 'غسول لطيف — الخطوة الثانية' },
-          { emoji: '👁️', text: 'العين: قطنة مبللة — اضغطي 10 ثوانٍ' },
-          { emoji: '🚫', text: 'لا تفركي — الفرك يسبب التجاعيد' },
+          { emoji: '', text: 'غسول لطيف — الخطوة الثانية' },
+          { emoji: '️', text: 'العين: قطنة مبللة — اضغطي 10 ثوانٍ' },
+          { emoji: '', text: 'لا تفركي — الفرك يسبب التجاعيد' },
         ].map((t, i) => (
           <div
             key={i}

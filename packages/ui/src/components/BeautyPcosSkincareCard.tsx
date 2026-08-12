@@ -17,9 +17,9 @@ export function BeautyPcosSkincareCard({ className = '' }: { className?: string 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: 'منتجات خالية من الزيوت — للبشرة الدهنية' },
-          { emoji: '🔬', text: 'نياسيناميد وزنك — لتنظيم إفراز الدهون' },
-          { emoji: '🥗', text: 'تغذية منخفضة السكر — تقلل الالتهابات' },
+          { emoji: '', text: 'منتجات خالية من الزيوت — للبشرة الدهنية' },
+          { emoji: '', text: 'نياسيناميد وزنك — لتنظيم إفراز الدهون' },
+          { emoji: '', text: 'تغذية منخفضة السكر — تقلل الالتهابات' },
           { emoji: '🩺', text: 'استشيري طبيبك — بعض العلاجات تحتاج وصفة' },
         ].map((t, i) => (
           <div

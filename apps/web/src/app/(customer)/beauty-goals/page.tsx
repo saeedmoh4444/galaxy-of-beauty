@@ -19,7 +19,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 const GOAL_TEMPLATES = [
   {
     key: 'skincare',
-    emoji: '✨',
+    emoji: '',
     name: 'عناية بالبشرة',
     goals: [
       'روتين عناية يومي لمدة ٣٠ يوم',
@@ -30,7 +30,7 @@ const GOAL_TEMPLATES = [
   },
   {
     key: 'makeup',
-    emoji: '💄',
+    emoji: '',
     name: 'مكياج',
     goals: [
       'تعلم أساسيات الكونتور',
@@ -41,13 +41,13 @@ const GOAL_TEMPLATES = [
   },
   {
     key: 'hair',
-    emoji: '💇‍♀️',
+    emoji: '‍️',
     name: 'شعر',
     goals: ['حمام زيت أسبوعي', 'قص أطراف الشعر', 'تجنب الحرارة لمدة أسبوعين', 'تجربة تسريحة جديدة'],
   },
   {
     key: 'health',
-    emoji: '🧘',
+    emoji: '',
     name: 'صحة وعافية',
     goals: [
       'نوم ٨ ساعات يومياً',
@@ -58,7 +58,7 @@ const GOAL_TEMPLATES = [
   },
   {
     key: 'nails',
-    emoji: '💅',
+    emoji: '',
     name: 'أظافر',
     goals: [
       'ترطيب الأظافر يومياً',
@@ -69,7 +69,7 @@ const GOAL_TEMPLATES = [
   },
   {
     key: 'spirit',
-    emoji: '🌸',
+    emoji: '',
     name: 'روحانية',
     goals: [
       'جلسة عناية ذاتية أسبوعياً',
@@ -103,7 +103,7 @@ export default function BeautyGoalsPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="🎯 أهداف الجمال" subtitle="حددي أهدافكِ وتابعي تقدمكِ" />
+        <PageTitle title=" أهداف الجمال" subtitle="حددي أهدافكِ وتابعي تقدمكِ" />
 
         <Card padding="lg" className="text-center">
           <div className="h-4 bg-surface-muted rounded-full">
@@ -160,23 +160,23 @@ export default function BeautyGoalsPage(): JSX.Element {
                 text: g.text,
                 year: g.year,
                 achieved: g.achieved,
-              })) ?? [{ emoji: '👰', text: 'إطلالة زفاف', year: '2027', achieved: false }]
+              })) ?? [{ emoji: '', text: 'إطلالة زفاف', year: '2027', achieved: false }]
             }
           />
           <BeautySkillTreeCard
             skills={[
-              { name: 'مكياج أساسي', emoji: '💄', level: 3, max: 5 },
-              { name: 'عناية بالبشرة', emoji: '🧴', level: 2, max: 5 },
-              { name: 'تسريحات', emoji: '💇', level: 1, max: 5 },
+              { name: 'مكياج أساسي', emoji: '', level: 3, max: 5 },
+              { name: 'عناية بالبشرة', emoji: '', level: 2, max: 5 },
+              { name: 'تسريحات', emoji: '', level: 1, max: 5 },
             ]}
           />
         </div>
         <div className="grid gap-6 lg:grid-cols-3">
           <BeautyHabitTrackerCard
             habits={[
-              { name: 'واقي شمس', emoji: '☀️', done: true },
-              { name: '8 أكواب ماء', emoji: '💧', done: false },
-              { name: 'روتين مسائي', emoji: '🌙', done: true },
+              { name: 'واقي شمس', emoji: '️', done: true },
+              { name: '8 أكواب ماء', emoji: '', done: false },
+              { name: 'روتين مسائي', emoji: '', done: true },
             ]}
           />
           <HydrationTracker goal={8} current={5} />
@@ -188,7 +188,7 @@ export default function BeautyGoalsPage(): JSX.Element {
               title: 'مكياج احترافي',
               modules: 8,
               completed: 3,
-              emoji: '💄',
+              emoji: '',
               duration: '6 أشهر',
             }}
           />

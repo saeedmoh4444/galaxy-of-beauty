@@ -9,7 +9,7 @@ export function BeautyCentellaCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌿</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">سينتيلا (Cica)</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">عشبة النمر — مهدئ خارق</p>
@@ -17,10 +17,10 @@ export function BeautyCentellaCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧯', text: 'يهدئ الالتهابات — ممتاز للبشرة الحساسة' },
+          { emoji: '', text: 'يهدئ الالتهابات — ممتاز للبشرة الحساسة' },
           { emoji: '🩹', text: 'يسرع التئام الجروح — يحفز الكولاجين' },
-          { emoji: '🔴', text: 'يقلل الاحمرار — بشرة هادئة ومتجانسة' },
-          { emoji: '💧', text: 'يقوي حاجز البشرة — يمنع فقدان الرطوبة' },
+          { emoji: '', text: 'يقلل الاحمرار — بشرة هادئة ومتجانسة' },
+          { emoji: '', text: 'يقوي حاجز البشرة — يمنع فقدان الرطوبة' },
         ].map((t, i) => (
           <div
             key={i}

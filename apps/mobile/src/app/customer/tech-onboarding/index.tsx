@@ -45,9 +45,9 @@ export default function TechOnboardingScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📋 التسجيل كفنية</Text>
+      <Text style={styles.t}> التسجيل كفنية</Text>
       <View style={styles.pc}>
-        <Text style={styles.pe}>📊</Text>
+        <Text style={styles.pe}></Text>
         <Text style={styles.pt}>
           {completed}/{total} مكتملة
         </Text>
@@ -57,7 +57,7 @@ export default function TechOnboardingScreen(): JSX.Element {
       </View>
       {steps.map((s: any, i: number) => (
         <View key={s.key ?? i} style={[styles.step, s.completed && styles.sd]}>
-          <Text style={styles.se}>{s.completed ? '✅' : '⭕'}</Text>
+          <Text style={styles.se}>{s.completed ? '' : '⭕'}</Text>
           <View style={{ flex: 1 }}>
             <Text style={[styles.stt, s.completed && styles.sttd]}>{s.titleAr as string}</Text>
             <Text style={styles.sdesc}>{s.descAr as string}</Text>

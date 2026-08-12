@@ -9,7 +9,7 @@ export function BeautyMaskCard({ className = '' }: { className?: string }): JSX.
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🎭</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             دليل الماسكات
@@ -19,10 +19,10 @@ export function BeautyMaskCard({ className = '' }: { className?: string }): JSX.
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '🧹', label: 'طين', tip: 'للبشرة الدهنية — ينظف المسام' },
-          { emoji: '💧', label: 'ورقي', tip: 'للبشرة الجافة — ترطيب مكثف' },
-          { emoji: '🌿', label: 'طبيعي', tip: 'عسل + زبادي — مهدئ' },
-          { emoji: '✨', label: 'ذهبي', tip: 'لجميع الأنواع — إشراقة' },
+          { emoji: '', label: 'طين', tip: 'للبشرة الدهنية — ينظف المسام' },
+          { emoji: '', label: 'ورقي', tip: 'للبشرة الجافة — ترطيب مكثف' },
+          { emoji: '', label: 'طبيعي', tip: 'عسل + زبادي — مهدئ' },
+          { emoji: '', label: 'ذهبي', tip: 'لجميع الأنواع — إشراقة' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-emerald-50 px-2.5 py-2 dark:bg-emerald-950">
             <span className="text-sm">{t.emoji}</span>

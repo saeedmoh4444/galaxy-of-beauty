@@ -18,12 +18,12 @@ interface SheLeadsProgramCardProps {
 }
 
 const MODULES = [
-  { emoji: '📊', title: 'إدارة الأعمال', desc: 'محاسبة، تسعير، إدارة المخزون' },
-  { emoji: '👥', title: 'قيادة الفريق', desc: 'توظيف، تدريب، تحفيز الخبيرات' },
-  { emoji: '📣', title: 'التسويق', desc: 'وسائل التواصل، العلامة التجارية' },
-  { emoji: '💻', title: 'التقنية', desc: 'نظام الحجز، التحليلات، التقارير' },
-  { emoji: '🤝', title: 'خدمة العملاء', desc: 'بناء العلاقات، حل المشكلات' },
-  { emoji: '💡', title: 'الابتكار', desc: 'تطوير خدمات جديدة، التميز' },
+  { emoji: '', title: 'إدارة الأعمال', desc: 'محاسبة، تسعير، إدارة المخزون' },
+  { emoji: '', title: 'قيادة الفريق', desc: 'توظيف، تدريب، تحفيز الخبيرات' },
+  { emoji: '', title: 'التسويق', desc: 'وسائل التواصل، العلامة التجارية' },
+  { emoji: '', title: 'التقنية', desc: 'نظام الحجز، التحليلات، التقارير' },
+  { emoji: '', title: 'خدمة العملاء', desc: 'بناء العلاقات، حل المشكلات' },
+  { emoji: '', title: 'الابتكار', desc: 'تطوير خدمات جديدة، التميز' },
 ];
 
 export function SheLeadsProgramCard({
@@ -41,7 +41,7 @@ export function SheLeadsProgramCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🚀
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">She Leads</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
@@ -92,11 +92,11 @@ export function SheLeadsProgramCard({
         onClick={onApply}
         className="mt-3 w-full rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 py-2.5 text-xs font-bold text-white hover:from-amber-600 hover:to-yellow-600 active:scale-[0.98] transition-all shadow-sm"
       >
-        انضمي للبرنامج 🚀
+        انضمي للبرنامج 
       </button>
 
       <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">
-        👑 لأن القيادة تبدأ بخطوة
+         لأن القيادة تبدأ بخطوة
       </p>
     </div>
   );

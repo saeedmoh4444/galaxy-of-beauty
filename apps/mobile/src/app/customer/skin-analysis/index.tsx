@@ -96,7 +96,7 @@ export default function SkinAnalysisScreen() {
         <Text style={styles.cardTitle}>حملي صورة لبشرتك</Text>
 
         <View style={styles.uploadZone}>
-          <Text style={styles.uploadEmoji}>📸</Text>
+          <Text style={styles.uploadEmoji}></Text>
           <Text style={styles.uploadHint}>التقطي صورة أو أدخلي رابط الصورة</Text>
           <TouchableOpacity
             style={styles.cameraBtn}
@@ -104,7 +104,7 @@ export default function SkinAnalysisScreen() {
             activeOpacity={0.8}
           >
             <Text style={styles.cameraBtnText}>
-              {showCamera ? '📷 جاري التصوير...' : '📷 التقاط صورة'}
+              {showCamera ? ' جاري التصوير...' : ' التقاط صورة'}
             </Text>
           </TouchableOpacity>
         </View>
@@ -189,7 +189,7 @@ export default function SkinAnalysisScreen() {
         <ActivityIndicator color="#7c3aed" style={{ marginTop: 20 }} />
       ) : history.length === 0 ? (
         <View style={styles.empty}>
-          <Text style={styles.emptyIcon}>🔬</Text>
+          <Text style={styles.emptyIcon}></Text>
           <Text style={styles.emptyTitle}>لا توجد تحليلات سابقة</Text>
           <Text style={styles.emptySub}>حملي أول صورة لتحليل بشرتك</Text>
         </View>
@@ -197,7 +197,7 @@ export default function SkinAnalysisScreen() {
         history.map((a) => (
           <TouchableOpacity key={a.id as number} style={styles.historyCard} activeOpacity={0.7}>
             <View style={styles.histIcon}>
-              <Text style={styles.histEmoji}>🔬</Text>
+              <Text style={styles.histEmoji}></Text>
             </View>
             <View style={styles.histInfo}>
               <Text style={styles.histType}>

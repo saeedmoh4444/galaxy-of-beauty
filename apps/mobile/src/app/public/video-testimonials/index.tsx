@@ -37,14 +37,14 @@ export default function VideoTestimonialsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🎥 تقييمات العملاء</Text>
+      <Text style={styles.t}> تقييمات العملاء</Text>
       {videos.map((v: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.ve}>{(v.emoji as string) ?? '🎥'}</Text>
+          <Text style={styles.ve}>{(v.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.vt}>{v.titleAr as string}</Text>
             <Text style={styles.vm}>
-              👩‍🎨 {v.technician as string} · 👁 {v.views as number}
+              ‍ {v.technician as string} ·  {v.views as number}
             </Text>
           </View>
         </View>

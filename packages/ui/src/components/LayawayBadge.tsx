@@ -49,7 +49,7 @@ export function LayawayBadge({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-lg" aria-hidden="true">
-            🗓️
+            ️
           </span>
           <div>
             <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">
@@ -62,7 +62,7 @@ export function LayawayBadge({
         </div>
         {isReserved && (
           <span className="shrink-0 rounded-full bg-violet-100 px-2.5 py-0.5 text-[10px] font-bold text-violet-700 dark:bg-violet-950 dark:text-violet-300">
-            ✅ محجوزة
+             محجوزة
           </span>
         )}
       </div>
@@ -93,7 +93,7 @@ export function LayawayBadge({
               {paid} من {installments} دفعة
             </span>
             <span className="font-bold text-violet-700 dark:text-violet-300">
-              {remaining > 0 ? `متبقي ${remaining} دفعات` : '🎉 مكتمل!'}
+              {remaining > 0 ? `متبقي ${remaining} دفعات` : ' مكتمل!'}
             </span>
           </div>
           <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-violet-100 dark:bg-violet-950">
@@ -109,7 +109,7 @@ export function LayawayBadge({
       {nextPaymentDate && remaining && remaining > 0 && (
         <div className="mt-2 flex items-center gap-2 rounded-lg bg-amber-50 px-2.5 py-1.5 dark:bg-amber-950">
           <span className="text-xs" aria-hidden="true">
-            📅
+            
           </span>
           <span className="text-[10px] text-amber-700 dark:text-amber-300">
             الدفعة القادمة: {nextPaymentDate}
@@ -119,7 +119,7 @@ export function LayawayBadge({
 
       {/* Zero-interest pledge */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        💜 بدون فوائد، بدون رسوم خفية — الجمال للجميع
+         بدون فوائد، بدون رسوم خفية — الجمال للجميع
       </p>
     </div>
   );

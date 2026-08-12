@@ -18,12 +18,12 @@ interface NightRoutine {
 }
 
 const ROUTINE: NightRoutine[] = [
-  { time: '21:00', emoji: '📱', action: 'إطفاء الشاشات', duration: '—' },
-  { time: '21:15', emoji: '🧴', action: 'روتين العناية الليلي', duration: '15 دقيقة' },
-  { time: '21:30', emoji: '🕯️', action: 'استرخاء وتأمل', duration: '10 دقيقة' },
-  { time: '21:45', emoji: '📖', action: 'قراءة هادئة', duration: '20 دقيقة' },
-  { time: '22:15', emoji: '🍵', action: 'شاي أعشاب', duration: '10 دقيقة' },
-  { time: '22:30', emoji: '😴', action: 'نوم عميق', duration: '8 ساعات' },
+  { time: '21:00', emoji: '', action: 'إطفاء الشاشات', duration: '—' },
+  { time: '21:15', emoji: '', action: 'روتين العناية الليلي', duration: '15 دقيقة' },
+  { time: '21:30', emoji: '️', action: 'استرخاء وتأمل', duration: '10 دقيقة' },
+  { time: '21:45', emoji: '', action: 'قراءة هادئة', duration: '20 دقيقة' },
+  { time: '22:15', emoji: '', action: 'شاي أعشاب', duration: '10 دقيقة' },
+  { time: '22:30', emoji: '', action: 'نوم عميق', duration: '8 ساعات' },
 ];
 
 interface BeautySleepCardProps {
@@ -47,7 +47,7 @@ export function BeautySleepCard({
       {/* Header */}
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🌙
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-indigo-800 dark:text-indigo-200">نوم الجمال</h4>
         <p className="text-[10px] text-indigo-500 dark:text-indigo-400">
@@ -70,7 +70,7 @@ export function BeautySleepCard({
       {/* Routine timeline */}
       <div className="mt-3 space-y-1.5">
         <p className="text-[10px] font-bold text-indigo-700 dark:text-indigo-300">
-          🌙 روتينكِ الليلي
+           روتينكِ الليلي
         </p>
         {ROUTINE.map((step, i) => {
           const isBedtime = step.action === 'نوم عميق';
@@ -107,7 +107,7 @@ export function BeautySleepCard({
       {/* Beauty sleep tip */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <p className="text-[10px] font-bold text-indigo-700 dark:text-indigo-300">
-          💡 لماذا نوم الجمال مهم؟
+           لماذا نوم الجمال مهم؟
         </p>
         <p className="mt-0.5 text-[10px] text-indigo-600 dark:text-indigo-400">
           أثناء النوم، بشرتكِ تجدد نفسها. 8 ساعات نوم = بشرة مشرقة + عيون أقل انتفاخاً + كولاجين
@@ -116,7 +116,7 @@ export function BeautySleepCard({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-indigo-500 dark:text-indigo-400">
-        🌙 &ldquo;النوم سر من أسرار الجمال&rdquo;
+         &ldquo;النوم سر من أسرار الجمال&rdquo;
       </p>
     </div>
   );

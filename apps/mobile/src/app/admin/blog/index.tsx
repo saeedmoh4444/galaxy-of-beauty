@@ -42,7 +42,7 @@ export default function AdminBlogScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📝 المدونة</Text>
+      <Text style={styles.t}> المدونة</Text>
       {data.map((p: any, i: number) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>

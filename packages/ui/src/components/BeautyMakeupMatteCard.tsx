@@ -9,7 +9,7 @@ export function BeautyMakeupMatteCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌑</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-gray-700 dark:text-gray-300">مكياج مطفي</h4>
           <p className="text-[10px] text-gray-500 dark:text-gray-400">إطلالة مخملية أنيقة</p>
@@ -17,10 +17,10 @@ export function BeautyMakeupMatteCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: 'برايمر مطفي — يتحكم باللمعان' },
-          { emoji: '📝', text: 'بودرة شفافة — لتثبيت المكياج' },
-          { emoji: '💄', text: 'أحمر شفاه مطفي — يدوم ساعات' },
-          { emoji: '🧻', text: 'ورق نشاف — بدل إضافة بودرة' },
+          { emoji: '', text: 'برايمر مطفي — يتحكم باللمعان' },
+          { emoji: '', text: 'بودرة شفافة — لتثبيت المكياج' },
+          { emoji: '', text: 'أحمر شفاه مطفي — يدوم ساعات' },
+          { emoji: '', text: 'ورق نشاف — بدل إضافة بودرة' },
         ].map((t, i) => (
           <div
             key={i}

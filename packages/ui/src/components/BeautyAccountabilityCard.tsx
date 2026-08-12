@@ -34,7 +34,7 @@ export function BeautyAccountabilityCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🤝
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-teal-700 dark:text-teal-300">شريكة المساءلة</h4>
         <p className="text-[10px] text-teal-500 dark:text-teal-400">
@@ -43,7 +43,7 @@ export function BeautyAccountabilityCard({
       </div>
 
       <div className="mt-3 rounded-xl bg-teal-50 p-4 text-center dark:bg-teal-950">
-        <p className="text-3xl font-bold text-teal-700 dark:text-teal-300">🔥 {streak}</p>
+        <p className="text-3xl font-bold text-teal-700 dark:text-teal-300"> {streak}</p>
         <p className="text-[10px] text-teal-600 dark:text-teal-400">
           {streak === 1 ? 'يوم' : 'أيام'} متتالية
         </p>
@@ -54,11 +54,11 @@ export function BeautyAccountabilityCard({
         onClick={onCheckIn}
         className="mt-3 w-full rounded-xl bg-teal-600 py-2.5 text-xs font-bold text-white hover:bg-teal-700 active:scale-[0.98] transition-all"
       >
-        ✅ سجلي إنجاز اليوم
+         سجلي إنجاز اليوم
       </button>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🤝 معاً أقوى — شريكتكِ تنتظر تحديثكِ
+         معاً أقوى — شريكتكِ تنتظر تحديثكِ
       </p>
     </div>
   );

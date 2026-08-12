@@ -20,7 +20,7 @@ export default function RoutineSchedulerPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📅 جدول الروتين</h1>
+          <h1 className="text-2xl font-bold"> جدول الروتين</h1>
           <p className="mt-1 text-sm text-text-secondary">نظمي روتين العناية اليومي والأسبوعي</p>
         </div>
 

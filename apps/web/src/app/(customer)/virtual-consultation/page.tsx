@@ -7,7 +7,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 const CONSULTANTS = [
   {
     key: 'skincare',
-    emoji: '👩‍⚕️',
+    emoji: '‍️',
     name: 'اخصائية بشرة',
     specialty: 'تحليل البشرة وتشخيص المشاكل',
     price: 150,
@@ -16,7 +16,7 @@ const CONSULTANTS = [
   },
   {
     key: 'makeup',
-    emoji: '💄',
+    emoji: '',
     name: 'خبيرة مكياج',
     specialty: 'استشارة مكياج للمناسبات',
     price: 120,
@@ -25,7 +25,7 @@ const CONSULTANTS = [
   },
   {
     key: 'hair',
-    emoji: '💇‍♀️',
+    emoji: '‍️',
     name: 'مصففة شعر',
     specialty: 'استشارة تسريحات وعناية',
     price: 100,
@@ -34,7 +34,7 @@ const CONSULTANTS = [
   },
   {
     key: 'nutrition',
-    emoji: '🥗',
+    emoji: '',
     name: 'اخصائية تغذية',
     specialty: 'تغذية البشرة والشعر',
     price: 130,
@@ -56,7 +56,7 @@ export default function VirtualConsultationPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📹 استشارة افتراضية</h1>
+          <h1 className="text-2xl font-bold"> استشارة افتراضية</h1>
           <p className="mt-1 text-sm text-text-secondary">استشيري خبيرات التجميل عبر الفيديو</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -73,7 +73,7 @@ export default function VirtualConsultationPage(): JSX.Element {
               <h3 className="font-bold mt-2">{c.name}</h3>
               <p className="text-xs text-text-secondary">{c.specialty}</p>
               <p className="text-sm font-bold text-brand-600 mt-1">
-                {formatCurrency(c.price)} · ⭐{c.rating}
+                {formatCurrency(c.price)} · {c.rating}
               </p>
             </button>
           ))}
@@ -81,7 +81,7 @@ export default function VirtualConsultationPage(): JSX.Element {
         {consultant && (
           <Card padding="lg">
             <h3 className="font-bold mb-4">
-              📅 اختر الوقت — {consultant.emoji} {consultant.name}
+               اختر الوقت — {consultant.emoji} {consultant.name}
             </h3>
             <div className="flex flex-wrap gap-2 mb-4">
               {consultant.slots.map((s) => (
@@ -107,14 +107,14 @@ export default function VirtualConsultationPage(): JSX.Element {
                 loading={bookMut.isPending}
                 className="w-full"
               >
-                📹 احجزي — {formatCurrency(consultant.price)}
+                 احجزي — {formatCurrency(consultant.price)}
               </Button>
             )}
           </Card>
         )}
         {(bookings ?? []).length > 0 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">📋 حجوزاتي</h3>
+            <h3 className="font-bold mb-3"> حجوزاتي</h3>
             <div className="space-y-2">
               {(bookings ?? []).map((b: Record<string, unknown>, i: number) => (
                 <div key={i} className="flex justify-between text-sm">

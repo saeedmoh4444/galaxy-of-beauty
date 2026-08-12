@@ -35,7 +35,7 @@ export default function ChallengesScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#f59e0b']} />
       }
     >
-      <Text style={styles.t}>🏆 تحديات الجمال</Text>
+      <Text style={styles.t}> تحديات الجمال</Text>
       <Text style={styles.sub}>أكملي التحديات واكسبي مكافآت</Text>
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد تحديات</Text>
@@ -47,11 +47,11 @@ export default function ChallengesScreen(): JSX.Element {
               key={ch.id}
               style={[styles.card, { borderLeftColor: colors[0], borderLeftWidth: 4 }]}
             >
-              <Text style={styles.chEmoji}>{(ch.emoji as string) ?? '🎯'}</Text>
+              <Text style={styles.chEmoji}>{(ch.emoji as string) ?? ''}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={styles.chName}>{ch.nameAr as string}</Text>
                 <Text style={styles.chDesc}>{ch.descAr as string}</Text>
-                <Text style={styles.chReward}>🎁 {ch.reward as string}</Text>
+                <Text style={styles.chReward}> {ch.reward as string}</Text>
               </View>
             </TouchableOpacity>
           );

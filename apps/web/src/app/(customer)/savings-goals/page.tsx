@@ -49,7 +49,7 @@ export default function SavingsGoalsPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">🎯 أهداف الادخار</h1>
+            <h1 className="text-2xl font-bold"> أهداف الادخار</h1>
             <p className="text-sm text-text-secondary mt-1">ادخري لخدمات أحلامكِ وحققي أهدافكِ</p>
           </div>
           <Button onClick={() => setShowAdd(true)}>هدف جديد</Button>
@@ -77,7 +77,7 @@ export default function SavingsGoalsPage(): JSX.Element {
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
-                        {g.title} {g.status === 'COMPLETED' && '🎉'}
+                        {g.title} {g.status === 'COMPLETED' && ''}
                       </h3>
                       <p className="text-sm text-text-secondary">
                         {formatCurrency(Number(g.savedAmount))} /{' '}
@@ -115,15 +115,13 @@ export default function SavingsGoalsPage(): JSX.Element {
                           }
                         }}
                       >
-                        💵 أضف
+                         أضف
                       </Button>
                       <Button
                         size="sm"
                         variant="danger"
                         onClick={() => deleteMut.mutate({ id: g.id })}
-                      >
-                        ✕
-                      </Button>
+                      >حذف</Button>
                     </div>
                   )}
                 </Card>
@@ -141,7 +139,7 @@ export default function SavingsGoalsPage(): JSX.Element {
               className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-gray-900"
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="mb-4 text-lg font-bold">🎯 هدف ادخار جديد</h3>
+              <h3 className="mb-4 text-lg font-bold"> هدف ادخار جديد</h3>
               <div className="space-y-3">
                 <Input
                   placeholder="اسم الهدف (مثال: باقة العناية)"

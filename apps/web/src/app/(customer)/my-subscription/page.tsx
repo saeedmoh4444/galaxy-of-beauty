@@ -41,7 +41,7 @@ export default function MySubscriptionPage(): JSX.Element {
     return (
       <DashboardLayout role="CUSTOMER">
         <div className="mx-auto max-w-lg space-y-6">
-          <h1 className="text-2xl font-bold">📦 اشتراكي</h1>
+          <h1 className="text-2xl font-bold"> اشتراكي</h1>
           <EmptyState
             title="لا يوجد اشتراك نشط"
             description="اشتركي في باقة شهرية واحصلي على خدمات بتخفيض"
@@ -67,7 +67,7 @@ export default function MySubscriptionPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">📦 اشتراكي</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100"> اشتراكي</h1>
 
         {/* Status Card */}
         <Card
@@ -75,7 +75,7 @@ export default function MySubscriptionPage(): JSX.Element {
           className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950"
         >
           <div className="text-center">
-            <span className="text-5xl">📦</span>
+            <span className="text-5xl"></span>
             <h2 className="mt-3 text-xl font-bold text-text-primary dark:text-gray-100">
               {planName}
             </h2>
@@ -104,7 +104,7 @@ export default function MySubscriptionPage(): JSX.Element {
 
         {/* Details */}
         <Card padding="lg">
-          <h3 className="font-semibold mb-4">📋 تفاصيل الاشتراك</h3>
+          <h3 className="font-semibold mb-4"> تفاصيل الاشتراك</h3>
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
               <span className="text-text-secondary">الحالة</span>
@@ -112,10 +112,10 @@ export default function MySubscriptionPage(): JSX.Element {
                 className={`font-bold ${sub.status === 'ACTIVE' ? 'text-green-600' : sub.status === 'PAUSED' ? 'text-amber-600' : 'text-red-600'}`}
               >
                 {sub.status === 'ACTIVE'
-                  ? '✅ نشط'
+                  ? ' نشط'
                   : sub.status === 'PAUSED'
-                    ? '⏸ متوقف'
-                    : '❌ ملغي'}
+                    ? ' متوقف'
+                    : ' ملغي'}
               </span>
             </div>
             <div className="flex justify-between">
@@ -144,7 +144,7 @@ export default function MySubscriptionPage(): JSX.Element {
           </Link>
           {sub.status === 'ACTIVE' && (
             <Button variant="outline" onClick={handlePause}>
-              ⏸ إيقاف مؤقت
+               إيقاف مؤقت
             </Button>
           )}
         </div>

@@ -44,7 +44,7 @@ export default function LoyaltyPunchCardScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>💳 بطاقة الولاء</Text>
+      <Text style={styles.t}> بطاقة الولاء</Text>
       <View style={styles.card}>
         <Text style={styles.count}>
           {punches}/{total}
@@ -52,7 +52,7 @@ export default function LoyaltyPunchCardScreen(): JSX.Element {
         <View style={styles.grid}>
           {Array.from({ length: total }, (_, i) => (
             <View key={i} style={[styles.punch, i < punches && styles.punched]}>
-              <Text style={styles.punchText}>{i < punches ? '💎' : '○'}</Text>
+              <Text style={styles.punchText}>{i < punches ? '' : '○'}</Text>
             </View>
           ))}
         </View>

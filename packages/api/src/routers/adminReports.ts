@@ -140,7 +140,7 @@ export const adminReportsRouter = router({
         customers: 0,
         avgRating: 0,
       },
-      sections: ['📊 الإيرادات', '📅 الحجوزات', '👩‍🎨 الفنيات', '💄 الخدمات', '📍 المدن'],
+      sections: [' الإيرادات', ' الحجوزات', '‍ الفنيات', ' الخدمات', ' المدن'],
     };
   }),
 });

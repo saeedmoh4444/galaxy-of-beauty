@@ -7,10 +7,10 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 const TABS = [
-  { key: 'trending', label: '🔥 رائج' },
-  { key: 'spotlight', label: '⭐ مميزات' },
-  { key: 'tips', label: '💡 نصائح' },
-  { key: 'feed', label: '📷 قبل وبعد' },
+  { key: 'trending', label: ' رائج' },
+  { key: 'spotlight', label: ' مميزات' },
+  { key: 'tips', label: ' نصائح' },
+  { key: 'feed', label: ' قبل وبعد' },
 ];
 
 export default function SocialScreen(): JSX.Element {
@@ -45,7 +45,7 @@ export default function SocialScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={s.t}>🌟 مجتمع الجمال</Text>
+      <Text style={s.t}> مجتمع الجمال</Text>
       <Text style={s.sub}>اكتشفي أحدث الصيحات والفنيات المميزات</Text>
 
       <View style={s.tabs}>
@@ -62,7 +62,7 @@ export default function SocialScreen(): JSX.Element {
 
       {tab === 'trending' && (trending as any[])?.length > 0 && (
         <View>
-          <Text style={s.st}>💆‍♀️ الخدمات الرائجة</Text>
+          <Text style={s.st}>‍️ الخدمات الرائجة</Text>
           {(trending as any[]).slice(0, 10).map((svc: any, i: number) => (
             <View key={svc.id ?? i} style={s.card}>
               <View style={s.rank}>
@@ -79,14 +79,14 @@ export default function SocialScreen(): JSX.Element {
 
       {tab === 'spotlight' && (spotlight as any[])?.length > 0 && (
         <View>
-          <Text style={s.st}>👩‍🎨 فنيات مميزات</Text>
+          <Text style={s.st}>‍ فنيات مميزات</Text>
           {(spotlight as any[]).map((tech: any, i: number) => (
             <View key={tech.id ?? i} style={s.card}>
-              <Text style={s.avatar}>👩‍🎨</Text>
+              <Text style={s.avatar}>‍</Text>
               <View style={{ flex: 1 }}>
                 <Text style={s.cardTitle}>{tech.name}</Text>
                 <Text style={s.cardSub}>
-                  {tech.city} · ⭐{tech.ratingAvg}
+                  {tech.city} · {tech.ratingAvg}
                 </Text>
               </View>
             </View>
@@ -96,7 +96,7 @@ export default function SocialScreen(): JSX.Element {
 
       {tab === 'tips' && tips.length > 0 && (
         <View>
-          <Text style={s.st}>💡 نصائح تجميلية</Text>
+          <Text style={s.st}> نصائح تجميلية</Text>
           {tips.map((tip: any, i: number) => (
             <View key={tip.id ?? i} style={s.card}>
               <View style={{ flex: 1 }}>
@@ -110,11 +110,11 @@ export default function SocialScreen(): JSX.Element {
 
       {tab === 'feed' && feedItems.length > 0 && (
         <View>
-          <Text style={s.st}>📷 قبل وبعد</Text>
+          <Text style={s.st}> قبل وبعد</Text>
           <View style={s.grid}>
             {feedItems.map((item: any, i: number) => (
               <View key={item.id ?? i} style={s.gridItem}>
-                <Text style={s.gridEmoji}>📷</Text>
+                <Text style={s.gridEmoji}></Text>
                 <Text style={s.gridTitle}>{item.technician?.user?.name ?? ''}</Text>
                 <Text style={s.gridSub}>{item.technician?.city ?? ''}</Text>
               </View>
@@ -125,10 +125,10 @@ export default function SocialScreen(): JSX.Element {
 
       {lookbookItems.length > 0 && (
         <View style={{ marginTop: 24 }}>
-          <Text style={s.st}>📸 لوك بوك الموسم</Text>
+          <Text style={s.st}> لوك بوك الموسم</Text>
           {(lookbookItems as any[]).slice(0, 4).map((l: any, i: number) => (
             <View key={l.id ?? i} style={s.card}>
-              <Text style={s.avatar}>📸</Text>
+              <Text style={s.avatar}></Text>
               <View style={{ flex: 1 }}>
                 <Text style={s.cardTitle}>{l.titleAr ?? l.id}</Text>
                 <Text style={s.cardSub}>{l.category ?? ''}</Text>

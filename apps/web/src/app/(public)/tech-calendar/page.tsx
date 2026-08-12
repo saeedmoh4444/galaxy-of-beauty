@@ -59,7 +59,7 @@ export default function TechCalendarPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">📅</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">تقويم المواعيد</h1>
         <p className="mt-2 text-text-secondary">تصفّحي المواعيد المتاحة للفنيات واحجزي مباشرة</p>
       </div>
@@ -122,7 +122,7 @@ export default function TechCalendarPage(): JSX.Element {
 
         {/* Technician List */}
         <Card padding="lg">
-          <h3 className="font-bold mb-3">👩‍🎨 الفنيات</h3>
+          <h3 className="font-bold mb-3">‍ الفنيات</h3>
           {tLoad ? (
             <CardSkeleton />
           ) : (
@@ -134,13 +134,13 @@ export default function TechCalendarPage(): JSX.Element {
                   className={`w-full text-right rounded-lg p-3 transition-all flex items-center gap-3 ${String(t.id) === techId ? 'bg-brand-50 dark:bg-brand-950 ring-2 ring-brand-300' : 'hover:bg-surface-muted dark:hover:bg-gray-800'}`}
                 >
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-purple-500 text-white text-sm font-bold">
-                    {(t.name as string)?.[0] ?? '👩'}
+                    {(t.name as string)?.[0] ?? ''}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold truncate">{t.name as string}</p>
-                    <p className="text-xs text-text-secondary">⭐ {t.rating as number}</p>
+                    <p className="text-xs text-text-secondary"> {t.rating as number}</p>
                   </div>
-                  {String(t.id) === techId && <span className="text-brand-500 text-xs">✓</span>}
+                  {String(t.id) === techId && <span className="text-brand-500 text-xs"></span>}
                 </button>
               ))}
             </div>
@@ -151,7 +151,7 @@ export default function TechCalendarPage(): JSX.Element {
       {techName && (
         <div className="mt-6 text-center">
           <p className="text-sm text-text-secondary">
-            👩‍🎨 {techName} · {availableDates.length} يوم متاح هذا الشهر
+            ‍ {techName} · {availableDates.length} يوم متاح هذا الشهر
           </p>
           <Link href="/bookings/create" className="mt-3 inline-block">
             <Button size="sm">احجزي الآن ←</Button>

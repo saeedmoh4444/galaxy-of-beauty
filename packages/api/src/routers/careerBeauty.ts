@@ -2,17 +2,17 @@ import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
 
 const PROFILES: Record<string, { emoji: string; title: string; services: string[] }> = {
-  office: { emoji: '💼', title: 'مكتبية', services: ['مكياج يومي', 'تسريحة عملية', 'مانيكير'] },
+  office: { emoji: '', title: 'مكتبية', services: ['مكياج يومي', 'تسريحة عملية', 'مانيكير'] },
   healthcare: { emoji: '🩺', title: 'طبية', services: ['عناية بالبشرة', 'حواجب', 'أظافر قصيرة'] },
-  education: { emoji: '📚', title: 'تعليمية', services: ['تنظيف بشرة', 'ترطيب', 'مكياج خفيف'] },
+  education: { emoji: '', title: 'تعليمية', services: ['تنظيف بشرة', 'ترطيب', 'مكياج خفيف'] },
   entrepreneur: {
-    emoji: '💎',
+    emoji: '',
     title: 'رائدة أعمال',
     services: ['مكياج احترافي', 'تسريحة', 'استشارة ألوان'],
   },
-  media: { emoji: '🎥', title: 'إعلامية', services: ['مكياج HD', 'تسريحة', 'مانيكير'] },
+  media: { emoji: '', title: 'إعلامية', services: ['مكياج HD', 'تسريحة', 'مانيكير'] },
   customer_facing: {
-    emoji: '🤝',
+    emoji: '',
     title: 'خدمة عملاء',
     services: ['مكياج طبيعي', 'ابتسامة هوليوود', 'أظافر'],
   },

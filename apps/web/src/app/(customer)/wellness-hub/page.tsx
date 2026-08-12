@@ -35,7 +35,7 @@ export default function WellnessHubPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🌸 مركز العافية</h1>
+          <h1 className="text-2xl font-bold"> مركز العافية</h1>
           <p className="mt-1 text-sm text-text-secondary">
             نظرة شاملة على صحتكِ وجمالكِ في مكان واحد
           </p>
@@ -50,7 +50,7 @@ export default function WellnessHubPage(): JSX.Element {
               اليوم {(d!.cycle as any).currentDay} من {(d!.cycle as any).cycleLength}
             </p>
             <p className="text-xs text-brand-600 mt-1">
-              ⏱️ الدورة القادمة بعد {(d!.cycle as any).daysUntilNext} يوم
+              ️ الدورة القادمة بعد {(d!.cycle as any).daysUntilNext} يوم
             </p>
           </Card>
         )}
@@ -77,7 +77,7 @@ export default function WellnessHubPage(): JSX.Element {
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-2xl font-extrabold text-cyan-600">
-              {d?.todayMood ? (d.todayMood as any).waterGlasses + '💧' : '—'}
+              {d?.todayMood ? (d.todayMood as any).waterGlasses + '' : '—'}
             </p>
             <p className="text-xs text-text-secondary">الماء</p>
           </Card>
@@ -86,7 +86,7 @@ export default function WellnessHubPage(): JSX.Element {
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Skin Analysis */}
           <Card padding="lg">
-            <h3 className="font-bold mb-3">🔬 تحليل البشرة</h3>
+            <h3 className="font-bold mb-3"> تحليل البشرة</h3>
             {d?.skin ? (
               <div className="space-y-2">
                 <p className="text-sm">
@@ -118,7 +118,7 @@ export default function WellnessHubPage(): JSX.Element {
 
           {/* Weekly Summary */}
           <Card padding="lg">
-            <h3 className="font-bold mb-3">📊 ملخص الأسبوع</h3>
+            <h3 className="font-bold mb-3"> ملخص الأسبوع</h3>
             {d?.weekly && (d.weekly as any).checkinCount > 0 ? (
               <div className="space-y-3">
                 <div>
@@ -151,7 +151,7 @@ export default function WellnessHubPage(): JSX.Element {
 
         {/* Journal */}
         <Card padding="lg">
-          <h3 className="font-bold mb-3">📔 آخر اليوميات ({(d?.journalCount as number) ?? 0})</h3>
+          <h3 className="font-bold mb-3"> آخر اليوميات ({(d?.journalCount as number) ?? 0})</h3>
           {(d?.recentJournals as Array<Record<string, unknown>>)?.length ? (
             (d?.recentJournals as Array<Record<string, unknown>>).map(
               (j: Record<string, unknown>) => (
@@ -169,7 +169,7 @@ export default function WellnessHubPage(): JSX.Element {
           )}
           <Link href="/beauty-journal">
             <Button size="sm" variant="outline" className="w-full mt-3">
-              📔 كل اليوميات
+               كل اليوميات
             </Button>
           </Link>
         </Card>
@@ -178,25 +178,25 @@ export default function WellnessHubPage(): JSX.Element {
         <div className="grid gap-3 sm:grid-cols-4">
           <Link href="/self-care">
             <Card hover padding="md" className="text-center">
-              <span className="text-2xl">🌸</span>
+              <span className="text-2xl"></span>
               <p className="text-xs font-medium mt-1">تقييم اليوم</p>
             </Card>
           </Link>
           <Link href="/cycle-tracker">
             <Card hover padding="md" className="text-center">
-              <span className="text-2xl">📅</span>
+              <span className="text-2xl"></span>
               <p className="text-xs font-medium mt-1">الدورة</p>
             </Card>
           </Link>
           <Link href="/skin-analysis">
             <Card hover padding="md" className="text-center">
-              <span className="text-2xl">🔬</span>
+              <span className="text-2xl"></span>
               <p className="text-xs font-medium mt-1">تحليل البشرة</p>
             </Card>
           </Link>
           <Link href="/wellness-tracker">
             <Card hover padding="md" className="text-center">
-              <span className="text-2xl">🧘</span>
+              <span className="text-2xl"></span>
               <p className="text-xs font-medium mt-1">العافية</p>
             </Card>
           </Link>

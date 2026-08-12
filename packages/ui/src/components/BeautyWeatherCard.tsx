@@ -20,27 +20,27 @@ interface WeatherAdvice {
 
 const ADVICE: Record<WeatherCondition, WeatherAdvice> = {
   hot: {
-    emoji: '☀️',
+    emoji: '️',
     title: 'حار',
     tips: ['SPF 50+ ضروري', 'مرطب جل خفيف', 'ماء كثير', 'تجنبي المكياج الثقيل'],
   },
   mild: {
-    emoji: '🌤️',
+    emoji: '️',
     title: 'معتدل',
     tips: ['SPF 30 كافي', 'روتينكِ المعتاد', 'جربي إطلالة جديدة'],
   },
   cold: {
-    emoji: '❄️',
+    emoji: '️',
     title: 'بارد',
     tips: ['مرطب غني', 'بلسم شفاه', 'قناع ترطيب', 'ماء دافئ للغسيل'],
   },
   humid: {
-    emoji: '💦',
+    emoji: '',
     title: 'رطب',
     tips: ['منتجات خالية من الزيوت', 'مثبت مكياج', 'ورق نشاف', 'تونر قابض'],
   },
   dusty: {
-    emoji: '🌪️',
+    emoji: '️',
     title: 'مغبر',
     tips: ['غسول عميق مساءً', 'قناع منقي', 'تجنبي التقشير', 'أحكمي إغلاق المسام'],
   },
@@ -96,7 +96,7 @@ export function BeautyWeatherCard({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🌤️ روتينكِ يتغير مع الطقس — ونحن نذكركِ
+        ️ روتينكِ يتغير مع الطقس — ونحن نذكركِ
       </p>
     </div>
   );

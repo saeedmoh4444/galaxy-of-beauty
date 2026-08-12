@@ -34,40 +34,40 @@ interface ConciergeData {
 }
 
 const STEPS = [
-  { key: 'profile', label: 'إنشاء الملف', emoji: '📋' },
-  { key: 'services', label: 'اختيار الخدمات', emoji: '💄' },
-  { key: 'trials', label: 'التجارب', emoji: '✨' },
-  { key: 'wedding', label: 'يوم الزفاف', emoji: '👰' },
+  { key: 'profile', label: 'إنشاء الملف', emoji: '' },
+  { key: 'services', label: 'اختيار الخدمات', emoji: '' },
+  { key: 'trials', label: 'التجارب', emoji: '' },
+  { key: 'wedding', label: 'يوم الزفاف', emoji: '' },
 ];
 
 const MARKETING_FEATURES = [
   {
-    icon: '📋',
+    icon: '',
     title: 'خططي ليومكِ',
     desc: 'اختاري خدمات المكياج، الشعر، والعناية بالبشرة — وحددي مواعيد التجارب قبل الزفاف',
   },
   {
-    icon: '💄',
+    icon: '',
     title: 'جربي إطلالتكِ',
     desc: 'جلسات تجربة مكياج وشعر مع أفضل الفنيات قبل اليوم الكبير',
   },
   {
-    icon: '👰',
+    icon: '',
     title: 'تألقي يوم زفافكِ',
     desc: 'فريق متكامل من الفنيات المحترفات في يومكِ الخاص',
   },
   {
-    icon: '💰',
+    icon: '',
     title: 'تحكمي بالميزانية',
     desc: 'حددي ميزانيتكِ وتابعي تكاليف كل خدمة — بدون مفاجآت',
   },
   {
-    icon: '📅',
+    icon: '',
     title: 'عد تنازلي',
     desc: 'تابعي الأيام المتبقية ليوم زفافكِ مع تذكيرات للتجارب والمواعيد',
   },
   {
-    icon: '✨',
+    icon: '',
     title: 'نصائح حصرية',
     desc: 'احصلي على نصائح مخصصة من خبراء التجميل للعناية قبل الزفاف',
   },
@@ -195,9 +195,9 @@ function BridalDashboard(): JSX.Element {
       {/* Dashboard Header */}
       <div className="text-center sm:text-right">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          👰 لوحة تخطيط الزفاف
+           لوحة تخطيط الزفاف
         </h1>
-        <p className="mt-1 text-sm text-text-secondary">تابعي تقدمكِ نحو يوم زفافكِ ✨</p>
+        <p className="mt-1 text-sm text-text-secondary">تابعي تقدمكِ نحو يوم زفافكِ </p>
       </div>
 
       {/* Progress Steps */}
@@ -208,7 +208,7 @@ function BridalDashboard(): JSX.Element {
               <div
                 className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full text-2xl transition-all ${idx < currentStep ? 'bg-green-100 ring-2 ring-green-500 dark:bg-green-900' : idx === currentStep ? 'bg-brand-100 ring-2 ring-brand-500 animate-pulse dark:bg-brand-900' : 'bg-surface-muted dark:bg-gray-800 opacity-50'}`}
               >
-                {idx < currentStep ? '✓' : step.emoji}
+                {idx < currentStep ? '' : step.emoji}
               </div>
               <p className="mt-1.5 text-xs font-semibold text-text-primary dark:text-gray-300 hidden sm:block">
                 {step.label}
@@ -228,7 +228,7 @@ function BridalDashboard(): JSX.Element {
       <Card padding="lg">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-text-primary dark:text-gray-100">
-            📋 تفاصيل الزفاف
+             تفاصيل الزفاف
           </h2>
           <Button size="sm" variant="ghost" onClick={openProfileForm}>
             {hasProfile ? 'تعديل' : 'إضافة'}
@@ -245,7 +245,7 @@ function BridalDashboard(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {concierge?.weddingDate && (
                 <div className="rounded-xl bg-brand-50 p-3 text-center dark:bg-brand-950">
-                  <p className="text-3xl">📅</p>
+                  <p className="text-3xl"></p>
                   <p className="mt-1 text-xs text-text-secondary">تاريخ الزفاف</p>
                   <p className="text-sm font-bold">
                     {new Date(concierge.weddingDate).toLocaleDateString('ar-SA', {
@@ -263,21 +263,21 @@ function BridalDashboard(): JSX.Element {
               )}
               {concierge?.venue && (
                 <div className="rounded-xl bg-purple-50 p-3 text-center dark:bg-purple-950">
-                  <p className="text-3xl">📍</p>
+                  <p className="text-3xl"></p>
                   <p className="mt-1 text-xs text-text-secondary">المكان</p>
                   <p className="text-sm font-bold">{concierge.venue}</p>
                 </div>
               )}
               {concierge?.guestCount && (
                 <div className="rounded-xl bg-pink-50 p-3 text-center dark:bg-pink-950">
-                  <p className="text-3xl">👥</p>
+                  <p className="text-3xl"></p>
                   <p className="mt-1 text-xs text-text-secondary">الضيوف</p>
                   <p className="text-sm font-bold">{concierge.guestCount} ضيف</p>
                 </div>
               )}
               {concierge?.budget && (
                 <div className="rounded-xl bg-green-50 p-3 text-center dark:bg-green-950">
-                  <p className="text-3xl">💰</p>
+                  <p className="text-3xl"></p>
                   <p className="mt-1 text-xs text-text-secondary">الميزانية</p>
                   <p className="text-sm font-bold">{formatCurrency(concierge.budget)} ر.س</p>
                 </div>
@@ -285,7 +285,7 @@ function BridalDashboard(): JSX.Element {
             </div>
             {concierge?.notes && (
               <div className="mt-4 rounded-xl bg-surface-muted p-3 dark:bg-gray-800">
-                <p className="text-xs text-text-tertiary mb-1">📝 ملاحظات</p>
+                <p className="text-xs text-text-tertiary mb-1"> ملاحظات</p>
                 <p className="text-sm text-text-primary dark:text-gray-300 whitespace-pre-wrap">
                   {concierge.notes}
                 </p>
@@ -300,7 +300,7 @@ function BridalDashboard(): JSX.Element {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-lg font-bold text-text-primary dark:text-gray-100">
-              💄 خدمات التجميل
+               خدمات التجميل
             </h2>
             <p className="text-xs text-text-secondary">
               {completedTrials} / {services.length} تجربة مكتملة
@@ -326,13 +326,13 @@ function BridalDashboard(): JSX.Element {
                   <div
                     className={`flex h-10 w-10 items-center justify-center rounded-full text-lg ${svc.isTrialDone ? 'bg-green-100 dark:bg-green-900' : 'bg-surface-muted dark:bg-gray-800'}`}
                   >
-                    {svc.isTrialDone ? '✅' : '⏳'}
+                    {svc.isTrialDone ? '' : ''}
                   </div>
                   <div>
                     <p className="text-sm font-semibold">خدمة #{svc.serviceId}</p>
                     {svc.trialDate && (
                       <p className="text-xs text-text-secondary">
-                        📅 تجربة:{' '}
+                         تجربة:{' '}
                         {new Date(svc.trialDate).toLocaleDateString('ar-SA', {
                           month: 'long',
                           day: 'numeric',
@@ -342,7 +342,7 @@ function BridalDashboard(): JSX.Element {
                       </p>
                     )}
                     {svc.notes && (
-                      <p className="text-xs text-text-tertiary mt-0.5">📝 {svc.notes}</p>
+                      <p className="text-xs text-text-tertiary mt-0.5"> {svc.notes}</p>
                     )}
                   </div>
                 </div>
@@ -353,7 +353,7 @@ function BridalDashboard(): JSX.Element {
                     onClick={() => markTrialMut.mutate({ serviceId: svc.id })}
                     loading={markTrialMut.isPending}
                   >
-                    تمت التجربة ✓
+                    تمت التجربة 
                   </Button>
                 )}
               </div>
@@ -367,12 +367,12 @@ function BridalDashboard(): JSX.Element {
         padding="lg"
         className="bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-950 dark:to-purple-950 border-none"
       >
-        <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">💡 نصائح للعروس</h3>
+        <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3"> نصائح للعروس</h3>
         <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400">
-          <p>✨ ابدئي جلسات العناية بالبشرة قبل ٣-٦ أشهر من الزفاف</p>
-          <p>💄 احجزي تجربة المكياج قبل شهرين على الأقل</p>
-          <p>💇‍♀️ جربي تسريحة الشعر مع الطرحة قبل ٣ أسابيع</p>
-          <p>💅 مانيكير وباديكير قبل يومين من الزفاف</p>
+          <p> ابدئي جلسات العناية بالبشرة قبل ٣-٦ أشهر من الزفاف</p>
+          <p> احجزي تجربة المكياج قبل شهرين على الأقل</p>
+          <p>‍️ جربي تسريحة الشعر مع الطرحة قبل ٣ أسابيع</p>
+          <p> مانيكير وباديكير قبل يومين من الزفاف</p>
         </div>
       </Card>
 
@@ -450,7 +450,7 @@ function BridalDashboard(): JSX.Element {
               إلغاء
             </Button>
             <Button onClick={handleSaveProfile} loading={upsertMut.isPending}>
-              💾 حفظ
+               حفظ
             </Button>
           </div>
         </div>
@@ -519,7 +519,7 @@ function MarketingLanding(): JSX.Element {
   return (
     <>
       <div className="text-center">
-        <span className="text-7xl">👰</span>
+        <span className="text-7xl"></span>
         <h1 className="mt-6 text-4xl font-extrabold text-text-primary dark:text-gray-100">
           خدمة تخطيط زفافكِ
         </h1>
@@ -529,7 +529,7 @@ function MarketingLanding(): JSX.Element {
         </p>
         <div className="mt-6">
           <Link href="/login?redirect=/bridal-concierge">
-            <Button size="lg">👰 سجّلي دخول للبدء</Button>
+            <Button size="lg"> سجّلي دخول للبدء</Button>
           </Link>
         </div>
       </div>
@@ -549,7 +549,7 @@ function MarketingLanding(): JSX.Element {
       </div>
 
       <div className="mt-16 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 p-8 text-white text-center">
-        <p className="text-3xl font-bold">✨ رحلتكِ نحو يوم الزفاف</p>
+        <p className="text-3xl font-bold"> رحلتكِ نحو يوم الزفاف</p>
         <div className="mt-8 grid gap-4 sm:grid-cols-4">
           {STEPS.map((s, idx) => (
             <div key={s.key} className="rounded-xl bg-white/20 p-4 backdrop-blur">
@@ -563,7 +563,7 @@ function MarketingLanding(): JSX.Element {
 
       <div className="mt-12 text-center">
         <p className="text-lg text-text-secondary dark:text-gray-400">
-          📞 تحتاجين مساعدة؟ تواصلي مع فريقنا على{' '}
+           تحتاجين مساعدة؟ تواصلي مع فريقنا على{' '}
           <span className="font-bold text-brand-600">٩٢٠٠١٣٣٣٣</span>
         </p>
       </div>

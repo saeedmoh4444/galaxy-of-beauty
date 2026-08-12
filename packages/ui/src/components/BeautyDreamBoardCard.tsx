@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W9: The Small Details — Delightful Surprises.
  *
  * Usage:
- *   <BeautyDreamBoardCard dreams={[{ emoji: '💇', text: 'شعر طويل صحي' }]} />
+ *   <BeautyDreamBoardCard dreams={[{ emoji: '', text: 'شعر طويل صحي' }]} />
  */
 
 interface Dream {
@@ -35,7 +35,7 @@ export function BeautyDreamBoardCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🌙
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-violet-800 dark:text-violet-200">
           لوحة الأحلام
@@ -65,7 +65,7 @@ export function BeautyDreamBoardCard({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-violet-500 dark:text-violet-400">
-        🌙 احلمي — ثم حققي
+         احلمي — ثم حققي
       </p>
     </div>
   );

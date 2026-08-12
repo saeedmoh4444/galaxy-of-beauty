@@ -9,7 +9,7 @@ export function BeautyGlutathioneCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌟</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">الجلوتاثيون</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">ملك مضادات الأكسدة</p>
@@ -17,10 +17,10 @@ export function BeautyGlutathioneCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '✨', text: 'يفتح البشرة — يقلل إنتاج الميلانين' },
-          { emoji: '🛡️', text: 'مضاد أكسدة قوي — يحمي من التلف' },
-          { emoji: '💉', text: 'حقن أو كبسولات — تحت إشراف طبي' },
-          { emoji: '🍅', text: 'مصادر طبيعية — طماطم، سبانخ، ثوم' },
+          { emoji: '', text: 'يفتح البشرة — يقلل إنتاج الميلانين' },
+          { emoji: '️', text: 'مضاد أكسدة قوي — يحمي من التلف' },
+          { emoji: '', text: 'حقن أو كبسولات — تحت إشراف طبي' },
+          { emoji: '', text: 'مصادر طبيعية — طماطم، سبانخ، ثوم' },
         ].map((t, i) => (
           <div
             key={i}

@@ -9,7 +9,7 @@ export function BeautySpaBathCard({ className = '' }: { className?: string }): J
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🛁</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">حمام مغربي</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">طقس الجمال التقليدي</p>
@@ -17,10 +17,10 @@ export function BeautySpaBathCard({ className = '' }: { className?: string }): J
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧖', text: 'الصابون البلدي — أساس الحمام المغربي' },
-          { emoji: '🧤', text: 'الليفة المغربية — تقشير عميق للجسم' },
-          { emoji: '🌿', text: 'طين الغاسول — ينقي ويشد البشرة' },
-          { emoji: '💧', text: 'ماء الورد — لإنعاش البعد عن الحمام' },
+          { emoji: '', text: 'الصابون البلدي — أساس الحمام المغربي' },
+          { emoji: '', text: 'الليفة المغربية — تقشير عميق للجسم' },
+          { emoji: '', text: 'طين الغاسول — ينقي ويشد البشرة' },
+          { emoji: '', text: 'ماء الورد — لإنعاش البعد عن الحمام' },
         ].map((t, i) => (
           <div
             key={i}

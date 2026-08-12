@@ -14,7 +14,7 @@ type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 
 const SEASONS: Record<Season, { emoji: string; title: string; reminders: string[] }> = {
   spring: {
-    emoji: '🌸',
+    emoji: '',
     title: 'الربيع',
     reminders: [
       'جددي روتين التقشير',
@@ -24,12 +24,12 @@ const SEASONS: Record<Season, { emoji: string; title: string; reminders: string[
     ],
   },
   summer: {
-    emoji: '☀️',
+    emoji: '️',
     title: 'الصيف',
     reminders: ['SPF 50+ يومياً', 'مرطب جل خفيف', 'اشربي ماء كثيراً', 'تجنبي المكياج الثقيل'],
   },
   autumn: {
-    emoji: '🍂',
+    emoji: '',
     title: 'الخريف',
     reminders: [
       'استعيدي ترطيب بشرتكِ',
@@ -39,7 +39,7 @@ const SEASONS: Record<Season, { emoji: string; title: string; reminders: string[
     ],
   },
   winter: {
-    emoji: '❄️',
+    emoji: '️',
     title: 'الشتاء',
     reminders: ['مرطب غني', 'بلسم شفاه', 'قناع ترطيب أسبوعي', 'احمي بشرتكِ من الهواء الجاف'],
   },

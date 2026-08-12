@@ -9,7 +9,7 @@ export function BeautyMakeupSettingCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">
             تثبيت المكياج
@@ -21,10 +21,10 @@ export function BeautyMakeupSettingCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💨', text: 'سبراي التثبيت — آخر خطوة' },
-          { emoji: '🧴', text: 'برايمر — أساس التثبيت' },
-          { emoji: '📝', text: 'بودرة شفافة — للمنطقة الدهنية فقط' },
-          { emoji: '🧻', text: 'ورق نشاف — بدل إضافة بودرة' },
+          { emoji: '', text: 'سبراي التثبيت — آخر خطوة' },
+          { emoji: '', text: 'برايمر — أساس التثبيت' },
+          { emoji: '', text: 'بودرة شفافة — للمنطقة الدهنية فقط' },
+          { emoji: '', text: 'ورق نشاف — بدل إضافة بودرة' },
         ].map((t, i) => (
           <div
             key={i}

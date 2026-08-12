@@ -23,12 +23,12 @@ export default function AudioRoomsScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#dc2626']} />
       }
     >
-      <Text style={styles.t}>🎙️ الغرف الصوتية</Text>
+      <Text style={styles.t}>️ الغرف الصوتية</Text>
       <Text style={styles.sub}>انضمي لنقاشات مباشرة مع خبراء التجميل</Text>
-      {live.length > 0 && <Text style={styles.sectionTitle}>🔴 مباشر الآن</Text>}
+      {live.length > 0 && <Text style={styles.sectionTitle}> مباشر الآن</Text>}
       {live.map((r: any) => (
         <View key={r.id} style={[styles.card, styles.liveCard]}>
-          <Text style={styles.roomEmoji}>🎙️</Text>
+          <Text style={styles.roomEmoji}>️</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.roomTitle}>{r.title as string}</Text>
             <Text style={styles.roomMeta}>
@@ -40,10 +40,10 @@ export default function AudioRoomsScreen(): JSX.Element {
           </TouchableOpacity>
         </View>
       ))}
-      {upcoming.length > 0 && <Text style={styles.sectionTitle}>📅 قادم</Text>}
+      {upcoming.length > 0 && <Text style={styles.sectionTitle}> قادم</Text>}
       {upcoming.map((r: any) => (
         <View key={r.id} style={styles.card}>
-          <Text style={styles.roomEmoji}>🎙️</Text>
+          <Text style={styles.roomEmoji}>️</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.roomTitle}>{r.title as string}</Text>
             <Text style={styles.roomMeta}>
@@ -55,7 +55,7 @@ export default function AudioRoomsScreen(): JSX.Element {
             </Text>
           </View>
           <View style={styles.remindBadge}>
-            <Text style={styles.remindText}>⏰ تذكير</Text>
+            <Text style={styles.remindText}> تذكير</Text>
           </View>
         </View>
       ))}

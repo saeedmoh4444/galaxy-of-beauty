@@ -31,14 +31,14 @@ export default function DNABeautyPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🧬 تحليل الجينات</h1>
+          <h1 className="text-2xl font-bold"> تحليل الجينات</h1>
           <p className="mt-1 text-sm text-text-secondary">
             اكتشفي احتياجات بشرتكِ بناءً على سماتكِ الوراثية
           </p>
         </div>
         {result ? (
           <Card padding="lg" className="text-center border-2 border-purple-300">
-            <span className="text-6xl">🧬</span>
+            <span className="text-6xl"></span>
             <h2 className="mt-4 text-xl font-bold">نتيجة التحليل</h2>
             <p className="text-2xl font-extrabold text-brand-600 mt-2">
               {result.score as number}% تطابق
@@ -56,7 +56,7 @@ export default function DNABeautyPage(): JSX.Element {
               )}
             </div>
             <div className="mt-4 text-right space-y-2">
-              <p className="font-bold">✅ موصى به:</p>
+              <p className="font-bold"> موصى به:</p>
               <div className="flex flex-wrap gap-1">
                 {(result.recommendations as string[])?.map((r: string) => (
                   <span
@@ -67,7 +67,7 @@ export default function DNABeautyPage(): JSX.Element {
                   </span>
                 ))}
               </div>
-              <p className="font-bold mt-3">🚫 تجنبي:</p>
+              <p className="font-bold mt-3"> تجنبي:</p>
               <div className="flex flex-wrap gap-1">
                 {(result.avoid as string[])?.map((a: string) => (
                   <span
@@ -87,7 +87,7 @@ export default function DNABeautyPage(): JSX.Element {
                 setSearchAnswers(null);
               }}
             >
-              🔄 إعادة
+               إعادة
             </Button>
           </Card>
         ) : isLoading ? (
@@ -96,7 +96,7 @@ export default function DNABeautyPage(): JSX.Element {
           <ErrorAlert message="فشل التحليل" onRetry={() => refetch()} />
         ) : (
           <Card padding="lg">
-            <h3 className="font-bold mb-4">🧬 أكملي الاستبيان</h3>
+            <h3 className="font-bold mb-4"> أكملي الاستبيان</h3>
             <div className="space-y-3">
               {qs.map((q: Record<string, unknown>) => (
                 <div
@@ -122,7 +122,7 @@ export default function DNABeautyPage(): JSX.Element {
               ))}
             </div>
             <Button onClick={() => setSearchAnswers(answers)} className="w-full mt-4">
-              🧬 تحليل
+               تحليل
             </Button>
           </Card>
         )}

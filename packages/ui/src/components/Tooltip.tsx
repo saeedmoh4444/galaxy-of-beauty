@@ -7,7 +7,7 @@ import type { ReactNode } from 'react';
  *
  * Usage:
  *   <Tooltip content="انسخ الكود">
- *     <button>📋</button>
+ *     <button></button>
  *   </Tooltip>
  */
 

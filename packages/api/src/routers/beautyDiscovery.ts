@@ -51,13 +51,13 @@ export const beautyDiscoveryRouter = router({
         id: s.id,
         name: (s.titleJson as any)?.ar,
         price: Number(s.basePrice),
-        emoji: s.emoji ?? '💅',
+        emoji: s.emoji ?? '',
       })),
       newServices: newServices.map((s: any) => ({
         id: s.id,
         name: (s.titleJson as any)?.ar,
         price: Number(s.basePrice),
-        emoji: s.emoji ?? '✨',
+        emoji: s.emoji ?? '',
       })),
       events: upcomingEvents.map((e: any) => ({
         id: e.id,
@@ -137,13 +137,13 @@ export const beautyDiscoveryRouter = router({
         id: w.service?.id,
         name: (w.service?.titleJson as any)?.ar,
         price: Number(w.service?.basePrice || 0),
-        emoji: w.service?.emoji ?? '💅',
+        emoji: w.service?.emoji ?? '',
       })),
       suggestions: suggestions.map((s: any) => ({
         id: s.id,
         name: (s.titleJson as any)?.ar,
         price: Number(s.basePrice),
-        emoji: s.emoji ?? '💅',
+        emoji: s.emoji ?? '',
         categoryId: s.categoryId,
       })),
     };

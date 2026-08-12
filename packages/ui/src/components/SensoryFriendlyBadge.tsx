@@ -31,49 +31,49 @@ interface FeatureDef {
 const FEATURES: FeatureDef[] = [
   {
     key: 'dim_lights',
-    emoji: '💡',
+    emoji: '',
     label: 'إضاءة هادئة',
     description: 'إضاءة خافتة ومريحة للعين',
   },
   {
     key: 'quiet_music',
-    emoji: '🎵',
+    emoji: '',
     label: 'موسيقى منخفضة',
     description: 'موسيقى هادئة أو إيقافها تماماً',
   },
   {
     key: 'no_fragrance',
-    emoji: '🌿',
+    emoji: '',
     label: 'بدون عطور قوية',
     description: 'منتجات خالية من العطور القوية',
   },
   {
     key: 'silent_appointment',
-    emoji: '🤫',
+    emoji: '',
     label: 'موعد صامت',
     description: 'بدون أحاديث جانبية إلا إذا بدأتِ أنتِ',
   },
   {
     key: 'comfort_kit',
-    emoji: '🧸',
+    emoji: '',
     label: 'حقيبة راحة',
     description: 'سماعات عازلة للضوضاء، ألعاب حسية، بطانية ثقيلة',
   },
   {
     key: 'predictable_service',
-    emoji: '📋',
+    emoji: '',
     label: 'خدمة متوقعة',
     description: 'شرح كل خطوة قبل البدء بها',
   },
   {
     key: 'private_room',
-    emoji: '🚪',
+    emoji: '',
     label: 'غرفة خاصة',
     description: 'غرفة منفصلة بعيداً عن الضوضاء',
   },
   {
     key: 'extra_time',
-    emoji: '⏰',
+    emoji: '',
     label: 'وقت إضافي',
     description: 'وقت إضافي 15-30 دقيقة بدون استعجال',
   },
@@ -113,7 +113,7 @@ export function SensoryFriendlyBadge({
       >
         <div className="flex items-center gap-2">
           <span className="text-lg" aria-hidden="true">
-            🧠
+            
           </span>
           <div>
             <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">صديق للحواس</h4>
@@ -169,7 +169,7 @@ export function SensoryFriendlyBadge({
           ))}
 
           <p className="!mt-3 text-[10px] leading-relaxed text-purple-500 dark:text-purple-400">
-            💜 نحن نهتم براحتكِ الحسية. أخبرينا باحتياجاتكِ عند الحجز وسنقوم بتجهيز كل شيء مسبقاً.
+             نحن نهتم براحتكِ الحسية. أخبرينا باحتياجاتكِ عند الحجز وسنقوم بتجهيز كل شيء مسبقاً.
           </p>
         </div>
       )}

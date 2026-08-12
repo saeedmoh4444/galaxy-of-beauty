@@ -19,12 +19,12 @@ interface CategoryDef {
 }
 
 const CATEGORIES: Record<WikiCategory, CategoryDef> = {
-  ingredient: { emoji: '🧪', label: 'مكونات' },
-  skincare: { emoji: '🧴', label: 'عناية بالبشرة' },
-  haircare: { emoji: '💇', label: 'عناية بالشعر' },
-  makeup: { emoji: '💄', label: 'مكياج' },
-  tradition: { emoji: '🏺', label: 'تراث سعودي' },
-  myth: { emoji: '🔍', label: 'خرافات شائعة' },
+  ingredient: { emoji: '', label: 'مكونات' },
+  skincare: { emoji: '', label: 'عناية بالبشرة' },
+  haircare: { emoji: '', label: 'عناية بالشعر' },
+  makeup: { emoji: '', label: 'مكياج' },
+  tradition: { emoji: '', label: 'تراث سعودي' },
+  myth: { emoji: '', label: 'خرافات شائعة' },
   health: { emoji: '🩺', label: 'صحة' },
 };
 
@@ -98,12 +98,12 @@ export function BeautyWikiCard({
       {/* Meta row */}
       <div className="mt-2 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-gray-500">
         {entry.readTime && (
-          <span className="flex items-center gap-1">📖 {entry.readTime} دقائق قراءة</span>
+          <span className="flex items-center gap-1"> {entry.readTime} دقائق قراءة</span>
         )}
-        {entry.author && <span className="flex items-center gap-1">✍️ {entry.author}</span>}
+        {entry.author && <span className="flex items-center gap-1">️ {entry.author}</span>}
         {entry.isArabicOriginal && (
           <span className="rounded bg-teal-50 px-1.5 py-0.5 text-teal-700 dark:bg-teal-950 dark:text-teal-300">
-            🇸🇦 محتوى عربي أصلي
+             محتوى عربي أصلي
           </span>
         )}
       </div>
@@ -121,7 +121,7 @@ export function BeautyWikiCard({
       {entry.category === 'tradition' && (
         <div className="mt-2 rounded-lg bg-amber-50 px-2.5 py-1.5 text-center dark:bg-amber-950">
           <p className="text-[10px] font-bold text-amber-700 dark:text-amber-300">
-            🏺 هذا المحتوى يوثق تراث الجمال السعودي الأصيل
+             هذا المحتوى يوثق تراث الجمال السعودي الأصيل
           </p>
         </div>
       )}
@@ -130,7 +130,7 @@ export function BeautyWikiCard({
       {entry.category === 'myth' && (
         <div className="mt-2 rounded-lg bg-rose-50 px-2.5 py-1.5 text-center dark:bg-rose-950">
           <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300">
-            🔍 هل تعتقدين أن معجون الأسنان يعالج الحبوب؟ اقرئي الحقيقة!
+             هل تعتقدين أن معجون الأسنان يعالج الحبوب؟ اقرئي الحقيقة!
           </p>
         </div>
       )}

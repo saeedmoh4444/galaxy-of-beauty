@@ -18,30 +18,30 @@ export default function AdminDashboardScreen(): JSX.Element {
       errorMessage="فشل تحميل لوحة الإدارة"
       onRetry={() => stats.refetch()}
     >
-      <Text style={styles.title}>📊 لوحة الإدارة</Text>
+      <Text style={styles.title}> لوحة الإدارة</Text>
       <View style={styles.statsGrid}>
         {['totalUsers', 'totalBookings', 'totalTechnicians', 'totalRevenue'].map((key) => (
           <View key={key} style={styles.statCard}>
             <Text style={styles.statNum}>{String(data?.[key] ?? 0)}</Text>
             <Text style={styles.statLabel}>
               {key === 'totalUsers'
-                ? '👥 مستخدمين'
+                ? ' مستخدمين'
                 : key === 'totalBookings'
-                  ? '📅 حجوزات'
+                  ? ' حجوزات'
                   : key === 'totalTechnicians'
-                    ? '💅 فنيات'
-                    : '💰 إيرادات'}
+                    ? ' فنيات'
+                    : ' إيرادات'}
             </Text>
           </View>
         ))}
       </View>
       <View style={styles.links}>
         {[
-          { h: '/admin/users', l: '👥 المستخدمين' },
-          { h: '/admin/bookings', l: '📅 الحجوزات' },
-          { h: '/admin/technicians', l: '💅 الفنيات' },
-          { h: '/admin/finance', l: '💰 المالية' },
-          { h: '/admin/analytics', l: '📈 التحليلات' },
+          { h: '/admin/users', l: ' المستخدمين' },
+          { h: '/admin/bookings', l: ' الحجوزات' },
+          { h: '/admin/technicians', l: ' الفنيات' },
+          { h: '/admin/finance', l: ' المالية' },
+          { h: '/admin/analytics', l: ' التحليلات' },
         ].map((link, i) => (
           <TouchableOpacity
             key={i}

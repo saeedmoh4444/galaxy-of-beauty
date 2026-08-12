@@ -4,9 +4,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 const TL: Record<string, { name: string; emoji: string; color: string }> = {
-  SILVER: { name: 'الفضية', emoji: '🥈', color: '#9ca3af' },
-  GOLD: { name: 'الذهبية', emoji: '🥇', color: '#f59e0b' },
-  PLATINUM: { name: 'البلاتينية', emoji: '💎', color: '#7c3aed' },
+  SILVER: { name: 'الفضية', emoji: '', color: '#9ca3af' },
+  GOLD: { name: 'الذهبية', emoji: '', color: '#f59e0b' },
+  PLATINUM: { name: 'البلاتينية', emoji: '', color: '#7c3aed' },
 };
 
 export default function RewardsScreen(): JSX.Element {
@@ -43,7 +43,7 @@ export default function RewardsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🏆 برنامج المكافآت</Text>
+      <Text style={styles.t}> برنامج المكافآت</Text>
       <View style={styles.tr}>
         {Object.entries(TL).map(([key, t]) => (
           <View
@@ -57,7 +57,7 @@ export default function RewardsScreen(): JSX.Element {
       </View>
       {rewards.map((r: any) => (
         <View key={r.id} style={styles.card}>
-          <Text style={styles.re}>{(r.emoji as string) ?? '🎁'}</Text>
+          <Text style={styles.re}>{(r.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.rn}>{(r.nameAr as string) ?? (r.titleAr as string)}</Text>
             <Text style={styles.rd}>{r.descAr as string}</Text>

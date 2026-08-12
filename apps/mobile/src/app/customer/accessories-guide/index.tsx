@@ -15,42 +15,42 @@ interface AccCard {
 
 const CARDS: AccCard[] = [
   {
-    emoji: '💍',
+    emoji: '',
     title: 'تنسيق الإكسسوارات',
     subtitle: 'اللمسة الأخيرة لإطلالتك',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '👂', text: 'أقراط — طويلة = وجه أنحف' },
-      { emoji: '📿', text: 'عقد — يناسب فتحة الرقبة' },
-      { emoji: '⌚', text: 'ساعة — كلاسيك لكل مناسبة' },
-      { emoji: '💍', text: 'خواتم — 2-3 كحد أقصى' },
+      { emoji: '', text: 'أقراط — طويلة = وجه أنحف' },
+      { emoji: '', text: 'عقد — يناسب فتحة الرقبة' },
+      { emoji: '', text: 'ساعة — كلاسيك لكل مناسبة' },
+      { emoji: '', text: 'خواتم — 2-3 كحد أقصى' },
     ],
   },
   {
-    emoji: '👜',
+    emoji: '',
     title: 'حقيبة الجمال',
     subtitle: 'أساسيات لا تستغني عنها',
     color: '#4f46e5',
     bg: '#eef2ff',
     tips: [
-      { emoji: '💄', text: 'أحمر شفاه — لون ناعم للإطلالة اليومية' },
+      { emoji: '', text: 'أحمر شفاه — لون ناعم للإطلالة اليومية' },
       { emoji: '🪞', text: 'مرآة صغيرة — للمسات السريعة' },
-      { emoji: '🧴', text: 'مرطب سفر — حجم صغير للطوارئ' },
-      { emoji: '☀️', text: 'واقي شمس — Mini size للشنطة' },
+      { emoji: '', text: 'مرطب سفر — حجم صغير للطوارئ' },
+      { emoji: '️', text: 'واقي شمس — Mini size للشنطة' },
     ],
   },
   {
-    emoji: '🧕',
+    emoji: '',
     title: 'أناقة الحجاب',
     subtitle: 'أفكار لتنسيق حجابك',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '🎨', text: 'ألوان متناسقة — الحجاب مع لون الفستان' },
-      { emoji: '🧷', text: 'تثبيت محكم — دبابيس غير ظاهرة' },
-      { emoji: '🌿', text: 'بطانة حرير — تحمي الشعر من التكسر' },
-      { emoji: '👒', text: 'تغيير الأسلوب — جربي لفات جديدة' },
+      { emoji: '', text: 'ألوان متناسقة — الحجاب مع لون الفستان' },
+      { emoji: '', text: 'تثبيت محكم — دبابيس غير ظاهرة' },
+      { emoji: '', text: 'بطانة حرير — تحمي الشعر من التكسر' },
+      { emoji: '', text: 'تغيير الأسلوب — جربي لفات جديدة' },
     ],
   },
 ];
@@ -58,7 +58,7 @@ const CARDS: AccCard[] = [
 export default function AccessoriesGuideScreen(): JSX.Element {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.header}>👛 دليل الإكسسوارات</Text>
+      <Text style={styles.header}> دليل الإكسسوارات</Text>
       <Text style={styles.subtitle}>اللمسة الأخيرة لإطلالة متكاملة</Text>
       <View style={styles.grid}>
         {CARDS.map((card, i) => (

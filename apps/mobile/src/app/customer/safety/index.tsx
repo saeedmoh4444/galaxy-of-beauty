@@ -4,7 +4,7 @@ import { trpc } from '@/lib/api';
 export default function SafetyScreen(): JSX.Element {
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>🛡️ السلامة</Text>
+      <Text style={s.h}>️ السلامة</Text>
       <Text style={s.sub}>سلامتكِ أولويتنا</Text>
       <View style={s.grid}>
         {[
@@ -16,56 +16,56 @@ export default function SafetyScreen(): JSX.Element {
             bg: '#fef2f2',
           },
           {
-            emoji: '🚶',
+            emoji: '',
             title: 'توصيلي لسيارتي',
             desc: 'مرافق حتى باب السيارة',
             color: '#f59e0b',
             bg: '#fffbeb',
           },
           {
-            emoji: '📍',
+            emoji: '',
             title: 'مشاركة الموقع',
             desc: 'شاركي موقعكِ مع صديقة تثقين بها',
             color: '#3b82f6',
             bg: '#eff6ff',
           },
           {
-            emoji: '🏠',
+            emoji: '',
             title: 'وصلت للبيت',
             desc: 'إشعار آلي عند وصولكِ',
             color: '#10b981',
             bg: '#ecfdf5',
           },
           {
-            emoji: '🔒',
+            emoji: '',
             title: 'اسم مستعار',
             desc: 'احجزي باسم مستعار للخصوصية',
             color: '#8b5cf6',
             bg: '#f5f3ff',
           },
           {
-            emoji: '📞',
+            emoji: '',
             title: 'اتصال آمن',
             desc: 'خط ساخن للطوارئ 24/7',
             color: '#06b6d4',
             bg: '#ecfeff',
           },
           {
-            emoji: '😷',
+            emoji: '',
             title: 'تعمية الوجه',
             desc: 'أخفِ وجهكِ في الصور',
             color: '#6366f1',
             bg: '#eef2ff',
           },
           {
-            emoji: '🕶️',
+            emoji: '️',
             title: 'وضع التخفي',
             desc: 'تصفحي بدون تسجيل نشاطكِ',
             color: '#d946ef',
             bg: '#fdf4ff',
           },
           {
-            emoji: '✍️',
+            emoji: '️',
             title: 'درع الموافقة',
             desc: 'موافقة صريحة قبل كل خدمة',
             color: '#14b8a6',

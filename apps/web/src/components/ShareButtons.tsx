@@ -33,21 +33,21 @@ export function ShareButtons({ title, url }: ShareButtonsProps): JSX.Element {
         className="rounded-lg bg-green-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-600 transition-colors"
         title="مشاركة عبر واتساب"
       >
-        📱 واتساب
+         واتساب
       </button>
       <button
         onClick={() => share('twitter')}
         className="rounded-lg bg-blue-400 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-500 transition-colors"
         title="مشاركة عبر تويتر"
       >
-        🐦 تويتر
+         تويتر
       </button>
       <button
         onClick={() => share('copy')}
         className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 transition-colors"
         title="نسخ الرابط"
       >
-        📋 نسخ
+         نسخ
       </button>
     </div>
   );

@@ -98,7 +98,7 @@ export default function BeautyProfilePage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">💄 ملفي الجمالي</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100"> ملفي الجمالي</h1>
         <p className="text-sm text-text-secondary">
           ساعدينا في تقديم توصيات مخصصة لكِ عن طريق إكمال ملفكِ الجمالي
         </p>
@@ -188,7 +188,7 @@ export default function BeautyProfilePage(): JSX.Element {
             </Card>
 
             <Button onClick={handleSave} loading={upsertMut.isPending} className="w-full" size="lg">
-              💾 حفظ الملف الجمالي
+               حفظ الملف الجمالي
             </Button>
           </div>
         )}

@@ -9,7 +9,7 @@ export function BeautyNailStrengthenCard({ className = '' }: { className?: strin
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💪</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">تقوية الأظافر</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">أظافر قوية — بدون تكسر</p>
@@ -17,10 +17,10 @@ export function BeautyNailStrengthenCard({ className = '' }: { className?: strin
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💅', text: 'مقوي أظافر — طبقة أساس قبل الطلاء' },
-          { emoji: '💧', text: 'زيت الأظافر — يومياً على الظفر والبشرة' },
-          { emoji: '🥗', text: 'بيوتين وزنك — من الداخل للخارج' },
-          { emoji: '🧤', text: 'قفازات للتنظيف — احمي أظافركِ' },
+          { emoji: '', text: 'مقوي أظافر — طبقة أساس قبل الطلاء' },
+          { emoji: '', text: 'زيت الأظافر — يومياً على الظفر والبشرة' },
+          { emoji: '', text: 'بيوتين وزنك — من الداخل للخارج' },
+          { emoji: '', text: 'قفازات للتنظيف — احمي أظافركِ' },
         ].map((t, i) => (
           <div
             key={i}

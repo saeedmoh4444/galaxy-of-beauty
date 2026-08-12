@@ -37,9 +37,9 @@ export const subscriptionGiftRouter = router({
 
   options: customerProcedure.query(() => ({
     tiers: [
-      { months: 1, price: 99, emoji: '🌸', label: 'شهر واحد' },
-      { months: 3, price: 269, emoji: '🌺', label: '3 أشهر', save: '10%' },
-      { months: 6, price: 499, emoji: '💐', label: '6 أشهر', save: '15%' },
+      { months: 1, price: 99, emoji: '', label: 'شهر واحد' },
+      { months: 3, price: 269, emoji: '', label: '3 أشهر', save: '10%' },
+      { months: 6, price: 499, emoji: '', label: '6 أشهر', save: '15%' },
     ],
   })),
 });

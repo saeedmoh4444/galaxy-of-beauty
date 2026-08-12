@@ -8,7 +8,7 @@ import { cn } from '@galaxy/shared';
  *
  * Usage:
  *   <InspirationBoardCard
- *     pins={[{ image: '💇', title: 'تسريحة ناعمة', savedBy: 'نورة' }]}
+ *     pins={[{ image: '', title: 'تسريحة ناعمة', savedBy: 'نورة' }]}
  *   />
  */
 
@@ -45,7 +45,7 @@ export function InspirationBoardCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-lg" aria-hidden="true">
-            📌
+            
           </span>
           <div>
             <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{boardName}</h4>
@@ -76,7 +76,7 @@ export function InspirationBoardCard({
       {/* Collaborators */}
       {collaborators && collaborators.length > 0 && (
         <div className="mt-2 flex items-center gap-1.5">
-          <span className="text-[10px] text-text-tertiary dark:text-gray-500">👯‍♀️</span>
+          <span className="text-[10px] text-text-tertiary dark:text-gray-500">‍️</span>
           <div className="flex -space-x-1.5">
             {collaborators.slice(0, 4).map((name) => (
               <span
@@ -109,7 +109,7 @@ export function InspirationBoardCard({
               {pin.title}
             </p>
             {pin.savedBy && (
-              <p className="text-[9px] text-text-tertiary dark:text-gray-500">📌 {pin.savedBy}</p>
+              <p className="text-[9px] text-text-tertiary dark:text-gray-500"> {pin.savedBy}</p>
             )}
             {pin.note && (
               <p className="mt-0.5 text-[9px] italic text-text-tertiary dark:text-gray-500 truncate">
@@ -142,7 +142,7 @@ export function InspirationBoardCard({
 
       {/* Footer */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        💕 شاركي إلهاماتكِ مع صديقاتكِ في دائرة الجمال
+         شاركي إلهاماتكِ مع صديقاتكِ في دائرة الجمال
       </p>
     </div>
   );

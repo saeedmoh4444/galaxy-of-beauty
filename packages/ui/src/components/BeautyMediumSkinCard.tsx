@@ -9,7 +9,7 @@ export function BeautyMediumSkinCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🤎</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">البشرة المتوسطة</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">
@@ -19,10 +19,10 @@ export function BeautyMediumSkinCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '☀️', text: 'SPF 30-50 — الميلانين يحمي ولكن ليس بالكامل' },
-          { emoji: '🔍', text: 'ميل للتصبغات — فيتامين C أساسي' },
-          { emoji: '💄', text: 'ألوان: برونزي، خوخي، تيراكوتا — دافئة' },
-          { emoji: '✨', text: 'هايلايتر ذهبي — يناسب الأندرتون الدافئ' },
+          { emoji: '️', text: 'SPF 30-50 — الميلانين يحمي ولكن ليس بالكامل' },
+          { emoji: '', text: 'ميل للتصبغات — فيتامين C أساسي' },
+          { emoji: '', text: 'ألوان: برونزي، خوخي، تيراكوتا — دافئة' },
+          { emoji: '', text: 'هايلايتر ذهبي — يناسب الأندرتون الدافئ' },
         ].map((t, i) => (
           <div
             key={i}

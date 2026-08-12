@@ -12,12 +12,12 @@ import { cn } from '@galaxy/shared';
  */
 
 const RITUALS = [
-  { emoji: '💧', label: '8 أكواب ماء' },
-  { emoji: '🧴', label: 'روتين عناية' },
-  { emoji: '☀️', label: 'واقي شمس' },
-  { emoji: '😴', label: 'نوم كافٍ' },
-  { emoji: '🧘', label: 'تأمل' },
-  { emoji: '🥗', label: 'تغذية صحية' },
+  { emoji: '', label: '8 أكواب ماء' },
+  { emoji: '', label: 'روتين عناية' },
+  { emoji: '️', label: 'واقي شمس' },
+  { emoji: '', label: 'نوم كافٍ' },
+  { emoji: '', label: 'تأمل' },
+  { emoji: '', label: 'تغذية صحية' },
 ];
 
 interface BeautyDailyCheckInCardProps {
@@ -45,7 +45,7 @@ export function BeautyDailyCheckInCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl">✅</span>
+          <span className="text-xl"></span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
               تسجيل اليوم

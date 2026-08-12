@@ -35,13 +35,13 @@ export default function CorporateWellnessPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="🏢 عافية الشركات" subtitle="باقات تجميل وعناية لمنسوبات الشركات" />
+        <PageTitle title=" عافية الشركات" subtitle="باقات تجميل وعناية لمنسوبات الشركات" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
             {submitted && (
               <div className="rounded-2xl bg-emerald-50 p-6 text-center dark:bg-emerald-950">
-                <span className="text-4xl">✅</span>
+                <span className="text-4xl"></span>
                 <p className="mt-3 font-bold text-emerald-700 dark:text-emerald-300">
                   تم استلام طلبكِ وسنتواصل معكِ
                 </p>
@@ -68,7 +68,7 @@ export default function CorporateWellnessPage(): JSX.Element {
                       </span>
                     </p>
                     <p className="mt-1 text-xs text-text-tertiary dark:text-gray-500">
-                      👥 حتى {p.employees} موظفة
+                       حتى {p.employees} موظفة
                     </p>
                     <div className="mt-2 flex flex-wrap gap-1">
                       {(p.services as string[])?.map((svc: string, i: number) => (
@@ -76,7 +76,7 @@ export default function CorporateWellnessPage(): JSX.Element {
                           key={i}
                           className="text-[11px] text-emerald-600 dark:text-emerald-400"
                         >
-                          ✓ {svc}
+                           {svc}
                         </span>
                       ))}
                     </div>
@@ -90,7 +90,7 @@ export default function CorporateWellnessPage(): JSX.Element {
               onClick={() => setShowForm(!showForm)}
               className="w-full rounded-xl bg-rose-600 py-3 text-sm font-bold text-white hover:bg-rose-700 transition-colors"
             >
-              {showForm ? '✕ إغلاق' : '📩 تقديم طلب'}
+              {showForm ? ' إغلاق' : ' تقديم طلب'}
             </button>
 
             {showForm && (
@@ -129,7 +129,7 @@ export default function CorporateWellnessPage(): JSX.Element {
             {enquiryItems.length > 0 && (
               <Card className="p-4">
                 <h3 className="text-sm font-bold text-text-primary dark:text-gray-100">
-                  📋 طلباتي السابقة
+                   طلباتي السابقة
                 </h3>
                 <div className="mt-3 space-y-2">
                   {enquiryItems.map((e: any, i: number) => (

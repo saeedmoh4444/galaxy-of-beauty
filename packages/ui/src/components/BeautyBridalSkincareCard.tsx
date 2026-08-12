@@ -9,7 +9,7 @@ export function BeautyBridalSkincareCard({ className = '' }: { className?: strin
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">👰</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">بشرة العروس</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">خطة 6 أشهر لبشرة الزفاف</p>
@@ -17,10 +17,10 @@ export function BeautyBridalSkincareCard({ className = '' }: { className?: strin
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '📅', text: '6 أشهر: بدء روتين عناية + واقي شمس يومي' },
-          { emoji: '🔬', text: '3 أشهر: أول جلسة فيشل + تحديد المشاكل' },
-          { emoji: '✨', text: 'شهر واحد: آخر تقشير — لا تجارب جديدة' },
-          { emoji: '💧', text: 'أسبوع الزفاف: ترطيب مكثف — بشرة مشرقة' },
+          { emoji: '', text: '6 أشهر: بدء روتين عناية + واقي شمس يومي' },
+          { emoji: '', text: '3 أشهر: أول جلسة فيشل + تحديد المشاكل' },
+          { emoji: '', text: 'شهر واحد: آخر تقشير — لا تجارب جديدة' },
+          { emoji: '', text: 'أسبوع الزفاف: ترطيب مكثف — بشرة مشرقة' },
         ].map((t, i) => (
           <div
             key={i}

@@ -37,13 +37,13 @@ export function RatingStars({
     >
       {Array.from({ length: full }, (_, i) => (
         <span key={`f-${i}`} className="text-amber-400">
-          ★
+          
         </span>
       ))}
-      {hasHalf ? <span className="text-amber-400">★</span> : null}
+      {hasHalf ? <span className="text-amber-400"></span> : null}
       {Array.from({ length: empty }, (_, i) => (
         <span key={`e-${i}`} className="text-gray-300 dark:text-gray-600">
-          ★
+          
         </span>
       ))}
       {showNumeric ? (

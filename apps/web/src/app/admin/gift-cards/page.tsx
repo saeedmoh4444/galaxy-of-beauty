@@ -13,7 +13,7 @@ export default function AdminGiftCardsPage(): JSX.Element {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">🎁 بطاقات الهدية</h1>
+      <h1 className="text-2xl font-bold"> بطاقات الهدية</h1>
       {isLoading ? (
         <CardSkeleton />
       ) : isError ? (

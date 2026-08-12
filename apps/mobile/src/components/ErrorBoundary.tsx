@@ -42,7 +42,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       return (
         <ScrollView contentContainerStyle={styles.container}>
           <View style={styles.iconCircle}>
-            <Text style={styles.iconEmoji}>⚠️</Text>
+            <Text style={styles.iconEmoji}></Text>
           </View>
           <Text style={styles.title}>حدث خطأ غير متوقع</Text>
           <Text style={styles.subtitle}>نأسف على هذا الخطأ. يرجى المحاولة لاحقاً.</Text>

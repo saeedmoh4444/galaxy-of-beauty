@@ -6,10 +6,10 @@ import { Card, CardSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const SKIN_TYPES = [
-  { key: 'dry' as const, emoji: '🏜️', label: 'جافة', desc: 'بشرة تحتاج ترطيب مكثف' },
-  { key: 'oily' as const, emoji: '💧', label: 'دهنية', desc: 'بشرة تفرز زيوتاً زائدة' },
-  { key: 'combination' as const, emoji: '🔄', label: 'مختلطة', desc: 'منطقة T دهنية والخدود جافة' },
-  { key: 'normal' as const, emoji: '✨', label: 'عادية', desc: 'بشرة متوازنة' },
+  { key: 'dry' as const, emoji: '️', label: 'جافة', desc: 'بشرة تحتاج ترطيب مكثف' },
+  { key: 'oily' as const, emoji: '', label: 'دهنية', desc: 'بشرة تفرز زيوتاً زائدة' },
+  { key: 'combination' as const, emoji: '', label: 'مختلطة', desc: 'منطقة T دهنية والخدود جافة' },
+  { key: 'normal' as const, emoji: '', label: 'عادية', desc: 'بشرة متوازنة' },
 ];
 
 export default function AIRoutinePage(): JSX.Element {
@@ -34,7 +34,7 @@ export default function AIRoutinePage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🧠 روتين العناية الذكي</h1>
+          <h1 className="text-2xl font-bold"> روتين العناية الذكي</h1>
           <p className="mt-1 text-sm text-text-secondary">
             روتين يومي مخصص لبشرتكِ بالذكاء الاصطناعي
           </p>
@@ -42,7 +42,7 @@ export default function AIRoutinePage(): JSX.Element {
 
         {!generated ? (
           <Card padding="lg">
-            <h3 className="font-bold text-lg mb-4">✨ اختاري نوع بشرتكِ</h3>
+            <h3 className="font-bold text-lg mb-4"> اختاري نوع بشرتكِ</h3>
             <div className="grid gap-3 sm:grid-cols-2">
               {SKIN_TYPES.map((t) => (
                 <button
@@ -58,7 +58,7 @@ export default function AIRoutinePage(): JSX.Element {
             </div>
             <div className="mt-4">
               <Button onClick={() => setGenerated(true)} className="w-full" size="lg">
-                🧠 توليد الروتين
+                 توليد الروتين
               </Button>
             </div>
           </Card>
@@ -71,7 +71,7 @@ export default function AIRoutinePage(): JSX.Element {
             <div className="grid gap-6 lg:grid-cols-2">
               <Card padding="lg">
                 <h3 className="font-bold text-lg mb-3">
-                  ☀️ الصباح (
+                  ️ الصباح (
                   {routine?.morning
                     ? ((routine.morning as Record<string, unknown>).totalTime as string)
                     : ''}
@@ -91,7 +91,7 @@ export default function AIRoutinePage(): JSX.Element {
               </Card>
               <Card padding="lg">
                 <h3 className="font-bold text-lg mb-3">
-                  🌙 المساء (
+                   المساء (
                   {routine?.evening
                     ? ((routine.evening as Record<string, unknown>).totalTime as string)
                     : ''}
@@ -115,11 +115,11 @@ export default function AIRoutinePage(): JSX.Element {
                 padding="lg"
                 className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950 border-none"
               >
-                <h3 className="font-bold mb-3">💡 نصائح</h3>
+                <h3 className="font-bold mb-3"> نصائح</h3>
                 <div className="space-y-2">
                   {tips.map((t, i) => (
                     <p key={i} className="text-sm">
-                      ✨ {t}
+                       {t}
                     </p>
                   ))}
                 </div>
@@ -127,7 +127,7 @@ export default function AIRoutinePage(): JSX.Element {
             )}
             <div className="text-center">
               <Button variant="ghost" onClick={() => setGenerated(false)}>
-                🔄 تغيير نوع البشرة
+                 تغيير نوع البشرة
               </Button>
             </div>
           </>

@@ -41,7 +41,7 @@ export default function IoTSyncPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📡 الأجهزة الذكية</h1>
+          <h1 className="text-2xl font-bold"> الأجهزة الذكية</h1>
           <p className="mt-1 text-sm text-text-secondary">
             اربطي أجهزة العناية الذكية لمتابعة بشرتكِ
           </p>
@@ -54,7 +54,7 @@ export default function IoTSyncPage(): JSX.Element {
               <p
                 className={`text-xs mt-1 ${d.status === 'connected' ? 'text-green-600' : 'text-text-tertiary'}`}
               >
-                {d.status === 'connected' ? '🟢 متصل' : '⚫ غير متصل'}
+                {d.status === 'connected' ? ' متصل' : ' غير متصل'}
               </p>
               <div className="mt-2">
                 {(d.features as string[])?.slice(0, 2).map((f: string) => (

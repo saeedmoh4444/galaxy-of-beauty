@@ -40,7 +40,7 @@ export function TechnicianCRMCard({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          👩‍🎨
+          ‍
         </span>
         <div>
           <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">زبوناتي</h4>
@@ -83,7 +83,7 @@ export function TechnicianCRMCard({
         {avgRating !== undefined && (
           <div className="rounded-xl bg-gray-50 p-2.5 text-center dark:bg-gray-800">
             <p className="text-[9px] text-text-tertiary dark:text-gray-500">التقييم</p>
-            <p className="text-sm font-bold text-amber-700 dark:text-amber-300">⭐ {avgRating}</p>
+            <p className="text-sm font-bold text-amber-700 dark:text-amber-300"> {avgRating}</p>
           </div>
         )}
       </div>
@@ -91,10 +91,10 @@ export function TechnicianCRMCard({
       {/* Quick actions */}
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '💌', label: 'إرسال عرض' },
-          { emoji: '🎂', label: 'تهنئة ميلاد' },
-          { emoji: '⭐', label: 'طلب تقييم' },
-          { emoji: '📊', label: 'تقرير كامل' },
+          { emoji: '', label: 'إرسال عرض' },
+          { emoji: '', label: 'تهنئة ميلاد' },
+          { emoji: '', label: 'طلب تقييم' },
+          { emoji: '', label: 'تقرير كامل' },
         ].map((a) => (
           <button
             key={a.label}

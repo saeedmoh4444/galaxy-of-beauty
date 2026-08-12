@@ -15,19 +15,19 @@ type SkinType = 'oily' | 'dry' | 'combination' | 'sensitive' | 'normal';
 type SkinGoal = 'anti_aging' | 'brightening' | 'acne' | 'hydration' | 'even_tone';
 
 const SKIN_TYPES: { value: SkinType; emoji: string; label: string }[] = [
-  { value: 'oily', emoji: '✨', label: 'دهنية' },
-  { value: 'dry', emoji: '💧', label: 'جافة' },
-  { value: 'combination', emoji: '🎭', label: 'مختلطة' },
-  { value: 'sensitive', emoji: '🌿', label: 'حساسة' },
-  { value: 'normal', emoji: '🌸', label: 'طبيعية' },
+  { value: 'oily', emoji: '', label: 'دهنية' },
+  { value: 'dry', emoji: '', label: 'جافة' },
+  { value: 'combination', emoji: '', label: 'مختلطة' },
+  { value: 'sensitive', emoji: '', label: 'حساسة' },
+  { value: 'normal', emoji: '', label: 'طبيعية' },
 ];
 
 const GOALS: { value: SkinGoal; emoji: string; label: string }[] = [
-  { value: 'anti_aging', emoji: '⏳', label: 'مكافحة الشيخوخة' },
-  { value: 'brightening', emoji: '✨', label: 'تفتيح' },
-  { value: 'acne', emoji: '🔴', label: 'علاج حبوب' },
-  { value: 'hydration', emoji: '💧', label: 'ترطيب' },
-  { value: 'even_tone', emoji: '🎨', label: 'توحيد لون' },
+  { value: 'anti_aging', emoji: '', label: 'مكافحة الشيخوخة' },
+  { value: 'brightening', emoji: '', label: 'تفتيح' },
+  { value: 'acne', emoji: '', label: 'علاج حبوب' },
+  { value: 'hydration', emoji: '', label: 'ترطيب' },
+  { value: 'even_tone', emoji: '', label: 'توحيد لون' },
 ];
 
 const ROUTINE_STEPS: Record<SkinType, string[]> = {
@@ -68,7 +68,7 @@ export function SkincareRoutineBuilder({
       >
         <div className="text-center">
           <span className="text-3xl" aria-hidden="true">
-            🧴
+            
           </span>
           <h4 className="mt-1 text-sm font-bold text-pink-700 dark:text-pink-300">
             روتينكِ المخصص
@@ -98,7 +98,7 @@ export function SkincareRoutineBuilder({
 
         <div className="mt-3 rounded-lg bg-amber-50 p-2 dark:bg-amber-950">
           <p className="text-center text-[10px] text-amber-700 dark:text-amber-300">
-            💡 الصباح: خطوات 1-5 · المساء: خطوات 1-4 (بدون واقي شمس)
+             الصباح: خطوات 1-5 · المساء: خطوات 1-4 (بدون واقي شمس)
           </p>
         </div>
 
@@ -107,7 +107,7 @@ export function SkincareRoutineBuilder({
           onClick={reset}
           className="mt-3 w-full rounded-xl border border-pink-200 py-2 text-xs font-bold text-pink-700 hover:bg-pink-50 dark:border-pink-800 dark:text-pink-300"
         >
-          بناء روتين جديد 🔄
+          بناء روتين جديد 
         </button>
       </div>
     );
@@ -122,7 +122,7 @@ export function SkincareRoutineBuilder({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🧴
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-pink-700 dark:text-pink-300">
           بناء روتين العناية

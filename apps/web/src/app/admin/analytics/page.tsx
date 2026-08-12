@@ -149,7 +149,7 @@ export default function AdminAnalyticsPage(): JSX.Element {
                   <tr key={t.id ?? i} className="border-b border-gray-100 dark:border-gray-800">
                     <td className="py-2 font-medium">{t.name}</td>
                     <td className="py-2">{String(t.completedBookings ?? 0)}</td>
-                    <td className="py-2">⭐ {Number(t.ratingAvg ?? 0).toFixed(1)}</td>
+                    <td className="py-2"> {Number(t.ratingAvg ?? 0).toFixed(1)}</td>
                   </tr>
                 ))}
               </tbody>

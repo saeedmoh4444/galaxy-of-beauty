@@ -9,7 +9,7 @@ export function BeautyGlutenFreeCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌾</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">
             الجمال بدون جلوتين
@@ -19,9 +19,9 @@ export function BeautyGlutenFreeCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🚫', text: 'بعض المنتجات تحتوي جلوتين — كريمات، بلسم، أحمر شفاه' },
-          { emoji: '🔍', text: 'تأكدي من المكونات — قمح، شعير، شوفان' },
-          { emoji: '✅', text: 'معظم المنتجات خالية — لكن الجئي للمعتمد' },
+          { emoji: '', text: 'بعض المنتجات تحتوي جلوتين — كريمات، بلسم، أحمر شفاه' },
+          { emoji: '', text: 'تأكدي من المكونات — قمح، شعير، شوفان' },
+          { emoji: '', text: 'معظم المنتجات خالية — لكن الجئي للمعتمد' },
           { emoji: '🩺', text: 'إذا كنتِ تعانين من سيلياك — الجئي لطبيبك' },
         ].map((t, i) => (
           <div

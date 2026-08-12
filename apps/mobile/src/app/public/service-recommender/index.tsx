@@ -23,10 +23,10 @@ export default function ServiceRecommenderScreen(): JSX.Element {
       emptyTitle="لا توجد توصيات"
       onRetry={() => recs.refetch()}
     >
-      <Text style={styles.title}>✨ توصيات لكِ</Text>
+      <Text style={styles.title}> توصيات لكِ</Text>
       {(data as Record<string, unknown>[])?.map((r: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(r.emoji as string) ?? '💄'}</Text>
+          <Text style={styles.emoji}>{(r.emoji as string) ?? ''}</Text>
           <View style={styles.info}>
             <Text style={styles.name}>{(r.nameJson as any)?.ar ?? (r.nameAr as string) ?? ''}</Text>
             <Text style={styles.price}>{r.price ? formatCurrency(Number(r.price)) : ''}</Text>

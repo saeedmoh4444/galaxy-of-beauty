@@ -40,17 +40,17 @@ export default function AIFeedScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🤖 خلاصتي الذكية</Text>
+      <Text style={styles.t}> خلاصتي الذكية</Text>
       {skinProfile && (
         <View style={styles.sc}>
-          <Text style={styles.st}>🧬 ملف بشرتكِ</Text>
+          <Text style={styles.st}> ملف بشرتكِ</Text>
           <Text style={styles.sd}>{skinProfile.skinType as string}</Text>
         </View>
       )}
-      {recommendations.length > 0 && <Text style={styles.stl}>💫 موصى به لكِ</Text>}
+      {recommendations.length > 0 && <Text style={styles.stl}> موصى به لكِ</Text>}
       {recommendations.map((r: any) => (
         <View key={r.id} style={styles.card}>
-          <Text style={styles.em}>✨</Text>
+          <Text style={styles.em}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>
               {((r.titleJson as any)?.ar as string) ?? (r.nameAr as string)}
@@ -59,10 +59,10 @@ export default function AIFeedScreen(): JSX.Element {
           </View>
         </View>
       ))}
-      {wishlistItems.length > 0 && <Text style={styles.stl}>❤️ من قائمة أمنياتكِ</Text>}
+      {wishlistItems.length > 0 && <Text style={styles.stl}>️ من قائمة أمنياتكِ</Text>}
       {wishlistItems.map((w: any) => (
         <View key={w.id} style={styles.card}>
-          <Text style={styles.em}>❤️</Text>
+          <Text style={styles.em}>️</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>
               {((w.titleJson as any)?.ar as string) ?? (w.nameAr as string)}

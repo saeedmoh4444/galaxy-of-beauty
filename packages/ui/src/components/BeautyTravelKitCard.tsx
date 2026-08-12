@@ -9,7 +9,7 @@ export function BeautyTravelKitCard({ className = '' }: { className?: string }):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🧳</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">
             حقيبة سفر الجمال
@@ -19,10 +19,10 @@ export function BeautyTravelKitCard({ className = '' }: { className?: string }):
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: 'عبوات صغيرة — أقل من 100 مل للطائرة' },
-          { emoji: '☀️', text: 'واقي شمس — أهم منتج في أي سفر' },
-          { emoji: '💄', text: 'منتجات متعددة الاستخدام — أحمر شفاه = بلاشر' },
-          { emoji: '🧻', text: 'مناديل ميسيلار — للتنظيف بدون ماء' },
+          { emoji: '', text: 'عبوات صغيرة — أقل من 100 مل للطائرة' },
+          { emoji: '️', text: 'واقي شمس — أهم منتج في أي سفر' },
+          { emoji: '', text: 'منتجات متعددة الاستخدام — أحمر شفاه = بلاشر' },
+          { emoji: '', text: 'مناديل ميسيلار — للتنظيف بدون ماء' },
         ].map((t, i) => (
           <div
             key={i}

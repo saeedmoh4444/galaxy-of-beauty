@@ -12,31 +12,31 @@ import { cn } from '@galaxy/shared';
  */
 
 const TIPS = [
-  { emoji: '💧', tip: 'اشربي كوب ماء قبل قهوتكِ الصباحية — بشرتكِ ستشكركِ', category: 'عناية' },
+  { emoji: '', tip: 'اشربي كوب ماء قبل قهوتكِ الصباحية — بشرتكِ ستشكركِ', category: 'عناية' },
   {
-    emoji: '☀️',
+    emoji: '️',
     tip: 'واقي الشمس حتى في الأيام الغائمة — الأشعة فوق البنفسجية تخترق الغيوم',
     category: 'حماية',
   },
   {
-    emoji: '😴',
+    emoji: '',
     tip: 'نامي على ظهركِ — يمنع تجاعيد الوجه ويحافظ على نضارة البشرة',
     category: 'صحة',
   },
-  { emoji: '🧴', tip: 'طبقي المرطب على بشرة رطبة — يمتص بشكل أفضل', category: 'عناية' },
+  { emoji: '', tip: 'طبقي المرطب على بشرة رطبة — يمتص بشكل أفضل', category: 'عناية' },
   {
-    emoji: '💄',
+    emoji: '',
     tip: 'جددِي مكياجكِ كل 6 أشهر — المنتجات القديمة تجمع البكتيريا',
     category: 'صحة',
   },
-  { emoji: '🥒', tip: 'شرائح الخيار الباردة تقلل انتفاخ العينين في 10 دقائق', category: 'طبيعي' },
+  { emoji: '', tip: 'شرائح الخيار الباردة تقلل انتفاخ العينين في 10 دقائق', category: 'طبيعي' },
   {
-    emoji: '🧖‍♀️',
+    emoji: '‍️',
     tip: 'لا تغسلي وجهكِ بالماء الساخن — الماء الفاتر أفضل للبشرة',
     category: 'عناية',
   },
   {
-    emoji: '🍵',
+    emoji: '',
     tip: 'الشاي الأخضر قبل النوم يساعد في محاربة الالتهابات وتجديد البشرة',
     category: 'صحة',
   },
@@ -59,7 +59,7 @@ export function DailyBeautyTipCard({ className = '' }: DailyBeautyTipCardProps):
     >
       <div className="flex items-center gap-2">
         <span className="text-lg" aria-hidden="true">
-          💡
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">نصيحة اليوم</h4>
@@ -89,7 +89,7 @@ export function DailyBeautyTipCard({ className = '' }: DailyBeautyTipCardProps):
       </div>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        💡 نصيحة جديدة كل يوم — تعلمي وطبقي
+         نصيحة جديدة كل يوم — تعلمي وطبقي
       </p>
     </div>
   );

@@ -41,10 +41,10 @@ export default function AdminServicesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>💆‍♀️ الخدمات</Text>
+      <Text style={styles.t}>‍️ الخدمات</Text>
       {data.map((s: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(s.emoji as string) ?? '💆‍♀️'}</Text>
+          <Text style={styles.emoji}>{(s.emoji as string) ?? '‍️'}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{(s.titleJson as any)?.ar as string}</Text>
             <Text style={styles.price}>{(s.basePrice as number)?.toLocaleString()} ر.س</Text>

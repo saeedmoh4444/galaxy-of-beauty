@@ -31,32 +31,32 @@ interface PermDef {
 
 const PERMISSIONS: Record<Permission, PermDef> = {
   photo_gallery: {
-    emoji: '🖼️',
+    emoji: '️',
     label: 'صور المعرض',
     description: 'السماح بعرض صوري في المعرض العام للمنصة',
   },
   before_after: {
-    emoji: '📸',
+    emoji: '',
     label: 'صور قبل/بعد',
     description: 'السماح بمشاركة صور التحول (يمكن تعتيم الوجه)',
   },
   testimonial: {
-    emoji: '💬',
+    emoji: '',
     label: 'شهادة',
     description: 'السماح بنشر تقييمي وشهادتي على المنصة',
   },
   data_analytics: {
-    emoji: '📊',
+    emoji: '',
     label: 'تحليل البيانات',
     description: 'استخدام بياناتي بشكل مجهول لتحسين الخدمات',
   },
   marketing_email: {
-    emoji: '📧',
+    emoji: '',
     label: 'رسائل تسويقية',
     description: 'استلام عروض وخصومات عبر البريد الإلكتروني',
   },
   location_sharing: {
-    emoji: '📍',
+    emoji: '',
     label: 'مشاركة الموقع',
     description: 'مشاركة موقعي مع الخبيرة أثناء الخدمة المنزلية',
     required: true,
@@ -101,7 +101,7 @@ export function ConsentShield({
       {/* Header */}
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🛡️
+          ️
         </span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">درع الموافقة</h4>
@@ -175,7 +175,7 @@ export function ConsentShield({
       {/* Privacy pledge */}
       <div className="mt-3 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 p-3 text-center dark:from-emerald-950 dark:to-teal-950">
         <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
-          🔒 تعهد الخصوصية
+           تعهد الخصوصية
         </p>
         <p className="mt-0.5 text-[9px] text-emerald-600 dark:text-emerald-400">
           بياناتكِ ملككِ وحدكِ. يمكنكِ تغيير هذه الإعدادات في أي وقت. نحن لا نبيع بياناتكِ لأي طرف

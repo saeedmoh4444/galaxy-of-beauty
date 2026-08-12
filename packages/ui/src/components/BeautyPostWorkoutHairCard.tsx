@@ -9,7 +9,7 @@ export function BeautyPostWorkoutHairCard({ className = '' }: { className?: stri
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💇</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">
             شعر ما بعد الرياضة
@@ -19,10 +19,10 @@ export function BeautyPostWorkoutHairCard({ className = '' }: { className?: stri
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💨', text: 'شامبو جاف — قبل التمرين لامتصاص العرق' },
-          { emoji: '🎀', text: 'كعكة عالية — تمنع التعرق على الرقبة' },
-          { emoji: '🧴', text: 'بلسم يترك على الشعر — بعد التمرين' },
-          { emoji: '📅', text: 'لا تغسلي يومياً — 2-3 مرات أسبوعياً' },
+          { emoji: '', text: 'شامبو جاف — قبل التمرين لامتصاص العرق' },
+          { emoji: '', text: 'كعكة عالية — تمنع التعرق على الرقبة' },
+          { emoji: '', text: 'بلسم يترك على الشعر — بعد التمرين' },
+          { emoji: '', text: 'لا تغسلي يومياً — 2-3 مرات أسبوعياً' },
         ].map((t, i) => (
           <div
             key={i}

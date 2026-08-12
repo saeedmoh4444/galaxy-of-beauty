@@ -10,8 +10,8 @@ import { NotificationBadge } from '@/components/NotificationBadge';
 import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
 
 const navLinks = [
-  { href: '/discover', labelAr: '🧭 اكتشفي', labelEn: 'Discover' },
-  { href: '/search', labelAr: '🔍', labelEn: 'Search' },
+  { href: '/discover', labelAr: ' اكتشفي', labelEn: 'Discover' },
+  { href: '/search', labelAr: '', labelEn: 'Search' },
   { href: '/marketplace', labelAr: 'المتجر', labelEn: 'Marketplace' },
   { href: '/mommy-and-me', labelAr: 'أم وابنتها', labelEn: 'Mommy & Me' },
   { href: '/lookbook', labelAr: 'لوك بوك', labelEn: 'Lookbook' },
@@ -124,7 +124,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
                   الصناديق الشهرية
                 </Link>
                 <Link href="/services/surprise-me" className="block hover:text-brand-600">
-                  🎲 فاجئيني
+                   فاجئيني
                 </Link>
               </div>
             </div>

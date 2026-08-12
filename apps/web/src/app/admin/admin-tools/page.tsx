@@ -13,12 +13,12 @@ export default function AdminToolsPage(): JSX.Element {
     <DashboardLayout role="ADMIN">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🛠️ أدوات المشرف</h1>
+          <h1 className="text-2xl font-bold">️ أدوات المشرف</h1>
           <p className="mt-1 text-sm text-text-secondary">إدارة إعدادات المنصة والميزات</p>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3">🚩 إدارة الميزات (Feature Flags)</h3>
+          <h3 className="font-bold mb-3"> إدارة الميزات (Feature Flags)</h3>
           {isLoading ? (
             <CardSkeleton />
           ) : !(flags ?? []).length ? (

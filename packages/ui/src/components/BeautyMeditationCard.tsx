@@ -15,7 +15,7 @@ export function BeautyMeditationCard({ className = '' }: BeautyMeditationCardPro
       )}
     >
       <div className="text-center">
-        <span className="text-3xl">🧘‍♀️</span>
+        <span className="text-3xl">‍️</span>
         <h4 className="mt-1 text-sm font-bold text-violet-800 dark:text-violet-200">تأمل الجمال</h4>
         <p className="text-[10px] text-violet-500 dark:text-violet-400">
           5 دقائق فقط — لجمالكِ الداخلي
@@ -24,9 +24,9 @@ export function BeautyMeditationCard({ className = '' }: BeautyMeditationCardPro
       <div className="mt-3 space-y-2">
         {[
           { emoji: '🫁', text: 'خذي 3 أنفاس عميقة — شهيق 4 ثوانٍ، زفير 6 ثوانٍ' },
-          { emoji: '💖', text: 'ركزي على شيء جميل في نفسكِ — داخلياً أو خارجياً' },
-          { emoji: '🙏', text: 'كرري: "أنا جميلة، أنا قوية، أنا كافية"' },
-          { emoji: '✨', text: 'افتحي عينيكِ ببطء — وابتسمي' },
+          { emoji: '', text: 'ركزي على شيء جميل في نفسكِ — داخلياً أو خارجياً' },
+          { emoji: '', text: 'كرري: "أنا جميلة، أنا قوية، أنا كافية"' },
+          { emoji: '', text: 'افتحي عينيكِ ببطء — وابتسمي' },
         ].map((s, i) => (
           <div
             key={i}

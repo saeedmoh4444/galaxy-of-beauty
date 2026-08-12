@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W4: Sisterhood & Community — Referral Program.
  *
  * Usage:
- *   <BeautyReferralLeaderboardCard leaders={[{ name: 'نورة', referrals: 12, emoji: '👑' }]} />
+ *   <BeautyReferralLeaderboardCard leaders={[{ name: 'نورة', referrals: 12, emoji: '' }]} />
  */
 
 interface Leader {
@@ -29,7 +29,7 @@ export function BeautyReferralLeaderboardCard({
 }: BeautyReferralLeaderboardCardProps): JSX.Element | null {
   if (!leaders.length) return null;
 
-  const medals = ['🥇', '🥈', '🥉'];
+  const medals = ['', '', ''];
 
   return (
     <div
@@ -40,7 +40,7 @@ export function BeautyReferralLeaderboardCard({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🏆
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">قائمة الإحالات</h4>
@@ -58,7 +58,7 @@ export function BeautyReferralLeaderboardCard({
             )}
           >
             <span className="text-sm w-6 text-center">{medals[i] || `${i + 1}.`}</span>
-            <span className="text-sm">{l.emoji || '👩'}</span>
+            <span className="text-sm">{l.emoji || ''}</span>
             <span className="flex-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
               {l.name}
             </span>
@@ -71,7 +71,7 @@ export function BeautyReferralLeaderboardCard({
 
       {userRank && (
         <div className="mt-2 rounded-lg bg-amber-50 p-2 text-center dark:bg-amber-950">
-          <p className="text-[10px] text-amber-700 dark:text-amber-300">📊 ترتيبكِ: #{userRank}</p>
+          <p className="text-[10px] text-amber-700 dark:text-amber-300"> ترتيبكِ: #{userRank}</p>
         </div>
       )}
     </div>

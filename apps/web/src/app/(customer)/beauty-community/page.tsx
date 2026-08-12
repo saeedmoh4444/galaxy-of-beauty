@@ -28,17 +28,17 @@ export default function BeautyCommunityPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="👯‍♀️ مجتمع الجمال" subtitle="تواصلي، تعلمي، وشاركي رحلتكِ" />
+        <PageTitle title="‍️ مجتمع الجمال" subtitle="تواصلي، تعلمي، وشاركي رحلتكِ" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
             {/* Squad & Friends */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautySquadCard squad={{ name: 'فرقة الرياض', members: 4, emoji: '💅' }} />
+              <BeautySquadCard squad={{ name: 'فرقة الرياض', members: 4, emoji: '' }} />
               <BeautyFriendActivityCard
                 activities={[
-                  { friend: 'نورة', action: 'حجزت مكياج', emoji: '💄', time: 'قبل ساعتين' },
-                  { friend: 'مها', action: 'أنهت تحدي العناية', emoji: '✨', time: 'قبل 5 ساعات' },
+                  { friend: 'نورة', action: 'حجزت مكياج', emoji: '', time: 'قبل ساعتين' },
+                  { friend: 'مها', action: 'أنهت تحدي العناية', emoji: '', time: 'قبل 5 ساعات' },
                 ]}
               />
             </div>
@@ -67,7 +67,7 @@ export default function BeautyCommunityPage(): JSX.Element {
               <BeautySavingsChallengeCard
                 challenge={{
                   name: 'تحدي الادخار',
-                  emoji: '💰',
+                  emoji: '',
                   target: 5000,
                   saved: 3200,
                   days: 30,
@@ -89,9 +89,9 @@ export default function BeautyCommunityPage(): JSX.Element {
 
             {/* Digital Tools */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyVirtualConsultationCard specialist="د. نورة" specialty="بشرة" emoji="👩‍⚕️" />
+              <BeautyVirtualConsultationCard specialist="د. نورة" specialty="بشرة" emoji="‍️" />
               <BeautyProgressPhotoCard
-                photos={[{ date: '2026-06-01', emoji: '✨', note: 'بداية الروتين' }]}
+                photos={[{ date: '2026-06-01', emoji: '', note: 'بداية الروتين' }]}
               />
             </div>
 
@@ -108,9 +108,9 @@ export default function BeautyCommunityPage(): JSX.Element {
               />
               <BeautyMoodBoardCard
                 items={[
-                  { emoji: '🌊', label: 'أزرق محيطي' },
-                  { emoji: '🌸', label: 'وردي ناعم' },
-                  { emoji: '✨', label: 'ذهبي لامع' },
+                  { emoji: '', label: 'أزرق محيطي' },
+                  { emoji: '', label: 'وردي ناعم' },
+                  { emoji: '', label: 'ذهبي لامع' },
                 ]}
               />
             </div>

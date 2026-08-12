@@ -25,16 +25,16 @@ interface FeatureDef {
 }
 
 const FEATURES: FeatureDef[] = [
-  { emoji: '📸', label: 'صور حقيقية', detail: 'نستخدم صور نساء حقيقيات — بدون تعديل أو فوتوشوب' },
-  { emoji: '👗', label: 'شامل الأحجام', detail: 'روبات، كراسي، ومناشف لكل أحجام الأجسام' },
-  { emoji: '🎨', label: 'كل ألوان البشرة', detail: 'خبيرات متدربات على كل درجات البشرة' },
-  { emoji: '🌺', label: 'إيجابية العمر', detail: 'الجمال ليس له عمر — كل مرحلة عمرية جميلة' },
+  { emoji: '', label: 'صور حقيقية', detail: 'نستخدم صور نساء حقيقيات — بدون تعديل أو فوتوشوب' },
+  { emoji: '', label: 'شامل الأحجام', detail: 'روبات، كراسي، ومناشف لكل أحجام الأجسام' },
+  { emoji: '', label: 'كل ألوان البشرة', detail: 'خبيرات متدربات على كل درجات البشرة' },
+  { emoji: '', label: 'إيجابية العمر', detail: 'الجمال ليس له عمر — كل مرحلة عمرية جميلة' },
   {
-    emoji: '🤍',
+    emoji: '',
     label: 'صديق للندبات',
     detail: 'لا نحكم على الندبات أو علامات التمدد — بل نحتضنها',
   },
-  { emoji: '✨', label: 'بدون تنقيح', detail: 'صور قبل/بعد حقيقية 100% — لا فوتوشوب' },
+  { emoji: '', label: 'بدون تنقيح', detail: 'صور قبل/بعد حقيقية 100% — لا فوتوشوب' },
 ];
 
 interface BodyPositiveBadgeProps {
@@ -71,7 +71,7 @@ export function BodyPositiveBadge({
       {/* Header */}
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          💜
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-purple-700 dark:text-purple-300">
           إيجابية الجسد
@@ -101,7 +101,7 @@ export function BodyPositiveBadge({
 
       {/* Pledge */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-        <p className="text-xs font-bold text-purple-700 dark:text-purple-300">✨ تعهدنا لكِ</p>
+        <p className="text-xs font-bold text-purple-700 dark:text-purple-300"> تعهدنا لكِ</p>
         <p className="mt-1 text-[10px] leading-relaxed text-purple-600 dark:text-purple-400">
           نؤمن أن الجمال الحقيقي هو أن تكوني على طبيعتكِ. لن نطلب منكِ أبداً تغيير شكل جسدكِ أو لون
           بشرتكِ أو ملامحكِ. نحن هنا لنبرز جمالكِ الطبيعي — ليس لنغيره.
@@ -110,7 +110,7 @@ export function BodyPositiveBadge({
 
       {/* Affirmation */}
       <p className="mt-2 text-center text-[9px] italic text-purple-500 dark:text-purple-400">
-        💜 &ldquo;أنتِ جميلة كما أنتِ&rdquo;
+         &ldquo;أنتِ جميلة كما أنتِ&rdquo;
       </p>
     </div>
   );

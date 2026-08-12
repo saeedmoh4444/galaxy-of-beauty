@@ -48,7 +48,7 @@ export default function TechCalendarScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📅 تقويم الفنيات</Text>
+      <Text style={styles.t}> تقويم الفنيات</Text>
       {days.map((d: any, di: number) => (
         <View key={di} style={styles.dg}>
           <Text style={styles.dl}>{d.day}</Text>
@@ -60,7 +60,7 @@ export default function TechCalendarScreen(): JSX.Element {
                   minute: '2-digit',
                 })}
               </Text>
-              <Text style={styles.st}>👩‍🎨 {s.technician as string}</Text>
+              <Text style={styles.st}>‍ {s.technician as string}</Text>
               <View style={[styles.sb, s.available ? styles.sf : styles.su]}>
                 <Text style={styles.sbt}>{s.available ? 'متاح' : 'محجوز'}</Text>
               </View>

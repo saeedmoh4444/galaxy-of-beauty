@@ -64,7 +64,7 @@ export function useNotifications() {
 
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: '⏰ تذكير بالموعد',
+          title: ' تذكير بالموعد',
           body: `${title} - بعد ساعة من الآن`,
           data: { bookingId, type: 'reminder' },
         },

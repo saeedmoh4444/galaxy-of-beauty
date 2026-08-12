@@ -6,26 +6,26 @@ const ISSUES = [
   {
     id: 1,
     titleAr: 'العناية بالبشرة في الصيف',
-    subject: '🌞 دليلكِ للعناية بالبشرة صيفاً',
+    subject: ' دليلكِ للعناية بالبشرة صيفاً',
     sentAt: '2026-07-25',
     openRate: 68,
-    emoji: '✨',
+    emoji: '',
   },
   {
     id: 2,
     titleAr: 'أحدث صيحات المكياج',
-    subject: '💄 اكتشفي أحدث صيحات مكياج ٢٠٢٦',
+    subject: ' اكتشفي أحدث صيحات مكياج ٢٠٢٦',
     sentAt: '2026-07-18',
     openRate: 72,
-    emoji: '💄',
+    emoji: '',
   },
   {
     id: 3,
     titleAr: 'عروض العيد',
-    subject: '🎉 عروض خاصة بمناسبة العيد',
+    subject: ' عروض خاصة بمناسبة العيد',
     sentAt: '2026-07-01',
     openRate: 85,
-    emoji: '🎉',
+    emoji: '',
   },
 ];
 
@@ -46,7 +46,7 @@ export const newsletterRouter = router({
         update: { active: true },
         create: { email: input.email },
       });
-      return { subscribed: true, email: input.email, message: 'تم الاشتراك بنجاح! 🎉' };
+      return { subscribed: true, email: input.email, message: 'تم الاشتراك بنجاح! ' };
     }),
 
   compose: adminProcedure
@@ -64,7 +64,7 @@ export const newsletterRouter = router({
         subject: input.subject,
         sentAt: new Date().toISOString().slice(0, 10),
         openRate: 0,
-        emoji: '📰',
+        emoji: '',
       };
       ISSUES.unshift(issue);
       return issue;

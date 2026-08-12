@@ -3,61 +3,61 @@ import { useState } from 'react';
 
 const FORTUNES = [
   {
-    text: 'جمالكِ يبدأ من داخلكِ — اعتني بنفسكِ اليوم ✨',
-    emoji: '💖',
+    text: 'جمالكِ يبدأ من داخلكِ — اعتني بنفسكِ اليوم ',
+    emoji: '',
     tip: 'اشربي ٨ أكواب ماء اليوم لبشرة متألقة',
   },
   {
-    text: 'الابتسامة هي أفضل إكسسوار يمكنكِ ارتداؤه 😊',
-    emoji: '😁',
+    text: 'الابتسامة هي أفضل إكسسوار يمكنكِ ارتداؤه ',
+    emoji: '',
     tip: 'ابتسمي — تفرز الإندورفين وتحسن البشرة',
   },
   {
-    text: 'أنتِ أجمل عندما تكونين على طبيعتكِ 🌸',
-    emoji: '🌺',
+    text: 'أنتِ أجمل عندما تكونين على طبيعتكِ ',
+    emoji: '',
     tip: 'اختاري مكياج يبرز جمالكِ الطبيعي',
   },
   {
-    text: 'الاعتناء بنفسكِ ليس رفاهية — إنه ضرورة 💆‍♀️',
-    emoji: '✨',
+    text: 'الاعتناء بنفسكِ ليس رفاهية — إنه ضرورة ‍️',
+    emoji: '',
     tip: 'خصصي ٣٠ دقيقة يومياً للعناية ببشرتكِ',
   },
   {
-    text: 'كل يوم هو فرصة جديدة لتتألقي 🌟',
-    emoji: '⭐',
+    text: 'كل يوم هو فرصة جديدة لتتألقي ',
+    emoji: '',
     tip: 'جربي روتين عناية جديد هذا الأسبوع',
   },
   {
-    text: 'الجمال ليس ما ترينه في المرآة فقط — بل ما تشعرين به 💕',
-    emoji: '💝',
+    text: 'الجمال ليس ما ترينه في المرآة فقط — بل ما تشعرين به ',
+    emoji: '',
     tip: 'دللي نفسكِ بجلسة مساج هذا الشهر',
   },
   {
-    text: 'ثقتكِ بنفسكِ هي سر جمالكِ 👑',
-    emoji: '👸',
+    text: 'ثقتكِ بنفسكِ هي سر جمالكِ ',
+    emoji: '',
     tip: 'قفي أمام المرآة وقولي شيئاً إيجابياً عن نفسكِ',
   },
   {
-    text: 'العناية بالبشرة استثمار — ليس مصروفاً 💎',
-    emoji: '💎',
+    text: 'العناية بالبشرة استثمار — ليس مصروفاً ',
+    emoji: '',
     tip: 'استثمري في روتين عناية منتظم',
   },
   {
-    text: 'أنتِ تستحقين الأفضل دائماً 🎀',
-    emoji: '🎀',
+    text: 'أنتِ تستحقين الأفضل دائماً ',
+    emoji: '',
     tip: 'لا تترددي في تدليل نفسكِ بين الحين والآخر',
   },
   {
-    text: 'جمالكِ فريد — لا تقارنيه بأحد 🦋',
-    emoji: '🦋',
+    text: 'جمالكِ فريد — لا تقارنيه بأحد ',
+    emoji: '',
     tip: 'اختاري خدمات تناسب نوع بشرتكِ الفريد',
   },
   {
-    text: 'الراحة والاسترخاء سر من أسرار الجمال 🧖‍♀️',
-    emoji: '🌿',
+    text: 'الراحة والاسترخاء سر من أسرار الجمال ‍️',
+    emoji: '',
     tip: 'احجزي جلسة استرخاء هذا الأسبوع',
   },
-  { text: 'غداً أجمل — ابدئي اليوم ✨', emoji: '🌈', tip: 'ابدئي روتين عناية متكامل من اليوم' },
+  { text: 'غداً أجمل — ابدئي اليوم ', emoji: '', tip: 'ابدئي روتين عناية متكامل من اليوم' },
 ];
 
 export default function BeautyFortuneScreen(): JSX.Element {
@@ -70,13 +70,13 @@ export default function BeautyFortuneScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>🔮 حظ الجمال</Text>
+      <Text style={styles.t}> حظ الجمال</Text>
       <View style={styles.card}>
         <Text style={styles.fortuneEmoji}>{fortune.emoji}</Text>
         <Text style={styles.fortuneText}>{fortune.text}</Text>
-        <Text style={styles.tip}>💡 {fortune.tip}</Text>
+        <Text style={styles.tip}> {fortune.tip}</Text>
         <TouchableOpacity onPress={getRandom} style={styles.btn}>
-          <Text style={styles.btnText}>🔮 جربي حظك</Text>
+          <Text style={styles.btnText}> جربي حظك</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

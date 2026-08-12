@@ -3,7 +3,7 @@ import { trpc } from '@/lib/api';
 import { trpc as trpcReact } from '@/lib/trpc-react';
 import { useState, useEffect, useCallback } from 'react';
 
-const CATS = ['💄 مكياج', '🧴 عناية', '💇‍♀️ شعر', '💅 أظافر', '🌿 طبيعي'];
+const CATS = [' مكياج', ' عناية', '‍️ شعر', ' أظافر', ' طبيعي'];
 
 export default function BeautyClosetScreen(): JSX.Element {
   const [products, setProducts] = useState<any[]>([]);
@@ -33,7 +33,7 @@ export default function BeautyClosetScreen(): JSX.Element {
   if (loading)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}>👗 خزانة الجمال</Text>
+        <Text style={styles.t}> خزانة الجمال</Text>
       </ScrollView>
     );
 
@@ -53,7 +53,7 @@ export default function BeautyClosetScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>👗 خزانة الجمال</Text>
+      <Text style={styles.t}> خزانة الجمال</Text>
       <Text style={styles.sub}>منتجاتكِ ومستحضراتكِ الشخصية</Text>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
@@ -77,12 +77,12 @@ export default function BeautyClosetScreen(): JSX.Element {
       </ScrollView>
 
       {filtered.length === 0 ? (
-        <Text style={styles.e}>👗 أضيفي منتجاتكِ الأولى!</Text>
+        <Text style={styles.e}> أضيفي منتجاتكِ الأولى!</Text>
       ) : (
         <View style={styles.grid}>
           {filtered.map((p: any, i: number) => (
             <View key={i} style={styles.card}>
-              <Text style={styles.pe}>{(p.emoji as string) ?? '🧴'}</Text>
+              <Text style={styles.pe}>{(p.emoji as string) ?? ''}</Text>
               <Text style={styles.pn}>{p.productName as string}</Text>
               {p.openDate && (
                 <Text style={styles.pd}>

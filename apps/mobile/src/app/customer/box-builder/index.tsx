@@ -49,11 +49,11 @@ export default function BoxBuilderScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📦 صندوقي</Text>
+      <Text style={styles.t}> صندوقي</Text>
       <Text style={styles.sub}>اختاري حتى ٥ منتجات لصندوقك الشهري</Text>
       {selected.size > 0 && (
         <View style={styles.badge}>
-          <Text style={styles.badgeText}>🎉 {selected.size} منتجات</Text>
+          <Text style={styles.badgeText}> {selected.size} منتجات</Text>
         </View>
       )}
       {products.map((p: any) => {
@@ -64,13 +64,13 @@ export default function BoxBuilderScreen(): JSX.Element {
             onPress={() => toggle(p.id)}
             style={[styles.card, isSel && styles.cardActive]}
           >
-            <Text style={styles.emoji}>{(p.emoji as string) ?? '🧴'}</Text>
+            <Text style={styles.emoji}>{(p.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.name}>{p.nameAr as string}</Text>
               <Text style={styles.price}>{(p.price as number)?.toLocaleString()} ر.س</Text>
             </View>
             <View style={[styles.check, isSel && styles.checkOn]}>
-              <Text style={styles.checkText}>{isSel ? '✓' : '+'}</Text>
+              <Text style={styles.checkText}>{isSel ? '' : '+'}</Text>
             </View>
           </TouchableOpacity>
         );

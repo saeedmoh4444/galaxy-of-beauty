@@ -27,7 +27,7 @@ export default function GiftCardMarketPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">💳 سوق البطاقات</h1>
+            <h1 className="text-2xl font-bold"> سوق البطاقات</h1>
             <p className="mt-1 text-sm text-text-secondary">اشتري وببيعي بطاقات الهدايا</p>
           </div>
           <Button onClick={() => setShow(true)}>بيع بطاقة</Button>
@@ -40,7 +40,7 @@ export default function GiftCardMarketPage(): JSX.Element {
           <div className="grid gap-4 sm:grid-cols-2">
             {items.map((l: Record<string, unknown>) => (
               <Card key={l.id as number} padding="lg" className="text-center">
-                <span className="text-4xl">🎁</span>
+                <span className="text-4xl"></span>
                 <p className="font-bold mt-2">بطاقة {formatCurrency(l.value as number)}</p>
                 <div className="flex items-center justify-center gap-2 mt-1">
                   <span className="text-text-tertiary line-through text-sm">
@@ -61,7 +61,7 @@ export default function GiftCardMarketPage(): JSX.Element {
                   className="mt-3 w-full"
                   onClick={() => buyMut.mutate({ listingId: l.id as number })}
                 >
-                  💳 شراء
+                   شراء
                 </Button>
               </Card>
             ))}
@@ -104,7 +104,7 @@ export default function GiftCardMarketPage(): JSX.Element {
               loading={listMut.isPending}
               className="w-full"
             >
-              💳 عرض البطاقة
+               عرض البطاقة
             </Button>
           </div>
         </Modal>

@@ -9,7 +9,7 @@ export function BeautyMakeupBrushCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🖌️</span>
+        <span className="text-xl">️</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">فرش المكياج</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">دليل التنظيف والاستخدام</p>
@@ -17,10 +17,10 @@ export function BeautyMakeupBrushCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧼', text: 'نظفي الفرش أسبوعياً — بشامبو أطفال' },
-          { emoji: '☀️', text: 'جففيها أفقياً — لا عمودياً' },
-          { emoji: '📅', text: 'استبدلي الفرش كل 6-12 شهر' },
-          { emoji: '🚫', text: 'لا تشاركي فرشك مع أحد' },
+          { emoji: '', text: 'نظفي الفرش أسبوعياً — بشامبو أطفال' },
+          { emoji: '️', text: 'جففيها أفقياً — لا عمودياً' },
+          { emoji: '', text: 'استبدلي الفرش كل 6-12 شهر' },
+          { emoji: '', text: 'لا تشاركي فرشك مع أحد' },
         ].map((t, i) => (
           <div
             key={i}

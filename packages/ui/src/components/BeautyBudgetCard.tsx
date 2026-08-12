@@ -19,14 +19,14 @@ interface CategoryDef {
 }
 
 const CATEGORIES: Record<BudgetCategory, CategoryDef> = {
-  nails: { emoji: '💅', label: 'أظافر' },
-  hair: { emoji: '💇', label: 'شعر' },
-  facial: { emoji: '🧖', label: 'بشرة' },
-  massage: { emoji: '💆', label: 'مساج' },
-  makeup: { emoji: '💄', label: 'مكياج' },
-  henna: { emoji: '🤚', label: 'حناء' },
-  brows: { emoji: '✨', label: 'حواجب' },
-  waxing: { emoji: '🕯️', label: 'إزالة شعر' },
+  nails: { emoji: '', label: 'أظافر' },
+  hair: { emoji: '', label: 'شعر' },
+  facial: { emoji: '', label: 'بشرة' },
+  massage: { emoji: '', label: 'مساج' },
+  makeup: { emoji: '', label: 'مكياج' },
+  henna: { emoji: '', label: 'حناء' },
+  brows: { emoji: '', label: 'حواجب' },
+  waxing: { emoji: '️', label: 'إزالة شعر' },
 };
 
 interface BudgetService {
@@ -65,7 +65,7 @@ export function BeautyBudgetCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-lg" aria-hidden="true">
-            💰
+            
           </span>
           <div>
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
@@ -118,7 +118,7 @@ export function BeautyBudgetCard({
                   {service.rating && (
                     <>
                       <span aria-hidden="true">·</span>
-                      <span className="text-amber-500">★ {service.rating}</span>
+                      <span className="text-amber-500"> {service.rating}</span>
                     </>
                   )}
                 </div>
@@ -147,7 +147,7 @@ export function BeautyBudgetCard({
 
       {/* Footer */}
       <p className="mt-3 text-center text-[10px] text-text-tertiary dark:text-gray-500">
-        ✨ الجمال مش لازم يكون غالي — اكتشفي خدمات رائعة بميزانيتكِ
+         الجمال مش لازم يكون غالي — اكتشفي خدمات رائعة بميزانيتكِ
       </p>
     </div>
   );

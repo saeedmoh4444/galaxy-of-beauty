@@ -43,7 +43,7 @@ export function WomenEmployerBadge({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true">
-            {isChampion ? '🏆' : '👩‍💼'}
+            {isChampion ? '' : '‍'}
           </span>
           <div>
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
@@ -83,18 +83,18 @@ export function WomenEmployerBadge({
       <div className="mt-2 flex flex-wrap gap-1">
         {hasBenefits && (
           <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[9px] font-medium text-blue-700 dark:bg-blue-950 dark:text-blue-300">
-            ✅ تأمين ومزايا
+             تأمين ومزايا
           </span>
         )}
         {womenInManagement !== undefined && womenInManagement > 0 && (
           <span className="rounded-full bg-purple-50 px-2 py-0.5 text-[9px] font-medium text-purple-700 dark:bg-purple-950 dark:text-purple-300">
-            👑 {womenInManagement} في الإدارة
+             {womenInManagement} في الإدارة
           </span>
         )}
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        👩‍💼 ندعم الصالونات التي توظف وتمكّن المرأة السعودية
+        ‍ ندعم الصالونات التي توظف وتمكّن المرأة السعودية
       </p>
     </div>
   );

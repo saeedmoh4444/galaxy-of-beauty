@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-nati
 const EVENTS = [
   {
     id: 1,
-    emoji: '👰',
+    emoji: '',
     name: 'معرض العرائس',
     date: '20 سبتمبر',
     location: 'الرياض',
@@ -11,7 +11,7 @@ const EVENTS = [
   },
   {
     id: 2,
-    emoji: '💄',
+    emoji: '',
     name: 'مهرجان الجمال',
     date: '15 أكتوبر',
     location: 'جدة',
@@ -20,7 +20,7 @@ const EVENTS = [
   },
   {
     id: 3,
-    emoji: '🎓',
+    emoji: '',
     name: 'ورشة مكياج احترافي',
     date: '5 أغسطس',
     location: 'الدمام',
@@ -29,7 +29,7 @@ const EVENTS = [
   },
   {
     id: 4,
-    emoji: '🌟',
+    emoji: '',
     name: 'ملتقى رائدات التجميل',
     date: '1 يوليو',
     location: 'الرياض',
@@ -40,7 +40,7 @@ const EVENTS = [
 export default function AdminBeautyEventsScreen(): JSX.Element {
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>🎪 فعاليات التجميل</Text>
+      <Text style={s.h}> فعاليات التجميل</Text>
       <Text style={s.sub}>إدارة الفعاليات والمناسبات</Text>
       <View style={{ flexDirection: 'row', gap: 6, marginBottom: 16 }}>
         {['upcoming', 'active', 'completed'].map((st) => (
@@ -60,10 +60,10 @@ export default function AdminBeautyEventsScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={s.cn}>{e.name}</Text>
             <View style={{ flexDirection: 'row', gap: 8, marginTop: 4 }}>
-              <Text style={s.cl}>📅 {e.date}</Text>
-              <Text style={s.cl}>📍 {e.location}</Text>
+              <Text style={s.cl}> {e.date}</Text>
+              <Text style={s.cl}> {e.location}</Text>
             </View>
-            <Text style={s.ca}>👥 {e.attendees} مشاركة</Text>
+            <Text style={s.ca}> {e.attendees} مشاركة</Text>
           </View>
           <View
             style={[

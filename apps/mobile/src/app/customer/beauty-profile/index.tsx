@@ -37,7 +37,7 @@ export default function BeautyProfileScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>💄 ملف الجمال</Text>
+      <Text style={styles.t}> ملف الجمال</Text>
       {data && (
         <View style={styles.card}>
           <Text style={styles.label}>نوع البشرة: {data.skinType as string}</Text>

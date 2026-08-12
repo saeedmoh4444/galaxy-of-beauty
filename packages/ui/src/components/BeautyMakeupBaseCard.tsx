@@ -9,7 +9,7 @@ export function BeautyMakeupBaseCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🎨</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">أساس المكياج</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400"> primer + foundation</p>
@@ -17,10 +17,10 @@ export function BeautyMakeupBaseCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: '1. برايمر — يملأ المسام ويثبت المكياج' },
-          { emoji: '💧', text: '2. بشرة رطبة — المرطب قبل البرايمر' },
-          { emoji: '🎨', text: '3. فاونديشن — طبقة رقيقة' },
-          { emoji: '🖌️', text: '4. ادمجي بالإسفنجة — وليس الأصابع' },
+          { emoji: '', text: '1. برايمر — يملأ المسام ويثبت المكياج' },
+          { emoji: '', text: '2. بشرة رطبة — المرطب قبل البرايمر' },
+          { emoji: '', text: '3. فاونديشن — طبقة رقيقة' },
+          { emoji: '️', text: '4. ادمجي بالإسفنجة — وليس الأصابع' },
         ].map((t, i) => (
           <div
             key={i}

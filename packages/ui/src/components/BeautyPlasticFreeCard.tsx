@@ -9,7 +9,7 @@ export function BeautyPlasticFreeCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🚫</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">
             الجمال بدون بلاستيك
@@ -20,9 +20,9 @@ export function BeautyPlasticFreeCard({ className = '' }: { className?: string }
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           { emoji: '🪥', label: 'فرشاة بامبو', tip: 'قابلة للتحلل — بدل البلاستيك' },
-          { emoji: '🧴', label: 'زجاج وألمنيوم', tip: 'قابلة للتدوير للأبد' },
+          { emoji: '', label: 'زجاج وألمنيوم', tip: 'قابلة للتدوير للأبد' },
           { emoji: '🪒', label: 'شفرة معدنية', tip: 'تدوم سنوات — ليس للرمي' },
-          { emoji: '🧼', label: 'صابون صلب', tip: 'بدون تغليف — ورق فقط' },
+          { emoji: '', label: 'صابون صلب', tip: 'بدون تغليف — ورق فقط' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-indigo-50 px-2.5 py-2 dark:bg-indigo-950">
             <span className="text-sm">{t.emoji}</span>

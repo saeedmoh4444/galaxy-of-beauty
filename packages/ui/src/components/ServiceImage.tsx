@@ -45,7 +45,7 @@ export function ServiceImage({
   const imageSrc = src ?? getServiceImage(service);
 
   if (failed || !imageSrc) {
-    const letter = alt?.[0] ?? service?.[0]?.toUpperCase() ?? '💄';
+    const letter = alt?.[0] ?? service?.[0]?.toUpperCase() ?? '';
     return (
       <div
         className={`flex items-center justify-center rounded-xl ${letterBg} ${sizeClasses[size]} ${className}`}

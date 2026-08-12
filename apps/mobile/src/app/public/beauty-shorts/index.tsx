@@ -27,18 +27,18 @@ export default function BeautyShortsScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={styles.t}>📹 فيديوهات قصيرة</Text>
+      <Text style={styles.t}> فيديوهات قصيرة</Text>
       <Text style={styles.sub}>أحدث فيديوهات التجميل القصيرة</Text>
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد فيديوهات</Text>
       ) : (
         items.map((s: any, i: number) => (
           <TouchableOpacity key={s.id ?? i} style={styles.card}>
-            <Text style={styles.shortEmoji}>{(s.emoji as string) ?? '🎬'}</Text>
+            <Text style={styles.shortEmoji}>{(s.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.shortTitle}>{(s.titleAr as string) ?? (s.title as string)}</Text>
               <Text style={styles.shortMeta}>
-                {s.creator as string} · {s.duration as string} · 👁 {s.views as number}
+                {s.creator as string} · {s.duration as string} ·  {s.views as number}
               </Text>
             </View>
             <Text style={styles.playBtn}>▶️</Text>

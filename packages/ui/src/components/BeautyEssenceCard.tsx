@@ -9,7 +9,7 @@ export function BeautyEssenceCard({ className = '' }: { className?: string }): J
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💧</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">الإسينس</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">
@@ -19,10 +19,10 @@ export function BeautyEssenceCard({ className = '' }: { className?: string }): J
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🔄', text: 'بعد التونر — وقبل السيروم' },
-          { emoji: '💧', text: 'قوام مائي خفيف — يخترق الطبقات العميقة' },
-          { emoji: '✨', text: 'يهيئ البشرة — يمتص السيروم بشكل أفضل' },
-          { emoji: '🤲', text: 'يطبق باليدين — ربتي ولا تفركي' },
+          { emoji: '', text: 'بعد التونر — وقبل السيروم' },
+          { emoji: '', text: 'قوام مائي خفيف — يخترق الطبقات العميقة' },
+          { emoji: '', text: 'يهيئ البشرة — يمتص السيروم بشكل أفضل' },
+          { emoji: '', text: 'يطبق باليدين — ربتي ولا تفركي' },
         ].map((t, i) => (
           <div
             key={i}

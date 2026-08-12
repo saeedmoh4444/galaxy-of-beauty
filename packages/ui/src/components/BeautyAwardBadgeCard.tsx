@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W10: Saudi Women Leadership — Annual Summit.
  *
  * Usage:
- *   <BeautyAwardBadgeCard awards={[{ name: 'أفضل خبيرة مكياج', year: '2026', emoji: '🏆' }]} />
+ *   <BeautyAwardBadgeCard awards={[{ name: 'أفضل خبيرة مكياج', year: '2026', emoji: '' }]} />
  */
 
 interface Award {
@@ -37,7 +37,7 @@ export function BeautyAwardBadgeCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🏆
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">جوائز المنصة</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">

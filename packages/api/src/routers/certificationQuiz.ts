@@ -6,7 +6,7 @@ const QUIZZES = [
   {
     id: 'skincare',
     nameAr: 'أساسيات العناية بالبشرة',
-    emoji: '✨',
+    emoji: '',
     questions: [
       {
         q: 'كم مرة يجب تنظيف البشرة يومياً؟',
@@ -28,7 +28,7 @@ const QUIZZES = [
   {
     id: 'makeup',
     nameAr: 'فن المكياج',
-    emoji: '💄',
+    emoji: '',
     questions: [
       {
         q: 'ما هي أول خطوة في تطبيق المكياج؟',

@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
  *   <Celebration />
  */
 
-const EMOJIS = ['✨', '🎉', '💫', '🌟', '💖', '🎊', '💄', '💅'];
+const EMOJIS = ['', '', '', '', '', '', '', ''];
 
 interface Particle {
   id: number;

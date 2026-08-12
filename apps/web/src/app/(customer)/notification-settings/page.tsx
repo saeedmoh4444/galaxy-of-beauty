@@ -41,7 +41,7 @@ export default function NotificationSettingsPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          🔔 إعدادات الإشعارات
+           إعدادات الإشعارات
         </h1>
         {isLoading ? (
           <CardSkeleton />

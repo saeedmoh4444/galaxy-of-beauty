@@ -9,7 +9,7 @@ export function BeautyVeganBeautyCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌱</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-green-700 dark:text-green-300">الجمال النباتي</h4>
           <p className="text-[10px] text-green-500 dark:text-green-400">
@@ -19,10 +19,10 @@ export function BeautyVeganBeautyCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🐰', text: 'بدون مكونات حيوانية — شمع عسل، لانولين، كولاجين' },
-          { emoji: '🌿', text: 'بدائل نباتية — شمع الصويا، زبدة الشيا' },
-          { emoji: '🔍', text: 'ابحثي عن شعار Vegan Certified' },
-          { emoji: '✨', text: 'نباتي ≠ طبيعي — اقرئي المكونات' },
+          { emoji: '', text: 'بدون مكونات حيوانية — شمع عسل، لانولين، كولاجين' },
+          { emoji: '', text: 'بدائل نباتية — شمع الصويا، زبدة الشيا' },
+          { emoji: '', text: 'ابحثي عن شعار Vegan Certified' },
+          { emoji: '', text: 'نباتي ≠ طبيعي — اقرئي المكونات' },
         ].map((t, i) => (
           <div
             key={i}

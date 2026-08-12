@@ -15,7 +15,7 @@ export default function GroupBuyPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🛒</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">صفقات المجموعة</h1>
         <p className="mt-2 text-text-secondary">انضمي لمجموعة ووفري أكثر!</p>
       </div>
@@ -52,7 +52,7 @@ export default function GroupBuyPage(): JSX.Element {
                 />
               </div>
               <p className="text-xs text-text-secondary mt-1">
-                {d.currentBuyers as number}/{d.minBuyers as number} مشتركة · ⏰ {d.endsIn as string}
+                {d.currentBuyers as number}/{d.minBuyers as number} مشتركة ·  {d.endsIn as string}
               </p>
               {user && (
                 <Button
@@ -60,7 +60,7 @@ export default function GroupBuyPage(): JSX.Element {
                   className="mt-3"
                   onClick={() => joinMut.mutate({ dealId: d.id as number })}
                 >
-                  🛒 انضمي ووفري {formatCurrency(d.savings as number)}
+                   انضمي ووفري {formatCurrency(d.savings as number)}
                 </Button>
               )}
             </Card>

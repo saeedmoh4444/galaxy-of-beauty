@@ -45,7 +45,7 @@ export default function ChatScreen(): JSX.Element {
   return (
     <View style={styles.c}>
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.i}>
-        <Text style={styles.t}>💬 المحادثات</Text>
+        <Text style={styles.t}> المحادثات</Text>
         {messages.length === 0 ? (
           <Text style={styles.e}>لا توجد رسائل</Text>
         ) : (
@@ -74,7 +74,7 @@ export default function ChatScreen(): JSX.Element {
           placeholderTextColor="#9ca3af"
         />
         <TouchableOpacity onPress={send} style={styles.sendBtn}>
-          <Text style={styles.sendBtnText}>📤</Text>
+          <Text style={styles.sendBtnText}></Text>
         </TouchableOpacity>
       </View>
     </View>

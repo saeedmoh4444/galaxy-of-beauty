@@ -61,7 +61,7 @@ export default function SustainabilityPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="🌿 الاستدامة والإتاحة" subtitle="جمال مستدام — للجميع" />
+        <PageTitle title=" الاستدامة والإتاحة" subtitle="جمال مستدام — للجميع" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

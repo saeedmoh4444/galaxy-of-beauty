@@ -36,7 +36,7 @@ export default function BeautyInnovationPage(): JSX.Element {
   return (
     <DashboardLayout role="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="🚀 الابتكار" subtitle="تقنيات وأدوات ذكية لجمالكِ" />
+        <PageTitle title=" الابتكار" subtitle="تقنيات وأدوات ذكية لجمالكِ" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -71,9 +71,9 @@ export default function BeautyInnovationPage(): JSX.Element {
             <BeautyTimeCapsuleCard savedDate="2026-08-06" />
             <BeautyDreamBoardCard
               dreams={[
-                { emoji: '💇', text: 'شعر طويل صحي' },
-                { emoji: '👰', text: 'إطلالة زفاف' },
-                { emoji: '💄', text: 'إتقان المكياج' },
+                { emoji: '', text: 'شعر طويل صحي' },
+                { emoji: '', text: 'إطلالة زفاف' },
+                { emoji: '', text: 'إتقان المكياج' },
               ]}
             />
             <BeautySecretSantaCard group="عرايس الرياض" budget={200} participants={12} />
@@ -92,7 +92,7 @@ export default function BeautyInnovationPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyQuickTipCard
                 tip={{
-                  emoji: '💧',
+                  emoji: '',
                   title: 'الماء أولاً',
                   body: 'اشربي كوب ماء قبل قهوتكِ الصباحية.',
                 }}

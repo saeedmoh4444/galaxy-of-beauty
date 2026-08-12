@@ -9,7 +9,7 @@ export function BeautyHotClimateCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">☀️</span>
+        <span className="text-xl">️</span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">عناية في الحر</h4>
           <p className="text-[10px] text-orange-500 dark:text-orange-400">
@@ -19,10 +19,10 @@ export function BeautyHotClimateCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: 'SPF 50+ — جدديه كل ساعتين' },
-          { emoji: '💧', text: 'سبراي مرطب — للانتعاش أثناء اليوم' },
-          { emoji: '🧢', text: 'قبعة ونظارة — حماية إضافية' },
-          { emoji: '🧊', text: 'جل الألوفيرا مبرد — بعد الشمس' },
+          { emoji: '', text: 'SPF 50+ — جدديه كل ساعتين' },
+          { emoji: '', text: 'سبراي مرطب — للانتعاش أثناء اليوم' },
+          { emoji: '', text: 'قبعة ونظارة — حماية إضافية' },
+          { emoji: '', text: 'جل الألوفيرا مبرد — بعد الشمس' },
         ].map((t, i) => (
           <div
             key={i}

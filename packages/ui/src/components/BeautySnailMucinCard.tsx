@@ -9,7 +9,7 @@ export function BeautySnailMucinCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🐌</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">مادة الحلزون</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">سر الترطيب الكوري</p>
@@ -17,10 +17,10 @@ export function BeautySnailMucinCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🔬', text: 'غني بالجليكوليك أسيد — مقشر لطيف طبيعي' },
-          { emoji: '💧', text: 'ألانتوين — يهدئ ويرطب بعمق' },
-          { emoji: '✨', text: 'يعالج الندبات والتصبغات — بشرة موحدة' },
-          { emoji: '🤝', text: 'آمن مع معظم المكونات — صباح ومساء' },
+          { emoji: '', text: 'غني بالجليكوليك أسيد — مقشر لطيف طبيعي' },
+          { emoji: '', text: 'ألانتوين — يهدئ ويرطب بعمق' },
+          { emoji: '', text: 'يعالج الندبات والتصبغات — بشرة موحدة' },
+          { emoji: '', text: 'آمن مع معظم المكونات — صباح ومساء' },
         ].map((t, i) => (
           <div
             key={i}

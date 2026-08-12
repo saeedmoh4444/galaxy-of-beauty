@@ -18,7 +18,7 @@ export default function ServiceMenuQrPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📋 QR قائمة الخدمات</h1>
+          <h1 className="text-2xl font-bold"> QR قائمة الخدمات</h1>
           <p className="mt-1 text-sm text-text-secondary">
             ولدي كود QR لقائمة خدمات الفنيات لمشاركته مع العميلات
           </p>
@@ -57,9 +57,9 @@ export default function ServiceMenuQrPage(): JSX.Element {
 
         {result && (
           <Card padding="lg" className="text-center border-2 border-brand-300">
-            <h3 className="font-bold mb-3">📱 QR لقائمة {result.technicianName as string}</h3>
+            <h3 className="font-bold mb-3"> QR لقائمة {result.technicianName as string}</h3>
             <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-xl bg-surface-muted dark:bg-gray-800 text-6xl">
-              📱
+              
             </div>
             <p className="text-xs text-text-secondary mt-2 break-all">{result.menuUrl as string}</p>
             <div className="flex gap-2 justify-center mt-3">
@@ -67,7 +67,7 @@ export default function ServiceMenuQrPage(): JSX.Element {
                 size="sm"
                 onClick={() => navigator.clipboard.writeText(result.menuUrl as string)}
               >
-                📋 نسخ الرابط
+                 نسخ الرابط
               </Button>
               <Button
                 size="sm"
@@ -79,7 +79,7 @@ export default function ServiceMenuQrPage(): JSX.Element {
                   window.open(`https://wa.me/?text=${text}`, '_blank');
                 }}
               >
-                💬 واتساب
+                 واتساب
               </Button>
             </div>
           </Card>

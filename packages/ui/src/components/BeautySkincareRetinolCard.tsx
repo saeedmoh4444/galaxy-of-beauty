@@ -9,7 +9,7 @@ export function BeautySkincareRetinolCard({ className = '' }: { className?: stri
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">⏳</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">الريتينول</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">المكون السحري للبشرة</p>
@@ -17,10 +17,10 @@ export function BeautySkincareRetinolCard({ className = '' }: { className?: stri
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🌙', text: 'مساءً فقط — يتحسس من الشمس' },
-          { emoji: '💧', text: 'كمية حبة بازلاء — للوجه كله' },
-          { emoji: '📅', text: 'ابدئي مرة أسبوعياً — ثم زيدي تدريجياً' },
-          { emoji: '☀️', text: 'واقي شمس في الصباح — ضروري جداً' },
+          { emoji: '', text: 'مساءً فقط — يتحسس من الشمس' },
+          { emoji: '', text: 'كمية حبة بازلاء — للوجه كله' },
+          { emoji: '', text: 'ابدئي مرة أسبوعياً — ثم زيدي تدريجياً' },
+          { emoji: '️', text: 'واقي شمس في الصباح — ضروري جداً' },
         ].map((t, i) => (
           <div
             key={i}

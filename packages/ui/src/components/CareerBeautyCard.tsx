@@ -22,7 +22,7 @@ interface ProfDef {
 
 const PROFS: Record<Profession, ProfDef> = {
   office: {
-    emoji: '💼',
+    emoji: '',
     title: 'مكتبية',
     look: 'مكياج ناعم احترافي',
     services: ['مكياج يومي سريع', 'تسريحة عملية', 'مانيكير'],
@@ -34,25 +34,25 @@ const PROFS: Record<Profession, ProfDef> = {
     services: ['عناية بالبشرة', 'حواجب مرتبة', 'أظافر قصيرة'],
   },
   education: {
-    emoji: '📚',
+    emoji: '',
     title: 'تعليمية',
     look: 'مكياج خفيف ولطيف',
     services: ['تنظيف بشرة', 'ترطيب', 'مكياج خفيف'],
   },
   entrepreneur: {
-    emoji: '💎',
+    emoji: '',
     title: 'رائدة أعمال',
     look: 'إطلالة قوية وواثقة',
     services: ['مكياج احترافي', 'تسريحة قوية', 'استشارة ألوان'],
   },
   media: {
-    emoji: '🎥',
+    emoji: '',
     title: 'إعلامية',
     look: 'مكياج كاميرا',
     services: ['مكياج HD', 'تسريحة', 'مانيكير وباديكير'],
   },
   customer_facing: {
-    emoji: '🤝',
+    emoji: '',
     title: 'خدمة عملاء',
     look: 'إطلالة ودودة وجذابة',
     services: ['مكياج طبيعي', 'ابتسامة هوليوود', 'عناية بالأظافر'],
@@ -94,7 +94,7 @@ export function CareerBeautyCard({
       {/* Quick services highlight */}
       <div className="mt-3 rounded-xl bg-sky-50 p-3 dark:bg-sky-950">
         <p className="text-[10px] font-bold text-sky-700 dark:text-sky-300">
-          ⚡ خدمات سريعة (30 دقيقة)
+           خدمات سريعة (30 دقيقة)
         </p>
         <div className="mt-1 flex flex-wrap gap-1">
           {prof.services.map((s) => (
@@ -113,7 +113,7 @@ export function CareerBeautyCard({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             <span className="text-sm" aria-hidden="true">
-              🕐
+              
             </span>
             <div>
               <p className="text-[10px] font-bold text-sky-800 dark:text-sky-200">
@@ -136,11 +136,11 @@ export function CareerBeautyCard({
         onClick={onBook}
         className="mt-3 w-full rounded-xl bg-sky-600 py-2.5 text-xs font-bold text-white hover:bg-sky-700 active:scale-[0.98] transition-all"
       >
-        احجزي استراحة جمالكِ 💼
+        احجزي استراحة جمالكِ 
       </button>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        💙 المرأة العاملة تستحق أن تتألق — حتى في أكثر أيامها انشغالاً
+         المرأة العاملة تستحق أن تتألق — حتى في أكثر أيامها انشغالاً
       </p>
     </div>
   );

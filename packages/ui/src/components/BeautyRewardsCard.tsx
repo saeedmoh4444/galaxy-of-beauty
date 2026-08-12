@@ -19,12 +19,12 @@ interface Reward {
 }
 
 const REWARDS: Reward[] = [
-  { name: 'مانيكير مجاني', emoji: '💅', points: 500 },
-  { name: 'قناع وجه', emoji: '🧖', points: 300 },
-  { name: 'خصم 50 ر.س', emoji: '💰', points: 400 },
-  { name: 'خدمة سريعة', emoji: '⚡', points: 250 },
-  { name: 'هدية شهرية', emoji: '🎁', points: 800 },
-  { name: 'يوم سبا مصغر', emoji: '🌸', points: 1500 },
+  { name: 'مانيكير مجاني', emoji: '', points: 500 },
+  { name: 'قناع وجه', emoji: '', points: 300 },
+  { name: 'خصم 50 ر.س', emoji: '', points: 400 },
+  { name: 'خدمة سريعة', emoji: '', points: 250 },
+  { name: 'هدية شهرية', emoji: '', points: 800 },
+  { name: 'يوم سبا مصغر', emoji: '', points: 1500 },
 ];
 
 interface BeautyRewardsCardProps {
@@ -61,7 +61,7 @@ export function BeautyRewardsCard({
               TIER_COLORS[tier],
             )}
           >
-            ⭐
+            
           </div>
           <div>
             <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">مكافآتي</h4>

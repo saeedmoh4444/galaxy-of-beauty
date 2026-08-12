@@ -49,14 +49,14 @@ export default function ClinicConnectScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🏥 Clinic Connect</Text>
+      <Text style={styles.t}> Clinic Connect</Text>
       {clinics.map((c: any) => (
         <View key={c.id} style={styles.card}>
           <Text style={styles.em}>{c.emoji as string}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>{c.name as string}</Text>
             <Text style={styles.meta}>
-              📍 {c.city as string} · {c.specialty as string} · ⭐ {c.rating as number}
+               {c.city as string} · {c.specialty as string} ·  {c.rating as number}
             </Text>
           </View>
           <TouchableOpacity onPress={() => refer(c.id as number)} style={styles.rb}>
@@ -64,7 +64,7 @@ export default function ClinicConnectScreen(): JSX.Element {
           </TouchableOpacity>
         </View>
       ))}
-      {referrals.length > 0 && <Text style={styles.st}>📋 إحالاتي</Text>}
+      {referrals.length > 0 && <Text style={styles.st}> إحالاتي</Text>}
       {referrals.map((r: any) => (
         <View key={r.id} style={styles.rc}>
           <Text style={styles.rr}>{r.reason as string}</Text>

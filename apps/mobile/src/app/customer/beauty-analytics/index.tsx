@@ -50,25 +50,25 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📊 تحليلات الجمال</Text>
+      <Text style={styles.t}> تحليلات الجمال</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
-          <Text style={styles.ke}>📅</Text>
+          <Text style={styles.ke}></Text>
           <Text style={styles.kv}>{s.totalBookings}</Text>
           <Text style={styles.kl}>حجوزات</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}>✅</Text>
+          <Text style={styles.ke}></Text>
           <Text style={[styles.kv, { color: '#059669' }]}>{s.completedBookings}</Text>
           <Text style={styles.kl}>مكتملة</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}>📈</Text>
+          <Text style={styles.ke}></Text>
           <Text style={[styles.kv, { color: '#2563eb' }]}>{s.completionRate}%</Text>
           <Text style={styles.kl}>نسبة</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}>💰</Text>
+          <Text style={styles.ke}></Text>
           <Text style={[styles.kv, { color: '#7c3aed' }]}>
             {(s.totalSpent as number)?.toLocaleString()}
           </Text>
@@ -77,7 +77,7 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
       </View>
       {byCat.length > 0 && (
         <View style={styles.sec}>
-          <Text style={styles.st}>📊 الحجوزات حسب الفئة</Text>
+          <Text style={styles.st}> الحجوزات حسب الفئة</Text>
           {byCat.map((cat: any, i: number) => (
             <View key={i} style={styles.cr}>
               <Text style={styles.cn}>{cat.category}</Text>
@@ -91,7 +91,7 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
       )}
       {trend.length > 0 && (
         <View style={styles.sec}>
-          <Text style={styles.st}>📈 الاتجاه الشهري</Text>
+          <Text style={styles.st}> الاتجاه الشهري</Text>
           <View style={styles.tr}>
             {trend.map((m: any, i: number) => (
               <View key={i} style={styles.tb}>

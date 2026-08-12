@@ -111,7 +111,7 @@ export function PanicButton({
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <span className="text-2xl" aria-hidden="true">
-              ⚠️
+              
             </span>
             <div>
               <p className="text-sm font-bold text-red-700 dark:text-red-300">تأكيد الطوارئ</p>
@@ -124,7 +124,7 @@ export function PanicButton({
           {/* Who will be notified */}
           <div className="rounded-xl bg-white p-2.5 dark:bg-gray-800">
             <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-              📞 سيتم إشعار
+               سيتم إشعار
             </p>
             <div className="mt-1 space-y-1">
               {contacts.map((c) => (
@@ -132,13 +132,13 @@ export function PanicButton({
                   key={c.phone}
                   className="flex items-center gap-1.5 text-[10px] text-text-secondary dark:text-gray-300"
                 >
-                  <span>{c.relation === 'mother' ? '👩' : '👤'}</span>
+                  <span>{c.relation === 'mother' ? '' : ''}</span>
                   <span className="font-bold">{c.name}</span>
                   <span className="text-text-tertiary">{c.phone}</span>
                 </div>
               ))}
               <div className="flex items-center gap-1.5 text-[10px] text-text-secondary dark:text-gray-300">
-                <span>🚔</span>
+                <span></span>
                 <span className="font-bold">الشرطة</span>
                 <span className="text-text-tertiary">999</span>
               </div>
@@ -147,11 +147,11 @@ export function PanicButton({
 
           {/* Address context */}
           {address && (
-            <p className="text-[10px] text-red-600 dark:text-red-400">📍 الموقع: {address}</p>
+            <p className="text-[10px] text-red-600 dark:text-red-400"> الموقع: {address}</p>
           )}
           {technicianName && (
             <p className="text-[10px] text-red-600 dark:text-red-400">
-              👩‍🎨 الخبيرة: {technicianName}
+              ‍ الخبيرة: {technicianName}
             </p>
           )}
 
@@ -180,7 +180,7 @@ export function PanicButton({
         <div className="text-center space-y-3">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
             <span className="text-3xl animate-pulse" aria-hidden="true">
-              🚨
+              
             </span>
           </div>
           <div>
@@ -197,7 +197,7 @@ export function PanicButton({
       {stage === 'done' && (
         <div className="text-center space-y-2">
           <span className="text-3xl" aria-hidden="true">
-            🤲
+            
           </span>
           <p className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             المساعدة في الطريق

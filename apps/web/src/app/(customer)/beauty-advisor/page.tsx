@@ -6,12 +6,12 @@ import { Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const TOPICS = [
-  { key: 'روتين', emoji: '🧴', q: 'كيف أبني روتين عناية يومي؟' },
-  { key: 'بشرة', emoji: '✨', q: 'كيف أحدد نوع بشرتي؟' },
-  { key: 'مكياج', emoji: '💄', q: 'كيف أختار كريم الأساس المناسب؟' },
-  { key: 'شعر', emoji: '💇‍♀️', q: 'كيف أعتني بشعري حسب نوعه؟' },
-  { key: 'زواج', emoji: '👰', q: 'كيف أخطط لجمالي قبل الزفاف؟' },
-  { key: 'صيف', emoji: '☀️', q: 'كيف أحمي بشرتي في الصيف؟' },
+  { key: 'روتين', emoji: '', q: 'كيف أبني روتين عناية يومي؟' },
+  { key: 'بشرة', emoji: '', q: 'كيف أحدد نوع بشرتي؟' },
+  { key: 'مكياج', emoji: '', q: 'كيف أختار كريم الأساس المناسب؟' },
+  { key: 'شعر', emoji: '‍️', q: 'كيف أعتني بشعري حسب نوعه؟' },
+  { key: 'زواج', emoji: '', q: 'كيف أخطط لجمالي قبل الزفاف؟' },
+  { key: 'صيف', emoji: '️', q: 'كيف أحمي بشرتي في الصيف؟' },
 ];
 
 export default function BeautyAdvisorPage(): JSX.Element {
@@ -19,7 +19,7 @@ export default function BeautyAdvisorPage(): JSX.Element {
     {
       role: 'assistant',
       content:
-        '👋 مرحباً! أنا ليلى، مستشارة جمالكِ الشخصية. اسأليني أي سؤال عن العناية بالبشرة، المكياج، الشعر، أو أي نصيحة تجميلية!',
+        ' مرحباً! أنا ليلى، مستشارة جمالكِ الشخصية. اسأليني أي سؤال عن العناية بالبشرة، المكياج، الشعر، أو أي نصيحة تجميلية!',
     },
   ]);
   const [input, setInput] = useState('');
@@ -54,7 +54,7 @@ export default function BeautyAdvisorPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl flex flex-col" style={{ height: 'calc(100vh - 120px)' }}>
         <div>
-          <h1 className="text-2xl font-bold">🤖 ليلى — مستشارة جمالكِ</h1>
+          <h1 className="text-2xl font-bold"> ليلى — مستشارة جمالكِ</h1>
           <p className="mt-1 text-sm text-text-secondary">اسأليني عن أي شيء يخص العناية والتجميل</p>
         </div>
 
@@ -90,7 +90,7 @@ export default function BeautyAdvisorPage(): JSX.Element {
             {isFetching && (
               <div className="flex justify-start">
                 <div className="bg-surface-muted rounded-2xl rounded-bl-md px-4 py-3 text-sm">
-                  💭 جاري الكتابة...
+                   جاري الكتابة...
                 </div>
               </div>
             )}
@@ -109,7 +109,7 @@ export default function BeautyAdvisorPage(): JSX.Element {
             }}
           />
           <Button onClick={() => handleSend()} loading={isFetching} className="rounded-xl px-6">
-            📤
+            إرسال
           </Button>
         </div>
       </div>

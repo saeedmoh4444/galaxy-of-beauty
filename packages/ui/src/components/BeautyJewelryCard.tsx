@@ -15,7 +15,7 @@ export function BeautyJewelryCard({ className = '' }: BeautyJewelryCardProps): J
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💍</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">
             تنسيق الإكسسوارات
@@ -25,10 +25,10 @@ export function BeautyJewelryCard({ className = '' }: BeautyJewelryCardProps): J
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '👂', label: 'أقراط', tip: 'طويلة = وجه أنحف' },
-          { emoji: '📿', label: 'عقد', tip: 'يناسب الفتحة' },
-          { emoji: '⌚', label: 'ساعة', tip: 'كلاسيك = لكل مناسبة' },
-          { emoji: '💍', label: 'خواتم', tip: '2-3 كحد أقصى' },
+          { emoji: '', label: 'أقراط', tip: 'طويلة = وجه أنحف' },
+          { emoji: '', label: 'عقد', tip: 'يناسب الفتحة' },
+          { emoji: '', label: 'ساعة', tip: 'كلاسيك = لكل مناسبة' },
+          { emoji: '', label: 'خواتم', tip: '2-3 كحد أقصى' },
         ].map((t) => (
           <div key={t.label} className="rounded-lg bg-amber-50 px-2.5 py-2 dark:bg-amber-950">
             <span className="text-sm">{t.emoji}</span>

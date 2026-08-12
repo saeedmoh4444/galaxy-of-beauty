@@ -26,14 +26,14 @@ interface PracticeDef {
 }
 
 const PRACTICES: Record<GreenPractice, PracticeDef> = {
-  recycled: { emoji: '♻️', label: 'إعادة تدوير' },
-  organic: { emoji: '🌿', label: 'منتجات عضوية' },
-  energy_efficient: { emoji: '💡', label: 'طاقة موفرة' },
-  water_saving: { emoji: '💧', label: 'ترشيد مياه' },
-  vegan_products: { emoji: '🌱', label: 'منتجات نباتية' },
-  plastic_free: { emoji: '🚫', label: 'خالٍ من البلاستيك' },
-  local_sourcing: { emoji: '🇸🇦', label: 'منتجات محلية' },
-  carbon_neutral: { emoji: '🌍', label: 'محايد كربونياً' },
+  recycled: { emoji: '️', label: 'إعادة تدوير' },
+  organic: { emoji: '', label: 'منتجات عضوية' },
+  energy_efficient: { emoji: '', label: 'طاقة موفرة' },
+  water_saving: { emoji: '', label: 'ترشيد مياه' },
+  vegan_products: { emoji: '', label: 'منتجات نباتية' },
+  plastic_free: { emoji: '', label: 'خالٍ من البلاستيك' },
+  local_sourcing: { emoji: '', label: 'منتجات محلية' },
+  carbon_neutral: { emoji: '', label: 'محايد كربونياً' },
 };
 
 interface GreenSalonBadgeProps {
@@ -56,7 +56,7 @@ export function GreenSalonBadge({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          🌿
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-green-700 dark:text-green-300">صالون أخضر</h4>
@@ -89,12 +89,12 @@ export function GreenSalonBadge({
       {/* Pledge */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
         <p className="text-[10px] text-green-700 dark:text-green-300">
-          🌍 نلتزم بممارسات صديقة للبيئة — من المنتجات إلى التغليف إلى استهلاك الطاقة
+           نلتزم بممارسات صديقة للبيئة — من المنتجات إلى التغليف إلى استهلاك الطاقة
         </p>
       </div>
 
       <p className="mt-1.5 text-center text-[9px] text-green-600 dark:text-green-400">
-        🌿 الجمال المستدام — لكِ وللأرض
+         الجمال المستدام — لكِ وللأرض
       </p>
     </div>
   );

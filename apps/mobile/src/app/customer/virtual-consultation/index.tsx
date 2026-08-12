@@ -8,7 +8,7 @@ import { SkeletonList } from '@/components/SkeletonCard';
 const CONSULTANTS = [
   {
     key: 'skincare',
-    emoji: '👩‍⚕️',
+    emoji: '‍️',
     name: 'اخصائية بشرة',
     specialty: 'تحليل البشرة وتشخيص المشاكل',
     price: 150,
@@ -17,7 +17,7 @@ const CONSULTANTS = [
   },
   {
     key: 'makeup',
-    emoji: '💄',
+    emoji: '',
     name: 'خبيرة مكياج',
     specialty: 'استشارة مكياج للمناسبات',
     price: 120,
@@ -26,7 +26,7 @@ const CONSULTANTS = [
   },
   {
     key: 'hair',
-    emoji: '💇‍♀️',
+    emoji: '‍️',
     name: 'مصففة شعر',
     specialty: 'استشارة تسريحات وعناية',
     price: 100,
@@ -35,7 +35,7 @@ const CONSULTANTS = [
   },
   {
     key: 'nutrition',
-    emoji: '🥗',
+    emoji: '',
     name: 'اخصائية تغذية',
     specialty: 'تغذية البشرة والشعر',
     price: 130,
@@ -85,7 +85,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={st.t}>📹 استشارة افتراضية</Text>
+      <Text style={st.t}> استشارة افتراضية</Text>
       <Text style={st.sub}>استشيري خبيرات التجميل عبر الفيديو</Text>
 
       {booked && (
@@ -98,7 +98,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
             alignItems: 'center',
           }}
         >
-          <Text style={{ fontSize: 32 }}>✅</Text>
+          <Text style={{ fontSize: 32 }}></Text>
           <Text style={{ fontWeight: '700', color: '#059669', marginTop: 8 }}>تم الحجز بنجاح</Text>
         </View>
       )}
@@ -126,7 +126,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
             <Text
               style={{ fontWeight: '700', color: '#db2777', textAlign: 'center', marginTop: 4 }}
             >
-              {c.price} ر.س · ⭐{c.rating}
+              {c.price} ر.س · {c.rating}
             </Text>
           </TouchableOpacity>
         ))}
@@ -135,7 +135,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
       {consultant && (
         <View style={{ marginTop: 16 }}>
           <Text style={{ fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 }}>
-            📅 اختر الوقت — {consultant.emoji} {consultant.name}
+             اختر الوقت — {consultant.emoji} {consultant.name}
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
             {consultant.slots.map((s) => (
@@ -150,7 +150,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
           </View>
           {slot && (
             <TouchableOpacity onPress={handleBook} style={[st.btn, { marginTop: 12 }]}>
-              <Text style={st.btnText}>📹 احجزي — {consultant.price} ر.س</Text>
+              <Text style={st.btnText}> احجزي — {consultant.price} ر.س</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -159,7 +159,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
       {myBookings.length > 0 && (
         <View style={{ marginTop: 20 }}>
           <Text style={{ fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 }}>
-            📋 حجوزاتي
+             حجوزاتي
           </Text>
           {myBookings.map((b: any, i: number) => (
             <View

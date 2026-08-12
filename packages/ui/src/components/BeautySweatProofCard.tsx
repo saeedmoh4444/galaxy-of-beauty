@@ -9,7 +9,7 @@ export function BeautySweatProofCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💦</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">مكياج مقاوم للعرق</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">إطلالة ثابتة أثناء التمرين</p>
@@ -17,10 +17,10 @@ export function BeautySweatProofCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: 'برايمر مات — أساس أي مكياج رياضي' },
-          { emoji: '💄', text: 'تينت شفاه وخدود — بدل الكريمي الثقيل' },
-          { emoji: '👁️', text: 'ماسكارا مقاومة للماء — ضرورية' },
-          { emoji: '🧻', text: 'ورق نشاف — للما بعد التمرين' },
+          { emoji: '', text: 'برايمر مات — أساس أي مكياج رياضي' },
+          { emoji: '', text: 'تينت شفاه وخدود — بدل الكريمي الثقيل' },
+          { emoji: '️', text: 'ماسكارا مقاومة للماء — ضرورية' },
+          { emoji: '', text: 'ورق نشاف — للما بعد التمرين' },
         ].map((t, i) => (
           <div
             key={i}

@@ -9,7 +9,7 @@ export function BeautySkincareMistCard({ className = '' }: { className?: string 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💦</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">رذاذ الوجه</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">انتعاش فوري للبشرة</p>
@@ -17,10 +17,10 @@ export function BeautySkincareMistCard({ className = '' }: { className?: string 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🌹', text: 'ماء الورد — مهدئ ومنعش طبيعي' },
-          { emoji: '💧', text: 'قبل المرطب — يمتص بشكل أفضل' },
-          { emoji: '☀️', text: 'فوق المكياج — إشراقة منتصف اليوم' },
-          { emoji: '✈️', text: 'في الطائرة — يحمي من الجفاف' },
+          { emoji: '', text: 'ماء الورد — مهدئ ومنعش طبيعي' },
+          { emoji: '', text: 'قبل المرطب — يمتص بشكل أفضل' },
+          { emoji: '️', text: 'فوق المكياج — إشراقة منتصف اليوم' },
+          { emoji: '️', text: 'في الطائرة — يحمي من الجفاف' },
         ].map((t, i) => (
           <div
             key={i}

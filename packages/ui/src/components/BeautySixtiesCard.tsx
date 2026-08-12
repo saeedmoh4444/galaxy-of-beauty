@@ -9,7 +9,7 @@ export function BeautySixtiesCard({ className = '' }: { className?: string }): J
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💎</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             العناية في الستينات
@@ -19,10 +19,10 @@ export function BeautySixtiesCard({ className = '' }: { className?: string }): J
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: 'ترطيب مكثف — كريمات غنية بالسيراميد' },
-          { emoji: '💆', text: 'مساج دوري — يحسن مرونة البشرة' },
-          { emoji: '☀️', text: 'حماية دائمة — البشرة الرقيقة تحتاج عناية' },
-          { emoji: '❤️', text: 'الجمال من الداخل — تغذية، نوم، سعادة' },
+          { emoji: '', text: 'ترطيب مكثف — كريمات غنية بالسيراميد' },
+          { emoji: '', text: 'مساج دوري — يحسن مرونة البشرة' },
+          { emoji: '️', text: 'حماية دائمة — البشرة الرقيقة تحتاج عناية' },
+          { emoji: '️', text: 'الجمال من الداخل — تغذية، نوم، سعادة' },
         ].map((t, i) => (
           <div
             key={i}

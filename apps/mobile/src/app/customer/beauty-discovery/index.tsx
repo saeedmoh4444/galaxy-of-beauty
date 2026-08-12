@@ -30,14 +30,14 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={s.t}>🔍 اكتشفي</Text>
+      <Text style={s.t}> اكتشفي</Text>
       <Text style={s.sub}>خدمات وعروض وفعاليات مخصصة لكِ</Text>
 
       {fy?.profile && (
         <View
           style={{ backgroundColor: '#faf5ff', borderRadius: 12, padding: 14, marginBottom: 16 }}
         >
-          <Text style={{ fontWeight: '700', color: '#7c3aed', fontSize: 15 }}>🧬 ملفكِ الشخصي</Text>
+          <Text style={{ fontWeight: '700', color: '#7c3aed', fontSize: 15 }}> ملفكِ الشخصي</Text>
           <Text style={{ color: '#7c3aed', fontSize: 13, marginTop: 4 }}>
             {fy.profile.skinType} · {fy.profile.hairType} ·{' '}
             {(fy.profile.concerns as string[])?.join('، ')}
@@ -47,7 +47,7 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
 
       {(f?.popularServices as any[])?.length > 0 && (
         <View style={{ marginBottom: 16 }}>
-          <Text style={s.st}>🔥 الأكثر طلباً</Text>
+          <Text style={s.st}> الأكثر طلباً</Text>
           {(f.popularServices as any[]).slice(0, 6).map((svc: any, i: number) => (
             <View key={svc.id ?? i} style={s.row}>
               <Text style={{ fontSize: 14 }}>
@@ -61,7 +61,7 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
 
       {(f?.flashDeals as any[])?.length > 0 && (
         <View style={{ marginBottom: 16 }}>
-          <Text style={s.st}>⚡ عروض فلاش</Text>
+          <Text style={s.st}> عروض فلاش</Text>
           {(f.flashDeals as any[]).slice(0, 4).map((d: any, i: number) => (
             <View key={d.id ?? i} style={s.row}>
               <View style={{ flex: 1 }}>
@@ -80,7 +80,7 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
 
       {(fy?.suggestions as any[])?.length > 0 && (
         <View style={{ marginBottom: 16 }}>
-          <Text style={s.st}>💝 لكِ خصيصاً</Text>
+          <Text style={s.st}> لكِ خصيصاً</Text>
           {(fy.suggestions as any[]).map((s: any, i: number) => (
             <View key={s.id ?? i} style={s.row}>
               <Text style={{ fontSize: 14 }}>
@@ -94,7 +94,7 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
 
       {(f?.events as any[])?.length > 0 && (
         <View style={{ marginBottom: 16 }}>
-          <Text style={s.st}>🎪 فعاليات قادمة</Text>
+          <Text style={s.st}> فعاليات قادمة</Text>
           {(f.events as any[]).map((e: any, i: number) => (
             <View key={e.id ?? i} style={s.row}>
               <View style={{ flex: 1 }}>

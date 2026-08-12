@@ -12,7 +12,7 @@ const TECHNICIANS = [
     price: 300,
     experience: '٨ سنوات',
     city: 'الرياض',
-    emoji: '💄',
+    emoji: '',
     services: ['مكياج عرايس', 'مكياج سهرة', 'مكياج ناعم'],
     features: { speed: 90, quality: 95, price: 70, communication: 92 },
   },
@@ -25,7 +25,7 @@ const TECHNICIANS = [
     price: 250,
     experience: '٦ سنوات',
     city: 'جدة',
-    emoji: '💇‍♀️',
+    emoji: '‍️',
     services: ['تسريحات', 'صبغات', 'علاج شعر'],
     features: { speed: 85, quality: 92, price: 80, communication: 88 },
   },
@@ -38,7 +38,7 @@ const TECHNICIANS = [
     price: 180,
     experience: '٥ سنوات',
     city: 'الدمام',
-    emoji: '💅',
+    emoji: '',
     services: ['مانيكير', 'باديكير', ' nail art'],
     features: { speed: 88, quality: 90, price: 90, communication: 85 },
   },
@@ -51,17 +51,17 @@ const TECHNICIANS = [
     price: 350,
     experience: '١٢ سنة',
     city: 'الرياض',
-    emoji: '✨',
+    emoji: '',
     services: ['تنظيف بشرة', 'تقشير', 'علاج حب الشباب'],
     features: { speed: 80, quality: 98, price: 60, communication: 95 },
   },
 ];
 
 const DIMS: Record<string, string> = {
-  speed: '⚡ السرعة',
-  quality: '⭐ الجودة',
-  price: '💰 السعر',
-  communication: '💬 التواصل',
+  speed: ' السرعة',
+  quality: ' الجودة',
+  price: ' السعر',
+  communication: ' التواصل',
 };
 
 export default function TechnicianComparePage(): JSX.Element {
@@ -76,7 +76,7 @@ export default function TechnicianComparePage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="text-center mb-10">
-        <span className="text-6xl">👩‍🎨</span>
+        <span className="text-6xl">‍</span>
         <h1 className="mt-4 text-3xl font-bold">مقارنة الفنيات</h1>
         <p className="mt-2 text-text-secondary">
           قارني بين الفنيات واختاري الأفضل لكِ (اختاري ٢-٣)
@@ -98,10 +98,10 @@ export default function TechnicianComparePage(): JSX.Element {
                   <div>
                     <p className="font-bold">{t.name}</p>
                     <p className="text-xs text-text-secondary">
-                      {t.specialty} · {t.city} · ⭐{t.rating} · {t.experience}
+                      {t.specialty} · {t.city} · {t.rating} · {t.experience}
                     </p>
                   </div>
-                  {isSel && <span className="mr-auto text-brand-600 text-xl">✅</span>}
+                  {isSel && <span className="mr-auto text-brand-600 text-xl"></span>}
                 </div>
               </button>
             );
@@ -111,7 +111,7 @@ export default function TechnicianComparePage(): JSX.Element {
 
       {techs.length >= 2 && (
         <Card padding="lg">
-          <h3 className="font-bold text-lg mb-6 text-center">📊 مقارنة {techs.length} فنيات</h3>
+          <h3 className="font-bold text-lg mb-6 text-center"> مقارنة {techs.length} فنيات</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -127,7 +127,7 @@ export default function TechnicianComparePage(): JSX.Element {
               </thead>
               <tbody>
                 <tr className="border-b">
-                  <td className="p-3 text-text-secondary">⭐ التقييم</td>
+                  <td className="p-3 text-text-secondary"> التقييم</td>
                   {techs.map((t) => (
                     <td key={t.id} className="p-3 text-center font-bold">
                       {t.rating}
@@ -135,7 +135,7 @@ export default function TechnicianComparePage(): JSX.Element {
                   ))}
                 </tr>
                 <tr className="border-b">
-                  <td className="p-3 text-text-secondary">📝 المراجعات</td>
+                  <td className="p-3 text-text-secondary"> المراجعات</td>
                   {techs.map((t) => (
                     <td key={t.id} className="p-3 text-center">
                       {t.reviews}
@@ -143,7 +143,7 @@ export default function TechnicianComparePage(): JSX.Element {
                   ))}
                 </tr>
                 <tr className="border-b">
-                  <td className="p-3 text-text-secondary">💰 السعر</td>
+                  <td className="p-3 text-text-secondary"> السعر</td>
                   {techs.map((t) => (
                     <td key={t.id} className="p-3 text-center font-bold text-brand-600">
                       {t.price} ر.س
@@ -151,7 +151,7 @@ export default function TechnicianComparePage(): JSX.Element {
                   ))}
                 </tr>
                 <tr className="border-b">
-                  <td className="p-3 text-text-secondary">📍 المدينة</td>
+                  <td className="p-3 text-text-secondary"> المدينة</td>
                   {techs.map((t) => (
                     <td key={t.id} className="p-3 text-center">
                       {t.city}
@@ -159,7 +159,7 @@ export default function TechnicianComparePage(): JSX.Element {
                   ))}
                 </tr>
                 <tr className="border-b">
-                  <td className="p-3 text-text-secondary">⏱️ الخبرة</td>
+                  <td className="p-3 text-text-secondary">️ الخبرة</td>
                   {techs.map((t) => (
                     <td key={t.id} className="p-3 text-center">
                       {t.experience}
@@ -167,7 +167,7 @@ export default function TechnicianComparePage(): JSX.Element {
                   ))}
                 </tr>
                 <tr className="border-b">
-                  <td className="p-3 text-text-secondary">💅 الخدمات</td>
+                  <td className="p-3 text-text-secondary"> الخدمات</td>
                   {techs.map((t) => (
                     <td key={t.id} className="p-3 text-center">
                       <div className="flex flex-wrap gap-1 justify-center">

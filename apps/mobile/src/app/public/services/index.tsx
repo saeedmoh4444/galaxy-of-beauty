@@ -35,7 +35,7 @@ export default function ServicesScreen(): JSX.Element {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
       }
     >
-      <Text style={styles.t}>💆‍♀️ الخدمات</Text>
+      <Text style={styles.t}>‍️ الخدمات</Text>
       <Text style={styles.sub}>اكتشفي جميع خدمات التجميل والعناية</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
         <View style={{ flexDirection: 'row', gap: 8 }}>
@@ -47,7 +47,7 @@ export default function ServicesScreen(): JSX.Element {
                 onPress={() => setActiveCat(cat.key as string)}
                 style={[styles.catChip, isActive && styles.catChipActive]}
               >
-                <Text style={styles.catEmoji}>{(cat.emoji as string) ?? '📂'}</Text>
+                <Text style={styles.catEmoji}>{(cat.emoji as string) ?? ''}</Text>
                 <Text style={[styles.catName, isActive && styles.catNameActive]}>
                   {cat.nameAr as string}
                 </Text>
@@ -64,13 +64,13 @@ export default function ServicesScreen(): JSX.Element {
           ) : (
             svcItems.map((s: any) => (
               <View key={s.id} style={styles.card}>
-                <Text style={styles.svcEmoji}>{(s.emoji as string) ?? '💆‍♀️'}</Text>
+                <Text style={styles.svcEmoji}>{(s.emoji as string) ?? '‍️'}</Text>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.svcName}>{s.nameAr as string}</Text>
                   <Text style={styles.svcDesc}>{(s.descAr as string)?.substring(0, 80)}</Text>
                   <View style={styles.svcMeta}>
                     <Text style={styles.svcPrice}>{(s.price as number)?.toLocaleString()} ر.س</Text>
-                    <Text style={styles.svcDuration}>⏱️ {s.duration as string}</Text>
+                    <Text style={styles.svcDuration}>️ {s.duration as string}</Text>
                   </View>
                 </View>
               </View>

@@ -9,7 +9,7 @@ export function BeautyUpcycledCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌟</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">
             الجمال المُعاد تدويره
@@ -19,10 +19,10 @@ export function BeautyUpcycledCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '☕', label: 'بقايا القهوة', tip: 'مقشر طبيعي للجسم' },
-          { emoji: '🍊', label: 'قشور الحمضيات', tip: 'زيوت عطرية طبيعية' },
-          { emoji: '🥑', label: 'بذور الأفوكادو', tip: 'صبغة وردية طبيعية' },
-          { emoji: '🌾', label: 'نخالة الأرز', tip: 'مقشر لطيف للوجه' },
+          { emoji: '', label: 'بقايا القهوة', tip: 'مقشر طبيعي للجسم' },
+          { emoji: '', label: 'قشور الحمضيات', tip: 'زيوت عطرية طبيعية' },
+          { emoji: '', label: 'بذور الأفوكادو', tip: 'صبغة وردية طبيعية' },
+          { emoji: '', label: 'نخالة الأرز', tip: 'مقشر لطيف للوجه' },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-amber-50 px-2.5 py-2 dark:bg-amber-950">
             <span className="text-sm">{t.emoji}</span>

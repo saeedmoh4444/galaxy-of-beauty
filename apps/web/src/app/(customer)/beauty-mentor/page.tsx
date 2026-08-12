@@ -6,7 +6,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 const LEVELS = [
   {
     key: 'beginner',
-    emoji: '🌱',
+    emoji: '',
     name: 'مبتدئة',
     desc: 'اكتشفي أساسيات العناية',
     plan: [
@@ -19,7 +19,7 @@ const LEVELS = [
   },
   {
     key: 'intermediate',
-    emoji: '🌸',
+    emoji: '',
     name: 'متوسطة',
     desc: 'طوري روتينكِ',
     plan: [
@@ -32,7 +32,7 @@ const LEVELS = [
   },
   {
     key: 'advanced',
-    emoji: '✨',
+    emoji: '',
     name: 'متقدمة',
     desc: 'أتقني فنون التجميل',
     plan: [
@@ -101,7 +101,7 @@ export default function BeautyMentorPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">👩‍🏫 مرشدة الجمال</h1>
+          <h1 className="text-2xl font-bold">‍ مرشدة الجمال</h1>
           <p className="mt-1 text-sm text-text-secondary">تعلمي من خبيرات التجميل — خطوة بخطوة</p>
         </div>
 
@@ -121,7 +121,7 @@ export default function BeautyMentorPage(): JSX.Element {
 
         <div className="grid gap-6 lg:grid-cols-2">
           <Card padding="lg">
-            <h3 className="font-bold mb-3">📋 خطة التعلم — {currentLevel.name}</h3>
+            <h3 className="font-bold mb-3"> خطة التعلم — {currentLevel.name}</h3>
             <div className="space-y-2">
               {currentLevel.plan.map((step, i) => (
                 <div key={i} className="flex items-center gap-3 rounded-lg border p-3">
@@ -135,7 +135,7 @@ export default function BeautyMentorPage(): JSX.Element {
           </Card>
 
           <Card padding="lg">
-            <h3 className="font-bold mb-3">📚 المواضيع</h3>
+            <h3 className="font-bold mb-3"> المواضيع</h3>
             <div className="flex flex-wrap gap-2 mb-4">
               {TOPICS.map((tp) => (
                 <button
@@ -149,7 +149,7 @@ export default function BeautyMentorPage(): JSX.Element {
             </div>
             {selectedTopic && (
               <div className="rounded-lg border p-4">
-                <h4 className="font-bold text-brand-600 mb-3">💡 نصائح {selectedTopic}</h4>
+                <h4 className="font-bold text-brand-600 mb-3"> نصائح {selectedTopic}</h4>
                 <div className="space-y-2">
                   {(TOPIC_TIPS[selectedTopic] ?? []).map((tip, i) => (
                     <p key={i} className="text-sm text-text-primary">

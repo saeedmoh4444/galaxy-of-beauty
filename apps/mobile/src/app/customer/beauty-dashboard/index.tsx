@@ -28,9 +28,9 @@ export default function BeautyDashboardScreen(): JSX.Element {
         insights.refetch();
       }}
     >
-      <Text style={styles.title}>💄 لوحة الجمال</Text>
+      <Text style={styles.title}> لوحة الجمال</Text>
       {[
-        { label: 'نقاط الولاء', value: `${String(lData?.points ?? 0)} ⭐`, color: COLORS.warning },
+        { label: 'نقاط الولاء', value: `${String(lData?.points ?? 0)} `, color: COLORS.warning },
         { label: 'المستوى', value: (lData?.tier as string) ?? '—', color: COLORS.brand },
         { label: 'الحجوزات', value: String(iData?.bookingCount ?? 0), color: COLORS.success },
         { label: 'الإنفاق', value: `${String(iData?.totalSpent ?? 0)} ر.س`, color: COLORS.gray900 },

@@ -9,7 +9,7 @@ export function BeautyRefillableCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🔄</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">
             عبوات قابلة للتعبئة
@@ -19,10 +19,10 @@ export function BeautyRefillableCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💰', text: 'أوفر — العبوة الأصلية مرة واحدة فقط' },
-          { emoji: '🌍', text: 'تقلل النفايات — 70% أقل من البلاستيك' },
-          { emoji: '💄', text: 'أحمر شفاه — كريم أساس — عطور' },
-          { emoji: '♻️', text: 'ارجعي العبوة الفارغة — لخصم على القادمة' },
+          { emoji: '', text: 'أوفر — العبوة الأصلية مرة واحدة فقط' },
+          { emoji: '', text: 'تقلل النفايات — 70% أقل من البلاستيك' },
+          { emoji: '', text: 'أحمر شفاه — كريم أساس — عطور' },
+          { emoji: '️', text: 'ارجعي العبوة الفارغة — لخصم على القادمة' },
         ].map((t, i) => (
           <div
             key={i}

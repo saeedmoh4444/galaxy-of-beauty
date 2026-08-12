@@ -41,7 +41,7 @@ export function FaceBlurToggle({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true">
-            😶‍🌫️
+            ‍️
           </span>
           <div>
             <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">تعتيم الوجه</h4>
@@ -72,7 +72,7 @@ export function FaceBlurToggle({
 
       {/* How it works */}
       <div className="mt-3 rounded-xl bg-blue-50 p-3 dark:bg-blue-950">
-        <p className="text-[10px] font-bold text-blue-700 dark:text-blue-300">🤖 كيف يعمل؟</p>
+        <p className="text-[10px] font-bold text-blue-700 dark:text-blue-300"> كيف يعمل؟</p>
         <p className="mt-0.5 text-[10px] text-blue-600 dark:text-blue-400">
           ذكاء اصطناعي على جهازكِ يتعرف على الوجوه ويعتمها تلقائياً. لا يتم رفع صوركِ إلى أي خادم —
           كل شيء على جهازكِ.
@@ -83,7 +83,7 @@ export function FaceBlurToggle({
       {photosAffected !== undefined && (
         <div className="mt-2 rounded-lg bg-blue-50 p-2 text-center dark:bg-blue-950">
           <p className="text-[10px] text-blue-700 dark:text-blue-300">
-            📸 {photosAffected} صورة متأثرة بهذا الإعداد
+             {photosAffected} صورة متأثرة بهذا الإعداد
           </p>
         </div>
       )}
@@ -92,13 +92,13 @@ export function FaceBlurToggle({
       <div className="mt-2 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
         <p className="text-center text-[10px] text-text-secondary dark:text-gray-300">
           {enabled
-            ? '✅ الوجوه معتمة تلقائياً في المعرض العام'
-            : '⚠️ الوجوه غير معتمة — ننصح بتفعيل التعتيم للخصوصية'}
+            ? ' الوجوه معتمة تلقائياً في المعرض العام'
+            : ' الوجوه غير معتمة — ننصح بتفعيل التعتيم للخصوصية'}
         </p>
       </div>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🔒 معالجة محلية بالكامل — خصوصيتكِ في جهازكِ فقط
+         معالجة محلية بالكامل — خصوصيتكِ في جهازكِ فقط
       </p>
     </div>
   );

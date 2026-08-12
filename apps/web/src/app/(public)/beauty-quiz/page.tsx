@@ -15,31 +15,31 @@ const questions: Question[] = [
     id: 'occasion',
     text: 'ما المناسبة؟',
     options: [
-      { label: 'يومي', value: 'daily', icon: '☀️' },
-      { label: 'مناسبة خاصة', value: 'special', icon: '✨' },
-      { label: 'زفاف', value: 'wedding', icon: '👰' },
-      { label: 'استرخاء', value: 'relax', icon: '🧖‍♀️' },
-      { label: 'تجربة جديدة', value: 'new', icon: '🎨' },
+      { label: 'يومي', value: 'daily', icon: '️' },
+      { label: 'مناسبة خاصة', value: 'special', icon: '' },
+      { label: 'زفاف', value: 'wedding', icon: '' },
+      { label: 'استرخاء', value: 'relax', icon: '‍️' },
+      { label: 'تجربة جديدة', value: 'new', icon: '' },
     ],
   },
   {
     id: 'focus',
     text: 'على ماذا تركزين؟',
     options: [
-      { label: 'الشعر', value: 'hair', icon: '💇‍♀️' },
-      { label: 'البشرة', value: 'skin', icon: '✨' },
-      { label: 'المكياج', value: 'makeup', icon: '💄' },
-      { label: 'الأظافر', value: 'nails', icon: '💅' },
-      { label: 'الجسم', value: 'body', icon: '🧴' },
+      { label: 'الشعر', value: 'hair', icon: '‍️' },
+      { label: 'البشرة', value: 'skin', icon: '' },
+      { label: 'المكياج', value: 'makeup', icon: '' },
+      { label: 'الأظافر', value: 'nails', icon: '' },
+      { label: 'الجسم', value: 'body', icon: '' },
     ],
   },
   {
     id: 'budget',
     text: 'ميزانيتكِ التقريبية؟',
     options: [
-      { label: 'اقتصادية', value: 'low', icon: '💰' },
-      { label: 'متوسطة', value: 'mid', icon: '💵' },
-      { label: 'فاخرة', value: 'high', icon: '💎' },
+      { label: 'اقتصادية', value: 'low', icon: '' },
+      { label: 'متوسطة', value: 'mid', icon: '' },
+      { label: 'فاخرة', value: 'high', icon: '' },
     ],
   },
 ];
@@ -106,7 +106,7 @@ export default function BeautyQuizPage(): JSX.Element {
   if (result) {
     return (
       <div className="mx-auto max-w-lg px-4 py-16 text-center">
-        <span className="text-6xl">✨</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {result.title}
         </h1>
@@ -123,7 +123,7 @@ export default function BeautyQuizPage(): JSX.Element {
             <Button size="lg">تصفحي الخدمات</Button>
           </Link>
           <Button variant="outline" onClick={reset}>
-            🔄 إعادة الاختبار
+             إعادة الاختبار
           </Button>
         </div>
       </div>

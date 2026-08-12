@@ -40,7 +40,7 @@ export default function WomensServicesPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl">🌸</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           خدمات نسائية
         </h1>
@@ -51,14 +51,14 @@ export default function WomensServicesPage(): JSX.Element {
 
       {bookingResult ? (
         <Card padding="lg" className="text-center border-2 border-green-300 dark:border-green-700">
-          <span className="text-6xl">✅</span>
+          <span className="text-6xl"></span>
           <h2 className="mt-4 text-xl font-bold">تم الحجز!</h2>
           <p className="font-bold mt-1">{bookingResult.service as string}</p>
           <p className="text-2xl font-extrabold text-brand-600 mt-2">
             {formatCurrency(bookingResult.price as number)} ر.س
           </p>
           <p className="text-sm text-text-secondary">
-            ⏱️ {bookingResult.durationMin as number} دقيقة
+            ️ {bookingResult.durationMin as number} دقيقة
           </p>
           {((bookingResult.specialRequirements as string[])?.length ?? 0) > 0 ? (
             <div className="mt-3 flex flex-wrap justify-center gap-1">
@@ -81,7 +81,7 @@ export default function WomensServicesPage(): JSX.Element {
               setSelectedCat(null);
             }}
           >
-            🔄 عودة
+             عودة
           </Button>
         </Card>
       ) : !selectedCat ? (
@@ -149,7 +149,7 @@ export default function WomensServicesPage(): JSX.Element {
                     </h3>
                     <p className="text-xs text-text-secondary">{s.nameEn as string}</p>
                     {(s.precautions as string) ? (
-                      <p className="text-xs text-amber-600 mt-0.5">⚠️ {s.precautions as string}</p>
+                      <p className="text-xs text-amber-600 mt-0.5"> {s.precautions as string}</p>
                     ) : null}
                   </div>
                 </div>
@@ -182,11 +182,11 @@ export default function WomensServicesPage(): JSX.Element {
               padding="lg"
               className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-none"
             >
-              <h3 className="font-bold mb-3 text-text-primary dark:text-gray-100">💡 نصائح مهمة</h3>
+              <h3 className="font-bold mb-3 text-text-primary dark:text-gray-100"> نصائح مهمة</h3>
               <div className="space-y-2">
                 {safetyTips.map((tip: string, i: number) => (
                   <p key={i} className="text-sm text-text-secondary dark:text-gray-400">
-                    ✅ {tip}
+                     {tip}
                   </p>
                 ))}
               </div>

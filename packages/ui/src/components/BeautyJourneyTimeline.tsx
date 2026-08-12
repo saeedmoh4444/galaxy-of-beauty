@@ -33,7 +33,7 @@ const STAGES: LifeStage[] = [
 
 const STAGE_DEFS: Record<LifeStage, StageDef> = {
   first_steps: {
-    emoji: '🌸',
+    emoji: '',
     title: 'خطواتي الأولى',
     ageRange: '15-18',
     services: ['أول درس مكياج', 'أساسيات العناية بالبشرة', 'أول باقة عناية'],
@@ -41,7 +41,7 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
     gradient: 'from-pink-400 to-rose-400',
   },
   discovery: {
-    emoji: '🦋',
+    emoji: '',
     title: 'اكتشاف وتعبير',
     ageRange: '18-25',
     services: ['إتقان المكياج', 'تجربة ألوان الشعر', 'ميزانية الجمال'],
@@ -49,7 +49,7 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
     gradient: 'from-purple-400 to-violet-400',
   },
   career: {
-    emoji: '💼',
+    emoji: '',
     title: 'مهنة وثقة',
     ageRange: '25-35',
     services: ['مكياج احترافي', 'خدمات سريعة 30 دقيقة', 'إطلالة المقابلات'],
@@ -57,7 +57,7 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
     gradient: 'from-blue-400 to-sky-400',
   },
   wedding_motherhood: {
-    emoji: '👰',
+    emoji: '',
     title: 'زواج وأمومة',
     ageRange: '25-40',
     services: ['رحلة العروس', 'عناية الحمل', 'باقة الأم الجديدة'],
@@ -65,7 +65,7 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
     gradient: 'from-rose-400 to-pink-400',
   },
   confidence: {
-    emoji: '👑',
+    emoji: '',
     title: 'ثقة وأناقة',
     ageRange: '40-55',
     services: ['علاجات مكافحة الشيخوخة', 'عناية هرمونية', 'باقة المرأة التنفيذية'],
@@ -73,7 +73,7 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
     gradient: 'from-amber-400 to-orange-400',
   },
   golden: {
-    emoji: '✨',
+    emoji: '',
     title: 'الجمال الذهبي',
     ageRange: '55+',
     services: ['علاجات لطيفة', 'أساليب كلاسيكية', 'باقة حفيدة العروس'],
@@ -112,7 +112,7 @@ export function BeautyJourneyTimeline({
       {/* Header */}
       <div className="text-center">
         <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-          🌸 رحلتي الجمالية
+           رحلتي الجمالية
         </h4>
         <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-gray-400">
           لكل مرحلة عمرية جمالها الخاص
@@ -193,7 +193,7 @@ export function BeautyJourneyTimeline({
                     </span>
                   )}
                   {isPast && (
-                    <span className="text-[10px] text-emerald-500 dark:text-emerald-400">✓</span>
+                    <span className="text-[10px] text-emerald-500 dark:text-emerald-400"></span>
                   )}
                 </div>
 
@@ -223,7 +223,7 @@ export function BeautyJourneyTimeline({
 
       {/* Footer */}
       <p className="mt-2 text-center text-[9px] italic text-text-tertiary dark:text-gray-500">
-        ✨ الجمال يتطور معكِ — ونحن معكِ في كل مرحلة
+         الجمال يتطور معكِ — ونحن معكِ في كل مرحلة
       </p>
     </div>
   );

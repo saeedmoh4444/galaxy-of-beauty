@@ -9,7 +9,7 @@ export function BeautySpotTreatmentCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🎯</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">علاج موضعي</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">للحبوب الطارئة</p>
@@ -17,10 +17,10 @@ export function BeautySpotTreatmentCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧪', text: 'حمض الساليسيليك — يجفف الحبة' },
-          { emoji: '🍃', text: 'زيت شجرة الشاي — مضاد بكتيريا' },
-          { emoji: '🧊', text: 'كمادة باردة — تخفف الالتهاب' },
-          { emoji: '🚫', text: 'لا تعبثي بالحبة — تترك أثراً' },
+          { emoji: '', text: 'حمض الساليسيليك — يجفف الحبة' },
+          { emoji: '', text: 'زيت شجرة الشاي — مضاد بكتيريا' },
+          { emoji: '', text: 'كمادة باردة — تخفف الالتهاب' },
+          { emoji: '', text: 'لا تعبثي بالحبة — تترك أثراً' },
         ].map((t, i) => (
           <div
             key={i}

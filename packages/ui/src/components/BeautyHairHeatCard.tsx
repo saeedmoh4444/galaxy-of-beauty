@@ -9,7 +9,7 @@ export function BeautyHairHeatCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🔥</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">
             حماية من الحرارة
@@ -19,10 +19,10 @@ export function BeautyHairHeatCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🛡️', text: 'واقي حراري — دائماً قبل المجفف أو المكواة' },
-          { emoji: '🌡️', text: 'حرارة متوسطة — لا القصوى' },
-          { emoji: '⏰', text: 'لا تمرري المكواة على نفس الخصلة مرتين' },
-          { emoji: '📅', text: 'يوم بدون حرارة في الأسبوع' },
+          { emoji: '️', text: 'واقي حراري — دائماً قبل المجفف أو المكواة' },
+          { emoji: '️', text: 'حرارة متوسطة — لا القصوى' },
+          { emoji: '', text: 'لا تمرري المكواة على نفس الخصلة مرتين' },
+          { emoji: '', text: 'يوم بدون حرارة في الأسبوع' },
         ].map((t, i) => (
           <div
             key={i}

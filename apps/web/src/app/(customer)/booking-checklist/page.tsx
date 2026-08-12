@@ -22,7 +22,7 @@ export default function BookingChecklistPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📋 قائمة التحضير</h1>
+          <h1 className="text-2xl font-bold"> قائمة التحضير</h1>
           <p className="mt-1 text-sm text-text-secondary">كل ما تحتاجينه قبل موعدكِ</p>
         </div>
 

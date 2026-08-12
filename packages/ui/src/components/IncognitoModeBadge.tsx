@@ -42,7 +42,7 @@ export function IncognitoModeBadge({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true">
-            {active ? '🕶️' : '👁️'}
+            {active ? '️' : '️'}
           </span>
           <div>
             <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">
@@ -78,10 +78,10 @@ export function IncognitoModeBadge({
         <div className="mt-3 space-y-2">
           <div className="grid grid-cols-2 gap-1.5">
             {[
-              { emoji: '🚫', label: 'بدون سجل' },
-              { emoji: '🔍', label: 'بدون اقتراحات' },
-              { emoji: '🍪', label: 'بدون كعكات' },
-              { emoji: '🗑️', label: 'حذف تلقائي' },
+              { emoji: '', label: 'بدون سجل' },
+              { emoji: '', label: 'بدون اقتراحات' },
+              { emoji: '', label: 'بدون كعكات' },
+              { emoji: '️', label: 'حذف تلقائي' },
             ].map((f) => (
               <div
                 key={f.label}
@@ -100,7 +100,7 @@ export function IncognitoModeBadge({
           {/* Expiry info */}
           <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
             <p className="text-center text-[10px] text-indigo-600 dark:text-indigo-400">
-              ⏰ ينتهي وضع التخفي تلقائياً عند إغلاق التطبيق
+               ينتهي وضع التخفي تلقائياً عند إغلاق التطبيق
             </p>
           </div>
         </div>
@@ -109,7 +109,7 @@ export function IncognitoModeBadge({
       {/* Privacy note */}
       <div className="mt-2 flex items-start gap-1.5 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
         <span className="text-xs shrink-0" aria-hidden="true">
-          🔒
+          
         </span>
         <p className="text-[9px] text-text-tertiary dark:text-gray-500">
           وضع التخفي يمنع حفظ سجل التصفح والبحث على جهازكِ. مزود الخدمة لا يزال يرى النشاط للفوترة.

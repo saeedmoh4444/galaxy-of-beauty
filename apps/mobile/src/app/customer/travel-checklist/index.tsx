@@ -4,7 +4,7 @@ import { useState } from 'react';
 const DESTINATIONS = [
   {
     key: 'beach',
-    emoji: '🏖️',
+    emoji: '️',
     name: 'شاطئ',
     color: '#0891b2',
     essentials: [
@@ -21,7 +21,7 @@ const DESTINATIONS = [
   },
   {
     key: 'city',
-    emoji: '🏙️',
+    emoji: '️',
     name: 'مدينة',
     color: '#6366f1',
     essentials: [
@@ -38,7 +38,7 @@ const DESTINATIONS = [
   },
   {
     key: 'mountain',
-    emoji: '⛰️',
+    emoji: '️',
     name: 'جبال',
     color: '#059669',
     essentials: [
@@ -69,7 +69,7 @@ export default function TravelChecklistScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>🧳 حقيبة السفر</Text>
+      <Text style={styles.t}> حقيبة السفر</Text>
       <Text style={styles.sub}>قائمة مستلزمات الجمال للسفر</Text>
 
       <View style={styles.tabs}>
@@ -89,13 +89,13 @@ export default function TravelChecklistScreen(): JSX.Element {
       </View>
 
       <View style={styles.progress}>
-        <Text style={styles.pt}>🎒 {progress}% جاهز</Text>
+        <Text style={styles.pt}> {progress}% جاهز</Text>
         <View style={styles.bar}>
           <View style={[styles.fill, { width: `${progress}%`, backgroundColor: d.color }]} />
         </View>
       </View>
 
-      <Text style={styles.st}>✅ القائمة</Text>
+      <Text style={styles.st}> القائمة</Text>
       {d.essentials.map((e, i) => (
         <TouchableOpacity
           key={i}
@@ -108,7 +108,7 @@ export default function TravelChecklistScreen(): JSX.Element {
               checked.has(e.item) && { backgroundColor: d.color, borderColor: d.color },
             ]}
           >
-            <Text style={styles.checkText}>{checked.has(e.item) ? '✓' : '○'}</Text>
+            <Text style={styles.checkText}>{checked.has(e.item) ? '' : '○'}</Text>
           </View>
           <Text style={[styles.itemText, checked.has(e.item) && styles.itemTextDone]}>
             {e.item}
@@ -117,7 +117,7 @@ export default function TravelChecklistScreen(): JSX.Element {
       ))}
 
       <View style={styles.tip}>
-        <Text style={styles.tipEmoji}>💡</Text>
+        <Text style={styles.tipEmoji}></Text>
         <Text style={styles.tipText}>{d.tips}</Text>
       </View>
     </ScrollView>

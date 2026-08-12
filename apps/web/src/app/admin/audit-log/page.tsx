@@ -15,15 +15,15 @@ import {
 
 const ACTION_OPTIONS = [
   { value: '', label: 'الكل' },
-  { value: 'LOGIN_SUCCESS', label: '🔑 تسجيل دخول' },
-  { value: 'SUSPEND_USER', label: '🚫 تعليق مستخدم' },
-  { value: 'VERIFY_KYC', label: '✅ توثيق فنية' },
-  { value: 'UPDATE_CATEGORY', label: '📂 تعديل قسم' },
-  { value: 'UPDATE_SERVICE', label: '💄 تعديل خدمة' },
-  { value: 'CREATE_PROMO', label: '🏷️ إنشاء كود خصم' },
-  { value: 'REFUND_PAYMENT', label: '💰 استرداد مبلغ' },
-  { value: 'MAINTENANCE_MODE', label: '🔧 وضع الصيانة' },
-  { value: 'FEATURE_FLAG_CHANGED', label: '🚩 تغيير خاصية' },
+  { value: 'LOGIN_SUCCESS', label: ' تسجيل دخول' },
+  { value: 'SUSPEND_USER', label: ' تعليق مستخدم' },
+  { value: 'VERIFY_KYC', label: ' توثيق فنية' },
+  { value: 'UPDATE_CATEGORY', label: ' تعديل قسم' },
+  { value: 'UPDATE_SERVICE', label: ' تعديل خدمة' },
+  { value: 'CREATE_PROMO', label: '️ إنشاء كود خصم' },
+  { value: 'REFUND_PAYMENT', label: ' استرداد مبلغ' },
+  { value: 'MAINTENANCE_MODE', label: ' وضع الصيانة' },
+  { value: 'FEATURE_FLAG_CHANGED', label: ' تغيير خاصية' },
 ];
 
 export default function AuditLogPage(): JSX.Element {
@@ -55,7 +55,7 @@ export default function AuditLogPage(): JSX.Element {
     <PageContainer width="wide">
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">📋 سجل التدقيق</h1>
+          <h1 className="text-2xl font-bold"> سجل التدقيق</h1>
           <p className="mt-1 text-sm text-text-secondary">جميع إجراءات المشرفين في المنصة</p>
         </div>
 

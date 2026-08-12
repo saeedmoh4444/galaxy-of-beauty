@@ -42,7 +42,7 @@ export function SecureCallBadge({
       <div className="flex items-center gap-2">
         <div className="relative">
           <span className="text-xl" aria-hidden="true">
-            📞
+            
           </span>
           {isActive && (
             <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
@@ -59,7 +59,7 @@ export function SecureCallBadge({
         </div>
         {isActive && (
           <span className="ml-auto rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-            🔒 نشط
+             نشط
           </span>
         )}
       </div>
@@ -75,7 +75,7 @@ export function SecureCallBadge({
             {proxyNumber}
           </p>
           <p className="mt-1 text-[9px] text-emerald-500 dark:text-emerald-400">
-            ⏰ ينتهي بعد {expiresIn} · 📞 {callsRemaining ?? 'غير محدود'} مكالمات متبقية
+             ينتهي بعد {expiresIn} ·  {callsRemaining ?? 'غير محدود'} مكالمات متبقية
           </p>
         </div>
       )}
@@ -83,10 +83,10 @@ export function SecureCallBadge({
       {/* Feature list */}
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '🔒', label: 'رقمكِ مخفي' },
-          { emoji: '⏰', label: 'رقم مؤقت' },
-          { emoji: '📝', label: 'المكالمات مسجلة' },
-          { emoji: '🚫', label: 'لا رسائل مزعجة' },
+          { emoji: '', label: 'رقمكِ مخفي' },
+          { emoji: '', label: 'رقم مؤقت' },
+          { emoji: '', label: 'المكالمات مسجلة' },
+          { emoji: '', label: 'لا رسائل مزعجة' },
         ].map((f) => (
           <div
             key={f.label}
@@ -104,7 +104,7 @@ export function SecureCallBadge({
 
       {/* How it works */}
       <div className="mt-2 rounded-lg bg-gray-50 p-2.5 dark:bg-gray-800">
-        <p className="text-[10px] font-bold text-text-secondary dark:text-gray-300">💡 كيف يعمل؟</p>
+        <p className="text-[10px] font-bold text-text-secondary dark:text-gray-300"> كيف يعمل؟</p>
         <p className="mt-0.5 text-[9px] leading-relaxed text-text-tertiary dark:text-gray-500">
           عندما تتصل الخبيرة، يمر الاتصال عبر رقم وسيط (Twilio). ترين رقمها المؤقت، وترى رقمكِ
           المؤقت. بعد انتهاء الموعد بـ {expiresIn}، تُحذف الأرقام تلقائياً.
@@ -118,7 +118,7 @@ export function SecureCallBadge({
           onClick={onActivate}
           className="mt-3 w-full rounded-xl bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
         >
-          فعّلي الاتصال الآمن 📞
+          فعّلي الاتصال الآمن 
         </button>
       )}
 
@@ -128,13 +128,13 @@ export function SecureCallBadge({
           type="button"
           className="mt-3 w-full rounded-xl border border-rose-200 bg-rose-50 py-2 text-[10px] font-bold text-rose-600 hover:bg-rose-100 dark:border-rose-800 dark:bg-rose-950 dark:text-rose-400"
         >
-          ⏹️ إلغاء الرقم المؤقت
+          ️ إلغاء الرقم المؤقت
         </button>
       )}
 
       {/* Privacy guarantee */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🛡️ خصوصيتكِ أمانة — لا نشارك رقمكِ الحقيقي مع أحد
+        ️ خصوصيتكِ أمانة — لا نشارك رقمكِ الحقيقي مع أحد
       </p>
     </div>
   );

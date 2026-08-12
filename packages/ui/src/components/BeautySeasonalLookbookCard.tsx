@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W9: The Small Details — Delightful Surprises.
  *
  * Usage:
- *   <BeautySeasonalLookbookCard season="summer" looks={[{ emoji: '☀️', name: 'إطلالة الصيف' }]} />
+ *   <BeautySeasonalLookbookCard season="summer" looks={[{ emoji: '️', name: 'إطلالة الصيف' }]} />
  */
 
 type Season = 'spring' | 'summer' | 'autumn' | 'winter' | 'ramadan' | 'eid';
@@ -20,51 +20,51 @@ interface Look {
 
 const SEASONAL: Record<Season, { emoji: string; title: string; looks: Look[] }> = {
   spring: {
-    emoji: '🌸',
+    emoji: '',
     title: 'ربيع 2026',
     looks: [
-      { emoji: '🌺', name: 'إطلالة زهرية', description: 'ألوان باستيل ومكياج وردي ناعم' },
-      { emoji: '💐', name: 'بشرة متوهجة', description: 'ترطيب عميق وإشراقة طبيعية' },
+      { emoji: '', name: 'إطلالة زهرية', description: 'ألوان باستيل ومكياج وردي ناعم' },
+      { emoji: '', name: 'بشرة متوهجة', description: 'ترطيب عميق وإشراقة طبيعية' },
     ],
   },
   summer: {
-    emoji: '☀️',
+    emoji: '️',
     title: 'صيف 2026',
     looks: [
-      { emoji: '🏖️', name: 'إطلالة الشاطئ', description: 'مكياج مقاوم للماء وواقي شمس' },
-      { emoji: '🌊', name: 'شعر منعش', description: 'تسريحات مرفوعة وخفيفة' },
+      { emoji: '️', name: 'إطلالة الشاطئ', description: 'مكياج مقاوم للماء وواقي شمس' },
+      { emoji: '', name: 'شعر منعش', description: 'تسريحات مرفوعة وخفيفة' },
     ],
   },
   autumn: {
-    emoji: '🍂',
+    emoji: '',
     title: 'خريف 2026',
     looks: [
-      { emoji: '🍁', name: 'ألوان دافئة', description: 'درجات برونزية وبنية في المكياج' },
-      { emoji: '🧣', name: 'عناية بالشعر', description: 'ترطيب عميق بعد الصيف' },
+      { emoji: '', name: 'ألوان دافئة', description: 'درجات برونزية وبنية في المكياج' },
+      { emoji: '', name: 'عناية بالشعر', description: 'ترطيب عميق بعد الصيف' },
     ],
   },
   winter: {
-    emoji: '❄️',
+    emoji: '️',
     title: 'شتاء 2026',
     looks: [
-      { emoji: '🎄', name: 'إطلالة الشتاء', description: 'مكياج دخاني وألوان داكنة' },
-      { emoji: '🧴', name: 'حماية البشرة', description: 'مرطبات غنية ضد الجفاف' },
+      { emoji: '', name: 'إطلالة الشتاء', description: 'مكياج دخاني وألوان داكنة' },
+      { emoji: '', name: 'حماية البشرة', description: 'مرطبات غنية ضد الجفاف' },
     ],
   },
   ramadan: {
-    emoji: '🌙',
+    emoji: '',
     title: 'رمضان',
     looks: [
-      { emoji: '🕌', name: 'إطلالة رمضانية', description: 'مكياج خفيف يدوم طويلاً' },
-      { emoji: '✨', name: 'عناية ليلية', description: 'روتين عناية مكثف بعد الإفطار' },
+      { emoji: '', name: 'إطلالة رمضانية', description: 'مكياج خفيف يدوم طويلاً' },
+      { emoji: '', name: 'عناية ليلية', description: 'روتين عناية مكثف بعد الإفطار' },
     ],
   },
   eid: {
-    emoji: '🎉',
+    emoji: '',
     title: 'العيد',
     looks: [
-      { emoji: '🌟', name: 'إطلالة العيد', description: 'مكياج احتفالي جريء' },
-      { emoji: '💫', name: 'تسريحة العيد', description: 'تسريحات أنيقة للمناسبات' },
+      { emoji: '', name: 'إطلالة العيد', description: 'مكياج احتفالي جريء' },
+      { emoji: '', name: 'تسريحة العيد', description: 'تسريحات أنيقة للمناسبات' },
     ],
   },
 };

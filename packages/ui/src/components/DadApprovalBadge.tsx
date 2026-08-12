@@ -42,7 +42,7 @@ export function DadApprovalBadge({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true">
-            {parentApproved ? '✅' : '👨‍👩‍👧'}
+            {parentApproved ? '' : '‍‍'}
           </span>
           <div>
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
@@ -61,7 +61,7 @@ export function DadApprovalBadge({
               : 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300',
           )}
         >
-          {parentApproved ? '✅ موافق' : '⏳ بانتظار'}
+          {parentApproved ? ' موافق' : ' بانتظار'}
         </span>
       </div>
 
@@ -69,7 +69,7 @@ export function DadApprovalBadge({
       {age !== undefined && (
         <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-black/20">
           <p className="text-[10px] text-text-secondary dark:text-gray-300">
-            👧 {age} سنة — {needsApproval ? 'مطلوب موافقة ولي الأمر' : 'لا تحتاج موافقة'}
+             {age} سنة — {needsApproval ? 'مطلوب موافقة ولي الأمر' : 'لا تحتاج موافقة'}
           </p>
         </div>
       )}
@@ -79,7 +79,7 @@ export function DadApprovalBadge({
         <>
           <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-black/20">
             <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-              📱 كيف يحصل ولي الأمر على الموافقة؟
+               كيف يحصل ولي الأمر على الموافقة؟
             </p>
             <div className="mt-1 space-y-0.5 text-[10px] text-text-secondary dark:text-gray-300">
               <p>1. نرسل رابط الموافقة لجوال {parentName}</p>
@@ -93,7 +93,7 @@ export function DadApprovalBadge({
             onClick={onRequestApproval}
             className="mt-2 w-full rounded-xl bg-amber-600 py-2 text-xs font-bold text-white hover:bg-amber-700 active:scale-[0.98] transition-all"
           >
-            أرسلي طلب الموافقة 📲
+            أرسلي طلب الموافقة 
           </button>
         </>
       )}
@@ -101,13 +101,13 @@ export function DadApprovalBadge({
       {parentApproved && (
         <div className="mt-2 rounded-lg bg-emerald-50 p-2 text-center dark:bg-emerald-950">
           <p className="text-[10px] text-emerald-700 dark:text-emerald-300">
-            🎉 تمت الموافقة — احجزي جلستكِ الآن
+             تمت الموافقة — احجزي جلستكِ الآن
           </p>
         </div>
       )}
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        👨‍👩‍👧 سلامتِك وراحتكِ هي أولويتنا دائماً
+        ‍‍ سلامتِك وراحتكِ هي أولويتنا دائماً
       </p>
     </div>
   );

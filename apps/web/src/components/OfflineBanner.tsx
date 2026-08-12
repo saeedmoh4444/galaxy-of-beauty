@@ -21,7 +21,7 @@ export function OfflineBanner(): JSX.Element | null {
 
   return (
     <div className="sticky top-0 z-50 bg-amber-500 px-4 py-2 text-center text-sm font-medium text-white">
-      ⚠️ أنت غير متصل بالإنترنت حالياً — قد لا تعمل بعض الميزات
+       أنت غير متصل بالإنترنت حالياً — قد لا تعمل بعض الميزات
     </div>
   );
 }

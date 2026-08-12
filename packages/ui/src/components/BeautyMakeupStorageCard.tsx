@@ -9,7 +9,7 @@ export function BeautyMakeupStorageCard({ className = '' }: { className?: string
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💄</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">تخزين المكياج</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">
@@ -19,10 +19,10 @@ export function BeautyMakeupStorageCard({ className = '' }: { className?: string
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🌡️', text: 'مكان بارد وجاف — ليس في الحمام الرطب' },
-          { emoji: '📦', text: 'منظمات أكريليك شفافة — تري كل شيء' },
-          { emoji: '☀️', text: 'بعيداً عن الشمس — الضوء يدمر المنتجات' },
-          { emoji: '🗂️', text: 'قسميها: يومي — أسبوعي — مناسبات' },
+          { emoji: '️', text: 'مكان بارد وجاف — ليس في الحمام الرطب' },
+          { emoji: '', text: 'منظمات أكريليك شفافة — تري كل شيء' },
+          { emoji: '️', text: 'بعيداً عن الشمس — الضوء يدمر المنتجات' },
+          { emoji: '️', text: 'قسميها: يومي — أسبوعي — مناسبات' },
         ].map((t, i) => (
           <div
             key={i}

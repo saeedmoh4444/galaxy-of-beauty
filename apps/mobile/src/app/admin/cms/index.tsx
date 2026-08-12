@@ -41,10 +41,10 @@ export default function AdminCMSScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📝 إدارة المحتوى</Text>
+      <Text style={styles.t}> إدارة المحتوى</Text>
       {data.map((cat: any, i: number) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>📂</Text>
+          <Text style={styles.emoji}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{(cat.nameJson as any)?.ar as string}</Text>
             <Text style={styles.meta}>

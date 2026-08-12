@@ -46,14 +46,14 @@ export default function PredictiveDemandScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📊 توقعات الطلب</Text>
+      <Text style={styles.t}> توقعات الطلب</Text>
       <View style={styles.kpi}>
-        <Text style={styles.kpiTitle}>📅 الأسبوع القادم</Text>
+        <Text style={styles.kpiTitle}> الأسبوع القادم</Text>
         <Text style={styles.kpiVal}>{(nw.predictedBookings as number) ?? 0} حجز</Text>
         <Text style={styles.kpiMeta}>الذروة: {nw.peakDay as string}</Text>
       </View>
       <View style={styles.kpi}>
-        <Text style={styles.kpiTitle}>📈 الشهر القادم</Text>
+        <Text style={styles.kpiTitle}> الشهر القادم</Text>
         <Text style={[styles.kpiVal, { color: '#059669' }]}>
           {(nm.predictedBookings as number) ?? 0} حجز
         </Text>

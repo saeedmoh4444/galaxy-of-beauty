@@ -27,7 +27,7 @@ export default function BundlesPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">📦 اصنعي باقتكِ</h1>
+        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100"> اصنعي باقتكِ</h1>
         <p className="mt-2 text-text-secondary">اختاري ٢-٥ خدمات واحصلي على خصم تلقائي</p>
       </div>
 
@@ -90,7 +90,7 @@ export default function BundlesPage(): JSX.Element {
                     <div
                       className={`h-6 w-6 rounded-full border-2 flex items-center justify-center ${selected.has(svc.id) ? 'border-brand-600 bg-brand-600' : 'border-edge'}`}
                     >
-                      {selected.has(svc.id) && <span className="text-white text-xs">✓</span>}
+                      {selected.has(svc.id) && <span className="text-white text-xs"></span>}
                     </div>
                   </div>
                 </button>
@@ -102,7 +102,7 @@ export default function BundlesPage(): JSX.Element {
       {count >= 2 && (
         <div className="mt-8 text-center">
           <Link href={`/bookings/create?serviceIds=${[...selected].join(',')}`}>
-            <Button size="lg">✨ احجزي باقتكِ بخصم {discount}%</Button>
+            <Button size="lg"> احجزي باقتكِ بخصم {discount}%</Button>
           </Link>
         </div>
       )}

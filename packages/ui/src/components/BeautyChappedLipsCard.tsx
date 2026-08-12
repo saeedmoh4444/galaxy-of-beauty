@@ -9,7 +9,7 @@ export function BeautyChappedLipsCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💋</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">تشقق الشفاه</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">علاج سريع للشفاه الجافة</p>
@@ -17,10 +17,10 @@ export function BeautyChappedLipsCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🍯', text: 'مقشر سكر + عسل — مرة أسبوعياً' },
-          { emoji: '🧴', text: 'بلسم بفيتامين E — كل ساعتين' },
-          { emoji: '💧', text: 'اشربي ماء — الجفاف يبدأ من الداخل' },
-          { emoji: '🚫', text: 'لا تلعقي شفاهكِ — اللعاب يزيد الجفاف' },
+          { emoji: '', text: 'مقشر سكر + عسل — مرة أسبوعياً' },
+          { emoji: '', text: 'بلسم بفيتامين E — كل ساعتين' },
+          { emoji: '', text: 'اشربي ماء — الجفاف يبدأ من الداخل' },
+          { emoji: '', text: 'لا تلعقي شفاهكِ — اللعاب يزيد الجفاف' },
         ].map((t, i) => (
           <div
             key={i}

@@ -52,7 +52,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            📊 تحليلات الجمال
+             تحليلات الجمال
           </h1>
           <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
             ملخص إنفاقكِ وحجوزاتكِ الشخصية
@@ -81,22 +81,22 @@ export default function BeautyAnalyticsPage(): JSX.Element {
             {/* KPI Cards */}
             <div className="grid gap-4 sm:grid-cols-4">
               <Card padding="lg" className="text-center">
-                <p className="text-4xl">📅</p>
+                <p className="text-4xl"></p>
                 <p className="mt-2 text-3xl font-extrabold text-brand-600">{s.totalBookings}</p>
                 <p className="text-xs text-text-secondary">إجمالي الحجوزات</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-4xl">✅</p>
+                <p className="text-4xl"></p>
                 <p className="mt-2 text-3xl font-extrabold text-green-600">{s.completedBookings}</p>
                 <p className="text-xs text-text-secondary">مكتملة</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-4xl">📈</p>
+                <p className="text-4xl"></p>
                 <p className="mt-2 text-3xl font-extrabold text-blue-600">{s.completionRate}%</p>
                 <p className="text-xs text-text-secondary">نسبة الإكمال</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-4xl">💰</p>
+                <p className="text-4xl"></p>
                 <p className="mt-2 text-3xl font-extrabold text-purple-600">
                   {formatCurrency(s.totalSpent)}
                 </p>
@@ -106,7 +106,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
 
             {/* Category Breakdown */}
             <Card padding="lg">
-              <h3 className="font-bold text-lg mb-4">📊 الحجوزات حسب الفئة</h3>
+              <h3 className="font-bold text-lg mb-4"> الحجوزات حسب الفئة</h3>
               {categories.length === 0 ? (
                 <p className="text-sm text-text-tertiary text-center py-4">لا توجد بيانات كافية</p>
               ) : (
@@ -135,7 +135,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
 
             {/* Monthly Trend */}
             <Card padding="lg">
-              <h3 className="font-bold text-lg mb-4">📈 النشاط الشهري</h3>
+              <h3 className="font-bold text-lg mb-4"> النشاط الشهري</h3>
               {monthlyTrend.length === 0 ? (
                 <p className="text-sm text-text-tertiary text-center py-4">لا توجد بيانات كافية</p>
               ) : (
@@ -162,15 +162,15 @@ export default function BeautyAnalyticsPage(): JSX.Element {
             {/* Recent Credits */}
             {s.recentCredits.length > 0 && (
               <Card padding="lg">
-                <h3 className="font-bold text-lg mb-4">💰 آخر الرصيد المضاف</h3>
+                <h3 className="font-bold text-lg mb-4"> آخر الرصيد المضاف</h3>
                 <div className="space-y-2">
                   {s.recentCredits.map((c, i) => (
                     <div key={i} className="flex justify-between text-sm">
                       <span className="text-text-secondary">
                         {c.source === 'REFERRAL_BONUS'
-                          ? '🎫 مكافأة إحالة'
+                          ? ' مكافأة إحالة'
                           : c.source === 'CASHBACK'
-                            ? '💵 كاش باك'
+                            ? ' كاش باك'
                             : c.source}
                       </span>
                       <span className="font-bold text-green-600">+{formatCurrency(c.amount)}</span>
@@ -184,7 +184,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
             <div className="text-center">
               <Link href="/bookings/create">
                 <span className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-5 py-3 text-sm font-bold text-white hover:bg-brand-700 transition-colors">
-                  احجزي جلستكِ القادمة 💅
+                  احجزي جلستكِ القادمة 
                 </span>
               </Link>
             </div>

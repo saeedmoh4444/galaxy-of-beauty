@@ -17,32 +17,32 @@ interface HijabiBeautyCardProps {
 
 const TIPS = [
   {
-    emoji: '🧕',
+    emoji: '',
     title: 'عناية بالشعر تحت الحجاب',
     desc: 'جلسات ترطيب عميق أسبوعياً — لأن شعركِ يحتاج عناية إضافية تحت الحجاب',
   },
   {
-    emoji: '💆‍♀️',
+    emoji: '‍️',
     title: 'تدليك فروة الرأس',
     desc: 'يحسن الدورة الدموية ويمنع تساقط الشعر الناتج عن الحجاب',
   },
   {
-    emoji: '💄',
+    emoji: '',
     title: 'مكياج يناسب الحجاب',
     desc: 'تركيز على العينين والحواجب — لأنها نافذة وجهكِ',
   },
   {
-    emoji: '🧴',
+    emoji: '',
     title: 'روتين مسائي للشعر',
     desc: 'فك الشعر فور العودة للمنزل وترطيبه ليسترجع حيويته',
   },
   {
-    emoji: '👒',
+    emoji: '',
     title: 'بطانة حجاب حريرية',
     desc: 'تحمي الشعر من التكسر وتقلل الاحتكاك — متوفرة في صالوناتنا',
   },
   {
-    emoji: '🌸',
+    emoji: '',
     title: 'عناية بالبشرة',
     desc: 'تركيز على منطقة الجبهة والذقن — الأكثر تأثراً بالحجاب',
   },
@@ -58,7 +58,7 @@ export function HijabiBeautyCard({ onBook, className = '' }: HijabiBeautyCardPro
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🧕
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-teal-800 dark:text-teal-200">جمال المحجبات</h4>
         <p className="text-[10px] text-teal-600 dark:text-teal-400">عناية متخصصة للمرأة المحجبة</p>
@@ -85,7 +85,7 @@ export function HijabiBeautyCard({ onBook, className = '' }: HijabiBeautyCardPro
       {/* Private room */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
         <p className="text-[10px] font-bold text-teal-800 dark:text-teal-200">
-          🚪 غرفة خاصة متوفرة
+           غرفة خاصة متوفرة
         </p>
         <p className="mt-0.5 text-[10px] text-teal-600 dark:text-teal-400">
           جميع خدماتنا في غرف خاصة — لا داعي لخلع الحجاب أمام أحد
@@ -97,11 +97,11 @@ export function HijabiBeautyCard({ onBook, className = '' }: HijabiBeautyCardPro
         onClick={onBook}
         className="mt-3 w-full rounded-xl bg-teal-600 py-2.5 text-xs font-bold text-white hover:bg-teal-700 active:scale-[0.98] transition-all"
       >
-        احجزي جلستكِ الخاصة 🧕
+        احجزي جلستكِ الخاصة 
       </button>
 
       <p className="mt-2 text-center text-[9px] text-teal-600 dark:text-teal-400">
-        🧕 حجابكِ تاجكِ — ونهتم بجمالكِ تحته
+         حجابكِ تاجكِ — ونهتم بجمالكِ تحته
       </p>
     </div>
   );

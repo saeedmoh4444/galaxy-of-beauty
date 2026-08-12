@@ -37,18 +37,18 @@ export default function SalonFinderScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📍 صالونات قريبة</Text>
+      <Text style={styles.t}> صالونات قريبة</Text>
       {salons.map((s: any) => (
         <View key={s.id} style={styles.card}>
-          <Text style={styles.se}>💇‍♀️</Text>
+          <Text style={styles.se}>‍️</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.sn}>{(s.nameAr as string) ?? (s.name as string)}</Text>
             <Text style={styles.sm}>
-              📍 {s.city as string}
+               {s.city as string}
               {s.distance ? ` · ${s.distance as string}` : ''}
             </Text>
             <Text style={styles.sr}>
-              ⭐ {(s.rating as number) ?? 0} · 👩‍🎨 {(s.technicianCount as number) ?? 0} فنيات
+               {(s.rating as number) ?? 0} · ‍ {(s.technicianCount as number) ?? 0} فنيات
             </Text>
           </View>
           <TouchableOpacity style={styles.vb}>

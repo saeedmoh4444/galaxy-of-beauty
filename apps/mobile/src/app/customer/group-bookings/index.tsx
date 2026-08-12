@@ -4,11 +4,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 const TE: Record<string, string> = {
-  bridal: '👰',
-  birthday: '🎂',
-  girls_night: '🌙',
-  family: '👨‍👩‍👧‍👦',
-  other: '🎉',
+  bridal: '',
+  birthday: '',
+  girls_night: '',
+  family: '‍‍‍',
+  other: '',
 };
 
 export default function GroupBookingsScreen(): JSX.Element {
@@ -45,10 +45,10 @@ export default function GroupBookingsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>👯‍♀️ الحجوزات الجماعية</Text>
+      <Text style={styles.t}>‍️ الحجوزات الجماعية</Text>
       {groups.map((g: any) => (
         <View key={g.id} style={styles.card}>
-          <Text style={styles.ge}>{TE[g.theme as string] ?? '🎉'}</Text>
+          <Text style={styles.ge}>{TE[g.theme as string] ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.gn}>{g.name as string}</Text>
             <Text style={styles.gm}>

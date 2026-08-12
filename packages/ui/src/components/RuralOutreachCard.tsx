@@ -41,7 +41,7 @@ export function RuralOutreachCard({
       {/* Header */}
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🏡
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">
           تمكين المرأة الريفية
@@ -55,21 +55,21 @@ export function RuralOutreachCard({
       <div className="mt-3 grid grid-cols-3 gap-2">
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
           <p className="text-lg" aria-hidden="true">
-            🎓
+            
           </p>
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{trained}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">متدربة</p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
           <p className="text-lg" aria-hidden="true">
-            💼
+            
           </p>
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{employed}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">موظفة</p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
           <p className="text-lg" aria-hidden="true">
-            📍
+            
           </p>
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{villages}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">قرية</p>
@@ -80,7 +80,7 @@ export function RuralOutreachCard({
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <div className="flex items-center justify-between text-[10px]">
           <span className="text-emerald-700 dark:text-emerald-300">
-            🎯 هدف توظيف {target} امرأة ريفية
+             هدف توظيف {target} امرأة ريفية
           </span>
           <span className="font-bold text-emerald-800 dark:text-emerald-200">{employPct}%</span>
         </div>
@@ -95,7 +95,7 @@ export function RuralOutreachCard({
       {/* How it works */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-200">
-          🚐 كيف نصل إليهن
+           كيف نصل إليهن
         </p>
         <div className="mt-1 space-y-1 text-[10px] text-emerald-700 dark:text-emerald-300">
           <p>• عيادات متنقلة تزور القرى أسبوعياً</p>
@@ -119,12 +119,12 @@ export function RuralOutreachCard({
           onClick={onDonate}
           className="flex-1 rounded-xl border border-emerald-200 bg-white py-2 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:bg-gray-800 dark:text-emerald-300"
         >
-          🤲 تبرعي
+           تبرعي
         </button>
       </div>
 
       <p className="mt-2 text-center text-[9px] text-emerald-600 dark:text-emerald-400">
-        💚 كل امرأة تستحق فرصة — أينما كانت
+         كل امرأة تستحق فرصة — أينما كانت
       </p>
     </div>
   );

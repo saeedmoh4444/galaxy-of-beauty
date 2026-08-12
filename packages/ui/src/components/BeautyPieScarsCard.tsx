@@ -9,7 +9,7 @@ export function BeautyPieScarsCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🔴</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">
             علامات ما بعد الحبوب
@@ -19,10 +19,10 @@ export function BeautyPieScarsCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🟤', text: 'PIH: تصبغ بني — فيتامين C وأربيوتين' },
-          { emoji: '🔴', text: 'PIE: احمرار — نيوكسين، أزيليك أسيد' },
-          { emoji: '🧴', text: 'ريتينول — يسرع تجدد الخلايا' },
-          { emoji: '☀️', text: 'SPF يومي — يمنع تفاقم التصبغات' },
+          { emoji: '', text: 'PIH: تصبغ بني — فيتامين C وأربيوتين' },
+          { emoji: '', text: 'PIE: احمرار — نيوكسين، أزيليك أسيد' },
+          { emoji: '', text: 'ريتينول — يسرع تجدد الخلايا' },
+          { emoji: '️', text: 'SPF يومي — يمنع تفاقم التصبغات' },
         ].map((t, i) => (
           <div
             key={i}

@@ -24,7 +24,7 @@ export default function TravelKitPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🧳 حقيبة السفر</h1>
+          <h1 className="text-2xl font-bold"> حقيبة السفر</h1>
           <p className="mt-1 text-sm text-text-secondary">جهزي حقيبة تجميل مثالية لرحلتكِ</p>
         </div>
 
@@ -61,10 +61,10 @@ export default function TravelKitPage(): JSX.Element {
           <CardSkeleton />
         ) : kit ? (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">🧳 محتويات الحقيبة</h3>
+            <h3 className="font-bold mb-3"> محتويات الحقيبة</h3>
             {(kit.tip as string) ? (
               <div className="mb-4 rounded-lg bg-brand-50 dark:bg-brand-950 p-3 text-sm text-brand-700">
-                <span className="font-bold">💡 نصيحة: </span>
+                <span className="font-bold"> نصيحة: </span>
                 {kit.tip as string}
               </div>
             ) : null}

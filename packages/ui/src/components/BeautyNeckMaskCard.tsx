@@ -9,7 +9,7 @@ export function BeautyNeckMaskCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🎭</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">قناع الرقبة</h4>
           <p className="text-[10px] text-purple-500 dark:text-purple-400">علاج مكثف للرقبة</p>
@@ -17,10 +17,10 @@ export function BeautyNeckMaskCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: 'قناع سيليكون — يعاد استخدامه فوق السيروم' },
-          { emoji: '💧', text: 'قناع ورقي للرقبة — مرة أسبوعياً' },
-          { emoji: '⏱️', text: '20-30 دقيقة — وقت الاسترخاء' },
-          { emoji: '🌙', text: 'قبل النوم — البشرة تتجدد ليلاً' },
+          { emoji: '', text: 'قناع سيليكون — يعاد استخدامه فوق السيروم' },
+          { emoji: '', text: 'قناع ورقي للرقبة — مرة أسبوعياً' },
+          { emoji: '️', text: '20-30 دقيقة — وقت الاسترخاء' },
+          { emoji: '', text: 'قبل النوم — البشرة تتجدد ليلاً' },
         ].map((t, i) => (
           <div
             key={i}

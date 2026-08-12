@@ -3,10 +3,10 @@
 import { cn } from '@galaxy/shared';
 
 const TIPS = [
-  { emoji: '🦶', title: 'نقع أسبوعي', desc: 'ماء دافئ وملح إنكليزي 15 دقيقة' },
+  { emoji: '', title: 'نقع أسبوعي', desc: 'ماء دافئ وملح إنكليزي 15 دقيقة' },
   { emoji: '🪨', title: 'حجر الخفاف', desc: 'لإزالة الجلد الميت بلطف' },
-  { emoji: '🧴', title: 'ترطيب عميق', desc: 'كريم مرطب قبل النوم مع جوارب' },
-  { emoji: '💅', title: 'عناية بالأظافر', desc: 'قص مستقيم لمنع الانغراس' },
+  { emoji: '', title: 'ترطيب عميق', desc: 'كريم مرطب قبل النوم مع جوارب' },
+  { emoji: '', title: 'عناية بالأظافر', desc: 'قص مستقيم لمنع الانغراس' },
 ];
 
 interface BeautyFootCareCardProps {
@@ -22,7 +22,7 @@ export function BeautyFootCareCard({ className = '' }: BeautyFootCareCardProps):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🦶</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">عناية بالقدمين</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">أقدام ناعمة طوال العام</p>

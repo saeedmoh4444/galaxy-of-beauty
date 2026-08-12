@@ -33,7 +33,7 @@ export default function BookingChecklistScreen(): JSX.Element {
       errorMessage="فشل تحميل القائمة"
       onRetry={() => list.refetch()}
     >
-      <Text style={styles.title}>📋 قائمة التحضير</Text>
+      <Text style={styles.title}> قائمة التحضير</Text>
       {CHECKLIST.map((item, i) => (
         <View key={i} style={styles.row}>
           <Text style={styles.check}>⬜</Text>

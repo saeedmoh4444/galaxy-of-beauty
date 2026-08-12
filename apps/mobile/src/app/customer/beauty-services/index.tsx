@@ -15,81 +15,81 @@ interface Card {
 
 const CARDS: Card[] = [
   {
-    emoji: '💡',
+    emoji: '',
     title: 'نصيحة جمال',
     subtitle: 'ضعي واقي الشمس كل ساعتين',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '☀️', text: 'SPF 50+ — للوجه والرقبة واليدين' },
-      { emoji: '⏰', text: 'جدديه كل ساعتين — تحت الشمس المباشرة' },
-      { emoji: '🏠', text: 'حتى في البيت — الأشعة تخترق الزجاج' },
-      { emoji: '📅', text: '365 يوم — صيفاً وشتاءً' },
+      { emoji: '️', text: 'SPF 50+ — للوجه والرقبة واليدين' },
+      { emoji: '', text: 'جدديه كل ساعتين — تحت الشمس المباشرة' },
+      { emoji: '', text: 'حتى في البيت — الأشعة تخترق الزجاج' },
+      { emoji: '', text: '365 يوم — صيفاً وشتاءً' },
     ],
   },
   {
-    emoji: '🚨',
+    emoji: '',
     title: 'طوارئ الجمال',
     subtitle: 'مساعدة فورية — 24 ساعة',
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '📞', text: 'اتصلي: 9200 — خط الطوارئ' },
-      { emoji: '⏰', text: 'وصول خلال 30 دقيقة' },
-      { emoji: '🏠', text: 'خدمة منزلية — للطوارئ' },
+      { emoji: '', text: 'اتصلي: 9200 — خط الطوارئ' },
+      { emoji: '', text: 'وصول خلال 30 دقيقة' },
+      { emoji: '', text: 'خدمة منزلية — للطوارئ' },
       { emoji: '🩺', text: 'استشارة طبية — عند الحاجة' },
     ],
   },
   {
-    emoji: '🏩',
+    emoji: '',
     title: 'مرافق الصالون',
     subtitle: 'واي فاي — مواقف — قهوة',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '📶', text: 'واي فاي مجاني — ابقي متصلة' },
+      { emoji: '', text: 'واي فاي مجاني — ابقي متصلة' },
       { emoji: '🅿️', text: 'مواقف سيارات — مجانية' },
-      { emoji: '☕', text: 'ضيافة — قهوة وشاي' },
-      { emoji: '👶', text: 'ركن أطفال — العبي بأمان' },
+      { emoji: '', text: 'ضيافة — قهوة وشاي' },
+      { emoji: '', text: 'ركن أطفال — العبي بأمان' },
     ],
   },
   {
-    emoji: '🕌',
+    emoji: '',
     title: 'غرفة الصلاة',
     subtitle: 'سجادات — عباءات — قبلة',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '🧎', text: 'سجادات صلاة — نظيفة ومعطرة' },
-      { emoji: '🧕', text: 'عباءات — متوفرة للصلاة' },
-      { emoji: '🕋', text: 'اتجاه القبلة — محدد بوضوح' },
-      { emoji: '💧', text: 'مكان وضوء — مجهز بالكامل' },
+      { emoji: '', text: 'سجادات صلاة — نظيفة ومعطرة' },
+      { emoji: '', text: 'عباءات — متوفرة للصلاة' },
+      { emoji: '', text: 'اتجاه القبلة — محدد بوضوح' },
+      { emoji: '', text: 'مكان وضوء — مجهز بالكامل' },
     ],
   },
   {
-    emoji: '⚖️',
+    emoji: '️',
     title: 'مقارنة المنتجات',
     subtitle: 'كريم A vs كريم B',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '⭐', text: 'كريم A: 120 ر.س — ترطيب 24 ساعة (4.5★)' },
-      { emoji: '💰', text: 'كريم B: 80 ر.س — خفيف وسريع (4.0★)' },
-      { emoji: '🏆', text: 'الأفضل: كريم A — ترطيب عميق' },
-      { emoji: '💡', text: 'الأوفر: كريم B — قيمة ممتازة' },
+      { emoji: '', text: 'كريم A: 120 ر.س — ترطيب 24 ساعة (4.5)' },
+      { emoji: '', text: 'كريم B: 80 ر.س — خفيف وسريع (4.0)' },
+      { emoji: '', text: 'الأفضل: كريم A — ترطيب عميق' },
+      { emoji: '', text: 'الأوفر: كريم B — قيمة ممتازة' },
     ],
   },
   {
-    emoji: '💎',
+    emoji: '',
     title: 'الاشتراك المميز',
     subtitle: 'باقة Premium — خصم 20%',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '💇', text: 'خصم 20% على جميع الخدمات' },
-      { emoji: '🎫', text: 'حجز أولوية — قبل 48 ساعة' },
-      { emoji: '🎁', text: 'هدية شهرية — منتج تجميل' },
-      { emoji: '⭐', text: 'نقاط مضاعفة — x2 على كل ريال' },
+      { emoji: '', text: 'خصم 20% على جميع الخدمات' },
+      { emoji: '', text: 'حجز أولوية — قبل 48 ساعة' },
+      { emoji: '', text: 'هدية شهرية — منتج تجميل' },
+      { emoji: '', text: 'نقاط مضاعفة — x2 على كل ريال' },
     ],
   },
 ];
@@ -97,7 +97,7 @@ const CARDS: Card[] = [
 export default function BeautyServicesScreen(): JSX.Element {
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>💅 خدمات الجمال</Text>
+      <Text style={s.h}> خدمات الجمال</Text>
       <Text style={s.sub}>اكتشفي كل ما تحتاجينه</Text>
       <View style={s.grid}>
         {CARDS.map((c, i) => (

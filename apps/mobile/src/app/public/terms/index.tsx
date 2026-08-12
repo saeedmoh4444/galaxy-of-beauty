@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native';
 export default function TermsScreen(): JSX.Element {
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>📄 الشروط والأحكام</Text>
+      <Text style={s.h}> الشروط والأحكام</Text>
       <Text style={s.d}>آخر تحديث: 1 أغسطس 2026</Text>
       {[
         'مقدمة',

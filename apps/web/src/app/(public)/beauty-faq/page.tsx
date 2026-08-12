@@ -23,7 +23,7 @@ export default function BeautyFaqPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🤖</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">Beauty FAQ</h1>
         <p className="mt-2 text-text-secondary">أجوبة على أسئلتكِ عن الجمال والعناية</p>
       </div>
@@ -34,7 +34,7 @@ export default function BeautyFaqPage(): JSX.Element {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && setSearch(query.trim())}
-          placeholder="🔍 ابحثي عن سؤال..."
+          placeholder=" ابحثي عن سؤال..."
           className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
         />
         <button

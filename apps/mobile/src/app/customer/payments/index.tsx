@@ -30,7 +30,7 @@ export default function PaymentsScreen(): JSX.Element {
       emptyTitle="لا توجد مدفوعات"
       onRetry={() => payments.refetch()}
     >
-      <Text style={styles.title}>💳 المدفوعات</Text>
+      <Text style={styles.title}> المدفوعات</Text>
       <FlatList
         data={data as any[]}
         keyExtractor={(_, i) => String(i)}

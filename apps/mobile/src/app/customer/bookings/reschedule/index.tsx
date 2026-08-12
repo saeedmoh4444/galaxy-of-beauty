@@ -47,9 +47,9 @@ export default function RescheduleScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}>🔄 تعديل الموعد</Text>
+        <Text style={styles.t}> تعديل الموعد</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}>✅</Text>
+          <Text style={styles.re}></Text>
           <Text style={styles.rt}>تم طلب التعديل</Text>
           <Text style={styles.rm}>سيتم إعلامكِ عند تأكيد الموعد الجديد</Text>
         </View>
@@ -67,7 +67,7 @@ export default function RescheduleScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🔄 تعديل الموعد</Text>
+      <Text style={styles.t}> تعديل الموعد</Text>
       {bookings.map((b: any) => (
         <TouchableOpacity
           key={b.id}

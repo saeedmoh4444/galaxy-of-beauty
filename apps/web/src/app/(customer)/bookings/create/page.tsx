@@ -116,7 +116,7 @@ export default function CreateBookingPage(): JSX.Element {
                       : 'bg-gray-200 text-text-secondary'
                 }`}
               >
-                {step > i + 1 ? '✓' : i + 1}
+                {step > i + 1 ? '' : i + 1}
               </span>
               <span className={step === i + 1 ? 'font-bold text-brand-600' : 'text-text-tertiary'}>
                 {label}

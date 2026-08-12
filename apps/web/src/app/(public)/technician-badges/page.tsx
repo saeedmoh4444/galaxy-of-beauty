@@ -14,42 +14,42 @@ interface Badge {
 
 const BADGE_META: Record<string, { emoji: string; gradient: string; descAr: string }> = {
   top_rated: {
-    emoji: '⭐',
+    emoji: '',
     gradient: 'from-amber-400 to-yellow-500',
     descAr: 'حصلت على أعلى التقييمات من العميلات',
   },
   most_booked: {
-    emoji: '🔥',
+    emoji: '',
     gradient: 'from-red-400 to-orange-500',
     descAr: 'الأكثر حجوزات في منصتنا',
   },
   quick_response: {
-    emoji: '⚡',
+    emoji: '',
     gradient: 'from-cyan-400 to-blue-500',
     descAr: 'استجابة سريعة وتأكيد فوري للحجوزات',
   },
   premium: {
-    emoji: '💎',
+    emoji: '',
     gradient: 'from-purple-400 to-indigo-500',
     descAr: 'فنية متميزة معتمدة من جالكسي بيوتي',
   },
   certified: {
-    emoji: '🏅',
+    emoji: '',
     gradient: 'from-green-400 to-emerald-500',
     descAr: 'حاصلة على شهادات معتمدة في مجال التجميل',
   },
   newcomer: {
-    emoji: '🌱',
+    emoji: '',
     gradient: 'from-lime-400 to-green-500',
     descAr: 'انضمت حديثاً وأثبتت جدارتها',
   },
   loyal: {
-    emoji: '👑',
+    emoji: '',
     gradient: 'from-pink-400 to-rose-500',
     descAr: 'معنا منذ أكثر من سنتين من الخدمة المتميزة',
   },
   mentor: {
-    emoji: '🎓',
+    emoji: '',
     gradient: 'from-teal-400 to-cyan-500',
     descAr: 'مدربة وخبيرة تدرب فنيات أخريات',
   },
@@ -57,7 +57,7 @@ const BADGE_META: Record<string, { emoji: string; gradient: string; descAr: stri
 
 function getBadgeMeta(key: string) {
   return (
-    BADGE_META[key] ?? { emoji: '🏷️', gradient: 'from-gray-400 to-gray-500', descAr: 'شارة تميز' }
+    BADGE_META[key] ?? { emoji: '️', gradient: 'from-gray-400 to-gray-500', descAr: 'شارة تميز' }
   );
 }
 
@@ -80,7 +80,7 @@ export default function TechnicianBadgesPage(): JSX.Element {
     <div className="mx-auto max-w-5xl px-4 py-12">
       {/* Header */}
       <div className="mb-10 text-center">
-        <span className="text-6xl">🏅</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           شارات الفنيات
         </h1>
@@ -140,7 +140,7 @@ export default function TechnicianBadgesPage(): JSX.Element {
 
       {/* Bottom CTA */}
       <div className="mt-12 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-500 p-6 text-center text-white">
-        <p className="text-2xl font-bold">🏅 ابحثي عن فنيات معتمدات</p>
+        <p className="text-2xl font-bold"> ابحثي عن فنيات معتمدات</p>
         <p className="mt-1 text-white/80">
           الفنيات الحاصلات على شارات التميز يقدمن أعلى مستويات الجودة
         </p>

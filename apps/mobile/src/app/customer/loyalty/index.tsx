@@ -4,9 +4,9 @@ import { trpc } from '@/lib/trpc-react';
 import { formatCurrency, DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 
 const TIERS: Record<string, { emoji: string; label: string }> = {
-  SILVER: { emoji: '🥈', label: 'فضية' },
-  GOLD: { emoji: '🥇', label: 'ذهبية' },
-  PLATINUM: { emoji: '💎', label: 'بلاتينية' },
+  SILVER: { emoji: '', label: 'فضية' },
+  GOLD: { emoji: '', label: 'ذهبية' },
+  PLATINUM: { emoji: '', label: 'بلاتينية' },
 };
 
 export default function LoyaltyScreen(): JSX.Element {
@@ -23,12 +23,12 @@ export default function LoyaltyScreen(): JSX.Element {
       errorMessage="فشل تحميل حساب الولاء"
       onRetry={() => account.refetch()}
     >
-      <Text style={styles.title}>⭐ الولاء</Text>
+      <Text style={styles.title}> الولاء</Text>
 
       {/* Tier Card */}
       <View style={styles.tierCard}>
         <Text style={styles.tierEmoji}>
-          {TIERS[(acc?.tier as string) ?? 'SILVER']?.emoji ?? '🥈'}
+          {TIERS[(acc?.tier as string) ?? 'SILVER']?.emoji ?? ''}
         </Text>
         <Text style={styles.tierLabel}>
           {TIERS[(acc?.tier as string) ?? 'SILVER']?.label ?? 'فضية'}

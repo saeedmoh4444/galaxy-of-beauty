@@ -3,7 +3,7 @@ const WAITLIST = [
   {
     id: 1,
     customer: 'نورة',
-    emoji: '👩',
+    emoji: '',
     service: 'مكياج عروس',
     date: '25 سبتمبر',
     time: 'صباحاً',
@@ -13,7 +13,7 @@ const WAITLIST = [
   {
     id: 2,
     customer: 'مها',
-    emoji: '👩',
+    emoji: '',
     service: 'تسريحة شعر',
     date: '25 سبتمبر',
     time: 'مساءً',
@@ -23,7 +23,7 @@ const WAITLIST = [
   {
     id: 3,
     customer: 'ريم',
-    emoji: '👩',
+    emoji: '',
     service: 'مانيكير',
     date: '26 سبتمبر',
     time: 'صباحاً',
@@ -33,7 +33,7 @@ const WAITLIST = [
   {
     id: 4,
     customer: 'سارة',
-    emoji: '👩',
+    emoji: '',
     service: 'مساج',
     date: '27 سبتمبر',
     time: 'مساءً',
@@ -44,7 +44,7 @@ const WAITLIST = [
 export default function TechWaitlistScreen(): JSX.Element {
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>📋 قائمة الانتظار</Text>
+      <Text style={s.h}> قائمة الانتظار</Text>
       <Text style={s.sub}>إدارة طلبات الانتظار</Text>
       {WAITLIST.map((w) => (
         <View key={w.id} style={[s.card, { opacity: w.notified ? 0.5 : 1 }]}>
@@ -59,11 +59,11 @@ export default function TechWaitlistScreen(): JSX.Element {
                 {w.service} · {w.date} {w.time}
               </Text>
             </View>
-            {w.notified && <Text style={[s.nb]}>✅ تم الإشعار</Text>}
+            {w.notified && <Text style={[s.nb]}> تم الإشعار</Text>}
           </View>
           {!w.notified && (
             <TouchableOpacity style={s.btn}>
-              <Text style={s.bt}>📩 إشعار بتوفر موعد</Text>
+              <Text style={s.bt}> إشعار بتوفر موعد</Text>
             </TouchableOpacity>
           )}
         </View>

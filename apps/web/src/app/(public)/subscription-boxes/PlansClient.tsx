@@ -20,7 +20,7 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
     <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
       <div className="text-center">
         <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">
-          📦 صناديق التجميل الشهرية
+           صناديق التجميل الشهرية
         </h1>
         <p className="mt-3 text-text-secondary dark:text-gray-400">
           اشتركي في باقة شهرية واحصلي على خدمات تجميل منتظمة بأسعار مخفضة
@@ -42,12 +42,12 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
               )}
               <div className="mb-4 text-center text-4xl">
                 {((plan.nameJson as Record<string, string>)?.ar || '').includes('ذهبية')
-                  ? '🥇'
+                  ? ''
                   : ((plan.nameJson as Record<string, string>)?.ar || '').includes('فضية')
-                    ? '🥈'
+                    ? ''
                     : ((plan.nameJson as Record<string, string>)?.ar || '').includes('برونزية')
-                      ? '🥉'
-                      : '📦'}
+                      ? ''
+                      : ''}
               </div>
               <h3 className="text-center text-lg font-bold text-text-primary dark:text-gray-100">
                 {(plan.nameJson as Record<string, string>)?.ar || ''}
@@ -58,7 +58,7 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
 
               <div className="mt-4 space-y-2 text-sm text-text-secondary dark:text-gray-400">
                 <div className="flex justify-between">
-                  <span>🗓 {Number(plan.servicesPerMonth)} حجز / شهر</span>
+                  <span> {Number(plan.servicesPerMonth)} حجز / شهر</span>
                   <span>
                     {plan.interval === 'MONTHLY'
                       ? 'شهرياً'
@@ -139,7 +139,7 @@ function SubscribeButton({ planId, planName: _planName }: { planId: number; plan
   });
 
   if (subscribed) {
-    return <p className="text-sm font-semibold text-green-600">✅ تم الاشتراك!</p>;
+    return <p className="text-sm font-semibold text-green-600"> تم الاشتراك!</p>;
   }
 
   return (

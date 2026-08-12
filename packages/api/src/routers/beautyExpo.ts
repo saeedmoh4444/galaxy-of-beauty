@@ -7,7 +7,7 @@ const BOOTHS = [
     category: 'skincare',
     description: 'اكتشفي أحدث منتجات العناية بالبشرة من لاروش بوزيه',
     products: ['واقي شمس', 'سيروم', 'غسول'],
-    emoji: '🧴',
+    emoji: '',
     visitors: 1250,
   },
   {
@@ -16,7 +16,7 @@ const BOOTHS = [
     category: 'makeup',
     description: 'تشكيلة ألوان جديدة لصيف ٢٠٢٦',
     products: ['أحمر شفاه', 'ظلال عيون', 'كريم أساس'],
-    emoji: '💄',
+    emoji: '',
     visitors: 2300,
   },
   {
@@ -25,7 +25,7 @@ const BOOTHS = [
     category: 'natural',
     description: 'منتجات طبيعية ١٠٠٪ خالية من المواد الكيميائية',
     products: ['زيوت طبيعية', 'أقنعة وجه', 'شامبو'],
-    emoji: '🌿',
+    emoji: '',
     visitors: 890,
   },
   {
@@ -43,7 +43,7 @@ const BOOTHS = [
     category: 'luxury',
     description: 'أحدث إصدارات عطور ومكياج ديور',
     products: ['عطر', 'أحمر شفاه', 'ماسكارا'],
-    emoji: '🌸',
+    emoji: '',
     visitors: 1800,
   },
 ];

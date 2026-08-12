@@ -53,10 +53,10 @@ export default function LiveStreamDetailScreen(): JSX.Element {
             {(stream.titleAr as string) ?? (stream.title as string)}
           </Text>
           <Text style={styles.videoMeta}>
-            👩‍🎨 {stream.host as string} · 👁 {stream.viewers as number}
+            ‍ {stream.host as string} ·  {stream.viewers as number}
           </Text>
         </View>
-        <Text style={styles.chatTitle}>💬 المحادثة المباشرة</Text>
+        <Text style={styles.chatTitle}> المحادثة المباشرة</Text>
         {messages.map((m: any, i: number) => (
           <View key={m.id ?? i} style={styles.msg}>
             <Text style={styles.msgUser}>{m.user as string}: </Text>
@@ -73,7 +73,7 @@ export default function LiveStreamDetailScreen(): JSX.Element {
           placeholderTextColor="#9ca3af"
         />
         <TouchableOpacity onPress={sendMsg} style={styles.sendBtn}>
-          <Text style={styles.sendBtnText}>📤</Text>
+          <Text style={styles.sendBtnText}></Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -3,7 +3,7 @@ const RULES = [
   {
     id: 1,
     service: 'مانيكير سبا',
-    emoji: '💅',
+    emoji: '',
     rate: 5,
     minSpend: 100,
     maxCashback: 50,
@@ -12,7 +12,7 @@ const RULES = [
   {
     id: 2,
     service: 'مكياج كامل',
-    emoji: '💄',
+    emoji: '',
     rate: 8,
     minSpend: 300,
     maxCashback: 100,
@@ -21,18 +21,18 @@ const RULES = [
   {
     id: 3,
     service: 'مساج استرخاء',
-    emoji: '💆',
+    emoji: '',
     rate: 10,
     minSpend: 200,
     maxCashback: 75,
     active: false,
   },
-  { id: 4, service: 'صبغ شعر', emoji: '🎨', rate: 5, minSpend: 150, maxCashback: 60, active: true },
+  { id: 4, service: 'صبغ شعر', emoji: '', rate: 5, minSpend: 150, maxCashback: 60, active: true },
 ];
 export default function AdminCashbackScreen(): JSX.Element {
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>💰 إدارة الكاش باك</Text>
+      <Text style={s.h}> إدارة الكاش باك</Text>
       <Text style={s.sub}>سياسات استرداد النقود</Text>
       {RULES.map((r) => (
         <View key={r.id} style={s.card}>
@@ -51,12 +51,12 @@ export default function AdminCashbackScreen(): JSX.Element {
             </View>
           </View>
           <View style={s.info}>
-            <Text style={s.it}>💰 أقصى استرداد: {r.maxCashback} ر.س</Text>
+            <Text style={s.it}> أقصى استرداد: {r.maxCashback} ر.س</Text>
           </View>
         </View>
       ))}
       <TouchableOpacity style={s.btn}>
-        <Text style={s.btnText}>➕ إضافة قاعدة جديدة</Text>
+        <Text style={s.btnText}> إضافة قاعدة جديدة</Text>
       </TouchableOpacity>
     </ScrollView>
   );

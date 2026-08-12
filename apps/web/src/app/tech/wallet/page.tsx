@@ -20,7 +20,7 @@ export default function TechWalletPage(): JSX.Element {
     <DashboardLayout role="TECHNICIAN">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">💰 محفظتي</h1>
+          <h1 className="text-2xl font-bold"> محفظتي</h1>
           <p className="mt-1 text-sm text-text-secondary">أرباحكِ وطلبات السحب</p>
         </div>
 
@@ -50,7 +50,7 @@ export default function TechWalletPage(): JSX.Element {
         )}
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3">💸 طلب سحب</h3>
+          <h3 className="font-bold mb-3"> طلب سحب</h3>
           <div className="flex gap-3">
             <input
               type="number"
@@ -75,7 +75,7 @@ export default function TechWalletPage(): JSX.Element {
 
         {transactions.length > 0 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">📋 المعاملات</h3>
+            <h3 className="font-bold mb-3"> المعاملات</h3>
             <div className="space-y-2">
               {transactions.map((t: Record<string, unknown>) => (
                 <div key={t.id as number} className="flex justify-between text-sm border-b pb-2">

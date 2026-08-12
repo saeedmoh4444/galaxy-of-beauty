@@ -41,10 +41,10 @@ export default function BirthdayRewardsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🎂 مكافآت الميلاد</Text>
+      <Text style={styles.t}> مكافآت الميلاد</Text>
       {data ? (
         <View style={styles.card}>
-          <Text style={styles.emoji}>🎁</Text>
+          <Text style={styles.emoji}></Text>
           <Text style={styles.reward}>{data.rewardName as string}</Text>
           <Text style={styles.code}>كود: {data.promoCode as string}</Text>
           <TouchableOpacity style={styles.claimBtn}>

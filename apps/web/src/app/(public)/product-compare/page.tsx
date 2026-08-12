@@ -5,10 +5,10 @@ import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
 
 const DIM_LABELS: Record<string, string> = {
-  hydration: '💧 ترطيب',
-  absorption: '🧽 امتصاص',
-  value: '💰 قيمة',
-  gentle: '🌸 لطف',
+  hydration: ' ترطيب',
+  absorption: ' امتصاص',
+  value: ' قيمة',
+  gentle: ' لطف',
 };
 
 export default function ProductComparePage(): JSX.Element {
@@ -39,14 +39,14 @@ export default function ProductComparePage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">⚖️</span>
+        <span className="text-6xl">️</span>
         <h1 className="mt-4 text-3xl font-bold">مقارنة المنتجات</h1>
         <p className="mt-2 text-text-secondary">قارني بين منتجات التجميل جنباً إلى جنب</p>
       </div>
 
       {/* Product selector */}
       <Card padding="lg" className="mb-6">
-        <h3 className="font-bold mb-3">🛍️ اختر منتجين للمقارنة ({selected.length}/4)</h3>
+        <h3 className="font-bold mb-3">️ اختر منتجين للمقارنة ({selected.length}/4)</h3>
         {pLoad ? (
           <CardSkeleton />
         ) : (
@@ -63,7 +63,7 @@ export default function ProductComparePage(): JSX.Element {
                 <p className="text-xs font-bold text-brand-600 mt-0.5">
                   {formatCurrency(p.price as number)} ر.س
                 </p>
-                <p className="text-[10px] text-text-tertiary">⭐ {p.rating as number}</p>
+                <p className="text-[10px] text-text-tertiary"> {p.rating as number}</p>
               </button>
             ))}
           </div>
@@ -92,7 +92,7 @@ export default function ProductComparePage(): JSX.Element {
             </thead>
             <tbody>
               <tr className="border-t dark:border-gray-700">
-                <td className="py-3 px-4 text-text-secondary font-semibold">💰 السعر</td>
+                <td className="py-3 px-4 text-text-secondary font-semibold"> السعر</td>
                 {compared.map((p: Record<string, unknown>) => (
                   <td
                     key={p.id as number}
@@ -103,7 +103,7 @@ export default function ProductComparePage(): JSX.Element {
                 ))}
               </tr>
               <tr className="border-t dark:border-gray-700">
-                <td className="py-3 px-4 text-text-secondary font-semibold">⭐ التقييم</td>
+                <td className="py-3 px-4 text-text-secondary font-semibold"> التقييم</td>
                 {compared.map((p: Record<string, unknown>) => (
                   <td key={p.id as number} className="text-center py-3 px-4">
                     {p.rating as number}
@@ -135,18 +135,18 @@ export default function ProductComparePage(): JSX.Element {
                 </tr>
               ))}
               <tr className="border-t dark:border-gray-700">
-                <td className="py-3 px-4 text-text-secondary font-semibold">🐰 خالي من القسوة</td>
+                <td className="py-3 px-4 text-text-secondary font-semibold"> خالي من القسوة</td>
                 {compared.map((p: Record<string, unknown>) => (
                   <td key={p.id as number} className="text-center py-3 px-4 text-lg">
-                    {p.crueltyFree ? '✅' : '❌'}
+                    {p.crueltyFree ? '' : ''}
                   </td>
                 ))}
               </tr>
               <tr className="border-t dark:border-gray-700">
-                <td className="py-3 px-4 text-text-secondary font-semibold">🌱 نباتي</td>
+                <td className="py-3 px-4 text-text-secondary font-semibold"> نباتي</td>
                 {compared.map((p: Record<string, unknown>) => (
                   <td key={p.id as number} className="text-center py-3 px-4 text-lg">
-                    {p.vegan ? '✅' : '❌'}
+                    {p.vegan ? '' : ''}
                   </td>
                 ))}
               </tr>

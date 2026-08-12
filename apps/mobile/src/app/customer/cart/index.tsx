@@ -37,7 +37,7 @@ export default function CartScreen(): JSX.Element {
       emptyDescription="أضيفي منتجات من المتجر"
       onRetry={() => cart.refetch()}
     >
-      <Text style={styles.title}>🛒 سلة التسوق</Text>
+      <Text style={styles.title}> سلة التسوق</Text>
       {(data as Record<string, unknown>[])?.map((item: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.row}>
@@ -53,7 +53,7 @@ export default function CartScreen(): JSX.Element {
         <View style={styles.footer}>
           <Text style={styles.total}>الإجمالي: {formatCurrency(total)}</Text>
           <TouchableOpacity style={styles.checkoutBtn}>
-            <Text style={styles.checkoutText}>💳 إتمام الشراء</Text>
+            <Text style={styles.checkoutText}> إتمام الشراء</Text>
           </TouchableOpacity>
         </View>
       ) : null}

@@ -32,7 +32,7 @@ export const technicianVerificationRouter = router({
     .input(
       z.object({
         nameJson: z.record(z.string()),
-        emoji: z.string().default('⭐'),
+        emoji: z.string().default(''),
         criteria: z.string().optional(),
       }),
     )

@@ -2,8 +2,8 @@ import { z } from 'zod';
 import { customerProcedure, router } from '../trpc';
 
 const PROVIDERS = [
-  { key: 'uber', nameAr: 'أوبر', emoji: '🚗', estimatedPrice: 35, estimatedTime: '٨ دقائق' },
-  { key: 'careem', nameAr: 'كريم', emoji: '🚕', estimatedPrice: 30, estimatedTime: '١٠ دقائق' },
+  { key: 'uber', nameAr: 'أوبر', emoji: '', estimatedPrice: 35, estimatedTime: '٨ دقائق' },
+  { key: 'careem', nameAr: 'كريم', emoji: '', estimatedPrice: 30, estimatedTime: '١٠ دقائق' },
 ];
 
 export const rideHailingRouter = router({

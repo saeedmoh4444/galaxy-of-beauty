@@ -16,7 +16,7 @@ export default function SkinTimelinePage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">⏱️ الخط الزمني للبشرة</h1>
+          <h1 className="text-2xl font-bold">️ الخط الزمني للبشرة</h1>
           <p className="mt-1 text-sm text-text-secondary">تتبعي رحلة بشرتكِ عبر الوقت</p>
         </div>
 
@@ -28,7 +28,7 @@ export default function SkinTimelinePage(): JSX.Element {
           </div>
         ) : entries.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">⏱️</p>
+            <p className="text-4xl mb-2">️</p>
             <p className="text-text-secondary">مافي بيانات لبشرتكِ بعد — سجلي أول تحليل</p>
           </Card>
         ) : (
@@ -42,15 +42,15 @@ export default function SkinTimelinePage(): JSX.Element {
                   />
                   <Card padding="md">
                     <div className="flex items-start gap-3">
-                      <span className="text-2xl">🔬</span>
+                      <span className="text-2xl"></span>
                       <div className="flex-1">
                         <p className="font-bold text-sm">
                           {(e.skinCondition as string) ?? 'غير محدد'}
                         </p>
                         <div className="mt-2 flex gap-4 text-xs text-text-secondary">
-                          <span>💧 ترطيب {(e.hydration as number) ?? '—'}/10</span>
+                          <span> ترطيب {(e.hydration as number) ?? '—'}/10</span>
                           <span>
-                            📅{' '}
+                            {' '}
                             {new Date(e.createdAt as string).toLocaleDateString('ar-SA', {
                               day: 'numeric',
                               month: 'long',

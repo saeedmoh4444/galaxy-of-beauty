@@ -41,7 +41,7 @@ export default function BookingHeatmapScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>📊 خريطة الحجوزات</Text>
+      <Text style={styles.t}> خريطة الحجوزات</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View>
           <View style={styles.hr}>

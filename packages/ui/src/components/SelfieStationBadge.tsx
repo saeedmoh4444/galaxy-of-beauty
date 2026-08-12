@@ -26,9 +26,9 @@ export function SelfieStationBadge({
   className = '',
 }: SelfieStationBadgeProps): JSX.Element {
   const features = [
-    { emoji: '💡', label: 'إضاءة Ring Light', available: hasRingLight },
-    { emoji: '📱', label: 'حامل جوال', available: hasPhoneStand },
-    { emoji: '🎭', label: 'خلفية تصوير', available: hasBackdrop },
+    { emoji: '', label: 'إضاءة Ring Light', available: hasRingLight },
+    { emoji: '', label: 'حامل جوال', available: hasPhoneStand },
+    { emoji: '', label: 'خلفية تصوير', available: hasBackdrop },
     { emoji: '🪞', label: 'إكسسوارات تصوير', available: hasProps },
   ];
 
@@ -41,7 +41,7 @@ export function SelfieStationBadge({
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true">
-          📸
+          
         </span>
         <div>
           <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">ركن التصوير</h4>
@@ -76,7 +76,7 @@ export function SelfieStationBadge({
             >
               {f.label}
             </span>
-            <span className="ml-auto text-[9px]">{f.available ? '✅' : '—'}</span>
+            <span className="ml-auto text-[9px]">{f.available ? '' : '—'}</span>
           </div>
         ))}
       </div>
@@ -84,7 +84,7 @@ export function SelfieStationBadge({
       {/* Hashtag */}
       <div className="mt-3 rounded-xl bg-fuchsia-50 p-3 text-center dark:bg-fuchsia-950">
         <p className="text-[10px] font-bold text-fuchsia-700 dark:text-fuchsia-300">
-          📸 شاركي إطلالتكِ مع
+           شاركي إطلالتكِ مع
         </p>
         <p className="mt-0.5 text-xs font-bold text-fuchsia-800 dark:text-fuchsia-200" dir="ltr">
           #GalaxyOfBeauty
@@ -92,7 +92,7 @@ export function SelfieStationBadge({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        📸 لأن كل إطلالة جميلة تستحق صورة
+         لأن كل إطلالة جميلة تستحق صورة
       </p>
     </div>
   );

@@ -22,7 +22,7 @@ export default function CartPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">🛒 سلة التسوق</h1>
+            <h1 className="text-2xl font-bold"> سلة التسوق</h1>
             <p className="mt-1 text-sm text-text-secondary">منتجات التجميل في سلتكِ</p>
           </div>
           {cartItems.length > 0 && (
@@ -40,7 +40,7 @@ export default function CartPage(): JSX.Element {
           </div>
         ) : cartItems.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">🛒</p>
+            <p className="text-4xl mb-2"></p>
             <p className="text-text-secondary">سلتكِ فاضية — تصفحي المنتجات وأضيفي اللي يعجبكِ</p>
           </Card>
         ) : (
@@ -53,7 +53,7 @@ export default function CartPage(): JSX.Element {
                   <Card key={item.id as number} padding="md">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <span className="text-3xl">🧴</span>
+                        <span className="text-3xl"></span>
                         <div>
                           <p className="font-bold">{nameJson?.ar ?? `منتج #${product?.id}`}</p>
                           <p className="text-xs text-text-secondary">
@@ -72,9 +72,7 @@ export default function CartPage(): JSX.Element {
                           onClick={() => removeMut.mutate({ productId: product?.id as number })}
                           loading={removeMut.isPending}
                           className="text-red-500"
-                        >
-                          ❌
-                        </Button>
+                        >حذف</Button>
                       </div>
                     </div>
                   </Card>
@@ -89,7 +87,7 @@ export default function CartPage(): JSX.Element {
                   <p className="text-2xl font-extrabold">{formatCurrency(total)}</p>
                 </div>
                 <Button size="lg" className="px-8">
-                  💳 إتمام الشراء
+                   إتمام الشراء
                 </Button>
               </div>
             </Card>

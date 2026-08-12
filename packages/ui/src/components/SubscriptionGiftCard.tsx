@@ -17,9 +17,9 @@ interface SubscriptionGiftCardProps {
 }
 
 const GIFT_OPTIONS = [
-  { emoji: '🌸', months: 1, price: 99, label: 'شهر واحد' },
-  { emoji: '🌺', months: 3, price: 269, label: '3 أشهر', discount: 'وفر 10%' },
-  { emoji: '💐', months: 6, price: 499, label: '6 أشهر', discount: 'وفر 15%' },
+  { emoji: '', months: 1, price: 99, label: 'شهر واحد' },
+  { emoji: '', months: 3, price: 269, label: '3 أشهر', discount: 'وفر 10%' },
+  { emoji: '', months: 6, price: 499, label: '6 أشهر', discount: 'وفر 15%' },
 ];
 
 export function SubscriptionGiftCard({
@@ -36,7 +36,7 @@ export function SubscriptionGiftCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🎁
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">أهدي اشتراك</h4>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">
@@ -75,11 +75,11 @@ export function SubscriptionGiftCard({
         onClick={onSend}
         className="mt-3 w-full rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 py-2.5 text-xs font-bold text-white hover:from-pink-600 hover:to-rose-600 active:scale-[0.98] transition-all shadow-sm"
       >
-        أرسلي الهدية 💝
+        أرسلي الهدية 
       </button>
 
       <p className="mt-2 text-center text-[9px] text-pink-500 dark:text-pink-400">
-        💝 الجمال هدية لا تُنسى
+         الجمال هدية لا تُنسى
       </p>
     </div>
   );

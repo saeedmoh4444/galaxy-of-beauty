@@ -28,7 +28,7 @@ export default function AchievementsPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">🏆 الإنجازات</h1>
+          <h1 className="text-2xl font-bold"> الإنجازات</h1>
           <p className="mt-1 text-sm text-text-secondary">ميداليات وجوائز رحلتكِ الجمالية</p>
         </div>
 
@@ -62,7 +62,7 @@ export default function AchievementsPage(): JSX.Element {
               </Card>
               <Card padding="md" className="text-center">
                 <p className="text-xl font-extrabold text-amber-600">
-                  🔥{(stats?.streakDays as number) ?? 0}
+                  {(stats?.streakDays as number) ?? 0}
                 </p>
                 <p className="text-xs text-text-secondary">أيام متتالية</p>
               </Card>
@@ -81,16 +81,16 @@ export default function AchievementsPage(): JSX.Element {
                   padding="md"
                   className={`text-center transition-all ${a.earned ? 'border-2 border-amber-300 bg-amber-50' : 'opacity-40'}`}
                 >
-                  <span className="text-4xl block">{a.earned ? (a.emoji as string) : '🔒'}</span>
+                  <span className="text-4xl block">{a.earned ? (a.emoji as string) : ''}</span>
                   <h3 className="font-bold mt-2">{a.nameAr as string}</h3>
                   <p className="text-xs text-text-secondary mt-1">{a.desc as string}</p>
                   {a.earned ? (
                     <span className="mt-2 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">
-                      ✅ تم
+                       تم
                     </span>
                   ) : (
                     <span className="mt-2 inline-block rounded-full bg-surface-muted px-2 py-0.5 text-xs text-text-tertiary">
-                      🔒
+                      
                     </span>
                   )}
                 </Card>

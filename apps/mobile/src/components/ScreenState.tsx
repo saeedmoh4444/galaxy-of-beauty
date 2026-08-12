@@ -85,11 +85,11 @@ export function ScreenState({
   if (isError) {
     return (
       <View style={styles.centered}>
-        <Text style={styles.errorEmoji}>⚠️</Text>
+        <Text style={styles.errorEmoji}></Text>
         <Text style={styles.errorMessage}>{errorMessage}</Text>
         {onRetry && (
           <TouchableOpacity onPress={onRetry} style={styles.retryBtn}>
-            <Text style={styles.retryText}>🔄 إعادة المحاولة</Text>
+            <Text style={styles.retryText}> إعادة المحاولة</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -100,7 +100,7 @@ export function ScreenState({
   if (isEmpty) {
     return (
       <View style={styles.centered}>
-        <Text style={styles.emptyEmoji}>📭</Text>
+        <Text style={styles.emptyEmoji}></Text>
         <Text style={styles.emptyTitle}>{emptyTitle}</Text>
         {emptyDescription && <Text style={styles.emptyDescription}>{emptyDescription}</Text>}
         {emptyAction && (

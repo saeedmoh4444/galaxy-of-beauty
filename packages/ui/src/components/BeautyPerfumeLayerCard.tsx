@@ -9,7 +9,7 @@ export function BeautyPerfumeLayerCard({ className = '' }: { className?: string 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🌸</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">طبقات العطر</h4>
           <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">كيف تختارين عطرك</p>
@@ -17,10 +17,10 @@ export function BeautyPerfumeLayerCard({ className = '' }: { className?: string 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🍋', text: 'النفحة العليا: أول ما تشمين — حمضيات، خفيفة' },
-          { emoji: '🌹', text: 'قلب العطر: بعد 15 دقيقة — ورود، توابل' },
+          { emoji: '', text: 'النفحة العليا: أول ما تشمين — حمضيات، خفيفة' },
+          { emoji: '', text: 'قلب العطر: بعد 15 دقيقة — ورود، توابل' },
           { emoji: '🪵', text: 'القاعدة: بعد ساعة — خشب، مسك، فانيليا' },
-          { emoji: '💡', text: 'انتظري 30 دقيقة قبل الحكم على العطر' },
+          { emoji: '', text: 'انتظري 30 دقيقة قبل الحكم على العطر' },
         ].map((t, i) => (
           <div
             key={i}

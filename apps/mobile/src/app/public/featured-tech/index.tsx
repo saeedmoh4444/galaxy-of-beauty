@@ -46,23 +46,23 @@ export default function FeaturedTechScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🌟 فنية الشهر</Text>
+      <Text style={styles.t}> فنية الشهر</Text>
       {tech && (
         <View style={styles.featured}>
-          <Text style={styles.fEmoji}>👩‍🎨</Text>
+          <Text style={styles.fEmoji}>‍</Text>
           <Text style={styles.fName}>{tech.name as string}</Text>
           <Text style={styles.fMeta}>
-            ⭐ {tech.rating as number} · {tech.specialtyAr as string}
+             {tech.rating as number} · {tech.specialtyAr as string}
           </Text>
         </View>
       )}
-      <Text style={styles.sectionTitle}>⭐ سابقات</Text>
+      <Text style={styles.sectionTitle}> سابقات</Text>
       {past.length === 0 ? (
         <Text style={styles.e}>لا توجد فنيات سابقات</Text>
       ) : (
         past.map((p: any, i: number) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.avatar}>👩‍🎨</Text>
+            <Text style={styles.avatar}>‍</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.name}>{p.name as string}</Text>
               <Text style={styles.month}>{p.month as string}</Text>

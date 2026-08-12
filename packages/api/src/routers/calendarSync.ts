@@ -14,7 +14,7 @@ export const calendarSyncRouter = router({
     SYNC_STATUS.connected = true;
     SYNC_STATUS.lastSynced = new Date().toISOString();
     SYNC_STATUS.upcomingEvents = 5;
-    return { connected: true, message: 'تم ربط التقويم بنجاح! 📅', upcomingEvents: 5 };
+    return { connected: true, message: 'تم ربط التقويم بنجاح! ', upcomingEvents: 5 };
   }),
   disconnect: customerProcedure.mutation(async () => {
     SYNC_STATUS.connected = false;
@@ -28,14 +28,14 @@ export const calendarSyncRouter = router({
       title: 'حجز مكياج',
       date: '2026-07-30T10:00:00',
       technician: 'نورة العمري',
-      emoji: '💄',
+      emoji: '',
     },
     {
       id: 2,
       title: 'تنظيف بشرة',
       date: '2026-08-02T14:00:00',
       technician: 'د. ليلى القحطاني',
-      emoji: '✨',
+      emoji: '',
     },
   ]),
 });

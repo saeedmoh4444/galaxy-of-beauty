@@ -9,7 +9,7 @@ export function BeautyAfterWaxCard({ className = '' }: { className?: string }): 
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">🕯️</span>
+        <span className="text-xl">️</span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">بعد إزالة الشعر</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">بشرة ناعمة — بدون التهاب</p>
@@ -17,10 +17,10 @@ export function BeautyAfterWaxCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '🧴', text: 'كريم مهدئ — ألوفيرا أو بانثينول' },
-          { emoji: '🚫', text: 'لا تعرقي — 24 ساعة بدون رياضة' },
-          { emoji: '👚', text: 'ملابس قطنية واسعة — للتهوية' },
-          { emoji: '📅', text: 'تقشير لطيف — بعد 3 أيام لمنع الشعر تحت الجلد' },
+          { emoji: '', text: 'كريم مهدئ — ألوفيرا أو بانثينول' },
+          { emoji: '', text: 'لا تعرقي — 24 ساعة بدون رياضة' },
+          { emoji: '', text: 'ملابس قطنية واسعة — للتهوية' },
+          { emoji: '', text: 'تقشير لطيف — بعد 3 أيام لمنع الشعر تحت الجلد' },
         ].map((t, i) => (
           <div
             key={i}

@@ -40,11 +40,11 @@ const STATUS_MAP: Record<string, { label: string; color: string; bg: string }> =
 };
 
 const THEME_EMOJI: Record<string, string> = {
-  bridal: '👰',
-  birthday: '🎂',
-  girls_night: '🌙',
-  family: '👨‍👩‍👧‍👦',
-  other: '🎉',
+  bridal: '',
+  birthday: '',
+  girls_night: '',
+  family: '‍‍‍',
+  other: '',
 };
 
 const THEME_LABELS: Record<string, string> = {
@@ -111,7 +111,7 @@ export default function GroupBookingDetailPage(): JSX.Element {
               <div className="pt-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <span className="text-5xl">{THEME_EMOJI[theme] ?? '🎉'}</span>
+                    <span className="text-5xl">{THEME_EMOJI[theme] ?? ''}</span>
                     <div>
                       <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                         {group?.name as string}
@@ -134,21 +134,21 @@ export default function GroupBookingDetailPage(): JSX.Element {
             {/* Summary Stats */}
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="md" className="text-center">
-                <p className="text-3xl">👯‍♀️</p>
+                <p className="text-3xl">‍️</p>
                 <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-gray-100">
                   {members.length}
                 </p>
                 <p className="text-xs text-gray-500">عضوة</p>
               </Card>
               <Card padding="md" className="text-center">
-                <p className="text-3xl">🏷️</p>
+                <p className="text-3xl">️</p>
                 <p className="mt-1 text-2xl font-bold text-brand-600">
                   {(group?.discountPercent as number) ?? 0}%
                 </p>
                 <p className="text-xs text-gray-500">خصم المجموعة</p>
               </Card>
               <Card padding="md" className="text-center">
-                <p className="text-3xl">💰</p>
+                <p className="text-3xl"></p>
                 <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-gray-100">
                   {Number(group?.totalAmount) > 0
                     ? formatCurrency(Number(group?.totalAmount))
@@ -161,7 +161,7 @@ export default function GroupBookingDetailPage(): JSX.Element {
             {/* Members List */}
             <Card padding="lg">
               <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
-                👥 العضوات ({members.length})
+                 العضوات ({members.length})
               </h2>
               {members.length === 0 ? (
                 <p className="text-center text-sm text-gray-400 py-8">لا توجد عضوات بعد</p>

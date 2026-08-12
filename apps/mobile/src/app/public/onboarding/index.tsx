@@ -3,13 +3,13 @@ import { useState } from 'react';
 
 const slides = [
   {
-    emoji: '💆‍♀️',
+    emoji: '‍️',
     title: 'أهلاً بكِ في جالكسي بيوتي',
     desc: 'منصتكِ الشاملة لكل خدمات التجميل والعناية',
   },
-  { emoji: '📅', title: 'احجزي بسهولة', desc: 'تصفحي الخدمات واحجزي موعدكِ في دقائق' },
-  { emoji: '👩‍🎨', title: 'أفضل الفنيات', desc: 'اختاري من نخبة الفنيات المحترفات في منطقتكِ' },
-  { emoji: '🎁', title: 'مكافآت وخصومات', desc: 'اكسبي نقاط واستمتعي بعروض حصرية' },
+  { emoji: '', title: 'احجزي بسهولة', desc: 'تصفحي الخدمات واحجزي موعدكِ في دقائق' },
+  { emoji: '‍', title: 'أفضل الفنيات', desc: 'اختاري من نخبة الفنيات المحترفات في منطقتكِ' },
+  { emoji: '', title: 'مكافآت وخصومات', desc: 'اكسبي نقاط واستمتعي بعروض حصرية' },
 ];
 
 export default function OnboardingScreen(): JSX.Element {
@@ -38,7 +38,7 @@ export default function OnboardingScreen(): JSX.Element {
             onPress={() => (isLast ? null : setStep(step + 1))}
             style={[styles.nextBtn, isLast && styles.doneBtn]}
           >
-            <Text style={styles.nextBtnText}>{isLast ? '✨ ابدئي الآن' : 'التالي →'}</Text>
+            <Text style={styles.nextBtnText}>{isLast ? ' ابدئي الآن' : 'التالي →'}</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -9,7 +9,7 @@ export function BeautyBridalTrialCard({ className = '' }: { className?: string }
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💄</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">تجربة العروس</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">بروفة المكياج والشعر</p>
@@ -17,10 +17,10 @@ export function BeautyBridalTrialCard({ className = '' }: { className?: string }
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '📅', text: 'قبل الزفاف بشهر — الوقت المثالي للتجربة' },
-          { emoji: '📸', text: 'صوري الإطلالة — لتقييمها لاحقاً' },
-          { emoji: '👗', text: 'ارتدي أبيض — لترى التناسق مع الفستان' },
-          { emoji: '💬', text: 'كوني صريحة — هذه تجربتكِ وليس يوم الزفاف' },
+          { emoji: '', text: 'قبل الزفاف بشهر — الوقت المثالي للتجربة' },
+          { emoji: '', text: 'صوري الإطلالة — لتقييمها لاحقاً' },
+          { emoji: '', text: 'ارتدي أبيض — لترى التناسق مع الفستان' },
+          { emoji: '', text: 'كوني صريحة — هذه تجربتكِ وليس يوم الزفاف' },
         ].map((t, i) => (
           <div
             key={i}

@@ -17,12 +17,12 @@ interface FranchiseBenefit {
 }
 
 const BENEFITS: FranchiseBenefit[] = [
-  { emoji: '🏷️', title: 'العلامة التجارية', description: 'استخدمي اسم جالاكسي بيوتي المعروف' },
-  { emoji: '📚', title: 'تدريب وتأهيل', description: 'برنامج تدريبي شامل لكِ ولفريقكِ' },
-  { emoji: '💻', title: 'نظام حجز متكامل', description: 'منصتنا التقنية مع حجوزات ومدفوعات' },
-  { emoji: '📣', title: 'تسويق ودعم', description: 'حملات تسويقية وإعلانات على حساب المنصة' },
-  { emoji: '💰', title: 'تمويل ميسر', description: 'شراكة مع بنوك سعودية للتمويل الصغير' },
-  { emoji: '👩‍🏫', title: 'إرشاد مستمر', description: 'مرشدة أعمال شخصية لمدة سنة كاملة' },
+  { emoji: '️', title: 'العلامة التجارية', description: 'استخدمي اسم جالاكسي بيوتي المعروف' },
+  { emoji: '', title: 'تدريب وتأهيل', description: 'برنامج تدريبي شامل لكِ ولفريقكِ' },
+  { emoji: '', title: 'نظام حجز متكامل', description: 'منصتنا التقنية مع حجوزات ومدفوعات' },
+  { emoji: '', title: 'تسويق ودعم', description: 'حملات تسويقية وإعلانات على حساب المنصة' },
+  { emoji: '', title: 'تمويل ميسر', description: 'شراكة مع بنوك سعودية للتمويل الصغير' },
+  { emoji: '‍', title: 'إرشاد مستمر', description: 'مرشدة أعمال شخصية لمدة سنة كاملة' },
 ];
 
 interface FranchiseCardProps {
@@ -53,7 +53,7 @@ export function FranchiseCard({
       {/* Header */}
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          🏪
+          
         </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">
           برنامج الامتياز
@@ -80,7 +80,7 @@ export function FranchiseCard({
       {/* Existing franchises */}
       <div className="mt-2 rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
         <p className="text-[10px] text-amber-700 dark:text-amber-300">
-          🎉 {existingFranchises} سيدة سبقوكِ وافتتحن فروعهنّ!
+           {existingFranchises} سيدة سبقوكِ وافتتحن فروعهنّ!
         </p>
       </div>
 
@@ -101,7 +101,7 @@ export function FranchiseCard({
 
       {/* How to qualify */}
       <div className="mt-3 rounded-xl bg-gradient-to-r from-amber-100 to-yellow-100 p-3 dark:from-amber-900 dark:to-yellow-900">
-        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">📋 شروط التأهل</p>
+        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200"> شروط التأهل</p>
         <div className="mt-1 space-y-0.5 text-[10px] text-amber-700 dark:text-amber-300">
           <p>• سنتين خبرة كخبيرة تجميل على منصتنا</p>
           <p>• تقييم 4.5 نجوم فأعلى</p>
@@ -116,12 +116,12 @@ export function FranchiseCard({
         onClick={onApply}
         className="mt-3 w-full rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 py-2.5 text-xs font-bold text-white hover:from-amber-600 hover:to-yellow-600 active:scale-[0.98] transition-all shadow-sm"
       >
-        ابدئي رحلة الامتياز 💪
+        ابدئي رحلة الامتياز 
       </button>
 
       {/* Women empowerment */}
       <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">
-        👑 نساعدكِ تبنين مشروعكِ الخاص وتحققين استقلالكِ المالي
+         نساعدكِ تبنين مشروعكِ الخاص وتحققين استقلالكِ المالي
       </p>
     </div>
   );

@@ -42,17 +42,17 @@ export default function BehindScenesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🎬 كواليس الجمال</Text>
+      <Text style={styles.t}> كواليس الجمال</Text>
       <Text style={styles.sub}>لقطات من وراء الكواليس</Text>
       {videos.length === 0 ? (
         <Text style={styles.e}>لا توجد فيديوهات</Text>
       ) : (
         videos.map((v: any, i: number) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.vidEmoji}>{(v.emoji as string) ?? '🎬'}</Text>
+            <Text style={styles.vidEmoji}>{(v.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.vidTitle}>{v.titleAr as string}</Text>
-              <Text style={styles.vidDur}>⏱️ {v.duration as string}</Text>
+              <Text style={styles.vidDur}>️ {v.duration as string}</Text>
             </View>
           </View>
         ))

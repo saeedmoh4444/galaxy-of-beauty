@@ -98,7 +98,7 @@ export default function MoodBoardPage(): JSX.Element {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-              🎨 لوحة الإلهام
+               لوحة الإلهام
             </h1>
             <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
               اجمعي صور إطلالاتكِ المفضلة ونظميها في لوحات — {totalPins} صورة في {allBoards.length}{' '}
@@ -127,7 +127,7 @@ export default function MoodBoardPage(): JSX.Element {
         ) : allBoards.length === 0 ? (
           <EmptyState
             title="لا توجد لوحات إلهام بعد"
-            description="أنشئي أول لوحة وابدئي بجمع إطلالاتكِ المفضلة! 🎨"
+            description="أنشئي أول لوحة وابدئي بجمع إطلالاتكِ المفضلة! "
             action={{ label: 'إنشاء لوحة', onPress: () => setShowCreate(true) }}
           />
         ) : (
@@ -144,7 +144,7 @@ export default function MoodBoardPage(): JSX.Element {
                       loading="lazy"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-5xl">🎨</div>
+                    <div className="flex h-full items-center justify-center text-5xl"></div>
                   )}
                   {/* Pin count badge */}
                   <span className="absolute top-2 left-2 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white backdrop-blur">
@@ -210,7 +210,7 @@ export default function MoodBoardPage(): JSX.Element {
                     }}
                     className="text-red-500 hover:text-red-700"
                   >
-                    🗑️
+                    ️
                   </Button>
                 </div>
               </Card>
@@ -250,7 +250,7 @@ export default function MoodBoardPage(): JSX.Element {
                 إلغاء
               </Button>
               <Button onClick={handleCreateBoard} loading={createBoardMut.isPending}>
-                🎨 إنشاء
+                 إنشاء
               </Button>
             </div>
           </div>
@@ -312,7 +312,7 @@ export default function MoodBoardPage(): JSX.Element {
                 إلغاء
               </Button>
               <Button onClick={handleAddPin} loading={addPinMut.isPending}>
-                📌 تثبيت
+                 تثبيت
               </Button>
             </div>
           </div>

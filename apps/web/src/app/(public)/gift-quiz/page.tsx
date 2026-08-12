@@ -69,7 +69,7 @@ export default function GiftQuizPage(): JSX.Element {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12">
         <div className="text-center mb-10">
-          <span className="text-6xl">🎁</span>
+          <span className="text-6xl"></span>
           <h1 className="mt-4 text-3xl font-bold">توصيات الهدايا</h1>
           <p className="mt-2 text-text-secondary">بناءً على إجاباتكِ، هذه أفضل الهدايا المقترحة</p>
         </div>
@@ -91,11 +91,11 @@ export default function GiftQuizPage(): JSX.Element {
                   </p>
                   <div className="mt-4 flex gap-2">
                     <Link href="/marketplace">
-                      <Button size="sm">🛍️ تسوقي الآن</Button>
+                      <Button size="sm">️ تسوقي الآن</Button>
                     </Link>
                     <Link href="/gift-cards">
                       <Button size="sm" variant="ghost">
-                        بطاقة هدية 🎁
+                        بطاقة هدية 
                       </Button>
                     </Link>
                   </div>
@@ -113,7 +113,7 @@ export default function GiftQuizPage(): JSX.Element {
               setResult(null);
             }}
           >
-            🔄 إعادة الاختبار
+             إعادة الاختبار
           </Button>
         </div>
       </div>
@@ -123,7 +123,7 @@ export default function GiftQuizPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-lg px-4 py-12">
       <div className="text-center mb-8">
-        <span className="text-6xl">🎁</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">اختبار توصية الهدايا</h1>
         <p className="mt-2 text-text-secondary">أجيبي على الأسئلة لاكتشاف الهدية المثالية</p>
       </div>

@@ -9,7 +9,7 @@ export function BeautyBiotinCard({ className = '' }: { className?: string }): JS
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💊</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">البيوتين</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
@@ -19,10 +19,10 @@ export function BeautyBiotinCard({ className = '' }: { className?: string }): JS
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💇', text: 'يقوي الشعر — يقلل التساقط ويزيد الكثافة' },
-          { emoji: '💅', text: 'يقوي الأظافر — يقلل التكسر والتقصف' },
-          { emoji: '🥚', text: 'موجود طبيعياً — بيض، مكسرات، أفوكادو' },
-          { emoji: '⏱️', text: '3-6 أشهر — لرؤية نتائج واضحة' },
+          { emoji: '', text: 'يقوي الشعر — يقلل التساقط ويزيد الكثافة' },
+          { emoji: '', text: 'يقوي الأظافر — يقلل التكسر والتقصف' },
+          { emoji: '', text: 'موجود طبيعياً — بيض، مكسرات، أفوكادو' },
+          { emoji: '️', text: '3-6 أشهر — لرؤية نتائج واضحة' },
         ].map((t, i) => (
           <div
             key={i}

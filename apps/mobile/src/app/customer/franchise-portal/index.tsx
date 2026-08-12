@@ -42,15 +42,15 @@ export default function FranchisePortalScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>🤝 بوابة الامتياز</Text>
+      <Text style={styles.t}> بوابة الامتياز</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
-          <Text style={styles.ke}>💰</Text>
+          <Text style={styles.ke}></Text>
           <Text style={styles.kv}>{((dash?.totalRevenue as number) ?? 0)?.toLocaleString()}</Text>
           <Text style={styles.kl}>الإيرادات</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}>📅</Text>
+          <Text style={styles.ke}></Text>
           <Text style={[styles.kv, { color: '#2563eb' }]}>
             {(dash?.totalBookings as number) ?? 0}
           </Text>
@@ -62,7 +62,7 @@ export default function FranchisePortalScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.ln}>{l.branch as string}</Text>
             <Text style={styles.lm}>
-              📍 {l.city as string} · {l.staff as number} موظفات
+               {l.city as string} · {l.staff as number} موظفات
             </Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>

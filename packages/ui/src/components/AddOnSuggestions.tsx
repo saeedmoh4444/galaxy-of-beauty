@@ -35,7 +35,7 @@ export function AddOnSuggestions({
       className={`rounded-2xl border border-edge bg-surface-muted p-4 dark:border-gray-700 dark:bg-gray-900 ${className}`}
     >
       <h4 className="text-sm font-semibold text-text-primary dark:text-gray-100">
-        💡 العناية تقترح عليكِ
+         العناية تقترح عليكِ
       </h4>
       <p className="mt-1 text-xs text-text-secondary dark:text-gray-400">
         العميلات أضفن هذه الخدمات مع هذا الحجز
@@ -52,7 +52,7 @@ export function AddOnSuggestions({
                 {addOn.name}
               </span>
               {addOn.popularity ? (
-                <span className="ml-2 text-[10px] text-amber-600">🔥 {addOn.popularity}+ حجز</span>
+                <span className="ml-2 text-[10px] text-amber-600"> {addOn.popularity}+ حجز</span>
               ) : null}
             </div>
             <div className="flex items-center gap-2">

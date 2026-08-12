@@ -51,7 +51,7 @@ export default function PriceEstimatorScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>💰 مقدّر الأسعار</Text>
+      <Text style={styles.t}> مقدّر الأسعار</Text>
       {services.map((s: any) => (
         <TouchableOpacity
           key={s.id}
@@ -61,7 +61,7 @@ export default function PriceEstimatorScreen(): JSX.Element {
           }}
           style={[styles.sr, selected === s.id && styles.sra]}
         >
-          <Text style={styles.se}>{(s.emoji as string) ?? '💆‍♀️'}</Text>
+          <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
           <Text style={styles.sn}>{s.nameAr as string}</Text>
           <Text style={styles.sp}>{(s.basePrice as number)?.toLocaleString()} ر.س</Text>
         </TouchableOpacity>
@@ -71,7 +71,7 @@ export default function PriceEstimatorScreen(): JSX.Element {
         disabled={!selected}
         style={[styles.eb, !selected && { opacity: 0.5 }]}
       >
-        <Text style={styles.et}>🧮 احسب التكلفة</Text>
+        <Text style={styles.et}> احسب التكلفة</Text>
       </TouchableOpacity>
       {estimate && (
         <View style={styles.ec}>

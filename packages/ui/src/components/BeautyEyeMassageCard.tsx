@@ -9,7 +9,7 @@ export function BeautyEyeMassageCard({ className = '' }: { className?: string })
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">💆</span>
+        <span className="text-xl"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">مساج العين</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">3 دقائق — لعيون مشرقة</p>
@@ -17,10 +17,10 @@ export function BeautyEyeMassageCard({ className = '' }: { className?: string })
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '☝️', text: 'البنصر — الأخف للتربيت على محيط العين' },
-          { emoji: '🔄', text: 'من الداخل للخارج — بحركة دائرية' },
-          { emoji: '🧴', text: 'مع كريم أو زيت — لتزلق الأصابع' },
-          { emoji: '⏱️', text: '3 دقائق — صباحاً لتقليل الانتفاخ' },
+          { emoji: '️', text: 'البنصر — الأخف للتربيت على محيط العين' },
+          { emoji: '', text: 'من الداخل للخارج — بحركة دائرية' },
+          { emoji: '', text: 'مع كريم أو زيت — لتزلق الأصابع' },
+          { emoji: '️', text: '3 دقائق — صباحاً لتقليل الانتفاخ' },
         ].map((t, i) => (
           <div
             key={i}

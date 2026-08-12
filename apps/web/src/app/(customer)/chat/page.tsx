@@ -45,13 +45,13 @@ export default function ChatPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">💬 المحادثات</h1>
+          <h1 className="text-2xl font-bold"> المحادثات</h1>
           <p className="mt-1 text-sm text-text-secondary">تواصلي مع الفنيات مباشرة</p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-3">
           <Card padding="lg" className="lg:col-span-1">
-            <h3 className="font-bold mb-3">📋 المحادثات النشطة</h3>
+            <h3 className="font-bold mb-3"> المحادثات النشطة</h3>
             {convLoading ? (
               <CardSkeleton />
             ) : convs.length === 0 ? (
@@ -138,9 +138,7 @@ export default function ChatPage(): JSX.Element {
                         );
                     }}
                     loading={sendMut.isPending}
-                  >
-                    📤
-                  </Button>
+                  >إرسال</Button>
                 </div>
               </>
             )}

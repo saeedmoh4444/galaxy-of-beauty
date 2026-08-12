@@ -36,7 +36,7 @@ export function BeautyIngredientHighlightCard({
     >
       <div className="flex items-center gap-2">
         <span className="text-2xl" aria-hidden="true">
-          {ingredient.emoji || '🧪'}
+          {ingredient.emoji || ''}
         </span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">مكون مميز</h4>
@@ -47,7 +47,7 @@ export function BeautyIngredientHighlightCard({
       </div>
 
       <div className="mt-3 rounded-xl bg-amber-50 p-3 dark:bg-amber-950">
-        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">✨ الفوائد</p>
+        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200"> الفوائد</p>
         <div className="mt-1 flex flex-wrap gap-1">
           {ingredient.benefits.map((b) => (
             <span
@@ -62,7 +62,7 @@ export function BeautyIngredientHighlightCard({
 
       {ingredient.funFact && (
         <div className="mt-2 rounded-lg bg-amber-50 p-2 dark:bg-amber-950">
-          <p className="text-[10px] text-amber-700 dark:text-amber-300">💡 {ingredient.funFact}</p>
+          <p className="text-[10px] text-amber-700 dark:text-amber-300"> {ingredient.funFact}</p>
         </div>
       )}
     </div>

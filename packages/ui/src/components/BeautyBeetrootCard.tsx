@@ -17,10 +17,10 @@ export function BeautyBeetrootCard({ className = '' }: { className?: string }): 
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '💗', text: 'يحسن الدورة الدموية — بشرة وردية متوهجة' },
+          { emoji: '', text: 'يحسن الدورة الدموية — بشرة وردية متوهجة' },
           { emoji: '🩸', text: 'غني بالحديد — يحارب شحوب البشرة' },
-          { emoji: '🧪', text: 'فيتامين C — يحفز إنتاج الكولاجين' },
-          { emoji: '🥤', text: 'شمندر + برتقال + زنجبيل — عصار الصباح' },
+          { emoji: '', text: 'فيتامين C — يحفز إنتاج الكولاجين' },
+          { emoji: '', text: 'شمندر + برتقال + زنجبيل — عصار الصباح' },
         ].map((t, i) => (
           <div
             key={i}

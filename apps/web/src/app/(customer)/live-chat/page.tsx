@@ -27,7 +27,7 @@ export default function LiveChatPage(): JSX.Element {
     <DashboardLayout role="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-4">
         <div>
-          <h1 className="text-2xl font-bold">💬 الدعم المباشر</h1>
+          <h1 className="text-2xl font-bold"> الدعم المباشر</h1>
           <p className="mt-1 text-sm text-text-secondary">تحدثي مع فريق الدعم مباشرة</p>
         </div>
         <Card padding="md" className="h-[60vh] flex flex-col">

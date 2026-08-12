@@ -3,7 +3,7 @@ const DEALS = [
   {
     id: 1,
     service: 'مانيكير',
-    emoji: '💅',
+    emoji: '',
     discount: 30,
     originalPrice: 150,
     dealPrice: 99,
@@ -14,7 +14,7 @@ const DEALS = [
   {
     id: 2,
     service: 'تنظيف بشرة',
-    emoji: '✨',
+    emoji: '',
     discount: 40,
     originalPrice: 250,
     dealPrice: 149,
@@ -25,7 +25,7 @@ const DEALS = [
   {
     id: 3,
     service: 'مكياج',
-    emoji: '💄',
+    emoji: '',
     discount: 25,
     originalPrice: 350,
     dealPrice: 262,
@@ -37,7 +37,7 @@ const DEALS = [
 export default function AdminFlashDealsScreen(): JSX.Element {
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>⚡ عروض فلاش</Text>
+      <Text style={s.h}> عروض فلاش</Text>
       <Text style={s.sub}>إدارة العروض محدودة الوقت</Text>
       {DEALS.map((d) => (
         <View key={d.id} style={s.card}>
@@ -57,13 +57,13 @@ export default function AdminFlashDealsScreen(): JSX.Element {
               <View style={[s.pf, { width: `${(d.sold / d.max) * 100}%` }]} />
             </View>
             <Text style={s.ps}>
-              ✅ {d.sold}/{d.max} مباع · ⏰ {d.endsIn}
+               {d.sold}/{d.max} مباع ·  {d.endsIn}
             </Text>
           </View>
         </View>
       ))}
       <TouchableOpacity style={s.btn}>
-        <Text style={s.bt}>➕ عرض فلاش جديد</Text>
+        <Text style={s.bt}> عرض فلاش جديد</Text>
       </TouchableOpacity>
     </ScrollView>
   );

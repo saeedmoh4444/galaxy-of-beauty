@@ -37,7 +37,7 @@ export default function KidsServicesPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl">🧒</span>
+        <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">خدمات الأطفال</h1>
         <p className="mt-2 text-text-secondary">
           عناية لطيفة وآمنة للصغار — من الرضع حتى المراهقات
@@ -46,13 +46,13 @@ export default function KidsServicesPage(): JSX.Element {
 
       {result ? (
         <Card padding="lg" className="text-center border-2 border-green-300">
-          <span className="text-6xl">✅</span>
+          <span className="text-6xl"></span>
           <h2 className="mt-4 text-xl font-bold">{result.message as string}</h2>
           <p className="text-2xl font-extrabold text-brand-600 mt-2">
             {formatCurrency(result.price as number)} ر.س
           </p>
           <p className="text-sm text-text-secondary mt-1">
-            👶 {result.childName as string} · ⏱️ {result.durationMin as number} دقيقة ·{' '}
+             {result.childName as string} · ️ {result.durationMin as number} دقيقة ·{' '}
             {result.tip as string}
           </p>
           <Button
@@ -63,7 +63,7 @@ export default function KidsServicesPage(): JSX.Element {
               setSelectedCat(null);
             }}
           >
-            🔄 عودة
+             عودة
           </Button>
         </Card>
       ) : !selectedCat ? (
@@ -169,11 +169,11 @@ export default function KidsServicesPage(): JSX.Element {
           </div>
           {tips && tips.length > 0 && (
             <Card padding="lg" className="bg-green-50 dark:bg-green-950 border-none">
-              <h3 className="font-bold mb-2">💡 نصائح</h3>
+              <h3 className="font-bold mb-2"> نصائح</h3>
               <div className="space-y-1">
                 {tips.map((t: string, i: number) => (
                   <p key={i} className="text-sm">
-                    ✅ {t}
+                     {t}
                   </p>
                 ))}
               </div>
