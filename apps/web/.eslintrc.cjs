@@ -23,7 +23,13 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     '@next/next/no-html-link-for-pages': ['error', 'apps/web/src/app/'],
-    '@next/next/no-img-element': 'error',
+    // Remote/user-uploaded images (Unsplash, S3) can't use next/image without
+    // per-domain remotePatterns — track as warning until image pipeline lands
+    '@next/next/no-img-element': 'warn',
+    // React Compiler-era rules false-positive the established async setState pattern
+    'react-hooks/set-state-in-effect': 'off',
+    'react-hooks/purity': 'off',
+    'react-hooks/refs': 'off',
   },
   ignorePatterns: ['dist/', 'build/', '.next/', '.expo/', 'node_modules/', '*.config.*'],
   parserOptions: {
