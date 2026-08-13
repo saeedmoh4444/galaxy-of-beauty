@@ -4,8 +4,17 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface GeofenceOffer {
+  id?: number;
+  emoji?: string;
+  titleAr?: string;
+  salonName?: string;
+  distance?: string;
+  expiresIn?: string;
+}
+
 export default function GeofenceOffersScreen(): JSX.Element {
-  const [offers, setOffers] = useState<any[]>([]);
+  const [offers, setOffers] = useState<GeofenceOffer[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
@@ -14,9 +23,9 @@ export default function GeofenceOffersScreen(): JSX.Element {
     (
       typedTrpc().geofenceOffers.nearby.query({
         city: 'الرياض' /* TODO: from user location */,
-      }) as any
+      }) as Promise<GeofenceOffer[]>
     )
-      .then((d: any) => {
+      .then((d) => {
         setOffers(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -30,7 +39,7 @@ export default function GeofenceOffersScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const optIn = () => {
-    typedTrpc().geofenceOffers.optIn.mutate({}) as any;
+    typedTrpc().geofenceOffers.optIn.mutate({}) as Promise<unknown>;
   };
   if (loading) return <SkeletonList count={4} />;
   return (
@@ -51,15 +60,15 @@ export default function GeofenceOffersScreen(): JSX.Element {
       </TouchableOpacity>
       {offers.map((o) => (
         <View key={o.id} style={styles.card}>
-          <Text style={styles.oe}>{o.emoji as string}</Text>
+          <Text style={styles.oe}>{o.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.otit}>{o.titleAr as string}</Text>
+            <Text style={styles.otit}>{o.titleAr ?? ''}</Text>
             <Text style={styles.om}>
-              {o.salonName as string} · {o.distance as string}
+              {o.salonName ?? ''} · {o.distance ?? ''}
             </Text>
           </View>
           <View style={styles.ex}>
-            <Text style={styles.ext}> {o.expiresIn as string}</Text>
+            <Text style={styles.ext}> {o.expiresIn ?? ''}</Text>
           </View>
         </View>
       ))}

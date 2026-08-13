@@ -4,16 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface RegistryGift {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  price?: number;
+}
+
 export default function GiftRegistryScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<RegistryGift[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().giftRegistry.myRegistry.query() as any)
-      .then((d: any) => {
+    (typedTrpc().giftRegistry.myRegistry.query() as Promise<RegistryGift[]>)
+      .then((d) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -45,10 +52,10 @@ export default function GiftRegistryScreen(): JSX.Element {
       <Text style={styles.t}> سجل الهدايا</Text>
       {data.map((g, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(g.emoji as string) ?? ''}</Text>
+          <Text style={styles.emoji}>{g.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{g.nameAr as string}</Text>
-            <Text style={styles.price}>{(g.price as number)?.toLocaleString()} ر.س</Text>
+            <Text style={styles.name}>{g.nameAr ?? ''}</Text>
+            <Text style={styles.price}>{(g.price ?? 0).toLocaleString()} ر.س</Text>
           </View>
         </View>
       ))}
