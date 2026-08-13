@@ -4,19 +4,38 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface VendorDashboard {
+  totalProducts?: number;
+  totalSales?: number;
+  totalRevenue?: number;
+  revenue?: number;
+  pendingOrders?: number;
+  rating?: number;
+}
+
+interface VendorProduct {
+  id: number;
+  name?: string;
+  nameAr?: string;
+  price?: number;
+  stock?: number;
+  sales?: number;
+  emoji?: string;
+  active?: boolean;
+}
+
 export default function VendorPortalScreen(): JSX.Element {
-  const [dash, setDash] = useState<any>(null);
-  const [products, setProducts] = useState<any[]>([]);
+  const [dash, setDash] = useState<VendorDashboard | null>(null);
+  const [products, setProducts] = useState<VendorProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().vendorPortal.dashboard.query() as any,
-      typedTrpc().vendorPortal.myProducts.query() as any,
-    ])
-      .then(([d, p]: any[]) => {
+      typedTrpc().vendorPortal.dashboard.query() as Promise<VendorDashboard>,
+      typedTrpc().vendorPortal.myProducts.query() as Promise<VendorProduct[]>,
+    ]).then(([d, p]) => {
         setDash(d);
         setProducts(p || []);
         setLoading(false);
@@ -31,7 +50,9 @@ export default function VendorPortalScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const remove = (id: number) => {
-    (typedTrpc().vendorPortal.deleteProduct.mutate({ id }) as any).then(() => fetch());
+    (typedTrpc().vendorPortal.deleteProduct.mutate({ id }) as Promise<unknown>).then(
+      () => fetch(),
+    );
   };
   if (loading) return <SkeletonList count={4} />;
   return (
@@ -50,13 +71,13 @@ export default function VendorPortalScreen(): JSX.Element {
       <View style={styles.kr}>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
-          <Text style={styles.kv}>{(dash?.totalProducts as number) ?? 0}</Text>
+          <Text style={styles.kv}>{dash?.totalProducts ?? 0}</Text>
           <Text style={styles.kl}>منتجات</Text>
         </View>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
           <Text style={[styles.kv, { color: '#059669' }]}>
-            {((dash?.totalRevenue as number) ?? 0)?.toLocaleString()}
+            {(dash?.totalRevenue ?? 0)?.toLocaleString()}
           </Text>
           <Text style={styles.kl}>ر.س</Text>
         </View>
@@ -65,8 +86,8 @@ export default function VendorPortalScreen(): JSX.Element {
         <View key={p.id} style={styles.card}>
           <Text style={styles.em}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nm}>{p.name as string}</Text>
-            <Text style={styles.meta}>{(p.price as number)?.toLocaleString()} ر.س</Text>
+            <Text style={styles.nm}>{p.name}</Text>
+            <Text style={styles.meta}>{p.price?.toLocaleString()} ر.س</Text>
           </View>
           <TouchableOpacity onPress={() => remove(p.id)}>
             <Text style={styles.del}>️</Text>

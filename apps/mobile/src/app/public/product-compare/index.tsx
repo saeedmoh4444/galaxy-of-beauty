@@ -4,16 +4,25 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface CompareProduct {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  price?: number;
+  brand?: string;
+  rating?: string;
+}
+
 export default function ProductCompareScreen(): JSX.Element {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<CompareProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<number[]>([]);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().productCompare.products.query() as any)
-      .then((d: any) => {
+    (typedTrpc().productCompare.products.query() as Promise<CompareProduct[]>)
+      .then((d: CompareProduct[]) => {
         setProducts(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -30,7 +39,7 @@ export default function ProductCompareScreen(): JSX.Element {
     if (selected.includes(id)) setSelected(selected.filter((x) => x !== id));
     else if (selected.length < 3) setSelected([...selected, id]);
   };
-  const ci = products.filter((p) => selected.includes(p.id));
+  const ci = products.filter((p) => selected.includes(p.id ?? -1));
   if (loading) return <SkeletonList count={5} />;
   return (
     <ScrollView
@@ -47,16 +56,16 @@ export default function ProductCompareScreen(): JSX.Element {
       <Text style={styles.t}> مقارنة المنتجات</Text>
       <View style={styles.grid}>
         {products.map((p) => {
-          const isSel = selected.includes(p.id);
+          const isSel = selected.includes(p.id ?? -1);
           return (
             <TouchableOpacity
               key={p.id}
-              onPress={() => toggle(p.id)}
+              onPress={() => toggle(p.id ?? -1)}
               style={[styles.ch, isSel && styles.cha]}
             >
-              <Text style={styles.ce}>{(p.emoji as string) ?? ''}</Text>
-              <Text style={[styles.cn, isSel && styles.cna]}>{p.nameAr as string}</Text>
-              <Text style={styles.cp}>{(p.price as number)?.toLocaleString()} ر.س</Text>
+              <Text style={styles.ce}>{p.emoji ?? ''}</Text>
+              <Text style={[styles.cn, isSel && styles.cna]}>{p.nameAr ?? ''}</Text>
+              <Text style={styles.cp}>{(p.price ?? 0).toLocaleString()} ر.س</Text>
             </TouchableOpacity>
           );
         })}
@@ -66,18 +75,18 @@ export default function ProductCompareScreen(): JSX.Element {
           <Text style={styles.ttl}> المقارنة</Text>
           {ci.map((p) => (
             <View key={p.id} style={styles.tc}>
-              <Text style={styles.tcn}>{p.nameAr as string}</Text>
+              <Text style={styles.tcn}>{p.nameAr ?? ''}</Text>
               <View style={styles.tr}>
                 <Text style={styles.tl}></Text>
-                <Text style={styles.tv}>{(p.price as number)?.toLocaleString()} ر.س</Text>
+                <Text style={styles.tv}>{(p.price ?? 0).toLocaleString()} ر.س</Text>
               </View>
               <View style={styles.tr}>
                 <Text style={styles.tl}>️</Text>
-                <Text style={styles.tv}>{p.brand as string}</Text>
+                <Text style={styles.tv}>{p.brand ?? ''}</Text>
               </View>
               <View style={styles.tr}>
                 <Text style={styles.tl}></Text>
-                <Text style={styles.tv}>{p.rating as string}</Text>
+                <Text style={styles.tv}>{p.rating ?? ''}</Text>
               </View>
             </View>
           ))}

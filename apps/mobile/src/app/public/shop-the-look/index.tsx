@@ -12,16 +12,32 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface LookProduct {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  brand?: string;
+  price?: number;
+}
+
+interface Look {
+  id?: number;
+  imageUrl?: string;
+  titleAr?: string;
+  technician?: string;
+  products?: LookProduct[];
+}
+
 export default function ShopTheLookScreen(): JSX.Element {
-  const [looks, setLooks] = useState<any[]>([]);
+  const [looks, setLooks] = useState<Look[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().shopTheLook.looks.query() as any)
-      .then((d: any) => {
+    (typedTrpc().shopTheLook.looks.query() as Promise<Look[]>)
+      .then((d: Look[]) => {
         setLooks(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -59,27 +75,27 @@ export default function ShopTheLookScreen(): JSX.Element {
           <View key={l.id} style={styles.card}>
             <View style={styles.lookHeader}>
               {l.imageUrl ? (
-                <Image source={{ uri: l.imageUrl as string }} style={styles.lookImage} />
+                <Image source={{ uri: l.imageUrl }} style={styles.lookImage} />
               ) : (
                 <View style={styles.lookPlaceholder}>
                   <Text style={{ fontSize: 32 }}>️</Text>
                 </View>
               )}
               <View style={{ flex: 1 }}>
-                <Text style={styles.lookTitle}>{l.titleAr as string}</Text>
-                <Text style={styles.lookBy}>‍ {l.technician as string}</Text>
+                <Text style={styles.lookTitle}>{l.titleAr ?? ''}</Text>
+                <Text style={styles.lookBy}>‍ {l.technician ?? ''}</Text>
               </View>
             </View>
             <Text style={styles.productsTitle}> المنتجات</Text>
-            {(l.products as any[])?.map((p) => (
+            {l.products?.map((p) => (
               <View key={p.id} style={styles.product}>
-                <Text style={styles.prodEmoji}>{(p.emoji as string) ?? ''}</Text>
+                <Text style={styles.prodEmoji}>{p.emoji ?? ''}</Text>
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.prodName}>{p.nameAr as string}</Text>
-                  <Text style={styles.prodBrand}>{p.brand as string}</Text>
+                  <Text style={styles.prodName}>{p.nameAr ?? ''}</Text>
+                  <Text style={styles.prodBrand}>{p.brand ?? ''}</Text>
                 </View>
                 <View style={{ alignItems: 'flex-end' }}>
-                  <Text style={styles.prodPrice}>{(p.price as number)?.toLocaleString()} ر.س</Text>
+                  <Text style={styles.prodPrice}>{(p.price ?? 0).toLocaleString()} ر.س</Text>
                   <TouchableOpacity style={styles.buyBtn}>
                     <Text style={styles.buyBtnText}>شراء</Text>
                   </TouchableOpacity>

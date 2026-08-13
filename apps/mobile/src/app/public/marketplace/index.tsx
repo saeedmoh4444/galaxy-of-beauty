@@ -4,15 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface MarketProduct {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  titleAr?: string;
+  price?: number;
+}
+
 export default function MarketplaceScreen(): JSX.Element {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<MarketProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().marketplace.products.query({}) as any)
-      .then((d: any) => {
+    (typedTrpc().marketplace.products.query({}) as Promise<MarketProduct[]>)
+      .then((d: MarketProduct[]) => {
         setProducts(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -58,10 +66,10 @@ export default function MarketplaceScreen(): JSX.Element {
           : products.map((p) => (
               <TouchableOpacity key={p.id} style={styles.card}>
                 <View style={styles.ci}>
-                  <Text style={styles.ce}>{(p.emoji as string) ?? ''}</Text>
+                  <Text style={styles.ce}>{p.emoji ?? ''}</Text>
                 </View>
-                <Text style={styles.ct}>{(p.nameAr as string) ?? (p.titleAr as string)}</Text>
-                <Text style={styles.cp}>{(p.price as number)?.toLocaleString()} ر.س</Text>
+                <Text style={styles.ct}>{p.nameAr ?? p.titleAr}</Text>
+                <Text style={styles.cp}>{(p.price ?? 0).toLocaleString()} ر.س</Text>
               </TouchableOpacity>
             ))}
       </View>

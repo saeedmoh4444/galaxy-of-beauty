@@ -4,16 +4,25 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface PricingItem {
+  service?: string;
+  emoji?: string;
+  reason?: string;
+  basePrice?: number;
+  currentPrice?: number;
+  discount?: number;
+}
+
 export default function SmartPricingScreen(): JSX.Element {
-  const [items, setItems] = useState<any[]>([]);
+  const [items, setItems] = useState<PricingItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().smartPricing.current.query() as any)
-      .then((d: any) => {
+    (typedTrpc().smartPricing.current.query() as Promise<PricingItem[]>)
+      .then((d: PricingItem[]) => {
         setItems(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -48,18 +57,18 @@ export default function SmartPricingScreen(): JSX.Element {
         <Text style={styles.e}>لا توجد خدمات</Text>
       ) : (
         items.map((s) => {
-          const isDiscounted = (s.currentPrice as number) < (s.basePrice as number);
+          const isDiscounted = (s.currentPrice ?? 0) < (s.basePrice ?? 0);
           return (
             <View key={s.service} style={styles.card}>
-              <Text style={styles.svcEmoji}>{s.emoji as string}</Text>
+              <Text style={styles.svcEmoji}>{s.emoji ?? ''}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={styles.svcName}>{s.service as string}</Text>
-                <Text style={styles.svcReason}>{s.reason as string}</Text>
+                <Text style={styles.svcName}>{s.service ?? ''}</Text>
+                <Text style={styles.svcReason}>{s.reason ?? ''}</Text>
               </View>
               <View style={{ alignItems: 'flex-end' }}>
                 {isDiscounted && (
                   <Text style={styles.basePrice}>
-                    {(s.basePrice as number)?.toLocaleString()} ر.س
+                    {(s.basePrice ?? 0).toLocaleString()} ر.س
                   </Text>
                 )}
                 <Text
@@ -68,10 +77,10 @@ export default function SmartPricingScreen(): JSX.Element {
                     isDiscounted ? { color: '#059669' } : { color: '#d97706' },
                   ]}
                 >
-                  {(s.currentPrice as number)?.toLocaleString()} ر.س
+                  {(s.currentPrice ?? 0).toLocaleString()} ر.س
                 </Text>
-                {(s.discount as number) > 0 && (
-                  <Text style={styles.discountBadge}>-{s.discount as number}%</Text>
+                {(s.discount ?? 0) > 0 && (
+                  <Text style={styles.discountBadge}>-{s.discount ?? 0}%</Text>
                 )}
               </View>
             </View>

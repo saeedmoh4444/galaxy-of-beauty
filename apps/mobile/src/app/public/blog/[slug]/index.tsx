@@ -5,17 +5,24 @@ import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface BlogPostData {
+  titleJson?: { ar?: string; en?: string };
+  bodyJson?: { ar?: string; en?: string };
+  tags?: string[];
+  publishedAt?: string | null;
+}
+
 export default function BlogPostScreen(): JSX.Element {
   const { slug } = useLocalSearchParams<{ slug: string }>();
-  const [post, setPost] = useState<any>(null);
+  const [post, setPost] = useState<BlogPostData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback(
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      (typedTrpc().blog.getBySlug.query({ slug }) as any)
-        .then((d: any) => {
+      (typedTrpc().blog.getBySlug.query({ slug }) as Promise<BlogPostData>)
+        .then((d: BlogPostData) => {
           setPost(d);
           setLoading(false);
           setRefreshing(false);
@@ -37,9 +44,9 @@ export default function BlogPostScreen(): JSX.Element {
         <Text style={styles.e}>المقال غير موجود</Text>
       </View>
     );
-  const title = ((post.titleJson as any)?.ar as string) ?? String(slug).replace(/-/g, ' ');
-  const body = ((post.bodyJson as any)?.ar as string) ?? '';
-  const tags = (post.tags ?? []) as string[];
+  const title = post.titleJson?.ar ?? String(slug).replace(/-/g, ' ');
+  const body = post.bodyJson?.ar ?? '';
+  const tags = post.tags ?? [];
   const stripHtml = (html: string) => html.replace(/<[^>]+>/g, '').substring(0, 500);
   return (
     <ScrollView
@@ -57,7 +64,7 @@ export default function BlogPostScreen(): JSX.Element {
       <View style={styles.meta}>
         {post.publishedAt && (
           <Text style={styles.date}>
-            {new Date(post.publishedAt as string).toLocaleDateString('ar-SA', {
+            {new Date(post.publishedAt ?? '').toLocaleDateString('ar-SA', {
               year: 'numeric',
               month: 'long',
               day: 'numeric',

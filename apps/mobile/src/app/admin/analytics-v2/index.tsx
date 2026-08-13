@@ -4,16 +4,40 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface AnalyticsKpi {
+  today?: number;
+  week?: number;
+  month?: number;
+  growth?: number;
+  chart?: number[];
+}
+
+interface TopService {
+  name?: string;
+  bookings?: number;
+  revenue?: number;
+  growth?: number;
+}
+
+interface AnalyticsData {
+  revenue?: AnalyticsKpi;
+  bookings?: AnalyticsKpi;
+  users?: Record<string, number>;
+  technicians?: Record<string, number>;
+  topServices?: TopService[];
+  forecast?: Record<string, number>;
+}
+
 export default function AdminAnalyticsV2Screen(): JSX.Element {
-  const [data, setData] = useState<any>({});
+  const [data, setData] = useState<AnalyticsData>({});
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().adminAnalyticsV2.dashboard.query() as any)
-      .then((d: any) => {
+    (typedTrpc().adminAnalyticsV2.dashboard.query() as Promise<AnalyticsData>)
+      .then((d: AnalyticsData) => {
         setData(d || {});
         setLoading(false);
         setRefreshing(false);
@@ -31,9 +55,9 @@ export default function AdminAnalyticsV2Screen(): JSX.Element {
   if (loading) return <SkeletonList count={5} />;
 
   const d = data ?? {};
-  const revenue = (d.revenue as Record<string, number>) ?? {};
-  const bookings = (d.bookings as Record<string, number>) ?? {};
-  const top = (d.topServices ?? []) as any[];
+  const revenue = d.revenue ?? {};
+  const bookings = d.bookings ?? {};
+  const top = d.topServices ?? [];
 
   return (
     <ScrollView
@@ -64,8 +88,8 @@ export default function AdminAnalyticsV2Screen(): JSX.Element {
       {top.map((s, i) => (
         <View key={i} style={styles.row}>
           <Text style={styles.rank}>#{i + 1}</Text>
-          <Text style={styles.name}>{s.name as string}</Text>
-          <Text style={styles.stat}>{s.bookings as number} حجز</Text>
+          <Text style={styles.name}>{s.name}</Text>
+          <Text style={styles.stat}>{s.bookings} حجز</Text>
         </View>
       ))}
     </ScrollView>

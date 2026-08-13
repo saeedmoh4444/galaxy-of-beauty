@@ -4,17 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface TicketEvent {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  date?: string;
+}
+
 export default function EventTicketsScreen(): JSX.Element {
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<TicketEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().eventTickets.list
-      .query()
-      .then((d: any) => {
+    (typedTrpc().eventTickets.list.query() as Promise<TicketEvent[]>)
+      .then((d) => {
         setEvents(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -50,11 +56,11 @@ export default function EventTicketsScreen(): JSX.Element {
       ) : (
         events.map((e, i) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.eventEmoji}>{(e.emoji as string) ?? ''}</Text>
+            <Text style={styles.eventEmoji}>{e.emoji ?? ''}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.eventName}>{e.nameAr as string}</Text>
+              <Text style={styles.eventName}>{e.nameAr ?? ''}</Text>
               <Text style={styles.eventDate}>
-                {new Date(e.date as string).toLocaleDateString('ar-SA')}
+                {e.date ? new Date(e.date).toLocaleDateString('ar-SA') : ''}
               </Text>
             </View>
             <TouchableOpacity style={styles.bookBtn}>

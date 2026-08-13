@@ -4,15 +4,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface GroupDeal {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  price?: number;
+  buyers?: number;
+  minBuyers?: number;
+}
+
 export default function GroupBuyScreen(): JSX.Element {
-  const [deals, setDeals] = useState<any[]>([]);
+  const [deals, setDeals] = useState<GroupDeal[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().groupBuy.deals.query() as any)
-      .then((d: any) => {
+    (typedTrpc().groupBuy.deals.query() as Promise<GroupDeal[]>)
+      .then((d: GroupDeal[]) => {
         setDeals(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -41,12 +50,12 @@ export default function GroupBuyScreen(): JSX.Element {
       <Text style={styles.t}> شراء جماعي</Text>
       {deals.map((d) => (
         <View key={d.id} style={styles.card}>
-          <Text style={styles.de}>{(d.emoji as string) ?? ''}</Text>
+          <Text style={styles.de}>{d.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.dn}>{d.nameAr as string}</Text>
-            <Text style={styles.dp}>{(d.price as number)?.toLocaleString()} ر.س</Text>
+            <Text style={styles.dn}>{d.nameAr ?? ''}</Text>
+            <Text style={styles.dp}>{(d.price ?? 0).toLocaleString()} ر.س</Text>
             <Text style={styles.dm}>
-              {d.buyers as number} / {d.minBuyers as number} مشترين
+              {d.buyers ?? 0} / {d.minBuyers ?? 0} مشترين
             </Text>
           </View>
         </View>

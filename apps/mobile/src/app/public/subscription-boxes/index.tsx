@@ -5,6 +5,15 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface SubscriptionBox {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  descAr?: string;
+  itemCount?: number;
+  price?: number;
+}
+
 export default function SubscriptionBoxesScreen(): JSX.Element {
   const {
     data: boxes,
@@ -18,7 +27,7 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الصناديق" onRetry={refetch} />;
 
-  const items = (boxes ?? []) as any[];
+  const items = (boxes as SubscriptionBox[] | undefined) ?? [];
 
   return (
     <ScrollView
@@ -35,14 +44,14 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
       ) : (
         items.map((b) => (
           <View key={b.id} style={styles.card}>
-            <Text style={styles.boxEmoji}>{(b.emoji as string) ?? ''}</Text>
+            <Text style={styles.boxEmoji}>{b.emoji ?? ''}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.boxName}>{b.nameAr as string}</Text>
-              <Text style={styles.boxDesc}>{(b.descAr as string)?.substring(0, 80)}</Text>
-              <Text style={styles.boxItems}> {b.itemCount as number} منتجات</Text>
+              <Text style={styles.boxName}>{b.nameAr ?? ''}</Text>
+              <Text style={styles.boxDesc}>{b.descAr?.substring(0, 80)}</Text>
+              <Text style={styles.boxItems}> {b.itemCount ?? 0} منتجات</Text>
             </View>
             <View style={{ alignItems: 'flex-end' }}>
-              <Text style={styles.boxPrice}>{(b.price as number)?.toLocaleString()} ر.س</Text>
+              <Text style={styles.boxPrice}>{(b.price ?? 0).toLocaleString()} ر.س</Text>
               <Text style={styles.boxPeriod}>/شهرياً</Text>
               <TouchableOpacity style={styles.subBtn}>
                 <Text style={styles.subBtnText}>اشتراك</Text>

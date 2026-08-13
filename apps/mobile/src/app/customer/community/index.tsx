@@ -14,6 +14,31 @@ import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 
+interface CommunityUser {
+  id?: number;
+  name?: string;
+  avatarUrl?: string;
+}
+
+interface CommunityPost {
+  id: number;
+  content?: string;
+  createdAt?: string;
+  likes?: number;
+  user?: CommunityUser;
+  _count?: { comments?: number };
+}
+
+interface FeedData {
+  items?: CommunityPost[];
+  total?: number;
+  page?: number;
+}
+
+interface MyLike {
+  postId: number;
+}
+
 export default function CommunityScreen(): JSX.Element {
   const {
     data: feedData,
@@ -37,10 +62,11 @@ export default function CommunityScreen(): JSX.Element {
   const [commentId, setCommentId] = useState<number | null>(null);
   const [commentText, setCommentText] = useState('');
 
-  const myLikesArr = (myLikes ?? []) as any[];
+  const myLikesArr = (myLikes as MyLike[] | undefined) ?? [];
   const likedIds = new Set(myLikesArr.map((l) => l.postId));
-  const feedItems = (feedData as any)?.items;
-  const posts: any[] = Array.isArray(feedItems) ? feedItems : [];
+  const feedItems = ((feedData as FeedData | null)?.items) ?? [];
+  const posts: CommunityPost[] = Array.isArray(feedItems) ? feedItems : [];
+  const trendingPosts = (trending as CommunityPost[] | undefined) ?? [];
 
   const handleLike = async (postId: number) => {
     try {
@@ -116,13 +142,13 @@ export default function CommunityScreen(): JSX.Element {
         </View>
       )}
 
-      {Array.isArray(trending) && (trending as any[]).length > 0 && (
+      {trendingPosts.length > 0 && (
         <View style={{ marginBottom: 16 }}>
           <Text style={{ fontWeight: '700', fontSize: 14, color: '#111827', marginBottom: 8 }}>
              الأكثر تفاعلاً
           </Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {(trending as any[]).map((p, i) => (
+            {trendingPosts.map((p, i) => (
               <View
                 key={p.id ?? i}
                 style={{
@@ -159,7 +185,7 @@ export default function CommunityScreen(): JSX.Element {
             <View>
               <Text style={{ fontWeight: '600', fontSize: 14 }}>{p.user?.name ?? 'مستخدمة'}</Text>
               <Text style={{ fontSize: 11, color: '#9ca3af' }}>
-                {new Date(p.createdAt).toLocaleDateString('ar-SA')}
+                {new Date(p.createdAt ?? '').toLocaleDateString('ar-SA')}
               </Text>
             </View>
           </View>

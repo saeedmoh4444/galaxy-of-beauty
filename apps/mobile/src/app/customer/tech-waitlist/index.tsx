@@ -4,19 +4,36 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface WaitlistTech {
+  id: number;
+  name?: string;
+  emoji?: string;
+  rating?: number;
+  waitlistCount?: number;
+  avgWait?: string;
+}
+
+interface MyWaitlist {
+  id: number;
+  name?: string;
+  position?: number;
+  technicianName?: string;
+  status?: string;
+  preferredDate?: string;
+}
+
 export default function TechWaitlistScreen(): JSX.Element {
-  const [popular, setPopular] = useState<any[]>([]);
-  const [myList, setMyList] = useState<any[]>([]);
+  const [popular, setPopular] = useState<WaitlistTech[]>([]);
+  const [myList, setMyList] = useState<MyWaitlist[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().techWaitlist.popular.query() as any,
-      typedTrpc().techWaitlist.myWaitlists.query() as any,
-    ])
-      .then(([p, m]: any[]) => {
+      typedTrpc().techWaitlist.popular.query() as Promise<WaitlistTech[]>,
+      typedTrpc().techWaitlist.myWaitlists.query() as Promise<MyWaitlist[]>,
+    ]).then(([p, m]) => {
         setPopular(p || []);
         setMyList(m || []);
         setLoading(false);
@@ -31,10 +48,14 @@ export default function TechWaitlistScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const join = (techId: number) => {
-    (typedTrpc().techWaitlist.join.mutate({ technicianId: techId }) as any).then(() => fetch());
+    (typedTrpc().techWaitlist.join.mutate({ technicianId: techId }) as Promise<unknown>).then(
+      () => fetch(),
+    );
   };
   const leave = (techId: number) => {
-    (typedTrpc().techWaitlist.leave.mutate({ technicianId: techId }) as any).then(() => fetch());
+    (typedTrpc().techWaitlist.leave.mutate({ technicianId: techId }) as Promise<unknown>).then(
+      () => fetch(),
+    );
   };
   if (loading) return <SkeletonList count={5} />;
   return (
@@ -55,8 +76,8 @@ export default function TechWaitlistScreen(): JSX.Element {
         <View key={t.id} style={styles.card}>
           <Text style={styles.te}>‍</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.tn}>{t.name as string}</Text>
-            <Text style={styles.tm}>الموقع: {(t.position as number) ?? '—'}</Text>
+            <Text style={styles.tn}>{t.name}</Text>
+            <Text style={styles.tm}>الموقع: {t.position ?? '—'}</Text>
           </View>
           <TouchableOpacity onPress={() => leave(t.id)} style={styles.lb}>
             <Text style={styles.lt}>خروج</Text>
@@ -68,9 +89,9 @@ export default function TechWaitlistScreen(): JSX.Element {
         <View key={t.id} style={styles.card}>
           <Text style={styles.te}>‍</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.tn}>{t.name as string}</Text>
+            <Text style={styles.tn}>{t.name}</Text>
             <Text style={styles.tm}>
-               {(t.rating as number) ?? 0} · {(t.waitlistCount as number) ?? 0} في الانتظار
+               {t.rating ?? 0} · {t.waitlistCount ?? 0} في الانتظار
             </Text>
           </View>
           <TouchableOpacity onPress={() => join(t.id)} style={styles.jb}>

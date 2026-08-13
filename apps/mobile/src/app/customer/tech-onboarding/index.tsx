@@ -4,15 +4,32 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface OnboardingStep {
+  key?: string;
+  titleAr?: string;
+  descAr?: string;
+  nameAr?: string;
+  desc?: string;
+  emoji?: string;
+  completed?: boolean;
+}
+
+interface OnboardingData {
+  steps?: OnboardingStep[];
+  completed?: number;
+  total?: number;
+  readyForReview?: boolean;
+}
+
 export default function TechOnboardingScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<OnboardingData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().techOnboarding.steps.query() as any)
-      .then((d: any) => {
+    (typedTrpc().techOnboarding.steps.query() as Promise<OnboardingData>)
+      .then((d: OnboardingData) => {
         setData(d);
         setLoading(false);
         setRefreshing(false);
@@ -26,14 +43,15 @@ export default function TechOnboardingScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const submitDoc = (stepKey: string) => {
-    (typedTrpc().techOnboarding.submitDoc.mutate({ stepKey, url: 'document-url' }) as any).then(
-      () => fetch(),
-    );
+    (typedTrpc().techOnboarding.submitDoc.mutate({
+      stepKey,
+      url: 'document-url',
+    }) as Promise<unknown>).then(() => fetch());
   };
   if (loading) return <SkeletonList count={4} />;
-  const steps = (data?.steps ?? []) as any[];
-  const completed = (data?.completed as number) ?? 0;
-  const total = (data?.total as number) ?? 5;
+  const steps = (data?.steps as OnboardingStep[] | undefined) ?? [];
+  const completed = data?.completed ?? 0;
+  const total = data?.total ?? 5;
   return (
     <ScrollView
       style={styles.c}
@@ -60,11 +78,11 @@ export default function TechOnboardingScreen(): JSX.Element {
         <View key={s.key ?? i} style={[styles.step, s.completed && styles.sd]}>
           <Text style={styles.se}>{s.completed ? '' : '⭕'}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={[styles.stt, s.completed && styles.sttd]}>{s.titleAr as string}</Text>
-            <Text style={styles.sdesc}>{s.descAr as string}</Text>
+            <Text style={[styles.stt, s.completed && styles.sttd]}>{s.titleAr}</Text>
+            <Text style={styles.sdesc}>{s.descAr}</Text>
           </View>
           {!s.completed && (
-            <TouchableOpacity onPress={() => submitDoc(s.key as string)} style={styles.ub}>
+            <TouchableOpacity onPress={() => submitDoc(s.key ?? '')} style={styles.ub}>
               <Text style={styles.ut}>رفع</Text>
             </TouchableOpacity>
           )}

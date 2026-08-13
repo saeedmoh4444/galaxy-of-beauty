@@ -4,18 +4,39 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface ServiceItem {
+  id: number;
+  emoji?: string;
+  nameAr?: string;
+  titleJson?: { ar?: string; en?: string };
+}
+
+interface RelatedService {
+  id?: number;
+  title?: string;
+  basePrice?: number;
+  durationMin?: number;
+  bookedTogether?: number;
+}
+
+interface ServiceListData {
+  items?: ServiceItem[];
+  total?: number;
+  page?: number;
+}
+
 export default function RecommendationsScreen(): JSX.Element {
-  const [services, setServices] = useState<any[]>([]);
+  const [services, setServices] = useState<ServiceItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [related, setRelated] = useState<any[]>([]);
+  const [related, setRelated] = useState<RelatedService[]>([]);
   const [relatedLoading, setRelatedLoading] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().services.list.query({}) as any)
-      .then((d: any) => {
+    (typedTrpc().services.list.query({}) as Promise<ServiceListData>)
+      .then((d: ServiceListData) => {
         setServices(d?.items || []);
         setLoading(false);
         setRefreshing(false);
@@ -31,8 +52,10 @@ export default function RecommendationsScreen(): JSX.Element {
   const getRelated = (serviceId: number) => {
     setSelectedId(serviceId);
     setRelatedLoading(true);
-    (typedTrpc().recommendations.frequentlyBookedTogether.query({ serviceId }) as any)
-      .then((d: any) => {
+    (typedTrpc().recommendations.frequentlyBookedTogether.query({
+      serviceId,
+    }) as Promise<RelatedService[]>)
+      .then((d: RelatedService[]) => {
         setRelated(d || []);
         setRelatedLoading(false);
       })
@@ -58,10 +81,8 @@ export default function RecommendationsScreen(): JSX.Element {
           onPress={() => getRelated(s.id)}
           style={[styles.sc, selectedId === s.id && styles.sca]}
         >
-          <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
-          <Text style={styles.sn}>
-            {((s.titleJson as any)?.ar as string) ?? (s.nameAr as string)}
-          </Text>
+          <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
+          <Text style={styles.sn}>{s.titleJson?.ar ?? s.nameAr}</Text>
         </TouchableOpacity>
       ))}
       {relatedLoading && <SkeletonList count={3} />}
@@ -70,11 +91,11 @@ export default function RecommendationsScreen(): JSX.Element {
         <View key={r.id} style={styles.card}>
           <Text style={styles.re}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.rn}>{r.title as string}</Text>
-            <Text style={styles.rp}>{(r.basePrice as number)?.toLocaleString()} ر.س</Text>
+            <Text style={styles.rn}>{r.title}</Text>
+            <Text style={styles.rp}>{r.basePrice?.toLocaleString()} ر.س</Text>
           </View>
           <View style={styles.rb}>
-            <Text style={styles.rbt}>{r.bookedTogether as number}x</Text>
+            <Text style={styles.rbt}>{r.bookedTogether}x</Text>
           </View>
         </View>
       ))}

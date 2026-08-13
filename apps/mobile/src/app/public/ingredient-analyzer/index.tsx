@@ -13,13 +13,32 @@ const COLORS = {
   danger: '#dc2626',
 };
 
+interface IngredientResult {
+  name?: string;
+  description?: string;
+  safety?: string;
+}
+
+interface AnalyzerQueryResult {
+  data: IngredientResult | null;
+  isLoading: boolean;
+  isError: boolean;
+  refetch: () => void;
+}
+
 export default function IngredientAnalyzerScreen(): JSX.Element {
   const [search, setSearch] = useState('');
   const [submitted, setSubmitted] = useState('');
-  const result = typedTrpc().ingredientAnalyzer?.analyze?.useQuery?.(
-    { ingredient: submitted },
-    { enabled: submitted.length > 0 },
-  ) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const result =
+    (typedTrpc().ingredientAnalyzer?.analyze?.useQuery?.(
+      { ingredient: submitted },
+      { enabled: submitted.length > 0 },
+    ) as AnalyzerQueryResult | null) ?? {
+      data: null,
+      isLoading: false,
+      isError: false,
+      refetch: () => {},
+    };
 
   return (
     <ScreenState
@@ -41,22 +60,22 @@ export default function IngredientAnalyzerScreen(): JSX.Element {
           <Text style={styles.analyzeText}>تحليل</Text>
         </TouchableOpacity>
       </View>
-      {(result.data as any) ? (
+      {result.data ? (
         <View
           style={[
             styles.resultCard,
             {
               borderLeftColor:
-                (result.data as any)?.safety === 'safe'
+                result.data?.safety === 'safe'
                   ? COLORS.success
-                  : (result.data as any)?.safety === 'warning'
+                  : result.data?.safety === 'warning'
                     ? COLORS.warning
                     : COLORS.danger,
             },
           ]}
         >
-          <Text style={styles.ingredientName}>{(result.data as any)?.name ?? submitted}</Text>
-          <Text style={styles.ingredientDesc}>{(result.data as any)?.description ?? ''}</Text>
+          <Text style={styles.ingredientName}>{result.data?.name ?? submitted}</Text>
+          <Text style={styles.ingredientDesc}>{result.data?.description ?? ''}</Text>
         </View>
       ) : null}
     </ScreenState>

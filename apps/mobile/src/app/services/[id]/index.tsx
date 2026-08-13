@@ -5,17 +5,25 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface ServiceDetail {
+  emoji?: string;
+  titleJson?: { ar?: string; en?: string };
+  descriptionJson?: { ar?: string; en?: string };
+  basePrice?: number;
+  durationMin?: number;
+}
+
 export default function ServiceDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<ServiceDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback(
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      (typedTrpc().services.getById.query({ id: parseInt(id, 10) }) as any)
-        .then((d: any) => {
+      (typedTrpc().services.getById.query({ id: parseInt(id, 10) }) as Promise<ServiceDetail>)
+        .then((d: ServiceDetail) => {
           setData(d);
           setLoading(false);
           setRefreshing(false);
@@ -50,15 +58,13 @@ export default function ServiceDetailScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>
-        {(data.emoji as string) ?? '‍️'} {(data.titleJson as any)?.ar as string}
+        {data.emoji ?? '‍️'} {data.titleJson?.ar}
       </Text>
       <View style={styles.card}>
-        <Text style={styles.price}>{(data.basePrice as number)?.toLocaleString()} ر.س</Text>
-        <Text style={styles.dur}>️ {data.durationMin as number} دقيقة</Text>
+        <Text style={styles.price}>{data.basePrice?.toLocaleString()} ر.س</Text>
+        <Text style={styles.dur}>️ {data.durationMin} دقيقة</Text>
       </View>
-      {data.descriptionJson && (
-        <Text style={styles.desc}>{(data.descriptionJson as any)?.ar as string}</Text>
-      )}
+      {data.descriptionJson && <Text style={styles.desc}>{data.descriptionJson?.ar}</Text>}
     </ScrollView>
   );
 }

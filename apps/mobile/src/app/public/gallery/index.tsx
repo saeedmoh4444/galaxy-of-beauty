@@ -4,15 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface GalleryPhoto {
+  id?: number;
+  imageUrl?: string;
+  title?: string;
+  technician?: string;
+}
+
 export default function GalleryScreen(): JSX.Element {
-  const [photos, setPhotos] = useState<any[]>([]);
+  const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().gallery.photos.query() as any)
-      .then((d: any) => {
+    (typedTrpc().gallery.photos.query() as Promise<GalleryPhoto[]>)
+      .then((d: GalleryPhoto[]) => {
         setPhotos(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -43,15 +50,15 @@ export default function GalleryScreen(): JSX.Element {
         {photos.map((p, i) => (
           <View key={p.id ?? i} style={styles.pc}>
             {p.imageUrl ? (
-              <Image source={{ uri: p.imageUrl as string }} style={styles.img} />
+              <Image source={{ uri: p.imageUrl }} style={styles.img} />
             ) : (
               <View style={styles.ph}>
                 <Text style={{ fontSize: 32 }}>️</Text>
               </View>
             )}
             <View style={styles.pi}>
-              <Text style={styles.pt}>{(p.title as string) ?? '—'}</Text>
-              <Text style={styles.pb}>‍ {p.technician as string}</Text>
+              <Text style={styles.pt}>{p.title ?? '—'}</Text>
+              <Text style={styles.pb}>‍ {p.technician ?? ''}</Text>
             </View>
           </View>
         ))}

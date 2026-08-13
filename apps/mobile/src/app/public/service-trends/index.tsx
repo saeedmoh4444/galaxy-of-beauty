@@ -4,15 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface ServiceTrend {
+  emoji?: string;
+  nameAr?: string;
+  trend?: string;
+  growth?: number;
+}
+
 export default function ServiceTrendsScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<ServiceTrend[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().serviceTrends.current.query() as any)
-      .then((d: any) => {
+    (typedTrpc().serviceTrends.current.query() as Promise<ServiceTrend[]>)
+      .then((d: ServiceTrend[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -41,11 +48,11 @@ export default function ServiceTrendsScreen(): JSX.Element {
       <Text style={styles.t}> اتجاهات الخدمات</Text>
       {data.map((s, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.em}>{(s.emoji as string) ?? ''}</Text>
+          <Text style={styles.em}>{s.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nm}>{s.nameAr as string}</Text>
+            <Text style={styles.nm}>{s.nameAr ?? ''}</Text>
             <Text style={styles.meta}>
-              {s.trend as string} · {s.growth as number}% نمو
+              {s.trend ?? ''} · {s.growth ?? 0}% نمو
             </Text>
           </View>
         </View>
