@@ -11,8 +11,12 @@ const PAYMENT_METHODS = [
   { key: 'bnpl', emoji: '', label: 'تقسيط' },
 ];
 
+interface WalletBalance {
+  balance?: number;
+}
+
 export default function CheckoutScreen(): JSX.Element {
-  const [balance, setBalance] = useState<any>(null);
+  const [balance, setBalance] = useState<WalletBalance | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [method, setMethod] = useState('wallet');
@@ -20,8 +24,8 @@ export default function CheckoutScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().wallet.getBalance.query() as any)
-      .then((d: any) => {
+    (typedTrpc().wallet.getBalance.query() as Promise<WalletBalance>)
+      .then((d) => {
         setBalance(d);
         setLoading(false);
         setRefreshing(false);
@@ -53,7 +57,7 @@ export default function CheckoutScreen(): JSX.Element {
 
       <View style={styles.bc}>
         <Text style={styles.bl}>رصيد المحفظة</Text>
-        <Text style={styles.ba}>{((balance?.balance as number) ?? 0).toLocaleString()} ر.س</Text>
+        <Text style={styles.ba}>{(balance?.balance ?? 0).toLocaleString()} ر.س</Text>
       </View>
 
       <Text style={styles.st}>طريقة الدفع</Text>
