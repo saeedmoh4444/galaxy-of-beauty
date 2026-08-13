@@ -4,9 +4,20 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface FeaturedTech {
+  name?: string;
+  rating?: number;
+  specialtyAr?: string;
+}
+
+interface PastFeaturedTech {
+  name?: string;
+  month?: string;
+}
+
 export default function FeaturedTechScreen(): JSX.Element {
-  const [tech, setTech] = useState<any>(null);
-  const [past, setPast] = useState<any[]>([]);
+  const [tech, setTech] = useState<FeaturedTech | null>(null);
+  const [past, setPast] = useState<PastFeaturedTech[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -14,10 +25,10 @@ export default function FeaturedTechScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().featuredTech.current.query(),
-      typedTrpc().featuredTech.past.query(),
+      typedTrpc().featuredTech.current.query() as Promise<FeaturedTech>,
+      typedTrpc().featuredTech.past.query() as Promise<PastFeaturedTech[]>,
     ])
-      .then(([t, p]: any[]) => {
+      .then(([t, p]) => {
         setTech(t);
         setPast(p || []);
         setLoading(false);
@@ -51,9 +62,9 @@ export default function FeaturedTechScreen(): JSX.Element {
       {tech && (
         <View style={styles.featured}>
           <Text style={styles.fEmoji}>‍</Text>
-          <Text style={styles.fName}>{tech.name as string}</Text>
+          <Text style={styles.fName}>{tech.name ?? ''}</Text>
           <Text style={styles.fMeta}>
-             {tech.rating as number} · {tech.specialtyAr as string}
+             {tech.rating ?? 0} · {tech.specialtyAr ?? ''}
           </Text>
         </View>
       )}
@@ -65,8 +76,8 @@ export default function FeaturedTechScreen(): JSX.Element {
           <View key={i} style={styles.card}>
             <Text style={styles.avatar}>‍</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.name}>{p.name as string}</Text>
-              <Text style={styles.month}>{p.month as string}</Text>
+              <Text style={styles.name}>{p.name ?? ''}</Text>
+              <Text style={styles.month}>{p.month ?? ''}</Text>
             </View>
           </View>
         ))

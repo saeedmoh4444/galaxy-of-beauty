@@ -4,8 +4,16 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface CompareService {
+  id: number;
+  emoji?: string;
+  nameAr?: string;
+  price?: number;
+  duration?: string;
+}
+
 export default function CompareScreen(): JSX.Element {
-  const [services, setServices] = useState<any[]>([]);
+  const [services, setServices] = useState<CompareService[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<number[]>([]);
@@ -13,8 +21,8 @@ export default function CompareScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().compare.services.query() as any)
-      .then((d: any) => {
+    (typedTrpc().compare.services.query() as Promise<CompareService[]>)
+      .then((d) => {
         setServices(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -60,11 +68,11 @@ export default function CompareScreen(): JSX.Element {
               onPress={() => toggle(s.id)}
               style={[styles.chip, isSel && styles.chipActive]}
             >
-              <Text style={styles.chipEmoji}>{(s.emoji as string) ?? '‍️'}</Text>
+              <Text style={styles.chipEmoji}>{s.emoji ?? ''}</Text>
               <Text style={[styles.chipName, isSel && styles.chipNameActive]}>
-                {s.nameAr as string}
+                {s.nameAr ?? ''}
               </Text>
-              <Text style={styles.chipPrice}>{(s.price as number)?.toLocaleString()} ر.س</Text>
+              <Text style={styles.chipPrice}>{(s.price ?? 0).toLocaleString()} ر.س</Text>
             </TouchableOpacity>
           );
         })}
@@ -74,14 +82,14 @@ export default function CompareScreen(): JSX.Element {
           <Text style={styles.tableTitle}> المقارنة</Text>
           {compareItems.map((s) => (
             <View key={s.id} style={styles.compareCard}>
-              <Text style={styles.cTitle}>{s.nameAr as string}</Text>
+              <Text style={styles.cTitle}>{s.nameAr ?? ''}</Text>
               <View style={styles.cRow}>
                 <Text style={styles.cLabel}></Text>
-                <Text style={styles.cVal}>{(s.price as number)?.toLocaleString()} ر.س</Text>
+                <Text style={styles.cVal}>{(s.price ?? 0).toLocaleString()} ر.س</Text>
               </View>
               <View style={styles.cRow}>
-                <Text style={styles.cLabel}>️</Text>
-                <Text style={styles.cVal}>{s.duration as string}</Text>
+                <Text style={styles.cLabel}></Text>
+                <Text style={styles.cVal}>{s.duration ?? ''}</Text>
               </View>
             </View>
           ))}
