@@ -15,6 +15,7 @@ import { typedTrpc } from '@/lib/trpc-react';
 interface AssistantMessage {
   id?: number;
   content?: string;
+  role?: string;
 }
 
 export default function AIAssistantScreen(): JSX.Element {
