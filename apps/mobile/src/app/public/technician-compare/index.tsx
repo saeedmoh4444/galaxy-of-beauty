@@ -4,16 +4,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface CompareTechnician {
+  id: number;
+  name?: string;
+  rating?: number;
+  totalBookings?: number;
+  startingPrice?: number;
+}
+
 export default function TechnicianCompareScreen(): JSX.Element {
-  const [techs, setTechs] = useState<any[]>([]);
+  const [techs, setTechs] = useState<CompareTechnician[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<number[]>([]);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().technicians.list.query({}) as any)
-      .then((d: any) => {
+    (typedTrpc().technicians.list.query({}) as Promise<CompareTechnician[]>)
+      .then((d) => {
         setTechs(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -55,8 +63,8 @@ export default function TechnicianCompareScreen(): JSX.Element {
               style={[styles.ch, isSel && styles.cha]}
             >
               <Text style={styles.ce}>‍</Text>
-              <Text style={[styles.cn, isSel && styles.cna]}>{t.name as string}</Text>
-              <Text style={styles.cr}> {(t.rating as number) ?? 0}</Text>
+              <Text style={[styles.cn, isSel && styles.cna]}>{t.name ?? ''}</Text>
+              <Text style={styles.cr}> {t.rating ?? 0}</Text>
             </TouchableOpacity>
           );
         })}
@@ -66,18 +74,18 @@ export default function TechnicianCompareScreen(): JSX.Element {
           <Text style={styles.ttl}> المقارنة</Text>
           {ct.map((t) => (
             <View key={t.id} style={styles.tc}>
-              <Text style={styles.tcn}>{t.name as string}</Text>
+              <Text style={styles.tcn}>{t.name ?? ''}</Text>
               <View style={styles.tr}>
                 <Text style={styles.tl}></Text>
-                <Text style={styles.tv}>{(t.rating as number) ?? 0}</Text>
+                <Text style={styles.tv}>{t.rating ?? 0}</Text>
               </View>
               <View style={styles.tr}>
                 <Text style={styles.tl}></Text>
-                <Text style={styles.tv}>{(t.totalBookings as number) ?? 0} حجز</Text>
+                <Text style={styles.tv}>{t.totalBookings ?? 0} حجز</Text>
               </View>
               <View style={styles.tr}>
                 <Text style={styles.tl}></Text>
-                <Text style={styles.tv}>{(t.startingPrice as number)?.toLocaleString()} ر.س</Text>
+                <Text style={styles.tv}>{(t.startingPrice ?? 0).toLocaleString()} ر.س</Text>
               </View>
             </View>
           ))}
