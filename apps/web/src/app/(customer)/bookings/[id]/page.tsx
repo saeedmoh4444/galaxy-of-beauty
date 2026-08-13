@@ -41,19 +41,19 @@ export default function BookingDetailPage(): JSX.Element {
 
   if (query.isLoading)
     return (
-      <DashboardLayout role="CUSTOMER">
+      <DashboardLayout userRole="CUSTOMER">
         <CardSkeleton />
       </DashboardLayout>
     );
   if (query.isError || !booking)
     return (
-      <DashboardLayout role="CUSTOMER">
+      <DashboardLayout userRole="CUSTOMER">
         <ErrorAlert message="فشل تحميل الحجز" onRetry={() => query.refetch()} />
       </DashboardLayout>
     );
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">تفاصيل الحجز</h1>

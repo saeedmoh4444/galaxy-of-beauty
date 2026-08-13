@@ -101,7 +101,7 @@ export default function BeautyGoalsPage(): JSX.Element {
   const pct = Math.round((checked / allGoals.length) * 100);
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" أهداف الجمال" subtitle="حددي أهدافكِ وتابعي تقدمكِ" />
 

@@ -29,7 +29,7 @@ export default function SelfCarePage(): JSX.Element {
   const { data: today } = api.selfCare.todayMood.useQuery() as any;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
            العناية الذاتية

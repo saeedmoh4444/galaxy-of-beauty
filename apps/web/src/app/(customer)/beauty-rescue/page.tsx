@@ -81,7 +81,7 @@ export default function BeautyRescuePage(): JSX.Element {
   const surcharge = 1.5;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> إنقاذ الجمال</h1>

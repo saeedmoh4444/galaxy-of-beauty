@@ -29,7 +29,7 @@ export default function ReviewsPage(): JSX.Element {
   const unreviewed = bookings.filter((b) => b.status === 'COMPLETED' && !b.reviewId);
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <h1 className="text-2xl font-bold">تقييماتي</h1>
 

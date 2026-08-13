@@ -20,7 +20,7 @@ export default function BeautyEventsPage(): JSX.Element {
   const registrations = (api as any).beautyEvents?.myRegistrations?.useQuery?.() as any;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" المناسبات" subtitle="احتفلي بكل لحظة جميلة" />
         <div className="grid gap-6 lg:grid-cols-3">

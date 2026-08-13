@@ -18,7 +18,7 @@ export default function SubscriptionsPage(): JSX.Element {
   const isError = plansQ.isError || mySubQ.isError;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <h1 className="text-2xl font-bold">باقات الاشتراك</h1>
 

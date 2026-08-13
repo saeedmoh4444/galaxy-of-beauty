@@ -20,7 +20,7 @@ export default function FranchisePortalPage(): JSX.Element {
   const locs = (locations ?? []) as Array<Record<string, unknown>>;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
           <div>

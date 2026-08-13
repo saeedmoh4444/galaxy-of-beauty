@@ -86,7 +86,7 @@ export default function PostCarePage(): JSX.Element {
   const libTips: CareTip[] = catData?.tips ?? [];
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header */}
         <div className="text-center sm:text-right">

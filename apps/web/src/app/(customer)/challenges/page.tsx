@@ -38,7 +38,7 @@ export default function ChallengesPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="default">
         <PageTitle title=" التحديات" subtitle="تحديات ممتعة لجمالكِ" />
 

@@ -55,7 +55,7 @@ export default function InspirationPage(): JSX.Element {
   }, []);
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <div className="flex items-center justify-between">
           <div>

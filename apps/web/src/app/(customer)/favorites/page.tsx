@@ -14,7 +14,7 @@ export default function FavoritesPage(): JSX.Element {
   const favorites = data ?? [];
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> المفضلة</h1>

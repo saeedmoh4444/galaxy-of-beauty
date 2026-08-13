@@ -13,7 +13,7 @@ export default function AchievementsPage(): JSX.Element {
     };
   if (isError)
     return (
-      <DashboardLayout role="CUSTOMER">
+      <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-4xl space-y-6">
           <ErrorAlert message="فشل تحميل الإنجازات" onRetry={() => refetch()} />
         </div>
@@ -25,7 +25,7 @@ export default function AchievementsPage(): JSX.Element {
   const totalCount = (data?.totalCount as number) ?? 0;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> الإنجازات</h1>

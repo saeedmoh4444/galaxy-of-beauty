@@ -16,7 +16,7 @@ export default function AdminCmsPage(): JSX.Element {
   const [tab, setTab] = useState<'categories' | 'services'>('categories');
 
   return (
-    <DashboardLayout role="ADMIN">
+    <DashboardLayout userRole="ADMIN">
       <div className="mx-auto max-w-6xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> إدارة المحتوى</h1>

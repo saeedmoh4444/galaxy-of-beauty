@@ -53,7 +53,7 @@ export default function CustomerDashboardPage(): JSX.Element {
   const streakInfo = insights.data?.streakInfo as Record<string, any> | undefined;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-text-primary">لوحة التحكم</h1>

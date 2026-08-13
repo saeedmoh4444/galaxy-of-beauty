@@ -52,13 +52,13 @@ export default function MyJourneyPage(): JSX.Element {
 
   if (bLoading)
     return (
-      <DashboardLayout role="CUSTOMER">
+      <DashboardLayout userRole="CUSTOMER">
         <CardSkeleton />
       </DashboardLayout>
     );
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100"> رحلتي</h1>
         <p className="text-sm text-text-secondary">قصة جمالكِ معنا — من أول حجز إلى اليوم</p>

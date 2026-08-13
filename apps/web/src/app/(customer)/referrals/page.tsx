@@ -65,7 +65,7 @@ export default function ReferralsPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <h1 className="text-2xl font-bold">دعوة الأصدقاء</h1>
 

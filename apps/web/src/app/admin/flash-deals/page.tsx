@@ -28,7 +28,7 @@ export default function AdminFlashDealsPage(): JSX.Element {
   const [maxRedemptions, setMax] = useState(20);
 
   return (
-    <DashboardLayout role="ADMIN">
+    <DashboardLayout userRole="ADMIN">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> إدارة عروض الفلاش</h1>

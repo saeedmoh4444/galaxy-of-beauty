@@ -25,7 +25,7 @@ export default function SafetyPage(): JSX.Element {
   const booking = (latestBooking?.data?.bookings as any[])?.[0];
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title="️ الأمان" subtitle="سلامتكِ أولاً — دائماً" />
 

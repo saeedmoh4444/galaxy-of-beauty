@@ -10,7 +10,7 @@ export default function AdminLoyaltyPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout role="ADMIN">
+    <DashboardLayout userRole="ADMIN">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> إدارة الولاء</h1>

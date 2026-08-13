@@ -60,7 +60,7 @@ export default function AiChatPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto flex h-[calc(100vh-12rem)] max-w-3xl flex-col">
         <div className="flex items-center gap-3 border-b border-gray-200 pb-4 dark:border-gray-700">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 text-2xl dark:bg-purple-900">

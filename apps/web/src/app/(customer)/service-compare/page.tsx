@@ -29,7 +29,7 @@ export default function ServiceComparePage(): JSX.Element {
   const compareItems = services.filter((s: any) => selected.includes(s.id));
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title="️ مقارنة الخدمات" subtitle="اختاري حتى 3 خدمات للمقارنة" />
 

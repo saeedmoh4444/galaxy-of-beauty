@@ -23,7 +23,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function PerfumeGuidePage(): JSX.Element {
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle
           title=" دليل العطور"

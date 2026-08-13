@@ -112,10 +112,11 @@ const adminLinks = [
 
 export function DashboardLayout({
   children,
-  role: userRole = 'CUSTOMER',
+  userRole = 'CUSTOMER',
 }: {
   children: ReactNode;
-  role?: string;
+  /** User role for navigation items — not an ARIA attribute */
+  userRole?: string;
 }): JSX.Element {
   const pathname = usePathname();
   const router = useRouter();

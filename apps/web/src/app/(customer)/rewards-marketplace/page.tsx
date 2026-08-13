@@ -33,7 +33,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
   const tier = (account?.tier as string) ?? 'SILVER';
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> سوق المكافآت</h1>

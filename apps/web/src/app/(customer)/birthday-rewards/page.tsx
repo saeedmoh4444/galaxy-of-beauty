@@ -58,7 +58,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
   const discountPercent = Number(reward?.discountPercent ?? 0);
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         {/* Header */}
         <div className="text-center">

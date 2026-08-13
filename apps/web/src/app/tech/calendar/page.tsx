@@ -13,7 +13,7 @@ export default function TechCalendarPage(): JSX.Element {
   const st = status.data as unknown as Record<string, unknown> | undefined;
 
   return (
-    <DashboardLayout role="TECHNICIAN">
+    <DashboardLayout userRole="TECHNICIAN">
       <div className="mx-auto max-w-2xl space-y-6">
         <h1 className="text-2xl font-bold">تقويم قوقل</h1>
 

@@ -30,7 +30,7 @@ export default function BeautyExtrasPage(): JSX.Element {
   const styleMatch = (api as any).styleMatch?.getProfile?.useQuery?.() as any;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" المزيد" subtitle="كل ما يجعل رحلتكِ الجمالية مميزة" />
 

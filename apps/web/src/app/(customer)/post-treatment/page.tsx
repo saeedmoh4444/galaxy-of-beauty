@@ -71,7 +71,7 @@ export default function PostTreatmentPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="default">
         <PageTitle title="‍️ متابعة ما بعد العلاج" subtitle="تعليمات العناية بعد كل خدمة" />
 

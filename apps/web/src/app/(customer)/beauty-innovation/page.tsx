@@ -34,7 +34,7 @@ export default function BeautyInnovationPage(): JSX.Element {
   const vlogs = (api as any).beautyVlogs?.list?.useQuery?.({ limit: 1 }) as any;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" الابتكار" subtitle="تقنيات وأدوات ذكية لجمالكِ" />
 

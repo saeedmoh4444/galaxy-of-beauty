@@ -12,7 +12,7 @@ export default function TechPerformancePage(): JSX.Element {
   const monthlyEarnings = (data?.monthlyEarnings as Array<Record<string, unknown>>) ?? [];
 
   return (
-    <DashboardLayout role="TECHNICIAN">
+    <DashboardLayout userRole="TECHNICIAN">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> أدائي</h1>

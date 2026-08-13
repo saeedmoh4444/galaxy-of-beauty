@@ -37,7 +37,7 @@ export default function CommunityPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title="مجتمع الجمال" subtitle="تواصلي، شاركي، وانتمي" />
 

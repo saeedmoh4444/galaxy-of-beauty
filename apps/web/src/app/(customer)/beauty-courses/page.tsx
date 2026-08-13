@@ -36,7 +36,7 @@ export default function BeautyCoursesPage(): JSX.Element {
   const myItems = (myCourses?.data ?? []) as any[];
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" دورات تجميل" subtitle="تعلمي مهارات التجميل من الخبيرات" />
 

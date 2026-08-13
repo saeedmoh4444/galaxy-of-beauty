@@ -49,7 +49,7 @@ export default function BeautyBudgetPage(): JSX.Element {
   const pct = budget > 0 ? Math.min(100, (spent / budget) * 100) : 0;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" ميزانية الجمال" subtitle="خططي لإنفاقكِ الجمالي بذكاء" />
         <div className="grid gap-6 lg:grid-cols-2">

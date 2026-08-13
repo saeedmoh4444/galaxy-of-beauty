@@ -31,7 +31,7 @@ export default function BeautyServicesPage(): JSX.Element {
   const pricing = (api as any).pricingCoach?.suggestions?.useQuery?.() as any;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" خدمات الجمال" subtitle="اكتشفي كل ما تحتاجينه" />
 

@@ -33,7 +33,7 @@ export default function CorporateWellnessPage(): JSX.Element {
   const enquiryItems = (enquiries?.data ?? []) as any[];
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" عافية الشركات" subtitle="باقات تجميل وعناية لمنسوبات الشركات" />
 

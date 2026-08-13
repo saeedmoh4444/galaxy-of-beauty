@@ -17,7 +17,7 @@ export default function TechWalletPage(): JSX.Element {
   const transactions = (txData?.items as Array<Record<string, unknown>>) ?? [];
 
   return (
-    <DashboardLayout role="TECHNICIAN">
+    <DashboardLayout userRole="TECHNICIAN">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> محفظتي</h1>

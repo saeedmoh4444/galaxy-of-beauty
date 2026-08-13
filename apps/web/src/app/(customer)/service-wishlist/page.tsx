@@ -23,7 +23,7 @@ export default function ServiceWishlistPage(): JSX.Element {
   const list = items ?? [];
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>

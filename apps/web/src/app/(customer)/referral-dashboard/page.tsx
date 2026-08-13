@@ -72,7 +72,7 @@ export default function ReferralDashboardPage(): JSX.Element {
   const topReferrers = leaderboard ?? [];
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> برنامج الإحالة</h1>

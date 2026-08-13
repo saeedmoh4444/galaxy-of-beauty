@@ -31,7 +31,7 @@ export default function LifeEventsPage(): JSX.Element {
   const events = (api as any).beautyEvents?.upcoming?.useQuery?.({ limit: 4 }) as any;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" مراحل الحياة" subtitle="لكل مرحلة عمرية جمالها الخاص" />
 

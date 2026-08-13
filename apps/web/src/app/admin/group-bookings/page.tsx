@@ -11,7 +11,7 @@ export default function AdminGroupBookingsPage(): JSX.Element {
   const groups = (groupData?.items as Array<Record<string, unknown>>) ?? [];
 
   return (
-    <DashboardLayout role="ADMIN">
+    <DashboardLayout userRole="ADMIN">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> الحجوزات الجماعية</h1>

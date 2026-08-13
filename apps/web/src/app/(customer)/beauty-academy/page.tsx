@@ -39,7 +39,7 @@ export default function BeautyAcademyPage(): JSX.Element {
   const bookClubs = (api as any).bookClub?.list?.useQuery?.({ limit: 2 }) as any;
   const heritage = (api as any).beautyHeritage?.list?.useQuery?.({ limit: 4 }) as any;
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" أكاديمية الجمال" subtitle="تعلمي، اكتشفي، وتطوري" />
 

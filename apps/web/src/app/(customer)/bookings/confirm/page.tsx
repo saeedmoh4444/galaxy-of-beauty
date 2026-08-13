@@ -13,7 +13,7 @@ export default function BookingConfirmPage(): JSX.Element {
   const endDate = new Date(new Date(date).getTime() + 3600000).toISOString();
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6 py-8 text-center">
         <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-green-100 text-6xl dark:bg-green-900">
           

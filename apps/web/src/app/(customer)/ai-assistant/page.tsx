@@ -18,7 +18,7 @@ export default function AIAssistantPage(): JSX.Element {
   const topicList = (topics ?? []) as Array<Record<string, unknown>>;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> مساعدة الذكاء الاصطناعي</h1>

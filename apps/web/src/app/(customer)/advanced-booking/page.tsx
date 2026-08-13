@@ -58,7 +58,7 @@ export default function AdvancedBookingPage(): JSX.Element {
       : SERVICES.slice(0, 3).reduce((s, x) => s + x.price, 0) * 0.85;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> حجز متقدم</h1>

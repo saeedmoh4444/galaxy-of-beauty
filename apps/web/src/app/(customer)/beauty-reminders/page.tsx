@@ -26,7 +26,7 @@ export default function BeautyRemindersPage(): JSX.Element {
   const dailyTip = (api as any).dailyBeautyTip?.today?.useQuery?.() as any;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" التذكيرات" subtitle="اعتني بنفسكِ — كل يوم" />
         <div className="grid gap-6 lg:grid-cols-2">

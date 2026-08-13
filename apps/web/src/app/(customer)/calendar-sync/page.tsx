@@ -18,7 +18,7 @@ export default function CalendarSyncPage(): JSX.Element {
   const events = upcoming ?? [];
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">️ مزامنة التقويم</h1>

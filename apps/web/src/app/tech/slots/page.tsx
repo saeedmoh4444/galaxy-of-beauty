@@ -24,7 +24,7 @@ export default function TechSlotsPage(): JSX.Element {
   });
 
   return (
-    <DashboardLayout role="TECHNICIAN">
+    <DashboardLayout userRole="TECHNICIAN">
       <div className="mx-auto max-w-3xl space-y-6">
         <h1 className="text-2xl font-bold">المواعيد المتاحة</h1>
 

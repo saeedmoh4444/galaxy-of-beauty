@@ -74,7 +74,7 @@ export default function TravelChecklistPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="default">
         <PageTitle title=" حقيبة الجمال" subtitle="لا تنسي شيئاً في سفركِ" />
 

@@ -54,7 +54,7 @@ export default function AdminAreasPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout role="ADMIN">
+    <DashboardLayout userRole="ADMIN">
       <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">إدارة المناطق</h1>

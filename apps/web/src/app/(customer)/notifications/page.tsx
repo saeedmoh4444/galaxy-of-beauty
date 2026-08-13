@@ -27,7 +27,7 @@ export default function NotificationsPage(): JSX.Element {
   const totalPages = (data?.totalPages as number) ?? 1;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">الإشعارات</h1>

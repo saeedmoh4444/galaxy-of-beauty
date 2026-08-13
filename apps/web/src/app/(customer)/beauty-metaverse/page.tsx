@@ -22,7 +22,7 @@ export default function BeautyMetaversePage(): JSX.Element {
   const list = (salons ?? []) as Array<Record<string, unknown>>;
   if (isLoading)
     return (
-      <DashboardLayout role="CUSTOMER">
+      <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-4xl space-y-6">
           <CardSkeleton />
         </div>
@@ -30,7 +30,7 @@ export default function BeautyMetaversePage(): JSX.Element {
     );
   if (isError)
     return (
-      <DashboardLayout role="CUSTOMER">
+      <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-4xl space-y-6">
           <ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} />
         </div>
@@ -38,7 +38,7 @@ export default function BeautyMetaversePage(): JSX.Element {
     );
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> عالم الجمال الافتراضي</h1>

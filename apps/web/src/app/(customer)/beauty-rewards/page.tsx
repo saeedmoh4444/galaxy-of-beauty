@@ -25,7 +25,7 @@ export default function BeautyRewardsPage(): JSX.Element {
   const referral = (api as any).referrals?.myStats?.useQuery?.() as any;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" المكافآت" subtitle="تقديراً لكونكِ جزءاً من عائلتنا" />
         <div className="grid gap-6 lg:grid-cols-3">

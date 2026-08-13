@@ -2,7 +2,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CustomerLoading(): JSX.Element {
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="flex flex-col items-center justify-center py-24">
         <img
           src="/logo.png"

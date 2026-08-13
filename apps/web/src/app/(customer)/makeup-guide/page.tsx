@@ -57,7 +57,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function MakeupGuidePage(): JSX.Element {
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" دليل المكياج" subtitle="كل ما تحتاجينه لإطلالة مثالية" />
 

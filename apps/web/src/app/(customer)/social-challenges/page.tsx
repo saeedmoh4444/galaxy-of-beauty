@@ -68,7 +68,7 @@ export default function SocialChallengesPage(): JSX.Element {
 
   if (isLoading)
     return (
-      <DashboardLayout role="CUSTOMER">
+      <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-3xl space-y-6">
           <CardSkeleton />
         </div>
@@ -76,7 +76,7 @@ export default function SocialChallengesPage(): JSX.Element {
     );
   if (isError)
     return (
-      <DashboardLayout role="CUSTOMER">
+      <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-3xl space-y-6">
           <ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} />
         </div>
@@ -86,7 +86,7 @@ export default function SocialChallengesPage(): JSX.Element {
   const joined = (myChallenges ?? []).map((c: Record<string, unknown>) => c.challengeKey as string);
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> تحديات اجتماعية</h1>

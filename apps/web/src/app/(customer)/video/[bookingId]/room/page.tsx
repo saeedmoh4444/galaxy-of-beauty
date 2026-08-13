@@ -10,7 +10,7 @@ export default function VideoRoomPage(): JSX.Element {
   const roomId = searchParams.get('room') || 'unknown';
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">غرفة الفيديو</h1>
 

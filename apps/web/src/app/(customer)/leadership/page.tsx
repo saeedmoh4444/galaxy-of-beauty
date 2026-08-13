@@ -30,7 +30,7 @@ export default function LeadershipPage(): JSX.Element {
   const franchise = (api as any).franchisePortal?.stats?.useQuery?.() as any;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle
           title=" القيادة والأثر"

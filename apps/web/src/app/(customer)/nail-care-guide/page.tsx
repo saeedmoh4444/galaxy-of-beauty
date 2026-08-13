@@ -23,7 +23,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function NailCareGuidePage(): JSX.Element {
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" دليل العناية بالأظافر" subtitle="كل ما تحتاجينه لأظافر جميلة وصحية" />
 

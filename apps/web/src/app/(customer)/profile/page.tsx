@@ -98,7 +98,7 @@ export default function ProfilePage(): JSX.Element {
   const userData: ProfileUser | undefined = user ?? undefined;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <h1 className="text-2xl font-bold">الملف الشخصي</h1>
 

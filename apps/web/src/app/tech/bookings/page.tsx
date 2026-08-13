@@ -17,7 +17,7 @@ export default function TechBookingsPage(): JSX.Element {
   const bookings = (data?.bookings as unknown as Record<string, unknown>[]) ?? [];
 
   return (
-    <DashboardLayout role="TECHNICIAN">
+    <DashboardLayout userRole="TECHNICIAN">
       <div className="mx-auto max-w-3xl space-y-6">
         <h1 className="text-2xl font-bold">الحجوزات</h1>
         <div className="flex flex-wrap gap-2">

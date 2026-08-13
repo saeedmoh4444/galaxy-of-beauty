@@ -24,7 +24,7 @@ export default function LiveChatPage(): JSX.Element {
   const msgs = history ?? [];
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-4">
         <div>
           <h1 className="text-2xl font-bold"> الدعم المباشر</h1>

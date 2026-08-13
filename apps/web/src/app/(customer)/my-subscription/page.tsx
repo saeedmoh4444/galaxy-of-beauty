@@ -27,19 +27,19 @@ export default function MySubscriptionPage(): JSX.Element {
 
   if (isLoading)
     return (
-      <DashboardLayout role="CUSTOMER">
+      <DashboardLayout userRole="CUSTOMER">
         <CardSkeleton />
       </DashboardLayout>
     );
   if (isError)
     return (
-      <DashboardLayout role="CUSTOMER">
+      <DashboardLayout userRole="CUSTOMER">
         <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
       </DashboardLayout>
     );
   if (!sub)
     return (
-      <DashboardLayout role="CUSTOMER">
+      <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-lg space-y-6">
           <h1 className="text-2xl font-bold"> اشتراكي</h1>
           <EmptyState
@@ -65,7 +65,7 @@ export default function MySubscriptionPage(): JSX.Element {
   const remaining = Math.max(0, servicesPerMonth - bookingsThisMonth);
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100"> اشتراكي</h1>
 

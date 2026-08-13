@@ -28,7 +28,7 @@ export default function DNABeautyPage(): JSX.Element {
   const qs = (questions ?? []) as Array<Record<string, unknown>>;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> تحليل الجينات</h1>

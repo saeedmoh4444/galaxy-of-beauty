@@ -11,7 +11,7 @@ export default function TechWaitlistPage(): JSX.Element {
   const bookings = waitlist ?? [];
 
   return (
-    <DashboardLayout role="TECHNICIAN">
+    <DashboardLayout userRole="TECHNICIAN">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> طلبات معلقة</h1>

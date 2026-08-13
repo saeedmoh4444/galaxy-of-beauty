@@ -59,7 +59,7 @@ export default function SustainabilityPage(): JSX.Element {
   }) as any;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" الاستدامة والإتاحة" subtitle="جمال مستدام — للجميع" />
 

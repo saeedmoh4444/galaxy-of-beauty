@@ -35,7 +35,7 @@ export default function TechDashboardPage(): JSX.Element {
   const completedBookings = profile?.technician?.completedBookings || 0;
 
   return (
-    <DashboardLayout role="TECHNICIAN">
+    <DashboardLayout userRole="TECHNICIAN">
       <PageContainer width="wide">
         <h1 className="text-2xl font-bold text-text-primary">لوحة تحكم الفنية</h1>
 

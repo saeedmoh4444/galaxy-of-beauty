@@ -108,7 +108,7 @@ export default function TechProfilePage(): JSX.Element {
   const allServices = (servicesQ.data?.items as unknown as Record<string, unknown>[]) ?? [];
 
   return (
-    <DashboardLayout role="TECHNICIAN">
+    <DashboardLayout userRole="TECHNICIAN">
       <div className="mx-auto max-w-4xl space-y-8">
         <h1 className="text-2xl font-bold">الملف الشخصي</h1>
 

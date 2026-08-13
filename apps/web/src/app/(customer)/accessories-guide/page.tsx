@@ -15,7 +15,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function AccessoriesGuidePage(): JSX.Element {
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" دليل الإكسسوارات" subtitle="اللمسة الأخيرة لإطلالة متكاملة" />
 

@@ -21,7 +21,7 @@ export default function FeatureFlagsPage(): JSX.Element {
   });
 
   return (
-    <DashboardLayout role="ADMIN">
+    <DashboardLayout userRole="ADMIN">
       <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">Feature Flags</h1>
         {isLoading ? (

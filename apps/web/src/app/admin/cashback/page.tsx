@@ -9,7 +9,7 @@ export default function AdminCashbackPage(): JSX.Element {
   const setRateMut = api.cashback.setRate.useMutation();
 
   return (
-    <DashboardLayout role="ADMIN">
+    <DashboardLayout userRole="ADMIN">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> إدارة الكاش باك</h1>

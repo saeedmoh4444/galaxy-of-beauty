@@ -42,7 +42,7 @@ export default function SkinAnalysisPage(): JSX.Element {
   const topConcerns = [...new Set(allConcerns)].slice(0, 5);
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">

@@ -83,7 +83,7 @@ export default function SkincareGuidePage(): JSX.Element {
   const skinAnalysis = (api as any).skinAnalysis?.latest?.useQuery?.() as any;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" دليل العناية بالبشرة" subtitle="كل ما تحتاجينه لبشرة صحية ومشرقة" />
 

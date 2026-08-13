@@ -11,7 +11,7 @@ export default function TechGalleryPage(): JSX.Element {
   const [uploaded, setUploaded] = useState(false);
 
   return (
-    <DashboardLayout role="TECHNICIAN">
+    <DashboardLayout userRole="TECHNICIAN">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">️ معرض أعمالي</h1>

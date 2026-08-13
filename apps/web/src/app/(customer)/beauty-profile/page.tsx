@@ -96,7 +96,7 @@ export default function BeautyProfilePage(): JSX.Element {
     });
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100"> ملفي الجمالي</h1>
         <p className="text-sm text-text-secondary">

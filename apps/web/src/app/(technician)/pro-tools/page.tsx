@@ -22,7 +22,7 @@ export default function ProToolsPage(): JSX.Element {
   const pricing = (api as any).pricingCoach?.suggestions?.useQuery?.() as any;
 
   return (
-    <DashboardLayout role="TECHNICIAN">
+    <DashboardLayout userRole="TECHNICIAN">
       <PageContainer width="wide">
         <PageTitle title=" أدوات المحترفات" subtitle="أدوات احترافية لإدارة أعمالكِ" />
 

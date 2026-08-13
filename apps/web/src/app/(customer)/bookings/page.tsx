@@ -35,7 +35,7 @@ export default function BookingsPage(): JSX.Element {
   const bookings = (data?.bookings as unknown as Record<string, unknown>[]) ?? [];
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="default">
         <h1 className="text-2xl font-bold text-text-primary">حجوزاتي</h1>
         <div className="flex flex-wrap gap-2">

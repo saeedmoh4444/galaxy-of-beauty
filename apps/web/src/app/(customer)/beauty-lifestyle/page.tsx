@@ -28,7 +28,7 @@ export default function BeautyLifestylePage(): JSX.Element {
   const alerts = (api as any).priceDropAlerts?.myAlerts?.useQuery?.() as any;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" نمط الحياة" subtitle="الجمال جزء من أسلوب حياتكِ" />
 

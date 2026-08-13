@@ -18,7 +18,7 @@ export default function LoyaltyPunchCardPage(): JSX.Element {
   const free = data?.earnedFree as boolean;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> بطاقة الولاء</h1>

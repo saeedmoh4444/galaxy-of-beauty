@@ -45,7 +45,7 @@ export default function GiftRegistryPage(): JSX.Element {
   const registries = (data ?? []) as Array<Record<string, any>>;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold"> سجل الهدايا</h1>

@@ -37,7 +37,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
   const progress = nextTier ? Math.min(100, (points / nextTier.minPoints) * 100) : 100;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
            برنامج الولاء

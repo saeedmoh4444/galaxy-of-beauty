@@ -39,7 +39,7 @@ export default function FamilyBeautyPage(): JSX.Element {
   const events = (api as any).communityEvents?.list?.useQuery?.({ limit: 2 }) as any;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title="‍‍‍ جمال العائلة" subtitle="لحظات جميلة تجمع الأحباب" />
 

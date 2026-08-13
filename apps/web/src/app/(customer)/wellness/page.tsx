@@ -65,7 +65,7 @@ export default function WellnessPage(): JSX.Element {
   const sleepLogs = (api as any).sleepTracker?.stats?.useQuery?.() as any;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title=" الصحة والعافية" subtitle="جمالكِ يبدأ من صحتكِ" />
 

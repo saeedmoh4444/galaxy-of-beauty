@@ -23,7 +23,7 @@ export default function MarketplacePage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <div className="mb-6 flex items-center justify-between">
           <div>

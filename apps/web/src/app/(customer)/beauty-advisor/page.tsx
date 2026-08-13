@@ -51,7 +51,7 @@ export default function BeautyAdvisorPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl flex flex-col" style={{ height: 'calc(100vh - 120px)' }}>
         <div>
           <h1 className="text-2xl font-bold"> ليلى — مستشارة جمالكِ</h1>

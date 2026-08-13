@@ -73,7 +73,7 @@ export default function GroupBookingDetailPage(): JSX.Element {
 
   if (isNaN(groupId)) {
     return (
-      <DashboardLayout role="CUSTOMER">
+      <DashboardLayout userRole="CUSTOMER">
         <ErrorAlert message="معرف المجموعة غير صالح" />
       </DashboardLayout>
     );
@@ -85,7 +85,7 @@ export default function GroupBookingDetailPage(): JSX.Element {
   const theme = (group?.theme as string) ?? 'other';
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <Breadcrumbs
           items={[

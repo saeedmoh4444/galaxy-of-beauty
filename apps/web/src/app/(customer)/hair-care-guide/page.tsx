@@ -37,7 +37,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function HairCareGuidePage(): JSX.Element {
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <PageTitle title="‍️ دليل العناية بالشعر" subtitle="كل ما تحتاجينه لشعر صحي وجميل" />
 

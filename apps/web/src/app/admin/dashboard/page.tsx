@@ -34,7 +34,7 @@ export default function AdminDashboardPage(): JSX.Element {
 
   if (isLoading) {
     return (
-      <DashboardLayout role="ADMIN">
+      <DashboardLayout userRole="ADMIN">
         <PageContainer width="wide">
           <DashboardSkeleton />
         </PageContainer>
@@ -44,7 +44,7 @@ export default function AdminDashboardPage(): JSX.Element {
 
   if (isError) {
     return (
-      <DashboardLayout role="ADMIN">
+      <DashboardLayout userRole="ADMIN">
         <PageContainer width="wide">
           <ErrorAlert message="فشل تحميل لوحة التحكم" onRetry={() => refetch()} />
         </PageContainer>
@@ -53,7 +53,7 @@ export default function AdminDashboardPage(): JSX.Element {
   }
 
   return (
-    <DashboardLayout role="ADMIN">
+    <DashboardLayout userRole="ADMIN">
       <PageContainer width="wide">
         <h1 className="text-2xl font-bold text-text-primary">لوحة التحكم</h1>
 

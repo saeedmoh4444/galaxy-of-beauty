@@ -72,7 +72,7 @@ export default function SeasonalCalendarPage(): JSX.Element {
   const s = SEASONS.find((x) => x.key === season)!;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="default">
         <PageTitle title=" روزنامة الجمال" subtitle="خططي لجمالكِ حسب الموسم" />
 

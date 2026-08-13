@@ -52,7 +52,7 @@ export default function ColorAnalysisPage(): JSX.Element {
   const s = SEASONS.find((x) => x.key === season)!;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="default">
         <PageTitle title=" تحليل الألوان" subtitle="اكتشفي الألوان اللي تناسب بشرتكِ" />
 
