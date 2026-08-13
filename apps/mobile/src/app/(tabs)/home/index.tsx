@@ -65,7 +65,7 @@ export default function HomeScreen(): JSX.Element {
             activeOpacity={0.7}
             onPress={() => {
               trigger('light');
-              router.push('/public/services' as any);
+              router.push('/public/services' as never);
             }}
           >
             <View style={styles.cardIcon}>

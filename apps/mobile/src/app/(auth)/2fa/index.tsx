@@ -40,8 +40,8 @@ export default function TwoFactorScreen() {
     try {
       const res = await (trpc.auth.setup2FA as any).mutate({});
       setSetupData(res as Record<string, unknown>);
-    } catch (e: any) {
-      setError(e?.message ?? 'فشل الإعداد');
+    } catch (e: unknown) {
+      setError((e as Error)?.message ?? 'فشل الإعداد');
     } finally {
       setActionLoading(false);
     }
@@ -59,8 +59,8 @@ export default function TwoFactorScreen() {
       setEnabled(true);
       setSetupData(null);
       setCode('');
-    } catch (e: any) {
-      setVerifyMsg(e?.message ?? 'رمز غير صحيح');
+    } catch (e: unknown) {
+      setVerifyMsg((e as Error)?.message ?? 'رمز غير صحيح');
     } finally {
       setActionLoading(false);
     }
@@ -71,8 +71,8 @@ export default function TwoFactorScreen() {
     try {
       await (trpc.auth.disable2FA as any).mutate({});
       setEnabled(false);
-    } catch (e: any) {
-      setError(e?.message ?? 'فشل التعطيل');
+    } catch (e: unknown) {
+      setError((e as Error)?.message ?? 'فشل التعطيل');
     } finally {
       setActionLoading(false);
     }

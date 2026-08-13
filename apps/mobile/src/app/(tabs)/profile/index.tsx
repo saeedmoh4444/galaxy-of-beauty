@@ -76,7 +76,7 @@ export default function ProfileScreen(): JSX.Element {
           <TouchableOpacity
             key={i}
             style={styles.menuItem}
-            onPress={() => router.push(item.href as any)}
+            onPress={() => router.push(item.href as never)}
             activeOpacity={0.6}
           >
             <Text style={styles.menuLabel}>{item.label}</Text>

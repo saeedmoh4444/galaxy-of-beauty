@@ -53,7 +53,7 @@ export default function DashboardScreen(): JSX.Element {
           <TouchableOpacity
             key={i}
             style={[styles.qlBtn, { backgroundColor: ql.c }]}
-            onPress={() => router.push(ql.h as any)}
+            onPress={() => router.push(ql.h as never)}
           >
             <Text style={styles.qlText}>{ql.l}</Text>
           </TouchableOpacity>

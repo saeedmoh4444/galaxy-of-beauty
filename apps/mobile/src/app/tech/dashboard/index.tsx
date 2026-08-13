@@ -52,7 +52,7 @@ export default function TechDashboardScreen(): JSX.Element {
           { h: '/tech/slots', l: ' المواعيد' },
           { h: '/tech/profile', l: ' ملفي' },
         ].map((l, i) => (
-          <TouchableOpacity key={i} style={styles.linkBtn} onPress={() => router.push(l.h as any)}>
+          <TouchableOpacity key={i} style={styles.linkBtn} onPress={() => router.push(l.h as never)}>
             <Text style={styles.linkText}>{l.l}</Text>
           </TouchableOpacity>
         ))}

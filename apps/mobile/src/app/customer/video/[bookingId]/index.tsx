@@ -56,7 +56,7 @@ export default function VideoBookingScreen(): JSX.Element {
         <Text style={styles.stat}>{data.status as string}</Text>
       </View>
       <TouchableOpacity
-        onPress={() => router.push(`/customer/video/${bookingId}/room` as any)}
+        onPress={() => router.push(`/customer/video/${bookingId}/room` as never)}
         style={styles.btn}
       >
         <Text style={styles.bt}> دخول الغرفة</Text>

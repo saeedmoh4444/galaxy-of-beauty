@@ -39,7 +39,7 @@ export default function WalletScreen(): JSX.Element {
         ) : null}
         <TouchableOpacity
           style={styles.topUpBtn}
-          onPress={() => router.push('/customer/wallet/top-up' as any)}
+          onPress={() => router.push('/customer/wallet/top-up' as never)}
         >
           <Text style={styles.topUpText}> شحن رصيد</Text>
         </TouchableOpacity>

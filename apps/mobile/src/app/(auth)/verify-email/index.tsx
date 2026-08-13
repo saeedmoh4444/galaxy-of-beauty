@@ -29,8 +29,8 @@ export default function VerifyEmailScreen() {
       await (trpc.auth.verifyEmail as any).mutate({ token });
       setDone(true);
       setMsg('تم توثيق البريد الإلكتروني بنجاح');
-    } catch (e: any) {
-      setError(e?.message ?? 'فشل توثيق البريد الإلكتروني');
+    } catch (e: unknown) {
+      setError((e as Error)?.message ?? 'فشل توثيق البريد الإلكتروني');
     } finally {
       setLoading(false);
     }

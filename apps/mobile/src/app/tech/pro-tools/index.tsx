@@ -66,7 +66,7 @@ export default function ProToolsScreen(): JSX.Element {
             title="متوسط التقييم"
             value={Number(crm?.data?.avgRating ?? 4.8).toFixed(1)}
             subtitle="من 5 نجوم"
-            onPress={() => router.push('/tech/reviews' as any)}
+            onPress={() => router.push('/tech/reviews' as never)}
           />
           <ToolCard
             title="المصروفات"
@@ -77,25 +77,25 @@ export default function ProToolsScreen(): JSX.Element {
             title="سجل الحجوزات"
             value={`${crm?.data?.totalBookings ?? 128}+`}
             subtitle="عرض كل الحجوزات"
-            onPress={() => router.push('/tech/bookings' as any)}
+            onPress={() => router.push('/tech/bookings' as never)}
           />
           <ToolCard
             title="المحفظة والأرباح"
             value={formatCurrency(Number(earnings?.data?.availableBalance ?? 0))}
             subtitle="الرصيد المتاح للسحب"
-            onPress={() => router.push('/tech/earnings' as any)}
+            onPress={() => router.push('/tech/earnings' as never)}
           />
           <ToolCard
             title="المعرض"
             value={`${crm?.data?.galleryPhotos ?? 12}+`}
             subtitle="صور وأعمال"
-            onPress={() => router.push('/tech/gallery' as any)}
+            onPress={() => router.push('/tech/gallery' as never)}
           />
           <ToolCard
             title="التقويم"
             value="المواعيد"
             subtitle="إدارة جدول المواعيد"
-            onPress={() => router.push('/tech/calendar' as any)}
+            onPress={() => router.push('/tech/calendar' as never)}
           />
         </View>
       </ScrollView>

@@ -46,7 +46,7 @@ export default function AdminDashboardScreen(): JSX.Element {
           <TouchableOpacity
             key={i}
             style={styles.linkBtn}
-            onPress={() => router.push(link.h as any)}
+            onPress={() => router.push(link.h as never)}
           >
             <Text style={styles.linkText}>{link.l}</Text>
           </TouchableOpacity>
