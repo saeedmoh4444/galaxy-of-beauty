@@ -18,6 +18,7 @@ interface LoyaltyAccount {
 interface LoyaltyTxn {
   reason?: string;
   points?: number;
+  createdAt?: string;
 }
 
 export default function LoyaltyScreen(): JSX.Element {
@@ -59,12 +60,12 @@ export default function LoyaltyScreen(): JSX.Element {
               <View>
                 <Text style={styles.txnReason}>{item.reason ?? 'عملية'}</Text>
                 <Text style={styles.txnDate}>
-                  {new Date(item.createdAt).toLocaleDateString('ar-SA')}
+                  {item.createdAt ? new Date(item.createdAt).toLocaleDateString('ar-SA') : ''}
                 </Text>
               </View>
-              <Text style={[styles.txnPoints, { color: item.points > 0 ? '#10b981' : '#dc2626' }]}>
-                {item.points > 0 ? '+' : ''}
-                {item.points}
+              <Text style={[styles.txnPoints, { color: (item.points ?? 0) > 0 ? '#10b981' : '#dc2626' }]}>
+                {(item.points ?? 0) > 0 ? '+' : ''}
+                {item.points ?? 0}
               </Text>
             </View>
           )}
