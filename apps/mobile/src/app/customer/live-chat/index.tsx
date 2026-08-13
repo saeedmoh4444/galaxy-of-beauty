@@ -3,14 +3,23 @@ import { trpc } from '@/lib/api';
 import { useState } from 'react';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface ChatMessage {
+  message?: string;
+  userName?: string;
+  isAgent?: boolean;
+}
+
 export default function LiveChatScreen() {
   const [msg, setMsg] = useState('');
-  const { data, refetch } = typedTrpc().liveChat.history.useQuery() as any;
-  const messages = (data ?? []) as Record<string, unknown>[];
+  const { data, refetch } = typedTrpc().liveChat.history.useQuery() as {
+    data?: ChatMessage[];
+    refetch: () => void;
+  };
+  const messages = data ?? [];
 
   const send = () => {
     if (!msg.trim()) return;
-    (typedTrpc().liveChat.send.mutate({ message: msg.trim() }) as any).then(() => {
+    (typedTrpc().liveChat.send.mutate({ message: msg.trim() }) as Promise<unknown>).then(() => {
       setMsg('');
       refetch();
     });
@@ -20,12 +29,12 @@ export default function LiveChatScreen() {
     <View style={styles.c}>
       <Text style={styles.t}> الدعم المباشر</Text>
       <ScrollView style={styles.list} contentContainerStyle={{ padding: 12, paddingBottom: 8 }}>
-        {messages.map((m: Record<string, unknown>, i: number) => (
+        {messages.map((m, i) => (
           <View key={i} style={[styles.bubble, m.isAgent ? styles.agent : styles.user]}>
             <Text style={[styles.bubbleText, m.isAgent ? styles.agentText : styles.userText]}>
-              {m.message as string}
+              {m.message ?? ''}
             </Text>
-            <Text style={styles.bubbleTime}>{m.userName as string}</Text>
+            <Text style={styles.bubbleTime}>{m.userName ?? ''}</Text>
           </View>
         ))}
       </ScrollView>
