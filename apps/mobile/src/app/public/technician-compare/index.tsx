@@ -92,10 +92,10 @@ export default function TechnicianCompareScreen(): JSX.Element {
           <View style={styles.w}>
             <Text style={styles.wt}>
                الأفضل:{' '}
-              {ct[0].rating > ct[1].rating
-                ? ct[0].name
-                : ct[0].rating < ct[1].rating
-                  ? ct[1].name
+              {(ct[0]?.rating ?? 0) > (ct[1]?.rating ?? 0)
+                ? (ct[0]?.name ?? '')
+                : (ct[0]?.rating ?? 0) < (ct[1]?.rating ?? 0)
+                  ? (ct[1]?.name ?? '')
                   : 'متقاربتان'}
             </Text>
           </View>
