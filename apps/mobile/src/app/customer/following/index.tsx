@@ -4,15 +4,21 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface FollowEntry {
+  id?: number;
+  technicianId: number;
+  createdAt?: string;
+}
+
 export default function FollowingScreen(): JSX.Element {
-  const [follows, setFollows] = useState<any[]>([]);
+  const [follows, setFollows] = useState<FollowEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().technicianFollows.myFollows.query() as any)
-      .then((d: any) => {
+    (typedTrpc().technicianFollows.myFollows.query() as Promise<FollowEntry[]>)
+      .then((d) => {
         setFollows(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -26,7 +32,7 @@ export default function FollowingScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const unfollow = (technicianId: number) => {
-    (typedTrpc().technicianFollows.unfollow.mutate({ technicianId }) as any).then(() => fetch());
+    (typedTrpc().technicianFollows.unfollow.mutate({ technicianId }) as Promise<unknown>).then(() => fetch());
   };
   if (loading) return <SkeletonList count={4} />;
   return (
@@ -46,9 +52,9 @@ export default function FollowingScreen(): JSX.Element {
         <View key={f.technicianId} style={styles.card}>
           <Text style={styles.av}>‍</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nm}>فنية #{f.technicianId as number}</Text>
+            <Text style={styles.nm}>فنية #{f.technicianId}</Text>
             <Text style={styles.meta}>
-              منذ {new Date(f.createdAt as string).toLocaleDateString('ar-SA')}
+              منذ {f.createdAt ? new Date(f.createdAt).toLocaleDateString('ar-SA') : ''}
             </Text>
           </View>
           <TouchableOpacity onPress={() => unfollow(f.technicianId)} style={styles.ub}>
