@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function GeofenceOffersScreen(): JSX.Element {
   const [offers, setOffers] = useState<any[]>([]);
@@ -11,7 +12,7 @@ export default function GeofenceOffersScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     (
-      (trpc as any).geofenceOffers.nearby.query({
+      typedTrpc().geofenceOffers.nearby.query({
         city: 'الرياض' /* TODO: from user location */,
       }) as any
     )
@@ -29,7 +30,7 @@ export default function GeofenceOffersScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const optIn = () => {
-    (trpc as any).geofenceOffers.optIn.mutate({}) as any;
+    typedTrpc().geofenceOffers.optIn.mutate({}) as any;
   };
   if (loading) return <SkeletonList count={4} />;
   return (

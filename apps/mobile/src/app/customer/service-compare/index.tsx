@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function ServiceCompareScreen(): JSX.Element {
   const [services, setServices] = useState<any[]>([]);
@@ -11,7 +12,7 @@ export default function ServiceCompareScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).services.list.query({}) as any)
+    (typedTrpc().services.list.query({}) as any)
       .then((d: any) => {
         setServices(d?.items || []);
         setLoading(false);

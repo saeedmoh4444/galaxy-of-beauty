@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const BD: Record<number, number> = { 2: 10, 3: 15, 4: 20, 5: 25 };
 
@@ -13,7 +14,7 @@ export default function BundlesScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).categories.list.query() as any)
+    (typedTrpc().categories.list.query() as any)
       .then((d: any) => {
         setServices(d || []);
         setLoading(false);

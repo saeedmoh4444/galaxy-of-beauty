@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState } from 'react';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const SKIN_TYPES = [
   { key: 'dry', emoji: '️', label: 'جافة' },
@@ -25,7 +26,7 @@ export default function AIRoutineScreen(): JSX.Element {
   const generate = () => {
     setGenerated(true);
     setLoading(true);
-    ((trpc as any).aiRoutine.generate.query({ skinType }) as any)
+    (typedTrpc().aiRoutine.generate.query({ skinType }) as any)
       .then((d: any) => {
         setData(d);
         setLoading(false);

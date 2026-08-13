@@ -12,20 +12,21 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function MarketplaceScreen(): JSX.Element {
   const [search, setSearch] = useState('');
   const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
-    (trpc as any).marketplace.products.query({ search: search || undefined, page: 1, limit: 24 }),
+    typedTrpc().marketplace.products.query({ search: search || undefined, page: 1, limit: 24 }),
   );
-  const { data: cart } = useQuery(() => (trpc as any).marketplace.cart.query());
+  const { data: cart } = useQuery(() => typedTrpc().marketplace.cart.query());
   const productItems = (data as any)?.items;
   const products: any[] = Array.isArray(productItems) ? productItems : [];
   const cartCount = ((cart ?? []) as any[]).length;
 
   const handleAddToCart = async (pid: number) => {
     try {
-      await (trpc as any).marketplace.addToCart.mutate({ productId: pid });
+      await typedTrpc().marketplace.addToCart.mutate({ productId: pid });
     } catch {}
   };
 

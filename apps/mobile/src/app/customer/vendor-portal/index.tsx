@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function VendorPortalScreen(): JSX.Element {
   const [dash, setDash] = useState<any>(null);
@@ -12,8 +13,8 @@ export default function VendorPortalScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      (trpc as any).vendorPortal.dashboard.query() as any,
-      (trpc as any).vendorPortal.myProducts.query() as any,
+      typedTrpc().vendorPortal.dashboard.query() as any,
+      typedTrpc().vendorPortal.myProducts.query() as any,
     ])
       .then(([d, p]: any[]) => {
         setDash(d);
@@ -30,7 +31,7 @@ export default function VendorPortalScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const remove = (id: number) => {
-    ((trpc as any).vendorPortal.deleteProduct.mutate({ id }) as any).then(() => fetch());
+    (typedTrpc().vendorPortal.deleteProduct.mutate({ id }) as any).then(() => fetch());
   };
   if (loading) return <SkeletonList count={4} />;
   return (

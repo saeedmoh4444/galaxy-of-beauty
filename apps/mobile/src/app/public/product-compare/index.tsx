@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function ProductCompareScreen(): JSX.Element {
   const [products, setProducts] = useState<any[]>([]);
@@ -11,7 +12,7 @@ export default function ProductCompareScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).productCompare.products.query() as any)
+    (typedTrpc().productCompare.products.query() as any)
       .then((d: any) => {
         setProducts(d || []);
         setLoading(false);

@@ -1,11 +1,11 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
+import { trpc, typedTrpc } from '@/lib/trpc-react';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function BeforeAfterScreen(): JSX.Element {
-  const gallery = (trpc as any).beforeAfter?.list?.useQuery?.({}) ?? {
+  const gallery = typedTrpc().beforeAfter?.list?.useQuery?.({}) ?? {
     data: null,
     isLoading: false,
     isError: false,

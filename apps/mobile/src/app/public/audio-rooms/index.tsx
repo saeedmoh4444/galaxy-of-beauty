@@ -3,10 +3,11 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function AudioRoomsScreen(): JSX.Element {
   const { data, loading, error, refreshing, refetch, refresh } = useQuery(() =>
-    (trpc as any).audioRooms.rooms.query(),
+    typedTrpc().audioRooms.rooms.query(),
   );
 
   if (loading) return <SkeletonList count={4} />;

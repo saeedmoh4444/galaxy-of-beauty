@@ -19,6 +19,7 @@ The platform is **not yet production-ready** — it is now **verifiably correct 
 
 | Domain | Web (Next.js) | Mobile (Expo) | API (tRPC) | DB (Prisma) | Tests | Status |
 |---|---|---|---|---|---|---|
+
 | Auth & Sessions | ✅ | ✅ | ✅ | ✅ | 20 tests | ✅ |
 | Booking Engine | ✅ | ✅ | ✅ | ✅ | 10 tests | ✅ |
 | Payments & Wallet | ✅ | ✅ | ✅ | ✅ | 12 tests | ✅ |

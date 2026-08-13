@@ -1,7 +1,7 @@
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
+import { trpc, typedTrpc } from '@/lib/trpc-react';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -16,7 +16,7 @@ const COLORS = {
 export default function IngredientAnalyzerScreen(): JSX.Element {
   const [search, setSearch] = useState('');
   const [submitted, setSubmitted] = useState('');
-  const result = (trpc as any).ingredientAnalyzer?.analyze?.useQuery?.(
+  const result = typedTrpc().ingredientAnalyzer?.analyze?.useQuery?.(
     { ingredient: submitted },
     { enabled: submitted.length > 0 },
   ) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };

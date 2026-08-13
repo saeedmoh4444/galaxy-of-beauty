@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function EmergencyBookingScreen(): JSX.Element {
   const [services, setServices] = useState<any[]>([]);
@@ -14,7 +15,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).services.list.query({}) as any)
+    (typedTrpc().services.list.query({}) as any)
       .then((d: any) => {
         setServices(d?.items || []);
         setLoading(false);
@@ -31,7 +32,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
   const check = (serviceId: number) => {
     setSelectedSvc(serviceId);
     setChecking(true);
-    ((trpc as any).emergencyBooking.checkAvailability.query({ serviceId }) as any)
+    (typedTrpc().emergencyBooking.checkAvailability.query({ serviceId }) as any)
       .then((d: any) => {
         setAvailability(d);
         setChecking(false);
@@ -40,7 +41,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
   };
   const book = (technicianId: number, slotId: number) => {
     (
-      (trpc as any).emergencyBooking.create.mutate({
+      typedTrpc().emergencyBooking.create.mutate({
         serviceId: selectedSvc!,
         technicianId,
         addressId: 1 /* TODO */,

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function SalonFinderScreen(): JSX.Element {
   const [salons, setSalons] = useState<any[]>([]);
@@ -10,7 +11,7 @@ export default function SalonFinderScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).salonMap.locations.query({ city: 'الرياض' /* TODO */ }) as any)
+    (typedTrpc().salonMap.locations.query({ city: 'الرياض' /* TODO */ }) as any)
       .then((d: any) => {
         setSalons(d || []);
         setLoading(false);

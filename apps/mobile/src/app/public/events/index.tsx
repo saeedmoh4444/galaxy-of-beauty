@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const ET: Record<string, { label: string; emoji: string }> = {
   workshop: { label: 'ورشة عمل', emoji: '️' },
@@ -18,7 +19,7 @@ export default function EventsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).beautyEvents.list.query({}) as any)
+    (typedTrpc().beautyEvents.list.query({}) as any)
       .then((d: any) => {
         setEvents(d || []);
         setLoading(false);

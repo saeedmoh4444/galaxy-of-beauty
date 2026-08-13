@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function BnplScreen(): JSX.Element {
   const [providers, setProviders] = useState<any[]>([]);
@@ -16,8 +17,8 @@ export default function BnplScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      (trpc as any).bnpl.providers.query() as any,
-      (trpc as any).bnpl.eligibility.query() as any,
+      typedTrpc().bnpl.providers.query() as any,
+      typedTrpc().bnpl.eligibility.query() as any,
     ])
       .then(([p, e]: any[]) => {
         setProviders(p || []);
@@ -35,7 +36,7 @@ export default function BnplScreen(): JSX.Element {
   }, [fetch]);
   const submit = () => {
     setLoading(true);
-    ((trpc as any).bnpl.createPlan.mutate({ amount, provider, installments: inst }) as any)
+    (typedTrpc().bnpl.createPlan.mutate({ amount, provider, installments: inst }) as any)
       .then((d: any) => {
         setResult(d);
         setLoading(false);

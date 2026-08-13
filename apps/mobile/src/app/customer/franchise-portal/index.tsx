@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function FranchisePortalScreen(): JSX.Element {
   const [dash, setDash] = useState<any>(null);
@@ -12,8 +13,8 @@ export default function FranchisePortalScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      (trpc as any).franchisePortal.dashboard.query() as any,
-      (trpc as any).franchisePortal.locations.query() as any,
+      typedTrpc().franchisePortal.dashboard.query() as any,
+      typedTrpc().franchisePortal.locations.query() as any,
     ])
       .then(([d, l]: any[]) => {
         setDash(d);

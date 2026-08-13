@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function TechCalendarScreen(): JSX.Element {
   const [slots, setSlots] = useState<any[]>([]);
@@ -10,7 +11,7 @@ export default function TechCalendarScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).techCalendar.availability.query() as any)
+    (typedTrpc().techCalendar.availability.query() as any)
       .then((d: any) => {
         setSlots(d || []);
         setLoading(false);

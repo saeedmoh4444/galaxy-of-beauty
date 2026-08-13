@@ -1,15 +1,16 @@
 import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState } from 'react';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function LiveChatScreen() {
   const [msg, setMsg] = useState('');
-  const { data, refetch } = (trpc as any).liveChat.history.useQuery() as any;
+  const { data, refetch } = typedTrpc().liveChat.history.useQuery() as any;
   const messages = (data ?? []) as Record<string, unknown>[];
 
   const send = () => {
     if (!msg.trim()) return;
-    ((trpc as any).liveChat.send.mutate({ message: msg.trim() }) as any).then(() => {
+    (typedTrpc().liveChat.send.mutate({ message: msg.trim() }) as any).then(() => {
       setMsg('');
       refetch();
     });

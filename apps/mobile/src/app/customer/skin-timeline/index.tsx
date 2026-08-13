@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function SkinTimelineScreen(): JSX.Element {
   const [entries, setEntries] = useState<any[]>([]);
@@ -11,7 +12,7 @@ export default function SkinTimelineScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).skinDiary.entries.query() as any)
+    (typedTrpc().skinDiary.entries.query() as any)
       .then((d: any) => {
         setEntries(d || []);
         setLoading(false);

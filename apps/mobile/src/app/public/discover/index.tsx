@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function DiscoverScreen(): JSX.Element {
   const {
@@ -12,8 +13,8 @@ export default function DiscoverScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => (trpc as any).discover.trending.query());
-  const { data: categories } = useQuery(() => (trpc as any).discover.categories.query());
+  } = useQuery(() => typedTrpc().discover.trending.query());
+  const { data: categories } = useQuery(() => typedTrpc().discover.categories.query());
 
   if (loading) return <SkeletonList count={6} />;
   if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;

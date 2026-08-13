@@ -10,6 +10,7 @@ import {
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function NewsletterScreen(): JSX.Element {
   const [issues, setIssues] = useState<any[]>([]);
@@ -20,7 +21,7 @@ export default function NewsletterScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).newsletter.issues.query() as any)
+    (typedTrpc().newsletter.issues.query() as any)
       .then((d: any) => {
         setIssues(d || []);
         setLoading(false);

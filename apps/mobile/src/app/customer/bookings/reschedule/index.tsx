@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function RescheduleScreen(): JSX.Element {
   const [bookings, setBookings] = useState<any[]>([]);
@@ -14,7 +15,7 @@ export default function RescheduleScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     (
-      (trpc as any).bookings.list.query({
+      typedTrpc().bookings.list.query({
         status: 'ACCEPTED',
         page: 1,
         limit: LARGE_PAGE_SIZE,
@@ -36,7 +37,7 @@ export default function RescheduleScreen(): JSX.Element {
   const reschedule = (bookingId: number) => {
     const nd = new Date(Date.now() + 86400000).toISOString();
     (
-      (trpc as any).reschedule.request.mutate({
+      typedTrpc().reschedule.request.mutate({
         bookingId,
         newStartAt: nd,
         reason: 'طلب تعديل الموعد',

@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function CashbackScreen(): JSX.Element {
   const [info, setInfo] = useState<any>(null);
@@ -13,8 +14,8 @@ export default function CashbackScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      (trpc as any).cashback.info.query() as any,
-      (trpc as any).cashback.history.query({ page: 1, limit: LARGE_PAGE_SIZE }) as any,
+      typedTrpc().cashback.info.query() as any,
+      typedTrpc().cashback.history.query({ page: 1, limit: LARGE_PAGE_SIZE }) as any,
     ])
       .then(([i, h]: any[]) => {
         setInfo(i);

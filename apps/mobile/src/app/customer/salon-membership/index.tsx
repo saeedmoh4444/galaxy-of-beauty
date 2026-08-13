@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const MEMBERSHIPS = [
   {
@@ -58,17 +59,17 @@ export default function SalonMembershipScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => (trpc as any).salonMembership.myMembership.query());
+  } = useQuery(() => typedTrpc().salonMembership.myMembership.query());
 
   const handleSubscribe = async (tier: string) => {
     try {
-      await (trpc as any).salonMembership.subscribe.mutate({ tier, autoRenew: true });
+      await typedTrpc().salonMembership.subscribe.mutate({ tier, autoRenew: true });
       refetch();
     } catch {}
   };
   const handleCancel = async () => {
     try {
-      await (trpc as any).salonMembership.cancel.mutate();
+      await typedTrpc().salonMembership.cancel.mutate();
       refetch();
     } catch {}
   };

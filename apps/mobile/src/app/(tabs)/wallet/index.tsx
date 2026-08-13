@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
+import { trpc, typedTrpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = {
@@ -36,9 +36,9 @@ export default function WalletScreen(): JSX.Element {
   const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 20 });
   // Experimental routes — not yet in the typed tRPC router
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const loyalty = (trpc as any).loyalty?.getAccount?.useQuery?.();
+  const loyalty = typedTrpc().loyalty?.getAccount?.useQuery?.();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const cashback = (trpc as any).cashback?.summary?.useQuery?.();
+  const cashback = typedTrpc().cashback?.summary?.useQuery?.();
 
   const balData = balance.data as BalanceData | undefined;
   const txnData = txns.data as TxnPage | undefined;

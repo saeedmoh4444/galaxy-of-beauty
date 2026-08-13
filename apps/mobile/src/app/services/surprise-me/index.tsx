@@ -2,13 +2,14 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-nati
 import { trpc } from '@/lib/api';
 import { useState, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function SurpriseMeScreen(): JSX.Element {
   const [result, setResult] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const surprise = useCallback(() => {
     setLoading(true);
-    ((trpc as any).services.surpriseMe.query() as any)
+    (typedTrpc().services.surpriseMe.query() as any)
       .then((d: any) => {
         setResult(d);
         setLoading(false);

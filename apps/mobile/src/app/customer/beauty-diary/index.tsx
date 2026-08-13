@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { trpc as trpcReact } from '@/lib/trpc-react';
 import { useState, useEffect, useCallback } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const MOODS = ['', '', '', '', '', '', '', ''];
 
@@ -11,12 +12,12 @@ export default function BeautyDiaryScreen(): JSX.Element {
   const [, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [todayMood, setTodayMood] = useState('');
-  const skinJournal = (trpcReact as any).skinDiary?.list?.useQuery?.({ limit: 7 });
+  const skinJournal = typedTrpc().skinDiary?.list?.useQuery?.({ limit: 7 });
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).beautyJournal.list.query({ page: 1, limit: LARGE_PAGE_SIZE }) as any)
+    (typedTrpc().beautyJournal.list.query({ page: 1, limit: LARGE_PAGE_SIZE }) as any)
       .then((d: any) => {
         setEntries(d || []);
         setLoading(false);

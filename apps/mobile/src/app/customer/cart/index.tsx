@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
+import { trpc, typedTrpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = {
@@ -12,7 +12,7 @@ const COLORS = {
 };
 
 export default function CartScreen(): JSX.Element {
-  const cart = (trpc as any).marketplace?.cart?.useQuery?.() ?? {
+  const cart = typedTrpc().marketplace?.cart?.useQuery?.() ?? {
     data: null,
     isLoading: false,
     isError: false,

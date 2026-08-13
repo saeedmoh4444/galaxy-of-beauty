@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function TravelKitScreen(): JSX.Element {
   const [dests, setDests] = useState<any[]>([]);
@@ -11,7 +12,7 @@ export default function TravelKitScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).travelKit.destinations.query() as any)
+    (typedTrpc().travelKit.destinations.query() as any)
       .then((d: any) => {
         setDests(d || []);
         setLoading(false);

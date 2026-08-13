@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function ServiceDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -13,7 +14,7 @@ export default function ServiceDetailScreen(): JSX.Element {
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      ((trpc as any).services.getById.query({ id: parseInt(id, 10) }) as any)
+      (typedTrpc().services.getById.query({ id: parseInt(id, 10) }) as any)
         .then((d: any) => {
           setData(d);
           setLoading(false);

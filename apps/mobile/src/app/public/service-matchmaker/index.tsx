@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState } from 'react';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const QUESTIONS = [
   {
@@ -55,7 +56,7 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
       setStep(step + 1);
     } else {
       setLoading(true);
-      ((trpc as any).serviceMatchmaker.match.query(next) as any)
+      (typedTrpc().serviceMatchmaker.match.query(next) as any)
         .then((d: any) => {
           setResult(d);
           setLoading(false);

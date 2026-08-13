@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function DNABeautyScreen(): JSX.Element {
   const [questions, setQuestions] = useState<any[]>([]);
@@ -13,7 +14,7 @@ export default function DNABeautyScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).dnaBeauty.questions.query() as any)
+    (typedTrpc().dnaBeauty.questions.query() as any)
       .then((d: any) => {
         setQuestions(d || []);
         setLoading(false);
@@ -29,7 +30,7 @@ export default function DNABeautyScreen(): JSX.Element {
   }, [fetch]);
   const analyze = () => {
     setAnalyzing(true);
-    ((trpc as any).dnaBeauty.analyze.query({ answers }) as any)
+    (typedTrpc().dnaBeauty.analyze.query({ answers }) as any)
       .then((d: any) => {
         setResult(d);
         setAnalyzing(false);

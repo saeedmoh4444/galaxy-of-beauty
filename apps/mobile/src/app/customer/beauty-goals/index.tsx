@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { trpc as trpcReact } from '@/lib/trpc-react';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const GT = [
   { key: 'glowing_skin', emoji: '', title: 'بشرة متألقة', target: 12 },
@@ -13,13 +14,13 @@ const GT = [
 
 export default function BeautyGoalsScreen(): JSX.Element {
   const [loading, setLoading] = useState(true);
-  const habits = (trpcReact as any).beautyHabits?.myHabits?.useQuery?.();
-  const visionGoals = (trpcReact as any).visionBoard?.myGoals?.useQuery?.({ limit: 6 });
+  const habits = typedTrpc().beautyHabits?.myHabits?.useQuery?.();
+  const visionGoals = typedTrpc().visionBoard?.myGoals?.useQuery?.({ limit: 6 });
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).beautyBudget.get.query() as any)
+    (typedTrpc().beautyBudget.get.query() as any)
       .then(() => {
         setLoading(false);
         setRefreshing(false);

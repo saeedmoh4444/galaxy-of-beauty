@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function AdminUsersScreen(): JSX.Element {
   const [data, setData] = useState<any[]>([]);
@@ -11,7 +12,7 @@ export default function AdminUsersScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).users.listAll.query({}) as any)
+    (typedTrpc().users.listAll.query({}) as any)
       .then((d: any) => {
         setData(d?.items || []);
         setLoading(false);

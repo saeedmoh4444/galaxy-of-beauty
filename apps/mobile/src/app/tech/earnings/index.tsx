@@ -1,6 +1,6 @@
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
+import { trpc, typedTrpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = {
@@ -12,7 +12,7 @@ const COLORS = {
 };
 
 export default function TechEarningsScreen(): JSX.Element {
-  const earnings = (trpc as any).payouts?.list?.useQuery?.({}) ?? {
+  const earnings = typedTrpc().payouts?.list?.useQuery?.({}) ?? {
     data: null,
     isLoading: false,
     isError: false,

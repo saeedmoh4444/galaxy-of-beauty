@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function PriceEstimatorScreen(): JSX.Element {
   const [services, setServices] = useState<any[]>([]);
@@ -13,7 +14,7 @@ export default function PriceEstimatorScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).priceEstimator.services.query() as any)
+    (typedTrpc().priceEstimator.services.query() as any)
       .then((d: any) => {
         setServices(d || []);
         setLoading(false);
@@ -30,7 +31,7 @@ export default function PriceEstimatorScreen(): JSX.Element {
   const getEstimate = () => {
     if (!selected) return;
     (
-      (trpc as any).priceEstimator.estimate.query({
+      typedTrpc().priceEstimator.estimate.query({
         serviceId: selected,
         promoCode: promo || undefined,
       }) as any

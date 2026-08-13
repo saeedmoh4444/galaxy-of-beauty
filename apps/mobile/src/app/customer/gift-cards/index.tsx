@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
+import { trpc, typedTrpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = {
@@ -13,7 +13,7 @@ const COLORS = {
 };
 
 export default function GiftCardsScreen(): JSX.Element {
-  const cards = (trpc as any).giftCards?.myCards?.useQuery?.({}) ?? {
+  const cards = typedTrpc().giftCards?.myCards?.useQuery?.({}) ?? {
     data: null,
     isLoading: false,
     isError: false,

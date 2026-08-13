@@ -3,6 +3,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function VideoBookingScreen(): JSX.Element {
   const { bookingId } = useLocalSearchParams<{ bookingId: string }>();
@@ -14,7 +15,7 @@ export default function VideoBookingScreen(): JSX.Element {
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      ((trpc as any).video.getSession.query({ bookingId: parseInt(bookingId, 10) }) as any)
+      (typedTrpc().video.getSession.query({ bookingId: parseInt(bookingId, 10) }) as any)
         .then((d: any) => {
           setData(d);
           setLoading(false);

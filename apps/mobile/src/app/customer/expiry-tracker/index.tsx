@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function ExpiryTrackerScreen(): JSX.Element {
   const [items, setItems] = useState<any[]>([]);
@@ -10,7 +11,7 @@ export default function ExpiryTrackerScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).expiryTracker.myItems.query() as any)
+    (typedTrpc().expiryTracker.myItems.query() as any)
       .then((d: any) => {
         setItems(d || []);
         setLoading(false);
@@ -25,7 +26,7 @@ export default function ExpiryTrackerScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const remove = (id: number) => {
-    ((trpc as any).expiryTracker.delete.mutate({ id }) as any).then(() => fetch());
+    (typedTrpc().expiryTracker.delete.mutate({ id }) as any).then(() => fetch());
   };
   if (loading) return <SkeletonList count={4} />;
   return (

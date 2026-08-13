@@ -13,6 +13,7 @@ import { EXTENDED_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function CommunityScreen(): JSX.Element {
   const {
@@ -22,14 +23,14 @@ export default function CommunityScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => (trpc as any).community.feed.query({ page: 1, limit: EXTENDED_PAGE_SIZE }));
+  } = useQuery(() => typedTrpc().community.feed.query({ page: 1, limit: EXTENDED_PAGE_SIZE }));
   const [content, setContent] = useState('');
   const [posting, setPosting] = useState(false);
 
   const create = () => {
     if (!content.trim()) return;
     setPosting(true);
-    ((trpc as any).community.create.mutate({ content: content.trim() }) as any)
+    (typedTrpc().community.create.mutate({ content: content.trim() }) as any)
       .then(() => {
         setContent('');
         setPosting(false);
@@ -39,7 +40,7 @@ export default function CommunityScreen(): JSX.Element {
   };
 
   const toggleLike = (postId: number) => {
-    ((trpc as any).community.toggleLike.mutate({ postId }) as any).then(() => refetch());
+    (typedTrpc().community.toggleLike.mutate({ postId }) as any).then(() => refetch());
   };
 
   if (loading) return <SkeletonList count={5} />;

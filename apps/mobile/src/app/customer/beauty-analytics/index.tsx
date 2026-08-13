@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc as trpcReact } from '@/lib/trpc-react';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function BeautyAnalyticsScreen(): JSX.Element {
   const [summary, setSummary] = useState<any>(null);
@@ -10,16 +11,16 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
   const [trend, setTrend] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const kindness = (trpcReact as any).kindnessPoints?.getStatus?.useQuery?.();
-  const loyalty = (trpcReact as any).loyalty?.getAccount?.useQuery?.();
+  const kindness = typedTrpc().kindnessPoints?.getStatus?.useQuery?.();
+  const loyalty = typedTrpc().loyalty?.getAccount?.useQuery?.();
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      (trpc as any).beautyAnalytics.summary.query() as any,
-      (trpc as any).beautyAnalytics.byCategory.query() as any,
-      (trpc as any).beautyAnalytics.monthlyTrend.query() as any,
+      typedTrpc().beautyAnalytics.summary.query() as any,
+      typedTrpc().beautyAnalytics.byCategory.query() as any,
+      typedTrpc().beautyAnalytics.monthlyTrend.query() as any,
     ])
       .then(([s, c, t]: any[]) => {
         setSummary(s);

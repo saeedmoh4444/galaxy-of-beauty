@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const GRADIENTS: Record<string, string[]> = {
   '7day_skincare': ['#f43f5e', '#ec4899'],
@@ -20,7 +21,7 @@ export default function ChallengesScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => (trpc as any).challenges.list.query());
+  } = useQuery(() => typedTrpc().challenges.list.query());
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل التحديات" onRetry={refetch} />;

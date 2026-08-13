@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState, useEffect } from 'react';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function BeautyStatsScreen(): JSX.Element {
   const [stats, setStats] = useState({
@@ -13,7 +14,7 @@ export default function BeautyStatsScreen(): JSX.Element {
     happyCustomers: 180000,
   });
   useEffect(() => {
-    (trpc as any).beautyStats?.platform
+    typedTrpc().beautyStats?.platform
       ?.query?.()
       .then((s: any) => s && setStats(s))
       .catch(() => {});

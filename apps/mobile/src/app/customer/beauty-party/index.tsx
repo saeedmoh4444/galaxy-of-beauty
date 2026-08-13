@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { trpc as trpcReact } from '@/lib/trpc-react';
 import { useState, useEffect, useCallback } from 'react';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const THEMES = [
   { key: 'spa', emoji: '‍️', name: 'سبا منزلي', desc: 'مساج وأقنعة واسترخاء' },
@@ -14,7 +15,7 @@ const THEMES = [
 export default function BeautyPartyScreen(): JSX.Element {
   const [, setServices] = useState<any[]>([]);
   const [, setLoading] = useState(true);
-  const { data: eventsData } = (trpcReact as any).communityEvents?.list?.useQuery?.({
+  const { data: eventsData } = typedTrpc().communityEvents?.list?.useQuery?.({
     limit: 4,
   }) ?? { data: null };
   const [refreshing, setRefreshing] = useState(false);
@@ -24,7 +25,7 @@ export default function BeautyPartyScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).services.list.query({}) as any)
+    (typedTrpc().services.list.query({}) as any)
       .then((d: any) => {
         setServices(d?.items || []);
         setLoading(false);

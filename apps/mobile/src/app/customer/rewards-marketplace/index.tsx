@@ -5,6 +5,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const TIER_COLORS: Record<string, string[]> = {
   SILVER: ['#d1d5db', '#9ca3af'],
@@ -20,16 +21,16 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => (trpc as any).loyalty.myAccount.query());
-  const { data: rewards } = useQuery(() => (trpc as any).loyalty.rewards.query());
+  } = useQuery(() => typedTrpc().loyalty.myAccount.query());
+  const { data: rewards } = useQuery(() => typedTrpc().loyalty.rewards.query());
   const { data: txs } = useQuery(() =>
-    (trpc as any).loyalty.myTransactions.query({ page: 1, limit: LARGE_PAGE_SIZE }),
+    typedTrpc().loyalty.myTransactions.query({ page: 1, limit: LARGE_PAGE_SIZE }),
   );
   const [redeemed, setRedeemed] = useState<number | null>(null);
 
   const handleRedeem = async (rid: number) => {
     try {
-      await (trpc as any).loyalty.redeem.mutate({ rewardId: rid });
+      await typedTrpc().loyalty.redeem.mutate({ rewardId: rid });
       setRedeemed(rid);
       refetch();
     } catch {}

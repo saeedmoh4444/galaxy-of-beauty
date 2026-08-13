@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const TYPES: Record<string, string> = {
   workshop: ' ورشة',
@@ -19,20 +20,20 @@ export default function BeautyEventsScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => (trpc as any).beautyEvents.upcoming.query());
-  const { data: myRegsData } = useQuery(() => (trpc as any).beautyEvents.myRegistrations.query());
+  } = useQuery(() => typedTrpc().beautyEvents.upcoming.query());
+  const { data: myRegsData } = useQuery(() => typedTrpc().beautyEvents.myRegistrations.query());
   const myRegs = (myRegsData ?? []) as any[];
   const registeredIds = new Set(((myRegs ?? []) as any[]).map((r: any) => r.eventId));
 
   const handleRegister = async (id: number) => {
     try {
-      await (trpc as any).beautyEvents.register.mutate({ eventId: id });
+      await typedTrpc().beautyEvents.register.mutate({ eventId: id });
       refetch();
     } catch {}
   };
   const handleCancel = async (id: number) => {
     try {
-      await (trpc as any).beautyEvents.cancelRegistration.mutate({ eventId: id });
+      await typedTrpc().beautyEvents.cancelRegistration.mutate({ eventId: id });
       refetch();
     } catch {}
   };

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const CH: Record<string, { emoji: string; color: string }> = {
   '7day_skincare': { emoji: '', color: '#ec4899' },
@@ -20,8 +21,8 @@ export default function ChallengesScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      (trpc as any).challenges.list.query() as any,
-      (trpc as any).challenges.progress.query() as any,
+      typedTrpc().challenges.list.query() as any,
+      typedTrpc().challenges.progress.query() as any,
     ])
       .then(([c, p]: any[]) => {
         setChallenges(c || []);
@@ -38,7 +39,7 @@ export default function ChallengesScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const join = (challengeId: string) => {
-    ((trpc as any).challenges.join.mutate({ challengeId }) as any).then(() => fetch());
+    (typedTrpc().challenges.join.mutate({ challengeId }) as any).then(() => fetch());
   };
   if (loading) return <SkeletonList count={4} />;
   return (

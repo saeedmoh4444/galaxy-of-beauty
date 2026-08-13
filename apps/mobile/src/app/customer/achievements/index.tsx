@@ -4,13 +4,14 @@ import { trpc as trpcReact } from '@/lib/trpc-react';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function AchievementsScreen(): JSX.Element {
   const { data: achievementsData } = (
-    trpcReact as any
+    typedTrpc()
   ).beautyAchievements?.myAchievements?.useQuery?.() ?? { data: null };
   const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
-    (trpc as any).customerAchievements.myAchievements.query(),
+    typedTrpc().customerAchievements.myAchievements.query(),
   );
 
   if (loading) return <SkeletonList count={4} />;

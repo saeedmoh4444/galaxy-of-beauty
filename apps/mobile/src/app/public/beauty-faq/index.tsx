@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function BeautyFaqScreen(): JSX.Element {
   const [faqs, setFaqs] = useState<any[]>([]);
@@ -10,7 +11,7 @@ export default function BeautyFaqScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).beautyFaq.list.query() as any)
+    (typedTrpc().beautyFaq.list.query() as any)
       .then((d: any) => {
         setFaqs(d || []);
         setLoading(false);

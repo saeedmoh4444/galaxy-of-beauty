@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 
 import { trpc } from '@/lib/api';
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function SearchScreen(): JSX.Element {
   const [query, setQuery] = useState('');
@@ -10,7 +11,7 @@ export default function SearchScreen(): JSX.Element {
   const doSearch = () => {
     if (!query.trim()) return;
     setLoading(true);
-    ((trpc as any).search.all.query({ q: query.trim() }) as any)
+    (typedTrpc().search.all.query({ q: query.trim() }) as any)
       .then((d: any) => {
         setResults(d);
         setLoading(false);

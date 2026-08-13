@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function LiveStreamScreen(): JSX.Element {
   const [data, setData] = useState<any>(null);
@@ -10,7 +11,7 @@ export default function LiveStreamScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).liveStream.list.query() as any)
+    (typedTrpc().liveStream.list.query() as any)
       .then((d: any) => {
         setData(d);
         setLoading(false);

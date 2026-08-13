@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
+import { trpc, typedTrpc } from '@/lib/trpc-react';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -12,8 +12,8 @@ const COLORS = {
 
 export default function ReferralsScreen(): JSX.Element {
   const code = trpc.referrals.getMyCode.useQuery();
-  const stats = (trpc as any).referrals?.getStats?.useQuery?.() ?? { data: null };
-  const kindness = (trpc as any).kindnessPoints?.getStatus?.useQuery?.();
+  const stats = typedTrpc().referrals?.getStats?.useQuery?.() ?? { data: null };
+  const kindness = typedTrpc().kindnessPoints?.getStatus?.useQuery?.();
 
   return (
     <ScreenState

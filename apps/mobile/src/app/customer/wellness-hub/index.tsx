@@ -3,10 +3,11 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function WellnessHubScreen(): JSX.Element {
   const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
-    (trpc as any).wellnessHub.dashboard.query(),
+    typedTrpc().wellnessHub.dashboard.query(),
   );
 
   if (loading) return <SkeletonList count={4} />;

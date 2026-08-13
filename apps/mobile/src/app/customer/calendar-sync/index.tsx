@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function CalendarSyncScreen(): JSX.Element {
   const [status, setStatus] = useState<any>(null);
@@ -12,8 +13,8 @@ export default function CalendarSyncScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      (trpc as any).calendarSync.status.query() as any,
-      (trpc as any).calendarSync.upcoming.query() as any,
+      typedTrpc().calendarSync.status.query() as any,
+      typedTrpc().calendarSync.upcoming.query() as any,
     ])
       .then(([s, u]: any[]) => {
         setStatus(s);
@@ -31,11 +32,11 @@ export default function CalendarSyncScreen(): JSX.Element {
   }, [fetch]);
   const connect = () => {
     (
-      (trpc as any).calendarSync.connect.mutate({ authCode: 'google-auth-code' /* TODO */ }) as any
+      typedTrpc().calendarSync.connect.mutate({ authCode: 'google-auth-code' /* TODO */ }) as any
     ).then(() => fetch());
   };
   const disconnect = () => {
-    ((trpc as any).calendarSync.disconnect.mutate({}) as any).then(() => fetch());
+    (typedTrpc().calendarSync.disconnect.mutate({}) as any).then(() => fetch());
   };
   if (loading) return <SkeletonList count={3} />;
   const connected = status?.connected as boolean;

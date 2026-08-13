@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function TechniciansScreen(): JSX.Element {
   const {
@@ -12,7 +13,7 @@ export default function TechniciansScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => (trpc as any).technicians.list.query());
+  } = useQuery(() => typedTrpc().technicians.list.query());
 
   if (loading) return <SkeletonList count={6} />;
   if (error) return <ErrorAlert message="فشل تحميل الفنيات" onRetry={refetch} />;

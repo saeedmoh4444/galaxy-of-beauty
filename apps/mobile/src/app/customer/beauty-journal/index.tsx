@@ -4,6 +4,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function BeautyJournalScreen(): JSX.Element {
   const {
@@ -13,7 +14,7 @@ export default function BeautyJournalScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => (trpc as any).beautyJournal.list.query({ page: 1, limit: LARGE_PAGE_SIZE }));
+  } = useQuery(() => typedTrpc().beautyJournal.list.query({ page: 1, limit: LARGE_PAGE_SIZE }));
 
   if (loading)
     return (

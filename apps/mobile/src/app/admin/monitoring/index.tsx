@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const STATUS_COLORS: Record<string, string> = {
   healthy: '#059669',
@@ -17,7 +18,7 @@ export default function MonitoringScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).monitoring.health.query() as any)
+    (typedTrpc().monitoring.health.query() as any)
       .then((d: any) => {
         setHealth(d || {});
         setLoading(false);

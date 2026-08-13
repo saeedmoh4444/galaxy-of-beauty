@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
+import { trpc, typedTrpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = {
@@ -14,14 +14,14 @@ const COLORS = {
 };
 
 export default function BeautyBudgetScreen(): JSX.Element {
-  const budget = (trpc as any).beautyBudget?.get?.useQuery?.() ?? {
+  const budget = typedTrpc().beautyBudget?.get?.useQuery?.() ?? {
     data: null,
     isLoading: false,
     isError: false,
     refetch: () => {},
   };
-  const loyalty = (trpc as any).loyalty?.getAccount?.useQuery?.();
-  const savings = (trpc as any).savingsGoals?.list?.useQuery?.();
+  const loyalty = typedTrpc().loyalty?.getAccount?.useQuery?.();
+  const savings = typedTrpc().savingsGoals?.list?.useQuery?.();
   const data = budget.data as Record<string, unknown> | undefined;
 
   return (

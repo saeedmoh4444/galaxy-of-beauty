@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const STEPS = [
   { key: 'consultation', emoji: '', title: 'استشارة', desc: 'تحديد احتياجات العروس' },
@@ -12,7 +13,7 @@ const STEPS = [
 
 export default function BridalConciergeScreen(): JSX.Element {
   const { data, loading, error, refreshing, refetch, refresh } = useQuery(() =>
-    (trpc as any).bridalConcierge.dashboard.query(),
+    typedTrpc().bridalConcierge.dashboard.query(),
   );
 
   if (loading) return <SkeletonList count={4} />;

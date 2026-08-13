@@ -4,6 +4,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const LEVELS: Record<string, { label: string; color: string }> = {
   beginner: { label: 'مبتدئ', color: '#10b981' },
@@ -19,16 +20,16 @@ export default function BeautyCoursesScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => (trpc as any).beautyCourses.list.query());
-  const { data: myCourses } = useQuery(() => (trpc as any).beautyCourses.myCourses.query());
+  } = useQuery(() => typedTrpc().beautyCourses.list.query());
+  const { data: myCourses } = useQuery(() => typedTrpc().beautyCourses.myCourses.query());
   const { data: expertTalks } = useQuery(() =>
-    (trpc as any).expertTalks?.upcoming?.query?.({ limit: 3 }),
+    typedTrpc().expertTalks?.upcoming?.query?.({ limit: 3 }),
   );
   const [enrolled, setEnrolled] = useState<number[]>([]);
 
   const handleEnroll = async (courseId: number) => {
     try {
-      await (trpc as any).beautyCourses.enroll.mutate({ courseId });
+      await typedTrpc().beautyCourses.enroll.mutate({ courseId });
       setEnrolled((prev) => [...prev, courseId]);
     } catch {}
   };

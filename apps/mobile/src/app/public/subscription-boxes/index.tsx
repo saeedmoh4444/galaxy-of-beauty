@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function SubscriptionBoxesScreen(): JSX.Element {
   const {
@@ -12,7 +13,7 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => (trpc as any).subscriptionBoxes.list.query());
+  } = useQuery(() => typedTrpc().subscriptionBoxes.list.query());
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الصناديق" onRetry={refetch} />;

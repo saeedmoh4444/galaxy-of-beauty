@@ -10,6 +10,7 @@ import {
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function AIAssistantScreen(): JSX.Element {
   const [messages, setMessages] = useState<any[]>([]);
@@ -20,7 +21,7 @@ export default function AIAssistantScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).aiAssistant.history.query() as any)
+    (typedTrpc().aiAssistant.history.query() as any)
       .then((d: any) => {
         setMessages(d || []);
         setLoading(false);

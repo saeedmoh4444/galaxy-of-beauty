@@ -12,6 +12,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const CATS: Record<string, string> = {
   hair: '‍️ شعر',
@@ -25,7 +26,7 @@ const INTERVALS = [7, 14, 30, 60, 90];
 
 export default function BeautyRemindersScreen(): JSX.Element {
   const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
-    (trpc as any).beautyReminders.myReminders.query(),
+    typedTrpc().beautyReminders.myReminders.query(),
   );
   const [title, setTitle] = useState('');
   const [cat, setCat] = useState('hair');
@@ -35,7 +36,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
   const handleCreate = async () => {
     if (!title) return;
     try {
-      await (trpc as any).beautyReminders.create.mutate({
+      await typedTrpc().beautyReminders.create.mutate({
         title,
         category: cat,
         intervalDays: interval,
@@ -47,13 +48,13 @@ export default function BeautyRemindersScreen(): JSX.Element {
   };
   const handleComplete = async (id: number) => {
     try {
-      await (trpc as any).beautyReminders.complete.mutate({ id });
+      await typedTrpc().beautyReminders.complete.mutate({ id });
       refetch();
     } catch {}
   };
   const handleDelete = async (id: number) => {
     try {
-      await (trpc as any).beautyReminders.delete.mutate({ id });
+      await typedTrpc().beautyReminders.delete.mutate({ id });
       refetch();
     } catch {}
   };

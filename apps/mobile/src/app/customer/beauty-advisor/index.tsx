@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useState, useRef } from 'react';
 import { trpc } from '@/lib/api';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const TOPICS = [
   { key: 'روتين', emoji: '', q: 'كيف أبني روتين عناية يومي؟' },
@@ -38,7 +39,7 @@ export default function BeautyAdvisorScreen(): JSX.Element {
     setInput('');
     setLoading(true);
     try {
-      const r = await (trpc as any).aiAssistant.ask.mutate({ question: msg });
+      const r = await typedTrpc().aiAssistant.ask.mutate({ question: msg });
       setMessages((prev) => [
         ...prev,
         { role: 'assistant', content: r.answer ?? r.message ?? 'عذراً، لم أستطع الإجابة.' },

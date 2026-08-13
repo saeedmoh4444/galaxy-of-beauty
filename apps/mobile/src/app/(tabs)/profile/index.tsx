@@ -2,7 +2,7 @@ import { useHaptics } from '@/hooks/useHaptics';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
+import { trpc, typedTrpc } from '@/lib/trpc-react';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -31,14 +31,14 @@ const MENU_ITEMS = [
 export default function ProfileScreen(): JSX.Element {
   const { trigger } = useHaptics();
   const router = useRouter();
-  const profile = (trpc as any).users?.me?.useQuery?.() ?? {
+  const profile = typedTrpc().users?.me?.useQuery?.() ?? {
     data: null,
     isLoading: false,
     isError: false,
     refetch: () => {},
   };
-  const loyalty = (trpc as any).loyalty?.getAccount?.useQuery?.();
-  const kindness = (trpc as any).kindnessPoints?.getStatus?.useQuery?.();
+  const loyalty = typedTrpc().loyalty?.getAccount?.useQuery?.();
+  const kindness = typedTrpc().kindnessPoints?.getStatus?.useQuery?.();
 
   return (
     <ScreenState

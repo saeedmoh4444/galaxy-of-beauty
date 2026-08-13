@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function PenPalScreen(): JSX.Element {
   const [data, setData] = useState<any>(null);
@@ -11,7 +12,7 @@ export default function PenPalScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).penPal.match.query() as any)
+    (typedTrpc().penPal.match.query() as any)
       .then((d: any) => {
         setData(d);
         setLoading(false);

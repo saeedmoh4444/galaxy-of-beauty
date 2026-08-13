@@ -10,6 +10,7 @@ import {
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function InspirationScreen(): JSX.Element {
   const [pins, setPins] = useState<any[]>([]);
@@ -18,7 +19,7 @@ export default function InspirationScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).inspiration.list.query() as any)
+    (typedTrpc().inspiration.list.query() as any)
       .then((d: any) => {
         setPins(d || []);
         setLoading(false);
@@ -33,7 +34,7 @@ export default function InspirationScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const remove = (id: number) => {
-    ((trpc as any).inspiration.delete.mutate({ id }) as any).then(() => fetch());
+    (typedTrpc().inspiration.delete.mutate({ id }) as any).then(() => fetch());
   };
   if (loading) return <SkeletonList count={6} />;
   return (

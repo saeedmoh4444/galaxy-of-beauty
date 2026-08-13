@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function TechOnboardingScreen(): JSX.Element {
   const [data, setData] = useState<any>(null);
@@ -10,7 +11,7 @@ export default function TechOnboardingScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).techOnboarding.steps.query() as any)
+    (typedTrpc().techOnboarding.steps.query() as any)
       .then((d: any) => {
         setData(d);
         setLoading(false);
@@ -25,7 +26,7 @@ export default function TechOnboardingScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const submitDoc = (stepKey: string) => {
-    ((trpc as any).techOnboarding.submitDoc.mutate({ stepKey, url: 'document-url' }) as any).then(
+    (typedTrpc().techOnboarding.submitDoc.mutate({ stepKey, url: 'document-url' }) as any).then(
       () => fetch(),
     );
   };

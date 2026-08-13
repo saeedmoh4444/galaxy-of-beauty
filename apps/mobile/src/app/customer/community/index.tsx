@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
-import { trpc } from '@/lib/trpc-react';
+import { trpc, typedTrpc } from '@/lib/trpc-react';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -22,15 +22,15 @@ export default function CommunityScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => (trpc as any).community.feed.query({ page: 1, limit: LARGE_PAGE_SIZE }));
-  const { data: myLikes } = useQuery(() => (trpc as any).community.myLikes.query());
-  const { data: trending } = useQuery(() => (trpc as any).community.trending.query());
-  const { data: kindnessData } = useQuery(() => (trpc as any).kindnessPoints?.getStatus?.query?.());
+  } = useQuery(() => typedTrpc().community.feed.query({ page: 1, limit: LARGE_PAGE_SIZE }));
+  const { data: myLikes } = useQuery(() => typedTrpc().community.myLikes.query());
+  const { data: trending } = useQuery(() => typedTrpc().community.trending.query());
+  const { data: kindnessData } = useQuery(() => typedTrpc().kindnessPoints?.getStatus?.query?.());
   const { data: circlesData } = useQuery(() =>
-    (trpc as any).beautyCircles?.list?.query?.({ limit: 3 }),
+    typedTrpc().beautyCircles?.list?.query?.({ limit: 3 }),
   );
   const { data: complimentsData } = useQuery(() =>
-    (trpc as any).sisterhoodCompliments?.count?.query?.(),
+    typedTrpc().sisterhoodCompliments?.count?.query?.(),
   );
   const [content, setContent] = useState('');
   const [showCreate, setShowCreate] = useState(false);
@@ -44,14 +44,14 @@ export default function CommunityScreen(): JSX.Element {
 
   const handleLike = async (postId: number) => {
     try {
-      await (trpc as any).community.toggleLike.mutate({ postId });
+      await typedTrpc().community.toggleLike.mutate({ postId });
       refetch();
     } catch {}
   };
   const handleCreate = async () => {
     if (!content) return;
     try {
-      await (trpc as any).community.create.mutate({ content });
+      await typedTrpc().community.create.mutate({ content });
       setContent('');
       setShowCreate(false);
       refetch();
@@ -60,14 +60,14 @@ export default function CommunityScreen(): JSX.Element {
   const handleComment = async () => {
     if (!commentId || !commentText) return;
     try {
-      await (trpc as any).community.addComment.mutate({ postId: commentId, content: commentText });
+      await typedTrpc().community.addComment.mutate({ postId: commentId, content: commentText });
       setCommentText('');
       setCommentId(null);
     } catch {}
   };
   const handleDelete = async (id: number) => {
     try {
-      await (trpc as any).community.delete.mutate({ id });
+      await typedTrpc().community.delete.mutate({ id });
       refetch();
     } catch {}
   };

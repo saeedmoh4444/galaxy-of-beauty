@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
+import { trpc, typedTrpc } from '@/lib/trpc-react';
 import { useHaptics } from '@/hooks/useHaptics';
 
 const COLORS = {
@@ -16,9 +16,9 @@ export default function HomeScreen(): JSX.Element {
   const router = useRouter();
   const { trigger } = useHaptics();
   const cats = trpc.categories.list.useQuery();
-  const kindness = (trpc as any).kindnessPoints?.getStatus?.useQuery?.();
-  const dailyTip = (trpc as any).dailyBeautyTip?.today?.useQuery?.();
-  const compliments = (trpc as any).sisterhoodCompliments?.count?.useQuery?.();
+  const kindness = typedTrpc().kindnessPoints?.getStatus?.useQuery?.();
+  const dailyTip = typedTrpc().dailyBeautyTip?.today?.useQuery?.();
+  const compliments = typedTrpc().sisterhoodCompliments?.count?.useQuery?.();
 
   const data = cats.data as unknown[] | undefined;
 

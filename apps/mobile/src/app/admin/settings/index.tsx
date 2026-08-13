@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function AdminSettingsScreen(): JSX.Element {
   const [loading, setLoading] = useState(true);
@@ -12,8 +13,8 @@ export default function AdminSettingsScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      (trpc as any).admin.getPlatformConfig.query().catch(() => ({})) as any,
-      (trpc as any).cashback.info.query().catch(() => ({})) as any,
+      typedTrpc().admin.getPlatformConfig.query().catch(() => ({})) as any,
+      typedTrpc().cashback.info.query().catch(() => ({})) as any,
     ])
       .then(([cfg, cb]: any[]) => {
         setConfig({ ...cfg, cashbackRate: cb?.rate });

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const REC = [
   { key: 'WEEKLY', emoji: '', label: 'أسبوعي' },
@@ -20,7 +21,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).services.list.query({}) as any)
+    (typedTrpc().services.list.query({}) as any)
       .then((d: any) => {
         setServices(d?.items || []);
         setLoading(false);
@@ -39,7 +40,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
     const s = new Date(Date.now() + 86400000).toISOString();
     const e = new Date(Date.now() + 86400000 + 3600000).toISOString();
     (
-      (trpc as any).advancedBooking.createRecurring.mutate({
+      typedTrpc().advancedBooking.createRecurring.mutate({
         technicianId: 1 /* TODO */,
         serviceId: selectedSvc,
         addressId: 1 /* TODO */,

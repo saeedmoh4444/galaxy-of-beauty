@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function TrendingScreen(): JSX.Element {
   const {
@@ -12,8 +13,8 @@ export default function TrendingScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => (trpc as any).social.trending.query());
-  const { data: spotlight } = useQuery(() => (trpc as any).social.spotlight.query());
+  } = useQuery(() => typedTrpc().social.trending.query());
+  const { data: spotlight } = useQuery(() => typedTrpc().social.spotlight.query());
 
   if (loading) return <SkeletonList count={5} />;
   if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;

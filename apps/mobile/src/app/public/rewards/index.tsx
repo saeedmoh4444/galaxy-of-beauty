@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const TL: Record<string, { name: string; emoji: string; color: string }> = {
   SILVER: { name: 'الفضية', emoji: '', color: '#9ca3af' },
@@ -16,7 +17,7 @@ export default function RewardsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).loyalty.rewards.query() as any)
+    (typedTrpc().loyalty.rewards.query() as any)
       .then((d: any) => {
         setRewards(d || []);
         setLoading(false);

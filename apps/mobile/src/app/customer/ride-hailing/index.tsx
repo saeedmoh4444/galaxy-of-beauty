@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function RideHailingScreen(): JSX.Element {
   const [providers, setProviders] = useState<any[]>([]);
@@ -11,7 +12,7 @@ export default function RideHailingScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).rideHailing.providers.query() as any)
+    (typedTrpc().rideHailing.providers.query() as any)
       .then((d: any) => {
         setProviders(d || []);
         setLoading(false);
@@ -27,7 +28,7 @@ export default function RideHailingScreen(): JSX.Element {
   }, [fetch]);
   const book = (provider: string) => {
     (
-      (trpc as any).rideHailing.book.mutate({
+      typedTrpc().rideHailing.book.mutate({
         bookingId: 1,
         provider,
         pickupAddress: 'موقعي الحالي',

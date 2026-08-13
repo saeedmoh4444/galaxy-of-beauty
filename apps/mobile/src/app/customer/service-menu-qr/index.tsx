@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function ServiceMenuQRScreen(): JSX.Element {
   const [techs, setTechs] = useState<any[]>([]);
@@ -11,7 +12,7 @@ export default function ServiceMenuQRScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).serviceMenuQr.list.query() as any)
+    (typedTrpc().serviceMenuQr.list.query() as any)
       .then((d: any) => {
         setTechs(d || []);
         setLoading(false);
@@ -26,7 +27,7 @@ export default function ServiceMenuQRScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const generate = (technicianId: number) => {
-    ((trpc as any).serviceMenuQr.generate.mutate({ technicianId }) as any).then((d: any) =>
+    (typedTrpc().serviceMenuQr.generate.mutate({ technicianId }) as any).then((d: any) =>
       setResult(d),
     );
   };

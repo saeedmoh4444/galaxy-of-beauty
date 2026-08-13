@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, Image, RefreshControl } from 'react
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function GalleryScreen(): JSX.Element {
   const [photos, setPhotos] = useState<any[]>([]);
@@ -10,7 +11,7 @@ export default function GalleryScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).gallery.photos.query() as any)
+    (typedTrpc().gallery.photos.query() as any)
       .then((d: any) => {
         setPhotos(d || []);
         setLoading(false);

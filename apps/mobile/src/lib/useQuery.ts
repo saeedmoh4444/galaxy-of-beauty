@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { typedTrpc } from '@/lib/trpc-react';
 
 interface QueryState<T> {
   data: T | null;
@@ -10,7 +11,7 @@ interface QueryState<T> {
 }
 
 /**
- * Typed hook for tRPC queries — replaces the `(trpc as any)` pattern
+ * Typed hook for tRPC queries — replaces the `typedTrpc()` pattern
  * with proper type inference, loading states, error handling with retry,
  * and pull-to-refresh support via `refreshing` + `refresh()`.
  *

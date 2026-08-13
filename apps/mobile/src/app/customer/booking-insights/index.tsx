@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function BookingInsightsScreen(): JSX.Element {
   const [analytics, setAnalytics] = useState<any>(null);
@@ -12,8 +13,8 @@ export default function BookingInsightsScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      ((trpc as any).beautyAnalytics.summary.query() as any).catch(() => null),
-      ((trpc as any).beautyAnalytics.byCategory.query() as any).catch(() => []),
+      (typedTrpc().beautyAnalytics.summary.query() as any).catch(() => null),
+      (typedTrpc().beautyAnalytics.byCategory.query() as any).catch(() => []),
     ])
       .then(([a, c]: any[]) => {
         setAnalytics(a);

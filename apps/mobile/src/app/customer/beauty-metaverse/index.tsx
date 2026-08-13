@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function BeautyMetaverseScreen(): JSX.Element {
   const [salons, setSalons] = useState<any[]>([]);
@@ -11,7 +12,7 @@ export default function BeautyMetaverseScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).beautyMetaverse.salons.query() as any)
+    (typedTrpc().beautyMetaverse.salons.query() as any)
       .then((d: any) => {
         setSalons(d || []);
         setLoading(false);
@@ -26,7 +27,7 @@ export default function BeautyMetaverseScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const enter = (salonId: number) => {
-    ((trpc as any).beautyMetaverse.enter.mutate({ salonId, avatar: 'skin1' }) as any).then(
+    (typedTrpc().beautyMetaverse.enter.mutate({ salonId, avatar: 'skin1' }) as any).then(
       (d: any) => setResult(d),
     );
   };

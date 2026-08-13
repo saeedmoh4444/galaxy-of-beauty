@@ -5,6 +5,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const TABS = [
   { key: 'trending', label: ' رائج' },
@@ -22,13 +23,13 @@ export default function SocialScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => (trpc as any).social.trending.query());
-  const { data: spotlight } = useQuery(() => (trpc as any).social.spotlight.query());
-  const { data: tipsData } = useQuery(() => (trpc as any).social.tips.query({ page: 1 }));
+  } = useQuery(() => typedTrpc().social.trending.query());
+  const { data: spotlight } = useQuery(() => typedTrpc().social.spotlight.query());
+  const { data: tipsData } = useQuery(() => typedTrpc().social.tips.query({ page: 1 }));
   const { data: feedData } = useQuery(() =>
-    (trpc as any).social.feed.query({ page: 1, limit: MEDIUM_PAGE_SIZE }),
+    typedTrpc().social.feed.query({ page: 1, limit: MEDIUM_PAGE_SIZE }),
   );
-  const { data: lookbook } = useQuery(() => (trpc as any).social.lookbook.query());
+  const { data: lookbook } = useQuery(() => typedTrpc().social.lookbook.query());
 
   if (loading) return <SkeletonList count={5} />;
   if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function TechWaitlistScreen(): JSX.Element {
   const [popular, setPopular] = useState<any[]>([]);
@@ -12,8 +13,8 @@ export default function TechWaitlistScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      (trpc as any).techWaitlist.popular.query() as any,
-      (trpc as any).techWaitlist.myWaitlists.query() as any,
+      typedTrpc().techWaitlist.popular.query() as any,
+      typedTrpc().techWaitlist.myWaitlists.query() as any,
     ])
       .then(([p, m]: any[]) => {
         setPopular(p || []);
@@ -30,10 +31,10 @@ export default function TechWaitlistScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const join = (techId: number) => {
-    ((trpc as any).techWaitlist.join.mutate({ technicianId: techId }) as any).then(() => fetch());
+    (typedTrpc().techWaitlist.join.mutate({ technicianId: techId }) as any).then(() => fetch());
   };
   const leave = (techId: number) => {
-    ((trpc as any).techWaitlist.leave.mutate({ technicianId: techId }) as any).then(() => fetch());
+    (typedTrpc().techWaitlist.leave.mutate({ technicianId: techId }) as any).then(() => fetch());
   };
   if (loading) return <SkeletonList count={5} />;
   return (

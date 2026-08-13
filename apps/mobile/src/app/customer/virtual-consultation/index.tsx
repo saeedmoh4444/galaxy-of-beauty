@@ -4,6 +4,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const CONSULTANTS = [
   {
@@ -52,7 +53,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => (trpc as any).virtualConsultation.myConsultations.query());
+  } = useQuery(() => typedTrpc().virtualConsultation.myConsultations.query());
   const [selected, setSelected] = useState<string | null>(null);
   const [slot, setSlot] = useState<string | null>(null);
   const [booked, setBooked] = useState(false);
@@ -62,7 +63,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
   const handleBook = async () => {
     if (!consultant || !slot) return;
     try {
-      await (trpc as any).virtualConsultation.book.mutate({
+      await typedTrpc().virtualConsultation.book.mutate({
         consultantType: consultant.key,
         scheduledAt: new Date().toISOString(),
         slot,

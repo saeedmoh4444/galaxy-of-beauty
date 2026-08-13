@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function AdminBookingsScreen(): JSX.Element {
   const [data, setData] = useState<any[]>([]);
@@ -12,7 +13,7 @@ export default function AdminBookingsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).bookings.list.query({ page: 1, limit: BULK_PAGE_SIZE }) as any)
+    (typedTrpc().bookings.list.query({ page: 1, limit: BULK_PAGE_SIZE }) as any)
       .then((d: any) => {
         setData(d?.bookings || []);
         setLoading(false);

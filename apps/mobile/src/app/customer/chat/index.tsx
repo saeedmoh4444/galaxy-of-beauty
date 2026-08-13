@@ -10,6 +10,7 @@ import {
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function ChatScreen(): JSX.Element {
   const [messages, setMessages] = useState<any[]>([]);
@@ -18,7 +19,7 @@ export default function ChatScreen(): JSX.Element {
 
   const fetch = useCallback(() => {
     setLoading(true);
-    ((trpc as any).chat.messages.query({ bookingId: 1, page: 1, limit: BULK_PAGE_SIZE }) as any)
+    (typedTrpc().chat.messages.query({ bookingId: 1, page: 1, limit: BULK_PAGE_SIZE }) as any)
       .then((d: any) => {
         setMessages(d?.items || []);
         setLoading(false);
@@ -33,7 +34,7 @@ export default function ChatScreen(): JSX.Element {
   const send = () => {
     if (!text.trim()) return;
     (
-      (trpc as any).chat.send.mutate({ receiverId: 1, bookingId: 1, message: text.trim() }) as any
+      typedTrpc().chat.send.mutate({ receiverId: 1, bookingId: 1, message: text.trim() }) as any
     ).then(() => {
       setText('');
       fetch();

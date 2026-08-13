@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
+import { trpc, typedTrpc } from '@/lib/trpc-react';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -27,7 +27,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function TechBookingsScreen(): JSX.Element {
-  const bookings = (trpc as any).bookings?.listForTechnician?.useQuery?.({ limit: 20 }) ?? {
+  const bookings = typedTrpc().bookings?.listForTechnician?.useQuery?.({ limit: 20 }) ?? {
     data: null,
     isLoading: false,
     isError: false,

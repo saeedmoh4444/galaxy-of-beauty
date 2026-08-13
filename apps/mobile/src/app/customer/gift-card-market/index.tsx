@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function GiftCardMarketScreen(): JSX.Element {
   const [listings, setListings] = useState<any[]>([]);
@@ -10,7 +11,7 @@ export default function GiftCardMarketScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).giftCardMarket.listings.query() as any)
+    (typedTrpc().giftCardMarket.listings.query() as any)
       .then((d: any) => {
         setListings(d || []);
         setLoading(false);
@@ -25,7 +26,7 @@ export default function GiftCardMarketScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const buy = (listingId: number) => {
-    ((trpc as any).giftCardMarket.buy.mutate({ listingId }) as any).then(() => fetch());
+    (typedTrpc().giftCardMarket.buy.mutate({ listingId }) as any).then(() => fetch());
   };
   if (loading) return <SkeletonList count={4} />;
   return (

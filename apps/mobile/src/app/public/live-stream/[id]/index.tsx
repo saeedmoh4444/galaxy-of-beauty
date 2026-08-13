@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useState, useEffect } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function LiveStreamDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -13,8 +14,8 @@ export default function LiveStreamDetailScreen(): JSX.Element {
 
   useEffect(() => {
     Promise.all([
-      (trpc as any).liveStream.get.query({ id: parseInt(id, 10) }) as any,
-      (trpc as any).liveStream.messages.query({ streamId: parseInt(id, 10) }) as any,
+      typedTrpc().liveStream.get.query({ id: parseInt(id, 10) }) as any,
+      typedTrpc().liveStream.messages.query({ streamId: parseInt(id, 10) }) as any,
     ])
       .then(([s, m]: any[]) => {
         setStream(s);
@@ -27,7 +28,7 @@ export default function LiveStreamDetailScreen(): JSX.Element {
   const sendMsg = () => {
     if (!chatText.trim()) return;
     (
-      (trpc as any).liveStream.sendMessage.mutate({
+      typedTrpc().liveStream.sendMessage.mutate({
         streamId: parseInt(id, 10),
         text: chatText.trim(),
       }) as any

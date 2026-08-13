@@ -1,10 +1,11 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState, useEffect } from 'react';
+import { typedTrpc } from '@/lib/trpc-react';
 export default function AdminToolsScreen(): JSX.Element {
   const [flags, setFlags] = useState<any[]>([]);
   useEffect(() => {
-    (trpc as any).featureFlags?.list
+    typedTrpc().featureFlags?.list
       ?.query()
       .then((d: any) => setFlags(d ?? []))
       .catch(() => {});

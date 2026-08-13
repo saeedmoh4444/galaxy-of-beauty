@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function HomeServiceScreen(): JSX.Element {
   const [estimate, setEstimate] = useState<any>(null);
@@ -10,7 +11,7 @@ export default function HomeServiceScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).homeService.estimate.query({ city: 'الرياض' /* TODO */ }) as any)
+    (typedTrpc().homeService.estimate.query({ city: 'الرياض' /* TODO */ }) as any)
       .then((d: any) => {
         setEstimate(d);
         setLoading(false);

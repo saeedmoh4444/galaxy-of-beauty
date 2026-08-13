@@ -4,6 +4,7 @@ import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function ServicesScreen(): JSX.Element {
   const {
@@ -13,11 +14,11 @@ export default function ServicesScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => (trpc as any).services.categories.query());
+  } = useQuery(() => typedTrpc().services.categories.query());
   const [activeCat, setActiveCat] = useState<string | null>(null);
   const { data: services } = useQuery(() =>
     activeCat
-      ? (trpc as any).services.byCategory.query({ category: activeCat })
+      ? typedTrpc().services.byCategory.query({ category: activeCat })
       : Promise.resolve(null),
   );
 

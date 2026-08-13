@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function ClinicConnectScreen(): JSX.Element {
   const [clinics, setClinics] = useState<any[]>([]);
@@ -12,8 +13,8 @@ export default function ClinicConnectScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      (trpc as any).clinicConnect.clinics.query() as any,
-      (trpc as any).clinicConnect.myReferrals.query() as any,
+      typedTrpc().clinicConnect.clinics.query() as any,
+      typedTrpc().clinicConnect.myReferrals.query() as any,
     ])
       .then(([c, r]: any[]) => {
         setClinics(c || []);
@@ -30,7 +31,7 @@ export default function ClinicConnectScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const refer = (clinicId: number) => {
-    (trpc as any).clinicConnect.refer.mutate({
+    typedTrpc().clinicConnect.refer.mutate({
       clinicId,
       reason: 'استشارة جلدية',
       urgency: 'routine',

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function FollowingScreen(): JSX.Element {
   const [follows, setFollows] = useState<any[]>([]);
@@ -10,7 +11,7 @@ export default function FollowingScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).technicianFollows.myFollows.query() as any)
+    (typedTrpc().technicianFollows.myFollows.query() as any)
       .then((d: any) => {
         setFollows(d || []);
         setLoading(false);
@@ -25,7 +26,7 @@ export default function FollowingScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const unfollow = (technicianId: number) => {
-    ((trpc as any).technicianFollows.unfollow.mutate({ technicianId }) as any).then(() => fetch());
+    (typedTrpc().technicianFollows.unfollow.mutate({ technicianId }) as any).then(() => fetch());
   };
   if (loading) return <SkeletonList count={4} />;
   return (

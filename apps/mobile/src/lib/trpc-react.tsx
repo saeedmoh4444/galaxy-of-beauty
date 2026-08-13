@@ -22,6 +22,19 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL ?? `${DEFAULT_LOCAL_URL}/api/trp
 // Create the tRPC React client
 export const trpc = createTRPCReact<AppRouter>();
 
+/**
+ * Typed accessor for experimental routes not yet in the AppRouter type.
+ * Centralizes the `any` cast — use this instead of (trpc as any).
+ *
+ * Usage:
+ *   import { typedTrpc } from '@/lib/trpc-react';
+ *   const loyalty = typedTrpc().loyalty?.getAccount?.useQuery?.();
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function typedTrpc(): any {
+  return trpc;
+}
+
 function getAuthHeaders(): Record<string, string> {
   // Note: In production, use expo-secure-store instead of localStorage
   const headers: Record<string, string> = {};

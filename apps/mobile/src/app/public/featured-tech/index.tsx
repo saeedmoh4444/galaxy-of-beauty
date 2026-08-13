@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function FeaturedTechScreen(): JSX.Element {
   const [tech, setTech] = useState<any>(null);
@@ -13,8 +14,8 @@ export default function FeaturedTechScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      (trpc as any).featuredTech.current.query(),
-      (trpc as any).featuredTech.past.query(),
+      typedTrpc().featuredTech.current.query(),
+      typedTrpc().featuredTech.past.query(),
     ])
       .then(([t, p]: any[]) => {
         setTech(t);

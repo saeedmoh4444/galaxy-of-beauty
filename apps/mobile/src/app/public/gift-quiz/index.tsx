@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
+import { trpc, typedTrpc } from '@/lib/trpc-react';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 const QUESTIONS = [
@@ -21,7 +21,7 @@ const QUESTIONS = [
 export default function GiftQuizScreen(): JSX.Element {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const recommendations = (trpc as any).giftQuiz?.getRecommendations?.useQuery?.(answers, {
+  const recommendations = typedTrpc().giftQuiz?.getRecommendations?.useQuery?.(answers, {
     enabled: Object.keys(answers).length === QUESTIONS.length,
   }) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
 

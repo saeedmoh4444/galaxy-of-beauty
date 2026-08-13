@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const PAYMENT_METHODS = [
   { key: 'wallet', emoji: '', label: 'المحفظة' },
@@ -19,7 +20,7 @@ export default function CheckoutScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    ((trpc as any).wallet.getBalance.query() as any)
+    (typedTrpc().wallet.getBalance.query() as any)
       .then((d: any) => {
         setBalance(d);
         setLoading(false);

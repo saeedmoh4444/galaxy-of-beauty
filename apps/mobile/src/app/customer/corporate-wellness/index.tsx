@@ -12,6 +12,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function CorporateWellnessScreen(): JSX.Element {
   const {
@@ -21,8 +22,8 @@ export default function CorporateWellnessScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => (trpc as any).corporateWellness.plans.query());
-  const { data: enquiries } = useQuery(() => (trpc as any).corporateWellness.myEnquiries.query());
+  } = useQuery(() => typedTrpc().corporateWellness.plans.query());
+  const { data: enquiries } = useQuery(() => typedTrpc().corporateWellness.myEnquiries.query());
   const [planId, setPlanId] = useState('growth');
   const [companyName, setCompanyName] = useState('');
   const [contactName, setContactName] = useState('');
@@ -33,7 +34,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
   const handleEnquire = async () => {
     if (!companyName || !contactName || !email) return;
     try {
-      await (trpc as any).corporateWellness.enquire.mutate({
+      await typedTrpc().corporateWellness.enquire.mutate({
         companyName,
         contactName,
         email,

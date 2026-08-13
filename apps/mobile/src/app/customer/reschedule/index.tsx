@@ -13,6 +13,7 @@ import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { typedTrpc } from '@/lib/trpc-react';
 
 export default function RescheduleScreen(): JSX.Element {
   const {
@@ -22,7 +23,7 @@ export default function RescheduleScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => (trpc as any).bookings.list.query({ page: 1, limit: LARGE_PAGE_SIZE }));
+  } = useQuery(() => typedTrpc().bookings.list.query({ page: 1, limit: LARGE_PAGE_SIZE }));
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [newDate, setNewDate] = useState('');
   const [newTime, setNewTime] = useState('');
@@ -32,7 +33,7 @@ export default function RescheduleScreen(): JSX.Element {
   const handleReschedule = async () => {
     if (!selectedId || !newDate || !newTime) return;
     try {
-      await (trpc as any).reschedule.request.mutate({
+      await typedTrpc().reschedule.request.mutate({
         bookingId: selectedId,
         newStartAt: new Date(`${newDate}T${newTime}:00`).toISOString(),
         reason: reason || undefined,
