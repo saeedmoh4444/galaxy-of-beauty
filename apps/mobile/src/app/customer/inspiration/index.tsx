@@ -68,7 +68,7 @@ export default function InspirationScreen(): JSX.Element {
             )}
             <View style={styles.cb}>
               <Text style={styles.pt}>{p.title ?? ''}</Text>
-              <TouchableOpacity onPress={() => remove(p.id)}>
+              <TouchableOpacity onPress={() => p.id && remove(p.id)}>
                 <Text>️</Text>
               </TouchableOpacity>
             </View>
