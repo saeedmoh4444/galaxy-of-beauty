@@ -24,7 +24,7 @@ export const createBookingSchema = z.object({
   startAt: z.string().datetime(),
   endAt: z.string().datetime(),
   notes: z.string().max(500).optional(),
-  idempotencyKey: z.string().uuid(),
+  idempotencyKey: z.string().min(8).max(128),
 });
 
 export const bookingStatusSchema = z.object({

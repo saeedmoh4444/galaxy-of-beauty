@@ -263,8 +263,12 @@ describe('Booking Contract — createBookingSchema', () => {
     ).toBe(true);
   });
 
-  it('idempotencyKey must be UUID format', () => {
-    expect(accepts(createBookingSchema, { ...valid, idempotencyKey: 'not-a-uuid' })).toBe(false);
+  it('idempotencyKey must be min 8 chars opaque string', () => {
+    // Relaxed from UUID — clients generate opaque keys (mobile uses prefixed format)
+    expect(accepts(createBookingSchema, { ...valid, idempotencyKey: 'mob_12345678_abcd' })).toBe(
+      true,
+    );
+    expect(accepts(createBookingSchema, { ...valid, idempotencyKey: 'short' })).toBe(false);
   });
 });
 

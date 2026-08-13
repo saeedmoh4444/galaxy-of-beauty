@@ -63,7 +63,7 @@ export default function TechWalletPage(): JSX.Element {
               onClick={() =>
                 withdrawMut.mutate({
                   amount: Number(amount),
-                  idempotencyKey: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+                  idempotencyKey: crypto.randomUUID(),
                 })
               }
               loading={withdrawMut.isPending}
