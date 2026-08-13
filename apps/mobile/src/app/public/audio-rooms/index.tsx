@@ -5,6 +5,19 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface AudioRoom {
+  id?: number;
+  title?: string;
+  host?: string;
+  listeners?: number;
+  scheduledAt?: string;
+}
+
+interface AudioRoomsData {
+  live?: AudioRoom[];
+  upcoming?: AudioRoom[];
+}
+
 export default function AudioRoomsScreen(): JSX.Element {
   const { data, loading, error, refreshing, refetch, refresh } = useQuery(() =>
     typedTrpc().audioRooms.rooms.query(),
@@ -13,8 +26,9 @@ export default function AudioRoomsScreen(): JSX.Element {
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الغرف الصوتية" onRetry={refetch} />;
 
-  const live = ((data as any)?.live ?? []) as any[];
-  const upcoming = ((data as any)?.upcoming ?? []) as any[];
+  const rooms = data as AudioRoomsData | null;
+  const live = rooms?.live ?? [];
+  const upcoming = rooms?.upcoming ?? [];
 
   return (
     <ScrollView
@@ -29,11 +43,11 @@ export default function AudioRoomsScreen(): JSX.Element {
       {live.length > 0 && <Text style={styles.sectionTitle}> مباشر الآن</Text>}
       {live.map((r) => (
         <View key={r.id} style={[styles.card, styles.liveCard]}>
-          <Text style={styles.roomEmoji}>️</Text>
+          <Text style={styles.roomEmoji}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.roomTitle}>{r.title as string}</Text>
+            <Text style={styles.roomTitle}>{r.title ?? ''}</Text>
             <Text style={styles.roomMeta}>
-              {r.host as string} · {r.listeners as number} مستمعين
+              {r.host ?? ''} · {r.listeners ?? 0} مستمعين
             </Text>
           </View>
           <TouchableOpacity style={styles.joinBtn}>
@@ -44,15 +58,15 @@ export default function AudioRoomsScreen(): JSX.Element {
       {upcoming.length > 0 && <Text style={styles.sectionTitle}> قادم</Text>}
       {upcoming.map((r) => (
         <View key={r.id} style={styles.card}>
-          <Text style={styles.roomEmoji}>️</Text>
+          <Text style={styles.roomEmoji}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.roomTitle}>{r.title as string}</Text>
+            <Text style={styles.roomTitle}>{r.title ?? ''}</Text>
             <Text style={styles.roomMeta}>
-              {r.host as string} ·{' '}
-              {new Date(r.scheduledAt as string).toLocaleDateString('ar-SA', {
+              {r.host ?? ''} ·{' '}
+              {r.scheduledAt ? new Date(r.scheduledAt).toLocaleDateString('ar-SA', {
                 month: 'short',
                 day: 'numeric',
-              })}
+              }) : ''}
             </Text>
           </View>
           <View style={styles.remindBadge}>

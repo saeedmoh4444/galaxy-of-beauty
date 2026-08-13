@@ -4,18 +4,31 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface EstimatorService {
+  id: number;
+  emoji?: string;
+  nameAr?: string;
+  basePrice?: number;
+}
+
+interface PriceEstimate {
+  basePrice?: number;
+  discount?: number;
+  total?: number;
+}
+
 export default function PriceEstimatorScreen(): JSX.Element {
-  const [services, setServices] = useState<any[]>([]);
+  const [services, setServices] = useState<EstimatorService[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
   const [promo] = useState('');
-  const [estimate, setEstimate] = useState<any>(null);
+  const [estimate, setEstimate] = useState<PriceEstimate | null>(null);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().priceEstimator.services.query() as any)
-      .then((d: any) => {
+    (typedTrpc().priceEstimator.services.query() as Promise<EstimatorService[]>)
+      .then((d) => {
         setServices(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -34,9 +47,9 @@ export default function PriceEstimatorScreen(): JSX.Element {
       typedTrpc().priceEstimator.estimate.query({
         serviceId: selected,
         promoCode: promo || undefined,
-      }) as any
+      }) as Promise<PriceEstimate>
     )
-      .then((d: any) => setEstimate(d))
+      .then((d) => setEstimate(d))
       .catch(() => {});
   };
   if (loading) return <SkeletonList count={5} />;
@@ -62,9 +75,9 @@ export default function PriceEstimatorScreen(): JSX.Element {
           }}
           style={[styles.sr, selected === s.id && styles.sra]}
         >
-          <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
-          <Text style={styles.sn}>{s.nameAr as string}</Text>
-          <Text style={styles.sp}>{(s.basePrice as number)?.toLocaleString()} ر.س</Text>
+          <Text style={styles.se}>{s.emoji ?? ''}</Text>
+          <Text style={styles.sn}>{s.nameAr ?? ''}</Text>
+          <Text style={styles.sp}>{(s.basePrice ?? 0).toLocaleString()} ر.س</Text>
         </TouchableOpacity>
       ))}
       <TouchableOpacity
@@ -78,13 +91,13 @@ export default function PriceEstimatorScreen(): JSX.Element {
         <View style={styles.ec}>
           <View style={styles.er}>
             <Text style={styles.el}>السعر الأساسي</Text>
-            <Text style={styles.ev}>{(estimate.basePrice as number)?.toLocaleString()} ر.س</Text>
+            <Text style={styles.ev}>{(estimate.basePrice ?? 0).toLocaleString()} ر.س</Text>
           </View>
-          {estimate.discount > 0 && (
+          {(estimate.discount ?? 0) > 0 && (
             <View style={styles.er}>
               <Text style={styles.el}>الخصم</Text>
               <Text style={[styles.ev, { color: '#059669' }]}>
-                -{(estimate.discount as number)?.toLocaleString()} ر.س
+                -{(estimate.discount ?? 0).toLocaleString()} ر.س
               </Text>
             </View>
           )}
@@ -92,7 +105,7 @@ export default function PriceEstimatorScreen(): JSX.Element {
           <View style={styles.er}>
             <Text style={[styles.el, { fontWeight: '700' }]}>الإجمالي</Text>
             <Text style={[styles.ev, { fontWeight: '800', fontSize: 20 }]}>
-              {(estimate.total as number)?.toLocaleString()} ر.س
+              {(estimate.total ?? 0).toLocaleString()} ر.س
             </Text>
           </View>
         </View>
