@@ -4,16 +4,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface RoutineStep {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  time?: string;
+  frequency?: string;
+}
+
 export default function RoutineSchedulerScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<RoutineStep[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().routineScheduler.list.query() as any)
-      .then((d: any) => {
+    (typedTrpc().routineScheduler.list.query() as Promise<RoutineStep[]>)
+      .then((d) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -45,11 +53,11 @@ export default function RoutineSchedulerScreen(): JSX.Element {
       <Text style={styles.t}> جدول الروتين</Text>
       {data.map((r, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(r.emoji as string) ?? ''}</Text>
+          <Text style={styles.emoji}>{r.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{r.nameAr as string}</Text>
+            <Text style={styles.name}>{r.nameAr ?? ''}</Text>
             <Text style={styles.time}>
-              {r.time as string} · {r.frequency as string}
+              {r.time ?? ''} · {r.frequency ?? ''}
             </Text>
           </View>
         </View>
