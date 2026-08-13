@@ -4,16 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface LeaderboardEntry {
+  id?: number;
+  name?: string;
+  rating?: number;
+  bookings?: number;
+}
+
 export default function TechLeaderboardScreen(): JSX.Element {
-  const [board, setBoard] = useState<any[]>([]);
+  const [board, setBoard] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().techLeaderboard.rankings.query({ sortBy: 'rating' }) as any)
-      .then((d: any) => {
+    (typedTrpc().techLeaderboard.rankings.query({ sortBy: 'rating' }) as Promise<LeaderboardEntry[]>)
+      .then((d) => {
         setBoard(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -56,9 +63,9 @@ export default function TechLeaderboardScreen(): JSX.Element {
               {i === 0 ? '' : i === 1 ? '' : i === 2 ? '' : '‍'}
             </Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.techName}>{t.name as string}</Text>
+              <Text style={styles.techName}>{t.name ?? ''}</Text>
               <Text style={styles.techMeta}>
-                 {t.rating as number} ·  {t.bookings as number} حجز
+                 {t.rating ?? 0} ·  {t.bookings ?? 0} حجز
               </Text>
             </View>
             {i === 0 && <Text style={styles.crown}></Text>}
