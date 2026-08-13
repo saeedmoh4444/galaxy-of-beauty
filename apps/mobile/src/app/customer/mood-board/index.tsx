@@ -4,16 +4,21 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface MoodPin {
+  id?: number;
+  imageUrl?: string;
+}
+
 export default function MoodBoardScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<MoodPin[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().moodBoard.myBoard.query() as any)
-      .then((d: any) => {
+    (typedTrpc().moodBoard.myBoard.query() as Promise<MoodPin[]>)
+      .then((d) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -47,7 +52,7 @@ export default function MoodBoardScreen(): JSX.Element {
         {data.map((p, i) => (
           <View key={i} style={styles.pin}>
             {p.imageUrl ? (
-              <Image source={{ uri: p.imageUrl as string }} style={styles.img} />
+              {p.imageUrl ? <Image source={{ uri: p.imageUrl }} style={styles.img} /> : null}
             ) : (
               <View style={styles.placeholder}>
                 <Text style={{ fontSize: 28 }}>️</Text>
