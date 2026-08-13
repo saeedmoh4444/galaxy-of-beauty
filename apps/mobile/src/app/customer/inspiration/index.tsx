@@ -60,7 +60,7 @@ export default function InspirationScreen(): JSX.Element {
         {pins.map((p) => (
           <View key={p.id} style={styles.card}>
             {p.imageUrl ? (
-              {p.imageUrl ? <Image source={{ uri: p.imageUrl }} style={styles.img} /> : null}
+              <Image source={{ uri: p.imageUrl }} style={styles.img} />
             ) : (
               <View style={styles.ph}>
                 <Text style={{ fontSize: 36 }}>️</Text>
