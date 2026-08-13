@@ -79,7 +79,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> حجز متكرر</Text>
-      {services.slice(0, 10).map((s: any) => (
+      {services.slice(0, 10).map((s) => (
         <TouchableOpacity
           key={s.id}
           onPress={() => setSelectedSvc(s.id)}

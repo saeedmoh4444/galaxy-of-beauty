@@ -3,6 +3,11 @@ import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc, typedTrpc } from '@/lib/trpc-react';
 
+interface IngredientAlternative {
+  name?: string;
+  description?: string;
+}
+
 const COLORS = {
   brand: '#7c3aed',
   white: '#ffffff',
@@ -39,7 +44,7 @@ export default function IngredientSubScreen(): JSX.Element {
           <Text style={styles.searchText}>بحث</Text>
         </TouchableOpacity>
       </View>
-      {((result.data as unknown[]) || []).map((alt: any, i: number) => (
+      {((result.data as IngredientAlternative[] | undefined) || []).map((alt, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.altName}>{alt.name ?? ''}</Text>
           <Text style={styles.altDesc}>{alt.description ?? ''}</Text>

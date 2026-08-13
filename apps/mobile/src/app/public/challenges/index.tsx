@@ -41,7 +41,7 @@ export default function ChallengesScreen(): JSX.Element {
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد تحديات</Text>
       ) : (
-        items.map((ch: any) => {
+        items.map((ch) => {
           const colors = GRADIENTS[ch.id as string] ?? ['#6b7280', '#9ca3af'];
           return (
             <TouchableOpacity

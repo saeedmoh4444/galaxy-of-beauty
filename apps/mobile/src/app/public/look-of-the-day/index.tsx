@@ -39,7 +39,7 @@ export default function LookOfTheDayScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> إطلالة اليوم</Text>
-      {looks.map((l: any, i: number) => (
+      {looks.map((l, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.le}>{(l.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>

@@ -62,7 +62,7 @@ export default function PredictiveDemandScreen(): JSX.Element {
           ثقة {nm.confidence as number}% · نمو +{nm.growth as number}%
         </Text>
       </View>
-      {bySvc.map((s: any, i: number) => (
+      {bySvc.map((s, i) => (
         <View key={i} style={styles.row}>
           <Text style={styles.svcName}>{s.name as string}</Text>
           <Text style={styles.svcDemand}>{s.currentDemand as number}%</Text>

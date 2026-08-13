@@ -52,7 +52,7 @@ export default function RecommendationsScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> توصيات ذكية</Text>
-      {services.slice(0, 10).map((s: any) => (
+      {services.slice(0, 10).map((s) => (
         <TouchableOpacity
           key={s.id}
           onPress={() => getRelated(s.id)}
@@ -66,7 +66,7 @@ export default function RecommendationsScreen(): JSX.Element {
       ))}
       {relatedLoading && <SkeletonList count={3} />}
       {related.length > 0 && !relatedLoading && <Text style={styles.st}> غالباً تُحجز مع:</Text>}
-      {related.map((r: any) => (
+      {related.map((r) => (
         <View key={r.id} style={styles.card}>
           <Text style={styles.re}></Text>
           <View style={{ flex: 1 }}>

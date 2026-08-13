@@ -33,7 +33,7 @@ export default function BeautyShortsScreen(): JSX.Element {
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد فيديوهات</Text>
       ) : (
-        items.map((s: any, i: number) => (
+        items.map((s, i) => (
           <TouchableOpacity key={s.id ?? i} style={styles.card}>
             <Text style={styles.shortEmoji}>{(s.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>

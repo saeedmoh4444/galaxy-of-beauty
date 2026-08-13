@@ -48,7 +48,7 @@ export default function AdminReportsScreen(): JSX.Element {
     >
       <Text style={styles.t}> التقارير</Text>
       {topTechs.length > 0 && <Text style={styles.st}>‍ أفضل الفنيات</Text>}
-      {topTechs.map((t: any, i: number) => (
+      {topTechs.map((t, i) => (
         <View key={i} style={styles.row}>
           <Text style={styles.r}>#{i + 1}</Text>
           <Text style={styles.n}>{t.name as string}</Text>
@@ -56,7 +56,7 @@ export default function AdminReportsScreen(): JSX.Element {
         </View>
       ))}
       {byService.length > 0 && <Text style={styles.st}> حسب الخدمة</Text>}
-      {byService.map((s: any, i: number) => (
+      {byService.map((s, i) => (
         <View key={i} style={styles.row}>
           <Text style={styles.r}>#{i + 1}</Text>
           <Text style={styles.n}>{s.name as string}</Text>

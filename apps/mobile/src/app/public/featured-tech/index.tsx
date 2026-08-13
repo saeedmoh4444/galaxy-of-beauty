@@ -61,7 +61,7 @@ export default function FeaturedTechScreen(): JSX.Element {
       {past.length === 0 ? (
         <Text style={styles.e}>لا توجد فنيات سابقات</Text>
       ) : (
-        past.map((p: any, i: number) => (
+        past.map((p, i) => (
           <View key={i} style={styles.card}>
             <Text style={styles.avatar}>‍</Text>
             <View style={{ flex: 1 }}>

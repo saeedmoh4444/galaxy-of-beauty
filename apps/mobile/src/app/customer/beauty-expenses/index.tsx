@@ -16,7 +16,7 @@ export default function BeautyExpensesScreen(): JSX.Element {
   const d = data as any;
   const byCategory = (d?.byCategory ?? []) as any[];
   const monthlyTrend = (d?.monthlyTrend ?? []) as any[];
-  const maxVal = Math.max(...monthlyTrend.map((m: any) => m.total ?? 0), 1);
+  const maxVal = Math.max(...monthlyTrend.map((m) => m.total ?? 0), 1);
 
   return (
     <ScrollView
@@ -60,7 +60,7 @@ export default function BeautyExpensesScreen(): JSX.Element {
       {byCategory.length > 0 && (
         <View style={{ marginTop: 16 }}>
           <Text style={s.st}> توزيع الإنفاق</Text>
-          {byCategory.map((c: any) => {
+          {byCategory.map((c) => {
             const pct = Math.round((c.total / (d?.thisMonthTotal || 1)) * 100);
             return (
               <View key={c.categoryId} style={{ marginBottom: 10 }}>
@@ -91,7 +91,7 @@ export default function BeautyExpensesScreen(): JSX.Element {
       {monthlyTrend.length > 0 && (
         <View style={{ marginTop: 16 }}>
           <Text style={s.st}> الاتجاه الشهري</Text>
-          {monthlyTrend.map((m: any) => {
+          {monthlyTrend.map((m) => {
             const pct = Math.round((m.total / maxVal) * 100);
             return (
               <View key={m.month} style={{ marginBottom: 8 }}>

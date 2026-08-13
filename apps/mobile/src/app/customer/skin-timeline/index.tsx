@@ -64,7 +64,7 @@ export default function SkinTimelineScreen(): JSX.Element {
         </View>
       ) : (
         <View style={styles.timeline}>
-          {entries.slice(0, 8).map((e: any, i: number) => (
+          {entries.slice(0, 8).map((e, i) => (
             <View key={i} style={styles.entry}>
               <View style={styles.entryLine} />
               <View style={[styles.entryDot, i === 0 && styles.entryDotLatest]} />

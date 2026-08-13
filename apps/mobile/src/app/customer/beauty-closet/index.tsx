@@ -39,7 +39,7 @@ export default function BeautyClosetScreen(): JSX.Element {
     );
 
   const filtered = filter
-    ? products.filter((p: any) => (p.category as string) === filter)
+    ? products.filter((p) => (p.category as string) === filter)
     : products;
 
   return (
@@ -81,7 +81,7 @@ export default function BeautyClosetScreen(): JSX.Element {
         <Text style={styles.e}> أضيفي منتجاتكِ الأولى!</Text>
       ) : (
         <View style={styles.grid}>
-          {filtered.map((p: any, i: number) => (
+          {filtered.map((p, i) => (
             <View key={i} style={styles.card}>
               <Text style={styles.pe}>{(p.emoji as string) ?? ''}</Text>
               <Text style={styles.pn}>{p.productName as string}</Text>

@@ -39,7 +39,7 @@ export default function SkinDiaryScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> يوميات البشرة</Text>
-      {data.map((e: any, i: number) => (
+      {data.map((e, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{(e.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>

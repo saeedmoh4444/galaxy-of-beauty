@@ -72,7 +72,7 @@ export default function BnplScreen(): JSX.Element {
     >
       <Text style={styles.t}> تقسيط المدفوعات</Text>
       <View style={styles.pr}>
-        {providers.map((p: any) => (
+        {providers.map((p) => (
           <TouchableOpacity
             key={p.key}
             onPress={() => setProvider(p.key)}

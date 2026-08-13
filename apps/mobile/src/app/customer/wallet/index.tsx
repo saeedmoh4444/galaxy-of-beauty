@@ -13,6 +13,14 @@ const COLORS = {
   danger: '#dc2626',
 };
 
+interface TransactionItem {
+  description?: string;
+  source?: string;
+  createdAt?: string;
+  amount?: number;
+  type?: string;
+}
+
 export default function WalletScreen(): JSX.Element {
   const router = useRouter();
   const balance = trpc.wallet.getBalance.useQuery();
@@ -45,11 +53,13 @@ export default function WalletScreen(): JSX.Element {
         </TouchableOpacity>
       </View>
       <Text style={styles.sectionTitle}>آخر المعاملات</Text>
-      {(txns.data as any)?.items?.map((t: any, i: number) => (
+      {((txns.data as { items?: TransactionItem[] } | undefined)?.items ?? []).map((t, i) => (
         <View key={i} style={styles.txnRow}>
           <View>
             <Text style={styles.txnDesc}>{t.description ?? t.source}</Text>
-            <Text style={styles.txnDate}>{new Date(t.createdAt).toLocaleDateString('ar-SA')}</Text>
+            <Text style={styles.txnDate}>
+              {t.createdAt ? new Date(t.createdAt).toLocaleDateString('ar-SA') : ''}
+            </Text>
           </View>
           <Text
             style={[

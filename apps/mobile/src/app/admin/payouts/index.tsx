@@ -54,7 +54,7 @@ export default function AdminPayoutsScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> المدفوعات للفنيات</Text>
-      {data.map((p: any, i: number) => {
+      {data.map((p, i) => {
         const s = STATUS_MAP[p.status as string] ?? {
           label: p.status,
           color: '#6b7280',

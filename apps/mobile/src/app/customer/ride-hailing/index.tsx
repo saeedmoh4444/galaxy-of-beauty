@@ -65,7 +65,7 @@ export default function RideHailingScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> توصيل للموعد</Text>
-      {providers.map((p: any) => (
+      {providers.map((p) => (
         <View key={p.key} style={styles.card}>
           <Text style={styles.pe}>{p.emoji as string}</Text>
           <View style={{ flex: 1 }}>

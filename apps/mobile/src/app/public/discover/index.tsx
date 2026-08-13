@@ -41,7 +41,7 @@ export default function DiscoverScreen(): JSX.Element {
             style={{ marginBottom: 20 }}
           >
             <View style={{ flexDirection: 'row', gap: 10 }}>
-              {catItems.map((cat: any) => (
+              {catItems.map((cat) => (
                 <TouchableOpacity key={cat.id ?? cat.key} style={styles.catChip}>
                   <Text style={styles.catEmoji}>{(cat.emoji as string) ?? ''}</Text>
                   <Text style={styles.catName}>{cat.nameAr as string}</Text>
@@ -55,7 +55,7 @@ export default function DiscoverScreen(): JSX.Element {
       {trendingItems.length === 0 ? (
         <Text style={styles.e}>لا توجد نتائج</Text>
       ) : (
-        trendingItems.map((t: any) => (
+        trendingItems.map((t) => (
           <View key={t.id} style={styles.card}>
             <Text style={styles.cardEmoji}>{(t.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>

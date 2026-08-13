@@ -78,7 +78,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
         </View>
       )}
 
-      {items.map((p: any) => (
+      {items.map((p) => (
         <TouchableOpacity
           key={p.id}
           onPress={() => setPlanId(p.id)}
@@ -142,7 +142,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
           <Text style={{ fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 }}>
              طلباتي السابقة
           </Text>
-          {(enquiries as any[]).map((e: any, i: number) => (
+          {(enquiries as any[]).map((e, i) => (
             <View
               key={i}
               style={{ backgroundColor: '#fff', borderRadius: 10, padding: 12, marginBottom: 6 }}

@@ -42,7 +42,7 @@ export default function ExpiryTrackerScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>️ متعقب الصلاحية</Text>
-      {items.map((i: any) => (
+      {items.map((i) => (
         <View key={i.id} style={[styles.card, i.expired && styles.exp, i.isClose && styles.close]}>
           <Text style={styles.em}>{i.emoji as string}</Text>
           <View style={{ flex: 1 }}>

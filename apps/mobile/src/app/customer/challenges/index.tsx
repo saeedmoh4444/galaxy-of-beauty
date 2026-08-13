@@ -55,7 +55,7 @@ export default function ChallengesScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> تحديات الجمال</Text>
-      {challenges.map((ch: any) => {
+      {challenges.map((ch) => {
         const s = CH[ch.id as string] ?? { emoji: '', color: '#6b7280' };
         const pct = Math.min(
           100,

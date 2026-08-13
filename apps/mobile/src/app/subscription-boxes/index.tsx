@@ -39,7 +39,7 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> الصناديق الشهرية</Text>
-      {boxes.map((b: any) => (
+      {boxes.map((b) => (
         <View key={b.id} style={styles.card}>
           <Text style={styles.be}>{(b.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>

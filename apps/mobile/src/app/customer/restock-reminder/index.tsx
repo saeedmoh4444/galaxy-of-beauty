@@ -43,7 +43,7 @@ export default function RestockReminderScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> تذكير بإعادة الطلب</Text>
-      {data.map((r: any, i: number) => (
+      {data.map((r, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{(r.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>

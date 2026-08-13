@@ -47,7 +47,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
       {plans.length === 0 ? (
         <Text style={styles.e}>لا توجد باقات</Text>
       ) : (
-        plans.map((p: any, i: number) => (
+        plans.map((p, i) => (
           <View key={i} style={styles.card}>
             <Text style={styles.planEmoji}>{(p.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>

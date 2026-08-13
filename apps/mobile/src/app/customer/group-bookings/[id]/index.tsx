@@ -76,7 +76,7 @@ export default function GroupBookingDetailScreen(): JSX.Element {
         <Text style={styles.ta}>{(data.totalAmount as number)?.toLocaleString()} ر.س</Text>
         <Text style={styles.td}>خصم: {data.discountPercent as number}%</Text>
       </View>
-      {(data.members as any[])?.map((m: any) => (
+      {(data.members as any[])?.map((m) => (
         <View key={m.id} style={styles.mr}>
           <Text style={styles.mn}>{m.name as string}</Text>
           <View style={[styles.mb, { backgroundColor: SM[m.status as string]?.bg ?? '#f3f4f6' }]}>

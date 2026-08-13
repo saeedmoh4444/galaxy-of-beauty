@@ -33,7 +33,7 @@ export default function BeautyPackagesScreen(): JSX.Element {
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد باقات</Text>
       ) : (
-        items.map((p: any) => (
+        items.map((p) => (
           <View key={p.id} style={styles.card}>
             <Text style={styles.pkgEmoji}>{(p.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>

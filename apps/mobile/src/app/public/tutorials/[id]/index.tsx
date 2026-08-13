@@ -64,7 +64,7 @@ export default function TutorialDetailScreen(): JSX.Element {
       {data.steps && (
         <View style={styles.sec}>
           <Text style={styles.st}> الخطوات</Text>
-          {(data.steps as any[]).map((s: any, i: number) => (
+          {(data.steps as any[]).map((s, i) => (
             <View key={i} style={styles.step}>
               <View style={styles.sn}>
                 <Text style={styles.snt}>{i + 1}</Text>

@@ -81,7 +81,7 @@ export default function MarketplaceScreen(): JSX.Element {
       )}
 
       <View style={s.grid}>
-        {products.map((p: any) => (
+        {products.map((p) => (
           <TouchableOpacity key={p.id} style={s.prod} onPress={() => handleAddToCart(p.id)}>
             <Text style={{ fontSize: 36, textAlign: 'center' }}></Text>
             <Text

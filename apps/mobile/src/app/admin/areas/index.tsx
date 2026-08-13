@@ -47,7 +47,7 @@ export default function AdminAreasScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> المناطق</Text>
-      {data.map((a: any, i: number) => (
+      {data.map((a, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{a.nameAr as string}</Text>

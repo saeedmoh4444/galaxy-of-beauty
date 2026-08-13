@@ -76,7 +76,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
       >
         <Text style={styles.t}> حجز طارئ</Text>
         <Text style={styles.sub}>حجز فوري خلال ٣ ساعات — رسوم إضافية ٥٠ ر.س</Text>
-        {services.slice(0, 10).map((s: any) => (
+        {services.slice(0, 10).map((s) => (
           <TouchableOpacity key={s.id} onPress={() => check(s.id)} style={styles.sc}>
             <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
             <Text style={styles.sn}>
@@ -97,7 +97,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
           {(availability.totalEstimate as number)?.toLocaleString()} ر.س
         </Text>
       </View>
-      {(availability.available as any[])?.map((t: any) => (
+      {(availability.available as any[])?.map((t) => (
         <View key={t.technicianId} style={styles.card}>
           <Text style={styles.te}>‍</Text>
           <View style={{ flex: 1 }}>

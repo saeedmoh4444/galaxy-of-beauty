@@ -58,7 +58,7 @@ export default function LiveStreamDetailScreen(): JSX.Element {
           </Text>
         </View>
         <Text style={styles.chatTitle}> المحادثة المباشرة</Text>
-        {messages.map((m: any, i: number) => (
+        {messages.map((m, i) => (
           <View key={m.id ?? i} style={styles.msg}>
             <Text style={styles.msgUser}>{m.user as string}: </Text>
             <Text style={styles.msgText}>{m.text as string}</Text>

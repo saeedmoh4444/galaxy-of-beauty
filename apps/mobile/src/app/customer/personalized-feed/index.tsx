@@ -40,7 +40,7 @@ export default function PersonalizedFeedScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> خلاصتي</Text>
-      {items.map((item: any) => (
+      {items.map((item) => (
         <View key={item.id} style={styles.card}>
           <Text style={styles.em}>{item.emoji as string}</Text>
           <View style={{ flex: 1 }}>

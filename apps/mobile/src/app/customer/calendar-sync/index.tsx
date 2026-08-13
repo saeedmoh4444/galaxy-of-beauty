@@ -67,7 +67,7 @@ export default function CalendarSyncScreen(): JSX.Element {
       </View>
       {upcoming.length > 0 && (
         <View style={styles.card}>
-          {upcoming.map((e: any) => (
+          {upcoming.map((e) => (
             <View key={e.id} style={styles.ev}>
               <Text style={styles.ee}>{e.emoji as string}</Text>
               <View style={{ flex: 1 }}>

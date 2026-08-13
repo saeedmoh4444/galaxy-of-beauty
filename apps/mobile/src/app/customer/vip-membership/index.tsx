@@ -40,7 +40,7 @@ export default function VIPMembershipScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> العضوية المميزة</Text>
-      {tiers.map((t: any, i: number) => (
+      {tiers.map((t, i) => (
         <View key={i} style={[styles.card, { borderColor: (t.color as string) ?? '#e5e7eb' }]}>
           <Text style={styles.emoji}>{t.emoji as string}</Text>
           <Text style={styles.name}>{t.nameAr as string}</Text>

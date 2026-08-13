@@ -43,7 +43,7 @@ export default function AdminZatcaScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> الفوترة (ZATCA)</Text>
-      {data.map((inv: any, i: number) => (
+      {data.map((inv, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.invNum}>{inv.invoiceNumber as string}</Text>
           <View style={{ flex: 1 }}>

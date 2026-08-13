@@ -76,7 +76,7 @@ export default function NewsletterScreen(): JSX.Element {
           <Text style={styles.st}>تم الاشتراك!</Text>
         </View>
       )}
-      {issues.map((i: any, idx: number) => (
+      {issues.map((i, idx) => (
         <View key={idx} style={styles.issue}>
           <Text style={styles.it}>{i.title as string}</Text>
           <Text style={styles.id}>{new Date(i.date as string).toLocaleDateString('ar-SA')}</Text>

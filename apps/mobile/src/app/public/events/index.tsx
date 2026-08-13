@@ -34,7 +34,7 @@ export default function EventsScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   if (loading) return <SkeletonList count={4} />;
-  const filtered = filter ? events.filter((e: any) => e.eventType === filter) : events;
+  const filtered = filter ? events.filter((e) => e.eventType === filter) : events;
   return (
     <ScrollView
       style={styles.c}
@@ -69,7 +69,7 @@ export default function EventsScreen(): JSX.Element {
           ))}
         </View>
       </ScrollView>
-      {filtered.map((e: any) => {
+      {filtered.map((e) => {
         const et = ET[e.eventType as string] ?? { label: e.eventType, emoji: '' };
         return (
           <View key={e.id} style={styles.card}>

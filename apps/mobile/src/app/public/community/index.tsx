@@ -79,7 +79,7 @@ export default function CommunityScreen(): JSX.Element {
         {items.length === 0 ? (
           <Text style={styles.e}>لا توجد منشورات بعد. كوني الأولى! </Text>
         ) : (
-          items.map((p: any) => (
+          items.map((p) => (
             <View key={p.id} style={styles.card}>
               <View style={styles.cardHeader}>
                 <Text style={styles.avatar}>‍</Text>

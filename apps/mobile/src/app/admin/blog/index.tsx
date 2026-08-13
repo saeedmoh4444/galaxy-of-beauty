@@ -44,7 +44,7 @@ export default function AdminBlogScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> المدونة</Text>
-      {data.map((p: any, i: number) => (
+      {data.map((p, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
             <Text style={styles.title}>{(p.titleJson as any)?.ar as string}</Text>

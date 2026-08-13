@@ -38,7 +38,7 @@ export default function CommunityScreen(): JSX.Element {
   const [commentText, setCommentText] = useState('');
 
   const myLikesArr = (myLikes ?? []) as any[];
-  const likedIds = new Set(myLikesArr.map((l: any) => l.postId));
+  const likedIds = new Set(myLikesArr.map((l) => l.postId));
   const feedItems = (feedData as any)?.items;
   const posts: any[] = Array.isArray(feedItems) ? feedItems : [];
 
@@ -122,7 +122,7 @@ export default function CommunityScreen(): JSX.Element {
              الأكثر تفاعلاً
           </Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {(trending as any[]).map((p: any, i: number) => (
+            {(trending as any[]).map((p, i) => (
               <View
                 key={p.id ?? i}
                 style={{
@@ -152,7 +152,7 @@ export default function CommunityScreen(): JSX.Element {
         </View>
       )}
 
-      {posts.map((p: any) => (
+      {posts.map((p) => (
         <View key={p.id} style={s.card}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 8 }}>
             <Text style={{ fontSize: 30 }}>‍</Text>

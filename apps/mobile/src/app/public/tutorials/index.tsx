@@ -39,7 +39,7 @@ export default function TutorialsScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> دروس الجمال</Text>
-      {tutorials.map((t: any) => (
+      {tutorials.map((t) => (
         <View key={t.id} style={styles.card}>
           <Text style={styles.te}>{(t.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>

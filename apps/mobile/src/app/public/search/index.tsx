@@ -41,7 +41,7 @@ export default function SearchScreen(): JSX.Element {
           {((results.services as any[]) ?? []).length > 0 && (
             <Text style={styles.st}>‍️ خدمات</Text>
           )}
-          {(results.services as any[])?.map((s: any) => (
+          {(results.services as any[])?.map((s) => (
             <View key={s.id} style={styles.card}>
               <Text style={styles.ce}>{(s.emoji as string) ?? '‍️'}</Text>
               <View style={{ flex: 1 }}>

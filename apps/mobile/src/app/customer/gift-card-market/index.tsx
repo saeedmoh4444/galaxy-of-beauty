@@ -43,7 +43,7 @@ export default function GiftCardMarketScreen(): JSX.Element {
     >
       <Text style={styles.t}> سوق البطاقات</Text>
       <View style={styles.grid}>
-        {listings.map((l: any) => (
+        {listings.map((l) => (
           <View key={l.id} style={styles.card}>
             <Text style={styles.ce}></Text>
             <Text style={styles.cv}>{(l.value as number)?.toLocaleString()} ر.س</Text>

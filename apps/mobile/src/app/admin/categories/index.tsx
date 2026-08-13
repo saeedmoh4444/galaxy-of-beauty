@@ -43,7 +43,7 @@ export default function AdminCategoriesScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> الفئات</Text>
-      {data.map((cat: any, i: number) => (
+      {data.map((cat, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{(cat.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>

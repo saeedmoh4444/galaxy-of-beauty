@@ -39,7 +39,7 @@ export default function BeautyFaqScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> الأسئلة الشائعة</Text>
-      {faqs.map((f: any, i: number) => (
+      {faqs.map((f, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.fq}>{f.questionAr as string}</Text>
           <Text style={styles.fa}>{f.answerAr as string}</Text>

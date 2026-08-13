@@ -64,7 +64,7 @@ export default function LastMileScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> توصيل سريع</Text>
-      {products.map((p: any) => (
+      {products.map((p) => (
         <View key={p.id} style={styles.card}>
           <Text style={styles.pe}>{p.emoji as string}</Text>
           <View style={{ flex: 1 }}>

@@ -47,7 +47,7 @@ export default function RescheduleScreen(): JSX.Element {
   if (error) return <ErrorAlert message="فشل تحميل الحجوزات" onRetry={refetch} />;
 
   const bookings = ((bookingsData as any)?.bookings ?? []) as any[];
-  const active = bookings.filter((b: any) => b.status === 'REQUESTED' || b.status === 'ACCEPTED');
+  const active = bookings.filter((b) => b.status === 'REQUESTED' || b.status === 'ACCEPTED');
 
   return (
     <ScrollView
@@ -84,7 +84,7 @@ export default function RescheduleScreen(): JSX.Element {
         </View>
       )}
 
-      {active.map((b: any) => {
+      {active.map((b) => {
         const isSel = selectedId === b.id;
         const svc = b.service as any;
         return (

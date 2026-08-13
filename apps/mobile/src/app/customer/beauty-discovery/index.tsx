@@ -48,7 +48,7 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
       {(f?.popularServices as any[])?.length > 0 && (
         <View style={{ marginBottom: 16 }}>
           <Text style={s.st}> الأكثر طلباً</Text>
-          {(f.popularServices as any[]).slice(0, 6).map((svc: any, i: number) => (
+          {(f.popularServices as any[]).slice(0, 6).map((svc, i) => (
             <View key={svc.id ?? i} style={s.row}>
               <Text style={{ fontSize: 14 }}>
                 {svc.emoji} {svc.name}
@@ -62,7 +62,7 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
       {(f?.flashDeals as any[])?.length > 0 && (
         <View style={{ marginBottom: 16 }}>
           <Text style={s.st}> عروض فلاش</Text>
-          {(f.flashDeals as any[]).slice(0, 4).map((d: any, i: number) => (
+          {(f.flashDeals as any[]).slice(0, 4).map((d, i) => (
             <View key={d.id ?? i} style={s.row}>
               <View style={{ flex: 1 }}>
                 <Text style={{ fontWeight: '600', fontSize: 14 }}>{d.title}</Text>
@@ -81,7 +81,7 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
       {(fy?.suggestions as any[])?.length > 0 && (
         <View style={{ marginBottom: 16 }}>
           <Text style={s.st}> لكِ خصيصاً</Text>
-          {(fy.suggestions as any[]).map((s: any, i: number) => (
+          {(fy.suggestions as any[]).map((s, i) => (
             <View key={s.id ?? i} style={s.row}>
               <Text style={{ fontSize: 14 }}>
                 {s.emoji} {s.name}
@@ -95,7 +95,7 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
       {(f?.events as any[])?.length > 0 && (
         <View style={{ marginBottom: 16 }}>
           <Text style={s.st}> فعاليات قادمة</Text>
-          {(f.events as any[]).map((e: any, i: number) => (
+          {(f.events as any[]).map((e, i) => (
             <View key={e.id ?? i} style={s.row}>
               <View style={{ flex: 1 }}>
                 <Text style={{ fontWeight: '600', fontSize: 14 }}>{e.name}</Text>

@@ -47,7 +47,7 @@ export default function TechnicianQAScreen(): JSX.Element {
       {questions.length === 0 ? (
         <Text style={styles.e}>لا توجد أسئلة</Text>
       ) : (
-        questions.map((q: any) => (
+        questions.map((q) => (
           <View key={q.id} style={styles.card}>
             <Text style={styles.qEmoji}>{(q.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>

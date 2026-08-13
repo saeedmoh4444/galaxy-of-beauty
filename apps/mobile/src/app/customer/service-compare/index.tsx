@@ -30,7 +30,7 @@ export default function ServiceCompareScreen(): JSX.Element {
     if (selected.includes(id)) setSelected(selected.filter((x) => x !== id));
     else if (selected.length < 3) setSelected([...selected, id]);
   };
-  const compareItems = services.filter((s: any) => selected.includes(s.id));
+  const compareItems = services.filter((s) => selected.includes(s.id));
   if (loading) return <SkeletonList count={5} />;
   return (
     <ScrollView
@@ -46,7 +46,7 @@ export default function ServiceCompareScreen(): JSX.Element {
     >
       <Text style={styles.t}>️ مقارنة الخدمات</Text>
       <View style={styles.grid}>
-        {services.slice(0, 12).map((s: any) => {
+        {services.slice(0, 12).map((s) => {
           const isSel = selected.includes(s.id);
           return (
             <TouchableOpacity
@@ -66,7 +66,7 @@ export default function ServiceCompareScreen(): JSX.Element {
       {compareItems.length >= 2 && (
         <View style={styles.tbl}>
           <Text style={styles.ttl}> المقارنة</Text>
-          {compareItems.map((s: any) => (
+          {compareItems.map((s) => (
             <View key={s.id} style={styles.cc}>
               <Text style={styles.ct}>{(s.titleJson as any)?.ar as string}</Text>
               <View style={styles.cr}>

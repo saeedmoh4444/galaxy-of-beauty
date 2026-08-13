@@ -43,7 +43,7 @@ export default function AdminPackagesScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> الباقات</Text>
-      {data.map((p: any, i: number) => (
+      {data.map((p, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}></Text>
           <View style={{ flex: 1 }}>

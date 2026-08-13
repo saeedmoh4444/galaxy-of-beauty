@@ -60,7 +60,7 @@ export default function AchievementsScreen(): JSX.Element {
       </View>
 
       <View style={s.grid}>
-        {achievements.map((a: any) => (
+        {achievements.map((a) => (
           <View
             key={a.key}
             style={[

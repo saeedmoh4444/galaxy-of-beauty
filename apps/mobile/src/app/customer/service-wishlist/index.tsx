@@ -42,7 +42,7 @@ export default function ServiceWishlistScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> قائمة الخدمات</Text>
-      {items.map((i: any) => (
+      {items.map((i) => (
         <View key={i.id} style={styles.card}>
           <Text style={styles.em}>{i.emoji as string}</Text>
           <View style={{ flex: 1 }}>

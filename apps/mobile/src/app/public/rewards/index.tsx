@@ -56,7 +56,7 @@ export default function RewardsScreen(): JSX.Element {
           </View>
         ))}
       </View>
-      {rewards.map((r: any) => (
+      {rewards.map((r) => (
         <View key={r.id} style={styles.card}>
           <Text style={styles.re}>{(r.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>

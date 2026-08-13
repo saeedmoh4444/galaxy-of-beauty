@@ -43,7 +43,7 @@ export default function AdminServicesScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>‍️ الخدمات</Text>
-      {data.map((s: any, i: number) => (
+      {data.map((s, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{(s.emoji as string) ?? '‍️'}</Text>
           <View style={{ flex: 1 }}>

@@ -44,7 +44,7 @@ export default function AdminBookingsScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> الحجوزات</Text>
-      {data.map((b: any, i: number) => (
+      {data.map((b, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
             <Text style={styles.code}>{b.bookingCode as string}</Text>

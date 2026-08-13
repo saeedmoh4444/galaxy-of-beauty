@@ -35,7 +35,7 @@ export default function TrendingScreen(): JSX.Element {
       {trendingItems.length > 0 && (
         <>
           <Text style={styles.sectionTitle}>‍️ الخدمات الرائجة</Text>
-          {trendingItems.map((s: any, i: number) => (
+          {trendingItems.map((s, i) => (
             <View key={s.id ?? i} style={styles.card}>
               <View style={styles.rank}>
                 <Text style={styles.rankText}>#{i + 1}</Text>
@@ -54,7 +54,7 @@ export default function TrendingScreen(): JSX.Element {
       {spotlightItems.length > 0 && (
         <>
           <Text style={styles.sectionTitle}> فنيات مميزات</Text>
-          {spotlightItems.map((t: any, i: number) => (
+          {spotlightItems.map((t, i) => (
             <View key={t.id ?? i} style={styles.card}>
               <Text style={styles.techEmoji}>
                 {i === 0 ? '' : i === 1 ? '' : i === 2 ? '' : '‍'}

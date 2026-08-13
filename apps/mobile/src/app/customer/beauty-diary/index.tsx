@@ -89,7 +89,7 @@ export default function BeautyDiaryScreen(): JSX.Element {
       </View>
 
       <Text style={styles.st}> آخر المدخلات</Text>
-      {entries.slice(0, 5).map((e: any, i: number) => (
+      {entries.slice(0, 5).map((e, i) => (
         <View key={i} style={styles.entry}>
           <View style={styles.entryHeader}>
             <Text style={styles.entryMood}></Text>

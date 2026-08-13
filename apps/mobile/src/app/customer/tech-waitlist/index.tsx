@@ -51,7 +51,7 @@ export default function TechWaitlistScreen(): JSX.Element {
     >
       <Text style={styles.t}> قائمة الانتظار</Text>
       {myList.length > 0 && <Text style={styles.st}> قوائمي</Text>}
-      {myList.map((t: any) => (
+      {myList.map((t) => (
         <View key={t.id} style={styles.card}>
           <Text style={styles.te}>‍</Text>
           <View style={{ flex: 1 }}>
@@ -64,7 +64,7 @@ export default function TechWaitlistScreen(): JSX.Element {
         </View>
       ))}
       <Text style={styles.st}> الفنيات الأكثر طلباً</Text>
-      {popular.map((t: any) => (
+      {popular.map((t) => (
         <View key={t.id} style={styles.card}>
           <Text style={styles.te}>‍</Text>
           <View style={{ flex: 1 }}>

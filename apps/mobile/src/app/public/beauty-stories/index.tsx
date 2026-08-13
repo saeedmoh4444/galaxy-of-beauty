@@ -33,7 +33,7 @@ export default function BeautyStoriesScreen(): JSX.Element {
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد قصص</Text>
       ) : (
-        items.map((s: any, i: number) => (
+        items.map((s, i) => (
           <View key={s.id ?? i} style={styles.card}>
             <Text style={styles.storyEmoji}>{(s.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>

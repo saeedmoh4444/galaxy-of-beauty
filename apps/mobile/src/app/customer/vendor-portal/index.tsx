@@ -61,7 +61,7 @@ export default function VendorPortalScreen(): JSX.Element {
           <Text style={styles.kl}>ر.س</Text>
         </View>
       </View>
-      {products.map((p: any) => (
+      {products.map((p) => (
         <View key={p.id} style={styles.card}>
           <Text style={styles.em}></Text>
           <View style={{ flex: 1 }}>

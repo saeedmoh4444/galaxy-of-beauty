@@ -43,7 +43,7 @@ export default function AdminCampaignsScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> الحملات</Text>
-      {data.map((c: any, i: number) => (
+      {data.map((c, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{(c.nameJson as any)?.ar as string}</Text>

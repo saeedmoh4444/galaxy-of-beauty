@@ -14,6 +14,12 @@ const TABS = [
   { key: 'feed', label: ' قبل وبعد' },
 ];
 
+interface FeedItem {
+  id?: number;
+  emoji?: string;
+  technician?: { user?: { name?: string }; city?: string };
+}
+
 export default function SocialScreen(): JSX.Element {
   const [tab, setTab] = useState('trending');
   const {
@@ -64,7 +70,7 @@ export default function SocialScreen(): JSX.Element {
       {tab === 'trending' && (trending as any[])?.length > 0 && (
         <View>
           <Text style={s.st}>‍️ الخدمات الرائجة</Text>
-          {(trending as any[]).slice(0, 10).map((svc: any, i: number) => (
+          {(trending as any[]).slice(0, 10).map((svc, i) => (
             <View key={svc.id ?? i} style={s.card}>
               <View style={s.rank}>
                 <Text style={s.rankText}>#{i + 1}</Text>
@@ -81,7 +87,7 @@ export default function SocialScreen(): JSX.Element {
       {tab === 'spotlight' && (spotlight as any[])?.length > 0 && (
         <View>
           <Text style={s.st}>‍ فنيات مميزات</Text>
-          {(spotlight as any[]).map((tech: any, i: number) => (
+          {(spotlight as any[]).map((tech, i) => (
             <View key={tech.id ?? i} style={s.card}>
               <Text style={s.avatar}>‍</Text>
               <View style={{ flex: 1 }}>
@@ -98,7 +104,7 @@ export default function SocialScreen(): JSX.Element {
       {tab === 'tips' && tips.length > 0 && (
         <View>
           <Text style={s.st}> نصائح تجميلية</Text>
-          {tips.map((tip: any, i: number) => (
+          {tips.map((tip, i) => (
             <View key={tip.id ?? i} style={s.card}>
               <View style={{ flex: 1 }}>
                 <Text style={s.cardTitle}>{tip.titleAr ?? tip.id}</Text>
@@ -113,7 +119,7 @@ export default function SocialScreen(): JSX.Element {
         <View>
           <Text style={s.st}> قبل وبعد</Text>
           <View style={s.grid}>
-            {feedItems.map((item: any, i: number) => (
+            {(feedItems as unknown as FeedItem[]).map((item, i) => (
               <View key={item.id ?? i} style={s.gridItem}>
                 <Text style={s.gridEmoji}></Text>
                 <Text style={s.gridTitle}>{item.technician?.user?.name ?? ''}</Text>
@@ -127,7 +133,7 @@ export default function SocialScreen(): JSX.Element {
       {lookbookItems.length > 0 && (
         <View style={{ marginTop: 24 }}>
           <Text style={s.st}> لوك بوك الموسم</Text>
-          {(lookbookItems as any[]).slice(0, 4).map((l: any, i: number) => (
+          {(lookbookItems as any[]).slice(0, 4).map((l, i) => (
             <View key={l.id ?? i} style={s.card}>
               <Text style={s.avatar}></Text>
               <View style={{ flex: 1 }}>

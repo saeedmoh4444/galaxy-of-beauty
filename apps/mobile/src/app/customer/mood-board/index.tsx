@@ -44,7 +44,7 @@ export default function MoodBoardScreen(): JSX.Element {
     >
       <Text style={styles.t}> لوحة المود</Text>
       <View style={styles.grid}>
-        {data.map((p: any, i: number) => (
+        {data.map((p, i) => (
           <View key={i} style={styles.pin}>
             {p.imageUrl ? (
               <Image source={{ uri: p.imageUrl as string }} style={styles.img} />

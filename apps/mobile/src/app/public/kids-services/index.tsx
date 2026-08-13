@@ -49,7 +49,7 @@ export default function KidsServicesScreen(): JSX.Element {
           <Text style={styles.sectionTitle}>
             {selectedCat.emoji as string} {selectedCat.nameAr as string}
           </Text>
-          {((selectedCat.services as any[]) ?? []).map((s: any, i: number) => (
+          {((selectedCat.services as any[]) ?? []).map((s, i) => (
             <View key={i} style={styles.svcCard}>
               <View style={{ flex: 1 }}>
                 <Text style={styles.svcName}>{s.nameAr as string}</Text>

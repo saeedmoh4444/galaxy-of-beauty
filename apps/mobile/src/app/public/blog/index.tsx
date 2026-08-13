@@ -4,6 +4,11 @@ import { trpc } from '@/lib/trpc-react';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
+interface BlogPost {
+  titleJson?: { ar?: string; en?: string };
+  publishedAt?: string;
+}
+
 export default function BlogScreen(): JSX.Element {
   const blog = trpc.blog.list.useQuery({ page: 1, limit: 10 });
 
@@ -17,9 +22,9 @@ export default function BlogScreen(): JSX.Element {
       onRetry={() => blog.refetch()}
     >
       <Text style={styles.title}> مدونة الجمال</Text>
-      {(((blog.data as any)?.items as unknown[]) || []).map((post: any, i: number) => (
+      {(((blog.data as { items?: BlogPost[] } | undefined)?.items) || []).map((post, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.postTitle}>{(post.titleJson as any)?.ar ?? ''}</Text>
+          <Text style={styles.postTitle}>{post.titleJson?.ar ?? ''}</Text>
           <Text style={styles.postDate}>
             {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('ar-SA') : ''}
           </Text>

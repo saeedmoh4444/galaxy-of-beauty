@@ -30,7 +30,7 @@ export default function ProductCompareScreen(): JSX.Element {
     if (selected.includes(id)) setSelected(selected.filter((x) => x !== id));
     else if (selected.length < 3) setSelected([...selected, id]);
   };
-  const ci = products.filter((p: any) => selected.includes(p.id));
+  const ci = products.filter((p) => selected.includes(p.id));
   if (loading) return <SkeletonList count={5} />;
   return (
     <ScrollView
@@ -46,7 +46,7 @@ export default function ProductCompareScreen(): JSX.Element {
     >
       <Text style={styles.t}> مقارنة المنتجات</Text>
       <View style={styles.grid}>
-        {products.map((p: any) => {
+        {products.map((p) => {
           const isSel = selected.includes(p.id);
           return (
             <TouchableOpacity
@@ -64,7 +64,7 @@ export default function ProductCompareScreen(): JSX.Element {
       {ci.length > 0 && (
         <View style={styles.tbl}>
           <Text style={styles.ttl}> المقارنة</Text>
-          {ci.map((p: any) => (
+          {ci.map((p) => (
             <View key={p.id} style={styles.tc}>
               <Text style={styles.tcn}>{p.nameAr as string}</Text>
               <View style={styles.tr}>

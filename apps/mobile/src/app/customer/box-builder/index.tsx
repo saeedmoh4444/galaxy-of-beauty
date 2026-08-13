@@ -57,7 +57,7 @@ export default function BoxBuilderScreen(): JSX.Element {
           <Text style={styles.badgeText}> {selected.size} منتجات</Text>
         </View>
       )}
-      {products.map((p: any) => {
+      {products.map((p) => {
         const isSel = selected.has(p.id);
         return (
           <TouchableOpacity

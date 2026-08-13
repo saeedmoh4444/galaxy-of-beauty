@@ -33,7 +33,7 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد صناديق</Text>
       ) : (
-        items.map((b: any) => (
+        items.map((b) => (
           <View key={b.id} style={styles.card}>
             <Text style={styles.boxEmoji}>{(b.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>

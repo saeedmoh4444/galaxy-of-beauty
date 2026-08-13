@@ -63,8 +63,8 @@ export default function BeautyRemindersScreen(): JSX.Element {
   if (error) return <ErrorAlert message="فشل تحميل التذكيرات" onRetry={refetch} />;
 
   const reminders = (data ?? []) as any[];
-  const overdue = reminders.filter((r: any) => new Date(r.nextDate) < new Date());
-  const upcoming = reminders.filter((r: any) => new Date(r.nextDate) >= new Date());
+  const overdue = reminders.filter((r) => new Date(r.nextDate) < new Date());
+  const upcoming = reminders.filter((r) => new Date(r.nextDate) >= new Date());
 
   return (
     <ScrollView
@@ -156,7 +156,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
           <Text style={{ fontWeight: '700', color: '#ef4444', fontSize: 15, marginBottom: 8 }}>
              فات موعدها
           </Text>
-          {overdue.map((r: any) => (
+          {overdue.map((r) => (
             <View
               key={r.id}
               style={[s.remCard, { borderColor: '#fca5a5', backgroundColor: '#fef2f2' }]}
@@ -183,7 +183,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
           <Text style={{ fontWeight: '700', color: '#111827', fontSize: 15, marginBottom: 8 }}>
              قادمة
           </Text>
-          {upcoming.map((r: any) => (
+          {upcoming.map((r) => (
             <View key={r.id} style={s.remCard}>
               <Text style={{ fontSize: 28 }}>{CATS[r.category]?.split(' ')[0]}</Text>
               <View style={{ flex: 1 }}>

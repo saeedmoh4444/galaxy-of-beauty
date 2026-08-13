@@ -68,7 +68,7 @@ export default function BookingInsightsScreen(): JSX.Element {
       {byCat.length > 0 && (
         <View style={styles.sec}>
           <Text style={styles.st}>‍️ توزيع الفئات</Text>
-          {byCat.map((cat: any, i: number) => (
+          {byCat.map((cat, i) => (
             <View key={i} style={styles.cr}>
               <Text style={styles.cn}>{cat.category as string}</Text>
               <View style={styles.cb}>

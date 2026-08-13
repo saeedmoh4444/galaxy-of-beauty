@@ -58,7 +58,7 @@ export default function SalonManagementScreen(): JSX.Element {
           <Text style={styles.kl}>ر.س</Text>
         </View>
       </View>
-      {staff.map((s: any) => (
+      {staff.map((s) => (
         <View key={s.id} style={styles.card}>
           <Text style={styles.em}>‍</Text>
           <View style={{ flex: 1 }}>

@@ -44,7 +44,7 @@ export default function AdminGiftCardsScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> بطاقات الهدية</Text>
-      {data.map((c: any, i: number) => (
+      {data.map((c, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
             <Text style={styles.code}>{c.code as string}</Text>

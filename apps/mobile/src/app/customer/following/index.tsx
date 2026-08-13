@@ -42,7 +42,7 @@ export default function FollowingScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>‍ متابعة الفنيات</Text>
-      {follows.map((f: any) => (
+      {follows.map((f) => (
         <View key={f.technicianId} style={styles.card}>
           <Text style={styles.av}>‍</Text>
           <View style={{ flex: 1 }}>

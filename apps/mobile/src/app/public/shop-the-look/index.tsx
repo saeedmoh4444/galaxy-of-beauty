@@ -55,7 +55,7 @@ export default function ShopTheLookScreen(): JSX.Element {
       {looks.length === 0 ? (
         <Text style={styles.e}>لا توجد إطلالات</Text>
       ) : (
-        looks.map((l: any) => (
+        looks.map((l) => (
           <View key={l.id} style={styles.card}>
             <View style={styles.lookHeader}>
               {l.imageUrl ? (
@@ -71,7 +71,7 @@ export default function ShopTheLookScreen(): JSX.Element {
               </View>
             </View>
             <Text style={styles.productsTitle}> المنتجات</Text>
-            {(l.products as any[])?.map((p: any) => (
+            {(l.products as any[])?.map((p) => (
               <View key={p.id} style={styles.product}>
                 <Text style={styles.prodEmoji}>{(p.emoji as string) ?? ''}</Text>
                 <View style={{ flex: 1 }}>

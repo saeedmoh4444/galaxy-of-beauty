@@ -30,7 +30,7 @@ export default function CompareScreen(): JSX.Element {
     if (selected.includes(id)) setSelected(selected.filter((x) => x !== id));
     else if (selected.length < 3) setSelected([...selected, id]);
   };
-  const ci = services.filter((s: any) => selected.includes(s.id));
+  const ci = services.filter((s) => selected.includes(s.id));
   if (loading) return <SkeletonList count={5} />;
   return (
     <ScrollView
@@ -46,7 +46,7 @@ export default function CompareScreen(): JSX.Element {
     >
       <Text style={styles.t}>️ مقارنة الخدمات</Text>
       <View style={styles.grid}>
-        {services.map((s: any) => {
+        {services.map((s) => {
           const isSel = selected.includes(s.id);
           return (
             <TouchableOpacity
@@ -64,7 +64,7 @@ export default function CompareScreen(): JSX.Element {
       {ci.length > 0 && (
         <View style={styles.tbl}>
           <Text style={styles.ttl}> المقارنة</Text>
-          {ci.map((s: any) => (
+          {ci.map((s) => (
             <View key={s.id} style={styles.tc}>
               <Text style={styles.tcn}>{s.nameAr as string}</Text>
               <View style={styles.tr}>

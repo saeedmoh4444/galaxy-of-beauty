@@ -217,7 +217,7 @@ export default function BeautyRescueScreen(): JSX.Element {
               <Text style={{ fontSize: 11, color: '#9ca3af' }}>{c.subtitle}</Text>
             </View>
           </View>
-          {c.tips.map((t: any, j: number) => (
+          {c.tips.map((t, j) => (
             <View
               key={j}
               style={{
@@ -333,7 +333,7 @@ export default function BeautyRescueScreen(): JSX.Element {
               <Text style={{ fontSize: 11, color: '#9ca3af' }}>{c.subtitle}</Text>
             </View>
           </View>
-          {c.tips.map((t: any, j: number) => (
+          {c.tips.map((t, j) => (
             <View
               key={j}
               style={{

@@ -50,7 +50,7 @@ export default function ChatScreen(): JSX.Element {
         {messages.length === 0 ? (
           <Text style={styles.e}>لا توجد رسائل</Text>
         ) : (
-          messages.map((m: any) => (
+          messages.map((m) => (
             <View
               key={m.id}
               style={[styles.msg, m.senderId === 1 ? styles.msgSent : styles.msgReceived]}

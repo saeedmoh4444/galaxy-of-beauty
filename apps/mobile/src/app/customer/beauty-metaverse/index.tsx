@@ -59,7 +59,7 @@ export default function BeautyMetaverseScreen(): JSX.Element {
     >
       <Text style={styles.t}> عالم الجمال الافتراضي</Text>
       <View style={styles.grid}>
-        {salons.map((s: any) => (
+        {salons.map((s) => (
           <TouchableOpacity key={s.id} onPress={() => enter(s.id)} style={styles.salon}>
             <Text style={styles.se}>{s.emoji as string}</Text>
             <Text style={styles.sn}>{s.name as string}</Text>

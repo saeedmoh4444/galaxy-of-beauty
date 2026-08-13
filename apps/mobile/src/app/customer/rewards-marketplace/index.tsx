@@ -79,7 +79,7 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
         </Text>
       </View>
 
-      {items.map((r: any) => {
+      {items.map((r) => {
         const canAfford = points >= r.pointsCost;
         const isRedeemed = redeemed === r.id;
         return (
@@ -136,7 +136,7 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
           <Text style={{ fontWeight: '700', fontSize: 15, color: '#111827', marginBottom: 8 }}>
              سجل النقاط
           </Text>
-          {transactions.slice(0, 10).map((t: any, i: number) => (
+          {transactions.slice(0, 10).map((t, i) => (
             <View
               key={t.id ?? i}
               style={{

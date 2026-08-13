@@ -47,7 +47,7 @@ export default function TechLeaderboardScreen(): JSX.Element {
       {board.length === 0 ? (
         <Text style={styles.e}>لا توجد بيانات</Text>
       ) : (
-        board.map((t: any, i: number) => (
+        board.map((t, i) => (
           <View key={t.id} style={[styles.card, i === 0 && styles.topCard]}>
             <View style={[styles.rank, i === 0 && styles.rankTop]}>
               <Text style={[styles.rankText, i === 0 && styles.rankTextTop]}>{i + 1}</Text>

@@ -127,7 +127,7 @@ export default function WellnessHubScreen(): JSX.Element {
       {(d?.recentJournals as any[])?.length > 0 && (
         <View style={s.card}>
           <Text style={s.st}> آخر اليوميات</Text>
-          {(d.recentJournals as any[]).map((j: any, i: number) => (
+          {(d.recentJournals as any[]).map((j, i) => (
             <View
               key={j.id ?? i}
               style={{ borderBottomWidth: 1, borderBottomColor: '#f3f4f6', paddingVertical: 8 }}

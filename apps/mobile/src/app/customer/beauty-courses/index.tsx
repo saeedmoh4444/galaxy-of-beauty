@@ -59,7 +59,7 @@ export default function BeautyCoursesScreen(): JSX.Element {
              دوراتي ({myItems.length})
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
-            {myItems.map((c: any, i: number) => (
+            {myItems.map((c, i) => (
               <View
                 key={i}
                 style={{
@@ -78,8 +78,8 @@ export default function BeautyCoursesScreen(): JSX.Element {
         </View>
       )}
 
-      {items.map((c: any) => {
-        const isEnrolled = enrolled.includes(c.id) || myItems.some((m: any) => m.courseId === c.id);
+      {items.map((c) => {
+        const isEnrolled = enrolled.includes(c.id) || myItems.some((m) => m.courseId === c.id);
         const level = LEVELS[c.level] ?? LEVELS['beginner']!;
         return (
           <View key={c.id} style={s.card}>

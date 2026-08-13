@@ -53,7 +53,7 @@ export default function PriceEstimatorScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> مقدّر الأسعار</Text>
-      {services.map((s: any) => (
+      {services.map((s) => (
         <TouchableOpacity
           key={s.id}
           onPress={() => {

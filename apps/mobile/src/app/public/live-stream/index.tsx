@@ -42,7 +42,7 @@ export default function LiveStreamScreen(): JSX.Element {
     >
       <Text style={styles.t}> البث المباشر</Text>
       {live.length > 0 && <Text style={styles.st}> مباشر الآن</Text>}
-      {live.map((s: any) => (
+      {live.map((s) => (
         <View key={s.id} style={[styles.card, styles.lc]}>
           <Text style={styles.se}></Text>
           <View style={{ flex: 1 }}>
@@ -57,7 +57,7 @@ export default function LiveStreamScreen(): JSX.Element {
         </View>
       ))}
       {upcoming.length > 0 && <Text style={styles.st}> قادم</Text>}
-      {upcoming.map((s: any) => (
+      {upcoming.map((s) => (
         <View key={s.id} style={styles.card}>
           <Text style={styles.se}></Text>
           <View style={{ flex: 1 }}>

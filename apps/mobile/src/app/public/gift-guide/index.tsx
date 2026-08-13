@@ -33,7 +33,7 @@ export default function GiftGuideScreen(): JSX.Element {
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد أدلة</Text>
       ) : (
-        items.map((g: any) => (
+        items.map((g) => (
           <View key={g.id} style={styles.card}>
             <Text style={styles.guideEmoji}>{(g.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>

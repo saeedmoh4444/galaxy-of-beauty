@@ -16,7 +16,7 @@ export default function AdminToolsScreen(): JSX.Element {
       <Text style={s.sub}>إدارة إعدادات المنصة والميزات</Text>
       <View style={s.card}>
         <Text style={s.ct}> إدارة الميزات</Text>
-        {flags.map((f: any) => (
+        {flags.map((f) => (
           <View key={f.key} style={s.row}>
             <View>
               <Text style={s.rn}>{f.key}</Text>

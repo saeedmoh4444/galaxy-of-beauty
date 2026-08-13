@@ -40,7 +40,7 @@ export default function GalleryScreen(): JSX.Element {
     >
       <Text style={styles.t}>️ معرض الصور</Text>
       <View style={styles.grid}>
-        {photos.map((p: any, i: number) => (
+        {photos.map((p, i) => (
           <View key={p.id ?? i} style={styles.pc}>
             {p.imageUrl ? (
               <Image source={{ uri: p.imageUrl as string }} style={styles.img} />

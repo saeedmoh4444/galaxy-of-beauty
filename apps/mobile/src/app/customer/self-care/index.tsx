@@ -39,7 +39,7 @@ export default function SelfCareScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> العناية الذاتية</Text>
-      {data.map((a: any, i: number) => (
+      {data.map((a, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{(a.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>

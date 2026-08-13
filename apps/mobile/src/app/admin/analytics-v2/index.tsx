@@ -61,7 +61,7 @@ export default function AdminAnalyticsV2Screen(): JSX.Element {
         </View>
       </View>
       {top.length > 0 && <Text style={styles.sectionTitle}> الأعلى</Text>}
-      {top.map((s: any, i: number) => (
+      {top.map((s, i) => (
         <View key={i} style={styles.row}>
           <Text style={styles.rank}>#{i + 1}</Text>
           <Text style={styles.name}>{s.name as string}</Text>

@@ -33,7 +33,7 @@ export default function TechniciansScreen(): JSX.Element {
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد فنيات</Text>
       ) : (
-        items.map((t: any) => (
+        items.map((t) => (
           <View key={t.id} style={styles.card}>
             <Text style={styles.avatar}>‍</Text>
             <View style={{ flex: 1 }}>

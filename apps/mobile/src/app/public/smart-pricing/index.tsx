@@ -47,7 +47,7 @@ export default function SmartPricingScreen(): JSX.Element {
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد خدمات</Text>
       ) : (
-        items.map((s: any) => {
+        items.map((s) => {
           const isDiscounted = (s.currentPrice as number) < (s.basePrice as number);
           return (
             <View key={s.service} style={styles.card}>

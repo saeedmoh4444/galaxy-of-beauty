@@ -39,7 +39,7 @@ export default function ReferralRaceScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> سباق الإحالات</Text>
-      {data.map((r: any, i: number) => (
+      {data.map((r, i) => (
         <View key={i} style={styles.card}>
           <View style={[styles.rk, i === 0 && styles.rk1]}>
             <Text style={styles.rkt}>{i + 1}</Text>

@@ -40,7 +40,7 @@ export default function TravelKitScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> حقيبة السفر</Text>
-      {dests.map((d: any, i: number) => (
+      {dests.map((d, i) => (
         <TouchableOpacity key={i} style={styles.card} onPress={() => setKit(d)}>
           <Text style={styles.de}>{(d.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>
@@ -52,7 +52,7 @@ export default function TravelKitScreen(): JSX.Element {
       {kit && (
         <View style={styles.kc}>
           <Text style={styles.kt}> محتويات الحقيبة - {kit.nameAr as string}</Text>
-          {(kit.items as any[])?.map((item: any, i: number) => (
+          {(kit.items as any[])?.map((item, i) => (
             <View key={i} style={styles.ki}>
               <Text style={styles.kie}>{item.emoji as string}</Text>
               <Text style={styles.kit}>{item.nameAr as string}</Text>

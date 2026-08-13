@@ -47,7 +47,7 @@ export default function GroupBookingsScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>‍️ الحجوزات الجماعية</Text>
-      {groups.map((g: any) => (
+      {groups.map((g) => (
         <View key={g.id} style={styles.card}>
           <Text style={styles.ge}>{TE[g.theme as string] ?? ''}</Text>
           <View style={{ flex: 1 }}>

@@ -48,7 +48,7 @@ export default function EventTicketsScreen(): JSX.Element {
       {events.length === 0 ? (
         <Text style={styles.e}>لا توجد فعاليات</Text>
       ) : (
-        events.map((e: any, i: number) => (
+        events.map((e, i) => (
           <View key={i} style={styles.card}>
             <Text style={styles.eventEmoji}>{(e.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>

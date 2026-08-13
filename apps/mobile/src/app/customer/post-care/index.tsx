@@ -43,7 +43,7 @@ export default function PostCareScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>‍️ عناية ما بعد الخدمة</Text>
-      {data.map((p: any, i: number) => (
+      {data.map((p, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{(p.emoji as string) ?? '‍️'}</Text>
           <View style={{ flex: 1 }}>

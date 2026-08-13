@@ -39,7 +39,7 @@ export default function MommyAndMeScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>‍ أمي وأنا</Text>
-      {services.map((s: any) => (
+      {services.map((s) => (
         <View key={s.id} style={styles.card}>
           <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
           <View style={{ flex: 1 }}>

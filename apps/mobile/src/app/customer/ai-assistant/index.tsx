@@ -59,7 +59,7 @@ export default function AIAssistantScreen(): JSX.Element {
         }
       >
         <Text style={styles.t}> المساعد الذكي</Text>
-        {messages.map((m: any, i: number) => (
+        {messages.map((m, i) => (
           <View key={i} style={[styles.msg, m.role === 'user' ? styles.user : styles.bot]}>
             <Text style={styles.msgText}>{m.content as string}</Text>
           </View>

@@ -40,7 +40,7 @@ export default function ServicesScreen(): JSX.Element {
       <Text style={styles.sub}>اكتشفي جميع خدمات التجميل والعناية</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
         <View style={{ flexDirection: 'row', gap: 8 }}>
-          {catItems.map((cat: any) => {
+          {catItems.map((cat) => {
             const isActive = activeCat === cat.key;
             return (
               <TouchableOpacity
@@ -63,7 +63,7 @@ export default function ServicesScreen(): JSX.Element {
           {svcItems.length === 0 ? (
             <Text style={styles.e}>لا توجد خدمات في هذه الفئة</Text>
           ) : (
-            svcItems.map((s: any) => (
+            svcItems.map((s) => (
               <View key={s.id} style={styles.card}>
                 <Text style={styles.svcEmoji}>{(s.emoji as string) ?? '‍️'}</Text>
                 <View style={{ flex: 1 }}>

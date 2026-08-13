@@ -49,7 +49,7 @@ export default function AIFeedScreen(): JSX.Element {
         </View>
       )}
       {recommendations.length > 0 && <Text style={styles.stl}> موصى به لكِ</Text>}
-      {recommendations.map((r: any) => (
+      {recommendations.map((r) => (
         <View key={r.id} style={styles.card}>
           <Text style={styles.em}></Text>
           <View style={{ flex: 1 }}>
@@ -61,7 +61,7 @@ export default function AIFeedScreen(): JSX.Element {
         </View>
       ))}
       {wishlistItems.length > 0 && <Text style={styles.stl}>️ من قائمة أمنياتكِ</Text>}
-      {wishlistItems.map((w: any) => (
+      {wishlistItems.map((w) => (
         <View key={w.id} style={styles.card}>
           <Text style={styles.em}>️</Text>
           <View style={{ flex: 1 }}>

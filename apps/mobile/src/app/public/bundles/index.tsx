@@ -56,7 +56,7 @@ export default function BundlesScreen(): JSX.Element {
           </Text>
         </View>
       )}
-      {services.slice(0, 15).map((s: any) => {
+      {services.slice(0, 15).map((s) => {
         const isSel = selected.has(s.id);
         return (
           <TouchableOpacity

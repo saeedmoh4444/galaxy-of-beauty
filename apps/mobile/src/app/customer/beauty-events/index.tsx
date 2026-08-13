@@ -23,7 +23,7 @@ export default function BeautyEventsScreen(): JSX.Element {
   } = useQuery(() => typedTrpc().beautyEvents.upcoming.query());
   const { data: myRegsData } = useQuery(() => typedTrpc().beautyEvents.myRegistrations.query());
   const myRegs = (myRegsData ?? []) as any[];
-  const registeredIds = new Set(((myRegs ?? []) as any[]).map((r: any) => r.eventId));
+  const registeredIds = new Set(((myRegs ?? []) as any[]).map((r) => r.eventId));
 
   const handleRegister = async (id: number) => {
     try {
@@ -62,7 +62,7 @@ export default function BeautyEventsScreen(): JSX.Element {
              مسجلة في {myRegs.length} فعاليات
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
-            {myRegs.map((r: any) => (
+            {myRegs.map((r) => (
               <View
                 key={r.id}
                 style={{
@@ -86,7 +86,7 @@ export default function BeautyEventsScreen(): JSX.Element {
         </View>
       )}
 
-      {items.map((e: any) => {
+      {items.map((e) => {
         const isReg = registeredIds.has(e.id);
         return (
           <View key={e.id} style={s.card}>

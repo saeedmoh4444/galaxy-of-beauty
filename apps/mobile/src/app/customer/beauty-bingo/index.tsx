@@ -49,7 +49,7 @@ export default function BeautyBingoScreen(): JSX.Element {
           {data?.completed ?? 0}/{data?.total ?? 9} مكتملة
         </Text>
         <View style={styles.grid}>
-          {tasks.map((t: any) => (
+          {tasks.map((t) => (
             <TouchableOpacity
               key={t.id}
               onPress={mark}

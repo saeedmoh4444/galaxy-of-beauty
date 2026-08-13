@@ -43,7 +43,7 @@ export default function GiftRegistryScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> سجل الهدايا</Text>
-      {data.map((g: any, i: number) => (
+      {data.map((g, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{(g.emoji as string) ?? ''}</Text>
           <View style={{ flex: 1 }}>

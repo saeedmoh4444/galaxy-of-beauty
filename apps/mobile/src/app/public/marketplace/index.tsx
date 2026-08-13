@@ -55,7 +55,7 @@ export default function MarketplaceScreen(): JSX.Element {
                 <Text style={styles.cd}>{item.desc}</Text>
               </View>
             ))
-          : products.map((p: any) => (
+          : products.map((p) => (
               <TouchableOpacity key={p.id} style={styles.card}>
                 <View style={styles.ci}>
                   <Text style={styles.ce}>{(p.emoji as string) ?? ''}</Text>

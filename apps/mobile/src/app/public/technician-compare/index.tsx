@@ -30,7 +30,7 @@ export default function TechnicianCompareScreen(): JSX.Element {
     if (selected.includes(id)) setSelected(selected.filter((x) => x !== id));
     else if (selected.length < 2) setSelected([...selected, id]);
   };
-  const ct = techs.filter((t: any) => selected.includes(t.id));
+  const ct = techs.filter((t) => selected.includes(t.id));
   if (loading) return <SkeletonList count={5} />;
   return (
     <ScrollView
@@ -46,7 +46,7 @@ export default function TechnicianCompareScreen(): JSX.Element {
     >
       <Text style={styles.t}>️ مقارنة الفنيات</Text>
       <View style={styles.grid}>
-        {techs.slice(0, 12).map((t: any) => {
+        {techs.slice(0, 12).map((t) => {
           const isSel = selected.includes(t.id);
           return (
             <TouchableOpacity
@@ -64,7 +64,7 @@ export default function TechnicianCompareScreen(): JSX.Element {
       {ct.length === 2 && (
         <View style={styles.tbl}>
           <Text style={styles.ttl}> المقارنة</Text>
-          {ct.map((t: any) => (
+          {ct.map((t) => (
             <View key={t.id} style={styles.tc}>
               <Text style={styles.tcn}>{t.name as string}</Text>
               <View style={styles.tr}>

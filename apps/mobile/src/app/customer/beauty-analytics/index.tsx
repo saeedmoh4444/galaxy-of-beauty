@@ -79,7 +79,7 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
       {byCat.length > 0 && (
         <View style={styles.sec}>
           <Text style={styles.st}> الحجوزات حسب الفئة</Text>
-          {byCat.map((cat: any, i: number) => (
+          {byCat.map((cat, i) => (
             <View key={i} style={styles.cr}>
               <Text style={styles.cn}>{cat.category}</Text>
               <View style={styles.cb}>
@@ -94,14 +94,14 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
         <View style={styles.sec}>
           <Text style={styles.st}> الاتجاه الشهري</Text>
           <View style={styles.tr}>
-            {trend.map((m: any, i: number) => (
+            {trend.map((m, i) => (
               <View key={i} style={styles.tb}>
                 <Text style={styles.tc}>{m.count}</Text>
                 <View
                   style={[
                     styles.tf,
                     {
-                      height: `${(m.count / Math.max(1, ...trend.map((x: any) => x.count))) * 80}%`,
+                      height: `${(m.count / Math.max(1, ...trend.map((x) => x.count))) * 80}%`,
                     },
                   ]}
                 />

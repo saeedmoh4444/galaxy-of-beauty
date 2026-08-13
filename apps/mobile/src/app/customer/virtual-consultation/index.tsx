@@ -162,7 +162,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
           <Text style={{ fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 }}>
              حجوزاتي
           </Text>
-          {myBookings.map((b: any, i: number) => (
+          {myBookings.map((b, i) => (
             <View
               key={i}
               style={{

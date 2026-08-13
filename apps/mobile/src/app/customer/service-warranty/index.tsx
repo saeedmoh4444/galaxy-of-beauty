@@ -39,7 +39,7 @@ export default function ServiceWarrantyScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>️ ضمان الخدمة</Text>
-      {data.map((w: any, i: number) => (
+      {data.map((w, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{(w.emoji as string) ?? '️'}</Text>
           <View style={{ flex: 1 }}>

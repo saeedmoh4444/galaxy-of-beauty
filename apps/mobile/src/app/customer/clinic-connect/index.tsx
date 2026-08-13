@@ -51,7 +51,7 @@ export default function ClinicConnectScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> Clinic Connect</Text>
-      {clinics.map((c: any) => (
+      {clinics.map((c) => (
         <View key={c.id} style={styles.card}>
           <Text style={styles.em}>{c.emoji as string}</Text>
           <View style={{ flex: 1 }}>
@@ -66,7 +66,7 @@ export default function ClinicConnectScreen(): JSX.Element {
         </View>
       ))}
       {referrals.length > 0 && <Text style={styles.st}> إحالاتي</Text>}
-      {referrals.map((r: any) => (
+      {referrals.map((r) => (
         <View key={r.id} style={styles.rc}>
           <Text style={styles.rr}>{r.reason as string}</Text>
           <View style={[styles.rbadge, r.status === 'PENDING' ? styles.rp : styles.rd]}>

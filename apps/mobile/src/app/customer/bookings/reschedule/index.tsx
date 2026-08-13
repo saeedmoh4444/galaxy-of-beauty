@@ -69,7 +69,7 @@ export default function RescheduleScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> تعديل الموعد</Text>
-      {bookings.map((b: any) => (
+      {bookings.map((b) => (
         <TouchableOpacity
           key={b.id}
           onPress={() => setSelected(b.id)}

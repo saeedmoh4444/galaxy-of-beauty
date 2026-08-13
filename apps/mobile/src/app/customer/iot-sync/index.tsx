@@ -43,7 +43,7 @@ export default function IoTSyncScreen(): JSX.Element {
     >
       <Text style={styles.t}> الأجهزة الذكية</Text>
       <View style={styles.grid}>
-        {devices.map((d: any) => (
+        {devices.map((d) => (
           <View key={d.key} style={styles.card}>
             <Text style={styles.de}>{d.emoji as string}</Text>
             <Text style={styles.dn}>{d.nameAr as string}</Text>

@@ -51,7 +51,7 @@ export default function InspirationScreen(): JSX.Element {
     >
       <Text style={styles.t}> لوحة الإلهام</Text>
       <View style={styles.grid}>
-        {pins.map((p: any) => (
+        {pins.map((p) => (
           <View key={p.id} style={styles.card}>
             {p.imageUrl ? (
               <Image source={{ uri: p.imageUrl as string }} style={styles.img} />

@@ -47,7 +47,7 @@ export default function TechnicianBadgesScreen(): JSX.Element {
       {badges.length === 0 ? (
         <Text style={styles.e}>لا توجد شارات</Text>
       ) : (
-        badges.map((b: any) => (
+        badges.map((b) => (
           <View key={b.id} style={styles.card}>
             <Text style={styles.badgeEmoji}>{(b.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>

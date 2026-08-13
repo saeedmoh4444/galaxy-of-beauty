@@ -48,7 +48,7 @@ export default function BehindScenesScreen(): JSX.Element {
       {videos.length === 0 ? (
         <Text style={styles.e}>لا توجد فيديوهات</Text>
       ) : (
-        videos.map((v: any, i: number) => (
+        videos.map((v, i) => (
           <View key={i} style={styles.card}>
             <Text style={styles.vidEmoji}>{(v.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>

@@ -49,7 +49,7 @@ export default function GeofenceOffersScreen(): JSX.Element {
       <TouchableOpacity onPress={optIn} style={styles.ob}>
         <Text style={styles.ot}> فعلي التنبيهات القريبة</Text>
       </TouchableOpacity>
-      {offers.map((o: any) => (
+      {offers.map((o) => (
         <View key={o.id} style={styles.card}>
           <Text style={styles.oe}>{o.emoji as string}</Text>
           <View style={{ flex: 1 }}>

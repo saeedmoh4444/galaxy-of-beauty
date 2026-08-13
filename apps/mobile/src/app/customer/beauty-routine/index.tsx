@@ -42,14 +42,14 @@ export default function BeautyRoutineScreen(): JSX.Element {
     >
       <Text style={styles.t}> روتيني</Text>
       {morning.length > 0 && <Text style={styles.st}>️ الصباح</Text>}
-      {morning.map((s: any, i: number) => (
+      {morning.map((s, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{s.emoji as string}</Text>
           <Text style={styles.name}>{s.nameAr as string}</Text>
         </View>
       ))}
       {evening.length > 0 && <Text style={styles.st}> المساء</Text>}
-      {evening.map((s: any, i: number) => (
+      {evening.map((s, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{s.emoji as string}</Text>
           <Text style={styles.name}>{s.nameAr as string}</Text>

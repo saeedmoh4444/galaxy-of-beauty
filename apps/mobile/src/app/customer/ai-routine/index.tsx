@@ -71,7 +71,7 @@ export default function AIRoutineScreen(): JSX.Element {
       <Text style={styles.t}> روتين العناية الذكي</Text>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>️ الصباح ({data?.morning?.totalTime ?? '—'})</Text>
-        {morning.map((s: any, i: number) => (
+        {morning.map((s, i) => (
           <View key={i} style={styles.step}>
             <Text style={styles.stepEmoji}>{s.emoji}</Text>
             <View>
@@ -83,7 +83,7 @@ export default function AIRoutineScreen(): JSX.Element {
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}> المساء ({data?.evening?.totalTime ?? '—'})</Text>
-        {evening.map((s: any, i: number) => (
+        {evening.map((s, i) => (
           <View key={i} style={styles.step}>
             <Text style={styles.stepEmoji}>{s.emoji}</Text>
             <View>

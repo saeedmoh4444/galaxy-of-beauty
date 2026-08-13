@@ -49,7 +49,7 @@ export default function WomensServicesScreen(): JSX.Element {
           <Text style={styles.sectionTitle}>
             {selectedCat.emoji as string} {selectedCat.nameAr as string}
           </Text>
-          {((selectedCat.services as any[]) ?? []).map((s: any, i: number) => (
+          {((selectedCat.services as any[]) ?? []).map((s, i) => (
             <View key={i} style={styles.svcCard}>
               <Text style={styles.svcName}>{s.nameAr as string}</Text>
               <Text style={styles.svcPrice}>{(s.price as number)?.toLocaleString()} ر.س</Text>

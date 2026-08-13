@@ -45,7 +45,7 @@ export default function HairColorSimScreen(): JSX.Element {
       <Text style={styles.t}>‍️ محاكي لون الشعر</Text>
       <Text style={styles.sub}>اختاري لون شعرك الجديد</Text>
       <View style={styles.grid}>
-        {colors.map((c: any, i: number) => (
+        {colors.map((c, i) => (
           <TouchableOpacity key={i} style={[styles.color, { backgroundColor: c.hex as string }]}>
             <Text style={styles.colorName}>{c.nameAr as string}</Text>
           </TouchableOpacity>

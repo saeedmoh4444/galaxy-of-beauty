@@ -33,7 +33,7 @@ export default function CampaignsScreen(): JSX.Element {
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد حملات</Text>
       ) : (
-        items.map((c: any) => (
+        items.map((c) => (
           <View key={c.id} style={styles.card}>
             <Text style={styles.campEmoji}>{(c.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>

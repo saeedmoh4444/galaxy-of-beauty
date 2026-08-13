@@ -4,15 +4,27 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface CalendarSlot {
+  id?: number;
+  date?: string;
+  technician?: string;
+  available?: boolean;
+}
+
+interface CalendarDay {
+  day: string;
+  slots: CalendarSlot[];
+}
+
 export default function TechCalendarScreen(): JSX.Element {
-  const [slots, setSlots] = useState<any[]>([]);
+  const [slots, setSlots] = useState<CalendarSlot[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().techCalendar.availability.query() as any)
-      .then((d: any) => {
+    (typedTrpc().techCalendar.availability.query() as Promise<CalendarSlot[]>)
+      .then((d) => {
         setSlots(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -26,7 +38,7 @@ export default function TechCalendarScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   if (loading) return <SkeletonList count={5} />;
-  const days = slots.reduce((acc: any[], s: any) => {
+  const days = slots.reduce((acc: CalendarDay[], s) => {
     const day = new Date(s.date as string).toLocaleDateString('ar-SA', {
       weekday: 'short',
       month: 'short',
@@ -50,10 +62,10 @@ export default function TechCalendarScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> تقويم الفنيات</Text>
-      {days.map((d: any, di: number) => (
+      {days.map((d, di) => (
         <View key={di} style={styles.dg}>
           <Text style={styles.dl}>{d.day}</Text>
-          {d.slots.map((s: any) => (
+          {d.slots.map((s) => (
             <View key={s.id} style={styles.slot}>
               <Text style={styles.stm}>
                 {new Date(s.date as string).toLocaleTimeString('ar-SA', {

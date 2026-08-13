@@ -43,7 +43,7 @@ export default function RecurringScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> حجوزات متكررة</Text>
-      {data.map((r: any, i: number) => (
+      {data.map((r, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}></Text>
           <View style={{ flex: 1 }}>

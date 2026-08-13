@@ -27,7 +27,7 @@ export default function AudioRoomsScreen(): JSX.Element {
       <Text style={styles.t}>️ الغرف الصوتية</Text>
       <Text style={styles.sub}>انضمي لنقاشات مباشرة مع خبراء التجميل</Text>
       {live.length > 0 && <Text style={styles.sectionTitle}> مباشر الآن</Text>}
-      {live.map((r: any) => (
+      {live.map((r) => (
         <View key={r.id} style={[styles.card, styles.liveCard]}>
           <Text style={styles.roomEmoji}>️</Text>
           <View style={{ flex: 1 }}>
@@ -42,7 +42,7 @@ export default function AudioRoomsScreen(): JSX.Element {
         </View>
       ))}
       {upcoming.length > 0 && <Text style={styles.sectionTitle}> قادم</Text>}
-      {upcoming.map((r: any) => (
+      {upcoming.map((r) => (
         <View key={r.id} style={styles.card}>
           <Text style={styles.roomEmoji}>️</Text>
           <View style={{ flex: 1 }}>

@@ -39,7 +39,7 @@ export default function SalonFinderScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> صالونات قريبة</Text>
-      {salons.map((s: any) => (
+      {salons.map((s) => (
         <View key={s.id} style={styles.card}>
           <Text style={styles.se}>‍️</Text>
           <View style={{ flex: 1 }}>

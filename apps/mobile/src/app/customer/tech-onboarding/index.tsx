@@ -56,7 +56,7 @@ export default function TechOnboardingScreen(): JSX.Element {
           <View style={[styles.pf, { width: `${(completed / total) * 100}%` }]} />
         </View>
       </View>
-      {steps.map((s: any, i: number) => (
+      {steps.map((s, i) => (
         <View key={s.key ?? i} style={[styles.step, s.completed && styles.sd]}>
           <Text style={styles.se}>{s.completed ? '' : '⭕'}</Text>
           <View style={{ flex: 1 }}>

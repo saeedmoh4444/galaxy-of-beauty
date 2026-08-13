@@ -4,6 +4,13 @@ import { ScreenState } from '@/components/ScreenState';
 import { trpc, typedTrpc } from '@/lib/trpc-react';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
+
+interface GiftRecommendation {
+  emoji?: string;
+  nameJson?: { ar?: string; en?: string };
+  price?: number;
+}
+
 const QUESTIONS = [
   {
     key: 'occasion',
@@ -53,11 +60,11 @@ export default function GiftQuizScreen(): JSX.Element {
       ) : (
         <View>
           <Text style={styles.resultTitle}> توصياتنا لكِ</Text>
-          {((recommendations.data as unknown[]) || []).map((r: any, i: number) => (
+          {((recommendations.data as GiftRecommendation[] | undefined) || []).map((r, i) => (
             <View key={i} style={styles.recCard}>
               <Text style={styles.recEmoji}>{r.emoji ?? ''}</Text>
               <View style={styles.recInfo}>
-                <Text style={styles.recName}>{(r.nameJson as any)?.ar ?? ''}</Text>
+                <Text style={styles.recName}>{r.nameJson?.ar ?? ''}</Text>
                 <Text style={styles.recPrice}>{r.price ? `${r.price} ر.س` : ''}</Text>
               </View>
             </View>

@@ -43,7 +43,7 @@ export default function AdminTechniciansScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>‍ الفنيات</Text>
-      {data.map((t: any, i: number) => (
+      {data.map((t, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.avatar}>‍</Text>
           <View style={{ flex: 1 }}>

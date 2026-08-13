@@ -43,7 +43,7 @@ export default function AdminDisputesScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>️ النزاعات</Text>
-      {data.map((d: any, i: number) => (
+      {data.map((d, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.status}>{d.status as string}</Text>
           <View style={{ flex: 1 }}>

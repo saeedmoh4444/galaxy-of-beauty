@@ -79,7 +79,7 @@ export default function DNABeautyScreen(): JSX.Element {
       <Text style={styles.t}> تحليل الجينات</Text>
       <View style={styles.card}>
         <Text style={styles.qt}>أكملي الاستبيان</Text>
-        {questions.map((q: any) => (
+        {questions.map((q) => (
           <View key={q.id} style={styles.qr}>
             <Text style={styles.qq}>{q.q as string}</Text>
             <View style={styles.qb}>

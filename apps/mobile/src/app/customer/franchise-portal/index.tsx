@@ -58,7 +58,7 @@ export default function FranchisePortalScreen(): JSX.Element {
           <Text style={styles.kl}>حجز</Text>
         </View>
       </View>
-      {locations.map((l: any) => (
+      {locations.map((l) => (
         <View key={l.id} style={styles.card}>
           <View style={{ flex: 1 }}>
             <Text style={styles.ln}>{l.branch as string}</Text>

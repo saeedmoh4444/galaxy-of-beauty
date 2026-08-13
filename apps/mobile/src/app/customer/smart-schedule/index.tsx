@@ -53,7 +53,7 @@ export default function SmartScheduleScreen(): JSX.Element {
         }
       >
         <Text style={styles.t}> جدولة ذكية</Text>
-        {services.slice(0, 10).map((s: any) => (
+        {services.slice(0, 10).map((s) => (
           <TouchableOpacity
             key={s.id}
             onPress={() => findSlots(s.id)}
@@ -71,7 +71,7 @@ export default function SmartScheduleScreen(): JSX.Element {
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
       <Text style={styles.t}> جدولة ذكية</Text>
-      {(slots.suggestions as any[])?.map((s: any, i: number) => (
+      {(slots.suggestions as any[])?.map((s, i) => (
         <View key={i} style={styles.card}>
           <View style={styles.rk}>
             <Text style={styles.rtx}>#{i + 1}</Text>
