@@ -36,7 +36,7 @@ export default function ResetPasswordScreen() {
     setError('');
     setLoading(true);
     try {
-      await trpc.auth.resetPassword.mutate({ token, password });
+      await trpc.auth.resetPassword.mutate({ token, newPassword: password });
       setDone(true);
       setMsg('تم إعادة تعيين كلمة المرور بنجاح');
     } catch (e: unknown) {
