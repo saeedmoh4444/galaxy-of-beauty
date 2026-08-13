@@ -4,19 +4,30 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface PlatformConfig {
+  platformFee?: string;
+  minPayout?: number;
+  maintenanceMode?: boolean;
+  cashbackRate?: number;
+}
+
+interface CashbackInfo {
+  rate?: number;
+}
+
 export default function AdminSettingsScreen(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [config, setConfig] = useState<any>({});
+  const [config, setConfig] = useState<PlatformConfig>({});
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().admin.getPlatformConfig.query().catch(() => ({})) as any,
-      typedTrpc().cashback.info.query().catch(() => ({})) as any,
+      typedTrpc().admin.getPlatformConfig.query().catch(() => ({})) as Promise<PlatformConfig>,
+      typedTrpc().cashback.info.query().catch(() => ({})) as Promise<CashbackInfo>,
     ])
-      .then(([cfg, cb]: any[]) => {
+      .then(([cfg, cb]) => {
         setConfig({ ...cfg, cashbackRate: cb?.rate });
         setLoading(false);
         setRefreshing(false);
@@ -51,12 +62,12 @@ export default function AdminSettingsScreen(): JSX.Element {
         <Text style={styles.st}> رسوم المنصة</Text>
         <View style={styles.row}>
           <Text style={styles.l}>نسبة المنصة</Text>
-          <Text style={styles.v}>{(config.platformFee as string) ?? '10%'}</Text>
+          <Text style={styles.v}>{config.platformFee ?? '10%'}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.l}>الحد الأدنى للسحب</Text>
           <Text style={styles.v}>
-            {((config.minPayout as number) ?? 100)?.toLocaleString()} ر.س
+            {(config.minPayout ?? 100).toLocaleString()} ر.س
           </Text>
         </View>
       </View>
@@ -65,7 +76,7 @@ export default function AdminSettingsScreen(): JSX.Element {
         <Text style={styles.st}> الكاش باك</Text>
         <View style={styles.row}>
           <Text style={styles.l}>نسبة الاسترداد</Text>
-          <Text style={styles.v}>{(config.cashbackRate as number) ?? 5}%</Text>
+          <Text style={styles.v}>{config.cashbackRate ?? 5}%</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.l}>مكافأة أول حجز</Text>

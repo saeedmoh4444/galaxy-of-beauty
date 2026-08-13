@@ -13,6 +13,33 @@ import { useState, useEffect } from 'react';
 import { DEFAULT_PAGE_SIZE, MAX_LIST_SIZE } from '@galaxy/ui';
 import { useToast } from '@/components/Toast';
 
+interface ServiceListItem {
+  id?: number;
+  titleJson?: { ar?: string; en?: string };
+  basePrice?: number;
+  durationMin?: number;
+}
+
+interface TechnicianService {
+  technician?: { userId?: number };
+}
+
+interface ServiceVariant {
+  id?: number;
+  nameJson?: { ar?: string; en?: string };
+}
+
+interface ServiceDetail extends ServiceListItem {
+  technicianServices?: TechnicianService[];
+  variants?: ServiceVariant[];
+}
+
+interface AddressItem {
+  id?: number;
+  label?: string;
+  city?: string;
+}
+
 export default function CreateBookingScreen() {
   const router = useRouter();
   const { showToast } = useToast();
@@ -24,22 +51,20 @@ export default function CreateBookingScreen() {
   const [notes, setNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const [services, setServices] = useState<Record<string, unknown>[]>([]);
-  const [svc, setSvc] = useState<Record<string, unknown> | null>(null);
-  const [addresses, setAddresses] = useState<Record<string, unknown>[]>([]);
+  const [services, setServices] = useState<ServiceListItem[]>([]);
+  const [svc, setSvc] = useState<ServiceDetail | null>(null);
+  const [addresses, setAddresses] = useState<AddressItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      trpc.services.list.query({ page: 1, limit: MAX_LIST_SIZE }) as any as Promise<
-        Record<string, unknown>
-      >,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      trpc.addresses.list.query() as any as Promise<Record<string, unknown>[]>,
+      trpc.services.list.query({ page: 1, limit: MAX_LIST_SIZE }) as unknown as Promise<{
+        items?: ServiceListItem[];
+      }>,
+      trpc.addresses.list.query() as unknown as Promise<AddressItem[]>,
     ])
       .then(([s, a]) => {
-        setServices((s?.items as Record<string, unknown>[]) || []);
+        setServices(s?.items ?? []);
         setAddresses(a || []);
         setLoading(false);
       })
@@ -48,8 +73,7 @@ export default function CreateBookingScreen() {
 
   useEffect(() => {
     if (!serviceId) return;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.services.getById.query({ id: serviceId }) as any as Promise<Record<string, unknown>>)
+    (trpc.services.getById.query({ id: serviceId }) as unknown as Promise<ServiceDetail>)
       .then(setSvc)
       .catch(() => {});
   }, [serviceId]);
@@ -61,20 +85,16 @@ export default function CreateBookingScreen() {
     }
     setSubmitting(true);
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       // Auto-assign first available technician for this service
-      const techs = (svc?.technicianServices as Array<Record<string, unknown>>) || [];
-      const technicianId =
-        techs.length > 0
-          ? ((techs[0]!.technician as Record<string, unknown>)?.userId as number) || 0
-          : 0;
+      const techs = svc?.technicianServices ?? [];
+      const technicianId = techs[0]?.technician?.userId ?? 0;
       if (!technicianId) {
         showToast('warning', 'لا توجد فنيات متاحة لهذه الخدمة حالياً');
         setSubmitting(false);
         return;
       }
 
-      await (trpc.bookings.create.mutate({
+      await trpc.bookings.create.mutate({
         serviceId,
         variantId,
         addressId,
@@ -83,9 +103,9 @@ export default function CreateBookingScreen() {
         notes: notes || undefined,
         startAt: new Date(Date.now() + 86400000).toISOString(),
         endAt: new Date(
-          Date.now() + 86400000 + ((svc?.durationMin as number) || 60) * 60000,
+          Date.now() + 86400000 + (svc?.durationMin ?? 60) * 60000,
         ).toISOString(),
-      }) as any as Promise<unknown>);
+      });
       showToast('success', 'تم إنشاء الحجز بنجاح!');
       setTimeout(() => router.back(), 1000);
     } catch {
@@ -95,7 +115,7 @@ export default function CreateBookingScreen() {
     }
   };
 
-  const variants = (svc?.variants as Array<Record<string, unknown>>) || [];
+  const variants = svc?.variants ?? [];
 
   if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
 
@@ -134,21 +154,21 @@ export default function CreateBookingScreen() {
       {step === 1 && (
         <View>
           <Text style={styles.sectionTitle}>اختر الخدمة</Text>
-          {services.map((s) => (
+          {services.map((s, i) => (
             <TouchableOpacity
-              key={s.id as number}
+              key={s.id ?? i}
               style={[styles.serviceCard, serviceId === s.id && styles.serviceCardActive]}
               onPress={() => {
-                setServiceId(s.id as number);
+                setServiceId(s.id);
                 setStep(2);
               }}
               activeOpacity={0.7}
             >
               <Text style={styles.serviceName}>
-                {(s.titleJson as Record<string, string>)?.ar || ''}
+                {s.titleJson?.ar ?? ''}
               </Text>
               <Text style={styles.serviceMeta}>
-                {Number(s.basePrice).toFixed(0)} ر.س · {s.durationMin as number} دقيقة
+                {Number(s.basePrice).toFixed(0)} ر.س · {s.durationMin} دقيقة
               </Text>
             </TouchableOpacity>
           ))}
@@ -159,7 +179,7 @@ export default function CreateBookingScreen() {
         <View>
           <Text style={styles.sectionTitle}>تفاصيل الحجز</Text>
           <Text style={styles.selectedService}>
-             {(svc.titleJson as Record<string, string>)?.ar || ''}
+             {svc.titleJson?.ar ?? ''}
           </Text>
 
           {variants.length > 0 && (
@@ -172,14 +192,14 @@ export default function CreateBookingScreen() {
                 >
                   <Text style={[styles.chipText, !variantId && { color: '#fff' }]}>الأساسي</Text>
                 </TouchableOpacity>
-                {variants.map((v) => (
+                {variants.map((v, i) => (
                   <TouchableOpacity
-                    key={v.id as number}
+                    key={v.id ?? i}
                     style={[styles.chip, variantId === v.id && styles.chipActive]}
-                    onPress={() => setVariantId(v.id as number)}
+                    onPress={() => setVariantId(v.id)}
                   >
                     <Text style={[styles.chipText, variantId === v.id && { color: '#fff' }]}>
-                      {(v.nameJson as Record<string, string>)?.ar || ''}
+                      {v.nameJson?.ar ?? ''}
                     </Text>
                   </TouchableOpacity>
                 ))}
@@ -189,14 +209,14 @@ export default function CreateBookingScreen() {
 
           <View style={styles.field}>
             <Text style={styles.label}>العنوان</Text>
-            {addresses.map((a) => (
+            {addresses.map((a, i) => (
               <TouchableOpacity
-                key={a.id as number}
+                key={a.id ?? i}
                 style={[styles.optionCard, addressId === a.id && styles.optionCardActive]}
-                onPress={() => setAddressId(a.id as number)}
+                onPress={() => setAddressId(a.id)}
               >
                 <Text style={styles.optionText}>
-                  {a.label as string} — {a.city as string}
+                  {a.label} — {a.city}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -245,7 +265,7 @@ export default function CreateBookingScreen() {
             <View style={styles.summaryRow}>
               <Text style={styles.summaryLabel}>الخدمة</Text>
               <Text style={styles.summaryValue}>
-                {(svc.titleJson as Record<string, string>)?.ar || ''}
+                {svc.titleJson?.ar ?? ''}
               </Text>
             </View>
             <View style={styles.summaryRow}>
@@ -254,7 +274,7 @@ export default function CreateBookingScreen() {
             </View>
             <View style={styles.summaryRow}>
               <Text style={styles.summaryLabel}>المدة</Text>
-              <Text style={styles.summaryValue}>{svc.durationMin as number} دقيقة</Text>
+              <Text style={styles.summaryValue}>{svc.durationMin} دقيقة</Text>
             </View>
           </View>
           <Text style={styles.note}>* ستقوم الفنية بتأكيد الموعد النهائي</Text>

@@ -6,8 +6,16 @@ import { typedTrpc } from '@/lib/trpc-react';
 
 const CATS = [' مكياج', ' عناية', '‍️ شعر', ' أظافر', ' طبيعي'];
 
+interface ClosetProduct {
+  id?: number;
+  emoji?: string;
+  productName?: string;
+  category?: string;
+  openDate?: string;
+}
+
 export default function BeautyClosetScreen(): JSX.Element {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<ClosetProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [filter, setFilter] = useState<string | null>(null);
@@ -16,8 +24,8 @@ export default function BeautyClosetScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().restockReminder.list.query() as any)
-      .then((d: any) => {
+    (typedTrpc().restockReminder.list.query() as Promise<ClosetProduct[]>)
+      .then((d) => {
         setProducts(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -39,7 +47,7 @@ export default function BeautyClosetScreen(): JSX.Element {
     );
 
   const filtered = filter
-    ? products.filter((p) => (p.category as string) === filter)
+    ? products.filter((p) => p.category === filter)
     : products;
 
   return (
@@ -83,11 +91,11 @@ export default function BeautyClosetScreen(): JSX.Element {
         <View style={styles.grid}>
           {filtered.map((p, i) => (
             <View key={i} style={styles.card}>
-              <Text style={styles.pe}>{(p.emoji as string) ?? ''}</Text>
-              <Text style={styles.pn}>{p.productName as string}</Text>
+              <Text style={styles.pe}>{p.emoji ?? ''}</Text>
+              <Text style={styles.pn}>{p.productName}</Text>
               {p.openDate && (
                 <Text style={styles.pd}>
-                  فتح: {new Date(p.openDate as string).toLocaleDateString('ar-SA')}
+                  فتح: {new Date(p.openDate ?? '').toLocaleDateString('ar-SA')}
                 </Text>
               )}
               <View style={styles.pu}>

@@ -4,15 +4,29 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface FeedResponse {
+  items?: FeedItem[];
+}
+
+interface FeedItem {
+  id?: number;
+  emoji?: string;
+  title?: string;
+  technician?: string;
+  brand?: string;
+  price?: number;
+  relevance?: number;
+}
+
 export default function PersonalizedFeedScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<FeedResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().personalizedFeed.feed.query() as any)
-      .then((d: any) => {
+    (typedTrpc().personalizedFeed.feed.query() as Promise<FeedResponse>)
+      .then((d) => {
         setData(d);
         setLoading(false);
         setRefreshing(false);
@@ -26,7 +40,7 @@ export default function PersonalizedFeedScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   if (loading) return <SkeletonList count={5} />;
-  const items = (data?.items ?? []) as any[];
+  const items = data?.items ?? [];
   return (
     <ScrollView
       style={styles.c}
@@ -42,19 +56,19 @@ export default function PersonalizedFeedScreen(): JSX.Element {
       <Text style={styles.t}> خلاصتي</Text>
       {items.map((item) => (
         <View key={item.id} style={styles.card}>
-          <Text style={styles.em}>{item.emoji as string}</Text>
+          <Text style={styles.em}>{item.emoji}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nm}>{item.title as string}</Text>
+            <Text style={styles.nm}>{item.title}</Text>
             <Text style={styles.meta}>
               {item.technician
                 ? `‍ ${item.technician}`
                 : item.brand
                   ? `️ ${item.brand}`
-                  : ` ${item.price as number} ر.س`}
+                  : ` ${item.price} ر.س`}
             </Text>
           </View>
           <View style={styles.rb}>
-            <Text style={styles.rt}>{item.relevance as number}%</Text>
+            <Text style={styles.rt}>{item.relevance}%</Text>
           </View>
         </View>
       ))}

@@ -4,16 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface NotificationPrefs {
+  bookings?: boolean;
+  promo?: boolean;
+  chat?: boolean;
+  reviews?: boolean;
+}
+
 export default function NotificationSettingsScreen(): JSX.Element {
-  const [data, setData] = useState<any>({});
+  const [data, setData] = useState<NotificationPrefs>({});
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().notificationPrefs.get.query() as any)
-      .then((d: any) => {
+    (typedTrpc().notificationPrefs.get.query() as Promise<NotificationPrefs>)
+      .then((d) => {
         setData(d || {});
         setLoading(false);
         setRefreshing(false);
@@ -43,7 +50,7 @@ export default function NotificationSettingsScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> إعدادات الإشعارات</Text>
-      {['bookings', 'promo', 'chat', 'reviews'].map((key) => (
+      {(['bookings', 'promo', 'chat', 'reviews'] as const).map((key) => (
         <View key={key} style={styles.row}>
           <Text style={styles.label}>
             {key === 'bookings'
@@ -55,7 +62,7 @@ export default function NotificationSettingsScreen(): JSX.Element {
                   : ' التقييمات'}
           </Text>
           <Switch
-            value={(data as any)[key] ?? true}
+            value={data[key] ?? true}
             onValueChange={() => {}}
             trackColor={{ false: '#e5e7eb', true: '#6366f1' }}
           />

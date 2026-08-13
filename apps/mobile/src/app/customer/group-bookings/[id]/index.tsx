@@ -20,17 +20,33 @@ const SM: Record<string, { label: string; color: string; bg: string }> = {
   CANCELLED: { label: 'ملغي', color: '#dc2626', bg: '#fee2e2' },
 };
 
+interface GroupBookingDetail {
+  id?: number;
+  theme?: string;
+  name?: string;
+  status?: string;
+  totalAmount?: number;
+  discountPercent?: number;
+  members?: GroupBookingMember[];
+}
+
+interface GroupBookingMember {
+  id?: number;
+  name?: string;
+  status?: string;
+}
+
 export default function GroupBookingDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<GroupBookingDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback(
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      (typedTrpc().groupBookings.get.query({ id: parseInt(id, 10) }) as any)
-        .then((d: any) => {
+      (typedTrpc().groupBookings.get.query({ id: parseInt(id, 10) }) as Promise<GroupBookingDetail>)
+        .then((d) => {
           setData(d);
           setLoading(false);
           setRefreshing(false);
@@ -52,7 +68,7 @@ export default function GroupBookingDetailScreen(): JSX.Element {
         <Text style={styles.e}>تعذر تحميل التفاصيل</Text>
       </View>
     );
-  const s = SM[data.status as string] ?? { label: 'غير معروف', color: '#6b7280', bg: '#f3f4f6' };
+  const s = SM[data.status ?? ''] ?? { label: 'غير معروف', color: '#6b7280', bg: '#f3f4f6' };
   return (
     <ScrollView
       style={styles.c}
@@ -66,22 +82,22 @@ export default function GroupBookingDetailScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>
-        {TE[data.theme as string] ?? ''} {data.name as string}
+        {TE[data.theme ?? ''] ?? ''} {data.name}
       </Text>
       <View style={[styles.sb, { backgroundColor: s.bg }]}>
         <Text style={[styles.sbt, { color: s.color }]}>{s.label}</Text>
       </View>
       <View style={styles.sec}>
         <Text style={styles.secT}> المبلغ</Text>
-        <Text style={styles.ta}>{(data.totalAmount as number)?.toLocaleString()} ر.س</Text>
-        <Text style={styles.td}>خصم: {data.discountPercent as number}%</Text>
+        <Text style={styles.ta}>{data.totalAmount?.toLocaleString()} ر.س</Text>
+        <Text style={styles.td}>خصم: {data.discountPercent}%</Text>
       </View>
-      {(data.members as any[])?.map((m) => (
+      {(data.members ?? []).map((m) => (
         <View key={m.id} style={styles.mr}>
-          <Text style={styles.mn}>{m.name as string}</Text>
-          <View style={[styles.mb, { backgroundColor: SM[m.status as string]?.bg ?? '#f3f4f6' }]}>
-            <Text style={[styles.mbt, { color: SM[m.status as string]?.color ?? '#6b7280' }]}>
-              {SM[m.status as string]?.label ?? '—'}
+          <Text style={styles.mn}>{m.name}</Text>
+          <View style={[styles.mb, { backgroundColor: SM[m.status ?? '']?.bg ?? '#f3f4f6' }]}>
+            <Text style={[styles.mbt, { color: SM[m.status ?? '']?.color ?? '#6b7280' }]}>
+              {SM[m.status ?? '']?.label ?? '—'}
             </Text>
           </View>
         </View>

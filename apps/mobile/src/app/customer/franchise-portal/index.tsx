@@ -4,19 +4,34 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface FranchiseDashboard {
+  totalRevenue?: number;
+  totalBookings?: number;
+}
+
+interface FranchiseLocation {
+  id?: number;
+  branch?: string;
+  city?: string;
+  staff?: number;
+  bookings?: number;
+  revenue?: number;
+  status?: string;
+}
+
 export default function FranchisePortalScreen(): JSX.Element {
-  const [dash, setDash] = useState<any>(null);
-  const [locations, setLocations] = useState<any[]>([]);
+  const [dash, setDash] = useState<FranchiseDashboard | null>(null);
+  const [locations, setLocations] = useState<FranchiseLocation[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().franchisePortal.dashboard.query() as any,
-      typedTrpc().franchisePortal.locations.query() as any,
+      typedTrpc().franchisePortal.dashboard.query() as Promise<FranchiseDashboard>,
+      typedTrpc().franchisePortal.locations.query() as Promise<FranchiseLocation[]>,
     ])
-      .then(([d, l]: any[]) => {
+      .then(([d, l]) => {
         setDash(d);
         setLocations(l || []);
         setLoading(false);
@@ -47,13 +62,13 @@ export default function FranchisePortalScreen(): JSX.Element {
       <View style={styles.kr}>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
-          <Text style={styles.kv}>{((dash?.totalRevenue as number) ?? 0)?.toLocaleString()}</Text>
+          <Text style={styles.kv}>{(dash?.totalRevenue ?? 0).toLocaleString()}</Text>
           <Text style={styles.kl}>الإيرادات</Text>
         </View>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
           <Text style={[styles.kv, { color: '#2563eb' }]}>
-            {(dash?.totalBookings as number) ?? 0}
+            {dash?.totalBookings ?? 0}
           </Text>
           <Text style={styles.kl}>حجز</Text>
         </View>
@@ -61,14 +76,14 @@ export default function FranchisePortalScreen(): JSX.Element {
       {locations.map((l) => (
         <View key={l.id} style={styles.card}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.ln}>{l.branch as string}</Text>
+            <Text style={styles.ln}>{l.branch}</Text>
             <Text style={styles.lm}>
-               {l.city as string} · {l.staff as number} موظفات
+               {l.city} · {l.staff} موظفات
             </Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
-            <Text style={styles.lb}>{l.bookings as number} حجز</Text>
-            <Text style={styles.lr}>{(l.revenue as number)?.toLocaleString()} ر.س</Text>
+            <Text style={styles.lb}>{l.bookings} حجز</Text>
+            <Text style={styles.lr}>{l.revenue?.toLocaleString()} ر.س</Text>
             <View style={[styles.badge, l.status === 'active' ? styles.ba : styles.bp]}>
               <Text style={styles.bt}>{l.status === 'active' ? 'نشط' : 'معلق'}</Text>
             </View>

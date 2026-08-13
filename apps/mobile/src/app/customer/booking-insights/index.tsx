@@ -4,19 +4,30 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface AnalyticsSummary {
+  totalSpent?: number;
+  totalBookings?: number;
+}
+
+interface CategoryStat {
+  category?: string;
+  pct?: number;
+  spent?: number;
+}
+
 export default function BookingInsightsScreen(): JSX.Element {
-  const [analytics, setAnalytics] = useState<any>(null);
-  const [byCat, setByCat] = useState<any[]>([]);
+  const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
+  const [byCat, setByCat] = useState<CategoryStat[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      (typedTrpc().beautyAnalytics.summary.query() as any).catch(() => null),
-      (typedTrpc().beautyAnalytics.byCategory.query() as any).catch(() => []),
+      typedTrpc().beautyAnalytics.summary.query().catch(() => null) as Promise<AnalyticsSummary | null>,
+      typedTrpc().beautyAnalytics.byCategory.query().catch(() => []) as Promise<CategoryStat[]>,
     ])
-      .then(([a, c]: any[]) => {
+      .then(([a, c]) => {
         setAnalytics(a);
         setByCat(c || []);
         setLoading(false);
@@ -31,9 +42,9 @@ export default function BookingInsightsScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   if (loading) return <SkeletonList count={3} />;
-  const s = analytics ?? {};
-  const totalSpent = (s.totalSpent as number) ?? 0;
-  const totalBookings = (s.totalBookings as number) ?? 0;
+  const s: AnalyticsSummary = analytics ?? {};
+  const totalSpent = s.totalSpent ?? 0;
+  const totalBookings = s.totalBookings ?? 0;
   const avgPerBooking = totalBookings > 0 ? Math.round(totalSpent / totalBookings) : 0;
   return (
     <ScrollView
@@ -70,12 +81,12 @@ export default function BookingInsightsScreen(): JSX.Element {
           <Text style={styles.st}>‍️ توزيع الفئات</Text>
           {byCat.map((cat, i) => (
             <View key={i} style={styles.cr}>
-              <Text style={styles.cn}>{cat.category as string}</Text>
+              <Text style={styles.cn}>{cat.category}</Text>
               <View style={styles.cb}>
-                <View style={[styles.cf, { width: `${cat.pct as number}%` }]} />
+                <View style={[styles.cf, { width: `${cat.pct ?? 0}%` }]} />
               </View>
-              <Text style={styles.cp}>{cat.pct as number}%</Text>
-              <Text style={styles.cs}>{(cat.spent as number)?.toLocaleString()} ر.س</Text>
+              <Text style={styles.cp}>{cat.pct}%</Text>
+              <Text style={styles.cs}>{cat.spent?.toLocaleString()} ر.س</Text>
             </View>
           ))}
         </View>

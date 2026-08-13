@@ -12,15 +12,24 @@ const TE: Record<string, string> = {
   other: '',
 };
 
+interface GroupBookingSummary {
+  id?: number;
+  theme?: string;
+  name?: string;
+  status?: string;
+  members?: unknown[];
+  totalAmount?: number;
+}
+
 export default function GroupBookingsScreen(): JSX.Element {
-  const [groups, setGroups] = useState<any[]>([]);
+  const [groups, setGroups] = useState<GroupBookingSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().groupBookings.list.query() as any)
-      .then((d: any) => {
+    (typedTrpc().groupBookings.list.query() as Promise<GroupBookingSummary[]>)
+      .then((d) => {
         setGroups(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -49,11 +58,11 @@ export default function GroupBookingsScreen(): JSX.Element {
       <Text style={styles.t}>‍️ الحجوزات الجماعية</Text>
       {groups.map((g) => (
         <View key={g.id} style={styles.card}>
-          <Text style={styles.ge}>{TE[g.theme as string] ?? ''}</Text>
+          <Text style={styles.ge}>{TE[g.theme ?? ''] ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.gn}>{g.name as string}</Text>
+            <Text style={styles.gn}>{g.name}</Text>
             <Text style={styles.gm}>
-              {g.members?.length ?? 0} أفراد · {(g.totalAmount as number)?.toLocaleString()} ر.س
+              {g.members?.length ?? 0} أفراد · {g.totalAmount?.toLocaleString()} ر.س
             </Text>
           </View>
           <View

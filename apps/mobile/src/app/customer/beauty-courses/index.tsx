@@ -12,6 +12,22 @@ const LEVELS: Record<string, { label: string; color: string }> = {
   advanced: { label: 'متقدم', color: '#ef4444' },
 };
 
+interface CourseItem {
+  id?: number;
+  emoji?: string;
+  titleAr?: string;
+  descAr?: string;
+  instructor?: string;
+  lessons?: number;
+  rating?: number;
+  level?: string;
+}
+
+interface MyCourseItem {
+  courseId?: number;
+  course?: { titleJson?: { ar?: string; en?: string } };
+}
+
 export default function BeautyCoursesScreen(): JSX.Element {
   const {
     data: courses,
@@ -37,8 +53,8 @@ export default function BeautyCoursesScreen(): JSX.Element {
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الدورات" onRetry={refetch} />;
 
-  const items = (courses ?? []) as any[];
-  const myItems = (myCourses ?? []) as any[];
+  const items = (courses as CourseItem[] | undefined) ?? [];
+  const myItems = (myCourses as MyCourseItem[] | undefined) ?? [];
 
   return (
     <ScrollView
@@ -79,8 +95,8 @@ export default function BeautyCoursesScreen(): JSX.Element {
       )}
 
       {items.map((c) => {
-        const isEnrolled = enrolled.includes(c.id) || myItems.some((m) => m.courseId === c.id);
-        const level = LEVELS[c.level] ?? LEVELS['beginner']!;
+        const isEnrolled = enrolled.includes(c.id ?? 0) || myItems.some((m) => m.courseId === c.id);
+        const level = LEVELS[c.level ?? ''] ?? LEVELS['beginner']!;
         return (
           <View key={c.id} style={s.card}>
             <Text style={{ fontSize: 40 }}>{c.emoji}</Text>
@@ -105,7 +121,7 @@ export default function BeautyCoursesScreen(): JSX.Element {
                 </View>
               </View>
               <TouchableOpacity
-                onPress={() => handleEnroll(c.id)}
+                onPress={() => handleEnroll(c.id ?? 0)}
                 disabled={isEnrolled}
                 style={[s.btn, isEnrolled && { backgroundColor: '#d1fae5' }]}
               >
