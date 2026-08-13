@@ -13,6 +13,7 @@ const COLORS = {
 
 interface SubscriptionPlan {
   nameJson?: { ar?: string; en?: string };
+  priceMonthly?: number;
 }
 
 interface SubscriptionDetail {
@@ -48,11 +49,11 @@ export default function SubscriptionsScreen(): JSX.Element {
 
   return (
     <ScreenState
-      isLoading={sub.isLoading}
-      isError={sub.isError}
+      isLoading={sub.isLoading ?? false}
+      isError={sub.isError ?? false}
       isEmpty={false}
       errorMessage="فشل تحميل الاشتراكات"
-      onRetry={() => sub.refetch()}
+      onRetry={() => sub.refetch?.()}
     >
       <Text style={styles.title}> اشتراكاتي</Text>
       {subscription ? (
@@ -74,7 +75,7 @@ export default function SubscriptionsScreen(): JSX.Element {
       {plans && plans.length > 0 && (
         <>
           <Text style={styles.sectionTitle}>الباقات المتاحة</Text>
-          {(plans as Record<string, unknown>[]).map((p: Record<string, unknown>, i: number) => (
+          {plans.map((p, i) => (
             <View key={i} style={styles.planCard}>
               <Text style={styles.planTitle}>{p.nameJson?.ar ?? ''}</Text>
               <Text style={styles.planPrice}>{formatCurrency(Number(p.priceMonthly))} / شهر</Text>
