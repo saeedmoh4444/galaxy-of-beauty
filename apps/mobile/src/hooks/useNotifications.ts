@@ -10,8 +10,49 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Platform } from 'react-native';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let Notifications: any = null;
+interface NotificationResponse {
+  notification?: {
+    request?: {
+      content?: {
+        data?: { bookingId?: number; type?: string };
+      };
+    };
+  };
+}
+
+interface NotificationsModule {
+  setNotificationHandler(config: {
+    handleNotification: () => Promise<{
+      shouldShowAlert: boolean;
+      shouldPlaySound: boolean;
+      shouldSetBadge: boolean;
+    }>;
+  }): void;
+  addNotificationReceivedListener(
+    callback: (notification: unknown) => void,
+  ): { remove(): void };
+  addNotificationResponseReceivedListener(
+    callback: (response: NotificationResponse) => void,
+  ): { remove(): void };
+  scheduleNotificationAsync(options: {
+    content: {
+      title: string;
+      body: string;
+      data: { bookingId: number; type: string };
+    };
+    trigger: { date: Date };
+  }): Promise<void>;
+  getPermissionsAsync(): Promise<{ status: string }>;
+  requestPermissionsAsync(): Promise<{ status: string }>;
+  setNotificationChannelAsync(
+    channelId: string,
+    options: { name: string; importance: number },
+  ): Promise<void>;
+  getExpoPushTokenAsync(options: { projectId: string }): Promise<{ data: string }>;
+  AndroidImportance: { MAX: number };
+}
+
+let Notifications: NotificationsModule = null as unknown as NotificationsModule;
 try {
   Notifications = require('expo-notifications');
 } catch {
@@ -43,7 +84,7 @@ export function useNotifications() {
       .catch(() => {});
 
     const sub = Notifications.addNotificationReceivedListener(() => {});
-    const tapSub = Notifications.addNotificationResponseReceivedListener((response: any) => {
+    const tapSub = Notifications.addNotificationResponseReceivedListener((response: NotificationResponse) => {
       const data = response?.notification?.request?.content?.data;
       if (data?.bookingId) {
         /* navigate to booking detail */

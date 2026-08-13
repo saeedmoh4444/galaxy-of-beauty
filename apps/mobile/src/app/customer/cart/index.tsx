@@ -42,7 +42,7 @@ export default function CartScreen(): JSX.Element {
         <View key={i} style={styles.card}>
           <View style={styles.row}>
             <View style={styles.left}>
-              <Text style={styles.name}>{(item.nameJson as any)?.ar ?? ''}</Text>
+              <Text style={styles.name}>{(item.nameJson as Record<string, string>)?.ar ?? ''}</Text>
               <Text style={styles.qty}>الكمية: {String(item.quantity ?? 1)}</Text>
             </View>
             <Text style={styles.price}>{formatCurrency(Number(item.price ?? 0))}</Text>

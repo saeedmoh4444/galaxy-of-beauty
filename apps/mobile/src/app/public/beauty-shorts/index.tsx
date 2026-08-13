@@ -5,6 +5,16 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface ShortVideo {
+  id?: number;
+  emoji?: string;
+  titleAr?: string;
+  title?: string;
+  creator?: string;
+  duration?: string;
+  views?: number;
+}
+
 export default function BeautyShortsScreen(): JSX.Element {
   const {
     data: shorts,
@@ -18,7 +28,7 @@ export default function BeautyShortsScreen(): JSX.Element {
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الفيديوهات" onRetry={refetch} />;
 
-  const items = (shorts ?? []) as any[];
+  const items = (shorts ?? []) as ShortVideo[];
 
   return (
     <ScrollView

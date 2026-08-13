@@ -4,15 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface WaitlistEntry {
+  id?: number;
+  serviceName?: string;
+  position?: number;
+}
+
 export default function WaitlistScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<WaitlistEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().waitlist.myEntries.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .waitlist.myEntries.query()
+      .then((d: WaitlistEntry[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -43,8 +50,8 @@ export default function WaitlistScreen(): JSX.Element {
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{w.serviceName as string}</Text>
-            <Text style={styles.pos}>الموقع: #{w.position as number}</Text>
+            <Text style={styles.name}>{w.serviceName}</Text>
+            <Text style={styles.pos}>الموقع: #{w.position}</Text>
           </View>
         </View>
       ))}

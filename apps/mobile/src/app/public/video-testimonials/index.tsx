@@ -4,15 +4,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface VideoTestimonial {
+  id?: number;
+  emoji?: string;
+  titleAr?: string;
+  technician?: string;
+  views?: number;
+}
+
 export default function VideoTestimonialsScreen(): JSX.Element {
-  const [videos, setVideos] = useState<any[]>([]);
+  const [videos, setVideos] = useState<VideoTestimonial[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().videoTestimonials.list.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .videoTestimonials.list.query()
+      .then((d: VideoTestimonial[]) => {
         setVideos(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -41,11 +50,11 @@ export default function VideoTestimonialsScreen(): JSX.Element {
       <Text style={styles.t}> تقييمات العملاء</Text>
       {videos.map((v, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.ve}>{(v.emoji as string) ?? ''}</Text>
+          <Text style={styles.ve}>{v.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.vt}>{v.titleAr as string}</Text>
+            <Text style={styles.vt}>{v.titleAr}</Text>
             <Text style={styles.vm}>
-              ‍ {v.technician as string} ·  {v.views as number}
+              ‍ {v.technician} ·  {v.views}
             </Text>
           </View>
         </View>

@@ -4,8 +4,14 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface BehindScenesVideo {
+  emoji?: string;
+  titleAr?: string;
+  duration?: string;
+}
+
 export default function BehindScenesScreen(): JSX.Element {
-  const [videos, setVideos] = useState<any[]>([]);
+  const [videos, setVideos] = useState<BehindScenesVideo[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -14,7 +20,7 @@ export default function BehindScenesScreen(): JSX.Element {
     else setLoading(true);
     typedTrpc().behindScenes.list
       .query()
-      .then((d: any) => {
+      .then((d: BehindScenesVideo[]) => {
         setVideos(d || []);
         setLoading(false);
         setRefreshing(false);

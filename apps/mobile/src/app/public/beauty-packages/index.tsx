@@ -5,6 +5,17 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface BeautyPackage {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  services?: string;
+  serviceCount?: number;
+  originalPrice?: number;
+  price?: number;
+  savings?: number;
+}
+
 export default function BeautyPackagesScreen(): JSX.Element {
   const {
     data: packages,
@@ -18,7 +29,7 @@ export default function BeautyPackagesScreen(): JSX.Element {
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الباقات" onRetry={refetch} />;
 
-  const items = (packages ?? []) as any[];
+  const items = (packages ?? []) as BeautyPackage[];
 
   return (
     <ScrollView

@@ -4,16 +4,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface SaleAlert {
+  id?: number;
+  emoji?: string;
+  serviceName?: string;
+  discount?: number;
+}
+
 export default function SaleAlertsScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<SaleAlert[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().saleAlerts.list.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .saleAlerts.list.query()
+      .then((d: SaleAlert[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -45,10 +53,10 @@ export default function SaleAlertsScreen(): JSX.Element {
       <Text style={styles.t}>️ تنبيهات التخفيضات</Text>
       {data.map((a, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(a.emoji as string) ?? '️'}</Text>
+          <Text style={styles.emoji}>{a.emoji ?? '️'}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{a.serviceName as string}</Text>
-            <Text style={styles.discount}>-{a.discount as number}%</Text>
+            <Text style={styles.name}>{a.serviceName}</Text>
+            <Text style={styles.discount}>-{a.discount}%</Text>
           </View>
         </View>
       ))}

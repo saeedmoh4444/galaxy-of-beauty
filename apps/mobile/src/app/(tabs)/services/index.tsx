@@ -19,7 +19,7 @@ export default function ServicesScreen(): JSX.Element {
     sort: 'popular',
     limit: 20,
     search: search || undefined,
-  } as any);
+  });
   const data = services.data?.items as unknown[] | undefined;
 
   return (

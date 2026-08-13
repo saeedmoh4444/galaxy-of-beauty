@@ -5,6 +5,16 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface BeautyStory {
+  id?: number;
+  emoji?: string;
+  titleAr?: string;
+  title?: string;
+  author?: string;
+  preview?: string;
+  descAr?: string;
+}
+
 export default function BeautyStoriesScreen(): JSX.Element {
   const {
     data: stories,
@@ -18,7 +28,7 @@ export default function BeautyStoriesScreen(): JSX.Element {
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل القصص" onRetry={refetch} />;
 
-  const items = (stories ?? []) as any[];
+  const items = (stories ?? []) as BeautyStory[];
 
   return (
     <ScrollView

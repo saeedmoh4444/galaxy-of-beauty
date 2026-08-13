@@ -5,6 +5,15 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface GiftGuide {
+  id?: number;
+  emoji?: string;
+  titleAr?: string;
+  occasionAr?: string;
+  priceRange?: string;
+  minPrice?: number;
+}
+
 export default function GiftGuideScreen(): JSX.Element {
   const {
     data: guides,
@@ -18,7 +27,7 @@ export default function GiftGuideScreen(): JSX.Element {
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الدليل" onRetry={refetch} />;
 
-  const items = (guides ?? []) as any[];
+  const items = (guides ?? []) as GiftGuide[];
 
   return (
     <ScrollView

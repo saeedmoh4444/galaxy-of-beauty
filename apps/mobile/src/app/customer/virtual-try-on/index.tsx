@@ -4,15 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface TryOnProduct {
+  id?: number;
+  hex?: string;
+  nameAr?: string;
+}
+
 export default function VirtualTryOnScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<TryOnProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().virtualTryOn.products.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .virtualTryOn.products.query()
+      .then((d: TryOnProduct[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -42,8 +49,8 @@ export default function VirtualTryOnScreen(): JSX.Element {
       <Text style={styles.sub}>جربي ألوان المكياج افتراضياً</Text>
       {data.map((p, i) => (
         <TouchableOpacity key={i} style={styles.card}>
-          <View style={[styles.swatch, { backgroundColor: p.hex as string }]} />
-          <Text style={styles.name}>{p.nameAr as string}</Text>
+          <View style={[styles.swatch, { backgroundColor: p.hex }]} />
+          <Text style={styles.name}>{p.nameAr}</Text>
         </TouchableOpacity>
       ))}
     </ScrollView>

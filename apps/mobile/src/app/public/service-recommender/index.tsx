@@ -28,7 +28,7 @@ export default function ServiceRecommenderScreen(): JSX.Element {
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{(r.emoji as string) ?? ''}</Text>
           <View style={styles.info}>
-            <Text style={styles.name}>{(r.nameJson as any)?.ar ?? (r.nameAr as string) ?? ''}</Text>
+            <Text style={styles.name}>{(r.nameJson as Record<string, string>)?.ar ?? (r.nameAr as string) ?? ''}</Text>
             <Text style={styles.price}>{r.price ? formatCurrency(Number(r.price)) : ''}</Text>
           </View>
         </View>

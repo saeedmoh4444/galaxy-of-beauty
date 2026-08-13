@@ -4,15 +4,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface SavingsGoal {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  current?: number;
+  target?: number;
+}
+
 export default function SavingsGoalsScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<SavingsGoal[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().savingsGoals.list.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .savingsGoals.list.query()
+      .then((d: SavingsGoal[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -41,12 +50,11 @@ export default function SavingsGoalsScreen(): JSX.Element {
       <Text style={styles.t}> أهداف التوفير</Text>
       {data.map((g, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(g.emoji as string) ?? ''}</Text>
+          <Text style={styles.emoji}>{g.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{g.nameAr as string}</Text>
+            <Text style={styles.name}>{g.nameAr}</Text>
             <Text style={styles.progress}>
-              {(g.current as number)?.toLocaleString()} / {(g.target as number)?.toLocaleString()}{' '}
-              ر.س
+              {g.current?.toLocaleString()} / {g.target?.toLocaleString()} ر.س
             </Text>
           </View>
         </View>

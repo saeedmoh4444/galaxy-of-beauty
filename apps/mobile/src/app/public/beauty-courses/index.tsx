@@ -22,7 +22,7 @@ export default function BeautyCoursesScreen(): JSX.Element {
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{(c.emoji as string) ?? ''}</Text>
           <View style={styles.info}>
-            <Text style={styles.name}>{(c.titleJson as any)?.ar ?? ''}</Text>
+            <Text style={styles.name}>{(c.titleJson as Record<string, string>)?.ar ?? ''}</Text>
             <Text style={styles.instructor}>
               {c.instructor as string} • {c.lessons as number} دروس
             </Text>

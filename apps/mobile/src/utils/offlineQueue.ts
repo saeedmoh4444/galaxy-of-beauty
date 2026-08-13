@@ -43,6 +43,11 @@ interface QueuedAction {
   retries: number;
 }
 
+interface OfflineMutationClient {
+  create: { mutate(input: Record<string, unknown>): Promise<unknown> };
+  cancel: { mutate(input: Record<string, unknown>): Promise<unknown> };
+}
+
 let isOnline = true;
 let syncInProgress = false;
 let listeners: Array<() => void> = [];
@@ -135,13 +140,14 @@ export async function syncQueue(): Promise<void> {
 async function replayAction(action: QueuedAction): Promise<void> {
   // Dynamic import to avoid circular dependency
   const { trpc } = await import('@/lib/trpc-react');
+  const bookings = trpc.bookings as unknown as OfflineMutationClient;
 
   switch (action.type) {
     case 'create_booking':
-      await (trpc as any).bookings.create.mutate(action.payload);
+      await bookings.create.mutate(action.payload);
       break;
     case 'cancel_booking':
-      await (trpc as any).bookings.cancel.mutate(action.payload);
+      await bookings.cancel.mutate(action.payload);
       break;
     default:
       console.warn(`[OfflineQueue] Unknown action type: ${action.type}`);

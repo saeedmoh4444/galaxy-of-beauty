@@ -4,15 +4,25 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface MommyService {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  descAr?: string;
+  price?: number;
+  duration?: string;
+}
+
 export default function MommyAndMeScreen(): JSX.Element {
-  const [services, setServices] = useState<any[]>([]);
+  const [services, setServices] = useState<MommyService[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().mommyAndMe.services.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .mommyAndMe.services.query()
+      .then((d: MommyService[]) => {
         setServices(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -41,13 +51,13 @@ export default function MommyAndMeScreen(): JSX.Element {
       <Text style={styles.t}>‍ أمي وأنا</Text>
       {services.map((s) => (
         <View key={s.id} style={styles.card}>
-          <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
+          <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.sn}>{s.nameAr as string}</Text>
-            <Text style={styles.sd}>{s.descAr as string}</Text>
+            <Text style={styles.sn}>{s.nameAr}</Text>
+            <Text style={styles.sd}>{s.descAr}</Text>
             <View style={styles.sm}>
-              <Text style={styles.sp}>{(s.price as number)?.toLocaleString()} ر.س</Text>
-              <Text style={styles.sdu}>️ {s.duration as string}</Text>
+              <Text style={styles.sp}>{s.price?.toLocaleString()} ر.س</Text>
+              <Text style={styles.sdu}>️ {s.duration}</Text>
             </View>
           </View>
           <TouchableOpacity style={styles.bb}>

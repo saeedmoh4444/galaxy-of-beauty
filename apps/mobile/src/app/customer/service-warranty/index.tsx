@@ -4,15 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface ServiceWarranty {
+  id?: number;
+  emoji?: string;
+  serviceName?: string;
+  expiresAt?: string;
+}
+
 export default function ServiceWarrantyScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<ServiceWarranty[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().serviceWarranty.list.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .serviceWarranty.list.query()
+      .then((d: ServiceWarranty[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -41,11 +49,11 @@ export default function ServiceWarrantyScreen(): JSX.Element {
       <Text style={styles.t}>️ ضمان الخدمة</Text>
       {data.map((w, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(w.emoji as string) ?? '️'}</Text>
+          <Text style={styles.emoji}>{w.emoji ?? '️'}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{w.serviceName as string}</Text>
+            <Text style={styles.name}>{w.serviceName}</Text>
             <Text style={styles.exp}>
-              ينتهي: {new Date(w.expiresAt as string).toLocaleDateString('ar-SA')}
+              ينتهي: {new Date(w.expiresAt ?? Date.now()).toLocaleDateString('ar-SA')}
             </Text>
           </View>
         </View>

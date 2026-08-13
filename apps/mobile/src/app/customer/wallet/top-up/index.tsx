@@ -30,7 +30,7 @@ export default function WalletTopUpScreen(): JSX.Element {
       <View style={styles.balanceCard}>
         <Text style={styles.balanceLabel}>الرصيد الحالي</Text>
         <Text style={styles.balanceAmount}>
-          {formatCurrency(Number((balance.data as any)?.balance ?? 0))}
+          {formatCurrency(Number(balance.data?.balance ?? 0))}
         </Text>
       </View>
       <Text style={styles.sectionTitle}>المبالغ السريعة</Text>

@@ -10,15 +10,26 @@ const TL: Record<string, { name: string; emoji: string; color: string }> = {
   PLATINUM: { name: 'البلاتينية', emoji: '', color: '#7c3aed' },
 };
 
+interface Reward {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  titleAr?: string;
+  descAr?: string;
+  pointsCost?: number;
+  points?: number;
+}
+
 export default function RewardsScreen(): JSX.Element {
-  const [rewards, setRewards] = useState<any[]>([]);
+  const [rewards, setRewards] = useState<Reward[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().loyalty.rewards.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .loyalty.rewards.query()
+      .then((d: Reward[]) => {
         setRewards(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -58,13 +69,13 @@ export default function RewardsScreen(): JSX.Element {
       </View>
       {rewards.map((r) => (
         <View key={r.id} style={styles.card}>
-          <Text style={styles.re}>{(r.emoji as string) ?? ''}</Text>
+          <Text style={styles.re}>{r.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.rn}>{(r.nameAr as string) ?? (r.titleAr as string)}</Text>
-            <Text style={styles.rd}>{r.descAr as string}</Text>
+            <Text style={styles.rn}>{r.nameAr ?? r.titleAr}</Text>
+            <Text style={styles.rd}>{r.descAr}</Text>
           </View>
           <Text style={styles.rp}>
-            {((r.pointsCost as number) ?? (r.points as number))?.toLocaleString()} نقطة
+            {(r.pointsCost ?? r.points)?.toLocaleString()} نقطة
           </Text>
         </View>
       ))}

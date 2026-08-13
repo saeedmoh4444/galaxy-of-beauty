@@ -4,15 +4,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface LookOfTheDay {
+  id?: number;
+  emoji?: string;
+  titleAr?: string;
+  descAr?: string;
+  technician?: string;
+}
+
 export default function LookOfTheDayScreen(): JSX.Element {
-  const [looks, setLooks] = useState<any[]>([]);
+  const [looks, setLooks] = useState<LookOfTheDay[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().lookOfTheDay.list.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .lookOfTheDay.list.query()
+      .then((d: LookOfTheDay[]) => {
         setLooks(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -41,11 +50,11 @@ export default function LookOfTheDayScreen(): JSX.Element {
       <Text style={styles.t}> إطلالة اليوم</Text>
       {looks.map((l, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.le}>{(l.emoji as string) ?? ''}</Text>
+          <Text style={styles.le}>{l.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.lt}>{l.titleAr as string}</Text>
-            <Text style={styles.ld}>{l.descAr as string}</Text>
-            <Text style={styles.lb}>‍ {l.technician as string}</Text>
+            <Text style={styles.lt}>{l.titleAr}</Text>
+            <Text style={styles.ld}>{l.descAr}</Text>
+            <Text style={styles.lb}>‍ {l.technician}</Text>
           </View>
         </View>
       ))}

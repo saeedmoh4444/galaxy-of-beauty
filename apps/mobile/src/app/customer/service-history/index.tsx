@@ -27,7 +27,7 @@ export default function ServiceHistoryScreen(): JSX.Element {
     >
       <Text style={styles.title}> سجل الخدمات</Text>
       <FlatList
-        data={data as any[]}
+        data={data as Record<string, unknown>[]}
         keyExtractor={(_, i) => String(i)}
         renderItem={({ item }: { item: Record<string, unknown> }) => (
           <View style={styles.row}>

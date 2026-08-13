@@ -20,7 +20,7 @@ export default function BeautyGoalsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().beautyBudget.get.query() as any)
+    typedTrpc().beautyBudget.get.query()
       .then(() => {
         setLoading(false);
         setRefreshing(false);

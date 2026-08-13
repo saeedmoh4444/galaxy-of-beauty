@@ -2,12 +2,19 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { trpc } from '@/lib/api';
 import { useState, useEffect } from 'react';
 import { typedTrpc } from '@/lib/trpc-react';
+
+interface FeatureFlag {
+  key?: string;
+  description?: string;
+  enabled?: boolean;
+}
+
 export default function AdminToolsScreen(): JSX.Element {
-  const [flags, setFlags] = useState<any[]>([]);
+  const [flags, setFlags] = useState<FeatureFlag[]>([]);
   useEffect(() => {
     typedTrpc().featureFlags?.list
       ?.query()
-      .then((d: any) => setFlags(d ?? []))
+      .then((d: FeatureFlag[]) => setFlags(d ?? []))
       .catch(() => {});
   }, []);
   return (

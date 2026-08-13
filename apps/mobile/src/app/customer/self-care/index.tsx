@@ -4,15 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface SelfCareActivity {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  duration?: string;
+}
+
 export default function SelfCareScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<SelfCareActivity[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().selfCare.activities.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .selfCare.activities.query()
+      .then((d: SelfCareActivity[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -41,10 +49,10 @@ export default function SelfCareScreen(): JSX.Element {
       <Text style={styles.t}> العناية الذاتية</Text>
       {data.map((a, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(a.emoji as string) ?? ''}</Text>
+          <Text style={styles.emoji}>{a.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{a.nameAr as string}</Text>
-            <Text style={styles.dur}>️ {a.duration as string}</Text>
+            <Text style={styles.name}>{a.nameAr}</Text>
+            <Text style={styles.dur}>️ {a.duration}</Text>
           </View>
         </View>
       ))}

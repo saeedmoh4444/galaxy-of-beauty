@@ -4,15 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface LeaderboardEntry {
+  id?: number;
+  name?: string;
+  referrals?: number;
+}
+
 export default function ReferralRaceScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().referralRace.leaderboard.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .referralRace.leaderboard.query()
+      .then((d: LeaderboardEntry[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -45,8 +52,8 @@ export default function ReferralRaceScreen(): JSX.Element {
             <Text style={styles.rkt}>{i + 1}</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.rn}>{r.name as string}</Text>
-            <Text style={styles.rc}>{r.referrals as number} إحالة</Text>
+            <Text style={styles.rn}>{r.name}</Text>
+            <Text style={styles.rc}>{r.referrals} إحالة</Text>
           </View>
           {i === 0 && <Text style={styles.cr}></Text>}
         </View>

@@ -25,10 +25,10 @@ export default function StreakCalendarScreen(): JSX.Element {
       <View style={styles.card}>
         <Text style={styles.fire}></Text>
         <Text style={styles.current}>
-          الأسبوع الحالي: {String((streak.data as any)?.currentStreak ?? 0)} أيام
+          الأسبوع الحالي: {String(streak.data?.currentStreak ?? 0)} أيام
         </Text>
         <Text style={styles.longest}>
-          أطول استمرارية: {String((streak.data as any)?.longestStreak ?? 0)} أيام
+          أطول استمرارية: {String(streak.data?.longestStreak ?? 0)} أيام
         </Text>
       </View>
       <Text style={styles.tip}>احجزي أسبوعياً للحفاظ على استمراريتكِ وكسب المكافآت!</Text>

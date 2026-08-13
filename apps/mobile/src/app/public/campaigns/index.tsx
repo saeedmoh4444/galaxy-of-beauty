@@ -5,6 +5,17 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface Campaign {
+  id?: number;
+  emoji?: string;
+  titleAr?: string;
+  title?: string;
+  descAr?: string;
+  description?: string;
+  discount?: number;
+  promoCode?: string;
+}
+
 export default function CampaignsScreen(): JSX.Element {
   const {
     data: campaigns,
@@ -18,7 +29,7 @@ export default function CampaignsScreen(): JSX.Element {
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الحملات" onRetry={refetch} />;
 
-  const items = (campaigns ?? []) as any[];
+  const items = (campaigns ?? []) as Campaign[];
 
   return (
     <ScrollView

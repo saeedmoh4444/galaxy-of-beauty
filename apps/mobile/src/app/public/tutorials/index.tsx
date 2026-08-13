@@ -4,15 +4,26 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface Tutorial {
+  id?: number;
+  emoji?: string;
+  titleAr?: string;
+  categoryAr?: string;
+  difficultyAr?: string;
+  duration?: string;
+  views?: number;
+}
+
 export default function TutorialsScreen(): JSX.Element {
-  const [tutorials, setTutorials] = useState<any[]>([]);
+  const [tutorials, setTutorials] = useState<Tutorial[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().tutorials.list.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .tutorials.list.query()
+      .then((d: Tutorial[]) => {
         setTutorials(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -41,14 +52,14 @@ export default function TutorialsScreen(): JSX.Element {
       <Text style={styles.t}> دروس الجمال</Text>
       {tutorials.map((t) => (
         <View key={t.id} style={styles.card}>
-          <Text style={styles.te}>{(t.emoji as string) ?? ''}</Text>
+          <Text style={styles.te}>{t.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.tt}>{t.titleAr as string}</Text>
+            <Text style={styles.tt}>{t.titleAr}</Text>
             <Text style={styles.tm}>
-              {t.categoryAr as string} · {t.difficultyAr as string} · ️ {t.duration as string}
+              {t.categoryAr} · {t.difficultyAr} · ️ {t.duration}
             </Text>
           </View>
-          <Text style={styles.tv}> {t.views as number}</Text>
+          <Text style={styles.tv}> {t.views}</Text>
         </View>
       ))}
     </ScrollView>

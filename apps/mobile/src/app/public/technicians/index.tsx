@@ -5,6 +5,16 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface Technician {
+  id?: number;
+  name?: string;
+  specialtyAr?: string;
+  specialty?: string;
+  rating?: number;
+  totalBookings?: number;
+  startingPrice?: number;
+}
+
 export default function TechniciansScreen(): JSX.Element {
   const {
     data: techs,
@@ -18,7 +28,7 @@ export default function TechniciansScreen(): JSX.Element {
   if (loading) return <SkeletonList count={6} />;
   if (error) return <ErrorAlert message="فشل تحميل الفنيات" onRetry={refetch} />;
 
-  const items = (techs ?? []) as any[];
+  const items = (techs ?? []) as Technician[];
 
   return (
     <ScrollView

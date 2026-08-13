@@ -31,7 +31,7 @@ export default function AiChatScreen() {
     setInput('');
     setSending(true);
     try {
-      const res = (await (trpc.ai.chat as any).mutate({ message: text })) as Record<
+      const res = (await trpc.ai.chat.mutate({ message: text })) as Record<
         string,
         unknown
       >;

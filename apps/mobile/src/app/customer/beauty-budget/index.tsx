@@ -44,7 +44,7 @@ export default function BeautyBudgetScreen(): JSX.Element {
           )}
           {savings?.data && (
             <Text style={styles.label}>
-               أهداف الادخار: {(savings.data as any[])?.length ?? 0}
+               أهداف الادخار: {savings.data?.length ?? 0}
             </Text>
           )}
         </View>

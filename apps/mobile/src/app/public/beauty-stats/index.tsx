@@ -3,8 +3,18 @@ import { trpc } from '@/lib/api';
 import { useState, useEffect } from 'react';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface PlatformStats {
+  totalBookings: number;
+  totalServices: number;
+  totalTechnicians: number;
+  totalReviews: number;
+  avgRating: number;
+  citiesCount: number;
+  happyCustomers: number;
+}
+
 export default function BeautyStatsScreen(): JSX.Element {
-  const [stats, setStats] = useState({
+  const [stats, setStats] = useState<PlatformStats>({
     totalBookings: 254000,
     totalServices: 850,
     totalTechnicians: 3200,
@@ -16,7 +26,7 @@ export default function BeautyStatsScreen(): JSX.Element {
   useEffect(() => {
     typedTrpc().beautyStats?.platform
       ?.query?.()
-      .then((s: any) => s && setStats(s))
+      .then((s: PlatformStats | null) => s && setStats(s))
       .catch(() => {});
   }, []);
 

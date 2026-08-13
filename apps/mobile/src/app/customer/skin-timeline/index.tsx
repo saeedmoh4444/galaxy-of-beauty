@@ -3,8 +3,16 @@ import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface SkinEntry {
+  id?: number;
+  title?: string;
+  createdAt?: string;
+  hydration?: number;
+  glow?: number;
+}
+
 export default function SkinTimelineScreen(): JSX.Element {
-  const [entries, setEntries] = useState<any[]>([]);
+  const [entries, setEntries] = useState<SkinEntry[]>([]);
   const [, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [compareMode, setCompareMode] = useState(false);
@@ -12,8 +20,9 @@ export default function SkinTimelineScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().skinDiary.entries.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .skinDiary.entries.query()
+      .then((d: SkinEntry[]) => {
         setEntries(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -70,15 +79,15 @@ export default function SkinTimelineScreen(): JSX.Element {
               <View style={[styles.entryDot, i === 0 && styles.entryDotLatest]} />
               <View style={styles.entryCard}>
                 <Text style={styles.entryDate}>
-                  {new Date((e.createdAt as string) ?? Date.now()).toLocaleDateString('ar-SA', {
+                  {new Date(e.createdAt ?? Date.now()).toLocaleDateString('ar-SA', {
                     month: 'short',
                     day: 'numeric',
                   })}
                 </Text>
-                <Text style={styles.entryTitle}>{(e.title as string) ?? 'تحديث البشرة'}</Text>
+                <Text style={styles.entryTitle}>{e.title ?? 'تحديث البشرة'}</Text>
                 <View style={styles.entryMetrics}>
-                  {e.hydration && <Text style={styles.metric}> {e.hydration as number}%</Text>}
-                  {e.glow && <Text style={styles.metric}> {e.glow as number}/10</Text>}
+                  {e.hydration && <Text style={styles.metric}> {e.hydration}%</Text>}
+                  {e.glow && <Text style={styles.metric}> {e.glow}/10</Text>}
                 </View>
               </View>
             </View>

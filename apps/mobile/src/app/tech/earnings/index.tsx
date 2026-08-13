@@ -36,13 +36,13 @@ export default function TechEarningsScreen(): JSX.Element {
       </View>
       {items && items.length > 0 && (
         <FlatList
-          data={items as any[]}
+          data={items as Record<string, unknown>[]}
           keyExtractor={(_, i) => String(i)}
           renderItem={({ item }) => (
             <View style={styles.txnRow}>
               <View>
                 <Text style={styles.txnPeriod}>
-                  {item.periodStart ? new Date(item.periodStart).toLocaleDateString('ar-SA') : ''}
+                  {item.periodStart ? new Date(item.periodStart as string).toLocaleDateString('ar-SA') : ''}
                 </Text>
                 <Text style={styles.txnStatus}>{item.status as string}</Text>
               </View>

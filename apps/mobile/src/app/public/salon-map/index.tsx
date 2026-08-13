@@ -4,15 +4,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface SalonLocation {
+  id?: number;
+  nameAr?: string;
+  name?: string;
+  city?: string;
+  rating?: number;
+}
+
 export default function SalonMapScreen(): JSX.Element {
-  const [salons, setSalons] = useState<any[]>([]);
+  const [salons, setSalons] = useState<SalonLocation[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().salonMap.locations.query({ city: 'الرياض' /* TODO */ }) as any)
-      .then((d: any) => {
+    typedTrpc()
+      .salonMap.locations.query({ city: 'الرياض' /* TODO */ })
+      .then((d: SalonLocation[]) => {
         setSalons(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -43,9 +52,9 @@ export default function SalonMapScreen(): JSX.Element {
         <View key={s.id} style={styles.card}>
           <Text style={styles.se}>‍️</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.sn}>{(s.nameAr as string) ?? (s.name as string)}</Text>
-            <Text style={styles.sm}> {s.city as string}</Text>
-            <Text style={styles.sr}> {(s.rating as number) ?? 0}</Text>
+            <Text style={styles.sn}>{s.nameAr ?? s.name}</Text>
+            <Text style={styles.sm}> {s.city}</Text>
+            <Text style={styles.sr}> {s.rating ?? 0}</Text>
           </View>
           <TouchableOpacity style={styles.vb}>
             <Text style={styles.vt}>عرض</Text>

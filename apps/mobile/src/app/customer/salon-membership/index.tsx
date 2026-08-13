@@ -5,6 +5,11 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface MembershipInfo {
+  tier?: string;
+  autoRenew?: boolean;
+}
+
 const MEMBERSHIPS = [
   {
     key: 'basic',
@@ -77,7 +82,7 @@ export default function SalonMembershipScreen(): JSX.Element {
   if (loading) return <SkeletonList count={3} />;
   if (error) return <ErrorAlert message="فشل تحميل العضويات" onRetry={refetch} />;
 
-  const current = membership as any;
+  const current = membership as MembershipInfo | undefined;
 
   return (
     <ScrollView

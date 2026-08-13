@@ -6,6 +6,21 @@ import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface ServiceCategory {
+  key?: string;
+  emoji?: string;
+  nameAr?: string;
+}
+
+interface ServiceItem {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  descAr?: string;
+  price?: number;
+  duration?: string;
+}
+
 export default function ServicesScreen(): JSX.Element {
   const {
     data: categories,
@@ -25,8 +40,8 @@ export default function ServicesScreen(): JSX.Element {
   if (loading) return <SkeletonList count={6} />;
   if (error) return <ErrorAlert message="فشل تحميل الخدمات" onRetry={refetch} />;
 
-  const catItems = (categories ?? []) as any[];
-  const svcItems = (services ?? []) as any[];
+  const catItems = (categories ?? []) as ServiceCategory[];
+  const svcItems = (services ?? []) as ServiceItem[];
 
   return (
     <ScrollView
@@ -45,12 +60,12 @@ export default function ServicesScreen(): JSX.Element {
             return (
               <TouchableOpacity
                 key={cat.key}
-                onPress={() => setActiveCat(cat.key as string)}
+                onPress={() => setActiveCat(cat.key ?? null)}
                 style={[styles.catChip, isActive && styles.catChipActive]}
               >
-                <Text style={styles.catEmoji}>{(cat.emoji as string) ?? ''}</Text>
+                <Text style={styles.catEmoji}>{cat.emoji ?? ''}</Text>
                 <Text style={[styles.catName, isActive && styles.catNameActive]}>
-                  {cat.nameAr as string}
+                  {cat.nameAr}
                 </Text>
               </TouchableOpacity>
             );
@@ -65,13 +80,13 @@ export default function ServicesScreen(): JSX.Element {
           ) : (
             svcItems.map((s) => (
               <View key={s.id} style={styles.card}>
-                <Text style={styles.svcEmoji}>{(s.emoji as string) ?? '‍️'}</Text>
+                <Text style={styles.svcEmoji}>{s.emoji ?? '‍️'}</Text>
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.svcName}>{s.nameAr as string}</Text>
-                  <Text style={styles.svcDesc}>{(s.descAr as string)?.substring(0, 80)}</Text>
+                  <Text style={styles.svcName}>{s.nameAr}</Text>
+                  <Text style={styles.svcDesc}>{s.descAr?.substring(0, 80)}</Text>
                   <View style={styles.svcMeta}>
-                    <Text style={styles.svcPrice}>{(s.price as number)?.toLocaleString()} ر.س</Text>
-                    <Text style={styles.svcDuration}>️ {s.duration as string}</Text>
+                    <Text style={styles.svcPrice}>{s.price?.toLocaleString()} ر.س</Text>
+                    <Text style={styles.svcDuration}>️ {s.duration}</Text>
                   </View>
                 </View>
               </View>

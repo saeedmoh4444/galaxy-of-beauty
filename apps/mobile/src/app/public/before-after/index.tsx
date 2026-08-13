@@ -29,7 +29,7 @@ export default function BeforeAfterScreen(): JSX.Element {
             <View style={styles.imagePlaceholder}>
               <Text style={styles.imageText}></Text>
             </View>
-            <Text style={styles.label}>{(item.titleJson as any)?.ar ?? ''}</Text>
+            <Text style={styles.label}>{(item.titleJson as Record<string, string>)?.ar ?? ''}</Text>
           </View>
         ))}
       </View>

@@ -6,6 +6,12 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface ConsultationBooking {
+  consultantType?: string;
+  slot?: string;
+  status?: string;
+}
+
 const CONSULTANTS = [
   {
     key: 'skincare',
@@ -76,7 +82,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
   if (loading) return <SkeletonList count={3} />;
   if (error) return <ErrorAlert message="فشل تحميل الاستشارات" onRetry={refetch} />;
 
-  const myBookings = (bookings ?? []) as any[];
+  const myBookings = (bookings ?? []) as ConsultationBooking[];
 
   return (
     <ScrollView

@@ -32,7 +32,7 @@ export default function PaymentsScreen(): JSX.Element {
     >
       <Text style={styles.title}> المدفوعات</Text>
       <FlatList
-        data={data as any[]}
+        data={data as Record<string, unknown>[]}
         keyExtractor={(_, i) => String(i)}
         renderItem={({ item }: { item: Record<string, unknown> }) => (
           <View style={styles.row}>

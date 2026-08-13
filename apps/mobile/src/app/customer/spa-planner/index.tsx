@@ -4,15 +4,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface SpaService {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  duration?: string;
+  price?: number;
+}
+
 export default function SpaPlannerScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<SpaService[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().spaPlanner.services.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .spaPlanner.services.query()
+      .then((d: SpaService[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -41,11 +50,11 @@ export default function SpaPlannerScreen(): JSX.Element {
       <Text style={styles.t}>‍️ مخطط السبا</Text>
       {data.map((s, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(s.emoji as string) ?? '‍️'}</Text>
+          <Text style={styles.emoji}>{s.emoji ?? '‍️'}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{s.nameAr as string}</Text>
+            <Text style={styles.name}>{s.nameAr}</Text>
             <Text style={styles.dur}>
-              ️ {s.duration as string} · {(s.price as number)?.toLocaleString()} ر.س
+              ️ {s.duration} · {s.price?.toLocaleString()} ر.س
             </Text>
           </View>
         </View>
