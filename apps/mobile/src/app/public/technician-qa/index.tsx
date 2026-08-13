@@ -4,16 +4,25 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface QAItem {
+  id?: number;
+  emoji?: string;
+  questionAr?: string;
+  categoryAr?: string;
+  technicianName?: string;
+  answerAr?: string;
+}
+
 export default function TechnicianQAScreen(): JSX.Element {
-  const [questions, setQuestions] = useState<any[]>([]);
+  const [questions, setQuestions] = useState<QAItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().technicianQA.list.query() as any)
-      .then((d: any) => {
+    (typedTrpc().technicianQA.list.query() as Promise<QAItem[]>)
+      .then((d) => {
         setQuestions(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -49,16 +58,16 @@ export default function TechnicianQAScreen(): JSX.Element {
       ) : (
         questions.map((q) => (
           <View key={q.id} style={styles.card}>
-            <Text style={styles.qEmoji}>{(q.emoji as string) ?? ''}</Text>
+            <Text style={styles.qEmoji}>{q.emoji ?? ''}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.qText}>{q.questionAr as string}</Text>
+              <Text style={styles.qText}>{q.questionAr ?? ''}</Text>
               <Text style={styles.qMeta}>
-                {q.categoryAr as string} · ‍ {q.technicianName as string}
+                {q.categoryAr ?? ''} ·  {q.technicianName ?? ''}
               </Text>
               {q.answerAr ? (
                 <View style={styles.answer}>
                   <Text style={styles.answerLabel}> الإجابة:</Text>
-                  <Text style={styles.answerText}>{q.answerAr as string}</Text>
+                  <Text style={styles.answerText}>{q.answerAr}</Text>
                 </View>
               ) : (
                 <Text style={styles.waiting}> في انتظار الرد...</Text>

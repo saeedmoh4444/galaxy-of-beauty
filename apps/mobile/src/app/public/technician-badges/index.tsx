@@ -4,16 +4,25 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface TechBadge {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  descAr?: string;
+  technicianCount?: number;
+  rarity?: string;
+}
+
 export default function TechnicianBadgesScreen(): JSX.Element {
-  const [badges, setBadges] = useState<any[]>([]);
+  const [badges, setBadges] = useState<TechBadge[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().technicianBadges.catalog.query() as any)
-      .then((d: any) => {
+    (typedTrpc().technicianBadges.catalog.query() as Promise<TechBadge[]>)
+      .then((d) => {
         setBadges(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -49,19 +58,19 @@ export default function TechnicianBadgesScreen(): JSX.Element {
       ) : (
         badges.map((b) => (
           <View key={b.id} style={styles.card}>
-            <Text style={styles.badgeEmoji}>{(b.emoji as string) ?? ''}</Text>
+            <Text style={styles.badgeEmoji}>{b.emoji ?? ''}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.badgeName}>{b.nameAr as string}</Text>
-              <Text style={styles.badgeDesc}>{b.descAr as string}</Text>
+              <Text style={styles.badgeName}>{b.nameAr ?? ''}</Text>
+              <Text style={styles.badgeDesc}>{b.descAr ?? ''}</Text>
               <Text style={styles.badgeCount}>
-                ‍ {b.technicianCount as number} فنيات حاصلات عليها
+                 {b.technicianCount ?? 0} فنيات حاصلات عليها
               </Text>
             </View>
             <View style={styles.badgeRarity}>
               <Text style={styles.rarityText}>
-                {(b.rarity as string) === 'rare'
+                {b.rarity === 'rare'
                   ? 'نادرة'
-                  : (b.rarity as string) === 'common'
+                  : b.rarity === 'common'
                     ? 'شائعة'
                     : 'مميزة'}
               </Text>
