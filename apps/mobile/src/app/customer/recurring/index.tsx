@@ -4,16 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface RecurringBooking {
+  id?: number;
+  serviceName?: string;
+  recurrence?: string;
+  occurrences?: number;
+}
+
 export default function RecurringScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<RecurringBooking[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().recurringBookings.list.query() as any)
-      .then((d: any) => {
+    (typedTrpc().recurringBookings.list.query() as Promise<RecurringBooking[]>)
+      .then((d) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -47,9 +54,9 @@ export default function RecurringScreen(): JSX.Element {
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{r.serviceName as string}</Text>
+            <Text style={styles.name}>{r.serviceName ?? ''}</Text>
             <Text style={styles.freq}>
-              {r.recurrence as string} · {r.occurrences as number} مرات
+              {r.recurrence ?? ''} · {r.occurrences ?? 0} مرات
             </Text>
           </View>
         </View>
