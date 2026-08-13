@@ -4,16 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface PriceDropAlert {
+  id?: number;
+  emoji?: string;
+  serviceName?: string;
+  droppedBy?: number;
+}
+
 export default function PriceDropAlertsScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<PriceDropAlert[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().priceDropAlerts.list.query() as any)
-      .then((d: any) => {
+    (typedTrpc().priceDropAlerts.list.query() as Promise<PriceDropAlert[]>)
+      .then((d) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -45,10 +52,10 @@ export default function PriceDropAlertsScreen(): JSX.Element {
       <Text style={styles.t}> تنبيهات الأسعار</Text>
       {data.map((a, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(a.emoji as string) ?? ''}</Text>
+          <Text style={styles.emoji}>{a.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{a.serviceName as string}</Text>
-            <Text style={styles.drop}>▼ {(a.droppedBy as number)?.toLocaleString()} ر.س</Text>
+            <Text style={styles.name}>{a.serviceName ?? ''}</Text>
+            <Text style={styles.drop}> {(a.droppedBy ?? 0).toLocaleString()} ر.س</Text>
           </View>
         </View>
       ))}
