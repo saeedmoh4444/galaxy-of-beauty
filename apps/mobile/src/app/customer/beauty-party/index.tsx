@@ -12,8 +12,12 @@ const THEMES = [
   { key: 'skincare', emoji: '', name: 'روتين عناية', desc: 'أقنعة وعناية بالبشرة' },
 ];
 
+interface PartyService {
+  id?: number;
+}
+
 export default function BeautyPartyScreen(): JSX.Element {
-  const [, setServices] = useState<any[]>([]);
+  const [, setServices] = useState<PartyService[]>([]);
   const [, setLoading] = useState(true);
   const { data: eventsData } = typedTrpc().communityEvents?.list?.useQuery?.({
     limit: 4,
@@ -25,8 +29,8 @@ export default function BeautyPartyScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().services.list.query({}) as any)
-      .then((d: any) => {
+    (typedTrpc().services.list.query({}) as Promise<{ items?: PartyService[] }>)
+      .then((d) => {
         setServices(d?.items || []);
         setLoading(false);
         setRefreshing(false);
