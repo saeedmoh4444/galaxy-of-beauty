@@ -12,8 +12,14 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface NewsletterIssue {
+  id?: number;
+  title?: string;
+  date?: string;
+}
+
 export default function NewsletterScreen(): JSX.Element {
-  const [issues, setIssues] = useState<any[]>([]);
+  const [issues, setIssues] = useState<NewsletterIssue[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [email, setEmail] = useState('');
@@ -21,8 +27,8 @@ export default function NewsletterScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().newsletter.issues.query() as any)
-      .then((d: any) => {
+    (typedTrpc().newsletter.issues.query() as Promise<NewsletterIssue[]>)
+      .then((d) => {
         setIssues(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -78,8 +84,8 @@ export default function NewsletterScreen(): JSX.Element {
       )}
       {issues.map((i, idx) => (
         <View key={idx} style={styles.issue}>
-          <Text style={styles.it}>{i.title as string}</Text>
-          <Text style={styles.id}>{new Date(i.date as string).toLocaleDateString('ar-SA')}</Text>
+          <Text style={styles.it}>{i.title ?? ''}</Text>
+          <Text style={styles.id}>{i.date ? new Date(i.date).toLocaleDateString('ar-SA') : ''}</Text>
         </View>
       ))}
     </ScrollView>
