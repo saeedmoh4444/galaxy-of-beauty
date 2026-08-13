@@ -12,15 +12,21 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface InspirationPin {
+  id?: number;
+  imageUrl?: string;
+  title?: string;
+}
+
 export default function InspirationScreen(): JSX.Element {
-  const [pins, setPins] = useState<any[]>([]);
+  const [pins, setPins] = useState<InspirationPin[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().inspiration.list.query() as any)
-      .then((d: any) => {
+    (typedTrpc().inspiration.list.query() as Promise<InspirationPin[]>)
+      .then((d) => {
         setPins(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -34,7 +40,7 @@ export default function InspirationScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const remove = (id: number) => {
-    (typedTrpc().inspiration.delete.mutate({ id }) as any).then(() => fetch());
+    (typedTrpc().inspiration.delete.mutate({ id }) as Promise<unknown>).then(() => fetch());
   };
   if (loading) return <SkeletonList count={6} />;
   return (
@@ -54,14 +60,14 @@ export default function InspirationScreen(): JSX.Element {
         {pins.map((p) => (
           <View key={p.id} style={styles.card}>
             {p.imageUrl ? (
-              <Image source={{ uri: p.imageUrl as string }} style={styles.img} />
+              {p.imageUrl ? <Image source={{ uri: p.imageUrl }} style={styles.img} /> : null}
             ) : (
               <View style={styles.ph}>
                 <Text style={{ fontSize: 36 }}>️</Text>
               </View>
             )}
             <View style={styles.cb}>
-              <Text style={styles.pt}>{p.title as string}</Text>
+              <Text style={styles.pt}>{p.title ?? ''}</Text>
               <TouchableOpacity onPress={() => remove(p.id)}>
                 <Text>️</Text>
               </TouchableOpacity>
