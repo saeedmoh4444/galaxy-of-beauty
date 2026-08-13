@@ -5,22 +5,31 @@ import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
 const ET: Record<string, { label: string; emoji: string }> = {
-  workshop: { label: 'ورشة عمل', emoji: '️' },
-  masterclass: { label: 'ماستر كلاس', emoji: '‍' },
+  workshop: { label: 'ورشة عمل', emoji: '' },
+  masterclass: { label: 'ماستر كلاس', emoji: '' },
   launch: { label: 'إطلاق منتج', emoji: '' },
   seasonal: { label: 'موسمي', emoji: '' },
 };
 
+interface BeautyEvent {
+  id?: number;
+  eventType?: string;
+  nameJson?: { ar?: string; en?: string };
+  nameAr?: string;
+  startsAt?: string;
+  location?: string;
+}
+
 export default function EventsScreen(): JSX.Element {
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<BeautyEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [filter, setFilter] = useState<string | null>(null);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().beautyEvents.list.query({}) as any)
-      .then((d: any) => {
+    (typedTrpc().beautyEvents.list.query({}) as Promise<BeautyEvent[]>)
+      .then((d) => {
         setEvents(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -70,20 +79,20 @@ export default function EventsScreen(): JSX.Element {
         </View>
       </ScrollView>
       {filtered.map((e) => {
-        const et = ET[e.eventType as string] ?? { label: e.eventType, emoji: '' };
+        const et = ET[e.eventType ?? ''] ?? { label: e.eventType ?? '', emoji: '' };
         return (
           <View key={e.id} style={styles.card}>
             <Text style={styles.ee}>{et.emoji}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.en}>
-                {((e.nameJson as any)?.ar as string) ?? (e.nameAr as string)}
+                {e.nameJson?.ar ?? e.nameAr ?? ''}
               </Text>
               <Text style={styles.em}>
-                {new Date(e.startsAt as string).toLocaleDateString('ar-SA', {
+                {e.startsAt ? new Date(e.startsAt).toLocaleDateString('ar-SA', {
                   month: 'long',
                   day: 'numeric',
-                })}{' '}
-                · {(e.location as string) ?? 'أونلاين'}
+                }) : ''}{' '}
+                · {e.location ?? 'أونلاين'}
               </Text>
             </View>
             <TouchableOpacity style={styles.jb}>
