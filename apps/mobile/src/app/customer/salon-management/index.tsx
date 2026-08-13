@@ -4,19 +4,31 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface SalonDashboard {
+  todayBookings?: number;
+  todayRevenue?: number;
+}
+
+interface SalonStaff {
+  id?: number;
+  name?: string;
+  role?: string;
+  rating?: number;
+}
+
 export default function SalonManagementScreen(): JSX.Element {
-  const [dash, setDash] = useState<any>(null);
-  const [staff, setStaff] = useState<any[]>([]);
+  const [dash, setDash] = useState<SalonDashboard | null>(null);
+  const [staff, setStaff] = useState<SalonStaff[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().salonManagement.dashboard.query() as any,
-      typedTrpc().salonManagement.staff.query() as any,
+      typedTrpc().salonManagement.dashboard.query() as Promise<SalonDashboard>,
+      typedTrpc().salonManagement.staff.query() as Promise<SalonStaff[]>,
     ])
-      .then(([d, s]: any[]) => {
+      .then(([d, s]) => {
         setDash(d);
         setStaff(s || []);
         setLoading(false);
@@ -47,13 +59,13 @@ export default function SalonManagementScreen(): JSX.Element {
       <View style={styles.kr}>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
-          <Text style={styles.kv}>{(dash?.todayBookings as number) ?? 0}</Text>
+          <Text style={styles.kv}>{dash?.todayBookings ?? 0}</Text>
           <Text style={styles.kl}>حجز اليوم</Text>
         </View>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
           <Text style={[styles.kv, { color: '#059669' }]}>
-            {((dash?.todayRevenue as number) ?? 0)?.toLocaleString()}
+            {(dash?.todayRevenue ?? 0).toLocaleString()}
           </Text>
           <Text style={styles.kl}>ر.س</Text>
         </View>
@@ -62,10 +74,10 @@ export default function SalonManagementScreen(): JSX.Element {
         <View key={s.id} style={styles.card}>
           <Text style={styles.em}>‍</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nm}>{s.name as string}</Text>
-            <Text style={styles.role}>{s.role as string}</Text>
+            <Text style={styles.nm}>{s.name ?? ''}</Text>
+            <Text style={styles.role}>{s.role ?? ''}</Text>
           </View>
-          <Text style={styles.rt}> {(s.rating as number) ?? 0}</Text>
+          <Text style={styles.rt}> {s.rating ?? 0}</Text>
         </View>
       ))}
     </ScrollView>
