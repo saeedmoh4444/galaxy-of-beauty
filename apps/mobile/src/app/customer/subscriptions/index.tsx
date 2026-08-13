@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
+import { trpc, typedTrpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = {
@@ -11,17 +11,40 @@ const COLORS = {
   success: '#10b981',
 };
 
-export default function SubscriptionsScreen(): JSX.Element {
-  const sub = (trpc.subscriptions as any).getMySubscription?.useQuery?.({}) ?? {
-    data: null,
-    isLoading: false,
-    isError: false,
-    refetch: () => {},
-  };
-  const plansQ = (trpc.subscriptions as any).getPlans?.useQuery?.({}) ?? { data: null };
+interface SubscriptionPlan {
+  nameJson?: { ar?: string; en?: string };
+}
 
-  const subscription = sub.data as Record<string, unknown> | undefined;
-  const plans = plansQ.data as unknown[] | undefined;
+interface SubscriptionDetail {
+  plan?: SubscriptionPlan;
+  status?: string;
+  currentPeriodEnd?: string;
+}
+
+interface SubscriptionQueryResult {
+  data?: SubscriptionDetail | null;
+  isLoading?: boolean;
+  isError?: boolean;
+  refetch?: () => void;
+}
+
+interface PlansQueryResult {
+  data?: SubscriptionPlan[] | null;
+}
+
+export default function SubscriptionsScreen(): JSX.Element {
+  const sub: SubscriptionQueryResult =
+    (typedTrpc().subscriptions.getMySubscription?.useQuery?.({}) as SubscriptionQueryResult | undefined) ?? {
+      data: null,
+      isLoading: false,
+      isError: false,
+      refetch: () => {},
+    };
+  const plansQ: PlansQueryResult =
+    (typedTrpc().subscriptions.getPlans?.useQuery?.({}) as PlansQueryResult | undefined) ?? { data: null };
+
+  const subscription = sub.data ?? undefined;
+  const plans = plansQ.data ?? [];
 
   return (
     <ScreenState
@@ -35,12 +58,12 @@ export default function SubscriptionsScreen(): JSX.Element {
       {subscription ? (
         <View style={styles.activeCard}>
           <Text style={styles.activeLabel}>الاشتراك الحالي</Text>
-          <Text style={styles.planName}>{(subscription.plan as any)?.nameJson?.ar ?? 'خطة'}</Text>
+          <Text style={styles.planName}>{subscription.plan?.nameJson?.ar ?? 'خطة'}</Text>
           <Text style={styles.status}>
-            {(subscription.status as string) === 'ACTIVE' ? ' نشط' : '️ متوقف'}
+            {subscription.status === 'ACTIVE' ? ' نشط' : ' متوقف'}
           </Text>
           <Text style={styles.date}>
-            ينتهي: {new Date(subscription.currentPeriodEnd as string).toLocaleDateString('ar-SA')}
+            ينتهي: {subscription.currentPeriodEnd ? new Date(subscription.currentPeriodEnd).toLocaleDateString('ar-SA') : ''}
           </Text>
         </View>
       ) : (
@@ -53,7 +76,7 @@ export default function SubscriptionsScreen(): JSX.Element {
           <Text style={styles.sectionTitle}>الباقات المتاحة</Text>
           {(plans as Record<string, unknown>[]).map((p: Record<string, unknown>, i: number) => (
             <View key={i} style={styles.planCard}>
-              <Text style={styles.planTitle}>{(p.nameJson as any)?.ar ?? ''}</Text>
+              <Text style={styles.planTitle}>{p.nameJson?.ar ?? ''}</Text>
               <Text style={styles.planPrice}>{formatCurrency(Number(p.priceMonthly))} / شهر</Text>
               <TouchableOpacity style={styles.subscribeBtn}>
                 <Text style={styles.subscribeText}>اشتركي الآن</Text>
