@@ -4,16 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface PostCarePlan {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  descAr?: string;
+}
+
 export default function PostCareScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<PostCarePlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().postCare.plans.query() as any)
-      .then((d: any) => {
+    (typedTrpc().postCare.plans.query() as Promise<PostCarePlan[]>)
+      .then((d) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -45,10 +52,10 @@ export default function PostCareScreen(): JSX.Element {
       <Text style={styles.t}>‍️ عناية ما بعد الخدمة</Text>
       {data.map((p, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(p.emoji as string) ?? '‍️'}</Text>
+          <Text style={styles.emoji}>{p.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{p.nameAr as string}</Text>
-            <Text style={styles.desc}>{p.descAr as string}</Text>
+            <Text style={styles.name}>{p.nameAr ?? ''}</Text>
+            <Text style={styles.desc}>{p.descAr ?? ''}</Text>
           </View>
         </View>
       ))}
