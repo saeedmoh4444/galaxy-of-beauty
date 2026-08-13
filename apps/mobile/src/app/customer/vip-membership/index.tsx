@@ -4,15 +4,27 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface VipTier {
+  color?: string;
+  emoji?: string;
+  nameAr?: string;
+  price?: number;
+}
+
+interface VipStatus {
+  tiers?: VipTier[];
+}
+
 export default function VIPMembershipScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<VipStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().vipMembership.status.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .vipMembership.status.query()
+      .then((d: VipStatus) => {
         setData(d);
         setLoading(false);
         setRefreshing(false);
@@ -26,7 +38,7 @@ export default function VIPMembershipScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   if (loading) return <SkeletonList count={3} />;
-  const tiers = (data?.tiers ?? []) as any[];
+  const tiers = data?.tiers ?? [];
   return (
     <ScrollView
       style={styles.c}
@@ -41,10 +53,10 @@ export default function VIPMembershipScreen(): JSX.Element {
     >
       <Text style={styles.t}> العضوية المميزة</Text>
       {tiers.map((t, i) => (
-        <View key={i} style={[styles.card, { borderColor: (t.color as string) ?? '#e5e7eb' }]}>
-          <Text style={styles.emoji}>{t.emoji as string}</Text>
-          <Text style={styles.name}>{t.nameAr as string}</Text>
-          <Text style={styles.price}>{(t.price as number)?.toLocaleString()} ر.س</Text>
+        <View key={i} style={[styles.card, { borderColor: t.color ?? '#e5e7eb' }]}>
+          <Text style={styles.emoji}>{t.emoji}</Text>
+          <Text style={styles.name}>{t.nameAr}</Text>
+          <Text style={styles.price}>{t.price?.toLocaleString()} ر.س</Text>
         </View>
       ))}
     </ScrollView>

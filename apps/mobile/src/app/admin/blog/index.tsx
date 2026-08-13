@@ -5,16 +5,27 @@ import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface BlogPost {
+  id?: number;
+  titleJson?: { ar?: string };
+  slug?: string;
+  isPublished?: boolean;
+}
+
+interface BlogListResponse {
+  items?: BlogPost[];
+}
+
 export default function AdminBlogScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().blog.listAll.query({ page: 1, limit: BULK_PAGE_SIZE }) as any)
-      .then((d: any) => {
+    (typedTrpc().blog.listAll.query({ page: 1, limit: BULK_PAGE_SIZE }) as unknown as Promise<BlogListResponse>)
+      .then((d: BlogListResponse) => {
         setData(d?.items || []);
         setLoading(false);
         setRefreshing(false);
@@ -47,8 +58,8 @@ export default function AdminBlogScreen(): JSX.Element {
       {data.map((p, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.title}>{(p.titleJson as any)?.ar as string}</Text>
-            <Text style={styles.meta}>{p.slug as string}</Text>
+            <Text style={styles.title}>{p.titleJson?.ar ?? ''}</Text>
+            <Text style={styles.meta}>{p.slug ?? ''}</Text>
           </View>
           <View style={[styles.badge, p.isPublished ? styles.pub : styles.draft]}>
             <Text style={styles.badgeText}>{p.isPublished ? 'منشور' : 'مسودة'}</Text>

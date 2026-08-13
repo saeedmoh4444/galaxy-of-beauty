@@ -28,6 +28,11 @@ const MENU_ITEMS = [
   { label: ' لايلى - المساعدة الذكية', href: '/customer/ai-chat' },
 ];
 
+interface ProfileUser {
+  name?: string;
+  email?: string;
+}
+
 export default function ProfileScreen(): JSX.Element {
   const { trigger } = useHaptics();
   const router = useRouter();
@@ -39,6 +44,7 @@ export default function ProfileScreen(): JSX.Element {
   };
   const loyalty = typedTrpc().loyalty?.getAccount?.useQuery?.();
   const kindness = typedTrpc().kindnessPoints?.getStatus?.useQuery?.();
+  const p = profile.data as ProfileUser | null;
 
   return (
     <ScreenState
@@ -51,10 +57,10 @@ export default function ProfileScreen(): JSX.Element {
       <Text style={styles.title}> حسابي</Text>
       <View style={styles.profileCard}>
         <View style={styles.avatar}>
-          <Text style={styles.avatarText}>{(profile.data as any)?.name?.[0] ?? ''}</Text>
+          <Text style={styles.avatarText}>{p?.name?.[0] ?? ''}</Text>
         </View>
-        <Text style={styles.userName}>{(profile.data as any)?.name ?? 'مستخدمة جالكسي بيوتي'}</Text>
-        <Text style={styles.userEmail}>{(profile.data as any)?.email ?? ''}</Text>
+        <Text style={styles.userName}>{p?.name ?? 'مستخدمة جالكسي بيوتي'}</Text>
+        <Text style={styles.userEmail}>{p?.email ?? ''}</Text>
         {/* Loyalty + Kindness Stats */}
         <View style={styles.statsRow}>
           {loyalty?.data && (

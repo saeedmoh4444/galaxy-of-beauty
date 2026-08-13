@@ -10,16 +10,31 @@ const STATUS_COLORS: Record<string, string> = {
   error: '#dc2626',
 };
 
+interface ServiceHealth {
+  status?: string;
+  ping?: number;
+}
+
+interface HealthPerformance {
+  avgResponseMs?: number;
+  activeSessions?: number;
+}
+
+interface HealthReport {
+  services?: Record<string, ServiceHealth>;
+  performance?: HealthPerformance;
+}
+
 export default function MonitoringScreen(): JSX.Element {
-  const [health, setHealth] = useState<any>({});
+  const [health, setHealth] = useState<HealthReport>({});
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().monitoring.health.query() as any)
-      .then((d: any) => {
+    (typedTrpc().monitoring.health.query() as unknown as Promise<HealthReport>)
+      .then((d: HealthReport) => {
         setHealth(d || {});
         setLoading(false);
         setRefreshing(false);
@@ -36,8 +51,8 @@ export default function MonitoringScreen(): JSX.Element {
 
   if (loading) return <SkeletonList count={5} />;
 
-  const services = (health.services ?? {}) as Record<string, any>;
-  const perf = (health.performance as Record<string, any>) ?? {};
+  const services = (health.services ?? {}) as Record<string, ServiceHealth>;
+  const perf = (health.performance ?? {}) as HealthPerformance;
 
   return (
     <ScrollView
@@ -59,25 +74,25 @@ export default function MonitoringScreen(): JSX.Element {
             key={key}
             style={[
               styles.svcCard,
-              { borderColor: STATUS_COLORS[svc.status as string] ?? '#6b7280' },
+              { borderColor: STATUS_COLORS[svc.status ?? ''] ?? '#6b7280' },
             ]}
           >
             <Text style={styles.svcEmoji}>{svc.status === 'healthy' ? '' : ''}</Text>
             <Text style={styles.svcKey}>{key}</Text>
-            <Text style={styles.svcPing}>{svc.ping as number}ms</Text>
+            <Text style={styles.svcPing}>{svc.ping ?? 0}ms</Text>
           </View>
         ))}
       </View>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
-          <Text style={styles.kpiVal}>{(perf.avgResponseMs as number) ?? 0}ms</Text>
+          <Text style={styles.kpiVal}>{perf.avgResponseMs ?? 0}ms</Text>
           <Text style={styles.kpiLabel}>الاستجابة</Text>
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#2563eb' }]}>
-            {(perf.activeSessions as number) ?? 0}
+            {perf.activeSessions ?? 0}
           </Text>
           <Text style={styles.kpiLabel}>جلسات</Text>
         </View>

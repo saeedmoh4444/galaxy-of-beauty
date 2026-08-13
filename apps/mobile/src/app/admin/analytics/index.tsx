@@ -4,16 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface AdminDashboard {
+  totalUsers?: number;
+  totalBookings?: number;
+  totalRevenue?: number;
+}
+
 export default function AdminAnalyticsScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<AdminDashboard | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().analytics.adminDashboard.query() as any)
-      .then((d: any) => {
+    (typedTrpc().analytics.adminDashboard.query() as unknown as Promise<AdminDashboard>)
+      .then((d: AdminDashboard) => {
         setData(d);
         setLoading(false);
         setRefreshing(false);
@@ -30,7 +36,7 @@ export default function AdminAnalyticsScreen(): JSX.Element {
 
   if (loading) return <SkeletonList count={4} />;
 
-  const d = data ?? {};
+  const d: AdminDashboard = data ?? {};
 
   return (
     <ScrollView
@@ -48,20 +54,20 @@ export default function AdminAnalyticsScreen(): JSX.Element {
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
-          <Text style={styles.kpiVal}>{(d.totalUsers as number) ?? 0}</Text>
+          <Text style={styles.kpiVal}>{d.totalUsers ?? 0}</Text>
           <Text style={styles.kpiLabel}>مستخدم</Text>
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#2563eb' }]}>
-            {(d.totalBookings as number) ?? 0}
+            {d.totalBookings ?? 0}
           </Text>
           <Text style={styles.kpiLabel}>حجز</Text>
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#059669' }]}>
-            {((d.totalRevenue as number) ?? 0)?.toLocaleString()}
+            {(d.totalRevenue ?? 0).toLocaleString()}
           </Text>
           <Text style={styles.kpiLabel}>ر.س</Text>
         </View>

@@ -5,17 +5,33 @@ import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface TutorialStep {
+  titleAr?: string;
+  descAr?: string;
+}
+
+interface Tutorial {
+  emoji?: string;
+  titleAr?: string;
+  categoryAr?: string;
+  difficultyAr?: string;
+  duration?: string;
+  descAr?: string;
+  steps?: TutorialStep[];
+}
+
 export default function TutorialDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<Tutorial | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback(
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      (typedTrpc().tutorials.get.query({ id: parseInt(id, 10) }) as any)
-        .then((d: any) => {
+      typedTrpc()
+        .tutorials.get.query({ id: parseInt(id, 10) })
+        .then((d: Tutorial) => {
           setData(d);
           setLoading(false);
           setRefreshing(false);
@@ -53,25 +69,25 @@ export default function TutorialDetailScreen(): JSX.Element {
         <Text style={styles.pi}>▶️</Text>
       </View>
       <Text style={styles.t}>
-        {(data.emoji as string) ?? ''} {data.titleAr as string}
+        {data.emoji ?? ''} {data.titleAr}
       </Text>
       <View style={styles.meta}>
-        <Text style={styles.mi}>{data.categoryAr as string}</Text>
-        <Text style={styles.mi}>{data.difficultyAr as string}</Text>
-        <Text style={styles.mi}>️ {data.duration as string}</Text>
+        <Text style={styles.mi}>{data.categoryAr}</Text>
+        <Text style={styles.mi}>{data.difficultyAr}</Text>
+        <Text style={styles.mi}>️ {data.duration}</Text>
       </View>
-      <Text style={styles.desc}>{data.descAr as string}</Text>
+      <Text style={styles.desc}>{data.descAr}</Text>
       {data.steps && (
         <View style={styles.sec}>
           <Text style={styles.st}> الخطوات</Text>
-          {(data.steps as any[]).map((s, i) => (
+          {data.steps.map((s, i) => (
             <View key={i} style={styles.step}>
               <View style={styles.sn}>
                 <Text style={styles.snt}>{i + 1}</Text>
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={styles.stt}>{s.titleAr as string}</Text>
-                <Text style={styles.sd}>{s.descAr as string}</Text>
+                <Text style={styles.stt}>{s.titleAr}</Text>
+                <Text style={styles.sd}>{s.descAr}</Text>
               </View>
             </View>
           ))}

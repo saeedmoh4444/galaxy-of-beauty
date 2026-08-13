@@ -4,16 +4,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface FeatureFlag {
+  id?: number;
+  key: string;
+  nameAr?: string;
+  rolloutPercent?: number;
+  enabled?: boolean;
+}
+
 export default function FeatureFlagsScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<FeatureFlag[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().featureFlags.list.query() as any)
-      .then((d: any) => {
+    (typedTrpc().featureFlags.list.query() as unknown as Promise<FeatureFlag[]>)
+      .then((d: FeatureFlag[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -29,7 +37,7 @@ export default function FeatureFlagsScreen(): JSX.Element {
   }, [fetch]);
 
   const toggle = (key: string) => {
-    (typedTrpc().featureFlags.toggle.mutate({ flagKey: key }) as any).then(() => fetch());
+    typedTrpc().featureFlags.toggle.mutate({ flagKey: key }).then(() => fetch());
   };
 
   if (loading) return <SkeletonList count={5} />;
@@ -50,8 +58,8 @@ export default function FeatureFlagsScreen(): JSX.Element {
       {data.map((f, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{(f.nameAr as string) ?? (f.key as string)}</Text>
-            <Text style={styles.meta}>{f.rolloutPercent as number}%</Text>
+            <Text style={styles.name}>{f.nameAr ?? f.key}</Text>
+            <Text style={styles.meta}>{f.rolloutPercent ?? 0}%</Text>
           </View>
           <TouchableOpacity
             onPress={() => toggle(f.key)}

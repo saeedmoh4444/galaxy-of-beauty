@@ -42,10 +42,22 @@ const QUESTIONS = [
   },
 ];
 
+interface MatchResultItem {
+  emoji?: string;
+  nameAr?: string;
+  whyAr?: string;
+  score?: number;
+  price?: number;
+}
+
+interface MatchResult {
+  matches?: MatchResultItem[];
+}
+
 export default function ServiceMatchmakerScreen(): JSX.Element {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<MatchResult | null>(null);
   const [loading, setLoading] = useState(false);
 
   const select = (value: string) => {
@@ -56,8 +68,9 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
       setStep(step + 1);
     } else {
       setLoading(true);
-      (typedTrpc().serviceMatchmaker.match.query(next) as any)
-        .then((d: any) => {
+      typedTrpc()
+        .serviceMatchmaker.match.query(next)
+        .then((d: MatchResult) => {
           setResult(d);
           setLoading(false);
         })
@@ -74,16 +87,16 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
         <View style={styles.resultCard}>
           <Text style={styles.resultEmoji}></Text>
           <Text style={styles.resultTitle}>خدماتكِ المثالية</Text>
-          {(result.matches as any[])?.map((m, i) => (
+          {result.matches?.map((m, i) => (
             <View key={i} style={styles.match}>
-              <Text style={styles.matchEmoji}>{(m.emoji as string) ?? '‍️'}</Text>
+              <Text style={styles.matchEmoji}>{m.emoji ?? '‍️'}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={styles.matchName}>{m.nameAr as string}</Text>
-                <Text style={styles.matchWhy}>{m.whyAr as string}</Text>
+                <Text style={styles.matchName}>{m.nameAr}</Text>
+                <Text style={styles.matchWhy}>{m.whyAr}</Text>
               </View>
               <View style={{ alignItems: 'flex-end' }}>
-                <Text style={styles.matchScore}>{m.score as number}%</Text>
-                <Text style={styles.matchPrice}>{(m.price as number)?.toLocaleString()} ر.س</Text>
+                <Text style={styles.matchScore}>{m.score}%</Text>
+                <Text style={styles.matchPrice}>{m.price?.toLocaleString()} ر.س</Text>
               </View>
             </View>
           ))}

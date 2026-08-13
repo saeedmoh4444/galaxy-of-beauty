@@ -4,16 +4,33 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface TravelDestination {
+  emoji?: string;
+  nameAr?: string;
+  descAr?: string;
+}
+
+interface TravelKitItem {
+  emoji?: string;
+  nameAr?: string;
+}
+
+interface TravelKit {
+  nameAr?: string;
+  items?: TravelKitItem[];
+}
+
 export default function TravelKitScreen(): JSX.Element {
-  const [dests, setDests] = useState<any[]>([]);
-  const [kit, setKit] = useState<any>(null);
+  const [dests, setDests] = useState<TravelDestination[]>([]);
+  const [kit, setKit] = useState<TravelKit | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().travelKit.destinations.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .travelKit.destinations.query()
+      .then((d: TravelDestination[]) => {
         setDests(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -42,20 +59,20 @@ export default function TravelKitScreen(): JSX.Element {
       <Text style={styles.t}> حقيبة السفر</Text>
       {dests.map((d, i) => (
         <TouchableOpacity key={i} style={styles.card} onPress={() => setKit(d)}>
-          <Text style={styles.de}>{(d.emoji as string) ?? ''}</Text>
+          <Text style={styles.de}>{d.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.dn}>{d.nameAr as string}</Text>
-            <Text style={styles.dd}>{d.descAr as string}</Text>
+            <Text style={styles.dn}>{d.nameAr}</Text>
+            <Text style={styles.dd}>{d.descAr}</Text>
           </View>
         </TouchableOpacity>
       ))}
       {kit && (
         <View style={styles.kc}>
-          <Text style={styles.kt}> محتويات الحقيبة - {kit.nameAr as string}</Text>
-          {(kit.items as any[])?.map((item, i) => (
+          <Text style={styles.kt}> محتويات الحقيبة - {kit.nameAr}</Text>
+          {kit.items?.map((item, i) => (
             <View key={i} style={styles.ki}>
-              <Text style={styles.kie}>{item.emoji as string}</Text>
-              <Text style={styles.kit}>{item.nameAr as string}</Text>
+              <Text style={styles.kie}>{item.emoji}</Text>
+              <Text style={styles.kit}>{item.nameAr}</Text>
             </View>
           ))}
         </View>

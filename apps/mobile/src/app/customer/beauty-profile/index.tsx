@@ -4,15 +4,21 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface BeautyProfileData {
+  skinType?: string;
+  hairType?: string;
+}
+
 export default function BeautyProfileScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<BeautyProfileData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().beautyProfile.get.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .beautyProfile.get.query()
+      .then((d: BeautyProfileData) => {
         setData(d);
         setLoading(false);
         setRefreshing(false);
@@ -41,8 +47,8 @@ export default function BeautyProfileScreen(): JSX.Element {
       <Text style={styles.t}> ملف الجمال</Text>
       {data && (
         <View style={styles.card}>
-          <Text style={styles.label}>نوع البشرة: {data.skinType as string}</Text>
-          <Text style={styles.label}>نوع الشعر: {data.hairType as string}</Text>
+          <Text style={styles.label}>نوع البشرة: {data.skinType}</Text>
+          <Text style={styles.label}>نوع الشعر: {data.hairType}</Text>
         </View>
       )}
     </ScrollView>

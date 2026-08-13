@@ -9,18 +9,27 @@ import {
 import { trpc } from '@/lib/api';
 import { useState, useEffect } from 'react';
 
+interface TwoFactorUser {
+  twoFactorEnabled?: boolean;
+}
+
+interface TwoFactorSetup {
+  secret?: string;
+  otpauthUrl?: string;
+}
+
 export default function TwoFactorScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [enabled, setEnabled] = useState(false);
-  const [setupData, setSetupData] = useState<Record<string, unknown> | null>(null);
+  const [setupData, setSetupData] = useState<TwoFactorSetup | null>(null);
   const [code, setCode] = useState('');
   const [verifyMsg, setVerifyMsg] = useState('');
   const [actionLoading, setActionLoading] = useState(false);
 
   const fetchStatus = () => {
     setLoading(true);
-    (trpc.auth.me.query() as unknown as Promise<Record<string, unknown>>)
+    (trpc.auth.me.query() as unknown as Promise<TwoFactorUser>)
       .then((u) => {
         setEnabled(Boolean(u.twoFactorEnabled));
         setLoading(false);
@@ -38,8 +47,8 @@ export default function TwoFactorScreen() {
   const handleSetup = async () => {
     setActionLoading(true);
     try {
-      const res = await (trpc.auth.setup2FA as any).mutate({});
-      setSetupData(res as Record<string, unknown>);
+      const res = await trpc.auth.setup2FA.mutate({});
+      setSetupData(res);
     } catch (e: unknown) {
       setError((e as Error)?.message ?? 'فشل الإعداد');
     } finally {
@@ -55,7 +64,7 @@ export default function TwoFactorScreen() {
     setActionLoading(true);
     setVerifyMsg('');
     try {
-      await (trpc.auth.verify2FA as any).mutate({ token: code });
+      await trpc.auth.verify2FA.mutate({ token: code });
       setEnabled(true);
       setSetupData(null);
       setCode('');
@@ -69,7 +78,7 @@ export default function TwoFactorScreen() {
   const handleDisable = async () => {
     setActionLoading(true);
     try {
-      await (trpc.auth.disable2FA as any).mutate({});
+      await trpc.auth.disable2FA.mutate({});
       setEnabled(false);
     } catch (e: unknown) {
       setError((e as Error)?.message ?? 'فشل التعطيل');
@@ -107,7 +116,7 @@ export default function TwoFactorScreen() {
         <View style={styles.card}>
           <Text style={styles.label}>الرمز السري (Secret):</Text>
           <Text style={styles.secret} selectable>
-            {setupData.secret as string}
+            {setupData.secret}
           </Text>
           <Text style={styles.hint}>
             انسخ الرمز السري إلى تطبيق المصادقة، ثم أدخل رمز التحقق للتأكيد

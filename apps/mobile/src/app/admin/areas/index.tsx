@@ -4,16 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface Area {
+  id: number;
+  nameAr?: string;
+  nameEn?: string;
+}
+
 export default function AdminAreasScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<Area[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().platform.listAreas.query({}) as any)
-      .then((d: any) => {
+    (typedTrpc().platform.listAreas.query({}) as unknown as Promise<Area[]>)
+      .then((d: Area[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -29,7 +35,7 @@ export default function AdminAreasScreen(): JSX.Element {
   }, [fetch]);
 
   const remove = (id: number) => {
-    (typedTrpc().platform.deleteArea.mutate({ id }) as any).then(() => fetch());
+    typedTrpc().platform.deleteArea.mutate({ id }).then(() => fetch());
   };
 
   if (loading) return <SkeletonList count={5} />;
@@ -50,8 +56,8 @@ export default function AdminAreasScreen(): JSX.Element {
       {data.map((a, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{a.nameAr as string}</Text>
-            <Text style={styles.meta}>{a.nameEn as string}</Text>
+            <Text style={styles.name}>{a.nameAr ?? ''}</Text>
+            <Text style={styles.meta}>{a.nameEn ?? ''}</Text>
           </View>
           <TouchableOpacity onPress={() => remove(a.id)}>
             <Text style={styles.del}>️</Text>

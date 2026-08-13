@@ -4,16 +4,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface BeautyPackage {
+  id?: number;
+  nameJson?: { ar?: string };
+  discountPercent?: number;
+  services?: unknown[];
+  isActive?: boolean;
+}
+
 export default function AdminPackagesScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<BeautyPackage[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().beautyPackages.listAll.query() as any)
-      .then((d: any) => {
+    (typedTrpc().beautyPackages.listAll.query() as unknown as Promise<BeautyPackage[]>)
+      .then((d: BeautyPackage[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -47,9 +55,9 @@ export default function AdminPackagesScreen(): JSX.Element {
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{(p.nameJson as any)?.ar as string}</Text>
+            <Text style={styles.name}>{p.nameJson?.ar ?? ''}</Text>
             <Text style={styles.discount}>
-              -{p.discountPercent as number}% · {p.services?.length || 0} خدمات
+              -{p.discountPercent ?? 0}% · {p.services?.length || 0} خدمات
             </Text>
           </View>
           <View style={[styles.badge, p.isActive ? styles.active : styles.inactive]}>

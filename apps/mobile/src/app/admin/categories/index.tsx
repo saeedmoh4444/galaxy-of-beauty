@@ -4,16 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface Category {
+  id?: number;
+  emoji?: string;
+  nameJson?: { ar?: string };
+  _count?: { services?: number };
+}
+
 export default function AdminCategoriesScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().categories.list.query() as any)
-      .then((d: any) => {
+    (typedTrpc().categories.list.query() as unknown as Promise<Category[]>)
+      .then((d: Category[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -45,9 +52,9 @@ export default function AdminCategoriesScreen(): JSX.Element {
       <Text style={styles.t}> الفئات</Text>
       {data.map((cat, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(cat.emoji as string) ?? ''}</Text>
+          <Text style={styles.emoji}>{cat.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{(cat.nameJson as any)?.ar as string}</Text>
+            <Text style={styles.name}>{cat.nameJson?.ar ?? ''}</Text>
             <Text style={styles.meta}>{cat._count?.services ?? 0} خدمات</Text>
           </View>
         </View>

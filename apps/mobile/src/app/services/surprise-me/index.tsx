@@ -4,13 +4,21 @@ import { useState, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface SurpriseService {
+  emoji?: string;
+  titleJson?: { ar?: string };
+  basePrice?: number;
+  reason?: string;
+}
+
 export default function SurpriseMeScreen(): JSX.Element {
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<SurpriseService | null>(null);
   const [loading, setLoading] = useState(false);
   const surprise = useCallback(() => {
     setLoading(true);
-    (typedTrpc().services.surpriseMe.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .services.surpriseMe.query()
+      .then((d: SurpriseService) => {
         setResult(d);
         setLoading(false);
       })
@@ -30,10 +38,10 @@ export default function SurpriseMeScreen(): JSX.Element {
         </View>
       ) : (
         <View style={styles.card}>
-          <Text style={styles.re}>{(result.emoji as string) ?? '‍️'}</Text>
-          <Text style={styles.rn}>{(result.titleJson as any)?.ar as string}</Text>
-          <Text style={styles.rp}>{(result.basePrice as number)?.toLocaleString()} ر.س</Text>
-          <Text style={styles.rd}>{result.reason as string}</Text>
+          <Text style={styles.re}>{result.emoji ?? '‍️'}</Text>
+          <Text style={styles.rn}>{result.titleJson?.ar}</Text>
+          <Text style={styles.rp}>{result.basePrice?.toLocaleString()} ر.س</Text>
+          <Text style={styles.rd}>{result.reason}</Text>
           <TouchableOpacity onPress={surprise} style={styles.btn}>
             <Text style={styles.bt}> جربي مرة أخرى</Text>
           </TouchableOpacity>

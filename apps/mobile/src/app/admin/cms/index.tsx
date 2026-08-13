@@ -4,16 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface CMSContentCategory {
+  id?: number;
+  nameJson?: { ar?: string };
+  slug?: string;
+  _count?: { services?: number };
+}
+
 export default function AdminCMSScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<CMSContentCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().cms.listCategories.query() as any)
-      .then((d: any) => {
+    (typedTrpc().cms.listCategories.query() as unknown as Promise<CMSContentCategory[]>)
+      .then((d: CMSContentCategory[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -47,9 +54,9 @@ export default function AdminCMSScreen(): JSX.Element {
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{(cat.nameJson as any)?.ar as string}</Text>
+            <Text style={styles.name}>{cat.nameJson?.ar ?? ''}</Text>
             <Text style={styles.meta}>
-              {cat.slug as string} · {cat._count?.services ?? 0} خدمات
+              {cat.slug ?? ''} · {cat._count?.services ?? 0} خدمات
             </Text>
           </View>
         </View>

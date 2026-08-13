@@ -4,16 +4,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface Campaign {
+  id?: number;
+  nameJson?: { ar?: string };
+  discountType?: string;
+  discountValue?: number;
+  isActive?: boolean;
+}
+
 export default function AdminCampaignsScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().campaigns.listAll.query() as any)
-      .then((d: any) => {
+    (typedTrpc().campaigns.listAll.query() as unknown as Promise<Campaign[]>)
+      .then((d: Campaign[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -46,9 +54,9 @@ export default function AdminCampaignsScreen(): JSX.Element {
       {data.map((c, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{(c.nameJson as any)?.ar as string}</Text>
+            <Text style={styles.name}>{c.nameJson?.ar ?? ''}</Text>
             <Text style={styles.discount}>
-              {c.discountType === 'percent' ? `-${c.discountValue}%` : `-${c.discountValue} ر.س`}
+              {c.discountType === 'percent' ? `-${c.discountValue ?? 0}%` : `-${c.discountValue ?? 0} ر.س`}
             </Text>
           </View>
           <View style={[styles.badge, c.isActive ? styles.active : styles.inactive]}>

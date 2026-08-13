@@ -15,6 +15,18 @@ import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface CommunityPost {
+  id?: number;
+  userName?: string;
+  createdAt?: string;
+  content?: string;
+  likes?: number;
+}
+
+interface CommunityFeed {
+  posts?: CommunityPost[];
+}
+
 export default function CommunityScreen(): JSX.Element {
   const {
     data: posts,
@@ -30,7 +42,8 @@ export default function CommunityScreen(): JSX.Element {
   const create = () => {
     if (!content.trim()) return;
     setPosting(true);
-    (typedTrpc().community.create.mutate({ content: content.trim() }) as any)
+    typedTrpc()
+      .community.create.mutate({ content: content.trim() })
       .then(() => {
         setContent('');
         setPosting(false);
@@ -40,13 +53,13 @@ export default function CommunityScreen(): JSX.Element {
   };
 
   const toggleLike = (postId: number) => {
-    (typedTrpc().community.toggleLike.mutate({ postId }) as any).then(() => refetch());
+    typedTrpc().community.toggleLike.mutate({ postId }).then(() => refetch());
   };
 
   if (loading) return <SkeletonList count={5} />;
   if (error) return <ErrorAlert message="فشل تحميل المجتمع" onRetry={refetch} />;
 
-  const items = ((posts as any)?.posts ?? []) as any[];
+  const items = ((posts as CommunityFeed | null)?.posts) ?? [];
 
   return (
     <View style={styles.c}>
@@ -84,15 +97,15 @@ export default function CommunityScreen(): JSX.Element {
               <View style={styles.cardHeader}>
                 <Text style={styles.avatar}>‍</Text>
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.userName}>{(p.userName as string) ?? 'مستخدم'}</Text>
+                  <Text style={styles.userName}>{p.userName ?? 'مستخدم'}</Text>
                   <Text style={styles.date}>
-                    {new Date(p.createdAt as string).toLocaleDateString('ar-SA')}
+                    {new Date(p.createdAt ?? '').toLocaleDateString('ar-SA')}
                   </Text>
                 </View>
               </View>
-              <Text style={styles.postContent}>{p.content as string}</Text>
-              <TouchableOpacity onPress={() => toggleLike(p.id as number)} style={styles.likeBtn}>
-                <Text style={styles.likeText}>️ {(p.likes as number) ?? 0}</Text>
+              <Text style={styles.postContent}>{p.content}</Text>
+              <TouchableOpacity onPress={() => toggleLike(p.id ?? 0)} style={styles.likeBtn}>
+                <Text style={styles.likeText}>️ {p.likes ?? 0}</Text>
               </TouchableOpacity>
             </View>
           ))

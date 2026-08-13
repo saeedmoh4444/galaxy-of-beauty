@@ -12,15 +12,27 @@ import { useState, useEffect, useCallback } from 'react';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface ChatMessage {
+  id?: number;
+  senderId?: number;
+  message?: string;
+  createdAt?: string;
+}
+
+interface ChatMessagesResponse {
+  items?: ChatMessage[];
+}
+
 export default function ChatScreen(): JSX.Element {
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [text, setText] = useState('');
 
   const fetch = useCallback(() => {
     setLoading(true);
-    (typedTrpc().chat.messages.query({ bookingId: 1, page: 1, limit: BULK_PAGE_SIZE }) as any)
-      .then((d: any) => {
+    typedTrpc()
+      .chat.messages.query({ bookingId: 1, page: 1, limit: BULK_PAGE_SIZE })
+      .then((d: ChatMessagesResponse) => {
         setMessages(d?.items || []);
         setLoading(false);
       })
@@ -33,9 +45,9 @@ export default function ChatScreen(): JSX.Element {
 
   const send = () => {
     if (!text.trim()) return;
-    (
-      typedTrpc().chat.send.mutate({ receiverId: 1, bookingId: 1, message: text.trim() }) as any
-    ).then(() => {
+    typedTrpc()
+      .chat.send.mutate({ receiverId: 1, bookingId: 1, message: text.trim() })
+      .then(() => {
       setText('');
       fetch();
     });
@@ -55,9 +67,9 @@ export default function ChatScreen(): JSX.Element {
               key={m.id}
               style={[styles.msg, m.senderId === 1 ? styles.msgSent : styles.msgReceived]}
             >
-              <Text style={styles.msgText}>{m.message as string}</Text>
+              <Text style={styles.msgText}>{m.message}</Text>
               <Text style={styles.msgTime}>
-                {new Date(m.createdAt as string).toLocaleTimeString('ar-SA', {
+                {new Date(m.createdAt ?? '').toLocaleTimeString('ar-SA', {
                   hour: '2-digit',
                   minute: '2-digit',
                 })}
