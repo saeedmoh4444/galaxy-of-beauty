@@ -4,16 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface HairColor {
+  id?: number;
+  hex?: string;
+  nameAr?: string;
+}
+
 export default function HairColorSimScreen(): JSX.Element {
-  const [colors, setColors] = useState<any[]>([]);
+  const [colors, setColors] = useState<HairColor[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().hairColorSim.colors.query() as any)
-      .then((d: any) => {
+    (typedTrpc().hairColorSim.colors.query() as Promise<HairColor[]>)
+      .then((d) => {
         setColors(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -46,8 +52,8 @@ export default function HairColorSimScreen(): JSX.Element {
       <Text style={styles.sub}>اختاري لون شعرك الجديد</Text>
       <View style={styles.grid}>
         {colors.map((c, i) => (
-          <TouchableOpacity key={i} style={[styles.color, { backgroundColor: c.hex as string }]}>
-            <Text style={styles.colorName}>{c.nameAr as string}</Text>
+          <TouchableOpacity key={i} style={[styles.color, { backgroundColor: c.hex ?? '#ccc' }]}>
+            <Text style={styles.colorName}>{c.nameAr ?? ''}</Text>
           </TouchableOpacity>
         ))}
       </View>
