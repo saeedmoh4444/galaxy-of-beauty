@@ -4,15 +4,28 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface FeedItem {
+  id?: number;
+  titleJson?: { ar?: string; en?: string };
+  nameAr?: string;
+  basePrice?: number;
+}
+
+interface AIFeedData {
+  recommendations?: FeedItem[];
+  wishlistItems?: FeedItem[];
+  skinProfile?: { skinType?: string };
+}
+
 export default function AIFeedScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<AIFeedData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().aiFeatures.personalizedFeed.query() as any)
-      .then((d: any) => {
+    (typedTrpc().aiFeatures.personalizedFeed.query() as Promise<AIFeedData>)
+      .then((d: AIFeedData) => {
         setData(d);
         setLoading(false);
         setRefreshing(false);
@@ -26,9 +39,9 @@ export default function AIFeedScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   if (loading) return <SkeletonList count={4} />;
-  const recommendations = (data?.recommendations ?? []) as any[];
-  const wishlistItems = (data?.wishlistItems ?? []) as any[];
-  const skinProfile = data?.skinProfile as any;
+  const recommendations = data?.recommendations ?? [];
+  const wishlistItems = data?.wishlistItems ?? [];
+  const skinProfile = data?.skinProfile;
   return (
     <ScrollView
       style={styles.c}
@@ -45,7 +58,7 @@ export default function AIFeedScreen(): JSX.Element {
       {skinProfile && (
         <View style={styles.sc}>
           <Text style={styles.st}> ملف بشرتكِ</Text>
-          <Text style={styles.sd}>{skinProfile.skinType as string}</Text>
+          <Text style={styles.sd}>{skinProfile.skinType}</Text>
         </View>
       )}
       {recommendations.length > 0 && <Text style={styles.stl}> موصى به لكِ</Text>}
@@ -54,9 +67,9 @@ export default function AIFeedScreen(): JSX.Element {
           <Text style={styles.em}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>
-              {((r.titleJson as any)?.ar as string) ?? (r.nameAr as string)}
+              {r.titleJson?.ar ?? r.nameAr}
             </Text>
-            <Text style={styles.meta}>{(r.basePrice as number)?.toLocaleString()} ر.س</Text>
+            <Text style={styles.meta}>{r.basePrice?.toLocaleString()} ر.س</Text>
           </View>
         </View>
       ))}
@@ -66,9 +79,9 @@ export default function AIFeedScreen(): JSX.Element {
           <Text style={styles.em}>️</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>
-              {((w.titleJson as any)?.ar as string) ?? (w.nameAr as string)}
+              {w.titleJson?.ar ?? w.nameAr}
             </Text>
-            <Text style={styles.meta}>{(w.basePrice as number)?.toLocaleString()} ر.س</Text>
+            <Text style={styles.meta}>{w.basePrice?.toLocaleString()} ر.س</Text>
           </View>
         </View>
       ))}

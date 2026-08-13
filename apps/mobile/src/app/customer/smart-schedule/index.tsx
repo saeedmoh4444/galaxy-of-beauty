@@ -4,18 +4,39 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface ServiceRow {
+  id: number;
+  emoji?: string;
+  titleJson?: { ar?: string; en?: string };
+  nameAr?: string;
+}
+
+interface ServiceListData {
+  items?: ServiceRow[];
+}
+
+interface SlotSuggestion {
+  startAt: string;
+  technicianId?: number;
+  rating?: number;
+}
+
+interface SmartScheduleData {
+  suggestions?: SlotSuggestion[];
+}
+
 export default function SmartScheduleScreen(): JSX.Element {
-  const [services, setServices] = useState<any[]>([]);
+  const [services, setServices] = useState<ServiceRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedSvc, setSelectedSvc] = useState<number | null>(null);
-  const [slots, setSlots] = useState<any>(null);
+  const [slots, setSlots] = useState<SmartScheduleData | null>(null);
   const [searching, setSearching] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().services.list.query({}) as any)
-      .then((d: any) => {
+    (typedTrpc().services.list.query({}) as Promise<ServiceListData>)
+      .then((d: ServiceListData) => {
         setServices(d?.items || []);
         setLoading(false);
         setRefreshing(false);
@@ -31,8 +52,8 @@ export default function SmartScheduleScreen(): JSX.Element {
   const findSlots = (serviceId: number) => {
     setSelectedSvc(serviceId);
     setSearching(true);
-    (typedTrpc().aiFeatures.smartSchedule.query({ serviceId }) as any)
-      .then((d: any) => {
+    (typedTrpc().aiFeatures.smartSchedule.query({ serviceId }) as Promise<SmartScheduleData>)
+      .then((d: SmartScheduleData) => {
         setSlots(d);
         setSearching(false);
       })
@@ -59,9 +80,9 @@ export default function SmartScheduleScreen(): JSX.Element {
             onPress={() => findSlots(s.id)}
             style={[styles.sc, selectedSvc === s.id && styles.sca]}
           >
-            <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
+            <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
             <Text style={styles.sn}>
-              {((s.titleJson as any)?.ar as string) ?? (s.nameAr as string)}
+              {s.titleJson?.ar ?? s.nameAr}
             </Text>
           </TouchableOpacity>
         ))}
@@ -71,27 +92,27 @@ export default function SmartScheduleScreen(): JSX.Element {
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
       <Text style={styles.t}> جدولة ذكية</Text>
-      {(slots.suggestions as any[])?.map((s, i) => (
+      {(slots.suggestions ?? []).map((s, i) => (
         <View key={i} style={styles.card}>
           <View style={styles.rk}>
             <Text style={styles.rtx}>#{i + 1}</Text>
           </View>
           <View style={{ flex: 1 }}>
             <Text style={styles.sd}>
-              {new Date(s.startAt as string).toLocaleDateString('ar-SA', {
+              {new Date(s.startAt).toLocaleDateString('ar-SA', {
                 weekday: 'long',
                 month: 'long',
                 day: 'numeric',
               })}
             </Text>
             <Text style={styles.stm}>
-              {new Date(s.startAt as string).toLocaleTimeString('ar-SA', {
+              {new Date(s.startAt).toLocaleTimeString('ar-SA', {
                 hour: '2-digit',
                 minute: '2-digit',
               })}
             </Text>
             <Text style={styles.sr}>
-              ‍ #{s.technicianId as number} ·  {s.rating as number}
+              ‍ #{s.technicianId} ·  {s.rating}
             </Text>
           </View>
           <TouchableOpacity style={styles.bb}>

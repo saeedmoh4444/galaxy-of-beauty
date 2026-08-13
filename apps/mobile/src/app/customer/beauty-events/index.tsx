@@ -12,6 +12,26 @@ const TYPES: Record<string, string> = {
   seasonal: ' موسمي',
 };
 
+interface EventNameJson {
+  ar?: string;
+  en?: string;
+}
+
+interface BeautyEvent {
+  id: number;
+  eventType: string;
+  nameJson?: EventNameJson;
+  location?: string;
+  startsAt: string;
+  price?: number;
+}
+
+interface EventRegistration {
+  id: number;
+  eventId?: number;
+  event?: { nameJson?: EventNameJson };
+}
+
 export default function BeautyEventsScreen(): JSX.Element {
   const {
     data: events,
@@ -22,8 +42,8 @@ export default function BeautyEventsScreen(): JSX.Element {
     refresh,
   } = useQuery(() => typedTrpc().beautyEvents.upcoming.query());
   const { data: myRegsData } = useQuery(() => typedTrpc().beautyEvents.myRegistrations.query());
-  const myRegs = (myRegsData ?? []) as any[];
-  const registeredIds = new Set(((myRegs ?? []) as any[]).map((r) => r.eventId));
+  const myRegs = (myRegsData ?? []) as EventRegistration[];
+  const registeredIds = new Set(myRegs.map((r) => r.eventId));
 
   const handleRegister = async (id: number) => {
     try {
@@ -41,7 +61,7 @@ export default function BeautyEventsScreen(): JSX.Element {
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الفعاليات" onRetry={refetch} />;
 
-  const items: any[] = Array.isArray(events) ? events : [];
+  const items: BeautyEvent[] = Array.isArray(events) ? events : [];
 
   return (
     <ScrollView

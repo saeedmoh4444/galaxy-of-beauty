@@ -4,23 +4,38 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface BnplProvider {
+  key: string;
+  emoji?: string;
+  nameAr?: string;
+}
+
+interface BnplEligibility {
+  eligible?: boolean;
+  provider?: string;
+}
+
+interface BnplPlanResult {
+  totalAmount?: number;
+}
+
 export default function BnplScreen(): JSX.Element {
-  const [providers, setProviders] = useState<any[]>([]);
-  const [, setEligibility] = useState<any>(null);
+  const [providers, setProviders] = useState<BnplProvider[]>([]);
+  const [, setEligibility] = useState<BnplEligibility | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [provider, setProvider] = useState('tabby');
   const [amount] = useState(500);
   const [inst] = useState(4);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<BnplPlanResult | null>(null);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().bnpl.providers.query() as any,
-      typedTrpc().bnpl.eligibility.query() as any,
+      typedTrpc().bnpl.providers.query() as Promise<BnplProvider[]>,
+      typedTrpc().bnpl.eligibility.query() as Promise<BnplEligibility>,
     ])
-      .then(([p, e]: any[]) => {
+      .then(([p, e]) => {
         setProviders(p || []);
         setEligibility(e);
         setLoading(false);
@@ -36,8 +51,10 @@ export default function BnplScreen(): JSX.Element {
   }, [fetch]);
   const submit = () => {
     setLoading(true);
-    (typedTrpc().bnpl.createPlan.mutate({ amount, provider, installments: inst }) as any)
-      .then((d: any) => {
+    (
+      typedTrpc().bnpl.createPlan.mutate({ amount, provider, installments: inst }) as Promise<BnplPlanResult>
+    )
+      .then((d: BnplPlanResult) => {
         setResult(d);
         setLoading(false);
       })
@@ -51,7 +68,7 @@ export default function BnplScreen(): JSX.Element {
         <View style={[styles.card, styles.sc]}>
           <Text style={styles.se}></Text>
           <Text style={styles.stt}>تمت الموافقة!</Text>
-          <Text style={styles.ta}>{(result.totalAmount as number)?.toLocaleString()} ر.س</Text>
+          <Text style={styles.ta}>{result.totalAmount?.toLocaleString()} ر.س</Text>
           <TouchableOpacity onPress={() => setResult(null)} style={styles.rst}>
             <Text style={styles.rstt}> إعادة</Text>
           </TouchableOpacity>
@@ -78,8 +95,8 @@ export default function BnplScreen(): JSX.Element {
             onPress={() => setProvider(p.key)}
             style={[styles.pb, provider === p.key && styles.pba]}
           >
-            <Text style={styles.pe}>{p.emoji as string}</Text>
-            <Text style={[styles.pn, provider === p.key && styles.pna]}>{p.nameAr as string}</Text>
+            <Text style={styles.pe}>{p.emoji}</Text>
+            <Text style={[styles.pn, provider === p.key && styles.pna]}>{p.nameAr}</Text>
           </TouchableOpacity>
         ))}
       </View>

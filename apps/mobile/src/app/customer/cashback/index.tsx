@@ -5,19 +5,35 @@ import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface CashbackInfo {
+  balance?: number;
+  totalBalance?: number;
+  rate?: number;
+}
+
+interface CashbackTransaction {
+  id?: number;
+  amount?: number;
+  createdAt: string;
+}
+
+interface CashbackHistory {
+  items?: CashbackTransaction[];
+}
+
 export default function CashbackScreen(): JSX.Element {
-  const [info, setInfo] = useState<any>(null);
-  const [history, setHistory] = useState<any>(null);
+  const [info, setInfo] = useState<CashbackInfo | null>(null);
+  const [history, setHistory] = useState<CashbackHistory | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().cashback.info.query() as any,
-      typedTrpc().cashback.history.query({ page: 1, limit: LARGE_PAGE_SIZE }) as any,
+      typedTrpc().cashback.info.query() as Promise<CashbackInfo>,
+      typedTrpc().cashback.history.query({ page: 1, limit: LARGE_PAGE_SIZE }) as Promise<CashbackHistory>,
     ])
-      .then(([i, h]: any[]) => {
+      .then(([i, h]) => {
         setInfo(i);
         setHistory(h);
         setLoading(false);
@@ -32,7 +48,7 @@ export default function CashbackScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   if (loading) return <SkeletonList count={3} />;
-  const items = (history?.items ?? []) as any[];
+  const items = history?.items ?? [];
   return (
     <ScrollView
       style={styles.c}
@@ -49,12 +65,12 @@ export default function CashbackScreen(): JSX.Element {
       <View style={styles.br}>
         <View style={styles.bc}>
           <Text style={styles.bl}>رصيد الكاش باك</Text>
-          <Text style={styles.ba}>{((info?.balance as number) ?? 0)?.toLocaleString()} ر.س</Text>
+          <Text style={styles.ba}>{(info?.balance ?? 0)?.toLocaleString()} ر.س</Text>
         </View>
         <View style={styles.bc}>
           <Text style={styles.bl}>الرصيد الإجمالي</Text>
           <Text style={[styles.ba, { color: '#7c3aed' }]}>
-            {((info?.totalBalance as number) ?? 0)?.toLocaleString()} ر.س
+            {(info?.totalBalance ?? 0)?.toLocaleString()} ر.س
           </Text>
         </View>
       </View>
@@ -62,12 +78,12 @@ export default function CashbackScreen(): JSX.Element {
         <View key={t.id} style={styles.card}>
           <Text style={styles.em}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.ta}>+{(t.amount as number)?.toLocaleString()} ر.س</Text>
+            <Text style={styles.ta}>+{t.amount?.toLocaleString()} ر.س</Text>
             <Text style={styles.td}>
-              {new Date(t.createdAt as string).toLocaleDateString('ar-SA')}
+              {new Date(t.createdAt).toLocaleDateString('ar-SA')}
             </Text>
           </View>
-          <Text style={styles.tr}>{(info?.rate as number) ?? 5}%</Text>
+          <Text style={styles.tr}>{info?.rate ?? 5}%</Text>
         </View>
       ))}
     </ScrollView>

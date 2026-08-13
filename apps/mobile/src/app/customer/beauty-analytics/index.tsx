@@ -5,10 +5,28 @@ import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc as trpcReact } from '@/lib/trpc-react';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface AnalyticsSummary {
+  totalBookings: number;
+  completedBookings: number;
+  completionRate: number;
+  totalSpent: number;
+}
+
+interface CategoryCount {
+  category: string;
+  pct: number;
+  count: number;
+}
+
+interface MonthlyTrend {
+  month: string;
+  count: number;
+}
+
 export default function BeautyAnalyticsScreen(): JSX.Element {
-  const [summary, setSummary] = useState<any>(null);
-  const [byCat, setByCat] = useState<any[]>([]);
-  const [trend, setTrend] = useState<any[]>([]);
+  const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
+  const [byCat, setByCat] = useState<CategoryCount[]>([]);
+  const [trend, setTrend] = useState<MonthlyTrend[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const kindness = typedTrpc().kindnessPoints?.getStatus?.useQuery?.();
@@ -18,11 +36,11 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().beautyAnalytics.summary.query() as any,
-      typedTrpc().beautyAnalytics.byCategory.query() as any,
-      typedTrpc().beautyAnalytics.monthlyTrend.query() as any,
+      typedTrpc().beautyAnalytics.summary.query() as Promise<AnalyticsSummary>,
+      typedTrpc().beautyAnalytics.byCategory.query() as Promise<CategoryCount[]>,
+      typedTrpc().beautyAnalytics.monthlyTrend.query() as Promise<MonthlyTrend[]>,
     ])
-      .then(([s, c, t]: any[]) => {
+      .then(([s, c, t]) => {
         setSummary(s);
         setByCat(c || []);
         setTrend(t || []);
@@ -71,7 +89,7 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
           <Text style={[styles.kv, { color: '#7c3aed' }]}>
-            {(s.totalSpent as number)?.toLocaleString()}
+            {s.totalSpent?.toLocaleString()}
           </Text>
           <Text style={styles.kl}>ر.س</Text>
         </View>

@@ -4,16 +4,26 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface ReportRow {
+  name?: string;
+  bookings?: number;
+}
+
+interface DashboardData {
+  topTechs?: ReportRow[];
+  byService?: ReportRow[];
+}
+
 export default function AdminReportsScreen(): JSX.Element {
-  const [data, setData] = useState<any>({});
+  const [data, setData] = useState<DashboardData>({});
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().adminReports.dashboard.query() as any)
-      .then((d: any) => {
+    (typedTrpc().adminReports.dashboard.query() as Promise<DashboardData>)
+      .then((d: DashboardData) => {
         setData(d || {});
         setLoading(false);
         setRefreshing(false);
@@ -31,8 +41,8 @@ export default function AdminReportsScreen(): JSX.Element {
   if (loading) return <SkeletonList count={5} />;
 
   const d = data ?? {};
-  const topTechs = (d.topTechs ?? []) as any[];
-  const byService = (d.byService ?? []) as any[];
+  const topTechs = d.topTechs ?? [];
+  const byService = d.byService ?? [];
 
   return (
     <ScrollView
@@ -51,16 +61,16 @@ export default function AdminReportsScreen(): JSX.Element {
       {topTechs.map((t, i) => (
         <View key={i} style={styles.row}>
           <Text style={styles.r}>#{i + 1}</Text>
-          <Text style={styles.n}>{t.name as string}</Text>
-          <Text style={styles.s}>{t.bookings as number} حجز</Text>
+          <Text style={styles.n}>{t.name}</Text>
+          <Text style={styles.s}>{t.bookings} حجز</Text>
         </View>
       ))}
       {byService.length > 0 && <Text style={styles.st}> حسب الخدمة</Text>}
       {byService.map((s, i) => (
         <View key={i} style={styles.row}>
           <Text style={styles.r}>#{i + 1}</Text>
-          <Text style={styles.n}>{s.name as string}</Text>
-          <Text style={styles.s}>{s.bookings as number} حجز</Text>
+          <Text style={styles.n}>{s.name}</Text>
+          <Text style={styles.s}>{s.bookings} حجز</Text>
         </View>
       ))}
     </ScrollView>

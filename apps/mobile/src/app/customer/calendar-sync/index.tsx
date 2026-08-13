@@ -4,19 +4,31 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface CalendarSyncStatus {
+  connected?: boolean;
+}
+
+interface CalendarEvent {
+  id?: number;
+  emoji?: string;
+  title?: string;
+  technician?: string;
+  date: string;
+}
+
 export default function CalendarSyncScreen(): JSX.Element {
-  const [status, setStatus] = useState<any>(null);
-  const [upcoming, setUpcoming] = useState<any[]>([]);
+  const [status, setStatus] = useState<CalendarSyncStatus | null>(null);
+  const [upcoming, setUpcoming] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().calendarSync.status.query() as any,
-      typedTrpc().calendarSync.upcoming.query() as any,
+      typedTrpc().calendarSync.status.query() as Promise<CalendarSyncStatus>,
+      typedTrpc().calendarSync.upcoming.query() as Promise<CalendarEvent[]>,
     ])
-      .then(([s, u]: any[]) => {
+      .then(([s, u]) => {
         setStatus(s);
         setUpcoming(u || []);
         setLoading(false);
@@ -32,14 +44,14 @@ export default function CalendarSyncScreen(): JSX.Element {
   }, [fetch]);
   const connect = () => {
     (
-      typedTrpc().calendarSync.connect.mutate({ authCode: 'google-auth-code' /* TODO */ }) as any
+      typedTrpc().calendarSync.connect.mutate({ authCode: 'google-auth-code' /* TODO */ })
     ).then(() => fetch());
   };
   const disconnect = () => {
-    (typedTrpc().calendarSync.disconnect.mutate({}) as any).then(() => fetch());
+    (typedTrpc().calendarSync.disconnect.mutate({})).then(() => fetch());
   };
   if (loading) return <SkeletonList count={3} />;
-  const connected = status?.connected as boolean;
+  const connected = status?.connected ?? false;
   return (
     <ScrollView
       style={styles.c}
@@ -69,13 +81,13 @@ export default function CalendarSyncScreen(): JSX.Element {
         <View style={styles.card}>
           {upcoming.map((e) => (
             <View key={e.id} style={styles.ev}>
-              <Text style={styles.ee}>{e.emoji as string}</Text>
+              <Text style={styles.ee}>{e.emoji}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={styles.et}>{e.title as string}</Text>
-                <Text style={styles.em}>‍ {e.technician as string}</Text>
+                <Text style={styles.et}>{e.title}</Text>
+                <Text style={styles.em}>‍ {e.technician}</Text>
               </View>
               <Text style={styles.ed}>
-                {new Date(e.date as string).toLocaleDateString('ar-SA', {
+                {new Date(e.date).toLocaleDateString('ar-SA', {
                   month: 'short',
                   day: 'numeric',
                 })}

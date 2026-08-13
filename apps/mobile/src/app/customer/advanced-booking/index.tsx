@@ -10,19 +10,34 @@ const REC = [
   { key: 'MONTHLY', emoji: '️', label: 'شهري' },
 ];
 
+interface ServiceRow {
+  id: number;
+  emoji?: string;
+  titleJson?: { ar?: string; en?: string };
+  nameAr?: string;
+}
+
+interface ServiceListData {
+  items?: ServiceRow[];
+}
+
+interface RecurringBookingResult {
+  bookings?: unknown[];
+}
+
 export default function AdvancedBookingScreen(): JSX.Element {
-  const [services, setServices] = useState<any[]>([]);
+  const [services, setServices] = useState<ServiceRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedSvc, setSelectedSvc] = useState<number | null>(null);
   const [recurrence, setRecurrence] = useState('WEEKLY');
   const [occurrences, setOccurrences] = useState(4);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<RecurringBookingResult | null>(null);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().services.list.query({}) as any)
-      .then((d: any) => {
+    (typedTrpc().services.list.query({}) as Promise<ServiceListData>)
+      .then((d: ServiceListData) => {
         setServices(d?.items || []);
         setLoading(false);
         setRefreshing(false);
@@ -49,8 +64,8 @@ export default function AdvancedBookingScreen(): JSX.Element {
         endAt: e,
         recurrence,
         occurrences,
-      }) as any
-    ).then((d: any) => setResult(d));
+      }) as Promise<RecurringBookingResult>
+    ).then((d: RecurringBookingResult) => setResult(d));
   };
   if (loading) return <SkeletonList count={5} />;
   if (result)
@@ -61,7 +76,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
           <Text style={styles.re}></Text>
           <Text style={styles.rtt}>تم!</Text>
           <Text style={styles.rcnt}>
-            {(result.bookings as any[])?.length ?? occurrences} حجوزات
+            {result.bookings?.length ?? occurrences} حجوزات
           </Text>
         </View>
       </ScrollView>
@@ -85,9 +100,9 @@ export default function AdvancedBookingScreen(): JSX.Element {
           onPress={() => setSelectedSvc(s.id)}
           style={[styles.sc, selectedSvc === s.id && styles.sca]}
         >
-          <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
+          <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
           <Text style={styles.sn}>
-            {((s.titleJson as any)?.ar as string) ?? (s.nameAr as string)}
+            {s.titleJson?.ar ?? s.nameAr}
           </Text>
         </TouchableOpacity>
       ))}

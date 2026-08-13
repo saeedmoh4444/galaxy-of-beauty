@@ -17,17 +17,34 @@ const SKIN_TYPES = [
   { key: 'normal', emoji: '', label: 'عادية' },
 ];
 
+interface RoutineStep {
+  emoji?: string;
+  stepAr?: string;
+  duration?: string;
+}
+
+interface RoutinePhase {
+  steps?: RoutineStep[];
+  totalTime?: string;
+}
+
+interface AIRoutineData {
+  morning?: RoutinePhase;
+  evening?: RoutinePhase;
+  tips?: string[];
+}
+
 export default function AIRoutineScreen(): JSX.Element {
   const [skinType, setSkinType] = useState('combination');
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<AIRoutineData | null>(null);
   const [loading, setLoading] = useState(false);
   const [generated, setGenerated] = useState(false);
 
   const generate = () => {
     setGenerated(true);
     setLoading(true);
-    (typedTrpc().aiRoutine.generate.query({ skinType }) as any)
-      .then((d: any) => {
+    (typedTrpc().aiRoutine.generate.query({ skinType }) as Promise<AIRoutineData>)
+      .then((d: AIRoutineData) => {
         setData(d);
         setLoading(false);
       })
@@ -62,9 +79,9 @@ export default function AIRoutineScreen(): JSX.Element {
 
   if (loading) return <ActivityIndicator color="#8b5cf6" style={{ marginTop: 40 }} size="large" />;
 
-  const morning = (data?.morning?.steps as any[]) ?? [];
-  const evening = (data?.evening?.steps as any[]) ?? [];
-  const tips = (data?.tips as string[]) ?? [];
+  const morning = data?.morning?.steps ?? [];
+  const evening = data?.evening?.steps ?? [];
+  const tips = data?.tips ?? [];
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
@@ -96,7 +113,7 @@ export default function AIRoutineScreen(): JSX.Element {
       {tips.length > 0 && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}> نصائح</Text>
-          {tips.map((tip: string, i: number) => (
+          {tips.map((tip, i) => (
             <Text key={i} style={styles.tip}>
               • {tip}
             </Text>
