@@ -5,6 +5,38 @@ import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 
+interface ServiceRow {
+  id?: number;
+  emoji?: string;
+  name?: string;
+  price?: number;
+}
+
+interface FlashDeal {
+  id?: number;
+  title?: string;
+  originalPrice?: number;
+  dealPrice?: number;
+}
+
+interface DiscoveryEvent {
+  id?: number;
+  name?: string;
+  type?: string;
+  location?: string;
+}
+
+interface FeaturedData {
+  popularServices?: ServiceRow[];
+  flashDeals?: FlashDeal[];
+  events?: DiscoveryEvent[];
+}
+
+interface ForYouData {
+  profile?: { skinType?: string; hairType?: string; concerns?: string[] };
+  suggestions?: ServiceRow[];
+}
+
 export default function BeautyDiscoveryScreen(): JSX.Element {
   const {
     data: featured,
@@ -19,8 +51,8 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
   if (loading) return <SkeletonList count={5} />;
   if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;
 
-  const f = featured as any;
-  const fy = forYou as any;
+  const f = featured as FeaturedData | null;
+  const fy = forYou as ForYouData | null;
 
   return (
     <ScrollView
@@ -45,10 +77,10 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
         </View>
       )}
 
-      {(f?.popularServices as any[])?.length > 0 && (
+      {(f?.popularServices ?? []).length > 0 && (
         <View style={{ marginBottom: 16 }}>
           <Text style={s.st}> الأكثر طلباً</Text>
-          {(f.popularServices as any[]).slice(0, 6).map((svc, i) => (
+          {(f?.popularServices ?? []).slice(0, 6).map((svc, i) => (
             <View key={svc.id ?? i} style={s.row}>
               <Text style={{ fontSize: 14 }}>
                 {svc.emoji} {svc.name}
@@ -59,10 +91,10 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
         </View>
       )}
 
-      {(f?.flashDeals as any[])?.length > 0 && (
+      {(f?.flashDeals ?? []).length > 0 && (
         <View style={{ marginBottom: 16 }}>
           <Text style={s.st}> عروض فلاش</Text>
-          {(f.flashDeals as any[]).slice(0, 4).map((d, i) => (
+          {(f?.flashDeals ?? []).slice(0, 4).map((d, i) => (
             <View key={d.id ?? i} style={s.row}>
               <View style={{ flex: 1 }}>
                 <Text style={{ fontWeight: '600', fontSize: 14 }}>{d.title}</Text>
@@ -78,24 +110,24 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
         </View>
       )}
 
-      {(fy?.suggestions as any[])?.length > 0 && (
+      {(fy?.suggestions ?? []).length > 0 && (
         <View style={{ marginBottom: 16 }}>
           <Text style={s.st}> لكِ خصيصاً</Text>
-          {(fy.suggestions as any[]).map((s, i) => (
-            <View key={s.id ?? i} style={s.row}>
+          {(fy?.suggestions ?? []).map((sug, i) => (
+            <View key={sug.id ?? i} style={s.row}>
               <Text style={{ fontSize: 14 }}>
-                {s.emoji} {s.name}
+                {sug.emoji} {sug.name}
               </Text>
-              <Text style={{ fontWeight: '700', color: '#db2777' }}>{s.price} ر.س</Text>
+              <Text style={{ fontWeight: '700', color: '#db2777' }}>{sug.price} ر.س</Text>
             </View>
           ))}
         </View>
       )}
 
-      {(f?.events as any[])?.length > 0 && (
+      {(f?.events ?? []).length > 0 && (
         <View style={{ marginBottom: 16 }}>
           <Text style={s.st}> فعاليات قادمة</Text>
-          {(f.events as any[]).map((e, i) => (
+          {(f?.events ?? []).map((e, i) => (
             <View key={e.id ?? i} style={s.row}>
               <View style={{ flex: 1 }}>
                 <Text style={{ fontWeight: '600', fontSize: 14 }}>{e.name}</Text>

@@ -4,19 +4,41 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface EmergencyService {
+  id: number;
+  emoji?: string;
+  titleJson?: { ar?: string; en?: string };
+  nameAr?: string;
+}
+
+interface AvailableTechnician {
+  technicianId: number;
+  name?: string;
+  rating?: number;
+}
+
+interface AvailabilityResult {
+  totalEstimate?: number;
+  available?: AvailableTechnician[];
+}
+
+interface BookingResult {
+  bookingCode?: string;
+}
+
 export default function EmergencyBookingScreen(): JSX.Element {
-  const [services, setServices] = useState<any[]>([]);
+  const [services, setServices] = useState<EmergencyService[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedSvc, setSelectedSvc] = useState<number | null>(null);
-  const [availability, setAvailability] = useState<any>(null);
+  const [availability, setAvailability] = useState<AvailabilityResult | null>(null);
   const [checking, setChecking] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<BookingResult | null>(null);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().services.list.query({}) as any)
-      .then((d: any) => {
+    (typedTrpc().services.list.query({}) as Promise<{ items?: EmergencyService[] }>)
+      .then((d) => {
         setServices(d?.items || []);
         setLoading(false);
         setRefreshing(false);
@@ -32,8 +54,8 @@ export default function EmergencyBookingScreen(): JSX.Element {
   const check = (serviceId: number) => {
     setSelectedSvc(serviceId);
     setChecking(true);
-    (typedTrpc().emergencyBooking.checkAvailability.query({ serviceId }) as any)
-      .then((d: any) => {
+    (typedTrpc().emergencyBooking.checkAvailability.query({ serviceId }) as Promise<AvailabilityResult>)
+      .then((d) => {
         setAvailability(d);
         setChecking(false);
       })
@@ -46,8 +68,8 @@ export default function EmergencyBookingScreen(): JSX.Element {
         technicianId,
         addressId: 1 /* TODO */,
         slotId,
-      }) as any
-    ).then((d: any) => setResult(d));
+      }) as Promise<BookingResult>
+    ).then((d) => setResult(d));
   };
   if (loading) return <SkeletonList count={5} />;
   if (result)
@@ -57,7 +79,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
         <View style={[styles.card, styles.rc]}>
           <Text style={styles.re}></Text>
           <Text style={styles.rt}>تم الحجز الطارئ!</Text>
-          <Text style={styles.rcode}>{(result.bookingCode as string) ?? '—'}</Text>
+          <Text style={styles.rcode}>{result.bookingCode ?? '—'}</Text>
         </View>
       </ScrollView>
     );
@@ -78,9 +100,9 @@ export default function EmergencyBookingScreen(): JSX.Element {
         <Text style={styles.sub}>حجز فوري خلال ٣ ساعات — رسوم إضافية ٥٠ ر.س</Text>
         {services.slice(0, 10).map((s) => (
           <TouchableOpacity key={s.id} onPress={() => check(s.id)} style={styles.sc}>
-            <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
+            <Text style={styles.se}>{s.emoji ?? ''}</Text>
             <Text style={styles.sn}>
-              {((s.titleJson as any)?.ar as string) ?? (s.nameAr as string)}
+              {s.titleJson?.ar ?? s.nameAr ?? ''}
             </Text>
             <Text style={styles.arrow}>→</Text>
           </TouchableOpacity>
@@ -94,15 +116,15 @@ export default function EmergencyBookingScreen(): JSX.Element {
       <View style={styles.ec}>
         <Text style={styles.et}> التكلفة التقديرية</Text>
         <Text style={styles.ev}>
-          {(availability.totalEstimate as number)?.toLocaleString()} ر.س
+          {(availability.totalEstimate ?? 0).toLocaleString()} ر.س
         </Text>
       </View>
-      {(availability.available as any[])?.map((t) => (
+      {(availability.available ?? []).map((t) => (
         <View key={t.technicianId} style={styles.card}>
-          <Text style={styles.te}>‍</Text>
+          <Text style={styles.te}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.tn}>{t.name as string}</Text>
-            <Text style={styles.tm}> {t.rating as number}</Text>
+            <Text style={styles.tn}>{t.name ?? ''}</Text>
+            <Text style={styles.tm}> {t.rating ?? ''}</Text>
           </View>
           <TouchableOpacity onPress={() => book(t.technicianId, 1)} style={styles.bb}>
             <Text style={styles.bt}>احجز الآن</Text>
