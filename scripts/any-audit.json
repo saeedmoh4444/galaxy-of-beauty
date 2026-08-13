@@ -1,13 +1,5 @@
 [
   {
-    "file": "app\\customer\\beauty-discovery\\index.tsx",
-    "count": 10
-  },
-  {
-    "file": "app\\customer\\emergency-booking\\index.tsx",
-    "count": 10
-  },
-  {
     "file": "app\\customer\\social\\index.tsx",
     "count": 9
   },

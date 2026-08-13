@@ -20,6 +20,32 @@ interface FeedItem {
   technician?: { user?: { name?: string }; city?: string };
 }
 
+interface TrendingService {
+  id?: number;
+  titleJson?: { ar?: string; en?: string };
+  name?: string;
+  bookingCount?: number;
+}
+
+interface SpotlightTech {
+  id?: number;
+  name?: string;
+  city?: string;
+  ratingAvg?: number;
+}
+
+interface BeautyTip {
+  id?: number;
+  titleAr?: string;
+  bodyAr?: string;
+}
+
+interface LookbookItem {
+  id?: number;
+  titleAr?: string;
+  category?: string;
+}
+
 export default function SocialScreen(): JSX.Element {
   const [tab, setTab] = useState('trending');
   const {
@@ -40,9 +66,11 @@ export default function SocialScreen(): JSX.Element {
   if (loading) return <SkeletonList count={5} />;
   if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;
 
-  const tips = (tipsData ?? []) as any[];
-  const feedItems = (feedData as any)?.items ?? [];
-  const lookbookItems = (lookbook ?? []) as any[];
+  const tips = (tipsData as BeautyTip[] | undefined) ?? [];
+  const feedItems = ((feedData as { items?: FeedItem[] } | null)?.items) ?? [];
+  const lookbookItems = (lookbook as LookbookItem[] | undefined) ?? [];
+  const trendingList = (trending as TrendingService[] | undefined) ?? [];
+  const spotlightList = (spotlight as SpotlightTech[] | undefined) ?? [];
 
   return (
     <ScrollView
@@ -67,16 +95,16 @@ export default function SocialScreen(): JSX.Element {
         ))}
       </View>
 
-      {tab === 'trending' && (trending as any[])?.length > 0 && (
+      {tab === 'trending' && trendingList.length > 0 && (
         <View>
-          <Text style={s.st}>‍️ الخدمات الرائجة</Text>
-          {(trending as any[]).slice(0, 10).map((svc, i) => (
+          <Text style={s.st}> الخدمات الرائجة</Text>
+          {trendingList.slice(0, 10).map((svc, i) => (
             <View key={svc.id ?? i} style={s.card}>
               <View style={s.rank}>
                 <Text style={s.rankText}>#{i + 1}</Text>
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={s.cardTitle}>{(svc.titleJson as any)?.ar ?? svc.name}</Text>
+                <Text style={s.cardTitle}>{svc.titleJson?.ar ?? svc.name}</Text>
                 <Text style={s.cardSub}>{svc.bookingCount} حجز</Text>
               </View>
             </View>
@@ -84,10 +112,10 @@ export default function SocialScreen(): JSX.Element {
         </View>
       )}
 
-      {tab === 'spotlight' && (spotlight as any[])?.length > 0 && (
+      {tab === 'spotlight' && spotlightList.length > 0 && (
         <View>
-          <Text style={s.st}>‍ فنيات مميزات</Text>
-          {(spotlight as any[]).map((tech, i) => (
+          <Text style={s.st}> فنيات مميزات</Text>
+          {spotlightList.map((tech, i) => (
             <View key={tech.id ?? i} style={s.card}>
               <Text style={s.avatar}>‍</Text>
               <View style={{ flex: 1 }}>
@@ -119,7 +147,7 @@ export default function SocialScreen(): JSX.Element {
         <View>
           <Text style={s.st}> قبل وبعد</Text>
           <View style={s.grid}>
-            {(feedItems as unknown as FeedItem[]).map((item, i) => (
+            {feedItems.map((item, i) => (
               <View key={item.id ?? i} style={s.gridItem}>
                 <Text style={s.gridEmoji}></Text>
                 <Text style={s.gridTitle}>{item.technician?.user?.name ?? ''}</Text>
@@ -133,7 +161,7 @@ export default function SocialScreen(): JSX.Element {
       {lookbookItems.length > 0 && (
         <View style={{ marginTop: 24 }}>
           <Text style={s.st}> لوك بوك الموسم</Text>
-          {(lookbookItems as any[]).slice(0, 4).map((l, i) => (
+          {lookbookItems.slice(0, 4).map((l, i) => (
             <View key={l.id ?? i} style={s.card}>
               <Text style={s.avatar}></Text>
               <View style={{ flex: 1 }}>
