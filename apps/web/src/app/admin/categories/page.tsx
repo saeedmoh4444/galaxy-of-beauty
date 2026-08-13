@@ -185,10 +185,11 @@ export default function AdminCategoriesPage(): JSX.Element {
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
           />
           <div>
-            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+            <label htmlFor="ac-parent-create" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
               القسم الأب
             </label>
             <select
+              id="ac-parent-create"
               className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               value={form.parentId ?? ''}
               onChange={(e) =>
@@ -233,10 +234,11 @@ export default function AdminCategoriesPage(): JSX.Element {
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
           />
           <div>
-            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+            <label htmlFor="ac-parent-edit" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
               القسم الأب
             </label>
             <select
+              id="ac-parent-edit"
               className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               value={form.parentId ?? ''}
               onChange={(e) =>

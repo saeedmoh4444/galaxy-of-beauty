@@ -127,8 +127,9 @@ export default function HomeServicePage(): JSX.Element {
             <div className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-semibold mb-1">المدينة</label>
+                  <label htmlFor="hs-city" className="block text-sm font-semibold mb-1">المدينة</label>
                   <select
+                    id="hs-city"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
@@ -141,8 +142,9 @@ export default function HomeServicePage(): JSX.Element {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1">معرف الخدمة</label>
+                  <label htmlFor="hs-serviceId" className="block text-sm font-semibold mb-1">معرف الخدمة</label>
                   <input
+                    id="hs-serviceId"
                     type="number"
                     value={serviceId}
                     onChange={(e) => setServiceId(e.target.value)}
@@ -152,8 +154,9 @@ export default function HomeServicePage(): JSX.Element {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1">العنوان التفصيلي</label>
+                <label htmlFor="hs-address" className="block text-sm font-semibold mb-1">العنوان التفصيلي</label>
                 <input
+                  id="hs-address"
                   type="text"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
@@ -163,8 +166,9 @@ export default function HomeServicePage(): JSX.Element {
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-semibold mb-1">التاريخ المفضل</label>
+                  <label htmlFor="hs-prefDate" className="block text-sm font-semibold mb-1">التاريخ المفضل</label>
                   <input
+                    id="hs-prefDate"
                     type="date"
                     value={prefDate}
                     onChange={(e) => setPrefDate(e.target.value)}
@@ -172,8 +176,9 @@ export default function HomeServicePage(): JSX.Element {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1">الوقت المفضل</label>
+                  <label htmlFor="hs-prefTime" className="block text-sm font-semibold mb-1">الوقت المفضل</label>
                   <input
+                    id="hs-prefTime"
                     type="time"
                     value={prefTime}
                     onChange={(e) => setPrefTime(e.target.value)}
@@ -182,8 +187,9 @@ export default function HomeServicePage(): JSX.Element {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1">ملاحظات</label>
+                <label htmlFor="hs-notes" className="block text-sm font-semibold mb-1">ملاحظات</label>
                 <textarea
+                  id="hs-notes"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="أي تفاصيل إضافية..."

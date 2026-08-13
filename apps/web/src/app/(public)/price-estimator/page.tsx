@@ -92,7 +92,7 @@ export default function PriceEstimatorPage(): JSX.Element {
         <div className="space-y-4">
           {/* Service Search / Select */}
           <div>
-            <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1.5">
+            <label htmlFor="pe-service" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1.5">
               الخدمة <span className="text-red-500">*</span>
             </label>
 
@@ -122,6 +122,7 @@ export default function PriceEstimatorPage(): JSX.Element {
             ) : (
               <div className="relative">
                 <input
+                  id="pe-service"
                   type="text"
                   value={search}
                   onChange={(e) => handleSearchChange(e.target.value)}
@@ -157,11 +158,12 @@ export default function PriceEstimatorPage(): JSX.Element {
 
           {/* Promo Code */}
           <div>
-            <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1.5">
+            <label htmlFor="pe-promo" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1.5">
               كود الخصم <span className="text-text-tertiary font-normal">(اختياري)</span>
             </label>
             <div className="relative">
               <input
+                id="pe-promo"
                 type="text"
                 value={promoCode}
                 onChange={(e) => setPromoCode(e.target.value.toUpperCase())}

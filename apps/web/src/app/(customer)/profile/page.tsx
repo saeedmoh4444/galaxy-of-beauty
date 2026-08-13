@@ -172,10 +172,11 @@ export default function ProfilePage(): JSX.Element {
                     onChange={(e) => setFormPhone(e.target.value)}
                   />
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+                    <label htmlFor="pf-lang" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
                       اللغة
                     </label>
                     <select
+                      id="pf-lang"
                       defaultValue={userData.preferredLanguage as string}
                       onChange={(e) => setFormLang(e.target.value)}
                       className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"

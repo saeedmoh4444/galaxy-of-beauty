@@ -13,12 +13,6 @@ const THEMES = [
 ];
 
 export default function BeautyPartyPage(): JSX.Element {
-  const { data: _data } = api.beautyParty.myParties.useQuery() as {
-    data: Array<Record<string, unknown>> | undefined;
-    isLoading: boolean;
-    isError: boolean;
-    refetch: () => void;
-  };
   const createMut = api.beautyParty.create.useMutation();
   const [theme, setTheme] = useState('spa');
   const [guests, setGuests] = useState(4);

@@ -61,8 +61,6 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 export default function WellnessPage(): JSX.Element {
   const cycleSettings = (api as any).cycleTracker?.settings?.useQuery?.() as any;
   const skinAnalysis = (api as any).skinAnalysis?.latest?.useQuery?.() as any;
-  const wellnessCheck = (api as any).wellnessTracker?.latest?.useQuery?.() as any;
-  const sleepLogs = (api as any).sleepTracker?.stats?.useQuery?.() as any;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

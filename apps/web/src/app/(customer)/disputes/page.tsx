@@ -107,8 +107,9 @@ export default function DisputesPage(): JSX.Element {
             placeholder="أدخل رقم الحجز"
           />
           <div>
-            <label className="mb-1 block text-sm font-medium">سبب النزاع</label>
+            <label htmlFor="dp-reason" className="mb-1 block text-sm font-medium">سبب النزاع</label>
             <textarea
+              id="dp-reason"
               className="w-full rounded-lg border border-gray-300 bg-white p-3 text-sm outline-none focus:border-brand-500 dark:border-gray-600 dark:bg-gray-800"
               rows={4}
               value={reason}

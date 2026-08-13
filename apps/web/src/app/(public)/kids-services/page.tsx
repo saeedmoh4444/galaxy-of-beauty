@@ -106,8 +106,9 @@ export default function KidsServicesPage(): JSX.Element {
           </Card>
           <div className="flex gap-3 items-end bg-surface-muted dark:bg-gray-800 rounded-xl p-4">
             <div>
-              <label className="text-xs font-semibold">اسم الطفل</label>
+              <label htmlFor="ks-child-name" className="text-xs font-semibold">اسم الطفل</label>
               <input
+                id="ks-child-name"
                 value={childName}
                 onChange={(e) => setChildName(e.target.value)}
                 placeholder="الاسم..."
@@ -115,8 +116,9 @@ export default function KidsServicesPage(): JSX.Element {
               />
             </div>
             <div>
-              <label className="text-xs font-semibold">العمر</label>
+              <label htmlFor="ks-child-age" className="text-xs font-semibold">العمر</label>
               <input
+                id="ks-child-age"
                 type="number"
                 value={childAge}
                 onChange={(e) => setChildAge(parseInt(e.target.value) || 0)}

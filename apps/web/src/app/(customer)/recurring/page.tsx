@@ -107,12 +107,16 @@ export default function RecurringPage(): JSX.Element {
         {showAdd && (
           <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
-            onClick={() => setShowAdd(false)}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setShowAdd(false);
+            }}
+            role="button"
+            tabIndex={-1}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') setShowAdd(false);
+            }}
           >
-            <div
-              className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-gray-900"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-gray-900">
               <h3 className="mb-4 text-lg font-bold">حجز متكرر جديد</h3>
               <div className="space-y-3">
                 <Input

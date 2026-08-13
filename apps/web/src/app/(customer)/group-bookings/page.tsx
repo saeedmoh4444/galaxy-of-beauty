@@ -272,10 +272,11 @@ export default function GroupBookingsPage(): JSX.Element {
           <div className="space-y-4">
             {/* Group Name */}
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label htmlFor="gb-name" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
                 اسم المجموعة
               </label>
               <input
+                id="gb-name"
                 type="text"
                 value={formName}
                 onChange={(e) => setFormName(e.target.value)}
@@ -286,10 +287,11 @@ export default function GroupBookingsPage(): JSX.Element {
 
             {/* Theme */}
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label htmlFor="gb-theme" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
                 المناسبة
               </label>
               <select
+                id="gb-theme"
                 value={formTheme}
                 onChange={(e) => setFormTheme(e.target.value)}
                 className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"

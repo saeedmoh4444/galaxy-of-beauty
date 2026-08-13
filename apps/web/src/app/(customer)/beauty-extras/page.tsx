@@ -25,9 +25,7 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyExtrasPage(): JSX.Element {
-  const wishlist = (api as any).wishlist?.list?.useQuery?.() as any;
   const referral = (api as any).referrals?.myStats?.useQuery?.() as any;
-  const styleMatch = (api as any).styleMatch?.getProfile?.useQuery?.() as any;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

@@ -1,6 +1,5 @@
 'use client';
 
-import { api } from '@/lib/trpc';
 import {
   PageContainer,
   PageTitle,
@@ -27,9 +26,6 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function LifeEventsPage(): JSX.Element {
-  const journey = (api as any).customerJourney?.myStage?.useQuery?.() as any;
-  const events = (api as any).beautyEvents?.upcoming?.useQuery?.({ limit: 4 }) as any;
-
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">

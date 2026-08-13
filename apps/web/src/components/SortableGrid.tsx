@@ -86,7 +86,7 @@ export function SortableGrid<T>({
   gap = 'gap-4',
   className = '',
 }: SortableGridProps<T>) {
-  const [_activeId, setActiveId] = useState<string | number | null>(null);
+  const [, setActiveId] = useState<string | number | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {

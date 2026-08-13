@@ -33,7 +33,7 @@ export default function WhatsAppBotPage(): JSX.Element {
       <div className="rounded-3xl bg-emerald-50 p-8 text-center dark:bg-emerald-950">
         <span className="text-5xl"></span>
         <h2 className="mt-4 text-2xl font-extrabold">ابدئي الآن</h2>
-        <p className="mt-2 text-text-secondary">أرسلي "مرحباً" إلى رقم الواتساب</p>
+        <p className="mt-2 text-text-secondary">أرسلي &quot;مرحباً&quot; إلى رقم الواتساب</p>
         <div className="mt-6 inline-flex items-center gap-3 rounded-2xl bg-emerald-600 px-8 py-4 text-xl font-bold text-white">
           <span>+966 50 000 0000</span>
         </div>

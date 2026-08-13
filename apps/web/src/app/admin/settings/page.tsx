@@ -167,10 +167,11 @@ export default function AdminSettingsPage(): JSX.Element {
         <h2 className="mb-3 text-lg font-semibold">تصدير البيانات</h2>
         <div className="flex flex-wrap items-end gap-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+            <label htmlFor="aset-export-format" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
               الصيغة
             </label>
             <select
+              id="aset-export-format"
               className="rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               value={exportFormat}
               onChange={(e) => setExportFormat(e.target.value as 'csv' | 'json')}

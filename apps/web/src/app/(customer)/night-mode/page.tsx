@@ -53,7 +53,11 @@ export default function NightModePage(): JSX.Element {
                       checked={done}
                       onChange={() => {
                         const n = new Set(checked);
-                        n.has(i) ? n.delete(i) : n.add(i);
+                        if (n.has(i)) {
+                          n.delete(i);
+                        } else {
+                          n.add(i);
+                        }
                         setChecked(n);
                       }}
                       className="h-5 w-5 accent-brand-600 ml-2"

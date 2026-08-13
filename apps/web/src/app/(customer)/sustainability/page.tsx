@@ -49,10 +49,6 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function SustainabilityPage(): JSX.Element {
-  const greenSalons = (api as any).greenSalon?.list?.useQuery?.({ limit: 4 }) as any;
-  const sensorySalons = (api as any).sensoryFriendly?.listSalons?.useQuery?.({ limit: 4 }) as any;
-
-  const playlist = (api as any).beautyPlaylist?.list?.useQuery?.({ limit: 1 }) as any;
   const weather = (api as any).weatherBeauty?.getAdvice?.useQuery?.({
     condition: 'hot',
     temp: 42,

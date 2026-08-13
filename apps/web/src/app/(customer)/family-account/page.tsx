@@ -39,15 +39,6 @@ const AGE_EMOJI: Record<string, string> = {
   senior: '',
 };
 
-const _PREF_EMOJI: Record<string, string> = {
-  gentle: '',
-  hypoallergenic: '️',
-  fragrance_free: '',
-  natural: '',
-  quick: '',
-  quiet: '',
-};
-
 export default function FamilyAccountPage(): JSX.Element {
   const {
     data: members,
@@ -287,10 +278,11 @@ export default function FamilyAccountPage(): JSX.Element {
         >
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label htmlFor="fa-name" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
                 الاسم
               </label>
               <input
+                id="fa-name"
                 type="text"
                 value={formName}
                 onChange={(e) => setFormName(e.target.value)}
@@ -301,10 +293,11 @@ export default function FamilyAccountPage(): JSX.Element {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+                <label htmlFor="fa-relation" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
                   العلاقة
                 </label>
                 <select
+                  id="fa-relation"
                   value={formRelation}
                   onChange={(e) => setFormRelation(e.target.value)}
                   className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
@@ -317,10 +310,11 @@ export default function FamilyAccountPage(): JSX.Element {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+                <label htmlFor="fa-age" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
                   الفئة العمرية
                 </label>
                 <select
+                  id="fa-age"
                   value={formAge}
                   onChange={(e) => setFormAge(e.target.value)}
                   className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
@@ -335,6 +329,7 @@ export default function FamilyAccountPage(): JSX.Element {
             </div>
 
             <div>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes preference toggle buttons */}
               <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-2">
                 التفضيلات
               </label>
@@ -357,10 +352,11 @@ export default function FamilyAccountPage(): JSX.Element {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label htmlFor="fa-notes" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
                 ملاحظات
               </label>
               <textarea
+                id="fa-notes"
                 value={formNotes}
                 onChange={(e) => setFormNotes(e.target.value)}
                 placeholder="حساسية، تفضيلات خاصة..."

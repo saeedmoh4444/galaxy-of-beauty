@@ -122,8 +122,9 @@ export default function EventTicketsPage(): JSX.Element {
         <div className="space-y-4">
           <p className="font-bold">{(selectedEvent?.nameJson as Record<string, string>)?.ar}</p>
           <div>
-            <label className="block text-sm font-semibold mb-1">اسم الحاضرة</label>
+            <label htmlFor="et-attendee-name" className="block text-sm font-semibold mb-1">اسم الحاضرة</label>
             <input
+              id="et-attendee-name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}

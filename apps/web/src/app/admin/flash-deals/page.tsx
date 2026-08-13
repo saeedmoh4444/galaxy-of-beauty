@@ -18,9 +18,6 @@ export default function AdminFlashDealsPage(): JSX.Element {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };
-  const { data: _upcoming } = api.flashDeals.upcoming.useQuery() as {
-    data: Array<Record<string, unknown>> | undefined;
-  };
   const createMut = api.flashDeals.create.useMutation();
   const [svcId, setSvcId] = useState(1);
   const [discount, setDiscount] = useState(30);

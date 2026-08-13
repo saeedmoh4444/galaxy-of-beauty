@@ -126,11 +126,17 @@ export default function AdminAreasPage(): JSX.Element {
         {showAdd && (
           <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
-            onClick={() => setShowAdd(false)}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setShowAdd(false);
+            }}
+            role="button"
+            tabIndex={-1}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') setShowAdd(false);
+            }}
           >
             <div
               className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900"
-              onClick={(e) => e.stopPropagation()}
             >
               <h3 className="mb-4 text-lg font-bold text-text-primary dark:text-gray-100">
                 إضافة منطقة جديدة

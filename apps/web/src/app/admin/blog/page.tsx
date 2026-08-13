@@ -79,8 +79,9 @@ export default function AdminBlogPage(): JSX.Element {
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
           />
           <div>
-            <label className="mb-1 block text-sm font-medium">المحتوى (عربي)</label>
+            <label htmlFor="ab-body-ar" className="mb-1 block text-sm font-medium">المحتوى (عربي)</label>
             <textarea
+              id="ab-body-ar"
               className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
               rows={5}
               value={form.bodyAr}
@@ -88,8 +89,9 @@ export default function AdminBlogPage(): JSX.Element {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium">المحتوى (إنجليزي)</label>
+            <label htmlFor="ab-body-en" className="mb-1 block text-sm font-medium">المحتوى (إنجليزي)</label>
             <textarea
+              id="ab-body-en"
               className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
               rows={5}
               value={form.bodyEn}

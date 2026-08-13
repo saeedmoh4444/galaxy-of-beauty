@@ -137,8 +137,9 @@ export default function SkinDiaryPage(): JSX.Element {
         <Modal open={showAdd} onClose={() => setShowAdd(false)} title="إضافة للبوميات">
           <div className="space-y-3">
             <div>
-              <label className="text-sm font-semibold">رابط الصورة</label>
+              <label htmlFor="skd-image" className="text-sm font-semibold">رابط الصورة</label>
               <input
+                id="skd-image"
                 type="url"
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
@@ -146,8 +147,9 @@ export default function SkinDiaryPage(): JSX.Element {
               />
             </div>
             <div>
-              <label className="text-sm font-semibold">حالة البشرة</label>
+              <label htmlFor="skd-condition" className="text-sm font-semibold">حالة البشرة</label>
               <select
+                id="skd-condition"
                 value={condition}
                 onChange={(e) => setCondition(e.target.value)}
                 className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1"
@@ -169,8 +171,9 @@ export default function SkinDiaryPage(): JSX.Element {
               />
             </div>
             <div>
-              <label className="text-sm font-semibold">ملاحظات</label>
+              <label htmlFor="skd-notes" className="text-sm font-semibold">ملاحظات</label>
               <textarea
+                id="skd-notes"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1"

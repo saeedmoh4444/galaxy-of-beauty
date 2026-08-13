@@ -24,9 +24,6 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 export default function BeautyLifestylePage(): JSX.Element {
   const loyalty = (api as any).loyalty?.getAccount?.useQuery?.() as any;
   const budget = (api as any).beautyBudget?.get?.useQuery?.() as any;
-  const savings = (api as any).savingsGoals?.list?.useQuery?.() as any;
-  const alerts = (api as any).priceDropAlerts?.myAlerts?.useQuery?.() as any;
-
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">

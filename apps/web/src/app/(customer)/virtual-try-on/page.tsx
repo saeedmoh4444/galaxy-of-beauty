@@ -271,7 +271,6 @@ export default function VirtualTryOnPage(): JSX.Element {
   const [selectedColor, setSelectedColor] = useState<ColorItem | null>(null);
   const [intensity, setIntensity] = useState(70);
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
-  const [_showCamera, _setShowCamera] = useState(true);
 
   // Product recommendations
   const recColor = selectedColor?.hex ?? '';

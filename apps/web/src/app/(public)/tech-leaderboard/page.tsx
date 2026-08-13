@@ -59,7 +59,7 @@ export default function TechLeaderboardPage(): JSX.Element {
             <Link key={t.id as number} href={`/technicians/${t.id}`}>
               <Card padding="md" className="flex items-center gap-4 hover:shadow-md transition-all">
                 <span className="text-2xl w-10 text-center font-bold">
-                  {[, '', '', ''][idx + 1] ?? `#${idx + 1}`}
+                  {['', '', ''][idx] ?? `#${idx + 1}`}
                 </span>
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-purple-500 text-white font-bold">
                   {((t.name as string) || '')[0]}

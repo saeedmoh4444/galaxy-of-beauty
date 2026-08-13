@@ -134,6 +134,7 @@ export default function SaleAlertsPage(): JSX.Element {
         <Modal open={showAdd} onClose={() => setShowAdd(false)} title="تنبيه جديد">
           <div className="space-y-3">
             <div>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes a non-labelable button group */}
               <label className="text-sm font-semibold mb-2 block">الفئات</label>
               <div className="flex flex-wrap gap-2">
                 {categories

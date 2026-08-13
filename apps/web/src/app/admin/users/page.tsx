@@ -12,7 +12,7 @@ export default function AdminUsersPage(): JSX.Element {
     limit: 20,
   });
   const suspendMut = api.admin.suspendUser.useMutation({ onSuccess: () => refetch() });
-  const [_selected, setSelected] = useState<Record<string, unknown> | null>(null);
+  const [, setSelected] = useState<Record<string, unknown> | null>(null);
 
   const customers = (data as unknown as Record<string, unknown>[]) ?? [];
 

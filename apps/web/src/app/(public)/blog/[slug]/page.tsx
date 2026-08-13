@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { BlogPostClient } from './BlogPostClient';
 

@@ -114,8 +114,9 @@ export default function RestockReminderPage(): JSX.Element {
         <Modal open={showAdd} onClose={() => setShowAdd(false)} title="إضافة منتج">
           <div className="space-y-3">
             <div>
-              <label className="text-sm font-semibold">اسم المنتج</label>
+              <label htmlFor="rr-name" className="text-sm font-semibold">اسم المنتج</label>
               <input
+                id="rr-name"
                 type="text"
                 value={productName}
                 onChange={(e) => setProductName(e.target.value)}
@@ -123,8 +124,9 @@ export default function RestockReminderPage(): JSX.Element {
               />
             </div>
             <div>
-              <label className="text-sm font-semibold">الفئة</label>
+              <label htmlFor="rr-category" className="text-sm font-semibold">الفئة</label>
               <select
+                id="rr-category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1"

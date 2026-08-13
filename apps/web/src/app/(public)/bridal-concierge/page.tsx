@@ -380,10 +380,11 @@ function BridalDashboard(): JSX.Element {
       <Modal open={showProfileForm} onClose={() => setShowProfileForm(false)} title="تفاصيل الزفاف">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+            <label htmlFor="bcd-wedding-date" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
               تاريخ الزفاف
             </label>
             <input
+              id="bcd-wedding-date"
               type="datetime-local"
               value={weddingDate}
               onChange={(e) => setWeddingDate(e.target.value)}
@@ -392,10 +393,11 @@ function BridalDashboard(): JSX.Element {
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label htmlFor="bcd-venue" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
                 المكان
               </label>
               <input
+                id="bcd-venue"
                 type="text"
                 value={venue}
                 onChange={(e) => setVenue(e.target.value)}
@@ -404,10 +406,11 @@ function BridalDashboard(): JSX.Element {
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label htmlFor="bcd-guests" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
                 عدد الضيوف
               </label>
               <input
+                id="bcd-guests"
                 type="number"
                 value={guestCount}
                 onChange={(e) => setGuestCount(e.target.value)}
@@ -417,10 +420,11 @@ function BridalDashboard(): JSX.Element {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+            <label htmlFor="bcd-budget" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
               الميزانية (ر.س)
             </label>
             <input
+              id="bcd-budget"
               type="number"
               value={budget}
               onChange={(e) => setBudget(e.target.value)}
@@ -429,10 +433,11 @@ function BridalDashboard(): JSX.Element {
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+            <label htmlFor="bcd-notes" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
               ملاحظات
             </label>
             <textarea
+              id="bcd-notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="أي ملاحظات أو طلبات خاصة..."
@@ -459,10 +464,11 @@ function BridalDashboard(): JSX.Element {
       <Modal open={showAddService} onClose={() => setShowAddService(false)} title="إضافة خدمة">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+            <label htmlFor="bcd-service-id" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
               معرف الخدمة
             </label>
             <input
+              id="bcd-service-id"
               type="number"
               value={newServiceId}
               onChange={(e) => setNewServiceId(e.target.value)}
@@ -471,10 +477,11 @@ function BridalDashboard(): JSX.Element {
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+            <label htmlFor="bcd-trial-date" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
               موعد التجربة (اختياري)
             </label>
             <input
+              id="bcd-trial-date"
               type="datetime-local"
               value={newTrialDate}
               onChange={(e) => setNewTrialDate(e.target.value)}
@@ -482,10 +489,11 @@ function BridalDashboard(): JSX.Element {
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+            <label htmlFor="bcd-service-notes" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
               ملاحظات
             </label>
             <textarea
+              id="bcd-service-notes"
               value={newServiceNotes}
               onChange={(e) => setNewServiceNotes(e.target.value)}
               placeholder="أي ملاحظات عن الخدمة..."

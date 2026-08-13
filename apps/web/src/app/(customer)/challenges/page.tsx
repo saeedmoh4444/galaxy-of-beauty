@@ -16,7 +16,7 @@ const CH: Record<string, { emoji: string; color: string; label: string }> = {
 export default function ChallengesPage(): JSX.Element {
   const [challenges, setChallenges] = useState<any[]>([]);
   const [progress, setProgress] = useState<any>({});
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   const fetch = useCallback(() => {
     setLoading(true);

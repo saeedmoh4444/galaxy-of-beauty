@@ -16,7 +16,11 @@ export default function BundlesPage(): JSX.Element {
   const toggle = (id: number) => {
     setSelected((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.size < 5 && next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else if (next.size < 5) {
+        next.add(id);
+      }
       return next;
     });
   };

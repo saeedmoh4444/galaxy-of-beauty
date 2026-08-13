@@ -14,11 +14,7 @@ const MOODS = [
 ];
 
 export default function WellnessTrackerPage(): JSX.Element {
-  const {
-    data: _today,
-    isLoading: _loading,
-    refetch,
-  } = api.wellnessTracker.today.useQuery() as {
+  const { refetch } = api.wellnessTracker.today.useQuery() as {
     data: Record<string, unknown> | null;
     isLoading: boolean;
     refetch: () => void;
@@ -61,8 +57,9 @@ export default function WellnessTrackerPage(): JSX.Element {
           <h3 className="font-bold text-lg mb-4"> تسجيل اليوم</h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="text-sm font-semibold"> الماء (أكواب)</label>
+              <label htmlFor="wt-water" className="text-sm font-semibold"> الماء (أكواب)</label>
               <input
+                id="wt-water"
                 type="number"
                 min={0}
                 max={20}
@@ -72,8 +69,9 @@ export default function WellnessTrackerPage(): JSX.Element {
               />
             </div>
             <div>
-              <label className="text-sm font-semibold"> النوم (ساعات)</label>
+              <label htmlFor="wt-sleep" className="text-sm font-semibold"> النوم (ساعات)</label>
               <input
+                id="wt-sleep"
                 type="number"
                 min={0}
                 max={24}
@@ -83,8 +81,9 @@ export default function WellnessTrackerPage(): JSX.Element {
               />
             </div>
             <div>
-              <label className="text-sm font-semibold">‍️ الخطوات</label>
+              <label htmlFor="wt-steps" className="text-sm font-semibold">‍️ الخطوات</label>
               <input
+                id="wt-steps"
                 type="number"
                 min={0}
                 value={steps}
@@ -93,6 +92,7 @@ export default function WellnessTrackerPage(): JSX.Element {
               />
             </div>
             <div>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- toggle button is not a labelable control */}
               <label className="text-sm font-semibold"> روتين العناية</label>
               <button
                 onClick={() => setSkincare(!skincare)}
@@ -102,6 +102,7 @@ export default function WellnessTrackerPage(): JSX.Element {
               </button>
             </div>
             <div className="sm:col-span-2">
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- mood buttons are not labelable controls */}
               <label className="text-sm font-semibold"> المزاج</label>
               <div className="mt-1 flex gap-2">
                 {MOODS.map((m) => (

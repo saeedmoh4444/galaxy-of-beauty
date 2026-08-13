@@ -31,17 +31,13 @@ export default function CustomerDashboardPage(): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const insights = api.analytics.customerInsights.useQuery() as any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const _mood = api.selfCare?.todayMood?.useQuery?.() as any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const budget = (api as any).beautyBudget?.get?.useQuery?.() as any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const pins = (api as any).inspiration?.list?.useQuery?.() as any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const registries = (api as any).giftRegistry?.myRegistries?.useQuery?.() as any;
   // New wired components
-  const dailyTip = (api as any).dailyBeautyTip?.today?.useQuery?.() as any;
   const kindnessStatus = (api as any).kindnessPoints?.getStatus?.useQuery?.() as any;
-  const compliments = (api as any).sisterhoodCompliments?.list?.useQuery?.({ limit: 4 }) as any;
   const circles = (api as any).beautyCircles?.list?.useQuery?.({ limit: 3 }) as any;
   const savingsGoals = (api as any).savingsGoals?.list?.useQuery?.() as any;
   // Budget services under 100 SAR

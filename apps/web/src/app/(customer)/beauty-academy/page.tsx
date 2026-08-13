@@ -4,8 +4,6 @@ import { api } from '@/lib/trpc';
 import {
   PageContainer,
   PageTitle,
-  ErrorAlert,
-  CardListSkeleton,
   FreeCourseCard,
   BeautyWikiCard,
   BeautyQuizCard,
@@ -37,7 +35,6 @@ export default function BeautyAcademyPage(): JSX.Element {
   const myths = (api as any).beautyMyths?.getRandom?.useQuery?.() as any;
   const recipes = (api as any).beautyRecipes?.list?.useQuery?.({ limit: 2 }) as any;
   const bookClubs = (api as any).bookClub?.list?.useQuery?.({ limit: 2 }) as any;
-  const heritage = (api as any).beautyHeritage?.list?.useQuery?.({ limit: 4 }) as any;
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">

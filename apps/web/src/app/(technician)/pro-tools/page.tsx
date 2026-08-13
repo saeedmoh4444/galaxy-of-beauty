@@ -73,6 +73,7 @@ export default function ProToolsPage(): JSX.Element {
           <div className="space-y-6">
             <BeautyRewardsCard points={2500} tier="diamond" />
             <SheLeadsBadge
+              /* eslint-disable-next-line jsx-a11y/aria-role -- 'role' is a component data prop, not an ARIA role */
               role="franchise_owner"
               name="نورة القحطاني"
               city="الرياض"

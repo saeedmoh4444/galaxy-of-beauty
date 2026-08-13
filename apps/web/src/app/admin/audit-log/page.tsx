@@ -63,8 +63,9 @@ export default function AuditLogPage(): JSX.Element {
         <Card padding="md">
           <div className="grid gap-4 sm:grid-cols-4">
             <div>
-              <label className="mb-1 block text-xs font-medium text-text-secondary">الإجراء</label>
+              <label htmlFor="al-action-filter" className="mb-1 block text-xs font-medium text-text-secondary">الإجراء</label>
               <select
+                id="al-action-filter"
                 value={actionFilter}
                 onChange={(e) => {
                   setActionFilter(e.target.value);

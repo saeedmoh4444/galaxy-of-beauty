@@ -1,6 +1,5 @@
 'use client';
 
-import { api } from '@/lib/trpc';
 import {
   PageContainer,
   PageTitle,
@@ -80,8 +79,6 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function SkincareGuidePage(): JSX.Element {
-  const skinAnalysis = (api as any).skinAnalysis?.latest?.useQuery?.() as any;
-
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">

@@ -172,10 +172,11 @@ export default function AdminTechniciansPage(): JSX.Element {
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+              <label htmlFor="at-review-note" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
                 ملاحظات
               </label>
               <textarea
+                id="at-review-note"
                 className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 rows={3}
                 value={reviewNote}

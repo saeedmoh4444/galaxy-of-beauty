@@ -56,7 +56,11 @@ export default function RoutineSchedulerPage(): JSX.Element {
                           checked={done}
                           onChange={() => {
                             const next = new Set(checked);
-                            next.has(key) ? next.delete(key) : next.add(key);
+                            if (next.has(key)) {
+                              next.delete(key);
+                            } else {
+                              next.add(key);
+                            }
                             setChecked(next);
                             toggleMut.mutate({ routineId: r.id as string, stepIndex: i });
                           }}

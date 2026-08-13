@@ -26,8 +26,6 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function LeadershipPage(): JSX.Element {
   const socialImpact = (api as any).socialImpact?.stats?.useQuery?.() as any;
-  const sheLeads = (api as any).sheLeads?.list?.useQuery?.({ limit: 2 }) as any;
-  const franchise = (api as any).franchisePortal?.stats?.useQuery?.() as any;
 
   return (
     <DashboardLayout userRole="CUSTOMER">
@@ -48,6 +46,7 @@ export default function LeadershipPage(): JSX.Element {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <SheLeadsBadge
+                /* eslint-disable-next-line jsx-a11y/aria-role -- 'role' is a component data prop, not an ARIA role */
                 role="franchise_owner"
                 name="نورة القحطاني"
                 city="الرياض"
@@ -55,6 +54,7 @@ export default function LeadershipPage(): JSX.Element {
                 teamSize={12}
               />
               <SheLeadsBadge
+                /* eslint-disable-next-line jsx-a11y/aria-role -- 'role' is a component data prop, not an ARIA role */
                 role="academy_instructor"
                 name="د. سارة"
                 city="جدة"

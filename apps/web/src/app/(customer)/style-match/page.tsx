@@ -28,7 +28,7 @@ export default function StyleMatchPage(): JSX.Element {
   const [customColors, setCustomColors] = useState<string[]>(['#D4737C']);
   const [activePreset, setActivePreset] = useState<string | null>(null);
   const [category, setCategory] = useState('');
-  const [_photoUrl, setPhotoUrl] = useState('');
+  const [, setPhotoUrl] = useState('');
   const [photoPreview, setPhotoPreview] = useState('');
   const [searched, setSearched] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);

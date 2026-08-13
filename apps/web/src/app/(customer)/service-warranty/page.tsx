@@ -203,6 +203,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
         <Modal open={showClaim} onClose={() => setShowClaim(false)} title="تقديم مطالبة ضمان">
           <div className="space-y-4">
             <div>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes a non-labelable button group */}
               <label className="block text-sm font-semibold mb-2">نوع التعويض</label>
               <div className="space-y-2">
                 {COMPENSATION_TYPES.map((t) => (
@@ -221,8 +222,9 @@ export default function ServiceWarrantyPage(): JSX.Element {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-semibold mb-1">سبب المطالبة</label>
+              <label htmlFor="sw-reason" className="block text-sm font-semibold mb-1">سبب المطالبة</label>
               <textarea
+                id="sw-reason"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
                 rows={3}

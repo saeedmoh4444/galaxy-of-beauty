@@ -5,7 +5,6 @@ import {
   Card,
   PageContainer,
   PageTitle,
-  BeautyGoalTracker,
   BeautyHabitTrackerCard,
   BeautyVisionBoardCard,
   BeautySkillTreeCard,
@@ -81,7 +80,6 @@ const GOAL_TEMPLATES = [
 ];
 
 export default function BeautyGoalsPage(): JSX.Element {
-  const habits = (api as any).beautyHabits?.myHabits?.useQuery?.() as any;
   const visionGoals = (api as any).visionBoard?.myGoals?.useQuery?.({ limit: 6 }) as any;
   const [goals, setGoals] = useState<Record<string, boolean[]>>({});
   const toggle = (catKey: string, idx: number) => {

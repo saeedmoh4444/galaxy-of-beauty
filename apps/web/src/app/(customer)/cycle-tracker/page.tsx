@@ -103,8 +103,9 @@ export default function CycleTrackerPage(): JSX.Element {
             <h3 className="font-bold mb-3">️ إعدادات الدورة</h3>
             <div className="grid gap-3 sm:grid-cols-3">
               <div>
-                <label className="text-xs text-text-secondary">مدة الدورة</label>
+                <label htmlFor="ct-cycleLen" className="text-xs text-text-secondary">مدة الدورة</label>
                 <input
+                  id="ct-cycleLen"
                   type="number"
                   value={cycleLen}
                   onChange={(e) => setCycleLen(Number(e.target.value))}
@@ -112,8 +113,9 @@ export default function CycleTrackerPage(): JSX.Element {
                 />
               </div>
               <div>
-                <label className="text-xs text-text-secondary">مدة الدورة الشهرية</label>
+                <label htmlFor="ct-periodLen" className="text-xs text-text-secondary">مدة الدورة الشهرية</label>
                 <input
+                  id="ct-periodLen"
                   type="number"
                   value={periodLen}
                   onChange={(e) => setPeriodLen(Number(e.target.value))}
@@ -121,8 +123,9 @@ export default function CycleTrackerPage(): JSX.Element {
                 />
               </div>
               <div>
-                <label className="text-xs text-text-secondary">آخر دورة</label>
+                <label htmlFor="ct-lastStart" className="text-xs text-text-secondary">آخر دورة</label>
                 <input
+                  id="ct-lastStart"
                   type="date"
                   value={lastStart}
                   onChange={(e) => setLastStart(e.target.value)}
@@ -181,6 +184,7 @@ export default function CycleTrackerPage(): JSX.Element {
           <Card padding="lg">
             <div className="space-y-3">
               <div>
+                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes emoji picker buttons */}
                 <label className="text-xs text-text-secondary mb-1 block">المزاج</label>
                 <div className="flex gap-2">
                   {MOODS.map((m) => (
@@ -195,6 +199,7 @@ export default function CycleTrackerPage(): JSX.Element {
                 </div>
               </div>
               <div>
+                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes flow selector buttons */}
                 <label className="text-xs text-text-secondary mb-1 block">شدة التدفق</label>
                 <div className="flex gap-2">
                   {['light', 'medium', 'heavy', 'spotting'].map((f) => (
@@ -215,6 +220,7 @@ export default function CycleTrackerPage(): JSX.Element {
                 </div>
               </div>
               <div>
+                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes symptom toggle buttons */}
                 <label className="text-xs text-text-secondary mb-1 block">الأعراض</label>
                 <div className="flex flex-wrap gap-1">
                   {SYMPTOMS_LIST.map((s) => (

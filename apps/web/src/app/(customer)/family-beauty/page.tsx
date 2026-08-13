@@ -36,7 +36,6 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function FamilyBeautyPage(): JSX.Element {
   const familyAccount = (api as any).familyAccount?.get?.useQuery?.() as any;
-  const events = (api as any).communityEvents?.list?.useQuery?.({ limit: 2 }) as any;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

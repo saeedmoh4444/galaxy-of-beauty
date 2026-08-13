@@ -2,7 +2,7 @@
 
 import { api } from '@/lib/trpc';
 import { useState } from 'react';
-import { PageContainer, PageTitle, Card, Button } from '@galaxy/ui';
+import { PageContainer, PageTitle, Card } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CorporateWellnessPage(): JSX.Element {
@@ -26,7 +26,7 @@ export default function CorporateWellnessPage(): JSX.Element {
       });
       setSubmitted(true);
       setShowForm(false);
-    } catch {}
+    } catch { /* noop */ }
   };
 
   const items = (plans?.data ?? []) as any[];

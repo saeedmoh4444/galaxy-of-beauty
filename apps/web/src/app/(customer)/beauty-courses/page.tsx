@@ -22,14 +22,13 @@ const LEVELS: Record<string, { label: string; color: string }> = {
 export default function BeautyCoursesPage(): JSX.Element {
   const courses = (api as any).beautyCourses?.list?.useQuery?.() as any;
   const myCourses = (api as any).beautyCourses?.myCourses?.useQuery?.() as any;
-  const expertTalks = (api as any).expertTalks?.upcoming?.useQuery?.({ limit: 3 }) as any;
   const [enrolled, setEnrolled] = useState<number[]>([]);
 
   const handleEnroll = async (courseId: number) => {
     try {
       await (api as any).beautyCourses.enroll.mutate({ courseId });
       setEnrolled((prev) => [...prev, courseId]);
-    } catch {}
+    } catch { /* noop */ }
   };
 
   const items = (courses?.data ?? []) as any[];

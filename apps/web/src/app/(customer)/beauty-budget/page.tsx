@@ -37,7 +37,6 @@ export default function BeautyBudgetPage(): JSX.Element {
   const [newBudget, setNewBudget] = useState('');
   // New financial components
   const savingsGoals = (api as any).savingsGoals?.list?.useQuery?.() as any;
-  const loyalty = (api as any).loyalty?.getAccount?.useQuery?.() as any;
   const budgetServices = (api as any).services?.list?.useQuery?.({
     limit: 5,
     maxPrice: 100,

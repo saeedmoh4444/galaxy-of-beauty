@@ -58,8 +58,9 @@ export default function SelfCarePage(): JSX.Element {
             <p className="mt-2 text-center text-sm text-brand-600">{MOOD_LABELS[mood - 1]}</p>
             <div className="mt-4 space-y-3">
               <div>
-                <label className="mb-1 block text-xs text-text-secondary">الطاقة (1-5)</label>
+                <label htmlFor="sc-energy" className="mb-1 block text-xs text-text-secondary">الطاقة (1-5)</label>
                 <input
+                  id="sc-energy"
                   type="range"
                   min="1"
                   max="5"

@@ -130,8 +130,9 @@ export default function TechnicianQAPage(): JSX.Element {
       <Modal open={showAsk} onClose={() => setShowAsk(false)} title="اسألي الفنيات">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold mb-1">الفئة</label>
+            <label htmlFor="tqa-category" className="block text-sm font-semibold mb-1">الفئة</label>
             <select
+              id="tqa-category"
               value={qCategory}
               onChange={(e) => setQCategory(e.target.value)}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
@@ -144,8 +145,9 @@ export default function TechnicianQAPage(): JSX.Element {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-semibold mb-1">سؤالكِ</label>
+            <label htmlFor="tqa-question" className="block text-sm font-semibold mb-1">سؤالكِ</label>
             <textarea
+              id="tqa-question"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               rows={3}

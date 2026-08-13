@@ -1,6 +1,5 @@
 'use client';
 
-import { api } from '@/lib/trpc';
 import {
   PageContainer,
   PageTitle,
@@ -21,10 +20,6 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyRemindersPage(): JSX.Element {
-  const habits = (api as any).beautyHabits?.myHabits?.useQuery?.() as any;
-  const sleepStats = (api as any).sleepTracker?.stats?.useQuery?.() as any;
-  const dailyTip = (api as any).dailyBeautyTip?.today?.useQuery?.() as any;
-
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">

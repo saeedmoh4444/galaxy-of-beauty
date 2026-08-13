@@ -26,9 +26,7 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyServicesPage(): JSX.Element {
-  const services = (api as any).services?.list?.useQuery?.({ limit: 10 }) as any;
   const loyalty = (api as any).loyalty?.getAccount?.useQuery?.() as any;
-  const pricing = (api as any).pricingCoach?.suggestions?.useQuery?.() as any;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

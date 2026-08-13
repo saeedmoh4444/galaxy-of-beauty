@@ -149,10 +149,11 @@ export default function GiftCardsPage(): JSX.Element {
                 placeholder="لأجمل صديقة"
               />
               <div>
-                <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+                <label htmlFor="gc-message" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
                   رسالة إهداء (اختياري)
                 </label>
                 <textarea
+                  id="gc-message"
                   className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
                   rows={3}
                   value={giftMessage}

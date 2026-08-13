@@ -163,10 +163,11 @@ export default function AdminDisputesPage(): JSX.Element {
             </p>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+              <label htmlFor="ad-resolve-status" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
                 نتيجة النزاع
               </label>
               <select
+                id="ad-resolve-status"
                 className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 value={resolveStatus}
                 onChange={(e) => setResolveStatus(e.target.value)}
@@ -178,10 +179,11 @@ export default function AdminDisputesPage(): JSX.Element {
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+              <label htmlFor="ad-resolution" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
                 تفاصيل الحل
               </label>
               <textarea
+                id="ad-resolution"
                 className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 rows={4}
                 value={resolutionText}

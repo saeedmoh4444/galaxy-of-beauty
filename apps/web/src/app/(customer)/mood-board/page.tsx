@@ -48,7 +48,6 @@ export default function MoodBoardPage(): JSX.Element {
       refetch();
     },
   });
-  const _removePinMut = api.moodBoard.removePin.useMutation({ onSuccess: () => refetch() });
   const deleteBoardMut = api.moodBoard.delete.useMutation({ onSuccess: () => refetch() });
 
   const [showCreate, setShowCreate] = useState(false);
@@ -222,10 +221,11 @@ export default function MoodBoardPage(): JSX.Element {
         <Modal open={showCreate} onClose={() => setShowCreate(false)} title="لوحة جديدة">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label htmlFor="mb-name" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
                 اسم اللوحة
               </label>
               <input
+                id="mb-name"
                 type="text"
                 value={newBoardName}
                 onChange={(e) => setNewBoardName(e.target.value)}
@@ -234,10 +234,11 @@ export default function MoodBoardPage(): JSX.Element {
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label htmlFor="mb-desc" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
                 الوصف (اختياري)
               </label>
               <textarea
+                id="mb-desc"
                 value={newBoardDesc}
                 onChange={(e) => setNewBoardDesc(e.target.value)}
                 placeholder="أفكار لإطلالة يوم الزفاف..."
@@ -260,10 +261,11 @@ export default function MoodBoardPage(): JSX.Element {
         <Modal open={showAddPin > 0} onClose={() => setShowAddPin(0)} title="إضافة صورة">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label htmlFor="mb-image" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
                 رابط الصورة
               </label>
               <input
+                id="mb-image"
                 type="url"
                 value={pinImageUrl}
                 onChange={(e) => setPinImageUrl(e.target.value)}
@@ -284,10 +286,11 @@ export default function MoodBoardPage(): JSX.Element {
               )}
             </div>
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label htmlFor="mb-title" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
                 العنوان (اختياري)
               </label>
               <input
+                id="mb-title"
                 type="text"
                 value={pinTitle}
                 onChange={(e) => setPinTitle(e.target.value)}
@@ -296,10 +299,11 @@ export default function MoodBoardPage(): JSX.Element {
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label htmlFor="mb-tags" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
                 وسوم (تفصل بفواصل)
               </label>
               <input
+                id="mb-tags"
                 type="text"
                 value={pinTags}
                 onChange={(e) => setPinTags(e.target.value)}

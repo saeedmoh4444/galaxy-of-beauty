@@ -22,15 +22,14 @@ export default async function ServiceDetailPage({
     related: [],
   };
 
+  if (isNaN(Number(id))) {
+    data.fetchError = 'معرف الخدمة غير صالح';
+    return <ServiceDetailClient svc={data} />;
+  }
+
   try {
     const caller = await getServerCaller();
     const serviceId = Number(id);
-
-    if (isNaN(serviceId)) {
-      data.fetchError = 'معرف الخدمة غير صالح';
-      return <ServiceDetailClient svc={data} />;
-    }
-
     const svc = (await caller.services.getById({ id: serviceId })) as Record<string, unknown>;
     const relatedResult = await caller.services.getRelated({ serviceId, limit: 4 });
 

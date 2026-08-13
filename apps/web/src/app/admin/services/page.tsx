@@ -195,8 +195,9 @@ export default function AdminServicesPage(): JSX.Element {
           className="w-64"
         />
         <div>
-          <label className="mb-1 block text-xs text-text-secondary">التصنيف</label>
+          <label htmlFor="as-cat-filter" className="mb-1 block text-xs text-text-secondary">التصنيف</label>
           <select
+            id="as-cat-filter"
             className="rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
             value={catFilter ?? ''}
             onChange={(e) => setCatFilter(e.target.value ? Number(e.target.value) : null)}
@@ -414,10 +415,11 @@ export default function AdminServicesPage(): JSX.Element {
             onChange={(e) => setForm({ ...form, durationMin: Number(e.target.value) })}
           />
           <div>
-            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+            <label htmlFor="as-cat-create" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
               التصنيف
             </label>
             <select
+              id="as-cat-create"
               className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               value={form.categoryId || ''}
               onChange={(e) => setForm({ ...form, categoryId: Number(e.target.value) || 0 })}
@@ -493,10 +495,11 @@ export default function AdminServicesPage(): JSX.Element {
             onChange={(e) => setForm({ ...form, durationMin: Number(e.target.value) })}
           />
           <div>
-            <label className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+            <label htmlFor="as-cat-edit" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
               التصنيف
             </label>
             <select
+              id="as-cat-edit"
               className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               value={form.categoryId || ''}
               onChange={(e) => setForm({ ...form, categoryId: Number(e.target.value) || 0 })}

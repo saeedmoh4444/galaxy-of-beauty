@@ -8,7 +8,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 export default function ServiceComparePage(): JSX.Element {
   const [services, setServices] = useState<any[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const fetch = useCallback(() => {
     setLoading(true);
     (api as any).services.list

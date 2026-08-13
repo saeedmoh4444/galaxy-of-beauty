@@ -19,7 +19,7 @@ export default function MarketplacePage(): JSX.Element {
   const handleAddToCart = async (pid: number) => {
     try {
       await (api as any).marketplace.addToCart.mutate({ productId: pid });
-    } catch {}
+    } catch { /* noop */ }
   };
 
   return (

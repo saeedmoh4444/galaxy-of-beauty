@@ -23,7 +23,6 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CommunityPage(): JSX.Element {
   const circles = (api as any).beautyCircles?.list?.useQuery?.({ limit: 6 }) as any;
-  const compliments = (api as any).sisterhoodCompliments?.list?.useQuery?.({ limit: 4 }) as any;
   const kindness = (api as any).kindnessPoints?.getStatus?.useQuery?.() as any;
   const events = (api as any).communityEvents?.list?.useQuery?.({ limit: 3 }) as any;
   const hero = (api as any).beautyCircles?.getHero?.useQuery?.() as any;

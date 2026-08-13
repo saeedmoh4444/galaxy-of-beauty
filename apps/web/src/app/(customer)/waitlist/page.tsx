@@ -116,8 +116,9 @@ export default function WaitlistPage(): JSX.Element {
       >
         <div className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-medium">اختر الفني</label>
+            <label htmlFor="wl-tech" className="mb-1 block text-sm font-medium">اختر الفني</label>
             <select
+              id="wl-tech"
               className="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm outline-none focus:border-brand-500 dark:border-gray-600 dark:bg-gray-800"
               value={selectedTechId}
               onChange={(e) => setSelectedTechId(e.target.value)}

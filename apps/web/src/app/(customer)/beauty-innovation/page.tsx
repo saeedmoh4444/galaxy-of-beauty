@@ -30,8 +30,6 @@ export default function BeautyInnovationPage(): JSX.Element {
     condition: 'hot',
     temp: 42,
   }) as any;
-  const concierge = (api as any).concierge?.stats?.useQuery?.() as any;
-  const vlogs = (api as any).beautyVlogs?.list?.useQuery?.({ limit: 1 }) as any;
 
   return (
     <DashboardLayout userRole="CUSTOMER">
