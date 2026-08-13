@@ -5,19 +5,32 @@ import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface StreamDetail {
+  titleAr?: string;
+  title?: string;
+  host?: string;
+  viewers?: number;
+}
+
+interface StreamMessage {
+  id?: number;
+  user?: string;
+  text?: string;
+}
+
 export default function LiveStreamDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [stream, setStream] = useState<any>(null);
-  const [messages, setMessages] = useState<any[]>([]);
+  const [stream, setStream] = useState<StreamDetail | null>(null);
+  const [messages, setMessages] = useState<StreamMessage[]>([]);
   const [chatText, setChatText] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
-      typedTrpc().liveStream.get.query({ id: parseInt(id, 10) }) as any,
-      typedTrpc().liveStream.messages.query({ streamId: parseInt(id, 10) }) as any,
+      typedTrpc().liveStream.get.query({ id: parseInt(id, 10) }) as Promise<StreamDetail>,
+      typedTrpc().liveStream.messages.query({ streamId: parseInt(id, 10) }) as Promise<StreamMessage[]>,
     ])
-      .then(([s, m]: any[]) => {
+      .then(([s, m]) => {
         setStream(s);
         setMessages(m || []);
         setLoading(false);
@@ -31,7 +44,7 @@ export default function LiveStreamDetailScreen(): JSX.Element {
       typedTrpc().liveStream.sendMessage.mutate({
         streamId: parseInt(id, 10),
         text: chatText.trim(),
-      }) as any
+      }) as Promise<void>
     ).then(() => {
       setChatText('');
     });
@@ -51,17 +64,17 @@ export default function LiveStreamDetailScreen(): JSX.Element {
         <View style={styles.videoPlaceholder}>
           <Text style={styles.playIcon}>▶️</Text>
           <Text style={styles.videoTitle}>
-            {(stream.titleAr as string) ?? (stream.title as string)}
+            {stream.titleAr ?? stream.title ?? ''}
           </Text>
           <Text style={styles.videoMeta}>
-            ‍ {stream.host as string} ·  {stream.viewers as number}
+             {stream.host ?? ''} ·  {stream.viewers ?? 0}
           </Text>
         </View>
         <Text style={styles.chatTitle}> المحادثة المباشرة</Text>
         {messages.map((m, i) => (
           <View key={m.id ?? i} style={styles.msg}>
-            <Text style={styles.msgUser}>{m.user as string}: </Text>
-            <Text style={styles.msgText}>{m.text as string}</Text>
+            <Text style={styles.msgUser}>{m.user ?? ''}: </Text>
+            <Text style={styles.msgText}>{m.text ?? ''}</Text>
           </View>
         ))}
       </ScrollView>

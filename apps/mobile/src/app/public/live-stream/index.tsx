@@ -4,15 +4,29 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface LiveStreamItem {
+  id?: number;
+  titleAr?: string;
+  title?: string;
+  host?: string;
+  viewers?: number;
+  scheduledAt?: string;
+}
+
+interface LiveStreamData {
+  live?: LiveStreamItem[];
+  upcoming?: LiveStreamItem[];
+}
+
 export default function LiveStreamScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<LiveStreamData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().liveStream.list.query() as any)
-      .then((d: any) => {
+    (typedTrpc().liveStream.list.query() as Promise<LiveStreamData>)
+      .then((d) => {
         setData(d);
         setLoading(false);
         setRefreshing(false);
@@ -26,8 +40,8 @@ export default function LiveStreamScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   if (loading) return <SkeletonList count={4} />;
-  const live = (data?.live ?? []) as any[];
-  const upcoming = (data?.upcoming ?? []) as any[];
+  const live = data?.live ?? [];
+  const upcoming = data?.upcoming ?? [];
   return (
     <ScrollView
       style={styles.c}
@@ -46,9 +60,9 @@ export default function LiveStreamScreen(): JSX.Element {
         <View key={s.id} style={[styles.card, styles.lc]}>
           <Text style={styles.se}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.sn}>{(s.titleAr as string) ?? (s.title as string)}</Text>
+            <Text style={styles.sn}>{s.titleAr ?? s.title ?? ''}</Text>
             <Text style={styles.sm}>
-              ‍ {s.host as string} ·  {s.viewers as number}
+               {s.host ?? ''} ·  {s.viewers ?? 0}
             </Text>
           </View>
           <TouchableOpacity style={styles.wb}>
@@ -61,15 +75,15 @@ export default function LiveStreamScreen(): JSX.Element {
         <View key={s.id} style={styles.card}>
           <Text style={styles.se}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.sn}>{(s.titleAr as string) ?? (s.title as string)}</Text>
+            <Text style={styles.sn}>{s.titleAr ?? s.title ?? ''}</Text>
             <Text style={styles.sm}>
-              ‍ {s.host as string} ·{' '}
-              {new Date(s.scheduledAt as string).toLocaleDateString('ar-SA', {
+               {s.host ?? ''} ·{' '}
+              {s.scheduledAt ? new Date(s.scheduledAt).toLocaleDateString('ar-SA', {
                 month: 'short',
                 day: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit',
-              })}
+              }) : ''}
             </Text>
           </View>
           <View style={styles.rb}>
