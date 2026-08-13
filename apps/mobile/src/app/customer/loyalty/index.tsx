@@ -9,11 +9,22 @@ const TIERS: Record<string, { emoji: string; label: string }> = {
   PLATINUM: { emoji: '', label: 'بلاتينية' },
 };
 
+interface LoyaltyAccount {
+  tier?: string;
+  points?: number;
+  lifetimePoints?: number;
+}
+
+interface LoyaltyTxn {
+  reason?: string;
+  points?: number;
+}
+
 export default function LoyaltyScreen(): JSX.Element {
   const account = trpc.loyalty.myAccount.useQuery();
   const txs = trpc.loyalty.myTransactions.useQuery({ page: 1, limit: DEFAULT_PAGE_SIZE });
 
-  const acc = account.data as Record<string, unknown> | undefined;
+  const acc = account.data as unknown as LoyaltyAccount | undefined;
 
   return (
     <ScreenState
@@ -28,20 +39,20 @@ export default function LoyaltyScreen(): JSX.Element {
       {/* Tier Card */}
       <View style={styles.tierCard}>
         <Text style={styles.tierEmoji}>
-          {TIERS[(acc?.tier as string) ?? 'SILVER']?.emoji ?? ''}
+          {TIERS[acc?.tier ?? 'SILVER']?.emoji ?? ''}
         </Text>
         <Text style={styles.tierLabel}>
-          {TIERS[(acc?.tier as string) ?? 'SILVER']?.label ?? 'فضية'}
+          {TIERS[acc?.tier ?? 'SILVER']?.label ?? 'فضية'}
         </Text>
-        <Text style={styles.points}>{(acc?.points as number) ?? 0} نقطة</Text>
-        <Text style={styles.lifetime}>إجمالي: {(acc?.lifetimePoints as number) ?? 0} نقطة</Text>
+        <Text style={styles.points}>{acc?.points ?? 0} نقطة</Text>
+        <Text style={styles.lifetime}>إجمالي: {acc?.lifetimePoints ?? 0} نقطة</Text>
       </View>
 
       {/* Recent Transactions */}
       <Text style={styles.sectionTitle}>آخر العمليات</Text>
       {txs.isLoading ? null : (
         <FlatList
-          data={((txs.data as any)?.items as any[]) ?? []}
+          data={((txs.data as unknown as { items?: LoyaltyTxn[] } | null)?.items) ?? []}
           keyExtractor={(_, i) => String(i)}
           renderItem={({ item }) => (
             <View style={styles.txnRow}>
