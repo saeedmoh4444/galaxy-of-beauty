@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { trpc } from '@/lib/api';
-import { trpc as trpcReact, typedTrpc } from '@/lib/trpc-react';
+import { typedTrpc } from '@/lib/trpc-react';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 

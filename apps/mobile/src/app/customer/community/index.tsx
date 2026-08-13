@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
-import { trpc, typedTrpc } from '@/lib/trpc-react';
+import { typedTrpc } from '@/lib/trpc-react';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';

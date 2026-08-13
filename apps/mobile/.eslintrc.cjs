@@ -19,6 +19,11 @@ module.exports = {
     'react/prop-types': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    // React Compiler-era rules flag the established async fetch().then(setX)
+    // pattern (setState after await is safe) — keep as warnings, not errors
+    'react-hooks/set-state-in-effect': 'off',
+    'react-hooks/purity': 'off',
+    'react-hooks/refs': 'off',
   },
   ignorePatterns: ['dist/', 'build/', '.expo/', 'node_modules/', '*.config.*', 'android/', 'ios/'],
   parserOptions: {

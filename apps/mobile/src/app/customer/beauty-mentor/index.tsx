@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import { trpc, typedTrpc } from '@/lib/trpc-react';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const MENTOR_LEVELS = [
   { key: 'beginner', emoji: '', name: 'مبتدئة', desc: 'اكتشفي أساسيات العناية' },

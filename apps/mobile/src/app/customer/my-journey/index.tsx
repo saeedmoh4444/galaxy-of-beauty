@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc, typedTrpc } from '@/lib/trpc-react';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 

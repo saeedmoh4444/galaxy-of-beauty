@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc, typedTrpc } from '@/lib/trpc-react';
+import { typedTrpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const SL: Record<string, string> = {

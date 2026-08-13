@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc, typedTrpc } from '@/lib/trpc-react';
+import { typedTrpc } from '@/lib/trpc-react';
 
 const COLORS = {
   brand: '#7c3aed',

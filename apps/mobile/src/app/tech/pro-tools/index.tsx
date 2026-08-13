@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc, typedTrpc } from '@/lib/trpc-react';
+import { typedTrpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = {

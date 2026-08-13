@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc, typedTrpc } from '@/lib/trpc-react';
+import { typedTrpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = {

@@ -1,6 +1,6 @@
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc, typedTrpc } from '@/lib/trpc-react';
+import { typedTrpc } from '@/lib/trpc-react';
 import { formatCurrency, EXTENDED_PAGE_SIZE } from '@galaxy/ui';
 
 const COLORS = {
