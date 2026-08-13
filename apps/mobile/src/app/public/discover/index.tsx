@@ -5,6 +5,24 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface DiscoverCategory {
+  id?: number;
+  key?: string;
+  emoji?: string;
+  nameAr?: string;
+}
+
+interface TrendingItem {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  titleAr?: string;
+  descAr?: string;
+  description?: string;
+  price?: number;
+  rating?: number;
+}
+
 export default function DiscoverScreen(): JSX.Element {
   const {
     data: trending,
@@ -19,8 +37,8 @@ export default function DiscoverScreen(): JSX.Element {
   if (loading) return <SkeletonList count={6} />;
   if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;
 
-  const trendingItems = (trending ?? []) as any[];
-  const catItems = (categories ?? []) as any[];
+  const trendingItems = (trending as TrendingItem[] | undefined) ?? [];
+  const catItems = (categories as DiscoverCategory[] | undefined) ?? [];
 
   return (
     <ScrollView
@@ -43,8 +61,8 @@ export default function DiscoverScreen(): JSX.Element {
             <View style={{ flexDirection: 'row', gap: 10 }}>
               {catItems.map((cat) => (
                 <TouchableOpacity key={cat.id ?? cat.key} style={styles.catChip}>
-                  <Text style={styles.catEmoji}>{(cat.emoji as string) ?? ''}</Text>
-                  <Text style={styles.catName}>{cat.nameAr as string}</Text>
+                  <Text style={styles.catEmoji}>{cat.emoji ?? ''}</Text>
+                  <Text style={styles.catName}>{cat.nameAr ?? ''}</Text>
                 </TouchableOpacity>
               ))}
             </View>
@@ -57,15 +75,15 @@ export default function DiscoverScreen(): JSX.Element {
       ) : (
         trendingItems.map((t) => (
           <View key={t.id} style={styles.card}>
-            <Text style={styles.cardEmoji}>{(t.emoji as string) ?? ''}</Text>
+            <Text style={styles.cardEmoji}>{t.emoji ?? ''}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.cardTitle}>{(t.nameAr as string) ?? (t.titleAr as string)}</Text>
+              <Text style={styles.cardTitle}>{t.nameAr ?? t.titleAr ?? ''}</Text>
               <Text style={styles.cardDesc}>
-                {((t.descAr as string) ?? (t.description as string))?.substring(0, 100)}
+                {(t.descAr ?? t.description ?? '')?.substring(0, 100)}
               </Text>
               <View style={styles.cardMeta}>
-                <Text style={styles.price}>{(t.price as number)?.toLocaleString()} ر.س</Text>
-                <Text style={styles.rating}> {(t.rating as number) ?? 0}</Text>
+                <Text style={styles.price}>{(t.price ?? 0).toLocaleString()} ر.س</Text>
+                <Text style={styles.rating}> {t.rating ?? 0}</Text>
               </View>
             </View>
           </View>
