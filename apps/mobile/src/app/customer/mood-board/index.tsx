@@ -52,7 +52,7 @@ export default function MoodBoardScreen(): JSX.Element {
         {data.map((p, i) => (
           <View key={i} style={styles.pin}>
             {p.imageUrl ? (
-              {p.imageUrl ? <Image source={{ uri: p.imageUrl }} style={styles.img} /> : null}
+              <Image source={{ uri: p.imageUrl }} style={styles.img} />
             ) : (
               <View style={styles.placeholder}>
                 <Text style={{ fontSize: 28 }}>️</Text>
