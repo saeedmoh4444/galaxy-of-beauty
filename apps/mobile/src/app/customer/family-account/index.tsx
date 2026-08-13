@@ -4,16 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface FamilyMember {
+  id?: number;
+  name?: string;
+  relation?: string;
+}
+
 export default function FamilyAccountScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<FamilyMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().familyAccount.members.query() as any)
-      .then((d: any) => {
+    typedTrpc().familyAccount.members.query()
+      .then((d: FamilyMember[] | undefined) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -47,8 +53,8 @@ export default function FamilyAccountScreen(): JSX.Element {
         <View key={i} style={styles.card}>
           <Text style={styles.avatar}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{m.name as string}</Text>
-            <Text style={styles.relation}>{m.relation as string}</Text>
+            <Text style={styles.name}>{m.name}</Text>
+            <Text style={styles.relation}>{m.relation}</Text>
           </View>
         </View>
       ))}

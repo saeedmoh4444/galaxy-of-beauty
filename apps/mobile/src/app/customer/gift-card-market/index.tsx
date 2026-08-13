@@ -4,15 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface GiftCardListing {
+  id: number;
+  value?: number;
+  sellingPrice?: number;
+  discount?: number;
+}
+
 export default function GiftCardMarketScreen(): JSX.Element {
-  const [listings, setListings] = useState<any[]>([]);
+  const [listings, setListings] = useState<GiftCardListing[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().giftCardMarket.listings.query() as any)
-      .then((d: any) => {
+    typedTrpc().giftCardMarket.listings.query()
+      .then((d: GiftCardListing[] | undefined) => {
         setListings(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -26,7 +33,7 @@ export default function GiftCardMarketScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const buy = (listingId: number) => {
-    (typedTrpc().giftCardMarket.buy.mutate({ listingId }) as any).then(() => fetch());
+    typedTrpc().giftCardMarket.buy.mutate({ listingId }).then(() => fetch());
   };
   if (loading) return <SkeletonList count={4} />;
   return (
@@ -46,11 +53,11 @@ export default function GiftCardMarketScreen(): JSX.Element {
         {listings.map((l) => (
           <View key={l.id} style={styles.card}>
             <Text style={styles.ce}></Text>
-            <Text style={styles.cv}>{(l.value as number)?.toLocaleString()} ر.س</Text>
-            <Text style={styles.op}>{(l.value as number)?.toLocaleString()}</Text>
-            <Text style={styles.sp}>{(l.sellingPrice as number)?.toLocaleString()} ر.س</Text>
-            <Text style={styles.db}>وفر {l.discount as number}%</Text>
-            <TouchableOpacity onPress={() => buy(l.id as number)} style={styles.bb}>
+            <Text style={styles.cv}>{l.value?.toLocaleString()} ر.س</Text>
+            <Text style={styles.op}>{l.value?.toLocaleString()}</Text>
+            <Text style={styles.sp}>{l.sellingPrice?.toLocaleString()} ر.س</Text>
+            <Text style={styles.db}>وفر {l.discount}%</Text>
+            <TouchableOpacity onPress={() => buy(l.id)} style={styles.bb}>
               <Text style={styles.bt}> شراء</Text>
             </TouchableOpacity>
           </View>

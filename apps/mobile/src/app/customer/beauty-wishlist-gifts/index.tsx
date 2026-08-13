@@ -12,8 +12,17 @@ const OCCASIONS = [
   { key: 'mothersday', emoji: '', name: 'عيد الأم' },
 ];
 
+interface WishlistItem {
+  id?: number;
+  name?: string;
+}
+
+interface WishlistData {
+  items?: WishlistItem[];
+}
+
 export default function BeautyWishlistGiftsScreen(): JSX.Element {
-  const [, setItems] = useState<any[]>([]);
+  const [, setItems] = useState<WishlistItem[]>([]);
   const [, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedOccasion, setSelectedOccasion] = useState('birthday');
@@ -22,8 +31,8 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().wishlist.list.query() as any)
-      .then((d: any) => {
+    typedTrpc().wishlist.list.query()
+      .then((d: WishlistData | undefined) => {
         setItems(d?.items || []);
         setLoading(false);
         setRefreshing(false);

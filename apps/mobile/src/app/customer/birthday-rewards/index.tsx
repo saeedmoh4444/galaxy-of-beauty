@@ -4,17 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface BirthdayReward {
+  rewardName?: string;
+  promoCode?: string;
+}
+
 export default function BirthdayRewardsScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<BirthdayReward | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().birthdayRewards.status.query() as any)
-      .then((d: any) => {
-        setData(d);
+    typedTrpc().birthdayRewards.status.query()
+      .then((d: BirthdayReward | null | undefined) => {
+        setData(d ?? null);
         setLoading(false);
         setRefreshing(false);
       })
@@ -46,8 +51,8 @@ export default function BirthdayRewardsScreen(): JSX.Element {
       {data ? (
         <View style={styles.card}>
           <Text style={styles.emoji}></Text>
-          <Text style={styles.reward}>{data.rewardName as string}</Text>
-          <Text style={styles.code}>كود: {data.promoCode as string}</Text>
+          <Text style={styles.reward}>{data.rewardName}</Text>
+          <Text style={styles.code}>كود: {data.promoCode}</Text>
           <TouchableOpacity style={styles.claimBtn}>
             <Text style={styles.claimText}>استلام</Text>
           </TouchableOpacity>

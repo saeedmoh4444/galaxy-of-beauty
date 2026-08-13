@@ -24,6 +24,14 @@ const CATS: Record<string, string> = {
 };
 const INTERVALS = [7, 14, 30, 60, 90];
 
+interface BeautyReminder {
+  id: number;
+  title?: string;
+  category?: string;
+  nextDate?: string;
+  intervalDays?: number;
+}
+
 export default function BeautyRemindersScreen(): JSX.Element {
   const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
     typedTrpc().beautyReminders.myReminders.query(),
@@ -62,9 +70,9 @@ export default function BeautyRemindersScreen(): JSX.Element {
   if (loading) return <SkeletonList count={3} />;
   if (error) return <ErrorAlert message="فشل تحميل التذكيرات" onRetry={refetch} />;
 
-  const reminders = (data ?? []) as any[];
-  const overdue = reminders.filter((r) => new Date(r.nextDate) < new Date());
-  const upcoming = reminders.filter((r) => new Date(r.nextDate) >= new Date());
+  const reminders = (data ?? []) as BeautyReminder[];
+  const overdue = reminders.filter((r) => new Date(r.nextDate ?? '') < new Date());
+  const upcoming = reminders.filter((r) => new Date(r.nextDate ?? '') >= new Date());
 
   return (
     <ScrollView
@@ -164,7 +172,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
               <View style={{ flex: 1 }}>
                 <Text style={{ fontWeight: '600' }}>{r.title}</Text>
                 <Text style={{ fontSize: 11, color: '#ef4444' }}>
-                  كان {new Date(r.nextDate).toLocaleDateString('ar-SA')}
+                  كان {new Date(r.nextDate ?? '').toLocaleDateString('ar-SA')}
                 </Text>
               </View>
               <TouchableOpacity onPress={() => handleComplete(r.id)} style={s.smBtn}>
@@ -185,11 +193,11 @@ export default function BeautyRemindersScreen(): JSX.Element {
           </Text>
           {upcoming.map((r) => (
             <View key={r.id} style={s.remCard}>
-              <Text style={{ fontSize: 28 }}>{CATS[r.category]?.split(' ')[0]}</Text>
+              <Text style={{ fontSize: 28 }}>{CATS[r.category ?? '']?.split(' ')[0]}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={{ fontWeight: '600' }}>{r.title}</Text>
                 <Text style={{ fontSize: 11, color: '#6b7280' }}>
-                  {new Date(r.nextDate).toLocaleDateString('ar-SA')} · كل {r.intervalDays} يوم
+                  {new Date(r.nextDate ?? '').toLocaleDateString('ar-SA')} · كل {r.intervalDays} يوم
                 </Text>
               </View>
               <TouchableOpacity onPress={() => handleDelete(r.id)}>

@@ -4,16 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface QuizSummary {
+  id?: string;
+  titleAr?: string;
+  descAr?: string;
+}
+
 export default function CertificationQuizScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<QuizSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().certificationQuiz.list.query() as any)
-      .then((d: any) => {
+    typedTrpc().certificationQuiz.list.query()
+      .then((d: QuizSummary[] | undefined) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -45,8 +51,8 @@ export default function CertificationQuizScreen(): JSX.Element {
       <Text style={styles.t}> اختبار الشهادة</Text>
       {data.map((q, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.qTitle}>{q.titleAr as string}</Text>
-          <Text style={styles.qDesc}>{q.descAr as string}</Text>
+          <Text style={styles.qTitle}>{q.titleAr}</Text>
+          <Text style={styles.qDesc}>{q.descAr}</Text>
           <TouchableOpacity style={styles.startBtn}>
             <Text style={styles.startText}>بدء</Text>
           </TouchableOpacity>

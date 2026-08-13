@@ -6,6 +6,12 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface JournalEntry {
+  id?: number;
+  title?: string;
+  createdAt?: string;
+}
+
 export default function BeautyJournalScreen(): JSX.Element {
   const {
     data: entries,
@@ -25,7 +31,7 @@ export default function BeautyJournalScreen(): JSX.Element {
     );
   if (error) return <ErrorAlert message="فشل تحميل اليوميات" onRetry={refetch} />;
 
-  const items = (entries ?? []) as Record<string, unknown>[];
+  const items = (entries ?? []) as JournalEntry[];
 
   return (
     <ScrollView
@@ -39,11 +45,11 @@ export default function BeautyJournalScreen(): JSX.Element {
       {items.length === 0 ? (
         <Text style={styles.e}>لا توجد مدخلات</Text>
       ) : (
-        items.map((e: Record<string, unknown>, i: number) => (
+        items.map((e, i) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.entryTitle}>{(e.title as string) ?? 'مدخل'}</Text>
+            <Text style={styles.entryTitle}>{e.title ?? 'مدخل'}</Text>
             <Text style={styles.entryDate}>
-              {new Date(e.createdAt as string).toLocaleDateString('ar-SA')}
+              {new Date(e.createdAt ?? '').toLocaleDateString('ar-SA')}
             </Text>
           </View>
         ))

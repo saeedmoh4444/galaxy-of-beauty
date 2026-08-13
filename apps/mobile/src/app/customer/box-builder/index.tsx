@@ -4,8 +4,15 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface BoxProduct {
+  id: number;
+  emoji?: string;
+  nameAr?: string;
+  price?: number;
+}
+
 export default function BoxBuilderScreen(): JSX.Element {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<BoxProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<Set<number>>(new Set());
@@ -13,8 +20,8 @@ export default function BoxBuilderScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().boxBuilder.products.query() as any)
-      .then((d: any) => {
+    typedTrpc().boxBuilder.products.query()
+      .then((d: BoxProduct[] | undefined) => {
         setProducts(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -65,10 +72,10 @@ export default function BoxBuilderScreen(): JSX.Element {
             onPress={() => toggle(p.id)}
             style={[styles.card, isSel && styles.cardActive]}
           >
-            <Text style={styles.emoji}>{(p.emoji as string) ?? ''}</Text>
+            <Text style={styles.emoji}>{p.emoji ?? ''}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.name}>{p.nameAr as string}</Text>
-              <Text style={styles.price}>{(p.price as number)?.toLocaleString()} ر.س</Text>
+              <Text style={styles.name}>{p.nameAr}</Text>
+              <Text style={styles.price}>{p.price?.toLocaleString()} ر.س</Text>
             </View>
             <View style={[styles.check, isSel && styles.checkOn]}>
               <Text style={styles.checkText}>{isSel ? '' : '+'}</Text>

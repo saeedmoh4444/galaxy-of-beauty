@@ -7,8 +7,14 @@ import { typedTrpc } from '@/lib/trpc-react';
 
 const MOODS = ['', '', '', '', '', '', '', ''];
 
+interface DiaryEntry {
+  id?: number;
+  title?: string;
+  createdAt?: string;
+}
+
 export default function BeautyDiaryScreen(): JSX.Element {
-  const [entries, setEntries] = useState<any[]>([]);
+  const [entries, setEntries] = useState<DiaryEntry[]>([]);
   const [, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [todayMood, setTodayMood] = useState('');
@@ -17,8 +23,8 @@ export default function BeautyDiaryScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().beautyJournal.list.query({ page: 1, limit: LARGE_PAGE_SIZE }) as any)
-      .then((d: any) => {
+    typedTrpc().beautyJournal.list.query({ page: 1, limit: LARGE_PAGE_SIZE }).then(
+      (d: DiaryEntry[] | undefined) => {
         setEntries(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -94,14 +100,14 @@ export default function BeautyDiaryScreen(): JSX.Element {
           <View style={styles.entryHeader}>
             <Text style={styles.entryMood}></Text>
             <Text style={styles.entryDate}>
-              {new Date((e.createdAt as string) ?? Date.now()).toLocaleDateString('ar-SA', {
+              {new Date(e.createdAt ?? Date.now()).toLocaleDateString('ar-SA', {
                 weekday: 'long',
                 month: 'short',
                 day: 'numeric',
               })}
             </Text>
           </View>
-          <Text style={styles.entryText}>{(e.title as string) ?? 'يوميات الجمال'}</Text>
+          <Text style={styles.entryText}>{e.title ?? 'يوميات الجمال'}</Text>
           <View style={styles.entryMeta}>
             <Text style={styles.entryMetaItem}>‍️ خدمة اليوم</Text>
             <Text style={styles.entryMetaItem}> بشرة متألقة</Text>

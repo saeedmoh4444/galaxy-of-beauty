@@ -4,16 +4,25 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface CompareService {
+  id: number;
+  emoji?: string;
+  titleJson?: { ar?: string; en?: string };
+  nameAr?: string;
+  basePrice?: number;
+  durationMin?: number;
+}
+
 export default function ServiceCompareScreen(): JSX.Element {
-  const [services, setServices] = useState<any[]>([]);
+  const [services, setServices] = useState<CompareService[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<number[]>([]);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().services.list.query({}) as any)
-      .then((d: any) => {
+    (typedTrpc().services.list.query({}) as Promise<{ items?: CompareService[] }>)
+      .then((d) => {
         setServices(d?.items || []);
         setLoading(false);
         setRefreshing(false);
@@ -54,11 +63,11 @@ export default function ServiceCompareScreen(): JSX.Element {
               onPress={() => toggle(s.id)}
               style={[styles.ch, isSel && styles.cha]}
             >
-              <Text style={styles.ce}>{(s.emoji as string) ?? '‍️'}</Text>
+              <Text style={styles.ce}>{s.emoji ?? ''}</Text>
               <Text style={[styles.cn, isSel && styles.cna]}>
-                {((s.titleJson as any)?.ar as string) ?? (s.nameAr as string)}
+                {s.titleJson?.ar ?? s.nameAr ?? ''}
               </Text>
-              <Text style={styles.cp}>{(s.basePrice as number)?.toLocaleString()} ر.س</Text>
+              <Text style={styles.cp}>{(s.basePrice ?? 0).toLocaleString()} ر.س</Text>
             </TouchableOpacity>
           );
         })}
@@ -68,14 +77,14 @@ export default function ServiceCompareScreen(): JSX.Element {
           <Text style={styles.ttl}> المقارنة</Text>
           {compareItems.map((s) => (
             <View key={s.id} style={styles.cc}>
-              <Text style={styles.ct}>{(s.titleJson as any)?.ar as string}</Text>
+              <Text style={styles.ct}>{s.titleJson?.ar ?? ''}</Text>
               <View style={styles.cr}>
                 <Text style={styles.cl}></Text>
-                <Text style={styles.cv}>{(s.basePrice as number)?.toLocaleString()} ر.س</Text>
+                <Text style={styles.cv}>{(s.basePrice ?? 0).toLocaleString()} ر.س</Text>
               </View>
               <View style={styles.cr}>
                 <Text style={styles.cl}>️</Text>
-                <Text style={styles.cv}>{s.durationMin as number} دقيقة</Text>
+                <Text style={styles.cv}>{s.durationMin ?? 0} دقيقة</Text>
               </View>
             </View>
           ))}
