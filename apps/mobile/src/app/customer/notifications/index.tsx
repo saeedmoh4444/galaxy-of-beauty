@@ -10,10 +10,19 @@ const COLORS = {
   unread: '#f5f3ff',
 };
 
+interface AppNotification {
+  titleJson?: { ar?: string; en?: string };
+  titleAr?: string;
+  bodyJson?: { ar?: string; en?: string };
+  body?: string;
+  createdAt?: string;
+  isRead?: boolean;
+}
+
 export default function NotificationsScreen(): JSX.Element {
   const notifs = trpc.notifications.list.useQuery({});
   const markAll = trpc.notifications.markAllRead.useMutation();
-  const data = notifs.data as unknown[] | undefined;
+  const data = notifs.data as AppNotification[] | undefined;
 
   return (
     <ScreenState
@@ -41,16 +50,16 @@ export default function NotificationsScreen(): JSX.Element {
           </TouchableOpacity>
         )}
       </View>
-      {(data as Record<string, unknown>[])?.map((n: Record<string, unknown>, i: number) => (
+      {data?.map((n, i) => (
         <TouchableOpacity key={i} style={[styles.card, !n.isRead && styles.unread]}>
           <Text style={styles.notifTitle}>
-            {(n.titleJson as any)?.ar ?? (n.titleAr as string) ?? ''}
+            {n.titleJson?.ar ?? n.titleAr ?? ''}
           </Text>
           <Text style={styles.notifBody}>
-            {(n.bodyJson as any)?.ar ?? (n.body as string) ?? ''}
+            {n.bodyJson?.ar ?? n.body ?? ''}
           </Text>
           <Text style={styles.notifTime}>
-            {new Date(n.createdAt as string).toLocaleString('ar-SA')}
+            {n.createdAt ? new Date(n.createdAt).toLocaleString('ar-SA') : ''}
           </Text>
         </TouchableOpacity>
       ))}
