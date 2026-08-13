@@ -6,6 +6,21 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface Achievement {
+  key?: string;
+  earned?: boolean;
+  emoji?: string;
+  nameAr?: string;
+  desc?: string;
+}
+
+interface AchievementsData {
+  achievements?: Achievement[];
+  stats?: Record<string, number>;
+  earnedCount?: number;
+  totalCount?: number;
+}
+
 export default function AchievementsScreen(): JSX.Element {
   const { data: achievementsData } = (
     typedTrpc()
@@ -17,8 +32,8 @@ export default function AchievementsScreen(): JSX.Element {
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الإنجازات" onRetry={refetch} />;
 
-  const d = data as any;
-  const achievements = (d?.achievements ?? []) as any[];
+  const d = data as AchievementsData | null;
+  const achievements = d?.achievements ?? [];
   const stats = d?.stats ?? {};
   const earnedCount = d?.earnedCount ?? 0;
   const totalCount = d?.totalCount ?? 0;
