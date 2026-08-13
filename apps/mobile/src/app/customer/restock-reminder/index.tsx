@@ -4,16 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface RestockItem {
+  id?: number;
+  emoji?: string;
+  productName?: string;
+  lastOrdered?: string;
+}
+
 export default function RestockReminderScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<RestockItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().restockReminder.list.query() as any)
-      .then((d: any) => {
+    (typedTrpc().restockReminder.list.query() as Promise<RestockItem[]>)
+      .then((d) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -45,11 +52,11 @@ export default function RestockReminderScreen(): JSX.Element {
       <Text style={styles.t}> تذكير بإعادة الطلب</Text>
       {data.map((r, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(r.emoji as string) ?? ''}</Text>
+          <Text style={styles.emoji}>{r.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{r.productName as string}</Text>
+            <Text style={styles.name}>{r.productName ?? ''}</Text>
             <Text style={styles.date}>
-              آخر طلب: {new Date(r.lastOrdered as string).toLocaleDateString('ar-SA')}
+              آخر طلب: {r.lastOrdered ? new Date(r.lastOrdered).toLocaleDateString('ar-SA') : ''}
             </Text>
           </View>
         </View>
