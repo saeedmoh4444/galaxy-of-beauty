@@ -4,16 +4,31 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface RideProvider {
+  key: string;
+  emoji: string;
+  nameAr: string;
+  estimatedTime: string;
+  estimatedPrice: number;
+}
+
+interface BookingResult {
+  driverName?: string;
+  carModel?: string;
+  plateNumber?: string;
+  estimatedArrival?: string;
+}
+
 export default function RideHailingScreen(): JSX.Element {
-  const [providers, setProviders] = useState<any[]>([]);
+  const [providers, setProviders] = useState<RideProvider[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<BookingResult | null>(null);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().rideHailing.providers.query() as any)
-      .then((d: any) => {
+    (typedTrpc().rideHailing.providers.query() as Promise<RideProvider[]>)
+      .then((d: RideProvider[]) => {
         setProviders(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -32,8 +47,8 @@ export default function RideHailingScreen(): JSX.Element {
         bookingId: 1,
         provider,
         pickupAddress: 'موقعي الحالي',
-      }) as any
-    ).then((d: any) => setResult(d));
+      }) as Promise<BookingResult>
+    ).then((d: BookingResult) => setResult(d));
   };
   if (loading) return <SkeletonList count={3} />;
   if (result)
@@ -44,10 +59,10 @@ export default function RideHailingScreen(): JSX.Element {
           <Text style={styles.re}></Text>
           <Text style={styles.rt}>تم الحجز!</Text>
           <Text style={styles.rn}>
-            {result.driverName as string} · {result.carModel as string}
+            {result.driverName} · {result.carModel}
           </Text>
           <Text style={styles.rm}>
-            {result.plateNumber as string} · {result.estimatedArrival as string}
+            {result.plateNumber} · {result.estimatedArrival}
           </Text>
         </View>
       </ScrollView>
@@ -67,14 +82,14 @@ export default function RideHailingScreen(): JSX.Element {
       <Text style={styles.t}> توصيل للموعد</Text>
       {providers.map((p) => (
         <View key={p.key} style={styles.card}>
-          <Text style={styles.pe}>{p.emoji as string}</Text>
+          <Text style={styles.pe}>{p.emoji}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.pn}>{p.nameAr as string}</Text>
+            <Text style={styles.pn}>{p.nameAr}</Text>
             <Text style={styles.pm}>
-              ️ {p.estimatedTime as string} · {(p.estimatedPrice as number)?.toLocaleString()} ر.س
+              ️ {p.estimatedTime} · {p.estimatedPrice?.toLocaleString()} ر.س
             </Text>
           </View>
-          <TouchableOpacity onPress={() => book(p.key as string)} style={styles.bb}>
+          <TouchableOpacity onPress={() => book(p.key)} style={styles.bb}>
             <Text style={styles.bt}>احجز</Text>
           </TouchableOpacity>
         </View>

@@ -4,15 +4,27 @@ import { trpc as trpcReact, typedTrpc } from '@/lib/trpc-react';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 
+interface BingoTask {
+  id?: number;
+  task?: string;
+  completed?: boolean;
+}
+
+interface BingoCard {
+  completed?: number;
+  total?: number;
+  tasks?: BingoTask[];
+}
+
 export default function BeautyBingoScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<BingoCard | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().beautyBingo.card.query() as any)
-      .then((d: any) => {
+    (typedTrpc().beautyBingo.card.query() as Promise<BingoCard>)
+      .then((d) => {
         setData(d);
         setLoading(false);
         setRefreshing(false);
@@ -26,10 +38,10 @@ export default function BeautyBingoScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const mark = () => {
-    (typedTrpc().beautyBingo.mark.mutate({}) as any).then(() => fetch());
+    (typedTrpc().beautyBingo.mark.mutate({}) as Promise<void>).then(() => fetch());
   };
   if (loading) return <SkeletonList count={3} />;
-  const tasks = (data?.tasks ?? []) as any[];
+  const tasks = data?.tasks ?? [];
   return (
     <ScrollView
       style={styles.c}

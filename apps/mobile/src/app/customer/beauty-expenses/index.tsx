@@ -5,6 +5,25 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface ExpenseCategory {
+  categoryId?: number;
+  name?: string;
+  total?: number;
+}
+
+interface MonthlyTrendPoint {
+  month?: string;
+  total?: number;
+}
+
+interface ExpensesSummary {
+  thisMonthTotal?: number;
+  lastMonthTotal?: number;
+  monthOverMonth?: number;
+  byCategory?: ExpenseCategory[];
+  monthlyTrend?: MonthlyTrendPoint[];
+}
+
 export default function BeautyExpensesScreen(): JSX.Element {
   const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
     typedTrpc().beautyExpenses.summary.query(),
@@ -13,9 +32,9 @@ export default function BeautyExpensesScreen(): JSX.Element {
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل البيانات" onRetry={refetch} />;
 
-  const d = data as any;
-  const byCategory = (d?.byCategory ?? []) as any[];
-  const monthlyTrend = (d?.monthlyTrend ?? []) as any[];
+  const d = data as ExpensesSummary | null;
+  const byCategory = d?.byCategory ?? [];
+  const monthlyTrend = d?.monthlyTrend ?? [];
   const maxVal = Math.max(...monthlyTrend.map((m) => m.total ?? 0), 1);
 
   return (
@@ -61,7 +80,7 @@ export default function BeautyExpensesScreen(): JSX.Element {
         <View style={{ marginTop: 16 }}>
           <Text style={s.st}> توزيع الإنفاق</Text>
           {byCategory.map((c) => {
-            const pct = Math.round((c.total / (d?.thisMonthTotal || 1)) * 100);
+            const pct = Math.round(((c.total ?? 0) / (d?.thisMonthTotal || 1)) * 100);
             return (
               <View key={c.categoryId} style={{ marginBottom: 10 }}>
                 <View
@@ -69,7 +88,7 @@ export default function BeautyExpensesScreen(): JSX.Element {
                 >
                   <Text style={{ fontSize: 13 }}>{c.name}</Text>
                   <Text style={{ fontWeight: '700', fontSize: 13 }}>
-                    {c.total.toLocaleString()} ر.س
+                    {(c.total ?? 0).toLocaleString()} ر.س
                   </Text>
                 </View>
                 <View style={{ height: 8, backgroundColor: '#e5e7eb', borderRadius: 4 }}>
@@ -92,7 +111,7 @@ export default function BeautyExpensesScreen(): JSX.Element {
         <View style={{ marginTop: 16 }}>
           <Text style={s.st}> الاتجاه الشهري</Text>
           {monthlyTrend.map((m) => {
-            const pct = Math.round((m.total / maxVal) * 100);
+            const pct = Math.round(((m.total ?? 0) / maxVal) * 100);
             return (
               <View key={m.month} style={{ marginBottom: 8 }}>
                 <View
@@ -100,7 +119,7 @@ export default function BeautyExpensesScreen(): JSX.Element {
                 >
                   <Text style={{ fontSize: 12, color: '#6b7280' }}>{m.month}</Text>
                   <Text style={{ fontWeight: '700', fontSize: 12 }}>
-                    {m.total.toLocaleString()} ر.س
+                    {(m.total ?? 0).toLocaleString()} ر.س
                   </Text>
                 </View>
                 <View style={{ height: 10, backgroundColor: '#e5e7eb', borderRadius: 5 }}>

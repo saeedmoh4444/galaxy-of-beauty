@@ -12,19 +12,31 @@ const CH: Record<string, { emoji: string; color: string }> = {
   refer_3friends: { emoji: '‍️', color: '#10b981' },
 };
 
+interface ChallengeItem {
+  id: string;
+  nameAr: string;
+  descAr: string;
+  target: number;
+  reward: string;
+}
+
+interface ChallengeProgress {
+  bookingCount?: number;
+}
+
 export default function ChallengesScreen(): JSX.Element {
-  const [challenges, setChallenges] = useState<any[]>([]);
-  const [progress, setProgress] = useState<any>({});
+  const [challenges, setChallenges] = useState<ChallengeItem[]>([]);
+  const [progress, setProgress] = useState<ChallengeProgress>({});
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().challenges.list.query() as any,
-      typedTrpc().challenges.progress.query() as any,
+      typedTrpc().challenges.list.query() as Promise<ChallengeItem[]>,
+      typedTrpc().challenges.progress.query() as Promise<ChallengeProgress>,
     ])
-      .then(([c, p]: any[]) => {
+      .then(([c, p]: [ChallengeItem[], ChallengeProgress]) => {
         setChallenges(c || []);
         setProgress(p);
         setLoading(false);
@@ -39,7 +51,7 @@ export default function ChallengesScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const join = (challengeId: string) => {
-    (typedTrpc().challenges.join.mutate({ challengeId }) as any).then(() => fetch());
+    typedTrpc().challenges.join.mutate({ challengeId }).then(() => fetch());
   };
   if (loading) return <SkeletonList count={4} />;
   return (
@@ -56,27 +68,24 @@ export default function ChallengesScreen(): JSX.Element {
     >
       <Text style={styles.t}> تحديات الجمال</Text>
       {challenges.map((ch) => {
-        const s = CH[ch.id as string] ?? { emoji: '', color: '#6b7280' };
-        const pct = Math.min(
-          100,
-          ((progress?.bookingCount || 0) / ((ch.target as number) || 1)) * 100,
-        );
+        const s = CH[ch.id] ?? { emoji: '', color: '#6b7280' };
+        const pct = Math.min(100, ((progress?.bookingCount || 0) / (ch.target || 1)) * 100);
         return (
           <View key={ch.id} style={[styles.card, { borderLeftColor: s.color }]}>
             <View style={styles.ch}>
               <Text style={styles.ce}>{s.emoji}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={styles.ct}>{ch.nameAr as string}</Text>
-                <Text style={styles.cd}>{ch.descAr as string}</Text>
+                <Text style={styles.ct}>{ch.nameAr}</Text>
+                <Text style={styles.cd}>{ch.descAr}</Text>
               </View>
             </View>
             <View style={styles.pb}>
               <View style={[styles.pf, { width: `${pct}%`, backgroundColor: s.color }]} />
             </View>
             <View style={styles.cf}>
-              <Text style={styles.rt}> {ch.reward as string}</Text>
+              <Text style={styles.rt}> {ch.reward}</Text>
               <TouchableOpacity
-                onPress={() => join(ch.id as string)}
+                onPress={() => join(ch.id)}
                 style={[styles.jb, { backgroundColor: s.color }]}
               >
                 <Text style={styles.jt}>انضمام</Text>

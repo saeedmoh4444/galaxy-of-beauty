@@ -4,16 +4,30 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface LastMileProduct {
+  id: number;
+  emoji: string;
+  nameAr: string;
+  deliveryTime: string;
+  price: number;
+}
+
+interface OrderResult {
+  product?: string;
+  estimatedDelivery?: string;
+  total?: number;
+}
+
 export default function LastMileScreen(): JSX.Element {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<LastMileProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<OrderResult | null>(null);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().lastMileDelivery.products.query() as any)
-      .then((d: any) => {
+    (typedTrpc().lastMileDelivery.products.query() as Promise<LastMileProduct[]>)
+      .then((d: LastMileProduct[]) => {
         setProducts(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -32,8 +46,8 @@ export default function LastMileScreen(): JSX.Element {
         productId,
         address: 'الرياض',
         paymentMethod: 'wallet',
-      }) as any
-    ).then((d: any) => setResult(d));
+      }) as Promise<OrderResult>
+    ).then((d: OrderResult) => setResult(d));
   };
   if (loading) return <SkeletonList count={4} />;
   if (result)
@@ -43,10 +57,9 @@ export default function LastMileScreen(): JSX.Element {
         <View style={[styles.card, styles.rc]}>
           <Text style={styles.re}></Text>
           <Text style={styles.rtt}>تم الطلب!</Text>
-          <Text style={styles.rp}>{result.product as string}</Text>
+          <Text style={styles.rp}>{result.product}</Text>
           <Text style={styles.rm}>
-             {result.estimatedDelivery as string} · {(result.total as number)?.toLocaleString()}{' '}
-            ر.س
+             {result.estimatedDelivery} · {result.total?.toLocaleString()} ر.س
           </Text>
         </View>
       </ScrollView>
@@ -66,13 +79,13 @@ export default function LastMileScreen(): JSX.Element {
       <Text style={styles.t}> توصيل سريع</Text>
       {products.map((p) => (
         <View key={p.id} style={styles.card}>
-          <Text style={styles.pe}>{p.emoji as string}</Text>
+          <Text style={styles.pe}>{p.emoji}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.pn}>{p.nameAr as string}</Text>
-            <Text style={styles.pd}>️ {p.deliveryTime as string}</Text>
+            <Text style={styles.pn}>{p.nameAr}</Text>
+            <Text style={styles.pd}>️ {p.deliveryTime}</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
-            <Text style={styles.pp}>{(p.price as number)?.toLocaleString()} ر.س</Text>
+            <Text style={styles.pp}>{p.price?.toLocaleString()} ر.س</Text>
             <TouchableOpacity onPress={() => order(p.id)} style={styles.ob}>
               <Text style={styles.ot}>اطلب</Text>
             </TouchableOpacity>

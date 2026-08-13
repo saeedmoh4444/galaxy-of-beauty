@@ -4,18 +4,27 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface DnaQuestion {
+  id: string;
+  q: string;
+}
+
+interface DnaResult {
+  score: number;
+}
+
 export default function DNABeautyScreen(): JSX.Element {
-  const [questions, setQuestions] = useState<any[]>([]);
+  const [questions, setQuestions] = useState<DnaQuestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [answers, setAnswers] = useState<Record<string, boolean>>({});
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<DnaResult | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().dnaBeauty.questions.query() as any)
-      .then((d: any) => {
+    (typedTrpc().dnaBeauty.questions.query() as Promise<DnaQuestion[]>)
+      .then((d: DnaQuestion[]) => {
         setQuestions(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -30,8 +39,8 @@ export default function DNABeautyScreen(): JSX.Element {
   }, [fetch]);
   const analyze = () => {
     setAnalyzing(true);
-    (typedTrpc().dnaBeauty.analyze.query({ answers }) as any)
-      .then((d: any) => {
+    (typedTrpc().dnaBeauty.analyze.query({ answers }) as Promise<DnaResult>)
+      .then((d: DnaResult) => {
         setResult(d);
         setAnalyzing(false);
       })
@@ -51,7 +60,7 @@ export default function DNABeautyScreen(): JSX.Element {
         <View style={[styles.card, styles.rc]}>
           <Text style={styles.re}></Text>
           <Text style={styles.rt}>نتيجة التحليل</Text>
-          <Text style={styles.score}>{result.score as number}% تطابق</Text>
+          <Text style={styles.score}>{result.score}% تطابق</Text>
           <TouchableOpacity
             onPress={() => {
               setAnswers({});
@@ -81,21 +90,21 @@ export default function DNABeautyScreen(): JSX.Element {
         <Text style={styles.qt}>أكملي الاستبيان</Text>
         {questions.map((q) => (
           <View key={q.id} style={styles.qr}>
-            <Text style={styles.qq}>{q.q as string}</Text>
+            <Text style={styles.qq}>{q.q}</Text>
             <View style={styles.qb}>
               <TouchableOpacity
-                onPress={() => setAnswers({ ...answers, [q.id as string]: true })}
-                style={[styles.qbtn, answers[q.id as string] === true && styles.qy]}
+                onPress={() => setAnswers({ ...answers, [q.id]: true })}
+                style={[styles.qbtn, answers[q.id] === true && styles.qy]}
               >
-                <Text style={[styles.qbt, answers[q.id as string] === true && styles.qat]}>
+                <Text style={[styles.qbt, answers[q.id] === true && styles.qat]}>
                   نعم
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => setAnswers({ ...answers, [q.id as string]: false })}
-                style={[styles.qbtn, answers[q.id as string] === false && styles.qn]}
+                onPress={() => setAnswers({ ...answers, [q.id]: false })}
+                style={[styles.qbtn, answers[q.id] === false && styles.qn]}
               >
-                <Text style={[styles.qbt, answers[q.id as string] === false && styles.qat]}>
+                <Text style={[styles.qbt, answers[q.id] === false && styles.qat]}>
                   لا
                 </Text>
               </TouchableOpacity>

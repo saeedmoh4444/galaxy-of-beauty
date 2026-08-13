@@ -5,12 +5,26 @@ import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface BookingRow {
+  id: number;
+  bookingCode: string;
+  startAt: string;
+}
+
+interface BookingsListResult {
+  bookings?: BookingRow[];
+}
+
+interface RescheduleResult {
+  status?: string;
+}
+
 export default function RescheduleScreen(): JSX.Element {
-  const [bookings, setBookings] = useState<any[]>([]);
+  const [bookings, setBookings] = useState<BookingRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<RescheduleResult | null>(null);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
@@ -19,9 +33,9 @@ export default function RescheduleScreen(): JSX.Element {
         status: 'ACCEPTED',
         page: 1,
         limit: LARGE_PAGE_SIZE,
-      }) as any
+      }) as Promise<BookingsListResult>
     )
-      .then((d: any) => {
+      .then((d: BookingsListResult) => {
         setBookings(d?.bookings || []);
         setLoading(false);
         setRefreshing(false);
@@ -41,8 +55,8 @@ export default function RescheduleScreen(): JSX.Element {
         bookingId,
         newStartAt: nd,
         reason: 'طلب تعديل الموعد',
-      }) as any
-    ).then((d: any) => setResult(d));
+      }) as Promise<RescheduleResult>
+    ).then((d: RescheduleResult) => setResult(d));
   };
   if (loading) return <SkeletonList count={4} />;
   if (result)
@@ -76,9 +90,9 @@ export default function RescheduleScreen(): JSX.Element {
           style={[styles.card, selected === b.id && styles.ca]}
         >
           <View style={{ flex: 1 }}>
-            <Text style={styles.bc}>{b.bookingCode as string}</Text>
+            <Text style={styles.bc}>{b.bookingCode}</Text>
             <Text style={styles.bd}>
-              {new Date(b.startAt as string).toLocaleDateString('ar-SA', {
+              {new Date(b.startAt).toLocaleDateString('ar-SA', {
                 weekday: 'long',
                 month: 'long',
                 day: 'numeric',

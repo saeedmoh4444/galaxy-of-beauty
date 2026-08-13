@@ -4,16 +4,27 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface QrTechnician {
+  id: number;
+  name: string;
+  services: string;
+}
+
+interface QrGenerated {
+  qrUrl?: string;
+  url?: string;
+}
+
 export default function ServiceMenuQRScreen(): JSX.Element {
-  const [techs, setTechs] = useState<any[]>([]);
+  const [techs, setTechs] = useState<QrTechnician[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<QrGenerated | null>(null);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().serviceMenuQr.list.query() as any)
-      .then((d: any) => {
+    (typedTrpc().serviceMenuQr.list.query() as Promise<QrTechnician[]>)
+      .then((d: QrTechnician[]) => {
         setTechs(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -27,8 +38,8 @@ export default function ServiceMenuQRScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const generate = (technicianId: number) => {
-    (typedTrpc().serviceMenuQr.generate.mutate({ technicianId }) as any).then((d: any) =>
-      setResult(d),
+    (typedTrpc().serviceMenuQr.generate.mutate({ technicianId }) as Promise<QrGenerated>).then(
+      (d: QrGenerated) => setResult(d),
     );
   };
   if (loading) return <SkeletonList count={4} />;
@@ -48,8 +59,8 @@ export default function ServiceMenuQRScreen(): JSX.Element {
       {techs.map((t) => (
         <View key={t.id} style={styles.card}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.tn}>{t.name as string}</Text>
-            <Text style={styles.ts}>{t.services as string}</Text>
+            <Text style={styles.tn}>{t.name}</Text>
+            <Text style={styles.ts}>{t.services}</Text>
           </View>
           <TouchableOpacity onPress={() => generate(t.id)} style={styles.qb}>
             <Text style={styles.qbt}>توليد QR</Text>
@@ -60,7 +71,7 @@ export default function ServiceMenuQRScreen(): JSX.Element {
         <View style={styles.rc}>
           <Text style={styles.re}></Text>
           <Text style={styles.rt}>تم توليد QR!</Text>
-          <Text style={styles.ru}>{(result.qrUrl ?? result.url) as string}</Text>
+          <Text style={styles.ru}>{result.qrUrl ?? result.url}</Text>
         </View>
       )}
     </ScrollView>

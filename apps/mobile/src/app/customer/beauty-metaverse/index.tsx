@@ -4,16 +4,26 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface MetaverseSalon {
+  id: number;
+  emoji: string;
+  name: string;
+}
+
+interface EnterResult {
+  welcomeMessage?: string;
+}
+
 export default function BeautyMetaverseScreen(): JSX.Element {
-  const [salons, setSalons] = useState<any[]>([]);
+  const [salons, setSalons] = useState<MetaverseSalon[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<EnterResult | null>(null);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().beautyMetaverse.salons.query() as any)
-      .then((d: any) => {
+    (typedTrpc().beautyMetaverse.salons.query() as Promise<MetaverseSalon[]>)
+      .then((d: MetaverseSalon[]) => {
         setSalons(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -27,8 +37,8 @@ export default function BeautyMetaverseScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const enter = (salonId: number) => {
-    (typedTrpc().beautyMetaverse.enter.mutate({ salonId, avatar: 'skin1' }) as any).then(
-      (d: any) => setResult(d),
+    (typedTrpc().beautyMetaverse.enter.mutate({ salonId, avatar: 'skin1' }) as Promise<EnterResult>).then(
+      (d: EnterResult) => setResult(d),
     );
   };
   if (loading) return <SkeletonList count={4} />;
@@ -38,7 +48,7 @@ export default function BeautyMetaverseScreen(): JSX.Element {
         <Text style={styles.t}> عالم الجمال الافتراضي</Text>
         <View style={[styles.card, styles.resultCard]}>
           <Text style={styles.resultEmoji}></Text>
-          <Text style={styles.resultTitle}>{result.welcomeMessage as string}</Text>
+          <Text style={styles.resultTitle}>{result.welcomeMessage}</Text>
           <TouchableOpacity onPress={() => setResult(null)} style={styles.exitBtn}>
             <Text style={styles.exitBtnText}>خروج</Text>
           </TouchableOpacity>
@@ -61,8 +71,8 @@ export default function BeautyMetaverseScreen(): JSX.Element {
       <View style={styles.grid}>
         {salons.map((s) => (
           <TouchableOpacity key={s.id} onPress={() => enter(s.id)} style={styles.salon}>
-            <Text style={styles.se}>{s.emoji as string}</Text>
-            <Text style={styles.sn}>{s.name as string}</Text>
+            <Text style={styles.se}>{s.emoji}</Text>
+            <Text style={styles.sn}>{s.name}</Text>
           </TouchableOpacity>
         ))}
       </View>

@@ -13,6 +13,39 @@ const TIER_COLORS: Record<string, string[]> = {
   PLATINUM: ['#c4b5fd', '#7c3aed'],
 };
 
+interface LoyaltyAccount {
+  points?: number;
+  tier?: string;
+  tierNameAr?: string;
+  multiplier?: number;
+}
+
+interface RewardNameJson {
+  ar?: string;
+}
+
+interface RewardDescriptionJson {
+  ar?: string;
+}
+
+interface LoyaltyReward {
+  id: number;
+  rewardType?: string;
+  nameJson?: RewardNameJson;
+  descriptionJson?: RewardDescriptionJson;
+  pointsCost: number;
+}
+
+interface LoyaltyTransaction {
+  id?: number;
+  reason?: string;
+  points: number;
+}
+
+interface TransactionsResult {
+  items?: LoyaltyTransaction[];
+}
+
 export default function RewardsMarketplaceScreen(): JSX.Element {
   const {
     data: account,
@@ -39,9 +72,9 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل المكافآت" onRetry={refetch} />;
 
-  const a = account as any;
-  const items = (rewards ?? []) as any[];
-  const transactions = ((txs as any)?.items ?? []) as any[];
+  const a = account as LoyaltyAccount | null;
+  const items = (rewards as LoyaltyReward[] | undefined) ?? [];
+  const transactions = ((txs as TransactionsResult | null)?.items) ?? [];
   const points = a?.points ?? 0;
   const tier = a?.tier ?? 'SILVER';
   const tierColors = TIER_COLORS[tier] ?? TIER_COLORS['SILVER']!;

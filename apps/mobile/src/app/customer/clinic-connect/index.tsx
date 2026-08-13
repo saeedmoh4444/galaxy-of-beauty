@@ -4,19 +4,34 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface Clinic {
+  id: number;
+  emoji: string;
+  name: string;
+  city: string;
+  specialty: string;
+  rating: number;
+}
+
+interface Referral {
+  id: number;
+  reason: string;
+  status: string;
+}
+
 export default function ClinicConnectScreen(): JSX.Element {
-  const [clinics, setClinics] = useState<any[]>([]);
-  const [referrals, setReferrals] = useState<any[]>([]);
+  const [clinics, setClinics] = useState<Clinic[]>([]);
+  const [referrals, setReferrals] = useState<Referral[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().clinicConnect.clinics.query() as any,
-      typedTrpc().clinicConnect.myReferrals.query() as any,
+      typedTrpc().clinicConnect.clinics.query() as Promise<Clinic[]>,
+      typedTrpc().clinicConnect.myReferrals.query() as Promise<Referral[]>,
     ])
-      .then(([c, r]: any[]) => {
+      .then(([c, r]: [Clinic[], Referral[]]) => {
         setClinics(c || []);
         setReferrals(r || []);
         setLoading(false);
@@ -35,7 +50,7 @@ export default function ClinicConnectScreen(): JSX.Element {
       clinicId,
       reason: 'استشارة جلدية',
       urgency: 'routine',
-    }) as any;
+    });
   };
   if (loading) return <SkeletonList count={5} />;
   return (
@@ -53,14 +68,14 @@ export default function ClinicConnectScreen(): JSX.Element {
       <Text style={styles.t}> Clinic Connect</Text>
       {clinics.map((c) => (
         <View key={c.id} style={styles.card}>
-          <Text style={styles.em}>{c.emoji as string}</Text>
+          <Text style={styles.em}>{c.emoji}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nm}>{c.name as string}</Text>
+            <Text style={styles.nm}>{c.name}</Text>
             <Text style={styles.meta}>
-               {c.city as string} · {c.specialty as string} ·  {c.rating as number}
+               {c.city} · {c.specialty} ·  {c.rating}
             </Text>
           </View>
-          <TouchableOpacity onPress={() => refer(c.id as number)} style={styles.rb}>
+          <TouchableOpacity onPress={() => refer(c.id)} style={styles.rb}>
             <Text style={styles.rt}>إحالة</Text>
           </TouchableOpacity>
         </View>
@@ -68,7 +83,7 @@ export default function ClinicConnectScreen(): JSX.Element {
       {referrals.length > 0 && <Text style={styles.st}> إحالاتي</Text>}
       {referrals.map((r) => (
         <View key={r.id} style={styles.rc}>
-          <Text style={styles.rr}>{r.reason as string}</Text>
+          <Text style={styles.rr}>{r.reason}</Text>
           <View style={[styles.rbadge, r.status === 'PENDING' ? styles.rp : styles.rd]}>
             <Text style={styles.rbt}>{r.status === 'PENDING' ? 'معلقة' : 'مكتملة'}</Text>
           </View>
