@@ -4,16 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface PenPalMatch {
+  name?: string;
+  matchReason?: string;
+}
+
 export default function PenPalScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<PenPalMatch | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().penPal.match.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .penPal.match.query()
+      .then((d: PenPalMatch) => {
         setData(d);
         setLoading(false);
         setRefreshing(false);
@@ -46,8 +52,8 @@ export default function PenPalScreen(): JSX.Element {
       {data ? (
         <View style={styles.card}>
           <Text style={styles.emoji}>‍</Text>
-          <Text style={styles.name}>{data.name as string}</Text>
-          <Text style={styles.match}>{data.matchReason as string}</Text>
+          <Text style={styles.name}>{data.name ?? ''}</Text>
+          <Text style={styles.match}>{data.matchReason ?? ''}</Text>
         </View>
       ) : (
         <Text style={styles.e}>لم تجدِ صديقة بعد</Text>

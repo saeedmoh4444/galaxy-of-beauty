@@ -4,15 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface IoTDevice {
+  key?: string;
+  nameAr?: string;
+  emoji?: string;
+  status?: string;
+}
+
 export default function IoTSyncScreen(): JSX.Element {
-  const [devices, setDevices] = useState<any[]>([]);
+  const [devices, setDevices] = useState<IoTDevice[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().iotSync.devices.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .iotSync.devices.query()
+      .then((d: IoTDevice[]) => {
         setDevices(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -26,7 +34,7 @@ export default function IoTSyncScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const connect = (dk: string) => {
-    typedTrpc().iotSync.connect.mutate({ deviceKey: dk }) as any;
+    typedTrpc().iotSync.connect.mutate({ deviceKey: dk });
   };
   if (loading) return <SkeletonList count={4} />;
   return (
@@ -45,8 +53,8 @@ export default function IoTSyncScreen(): JSX.Element {
       <View style={styles.grid}>
         {devices.map((d) => (
           <View key={d.key} style={styles.card}>
-            <Text style={styles.de}>{d.emoji as string}</Text>
-            <Text style={styles.dn}>{d.nameAr as string}</Text>
+            <Text style={styles.de}>{d.emoji ?? ''}</Text>
+            <Text style={styles.dn}>{d.nameAr ?? ''}</Text>
             <Text
               style={[
                 styles.ds,
@@ -55,7 +63,7 @@ export default function IoTSyncScreen(): JSX.Element {
             >
               {d.status === 'connected' ? ' متصل' : ' غير متصل'}
             </Text>
-            <TouchableOpacity onPress={() => connect(d.key as string)} style={styles.db}>
+            <TouchableOpacity onPress={() => connect(d.key ?? '')} style={styles.db}>
               <Text style={styles.dbt}>{d.status === 'connected' ? 'مزامنة' : 'ربط'}</Text>
             </TouchableOpacity>
           </View>

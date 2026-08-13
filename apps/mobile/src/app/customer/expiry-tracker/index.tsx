@@ -4,15 +4,25 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface ExpiryItem {
+  id?: number;
+  emoji?: string;
+  productName?: string;
+  expiryMonths?: number;
+  expired?: boolean;
+  isClose?: boolean;
+}
+
 export default function ExpiryTrackerScreen(): JSX.Element {
-  const [items, setItems] = useState<any[]>([]);
+  const [items, setItems] = useState<ExpiryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().expiryTracker.myItems.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .expiryTracker.myItems.query()
+      .then((d: ExpiryItem[]) => {
         setItems(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -26,7 +36,7 @@ export default function ExpiryTrackerScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const remove = (id: number) => {
-    (typedTrpc().expiryTracker.delete.mutate({ id }) as any).then(() => fetch());
+    typedTrpc().expiryTracker.delete.mutate({ id }).then(() => fetch());
   };
   if (loading) return <SkeletonList count={4} />;
   return (
@@ -44,12 +54,12 @@ export default function ExpiryTrackerScreen(): JSX.Element {
       <Text style={styles.t}>️ متعقب الصلاحية</Text>
       {items.map((i) => (
         <View key={i.id} style={[styles.card, i.expired && styles.exp, i.isClose && styles.close]}>
-          <Text style={styles.em}>{i.emoji as string}</Text>
+          <Text style={styles.em}>{i.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nm}>{i.productName as string}</Text>
-            <Text style={styles.meta}>ينتهي بعد {i.expiryMonths as number} شهر</Text>
+            <Text style={styles.nm}>{i.productName ?? ''}</Text>
+            <Text style={styles.meta}>ينتهي بعد {i.expiryMonths ?? 0} شهر</Text>
           </View>
-          <TouchableOpacity onPress={() => remove(i.id)}>
+          <TouchableOpacity onPress={() => remove(i.id ?? 0)}>
             <Text style={styles.del}>️</Text>
           </TouchableOpacity>
         </View>

@@ -15,6 +15,17 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface Booking {
+  id?: number;
+  status?: string;
+  startAt?: string;
+  service?: { titleJson?: { ar?: string; en?: string } };
+}
+
+interface BookingsData {
+  bookings?: Booking[];
+}
+
 export default function RescheduleScreen(): JSX.Element {
   const {
     data: bookingsData,
@@ -46,7 +57,7 @@ export default function RescheduleScreen(): JSX.Element {
   if (loading) return <SkeletonList count={3} />;
   if (error) return <ErrorAlert message="فشل تحميل الحجوزات" onRetry={refetch} />;
 
-  const bookings = ((bookingsData as any)?.bookings ?? []) as any[];
+  const bookings = ((bookingsData as BookingsData | null)?.bookings) ?? [];
   const active = bookings.filter((b) => b.status === 'REQUESTED' || b.status === 'ACCEPTED');
 
   return (
@@ -86,21 +97,22 @@ export default function RescheduleScreen(): JSX.Element {
 
       {active.map((b) => {
         const isSel = selectedId === b.id;
-        const svc = b.service as any;
         return (
           <TouchableOpacity
             key={b.id}
             onPress={() => {
-              setSelectedId(isSel ? null : b.id);
+              setSelectedId(isSel ? null : (b.id ?? null));
               setDone(false);
             }}
             style={[s.card, isSel && { borderColor: '#db2777', backgroundColor: '#fdf2f8' }]}
           >
             <View style={{ flex: 1 }}>
               <Text style={{ fontWeight: '600', fontSize: 14 }}>حجز #{b.id}</Text>
-              <Text style={{ fontSize: 12, color: '#6b7280' }}>{svc?.titleJson?.ar ?? ''}</Text>
+              <Text style={{ fontSize: 12, color: '#6b7280' }}>
+                {b.service?.titleJson?.ar ?? ''}
+              </Text>
               <Text style={{ fontSize: 11, color: '#9ca3af', marginTop: 2 }}>
-                {new Date(b.startAt).toLocaleDateString('ar-SA')}
+                {b.startAt ? new Date(b.startAt).toLocaleDateString('ar-SA') : ''}
               </Text>
             </View>
             <View

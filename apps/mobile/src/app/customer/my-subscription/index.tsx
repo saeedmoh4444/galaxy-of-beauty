@@ -4,16 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface SubscriptionData {
+  planName?: string;
+  autoRenew?: boolean;
+}
+
 export default function MySubscriptionScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<SubscriptionData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().subscriptions.getMySubscription.query({}) as any)
-      .then((d: any) => {
+    typedTrpc()
+      .subscriptions.getMySubscription.query({})
+      .then((d: SubscriptionData) => {
         setData(d);
         setLoading(false);
         setRefreshing(false);
@@ -45,7 +51,7 @@ export default function MySubscriptionScreen(): JSX.Element {
       <Text style={styles.t}> اشتراكي</Text>
       {data ? (
         <View style={styles.card}>
-          <Text style={styles.plan}>{(data.planName as string) ?? 'غير مشترك'}</Text>
+          <Text style={styles.plan}>{data.planName ?? 'غير مشترك'}</Text>
           <Text style={styles.status}>{data.autoRenew ? 'تجديد تلقائي' : 'بدون تجديد'}</Text>
         </View>
       ) : (

@@ -5,6 +5,51 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface CyclePhase {
+  color?: string;
+  emoji?: string;
+  name?: string;
+}
+
+interface CycleData {
+  phase?: CyclePhase;
+  currentDay?: number;
+  cycleLength?: number;
+  daysUntilNext?: number;
+}
+
+interface TodayMood {
+  mood?: number;
+  energy?: number;
+  sleepHours?: number;
+  waterGlasses?: number;
+}
+
+interface SkinData {
+  skinType?: string;
+  concerns?: string[];
+}
+
+interface WeeklyData {
+  checkinCount?: number;
+  avgMood?: number;
+  avgEnergy?: number;
+}
+
+interface JournalEntry {
+  id?: number;
+  content?: string;
+  date?: string;
+}
+
+interface WellnessDashboard {
+  cycle?: CycleData;
+  todayMood?: TodayMood;
+  skin?: SkinData;
+  weekly?: WeeklyData;
+  recentJournals?: JournalEntry[];
+}
+
 export default function WellnessHubScreen(): JSX.Element {
   const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
     typedTrpc().wellnessHub.dashboard.query(),
@@ -13,7 +58,9 @@ export default function WellnessHubScreen(): JSX.Element {
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل البيانات" onRetry={refetch} />;
 
-  const d = data as any;
+  const d = data as WellnessDashboard | null;
+  const weekly = d?.weekly;
+  const recentJournals = d?.recentJournals ?? [];
 
   return (
     <ScrollView
@@ -75,7 +122,7 @@ export default function WellnessHubScreen(): JSX.Element {
             النوع: <Text style={{ fontWeight: '700' }}>{d.skin.skinType}</Text>
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 6 }}>
-            {((d.skin.concerns as string[]) || []).map((c: string, i: number) => (
+            {(d.skin.concerns ?? []).map((c, i) => (
               <View
                 key={i}
                 style={{
@@ -92,31 +139,31 @@ export default function WellnessHubScreen(): JSX.Element {
         </View>
       )}
 
-      {d?.weekly?.checkinCount > 0 && (
+      {(weekly?.checkinCount ?? 0) > 0 && (
         <View style={s.card}>
           <Text style={s.st}> ملخص الأسبوع</Text>
           <View style={{ marginTop: 8 }}>
             <Text style={{ fontSize: 12, color: '#6b7280' }}>
-              متوسط المزاج: {d.weekly.avgMood}/5
+              متوسط المزاج: {weekly?.avgMood ?? 0}/5
             </Text>
             <View style={s.bar}>
               <View
                 style={[
                   s.barFill,
-                  { width: `${(d.weekly.avgMood / 5) * 100}%`, backgroundColor: '#f59e0b' },
+                  { width: `${((weekly?.avgMood ?? 0) / 5) * 100}%`, backgroundColor: '#f59e0b' },
                 ]}
               />
             </View>
           </View>
           <View style={{ marginTop: 8 }}>
             <Text style={{ fontSize: 12, color: '#6b7280' }}>
-              متوسط الطاقة: {d.weekly.avgEnergy}/10
+              متوسط الطاقة: {weekly?.avgEnergy ?? 0}/10
             </Text>
             <View style={s.bar}>
               <View
                 style={[
                   s.barFill,
-                  { width: `${(d.weekly.avgEnergy / 10) * 100}%`, backgroundColor: '#3b82f6' },
+                  { width: `${((weekly?.avgEnergy ?? 0) / 10) * 100}%`, backgroundColor: '#3b82f6' },
                 ]}
               />
             </View>
@@ -124,17 +171,17 @@ export default function WellnessHubScreen(): JSX.Element {
         </View>
       )}
 
-      {(d?.recentJournals as any[])?.length > 0 && (
+      {recentJournals.length > 0 && (
         <View style={s.card}>
           <Text style={s.st}> آخر اليوميات</Text>
-          {(d.recentJournals as any[]).map((j, i) => (
+          {recentJournals.map((j, i) => (
             <View
               key={j.id ?? i}
               style={{ borderBottomWidth: 1, borderBottomColor: '#f3f4f6', paddingVertical: 8 }}
             >
               <Text style={{ fontSize: 13, color: '#374151' }}>{j.content?.slice(0, 120)}</Text>
               <Text style={{ fontSize: 11, color: '#9ca3af', marginTop: 2 }}>
-                {new Date(j.date).toLocaleDateString('ar-SA')}
+                {j.date ? new Date(j.date).toLocaleDateString('ar-SA') : ''}
               </Text>
             </View>
           ))}

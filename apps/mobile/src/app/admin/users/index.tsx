@@ -4,16 +4,25 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface AdminUserItem {
+  name?: string;
+  email?: string;
+  role?: string;
+}
+
+interface AdminUsersResponse {
+  items?: AdminUserItem[];
+}
+
 export default function AdminUsersScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<AdminUserItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().users.listAll.query({}) as any)
-      .then((d: any) => {
+    typedTrpc().users.listAll.query({}).then((d: AdminUsersResponse) => {
         setData(d?.items || []);
         setLoading(false);
         setRefreshing(false);
@@ -47,10 +56,10 @@ export default function AdminUsersScreen(): JSX.Element {
         <View key={i} style={styles.card}>
           <Text style={styles.avatar}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{u.name as string}</Text>
-            <Text style={styles.email}>{u.email as string}</Text>
+            <Text style={styles.name}>{u.name}</Text>
+            <Text style={styles.email}>{u.email}</Text>
           </View>
-          <Text style={styles.role}>{u.role as string}</Text>
+          <Text style={styles.role}>{u.role}</Text>
         </View>
       ))}
     </ScrollView>

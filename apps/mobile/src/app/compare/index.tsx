@@ -4,16 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface CompareService {
+  id: number;
+  emoji?: string;
+  nameAr?: string;
+  price?: number;
+  duration?: string;
+}
+
 export default function CompareScreen(): JSX.Element {
-  const [services, setServices] = useState<any[]>([]);
+  const [services, setServices] = useState<CompareService[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<number[]>([]);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().compare.services.query() as any)
-      .then((d: any) => {
+    typedTrpc().compare.services.query().then((d: CompareService[]) => {
         setServices(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -54,9 +61,9 @@ export default function CompareScreen(): JSX.Element {
               onPress={() => toggle(s.id)}
               style={[styles.ch, isSel && styles.cha]}
             >
-              <Text style={styles.ce}>{(s.emoji as string) ?? '‍️'}</Text>
-              <Text style={[styles.cn, isSel && styles.cna]}>{s.nameAr as string}</Text>
-              <Text style={styles.cp}>{(s.price as number)?.toLocaleString()} ر.س</Text>
+              <Text style={styles.ce}>{s.emoji ?? '‍️'}</Text>
+              <Text style={[styles.cn, isSel && styles.cna]}>{s.nameAr}</Text>
+              <Text style={styles.cp}>{s.price?.toLocaleString()} ر.س</Text>
             </TouchableOpacity>
           );
         })}
@@ -66,14 +73,14 @@ export default function CompareScreen(): JSX.Element {
           <Text style={styles.ttl}> المقارنة</Text>
           {ci.map((s) => (
             <View key={s.id} style={styles.tc}>
-              <Text style={styles.tcn}>{s.nameAr as string}</Text>
+              <Text style={styles.tcn}>{s.nameAr}</Text>
               <View style={styles.tr}>
                 <Text style={styles.tl}></Text>
-                <Text style={styles.tv}>{(s.price as number)?.toLocaleString()} ر.س</Text>
+                <Text style={styles.tv}>{s.price?.toLocaleString()} ر.س</Text>
               </View>
               <View style={styles.tr}>
                 <Text style={styles.tl}>️</Text>
-                <Text style={styles.tv}>{s.duration as string}</Text>
+                <Text style={styles.tv}>{s.duration}</Text>
               </View>
             </View>
           ))}

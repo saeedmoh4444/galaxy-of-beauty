@@ -4,16 +4,21 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface DisputeItem {
+  status?: string;
+  reason?: string;
+  createdAt?: string;
+}
+
 export default function AdminDisputesScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<DisputeItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().disputes.list.query({}) as any)
-      .then((d: any) => {
+    typedTrpc().disputes.list.query({}).then((d: DisputeItem[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -45,11 +50,11 @@ export default function AdminDisputesScreen(): JSX.Element {
       <Text style={styles.t}>️ النزاعات</Text>
       {data.map((d, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.status}>{d.status as string}</Text>
+          <Text style={styles.status}>{d.status}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.reason}>{d.reason as string}</Text>
+            <Text style={styles.reason}>{d.reason}</Text>
             <Text style={styles.date}>
-              {new Date(d.createdAt as string).toLocaleDateString('ar-SA')}
+              {new Date(d.createdAt ?? '').toLocaleDateString('ar-SA')}
             </Text>
           </View>
         </View>

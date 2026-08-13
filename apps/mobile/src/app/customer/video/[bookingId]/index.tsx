@@ -5,18 +5,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface VideoSession {
+  roomId?: string;
+  status?: string;
+}
+
 export default function VideoBookingScreen(): JSX.Element {
   const { bookingId } = useLocalSearchParams<{ bookingId: string }>();
   const router = useRouter();
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<VideoSession | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback(
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      (typedTrpc().video.getSession.query({ bookingId: parseInt(bookingId, 10) }) as any)
-        .then((d: any) => {
+      typedTrpc()
+        .video.getSession.query({ bookingId: parseInt(bookingId, 10) })
+        .then((d: VideoSession) => {
           setData(d);
           setLoading(false);
           setRefreshing(false);
@@ -52,8 +58,8 @@ export default function VideoBookingScreen(): JSX.Element {
     >
       <Text style={styles.t}> جلسة فيديو</Text>
       <View style={styles.card}>
-        <Text style={styles.code}>{(data.roomId as string) ?? '—'}</Text>
-        <Text style={styles.stat}>{data.status as string}</Text>
+        <Text style={styles.code}>{data.roomId ?? '—'}</Text>
+        <Text style={styles.stat}>{data.status ?? ''}</Text>
       </View>
       <TouchableOpacity
         onPress={() => router.push(`/customer/video/${bookingId}/room` as never)}

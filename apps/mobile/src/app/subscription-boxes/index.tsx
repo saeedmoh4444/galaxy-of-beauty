@@ -4,15 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface SubscriptionBox {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  descAr?: string;
+  itemCount?: number;
+  price?: number;
+}
+
 export default function SubscriptionBoxesScreen(): JSX.Element {
-  const [boxes, setBoxes] = useState<any[]>([]);
+  const [boxes, setBoxes] = useState<SubscriptionBox[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().subscriptionBoxes.list.query() as any)
-      .then((d: any) => {
+    typedTrpc().subscriptionBoxes.list.query().then((d: SubscriptionBox[]) => {
         setBoxes(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -41,14 +49,14 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
       <Text style={styles.t}> الصناديق الشهرية</Text>
       {boxes.map((b) => (
         <View key={b.id} style={styles.card}>
-          <Text style={styles.be}>{(b.emoji as string) ?? ''}</Text>
+          <Text style={styles.be}>{b.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.bn}>{b.nameAr as string}</Text>
-            <Text style={styles.bd}>{(b.descAr as string)?.substring(0, 80)}</Text>
-            <Text style={styles.bi}> {b.itemCount as number} منتجات</Text>
+            <Text style={styles.bn}>{b.nameAr}</Text>
+            <Text style={styles.bd}>{b.descAr?.substring(0, 80)}</Text>
+            <Text style={styles.bi}> {b.itemCount} منتجات</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
-            <Text style={styles.bp}>{(b.price as number)?.toLocaleString()} ر.س</Text>
+            <Text style={styles.bp}>{b.price?.toLocaleString()} ر.س</Text>
             <Text style={styles.bper}>/شهرياً</Text>
             <TouchableOpacity style={styles.sb}>
               <Text style={styles.sbt}>اشتراك</Text>

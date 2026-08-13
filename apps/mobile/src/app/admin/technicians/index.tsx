@@ -4,16 +4,21 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface AdminTechnicianItem {
+  name?: string;
+  rating?: number;
+  city?: string;
+}
+
 export default function AdminTechniciansScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<AdminTechnicianItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().technicians.list.query({}) as any)
-      .then((d: any) => {
+    typedTrpc().technicians.list.query({}).then((d: AdminTechnicianItem[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -47,9 +52,9 @@ export default function AdminTechniciansScreen(): JSX.Element {
         <View key={i} style={styles.card}>
           <Text style={styles.avatar}>‍</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{t.name as string}</Text>
+            <Text style={styles.name}>{t.name}</Text>
             <Text style={styles.meta}>
-               {(t.rating as number) ?? 0} · {t.city as string}
+               {t.rating ?? 0} · {t.city}
             </Text>
           </View>
         </View>

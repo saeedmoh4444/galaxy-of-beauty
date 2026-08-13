@@ -4,16 +4,28 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface AdminService {
+  id?: number;
+  emoji?: string;
+  titleJson?: { ar?: string };
+  basePrice?: number;
+}
+
+interface ServicesListResponse {
+  items?: AdminService[];
+}
+
 export default function AdminServicesScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<AdminService[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().services.list.query({}) as any)
-      .then((d: any) => {
+    typedTrpc()
+      .services.list.query({})
+      .then((d: ServicesListResponse) => {
         setData(d?.items || []);
         setLoading(false);
         setRefreshing(false);
@@ -45,10 +57,10 @@ export default function AdminServicesScreen(): JSX.Element {
       <Text style={styles.t}>‍️ الخدمات</Text>
       {data.map((s, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(s.emoji as string) ?? '‍️'}</Text>
+          <Text style={styles.emoji}>{s.emoji ?? '‍️'}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{(s.titleJson as any)?.ar as string}</Text>
-            <Text style={styles.price}>{(s.basePrice as number)?.toLocaleString()} ر.س</Text>
+            <Text style={styles.name}>{s.titleJson?.ar ?? ''}</Text>
+            <Text style={styles.price}>{(s.basePrice ?? 0).toLocaleString()} ر.س</Text>
           </View>
         </View>
       ))}

@@ -10,10 +10,21 @@ const COLORS = {
   success: '#10b981',
 };
 
+interface ReferralCodeData {
+  referralCode?: string;
+}
+
+interface ReferralStats {
+  totalReferrals?: number;
+  totalEarnings?: number;
+}
+
 export default function ReferralsScreen(): JSX.Element {
   const code = trpc.referrals.getMyCode.useQuery();
   const stats = typedTrpc().referrals?.getStats?.useQuery?.() ?? { data: null };
   const kindness = typedTrpc().kindnessPoints?.getStatus?.useQuery?.();
+  const codeData = code.data as ReferralCodeData | null;
+  const statsData = stats.data as ReferralStats | null;
 
   return (
     <ScreenState
@@ -26,7 +37,7 @@ export default function ReferralsScreen(): JSX.Element {
       <Text style={styles.title}> الإحالات</Text>
       <View style={styles.codeCard}>
         <Text style={styles.codeLabel}>كود الإحالة الخاص بكِ</Text>
-        <Text style={styles.codeValue}>{(code.data as any)?.referralCode ?? '———'}</Text>
+        <Text style={styles.codeValue}>{codeData?.referralCode ?? '———'}</Text>
         <TouchableOpacity style={styles.copyBtn} onPress={() => {}}>
           <Text style={styles.copyText}> نسخ الكود</Text>
         </TouchableOpacity>
@@ -34,12 +45,12 @@ export default function ReferralsScreen(): JSX.Element {
       {stats.data && (
         <View style={styles.statsRow}>
           <View style={styles.statCard}>
-            <Text style={styles.statNum}>{String((stats.data as any)?.totalReferrals ?? 0)}</Text>
+            <Text style={styles.statNum}>{String(statsData?.totalReferrals ?? 0)}</Text>
             <Text style={styles.statLabel}>إحالات</Text>
           </View>
           <View style={styles.statCard}>
             <Text style={styles.statNum}>
-              {String((stats.data as any)?.totalEarnings ?? 0)} ر.س
+              {String(statsData?.totalEarnings ?? 0)} ر.س
             </Text>
             <Text style={styles.statLabel}>مكافآت</Text>
           </View>

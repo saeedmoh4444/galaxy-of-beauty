@@ -4,16 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface PunchCardStatus {
+  punches?: number;
+  total?: number;
+}
+
 export default function LoyaltyPunchCardScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<PunchCardStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().loyaltyPunchCard.status.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .loyaltyPunchCard.status.query()
+      .then((d: PunchCardStatus) => {
         setData(d);
         setLoading(false);
         setRefreshing(false);
@@ -30,8 +36,8 @@ export default function LoyaltyPunchCardScreen(): JSX.Element {
 
   if (loading) return <SkeletonList count={3} />;
 
-  const punches = (data?.punches as number) ?? 0;
-  const total = (data?.total as number) ?? 10;
+  const punches = data?.punches ?? 0;
+  const total = data?.total ?? 10;
 
   return (
     <ScrollView

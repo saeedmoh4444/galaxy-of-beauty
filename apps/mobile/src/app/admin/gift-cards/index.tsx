@@ -5,16 +5,25 @@ import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface GiftCardItem {
+  code?: string;
+  amount?: number;
+  status?: string;
+}
+
+interface GiftCardListResponse {
+  items?: GiftCardItem[];
+}
+
 export default function AdminGiftCardsScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<GiftCardItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().giftCards.listAll.query({ page: 1, limit: BULK_PAGE_SIZE }) as any)
-      .then((d: any) => {
+    typedTrpc().giftCards.listAll.query({ page: 1, limit: BULK_PAGE_SIZE }).then((d: GiftCardListResponse) => {
         setData(d?.items || []);
         setLoading(false);
         setRefreshing(false);
@@ -47,8 +56,8 @@ export default function AdminGiftCardsScreen(): JSX.Element {
       {data.map((c, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.code}>{c.code as string}</Text>
-            <Text style={styles.meta}>{(c.amount as number)?.toLocaleString()} ر.س</Text>
+            <Text style={styles.code}>{c.code}</Text>
+            <Text style={styles.meta}>{c.amount?.toLocaleString()} ر.س</Text>
           </View>
           <View style={[styles.badge, c.status === 'ACTIVE' ? styles.active : styles.used]}>
             <Text style={styles.badgeText}>{c.status === 'ACTIVE' ? 'نشطة' : 'مستخدمة'}</Text>

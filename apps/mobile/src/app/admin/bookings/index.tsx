@@ -5,16 +5,25 @@ import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface BookingItem {
+  bookingCode?: string;
+  startAt?: string;
+  status?: string;
+}
+
+interface BookingListResponse {
+  bookings?: BookingItem[];
+}
+
 export default function AdminBookingsScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<BookingItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().bookings.list.query({ page: 1, limit: BULK_PAGE_SIZE }) as any)
-      .then((d: any) => {
+    typedTrpc().bookings.list.query({ page: 1, limit: BULK_PAGE_SIZE }).then((d: BookingListResponse) => {
         setData(d?.bookings || []);
         setLoading(false);
         setRefreshing(false);
@@ -47,12 +56,12 @@ export default function AdminBookingsScreen(): JSX.Element {
       {data.map((b, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.code}>{b.bookingCode as string}</Text>
+            <Text style={styles.code}>{b.bookingCode}</Text>
             <Text style={styles.date}>
-              {new Date(b.startAt as string).toLocaleDateString('ar-SA')}
+              {new Date(b.startAt ?? '').toLocaleDateString('ar-SA')}
             </Text>
           </View>
-          <Text style={styles.status}>{b.status as string}</Text>
+          <Text style={styles.status}>{b.status}</Text>
         </View>
       ))}
     </ScrollView>

@@ -4,16 +4,21 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface ZatcaInvoiceItem {
+  invoiceNumber?: string;
+  totalAmount?: number;
+  createdAt?: string;
+}
+
 export default function AdminZatcaScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<ZatcaInvoiceItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().zatca.invoices.query({}) as any)
-      .then((d: any) => {
+    typedTrpc().zatca.invoices.query({}).then((d: ZatcaInvoiceItem[]) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -45,12 +50,12 @@ export default function AdminZatcaScreen(): JSX.Element {
       <Text style={styles.t}> الفوترة (ZATCA)</Text>
       {data.map((inv, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.invNum}>{inv.invoiceNumber as string}</Text>
+          <Text style={styles.invNum}>{inv.invoiceNumber}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.amount}>{(inv.totalAmount as number)?.toLocaleString()} ر.س</Text>
+            <Text style={styles.amount}>{inv.totalAmount?.toLocaleString()} ر.س</Text>
           </View>
           <Text style={styles.invDate}>
-            {new Date(inv.createdAt as string).toLocaleDateString('ar-SA')}
+            {new Date(inv.createdAt ?? '').toLocaleDateString('ar-SA')}
           </Text>
         </View>
       ))}

@@ -4,13 +4,20 @@ import { useState, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface StyleMatchResult {
+  styleEmoji?: string;
+  styleNameAr?: string;
+  descriptionAr?: string;
+}
+
 export default function StyleMatchScreen(): JSX.Element {
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<StyleMatchResult | null>(null);
   const [loading, setLoading] = useState(false);
   const match = useCallback(() => {
     setLoading(true);
-    (typedTrpc().styleMatch.analyze.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .styleMatch.analyze.query()
+      .then((d: StyleMatchResult) => {
         setResult(d);
         setLoading(false);
       })
@@ -30,9 +37,9 @@ export default function StyleMatchScreen(): JSX.Element {
         </View>
       ) : (
         <View style={styles.card}>
-          <Text style={styles.se}>{(result.styleEmoji as string) ?? ''}</Text>
-          <Text style={styles.sn}>{result.styleNameAr as string}</Text>
-          <Text style={styles.sd}>{result.descriptionAr as string}</Text>
+          <Text style={styles.se}>{result.styleEmoji ?? ''}</Text>
+          <Text style={styles.sn}>{result.styleNameAr ?? ''}</Text>
+          <Text style={styles.sd}>{result.descriptionAr ?? ''}</Text>
         </View>
       )}
     </ScrollView>

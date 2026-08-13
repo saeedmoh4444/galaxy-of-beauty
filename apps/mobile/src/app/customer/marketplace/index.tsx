@@ -14,15 +14,30 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface MarketProduct {
+  id?: number;
+  nameJson?: { ar?: string };
+  brand?: string;
+  price?: number;
+}
+
+interface MarketProductsResponse {
+  items?: MarketProduct[];
+}
+
+interface CartItem {
+  id?: number;
+}
+
 export default function MarketplaceScreen(): JSX.Element {
   const [search, setSearch] = useState('');
   const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
     typedTrpc().marketplace.products.query({ search: search || undefined, page: 1, limit: 24 }),
   );
   const { data: cart } = useQuery(() => typedTrpc().marketplace.cart.query());
-  const productItems = (data as any)?.items;
-  const products: any[] = Array.isArray(productItems) ? productItems : [];
-  const cartCount = ((cart ?? []) as any[]).length;
+  const productItems = (data as MarketProductsResponse | null)?.items;
+  const products: MarketProduct[] = Array.isArray(productItems) ? productItems : [];
+  const cartCount = ((cart ?? []) as CartItem[]).length;
 
   const handleAddToCart = async (pid: number) => {
     try {
@@ -82,7 +97,7 @@ export default function MarketplaceScreen(): JSX.Element {
 
       <View style={s.grid}>
         {products.map((p) => (
-          <TouchableOpacity key={p.id} style={s.prod} onPress={() => handleAddToCart(p.id)}>
+          <TouchableOpacity key={p.id} style={s.prod} onPress={() => handleAddToCart(p.id ?? 0)}>
             <Text style={{ fontSize: 36, textAlign: 'center' }}></Text>
             <Text
               style={{ fontWeight: '600', fontSize: 13, textAlign: 'center', marginTop: 6 }}

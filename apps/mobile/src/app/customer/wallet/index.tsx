@@ -21,10 +21,16 @@ interface TransactionItem {
   type?: string;
 }
 
+interface WalletBalanceData {
+  balance?: number;
+  bonusBalance?: number;
+}
+
 export default function WalletScreen(): JSX.Element {
   const router = useRouter();
   const balance = trpc.wallet.getBalance.useQuery();
   const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 20 });
+  const balanceData = balance.data as unknown as WalletBalanceData | null;
 
   return (
     <ScreenState
@@ -38,11 +44,11 @@ export default function WalletScreen(): JSX.Element {
       <View style={styles.balanceCard}>
         <Text style={styles.balanceLabel}>الرصيد المتاح</Text>
         <Text style={styles.balanceAmount}>
-          {formatCurrency(Number((balance.data as any)?.balance ?? 0))}
+          {formatCurrency(Number(balanceData?.balance ?? 0))}
         </Text>
-        {(balance.data as any)?.bonusBalance > 0 ? (
+        {(balanceData?.bonusBalance ?? 0) > 0 ? (
           <Text style={styles.bonusText}>
-            + {formatCurrency(Number((balance.data as any)?.bonusBalance))} مكافآت
+            + {formatCurrency(Number(balanceData?.bonusBalance ?? 0))} مكافآت
           </Text>
         ) : null}
         <TouchableOpacity

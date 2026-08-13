@@ -14,6 +14,21 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface CorporatePlan {
+  id?: string;
+  emoji?: string;
+  nameAr?: string;
+  price?: number;
+  employees?: number;
+  services?: string[];
+}
+
+interface CorporateEnquiry {
+  companyName?: string;
+  planId?: string;
+  createdAt?: string;
+}
+
 export default function CorporateWellnessScreen(): JSX.Element {
   const {
     data: plans,
@@ -48,7 +63,8 @@ export default function CorporateWellnessScreen(): JSX.Element {
   if (loading) return <SkeletonList count={3} />;
   if (error) return <ErrorAlert message="فشل تحميل الباقات" onRetry={refetch} />;
 
-  const items = (plans ?? []) as any[];
+  const items = (plans ?? []) as CorporatePlan[];
+  const enquiryItems = ((enquiries as CorporateEnquiry[] | undefined) ?? []);
 
   return (
     <ScrollView
@@ -81,7 +97,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
       {items.map((p) => (
         <TouchableOpacity
           key={p.id}
-          onPress={() => setPlanId(p.id)}
+          onPress={() => setPlanId(p.id ?? '')}
           style={[
             s.card,
             planId === p.id && { borderColor: '#db2777', backgroundColor: '#fdf2f8' },
@@ -90,10 +106,10 @@ export default function CorporateWellnessScreen(): JSX.Element {
           <Text style={{ fontSize: 40 }}>{p.emoji}</Text>
           <View style={{ flex: 1 }}>
             <Text style={s.cTitle}>{p.nameAr}</Text>
-            <Text style={s.cPrice}>{(p.price as number).toLocaleString()} ر.س / سنوياً</Text>
+            <Text style={s.cPrice}>{(p.price ?? 0).toLocaleString()} ر.س / سنوياً</Text>
             <Text style={s.cSub}> حتى {p.employees} موظفة</Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 6 }}>
-              {(p.services as string[]).map((svc, i) => (
+              {(p.services ?? []).map((svc, i) => (
                 <Text key={i} style={{ fontSize: 11, color: '#059669' }}>
                    {svc}
                 </Text>
@@ -137,19 +153,19 @@ export default function CorporateWellnessScreen(): JSX.Element {
         </View>
       )}
 
-      {(enquiries as any[])?.length > 0 && (
+      {enquiryItems.length > 0 && (
         <View style={{ marginTop: 20 }}>
           <Text style={{ fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 }}>
              طلباتي السابقة
           </Text>
-          {(enquiries as any[]).map((e, i) => (
+          {enquiryItems.map((e, i) => (
             <View
               key={i}
               style={{ backgroundColor: '#fff', borderRadius: 10, padding: 12, marginBottom: 6 }}
             >
               <Text style={{ fontWeight: '600', fontSize: 14 }}>{e.companyName}</Text>
               <Text style={{ fontSize: 12, color: '#6b7280' }}>
-                {e.planId} · {new Date(e.createdAt).toLocaleDateString('ar-SA')}
+                {e.planId} · {new Date(e.createdAt ?? '').toLocaleDateString('ar-SA')}
               </Text>
             </View>
           ))}

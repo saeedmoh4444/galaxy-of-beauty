@@ -4,15 +4,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface WishlistItem {
+  id?: number;
+  emoji?: string;
+  serviceName?: string;
+  lowestPrice?: number;
+  currentPrice?: number;
+}
+
 export default function ServiceWishlistScreen(): JSX.Element {
-  const [items, setItems] = useState<any[]>([]);
+  const [items, setItems] = useState<WishlistItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().serviceWishlist.myWishlist.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .serviceWishlist.myWishlist.query()
+      .then((d: WishlistItem[]) => {
         setItems(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -26,7 +35,9 @@ export default function ServiceWishlistScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const remove = (id: number) => {
-    (typedTrpc().serviceWishlist.remove.mutate({ id }) as any).then(() => fetch());
+    typedTrpc()
+      .serviceWishlist.remove.mutate({ id })
+      .then(() => fetch());
   };
   if (loading) return <SkeletonList count={4} />;
   return (
@@ -44,16 +55,16 @@ export default function ServiceWishlistScreen(): JSX.Element {
       <Text style={styles.t}> قائمة الخدمات</Text>
       {items.map((i) => (
         <View key={i.id} style={styles.card}>
-          <Text style={styles.em}>{i.emoji as string}</Text>
+          <Text style={styles.em}>{i.emoji}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nm}>{i.serviceName as string}</Text>
+            <Text style={styles.nm}>{i.serviceName}</Text>
             <Text style={styles.lp}>
-              أقل سعر: {(i.lowestPrice as number)?.toLocaleString()} ر.س
+              أقل سعر: {i.lowestPrice?.toLocaleString()} ر.س
             </Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
-            <Text style={styles.cp}>{(i.currentPrice as number)?.toLocaleString()} ر.س</Text>
-            <TouchableOpacity onPress={() => remove(i.id)}>
+            <Text style={styles.cp}>{i.currentPrice?.toLocaleString()} ر.س</Text>
+            <TouchableOpacity onPress={() => remove(i.id ?? 0)}>
               <Text style={styles.del}>️</Text>
             </TouchableOpacity>
           </View>

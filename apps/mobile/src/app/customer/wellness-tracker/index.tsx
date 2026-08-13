@@ -4,15 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface TodayHealthData {
+  water?: number;
+  sleep?: number;
+  steps?: number;
+}
+
 export default function WellnessTrackerScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<TodayHealthData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().wellnessTracker.today.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .wellnessTracker.today.query()
+      .then((d: TodayHealthData) => {
         setData(d);
         setLoading(false);
         setRefreshing(false);
@@ -26,7 +33,7 @@ export default function WellnessTrackerScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   if (loading) return <SkeletonList count={3} />;
-  const d = data ?? {};
+  const d: TodayHealthData = data ?? {};
   return (
     <ScrollView
       style={styles.c}
@@ -43,17 +50,17 @@ export default function WellnessTrackerScreen(): JSX.Element {
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
-          <Text style={styles.kpiVal}>{(d.water as number) ?? 0}</Text>
+          <Text style={styles.kpiVal}>{d.water ?? 0}</Text>
           <Text style={styles.kpiLabel}>أكواب</Text>
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
-          <Text style={[styles.kpiVal, { color: '#2563eb' }]}>{(d.sleep as number) ?? 0}h</Text>
+          <Text style={[styles.kpiVal, { color: '#2563eb' }]}>{d.sleep ?? 0}h</Text>
           <Text style={styles.kpiLabel}>نوم</Text>
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
-          <Text style={[styles.kpiVal, { color: '#059669' }]}>{(d.steps as number) ?? 0}</Text>
+          <Text style={[styles.kpiVal, { color: '#059669' }]}>{d.steps ?? 0}</Text>
           <Text style={styles.kpiLabel}>خطوة</Text>
         </View>
       </View>

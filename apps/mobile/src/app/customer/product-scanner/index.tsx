@@ -11,6 +11,11 @@ const COLORS = {
   success: '#10b981',
 };
 
+interface ScannedProduct {
+  nameJson?: { ar?: string; en?: string };
+  name?: string;
+}
+
 export default function ProductScannerScreen(): JSX.Element {
   const [barcode, setBarcode] = useState('');
   const [scanned, setScanned] = useState(false);
@@ -18,6 +23,7 @@ export default function ProductScannerScreen(): JSX.Element {
     { barcode },
     { enabled: scanned && barcode.length > 0 },
   ) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const product = result.data as ScannedProduct | null;
 
   return (
     <ScreenState
@@ -36,10 +42,10 @@ export default function ProductScannerScreen(): JSX.Element {
       >
         <Text style={styles.scanText}> مسح الباركود</Text>
       </TouchableOpacity>
-      {(result.data as any) ? (
+      {product ? (
         <View style={styles.result}>
           <Text style={styles.productName}>
-            {(result.data as any)?.nameJson?.ar ?? (result.data as any)?.name ?? ''}
+            {product?.nameJson?.ar ?? product?.name ?? ''}
           </Text>
         </View>
       ) : null}

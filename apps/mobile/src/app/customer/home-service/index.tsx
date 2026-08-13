@@ -4,15 +4,21 @@ import { useState, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface HomeServiceEstimate {
+  totalEstimate?: number;
+  estimatedDuration?: string;
+}
+
 export default function HomeServiceScreen(): JSX.Element {
-  const [estimate, setEstimate] = useState<any>(null);
+  const [estimate, setEstimate] = useState<HomeServiceEstimate | null>(null);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().homeService.estimate.query({ city: 'الرياض' /* TODO */ }) as any)
-      .then((d: any) => {
+    typedTrpc()
+      .homeService.estimate.query({ city: 'الرياض' /* TODO */ })
+      .then((d: HomeServiceEstimate) => {
         setEstimate(d);
         setLoading(false);
         setRefreshing(false);
@@ -41,8 +47,8 @@ export default function HomeServiceScreen(): JSX.Element {
       </TouchableOpacity>
       {estimate && (
         <View style={styles.card}>
-          <Text style={styles.ep}>{(estimate.totalEstimate as number)?.toLocaleString()} ر.س</Text>
-          <Text style={styles.em}>️ {estimate.estimatedDuration as string}</Text>
+          <Text style={styles.ep}>{(estimate.totalEstimate ?? 0).toLocaleString()} ر.س</Text>
+          <Text style={styles.em}>️ {estimate.estimatedDuration ?? ''}</Text>
         </View>
       )}
     </ScrollView>
