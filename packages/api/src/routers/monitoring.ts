@@ -104,7 +104,7 @@ export const monitoringRouter = router({
 
     // ── Payment success rate (real from DB) ──
     let paymentSuccessRate = 100;
-    let paymentProcessingTime = 'N/A';
+    const paymentProcessingTime = 'N/A';
     try {
       const [paymentsTotal, paymentsSuccessful] = await Promise.all([
         prisma.payment.count(),

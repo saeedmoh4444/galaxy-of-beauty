@@ -6,6 +6,7 @@ import { notFound, forbidden } from '../lib/errors';
 import { protectedProcedure, customerProcedure, technicianProcedure, router } from '../trpc';
 import { createBookingSchema, bookingQuerySchema } from '../validators/booking';
 import { emitToUser, emitToTechnician, emitToAdmin } from '../socket/index';
+import type { CashbackJob, LoyaltyPointsJob, NotificationJob, CalendarSyncJob } from '../workers';
 import {
   getWalletQueue,
   getLoyaltyQueue,
@@ -217,7 +218,7 @@ export const bookingRouter = router({
           bookingId: booking.id,
           amount: cashback,
           idempotencyKey: idemKey ? `${idemKey}_cashback` : undefined,
-        } as import('../workers').CashbackJob),
+        } as CashbackJob),
 
         // Loyalty points
         getLoyaltyQueue()?.add('points.earn', {
@@ -226,7 +227,7 @@ export const bookingRouter = router({
           points,
           reason: 'booking',
           idempotencyKey: idemKey ? `${idemKey}_loyalty` : undefined,
-        } as import('../workers').LoyaltyPointsJob),
+        } as LoyaltyPointsJob),
 
         // Notification to technician
         getNotificationQueue()?.add('booking.requested', {
@@ -238,7 +239,7 @@ export const bookingRouter = router({
           bodyEn: `New booking request from ${ctx.user.email}`,
           channels: ['in_app', 'push'],
           idempotencyKey: idemKey ? `${idemKey}_notif_tech` : undefined,
-        } as import('../workers').NotificationJob),
+        } as NotificationJob),
 
         // Notification to customer
         getNotificationQueue()?.add('booking.confirmed', {
@@ -250,7 +251,7 @@ export const bookingRouter = router({
           bodyEn: 'Your request has been sent. We will notify you upon acceptance.',
           channels: ['in_app'],
           idempotencyKey: idemKey ? `${idemKey}_notif_cust` : undefined,
-        } as import('../workers').NotificationJob),
+        } as NotificationJob),
 
         // Calendar sync (if technician has Google Calendar)
         getIntegrationQueue()?.add('calendar.create', {
@@ -261,7 +262,7 @@ export const bookingRouter = router({
           endAt: input.endAt,
           summary: `Booking #${booking.bookingCode}`,
           idempotencyKey: idemKey ? `${idemKey}_calendar` : undefined,
-        } as import('../workers').CalendarSyncJob),
+        } as CalendarSyncJob),
       ]);
     } catch {
       // Fire-and-forget — enqueue failures should never fail the booking creation

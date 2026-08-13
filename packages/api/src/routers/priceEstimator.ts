@@ -16,7 +16,7 @@ export const priceEstimatorRouter = router({
       const service = await prisma.service.findUnique({ where: { id: input.serviceId } });
       if (!service) throw new Error('الخدمة غير موجودة');
 
-      let basePrice = Number(service.basePrice);
+      const basePrice = Number(service.basePrice);
       let variantDelta = 0;
       let variantName = '';
 

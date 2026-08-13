@@ -1,4 +1,5 @@
-import { Server, Socket } from 'socket.io';
+import type { Socket } from 'socket.io';
+import { Server } from 'socket.io';
 import type { Server as HttpServer } from 'http';
 import { createAdapter } from '@socket.io/redis-adapter';
 import { z } from 'zod';

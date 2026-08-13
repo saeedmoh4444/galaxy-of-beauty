@@ -1,5 +1,6 @@
 import { TRPCError } from '@trpc/server';
-import { prisma, Prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
+import { prisma } from '@galaxy/db';
 import { MIN_WITHDRAWAL_BALANCE, WITHDRAWAL_FEE_RATE } from '@galaxy/shared';
 import { z } from 'zod';
 import { router, protectedProcedure, customerProcedure, technicianProcedure } from '../trpc';

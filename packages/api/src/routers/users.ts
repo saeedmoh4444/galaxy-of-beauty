@@ -159,7 +159,10 @@ export const userRouter = router({
       }
 
       // Strip sensitive authentication fields
-      const { passwordHash, twoFactorSecret, emailVerifyToken, ...safeData } = user;
+      const { passwordHash: _ph, twoFactorSecret: _tfs, emailVerifyToken: _evt, ...safeData } = user;
+      void _ph;
+      void _tfs;
+      void _evt;
 
       return {
         exportedAt: new Date().toISOString(),
