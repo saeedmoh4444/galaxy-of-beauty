@@ -4,15 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface DiaryEntry {
+  id?: number;
+  emoji?: string;
+  title?: string;
+  createdAt?: string;
+}
+
 export default function SkinDiaryScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<DiaryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().skinDiary.entries.query() as any)
-      .then((d: any) => {
+    (typedTrpc().skinDiary.entries.query() as Promise<DiaryEntry[]>)
+      .then((d) => {
         setData(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -41,11 +48,11 @@ export default function SkinDiaryScreen(): JSX.Element {
       <Text style={styles.t}> يوميات البشرة</Text>
       {data.map((e, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{(e.emoji as string) ?? ''}</Text>
+          <Text style={styles.emoji}>{e.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{e.title as string}</Text>
+            <Text style={styles.name}>{e.title ?? ''}</Text>
             <Text style={styles.date}>
-              {new Date(e.createdAt as string).toLocaleDateString('ar-SA')}
+              {e.createdAt ? new Date(e.createdAt).toLocaleDateString('ar-SA') : ''}
             </Text>
           </View>
         </View>
