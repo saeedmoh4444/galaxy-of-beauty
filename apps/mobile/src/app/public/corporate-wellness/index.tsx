@@ -4,16 +4,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface WellnessPlan {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  descAr?: string;
+}
+
 export default function CorporateWellnessScreen(): JSX.Element {
-  const [plans, setPlans] = useState<any[]>([]);
+  const [plans, setPlans] = useState<WellnessPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().corporateWellness.plans.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .corporateWellness.plans.query()
+      .then((d: WellnessPlan[]) => {
         setPlans(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -49,10 +57,10 @@ export default function CorporateWellnessScreen(): JSX.Element {
       ) : (
         plans.map((p, i) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.planEmoji}>{(p.emoji as string) ?? ''}</Text>
+            <Text style={styles.planEmoji}>{p.emoji ?? ''}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.planName}>{p.nameAr as string}</Text>
-              <Text style={styles.planDesc}>{p.descAr as string}</Text>
+              <Text style={styles.planName}>{p.nameAr}</Text>
+              <Text style={styles.planDesc}>{p.descAr}</Text>
             </View>
             <TouchableOpacity style={styles.inquireBtn}>
               <Text style={styles.inquireText}>استفسار</Text>

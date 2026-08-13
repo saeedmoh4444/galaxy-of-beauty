@@ -6,16 +6,26 @@ import { typedTrpc } from '@/lib/trpc-react';
 
 const BD: Record<number, number> = { 2: 10, 3: 15, 4: 20, 5: 25 };
 
+interface BundleService {
+  id: number;
+  emoji?: string;
+  nameJson?: { ar?: string; en?: string };
+  nameAr?: string;
+  slug?: string;
+  _count?: { services?: number };
+}
+
 export default function BundlesScreen(): JSX.Element {
-  const [services, setServices] = useState<any[]>([]);
+  const [services, setServices] = useState<BundleService[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().categories.list.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .categories.list.query()
+      .then((d: BundleService[]) => {
         setServices(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -52,7 +62,7 @@ export default function BundlesScreen(): JSX.Element {
       {count > 0 && (
         <View style={styles.db}>
           <Text style={styles.dt}>
-             خصم {discount}% على {count} خدمات!
+            خصم {discount}% على {count} خدمات!
           </Text>
         </View>
       )}
@@ -64,12 +74,10 @@ export default function BundlesScreen(): JSX.Element {
             onPress={() => toggle(s.id)}
             style={[styles.card, isSel && styles.ca]}
           >
-            <Text style={styles.se}>{(s.emoji as string) ?? '‍️'}</Text>
+            <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.sn}>
-                {((s.nameJson as any)?.ar as string) ?? (s.nameAr as string) ?? s.slug}
-              </Text>
-              <Text style={styles.sm}>{(s._count?.services ?? 0) as number} خدمات</Text>
+              <Text style={styles.sn}>{s.nameJson?.ar ?? s.nameAr ?? s.slug}</Text>
+              <Text style={styles.sm}>{s._count?.services ?? 0} خدمات</Text>
             </View>
             <View style={[styles.ch, isSel && styles.cha]}>
               <Text style={[styles.cht, isSel && styles.chta]}>{isSel ? '' : '+'}</Text>

@@ -4,6 +4,13 @@ import { trpc, typedTrpc } from '@/lib/trpc-react';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
+interface ExpoEvent {
+  id?: number;
+  nameJson?: { ar?: string; en?: string };
+  descriptionJson?: { ar?: string; en?: string };
+  startsAt?: string;
+}
+
 export default function BeautyExpoScreen(): JSX.Element {
   const expo = typedTrpc().beautyExpo?.list?.useQuery?.({}) ?? {
     data: null,
@@ -11,7 +18,7 @@ export default function BeautyExpoScreen(): JSX.Element {
     isError: false,
     refetch: () => {},
   };
-  const data = expo.data as unknown[] | undefined;
+  const data = expo.data as ExpoEvent[] | undefined;
 
   return (
     <ScreenState
@@ -23,12 +30,12 @@ export default function BeautyExpoScreen(): JSX.Element {
       onRetry={() => expo.refetch()}
     >
       <Text style={styles.title}> معرض التجميل</Text>
-      {(data as Record<string, unknown>[])?.map((e: Record<string, unknown>, i: number) => (
+      {data?.map((e, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.name}>{(e.nameJson as any)?.ar ?? ''}</Text>
-          <Text style={styles.desc}>{(e.descriptionJson as any)?.ar ?? ''}</Text>
+          <Text style={styles.name}>{e.nameJson?.ar ?? ''}</Text>
+          <Text style={styles.desc}>{e.descriptionJson?.ar ?? ''}</Text>
           <Text style={styles.date}>
-            {e.startsAt ? new Date(e.startsAt as string).toLocaleDateString('ar-SA') : ''}
+            {e.startsAt ? new Date(e.startsAt).toLocaleDateString('ar-SA') : ''}
           </Text>
         </View>
       ))}

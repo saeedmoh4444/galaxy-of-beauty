@@ -4,15 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface HeatmapData {
+  hours?: string[];
+  days?: string[];
+  grid?: number[][];
+}
+
 export default function BookingHeatmapScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<HeatmapData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().bookingHeatmap.data.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .bookingHeatmap.data.query()
+      .then((d: HeatmapData) => {
         setData(d);
         setLoading(false);
         setRefreshing(false);
@@ -26,10 +33,10 @@ export default function BookingHeatmapScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   if (loading) return <SkeletonList count={4} />;
-  const hours = (data?.hours ?? []) as string[];
-  const days = (data?.days ?? []) as string[];
-  const grid = (data?.grid ?? []) as number[][];
-  const maxVal = Math.max(1, ...(grid?.flat() ?? [1]));
+  const hours = data?.hours ?? [];
+  const days = data?.days ?? [];
+  const grid = data?.grid ?? [];
+  const maxVal = Math.max(1, ...(grid.flat() ?? [1]));
   return (
     <ScrollView
       style={styles.c}
@@ -51,21 +58,21 @@ export default function BookingHeatmapScreen(): JSX.Element {
                 <Text style={styles.lt}>-</Text>
               </View>,
             ].concat(
-              hours.map((h: string) => (
+              hours.map((h) => (
                 <View key={h} style={styles.hc}>
                   <Text style={styles.ht}>{h}</Text>
                 </View>
               )),
             )}
           </View>
-          {days.map((day: string, di: number) => (
+          {days.map((day, di) => (
             <View key={day} style={styles.rr}>
               {[
                 <View key="l" style={styles.lc}>
                   <Text style={styles.lt}>{day}</Text>
                 </View>,
               ].concat(
-                hours.map((_h: string, hi: number) => {
+                hours.map((_h, hi) => {
                   const val = grid?.[di]?.[hi] ?? 0;
                   const intensity = val / maxVal;
                   const bg =

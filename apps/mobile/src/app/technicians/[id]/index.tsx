@@ -5,17 +5,27 @@ import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface TechnicianDetail {
+  id?: number;
+  name?: string;
+  specialtyAr?: string;
+  specialty?: string;
+  rating?: number;
+  city?: string;
+}
+
 export default function TechnicianDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<TechnicianDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback(
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      (typedTrpc().technicians.getById.query({ id: parseInt(id, 10) }) as any)
-        .then((d: any) => {
+      typedTrpc()
+        .technicians.getById.query({ id: parseInt(id, 10) })
+        .then((d: TechnicianDetail) => {
           setData(d);
           setLoading(false);
           setRefreshing(false);
@@ -49,13 +59,11 @@ export default function TechnicianDetailScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>‍ {data.name as string}</Text>
+      <Text style={styles.t}>‍ {data.name}</Text>
       <View style={styles.card}>
-        <Text style={styles.spec}>
-          {(data.specialtyAr as string) ?? (data.specialty as string)}
-        </Text>
-        <Text style={styles.rating}> {(data.rating as number) ?? 0}</Text>
-        <Text style={styles.city}> {data.city as string}</Text>
+        <Text style={styles.spec}>{data.specialtyAr ?? data.specialty}</Text>
+        <Text style={styles.rating}> {data.rating ?? 0}</Text>
+        <Text style={styles.city}> {data.city}</Text>
       </View>
     </ScrollView>
   );

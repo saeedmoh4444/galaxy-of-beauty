@@ -11,6 +11,18 @@ const STEPS = [
   { key: 'final', emoji: '', title: 'اليوم الكبير', desc: 'يوم الزفاف' },
 ];
 
+interface ConciergeStep {
+  completed?: boolean;
+  date?: string;
+}
+
+interface BridalDashboard {
+  completionPercent?: number;
+  steps?: Record<string, ConciergeStep>;
+  weddingDate?: string;
+  daysUntil?: number;
+}
+
 export default function BridalConciergeScreen(): JSX.Element {
   const { data, loading, error, refreshing, refetch, refresh } = useQuery(() =>
     typedTrpc().bridalConcierge.dashboard.query(),
@@ -19,7 +31,7 @@ export default function BridalConciergeScreen(): JSX.Element {
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل كونسيرج العروس" onRetry={refetch} />;
 
-  const d = (data ?? {}) as any;
+  const d = (data as BridalDashboard | undefined) ?? {};
 
   return (
     <ScrollView
@@ -35,14 +47,12 @@ export default function BridalConciergeScreen(): JSX.Element {
         <Text style={styles.progressEmoji}></Text>
         <Text style={styles.progressTitle}>تقدم التحضيرات</Text>
         <View style={styles.progressBar}>
-          <View
-            style={[styles.progressFill, { width: `${(d.completionPercent as number) ?? 0}%` }]}
-          />
+          <View style={[styles.progressFill, { width: `${d.completionPercent ?? 0}%` }]} />
         </View>
-        <Text style={styles.progressPct}>{(d.completionPercent as number) ?? 0}%</Text>
+        <Text style={styles.progressPct}>{d.completionPercent ?? 0}%</Text>
       </View>
       {STEPS.map((step) => {
-        const stepData = d.steps?.[step.key] as any;
+        const stepData = d.steps?.[step.key];
         return (
           <View key={step.key} style={[styles.step, stepData?.completed && styles.stepDone]}>
             <Text style={styles.stepEmoji}>{step.emoji}</Text>
@@ -53,7 +63,7 @@ export default function BridalConciergeScreen(): JSX.Element {
               <Text style={styles.stepDesc}>{step.desc}</Text>
               {stepData?.date && (
                 <Text style={styles.stepDate}>
-                   {new Date(stepData.date as string).toLocaleDateString('ar-SA')}
+                  {new Date(stepData.date).toLocaleDateString('ar-SA')}
                 </Text>
               )}
             </View>
@@ -64,7 +74,7 @@ export default function BridalConciergeScreen(): JSX.Element {
       {d.weddingDate && (
         <View style={styles.countdown}>
           <Text style={styles.countdownEmoji}></Text>
-          <Text style={styles.countdownText}>الأيام المتبقية: {d.daysUntil as number}</Text>
+          <Text style={styles.countdownText}>الأيام المتبقية: {d.daysUntil}</Text>
         </View>
       )}
     </ScrollView>

@@ -5,6 +5,21 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface TrendingService {
+  id?: number;
+  titleJson?: { ar?: string; en?: string };
+  name?: string;
+  bookingCount?: number;
+  basePrice?: number;
+}
+
+interface SpotlightTech {
+  id?: number;
+  name?: string;
+  city?: string;
+  ratingAvg?: number;
+}
+
 export default function TrendingScreen(): JSX.Element {
   const {
     data: trending,
@@ -19,8 +34,8 @@ export default function TrendingScreen(): JSX.Element {
   if (loading) return <SkeletonList count={5} />;
   if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;
 
-  const trendingItems = (trending ?? []) as any[];
-  const spotlightItems = (spotlight ?? []) as any[];
+  const trendingItems = (trending as TrendingService[] | undefined) ?? [];
+  const spotlightItems = (spotlight as SpotlightTech[] | undefined) ?? [];
 
   return (
     <ScrollView
@@ -41,12 +56,10 @@ export default function TrendingScreen(): JSX.Element {
                 <Text style={styles.rankText}>#{i + 1}</Text>
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={styles.svcName}>
-                  {((s.titleJson as any)?.ar as string) ?? (s.name as string)}
-                </Text>
-                <Text style={styles.svcBookings}>{s.bookingCount as number} حجز</Text>
+                <Text style={styles.svcName}>{s.titleJson?.ar ?? s.name}</Text>
+                <Text style={styles.svcBookings}>{s.bookingCount} حجز</Text>
               </View>
-              <Text style={styles.svcPrice}>{(s.basePrice as number)?.toLocaleString()} ر.س</Text>
+              <Text style={styles.svcPrice}>{s.basePrice?.toLocaleString()} ر.س</Text>
             </View>
           ))}
         </>
@@ -60,9 +73,9 @@ export default function TrendingScreen(): JSX.Element {
                 {i === 0 ? '' : i === 1 ? '' : i === 2 ? '' : '‍'}
               </Text>
               <View style={{ flex: 1 }}>
-                <Text style={styles.techName}>{t.name as string}</Text>
+                <Text style={styles.techName}>{t.name}</Text>
                 <Text style={styles.techMeta}>
-                   {t.city as string} ·  {t.ratingAvg as number}
+                  {t.city} · {t.ratingAvg}
                 </Text>
               </View>
             </View>

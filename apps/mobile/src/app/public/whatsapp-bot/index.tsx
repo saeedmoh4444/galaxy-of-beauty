@@ -4,16 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface WhatsAppInfo {
+  connected?: boolean;
+  phoneNumber?: string;
+}
+
 export default function WhatsAppBotScreen(): JSX.Element {
-  const [_data, setData] = useState<any>(null);
+  const [_data, setData] = useState<WhatsAppInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().whatsappBot.info.query().catch(() => ({})) as any)
-      .then((d: any) => {
+    typedTrpc()
+      .whatsappBot.info.query()
+      .catch(() => ({}))
+      .then((d: WhatsAppInfo) => {
         setData(d || {});
         setLoading(false);
         setRefreshing(false);

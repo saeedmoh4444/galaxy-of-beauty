@@ -4,15 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface FaqItem {
+  id?: number;
+  questionAr?: string;
+  answerAr?: string;
+}
+
 export default function BeautyFaqScreen(): JSX.Element {
-  const [faqs, setFaqs] = useState<any[]>([]);
+  const [faqs, setFaqs] = useState<FaqItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().beautyFaq.list.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .beautyFaq.list.query()
+      .then((d: FaqItem[]) => {
         setFaqs(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -41,8 +48,8 @@ export default function BeautyFaqScreen(): JSX.Element {
       <Text style={styles.t}> الأسئلة الشائعة</Text>
       {faqs.map((f, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.fq}>{f.questionAr as string}</Text>
-          <Text style={styles.fa}>{f.answerAr as string}</Text>
+          <Text style={styles.fq}>{f.questionAr}</Text>
+          <Text style={styles.fa}>{f.answerAr}</Text>
         </View>
       ))}
     </ScrollView>

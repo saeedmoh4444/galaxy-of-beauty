@@ -4,15 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
+interface ApiDocsData {
+  title?: string;
+  version?: string;
+  endpoints?: number;
+}
+
 export default function ApiDocsScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<ApiDocsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().apiDocs.reference.query() as any)
-      .then((d: any) => {
+    typedTrpc()
+      .apiDocs.reference.query()
+      .then((d: ApiDocsData) => {
         setData(d);
         setLoading(false);
         setRefreshing(false);
@@ -42,9 +49,9 @@ export default function ApiDocsScreen(): JSX.Element {
       {data && (
         <View style={styles.card}>
           <Text style={styles.ttl}>
-            {data.title as string} v{data.version as string}
+            {data.title ?? ''} v{data.version ?? ''}
           </Text>
-          <Text style={styles.meta}>{data.endpoints as number} routers</Text>
+          <Text style={styles.meta}>{data.endpoints ?? 0} routers</Text>
         </View>
       )}
     </ScrollView>
