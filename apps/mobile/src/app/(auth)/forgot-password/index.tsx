@@ -26,7 +26,7 @@ export default function ForgotPasswordScreen() {
     setError('');
     setLoading(true);
     try {
-      await (trpc.auth.forgotPassword as any).mutate({ email });
+      await trpc.auth.forgotPassword.mutate({ email });
       setSent(true);
       setMsg('تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني');
     } catch (e: unknown) {
