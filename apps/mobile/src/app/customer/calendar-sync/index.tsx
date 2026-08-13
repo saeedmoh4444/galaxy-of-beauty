@@ -21,6 +21,7 @@ export default function CalendarSyncScreen(): JSX.Element {
   const [upcoming, setUpcoming] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState('');
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
@@ -43,9 +44,9 @@ export default function CalendarSyncScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const connect = () => {
-    (
-      typedTrpc().calendarSync.connect.mutate({ authCode: 'google-auth-code' /* TODO */ })
-    ).then(() => fetch());
+    // Google OAuth flow not wired on mobile yet — surface a clear message
+    // instead of silently failing with a fake auth code.
+    setError('مزامنة تقويم Google غير متوفرة في التطبيق حالياً');
   };
   const disconnect = () => {
     (typedTrpc().calendarSync.disconnect.mutate({})).then(() => fetch());
@@ -64,7 +65,8 @@ export default function CalendarSyncScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ مزامنة التقويم</Text>
+      <Text style={styles.t}> مزامنة التقويم</Text>
+      {error ? <Text style={styles.errText}>{error}</Text> : null}
       <View style={styles.card}>
         <Text style={styles.se}>{connected ? '' : ''}</Text>
         <Text style={styles.st}>{connected ? 'التقويم مربوط' : 'لم يتم ربط التقويم بعد'}</Text>
@@ -111,6 +113,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   se: { fontSize: 56 },
+  errText: { color: '#dc2626', textAlign: 'center', fontSize: 13, marginBottom: 10 },
   st: { fontSize: 18, fontWeight: '700', color: '#111827', marginTop: 8 },
   cb: {
     backgroundColor: '#0891b2',

@@ -61,12 +61,19 @@ export default function EmergencyBookingScreen(): JSX.Element {
       })
       .catch(() => setChecking(false));
   };
-  const book = (technicianId: number, slotId: number) => {
+  const book = async (technicianId: number, slotId: number) => {
+    if (!selectedSvc) return;
+    // Resolve the customer's first address instead of a hardcoded ID
+    const addresses = (await typedTrpc().addresses.list.query({})) as unknown as
+      | { id: number }[]
+      | undefined;
+    const addressId = addresses?.[0]?.id;
+    if (!addressId) return;
     (
       typedTrpc().emergencyBooking.create.mutate({
-        serviceId: selectedSvc!,
+        serviceId: selectedSvc,
         technicianId,
-        addressId: 1 /* TODO */,
+        addressId,
         slotId,
       }) as Promise<BookingResult>
     ).then((d) => setResult(d));

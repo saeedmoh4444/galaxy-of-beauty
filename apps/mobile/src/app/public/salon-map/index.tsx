@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
+import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
 
 interface SalonLocation {
   id?: number;
@@ -20,7 +21,7 @@ export default function SalonMapScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     typedTrpc()
-      .salonMap.locations.query({ city: 'الرياض' /* TODO */ })
+      .salonMap.locations.query({ city: DEFAULT_SAUDI_CITY })
       .then((d: SalonLocation[]) => {
         setSalons(d || []);
         setLoading(false);

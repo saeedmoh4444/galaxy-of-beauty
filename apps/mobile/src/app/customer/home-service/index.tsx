@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useState, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
+import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
 
 interface HomeServiceEstimate {
   totalEstimate?: number;
@@ -17,7 +18,7 @@ export default function HomeServiceScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     typedTrpc()
-      .homeService.estimate.query({ city: 'الرياض' /* TODO */ })
+      .homeService.estimate.query({ city: DEFAULT_SAUDI_CITY /* TODO: use user location */ })
       .then((d: HomeServiceEstimate) => {
         setEstimate(d);
         setLoading(false);

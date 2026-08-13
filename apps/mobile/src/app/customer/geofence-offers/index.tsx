@@ -3,6 +3,7 @@ import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
+import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
 
 interface GeofenceOffer {
   id?: number;
@@ -22,7 +23,7 @@ export default function GeofenceOffersScreen(): JSX.Element {
     else setLoading(true);
     (
       typedTrpc().geofenceOffers.nearby.query({
-        city: 'الرياض' /* TODO: from user location */,
+        city: DEFAULT_SAUDI_CITY /* TODO: from user location */,
       }) as Promise<GeofenceOffer[]>
     )
       .then((d) => {

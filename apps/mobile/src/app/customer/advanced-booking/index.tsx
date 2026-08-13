@@ -25,17 +25,49 @@ interface RecurringBookingResult {
   bookings?: unknown[];
 }
 
+interface AddressRow {
+  id: number;
+}
+
+interface TechnicianRow {
+  id: number;
+}
+
+interface SlotRow {
+  id: number;
+}
+
 export default function AdvancedBookingScreen(): JSX.Element {
   const [services, setServices] = useState<ServiceRow[]>([]);
+  const [address, setAddress] = useState<AddressRow | null>(null);
+  const [technician, setTechnician] = useState<TechnicianRow | null>(null);
+  const [slot, setSlot] = useState<SlotRow | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedSvc, setSelectedSvc] = useState<number | null>(null);
   const [recurrence, setRecurrence] = useState('WEEKLY');
   const [occurrences, setOccurrences] = useState(4);
   const [result, setResult] = useState<RecurringBookingResult | null>(null);
+
+  // Resolve real IDs instead of hardcoded placeholders (audit fix B1/D1)
+  const fetchRefs = useCallback(() => {
+    Promise.allSettled([
+      (typedTrpc().addresses.list.query({}) as Promise<AddressRow[]>).then((d) => {
+        if (d?.[0]) setAddress(d[0]);
+      }),
+      (typedTrpc().technicians.list.query({}) as Promise<TechnicianRow[]>).then((d) => {
+        if (d?.[0]) setTechnician(d[0]);
+      }),
+      (typedTrpc().availability.list.query({}) as Promise<SlotRow[]>).then((d) => {
+        if (d?.[0]) setSlot(d[0]);
+      }),
+    ]);
+  }, []);
+
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
+    fetchRefs();
     (typedTrpc().services.list.query({}) as Promise<ServiceListData>)
       .then((d: ServiceListData) => {
         setServices(d?.items || []);
@@ -46,20 +78,24 @@ export default function AdvancedBookingScreen(): JSX.Element {
         setLoading(false);
         setRefreshing(false);
       });
-  }, []);
+  }, [fetchRefs]);
   useEffect(() => {
     fetch();
   }, [fetch]);
   const create = () => {
     if (!selectedSvc) return;
+    if (!address || !technician || !slot) {
+      // Cannot create a recurring booking without resolved references
+      return;
+    }
     const s = new Date(Date.now() + 86400000).toISOString();
     const e = new Date(Date.now() + 86400000 + 3600000).toISOString();
     (
       typedTrpc().advancedBooking.createRecurring.mutate({
-        technicianId: 1 /* TODO */,
+        technicianId: technician.id,
         serviceId: selectedSvc,
-        addressId: 1 /* TODO */,
-        slotId: 1 /* TODO */,
+        addressId: address.id,
+        slotId: slot.id,
         startAt: s,
         endAt: e,
         recurrence,
