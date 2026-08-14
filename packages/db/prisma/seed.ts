@@ -1049,7 +1049,7 @@ async function main() {
   // ---- New Features (Post-MVP) ----
 
   // Seed blog posts
-  const blog1 = await prisma.blogPost.create({
+  await prisma.blogPost.create({
     data: {
       titleJson: { ar: 'أسرار العناية بالبشرة في الصيف', en: 'Summer Skincare Secrets' },
       bodyJson: {
@@ -1062,7 +1062,7 @@ async function main() {
       publishedAt: new Date(),
     },
   });
-  const blog2 = await prisma.blogPost.create({
+  await prisma.blogPost.create({
     data: {
       titleJson: { ar: 'أحدث صيحات مكياج ٢٠٢٦', en: '2026 Makeup Trends' },
       bodyJson: {
@@ -1075,7 +1075,7 @@ async function main() {
       publishedAt: new Date(),
     },
   });
-  const blog3 = await prisma.blogPost.create({
+  await prisma.blogPost.create({
     data: {
       titleJson: { ar: 'روتين العناية بالبشرة اليومي', en: 'Daily Skincare Routine' },
       bodyJson: {
@@ -1088,7 +1088,7 @@ async function main() {
       publishedAt: new Date(Date.now() - 7 * 86400000),
     },
   });
-  const blog4 = await prisma.blogPost.create({
+  await prisma.blogPost.create({
     data: {
       titleJson: { ar: 'أفضل زيوت الشعر الطبيعية', en: 'Best Natural Hair Oils' },
       bodyJson: {
@@ -1101,7 +1101,7 @@ async function main() {
       publishedAt: new Date(Date.now() - 10 * 86400000),
     },
   });
-  const blog5 = await prisma.blogPost.create({
+  await prisma.blogPost.create({
     data: {
       titleJson: { ar: 'دليل العروس لإطلالة مثالية', en: 'Bridal Beauty Guide' },
       bodyJson: {
@@ -1114,7 +1114,7 @@ async function main() {
       publishedAt: new Date(Date.now() - 14 * 86400000),
     },
   });
-  const blog6 = await prisma.blogPost.create({
+  await prisma.blogPost.create({
     data: {
       titleJson: { ar: 'فوائد المساج للصحة النفسية', en: 'Massage Benefits for Mental Health' },
       bodyJson: {
@@ -1127,7 +1127,7 @@ async function main() {
       publishedAt: new Date(Date.now() - 21 * 86400000),
     },
   });
-  const blog7 = await prisma.blogPost.create({
+  await prisma.blogPost.create({
     data: {
       titleJson: { ar: 'الحناء: فن وتقليد سعودي', en: 'Henna: Saudi Art & Tradition' },
       bodyJson: {
@@ -1140,7 +1140,7 @@ async function main() {
       publishedAt: new Date(Date.now() - 30 * 86400000),
     },
   });
-  const blog8 = await prisma.blogPost.create({
+  await prisma.blogPost.create({
     data: {
       titleJson: { ar: 'دليل إزالة الشعر: أي طريقة تناسبك؟', en: 'Hair Removal Guide' },
       bodyJson: {
@@ -1153,7 +1153,7 @@ async function main() {
       publishedAt: new Date(Date.now() - 5 * 86400000),
     },
   });
-  const blog9 = await prisma.blogPost.create({
+  await prisma.blogPost.create({
     data: {
       titleJson: { ar: 'أسرار الرموش الطويلة', en: 'Secrets of Long Lashes' },
       bodyJson: {
@@ -1166,7 +1166,7 @@ async function main() {
       publishedAt: new Date(Date.now() - 3 * 86400000),
     },
   });
-  const blog10 = await prisma.blogPost.create({
+  await prisma.blogPost.create({
     data: {
       titleJson: { ar: 'فوائد المساج وأنواعه', en: 'Massage Types & Benefits' },
       bodyJson: {
@@ -1182,13 +1182,13 @@ async function main() {
   console.log(' Blog posts');
 
   // Seed technician badges
-  const badge1 = await prisma.technicianBadge.create({
+  await prisma.technicianBadge.create({
     data: { key: 'bridal_specialist', nameJson: { ar: 'أخصائية عرايس', en: 'Bridal Specialist' } },
   });
-  const badge2 = await prisma.technicianBadge.create({
+  await prisma.technicianBadge.create({
     data: { key: 'organic_products', nameJson: { ar: 'منتجات عضوية', en: 'Organic Products' } },
   });
-  const badge3 = await prisma.technicianBadge.create({
+  await prisma.technicianBadge.create({
     data: { key: 'celebrity_stylist', nameJson: { ar: 'مصففة مشاهير', en: 'Celebrity Stylist' } },
   });
   console.log(' Technician badges');

@@ -135,7 +135,7 @@ async function main() {
   const existingCustomers = existingUsers.filter((u: any) => u.role === 'CUSTOMER');
   const existingTechs = await db.technician.findMany({ include: { user: true } });
   const allServices = await db.service.findMany({ include: { variants: true } });
-  const allCategories = await db.category.findMany();
+  await db.category.findMany();
 
   console.log(
     `   Found: ${existingCustomers.length} customers, ${existingTechs.length} techs, ${allServices.length} services`,
@@ -151,7 +151,6 @@ async function main() {
 
   for (let i = 0; i < 24 && i < remainingNames.length; i++) {
     const name = remainingNames[i]!;
-    const city = pick(CITIES);
     const email = `customer_enrich_${i + 1}@test.com`;
     const u = await db.user.create({
       data: {
@@ -357,7 +356,7 @@ async function main() {
           service.variants?.length > 0 && Math.random() > 0.6 ? pick(service.variants) : null;
 
         // Date/time with peak-hour bias
-        let daysAgo = randomInt(0, bucket.daysAgo);
+        const daysAgo = randomInt(0, bucket.daysAgo);
         const date = new Date();
         date.setDate(date.getDate() - daysAgo);
 

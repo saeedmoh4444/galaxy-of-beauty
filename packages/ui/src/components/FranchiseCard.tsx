@@ -105,7 +105,7 @@ export function FranchiseCard({
         <div className="mt-1 space-y-0.5 text-[10px] text-amber-700 dark:text-amber-300">
           <p>• سنتين خبرة كخبيرة تجميل على منصتنا</p>
           <p>• تقييم 4.5 نجوم فأعلى</p>
-          <p>• إكمال برنامج "من خبيرة إلى CEO"</p>
+          <p>• إكمال برنامج &quot;من خبيرة إلى CEO&quot;</p>
           <p>• اجتياز المقابلة الشخصية</p>
         </div>
       </div>

@@ -60,8 +60,6 @@ export function ServiceImage({
   }
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element -- remote Unsplash URLs
-    // can't use Next Image without per-domain remotePatterns config
     <img
       src={imageSrc}
       alt={alt || service || 'Beauty service'}

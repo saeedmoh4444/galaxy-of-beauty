@@ -19,6 +19,14 @@ module.exports = {
     'react/prop-types': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    // React Compiler-era rules false-positive the established async setState pattern
+    'react-hooks/set-state-in-effect': 'off',
+    'react-hooks/purity': 'off',
+    'react-hooks/refs': 'off',
+    'react-hooks/immutability': 'off',
+    'react-hooks/preserve-manual-memoization': 'off',
+    // UI package uses raw <img> for remote Unsplash URLs (ServiceImage)
+    '@next/next/no-img-element': 'off',
   },
   ignorePatterns: ['dist/', 'build/', 'node_modules/', '*.config.*'],
   parserOptions: {

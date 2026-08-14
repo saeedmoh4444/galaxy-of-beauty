@@ -41,7 +41,7 @@ export function IAmHomeSafe({
     if (!appointmentEnd) return `${graceMinutes} دقيقة`;
     const [h, m] = appointmentEnd.split(':').map(Number);
     if (h === undefined || m === undefined) return `${graceMinutes} دقيقة`;
-    let totalMin = h * 60 + m + graceMinutes;
+    const totalMin = h * 60 + m + graceMinutes;
     const alertH = Math.floor(totalMin / 60) % 24;
     const alertM = totalMin % 60;
     return `${String(alertH).padStart(2, '0')}:${String(alertM).padStart(2, '0')}`;

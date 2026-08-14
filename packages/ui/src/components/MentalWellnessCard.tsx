@@ -176,7 +176,7 @@ export function MentalWellnessCard({
 
       {/* Wellness tip */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         "الجمال يبدأ من الداخل" — عنايتكِ بنفسكِ عبادة
+         &quot;الجمال يبدأ من الداخل&quot; — عنايتكِ بنفسكِ عبادة
       </p>
     </div>
   );

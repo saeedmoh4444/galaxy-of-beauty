@@ -10,6 +10,17 @@ module.exports = {
     'no-console': 'warn',
   },
   ignorePatterns: ['dist/', 'build/', 'node_modules/', '*.config.*'],
+  overrides: [
+    {
+      // Seed scripts are dev-only tooling with large literal datasets
+      files: ['prisma/**/*.ts'],
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-unused-vars': 'off',
+        'no-console': 'off',
+      },
+    },
+  ],
   parserOptions: {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
