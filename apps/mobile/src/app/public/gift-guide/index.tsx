@@ -22,7 +22,7 @@ export default function GiftGuideScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().giftGuide.list.query());
+  } = useQuery(() => typedTrpc().giftQuiz.questions.query());
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الدليل" onRetry={refetch} />;

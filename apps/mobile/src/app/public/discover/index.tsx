@@ -31,8 +31,8 @@ export default function DiscoverScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().discover.trending.query());
-  const { data: categories } = useQuery(() => typedTrpc().discover.categories.query());
+  } = useQuery(() => typedTrpc().beautyDiscovery.featured.query());
+  const { data: categories } = useQuery(() => typedTrpc().categories.list.query());
 
   if (loading) return <SkeletonList count={6} />;
   if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;

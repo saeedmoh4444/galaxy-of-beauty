@@ -21,7 +21,7 @@ export default function CompareScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().compare.services.query() as Promise<CompareService[]>)
+    (typedTrpc().productCompare.list.query() as Promise<CompareService[]>)
       .then((d) => {
         setServices(d || []);
         setLoading(false);

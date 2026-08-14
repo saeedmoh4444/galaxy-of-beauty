@@ -21,7 +21,7 @@ export default function BeautyRoutineScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().beautyRoutine.get.query() as Promise<RoutineData>)
+    (typedTrpc().routineScheduler.myRoutines.query() as Promise<RoutineData>)
       .then((d: RoutineData) => {
         setData(d);
         setLoading(false);

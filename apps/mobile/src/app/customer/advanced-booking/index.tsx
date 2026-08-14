@@ -58,7 +58,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
       (typedTrpc().technicians.list.query({}) as Promise<TechnicianRow[]>).then((d) => {
         if (d?.[0]) setTechnician(d[0]);
       }),
-      (typedTrpc().availability.list.query({}) as Promise<SlotRow[]>).then((d) => {
+      (typedTrpc().slots.getAvailability.query({}) as Promise<SlotRow[]>).then((d) => {
         if (d?.[0]) setSlot(d[0]);
       }),
     ]);
