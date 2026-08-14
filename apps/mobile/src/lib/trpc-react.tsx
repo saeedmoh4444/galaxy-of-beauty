@@ -6,10 +6,11 @@
  *
  * Usage: Wrap your root layout with <TRPCProvider>{children}</TRPCProvider>
  * Then:  const { data } = trpc.bookings.list.useQuery({ limit: 10 });
+ * Or imperative: typedTrpc().bookings.list.query({ limit: 10 }).then(...)
  */
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { httpBatchLink } from '@trpc/client';
+import { httpBatchLink, createTRPCClient } from '@trpc/client';
 import { createTRPCReact } from '@trpc/react-query';
 import { useState } from 'react';
 import type { ReactNode } from 'react';
@@ -23,16 +24,28 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL ?? `${DEFAULT_LOCAL_URL}/api/trp
 export const trpc = createTRPCReact<AppRouter>();
 
 /**
- * Typed accessor for experimental routes not yet in the AppRouter type.
- * Centralizes the `any` cast — use this instead of (trpc as any).
+ * Raw vanilla tRPC client with FULL router type safety.
  *
- * Usage:
- *   import { typedTrpc } from '@/lib/trpc-react';
- *   const loyalty = typedTrpc().loyalty?.getAccount?.useQuery?.();
+ * `.query()` / `.mutate()` return promises — any phantom router or
+ * procedure name (e.g. `loyalty.getAccount` when the router only has
+ * `myAccount`) is a compile-time error, not a silent runtime 404.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function typedTrpc(): any {
-  return trpc;
+export const rawTrpc = createTRPCClient<AppRouter>({
+  links: [
+    httpBatchLink({
+      url: API_URL,
+      transformer: superjson,
+    }),
+  ],
+});
+
+/**
+ * Imperative accessor for the promise-style client API.
+ * Prefer the `trpc` hooks for new code; this exists for screens that
+ * use the `.query().then()` pattern.
+ */
+export function typedTrpc(): typeof rawTrpc {
+  return rawTrpc;
 }
 
 function getAuthHeaders(): Record<string, string> {
@@ -71,8 +84,7 @@ export function TRPCProvider({ children }: { children: ReactNode }): ReactNode {
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-      <QueryClientProvider client={queryClient}>{children as any}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </trpc.Provider>
   );
 }
