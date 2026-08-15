@@ -1,5 +1,4 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
@@ -10,8 +9,8 @@ interface WhatsAppInfo {
 }
 
 export default function WhatsAppBotScreen(): JSX.Element {
-  const [_data, setData] = useState<WhatsAppInfo | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [setData] = useState<WhatsAppInfo | null>(null);
+  const [, loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {

@@ -1,5 +1,4 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { typedTrpc } from '@/lib/trpc-react';
 

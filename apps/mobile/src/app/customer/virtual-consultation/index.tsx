@@ -1,6 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
-import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -76,7 +75,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
         price: consultant.price,
       });
       setBooked(true);
-    } catch {}
+    } catch { /* noop */ }
   };
 
   if (loading) return <SkeletonList count={3} />;

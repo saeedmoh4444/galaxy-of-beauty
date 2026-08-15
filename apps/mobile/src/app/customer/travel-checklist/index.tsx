@@ -62,7 +62,8 @@ export default function TravelChecklistScreen(): JSX.Element {
   const d = DESTINATIONS.find((x) => x.key === dest)!;
   const toggle = (item: string) => {
     const n = new Set(checked);
-    n.has(item) ? n.delete(item) : n.add(item);
+    if (n.has(item)) n.delete(item);
+    else n.add(item);
     setChecked(n);
   };
   const progress = Math.round((checked.size / d.essentials.length) * 100);

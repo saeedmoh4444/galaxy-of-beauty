@@ -1,6 +1,4 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { trpc as trpcReact } from '@/lib/trpc-react';
 import { useState, useEffect, useCallback } from 'react';
 import { typedTrpc } from '@/lib/trpc-react';
 
@@ -19,7 +17,6 @@ export default function BeautyClosetScreen(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [filter, setFilter] = useState<string | null>(null);
-  const loyalty = typedTrpc().loyalty?.getAccount?.useQuery?.();
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);

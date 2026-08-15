@@ -1,6 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
-import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -38,16 +37,13 @@ export default function BeautyCoursesScreen(): JSX.Element {
     refresh,
   } = useQuery(() => typedTrpc().beautyCourses.list.query());
   const { data: myCourses } = useQuery(() => typedTrpc().beautyCourses.myCourses.query());
-  const { data: expertTalks } = useQuery(() =>
-    typedTrpc().expertTalks?.upcoming?.query?.({ limit: 3 }),
-  );
   const [enrolled, setEnrolled] = useState<number[]>([]);
 
   const handleEnroll = async (courseId: number) => {
     try {
       await typedTrpc().beautyCourses.enroll.mutate({ courseId });
       setEnrolled((prev) => [...prev, courseId]);
-    } catch {}
+    } catch { /* noop */ }
   };
 
   if (loading) return <SkeletonList count={4} />;

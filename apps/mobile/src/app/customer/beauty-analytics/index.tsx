@@ -1,8 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc as trpcReact } from '@/lib/trpc-react';
 import { typedTrpc } from '@/lib/trpc-react';
 
 interface AnalyticsSummary {
@@ -29,8 +27,6 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
   const [trend, setTrend] = useState<MonthlyTrend[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const kindness = typedTrpc().kindnessPoints?.getStatus?.useQuery?.();
-  const loyalty = typedTrpc().loyalty?.getAccount?.useQuery?.();
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);

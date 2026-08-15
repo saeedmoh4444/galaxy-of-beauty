@@ -17,7 +17,7 @@ interface ScannedProduct {
 }
 
 export default function ProductScannerScreen(): JSX.Element {
-  const [barcode, setBarcode] = useState('');
+  const [barcode] = useState('');
   const [scanned, setScanned] = useState(false);
   const result = typedTrpc().productScanner?.scan?.useQuery?.(
     { barcode },

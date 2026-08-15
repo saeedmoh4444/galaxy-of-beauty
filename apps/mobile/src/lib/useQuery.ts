@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { typedTrpc } from '@/lib/trpc-react';
 
 interface QueryState<T> {
   data: T | null;

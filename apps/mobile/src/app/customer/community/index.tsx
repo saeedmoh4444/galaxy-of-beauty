@@ -50,13 +50,6 @@ export default function CommunityScreen(): JSX.Element {
   } = useQuery(() => typedTrpc().community.feed.query({ page: 1, limit: LARGE_PAGE_SIZE }));
   const { data: myLikes } = useQuery(() => typedTrpc().community.myLikes.query());
   const { data: trending } = useQuery(() => typedTrpc().community.trending.query());
-  const { data: kindnessData } = useQuery(() => typedTrpc().kindnessPoints?.getStatus?.query?.());
-  const { data: circlesData } = useQuery(() =>
-    typedTrpc().beautyCircles?.list?.query?.({ limit: 3 }),
-  );
-  const { data: complimentsData } = useQuery(() =>
-    typedTrpc().sisterhoodCompliments?.count?.query?.(),
-  );
   const [content, setContent] = useState('');
   const [showCreate, setShowCreate] = useState(false);
   const [commentId, setCommentId] = useState<number | null>(null);
@@ -72,7 +65,7 @@ export default function CommunityScreen(): JSX.Element {
     try {
       await typedTrpc().community.toggleLike.mutate({ postId });
       refetch();
-    } catch {}
+    } catch { /* noop */ }
   };
   const handleCreate = async () => {
     if (!content) return;
@@ -81,7 +74,7 @@ export default function CommunityScreen(): JSX.Element {
       setContent('');
       setShowCreate(false);
       refetch();
-    } catch {}
+    } catch { /* noop */ }
   };
   const handleComment = async () => {
     if (!commentId || !commentText) return;
@@ -89,13 +82,13 @@ export default function CommunityScreen(): JSX.Element {
       await typedTrpc().community.addComment.mutate({ postId: commentId, content: commentText });
       setCommentText('');
       setCommentId(null);
-    } catch {}
+    } catch { /* noop */ }
   };
   const handleDelete = async (id: number) => {
     try {
       await typedTrpc().community.delete.mutate({ id });
       refetch();
-    } catch {}
+    } catch { /* noop */ }
   };
 
   if (loading) return <SkeletonList count={4} />;

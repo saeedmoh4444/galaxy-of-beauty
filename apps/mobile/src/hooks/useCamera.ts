@@ -15,6 +15,8 @@ export function useCamera() {
 
   const requestPermission = useCallback(async (): Promise<boolean> => {
     try {
+      // expo-camera is an optional dependency — require dynamically so web builds work without it
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const Camera = require('expo-camera');
 
       const { status } = (await Camera.requestCameraPermissionsAsync?.()) || { status: 'denied' };

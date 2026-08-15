@@ -1,6 +1,5 @@
-import { useHaptics } from '@/hooks/useHaptics';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc, typedTrpc } from '@/lib/trpc-react';
@@ -38,9 +37,6 @@ export default function BookingsScreen(): JSX.Element {
   const bookings = trpc.bookings.list.useQuery({ page, limit: DEFAULT_PAGE_SIZE });
   const data = bookings.data?.bookings as unknown[] | undefined;
   const loyalty = typedTrpc().loyalty?.getAccount?.useQuery?.();
-  const safety = typedTrpc().safety?.getCheckInStatus?.useQuery?.({ bookingId: 0 }) as
-    | { data?: { checkedIn?: boolean } | null }
-    | undefined;
 
   return (
     <ScreenState

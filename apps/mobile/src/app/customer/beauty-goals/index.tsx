@@ -1,6 +1,4 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { trpc as trpcReact } from '@/lib/trpc-react';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
@@ -14,8 +12,6 @@ const GT = [
 
 export default function BeautyGoalsScreen(): JSX.Element {
   const [loading, setLoading] = useState(true);
-  const habits = typedTrpc().beautyHabits?.myHabits?.useQuery?.();
-  const visionGoals = typedTrpc().visionBoard?.myGoals?.useQuery?.({ limit: 6 });
   const [refreshing, setRefreshing] = useState(false);
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);

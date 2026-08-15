@@ -14,7 +14,8 @@ export function useBiometric() {
 
   const checkAvailability = useCallback(async () => {
     try {
-      // Dynamically require expo-local-authentication
+      // Dynamically require expo-local-authentication (optional dependency)
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const LocalAuth = require('expo-local-authentication');
 
       const compatible = await LocalAuth.hasHardwareAsync?.();
@@ -57,6 +58,8 @@ export function useBiometric() {
     }
 
     try {
+      // expo-local-authentication is an optional dependency — require dynamically
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const LocalAuth = require('expo-local-authentication');
 
       const result = await LocalAuth.authenticateAsync?.({

@@ -12,7 +12,8 @@
 // AsyncStorage from expo — try require to avoid type issues
 const AsyncStorage = (() => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // AsyncStorage is an optional dependency — require dynamically with in-memory fallback
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     return require('@react-native-async-storage/async-storage').default;
   } catch {
     // Fallback in-memory store if package not installed

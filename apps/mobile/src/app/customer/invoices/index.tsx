@@ -1,7 +1,6 @@
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { typedTrpc } from '@/lib/trpc-react';
-import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 const STATUS_LABELS: Record<string, string> = {

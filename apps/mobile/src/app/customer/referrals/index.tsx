@@ -22,7 +22,6 @@ interface ReferralStats {
 export default function ReferralsScreen(): JSX.Element {
   const code = trpc.referrals.getMyCode.useQuery();
   const stats = typedTrpc().referrals?.getStats?.useQuery?.() ?? { data: null };
-  const kindness = typedTrpc().kindnessPoints?.getStatus?.useQuery?.();
   const codeData = code.data as ReferralCodeData | null;
   const statsData = stats.data as ReferralStats | null;
 

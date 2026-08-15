@@ -1,5 +1,4 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { typedTrpc } from '@/lib/trpc-react';
 

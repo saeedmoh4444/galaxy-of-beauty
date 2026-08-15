@@ -1,5 +1,4 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -70,13 +69,13 @@ export default function SalonMembershipScreen(): JSX.Element {
     try {
       await typedTrpc().salonMembership.subscribe.mutate({ tier, autoRenew: true });
       refetch();
-    } catch {}
+    } catch { /* noop */ }
   };
   const handleCancel = async () => {
     try {
       await typedTrpc().salonMembership.cancel.mutate();
       refetch();
-    } catch {}
+    } catch { /* noop */ }
   };
 
   if (loading) return <SkeletonList count={3} />;

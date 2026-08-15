@@ -1,4 +1,3 @@
-import { useHaptics } from '@/hooks/useHaptics';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';

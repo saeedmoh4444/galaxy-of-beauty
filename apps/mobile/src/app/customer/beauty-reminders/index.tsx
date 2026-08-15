@@ -8,7 +8,6 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useState } from 'react';
-import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -52,19 +51,19 @@ export default function BeautyRemindersScreen(): JSX.Element {
       setTitle('');
       setShowForm(false);
       refetch();
-    } catch {}
+    } catch { /* noop */ }
   };
   const handleComplete = async (id: number) => {
     try {
       await typedTrpc().beautyReminders.complete.mutate({ id });
       refetch();
-    } catch {}
+    } catch { /* noop */ }
   };
   const handleDelete = async (id: number) => {
     try {
       await typedTrpc().beautyReminders.delete.mutate({ id });
       refetch();
-    } catch {}
+    } catch { /* noop */ }
   };
 
   if (loading) return <SkeletonList count={3} />;

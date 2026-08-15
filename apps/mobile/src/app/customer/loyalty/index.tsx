@@ -1,7 +1,7 @@
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
-import { formatCurrency, DEFAULT_PAGE_SIZE } from '@galaxy/ui';
+import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 
 const TIERS: Record<string, { emoji: string; label: string }> = {
   SILVER: { emoji: '', label: 'فضية' },

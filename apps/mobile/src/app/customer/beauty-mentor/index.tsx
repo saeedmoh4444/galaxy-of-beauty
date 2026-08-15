@@ -1,6 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import { typedTrpc } from '@/lib/trpc-react';
 
 const MENTOR_LEVELS = [
   { key: 'beginner', emoji: '', name: 'مبتدئة', desc: 'اكتشفي أساسيات العناية' },
@@ -11,9 +10,6 @@ const MENTOR_LEVELS = [
 const TOPICS = ['العناية بالبشرة', 'المكياج', 'العناية بالشعر', 'الأظافر', 'العطور', 'التغذية'];
 
 export default function BeautyMentorScreen(): JSX.Element {
-  const { data: mentorsData } = typedTrpc().beautyCircles?.list?.useQuery?.({ limit: 3 }) ?? {
-    data: null,
-  };
   const [level, setLevel] = useState('beginner');
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
 

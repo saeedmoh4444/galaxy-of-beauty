@@ -9,7 +9,6 @@ import {
   Platform,
 } from 'react-native';
 import { useState, useRef } from 'react';
-import { trpc } from '@/lib/api';
 import { typedTrpc } from '@/lib/trpc-react';
 
 const TOPICS = [

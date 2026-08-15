@@ -1,6 +1,4 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { trpc as trpcReact } from '@/lib/trpc-react';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -22,9 +20,6 @@ interface AchievementsData {
 }
 
 export default function AchievementsScreen(): JSX.Element {
-  const { data: achievementsData } = (
-    typedTrpc()
-  ).beautyAchievements?.myAchievements?.useQuery?.() ?? { data: null };
   const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
     typedTrpc().customerAchievements.myAchievements.query(),
   );

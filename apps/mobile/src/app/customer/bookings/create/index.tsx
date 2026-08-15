@@ -10,7 +10,7 @@ import {
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/api';
 import { useState, useEffect } from 'react';
-import { DEFAULT_PAGE_SIZE, MAX_LIST_SIZE } from '@galaxy/ui';
+import { MAX_LIST_SIZE } from '@galaxy/ui';
 import { useToast } from '@/components/Toast';
 
 interface ServiceListItem {

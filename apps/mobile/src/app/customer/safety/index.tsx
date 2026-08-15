@@ -1,5 +1,4 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { trpc } from '@/lib/api';
 
 export default function SafetyScreen(): JSX.Element {
   return (

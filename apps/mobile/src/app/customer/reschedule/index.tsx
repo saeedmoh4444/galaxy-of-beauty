@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
-import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -51,7 +50,7 @@ export default function RescheduleScreen(): JSX.Element {
       });
       setDone(true);
       refetch();
-    } catch {}
+    } catch { /* noop */ }
   };
 
   if (loading) return <SkeletonList count={3} />;

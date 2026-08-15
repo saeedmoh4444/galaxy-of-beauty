@@ -1,6 +1,4 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { trpc as trpcReact } from '@/lib/trpc-react';
 import { useState, useEffect, useCallback } from 'react';
 import { typedTrpc } from '@/lib/trpc-react';
 
@@ -19,9 +17,6 @@ interface PartyService {
 export default function BeautyPartyScreen(): JSX.Element {
   const [, setServices] = useState<PartyService[]>([]);
   const [, setLoading] = useState(true);
-  const { data: eventsData } = typedTrpc().communityEvents?.list?.useQuery?.({
-    limit: 4,
-  }) ?? { data: null };
   const [refreshing, setRefreshing] = useState(false);
   const [theme, setTheme] = useState('spa');
   const [guests, setGuests] = useState(4);

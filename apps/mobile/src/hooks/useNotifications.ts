@@ -54,6 +54,8 @@ interface NotificationsModule {
 
 let Notifications: NotificationsModule = null as unknown as NotificationsModule;
 try {
+  // expo-notifications is an optional dependency — require dynamically with fallback
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   Notifications = require('expo-notifications');
 } catch {
   /* expo-notifications not installed */

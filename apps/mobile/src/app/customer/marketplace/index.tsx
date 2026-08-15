@@ -8,7 +8,6 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useState } from 'react';
-import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -42,7 +41,7 @@ export default function MarketplaceScreen(): JSX.Element {
   const handleAddToCart = async (pid: number) => {
     try {
       await typedTrpc().marketplace.addToCart.mutate({ productId: pid });
-    } catch {}
+    } catch { /* noop */ }
   };
 
   if (loading) return <SkeletonList count={6} />;

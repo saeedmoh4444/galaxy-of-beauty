@@ -1,5 +1,4 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -49,13 +48,13 @@ export default function BeautyEventsScreen(): JSX.Element {
     try {
       await typedTrpc().beautyEvents.register.mutate({ eventId: id });
       refetch();
-    } catch {}
+    } catch { /* noop */ }
   };
   const handleCancel = async (id: number) => {
     try {
       await typedTrpc().beautyEvents.cancelRegistration.mutate({ eventId: id });
       refetch();
-    } catch {}
+    } catch { /* noop */ }
   };
 
   if (loading) return <SkeletonList count={4} />;

@@ -1,5 +1,4 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
@@ -40,7 +39,8 @@ export default function BundlesScreen(): JSX.Element {
   }, [fetch]);
   const toggle = (id: number) => {
     const n = new Set(selected);
-    n.has(id) ? n.delete(id) : n.size < 5 && n.add(id);
+    if (n.has(id)) n.delete(id);
+    else if (n.size < 5) n.add(id);
     setSelected(n);
   };
   const count = selected.size;
