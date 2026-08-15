@@ -5,9 +5,9 @@ import type { ServiceDetailData } from './ServiceDetailClient';
 export default async function ServiceDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<JSX.Element> {
-  const { id } = params;
+  const { id } = await params;
 
   const data: ServiceDetailData = {
     id: Number(id),

@@ -6,9 +6,10 @@ import type { TechnicianProfileData } from './TechnicianProfileClient';
 export default async function TechnicianProfilePage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<JSX.Element> {
-  const tid = Number(params.id);
+  const { id } = await params;
+  const tid = Number(id);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const data: TechnicianProfileData = { technician: null as any, services: [] as any[] };
 

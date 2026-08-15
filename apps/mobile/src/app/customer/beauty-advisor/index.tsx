@@ -9,7 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import { useState, useRef } from 'react';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const TOPICS = [
   { key: 'روتين', emoji: '', q: 'كيف أبني روتين عناية يومي؟' },
@@ -29,27 +29,28 @@ export default function BeautyAdvisorScreen(): JSX.Element {
     },
   ]);
   const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
 
-  const handleSend = async (text?: string) => {
-    const msg = (text || input).trim();
-    if (!msg || loading) return;
-    setMessages((prev) => [...prev, { role: 'user', content: msg }]);
-    setInput('');
-    setLoading(true);
-    try {
-      const r = await rawTrpc.aiAssistant.ask.query({ question: msg });
+  const askMut = trpc.aiAssistant.ask.useMutation({
+    onSuccess: (r) => {
       setMessages((prev) => [
         ...prev,
         { role: 'assistant', content: r.answer ?? 'عذراً، لم أستطع الإجابة.' },
       ]);
-    } catch {
+    },
+    onError: () => {
       setMessages((prev) => [
         ...prev,
         { role: 'assistant', content: 'عذراً، حدث خطأ. حاولي مرة أخرى.' },
       ]);
-    }
-    setLoading(false);
+    },
+  });
+
+  const handleSend = (text?: string) => {
+    const msg = (text || input).trim();
+    if (!msg || askMut.isPending) return;
+    setMessages((prev) => [...prev, { role: 'user', content: msg }]);
+    setInput('');
+    askMut.mutate({ question: msg });
   };
 
   return (
@@ -94,7 +95,7 @@ export default function BeautyAdvisorScreen(): JSX.Element {
             </View>
           </View>
         ))}
-        {loading && (
+        {askMut.isPending && (
           <View style={{ alignItems: 'flex-start', marginBottom: 12 }}>
             <View style={[s.bubble, s.assistantBubble]}>
               <Text style={[s.bubbleText, { color: '#9ca3af' }]}> جاري الكتابة...</Text>

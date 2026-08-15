@@ -23,31 +23,27 @@ export default function BeautyAdvisorPage(): JSX.Element {
     },
   ]);
   const [input, setInput] = useState('');
-  const [question, setQuestion] = useState('');
   const chatEndRef = useRef<HTMLDivElement>(null);
-  const { data: aiResponse, isFetching } = api.aiAssistant.ask.useQuery(
-    { question },
-    { enabled: !!question },
-  ) as { data: Record<string, unknown> | undefined; isFetching: boolean };
+
+  const askMut = api.aiAssistant.ask.useMutation({
+    onSuccess: (aiResponse) => {
+      const r = aiResponse as unknown as { answer?: string; message?: string };
+      const reply = r.answer ?? r.message ?? 'عذراً، لم أستطع الإجابة.';
+      setMessages((prev) => [...prev, { role: 'assistant', content: reply }]);
+    },
+  });
+  const isFetching = askMut.isPending;
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-  useEffect(() => {
-    if (aiResponse && question) {
-      const reply =
-        (aiResponse.answer as string) ?? (aiResponse as any).message ?? 'عذراً، لم أستطع الإجابة.';
-      setMessages((prev) => [...prev, { role: 'assistant', content: reply }]);
-      setQuestion('');
-    }
-  }, [aiResponse, question]);
 
   const handleSend = (text?: string) => {
     const msg = (text || input).trim();
     if (!msg || isFetching) return;
     setMessages((prev) => [...prev, { role: 'user', content: msg }]);
     setInput('');
-    setQuestion(msg);
+    askMut.mutate({ question: msg });
   };
 
   return (
@@ -90,7 +86,7 @@ export default function BeautyAdvisorPage(): JSX.Element {
             {isFetching && (
               <div className="flex justify-start">
                 <div className="bg-surface-muted rounded-2xl rounded-bl-md px-4 py-3 text-sm">
-                   جاري الكتابة...
+                  جاري الكتابة...
                 </div>
               </div>
             )}

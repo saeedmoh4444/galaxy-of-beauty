@@ -6,14 +6,18 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function AIAssistantPage(): JSX.Element {
   const [q, setQ] = useState('');
-  const [searchQ, setSearchQ] = useState('');
   const { data: topics } = api.aiAssistant.topics.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
   };
-  const { data: answer, isLoading } = api.aiAssistant.ask.useQuery(
-    { question: searchQ },
-    { enabled: searchQ.length > 1 },
-  ) as { data: Record<string, unknown> | undefined; isLoading: boolean };
+  const askMut = api.aiAssistant.ask.useMutation();
+
+  const answer = askMut.data as Record<string, unknown> | undefined;
+  const isLoading = askMut.isPending;
+
+  const ask = (question: string) => {
+    const trimmed = question.trim();
+    if (trimmed.length > 1) askMut.mutate({ question: trimmed });
+  };
 
   const topicList = (topics ?? []) as Array<Record<string, unknown>>;
 
@@ -29,11 +33,11 @@ export default function AIAssistantPage(): JSX.Element {
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && setSearchQ(q.trim())}
+              onKeyDown={(e) => e.key === 'Enter' && ask(q)}
               placeholder="اسألي عن روتين، بشرة، مكياج..."
               className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
-            <Button onClick={() => setSearchQ(q.trim())}>اسألي</Button>
+            <Button onClick={() => ask(q)}>اسألي</Button>
           </div>
           <div className="flex flex-wrap gap-2">
             {topicList.map((t: Record<string, unknown>) => (
@@ -41,7 +45,7 @@ export default function AIAssistantPage(): JSX.Element {
                 key={t.key as string}
                 onClick={() => {
                   setQ(t.label as string);
-                  setSearchQ(t.label as string);
+                  ask(t.label as string);
                 }}
                 className="rounded-full bg-brand-50 dark:bg-brand-950 px-3 py-1.5 text-xs font-medium"
               >

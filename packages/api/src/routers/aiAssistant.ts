@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { OPENAI_API_URL, OPENAI_MODEL , EXPERIMENTAL_FEATURES } from '@galaxy/shared';
-import { customerProcedure, router , requireFeatureFlag } from '../trpc';
+import { OPENAI_API_URL, OPENAI_MODEL, EXPERIMENTAL_FEATURES } from '@galaxy/shared';
+import { customerProcedure, customerMutation, router, requireFeatureFlag } from '../trpc';
 
 const FALLBACK_RESPONSES: Record<string, string> = {
   روتين:
@@ -18,8 +18,12 @@ const FALLBACK_RESPONSES: Record<string, string> = {
 const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.AI_CHAT);
 
 export const aiAssistantRouter = router({
-  ask: customerProcedure.use(flag).input(z.object({ question: z.string().min(2).max(500) }))
-    .query(async ({ input }) => {
+  // Mutation: asking a question is an on-demand action, not a cached fetch —
+  // clients use useMutation and cannot treat the answer as a query result
+  ask: customerMutation
+    .use(flag)
+    .input(z.object({ question: z.string().min(2).max(500) }))
+    .mutation(async ({ input }) => {
       const q = input.question;
       let answer = '';
       for (const [keyword, response] of Object.entries(FALLBACK_RESPONSES)) {
@@ -75,8 +79,7 @@ export const aiAssistantRouter = router({
       .filter((k) => k !== 'default')
       .map((k) => ({
         key: k,
-        emoji:
-          { روتين: '', بشرة: '', مكياج: '', شعر: '‍️', زواج: '', صيف: '️' }[k] ?? '',
+        emoji: { روتين: '', بشرة: '', مكياج: '', شعر: '‍️', زواج: '', صيف: '️' }[k] ?? '',
         label: k,
       })),
   ),

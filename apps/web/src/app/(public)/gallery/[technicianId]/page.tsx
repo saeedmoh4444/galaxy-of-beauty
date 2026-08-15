@@ -5,9 +5,9 @@ import type { GalleryPageData } from './GalleryClient';
 export default async function GalleryPage({
   params,
 }: {
-  params: { technicianId: string };
+  params: Promise<{ technicianId: string }>;
 }): Promise<JSX.Element> {
-  const { technicianId } = params;
+  const { technicianId } = await params;
   const tid = Number(technicianId);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
