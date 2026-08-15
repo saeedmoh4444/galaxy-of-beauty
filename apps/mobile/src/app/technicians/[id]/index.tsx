@@ -23,7 +23,7 @@ export default function TechnicianDetailScreen(): JSX.Element {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
       typedTrpc()
-        .technicians.getById.query({ id: parseInt(id, 10) })
+        .technicians.getById.query({ userId: parseInt(id, 10) })
         .then((d: TechnicianDetail) => {
           setData(d);
           setLoading(false);

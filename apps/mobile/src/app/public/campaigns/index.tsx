@@ -23,7 +23,7 @@ export default function CampaignsScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().campaigns.list.query());
+  } = useQuery(() => typedTrpc().campaigns.active.query());
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الحملات" onRetry={refetch} />;

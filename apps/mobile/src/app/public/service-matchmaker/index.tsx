@@ -68,9 +68,9 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
     } else {
       setLoading(true);
       typedTrpc()
-        .serviceMatchmaker.match.query(next)
-        .then((d: MatchResult) => {
-          setResult(d);
+        .serviceMatchmaker.match.query({ answers: next })
+        .then((d) => {
+          setResult({ matches: (d ?? []) as unknown as MatchResultItem[] });
           setLoading(false);
         })
         .catch(() => setLoading(false));

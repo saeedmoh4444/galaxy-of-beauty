@@ -18,7 +18,7 @@ export default function RestockReminderScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().restockReminder.list.query() as Promise<RestockItem[]>)
+    (typedTrpc().restockReminder.myItems.query() as unknown as Promise<RestockItem[]>)
       .then((d) => {
         setData(d || []);
         setLoading(false);

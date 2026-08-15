@@ -20,8 +20,8 @@ export default function VideoBookingScreen(): JSX.Element {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
       typedTrpc()
-        .video.getSession.query({ bookingId: parseInt(bookingId, 10) })
-        .then((d: VideoSession) => {
+        .video.getByBooking.query({ bookingId: parseInt(bookingId, 10) })
+        .then((d) => {
           setData(d);
           setLoading(false);
           setRefreshing(false);

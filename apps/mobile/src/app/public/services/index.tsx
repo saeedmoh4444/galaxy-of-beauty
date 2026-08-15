@@ -5,12 +5,6 @@ import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
 import { typedTrpc } from '@/lib/trpc-react';
 
-interface ServiceCategory {
-  key?: string;
-  emoji?: string;
-  nameAr?: string;
-}
-
 interface ServiceItem {
   id?: number;
   emoji?: string;
@@ -28,19 +22,31 @@ export default function ServicesScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().services.categories.query());
+  } = useQuery(() => typedTrpc().categories.tree.query());
   const [activeCat, setActiveCat] = useState<string | null>(null);
+  const catItems = ((categories ?? []) as unknown as Array<{
+    id?: number;
+    slug?: string;
+    emoji?: string;
+    nameJson?: { ar?: string };
+  }>).map((c) => ({
+    key: c.slug ?? String(c.id ?? ''),
+    nameAr: c.nameJson?.ar ?? '',
+    emoji: c.emoji ?? '',
+    id: c.id,
+  }));
   const { data: services } = useQuery(() =>
     activeCat
-      ? typedTrpc().services.byCategory.query({ category: activeCat })
+      ? typedTrpc().services.list.query({
+          categoryId: catItems.find((c) => c.key === activeCat)?.id,
+        })
       : Promise.resolve(null),
   );
 
   if (loading) return <SkeletonList count={6} />;
   if (error) return <ErrorAlert message="فشل تحميل الخدمات" onRetry={refetch} />;
 
-  const catItems = (categories ?? []) as ServiceCategory[];
-  const svcItems = (services ?? []) as ServiceItem[];
+  const svcItems = (((services as unknown as { items?: ServiceItem[] } | null)?.items ?? []) as ServiceItem[]);
 
   return (
     <ScrollView

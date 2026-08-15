@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -19,7 +19,7 @@ interface ScannedProduct {
 export default function ProductScannerScreen(): JSX.Element {
   const [barcode] = useState('');
   const [scanned, setScanned] = useState(false);
-  const result = typedTrpc().productScanner?.scan?.useQuery?.(
+  const result = trpc.productScanner.lookup.useQuery(
     { barcode },
     { enabled: scanned && barcode.length > 0 },
   ) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };

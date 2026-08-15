@@ -27,7 +27,7 @@ export default function EventsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().beautyEvents.list.query({}) as Promise<BeautyEvent[]>)
+    (typedTrpc().beautyEvents.upcoming.query() as unknown as Promise<BeautyEvent[]>)
       .then((d) => {
         setEvents(d || []);
         setLoading(false);

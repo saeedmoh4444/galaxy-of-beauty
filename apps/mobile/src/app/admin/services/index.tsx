@@ -10,10 +10,6 @@ interface AdminService {
   basePrice?: number;
 }
 
-interface ServicesListResponse {
-  items?: AdminService[];
-}
-
 export default function AdminServicesScreen(): JSX.Element {
   const [data, setData] = useState<AdminService[]>([]);
   const [loading, setLoading] = useState(true);
@@ -24,8 +20,8 @@ export default function AdminServicesScreen(): JSX.Element {
     else setLoading(true);
     typedTrpc()
       .services.list.query({})
-      .then((d: ServicesListResponse) => {
-        setData(d?.items || []);
+      .then((d) => {
+        setData((d?.items ?? []) as unknown as AdminService[]);
         setLoading(false);
         setRefreshing(false);
       })

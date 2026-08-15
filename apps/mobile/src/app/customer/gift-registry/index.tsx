@@ -18,7 +18,7 @@ export default function GiftRegistryScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().giftRegistry.myRegistry.query() as Promise<RegistryGift[]>)
+    (typedTrpc().giftRegistry.myRegistries.query() as unknown as Promise<RegistryGift[]>)
       .then((d) => {
         setData(d || []);
         setLoading(false);

@@ -44,7 +44,7 @@ export default function GroupBookingDetailScreen(): JSX.Element {
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      (typedTrpc().groupBookings.get.query({ id: parseInt(id, 10) }) as Promise<GroupBookingDetail>)
+      (typedTrpc().groupBookings.getById.query({ id: parseInt(id, 10) }) as Promise<GroupBookingDetail>)
         .then((d) => {
           setData(d);
           setLoading(false);

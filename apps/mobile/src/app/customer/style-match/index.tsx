@@ -15,9 +15,9 @@ export default function StyleMatchScreen(): JSX.Element {
   const match = useCallback(() => {
     setLoading(true);
     typedTrpc()
-      .styleMatch.analyze.query()
-      .then((d: StyleMatchResult) => {
-        setResult(d);
+      .styleMatch.match.mutate({ colors: ['#e879f9'] })
+      .then((d) => {
+        setResult(d as unknown as StyleMatchResult);
         setLoading(false);
       })
       .catch(() => setLoading(false));

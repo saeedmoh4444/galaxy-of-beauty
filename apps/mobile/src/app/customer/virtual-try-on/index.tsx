@@ -17,9 +17,9 @@ export default function VirtualTryOnScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     typedTrpc()
-      .virtualTryOn.products.query()
-      .then((d: TryOnProduct[]) => {
-        setData(d || []);
+      .virtualTryOn.palettes.query()
+      .then((d) => {
+        setData(Object.values(d).flat() as unknown as TryOnProduct[]);
         setLoading(false);
         setRefreshing(false);
       })

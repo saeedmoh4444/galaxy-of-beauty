@@ -17,8 +17,8 @@ export default function AdminDisputesScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().disputes.list.query({}).then((d: DisputeItem[]) => {
-        setData(d || []);
+    typedTrpc().disputes.list.query({}).then((d) => {
+        setData((d?.items ?? []) as unknown as DisputeItem[]);
         setLoading(false);
         setRefreshing(false);
       })

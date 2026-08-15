@@ -6,13 +6,14 @@ import { typedTrpc } from '@/lib/trpc-react';
 
 export default function BeautyAwardsScreen(): JSX.Element {
   const { data, loading, error, refreshing, refetch, refresh } = useQuery(() =>
-    typedTrpc().beautyAwards.list.query(),
+    typedTrpc().beautyAwards.current.query(),
   );
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الجوائز" onRetry={refetch} />;
 
-  const items = (data ?? []) as Record<string, unknown>[];
+  const items = ((data as unknown as { categories?: Record<string, unknown>[] } | null)?.categories ??
+    []) as Record<string, unknown>[];
 
   return (
     <ScrollView

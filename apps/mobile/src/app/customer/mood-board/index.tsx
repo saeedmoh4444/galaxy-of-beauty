@@ -16,7 +16,7 @@ export default function MoodBoardScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().moodBoard.myBoard.query() as Promise<MoodPin[]>)
+    (typedTrpc().moodBoard.list.query() as unknown as Promise<MoodPin[]>)
       .then((d) => {
         setData(d || []);
         setLoading(false);

@@ -23,7 +23,7 @@ export default function CheckoutScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().wallet.getBalance.query() as Promise<WalletBalance>)
+    (typedTrpc().wallet.getBalance.query() as unknown as Promise<WalletBalance>)
       .then((d) => {
         setBalance(d);
         setLoading(false);

@@ -4,8 +4,8 @@ import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
 interface ReferralDashboardData {
-  totalReferrals?: number;
-  totalEarnings?: number;
+  totalReferred?: number;
+  totalEarned?: number;
 }
 
 export default function ReferralDashboardScreen(): JSX.Element {
@@ -17,9 +17,9 @@ export default function ReferralDashboardScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     typedTrpc()
-      .referrals.dashboard.query()
-      .then((d: ReferralDashboardData) => {
-        setData(d);
+      .referrals.getStats.query()
+      .then((d) => {
+        setData(d as unknown as ReferralDashboardData);
         setLoading(false);
         setRefreshing(false);
       })
@@ -53,13 +53,13 @@ export default function ReferralDashboardScreen(): JSX.Element {
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}>‍️</Text>
-          <Text style={styles.kpiVal}>{d.totalReferrals ?? 0}</Text>
+          <Text style={styles.kpiVal}>{d.totalReferred ?? 0}</Text>
           <Text style={styles.kpiLabel}>إحالة</Text>
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#059669' }]}>
-            {(d.totalEarnings ?? 0).toLocaleString()}
+            {(d.totalEarned ?? 0).toLocaleString()}
           </Text>
           <Text style={styles.kpiLabel}>ر.س</Text>
         </View>

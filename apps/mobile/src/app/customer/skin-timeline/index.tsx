@@ -19,8 +19,7 @@ export default function SkinTimelineScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .skinDiary.entries.query()
+    (typedTrpc().skinDiary.entries.query() as unknown as Promise<SkinEntry[]>)
       .then((d: SkinEntry[]) => {
         setEntries(d || []);
         setLoading(false);

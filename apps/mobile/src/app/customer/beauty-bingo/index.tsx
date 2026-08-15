@@ -36,8 +36,10 @@ export default function BeautyBingoScreen(): JSX.Element {
   useEffect(() => {
     fetch();
   }, [fetch]);
-  const mark = () => {
-    (typedTrpc().beautyBingo.mark.mutate({}) as Promise<void>).then(() => fetch());
+  const mark = (taskId: number) => {
+    typedTrpc()
+      .beautyBingo.mark.mutate({ taskId })
+      .then(() => fetch());
   };
   if (loading) return <SkeletonList count={3} />;
   const tasks = data?.tasks ?? [];
@@ -63,7 +65,7 @@ export default function BeautyBingoScreen(): JSX.Element {
           {tasks.map((t) => (
             <TouchableOpacity
               key={t.id}
-              onPress={mark}
+              onPress={() => t.id != null && mark(t.id)}
               style={[styles.task, t.completed && styles.td]}
             >
               <Text style={styles.tt}>

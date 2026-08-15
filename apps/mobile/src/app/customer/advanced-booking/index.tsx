@@ -7,7 +7,7 @@ const REC = [
   { key: 'WEEKLY', emoji: '', label: 'أسبوعي' },
   { key: 'BIWEEKLY', emoji: '', label: 'كل أسبوعين' },
   { key: 'MONTHLY', emoji: '️', label: 'شهري' },
-];
+] as const;
 
 interface ServiceRow {
   id: number;
@@ -44,24 +44,36 @@ export default function AdvancedBookingScreen(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedSvc, setSelectedSvc] = useState<number | null>(null);
-  const [recurrence, setRecurrence] = useState('WEEKLY');
+  const [recurrence, setRecurrence] = useState<'WEEKLY' | 'BIWEEKLY' | 'MONTHLY'>('WEEKLY');
   const [occurrences, setOccurrences] = useState(4);
   const [result, setResult] = useState<RecurringBookingResult | null>(null);
 
   // Resolve real IDs instead of hardcoded placeholders (audit fix B1/D1)
   const fetchRefs = useCallback(() => {
     Promise.allSettled([
-      (typedTrpc().addresses.list.query({}) as Promise<AddressRow[]>).then((d) => {
+      (typedTrpc().addresses.list.query() as Promise<AddressRow[]>).then((d) => {
         if (d?.[0]) setAddress(d[0]);
       }),
-      (typedTrpc().technicians.list.query({}) as Promise<TechnicianRow[]>).then((d) => {
-        if (d?.[0]) setTechnician(d[0]);
-      }),
-      (typedTrpc().slots.getAvailability.query({}) as Promise<SlotRow[]>).then((d) => {
-        if (d?.[0]) setSlot(d[0]);
-      }),
+      typedTrpc()
+        .technicians.list.query({})
+        .then((d) => {
+          const list = (d?.items ?? []) as unknown as TechnicianRow[];
+          if (list[0]) setTechnician(list[0]);
+        }),
     ]);
   }, []);
+
+  // Load the first technician's availability once a technician is resolved
+  useEffect(() => {
+    if (!technician) return;
+    typedTrpc()
+      .slots.getAvailability.query({ technicianId: technician.id })
+      .then((d) => {
+        const list = (d ?? []) as unknown as SlotRow[];
+        if (list[0]) setSlot(list[0]);
+      })
+      .catch(() => {});
+  }, [technician]);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);

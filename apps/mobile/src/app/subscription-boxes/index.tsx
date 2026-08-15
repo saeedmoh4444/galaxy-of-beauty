@@ -19,8 +19,8 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().subscriptionBoxes.list.query().then((d: SubscriptionBox[]) => {
-        setBoxes(d || []);
+    typedTrpc().subscriptionBoxes.plans.query().then((d) => {
+        setBoxes((d ?? []) as unknown as SubscriptionBox[]);
         setLoading(false);
         setRefreshing(false);
       })

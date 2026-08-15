@@ -21,7 +21,7 @@ export default function SearchScreen(): JSX.Element {
   const doSearch = () => {
     if (!query.trim()) return;
     setLoading(true);
-    (typedTrpc().search.all.query({ q: query.trim() }) as Promise<SearchResults>)
+    (typedTrpc().search.search.query({ query: query.trim() }) as unknown as Promise<SearchResults>)
       .then((d) => {
         setResults(d);
         setLoading(false);

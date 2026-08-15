@@ -16,9 +16,9 @@ export default function SurpriseMeScreen(): JSX.Element {
   const surprise = useCallback(() => {
     setLoading(true);
     typedTrpc()
-      .services.surpriseMe.query()
-      .then((d: SurpriseService) => {
-        setResult(d);
+      .services.surpriseMe.query({})
+      .then((d) => {
+        setResult(d as unknown as SurpriseService);
         setLoading(false);
       })
       .catch(() => setLoading(false));

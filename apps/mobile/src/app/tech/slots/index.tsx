@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -12,13 +12,13 @@ const COLORS = {
 };
 
 export default function TechSlotsScreen(): JSX.Element {
-  const slots = typedTrpc().slots?.mySlots?.useQuery?.({ days: 7 }) ?? {
+  const slots = trpc.slots.getMySlots.useQuery({}) ?? {
     data: null,
     isLoading: false,
     isError: false,
     refetch: () => {},
   };
-  const data = slots.data as unknown[] | undefined;
+  const data = slots.data as unknown as unknown[] | undefined;
 
   return (
     <ScreenState

@@ -18,10 +18,6 @@ interface ChatMessage {
   createdAt?: string;
 }
 
-interface ChatMessagesResponse {
-  items?: ChatMessage[];
-}
-
 export default function ChatScreen(): JSX.Element {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,8 +27,8 @@ export default function ChatScreen(): JSX.Element {
     setLoading(true);
     typedTrpc()
       .chat.messages.query({ bookingId: 1, page: 1, limit: BULK_PAGE_SIZE })
-      .then((d: ChatMessagesResponse) => {
-        setMessages(d?.items || []);
+      .then((d) => {
+        setMessages((d?.items ?? []) as unknown as ChatMessage[]);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -45,7 +41,7 @@ export default function ChatScreen(): JSX.Element {
   const send = () => {
     if (!text.trim()) return;
     typedTrpc()
-      .chat.send.mutate({ receiverId: 1, bookingId: 1, message: text.trim() })
+      .chat.send.mutate({ receiverId: 1, bookingId: 1, content: text.trim() })
       .then(() => {
       setText('');
       fetch();

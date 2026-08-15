@@ -20,9 +20,9 @@ export default function MommyAndMeScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     typedTrpc()
-      .mommyAndMe.services.query()
-      .then((d: MommyService[]) => {
-        setServices(d || []);
+      .womensServices.categories.query()
+      .then((d) => {
+        setServices((d ?? []) as unknown as MommyService[]);
         setLoading(false);
         setRefreshing(false);
       })

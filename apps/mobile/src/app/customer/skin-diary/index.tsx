@@ -17,7 +17,7 @@ export default function SkinDiaryScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().skinDiary.entries.query() as Promise<DiaryEntry[]>)
+    (typedTrpc().skinDiary.entries.query() as unknown as Promise<DiaryEntry[]>)
       .then((d) => {
         setData(d || []);
         setLoading(false);

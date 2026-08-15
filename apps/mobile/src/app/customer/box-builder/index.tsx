@@ -19,7 +19,7 @@ export default function BoxBuilderScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().boxBuilder.products.query()
+    (typedTrpc().boxBuilder.catalog.query() as unknown as Promise<BoxProduct[]>)
       .then((d: BoxProduct[] | undefined) => {
         setProducts(d || []);
         setLoading(false);

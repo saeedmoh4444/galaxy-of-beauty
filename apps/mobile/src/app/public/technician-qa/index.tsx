@@ -20,9 +20,9 @@ export default function TechnicianQAScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().technicianQA.list.query() as Promise<QAItem[]>)
+    (typedTrpc().technicianQA.list.query({}) as unknown as Promise<{ items: QAItem[] }>)
       .then((d) => {
-        setQuestions(d || []);
+        setQuestions(d?.items ?? []);
         setLoading(false);
         setRefreshing(false);
       })

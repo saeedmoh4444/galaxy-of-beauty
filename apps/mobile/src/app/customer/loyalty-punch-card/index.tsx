@@ -17,7 +17,7 @@ export default function LoyaltyPunchCardScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     typedTrpc()
-      .loyaltyPunchCard.status.query()
+      .loyaltyPunchCard.myCard.query()
       .then((d: PunchCardStatus) => {
         setData(d);
         setLoading(false);

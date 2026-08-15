@@ -21,7 +21,7 @@ export default function ServiceDetailScreen(): JSX.Element {
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      (typedTrpc().services.getById.query({ id: parseInt(id, 10) }) as Promise<ServiceDetail>)
+      (typedTrpc().services.getById.query({ id: parseInt(id, 10) }) as unknown as Promise<ServiceDetail>)
         .then((d: ServiceDetail) => {
           setData(d);
           setLoading(false);

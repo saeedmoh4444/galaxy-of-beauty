@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 const STATUS_LABELS: Record<string, string> = {
@@ -12,7 +12,7 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export default function DisputesScreen(): JSX.Element {
-  const disputes = typedTrpc().disputes?.list?.useQuery?.({}) ?? {
+  const disputes = trpc.disputes.list.useQuery({}) ?? {
     data: null,
     isLoading: false,
     isError: false,

@@ -12,7 +12,7 @@ export default function BeautyPodcastScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().beautyPodcast.list.query());
+  } = useQuery(() => typedTrpc().beautyPodcast.episodes.query());
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل البودكاست" onRetry={refetch} />;

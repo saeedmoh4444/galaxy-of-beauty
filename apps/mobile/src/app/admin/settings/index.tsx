@@ -23,7 +23,7 @@ export default function AdminSettingsScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().admin.getPlatformConfig.query().catch(() => ({})) as Promise<PlatformConfig>,
+      typedTrpc().platform.getSettings.query().catch(() => ({})) as Promise<PlatformConfig>,
       typedTrpc().cashback.info.query().catch(() => ({})) as Promise<CashbackInfo>,
     ])
       .then(([cfg, cb]) => {

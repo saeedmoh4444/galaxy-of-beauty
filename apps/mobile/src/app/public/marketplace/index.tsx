@@ -18,9 +18,11 @@ export default function MarketplaceScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().marketplace.products.query({}) as Promise<MarketProduct[]>)
-      .then((d: MarketProduct[]) => {
-        setProducts(d || []);
+    (typedTrpc().marketplace.products.query({}) as unknown as Promise<{
+      items: MarketProduct[];
+    }>)
+      .then((d) => {
+        setProducts(d?.items ?? []);
         setLoading(false);
         setRefreshing(false);
       })

@@ -23,7 +23,7 @@ export default function AIFeedScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().aiFeatures.personalizedFeed.query() as Promise<AIFeedData>)
+    (typedTrpc().aiFeatures.personalizedFeed.query() as unknown as Promise<AIFeedData>)
       .then((d: AIFeedData) => {
         setData(d);
         setLoading(false);

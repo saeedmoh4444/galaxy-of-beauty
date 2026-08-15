@@ -21,12 +21,12 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().subscriptionBoxes.list.query());
+  } = useQuery(() => typedTrpc().subscriptionBoxes.plans.query());
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الصناديق" onRetry={refetch} />;
 
-  const items = (boxes as SubscriptionBox[] | undefined) ?? [];
+  const items = (boxes ?? []) as unknown as SubscriptionBox[];
 
   return (
     <ScrollView

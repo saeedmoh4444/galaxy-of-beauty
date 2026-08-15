@@ -63,7 +63,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
   const book = async (technicianId: number, slotId: number) => {
     if (!selectedSvc) return;
     // Resolve the customer's first address instead of a hardcoded ID
-    const addresses = (await typedTrpc().addresses.list.query({})) as unknown as
+    const addresses = (await typedTrpc().addresses.list.query()) as unknown as
       | { id: number }[]
       | undefined;
     const addressId = addresses?.[0]?.id;

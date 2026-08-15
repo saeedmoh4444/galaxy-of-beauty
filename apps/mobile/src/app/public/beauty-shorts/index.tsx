@@ -22,7 +22,7 @@ export default function BeautyShortsScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().beautyShorts.list.query());
+  } = useQuery(() => typedTrpc().beautyShorts.feed.query());
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الفيديوهات" onRetry={refetch} />;

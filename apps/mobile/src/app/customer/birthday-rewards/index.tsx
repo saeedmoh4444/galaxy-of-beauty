@@ -16,7 +16,7 @@ export default function BirthdayRewardsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().birthdayRewards.status.query()
+    typedTrpc().birthdayRewards.myReward.query()
       .then((d: BirthdayReward | null | undefined) => {
         setData(d ?? null);
         setLoading(false);

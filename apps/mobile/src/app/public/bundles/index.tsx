@@ -24,8 +24,8 @@ export default function BundlesScreen(): JSX.Element {
     else setLoading(true);
     typedTrpc()
       .categories.list.query()
-      .then((d: BundleService[]) => {
-        setServices(d || []);
+      .then((d) => {
+        setServices(d as unknown as BundleService[]);
         setLoading(false);
         setRefreshing(false);
       })

@@ -14,7 +14,7 @@ const SKIN_TYPES = [
   { key: 'oily', emoji: '', label: 'دهنية' },
   { key: 'combination', emoji: '', label: 'مختلطة' },
   { key: 'normal', emoji: '', label: 'عادية' },
-];
+] as const;
 
 interface RoutineStep {
   emoji?: string;
@@ -34,7 +34,7 @@ interface AIRoutineData {
 }
 
 export default function AIRoutineScreen(): JSX.Element {
-  const [skinType, setSkinType] = useState('combination');
+  const [skinType, setSkinType] = useState<'dry' | 'oily' | 'combination' | 'normal'>('combination');
   const [data, setData] = useState<AIRoutineData | null>(null);
   const [loading, setLoading] = useState(false);
   const [generated, setGenerated] = useState(false);

@@ -18,9 +18,9 @@ export default function PostCareScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().postCare.plans.query() as Promise<PostCarePlan[]>)
+    (typedTrpc().postCare.library.query() as unknown as Promise<{ categories: PostCarePlan[] }>)
       .then((d) => {
-        setData(d || []);
+        setData(d?.categories ?? []);
         setLoading(false);
         setRefreshing(false);
       })

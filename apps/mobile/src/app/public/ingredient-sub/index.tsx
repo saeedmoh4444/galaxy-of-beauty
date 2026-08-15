@@ -1,12 +1,7 @@
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
-
-interface IngredientAlternative {
-  name?: string;
-  description?: string;
-}
+import { trpc } from '@/lib/trpc-react';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -19,7 +14,7 @@ const COLORS = {
 export default function IngredientSubScreen(): JSX.Element {
   const [search, setSearch] = useState('');
   const [submitted, setSubmitted] = useState('');
-  const result = typedTrpc().ingredientSub?.findSubstitutes?.useQuery?.(
+  const result = trpc.ingredientSub.find.useQuery(
     { ingredient: submitted },
     { enabled: submitted.length > 0 },
   ) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
@@ -44,10 +39,10 @@ export default function IngredientSubScreen(): JSX.Element {
           <Text style={styles.searchText}>بحث</Text>
         </TouchableOpacity>
       </View>
-      {((result.data as IngredientAlternative[] | undefined) || []).map((alt, i) => (
+      {((result.data as unknown as { subs?: string[] } | null)?.subs ?? []).map((alt, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.altName}>{alt.name ?? ''}</Text>
-          <Text style={styles.altDesc}>{alt.description ?? ''}</Text>
+          <Text style={styles.altName}>{alt}</Text>
+          <Text style={styles.altDesc}></Text>
         </View>
       ))}
     </ScreenState>

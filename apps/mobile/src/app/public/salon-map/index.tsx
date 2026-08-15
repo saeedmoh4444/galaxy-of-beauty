@@ -20,9 +20,9 @@ export default function SalonMapScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     typedTrpc()
-      .salonMap.locations.query({ city: DEFAULT_SAUDI_CITY })
-      .then((d: SalonLocation[]) => {
-        setSalons(d || []);
+      .salonMap.explore.query({ city: DEFAULT_SAUDI_CITY })
+      .then((d) => {
+        setSalons(d as unknown as SalonLocation[]);
         setLoading(false);
         setRefreshing(false);
       })

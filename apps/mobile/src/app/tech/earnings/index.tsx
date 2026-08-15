@@ -1,6 +1,6 @@
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = {
@@ -12,14 +12,15 @@ const COLORS = {
 };
 
 export default function TechEarningsScreen(): JSX.Element {
-  const earnings = typedTrpc().payouts?.list?.useQuery?.({}) ?? {
+  const earnings = trpc.technicianEarnings.summary.useQuery() ?? {
     data: null,
     isLoading: false,
     isError: false,
     refetch: () => {},
   };
-  const data = earnings.data as Record<string, unknown> | undefined;
-  const items = data?.items as unknown[] | undefined;
+  const monthly = trpc.technicianEarnings.monthly.useQuery({ months: 6 });
+  const data = earnings.data as unknown as Record<string, unknown> | undefined;
+  const items = (monthly.data ?? []) as unknown as unknown[] | undefined;
 
   return (
     <ScreenState
@@ -32,7 +33,7 @@ export default function TechEarningsScreen(): JSX.Element {
       <Text style={styles.title}> أرباحي</Text>
       <View style={styles.summaryCard}>
         <Text style={styles.summaryLabel}>إجمالي الأرباح</Text>
-        <Text style={styles.summaryAmount}>{formatCurrency(Number(data?.totalEarnings ?? 0))}</Text>
+        <Text style={styles.summaryAmount}>{formatCurrency(Number(data?.totalEarned ?? 0))}</Text>
       </View>
       {items && items.length > 0 && (
         <FlatList
@@ -41,9 +42,7 @@ export default function TechEarningsScreen(): JSX.Element {
           renderItem={({ item }) => (
             <View style={styles.txnRow}>
               <View>
-                <Text style={styles.txnPeriod}>
-                  {item.periodStart ? new Date(item.periodStart as string).toLocaleDateString('ar-SA') : ''}
-                </Text>
+                <Text style={styles.txnPeriod}>{item.month ? (item.month as string) : ''}</Text>
                 <Text style={styles.txnStatus}>{item.status as string}</Text>
               </View>
               <Text style={styles.txnAmount}>{formatCurrency(Number(item.amount ?? 0))}</Text>

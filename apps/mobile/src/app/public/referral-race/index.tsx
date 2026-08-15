@@ -18,8 +18,13 @@ export default function ReferralRaceScreen(): JSX.Element {
     else setLoading(true);
     typedTrpc()
       .referralRace.leaderboard.query()
-      .then((d: LeaderboardEntry[]) => {
-        setData(d || []);
+      .then((d) => {
+        setData(
+          (d?.leaders ?? []).map((l) => ({
+            name: l.userName,
+            referrals: l.referralCount,
+          })),
+        );
         setLoading(false);
         setRefreshing(false);
       })

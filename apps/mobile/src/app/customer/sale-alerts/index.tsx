@@ -18,8 +18,7 @@ export default function SaleAlertsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .saleAlerts.list.query()
+    (typedTrpc().saleAlerts.myAlerts.query() as unknown as Promise<SaleAlert[]>)
       .then((d: SaleAlert[]) => {
         setData(d || []);
         setLoading(false);

@@ -25,7 +25,7 @@ module.exports = {
     'react-hooks/purity': 'off',
     'react-hooks/refs': 'off',
   },
-  ignorePatterns: ['dist/', 'build/', '.expo/', 'node_modules/', '*.config.*', 'android/', 'ios/'],
+  ignorePatterns: ['dist/', 'build/', '.expo/', 'node_modules/', '*.config.*', 'android/', 'ios/', 'e2e/'],
   parserOptions: {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,

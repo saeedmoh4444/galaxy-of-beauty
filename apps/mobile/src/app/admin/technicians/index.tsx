@@ -17,8 +17,8 @@ export default function AdminTechniciansScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().technicians.list.query({}).then((d: AdminTechnicianItem[]) => {
-        setData(d || []);
+    typedTrpc().technicians.list.query({}).then((d) => {
+        setData((d?.items ?? []) as AdminTechnicianItem[]);
         setLoading(false);
         setRefreshing(false);
       })

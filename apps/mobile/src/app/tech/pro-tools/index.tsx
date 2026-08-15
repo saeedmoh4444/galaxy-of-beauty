@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = {
@@ -36,8 +36,18 @@ function ToolCard({ title, value, subtitle, onPress }: ToolCardProps): JSX.Eleme
 
 export default function ProToolsScreen(): JSX.Element {
   const router = useRouter();
-  const crm = typedTrpc().technicians?.myStats?.useQuery?.();
-  const earnings = typedTrpc().technicianEarnings?.summary?.useQuery?.();
+  const crm = trpc.technicianPerformance.myStats.useQuery() as unknown as {
+    data?: Record<string, unknown> | null;
+    isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
+  };
+  const earnings = trpc.technicianEarnings.summary.useQuery() as unknown as {
+    data?: Record<string, unknown> | null;
+    isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
+  };
 
   return (
     <ScreenState

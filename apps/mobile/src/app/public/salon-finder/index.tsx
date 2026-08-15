@@ -21,8 +21,8 @@ export default function SalonFinderScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().salonMap.locations.query({ city: DEFAULT_SAUDI_CITY /* TODO: use user location */ }) as Promise<Salon[]>)
-      .then((d: Salon[]) => {
+    (typedTrpc().salonMap.explore.query({ city: DEFAULT_SAUDI_CITY /* TODO: use user location */ }) as unknown as Promise<Salon[]>)
+      .then((d) => {
         setSalons(d || []);
         setLoading(false);
         setRefreshing(false);

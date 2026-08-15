@@ -21,9 +21,9 @@ export default function TutorialsScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     typedTrpc()
-      .tutorials.list.query()
-      .then((d: Tutorial[]) => {
-        setTutorials(d || []);
+      .tutorials.list.query({})
+      .then((d) => {
+        setTutorials((d?.items ?? []) as unknown as Tutorial[]);
         setLoading(false);
         setRefreshing(false);
       })

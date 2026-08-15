@@ -3,15 +3,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { typedTrpc } from '@/lib/trpc-react';
 
-interface VipTier {
-  color?: string;
-  emoji?: string;
-  nameAr?: string;
-  price?: number;
-}
-
 interface VipStatus {
-  tiers?: VipTier[];
+  currentTier?: string;
+  expiresAt?: string | null;
+  autoRenew?: boolean;
 }
 
 export default function VIPMembershipScreen(): JSX.Element {
@@ -22,9 +17,9 @@ export default function VIPMembershipScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     typedTrpc()
-      .vipMembership.status.query()
-      .then((d: VipStatus) => {
-        setData(d);
+      .vipMembership.myTier.query()
+      .then((d) => {
+        setData(d as unknown as VipStatus);
         setLoading(false);
         setRefreshing(false);
       })
@@ -37,7 +32,6 @@ export default function VIPMembershipScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   if (loading) return <SkeletonList count={3} />;
-  const tiers = data?.tiers ?? [];
   return (
     <ScrollView
       style={styles.c}
@@ -51,13 +45,15 @@ export default function VIPMembershipScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}> العضوية المميزة</Text>
-      {tiers.map((t, i) => (
-        <View key={i} style={[styles.card, { borderColor: t.color ?? '#e5e7eb' }]}>
-          <Text style={styles.emoji}>{t.emoji}</Text>
-          <Text style={styles.name}>{t.nameAr}</Text>
-          <Text style={styles.price}>{t.price?.toLocaleString()} ر.س</Text>
+      {data?.currentTier ? (
+        <View style={styles.card}>
+          <Text style={styles.emoji}>⭐</Text>
+          <Text style={styles.name}>{data.currentTier}</Text>
+          <Text style={styles.price}>
+            {data.autoRenew ? 'تجديد تلقائي مفعل' : 'تجديد تلقائي معطل'}
+          </Text>
         </View>
-      ))}
+      ) : null}
     </ScrollView>
   );
 }

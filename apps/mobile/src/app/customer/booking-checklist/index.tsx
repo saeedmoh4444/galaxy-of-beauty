@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -18,7 +18,7 @@ const CHECKLIST = [
 ];
 
 export default function BookingChecklistScreen(): JSX.Element {
-  const list = typedTrpc().bookingChecklist?.get?.useQuery?.({}) ?? {
+  const list = trpc.bookingChecklist.get.useQuery({ category: 'makeup' }) ?? {
     data: null,
     isLoading: false,
     isError: false,

@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -34,14 +34,14 @@ interface ProfileUser {
 
 export default function ProfileScreen(): JSX.Element {
   const router = useRouter();
-  const profile = typedTrpc().users?.me?.useQuery?.() ?? {
+  const profile = trpc.users.getMe.useQuery() ?? {
     data: null,
     isLoading: false,
     isError: false,
     refetch: () => {},
   };
-  const loyalty = typedTrpc().loyalty?.getAccount?.useQuery?.();
-  const kindness = typedTrpc().kindnessPoints?.getStatus?.useQuery?.();
+  const loyalty = trpc.loyalty.myAccount.useQuery();
+  const kindness = trpc.kindnessPoints.getStatus.useQuery();
   const p = profile.data as ProfileUser | null;
 
   return (

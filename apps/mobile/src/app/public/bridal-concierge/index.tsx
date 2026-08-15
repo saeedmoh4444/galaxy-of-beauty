@@ -24,13 +24,13 @@ interface BridalDashboard {
 
 export default function BridalConciergeScreen(): JSX.Element {
   const { data, loading, error, refreshing, refetch, refresh } = useQuery(() =>
-    typedTrpc().bridalConcierge.dashboard.query(),
+    typedTrpc().bridalConcierge.get.query(),
   );
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل كونسيرج العروس" onRetry={refetch} />;
 
-  const d = (data as BridalDashboard | undefined) ?? {};
+  const d = (data as unknown as BridalDashboard | undefined) ?? {};
 
   return (
     <ScrollView

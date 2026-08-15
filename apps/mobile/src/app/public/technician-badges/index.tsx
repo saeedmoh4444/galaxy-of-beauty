@@ -20,7 +20,7 @@ export default function TechnicianBadgesScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().technicianBadges.catalog.query() as Promise<TechBadge[]>)
+    (typedTrpc().technicianBadges.list.query() as unknown as Promise<TechBadge[]>)
       .then((d) => {
         setBadges(d || []);
         setLoading(false);

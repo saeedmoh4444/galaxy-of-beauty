@@ -22,7 +22,7 @@ export default function TechCalendarScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().techCalendar.availability.query() as Promise<CalendarSlot[]>)
+    (typedTrpc().techCalendar.listWithAvailability.query() as unknown as Promise<CalendarSlot[]>)
       .then((d) => {
         setSlots(d || []);
         setLoading(false);

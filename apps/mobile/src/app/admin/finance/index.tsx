@@ -17,7 +17,7 @@ export default function AdminFinanceScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().analytics.adminDashboard.query() as unknown as Promise<AdminFinanceDashboard>)
+    (typedTrpc().admin.dashboardStats.query() as unknown as Promise<AdminFinanceDashboard>)
       .then((d: AdminFinanceDashboard) => {
         setData(d);
         setLoading(false);

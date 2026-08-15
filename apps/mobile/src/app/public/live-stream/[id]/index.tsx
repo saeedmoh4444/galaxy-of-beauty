@@ -26,12 +26,19 @@ export default function LiveStreamDetailScreen(): JSX.Element {
 
   useEffect(() => {
     Promise.all([
-      typedTrpc().liveStream.get.query({ id: parseInt(id, 10) }) as Promise<StreamDetail>,
-      typedTrpc().liveStream.messages.query({ streamId: parseInt(id, 10) }) as Promise<StreamMessage[]>,
+      typedTrpc().liveStream.upcoming.query({}),
+      typedTrpc().liveChat.history.query(),
     ])
       .then(([s, m]) => {
-        setStream(s);
-        setMessages(m || []);
+        const list = (s ?? []) as unknown as Array<StreamDetail & { id?: number }>;
+        setStream(list.find((x) => x.id === parseInt(id, 10)) ?? null);
+        setMessages(
+          (m ?? []).map((msg) => ({
+            id: msg.id,
+            user: msg.userName,
+            text: msg.message,
+          })),
+        );
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -40,10 +47,9 @@ export default function LiveStreamDetailScreen(): JSX.Element {
   const sendMsg = () => {
     if (!chatText.trim()) return;
     (
-      typedTrpc().liveStream.sendMessage.mutate({
-        streamId: parseInt(id, 10),
-        text: chatText.trim(),
-      }) as Promise<void>
+      typedTrpc().liveChat.send.mutate({
+        message: chatText.trim(),
+      }) as unknown as Promise<void>
     ).then(() => {
       setChatText('');
     });

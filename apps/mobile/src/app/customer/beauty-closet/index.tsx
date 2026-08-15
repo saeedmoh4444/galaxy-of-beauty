@@ -21,7 +21,7 @@ export default function BeautyClosetScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().restockReminder.list.query() as Promise<ClosetProduct[]>)
+    (typedTrpc().restockReminder.myItems.query() as unknown as Promise<ClosetProduct[]>)
       .then((d) => {
         setProducts(d || []);
         setLoading(false);

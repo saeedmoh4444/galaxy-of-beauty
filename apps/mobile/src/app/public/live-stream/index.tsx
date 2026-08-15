@@ -24,9 +24,11 @@ export default function LiveStreamScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().liveStream.list.query() as Promise<LiveStreamData>)
+    typedTrpc()
+      .liveStream.upcoming.query({})
       .then((d) => {
-        setData(d);
+        const items = (d ?? []) as unknown as LiveStreamItem[];
+        setData({ live: items, upcoming: items });
         setLoading(false);
         setRefreshing(false);
       })

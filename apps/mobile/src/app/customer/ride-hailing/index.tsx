@@ -44,7 +44,7 @@ export default function RideHailingScreen(): JSX.Element {
     (
       typedTrpc().rideHailing.book.mutate({
         bookingId: 1,
-        provider,
+        provider: provider as 'uber' | 'careem',
         pickupAddress: 'موقعي الحالي',
       }) as Promise<BookingResult>
     ).then((d: BookingResult) => setResult(d));

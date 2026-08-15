@@ -1,19 +1,19 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 const DAYS = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
 
 export default function TechCalendarScreen(): JSX.Element {
-  const calendar = typedTrpc().calendar?.myCalendar?.useQuery?.({}) ?? {
+  const calendar = trpc.techCalendar.listWithAvailability.useQuery() ?? {
     data: null,
     isLoading: false,
     isError: false,
     refetch: () => {},
   };
-  const data = calendar.data as Record<string, unknown> | undefined;
+  const data = calendar.data as unknown as Record<string, unknown> | undefined;
 
   return (
     <ScreenState

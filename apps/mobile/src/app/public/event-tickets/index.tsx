@@ -18,7 +18,7 @@ export default function EventTicketsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().eventTickets.list.query() as Promise<TicketEvent[]>)
+    (typedTrpc().eventTickets.available.query() as unknown as Promise<TicketEvent[]>)
       .then((d) => {
         setEvents(d || []);
         setLoading(false);

@@ -17,8 +17,8 @@ export default function BeautyProfileScreen(): JSX.Element {
     else setLoading(true);
     typedTrpc()
       .beautyProfile.get.query()
-      .then((d: BeautyProfileData) => {
-        setData(d);
+      .then((d) => {
+        setData((d ?? null) as unknown as BeautyProfileData);
         setLoading(false);
         setRefreshing(false);
       })

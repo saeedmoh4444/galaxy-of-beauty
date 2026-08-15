@@ -20,8 +20,8 @@ export default function TechniciansScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().technicians.list.query({}).then((d: TechnicianItem[]) => {
-        setTechs(d || []);
+    typedTrpc().technicians.list.query({}).then((d) => {
+        setTechs((d?.items ?? []) as unknown as TechnicianItem[]);
         setLoading(false);
         setRefreshing(false);
       })

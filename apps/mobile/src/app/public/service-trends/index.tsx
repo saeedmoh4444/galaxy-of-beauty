@@ -17,9 +17,9 @@ export default function ServiceTrendsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().serviceTrends.current.query() as Promise<ServiceTrend[]>)
-      .then((d: ServiceTrend[]) => {
-        setData(d || []);
+    (typedTrpc().serviceTrends.trends.query() as unknown as Promise<{ monthly: ServiceTrend[] }>)
+      .then((d) => {
+        setData(d?.monthly ?? []);
         setLoading(false);
         setRefreshing(false);
       })

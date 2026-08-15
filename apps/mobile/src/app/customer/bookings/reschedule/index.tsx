@@ -32,7 +32,7 @@ export default function RescheduleScreen(): JSX.Element {
         status: 'ACCEPTED',
         page: 1,
         limit: LARGE_PAGE_SIZE,
-      }) as Promise<BookingsListResult>
+      }) as unknown as Promise<BookingsListResult>
     )
       .then((d: BookingsListResult) => {
         setBookings(d?.bookings || []);

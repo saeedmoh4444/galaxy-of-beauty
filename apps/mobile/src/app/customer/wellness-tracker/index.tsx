@@ -18,7 +18,7 @@ export default function WellnessTrackerScreen(): JSX.Element {
     else setLoading(true);
     typedTrpc()
       .wellnessTracker.today.query()
-      .then((d: TodayHealthData) => {
+      .then((d) => {
         setData(d);
         setLoading(false);
         setRefreshing(false);

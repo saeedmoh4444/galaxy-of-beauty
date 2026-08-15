@@ -20,9 +20,9 @@ export default function GalleryDetailScreen(): JSX.Element {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
       typedTrpc()
-        .gallery.photos.query({ technicianId: parseInt(technicianId, 10) })
-        .then((d: GalleryPhoto[]) => {
-          setPhotos(d || []);
+        .gallery.byTechnician.query({ technicianId: parseInt(technicianId, 10) })
+        .then((d) => {
+          setPhotos((d?.items ?? []) as unknown as GalleryPhoto[]);
           setLoading(false);
           setRefreshing(false);
         })

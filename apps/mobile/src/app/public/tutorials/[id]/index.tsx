@@ -29,9 +29,9 @@ export default function TutorialDetailScreen(): JSX.Element {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
       typedTrpc()
-        .tutorials.get.query({ id: parseInt(id, 10) })
-        .then((d: Tutorial) => {
-          setData(d);
+        .tutorials.getById.query({ id: parseInt(id, 10) })
+        .then((d) => {
+          setData(d as unknown as Tutorial);
           setLoading(false);
           setRefreshing(false);
         })

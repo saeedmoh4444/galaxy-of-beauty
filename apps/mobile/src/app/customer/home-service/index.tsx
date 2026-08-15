@@ -18,8 +18,8 @@ export default function HomeServiceScreen(): JSX.Element {
     else setLoading(true);
     typedTrpc()
       .homeService.estimate.query({ city: DEFAULT_SAUDI_CITY /* TODO: use user location */ })
-      .then((d: HomeServiceEstimate) => {
-        setEstimate(d);
+      .then((d) => {
+        setEstimate(d as unknown as HomeServiceEstimate);
         setLoading(false);
         setRefreshing(false);
       })

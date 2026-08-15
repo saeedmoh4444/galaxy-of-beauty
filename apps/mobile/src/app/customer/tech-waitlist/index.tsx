@@ -16,6 +16,7 @@ interface MyWaitlist {
   id: number;
   name?: string;
   position?: number;
+  technicianId?: number;
   technicianName?: string;
   status?: string;
   preferredDate?: string;
@@ -47,12 +48,19 @@ export default function TechWaitlistScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const join = (techId: number) => {
-    (typedTrpc().techWaitlist.join.mutate({ technicianId: techId }) as Promise<unknown>).then(
-      () => fetch(),
-    );
+    const techName =
+      popular.find((t) => t.id === techId)?.name ??
+      myList.find((m) => m.technicianId === techId)?.technicianName ??
+      '';
+    (
+      typedTrpc().techWaitlist.join.mutate({
+        technicianId: techId,
+        technicianName: techName,
+      }) as Promise<unknown>
+    ).then(() => fetch());
   };
   const leave = (techId: number) => {
-    (typedTrpc().techWaitlist.leave.mutate({ technicianId: techId }) as Promise<unknown>).then(
+    (typedTrpc().techWaitlist.leave.mutate({ id: techId }) as Promise<unknown>).then(
       () => fetch(),
     );
   };

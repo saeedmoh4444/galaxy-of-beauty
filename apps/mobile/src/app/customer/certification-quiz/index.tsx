@@ -17,7 +17,7 @@ export default function CertificationQuizScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().certificationQuiz.list.query()
+    (typedTrpc().certificationQuiz.quizzes.query() as unknown as Promise<QuizSummary[]>)
       .then((d: QuizSummary[] | undefined) => {
         setData(d || []);
         setLoading(false);

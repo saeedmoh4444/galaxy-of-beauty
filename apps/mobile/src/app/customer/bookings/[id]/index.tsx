@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const SL: Record<string, string> = {
@@ -28,7 +28,7 @@ const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900
 
 export default function BookingDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const detail = typedTrpc().bookings?.getById?.useQuery?.(
+  const detail = trpc.bookings.getById.useQuery(
     { id: Number(id) },
     { enabled: !!id },
   ) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };

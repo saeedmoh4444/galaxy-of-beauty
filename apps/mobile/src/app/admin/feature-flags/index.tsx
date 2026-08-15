@@ -36,7 +36,7 @@ export default function FeatureFlagsScreen(): JSX.Element {
   }, [fetch]);
 
   const toggle = (key: string) => {
-    typedTrpc().featureFlags.toggle.mutate({ flagKey: key }).then(() => fetch());
+    typedTrpc().featureFlags.toggle.mutate({ key }).then(() => fetch());
   };
 
   if (loading) return <SkeletonList count={5} />;

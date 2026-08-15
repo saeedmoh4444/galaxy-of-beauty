@@ -44,7 +44,7 @@ export default function TechOnboardingScreen(): JSX.Element {
   const submitDoc = (stepKey: string) => {
     (typedTrpc().techOnboarding.submitDoc.mutate({
       stepKey,
-      url: 'document-url',
+      documentUrl: 'document-url',
     }) as Promise<unknown>).then(() => fetch());
   };
   if (loading) return <SkeletonList count={4} />;

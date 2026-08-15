@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function ServiceRecommenderScreen(): JSX.Element {
-  const recs = typedTrpc().serviceRecommender?.getRecommendations?.useQuery?.({}) ?? {
+  const recs = trpc.serviceRecommender.myResults.useQuery() ?? {
     data: null,
     isLoading: false,
     isError: false,

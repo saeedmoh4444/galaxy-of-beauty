@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -11,13 +11,13 @@ const COLORS = {
 };
 
 export default function TechProfileScreen(): JSX.Element {
-  const profile = typedTrpc().technicians?.myProfile?.useQuery?.() ?? {
+  const profile = trpc.users.getMe.useQuery() ?? {
     data: null,
     isLoading: false,
     isError: false,
     refetch: () => {},
   };
-  const data = profile.data as Record<string, unknown> | undefined;
+  const data = profile.data as unknown as Record<string, unknown> | undefined;
 
   return (
     <ScreenState

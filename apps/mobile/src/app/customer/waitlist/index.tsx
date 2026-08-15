@@ -16,8 +16,7 @@ export default function WaitlistScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .waitlist.myEntries.query()
+    (typedTrpc().waitlist.listMyEntries.query() as unknown as Promise<WaitlistEntry[]>)
       .then((d: WaitlistEntry[]) => {
         setData(d || []);
         setLoading(false);

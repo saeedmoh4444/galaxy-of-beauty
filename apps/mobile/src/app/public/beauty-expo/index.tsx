@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
@@ -12,13 +12,13 @@ interface ExpoEvent {
 }
 
 export default function BeautyExpoScreen(): JSX.Element {
-  const expo = typedTrpc().beautyExpo?.list?.useQuery?.({}) ?? {
+  const expo = trpc.beautyExpo.booths.useQuery() ?? {
     data: null,
     isLoading: false,
     isError: false,
     refetch: () => {},
   };
-  const data = expo.data as ExpoEvent[] | undefined;
+  const data = expo.data as unknown as ExpoEvent[] | undefined;
 
   return (
     <ScreenState

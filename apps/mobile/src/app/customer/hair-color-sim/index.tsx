@@ -17,7 +17,7 @@ export default function HairColorSimScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().hairColorSim.colors.query() as Promise<HairColor[]>)
+    (typedTrpc().hairColorSim.colors.query() as unknown as Promise<HairColor[]>)
       .then((d) => {
         setColors(d || []);
         setLoading(false);

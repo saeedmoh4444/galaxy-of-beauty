@@ -17,7 +17,7 @@ export default function FamilyAccountScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().familyAccount.members.query()
+    (typedTrpc().familyAccount.list.query() as unknown as Promise<FamilyMember[]>)
       .then((d: FamilyMember[] | undefined) => {
         setData(d || []);
         setLoading(false);

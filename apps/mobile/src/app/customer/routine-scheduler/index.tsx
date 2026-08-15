@@ -19,7 +19,7 @@ export default function RoutineSchedulerScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().routineScheduler.list.query() as Promise<RoutineStep[]>)
+    (typedTrpc().routineScheduler.myRoutines.query() as unknown as Promise<RoutineStep[]>)
       .then((d) => {
         setData(d || []);
         setLoading(false);

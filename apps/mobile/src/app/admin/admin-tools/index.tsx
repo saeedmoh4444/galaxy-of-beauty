@@ -11,9 +11,9 @@ interface FeatureFlag {
 export default function AdminToolsScreen(): JSX.Element {
   const [flags, setFlags] = useState<FeatureFlag[]>([]);
   useEffect(() => {
-    typedTrpc().featureFlags?.list
-      ?.query()
-      .then((d: FeatureFlag[]) => setFlags(d ?? []))
+    typedTrpc()
+      .featureFlags.list.query()
+      .then((d) => setFlags((d ?? []) as FeatureFlag[]))
       .catch(() => {});
   }, []);
   return (

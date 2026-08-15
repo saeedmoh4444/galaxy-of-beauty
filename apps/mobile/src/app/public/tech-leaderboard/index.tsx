@@ -18,9 +18,18 @@ export default function TechLeaderboardScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().techLeaderboard.rankings.query({ sortBy: 'rating' }) as Promise<LeaderboardEntry[]>)
+    (typedTrpc().techLeaderboard.leaderboard.query({ category: 'rating' }) as unknown as Promise<
+      Array<{ id?: number; name?: string; rating?: number; totalBookings?: number }>
+    >)
       .then((d) => {
-        setBoard(d || []);
+        setBoard(
+          (d ?? []).map((t) => ({
+            id: t.id,
+            name: t.name,
+            rating: t.rating,
+            bookings: t.totalBookings,
+          })),
+        );
         setLoading(false);
         setRefreshing(false);
       })

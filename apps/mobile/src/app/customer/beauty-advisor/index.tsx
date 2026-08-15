@@ -38,10 +38,10 @@ export default function BeautyAdvisorScreen(): JSX.Element {
     setInput('');
     setLoading(true);
     try {
-      const r = await typedTrpc().aiAssistant.ask.mutate({ question: msg });
+      const r = await typedTrpc().aiAssistant.ask.query({ question: msg });
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: r.answer ?? r.message ?? 'عذراً، لم أستطع الإجابة.' },
+        { role: 'assistant', content: r.answer ?? 'عذراً، لم أستطع الإجابة.' },
       ]);
     } catch {
       setMessages((prev) => [

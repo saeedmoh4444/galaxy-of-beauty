@@ -51,7 +51,11 @@ export default function BnplScreen(): JSX.Element {
   const submit = () => {
     setLoading(true);
     (
-      typedTrpc().bnpl.createPlan.mutate({ amount, provider, installments: inst }) as Promise<BnplPlanResult>
+      typedTrpc().bnpl.createPlan.mutate({
+        amount,
+        provider: provider as 'tabby' | 'tamara',
+        installments: inst,
+      }) as Promise<BnplPlanResult>
     )
       .then((d: BnplPlanResult) => {
         setResult(d);

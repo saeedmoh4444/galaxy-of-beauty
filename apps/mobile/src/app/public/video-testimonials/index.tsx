@@ -19,9 +19,9 @@ export default function VideoTestimonialsScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     typedTrpc()
-      .videoTestimonials.list.query()
-      .then((d: VideoTestimonial[]) => {
-        setVideos(d || []);
+      .videoTestimonials.feed.query({})
+      .then((d) => {
+        setVideos((d?.items ?? []) as unknown as VideoTestimonial[]);
         setLoading(false);
         setRefreshing(false);
       })

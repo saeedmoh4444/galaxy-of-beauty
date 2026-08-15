@@ -5,8 +5,8 @@ import { typedTrpc } from '@/lib/trpc-react';
 
 interface FaqItem {
   id?: number;
-  questionAr?: string;
-  answerAr?: string;
+  question?: string;
+  answer?: string;
 }
 
 export default function BeautyFaqScreen(): JSX.Element {
@@ -17,8 +17,9 @@ export default function BeautyFaqScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     typedTrpc()
-      .beautyFaq.list.query()
-      .then((d: FaqItem[]) => {
+      .beautyFaq.search.query({})
+      .then((d) => {
+        setFaqs(d as unknown as FaqItem[]);
         setFaqs(d || []);
         setLoading(false);
         setRefreshing(false);
@@ -47,8 +48,8 @@ export default function BeautyFaqScreen(): JSX.Element {
       <Text style={styles.t}> الأسئلة الشائعة</Text>
       {faqs.map((f, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.fq}>{f.questionAr}</Text>
-          <Text style={styles.fa}>{f.answerAr}</Text>
+          <Text style={styles.fq}>{f.question}</Text>
+          <Text style={styles.fa}>{f.answer}</Text>
         </View>
       ))}
     </ScrollView>

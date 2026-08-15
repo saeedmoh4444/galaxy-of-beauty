@@ -21,7 +21,7 @@ export default function GeofenceOffersScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     (
-      typedTrpc().geofenceOffers.nearby.query({
+      typedTrpc().geofenceOffers.nearMe.query({
         city: DEFAULT_SAUDI_CITY /* TODO: from user location */,
       }) as Promise<GeofenceOffer[]>
     )
@@ -39,7 +39,8 @@ export default function GeofenceOffersScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const optIn = () => {
-    typedTrpc().geofenceOffers.optIn.mutate({}) as Promise<unknown>;
+    // No opt-in mutation exists on the server; refresh the offers list instead
+    fetch();
   };
   if (loading) return <SkeletonList count={4} />;
   return (

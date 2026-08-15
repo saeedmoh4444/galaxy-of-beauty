@@ -19,9 +19,11 @@ export default function TechnicianCompareScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().technicians.list.query({}) as Promise<CompareTechnician[]>)
+    (typedTrpc().technicians.list.query({}) as unknown as Promise<{
+      items: CompareTechnician[];
+    }>)
       .then((d) => {
-        setTechs(d || []);
+        setTechs(d?.items ?? []);
         setLoading(false);
         setRefreshing(false);
       })

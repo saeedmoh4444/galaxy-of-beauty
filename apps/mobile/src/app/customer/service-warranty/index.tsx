@@ -17,8 +17,7 @@ export default function ServiceWarrantyScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .serviceWarranty.list.query()
+    (typedTrpc().serviceWarranty.myClaims.query() as unknown as Promise<ServiceWarranty[]>)
       .then((d: ServiceWarranty[]) => {
         setData(d || []);
         setLoading(false);

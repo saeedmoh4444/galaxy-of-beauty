@@ -17,7 +17,7 @@ export default function BehindScenesScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().behindScenes.list
+    typedTrpc().behindScenes.feed
       .query()
       .then((d: BehindScenesVideo[]) => {
         setVideos(d || []);

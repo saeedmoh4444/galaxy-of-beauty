@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc, typedTrpc } from '@/lib/trpc-react';
 
 interface ChatMessage {
   message?: string;
@@ -10,7 +10,7 @@ interface ChatMessage {
 
 export default function LiveChatScreen() {
   const [msg, setMsg] = useState('');
-  const { data, refetch } = typedTrpc().liveChat.history.useQuery() as {
+  const { data, refetch } = trpc.liveChat.history.useQuery() as {
     data?: ChatMessage[];
     refetch: () => void;
   };

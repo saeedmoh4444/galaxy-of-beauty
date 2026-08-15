@@ -20,7 +20,7 @@ export default function ProductCompareScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().productCompare.products.query() as Promise<CompareProduct[]>)
+    (typedTrpc().productCompare.list.query() as unknown as Promise<CompareProduct[]>)
       .then((d: CompareProduct[]) => {
         setProducts(d || []);
         setLoading(false);

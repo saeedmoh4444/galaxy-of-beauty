@@ -12,8 +12,10 @@ module.exports = {
   ignorePatterns: ['dist/', 'build/', 'node_modules/', '*.config.*'],
   overrides: [
     {
-      // Seed scripts are dev-only tooling with large literal datasets
+      // Seed scripts are dev-only tooling with large literal datasets.
+      // They live outside tsconfig rootDir, so drop the project parser config.
       files: ['prisma/**/*.ts'],
+      parserOptions: { project: null },
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-unused-vars': 'off',

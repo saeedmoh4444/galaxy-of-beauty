@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -165,9 +166,9 @@ export default function BeautyRoutinePage(): JSX.Element {
             )}
 
             <div className="text-center">
-              <a href="/services" className="inline-block">
+              <Link href="/services" className="inline-block">
                 <Button variant="outline">احجزي خدمات العناية</Button>
-              </a>
+              </Link>
             </div>
           </>
         )}

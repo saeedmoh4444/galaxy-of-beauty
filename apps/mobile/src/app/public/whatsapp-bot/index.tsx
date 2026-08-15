@@ -9,18 +9,18 @@ interface WhatsAppInfo {
 }
 
 export default function WhatsAppBotScreen(): JSX.Element {
-  const [setData] = useState<WhatsAppInfo | null>(null);
-  const [, loading, setLoading] = useState(true);
+  const [, setData] = useState<WhatsAppInfo | null>(null);
+  const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     typedTrpc()
-      .whatsappBot.info.query()
+      .whatsappBot.commands.query()
       .catch(() => ({}))
-      .then((d: WhatsAppInfo) => {
-        setData(d || {});
+      .then((d) => {
+        setData((d || {}) as unknown as WhatsAppInfo);
         setLoading(false);
         setRefreshing(false);
       })

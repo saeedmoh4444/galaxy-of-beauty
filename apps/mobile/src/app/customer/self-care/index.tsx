@@ -17,8 +17,7 @@ export default function SelfCareScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .selfCare.activities.query()
+    (typedTrpc().selfCare.history.query({}) as unknown as Promise<SelfCareActivity[]>)
       .then((d: SelfCareActivity[]) => {
         setData(d || []);
         setLoading(false);

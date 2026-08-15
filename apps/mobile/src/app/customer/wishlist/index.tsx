@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc, typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = {
@@ -13,7 +13,7 @@ const COLORS = {
 
 export default function WishlistScreen(): JSX.Element {
   const wishlist = trpc.wishlist.list.useQuery();
-  const remove = typedTrpc().wishlist?.remove?.useMutation?.();
+  const remove = trpc.wishlist.remove.useMutation();
 
   const data = wishlist.data as unknown[] | undefined;
 

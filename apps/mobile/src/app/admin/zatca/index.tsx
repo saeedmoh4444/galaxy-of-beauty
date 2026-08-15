@@ -17,8 +17,8 @@ export default function AdminZatcaScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().zatca.invoices.query({}).then((d: ZatcaInvoiceItem[]) => {
-        setData(d || []);
+    typedTrpc().zatca.listInvoices.query({}).then((d) => {
+        setData((d?.items ?? []) as unknown as ZatcaInvoiceItem[]);
         setLoading(false);
         setRefreshing(false);
       })

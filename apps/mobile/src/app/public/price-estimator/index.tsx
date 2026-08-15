@@ -26,9 +26,9 @@ export default function PriceEstimatorScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().priceEstimator.services.query() as Promise<EstimatorService[]>)
+    (typedTrpc().services.list.query({}) as unknown as Promise<{ items: EstimatorService[] }>)
       .then((d) => {
-        setServices(d || []);
+        setServices(d?.items ?? []);
         setLoading(false);
         setRefreshing(false);
       })

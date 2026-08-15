@@ -17,9 +17,11 @@ export default function GalleryScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().gallery.photos.query() as Promise<GalleryPhoto[]>)
-      .then((d: GalleryPhoto[]) => {
-        setPhotos(d || []);
+    (typedTrpc().gallery.byTechnician.query({ technicianId: 1 }) as unknown as Promise<{
+      items: GalleryPhoto[];
+    }>)
+      .then((d) => {
+        setPhotos(d?.items ?? []);
         setLoading(false);
         setRefreshing(false);
       })

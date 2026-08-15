@@ -35,7 +35,7 @@ export default function ShopTheLookScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().lookbook.list.query() as Promise<Look[]>)
+    (typedTrpc().lookbook.current.query() as unknown as Promise<Look[]>)
       .then((d: Look[]) => {
         setLooks(d || []);
         setLoading(false);

@@ -36,7 +36,9 @@ export default function DiscoverScreen(): JSX.Element {
   if (loading) return <SkeletonList count={6} />;
   if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;
 
-  const trendingItems = (trending as TrendingItem[] | undefined) ?? [];
+  const trendingItems =
+    ((trending as unknown as { popularServices?: TrendingItem[] } | null)?.popularServices ??
+      []) as TrendingItem[];
   const catItems = (categories as DiscoverCategory[] | undefined) ?? [];
 
   return (

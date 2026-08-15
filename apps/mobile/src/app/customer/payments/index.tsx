@@ -1,6 +1,6 @@
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 import { formatCurrency, EXTENDED_PAGE_SIZE } from '@galaxy/ui';
 
 const COLORS = {
@@ -13,13 +13,13 @@ const COLORS = {
 };
 
 export default function PaymentsScreen(): JSX.Element {
-  const payments = typedTrpc().payments?.list?.useQuery?.({ limit: EXTENDED_PAGE_SIZE }) ?? {
+  const payments = trpc.wallet.getTransactions.useQuery({ page: 1, limit: EXTENDED_PAGE_SIZE }) ?? {
     data: null,
     isLoading: false,
     isError: false,
     refetch: () => {},
   };
-  const data = payments.data as unknown[] | undefined;
+  const data = payments.data?.transactions as unknown[] | undefined;
 
   return (
     <ScreenState

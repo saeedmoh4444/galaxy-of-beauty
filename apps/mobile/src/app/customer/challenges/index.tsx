@@ -33,7 +33,7 @@ export default function ChallengesScreen(): JSX.Element {
     else setLoading(true);
     Promise.all([
       typedTrpc().challenges.list.query() as Promise<ChallengeItem[]>,
-      typedTrpc().challenges.progress.query() as Promise<ChallengeProgress>,
+      typedTrpc().challenges.myProgress.query() as Promise<ChallengeProgress>,
     ])
       .then(([c, p]: [ChallengeItem[], ChallengeProgress]) => {
         setChallenges(c || []);

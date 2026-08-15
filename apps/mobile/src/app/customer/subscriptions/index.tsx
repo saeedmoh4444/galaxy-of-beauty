@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = {
@@ -35,14 +35,14 @@ interface PlansQueryResult {
 
 export default function SubscriptionsScreen(): JSX.Element {
   const sub: SubscriptionQueryResult =
-    (typedTrpc().subscriptions.getMySubscription?.useQuery?.({}) as SubscriptionQueryResult | undefined) ?? {
+    (trpc.subscriptions.getMySubscription.useQuery() as SubscriptionQueryResult | undefined) ?? {
       data: null,
       isLoading: false,
       isError: false,
       refetch: () => {},
     };
   const plansQ: PlansQueryResult =
-    (typedTrpc().subscriptions.getPlans?.useQuery?.({}) as PlansQueryResult | undefined) ?? { data: null };
+    (trpc.subscriptions.getPlans.useQuery() as PlansQueryResult | undefined) ?? { data: null };
 
   const subscription = sub.data ?? undefined;
   const plans = plansQ.data ?? [];

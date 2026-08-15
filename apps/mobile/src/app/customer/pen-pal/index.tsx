@@ -18,8 +18,8 @@ export default function PenPalScreen(): JSX.Element {
     else setLoading(true);
     typedTrpc()
       .penPal.match.query()
-      .then((d: PenPalMatch) => {
-        setData(d);
+      .then((d) => {
+        setData((d?.[0] ?? null) as unknown as PenPalMatch);
         setLoading(false);
         setRefreshing(false);
       })

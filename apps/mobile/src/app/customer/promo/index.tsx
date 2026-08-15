@@ -1,7 +1,7 @@
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = {
@@ -15,7 +15,7 @@ const COLORS = {
 
 export default function PromoScreen(): JSX.Element {
   const [code, setCode] = useState('');
-  const promos = typedTrpc().promo?.listActive?.useQuery?.({}) ?? {
+  const promos = trpc.promo.list.useQuery() ?? {
     data: null,
     isLoading: false,
     isError: false,

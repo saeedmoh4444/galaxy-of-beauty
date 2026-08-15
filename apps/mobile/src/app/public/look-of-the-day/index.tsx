@@ -19,9 +19,9 @@ export default function LookOfTheDayScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     typedTrpc()
-      .lookOfTheDay.list.query()
-      .then((d: LookOfTheDay[]) => {
-        setLooks(d || []);
+      .lookOfTheDay.feed.query({})
+      .then((d) => {
+        setLooks((d?.items ?? []) as unknown as LookOfTheDay[]);
         setLoading(false);
         setRefreshing(false);
       })

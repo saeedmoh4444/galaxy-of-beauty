@@ -18,7 +18,7 @@ export default function PriceDropAlertsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().priceDropAlerts.list.query() as Promise<PriceDropAlert[]>)
+    (typedTrpc().priceDropAlerts.myAlerts.query() as unknown as Promise<PriceDropAlert[]>)
       .then((d) => {
         setData(d || []);
         setLoading(false);

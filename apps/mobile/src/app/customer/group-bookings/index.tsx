@@ -27,7 +27,7 @@ export default function GroupBookingsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().groupBookings.list.query() as Promise<GroupBookingSummary[]>)
+    (typedTrpc().groupBookings.myGroups.query() as unknown as Promise<GroupBookingSummary[]>)
       .then((d) => {
         setGroups(d || []);
         setLoading(false);

@@ -17,10 +17,6 @@ interface Payout {
   amount?: number;
 }
 
-interface PayoutListResponse {
-  payouts?: Payout[];
-}
-
 export default function AdminPayoutsScreen(): JSX.Element {
   const [data, setData] = useState<Payout[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,8 +27,8 @@ export default function AdminPayoutsScreen(): JSX.Element {
     else setLoading(true);
     typedTrpc()
       .payouts.listForAdmin.query({})
-      .then((d: PayoutListResponse) => {
-        setData(d?.payouts || []);
+      .then((d) => {
+        setData((d?.payouts ?? []) as unknown as Payout[]);
         setLoading(false);
         setRefreshing(false);
       })

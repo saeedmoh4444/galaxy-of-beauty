@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc, typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -36,7 +36,7 @@ export default function BookingsScreen(): JSX.Element {
   const [page] = useState(1);
   const bookings = trpc.bookings.list.useQuery({ page, limit: DEFAULT_PAGE_SIZE });
   const data = bookings.data?.bookings as unknown[] | undefined;
-  const loyalty = typedTrpc().loyalty?.getAccount?.useQuery?.();
+  const loyalty = trpc.loyalty.myAccount.useQuery();
 
   return (
     <ScreenState

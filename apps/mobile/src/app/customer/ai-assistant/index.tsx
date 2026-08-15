@@ -26,7 +26,7 @@ export default function AIAssistantScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().aiAssistant.history.query() as Promise<AssistantMessage[]>)
+    (typedTrpc().liveChat.history.query() as Promise<AssistantMessage[]>)
       .then((d) => {
         setMessages(d || []);
         setLoading(false);

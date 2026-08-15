@@ -51,7 +51,7 @@ export default function SmartScheduleScreen(): JSX.Element {
   const findSlots = (serviceId: number) => {
     setSelectedSvc(serviceId);
     setSearching(true);
-    (typedTrpc().aiFeatures.smartSchedule.query({ serviceId }) as Promise<SmartScheduleData>)
+    (typedTrpc().aiFeatures.smartSchedule.query({ serviceId }) as unknown as Promise<SmartScheduleData>)
       .then((d: SmartScheduleData) => {
         setSlots(d);
         setSearching(false);

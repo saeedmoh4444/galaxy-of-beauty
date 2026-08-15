@@ -48,7 +48,7 @@ export default function CalendarSyncScreen(): JSX.Element {
     setError('مزامنة تقويم Google غير متوفرة في التطبيق حالياً');
   };
   const disconnect = () => {
-    (typedTrpc().calendarSync.disconnect.mutate({})).then(() => fetch());
+    typedTrpc().calendarSync.disconnect.mutate().then(() => fetch());
   };
   if (loading) return <SkeletonList count={3} />;
   const connected = status?.connected ?? false;

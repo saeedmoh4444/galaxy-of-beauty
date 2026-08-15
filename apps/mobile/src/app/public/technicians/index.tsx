@@ -22,12 +22,12 @@ export default function TechniciansScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().technicians.list.query());
+  } = useQuery(() => typedTrpc().technicians.list.query({}));
 
   if (loading) return <SkeletonList count={6} />;
   if (error) return <ErrorAlert message="فشل تحميل الفنيات" onRetry={refetch} />;
 
-  const items = (techs ?? []) as Technician[];
+  const items = (((techs as unknown as { items?: Technician[] } | null)?.items ?? []) as Technician[]);
 
   return (
     <ScrollView

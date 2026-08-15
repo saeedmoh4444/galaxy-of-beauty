@@ -10,10 +10,6 @@ interface BookingItem {
   status?: string;
 }
 
-interface BookingListResponse {
-  bookings?: BookingItem[];
-}
-
 export default function AdminBookingsScreen(): JSX.Element {
   const [data, setData] = useState<BookingItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,8 +18,8 @@ export default function AdminBookingsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().bookings.list.query({ page: 1, limit: BULK_PAGE_SIZE }).then((d: BookingListResponse) => {
-        setData(d?.bookings || []);
+    typedTrpc().bookings.list.query({ page: 1, limit: BULK_PAGE_SIZE }).then((d) => {
+        setData((d?.bookings ?? []) as unknown as BookingItem[]);
         setLoading(false);
         setRefreshing(false);
       })

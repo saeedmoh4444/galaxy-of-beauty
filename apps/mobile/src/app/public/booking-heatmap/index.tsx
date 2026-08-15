@@ -17,9 +17,9 @@ export default function BookingHeatmapScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     typedTrpc()
-      .bookingHeatmap.data.query()
-      .then((d: HeatmapData) => {
-        setData(d);
+      .bookingHeatmap.data.query({})
+      .then((d) => {
+        setData(d as unknown as HeatmapData);
         setLoading(false);
         setRefreshing(false);
       })

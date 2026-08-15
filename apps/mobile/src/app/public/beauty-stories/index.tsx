@@ -22,7 +22,7 @@ export default function BeautyStoriesScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().beautyStories.list.query());
+  } = useQuery(() => typedTrpc().beautyStories.feed.query());
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل القصص" onRetry={refetch} />;

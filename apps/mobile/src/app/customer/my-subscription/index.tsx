@@ -17,7 +17,7 @@ export default function MySubscriptionScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     typedTrpc()
-      .subscriptions.getMySubscription.query({})
+      .subscriptions.getMySubscription.query()
       .then((d: SubscriptionData) => {
         setData(d);
         setLoading(false);

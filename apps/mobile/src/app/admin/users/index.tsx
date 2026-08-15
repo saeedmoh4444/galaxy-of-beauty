@@ -21,7 +21,7 @@ export default function AdminUsersScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().users.listAll.query({}).then((d: AdminUsersResponse) => {
+    typedTrpc().admin.listCustomers.query({}).then((d: AdminUsersResponse) => {
         setData(d?.items || []);
         setLoading(false);
         setRefreshing(false);

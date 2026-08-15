@@ -20,7 +20,7 @@ export default function ServiceCompareScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().services.list.query({}) as Promise<{ items?: CompareService[] }>)
+    (typedTrpc().services.list.query({}) as unknown as Promise<{ items?: CompareService[] }>)
       .then((d) => {
         setServices(d?.items || []);
         setLoading(false);

@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { typedTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function FavoritesScreen(): JSX.Element {
-  const favs = typedTrpc().favorites?.list?.useQuery?.() ?? {
+  const favs = trpc.favorites.list.useQuery() ?? {
     data: null,
     isLoading: false,
     isError: false,

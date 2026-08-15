@@ -45,7 +45,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
     try {
       await typedTrpc().beautyReminders.create.mutate({
         title,
-        category: cat,
+        category: cat as 'makeup' | 'hair' | 'nails' | 'skincare' | 'body' | 'other',
         intervalDays: interval,
       });
       setTitle('');
