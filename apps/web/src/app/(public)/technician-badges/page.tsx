@@ -3,6 +3,7 @@
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState } from '@galaxy/ui';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Badge {
   id: number;
@@ -113,10 +114,10 @@ export default function TechnicianBadgesPage(): JSX.Element {
                 className="group text-center transition-all hover:shadow-xl hover:-translate-y-1"
               >
                 <div
-                  className={`mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br ${meta.gradient} text-4xl shadow-lg transition-transform group-hover:scale-110`}
+                  className={`relative mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br ${meta.gradient} text-4xl shadow-lg transition-transform group-hover:scale-110`}
                 >
                   {badge.iconUrl ? (
-                    <img src={badge.iconUrl} alt={name} className="h-12 w-12 object-contain" />
+                    <Image src={badge.iconUrl} alt={name} fill className="object-contain p-4" />
                   ) : (
                     meta.emoji
                   )}

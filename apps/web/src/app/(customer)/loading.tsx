@@ -1,12 +1,15 @@
+import Image from 'next/image';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CustomerLoading(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="flex flex-col items-center justify-center py-24">
-        <img
+        <Image
           src="/logo.png"
           alt="جالكسي بيوتي"
+          width={56}
+          height={56}
           className="mb-6 h-14 w-14 animate-pulse rounded-2xl object-cover shadow-lg"
         />
         <div className="flex gap-1">

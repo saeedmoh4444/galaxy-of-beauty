@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Script from 'next/script';
 import Link from 'next/link';
+import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import {
   Card,
@@ -162,7 +163,7 @@ export default function SalonMapPage(): JSX.Element {
         <div className="mx-auto max-w-6xl px-4 py-3">
           <div className="flex items-center gap-3 overflow-x-auto pb-1">
             <span className="text-sm font-bold text-text-primary dark:text-gray-300 shrink-0">
-               المدن:
+              المدن:
             </span>
             {cities?.slice(0, 10).map((c) => (
               <button
@@ -216,16 +217,15 @@ export default function SalonMapPage(): JSX.Element {
             <button
               onClick={() => setSelectedTechnician(null)}
               className="absolute top-3 right-3 text-text-tertiary hover:text-text-secondary text-lg"
-            >
-              
-            </button>
+            ></button>
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-white text-lg font-bold">
+              <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-white text-lg font-bold">
                 {selectedTechnician.avatarUrl ? (
-                  <img
+                  <Image
                     src={selectedTechnician.avatarUrl}
                     alt=""
-                    className="h-12 w-12 rounded-full object-cover"
+                    fill
+                    className="rounded-full object-cover"
                   />
                 ) : (
                   selectedTechnician.name[0]

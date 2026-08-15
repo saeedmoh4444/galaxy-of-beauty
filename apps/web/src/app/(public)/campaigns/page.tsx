@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import {
   Card,
@@ -109,7 +110,7 @@ export default function CampaignsPage(): JSX.Element {
                   >
                     <div className="relative flex h-36 items-center justify-center bg-gradient-to-br from-red-100 to-amber-100 dark:from-red-950 dark:to-amber-950 text-5xl">
                       {c.imageUrl ? (
-                        <img src={c.imageUrl} alt="" className="h-full w-full object-cover" />
+                        <Image src={c.imageUrl} alt="" fill className="object-cover" />
                       ) : (
                         <span></span>
                       )}
@@ -144,7 +145,7 @@ export default function CampaignsPage(): JSX.Element {
                             }}
                             className="mr-auto text-xs text-brand-500 hover:text-brand-700"
                           >
-                             نسخ
+                            نسخ
                           </button>
                         </div>
                       )}

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -33,7 +34,13 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
       <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/80 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2">
-            <img src="/logo.png" alt="جالكسي بيوتي" className="h-10 w-10 rounded-lg object-cover" />
+            <Image
+              src="/logo.png"
+              alt="جالكسي بيوتي"
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded-lg object-cover"
+            />
             <span className="text-xl font-bold text-brand-600">جالكسي بيوتي</span>
           </Link>
 
@@ -83,9 +90,11 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <Link href="/" className="flex items-center gap-2">
-                <img
+                <Image
                   src="/logo.png"
                   alt="جالكسي بيوتي"
+                  width={40}
+                  height={40}
                   className="h-10 w-10 rounded-lg object-cover"
                 />
                 <span className="text-lg font-bold text-brand-600">جالكسي بيوتي</span>
@@ -124,7 +133,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
                   الصناديق الشهرية
                 </Link>
                 <Link href="/services/surprise-me" className="block hover:text-brand-600">
-                   فاجئيني
+                  فاجئيني
                 </Link>
               </div>
             </div>

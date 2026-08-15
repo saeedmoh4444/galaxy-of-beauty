@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import Link from 'next/link';
@@ -107,12 +108,13 @@ export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): J
 
             return (
               <Card key={event.id} padding="md" className="flex flex-col">
-                <div className="mb-4 flex h-40 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
+                <div className="relative mb-4 flex h-40 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
                   {event.imageUrl ? (
-                    <img
+                    <Image
                       src={event.imageUrl}
                       alt={name}
-                      className="h-full w-full rounded-xl object-cover"
+                      fill
+                      className="rounded-xl object-cover"
                     />
                   ) : (
                     ''

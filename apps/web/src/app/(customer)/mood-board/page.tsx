@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -97,7 +98,7 @@ export default function MoodBoardPage(): JSX.Element {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-               لوحة الإلهام
+              لوحة الإلهام
             </h1>
             <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
               اجمعي صور إطلالاتكِ المفضلة ونظميها في لوحات — {totalPins} صورة في {allBoards.length}{' '}
@@ -136,11 +137,11 @@ export default function MoodBoardPage(): JSX.Element {
                 {/* Cover */}
                 <div className="relative h-44 overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700">
                   {board.coverUrl ? (
-                    <img
+                    <Image
                       src={board.coverUrl}
                       alt={board.name}
-                      className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                      loading="lazy"
+                      fill
+                      className="object-cover transition-transform group-hover:scale-105"
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center text-5xl"></div>
@@ -167,14 +168,9 @@ export default function MoodBoardPage(): JSX.Element {
                     {board.pins.slice(0, 5).map((pin) => (
                       <div
                         key={pin.id}
-                        className="h-16 flex-1 overflow-hidden bg-surface-muted dark:bg-gray-800 rounded"
+                        className="relative h-16 flex-1 overflow-hidden bg-surface-muted dark:bg-gray-800 rounded"
                       >
-                        <img
-                          src={pin.imageUrl}
-                          alt={pin.title}
-                          className="h-full w-full object-cover"
-                          loading="lazy"
-                        />
+                        <Image src={pin.imageUrl} alt={pin.title} fill className="object-cover" />
                       </div>
                     ))}
                     {board.pins.length > 5 && (
@@ -221,7 +217,10 @@ export default function MoodBoardPage(): JSX.Element {
         <Modal open={showCreate} onClose={() => setShowCreate(false)} title="لوحة جديدة">
           <div className="space-y-4">
             <div>
-              <label htmlFor="mb-name" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label
+                htmlFor="mb-name"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
                 اسم اللوحة
               </label>
               <input
@@ -234,7 +233,10 @@ export default function MoodBoardPage(): JSX.Element {
               />
             </div>
             <div>
-              <label htmlFor="mb-desc" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label
+                htmlFor="mb-desc"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
                 الوصف (اختياري)
               </label>
               <textarea
@@ -251,7 +253,7 @@ export default function MoodBoardPage(): JSX.Element {
                 إلغاء
               </Button>
               <Button onClick={handleCreateBoard} loading={createBoardMut.isPending}>
-                 إنشاء
+                إنشاء
               </Button>
             </div>
           </div>
@@ -261,7 +263,10 @@ export default function MoodBoardPage(): JSX.Element {
         <Modal open={showAddPin > 0} onClose={() => setShowAddPin(0)} title="إضافة صورة">
           <div className="space-y-4">
             <div>
-              <label htmlFor="mb-image" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label
+                htmlFor="mb-image"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
                 رابط الصورة
               </label>
               <input
@@ -274,6 +279,7 @@ export default function MoodBoardPage(): JSX.Element {
               />
               {pinImageUrl && (
                 <div className="mt-2 h-32 rounded-xl bg-surface-muted dark:bg-gray-800 overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- user-entered URL may not be an allowed remote host for the optimizer */}
                   <img
                     src={pinImageUrl}
                     alt="معاينة"
@@ -286,7 +292,10 @@ export default function MoodBoardPage(): JSX.Element {
               )}
             </div>
             <div>
-              <label htmlFor="mb-title" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label
+                htmlFor="mb-title"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
                 العنوان (اختياري)
               </label>
               <input
@@ -299,7 +308,10 @@ export default function MoodBoardPage(): JSX.Element {
               />
             </div>
             <div>
-              <label htmlFor="mb-tags" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label
+                htmlFor="mb-tags"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
                 وسوم (تفصل بفواصل)
               </label>
               <input
@@ -316,7 +328,7 @@ export default function MoodBoardPage(): JSX.Element {
                 إلغاء
               </Button>
               <Button onClick={handleAddPin} loading={addPinMut.isPending}>
-                 تثبيت
+                تثبيت
               </Button>
             </div>
           </div>

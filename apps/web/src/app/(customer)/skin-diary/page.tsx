@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -99,8 +100,8 @@ export default function SkinDiaryPage(): JSX.Element {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((e: Record<string, unknown>) => (
               <Card key={e.id as number} padding="md" className="group">
-                <div className="h-36 rounded-xl bg-surface-muted dark:bg-gray-800 overflow-hidden">
-                  <img src={e.imageUrl as string} alt="" className="h-full w-full object-cover" />
+                <div className="relative h-36 rounded-xl bg-surface-muted dark:bg-gray-800 overflow-hidden">
+                  <Image src={e.imageUrl as string} alt="" fill className="object-cover" />
                 </div>
                 <div className="mt-2 flex items-center justify-between">
                   <span className="rounded-full bg-brand-100 dark:bg-brand-900 px-2 py-0.5 text-xs font-medium">
@@ -137,7 +138,9 @@ export default function SkinDiaryPage(): JSX.Element {
         <Modal open={showAdd} onClose={() => setShowAdd(false)} title="إضافة للبوميات">
           <div className="space-y-3">
             <div>
-              <label htmlFor="skd-image" className="text-sm font-semibold">رابط الصورة</label>
+              <label htmlFor="skd-image" className="text-sm font-semibold">
+                رابط الصورة
+              </label>
               <input
                 id="skd-image"
                 type="url"
@@ -147,7 +150,9 @@ export default function SkinDiaryPage(): JSX.Element {
               />
             </div>
             <div>
-              <label htmlFor="skd-condition" className="text-sm font-semibold">حالة البشرة</label>
+              <label htmlFor="skd-condition" className="text-sm font-semibold">
+                حالة البشرة
+              </label>
               <select
                 id="skd-condition"
                 value={condition}
@@ -171,7 +176,9 @@ export default function SkinDiaryPage(): JSX.Element {
               />
             </div>
             <div>
-              <label htmlFor="skd-notes" className="text-sm font-semibold">ملاحظات</label>
+              <label htmlFor="skd-notes" className="text-sm font-semibold">
+                ملاحظات
+              </label>
               <textarea
                 id="skd-notes"
                 value={notes}
@@ -193,7 +200,7 @@ export default function SkinDiaryPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-               حفظ
+              حفظ
             </Button>
           </div>
         </Modal>

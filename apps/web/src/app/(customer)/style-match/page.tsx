@@ -95,6 +95,7 @@ export default function StyleMatchPage(): JSX.Element {
               />
               {photoPreview && (
                 <div className="mt-3 rounded-xl overflow-hidden h-40 bg-surface-muted dark:bg-gray-800">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- blob: URL from URL.createObjectURL cannot be passed to next/image */}
                   <img src={photoPreview} alt="معاينة" className="h-full w-full object-cover" />
                 </div>
               )}
@@ -135,9 +136,7 @@ export default function StyleMatchPage(): JSX.Element {
                       <button
                         onClick={() => removeColor(i)}
                         className="text-text-tertiary hover:text-red-500 text-xs"
-                      >
-                        
-                      </button>
+                      ></button>
                     )}
                   </div>
                 ))}
@@ -159,7 +158,7 @@ export default function StyleMatchPage(): JSX.Element {
                 className="w-full"
                 size="lg"
               >
-                 ابحثي عن إطلالات مشابهة
+                ابحثي عن إطلالات مشابهة
               </Button>
             </div>
           </div>
@@ -273,7 +272,7 @@ export default function StyleMatchPage(): JSX.Element {
                         className="mt-3 inline-block"
                       >
                         <Button size="sm" variant="ghost">
-                           شاهدي الدرس
+                          شاهدي الدرس
                         </Button>
                       </Link>
                     )}

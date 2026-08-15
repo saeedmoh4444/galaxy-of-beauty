@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/ui';
 
@@ -187,11 +188,11 @@ export default function TutorialsPage(): JSX.Element {
                   {/* Thumbnail */}
                   <div className="relative flex h-44 items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
                     {t.thumbnailUrl ? (
-                      <img
+                      <Image
                         src={t.thumbnailUrl}
                         alt={t.titleAr}
-                        className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                        loading="lazy"
+                        fill
+                        className="object-cover transition-transform group-hover:scale-105"
                       />
                     ) : (
                       <div className="text-center text-white/60">

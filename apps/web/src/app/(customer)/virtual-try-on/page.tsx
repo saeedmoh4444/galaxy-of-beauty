@@ -5,6 +5,7 @@ import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
+import Image from 'next/image';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -239,9 +240,7 @@ function ColorPalette({
             {c.nameAr}
           </span>
           {selectedId === c.id && (
-            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] text-white">
-              
-            </span>
+            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] text-white"></span>
           )}
         </button>
       ))}
@@ -391,7 +390,7 @@ export default function VirtualTryOnPage(): JSX.Element {
         {/* Header */}
         <div className="text-center sm:text-right">
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-             تجربة المكياج الافتراضية
+            تجربة المكياج الافتراضية
           </h1>
           <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
             جربي ألوان المكياج مباشرة على وجهكِ قبل الشراء
@@ -430,7 +429,7 @@ export default function VirtualTryOnPage(): JSX.Element {
             {/* Color Palette */}
             <Card padding="md">
               <h3 className="text-sm font-semibold text-text-primary dark:text-gray-300 mb-3">
-                 الألوان{' '}
+                الألوان{' '}
                 {selectedColor && <span className="text-brand-600">— {selectedColor.nameAr}</span>}
               </h3>
               {palettesLoading ? (
@@ -469,7 +468,7 @@ export default function VirtualTryOnPage(): JSX.Element {
 
             {/* Capture Button */}
             <Button onClick={takePhoto} disabled={!cameraReady} className="w-full" size="lg">
-               التقطي صورة
+              التقطي صورة
             </Button>
           </div>
 
@@ -520,9 +519,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                         onClick={flipCamera}
                         className="rounded-full bg-black/50 p-2 text-white text-sm backdrop-blur hover:bg-black/70 transition-colors"
                         title="قلب الكاميرا"
-                      >
-                        
-                      </button>
+                      ></button>
                     </div>
 
                     {/* Camera error overlay */}
@@ -541,6 +538,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                     {/* Captured photo preview */}
                     {capturedPhoto && (
                       <div className="absolute inset-0 bg-black">
+                        {/* eslint-disable-next-line @next/next/no-img-element -- canvas data: URL cannot be passed to next/image */}
                         <img
                           src={capturedPhoto}
                           alt="لقطة"
@@ -557,7 +555,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                             }}
                             className="flex-1"
                           >
-                             تحميل
+                            تحميل
                           </Button>
                           <Button
                             size="sm"
@@ -565,7 +563,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                             onClick={() => setCapturedPhoto(null)}
                             className="flex-1 bg-white/20 text-white hover:bg-white/30"
                           >
-                             إعادة التصوير
+                            إعادة التصوير
                           </Button>
                         </div>
                       </div>
@@ -611,13 +609,13 @@ export default function VirtualTryOnPage(): JSX.Element {
                       padding="md"
                       className="h-full transition-all hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
                     >
-                      <div className="flex h-32 items-center justify-center rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 mb-3">
+                      <div className="relative flex h-32 items-center justify-center rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 mb-3">
                         {p.imageUrl ? (
-                          <img
+                          <Image
                             src={p.imageUrl}
                             alt={p.nameAr}
-                            className="h-full w-full rounded-xl object-cover"
-                            loading="lazy"
+                            fill
+                            className="rounded-xl object-cover"
                           />
                         ) : (
                           <span className="text-4xl"></span>

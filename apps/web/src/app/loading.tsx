@@ -1,11 +1,15 @@
+import Image from 'next/image';
+
 export default function RootLoading(): JSX.Element {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-white dark:bg-gray-950">
       <div className="flex flex-col items-center gap-6">
         <div className="animate-pulse">
-          <img
+          <Image
             src="/logo.png"
             alt="Galaxy of Beauty"
+            width={80}
+            height={80}
             className="h-20 w-20 rounded-2xl object-cover shadow-lg"
           />
         </div>

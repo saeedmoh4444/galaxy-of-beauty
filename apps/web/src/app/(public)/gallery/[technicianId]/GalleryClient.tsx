@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { Card, EmptyState } from '@galaxy/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,13 +31,13 @@ export function GalleryClient({ data }: { data: GalleryPageData }): JSX.Element 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((img: GalleryImage) => (
               <Card key={img.id} padding="none" className="group cursor-pointer overflow-hidden">
-                <div className="flex aspect-square items-center justify-center bg-gray-100 text-5xl dark:bg-gray-800">
+                <div className="relative flex aspect-square items-center justify-center bg-gray-100 text-5xl dark:bg-gray-800">
                   {img.imageUrl ? (
-                    <img
+                    <Image
                       src={String(img.imageUrl)}
                       alt={(img.captionJson as { ar?: string })?.ar || 'Gallery image'}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
+                      fill
+                      className="object-cover"
                     />
                   ) : (
                     <span>️</span>

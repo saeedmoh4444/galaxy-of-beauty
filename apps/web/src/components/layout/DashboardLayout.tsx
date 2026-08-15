@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/aria-role */ // 'role' prop is a user role, not an ARIA attribute
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { useAuth } from '@galaxy/ui';
@@ -135,7 +136,13 @@ export function DashboardLayout({
       {/* Sidebar */}
       <aside className="hidden w-64 border-e border-gray-200 bg-white p-4 md:block dark:border-gray-800 dark:bg-gray-950">
         <Link href="/" className="mb-8 flex items-center gap-2">
-          <img src="/logo.png" alt="جالكسي بيوتي" className="h-10 w-10 rounded-lg object-cover" />
+          <Image
+            src="/logo.png"
+            alt="جالكسي بيوتي"
+            width={40}
+            height={40}
+            className="h-10 w-10 rounded-lg object-cover"
+          />
           <span className="text-xl font-bold text-brand-600">جالكسي بيوتي</span>
         </Link>
         <nav className="space-y-1">

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -48,12 +49,13 @@ export default function WishlistPage(): JSX.Element {
                 const titleJson = service.titleJson;
                 return (
                   <Card key={item.id as number} padding="md" className="relative">
-                    <div className="mb-3 flex h-36 items-center justify-center rounded-lg bg-surface-muted dark:bg-gray-800">
+                    <div className="relative mb-3 flex h-36 items-center justify-center rounded-lg bg-surface-muted dark:bg-gray-800">
                       {service.imageUrl ? (
-                        <img
+                        <Image
                           src={service.imageUrl as string}
                           alt=""
-                          className="h-full w-full rounded-lg object-cover"
+                          fill
+                          className="rounded-lg object-cover"
                         />
                       ) : (
                         <span className="text-4xl text-gray-300"></span>
@@ -85,12 +87,13 @@ export default function WishlistPage(): JSX.Element {
                 return (
                   <Card key={item.id as number} padding="md" className="relative">
                     <div className="mb-3 flex items-center gap-3">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-surface-muted dark:bg-gray-800">
+                      <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-surface-muted dark:bg-gray-800">
                         {user.avatarUrl ? (
-                          <img
+                          <Image
                             src={user.avatarUrl as string}
                             alt=""
-                            className="h-full w-full rounded-full object-cover"
+                            fill
+                            className="rounded-full object-cover"
                           />
                         ) : (
                           <span className="text-2xl text-gray-300"></span>

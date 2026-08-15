@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import { CardSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/ui';
 
@@ -151,11 +152,11 @@ export function BlogClient({
                   <article className="overflow-hidden rounded-2xl border border-edge bg-white transition-all hover:shadow-xl hover:-translate-y-1 dark:border-gray-800 dark:bg-gray-900">
                     <div className="relative flex h-48 items-center justify-center bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
                       {post.imageUrl ? (
-                        <img
+                        <Image
                           src={post.imageUrl}
                           alt={title}
-                          className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                          loading="lazy"
+                          fill
+                          className="object-cover transition-transform group-hover:scale-105"
                         />
                       ) : (
                         <span></span>

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
@@ -115,9 +116,11 @@ export default function StreaksPage(): JSX.Element {
                       <div className="flex items-start gap-3">
                         <span className="text-3xl">
                           {ach.iconUrl ? (
-                            <img
+                            <Image
                               src={ach.iconUrl as string}
                               alt=""
+                              width={40}
+                              height={40}
                               className="h-10 w-10 rounded-full object-cover"
                             />
                           ) : isEarned ? (
@@ -134,7 +137,7 @@ export default function StreaksPage(): JSX.Element {
                           <div className="mt-2 flex items-center gap-2">
                             {isEarned ? (
                               <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                                تم الإنجاز 
+                                تم الإنجاز
                               </span>
                             ) : (
                               <span className="rounded-full bg-surface-muted px-2.5 py-0.5 text-xs font-medium text-text-secondary dark:bg-gray-800">

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = { title: '404 - الصفحة غير موجودة | جالكسي بيوتي' };
@@ -6,9 +7,11 @@ export const metadata: Metadata = { title: '404 - الصفحة غير موجود
 export default function NotFound(): JSX.Element {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-white px-4 text-center dark:bg-gray-950">
-      <img
+      <Image
         src="/logo.png"
         alt="جالكسي بيوتي"
+        width={80}
+        height={80}
         className="mb-8 h-20 w-20 rounded-2xl object-cover shadow-lg opacity-60"
       />
       <div className="mb-4 text-7xl"></div>

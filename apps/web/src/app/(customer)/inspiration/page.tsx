@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import {
   Card,
@@ -108,18 +109,18 @@ export default function InspirationPage(): JSX.Element {
                 </div>
 
                 {p.imageUrl ? (
-                  <img
+                  <Image
                     src={p.imageUrl}
                     alt={p.title || ''}
+                    width={800}
+                    height={320}
                     className="mb-3 h-40 w-full rounded-xl object-cover"
                   />
                 ) : (
                   <div
                     className="mb-3 flex h-40 items-center justify-center rounded-xl bg-surface-muted text-4xl dark:bg-gray-800"
                     aria-hidden="true"
-                  >
-                    
-                  </div>
+                  ></div>
                 )}
 
                 {p.title && <h3 className="font-semibold text-text-primary">{p.title}</h3>}

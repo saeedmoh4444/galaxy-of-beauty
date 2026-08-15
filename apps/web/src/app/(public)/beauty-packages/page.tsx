@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from 'next/link';
+import Image from 'next/image';
 import { getServerCaller } from '@/lib/server-trpc';
 
 export default async function BeautyPackagesPage(): Promise<JSX.Element> {
@@ -41,9 +42,9 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
                 key={pkg.id}
                 className="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900"
               >
-                <div className="flex h-40 items-center justify-center bg-gradient-to-br from-brand-200 to-accent-200 text-5xl dark:from-brand-900 dark:to-accent-900">
+                <div className="relative flex h-40 items-center justify-center bg-gradient-to-br from-brand-200 to-accent-200 text-5xl dark:from-brand-900 dark:to-accent-900">
                   {pkg.imageUrl ? (
-                    <img src={pkg.imageUrl} alt={name} className="h-full w-full object-cover" />
+                    <Image src={pkg.imageUrl} alt={name} fill className="object-cover" />
                   ) : (
                     <span></span>
                   )}

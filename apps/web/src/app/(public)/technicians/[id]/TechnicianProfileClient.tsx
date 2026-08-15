@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Card, EmptyState, Button, formatCurrency, ar } from '@galaxy/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,13 +46,9 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
 
       <Card padding="lg" className="mt-6">
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-          <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
+          <div className="relative flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
             {user.avatarUrl ? (
-              <img
-                src={user.avatarUrl}
-                alt={name}
-                className="h-full w-full rounded-full object-cover"
-              />
+              <Image src={user.avatarUrl} alt={name} fill className="rounded-full object-cover" />
             ) : (
               <span>‍</span>
             )}
@@ -59,16 +56,8 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
           <div className="flex-1 text-center sm:text-right">
             <div className="flex items-center justify-center gap-2 sm:justify-start">
               <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{name}</h1>
-              {kycStatus === 'VERIFIED' && (
-                <span className="text-green-500" title="موثقة">
-                  
-                </span>
-              )}
-              {isEco && (
-                <span className="text-green-500" title="منتجات صديقة للبيئة">
-                  
-                </span>
-              )}
+              {kycStatus === 'VERIFIED' && <span className="text-green-500" title="موثقة"></span>}
+              {isEco && <span className="text-green-500" title="منتجات صديقة للبيئة"></span>}
             </div>
             <p className="text-gray-500">
               {city}
@@ -121,14 +110,14 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
             {galleryImages.slice(0, 8).map((img: AnyRecord, i: number) => (
               <div
                 key={i}
-                className="aspect-square rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden dark:bg-gray-800"
+                className="relative aspect-square rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden dark:bg-gray-800"
               >
                 {img.imageUrl ? (
-                  <img
+                  <Image
                     src={img.imageUrl}
                     alt={ar(img.captionJson)}
-                    className="h-full w-full object-cover"
-                    loading="lazy"
+                    fill
+                    className="object-cover"
                   />
                 ) : (
                   <span className="text-2xl">️</span>

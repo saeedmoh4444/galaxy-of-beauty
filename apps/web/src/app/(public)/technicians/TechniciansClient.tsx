@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import { Input, Card, CardSkeleton, ErrorAlert, EmptyState, ar } from '@galaxy/ui';
 
@@ -66,13 +67,13 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
             return (
               <Link key={tech.id} href={`/technicians/${tech.id}`}>
                 <Card hover padding="lg" className="flex flex-col items-center text-center">
-                  <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-3xl dark:from-brand-900 dark:to-accent-900">
+                  <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-3xl dark:from-brand-900 dark:to-accent-900">
                     {avatarUrl ? (
-                      <img
+                      <Image
                         src={avatarUrl}
                         alt={name}
-                        className="h-full w-full rounded-full object-cover"
-                        loading="lazy"
+                        fill
+                        className="rounded-full object-cover"
                       />
                     ) : (
                       <span>‍</span>

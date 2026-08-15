@@ -1,9 +1,13 @@
+import Image from 'next/image';
+
 export default function PublicLoading(): JSX.Element {
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center">
-      <img
+      <Image
         src="/logo.png"
         alt="جالكسي بيوتي"
+        width={64}
+        height={64}
         className="mb-6 h-16 w-16 animate-pulse rounded-2xl object-cover shadow-lg"
       />
       <div className="flex gap-1">

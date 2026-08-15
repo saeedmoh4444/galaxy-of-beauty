@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function RootError({
   error,
@@ -11,9 +12,11 @@ export default function RootError({
 }): JSX.Element {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-white px-4 dark:bg-gray-950">
-      <img
+      <Image
         src="/logo.png"
         alt="جالكسي بيوتي"
+        width={80}
+        height={80}
         className="mb-8 h-20 w-20 rounded-2xl object-cover shadow-lg"
       />
       <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">حدث خطأ غير متوقع</h1>

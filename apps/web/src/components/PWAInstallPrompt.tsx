@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -33,7 +34,13 @@ export function PWAInstallPrompt(): JSX.Element {
   return (
     <div className="fixed bottom-20 left-4 right-4 z-50 mx-auto max-w-sm rounded-2xl bg-white p-4 shadow-2xl border border-brand-200 dark:bg-gray-900 dark:border-brand-800 animate-slide-up">
       <div className="flex items-center gap-4">
-        <img src="/logo.png" alt="جالكسي بيوتي" className="h-12 w-12 rounded-xl" />
+        <Image
+          src="/logo.png"
+          alt="جالكسي بيوتي"
+          width={48}
+          height={48}
+          className="h-12 w-12 rounded-xl"
+        />
         <div className="flex-1">
           <p className="font-bold text-gray-900 dark:text-gray-100 text-sm">
             أضيفي التطبيق للشاشة الرئيسية

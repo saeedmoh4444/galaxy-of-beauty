@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import { ErrorAlert, Button } from '@galaxy/ui';
 import { ShareButtons } from '@/components/ShareButtons';
@@ -121,15 +122,15 @@ export function BlogPostClient({
 
       <article className="mt-6">
         {(post as BlogPost).imageUrl ? (
-          <img
+          <Image
             src={(post as BlogPost).imageUrl!}
             alt={title}
+            width={1200}
+            height={640}
             className="mb-8 h-64 w-full rounded-2xl object-cover shadow-lg sm:h-80"
           />
         ) : (
-          <div className="mb-8 flex h-48 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-accent-100 text-7xl dark:from-brand-900 dark:to-accent-900 sm:h-64">
-            
-          </div>
+          <div className="mb-8 flex h-48 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-accent-100 text-7xl dark:from-brand-900 dark:to-accent-900 sm:h-64"></div>
         )}
 
         <div className="mb-4 flex flex-wrap gap-2">

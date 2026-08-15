@@ -37,6 +37,7 @@ export default function HairColorSimPage(): JSX.Element {
             }}
           />
           {photo && (
+            /* eslint-disable-next-line @next/next/no-img-element -- blob: URL from URL.createObjectURL cannot be passed to next/image */
             <img src={photo} alt="صورتك" className="mt-3 h-48 rounded-xl object-cover w-full" />
           )}
         </Card>
