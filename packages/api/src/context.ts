@@ -8,6 +8,8 @@ export interface TRPCContext {
   csrfCookie: string | null;
   /** CSRF token from the X-CSRF-Token request header */
   csrfHeader: string | null;
+  /** Origin header — null for non-browser clients (native apps, curl) */
+  origin: string | null;
   /** Whether the server is running in production mode */
   isProduction: boolean;
   /** Set auth cookies on the response (called by auth router) */
@@ -22,6 +24,7 @@ export interface CreateContextOptions {
   user?: JwtPayload | null;
   csrfCookie?: string | null;
   csrfHeader?: string | null;
+  origin?: string | null;
   isProduction?: boolean;
   setCookies?: (cookies: string[]) => void;
   clientIp?: string | null;
@@ -34,6 +37,7 @@ export async function createTRPCContext(opts?: CreateContextOptions): Promise<TR
     user: opts?.user ?? null,
     csrfCookie: opts?.csrfCookie ?? null,
     csrfHeader: opts?.csrfHeader ?? null,
+    origin: opts?.origin ?? null,
     isProduction: opts?.isProduction ?? false,
     setCookies: opts?.setCookies ?? (() => {}),
     clientIp: opts?.clientIp ?? null,

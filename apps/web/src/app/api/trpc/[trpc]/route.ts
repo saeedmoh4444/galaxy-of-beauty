@@ -37,7 +37,11 @@ const handler = async (req: NextRequest) => {
   // X-Forwarded-For is set by reverse proxies (nginx, load balancers).
   // Take the first IP in the chain (original client).
   const forwardedFor = req.headers.get('x-forwarded-for');
-  const clientIp = forwardedFor?.split(',')[0]?.trim() ?? req.headers.get('x-real-ip') ?? '127.0.0.1';
+  const clientIp =
+    forwardedFor?.split(',')[0]?.trim() ?? req.headers.get('x-real-ip') ?? '127.0.0.1';
+
+  // ── Origin header (null for non-browser clients like the mobile app) ──
+  const origin = req.headers.get('origin') ?? null;
 
   // ── Correlation ID for request tracing ──
   const correlationId = req.headers.get('x-request-id') ?? crypto.randomUUID?.() ?? 'unknown';
@@ -62,6 +66,7 @@ const handler = async (req: NextRequest) => {
         user,
         csrfCookie,
         csrfHeader,
+        origin,
         isProduction,
         clientIp,
         correlationId,

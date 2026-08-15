@@ -58,6 +58,41 @@ describe('Wallet', () => {
     const caller = await anonCaller();
     await expect(caller.wallet.topUp({ amount: 100 })).rejects.toThrow();
   });
+
+  it('should accept an opaque (mobile-style) idempotency key', async () => {
+    const key = `mob_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+    const result = await customerCaller.wallet.topUp({ amount: 100, idempotencyKey: key });
+    expect(result).toHaveProperty('balance');
+    expect(result.message).toBe('تم شحن الرصيد بنجاح');
+  });
+
+  it('should accept a UUID idempotency key (web client)', async () => {
+    const result = await customerCaller.wallet.topUp({
+      amount: 100,
+      idempotencyKey: crypto.randomUUID(),
+    });
+    expect(result).toHaveProperty('balance');
+  });
+
+  it('should replay the same idempotency key without double-charging', async () => {
+    const key = `mob_${Date.now()}_replay${Math.random().toString(36).slice(2, 6)}`;
+    const first = await customerCaller.wallet.topUp({ amount: 100, idempotencyKey: key });
+    const second = await customerCaller.wallet.topUp({ amount: 100, idempotencyKey: key });
+    expect(second.message).toBe('Already processed');
+    expect(second.balance).toBe(first.balance);
+  });
+
+  it('should reject top-up below the 10 SAR minimum', async () => {
+    await expect(
+      customerCaller.wallet.topUp({ amount: 5, idempotencyKey: `mob_${Date.now()}_min` }),
+    ).rejects.toThrow();
+  });
+
+  it('should reject top-up above the 5000 SAR maximum', async () => {
+    await expect(
+      customerCaller.wallet.topUp({ amount: 5001, idempotencyKey: `mob_${Date.now()}_max` }),
+    ).rejects.toThrow();
+  });
 });
 
 // ── Loyalty ──────────────────────────────────────────────────────────

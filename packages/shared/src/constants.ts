@@ -218,6 +218,9 @@ export const LOYALTY_TIERS = {
 export const MIN_WITHDRAWAL_BALANCE = 200;
 /** Wallet withdrawal fee rate. */
 export const WITHDRAWAL_FEE_RATE = 0.05;
+/** Wallet top-up amount bounds (SAR). */
+export const TOP_UP_MIN_AMOUNT = 10;
+export const TOP_UP_MAX_AMOUNT = 5000;
 
 /** Emergency booking surcharge (SAR). */
 export const EMERGENCY_SURCHARGE_SAR = 50;

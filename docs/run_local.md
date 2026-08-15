@@ -438,10 +438,15 @@ If you still see this, check that the server uses the latest code.
 #### "CSRF token missing or invalid" in API calls
 
 ```
-Mutations require a CSRF cookie + header. The TRPCProvider in the web app
-handles this automatically. For direct API testing, include:
+Mutations from browsers require a CSRF cookie + header. The TRPCProvider in
+the web app handles this automatically. For direct API testing, include:
 - Cookie: csrf-token=<64 hex chars>
 - Header: x-csrf-token=<same 64 hex chars>
+
+Non-browser clients (mobile app, curl) don't send an Origin header and are
+exempt from the CSRF guard — they authenticate via Authorization: Bearer.
+If you hit this error from a script, check that your tooling isn't adding
+an Origin header, or include the cookie+header pair above.
 ```
 
 #### 401 "Authentication required"

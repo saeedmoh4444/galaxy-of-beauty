@@ -17,6 +17,7 @@ import type { ReactNode } from 'react';
 import superjson from 'superjson';
 import type { AppRouter } from '@galaxy/api';
 import { DEFAULT_LOCAL_URL } from '@galaxy/ui';
+import { getAuthHeaders } from './authToken';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL ?? `${DEFAULT_LOCAL_URL}/api/trpc`;
 
@@ -35,6 +36,7 @@ export const rawTrpc = createTRPCClient<AppRouter>({
     httpBatchLink({
       url: API_URL,
       transformer: superjson,
+      headers: getAuthHeaders,
     }),
   ],
 });
@@ -46,15 +48,6 @@ export const rawTrpc = createTRPCClient<AppRouter>({
  */
 export function typedTrpc(): typeof rawTrpc {
   return rawTrpc;
-}
-
-function getAuthHeaders(): Record<string, string> {
-  // Note: In production, use expo-secure-store instead of localStorage
-  const headers: Record<string, string> = {};
-  if (typeof globalThis !== 'undefined') {
-    // Simple in-memory token store for now (upgrade to SecureStore)
-  }
-  return headers;
 }
 
 export function TRPCProvider({ children }: { children: ReactNode }): ReactNode {

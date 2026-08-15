@@ -39,7 +39,7 @@ const rateLimitGuard = middleware(async ({ ctx, next, path }) => {
   // Anonymous: key by client IP + path to prevent one client exhausting the bucket
   // Authenticated: key by user ID
   // Admin: key by user ID (separate, higher limit)
-  const clientId = ctx.user ? `${ctx.user.id}` : (ctx.clientIp || 'unknown');
+  const clientId = ctx.user ? `${ctx.user.id}` : ctx.clientIp || 'unknown';
   const key = `${clientId}:${path}`;
 
   const result = await checkRateLimit(key, tier as 'anonymous' | 'authenticated' | 'admin');
@@ -59,6 +59,12 @@ export const publicProcedure = procedure.use(requestCounter).use(rateLimitGuard)
 
 // ---- CSRF Protection (applied to mutations) ----
 const csrfGuard = middleware(({ ctx, next }) => {
+  // Non-browser clients (native apps, curl) don't send an Origin header
+  // and have no ambient cookie jar for an attacker to ride, so the
+  // browser CSRF threat model doesn't apply — skip the guard for them.
+  // Browsers always send Origin on POST (fetch and form submissions).
+  if (!ctx.origin) return next();
+
   // Read CSRF cookie and header from the context
   const cookieToken = ctx.csrfCookie ?? null;
   const headerToken = ctx.csrfHeader ?? null;
@@ -136,9 +142,7 @@ export const adminMutation = adminProcedure.use(csrfGuard);
  *     .query(...)
  */
 export function requireOwnership(
-  getOwnerId: (opts: {
-    ctx: Context;
-  }) => Promise<number | null> | number | null,
+  getOwnerId: (opts: { ctx: Context }) => Promise<number | null> | number | null,
 ) {
   return middleware(async ({ ctx, next }) => {
     if (!ctx.user) {

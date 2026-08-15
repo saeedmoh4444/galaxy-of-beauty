@@ -1,11 +1,18 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
 import SocketProvider from '@/components/SocketProvider';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ToastProvider } from '@/components/Toast';
 import { TRPCProvider } from '@/lib/trpc-react';
+import { loadAuthToken } from '@/lib/authToken';
 
 export default function RootLayout() {
+  useEffect(() => {
+    // Restore the persisted access token so authenticated screens work after restart
+    void loadAuthToken();
+  }, []);
+
   return (
     <ErrorBoundary>
       <ToastProvider>

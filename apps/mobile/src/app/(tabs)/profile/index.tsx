@@ -2,6 +2,8 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { setAuthToken } from '@/lib/authToken';
+import { setSocketToken } from '@/hooks/useSocket';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -43,6 +45,15 @@ export default function ProfileScreen(): JSX.Element {
   const loyalty = trpc.loyalty.myAccount.useQuery();
   const kindness = trpc.kindnessPoints.getStatus.useQuery();
   const p = profile.data as ProfileUser | null;
+
+  const logout = trpc.auth.logout.useMutation({
+    // Local logout always succeeds even if the server call fails
+    onSettled: () => {
+      void setAuthToken(null);
+      setSocketToken(null);
+      router.replace('/(auth)/login');
+    },
+  });
 
   return (
     <ScreenState
@@ -88,7 +99,7 @@ export default function ProfileScreen(): JSX.Element {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <TouchableOpacity style={styles.logoutBtn}>
+      <TouchableOpacity style={styles.logoutBtn} onPress={() => logout.mutate({})}>
         <Text style={styles.logoutText}> تسجيل الخروج</Text>
       </TouchableOpacity>
     </ScreenState>

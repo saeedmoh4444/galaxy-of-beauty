@@ -1,9 +1,14 @@
 import { TRPCError } from '@trpc/server';
 import type { Prisma } from '@galaxy/db';
 import { prisma } from '@galaxy/db';
-import { MIN_WITHDRAWAL_BALANCE, WITHDRAWAL_FEE_RATE } from '@galaxy/shared';
+import {
+  MIN_WITHDRAWAL_BALANCE,
+  WITHDRAWAL_FEE_RATE,
+  TOP_UP_MIN_AMOUNT,
+  TOP_UP_MAX_AMOUNT,
+} from '@galaxy/shared';
 import { z } from 'zod';
-import { router, protectedProcedure, customerProcedure, technicianProcedure } from '../trpc';
+import { router, protectedProcedure, customerMutation, technicianMutation } from '../trpc';
 import { walletWithdrawSchema, walletTransactionQuerySchema } from '../validators/payment';
 
 /**
@@ -96,7 +101,7 @@ export const walletRouter = router({
   // -----------------------------------------------------------------------
   // withdraw — Technician requests a payout from their wallet
   // -----------------------------------------------------------------------
-  withdraw: technicianProcedure.input(walletWithdrawSchema).mutation(async ({ ctx, input }) => {
+  withdraw: technicianMutation.input(walletWithdrawSchema).mutation(async ({ ctx, input }) => {
     try {
       // 1. Ensure wallet exists and check minimum balance
       const wallet = await ensureWallet(ctx.user.id);
@@ -174,11 +179,12 @@ export const walletRouter = router({
   // -----------------------------------------------------------------------
   // topUp — Customer adds funds to their wallet
   // -----------------------------------------------------------------------
-  topUp: customerProcedure
+  topUp: customerMutation
     .input(
       z.object({
-        amount: z.number().min(10).max(5000),
-        idempotencyKey: z.string().uuid(),
+        amount: z.number().min(TOP_UP_MIN_AMOUNT).max(TOP_UP_MAX_AMOUNT),
+        // Opaque key (Stripe pattern): web sends UUIDs, mobile sends `mob_<ts>_<rand>`
+        idempotencyKey: z.string().min(8).max(128),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -188,7 +194,7 @@ export const walletRouter = router({
       });
       if (existing) {
         const wallet = await prisma.wallet.findUnique({ where: { userId: ctx.user.id } });
-        return { balance: wallet?.balance ?? 0, message: 'Already processed' };
+        return { balance: Number(wallet?.balance ?? 0), message: 'Already processed' };
       }
 
       const wallet = await prisma.wallet.upsert({

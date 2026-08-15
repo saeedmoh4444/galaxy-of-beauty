@@ -143,8 +143,10 @@ describe('Role-Based Access', () => {
 // ── CSRF Protection ──────────────────────────────────────────────────
 
 describe('CSRF Protection', () => {
-  it('should reject mutation without CSRF tokens', async () => {
-    const caller = await authCaller(TEST_USER);
+  it('should reject browser mutation without CSRF tokens (Origin present)', async () => {
+    // Browsers always send Origin on POST — model that to exercise the CSRF path
+    const ctx = await createTRPCContext({ user: TEST_USER, origin: 'http://localhost:3000' });
+    const caller = (appRouter as any).createCaller(ctx);
     await expect(
       caller.auth.changePassword({ currentPassword: 'old', newPassword: 'NewPass@123' }),
     ).rejects.toMatchObject({ code: 'FORBIDDEN' });

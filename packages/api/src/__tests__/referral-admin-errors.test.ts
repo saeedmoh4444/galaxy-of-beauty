@@ -134,9 +134,9 @@ describe('Error & Edge Cases', () => {
     await expect(caller.search.search({ query: '', page: 1, limit: 10 })).rejects.toThrow();
   });
 
-  it('should require CSRF for mutations', async () => {
-    // Create context without CSRF
-    const ctx = await createTRPCContext();
+  it('should require CSRF for browser mutations (Origin present)', async () => {
+    // Create context without CSRF but with a browser Origin
+    const ctx = await createTRPCContext({ origin: 'http://localhost:3000' });
     const noCsrfCaller = (appRouter as any).createCaller(ctx);
     await expect(noCsrfCaller.auth.forgotPassword({ email: 'test@test.com' })).rejects.toThrow();
   });
