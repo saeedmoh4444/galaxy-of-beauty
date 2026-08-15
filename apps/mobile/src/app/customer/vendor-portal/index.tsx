@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface VendorDashboard {
   totalProducts?: number;
@@ -32,9 +32,10 @@ export default function VendorPortalScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().vendorPortal.dashboard.query() as Promise<VendorDashboard>,
-      typedTrpc().vendorPortal.myProducts.query() as Promise<VendorProduct[]>,
-    ]).then(([d, p]) => {
+      rawTrpc.vendorPortal.dashboard.query() as Promise<VendorDashboard>,
+      rawTrpc.vendorPortal.myProducts.query() as Promise<VendorProduct[]>,
+    ])
+      .then(([d, p]) => {
         setDash(d);
         setProducts(p || []);
         setLoading(false);
@@ -49,9 +50,7 @@ export default function VendorPortalScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const remove = (id: number) => {
-    (typedTrpc().vendorPortal.deleteProduct.mutate({ id }) as Promise<unknown>).then(
-      () => fetch(),
-    );
+    (rawTrpc.vendorPortal.deleteProduct.mutate({ id }) as Promise<unknown>).then(() => fetch());
   };
   if (loading) return <SkeletonList count={4} />;
   return (

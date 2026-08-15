@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface WellnessPlan {
   id?: number;
@@ -18,8 +18,8 @@ export default function CorporateWellnessScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .corporateWellness.plans.query()
+    rawTrpc.corporateWellness.plans
+      .query()
       .then((d: WellnessPlan[]) => {
         setPlans(d || []);
         setLoading(false);

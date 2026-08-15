@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const STATUS_MAP: Record<string, { label: string; color: string; bg: string }> = {
   PENDING: { label: 'معلق', color: '#d97706', bg: '#fef3c7' },
@@ -25,8 +25,8 @@ export default function AdminPayoutsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .payouts.listForAdmin.query({})
+    rawTrpc.payouts.listForAdmin
+      .query({})
       .then((d) => {
         setData((d?.payouts ?? []) as unknown as Payout[]);
         setLoading(false);
@@ -43,7 +43,7 @@ export default function AdminPayoutsScreen(): JSX.Element {
   }, [fetch]);
 
   const process = (id: number) => {
-    typedTrpc().payouts.process.mutate({ payoutId: id }).then(() => fetch());
+    rawTrpc.payouts.process.mutate({ payoutId: id }).then(() => fetch());
   };
 
   if (loading) return <SkeletonList count={5} />;

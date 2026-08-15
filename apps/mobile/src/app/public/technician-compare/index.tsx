@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface CompareTechnician {
   id: number;
@@ -19,9 +19,11 @@ export default function TechnicianCompareScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().technicians.list.query({}) as unknown as Promise<{
-      items: CompareTechnician[];
-    }>)
+    (
+      rawTrpc.technicians.list.query({}) as unknown as Promise<{
+        items: CompareTechnician[];
+      }>
+    )
       .then((d) => {
         setTechs(d?.items ?? []);
         setLoading(false);
@@ -92,7 +94,7 @@ export default function TechnicianCompareScreen(): JSX.Element {
           ))}
           <View style={styles.w}>
             <Text style={styles.wt}>
-               الأفضل:{' '}
+              الأفضل:{' '}
               {(ct[0]?.rating ?? 0) > (ct[1]?.rating ?? 0)
                 ? (ct[0]?.name ?? '')
                 : (ct[0]?.rating ?? 0) < (ct[1]?.rating ?? 0)

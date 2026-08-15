@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface EstimatorService {
   id: number;
@@ -26,7 +26,7 @@ export default function PriceEstimatorScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().services.list.query({}) as unknown as Promise<{ items: EstimatorService[] }>)
+    (rawTrpc.services.list.query({}) as unknown as Promise<{ items: EstimatorService[] }>)
       .then((d) => {
         setServices(d?.items ?? []);
         setLoading(false);
@@ -43,7 +43,7 @@ export default function PriceEstimatorScreen(): JSX.Element {
   const getEstimate = () => {
     if (!selected) return;
     (
-      typedTrpc().priceEstimator.estimate.query({
+      rawTrpc.priceEstimator.estimate.query({
         serviceId: selected,
         promoCode: promo || undefined,
       }) as Promise<PriceEstimate>

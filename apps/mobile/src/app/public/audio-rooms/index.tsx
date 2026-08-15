@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface AudioRoom {
   id?: number;
@@ -19,7 +19,7 @@ interface AudioRoomsData {
 
 export default function AudioRoomsScreen(): JSX.Element {
   const { data, loading, error, refreshing, refetch, refresh } = useQuery(() =>
-    typedTrpc().audioRooms.rooms.query(),
+    rawTrpc.audioRooms.rooms.query(),
   );
 
   if (loading) return <SkeletonList count={4} />;
@@ -62,10 +62,12 @@ export default function AudioRoomsScreen(): JSX.Element {
             <Text style={styles.roomTitle}>{r.title ?? ''}</Text>
             <Text style={styles.roomMeta}>
               {r.host ?? ''} ·{' '}
-              {r.scheduledAt ? new Date(r.scheduledAt).toLocaleDateString('ar-SA', {
-                month: 'short',
-                day: 'numeric',
-              }) : ''}
+              {r.scheduledAt
+                ? new Date(r.scheduledAt).toLocaleDateString('ar-SA', {
+                    month: 'short',
+                    day: 'numeric',
+                  })
+                : ''}
             </Text>
           </View>
           <View style={styles.remindBadge}>

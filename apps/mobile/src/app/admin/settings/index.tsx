@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface PlatformConfig {
   platformFee?: string;
@@ -23,8 +23,8 @@ export default function AdminSettingsScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().platform.getSettings.query().catch(() => ({})) as Promise<PlatformConfig>,
-      typedTrpc().cashback.info.query().catch(() => ({})) as Promise<CashbackInfo>,
+      rawTrpc.platform.getSettings.query().catch(() => ({})) as Promise<PlatformConfig>,
+      rawTrpc.cashback.info.query().catch(() => ({})) as Promise<CashbackInfo>,
     ])
       .then(([cfg, cb]) => {
         setConfig({ ...cfg, cashbackRate: cb?.rate });
@@ -65,9 +65,7 @@ export default function AdminSettingsScreen(): JSX.Element {
         </View>
         <View style={styles.row}>
           <Text style={styles.l}>الحد الأدنى للسحب</Text>
-          <Text style={styles.v}>
-            {(config.minPayout ?? 100).toLocaleString()} ر.س
-          </Text>
+          <Text style={styles.v}>{(config.minPayout ?? 100).toLocaleString()} ر.س</Text>
         </View>
       </View>
 

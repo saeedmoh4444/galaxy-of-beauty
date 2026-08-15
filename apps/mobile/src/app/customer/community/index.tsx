@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -47,9 +47,9 @@ export default function CommunityScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => typedTrpc().community.feed.query({ page: 1, limit: LARGE_PAGE_SIZE }));
-  const { data: myLikes } = useQuery(() => typedTrpc().community.myLikes.query());
-  const { data: trending } = useQuery(() => typedTrpc().community.trending.query());
+  } = useQuery(() => rawTrpc.community.feed.query({ page: 1, limit: LARGE_PAGE_SIZE }));
+  const { data: myLikes } = useQuery(() => rawTrpc.community.myLikes.query());
+  const { data: trending } = useQuery(() => rawTrpc.community.trending.query());
   const [content, setContent] = useState('');
   const [showCreate, setShowCreate] = useState(false);
   const [commentId, setCommentId] = useState<number | null>(null);
@@ -57,38 +57,46 @@ export default function CommunityScreen(): JSX.Element {
 
   const myLikesArr = (myLikes as MyLike[] | undefined) ?? [];
   const likedIds = new Set(myLikesArr.map((l) => l.postId));
-  const feedItems = ((feedData as FeedData | null)?.items) ?? [];
+  const feedItems = (feedData as FeedData | null)?.items ?? [];
   const posts: CommunityPost[] = Array.isArray(feedItems) ? feedItems : [];
   const trendingPosts = (trending as CommunityPost[] | undefined) ?? [];
 
   const handleLike = async (postId: number) => {
     try {
-      await typedTrpc().community.toggleLike.mutate({ postId });
+      await rawTrpc.community.toggleLike.mutate({ postId });
       refetch();
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
   const handleCreate = async () => {
     if (!content) return;
     try {
-      await typedTrpc().community.create.mutate({ content });
+      await rawTrpc.community.create.mutate({ content });
       setContent('');
       setShowCreate(false);
       refetch();
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
   const handleComment = async () => {
     if (!commentId || !commentText) return;
     try {
-      await typedTrpc().community.addComment.mutate({ postId: commentId, content: commentText });
+      await rawTrpc.community.addComment.mutate({ postId: commentId, content: commentText });
       setCommentText('');
       setCommentId(null);
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
   const handleDelete = async (id: number) => {
     try {
-      await typedTrpc().community.delete.mutate({ id });
+      await rawTrpc.community.delete.mutate({ id });
       refetch();
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
 
   if (loading) return <SkeletonList count={4} />;
@@ -138,7 +146,7 @@ export default function CommunityScreen(): JSX.Element {
       {trendingPosts.length > 0 && (
         <View style={{ marginBottom: 16 }}>
           <Text style={{ fontWeight: '700', fontSize: 14, color: '#111827', marginBottom: 8 }}>
-             الأكثر تفاعلاً
+            الأكثر تفاعلاً
           </Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {trendingPosts.map((p, i) => (

@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface CMSContentCategory {
   id?: number;
@@ -18,7 +18,7 @@ export default function AdminCMSScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().cms.listCategories.query() as unknown as Promise<CMSContentCategory[]>)
+    (rawTrpc.cms.listCategories.query() as unknown as Promise<CMSContentCategory[]>)
       .then((d: CMSContentCategory[]) => {
         setData(d || []);
         setLoading(false);

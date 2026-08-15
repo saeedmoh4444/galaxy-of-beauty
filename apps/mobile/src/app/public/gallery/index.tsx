@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, Image, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface GalleryPhoto {
   id?: number;
@@ -17,9 +17,11 @@ export default function GalleryScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().gallery.byTechnician.query({ technicianId: 1 }) as unknown as Promise<{
-      items: GalleryPhoto[];
-    }>)
+    (
+      rawTrpc.gallery.byTechnician.query({ technicianId: 1 }) as unknown as Promise<{
+        items: GalleryPhoto[];
+      }>
+    )
       .then((d) => {
         setPhotos(d?.items ?? []);
         setLoading(false);

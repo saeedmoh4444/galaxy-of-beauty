@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface TravelDestination {
   emoji?: string;
@@ -27,8 +27,8 @@ export default function TravelKitScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .travelKit.destinations.query()
+    rawTrpc.travelKit.destinations
+      .query()
       .then((d: TravelDestination[]) => {
         setDests(d || []);
         setLoading(false);

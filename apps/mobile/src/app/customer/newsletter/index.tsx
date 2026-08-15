@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface NewsletterIssue {
   id?: number;
@@ -26,7 +26,7 @@ export default function NewsletterScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().newsletter.issues.query() as Promise<NewsletterIssue[]>)
+    (rawTrpc.newsletter.issues.query() as Promise<NewsletterIssue[]>)
       .then((d) => {
         setIssues(d || []);
         setLoading(false);
@@ -84,7 +84,9 @@ export default function NewsletterScreen(): JSX.Element {
       {issues.map((i, idx) => (
         <View key={idx} style={styles.issue}>
           <Text style={styles.it}>{i.title ?? ''}</Text>
-          <Text style={styles.id}>{i.date ? new Date(i.date).toLocaleDateString('ar-SA') : ''}</Text>
+          <Text style={styles.id}>
+            {i.date ? new Date(i.date).toLocaleDateString('ar-SA') : ''}
+          </Text>
         </View>
       ))}
     </ScrollView>

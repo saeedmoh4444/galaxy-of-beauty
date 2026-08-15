@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface InspirationPin {
   id?: number;
@@ -24,7 +24,7 @@ export default function InspirationScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().inspiration.list.query() as Promise<InspirationPin[]>)
+    (rawTrpc.inspiration.list.query() as Promise<InspirationPin[]>)
       .then((d) => {
         setPins(d || []);
         setLoading(false);
@@ -39,7 +39,7 @@ export default function InspirationScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const remove = (id: number) => {
-    (typedTrpc().inspiration.delete.mutate({ id }) as Promise<unknown>).then(() => fetch());
+    (rawTrpc.inspiration.delete.mutate({ id }) as Promise<unknown>).then(() => fetch());
   };
   if (loading) return <SkeletonList count={6} />;
   return (

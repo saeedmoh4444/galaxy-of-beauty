@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface ReferralDashboardData {
   totalReferred?: number;
@@ -16,8 +16,8 @@ export default function ReferralDashboardScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .referrals.getStats.query()
+    rawTrpc.referrals.getStats
+      .query()
       .then((d) => {
         setData(d as unknown as ReferralDashboardData);
         setLoading(false);

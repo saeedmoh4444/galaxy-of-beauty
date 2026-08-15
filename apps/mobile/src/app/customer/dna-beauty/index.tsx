@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface DnaQuestion {
   id: string;
@@ -22,7 +22,7 @@ export default function DNABeautyScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().dnaBeauty.questions.query() as Promise<DnaQuestion[]>)
+    (rawTrpc.dnaBeauty.questions.query() as Promise<DnaQuestion[]>)
       .then((d: DnaQuestion[]) => {
         setQuestions(d || []);
         setLoading(false);
@@ -38,7 +38,7 @@ export default function DNABeautyScreen(): JSX.Element {
   }, [fetch]);
   const analyze = () => {
     setAnalyzing(true);
-    (typedTrpc().dnaBeauty.analyze.query({ answers }) as Promise<DnaResult>)
+    (rawTrpc.dnaBeauty.analyze.query({ answers }) as Promise<DnaResult>)
       .then((d: DnaResult) => {
         setResult(d);
         setAnalyzing(false);
@@ -95,17 +95,13 @@ export default function DNABeautyScreen(): JSX.Element {
                 onPress={() => setAnswers({ ...answers, [q.id]: true })}
                 style={[styles.qbtn, answers[q.id] === true && styles.qy]}
               >
-                <Text style={[styles.qbt, answers[q.id] === true && styles.qat]}>
-                  نعم
-                </Text>
+                <Text style={[styles.qbt, answers[q.id] === true && styles.qat]}>نعم</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => setAnswers({ ...answers, [q.id]: false })}
                 style={[styles.qbtn, answers[q.id] === false && styles.qn]}
               >
-                <Text style={[styles.qbt, answers[q.id] === false && styles.qat]}>
-                  لا
-                </Text>
+                <Text style={[styles.qbt, answers[q.id] === false && styles.qat]}>لا</Text>
               </TouchableOpacity>
             </View>
           </View>

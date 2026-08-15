@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface DiscoverCategory {
   id?: number;
@@ -30,15 +30,14 @@ export default function DiscoverScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().beautyDiscovery.featured.query());
-  const { data: categories } = useQuery(() => typedTrpc().categories.list.query());
+  } = useQuery(() => rawTrpc.beautyDiscovery.featured.query());
+  const { data: categories } = useQuery(() => rawTrpc.categories.list.query());
 
   if (loading) return <SkeletonList count={6} />;
   if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;
 
-  const trendingItems =
-    ((trending as unknown as { popularServices?: TrendingItem[] } | null)?.popularServices ??
-      []) as TrendingItem[];
+  const trendingItems = ((trending as unknown as { popularServices?: TrendingItem[] } | null)
+    ?.popularServices ?? []) as TrendingItem[];
   const catItems = (categories as DiscoverCategory[] | undefined) ?? [];
 
   return (

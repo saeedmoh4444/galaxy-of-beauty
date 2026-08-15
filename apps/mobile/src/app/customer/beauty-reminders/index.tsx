@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const CATS: Record<string, string> = {
   hair: '‍️ شعر',
@@ -33,7 +33,7 @@ interface BeautyReminder {
 
 export default function BeautyRemindersScreen(): JSX.Element {
   const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
-    typedTrpc().beautyReminders.myReminders.query(),
+    rawTrpc.beautyReminders.myReminders.query(),
   );
   const [title, setTitle] = useState('');
   const [cat, setCat] = useState('hair');
@@ -43,7 +43,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
   const handleCreate = async () => {
     if (!title) return;
     try {
-      await typedTrpc().beautyReminders.create.mutate({
+      await rawTrpc.beautyReminders.create.mutate({
         title,
         category: cat as 'makeup' | 'hair' | 'nails' | 'skincare' | 'body' | 'other',
         intervalDays: interval,
@@ -51,19 +51,25 @@ export default function BeautyRemindersScreen(): JSX.Element {
       setTitle('');
       setShowForm(false);
       refetch();
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
   const handleComplete = async (id: number) => {
     try {
-      await typedTrpc().beautyReminders.complete.mutate({ id });
+      await rawTrpc.beautyReminders.complete.mutate({ id });
       refetch();
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
   const handleDelete = async (id: number) => {
     try {
-      await typedTrpc().beautyReminders.delete.mutate({ id });
+      await rawTrpc.beautyReminders.delete.mutate({ id });
       refetch();
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
 
   if (loading) return <SkeletonList count={3} />;
@@ -161,7 +167,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
       {overdue.length > 0 && (
         <View style={{ marginBottom: 16 }}>
           <Text style={{ fontWeight: '700', color: '#ef4444', fontSize: 15, marginBottom: 8 }}>
-             فات موعدها
+            فات موعدها
           </Text>
           {overdue.map((r) => (
             <View
@@ -188,7 +194,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
       {upcoming.length > 0 && (
         <View>
           <Text style={{ fontWeight: '700', color: '#111827', fontSize: 15, marginBottom: 8 }}>
-             قادمة
+            قادمة
           </Text>
           {upcoming.map((r) => (
             <View key={r.id} style={s.remCard}>

@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface Clinic {
   id: number;
@@ -27,8 +27,8 @@ export default function ClinicConnectScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().clinicConnect.clinics.query() as Promise<Clinic[]>,
-      typedTrpc().clinicConnect.myReferrals.query() as Promise<Referral[]>,
+      rawTrpc.clinicConnect.clinics.query() as Promise<Clinic[]>,
+      rawTrpc.clinicConnect.myReferrals.query() as Promise<Referral[]>,
     ])
       .then(([c, r]: [Clinic[], Referral[]]) => {
         setClinics(c || []);
@@ -45,7 +45,7 @@ export default function ClinicConnectScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const refer = (clinicId: number) => {
-    typedTrpc().clinicConnect.refer.mutate({
+    rawTrpc.clinicConnect.refer.mutate({
       clinicId,
       reason: 'استشارة جلدية',
       urgency: 'routine',
@@ -71,7 +71,7 @@ export default function ClinicConnectScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>{c.name}</Text>
             <Text style={styles.meta}>
-               {c.city} · {c.specialty} ·  {c.rating}
+              {c.city} · {c.specialty} · {c.rating}
             </Text>
           </View>
           <TouchableOpacity onPress={() => refer(c.id)} style={styles.rb}>

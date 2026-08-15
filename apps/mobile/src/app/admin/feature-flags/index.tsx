@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface FeatureFlag {
   id?: number;
@@ -19,7 +19,7 @@ export default function FeatureFlagsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().featureFlags.list.query() as unknown as Promise<FeatureFlag[]>)
+    (rawTrpc.featureFlags.list.query() as unknown as Promise<FeatureFlag[]>)
       .then((d: FeatureFlag[]) => {
         setData(d || []);
         setLoading(false);
@@ -36,7 +36,7 @@ export default function FeatureFlagsScreen(): JSX.Element {
   }, [fetch]);
 
   const toggle = (key: string) => {
-    typedTrpc().featureFlags.toggle.mutate({ key }).then(() => fetch());
+    rawTrpc.featureFlags.toggle.mutate({ key }).then(() => fetch());
   };
 
   if (loading) return <SkeletonList count={5} />;

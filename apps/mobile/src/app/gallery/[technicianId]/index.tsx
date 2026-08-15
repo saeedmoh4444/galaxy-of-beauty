@@ -2,7 +2,7 @@ import { View, Text, ScrollView, Image, StyleSheet, RefreshControl } from 'react
 import { useLocalSearchParams } from 'expo-router';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface GalleryPhoto {
   id?: number;
@@ -19,8 +19,8 @@ export default function GalleryDetailScreen(): JSX.Element {
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      typedTrpc()
-        .gallery.byTechnician.query({ technicianId: parseInt(technicianId, 10) })
+      rawTrpc.gallery.byTechnician
+        .query({ technicianId: parseInt(technicianId, 10) })
         .then((d) => {
           setPhotos((d?.items ?? []) as unknown as GalleryPhoto[]);
           setLoading(false);

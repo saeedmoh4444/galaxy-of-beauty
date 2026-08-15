@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface HairColor {
   id?: number;
@@ -17,7 +17,7 @@ export default function HairColorSimScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().hairColorSim.colors.query() as unknown as Promise<HairColor[]>)
+    (rawTrpc.hairColorSim.colors.query() as unknown as Promise<HairColor[]>)
       .then((d) => {
         setColors(d || []);
         setLoading(false);

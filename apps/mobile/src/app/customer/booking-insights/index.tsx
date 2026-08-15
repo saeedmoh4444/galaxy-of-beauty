@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface AnalyticsSummary {
   totalSpent?: number;
@@ -23,8 +23,8 @@ export default function BookingInsightsScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().beautyAnalytics.summary.query().catch(() => null) as Promise<AnalyticsSummary | null>,
-      typedTrpc().beautyAnalytics.byCategory.query().catch(() => []) as Promise<CategoryStat[]>,
+      rawTrpc.beautyAnalytics.summary.query().catch(() => null) as Promise<AnalyticsSummary | null>,
+      rawTrpc.beautyAnalytics.byCategory.query().catch(() => []) as Promise<CategoryStat[]>,
     ])
       .then(([a, c]) => {
         setAnalytics(a);

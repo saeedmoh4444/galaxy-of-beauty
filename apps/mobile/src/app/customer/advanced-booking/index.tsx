@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const REC = [
   { key: 'WEEKLY', emoji: '', label: 'أسبوعي' },
@@ -51,23 +51,21 @@ export default function AdvancedBookingScreen(): JSX.Element {
   // Resolve real IDs instead of hardcoded placeholders (audit fix B1/D1)
   const fetchRefs = useCallback(() => {
     Promise.allSettled([
-      (typedTrpc().addresses.list.query() as Promise<AddressRow[]>).then((d) => {
+      (rawTrpc.addresses.list.query() as Promise<AddressRow[]>).then((d) => {
         if (d?.[0]) setAddress(d[0]);
       }),
-      typedTrpc()
-        .technicians.list.query({})
-        .then((d) => {
-          const list = (d?.items ?? []) as unknown as TechnicianRow[];
-          if (list[0]) setTechnician(list[0]);
-        }),
+      rawTrpc.technicians.list.query({}).then((d) => {
+        const list = (d?.items ?? []) as unknown as TechnicianRow[];
+        if (list[0]) setTechnician(list[0]);
+      }),
     ]);
   }, []);
 
   // Load the first technician's availability once a technician is resolved
   useEffect(() => {
     if (!technician) return;
-    typedTrpc()
-      .slots.getAvailability.query({ technicianId: technician.id })
+    rawTrpc.slots.getAvailability
+      .query({ technicianId: technician.id })
       .then((d) => {
         const list = (d ?? []) as unknown as SlotRow[];
         if (list[0]) setSlot(list[0]);
@@ -75,21 +73,24 @@ export default function AdvancedBookingScreen(): JSX.Element {
       .catch(() => {});
   }, [technician]);
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    fetchRefs();
-    (typedTrpc().services.list.query({}) as Promise<ServiceListData>)
-      .then((d: ServiceListData) => {
-        setServices(d?.items || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, [fetchRefs]);
+  const fetch = useCallback(
+    (isRefresh = false) => {
+      if (isRefresh) setRefreshing(true);
+      else setLoading(true);
+      fetchRefs();
+      (rawTrpc.services.list.query({}) as Promise<ServiceListData>)
+        .then((d: ServiceListData) => {
+          setServices(d?.items || []);
+          setLoading(false);
+          setRefreshing(false);
+        })
+        .catch(() => {
+          setLoading(false);
+          setRefreshing(false);
+        });
+    },
+    [fetchRefs],
+  );
   useEffect(() => {
     fetch();
   }, [fetch]);
@@ -102,7 +103,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
     const s = new Date(Date.now() + 86400000).toISOString();
     const e = new Date(Date.now() + 86400000 + 3600000).toISOString();
     (
-      typedTrpc().advancedBooking.createRecurring.mutate({
+      rawTrpc.advancedBooking.createRecurring.mutate({
         technicianId: technician.id,
         serviceId: selectedSvc,
         addressId: address.id,
@@ -122,9 +123,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
         <View style={[styles.card, styles.rc]}>
           <Text style={styles.re}></Text>
           <Text style={styles.rtt}>تم!</Text>
-          <Text style={styles.rcnt}>
-            {result.bookings?.length ?? occurrences} حجوزات
-          </Text>
+          <Text style={styles.rcnt}>{result.bookings?.length ?? occurrences} حجوزات</Text>
         </View>
       </ScrollView>
     );
@@ -148,9 +147,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
           style={[styles.sc, selectedSvc === s.id && styles.sca]}
         >
           <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
-          <Text style={styles.sn}>
-            {s.titleJson?.ar ?? s.nameAr}
-          </Text>
+          <Text style={styles.sn}>{s.titleJson?.ar ?? s.nameAr}</Text>
         </TouchableOpacity>
       ))}
       <Text style={styles.st}> التكرار</Text>

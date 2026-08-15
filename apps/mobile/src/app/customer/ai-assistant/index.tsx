@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface AssistantMessage {
   id?: number;
@@ -26,7 +26,7 @@ export default function AIAssistantScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().liveChat.history.query() as Promise<AssistantMessage[]>)
+    (rawTrpc.liveChat.history.query() as Promise<AssistantMessage[]>)
       .then((d) => {
         setMessages(d || []);
         setLoading(false);

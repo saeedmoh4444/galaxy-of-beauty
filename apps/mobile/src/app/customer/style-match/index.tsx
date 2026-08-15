@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface StyleMatchResult {
   styleEmoji?: string;
@@ -14,8 +14,8 @@ export default function StyleMatchScreen(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const match = useCallback(() => {
     setLoading(true);
-    typedTrpc()
-      .styleMatch.match.mutate({ colors: ['#e879f9'] })
+    rawTrpc.styleMatch.match
+      .mutate({ colors: ['#e879f9'] })
       .then((d) => {
         setResult(d as unknown as StyleMatchResult);
         setLoading(false);

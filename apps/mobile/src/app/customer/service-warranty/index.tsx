@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface ServiceWarranty {
   id?: number;
@@ -17,7 +17,7 @@ export default function ServiceWarrantyScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().serviceWarranty.myClaims.query() as unknown as Promise<ServiceWarranty[]>)
+    (rawTrpc.serviceWarranty.myClaims.query() as unknown as Promise<ServiceWarranty[]>)
       .then((d: ServiceWarranty[]) => {
         setData(d || []);
         setLoading(false);

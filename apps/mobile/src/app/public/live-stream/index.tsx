@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface LiveStreamItem {
   id?: number;
@@ -24,8 +24,8 @@ export default function LiveStreamScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .liveStream.upcoming.query({})
+    rawTrpc.liveStream.upcoming
+      .query({})
       .then((d) => {
         const items = (d ?? []) as unknown as LiveStreamItem[];
         setData({ live: items, upcoming: items });
@@ -63,7 +63,7 @@ export default function LiveStreamScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.sn}>{s.titleAr ?? s.title ?? ''}</Text>
             <Text style={styles.sm}>
-               {s.host ?? ''} ·  {s.viewers ?? 0}
+              {s.host ?? ''} · {s.viewers ?? 0}
             </Text>
           </View>
           <TouchableOpacity style={styles.wb}>
@@ -78,13 +78,15 @@ export default function LiveStreamScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.sn}>{s.titleAr ?? s.title ?? ''}</Text>
             <Text style={styles.sm}>
-               {s.host ?? ''} ·{' '}
-              {s.scheduledAt ? new Date(s.scheduledAt).toLocaleDateString('ar-SA', {
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-              }) : ''}
+              {s.host ?? ''} ·{' '}
+              {s.scheduledAt
+                ? new Date(s.scheduledAt).toLocaleDateString('ar-SA', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })
+                : ''}
             </Text>
           </View>
           <View style={styles.rb}>

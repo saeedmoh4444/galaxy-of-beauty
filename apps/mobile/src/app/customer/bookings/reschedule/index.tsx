@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState, useEffect, useCallback } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface BookingRow {
   id: number;
@@ -28,7 +28,7 @@ export default function RescheduleScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     (
-      typedTrpc().bookings.list.query({
+      rawTrpc.bookings.list.query({
         status: 'ACCEPTED',
         page: 1,
         limit: LARGE_PAGE_SIZE,
@@ -50,7 +50,7 @@ export default function RescheduleScreen(): JSX.Element {
   const reschedule = (bookingId: number) => {
     const nd = new Date(Date.now() + 86400000).toISOString();
     (
-      typedTrpc().reschedule.request.mutate({
+      rawTrpc.reschedule.request.mutate({
         bookingId,
         newStartAt: nd,
         reason: 'طلب تعديل الموعد',

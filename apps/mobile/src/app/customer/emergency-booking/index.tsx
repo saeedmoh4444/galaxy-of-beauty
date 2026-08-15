@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface EmergencyService {
   id: number;
@@ -36,7 +36,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().services.list.query({}) as Promise<{ items?: EmergencyService[] }>)
+    (rawTrpc.services.list.query({}) as Promise<{ items?: EmergencyService[] }>)
       .then((d) => {
         setServices(d?.items || []);
         setLoading(false);
@@ -53,7 +53,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
   const check = (serviceId: number) => {
     setSelectedSvc(serviceId);
     setChecking(true);
-    (typedTrpc().emergencyBooking.checkAvailability.query({ serviceId }) as Promise<AvailabilityResult>)
+    (rawTrpc.emergencyBooking.checkAvailability.query({ serviceId }) as Promise<AvailabilityResult>)
       .then((d) => {
         setAvailability(d);
         setChecking(false);
@@ -63,13 +63,12 @@ export default function EmergencyBookingScreen(): JSX.Element {
   const book = async (technicianId: number, slotId: number) => {
     if (!selectedSvc) return;
     // Resolve the customer's first address instead of a hardcoded ID
-    const addresses = (await typedTrpc().addresses.list.query()) as unknown as
-      | { id: number }[]
-      | undefined;
+    const addresses = (await rawTrpc.addresses.list.query()) as unknown as
+      { id: number }[] | undefined;
     const addressId = addresses?.[0]?.id;
     if (!addressId) return;
     (
-      typedTrpc().emergencyBooking.create.mutate({
+      rawTrpc.emergencyBooking.create.mutate({
         serviceId: selectedSvc,
         technicianId,
         addressId,
@@ -107,9 +106,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
         {services.slice(0, 10).map((s) => (
           <TouchableOpacity key={s.id} onPress={() => check(s.id)} style={styles.sc}>
             <Text style={styles.se}>{s.emoji ?? ''}</Text>
-            <Text style={styles.sn}>
-              {s.titleJson?.ar ?? s.nameAr ?? ''}
-            </Text>
+            <Text style={styles.sn}>{s.titleJson?.ar ?? s.nameAr ?? ''}</Text>
             <Text style={styles.arrow}>→</Text>
           </TouchableOpacity>
         ))}
@@ -121,9 +118,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
       <Text style={styles.t}> حجز طارئ</Text>
       <View style={styles.ec}>
         <Text style={styles.et}> التكلفة التقديرية</Text>
-        <Text style={styles.ev}>
-          {(availability.totalEstimate ?? 0).toLocaleString()} ر.س
-        </Text>
+        <Text style={styles.ev}>{(availability.totalEstimate ?? 0).toLocaleString()} ر.س</Text>
       </View>
       {(availability.available ?? []).map((t) => (
         <View key={t.technicianId} style={styles.card}>

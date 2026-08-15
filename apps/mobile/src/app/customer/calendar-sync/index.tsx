@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface CalendarSyncStatus {
   connected?: boolean;
@@ -25,8 +25,8 @@ export default function CalendarSyncScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().calendarSync.status.query() as Promise<CalendarSyncStatus>,
-      typedTrpc().calendarSync.upcoming.query() as Promise<CalendarEvent[]>,
+      rawTrpc.calendarSync.status.query() as Promise<CalendarSyncStatus>,
+      rawTrpc.calendarSync.upcoming.query() as Promise<CalendarEvent[]>,
     ])
       .then(([s, u]) => {
         setStatus(s);
@@ -48,7 +48,7 @@ export default function CalendarSyncScreen(): JSX.Element {
     setError('مزامنة تقويم Google غير متوفرة في التطبيق حالياً');
   };
   const disconnect = () => {
-    typedTrpc().calendarSync.disconnect.mutate().then(() => fetch());
+    rawTrpc.calendarSync.disconnect.mutate().then(() => fetch());
   };
   if (loading) return <SkeletonList count={3} />;
   const connected = status?.connected ?? false;

@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const ET: Record<string, { label: string; emoji: string }> = {
   workshop: { label: 'ورشة عمل', emoji: '' },
@@ -27,7 +27,7 @@ export default function EventsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().beautyEvents.upcoming.query() as unknown as Promise<BeautyEvent[]>)
+    (rawTrpc.beautyEvents.upcoming.query() as unknown as Promise<BeautyEvent[]>)
       .then((d) => {
         setEvents(d || []);
         setLoading(false);
@@ -83,14 +83,14 @@ export default function EventsScreen(): JSX.Element {
           <View key={e.id} style={styles.card}>
             <Text style={styles.ee}>{et.emoji}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.en}>
-                {e.nameJson?.ar ?? e.nameAr ?? ''}
-              </Text>
+              <Text style={styles.en}>{e.nameJson?.ar ?? e.nameAr ?? ''}</Text>
               <Text style={styles.em}>
-                {e.startsAt ? new Date(e.startsAt).toLocaleDateString('ar-SA', {
-                  month: 'long',
-                  day: 'numeric',
-                }) : ''}{' '}
+                {e.startsAt
+                  ? new Date(e.startsAt).toLocaleDateString('ar-SA', {
+                      month: 'long',
+                      day: 'numeric',
+                    })
+                  : ''}{' '}
                 · {e.location ?? 'أونلاين'}
               </Text>
             </View>

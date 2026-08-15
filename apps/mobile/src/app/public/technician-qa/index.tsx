@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface QAItem {
   id?: number;
@@ -20,7 +20,7 @@ export default function TechnicianQAScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().technicianQA.list.query({}) as unknown as Promise<{ items: QAItem[] }>)
+    (rawTrpc.technicianQA.list.query({}) as unknown as Promise<{ items: QAItem[] }>)
       .then((d) => {
         setQuestions(d?.items ?? []);
         setLoading(false);
@@ -61,7 +61,7 @@ export default function TechnicianQAScreen(): JSX.Element {
             <View style={{ flex: 1 }}>
               <Text style={styles.qText}>{q.questionAr ?? ''}</Text>
               <Text style={styles.qMeta}>
-                {q.categoryAr ?? ''} ·  {q.technicianName ?? ''}
+                {q.categoryAr ?? ''} · {q.technicianName ?? ''}
               </Text>
               {q.answerAr ? (
                 <View style={styles.answer}>

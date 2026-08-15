@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const TYPES: Record<string, string> = {
   workshop: ' ورشة',
@@ -39,22 +39,26 @@ export default function BeautyEventsScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => typedTrpc().beautyEvents.upcoming.query());
-  const { data: myRegsData } = useQuery(() => typedTrpc().beautyEvents.myRegistrations.query());
+  } = useQuery(() => rawTrpc.beautyEvents.upcoming.query());
+  const { data: myRegsData } = useQuery(() => rawTrpc.beautyEvents.myRegistrations.query());
   const myRegs = (myRegsData ?? []) as EventRegistration[];
   const registeredIds = new Set(myRegs.map((r) => r.eventId));
 
   const handleRegister = async (id: number) => {
     try {
-      await typedTrpc().beautyEvents.register.mutate({ eventId: id });
+      await rawTrpc.beautyEvents.register.mutate({ eventId: id });
       refetch();
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
   const handleCancel = async (id: number) => {
     try {
-      await typedTrpc().beautyEvents.cancelRegistration.mutate({ eventId: id });
+      await rawTrpc.beautyEvents.cancelRegistration.mutate({ eventId: id });
       refetch();
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
 
   if (loading) return <SkeletonList count={4} />;
@@ -78,7 +82,7 @@ export default function BeautyEventsScreen(): JSX.Element {
           style={{ backgroundColor: '#ecfdf5', borderRadius: 12, padding: 12, marginBottom: 16 }}
         >
           <Text style={{ fontWeight: '700', color: '#059669', marginBottom: 4 }}>
-             مسجلة في {myRegs.length} فعاليات
+            مسجلة في {myRegs.length} فعاليات
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
             {myRegs.map((r) => (

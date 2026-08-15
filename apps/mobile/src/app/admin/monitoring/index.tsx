@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const STATUS_COLORS: Record<string, string> = {
   healthy: '#059669',
@@ -32,7 +32,7 @@ export default function MonitoringScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().monitoring.health.query() as unknown as Promise<HealthReport>)
+    (rawTrpc.monitoring.health.query() as unknown as Promise<HealthReport>)
       .then((d: HealthReport) => {
         setHealth(d || {});
         setLoading(false);
@@ -71,10 +71,7 @@ export default function MonitoringScreen(): JSX.Element {
         {Object.entries(services).map(([key, svc]) => (
           <View
             key={key}
-            style={[
-              styles.svcCard,
-              { borderColor: STATUS_COLORS[svc.status ?? ''] ?? '#6b7280' },
-            ]}
+            style={[styles.svcCard, { borderColor: STATUS_COLORS[svc.status ?? ''] ?? '#6b7280' }]}
           >
             <Text style={styles.svcEmoji}>{svc.status === 'healthy' ? '' : ''}</Text>
             <Text style={styles.svcKey}>{key}</Text>
@@ -90,9 +87,7 @@ export default function MonitoringScreen(): JSX.Element {
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
-          <Text style={[styles.kpiVal, { color: '#2563eb' }]}>
-            {perf.activeSessions ?? 0}
-          </Text>
+          <Text style={[styles.kpiVal, { color: '#2563eb' }]}>{perf.activeSessions ?? 0}</Text>
           <Text style={styles.kpiLabel}>جلسات</Text>
         </View>
       </View>

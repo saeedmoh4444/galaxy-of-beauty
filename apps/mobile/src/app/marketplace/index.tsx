@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface MarketplaceProduct {
   id?: number;
@@ -18,7 +18,9 @@ export default function MarketplaceScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().marketplace.products.query({}).then((d) => {
+    rawTrpc.marketplace.products
+      .query({})
+      .then((d) => {
         setProducts((d?.items ?? []) as unknown as MarketplaceProduct[]);
         setLoading(false);
         setRefreshing(false);

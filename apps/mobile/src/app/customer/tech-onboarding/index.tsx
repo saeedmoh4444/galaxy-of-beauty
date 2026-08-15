@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface OnboardingStep {
   key?: string;
@@ -27,7 +27,7 @@ export default function TechOnboardingScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().techOnboarding.steps.query() as Promise<OnboardingData>)
+    (rawTrpc.techOnboarding.steps.query() as Promise<OnboardingData>)
       .then((d: OnboardingData) => {
         setData(d);
         setLoading(false);
@@ -42,10 +42,12 @@ export default function TechOnboardingScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const submitDoc = (stepKey: string) => {
-    (typedTrpc().techOnboarding.submitDoc.mutate({
-      stepKey,
-      documentUrl: 'document-url',
-    }) as Promise<unknown>).then(() => fetch());
+    (
+      rawTrpc.techOnboarding.submitDoc.mutate({
+        stepKey,
+        documentUrl: 'document-url',
+      }) as Promise<unknown>
+    ).then(() => fetch());
   };
   if (loading) return <SkeletonList count={4} />;
   const steps = (data?.steps as OnboardingStep[] | undefined) ?? [];

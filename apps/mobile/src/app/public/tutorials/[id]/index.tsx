@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { useState, useEffect, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface TutorialStep {
   titleAr?: string;
@@ -28,8 +28,8 @@ export default function TutorialDetailScreen(): JSX.Element {
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      typedTrpc()
-        .tutorials.getById.query({ id: parseInt(id, 10) })
+      rawTrpc.tutorials.getById
+        .query({ id: parseInt(id, 10) })
         .then((d) => {
           setData(d as unknown as Tutorial);
           setLoading(false);

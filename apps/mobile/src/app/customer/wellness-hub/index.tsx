@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface CyclePhase {
   color?: string;
@@ -51,7 +51,7 @@ interface WellnessDashboard {
 
 export default function WellnessHubScreen(): JSX.Element {
   const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
-    typedTrpc().wellnessHub.dashboard.query(),
+    rawTrpc.wellnessHub.dashboard.query(),
   );
 
   if (loading) return <SkeletonList count={4} />;
@@ -162,7 +162,10 @@ export default function WellnessHubScreen(): JSX.Element {
               <View
                 style={[
                   s.barFill,
-                  { width: `${((weekly?.avgEnergy ?? 0) / 10) * 100}%`, backgroundColor: '#3b82f6' },
+                  {
+                    width: `${((weekly?.avgEnergy ?? 0) / 10) * 100}%`,
+                    backgroundColor: '#3b82f6',
+                  },
                 ]}
               />
             </View>

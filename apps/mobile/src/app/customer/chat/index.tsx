@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface ChatMessage {
   id?: number;
@@ -25,8 +25,8 @@ export default function ChatScreen(): JSX.Element {
 
   const fetch = useCallback(() => {
     setLoading(true);
-    typedTrpc()
-      .chat.messages.query({ bookingId: 1, page: 1, limit: BULK_PAGE_SIZE })
+    rawTrpc.chat.messages
+      .query({ bookingId: 1, page: 1, limit: BULK_PAGE_SIZE })
       .then((d) => {
         setMessages((d?.items ?? []) as unknown as ChatMessage[]);
         setLoading(false);
@@ -40,9 +40,7 @@ export default function ChatScreen(): JSX.Element {
 
   const send = () => {
     if (!text.trim()) return;
-    typedTrpc()
-      .chat.send.mutate({ receiverId: 1, bookingId: 1, content: text.trim() })
-      .then(() => {
+    rawTrpc.chat.send.mutate({ receiverId: 1, bookingId: 1, content: text.trim() }).then(() => {
       setText('');
       fetch();
     });

@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
 
 interface GeofenceOffer {
@@ -21,7 +21,7 @@ export default function GeofenceOffersScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     (
-      typedTrpc().geofenceOffers.nearMe.query({
+      rawTrpc.geofenceOffers.nearMe.query({
         city: DEFAULT_SAUDI_CITY /* TODO: from user location */,
       }) as Promise<GeofenceOffer[]>
     )

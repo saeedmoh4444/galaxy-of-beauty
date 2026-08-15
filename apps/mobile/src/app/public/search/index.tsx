@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface SearchService {
   id?: number;
@@ -21,7 +21,7 @@ export default function SearchScreen(): JSX.Element {
   const doSearch = () => {
     if (!query.trim()) return;
     setLoading(true);
-    (typedTrpc().search.search.query({ query: query.trim() }) as unknown as Promise<SearchResults>)
+    (rawTrpc.search.search.query({ query: query.trim() }) as unknown as Promise<SearchResults>)
       .then((d) => {
         setResults(d);
         setLoading(false);
@@ -48,9 +48,7 @@ export default function SearchScreen(): JSX.Element {
       {loading && <SkeletonList count={4} />}
       {results && !loading && (
         <>
-          {(results.services ?? []).length > 0 && (
-            <Text style={styles.st}> خدمات</Text>
-          )}
+          {(results.services ?? []).length > 0 && <Text style={styles.st}> خدمات</Text>}
           {(results.services ?? []).map((s) => (
             <View key={s.id} style={styles.card}>
               <Text style={styles.ce}>{s.emoji ?? ''}</Text>

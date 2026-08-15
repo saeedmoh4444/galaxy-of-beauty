@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface PenPalMatch {
   name?: string;
@@ -16,8 +16,8 @@ export default function PenPalScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .penPal.match.query()
+    rawTrpc.penPal.match
+      .query()
       .then((d) => {
         setData((d?.[0] ?? null) as unknown as PenPalMatch);
         setLoading(false);

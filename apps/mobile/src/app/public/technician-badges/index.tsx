@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface TechBadge {
   id?: number;
@@ -20,7 +20,7 @@ export default function TechnicianBadgesScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().technicianBadges.list.query() as unknown as Promise<TechBadge[]>)
+    (rawTrpc.technicianBadges.list.query() as unknown as Promise<TechBadge[]>)
       .then((d) => {
         setBadges(d || []);
         setLoading(false);
@@ -61,17 +61,11 @@ export default function TechnicianBadgesScreen(): JSX.Element {
             <View style={{ flex: 1 }}>
               <Text style={styles.badgeName}>{b.nameAr ?? ''}</Text>
               <Text style={styles.badgeDesc}>{b.descAr ?? ''}</Text>
-              <Text style={styles.badgeCount}>
-                 {b.technicianCount ?? 0} فنيات حاصلات عليها
-              </Text>
+              <Text style={styles.badgeCount}>{b.technicianCount ?? 0} فنيات حاصلات عليها</Text>
             </View>
             <View style={styles.badgeRarity}>
               <Text style={styles.rarityText}>
-                {b.rarity === 'rare'
-                  ? 'نادرة'
-                  : b.rarity === 'common'
-                    ? 'شائعة'
-                    : 'مميزة'}
+                {b.rarity === 'rare' ? 'نادرة' : b.rarity === 'common' ? 'شائعة' : 'مميزة'}
               </Text>
             </View>
           </View>

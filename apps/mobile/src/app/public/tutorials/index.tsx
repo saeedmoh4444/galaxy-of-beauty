@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface Tutorial {
   id?: number;
@@ -20,8 +20,8 @@ export default function TutorialsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .tutorials.list.query({})
+    rawTrpc.tutorials.list
+      .query({})
       .then((d) => {
         setTutorials((d?.items ?? []) as unknown as Tutorial[]);
         setLoading(false);

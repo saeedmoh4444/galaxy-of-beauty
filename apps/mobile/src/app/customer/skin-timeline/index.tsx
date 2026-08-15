@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface SkinEntry {
   id?: number;
@@ -19,7 +19,7 @@ export default function SkinTimelineScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().skinDiary.entries.query() as unknown as Promise<SkinEntry[]>)
+    (rawTrpc.skinDiary.entries.query() as unknown as Promise<SkinEntry[]>)
       .then((d: SkinEntry[]) => {
         setEntries(d || []);
         setLoading(false);

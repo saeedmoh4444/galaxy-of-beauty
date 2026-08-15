@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const TL: Record<string, { name: string; emoji: string; color: string }> = {
   SILVER: { name: 'الفضية', emoji: '', color: '#9ca3af' },
@@ -26,8 +26,8 @@ export default function RewardsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .loyalty.rewards.query()
+    rawTrpc.loyalty.rewards
+      .query()
       .then((d: Reward[]) => {
         setRewards(d || []);
         setLoading(false);
@@ -73,9 +73,7 @@ export default function RewardsScreen(): JSX.Element {
             <Text style={styles.rn}>{r.nameAr ?? r.titleAr}</Text>
             <Text style={styles.rd}>{r.descAr}</Text>
           </View>
-          <Text style={styles.rp}>
-            {(r.pointsCost ?? r.points)?.toLocaleString()} نقطة
-          </Text>
+          <Text style={styles.rp}>{(r.pointsCost ?? r.points)?.toLocaleString()} نقطة</Text>
         </View>
       ))}
     </ScrollView>

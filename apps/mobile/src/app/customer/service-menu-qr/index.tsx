@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface QrTechnician {
   id: number;
@@ -22,7 +22,7 @@ export default function ServiceMenuQRScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().serviceMenuQr.list.query() as Promise<QrTechnician[]>)
+    (rawTrpc.serviceMenuQr.list.query() as Promise<QrTechnician[]>)
       .then((d: QrTechnician[]) => {
         setTechs(d || []);
         setLoading(false);
@@ -37,7 +37,7 @@ export default function ServiceMenuQRScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const generate = (technicianId: number) => {
-    (typedTrpc().serviceMenuQr.generate.mutate({ technicianId }) as Promise<QrGenerated>).then(
+    (rawTrpc.serviceMenuQr.generate.mutate({ technicianId }) as Promise<QrGenerated>).then(
       (d: QrGenerated) => setResult(d),
     );
   };

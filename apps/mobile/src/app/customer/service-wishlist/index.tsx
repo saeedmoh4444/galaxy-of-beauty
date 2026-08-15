@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface WishlistItem {
   id?: number;
@@ -18,8 +18,8 @@ export default function ServiceWishlistScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .serviceWishlist.myWishlist.query()
+    rawTrpc.serviceWishlist.myWishlist
+      .query()
       .then((d: WishlistItem[]) => {
         setItems(d || []);
         setLoading(false);
@@ -34,9 +34,7 @@ export default function ServiceWishlistScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const remove = (id: number) => {
-    typedTrpc()
-      .serviceWishlist.remove.mutate({ id })
-      .then(() => fetch());
+    rawTrpc.serviceWishlist.remove.mutate({ id }).then(() => fetch());
   };
   if (loading) return <SkeletonList count={4} />;
   return (
@@ -57,9 +55,7 @@ export default function ServiceWishlistScreen(): JSX.Element {
           <Text style={styles.em}>{i.emoji}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>{i.serviceName}</Text>
-            <Text style={styles.lp}>
-              أقل سعر: {i.lowestPrice?.toLocaleString()} ر.س
-            </Text>
+            <Text style={styles.lp}>أقل سعر: {i.lowestPrice?.toLocaleString()} ر.س</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
             <Text style={styles.cp}>{i.currentPrice?.toLocaleString()} ر.س</Text>

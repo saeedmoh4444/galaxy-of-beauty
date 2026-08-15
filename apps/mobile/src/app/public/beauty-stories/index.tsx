@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface BeautyStory {
   id?: number;
@@ -22,7 +22,7 @@ export default function BeautyStoriesScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().beautyStories.feed.query());
+  } = useQuery(() => rawTrpc.beautyStories.feed.query());
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل القصص" onRetry={refetch} />;

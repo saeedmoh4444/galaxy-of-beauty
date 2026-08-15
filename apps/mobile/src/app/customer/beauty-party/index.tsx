@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const THEMES = [
   { key: 'spa', emoji: '‍️', name: 'سبا منزلي', desc: 'مساج وأقنعة واسترخاء' },
@@ -24,7 +24,7 @@ export default function BeautyPartyScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().services.list.query({}) as Promise<{ items?: PartyService[] }>)
+    (rawTrpc.services.list.query({}) as Promise<{ items?: PartyService[] }>)
       .then((d) => {
         setServices(d?.items || []);
         setLoading(false);

@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface ServiceItem {
   id: number;
@@ -34,7 +34,7 @@ export default function RecommendationsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().services.list.query({}) as Promise<ServiceListData>)
+    (rawTrpc.services.list.query({}) as Promise<ServiceListData>)
       .then((d: ServiceListData) => {
         setServices(d?.items || []);
         setLoading(false);
@@ -51,9 +51,11 @@ export default function RecommendationsScreen(): JSX.Element {
   const getRelated = (serviceId: number) => {
     setSelectedId(serviceId);
     setRelatedLoading(true);
-    (typedTrpc().recommendations.frequentlyBookedTogether.query({
-      serviceId,
-    }) as Promise<RelatedService[]>)
+    (
+      rawTrpc.recommendations.frequentlyBookedTogether.query({
+        serviceId,
+      }) as Promise<RelatedService[]>
+    )
       .then((d: RelatedService[]) => {
         setRelated(d || []);
         setRelatedLoading(false);

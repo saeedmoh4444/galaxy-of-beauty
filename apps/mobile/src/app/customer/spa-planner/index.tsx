@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface SpaService {
   id?: number;
@@ -18,8 +18,8 @@ export default function SpaPlannerScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .spaPlanner.services.query()
+    rawTrpc.spaPlanner.services
+      .query()
       .then((d: SpaService[]) => {
         setData(d || []);
         setLoading(false);

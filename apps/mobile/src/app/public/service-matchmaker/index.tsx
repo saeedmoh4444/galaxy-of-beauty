@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useState } from 'react';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const QUESTIONS = [
   {
@@ -67,8 +67,8 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
       setStep(step + 1);
     } else {
       setLoading(true);
-      typedTrpc()
-        .serviceMatchmaker.match.query({ answers: next })
+      rawTrpc.serviceMatchmaker.match
+        .query({ answers: next })
         .then((d) => {
           setResult({ matches: (d ?? []) as unknown as MatchResultItem[] });
           setLoading(false);

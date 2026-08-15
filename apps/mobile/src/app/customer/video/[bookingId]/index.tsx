@@ -2,7 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } 
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface VideoSession {
   roomId?: string;
@@ -19,8 +19,8 @@ export default function VideoBookingScreen(): JSX.Element {
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      typedTrpc()
-        .video.getByBooking.query({ bookingId: parseInt(bookingId, 10) })
+      rawTrpc.video.getByBooking
+        .query({ bookingId: parseInt(bookingId, 10) })
         .then((d) => {
           setData(d);
           setLoading(false);

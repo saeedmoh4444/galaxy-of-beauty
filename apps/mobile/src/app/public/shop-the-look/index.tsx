@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface LookProduct {
   id?: number;
@@ -35,7 +35,7 @@ export default function ShopTheLookScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().lookbook.current.query() as unknown as Promise<Look[]>)
+    (rawTrpc.lookbook.current.query() as unknown as Promise<Look[]>)
       .then((d: Look[]) => {
         setLooks(d || []);
         setLoading(false);

@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
 
 interface HomeServiceEstimate {
@@ -16,8 +16,8 @@ export default function HomeServiceScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .homeService.estimate.query({ city: DEFAULT_SAUDI_CITY /* TODO: use user location */ })
+    rawTrpc.homeService.estimate
+      .query({ city: DEFAULT_SAUDI_CITY /* TODO: use user location */ })
       .then((d) => {
         setEstimate(d as unknown as HomeServiceEstimate);
         setLoading(false);

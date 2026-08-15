@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, Switch, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface NotificationPrefs {
   bookings?: boolean;
@@ -18,7 +18,7 @@ export default function NotificationSettingsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().notificationPrefs.get.query() as Promise<NotificationPrefs>)
+    (rawTrpc.notificationPrefs.get.query() as Promise<NotificationPrefs>)
       .then((d) => {
         setData(d || {});
         setLoading(false);

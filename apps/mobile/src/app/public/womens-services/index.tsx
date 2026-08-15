@@ -3,7 +3,7 @@ import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface ServiceItem {
   nameAr?: string;
@@ -18,7 +18,7 @@ export default function WomensServicesScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().womensServices.categories.query());
+  } = useQuery(() => rawTrpc.womensServices.categories.query());
   const [selectedCat, setSelectedCat] = useState<Record<string, unknown> | null>(null);
 
   if (loading) return <SkeletonList count={6} />;

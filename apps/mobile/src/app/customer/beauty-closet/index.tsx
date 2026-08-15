@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const CATS = [' مكياج', ' عناية', '‍️ شعر', ' أظافر', ' طبيعي'];
 
@@ -21,7 +21,7 @@ export default function BeautyClosetScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().restockReminder.myItems.query() as unknown as Promise<ClosetProduct[]>)
+    (rawTrpc.restockReminder.myItems.query() as unknown as Promise<ClosetProduct[]>)
       .then((d) => {
         setProducts(d || []);
         setLoading(false);
@@ -43,9 +43,7 @@ export default function BeautyClosetScreen(): JSX.Element {
       </ScrollView>
     );
 
-  const filtered = filter
-    ? products.filter((p) => p.category === filter)
-    : products;
+  const filtered = filter ? products.filter((p) => p.category === filter) : products;
 
   return (
     <ScrollView

@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface MarketProduct {
   id?: number;
@@ -31,17 +31,19 @@ interface CartItem {
 export default function MarketplaceScreen(): JSX.Element {
   const [search, setSearch] = useState('');
   const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
-    typedTrpc().marketplace.products.query({ search: search || undefined, page: 1, limit: 24 }),
+    rawTrpc.marketplace.products.query({ search: search || undefined, page: 1, limit: 24 }),
   );
-  const { data: cart } = useQuery(() => typedTrpc().marketplace.cart.query());
+  const { data: cart } = useQuery(() => rawTrpc.marketplace.cart.query());
   const productItems = (data as MarketProductsResponse | null)?.items;
   const products: MarketProduct[] = Array.isArray(productItems) ? productItems : [];
   const cartCount = ((cart ?? []) as CartItem[]).length;
 
   const handleAddToCart = async (pid: number) => {
     try {
-      await typedTrpc().marketplace.addToCart.mutate({ productId: pid });
-    } catch { /* noop */ }
+      await rawTrpc.marketplace.addToCart.mutate({ productId: pid });
+    } catch {
+      /* noop */
+    }
   };
 
   if (loading) return <SkeletonList count={6} />;
@@ -125,7 +127,7 @@ export default function MarketplaceScreen(): JSX.Element {
               }}
             >
               <Text style={{ color: '#fff', textAlign: 'center', fontSize: 12, fontWeight: '600' }}>
-                 أضيفي
+                أضيفي
               </Text>
             </View>
           </TouchableOpacity>

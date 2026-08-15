@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface ConsultationBooking {
   consultantType?: string;
@@ -58,7 +58,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => typedTrpc().virtualConsultation.myConsultations.query());
+  } = useQuery(() => rawTrpc.virtualConsultation.myConsultations.query());
   const [selected, setSelected] = useState<string | null>(null);
   const [slot, setSlot] = useState<string | null>(null);
   const [booked, setBooked] = useState(false);
@@ -68,14 +68,16 @@ export default function VirtualConsultationScreen(): JSX.Element {
   const handleBook = async () => {
     if (!consultant || !slot) return;
     try {
-      await typedTrpc().virtualConsultation.book.mutate({
+      await rawTrpc.virtualConsultation.book.mutate({
         consultantType: consultant.key,
         scheduledAt: new Date().toISOString(),
         slot,
         price: consultant.price,
       });
       setBooked(true);
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
 
   if (loading) return <SkeletonList count={3} />;
@@ -141,7 +143,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
       {consultant && (
         <View style={{ marginTop: 16 }}>
           <Text style={{ fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 }}>
-             اختر الوقت — {consultant.emoji} {consultant.name}
+            اختر الوقت — {consultant.emoji} {consultant.name}
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
             {consultant.slots.map((s) => (
@@ -165,7 +167,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
       {myBookings.length > 0 && (
         <View style={{ marginTop: 20 }}>
           <Text style={{ fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 }}>
-             حجوزاتي
+            حجوزاتي
           </Text>
           {myBookings.map((b, i) => (
             <View

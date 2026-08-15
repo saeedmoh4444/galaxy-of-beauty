@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const PAYMENT_METHODS = [
   { key: 'wallet', emoji: '', label: 'المحفظة' },
@@ -23,7 +23,7 @@ export default function CheckoutScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().wallet.getBalance.query() as unknown as Promise<WalletBalance>)
+    (rawTrpc.wallet.getBalance.query() as unknown as Promise<WalletBalance>)
       .then((d) => {
         setBalance(d);
         setLoading(false);

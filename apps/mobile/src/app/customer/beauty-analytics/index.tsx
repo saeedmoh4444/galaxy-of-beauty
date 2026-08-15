@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface AnalyticsSummary {
   totalBookings: number;
@@ -32,9 +32,9 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().beautyAnalytics.summary.query() as Promise<AnalyticsSummary>,
-      typedTrpc().beautyAnalytics.byCategory.query() as Promise<CategoryCount[]>,
-      typedTrpc().beautyAnalytics.monthlyTrend.query() as Promise<MonthlyTrend[]>,
+      rawTrpc.beautyAnalytics.summary.query() as Promise<AnalyticsSummary>,
+      rawTrpc.beautyAnalytics.byCategory.query() as Promise<CategoryCount[]>,
+      rawTrpc.beautyAnalytics.monthlyTrend.query() as Promise<MonthlyTrend[]>,
     ])
       .then(([s, c, t]) => {
         setSummary(s);
@@ -84,9 +84,7 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
         </View>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
-          <Text style={[styles.kv, { color: '#7c3aed' }]}>
-            {s.totalSpent?.toLocaleString()}
-          </Text>
+          <Text style={[styles.kv, { color: '#7c3aed' }]}>{s.totalSpent?.toLocaleString()}</Text>
           <Text style={styles.kl}>ر.س</Text>
         </View>
       </View>

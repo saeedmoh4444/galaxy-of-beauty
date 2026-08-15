@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface AdminFinanceDashboard {
   totalRevenue?: number;
@@ -17,7 +17,7 @@ export default function AdminFinanceScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().admin.dashboardStats.query() as unknown as Promise<AdminFinanceDashboard>)
+    (rawTrpc.admin.dashboardStats.query() as unknown as Promise<AdminFinanceDashboard>)
       .then((d: AdminFinanceDashboard) => {
         setData(d);
         setLoading(false);

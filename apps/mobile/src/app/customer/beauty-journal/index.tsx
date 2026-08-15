@@ -3,7 +3,7 @@ import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface JournalEntry {
   id?: number;
@@ -19,7 +19,7 @@ export default function BeautyJournalScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().beautyJournal.list.query({ page: 1, limit: LARGE_PAGE_SIZE }));
+  } = useQuery(() => rawTrpc.beautyJournal.list.query({ page: 1, limit: LARGE_PAGE_SIZE }));
 
   if (loading)
     return (

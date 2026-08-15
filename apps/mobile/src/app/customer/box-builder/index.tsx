@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface BoxProduct {
   id: number;
@@ -19,7 +19,7 @@ export default function BoxBuilderScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().boxBuilder.catalog.query() as unknown as Promise<BoxProduct[]>)
+    (rawTrpc.boxBuilder.catalog.query() as unknown as Promise<BoxProduct[]>)
       .then((d: BoxProduct[] | undefined) => {
         setProducts(d || []);
         setLoading(false);

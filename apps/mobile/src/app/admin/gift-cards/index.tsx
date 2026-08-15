@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { useState, useEffect, useCallback } from 'react';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface GiftCardItem {
   code?: string;
@@ -22,7 +22,9 @@ export default function AdminGiftCardsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().giftCards.listAll.query({ page: 1, limit: BULK_PAGE_SIZE }).then((d: GiftCardListResponse) => {
+    rawTrpc.giftCards.listAll
+      .query({ page: 1, limit: BULK_PAGE_SIZE })
+      .then((d: GiftCardListResponse) => {
         setData(d?.items || []);
         setLoading(false);
         setRefreshing(false);

@@ -10,12 +10,12 @@ interface QueryState<T> {
 }
 
 /**
- * Typed hook for tRPC queries — replaces the `typedTrpc()` pattern
+ * Typed hook for tRPC queries — replaces the raw promise pattern
  * with proper type inference, loading states, error handling with retry,
  * and pull-to-refresh support via `refreshing` + `refresh()`.
  *
  * @example
- * const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => trpc.services.list.query({}));
+ * const { data, loading, error, refreshing, refetch, refresh } = useQuery(() => rawTrpc.services.list.query({}));
  * // In ScrollView: refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}
  */
 export function useQuery<T>(queryFn: () => Promise<T>): QueryState<T> {

@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { useState, useEffect } from 'react';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface PlatformStats {
   totalBookings: number;
@@ -23,7 +23,7 @@ export default function BeautyStatsScreen(): JSX.Element {
     happyCustomers: 180000,
   });
   useEffect(() => {
-    typedTrpc().beautyStats?.platform
+    rawTrpc.beautyStats?.platform
       ?.query?.()
       .then((s: PlatformStats | null) => s && setStats(s))
       .catch(() => {});

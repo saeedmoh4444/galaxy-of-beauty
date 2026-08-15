@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 
 import { useState, useEffect } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface StreamDetail {
   titleAr?: string;
@@ -25,10 +25,7 @@ export default function LiveStreamDetailScreen(): JSX.Element {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([
-      typedTrpc().liveStream.upcoming.query({}),
-      typedTrpc().liveChat.history.query(),
-    ])
+    Promise.all([rawTrpc.liveStream.upcoming.query({}), rawTrpc.liveChat.history.query()])
       .then(([s, m]) => {
         const list = (s ?? []) as unknown as Array<StreamDetail & { id?: number }>;
         setStream(list.find((x) => x.id === parseInt(id, 10)) ?? null);
@@ -47,7 +44,7 @@ export default function LiveStreamDetailScreen(): JSX.Element {
   const sendMsg = () => {
     if (!chatText.trim()) return;
     (
-      typedTrpc().liveChat.send.mutate({
+      rawTrpc.liveChat.send.mutate({
         message: chatText.trim(),
       }) as unknown as Promise<void>
     ).then(() => {
@@ -68,11 +65,9 @@ export default function LiveStreamDetailScreen(): JSX.Element {
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.i}>
         <View style={styles.videoPlaceholder}>
           <Text style={styles.playIcon}>▶️</Text>
-          <Text style={styles.videoTitle}>
-            {stream.titleAr ?? stream.title ?? ''}
-          </Text>
+          <Text style={styles.videoTitle}>{stream.titleAr ?? stream.title ?? ''}</Text>
           <Text style={styles.videoMeta}>
-             {stream.host ?? ''} ·  {stream.viewers ?? 0}
+            {stream.host ?? ''} · {stream.viewers ?? 0}
           </Text>
         </View>
         <Text style={styles.chatTitle}> المحادثة المباشرة</Text>

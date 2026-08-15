@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface SurpriseService {
   emoji?: string;
@@ -15,8 +15,8 @@ export default function SurpriseMeScreen(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const surprise = useCallback(() => {
     setLoading(true);
-    typedTrpc()
-      .services.surpriseMe.query({})
+    rawTrpc.services.surpriseMe
+      .query({})
       .then((d) => {
         setResult(d as unknown as SurpriseService);
         setLoading(false);

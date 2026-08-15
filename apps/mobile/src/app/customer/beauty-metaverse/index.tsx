@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface MetaverseSalon {
   id: number;
@@ -21,7 +21,7 @@ export default function BeautyMetaverseScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().beautyMetaverse.salons.query() as Promise<MetaverseSalon[]>)
+    (rawTrpc.beautyMetaverse.salons.query() as Promise<MetaverseSalon[]>)
       .then((d: MetaverseSalon[]) => {
         setSalons(d || []);
         setLoading(false);
@@ -36,9 +36,9 @@ export default function BeautyMetaverseScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const enter = (salonId: number) => {
-    (typedTrpc().beautyMetaverse.enter.mutate({ salonId, avatar: 'skin1' }) as Promise<EnterResult>).then(
-      (d: EnterResult) => setResult(d),
-    );
+    (
+      rawTrpc.beautyMetaverse.enter.mutate({ salonId, avatar: 'skin1' }) as Promise<EnterResult>
+    ).then((d: EnterResult) => setResult(d));
   };
   if (loading) return <SkeletonList count={4} />;
   if (result)

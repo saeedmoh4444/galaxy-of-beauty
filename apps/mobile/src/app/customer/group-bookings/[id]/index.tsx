@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { useState, useEffect, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const TE: Record<string, string> = {
   bridal: '',
@@ -44,7 +44,7 @@ export default function GroupBookingDetailScreen(): JSX.Element {
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      (typedTrpc().groupBookings.getById.query({ id: parseInt(id, 10) }) as Promise<GroupBookingDetail>)
+      (rawTrpc.groupBookings.getById.query({ id: parseInt(id, 10) }) as Promise<GroupBookingDetail>)
         .then((d) => {
           setData(d);
           setLoading(false);

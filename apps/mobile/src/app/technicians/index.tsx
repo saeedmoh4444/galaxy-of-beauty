@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface TechnicianItem {
   id?: number;
@@ -20,7 +20,9 @@ export default function TechniciansScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().technicians.list.query({}).then((d) => {
+    rawTrpc.technicians.list
+      .query({})
+      .then((d) => {
         setTechs((d?.items ?? []) as unknown as TechnicianItem[]);
         setLoading(false);
         setRefreshing(false);

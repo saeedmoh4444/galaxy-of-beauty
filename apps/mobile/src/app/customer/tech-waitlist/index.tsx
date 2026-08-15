@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface WaitlistTech {
   id: number;
@@ -31,9 +31,10 @@ export default function TechWaitlistScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().techWaitlist.popular.query() as Promise<WaitlistTech[]>,
-      typedTrpc().techWaitlist.myWaitlists.query() as Promise<MyWaitlist[]>,
-    ]).then(([p, m]) => {
+      rawTrpc.techWaitlist.popular.query() as Promise<WaitlistTech[]>,
+      rawTrpc.techWaitlist.myWaitlists.query() as Promise<MyWaitlist[]>,
+    ])
+      .then(([p, m]) => {
         setPopular(p || []);
         setMyList(m || []);
         setLoading(false);
@@ -53,16 +54,14 @@ export default function TechWaitlistScreen(): JSX.Element {
       myList.find((m) => m.technicianId === techId)?.technicianName ??
       '';
     (
-      typedTrpc().techWaitlist.join.mutate({
+      rawTrpc.techWaitlist.join.mutate({
         technicianId: techId,
         technicianName: techName,
       }) as Promise<unknown>
     ).then(() => fetch());
   };
   const leave = (techId: number) => {
-    (typedTrpc().techWaitlist.leave.mutate({ id: techId }) as Promise<unknown>).then(
-      () => fetch(),
-    );
+    (rawTrpc.techWaitlist.leave.mutate({ id: techId }) as Promise<unknown>).then(() => fetch());
   };
   if (loading) return <SkeletonList count={5} />;
   return (
@@ -98,7 +97,7 @@ export default function TechWaitlistScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.tn}>{t.name}</Text>
             <Text style={styles.tm}>
-               {t.rating ?? 0} · {t.waitlistCount ?? 0} في الانتظار
+              {t.rating ?? 0} · {t.waitlistCount ?? 0} في الانتظار
             </Text>
           </View>
           <TouchableOpacity onPress={() => join(t.id)} style={styles.jb}>

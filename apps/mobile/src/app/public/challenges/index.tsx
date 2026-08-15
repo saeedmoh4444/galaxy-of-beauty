@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface Challenge {
   id?: string;
@@ -28,7 +28,7 @@ export default function ChallengesScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().challenges.list.query());
+  } = useQuery(() => rawTrpc.challenges.list.query());
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل التحديات" onRetry={refetch} />;

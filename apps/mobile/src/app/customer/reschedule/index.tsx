@@ -12,7 +12,7 @@ import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface Booking {
   id?: number;
@@ -33,7 +33,7 @@ export default function RescheduleScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => typedTrpc().bookings.list.query({ page: 1, limit: LARGE_PAGE_SIZE }));
+  } = useQuery(() => rawTrpc.bookings.list.query({ page: 1, limit: LARGE_PAGE_SIZE }));
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [newDate, setNewDate] = useState('');
   const [newTime, setNewTime] = useState('');
@@ -43,20 +43,22 @@ export default function RescheduleScreen(): JSX.Element {
   const handleReschedule = async () => {
     if (!selectedId || !newDate || !newTime) return;
     try {
-      await typedTrpc().reschedule.request.mutate({
+      await rawTrpc.reschedule.request.mutate({
         bookingId: selectedId,
         newStartAt: new Date(`${newDate}T${newTime}:00`).toISOString(),
         reason: reason || undefined,
       });
       setDone(true);
       refetch();
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
 
   if (loading) return <SkeletonList count={3} />;
   if (error) return <ErrorAlert message="فشل تحميل الحجوزات" onRetry={refetch} />;
 
-  const bookings = ((bookingsData as BookingsData | null)?.bookings) ?? [];
+  const bookings = (bookingsData as BookingsData | null)?.bookings ?? [];
   const active = bookings.filter((b) => b.status === 'REQUESTED' || b.status === 'ACCEPTED');
 
   return (
@@ -137,7 +139,7 @@ export default function RescheduleScreen(): JSX.Element {
           style={{ backgroundColor: '#fff', borderRadius: 14, padding: 14, marginTop: 16, gap: 10 }}
         >
           <Text style={{ fontWeight: '700', fontSize: 15, color: '#111827' }}>
-             اختر الموعد الجديد
+            اختر الموعد الجديد
           </Text>
           <TextInput
             value={newDate}

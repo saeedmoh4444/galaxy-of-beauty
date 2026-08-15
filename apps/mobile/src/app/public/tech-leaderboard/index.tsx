@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface LeaderboardEntry {
   id?: number;
@@ -18,9 +18,11 @@ export default function TechLeaderboardScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().techLeaderboard.leaderboard.query({ category: 'rating' }) as unknown as Promise<
-      Array<{ id?: number; name?: string; rating?: number; totalBookings?: number }>
-    >)
+    (
+      rawTrpc.techLeaderboard.leaderboard.query({ category: 'rating' }) as unknown as Promise<
+        Array<{ id?: number; name?: string; rating?: number; totalBookings?: number }>
+      >
+    )
       .then((d) => {
         setBoard(
           (d ?? []).map((t) => ({
@@ -67,13 +69,11 @@ export default function TechLeaderboardScreen(): JSX.Element {
             <View style={[styles.rank, i === 0 && styles.rankTop]}>
               <Text style={[styles.rankText, i === 0 && styles.rankTextTop]}>{i + 1}</Text>
             </View>
-            <Text style={styles.rankEmoji}>
-              {i === 0 ? '' : i === 1 ? '' : i === 2 ? '' : '‍'}
-            </Text>
+            <Text style={styles.rankEmoji}>{i === 0 ? '' : i === 1 ? '' : i === 2 ? '' : '‍'}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.techName}>{t.name ?? ''}</Text>
               <Text style={styles.techMeta}>
-                 {t.rating ?? 0} ·  {t.bookings ?? 0} حجز
+                {t.rating ?? 0} · {t.bookings ?? 0} حجز
               </Text>
             </View>
             {i === 0 && <Text style={styles.crown}></Text>}

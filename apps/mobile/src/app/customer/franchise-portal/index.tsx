@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface FranchiseDashboard {
   totalRevenue?: number;
@@ -27,8 +27,8 @@ export default function FranchisePortalScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().franchisePortal.dashboard.query() as Promise<FranchiseDashboard>,
-      typedTrpc().franchisePortal.locations.query() as Promise<FranchiseLocation[]>,
+      rawTrpc.franchisePortal.dashboard.query() as Promise<FranchiseDashboard>,
+      rawTrpc.franchisePortal.locations.query() as Promise<FranchiseLocation[]>,
     ])
       .then(([d, l]) => {
         setDash(d);
@@ -66,9 +66,7 @@ export default function FranchisePortalScreen(): JSX.Element {
         </View>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
-          <Text style={[styles.kv, { color: '#2563eb' }]}>
-            {dash?.totalBookings ?? 0}
-          </Text>
+          <Text style={[styles.kv, { color: '#2563eb' }]}>{dash?.totalBookings ?? 0}</Text>
           <Text style={styles.kl}>حجز</Text>
         </View>
       </View>
@@ -77,7 +75,7 @@ export default function FranchisePortalScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.ln}>{l.branch}</Text>
             <Text style={styles.lm}>
-               {l.city} · {l.staff} موظفات
+              {l.city} · {l.staff} موظفات
             </Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>

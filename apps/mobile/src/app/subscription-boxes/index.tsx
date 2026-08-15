@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface SubscriptionBox {
   id?: number;
@@ -19,7 +19,9 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().subscriptionBoxes.plans.query().then((d) => {
+    rawTrpc.subscriptionBoxes.plans
+      .query()
+      .then((d) => {
         setBoxes((d ?? []) as unknown as SubscriptionBox[]);
         setLoading(false);
         setRefreshing(false);

@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface ExpenseCategory {
   categoryId?: number;
@@ -25,7 +25,7 @@ interface ExpensesSummary {
 
 export default function BeautyExpensesScreen(): JSX.Element {
   const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
-    typedTrpc().beautyExpenses.summary.query(),
+    rawTrpc.beautyExpenses.summary.query(),
   );
 
   if (loading) return <SkeletonList count={4} />;

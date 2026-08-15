@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface SalonDashboard {
   todayBookings?: number;
@@ -24,8 +24,8 @@ export default function SalonManagementScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().salonManagement.dashboard.query() as Promise<SalonDashboard>,
-      typedTrpc().salonManagement.staff.query() as Promise<SalonStaff[]>,
+      rawTrpc.salonManagement.dashboard.query() as Promise<SalonDashboard>,
+      rawTrpc.salonManagement.staff.query() as Promise<SalonStaff[]>,
     ])
       .then(([d, s]) => {
         setDash(d);

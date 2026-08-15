@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface ShortVideo {
   id?: number;
@@ -22,7 +22,7 @@ export default function BeautyShortsScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().beautyShorts.feed.query());
+  } = useQuery(() => rawTrpc.beautyShorts.feed.query());
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الفيديوهات" onRetry={refetch} />;
@@ -48,7 +48,7 @@ export default function BeautyShortsScreen(): JSX.Element {
             <View style={{ flex: 1 }}>
               <Text style={styles.shortTitle}>{(s.titleAr as string) ?? (s.title as string)}</Text>
               <Text style={styles.shortMeta}>
-                {s.creator as string} · {s.duration as string} ·  {s.views as number}
+                {s.creator as string} · {s.duration as string} · {s.views as number}
               </Text>
             </View>
             <Text style={styles.playBtn}>▶️</Text>

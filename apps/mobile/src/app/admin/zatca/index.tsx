@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface ZatcaInvoiceItem {
   invoiceNumber?: string;
@@ -17,7 +17,9 @@ export default function AdminZatcaScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().zatca.listInvoices.query({}).then((d) => {
+    rawTrpc.zatca.listInvoices
+      .query({})
+      .then((d) => {
         setData((d?.items ?? []) as unknown as ZatcaInvoiceItem[]);
         setLoading(false);
         setRefreshing(false);

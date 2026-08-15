@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface BeautyProfileData {
   skinType?: string;
@@ -15,8 +15,8 @@ export default function BeautyProfileScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .beautyProfile.get.query()
+    rawTrpc.beautyProfile.get
+      .query()
       .then((d) => {
         setData((d ?? null) as unknown as BeautyProfileData);
         setLoading(false);

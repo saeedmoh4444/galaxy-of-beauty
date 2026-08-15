@@ -2,18 +2,18 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 export default function BeautyAwardsScreen(): JSX.Element {
   const { data, loading, error, refreshing, refetch, refresh } = useQuery(() =>
-    typedTrpc().beautyAwards.current.query(),
+    rawTrpc.beautyAwards.current.query(),
   );
 
   if (loading) return <SkeletonList count={4} />;
   if (error) return <ErrorAlert message="فشل تحميل الجوائز" onRetry={refetch} />;
 
-  const items = ((data as unknown as { categories?: Record<string, unknown>[] } | null)?.categories ??
-    []) as Record<string, unknown>[];
+  const items = ((data as unknown as { categories?: Record<string, unknown>[] } | null)
+    ?.categories ?? []) as Record<string, unknown>[];
 
   return (
     <ScrollView

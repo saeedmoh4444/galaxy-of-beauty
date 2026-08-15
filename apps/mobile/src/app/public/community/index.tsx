@@ -12,7 +12,7 @@ import { EXTENDED_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface CommunityPost {
   id?: number;
@@ -34,15 +34,15 @@ export default function CommunityScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().community.feed.query({ page: 1, limit: EXTENDED_PAGE_SIZE }));
+  } = useQuery(() => rawTrpc.community.feed.query({ page: 1, limit: EXTENDED_PAGE_SIZE }));
   const [content, setContent] = useState('');
   const [posting, setPosting] = useState(false);
 
   const create = () => {
     if (!content.trim()) return;
     setPosting(true);
-    typedTrpc()
-      .community.create.mutate({ content: content.trim() })
+    rawTrpc.community.create
+      .mutate({ content: content.trim() })
       .then(() => {
         setContent('');
         setPosting(false);
@@ -52,13 +52,13 @@ export default function CommunityScreen(): JSX.Element {
   };
 
   const toggleLike = (postId: number) => {
-    typedTrpc().community.toggleLike.mutate({ postId }).then(() => refetch());
+    rawTrpc.community.toggleLike.mutate({ postId }).then(() => refetch());
   };
 
   if (loading) return <SkeletonList count={5} />;
   if (error) return <ErrorAlert message="فشل تحميل المجتمع" onRetry={refetch} />;
 
-  const items = ((posts as CommunityFeed | null)?.posts) ?? [];
+  const items = (posts as CommunityFeed | null)?.posts ?? [];
 
   return (
     <View style={styles.c}>

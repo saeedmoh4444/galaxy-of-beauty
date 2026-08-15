@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 
@@ -22,7 +22,7 @@ export default function BeautyBingoScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().beautyBingo.card.query() as Promise<BingoCard>)
+    (rawTrpc.beautyBingo.card.query() as Promise<BingoCard>)
       .then((d) => {
         setData(d);
         setLoading(false);
@@ -37,9 +37,7 @@ export default function BeautyBingoScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const mark = (taskId: number) => {
-    typedTrpc()
-      .beautyBingo.mark.mutate({ taskId })
-      .then(() => fetch());
+    rawTrpc.beautyBingo.mark.mutate({ taskId }).then(() => fetch());
   };
   if (loading) return <SkeletonList count={3} />;
   const tasks = data?.tasks ?? [];

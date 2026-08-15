@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface TrendingService {
   id?: number;
@@ -27,8 +27,8 @@ export default function TrendingScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().social.trending.query());
-  const { data: spotlight } = useQuery(() => typedTrpc().social.spotlight.query());
+  } = useQuery(() => rawTrpc.social.trending.query());
+  const { data: spotlight } = useQuery(() => rawTrpc.social.spotlight.query());
 
   if (loading) return <SkeletonList count={5} />;
   if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;

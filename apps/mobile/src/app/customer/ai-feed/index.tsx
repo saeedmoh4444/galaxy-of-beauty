@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface FeedItem {
   id?: number;
@@ -23,7 +23,7 @@ export default function AIFeedScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().aiFeatures.personalizedFeed.query() as unknown as Promise<AIFeedData>)
+    (rawTrpc.aiFeatures.personalizedFeed.query() as unknown as Promise<AIFeedData>)
       .then((d: AIFeedData) => {
         setData(d);
         setLoading(false);
@@ -65,9 +65,7 @@ export default function AIFeedScreen(): JSX.Element {
         <View key={r.id} style={styles.card}>
           <Text style={styles.em}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nm}>
-              {r.titleJson?.ar ?? r.nameAr}
-            </Text>
+            <Text style={styles.nm}>{r.titleJson?.ar ?? r.nameAr}</Text>
             <Text style={styles.meta}>{r.basePrice?.toLocaleString()} ر.س</Text>
           </View>
         </View>
@@ -77,9 +75,7 @@ export default function AIFeedScreen(): JSX.Element {
         <View key={w.id} style={styles.card}>
           <Text style={styles.em}>️</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nm}>
-              {w.titleJson?.ar ?? w.nameAr}
-            </Text>
+            <Text style={styles.nm}>{w.titleJson?.ar ?? w.nameAr}</Text>
             <Text style={styles.meta}>{w.basePrice?.toLocaleString()} ر.س</Text>
           </View>
         </View>

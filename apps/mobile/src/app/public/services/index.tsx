@@ -3,7 +3,7 @@ import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface ServiceItem {
   id?: number;
@@ -22,14 +22,16 @@ export default function ServicesScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().categories.tree.query());
+  } = useQuery(() => rawTrpc.categories.tree.query());
   const [activeCat, setActiveCat] = useState<string | null>(null);
-  const catItems = ((categories ?? []) as unknown as Array<{
-    id?: number;
-    slug?: string;
-    emoji?: string;
-    nameJson?: { ar?: string };
-  }>).map((c) => ({
+  const catItems = (
+    (categories ?? []) as unknown as Array<{
+      id?: number;
+      slug?: string;
+      emoji?: string;
+      nameJson?: { ar?: string };
+    }>
+  ).map((c) => ({
     key: c.slug ?? String(c.id ?? ''),
     nameAr: c.nameJson?.ar ?? '',
     emoji: c.emoji ?? '',
@@ -37,7 +39,7 @@ export default function ServicesScreen(): JSX.Element {
   }));
   const { data: services } = useQuery(() =>
     activeCat
-      ? typedTrpc().services.list.query({
+      ? rawTrpc.services.list.query({
           categoryId: catItems.find((c) => c.key === activeCat)?.id,
         })
       : Promise.resolve(null),
@@ -46,7 +48,8 @@ export default function ServicesScreen(): JSX.Element {
   if (loading) return <SkeletonList count={6} />;
   if (error) return <ErrorAlert message="فشل تحميل الخدمات" onRetry={refetch} />;
 
-  const svcItems = (((services as unknown as { items?: ServiceItem[] } | null)?.items ?? []) as ServiceItem[]);
+  const svcItems = ((services as unknown as { items?: ServiceItem[] } | null)?.items ??
+    []) as ServiceItem[];
 
   return (
     <ScrollView
@@ -69,9 +72,7 @@ export default function ServicesScreen(): JSX.Element {
                 style={[styles.catChip, isActive && styles.catChipActive]}
               >
                 <Text style={styles.catEmoji}>{cat.emoji ?? ''}</Text>
-                <Text style={[styles.catName, isActive && styles.catNameActive]}>
-                  {cat.nameAr}
-                </Text>
+                <Text style={[styles.catName, isActive && styles.catNameActive]}>{cat.nameAr}</Text>
               </TouchableOpacity>
             );
           })}

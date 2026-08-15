@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface VideoTestimonial {
   id?: number;
@@ -18,8 +18,8 @@ export default function VideoTestimonialsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .videoTestimonials.feed.query({})
+    rawTrpc.videoTestimonials.feed
+      .query({})
       .then((d) => {
         setVideos((d?.items ?? []) as unknown as VideoTestimonial[]);
         setLoading(false);
@@ -53,7 +53,7 @@ export default function VideoTestimonialsScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.vt}>{v.titleAr}</Text>
             <Text style={styles.vm}>
-              ‍ {v.technician} ·  {v.views}
+              ‍ {v.technician} · {v.views}
             </Text>
           </View>
         </View>

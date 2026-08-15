@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface AnalyticsKpi {
   today?: number;
@@ -35,7 +35,7 @@ export default function AdminAnalyticsV2Screen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().adminAnalyticsV2.dashboard.query() as Promise<AnalyticsData>)
+    (rawTrpc.adminAnalyticsV2.dashboard.query() as Promise<AnalyticsData>)
       .then((d: AnalyticsData) => {
         setData(d || {});
         setLoading(false);

@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface PricingItem {
   service?: string;
@@ -20,7 +20,7 @@ export default function SmartPricingScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().smartPricing.current.query() as Promise<PricingItem[]>)
+    (rawTrpc.smartPricing.current.query() as Promise<PricingItem[]>)
       .then((d: PricingItem[]) => {
         setItems(d || []);
         setLoading(false);
@@ -66,9 +66,7 @@ export default function SmartPricingScreen(): JSX.Element {
               </View>
               <View style={{ alignItems: 'flex-end' }}>
                 {isDiscounted && (
-                  <Text style={styles.basePrice}>
-                    {(s.basePrice ?? 0).toLocaleString()} ر.س
-                  </Text>
+                  <Text style={styles.basePrice}>{(s.basePrice ?? 0).toLocaleString()} ر.س</Text>
                 )}
                 <Text
                   style={[

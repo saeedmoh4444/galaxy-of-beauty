@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface BirthdayReward {
   rewardName?: string;
@@ -16,7 +16,8 @@ export default function BirthdayRewardsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().birthdayRewards.myReward.query()
+    rawTrpc.birthdayRewards.myReward
+      .query()
       .then((d: BirthdayReward | null | undefined) => {
         setData(d ?? null);
         setLoading(false);

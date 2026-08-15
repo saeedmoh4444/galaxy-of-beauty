@@ -6,7 +6,7 @@
  *
  * Usage: Wrap your root layout with <TRPCProvider>{children}</TRPCProvider>
  * Then:  const { data } = trpc.bookings.list.useQuery({ limit: 10 });
- * Or imperative: typedTrpc().bookings.list.query({ limit: 10 }).then(...)
+ * Or imperative: rawTrpc.bookings.list.query({ limit: 10 }).then(...)
  */
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -25,11 +25,14 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL ?? `${DEFAULT_LOCAL_URL}/api/trp
 export const trpc = createTRPCReact<AppRouter>();
 
 /**
- * Raw vanilla tRPC client with FULL router type safety.
+ * Raw vanilla tRPC client for the promise-style API, with FULL router
+ * type safety.
  *
  * `.query()` / `.mutate()` return promises — any phantom router or
  * procedure name (e.g. `loyalty.getAccount` when the router only has
  * `myAccount`) is a compile-time error, not a silent runtime 404.
+ * Prefer the `trpc` hooks for new code; `rawTrpc` exists for screens
+ * that use the `.query().then()` pattern.
  */
 export const rawTrpc = createTRPCClient<AppRouter>({
   links: [
@@ -40,15 +43,6 @@ export const rawTrpc = createTRPCClient<AppRouter>({
     }),
   ],
 });
-
-/**
- * Imperative accessor for the promise-style client API.
- * Prefer the `trpc` hooks for new code; this exists for screens that
- * use the `.query().then()` pattern.
- */
-export function typedTrpc(): typeof rawTrpc {
-  return rawTrpc;
-}
 
 export function TRPCProvider({ children }: { children: ReactNode }): ReactNode {
   const [queryClient] = useState(

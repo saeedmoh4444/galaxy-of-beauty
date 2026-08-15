@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { useState, useEffect, useCallback } from 'react';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface BlogPost {
   id?: number;
@@ -23,7 +23,12 @@ export default function AdminBlogScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().blog.listAll.query({ page: 1, limit: BULK_PAGE_SIZE }) as unknown as Promise<BlogListResponse>)
+    (
+      rawTrpc.blog.listAll.query({
+        page: 1,
+        limit: BULK_PAGE_SIZE,
+      }) as unknown as Promise<BlogListResponse>
+    )
       .then((d: BlogListResponse) => {
         setData(d?.items || []);
         setLoading(false);

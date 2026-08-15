@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const OCCASIONS = [
   { key: 'birthday', emoji: '', name: 'عيد ميلاد' },
@@ -30,7 +30,8 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().wishlist.list.query()
+    rawTrpc.wishlist.list
+      .query()
       .then((d: WishlistData | undefined) => {
         setItems(d?.items || []);
         setLoading(false);
@@ -87,7 +88,7 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
       </View>
 
       <Text style={styles.st}>
-         أمنياتي ({occasion.emoji} {occasion.name})
+        أمنياتي ({occasion.emoji} {occasion.name})
       </Text>
       <View style={styles.gifts}>
         {[

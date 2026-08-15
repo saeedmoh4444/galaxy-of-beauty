@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { useState, useEffect, useCallback } from 'react';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface BookingItem {
   bookingCode?: string;
@@ -18,7 +18,9 @@ export default function AdminBookingsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().bookings.list.query({ page: 1, limit: BULK_PAGE_SIZE }).then((d) => {
+    rawTrpc.bookings.list
+      .query({ page: 1, limit: BULK_PAGE_SIZE })
+      .then((d) => {
         setData((d?.bookings ?? []) as unknown as BookingItem[]);
         setLoading(false);
         setRefreshing(false);
@@ -52,9 +54,7 @@ export default function AdminBookingsScreen(): JSX.Element {
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
             <Text style={styles.code}>{b.bookingCode}</Text>
-            <Text style={styles.date}>
-              {new Date(b.startAt ?? '').toLocaleDateString('ar-SA')}
-            </Text>
+            <Text style={styles.date}>{new Date(b.startAt ?? '').toLocaleDateString('ar-SA')}</Text>
           </View>
           <Text style={styles.status}>{b.status}</Text>
         </View>

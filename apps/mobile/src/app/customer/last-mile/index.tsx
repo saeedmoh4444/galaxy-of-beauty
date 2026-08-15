@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface LastMileProduct {
   id: number;
@@ -25,7 +25,7 @@ export default function LastMileScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().lastMileDelivery.products.query() as Promise<LastMileProduct[]>)
+    (rawTrpc.lastMileDelivery.products.query() as Promise<LastMileProduct[]>)
       .then((d: LastMileProduct[]) => {
         setProducts(d || []);
         setLoading(false);
@@ -41,7 +41,7 @@ export default function LastMileScreen(): JSX.Element {
   }, [fetch]);
   const order = (productId: number) => {
     (
-      typedTrpc().lastMileDelivery.order.mutate({
+      rawTrpc.lastMileDelivery.order.mutate({
         productId,
         address: 'الرياض',
         paymentMethod: 'wallet',
@@ -58,7 +58,7 @@ export default function LastMileScreen(): JSX.Element {
           <Text style={styles.rtt}>تم الطلب!</Text>
           <Text style={styles.rp}>{result.product}</Text>
           <Text style={styles.rm}>
-             {result.estimatedDelivery} · {result.total?.toLocaleString()} ر.س
+            {result.estimatedDelivery} · {result.total?.toLocaleString()} ر.س
           </Text>
         </View>
       </ScrollView>

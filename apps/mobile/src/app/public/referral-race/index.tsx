@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface LeaderboardEntry {
   id?: number;
@@ -16,8 +16,8 @@ export default function ReferralRaceScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .referralRace.leaderboard.query()
+    rawTrpc.referralRace.leaderboard
+      .query()
       .then((d) => {
         setData(
           (d?.leaders ?? []).map((l) => ({

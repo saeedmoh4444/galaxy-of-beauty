@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface AdminDashboard {
   totalUsers?: number;
@@ -17,7 +17,7 @@ export default function AdminAnalyticsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().admin.dashboardStats.query() as unknown as Promise<AdminDashboard>)
+    (rawTrpc.admin.dashboardStats.query() as unknown as Promise<AdminDashboard>)
       .then((d: AdminDashboard) => {
         setData(d);
         setLoading(false);
@@ -58,9 +58,7 @@ export default function AdminAnalyticsScreen(): JSX.Element {
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
-          <Text style={[styles.kpiVal, { color: '#2563eb' }]}>
-            {d.totalBookings ?? 0}
-          </Text>
+          <Text style={[styles.kpiVal, { color: '#2563eb' }]}>{d.totalBookings ?? 0}</Text>
           <Text style={styles.kpiLabel}>حجز</Text>
         </View>
         <View style={styles.kpi}>

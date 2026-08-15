@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
 
 interface SalonLocation {
@@ -19,8 +19,8 @@ export default function SalonMapScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .salonMap.explore.query({ city: DEFAULT_SAUDI_CITY })
+    rawTrpc.salonMap.explore
+      .query({ city: DEFAULT_SAUDI_CITY })
       .then((d) => {
         setSalons(d as unknown as SalonLocation[]);
         setLoading(false);

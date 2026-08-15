@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface FollowEntry {
   id?: number;
@@ -16,7 +16,7 @@ export default function FollowingScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().technicianFollows.myFollows.query() as Promise<FollowEntry[]>)
+    (rawTrpc.technicianFollows.myFollows.query() as Promise<FollowEntry[]>)
       .then((d) => {
         setFollows(d || []);
         setLoading(false);
@@ -31,7 +31,9 @@ export default function FollowingScreen(): JSX.Element {
     fetch();
   }, [fetch]);
   const unfollow = (technicianId: number) => {
-    (typedTrpc().technicianFollows.unfollow.mutate({ technicianId }) as Promise<unknown>).then(() => fetch());
+    (rawTrpc.technicianFollows.unfollow.mutate({ technicianId }) as Promise<unknown>).then(() =>
+      fetch(),
+    );
   };
   if (loading) return <SkeletonList count={4} />;
   return (

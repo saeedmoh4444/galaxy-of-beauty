@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const MOODS = ['', '', '', '', '', '', '', ''];
 
@@ -20,8 +20,9 @@ export default function BeautyDiaryScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().beautyJournal.list.query({ page: 1, limit: LARGE_PAGE_SIZE }).then(
-      (d: DiaryEntry[] | undefined) => {
+    rawTrpc.beautyJournal.list
+      .query({ page: 1, limit: LARGE_PAGE_SIZE })
+      .then((d: DiaryEntry[] | undefined) => {
         setEntries(d || []);
         setLoading(false);
         setRefreshing(false);

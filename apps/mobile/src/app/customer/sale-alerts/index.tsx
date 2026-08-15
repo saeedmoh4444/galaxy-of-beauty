@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface SaleAlert {
   id?: number;
@@ -18,7 +18,7 @@ export default function SaleAlertsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().saleAlerts.myAlerts.query() as unknown as Promise<SaleAlert[]>)
+    (rawTrpc.saleAlerts.myAlerts.query() as unknown as Promise<SaleAlert[]>)
       .then((d: SaleAlert[]) => {
         setData(d || []);
         setLoading(false);

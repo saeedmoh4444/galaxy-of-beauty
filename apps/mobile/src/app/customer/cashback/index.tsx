@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { useState, useEffect, useCallback } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface CashbackInfo {
   balance?: number;
@@ -29,8 +29,11 @@ export default function CashbackScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().cashback.info.query() as Promise<CashbackInfo>,
-      typedTrpc().cashback.history.query({ page: 1, limit: LARGE_PAGE_SIZE }) as Promise<CashbackHistory>,
+      rawTrpc.cashback.info.query() as Promise<CashbackInfo>,
+      rawTrpc.cashback.history.query({
+        page: 1,
+        limit: LARGE_PAGE_SIZE,
+      }) as Promise<CashbackHistory>,
     ])
       .then(([i, h]) => {
         setInfo(i);
@@ -78,9 +81,7 @@ export default function CashbackScreen(): JSX.Element {
           <Text style={styles.em}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.ta}>+{t.amount?.toLocaleString()} ر.س</Text>
-            <Text style={styles.td}>
-              {new Date(t.createdAt).toLocaleDateString('ar-SA')}
-            </Text>
+            <Text style={styles.td}>{new Date(t.createdAt).toLocaleDateString('ar-SA')}</Text>
           </View>
           <Text style={styles.tr}>{info?.rate ?? 5}%</Text>
         </View>

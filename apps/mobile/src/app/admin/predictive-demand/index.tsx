@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface ForecastWindow {
   predictedBookings?: number;
@@ -31,7 +31,7 @@ export default function PredictiveDemandScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().predictiveDemand.forecast.query() as Promise<DemandForecast>)
+    (rawTrpc.predictiveDemand.forecast.query() as Promise<DemandForecast>)
       .then((d: DemandForecast) => {
         setData(d || {});
         setLoading(false);
@@ -74,9 +74,7 @@ export default function PredictiveDemandScreen(): JSX.Element {
       </View>
       <View style={styles.kpi}>
         <Text style={styles.kpiTitle}> الشهر القادم</Text>
-        <Text style={[styles.kpiVal, { color: '#059669' }]}>
-          {nm.predictedBookings ?? 0} حجز
-        </Text>
+        <Text style={[styles.kpiVal, { color: '#059669' }]}>{nm.predictedBookings ?? 0} حجز</Text>
         <Text style={styles.kpiMeta}>
           ثقة {nm.confidence ?? 0}% · نمو +{nm.growth ?? 0}%
         </Text>

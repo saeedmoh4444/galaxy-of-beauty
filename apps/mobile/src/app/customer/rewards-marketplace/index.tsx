@@ -4,7 +4,7 @@ import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const TIER_COLORS: Record<string, string[]> = {
   SILVER: ['#d1d5db', '#9ca3af'],
@@ -53,19 +53,21 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => typedTrpc().loyalty.myAccount.query());
-  const { data: rewards } = useQuery(() => typedTrpc().loyalty.rewards.query());
+  } = useQuery(() => rawTrpc.loyalty.myAccount.query());
+  const { data: rewards } = useQuery(() => rawTrpc.loyalty.rewards.query());
   const { data: txs } = useQuery(() =>
-    typedTrpc().loyalty.myTransactions.query({ page: 1, limit: LARGE_PAGE_SIZE }),
+    rawTrpc.loyalty.myTransactions.query({ page: 1, limit: LARGE_PAGE_SIZE }),
   );
   const [redeemed, setRedeemed] = useState<number | null>(null);
 
   const handleRedeem = async (rid: number) => {
     try {
-      await typedTrpc().loyalty.redeem.mutate({ rewardId: rid });
+      await rawTrpc.loyalty.redeem.mutate({ rewardId: rid });
       setRedeemed(rid);
       refetch();
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
 
   if (loading) return <SkeletonList count={4} />;
@@ -73,7 +75,7 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
 
   const a = account as LoyaltyAccount | null;
   const items = (rewards as LoyaltyReward[] | undefined) ?? [];
-  const transactions = ((txs as TransactionsResult | null)?.items) ?? [];
+  const transactions = (txs as TransactionsResult | null)?.items ?? [];
   const points = a?.points ?? 0;
   const tier = a?.tier ?? 'SILVER';
   const tierColors = TIER_COLORS[tier] ?? TIER_COLORS['SILVER']!;
@@ -148,7 +150,7 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
               <Text
                 style={{ color: '#059669', fontWeight: '700', textAlign: 'center', marginTop: 10 }}
               >
-                 تم الاستبدال
+                تم الاستبدال
               </Text>
             ) : (
               <TouchableOpacity
@@ -166,7 +168,7 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
       {transactions.length > 0 && (
         <View style={{ marginTop: 12 }}>
           <Text style={{ fontWeight: '700', fontSize: 15, color: '#111827', marginBottom: 8 }}>
-             سجل النقاط
+            سجل النقاط
           </Text>
           {transactions.slice(0, 10).map((t, i) => (
             <View

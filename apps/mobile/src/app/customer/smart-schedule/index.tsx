@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface ServiceRow {
   id: number;
@@ -34,7 +34,7 @@ export default function SmartScheduleScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().services.list.query({}) as Promise<ServiceListData>)
+    (rawTrpc.services.list.query({}) as Promise<ServiceListData>)
       .then((d: ServiceListData) => {
         setServices(d?.items || []);
         setLoading(false);
@@ -51,7 +51,7 @@ export default function SmartScheduleScreen(): JSX.Element {
   const findSlots = (serviceId: number) => {
     setSelectedSvc(serviceId);
     setSearching(true);
-    (typedTrpc().aiFeatures.smartSchedule.query({ serviceId }) as unknown as Promise<SmartScheduleData>)
+    (rawTrpc.aiFeatures.smartSchedule.query({ serviceId }) as unknown as Promise<SmartScheduleData>)
       .then((d: SmartScheduleData) => {
         setSlots(d);
         setSearching(false);
@@ -80,9 +80,7 @@ export default function SmartScheduleScreen(): JSX.Element {
             style={[styles.sc, selectedSvc === s.id && styles.sca]}
           >
             <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
-            <Text style={styles.sn}>
-              {s.titleJson?.ar ?? s.nameAr}
-            </Text>
+            <Text style={styles.sn}>{s.titleJson?.ar ?? s.nameAr}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -111,7 +109,7 @@ export default function SmartScheduleScreen(): JSX.Element {
               })}
             </Text>
             <Text style={styles.sr}>
-              ‍ #{s.technicianId} ·  {s.rating}
+              ‍ #{s.technicianId} · {s.rating}
             </Text>
           </View>
           <TouchableOpacity style={styles.bb}>

@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface SelfCareActivity {
   id?: number;
@@ -17,7 +17,7 @@ export default function SelfCareScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().selfCare.history.query({}) as unknown as Promise<SelfCareActivity[]>)
+    (rawTrpc.selfCare.history.query({}) as unknown as Promise<SelfCareActivity[]>)
       .then((d: SelfCareActivity[]) => {
         setData(d || []);
         setLoading(false);

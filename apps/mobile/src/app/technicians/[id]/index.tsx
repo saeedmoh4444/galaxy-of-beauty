@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { useState, useEffect, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface TechnicianDetail {
   id?: number;
@@ -22,8 +22,8 @@ export default function TechnicianDetailScreen(): JSX.Element {
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      typedTrpc()
-        .technicians.getById.query({ userId: parseInt(id, 10) })
+      rawTrpc.technicians.getById
+        .query({ userId: parseInt(id, 10) })
         .then((d: TechnicianDetail) => {
           setData(d);
           setLoading(false);

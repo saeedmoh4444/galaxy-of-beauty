@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const LEVELS: Record<string, { label: string; color: string }> = {
   beginner: { label: 'مبتدئ', color: '#10b981' },
@@ -35,15 +35,17 @@ export default function BeautyCoursesScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => typedTrpc().beautyCourses.list.query());
-  const { data: myCourses } = useQuery(() => typedTrpc().beautyCourses.myCourses.query());
+  } = useQuery(() => rawTrpc.beautyCourses.list.query());
+  const { data: myCourses } = useQuery(() => rawTrpc.beautyCourses.myCourses.query());
   const [enrolled, setEnrolled] = useState<number[]>([]);
 
   const handleEnroll = async (courseId: number) => {
     try {
-      await typedTrpc().beautyCourses.enroll.mutate({ courseId });
+      await rawTrpc.beautyCourses.enroll.mutate({ courseId });
       setEnrolled((prev) => [...prev, courseId]);
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
 
   if (loading) return <SkeletonList count={4} />;
@@ -68,7 +70,7 @@ export default function BeautyCoursesScreen(): JSX.Element {
           style={{ marginBottom: 16, backgroundColor: '#ecfdf5', borderRadius: 12, padding: 12 }}
         >
           <Text style={{ fontWeight: '700', color: '#059669', marginBottom: 8 }}>
-             دوراتي ({myItems.length})
+            دوراتي ({myItems.length})
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
             {myItems.map((c, i) => (

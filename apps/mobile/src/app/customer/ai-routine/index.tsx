@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useState } from 'react';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const SKIN_TYPES = [
   { key: 'dry', emoji: '️', label: 'جافة' },
@@ -34,7 +34,9 @@ interface AIRoutineData {
 }
 
 export default function AIRoutineScreen(): JSX.Element {
-  const [skinType, setSkinType] = useState<'dry' | 'oily' | 'combination' | 'normal'>('combination');
+  const [skinType, setSkinType] = useState<'dry' | 'oily' | 'combination' | 'normal'>(
+    'combination',
+  );
   const [data, setData] = useState<AIRoutineData | null>(null);
   const [loading, setLoading] = useState(false);
   const [generated, setGenerated] = useState(false);
@@ -42,7 +44,7 @@ export default function AIRoutineScreen(): JSX.Element {
   const generate = () => {
     setGenerated(true);
     setLoading(true);
-    (typedTrpc().aiRoutine.generate.query({ skinType }) as Promise<AIRoutineData>)
+    (rawTrpc.aiRoutine.generate.query({ skinType }) as Promise<AIRoutineData>)
       .then((d: AIRoutineData) => {
         setData(d);
         setLoading(false);

@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface Campaign {
   id?: number;
@@ -19,7 +19,7 @@ export default function AdminCampaignsScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().campaigns.listAll.query() as unknown as Promise<Campaign[]>)
+    (rawTrpc.campaigns.listAll.query() as unknown as Promise<Campaign[]>)
       .then((d: Campaign[]) => {
         setData(d || []);
         setLoading(false);
@@ -55,7 +55,9 @@ export default function AdminCampaignsScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{c.nameJson?.ar ?? ''}</Text>
             <Text style={styles.discount}>
-              {c.discountType === 'percent' ? `-${c.discountValue ?? 0}%` : `-${c.discountValue ?? 0} ر.س`}
+              {c.discountType === 'percent'
+                ? `-${c.discountValue ?? 0}%`
+                : `-${c.discountValue ?? 0} ر.س`}
             </Text>
           </View>
           <View style={[styles.badge, c.isActive ? styles.active : styles.inactive]}>

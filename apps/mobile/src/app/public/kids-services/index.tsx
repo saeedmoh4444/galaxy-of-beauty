@@ -3,7 +3,7 @@ import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface KidsServiceItem {
   nameAr?: string;
@@ -19,7 +19,7 @@ export default function KidsServicesScreen(): JSX.Element {
     refreshing,
     refetch,
     refresh,
-  } = useQuery(() => typedTrpc().kidsServices.categories.query());
+  } = useQuery(() => rawTrpc.kidsServices.categories.query());
   const [selectedCat, setSelectedCat] = useState<Record<string, unknown> | null>(null);
 
   if (loading) return <SkeletonList count={5} />;

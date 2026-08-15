@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface CompareService {
   id: number;
@@ -20,7 +20,7 @@ export default function CompareScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().productCompare.list.query() as unknown as Promise<CompareService[]>)
+    (rawTrpc.productCompare.list.query() as unknown as Promise<CompareService[]>)
       .then((d) => {
         setServices(d || []);
         setLoading(false);

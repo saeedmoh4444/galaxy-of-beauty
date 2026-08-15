@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
 
 interface Salon {
@@ -21,7 +21,11 @@ export default function SalonFinderScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    (typedTrpc().salonMap.explore.query({ city: DEFAULT_SAUDI_CITY /* TODO: use user location */ }) as unknown as Promise<Salon[]>)
+    (
+      rawTrpc.salonMap.explore.query({
+        city: DEFAULT_SAUDI_CITY /* TODO: use user location */,
+      }) as unknown as Promise<Salon[]>
+    )
       .then((d) => {
         setSalons(d || []);
         setLoading(false);
@@ -55,11 +59,11 @@ export default function SalonFinderScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.sn}>{s.nameAr ?? s.name}</Text>
             <Text style={styles.sm}>
-               {s.city ?? ''}
+              {s.city ?? ''}
               {s.distance ? ` · ${s.distance}` : ''}
             </Text>
             <Text style={styles.sr}>
-               {s.rating ?? 0} · ‍ {s.technicianCount ?? 0} فنيات
+              {s.rating ?? 0} · ‍ {s.technicianCount ?? 0} فنيات
             </Text>
           </View>
           <TouchableOpacity style={styles.vb}>

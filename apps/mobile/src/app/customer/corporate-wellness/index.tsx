@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface CorporatePlan {
   id?: string;
@@ -36,8 +36,8 @@ export default function CorporateWellnessScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => typedTrpc().corporateWellness.plans.query());
-  const { data: enquiries } = useQuery(() => typedTrpc().corporateWellness.myEnquiries.query());
+  } = useQuery(() => rawTrpc.corporateWellness.plans.query());
+  const { data: enquiries } = useQuery(() => rawTrpc.corporateWellness.myEnquiries.query());
   const [planId, setPlanId] = useState('growth');
   const [companyName, setCompanyName] = useState('');
   const [contactName, setContactName] = useState('');
@@ -48,7 +48,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
   const handleEnquire = async () => {
     if (!companyName || !contactName || !email) return;
     try {
-      await typedTrpc().corporateWellness.enquire.mutate({
+      await rawTrpc.corporateWellness.enquire.mutate({
         companyName,
         contactName,
         email,
@@ -56,14 +56,16 @@ export default function CorporateWellnessScreen(): JSX.Element {
       });
       setSubmitted(true);
       setShowForm(false);
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
 
   if (loading) return <SkeletonList count={3} />;
   if (error) return <ErrorAlert message="فشل تحميل الباقات" onRetry={refetch} />;
 
   const items = (plans ?? []) as CorporatePlan[];
-  const enquiryItems = ((enquiries as CorporateEnquiry[] | undefined) ?? []);
+  const enquiryItems = (enquiries as CorporateEnquiry[] | undefined) ?? [];
 
   return (
     <ScrollView
@@ -110,7 +112,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 6 }}>
               {(p.services ?? []).map((svc, i) => (
                 <Text key={i} style={{ fontSize: 11, color: '#059669' }}>
-                   {svc}
+                  {svc}
                 </Text>
               ))}
             </View>
@@ -155,7 +157,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
       {enquiryItems.length > 0 && (
         <View style={{ marginTop: 20 }}>
           <Text style={{ fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 }}>
-             طلباتي السابقة
+            طلباتي السابقة
           </Text>
           {enquiryItems.map((e, i) => (
             <View

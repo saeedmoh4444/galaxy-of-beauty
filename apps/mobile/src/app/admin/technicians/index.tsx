@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface AdminTechnicianItem {
   name?: string;
@@ -17,7 +17,9 @@ export default function AdminTechniciansScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc().technicians.list.query({}).then((d) => {
+    rawTrpc.technicians.list
+      .query({})
+      .then((d) => {
         setData((d?.items ?? []) as AdminTechnicianItem[]);
         setLoading(false);
         setRefreshing(false);
@@ -53,7 +55,7 @@ export default function AdminTechniciansScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{t.name}</Text>
             <Text style={styles.meta}>
-               {t.rating ?? 0} · {t.city}
+              {t.rating ?? 0} · {t.city}
             </Text>
           </View>
         </View>

@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { useLocalSearchParams } from 'expo-router';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface ServiceDetail {
   emoji?: string;
@@ -21,7 +21,11 @@ export default function ServiceDetailScreen(): JSX.Element {
     (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      (typedTrpc().services.getById.query({ id: parseInt(id, 10) }) as unknown as Promise<ServiceDetail>)
+      (
+        rawTrpc.services.getById.query({
+          id: parseInt(id, 10),
+        }) as unknown as Promise<ServiceDetail>
+      )
         .then((d: ServiceDetail) => {
           setData(d);
           setLoading(false);

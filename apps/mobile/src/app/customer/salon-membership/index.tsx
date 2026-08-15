@@ -2,7 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface MembershipInfo {
   tier?: string;
@@ -63,19 +63,23 @@ export default function SalonMembershipScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => typedTrpc().salonMembership.myMembership.query());
+  } = useQuery(() => rawTrpc.salonMembership.myMembership.query());
 
   const handleSubscribe = async (tier: string) => {
     try {
-      await typedTrpc().salonMembership.subscribe.mutate({ tier, autoRenew: true });
+      await rawTrpc.salonMembership.subscribe.mutate({ tier, autoRenew: true });
       refetch();
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
   const handleCancel = async () => {
     try {
-      await typedTrpc().salonMembership.cancel.mutate();
+      await rawTrpc.salonMembership.cancel.mutate();
       refetch();
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
 
   if (loading) return <SkeletonList count={3} />;
@@ -152,12 +156,10 @@ export default function SalonMembershipScreen(): JSX.Element {
             {m.price === 0 ? 'مجانية' : `${m.price} ر.س / شهرياً`}
           </Text>
           <View style={{ marginTop: 12, gap: 4 }}>
-            <Text style={{ fontWeight: '600', color: '#374151', marginBottom: 4 }}>
-               المميزات
-            </Text>
+            <Text style={{ fontWeight: '600', color: '#374151', marginBottom: 4 }}>المميزات</Text>
             {m.benefits.map((b, i) => (
               <Text key={i} style={{ color: '#059669', fontSize: 12 }}>
-                 {b}
+                {b}
               </Text>
             ))}
             {m.notIncluded.length > 0 && (
@@ -165,11 +167,11 @@ export default function SalonMembershipScreen(): JSX.Element {
                 <Text
                   style={{ fontWeight: '600', color: '#9ca3af', marginTop: 8, marginBottom: 4 }}
                 >
-                   غير متضمن
+                  غير متضمن
                 </Text>
                 {m.notIncluded.map((b, i) => (
                   <Text key={i} style={{ color: '#d1d5db', fontSize: 12 }}>
-                     {b}
+                    {b}
                   </Text>
                 ))}
               </>

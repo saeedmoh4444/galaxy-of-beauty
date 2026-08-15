@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface FeaturedTech {
   name?: string;
@@ -24,8 +24,8 @@ export default function FeaturedTechScreen(): JSX.Element {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     Promise.all([
-      typedTrpc().featuredTech.current.query() as Promise<FeaturedTech>,
-      typedTrpc().featuredTech.past.query() as Promise<PastFeaturedTech[]>,
+      rawTrpc.featuredTech.current.query() as Promise<FeaturedTech>,
+      rawTrpc.featuredTech.past.query() as Promise<PastFeaturedTech[]>,
     ])
       .then(([t, p]) => {
         setTech(t);
@@ -63,7 +63,7 @@ export default function FeaturedTechScreen(): JSX.Element {
           <Text style={styles.fEmoji}>‍</Text>
           <Text style={styles.fName}>{tech.name ?? ''}</Text>
           <Text style={styles.fMeta}>
-             {tech.rating ?? 0} · {tech.specialtyAr ?? ''}
+            {tech.rating ?? 0} · {tech.specialtyAr ?? ''}
           </Text>
         </View>
       )}

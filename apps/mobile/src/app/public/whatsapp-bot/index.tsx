@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 interface WhatsAppInfo {
   connected?: boolean;
@@ -16,8 +16,8 @@ export default function WhatsAppBotScreen(): JSX.Element {
   const fetch = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    typedTrpc()
-      .whatsappBot.commands.query()
+    rawTrpc.whatsappBot.commands
+      .query()
       .catch(() => ({}))
       .then((d) => {
         setData((d || {}) as unknown as WhatsAppInfo);

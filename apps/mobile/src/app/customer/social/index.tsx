@@ -4,7 +4,7 @@ import { MEDIUM_PAGE_SIZE } from '@galaxy/ui';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 
 const TABS = [
   { key: 'trending', label: ' رائج' },
@@ -54,19 +54,19 @@ export default function SocialScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => typedTrpc().social.trending.query());
-  const { data: spotlight } = useQuery(() => typedTrpc().social.spotlight.query());
-  const { data: tipsData } = useQuery(() => typedTrpc().social.tips.query({ page: 1 }));
+  } = useQuery(() => rawTrpc.social.trending.query());
+  const { data: spotlight } = useQuery(() => rawTrpc.social.spotlight.query());
+  const { data: tipsData } = useQuery(() => rawTrpc.social.tips.query({ page: 1 }));
   const { data: feedData } = useQuery(() =>
-    typedTrpc().social.feed.query({ page: 1, limit: MEDIUM_PAGE_SIZE }),
+    rawTrpc.social.feed.query({ page: 1, limit: MEDIUM_PAGE_SIZE }),
   );
-  const { data: lookbook } = useQuery(() => typedTrpc().social.lookbook.query());
+  const { data: lookbook } = useQuery(() => rawTrpc.social.lookbook.query());
 
   if (loading) return <SkeletonList count={5} />;
   if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;
 
   const tips = (tipsData as BeautyTip[] | undefined) ?? [];
-  const feedItems = ((feedData as { items?: FeedItem[] } | null)?.items) ?? [];
+  const feedItems = (feedData as { items?: FeedItem[] } | null)?.items ?? [];
   const lookbookItems = (lookbook as LookbookItem[] | undefined) ?? [];
   const trendingList = (trending as TrendingService[] | undefined) ?? [];
   const spotlightList = (spotlight as SpotlightTech[] | undefined) ?? [];

@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { typedTrpc } from '@/lib/trpc-react';
+import { rawTrpc } from '@/lib/trpc-react';
 import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -44,8 +44,8 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
     refetch,
     refreshing,
     refresh,
-  } = useQuery(() => typedTrpc().beautyDiscovery.featured.query());
-  const { data: forYou } = useQuery(() => typedTrpc().beautyDiscovery.forYou.query());
+  } = useQuery(() => rawTrpc.beautyDiscovery.featured.query());
+  const { data: forYou } = useQuery(() => rawTrpc.beautyDiscovery.forYou.query());
 
   if (loading) return <SkeletonList count={5} />;
   if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;
