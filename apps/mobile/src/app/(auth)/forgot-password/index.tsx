@@ -6,7 +6,7 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import { trpc } from '@/lib/api';
+import { trpc } from '@/lib/trpc-react';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
 
@@ -14,26 +14,26 @@ export default function ForgotPasswordScreen() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [msg, setMsg] = useState('');
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [sent, setSent] = useState(false);
 
-  const handleSubmit = async () => {
+  const forgotMut = trpc.auth.forgotPassword.useMutation({
+    onSuccess: () => {
+      setSent(true);
+      setMsg('تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني');
+    },
+    onError: (e) => {
+      setError(e.message ?? 'فشل إرسال رابط إعادة التعيين');
+    },
+  });
+
+  const handleSubmit = () => {
     if (!email) {
       setError('يرجى إدخال البريد الإلكتروني');
       return;
     }
     setError('');
-    setLoading(true);
-    try {
-      await trpc.auth.forgotPassword.mutate({ email });
-      setSent(true);
-      setMsg('تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني');
-    } catch (e: unknown) {
-      setError((e as Error)?.message ?? 'فشل إرسال رابط إعادة التعيين');
-    } finally {
-      setLoading(false);
-    }
+    forgotMut.mutate({ email });
   };
 
   return (
@@ -41,7 +41,7 @@ export default function ForgotPasswordScreen() {
       <Text style={styles.title}>نسيت كلمة المرور</Text>
       <Text style={styles.sub}>أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور</Text>
 
-      {loading ? (
+      {forgotMut.isPending ? (
         <ActivityIndicator color="#7c3aed" style={{ marginTop: 32 }} />
       ) : sent ? (
         <View style={styles.successBox}>

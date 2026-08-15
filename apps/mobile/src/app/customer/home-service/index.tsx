@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
 
 interface HomeServiceEstimate {
@@ -10,39 +9,28 @@ interface HomeServiceEstimate {
 }
 
 export default function HomeServiceScreen(): JSX.Element {
-  const [estimate, setEstimate] = useState<HomeServiceEstimate | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.homeService.estimate
-      .query({ city: DEFAULT_SAUDI_CITY /* TODO: use user location */ })
-      .then((d) => {
-        setEstimate(d as unknown as HomeServiceEstimate);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  if (loading) return <SkeletonList count={3} />;
+  // Fetch-on-demand: the user taps to get an estimate, so keep the query disabled
+  // until first request instead of firing on mount
+  const estimateQ = trpc.homeService.estimate.useQuery(
+    { city: DEFAULT_SAUDI_CITY /* TODO: use user location */ },
+    { enabled: false },
+  );
+  const estimate = estimateQ.data as unknown as HomeServiceEstimate | null;
+  if (estimateQ.isLoading) return <SkeletonList count={3} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={estimateQ.isRefetching}
+          onRefresh={() => estimateQ.refetch()}
           colors={['#059669']}
         />
       }
     >
       <Text style={styles.t}> خدمة منزلية</Text>
-      <TouchableOpacity onPress={() => fetch(false)} style={styles.btn}>
+      <TouchableOpacity onPress={() => estimateQ.refetch()} style={styles.btn}>
         <Text style={styles.bt}> تقدير التكلفة — الرياض</Text>
       </TouchableOpacity>
       {estimate && (

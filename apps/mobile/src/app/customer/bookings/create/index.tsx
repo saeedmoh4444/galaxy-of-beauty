@@ -8,8 +8,8 @@ import {
   TextInput,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { trpc } from '@/lib/trpc-react';
+import { useState } from 'react';
 import { MAX_LIST_SIZE } from '@galaxy/ui';
 import { useToast } from '@/components/Toast';
 
@@ -49,70 +49,50 @@ export default function CreateBookingScreen() {
   const [addressId, setAddressId] = useState<number | undefined>();
   const [promoCode, setPromoCode] = useState('');
   const [notes, setNotes] = useState('');
-  const [submitting, setSubmitting] = useState(false);
 
-  const [services, setServices] = useState<ServiceListItem[]>([]);
-  const [svc, setSvc] = useState<ServiceDetail | null>(null);
-  const [addresses, setAddresses] = useState<AddressItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const servicesQ = trpc.services.list.useQuery({ page: 1, limit: MAX_LIST_SIZE });
+  const addressesQ = trpc.addresses.list.useQuery();
+  const svcQ = trpc.services.getById.useQuery({ id: serviceId! }, { enabled: !!serviceId });
 
-  useEffect(() => {
-    Promise.all([
-      trpc.services.list.query({ page: 1, limit: MAX_LIST_SIZE }) as unknown as Promise<{
-        items?: ServiceListItem[];
-      }>,
-      trpc.addresses.list.query() as unknown as Promise<AddressItem[]>,
-    ])
-      .then(([s, a]) => {
-        setServices(s?.items ?? []);
-        setAddresses(a || []);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+  const services: ServiceListItem[] =
+    (servicesQ.data as unknown as { items?: ServiceListItem[] })?.items ?? [];
+  const svc: ServiceDetail | null = svcQ.data as unknown as ServiceDetail | null;
+  const addresses: AddressItem[] = (addressesQ.data as AddressItem[] | undefined) ?? [];
+  const loading = servicesQ.isLoading || addressesQ.isLoading;
 
-  useEffect(() => {
-    if (!serviceId) return;
-    (trpc.services.getById.query({ id: serviceId }) as unknown as Promise<ServiceDetail>)
-      .then(setSvc)
-      .catch(() => {});
-  }, [serviceId]);
+  const createMut = trpc.bookings.create.useMutation({
+    onSuccess: () => {
+      showToast('success', 'تم إنشاء الحجز بنجاح!');
+      setTimeout(() => router.back(), 1000);
+    },
+    onError: () => {
+      showToast('error', 'فشل إنشاء الحجز');
+    },
+  });
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!serviceId || !addressId) {
       showToast('warning', 'الرجاء اختيار الخدمة والعنوان');
       return;
     }
-    setSubmitting(true);
-    try {
-      // Auto-assign first available technician for this service
-      const techs = svc?.technicianServices ?? [];
-      const technicianId = techs[0]?.technician?.userId ?? 0;
-      if (!technicianId) {
-        showToast('warning', 'لا توجد فنيات متاحة لهذه الخدمة حالياً');
-        setSubmitting(false);
-        return;
-      }
-
-      await trpc.bookings.create.mutate({
-        serviceId,
-        variantId,
-        addressId,
-        technicianId,
-        idempotencyKey: `mob_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
-        notes: notes || undefined,
-        startAt: new Date(Date.now() + 86400000).toISOString(),
-        endAt: new Date(
-          Date.now() + 86400000 + (svc?.durationMin ?? 60) * 60000,
-        ).toISOString(),
-      });
-      showToast('success', 'تم إنشاء الحجز بنجاح!');
-      setTimeout(() => router.back(), 1000);
-    } catch {
-      showToast('error', 'فشل إنشاء الحجز');
-    } finally {
-      setSubmitting(false);
+    // Auto-assign first available technician for this service
+    const techs = svc?.technicianServices ?? [];
+    const technicianId = techs[0]?.technician?.userId ?? 0;
+    if (!technicianId) {
+      showToast('warning', 'لا توجد فنيات متاحة لهذه الخدمة حالياً');
+      return;
     }
+
+    createMut.mutate({
+      serviceId,
+      variantId,
+      addressId,
+      technicianId,
+      idempotencyKey: `mob_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
+      notes: notes || undefined,
+      startAt: new Date(Date.now() + 86400000).toISOString(),
+      endAt: new Date(Date.now() + 86400000 + (svc?.durationMin ?? 60) * 60000).toISOString(),
+    });
   };
 
   const variants = svc?.variants ?? [];
@@ -164,9 +144,7 @@ export default function CreateBookingScreen() {
               }}
               activeOpacity={0.7}
             >
-              <Text style={styles.serviceName}>
-                {s.titleJson?.ar ?? ''}
-              </Text>
+              <Text style={styles.serviceName}>{s.titleJson?.ar ?? ''}</Text>
               <Text style={styles.serviceMeta}>
                 {Number(s.basePrice).toFixed(0)} ر.س · {s.durationMin} دقيقة
               </Text>
@@ -178,9 +156,7 @@ export default function CreateBookingScreen() {
       {step === 2 && svc && (
         <View>
           <Text style={styles.sectionTitle}>تفاصيل الحجز</Text>
-          <Text style={styles.selectedService}>
-             {svc.titleJson?.ar ?? ''}
-          </Text>
+          <Text style={styles.selectedService}>{svc.titleJson?.ar ?? ''}</Text>
 
           {variants.length > 0 && (
             <View style={styles.field}>
@@ -264,9 +240,7 @@ export default function CreateBookingScreen() {
           <View style={styles.summary}>
             <View style={styles.summaryRow}>
               <Text style={styles.summaryLabel}>الخدمة</Text>
-              <Text style={styles.summaryValue}>
-                {svc.titleJson?.ar ?? ''}
-              </Text>
+              <Text style={styles.summaryValue}>{svc.titleJson?.ar ?? ''}</Text>
             </View>
             <View style={styles.summaryRow}>
               <Text style={styles.summaryLabel}>السعر</Text>
@@ -282,8 +256,12 @@ export default function CreateBookingScreen() {
             <TouchableOpacity style={styles.backBtn} onPress={() => setStep(2)}>
               <Text style={styles.backText}>السابق</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.nextBtn} onPress={handleSubmit} disabled={submitting}>
-              {submitting ? (
+            <TouchableOpacity
+              style={styles.nextBtn}
+              onPress={handleSubmit}
+              disabled={createMut.isPending}
+            >
+              {createMut.isPending ? (
                 <ActivityIndicator color="#fff" />
               ) : (
                 <Text style={styles.nextText}>تأكيد الحجز</Text>

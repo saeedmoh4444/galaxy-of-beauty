@@ -11,7 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { trpc } from '@/lib/api';
+import { trpc } from '@/lib/trpc-react';
 import { setAuthToken } from '@/lib/authToken';
 import { setSocketToken } from '@/hooks/useSocket';
 import { useBiometric } from '@/hooks/useBiometric';
@@ -23,7 +23,6 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [totpToken, setTotpToken] = useState('');
-  const [loading, setLoading] = useState(false);
   const [twoFactorRequired, setTwoFactorRequired] = useState(false);
   const { isAvailable, authenticate } = useBiometric();
 
@@ -34,14 +33,8 @@ export default function LoginScreen() {
     }
   };
 
-  const handleLogin = async () => {
-    setLoading(true);
-    try {
-      const result = await trpc.auth.login.mutate({
-        email,
-        password,
-        ...(twoFactorRequired ? { totpToken } : {}),
-      });
+  const loginMut = trpc.auth.login.useMutation({
+    onSuccess: (result) => {
       const u = result.user as Record<string, unknown>;
       // Store the access token: HTTP tRPC clients read it via getAuthHeaders(),
       // the socket uses it for handshake auth
@@ -50,17 +43,23 @@ export default function LoginScreen() {
       if (u.role === 'ADMIN') router.replace('/admin/dashboard');
       else if (u.role === 'TECHNICIAN') router.replace('/tech/dashboard');
       else router.replace('/(tabs)/home');
-    } catch (err: unknown) {
+    },
+    onError: (err) => {
       // Check if the server is requesting 2FA
-      const trpcErr = err as { data?: { code?: string }; message?: string };
-      if (trpcErr.data?.code === 'PRECONDITION_FAILED' && trpcErr.message === '2FA_REQUIRED') {
+      if (err.data?.code === 'PRECONDITION_FAILED' && err.message === '2FA_REQUIRED') {
         setTwoFactorRequired(true);
       } else {
-        showToast('error', (err as Error).message || 'فشل تسجيل الدخول');
+        showToast('error', err.message || 'فشل تسجيل الدخول');
       }
-    } finally {
-      setLoading(false);
-    }
+    },
+  });
+
+  const handleLogin = () => {
+    loginMut.mutate({
+      email,
+      password,
+      ...(twoFactorRequired ? { totpToken } : {}),
+    });
   };
 
   const handleCancel2FA = () => {
@@ -121,11 +120,11 @@ export default function LoginScreen() {
           </TouchableOpacity>
         )}
         <TouchableOpacity
-          style={[styles.button, loading && styles.buttonDisabled]}
+          style={[styles.button, loginMut.isPending && styles.buttonDisabled]}
           onPress={handleLogin}
-          disabled={loading}
+          disabled={loginMut.isPending}
         >
-          {loading ? (
+          {loginMut.isPending ? (
             <ActivityIndicator color="#fff" />
           ) : (
             <Text style={styles.buttonText}>{twoFactorRequired ? 'تحقق' : 'دخول'}</Text>

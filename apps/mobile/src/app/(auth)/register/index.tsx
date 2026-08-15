@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { trpc } from '@/lib/api';
+import { trpc } from '@/lib/trpc-react';
 import { useToast } from '@/components/Toast';
 
 export default function RegisterScreen() {
@@ -15,29 +15,29 @@ export default function RegisterScreen() {
     role: 'CUSTOMER' as 'CUSTOMER' | 'TECHNICIAN',
     city: '',
   });
-  const [loading, setLoading] = useState(false);
 
   const set = (field: string, value: string) => setForm((f) => ({ ...f, [field]: value }));
 
-  const handleRegister = async () => {
-    setLoading(true);
-    try {
-      await trpc.auth.register.mutate({
-        email: form.email,
-        phone: form.phone,
-        password: form.password,
-        name: form.name,
-        role: form.role,
-        acceptedTerms: true,
-        city: form.role === 'TECHNICIAN' ? form.city : undefined,
-      } as Parameters<typeof trpc.auth.register.mutate>[0]);
+  const registerMut = trpc.auth.register.useMutation({
+    onSuccess: () => {
       showToast('success', 'تم إنشاء الحساب بنجاح');
       setTimeout(() => router.replace('/(auth)/login'), 1000);
-    } catch (err: unknown) {
-      showToast('error', (err as Error).message || 'فشل إنشاء الحساب');
-    } finally {
-      setLoading(false);
-    }
+    },
+    onError: (err) => {
+      showToast('error', err.message || 'فشل إنشاء الحساب');
+    },
+  });
+
+  const handleRegister = () => {
+    registerMut.mutate({
+      email: form.email,
+      phone: form.phone,
+      password: form.password,
+      name: form.name,
+      role: form.role,
+      acceptedTerms: true,
+      city: form.role === 'TECHNICIAN' ? form.city : undefined,
+    });
   };
 
   return (
@@ -98,11 +98,13 @@ export default function RegisterScreen() {
         />
       )}
       <TouchableOpacity
-        style={[styles.button, loading && styles.buttonDisabled]}
+        style={[styles.button, registerMut.isPending && styles.buttonDisabled]}
         onPress={handleRegister}
-        disabled={loading}
+        disabled={registerMut.isPending}
       >
-        <Text style={styles.buttonText}>{loading ? 'جاري الإنشاء...' : 'إنشاء حساب'}</Text>
+        <Text style={styles.buttonText}>
+          {registerMut.isPending ? 'جاري الإنشاء...' : 'إنشاء حساب'}
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => router.back()}>
         <Text style={styles.link}>لديك حساب؟ تسجيل الدخول</Text>

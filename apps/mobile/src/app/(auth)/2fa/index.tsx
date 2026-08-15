@@ -6,12 +6,8 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
-
-interface TwoFactorUser {
-  twoFactorEnabled?: boolean;
-}
+import { trpc } from '@/lib/trpc-react';
+import { useState } from 'react';
 
 interface TwoFactorSetup {
   secret?: string;
@@ -19,75 +15,56 @@ interface TwoFactorSetup {
 }
 
 export default function TwoFactorScreen() {
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [enabled, setEnabled] = useState(false);
   const [setupData, setSetupData] = useState<TwoFactorSetup | null>(null);
   const [code, setCode] = useState('');
   const [verifyMsg, setVerifyMsg] = useState('');
-  const [actionLoading, setActionLoading] = useState(false);
+  const [enabledOverride, setEnabledOverride] = useState<boolean | null>(null);
 
-  const fetchStatus = () => {
-    setLoading(true);
-    (trpc.auth.me.query() as unknown as Promise<TwoFactorUser>)
-      .then((u) => {
-        setEnabled(Boolean(u.twoFactorEnabled));
-        setLoading(false);
-      })
-      .catch(() => {
-        setError('فشل تحميل حالة المصادقة');
-        setLoading(false);
-      });
-  };
+  const status = trpc.auth.me.useQuery(undefined, {
+    select: (u) => Boolean(u.twoFactorEnabled),
+  });
+  const enabled = enabledOverride ?? status.data ?? false;
 
-  useEffect(() => {
-    fetchStatus();
-  }, []);
+  const setupMut = trpc.auth.setup2FA.useMutation({
+    onSuccess: (res) => setSetupData(res),
+    onError: (e) => setError(e.message ?? 'فشل الإعداد'),
+  });
 
-  const handleSetup = async () => {
-    setActionLoading(true);
-    try {
-      const res = await trpc.auth.setup2FA.mutate({});
-      setSetupData(res);
-    } catch (e: unknown) {
-      setError((e as Error)?.message ?? 'فشل الإعداد');
-    } finally {
-      setActionLoading(false);
-    }
-  };
+  const verifyMut = trpc.auth.verify2FA.useMutation({
+    onSuccess: () => {
+      setEnabledOverride(true);
+      setSetupData(null);
+      setCode('');
+    },
+    onError: (e) => setVerifyMsg(e.message ?? 'رمز غير صحيح'),
+  });
 
-  const handleVerify = async () => {
+  const disableMut = trpc.auth.disable2FA.useMutation({
+    onSuccess: () => setEnabledOverride(false),
+    onError: (e) => setError(e.message ?? 'فشل التعطيل'),
+  });
+
+  const handleSetup = () => setupMut.mutate({});
+
+  const handleVerify = () => {
     if (code.length !== 6) {
       setVerifyMsg('يرجى إدخال رمز مكون من 6 أرقام');
       return;
     }
-    setActionLoading(true);
     setVerifyMsg('');
-    try {
-      await trpc.auth.verify2FA.mutate({ token: code });
-      setEnabled(true);
-      setSetupData(null);
-      setCode('');
-    } catch (e: unknown) {
-      setVerifyMsg((e as Error)?.message ?? 'رمز غير صحيح');
-    } finally {
-      setActionLoading(false);
-    }
+    verifyMut.mutate({ token: code });
   };
 
-  const handleDisable = async () => {
-    setActionLoading(true);
-    try {
-      await trpc.auth.disable2FA.mutate({});
-      setEnabled(false);
-    } catch (e: unknown) {
-      setError((e as Error)?.message ?? 'فشل التعطيل');
-    } finally {
-      setActionLoading(false);
-    }
-  };
+  const handleDisable = () => disableMut.mutate({});
 
-  if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 80 }} />;
+  if (status.isLoading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 80 }} />;
+  if (status.isError)
+    return (
+      <View style={styles.container}>
+        <Text style={styles.error}>فشل تحميل حالة المصادقة</Text>
+      </View>
+    );
 
   return (
     <View style={styles.container}>
@@ -103,9 +80,9 @@ export default function TwoFactorScreen() {
           <TouchableOpacity
             style={[styles.btn, styles.dangerBtn]}
             onPress={handleDisable}
-            disabled={actionLoading}
+            disabled={disableMut.isPending}
           >
-            {actionLoading ? (
+            {disableMut.isPending ? (
               <ActivityIndicator color="#fff" />
             ) : (
               <Text style={styles.btnText}>تعطيل المصادقة الثنائية</Text>
@@ -133,9 +110,9 @@ export default function TwoFactorScreen() {
           <TouchableOpacity
             style={styles.btn}
             onPress={handleVerify}
-            disabled={actionLoading || code.length !== 6}
+            disabled={verifyMut.isPending || code.length !== 6}
           >
-            {actionLoading ? (
+            {verifyMut.isPending ? (
               <ActivityIndicator color="#fff" />
             ) : (
               <Text style={styles.btnText}>تأكيد وتفعيل</Text>
@@ -147,8 +124,8 @@ export default function TwoFactorScreen() {
           <Text style={styles.lockIcon}></Text>
           <Text style={styles.subTitle}>إعداد المصادقة الثنائية</Text>
           <Text style={styles.hint}>أضف طبقة حماية إضافية لحسابك باستخدام تطبيق المصادقة</Text>
-          <TouchableOpacity style={styles.btn} onPress={handleSetup} disabled={actionLoading}>
-            {actionLoading ? (
+          <TouchableOpacity style={styles.btn} onPress={handleSetup} disabled={setupMut.isPending}>
+            {setupMut.isPending ? (
               <ActivityIndicator color="#fff" />
             ) : (
               <Text style={styles.btnText}>بدء الإعداد</Text>

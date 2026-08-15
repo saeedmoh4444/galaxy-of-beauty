@@ -2,12 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import crypto from 'crypto';
 import { MAX_AUTH_ATTEMPTS, MS_PER_DAY, MS_PER_WEEK } from '@galaxy/shared';
-import {
-  publicMutation,
-  protectedProcedure,
-  protectedMutation,
-  router,
-} from '../trpc';
+import { publicMutation, protectedProcedure, protectedMutation, router } from '../trpc';
 import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
 import {
@@ -53,6 +48,8 @@ const userSelect = {
   lastLoginAt: true,
   createdAt: true,
   updatedAt: true,
+  // Exposed as a boolean only — never the twoFactorSecret
+  twoFactorEnabled: true,
 } satisfies Prisma.UserSelect;
 
 function generateToken(length = 32): string {
@@ -217,7 +214,9 @@ export const authRouter = router({
 
       // Set cookies on response
       const isProduction = ctx.isProduction ?? false;
-      ctx.setCookies?.(buildAuthCookies({ accessToken, refreshToken: refreshTokenJwt }, isProduction));
+      ctx.setCookies?.(
+        buildAuthCookies({ accessToken, refreshToken: refreshTokenJwt }, isProduction),
+      );
 
       return { user, accessToken, refreshToken: refreshTokenJwt };
     } catch (error) {
@@ -326,7 +325,9 @@ export const authRouter = router({
 
       // Set cookies on response
       const isProduction = ctx.isProduction ?? false;
-      ctx.setCookies?.(buildAuthCookies({ accessToken, refreshToken: refreshTokenJwt }, isProduction));
+      ctx.setCookies?.(
+        buildAuthCookies({ accessToken, refreshToken: refreshTokenJwt }, isProduction),
+      );
 
       return { user: safeUser, accessToken, refreshToken: refreshTokenJwt };
     } catch (error) {
@@ -401,7 +402,9 @@ export const authRouter = router({
 
       // Set new cookies
       const isProduction = ctx.isProduction ?? false;
-      ctx.setCookies?.(buildAuthCookies({ accessToken, refreshToken: refreshTokenJwt }, isProduction));
+      ctx.setCookies?.(
+        buildAuthCookies({ accessToken, refreshToken: refreshTokenJwt }, isProduction),
+      );
 
       return { accessToken, refreshToken: refreshTokenJwt };
     } catch (error) {

@@ -9,10 +9,9 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface Booking {
   id?: number;
@@ -26,39 +25,34 @@ interface BookingsData {
 }
 
 export default function RescheduleScreen(): JSX.Element {
-  const {
-    data: bookingsData,
-    loading,
-    error,
-    refetch,
-    refreshing,
-    refresh,
-  } = useQuery(() => rawTrpc.bookings.list.query({ page: 1, limit: LARGE_PAGE_SIZE }));
+  const bookingsQ = trpc.bookings.list.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [newDate, setNewDate] = useState('');
   const [newTime, setNewTime] = useState('');
   const [reason, setReason] = useState('');
   const [done, setDone] = useState(false);
 
-  const handleReschedule = async () => {
-    if (!selectedId || !newDate || !newTime) return;
-    try {
-      await rawTrpc.reschedule.request.mutate({
-        bookingId: selectedId,
-        newStartAt: new Date(`${newDate}T${newTime}:00`).toISOString(),
-        reason: reason || undefined,
-      });
+  const rescheduleMut = trpc.reschedule.request.useMutation({
+    onSuccess: () => {
       setDone(true);
-      refetch();
-    } catch {
-      /* noop */
-    }
+      void bookingsQ.refetch();
+    },
+  });
+
+  const handleReschedule = () => {
+    if (!selectedId || !newDate || !newTime) return;
+    rescheduleMut.mutate({
+      bookingId: selectedId,
+      newStartAt: new Date(`${newDate}T${newTime}:00`).toISOString(),
+      reason: reason || undefined,
+    });
   };
 
-  if (loading) return <SkeletonList count={3} />;
-  if (error) return <ErrorAlert message="فشل تحميل الحجوزات" onRetry={refetch} />;
+  if (bookingsQ.isLoading) return <SkeletonList count={3} />;
+  if (bookingsQ.isError)
+    return <ErrorAlert message="فشل تحميل الحجوزات" onRetry={() => bookingsQ.refetch()} />;
 
-  const bookings = (bookingsData as BookingsData | null)?.bookings ?? [];
+  const bookings = (bookingsQ.data as unknown as BookingsData | null)?.bookings ?? [];
   const active = bookings.filter((b) => b.status === 'REQUESTED' || b.status === 'ACCEPTED');
 
   return (
@@ -66,7 +60,11 @@ export default function RescheduleScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={bookingsQ.isRefetching}
+          onRefresh={() => bookingsQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={s.t}> إعادة جدولة</Text>

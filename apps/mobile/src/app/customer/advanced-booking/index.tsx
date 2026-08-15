@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const REC = [
   { key: 'WEEKLY', emoji: '', label: 'أسبوعي' },
@@ -37,63 +37,35 @@ interface SlotRow {
 }
 
 export default function AdvancedBookingScreen(): JSX.Element {
-  const [services, setServices] = useState<ServiceRow[]>([]);
-  const [address, setAddress] = useState<AddressRow | null>(null);
-  const [technician, setTechnician] = useState<TechnicianRow | null>(null);
-  const [slot, setSlot] = useState<SlotRow | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [selectedSvc, setSelectedSvc] = useState<number | null>(null);
   const [recurrence, setRecurrence] = useState<'WEEKLY' | 'BIWEEKLY' | 'MONTHLY'>('WEEKLY');
   const [occurrences, setOccurrences] = useState(4);
   const [result, setResult] = useState<RecurringBookingResult | null>(null);
 
+  const servicesQ = trpc.services.list.useQuery({});
+  const addressesQ = trpc.addresses.list.useQuery();
+  const techniciansQ = trpc.technicians.list.useQuery({});
+
   // Resolve real IDs instead of hardcoded placeholders (audit fix B1/D1)
-  const fetchRefs = useCallback(() => {
-    Promise.allSettled([
-      (rawTrpc.addresses.list.query() as Promise<AddressRow[]>).then((d) => {
-        if (d?.[0]) setAddress(d[0]);
-      }),
-      rawTrpc.technicians.list.query({}).then((d) => {
-        const list = (d?.items ?? []) as unknown as TechnicianRow[];
-        if (list[0]) setTechnician(list[0]);
-      }),
-    ]);
-  }, []);
+  const services: ServiceRow[] = (servicesQ.data as unknown as ServiceListData)?.items ?? [];
+  const address: AddressRow | null = addressesQ.data?.[0] ?? null;
+  const technician: TechnicianRow | null =
+    ((techniciansQ.data?.items ?? []) as unknown as TechnicianRow[])[0] ?? null;
 
   // Load the first technician's availability once a technician is resolved
-  useEffect(() => {
-    if (!technician) return;
-    rawTrpc.slots.getAvailability
-      .query({ technicianId: technician.id })
-      .then((d) => {
-        const list = (d ?? []) as unknown as SlotRow[];
-        if (list[0]) setSlot(list[0]);
-      })
-      .catch(() => {});
-  }, [technician]);
-
-  const fetch = useCallback(
-    (isRefresh = false) => {
-      if (isRefresh) setRefreshing(true);
-      else setLoading(true);
-      fetchRefs();
-      (rawTrpc.services.list.query({}) as Promise<ServiceListData>)
-        .then((d: ServiceListData) => {
-          setServices(d?.items || []);
-          setLoading(false);
-          setRefreshing(false);
-        })
-        .catch(() => {
-          setLoading(false);
-          setRefreshing(false);
-        });
-    },
-    [fetchRefs],
+  const availabilityQ = trpc.slots.getAvailability.useQuery(
+    { technicianId: technician?.id ?? 0 },
+    { enabled: !!technician },
   );
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const slot: SlotRow | null = ((availabilityQ.data ?? []) as unknown as SlotRow[])[0] ?? null;
+
+  const loading = servicesQ.isLoading || addressesQ.isLoading || techniciansQ.isLoading;
+  const refreshing = servicesQ.isRefetching || addressesQ.isRefetching || techniciansQ.isRefetching;
+
+  const createMut = trpc.advancedBooking.createRecurring.useMutation({
+    onSuccess: (d) => setResult(d as unknown as RecurringBookingResult),
+  });
+
   const create = () => {
     if (!selectedSvc) return;
     if (!address || !technician || !slot) {
@@ -102,18 +74,16 @@ export default function AdvancedBookingScreen(): JSX.Element {
     }
     const s = new Date(Date.now() + 86400000).toISOString();
     const e = new Date(Date.now() + 86400000 + 3600000).toISOString();
-    (
-      rawTrpc.advancedBooking.createRecurring.mutate({
-        technicianId: technician.id,
-        serviceId: selectedSvc,
-        addressId: address.id,
-        slotId: slot.id,
-        startAt: s,
-        endAt: e,
-        recurrence,
-        occurrences,
-      }) as Promise<RecurringBookingResult>
-    ).then((d: RecurringBookingResult) => setResult(d));
+    createMut.mutate({
+      technicianId: technician.id,
+      serviceId: selectedSvc,
+      addressId: address.id,
+      slotId: slot.id,
+      startAt: s,
+      endAt: e,
+      recurrence,
+      occurrences,
+    });
   };
   if (loading) return <SkeletonList count={5} />;
   if (result)
@@ -134,7 +104,11 @@ export default function AdvancedBookingScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          onRefresh={() => {
+            void servicesQ.refetch();
+            void addressesQ.refetch();
+            void techniciansQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

@@ -1,8 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface BookingRow {
   id: number;
@@ -10,54 +10,35 @@ interface BookingRow {
   startAt: string;
 }
 
-interface BookingsListResult {
-  bookings?: BookingRow[];
-}
-
 interface RescheduleResult {
   status?: string;
 }
 
 export default function RescheduleScreen(): JSX.Element {
-  const [bookings, setBookings] = useState<BookingRow[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
   const [result, setResult] = useState<RescheduleResult | null>(null);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (
-      rawTrpc.bookings.list.query({
-        status: 'ACCEPTED',
-        page: 1,
-        limit: LARGE_PAGE_SIZE,
-      }) as unknown as Promise<BookingsListResult>
-    )
-      .then((d: BookingsListResult) => {
-        setBookings(d?.bookings || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+
+  const bookingsQ = trpc.bookings.list.useQuery({
+    status: 'ACCEPTED',
+    page: 1,
+    limit: LARGE_PAGE_SIZE,
+  });
+  const bookings: BookingRow[] =
+    (bookingsQ.data as unknown as { bookings?: BookingRow[] })?.bookings ?? [];
+
+  const rescheduleMut = trpc.reschedule.request.useMutation({
+    onSuccess: (d) => setResult(d as unknown as RescheduleResult),
+  });
+
   const reschedule = (bookingId: number) => {
     const nd = new Date(Date.now() + 86400000).toISOString();
-    (
-      rawTrpc.reschedule.request.mutate({
-        bookingId,
-        newStartAt: nd,
-        reason: 'طلب تعديل الموعد',
-      }) as Promise<RescheduleResult>
-    ).then((d: RescheduleResult) => setResult(d));
+    rescheduleMut.mutate({
+      bookingId,
+      newStartAt: nd,
+      reason: 'طلب تعديل الموعد',
+    });
   };
-  if (loading) return <SkeletonList count={4} />;
+  if (bookingsQ.isLoading) return <SkeletonList count={4} />;
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
@@ -75,8 +56,8 @@ export default function RescheduleScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={bookingsQ.isRefetching}
+          onRefresh={() => bookingsQ.refetch()}
           colors={['#2563eb']}
         />
       }

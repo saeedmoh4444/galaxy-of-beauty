@@ -6,7 +6,7 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import { trpc } from '@/lib/api';
+import { trpc } from '@/lib/trpc-react';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
 
@@ -16,11 +16,20 @@ export default function ResetPasswordScreen() {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [msg, setMsg] = useState('');
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [done, setDone] = useState(false);
 
-  const handleSubmit = async () => {
+  const resetMut = trpc.auth.resetPassword.useMutation({
+    onSuccess: () => {
+      setDone(true);
+      setMsg('تم إعادة تعيين كلمة المرور بنجاح');
+    },
+    onError: (e) => {
+      setError(e.message ?? 'فشل إعادة تعيين كلمة المرور');
+    },
+  });
+
+  const handleSubmit = () => {
     if (!token || !password) {
       setError('جميع الحقول مطلوبة');
       return;
@@ -34,23 +43,14 @@ export default function ResetPasswordScreen() {
       return;
     }
     setError('');
-    setLoading(true);
-    try {
-      await trpc.auth.resetPassword.mutate({ token, newPassword: password });
-      setDone(true);
-      setMsg('تم إعادة تعيين كلمة المرور بنجاح');
-    } catch (e: unknown) {
-      setError((e as Error)?.message ?? 'فشل إعادة تعيين كلمة المرور');
-    } finally {
-      setLoading(false);
-    }
+    resetMut.mutate({ token, newPassword: password });
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>إعادة تعيين كلمة المرور</Text>
 
-      {loading ? (
+      {resetMut.isPending ? (
         <ActivityIndicator color="#7c3aed" style={{ marginTop: 32 }} />
       ) : done ? (
         <View style={styles.successBox}>

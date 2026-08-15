@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
-import { trpc, rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface ChatMessage {
   message?: string;
@@ -16,12 +16,16 @@ export default function LiveChatScreen() {
   };
   const messages = data ?? [];
 
+  const sendMut = trpc.liveChat.send.useMutation({
+    onSuccess: () => {
+      setMsg('');
+      void refetch();
+    },
+  });
+
   const send = () => {
     if (!msg.trim()) return;
-    (rawTrpc.liveChat.send.mutate({ message: msg.trim() }) as Promise<unknown>).then(() => {
-      setMsg('');
-      refetch();
-    });
+    sendMut.mutate({ message: msg.trim() });
   };
 
   return (

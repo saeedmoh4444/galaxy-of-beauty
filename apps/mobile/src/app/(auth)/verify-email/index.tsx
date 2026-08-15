@@ -6,7 +6,7 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import { trpc } from '@/lib/api';
+import { trpc } from '@/lib/trpc-react';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
 
@@ -14,33 +14,33 @@ export default function VerifyEmailScreen() {
   const router = useRouter();
   const [token, setToken] = useState('');
   const [msg, setMsg] = useState('');
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [done, setDone] = useState(false);
 
-  const handleVerify = async () => {
+  const verifyMut = trpc.auth.verifyEmail.useMutation({
+    onSuccess: () => {
+      setDone(true);
+      setMsg('تم توثيق البريد الإلكتروني بنجاح');
+    },
+    onError: (e) => {
+      setError(e.message ?? 'فشل توثيق البريد الإلكتروني');
+    },
+  });
+
+  const handleVerify = () => {
     if (!token) {
       setError('يرجى إدخال رمز التحقق');
       return;
     }
     setError('');
-    setLoading(true);
-    try {
-      await trpc.auth.verifyEmail.mutate({ token });
-      setDone(true);
-      setMsg('تم توثيق البريد الإلكتروني بنجاح');
-    } catch (e: unknown) {
-      setError((e as Error)?.message ?? 'فشل توثيق البريد الإلكتروني');
-    } finally {
-      setLoading(false);
-    }
+    verifyMut.mutate({ token });
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>توثيق البريد الإلكتروني</Text>
 
-      {loading ? (
+      {verifyMut.isPending ? (
         <ActivityIndicator color="#7c3aed" style={{ marginTop: 32 }} />
       ) : done ? (
         <View style={styles.successBox}>

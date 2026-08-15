@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface EmergencyService {
   id: number;
@@ -26,57 +26,39 @@ interface BookingResult {
 }
 
 export default function EmergencyBookingScreen(): JSX.Element {
-  const [services, setServices] = useState<EmergencyService[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [selectedSvc, setSelectedSvc] = useState<number | null>(null);
-  const [availability, setAvailability] = useState<AvailabilityResult | null>(null);
-  const [checking, setChecking] = useState(false);
   const [result, setResult] = useState<BookingResult | null>(null);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.services.list.query({}) as Promise<{ items?: EmergencyService[] }>)
-      .then((d) => {
-        setServices(d?.items || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  const check = (serviceId: number) => {
-    setSelectedSvc(serviceId);
-    setChecking(true);
-    (rawTrpc.emergencyBooking.checkAvailability.query({ serviceId }) as Promise<AvailabilityResult>)
-      .then((d) => {
-        setAvailability(d);
-        setChecking(false);
-      })
-      .catch(() => setChecking(false));
-  };
-  const book = async (technicianId: number, slotId: number) => {
+
+  const servicesQ = trpc.services.list.useQuery({});
+  const services: EmergencyService[] =
+    (servicesQ.data as unknown as { items?: EmergencyService[] })?.items ?? [];
+
+  // Availability is fetched on demand for the selected service
+  const availabilityQ = trpc.emergencyBooking.checkAvailability.useQuery(
+    { serviceId: selectedSvc ?? 0 },
+    { enabled: !!selectedSvc },
+  );
+  const availability = (availabilityQ.data as AvailabilityResult | undefined) ?? null;
+
+  const addressesQ = trpc.addresses.list.useQuery();
+
+  const createMut = trpc.emergencyBooking.create.useMutation({
+    onSuccess: (d) => setResult(d as unknown as BookingResult),
+  });
+
+  const book = (technicianId: number, slotId: number) => {
     if (!selectedSvc) return;
     // Resolve the customer's first address instead of a hardcoded ID
-    const addresses = (await rawTrpc.addresses.list.query()) as unknown as
-      { id: number }[] | undefined;
-    const addressId = addresses?.[0]?.id;
+    const addressId = addressesQ.data?.[0]?.id;
     if (!addressId) return;
-    (
-      rawTrpc.emergencyBooking.create.mutate({
-        serviceId: selectedSvc,
-        technicianId,
-        addressId,
-        slotId,
-      }) as Promise<BookingResult>
-    ).then((d) => setResult(d));
+    createMut.mutate({
+      serviceId: selectedSvc,
+      technicianId,
+      addressId,
+      slotId,
+    });
   };
-  if (loading) return <SkeletonList count={5} />;
+  if (servicesQ.isLoading) return <SkeletonList count={5} />;
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
@@ -88,15 +70,15 @@ export default function EmergencyBookingScreen(): JSX.Element {
         </View>
       </ScrollView>
     );
-  if (!availability)
+  if (!availability || !selectedSvc)
     return (
       <ScrollView
         style={styles.c}
         contentContainerStyle={styles.i}
         refreshControl={
           <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => fetch(true)}
+            refreshing={servicesQ.isRefetching}
+            onRefresh={() => servicesQ.refetch()}
             colors={['#ef4444']}
           />
         }
@@ -104,7 +86,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
         <Text style={styles.t}> حجز طارئ</Text>
         <Text style={styles.sub}>حجز فوري خلال ٣ ساعات — رسوم إضافية ٥٠ ر.س</Text>
         {services.slice(0, 10).map((s) => (
-          <TouchableOpacity key={s.id} onPress={() => check(s.id)} style={styles.sc}>
+          <TouchableOpacity key={s.id} onPress={() => setSelectedSvc(s.id)} style={styles.sc}>
             <Text style={styles.se}>{s.emoji ?? ''}</Text>
             <Text style={styles.sn}>{s.titleJson?.ar ?? s.nameAr ?? ''}</Text>
             <Text style={styles.arrow}>→</Text>
@@ -112,7 +94,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
         ))}
       </ScrollView>
     );
-  if (checking) return <SkeletonList count={4} />;
+  if (availabilityQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
       <Text style={styles.t}> حجز طارئ</Text>
@@ -134,7 +116,6 @@ export default function EmergencyBookingScreen(): JSX.Element {
       ))}
       <TouchableOpacity
         onPress={() => {
-          setAvailability(null);
           setSelectedSvc(null);
         }}
         style={styles.back}

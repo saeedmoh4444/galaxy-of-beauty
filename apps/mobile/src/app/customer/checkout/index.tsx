@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const PAYMENT_METHODS = [
   { key: 'wallet', emoji: '', label: 'المحفظة' },
@@ -10,35 +10,12 @@ const PAYMENT_METHODS = [
   { key: 'bnpl', emoji: '', label: 'تقسيط' },
 ];
 
-interface WalletBalance {
-  balance?: number;
-}
-
 export default function CheckoutScreen(): JSX.Element {
-  const [balance, setBalance] = useState<WalletBalance | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [method, setMethod] = useState('wallet');
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.wallet.getBalance.query() as unknown as Promise<WalletBalance>)
-      .then((d) => {
-        setBalance(d);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const balanceQ = trpc.wallet.getBalance.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
+  if (balanceQ.isLoading) return <SkeletonList count={4} />;
 
   return (
     <ScrollView
@@ -46,8 +23,8 @@ export default function CheckoutScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={balanceQ.isRefetching}
+          onRefresh={() => balanceQ.refetch()}
           colors={['#059669']}
         />
       }
@@ -56,7 +33,7 @@ export default function CheckoutScreen(): JSX.Element {
 
       <View style={styles.bc}>
         <Text style={styles.bl}>رصيد المحفظة</Text>
-        <Text style={styles.ba}>{(balance?.balance ?? 0).toLocaleString()} ر.س</Text>
+        <Text style={styles.ba}>{(balanceQ.data?.balance ?? 0).toLocaleString()} ر.س</Text>
       </View>
 
       <Text style={styles.st}>طريقة الدفع</Text>
