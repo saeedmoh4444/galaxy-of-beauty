@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface CyclePhase {
   color?: string;
@@ -50,14 +49,13 @@ interface WellnessDashboard {
 }
 
 export default function WellnessHubScreen(): JSX.Element {
-  const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
-    rawTrpc.wellnessHub.dashboard.query(),
-  );
+  const dashQ = trpc.wellnessHub.dashboard.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل البيانات" onRetry={refetch} />;
+  if (dashQ.isLoading) return <SkeletonList count={4} />;
+  if (dashQ.isError)
+    return <ErrorAlert message="فشل تحميل البيانات" onRetry={() => dashQ.refetch()} />;
 
-  const d = data as WellnessDashboard | null;
+  const d = dashQ.data as WellnessDashboard | null;
   const weekly = d?.weekly;
   const recentJournals = d?.recentJournals ?? [];
 
@@ -66,7 +64,11 @@ export default function WellnessHubScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={dashQ.isRefetching}
+          onRefresh={() => dashQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={s.title}> مركز العافية</Text>

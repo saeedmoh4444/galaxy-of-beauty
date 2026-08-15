@@ -1,9 +1,8 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface ServiceItem {
   nameAr?: string;
@@ -11,27 +10,25 @@ interface ServiceItem {
 }
 
 export default function WomensServicesScreen(): JSX.Element {
-  const {
-    data: cats,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.womensServices.categories.query());
+  const catsQ = trpc.womensServices.categories.useQuery();
   const [selectedCat, setSelectedCat] = useState<Record<string, unknown> | null>(null);
 
-  if (loading) return <SkeletonList count={6} />;
-  if (error) return <ErrorAlert message="فشل تحميل الخدمات" onRetry={refetch} />;
+  if (catsQ.isLoading) return <SkeletonList count={6} />;
+  if (catsQ.isError)
+    return <ErrorAlert message="فشل تحميل الخدمات" onRetry={() => catsQ.refetch()} />;
 
-  const categories = (cats ?? []) as Record<string, unknown>[];
+  const categories = (catsQ.data as unknown as Record<string, unknown>[] | undefined) ?? [];
 
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#be185d']} />
+        <RefreshControl
+          refreshing={catsQ.isRefetching}
+          onRefresh={() => catsQ.refetch()}
+          colors={['#be185d']}
+        />
       }
     >
       <Text style={styles.t}> خدمات نسائية</Text>

@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface ServiceItem {
   id: number;
@@ -25,52 +25,28 @@ interface ServiceListData {
 }
 
 export default function RecommendationsScreen(): JSX.Element {
-  const [services, setServices] = useState<ServiceItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [related, setRelated] = useState<RelatedService[]>([]);
-  const [relatedLoading, setRelatedLoading] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.services.list.query({}) as Promise<ServiceListData>)
-      .then((d: ServiceListData) => {
-        setServices(d?.items || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const servicesQ = trpc.services.list.useQuery({});
+  const services: ServiceItem[] =
+    (servicesQ.data as unknown as ServiceListData | null)?.items ?? [];
+  const relatedQ = trpc.recommendations.frequentlyBookedTogether.useQuery(
+    { serviceId: selectedId ?? 0 },
+    { enabled: !!selectedId },
+  );
+  const related: RelatedService[] =
+    (relatedQ.data as unknown as RelatedService[] | undefined) ?? [];
   const getRelated = (serviceId: number) => {
     setSelectedId(serviceId);
-    setRelatedLoading(true);
-    (
-      rawTrpc.recommendations.frequentlyBookedTogether.query({
-        serviceId,
-      }) as Promise<RelatedService[]>
-    )
-      .then((d: RelatedService[]) => {
-        setRelated(d || []);
-        setRelatedLoading(false);
-      })
-      .catch(() => setRelatedLoading(false));
   };
-  if (loading) return <SkeletonList count={5} />;
+  if (servicesQ.isLoading) return <SkeletonList count={5} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={servicesQ.isRefetching}
+          onRefresh={() => servicesQ.refetch()}
           colors={['#ec4899']}
         />
       }
@@ -86,8 +62,10 @@ export default function RecommendationsScreen(): JSX.Element {
           <Text style={styles.sn}>{s.titleJson?.ar ?? s.nameAr}</Text>
         </TouchableOpacity>
       ))}
-      {relatedLoading && <SkeletonList count={3} />}
-      {related.length > 0 && !relatedLoading && <Text style={styles.st}> غالباً تُحجز مع:</Text>}
+      {relatedQ.isFetching && <SkeletonList count={3} />}
+      {related.length > 0 && !relatedQ.isFetching && (
+        <Text style={styles.st}> غالباً تُحجز مع:</Text>
+      )}
       {related.map((r) => (
         <View key={r.id} style={styles.card}>
           <Text style={styles.re}></Text>

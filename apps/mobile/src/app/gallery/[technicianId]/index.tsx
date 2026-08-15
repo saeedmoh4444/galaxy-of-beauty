@@ -1,8 +1,8 @@
 import { View, Text, ScrollView, Image, StyleSheet, RefreshControl } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
 
 interface GalleryPhoto {
   id?: number;
@@ -12,39 +12,18 @@ interface GalleryPhoto {
 
 export default function GalleryDetailScreen(): JSX.Element {
   const { technicianId } = useLocalSearchParams<{ technicianId: string }>();
-  const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback(
-    (isRefresh = false) => {
-      if (isRefresh) setRefreshing(true);
-      else setLoading(true);
-      rawTrpc.gallery.byTechnician
-        .query({ technicianId: parseInt(technicianId, 10) })
-        .then((d) => {
-          setPhotos((d?.items ?? []) as unknown as GalleryPhoto[]);
-          setLoading(false);
-          setRefreshing(false);
-        })
-        .catch(() => {
-          setLoading(false);
-          setRefreshing(false);
-        });
-    },
-    [technicianId],
-  );
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={6} />;
+  const q = trpc.gallery.byTechnician.useQuery({ technicianId: parseInt(technicianId, 10) });
+  const photos = (q.data as unknown as { items?: GalleryPhoto[] } | null)?.items ?? [];
+  if (q.isLoading) return <SkeletonList count={6} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل معرض الفنية" onRetry={() => q.refetch()} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#7c3aed']}
         />
       }

@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface Achievement {
   key?: string;
@@ -20,14 +19,12 @@ interface AchievementsData {
 }
 
 export default function AchievementsScreen(): JSX.Element {
-  const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
-    rawTrpc.customerAchievements.myAchievements.query(),
-  );
+  const q = trpc.customerAchievements.myAchievements.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل الإنجازات" onRetry={refetch} />;
+  if (q.isLoading) return <SkeletonList count={4} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل الإنجازات" onRetry={() => q.refetch()} />;
 
-  const d = data as AchievementsData | null;
+  const d = q.data as AchievementsData | null;
   const achievements = d?.achievements ?? [];
   const stats = d?.stats ?? {};
   const earnedCount = d?.earnedCount ?? 0;
@@ -39,7 +36,11 @@ export default function AchievementsScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={s.t}> الإنجازات</Text>

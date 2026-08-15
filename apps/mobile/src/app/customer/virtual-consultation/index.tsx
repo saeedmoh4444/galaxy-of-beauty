@@ -1,9 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface ConsultationBooking {
   consultantType?: string;
@@ -51,46 +50,45 @@ const CONSULTANTS = [
 ];
 
 export default function VirtualConsultationScreen(): JSX.Element {
-  const {
-    data: bookings,
-    loading,
-    error,
-    refetch,
-    refreshing,
-    refresh,
-  } = useQuery(() => rawTrpc.virtualConsultation.myConsultations.query());
+  const bookingsQ = trpc.virtualConsultation.myConsultations.useQuery();
   const [selected, setSelected] = useState<string | null>(null);
   const [slot, setSlot] = useState<string | null>(null);
   const [booked, setBooked] = useState(false);
 
   const consultant = CONSULTANTS.find((c) => c.key === selected);
 
-  const handleBook = async () => {
-    if (!consultant || !slot) return;
-    try {
-      await rawTrpc.virtualConsultation.book.mutate({
-        consultantType: consultant.key,
-        scheduledAt: new Date().toISOString(),
-        slot,
-        price: consultant.price,
-      });
+  const bookMut = trpc.virtualConsultation.book.useMutation({
+    onSuccess: () => {
       setBooked(true);
-    } catch {
-      /* noop */
-    }
+    },
+    onError: () => {},
+  });
+  const handleBook = () => {
+    if (!consultant || !slot) return;
+    bookMut.mutate({
+      consultantType: consultant.key,
+      scheduledAt: new Date().toISOString(),
+      slot,
+      price: consultant.price,
+    });
   };
 
-  if (loading) return <SkeletonList count={3} />;
-  if (error) return <ErrorAlert message="فشل تحميل الاستشارات" onRetry={refetch} />;
+  if (bookingsQ.isLoading) return <SkeletonList count={3} />;
+  if (bookingsQ.isError)
+    return <ErrorAlert message="فشل تحميل الاستشارات" onRetry={() => bookingsQ.refetch()} />;
 
-  const myBookings = (bookings ?? []) as ConsultationBooking[];
+  const myBookings = (bookingsQ.data ?? []) as ConsultationBooking[];
 
   return (
     <ScrollView
       style={st.c}
       contentContainerStyle={st.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={bookingsQ.isRefetching}
+          onRefresh={() => bookingsQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={st.t}> استشارة افتراضية</Text>

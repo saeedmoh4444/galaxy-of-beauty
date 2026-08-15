@@ -9,10 +9,9 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
-import { rawTrpc } from '@/lib/trpc-react';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { trpc } from '@/lib/trpc-react';
 
 interface CommunityUser {
   id?: number;
@@ -40,74 +39,72 @@ interface MyLike {
 }
 
 export default function CommunityScreen(): JSX.Element {
-  const {
-    data: feedData,
-    loading,
-    error,
-    refetch,
-    refreshing,
-    refresh,
-  } = useQuery(() => rawTrpc.community.feed.query({ page: 1, limit: LARGE_PAGE_SIZE }));
-  const { data: myLikes } = useQuery(() => rawTrpc.community.myLikes.query());
-  const { data: trending } = useQuery(() => rawTrpc.community.trending.query());
+  const feedQ = trpc.community.feed.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
+  const myLikesQ = trpc.community.myLikes.useQuery();
+  const trendingQ = trpc.community.trending.useQuery();
   const [content, setContent] = useState('');
   const [showCreate, setShowCreate] = useState(false);
   const [commentId, setCommentId] = useState<number | null>(null);
   const [commentText, setCommentText] = useState('');
 
-  const myLikesArr = (myLikes as MyLike[] | undefined) ?? [];
+  const myLikesArr = (myLikesQ.data as MyLike[] | undefined) ?? [];
   const likedIds = new Set(myLikesArr.map((l) => l.postId));
-  const feedItems = (feedData as FeedData | null)?.items ?? [];
+  const feedItems = (feedQ.data as FeedData | null)?.items ?? [];
   const posts: CommunityPost[] = Array.isArray(feedItems) ? feedItems : [];
-  const trendingPosts = (trending as CommunityPost[] | undefined) ?? [];
+  const trendingPosts = (trendingQ.data as CommunityPost[] | undefined) ?? [];
 
-  const handleLike = async (postId: number) => {
-    try {
-      await rawTrpc.community.toggleLike.mutate({ postId });
-      refetch();
-    } catch {
-      /* noop */
-    }
-  };
-  const handleCreate = async () => {
-    if (!content) return;
-    try {
-      await rawTrpc.community.create.mutate({ content });
+  const likeMut = trpc.community.toggleLike.useMutation({
+    onSuccess: () => {
+      void feedQ.refetch();
+    },
+  });
+  const createMut = trpc.community.create.useMutation({
+    onSuccess: () => {
       setContent('');
       setShowCreate(false);
-      refetch();
-    } catch {
-      /* noop */
-    }
-  };
-  const handleComment = async () => {
-    if (!commentId || !commentText) return;
-    try {
-      await rawTrpc.community.addComment.mutate({ postId: commentId, content: commentText });
+      void feedQ.refetch();
+    },
+  });
+  const commentMut = trpc.community.addComment.useMutation({
+    onSuccess: () => {
       setCommentText('');
       setCommentId(null);
-    } catch {
-      /* noop */
-    }
+    },
+  });
+  const deleteMut = trpc.community.delete.useMutation({
+    onSuccess: () => {
+      void feedQ.refetch();
+    },
+  });
+  const handleLike = (postId: number) => {
+    likeMut.mutate({ postId });
   };
-  const handleDelete = async (id: number) => {
-    try {
-      await rawTrpc.community.delete.mutate({ id });
-      refetch();
-    } catch {
-      /* noop */
-    }
+  const handleCreate = () => {
+    if (!content) return;
+    createMut.mutate({ content });
+  };
+  const handleComment = () => {
+    if (!commentId || !commentText) return;
+    commentMut.mutate({ postId: commentId, content: commentText });
+  };
+  const handleDelete = (id: number) => {
+    deleteMut.mutate({ id });
   };
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل المجتمع" onRetry={refetch} />;
+  if (feedQ.isLoading) return <SkeletonList count={4} />;
+  if (feedQ.isError)
+    return <ErrorAlert message="فشل تحميل المجتمع" onRetry={() => feedQ.refetch()} />;
 
   return (
     <ScrollView
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={feedQ.isRefetching}
+          onRefresh={() => feedQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <View

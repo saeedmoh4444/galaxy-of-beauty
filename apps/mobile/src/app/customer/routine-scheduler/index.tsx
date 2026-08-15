@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface RoutineStep {
   id?: number;
@@ -12,30 +11,10 @@ interface RoutineStep {
 }
 
 export default function RoutineSchedulerScreen(): JSX.Element {
-  const [data, setData] = useState<RoutineStep[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const routinesQ = trpc.routineScheduler.myRoutines.useQuery();
+  const data: RoutineStep[] = (routinesQ.data as unknown as RoutineStep[] | undefined) ?? [];
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.routineScheduler.myRoutines.query() as unknown as Promise<RoutineStep[]>)
-      .then((d) => {
-        setData(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={4} />;
+  if (routinesQ.isLoading) return <SkeletonList count={4} />;
 
   return (
     <ScrollView
@@ -43,8 +22,8 @@ export default function RoutineSchedulerScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={routinesQ.isRefetching}
+          onRefresh={() => routinesQ.refetch()}
           colors={['#8b5cf6']}
         />
       }

@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface BeautyPackage {
   id?: number;
@@ -16,26 +15,24 @@ interface BeautyPackage {
 }
 
 export default function BeautyPackagesScreen(): JSX.Element {
-  const {
-    data: packages,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.beautyPackages.list.query());
+  const packagesQ = trpc.beautyPackages.list.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل الباقات" onRetry={refetch} />;
+  if (packagesQ.isLoading) return <SkeletonList count={4} />;
+  if (packagesQ.isError)
+    return <ErrorAlert message="فشل تحميل الباقات" onRetry={() => packagesQ.refetch()} />;
 
-  const items = (packages ?? []) as BeautyPackage[];
+  const items = (packagesQ.data ?? []) as BeautyPackage[];
 
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={packagesQ.isRefetching}
+          onRefresh={() => packagesQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={styles.t}> باقات التجميل</Text>

@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface FeedItem {
   id?: number;
@@ -17,27 +16,9 @@ interface AIFeedData {
 }
 
 export default function AIFeedScreen(): JSX.Element {
-  const [data, setData] = useState<AIFeedData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.aiFeatures.personalizedFeed.query() as unknown as Promise<AIFeedData>)
-      .then((d: AIFeedData) => {
-        setData(d);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const q = trpc.aiFeatures.personalizedFeed.useQuery();
+  if (q.isLoading) return <SkeletonList count={4} />;
+  const data = q.data as unknown as AIFeedData | null;
   const recommendations = data?.recommendations ?? [];
   const wishlistItems = data?.wishlistItems ?? [];
   const skinProfile = data?.skinProfile;
@@ -47,8 +28,8 @@ export default function AIFeedScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#7c3aed']}
         />
       }

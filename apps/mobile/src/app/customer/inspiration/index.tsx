@@ -7,9 +7,8 @@ import {
   Image,
   RefreshControl,
 } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface InspirationPin {
   id?: number;
@@ -18,38 +17,25 @@ interface InspirationPin {
 }
 
 export default function InspirationScreen(): JSX.Element {
-  const [pins, setPins] = useState<InspirationPin[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.inspiration.list.query() as Promise<InspirationPin[]>)
-      .then((d) => {
-        setPins(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const q = trpc.inspiration.list.useQuery();
+  const pins: InspirationPin[] = (q.data as unknown as InspirationPin[] | undefined) ?? [];
+  const delMut = trpc.inspiration.delete.useMutation({
+    onSuccess: () => {
+      void q.refetch();
+    },
+  });
   const remove = (id: number) => {
-    (rawTrpc.inspiration.delete.mutate({ id }) as Promise<unknown>).then(() => fetch());
+    delMut.mutate({ id });
   };
-  if (loading) return <SkeletonList count={6} />;
+  if (q.isLoading) return <SkeletonList count={6} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#ec4899']}
         />
       }

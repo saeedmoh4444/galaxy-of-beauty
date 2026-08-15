@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface LeaderboardEntry {
   id?: number;
@@ -11,41 +10,23 @@ interface LeaderboardEntry {
 }
 
 export default function TechLeaderboardScreen(): JSX.Element {
-  const [board, setBoard] = useState<LeaderboardEntry[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const boardQ = trpc.techLeaderboard.leaderboard.useQuery({ category: 'rating' });
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (
-      rawTrpc.techLeaderboard.leaderboard.query({ category: 'rating' }) as unknown as Promise<
-        Array<{ id?: number; name?: string; rating?: number; totalBookings?: number }>
-      >
-    )
-      .then((d) => {
-        setBoard(
-          (d ?? []).map((t) => ({
-            id: t.id,
-            name: t.name,
-            rating: t.rating,
-            bookings: t.totalBookings,
-          })),
-        );
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
+  if (boardQ.isLoading) return <SkeletonList count={5} />;
 
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={5} />;
+  const board: LeaderboardEntry[] = (
+    (boardQ.data as unknown as Array<{
+      id?: number;
+      name?: string;
+      rating?: number;
+      totalBookings?: number;
+    }> | null) ?? []
+  ).map((t) => ({
+    id: t.id,
+    name: t.name,
+    rating: t.rating,
+    bookings: t.totalBookings,
+  }));
 
   return (
     <ScrollView
@@ -53,8 +34,8 @@ export default function TechLeaderboardScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={boardQ.isRefetching}
+          onRefresh={() => boardQ.refetch()}
           colors={['#f59e0b']}
         />
       }

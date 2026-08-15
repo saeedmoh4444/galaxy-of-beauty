@@ -24,11 +24,10 @@ export default function SkinAnalysisScreen() {
     limit: DEFAULT_PAGE_SIZE,
   });
   const history: Record<string, unknown>[] =
-    ((historyQ.data as Record<string, unknown> | null)?.items as Record<string, unknown>[]) ??
-    [];
+    ((historyQ.data as Record<string, unknown> | null)?.items as Record<string, unknown>[]) ?? [];
 
   const analyzeMut = trpc.skinAnalysis.analyze.useMutation({
-    onSuccess: (data) => {
+    onSuccess: () => {
       void historyQ.refetch();
     },
     onError: () => {
@@ -38,8 +37,10 @@ export default function SkinAnalysisScreen() {
   // Clear the previous result while a new analysis is in flight (previous behavior)
   const result = analyzeMut.isPending
     ? null
-    : (((analyzeMut.data as Record<string, unknown> | undefined)
-        ?.resultJson as Record<string, unknown>) || null);
+    : ((analyzeMut.data as Record<string, unknown> | undefined)?.resultJson as Record<
+        string,
+        unknown
+      >) || null;
 
   const handleCameraCapture = async () => {
     if (!hasPermission) {

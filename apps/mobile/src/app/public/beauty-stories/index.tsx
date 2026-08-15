@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface BeautyStory {
   id?: number;
@@ -15,26 +14,24 @@ interface BeautyStory {
 }
 
 export default function BeautyStoriesScreen(): JSX.Element {
-  const {
-    data: stories,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.beautyStories.feed.query());
+  const storiesQ = trpc.beautyStories.feed.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل القصص" onRetry={refetch} />;
+  if (storiesQ.isLoading) return <SkeletonList count={4} />;
+  if (storiesQ.isError)
+    return <ErrorAlert message="فشل تحميل القصص" onRetry={() => storiesQ.refetch()} />;
 
-  const items = (stories ?? []) as BeautyStory[];
+  const items = (storiesQ.data ?? []) as BeautyStory[];
 
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />
+        <RefreshControl
+          refreshing={storiesQ.isRefetching}
+          onRefresh={() => storiesQ.refetch()}
+          colors={['#7c3aed']}
+        />
       }
     >
       <Text style={styles.t}> القصص</Text>

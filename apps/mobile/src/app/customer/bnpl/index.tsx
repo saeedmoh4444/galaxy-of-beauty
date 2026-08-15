@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface BnplProvider {
   key: string;
@@ -9,61 +9,31 @@ interface BnplProvider {
   nameAr?: string;
 }
 
-interface BnplEligibility {
-  eligible?: boolean;
-  provider?: string;
-}
-
 interface BnplPlanResult {
   totalAmount?: number;
 }
 
 export default function BnplScreen(): JSX.Element {
-  const [providers, setProviders] = useState<BnplProvider[]>([]);
-  const [, setEligibility] = useState<BnplEligibility | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const providersQ = trpc.bnpl.providers.useQuery();
+  const eligibilityQ = trpc.bnpl.eligibility.useQuery();
   const [provider, setProvider] = useState('tabby');
   const [amount] = useState(500);
   const [inst] = useState(4);
   const [result, setResult] = useState<BnplPlanResult | null>(null);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    Promise.all([
-      rawTrpc.bnpl.providers.query() as Promise<BnplProvider[]>,
-      rawTrpc.bnpl.eligibility.query() as Promise<BnplEligibility>,
-    ])
-      .then(([p, e]) => {
-        setProviders(p || []);
-        setEligibility(e);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const providers: BnplProvider[] =
+    (providersQ.data as unknown as BnplProvider[] | undefined) ?? [];
+  const submitMut = trpc.bnpl.createPlan.useMutation({
+    onSuccess: (d) => setResult(d as unknown as BnplPlanResult),
+  });
   const submit = () => {
-    setLoading(true);
-    (
-      rawTrpc.bnpl.createPlan.mutate({
-        amount,
-        provider: provider as 'tabby' | 'tamara',
-        installments: inst,
-      }) as Promise<BnplPlanResult>
-    )
-      .then((d: BnplPlanResult) => {
-        setResult(d);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    submitMut.mutate({
+      amount,
+      provider: provider as 'tabby' | 'tamara',
+      installments: inst,
+    });
   };
-  if (loading) return <SkeletonList count={3} />;
+  if (providersQ.isLoading || eligibilityQ.isLoading || submitMut.isPending)
+    return <SkeletonList count={3} />;
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
@@ -84,8 +54,11 @@ export default function BnplScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={providersQ.isRefetching || eligibilityQ.isRefetching}
+          onRefresh={() => {
+            void providersQ.refetch();
+            void eligibilityQ.refetch();
+          }}
           colors={['#0891b2']}
         />
       }

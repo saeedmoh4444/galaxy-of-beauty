@@ -1,9 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
+import { useState } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { useState } from 'react';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface ServiceItem {
   id?: number;
@@ -15,17 +14,10 @@ interface ServiceItem {
 }
 
 export default function ServicesScreen(): JSX.Element {
-  const {
-    data: categories,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.categories.tree.query());
+  const categoriesQ = trpc.categories.tree.useQuery();
   const [activeCat, setActiveCat] = useState<string | null>(null);
   const catItems = (
-    (categories ?? []) as unknown as Array<{
+    (categoriesQ.data ?? []) as unknown as Array<{
       id?: number;
       slug?: string;
       emoji?: string;
@@ -37,18 +29,16 @@ export default function ServicesScreen(): JSX.Element {
     emoji: c.emoji ?? '',
     id: c.id,
   }));
-  const { data: services } = useQuery(() =>
-    activeCat
-      ? rawTrpc.services.list.query({
-          categoryId: catItems.find((c) => c.key === activeCat)?.id,
-        })
-      : Promise.resolve(null),
+  const servicesQ = trpc.services.list.useQuery(
+    { categoryId: catItems.find((c) => c.key === activeCat)?.id },
+    { enabled: !!activeCat },
   );
 
-  if (loading) return <SkeletonList count={6} />;
-  if (error) return <ErrorAlert message="فشل تحميل الخدمات" onRetry={refetch} />;
+  if (categoriesQ.isLoading) return <SkeletonList count={6} />;
+  if (categoriesQ.isError)
+    return <ErrorAlert message="فشل تحميل الخدمات" onRetry={() => categoriesQ.refetch()} />;
 
-  const svcItems = ((services as unknown as { items?: ServiceItem[] } | null)?.items ??
+  const svcItems = ((servicesQ.data as unknown as { items?: ServiceItem[] } | null)?.items ??
     []) as ServiceItem[];
 
   return (
@@ -56,7 +46,11 @@ export default function ServicesScreen(): JSX.Element {
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={categoriesQ.isRefetching}
+          onRefresh={() => categoriesQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={styles.t}>‍️ الخدمات</Text>

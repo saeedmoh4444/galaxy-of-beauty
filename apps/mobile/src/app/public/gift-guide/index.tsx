@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface GiftGuide {
   id?: number;
@@ -14,26 +13,24 @@ interface GiftGuide {
 }
 
 export default function GiftGuideScreen(): JSX.Element {
-  const {
-    data: guides,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.giftQuiz.questions.query());
+  const guidesQ = trpc.giftQuiz.questions.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل الدليل" onRetry={refetch} />;
+  if (guidesQ.isLoading) return <SkeletonList count={4} />;
+  if (guidesQ.isError)
+    return <ErrorAlert message="فشل تحميل الدليل" onRetry={() => guidesQ.refetch()} />;
 
-  const items = (guides ?? []) as GiftGuide[];
+  const items = (guidesQ.data ?? []) as GiftGuide[];
 
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={guidesQ.isRefetching}
+          onRefresh={() => guidesQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={styles.t}> دليل الهدايا</Text>

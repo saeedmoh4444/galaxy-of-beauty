@@ -7,9 +7,9 @@ import {
   StyleSheet,
   RefreshControl,
 } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface AssistantMessage {
   id?: number;
@@ -18,31 +18,11 @@ interface AssistantMessage {
 }
 
 export default function AIAssistantScreen(): JSX.Element {
-  const [messages, setMessages] = useState<AssistantMessage[]>([]);
   const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const q = trpc.liveChat.history.useQuery();
+  const messages: AssistantMessage[] = (q.data as AssistantMessage[] | undefined) ?? [];
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.liveChat.history.query() as Promise<AssistantMessage[]>)
-      .then((d) => {
-        setMessages(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading)
+  if (q.isLoading)
     return (
       <View style={styles.c}>
         <Text style={styles.t}> المساعد الذكي</Text>
@@ -57,8 +37,8 @@ export default function AIAssistantScreen(): JSX.Element {
         contentContainerStyle={styles.i}
         refreshControl={
           <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => fetch(true)}
+            refreshing={q.isRefetching}
+            onRefresh={() => q.refetch()}
             colors={['#7c3aed']}
           />
         }

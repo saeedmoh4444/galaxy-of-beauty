@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface RideProvider {
   key: string;
@@ -19,37 +19,22 @@ interface BookingResult {
 }
 
 export default function RideHailingScreen(): JSX.Element {
-  const [providers, setProviders] = useState<RideProvider[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [result, setResult] = useState<BookingResult | null>(null);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.rideHailing.providers.query() as Promise<RideProvider[]>)
-      .then((d: RideProvider[]) => {
-        setProviders(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const providersQ = trpc.rideHailing.providers.useQuery();
+  const providers: RideProvider[] =
+    (providersQ.data as unknown as RideProvider[] | undefined) ?? [];
+
+  const bookMut = trpc.rideHailing.book.useMutation({
+    onSuccess: (d) => setResult(d as unknown as BookingResult),
+  });
   const book = (provider: string) => {
-    (
-      rawTrpc.rideHailing.book.mutate({
-        bookingId: 1,
-        provider: provider as 'uber' | 'careem',
-        pickupAddress: 'موقعي الحالي',
-      }) as Promise<BookingResult>
-    ).then((d: BookingResult) => setResult(d));
+    bookMut.mutate({
+      bookingId: 1,
+      provider: provider as 'uber' | 'careem',
+      pickupAddress: 'موقعي الحالي',
+    });
   };
-  if (loading) return <SkeletonList count={3} />;
+  if (providersQ.isLoading) return <SkeletonList count={3} />;
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
@@ -72,8 +57,8 @@ export default function RideHailingScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={providersQ.isRefetching}
+          onRefresh={() => providersQ.refetch()}
           colors={['#2563eb']}
         />
       }

@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface AnalyticsSummary {
   totalSpent?: number;
@@ -15,44 +14,25 @@ interface CategoryStat {
 }
 
 export default function BookingInsightsScreen(): JSX.Element {
-  const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
-  const [byCat, setByCat] = useState<CategoryStat[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    Promise.all([
-      rawTrpc.beautyAnalytics.summary.query().catch(() => null) as Promise<AnalyticsSummary | null>,
-      rawTrpc.beautyAnalytics.byCategory.query().catch(() => []) as Promise<CategoryStat[]>,
-    ])
-      .then(([a, c]) => {
-        setAnalytics(a);
-        setByCat(c || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={3} />;
-  const s: AnalyticsSummary = analytics ?? {};
+  const analyticsQ = trpc.beautyAnalytics.summary.useQuery();
+  const byCatQ = trpc.beautyAnalytics.byCategory.useQuery();
+  if (analyticsQ.isLoading || byCatQ.isLoading) return <SkeletonList count={3} />;
+  const s: AnalyticsSummary = (analyticsQ.data as unknown as AnalyticsSummary | null) ?? {};
   const totalSpent = s.totalSpent ?? 0;
   const totalBookings = s.totalBookings ?? 0;
   const avgPerBooking = totalBookings > 0 ? Math.round(totalSpent / totalBookings) : 0;
+  const byCat = (byCatQ.data as CategoryStat[] | undefined) ?? [];
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={analyticsQ.isRefetching || byCatQ.isRefetching}
+          onRefresh={() => {
+            void analyticsQ.refetch();
+            void byCatQ.refetch();
+          }}
           colors={['#0891b2']}
         />
       }

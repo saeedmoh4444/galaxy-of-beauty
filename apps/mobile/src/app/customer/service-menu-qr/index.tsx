@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface QrTechnician {
   id: number;
@@ -15,41 +15,25 @@ interface QrGenerated {
 }
 
 export default function ServiceMenuQRScreen(): JSX.Element {
-  const [techs, setTechs] = useState<QrTechnician[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [result, setResult] = useState<QrGenerated | null>(null);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.serviceMenuQr.list.query() as Promise<QrTechnician[]>)
-      .then((d: QrTechnician[]) => {
-        setTechs(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const techsQ = trpc.serviceMenuQr.list.useQuery();
+  const techs: QrTechnician[] = (techsQ.data as unknown as QrTechnician[] | undefined) ?? [];
+
+  const generateMut = trpc.serviceMenuQr.generate.useMutation({
+    onSuccess: (d) => setResult(d as unknown as QrGenerated),
+  });
   const generate = (technicianId: number) => {
-    (rawTrpc.serviceMenuQr.generate.mutate({ technicianId }) as Promise<QrGenerated>).then(
-      (d: QrGenerated) => setResult(d),
-    );
+    generateMut.mutate({ technicianId });
   };
-  if (loading) return <SkeletonList count={4} />;
+  if (techsQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={techsQ.isRefetching}
+          onRefresh={() => techsQ.refetch()}
           colors={['#059669']}
         />
       }

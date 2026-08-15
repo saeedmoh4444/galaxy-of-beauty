@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface DiscoverCategory {
   id?: number;
@@ -23,29 +22,27 @@ interface TrendingItem {
 }
 
 export default function DiscoverScreen(): JSX.Element {
-  const {
-    data: trending,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.beautyDiscovery.featured.query());
-  const { data: categories } = useQuery(() => rawTrpc.categories.list.query());
+  const trendingQ = trpc.beautyDiscovery.featured.useQuery();
+  const categoriesQ = trpc.categories.list.useQuery();
 
-  if (loading) return <SkeletonList count={6} />;
-  if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;
+  if (trendingQ.isLoading) return <SkeletonList count={6} />;
+  if (trendingQ.isError)
+    return <ErrorAlert message="فشل تحميل المحتوى" onRetry={() => trendingQ.refetch()} />;
 
-  const trendingItems = ((trending as unknown as { popularServices?: TrendingItem[] } | null)
+  const trendingItems = ((trendingQ.data as unknown as { popularServices?: TrendingItem[] } | null)
     ?.popularServices ?? []) as TrendingItem[];
-  const catItems = (categories as DiscoverCategory[] | undefined) ?? [];
+  const catItems = (categoriesQ.data as DiscoverCategory[] | undefined) ?? [];
 
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={trendingQ.isRefetching}
+          onRefresh={() => trendingQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={styles.t}> اكتشف</Text>

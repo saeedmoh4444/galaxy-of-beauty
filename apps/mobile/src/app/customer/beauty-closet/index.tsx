@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
-import { rawTrpc } from '@/lib/trpc-react';
+import { useState } from 'react';
+import { trpc } from '@/lib/trpc-react';
 
 const CATS = [' مكياج', ' عناية', '‍️ شعر', ' أظافر', ' طبيعي'];
 
@@ -13,30 +13,11 @@ interface ClosetProduct {
 }
 
 export default function BeautyClosetScreen(): JSX.Element {
-  const [products, setProducts] = useState<ClosetProduct[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [filter, setFilter] = useState<string | null>(null);
+  const q = trpc.restockReminder.myItems.useQuery();
+  const products: ClosetProduct[] = (q.data as unknown as ClosetProduct[] | undefined) ?? [];
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.restockReminder.myItems.query() as unknown as Promise<ClosetProduct[]>)
-      .then((d) => {
-        setProducts(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading)
+  if (q.isLoading)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}> خزانة الجمال</Text>
@@ -51,8 +32,8 @@ export default function BeautyClosetScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#8b5cf6']}
         />
       }

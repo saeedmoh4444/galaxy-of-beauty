@@ -7,9 +7,9 @@ import {
   TextInput,
   RefreshControl,
 } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface NewsletterIssue {
   id?: number;
@@ -18,37 +18,20 @@ interface NewsletterIssue {
 }
 
 export default function NewsletterScreen(): JSX.Element {
-  const [issues, setIssues] = useState<NewsletterIssue[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.newsletter.issues.query() as Promise<NewsletterIssue[]>)
-      .then((d) => {
-        setIssues(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const issuesQ = trpc.newsletter.issues.useQuery();
+  const issues: NewsletterIssue[] =
+    (issuesQ.data as unknown as NewsletterIssue[] | undefined) ?? [];
+  if (issuesQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={issuesQ.isRefetching}
+          onRefresh={() => issuesQ.refetch()}
           colors={['#2563eb']}
         />
       }

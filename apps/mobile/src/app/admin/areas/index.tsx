@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
 
 interface Area {
   id: number;
@@ -10,34 +10,16 @@ interface Area {
 }
 
 export default function AdminAreasScreen(): JSX.Element {
-  const [data, setData] = useState<Area[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.platform.listAreas.query({}) as unknown as Promise<Area[]>)
-      .then((d: Area[]) => {
-        setData(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const q = trpc.platform.listAreas.useQuery({});
+  const data = (q.data as unknown as Area[] | null) ?? [];
+  const deleteMut = trpc.platform.deleteArea.useMutation({ onSuccess: () => void q.refetch() });
 
   const remove = (id: number) => {
-    rawTrpc.platform.deleteArea.mutate({ id }).then(() => fetch());
+    deleteMut.mutate({ id });
   };
 
-  if (loading) return <SkeletonList count={5} />;
+  if (q.isLoading) return <SkeletonList count={5} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل المناطق" onRetry={() => q.refetch()} />;
 
   return (
     <ScrollView
@@ -45,8 +27,8 @@ export default function AdminAreasScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#0891b2']}
         />
       }

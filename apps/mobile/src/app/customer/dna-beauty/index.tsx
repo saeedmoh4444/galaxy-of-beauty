@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface DnaQuestion {
   id: string;
@@ -13,45 +13,22 @@ interface DnaResult {
 }
 
 export default function DNABeautyScreen(): JSX.Element {
-  const [questions, setQuestions] = useState<DnaQuestion[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [answers, setAnswers] = useState<Record<string, boolean>>({});
-  const [result, setResult] = useState<DnaResult | null>(null);
-  const [analyzing, setAnalyzing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.dnaBeauty.questions.query() as Promise<DnaQuestion[]>)
-      .then((d: DnaQuestion[]) => {
-        setQuestions(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const utils = trpc.useUtils();
+  const q = trpc.dnaBeauty.questions.useQuery();
+  const questions: DnaQuestion[] = (q.data as unknown as DnaQuestion[] | undefined) ?? [];
+  const analyzeQ = trpc.dnaBeauty.analyze.useQuery({ answers }, { enabled: false });
   const analyze = () => {
-    setAnalyzing(true);
-    (rawTrpc.dnaBeauty.analyze.query({ answers }) as Promise<DnaResult>)
-      .then((d: DnaResult) => {
-        setResult(d);
-        setAnalyzing(false);
-      })
-      .catch(() => setAnalyzing(false));
+    void analyzeQ.refetch();
   };
-  if (loading) return <SkeletonList count={4} />;
-  if (analyzing)
+  if (q.isLoading) return <SkeletonList count={4} />;
+  if (analyzeQ.isLoading)
     return (
       <View style={styles.c}>
         <SkeletonList count={3} />
       </View>
     );
+  const result = analyzeQ.data as DnaResult | null;
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
@@ -63,7 +40,7 @@ export default function DNABeautyScreen(): JSX.Element {
           <TouchableOpacity
             onPress={() => {
               setAnswers({});
-              setResult(null);
+              utils.dnaBeauty.analyze.reset();
             }}
             style={styles.rst}
           >
@@ -78,8 +55,8 @@ export default function DNABeautyScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#7c3aed']}
         />
       }

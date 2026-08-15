@@ -1,8 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
 
 interface ServiceDetail {
   emoji?: string;
@@ -14,34 +14,10 @@ interface ServiceDetail {
 
 export default function ServiceDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [data, setData] = useState<ServiceDetail | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback(
-    (isRefresh = false) => {
-      if (isRefresh) setRefreshing(true);
-      else setLoading(true);
-      (
-        rawTrpc.services.getById.query({
-          id: parseInt(id, 10),
-        }) as unknown as Promise<ServiceDetail>
-      )
-        .then((d: ServiceDetail) => {
-          setData(d);
-          setLoading(false);
-          setRefreshing(false);
-        })
-        .catch(() => {
-          setLoading(false);
-          setRefreshing(false);
-        });
-    },
-    [id],
-  );
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const q = trpc.services.getById.useQuery({ id: parseInt(id, 10) });
+  const data = (q.data as unknown as ServiceDetail | null) ?? null;
+  if (q.isLoading) return <SkeletonList count={4} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل الخدمة" onRetry={() => q.refetch()} />;
   if (!data)
     return (
       <View style={styles.c}>
@@ -54,8 +30,8 @@ export default function ServiceDetailScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#db2777']}
         />
       }

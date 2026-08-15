@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface BoxProduct {
   id: number;
@@ -11,29 +11,9 @@ interface BoxProduct {
 }
 
 export default function BoxBuilderScreen(): JSX.Element {
-  const [products, setProducts] = useState<BoxProduct[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<Set<number>>(new Set());
-
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.boxBuilder.catalog.query() as unknown as Promise<BoxProduct[]>)
-      .then((d: BoxProduct[] | undefined) => {
-        setProducts(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const q = trpc.boxBuilder.catalog.useQuery();
+  const products: BoxProduct[] = (q.data as unknown as BoxProduct[] | undefined) ?? [];
 
   const toggle = (id: number) => {
     const n = new Set(selected);
@@ -42,7 +22,7 @@ export default function BoxBuilderScreen(): JSX.Element {
     setSelected(n);
   };
 
-  if (loading) return <SkeletonList count={5} />;
+  if (q.isLoading) return <SkeletonList count={5} />;
 
   return (
     <ScrollView
@@ -50,8 +30,8 @@ export default function BoxBuilderScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#7c3aed']}
         />
       }

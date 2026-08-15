@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface LastMileProduct {
   id: number;
@@ -18,37 +18,22 @@ interface OrderResult {
 }
 
 export default function LastMileScreen(): JSX.Element {
-  const [products, setProducts] = useState<LastMileProduct[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [result, setResult] = useState<OrderResult | null>(null);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.lastMileDelivery.products.query() as Promise<LastMileProduct[]>)
-      .then((d: LastMileProduct[]) => {
-        setProducts(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+
+  const productsQ = trpc.lastMileDelivery.products.useQuery();
+  const products: LastMileProduct[] = (productsQ.data as LastMileProduct[] | undefined) ?? [];
+
+  const orderMut = trpc.lastMileDelivery.order.useMutation({
+    onSuccess: (d) => setResult(d as unknown as OrderResult),
+  });
   const order = (productId: number) => {
-    (
-      rawTrpc.lastMileDelivery.order.mutate({
-        productId,
-        address: 'الرياض',
-        paymentMethod: 'wallet',
-      }) as Promise<OrderResult>
-    ).then((d: OrderResult) => setResult(d));
+    orderMut.mutate({
+      productId,
+      address: 'الرياض',
+      paymentMethod: 'wallet',
+    });
   };
-  if (loading) return <SkeletonList count={4} />;
+  if (productsQ.isLoading) return <SkeletonList count={4} />;
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
@@ -69,8 +54,8 @@ export default function LastMileScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={productsQ.isRefetching}
+          onRefresh={() => productsQ.refetch()}
           colors={['#f59e0b']}
         />
       }

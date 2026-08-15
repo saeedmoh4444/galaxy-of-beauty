@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface Campaign {
   id?: number;
@@ -16,26 +15,24 @@ interface Campaign {
 }
 
 export default function CampaignsScreen(): JSX.Element {
-  const {
-    data: campaigns,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.campaigns.active.query());
+  const campaignsQ = trpc.campaigns.active.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل الحملات" onRetry={refetch} />;
+  if (campaignsQ.isLoading) return <SkeletonList count={4} />;
+  if (campaignsQ.isError)
+    return <ErrorAlert message="فشل تحميل الحملات" onRetry={() => campaignsQ.refetch()} />;
 
-  const items = (campaigns ?? []) as Campaign[];
+  const items = (campaignsQ.data ?? []) as Campaign[];
 
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#f59e0b']} />
+        <RefreshControl
+          refreshing={campaignsQ.isRefetching}
+          onRefresh={() => campaignsQ.refetch()}
+          colors={['#f59e0b']}
+        />
       }
     >
       <Text style={styles.t}> العروض والحملات</Text>

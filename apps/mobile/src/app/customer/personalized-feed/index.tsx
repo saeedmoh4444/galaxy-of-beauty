@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface FeedResponse {
   items?: FeedItem[];
@@ -18,36 +17,17 @@ interface FeedItem {
 }
 
 export default function PersonalizedFeedScreen(): JSX.Element {
-  const [data, setData] = useState<FeedResponse | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.personalizedFeed.feed.query() as Promise<FeedResponse>)
-      .then((d) => {
-        setData(d);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={5} />;
-  const items = data?.items ?? [];
+  const feedQ = trpc.personalizedFeed.feed.useQuery();
+  if (feedQ.isLoading) return <SkeletonList count={5} />;
+  const items = (feedQ.data as FeedResponse | null)?.items ?? [];
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={feedQ.isRefetching}
+          onRefresh={() => feedQ.refetch()}
           colors={['#ec4899']}
         />
       }

@@ -1,8 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
 
 interface TechnicianDetail {
   id?: number;
@@ -15,31 +15,11 @@ interface TechnicianDetail {
 
 export default function TechnicianDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [data, setData] = useState<TechnicianDetail | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback(
-    (isRefresh = false) => {
-      if (isRefresh) setRefreshing(true);
-      else setLoading(true);
-      rawTrpc.technicians.getById
-        .query({ userId: parseInt(id, 10) })
-        .then((d: TechnicianDetail) => {
-          setData(d);
-          setLoading(false);
-          setRefreshing(false);
-        })
-        .catch(() => {
-          setLoading(false);
-          setRefreshing(false);
-        });
-    },
-    [id],
-  );
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const q = trpc.technicians.getById.useQuery({ userId: parseInt(id, 10) });
+  const data = (q.data as unknown as TechnicianDetail | null) ?? null;
+  if (q.isLoading) return <SkeletonList count={4} />;
+  if (q.isError)
+    return <ErrorAlert message="فشل تحميل بيانات الفنية" onRetry={() => q.refetch()} />;
   if (!data)
     return (
       <View style={styles.c}>
@@ -52,8 +32,8 @@ export default function TechnicianDetailScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#db2777']}
         />
       }

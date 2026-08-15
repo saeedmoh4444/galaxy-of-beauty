@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface SelfCareActivity {
   id?: number;
@@ -11,35 +10,18 @@ interface SelfCareActivity {
 }
 
 export default function SelfCareScreen(): JSX.Element {
-  const [data, setData] = useState<SelfCareActivity[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.selfCare.history.query({}) as unknown as Promise<SelfCareActivity[]>)
-      .then((d: SelfCareActivity[]) => {
-        setData(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const historyQ = trpc.selfCare.history.useQuery({});
+  const data: SelfCareActivity[] =
+    (historyQ.data as unknown as SelfCareActivity[] | undefined) ?? [];
+  if (historyQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={historyQ.isRefetching}
+          onRefresh={() => historyQ.refetch()}
           colors={['#ec4899']}
         />
       }

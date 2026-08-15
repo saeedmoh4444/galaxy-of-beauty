@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl, Image } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface MoodPin {
   id?: number;
@@ -9,30 +8,10 @@ interface MoodPin {
 }
 
 export default function MoodBoardScreen(): JSX.Element {
-  const [data, setData] = useState<MoodPin[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const pinsQ = trpc.moodBoard.list.useQuery();
+  const data: MoodPin[] = (pinsQ.data as unknown as MoodPin[] | undefined) ?? [];
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.moodBoard.list.query() as unknown as Promise<MoodPin[]>)
-      .then((d) => {
-        setData(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={6} />;
+  if (pinsQ.isLoading) return <SkeletonList count={6} />;
 
   return (
     <ScrollView
@@ -40,8 +19,8 @@ export default function MoodBoardScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={pinsQ.isRefetching}
+          onRefresh={() => pinsQ.refetch()}
           colors={['#ec4899']}
         />
       }

@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface AudioRoom {
   id?: number;
@@ -18,14 +17,13 @@ interface AudioRoomsData {
 }
 
 export default function AudioRoomsScreen(): JSX.Element {
-  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() =>
-    rawTrpc.audioRooms.rooms.query(),
-  );
+  const roomsQ = trpc.audioRooms.rooms.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل الغرف الصوتية" onRetry={refetch} />;
+  if (roomsQ.isLoading) return <SkeletonList count={4} />;
+  if (roomsQ.isError)
+    return <ErrorAlert message="فشل تحميل الغرف الصوتية" onRetry={() => roomsQ.refetch()} />;
 
-  const rooms = data as AudioRoomsData | null;
+  const rooms = roomsQ.data as AudioRoomsData | null;
   const live = rooms?.live ?? [];
   const upcoming = rooms?.upcoming ?? [];
 
@@ -34,7 +32,11 @@ export default function AudioRoomsScreen(): JSX.Element {
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#dc2626']} />
+        <RefreshControl
+          refreshing={roomsQ.isRefetching}
+          onRefresh={() => roomsQ.refetch()}
+          colors={['#dc2626']}
+        />
       }
     >
       <Text style={styles.t}>️ الغرف الصوتية</Text>

@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface VideoSession {
   roomId?: string;
@@ -12,31 +11,9 @@ interface VideoSession {
 export default function VideoBookingScreen(): JSX.Element {
   const { bookingId } = useLocalSearchParams<{ bookingId: string }>();
   const router = useRouter();
-  const [data, setData] = useState<VideoSession | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback(
-    (isRefresh = false) => {
-      if (isRefresh) setRefreshing(true);
-      else setLoading(true);
-      rawTrpc.video.getByBooking
-        .query({ bookingId: parseInt(bookingId, 10) })
-        .then((d) => {
-          setData(d);
-          setLoading(false);
-          setRefreshing(false);
-        })
-        .catch(() => {
-          setLoading(false);
-          setRefreshing(false);
-        });
-    },
-    [bookingId],
-  );
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={3} />;
+  const dataQ = trpc.video.getByBooking.useQuery({ bookingId: parseInt(bookingId, 10) });
+  if (dataQ.isLoading) return <SkeletonList count={3} />;
+  const data = dataQ.data as VideoSession | null;
   if (!data)
     return (
       <View style={styles.c}>
@@ -49,8 +26,8 @@ export default function VideoBookingScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={dataQ.isRefetching}
+          onRefresh={() => dataQ.refetch()}
           colors={['#7c3aed']}
         />
       }

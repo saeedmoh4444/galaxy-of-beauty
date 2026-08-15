@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface MetaverseSalon {
   id: number;
@@ -14,33 +14,16 @@ interface EnterResult {
 }
 
 export default function BeautyMetaverseScreen(): JSX.Element {
-  const [salons, setSalons] = useState<MetaverseSalon[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [result, setResult] = useState<EnterResult | null>(null);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.beautyMetaverse.salons.query() as Promise<MetaverseSalon[]>)
-      .then((d: MetaverseSalon[]) => {
-        setSalons(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const q = trpc.beautyMetaverse.salons.useQuery();
+  const salons: MetaverseSalon[] = (q.data as unknown as MetaverseSalon[] | undefined) ?? [];
+  const enterMut = trpc.beautyMetaverse.enter.useMutation({
+    onSuccess: (d) => setResult(d as unknown as EnterResult),
+  });
   const enter = (salonId: number) => {
-    (
-      rawTrpc.beautyMetaverse.enter.mutate({ salonId, avatar: 'skin1' }) as Promise<EnterResult>
-    ).then((d: EnterResult) => setResult(d));
+    enterMut.mutate({ salonId, avatar: 'skin1' });
   };
-  if (loading) return <SkeletonList count={4} />;
+  if (q.isLoading) return <SkeletonList count={4} />;
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
@@ -60,8 +43,8 @@ export default function BeautyMetaverseScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#7c3aed']}
         />
       }

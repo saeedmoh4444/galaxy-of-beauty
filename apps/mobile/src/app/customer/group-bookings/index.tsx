@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const TE: Record<string, string> = {
   bridal: '',
@@ -21,35 +20,19 @@ interface GroupBookingSummary {
 }
 
 export default function GroupBookingsScreen(): JSX.Element {
-  const [groups, setGroups] = useState<GroupBookingSummary[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.groupBookings.myGroups.query() as unknown as Promise<GroupBookingSummary[]>)
-      .then((d) => {
-        setGroups(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const q = trpc.groupBookings.myGroups.useQuery();
+  const groups: GroupBookingSummary[] =
+    (q.data as unknown as GroupBookingSummary[] | undefined) ?? [];
+
+  if (q.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#7c3aed']}
         />
       }

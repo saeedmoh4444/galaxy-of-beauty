@@ -8,10 +8,9 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useState } from 'react';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const CATS: Record<string, string> = {
   hair: '‍️ شعر',
@@ -32,50 +31,49 @@ interface BeautyReminder {
 }
 
 export default function BeautyRemindersScreen(): JSX.Element {
-  const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
-    rawTrpc.beautyReminders.myReminders.query(),
-  );
+  const q = trpc.beautyReminders.myReminders.useQuery();
   const [title, setTitle] = useState('');
   const [cat, setCat] = useState('hair');
   const [interval, setInterval] = useState(30);
   const [showForm, setShowForm] = useState(false);
 
-  const handleCreate = async () => {
-    if (!title) return;
-    try {
-      await rawTrpc.beautyReminders.create.mutate({
-        title,
-        category: cat as 'makeup' | 'hair' | 'nails' | 'skincare' | 'body' | 'other',
-        intervalDays: interval,
-      });
+  const createMut = trpc.beautyReminders.create.useMutation({
+    onSuccess: () => {
       setTitle('');
       setShowForm(false);
-      refetch();
-    } catch {
-      /* noop */
-    }
+      void q.refetch();
+    },
+  });
+  const completeMut = trpc.beautyReminders.complete.useMutation({
+    onSuccess: () => {
+      void q.refetch();
+    },
+  });
+  const deleteMut = trpc.beautyReminders.delete.useMutation({
+    onSuccess: () => {
+      void q.refetch();
+    },
+  });
+
+  const handleCreate = () => {
+    if (!title) return;
+    createMut.mutate({
+      title,
+      category: cat as 'makeup' | 'hair' | 'nails' | 'skincare' | 'body' | 'other',
+      intervalDays: interval,
+    });
   };
-  const handleComplete = async (id: number) => {
-    try {
-      await rawTrpc.beautyReminders.complete.mutate({ id });
-      refetch();
-    } catch {
-      /* noop */
-    }
+  const handleComplete = (id: number) => {
+    completeMut.mutate({ id });
   };
-  const handleDelete = async (id: number) => {
-    try {
-      await rawTrpc.beautyReminders.delete.mutate({ id });
-      refetch();
-    } catch {
-      /* noop */
-    }
+  const handleDelete = (id: number) => {
+    deleteMut.mutate({ id });
   };
 
-  if (loading) return <SkeletonList count={3} />;
-  if (error) return <ErrorAlert message="فشل تحميل التذكيرات" onRetry={refetch} />;
+  if (q.isLoading) return <SkeletonList count={3} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل التذكيرات" onRetry={() => q.refetch()} />;
 
-  const reminders = (data ?? []) as BeautyReminder[];
+  const reminders = (q.data ?? []) as BeautyReminder[];
   const overdue = reminders.filter((r) => new Date(r.nextDate ?? '') < new Date());
   const upcoming = reminders.filter((r) => new Date(r.nextDate ?? '') >= new Date());
 
@@ -84,7 +82,11 @@ export default function BeautyRemindersScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <View

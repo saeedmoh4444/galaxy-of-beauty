@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface ApiDocsData {
   title?: string;
@@ -10,36 +9,17 @@ interface ApiDocsData {
 }
 
 export default function ApiDocsScreen(): JSX.Element {
-  const [data, setData] = useState<ApiDocsData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.apiDocs.reference
-      .query()
-      .then((d: ApiDocsData) => {
-        setData(d);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const docsQ = trpc.apiDocs.reference.useQuery();
+  if (docsQ.isLoading) return <SkeletonList count={4} />;
+  const data = docsQ.data as ApiDocsData | null;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={docsQ.isRefetching}
+          onRefresh={() => docsQ.refetch()}
           colors={['#6366f1']}
         />
       }

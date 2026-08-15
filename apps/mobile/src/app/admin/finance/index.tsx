@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
 
 interface AdminFinanceDashboard {
   totalRevenue?: number;
@@ -10,30 +10,12 @@ interface AdminFinanceDashboard {
 }
 
 export default function AdminFinanceScreen(): JSX.Element {
-  const [data, setData] = useState<AdminFinanceDashboard | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const q = trpc.admin.dashboardStats.useQuery();
+  const data = (q.data as unknown as AdminFinanceDashboard | null) ?? {};
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.admin.dashboardStats.query() as unknown as Promise<AdminFinanceDashboard>)
-      .then((d: AdminFinanceDashboard) => {
-        setData(d);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={4} />;
+  if (q.isLoading) return <SkeletonList count={4} />;
+  if (q.isError)
+    return <ErrorAlert message="فشل تحميل البيانات المالية" onRetry={() => q.refetch()} />;
 
   const d: AdminFinanceDashboard = data ?? {};
 
@@ -43,8 +25,8 @@ export default function AdminFinanceScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#059669']}
         />
       }

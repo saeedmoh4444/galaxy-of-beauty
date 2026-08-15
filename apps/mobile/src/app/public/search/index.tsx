@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface SearchService {
   id?: number;
@@ -16,17 +16,11 @@ interface SearchResults {
 
 export default function SearchScreen(): JSX.Element {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<SearchResults | null>(null);
-  const [loading, setLoading] = useState(false);
+  const resultsQ = trpc.search.search.useQuery({ query: query.trim() }, { enabled: false });
+  const results = (resultsQ.data as unknown as SearchResults | null) ?? null;
   const doSearch = () => {
     if (!query.trim()) return;
-    setLoading(true);
-    (rawTrpc.search.search.query({ query: query.trim() }) as unknown as Promise<SearchResults>)
-      .then((d) => {
-        setResults(d);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    void resultsQ.refetch();
   };
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
@@ -45,11 +39,11 @@ export default function SearchScreen(): JSX.Element {
           <Text style={styles.sbt}></Text>
         </TouchableOpacity>
       </View>
-      {loading && <SkeletonList count={4} />}
-      {results && !loading && (
+      {resultsQ.isLoading && <SkeletonList count={4} />}
+      {resultsQ.data && !resultsQ.isLoading && (
         <>
-          {(results.services ?? []).length > 0 && <Text style={styles.st}> خدمات</Text>}
-          {(results.services ?? []).map((s) => (
+          {(results?.services ?? []).length > 0 && <Text style={styles.st}> خدمات</Text>}
+          {(results?.services ?? []).map((s) => (
             <View key={s.id} style={styles.card}>
               <Text style={styles.ce}>{s.emoji ?? ''}</Text>
               <View style={{ flex: 1 }}>

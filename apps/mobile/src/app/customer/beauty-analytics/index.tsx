@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface AnalyticsSummary {
   totalBookings: number;
@@ -22,45 +21,31 @@ interface MonthlyTrend {
 }
 
 export default function BeautyAnalyticsScreen(): JSX.Element {
-  const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
-  const [byCat, setByCat] = useState<CategoryCount[]>([]);
-  const [trend, setTrend] = useState<MonthlyTrend[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const summaryQ = trpc.beautyAnalytics.summary.useQuery();
+  const byCatQ = trpc.beautyAnalytics.byCategory.useQuery();
+  const trendQ = trpc.beautyAnalytics.monthlyTrend.useQuery();
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    Promise.all([
-      rawTrpc.beautyAnalytics.summary.query() as Promise<AnalyticsSummary>,
-      rawTrpc.beautyAnalytics.byCategory.query() as Promise<CategoryCount[]>,
-      rawTrpc.beautyAnalytics.monthlyTrend.query() as Promise<MonthlyTrend[]>,
-    ])
-      .then(([s, c, t]) => {
-        setSummary(s);
-        setByCat(c || []);
-        setTrend(t || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
-  const s = summary ?? { totalBookings: 0, completedBookings: 0, completionRate: 0, totalSpent: 0 };
+  if (summaryQ.isLoading || byCatQ.isLoading || trendQ.isLoading) return <SkeletonList count={4} />;
+  const s = (summaryQ.data as unknown as AnalyticsSummary | null) ?? {
+    totalBookings: 0,
+    completedBookings: 0,
+    completionRate: 0,
+    totalSpent: 0,
+  };
+  const byCat = (byCatQ.data as CategoryCount[] | undefined) ?? [];
+  const trend = (trendQ.data as MonthlyTrend[] | undefined) ?? [];
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={summaryQ.isRefetching || byCatQ.isRefetching || trendQ.isRefetching}
+          onRefresh={() => {
+            void summaryQ.refetch();
+            void byCatQ.refetch();
+            void trendQ.refetch();
+          }}
           colors={['#8b5cf6']}
         />
       }

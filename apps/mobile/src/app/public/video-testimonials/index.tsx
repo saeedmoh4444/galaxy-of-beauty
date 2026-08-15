@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface VideoTestimonial {
   id?: number;
@@ -12,36 +11,21 @@ interface VideoTestimonial {
 }
 
 export default function VideoTestimonialsScreen(): JSX.Element {
-  const [videos, setVideos] = useState<VideoTestimonial[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.videoTestimonials.feed
-      .query({})
-      .then((d) => {
-        setVideos((d?.items ?? []) as unknown as VideoTestimonial[]);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const videosQ = trpc.videoTestimonials.feed.useQuery({});
+
+  if (videosQ.isLoading) return <SkeletonList count={4} />;
+
+  const videos = ((videosQ.data as unknown as { items?: VideoTestimonial[] } | null)?.items ??
+    []) as VideoTestimonial[];
+
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={videosQ.isRefetching}
+          onRefresh={() => videosQ.refetch()}
           colors={['#dc2626']}
         />
       }

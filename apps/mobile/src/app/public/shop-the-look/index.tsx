@@ -7,9 +7,8 @@ import {
   Image,
   RefreshControl,
 } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface LookProduct {
   id?: number;
@@ -28,30 +27,11 @@ interface Look {
 }
 
 export default function ShopTheLookScreen(): JSX.Element {
-  const [looks, setLooks] = useState<Look[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const looksQ = trpc.lookbook.current.useQuery();
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.lookbook.current.query() as unknown as Promise<Look[]>)
-      .then((d: Look[]) => {
-        setLooks(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
+  if (looksQ.isLoading) return <SkeletonList count={4} />;
 
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={4} />;
+  const looks = (looksQ.data as unknown as Look[] | null) ?? [];
 
   return (
     <ScrollView
@@ -59,8 +39,8 @@ export default function ShopTheLookScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={looksQ.isRefetching}
+          onRefresh={() => looksQ.refetch()}
           colors={['#ec4899']}
         />
       }

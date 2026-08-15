@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface MommyService {
   id?: number;
@@ -13,36 +12,17 @@ interface MommyService {
 }
 
 export default function MommyAndMeScreen(): JSX.Element {
-  const [services, setServices] = useState<MommyService[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.womensServices.categories
-      .query()
-      .then((d) => {
-        setServices((d ?? []) as unknown as MommyService[]);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const servicesQ = trpc.womensServices.categories.useQuery();
+  const services: MommyService[] = (servicesQ.data as unknown as MommyService[] | undefined) ?? [];
+  if (servicesQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={servicesQ.isRefetching}
+          onRefresh={() => servicesQ.refetch()}
           colors={['#ec4899']}
         />
       }

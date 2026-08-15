@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, Image, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface GalleryPhoto {
   id?: number;
@@ -11,39 +10,19 @@ interface GalleryPhoto {
 }
 
 export default function GalleryScreen(): JSX.Element {
-  const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (
-      rawTrpc.gallery.byTechnician.query({ technicianId: 1 }) as unknown as Promise<{
-        items: GalleryPhoto[];
-      }>
-    )
-      .then((d) => {
-        setPhotos(d?.items ?? []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={6} />;
+  const photosQ = trpc.gallery.byTechnician.useQuery({ technicianId: 1 });
+
+  if (photosQ.isLoading) return <SkeletonList count={6} />;
+
+  const photos = (photosQ.data as unknown as { items?: GalleryPhoto[] })?.items ?? [];
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={photosQ.isRefetching}
+          onRefresh={() => photosQ.refetch()}
           colors={['#7c3aed']}
         />
       }

@@ -1,8 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
 
 interface BookingItem {
   bookingCode?: string;
@@ -11,31 +11,11 @@ interface BookingItem {
 }
 
 export default function AdminBookingsScreen(): JSX.Element {
-  const [data, setData] = useState<BookingItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const q = trpc.bookings.list.useQuery({ page: 1, limit: BULK_PAGE_SIZE });
+  const data = (q.data as unknown as { bookings?: BookingItem[] } | null)?.bookings ?? [];
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.bookings.list
-      .query({ page: 1, limit: BULK_PAGE_SIZE })
-      .then((d) => {
-        setData((d?.bookings ?? []) as unknown as BookingItem[]);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={6} />;
+  if (q.isLoading) return <SkeletonList count={6} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل الحجوزات" onRetry={() => q.refetch()} />;
 
   return (
     <ScrollView
@@ -43,8 +23,8 @@ export default function AdminBookingsScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#6366f1']}
         />
       }

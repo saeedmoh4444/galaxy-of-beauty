@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface SaleAlert {
   id?: number;
@@ -11,30 +10,10 @@ interface SaleAlert {
 }
 
 export default function SaleAlertsScreen(): JSX.Element {
-  const [data, setData] = useState<SaleAlert[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const alertsQ = trpc.saleAlerts.myAlerts.useQuery();
+  const data: SaleAlert[] = (alertsQ.data as unknown as SaleAlert[] | undefined) ?? [];
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.saleAlerts.myAlerts.query() as unknown as Promise<SaleAlert[]>)
-      .then((d: SaleAlert[]) => {
-        setData(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={4} />;
+  if (alertsQ.isLoading) return <SkeletonList count={4} />;
 
   return (
     <ScrollView
@@ -42,8 +21,8 @@ export default function SaleAlertsScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={alertsQ.isRefetching}
+          onRefresh={() => alertsQ.refetch()}
           colors={['#dc2626']}
         />
       }

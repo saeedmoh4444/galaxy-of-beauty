@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useState } from 'react';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const QUESTIONS = [
   {
@@ -56,8 +56,19 @@ interface MatchResult {
 export default function ServiceMatchmakerScreen(): JSX.Element {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [result, setResult] = useState<MatchResult | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState<Record<string, string> | null>(null);
+
+  // Fetch on demand once the last answer is picked: args are snapshotted into
+  // `submitted` so the query fetches with the final merged answers.
+  const matchQ = trpc.serviceMatchmaker.match.useQuery(
+    { answers: submitted ?? {} },
+    { enabled: !!submitted },
+  );
+
+  const result: MatchResult | null =
+    matchQ.data !== undefined
+      ? { matches: (matchQ.data as unknown as MatchResultItem[]) ?? [] }
+      : null;
 
   const select = (value: string) => {
     const q = QUESTIONS[step]!;
@@ -66,18 +77,12 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
     if (step < QUESTIONS.length - 1) {
       setStep(step + 1);
     } else {
-      setLoading(true);
-      rawTrpc.serviceMatchmaker.match
-        .query({ answers: next })
-        .then((d) => {
-          setResult({ matches: (d ?? []) as unknown as MatchResultItem[] });
-          setLoading(false);
-        })
-        .catch(() => setLoading(false));
+      setSubmitted(next);
     }
   };
 
-  if (loading) return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
+  if (matchQ.isLoading)
+    return <ActivityIndicator color="#ec4899" style={{ marginTop: 40 }} size="large" />;
 
   if (result) {
     return (
@@ -104,7 +109,7 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
           onPress={() => {
             setStep(0);
             setAnswers({});
-            setResult(null);
+            setSubmitted(null);
           }}
           style={styles.resetBtn}
         >

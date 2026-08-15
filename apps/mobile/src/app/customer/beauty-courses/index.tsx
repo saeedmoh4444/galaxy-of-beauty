@@ -1,9 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const LEVELS: Record<string, { label: string; color: string }> = {
   beginner: { label: 'مبتدئ', color: '#10b981' },
@@ -28,38 +27,37 @@ interface MyCourseItem {
 }
 
 export default function BeautyCoursesScreen(): JSX.Element {
-  const {
-    data: courses,
-    loading,
-    error,
-    refetch,
-    refreshing,
-    refresh,
-  } = useQuery(() => rawTrpc.beautyCourses.list.query());
-  const { data: myCourses } = useQuery(() => rawTrpc.beautyCourses.myCourses.query());
+  const coursesQ = trpc.beautyCourses.list.useQuery();
+  const myCoursesQ = trpc.beautyCourses.myCourses.useQuery();
   const [enrolled, setEnrolled] = useState<number[]>([]);
 
+  const enrollMut = trpc.beautyCourses.enroll.useMutation();
   const handleEnroll = async (courseId: number) => {
     try {
-      await rawTrpc.beautyCourses.enroll.mutate({ courseId });
+      await enrollMut.mutateAsync({ courseId });
       setEnrolled((prev) => [...prev, courseId]);
     } catch {
       /* noop */
     }
   };
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل الدورات" onRetry={refetch} />;
+  if (coursesQ.isLoading) return <SkeletonList count={4} />;
+  if (coursesQ.isError)
+    return <ErrorAlert message="فشل تحميل الدورات" onRetry={() => coursesQ.refetch()} />;
 
-  const items = (courses as CourseItem[] | undefined) ?? [];
-  const myItems = (myCourses as MyCourseItem[] | undefined) ?? [];
+  const items = (coursesQ.data as CourseItem[] | undefined) ?? [];
+  const myItems = (myCoursesQ.data as MyCourseItem[] | undefined) ?? [];
 
   return (
     <ScrollView
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={coursesQ.isRefetching}
+          onRefresh={() => coursesQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={s.t}> دورات تجميل</Text>

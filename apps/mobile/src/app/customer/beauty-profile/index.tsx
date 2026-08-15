@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface BeautyProfileData {
   skinType?: string;
@@ -9,36 +8,17 @@ interface BeautyProfileData {
 }
 
 export default function BeautyProfileScreen(): JSX.Element {
-  const [data, setData] = useState<BeautyProfileData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.beautyProfile.get
-      .query()
-      .then((d) => {
-        setData((d ?? null) as unknown as BeautyProfileData);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={3} />;
+  const q = trpc.beautyProfile.get.useQuery();
+  if (q.isLoading) return <SkeletonList count={3} />;
+  const data = q.data as unknown as BeautyProfileData | null;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#ec4899']}
         />
       }

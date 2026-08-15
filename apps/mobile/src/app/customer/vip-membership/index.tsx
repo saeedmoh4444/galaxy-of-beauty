@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface VipStatus {
   currentTier?: string;
@@ -10,36 +9,17 @@ interface VipStatus {
 }
 
 export default function VIPMembershipScreen(): JSX.Element {
-  const [data, setData] = useState<VipStatus | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.vipMembership.myTier
-      .query()
-      .then((d) => {
-        setData(d as unknown as VipStatus);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={3} />;
+  const tierQ = trpc.vipMembership.myTier.useQuery();
+  const data = tierQ.data as unknown as VipStatus | null;
+  if (tierQ.isLoading) return <SkeletonList count={3} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={tierQ.isRefetching}
+          onRefresh={() => tierQ.refetch()}
           colors={['#7c3aed']}
         />
       }

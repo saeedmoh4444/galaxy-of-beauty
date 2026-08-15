@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const TE: Record<string, string> = {
   bridal: '',
@@ -37,30 +36,9 @@ interface GroupBookingMember {
 
 export default function GroupBookingDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [data, setData] = useState<GroupBookingDetail | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback(
-    (isRefresh = false) => {
-      if (isRefresh) setRefreshing(true);
-      else setLoading(true);
-      (rawTrpc.groupBookings.getById.query({ id: parseInt(id, 10) }) as Promise<GroupBookingDetail>)
-        .then((d) => {
-          setData(d);
-          setLoading(false);
-          setRefreshing(false);
-        })
-        .catch(() => {
-          setLoading(false);
-          setRefreshing(false);
-        });
-    },
-    [id],
-  );
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const q = trpc.groupBookings.getById.useQuery({ id: parseInt(id, 10) });
+  const data = q.data as GroupBookingDetail | null;
+  if (q.isLoading) return <SkeletonList count={4} />;
   if (!data)
     return (
       <View style={styles.c}>
@@ -74,8 +52,8 @@ export default function GroupBookingDetailScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#7c3aed']}
         />
       }

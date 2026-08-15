@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface CalendarSyncStatus {
   connected?: boolean;
@@ -16,50 +16,39 @@ interface CalendarEvent {
 }
 
 export default function CalendarSyncScreen(): JSX.Element {
-  const [status, setStatus] = useState<CalendarSyncStatus | null>(null);
-  const [upcoming, setUpcoming] = useState<CalendarEvent[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    Promise.all([
-      rawTrpc.calendarSync.status.query() as Promise<CalendarSyncStatus>,
-      rawTrpc.calendarSync.upcoming.query() as Promise<CalendarEvent[]>,
-    ])
-      .then(([s, u]) => {
-        setStatus(s);
-        setUpcoming(u || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const statusQ = trpc.calendarSync.status.useQuery();
+  const upcomingQ = trpc.calendarSync.upcoming.useQuery();
+  const disconnectMut = trpc.calendarSync.disconnect.useMutation({
+    onSuccess: () => {
+      void statusQ.refetch();
+      void upcomingQ.refetch();
+    },
+  });
   const connect = () => {
     // Google OAuth flow not wired on mobile yet — surface a clear message
     // instead of silently failing with a fake auth code.
     setError('مزامنة تقويم Google غير متوفرة في التطبيق حالياً');
   };
   const disconnect = () => {
-    rawTrpc.calendarSync.disconnect.mutate().then(() => fetch());
+    disconnectMut.mutate();
   };
-  if (loading) return <SkeletonList count={3} />;
+  if (statusQ.isLoading || upcomingQ.isLoading) return <SkeletonList count={3} />;
+  const status = statusQ.data as unknown as CalendarSyncStatus | null;
   const connected = status?.connected ?? false;
+  const upcoming: CalendarEvent[] =
+    (upcomingQ.data as unknown as CalendarEvent[] | undefined) ?? [];
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={statusQ.isRefetching || upcomingQ.isRefetching}
+          onRefresh={() => {
+            void statusQ.refetch();
+            void upcomingQ.refetch();
+          }}
           colors={['#0891b2']}
         />
       }

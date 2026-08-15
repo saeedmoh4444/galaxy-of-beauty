@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface VendorDashboard {
   totalProducts?: number;
@@ -24,43 +23,33 @@ interface VendorProduct {
 }
 
 export default function VendorPortalScreen(): JSX.Element {
-  const [dash, setDash] = useState<VendorDashboard | null>(null);
-  const [products, setProducts] = useState<VendorProduct[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    Promise.all([
-      rawTrpc.vendorPortal.dashboard.query() as Promise<VendorDashboard>,
-      rawTrpc.vendorPortal.myProducts.query() as Promise<VendorProduct[]>,
-    ])
-      .then(([d, p]) => {
-        setDash(d);
-        setProducts(p || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const dashQ = trpc.vendorPortal.dashboard.useQuery();
+  const productsQ = trpc.vendorPortal.myProducts.useQuery();
+  const dash = dashQ.data as VendorDashboard | null;
+  const products: VendorProduct[] =
+    (productsQ.data as unknown as VendorProduct[] | undefined) ?? [];
+
+  const deleteMut = trpc.vendorPortal.deleteProduct.useMutation({
+    onSuccess: () => {
+      void dashQ.refetch();
+      void productsQ.refetch();
+    },
+  });
   const remove = (id: number) => {
-    (rawTrpc.vendorPortal.deleteProduct.mutate({ id }) as Promise<unknown>).then(() => fetch());
+    deleteMut.mutate({ id });
   };
-  if (loading) return <SkeletonList count={4} />;
+  if (dashQ.isLoading || productsQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={dashQ.isRefetching || productsQ.isRefetching}
+          onRefresh={() => {
+            void dashQ.refetch();
+            void productsQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

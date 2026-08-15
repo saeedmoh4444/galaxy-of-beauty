@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface FamilyMember {
   id?: number;
@@ -10,30 +9,10 @@ interface FamilyMember {
 }
 
 export default function FamilyAccountScreen(): JSX.Element {
-  const [data, setData] = useState<FamilyMember[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const q = trpc.familyAccount.list.useQuery();
+  const data: FamilyMember[] = (q.data as unknown as FamilyMember[] | undefined) ?? [];
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.familyAccount.list.query() as unknown as Promise<FamilyMember[]>)
-      .then((d: FamilyMember[] | undefined) => {
-        setData(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={4} />;
+  if (q.isLoading) return <SkeletonList count={4} />;
 
   return (
     <ScrollView
@@ -41,8 +20,8 @@ export default function FamilyAccountScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#ec4899']}
         />
       }

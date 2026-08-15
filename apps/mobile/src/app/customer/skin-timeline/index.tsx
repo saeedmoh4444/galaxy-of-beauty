@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
-import { rawTrpc } from '@/lib/trpc-react';
+import { useState } from 'react';
+import { trpc } from '@/lib/trpc-react';
 
 interface SkinEntry {
   id?: number;
@@ -11,28 +11,9 @@ interface SkinEntry {
 }
 
 export default function SkinTimelineScreen(): JSX.Element {
-  const [entries, setEntries] = useState<SkinEntry[]>([]);
-  const [, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [compareMode, setCompareMode] = useState(false);
-
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.skinDiary.entries.query() as unknown as Promise<SkinEntry[]>)
-      .then((d: SkinEntry[]) => {
-        setEntries(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const entriesQ = trpc.skinDiary.entries.useQuery();
+  const entries: SkinEntry[] = (entriesQ.data as unknown as SkinEntry[] | undefined) ?? [];
 
   return (
     <ScrollView
@@ -40,8 +21,8 @@ export default function SkinTimelineScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={entriesQ.isRefetching}
+          onRefresh={() => entriesQ.refetch()}
           colors={['#8b5cf6']}
         />
       }

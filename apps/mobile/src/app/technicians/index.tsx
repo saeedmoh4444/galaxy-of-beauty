@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
 
 interface TechnicianItem {
   id?: number;
@@ -14,36 +14,18 @@ interface TechnicianItem {
 }
 
 export default function TechniciansScreen(): JSX.Element {
-  const [techs, setTechs] = useState<TechnicianItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.technicians.list
-      .query({})
-      .then((d) => {
-        setTechs((d?.items ?? []) as unknown as TechnicianItem[]);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={5} />;
+  const q = trpc.technicians.list.useQuery({});
+  const techs = (q.data as unknown as { items?: TechnicianItem[] } | null)?.items ?? [];
+  if (q.isLoading) return <SkeletonList count={5} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل الفنيات" onRetry={() => q.refetch()} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#db2777']}
         />
       }

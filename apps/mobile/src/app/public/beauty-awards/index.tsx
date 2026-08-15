@@ -1,18 +1,16 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 export default function BeautyAwardsScreen(): JSX.Element {
-  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() =>
-    rawTrpc.beautyAwards.current.query(),
-  );
+  const awardsQ = trpc.beautyAwards.current.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل الجوائز" onRetry={refetch} />;
+  if (awardsQ.isLoading) return <SkeletonList count={4} />;
+  if (awardsQ.isError)
+    return <ErrorAlert message="فشل تحميل الجوائز" onRetry={() => awardsQ.refetch()} />;
 
-  const items = ((data as unknown as { categories?: Record<string, unknown>[] } | null)
+  const items = ((awardsQ.data as unknown as { categories?: Record<string, unknown>[] } | null)
     ?.categories ?? []) as Record<string, unknown>[];
 
   return (
@@ -20,7 +18,11 @@ export default function BeautyAwardsScreen(): JSX.Element {
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#f59e0b']} />
+        <RefreshControl
+          refreshing={awardsQ.isRefetching}
+          onRefresh={() => awardsQ.refetch()}
+          colors={['#f59e0b']}
+        />
       }
     >
       <Text style={styles.t}> جوائز التجميل</Text>

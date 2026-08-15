@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface TodayHealthData {
   water?: number;
@@ -10,37 +9,17 @@ interface TodayHealthData {
 }
 
 export default function WellnessTrackerScreen(): JSX.Element {
-  const [data, setData] = useState<TodayHealthData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.wellnessTracker.today
-      .query()
-      .then((d) => {
-        setData(d);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={3} />;
-  const d: TodayHealthData = data ?? {};
+  const todayQ = trpc.wellnessTracker.today.useQuery();
+  if (todayQ.isLoading) return <SkeletonList count={3} />;
+  const d: TodayHealthData = (todayQ.data as unknown as TodayHealthData) ?? {};
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={todayQ.isRefetching}
+          onRefresh={() => todayQ.refetch()}
           colors={['#059669']}
         />
       }

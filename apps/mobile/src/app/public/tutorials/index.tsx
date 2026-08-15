@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface Tutorial {
   id?: number;
@@ -14,36 +13,21 @@ interface Tutorial {
 }
 
 export default function TutorialsScreen(): JSX.Element {
-  const [tutorials, setTutorials] = useState<Tutorial[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.tutorials.list
-      .query({})
-      .then((d) => {
-        setTutorials((d?.items ?? []) as unknown as Tutorial[]);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const tutorialsQ = trpc.tutorials.list.useQuery({});
+
+  if (tutorialsQ.isLoading) return <SkeletonList count={4} />;
+
+  const tutorials = ((tutorialsQ.data as unknown as { items?: Tutorial[] } | null)?.items ??
+    []) as Tutorial[];
+
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={tutorialsQ.isRefetching}
+          onRefresh={() => tutorialsQ.refetch()}
           colors={['#7c3aed']}
         />
       }

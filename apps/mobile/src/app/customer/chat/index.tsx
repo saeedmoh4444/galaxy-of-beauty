@@ -7,9 +7,9 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface ChatMessage {
   id?: number;
@@ -19,34 +19,24 @@ interface ChatMessage {
 }
 
 export default function ChatScreen(): JSX.Element {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [loading, setLoading] = useState(true);
   const [text, setText] = useState('');
+  const q = trpc.chat.messages.useQuery({ bookingId: 1, page: 1, limit: BULK_PAGE_SIZE });
+  const messages: ChatMessage[] = (q.data?.items ?? []) as unknown as ChatMessage[];
 
-  const fetch = useCallback(() => {
-    setLoading(true);
-    rawTrpc.chat.messages
-      .query({ bookingId: 1, page: 1, limit: BULK_PAGE_SIZE })
-      .then((d) => {
-        setMessages((d?.items ?? []) as unknown as ChatMessage[]);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const sendMut = trpc.chat.send.useMutation({
+    onSuccess: () => {
+      setText('');
+      void q.refetch();
+    },
+  });
 
   const send = () => {
     if (!text.trim()) return;
-    rawTrpc.chat.send.mutate({ receiverId: 1, bookingId: 1, content: text.trim() }).then(() => {
-      setText('');
-      fetch();
-    });
+    sendMut.mutate({ receiverId: 1, bookingId: 1, content: text.trim() });
   };
 
-  if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
+  if (q.isLoading || q.isRefetching)
+    return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
 
   return (
     <View style={styles.c}>

@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface CompareService {
   id: number;
@@ -12,29 +12,9 @@ interface CompareService {
 }
 
 export default function CompareScreen(): JSX.Element {
-  const [services, setServices] = useState<CompareService[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<number[]>([]);
-
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.productCompare.list.query() as unknown as Promise<CompareService[]>)
-      .then((d) => {
-        setServices(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const servicesQ = trpc.productCompare.list.useQuery();
+  const services = (servicesQ.data as unknown as CompareService[]) ?? [];
 
   const toggle = (id: number) => {
     if (selected.includes(id)) setSelected(selected.filter((x) => x !== id));
@@ -42,7 +22,7 @@ export default function CompareScreen(): JSX.Element {
   };
   const compareItems = services.filter((s) => selected.includes(s.id));
 
-  if (loading) return <SkeletonList count={5} />;
+  if (servicesQ.isLoading) return <SkeletonList count={5} />;
 
   return (
     <ScrollView
@@ -50,8 +30,8 @@ export default function CompareScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={servicesQ.isRefetching}
+          onRefresh={() => servicesQ.refetch()}
           colors={['#6366f1']}
         />
       }

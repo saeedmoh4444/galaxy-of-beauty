@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface MembershipInfo {
   tier?: string;
@@ -56,43 +55,43 @@ const MEMBERSHIPS = [
 ];
 
 export default function SalonMembershipScreen(): JSX.Element {
-  const {
-    data: membership,
-    loading,
-    error,
-    refetch,
-    refreshing,
-    refresh,
-  } = useQuery(() => rawTrpc.salonMembership.myMembership.query());
+  const membershipQ = trpc.salonMembership.myMembership.useQuery();
 
-  const handleSubscribe = async (tier: string) => {
-    try {
-      await rawTrpc.salonMembership.subscribe.mutate({ tier, autoRenew: true });
-      refetch();
-    } catch {
-      /* noop */
-    }
+  const subscribeMut = trpc.salonMembership.subscribe.useMutation({
+    onSuccess: () => {
+      void membershipQ.refetch();
+    },
+    onError: () => {},
+  });
+  const cancelMut = trpc.salonMembership.cancel.useMutation({
+    onSuccess: () => {
+      void membershipQ.refetch();
+    },
+    onError: () => {},
+  });
+  const handleSubscribe = (tier: string) => {
+    subscribeMut.mutate({ tier, autoRenew: true });
   };
-  const handleCancel = async () => {
-    try {
-      await rawTrpc.salonMembership.cancel.mutate();
-      refetch();
-    } catch {
-      /* noop */
-    }
+  const handleCancel = () => {
+    cancelMut.mutate();
   };
 
-  if (loading) return <SkeletonList count={3} />;
-  if (error) return <ErrorAlert message="فشل تحميل العضويات" onRetry={refetch} />;
+  if (membershipQ.isLoading) return <SkeletonList count={3} />;
+  if (membershipQ.isError)
+    return <ErrorAlert message="فشل تحميل العضويات" onRetry={() => membershipQ.refetch()} />;
 
-  const current = membership as MembershipInfo | undefined;
+  const current = membershipQ.data as MembershipInfo | undefined;
 
   return (
     <ScrollView
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={membershipQ.isRefetching}
+          onRefresh={() => membershipQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={s.t}> عضويات الصالون</Text>

@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface TrendingService {
   id?: number;
@@ -20,28 +19,26 @@ interface SpotlightTech {
 }
 
 export default function TrendingScreen(): JSX.Element {
-  const {
-    data: trending,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.social.trending.query());
-  const { data: spotlight } = useQuery(() => rawTrpc.social.spotlight.query());
+  const trendingQ = trpc.social.trending.useQuery();
+  const spotlightQ = trpc.social.spotlight.useQuery();
 
-  if (loading) return <SkeletonList count={5} />;
-  if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;
+  if (trendingQ.isLoading) return <SkeletonList count={5} />;
+  if (trendingQ.isError)
+    return <ErrorAlert message="فشل تحميل المحتوى" onRetry={() => trendingQ.refetch()} />;
 
-  const trendingItems = (trending as TrendingService[] | undefined) ?? [];
-  const spotlightItems = (spotlight as SpotlightTech[] | undefined) ?? [];
+  const trendingItems = (trendingQ.data as unknown as TrendingService[] | undefined) ?? [];
+  const spotlightItems = (spotlightQ.data as unknown as SpotlightTech[] | undefined) ?? [];
 
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={trendingQ.isRefetching}
+          onRefresh={() => trendingQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={styles.t}> الأكثر رواجاً</Text>

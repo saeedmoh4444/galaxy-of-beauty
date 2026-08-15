@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface ReferralDashboardData {
   totalReferred?: number;
@@ -9,33 +8,11 @@ interface ReferralDashboardData {
 }
 
 export default function ReferralDashboardScreen(): JSX.Element {
-  const [data, setData] = useState<ReferralDashboardData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const statsQ = trpc.referrals.getStats.useQuery();
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.referrals.getStats
-      .query()
-      .then((d) => {
-        setData(d as unknown as ReferralDashboardData);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
+  if (statsQ.isLoading) return <SkeletonList count={3} />;
 
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={3} />;
-
-  const d: ReferralDashboardData = data ?? {};
+  const d: ReferralDashboardData = (statsQ.data as unknown as ReferralDashboardData) ?? {};
 
   return (
     <ScrollView
@@ -43,8 +20,8 @@ export default function ReferralDashboardScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={statsQ.isRefetching}
+          onRefresh={() => statsQ.refetch()}
           colors={['#7c3aed']}
         />
       }

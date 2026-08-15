@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface RoutineStep {
   emoji?: string;
@@ -14,27 +13,9 @@ interface RoutineData {
 }
 
 export default function BeautyRoutineScreen(): JSX.Element {
-  const [data, setData] = useState<RoutineData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.routineScheduler.myRoutines.query() as Promise<RoutineData>)
-      .then((d: RoutineData) => {
-        setData(d);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={3} />;
+  const q = trpc.routineScheduler.myRoutines.useQuery();
+  if (q.isLoading) return <SkeletonList count={3} />;
+  const data = q.data as unknown as RoutineData | null;
   const morning = (data?.morning as RoutineStep[] | undefined) ?? [];
   const evening = (data?.evening as RoutineStep[] | undefined) ?? [];
   return (
@@ -43,8 +24,8 @@ export default function BeautyRoutineScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#8b5cf6']}
         />
       }

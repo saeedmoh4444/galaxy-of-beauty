@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface Technician {
   id?: number;
@@ -15,19 +14,13 @@ interface Technician {
 }
 
 export default function TechniciansScreen(): JSX.Element {
-  const {
-    data: techs,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.technicians.list.query({}));
+  const techsQ = trpc.technicians.list.useQuery({});
 
-  if (loading) return <SkeletonList count={6} />;
-  if (error) return <ErrorAlert message="فشل تحميل الفنيات" onRetry={refetch} />;
+  if (techsQ.isLoading) return <SkeletonList count={6} />;
+  if (techsQ.isError)
+    return <ErrorAlert message="فشل تحميل الفنيات" onRetry={() => techsQ.refetch()} />;
 
-  const items = ((techs as unknown as { items?: Technician[] } | null)?.items ??
+  const items = ((techsQ.data as unknown as { items?: Technician[] } | null)?.items ??
     []) as Technician[];
 
   return (
@@ -35,7 +28,11 @@ export default function TechniciansScreen(): JSX.Element {
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={techsQ.isRefetching}
+          onRefresh={() => techsQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={styles.t}>‍ الفنيات</Text>

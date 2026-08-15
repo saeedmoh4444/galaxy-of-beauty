@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
-import { rawTrpc } from '@/lib/trpc-react';
+import { useState } from 'react';
+import { trpc } from '@/lib/trpc-react';
 
 const THEMES = [
   { key: 'spa', emoji: '‍️', name: 'سبا منزلي', desc: 'مساج وأقنعة واسترخاء' },
@@ -10,34 +10,11 @@ const THEMES = [
   { key: 'skincare', emoji: '', name: 'روتين عناية', desc: 'أقنعة وعناية بالبشرة' },
 ];
 
-interface PartyService {
-  id?: number;
-}
-
 export default function BeautyPartyScreen(): JSX.Element {
-  const [, setServices] = useState<PartyService[]>([]);
-  const [, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [theme, setTheme] = useState('spa');
   const [guests, setGuests] = useState(4);
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.services.list.query({}) as Promise<{ items?: PartyService[] }>)
-      .then((d) => {
-        setServices(d?.items || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const q = trpc.services.list.useQuery({});
 
   const estPerPerson = 150;
   const total = estPerPerson * guests;
@@ -50,8 +27,8 @@ export default function BeautyPartyScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#ec4899']}
         />
       }

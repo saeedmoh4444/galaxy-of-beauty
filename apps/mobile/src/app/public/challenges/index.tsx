@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface Challenge {
   id?: string;
@@ -21,26 +20,24 @@ const GRADIENTS: Record<string, string[]> = {
 };
 
 export default function ChallengesScreen(): JSX.Element {
-  const {
-    data: challenges,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.challenges.list.query());
+  const challengesQ = trpc.challenges.list.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل التحديات" onRetry={refetch} />;
+  if (challengesQ.isLoading) return <SkeletonList count={4} />;
+  if (challengesQ.isError)
+    return <ErrorAlert message="فشل تحميل التحديات" onRetry={() => challengesQ.refetch()} />;
 
-  const items = (challenges ?? []) as Challenge[];
+  const items = (challengesQ.data ?? []) as Challenge[];
 
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#f59e0b']} />
+        <RefreshControl
+          refreshing={challengesQ.isRefetching}
+          onRefresh={() => challengesQ.refetch()}
+          colors={['#f59e0b']}
+        />
       }
     >
       <Text style={styles.t}> تحديات الجمال</Text>

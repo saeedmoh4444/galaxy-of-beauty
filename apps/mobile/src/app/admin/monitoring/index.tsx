@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
 
 const STATUS_COLORS: Record<string, string> = {
   healthy: '#059669',
@@ -25,30 +25,11 @@ interface HealthReport {
 }
 
 export default function MonitoringScreen(): JSX.Element {
-  const [health, setHealth] = useState<HealthReport>({});
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const q = trpc.monitoring.health.useQuery();
+  const health = (q.data as unknown as HealthReport | null) ?? {};
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.monitoring.health.query() as unknown as Promise<HealthReport>)
-      .then((d: HealthReport) => {
-        setHealth(d || {});
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={5} />;
+  if (q.isLoading) return <SkeletonList count={5} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل حالة الأنظمة" onRetry={() => q.refetch()} />;
 
   const services = (health.services ?? {}) as Record<string, ServiceHealth>;
   const perf = (health.performance ?? {}) as HealthPerformance;
@@ -59,8 +40,8 @@ export default function MonitoringScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#059669']}
         />
       }

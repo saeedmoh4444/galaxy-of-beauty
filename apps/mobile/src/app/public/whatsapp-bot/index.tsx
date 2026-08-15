@@ -1,40 +1,12 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
-
-interface WhatsAppInfo {
-  connected?: boolean;
-  phoneNumber?: string;
-}
+import { trpc } from '@/lib/trpc-react';
 
 export default function WhatsAppBotScreen(): JSX.Element {
-  const [, setData] = useState<WhatsAppInfo | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  // Data used for future WhatsApp integration status
+  const q = trpc.whatsappBot.commands.useQuery();
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.whatsappBot.commands
-      .query()
-      .catch(() => ({}))
-      .then((d) => {
-        setData((d || {}) as unknown as WhatsAppInfo);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-    /* data used for future WhatsApp integration status */
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={3} />;
+  if (q.isLoading) return <SkeletonList count={3} />;
 
   return (
     <ScrollView
@@ -42,8 +14,8 @@ export default function WhatsAppBotScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#25D366']}
         />
       }

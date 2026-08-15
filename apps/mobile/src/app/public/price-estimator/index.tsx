@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface EstimatorService {
   id: number;
@@ -17,49 +17,29 @@ interface PriceEstimate {
 }
 
 export default function PriceEstimatorScreen(): JSX.Element {
-  const [services, setServices] = useState<EstimatorService[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
   const [promo] = useState('');
-  const [estimate, setEstimate] = useState<PriceEstimate | null>(null);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.services.list.query({}) as unknown as Promise<{ items: EstimatorService[] }>)
-      .then((d) => {
-        setServices(d?.items ?? []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const servicesQ = trpc.services.list.useQuery({});
+  const services: EstimatorService[] =
+    (servicesQ.data as unknown as { items?: EstimatorService[] } | undefined)?.items ?? [];
+  const estimateQ = trpc.priceEstimator.estimate.useQuery(
+    { serviceId: selected ?? 0, promoCode: promo || undefined },
+    { enabled: false },
+  );
+  const estimate = (estimateQ.data as PriceEstimate | undefined) ?? null;
   const getEstimate = () => {
     if (!selected) return;
-    (
-      rawTrpc.priceEstimator.estimate.query({
-        serviceId: selected,
-        promoCode: promo || undefined,
-      }) as Promise<PriceEstimate>
-    )
-      .then((d) => setEstimate(d))
-      .catch(() => {});
+    void estimateQ.refetch();
   };
-  if (loading) return <SkeletonList count={5} />;
+  if (servicesQ.isLoading) return <SkeletonList count={5} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={servicesQ.isRefetching}
+          onRefresh={() => servicesQ.refetch()}
           colors={['#059669']}
         />
       }
@@ -70,7 +50,6 @@ export default function PriceEstimatorScreen(): JSX.Element {
           key={s.id}
           onPress={() => {
             setSelected(s.id);
-            setEstimate(null);
           }}
           style={[styles.sr, selected === s.id && styles.sra]}
         >

@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface ExpenseCategory {
   categoryId?: number;
@@ -24,14 +23,12 @@ interface ExpensesSummary {
 }
 
 export default function BeautyExpensesScreen(): JSX.Element {
-  const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
-    rawTrpc.beautyExpenses.summary.query(),
-  );
+  const q = trpc.beautyExpenses.summary.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل البيانات" onRetry={refetch} />;
+  if (q.isLoading) return <SkeletonList count={4} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل البيانات" onRetry={() => q.refetch()} />;
 
-  const d = data as ExpensesSummary | null;
+  const d = q.data as ExpensesSummary | null;
   const byCategory = d?.byCategory ?? [];
   const monthlyTrend = d?.monthlyTrend ?? [];
   const maxVal = Math.max(...monthlyTrend.map((m) => m.total ?? 0), 1);
@@ -41,7 +38,11 @@ export default function BeautyExpensesScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={s.t}> تحليل الإنفاق</Text>

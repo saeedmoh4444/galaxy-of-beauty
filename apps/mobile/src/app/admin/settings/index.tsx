@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface PlatformConfig {
   platformFee?: string;
@@ -15,31 +14,13 @@ interface CashbackInfo {
 }
 
 export default function AdminSettingsScreen(): JSX.Element {
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [config, setConfig] = useState<PlatformConfig>({});
-
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    Promise.all([
-      rawTrpc.platform.getSettings.query().catch(() => ({})) as Promise<PlatformConfig>,
-      rawTrpc.cashback.info.query().catch(() => ({})) as Promise<CashbackInfo>,
-    ])
-      .then(([cfg, cb]) => {
-        setConfig({ ...cfg, cashbackRate: cb?.rate });
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const settingsQ = trpc.platform.getSettings.useQuery();
+  const cashbackQ = trpc.cashback.info.useQuery();
+  const config: PlatformConfig = {
+    ...((settingsQ.data as unknown as PlatformConfig | null) ?? {}),
+    cashbackRate: (cashbackQ.data as unknown as CashbackInfo | null)?.rate,
+  };
+  const loading = settingsQ.isLoading || cashbackQ.isLoading;
 
   if (loading) return <SkeletonList count={4} />;
 
@@ -49,8 +30,11 @@ export default function AdminSettingsScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={settingsQ.isRefetching || cashbackQ.isRefetching}
+          onRefresh={() => {
+            void settingsQ.refetch();
+            void cashbackQ.refetch();
+          }}
           colors={['#6366f1']}
         />
       }

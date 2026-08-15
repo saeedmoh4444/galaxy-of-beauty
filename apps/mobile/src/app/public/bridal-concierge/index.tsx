@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const STEPS = [
   { key: 'consultation', emoji: '', title: 'استشارة', desc: 'تحديد احتياجات العروس' },
@@ -23,21 +22,24 @@ interface BridalDashboard {
 }
 
 export default function BridalConciergeScreen(): JSX.Element {
-  const { data, loading, error, refreshing, refetch, refresh } = useQuery(() =>
-    rawTrpc.bridalConcierge.get.query(),
-  );
+  const conciergeQ = trpc.bridalConcierge.get.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل كونسيرج العروس" onRetry={refetch} />;
+  if (conciergeQ.isLoading) return <SkeletonList count={4} />;
+  if (conciergeQ.isError)
+    return <ErrorAlert message="فشل تحميل كونسيرج العروس" onRetry={() => conciergeQ.refetch()} />;
 
-  const d = (data as unknown as BridalDashboard | undefined) ?? {};
+  const d = (conciergeQ.data as unknown as BridalDashboard | undefined) ?? {};
 
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={conciergeQ.isRefetching}
+          onRefresh={() => conciergeQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={styles.t}> كونسيرج العروس</Text>

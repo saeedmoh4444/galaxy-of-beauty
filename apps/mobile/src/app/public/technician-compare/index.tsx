@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface CompareTechnician {
   id: number;
@@ -12,45 +12,24 @@ interface CompareTechnician {
 }
 
 export default function TechnicianCompareScreen(): JSX.Element {
-  const [techs, setTechs] = useState<CompareTechnician[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const q = trpc.technicians.list.useQuery({});
   const [selected, setSelected] = useState<number[]>([]);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (
-      rawTrpc.technicians.list.query({}) as unknown as Promise<{
-        items: CompareTechnician[];
-      }>
-    )
-      .then((d) => {
-        setTechs(d?.items ?? []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
   const toggle = (id: number) => {
     if (selected.includes(id)) setSelected(selected.filter((x) => x !== id));
     else if (selected.length < 2) setSelected([...selected, id]);
   };
+  const techs = ((q.data as unknown as { items?: CompareTechnician[] } | null)?.items ??
+    []) as CompareTechnician[];
   const ct = techs.filter((t) => selected.includes(t.id));
-  if (loading) return <SkeletonList count={5} />;
+  if (q.isLoading) return <SkeletonList count={5} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#7c3aed']}
         />
       }

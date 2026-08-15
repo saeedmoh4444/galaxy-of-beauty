@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface OnboardingStep {
   key?: string;
@@ -21,35 +20,20 @@ interface OnboardingData {
 }
 
 export default function TechOnboardingScreen(): JSX.Element {
-  const [data, setData] = useState<OnboardingData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.techOnboarding.steps.query() as Promise<OnboardingData>)
-      .then((d: OnboardingData) => {
-        setData(d);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const dataQ = trpc.techOnboarding.steps.useQuery();
+  const submitDocMut = trpc.techOnboarding.submitDoc.useMutation({
+    onSuccess: () => {
+      void dataQ.refetch();
+    },
+  });
   const submitDoc = (stepKey: string) => {
-    (
-      rawTrpc.techOnboarding.submitDoc.mutate({
-        stepKey,
-        documentUrl: 'document-url',
-      }) as Promise<unknown>
-    ).then(() => fetch());
+    submitDocMut.mutate({
+      stepKey,
+      documentUrl: 'document-url',
+    });
   };
-  if (loading) return <SkeletonList count={4} />;
+  if (dataQ.isLoading) return <SkeletonList count={4} />;
+  const data = dataQ.data as OnboardingData | null;
   const steps = (data?.steps as OnboardingStep[] | undefined) ?? [];
   const completed = data?.completed ?? 0;
   const total = data?.total ?? 5;
@@ -59,8 +43,8 @@ export default function TechOnboardingScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={dataQ.isRefetching}
+          onRefresh={() => dataQ.refetch()}
           colors={['#059669']}
         />
       }

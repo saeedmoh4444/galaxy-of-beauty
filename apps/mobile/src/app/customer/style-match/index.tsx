@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface StyleMatchResult {
   styleEmoji?: string;
@@ -11,18 +11,13 @@ interface StyleMatchResult {
 
 export default function StyleMatchScreen(): JSX.Element {
   const [result, setResult] = useState<StyleMatchResult | null>(null);
-  const [loading, setLoading] = useState(false);
-  const match = useCallback(() => {
-    setLoading(true);
-    rawTrpc.styleMatch.match
-      .mutate({ colors: ['#e879f9'] })
-      .then((d) => {
-        setResult(d as unknown as StyleMatchResult);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
-  if (loading) return <SkeletonList count={3} />;
+  const matchMut = trpc.styleMatch.match.useMutation({
+    onSuccess: (d) => setResult(d as unknown as StyleMatchResult),
+  });
+  const match = () => {
+    matchMut.mutate({ colors: ['#e879f9'] });
+  };
+  if (matchMut.isPending) return <SkeletonList count={3} />;
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
       <Text style={styles.t}> مطابقة الأسلوب</Text>

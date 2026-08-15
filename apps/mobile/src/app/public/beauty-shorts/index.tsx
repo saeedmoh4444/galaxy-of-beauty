@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface ShortVideo {
   id?: number;
@@ -15,26 +14,24 @@ interface ShortVideo {
 }
 
 export default function BeautyShortsScreen(): JSX.Element {
-  const {
-    data: shorts,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.beautyShorts.feed.query());
+  const shortsQ = trpc.beautyShorts.feed.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل الفيديوهات" onRetry={refetch} />;
+  if (shortsQ.isLoading) return <SkeletonList count={4} />;
+  if (shortsQ.isError)
+    return <ErrorAlert message="فشل تحميل الفيديوهات" onRetry={() => shortsQ.refetch()} />;
 
-  const items = (shorts ?? []) as ShortVideo[];
+  const items = (shortsQ.data ?? []) as ShortVideo[];
 
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={shortsQ.isRefetching}
+          onRefresh={() => shortsQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={styles.t}> فيديوهات قصيرة</Text>

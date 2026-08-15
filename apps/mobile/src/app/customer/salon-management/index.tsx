@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface SalonDashboard {
   todayBookings?: number;
@@ -16,40 +15,22 @@ interface SalonStaff {
 }
 
 export default function SalonManagementScreen(): JSX.Element {
-  const [dash, setDash] = useState<SalonDashboard | null>(null);
-  const [staff, setStaff] = useState<SalonStaff[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    Promise.all([
-      rawTrpc.salonManagement.dashboard.query() as Promise<SalonDashboard>,
-      rawTrpc.salonManagement.staff.query() as Promise<SalonStaff[]>,
-    ])
-      .then(([d, s]) => {
-        setDash(d);
-        setStaff(s || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const dashQ = trpc.salonManagement.dashboard.useQuery();
+  const staffQ = trpc.salonManagement.staff.useQuery();
+  const dash = dashQ.data as SalonDashboard | null;
+  const staff: SalonStaff[] = (staffQ.data as SalonStaff[] | undefined) ?? [];
+  if (dashQ.isLoading || staffQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={dashQ.isRefetching || staffQ.isRefetching}
+          onRefresh={() => {
+            void dashQ.refetch();
+            void staffQ.refetch();
+          }}
           colors={['#0891b2']}
         />
       }

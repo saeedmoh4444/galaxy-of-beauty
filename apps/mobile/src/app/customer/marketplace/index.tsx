@@ -8,10 +8,9 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useState } from 'react';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface MarketProduct {
   id?: number;
@@ -30,31 +29,35 @@ interface CartItem {
 
 export default function MarketplaceScreen(): JSX.Element {
   const [search, setSearch] = useState('');
-  const { data, loading, error, refetch, refreshing, refresh } = useQuery(() =>
-    rawTrpc.marketplace.products.query({ search: search || undefined, page: 1, limit: 24 }),
-  );
-  const { data: cart } = useQuery(() => rawTrpc.marketplace.cart.query());
-  const productItems = (data as MarketProductsResponse | null)?.items;
+  const productsQ = trpc.marketplace.products.useQuery({
+    search: search || undefined,
+    page: 1,
+    limit: 24,
+  });
+  const cartQ = trpc.marketplace.cart.useQuery();
+  const productItems = (productsQ.data as unknown as MarketProductsResponse | null)?.items;
   const products: MarketProduct[] = Array.isArray(productItems) ? productItems : [];
-  const cartCount = ((cart ?? []) as CartItem[]).length;
+  const cartCount = ((cartQ.data ?? []) as CartItem[]).length;
 
-  const handleAddToCart = async (pid: number) => {
-    try {
-      await rawTrpc.marketplace.addToCart.mutate({ productId: pid });
-    } catch {
-      /* noop */
-    }
+  const addToCartMut = trpc.marketplace.addToCart.useMutation({ onError: () => {} });
+  const handleAddToCart = (pid: number) => {
+    addToCartMut.mutate({ productId: pid });
   };
 
-  if (loading) return <SkeletonList count={6} />;
-  if (error) return <ErrorAlert message="فشل تحميل المتجر" onRetry={refetch} />;
+  if (productsQ.isLoading) return <SkeletonList count={6} />;
+  if (productsQ.isError)
+    return <ErrorAlert message="فشل تحميل المتجر" onRetry={() => productsQ.refetch()} />;
 
   return (
     <ScrollView
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={productsQ.isRefetching}
+          onRefresh={() => productsQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <View

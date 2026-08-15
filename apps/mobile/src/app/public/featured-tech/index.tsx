@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface FeaturedTech {
   name?: string;
@@ -15,35 +14,13 @@ interface PastFeaturedTech {
 }
 
 export default function FeaturedTechScreen(): JSX.Element {
-  const [tech, setTech] = useState<FeaturedTech | null>(null);
-  const [past, setPast] = useState<PastFeaturedTech[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const currentQ = trpc.featuredTech.current.useQuery();
+  const pastQ = trpc.featuredTech.past.useQuery();
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    Promise.all([
-      rawTrpc.featuredTech.current.query() as Promise<FeaturedTech>,
-      rawTrpc.featuredTech.past.query() as Promise<PastFeaturedTech[]>,
-    ])
-      .then(([t, p]) => {
-        setTech(t);
-        setPast(p || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
+  if (currentQ.isLoading || pastQ.isLoading) return <SkeletonList count={4} />;
 
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={4} />;
+  const tech = (currentQ.data as unknown as FeaturedTech | undefined) ?? null;
+  const past = (pastQ.data ?? []) as PastFeaturedTech[];
 
   return (
     <ScrollView
@@ -51,8 +28,11 @@ export default function FeaturedTechScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={currentQ.isRefetching || pastQ.isRefetching}
+          onRefresh={() => {
+            void currentQ.refetch();
+            void pastQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

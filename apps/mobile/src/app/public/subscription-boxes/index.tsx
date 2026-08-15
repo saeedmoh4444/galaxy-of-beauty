@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface SubscriptionBox {
   id?: number;
@@ -14,26 +13,24 @@ interface SubscriptionBox {
 }
 
 export default function SubscriptionBoxesScreen(): JSX.Element {
-  const {
-    data: boxes,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.subscriptionBoxes.plans.query());
+  const boxesQ = trpc.subscriptionBoxes.plans.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل الصناديق" onRetry={refetch} />;
+  if (boxesQ.isLoading) return <SkeletonList count={4} />;
+  if (boxesQ.isError)
+    return <ErrorAlert message="فشل تحميل الصناديق" onRetry={() => boxesQ.refetch()} />;
 
-  const items = (boxes ?? []) as unknown as SubscriptionBox[];
+  const items = (boxesQ.data as unknown as SubscriptionBox[] | null) ?? [];
 
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />
+        <RefreshControl
+          refreshing={boxesQ.isRefetching}
+          onRefresh={() => boxesQ.refetch()}
+          colors={['#7c3aed']}
+        />
       }
     >
       <Text style={styles.t}> الصناديق الشهرية</Text>

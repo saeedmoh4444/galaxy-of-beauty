@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface FranchiseDashboard {
   totalRevenue?: number;
@@ -19,40 +18,23 @@ interface FranchiseLocation {
 }
 
 export default function FranchisePortalScreen(): JSX.Element {
-  const [dash, setDash] = useState<FranchiseDashboard | null>(null);
-  const [locations, setLocations] = useState<FranchiseLocation[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    Promise.all([
-      rawTrpc.franchisePortal.dashboard.query() as Promise<FranchiseDashboard>,
-      rawTrpc.franchisePortal.locations.query() as Promise<FranchiseLocation[]>,
-    ])
-      .then(([d, l]) => {
-        setDash(d);
-        setLocations(l || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const dashQ = trpc.franchisePortal.dashboard.useQuery();
+  const locationsQ = trpc.franchisePortal.locations.useQuery();
+  if (dashQ.isLoading || locationsQ.isLoading) return <SkeletonList count={4} />;
+  const dash = dashQ.data as unknown as FranchiseDashboard | null;
+  const locations: FranchiseLocation[] =
+    (locationsQ.data as unknown as FranchiseLocation[] | undefined) ?? [];
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={dashQ.isRefetching || locationsQ.isRefetching}
+          onRefresh={() => {
+            void dashQ.refetch();
+            void locationsQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

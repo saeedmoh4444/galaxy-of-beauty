@@ -1,8 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
 
 interface BlogPost {
   id?: number;
@@ -16,35 +16,11 @@ interface BlogListResponse {
 }
 
 export default function AdminBlogScreen(): JSX.Element {
-  const [data, setData] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const q = trpc.blog.listAll.useQuery({ page: 1, limit: BULK_PAGE_SIZE });
+  const data = (q.data as unknown as BlogListResponse | null)?.items ?? [];
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (
-      rawTrpc.blog.listAll.query({
-        page: 1,
-        limit: BULK_PAGE_SIZE,
-      }) as unknown as Promise<BlogListResponse>
-    )
-      .then((d: BlogListResponse) => {
-        setData(d?.items || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={5} />;
+  if (q.isLoading) return <SkeletonList count={5} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل المقالات" onRetry={() => q.refetch()} />;
 
   return (
     <ScrollView
@@ -52,8 +28,8 @@ export default function AdminBlogScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#7c3aed']}
         />
       }

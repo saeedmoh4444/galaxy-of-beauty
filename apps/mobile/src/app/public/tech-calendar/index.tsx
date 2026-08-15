@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface CalendarSlot {
   id?: number;
@@ -16,27 +15,11 @@ interface CalendarDay {
 }
 
 export default function TechCalendarScreen(): JSX.Element {
-  const [slots, setSlots] = useState<CalendarSlot[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.techCalendar.listWithAvailability.query() as unknown as Promise<CalendarSlot[]>)
-      .then((d) => {
-        setSlots(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={5} />;
+  const slotsQ = trpc.techCalendar.listWithAvailability.useQuery();
+
+  if (slotsQ.isLoading) return <SkeletonList count={5} />;
+
+  const slots = (slotsQ.data as unknown as CalendarSlot[] | null) ?? [];
   const days = slots.reduce((acc: CalendarDay[], s) => {
     const day = new Date(s.date as string).toLocaleDateString('ar-SA', {
       weekday: 'short',
@@ -54,8 +37,8 @@ export default function TechCalendarScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={slotsQ.isRefetching}
+          onRefresh={() => slotsQ.refetch()}
           colors={['#059669']}
         />
       }

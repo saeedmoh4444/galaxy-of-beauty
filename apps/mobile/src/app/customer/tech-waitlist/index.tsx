@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface WaitlistTech {
   id: number;
@@ -23,55 +22,48 @@ interface MyWaitlist {
 }
 
 export default function TechWaitlistScreen(): JSX.Element {
-  const [popular, setPopular] = useState<WaitlistTech[]>([]);
-  const [myList, setMyList] = useState<MyWaitlist[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    Promise.all([
-      rawTrpc.techWaitlist.popular.query() as Promise<WaitlistTech[]>,
-      rawTrpc.techWaitlist.myWaitlists.query() as Promise<MyWaitlist[]>,
-    ])
-      .then(([p, m]) => {
-        setPopular(p || []);
-        setMyList(m || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const popularQ = trpc.techWaitlist.popular.useQuery();
+  const myListQ = trpc.techWaitlist.myWaitlists.useQuery();
+  const popular: WaitlistTech[] = (popularQ.data as unknown as WaitlistTech[] | undefined) ?? [];
+  const myList: MyWaitlist[] = (myListQ.data as unknown as MyWaitlist[] | undefined) ?? [];
+
+  const joinMut = trpc.techWaitlist.join.useMutation({
+    onSuccess: () => {
+      void popularQ.refetch();
+      void myListQ.refetch();
+    },
+  });
   const join = (techId: number) => {
     const techName =
       popular.find((t) => t.id === techId)?.name ??
       myList.find((m) => m.technicianId === techId)?.technicianName ??
       '';
-    (
-      rawTrpc.techWaitlist.join.mutate({
-        technicianId: techId,
-        technicianName: techName,
-      }) as Promise<unknown>
-    ).then(() => fetch());
+    joinMut.mutate({
+      technicianId: techId,
+      technicianName: techName,
+    });
   };
+  const leaveMut = trpc.techWaitlist.leave.useMutation({
+    onSuccess: () => {
+      void popularQ.refetch();
+      void myListQ.refetch();
+    },
+  });
   const leave = (techId: number) => {
-    (rawTrpc.techWaitlist.leave.mutate({ id: techId }) as Promise<unknown>).then(() => fetch());
+    leaveMut.mutate({ id: techId });
   };
-  if (loading) return <SkeletonList count={5} />;
+  if (popularQ.isLoading || myListQ.isLoading) return <SkeletonList count={5} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={popularQ.isRefetching || myListQ.isRefetching}
+          onRefresh={() => {
+            void popularQ.refetch();
+            void myListQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

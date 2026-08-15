@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface ServiceWarranty {
   id?: number;
@@ -11,35 +10,17 @@ interface ServiceWarranty {
 }
 
 export default function ServiceWarrantyScreen(): JSX.Element {
-  const [data, setData] = useState<ServiceWarranty[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.serviceWarranty.myClaims.query() as unknown as Promise<ServiceWarranty[]>)
-      .then((d: ServiceWarranty[]) => {
-        setData(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const claimsQ = trpc.serviceWarranty.myClaims.useQuery();
+  const data: ServiceWarranty[] = (claimsQ.data as unknown as ServiceWarranty[] | undefined) ?? [];
+  if (claimsQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={claimsQ.isRefetching}
+          onRefresh={() => claimsQ.refetch()}
           colors={['#2563eb']}
         />
       }

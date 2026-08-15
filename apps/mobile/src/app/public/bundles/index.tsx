@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const BD: Record<number, number> = { 2: 10, 3: 15, 4: 20, 5: 25 };
 
@@ -15,28 +15,9 @@ interface BundleService {
 }
 
 export default function BundlesScreen(): JSX.Element {
-  const [services, setServices] = useState<BundleService[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<Set<number>>(new Set());
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.categories.list
-      .query()
-      .then((d) => {
-        setServices(d as unknown as BundleService[]);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const servicesQ = trpc.categories.list.useQuery();
+  const services = (servicesQ.data as unknown as BundleService[]) ?? [];
   const toggle = (id: number) => {
     const n = new Set(selected);
     if (n.has(id)) n.delete(id);
@@ -45,15 +26,15 @@ export default function BundlesScreen(): JSX.Element {
   };
   const count = selected.size;
   const discount = BD[count] || 0;
-  if (loading) return <SkeletonList count={5} />;
+  if (servicesQ.isLoading) return <SkeletonList count={5} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={servicesQ.isRefetching}
+          onRefresh={() => servicesQ.refetch()}
           colors={['#f59e0b']}
         />
       }

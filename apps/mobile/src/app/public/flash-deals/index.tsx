@@ -1,30 +1,27 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 export default function FlashDealsScreen(): JSX.Element {
-  const {
-    data: deals,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.flashDeals.active.query());
+  const dealsQ = trpc.flashDeals.active.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل العروض" onRetry={refetch} />;
+  if (dealsQ.isLoading) return <SkeletonList count={4} />;
+  if (dealsQ.isError)
+    return <ErrorAlert message="فشل تحميل العروض" onRetry={() => dealsQ.refetch()} />;
 
-  const items = (deals ?? []) as Record<string, unknown>[];
+  const items = (dealsQ.data ?? []) as Record<string, unknown>[];
 
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#dc2626']} />
+        <RefreshControl
+          refreshing={dealsQ.isRefetching}
+          onRefresh={() => dealsQ.refetch()}
+          colors={['#dc2626']}
+        />
       }
     >
       <Text style={styles.t}> عروض فلاش</Text>

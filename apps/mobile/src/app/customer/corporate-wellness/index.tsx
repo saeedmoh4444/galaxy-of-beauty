@@ -8,10 +8,9 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useState } from 'react';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface CorporatePlan {
   id?: string;
@@ -29,15 +28,8 @@ interface CorporateEnquiry {
 }
 
 export default function CorporateWellnessScreen(): JSX.Element {
-  const {
-    data: plans,
-    loading,
-    error,
-    refetch,
-    refreshing,
-    refresh,
-  } = useQuery(() => rawTrpc.corporateWellness.plans.query());
-  const { data: enquiries } = useQuery(() => rawTrpc.corporateWellness.myEnquiries.query());
+  const plansQ = trpc.corporateWellness.plans.useQuery();
+  const enquiriesQ = trpc.corporateWellness.myEnquiries.useQuery();
   const [planId, setPlanId] = useState('growth');
   const [companyName, setCompanyName] = useState('');
   const [contactName, setContactName] = useState('');
@@ -45,34 +37,42 @@ export default function CorporateWellnessScreen(): JSX.Element {
   const [showForm, setShowForm] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleEnquire = async () => {
-    if (!companyName || !contactName || !email) return;
-    try {
-      await rawTrpc.corporateWellness.enquire.mutate({
-        companyName,
-        contactName,
-        email,
-        planId,
-      });
+  const enquireMut = trpc.corporateWellness.enquire.useMutation({
+    onSuccess: () => {
       setSubmitted(true);
       setShowForm(false);
-    } catch {
-      /* noop */
-    }
+    },
+  });
+  const handleEnquire = () => {
+    if (!companyName || !contactName || !email) return;
+    enquireMut.mutate({
+      companyName,
+      contactName,
+      email,
+      planId,
+    });
   };
 
-  if (loading) return <SkeletonList count={3} />;
-  if (error) return <ErrorAlert message="فشل تحميل الباقات" onRetry={refetch} />;
+  if (plansQ.isLoading) return <SkeletonList count={3} />;
+  if (plansQ.isError)
+    return <ErrorAlert message="فشل تحميل الباقات" onRetry={() => plansQ.refetch()} />;
 
-  const items = (plans ?? []) as CorporatePlan[];
-  const enquiryItems = (enquiries as CorporateEnquiry[] | undefined) ?? [];
+  const items = (plansQ.data ?? []) as CorporatePlan[];
+  const enquiryItems = (enquiriesQ.data as CorporateEnquiry[] | undefined) ?? [];
 
   return (
     <ScrollView
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={plansQ.isRefetching || enquiriesQ.isRefetching}
+          onRefresh={() => {
+            void plansQ.refetch();
+            void enquiriesQ.refetch();
+          }}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={s.t}> عافية الشركات</Text>

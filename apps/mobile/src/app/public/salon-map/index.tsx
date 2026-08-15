@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
 
 interface SalonLocation {
@@ -13,36 +12,19 @@ interface SalonLocation {
 }
 
 export default function SalonMapScreen(): JSX.Element {
-  const [salons, setSalons] = useState<SalonLocation[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.salonMap.explore
-      .query({ city: DEFAULT_SAUDI_CITY })
-      .then((d) => {
-        setSalons(d as unknown as SalonLocation[]);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={5} />;
+  const salonsQ = trpc.salonMap.explore.useQuery({ city: DEFAULT_SAUDI_CITY });
+
+  if (salonsQ.isLoading) return <SkeletonList count={5} />;
+
+  const salons = (salonsQ.data as unknown as SalonLocation[] | null) ?? [];
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={salonsQ.isRefetching}
+          onRefresh={() => salonsQ.refetch()}
           colors={['#059669']}
         />
       }

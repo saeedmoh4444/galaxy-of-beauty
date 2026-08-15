@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface ServiceRow {
   id: number;
@@ -25,49 +25,27 @@ interface SmartScheduleData {
 }
 
 export default function SmartScheduleScreen(): JSX.Element {
-  const [services, setServices] = useState<ServiceRow[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [selectedSvc, setSelectedSvc] = useState<number | null>(null);
-  const [slots, setSlots] = useState<SmartScheduleData | null>(null);
-  const [searching, setSearching] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.services.list.query({}) as Promise<ServiceListData>)
-      .then((d: ServiceListData) => {
-        setServices(d?.items || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const servicesQ = trpc.services.list.useQuery({});
+  const services: ServiceRow[] = (servicesQ.data as unknown as ServiceListData | null)?.items ?? [];
+  const slotsQ = trpc.aiFeatures.smartSchedule.useQuery(
+    { serviceId: selectedSvc ?? 0 },
+    { enabled: !!selectedSvc },
+  );
+  const slots = (slotsQ.data as unknown as SmartScheduleData | null) ?? null;
   const findSlots = (serviceId: number) => {
     setSelectedSvc(serviceId);
-    setSearching(true);
-    (rawTrpc.aiFeatures.smartSchedule.query({ serviceId }) as unknown as Promise<SmartScheduleData>)
-      .then((d: SmartScheduleData) => {
-        setSlots(d);
-        setSearching(false);
-      })
-      .catch(() => setSearching(false));
   };
-  if (loading) return <SkeletonList count={5} />;
-  if (!slots)
+  if (servicesQ.isLoading) return <SkeletonList count={5} />;
+  if (!slots || !selectedSvc)
     return (
       <ScrollView
         style={styles.c}
         contentContainerStyle={styles.i}
         refreshControl={
           <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => fetch(true)}
+            refreshing={servicesQ.isRefetching}
+            onRefresh={() => servicesQ.refetch()}
             colors={['#059669']}
           />
         }
@@ -85,7 +63,7 @@ export default function SmartScheduleScreen(): JSX.Element {
         ))}
       </ScrollView>
     );
-  if (searching) return <SkeletonList count={4} />;
+  if (slotsQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
       <Text style={styles.t}> جدولة ذكية</Text>
@@ -119,7 +97,6 @@ export default function SmartScheduleScreen(): JSX.Element {
       ))}
       <TouchableOpacity
         onPress={() => {
-          setSlots(null);
           setSelectedSvc(null);
         }}
         style={styles.back}

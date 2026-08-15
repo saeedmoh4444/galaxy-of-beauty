@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
 
 interface DisputeItem {
   status?: string;
@@ -10,31 +10,11 @@ interface DisputeItem {
 }
 
 export default function AdminDisputesScreen(): JSX.Element {
-  const [data, setData] = useState<DisputeItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const q = trpc.disputes.list.useQuery({});
+  const data = (q.data as unknown as { items?: DisputeItem[] } | null)?.items ?? [];
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.disputes.list
-      .query({})
-      .then((d) => {
-        setData((d?.items ?? []) as unknown as DisputeItem[]);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={5} />;
+  if (q.isLoading) return <SkeletonList count={5} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل النزاعات" onRetry={() => q.refetch()} />;
 
   return (
     <ScrollView
@@ -42,8 +22,8 @@ export default function AdminDisputesScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#dc2626']}
         />
       }

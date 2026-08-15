@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface GiftCardListing {
   id: number;
@@ -11,39 +10,25 @@ interface GiftCardListing {
 }
 
 export default function GiftCardMarketScreen(): JSX.Element {
-  const [listings, setListings] = useState<GiftCardListing[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.giftCardMarket.listings
-      .query()
-      .then((d: GiftCardListing[] | undefined) => {
-        setListings(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const q = trpc.giftCardMarket.listings.useQuery();
+  const listings: GiftCardListing[] = (q.data as unknown as GiftCardListing[] | undefined) ?? [];
+  const buyMut = trpc.giftCardMarket.buy.useMutation({
+    onSuccess: () => {
+      void q.refetch();
+    },
+  });
   const buy = (listingId: number) => {
-    rawTrpc.giftCardMarket.buy.mutate({ listingId }).then(() => fetch());
+    buyMut.mutate({ listingId });
   };
-  if (loading) return <SkeletonList count={4} />;
+  if (q.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#7c3aed']}
         />
       }

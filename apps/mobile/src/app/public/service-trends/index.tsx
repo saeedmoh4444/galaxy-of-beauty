@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface ServiceTrend {
   emoji?: string;
@@ -11,35 +10,19 @@ interface ServiceTrend {
 }
 
 export default function ServiceTrendsScreen(): JSX.Element {
-  const [data, setData] = useState<ServiceTrend[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.serviceTrends.trends.query() as unknown as Promise<{ monthly: ServiceTrend[] }>)
-      .then((d) => {
-        setData(d?.monthly ?? []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const dataQ = trpc.serviceTrends.trends.useQuery();
+
+  if (dataQ.isLoading) return <SkeletonList count={4} />;
+
+  const data = (dataQ.data as unknown as { monthly?: ServiceTrend[] } | null)?.monthly ?? [];
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={dataQ.isRefetching}
+          onRefresh={() => dataQ.refetch()}
           colors={['#ec4899']}
         />
       }

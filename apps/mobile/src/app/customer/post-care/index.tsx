@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface PostCarePlan {
   id?: number;
@@ -11,30 +10,10 @@ interface PostCarePlan {
 }
 
 export default function PostCareScreen(): JSX.Element {
-  const [data, setData] = useState<PostCarePlan[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.postCare.library.query() as unknown as Promise<{ categories: PostCarePlan[] }>)
-      .then((d) => {
-        setData(d?.categories ?? []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={4} />;
+  const libraryQ = trpc.postCare.library.useQuery();
+  const data: PostCarePlan[] =
+    (libraryQ.data as unknown as { categories?: PostCarePlan[] } | null)?.categories ?? [];
+  if (libraryQ.isLoading) return <SkeletonList count={4} />;
 
   return (
     <ScrollView
@@ -42,8 +21,8 @@ export default function PostCareScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={libraryQ.isRefetching}
+          onRefresh={() => libraryQ.refetch()}
           colors={['#059669']}
         />
       }

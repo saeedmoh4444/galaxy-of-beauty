@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface CompareProduct {
   id?: number;
@@ -13,41 +13,24 @@ interface CompareProduct {
 }
 
 export default function ProductCompareScreen(): JSX.Element {
-  const [products, setProducts] = useState<CompareProduct[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<number[]>([]);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.productCompare.list.query() as unknown as Promise<CompareProduct[]>)
-      .then((d: CompareProduct[]) => {
-        setProducts(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const productsQ = trpc.productCompare.list.useQuery();
+  const products: CompareProduct[] =
+    (productsQ.data as unknown as CompareProduct[] | undefined) ?? [];
   const toggle = (id: number) => {
     if (selected.includes(id)) setSelected(selected.filter((x) => x !== id));
     else if (selected.length < 3) setSelected([...selected, id]);
   };
   const ci = products.filter((p) => selected.includes(p.id ?? -1));
-  if (loading) return <SkeletonList count={5} />;
+  if (productsQ.isLoading) return <SkeletonList count={5} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={productsQ.isRefetching}
+          onRefresh={() => productsQ.refetch()}
           colors={['#0891b2']}
         />
       }

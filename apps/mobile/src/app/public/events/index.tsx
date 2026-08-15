@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const ET: Record<string, { label: string; emoji: string }> = {
   workshop: { label: 'ورشة عمل', emoji: '' },
@@ -20,28 +20,12 @@ interface BeautyEvent {
 }
 
 export default function EventsScreen(): JSX.Element {
-  const [events, setEvents] = useState<BeautyEvent[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [filter, setFilter] = useState<string | null>(null);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.beautyEvents.upcoming.query() as unknown as Promise<BeautyEvent[]>)
-      .then((d) => {
-        setEvents(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const eventsQ = trpc.beautyEvents.upcoming.useQuery();
+
+  if (eventsQ.isLoading) return <SkeletonList count={4} />;
+
+  const events = (eventsQ.data ?? []) as BeautyEvent[];
   const filtered = filter ? events.filter((e) => e.eventType === filter) : events;
   return (
     <ScrollView
@@ -49,8 +33,8 @@ export default function EventsScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={eventsQ.isRefetching}
+          onRefresh={() => eventsQ.refetch()}
           colors={['#7c3aed']}
         />
       }

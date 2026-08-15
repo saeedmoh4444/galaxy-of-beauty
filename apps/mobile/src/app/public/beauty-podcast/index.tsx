@@ -1,30 +1,27 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 export default function BeautyPodcastScreen(): JSX.Element {
-  const {
-    data: eps,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.beautyPodcast.episodes.query());
+  const epsQ = trpc.beautyPodcast.episodes.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل البودكاست" onRetry={refetch} />;
+  if (epsQ.isLoading) return <SkeletonList count={4} />;
+  if (epsQ.isError)
+    return <ErrorAlert message="فشل تحميل البودكاست" onRetry={() => epsQ.refetch()} />;
 
-  const items = (eps ?? []) as Record<string, unknown>[];
+  const items = (epsQ.data ?? []) as Record<string, unknown>[];
 
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />
+        <RefreshControl
+          refreshing={epsQ.isRefetching}
+          onRefresh={() => epsQ.refetch()}
+          colors={['#7c3aed']}
+        />
       }
     >
       <Text style={styles.t}>️ بودكاست الجمال</Text>

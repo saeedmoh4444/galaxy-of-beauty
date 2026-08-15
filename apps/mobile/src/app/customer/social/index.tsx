@@ -1,10 +1,9 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { MEDIUM_PAGE_SIZE } from '@galaxy/ui';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const TABS = [
   { key: 'trending', label: ' رائج' },
@@ -47,36 +46,32 @@ interface LookbookItem {
 
 export default function SocialScreen(): JSX.Element {
   const [tab, setTab] = useState('trending');
-  const {
-    data: trending,
-    loading,
-    error,
-    refetch,
-    refreshing,
-    refresh,
-  } = useQuery(() => rawTrpc.social.trending.query());
-  const { data: spotlight } = useQuery(() => rawTrpc.social.spotlight.query());
-  const { data: tipsData } = useQuery(() => rawTrpc.social.tips.query({ page: 1 }));
-  const { data: feedData } = useQuery(() =>
-    rawTrpc.social.feed.query({ page: 1, limit: MEDIUM_PAGE_SIZE }),
-  );
-  const { data: lookbook } = useQuery(() => rawTrpc.social.lookbook.query());
+  const trendingQ = trpc.social.trending.useQuery();
+  const spotlightQ = trpc.social.spotlight.useQuery();
+  const tipsQ = trpc.social.tips.useQuery({ page: 1 });
+  const feedQ = trpc.social.feed.useQuery({ page: 1, limit: MEDIUM_PAGE_SIZE });
+  const lookbookQ = trpc.social.lookbook.useQuery();
 
-  if (loading) return <SkeletonList count={5} />;
-  if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;
+  if (trendingQ.isLoading) return <SkeletonList count={5} />;
+  if (trendingQ.isError)
+    return <ErrorAlert message="فشل تحميل المحتوى" onRetry={() => trendingQ.refetch()} />;
 
-  const tips = (tipsData as BeautyTip[] | undefined) ?? [];
-  const feedItems = (feedData as { items?: FeedItem[] } | null)?.items ?? [];
-  const lookbookItems = (lookbook as LookbookItem[] | undefined) ?? [];
-  const trendingList = (trending as TrendingService[] | undefined) ?? [];
-  const spotlightList = (spotlight as SpotlightTech[] | undefined) ?? [];
+  const tips = (tipsQ.data as BeautyTip[] | undefined) ?? [];
+  const feedItems = (feedQ.data as { items?: FeedItem[] } | null)?.items ?? [];
+  const lookbookItems = (lookbookQ.data as LookbookItem[] | undefined) ?? [];
+  const trendingList = (trendingQ.data as TrendingService[] | undefined) ?? [];
+  const spotlightList = (spotlightQ.data as SpotlightTech[] | undefined) ?? [];
 
   return (
     <ScrollView
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={trendingQ.isRefetching}
+          onRefresh={() => trendingQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={s.t}> مجتمع الجمال</Text>

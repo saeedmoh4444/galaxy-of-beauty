@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface Clinic {
   id: number;
@@ -19,47 +18,30 @@ interface Referral {
 }
 
 export default function ClinicConnectScreen(): JSX.Element {
-  const [clinics, setClinics] = useState<Clinic[]>([]);
-  const [referrals, setReferrals] = useState<Referral[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    Promise.all([
-      rawTrpc.clinicConnect.clinics.query() as Promise<Clinic[]>,
-      rawTrpc.clinicConnect.myReferrals.query() as Promise<Referral[]>,
-    ])
-      .then(([c, r]: [Clinic[], Referral[]]) => {
-        setClinics(c || []);
-        setReferrals(r || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const clinicsQ = trpc.clinicConnect.clinics.useQuery();
+  const referralsQ = trpc.clinicConnect.myReferrals.useQuery();
+  const clinics: Clinic[] = (clinicsQ.data as unknown as Clinic[] | undefined) ?? [];
+  const referrals: Referral[] = (referralsQ.data as unknown as Referral[] | undefined) ?? [];
+  const referMut = trpc.clinicConnect.refer.useMutation();
   const refer = (clinicId: number) => {
-    rawTrpc.clinicConnect.refer.mutate({
+    referMut.mutate({
       clinicId,
       reason: 'استشارة جلدية',
       urgency: 'routine',
     });
   };
-  if (loading) return <SkeletonList count={5} />;
+  if (clinicsQ.isLoading || referralsQ.isLoading) return <SkeletonList count={5} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={clinicsQ.isRefetching || referralsQ.isRefetching}
+          onRefresh={() => {
+            void clinicsQ.refetch();
+            void referralsQ.refetch();
+          }}
           colors={['#0891b2']}
         />
       }

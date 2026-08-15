@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface MarketProduct {
   id?: number;
@@ -12,39 +11,18 @@ interface MarketProduct {
 }
 
 export default function MarketplaceScreen(): JSX.Element {
-  const [products, setProducts] = useState<MarketProduct[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (
-      rawTrpc.marketplace.products.query({}) as unknown as Promise<{
-        items: MarketProduct[];
-      }>
-    )
-      .then((d) => {
-        setProducts(d?.items ?? []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const productsQ = trpc.marketplace.products.useQuery({});
+  const products: MarketProduct[] =
+    (productsQ.data as unknown as { items?: MarketProduct[] } | undefined)?.items ?? [];
+  if (productsQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={productsQ.isRefetching}
+          onRefresh={() => productsQ.refetch()}
           colors={['#db2777']}
         />
       }

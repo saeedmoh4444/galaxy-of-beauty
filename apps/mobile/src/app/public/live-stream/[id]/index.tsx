@@ -1,8 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface StreamDetail {
   titleAr?: string;
@@ -19,36 +19,28 @@ interface StreamMessage {
 
 export default function LiveStreamDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [stream, setStream] = useState<StreamDetail | null>(null);
-  const [messages, setMessages] = useState<StreamMessage[]>([]);
   const [chatText, setChatText] = useState('');
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    Promise.all([rawTrpc.liveStream.upcoming.query({}), rawTrpc.liveChat.history.query()])
-      .then(([s, m]) => {
-        const list = (s ?? []) as unknown as Array<StreamDetail & { id?: number }>;
-        setStream(list.find((x) => x.id === parseInt(id, 10)) ?? null);
-        setMessages(
-          (m ?? []).map((msg) => ({
-            id: msg.id,
-            user: msg.userName,
-            text: msg.message,
-          })),
-        );
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [id]);
+  const upcomingQ = trpc.liveStream.upcoming.useQuery({});
+  const historyQ = trpc.liveChat.history.useQuery();
+
+  const sendMut = trpc.liveChat.send.useMutation({
+    onSuccess: () => setChatText(''),
+  });
+
+  const stream =
+    ((upcomingQ.data as unknown as Array<StreamDetail & { id?: number }> | undefined) ?? []).find(
+      (x) => x.id === parseInt(id, 10),
+    ) ?? null;
+  const messages: StreamMessage[] = (
+    (historyQ.data ?? []) as unknown as Array<{ id?: number; userName?: string; message?: string }>
+  ).map((msg) => ({ id: msg.id, user: msg.userName, text: msg.message }));
+  const loading = upcomingQ.isLoading || historyQ.isLoading;
 
   const sendMsg = () => {
     if (!chatText.trim()) return;
-    (
-      rawTrpc.liveChat.send.mutate({
-        message: chatText.trim(),
-      }) as unknown as Promise<void>
-    ).then(() => {
-      setChatText('');
+    sendMut.mutate({
+      message: chatText.trim(),
     });
   };
 

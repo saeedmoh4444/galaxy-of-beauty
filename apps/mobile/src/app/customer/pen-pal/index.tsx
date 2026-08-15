@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface PenPalMatch {
   name?: string;
@@ -9,31 +8,10 @@ interface PenPalMatch {
 }
 
 export default function PenPalScreen(): JSX.Element {
-  const [data, setData] = useState<PenPalMatch | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const matchQ = trpc.penPal.match.useQuery();
+  const data = (matchQ.data?.[0] ?? null) as unknown as PenPalMatch;
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.penPal.match
-      .query()
-      .then((d) => {
-        setData((d?.[0] ?? null) as unknown as PenPalMatch);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={3} />;
+  if (matchQ.isLoading) return <SkeletonList count={3} />;
 
   return (
     <ScrollView
@@ -41,8 +19,8 @@ export default function PenPalScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={matchQ.isRefetching}
+          onRefresh={() => matchQ.refetch()}
           colors={['#ec4899']}
         />
       }

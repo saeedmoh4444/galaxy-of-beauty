@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, Switch, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface NotificationPrefs {
   bookings?: boolean;
@@ -11,30 +10,10 @@ interface NotificationPrefs {
 }
 
 export default function NotificationSettingsScreen(): JSX.Element {
-  const [data, setData] = useState<NotificationPrefs>({});
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const prefsQ = trpc.notificationPrefs.get.useQuery();
+  const data = (prefsQ.data as NotificationPrefs | undefined) ?? {};
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.notificationPrefs.get.query() as Promise<NotificationPrefs>)
-      .then((d) => {
-        setData(d || {});
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={3} />;
+  if (prefsQ.isLoading) return <SkeletonList count={3} />;
 
   return (
     <ScrollView
@@ -42,8 +21,8 @@ export default function NotificationSettingsScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={prefsQ.isRefetching}
+          onRefresh={() => prefsQ.refetch()}
           colors={['#6366f1']}
         />
       }

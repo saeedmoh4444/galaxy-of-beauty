@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { useState, useEffect } from 'react';
-import { rawTrpc } from '@/lib/trpc-react';
+import { SkeletonList } from '@/components/SkeletonCard';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
 
 interface FeatureFlag {
   key?: string;
@@ -9,13 +10,10 @@ interface FeatureFlag {
 }
 
 export default function AdminToolsScreen(): JSX.Element {
-  const [flags, setFlags] = useState<FeatureFlag[]>([]);
-  useEffect(() => {
-    rawTrpc.featureFlags.list
-      .query()
-      .then((d) => setFlags((d ?? []) as FeatureFlag[]))
-      .catch(() => {});
-  }, []);
+  const q = trpc.featureFlags.list.useQuery();
+  const flags = (q.data as unknown as FeatureFlag[] | null) ?? [];
+  if (q.isLoading) return <SkeletonList count={5} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل الميزات" onRetry={() => q.refetch()} />;
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
       <Text style={s.h}>️ أدوات المشرف</Text>

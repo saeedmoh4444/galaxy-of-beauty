@@ -1,6 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { useState, useEffect } from 'react';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface PlatformStats {
   totalBookings: number;
@@ -12,22 +11,19 @@ interface PlatformStats {
   happyCustomers: number;
 }
 
+const DEFAULT_STATS: PlatformStats = {
+  totalBookings: 254000,
+  totalServices: 850,
+  totalTechnicians: 3200,
+  totalReviews: 89000,
+  avgRating: 4.8,
+  citiesCount: 16,
+  happyCustomers: 180000,
+};
+
 export default function BeautyStatsScreen(): JSX.Element {
-  const [stats, setStats] = useState<PlatformStats>({
-    totalBookings: 254000,
-    totalServices: 850,
-    totalTechnicians: 3200,
-    totalReviews: 89000,
-    avgRating: 4.8,
-    citiesCount: 16,
-    happyCustomers: 180000,
-  });
-  useEffect(() => {
-    rawTrpc.beautyStats?.platform
-      ?.query?.()
-      .then((s: PlatformStats | null) => s && setStats(s))
-      .catch(() => {});
-  }, []);
+  const statsQ = trpc.beautyStats.platform.useQuery();
+  const stats = statsQ.data ?? DEFAULT_STATS;
 
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>

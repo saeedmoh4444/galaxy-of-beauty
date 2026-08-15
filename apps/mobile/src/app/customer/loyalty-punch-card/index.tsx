@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface PunchCardStatus {
   punches?: number;
@@ -9,34 +8,12 @@ interface PunchCardStatus {
 }
 
 export default function LoyaltyPunchCardScreen(): JSX.Element {
-  const [data, setData] = useState<PunchCardStatus | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const cardQ = trpc.loyaltyPunchCard.myCard.useQuery();
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.loyaltyPunchCard.myCard
-      .query()
-      .then((d: PunchCardStatus) => {
-        setData(d);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
+  if (cardQ.isLoading) return <SkeletonList count={3} />;
 
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={3} />;
-
-  const punches = data?.punches ?? 0;
-  const total = data?.total ?? 10;
+  const punches = (cardQ.data as unknown as PunchCardStatus | null)?.punches ?? 0;
+  const total = (cardQ.data as unknown as PunchCardStatus | null)?.total ?? 10;
 
   return (
     <ScrollView
@@ -44,8 +21,8 @@ export default function LoyaltyPunchCardScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={cardQ.isRefetching}
+          onRefresh={() => cardQ.refetch()}
           colors={['#f59e0b']}
         />
       }

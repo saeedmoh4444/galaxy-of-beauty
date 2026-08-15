@@ -7,12 +7,11 @@ import {
   TouchableOpacity,
   RefreshControl,
 } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { EXTENDED_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface CommunityPost {
   id?: number;
@@ -27,38 +26,33 @@ interface CommunityFeed {
 }
 
 export default function CommunityScreen(): JSX.Element {
-  const {
-    data: posts,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.community.feed.query({ page: 1, limit: EXTENDED_PAGE_SIZE }));
+  const postsQ = trpc.community.feed.useQuery({ page: 1, limit: EXTENDED_PAGE_SIZE });
   const [content, setContent] = useState('');
-  const [posting, setPosting] = useState(false);
+
+  const createMut = trpc.community.create.useMutation({
+    onSuccess: () => {
+      setContent('');
+      void postsQ.refetch();
+    },
+    onError: () => {},
+  });
+
+  const likeMut = trpc.community.toggleLike.useMutation({
+    onSuccess: () => postsQ.refetch(),
+  });
 
   const create = () => {
     if (!content.trim()) return;
-    setPosting(true);
-    rawTrpc.community.create
-      .mutate({ content: content.trim() })
-      .then(() => {
-        setContent('');
-        setPosting(false);
-        refetch();
-      })
-      .catch(() => setPosting(false));
+    createMut.mutate({ content: content.trim() });
   };
 
-  const toggleLike = (postId: number) => {
-    rawTrpc.community.toggleLike.mutate({ postId }).then(() => refetch());
-  };
+  const toggleLike = (postId: number) => likeMut.mutate({ postId });
 
-  if (loading) return <SkeletonList count={5} />;
-  if (error) return <ErrorAlert message="فشل تحميل المجتمع" onRetry={refetch} />;
+  if (postsQ.isLoading) return <SkeletonList count={5} />;
+  if (postsQ.isError)
+    return <ErrorAlert message="فشل تحميل المجتمع" onRetry={() => postsQ.refetch()} />;
 
-  const items = (posts as CommunityFeed | null)?.posts ?? [];
+  const items = (postsQ.data as CommunityFeed | null)?.posts ?? [];
 
   return (
     <View style={styles.c}>
@@ -66,7 +60,11 @@ export default function CommunityScreen(): JSX.Element {
         style={{ flex: 1 }}
         contentContainerStyle={styles.i}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#7c3aed']} />
+          <RefreshControl
+            refreshing={postsQ.isRefetching}
+            onRefresh={() => postsQ.refetch()}
+            colors={['#7c3aed']}
+          />
         }
       >
         <Text style={styles.t}> مجتمع الجمال</Text>
@@ -82,10 +80,10 @@ export default function CommunityScreen(): JSX.Element {
           />
           <TouchableOpacity
             onPress={create}
-            disabled={posting || !content.trim()}
+            disabled={createMut.isPending || !content.trim()}
             style={[styles.postBtn, !content.trim() && { opacity: 0.5 }]}
           >
-            <Text style={styles.postBtnText}>{posting ? '...' : 'نشر'}</Text>
+            <Text style={styles.postBtnText}>{createMut.isPending ? '...' : 'نشر'}</Text>
           </TouchableOpacity>
         </View>
         {items.length === 0 ? (

@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface RestockItem {
   id?: number;
@@ -11,30 +10,10 @@ interface RestockItem {
 }
 
 export default function RestockReminderScreen(): JSX.Element {
-  const [data, setData] = useState<RestockItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const itemsQ = trpc.restockReminder.myItems.useQuery();
+  const data: RestockItem[] = (itemsQ.data as unknown as RestockItem[] | undefined) ?? [];
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.restockReminder.myItems.query() as unknown as Promise<RestockItem[]>)
-      .then((d) => {
-        setData(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={4} />;
+  if (itemsQ.isLoading) return <SkeletonList count={4} />;
 
   return (
     <ScrollView
@@ -42,8 +21,8 @@ export default function RestockReminderScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={itemsQ.isRefetching}
+          onRefresh={() => itemsQ.refetch()}
           colors={['#f59e0b']}
         />
       }

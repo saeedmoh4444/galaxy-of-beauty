@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface HeatmapData {
   hours?: string[];
@@ -10,28 +9,10 @@ interface HeatmapData {
 }
 
 export default function BookingHeatmapScreen(): JSX.Element {
-  const [data, setData] = useState<HeatmapData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.bookingHeatmap.data
-      .query({})
-      .then((d) => {
-        setData(d as unknown as HeatmapData);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const heatmapQ = trpc.bookingHeatmap.data.useQuery({});
+  const data = heatmapQ.data as unknown as HeatmapData | null;
+
+  if (heatmapQ.isLoading) return <SkeletonList count={4} />;
   const hours = data?.hours ?? [];
   const days = data?.days ?? [];
   const grid = data?.grid ?? [];
@@ -42,8 +23,8 @@ export default function BookingHeatmapScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={heatmapQ.isRefetching}
+          onRefresh={() => heatmapQ.refetch()}
           colors={['#ef4444']}
         />
       }

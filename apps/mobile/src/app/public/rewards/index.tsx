@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const TL: Record<string, { name: string; emoji: string; color: string }> = {
   SILVER: { name: 'الفضية', emoji: '', color: '#9ca3af' },
@@ -20,36 +19,17 @@ interface Reward {
 }
 
 export default function RewardsScreen(): JSX.Element {
-  const [rewards, setRewards] = useState<Reward[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.loyalty.rewards
-      .query()
-      .then((d: Reward[]) => {
-        setRewards(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const rewardsQ = trpc.loyalty.rewards.useQuery();
+  const rewards: Reward[] = (rewardsQ.data as unknown as Reward[] | undefined) ?? [];
+  if (rewardsQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={rewardsQ.isRefetching}
+          onRefresh={() => rewardsQ.refetch()}
           colors={['#f59e0b']}
         />
       }

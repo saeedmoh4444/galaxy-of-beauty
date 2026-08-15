@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface SavingsGoal {
   id?: number;
@@ -12,36 +11,17 @@ interface SavingsGoal {
 }
 
 export default function SavingsGoalsScreen(): JSX.Element {
-  const [data, setData] = useState<SavingsGoal[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.savingsGoals.list
-      .query()
-      .then((d: SavingsGoal[]) => {
-        setData(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const goalsQ = trpc.savingsGoals.list.useQuery();
+  const data: SavingsGoal[] = (goalsQ.data as unknown as SavingsGoal[] | undefined) ?? [];
+  if (goalsQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={goalsQ.isRefetching}
+          onRefresh={() => goalsQ.refetch()}
           colors={['#059669']}
         />
       }

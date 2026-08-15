@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
 
 interface SubscriptionBox {
   id?: number;
@@ -13,36 +13,18 @@ interface SubscriptionBox {
 }
 
 export default function SubscriptionBoxesScreen(): JSX.Element {
-  const [boxes, setBoxes] = useState<SubscriptionBox[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.subscriptionBoxes.plans
-      .query()
-      .then((d) => {
-        setBoxes((d ?? []) as unknown as SubscriptionBox[]);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const q = trpc.subscriptionBoxes.plans.useQuery();
+  const boxes = (q.data as unknown as SubscriptionBox[] | null) ?? [];
+  if (q.isLoading) return <SkeletonList count={4} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل الصناديق" onRetry={() => q.refetch()} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#8b5cf6']}
         />
       }

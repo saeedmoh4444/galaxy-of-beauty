@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface LiveStreamItem {
   id?: number;
@@ -12,45 +11,20 @@ interface LiveStreamItem {
   scheduledAt?: string;
 }
 
-interface LiveStreamData {
-  live?: LiveStreamItem[];
-  upcoming?: LiveStreamItem[];
-}
-
 export default function LiveStreamScreen(): JSX.Element {
-  const [data, setData] = useState<LiveStreamData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.liveStream.upcoming
-      .query({})
-      .then((d) => {
-        const items = (d ?? []) as unknown as LiveStreamItem[];
-        setData({ live: items, upcoming: items });
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
-  const live = data?.live ?? [];
-  const upcoming = data?.upcoming ?? [];
+  const upcomingQ = trpc.liveStream.upcoming.useQuery({});
+  const items = (upcomingQ.data as unknown as LiveStreamItem[] | undefined) ?? [];
+  if (upcomingQ.isLoading) return <SkeletonList count={4} />;
+  const live = items;
+  const upcoming = items;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={upcomingQ.isRefetching}
+          onRefresh={() => upcomingQ.refetch()}
           colors={['#ef4444']}
         />
       }

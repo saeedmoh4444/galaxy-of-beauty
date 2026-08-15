@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useState } from 'react';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const SKIN_TYPES = [
   { key: 'dry', emoji: '️', label: 'جافة' },
@@ -37,19 +37,12 @@ export default function AIRoutineScreen(): JSX.Element {
   const [skinType, setSkinType] = useState<'dry' | 'oily' | 'combination' | 'normal'>(
     'combination',
   );
-  const [data, setData] = useState<AIRoutineData | null>(null);
-  const [loading, setLoading] = useState(false);
   const [generated, setGenerated] = useState(false);
+  const q = trpc.aiRoutine.generate.useQuery({ skinType }, { enabled: false });
 
   const generate = () => {
     setGenerated(true);
-    setLoading(true);
-    (rawTrpc.aiRoutine.generate.query({ skinType }) as Promise<AIRoutineData>)
-      .then((d: AIRoutineData) => {
-        setData(d);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    void q.refetch();
   };
 
   if (!generated) {
@@ -78,8 +71,10 @@ export default function AIRoutineScreen(): JSX.Element {
     );
   }
 
-  if (loading) return <ActivityIndicator color="#8b5cf6" style={{ marginTop: 40 }} size="large" />;
+  if (q.isLoading)
+    return <ActivityIndicator color="#8b5cf6" style={{ marginTop: 40 }} size="large" />;
 
+  const data = q.data as AIRoutineData | null;
   const morning = data?.morning?.steps ?? [];
   const evening = data?.evening?.steps ?? [];
   const tips = data?.tips ?? [];
@@ -124,7 +119,6 @@ export default function AIRoutineScreen(): JSX.Element {
       <TouchableOpacity
         onPress={() => {
           setGenerated(false);
-          setData(null);
         }}
         style={styles.resetBtn}
       >

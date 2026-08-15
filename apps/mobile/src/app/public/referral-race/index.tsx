@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface LeaderboardEntry {
   id?: number;
@@ -10,41 +9,25 @@ interface LeaderboardEntry {
 }
 
 export default function ReferralRaceScreen(): JSX.Element {
-  const [data, setData] = useState<LeaderboardEntry[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.referralRace.leaderboard
-      .query()
-      .then((d) => {
-        setData(
-          (d?.leaders ?? []).map((l) => ({
-            name: l.userName,
-            referrals: l.referralCount,
-          })),
-        );
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={5} />;
+  const leaderboardQ = trpc.referralRace.leaderboard.useQuery();
+  const data: LeaderboardEntry[] = (
+    (
+      leaderboardQ.data as unknown as
+        { leaders?: Array<{ userName?: string; referralCount?: number }> } | undefined
+    )?.leaders ?? []
+  ).map((l) => ({
+    name: l.userName,
+    referrals: l.referralCount,
+  }));
+  if (leaderboardQ.isLoading) return <SkeletonList count={5} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={leaderboardQ.isRefetching}
+          onRefresh={() => leaderboardQ.refetch()}
           colors={['#7c3aed']}
         />
       }

@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const TYPES: Record<string, string> = {
   workshop: ' ورشة',
@@ -32,46 +31,47 @@ interface EventRegistration {
 }
 
 export default function BeautyEventsScreen(): JSX.Element {
-  const {
-    data: events,
-    loading,
-    error,
-    refetch,
-    refreshing,
-    refresh,
-  } = useQuery(() => rawTrpc.beautyEvents.upcoming.query());
-  const { data: myRegsData } = useQuery(() => rawTrpc.beautyEvents.myRegistrations.query());
-  const myRegs = (myRegsData ?? []) as EventRegistration[];
+  const eventsQ = trpc.beautyEvents.upcoming.useQuery();
+  const myRegsQ = trpc.beautyEvents.myRegistrations.useQuery();
+  const myRegs = (myRegsQ.data ?? []) as EventRegistration[];
   const registeredIds = new Set(myRegs.map((r) => r.eventId));
 
-  const handleRegister = async (id: number) => {
-    try {
-      await rawTrpc.beautyEvents.register.mutate({ eventId: id });
-      refetch();
-    } catch {
-      /* noop */
-    }
+  const registerMut = trpc.beautyEvents.register.useMutation({
+    onSuccess: () => {
+      void eventsQ.refetch();
+    },
+  });
+  const cancelMut = trpc.beautyEvents.cancelRegistration.useMutation({
+    onSuccess: () => {
+      void eventsQ.refetch();
+    },
+  });
+  const handleRegister = (id: number) => {
+    registerMut.mutate({ eventId: id });
   };
-  const handleCancel = async (id: number) => {
-    try {
-      await rawTrpc.beautyEvents.cancelRegistration.mutate({ eventId: id });
-      refetch();
-    } catch {
-      /* noop */
-    }
+  const handleCancel = (id: number) => {
+    cancelMut.mutate({ eventId: id });
   };
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل الفعاليات" onRetry={refetch} />;
+  if (eventsQ.isLoading) return <SkeletonList count={4} />;
+  if (eventsQ.isError)
+    return <ErrorAlert message="فشل تحميل الفعاليات" onRetry={() => eventsQ.refetch()} />;
 
-  const items: BeautyEvent[] = Array.isArray(events) ? events : [];
+  const items: BeautyEvent[] = Array.isArray(eventsQ.data) ? eventsQ.data : [];
 
   return (
     <ScrollView
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={eventsQ.isRefetching || myRegsQ.isRefetching}
+          onRefresh={() => {
+            void eventsQ.refetch();
+            void myRegsQ.refetch();
+          }}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={s.t}> فعاليات وورش</Text>

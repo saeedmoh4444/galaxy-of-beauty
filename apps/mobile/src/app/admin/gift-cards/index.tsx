@@ -1,8 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
 
 interface GiftCardItem {
   code?: string;
@@ -15,31 +15,12 @@ interface GiftCardListResponse {
 }
 
 export default function AdminGiftCardsScreen(): JSX.Element {
-  const [data, setData] = useState<GiftCardItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const q = trpc.giftCards.listAll.useQuery({ page: 1, limit: BULK_PAGE_SIZE });
+  const data = (q.data as unknown as GiftCardListResponse | null)?.items ?? [];
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.giftCards.listAll
-      .query({ page: 1, limit: BULK_PAGE_SIZE })
-      .then((d: GiftCardListResponse) => {
-        setData(d?.items || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={5} />;
+  if (q.isLoading) return <SkeletonList count={5} />;
+  if (q.isError)
+    return <ErrorAlert message="فشل تحميل بطاقات الهدية" onRetry={() => q.refetch()} />;
 
   return (
     <ScrollView
@@ -47,8 +28,8 @@ export default function AdminGiftCardsScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#ec4899']}
         />
       }

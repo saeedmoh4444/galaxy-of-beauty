@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
-import { rawTrpc } from '@/lib/trpc-react';
+import { useState } from 'react';
+import { trpc } from '@/lib/trpc-react';
 
 const OCCASIONS = [
   { key: 'birthday', emoji: '', name: 'عيد ميلاد' },
@@ -11,40 +11,10 @@ const OCCASIONS = [
   { key: 'mothersday', emoji: '', name: 'عيد الأم' },
 ];
 
-interface WishlistItem {
-  id?: number;
-  name?: string;
-}
-
-interface WishlistData {
-  items?: WishlistItem[];
-}
-
 export default function BeautyWishlistGiftsScreen(): JSX.Element {
-  const [, setItems] = useState<WishlistItem[]>([]);
-  const [, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const q = trpc.wishlist.list.useQuery();
   const [selectedOccasion, setSelectedOccasion] = useState('birthday');
   const [shareMode, setShareMode] = useState(false);
-
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.wishlist.list
-      .query()
-      .then((d: WishlistData | undefined) => {
-        setItems(d?.items || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
 
   const occasion = OCCASIONS.find((o) => o.key === selectedOccasion)!;
 
@@ -54,8 +24,8 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#ec4899']}
         />
       }

@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface TechBadge {
   id?: number;
@@ -13,30 +12,11 @@ interface TechBadge {
 }
 
 export default function TechnicianBadgesScreen(): JSX.Element {
-  const [badges, setBadges] = useState<TechBadge[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const q = trpc.technicianBadges.list.useQuery();
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.technicianBadges.list.query() as unknown as Promise<TechBadge[]>)
-      .then((d) => {
-        setBadges(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
+  if (q.isLoading) return <SkeletonList count={4} />;
 
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={4} />;
+  const badges = (q.data as unknown as TechBadge[] | null) ?? [];
 
   return (
     <ScrollView
@@ -44,8 +24,8 @@ export default function TechnicianBadgesScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#8b5cf6']}
         />
       }

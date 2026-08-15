@@ -1,9 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface JournalEntry {
   id?: number;
@@ -12,32 +11,29 @@ interface JournalEntry {
 }
 
 export default function BeautyJournalScreen(): JSX.Element {
-  const {
-    data: entries,
-    loading,
-    error,
-    refreshing,
-    refetch,
-    refresh,
-  } = useQuery(() => rawTrpc.beautyJournal.list.query({ page: 1, limit: LARGE_PAGE_SIZE }));
+  const q = trpc.beautyJournal.list.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
 
-  if (loading)
+  if (q.isLoading)
     return (
       <View style={styles.c}>
         <Text style={styles.t}> يوميات الجمال</Text>
         <SkeletonList count={4} />
       </View>
     );
-  if (error) return <ErrorAlert message="فشل تحميل اليوميات" onRetry={refetch} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل اليوميات" onRetry={() => q.refetch()} />;
 
-  const items = (entries ?? []) as JournalEntry[];
+  const items = (q.data ?? []) as JournalEntry[];
 
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#8b5cf6']} />
+        <RefreshControl
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
+          colors={['#8b5cf6']}
+        />
       }
     >
       <Text style={styles.t}> يوميات الجمال</Text>

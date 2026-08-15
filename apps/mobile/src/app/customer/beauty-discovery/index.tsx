@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { rawTrpc } from '@/lib/trpc-react';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { trpc } from '@/lib/trpc-react';
 
 interface ServiceRow {
   id?: number;
@@ -37,28 +36,29 @@ interface ForYouData {
 }
 
 export default function BeautyDiscoveryScreen(): JSX.Element {
-  const {
-    data: featured,
-    loading,
-    error,
-    refetch,
-    refreshing,
-    refresh,
-  } = useQuery(() => rawTrpc.beautyDiscovery.featured.query());
-  const { data: forYou } = useQuery(() => rawTrpc.beautyDiscovery.forYou.query());
+  const featuredQ = trpc.beautyDiscovery.featured.useQuery();
+  const forYouQ = trpc.beautyDiscovery.forYou.useQuery();
 
-  if (loading) return <SkeletonList count={5} />;
-  if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;
+  if (featuredQ.isLoading) return <SkeletonList count={5} />;
+  if (featuredQ.isError)
+    return <ErrorAlert message="فشل تحميل المحتوى" onRetry={() => featuredQ.refetch()} />;
 
-  const f = featured as FeaturedData | null;
-  const fy = forYou as ForYouData | null;
+  const f = featuredQ.data as FeaturedData | null;
+  const fy = forYouQ.data as ForYouData | null;
 
   return (
     <ScrollView
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={featuredQ.isRefetching || forYouQ.isRefetching}
+          onRefresh={() => {
+            void featuredQ.refetch();
+            void forYouQ.refetch();
+          }}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={s.t}> اكتشفي</Text>

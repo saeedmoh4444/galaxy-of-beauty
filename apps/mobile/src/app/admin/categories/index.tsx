@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
 
 interface Category {
   id?: number;
@@ -11,30 +11,11 @@ interface Category {
 }
 
 export default function AdminCategoriesScreen(): JSX.Element {
-  const [data, setData] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const q = trpc.categories.list.useQuery();
+  const data = (q.data as unknown as Category[] | null) ?? [];
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.categories.list.query() as unknown as Promise<Category[]>)
-      .then((d: Category[]) => {
-        setData(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={6} />;
+  if (q.isLoading) return <SkeletonList count={6} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل الفئات" onRetry={() => q.refetch()} />;
 
   return (
     <ScrollView
@@ -42,8 +23,8 @@ export default function AdminCategoriesScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#6366f1']}
         />
       }

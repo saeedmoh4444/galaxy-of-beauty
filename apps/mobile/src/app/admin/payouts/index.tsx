@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
 
 const STATUS_MAP: Record<string, { label: string; color: string; bg: string }> = {
   PENDING: { label: 'معلق', color: '#d97706', bg: '#fef3c7' },
@@ -18,35 +18,16 @@ interface Payout {
 }
 
 export default function AdminPayoutsScreen(): JSX.Element {
-  const [data, setData] = useState<Payout[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.payouts.listForAdmin
-      .query({})
-      .then((d) => {
-        setData((d?.payouts ?? []) as unknown as Payout[]);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const q = trpc.payouts.listForAdmin.useQuery({});
+  const data = (q.data as unknown as { payouts?: Payout[] } | null)?.payouts ?? [];
+  const processMut = trpc.payouts.process.useMutation({ onSuccess: () => void q.refetch() });
 
   const process = (id: number) => {
-    rawTrpc.payouts.process.mutate({ payoutId: id }).then(() => fetch());
+    processMut.mutate({ payoutId: id });
   };
 
-  if (loading) return <SkeletonList count={5} />;
+  if (q.isLoading) return <SkeletonList count={5} />;
+  if (q.isError) return <ErrorAlert message="فشل تحميل المدفوعات" onRetry={() => q.refetch()} />;
 
   return (
     <ScrollView
@@ -54,8 +35,8 @@ export default function AdminPayoutsScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#0891b2']}
         />
       }

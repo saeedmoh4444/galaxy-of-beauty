@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
-import { useState, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface SurpriseService {
   emoji?: string;
@@ -11,19 +10,12 @@ interface SurpriseService {
 }
 
 export default function SurpriseMeScreen(): JSX.Element {
-  const [result, setResult] = useState<SurpriseService | null>(null);
-  const [loading, setLoading] = useState(false);
-  const surprise = useCallback(() => {
-    setLoading(true);
-    rawTrpc.services.surpriseMe
-      .query({})
-      .then((d) => {
-        setResult(d as unknown as SurpriseService);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
-  if (loading) return <SkeletonList count={3} />;
+  const surpriseQ = trpc.services.surpriseMe.useQuery({}, { enabled: false });
+  const result = (surpriseQ.data as unknown as SurpriseService | null) ?? null;
+  const surprise = () => {
+    void surpriseQ.refetch();
+  };
+  if (surpriseQ.isLoading) return <SkeletonList count={3} />;
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
       <Text style={styles.t}> فاجئيني</Text>

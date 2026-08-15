@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface CashbackInfo {
   balance?: number;
@@ -21,35 +20,11 @@ interface CashbackHistory {
 }
 
 export default function CashbackScreen(): JSX.Element {
-  const [info, setInfo] = useState<CashbackInfo | null>(null);
-  const [history, setHistory] = useState<CashbackHistory | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    Promise.all([
-      rawTrpc.cashback.info.query() as Promise<CashbackInfo>,
-      rawTrpc.cashback.history.query({
-        page: 1,
-        limit: LARGE_PAGE_SIZE,
-      }) as Promise<CashbackHistory>,
-    ])
-      .then(([i, h]) => {
-        setInfo(i);
-        setHistory(h);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={3} />;
+  const infoQ = trpc.cashback.info.useQuery();
+  const historyQ = trpc.cashback.history.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
+  if (infoQ.isLoading || historyQ.isLoading) return <SkeletonList count={3} />;
+  const info = infoQ.data as unknown as CashbackInfo | null;
+  const history = historyQ.data as unknown as CashbackHistory | null;
   const items = history?.items ?? [];
   return (
     <ScrollView
@@ -57,8 +32,11 @@ export default function CashbackScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={infoQ.isRefetching || historyQ.isRefetching}
+          onRefresh={() => {
+            void infoQ.refetch();
+            void historyQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface QAItem {
   id?: number;
@@ -13,30 +12,11 @@ interface QAItem {
 }
 
 export default function TechnicianQAScreen(): JSX.Element {
-  const [questions, setQuestions] = useState<QAItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const q = trpc.technicianQA.list.useQuery({});
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.technicianQA.list.query({}) as unknown as Promise<{ items: QAItem[] }>)
-      .then((d) => {
-        setQuestions(d?.items ?? []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
+  if (q.isLoading) return <SkeletonList count={4} />;
 
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={4} />;
+  const questions = ((q.data as unknown as { items?: QAItem[] } | null)?.items ?? []) as QAItem[];
 
   return (
     <ScrollView
@@ -44,8 +24,8 @@ export default function TechnicianQAScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#2563eb']}
         />
       }

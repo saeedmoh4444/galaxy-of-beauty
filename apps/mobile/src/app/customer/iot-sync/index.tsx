@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface IoTDevice {
   key?: string;
@@ -11,39 +10,21 @@ interface IoTDevice {
 }
 
 export default function IoTSyncScreen(): JSX.Element {
-  const [devices, setDevices] = useState<IoTDevice[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.iotSync.devices
-      .query()
-      .then((d: IoTDevice[]) => {
-        setDevices(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const q = trpc.iotSync.devices.useQuery();
+  const devices: IoTDevice[] = (q.data as unknown as IoTDevice[] | undefined) ?? [];
+  const connectMut = trpc.iotSync.connect.useMutation();
   const connect = (dk: string) => {
-    rawTrpc.iotSync.connect.mutate({ deviceKey: dk });
+    connectMut.mutate({ deviceKey: dk });
   };
-  if (loading) return <SkeletonList count={4} />;
+  if (q.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#0891b2']}
         />
       }

@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface BlogPostData {
   titleJson?: { ar?: string; en?: string };
@@ -13,30 +12,11 @@ interface BlogPostData {
 
 export default function BlogPostScreen(): JSX.Element {
   const { slug } = useLocalSearchParams<{ slug: string }>();
-  const [post, setPost] = useState<BlogPostData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback(
-    (isRefresh = false) => {
-      if (isRefresh) setRefreshing(true);
-      else setLoading(true);
-      (rawTrpc.blog.getBySlug.query({ slug }) as Promise<BlogPostData>)
-        .then((d: BlogPostData) => {
-          setPost(d);
-          setLoading(false);
-          setRefreshing(false);
-        })
-        .catch(() => {
-          setLoading(false);
-          setRefreshing(false);
-        });
-    },
-    [slug],
-  );
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const postQ = trpc.blog.getBySlug.useQuery({ slug });
+
+  if (postQ.isLoading) return <SkeletonList count={4} />;
+
+  const post = (postQ.data as BlogPostData | undefined) ?? null;
   if (!post)
     return (
       <View style={styles.c}>
@@ -53,8 +33,8 @@ export default function BlogPostScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={postQ.isRefetching}
+          onRefresh={() => postQ.refetch()}
           colors={['#7c3aed']}
         />
       }

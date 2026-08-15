@@ -1,10 +1,9 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const TIER_COLORS: Record<string, string[]> = {
   SILVER: ['#d1d5db', '#9ca3af'],
@@ -46,36 +45,29 @@ interface TransactionsResult {
 }
 
 export default function RewardsMarketplaceScreen(): JSX.Element {
-  const {
-    data: account,
-    loading,
-    error,
-    refetch,
-    refreshing,
-    refresh,
-  } = useQuery(() => rawTrpc.loyalty.myAccount.query());
-  const { data: rewards } = useQuery(() => rawTrpc.loyalty.rewards.query());
-  const { data: txs } = useQuery(() =>
-    rawTrpc.loyalty.myTransactions.query({ page: 1, limit: LARGE_PAGE_SIZE }),
-  );
+  const accountQ = trpc.loyalty.myAccount.useQuery();
+  const rewardsQ = trpc.loyalty.rewards.useQuery();
+  const txsQ = trpc.loyalty.myTransactions.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
   const [redeemed, setRedeemed] = useState<number | null>(null);
 
-  const handleRedeem = async (rid: number) => {
-    try {
-      await rawTrpc.loyalty.redeem.mutate({ rewardId: rid });
-      setRedeemed(rid);
-      refetch();
-    } catch {
-      /* noop */
-    }
+  const redeemMut = trpc.loyalty.redeem.useMutation({
+    onSuccess: (_d, vars) => {
+      setRedeemed(vars.rewardId);
+      void accountQ.refetch();
+    },
+    onError: () => {},
+  });
+  const handleRedeem = (rid: number) => {
+    redeemMut.mutate({ rewardId: rid });
   };
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل المكافآت" onRetry={refetch} />;
+  if (accountQ.isLoading) return <SkeletonList count={4} />;
+  if (accountQ.isError)
+    return <ErrorAlert message="فشل تحميل المكافآت" onRetry={() => accountQ.refetch()} />;
 
-  const a = account as LoyaltyAccount | null;
-  const items = (rewards as LoyaltyReward[] | undefined) ?? [];
-  const transactions = (txs as TransactionsResult | null)?.items ?? [];
+  const a = accountQ.data as LoyaltyAccount | null;
+  const items = (rewardsQ.data as LoyaltyReward[] | undefined) ?? [];
+  const transactions = (txsQ.data as TransactionsResult | null)?.items ?? [];
   const points = a?.points ?? 0;
   const tier = a?.tier ?? 'SILVER';
   const tierColors = TIER_COLORS[tier] ?? TIER_COLORS['SILVER']!;
@@ -85,7 +77,11 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />
+        <RefreshControl
+          refreshing={accountQ.isRefetching}
+          onRefresh={() => accountQ.refetch()}
+          colors={['#db2777']}
+        />
       }
     >
       <Text style={s.t}> سوق المكافآت</Text>

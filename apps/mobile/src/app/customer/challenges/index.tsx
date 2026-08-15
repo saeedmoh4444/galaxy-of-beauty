@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 const CH: Record<string, { emoji: string; color: string }> = {
   '7day_skincare': { emoji: '', color: '#ec4899' },
@@ -24,43 +23,32 @@ interface ChallengeProgress {
 }
 
 export default function ChallengesScreen(): JSX.Element {
-  const [challenges, setChallenges] = useState<ChallengeItem[]>([]);
-  const [progress, setProgress] = useState<ChallengeProgress>({});
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    Promise.all([
-      rawTrpc.challenges.list.query() as Promise<ChallengeItem[]>,
-      rawTrpc.challenges.myProgress.query() as Promise<ChallengeProgress>,
-    ])
-      .then(([c, p]: [ChallengeItem[], ChallengeProgress]) => {
-        setChallenges(c || []);
-        setProgress(p);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const listQ = trpc.challenges.list.useQuery();
+  const progressQ = trpc.challenges.myProgress.useQuery();
+  const joinMut = trpc.challenges.join.useMutation({
+    onSuccess: () => {
+      void listQ.refetch();
+      void progressQ.refetch();
+    },
+  });
+  const challenges: ChallengeItem[] = (listQ.data as unknown as ChallengeItem[] | undefined) ?? [];
+  const progress: ChallengeProgress =
+    (progressQ.data as unknown as ChallengeProgress | undefined) ?? {};
   const join = (challengeId: string) => {
-    rawTrpc.challenges.join.mutate({ challengeId }).then(() => fetch());
+    joinMut.mutate({ challengeId });
   };
-  if (loading) return <SkeletonList count={4} />;
+  if (listQ.isLoading || progressQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={listQ.isRefetching || progressQ.isRefetching}
+          onRefresh={() => {
+            void listQ.refetch();
+            void progressQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

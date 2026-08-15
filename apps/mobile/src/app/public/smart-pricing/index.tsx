@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface PricingItem {
   service?: string;
@@ -13,30 +12,11 @@ interface PricingItem {
 }
 
 export default function SmartPricingScreen(): JSX.Element {
-  const [items, setItems] = useState<PricingItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const itemsQ = trpc.smartPricing.current.useQuery();
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.smartPricing.current.query() as Promise<PricingItem[]>)
-      .then((d: PricingItem[]) => {
-        setItems(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
+  if (itemsQ.isLoading) return <SkeletonList count={4} />;
 
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={4} />;
+  const items = (itemsQ.data as unknown as PricingItem[] | null) ?? [];
 
   return (
     <ScrollView
@@ -44,8 +24,8 @@ export default function SmartPricingScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={itemsQ.isRefetching}
+          onRefresh={() => itemsQ.refetch()}
           colors={['#f59e0b']}
         />
       }

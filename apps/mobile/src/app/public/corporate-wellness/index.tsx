@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { rawTrpc } from '@/lib/trpc-react';
+import { trpc } from '@/lib/trpc-react';
 
 interface WellnessPlan {
   id?: number;
@@ -11,31 +10,11 @@ interface WellnessPlan {
 }
 
 export default function CorporateWellnessScreen(): JSX.Element {
-  const [plans, setPlans] = useState<WellnessPlan[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const plansQ = trpc.corporateWellness.plans.useQuery();
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    rawTrpc.corporateWellness.plans
-      .query()
-      .then((d: WellnessPlan[]) => {
-        setPlans(d || []);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
+  if (plansQ.isLoading) return <SkeletonList count={4} />;
 
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  if (loading) return <SkeletonList count={4} />;
+  const plans = (plansQ.data ?? []) as WellnessPlan[];
 
   return (
     <ScrollView
@@ -43,8 +22,8 @@ export default function CorporateWellnessScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={plansQ.isRefetching}
+          onRefresh={() => plansQ.refetch()}
           colors={['#059669']}
         />
       }

@@ -1,6 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { rawTrpc } from '@/lib/trpc-react';
-import { useState, useEffect, useCallback } from 'react';
+import { trpc } from '@/lib/trpc-react';
 import { SkeletonList } from '@/components/SkeletonCard';
 
 interface BingoTask {
@@ -16,30 +15,17 @@ interface BingoCard {
 }
 
 export default function BeautyBingoScreen(): JSX.Element {
-  const [data, setData] = useState<BingoCard | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
-    (rawTrpc.beautyBingo.card.query() as Promise<BingoCard>)
-      .then((d) => {
-        setData(d);
-        setLoading(false);
-        setRefreshing(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
-  }, []);
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const q = trpc.beautyBingo.card.useQuery();
+  const markMut = trpc.beautyBingo.mark.useMutation({
+    onSuccess: () => {
+      void q.refetch();
+    },
+  });
   const mark = (taskId: number) => {
-    rawTrpc.beautyBingo.mark.mutate({ taskId }).then(() => fetch());
+    markMut.mutate({ taskId });
   };
-  if (loading) return <SkeletonList count={3} />;
+  if (q.isLoading) return <SkeletonList count={3} />;
+  const data = q.data as BingoCard | null;
   const tasks = data?.tasks ?? [];
   return (
     <ScrollView
@@ -47,8 +33,8 @@ export default function BeautyBingoScreen(): JSX.Element {
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => fetch(true)}
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
           colors={['#ec4899']}
         />
       }
