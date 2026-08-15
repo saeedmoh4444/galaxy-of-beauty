@@ -7,21 +7,39 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import { trpc } from '@/lib/api';
+import { trpc } from '@/lib/trpc-react';
 import { useCamera } from '@/hooks/useCamera';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 import { useToast } from '@/components/Toast';
 
 export default function SkinAnalysisScreen() {
   const [imageUrl, setImageUrl] = useState('');
-  const [analyzing, setAnalyzing] = useState(false);
-  const [result, setResult] = useState<Record<string, unknown> | null>(null);
   const { showToast } = useToast();
-  const [history, setHistory] = useState<Record<string, unknown>[]>([]);
-  const [loadingHistory, setLoadingHistory] = useState(true);
   const [showCamera, setShowCamera] = useState(false);
   const { hasPermission, requestPermission, takePhoto } = useCamera();
+
+  const historyQ = trpc.skinAnalysis.history.useQuery({
+    page: 1,
+    limit: DEFAULT_PAGE_SIZE,
+  });
+  const history: Record<string, unknown>[] =
+    ((historyQ.data as Record<string, unknown> | null)?.items as Record<string, unknown>[]) ??
+    [];
+
+  const analyzeMut = trpc.skinAnalysis.analyze.useMutation({
+    onSuccess: (data) => {
+      void historyQ.refetch();
+    },
+    onError: () => {
+      showToast('error', 'فشل تحليل الصورة. حاولي مجدداً.');
+    },
+  });
+  // Clear the previous result while a new analysis is in flight (previous behavior)
+  const result = analyzeMut.isPending
+    ? null
+    : (((analyzeMut.data as Record<string, unknown> | undefined)
+        ?.resultJson as Record<string, unknown>) || null);
 
   const handleCameraCapture = async () => {
     if (!hasPermission) {
@@ -37,45 +55,12 @@ export default function SkinAnalysisScreen() {
     }
   };
 
-  const fetchHistory = useCallback(async () => {
-    setLoadingHistory(true);
-    try {
-      const data = (await trpc.skinAnalysis.history.query({
-        page: 1,
-        limit: DEFAULT_PAGE_SIZE,
-      })) as Record<string, unknown>;
-      setHistory((data.items as Record<string, unknown>[]) || []);
-    } catch {
-      // keep stale
-    } finally {
-      setLoadingHistory(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchHistory();
-  }, [fetchHistory]);
-
-  const handleAnalyze = async () => {
+  const handleAnalyze = () => {
     if (!imageUrl) {
       showToast('error', 'الرجاء إدخال رابط الصورة');
       return;
     }
-    setAnalyzing(true);
-    setResult(null);
-    try {
-      const data = (await trpc.skinAnalysis.analyze.mutate({ imageUrl })) as Record<
-        string,
-        unknown
-      >;
-      const resultJson = (data.resultJson as Record<string, unknown>) || null;
-      setResult(resultJson);
-      fetchHistory();
-    } catch {
-      showToast('error', 'فشل تحليل الصورة. حاولي مجدداً.');
-    } finally {
-      setAnalyzing(false);
-    }
+    analyzeMut.mutate({ imageUrl });
   };
 
   const skinTypeLabels: Record<string, string> = {
@@ -120,12 +105,15 @@ export default function SkinAnalysisScreen() {
         />
 
         <TouchableOpacity
-          style={[styles.analyzeBtn, (!imageUrl || analyzing) && styles.analyzeBtnDisabled]}
+          style={[
+            styles.analyzeBtn,
+            (!imageUrl || analyzeMut.isPending) && styles.analyzeBtnDisabled,
+          ]}
           onPress={handleAnalyze}
-          disabled={!imageUrl || analyzing}
+          disabled={!imageUrl || analyzeMut.isPending}
           activeOpacity={0.8}
         >
-          {analyzing ? (
+          {analyzeMut.isPending ? (
             <ActivityIndicator color="#fff" size="small" />
           ) : (
             <Text style={styles.analyzeBtnText}>تحليل</Text>
@@ -185,7 +173,7 @@ export default function SkinAnalysisScreen() {
       {/* History */}
       <Text style={styles.sectionTitle}>التحليلات السابقة</Text>
 
-      {loadingHistory ? (
+      {historyQ.isLoading ? (
         <ActivityIndicator color="#7c3aed" style={{ marginTop: 20 }} />
       ) : history.length === 0 ? (
         <View style={styles.empty}>

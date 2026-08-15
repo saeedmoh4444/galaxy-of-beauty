@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   TextInput,
 } from 'react-native';
-import { trpc } from '@/lib/api';
+import { trpc } from '@/lib/trpc-react';
 import { useState, useRef } from 'react';
 
 export default function AiChatScreen() {
@@ -15,46 +15,47 @@ export default function AiChatScreen() {
     { id: string; role: string; content: string; time: string }[]
   >([]);
   const [input, setInput] = useState('');
-  const [sending, setSending] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
 
-  const handleSend = async () => {
-    const text = input.trim();
-    if (!text || sending) return;
-    const userMsg = {
-      id: Date.now().toString(),
-      role: 'user',
-      content: text,
-      time: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }),
-    };
-    setMessages((prev) => [...prev, userMsg]);
-    setInput('');
-    setSending(true);
-    try {
-      const res = (await trpc.ai.chat.mutate({ message: text })) as Record<
-        string,
-        unknown
-      >;
+  const now = () =>
+    new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+
+  const chatMut = trpc.ai.chat.useMutation({
+    onSuccess: (res) => {
+      const r = res as unknown as { response?: string; message?: string };
       const reply = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: (res.response ?? res.message ?? '') as string,
-        time: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }),
+        content: (r.response ?? r.message ?? '') as string,
+        time: now(),
       };
       setMessages((prev) => [...prev, reply]);
-    } catch {
+    },
+    onError: () => {
       setMessages((prev) => [
         ...prev,
         {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
           content: 'عذراً، حدث خطأ. حاولي مرة أخرى.',
-          time: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }),
+          time: now(),
         },
       ]);
-    } finally {
-      setSending(false);
-    }
+    },
+  });
+
+  const handleSend = () => {
+    const text = input.trim();
+    if (!text || chatMut.isPending) return;
+    const userMsg = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: text,
+      time: now(),
+    };
+    setMessages((prev) => [...prev, userMsg]);
+    setInput('');
+    chatMut.mutate({ message: text });
   };
 
   return (
@@ -102,7 +103,7 @@ export default function AiChatScreen() {
             </View>
           </View>
         ))}
-        {sending && (
+        {chatMut.isPending && (
           <View style={styles.msgAssistant}>
             <View style={styles.bubbleAssistant}>
               <Text style={styles.assistantLabel}>لايلى</Text>
@@ -122,9 +123,9 @@ export default function AiChatScreen() {
           textAlignVertical="center"
         />
         <TouchableOpacity
-          style={[styles.sendBtn, (!input.trim() || sending) && { opacity: 0.5 }]}
+          style={[styles.sendBtn, (!input.trim() || chatMut.isPending) && { opacity: 0.5 }]}
           onPress={handleSend}
-          disabled={!input.trim() || sending}
+          disabled={!input.trim() || chatMut.isPending}
         >
           <Text style={styles.sendText}>إرسال</Text>
         </TouchableOpacity>
