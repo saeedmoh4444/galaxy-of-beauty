@@ -130,7 +130,9 @@ export const categoryRouter = router({
       });
 
       // Invalidate category cache after mutation
-      invalidateCachePrefix('categories:').catch(() => {});
+      invalidateCachePrefix('categories:').catch((err) => {
+        console.warn('[Cache] failed to invalidate categories:', (err as Error).message);
+      });
       return category;
     }),
 
@@ -166,7 +168,9 @@ export const categoryRouter = router({
         data,
       });
 
-      invalidateCachePrefix('categories:').catch(() => {});
+      invalidateCachePrefix('categories:').catch((err) => {
+        console.warn('[Cache] failed to invalidate categories:', (err as Error).message);
+      });
       return category;
     }),
 
@@ -192,7 +196,9 @@ export const categoryRouter = router({
         data: { isActive: false },
       });
 
-      invalidateCachePrefix('categories:').catch(() => {});
+      invalidateCachePrefix('categories:').catch((err) => {
+        console.warn('[Cache] failed to invalidate categories:', (err as Error).message);
+      });
       return { success: true };
     }),
 });
