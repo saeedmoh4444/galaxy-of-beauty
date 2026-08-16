@@ -137,6 +137,7 @@ galaxy-of-beauty/
 | Document                                                        | Description                                |
 | --------------------------------------------------------------- | ------------------------------------------ |
 | [Delivery Report](DELIVERY_REPORT.md)                           | Full program status + follow-up addendum   |
+| [Local Testing Guide](docs/LOCAL_TESTING_GUIDE.md)              | Test everything yourself — full checklist  |
 | [ADR-006: Web Session Model](docs/adr/006-web-session-model.md) | Auth architecture decision                 |
 | [Model Ownership Map](docs/architecture/model-ownership.md)     | 202 models → 12 bounded contexts           |
 | [Architecture Context Map](docs/architecture/context-map.md)    | Domain classification + debt audit         |

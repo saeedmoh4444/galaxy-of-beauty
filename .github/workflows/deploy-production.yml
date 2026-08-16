@@ -1,8 +1,8 @@
 name: Deploy to Production
 
 on:
-  push:
-    branches: [master]
+  # Manual only — no automatic production deployments until the local
+  # verification pass is complete and approved (2026-08-16).
   workflow_dispatch:
 
 concurrency:
