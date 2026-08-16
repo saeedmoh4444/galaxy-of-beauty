@@ -27,14 +27,14 @@ export default defineConfig({
       ],
       // Coverage ratchet (audit rec #4) — raise quarterly toward
       // 55 → 60 → 65. Set just under current actuals (2026-08-16):
-      // 50.76 stmts / 61.63 branches / 34.17 functions / 50.76 lines.
-      // The laggards remain the 0%-covered workers/socket and long
-      // untested router files (bookings, payfort gateway).
+      // 51.91 stmts / 63.26 branches / 37.97 functions / 51.91 lines.
+      // The laggards remain the 0%-covered workers/socket and the
+      // payfort gateway integration.
       thresholds: {
-        statements: 49,
-        branches: 58,
-        functions: 33,
-        lines: 49,
+        statements: 50,
+        branches: 61,
+        functions: 36,
+        lines: 50,
       },
     },
   },
