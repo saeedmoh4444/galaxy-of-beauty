@@ -149,9 +149,22 @@ export function initializeSocket(httpServer: HttpServer): Server {
     },
     pingTimeout: 60000,
     pingInterval: 25000,
-    // ── RT-005: Redis adapter for multi-instance ──────────
-    ...(getRedis() ? { adapter: createAdapter(getRedis()!, getRedis()!.duplicate()) } : {}),
   });
+
+  // ── RT-005: Redis adapter for multi-instance ──────────
+  // Attach after server construction so a down/flapping Redis can't
+  // take the whole socket process with it: the duplicated subscriber
+  // needs its own error listener, otherwise ioredis rejections are
+  // unhandled and crash the process (Node 20 default).
+  const redis = getRedis();
+  if (redis) {
+    const sub = redis.duplicate();
+    sub.on('error', (err) => {
+      // eslint-disable-next-line no-console
+      console.error('[Socket] Redis adapter error:', err.message);
+    });
+    io.adapter(createAdapter(redis, sub));
+  }
 
   // ── Authentication middleware ──────────────────────────
   io.use((socket, next) => {
