@@ -198,3 +198,56 @@ b9303aee Phase 0: Preserve and classify working tree — add .history/, backups/
 The Galaxy of Beauty monorepo has been transformed from an aspirational prototype into a verifiably correct baseline. All critical blockers from the senior evaluation have been resolved. The remaining work is documented, prioritized, and owned in the technical-debt register.
 
 The platform is ready for the next stage: **production hardening through iterative, tested pull requests against a green CI baseline.**
+
+---
+
+## 📌 Addendum — Follow-up Stabilization (2026-08-13 → 2026-08-16)
+
+Pushed directly to `master` after the baseline merge. This addendum supersedes the recommendations and metrics above where noted.
+
+## Completed from the original recommendations
+
+| Recommendation                      | Status                                                                                                                        |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Next.js 15 migration (8 high vulns) | ✅ Done — `next@15.5.23`, App Router params fixed (`await params` on 3 dynamic pages)                                         |
+| Tier 1 test coverage (was 9.5%)     | ✅ Auth 2FA lifecycle, payments authorize→capture→cashback, wallet, token cleanup, drag-reorder — **530 API tests** (was 350) |
+| Real ESLint across all workspaces   | ✅ 0 errors in all 6 packages                                                                                                 |
+| Coverage ratchet                    | ✅ Active and green: 49/58/33/49 thresholds, actuals 50.76/61.63/34.17/50.76                                                  |
+| Mobile `any` budget (943 → 500)     | ✅ 823 → **3**                                                                                                                |
+| CI format job                       | ✅ Green (repo-wide prettier pass, 314 files)                                                                                 |
+
+## Newly delivered (audit + UI/UX backlog)
+
+- **Audit recommendations #1–#5 complete**: typedTrpc killed (188 screens → rawTrpc → hooks-only), wallet top-up wired end-to-end, image pipeline (next/image everywhere, `no-img-element` = error), CI lint gate blocking, coverage ratchet enforced.
+- **Mobile runtime auth rebuilt**: Bearer-header auth with persisted token store; CSRF origin exemption for non-browser clients; login/logout wired; `@/lib/api` and `@/lib/useQuery` deleted — one fully-typed client module (`trpc-react`).
+- **UI/UX backlog 17/17**: sized skeletons (179 pages), page transitions (180ms + reduced-motion), inline editing on profile, drag-and-drop pin reorder with persistence (schema + API + optimistic UI), Storybook for `@galaxy/ui`.
+
+## Bugs found and fixed by the new verification layers
+
+| Bug                                             | Impact                                               | Fix                                                 |
+| ----------------------------------------------- | ---------------------------------------------------- | --------------------------------------------------- |
+| TOTP secrets were base64                        | Authenticator apps could never verify 2FA codes      | RFC 4648 base32 secrets + full 2FA flow tests       |
+| Search ILIKE raw SQL (`is_active`, `titlejson`) | Arabic search boost silently dead (42703 → fallback) | Quoted `"isActive"` / `"titleJson"`                 |
+| Playwright/CI weak test secrets                 | E2E server could not boot in production mode         | Strong non-blacklisted secrets; **56/56 e2e green** |
+| `auth.me` missing `twoFactorEnabled`            | Mobile 2FA toggle always off                         | Added to `userSelect`                               |
+| Next 15 sync `params` access                    | 3 dynamic pages always rendered "not found"          | `await params`                                      |
+| Shadowed `.eslintrc.json`                       | Contradictory stale rules                            | Deleted (`.cjs` authoritative)                      |
+
+## Updated verification snapshot (2026-08-16)
+
+```bash
+pnpm format:check          # ✅ 0 warnings (was 1509 files failing)
+pnpm type-check            # ✅ 6/6 workspaces
+pnpm lint                  # ✅ 0 errors in all workspaces
+pnpm --filter @galaxy/api test        # ✅ 37 files, 530 tests
+pnpm --filter @galaxy/api test:coverage  # ✅ exit 0, thresholds enforced
+pnpm --filter @galaxy/web exec playwright test --project=chromium  # ✅ 56/56
+pnpm --filter @galaxy/ui build-storybook  # ✅
+node apps/web/scripts/smoke-mobile-contract.mjs  # ✅ 5/5 (requires dev server)
+```
+
+## Remaining work
+
+- **Coverage toward 55%**: `bookings.ts` (23.94%), `payfort` gateway, socket server, workers/index remain the laggards.
+- **E2E breadth**: firefox + mobile-chrome projects not run locally yet.
+- **PR #44 workflow**: branch protection, reviewed-PR process still open.
