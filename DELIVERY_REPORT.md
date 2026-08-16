@@ -225,6 +225,23 @@ Pushed directly to `master` after the baseline merge. This addendum supersedes t
 - **Runtime smoke test committed**: `apps/web/scripts/smoke-mobile-contract.mjs` verifies the mobile HTTP contract (origin exemption, Bearer auth, opaque idempotency, CSRF enforcement) against a live server.
 - **Brand consistency**: unified `LogoLoader` for all web loading routes (screen-reader announced, one component instead of 5 drifted copies) + mobile equivalent; chatbot renamed Layla → **Beauty Galaxy (مجرة الجمال)** across web, mobile, API prompts, and docs.
 
+## CI pipeline fully green (2026-08-16, run 31950097544)
+
+The evaluation baseline recorded **0/38 successful CI runs**. After repairing seven distinct workflow defects, all eight jobs now pass in a single run:
+
+| Job               | Status                                               |
+| ----------------- | ---------------------------------------------------- |
+| Format (Prettier) | ✅                                                   |
+| Lint              | ✅                                                   |
+| Type Check        | ✅                                                   |
+| Dependency Audit  | ✅ baseline-enforced (`scripts/audit-check.mjs`)     |
+| Unit Tests        | ✅ 543 tests against a real seeded Postgres + Redis  |
+| Build             | ✅                                                   |
+| Docker Build      | ✅                                                   |
+| E2E (Playwright)  | ✅ 168/168 across chromium + firefox + mobile Chrome |
+
+CI fixes (commits `0f282571` → `67c12d15`): prisma generate step + `postinstall` on the db package; `db push` + `db:seed` for tests and e2e; baseline-based audit gate; `sharp >=0.35.0` override (8 → 7 accepted highs); env-independent health test + Redis service; strong e2e secrets; in-job web build for e2e (`next start` needs `.next`).
+
 ## Bugs found and fixed by the new verification layers
 
 | Bug                                                   | Impact                                                | Fix                                               |
@@ -249,10 +266,11 @@ pnpm --filter @galaxy/api test:coverage  # ✅ exit 0, thresholds 50/61/36/50 en
 pnpm --filter @galaxy/web exec playwright test  # ✅ 168/168 (chromium + firefox + mobile chrome)
 pnpm --filter @galaxy/ui build-storybook  # ✅
 node apps/web/scripts/smoke-mobile-contract.mjs  # ✅ 5/5 (requires dev server)
+# GitHub Actions: all 8 CI jobs green on every push (run 31950097544)
 ```
 
 ## Remaining work
 
 - **Coverage toward 55%**: `payfort` gateway integration, socket server, and `workers/index` remain the laggards (bookings.ts is now 72%).
-- **PR #44 workflow**: branch protection, reviewed-PR process still open (GitHub-admin actions).
+- **Branch protection on master**: the last CI-adjacent task — requires repo-admin action (GitHub settings).
 - **Out of repo**: the separate TaskFlow assessment repository and Phase 11 ops/deployment modernization (staging infra, immutable artifacts, SLOs) need hosting/product decisions.
