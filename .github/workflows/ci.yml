@@ -157,7 +157,7 @@ jobs:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
 
       - name: Install Playwright Browsers
-        run: pnpm --filter @galaxy/web exec playwright install --with-deps chromium
+        run: pnpm --filter @galaxy/web exec playwright install --with-deps chromium firefox
 
       - name: Start Next.js Server
         run: |
