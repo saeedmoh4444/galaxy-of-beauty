@@ -1,5 +1,3 @@
--- Active: 1777832863017@@127.0.0.1@5432@Galaxy_of_Beauty_db
-
 # Galaxy of Beauty — Local Development & Docker Guide
 
 > **Complete guide for running the platform locally with troubleshooting**
@@ -228,30 +226,33 @@ pnpm db:seed             # Seed database with test data
 ### 4.3 Testing
 
 ```bash
-# Run all API tests (307 tests)
+# Run all API tests (543 tests)
 cd packages/api && pnpm test
 
 # Run specific test file
 cd packages/api && npx vitest run src/__tests__/auth-flow.test.ts
 
-# Run E2E tests (requires dev server running)
-cd apps/web && npx playwright test
+# Coverage with enforced ratchet (50/61/36/50)
+cd packages/api && pnpm test:coverage
+
+# Run E2E tests (auto-starts next start after a web build)
+cd apps/web && pnpm exec playwright test
 
 # Run E2E on specific browser
-cd apps/web && npx playwright test --project=chromium
+cd apps/web && pnpm exec playwright test --project=chromium
 
 # Run E2E with UI mode
-cd apps/web && npx playwright test --ui
+cd apps/web && pnpm exec playwright test --ui
 ```
 
 ### 4.4 Storybook
 
 ```bash
 # Start Storybook dev server
-cd packages/shared && pnpm storybook
+cd packages/ui && pnpm storybook
 
 # Build Storybook for production
-cd packages/shared && pnpm build-storybook
+cd packages/ui && pnpm build-storybook
 ```
 
 ### 4.5 Mobile App
@@ -638,4 +639,35 @@ docker push your-registry/galaxy-web:latest
 
 # Deploy (example with docker compose on server)
 docker compose -f docker-compose.prod.yml up -d
+```
+
+---
+
+## 16. Verification Commands (2026-08-16 snapshot)
+
+All commands verified locally and in CI (all 8 GitHub Actions jobs green):
+
+```bash
+# Quality gates
+pnpm format:check          # ✅ 0 warnings
+pnpm type-check            # ✅ 6/6 workspaces
+pnpm lint                  # ✅ 0 errors in all workspaces
+pnpm build                 # ✅ 6/6 workspaces
+
+# Tests
+pnpm --filter @galaxy/api test            # ✅ 543 tests (38 files)
+pnpm --filter @galaxy/api test:coverage   # ✅ exit 0 — ratchet 50/61/36/50 enforced
+pnpm --filter @galaxy/web exec playwright test  # ✅ 168/168 — chromium + firefox + mobile chrome
+#   (playwright install chromium firefox first; the config auto-starts `next start`
+#    after `pnpm --filter @galaxy/web build`)
+
+# Runtime smoke test (mobile HTTP contract against the dev server)
+pnpm --filter @galaxy/web dev   # terminal 1
+node apps/web/scripts/smoke-mobile-contract.mjs   # terminal 2 — ✅ 5/5
+
+# Component library
+pnpm --filter @galaxy/ui storybook   # http://localhost:6006
+
+# Dependency audit (baseline-enforced — only NEW findings fail)
+node scripts/audit-check.mjs
 ```

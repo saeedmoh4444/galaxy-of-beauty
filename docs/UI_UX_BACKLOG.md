@@ -2,6 +2,11 @@
 
 > Produced from direct codebase audit of 11 shared components, 254 Next.js routes, Tailwind config, theme tokens, i18n, and 50+ customer-facing pages.
 > **Date:** 2026-08-03
+>
+> ✅ **Status (2026-08-16): complete — 17/17 items delivered.**
+> P0 quick wins, P1 structural (incl. sized skeleton rollout across 179 pages),
+> P2 delight (page transitions, inline editing, drag-and-drop reorder persistence),
+> and P3 foundation (Storybook 8). See [DELIVERY_REPORT.md](../DELIVERY_REPORT.md) addendum.
 
 ---
 

@@ -4,6 +4,12 @@
 **Scope**: Full platform — web, mobile, API, database
 **Plan**: [AUDIT_PLAN.md](./AUDIT_PLAN.md)
 
+> ✅ **Status (2026-08-16): all five recommendations delivered.**
+> #1 typedTrpc killed (mobile is hooks-only), #2 wallet top-up wired end-to-end,
+> #3 image pipeline (next/image everywhere), #4 coverage ratchet active and
+> green (50/61/36/50 thresholds), #5 CI fully green (all 8 jobs, incl. 168/168
+> E2E across 3 browsers). See [DELIVERY_REPORT.md](../DELIVERY_REPORT.md) addendum.
+
 ## Summary
 
 | Check                     | Result                                             |
