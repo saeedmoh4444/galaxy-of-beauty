@@ -169,15 +169,17 @@ jobs:
           done
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
-          JWT_ACCESS_SECRET: 'test-access-secret-at-least-32-characters-!!'
-          JWT_REFRESH_SECRET: 'test-refresh-secret-at-least-32-characters!!'
+          # Strong, non-blacklisted secrets — next start runs in production mode
+          # and the API's env validator rejects the old weak test defaults.
+          JWT_ACCESS_SECRET: 'e2e-access-9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c'
+          JWT_REFRESH_SECRET: 'e2e-refresh-1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d'
 
       - name: Run Playwright Tests
         run: pnpm --filter @galaxy/web exec playwright test
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
-          JWT_ACCESS_SECRET: 'test-access-secret-at-least-32-characters-!!'
-          JWT_REFRESH_SECRET: 'test-refresh-secret-at-least-32-characters!!'
+          JWT_ACCESS_SECRET: 'e2e-access-9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c'
+          JWT_REFRESH_SECRET: 'e2e-refresh-1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d'
           PLAYWRIGHT_BASE_URL: 'http://localhost:3000'
 
       - uses: actions/upload-artifact@v4
