@@ -122,6 +122,9 @@ jobs:
         env:
           DATABASE_URL: postgresql://gob_admin:${{ secrets.DB_PASSWORD }}@localhost:5432/Galaxy_of_Beauty_db
 
+      - name: Install Playwright Browsers
+        run: pnpm --filter @galaxy/web exec playwright install --with-deps chromium firefox
+
       - name: Start Next.js Server
         run: |
           pnpm --filter @galaxy/web exec next start --port 3000 &
