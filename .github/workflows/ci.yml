@@ -177,6 +177,13 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm --filter @galaxy/web exec playwright install --with-deps chromium firefox
 
+      - name: Build Web App
+        run: pnpm --filter @galaxy/web build
+        env:
+          DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
+          JWT_ACCESS_SECRET: 'e2e-access-9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c'
+          JWT_REFRESH_SECRET: 'e2e-refresh-1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d'
+
       - name: Start Next.js Server
         run: |
           pnpm --filter @galaxy/web exec next start --port 3000 &
