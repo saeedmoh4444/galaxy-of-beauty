@@ -35,6 +35,7 @@ export default function InspirationPage(): JSX.Element {
       addToast('success', 'تم الحذف');
     },
   });
+  const reorderMut = api.inspiration.reorder.useMutation();
 
   const [showAdd, setShowAdd] = useState(false);
   const [form, setForm] = useState({ imageUrl: '', title: '', notes: '', tags: '' });
@@ -44,16 +45,14 @@ export default function InspirationPage(): JSX.Element {
   // Use local order when user has reordered, otherwise server order
   const pins = orderedPins && orderedPins.length === allPins.length ? orderedPins : allPins;
 
-  // Sync when server data changes (e.g., after create/delete)
-  if (allPins.length !== pins.length && !orderedPins) {
-    // Reset to server order on data refetch
-  }
-
-  const handleReorder = useCallback((newPins: Array<Record<string, any>>) => {
-    setOrderedPins(newPins);
-    // Optimistic — the API doesn't persist order yet.
-    // When a sortOrder field is added to the DB, call the mutation here.
-  }, []);
+  const handleReorder = useCallback(
+    (newPins: Array<Record<string, any>>) => {
+      setOrderedPins(newPins);
+      // Optimistic — persist the new order; the server list orders by sortOrder
+      reorderMut.mutate({ pinIds: newPins.map((p) => p.id as number) });
+    },
+    [reorderMut],
+  );
 
   return (
     <DashboardLayout userRole="CUSTOMER">

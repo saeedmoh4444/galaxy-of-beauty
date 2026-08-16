@@ -1665,6 +1665,7 @@ model InspirationPin {
   notes       String?
   tags        String[] // e.g. ["bridal", "nails", "haircolor"]
   serviceId   Int?     // Link to a service
+  sortOrder   Int      @default(0)
   createdAt   DateTime @default(now())
 
   @@index([userId])
@@ -2271,6 +2272,7 @@ model MoodBoardPin {
   note      String   @default("")
   tags      String[] @default([])
   serviceId Int?
+  sortOrder Int      @default(0)
   createdAt DateTime @default(now())
 
   board     MoodBoard @relation(fields: [boardId], references: [id], onDelete: Cascade)

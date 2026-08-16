@@ -1,18 +1,18 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { customerProcedure, router } from '../trpc';
+import { customerProcedure, customerMutation, router } from '../trpc';
 
 export const moodBoardRouter = router({
   list: customerProcedure.query(async ({ ctx }) =>
     prisma.moodBoard.findMany({
       where: { userId: ctx.user.id },
-      include: { pins: true },
+      include: { pins: { orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }] } },
       orderBy: { createdAt: 'desc' },
       take: 20,
     }),
   ),
 
-  create: customerProcedure
+  create: customerMutation
     .input(z.object({ name: z.string().min(1).max(100), description: z.string().optional() }))
     .mutation(async ({ ctx, input }) =>
       prisma.moodBoard.create({
@@ -21,7 +21,7 @@ export const moodBoardRouter = router({
       }),
     ),
 
-  addPin: customerProcedure
+  addPin: customerMutation
     .input(
       z.object({
         boardId: z.number(),
@@ -37,6 +37,12 @@ export const moodBoardRouter = router({
         where: { id: input.boardId, userId: ctx.user.id },
       });
       if (!board) throw new Error('اللوحة غير موجودة');
+      // New pins go to the end of the board
+      const last = await prisma.moodBoardPin.findFirst({
+        where: { boardId: input.boardId },
+        orderBy: { sortOrder: 'desc' },
+        select: { sortOrder: true },
+      });
       const pin = await prisma.moodBoardPin.create({
         data: {
           boardId: input.boardId,
@@ -45,6 +51,7 @@ export const moodBoardRouter = router({
           note: input.note ?? '',
           tags: input.tags,
           serviceId: input.serviceId ?? null,
+          sortOrder: (last?.sortOrder ?? 0) + 1,
         },
       });
       if (!board.coverUrl)
@@ -55,7 +62,29 @@ export const moodBoardRouter = router({
       return pin;
     }),
 
-  removePin: customerProcedure
+  /**
+   * Persist a drag-and-drop reorder of a board's pins: pinIds is the full
+   * ordered id list for that board.
+   */
+  reorderPins: customerMutation
+    .input(z.object({ boardId: z.number(), pinIds: z.array(z.number()) }))
+    .mutation(async ({ ctx, input }) => {
+      const board = await prisma.moodBoard.findFirst({
+        where: { id: input.boardId, userId: ctx.user.id },
+      });
+      if (!board) throw new Error('اللوحة غير موجودة');
+      await prisma.$transaction(
+        input.pinIds.map((pinId, index) =>
+          prisma.moodBoardPin.updateMany({
+            where: { id: pinId, boardId: input.boardId },
+            data: { sortOrder: index },
+          }),
+        ),
+      );
+      return { success: true };
+    }),
+
+  removePin: customerMutation
     .input(z.object({ boardId: z.number(), pinId: z.number() }))
     .mutation(async ({ ctx, input }) => {
       const board = await prisma.moodBoard.findFirst({
@@ -66,7 +95,7 @@ export const moodBoardRouter = router({
       return { success: true };
     }),
 
-  delete: customerProcedure
+  delete: customerMutation
     .input(z.object({ boardId: z.number() }))
     .mutation(async ({ ctx, input }) => {
       await prisma.moodBoard.deleteMany({ where: { id: input.boardId, userId: ctx.user.id } });

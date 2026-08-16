@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { SortableGrid } from '@/components/SortableGrid';
 interface Pin {
   id: number;
   imageUrl: string;
@@ -50,6 +51,41 @@ export default function MoodBoardPage(): JSX.Element {
     },
   });
   const deleteBoardMut = api.moodBoard.delete.useMutation({ onSuccess: () => refetch() });
+
+  const utils = api.useUtils();
+  const reorderPinsMut = api.moodBoard.reorderPins.useMutation({
+    onMutate: async ({ boardId, pinIds }) => {
+      // Optimistic: apply the new pin order to the cached board list
+      await utils.moodBoard.list.cancel();
+      const prev = utils.moodBoard.list.getData();
+      utils.moodBoard.list.setData(undefined, (old) => {
+        if (!old) return old;
+        const order = new Map(pinIds.map((id, i) => [id, i]));
+        return old.map((b) =>
+          b.id === boardId
+            ? {
+                ...b,
+                pins: [...b.pins].sort(
+                  (a, b) => (order.get(a.id) ?? a.sortOrder) - (order.get(b.id) ?? b.sortOrder),
+                ),
+              }
+            : b,
+        );
+      });
+      return { prev };
+    },
+    onError: (_e, _v, ctx) => {
+      if (ctx?.prev) utils.moodBoard.list.setData(undefined, ctx.prev);
+    },
+  });
+
+  const handleReorderBoardPins = (board: Board) => (newVisible: Pin[]) => {
+    const hiddenIds = board.pins.slice(5).map((p) => p.id);
+    reorderPinsMut.mutate({
+      boardId: board.id,
+      pinIds: [...newVisible.map((p) => p.id), ...hiddenIds],
+    });
+  };
 
   const [showCreate, setShowCreate] = useState(false);
   const [newBoardName, setNewBoardName] = useState('');
@@ -158,17 +194,29 @@ export default function MoodBoardPage(): JSX.Element {
                   )}
                 </div>
 
-                {/* Pin thumbnails */}
+                {/* Pin thumbnails — drag to reorder (UI/UX backlog 3.3) */}
                 {board.pins.length > 0 && (
                   <div className="mt-3 flex gap-1 overflow-hidden rounded-lg">
-                    {board.pins.slice(0, 5).map((pin) => (
-                      <div
-                        key={pin.id}
-                        className="relative h-16 flex-1 overflow-hidden bg-surface-muted dark:bg-gray-800 rounded"
+                    <div className="min-w-0 flex-1">
+                      <SortableGrid
+                        items={board.pins.slice(0, 5)}
+                        getItemId={(pin) => pin.id}
+                        onReorder={handleReorderBoardPins(board)}
+                        columns="grid-cols-5"
+                        gap="gap-1"
                       >
-                        <Image src={pin.imageUrl} alt={pin.title} fill className="object-cover" />
-                      </div>
-                    ))}
+                        {(pin) => (
+                          <div className="relative h-16 overflow-hidden rounded bg-surface-muted dark:bg-gray-800">
+                            <Image
+                              src={pin.imageUrl}
+                              alt={pin.title}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        )}
+                      </SortableGrid>
+                    </div>
                     {board.pins.length > 5 && (
                       <div className="flex h-16 w-10 shrink-0 items-center justify-center rounded bg-gray-200 dark:bg-gray-700 text-xs text-text-secondary">
                         +{board.pins.length - 5}
