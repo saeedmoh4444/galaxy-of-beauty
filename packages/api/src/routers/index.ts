@@ -315,10 +315,13 @@ export const appRouter = router({
       checks.database = 'error';
     }
 
-    // Redis check
+    // Redis check — only report 'ok' when the connection is ready AND the
+    // ping succeeds. With enableOfflineQueue disabled, pinging during the
+    // 'connecting' handshake rejects instantly and would falsely read as
+    // an error, so that state reports 'unavailable' instead.
     try {
       const redis = getRedis();
-      if (redis && (redis.status === 'ready' || redis.status === 'connecting')) {
+      if (redis?.status === 'ready') {
         await redis.ping();
         checks.redis = 'ok';
       } else {
