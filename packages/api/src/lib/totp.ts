@@ -11,6 +11,8 @@ const TOTP_DIGITS = 6;
 // that never verify.
 
 const BASE32_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+/** otpauth issuer label — invariant brand name shown in authenticator apps. */
+const TOTP_ISSUER = 'GalaxyOfBeauty';
 
 function base32Encode(buffer: Buffer): string {
   let bits = 0;
@@ -56,7 +58,7 @@ export function generateTotpSecret(email: string): { secret: string; otpauthUrl:
   // 20 bytes = 160 bits, standard for TOTP
   const secretBytes = crypto.randomBytes(20);
   const secret = base32Encode(secretBytes);
-  const otpauthUrl = `otpauth://totp/GalaxyOfBeauty:${encodeURIComponent(email)}?secret=${secret}&issuer=GalaxyOfBeauty&algorithm=SHA1&digits=${TOTP_DIGITS}&period=${TOTP_STEP}`;
+  const otpauthUrl = `otpauth://totp/${TOTP_ISSUER}:${encodeURIComponent(email)}?secret=${secret}&issuer=${TOTP_ISSUER}&algorithm=SHA1&digits=${TOTP_DIGITS}&period=${TOTP_STEP}`;
   return { secret, otpauthUrl };
 }
 

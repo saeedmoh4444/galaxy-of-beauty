@@ -6,7 +6,10 @@
 import { createTRPCClient, httpBatchLink, httpLink } from '@trpc/client';
 import superjson from 'superjson';
 
-const url = 'http://localhost:3000/api/trpc';
+// No-hardcoding rules: API base URL comes from the environment with a
+// documented local fallback (matches the web app's dev defaults).
+const APP_ORIGIN = process.env['SMOKE_APP_ORIGIN'] || 'http://localhost:3000';
+const url = `${APP_ORIGIN}/api/trpc`;
 
 // ── 1. Mobile login: no Origin, no CSRF (publicMutation must be origin-exempt) ──
 const anon = createTRPCClient({ links: [httpLink({ url, transformer: superjson })] });
@@ -80,7 +83,7 @@ const browserSim = createTRPCClient({
     httpBatchLink({
       url,
       transformer: superjson,
-      headers: () => ({ authorization: `Bearer ${result.note}`, origin: 'http://localhost:3000' }),
+      headers: () => ({ authorization: `Bearer ${result.note}`, origin: APP_ORIGIN }),
     }),
   ],
 });
