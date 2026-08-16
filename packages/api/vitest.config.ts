@@ -27,13 +27,13 @@ export default defineConfig({
       ],
       // Coverage ratchet (audit rec #4) — raise quarterly toward
       // 55 → 60 → 65. Set just under current actuals (2026-08-16):
-      // 49.69 stmts / 59.82 branches / 27.27 functions / 49.69 lines.
+      // 49.91 stmts / 60.79 branches / 28.84 functions / 49.91 lines.
       // Function coverage is the laggard: the 0%-covered workers and
       // untested procedure handlers are the next targets.
       thresholds: {
         statements: 48,
         branches: 57,
-        functions: 25,
+        functions: 27,
         lines: 48,
       },
     },
