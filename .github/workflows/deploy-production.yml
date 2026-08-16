@@ -68,8 +68,8 @@ jobs:
       - name: Test
         run: pnpm --filter @galaxy/api test
         env:
-          JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
-          JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
+          JWT_ACCESS_SECRET: 'e2e-access-9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c'
+          JWT_REFRESH_SECRET: 'e2e-refresh-1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d'
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db'
 
       - name: Build
@@ -85,7 +85,7 @@ jobs:
         image: postgres:15-alpine
         env:
           POSTGRES_USER: gob_admin
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_PASSWORD: gob_test_pass
           POSTGRES_DB: Galaxy_of_Beauty_db
         ports:
           - 5432:5432
@@ -120,7 +120,7 @@ jobs:
           pnpm --filter @galaxy/db exec prisma db push --skip-generate
           pnpm --filter @galaxy/db db:seed
         env:
-          DATABASE_URL: postgresql://gob_admin:${{ secrets.DB_PASSWORD }}@localhost:5432/Galaxy_of_Beauty_db
+          DATABASE_URL: postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db
 
       - name: Install Playwright Browsers
         run: pnpm --filter @galaxy/web exec playwright install --with-deps chromium firefox
@@ -135,17 +135,17 @@ jobs:
             sleep 1
           done
         env:
-          DATABASE_URL: postgresql://gob_admin:${{ secrets.DB_PASSWORD }}@localhost:5432/Galaxy_of_Beauty_db
-          JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
-          JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
+          DATABASE_URL: postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db
+          JWT_ACCESS_SECRET: 'e2e-access-9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c'
+          JWT_REFRESH_SECRET: 'e2e-refresh-1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d'
 
       - name: Run E2E Tests
         run: pnpm --filter @galaxy/web test:e2e
         env:
-          DATABASE_URL: postgresql://gob_admin:${{ secrets.DB_PASSWORD }}@localhost:5432/Galaxy_of_Beauty_db
+          DATABASE_URL: postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db
           PLAYWRIGHT_BASE_URL: http://localhost:3000
-          JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
-          JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
+          JWT_ACCESS_SECRET: 'e2e-access-9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c'
+          JWT_REFRESH_SECRET: 'e2e-refresh-1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d'
 
       - uses: actions/upload-artifact@v4
         if: always()
