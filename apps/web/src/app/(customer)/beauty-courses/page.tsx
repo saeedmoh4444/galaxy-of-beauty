@@ -28,7 +28,9 @@ export default function BeautyCoursesPage(): JSX.Element {
     try {
       await (api as any).beautyCourses.enroll.mutate({ courseId });
       setEnrolled((prev) => [...prev, courseId]);
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
 
   const items = (courses?.data ?? []) as any[];
@@ -44,7 +46,7 @@ export default function BeautyCoursesPage(): JSX.Element {
             {myItems.length > 0 && (
               <div className="rounded-2xl bg-emerald-50 p-4 dark:bg-emerald-950">
                 <h3 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-                   دوراتي ({myItems.length})
+                  دوراتي ({myItems.length})
                 </h3>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {myItems.map((c: any, i: number) => (

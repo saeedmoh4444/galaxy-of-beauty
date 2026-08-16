@@ -79,9 +79,7 @@ export function SensoryMapCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">
             خريطة الصالون الحسية
@@ -119,12 +117,12 @@ export function SensoryMapCard({
       {/* Preference note */}
       <div className="mt-3 rounded-xl bg-purple-50 p-3 dark:bg-purple-950">
         <p className="text-center text-[10px] text-purple-700 dark:text-purple-300">
-           أخبرينا بالمنطقة التي تفضلينها عند الحجز — وسنجهزها لكِ
+          أخبرينا بالمنطقة التي تفضلينها عند الحجز — وسنجهزها لكِ
         </p>
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         راحتكِ الحسية أولويتنا
+        راحتكِ الحسية أولويتنا
       </p>
     </div>
   );

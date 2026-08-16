@@ -59,9 +59,7 @@ export function BeautyEmergencyKit({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">حقيبة الطوارئ</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">
@@ -93,12 +91,12 @@ export function BeautyEmergencyKit({
       {/* Always free */}
       <div className="mt-2 rounded-lg bg-rose-50 p-2 text-center dark:bg-rose-950">
         <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300">
-           مجاناً — لا حاجة للسؤال
+          مجاناً — لا حاجة للسؤال
         </p>
       </div>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         لأن الطوارئ لا تخبرنا قبل أن تأتي
+        لأن الطوارئ لا تخبرنا قبل أن تأتي
       </p>
     </div>
   );

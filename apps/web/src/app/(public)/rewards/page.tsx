@@ -22,9 +22,7 @@ export default async function RewardsPage(): Promise<JSX.Element> {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">
-           برنامج المكافآت
-        </h1>
+        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">برنامج المكافآت</h1>
         <p className="mt-2 text-text-secondary">اكسبي نقاط مع كل حجز واستبدليها بمكافآت حصرية</p>
       </div>
 

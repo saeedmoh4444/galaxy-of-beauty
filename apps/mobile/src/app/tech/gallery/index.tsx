@@ -18,7 +18,7 @@ export default function TechGalleryScreen(): JSX.Element {
             <Text style={s.ce}>{p.emoji}</Text>
             <Text style={s.cn}>{p.name}</Text>
             <Text style={s.cd}>
-               {p.client} ·  {p.date}
+              {p.client} · {p.date}
             </Text>
             <Text style={s.cl}>️ {p.likes} إعجاب</Text>
           </View>

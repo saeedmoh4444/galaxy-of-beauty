@@ -28,7 +28,9 @@ export function EmpowermentQuote({ className = '' }: { className?: string }): JS
     <div
       className={`rounded-xl border border-purple-100 bg-gradient-to-r from-purple-50 to-pink-50 p-5 text-center dark:border-purple-900 dark:from-purple-950 dark:to-pink-950 ${className}`}
     >
-      <p className="text-lg leading-relaxed text-purple-800 dark:text-purple-200">&quot;{quote.text}&quot;</p>
+      <p className="text-lg leading-relaxed text-purple-800 dark:text-purple-200">
+        &quot;{quote.text}&quot;
+      </p>
       <p className="mt-3 text-xs font-semibold text-purple-500 dark:text-purple-400">
         — {quote.author}
       </p>

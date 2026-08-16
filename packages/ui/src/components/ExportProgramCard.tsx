@@ -31,9 +31,7 @@ export function ExportProgramCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">
           برنامج التصدير
         </h4>
@@ -67,7 +65,7 @@ export function ExportProgramCard({
         onClick={onLearnMore}
         className="mt-3 w-full rounded-xl bg-emerald-600 py-2 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
       >
-        صدري منتجكِ 
+        صدري منتجكِ
       </button>
     </div>
   );

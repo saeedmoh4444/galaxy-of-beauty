@@ -42,9 +42,7 @@ export function BeautySavingsMilestoneCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-emerald-700 dark:text-emerald-300">
           محطات الادخار
         </h4>
@@ -96,7 +94,7 @@ export function BeautySavingsMilestoneCard({
       {nextMilestone && (
         <div className="mt-2 rounded-lg bg-amber-50 p-2 text-center dark:bg-amber-950">
           <p className="text-[10px] text-amber-700 dark:text-amber-300">
-             المحطة القادمة: {nextMilestone.toLocaleString('ar-SA')} ر.س — باقي{' '}
+            المحطة القادمة: {nextMilestone.toLocaleString('ar-SA')} ر.س — باقي{' '}
             {nextMilestone - saved} ر.س
           </p>
         </div>
@@ -107,7 +105,7 @@ export function BeautySavingsMilestoneCard({
         onClick={onViewSavings}
         className="mt-3 w-full rounded-xl bg-emerald-600 py-2 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
       >
-        تفقدي مدخراتكِ 
+        تفقدي مدخراتكِ
       </button>
     </div>
   );

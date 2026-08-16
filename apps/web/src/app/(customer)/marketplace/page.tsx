@@ -19,7 +19,9 @@ export default function MarketplacePage(): JSX.Element {
   const handleAddToCart = async (pid: number) => {
     try {
       await (api as any).marketplace.addToCart.mutate({ productId: pid });
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
 
   return (
@@ -30,7 +32,7 @@ export default function MarketplacePage(): JSX.Element {
             <PageTitle title="️ متجر الجمال" subtitle="منتجات تجميل أصلية" />
           </div>
           <span className="rounded-full bg-gray-100 px-4 py-2 text-sm font-bold text-text-primary dark:bg-gray-800 dark:text-gray-100">
-             {cartCount}
+            {cartCount}
           </span>
         </div>
 
@@ -69,7 +71,7 @@ export default function MarketplacePage(): JSX.Element {
                     onClick={() => handleAddToCart(p.id)}
                     className="rounded-xl bg-rose-600 px-4 py-2 text-xs font-bold text-white hover:bg-rose-700 transition-colors"
                   >
-                     أضيفي
+                    أضيفي
                   </button>
                 </div>
               </div>

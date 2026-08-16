@@ -31,4 +31,11 @@ export { default as theme } from './theme';
 export type { Theme } from './theme';
 
 // Images
-export { serviceImages, categoryImages, heroImages, dashboardImages, getServiceImage, getCategoryImage } from './images';
+export {
+  serviceImages,
+  categoryImages,
+  heroImages,
+  dashboardImages,
+  getServiceImage,
+  getCategoryImage,
+} from './images';

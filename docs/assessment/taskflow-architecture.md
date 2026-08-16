@@ -138,11 +138,12 @@ POST   /api/cards/:id/move                        { columnId, position, version 
 
 ## Real-time (Socket.IO)
 
-| Channel | Authorization | Events |
-|---|---|---|
+| Channel           | Authorization     | Events                                                                                          |
+| ----------------- | ----------------- | ----------------------------------------------------------------------------------------------- |
 | `board:<boardId>` | Board member only | `card:created`, `card:updated`, `card:moved`, `card:deleted`, `column:created`, `member:joined` |
 
 Realtime messages:
+
 ```json
 {
   "entity": "card",
@@ -159,13 +160,13 @@ Clients that detect a version gap (received version 7 but local state has versio
 
 ## Testing Strategy
 
-| Suite | Tools | Scope |
-|---|---|---|
-| Unit | Vitest | Card ordering math, validation, auth helpers |
-| Integration | Vitest + Supertest | REST endpoints with ephemeral PostgreSQL |
-| Component | Vitest + Testing Library | React components (Board, Column, Card, CardForm) |
-| E2E | Playwright | Drag-and-drop (keyboard + pointer), multi-client real-time, auth flow |
-| Security | Vitest | JWT algorithm pinning, board membership auth, rate limiting |
+| Suite       | Tools                    | Scope                                                                 |
+| ----------- | ------------------------ | --------------------------------------------------------------------- |
+| Unit        | Vitest                   | Card ordering math, validation, auth helpers                          |
+| Integration | Vitest + Supertest       | REST endpoints with ephemeral PostgreSQL                              |
+| Component   | Vitest + Testing Library | React components (Board, Column, Card, CardForm)                      |
+| E2E         | Playwright               | Drag-and-drop (keyboard + pointer), multi-client real-time, auth flow |
+| Security    | Vitest                   | JWT algorithm pinning, board membership auth, rate limiting           |
 
 ## Infrastructure
 

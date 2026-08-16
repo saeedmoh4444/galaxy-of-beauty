@@ -67,9 +67,7 @@ export function SkincareRoutineBuilder({
         )}
       >
         <div className="text-center">
-          <span className="text-3xl" aria-hidden="true">
-            
-          </span>
+          <span className="text-3xl" aria-hidden="true"></span>
           <h4 className="mt-1 text-sm font-bold text-pink-700 dark:text-pink-300">
             روتينكِ المخصص
           </h4>
@@ -98,7 +96,7 @@ export function SkincareRoutineBuilder({
 
         <div className="mt-3 rounded-lg bg-amber-50 p-2 dark:bg-amber-950">
           <p className="text-center text-[10px] text-amber-700 dark:text-amber-300">
-             الصباح: خطوات 1-5 · المساء: خطوات 1-4 (بدون واقي شمس)
+            الصباح: خطوات 1-5 · المساء: خطوات 1-4 (بدون واقي شمس)
           </p>
         </div>
 
@@ -107,7 +105,7 @@ export function SkincareRoutineBuilder({
           onClick={reset}
           className="mt-3 w-full rounded-xl border border-pink-200 py-2 text-xs font-bold text-pink-700 hover:bg-pink-50 dark:border-pink-800 dark:text-pink-300"
         >
-          بناء روتين جديد 
+          بناء روتين جديد
         </button>
       </div>
     );
@@ -121,9 +119,7 @@ export function SkincareRoutineBuilder({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-pink-700 dark:text-pink-300">
           بناء روتين العناية
         </h4>

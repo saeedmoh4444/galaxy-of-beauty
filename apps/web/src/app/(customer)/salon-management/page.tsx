@@ -75,8 +75,7 @@ export default function SalonManagementPage(): JSX.Element {
                   <div>
                     <p className="font-bold">{m.name as string}</p>
                     <p className="text-xs text-text-secondary">
-                      {m.role as string} ·  {m.rating as number} · {m.bookingsToday as number}{' '}
-                      حجوزات
+                      {m.role as string} · {m.rating as number} · {m.bookingsToday as number} حجوزات
                     </p>
                   </div>
                 </div>

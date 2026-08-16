@@ -39,12 +39,8 @@ export default function LoyaltyScreen(): JSX.Element {
 
       {/* Tier Card */}
       <View style={styles.tierCard}>
-        <Text style={styles.tierEmoji}>
-          {TIERS[acc?.tier ?? 'SILVER']?.emoji ?? ''}
-        </Text>
-        <Text style={styles.tierLabel}>
-          {TIERS[acc?.tier ?? 'SILVER']?.label ?? 'فضية'}
-        </Text>
+        <Text style={styles.tierEmoji}>{TIERS[acc?.tier ?? 'SILVER']?.emoji ?? ''}</Text>
+        <Text style={styles.tierLabel}>{TIERS[acc?.tier ?? 'SILVER']?.label ?? 'فضية'}</Text>
         <Text style={styles.points}>{acc?.points ?? 0} نقطة</Text>
         <Text style={styles.lifetime}>إجمالي: {acc?.lifetimePoints ?? 0} نقطة</Text>
       </View>
@@ -53,7 +49,7 @@ export default function LoyaltyScreen(): JSX.Element {
       <Text style={styles.sectionTitle}>آخر العمليات</Text>
       {txs.isLoading ? null : (
         <FlatList
-          data={((txs.data as unknown as { items?: LoyaltyTxn[] } | null)?.items) ?? []}
+          data={(txs.data as unknown as { items?: LoyaltyTxn[] } | null)?.items ?? []}
           keyExtractor={(_, i) => String(i)}
           renderItem={({ item }) => (
             <View style={styles.txnRow}>
@@ -63,7 +59,12 @@ export default function LoyaltyScreen(): JSX.Element {
                   {item.createdAt ? new Date(item.createdAt).toLocaleDateString('ar-SA') : ''}
                 </Text>
               </View>
-              <Text style={[styles.txnPoints, { color: (item.points ?? 0) > 0 ? '#10b981' : '#dc2626' }]}>
+              <Text
+                style={[
+                  styles.txnPoints,
+                  { color: (item.points ?? 0) > 0 ? '#10b981' : '#dc2626' },
+                ]}
+              >
                 {(item.points ?? 0) > 0 ? '+' : ''}
                 {item.points ?? 0}
               </Text>

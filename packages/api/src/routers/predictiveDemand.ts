@@ -1,5 +1,5 @@
 import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
-import { adminProcedure, customerProcedure, router , requireFeatureFlag } from '../trpc';
+import { adminProcedure, customerProcedure, router, requireFeatureFlag } from '../trpc';
 
 const FORECAST = {
   nextWeek: {

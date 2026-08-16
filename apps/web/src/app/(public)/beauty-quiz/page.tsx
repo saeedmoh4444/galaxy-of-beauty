@@ -123,7 +123,7 @@ export default function BeautyQuizPage(): JSX.Element {
             <Button size="lg">تصفحي الخدمات</Button>
           </Link>
           <Button variant="outline" onClick={reset}>
-             إعادة الاختبار
+            إعادة الاختبار
           </Button>
         </div>
       </div>

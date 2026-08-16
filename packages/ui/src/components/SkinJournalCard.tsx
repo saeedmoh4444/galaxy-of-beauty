@@ -36,9 +36,7 @@ export function SkinJournalCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-2xl" aria-hidden="true">
-            
-          </span>
+          <span className="text-2xl" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">يوميات بشرتي</h4>
             <p className="text-[10px] text-purple-500 dark:text-purple-400">تابعي رحلة بشرتكِ</p>
@@ -89,7 +87,7 @@ export function SkinJournalCard({
       </button>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         تتبعي بشرتكِ يومياً — التغييرات الصغيرة تصنع فرقاً كبيراً
+        تتبعي بشرتكِ يومياً — التغييرات الصغيرة تصنع فرقاً كبيراً
       </p>
     </div>
   );

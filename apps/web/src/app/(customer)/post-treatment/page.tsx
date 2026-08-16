@@ -115,7 +115,7 @@ export default function PostTreatmentPage(): JSX.Element {
           </div>
 
           <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
-             تعليمات مهمة
+            تعليمات مهمة
           </h4>
           <div className="mt-2 space-y-1">
             {t.aftercare.map((a, i) => (
@@ -129,7 +129,7 @@ export default function PostTreatmentPage(): JSX.Element {
           </div>
 
           <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
-             الجدول الزمني
+            الجدول الزمني
           </h4>
           <div className="mt-2 space-y-2">
             {t.timeline.map((tl, i) => (

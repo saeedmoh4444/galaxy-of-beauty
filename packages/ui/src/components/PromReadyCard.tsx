@@ -85,7 +85,7 @@ export function PromReadyCard({
         <p className="text-[10px] text-purple-500 dark:text-purple-400">{ev.description}</p>
         {isTeen && (
           <span className="mt-1 inline-block rounded-full bg-purple-100 px-2 py-0.5 text-[9px] font-medium text-purple-700 dark:bg-purple-900 dark:text-purple-300">
-             مناسب لعمر {age} سنة
+            مناسب لعمر {age} سنة
           </span>
         )}
       </div>
@@ -120,12 +120,12 @@ export function PromReadyCard({
           onClick={onBook}
           className="rounded-xl bg-purple-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-purple-700 active:scale-[0.98] transition-all"
         >
-          احجزي إطلالتكِ 
+          احجزي إطلالتكِ
         </button>
       </div>
 
       <p className="mt-2 text-center text-[9px] text-purple-500 dark:text-purple-400">
-         اجعلي مناسبتكِ الخاصة لا تُنسى
+        اجعلي مناسبتكِ الخاصة لا تُنسى
       </p>
     </div>
   );

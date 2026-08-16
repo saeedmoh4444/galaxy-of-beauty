@@ -51,7 +51,7 @@ export function PrayerTimes(): JSX.Element {
     <div className="rounded-xl border border-edge bg-surface-muted p-3 dark:border-gray-700 dark:bg-gray-900">
       <div className="flex items-center justify-between">
         <span className="text-xs font-semibold text-text-primary dark:text-gray-100">
-           مواقيت الصلاة
+          مواقيت الصلاة
         </span>
         {prayer.next ? (
           <span className="text-[10px] text-text-secondary dark:text-gray-400">

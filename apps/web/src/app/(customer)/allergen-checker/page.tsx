@@ -101,7 +101,7 @@ export default function AllergenCheckerPage(): JSX.Element {
           loading={saveMut.isPending}
           className="w-full"
         >
-           حفظ الملف
+          حفظ الملف
         </Button>
       </div>
     </DashboardLayout>

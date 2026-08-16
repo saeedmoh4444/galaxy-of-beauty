@@ -84,13 +84,13 @@ export function BeautyInfographicCard({
       {/* Source */}
       {source && (
         <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-           المصدر: {source}
+          المصدر: {source}
         </p>
       )}
 
       {/* Share tip */}
       <p className="mt-1.5 text-center text-[9px] text-indigo-500 dark:text-indigo-400">
-         المعرفة المرئية أسهل للتذكر — شاركيها مع صديقاتكِ
+        المعرفة المرئية أسهل للتذكر — شاركيها مع صديقاتكِ
       </p>
     </div>
   );

@@ -131,7 +131,7 @@ export function BeautyCareerPathCard({
         onClick={onLearnMore}
         className="mt-3 w-full rounded-xl bg-teal-600 py-2 text-xs font-bold text-white hover:bg-teal-700 active:scale-[0.98] transition-all"
       >
-        اكتشفي المسار 
+        اكتشفي المسار
       </button>
     </div>
   );

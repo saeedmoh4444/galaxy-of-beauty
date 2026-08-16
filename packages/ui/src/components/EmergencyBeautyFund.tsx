@@ -159,7 +159,7 @@ export function EmergencyBeautyFund({
           </div>
           {r.urgency === 'high' && (
             <span className="ml-auto rounded-full bg-rose-100 px-2 py-0.5 text-[9px] font-bold text-rose-700 dark:bg-rose-900 dark:text-rose-300">
-               عاجل
+              عاجل
             </span>
           )}
         </div>
@@ -179,7 +179,7 @@ export function EmergencyBeautyFund({
       {/* Women helped */}
       <div className="mt-2 rounded-lg bg-purple-50 p-2 text-center dark:bg-purple-950">
         <p className="text-[10px] text-purple-700 dark:text-purple-300">
-           ساعدنا {womenHelped} امرأة هذا الشهر
+          ساعدنا {womenHelped} امرأة هذا الشهر
         </p>
       </div>
 
@@ -190,7 +190,7 @@ export function EmergencyBeautyFund({
           onClick={onApply}
           className="mt-3 w-full rounded-xl bg-purple-600 py-2.5 text-xs font-bold text-white hover:bg-purple-700 active:scale-[0.98] transition-all"
         >
-          قدّمي طلباً سرياً 
+          قدّمي طلباً سرياً
         </button>
       )}
 
@@ -199,13 +199,13 @@ export function EmergencyBeautyFund({
           type="button"
           className="mt-3 w-full rounded-xl bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
         >
-          احجزي موعدكِ الآن 
+          احجزي موعدكِ الآن
         </button>
       )}
 
       {/* Privacy */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         طلبكِ سري تماماً — لا أحد يعرف أنكِ استخدمتِ الصندوق
+        طلبكِ سري تماماً — لا أحد يعرف أنكِ استخدمتِ الصندوق
       </p>
     </div>
   );

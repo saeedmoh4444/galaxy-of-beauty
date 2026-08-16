@@ -36,9 +36,7 @@ export function BeautyPlaylistCard({ className = '' }: BeautyPlaylistCardProps):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">موسيقى الجمال</h4>
           <p className="text-[10px] text-violet-500 dark:text-violet-400">
@@ -75,7 +73,7 @@ export function BeautyPlaylistCard({ className = '' }: BeautyPlaylistCardProps):
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         اختاري الموسيقى التي تحبينها لجلسة مثالية
+        اختاري الموسيقى التي تحبينها لجلسة مثالية
       </p>
     </div>
   );

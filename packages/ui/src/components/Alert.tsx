@@ -56,9 +56,7 @@ export function Alert({
         <button
           onClick={() => setDismissed(true)}
           className="text-current opacity-50 hover:opacity-100"
-        >
-          
-        </button>
+        ></button>
       ) : null}
     </div>
   );

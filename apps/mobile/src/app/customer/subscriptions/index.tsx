@@ -34,15 +34,15 @@ interface PlansQueryResult {
 }
 
 export default function SubscriptionsScreen(): JSX.Element {
-  const sub: SubscriptionQueryResult =
-    (trpc.subscriptions.getMySubscription.useQuery() as SubscriptionQueryResult | undefined) ?? {
-      data: null,
-      isLoading: false,
-      isError: false,
-      refetch: () => {},
-    };
-  const plansQ: PlansQueryResult =
-    (trpc.subscriptions.getPlans.useQuery() as PlansQueryResult | undefined) ?? { data: null };
+  const sub: SubscriptionQueryResult = (trpc.subscriptions.getMySubscription.useQuery() as
+    SubscriptionQueryResult | undefined) ?? {
+    data: null,
+    isLoading: false,
+    isError: false,
+    refetch: () => {},
+  };
+  const plansQ: PlansQueryResult = (trpc.subscriptions.getPlans.useQuery() as
+    PlansQueryResult | undefined) ?? { data: null };
 
   const subscription = sub.data ?? undefined;
   const plans = plansQ.data ?? [];
@@ -60,11 +60,12 @@ export default function SubscriptionsScreen(): JSX.Element {
         <View style={styles.activeCard}>
           <Text style={styles.activeLabel}>الاشتراك الحالي</Text>
           <Text style={styles.planName}>{subscription.plan?.nameJson?.ar ?? 'خطة'}</Text>
-          <Text style={styles.status}>
-            {subscription.status === 'ACTIVE' ? ' نشط' : ' متوقف'}
-          </Text>
+          <Text style={styles.status}>{subscription.status === 'ACTIVE' ? ' نشط' : ' متوقف'}</Text>
           <Text style={styles.date}>
-            ينتهي: {subscription.currentPeriodEnd ? new Date(subscription.currentPeriodEnd).toLocaleDateString('ar-SA') : ''}
+            ينتهي:{' '}
+            {subscription.currentPeriodEnd
+              ? new Date(subscription.currentPeriodEnd).toLocaleDateString('ar-SA')
+              : ''}
           </Text>
         </View>
       ) : (

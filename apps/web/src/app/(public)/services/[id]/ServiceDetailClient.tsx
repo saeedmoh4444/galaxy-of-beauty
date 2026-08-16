@@ -78,7 +78,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
           }
           className="rounded-lg border border-gray-200 px-3 py-1 text-xs text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
         >
-           مشاركة
+          مشاركة
         </button>
         <button
           onClick={() => {
@@ -86,7 +86,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
           }}
           className="rounded-lg border border-gray-200 px-3 py-1 text-xs text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
         >
-           نسخ الرابط
+          نسخ الرابط
         </button>
       </div>
 
@@ -149,7 +149,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
                     <div>
                       <p className="font-semibold text-gray-900 dark:text-gray-100">{user.name}</p>
                       <p className="text-sm text-gray-500">
-                        {tech.city} ·  {Number(tech.ratingAvg ?? 0).toFixed(1)}
+                        {tech.city} · {Number(tech.ratingAvg ?? 0).toFixed(1)}
                       </p>
                       {tech.bioJson ? (
                         <p className="mt-1 line-clamp-2 text-xs text-gray-400">
@@ -183,9 +183,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
             {related.map((r: AnyRecord) => (
               <Link key={r.id} href={`/services/${r.id}`}>
                 <Card hover padding="sm">
-                  <div className="flex h-24 items-center justify-center rounded-lg bg-gray-100 text-3xl dark:bg-gray-800">
-                    
-                  </div>
+                  <div className="flex h-24 items-center justify-center rounded-lg bg-gray-100 text-3xl dark:bg-gray-800"></div>
                   <p className="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
                     {r.titleJson?.ar || ''}
                   </p>

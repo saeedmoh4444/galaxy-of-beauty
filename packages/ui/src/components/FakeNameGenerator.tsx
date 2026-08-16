@@ -67,9 +67,7 @@ export function FakeNameGenerator({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true">
-          
-        </span>
+        <span className="text-lg" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">
             احجزي باسم مستعار
@@ -107,7 +105,7 @@ export function FakeNameGenerator({
             onClick={generate}
             className="mt-3 w-full rounded-xl bg-fuchsia-600 py-2.5 text-xs font-bold text-white hover:bg-fuchsia-700 active:scale-[0.98] transition-all"
           >
-             ولّدي اسماً عشوائياً
+            ولّدي اسماً عشوائياً
           </button>
 
           {/* Generated name */}
@@ -123,14 +121,14 @@ export function FakeNameGenerator({
                   onClick={() => select(generated)}
                   className="flex-1 rounded-lg bg-fuchsia-600 py-1.5 text-[10px] font-bold text-white hover:bg-fuchsia-700"
                 >
-                   استخدام
+                  استخدام
                 </button>
                 <button
                   type="button"
                   onClick={generate}
                   className="flex-1 rounded-lg bg-fuchsia-100 py-1.5 text-[10px] font-bold text-fuchsia-700 hover:bg-fuchsia-200 dark:bg-fuchsia-900 dark:text-fuchsia-300"
                 >
-                   جربِي آخر
+                  جربِي آخر
                 </button>
               </div>
             </div>
@@ -159,9 +157,7 @@ export function FakeNameGenerator({
 
       {/* Privacy note */}
       <div className="mt-3 flex items-start gap-1.5 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
-        <span className="text-xs shrink-0" aria-hidden="true">
-          
-        </span>
+        <span className="text-xs shrink-0" aria-hidden="true"></span>
         <p className="text-[9px] text-text-tertiary dark:text-gray-500">
           اسمكِ الحقيقي يبقى محمياً. الاسم المستعار يُستخدم فقط للتواصل مع الخبيرة أثناء الموعد.
         </p>

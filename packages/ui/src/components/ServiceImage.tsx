@@ -32,7 +32,8 @@ const sizeClasses: Record<string, string> = {
   full: 'h-full w-full',
 };
 
-const letterBg = 'bg-gradient-to-br from-brand-100 to-brand-200 dark:from-brand-800 dark:to-brand-900';
+const letterBg =
+  'bg-gradient-to-br from-brand-100 to-brand-200 dark:from-brand-800 dark:to-brand-900';
 
 export function ServiceImage({
   service,
@@ -52,9 +53,7 @@ export function ServiceImage({
         role="img"
         aria-label={alt || service || 'Beauty service'}
       >
-        <span className="text-2xl font-bold text-brand-600 dark:text-brand-300">
-          {letter}
-        </span>
+        <span className="text-2xl font-bold text-brand-600 dark:text-brand-300">{letter}</span>
       </div>
     );
   }

@@ -76,9 +76,7 @@ export function QuietCornerBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">ركن الأطفال</h4>
           <p className="text-[10px] text-orange-500 dark:text-orange-400">
@@ -123,7 +121,7 @@ export function QuietCornerBadge({
 
       {/* Mom encouragement */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         أنتِ تستحقين وقتاً لنفسكِ — وصغاركِ في أيدٍ أمينة
+        أنتِ تستحقين وقتاً لنفسكِ — وصغاركِ في أيدٍ أمينة
       </p>
     </div>
   );

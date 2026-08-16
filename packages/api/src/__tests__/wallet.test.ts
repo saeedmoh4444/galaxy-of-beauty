@@ -137,9 +137,9 @@ describe('Wallet — Balance Arithmetic', () => {
   it('multiple transactions should maintain ledger integrity', () => {
     let balance = 200;
     balance += 100; // deposit
-    balance -= 50;  // payment
-    balance += 11;  // cashback
-    balance -= 75;  // withdrawal
+    balance -= 50; // payment
+    balance += 11; // cashback
+    balance -= 75; // withdrawal
     expect(balance).toBe(186);
   });
 

@@ -112,9 +112,7 @@ export function SensoryFriendlyBadge({
         className="flex w-full items-center justify-between text-left"
       >
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true">
-            
-          </span>
+          <span className="text-lg" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">صديق للحواس</h4>
             <p className="text-[10px] text-purple-500 dark:text-purple-400">
@@ -169,7 +167,7 @@ export function SensoryFriendlyBadge({
           ))}
 
           <p className="!mt-3 text-[10px] leading-relaxed text-purple-500 dark:text-purple-400">
-             نحن نهتم براحتكِ الحسية. أخبرينا باحتياجاتكِ عند الحجز وسنقوم بتجهيز كل شيء مسبقاً.
+            نحن نهتم براحتكِ الحسية. أخبرينا باحتياجاتكِ عند الحجز وسنقوم بتجهيز كل شيء مسبقاً.
           </p>
         </div>
       )}

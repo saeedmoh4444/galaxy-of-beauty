@@ -49,9 +49,7 @@ export function GrandmotherPackageCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">{o.title}</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
           {grandmaName ? `${grandmaName} — ` : ''}
@@ -78,7 +76,7 @@ export function GrandmotherPackageCard({
           onClick={onBook}
           className="rounded-xl bg-amber-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-amber-700 active:scale-[0.98] transition-all"
         >
-          احجزي 
+          احجزي
         </button>
       </div>
     </div>

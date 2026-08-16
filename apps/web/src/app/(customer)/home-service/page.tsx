@@ -127,7 +127,9 @@ export default function HomeServicePage(): JSX.Element {
             <div className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="hs-city" className="block text-sm font-semibold mb-1">المدينة</label>
+                  <label htmlFor="hs-city" className="block text-sm font-semibold mb-1">
+                    المدينة
+                  </label>
                   <select
                     id="hs-city"
                     value={city}
@@ -142,7 +144,9 @@ export default function HomeServicePage(): JSX.Element {
                   </select>
                 </div>
                 <div>
-                  <label htmlFor="hs-serviceId" className="block text-sm font-semibold mb-1">معرف الخدمة</label>
+                  <label htmlFor="hs-serviceId" className="block text-sm font-semibold mb-1">
+                    معرف الخدمة
+                  </label>
                   <input
                     id="hs-serviceId"
                     type="number"
@@ -154,7 +158,9 @@ export default function HomeServicePage(): JSX.Element {
                 </div>
               </div>
               <div>
-                <label htmlFor="hs-address" className="block text-sm font-semibold mb-1">العنوان التفصيلي</label>
+                <label htmlFor="hs-address" className="block text-sm font-semibold mb-1">
+                  العنوان التفصيلي
+                </label>
                 <input
                   id="hs-address"
                   type="text"
@@ -166,7 +172,9 @@ export default function HomeServicePage(): JSX.Element {
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="hs-prefDate" className="block text-sm font-semibold mb-1">التاريخ المفضل</label>
+                  <label htmlFor="hs-prefDate" className="block text-sm font-semibold mb-1">
+                    التاريخ المفضل
+                  </label>
                   <input
                     id="hs-prefDate"
                     type="date"
@@ -176,7 +184,9 @@ export default function HomeServicePage(): JSX.Element {
                   />
                 </div>
                 <div>
-                  <label htmlFor="hs-prefTime" className="block text-sm font-semibold mb-1">الوقت المفضل</label>
+                  <label htmlFor="hs-prefTime" className="block text-sm font-semibold mb-1">
+                    الوقت المفضل
+                  </label>
                   <input
                     id="hs-prefTime"
                     type="time"
@@ -187,7 +197,9 @@ export default function HomeServicePage(): JSX.Element {
                 </div>
               </div>
               <div>
-                <label htmlFor="hs-notes" className="block text-sm font-semibold mb-1">ملاحظات</label>
+                <label htmlFor="hs-notes" className="block text-sm font-semibold mb-1">
+                  ملاحظات
+                </label>
                 <textarea
                   id="hs-notes"
                   value={notes}
@@ -208,7 +220,7 @@ export default function HomeServicePage(): JSX.Element {
                 className="w-full"
                 size="lg"
               >
-                 أرسلي الطلب
+                أرسلي الطلب
               </Button>
             </div>
           </Card>

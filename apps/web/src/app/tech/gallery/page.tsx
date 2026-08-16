@@ -50,7 +50,7 @@ export default function TechGalleryPage(): JSX.Element {
               loading={uploadMut.isPending}
               className="w-full"
             >
-               رفع الصورة
+              رفع الصورة
             </Button>
           </div>
         </Card>

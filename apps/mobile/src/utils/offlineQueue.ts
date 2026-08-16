@@ -124,7 +124,9 @@ export async function syncQueue(): Promise<void> {
         if (action.retries < 3) {
           remaining.push({ ...action, retries: action.retries + 1 });
         } else {
-          console.warn(`[OfflineQueue] Action ${action.id} failed after 3 retries: ${(err as Error).message}`);
+          console.warn(
+            `[OfflineQueue] Action ${action.id} failed after 3 retries: ${(err as Error).message}`,
+          );
         }
       }
     }

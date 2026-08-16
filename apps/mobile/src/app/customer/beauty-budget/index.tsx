@@ -43,9 +43,7 @@ export default function BeautyBudgetScreen(): JSX.Element {
             <Text style={styles.label}> نقاط الولاء: {loyalty.data.points ?? 0}</Text>
           )}
           {savings?.data && (
-            <Text style={styles.label}>
-               أهداف الادخار: {savings.data?.length ?? 0}
-            </Text>
+            <Text style={styles.label}>أهداف الادخار: {savings.data?.length ?? 0}</Text>
           )}
         </View>
       ) : null}

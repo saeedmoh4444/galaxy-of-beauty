@@ -41,9 +41,7 @@ export function SecureCallBadge({
       {/* Header */}
       <div className="flex items-center gap-2">
         <div className="relative">
-          <span className="text-xl" aria-hidden="true">
-            
-          </span>
+          <span className="text-xl" aria-hidden="true"></span>
           {isActive && (
             <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -59,7 +57,7 @@ export function SecureCallBadge({
         </div>
         {isActive && (
           <span className="ml-auto rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-             نشط
+            نشط
           </span>
         )}
       </div>
@@ -75,7 +73,7 @@ export function SecureCallBadge({
             {proxyNumber}
           </p>
           <p className="mt-1 text-[9px] text-emerald-500 dark:text-emerald-400">
-             ينتهي بعد {expiresIn} ·  {callsRemaining ?? 'غير محدود'} مكالمات متبقية
+            ينتهي بعد {expiresIn} · {callsRemaining ?? 'غير محدود'} مكالمات متبقية
           </p>
         </div>
       )}
@@ -118,7 +116,7 @@ export function SecureCallBadge({
           onClick={onActivate}
           className="mt-3 w-full rounded-xl bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
         >
-          فعّلي الاتصال الآمن 
+          فعّلي الاتصال الآمن
         </button>
       )}
 

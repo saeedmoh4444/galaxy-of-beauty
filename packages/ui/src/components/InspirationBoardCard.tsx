@@ -44,9 +44,7 @@ export function InspirationBoardCard({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true">
-            
-          </span>
+          <span className="text-lg" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{boardName}</h4>
             <p className="text-[10px] text-rose-500 dark:text-rose-400">
@@ -142,7 +140,7 @@ export function InspirationBoardCard({
 
       {/* Footer */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         شاركي إلهاماتكِ مع صديقاتكِ في دائرة الجمال
+        شاركي إلهاماتكِ مع صديقاتكِ في دائرة الجمال
       </p>
     </div>
   );

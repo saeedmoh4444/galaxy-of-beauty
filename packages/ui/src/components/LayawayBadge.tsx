@@ -62,7 +62,7 @@ export function LayawayBadge({
         </div>
         {isReserved && (
           <span className="shrink-0 rounded-full bg-violet-100 px-2.5 py-0.5 text-[10px] font-bold text-violet-700 dark:bg-violet-950 dark:text-violet-300">
-             محجوزة
+            محجوزة
           </span>
         )}
       </div>
@@ -108,9 +108,7 @@ export function LayawayBadge({
       {/* Next payment */}
       {nextPaymentDate && remaining && remaining > 0 && (
         <div className="mt-2 flex items-center gap-2 rounded-lg bg-amber-50 px-2.5 py-1.5 dark:bg-amber-950">
-          <span className="text-xs" aria-hidden="true">
-            
-          </span>
+          <span className="text-xs" aria-hidden="true"></span>
           <span className="text-[10px] text-amber-700 dark:text-amber-300">
             الدفعة القادمة: {nextPaymentDate}
           </span>
@@ -119,7 +117,7 @@ export function LayawayBadge({
 
       {/* Zero-interest pledge */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         بدون فوائد، بدون رسوم خفية — الجمال للجميع
+        بدون فوائد، بدون رسوم خفية — الجمال للجميع
       </p>
     </div>
   );

@@ -35,9 +35,7 @@ export function BeautyRoutineTimelineCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true">
-            
-          </span>
+          <span className="text-xl" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">روتيني اليومي</h4>
             {skinType && <p className="text-[10px] text-sky-500 dark:text-sky-400">{skinType}</p>}

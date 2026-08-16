@@ -90,7 +90,7 @@ export default function BeautyPartyPage(): JSX.Element {
           loading={createMut.isPending}
           className="w-full"
         >
-           احجزي حفلتكِ
+          احجزي حفلتكِ
         </Button>
       </div>
     </DashboardLayout>

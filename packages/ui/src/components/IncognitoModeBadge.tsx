@@ -100,7 +100,7 @@ export function IncognitoModeBadge({
           {/* Expiry info */}
           <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
             <p className="text-center text-[10px] text-indigo-600 dark:text-indigo-400">
-               ينتهي وضع التخفي تلقائياً عند إغلاق التطبيق
+              ينتهي وضع التخفي تلقائياً عند إغلاق التطبيق
             </p>
           </div>
         </div>
@@ -108,9 +108,7 @@ export function IncognitoModeBadge({
 
       {/* Privacy note */}
       <div className="mt-2 flex items-start gap-1.5 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
-        <span className="text-xs shrink-0" aria-hidden="true">
-          
-        </span>
+        <span className="text-xs shrink-0" aria-hidden="true"></span>
         <p className="text-[9px] text-text-tertiary dark:text-gray-500">
           وضع التخفي يمنع حفظ سجل التصفح والبحث على جهازكِ. مزود الخدمة لا يزال يرى النشاط للفوترة.
         </p>

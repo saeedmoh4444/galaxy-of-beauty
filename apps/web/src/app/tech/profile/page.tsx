@@ -200,7 +200,10 @@ export default function TechProfilePage(): JSX.Element {
                   onChange={(e) => setBufferMinutes(Number(e.target.value))}
                 />
                 <div className="flex items-center gap-3 self-end pb-2">
-                  <label htmlFor="tp-eco-friendly" className="text-sm font-medium text-text-primary dark:text-gray-300">
+                  <label
+                    htmlFor="tp-eco-friendly"
+                    className="text-sm font-medium text-text-primary dark:text-gray-300"
+                  >
                     صديق للبيئة
                   </label>
                   <input

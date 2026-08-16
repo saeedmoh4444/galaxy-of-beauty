@@ -30,10 +30,7 @@ export default function LeadershipPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle
-          title=" القيادة والأثر"
-          subtitle="معاً نبني مستقبل المرأة السعودية في التجميل"
-        />
+        <PageTitle title=" القيادة والأثر" subtitle="معاً نبني مستقبل المرأة السعودية في التجميل" />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

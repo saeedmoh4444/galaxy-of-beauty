@@ -96,7 +96,7 @@ export function BridalJourneyTimeline({
         </p>
         {weddingDate && (
           <p className="mt-0.5 text-[10px] font-bold text-rose-600 dark:text-rose-400">
-             تاريخ الزفاف: {weddingDate}
+            تاريخ الزفاف: {weddingDate}
           </p>
         )}
       </div>
@@ -179,7 +179,7 @@ export function BridalJourneyTimeline({
 
                   {/* Tip */}
                   <p className="mt-1 text-[9px] italic text-text-tertiary dark:text-gray-500">
-                     {m.tip}
+                    {m.tip}
                   </p>
 
                   {/* Book button for current */}
@@ -201,7 +201,7 @@ export function BridalJourneyTimeline({
 
       {/* Footer */}
       <p className="mt-2 text-center text-[9px] text-rose-500 dark:text-rose-400">
-         &ldquo;يوم زفافكِ هو بداية أجمل قصة&rdquo;
+        &ldquo;يوم زفافكِ هو بداية أجمل قصة&rdquo;
       </p>
     </div>
   );

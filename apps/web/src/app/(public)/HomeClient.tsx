@@ -25,9 +25,18 @@ export interface HomePageProps {
 
 function categoryImageKey(slug: string): string {
   const map: Record<string, string> = {
-    hair: 'hair', nails: 'nails', skincare: 'skincare', makeup: 'makeup',
-    massage: 'massage', henna: 'henna', waxing: 'waxing', lashes: 'lashes',
-    body: 'bodyTreatments', spa: 'spa', bridal: 'bridal', men: 'mensGrooming',
+    hair: 'hair',
+    nails: 'nails',
+    skincare: 'skincare',
+    makeup: 'makeup',
+    massage: 'massage',
+    henna: 'henna',
+    waxing: 'waxing',
+    lashes: 'lashes',
+    body: 'bodyTreatments',
+    spa: 'spa',
+    bridal: 'bridal',
+    men: 'mensGrooming',
   };
   return map[slug] ?? 'default';
 }
@@ -77,11 +86,7 @@ export function HomeClient({
             {categories.map((c) => (
               <Link key={c.id} href={`/services?categoryId=${c.id}`}>
                 <Card hover padding="lg" className="flex flex-col items-center text-center">
-                  <ServiceImage
-                    service={categoryImageKey(c.slug)}
-                    size="lg"
-                    alt={ar(c.nameJson)}
-                  />
+                  <ServiceImage service={categoryImageKey(c.slug)} size="lg" alt={ar(c.nameJson)} />
                   <h3 className="mt-3 text-sm font-semibold">{ar(c.nameJson)}</h3>
                 </Card>
               </Link>
@@ -165,7 +170,8 @@ export function HomeClient({
                 className="text-center bg-white/80 dark:bg-gray-900/80 backdrop-blur"
               >
                 <p className="text-lg font-bold text-yellow-500">
-                  {'★'.repeat(t.rating)}{'☆'.repeat(5 - t.rating)}
+                  {'★'.repeat(t.rating)}
+                  {'☆'.repeat(5 - t.rating)}
                 </p>
                 <p className="mt-3 text-sm text-text-secondary dark:text-gray-400 leading-relaxed">
                   &ldquo;{t.text}&rdquo;

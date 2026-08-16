@@ -136,10 +136,7 @@ export function useAuth(options?: UseAuthOptions): UseAuthReturn {
     await storage.removeItem(KEYS.USER);
 
     if (!serverTokens) {
-      await Promise.all([
-        storage.removeItem(KEYS.ACCESS),
-        storage.removeItem(KEYS.REFRESH),
-      ]);
+      await Promise.all([storage.removeItem(KEYS.ACCESS), storage.removeItem(KEYS.REFRESH)]);
     }
 
     setTokens(null);

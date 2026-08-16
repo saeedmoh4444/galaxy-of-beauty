@@ -75,19 +75,19 @@ export function BeautyConciergeCard({
           onClick={onChat}
           className="flex-1 rounded-xl bg-amber-600 py-2.5 text-xs font-bold text-white hover:bg-amber-700 active:scale-[0.98] transition-all"
         >
-           محادثة
+          محادثة
         </button>
         <button
           type="button"
           onClick={onCall}
           className="rounded-xl border border-amber-200 bg-white px-4 py-2.5 text-xs font-bold text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:bg-gray-800 dark:text-amber-300"
         >
-           اتصال
+          اتصال
         </button>
       </div>
 
       <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">
-         &ldquo;دللي نفسكِ — ونحن نتولى الباقي&rdquo;
+        &ldquo;دللي نفسكِ — ونحن نتولى الباقي&rdquo;
       </p>
     </div>
   );

@@ -48,7 +48,7 @@ export function BeautyVirtualConsultationCard({
           <p className="text-[10px] text-text-tertiary dark:text-gray-500">{specialty}</p>
         </div>
         <span className="shrink-0 rounded-full bg-blue-50 px-2.5 py-0.5 text-[10px] font-bold text-blue-700 dark:bg-blue-950 dark:text-blue-300">
-           أونلاين
+          أونلاين
         </span>
       </div>
 
@@ -71,7 +71,7 @@ export function BeautyVirtualConsultationCard({
               key={slot}
               className="rounded-full bg-white px-2.5 py-1 text-[10px] font-medium text-blue-700 dark:bg-gray-800 dark:text-blue-300"
             >
-               {slot}
+              {slot}
             </span>
           ))}
         </div>
@@ -82,7 +82,7 @@ export function BeautyVirtualConsultationCard({
         onClick={onBook}
         className="mt-3 w-full rounded-xl bg-blue-600 py-2.5 text-xs font-bold text-white hover:bg-blue-700 active:scale-[0.98] transition-all"
       >
-        احجزي استشارة 
+        احجزي استشارة
       </button>
     </div>
   );

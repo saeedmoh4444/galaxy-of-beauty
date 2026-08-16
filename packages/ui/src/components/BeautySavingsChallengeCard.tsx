@@ -94,14 +94,12 @@ export function BeautySavingsChallengeCard({
           onClick={onAddSavings}
           className="mt-3 w-full rounded-xl bg-emerald-600 py-2 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
         >
-          أضيفي {Math.min(dailyTarget, remaining)} ر.س 
+          أضيفي {Math.min(dailyTarget, remaining)} ر.س
         </button>
       )}
       {remaining <= 0 && (
         <div className="mt-3 rounded-lg bg-emerald-100 p-2 text-center dark:bg-emerald-900">
-          <p className="text-xs font-bold text-emerald-700 dark:text-emerald-300">
-             أكملتِ التحدي!
-          </p>
+          <p className="text-xs font-bold text-emerald-700 dark:text-emerald-300">أكملتِ التحدي!</p>
         </div>
       )}
     </div>

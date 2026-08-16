@@ -34,9 +34,7 @@ export function BeautyVoiceAssistantCard({
       )}
     >
       <div className="text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-violet-200 to-purple-200 text-2xl dark:from-violet-800 dark:to-purple-800 animate-pulse">
-          
-        </div>
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-violet-200 to-purple-200 text-2xl dark:from-violet-800 dark:to-purple-800 animate-pulse"></div>
         <h4 className="mt-2 text-sm font-bold text-violet-800 dark:text-violet-200">
           المساعد الصوتي
         </h4>
@@ -49,7 +47,7 @@ export function BeautyVoiceAssistantCard({
         onClick={onActivate}
         className="mt-3 w-full rounded-xl bg-gradient-to-r from-violet-500 to-purple-500 py-3 text-sm font-bold text-white hover:from-violet-600 hover:to-purple-600 active:scale-[0.98] transition-all shadow-lg shadow-violet-200 dark:shadow-violet-900"
       >
-         اضغطي وتحدثي
+        اضغطي وتحدثي
       </button>
 
       {/* Example commands */}
@@ -75,15 +73,15 @@ export function BeautyVoiceAssistantCard({
       {/* Languages */}
       <div className="mt-2 flex justify-center gap-1.5">
         <span className="rounded-full bg-white/60 px-2 py-0.5 text-[9px] text-violet-600 dark:bg-gray-800/60 dark:text-violet-400">
-           العربية
+          العربية
         </span>
         <span className="rounded-full bg-white/60 px-2 py-0.5 text-[9px] text-violet-600 dark:bg-gray-800/60 dark:text-violet-400">
-           English
+          English
         </span>
       </div>
 
       <p className="mt-2 text-center text-[9px] text-violet-500 dark:text-violet-400">
-         &ldquo;يداكِ مشغولتان — وصوتكِ يكفي&rdquo;
+        &ldquo;يداكِ مشغولتان — وصوتكِ يكفي&rdquo;
       </p>
     </div>
   );

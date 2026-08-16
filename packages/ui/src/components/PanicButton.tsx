@@ -110,9 +110,7 @@ export function PanicButton({
       {stage === 'confirm' && (
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <span className="text-2xl" aria-hidden="true">
-              
-            </span>
+            <span className="text-2xl" aria-hidden="true"></span>
             <div>
               <p className="text-sm font-bold text-red-700 dark:text-red-300">تأكيد الطوارئ</p>
               <p className="text-[10px] text-red-500 dark:text-red-400">
@@ -123,9 +121,7 @@ export function PanicButton({
 
           {/* Who will be notified */}
           <div className="rounded-xl bg-white p-2.5 dark:bg-gray-800">
-            <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-               سيتم إشعار
-            </p>
+            <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">سيتم إشعار</p>
             <div className="mt-1 space-y-1">
               {contacts.map((c) => (
                 <div
@@ -179,9 +175,7 @@ export function PanicButton({
       {stage === 'activated' && (
         <div className="text-center space-y-3">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
-            <span className="text-3xl animate-pulse" aria-hidden="true">
-              
-            </span>
+            <span className="text-3xl animate-pulse" aria-hidden="true"></span>
           </div>
           <div>
             <p className="text-sm font-bold text-red-700 dark:text-red-300">تم إرسال الطوارئ!</p>
@@ -196,9 +190,7 @@ export function PanicButton({
       {/* Done state */}
       {stage === 'done' && (
         <div className="text-center space-y-2">
-          <span className="text-3xl" aria-hidden="true">
-            
-          </span>
+          <span className="text-3xl" aria-hidden="true"></span>
           <p className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             المساعدة في الطريق
           </p>

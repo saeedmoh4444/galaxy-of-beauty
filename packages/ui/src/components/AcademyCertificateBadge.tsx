@@ -77,9 +77,7 @@ export function AcademyCertificateBadge({
       {/* Certificate seal */}
       <div className="text-center">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-sky-100 dark:from-blue-800 dark:to-sky-800">
-          <span className="text-3xl" aria-hidden="true">
-            
-          </span>
+          <span className="text-3xl" aria-hidden="true"></span>
         </div>
         <h4 className="mt-2 text-sm font-bold text-blue-800 dark:text-blue-200">شهادة معتمدة</h4>
         <p className="text-[10px] text-blue-500 dark:text-blue-400">أكاديمية جالاكسي بيوتي</p>
@@ -104,7 +102,7 @@ export function AcademyCertificateBadge({
             {level.emoji} {level.label}
           </span>
           <span className="text-[10px] text-text-tertiary dark:text-gray-500">
-             {certificate.date}
+            {certificate.date}
           </span>
         </div>
       </div>
@@ -122,9 +120,7 @@ export function AcademyCertificateBadge({
       {/* Blockchain verification */}
       {certificate.isBlockchainVerified && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1.5 dark:bg-emerald-950">
-          <span className="text-xs" aria-hidden="true">
-            
-          </span>
+          <span className="text-xs" aria-hidden="true"></span>
           <div>
             <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
               موثقة بتقنية البلوك تشين
@@ -143,14 +139,14 @@ export function AcademyCertificateBadge({
           onClick={onShare}
           className="flex-1 rounded-xl bg-blue-600 py-2 text-[10px] font-bold text-white hover:bg-blue-700 active:scale-[0.98] transition-all"
         >
-           مشاركة
+          مشاركة
         </button>
         <button
           type="button"
           onClick={onVerify}
           className="flex-1 rounded-xl border border-blue-200 bg-white py-2 text-[10px] font-bold text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:bg-gray-800 dark:text-blue-300"
         >
-           تحقق
+          تحقق
         </button>
       </div>
 

@@ -94,7 +94,7 @@ export default function ServiceWishlistPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-               إضافة
+              إضافة
             </Button>
           </div>
         </Modal>

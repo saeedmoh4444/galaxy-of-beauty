@@ -52,7 +52,7 @@ export function ServiceAnimalBadge({ className = '' }: ServiceAnimalBadgeProps):
       </div>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         الوصول حق للجميع
+        الوصول حق للجميع
       </p>
     </div>
   );

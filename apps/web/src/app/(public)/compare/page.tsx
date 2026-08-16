@@ -47,9 +47,7 @@ export default function ComparePage(): JSX.Element {
                 {services.map((s) => (
                   <th key={s.id as number} className="p-4 text-center min-w-[200px]">
                     <div className="flex flex-col items-center gap-2">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-brand-50 text-2xl dark:bg-brand-950">
-                        
-                      </div>
+                      <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-brand-50 text-2xl dark:bg-brand-950"></div>
                       <p className="text-sm font-bold text-text-primary dark:text-gray-100">
                         {(s.titleJson as Record<string, string>)?.ar || ''}
                       </p>
@@ -161,7 +159,7 @@ export default function ComparePage(): JSX.Element {
           {/* Best value indicator */}
           <div className="mt-6 rounded-xl border border-brand-200 bg-brand-50 p-4 text-center dark:border-brand-800 dark:bg-brand-950">
             <p className="text-sm font-semibold text-brand-700 dark:text-brand-300">
-               الأفضل قيمة:{' '}
+              الأفضل قيمة:{' '}
               {(() => {
                 const best = [...services].sort(
                   (a, b) =>

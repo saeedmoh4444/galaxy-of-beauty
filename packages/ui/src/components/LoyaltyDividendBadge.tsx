@@ -136,7 +136,7 @@ export function LoyaltyDividendBadge({
         <div className="mt-3 rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
           <div className="flex items-center justify-between text-[10px]">
             <span className="text-text-secondary dark:text-gray-300">
-               للوصول للمرتبة {nextTier.label}
+              للوصول للمرتبة {nextTier.label}
             </span>
             <span className="font-bold text-text-primary dark:text-gray-100">
               {progressToNext}%
@@ -156,7 +156,7 @@ export function LoyaltyDividendBadge({
             {nextTier.minSpend - yearlySpend > 0
               ? (nextTier.minSpend - yearlySpend).toLocaleString('ar-SA')
               : 0}{' '}
-            ر.س للترقية 
+            ر.س للترقية
           </p>
         </div>
       )}
@@ -165,14 +165,14 @@ export function LoyaltyDividendBadge({
       {!nextTier && (
         <div className="mt-3 rounded-xl bg-gradient-to-r from-sky-50 to-blue-50 p-3 text-center dark:from-sky-950 dark:to-blue-950">
           <p className="text-xs font-bold text-sky-700 dark:text-sky-300">
-             أنتِ في أعلى مرتبة — تهانينا!
+            أنتِ في أعلى مرتبة — تهانينا!
           </p>
         </div>
       )}
 
       {/* Payout info */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         تصرف أرباحكِ السنوية في {payoutMonth} من كل عام
+        تصرف أرباحكِ السنوية في {payoutMonth} من كل عام
       </p>
     </div>
   );

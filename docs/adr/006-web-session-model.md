@@ -22,11 +22,11 @@ Adopt **server-owned, HttpOnly cookies** for web sessions, with a bearer-token f
 
 ### Target architecture
 
-| Client | Access credential | Refresh credential | Storage |
-|---|---|---|---|
-| Web | Short-lived JWT in `HttpOnly`, `Secure`, `SameSite=Lax` cookie named `gob_access` | Rotating JWT in `HttpOnly`, `Secure`, `SameSite=Strict` cookie named `gob_refresh` with `Path=/api/trpc/auth.refresh` | Cookies only; no JavaScript access |
-| Mobile | Short-lived JWT in memory (React state) | Rotating JWT in Expo SecureStore | SecureStore for refresh; memory for access |
-| Socket.IO | Cookie-authenticated same-origin (web) or token param (mobile) | Never sent to Socket.IO | N/A |
+| Client    | Access credential                                                                 | Refresh credential                                                                                                    | Storage                                    |
+| --------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| Web       | Short-lived JWT in `HttpOnly`, `Secure`, `SameSite=Lax` cookie named `gob_access` | Rotating JWT in `HttpOnly`, `Secure`, `SameSite=Strict` cookie named `gob_refresh` with `Path=/api/trpc/auth.refresh` | Cookies only; no JavaScript access         |
+| Mobile    | Short-lived JWT in memory (React state)                                           | Rotating JWT in Expo SecureStore                                                                                      | SecureStore for refresh; memory for access |
+| Socket.IO | Cookie-authenticated same-origin (web) or token param (mobile)                    | Never sent to Socket.IO                                                                                               | N/A                                        |
 
 ### Session lifecycle
 
@@ -55,15 +55,16 @@ PASSWORD CHANGE / ACCOUNT SUSPENSION:
 
 ### Cookie configuration (production)
 
-| Cookie | HttpOnly | Secure | SameSite | Path | Max-Age |
-|---|---|---|---|---|---|
-| `gob_access` | true | true | Lax | / | 900 (15 min) |
-| `gob_refresh` | true | true | Strict | /api/trpc | 604800 (7 days) |
-| `csrf-token` | false | true | Strict | / | 86400 (24h) |
+| Cookie        | HttpOnly | Secure | SameSite | Path      | Max-Age         |
+| ------------- | -------- | ------ | -------- | --------- | --------------- |
+| `gob_access`  | true     | true   | Lax      | /         | 900 (15 min)    |
+| `gob_refresh` | true     | true   | Strict   | /api/trpc | 604800 (7 days) |
+| `csrf-token`  | false    | true   | Strict   | /         | 86400 (24h)     |
 
 ## Consequences
 
 ### Positive
+
 - Single source of truth: middleware, SSR, tRPC, exports all read the same cookie
 - XSS-resistant: tokens are never accessible to JavaScript
 - CSRF-resistant: refresh cookie is SameSite=Strict + path-scoped
@@ -71,6 +72,7 @@ PASSWORD CHANGE / ACCOUNT SUSPENSION:
 - Mobile path preserved via Authorization header fallback
 
 ### Negative
+
 - Mobile clients must send tokens via header (needs adapter)
 - Web clients can no longer read access token expiry from JS (rely on /me endpoint)
 - Deployment must ensure `Secure` flag is set (requires HTTPS)

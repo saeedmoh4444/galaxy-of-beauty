@@ -18,7 +18,7 @@ The platform is **not yet production-ready** — it is now **verifiably correct 
 ## Feature Matrix
 
 | Domain | Web (Next.js) | Mobile (Expo) | API (tRPC) | DB (Prisma) | Tests | Status |
-|---|---|---|---|---|---|---|
+| ------ | ------------- | ------------- | ---------- | ----------- | ----- | ------ |
 
 | Auth & Sessions | ✅ | ✅ | ✅ | ✅ | 20 tests | ✅ |
 | Booking Engine | ✅ | ✅ | ✅ | ✅ | 10 tests | ✅ |
@@ -71,13 +71,13 @@ docker compose config -q   # ✅ Valid configuration
 
 See `.env.example` for the complete template. Required variables:
 
-| Variable | Purpose | Min Length |
-|---|---|---|
-| `DATABASE_URL` | PostgreSQL connection | — |
-| `JWT_ACCESS_SECRET` | Access token signing | 32 chars |
-| `JWT_REFRESH_SECRET` | Refresh token signing | 32 chars |
-| `REDIS_URL` | Redis connection (optional, defaults to localhost) | — |
-| `NODE_ENV` | Environment (`development`/`production`/`test`) | — |
+| Variable             | Purpose                                            | Min Length |
+| -------------------- | -------------------------------------------------- | ---------- |
+| `DATABASE_URL`       | PostgreSQL connection                              | —          |
+| `JWT_ACCESS_SECRET`  | Access token signing                               | 32 chars   |
+| `JWT_REFRESH_SECRET` | Refresh token signing                              | 32 chars   |
+| `REDIS_URL`          | Redis connection (optional, defaults to localhost) | —          |
+| `NODE_ENV`           | Environment (`development`/`production`/`test`)    | —          |
 
 All sensitive values are commented out in `.env.example`. Production startup validates secrets are not default/weak values.
 
@@ -88,6 +88,7 @@ All sensitive values are commented out in `.env.example`. Production startup val
 **NONE** — all issues identified in the evaluation report have been either resolved or documented with compensating controls and target dates.
 
 ### Resolved (20 items)
+
 - Circular dependency (shared↔UI)
 - Frozen lockfile install failure
 - Root build failure
@@ -112,6 +113,7 @@ All sensitive values are commented out in `.env.example`. Production startup val
 - Hardcoded `<html lang="ar">`
 
 ### Accepted with compensating controls (documented in SECURITY.md)
+
 - Next.js 14.2.35 vulnerabilities (8 high) — Next.js 15 migration planned Q4 2026
 - Socket.IO parser vulnerability (1 high) — mitigated by Zod validation + rate limiting
 - image-size parser vulnerabilities (2 high) — Next.js transitive dep, restricted remotePatterns
@@ -144,42 +146,46 @@ b9303aee Phase 0: Preserve and classify working tree — add .history/, backups/
 
 ## Program Metrics
 
-| Metric | Evaluation Baseline | After Remediation | Target |
-|---|---|---|---|
-| Frozen install | ❌ FAIL | ✅ PASS | ✅ |
-| Root build | ❌ FAIL | ✅ PASS | ✅ |
-| Format check | ❌ 1509 files | ✅ 0 warnings | ✅ |
-| CI success rate | 0/38 | 🔄 Ready (fixed) | ≥95% |
-| High prod vulns | 24 | 15 accepted | 0 unaccepted |
-| API namespaces tested | ~23/243 (9.5%) | ~23/243 (9.5%) | 100% Tier 1 |
-| explicit `any` signals | ~1,936 | 1,401 (-28%) | 730 (-48%) |
-| ESLint-disable directives | 213 | 206 | Declining |
-| Human-authored PRs | 0 | 1 (PR #44) | All via reviewed PR |
-| Open technical issues | 0 | 18 tracked | All P0/P1 owned |
+| Metric                    | Evaluation Baseline | After Remediation | Target              |
+| ------------------------- | ------------------- | ----------------- | ------------------- |
+| Frozen install            | ❌ FAIL             | ✅ PASS           | ✅                  |
+| Root build                | ❌ FAIL             | ✅ PASS           | ✅                  |
+| Format check              | ❌ 1509 files       | ✅ 0 warnings     | ✅                  |
+| CI success rate           | 0/38                | 🔄 Ready (fixed)  | ≥95%                |
+| High prod vulns           | 24                  | 15 accepted       | 0 unaccepted        |
+| API namespaces tested     | ~23/243 (9.5%)      | ~23/243 (9.5%)    | 100% Tier 1         |
+| explicit `any` signals    | ~1,936              | 1,401 (-28%)      | 730 (-48%)          |
+| ESLint-disable directives | 213                 | 206               | Declining           |
+| Human-authored PRs        | 0                   | 1 (PR #44)        | All via reviewed PR |
+| Open technical issues     | 0                   | 18 tracked        | All P0/P1 owned     |
 
 ---
 
 ## Recommendations
 
 ### Immediate (this week)
+
 1. **Merge PR #44** into master after review
 2. **Enable branch protection** on master (requires repo admin)
 3. **Run CI** on the merged branch to verify green pipeline
 4. **Notify users** of auth change (re-login required after deploy)
 
 ### Short-term (30 days)
+
 1. **Next.js 15 migration** — address the 8 high vulns, App Router compatibility
 2. **Tier 1 test coverage** — auth, bookings, payments, wallet, admin (currently 9.5%)
 3. **Real ESLint setup** — replace `tsc --noEmit` with actual ESLint across all workspaces
 4. **womensServices.ts split** — 3,626-line file → 4 domain modules
 
 ### Medium-term (90 days)
+
 1. **Mobile `any` budget** — 943 → 500 usages
 2. **Dependency audit gate** — make CI audit blocking (currently non-blocking)
 3. **Feature flags** for 10 experimental features
 4. **Database backup restore drill**
 
 ### Long-term (Q4 2026)
+
 1. **Immutable deployment pipeline** — build once, promote by digest
 2. **TaskFlow implementation** — separate repository per assessment spec
 3. **Archive unused features** — 3 models flagged, ~10 experimental routers

@@ -51,7 +51,7 @@ export default function CalendarSyncPage(): JSX.Element {
                 onClick={() => connectMut.mutate({ authCode: 'google-auth-code' })}
                 loading={connectMut.isPending}
               >
-                 ربط تقويم قوقل
+                ربط تقويم قوقل
               </Button>
             )}
           </div>

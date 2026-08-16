@@ -62,9 +62,7 @@ export function BeautyChallengeCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-emerald-700 dark:text-emerald-300">
           تحدي 30 يوم
         </h4>
@@ -80,7 +78,7 @@ export function BeautyChallengeCard({
             اليوم {today} من {totalDays}
           </span>
           <span className="text-xs font-bold text-emerald-800 dark:text-emerald-200">
-            {completedDays}/{totalDays} 
+            {completedDays}/{totalDays}
           </span>
         </div>
         <div className="mt-1.5 h-3 overflow-hidden rounded-full bg-emerald-100 dark:bg-emerald-900">
@@ -108,7 +106,7 @@ export function BeautyChallengeCard({
             onClick={() => onCheckIn?.(todayTask.day)}
             className="mt-2 rounded-full bg-emerald-600 px-4 py-1.5 text-[10px] font-bold text-white hover:bg-emerald-700 active:scale-95 transition-all"
           >
-             أنجزتها!
+            أنجزتها!
           </button>
         </div>
       )}
@@ -141,7 +139,7 @@ export function BeautyChallengeCard({
 
       {/* Motivation */}
       <p className="mt-3 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         {30 - completedDays} يوم متبقي — أنتِ قادرة!
+        {30 - completedDays} يوم متبقي — أنتِ قادرة!
       </p>
     </div>
   );

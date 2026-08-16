@@ -38,9 +38,7 @@ export function BeautyStyleMatchCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">
           تحليل الأسلوب
         </h4>

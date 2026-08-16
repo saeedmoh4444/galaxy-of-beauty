@@ -81,7 +81,7 @@ export default function ColorAnalysisPage(): JSX.Element {
           <p className="mt-2 text-sm text-text-secondary dark:text-gray-400"> {s.skin}</p>
 
           <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
-             لوحة الألوان
+            لوحة الألوان
           </h4>
           <div className="mt-3 flex gap-2">
             {s.colors.map((c, i) => (
@@ -94,7 +94,7 @@ export default function ColorAnalysisPage(): JSX.Element {
           </div>
 
           <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
-             المكياج المناسب
+            المكياج المناسب
           </h4>
           <div className="mt-2 space-y-2">
             {s.makeup.map((m, i) => (
@@ -118,7 +118,7 @@ export default function ColorAnalysisPage(): JSX.Element {
           type="button"
           className="mt-6 w-full rounded-2xl bg-rose-600 py-4 text-center text-base font-bold text-white hover:bg-rose-700 transition-colors"
         >
-           حللي بشرتكِ
+          حللي بشرتكِ
         </button>
       </PageContainer>
     </DashboardLayout>

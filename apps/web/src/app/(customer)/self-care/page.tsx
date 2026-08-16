@@ -31,9 +31,7 @@ export default function SelfCarePage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-           العناية الذاتية
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">العناية الذاتية</h1>
 
         {today ? (
           <Card padding="lg" className="text-center">
@@ -58,7 +56,9 @@ export default function SelfCarePage(): JSX.Element {
             <p className="mt-2 text-center text-sm text-brand-600">{MOOD_LABELS[mood - 1]}</p>
             <div className="mt-4 space-y-3">
               <div>
-                <label htmlFor="sc-energy" className="mb-1 block text-xs text-text-secondary">الطاقة (1-5)</label>
+                <label htmlFor="sc-energy" className="mb-1 block text-xs text-text-secondary">
+                  الطاقة (1-5)
+                </label>
                 <input
                   id="sc-energy"
                   type="range"
@@ -106,7 +106,7 @@ export default function SelfCarePage(): JSX.Element {
               loading={checkinMut.isPending}
               className="mt-4 w-full"
             >
-               حفظ التقييم
+              حفظ التقييم
             </Button>
           </Card>
         )}

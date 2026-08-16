@@ -136,14 +136,12 @@ export function MentalWellnessCard({
       {/* Package */}
       <div className="mt-3 rounded-xl bg-gray-50 p-3 dark:bg-gray-800">
         <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-           {m.packageName}
+          {m.packageName}
         </p>
         <div className="mt-1.5 space-y-0.5">
           {m.recommendations.map((r) => (
             <div key={r} className="flex items-center gap-1.5">
-              <span className="text-[10px] text-text-tertiary" aria-hidden="true">
-                
-              </span>
+              <span className="text-[10px] text-text-tertiary" aria-hidden="true"></span>
               <span className="text-[10px] text-text-secondary dark:text-gray-300">{r}</span>
             </div>
           ))}
@@ -171,12 +169,12 @@ export function MentalWellnessCard({
         onClick={onJournalPrompt}
         className="mt-2 w-full rounded-lg border border-purple-100 bg-purple-50 py-2 text-[10px] font-medium text-purple-700 hover:bg-purple-100 dark:border-purple-900 dark:bg-purple-950 dark:text-purple-300 transition-colors"
       >
-         اكتبي مشاعركِ في يومياتكِ الجمالية
+        اكتبي مشاعركِ في يومياتكِ الجمالية
       </button>
 
       {/* Wellness tip */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         &quot;الجمال يبدأ من الداخل&quot; — عنايتكِ بنفسكِ عبادة
+        &quot;الجمال يبدأ من الداخل&quot; — عنايتكِ بنفسكِ عبادة
       </p>
     </div>
   );

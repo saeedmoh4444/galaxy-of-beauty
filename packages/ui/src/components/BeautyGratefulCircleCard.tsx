@@ -39,9 +39,7 @@ export function BeautyGratefulCircleCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true">
-            
-          </span>
+          <span className="text-xl" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">دائرة الامتنان</h4>
             <p className="text-[10px] text-rose-500 dark:text-rose-400">
@@ -74,7 +72,7 @@ export function BeautyGratefulCircleCard({
         onClick={onSend}
         className="mt-3 w-full rounded-xl bg-rose-600 py-2 text-xs font-bold text-white hover:bg-rose-700 active:scale-[0.98] transition-all"
       >
-        أرسلي شكراً 
+        أرسلي شكراً
       </button>
     </div>
   );

@@ -121,9 +121,7 @@ export function AccessibleSalonBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true">
-          
-        </span>
+        <span className="text-lg" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">صالون شامل للجميع</h4>
           <p className="text-[10px] text-blue-500 dark:text-blue-400">
@@ -158,7 +156,7 @@ export function AccessibleSalonBadge({
       {/* Footer pledge */}
       <div className="mt-3 rounded-xl bg-gradient-to-r from-blue-50 to-purple-50 p-3 dark:from-blue-950 dark:to-purple-950">
         <p className="text-center text-[10px] font-medium text-blue-700 dark:text-blue-300">
-           كل امرأة، كل جسد، كل جمال — مرحباً بكِ كما أنتِ
+          كل امرأة، كل جسد، كل جمال — مرحباً بكِ كما أنتِ
         </p>
       </div>
     </div>

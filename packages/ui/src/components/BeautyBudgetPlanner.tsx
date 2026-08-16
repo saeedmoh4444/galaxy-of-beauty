@@ -49,9 +49,7 @@ export function BeautyBudgetPlanner({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true">
-            
-          </span>
+          <span className="text-xl" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
               ميزانية الجمال
@@ -106,7 +104,7 @@ export function BeautyBudgetPlanner({
       {/* Category breakdown */}
       <div className="mt-3 space-y-1.5">
         <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-           توزيع الميزانية
+          توزيع الميزانية
         </p>
         {CATEGORIES.map((cat) => {
           const amount = Math.round(beautyBudget * (cat.percentage / 100));
@@ -134,7 +132,7 @@ export function BeautyBudgetPlanner({
 
       {/* Tip */}
       <p className="mt-3 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         خصصي {beautyPercent}% من دخلكِ لجمالكِ — واستمتعي بدون تأنيب ضمير
+        خصصي {beautyPercent}% من دخلكِ لجمالكِ — واستمتعي بدون تأنيب ضمير
       </p>
     </div>
   );

@@ -31,7 +31,7 @@ export function RelatedServices({
   return (
     <div className={className}>
       <h3 className="mb-3 text-lg font-bold text-text-primary dark:text-gray-100">
-         قد يعجبكِ أيضاً
+        قد يعجبكِ أيضاً
       </h3>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((s) => (

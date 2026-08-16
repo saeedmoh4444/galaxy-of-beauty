@@ -27,9 +27,7 @@ export function BeautyGoalTracker({
 
   return (
     <div className={`space-y-3 ${className}`}>
-      <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-         أهدافي التعليمية
-      </h4>
+      <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">أهدافي التعليمية</h4>
       {goals.map((goal, i) => (
         <div key={i} className="rounded-lg bg-white p-3 dark:bg-gray-900">
           <div className="mb-1.5 flex items-center justify-between">

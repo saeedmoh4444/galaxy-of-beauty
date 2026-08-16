@@ -35,15 +35,13 @@ export function BeautyRecipeCard({ recipe, className = '' }: BeautyRecipeCardPro
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             {recipe.title}
           </h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
-             {recipe.duration} ·  طبيعي 100%
+            {recipe.duration} · طبيعي 100%
             {recipe.forSkin && ` · ${recipe.forSkin}`}
           </p>
         </div>
@@ -81,7 +79,7 @@ export function BeautyRecipeCard({ recipe, className = '' }: BeautyRecipeCardPro
 
       {/* Caution */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         اختبري على جزء صغير من بشرتكِ قبل الاستخدام
+        اختبري على جزء صغير من بشرتكِ قبل الاستخدام
       </p>
     </div>
   );

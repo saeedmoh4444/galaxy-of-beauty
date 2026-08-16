@@ -20,7 +20,7 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
     <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
       <div className="text-center">
         <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">
-           صناديق التجميل الشهرية
+          صناديق التجميل الشهرية
         </h1>
         <p className="mt-3 text-text-secondary dark:text-gray-400">
           اشتركي في باقة شهرية واحصلي على خدمات تجميل منتظمة بأسعار مخفضة

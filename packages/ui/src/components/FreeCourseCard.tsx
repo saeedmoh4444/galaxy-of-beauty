@@ -137,9 +137,7 @@ export function FreeCourseCard({
       {/* Progress / Certificate row */}
       {course.hasCertificate && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-teal-50 px-2 py-1 dark:bg-teal-950">
-          <span className="text-xs" aria-hidden="true">
-            
-          </span>
+          <span className="text-xs" aria-hidden="true"></span>
           <span className="text-[10px] font-medium text-teal-700 dark:text-teal-300">
             شهادة معتمدة عند الإكمال
           </span>
@@ -165,7 +163,7 @@ export function FreeCourseCard({
           'active:scale-[0.98]',
         )}
       >
-        ابدئي التعلم الآن 
+        ابدئي التعلم الآن
       </button>
     </div>
   );

@@ -72,7 +72,7 @@ export default function NightModeScreen(): JSX.Element {
       </View>
 
       <Text style={[styles.hint, enabled && styles.hintDark]}>
-         الوضع الليلي يقلل إجهاد العين ويوفر البطارية
+        الوضع الليلي يقلل إجهاد العين ويوفر البطارية
       </Text>
     </ScrollView>
   );

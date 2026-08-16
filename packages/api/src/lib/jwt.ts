@@ -22,7 +22,12 @@ const ISSUER = 'galaxy-of-beauty';
 const AUDIENCE = 'galaxy-of-beauty-api';
 const ALGORITHM = 'HS256';
 
-function signToken(payload: JwtPayload, secret: string, expiry: string, type: 'access' | 'refresh'): string {
+function signToken(
+  payload: JwtPayload,
+  secret: string,
+  expiry: string,
+  type: 'access' | 'refresh',
+): string {
   return jwt.sign(
     {
       ...payload,
@@ -39,7 +44,11 @@ function signToken(payload: JwtPayload, secret: string, expiry: string, type: 'a
   );
 }
 
-function verifyToken(token: string, secret: string, expectedType: 'access' | 'refresh'): JwtPayload {
+function verifyToken(
+  token: string,
+  secret: string,
+  expectedType: 'access' | 'refresh',
+): JwtPayload {
   const decoded = jwt.verify(token, secret, {
     algorithms: [ALGORITHM],
     issuer: ISSUER,

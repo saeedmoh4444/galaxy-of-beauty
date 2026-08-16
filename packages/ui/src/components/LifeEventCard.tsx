@@ -146,12 +146,12 @@ export function LifeEventCard({ event, onBook, className = '' }: LifeEventCardPr
       {/* Package name */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-           {e.packageName}
+          {e.packageName}
         </p>
         <ul className="mt-1.5 grid grid-cols-2 gap-x-2 gap-y-0.5">
           {e.contents.map((item) => (
             <li key={item} className="text-[10px] text-text-secondary dark:text-gray-300">
-               {item}
+              {item}
             </li>
           ))}
         </ul>

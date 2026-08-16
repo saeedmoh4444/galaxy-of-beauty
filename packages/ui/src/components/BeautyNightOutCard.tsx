@@ -35,16 +35,14 @@ export function BeautyNightOutCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-indigo-800 dark:text-indigo-200">ليلة خارجاً</h4>
         <p className="text-[10px] text-indigo-500 dark:text-indigo-400">
           خدمات سريعة لليلتكِ الخاصة
         </p>
         {available && (
           <span className="mt-1 inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-bold text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300">
-             متوفر الآن
+            متوفر الآن
           </span>
         )}
       </div>
@@ -82,7 +80,7 @@ export function BeautyNightOutCard({
       </button>
 
       <p className="mt-2 text-center text-[9px] text-indigo-500 dark:text-indigo-400">
-         الليلة ليلتكِ — تألقي
+        الليلة ليلتكِ — تألقي
       </p>
     </div>
   );

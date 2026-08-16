@@ -201,7 +201,7 @@ export function CyclePhaseCard({
 
       {/* Footer tip */}
       <p className="mt-2 text-center text-[9px] italic text-text-tertiary dark:text-gray-500">
-         CycleSync™ — لأن جمالكِ مرتبط بصحتكِ
+        CycleSync™ — لأن جمالكِ مرتبط بصحتكِ
       </p>
     </div>
   );

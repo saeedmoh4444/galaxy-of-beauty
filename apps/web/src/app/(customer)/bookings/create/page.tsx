@@ -168,7 +168,9 @@ export default function CreateBookingPage(): JSX.Element {
 
             {variants.length > 0 && (
               <div className="mb-4">
-                <label htmlFor="bc-variant" className="mb-2 block text-sm text-text-secondary">اختر المتغير</label>
+                <label htmlFor="bc-variant" className="mb-2 block text-sm text-text-secondary">
+                  اختر المتغير
+                </label>
                 <select
                   id="bc-variant"
                   className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
@@ -186,7 +188,9 @@ export default function CreateBookingPage(): JSX.Element {
             )}
 
             <div className="mb-4">
-              <label htmlFor="bc-address" className="mb-2 block text-sm text-text-secondary">اختر العنوان</label>
+              <label htmlFor="bc-address" className="mb-2 block text-sm text-text-secondary">
+                اختر العنوان
+              </label>
               <select
                 id="bc-address"
                 className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
@@ -203,7 +207,9 @@ export default function CreateBookingPage(): JSX.Element {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="bc-promo" className="mb-2 block text-sm text-text-secondary">كود الخصم (اختياري)</label>
+              <label htmlFor="bc-promo" className="mb-2 block text-sm text-text-secondary">
+                كود الخصم (اختياري)
+              </label>
               <Input
                 id="bc-promo"
                 value={promoCode}
@@ -213,7 +219,9 @@ export default function CreateBookingPage(): JSX.Element {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="bc-notes" className="mb-2 block text-sm text-text-secondary">ملاحظات</label>
+              <label htmlFor="bc-notes" className="mb-2 block text-sm text-text-secondary">
+                ملاحظات
+              </label>
               <textarea
                 id="bc-notes"
                 className="w-full rounded-lg border border-gray-300 p-3 text-sm dark:border-gray-600 dark:bg-gray-800"

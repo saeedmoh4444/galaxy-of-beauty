@@ -22,7 +22,7 @@ export default function BlogScreen(): JSX.Element {
       onRetry={() => blog.refetch()}
     >
       <Text style={styles.title}> مدونة الجمال</Text>
-      {(((blog.data as { items?: BlogPost[] } | undefined)?.items) || []).map((post, i) => (
+      {((blog.data as { items?: BlogPost[] } | undefined)?.items || []).map((post, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.postTitle}>{post.titleJson?.ar ?? ''}</Text>
           <Text style={styles.postDate}>

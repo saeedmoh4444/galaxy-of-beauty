@@ -53,7 +53,7 @@ export function AddonSuggestions({
   return (
     <div>
       <h4 className="mb-3 text-sm font-semibold text-gray-900 dark:text-gray-100">
-         أضيفي إلى حجزكِ
+        أضيفي إلى حجزكِ
       </h4>
       <div className="grid gap-2 sm:grid-cols-2">
         {addons.map((a) => {

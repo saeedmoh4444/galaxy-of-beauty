@@ -42,9 +42,7 @@ export function BeautyTriviaCard({ className = '' }: BeautyTriviaCardProps): JSX
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true">
-          
-        </span>
+        <span className="text-lg" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">هل تعلمين؟</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">
@@ -73,7 +71,7 @@ export function BeautyTriviaCard({ className = '' }: BeautyTriviaCardProps): JSX
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         المعرفة جمال — تعلمي شيئاً جديداً كل يوم
+        المعرفة جمال — تعلمي شيئاً جديداً كل يوم
       </p>
     </div>
   );

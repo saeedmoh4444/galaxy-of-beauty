@@ -51,7 +51,7 @@ export default function TechWaitlistPage(): JSX.Element {
                       </p>
                     </div>
                     <span className="rounded-full bg-yellow-100 px-3 py-1 text-xs text-yellow-700">
-                       معلق
+                      معلق
                     </span>
                   </div>
                 </Card>

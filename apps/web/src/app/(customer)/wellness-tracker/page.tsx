@@ -57,7 +57,10 @@ export default function WellnessTrackerPage(): JSX.Element {
           <h3 className="font-bold text-lg mb-4"> تسجيل اليوم</h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label htmlFor="wt-water" className="text-sm font-semibold"> الماء (أكواب)</label>
+              <label htmlFor="wt-water" className="text-sm font-semibold">
+                {' '}
+                الماء (أكواب)
+              </label>
               <input
                 id="wt-water"
                 type="number"
@@ -69,7 +72,10 @@ export default function WellnessTrackerPage(): JSX.Element {
               />
             </div>
             <div>
-              <label htmlFor="wt-sleep" className="text-sm font-semibold"> النوم (ساعات)</label>
+              <label htmlFor="wt-sleep" className="text-sm font-semibold">
+                {' '}
+                النوم (ساعات)
+              </label>
               <input
                 id="wt-sleep"
                 type="number"
@@ -81,7 +87,9 @@ export default function WellnessTrackerPage(): JSX.Element {
               />
             </div>
             <div>
-              <label htmlFor="wt-steps" className="text-sm font-semibold">‍️ الخطوات</label>
+              <label htmlFor="wt-steps" className="text-sm font-semibold">
+                ‍️ الخطوات
+              </label>
               <input
                 id="wt-steps"
                 type="number"
@@ -124,7 +132,7 @@ export default function WellnessTrackerPage(): JSX.Element {
               loading={checkinMut.isPending}
               className="w-full"
             >
-               حفظ
+              حفظ
             </Button>
           </div>
         </Card>

@@ -49,7 +49,7 @@ export default function BNPLPage(): JSX.Element {
               )}
             </div>
             <Button variant="ghost" className="mt-4" onClick={() => setResult(null)}>
-               إعادة
+              إعادة
             </Button>
           </Card>
         ) : (

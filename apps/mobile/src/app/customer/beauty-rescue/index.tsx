@@ -140,7 +140,7 @@ export default function BeautyRescueScreen(): JSX.Element {
           marginBottom: 12,
         }}
       >
-         نصائح SOS منزلية
+        نصائح SOS منزلية
       </Text>
       {[
         {
@@ -256,7 +256,7 @@ export default function BeautyRescueScreen(): JSX.Element {
           marginBottom: 12,
         }}
       >
-         عناية ما بعد الإجراءات
+        عناية ما بعد الإجراءات
       </Text>
       {[
         {

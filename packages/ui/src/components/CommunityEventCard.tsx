@@ -67,12 +67,12 @@ export function CommunityEventCard({
         <div className="mt-2">
           <div className="flex items-center justify-between text-[10px]">
             <span className="text-text-tertiary dark:text-gray-500">
-               {event.attendees} مسجلة
+              {event.attendees} مسجلة
               {event.maxAttendees && ` / ${event.maxAttendees}`}
             </span>
             {isFull && (
               <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[9px] font-bold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
-                 اكتمل
+                اكتمل
               </span>
             )}
           </div>
@@ -112,7 +112,7 @@ export function CommunityEventCard({
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         لقاءات حقيقية لنساء حقيقيات
+        لقاءات حقيقية لنساء حقيقيات
       </p>
     </div>
   );

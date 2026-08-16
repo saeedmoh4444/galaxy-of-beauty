@@ -28,10 +28,12 @@ const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900
 
 export default function BookingDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const detail = trpc.bookings.getById.useQuery(
-    { id: Number(id) },
-    { enabled: !!id },
-  ) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const detail = trpc.bookings.getById.useQuery({ id: Number(id) }, { enabled: !!id }) ?? {
+    data: null,
+    isLoading: false,
+    isError: false,
+    refetch: () => {},
+  };
   const data = detail.data as Record<string, unknown> | undefined;
 
   return (

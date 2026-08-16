@@ -38,9 +38,7 @@ export function BeautyGratitudeCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">
           يوميات الامتنان
         </h4>
@@ -65,7 +63,7 @@ export function BeautyGratitudeCard({
       </button>
 
       <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">
-         الامتنان يجعل الجمال يدوم
+        الامتنان يجعل الجمال يدوم
       </p>
     </div>
   );

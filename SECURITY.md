@@ -2,10 +2,10 @@
 
 ## Supported Versions
 
-| Version | Supported          |
-|---------|--------------------|
-| master  | ✅ Active development |
-| Latest release | ✅ Supported |
+| Version        | Supported             |
+| -------------- | --------------------- |
+| master         | ✅ Active development |
+| Latest release | ✅ Supported          |
 
 ## Vulnerability Reporting
 
@@ -64,15 +64,16 @@ All 8 Next.js 14.2.35 advisories were resolved by upgrading to **Next.js 15.5.23
 
 ## Planned Remediation
 
-| Priority | Package | Action | Timeline |
-|---|---|---|---|
-| ✅ Complete | Next.js 15 | Migrated 14.2.35 → 15.5.23 | Aug 2026 |
-| P1 | Socket.IO | Upgrade parser to patched version | Q4 2026 |
-| P2 | Expo SDK | Resolve peer dependency alignment | Q4 2026 |
+| Priority    | Package    | Action                            | Timeline |
+| ----------- | ---------- | --------------------------------- | -------- |
+| ✅ Complete | Next.js 15 | Migrated 14.2.35 → 15.5.23        | Aug 2026 |
+| P1          | Socket.IO  | Upgrade parser to patched version | Q4 2026  |
+| P2          | Expo SDK   | Resolve peer dependency alignment | Q4 2026  |
 
 ## Audit in CI
 
 `pnpm audit --prod` runs in CI on every PR. **New** critical/high findings must be either:
+
 1. Resolved in the PR, OR
 2. Accepted with a time-bounded exception (max 90 days), documented in this file
 

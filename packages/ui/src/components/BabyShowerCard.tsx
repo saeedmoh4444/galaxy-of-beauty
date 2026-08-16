@@ -31,9 +31,7 @@ export function BabyShowerCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-sky-800 dark:text-sky-200">بيبي شاور</h4>
         <p className="text-[10px] text-sky-500 dark:text-sky-400">إطلالة مميزة للأم المنتظرة</p>
         {guests && (
@@ -63,7 +61,7 @@ export function BabyShowerCard({
           onClick={onBook}
           className="rounded-xl bg-sky-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-sky-700 active:scale-[0.98] transition-all"
         >
-          احجزي 
+          احجزي
         </button>
       </div>
     </div>

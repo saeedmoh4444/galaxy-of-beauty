@@ -81,7 +81,7 @@ export default function VirtualConsultationPage(): JSX.Element {
         {consultant && (
           <Card padding="lg">
             <h3 className="font-bold mb-4">
-               اختر الوقت — {consultant.emoji} {consultant.name}
+              اختر الوقت — {consultant.emoji} {consultant.name}
             </h3>
             <div className="flex flex-wrap gap-2 mb-4">
               {consultant.slots.map((s) => (
@@ -107,7 +107,7 @@ export default function VirtualConsultationPage(): JSX.Element {
                 loading={bookMut.isPending}
                 className="w-full"
               >
-                 احجزي — {formatCurrency(consultant.price)}
+                احجزي — {formatCurrency(consultant.price)}
               </Button>
             )}
           </Card>

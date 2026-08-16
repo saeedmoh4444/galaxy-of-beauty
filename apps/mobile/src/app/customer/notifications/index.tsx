@@ -52,12 +52,8 @@ export default function NotificationsScreen(): JSX.Element {
       </View>
       {data?.map((n, i) => (
         <TouchableOpacity key={i} style={[styles.card, !n.isRead && styles.unread]}>
-          <Text style={styles.notifTitle}>
-            {n.titleJson?.ar ?? n.titleAr ?? ''}
-          </Text>
-          <Text style={styles.notifBody}>
-            {n.bodyJson?.ar ?? n.body ?? ''}
-          </Text>
+          <Text style={styles.notifTitle}>{n.titleJson?.ar ?? n.titleAr ?? ''}</Text>
+          <Text style={styles.notifBody}>{n.bodyJson?.ar ?? n.body ?? ''}</Text>
           <Text style={styles.notifTime}>
             {n.createdAt ? new Date(n.createdAt).toLocaleString('ar-SA') : ''}
           </Text>

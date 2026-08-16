@@ -218,8 +218,7 @@ export const referralRouter = router({
 
     // Tiered rewards
     const count = completed.length;
-    const tier =
-      count >= 10 ? ' الماسي' : count >= 5 ? ' ذهبي' : count >= 1 ? ' فضي' : ' مبتدئ';
+    const tier = count >= 10 ? ' الماسي' : count >= 5 ? ' ذهبي' : count >= 1 ? ' فضي' : ' مبتدئ';
     const nextTier =
       count >= 10
         ? null

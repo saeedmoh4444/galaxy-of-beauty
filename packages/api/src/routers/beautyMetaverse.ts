@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
-import { customerProcedure, publicProcedure, router , requireFeatureFlag } from '../trpc';
+import { customerProcedure, publicProcedure, router, requireFeatureFlag } from '../trpc';
 
 const SALONS = [
   { id: 1, name: 'صالون نورة', technician: 'نورة العمري', emoji: '', visitors: 450, rating: 4.9 },
@@ -33,7 +33,9 @@ const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.BEAUTY_METAVERSE);
 export const beautyMetaverseRouter = router({
   salons: publicProcedure.use(flag).query(() => SALONS),
   avatars: customerProcedure.use(flag).query(() => AVATARS),
-  enter: customerProcedure.use(flag).input(z.object({ salonId: z.number(), avatar: z.string() }))
+  enter: customerProcedure
+    .use(flag)
+    .input(z.object({ salonId: z.number(), avatar: z.string() }))
     .mutation(async ({ input }) => {
       const salon = SALONS.find((s) => s.id === input.salonId);
       return {

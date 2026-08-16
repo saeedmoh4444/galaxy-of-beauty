@@ -175,7 +175,7 @@ export function ConsentShield({
       {/* Privacy pledge */}
       <div className="mt-3 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 p-3 text-center dark:from-emerald-950 dark:to-teal-950">
         <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
-           تعهد الخصوصية
+          تعهد الخصوصية
         </p>
         <p className="mt-0.5 text-[9px] text-emerald-600 dark:text-emerald-400">
           بياناتكِ ملككِ وحدكِ. يمكنكِ تغيير هذه الإعدادات في أي وقت. نحن لا نبيع بياناتكِ لأي طرف

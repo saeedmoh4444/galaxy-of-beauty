@@ -78,14 +78,10 @@ export function TeenBeautyCard({
       {/* Learning points */}
       {service.learningPoints && service.learningPoints.length > 0 && (
         <div className="mt-2 space-y-1">
-          <p className="text-[10px] font-bold text-purple-600 dark:text-purple-400">
-             راح تتعلم:
-          </p>
+          <p className="text-[10px] font-bold text-purple-600 dark:text-purple-400">راح تتعلم:</p>
           {service.learningPoints.map((point, i) => (
             <div key={i} className="flex items-center gap-1.5">
-              <span className="text-[10px] text-purple-400" aria-hidden="true">
-                
-              </span>
+              <span className="text-[10px] text-purple-400" aria-hidden="true"></span>
               <span className="text-[10px] text-text-secondary dark:text-gray-300">{point}</span>
             </div>
           ))}
@@ -109,9 +105,7 @@ export function TeenBeautyCard({
 
       {/* Age-appropriate reminder */}
       <div className="mt-2 flex items-start gap-2 rounded-xl bg-purple-50 p-2.5 dark:bg-purple-950">
-        <span className="text-sm" aria-hidden="true">
-          
-        </span>
+        <span className="text-sm" aria-hidden="true"></span>
         <div>
           <p className="text-[10px] font-bold text-purple-700 dark:text-purple-300">
             مناسبة لعمركِ

@@ -62,19 +62,19 @@ export function BeautySquadCard({
           onClick={onCreateEvent}
           className="flex-1 rounded-xl bg-fuchsia-600 py-2 text-[10px] font-bold text-white hover:bg-fuchsia-700 active:scale-[0.98] transition-all"
         >
-           لقاء جديد
+          لقاء جديد
         </button>
         <button
           type="button"
           onClick={onInvite}
           className="rounded-xl border border-fuchsia-200 bg-white px-4 py-2 text-[10px] font-bold text-fuchsia-700 hover:bg-fuchsia-50 dark:border-fuchsia-800 dark:bg-gray-800 dark:text-fuchsia-300"
         >
-           دعوة
+          دعوة
         </button>
       </div>
 
       <p className="mt-2 text-center text-[9px] text-fuchsia-500 dark:text-fuchsia-400">
-         صديقاتكِ هن عائلتكِ المختارة
+        صديقاتكِ هن عائلتكِ المختارة
       </p>
     </div>
   );

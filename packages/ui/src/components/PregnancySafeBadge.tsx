@@ -87,7 +87,7 @@ export function PregnancySafeBadge({
           <p className="text-[10px] text-text-tertiary dark:text-gray-400">{t.description}</p>
         </div>
         <span className="ml-auto shrink-0 rounded-full bg-white/70 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-black/20 dark:text-emerald-300">
-           آمن للحمل
+          آمن للحمل
         </span>
       </div>
 

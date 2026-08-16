@@ -46,8 +46,16 @@ interface AuditEntry {
  * in metadata. Use actor/target IDs for traceability.
  */
 export function audit(event: AuditEntry): void {
-  const { event: eventType, actorId, actorRole, targetId, targetType, outcome, metadata, clientIp } =
-    event;
+  const {
+    event: eventType,
+    actorId,
+    actorRole,
+    targetId,
+    targetType,
+    outcome,
+    metadata,
+    clientIp,
+  } = event;
 
   logger.info(
     {

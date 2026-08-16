@@ -103,28 +103,25 @@ export async function createGoogleCalendarEvent(
   event: CalendarEvent,
 ): Promise<string | null> {
   try {
-    const response = await fetch(
-      `${GOOGLE_CALENDAR_API_URL}/calendars/primary/events`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          summary: event.summary,
-          description: event.description || '',
-          start: {
-            dateTime: event.start,
-            timeZone: event.timezone || 'Asia/Riyadh',
-          },
-          end: {
-            dateTime: event.end,
-            timeZone: event.timezone || 'Asia/Riyadh',
-          },
-        }),
+    const response = await fetch(`${GOOGLE_CALENDAR_API_URL}/calendars/primary/events`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify({
+        summary: event.summary,
+        description: event.description || '',
+        start: {
+          dateTime: event.start,
+          timeZone: event.timezone || 'Asia/Riyadh',
+        },
+        end: {
+          dateTime: event.end,
+          timeZone: event.timezone || 'Asia/Riyadh',
+        },
+      }),
+    });
 
     const data = (await response.json()) as Record<string, unknown>;
     if (!response.ok) return null;

@@ -116,7 +116,7 @@ export default function VendorPortalPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-               إضافة
+              إضافة
             </Button>
           </div>
         </Modal>

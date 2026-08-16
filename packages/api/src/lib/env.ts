@@ -101,7 +101,9 @@ function validateProductionSecrets(env: Env): void {
     process.exit(1);
   }
   if (env.JWT_ACCESS_SECRET === env.JWT_REFRESH_SECRET) {
-    console.error(' PRODUCTION SAFETY: JWT_ACCESS_SECRET and JWT_REFRESH_SECRET must be different.');
+    console.error(
+      ' PRODUCTION SAFETY: JWT_ACCESS_SECRET and JWT_REFRESH_SECRET must be different.',
+    );
     process.exit(1);
   }
 }

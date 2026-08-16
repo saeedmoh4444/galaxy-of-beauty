@@ -92,7 +92,7 @@ export default function SocialChallengesScreen(): JSX.Element {
             </View>
             <View style={styles.cm}>
               <Text style={styles.cmi}>
-                 {c.participants} · ️ {c.duration}
+                {c.participants} · ️ {c.duration}
               </Text>
               <Text style={styles.cmi}> {c.prize}</Text>
             </View>

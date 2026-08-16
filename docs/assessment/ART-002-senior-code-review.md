@@ -19,6 +19,7 @@ const decoded = jwt.verify(token, getSecret());
 **Exploit**: Attacker crafts `header.{"role":"admin"}.` (empty signature) → gains admin access to any account.
 
 **Fix**:
+
 ```js
 const decoded = jwt.verify(token, getSecret(), { algorithms: ['HS256'] });
 ```
@@ -44,6 +45,7 @@ return res.status(500).json({ error: err.message, stack: err.stack });
 **Problem**: Full JWT logged to console (persisted in log files, shipped to log aggregators). Stack traces exposed to clients reveal internal paths, library versions, and code structure.
 
 **Fix**:
+
 ```js
 // Log only user ID, never the token
 logger.info({ userId: decoded.id }, 'User authenticated');
@@ -61,12 +63,12 @@ if (!rows.length) return res.status(403).send('User gone');
 **Problem**: Synchronous I/O blocks the event loop. No try/catch — a DB error crashes the process. `SELECT *` returns password hash unnecessarily.
 
 **Fix**:
+
 ```js
 try {
-  const user = await db.query(
-    'SELECT id, email, role, is_active FROM users WHERE id = $1',
-    [decoded.id]
-  );
+  const user = await db.query('SELECT id, email, role, is_active FROM users WHERE id = $1', [
+    decoded.id,
+  ]);
   if (!user.rows.length) {
     return res.status(401).json({ error: 'Authentication failed' });
   }
@@ -82,12 +84,15 @@ try {
 ### 5. Synchronous File Read on Every Request (MEDIUM)
 
 ```js
-function getSecret() { return fs.readFileSync('/etc/secrets/jwt.key', 'utf8').trim(); }
+function getSecret() {
+  return fs.readFileSync('/etc/secrets/jwt.key', 'utf8').trim();
+}
 ```
 
 **Problem**: `readFileSync` on the hot path (every authenticated request) blocks the event loop. At scale, this adds milliseconds of synchronous I/O per request.
 
 **Fix**: Read once at startup, validate, cache in memory:
+
 ```js
 const JWT_SECRET = (() => {
   const secret = fs.readFileSync('/etc/secrets/jwt.key', 'utf8').trim();
@@ -105,6 +110,7 @@ const JWT_SECRET = (() => {
 `401` returns `{ error: "..." }`, `403` returns plain text `"User gone"`, `500` returns `{ error, stack }`. Clients must handle three different response shapes.
 
 **Fix**: Use a consistent error format across all responses:
+
 ```js
 { error: { code: 'UNAUTHORIZED', message: '...' } }
 ```

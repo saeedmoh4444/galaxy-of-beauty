@@ -139,7 +139,7 @@ export default function BeautyRescuePage(): JSX.Element {
                 <div className="space-y-2 mb-4">
                   {emergency.tips.map((tip, i) => (
                     <p key={i} className="text-sm text-text-secondary">
-                       {tip}
+                      {tip}
                     </p>
                   ))}
                 </div>
@@ -157,7 +157,7 @@ export default function BeautyRescuePage(): JSX.Element {
                   <span>{formatCurrency(emergency.price * surcharge)}</span>
                 </div>
                 <Button onClick={() => setBooked(true)} className="w-full mt-4">
-                   اطلبي الإنقاذ
+                  اطلبي الإنقاذ
                 </Button>
               </Card>
             )}

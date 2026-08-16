@@ -140,7 +140,7 @@ export function BeautyCircleCard({
             </span>
             {circle.city && (
               <span className="text-[10px] text-text-tertiary dark:text-gray-500">
-                 {circle.city}
+                {circle.city}
               </span>
             )}
           </div>
@@ -182,7 +182,7 @@ export function BeautyCircleCard({
           )}
           {isAlmostFull && (
             <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:bg-amber-950 dark:text-amber-400">
-               أوشكت على الامتلاء
+              أوشكت على الامتلاء
             </span>
           )}
         </div>
@@ -191,9 +191,7 @@ export function BeautyCircleCard({
       {/* Next meetup */}
       {circle.nextMeetup && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-pink-50 px-2.5 py-1.5 dark:bg-pink-950">
-          <span className="text-xs" aria-hidden="true">
-            
-          </span>
+          <span className="text-xs" aria-hidden="true"></span>
           <span className="text-[10px] text-text-secondary dark:text-gray-300">
             اللقاء القادم: {circle.nextMeetup}
           </span>
@@ -219,7 +217,7 @@ export function BeautyCircleCard({
           'active:scale-[0.98]',
         )}
       >
-        انضمي للدائرة 
+        انضمي للدائرة
       </button>
     </div>
   );

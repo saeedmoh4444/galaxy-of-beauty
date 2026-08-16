@@ -37,9 +37,7 @@ export function BeautySecretSantaCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-red-700 dark:text-red-300">الهدية السرية</h4>
         <p className="text-[10px] text-red-500 dark:text-red-400">{group}</p>
       </div>
@@ -61,7 +59,7 @@ export function BeautySecretSantaCard({
           onClick={onJoin}
           className="mt-3 w-full rounded-xl bg-red-600 py-2.5 text-xs font-bold text-white hover:bg-red-700 active:scale-[0.98] transition-all"
         >
-          انضمي للعبة 
+          انضمي للعبة
         </button>
       ) : (
         <button
@@ -69,12 +67,12 @@ export function BeautySecretSantaCard({
           onClick={onReveal}
           className="mt-3 w-full rounded-xl bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
         >
-          اكشفي هديتكِ 
+          اكشفي هديتكِ
         </button>
       )}
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         الهدية الأجمل هي التي تأتي من القلب
+        الهدية الأجمل هي التي تأتي من القلب
       </p>
     </div>
   );

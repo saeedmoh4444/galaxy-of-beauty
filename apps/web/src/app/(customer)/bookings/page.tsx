@@ -102,7 +102,7 @@ export default function BookingsPage(): JSX.Element {
                       href={`/video/${b.id}`}
                       className="rounded-lg bg-purple-600 px-3 py-1 text-xs font-medium text-white hover:bg-purple-700"
                     >
-                       فيديو
+                      فيديو
                     </Link>
                   )}
                 </div>

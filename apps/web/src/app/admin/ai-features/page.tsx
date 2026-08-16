@@ -45,11 +45,7 @@ export default function AdminAiFeaturesPage(): JSX.Element {
           {result && (
             <div className="mt-3 rounded-lg border p-3 flex items-center gap-3">
               <span className="text-3xl">
-                {result.sentiment === 'positive'
-                  ? ''
-                  : result.sentiment === 'negative'
-                    ? ''
-                    : ''}
+                {result.sentiment === 'positive' ? '' : result.sentiment === 'negative' ? '' : ''}
               </span>
               <div>
                 <p className="font-bold">{result.sentiment as string}</p>

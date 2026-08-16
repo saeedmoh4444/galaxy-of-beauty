@@ -116,21 +116,19 @@ export function SaudiBeautyHeritageCard({
 
       {/* Modern use */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">
-           الاستخدام الحديث
-        </p>
+        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">الاستخدام الحديث</p>
         <p className="mt-1 text-[10px] text-amber-700 dark:text-amber-300">{p.modernUse}</p>
       </div>
 
       {/* Heritage badge */}
       <div className="mt-2 rounded-lg bg-amber-100 p-2 text-center dark:bg-amber-900">
         <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">
-           هذا المحتوى يوثق تراث الجمال السعودي الأصيل
+          هذا المحتوى يوثق تراث الجمال السعودي الأصيل
         </p>
       </div>
 
       <p className="mt-1.5 text-center text-[9px] text-amber-600 dark:text-amber-400">
-         نحافظ على تراثنا — لأنه جزء من هويتنا
+        نحافظ على تراثنا — لأنه جزء من هويتنا
       </p>
     </div>
   );

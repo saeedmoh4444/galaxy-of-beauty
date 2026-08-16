@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
-import { customerProcedure, router , requireFeatureFlag } from '../trpc';
+import { customerProcedure, router, requireFeatureFlag } from '../trpc';
 
 const BINGO_CARD = [
   { id: 1, task: 'روتين عناية يومي كامل ' },
@@ -26,7 +26,9 @@ export const beautyBingoRouter = router({
     return { tasks, completed, total: 9, reward: '٣ خطوط = جلسة مجانية! ' };
   }),
 
-  mark: customerProcedure.use(flag).input(z.object({ taskId: z.number() }))
+  mark: customerProcedure
+    .use(flag)
+    .input(z.object({ taskId: z.number() }))
     .mutation(async ({ ctx, input }) => {
       await prisma.bingoProgress.upsert({
         where: { userId_taskId: { userId: ctx.user.id, taskId: input.taskId } },

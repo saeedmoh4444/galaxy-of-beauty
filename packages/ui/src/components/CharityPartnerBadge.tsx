@@ -68,11 +68,11 @@ export function CharityPartnerBadge({
         onClick={onDonate}
         className="mt-3 w-full rounded-xl bg-rose-600 py-2 text-xs font-bold text-white hover:bg-rose-700 active:scale-[0.98] transition-all"
       >
-        تبرعي الآن 
+        تبرعي الآن
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         معاً نصنع فرقاً في حياة النساء
+        معاً نصنع فرقاً في حياة النساء
       </p>
     </div>
   );

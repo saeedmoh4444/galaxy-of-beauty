@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
-import { publicProcedure, router , requireFeatureFlag } from '../trpc';
+import { publicProcedure, router, requireFeatureFlag } from '../trpc';
 
 // Curated beauty product database with ingredient safety info
 const PRODUCTS = [
@@ -173,7 +173,9 @@ const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.PRODUCT_SCANNER);
 
 export const productScannerRouter = router({
   // Lookup product by barcode
-  lookup: publicProcedure.use(flag).input(z.object({ barcode: z.string().min(8).max(20) }))
+  lookup: publicProcedure
+    .use(flag)
+    .input(z.object({ barcode: z.string().min(8).max(20) }))
     .query(async ({ input }) => {
       const product = PRODUCTS.find((p) => p.barcode === input.barcode);
       if (!product) return { found: false, message: 'المنتج غير موجود في قاعدة البيانات' };
@@ -191,19 +193,24 @@ export const productScannerRouter = router({
     }),
 
   // Search by name
-  search: publicProcedure.use(flag).input(z.object({ query: z.string().min(2) })).query(async ({ input }) => {
-    const q = input.query.toLowerCase();
-    return PRODUCTS.filter(
-      (p) =>
-        p.nameAr.includes(q) ||
-        p.nameEn.toLowerCase().includes(q) ||
-        p.brand.toLowerCase().includes(q) ||
-        p.ingredients.some((i) => i.toLowerCase().includes(q)),
-    );
-  }),
+  search: publicProcedure
+    .use(flag)
+    .input(z.object({ query: z.string().min(2) }))
+    .query(async ({ input }) => {
+      const q = input.query.toLowerCase();
+      return PRODUCTS.filter(
+        (p) =>
+          p.nameAr.includes(q) ||
+          p.nameEn.toLowerCase().includes(q) ||
+          p.brand.toLowerCase().includes(q) ||
+          p.ingredients.some((i) => i.toLowerCase().includes(q)),
+      );
+    }),
 
   // Ingredient safety info
-  checkIngredient: publicProcedure.use(flag).input(z.object({ ingredient: z.string() }))
+  checkIngredient: publicProcedure
+    .use(flag)
+    .input(z.object({ ingredient: z.string() }))
     .query(async ({ input }) => {
       const name = input.ingredient.trim();
       const tip = SAFETY_TIPS[name] ?? 'لا توجد معلومات كافية عن هذه المادة';

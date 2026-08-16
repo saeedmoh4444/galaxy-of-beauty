@@ -117,7 +117,7 @@ export function BeautySubscriptionCard({
         onClick={onSubscribe}
         className="mt-3 w-full rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 py-2.5 text-xs font-bold text-white hover:from-pink-600 hover:to-purple-600 active:scale-[0.98] transition-all shadow-sm"
       >
-        اشتركي الآن 
+        اشتركي الآن
       </button>
     </div>
   );

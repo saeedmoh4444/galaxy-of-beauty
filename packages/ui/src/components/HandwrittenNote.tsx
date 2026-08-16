@@ -90,19 +90,19 @@ export function HandwrittenNote({
       {/* Booking count */}
       <div className="mt-2 text-center">
         <span className="rounded-full bg-rose-50 px-3 py-1 text-[10px] font-bold text-rose-600 dark:bg-rose-950 dark:text-rose-400">
-           حجز #{bookingCount}
+          حجز #{bookingCount}
         </span>
       </div>
 
       {/* Next milestone */}
       {bookingCount < 100 && (
         <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-           {milestone + 15 - bookingCount} حجوزات متبقية لمفاجأتكِ القادمة
+          {milestone + 15 - bookingCount} حجوزات متبقية لمفاجأتكِ القادمة
         </p>
       )}
 
       <p className="mt-1 text-center text-[9px] italic text-rose-500 dark:text-rose-400">
-         لأن كل حجز هو قصة جميلة بيننا
+        لأن كل حجز هو قصة جميلة بيننا
       </p>
     </div>
   );

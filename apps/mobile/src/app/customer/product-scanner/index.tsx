@@ -44,9 +44,7 @@ export default function ProductScannerScreen(): JSX.Element {
       </TouchableOpacity>
       {product ? (
         <View style={styles.result}>
-          <Text style={styles.productName}>
-            {product?.nameJson?.ar ?? product?.name ?? ''}
-          </Text>
+          <Text style={styles.productName}>{product?.nameJson?.ar ?? product?.name ?? ''}</Text>
         </View>
       ) : null}
     </ScreenState>

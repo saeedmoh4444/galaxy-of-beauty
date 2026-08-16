@@ -47,9 +47,7 @@ export function buildUser(overrides?: BuildUserOverrides) {
     phone: overrides?.phone ?? `+9665${String(s).padStart(8, '0')}`,
     name: overrides?.name ?? `مستخدم تجريبي ${s}`,
     role: overrides?.role ?? 'CUSTOMER',
-    passwordHash:
-      overrides?.passwordHash ??
-      '$2b$10$placeholderhashfortestingpurposesonly', // bcrypt hash for 'TestPass123!'
+    passwordHash: overrides?.passwordHash ?? '$2b$10$placeholderhashfortestingpurposesonly', // bcrypt hash for 'TestPass123!'
     isActive: overrides?.isActive ?? true,
     emailVerified: overrides?.emailVerified ?? true,
     twoFactorEnabled: overrides?.twoFactorEnabled ?? false,

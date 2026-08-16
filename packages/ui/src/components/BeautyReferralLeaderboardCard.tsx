@@ -39,9 +39,7 @@ export function BeautyReferralLeaderboardCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">قائمة الإحالات</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">الأكثر دعوة لصديقاتهن</p>

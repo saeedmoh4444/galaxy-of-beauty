@@ -39,9 +39,7 @@ export function WellnessCheckCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-2xl" aria-hidden="true">
-            
-          </span>
+          <span className="text-2xl" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
               الفحص الشهري
@@ -53,7 +51,7 @@ export function WellnessCheckCard({
         </div>
         {lastCheck && (
           <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
-             {lastCheck}
+            {lastCheck}
           </span>
         )}
       </div>
@@ -80,7 +78,7 @@ export function WellnessCheckCard({
         onClick={onStartCheck}
         className="mt-3 w-full rounded-xl bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
       >
-        ابدئي الفحص 
+        ابدئي الفحص
       </button>
     </div>
   );

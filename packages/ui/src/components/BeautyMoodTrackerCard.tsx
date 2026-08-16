@@ -41,9 +41,7 @@ export function BeautyMoodTrackerCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true">
-            
-          </span>
+          <span className="text-xl" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">كيف تشعرين؟</h4>
             <p className="text-[10px] text-violet-500 dark:text-violet-400">
@@ -78,7 +76,7 @@ export function BeautyMoodTrackerCard({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         مزاجكِ جزء من رحلة جمالكِ
+        مزاجكِ جزء من رحلة جمالكِ
       </p>
     </div>
   );

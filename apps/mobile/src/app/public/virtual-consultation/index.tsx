@@ -97,7 +97,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
           {consultant && (
             <View style={styles.slots}>
               <Text style={styles.st}>
-                 اختر الوقت — {consultant.emoji} {consultant.name}
+                اختر الوقت — {consultant.emoji} {consultant.name}
               </Text>
               <View style={styles.slotGrid}>
                 {consultant.slots.map((s) => (

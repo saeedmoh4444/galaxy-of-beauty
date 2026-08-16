@@ -12,11 +12,11 @@ A codebase is approachable when a new hire can ship their first bug fix within t
 
 Not a 50-page wiki written at project inception and never updated. I maintain these living documents at the repo root:
 
-| Document | Purpose | Updated |
-|---|---|---|
-| `README.md` | One command to start. Verified commands only. | Every PR that changes setup |
-| `docs/architecture/context-map.md` | What lives where, what depends on what | Every new service/module |
-| `docs/adr/` | Why we made each major decision | Before implementation |
+| Document                           | Purpose                                       | Updated                     |
+| ---------------------------------- | --------------------------------------------- | --------------------------- |
+| `README.md`                        | One command to start. Verified commands only. | Every PR that changes setup |
+| `docs/architecture/context-map.md` | What lives where, what depends on what        | Every new service/module    |
+| `docs/adr/`                        | Why we made each major decision               | Before implementation       |
 
 ### 2. Consistent, Discoverable Structure
 
@@ -35,6 +35,7 @@ No `utils/helpers.ts`, no `common/misc.ts`. Every file has a clear owner.
 Every new team member's first task is the same: **"Add a `health` field to the `/me` response and display it in the profile page."**
 
 This touches:
+
 - Prisma schema → teaches DB layer
 - tRPC router → teaches API layer
 - Next.js page → teaches web layer

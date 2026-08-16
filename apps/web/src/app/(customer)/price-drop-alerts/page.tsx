@@ -130,7 +130,7 @@ export default function PriceDropAlertsPage(): JSX.Element {
               loading={createMut.isPending}
               className="w-full"
             >
-               تفعيل
+              تفعيل
             </Button>
           </div>
         </Modal>

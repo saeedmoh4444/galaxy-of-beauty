@@ -36,7 +36,7 @@ export default function DashboardScreen(): JSX.Element {
         </View>
         <View style={styles.statCard}>
           <Text style={styles.statNum}>
-             {String((data?.streakInfo as Record<string, unknown>)?.currentStreak ?? 0)}
+            {String((data?.streakInfo as Record<string, unknown>)?.currentStreak ?? 0)}
           </Text>
           <Text style={styles.statLabel}>الاستمرارية</Text>
         </View>

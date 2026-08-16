@@ -95,9 +95,7 @@ export function BeautySkinQuizCard({
           className,
         )}
       >
-        <span className="text-4xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-4xl" aria-hidden="true"></span>
         <h4 className="mt-2 text-sm font-bold text-teal-700 dark:text-teal-300">نوع بشرتكِ</h4>
         <p className="mt-2 text-2xl font-bold text-teal-800 dark:text-teal-200">{result}</p>
         <button
@@ -109,7 +107,7 @@ export function BeautySkinQuizCard({
           }}
           className="mt-3 rounded-xl bg-teal-600 px-4 py-2 text-xs font-bold text-white hover:bg-teal-700"
         >
-          جربي مرة أخرى 
+          جربي مرة أخرى
         </button>
       </div>
     );

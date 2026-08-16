@@ -70,9 +70,7 @@ export function BodyPositiveBadge({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-purple-700 dark:text-purple-300">
           إيجابية الجسد
         </h4>
@@ -110,7 +108,7 @@ export function BodyPositiveBadge({
 
       {/* Affirmation */}
       <p className="mt-2 text-center text-[9px] italic text-purple-500 dark:text-purple-400">
-         &ldquo;أنتِ جميلة كما أنتِ&rdquo;
+        &ldquo;أنتِ جميلة كما أنتِ&rdquo;
       </p>
     </div>
   );

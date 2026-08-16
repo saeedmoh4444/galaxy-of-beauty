@@ -119,7 +119,7 @@ export function FitnessBeautyCard({
       {/* Quick product recs */}
       <div className="mt-3 rounded-xl bg-emerald-50 p-3 dark:bg-emerald-950">
         <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
-           منتجات مقترحة
+          منتجات مقترحة
         </p>
         <div className="mt-1 flex flex-wrap gap-1">
           {['منظف لطيف', 'تونر منعش', 'مرطب خفيف', 'واقي شمس'].map((p) => (
@@ -134,7 +134,7 @@ export function FitnessBeautyCard({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         الجمال والصحة وجهان لعملة واحدة
+        الجمال والصحة وجهان لعملة واحدة
       </p>
     </div>
   );

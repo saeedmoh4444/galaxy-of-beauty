@@ -39,6 +39,7 @@ Every migration file MUST include a comment header:
 3. **Index before query.** When adding a new query pattern, add the supporting index in the SAME migration.
 
 4. **Validate constraints.** Before adding NOT NULL or CHECK constraints, verify existing data satisfies them:
+
    ```sql
    -- Validate before adding constraint
    SELECT count(*) FROM bookings WHERE total_amount < 0;
@@ -53,33 +54,33 @@ Every migration file MUST include a comment header:
 
 Found 12 redundant single-column indexes that duplicate `@unique` constraints. In PostgreSQL, `@unique` automatically creates a unique B-tree index. An additional `@@index` on the same column is wasted storage and write overhead.
 
-| Column | @unique model | Redundant @@index model | Action |
-|---|---|---|---|
-| `token` | RefreshToken, ResetToken, EmailVerifyToken | Various | Drop @@index |
-| `bookingCode` | Booking | Booking | Drop @@index |
-| `code` | PromoCode, GiftCard | PromoCode, GiftCard | Drop @@index |
-| `slug` | Category, BlogPost, VendorStore | Category, BlogPost, VendorStore | Drop @@index |
-| `referralCode` | Referral | Referral | Drop @@index |
-| `phone` | User | User | Drop @@index |
-| `invoiceNumber` | Payment | Payment | Drop @@index |
-| `bookingId` | Various | Various | Drop @@index |
-| `roomId` | VideoSession | VideoSession | Drop @@index |
-| `storeSlug` | VendorStore | VendorStore | Drop @@index |
-| `userId` | Various | Various | Drop @@index (on models where userId is @unique) |
-| `customerId` | Various | Various | Verify before dropping (may be composite) |
+| Column          | @unique model                              | Redundant @@index model         | Action                                           |
+| --------------- | ------------------------------------------ | ------------------------------- | ------------------------------------------------ |
+| `token`         | RefreshToken, ResetToken, EmailVerifyToken | Various                         | Drop @@index                                     |
+| `bookingCode`   | Booking                                    | Booking                         | Drop @@index                                     |
+| `code`          | PromoCode, GiftCard                        | PromoCode, GiftCard             | Drop @@index                                     |
+| `slug`          | Category, BlogPost, VendorStore            | Category, BlogPost, VendorStore | Drop @@index                                     |
+| `referralCode`  | Referral                                   | Referral                        | Drop @@index                                     |
+| `phone`         | User                                       | User                            | Drop @@index                                     |
+| `invoiceNumber` | Payment                                    | Payment                         | Drop @@index                                     |
+| `bookingId`     | Various                                    | Various                         | Drop @@index                                     |
+| `roomId`        | VideoSession                               | VideoSession                    | Drop @@index                                     |
+| `storeSlug`     | VendorStore                                | VendorStore                     | Drop @@index                                     |
+| `userId`        | Various                                    | Various                         | Drop @@index (on models where userId is @unique) |
+| `customerId`    | Various                                    | Various                         | Verify before dropping (may be composite)        |
 
 ## Missing Database Constraints — August 2026
 
 These should be added in a follow-up migration after data validation:
 
-| Table | Constraint | SQL |
-|---|---|---|
-| `users` | Language enum | `CONSTRAINT chk_language CHECK (preferred_language IN ('ar', 'en'))` |
-| `bookings` | Non-negative amount | `CONSTRAINT chk_total_amount CHECK (total_amount >= 0)` |
-| `bookings` | Non-negative fee | `CONSTRAINT chk_platform_fee CHECK (platform_fee >= 0)` |
-| `reviews` | Valid rating | `CONSTRAINT chk_rating CHECK (rating >= 1 AND rating <= 5)` |
-| `payments` | Non-negative amount | `CONSTRAINT chk_amount CHECK (amount >= 0)` |
-| `wallet_transactions` | Non-negative amount | `CONSTRAINT chk_amount CHECK (amount >= 0)` |
-| `loyalty_tiers` | Valid discount | `CONSTRAINT chk_discount CHECK (discount_percent >= 0 AND discount_percent <= 100)` |
-| `notifications` | Valid channel | `CONSTRAINT chk_channel CHECK (channel IN ('push', 'email', 'sms', 'in_app'))` |
-| `notifications` | Valid type | `CONSTRAINT chk_type CHECK (type IN ('booking', 'payment', 'reminder', 'promo', 'system', 'chat'))` |
+| Table                 | Constraint          | SQL                                                                                                 |
+| --------------------- | ------------------- | --------------------------------------------------------------------------------------------------- |
+| `users`               | Language enum       | `CONSTRAINT chk_language CHECK (preferred_language IN ('ar', 'en'))`                                |
+| `bookings`            | Non-negative amount | `CONSTRAINT chk_total_amount CHECK (total_amount >= 0)`                                             |
+| `bookings`            | Non-negative fee    | `CONSTRAINT chk_platform_fee CHECK (platform_fee >= 0)`                                             |
+| `reviews`             | Valid rating        | `CONSTRAINT chk_rating CHECK (rating >= 1 AND rating <= 5)`                                         |
+| `payments`            | Non-negative amount | `CONSTRAINT chk_amount CHECK (amount >= 0)`                                                         |
+| `wallet_transactions` | Non-negative amount | `CONSTRAINT chk_amount CHECK (amount >= 0)`                                                         |
+| `loyalty_tiers`       | Valid discount      | `CONSTRAINT chk_discount CHECK (discount_percent >= 0 AND discount_percent <= 100)`                 |
+| `notifications`       | Valid channel       | `CONSTRAINT chk_channel CHECK (channel IN ('push', 'email', 'sms', 'in_app'))`                      |
+| `notifications`       | Valid type          | `CONSTRAINT chk_type CHECK (type IN ('booking', 'payment', 'reminder', 'promo', 'system', 'chat'))` |

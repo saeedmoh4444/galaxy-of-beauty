@@ -60,9 +60,7 @@ export function BeautyRewardsCard({
               'flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br text-lg text-white',
               TIER_COLORS[tier],
             )}
-          >
-            
-          </div>
+          ></div>
           <div>
             <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">مكافآتي</h4>
             <p className="text-[10px] text-amber-500 dark:text-amber-400">

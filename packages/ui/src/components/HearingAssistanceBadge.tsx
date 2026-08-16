@@ -52,9 +52,7 @@ export function HearingAssistanceBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">مساعدة سمعية</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">
@@ -84,7 +82,7 @@ export function HearingAssistanceBadge({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-sky-600 dark:text-sky-400">
-         نسمعكِ بكل الطرق — الجمال للجميع
+        نسمعكِ بكل الطرق — الجمال للجميع
       </p>
     </div>
   );

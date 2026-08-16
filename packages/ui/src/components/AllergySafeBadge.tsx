@@ -79,7 +79,7 @@ export function AllergySafeBadge({
       {/* How we handle */}
       <div className="mt-3 rounded-xl bg-emerald-50 p-3 dark:bg-emerald-950">
         <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-200">
-           كيف نضمن سلامتكِ
+          كيف نضمن سلامتكِ
         </p>
         <div className="mt-1 space-y-0.5 text-[10px] text-emerald-700 dark:text-emerald-300">
           <p>• نسألكِ عن الحساسية عند الحجز</p>

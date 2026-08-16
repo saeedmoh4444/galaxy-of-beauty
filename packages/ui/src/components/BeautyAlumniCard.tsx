@@ -47,7 +47,7 @@ export function BeautyAlumniCard({
             {alumna.currentRole}
           </p>
           <p className="text-[10px] text-text-tertiary dark:text-gray-500">
-             خريجة {alumna.graduationYear}
+            خريجة {alumna.graduationYear}
             {alumna.city && ` ·  ${alumna.city}`}
           </p>
         </div>
@@ -64,7 +64,7 @@ export function BeautyAlumniCard({
         onClick={onViewProfile}
         className="mt-3 w-full rounded-lg border border-purple-200 py-1.5 text-[10px] font-bold text-purple-700 hover:bg-purple-50 dark:border-purple-800 dark:text-purple-300 transition-colors"
       >
-        شاهدِي قصتها 
+        شاهدِي قصتها
       </button>
     </div>
   );

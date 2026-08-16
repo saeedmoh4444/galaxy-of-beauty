@@ -28,7 +28,7 @@ export function RamadanBanner(): JSX.Element | null {
       ) : null}
       {isEid ? (
         <span className="block text-xs text-white/70">
-           خصم خاص بمناسبة العيد — استخدمي كود EID20
+          خصم خاص بمناسبة العيد — استخدمي كود EID20
         </span>
       ) : null}
     </div>

@@ -39,9 +39,7 @@ export function BeautyPriceDropHistoryCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true">
-            
-          </span>
+          <span className="text-xl" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
               انخفاضات الأسعار

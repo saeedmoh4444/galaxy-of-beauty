@@ -6,11 +6,13 @@
 ## 1. Auth Outage (users cannot log in)
 
 **Symptoms**:
+
 - Login endpoint returns 500 or timeout
 - `/me` returns 401 for valid cookies
 - JWT verification errors in logs
 
 **Response**:
+
 1. Check JWT secrets are set and consistent: `echo $JWT_ACCESS_SECRET | wc -c` (must be ≥32)
 2. Check database connectivity: `pnpm --filter @galaxy/db exec prisma db push --skip-generate` (dry-run)
 3. Check Redis connectivity: `redis-cli -u $REDIS_URL PING`
@@ -22,11 +24,13 @@
 ## 2. Payment Processing Failure
 
 **Symptoms**:
+
 - Payment creation returns 500
 - Wallet balance not updating
 - PayFort/APS gateway timeout
 
 **Response**:
+
 1. Check PayFort configuration: verify `PAYFORT_*` env vars
 2. Check idempotency keys: duplicate POSTs should return cached response
 3. Check payment logs: `grep payment /var/log/app.log | tail -20`
@@ -38,10 +42,12 @@
 ## 3. Booking Slot Conflict (double booking)
 
 **Symptoms**:
+
 - Two customers book the same slot
 - Booking status inconsistency
 
 **Response**:
+
 1. Identify conflicting booking IDs from logs
 2. Cancel the newer booking, refund if paid
 3. Notify affected customers
@@ -51,11 +57,13 @@
 ## 4. Database Saturation
 
 **Symptoms**:
+
 - Queries timing out
 - Connection pool exhausted
 - Prisma errors: `Timed out fetching a new connection`
 
 **Response**:
+
 1. Check active connections: `SELECT count(*) FROM pg_stat_activity WHERE state = 'active'`
 2. Check long-running queries: `SELECT query, age(now(), query_start) FROM pg_stat_activity WHERE state = 'active' ORDER BY query_start LIMIT 10`
 3. Kill queries running >30s: `SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE state = 'active' AND age(now(), query_start) > interval '30 seconds'`
@@ -65,11 +73,13 @@
 ## 5. Redis Loss
 
 **Symptoms**:
+
 - Rate limiting fails open (requests allowed)
 - Session cache misses
 - Socket.IO rooms not synced across instances
 
 **Response**:
+
 1. Check Redis: `redis-cli -u $REDIS_URL PING`
 2. If down: application continues with degraded performance (rate limiting, cache miss)
 3. Restart Redis: `docker compose restart redis` or cloud provider console
@@ -80,6 +90,7 @@
 **Symptoms**: New deployment causes errors, regressions, or downtime
 
 **Response**:
+
 1. **Immediate**: Run rollback script
    ```bash
    # Roll back to previous deployment
@@ -104,6 +115,7 @@
 **Symptoms**: API keys, JWT secrets, or credentials found in logs/commits
 
 **Response**:
+
 1. **Immediate**: Rotate compromised credentials
    - JWT secrets: generate new values, update env, restart all instances (all sessions invalidated)
    - API keys: revoke in provider console, generate new
@@ -115,11 +127,11 @@
 
 ## Escalation Contacts
 
-| Role | Contact |
-|---|---|
-| On-call engineer | Primary (rotation) |
-| Security incident | security@galaxyofbeauty.sa |
-| Database admin | dba@galaxyofbeauty.sa |
+| Role                     | Contact                      |
+| ------------------------ | ---------------------------- |
+| On-call engineer         | Primary (rotation)           |
+| Security incident        | security@galaxyofbeauty.sa   |
+| Database admin           | dba@galaxyofbeauty.sa        |
 | Payment provider support | PayFort/APS merchant support |
 
 ## Post-Incident Checklist

@@ -37,19 +37,25 @@ export default function HomeScreen(): JSX.Element {
       <View style={styles.statsRow}>
         {kindness?.data?.points !== undefined && (
           <View style={styles.statBadge}>
-            <View style={styles.statIcon}><Text style={styles.statIconText}>K</Text></View>
+            <View style={styles.statIcon}>
+              <Text style={styles.statIconText}>K</Text>
+            </View>
             <Text style={styles.statText}>{kindness.data.points} نقطة</Text>
           </View>
         )}
         {compliments?.data !== undefined && (
           <View style={styles.statBadge}>
-            <View style={styles.statIcon}><Text style={styles.statIconText}>M</Text></View>
+            <View style={styles.statIcon}>
+              <Text style={styles.statIconText}>M</Text>
+            </View>
             <Text style={styles.statText}>{compliments.data} رسالة</Text>
           </View>
         )}
         {dailyTip?.data && (
           <View style={styles.tipBar}>
-            <View style={styles.tipIcon}><Text style={styles.tipIconText}>!</Text></View>
+            <View style={styles.tipIcon}>
+              <Text style={styles.tipIconText}>!</Text>
+            </View>
             <Text style={styles.tipText} numberOfLines={1}>
               {dailyTip.data.tip ?? ''}
             </Text>

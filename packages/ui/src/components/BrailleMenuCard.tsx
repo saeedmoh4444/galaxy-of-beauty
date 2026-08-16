@@ -32,9 +32,7 @@ export function BrailleMenuCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">قائمة برايل</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">
@@ -62,9 +60,7 @@ export function BrailleMenuCard({
 
       {/* Accessibility features */}
       <div className="mt-3 rounded-xl bg-indigo-50 p-3 dark:bg-indigo-950">
-        <p className="text-[10px] font-bold text-indigo-800 dark:text-indigo-200">
-           ميزات الإتاحة
-        </p>
+        <p className="text-[10px] font-bold text-indigo-800 dark:text-indigo-200">ميزات الإتاحة</p>
         <div className="mt-1 space-y-0.5 text-[10px] text-indigo-700 dark:text-indigo-300">
           <p>• قائمة برايل عند المدخل</p>
           <p>• أحرف كبيرة للضعف البصري</p>
@@ -74,7 +70,7 @@ export function BrailleMenuCard({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         كل امرأة تستحق أن تعرف خياراتها — بطريقتها
+        كل امرأة تستحق أن تعرف خياراتها — بطريقتها
       </p>
     </div>
   );

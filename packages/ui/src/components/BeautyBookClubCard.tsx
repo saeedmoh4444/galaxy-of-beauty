@@ -70,7 +70,7 @@ export function BeautyBookClubCard({
       {book.nextMeeting && (
         <div className="mt-2 rounded-lg bg-amber-50 p-2 dark:bg-amber-950">
           <p className="text-center text-[10px] text-amber-700 dark:text-amber-300">
-             اللقاء القادم: {book.nextMeeting}
+            اللقاء القادم: {book.nextMeeting}
           </p>
         </div>
       )}
@@ -81,11 +81,11 @@ export function BeautyBookClubCard({
         onClick={onJoin}
         className="mt-3 w-full rounded-xl bg-amber-600 py-2 text-xs font-bold text-white hover:bg-amber-700 active:scale-[0.98] transition-all"
       >
-        انضمي للنادي 
+        انضمي للنادي
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         نقرأ معاً لنرتقي معاً
+        نقرأ معاً لنرتقي معاً
       </p>
     </div>
   );

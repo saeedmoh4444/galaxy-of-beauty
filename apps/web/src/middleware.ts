@@ -71,9 +71,9 @@ export function middleware(request: NextRequest) {
 
   // CORS for the tRPC API endpoint — only allowed origins
   if (pathname.startsWith('/api/trpc')) {
-    const allowedOrigins = [
-      process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000',
-    ].filter(Boolean);
+    const allowedOrigins = [process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'].filter(
+      Boolean,
+    );
 
     const origin = request.headers.get('origin');
     if (origin && allowedOrigins.includes(origin)) {

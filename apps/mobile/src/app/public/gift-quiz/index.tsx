@@ -28,11 +28,10 @@ const QUESTIONS = [
 export default function GiftQuizScreen(): JSX.Element {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const recommendations =
-    trpc.giftQuiz.recommend.useQuery(
-      { answers },
-      { enabled: Object.keys(answers).length === QUESTIONS.length },
-    ) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
+  const recommendations = trpc.giftQuiz.recommend.useQuery(
+    { answers },
+    { enabled: Object.keys(answers).length === QUESTIONS.length },
+  ) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
 
   return (
     <ScreenState
@@ -62,15 +61,17 @@ export default function GiftQuizScreen(): JSX.Element {
       ) : (
         <View>
           <Text style={styles.resultTitle}> توصياتنا لكِ</Text>
-          {((recommendations.data as unknown as GiftRecommendation[] | undefined) || []).map((r, i) => (
-            <View key={i} style={styles.recCard}>
-              <Text style={styles.recEmoji}>{r.emoji ?? ''}</Text>
-              <View style={styles.recInfo}>
-                <Text style={styles.recName}>{r.nameJson?.ar ?? ''}</Text>
-                <Text style={styles.recPrice}>{r.price ? `${r.price} ر.س` : ''}</Text>
+          {((recommendations.data as unknown as GiftRecommendation[] | undefined) || []).map(
+            (r, i) => (
+              <View key={i} style={styles.recCard}>
+                <Text style={styles.recEmoji}>{r.emoji ?? ''}</Text>
+                <View style={styles.recInfo}>
+                  <Text style={styles.recName}>{r.nameJson?.ar ?? ''}</Text>
+                  <Text style={styles.recPrice}>{r.price ? `${r.price} ر.س` : ''}</Text>
+                </View>
               </View>
-            </View>
-          ))}
+            ),
+          )}
           <TouchableOpacity
             style={styles.restartBtn}
             onPress={() => {

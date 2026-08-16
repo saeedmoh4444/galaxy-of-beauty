@@ -64,9 +64,7 @@ export function BeautyBudgetCard({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true">
-            
-          </span>
+          <span className="text-lg" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
               جمال بالميزانية
@@ -147,7 +145,7 @@ export function BeautyBudgetCard({
 
       {/* Footer */}
       <p className="mt-3 text-center text-[10px] text-text-tertiary dark:text-gray-500">
-         الجمال مش لازم يكون غالي — اكتشفي خدمات رائعة بميزانيتكِ
+        الجمال مش لازم يكون غالي — اكتشفي خدمات رائعة بميزانيتكِ
       </p>
     </div>
   );

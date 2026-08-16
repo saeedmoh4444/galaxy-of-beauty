@@ -65,9 +65,7 @@ export function CognitiveAccessibilityBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">صديق للإدراك</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">
@@ -90,7 +88,7 @@ export function CognitiveAccessibilityBadge({
         ))}
       </div>
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         كل عقل جميل بطريقته
+        كل عقل جميل بطريقته
       </p>
     </div>
   );

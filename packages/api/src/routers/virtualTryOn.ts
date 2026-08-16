@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { SMALL_PAGE_SIZE , EXPERIMENTAL_FEATURES } from '@galaxy/shared';
-import { publicProcedure, customerProcedure, router , requireFeatureFlag } from '../trpc';
+import { SMALL_PAGE_SIZE, EXPERIMENTAL_FEATURES } from '@galaxy/shared';
+import { publicProcedure, customerProcedure, router, requireFeatureFlag } from '../trpc';
 
 // Predefined makeup color palettes — curated for Saudi beauty preferences
 const LIP_COLORS = [
@@ -100,7 +100,9 @@ export const virtualTryOnRouter = router({
   })),
 
   // Save a try-on session (for analytics + recommendations)
-  saveSession: customerProcedure.use(flag).input(
+  saveSession: customerProcedure
+    .use(flag)
+    .input(
       z.object({
         makeupType: z.enum(['lips', 'eyes', 'blush', 'nails']),
         colorId: z.string(),
@@ -116,7 +118,9 @@ export const virtualTryOnRouter = router({
     })),
 
   // Get recommended products based on color preference
-  recommendations: publicProcedure.use(flag).input(z.object({ colorHex: z.string(), category: z.enum(['lips', 'eyes', 'blush', 'nails']) }))
+  recommendations: publicProcedure
+    .use(flag)
+    .input(z.object({ colorHex: z.string(), category: z.enum(['lips', 'eyes', 'blush', 'nails']) }))
     .query(async ({ input }) => {
       // Find products in matching categories
       const categoryMap: Record<string, string[]> = {

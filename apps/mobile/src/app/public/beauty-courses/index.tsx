@@ -27,7 +27,7 @@ export default function BeautyCoursesScreen(): JSX.Element {
               {c.instructor as string} • {c.lessons as number} دروس
             </Text>
             <Text style={styles.detail}>
-              {c.level as string} • {c.duration as string} •  {c.rating as number}
+              {c.level as string} • {c.duration as string} • {c.rating as number}
             </Text>
           </View>
         </View>

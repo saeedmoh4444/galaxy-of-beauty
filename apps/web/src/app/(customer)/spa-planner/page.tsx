@@ -55,7 +55,7 @@ export default function SpaPlannerPage(): JSX.Element {
               )}
             </div>
             <Button className="mt-4" onClick={() => setResult(null)}>
-               تخطيط جديد
+              تخطيط جديد
             </Button>
           </Card>
         ) : (

@@ -42,9 +42,7 @@ export function PersonalStylingCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">
           استشارة الإطلالة
         </h4>
@@ -92,11 +90,11 @@ export function PersonalStylingCard({
         onClick={onBook}
         className="mt-3 w-full rounded-xl bg-fuchsia-600 py-2.5 text-xs font-bold text-white hover:bg-fuchsia-700 active:scale-[0.98] transition-all"
       >
-        احجزي استشارتكِ 
+        احجزي استشارتكِ
       </button>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         لأن لكل امرأة ألوانها الخاصة
+        لأن لكل امرأة ألوانها الخاصة
       </p>
     </div>
   );

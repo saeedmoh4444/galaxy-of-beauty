@@ -55,9 +55,7 @@ export function MirrorStickerCard({ className = '' }: MirrorStickerCardProps): J
         >
           &ldquo;{affirmation}&rdquo;
         </p>
-        <p className="mt-2 text-2xl" aria-hidden="true">
-          
-        </p>
+        <p className="mt-2 text-2xl" aria-hidden="true"></p>
       </div>
 
       {/* Context */}
@@ -80,7 +78,7 @@ export function MirrorStickerCard({ className = '' }: MirrorStickerCardProps): J
       </div>
 
       <p className="mt-2 text-center text-[9px] text-pink-500 dark:text-pink-400">
-         &ldquo;قفي أمام المرآة كل صباح وقولي: أنا جميلة، أنا قوية، أنا كافية&rdquo;
+        &ldquo;قفي أمام المرآة كل صباح وقولي: أنا جميلة، أنا قوية، أنا كافية&rdquo;
       </p>
     </div>
   );

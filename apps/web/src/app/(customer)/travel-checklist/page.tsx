@@ -100,11 +100,11 @@ export default function TravelChecklistPage(): JSX.Element {
             {d.emoji} {d.name}
           </h3>
           <p className="mt-2 rounded-xl bg-white/60 p-3 text-sm text-text-secondary dark:bg-gray-800/60 dark:text-gray-300">
-             {d.tips}
+            {d.tips}
           </p>
 
           <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
-             الأساسيات (8 عناصر)
+            الأساسيات (8 عناصر)
           </h4>
           <div className="mt-3 space-y-2">
             {d.essentials.map((item, i) => (
@@ -129,7 +129,7 @@ export default function TravelChecklistPage(): JSX.Element {
           </div>
 
           <p className="mt-4 text-center text-sm font-bold text-text-primary dark:text-gray-100">
-             {checked.size} / {d.essentials.length} تم تجهيزها
+            {checked.size} / {d.essentials.length} تم تجهيزها
           </p>
         </div>
       </PageContainer>

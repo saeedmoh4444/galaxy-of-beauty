@@ -51,7 +51,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({ children }: { children: ReactNode }): Promise<ReactNode> {
+export default async function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}): Promise<ReactNode> {
   // Read locale from cookie (default: Arabic) — cookies() is async in Next.js 15
   const cookieStore = await cookies();
   const locale = cookieStore.get('gob_lang')?.value || 'ar';

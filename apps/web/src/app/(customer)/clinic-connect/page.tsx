@@ -42,7 +42,7 @@ export default function ClinicConnectPage(): JSX.Element {
                   <div>
                     <p className="font-bold">{c.name as string}</p>
                     <p className="text-xs text-text-secondary">
-                       {c.city as string} · {c.specialty as string} ·  {c.rating as number}
+                      {c.city as string} · {c.specialty as string} · {c.rating as number}
                     </p>
                   </div>
                 </div>

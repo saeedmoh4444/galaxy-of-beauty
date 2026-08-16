@@ -108,7 +108,7 @@ export function BeautyPodcastCard({
         onClick={onSubscribe}
         className="mt-2 w-full rounded-xl border border-rose-200 py-2 text-[10px] font-bold text-rose-600 hover:bg-rose-50 dark:border-rose-800 dark:text-rose-400 dark:hover:bg-rose-950 transition-colors"
       >
-         تابعي البودكاست
+        تابعي البودكاست
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">

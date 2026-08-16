@@ -22,6 +22,7 @@ I choose the database that matches the data's shape and access pattern, not the 
 ### Concrete Example: Booking Slot Reservation
 
 When reserving a booking slot, I need:
+
 1. **PostgreSQL**: Check slot availability with `SELECT ... FOR UPDATE` (row-level lock), insert Booking row, update Availability. This requires ACID — if the payment fails, the entire transaction rolls back.
 2. **Redis**: Cache the availability calendar for fast reads (key: `slots:technician:42:2026-08-15` → set of available times). When a slot is booked, remove it from the set. If Redis is unavailable, fall back to the database query — the cache is an optimization, not the source of truth.
 

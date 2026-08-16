@@ -45,9 +45,7 @@ export function BeautyCouponCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">كوبون خصم</h4>
         <p className="mt-1 text-3xl font-extrabold text-amber-700 dark:text-amber-300">
           {discount}%
@@ -72,7 +70,7 @@ export function BeautyCouponCard({
 
       {expiresAt && (
         <p className="mt-2 text-center text-[10px] text-amber-600 dark:text-amber-400">
-           ينتهي {expiresAt}
+          ينتهي {expiresAt}
         </p>
       )}
     </div>

@@ -17,8 +17,7 @@ export default function AiChatScreen() {
   const [input, setInput] = useState('');
   const scrollRef = useRef<ScrollView>(null);
 
-  const now = () =>
-    new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+  const now = () => new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
 
   const chatMut = trpc.ai.chat.useMutation({
     onSuccess: (res) => {

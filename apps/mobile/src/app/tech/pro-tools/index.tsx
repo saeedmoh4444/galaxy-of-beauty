@@ -55,7 +55,10 @@ export default function ProToolsScreen(): JSX.Element {
       isError={crm?.isError || earnings?.isError}
       isEmpty={false}
       errorMessage="فشل تحميل الأدوات"
-      onRetry={() => { crm?.refetch?.(); earnings?.refetch?.(); }}
+      onRetry={() => {
+        crm?.refetch?.();
+        earnings?.refetch?.();
+      }}
     >
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <Text style={styles.title}>أدوات المحترفات</Text>
@@ -78,11 +81,7 @@ export default function ProToolsScreen(): JSX.Element {
             subtitle="من 5 نجوم"
             onPress={() => router.push('/tech/reviews' as never)}
           />
-          <ToolCard
-            title="المصروفات"
-            value={formatCurrency(3200)}
-            subtitle="هذا الشهر"
-          />
+          <ToolCard title="المصروفات" value={formatCurrency(3200)} subtitle="هذا الشهر" />
           <ToolCard
             title="سجل الحجوزات"
             value={`${crm?.data?.totalBookings ?? 128}+`}
@@ -116,7 +115,13 @@ export default function ProToolsScreen(): JSX.Element {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
   content: { padding: 20 },
-  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 8 },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.brand,
+    textAlign: 'center',
+    marginBottom: 8,
+  },
   subtitle: { fontSize: 14, color: COLORS.gray400, textAlign: 'center', marginBottom: 24 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
   toolCard: {

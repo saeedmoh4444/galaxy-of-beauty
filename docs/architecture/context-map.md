@@ -8,61 +8,61 @@
 
 ### Core (Must work correctly — revenue/safety critical)
 
-| Domain | Routers | Models | Risk |
-|---|---|---|---|
-| Identity & Auth | `auth.*` | User, RefreshToken, ResetToken, Session | Account takeover |
-| Booking Engine | `bookings.*`, `slots.*`, `availability.*` | Booking, BookingSlot, AvailabilitySlot | Revenue loss |
-| Payments | `payments.*`, `wallet.*`, `payouts.*` | Payment, Wallet, WalletTransaction, Payout | Financial loss |
-| Disputes | `disputes.*` | Dispute, DisputeEvidence | Chargeback |
-| Admin Operations | `admin.*` | AuditLog, AdminAction | Privilege abuse |
+| Domain           | Routers                                   | Models                                     | Risk             |
+| ---------------- | ----------------------------------------- | ------------------------------------------ | ---------------- |
+| Identity & Auth  | `auth.*`                                  | User, RefreshToken, ResetToken, Session    | Account takeover |
+| Booking Engine   | `bookings.*`, `slots.*`, `availability.*` | Booking, BookingSlot, AvailabilitySlot     | Revenue loss     |
+| Payments         | `payments.*`, `wallet.*`, `payouts.*`     | Payment, Wallet, WalletTransaction, Payout | Financial loss   |
+| Disputes         | `disputes.*`                              | Dispute, DisputeEvidence                   | Chargeback       |
+| Admin Operations | `admin.*`                                 | AuditLog, AdminAction                      | Privilege abuse  |
 
 ### Supporting (Customer-facing, non-critical)
 
-| Domain | Routers | Models |
-|---|---|---|
-| Service Catalog | `services.*`, `categories.*`, `tags.*` | Service, Category, ServiceTag |
-| Technicians | `technicians.*`, `featuredTech.*` | Technician, TechnicianBadge |
-| Reviews | `reviews.*` | Review, ReviewReply |
-| Search | `search.*`, `recommendations.*` | (uses existing models) |
-| Notifications | `notifications.*`, `push.*` | Notification, PushSubscription |
-| Chat | `chat.*`, `messages.*` | ChatRoom, Message |
-| Uploads | `uploads.*` | (S3/file system) |
+| Domain          | Routers                                | Models                         |
+| --------------- | -------------------------------------- | ------------------------------ |
+| Service Catalog | `services.*`, `categories.*`, `tags.*` | Service, Category, ServiceTag  |
+| Technicians     | `technicians.*`, `featuredTech.*`      | Technician, TechnicianBadge    |
+| Reviews         | `reviews.*`                            | Review, ReviewReply            |
+| Search          | `search.*`, `recommendations.*`        | (uses existing models)         |
+| Notifications   | `notifications.*`, `push.*`            | Notification, PushSubscription |
+| Chat            | `chat.*`, `messages.*`                 | ChatRoom, Message              |
+| Uploads         | `uploads.*`                            | (S3/file system)               |
 
 ### Generic (Shared infrastructure)
 
-| Domain | Routers | Notes |
-|---|---|---|
-| Health | `health` | Health check endpoints |
-| i18n | (shared package) | Translation system |
-| Feature Flags | (trpc middleware) | Runtime toggles |
-| Monitoring | `monitoring.*` | Internal metrics |
-| Analytics | `analytics.*` | Usage tracking |
+| Domain        | Routers           | Notes                  |
+| ------------- | ----------------- | ---------------------- |
+| Health        | `health`          | Health check endpoints |
+| i18n          | (shared package)  | Translation system     |
+| Feature Flags | (trpc middleware) | Runtime toggles        |
+| Monitoring    | `monitoring.*`    | Internal metrics       |
+| Analytics     | `analytics.*`     | Usage tracking         |
 
 ### Experimental (Not production-ready — archive or gate)
 
-| Domain | Routers | Recommendation |
-|---|---|---|
-| Skin Analysis | `skinAnalysis.*` | Gate behind `ENABLE_SKIN_ANALYSIS` flag |
-| Virtual Try-On | `virtualTryOn.*` | Gate behind `ENABLE_VIRTUAL_TRYON` flag |
-| AI Chat | `aiChat.*` | Gate behind `ENABLE_AI_CHAT` flag |
-| Product Scanner | `productScanner.*` | Gate behind feature flag |
-| Predictive Demand | `predictiveDemand.*` | Archive (no router references) |
-| Beauty Trends | `beautyTrends.*` | Archive (unused) |
-| Beauty Innovation | `beautyInnovation.*` | Merge into blog/content |
-| Secret Santa | `secretSanta.*` | Gate seasonally |
-| Time Capsule | `timeCapsule.*` | Archive (no active usage) |
-| Concierge | `concierge.*` | Beta — gate |
+| Domain            | Routers              | Recommendation                          |
+| ----------------- | -------------------- | --------------------------------------- |
+| Skin Analysis     | `skinAnalysis.*`     | Gate behind `ENABLE_SKIN_ANALYSIS` flag |
+| Virtual Try-On    | `virtualTryOn.*`     | Gate behind `ENABLE_VIRTUAL_TRYON` flag |
+| AI Chat           | `aiChat.*`           | Gate behind `ENABLE_AI_CHAT` flag       |
+| Product Scanner   | `productScanner.*`   | Gate behind feature flag                |
+| Predictive Demand | `predictiveDemand.*` | Archive (no router references)          |
+| Beauty Trends     | `beautyTrends.*`     | Archive (unused)                        |
+| Beauty Innovation | `beautyInnovation.*` | Merge into blog/content                 |
+| Secret Santa      | `secretSanta.*`      | Gate seasonally                         |
+| Time Capsule      | `timeCapsule.*`      | Archive (no active usage)               |
+| Concierge         | `concierge.*`        | Beta — gate                             |
 
 ### Duplicate / Low Value — Archive Candidates
 
-| Domain | Reason |
-|---|---|
+| Domain                         | Reason                              |
+| ------------------------------ | ----------------------------------- |
 | `beautySanta` vs `secretSanta` | Two implementations of same feature |
-| `beautyQuests.*` | No client-side integration |
-| `sisterhoodWish.*` | Merged into sisterhood |
-| `socialFeed.*` | Duplicate of community posts |
-| `beautyMoodboard.*` | Unused |
-| `beautyScanner.*` | Duplicate of productScanner |
+| `beautyQuests.*`               | No client-side integration          |
+| `sisterhoodWish.*`             | Merged into sisterhood              |
+| `socialFeed.*`                 | Duplicate of community posts        |
+| `beautyMoodboard.*`            | Unused                              |
+| `beautyScanner.*`              | Duplicate of productScanner         |
 
 ## Dependency Rules (enforced by ARCH-003)
 
@@ -77,6 +77,7 @@ mobile/ ──> api/, ui/
 ```
 
 ### Forbidden Dependencies (CI must reject)
+
 - `shared/` → `ui/` ❌ (was the circular dependency in Phase 0)
 - `api/` → `ui/` ❌ (API must remain platform-agnostic)
 - `db/` → `api/` ❌
@@ -84,12 +85,12 @@ mobile/ ──> api/, ui/
 
 ## Router Size Health
 
-| Size | Count | Action |
-|---|---|---|
-| >1000 lines | 1 (`womensServices.ts` — 3,626) | 🔴 Emergency split |
-| 500–1000 lines | 6 | 🟡 Split by subdomain |
-| 300–500 lines | 8 | 🟡 Review for split |
-| <300 lines | 230 | ✅ Healthy |
+| Size           | Count                           | Action                |
+| -------------- | ------------------------------- | --------------------- |
+| >1000 lines    | 1 (`womensServices.ts` — 3,626) | 🔴 Emergency split    |
+| 500–1000 lines | 6                               | 🟡 Split by subdomain |
+| 300–500 lines  | 8                               | 🟡 Review for split   |
+| <300 lines     | 230                             | ✅ Healthy            |
 
 ### Oversized Router Split Plan
 
@@ -110,16 +111,17 @@ mobile/ ──> api/, ui/
 
 ## any Budget — ARCH-006
 
-| Workspace | Current (Aug 2026) | Target (Dec 2026) | Reduction |
-|---|---|---|---|
-| `apps/mobile` | 943 | 500 | -47% |
-| `apps/web` | 286 | 150 | -48% |
-| `packages/api` | 171 | 80 | -53% |
-| `packages/shared` | 0 | 0 | ✅ Done |
-| `packages/ui` | 1 | 0 | -100% |
-| **Total** | **1,401** | **730** | **-48%** |
+| Workspace         | Current (Aug 2026) | Target (Dec 2026) | Reduction |
+| ----------------- | ------------------ | ----------------- | --------- |
+| `apps/mobile`     | 943                | 500               | -47%      |
+| `apps/web`        | 286                | 150               | -48%      |
+| `packages/api`    | 171                | 80                | -53%      |
+| `packages/shared` | 0                  | 0                 | ✅ Done   |
+| `packages/ui`     | 1                  | 0                 | -100%     |
+| **Total**         | **1,401**          | **730**           | **-48%**  |
 
 ### Rules
+
 1. **No new `any`** in Tier 1 domains (auth, bookings, payments, wallet)
 2. **Prefer `unknown`** + type guards
 3. **CI tracks** count regression (must not increase)
@@ -127,12 +129,13 @@ mobile/ ──> api/, ui/
 
 ## ESLint Suppression Review — ARCH-007
 
-| Workspace | Count | Notes |
-|---|---|---|
-| `@typescript-eslint/no-explicit-any` | ~180 | Vast majority of suppressions |
-| Others | ~26 | Various rule bypasses |
+| Workspace                            | Count | Notes                         |
+| ------------------------------------ | ----- | ----------------------------- |
+| `@typescript-eslint/no-explicit-any` | ~180  | Vast majority of suppressions |
+| Others                               | ~26   | Various rule bypasses         |
 
 ### Rules for Suppression
+
 1. Every `eslint-disable` must have a comment explaining WHY
 2. Link to an issue if temporary
 3. No blanket disables on entire files

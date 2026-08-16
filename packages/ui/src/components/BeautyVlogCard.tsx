@@ -38,9 +38,7 @@ export function BeautyVlogCard({
     >
       {/* Thumbnail placeholder */}
       <div className="relative rounded-xl bg-gradient-to-br from-rose-200 to-pink-200 p-8 text-center dark:from-rose-900 dark:to-pink-900">
-        <span className="text-4xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-4xl" aria-hidden="true"></span>
         <button
           type="button"
           onClick={onWatch}
@@ -79,7 +77,7 @@ export function BeautyVlogCard({
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         يوميات خبيراتنا — من القلب مباشرة
+        يوميات خبيراتنا — من القلب مباشرة
       </p>
     </div>
   );

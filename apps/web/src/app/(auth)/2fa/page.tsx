@@ -56,9 +56,7 @@ export default function TwoFactorPage(): JSX.Element {
             {twoFactorEnabled ? (
               /* ── Already enabled ── */
               <div className="space-y-4 text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl dark:bg-green-900">
-                  
-                </div>
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl dark:bg-green-900"></div>
                 <p className="text-lg font-semibold text-green-700 dark:text-green-300">
                   المصادقة الثنائية مفعلة
                 </p>
@@ -85,9 +83,7 @@ export default function TwoFactorPage(): JSX.Element {
             /* Step 1: Show setup button until clicked */
             !setupMut.isSuccess ? (
               <div className="space-y-4 text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-100 text-3xl dark:bg-brand-900">
-                  
-                </div>
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-100 text-3xl dark:bg-brand-900"></div>
                 <p className="text-lg font-semibold">إعداد المصادقة الثنائية</p>
                 <p className="text-sm text-text-secondary">
                   المصادقة الثنائية تضيف طبقة حماية إضافية لحسابك. عند تفعيلها، ستحتاج إلى إدخال رمز

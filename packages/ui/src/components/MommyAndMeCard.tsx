@@ -97,21 +97,15 @@ export function MommyAndMeCard({
       {/* Participants */}
       <div className="mt-3 flex items-center justify-center gap-3">
         <div className="text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-200 to-rose-200 text-lg dark:from-pink-800 dark:to-rose-800">
-            
-          </div>
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-200 to-rose-200 text-lg dark:from-pink-800 dark:to-rose-800"></div>
           <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">{mom}</p>
           <p className="text-[9px] text-text-tertiary dark:text-gray-500">ماما</p>
         </div>
 
-        <span className="text-pink-400 text-lg" aria-hidden="true">
-          
-        </span>
+        <span className="text-pink-400 text-lg" aria-hidden="true"></span>
 
         <div className="text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-purple-200 to-violet-200 text-lg dark:from-purple-800 dark:to-violet-800">
-            
-          </div>
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-purple-200 to-violet-200 text-lg dark:from-purple-800 dark:to-violet-800"></div>
           <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
             {daughter}
           </p>
@@ -145,7 +139,7 @@ export function MommyAndMeCard({
           </span>
           {!isAgeAppropriate && (
             <span className="text-[9px] text-amber-600 dark:text-amber-400">
-               قد لا يكون مناسباً لعمر ابنتكِ
+              قد لا يكون مناسباً لعمر ابنتكِ
             </span>
           )}
         </div>
@@ -157,7 +151,7 @@ export function MommyAndMeCard({
               key={item}
               className="rounded-full bg-pink-50 px-2 py-0.5 text-[9px] text-pink-700 dark:bg-pink-950 dark:text-pink-300"
             >
-               {item}
+              {item}
             </span>
           ))}
         </div>
@@ -181,12 +175,12 @@ export function MommyAndMeCard({
         onClick={onBook}
         className="mt-3 w-full rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 py-2.5 text-xs font-bold text-white hover:from-pink-600 hover:to-purple-600 active:scale-[0.98] transition-all shadow-sm"
       >
-        احجزي وقتكما الخاص 
+        احجزي وقتكما الخاص
       </button>
 
       {/* Memory */}
       <p className="mt-2 text-center text-[9px] text-pink-500 dark:text-pink-400">
-         صورة تذكارية لكما معاً — لأن هذه اللحظات لا تنسى
+        صورة تذكارية لكما معاً — لأن هذه اللحظات لا تنسى
       </p>
     </div>
   );

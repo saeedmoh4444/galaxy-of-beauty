@@ -34,9 +34,7 @@ export function NewMomSupportCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-sky-800 dark:text-sky-200">
           {isNewborn ? 'أهلاً بالأم الجديدة' : 'عودة الأم'}
         </h4>
@@ -48,8 +46,7 @@ export function NewMomSupportCard({
       {/* Baby age */}
       <div className="mt-3 rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
         <p className="text-[10px] text-sky-700 dark:text-sky-300">
-           عمر الطفل:{' '}
-          {babyAge < 1 ? 'أقل من شهر' : `${babyAge} ${babyAge === 1 ? 'شهر' : 'أشهر'}`}
+          عمر الطفل: {babyAge < 1 ? 'أقل من شهر' : `${babyAge} ${babyAge === 1 ? 'شهر' : 'أشهر'}`}
         </p>
       </div>
 
@@ -81,11 +78,11 @@ export function NewMomSupportCard({
         onClick={onBook}
         className="mt-3 w-full rounded-xl bg-sky-600 py-2.5 text-xs font-bold text-white hover:bg-sky-700 active:scale-[0.98] transition-all"
       >
-        احجزي وقتكِ 
+        احجزي وقتكِ
       </button>
 
       <p className="mt-2 text-center text-[9px] text-sky-500 dark:text-sky-400">
-         الأم السعيدة تربي طفلاً سعيداً
+        الأم السعيدة تربي طفلاً سعيداً
       </p>
     </div>
   );

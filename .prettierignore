@@ -1,8 +1,9 @@
 node_modules/
-dist/
-build/
 .next/
 .expo/
-.turbo/
+dist/
+build/
 coverage/
+storybook-static/
 pnpm-lock.yaml
+*.min.js

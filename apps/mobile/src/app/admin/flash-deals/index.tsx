@@ -57,7 +57,7 @@ export default function AdminFlashDealsScreen(): JSX.Element {
               <View style={[s.pf, { width: `${(d.sold / d.max) * 100}%` }]} />
             </View>
             <Text style={s.ps}>
-               {d.sold}/{d.max} مباع ·  {d.endsIn}
+              {d.sold}/{d.max} مباع · {d.endsIn}
             </Text>
           </View>
         </View>

@@ -40,9 +40,7 @@ export function PrayerTimeReminder({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true">
-            
-          </span>
+          <span className="text-xl" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
               موعد الصلاة
@@ -54,7 +52,7 @@ export function PrayerTimeReminder({
         </div>
         {isSoon && (
           <span className="shrink-0 animate-pulse rounded-full bg-amber-200 px-2.5 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-800 dark:text-amber-200">
-             قريباً
+            قريباً
           </span>
         )}
       </div>
@@ -70,7 +68,7 @@ export function PrayerTimeReminder({
       {/* Gentle reminder */}
       <div className="mt-2 rounded-lg bg-emerald-50 p-2 dark:bg-emerald-950">
         <p className="text-center text-[10px] text-emerald-700 dark:text-emerald-300">
-           سنذكركِ قبل الأذان بـ 10 دقائق — لتستعدي للصلاة براحة
+          سنذكركِ قبل الأذان بـ 10 دقائق — لتستعدي للصلاة براحة
         </p>
       </div>
 
@@ -80,12 +78,12 @@ export function PrayerTimeReminder({
           onClick={onDismiss}
           className="mt-2 w-full rounded-lg border border-emerald-200 py-1.5 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-300"
         >
-          شكراً 
+          شكراً
         </button>
       )}
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         راحتكِ الروحية جزء من تجربتكِ
+        راحتكِ الروحية جزء من تجربتكِ
       </p>
     </div>
   );

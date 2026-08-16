@@ -93,9 +93,7 @@ export function IngredientGlossaryCard({
     >
       {/* Ingredient name + type */}
       <div className="flex items-start gap-3">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-teal-100 to-emerald-100 text-lg dark:from-teal-900 dark:to-emerald-900">
-          
-        </div>
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-teal-100 to-emerald-100 text-lg dark:from-teal-900 dark:to-emerald-900"></div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
             {ingredient.name}

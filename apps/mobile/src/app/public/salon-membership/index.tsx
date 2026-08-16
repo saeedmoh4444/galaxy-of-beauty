@@ -82,7 +82,7 @@ export default function SalonMembershipScreen(): JSX.Element {
                 {m.notIncluded.length > 0 && (
                   <>
                     <Text style={[styles.cbTitle, { color: '#9ca3af', marginTop: 12 }]}>
-                       غير متضمن
+                      غير متضمن
                     </Text>
                     {m.notIncluded.map((b, i) => (
                       <View key={i} style={styles.benefit}>

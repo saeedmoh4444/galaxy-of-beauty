@@ -80,9 +80,7 @@ export function AskDermatologistCard({
       <div className="mt-3 rounded-xl bg-gradient-to-r from-blue-50 to-sky-50 p-3 dark:from-blue-950 dark:to-sky-950">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
-            <span className="text-sm" aria-hidden="true">
-              
-            </span>
+            <span className="text-sm" aria-hidden="true"></span>
             <span className="text-[10px] font-bold text-blue-700 dark:text-blue-300">
               الجلسة القادمة
             </span>
@@ -95,15 +93,13 @@ export function AskDermatologistCard({
         </div>
         <p className="mt-1 text-xs font-bold text-blue-800 dark:text-blue-200">{arabicDate}</p>
         <p className="text-[10px] text-blue-500 dark:text-blue-400">
-           8:00 مساءً — مباشر على المنصة
+          8:00 مساءً — مباشر على المنصة
         </p>
       </div>
 
       {/* Questions counter */}
       <div className="mt-2 flex items-center gap-2 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
-        <span className="text-sm" aria-hidden="true">
-          
-        </span>
+        <span className="text-sm" aria-hidden="true"></span>
         <span className="text-[10px] text-text-secondary dark:text-gray-300">
           {questionsCount > 0 ? `${questionsCount} سؤال مقدّم من المجتمع` : 'كوني أول من تسأل!'}
         </span>
@@ -132,7 +128,7 @@ export function AskDermatologistCard({
       {hasSubmitted && (
         <div className="mt-2 rounded-lg bg-emerald-50 p-2 text-center dark:bg-emerald-950">
           <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
-             تم إرسال سؤالكِ — سترد الدكتورة خلال الجلسة
+            تم إرسال سؤالكِ — سترد الدكتورة خلال الجلسة
           </p>
         </div>
       )}
@@ -143,12 +139,12 @@ export function AskDermatologistCard({
         onClick={onRegister}
         className="mt-2 w-full rounded-xl bg-blue-600 py-2 text-xs font-bold text-white hover:bg-blue-700 active:scale-[0.98] transition-all"
       >
-        سجّلي حضوركِ الآن 
+        سجّلي حضوركِ الآن
       </button>
 
       {/* Anonymity note */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         يمكنكِ تقديم سؤالكِ بشكل مجهول — خصوصيتكِ محمية
+        يمكنكِ تقديم سؤالكِ بشكل مجهول — خصوصيتكِ محمية
       </p>
     </div>
   );

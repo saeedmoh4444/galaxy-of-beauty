@@ -62,7 +62,7 @@ export function BeautyTimeCapsuleCard({
       </button>
 
       <p className="mt-2 text-center text-[9px] text-purple-500 dark:text-purple-400">
-         بعض الروتينات تستحق أن نتذكرها
+        بعض الروتينات تستحق أن نتذكرها
       </p>
     </div>
   );

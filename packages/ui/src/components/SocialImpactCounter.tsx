@@ -152,9 +152,7 @@ export function SocialImpactCounter({
       {/* Year target */}
       <div className="mt-3 text-center">
         <div className="inline-flex items-center gap-1 rounded-full bg-white/60 px-3 py-1 dark:bg-black/20">
-          <span className="text-xs" aria-hidden="true">
-            
-          </span>
+          <span className="text-xs" aria-hidden="true"></span>
           <span className="text-[10px] font-bold text-amber-800 dark:text-amber-200">
             {Math.round((womenEmployed / 1000) * 100)}% من هدف 2028
           </span>
@@ -163,7 +161,7 @@ export function SocialImpactCounter({
 
       {/* Pledge */}
       <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">
-         نؤمن بأن تمكين المرأة اقتصادياً يبني مستقبلاً أفضل للجميع
+        نؤمن بأن تمكين المرأة اقتصادياً يبني مستقبلاً أفضل للجميع
       </p>
     </div>
   );

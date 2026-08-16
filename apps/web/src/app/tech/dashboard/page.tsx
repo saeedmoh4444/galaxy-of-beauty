@@ -47,11 +47,7 @@ export default function TechDashboardPage(): JSX.Element {
         ) : (
           <div className="grid gap-4 md:grid-cols-4">
             <StatCard label="أرباح اليوم" value={formatCurrency(Number(todayEarnings))} icon="" />
-            <StatCard
-              label="أرباح الأسبوع"
-              value={formatCurrency(Number(weekEarnings))}
-              icon=""
-            />
+            <StatCard label="أرباح الأسبوع" value={formatCurrency(Number(weekEarnings))} icon="" />
             <StatCard label="أرباح الشهر" value={formatCurrency(Number(monthEarnings))} icon="" />
             <StatCard label="التقييم" value={` ${Number(rating).toFixed(1)}`} icon="" />
           </div>

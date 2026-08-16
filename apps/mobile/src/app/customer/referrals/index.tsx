@@ -48,9 +48,7 @@ export default function ReferralsScreen(): JSX.Element {
             <Text style={styles.statLabel}>إحالات</Text>
           </View>
           <View style={styles.statCard}>
-            <Text style={styles.statNum}>
-              {String(statsData?.totalEarnings ?? 0)} ر.س
-            </Text>
+            <Text style={styles.statNum}>{String(statsData?.totalEarnings ?? 0)} ر.س</Text>
             <Text style={styles.statLabel}>مكافآت</Text>
           </View>
         </View>

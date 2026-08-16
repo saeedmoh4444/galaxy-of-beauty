@@ -12,11 +12,11 @@ I debug from the user backward — starting at the browser and following the req
 
 Open Chrome DevTools → Network tab → reload the page. Filter by the API call that fetches bookings (`/api/trpc/bookings.list`).
 
-| What I check | What it tells me |
-|---|---|
-| **TTFB** (Time to First Byte) | If >2s: server-side problem. If <200ms: client-side rendering issue. |
-| **Content Download** | If large: too much data. Check response size. |
-| **Waterfall** | Are there sequential requests creating a waterfall? Could they be parallelized? |
+| What I check                  | What it tells me                                                                |
+| ----------------------------- | ------------------------------------------------------------------------------- |
+| **TTFB** (Time to First Byte) | If >2s: server-side problem. If <200ms: client-side rendering issue.            |
+| **Content Download**          | If large: too much data. Check response size.                                   |
+| **Waterfall**                 | Are there sequential requests creating a waterfall? Could they be parallelized? |
 
 **Finding**: TTFB is 8.2 seconds. This is server-side.
 
@@ -25,6 +25,7 @@ Open Chrome DevTools → Network tab → reload the page. Filter by the API call
 Open the tRPC response in the Network tab. Check the response payload size. If the response is 2MB of JSON, the problem is over-fetching. If it's 10KB, the problem is in query execution.
 
 Add timing to the route handler:
+
 ```typescript
 const t0 = performance.now();
 const result = await caller.bookings.list(input);
@@ -36,11 +37,13 @@ console.log(`bookings.list took ${performance.now() - t0}ms`);
 ### Step 3: Is it the database query?
 
 Check the exact query Prisma generated. In development, log all queries:
+
 ```typescript
 const prisma = new PrismaClient({ log: ['query'] });
 ```
 
 Or check the database directly with `EXPLAIN ANALYZE`:
+
 ```sql
 EXPLAIN (ANALYZE, BUFFERS)
 SELECT * FROM bookings
@@ -49,11 +52,11 @@ ORDER BY "createdAt" DESC
 LIMIT 20;
 ```
 
-| Signal | Problem |
-|---|---|
-| `Seq Scan on bookings` (not Index Scan) | Missing index |
-| `Buffers: shared hit=50000` | Reading too much data from disk |
-| `Sort Method: external merge` | Sorting in memory because no index on ORDER BY |
+| Signal                                  | Problem                                        |
+| --------------------------------------- | ---------------------------------------------- |
+| `Seq Scan on bookings` (not Index Scan) | Missing index                                  |
+| `Buffers: shared hit=50000`             | Reading too much data from disk                |
+| `Sort Method: external merge`           | Sorting in memory because no index on ORDER BY |
 
 **Finding**: The query does a sequential scan on 500,000 bookings. The index on `(customerId, status, createdAt)` exists but PostgreSQL chose not to use it because the statistics were stale.
 

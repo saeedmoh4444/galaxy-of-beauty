@@ -111,7 +111,7 @@ export function BeautyCertificationPathCard({
         onClick={onEnroll}
         className="mt-3 w-full rounded-xl bg-blue-600 py-2 text-xs font-bold text-white hover:bg-blue-700 active:scale-[0.98] transition-all"
       >
-        سجلي في المسار 
+        سجلي في المسار
       </button>
     </div>
   );

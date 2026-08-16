@@ -66,7 +66,7 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
             href="/dashboard"
             className="block rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-surface-muted dark:text-gray-400 dark:hover:bg-gray-900"
           >
-             العودة للمتجر
+            العودة للمتجر
           </Link>
           <button
             onClick={async () => {

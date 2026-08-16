@@ -29,16 +29,15 @@ interface AnalyzerQueryResult {
 export default function IngredientAnalyzerScreen(): JSX.Element {
   const [search, setSearch] = useState('');
   const [submitted, setSubmitted] = useState('');
-  const result =
-    (trpc.ingredientAnalyzer.analyze.useQuery(
-      { ingredients: submitted },
-      { enabled: submitted.length > 0 },
-    ) as unknown as AnalyzerQueryResult | null) ?? {
-      data: null,
-      isLoading: false,
-      isError: false,
-      refetch: () => {},
-    };
+  const result = (trpc.ingredientAnalyzer.analyze.useQuery(
+    { ingredients: submitted },
+    { enabled: submitted.length > 0 },
+  ) as unknown as AnalyzerQueryResult | null) ?? {
+    data: null,
+    isLoading: false,
+    isError: false,
+    refetch: () => {},
+  };
 
   return (
     <ScreenState

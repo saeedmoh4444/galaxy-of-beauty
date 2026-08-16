@@ -55,9 +55,7 @@ export function BeautyWaterIntakeCard({
                 ? 'bg-sky-200 text-sky-700 dark:bg-sky-900 dark:text-sky-300'
                 : 'bg-gray-100 text-gray-400 hover:bg-sky-50 dark:bg-gray-800',
             )}
-          >
-            
-          </button>
+          ></button>
         ))}
       </div>
       <button

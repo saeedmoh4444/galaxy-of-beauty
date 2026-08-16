@@ -101,9 +101,7 @@ export function ToastProvider({ children }: { children: ReactNode }): JSX.Elemen
               onClick={() => removeToast(toast.id)}
               className="ml-2 opacity-70 hover:opacity-100"
               aria-label="إغلاق"
-            >
-              
-            </button>
+            ></button>
           </div>
         ))}
       </div>

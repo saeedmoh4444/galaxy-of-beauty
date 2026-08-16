@@ -75,9 +75,7 @@ export function BeautyQuizCard({ className = '' }: BeautyQuizCardProps): JSX.Ele
           className,
         )}
       >
-        <span className="text-4xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-4xl" aria-hidden="true"></span>
         <h4 className="mt-2 text-sm font-bold text-teal-700 dark:text-teal-300">انتهى الاختبار!</h4>
         <p className="mt-1 text-lg font-bold text-teal-800 dark:text-teal-200">
           {score}/{QUESTIONS.length}
@@ -99,7 +97,7 @@ export function BeautyQuizCard({ className = '' }: BeautyQuizCardProps): JSX.Ele
           }}
           className="mt-3 rounded-xl bg-teal-600 px-4 py-2 text-xs font-bold text-white hover:bg-teal-700"
         >
-          حاولي مرة أخرى 
+          حاولي مرة أخرى
         </button>
       </div>
     );
@@ -114,9 +112,7 @@ export function BeautyQuizCard({ className = '' }: BeautyQuizCardProps): JSX.Ele
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true">
-            
-          </span>
+          <span className="text-lg" aria-hidden="true"></span>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">اختبار الجمال</h4>
         </div>
         <span className="text-[10px] text-text-tertiary dark:text-gray-500">

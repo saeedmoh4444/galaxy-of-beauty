@@ -110,8 +110,15 @@ function validatedOn<T>(
 
     const result = schema.safeParse(raw);
     if (!result.success) {
-      logger.warn({ socketId: socket.id, event, errors: result.error.flatten() }, '[Socket] Invalid payload');
-      ack?.({ error: 'VALIDATION_ERROR', message: 'Invalid payload', details: result.error.flatten() });
+      logger.warn(
+        { socketId: socket.id, event, errors: result.error.flatten() },
+        '[Socket] Invalid payload',
+      );
+      ack?.({
+        error: 'VALIDATION_ERROR',
+        message: 'Invalid payload',
+        details: result.error.flatten(),
+      });
       return;
     }
 
@@ -143,9 +150,7 @@ export function initializeSocket(httpServer: HttpServer): Server {
     pingTimeout: 60000,
     pingInterval: 25000,
     // ── RT-005: Redis adapter for multi-instance ──────────
-    ...(getRedis()
-      ? { adapter: createAdapter(getRedis()!, getRedis()!.duplicate()) }
-      : {}),
+    ...(getRedis() ? { adapter: createAdapter(getRedis()!, getRedis()!.duplicate()) } : {}),
   });
 
   // ── Authentication middleware ──────────────────────────
@@ -154,8 +159,7 @@ export function initializeSocket(httpServer: HttpServer): Server {
       let token: string | undefined;
 
       // 1. Try explicit auth token (mobile / legacy clients)
-      token =
-        (socket.handshake.auth as Record<string, unknown>).token as string | undefined;
+      token = (socket.handshake.auth as Record<string, unknown>).token as string | undefined;
 
       // 2. Try query param (mobile fallback)
       if (!token) {
@@ -228,7 +232,10 @@ export function initializeSocket(httpServer: HttpServer): Server {
     validatedOn(socket, 'join:waitlist', JoinWaitlistSchema, (data, ack) => {
       // Technicians: only join their own waitlist room
       if (role === 'TECHNICIAN' && data.technicianId !== userId) {
-        logger.warn({ userId, role, targetTechId: data.technicianId }, '[Socket] Unauthorized waitlist join');
+        logger.warn(
+          { userId, role, targetTechId: data.technicianId },
+          '[Socket] Unauthorized waitlist join',
+        );
         ack?.({ error: 'FORBIDDEN', message: 'Cannot join another technician waitlist' });
         return;
       }

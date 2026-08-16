@@ -26,7 +26,9 @@ export default function CorporateWellnessPage(): JSX.Element {
       });
       setSubmitted(true);
       setShowForm(false);
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   };
 
   const items = (plans?.data ?? []) as any[];
@@ -68,7 +70,7 @@ export default function CorporateWellnessPage(): JSX.Element {
                       </span>
                     </p>
                     <p className="mt-1 text-xs text-text-tertiary dark:text-gray-500">
-                       حتى {p.employees} موظفة
+                      حتى {p.employees} موظفة
                     </p>
                     <div className="mt-2 flex flex-wrap gap-1">
                       {(p.services as string[])?.map((svc: string, i: number) => (
@@ -76,7 +78,7 @@ export default function CorporateWellnessPage(): JSX.Element {
                           key={i}
                           className="text-[11px] text-emerald-600 dark:text-emerald-400"
                         >
-                           {svc}
+                          {svc}
                         </span>
                       ))}
                     </div>
@@ -129,7 +131,7 @@ export default function CorporateWellnessPage(): JSX.Element {
             {enquiryItems.length > 0 && (
               <Card className="p-4">
                 <h3 className="text-sm font-bold text-text-primary dark:text-gray-100">
-                   طلباتي السابقة
+                  طلباتي السابقة
                 </h3>
                 <div className="mt-3 space-y-2">
                   {enquiryItems.map((e: any, i: number) => (

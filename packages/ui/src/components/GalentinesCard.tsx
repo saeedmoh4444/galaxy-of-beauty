@@ -40,9 +40,7 @@ export function GalentinesCard({
     >
       {/* Header */}
       <div className="text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-pink-200 to-rose-200 text-2xl dark:from-pink-800 dark:to-rose-800">
-          
-        </div>
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-pink-200 to-rose-200 text-2xl dark:from-pink-800 dark:to-rose-800"></div>
         <h4 className="mt-2 text-sm font-bold text-pink-800 dark:text-pink-200">يوم الصديقات</h4>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">{date} — احتفلي بصداقاتكِ</p>
       </div>
@@ -50,18 +48,18 @@ export function GalentinesCard({
       {/* Friend list */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-           معكِ في هذا اليوم
+          معكِ في هذا اليوم
         </p>
         <div className="mt-1.5 flex flex-wrap gap-1.5">
           <span className="rounded-full bg-pink-100 px-2.5 py-1 text-[10px] font-bold text-pink-700 dark:bg-pink-900 dark:text-pink-300">
-             أنتِ
+            أنتِ
           </span>
           {friends.map((name) => (
             <span
               key={name}
               className="rounded-full bg-rose-100 px-2.5 py-1 text-[10px] font-medium text-rose-700 dark:bg-rose-900 dark:text-rose-300"
             >
-               {name}
+              {name}
             </span>
           ))}
         </div>
@@ -102,12 +100,12 @@ export function GalentinesCard({
         onClick={onBook}
         className="mt-3 w-full rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 py-2.5 text-xs font-bold text-white hover:from-pink-600 hover:to-rose-600 active:scale-[0.98] transition-all shadow-sm shadow-pink-200 dark:shadow-pink-900"
       >
-        احجزي يوم الصديقات 
+        احجزي يوم الصديقات
       </button>
 
       {/* Footer */}
       <p className="mt-2 text-center text-[9px] text-pink-500 dark:text-pink-400">
-         لأن الصديقات هن العائلة التي نختارها
+        لأن الصديقات هن العائلة التي نختارها
       </p>
     </div>
   );

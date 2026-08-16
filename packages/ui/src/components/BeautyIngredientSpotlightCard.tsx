@@ -59,9 +59,7 @@ export function BeautyIngredientSpotlightCard({
 
       {ingredient.suitableFor && (
         <div className="mt-2">
-          <p className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-             مناسب لـ
-          </p>
+          <p className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">مناسب لـ</p>
           <div className="mt-1 flex flex-wrap gap-1">
             {ingredient.suitableFor.map((s) => (
               <span

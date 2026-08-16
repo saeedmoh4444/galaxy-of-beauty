@@ -61,7 +61,7 @@ export default function GiftCardMarketPage(): JSX.Element {
                   className="mt-3 w-full"
                   onClick={() => buyMut.mutate({ listingId: l.id as number })}
                 >
-                   شراء
+                  شراء
                 </Button>
               </Card>
             ))}
@@ -104,7 +104,7 @@ export default function GiftCardMarketPage(): JSX.Element {
               loading={listMut.isPending}
               className="w-full"
             >
-               عرض البطاقة
+              عرض البطاقة
             </Button>
           </div>
         </Modal>

@@ -58,9 +58,7 @@ export function DailyBeautyTipCard({ className = '' }: DailyBeautyTipCardProps):
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true">
-          
-        </span>
+        <span className="text-lg" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">نصيحة اليوم</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{tip.category}</p>
@@ -89,7 +87,7 @@ export function DailyBeautyTipCard({ className = '' }: DailyBeautyTipCardProps):
       </div>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         نصيحة جديدة كل يوم — تعلمي وطبقي
+        نصيحة جديدة كل يوم — تعلمي وطبقي
       </p>
     </div>
   );

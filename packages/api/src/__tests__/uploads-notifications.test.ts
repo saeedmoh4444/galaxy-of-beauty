@@ -11,14 +11,12 @@ import { z } from 'zod';
 
 const uploadSchema = z.object({
   fileName: z.string().min(1).max(255),
-  fileSize: z.number().int().positive().max(10 * 1024 * 1024), // 10MB max
-  mimeType: z.enum([
-    'image/jpeg',
-    'image/png',
-    'image/webp',
-    'image/avif',
-    'application/pdf',
-  ]),
+  fileSize: z
+    .number()
+    .int()
+    .positive()
+    .max(10 * 1024 * 1024), // 10MB max
+  mimeType: z.enum(['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'application/pdf']),
   purpose: z.enum(['AVATAR', 'PORTFOLIO', 'KYC', 'DISPUTE_EVIDENCE', 'GALLERY']),
 });
 

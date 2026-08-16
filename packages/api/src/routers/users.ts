@@ -159,7 +159,12 @@ export const userRouter = router({
       }
 
       // Strip sensitive authentication fields
-      const { passwordHash: _ph, twoFactorSecret: _tfs, emailVerifyToken: _evt, ...safeData } = user;
+      const {
+        passwordHash: _ph,
+        twoFactorSecret: _tfs,
+        emailVerifyToken: _evt,
+        ...safeData
+      } = user;
       void _ph;
       void _tfs;
       void _evt;

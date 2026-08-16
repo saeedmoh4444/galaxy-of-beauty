@@ -38,9 +38,7 @@ export function BeautyQuietSpaceCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-purple-800 dark:text-purple-200">
           المساحة الهادئة
         </h4>
@@ -63,7 +61,7 @@ export function BeautyQuietSpaceCard({
         })}
       </div>
       <p className="mt-2 text-center text-[9px] text-purple-500 dark:text-purple-400">
-         خذي لحظة لنفسكِ
+        خذي لحظة لنفسكِ
       </p>
     </div>
   );

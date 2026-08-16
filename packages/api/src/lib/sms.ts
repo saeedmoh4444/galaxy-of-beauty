@@ -38,17 +38,14 @@ export async function sendSms(to: string, message: string): Promise<boolean> {
       Body: message,
     }).toString();
 
-    const response = await fetch(
-      `${TWILIO_API_URL}/Accounts/${config.accountSid}/Messages.json`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Basic ${auth}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: body.toString(),
+    const response = await fetch(`${TWILIO_API_URL}/Accounts/${config.accountSid}/Messages.json`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${auth}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-    );
+      body: body.toString(),
+    });
 
     return response.ok;
   } catch (err) {

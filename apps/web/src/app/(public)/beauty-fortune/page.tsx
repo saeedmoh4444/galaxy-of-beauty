@@ -98,7 +98,7 @@ export default function BeautyFortunePage(): JSX.Element {
               اكسري البسكويت واكتشفي رسالتكِ الجمالية اليوم
             </p>
             <Button onClick={openFortune} size="lg" className="mt-8">
-               افتحي بسكويتكِ
+              افتحي بسكويتكِ
             </Button>
           </div>
         )}
@@ -117,14 +117,12 @@ export default function BeautyFortunePage(): JSX.Element {
               {fortune.text}
             </p>
             <div className="mt-6 rounded-xl bg-brand-50 p-4 dark:bg-brand-950">
-              <p className="text-sm font-medium text-brand-700 dark:text-brand-300">
-                 نصيحة اليوم
-              </p>
+              <p className="text-sm font-medium text-brand-700 dark:text-brand-300">نصيحة اليوم</p>
               <p className="mt-1 text-brand-600 dark:text-brand-400">{fortune.tip}</p>
             </div>
             <div className="mt-6 flex gap-3 justify-center">
               <Button onClick={openFortune} variant="outline">
-                 بسكويت آخر
+                بسكويت آخر
               </Button>
               <Link href={SERVICE_LINKS[fortune.emoji]?.href || '/services'}>
                 <Button> احجزي الآن</Button>

@@ -37,6 +37,12 @@ export const reviewSchema = z.object({
 
 export const disputeSchema = z.object({
   bookingId: z.number().int().positive(),
-  reason: z.enum(['SERVICE_NOT_RENDERED', 'QUALITY_UNSATISFACTORY', 'WRONG_SERVICE', 'OVERCHARGED', 'OTHER']),
+  reason: z.enum([
+    'SERVICE_NOT_RENDERED',
+    'QUALITY_UNSATISFACTORY',
+    'WRONG_SERVICE',
+    'OVERCHARGED',
+    'OTHER',
+  ]),
   description: z.string().min(10).max(2000),
 });

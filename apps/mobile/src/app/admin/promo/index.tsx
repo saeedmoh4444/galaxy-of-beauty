@@ -60,7 +60,7 @@ export default function AdminPromoScreen(): JSX.Element {
             <View style={[s.pf, { width: `${(p.uses / p.maxUses) * 100}%` }]} />
           </View>
           <Text style={s.pu}>
-             {p.uses}/{p.maxUses} استخدام
+            {p.uses}/{p.maxUses} استخدام
           </Text>
         </View>
       ))}

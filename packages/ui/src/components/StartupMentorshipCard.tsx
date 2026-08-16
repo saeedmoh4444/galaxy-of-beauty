@@ -33,9 +33,7 @@ export function StartupMentorshipCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">حاضنة الجمال</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
           دعم وتمويل لرائدات الأعمال في التجميل
@@ -69,7 +67,7 @@ export function StartupMentorshipCard({
           onClick={onApplyStartup}
           className="flex-1 rounded-xl bg-amber-600 py-2 text-[10px] font-bold text-white hover:bg-amber-700 active:scale-[0.98] transition-all"
         >
-          قدمي مشروعكِ 
+          قدمي مشروعكِ
         </button>
         <button
           type="button"

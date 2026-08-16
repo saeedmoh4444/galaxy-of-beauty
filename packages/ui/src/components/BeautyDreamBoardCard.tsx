@@ -34,9 +34,7 @@ export function BeautyDreamBoardCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-violet-800 dark:text-violet-200">
           لوحة الأحلام
         </h4>
@@ -65,7 +63,7 @@ export function BeautyDreamBoardCard({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-violet-500 dark:text-violet-400">
-         احلمي — ثم حققي
+        احلمي — ثم حققي
       </p>
     </div>
   );

@@ -43,9 +43,7 @@ export function BeautyMicroChallengeCard({
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
             {challenge.title}
           </h4>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-500">
-            ️ {challenge.duration}
-          </p>
+          <p className="text-[10px] text-text-tertiary dark:text-gray-500">️ {challenge.duration}</p>
         </div>
         {challenge.completed && <span className="text-lg shrink-0"></span>}
       </div>
@@ -55,7 +53,7 @@ export function BeautyMicroChallengeCard({
           onClick={onComplete}
           className="flex-1 rounded-lg bg-teal-600 py-2 text-[10px] font-bold text-white hover:bg-teal-700 active:scale-[0.98] transition-all"
         >
-           أنجزتها!
+          أنجزتها!
         </button>
         <button
           type="button"

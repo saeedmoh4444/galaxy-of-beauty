@@ -28,12 +28,10 @@ interface NotificationsModule {
       shouldSetBadge: boolean;
     }>;
   }): void;
-  addNotificationReceivedListener(
-    callback: (notification: unknown) => void,
-  ): { remove(): void };
-  addNotificationResponseReceivedListener(
-    callback: (response: NotificationResponse) => void,
-  ): { remove(): void };
+  addNotificationReceivedListener(callback: (notification: unknown) => void): { remove(): void };
+  addNotificationResponseReceivedListener(callback: (response: NotificationResponse) => void): {
+    remove(): void;
+  };
   scheduleNotificationAsync(options: {
     content: {
       title: string;
@@ -86,12 +84,14 @@ export function useNotifications() {
       .catch(() => {});
 
     const sub = Notifications.addNotificationReceivedListener(() => {});
-    const tapSub = Notifications.addNotificationResponseReceivedListener((response: NotificationResponse) => {
-      const data = response?.notification?.request?.content?.data;
-      if (data?.bookingId) {
-        /* navigate to booking detail */
-      }
-    });
+    const tapSub = Notifications.addNotificationResponseReceivedListener(
+      (response: NotificationResponse) => {
+        const data = response?.notification?.request?.content?.data;
+        if (data?.bookingId) {
+          /* navigate to booking detail */
+        }
+      },
+    );
 
     return () => {
       sub?.remove?.();

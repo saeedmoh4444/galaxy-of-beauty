@@ -56,16 +56,14 @@ export function BrideTribeCard({
       {/* Bride */}
       <div className="mt-3 rounded-xl bg-gradient-to-r from-rose-50 to-pink-50 p-3 dark:from-rose-950 dark:to-pink-950">
         <div className="flex items-center gap-2">
-          <span className="text-2xl" aria-hidden="true">
-            
-          </span>
+          <span className="text-2xl" aria-hidden="true"></span>
           <div>
             <p className="text-xs font-bold text-text-primary dark:text-gray-100">{bride}</p>
             <p className="text-[10px] text-rose-600 dark:text-rose-400">العروس </p>
           </div>
           {weddingDate && (
             <span className="ml-auto text-[10px] text-text-tertiary dark:text-gray-400">
-               {weddingDate}
+              {weddingDate}
             </span>
           )}
         </div>
@@ -74,7 +72,7 @@ export function BrideTribeCard({
       {/* Bridesmaids list */}
       <div className="mt-2 space-y-1.5">
         <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-           الوصيفات ({bridesmaids.length})
+          الوصيفات ({bridesmaids.length})
         </p>
         {bridesmaids.map((b, i) => (
           <div
@@ -92,11 +90,11 @@ export function BrideTribeCard({
             </div>
             {b.lookAssigned ? (
               <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
-                 تم التنسيق
+                تم التنسيق
               </span>
             ) : (
               <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:bg-amber-950 dark:text-amber-400">
-                 بانتظار التنسيق
+                بانتظار التنسيق
               </span>
             )}
           </div>
@@ -139,11 +137,11 @@ export function BrideTribeCard({
         onClick={onCoordinate}
         className="mt-3 w-full rounded-xl bg-rose-600 py-2.5 text-xs font-bold text-white hover:bg-rose-700 active:scale-[0.98] transition-all"
       >
-        نسّقي إطلالات الوصيفات 
+        نسّقي إطلالات الوصيفات
       </button>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         لأن صديقاتكِ جزء من يومكِ الخاص
+        لأن صديقاتكِ جزء من يومكِ الخاص
       </p>
     </div>
   );

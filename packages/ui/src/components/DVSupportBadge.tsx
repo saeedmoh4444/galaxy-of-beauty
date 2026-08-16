@@ -35,9 +35,7 @@ export function DVSupportBadge({
     >
       {/* Header - subtle, no obvious labeling */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-purple-700 dark:text-purple-300">
           يداً بيد ننهض
         </h4>
@@ -62,9 +60,7 @@ export function DVSupportBadge({
       {/* Partner */}
       <div className="mt-2 rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true">
-            
-          </span>
+          <span className="text-lg" aria-hidden="true"></span>
           <div>
             <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
               بالشراكة مع
@@ -78,7 +74,7 @@ export function DVSupportBadge({
       {survivorsServed > 0 && (
         <div className="mt-2 rounded-lg bg-purple-50 p-2 text-center dark:bg-purple-950">
           <p className="text-[10px] text-purple-700 dark:text-purple-300">
-             ساعدنا {survivorsServed} امرأة هذا العام
+            ساعدنا {survivorsServed} امرأة هذا العام
           </p>
         </div>
       )}
@@ -86,7 +82,7 @@ export function DVSupportBadge({
       {/* Confidentiality */}
       <div className="mt-2 rounded-lg bg-amber-50 p-2 dark:bg-amber-950">
         <p className="text-center text-[10px] text-amber-700 dark:text-amber-300">
-           سري تماماً — لا أحد يعرف أنكِ استخدمتِ هذه الخدمة
+          سري تماماً — لا أحد يعرف أنكِ استخدمتِ هذه الخدمة
         </p>
       </div>
 
@@ -97,7 +93,7 @@ export function DVSupportBadge({
           onClick={onGetHelp}
           className="flex-1 rounded-xl bg-purple-600 py-2.5 text-xs font-bold text-white hover:bg-purple-700 active:scale-[0.98] transition-all"
         >
-          احصلي على مساعدة 
+          احصلي على مساعدة
         </button>
         <button
           type="button"
@@ -109,7 +105,7 @@ export function DVSupportBadge({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-purple-500 dark:text-purple-400">
-         لستِ وحدكِ — نحن معكِ
+        لستِ وحدكِ — نحن معكِ
       </p>
     </div>
   );

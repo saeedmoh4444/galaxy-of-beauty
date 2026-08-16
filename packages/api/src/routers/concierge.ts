@@ -1,12 +1,14 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
-import { customerProcedure, router , requireFeatureFlag } from '../trpc';
+import { customerProcedure, router, requireFeatureFlag } from '../trpc';
 
 const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.CONCIERGE);
 
 export const conciergeRouter = router({
-  request: customerProcedure.use(flag).input(
+  request: customerProcedure
+    .use(flag)
+    .input(
       z.object({
         request: z.string().min(5).max(500),
         category: z
@@ -20,7 +22,9 @@ export const conciergeRouter = router({
       });
     }),
 
-  myRequests: customerProcedure.use(flag).input(z.object({ limit: z.number().int().min(1).max(30).default(10) }))
+  myRequests: customerProcedure
+    .use(flag)
+    .input(z.object({ limit: z.number().int().min(1).max(30).default(10) }))
     .query(async ({ ctx, input }) => {
       return prisma.conciergeRequest.findMany({
         where: { userId: ctx.user.id },

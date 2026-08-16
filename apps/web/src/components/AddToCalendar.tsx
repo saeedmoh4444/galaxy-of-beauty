@@ -63,7 +63,7 @@ export function AddToCalendar({
         onClick={generateICS}
         className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
       >
-         أضف للتقويم
+        أضف للتقويم
       </button>
       <a
         href={googleCalUrl()}
@@ -71,7 +71,7 @@ export function AddToCalendar({
         rel="noopener noreferrer"
         className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
       >
-         Google
+        Google
       </a>
     </div>
   );

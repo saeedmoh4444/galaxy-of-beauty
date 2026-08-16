@@ -86,9 +86,7 @@ export function SkinAnalysisCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-blue-700 dark:text-blue-300">تحليل البشرة</h4>
         <p className="text-[10px] text-blue-500 dark:text-blue-400">
           تحليل ذكي لبشرتكِ مع توصيات مخصصة
@@ -110,7 +108,7 @@ export function SkinAnalysisCard({
                 </span>
               </div>
               <p className="mt-1 text-[10px] text-blue-700 dark:text-blue-300">
-                 {c.recommendation}
+                {c.recommendation}
               </p>
             </div>
           );
@@ -120,7 +118,7 @@ export function SkinAnalysisCard({
       {/* Disclaimer */}
       <div className="mt-2 rounded-lg bg-amber-50 p-2 dark:bg-amber-950">
         <p className="text-center text-[10px] text-amber-700 dark:text-amber-300">
-           هذا التحليل مبدئي بالذكاء الاصطناعي — استشيري طبيبة جلدية للتشخيص الدقيق
+          هذا التحليل مبدئي بالذكاء الاصطناعي — استشيري طبيبة جلدية للتشخيص الدقيق
         </p>
       </div>
 

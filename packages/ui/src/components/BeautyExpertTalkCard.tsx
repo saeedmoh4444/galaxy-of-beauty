@@ -44,7 +44,7 @@ export function BeautyExpertTalkCard({
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{talk.title}</h4>
           <p className="text-[10px] text-text-tertiary dark:text-gray-500">
-            ️ {talk.expert} ·  {talk.date}
+            ️ {talk.expert} · {talk.date}
           </p>
         </div>
         {talk.isFree && (
@@ -67,7 +67,7 @@ export function BeautyExpertTalkCard({
         onClick={onRegister}
         className="mt-3 w-full rounded-xl bg-indigo-600 py-2 text-xs font-bold text-white hover:bg-indigo-700 active:scale-[0.98] transition-all"
       >
-        سجلي حضوركِ 
+        سجلي حضوركِ
       </button>
     </div>
   );

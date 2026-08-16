@@ -99,11 +99,11 @@ export default function SeasonalCalendarPage(): JSX.Element {
           </h3>
           <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">{s.months}</p>
           <p className="mt-4 rounded-xl bg-white/60 p-3 text-sm text-text-primary dark:bg-gray-800/60 dark:text-gray-200">
-             {s.tips}
+            {s.tips}
           </p>
 
           <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
-             الخدمات الموصى بها
+            الخدمات الموصى بها
           </h4>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {s.services.map((svc, i) => (

@@ -111,9 +111,7 @@ export function BeautyJourneyTimeline({
     <div className={cn('rounded-2xl bg-white p-5 dark:bg-gray-900', className)}>
       {/* Header */}
       <div className="text-center">
-        <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-           رحلتي الجمالية
-        </h4>
+        <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">رحلتي الجمالية</h4>
         <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-gray-400">
           لكل مرحلة عمرية جمالها الخاص
         </p>
@@ -223,7 +221,7 @@ export function BeautyJourneyTimeline({
 
       {/* Footer */}
       <p className="mt-2 text-center text-[9px] italic text-text-tertiary dark:text-gray-500">
-         الجمال يتطور معكِ — ونحن معكِ في كل مرحلة
+        الجمال يتطور معكِ — ونحن معكِ في كل مرحلة
       </p>
     </div>
   );

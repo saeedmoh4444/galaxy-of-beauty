@@ -54,9 +54,7 @@ export default function WalletScreen(): JSX.Element {
 
       <View style={styles.balanceCard}>
         <Text style={styles.balanceLabel}>الرصيد المتاح</Text>
-        <Text style={styles.balanceAmount}>
-          {formatCurrency(Number(balData?.balance ?? 0))}
-        </Text>
+        <Text style={styles.balanceAmount}>{formatCurrency(Number(balData?.balance ?? 0))}</Text>
         {(balData?.bonusBalance ?? 0) > 0 && (
           <Text style={styles.bonusText}>
             + {formatCurrency(Number(balData?.bonusBalance))} رصيد مكافآت
@@ -76,7 +74,7 @@ export default function WalletScreen(): JSX.Element {
                 <Text style={styles.rewardIconText}>L</Text>
               </View>
               <Text style={styles.rewardVal}>
-                {(loyalty.data as Record<string, unknown>)?.points as number ?? 0}
+                {((loyalty.data as Record<string, unknown>)?.points as number) ?? 0}
               </Text>
               <Text style={styles.rewardLbl}>نقاط ولاء</Text>
             </View>
@@ -88,7 +86,7 @@ export default function WalletScreen(): JSX.Element {
               </View>
               <Text style={styles.rewardVal}>
                 {formatCurrency(
-                  (cashback.data as Record<string, unknown>)?.totalCashback as number ?? 0,
+                  ((cashback.data as Record<string, unknown>)?.totalCashback as number) ?? 0,
                 )}
               </Text>
               <Text style={styles.rewardLbl}>كاش باك</Text>
@@ -125,7 +123,13 @@ export default function WalletScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.brand,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
   balanceCard: {
     backgroundColor: COLORS.brand,
     borderRadius: 16,

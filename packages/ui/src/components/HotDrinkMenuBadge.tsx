@@ -64,9 +64,7 @@ export function HotDrinkMenuBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">قائمة المشروبات</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">
@@ -75,7 +73,7 @@ export function HotDrinkMenuBadge({
         </div>
         {complimentary && (
           <span className="ml-auto shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
-             مجاناً
+            مجاناً
           </span>
         )}
       </div>
@@ -107,7 +105,7 @@ export function HotDrinkMenuBadge({
 
       {/* Warm touch */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         &ldquo;القهوة العربية جزء من كرم الضيافة السعودية&rdquo;
+        &ldquo;القهوة العربية جزء من كرم الضيافة السعودية&rdquo;
       </p>
     </div>
   );

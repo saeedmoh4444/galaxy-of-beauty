@@ -83,7 +83,7 @@ export function FaceBlurToggle({
       {photosAffected !== undefined && (
         <div className="mt-2 rounded-lg bg-blue-50 p-2 text-center dark:bg-blue-950">
           <p className="text-[10px] text-blue-700 dark:text-blue-300">
-             {photosAffected} صورة متأثرة بهذا الإعداد
+            {photosAffected} صورة متأثرة بهذا الإعداد
           </p>
         </div>
       )}
@@ -98,7 +98,7 @@ export function FaceBlurToggle({
       </div>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-         معالجة محلية بالكامل — خصوصيتكِ في جهازكِ فقط
+        معالجة محلية بالكامل — خصوصيتكِ في جهازكِ فقط
       </p>
     </div>
   );

@@ -74,9 +74,7 @@ export function ThreeGenerationsCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-text-primary dark:text-gray-100">
           ثلاث أجيال من الجمال
         </h4>
@@ -143,7 +141,7 @@ export function ThreeGenerationsCard({
       {/* Memory keepsake */}
       <div className="mt-2 rounded-lg bg-rose-50 p-2 text-center dark:bg-rose-950">
         <p className="text-[10px] font-medium text-rose-700 dark:text-rose-300">
-           صورة تذكارية للثلاثة أجيال — هديتنا لكِ
+          صورة تذكارية للثلاثة أجيال — هديتنا لكِ
         </p>
       </div>
 
@@ -153,7 +151,7 @@ export function ThreeGenerationsCard({
         onClick={onBook}
         className="mt-3 w-full rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 py-2.5 text-xs font-bold text-white hover:from-rose-600 hover:to-amber-600 active:scale-[0.98] transition-all shadow-sm"
       >
-        احجزي للعائلة 
+        احجزي للعائلة
       </button>
     </div>
   );

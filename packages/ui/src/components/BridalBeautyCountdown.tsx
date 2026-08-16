@@ -110,9 +110,7 @@ export function BridalBeautyCountdown({
 
       {isPast && (
         <div className="mt-3 rounded-xl bg-rose-50 p-4 text-center dark:bg-rose-950">
-          <p className="text-lg" aria-hidden="true">
-            
-          </p>
+          <p className="text-lg" aria-hidden="true"></p>
           <p className="text-xs font-bold text-rose-700 dark:text-rose-300">
             ألف مبروك! رحلة الجمال اكتملت
           </p>

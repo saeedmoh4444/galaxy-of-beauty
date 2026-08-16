@@ -106,7 +106,10 @@ export default function RegisterPage(): JSX.Element {
             onChange={(e) => set('confirmPassword', e.target.value)}
           />
           <div>
-            <label htmlFor="rg-account-type" className="mb-1.5 block text-sm font-medium text-text-primary dark:text-gray-300">
+            <label
+              htmlFor="rg-account-type"
+              className="mb-1.5 block text-sm font-medium text-text-primary dark:text-gray-300"
+            >
               نوع الحساب
             </label>
             <select

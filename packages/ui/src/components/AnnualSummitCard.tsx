@@ -52,9 +52,7 @@ export function AnnualSummitCard({
     >
       {/* Header */}
       <div className="text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-yellow-200 text-2xl dark:from-amber-800 dark:to-yellow-800">
-          
-        </div>
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-yellow-200 text-2xl dark:from-amber-800 dark:to-yellow-800"></div>
         <h4 className="mt-2 text-sm font-bold text-amber-800 dark:text-amber-200">
           ملتقى المرأة في الجمال
         </h4>
@@ -149,11 +147,11 @@ export function AnnualSummitCard({
         onClick={onSponsor}
         className="mt-2 w-full rounded-lg border border-amber-200 bg-white/60 py-1.5 text-[10px] font-medium text-amber-700 hover:bg-white dark:border-amber-800 dark:bg-gray-800/60 dark:text-amber-300"
       >
-         راعي الملتقى
+        راعي الملتقى
       </button>
 
       <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">
-         معاً نبني مستقبل المرأة السعودية في قطاع التجميل
+        معاً نبني مستقبل المرأة السعودية في قطاع التجميل
       </p>
     </div>
   );

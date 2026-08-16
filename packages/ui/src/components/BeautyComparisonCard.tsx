@@ -81,7 +81,7 @@ export function BeautyComparisonCard({
             )}
             {item.best && (
               <span className="mt-1 inline-block rounded-full bg-blue-100 px-2 py-0.5 text-[9px] font-bold text-blue-700 dark:bg-blue-800 dark:text-blue-200">
-                 الأفضل
+                الأفضل
               </span>
             )}
 
@@ -89,12 +89,12 @@ export function BeautyComparisonCard({
             <div className="mt-2 space-y-1 text-left">
               {item.pros.map((p) => (
                 <p key={p} className="text-[9px] text-emerald-600 dark:text-emerald-400">
-                   {p}
+                  {p}
                 </p>
               ))}
               {item.cons.map((c) => (
                 <p key={c} className="text-[9px] text-rose-600 dark:text-rose-400">
-                   {c}
+                  {c}
                 </p>
               ))}
             </div>

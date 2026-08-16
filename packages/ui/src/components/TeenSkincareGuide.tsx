@@ -106,9 +106,7 @@ export function TeenSkincareGuide({
 
       {/* Morning routine */}
       <div className="mt-3 rounded-xl bg-amber-50 p-3 dark:bg-amber-950">
-        <p className="text-[10px] font-bold text-amber-700 dark:text-amber-300">
-          ️ الروتين الصباحي
-        </p>
+        <p className="text-[10px] font-bold text-amber-700 dark:text-amber-300">️ الروتين الصباحي</p>
         <div className="mt-1 flex flex-wrap gap-1">
           {routine.morning.map((step, i) => (
             <span
@@ -124,7 +122,7 @@ export function TeenSkincareGuide({
       {/* Evening routine */}
       <div className="mt-2 rounded-xl bg-indigo-50 p-3 dark:bg-indigo-950">
         <p className="text-[10px] font-bold text-indigo-700 dark:text-indigo-300">
-           الروتين المسائي
+          الروتين المسائي
         </p>
         <div className="mt-1 flex flex-wrap gap-1">
           {routine.evening.map((step, i) => (
@@ -153,7 +151,7 @@ export function TeenSkincareGuide({
       {/* Gentle reminder */}
       <div className="mt-2 rounded-lg bg-emerald-50 p-2 dark:bg-emerald-950">
         <p className="text-center text-[10px] text-emerald-700 dark:text-emerald-300">
-           في هذا العمر: الأقل هو الأكثر — لا حاجة لمنتجات قوية أو باهظة
+          في هذا العمر: الأقل هو الأكثر — لا حاجة لمنتجات قوية أو باهظة
         </p>
       </div>
     </div>

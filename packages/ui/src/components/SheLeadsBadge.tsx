@@ -180,7 +180,7 @@ export function SheLeadsBadge({
       <div className="mt-2 flex flex-wrap gap-1.5">
         {city && (
           <span className="inline-flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 text-[10px] dark:bg-black/20 dark:text-gray-300">
-             {city}
+            {city}
           </span>
         )}
         {yearsOfExperience && (
@@ -190,7 +190,7 @@ export function SheLeadsBadge({
         )}
         {teamSize && (
           <span className="inline-flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 text-[10px] dark:bg-black/20 dark:text-gray-300">
-             فريق من {teamSize}
+            فريق من {teamSize}
           </span>
         )}
       </div>
@@ -198,7 +198,7 @@ export function SheLeadsBadge({
       {/* She Leads tagline */}
       <div className="mt-3 border-t border-amber-200 pt-2 dark:border-amber-800">
         <p className="text-center text-[9px] font-bold text-amber-700 dark:text-amber-400">
-           She Leads — لأن القيادة تبدأ من الداخل 
+          She Leads — لأن القيادة تبدأ من الداخل
         </p>
       </div>
     </div>

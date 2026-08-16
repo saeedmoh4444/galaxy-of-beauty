@@ -55,9 +55,7 @@ export function GreenSalonBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-green-700 dark:text-green-300">صالون أخضر</h4>
           <p className="text-[10px] text-green-500 dark:text-green-400">
@@ -89,12 +87,12 @@ export function GreenSalonBadge({
       {/* Pledge */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
         <p className="text-[10px] text-green-700 dark:text-green-300">
-           نلتزم بممارسات صديقة للبيئة — من المنتجات إلى التغليف إلى استهلاك الطاقة
+          نلتزم بممارسات صديقة للبيئة — من المنتجات إلى التغليف إلى استهلاك الطاقة
         </p>
       </div>
 
       <p className="mt-1.5 text-center text-[9px] text-green-600 dark:text-green-400">
-         الجمال المستدام — لكِ وللأرض
+        الجمال المستدام — لكِ وللأرض
       </p>
     </div>
   );

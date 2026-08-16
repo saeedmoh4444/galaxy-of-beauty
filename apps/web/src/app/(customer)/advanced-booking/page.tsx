@@ -77,13 +77,13 @@ export default function AdvancedBookingPage(): JSX.Element {
                 onClick={() => setMode('recurring')}
                 className={`flex-1 rounded-lg px-4 py-3 text-sm font-medium ${mode === 'recurring' ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
               >
-                 حجز متكرر
+                حجز متكرر
               </button>
               <button
                 onClick={() => setMode('bundle')}
                 className={`flex-1 rounded-lg px-4 py-3 text-sm font-medium ${mode === 'bundle' ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
               >
-                 باقة خدمات
+                باقة خدمات
               </button>
             </div>
 
@@ -138,7 +138,7 @@ export default function AdvancedBookingPage(): JSX.Element {
                   loading={recurringMut.isPending}
                   className="w-full mt-3"
                 >
-                   إنشاء حجز متكرر
+                  إنشاء حجز متكرر
                 </Button>
               </Card>
             ) : (
@@ -176,7 +176,7 @@ export default function AdvancedBookingPage(): JSX.Element {
                   loading={bundleMut.isPending}
                   className="w-full mt-3"
                 >
-                   حجز الباقة
+                  حجز الباقة
                 </Button>
               </Card>
             )}

@@ -48,7 +48,7 @@ export default function BeautyDashboardPage(): JSX.Element {
               </Card>
               <Card padding="lg" className="text-center">
                 <p className="text-2xl font-extrabold text-amber-600">
-                   {(data?.streakDays as number) ?? 0}
+                  {(data?.streakDays as number) ?? 0}
                 </p>
                 <p className="text-xs text-text-secondary">أيام متتالية</p>
               </Card>

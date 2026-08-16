@@ -69,7 +69,7 @@ export function JustBecauseFlowers({
             أرسلنا لكِ {bouquet.name} في {lastReceived}
           </p>
           <p className="mt-0.5 text-[10px] text-rose-500 dark:text-rose-400">
-             شكراً لأنكِ جزء من عائلتنا
+            شكراً لأنكِ جزء من عائلتنا
           </p>
         </div>
       ) : (
@@ -87,12 +87,12 @@ export function JustBecauseFlowers({
       {/* Booking counter */}
       <div className="mt-2 text-center">
         <span className="rounded-full bg-rose-50 px-3 py-1 text-[10px] font-bold text-rose-600 dark:bg-rose-950 dark:text-rose-400">
-           {bookingsCount} حجز
+          {bookingsCount} حجز
         </span>
       </div>
 
       <p className="mt-2 text-center text-[9px] text-rose-500 dark:text-rose-400">
-         بعض الأيام تحتاج زهوراً — بدون سبب
+        بعض الأيام تحتاج زهوراً — بدون سبب
       </p>
     </div>
   );
