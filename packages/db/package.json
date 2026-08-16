@@ -13,6 +13,7 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf .turbo dist",
+    "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate:dev": "prisma migrate dev",
