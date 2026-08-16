@@ -15,17 +15,16 @@ We aim to acknowledge reports within 48 hours and provide an initial assessment 
 
 ## Dependency Audit (August 2026)
 
-As of 2026-08-12, `pnpm audit --prod` reports **8 high findings** across the following packages:
+As of 2026-08-16, `pnpm audit --prod` reports **7 high findings** (baseline enforced by `scripts/audit-check.mjs` in CI) across the following packages:
 
 ### Next.js — ✅ RESOLVED
 
 All 8 Next.js 14.2.35 advisories were resolved by upgrading to **Next.js 15.5.23** (commit `c3fa2ea`).
 
-### sharp / libvips (1 finding)
+### sharp / libvips (1 finding) — ✅ RESOLVED
 
-- **Type**: Inherited vulnerabilities in libvips image processing library
-- **Status**: ✅ **Accepted risk** — sharp is a transitive dependency used by Next.js 15 for image optimization
-- **Compensating controls**: `images.remotePatterns` restricts remote image sources to known CDN/object storage
+- **Type**: Inherited vulnerabilities in libvips image processing library (CVE-2026-33327, CVE-2026-33328, CVE-2026-35590, CVE-2026-35591)
+- **Status**: ✅ **Resolved** — `sharp` pinned to `>=0.35.0` via pnpm override (previously 0.34.5 through Next.js). Web build verified after the bump.
 
 ### Socket.IO (1 finding)
 
