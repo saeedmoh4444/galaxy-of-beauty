@@ -29,7 +29,12 @@ export function getRedis(): Redis | null {
       enableOfflineQueue: false,
     });
 
+    // Log each distinct error message once per process — repeated retry
+    // failures while Redis is down otherwise spam the console
+    const loggedErrors = new Set<string>();
     redis.on('error', (err) => {
+      if (loggedErrors.has(err.message)) return;
+      loggedErrors.add(err.message);
       // Log Redis errors but don't crash — the API degrades gracefully
       // eslint-disable-next-line no-console
       console.error('[Redis] Connection error:', err.message);
