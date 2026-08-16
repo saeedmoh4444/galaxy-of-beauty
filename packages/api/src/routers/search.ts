@@ -49,7 +49,7 @@ export const searchRouter = router({
     // If ILIKE search is available, use it for better Arabic matching
     try {
       const ilikeResults = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
-        `SELECT id FROM services WHERE is_active = true AND (${jsonbPath} ILIKE $1 OR ${descPath} ILIKE $1) LIMIT $2`,
+        `SELECT id FROM services WHERE "isActive" = true AND (${jsonbPath} ILIKE $1 OR ${descPath} ILIKE $1) LIMIT $2`,
         `%${query}%`,
         limit,
       );
