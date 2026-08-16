@@ -17,6 +17,29 @@ jobs:
     name: Verify
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: gob_admin
+          POSTGRES_PASSWORD: gob_test_pass
+          POSTGRES_DB: Galaxy_of_Beauty_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -25,23 +48,30 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
+      - name: Push Schema + Seed (ephemeral DB)
+        run: |
+          pnpm db:push
+          pnpm db:seed
+        env:
+          DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db'
+
       - name: Type Check
         run: pnpm type-check
-      
+
       - name: Lint
         run: pnpm lint
-      
+
       - name: Test
         run: pnpm --filter @galaxy/api test
         env:
           JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
           JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
-          DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
-      
+          DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db'
+
       - name: Build
         run: pnpm build
 
@@ -81,10 +111,10 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
-      
+
       - name: Install + Build
         run: pnpm install --frozen-lockfile && pnpm build
-      
+
       - name: Push Schema + Seed
         run: |
           pnpm db:push
@@ -95,8 +125,10 @@ jobs:
       - name: Start Next.js Server
         run: |
           pnpm --filter @galaxy/web exec next start --port 3000 &
+          SERVER_PID=$!
           for i in $(seq 1 30); do
-            curl -sf http://localhost:3000/api/trpc/health && break
+            if curl -sf http://localhost:3000/api/trpc/health; then break; fi
+            if ! kill -0 $SERVER_PID 2>/dev/null; then echo "Server exited early"; exit 1; fi
             sleep 1
           done
         env:
@@ -111,7 +143,7 @@ jobs:
           PLAYWRIGHT_BASE_URL: http://localhost:3000
           JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
           JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
-      
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -141,13 +173,13 @@ jobs:
             pnpm build
             pm2 reload all
             echo "✅ Deploy complete: $(date)"
-      
+
       - name: Health Check
         run: |
           sleep 5
           curl -f https://galaxyofbeauty.sa/api/trpc/health || exit 1
           echo "✅ Health check passed"
-      
+
       - name: Notify Sentry
         if: always()
         run: |
