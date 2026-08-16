@@ -1,6 +1,6 @@
 # Galaxy of Beauty | جالكسي بيوتي — Comprehensive Platform Details
 
-> **71 commits of hardening | 307 tests | 0 TS errors | 0 ESLint warnings | Production-ready**
+> **120+ commits of hardening | 543 tests + 168 E2E | 0 TS errors | 0 ESLint errors | verifiably-correct baseline (CI fully green)**
 
 ---
 
@@ -14,8 +14,8 @@
 | **Languages**    | Arabic (default, RTL) + English (LTR)                                      |
 | **Users**        | Customers, Technicians, Admins                                             |
 | **Services**     | Hair, Nails, Skincare, Makeup, Massage, Henna                              |
-| **Architecture** | Monorepo — 6 packages, 254 routes, 87 database models                      |
-| **Stack**        | Next.js 14, tRPC v11, Prisma, PostgreSQL 15, Redis 7, Tailwind CSS, Docker |
+| **Architecture** | Monorepo — 7 packages, 280 routes, 202 database models                     |
+| **Stack**        | Next.js 15, tRPC v11, Prisma, PostgreSQL 15, Redis 7, Tailwind CSS, Docker |
 
 ---
 
@@ -24,10 +24,10 @@
 ```
 galaxy-of-beauty/
 ├── apps/
-│   ├── web/          # Next.js 14 App Router — 254 routes, Server Components + Client Components
-│   └── mobile/       # Expo SDK 54 + Expo Router — 47 screens
+│   ├── web/          # Next.js 15 App Router — 280 routes, Server Components + Client Components
+│   └── mobile/       # Expo SDK 57 + Expo Router — 47 screens
 ├── packages/
-│   ├── api/          # tRPC v11 — 176 routers, 400+ procedures, Zod validation
+│   ├── api/          # tRPC v11 — 243 routers, Zod validation
 │   ├── db/           # Prisma — 87 models, 15 enums, PostgreSQL 15
 │   ├── shared/       # 15 UI components, 80+ constants, i18n, theme, hooks, design tokens
 │   └── config/       # Shared TSConfig, ESLint, Prettier, Tailwind presets
@@ -294,10 +294,10 @@ Customer Shares Referral Code → Friend Registers with Code
 
 ### 5.1 Technical Excellence
 
-- **Zero errors, zero warnings** — 0 TS errors across 6 packages, 0 ESLint warnings, 307/307 tests
-- **Type-safe API** — tRPC v11 with Zod validation on all 400+ procedures
-- **Full test coverage** — 307 integration tests + 50+ E2E Playwright tests
-- **CI/CD pipeline** — Type-check, lint, unit tests, E2E, Docker build all automated
+- **Zero errors** — 0 TS errors across 7 packages, 0 ESLint errors, 543/543 tests
+- **Type-safe API** — tRPC v11 with Zod validation on all 243 routers
+- **Full test coverage** — 543 integration tests + 168 E2E Playwright tests (3 browsers) + enforced coverage ratchet
+- **CI/CD pipeline** — all 8 GitHub Actions jobs green: format, lint, type-check, audit, tests, build, Docker, E2E
 - **70+ commits of hardening** — constants, semantic tokens, a11y, focus trapping, reduced motion
 
 ### 5.2 Arabic-First Design

@@ -272,9 +272,9 @@ cd apps/mobile && pnpm type-check
 ```
 galaxy-of-beauty/
 ├── apps/
-│   ├── web/                          # Next.js 14 App Router
+│   ├── web/                          # Next.js 15 App Router
 │   │   ├── src/
-│   │   │   ├── app/                  # 254 routes (pages, layouts, API)
+│   │   │   ├── app/                  # 280 routes (pages, layouts, API)
 │   │   │   │   ├── (auth)/           # Login, Register, 2FA, Forgot/Reset
 │   │   │   │   ├── (customer)/       # Dashboard, Bookings, Wallet, Profile...
 │   │   │   │   ├── (public)/         # Home, Services, Technicians, Blog...
@@ -283,22 +283,22 @@ galaxy-of-beauty/
 │   │   │   ├── components/           # App-specific components
 │   │   │   ├── lib/                  # tRPC client, server utilities
 │   │   │   └── hooks/                # useSocket, useRetry
-│   │   ├── e2e/                      # Playwright E2E tests (9 specs)
+│   │   ├── e2e/                      # Playwright E2E tests (9 specs, 168 tests)
 │   │   ├── tailwind.config.ts        # Tailwind + semantic token config
 │   │   └── playwright.config.ts      # Playwright config (3 browsers)
-│   └── mobile/                       # Expo SDK 54
+│   └── mobile/                       # Expo SDK 57
 │       └── src/
-│           ├── app/                  # Expo Router screens (47 screens)
+│           ├── app/                  # Expo Router screens
 │           ├── components/           # Mobile components
-│           └── lib/                  # API client, useQuery
+│           └── lib/                  # tRPC client (hooks + token store)
 ├── packages/
-│   ├── api/                          # tRPC API (176 routers, 400+ procedures)
+│   ├── api/                          # tRPC API (243 routers)
 │   │   └── src/
 │   │       ├── routers/              # All API routers
 │   │       ├── lib/                  # Auth, cache, rate-limit, CSRF, JWT...
 │   │       ├── validators/           # Zod schemas
-│   │       └── __tests__/            # 307 tests (15 files)
-│   ├── db/                           # Prisma (87 models)
+│   │       └── __tests__/            # 543 tests (38 files)
+│   ├── db/                           # Prisma (202 models)
 │   │   └── prisma/
 │   │       ├── schema.prisma         # Database schema
 │   │       └── seed.ts               # Seed data

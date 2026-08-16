@@ -33,8 +33,8 @@ Academic classification:
 ```
 galaxy-of-beauty/                    # The Body
 ├── apps/
-│   ├── web/          (Next.js 14)   # The Face — user-facing web app
-│   └── mobile/       (Expo 54)      # The Hands — mobile companion
+│   ├── web/          (Next.js 15)   # The Face — user-facing web app
+│   └── mobile/       (Expo 57)      # The Hands — mobile companion
 ├── packages/
 │   ├── api/          (tRPC v11)     # The Brain — business logic, 177 routers
 │   ├── db/           (Prisma)       # The Spine — data persistence
@@ -248,7 +248,7 @@ Every data-fetching page:
 | Tech                      | Reason                                                                   | Would We Choose Again?                                                 |
 | ------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
 | **tRPC v11**              | End-to-end type safety without code generation. Zod validation built in. | ✅ Yes — best decision in the stack.                                   |
-| **Next.js 14 App Router** | Hybrid SSR/CSR. ISR for static pages. Middleware for auth.               | ✅ Yes — but v15 with Turbopack would be faster.                       |
+| **Next.js 15 App Router** | Hybrid SSR/CSR. ISR for static pages. Middleware for auth.               | ✅ Yes — stayed with Next through the v14→v15 migration.               |
 | **Prisma**                | Type-safe queries, migrations, great DX.                                 | ⚠️ Maybe — Drizzle ORM is lighter. Prisma cold start is slow.          |
 | **Expo SDK 54**           | Write once, deploy to iOS + Android + Web.                               | ⚠️ Maybe — React Native has rough edges. Flutter for better mobile UX. |
 | **BullMQ**                | Redis-backed job queues. Exactly what we needed.                         | ✅ Yes — but need monitoring dashboard for queues.                     |

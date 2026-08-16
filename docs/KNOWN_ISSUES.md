@@ -1,6 +1,6 @@
 # Galaxy of Beauty — Known Issues
 
-> **Date:** 2026-08-08 | **Severity:** Low | **Platform Status:** Production-ready
+> **Date:** 2026-08-08 | **Severity:** Low | **Platform Status:** Verifiably-correct baseline (see [DELIVERY_REPORT.md](../DELIVERY_REPORT.md) — not yet production-hardened)
 
 ---
 
@@ -35,10 +35,10 @@
 
 ## 4. Test Coverage Gap (Medium)
 
-**Current:** 24 test files, 350 tests (passing)
-**Gap:** ~221 routers have zero test coverage (245 routers - 24 test files)
-**Plan:** Gradual — add test files for critical routers over time
-**Status:** In progress — 6 new test files added this session
+**Current (2026-08-16):** 38 test files, 543 tests (passing), coverage ratchet enforced at 50/61/36/50
+**Gap:** The remaining 0%-covered surfaces are `payfort` gateway integration, the socket server, and `workers/index`; untested procedure handlers across ~150 feature routers
+**Plan:** Gradual — ratchet upward toward 55% statements (see `packages/api/vitest.config.ts`)
+**Status:** In progress — auth 2FA, payments, booking lifecycle, wallet, and token-cleanup suites added since the 08-08 snapshot
 
 ---
 

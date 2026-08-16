@@ -7,7 +7,7 @@
 │                        CLIENTS                               │
 │  ┌──────────────────┐  ┌──────────────────┐                 │
 │  │ apps/web         │  │ apps/mobile      │                 │
-│  │ Next.js 14 (SSR) │  │ Expo SDK 54      │                 │
+│  │ Next.js 15 (SSR) │  │ Expo SDK 57      │                 │
 │  │ 90+ pages        │  │ Expo Router      │                 │
 │  │ tRPC Client      │  │ React Query      │                 │
 │  │ React Query      │  │                  │                 │
@@ -17,12 +17,12 @@
 ┌───────────▼─────────────────────▼──────────────────────────┐
 │                     API LAYER                                │
 │  ┌──────────────────────────────────────────────────────┐   │
-│  │ packages/api — tRPC v11 (159 routers)                │   │
+│  │ packages/api — tRPC v11 (243 routers)                │   │
 │  │ Middleware: rateLimit → auth → role → CSRF → Zod     │   │
 │  └──────────────────────┬───────────────────────────────┘   │
 │  ┌──────────────────────┼───────────────────────────────┐   │
 │  │ packages/db          │  packages/shared              │   │
-│  │ Prisma (87+ models)  │  UI kit, i18n, types          │   │
+│  │ Prisma (202 models)  │  UI kit, i18n, types          │   │
 │  └──────────────────────┴───────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
             │
@@ -83,6 +83,6 @@ See `docs/adr/` for detailed architecture decision records.
 | tRPC over REST           | End-to-end type safety, no code generation               |
 | Prisma over raw SQL      | Type-safe queries, migration support, productivity       |
 | Next.js over Vite SPA    | SSR/ISR for SEO, file-based routing, API routes          |
-| Separate Socket.IO       | Next.js 14 App Router doesn't support WebSocket upgrade  |
+| Separate Socket.IO       | Next.js 15 App Router doesn't support WebSocket upgrade  |
 | JSONB for i18n           | Simpler than translation tables, works with Prisma Json  |
 | `prisma db push` for dev | Faster iteration; `prisma migrate deploy` for production |

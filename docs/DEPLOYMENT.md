@@ -4,7 +4,7 @@
 
 | Component  | Technology                     | Port   | Purpose                           |
 | ---------- | ------------------------------ | ------ | --------------------------------- |
-| Web Server | Next.js 14 (PM2)               | 3000   | Customer/Admin/Technician web app |
+| Web Server | Next.js 15 (PM2)               | 3000   | Customer/Admin/Technician web app |
 | Mobile     | Expo (PM2)                     | 8081   | React Native mobile app           |
 | API        | tRPC v11 (embedded in Next.js) | 3000   | Type-safe API layer               |
 | Database   | PostgreSQL 15                  | 5432   | Primary data store                |
