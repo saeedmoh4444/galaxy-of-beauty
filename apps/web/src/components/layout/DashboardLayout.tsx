@@ -64,7 +64,7 @@ const customerLinks = [
   { href: '/saved-cards', labelAr: 'البطاقات', labelEn: 'Cards', icon: '' },
   { href: '/notifications', labelAr: 'الإشعارات', labelEn: 'Notifications', icon: '' },
   { href: '/skin-analysis', labelAr: 'تحليل البشرة', labelEn: 'Skin Analysis', icon: '' },
-  { href: '/ai-chat', labelAr: 'لايلى', labelEn: 'Layla AI', icon: '' },
+  { href: '/ai-chat', labelAr: 'مجرة الجمال', labelEn: 'Beauty Galaxy', icon: '' },
   { href: '/subscriptions', labelAr: 'الاشتراكات', labelEn: 'Subscriptions', icon: '' },
   { href: '/marketplace', labelAr: 'المتجر', labelEn: 'Marketplace', icon: '️' },
   { href: '/subscription-boxes', labelAr: 'الصناديق الشهرية', labelEn: 'Boxes', icon: '' },

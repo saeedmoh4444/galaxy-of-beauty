@@ -136,15 +136,15 @@ galaxy-of-beauty/
 
 #### AI & Smart Features
 
-| Feature              | Detail                                                    |
-| -------------------- | --------------------------------------------------------- |
-| AI Chatbot ("Layla") | OpenAI GPT-4o-mini powered, Arabic-first, beauty domain   |
-| AI Routine Generator | Personalized routine based on skin profile                |
-| AI Skin Analysis     | Photo → skin type, concerns, hydration, recommendations   |
-| AI Feed              | Personalized service recommendations from booking history |
-| Smart Schedule       | Best time slots based on availability patterns            |
-| Service Matchmaker   | Quiz-based personalized service matching                  |
-| Gift Quiz            | Multi-question gift recommendation engine                 |
+| Feature                      | Detail                                                    |
+| ---------------------------- | --------------------------------------------------------- |
+| AI Chatbot ("Beauty Galaxy") | OpenAI GPT-4o-mini powered, Arabic-first, beauty domain   |
+| AI Routine Generator         | Personalized routine based on skin profile                |
+| AI Skin Analysis             | Photo → skin type, concerns, hydration, recommendations   |
+| AI Feed                      | Personalized service recommendations from booking history |
+| Smart Schedule               | Best time slots based on availability patterns            |
+| Service Matchmaker           | Quiz-based personalized service matching                  |
+| Gift Quiz                    | Multi-question gift recommendation engine                 |
 
 #### Loyalty & Engagement
 

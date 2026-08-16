@@ -25,7 +25,8 @@ export default function BeautyAdvisorScreen(): JSX.Element {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: ' مرحباً! أنا ليلى، مستشارة جمالكِ الشخصية. اسأليني أي سؤال عن العناية والتجميل!',
+      content:
+        ' مرحباً! أنا مجرة الجمال، مستشارة جمالكِ الشخصية. اسأليني أي سؤال عن العناية والتجميل!',
     },
   ]);
   const [input, setInput] = useState('');
@@ -56,7 +57,7 @@ export default function BeautyAdvisorScreen(): JSX.Element {
   return (
     <KeyboardAvoidingView style={s.c} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View style={s.header}>
-        <Text style={s.t}> ليلى</Text>
+        <Text style={s.t}> مجرة الجمال</Text>
         <Text style={s.sub}>مستشارة جمالكِ الشخصية</Text>
       </View>
 

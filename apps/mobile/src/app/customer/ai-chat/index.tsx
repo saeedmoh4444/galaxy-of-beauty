@@ -62,7 +62,7 @@ export default function AiChatScreen() {
       <View style={styles.chatHeader}>
         <Text style={styles.avatar}></Text>
         <View>
-          <Text style={styles.chatTitle}>لايلى</Text>
+          <Text style={styles.chatTitle}>مجرة الجمال</Text>
           <Text style={styles.chatSub}>مستشارة التجميل الذكية</Text>
         </View>
       </View>
@@ -75,7 +75,7 @@ export default function AiChatScreen() {
         {messages.length === 0 && (
           <View style={styles.centered}>
             <Text style={styles.emptyIcon}></Text>
-            <Text style={styles.empty}>مرحباً بك في لايلى!</Text>
+            <Text style={styles.empty}>مرحباً بك في مجرة الجمال!</Text>
             <Text style={styles.hint}>أنا مستشارة التجميل الذكية، اسأليني عن أي شيء</Text>
           </View>
         )}
@@ -90,7 +90,7 @@ export default function AiChatScreen() {
                 m.role === 'user' ? styles.bubbleUser : styles.bubbleAssistant,
               ]}
             >
-              {m.role === 'assistant' && <Text style={styles.assistantLabel}>لايلى</Text>}
+              {m.role === 'assistant' && <Text style={styles.assistantLabel}>مجرة الجمال</Text>}
               <Text style={[styles.msgText, m.role === 'user' && { color: '#fff' }]}>
                 {m.content}
               </Text>
@@ -105,7 +105,7 @@ export default function AiChatScreen() {
         {chatMut.isPending && (
           <View style={styles.msgAssistant}>
             <View style={styles.bubbleAssistant}>
-              <Text style={styles.assistantLabel}>لايلى</Text>
+              <Text style={styles.assistantLabel}>مجرة الجمال</Text>
               <ActivityIndicator color="#7c3aed" size="small" />
             </View>
           </View>

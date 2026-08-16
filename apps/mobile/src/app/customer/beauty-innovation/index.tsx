@@ -17,7 +17,7 @@ const CARDS: Card[] = [
   {
     emoji: '️',
     title: 'مساعد صوتي',
-    subtitle: 'اسألي ليلى — مستشارة جمالك',
+    subtitle: 'اسألي مجرة الجمال — مستشارة جمالك',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [

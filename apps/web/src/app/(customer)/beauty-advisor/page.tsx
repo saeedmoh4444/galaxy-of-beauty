@@ -19,7 +19,7 @@ export default function BeautyAdvisorPage(): JSX.Element {
     {
       role: 'assistant',
       content:
-        ' مرحباً! أنا ليلى، مستشارة جمالكِ الشخصية. اسأليني أي سؤال عن العناية بالبشرة، المكياج، الشعر، أو أي نصيحة تجميلية!',
+        ' مرحباً! أنا مجرة الجمال، مستشارة جمالكِ الشخصية. اسأليني أي سؤال عن العناية بالبشرة، المكياج، الشعر، أو أي نصيحة تجميلية!',
     },
   ]);
   const [input, setInput] = useState('');
@@ -50,7 +50,7 @@ export default function BeautyAdvisorPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl flex flex-col" style={{ height: 'calc(100vh - 120px)' }}>
         <div>
-          <h1 className="text-2xl font-bold"> ليلى — مستشارة جمالكِ</h1>
+          <h1 className="text-2xl font-bold"> مجرة الجمال — مستشارة جمالكِ</h1>
           <p className="mt-1 text-sm text-text-secondary">اسأليني عن أي شيء يخص العناية والتجميل</p>
         </div>
 

@@ -146,7 +146,7 @@
 
 ### 3.3 AI Beauty Advisor — Proactive
 
-**Why:** "Layla" is reactive (chat). Proactive AI suggests services before the customer asks.
+**Why:** "Beauty Galaxy" is reactive (chat). Proactive AI suggests services before the customer asks.
 **What:**
 
 - **Smart Notifications:** "Your last facial was 3 weeks ago. Time for a refresh! Book now → 10% off"
@@ -216,7 +216,7 @@
 - Loading states: Branded skeleton screens with logo shimmer
 - Pull-to-refresh: Custom branded animation (stars/glitter theme)
 - Tab transitions: Smooth slide animations between tabs
-- Empty states: Illustrated characters (brand mascot "Layla" in different moods)
+- Empty states: Illustrated characters (brand mascot "Beauty Galaxy" in different moods)
 - Error states: Friendly illustrated errors with humor
 
 ### 5.2 Accessibility (a11y) Excellence

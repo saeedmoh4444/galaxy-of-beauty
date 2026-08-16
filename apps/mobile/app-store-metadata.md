@@ -24,7 +24,7 @@ FEATURES:
 • Browse 7 service categories with 500+ technicians
 • Real-time booking with instant confirmation
 • Wallet with cashback rewards (5% on every booking)
-• AI chatbot "Layla" for personalized beauty advice
+• AI chatbot "Beauty Galaxy" for personalized beauty advice
 • Loyalty program — earn points, unlock tiers, get rewards
 • Gift cards for friends and family
 • ZATCA-compliant e-invoicing
@@ -46,7 +46,7 @@ SECURITY:
 • تصفح ٧ أقسام خدمة مع ٥٠٠+ فنية
 • حجز فوري مع تأكيد مباشر
 • محفظة مع مكافآت كاش باك (٥٪ على كل حجز)
-• المساعدة الذكية "ليلى" لنصائح تجميل مخصصة
+• المساعدة الذكية "مجرة الجمال" لنصائح تجميل مخصصة
 • برنامج ولاء — اكسبي نقاط، ارتقي بالمستويات، احصلي على مكافآت
 • بطاقات هدايا للأصدقاء والعائلة
 • فواتير إلكترونية متوافقة مع زاتكا
@@ -74,7 +74,7 @@ spa,saudi,arabia,جمال,مكياج,شعر,أظافر,حجز,صالون,سبا,
 2. Service catalog with search
 3. Booking flow (select service → technician → time)
 4. Wallet with balance and transactions
-5. AI chatbot "Layla"
+5. AI chatbot "Beauty Galaxy"
 6. Loyalty program dashboard
 
 ## Google Play Console (Android)

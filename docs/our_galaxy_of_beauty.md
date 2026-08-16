@@ -239,18 +239,18 @@
 
 ### 4.6 AI & Smart Features
 
-| #   | Feature                             | Description                                                         |
-| --- | ----------------------------------- | ------------------------------------------------------------------- |
-| 44  | ليلى — مستشارة الجمال (AI Chatbot)  | Arabic AI beauty advisor powered by GPT-4o-mini                     |
-| 45  | روتين ذكي (AI Routine)              | Personalized beauty routine based on skin profile                   |
-| 46  | تحليل البشرة (Skin Analysis)        | AI photo analysis — skin type, concerns, hydration, recommendations |
-| 47  | تغذية مخصصة (Personalized Feed)     | AI-curated service recommendations from your history                |
-| 48  | محلل المكونات (Ingredient Analyzer) | Scan product ingredients for allergens and safety                   |
-| 49  | منسق الخدمات (Service Matchmaker)   | Quiz-based personalized service matching                            |
-| 50  | دليل الهدايا (Gift Quiz)            | Multi-question quiz to find the perfect beauty gift                 |
-| 51  | تحليل الألوان (Color Analysis)      | Find your best makeup colors based on skin tone                     |
-| 52  | محاكاة لون الشعر (Hair Color Sim)   | Virtual try-on for hair colors                                      |
-| 53  | التجربة الافتراضية (Virtual Try-On) | AR makeup try-on with camera integration                            |
+| #   | Feature                                   | Description                                                         |
+| --- | ----------------------------------------- | ------------------------------------------------------------------- |
+| 44  | مجرة الجمال — مستشارة الجمال (AI Chatbot) | Arabic AI beauty advisor powered by GPT-4o-mini                     |
+| 45  | روتين ذكي (AI Routine)                    | Personalized beauty routine based on skin profile                   |
+| 46  | تحليل البشرة (Skin Analysis)              | AI photo analysis — skin type, concerns, hydration, recommendations |
+| 47  | تغذية مخصصة (Personalized Feed)           | AI-curated service recommendations from your history                |
+| 48  | محلل المكونات (Ingredient Analyzer)       | Scan product ingredients for allergens and safety                   |
+| 49  | منسق الخدمات (Service Matchmaker)         | Quiz-based personalized service matching                            |
+| 50  | دليل الهدايا (Gift Quiz)                  | Multi-question quiz to find the perfect beauty gift                 |
+| 51  | تحليل الألوان (Color Analysis)            | Find your best makeup colors based on skin tone                     |
+| 52  | محاكاة لون الشعر (Hair Color Sim)         | Virtual try-on for hair colors                                      |
+| 53  | التجربة الافتراضية (Virtual Try-On)       | AR makeup try-on with camera integration                            |
 
 ### 4.7 Wellness & Self-Care
 

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('AI Chat (Layla)', () => {
+test.describe('AI Chat (Beauty Galaxy)', () => {
   test('should load AI chat page successfully', async ({ page }) => {
     const response = await page.goto('/ai-chat');
     // AI chat is a public page — it loads without redirect

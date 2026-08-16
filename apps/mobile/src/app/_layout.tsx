@@ -69,7 +69,7 @@ export default function RootLayout() {
               <Stack.Screen name="customer/referrals/index" options={{ title: 'الإحالات' }} />
               <Stack.Screen name="customer/streaks/index" options={{ title: 'الاستمرارية' }} />
               <Stack.Screen name="customer/disputes/index" options={{ title: 'النزاعات' }} />
-              <Stack.Screen name="customer/ai-chat/index" options={{ title: 'لايلى' }} />
+              <Stack.Screen name="customer/ai-chat/index" options={{ title: 'مجرة الجمال' }} />
               <Stack.Screen name="customer/subscriptions/index" options={{ title: 'الاشتراكات' }} />
               <Stack.Screen
                 name="customer/saved-cards/index"

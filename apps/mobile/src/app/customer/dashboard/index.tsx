@@ -47,7 +47,7 @@ export default function DashboardScreen(): JSX.Element {
           { h: '/customer/wallet', l: ' المحفظة', c: '#059669' },
           { h: '/customer/wishlist', l: '️ المفضلة', c: '#dc2626' },
           { h: '/customer/loyalty', l: ' الولاء', c: '#d97706' },
-          { h: '/customer/ai-chat', l: ' لايلى', c: '#2563eb' },
+          { h: '/customer/ai-chat', l: ' مجرة الجمال', c: '#2563eb' },
           { h: '/customer/profile', l: ' حسابي', c: '#7c3aed' },
         ].map((ql, i) => (
           <TouchableOpacity

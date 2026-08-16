@@ -26,7 +26,7 @@ const MENU_ITEMS = [
   { label: ' أكاديمية الجمال', href: '/customer/beauty-academy' },
   { label: ' الصحة والعافية', href: '/customer/wellness' },
   { label: ' الإشعارات', href: '/customer/notifications' },
-  { label: ' لايلى - المساعدة الذكية', href: '/customer/ai-chat' },
+  { label: ' مجرة الجمال - المساعدة الذكية', href: '/customer/ai-chat' },
 ];
 
 interface ProfileUser {

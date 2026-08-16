@@ -199,7 +199,7 @@ describe('Galaxy of Beauty Mobile App', () => {
   });
 
   // ── AI Chat ──────────────────────────────────────────────
-  describe('AI Chat (Layla)', () => {
+  describe('AI Chat (Beauty Galaxy)', () => {
     it('should navigate to AI chat screen', async () => {
       // Requires login — test redirect
       await device.launchApp({

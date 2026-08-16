@@ -13,7 +13,7 @@ import {
 } from '@galaxy/shared';
 
 // ── OpenAI API helper ─────────────────────────────────────
-const LAYLA_SYSTEM_PROMPT = `أنتِ "ليلى"، مستشارة تجميل ذكية لمنصة "جالكسي بيوتي" السعودية. تقدمين نصائح عن:
+const BEAUTY_GALAXY_SYSTEM_PROMPT = `أنتِ "مجرة الجمال"، مستشارة تجميل ذكية لمنصة "جالكسي بيوتي" السعودية. تقدمين نصائح عن:
 
 - العناية بالبشرة والشعر والأظافر
 - خدمات التجميل المتوفرة (شعر، مساج، مكياج، عناية بالبشرة، حناء، أظافر)
@@ -41,7 +41,7 @@ async function callOpenAI(
       headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: OPENAI_MODEL,
-        messages: [{ role: 'system', content: LAYLA_SYSTEM_PROMPT }, ...messages],
+        messages: [{ role: 'system', content: BEAUTY_GALAXY_SYSTEM_PROMPT }, ...messages],
         max_tokens: maxTokens,
         temperature: OPENAI_DEFAULT_TEMPERATURE,
       }),
@@ -129,7 +129,7 @@ export const aiRouter = router({
           code: 'PRECONDITION_FAILED',
           message: quota.subscription
             ? `لقد استنفدت الحد الشهري (${used}/${limit}). انتظري التجديد الشهري أو قومي بالترقية.`
-            : 'يلزمك اشتراك في باقة الذكاء الاصطناعي لاستخدام لايلى.',
+            : 'يلزمك اشتراك في باقة الذكاء الاصطناعي لاستخدام مجرة الجمال.',
         });
       }
 

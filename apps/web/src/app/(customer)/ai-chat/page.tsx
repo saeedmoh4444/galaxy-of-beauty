@@ -5,7 +5,7 @@ import { api } from '@/lib/trpc';
 import { CardSkeleton, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
-const LAYLA_AVATAR = '';
+const BEAUTY_GALAXY_AVATAR = '';
 
 interface ChatMessage {
   id: string;
@@ -64,10 +64,10 @@ export default function AiChatPage(): JSX.Element {
       <div className="mx-auto flex h-[calc(100vh-12rem)] max-w-3xl flex-col">
         <div className="flex items-center gap-3 border-b border-gray-200 pb-4 dark:border-gray-700">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 text-2xl dark:bg-purple-900">
-            {LAYLA_AVATAR}
+            {BEAUTY_GALAXY_AVATAR}
           </div>
           <div>
-            <h1 className="text-xl font-bold">لايلى</h1>
+            <h1 className="text-xl font-bold">مجرة الجمال</h1>
             <p className="text-xs text-purple-600 dark:text-purple-400">مستشارة التجميل الذكية</p>
           </div>
         </div>
@@ -86,9 +86,9 @@ export default function AiChatPage(): JSX.Element {
             </div>
           ) : messages.length === 0 && !sendMut.isPending ? (
             <div className="flex flex-col items-center justify-center pt-16 text-center">
-              <div className="mb-4 text-6xl">{LAYLA_AVATAR}</div>
+              <div className="mb-4 text-6xl">{BEAUTY_GALAXY_AVATAR}</div>
               <EmptyState
-                title="مرحباً بك في لايلى!"
+                title="مرحباً بك في مجرة الجمال!"
                 description="أنا مستشارة التجميل الذكية، يمكنني مساعدتك في اختيار الخدمات المناسبة، نصائح العناية، وأجوبة على استفساراتك"
               />
               <p className="mt-4 text-sm text-purple-500">اسأليني عن أي شيء يخص التجميل والعناية</p>
@@ -107,7 +107,9 @@ export default function AiChatPage(): JSX.Element {
                   }`}
                 >
                   {msg.role === 'assistant' && (
-                    <span className="mb-1 block text-xs font-medium text-purple-500">لايلى</span>
+                    <span className="mb-1 block text-xs font-medium text-purple-500">
+                      مجرة الجمال
+                    </span>
                   )}
                   <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.content}</p>
                   <p
@@ -125,7 +127,7 @@ export default function AiChatPage(): JSX.Element {
           {sendMut.isPending && (
             <div className="flex justify-start">
               <div className="max-w-[80%] rounded-2xl rounded-bl-md border border-purple-200 bg-purple-50 px-4 py-3 dark:border-purple-800 dark:bg-purple-900/30">
-                <span className="mb-1 block text-xs font-medium text-purple-500">لايلى</span>
+                <span className="mb-1 block text-xs font-medium text-purple-500">مجرة الجمال</span>
                 <span className="text-sm text-text-secondary">...</span>
               </div>
             </div>

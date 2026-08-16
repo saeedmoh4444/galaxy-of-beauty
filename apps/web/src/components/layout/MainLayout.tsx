@@ -124,7 +124,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
               <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">المساعدة</h4>
               <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
                 <Link href="/ai-chat" className="block hover:text-brand-600">
-                  تحدثي مع ليلى
+                  تحدثي مع مجرة الجمال
                 </Link>
                 <Link href="/bookings/create" className="block hover:text-brand-600">
                   احجزي الآن
