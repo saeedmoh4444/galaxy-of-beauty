@@ -62,7 +62,7 @@ idempotent replay, and browser-CSRF enforcement (FORBIDDEN).
 
 - [ ] Register a new account → lands on login
 - [ ] Login as `customer@test.com`
-- [ ] **2FA**: `/customer/profile`? No — open the 2FA screen, click **بدء الإعداد**, copy the
+- [ ] **2FA**: open the 2FA screen from the profile area, click **بدء الإعداد**, copy the
       base32 secret into Google Authenticator (works with real apps now), verify with the code,
       log out, log back in → challenged with `2FA_REQUIRED`, log in with a fresh code, then disable 2FA
 - [ ] Logout revokes the session (old refresh token rejected)
