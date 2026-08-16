@@ -5,17 +5,57 @@ const TOTP_STEP = 30; // 30-second time window
 const TOTP_WINDOW = 1; // Allow ±1 step drift
 const TOTP_DIGITS = 6;
 
+// ── Base32 (RFC 4648, unpadded uppercase) ──────────────────
+// Authenticator apps (Google Authenticator, Authy, 1Password) expect
+// the otpauth secret to be base32 — a base64 secret produces QR codes
+// that never verify.
+
+const BASE32_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+
+function base32Encode(buffer: Buffer): string {
+  let bits = 0;
+  let value = 0;
+  let output = '';
+  for (const byte of buffer) {
+    value = (value << 8) | byte;
+    bits += 8;
+    while (bits >= 5) {
+      output += BASE32_ALPHABET[(value >>> (bits - 5)) & 31];
+      bits -= 5;
+    }
+  }
+  if (bits > 0) output += BASE32_ALPHABET[(value << (5 - bits)) & 31];
+  return output;
+}
+
+function base32Decode(input: string): Buffer {
+  const clean = input.toUpperCase().replace(/=+$/, '').replace(/\s+/g, '');
+  let bits = 0;
+  let value = 0;
+  const bytes: number[] = [];
+  for (const char of clean) {
+    const index = BASE32_ALPHABET.indexOf(char);
+    if (index === -1) throw new Error(`Invalid base32 character: ${char}`);
+    value = (value << 5) | index;
+    bits += 5;
+    if (bits >= 8) {
+      bytes.push((value >>> (bits - 8)) & 0xff);
+      bits -= 8;
+    }
+  }
+  return Buffer.from(bytes);
+}
+
 // ── TOTP Implementation ───────────────────────────────────
 
 /**
- * Generate a cryptographically random TOTP secret.
- * Returns the secret as a base32-like hex string suitable for authenticator apps,
- * and the otpauth:// URI for QR code generation.
+ * Generate a cryptographically random TOTP secret as base32, suitable
+ * for authenticator apps, plus the otpauth:// URI for QR codes.
  */
 export function generateTotpSecret(email: string): { secret: string; otpauthUrl: string } {
   // 20 bytes = 160 bits, standard for TOTP
   const secretBytes = crypto.randomBytes(20);
-  const secret = secretBytes.toString('base64');
+  const secret = base32Encode(secretBytes);
   const otpauthUrl = `otpauth://totp/GalaxyOfBeauty:${encodeURIComponent(email)}?secret=${secret}&issuer=GalaxyOfBeauty&algorithm=SHA1&digits=${TOTP_DIGITS}&period=${TOTP_STEP}`;
   return { secret, otpauthUrl };
 }
@@ -29,7 +69,7 @@ function generateToken(secret: string, counter: number): string {
   counterBuf.writeBigInt64BE(BigInt(counter), 0);
 
   // HMAC-SHA1
-  const hmac = crypto.createHmac('sha1', Buffer.from(secret, 'base64'));
+  const hmac = crypto.createHmac('sha1', base32Decode(secret));
   hmac.update(counterBuf);
   const digest = hmac.digest();
 
