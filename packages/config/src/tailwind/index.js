@@ -38,6 +38,36 @@ module.exports = {
           900: '#831843',
           950: '#500724',
         },
+        // Semantic tokens — CSS custom properties for automatic dark mode.
+        // Consumed by apps/web and packages/ui (Storybook) alike.
+        surface: {
+          DEFAULT: 'var(--color-surface)',
+          muted: 'var(--color-surface-muted)',
+          elevated: 'var(--color-surface-elevated)',
+        },
+        'text-primary': 'var(--color-text-primary)',
+        'text-secondary': 'var(--color-text-secondary)',
+        'text-tertiary': 'var(--color-text-tertiary)',
+        edge: {
+          DEFAULT: 'var(--color-border-default)',
+          muted: 'var(--color-border-muted)',
+        },
+        success: {
+          DEFAULT: 'var(--color-success)',
+          subtle: 'var(--color-success-subtle)',
+        },
+        warning: {
+          DEFAULT: 'var(--color-warning)',
+          subtle: 'var(--color-warning-subtle)',
+        },
+        danger: {
+          DEFAULT: 'var(--color-danger)',
+          subtle: 'var(--color-danger-subtle)',
+        },
+        info: {
+          DEFAULT: 'var(--color-info)',
+          subtle: 'var(--color-info-subtle)',
+        },
       },
       fontFamily: {
         sans: ['Inter', 'Tajawal', 'system-ui', 'sans-serif'],
