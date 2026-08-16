@@ -28,7 +28,7 @@ galaxy-of-beauty/
 │   └── mobile/       # Expo SDK 57 + Expo Router — 47 screens
 ├── packages/
 │   ├── api/          # tRPC v11 — 243 routers, Zod validation
-│   ├── db/           # Prisma — 87 models, 15 enums, PostgreSQL 15
+│   ├── db/           # Prisma — 202 models, 15 enums, PostgreSQL 15
 │   ├── shared/       # 15 UI components, 80+ constants, i18n, theme, hooks, design tokens
 │   └── config/       # Shared TSConfig, ESLint, Prettier, Tailwind presets
 ├── docs/             # Architecture decisions, test plans, platform details
@@ -395,4 +395,4 @@ _Full schema: `packages/db/prisma/schema.prisma`_
 
 ---
 
-**Built with 71 commits of hardening. Production-ready.**
+**Built with 120+ commits of hardening. Verifiably-correct baseline — CI fully green, not yet production-hardened.**

@@ -14,24 +14,29 @@
 
 ---
 
+## Resolved Items (2026-08-16)
+
+| ID    | Item                                             | Resolution                                                                                                                        |
+| ----- | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| P0-01 | Next.js 15 migration (8 high vulns, 14.2.35 EOL) | ✅ Next 15.5.23; `await params` on dynamic pages; web build + 168/168 e2e green                                                   |
+| P1-01 | Real ESLint setup across all workspaces          | ✅ 0 errors in all 6 code-bearing packages; web `.eslintrc.json` shadow duplicate removed                                         |
+| P1-03 | Test coverage: Tier 1 endpoints (was 9.5%)       | ✅ 543 tests; auth 2FA, booking state machine (72% of bookings.ts), payments, wallet, token cleanup; ratchet 50/61/36/50 enforced |
+| P1-04 | Mobile app `any` budget (943 usages)             | ✅ 3 remaining                                                                                                                    |
+
 ## Active Debt Items
 
 ### P0 — Critical
 
-| ID    | Item                                             | Owner | Created  | Notes                                                    |
-| ----- | ------------------------------------------------ | ----- | -------- | -------------------------------------------------------- |
-| P0-01 | Next.js 15 migration (8 high vulns, 14.2.35 EOL) | —     | Aug 2026 | Blocked by App Router breaking changes audit             |
-| P0-02 | womensServices.ts router split (3,626 lines)     | —     | Aug 2026 | Emergency split: core / packages / specialists / privacy |
+| ID    | Item                                         | Owner | Created  | Notes                                                    |
+| ----- | -------------------------------------------- | ----- | -------- | -------------------------------------------------------- |
+| P0-02 | womensServices.ts router split (3,626 lines) | —     | Aug 2026 | Emergency split: core / packages / specialists / privacy |
 
 ### P1 — High
 
-| ID    | Item                                               | Owner | Created  | Notes                                       |
-| ----- | -------------------------------------------------- | ----- | -------- | ------------------------------------------- |
-| P1-01 | Real ESLint setup across all workspaces            | —     | Aug 2026 | Currently `tsc --noEmit` only in web+mobile |
-| P1-02 | Socket.IO parser upgrade (high vuln)               | —     | Aug 2026 | Blocked by Socket.IO major version compat   |
-| P1-03 | Test coverage: Tier 1 endpoints (currently 9.5%)   | —     | Aug 2026 | ~23/243 namespaces have tests               |
-| P1-04 | Mobile app `any` budget (943 usages)               | —     | Aug 2026 | Target: 500 by Dec 2026                     |
-| P1-05 | Refresh token family not enforced pre-Phase 3 data | —     | Aug 2026 | Old tokens lack familyId                    |
+| ID    | Item                                               | Owner | Created  | Notes                                     |
+| ----- | -------------------------------------------------- | ----- | -------- | ----------------------------------------- |
+| P1-02 | Socket.IO parser upgrade (high vuln)               | —     | Aug 2026 | Blocked by Socket.IO major version compat |
+| P1-05 | Refresh token family not enforced pre-Phase 3 data | —     | Aug 2026 | Old tokens lack familyId                  |
 
 ### P2 — Medium
 
