@@ -13,6 +13,7 @@ import {
   Button,
   Input,
   Modal,
+  InlineEdit,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -56,9 +57,19 @@ export default function ProfilePage(): JSX.Element {
       refetchUser();
     },
   });
-  const [formName, setFormName] = useState('');
-  const [formPhone, setFormPhone] = useState('');
-  const [formLang, setFormLang] = useState('ar');
+
+  // Inline edits save a single field at a time (UI/UX backlog 3.2)
+  const saveName = async (name: string): Promise<string> => {
+    await updateProfileMut.mutateAsync({ name });
+    return name;
+  };
+  const savePhone = async (phone: string): Promise<string> => {
+    await updateProfileMut.mutateAsync({ phone });
+    return phone;
+  };
+  const saveLanguage = (lang: 'ar' | 'en') => {
+    updateProfileMut.mutate({ preferredLanguage: lang });
+  };
 
   // -- Addresses tab --
   const {
@@ -159,27 +170,34 @@ export default function ProfilePage(): JSX.Element {
               </div>
             ) : (
               <Card padding="lg">
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    updateProfileMut.mutate({
-                      name: formName || undefined,
-                      phone: formPhone || undefined,
-                      preferredLanguage: formLang as 'ar' | 'en' | undefined,
-                    });
-                  }}
-                  className="space-y-4"
-                >
-                  <Input
-                    label="الاسم"
-                    defaultValue={userData.name as string}
-                    onChange={(e) => setFormName(e.target.value)}
-                  />
-                  <Input
-                    label="رقم الجوال"
-                    defaultValue={userData.phone as string}
-                    onChange={(e) => setFormPhone(e.target.value)}
-                  />
+                <div className="space-y-4">
+                  <div>
+                    <span className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+                      الاسم
+                    </span>
+                    <InlineEdit
+                      label="الاسم"
+                      value={(userData.name as string) ?? ''}
+                      onSave={saveName}
+                      validate={(v) => (v.length < 2 ? 'الاسم قصير جداً' : null)}
+                      disabled={updateProfileMut.isPending}
+                    />
+                  </div>
+                  <div>
+                    <span className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+                      رقم الجوال
+                    </span>
+                    <InlineEdit
+                      label="رقم الجوال"
+                      value={(userData.phone as string) ?? ''}
+                      onSave={savePhone}
+                      validate={(v) =>
+                        /^\+9665\d{8}$/.test(v) ? null : 'صيغة الجوال: +9665xxxxxxxx'
+                      }
+                      placeholder="+9665xxxxxxxx"
+                      disabled={updateProfileMut.isPending}
+                    />
+                  </div>
                   <div>
                     <label
                       htmlFor="pf-lang"
@@ -189,18 +207,15 @@ export default function ProfilePage(): JSX.Element {
                     </label>
                     <select
                       id="pf-lang"
-                      defaultValue={userData.preferredLanguage as string}
-                      onChange={(e) => setFormLang(e.target.value)}
+                      value={(userData.preferredLanguage as string) ?? 'ar'}
+                      onChange={(e) => saveLanguage(e.target.value as 'ar' | 'en')}
                       className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                     >
                       <option value="ar">العربية</option>
                       <option value="en">English</option>
                     </select>
                   </div>
-                  <Button type="submit" loading={updateProfileMut.isPending}>
-                    حفظ التغييرات
-                  </Button>
-                </form>
+                </div>
               </Card>
             )}
           </>
