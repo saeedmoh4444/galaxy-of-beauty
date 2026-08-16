@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/ui';
+import { Card, GridSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const SKIN_TYPES = [
@@ -58,14 +58,14 @@ export default function AIRoutinePage(): JSX.Element {
             </div>
             <div className="mt-4">
               <Button onClick={() => setGenerated(true)} className="w-full" size="lg">
-                 توليد الروتين
+                توليد الروتين
               </Button>
             </div>
           </Card>
         ) : isLoading ? (
-          <CardSkeleton />
+          <GridSkeleton count={2} />
         ) : !routine ? (
-          <CardSkeleton />
+          <GridSkeleton count={2} />
         ) : (
           <>
             <div className="grid gap-6 lg:grid-cols-2">
@@ -91,7 +91,7 @@ export default function AIRoutinePage(): JSX.Element {
               </Card>
               <Card padding="lg">
                 <h3 className="font-bold text-lg mb-3">
-                   المساء (
+                  المساء (
                   {routine?.evening
                     ? ((routine.evening as Record<string, unknown>).totalTime as string)
                     : ''}
@@ -119,7 +119,7 @@ export default function AIRoutinePage(): JSX.Element {
                 <div className="space-y-2">
                   {tips.map((t, i) => (
                     <p key={i} className="text-sm">
-                       {t}
+                      {t}
                     </p>
                   ))}
                 </div>
@@ -127,7 +127,7 @@ export default function AIRoutinePage(): JSX.Element {
             )}
             <div className="text-center">
               <Button variant="ghost" onClick={() => setGenerated(false)}>
-                 تغيير نوع البشرة
+                تغيير نوع البشرة
               </Button>
             </div>
           </>

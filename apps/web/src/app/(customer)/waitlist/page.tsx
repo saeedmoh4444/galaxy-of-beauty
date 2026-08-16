@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal, Input } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const STATUS_STYLES: Record<string, string> = {
@@ -49,7 +49,7 @@ export default function WaitlistPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={3} />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل قائمة الانتظار" onRetry={() => refetch()} />
         ) : entries.length === 0 ? (
@@ -116,7 +116,9 @@ export default function WaitlistPage(): JSX.Element {
       >
         <div className="space-y-4">
           <div>
-            <label htmlFor="wl-tech" className="mb-1 block text-sm font-medium">اختر الفني</label>
+            <label htmlFor="wl-tech" className="mb-1 block text-sm font-medium">
+              اختر الفني
+            </label>
             <select
               id="wl-tech"
               className="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm outline-none focus:border-brand-500 dark:border-gray-600 dark:bg-gray-800"

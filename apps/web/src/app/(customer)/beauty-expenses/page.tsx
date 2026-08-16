@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
+import { Card, DashboardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyExpensesPage(): JSX.Element {
@@ -28,7 +28,7 @@ export default function BeautyExpensesPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <CardSkeleton />
+          <DashboardSkeleton />
         ) : (
           <>
             <div className="grid gap-4 sm:grid-cols-4">

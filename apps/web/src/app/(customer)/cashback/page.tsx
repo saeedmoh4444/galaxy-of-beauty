@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, CardListSkeleton, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CashbackPage(): JSX.Element {
@@ -30,7 +30,7 @@ export default function CashbackPage(): JSX.Element {
         </div>
 
         {infoLoading ? (
-          <CardSkeleton />
+          <KPIRowSkeleton count={3} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-3">
             <Card padding="lg" className="text-center bg-amber-50">
@@ -59,8 +59,8 @@ export default function CashbackPage(): JSX.Element {
         {(info?.isFirstBooking as boolean) && (
           <Card padding="lg" className="border-2 border-amber-300 bg-amber-50 text-center">
             <p className="font-bold text-amber-700">
-               مكافأة أول حجز: {formatCurrency(info?.firstBookingBonus as number)} إضافية على أول
-              حجز لكِ!
+              مكافأة أول حجز: {formatCurrency(info?.firstBookingBonus as number)} إضافية على أول حجز
+              لكِ!
             </p>
           </Card>
         )}
@@ -68,7 +68,7 @@ export default function CashbackPage(): JSX.Element {
         <Card padding="lg">
           <h3 className="font-bold mb-4"> سجل الاسترداد</h3>
           {histLoading ? (
-            <CardSkeleton />
+            <CardListSkeleton count={4} />
           ) : transactions.length === 0 ? (
             <p className="text-sm text-text-tertiary text-center py-4">
               لا توجد عمليات استرداد بعد

@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, formatCurrency } from '@galaxy/ui';
 
 export default function AdminAnalyticsV2Page(): JSX.Element {
   const { data, isLoading } = api.adminAnalyticsV2.dashboard.useQuery() as {
@@ -15,11 +15,7 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
         <h1 className="text-2xl font-bold"> التحليلات المتقدمة</h1>
       </div>
       {isLoading ? (
-        <div className="grid gap-4 sm:grid-cols-4">
-          {Array.from({ length: 4 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <KPIRowSkeleton count={4} />
       ) : (
         <>
           <div className="grid gap-4 sm:grid-cols-4">

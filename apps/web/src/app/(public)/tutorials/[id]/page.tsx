@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, DetailSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 
 const DEFAULT_DIFFICULTY = { label: 'غير معروف', color: 'bg-gray-100 text-gray-700' };
@@ -61,8 +61,7 @@ export default function TutorialDetailPage(): JSX.Element {
   if (isLoading) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12 space-y-6">
-        <CardSkeleton />
-        <CardSkeleton />
+        <DetailSkeleton />
       </div>
     );
   }
@@ -172,9 +171,7 @@ export default function TutorialDetailPage(): JSX.Element {
         {/* Description */}
         {desc && (
           <div className="mt-6 rounded-2xl bg-gray-50 p-5 dark:bg-gray-900">
-            <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
-               وصف الدرس
-            </h3>
+            <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">وصف الدرس</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-wrap">
               {desc}
             </p>

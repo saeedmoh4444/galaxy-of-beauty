@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton, GridSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function AdminCmsPage(): JSX.Element {
@@ -28,19 +28,19 @@ export default function AdminCmsPage(): JSX.Element {
             onClick={() => setTab('categories')}
             className={`rounded-lg px-4 py-2 text-sm ${tab === 'categories' ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
           >
-             الفئات
+            الفئات
           </button>
           <button
             onClick={() => setTab('services')}
             className={`rounded-lg px-4 py-2 text-sm ${tab === 'services' ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
           >
-             الخدمات
+            الخدمات
           </button>
         </div>
 
         {tab === 'categories' &&
           (catLoading ? (
-            <CardSkeleton />
+            <GridSkeleton count={6} />
           ) : (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {(categories ?? []).map((c: Record<string, unknown>) => (
@@ -62,7 +62,7 @@ export default function AdminCmsPage(): JSX.Element {
 
         {tab === 'services' &&
           (svcLoading ? (
-            <CardSkeleton />
+            <CardListSkeleton count={4} />
           ) : (
             <div className="space-y-2">
               {(services ?? []).map((s: Record<string, unknown>) => (

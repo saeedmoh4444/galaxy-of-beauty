@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
-  CardSkeleton,
+  GridSkeleton,
+  CardListSkeleton,
   ErrorAlert,
   EmptyState,
   Button,
@@ -103,7 +104,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
         <Card padding="lg">
           <h3 className="font-bold text-lg mb-4"> ماذا يغطي الضمان؟</h3>
           {pLoad ? (
-            <CardSkeleton />
+            <GridSkeleton count={3} />
           ) : (
             <div className="grid gap-4 sm:grid-cols-3">
               {coverage.map((c: Record<string, string>, i: number) => (
@@ -154,7 +155,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
         {/* My Claims */}
         <h3 className="text-lg font-bold"> مطالباتي</h3>
         {cLoad ? (
-          <CardSkeleton />
+          <CardListSkeleton count={3} />
         ) : isError ? (
           <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
         ) : myClaims.length === 0 ? (
@@ -222,7 +223,9 @@ export default function ServiceWarrantyPage(): JSX.Element {
               </div>
             </div>
             <div>
-              <label htmlFor="sw-reason" className="block text-sm font-semibold mb-1">سبب المطالبة</label>
+              <label htmlFor="sw-reason" className="block text-sm font-semibold mb-1">
+                سبب المطالبة
+              </label>
               <textarea
                 id="sw-reason"
                 value={reason}

@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const TIER_COLORS: Record<string, string> = {
@@ -41,7 +41,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
         </div>
 
         {acctLoading ? (
-          <CardSkeleton />
+          <KPIRowSkeleton count={1} />
         ) : (
           <Card
             padding="lg"
@@ -62,11 +62,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
         )}
 
         {rwLoading ? (
-          <div className="grid gap-4 sm:grid-cols-3">
-            {Array.from({ length: 6 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <GridSkeleton count={6} />
         ) : !(rewards ?? []).length ? (
           <Card padding="lg" className="text-center py-8">
             <p className="text-text-secondary">لا توجد مكافآت متاحة</p>

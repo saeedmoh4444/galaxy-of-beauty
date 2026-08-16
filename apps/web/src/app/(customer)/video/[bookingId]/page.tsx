@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useState } from 'react';
 
@@ -46,7 +46,7 @@ export default function VideoSessionPage(): JSX.Element {
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">استشارة فيديو</h1>
 
         {isLoading ? (
-          <CardSkeleton />
+          <KPIRowSkeleton count={1} />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل الجلسة" onRetry={() => refetch()} />
         ) : !sess ? (

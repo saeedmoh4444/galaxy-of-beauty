@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
-  CardSkeleton,
+  CardListSkeleton,
   ErrorAlert,
   EmptyState,
   Button,
@@ -72,7 +72,7 @@ function CountdownTimer({ endsAt }: { endsAt: string }): JSX.Element {
     <span
       className={`inline-flex items-center gap-1 text-xs font-semibold ${isEnded ? 'text-text-tertiary' : 'text-orange-600 animate-pulse'}`}
     >
-       {timeLeft}
+      {timeLeft}
     </span>
   );
 }
@@ -127,11 +127,7 @@ export default function FlashDealsPage(): JSX.Element {
 
       {/* Content */}
       {isLoading ? (
-        <div className="space-y-6">
-          {Array.from({ length: 3 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <CardListSkeleton count={4} />
       ) : isError ? (
         <ErrorAlert message="فشل تحميل العروض" onRetry={() => refetch()} />
       ) : allDeals.length === 0 ? (
@@ -202,7 +198,7 @@ export default function FlashDealsPage(): JSX.Element {
                     <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-text-secondary">
                       <CountdownTimer endsAt={deal.endsAt} />
                       <span>
-                         {deal.currentRedemptions} / {deal.maxRedemptions} تم الاستفادة
+                        {deal.currentRedemptions} / {deal.maxRedemptions} تم الاستفادة
                       </span>
                     </div>
 
@@ -215,11 +211,11 @@ export default function FlashDealsPage(): JSX.Element {
                     <div className="mt-4 flex flex-wrap items-center gap-3">
                       {soldOut ? (
                         <span className="rounded-lg bg-surface-muted px-4 py-2 text-sm font-semibold text-text-secondary dark:bg-gray-800">
-                           نفذت الكمية
+                          نفذت الكمية
                         </span>
                       ) : isClaimed ? (
                         <span className="rounded-lg bg-green-100 px-4 py-2 text-sm font-semibold text-green-700 dark:bg-green-900 dark:text-green-300">
-                           تم الاستفادة من العرض
+                          تم الاستفادة من العرض
                         </span>
                       ) : user ? (
                         <Button
@@ -227,7 +223,7 @@ export default function FlashDealsPage(): JSX.Element {
                           loading={claimingId === deal.id}
                           size="sm"
                         >
-                           احجزي الآن
+                          احجزي الآن
                         </Button>
                       ) : (
                         <Link href={`/login?redirect=/flash-deals`}>

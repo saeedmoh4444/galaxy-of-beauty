@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyBingoPage(): JSX.Element {
@@ -22,7 +22,7 @@ export default function BeautyBingoPage(): JSX.Element {
           <p className="mt-1 text-sm text-text-secondary">أكملي المهام واكسبي جلسة مجانية!</p>
         </div>
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={1} />
         ) : (
           <Card padding="lg" className="text-center">
             <span className="text-5xl"></span>
@@ -45,7 +45,7 @@ export default function BeautyBingoPage(): JSX.Element {
         )}
         <div className="text-center">
           <Button variant="ghost" onClick={() => markMut.mutate({ taskId: 1 })}>
-             تحديث
+            تحديث
           </Button>
         </div>
       </div>

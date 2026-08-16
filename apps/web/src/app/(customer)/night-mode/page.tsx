@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function NightModePage(): JSX.Element {
@@ -26,7 +26,7 @@ export default function NightModePage(): JSX.Element {
         </div>
 
         {rLoad ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : (
           <Card padding="lg">
             <div className="space-y-1">
@@ -78,7 +78,7 @@ export default function NightModePage(): JSX.Element {
             <div className="space-y-2">
               {allTips.map((t: string, i: number) => (
                 <p key={i} className="text-sm">
-                   {t}
+                  {t}
                 </p>
               ))}
             </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, DetailSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import Link from 'next/link';
 
 export default function FeaturedTechPage(): JSX.Element {
@@ -31,7 +31,7 @@ export default function FeaturedTechPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <CardSkeleton />
+        <DetailSkeleton />
       ) : isError ? (
         <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
       ) : current ? (
@@ -44,7 +44,7 @@ export default function FeaturedTechPage(): JSX.Element {
               {current.emoji as string}
             </div>
             <p className="text-xs text-amber-600 font-bold mt-3">
-               فنية الأسبوع —{' '}
+              فنية الأسبوع —{' '}
               {new Date(current.weekOf as string).toLocaleDateString('ar-SA', {
                 month: 'long',
                 day: 'numeric',

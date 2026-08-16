@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function TravelKitPage(): JSX.Element {
@@ -58,7 +58,7 @@ export default function TravelKitPage(): JSX.Element {
         </Card>
 
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : kit ? (
           <Card padding="lg">
             <h3 className="font-bold mb-3"> محتويات الحقيبة</h3>

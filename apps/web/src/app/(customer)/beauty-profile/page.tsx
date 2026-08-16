@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, FormSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
@@ -104,7 +104,7 @@ export default function BeautyProfilePage(): JSX.Element {
         </p>
 
         {isLoading ? (
-          <CardSkeleton />
+          <FormSkeleton fields={5} />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل الملف" onRetry={() => refetch()} />
         ) : (
@@ -188,7 +188,7 @@ export default function BeautyProfilePage(): JSX.Element {
             </Card>
 
             <Button onClick={handleSave} loading={upsertMut.isPending} className="w-full" size="lg">
-               حفظ الملف الجمالي
+              حفظ الملف الجمالي
             </Button>
           </div>
         )}

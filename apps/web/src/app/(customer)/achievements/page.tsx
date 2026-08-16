@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
+import { Card, DashboardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function AchievementsPage(): JSX.Element {
@@ -33,7 +33,7 @@ export default function AchievementsPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <CardSkeleton />
+          <DashboardSkeleton />
         ) : (
           <>
             <Card padding="lg" className="text-center">
@@ -86,12 +86,10 @@ export default function AchievementsPage(): JSX.Element {
                   <p className="text-xs text-text-secondary mt-1">{a.desc as string}</p>
                   {a.earned ? (
                     <span className="mt-2 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">
-                       تم
+                      تم
                     </span>
                   ) : (
-                    <span className="mt-2 inline-block rounded-full bg-surface-muted px-2 py-0.5 text-xs text-text-tertiary">
-                      
-                    </span>
+                    <span className="mt-2 inline-block rounded-full bg-surface-muted px-2 py-0.5 text-xs text-text-tertiary"></span>
                   )}
                 </Card>
               ))}

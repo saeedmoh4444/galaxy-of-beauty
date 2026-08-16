@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { CardSkeleton, Button, formatCurrency, ar } from '@galaxy/ui';
+import { GridSkeleton, Button, formatCurrency, ar } from '@galaxy/ui';
 const BUNDLE_DISCOUNTS: Record<number, number> = { 2: 10, 3: 15, 4: 20, 5: 25 };
 
 export default function BundlesPage(): JSX.Element {
@@ -58,11 +58,7 @@ export default function BundlesPage(): JSX.Element {
       )}
 
       {isLoading ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 9 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={8} />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {services

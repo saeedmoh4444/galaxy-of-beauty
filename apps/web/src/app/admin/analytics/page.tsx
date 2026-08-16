@@ -2,7 +2,14 @@
 
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, formatCurrency } from '@galaxy/ui';
+import {
+  Card,
+  KPIRowSkeleton,
+  CardListSkeleton,
+  ErrorAlert,
+  EmptyState,
+  formatCurrency,
+} from '@galaxy/ui';
 
 type RevenueDay = NonNullable<RouterOutput['analytics']['revenueChart']>['dailyRevenue'][number];
 type BookingStats = RouterOutput['analytics']['bookingStats'];
@@ -54,11 +61,7 @@ export default function AdminAnalyticsPage(): JSX.Element {
       <div>
         <h2 className="mb-3 text-lg font-semibold">إحصائيات الحجوزات</h2>
         {bookingStatsQuery.isLoading ? (
-          <div className="grid gap-4 md:grid-cols-4">
-            {Array.from({ length: 4 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <KPIRowSkeleton count={4} />
         ) : bookingStatsQuery.isError ? (
           <ErrorAlert
             message="فشل تحميل إحصائيات الحجوزات"
@@ -94,7 +97,7 @@ export default function AdminAnalyticsPage(): JSX.Element {
       <Card>
         <h2 className="mb-3 text-lg font-semibold">الإيرادات (آخر 30 يوم)</h2>
         {revenueQuery.isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : revenueQuery.isError ? (
           <ErrorAlert message="فشل تحميل الإيرادات" onRetry={() => revenueQuery.refetch()} />
         ) : revenueData.length === 0 ? (
@@ -129,7 +132,7 @@ export default function AdminAnalyticsPage(): JSX.Element {
       <Card>
         <h2 className="mb-3 text-lg font-semibold">أفضل الفنيات</h2>
         {topTechQuery.isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : topTechQuery.isError ? (
           <ErrorAlert message="فشل تحميل أفضل الفنيات" onRetry={() => topTechQuery.refetch()} />
         ) : topTechs.length === 0 ? (
@@ -162,7 +165,7 @@ export default function AdminAnalyticsPage(): JSX.Element {
       <Card>
         <h2 className="mb-3 text-lg font-semibold">نمو المستخدمين (آخر 30 يوم)</h2>
         {userGrowthQuery.isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : userGrowthQuery.isError ? (
           <ErrorAlert
             message="فشل تحميل نمو المستخدمين"

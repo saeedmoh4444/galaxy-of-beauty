@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 
 export default function GroupBuyPage(): JSX.Element {
@@ -20,11 +20,7 @@ export default function GroupBuyPage(): JSX.Element {
         <p className="mt-2 text-text-secondary">انضمي لمجموعة ووفري أكثر!</p>
       </div>
       {isLoading ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 3 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={6} />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {deals.map((d: Record<string, unknown>) => (
@@ -52,7 +48,7 @@ export default function GroupBuyPage(): JSX.Element {
                 />
               </div>
               <p className="text-xs text-text-secondary mt-1">
-                {d.currentBuyers as number}/{d.minBuyers as number} مشتركة ·  {d.endsIn as string}
+                {d.currentBuyers as number}/{d.minBuyers as number} مشتركة · {d.endsIn as string}
               </p>
               {user && (
                 <Button
@@ -60,7 +56,7 @@ export default function GroupBuyPage(): JSX.Element {
                   className="mt-3"
                   onClick={() => joinMut.mutate({ dealId: d.id as number })}
                 >
-                   انضمي ووفري {formatCurrency(d.savings as number)}
+                  انضمي ووفري {formatCurrency(d.savings as number)}
                 </Button>
               )}
             </Card>

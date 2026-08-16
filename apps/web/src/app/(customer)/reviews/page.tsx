@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal, Input } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const RATING_OPTIONS = [1, 2, 3, 4, 5];
@@ -34,7 +34,7 @@ export default function ReviewsPage(): JSX.Element {
         <h1 className="text-2xl font-bold">تقييماتي</h1>
 
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل التقييمات" onRetry={() => refetch()} />
         ) : reviewed.length === 0 && unreviewed.length === 0 ? (

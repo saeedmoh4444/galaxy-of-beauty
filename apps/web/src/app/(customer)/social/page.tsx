@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton, GridSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const TIP_CATEGORIES = ['skincare', 'makeup', 'hair', 'wellness', 'all'];
@@ -59,7 +59,7 @@ export default function SocialPage(): JSX.Element {
           <Card padding="lg">
             <h3 className="font-bold mb-3"> الأكثر طلباً</h3>
             {trLoading ? (
-              <CardSkeleton />
+              <CardListSkeleton count={4} />
             ) : !(trending ?? []).length ? (
               <p className="text-sm text-text-tertiary">لا توجد بيانات</p>
             ) : (
@@ -85,7 +85,7 @@ export default function SocialPage(): JSX.Element {
           <Card padding="lg">
             <h3 className="font-bold mb-3"> فنيات مميزات</h3>
             {spLoading ? (
-              <CardSkeleton />
+              <CardListSkeleton count={3} />
             ) : !(spotlight ?? []).length ? (
               <p className="text-sm text-text-tertiary">لا توجد بيانات</p>
             ) : (
@@ -129,7 +129,7 @@ export default function SocialPage(): JSX.Element {
             ))}
           </div>
           {tipsLoading ? (
-            <CardSkeleton />
+            <CardListSkeleton count={4} />
           ) : tips.length === 0 ? (
             <p className="text-sm text-text-tertiary">لا توجد نصائح</p>
           ) : (
@@ -165,7 +165,7 @@ export default function SocialPage(): JSX.Element {
         <Card padding="lg">
           <h3 className="font-bold mb-3"> قبل وبعد</h3>
           {feedLoading ? (
-            <CardSkeleton />
+            <GridSkeleton count={6} />
           ) : feedItems.length === 0 ? (
             <p className="text-sm text-text-tertiary">لا توجد صور</p>
           ) : (

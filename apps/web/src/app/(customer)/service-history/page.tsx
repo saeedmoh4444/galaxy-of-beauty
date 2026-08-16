@@ -3,7 +3,15 @@
 
 import { api } from '@/lib/trpc';
 import Link from 'next/link';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency, ar } from '@galaxy/ui';
+import {
+  Card,
+  CardListSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  formatCurrency,
+  ar,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function ServiceHistoryPage(): JSX.Element {
@@ -74,7 +82,7 @@ export default function ServiceHistoryPage(): JSX.Element {
         <div>
           <h2 className="mb-4 text-lg font-semibold"> آخر الحجوزات</h2>
           {isLoading ? (
-            <CardSkeleton />
+            <CardListSkeleton count={4} />
           ) : isError ? (
             <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
           ) : recentBookings.length === 0 ? (
@@ -101,7 +109,9 @@ export default function ServiceHistoryPage(): JSX.Element {
                       </span>
                       {b.status === 'COMPLETED' && (
                         <Link href={`/bookings/create?serviceId=${b.serviceId}`}>
-                          <Button size="sm" variant="outline">إعادة حجز</Button>
+                          <Button size="sm" variant="outline">
+                            إعادة حجز
+                          </Button>
                         </Link>
                       )}
                     </div>

@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const MEMBERSHIPS = [
@@ -67,7 +67,7 @@ export default function SalonMembershipPage(): JSX.Element {
           <p className="mt-1 text-sm text-text-secondary">اختاري العضوية اللي تناسبكِ</p>
         </div>
         {isLoading ? (
-          <CardSkeleton />
+          <KPIRowSkeleton count={1} />
         ) : (
           (membership?.tier as string) && (
             <Card padding="lg" className="text-center border-2 border-purple-300">
@@ -105,7 +105,7 @@ export default function SalonMembershipPage(): JSX.Element {
                 <p className="font-semibold text-text-primary"> المميزات</p>
                 {m.benefits.map((b, i) => (
                   <p key={i} className="text-green-600">
-                     {b}
+                    {b}
                   </p>
                 ))}
                 {m.notIncluded.length > 0 && (
@@ -113,7 +113,7 @@ export default function SalonMembershipPage(): JSX.Element {
                     <p className="font-semibold text-text-tertiary mt-3"> غير متضمن</p>
                     {m.notIncluded.map((b, i) => (
                       <p key={i} className="text-text-tertiary">
-                         {b}
+                        {b}
                       </p>
                     ))}
                   </>

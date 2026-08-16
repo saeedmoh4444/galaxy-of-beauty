@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 
 export default function BeautyAwardsPage(): JSX.Element {
@@ -23,11 +23,7 @@ export default function BeautyAwardsPage(): JSX.Element {
         </p>
       </div>
       {isLoading ? (
-        <div className="space-y-4">
-          {Array.from({ length: 4 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <CardListSkeleton count={4} />
       ) : (
         <div className="space-y-6">
           {cats.map((c: Record<string, unknown>) => (

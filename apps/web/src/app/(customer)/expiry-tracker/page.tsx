@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function ExpiryTrackerPage(): JSX.Element {
@@ -48,11 +48,7 @@ export default function ExpiryTrackerPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <CardListSkeleton count={4} />
         ) : isError ? (
           <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
         ) : myItems.length === 0 ? (

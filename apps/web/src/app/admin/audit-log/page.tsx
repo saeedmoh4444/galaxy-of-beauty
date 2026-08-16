@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
-  CardSkeleton,
+  TableSkeleton,
   ErrorAlert,
   EmptyState,
   Input,
@@ -63,7 +63,12 @@ export default function AuditLogPage(): JSX.Element {
         <Card padding="md">
           <div className="grid gap-4 sm:grid-cols-4">
             <div>
-              <label htmlFor="al-action-filter" className="mb-1 block text-xs font-medium text-text-secondary">الإجراء</label>
+              <label
+                htmlFor="al-action-filter"
+                className="mb-1 block text-xs font-medium text-text-secondary"
+              >
+                الإجراء
+              </label>
               <select
                 id="al-action-filter"
                 value={actionFilter}
@@ -117,7 +122,7 @@ export default function AuditLogPage(): JSX.Element {
 
         {/* Logs Table */}
         {isLoading ? (
-          <CardSkeleton />
+          <TableSkeleton rows={5} cols={6} />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل سجل التدقيق" onRetry={() => refetch()} />
         ) : logs.length === 0 ? (

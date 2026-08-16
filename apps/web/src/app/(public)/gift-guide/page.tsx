@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, FormSkeleton, Button, formatCurrency } from '@galaxy/ui';
 const OCCASIONS = [
   {
     id: 'birthday',
@@ -159,7 +159,7 @@ export default function GiftGuidePage(): JSX.Element {
 
       <div className="text-center mt-12 p-8 bg-gradient-to-r from-pink-50 to-purple-50 rounded-3xl dark:from-pink-950 dark:to-purple-950">
         <h2 className="text-xl font-bold text-text-primary dark:text-gray-100">
-           لم تجدي ما تبحثين عنه؟
+          لم تجدي ما تبحثين عنه؟
         </h2>
         <p className="mt-2 text-text-secondary">أنشئي بطاقة هدية بالمبلغ اللي تختارينه</p>
         <Link href="/gift-cards" className="mt-4 inline-block">
@@ -212,7 +212,7 @@ function GiftQuizWidget(): JSX.Element {
       <p className="mt-2 text-text-secondary">جاوبي على الأسئلة وبنقترح عليكِ أفضل الهدايا</p>
 
       {qLoading ? (
-        <CardSkeleton />
+        <FormSkeleton fields={4} />
       ) : done && results ? (
         <div className="mt-6">
           <div className="grid gap-4 sm:grid-cols-2">
@@ -234,7 +234,7 @@ function GiftQuizWidget(): JSX.Element {
             ))}
           </div>
           <Button onClick={reset} variant="outline" className="mt-4">
-             إعادة الاختبار
+            إعادة الاختبار
           </Button>
         </div>
       ) : currentQ ? (

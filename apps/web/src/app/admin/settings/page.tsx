@@ -3,7 +3,16 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input, Modal } from '@galaxy/ui';
+import {
+  Button,
+  Card,
+  CardListSkeleton,
+  TextSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Input,
+  Modal,
+} from '@galaxy/ui';
 
 type SettingsMap = RouterOutput['platform']['getSettings'];
 type TermsData = RouterOutput['platform']['getTerms'];
@@ -64,7 +73,7 @@ export default function AdminSettingsPage(): JSX.Element {
       <Card>
         <h2 className="mb-3 text-lg font-semibold">إعدادات المنصة</h2>
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل الإعدادات" onRetry={() => refetch()} />
         ) : settingsEntries.length === 0 ? (
@@ -114,7 +123,11 @@ export default function AdminSettingsPage(): JSX.Element {
       <Card>
         <h2 className="mb-3 text-lg font-semibold">الشروط والأحكام</h2>
         {termsQuery.isLoading ? (
-          <CardSkeleton />
+          <div className="space-y-2">
+            <TextSkeleton width="50%" />
+            <TextSkeleton width="75%" />
+            <TextSkeleton width="40%" />
+          </div>
         ) : termsQuery.isError ? (
           <ErrorAlert message="فشل تحميل الشروط" onRetry={() => termsQuery.refetch()} />
         ) : (
@@ -143,7 +156,12 @@ export default function AdminSettingsPage(): JSX.Element {
       <Card>
         <h2 className="mb-3 text-lg font-semibold">المدن المتاحة</h2>
         {citiesQuery.isLoading ? (
-          <CardSkeleton />
+          <div className="flex flex-wrap gap-2">
+            <TextSkeleton width="6rem" />
+            <TextSkeleton width="5rem" />
+            <TextSkeleton width="7rem" />
+            <TextSkeleton width="6rem" />
+          </div>
         ) : citiesQuery.isError ? (
           <ErrorAlert message="فشل تحميل المدن" onRetry={() => citiesQuery.refetch()} />
         ) : citiesData.length === 0 ? (
@@ -167,7 +185,10 @@ export default function AdminSettingsPage(): JSX.Element {
         <h2 className="mb-3 text-lg font-semibold">تصدير البيانات</h2>
         <div className="flex flex-wrap items-end gap-4">
           <div>
-            <label htmlFor="aset-export-format" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+            <label
+              htmlFor="aset-export-format"
+              className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+            >
               الصيغة
             </label>
             <select

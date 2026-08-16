@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, GridSkeleton } from '@galaxy/ui';
 
 export default function BeautyExpoPage(): JSX.Element {
   const { data, isLoading } = api.beautyExpo.booths.useQuery() as {
@@ -17,11 +17,7 @@ export default function BeautyExpoPage(): JSX.Element {
         <p className="mt-2 text-text-secondary">تجولي في أجنحة أشهر الماركات العالمية</p>
       </div>
       {isLoading ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 5 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={6} />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {booths.map((b: Record<string, unknown>) => (

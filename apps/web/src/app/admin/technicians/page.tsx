@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Modal } from '@galaxy/ui';
+import { Button, Card, GridSkeleton, ErrorAlert, EmptyState, Modal } from '@galaxy/ui';
 
 const KYC_TABS = ['ALL', 'PENDING', 'SUBMITTED', 'VERIFIED', 'REJECTED'] as const;
 
@@ -84,7 +84,7 @@ export default function AdminTechniciansPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <CardSkeleton />
+        <GridSkeleton count={6} />
       ) : isError ? (
         <ErrorAlert message="فشل تحميل الفنيات" onRetry={() => refetch()} />
       ) : filtered.length === 0 ? (
@@ -172,7 +172,10 @@ export default function AdminTechniciansPage(): JSX.Element {
             </div>
 
             <div>
-              <label htmlFor="at-review-note" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+              <label
+                htmlFor="at-review-note"
+                className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+              >
                 ملاحظات
               </label>
               <textarea

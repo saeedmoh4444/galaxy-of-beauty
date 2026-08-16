@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
+import { Card, DetailSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 
@@ -139,14 +139,14 @@ export default function ProductScannerPage(): JSX.Element {
               dir="ltr"
             />
             <Button onClick={handleLookup} loading={isLoading} disabled={barcode.length < 8}>
-              فحص 
+              فحص
             </Button>
           </div>
         </Card>
 
         {/* Result */}
         {isLoading ? (
-          <CardSkeleton />
+          <DetailSkeleton />
         ) : isError ? (
           <ErrorAlert message="فشل البحث عن المنتج" onRetry={() => refetch()} />
         ) : result && !result.found ? (
@@ -160,11 +160,7 @@ export default function ProductScannerPage(): JSX.Element {
             <Card padding="lg" className="border-2 border-brand-200 dark:border-brand-800">
               <div className="flex items-start gap-4">
                 <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-purple-100 text-3xl dark:from-brand-900 dark:to-purple-900">
-                  {product.category === 'skincare'
-                    ? ''
-                    : product.category === 'makeup'
-                      ? ''
-                      : '‍️'}
+                  {product.category === 'skincare' ? '' : product.category === 'makeup' ? '' : '‍️'}
                 </div>
                 <div className="flex-1">
                   <h2 className="text-xl font-bold">{product.nameAr}</h2>
@@ -199,9 +195,7 @@ export default function ProductScannerPage(): JSX.Element {
               {/* Concerns / Warnings */}
               {product.safetyDetails && product.safetyDetails.length > 0 && (
                 <div className="mt-4 rounded-xl bg-red-50 dark:bg-red-950 p-4">
-                  <h4 className="text-sm font-bold text-red-700 dark:text-red-300 mb-2">
-                     تنبيهات
-                  </h4>
+                  <h4 className="text-sm font-bold text-red-700 dark:text-red-300 mb-2">تنبيهات</h4>
                   <div className="space-y-2">
                     {product.safetyDetails.map((d, i) => (
                       <div key={i} className="text-sm text-red-600 dark:text-red-400">

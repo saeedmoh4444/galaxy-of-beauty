@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BookingChecklistPage(): JSX.Element {
@@ -39,7 +39,7 @@ export default function BookingChecklistPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : (
           <Card padding="lg">
             <div className="space-y-4">

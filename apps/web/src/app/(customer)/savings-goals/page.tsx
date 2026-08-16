@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
-  CardSkeleton,
+  CardListSkeleton,
   ErrorAlert,
   EmptyState,
   Button,
@@ -56,7 +56,7 @@ export default function SavingsGoalsPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={3} />
         ) : isError ? (
           <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
         ) : goals.length === 0 ? (
@@ -115,13 +115,15 @@ export default function SavingsGoalsPage(): JSX.Element {
                           }
                         }}
                       >
-                         أضف
+                        أضف
                       </Button>
                       <Button
                         size="sm"
                         variant="danger"
                         onClick={() => deleteMut.mutate({ id: g.id })}
-                      >حذف</Button>
+                      >
+                        حذف
+                      </Button>
                     </div>
                   )}
                 </Card>

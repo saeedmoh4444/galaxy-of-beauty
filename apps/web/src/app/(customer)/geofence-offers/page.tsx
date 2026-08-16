@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function GeofenceOffersPage(): JSX.Element {
@@ -22,15 +22,11 @@ export default function GeofenceOffersPage(): JSX.Element {
         </div>
 
         <Button onClick={() => optInMut.mutate()} loading={optInMut.isPending} className="w-full">
-           فعلي التنبيهات القريبة
+          فعلي التنبيهات القريبة
         </Button>
 
         {isLoading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <CardListSkeleton count={4} />
         ) : (
           <div className="space-y-3">
             {items.map((o: Record<string, unknown>) => (
@@ -48,7 +44,7 @@ export default function GeofenceOffersPage(): JSX.Element {
                 </div>
                 <div className="text-right">
                   <span className="rounded-full bg-red-100 dark:bg-red-900 px-2.5 py-0.5 text-xs font-bold text-red-700">
-                     {o.expiresIn as string}
+                    {o.expiresIn as string}
                   </span>
                 </div>
               </Card>

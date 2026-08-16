@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import Link from 'next/link';
 
 export default function ServiceRecommenderPage(): JSX.Element {
@@ -40,11 +40,7 @@ export default function ServiceRecommenderPage(): JSX.Element {
 
       {searchAnswers ? (
         isLoading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 4 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <CardListSkeleton count={4} />
         ) : (
           <div className="space-y-6">
             <div className="grid gap-3 sm:grid-cols-2">
@@ -75,7 +71,7 @@ export default function ServiceRecommenderPage(): JSX.Element {
                   setSearchAnswers(null);
                 }}
               >
-                 إعادة
+                إعادة
               </Button>
             </div>
           </div>

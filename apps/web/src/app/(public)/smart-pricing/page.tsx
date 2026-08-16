@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, formatCurrency } from '@galaxy/ui';
 
 export default function SmartPricingPage(): JSX.Element {
   const { data, isLoading } = api.smartPricing.current.useQuery() as {
@@ -19,11 +19,7 @@ export default function SmartPricingPage(): JSX.Element {
         </p>
       </div>
       {isLoading ? (
-        <div className="space-y-3">
-          {Array.from({ length: 4 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <CardListSkeleton count={4} />
       ) : (
         <div className="space-y-3">
           {items.map((s: Record<string, unknown>) => (

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/ui';
+import { Card, TableSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
@@ -78,7 +78,7 @@ export default function AdminAreasPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          Array.from({ length: 5 }, (_, i) => <CardSkeleton key={i} />)
+          <TableSkeleton rows={5} cols={4} />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل المناطق" onRetry={() => refetch()} />
         ) : areas.length === 0 ? (
@@ -135,9 +135,7 @@ export default function AdminAreasPage(): JSX.Element {
               if (e.key === 'Escape') setShowAdd(false);
             }}
           >
-            <div
-              className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900"
-            >
+            <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900">
               <h3 className="mb-4 text-lg font-bold text-text-primary dark:text-gray-100">
                 إضافة منطقة جديدة
               </h3>

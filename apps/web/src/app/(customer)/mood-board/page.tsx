@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 interface Pin {
   id: number;
@@ -117,11 +117,7 @@ export default function MoodBoardPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <GridSkeleton count={6} />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل اللوحات" onRetry={() => refetch()} />
         ) : allBoards.length === 0 ? (

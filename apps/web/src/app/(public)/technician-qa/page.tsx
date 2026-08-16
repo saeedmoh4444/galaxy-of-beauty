@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import Link from 'next/link';
 
@@ -70,11 +70,7 @@ export default function TechnicianQAPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <div className="space-y-3">
-          {Array.from({ length: 3 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <CardListSkeleton count={4} />
       ) : isError ? (
         <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
       ) : items.length === 0 ? (
@@ -130,7 +126,9 @@ export default function TechnicianQAPage(): JSX.Element {
       <Modal open={showAsk} onClose={() => setShowAsk(false)} title="اسألي الفنيات">
         <div className="space-y-4">
           <div>
-            <label htmlFor="tqa-category" className="block text-sm font-semibold mb-1">الفئة</label>
+            <label htmlFor="tqa-category" className="block text-sm font-semibold mb-1">
+              الفئة
+            </label>
             <select
               id="tqa-category"
               value={qCategory}
@@ -145,7 +143,9 @@ export default function TechnicianQAPage(): JSX.Element {
             </select>
           </div>
           <div>
-            <label htmlFor="tqa-question" className="block text-sm font-semibold mb-1">سؤالكِ</label>
+            <label htmlFor="tqa-question" className="block text-sm font-semibold mb-1">
+              سؤالكِ
+            </label>
             <textarea
               id="tqa-question"
               value={question}

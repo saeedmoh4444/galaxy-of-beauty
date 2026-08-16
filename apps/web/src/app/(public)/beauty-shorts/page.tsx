@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { CardSkeleton } from '@galaxy/ui';
+import { CardListSkeleton } from '@galaxy/ui';
 export default function BeautyShortsPage(): JSX.Element {
   const { data, isLoading } = api.beautyShorts.feed.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
@@ -17,11 +17,7 @@ export default function BeautyShortsPage(): JSX.Element {
         <p className="mt-2 text-text-secondary">فيديوهات قصيرة وسريعة</p>
       </div>
       {isLoading ? (
-        <div className="space-y-4">
-          {Array.from({ length: 3 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <CardListSkeleton count={3} />
       ) : (
         <div className="space-y-4">
           {shorts.map((s: Record<string, unknown>) => (

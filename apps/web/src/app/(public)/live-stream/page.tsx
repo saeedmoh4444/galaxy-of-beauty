@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, EmptyState } from '@galaxy/ui';
 import Link from 'next/link';
 
 export default function LiveStreamPage(): JSX.Element {
@@ -34,11 +34,7 @@ export default function LiveStreamPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 3 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={6} />
       ) : isError ? (
         <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
       ) : live.length === 0 && upcoming.length === 0 ? (
@@ -60,7 +56,7 @@ export default function LiveStreamPage(): JSX.Element {
                           <span className="text-6xl"></span>
                         </div>
                         <span className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-red-600 px-3 py-1 text-xs font-bold text-white animate-pulse">
-                           مباشر
+                          مباشر
                         </span>
                         <span className="absolute bottom-2 right-2 rounded bg-black/70 px-2 py-0.5 text-xs text-white">
                           {s.viewerCount as number} مشاهد

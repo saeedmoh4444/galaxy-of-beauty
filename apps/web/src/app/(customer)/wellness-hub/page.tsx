@@ -2,7 +2,7 @@
 'use client';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, ErrorAlert } from '@galaxy/ui';
+import { Card, DashboardSkeleton, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function WellnessHubPage(): JSX.Element {
@@ -17,7 +17,7 @@ export default function WellnessHubPage(): JSX.Element {
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-5xl space-y-6">
-          <CardSkeleton />
+          <DashboardSkeleton />
         </div>
       </DashboardLayout>
     );
@@ -169,7 +169,7 @@ export default function WellnessHubPage(): JSX.Element {
           )}
           <Link href="/beauty-journal">
             <Button size="sm" variant="outline" className="w-full mt-3">
-               كل اليوميات
+              كل اليوميات
             </Button>
           </Link>
         </Card>

@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function IoTSyncPage(): JSX.Element {
@@ -22,7 +22,7 @@ export default function IoTSyncPage(): JSX.Element {
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-3xl space-y-6">
-          <CardSkeleton />
+          <GridSkeleton count={6} />
         </div>
       </DashboardLayout>
     );

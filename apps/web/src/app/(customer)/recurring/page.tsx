@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
@@ -51,13 +51,11 @@ export default function RecurringPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-             حجوزات متكررة
-          </h1>
+          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">حجوزات متكررة</h1>
           <Button onClick={() => setShowAdd(true)}>إضافة حجز متكرر</Button>
         </div>
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : isError ? (
           <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
         ) : bookings.length === 0 ? (
@@ -89,14 +87,18 @@ export default function RecurringPage(): JSX.Element {
                         size="sm"
                         variant="outline"
                         onClick={() => pauseMut.mutate({ id: b.id })}
-                      >إيقاف</Button>
+                      >
+                        إيقاف
+                      </Button>
                     )}
                     {b.status !== 'CANCELLED' && (
                       <Button
                         size="sm"
                         variant="danger"
                         onClick={() => cancelMut.mutate({ id: b.id })}
-                      >إلغاء</Button>
+                      >
+                        إلغاء
+                      </Button>
                     )}
                   </div>
                 </div>

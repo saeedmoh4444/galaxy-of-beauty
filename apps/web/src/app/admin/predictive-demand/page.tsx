@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, CardListSkeleton } from '@galaxy/ui';
 
 export default function PredictiveDemandPage(): JSX.Element {
   const { data, isLoading } = api.predictiveDemand.forecast.useQuery() as {
@@ -15,7 +15,10 @@ export default function PredictiveDemandPage(): JSX.Element {
         <h1 className="text-2xl font-bold"> توقعات الطلب</h1>
       </div>
       {isLoading ? (
-        <CardSkeleton />
+        <>
+          <KPIRowSkeleton count={2} />
+          <CardListSkeleton count={3} />
+        </>
       ) : (
         <>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -25,7 +28,7 @@ export default function PredictiveDemandPage(): JSX.Element {
                 {(f.nextWeek as Record<string, unknown>)?.predictedBookings as number} حجز
               </p>
               <p className="text-sm text-text-secondary">
-                 الذروة: {(f.nextWeek as Record<string, unknown>)?.peakDay as string}{' '}
+                الذروة: {(f.nextWeek as Record<string, unknown>)?.peakDay as string}{' '}
                 {(f.nextWeek as Record<string, unknown>)?.peakTime as string}
               </p>
               <p className="text-xs text-text-tertiary mt-2">

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 
@@ -176,11 +176,7 @@ export default function FamilyAccountPage(): JSX.Element {
 
         {/* Members List */}
         {isLoading ? (
-          <div className="space-y-4">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <CardListSkeleton count={4} />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل أفراد العائلة" onRetry={() => refetch()} />
         ) : allMembers.length === 0 ? (
@@ -233,7 +229,7 @@ export default function FamilyAccountPage(): JSX.Element {
                     )}
                     {(m.bookingCount ?? 0) > 0 && (
                       <p className="mt-1 text-xs text-brand-600 font-medium">
-                         {m.bookingCount} حجز سابق
+                        {m.bookingCount} حجز سابق
                       </p>
                     )}
                   </div>
@@ -246,7 +242,7 @@ export default function FamilyAccountPage(): JSX.Element {
                     className="flex-1"
                   >
                     <Button size="sm" className="w-full">
-                       احجزي لـ{m.name}
+                      احجزي لـ{m.name}
                     </Button>
                   </Link>
                   <Button size="sm" variant="ghost" onClick={() => openEdit(m)}>
@@ -278,7 +274,10 @@ export default function FamilyAccountPage(): JSX.Element {
         >
           <div className="space-y-4">
             <div>
-              <label htmlFor="fa-name" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label
+                htmlFor="fa-name"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
                 الاسم
               </label>
               <input
@@ -293,7 +292,10 @@ export default function FamilyAccountPage(): JSX.Element {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label htmlFor="fa-relation" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+                <label
+                  htmlFor="fa-relation"
+                  className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                >
                   العلاقة
                 </label>
                 <select
@@ -310,7 +312,10 @@ export default function FamilyAccountPage(): JSX.Element {
                 </select>
               </div>
               <div>
-                <label htmlFor="fa-age" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+                <label
+                  htmlFor="fa-age"
+                  className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                >
                   الفئة العمرية
                 </label>
                 <select
@@ -352,7 +357,10 @@ export default function FamilyAccountPage(): JSX.Element {
             </div>
 
             <div>
-              <label htmlFor="fa-notes" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label
+                htmlFor="fa-notes"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
                 ملاحظات
               </label>
               <textarea

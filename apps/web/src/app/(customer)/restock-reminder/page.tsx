@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function RestockReminderPage(): JSX.Element {
@@ -49,11 +49,7 @@ export default function RestockReminderPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <CardListSkeleton count={3} />
         ) : isError ? (
           <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
         ) : myItems.length === 0 ? (
@@ -84,7 +80,7 @@ export default function RestockReminderPage(): JSX.Element {
                         <h3 className="font-bold">{item.productName as string}</h3>
                         {needsRestock && (
                           <span className="rounded-full bg-red-100 dark:bg-red-900 px-2 py-0.5 text-xs font-bold text-red-700 dark:text-red-300">
-                             حان وقت التجديد
+                            حان وقت التجديد
                           </span>
                         )}
                       </div>
@@ -114,7 +110,9 @@ export default function RestockReminderPage(): JSX.Element {
         <Modal open={showAdd} onClose={() => setShowAdd(false)} title="إضافة منتج">
           <div className="space-y-3">
             <div>
-              <label htmlFor="rr-name" className="text-sm font-semibold">اسم المنتج</label>
+              <label htmlFor="rr-name" className="text-sm font-semibold">
+                اسم المنتج
+              </label>
               <input
                 id="rr-name"
                 type="text"
@@ -124,7 +122,9 @@ export default function RestockReminderPage(): JSX.Element {
               />
             </div>
             <div>
-              <label htmlFor="rr-category" className="text-sm font-semibold">الفئة</label>
+              <label htmlFor="rr-category" className="text-sm font-semibold">
+                الفئة
+              </label>
               <select
                 id="rr-category"
                 value={category}
@@ -146,7 +146,7 @@ export default function RestockReminderPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-               إضافة
+              إضافة
             </Button>
           </div>
         </Modal>

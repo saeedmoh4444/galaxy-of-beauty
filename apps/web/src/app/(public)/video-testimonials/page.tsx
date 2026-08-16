@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, Modal } from '@galaxy/ui';
+import { Card, GridSkeleton, Button, Modal } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 
 export default function VideoTestimonialsPage(): JSX.Element {
@@ -33,11 +33,7 @@ export default function VideoTestimonialsPage(): JSX.Element {
         </div>
       )}
       {isLoading ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={6} />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((t: Record<string, unknown>) => (
@@ -86,9 +82,7 @@ export default function VideoTestimonialsPage(): JSX.Element {
                 key={s}
                 onClick={() => setRating(s)}
                 className={`text-2xl ${s <= rating ? 'text-amber-500' : 'text-gray-300'}`}
-              >
-                
-              </button>
+              ></button>
             ))}
           </div>
           <textarea
@@ -113,7 +107,7 @@ export default function VideoTestimonialsPage(): JSX.Element {
             loading={submitMut.isPending}
             className="w-full"
           >
-             نشر
+            نشر
           </Button>
         </div>
       </Modal>

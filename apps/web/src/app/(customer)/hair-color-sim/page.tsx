@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/ui';
+import { Card, GridSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 
@@ -45,7 +45,7 @@ export default function HairColorSimPage(): JSX.Element {
         <Card padding="lg">
           <h3 className="font-bold mb-4"> اختاري لوناً</h3>
           {isLoading ? (
-            <CardSkeleton />
+            <GridSkeleton count={6} />
           ) : (
             <div className="flex flex-wrap gap-3">
               {allColors.map((c: Record<string, unknown>) => (

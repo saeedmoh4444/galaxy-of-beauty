@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, GridSkeleton, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyDiscoveryPage(): JSX.Element {
@@ -26,7 +26,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
         </div>
 
         {pLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={1} />
         ) : (
           (forYou?.profile as Record<string, unknown>) && (
             <Card padding="lg" className="border-2 border-purple-200 bg-purple-50">
@@ -49,7 +49,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
 
         <div className="grid gap-6 lg:grid-cols-2">
           {fLoading ? (
-            <CardSkeleton />
+            <CardListSkeleton count={4} />
           ) : (
             <Card padding="lg">
               <h3 className="font-bold mb-3"> الأكثر طلباً</h3>
@@ -74,7 +74,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
           )}
 
           {pLoading ? (
-            <CardSkeleton />
+            <CardListSkeleton count={4} />
           ) : (
             <Card padding="lg">
               <h3 className="font-bold mb-3"> لكِ خصيصاً</h3>
@@ -102,7 +102,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
         </div>
 
         {fLoading ? (
-          <CardSkeleton />
+          <GridSkeleton count={4} />
         ) : (featured?.flashDeals as Array<Record<string, unknown>>)?.length ? (
           <Card padding="lg">
             <h3 className="font-bold mb-3"> عروض فلاش</h3>
@@ -130,7 +130,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
         ) : null}
 
         {fLoading ? (
-          <CardSkeleton />
+          <GridSkeleton count={4} />
         ) : (featured?.events as Array<Record<string, unknown>>)?.length ? (
           <Card padding="lg">
             <h3 className="font-bold mb-3"> فعاليات قادمة</h3>

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, TableSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import Link from 'next/link';
 
 const MONTHS = [
@@ -80,7 +80,7 @@ export default function TechCalendarPage(): JSX.Element {
           </div>
 
           {isLoading ? (
-            <CardSkeleton />
+            <TableSkeleton rows={5} cols={7} />
           ) : isError ? (
             <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
           ) : (
@@ -124,7 +124,7 @@ export default function TechCalendarPage(): JSX.Element {
         <Card padding="lg">
           <h3 className="font-bold mb-3">‍ الفنيات</h3>
           {tLoad ? (
-            <CardSkeleton />
+            <CardListSkeleton count={4} />
           ) : (
             <div className="space-y-2 max-h-96 overflow-y-auto">
               {techs.map((t: Record<string, unknown>) => (

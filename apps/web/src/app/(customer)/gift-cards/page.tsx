@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
-  CardSkeleton,
+  CardListSkeleton,
   ErrorAlert,
   EmptyState,
   Button,
@@ -91,7 +91,7 @@ export default function GiftCardsPage(): JSX.Element {
 
         {tab === 'my' &&
           (myCardsQ.isLoading ? (
-            <CardSkeleton />
+            <CardListSkeleton count={4} />
           ) : myCardsQ.isError ? (
             <ErrorAlert message="فشل تحميل البطاقات" onRetry={() => myCardsQ.refetch()} />
           ) : !myCardsQ.data || myCardsQ.data.length === 0 ? (
@@ -149,7 +149,10 @@ export default function GiftCardsPage(): JSX.Element {
                 placeholder="لأجمل صديقة"
               />
               <div>
-                <label htmlFor="gc-message" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+                <label
+                  htmlFor="gc-message"
+                  className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+                >
                   رسالة إهداء (اختياري)
                 </label>
                 <textarea
@@ -178,7 +181,7 @@ export default function GiftCardsPage(): JSX.Element {
                 loading={buyMut.isPending}
                 className="w-full"
               >
-                 شراء بطاقة هدية
+                شراء بطاقة هدية
               </Button>
             </div>
           </Card>

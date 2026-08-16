@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function AdminLoyaltyPage(): JSX.Element {
@@ -21,7 +21,7 @@ export default function AdminLoyaltyPage(): JSX.Element {
           <Card padding="lg">
             <h3 className="font-bold mb-3"> المكافآت المتاحة</h3>
             {rwLoading ? (
-              <CardSkeleton />
+              <CardListSkeleton count={4} />
             ) : !(rewards ?? []).length ? (
               <p className="text-sm text-text-tertiary">لا توجد مكافآت</p>
             ) : (

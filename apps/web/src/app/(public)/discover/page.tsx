@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
+import { Card, GridSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
 
 const FEATURES = [
   {
@@ -223,11 +223,7 @@ function TrendingNow(): JSX.Element {
     <div className="mt-16">
       <h2 className="text-2xl font-bold text-center mb-6"> الأكثر طلباً هذا الشهر</h2>
       {isLoading ? (
-        <div className="grid gap-4 sm:grid-cols-3">
-          {Array.from({ length: 6 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={8} />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {(trending ?? []).slice(0, 8).map((s: Record<string, unknown>) => (

@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
@@ -50,9 +50,7 @@ export default function BeautyJournalPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-           يوميات الجمال
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">يوميات الجمال</h1>
         <p className="text-sm text-text-secondary">
           دوّني رحلتكِ الجمالية — تجارب، مشاعر، وإطلالات
         </p>
@@ -118,11 +116,7 @@ export default function BeautyJournalPage(): JSX.Element {
 
         {/* Entries */}
         {isLoading ? (
-          <div className="space-y-4">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <CardListSkeleton count={4} />
         ) : isError ? (
           <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
         ) : entries.length === 0 ? (
@@ -134,9 +128,7 @@ export default function BeautyJournalPage(): JSX.Element {
                 <button
                   onClick={() => deleteMut.mutate({ id: e.id })}
                   className="absolute top-2 right-2 hidden rounded-full bg-red-500 p-1 text-white text-xs group-hover:block"
-                >
-                  
-                </button>
+                ></button>
                 <div className="flex items-center gap-3 text-xs text-text-tertiary mb-2">
                   {e.mood && <span>{MOODS[e.mood - 1]}</span>}
                   {e.serviceType && (

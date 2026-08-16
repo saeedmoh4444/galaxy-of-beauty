@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
-import { CardSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/ui';
+import { GridSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/ui';
 
 interface BlogPost {
   id: number;
@@ -116,11 +116,7 @@ export function BlogClient({
       </div>
 
       {isLoading && !initialPosts.length ? (
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={6} />
       ) : isError ? (
         <ErrorAlert message="فشل تحميل المقالات" onRetry={() => refetch()} />
       ) : posts.length === 0 ? (

@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, EmptyState } from '@galaxy/ui';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -91,11 +91,7 @@ export default function TechnicianBadgesPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {Array.from({ length: 8 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={8} />
       ) : isError ? (
         <ErrorAlert message="فشل تحميل الشارات" onRetry={() => refetch()} />
       ) : allBadges.length === 0 ? (

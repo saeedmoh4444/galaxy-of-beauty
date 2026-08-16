@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function SaleAlertsPage(): JSX.Element {
@@ -70,9 +70,7 @@ export default function SaleAlertsPage(): JSX.Element {
                   <span className="text-2xl">{d.emoji as string}</span>
                   <p className="font-bold text-sm mt-1">{d.titleAr as string}</p>
                   <p className="text-xs text-red-500 font-bold mt-1">-{d.discount as number}%</p>
-                  <p className="text-[10px] text-text-tertiary">
-                     ينتهي خلال {d.endsIn as string}
-                  </p>
+                  <p className="text-[10px] text-text-tertiary">ينتهي خلال {d.endsIn as string}</p>
                 </div>
               ))}
             </div>
@@ -81,7 +79,7 @@ export default function SaleAlertsPage(): JSX.Element {
 
         {/* My Alerts */}
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={3} />
         ) : isError ? (
           <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
         ) : myAlerts.length === 0 ? (
@@ -176,7 +174,7 @@ export default function SaleAlertsPage(): JSX.Element {
               loading={createMut.isPending}
               className="w-full"
             >
-               تفعيل التنبيه
+              تفعيل التنبيه
             </Button>
           </div>
         </Modal>

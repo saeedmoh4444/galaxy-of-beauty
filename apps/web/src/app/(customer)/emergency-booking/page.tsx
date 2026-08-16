@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const POPULAR_SERVICES = [
@@ -70,10 +70,10 @@ export default function EmergencyBookingPage(): JSX.Element {
           </div>
 
           {isLoading ? (
-            <CardSkeleton />
+            <CardListSkeleton count={4} />
           ) : available.length === 0 ? (
             <p className="text-sm text-text-tertiary text-center py-4">
-               لا توجد فنيات متاحات حالياً لهذه الخدمة
+              لا توجد فنيات متاحات حالياً لهذه الخدمة
             </p>
           ) : (
             <div className="space-y-2">
@@ -91,7 +91,7 @@ export default function EmergencyBookingPage(): JSX.Element {
                   </div>
                   <div className="flex justify-between text-xs text-text-secondary mt-1">
                     <span>
-                       {t.rating as number} · {t.city as string}
+                      {t.rating as number} · {t.city as string}
                     </span>
                     <span>
                       {' '}
@@ -147,7 +147,7 @@ export default function EmergencyBookingPage(): JSX.Element {
               loading={createMut.isPending}
               className="w-full"
             >
-               احجزي الآن — {formatCurrency((avail?.totalEstimate as number) ?? 0)}
+              احجزي الآن — {formatCurrency((avail?.totalEstimate as number) ?? 0)}
             </Button>
           )
         )}

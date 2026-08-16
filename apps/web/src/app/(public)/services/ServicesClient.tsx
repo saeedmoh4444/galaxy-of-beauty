@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Input, Card, CardSkeleton, ErrorAlert, EmptyState, useDebounce, ar } from '@galaxy/ui';
+import { Input, Card, GridSkeleton, ErrorAlert, EmptyState, useDebounce, ar } from '@galaxy/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyRecord = Record<string, any>;
@@ -65,7 +65,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
           href="/services/surprise-me"
           className="rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white hover:bg-accent-600 transition-colors"
         >
-           فاجئيني
+          فاجئيني
         </Link>
       </div>
       <div className="mb-6 flex flex-wrap gap-4">
@@ -128,11 +128,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
       </div>
 
       {svcQuery.isLoading ? (
-        <div className="grid gap-6 md:grid-cols-3">
-          {Array.from({ length: 6 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={6} />
       ) : svcQuery.isError ? (
         <ErrorAlert message="فشل تحميل الخدمات" onRetry={() => svcQuery.refetch()} />
       ) : items.length === 0 ? (

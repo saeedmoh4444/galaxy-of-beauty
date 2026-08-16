@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const POPULAR_SERVICES = [
@@ -58,7 +58,7 @@ export default function RecommendationsPage(): JSX.Element {
         <Card padding="lg">
           <h3 className="font-bold mb-4"> تحجز مع بعض</h3>
           {tLoading ? (
-            <CardSkeleton />
+            <GridSkeleton count={4} />
           ) : !(together ?? []).length ? (
             <p className="text-sm text-text-tertiary">لا توجد توصيات حالياً</p>
           ) : (
@@ -86,7 +86,7 @@ export default function RecommendationsPage(): JSX.Element {
         <Card padding="lg">
           <h3 className="font-bold mb-4"> كملي الطلة</h3>
           {cLoading ? (
-            <CardSkeleton />
+            <GridSkeleton count={4} />
           ) : !(complete ?? []).length ? (
             <p className="text-sm text-text-tertiary">لا توجد توصيات حالياً</p>
           ) : (
@@ -99,7 +99,7 @@ export default function RecommendationsPage(): JSX.Element {
                   </p>
                   {s.reason === 'popular' && (
                     <span className="mt-1 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">
-                       الأكثر طلباً
+                      الأكثر طلباً
                     </span>
                   )}
                 </div>

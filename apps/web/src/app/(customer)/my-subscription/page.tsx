@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
+import { Card, DetailSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
@@ -28,7 +28,7 @@ export default function MySubscriptionPage(): JSX.Element {
   if (isLoading)
     return (
       <DashboardLayout userRole="CUSTOMER">
-        <CardSkeleton />
+        <DetailSkeleton />
       </DashboardLayout>
     );
   if (isError)
@@ -111,11 +111,7 @@ export default function MySubscriptionPage(): JSX.Element {
               <span
                 className={`font-bold ${sub.status === 'ACTIVE' ? 'text-green-600' : sub.status === 'PAUSED' ? 'text-amber-600' : 'text-red-600'}`}
               >
-                {sub.status === 'ACTIVE'
-                  ? ' نشط'
-                  : sub.status === 'PAUSED'
-                    ? ' متوقف'
-                    : ' ملغي'}
+                {sub.status === 'ACTIVE' ? ' نشط' : sub.status === 'PAUSED' ? ' متوقف' : ' ملغي'}
               </span>
             </div>
             <div className="flex justify-between">
@@ -144,7 +140,7 @@ export default function MySubscriptionPage(): JSX.Element {
           </Link>
           {sub.status === 'ACTIVE' && (
             <Button variant="outline" onClick={handlePause}>
-               إيقاف مؤقت
+              إيقاف مؤقت
             </Button>
           )}
         </div>

@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, ErrorAlert, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, ErrorAlert, formatCurrency } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import Link from 'next/link';
 
@@ -81,7 +81,7 @@ export default function WomensServicesPage(): JSX.Element {
               setSelectedCat(null);
             }}
           >
-             عودة
+            عودة
           </Button>
         </Card>
       ) : !selectedCat ? (
@@ -107,7 +107,7 @@ export default function WomensServicesPage(): JSX.Element {
           ))}
         </div>
       ) : isLoading ? (
-        <CardSkeleton />
+        <CardListSkeleton count={4} />
       ) : isError ? (
         <ErrorAlert message="فشل تحميل الخدمات" onRetry={() => refetch()} />
       ) : (
@@ -186,7 +186,7 @@ export default function WomensServicesPage(): JSX.Element {
               <div className="space-y-2">
                 {safetyTips.map((tip: string, i: number) => (
                   <p key={i} className="text-sm text-text-secondary dark:text-gray-400">
-                     {tip}
+                    {tip}
                   </p>
                 ))}
               </div>

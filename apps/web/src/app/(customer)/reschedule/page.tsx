@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function ReschedulePage(): JSX.Element {
@@ -56,11 +56,7 @@ export default function ReschedulePage(): JSX.Element {
         )}
 
         {isLoading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <CardListSkeleton count={3} />
         ) : activeBookings.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
             <p className="text-4xl mb-2"></p>
@@ -137,7 +133,7 @@ export default function ReschedulePage(): JSX.Element {
               disabled={!newDate || !newTime}
               className="w-full mt-3"
             >
-               تأكيد إعادة الجدولة
+              تأكيد إعادة الجدولة
             </Button>
           </Card>
         )}

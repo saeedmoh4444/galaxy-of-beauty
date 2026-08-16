@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
 import { useState } from 'react';
 
 export default function AdminCampaignsPage(): JSX.Element {
@@ -32,7 +32,7 @@ export default function AdminCampaignsPage(): JSX.Element {
         <Button onClick={() => setShowCreate(true)}>إضافة حملة</Button>
       </div>
       {isLoading ? (
-        <CardSkeleton />
+        <CardListSkeleton count={4} />
       ) : isError ? (
         <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
       ) : campaigns.length === 0 ? (

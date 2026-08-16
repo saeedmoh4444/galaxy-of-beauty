@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
+import { Card, DetailSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useAuth } from '@galaxy/ui';
 import Link from 'next/link';
@@ -67,12 +67,12 @@ export default function BirthdayRewardsPage(): JSX.Element {
             هدية عيد ميلادكِ
           </h1>
           <p className="mt-2 text-text-secondary dark:text-gray-400">
-            احتفلي معنا — مكافأة خاصة بمناسبة يوم ميلادكِ 
+            احتفلي معنا — مكافأة خاصة بمناسبة يوم ميلادكِ
           </p>
         </div>
 
         {isLoading ? (
-          <CardSkeleton />
+          <DetailSkeleton />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل بيانات المكافأة" onRetry={() => refetch()} />
         ) : (
@@ -110,7 +110,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
                         }}
                         className="mt-2 text-xs text-brand-600 hover:text-brand-700 font-medium"
                       >
-                         نسخ الكود
+                        نسخ الكود
                       </button>
                     </div>
                   )}
@@ -155,7 +155,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
 
                   <div className="mt-6">
                     <Button size="lg" onClick={handleClaim} loading={claimMut.isPending}>
-                       استلمي هديتكِ
+                      استلمي هديتكِ
                     </Button>
                   </div>
                 </div>
@@ -218,7 +218,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
               className="bg-gradient-to-r from-pink-100 to-rose-100 dark:from-pink-950 dark:to-rose-950 border-none"
             >
               <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">
-                 أفكار لعيد ميلادكِ
+                أفكار لعيد ميلادكِ
               </h3>
               <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400 sm:grid-cols-2">
                 <p>‍️ تسريحة شعر جديدة ليومكِ الخاص</p>

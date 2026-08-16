@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert } from '@galaxy/ui';
 
 const CAT_COLORS: Record<string, string> = {
   makeup: '#C41E3A',
@@ -30,7 +30,7 @@ export default function ServiceTrendsPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <CardSkeleton />
+        <CardListSkeleton count={2} />
       ) : isError ? (
         <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
       ) : (
@@ -79,9 +79,7 @@ export default function ServiceTrendsPage(): JSX.Element {
                   key={i}
                   className="flex items-center gap-3 rounded-lg bg-surface-muted dark:bg-gray-800 p-3"
                 >
-                  <span className="text-2xl w-10 text-center">
-                    {['', '', '', '4️⃣', '5️⃣'][i]}
-                  </span>
+                  <span className="text-2xl w-10 text-center">{['', '', '', '4️⃣', '5️⃣'][i]}</span>
                   <span className="text-2xl">{t.emoji as string}</span>
                   <span className="flex-1 font-bold">{t.nameAr as string}</span>
                   <span className="rounded-full bg-green-100 dark:bg-green-900 px-2.5 py-0.5 text-xs font-bold text-green-700">

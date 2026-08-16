@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
-  CardSkeleton,
   ErrorAlert,
+  FormSkeleton,
   Button,
   Input,
   formatCurrency,
@@ -55,7 +55,7 @@ export default function BeautyBudgetPage(): JSX.Element {
           {/* Left column */}
           <div className="space-y-6">
             {isLoading ? (
-              <CardSkeleton />
+              <FormSkeleton fields={4} />
             ) : isError ? (
               <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
             ) : (

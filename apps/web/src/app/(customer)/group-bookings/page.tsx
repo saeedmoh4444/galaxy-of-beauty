@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
-  CardSkeleton,
+  CardListSkeleton,
   ErrorAlert,
   EmptyState,
   Button,
@@ -196,11 +196,7 @@ export default function GroupBookingsPage(): JSX.Element {
 
         {/* My Groups */}
         {isLoading ? (
-          <div className="space-y-4">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <CardListSkeleton count={4} />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل حجوزات المجموعات" onRetry={() => refetch()} />
         ) : allGroups.length === 0 ? (
@@ -272,7 +268,10 @@ export default function GroupBookingsPage(): JSX.Element {
           <div className="space-y-4">
             {/* Group Name */}
             <div>
-              <label htmlFor="gb-name" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label
+                htmlFor="gb-name"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
                 اسم المجموعة
               </label>
               <input
@@ -287,7 +286,10 @@ export default function GroupBookingsPage(): JSX.Element {
 
             {/* Theme */}
             <div>
-              <label htmlFor="gb-theme" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label
+                htmlFor="gb-theme"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
                 المناسبة
               </label>
               <select
@@ -366,9 +368,7 @@ export default function GroupBookingsPage(): JSX.Element {
                         type="button"
                         onClick={() => removeMember(idx)}
                         className="text-text-tertiary hover:text-red-500 p-1"
-                      >
-                        
-                      </button>
+                      ></button>
                     )}
                   </div>
                 ))}
@@ -394,7 +394,7 @@ export default function GroupBookingsPage(): JSX.Element {
                 إلغاء
               </Button>
               <Button onClick={handleCreate} loading={createMut.isPending}>
-                 إنشاء المجموعة
+                إنشاء المجموعة
               </Button>
             </div>
           </div>

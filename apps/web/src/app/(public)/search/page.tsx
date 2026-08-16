@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Input, Card, CardSkeleton, Button, formatCurrency, ar } from '@galaxy/ui';
+import { Input, Card, GridSkeleton, Button, formatCurrency, ar } from '@galaxy/ui';
 export default function SearchPage(): JSX.Element {
   const [query, setQuery] = useState('');
   const [searched, setSearched] = useState(false);
@@ -60,7 +60,7 @@ export default function SearchPage(): JSX.Element {
             {isLoading ? 'جاري البحث...' : `${totalResults} نتيجة`}
           </p>
           {isLoading ? (
-            <CardSkeleton />
+            <GridSkeleton count={8} />
           ) : totalResults === 0 ? (
             <div className="py-16 text-center text-text-tertiary">
               <span className="text-5xl"></span>
@@ -75,9 +75,7 @@ export default function SearchPage(): JSX.Element {
                     {svcItems.map((s: any) => (
                       <Link key={s.id} href={`/services/${s.id}`}>
                         <Card hover padding="md">
-                          <div className="h-32 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100 flex items-center justify-center text-3xl">
-                            
-                          </div>
+                          <div className="h-32 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100 flex items-center justify-center text-3xl"></div>
                           <h3 className="mt-2 font-semibold">{ar(s.titleJson)}</h3>
                           <p className="text-sm text-text-secondary">
                             {s.durationMin} دقيقة · {formatCurrency(Number(s.basePrice))}
@@ -95,9 +93,7 @@ export default function SearchPage(): JSX.Element {
                     {prodItems.map((p: any) => (
                       <Link key={p.id} href={`/marketplace`}>
                         <Card hover padding="sm">
-                          <div className="h-24 rounded-lg bg-surface-muted flex items-center justify-center text-2xl">
-                            
-                          </div>
+                          <div className="h-24 rounded-lg bg-surface-muted flex items-center justify-center text-2xl"></div>
                           <p className="mt-2 text-sm font-semibold truncate">{ar(p.nameJson)}</p>
                           <p className="text-xs font-bold text-brand-600">
                             {formatCurrency(Number(p.price))}
@@ -121,7 +117,7 @@ export default function SearchPage(): JSX.Element {
                             </div>
                             <p className="mt-2 font-semibold">{t.user?.name}</p>
                             <p className="text-sm text-text-secondary">
-                              {t.city} ·  {Number(t.ratingAvg).toFixed(1)}
+                              {t.city} · {Number(t.ratingAvg).toFixed(1)}
                             </p>
                           </div>
                         </Card>

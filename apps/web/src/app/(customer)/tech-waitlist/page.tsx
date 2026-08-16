@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function TechWaitlistPage(): JSX.Element {
@@ -25,7 +25,7 @@ export default function TechWaitlistPage(): JSX.Element {
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-3xl space-y-6">
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         </div>
       </DashboardLayout>
     );

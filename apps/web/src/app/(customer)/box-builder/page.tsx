@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BoxBuilderPage(): JSX.Element {
@@ -63,7 +63,7 @@ export default function BoxBuilderPage(): JSX.Element {
             <Card padding="lg">
               <h3 className="font-bold mb-3">️ اختاري منتجاتكِ (٣-٦)</h3>
               {isLoading ? (
-                <CardSkeleton />
+                <GridSkeleton count={8} />
               ) : (
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                   {products.map((p: Record<string, unknown>) => (
@@ -126,7 +126,7 @@ export default function BoxBuilderPage(): JSX.Element {
                     className="w-full"
                     size="lg"
                   >
-                     بناء الصندوق
+                    بناء الصندوق
                   </Button>
                 </div>
               </Card>

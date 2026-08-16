@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, formatCurrency } from '@galaxy/ui';
+import { Card, TableSkeleton, ErrorAlert, EmptyState, formatCurrency } from '@galaxy/ui';
 
 export default function AdminGiftCardsPage(): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -15,7 +15,7 @@ export default function AdminGiftCardsPage(): JSX.Element {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold"> بطاقات الهدية</h1>
       {isLoading ? (
-        <CardSkeleton />
+        <TableSkeleton rows={5} cols={5} />
       ) : isError ? (
         <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
       ) : items.length === 0 ? (

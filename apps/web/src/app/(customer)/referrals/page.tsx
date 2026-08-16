@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
-  CardSkeleton,
+  DashboardSkeleton,
   ErrorAlert,
   EmptyState,
   Button,
@@ -70,11 +70,7 @@ export default function ReferralsPage(): JSX.Element {
         <h1 className="text-2xl font-bold">دعوة الأصدقاء</h1>
 
         {isLoading ? (
-          <div className="space-y-4">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <DashboardSkeleton />
         ) : isError ? (
           <ErrorAlert
             message="فشل تحميل بيانات الدعوة"

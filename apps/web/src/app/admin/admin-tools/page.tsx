@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function AdminToolsPage(): JSX.Element {
@@ -20,7 +20,7 @@ export default function AdminToolsPage(): JSX.Element {
         <Card padding="lg">
           <h3 className="font-bold mb-3"> إدارة الميزات (Feature Flags)</h3>
           {isLoading ? (
-            <CardSkeleton />
+            <CardListSkeleton count={4} />
           ) : !(flags ?? []).length ? (
             <p className="text-sm text-text-tertiary">لا توجد ميزات معرفة</p>
           ) : (

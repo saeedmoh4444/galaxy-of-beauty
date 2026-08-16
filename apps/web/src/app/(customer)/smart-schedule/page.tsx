@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const POPULAR_SERVICES = [
@@ -60,7 +60,7 @@ export default function SmartSchedulePage(): JSX.Element {
         </Card>
 
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : suggestions.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
             <p className="text-4xl mb-2"></p>

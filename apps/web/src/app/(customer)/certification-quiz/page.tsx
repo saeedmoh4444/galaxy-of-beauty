@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CertificationQuizPage(): JSX.Element {
@@ -62,7 +62,7 @@ export default function CertificationQuizPage(): JSX.Element {
                 setResult(null);
               }}
             >
-               اختبار آخر
+              اختبار آخر
             </Button>
           </Card>
         ) : quizId ? (
@@ -100,11 +100,11 @@ export default function CertificationQuizPage(): JSX.Element {
               loading={submitMut.isPending}
               className="w-full mt-4"
             >
-              تقديم 
+              تقديم
             </Button>
           </Card>
         ) : isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
             {qs.map((q: Record<string, unknown>) => (

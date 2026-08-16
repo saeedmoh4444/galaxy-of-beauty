@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
@@ -41,10 +41,10 @@ export default function NotificationSettingsPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-           إعدادات الإشعارات
+          إعدادات الإشعارات
         </h1>
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={6} />
         ) : (
           <Card padding="none">
             {TOGGLES.map((t) => (

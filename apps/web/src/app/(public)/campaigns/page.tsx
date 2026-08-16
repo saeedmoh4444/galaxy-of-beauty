@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import {
   Card,
-  CardSkeleton,
+  GridSkeleton,
   ErrorAlert,
   EmptyState,
   formatCurrency,
@@ -83,11 +83,7 @@ export default function CampaignsPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <div className="space-y-6">
-          {Array.from({ length: 4 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={6} />
       ) : aErr ? (
         <ErrorAlert message="فشل تحميل الحملات" onRetry={() => aRef()} />
       ) : isEmpty ? (

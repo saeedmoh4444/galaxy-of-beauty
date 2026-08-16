@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, TableSkeleton, formatCurrency } from '@galaxy/ui';
 
 const DIM_LABELS: Record<string, string> = {
   hydration: ' ترطيب',
@@ -48,7 +48,7 @@ export default function ProductComparePage(): JSX.Element {
       <Card padding="lg" className="mb-6">
         <h3 className="font-bold mb-3">️ اختر منتجين للمقارنة ({selected.length}/4)</h3>
         {pLoad ? (
-          <CardSkeleton />
+          <GridSkeleton count={8} />
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {productsList.map((p: Record<string, unknown>) => (
@@ -72,7 +72,7 @@ export default function ProductComparePage(): JSX.Element {
 
       {/* Comparison Table */}
       {cLoad ? (
-        <CardSkeleton />
+        <TableSkeleton rows={5} cols={3} />
       ) : compared.length >= 2 ? (
         <Card padding="lg" className="overflow-x-auto">
           <table className="w-full text-sm">

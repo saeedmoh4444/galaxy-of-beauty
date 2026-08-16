@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert } from '@galaxy/ui';
+import { Card, TableSkeleton, ErrorAlert } from '@galaxy/ui';
 
 const COLORS = [
   'bg-green-100 dark:bg-green-900/40',
@@ -33,7 +33,7 @@ export default function BookingHeatmapPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <CardSkeleton />
+        <TableSkeleton rows={5} cols={8} />
       ) : isError ? (
         <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
       ) : data ? (

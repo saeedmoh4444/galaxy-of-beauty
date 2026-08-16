@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/ui';
 
 interface Tutorial {
   id: number;
@@ -149,11 +149,7 @@ export default function TutorialsPage(): JSX.Element {
 
       {/* Tutorials Grid */}
       {isLoading ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={6} />
       ) : isError ? (
         <ErrorAlert message="فشل تحميل الدروس" onRetry={() => refetch()} />
       ) : tutorials.length === 0 ? (

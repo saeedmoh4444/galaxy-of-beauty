@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const SERVICES = [
@@ -85,14 +85,14 @@ export default function AdminFlashDealsPage(): JSX.Element {
             loading={createMut.isPending}
             className="w-full mt-3"
           >
-             إنشاء العرض
+            إنشاء العرض
           </Button>
         </Card>
 
         <Card padding="lg">
           <h3 className="font-bold mb-3"> العروض النشطة</h3>
           {isLoading ? (
-            <CardSkeleton />
+            <CardListSkeleton count={4} />
           ) : !(active ?? []).length ? (
             <p className="text-sm text-text-tertiary">لا توجد عروض نشطة</p>
           ) : (

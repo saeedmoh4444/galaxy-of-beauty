@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const CATEGORIES = [
@@ -48,7 +48,7 @@ export default function BeautyBudgetPlannerPage(): JSX.Element {
           </Card>
         </div>
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={6} />
         ) : (
           <div className="space-y-3">
             {CATEGORIES.map((c) => {

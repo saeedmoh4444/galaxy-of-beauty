@@ -4,7 +4,16 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
+import {
+  Card,
+  FormSkeleton,
+  CardListSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  Input,
+  Modal,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 type ProfileUser = NonNullable<RouterOutput['auth']['me']>;
@@ -136,7 +145,7 @@ export default function ProfilePage(): JSX.Element {
         {activeTab === 'profile' && (
           <>
             {userLoading ? (
-              <CardSkeleton />
+              <FormSkeleton fields={3} />
             ) : userError ? (
               <ErrorAlert message="فشل تحميل الملف الشخصي" onRetry={() => refetchUser()} />
             ) : !userData ? (
@@ -172,7 +181,10 @@ export default function ProfilePage(): JSX.Element {
                     onChange={(e) => setFormPhone(e.target.value)}
                   />
                   <div>
-                    <label htmlFor="pf-lang" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+                    <label
+                      htmlFor="pf-lang"
+                      className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+                    >
                       اللغة
                     </label>
                     <select
@@ -202,11 +214,7 @@ export default function ProfilePage(): JSX.Element {
             </div>
 
             {addrLoading ? (
-              <div className="space-y-3">
-                {Array.from({ length: 3 }, (_, i) => (
-                  <CardSkeleton key={i} />
-                ))}
-              </div>
+              <CardListSkeleton count={3} />
             ) : addrError ? (
               <ErrorAlert message="فشل تحميل العناوين" onRetry={() => refetchAddr()} />
             ) : addrList.length === 0 ? (

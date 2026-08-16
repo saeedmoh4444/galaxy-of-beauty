@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
-  CardSkeleton,
+  CardListSkeleton,
   ErrorAlert,
   EmptyState,
   Button,
@@ -56,7 +56,7 @@ export default function GiftRegistryPage(): JSX.Element {
         </p>
 
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : isError ? (
           <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
         ) : registries.length === 0 ? (

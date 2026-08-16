@@ -2,7 +2,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/ui';
+import { Card, CardSkeleton, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function ChatPage(): JSX.Element {
@@ -53,7 +53,7 @@ export default function ChatPage(): JSX.Element {
           <Card padding="lg" className="lg:col-span-1">
             <h3 className="font-bold mb-3"> المحادثات النشطة</h3>
             {convLoading ? (
-              <CardSkeleton />
+              <CardListSkeleton count={3} />
             ) : convs.length === 0 ? (
               <p className="text-sm text-text-tertiary">لا توجد محادثات</p>
             ) : (
@@ -138,7 +138,9 @@ export default function ChatPage(): JSX.Element {
                         );
                     }}
                     loading={sendMut.isPending}
-                  >إرسال</Button>
+                  >
+                    إرسال
+                  </Button>
                 </div>
               </>
             )}

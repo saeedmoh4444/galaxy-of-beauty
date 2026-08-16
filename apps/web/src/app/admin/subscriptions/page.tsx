@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function AdminSubscriptionsPage(): JSX.Element {
@@ -18,11 +18,7 @@ export default function AdminSubscriptionsPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <div className="grid gap-4 sm:grid-cols-3">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <GridSkeleton count={6} />
         ) : !(plans ?? []).length ? (
           <Card padding="lg" className="text-center py-8">
             <p className="text-4xl mb-2"></p>

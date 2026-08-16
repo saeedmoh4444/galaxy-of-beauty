@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyMetaversePage(): JSX.Element {
@@ -24,7 +24,7 @@ export default function BeautyMetaversePage(): JSX.Element {
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-4xl space-y-6">
-          <CardSkeleton />
+          <GridSkeleton count={6} />
         </div>
       </DashboardLayout>
     );
@@ -82,8 +82,7 @@ export default function BeautyMetaversePage(): JSX.Element {
                   <span className="text-4xl">{s.emoji as string}</span>
                   <p className="font-bold mt-2">{s.name as string}</p>
                   <p className="text-xs text-text-secondary">
-                    ‍ {s.technician as string} ·  {s.rating as number} · {' '}
-                    {s.visitors as number}
+                    ‍ {s.technician as string} · {s.rating as number} · {s.visitors as number}
                   </p>
                 </button>
               ))}

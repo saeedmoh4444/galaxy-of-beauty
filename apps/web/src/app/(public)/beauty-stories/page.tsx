@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { CardSkeleton } from '@galaxy/ui';
+import { GridSkeleton } from '@galaxy/ui';
 export default function BeautyStoriesPage(): JSX.Element {
   const { data, isLoading } = api.beautyStories.feed.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
@@ -17,13 +17,7 @@ export default function BeautyStoriesPage(): JSX.Element {
         <p className="mt-2 text-text-secondary">قصص يومية من فنياتنا</p>
       </div>
       {isLoading ? (
-        <div className="flex gap-4 justify-center">
-          {Array.from({ length: 4 }, (_, i) => (
-            <div key={i} className="w-32 h-48">
-              <CardSkeleton />
-            </div>
-          ))}
-        </div>
+        <GridSkeleton count={4} />
       ) : (
         <div className="flex gap-4 justify-center flex-wrap">
           {stories.map((s: Record<string, unknown>) => (

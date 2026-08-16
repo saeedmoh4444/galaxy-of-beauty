@@ -2,7 +2,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, DashboardSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 
@@ -49,7 +49,7 @@ export default function MyJourneyPage(): JSX.Element {
   if (bLoading)
     return (
       <DashboardLayout userRole="CUSTOMER">
-        <CardSkeleton />
+        <DashboardSkeleton />
       </DashboardLayout>
     );
 
@@ -92,7 +92,7 @@ export default function MyJourneyPage(): JSX.Element {
           <Card padding="md" className="text-center">
             <p className="text-sm text-text-secondary">أفضل استمرارية</p>
             <p className="text-2xl font-extrabold text-orange-600">
-               {streak?.longestStreak || 0} أسابيع
+              {streak?.longestStreak || 0} أسابيع
             </p>
           </Card>
         </div>

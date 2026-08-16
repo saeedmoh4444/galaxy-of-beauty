@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, GridSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 
@@ -122,11 +122,7 @@ export default function PostCarePage(): JSX.Element {
         {activeTab === 'plan' && (
           <>
             {planLoading ? (
-              <div className="space-y-4">
-                {Array.from({ length: 2 }, (_, i) => (
-                  <CardSkeleton key={i} />
-                ))}
-              </div>
+              <CardListSkeleton count={2} />
             ) : planError ? (
               <ErrorAlert message="فشل تحميل خطة العناية" onRetry={() => refetchPlan()} />
             ) : plans.length === 0 ? (
@@ -206,11 +202,7 @@ export default function PostCarePage(): JSX.Element {
         {activeTab === 'library' && (
           <>
             {libLoading ? (
-              <div className="space-y-4">
-                {Array.from({ length: 3 }, (_, i) => (
-                  <CardSkeleton key={i} />
-                ))}
-              </div>
+              <GridSkeleton count={6} />
             ) : libError ? (
               <ErrorAlert message="فشل تحميل المكتبة" onRetry={() => refetchLib()} />
             ) : (

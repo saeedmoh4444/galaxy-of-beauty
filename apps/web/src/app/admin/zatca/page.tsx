@@ -6,7 +6,7 @@ import type { RouterOutput } from '@galaxy/api/client';
 import {
   Button,
   Card,
-  CardSkeleton,
+  CardListSkeleton,
   ErrorAlert,
   EmptyState,
   Input,
@@ -95,7 +95,7 @@ export default function AdminZatcaPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <CardSkeleton />
+        <CardListSkeleton count={4} />
       ) : isError ? (
         <ErrorAlert message="فشل تحميل الفواتير" onRetry={() => refetch()} />
       ) : filtered.length === 0 ? (

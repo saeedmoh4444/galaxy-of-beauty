@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Button, Card, CardSkeleton, ErrorAlert, ar } from '@galaxy/ui';
+import { Button, Card, GridSkeleton, ErrorAlert, ar } from '@galaxy/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyRecord = Record<string, any>;
@@ -57,9 +57,7 @@ export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.El
       </div>
 
       {loading ? (
-        <div className="mx-auto max-w-sm">
-          <CardSkeleton />
-        </div>
+        <GridSkeleton count={1} />
       ) : error ? (
         <div className="space-y-4">
           <ErrorAlert message={error} onRetry={pickRandom} />
@@ -69,7 +67,7 @@ export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.El
         <div className="space-y-6">
           <ServiceCard svc={svc} />
           <Button onClick={pickRandom} size="lg" className="mx-auto">
-             اقتراح آخر
+            اقتراح آخر
           </Button>
         </div>
       ) : (
@@ -87,9 +85,7 @@ export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.El
 function ServiceCard({ svc }: { svc: AnyRecord }): JSX.Element {
   return (
     <Card padding="lg" className="mx-auto max-w-sm text-center">
-      <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
-        
-      </div>
+      <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900"></div>
       <h2 className="mt-4 text-xl font-bold text-text-primary dark:text-gray-100">
         {ar(svc.titleJson)}
       </h2>

@@ -2,7 +2,7 @@
 
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
+import { Card, TableSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
@@ -43,7 +43,7 @@ export default function PayoutsPage(): JSX.Element {
           المدفوعات للفنيات
         </h1>
         {isLoading ? (
-          <CardSkeleton />
+          <TableSkeleton rows={5} cols={5} />
         ) : isError ? (
           <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
         ) : items.length === 0 ? (

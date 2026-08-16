@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function NewsletterPage(): JSX.Element {
@@ -56,11 +56,7 @@ export default function NewsletterPage(): JSX.Element {
 
         <h3 className="font-bold text-lg"> النشرات السابقة</h3>
         {isLoading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <CardListSkeleton count={3} />
         ) : (
           <div className="space-y-3">
             {list.map((i: Record<string, unknown>) => (

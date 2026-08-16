@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, PageContainer, StatCard } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, ErrorAlert, EmptyState, PageContainer, StatCard } from '@galaxy/ui';
 
 const STATUS_COLORS: Record<string, string> = {
   healthy: 'text-green-600 bg-green-100 dark:bg-green-900 dark:text-green-300',
@@ -52,11 +52,7 @@ export default function MonitoringPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <div className="grid gap-4 sm:grid-cols-5">
-            {Array.from({ length: 5 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <KPIRowSkeleton count={5} />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل بيانات المراقبة" onRetry={() => refetch()} />
         ) : !health ? (
@@ -136,7 +132,7 @@ export default function MonitoringPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <Card padding="lg">
                 <h3 className="font-bold mb-3">
-                   الأخطاء (آخر ٢٤ ساعة: {(errData.last24h as number) ?? 0})
+                  الأخطاء (آخر ٢٤ ساعة: {(errData.last24h as number) ?? 0})
                 </h3>
                 <div className="space-y-2">
                   {(errData.byType as Array<Record<string, unknown>>)?.map(

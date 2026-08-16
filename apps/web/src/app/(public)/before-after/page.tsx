@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 
 export default function BeforeAfterPage(): JSX.Element {
@@ -47,11 +47,7 @@ export default function BeforeAfterPage(): JSX.Element {
       )}
 
       {isLoading ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={6} />
       ) : isError ? (
         <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
       ) : items.length === 0 ? (
@@ -63,15 +59,11 @@ export default function BeforeAfterPage(): JSX.Element {
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <p className="text-[10px] text-text-tertiary mb-1 text-center">قبل</p>
-                  <div className="h-32 rounded-xl bg-surface-muted dark:bg-gray-800 flex items-center justify-center text-3xl">
-                    
-                  </div>
+                  <div className="h-32 rounded-xl bg-surface-muted dark:bg-gray-800 flex items-center justify-center text-3xl"></div>
                 </div>
                 <div>
                   <p className="text-[10px] text-text-tertiary mb-1 text-center">بعد</p>
-                  <div className="h-32 rounded-xl bg-gradient-to-br from-brand-100 to-purple-100 dark:from-brand-900 dark:to-purple-900 flex items-center justify-center text-3xl">
-                    
-                  </div>
+                  <div className="h-32 rounded-xl bg-gradient-to-br from-brand-100 to-purple-100 dark:from-brand-900 dark:to-purple-900 flex items-center justify-center text-3xl"></div>
                 </div>
               </div>
               <div className="mt-3">
@@ -93,7 +85,9 @@ export default function BeforeAfterPage(): JSX.Element {
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label htmlFor="ba-before" className="text-sm font-semibold">رابط صورة قبل</label>
+              <label htmlFor="ba-before" className="text-sm font-semibold">
+                رابط صورة قبل
+              </label>
               <input
                 id="ba-before"
                 type="url"
@@ -103,7 +97,9 @@ export default function BeforeAfterPage(): JSX.Element {
               />
             </div>
             <div>
-              <label htmlFor="ba-after" className="text-sm font-semibold">رابط صورة بعد</label>
+              <label htmlFor="ba-after" className="text-sm font-semibold">
+                رابط صورة بعد
+              </label>
               <input
                 id="ba-after"
                 type="url"
@@ -115,7 +111,9 @@ export default function BeforeAfterPage(): JSX.Element {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label htmlFor="ba-service-type" className="text-sm font-semibold">نوع الخدمة</label>
+              <label htmlFor="ba-service-type" className="text-sm font-semibold">
+                نوع الخدمة
+              </label>
               <select
                 id="ba-service-type"
                 value={serviceType}
@@ -128,7 +126,9 @@ export default function BeforeAfterPage(): JSX.Element {
               </select>
             </div>
             <div>
-              <label htmlFor="ba-tech-name" className="text-sm font-semibold">اسم الفنية</label>
+              <label htmlFor="ba-tech-name" className="text-sm font-semibold">
+                اسم الفنية
+              </label>
               <input
                 id="ba-tech-name"
                 type="text"
@@ -139,7 +139,9 @@ export default function BeforeAfterPage(): JSX.Element {
             </div>
           </div>
           <div>
-            <label htmlFor="ba-desc" className="text-sm font-semibold">وصف</label>
+            <label htmlFor="ba-desc" className="text-sm font-semibold">
+              وصف
+            </label>
             <textarea
               id="ba-desc"
               value={desc}
@@ -163,7 +165,7 @@ export default function BeforeAfterPage(): JSX.Element {
             loading={submitMut.isPending}
             className="w-full"
           >
-             نشر
+            نشر
           </Button>
         </div>
       </Modal>

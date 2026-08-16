@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, LOYALTY_TIERS } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, LOYALTY_TIERS } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 /** UI‑only marketing copy per tier (benefits shown to the customer). */
@@ -39,12 +39,10 @@ export default function LoyaltyDashboardPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-           برنامج الولاء
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">برنامج الولاء</h1>
 
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : isError ? (
           <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
         ) : !account ? (

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -592,11 +592,7 @@ export default function VirtualTryOnPage(): JSX.Element {
               منتجات تناسب درجة &ldquo;{selectedColor.nameAr}&rdquo; من متجرنا
             </p>
             {recsLoading ? (
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {Array.from({ length: 4 }, (_, i) => (
-                  <CardSkeleton key={i} />
-                ))}
-              </div>
+              <GridSkeleton count={4} />
             ) : !products || products.length === 0 ? (
               <p className="text-sm text-text-tertiary text-center py-4">
                 لا توجد منتجات مطابقة حالياً — تصفحي متجرنا للمزيد

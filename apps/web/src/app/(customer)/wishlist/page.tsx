@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 // Structural types to avoid TS2589 deep instantiation from RouterOutput
@@ -22,11 +22,7 @@ export default function WishlistPage(): JSX.Element {
         <h1 className="text-2xl font-bold">المفضلة</h1>
 
         {isLoading ? (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <GridSkeleton count={6} />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل المفضلة" onRetry={() => refetch()} />
         ) : items.length === 0 ? (

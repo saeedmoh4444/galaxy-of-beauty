@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal, Input } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const STATUS_STYLES: Record<string, string> = {
@@ -47,7 +47,7 @@ export default function DisputesPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل النزاعات" onRetry={() => refetch()} />
         ) : disputes.length === 0 ? (
@@ -107,7 +107,9 @@ export default function DisputesPage(): JSX.Element {
             placeholder="أدخل رقم الحجز"
           />
           <div>
-            <label htmlFor="dp-reason" className="mb-1 block text-sm font-medium">سبب النزاع</label>
+            <label htmlFor="dp-reason" className="mb-1 block text-sm font-medium">
+              سبب النزاع
+            </label>
             <textarea
               id="dp-reason"
               className="w-full rounded-lg border border-gray-300 bg-white p-3 text-sm outline-none focus:border-brand-500 dark:border-gray-600 dark:bg-gray-800"

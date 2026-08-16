@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import Link from 'next/link';
 
 export default function ServiceMatchmakerPage(): JSX.Element {
@@ -40,11 +40,7 @@ export default function ServiceMatchmakerPage(): JSX.Element {
 
       {searchAnswers ? (
         isLoading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 4 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <CardListSkeleton count={4} />
         ) : (
           <div className="space-y-3">
             {services.map((s: Record<string, unknown>) => (
@@ -81,7 +77,7 @@ export default function ServiceMatchmakerPage(): JSX.Element {
                   setSearchAnswers(null);
                 }}
               >
-                 إعادة
+                إعادة
               </Button>
             </div>
           </div>

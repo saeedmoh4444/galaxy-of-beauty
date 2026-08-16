@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
+import { Card, CardListSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
 
 export default function TrendingPage(): JSX.Element {
   const {
@@ -37,7 +37,7 @@ export default function TrendingPage(): JSX.Element {
         <Card padding="lg">
           <h3 className="font-bold mb-3 text-lg"> الخدمات الأكثر طلباً</h3>
           {trLoading ? (
-            <CardSkeleton />
+            <CardListSkeleton count={4} />
           ) : !(trending ?? []).length ? (
             <p className="text-sm text-text-tertiary">لا توجد بيانات</p>
           ) : (
@@ -67,7 +67,7 @@ export default function TrendingPage(): JSX.Element {
         <Card padding="lg">
           <h3 className="font-bold mb-3 text-lg"> فنيات مميزات</h3>
           {spLoading ? (
-            <CardSkeleton />
+            <CardListSkeleton count={4} />
           ) : !(spotlight ?? []).length ? (
             <p className="text-sm text-text-tertiary">لا توجد بيانات</p>
           ) : (

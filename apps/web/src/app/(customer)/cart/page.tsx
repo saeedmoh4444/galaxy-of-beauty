@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CartPage(): JSX.Element {
@@ -33,11 +33,7 @@ export default function CartPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <CardListSkeleton count={4} />
         ) : cartItems.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
             <p className="text-4xl mb-2"></p>
@@ -72,7 +68,9 @@ export default function CartPage(): JSX.Element {
                           onClick={() => removeMut.mutate({ productId: product?.id as number })}
                           loading={removeMut.isPending}
                           className="text-red-500"
-                        >حذف</Button>
+                        >
+                          حذف
+                        </Button>
                       </div>
                     </div>
                   </Card>
@@ -87,7 +85,7 @@ export default function CartPage(): JSX.Element {
                   <p className="text-2xl font-extrabold">{formatCurrency(total)}</p>
                 </div>
                 <Button size="lg" className="px-8">
-                   إتمام الشراء
+                  إتمام الشراء
                 </Button>
               </div>
             </Card>

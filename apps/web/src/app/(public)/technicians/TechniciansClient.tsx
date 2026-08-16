@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
-import { Input, Card, CardSkeleton, ErrorAlert, EmptyState, ar } from '@galaxy/ui';
+import { Input, Card, GridSkeleton, ErrorAlert, EmptyState, ar } from '@galaxy/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyRecord = Record<string, any>;
@@ -43,11 +43,7 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
       </div>
 
       {query.isLoading && techs.length === 0 ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={6} />
       ) : query.isError ? (
         <ErrorAlert message="فشل تحميل الفنيات" onRetry={() => query.refetch()} />
       ) : techs.length === 0 ? (

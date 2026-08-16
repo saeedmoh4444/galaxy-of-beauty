@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, GridSkeleton } from '@galaxy/ui';
 const SEASONS = [
   {
     id: 'summer',
@@ -208,11 +208,7 @@ function CommunityLooks(): JSX.Element {
         <p className="mt-2 text-text-secondary">أحدث الإطلالات من مجتمع جالكسي بيوتي</p>
       </div>
       {isLoading ? (
-        <div className="grid gap-6 sm:grid-cols-3">
-          {Array.from({ length: 3 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={6} />
       ) : (
         <div className="grid gap-6 sm:grid-cols-3">
           {looks.map((l: Record<string, unknown>) => (

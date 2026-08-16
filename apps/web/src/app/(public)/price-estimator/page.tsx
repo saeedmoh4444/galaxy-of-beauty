@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
+import { Card, FormSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
 
 interface EstimateResult {
   serviceName: string;
@@ -92,7 +92,10 @@ export default function PriceEstimatorPage(): JSX.Element {
         <div className="space-y-4">
           {/* Service Search / Select */}
           <div>
-            <label htmlFor="pe-service" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1.5">
+            <label
+              htmlFor="pe-service"
+              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1.5"
+            >
               الخدمة <span className="text-red-500">*</span>
             </label>
 
@@ -115,9 +118,7 @@ export default function PriceEstimatorPage(): JSX.Element {
                   onClick={() => setSelectedServiceId(null)}
                   className="text-text-tertiary hover:text-red-500 p-1 transition-colors"
                   title="تغيير الخدمة"
-                >
-                  
-                </button>
+                ></button>
               </div>
             ) : (
               <div className="relative">
@@ -131,7 +132,7 @@ export default function PriceEstimatorPage(): JSX.Element {
                 />
                 {servicesLoading && search.length > 0 && (
                   <div className="absolute top-full mt-1 w-full rounded-xl border border-edge bg-white p-4 text-center text-sm text-text-tertiary dark:border-gray-700 dark:bg-gray-900 z-10 shadow-lg">
-                     جاري البحث...
+                    جاري البحث...
                   </div>
                 )}
                 {search.length > 0 && !servicesLoading && serviceList.length > 0 && (
@@ -158,7 +159,10 @@ export default function PriceEstimatorPage(): JSX.Element {
 
           {/* Promo Code */}
           <div>
-            <label htmlFor="pe-promo" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1.5">
+            <label
+              htmlFor="pe-promo"
+              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1.5"
+            >
               كود الخصم <span className="text-text-tertiary font-normal">(اختياري)</span>
             </label>
             <div className="relative">
@@ -172,7 +176,7 @@ export default function PriceEstimatorPage(): JSX.Element {
               />
               {promoCode && estimate?.promoValid && (
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-green-500 text-sm font-bold">
-                   صالح
+                  صالح
                 </span>
               )}
               {hasPromoError && (
@@ -186,13 +190,13 @@ export default function PriceEstimatorPage(): JSX.Element {
           {/* Quick Info */}
           <div className="rounded-xl bg-surface-muted p-3 dark:bg-gray-800 text-xs text-text-secondary space-y-1">
             <p>
-               <strong>السعر الأساسي</strong> — سعر الخدمة قبل أي إضافات
+              <strong>السعر الأساسي</strong> — سعر الخدمة قبل أي إضافات
             </p>
             <p>
-               <strong>رسوم المنصة</strong> — ١١ ر.س ثابتة لكل حجز
+              <strong>رسوم المنصة</strong> — ١١ ر.س ثابتة لكل حجز
             </p>
             <p>
-               <strong>الخصم</strong> — يطبق تلقائياً عند إدخال كود خصم صالح
+              <strong>الخصم</strong> — يطبق تلقائياً عند إدخال كود خصم صالح
             </p>
           </div>
         </div>
@@ -201,7 +205,7 @@ export default function PriceEstimatorPage(): JSX.Element {
       {/* Estimate Result */}
       {estimateLoading && selectedServiceId && (
         <div className="mt-6">
-          <CardSkeleton />
+          <FormSkeleton fields={4} />
         </div>
       )}
 
@@ -278,7 +282,7 @@ export default function PriceEstimatorPage(): JSX.Element {
 
             {hasPromoError && (
               <div className="rounded-lg bg-red-50 p-2 text-center text-xs text-red-600 dark:bg-red-950 dark:text-red-400">
-                 كود الخصم &ldquo;{promoCode}&rdquo; غير صالح أو منتهي الصلاحية
+                كود الخصم &ldquo;{promoCode}&rdquo; غير صالح أو منتهي الصلاحية
               </div>
             )}
 
@@ -294,7 +298,7 @@ export default function PriceEstimatorPage(): JSX.Element {
 
             {savings > 0 && (
               <div className="rounded-full bg-green-100 px-4 py-1.5 text-center text-xs font-bold text-green-700 dark:bg-green-900 dark:text-green-300">
-                 وفرتِ {formatCurrency(savings)} ر.س!
+                وفرتِ {formatCurrency(savings)} ر.س!
               </div>
             )}
           </div>

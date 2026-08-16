@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, DashboardSkeleton, Button, formatCurrency } from '@galaxy/ui';
 
 export default function AdminReportsPage(): JSX.Element {
   const { data, isLoading } = api.adminReports.dashboard.useQuery() as {
@@ -37,23 +37,19 @@ export default function AdminReportsPage(): JSX.Element {
               size="sm"
               onClick={() => downloadCSV(csv.topTechs as string, 'top-technicians.csv')}
             >
-               CSV فنيات
+              CSV فنيات
             </Button>
           )}
           {csv && (
             <Button size="sm" onClick={() => downloadCSV(csv.byService as string, 'services.csv')}>
-               CSV خدمات
+              CSV خدمات
             </Button>
           )}
         </div>
       </div>
 
       {isLoading ? (
-        <div className="grid gap-4 sm:grid-cols-2">
-          {Array.from({ length: 4 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <DashboardSkeleton />
       ) : (
         <>
           <div className="grid gap-4 sm:grid-cols-2">

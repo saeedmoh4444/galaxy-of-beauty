@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton } from '@galaxy/ui';
 export default function ApiDocsPage(): JSX.Element {
   const { data, isLoading } = api.apiDocs.reference.useQuery() as {
     data: Record<string, unknown> | undefined;
@@ -31,7 +31,7 @@ export default function ApiDocsPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <CardSkeleton />
+        <CardListSkeleton count={4} />
       ) : (
         <>
           <Card padding="lg" className="mb-6">
@@ -48,7 +48,7 @@ export default function ApiDocsPage(): JSX.Element {
                 onClick={downloadJSON}
                 className="rounded-lg bg-brand-600 px-4 py-2 text-sm text-white"
               >
-                 OpenAPI JSON
+                OpenAPI JSON
               </button>
             </div>
             <div className="mt-4 rounded-xl bg-surface-muted dark:bg-gray-800 p-4">

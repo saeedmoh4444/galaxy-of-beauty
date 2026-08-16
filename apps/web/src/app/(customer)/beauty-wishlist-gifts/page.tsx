@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyWishlistGiftsPage(): JSX.Element {
@@ -76,7 +76,7 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
               loading={createMut.isPending}
               className="w-full"
             >
-               إنشاء السجل
+              إنشاء السجل
             </Button>
           </Card>
         )}
@@ -89,11 +89,7 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
         )}
 
         {isLoading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 2 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <CardListSkeleton count={4} />
         ) : !(registries ?? []).length ? (
           <Card padding="lg" className="text-center py-8">
             <p className="text-4xl mb-2"></p>

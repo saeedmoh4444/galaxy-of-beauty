@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, Modal, formatCurrency } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, Button, Modal, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function FranchisePortalPage(): JSX.Element {
@@ -30,11 +30,7 @@ export default function FranchisePortalPage(): JSX.Element {
           <Button onClick={() => setShow(true)}>+ فرع</Button>
         </div>
         {isLoading ? (
-          <div className="grid gap-4 sm:grid-cols-4">
-            {Array.from({ length: 4 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <KPIRowSkeleton count={4} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-4">
             <Card padding="md" className="text-center">
@@ -67,7 +63,7 @@ export default function FranchisePortalPage(): JSX.Element {
               <div>
                 <p className="font-bold">{l.branch as string}</p>
                 <p className="text-xs text-text-secondary">
-                   {l.city as string} · {l.staff as number} موظفات
+                  {l.city as string} · {l.staff as number} موظفات
                 </p>
               </div>
               <div className="text-right flex items-center gap-4">

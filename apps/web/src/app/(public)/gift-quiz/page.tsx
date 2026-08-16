@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, FormSkeleton, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import Link from 'next/link';
 
 interface Question {
@@ -60,7 +60,7 @@ export default function GiftQuizPage(): JSX.Element {
   if (qLoad) {
     return (
       <div className="mx-auto max-w-lg px-4 py-24">
-        <CardSkeleton />
+        <FormSkeleton fields={4} />
       </div>
     );
   }
@@ -95,7 +95,7 @@ export default function GiftQuizPage(): JSX.Element {
                     </Link>
                     <Link href="/gift-cards">
                       <Button size="sm" variant="ghost">
-                        بطاقة هدية 
+                        بطاقة هدية
                       </Button>
                     </Link>
                   </div>
@@ -113,7 +113,7 @@ export default function GiftQuizPage(): JSX.Element {
               setResult(null);
             }}
           >
-             إعادة الاختبار
+            إعادة الاختبار
           </Button>
         </div>
       </div>
@@ -157,7 +157,7 @@ export default function GiftQuizPage(): JSX.Element {
         </Card>
       )}
 
-      {rLoad && <CardSkeleton />}
+      {rLoad && <GridSkeleton count={4} />}
     </div>
   );
 }

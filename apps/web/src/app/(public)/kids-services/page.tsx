@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import Link from 'next/link';
 
@@ -52,7 +52,7 @@ export default function KidsServicesPage(): JSX.Element {
             {formatCurrency(result.price as number)} ر.س
           </p>
           <p className="text-sm text-text-secondary mt-1">
-             {result.childName as string} · ️ {result.durationMin as number} دقيقة ·{' '}
+            {result.childName as string} · ️ {result.durationMin as number} دقيقة ·{' '}
             {result.tip as string}
           </p>
           <Button
@@ -63,7 +63,7 @@ export default function KidsServicesPage(): JSX.Element {
               setSelectedCat(null);
             }}
           >
-             عودة
+            عودة
           </Button>
         </Card>
       ) : !selectedCat ? (
@@ -85,7 +85,7 @@ export default function KidsServicesPage(): JSX.Element {
           ))}
         </div>
       ) : isLoading ? (
-        <CardSkeleton />
+        <CardListSkeleton count={4} />
       ) : isError ? (
         <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
       ) : (
@@ -106,7 +106,9 @@ export default function KidsServicesPage(): JSX.Element {
           </Card>
           <div className="flex gap-3 items-end bg-surface-muted dark:bg-gray-800 rounded-xl p-4">
             <div>
-              <label htmlFor="ks-child-name" className="text-xs font-semibold">اسم الطفل</label>
+              <label htmlFor="ks-child-name" className="text-xs font-semibold">
+                اسم الطفل
+              </label>
               <input
                 id="ks-child-name"
                 value={childName}
@@ -116,7 +118,9 @@ export default function KidsServicesPage(): JSX.Element {
               />
             </div>
             <div>
-              <label htmlFor="ks-child-age" className="text-xs font-semibold">العمر</label>
+              <label htmlFor="ks-child-age" className="text-xs font-semibold">
+                العمر
+              </label>
               <input
                 id="ks-child-age"
                 type="number"
@@ -175,7 +179,7 @@ export default function KidsServicesPage(): JSX.Element {
               <div className="space-y-1">
                 {tips.map((t: string, i: number) => (
                   <p key={i} className="text-sm">
-                     {t}
+                    {t}
                   </p>
                 ))}
               </div>

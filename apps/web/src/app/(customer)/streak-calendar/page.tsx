@@ -2,7 +2,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 
@@ -60,11 +60,11 @@ export default function StreakCalendarPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-           تقويم الاستمرارية
+          تقويم الاستمرارية
         </h1>
 
         {isLoading ? (
-          <CardSkeleton />
+          <KPIRowSkeleton count={1} />
         ) : isError ? (
           <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
         ) : (

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const TYPE_ICONS: Record<string, string> = {
@@ -42,11 +42,7 @@ export default function NotificationsPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 5 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <CardListSkeleton count={5} />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل الإشعارات" onRetry={() => refetch()} />
         ) : items.length === 0 ? (

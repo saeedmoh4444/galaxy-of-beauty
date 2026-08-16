@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function PenPalPage(): JSX.Element {
@@ -78,11 +78,11 @@ export default function PenPalPage(): JSX.Element {
               loading={registerMut.isPending}
               className="w-full"
             >
-               ابحثي عن صديقات
+              ابحثي عن صديقات
             </Button>
           </Card>
         ) : isLoading ? (
-          <CardSkeleton />
+          <GridSkeleton count={6} />
         ) : isError ? (
           <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
         ) : pals.length === 0 ? (

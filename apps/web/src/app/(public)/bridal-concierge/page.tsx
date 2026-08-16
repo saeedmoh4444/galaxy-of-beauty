@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import {
   Card,
-  CardSkeleton,
+  DashboardSkeleton,
   ErrorAlert,
   EmptyState,
   Button,
@@ -183,9 +183,7 @@ function BridalDashboard(): JSX.Element {
   if (isLoading)
     return (
       <div className="space-y-4">
-        {Array.from({ length: 3 }, (_, i) => (
-          <CardSkeleton key={i} />
-        ))}
+        <DashboardSkeleton />
       </div>
     );
   if (isError) return <ErrorAlert message="فشل تحميل بيانات التخطيط" onRetry={() => refetch()} />;
@@ -195,7 +193,7 @@ function BridalDashboard(): JSX.Element {
       {/* Dashboard Header */}
       <div className="text-center sm:text-right">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-           لوحة تخطيط الزفاف
+          لوحة تخطيط الزفاف
         </h1>
         <p className="mt-1 text-sm text-text-secondary">تابعي تقدمكِ نحو يوم زفافكِ </p>
       </div>
@@ -227,9 +225,7 @@ function BridalDashboard(): JSX.Element {
       {/* Wedding Details */}
       <Card padding="lg">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-text-primary dark:text-gray-100">
-             تفاصيل الزفاف
-          </h2>
+          <h2 className="text-lg font-bold text-text-primary dark:text-gray-100">تفاصيل الزفاف</h2>
           <Button size="sm" variant="ghost" onClick={openProfileForm}>
             {hasProfile ? 'تعديل' : 'إضافة'}
           </Button>
@@ -300,7 +296,7 @@ function BridalDashboard(): JSX.Element {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-lg font-bold text-text-primary dark:text-gray-100">
-               خدمات التجميل
+              خدمات التجميل
             </h2>
             <p className="text-xs text-text-secondary">
               {completedTrials} / {services.length} تجربة مكتملة
@@ -332,7 +328,7 @@ function BridalDashboard(): JSX.Element {
                     <p className="text-sm font-semibold">خدمة #{svc.serviceId}</p>
                     {svc.trialDate && (
                       <p className="text-xs text-text-secondary">
-                         تجربة:{' '}
+                        تجربة:{' '}
                         {new Date(svc.trialDate).toLocaleDateString('ar-SA', {
                           month: 'long',
                           day: 'numeric',
@@ -341,9 +337,7 @@ function BridalDashboard(): JSX.Element {
                         })}
                       </p>
                     )}
-                    {svc.notes && (
-                      <p className="text-xs text-text-tertiary mt-0.5"> {svc.notes}</p>
-                    )}
+                    {svc.notes && <p className="text-xs text-text-tertiary mt-0.5"> {svc.notes}</p>}
                   </div>
                 </div>
                 {!svc.isTrialDone && (
@@ -353,7 +347,7 @@ function BridalDashboard(): JSX.Element {
                     onClick={() => markTrialMut.mutate({ serviceId: svc.id })}
                     loading={markTrialMut.isPending}
                   >
-                    تمت التجربة 
+                    تمت التجربة
                   </Button>
                 )}
               </div>
@@ -380,7 +374,10 @@ function BridalDashboard(): JSX.Element {
       <Modal open={showProfileForm} onClose={() => setShowProfileForm(false)} title="تفاصيل الزفاف">
         <div className="space-y-4">
           <div>
-            <label htmlFor="bcd-wedding-date" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+            <label
+              htmlFor="bcd-wedding-date"
+              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+            >
               تاريخ الزفاف
             </label>
             <input
@@ -393,7 +390,10 @@ function BridalDashboard(): JSX.Element {
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label htmlFor="bcd-venue" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label
+                htmlFor="bcd-venue"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
                 المكان
               </label>
               <input
@@ -406,7 +406,10 @@ function BridalDashboard(): JSX.Element {
               />
             </div>
             <div>
-              <label htmlFor="bcd-guests" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label
+                htmlFor="bcd-guests"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
                 عدد الضيوف
               </label>
               <input
@@ -420,7 +423,10 @@ function BridalDashboard(): JSX.Element {
             </div>
           </div>
           <div>
-            <label htmlFor="bcd-budget" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+            <label
+              htmlFor="bcd-budget"
+              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+            >
               الميزانية (ر.س)
             </label>
             <input
@@ -433,7 +439,10 @@ function BridalDashboard(): JSX.Element {
             />
           </div>
           <div>
-            <label htmlFor="bcd-notes" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+            <label
+              htmlFor="bcd-notes"
+              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+            >
               ملاحظات
             </label>
             <textarea
@@ -455,7 +464,7 @@ function BridalDashboard(): JSX.Element {
               إلغاء
             </Button>
             <Button onClick={handleSaveProfile} loading={upsertMut.isPending}>
-               حفظ
+              حفظ
             </Button>
           </div>
         </div>
@@ -464,7 +473,10 @@ function BridalDashboard(): JSX.Element {
       <Modal open={showAddService} onClose={() => setShowAddService(false)} title="إضافة خدمة">
         <div className="space-y-4">
           <div>
-            <label htmlFor="bcd-service-id" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+            <label
+              htmlFor="bcd-service-id"
+              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+            >
               معرف الخدمة
             </label>
             <input
@@ -477,7 +489,10 @@ function BridalDashboard(): JSX.Element {
             />
           </div>
           <div>
-            <label htmlFor="bcd-trial-date" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+            <label
+              htmlFor="bcd-trial-date"
+              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+            >
               موعد التجربة (اختياري)
             </label>
             <input
@@ -489,7 +504,10 @@ function BridalDashboard(): JSX.Element {
             />
           </div>
           <div>
-            <label htmlFor="bcd-service-notes" className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+            <label
+              htmlFor="bcd-service-notes"
+              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+            >
               ملاحظات
             </label>
             <textarea
@@ -571,7 +589,7 @@ function MarketingLanding(): JSX.Element {
 
       <div className="mt-12 text-center">
         <p className="text-lg text-text-secondary dark:text-gray-400">
-           تحتاجين مساعدة؟ تواصلي مع فريقنا على{' '}
+          تحتاجين مساعدة؟ تواصلي مع فريقنا على{' '}
           <span className="font-bold text-brand-600">٩٢٠٠١٣٣٣٣</span>
         </p>
       </div>
@@ -589,9 +607,7 @@ export default function BridalConciergePage(): JSX.Element {
     <div className="mx-auto max-w-4xl px-4 py-12 space-y-6">
       {authLoading ? (
         <div className="space-y-4">
-          {Array.from({ length: 3 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
+          <DashboardSkeleton />
         </div>
       ) : user ? (
         <BridalDashboard />

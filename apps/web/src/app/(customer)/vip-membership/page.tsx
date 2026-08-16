@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function VIPMembershipPage(): JSX.Element {
@@ -32,11 +32,7 @@ export default function VIPMembershipPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <div className="grid gap-6 lg:grid-cols-3">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <GridSkeleton count={3} />
         ) : allTiers.length === 0 ? (
           <ErrorAlert message="لا توجد بيانات" />
         ) : (
@@ -86,7 +82,7 @@ export default function VIPMembershipPage(): JSX.Element {
                         loading={upgradeMut.isPending}
                         className="w-full"
                       >
-                         ترقية
+                        ترقية
                       </Button>
                     ) : null}
                   </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
@@ -123,13 +123,13 @@ export default function ReferralDashboardPage(): JSX.Element {
               onClick={copyCode}
               className="rounded-lg bg-white/20 px-4 py-2 text-sm font-bold hover:bg-white/30 transition-colors"
             >
-               نسخ الكود
+              نسخ الكود
             </button>
             <button
               onClick={shareWhatsApp}
               className="rounded-lg bg-green-500/50 px-4 py-2 text-sm font-bold hover:bg-green-500/70 transition-colors"
             >
-               واتساب
+              واتساب
             </button>
           </div>
         </Card>
@@ -137,7 +137,7 @@ export default function ReferralDashboardPage(): JSX.Element {
         {/* Referral History */}
         <h3 className="text-lg font-bold"> سجل الإحالات</h3>
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : isError ? (
           <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
         ) : s.referrals.length === 0 ? (
@@ -149,9 +149,7 @@ export default function ReferralDashboardPage(): JSX.Element {
             {s.referrals.map((r) => (
               <Card key={r.id} padding="md" className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900 text-lg">
-                    
-                  </div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900 text-lg"></div>
                   <div>
                     <p className="font-semibold text-sm">{r.referred?.name ?? 'مستخدم'}</p>
                     <p className="text-xs text-text-secondary">
@@ -204,9 +202,7 @@ export default function ReferralDashboardPage(): JSX.Element {
                       }}
                     />
                   </div>
-                  <span className="text-sm font-semibold w-12 text-right">
-                    {entry._count.id} 
-                  </span>
+                  <span className="text-sm font-semibold w-12 text-right">{entry._count.id}</span>
                 </div>
               ))}
             </div>

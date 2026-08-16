@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 
 export default function IngredientSubPage(): JSX.Element {
   const [search, setSearch] = useState('');
@@ -34,7 +34,7 @@ export default function IngredientSubPage(): JSX.Element {
         <Button onClick={() => setQ(search.trim())}>بحث</Button>
       </div>
       {q && isLoading ? (
-        <CardSkeleton />
+        <CardListSkeleton count={4} />
       ) : subs.length > 0 ? (
         <Card padding="lg">
           <h3 className="font-bold mb-3"> بدائل {result?.ingredient as string}</h3>

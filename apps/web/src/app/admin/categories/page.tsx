@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input, Modal } from '@galaxy/ui';
+import { Button, Card, CardListSkeleton, ErrorAlert, EmptyState, Input, Modal } from '@galaxy/ui';
 
 // Structural type avoids TS2589 deep instantiation from RouterOutput
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -87,7 +87,7 @@ export default function AdminCategoriesPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <CardSkeleton />
+        <CardListSkeleton count={4} />
       ) : isError ? (
         <ErrorAlert message="فشل تحميل الأقسام" onRetry={() => refetch()} />
       ) : categories.length === 0 ? (
@@ -185,7 +185,10 @@ export default function AdminCategoriesPage(): JSX.Element {
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
           />
           <div>
-            <label htmlFor="ac-parent-create" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+            <label
+              htmlFor="ac-parent-create"
+              className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+            >
               القسم الأب
             </label>
             <select
@@ -234,7 +237,10 @@ export default function AdminCategoriesPage(): JSX.Element {
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
           />
           <div>
-            <label htmlFor="ac-parent-edit" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+            <label
+              htmlFor="ac-parent-edit"
+              className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+            >
               القسم الأب
             </label>
             <select

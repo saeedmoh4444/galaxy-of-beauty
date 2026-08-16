@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import Link from 'next/link';
 
 interface Event {
@@ -67,11 +67,7 @@ export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): J
       </div>
 
       {isLoading && !initialEvents.length ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={6} />
       ) : isError ? (
         <ErrorAlert message="فشل تحميل الفعاليات" onRetry={() => refetch()} />
       ) : events.length === 0 ? (

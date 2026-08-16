@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function RideHailingPage(): JSX.Element {
@@ -23,7 +23,7 @@ export default function RideHailingPage(): JSX.Element {
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-3xl space-y-6">
-          <CardSkeleton />
+          <CardListSkeleton count={3} />
         </div>
       </DashboardLayout>
     );
@@ -70,8 +70,8 @@ export default function RideHailingPage(): JSX.Element {
                     <div>
                       <p className="font-bold">{p.nameAr as string}</p>
                       <p className="text-xs text-text-secondary">
-                        ️ {p.estimatedTime as string} ·{' '}
-                        {formatCurrency(p.estimatedPrice as number)} ر.س
+                        ️ {p.estimatedTime as string} · {formatCurrency(p.estimatedPrice as number)}{' '}
+                        ر.س
                       </p>
                     </div>
                   </div>

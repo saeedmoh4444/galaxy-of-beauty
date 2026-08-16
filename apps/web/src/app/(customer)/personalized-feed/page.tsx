@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function PersonalizedFeedPage(): JSX.Element {
@@ -18,11 +18,7 @@ export default function PersonalizedFeedPage(): JSX.Element {
           <p className="mt-1 text-sm text-text-secondary">محتوى مخصص لكِ بناءً على اهتماماتكِ</p>
         </div>
         {isLoading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 6 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <CardListSkeleton count={6} />
         ) : (
           <div className="space-y-3">
             {items.map((item: Record<string, unknown>) => (

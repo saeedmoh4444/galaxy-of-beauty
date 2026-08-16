@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, formatCurrency } from '@galaxy/ui';
+import { Card, DetailSkeleton, ErrorAlert, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 
@@ -95,10 +95,7 @@ export default function GroupBookingDetailPage(): JSX.Element {
         />
 
         {isLoading ? (
-          <div className="space-y-4">
-            <CardSkeleton />
-            <CardSkeleton />
-          </div>
+          <DetailSkeleton />
         ) : isError || !group ? (
           <ErrorAlert message="فشل تحميل تفاصيل المجموعة" onRetry={() => refetch()} />
         ) : (
@@ -161,7 +158,7 @@ export default function GroupBookingDetailPage(): JSX.Element {
             {/* Members List */}
             <Card padding="lg">
               <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
-                 العضوات ({members.length})
+                العضوات ({members.length})
               </h2>
               {members.length === 0 ? (
                 <p className="text-center text-sm text-gray-400 py-8">لا توجد عضوات بعد</p>

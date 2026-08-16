@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/ui';
 
 export default function AdminUsersPage(): JSX.Element {
   const [search, setSearch] = useState('');
@@ -26,7 +26,7 @@ export default function AdminUsersPage(): JSX.Element {
       />
 
       {isLoading ? (
-        <CardSkeleton />
+        <CardListSkeleton count={4} />
       ) : isError ? (
         <ErrorAlert message="فشل تحميل المستخدمين" onRetry={() => refetch()} />
       ) : customers.length === 0 ? (

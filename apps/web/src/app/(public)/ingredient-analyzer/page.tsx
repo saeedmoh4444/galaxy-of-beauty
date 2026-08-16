@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 
 const RATING_COLORS: Record<string, string> = {
   safe: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
@@ -56,13 +56,13 @@ export default function IngredientAnalyzerPage(): JSX.Element {
             disabled={!text.trim()}
             className="flex-1"
           >
-             تحليل
+            تحليل
           </Button>
         </div>
       </Card>
 
       {isLoading ? (
-        <CardSkeleton />
+        <CardListSkeleton count={4} />
       ) : isError ? (
         <ErrorAlert message="فشل التحليل" onRetry={() => refetch()} />
       ) : stats ? (

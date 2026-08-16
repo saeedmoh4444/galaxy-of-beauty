@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 
 export default function ReferralRacePage(): JSX.Element {
@@ -31,7 +31,7 @@ export default function ReferralRacePage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <CardSkeleton />
+        <CardListSkeleton count={4} />
       ) : isError ? (
         <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
       ) : (

@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, ErrorAlert } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const CHALLENGES = [
@@ -70,7 +70,7 @@ export default function SocialChallengesPage(): JSX.Element {
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-3xl space-y-6">
-          <CardSkeleton />
+          <CardListSkeleton count={5} />
         </div>
       </DashboardLayout>
     );

@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, formatCurrency } from '@galaxy/ui';
+import { Card, DashboardSkeleton, ErrorAlert, EmptyState, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 
@@ -52,7 +52,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-             تحليلات الجمال
+            تحليلات الجمال
           </h1>
           <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
             ملخص إنفاقكِ وحجوزاتكِ الشخصية
@@ -60,11 +60,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <div className="grid gap-4 sm:grid-cols-4">
-            {Array.from({ length: 4 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <DashboardSkeleton />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل التحليلات" onRetry={() => sRef()} />
         ) : s.totalBookings === 0 ? (
@@ -184,7 +180,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
             <div className="text-center">
               <Link href="/bookings/create">
                 <span className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-5 py-3 text-sm font-bold text-white hover:bg-brand-700 transition-colors">
-                  احجزي جلستكِ القادمة 
+                  احجزي جلستكِ القادمة
                 </span>
               </Link>
             </div>

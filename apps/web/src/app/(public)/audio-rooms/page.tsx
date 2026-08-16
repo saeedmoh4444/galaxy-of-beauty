@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 
 export default function AudioRoomsPage(): JSX.Element {
@@ -23,11 +23,7 @@ export default function AudioRoomsPage(): JSX.Element {
         <p className="mt-2 text-text-secondary">انضمي لنقاشات مباشرة مع خبراء التجميل</p>
       </div>
       {isLoading ? (
-        <div className="space-y-3">
-          {Array.from({ length: 3 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <CardListSkeleton count={4} />
       ) : (
         <>
           {live.length > 0 && <h3 className="font-bold mb-3"> مباشر الآن</h3>}
@@ -42,7 +38,7 @@ export default function AudioRoomsPage(): JSX.Element {
                 <div className="flex-1">
                   <h3 className="font-bold">{r.title as string}</h3>
                   <p className="text-xs text-text-secondary">
-                     {r.host as string} ·  {r.listeners as number} مستمع
+                    {r.host as string} · {r.listeners as number} مستمع
                   </p>
                 </div>
                 {user && (
@@ -61,7 +57,7 @@ export default function AudioRoomsPage(): JSX.Element {
                 <div className="flex-1">
                   <h3 className="font-bold">{r.title as string}</h3>
                   <p className="text-xs text-text-secondary">
-                     {r.host as string} · {' '}
+                    {r.host as string} ·{' '}
                     {new Date(r.scheduledFor as string).toLocaleDateString('ar-SA', {
                       month: 'long',
                       day: 'numeric',

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
 import { useState } from 'react';
 
 export default function AdminPackagesPage(): JSX.Element {
@@ -24,7 +24,7 @@ export default function AdminPackagesPage(): JSX.Element {
         <Button onClick={() => setShowCreate(true)}>إضافة باقة</Button>
       </div>
       {isLoading ? (
-        <CardSkeleton />
+        <GridSkeleton count={6} />
       ) : isError ? (
         <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
       ) : packages.length === 0 ? (

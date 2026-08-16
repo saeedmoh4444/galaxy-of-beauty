@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CheckoutPage(): JSX.Element {
@@ -35,7 +35,7 @@ export default function CheckoutPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : cartItems.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
             <p className="text-4xl mb-2"></p>
@@ -109,7 +109,7 @@ export default function CheckoutPage(): JSX.Element {
             </Card>
 
             <Button onClick={() => setPlaced(true)} className="w-full" size="lg">
-               ادفعي {formatCurrency(total)}
+              ادفعي {formatCurrency(total)}
             </Button>
           </>
         )}

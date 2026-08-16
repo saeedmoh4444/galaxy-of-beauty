@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Modal } from '@galaxy/ui';
+import { Button, Card, CardListSkeleton, ErrorAlert, EmptyState, Modal } from '@galaxy/ui';
 
 const STATUS_TABS = [
   'OPEN',
@@ -91,7 +91,7 @@ export default function AdminDisputesPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <CardSkeleton />
+        <CardListSkeleton count={4} />
       ) : isError ? (
         <ErrorAlert message="فشل تحميل النزاعات" onRetry={() => refetch()} />
       ) : filtered.length === 0 ? (
@@ -163,7 +163,10 @@ export default function AdminDisputesPage(): JSX.Element {
             </p>
 
             <div>
-              <label htmlFor="ad-resolve-status" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+              <label
+                htmlFor="ad-resolve-status"
+                className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+              >
                 نتيجة النزاع
               </label>
               <select
@@ -179,7 +182,10 @@ export default function AdminDisputesPage(): JSX.Element {
             </div>
 
             <div>
-              <label htmlFor="ad-resolution" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+              <label
+                htmlFor="ad-resolution"
+                className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+              >
                 تفاصيل الحل
               </label>
               <textarea

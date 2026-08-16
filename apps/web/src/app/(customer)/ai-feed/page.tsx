@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function AiFeedPage(): JSX.Element {
@@ -23,7 +23,7 @@ export default function AiFeedPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <CardSkeleton />
+          <GridSkeleton count={6} />
         ) : (
           <>
             {skinProfile && (

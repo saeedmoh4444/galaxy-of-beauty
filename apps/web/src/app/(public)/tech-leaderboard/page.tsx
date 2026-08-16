@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert } from '@galaxy/ui';
 import Link from 'next/link';
 
 export default function TechLeaderboardPage(): JSX.Element {
@@ -46,11 +46,7 @@ export default function TechLeaderboardPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <div className="space-y-3">
-          {Array.from({ length: 5 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <CardListSkeleton count={4} />
       ) : isError ? (
         <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
       ) : (
@@ -67,7 +63,7 @@ export default function TechLeaderboardPage(): JSX.Element {
                 <div className="flex-1">
                   <p className="font-bold">{t.name as string}</p>
                   <p className="text-xs text-text-secondary">
-                     {t.rating as number} · {t.reviewCount as number} مراجعة
+                    {t.rating as number} · {t.reviewCount as number} مراجعة
                   </p>
                 </div>
                 <div className="text-right">

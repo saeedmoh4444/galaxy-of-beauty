@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { DetailSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 
@@ -53,7 +53,7 @@ export default function LiveStreamDetailPage(): JSX.Element {
   if (isLoading)
     return (
       <div className="py-24">
-        <CardSkeleton />
+        <DetailSkeleton />
       </div>
     );
   if (isError || !stream)

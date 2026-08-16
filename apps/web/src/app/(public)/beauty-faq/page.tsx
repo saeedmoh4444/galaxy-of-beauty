@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton } from '@galaxy/ui';
 
 export default function BeautyFaqPage(): JSX.Element {
   const [query, setQuery] = useState('');
@@ -64,11 +64,7 @@ export default function BeautyFaqPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <div className="space-y-3">
-          {Array.from({ length: 4 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <CardListSkeleton count={4} />
       ) : (
         <div className="space-y-3">
           {faqs.map((f: Record<string, unknown>, i: number) => (

@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function SubscriptionsPage(): JSX.Element {
@@ -23,11 +23,7 @@ export default function SubscriptionsPage(): JSX.Element {
         <h1 className="text-2xl font-bold">باقات الاشتراك</h1>
 
         {isLoading ? (
-          <div className="grid gap-6 md:grid-cols-3">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <GridSkeleton count={3} />
         ) : isError ? (
           <ErrorAlert
             message="فشل تحميل الباقات"

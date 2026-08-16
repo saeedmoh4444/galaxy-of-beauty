@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const SYMPTOMS_LIST = [
@@ -103,7 +103,9 @@ export default function CycleTrackerPage(): JSX.Element {
             <h3 className="font-bold mb-3">️ إعدادات الدورة</h3>
             <div className="grid gap-3 sm:grid-cols-3">
               <div>
-                <label htmlFor="ct-cycleLen" className="text-xs text-text-secondary">مدة الدورة</label>
+                <label htmlFor="ct-cycleLen" className="text-xs text-text-secondary">
+                  مدة الدورة
+                </label>
                 <input
                   id="ct-cycleLen"
                   type="number"
@@ -113,7 +115,9 @@ export default function CycleTrackerPage(): JSX.Element {
                 />
               </div>
               <div>
-                <label htmlFor="ct-periodLen" className="text-xs text-text-secondary">مدة الدورة الشهرية</label>
+                <label htmlFor="ct-periodLen" className="text-xs text-text-secondary">
+                  مدة الدورة الشهرية
+                </label>
                 <input
                   id="ct-periodLen"
                   type="number"
@@ -123,7 +127,9 @@ export default function CycleTrackerPage(): JSX.Element {
                 />
               </div>
               <div>
-                <label htmlFor="ct-lastStart" className="text-xs text-text-secondary">آخر دورة</label>
+                <label htmlFor="ct-lastStart" className="text-xs text-text-secondary">
+                  آخر دورة
+                </label>
                 <input
                   id="ct-lastStart"
                   type="date"
@@ -147,13 +153,13 @@ export default function CycleTrackerPage(): JSX.Element {
               loading={settingsMut.isPending}
               className="w-full mt-3"
             >
-               حفظ
+              حفظ
             </Button>
           </Card>
         )}
 
         {todayLoading ? (
-          <CardSkeleton />
+          <KPIRowSkeleton count={1} />
         ) : (
           <Card padding="lg" className={`text-center border-2`}>
             <span className="text-5xl">{(phase?.emoji as string) ?? ''}</span>
@@ -168,7 +174,7 @@ export default function CycleTrackerPage(): JSX.Element {
             )}
             {!today?.hasSettings && (
               <p className="text-xs text-amber-600 mt-2">
-                 اضبطي إعدادات الدورة للحصول على توقعات دقيقة
+                اضبطي إعدادات الدورة للحصول على توقعات دقيقة
               </p>
             )}
           </Card>
@@ -246,7 +252,7 @@ export default function CycleTrackerPage(): JSX.Element {
                 className="w-full rounded-lg border px-3 py-2 text-xs dark:border-gray-700 dark:bg-gray-800"
               />
               <Button onClick={handleLog} loading={logMut.isPending} className="w-full">
-                 حفظ اليوم
+                حفظ اليوم
               </Button>
             </div>
           </Card>

@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, FormSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function DNABeautyPage(): JSX.Element {
@@ -87,11 +87,11 @@ export default function DNABeautyPage(): JSX.Element {
                 setSearchAnswers(null);
               }}
             >
-               إعادة
+              إعادة
             </Button>
           </Card>
         ) : isLoading ? (
-          <CardSkeleton />
+          <FormSkeleton fields={4} />
         ) : isError ? (
           <ErrorAlert message="فشل التحليل" onRetry={() => refetch()} />
         ) : (
@@ -122,7 +122,7 @@ export default function DNABeautyPage(): JSX.Element {
               ))}
             </div>
             <Button onClick={() => setSearchAnswers(answers)} className="w-full mt-4">
-               تحليل
+              تحليل
             </Button>
           </Card>
         )}

@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, Modal } from '@galaxy/ui';
+import { Card, GridSkeleton, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const CATS = ['skincare', 'makeup', 'hair', 'nails', 'natural'];
@@ -28,11 +28,7 @@ export default function BeautyClosetPage(): JSX.Element {
           <Button onClick={() => setShowAdd(true)}>+ منتج</Button>
         </div>
         {isLoading ? (
-          <div className="grid gap-4 sm:grid-cols-3">
-            {Array.from({ length: 6 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <GridSkeleton count={8} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-3">
             {products.map((p: Record<string, unknown>) => (

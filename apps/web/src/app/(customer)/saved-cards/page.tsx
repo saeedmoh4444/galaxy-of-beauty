@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
@@ -68,7 +68,7 @@ export default function SavedCardsPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          Array.from({ length: 2 }, (_, i) => <CardSkeleton key={i} />)
+          <CardListSkeleton count={2} />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل البطاقات" onRetry={() => refetch()} />
         ) : cards.length === 0 ? (

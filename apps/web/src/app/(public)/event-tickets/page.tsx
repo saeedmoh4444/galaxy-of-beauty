@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
-  CardSkeleton,
+  GridSkeleton,
   ErrorAlert,
   EmptyState,
   Button,
@@ -54,11 +54,7 @@ export default function EventTicketsPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 3 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <GridSkeleton count={6} />
       ) : isError ? (
         <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
       ) : !events || events.length === 0 ? (
@@ -93,7 +89,7 @@ export default function EventTicketsPage(): JSX.Element {
               <div className="mt-4">
                 {reserved && (reserved.eventId as number) === (e.id as number) ? (
                   <span className="rounded-full bg-green-100 px-4 py-2 text-sm font-bold text-green-700 dark:bg-green-900 dark:text-green-300">
-                     تم الحجز
+                    تم الحجز
                   </span>
                 ) : user ? (
                   <Button
@@ -103,7 +99,7 @@ export default function EventTicketsPage(): JSX.Element {
                       setName(user.name ?? '');
                     }}
                   >
-                     احجزي مقعداً
+                    احجزي مقعداً
                   </Button>
                 ) : (
                   <Link href="/login">
@@ -122,7 +118,9 @@ export default function EventTicketsPage(): JSX.Element {
         <div className="space-y-4">
           <p className="font-bold">{(selectedEvent?.nameJson as Record<string, string>)?.ar}</p>
           <div>
-            <label htmlFor="et-attendee-name" className="block text-sm font-semibold mb-1">اسم الحاضرة</label>
+            <label htmlFor="et-attendee-name" className="block text-sm font-semibold mb-1">
+              اسم الحاضرة
+            </label>
             <input
               id="et-attendee-name"
               type="text"
@@ -136,7 +134,7 @@ export default function EventTicketsPage(): JSX.Element {
               إلغاء
             </Button>
             <Button onClick={handleReserve} loading={reserveMut.isPending}>
-               تأكيد الحجز
+              تأكيد الحجز
             </Button>
           </div>
         </div>

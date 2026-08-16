@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function LastMilePage(): JSX.Element {
@@ -23,7 +23,7 @@ export default function LastMilePage(): JSX.Element {
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-3xl space-y-6">
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         </div>
       </DashboardLayout>
     );
@@ -51,7 +51,7 @@ export default function LastMilePage(): JSX.Element {
             <h2 className="mt-4 text-xl font-bold">تم الطلب!</h2>
             <p className="font-bold mt-1">{result.product as string}</p>
             <p className="text-sm text-text-secondary">
-               {result.estimatedDelivery as string} · {formatCurrency(result.total as number)} ر.س
+              {result.estimatedDelivery as string} · {formatCurrency(result.total as number)} ر.س
             </p>
           </Card>
         ) : (

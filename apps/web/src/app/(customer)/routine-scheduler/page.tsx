@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function RoutineSchedulerPage(): JSX.Element {
@@ -25,11 +25,7 @@ export default function RoutineSchedulerPage(): JSX.Element {
         </div>
 
         {isLoading ? (
-          <div className="space-y-4">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <CardListSkeleton count={3} />
         ) : (
           allRoutines.map((r: Record<string, unknown>) => (
             <Card key={r.id as string} padding="lg">

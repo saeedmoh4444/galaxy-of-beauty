@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, DetailSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const SKIN_ROUTINES: Record<string, { morning: string[]; evening: string[]; weekly: string[] }> = {
@@ -60,13 +60,11 @@ export default function BeautyRoutinePage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-           روتيني الجمالي
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">روتيني الجمالي</h1>
         <p className="text-sm text-text-secondary">روتين يومي مخصص لكِ بناءً على ملفكِ الجمالي</p>
 
         {isLoading ? (
-          <CardSkeleton />
+          <DetailSkeleton />
         ) : isError ? (
           <ErrorAlert message="فشل تحميل الملف" onRetry={() => refetch()} />
         ) : !profile ? (
@@ -83,7 +81,7 @@ export default function BeautyRoutinePage(): JSX.Element {
             {/* Skin Routine */}
             <Card padding="lg">
               <h3 className="text-lg font-bold mb-4">
-                 روتين البشرة (
+                روتين البشرة (
                 {profile.skinType === 'oily'
                   ? 'دهنية'
                   : profile.skinType === 'dry'

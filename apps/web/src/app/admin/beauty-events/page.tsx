@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 const EVENT_TYPES = [
@@ -120,14 +120,14 @@ export default function AdminBeautyEventsPage(): JSX.Element {
             />
           </div>
           <Button onClick={handleCreate} loading={createMut.isPending} className="w-full mt-3">
-             إنشاء الفعالية
+            إنشاء الفعالية
           </Button>
         </Card>
 
         <Card padding="lg">
           <h3 className="font-bold mb-3"> الفعاليات</h3>
           {isLoading ? (
-            <CardSkeleton />
+            <CardListSkeleton count={4} />
           ) : !(events ?? []).length ? (
             <p className="text-sm text-text-tertiary">لا توجد فعاليات</p>
           ) : (

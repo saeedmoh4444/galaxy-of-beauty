@@ -3,7 +3,15 @@
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
+import {
+  Card,
+  KPIRowSkeleton,
+  GridSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  formatCurrency,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 type StreakData = RouterOutput['streaks']['get'];
@@ -30,16 +38,8 @@ export default function StreaksPage(): JSX.Element {
 
         {isLoading ? (
           <div className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-3">
-              {Array.from({ length: 3 }, (_, i) => (
-                <CardSkeleton key={i} />
-              ))}
-            </div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: 3 }, (_, i) => (
-                <CardSkeleton key={i} />
-              ))}
-            </div>
+            <KPIRowSkeleton count={3} />
+            <GridSkeleton count={6} />
           </div>
         ) : isError ? (
           <ErrorAlert

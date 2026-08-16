@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function SkinAnalysisPage(): JSX.Element {
@@ -46,7 +46,7 @@ export default function SkinAnalysisPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-             تحليل البشرة بالذكاء الاصطناعي
+            تحليل البشرة بالذكاء الاصطناعي
           </h1>
           <p className="mt-1 text-sm text-text-secondary">
             حمّلي صورة لبشرتكِ واحصلي على تحليل شامل وتوصيات مخصصة
@@ -107,7 +107,7 @@ export default function SkinAnalysisPage(): JSX.Element {
                 loading={analyzing}
                 disabled={!imageUrl}
               >
-                تحليل 
+                تحليل
               </Button>
             </div>
           </div>
@@ -120,7 +120,7 @@ export default function SkinAnalysisPage(): JSX.Element {
             className="border-2 border-brand-300 bg-brand-50/50 dark:border-brand-800 dark:bg-brand-950/50"
           >
             <h3 className="mb-4 font-bold text-brand-700 dark:text-brand-300 text-lg">
-               نتائج التحليل
+              نتائج التحليل
             </h3>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="rounded-xl bg-white dark:bg-gray-800 p-4">
@@ -196,7 +196,7 @@ export default function SkinAnalysisPage(): JSX.Element {
         {/* History Timeline */}
         <h3 className="text-lg font-bold"> سجل التحليلات</h3>
         {isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={3} />
         ) : isError ? (
           <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
         ) : histItems.length === 0 ? (
@@ -211,9 +211,7 @@ export default function SkinAnalysisPage(): JSX.Element {
                   padding="md"
                   className={`flex items-center gap-4 ${idx === 0 ? 'border-l-4 border-brand-500' : ''}`}
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-purple-100 dark:from-brand-900 dark:to-purple-900 text-lg">
-                    
-                  </div>
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-purple-100 dark:from-brand-900 dark:to-purple-900 text-lg"></div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <p className="font-bold text-sm">{(res?.skinType as string) || 'تحليل'}</p>

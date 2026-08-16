@@ -5,7 +5,7 @@ import { api } from '@/lib/trpc';
 import {
   Button,
   Card,
-  CardSkeleton,
+  CardListSkeleton,
   ErrorAlert,
   EmptyState,
   Input,
@@ -195,7 +195,9 @@ export default function AdminServicesPage(): JSX.Element {
           className="w-64"
         />
         <div>
-          <label htmlFor="as-cat-filter" className="mb-1 block text-xs text-text-secondary">التصنيف</label>
+          <label htmlFor="as-cat-filter" className="mb-1 block text-xs text-text-secondary">
+            التصنيف
+          </label>
           <select
             id="as-cat-filter"
             className="rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
@@ -227,7 +229,7 @@ export default function AdminServicesPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <CardSkeleton />
+        <CardListSkeleton count={4} />
       ) : isError ? (
         <ErrorAlert message="فشل تحميل الخدمات" onRetry={() => refetch()} />
       ) : filtered.length === 0 ? (
@@ -415,7 +417,10 @@ export default function AdminServicesPage(): JSX.Element {
             onChange={(e) => setForm({ ...form, durationMin: Number(e.target.value) })}
           />
           <div>
-            <label htmlFor="as-cat-create" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+            <label
+              htmlFor="as-cat-create"
+              className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+            >
               التصنيف
             </label>
             <select
@@ -495,7 +500,10 @@ export default function AdminServicesPage(): JSX.Element {
             onChange={(e) => setForm({ ...form, durationMin: Number(e.target.value) })}
           />
           <div>
-            <label htmlFor="as-cat-edit" className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+            <label
+              htmlFor="as-cat-edit"
+              className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+            >
               التصنيف
             </label>
             <select

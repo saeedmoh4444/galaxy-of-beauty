@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 
@@ -182,11 +182,7 @@ export default function StyleMatchPage(): JSX.Element {
 
         {/* Results */}
         {matchMut.isPending ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 3 }, (_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
+          <GridSkeleton count={6} />
         ) : matchMut.isError ? (
           <ErrorAlert message="فشل البحث" onRetry={handleMatch} />
         ) : searched && resultsList.length === 0 ? (

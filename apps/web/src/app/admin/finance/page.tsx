@@ -5,7 +5,8 @@ import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
 import {
   Card,
-  CardSkeleton,
+  KPIRowSkeleton,
+  CardListSkeleton,
   ErrorAlert,
   EmptyState,
   Button,
@@ -30,11 +31,7 @@ export default function AdminFinancePage(): JSX.Element {
       <h1 className="text-2xl font-bold">المالية</h1>
 
       {financials.isLoading ? (
-        <div className="grid gap-4 md:grid-cols-4">
-          {Array.from({ length: 4 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <KPIRowSkeleton count={4} />
       ) : financials.isError ? (
         <ErrorAlert message="فشل التحميل" onRetry={() => financials.refetch()} />
       ) : (
@@ -100,7 +97,7 @@ export default function AdminFinancePage(): JSX.Element {
       <Card>
         <h2 className="mb-3 text-lg font-semibold">سجل المدفوعات</h2>
         {payouts.isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : payouts.isError ? (
           <ErrorAlert message="فشل التحميل" onRetry={() => payouts.refetch()} />
         ) : !payouts.data || payouts.data.payouts.length === 0 ? (

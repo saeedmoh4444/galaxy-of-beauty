@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert } from '@galaxy/ui';
 
 export default function BeautyPodcastPage(): JSX.Element {
   const { data, isLoading, isError, refetch } = api.beautyPodcast.episodes.useQuery() as {
@@ -21,11 +21,7 @@ export default function BeautyPodcastPage(): JSX.Element {
       </div>
 
       {isLoading ? (
-        <div className="space-y-4">
-          {Array.from({ length: 5 }, (_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
+        <CardListSkeleton count={4} />
       ) : isError ? (
         <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
       ) : (
