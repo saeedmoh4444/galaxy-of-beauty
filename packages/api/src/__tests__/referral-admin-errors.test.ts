@@ -144,7 +144,9 @@ describe('Error & Edge Cases', () => {
   it('health endpoint should be public', async () => {
     const caller = await anonCaller();
     const result = await caller.health();
-    expect(result.status).toBe('ok');
+    // The endpoint is about accessibility — status depends on local services
+    // (Redis degrades to 'degraded' when unavailable)
+    expect(['ok', 'degraded']).toContain(result.status);
   });
 
   it('should return platform stats (public)', async () => {
