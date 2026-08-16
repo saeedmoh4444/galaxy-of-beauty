@@ -31,9 +31,10 @@ export const searchRouter = router({
     const { query, locale, categoryId, city, minPrice, maxPrice, sortBy, page, limit } = input;
     const skip = (page - 1) * limit;
 
-    // Use ILIKE on JSONB text extraction for better Arabic search
-    const jsonbPath = locale === 'ar' ? "titleJson->>'ar'" : "titleJson->>'en'";
-    const descPath = locale === 'ar' ? "descriptionJson->>'ar'" : "descriptionJson->>'en'";
+    // Use ILIKE on JSONB text extraction for better Arabic search.
+    // Columns are camelCase (Prisma defaults) — must be quoted in raw SQL.
+    const jsonbPath = locale === 'ar' ? `"titleJson"->>'ar'` : `"titleJson"->>'en'`;
+    const descPath = locale === 'ar' ? `"descriptionJson"->>'ar'` : `"descriptionJson"->>'en'`;
 
     const serviceWhere: Record<string, unknown> = {
       isActive: true,
