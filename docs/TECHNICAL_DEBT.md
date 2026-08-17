@@ -20,7 +20,7 @@
 | ----- | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
 | P0-01 | Next.js 15 migration (8 high vulns, 14.2.35 EOL) | ✅ Next 15.5.23; `await params` on dynamic pages; web build + 168/168 e2e green                                                   |
 | P1-01 | Real ESLint setup across all workspaces          | ✅ 0 errors in all 6 code-bearing packages; web `.eslintrc.json` shadow duplicate removed                                         |
-| P1-03 | Test coverage: Tier 1 endpoints (was 9.5%)       | ✅ 575 tests; auth 2FA, booking state machine (72% of bookings.ts), payments, wallet, token cleanup, socket server (94%), worker handlers, payfort gateway; ratchet 52/68/48/52 enforced |
+| P1-03 | Test coverage: Tier 1 endpoints (was 9.5%)       | ✅ 578 tests; auth 2FA, booking state machine (72% of bookings.ts), payments, wallet, token cleanup, socket server (94%), worker handlers + wiring (81%), payfort gateway; ratchet 52/68/49/52 enforced |
 | P1-04 | Mobile app `any` budget (943 usages)             | ✅ 3 remaining                                                                                                                    |
 
 ## Active Debt Items
