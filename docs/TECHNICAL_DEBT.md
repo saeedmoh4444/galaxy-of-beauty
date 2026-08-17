@@ -33,6 +33,7 @@
 | P1-05 | Refresh token family not enforced pre-Phase 3 data    | ✅ Migration `20260817000000_refresh_token_family_backfill`: legacy rows (familyId='') each get their own family; column default now `gen_random_uuid()`. Reuse-detection revocation scoped to userId; rotation mints a fresh family on empty legacy familyId. Real integration tests replace the literal-only token-reuse file (2026-08-17)                                                                                                                                                                                                                                |
 | P3-01 | 3 models flagged for archival (duplicates)            | ✅ BeautySanta + BeautyQuest were already gone. Affirmation/AffirmationFavorite archived 2026-08-17: affirmations router removed (zero web/mobile consumers, zero tests, zero rows — tables verified empty), models dropped via migration `20260817010000_archive_affirmations`; sisterhoodCompliments is the live replacement. Router count 243 → 242 (contract test + docs updated)                                                                                                                                                                                       |
 | P3-03 | Turbo cache warnings (shared/ui no output)            | ✅ Fixed 2026-08-17: package-level turbo.json with outputs:[] (turbo v2 dropped the package.json `turbo` field) — warning gone                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| P3-02 | JSON localization lacks DB-level shape validation     | ✅ 45 CHECK constraints across 27 tables (migration `20260817020000_i18n_json_shape_constraints`): every {ar,en} JSON field must contain both keys, nullable columns allow NULL. Legacy ar-only rows (32) backfilled en:=ar first; enforcement verified with a negative INSERT test. A token-cleanup test fixture was caught and fixed (2026-08-17)                                                                                                                                                                                                                         |
 
 ## Active Debt Items
 
@@ -50,9 +51,7 @@ None active — see Resolved.
 
 ### P3 — Low
 
-| ID    | Item                                              | Owner | Created  | Notes                                 |
-| ----- | ------------------------------------------------- | ----- | -------- | ------------------------------------- |
-| P3-02 | JSON localization lacks DB-level shape validation | —     | Aug 2026 | Currently validated only in app layer |
+None active — see Resolved.
 
 ---
 
