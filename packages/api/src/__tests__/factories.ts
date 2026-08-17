@@ -44,7 +44,9 @@ export function buildUser(overrides?: BuildUserOverrides) {
   const s = seq();
   return {
     email: overrides?.email ?? `test-${uid()}-${s}@example.com`,
-    phone: overrides?.phone ?? `+9665${String(s).padStart(8, '0')}`,
+    // Timestamp-based digits: the old `+9665${seq}` pattern collided with
+    // seeded users (+966500000001) on a fresh file's first buildUser call.
+    phone: overrides?.phone ?? `+9665${String(Date.now() % 100000000).padStart(8, '0')}`,
     name: overrides?.name ?? `مستخدم تجريبي ${s}`,
     role: overrides?.role ?? 'CUSTOMER',
     passwordHash: overrides?.passwordHash ?? '$2b$10$placeholderhashfortestingpurposesonly', // bcrypt hash for 'TestPass123!'
@@ -178,14 +180,13 @@ export function buildPayment(overrides: BuildPaymentOverrides) {
 export interface BuildWalletOverrides {
   userId: number;
   balance?: number;
-  currency?: string;
 }
 
 export function buildWallet(overrides: BuildWalletOverrides) {
+  // Note: Wallet has no currency column (currency lives on Payment).
   return {
     userId: overrides.userId,
     balance: overrides.balance ?? 0,
-    currency: overrides.currency ?? 'SAR',
   };
 }
 
