@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
@@ -6,12 +5,7 @@ import { Card, DashboardSkeleton, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function WellnessHubPage(): JSX.Element {
-  const { data, isLoading, isError, refetch } = api.wellnessHub.dashboard.useQuery() as {
-    data: Record<string, unknown> | undefined;
-    isLoading: boolean;
-    isError: boolean;
-    refetch: () => void;
-  };
+  const { data, isLoading, isError, refetch } = api.wellnessHub.dashboard.useQuery();
 
   if (isLoading)
     return (
@@ -42,15 +36,15 @@ export default function WellnessHubPage(): JSX.Element {
         </div>
 
         {/* Cycle Card */}
-        {(d?.cycle as Record<string, unknown>) && (
+        {d?.cycle && (
           <Card padding="lg" className="text-center border-2">
-            <span className="text-4xl">{(d!.cycle as any).phase?.emoji}</span>
-            <h3 className="font-bold text-lg mt-2">{(d!.cycle as any).phase?.name}</h3>
+            <span className="text-4xl">{d!.cycle.phase?.emoji}</span>
+            <h3 className="font-bold text-lg mt-2">{d!.cycle.phase?.name}</h3>
             <p className="text-sm text-text-secondary">
-              اليوم {(d!.cycle as any).currentDay} من {(d!.cycle as any).cycleLength}
+              اليوم {d!.cycle.currentDay} من {d!.cycle.cycleLength}
             </p>
             <p className="text-xs text-brand-600 mt-1">
-              ️ الدورة القادمة بعد {(d!.cycle as any).daysUntilNext} يوم
+              ️ الدورة القادمة بعد {d!.cycle.daysUntilNext} يوم
             </p>
           </Card>
         )}
@@ -59,25 +53,25 @@ export default function WellnessHubPage(): JSX.Element {
         <div className="grid gap-4 sm:grid-cols-4">
           <Card padding="md" className="text-center">
             <p className="text-2xl font-extrabold">
-              {d?.todayMood ? (d.todayMood as any).mood + '/5' : '—'}
+              {d?.todayMood ? d.todayMood.mood + '/5' : '—'}
             </p>
             <p className="text-xs text-text-secondary">مزاج اليوم</p>
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-2xl font-extrabold text-blue-600">
-              {d?.todayMood ? (d.todayMood as any).energy + '/10' : '—'}
+              {d?.todayMood ? String(d.todayMood.energy) + '/10' : '—'}
             </p>
             <p className="text-xs text-text-secondary">الطاقة</p>
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-2xl font-extrabold text-purple-600">
-              {d?.todayMood ? (d.todayMood as any).sleepHours + 'h' : '—'}
+              {d?.todayMood ? String(d.todayMood.sleepHours) + 'h' : '—'}
             </p>
             <p className="text-xs text-text-secondary">النوم</p>
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-2xl font-extrabold text-cyan-600">
-              {d?.todayMood ? (d.todayMood as any).waterGlasses + '' : '—'}
+              {d?.todayMood ? String(d.todayMood.waterGlasses) + '' : '—'}
             </p>
             <p className="text-xs text-text-secondary">الماء</p>
           </Card>
@@ -91,10 +85,10 @@ export default function WellnessHubPage(): JSX.Element {
               <div className="space-y-2">
                 <p className="text-sm">
                   <span className="text-text-secondary">نوع البشرة:</span>{' '}
-                  <span className="font-bold">{(d.skin as any).skinType}</span>
+                  <span className="font-bold">{d.skin.skinType}</span>
                 </p>
                 <div className="flex flex-wrap gap-1">
-                  {(((d.skin as any).concerns as string[]) || []).map((c: string) => (
+                  {((d.skin.concerns as string[]) ?? []).map((c) => (
                     <span
                       key={c}
                       className="rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-700"
@@ -119,14 +113,14 @@ export default function WellnessHubPage(): JSX.Element {
           {/* Weekly Summary */}
           <Card padding="lg">
             <h3 className="font-bold mb-3"> ملخص الأسبوع</h3>
-            {d?.weekly && (d.weekly as any).checkinCount > 0 ? (
+            {d?.weekly && d.weekly.checkinCount > 0 ? (
               <div className="space-y-3">
                 <div>
                   <p className="text-xs text-text-secondary mb-1">متوسط المزاج</p>
                   <div className="h-2 bg-surface-muted rounded-full">
                     <div
                       className="h-2 bg-amber-500 rounded-full"
-                      style={{ width: `${((d.weekly as any).avgMood / 5) * 100}%` }}
+                      style={{ width: `${((d.weekly.avgMood ?? 0) / 5) * 100}%` }}
                     />
                   </div>
                 </div>
@@ -135,12 +129,12 @@ export default function WellnessHubPage(): JSX.Element {
                   <div className="h-2 bg-surface-muted rounded-full">
                     <div
                       className="h-2 bg-blue-500 rounded-full"
-                      style={{ width: `${((d.weekly as any).avgEnergy / 10) * 100}%` }}
+                      style={{ width: `${((d.weekly.avgEnergy ?? 0) / 10) * 100}%` }}
                     />
                   </div>
                 </div>
                 <p className="text-xs text-text-tertiary">
-                  {(d.weekly as any).checkinCount} تقييم هذا الأسبوع
+                  {d.weekly.checkinCount} تقييم هذا الأسبوع
                 </p>
               </div>
             ) : (
@@ -151,19 +145,16 @@ export default function WellnessHubPage(): JSX.Element {
 
         {/* Journal */}
         <Card padding="lg">
-          <h3 className="font-bold mb-3"> آخر اليوميات ({(d?.journalCount as number) ?? 0})</h3>
-          {(d?.recentJournals as Array<Record<string, unknown>>)?.length ? (
-            (d?.recentJournals as Array<Record<string, unknown>>).map(
-              (j: Record<string, unknown>) => (
-                <div key={j.id as number} className="border-b py-2 last:border-0">
-                  <p className="text-sm">{j.content as string}</p>
-                  <p className="text-xs text-text-tertiary mt-1">
-                    {new Date(j.date as string).toLocaleDateString('ar-SA')} · مزاج:{' '}
-                    {(j.mood as number) ?? '—'}/5
-                  </p>
-                </div>
-              ),
-            )
+          <h3 className="font-bold mb-3"> آخر اليوميات ({d?.journalCount ?? 0})</h3>
+          {d?.recentJournals?.length ? (
+            d.recentJournals.map((j) => (
+              <div key={j.id} className="border-b py-2 last:border-0">
+                <p className="text-sm">{j.content}</p>
+                <p className="text-xs text-text-tertiary mt-1">
+                  {new Date(j.date).toLocaleDateString('ar-SA')} · مزاج: {j.mood ?? '—'}/5
+                </p>
+              </div>
+            ))
           ) : (
             <p className="text-sm text-text-tertiary">لا توجد يوميات</p>
           )}

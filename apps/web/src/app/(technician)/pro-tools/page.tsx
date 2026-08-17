@@ -17,9 +17,39 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function ProToolsPage(): JSX.Element {
-  const crm = (api as any).technicians?.myStats?.useQuery?.() as any;
-  const earnings = (api as any).technicianEarnings?.summary?.useQuery?.() as any;
-  const pricing = (api as any).pricingCoach?.suggestions?.useQuery?.() as any;
+  // myStats and pricingCoach.suggestions are not registered router procedures —
+  // keep the optional chaining so the cards fall back to their defaults.
+  const legacyApi = api as unknown as {
+    technicians?: {
+      myStats?: {
+        useQuery?: () => {
+          data?: {
+            totalCustomers: number;
+            regularCustomers: number;
+            newThisMonth: number;
+            monthlyRevenue: number;
+            avgRating: number;
+          };
+        };
+      };
+    };
+    pricingCoach?: {
+      suggestions?: {
+        useQuery?: () => {
+          data?: {
+            serviceName: string;
+            currentPrice: number;
+            suggestedPrice: number;
+            demand: 'medium' | 'high' | 'low';
+            competitorAvg: number;
+          };
+        };
+      };
+    };
+  };
+  const crm = legacyApi.technicians?.myStats?.useQuery?.();
+  const earnings = api.technicianEarnings.summary.useQuery();
+  const pricing = legacyApi.pricingCoach?.suggestions?.useQuery?.();
 
   return (
     <DashboardLayout userRole="TECHNICIAN">
@@ -40,8 +70,8 @@ export default function ProToolsPage(): JSX.Element {
               />
               <BusinessDashboardCard
                 revenue={{
-                  month: earnings?.data?.thisMonth ?? 8500,
-                  previous: earnings?.data?.lastMonth ?? 7200,
+                  month: (earnings?.data?.thisMonth ?? 8500) as unknown as number,
+                  previous: (earnings?.data?.lastMonth ?? 7200) as unknown as number,
                 }}
                 expenses={3200}
               />

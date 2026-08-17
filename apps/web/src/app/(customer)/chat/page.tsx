@@ -90,13 +90,14 @@ export default function ChatPage(): JSX.Element {
                   ) : (
                     selectedMsgs.map((m: Record<string, unknown>) => {
                       const sender = m.sender as Record<string, unknown> | undefined;
+                      const currentUserId = m.currentUserId as number | undefined;
                       return (
                         <div
                           key={m.id as number}
-                          className={`flex ${sender?.id === (m as any).currentUserId ? 'justify-end' : 'justify-start'}`}
+                          className={`flex ${sender?.id === currentUserId ? 'justify-end' : 'justify-start'}`}
                         >
                           <div
-                            className={`max-w-[80%] rounded-xl p-3 ${sender?.id === (m as any).currentUserId ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
+                            className={`max-w-[80%] rounded-xl p-3 ${sender?.id === currentUserId ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
                           >
                             <p className="text-sm">{m.content as string}</p>
                             <p className="text-xs opacity-70 mt-1">

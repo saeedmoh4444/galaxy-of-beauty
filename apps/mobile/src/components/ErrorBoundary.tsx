@@ -27,7 +27,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
     }
-    // eslint-disable-next-line no-console
+    // eslint-disable-next-line no-console -- error boundary reporting must not throw
     console.error('[Mobile ErrorBoundary]', error.message);
   }
 

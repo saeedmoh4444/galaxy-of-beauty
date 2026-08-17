@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { api } from '@/lib/trpc';
@@ -7,18 +6,16 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import Link from 'next/link';
 
 export default function MyJourneyPage(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: bookings, isLoading: bLoading } = api.bookings.list.useQuery({ limit: 100 }) as any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: streak } = (api as any).streaks?.get?.useQuery?.() as any;
+  const { data: bookings, isLoading: bLoading } = api.bookings.list.useQuery({ limit: 100 });
+  const { data: streak } = api.streaks.get.useQuery();
 
-  const allBookings = (bookings?.bookings ?? []) as Array<Record<string, any>>;
-  const completed = allBookings.filter((b: any) => b.status === 'COMPLETED');
+  const allBookings = bookings?.bookings ?? [];
+  const completed = allBookings.filter((b) => b.status === 'COMPLETED');
   const firstBooking = allBookings[allBookings.length - 1];
-  const totalSpent = completed.reduce((sum: number, b: any) => sum + Number(b.totalAmount || 0), 0);
-  const uniqueServices = new Set(completed.map((b: any) => b.serviceId)).size;
+  const totalSpent = completed.reduce((sum: number, b) => sum + Number(b.totalAmount || 0), 0);
+  const uniqueServices = new Set(completed.map((b) => b.serviceId)).size;
   const uniqueTechnicians = new Set(
-    completed.filter((b: any) => b.technicianId).map((b: any) => b.technicianId),
+    completed.filter((b) => b.technicianId).map((b) => b.technicianId),
   ).size;
 
   // Milestones

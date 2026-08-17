@@ -20,7 +20,7 @@ import { SortableGrid } from '@/components/SortableGrid';
 export default function InspirationPage(): JSX.Element {
   const { addToast } = useToast();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = api.inspiration.list.useQuery() as any;
+  const { data, isLoading, isError, refetch } = api.inspiration.list.useQuery();
   const createMut = api.inspiration.create.useMutation({
     onSuccess: () => {
       refetch();

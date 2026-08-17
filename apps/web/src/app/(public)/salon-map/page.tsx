@@ -38,6 +38,17 @@ interface CityInfo {
 
 const LEAFLET_READY = typeof window !== 'undefined';
 
+interface LeafletMap {
+  removeLayer: (l: unknown) => void;
+  setView: (c: [number, number], z: number) => LeafletMap;
+}
+
+interface LeafletMarker {
+  addTo: (m: LeafletMap) => LeafletMarker;
+  on: (event: string, cb: () => void) => LeafletMarker;
+  bindPopup: (html: string) => { openPopup: () => void };
+}
+
 function MapView({
   technicians,
   selectedCity,
@@ -55,8 +66,19 @@ function MapView({
 
   useEffect(() => {
     if (!LEAFLET_READY || !mapRef.current) return;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const L = (window as any).L;
+    const L = (
+      window as unknown as {
+        L: {
+          map: (el: HTMLElement) => LeafletMap;
+          tileLayer: (
+            url: string,
+            opts: Record<string, unknown>,
+          ) => { addTo: (m: LeafletMap) => unknown };
+          divIcon: (opts: Record<string, unknown>) => unknown;
+          marker: (pos: [number, number], opts: { icon: unknown }) => LeafletMarker;
+        };
+      }
+    ).L;
     if (!L) return;
 
     // Initialize map once
@@ -75,7 +97,7 @@ function MapView({
 
     const map = mapInstance.current as {
       removeLayer: (l: unknown) => void;
-      setView: (c: [number, number], z: number) => void;
+      setView: (c: [number, number], z: number) => LeafletMap;
     } | null;
     if (map && L) {
       markersRef.current.forEach((m) => map.removeLayer(m));

@@ -20,21 +20,22 @@ const LEVELS: Record<string, { label: string; color: string }> = {
 };
 
 export default function BeautyCoursesPage(): JSX.Element {
-  const courses = (api as any).beautyCourses?.list?.useQuery?.() as any;
-  const myCourses = (api as any).beautyCourses?.myCourses?.useQuery?.() as any;
+  const courses = api.beautyCourses.list.useQuery();
+  const myCourses = api.beautyCourses.myCourses.useQuery();
   const [enrolled, setEnrolled] = useState<number[]>([]);
+  const enrollMut = api.beautyCourses.enroll.useMutation();
 
   const handleEnroll = async (courseId: number) => {
     try {
-      await (api as any).beautyCourses.enroll.mutate({ courseId });
+      await enrollMut.mutateAsync({ courseId });
       setEnrolled((prev) => [...prev, courseId]);
     } catch {
       /* noop */
     }
   };
 
-  const items = (courses?.data ?? []) as any[];
-  const myItems = (myCourses?.data ?? []) as any[];
+  const items = courses?.data ?? [];
+  const myItems = myCourses?.data ?? [];
 
   return (
     <DashboardLayout userRole="CUSTOMER">
@@ -49,12 +50,15 @@ export default function BeautyCoursesPage(): JSX.Element {
                   دوراتي ({myItems.length})
                 </h3>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {myItems.map((c: any, i: number) => (
+                  {myItems.map((c, i) => (
                     <span
                       key={i}
                       className="rounded-full bg-emerald-200 px-3 py-1 text-xs text-emerald-800 dark:bg-emerald-800 dark:text-emerald-200"
                     >
-                      {c.course?.titleJson?.ar ?? `دورة #${c.courseId}`}
+                      {(
+                        (c.course as Record<string, unknown> | undefined)?.titleJson as
+                          Record<string, string> | undefined
+                      )?.ar ?? `دورة #${c.courseId}`}
                     </span>
                   ))}
                 </div>
@@ -62,9 +66,9 @@ export default function BeautyCoursesPage(): JSX.Element {
             )}
 
             <div className="space-y-4">
-              {items.map((c: any) => {
+              {items.map((c) => {
                 const isEnrolled =
-                  enrolled.includes(c.id) || myItems.some((m: any) => m.courseId === c.id);
+                  enrolled.includes(c.id) || myItems.some((m) => m.courseId === c.id);
                 const level = LEVELS[c.level] ?? LEVELS['beginner']!;
                 return (
                   <div

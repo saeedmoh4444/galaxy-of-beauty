@@ -22,14 +22,12 @@ import type { JwtPayload } from '../lib/jwt';
 
 async function anonCaller() {
   const ctx = await createTRPCContext();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (appRouter as any).createCaller(ctx);
+  return appRouter.createCaller(ctx);
 }
 
 async function authCaller(user: JwtPayload) {
   const ctx = await createTRPCContext({ user });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (appRouter as any).createCaller(ctx);
+  return appRouter.createCaller(ctx);
 }
 
 const TEST_USER: JwtPayload = {
@@ -146,7 +144,7 @@ describe('CSRF Protection', () => {
   it('should reject browser mutation without CSRF tokens (Origin present)', async () => {
     // Browsers always send Origin on POST — model that to exercise the CSRF path
     const ctx = await createTRPCContext({ user: TEST_USER, origin: 'http://localhost:3000' });
-    const caller = (appRouter as any).createCaller(ctx);
+    const caller = appRouter.createCaller(ctx);
     await expect(
       caller.auth.changePassword({ currentPassword: 'old', newPassword: 'NewPass@123' }),
     ).rejects.toMatchObject({ code: 'FORBIDDEN' });
@@ -192,8 +190,7 @@ describe('Zod Validation', () => {
       csrfCookie: 'a'.repeat(64),
       csrfHeader: 'a'.repeat(64),
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const caller = (appRouter as any).createCaller(ctx);
+    const caller = appRouter.createCaller(ctx);
     await expect(
       caller.auth.login({ email: 'not-an-email', password: 'any' }),
     ).rejects.toMatchObject({ code: 'BAD_REQUEST' });

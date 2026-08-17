@@ -10,10 +10,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   try {
     const caller = await getServerCaller();
-    const post = await (caller as any).blog.getBySlug({ slug });
+    const post = await caller.blog.getBySlug({ slug });
     if (post) {
-      const title = post.titleJson?.ar ?? post.titleJson?.en ?? '';
-      const body = post.bodyJson?.ar ?? post.bodyJson?.en ?? '';
+      const titleJson = post.titleJson as Record<string, string>;
+      const title = titleJson.ar ?? titleJson.en ?? '';
+      const bodyJson = post.bodyJson as Record<string, string>;
+      const body = bodyJson.ar ?? bodyJson.en ?? '';
       return {
         title: `${title} | مدونة الجمال`,
         description: body.replace(/<[^>]+>/g, '').slice(0, 160),
@@ -38,7 +40,10 @@ export default async function BlogPostPage({ params }: Props): Promise<JSX.Eleme
 
   try {
     const caller = await getServerCaller();
-    post = serializeForClient(await (caller as any).blog.getBySlug({ slug }));
+    post = serializeForClient(await caller.blog.getBySlug({ slug })) as unknown as Record<
+      string,
+      unknown
+    > | null;
   } catch (e) {
     fetchError = (e as Error).message || 'فشل تحميل المقال';
   }

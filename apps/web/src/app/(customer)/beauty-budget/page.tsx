@@ -26,8 +26,7 @@ import { useToast } from '@galaxy/ui';
 
 export default function BeautyBudgetPage(): JSX.Element {
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = api.beautyBudget.get.useQuery() as any;
+  const { data, isLoading, isError, refetch } = api.beautyBudget.get.useQuery();
   const setBudgetMut = api.beautyBudget.set.useMutation({
     onSuccess: () => {
       refetch();
@@ -36,11 +35,11 @@ export default function BeautyBudgetPage(): JSX.Element {
   });
   const [newBudget, setNewBudget] = useState('');
   // New financial components
-  const savingsGoals = (api as any).savingsGoals?.list?.useQuery?.() as any;
-  const budgetServices = (api as any).services?.list?.useQuery?.({
+  const savingsGoals = api.savingsGoals.list.useQuery();
+  const budgetServices = api.services.list.useQuery({
     limit: 5,
     maxPrice: 100,
-  }) as any;
+  });
 
   const budget = Number(data?.budget || 0);
   const spent = Number(data?.spent || 0);
@@ -112,8 +111,8 @@ export default function BeautyBudgetPage(): JSX.Element {
             <BeautyBudgetPlanner monthlyIncome={budget > 0 ? budget * 10 : 5000} />
             <BeautyBudgetCard
               services={
-                (budgetServices?.data?.items as any[])?.slice(0, 4)?.map((s: any) => ({
-                  name: (s.titleJson as any)?.ar ?? '',
+                budgetServices?.data?.items?.slice(0, 4)?.map((s) => ({
+                  name: (s.titleJson as { ar?: string } | null)?.ar ?? '',
                   price: Number(s.basePrice),
                   category: 'facial' as const,
                   duration: `${s.durationMin} دقيقة`,
@@ -124,16 +123,18 @@ export default function BeautyBudgetPage(): JSX.Element {
 
           {/* Right column */}
           <div className="space-y-6">
-            {savingsGoals?.data?.length > 0 && (
+            {savingsGoals?.data?.length ? (
               <BeautySavingsGoal
-                goals={(savingsGoals.data as any[]).slice(0, 3).map((g: any) => ({
-                  label: g.name ?? 'هدف',
-                  target: g.amount ?? 0,
-                  saved: g.saved ?? 0,
-                  monthly: g.monthly ?? 0,
-                }))}
+                goals={(savingsGoals.data as Array<Record<string, unknown>>)
+                  .slice(0, 3)
+                  .map((g) => ({
+                    label: (g.name as string) ?? 'هدف',
+                    target: (g.amount as number) ?? 0,
+                    saved: (g.saved as number) ?? 0,
+                    monthly: (g.monthly as number) ?? 0,
+                  }))}
               />
-            )}
+            ) : null}
             <LoyaltyDividendBadge yearlySpend={spent * 12} />
             <div className="grid gap-4 sm:grid-cols-2">
               <StudentDiscountBadge discount={15} />

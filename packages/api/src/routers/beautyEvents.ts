@@ -3,7 +3,7 @@ import { prisma } from '@galaxy/db';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, adminProcedure, customerProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- EventRegistration has no relations in Prisma schema (legacy include)
 const db = prisma as any;
 
 export const beautyEventRouter = router({

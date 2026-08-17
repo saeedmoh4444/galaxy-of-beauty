@@ -80,7 +80,7 @@ const GOAL_TEMPLATES = [
 ];
 
 export default function BeautyGoalsPage(): JSX.Element {
-  const visionGoals = (api as any).visionBoard?.myGoals?.useQuery?.({ limit: 6 }) as any;
+  const visionGoals = api.visionBoard.myGoals.useQuery({ limit: 6 });
   const [goals, setGoals] = useState<Record<string, boolean[]>>({});
   const toggle = (catKey: string, idx: number) => {
     setGoals((prev) => {
@@ -153,7 +153,7 @@ export default function BeautyGoalsPage(): JSX.Element {
         <div className="grid gap-6 lg:grid-cols-2">
           <BeautyVisionBoardCard
             goals={
-              (visionGoals?.data as any[])?.map((g: any) => ({
+              visionGoals?.data?.map((g) => ({
                 emoji: g.emoji,
                 text: g.text,
                 year: g.year,

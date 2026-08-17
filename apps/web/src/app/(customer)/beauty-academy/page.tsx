@@ -28,13 +28,27 @@ import {
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
+// Legacy page shape: the card grid below expects `{ items }`, but
+// beautyCourses.list returns a plain array — the optional chain falls
+// through (grid renders nothing) exactly as before.
+interface LegacyCourseItem {
+  title?: string;
+  level?: 'beginner' | 'intermediate' | 'advanced';
+  duration?: string;
+  lessons?: number;
+  instructor?: string;
+  enrolled?: number;
+  emoji?: string;
+  hasCertificate?: boolean;
+}
+
 export default function BeautyAcademyPage(): JSX.Element {
-  const courses = (api as any).beautyCourses?.list?.useQuery?.({ limit: 4 }) as any;
-  const dailyTip = (api as any).dailyBeautyTip?.today?.useQuery?.() as any;
-  const expertTalks = (api as any).expertTalks?.upcoming?.useQuery?.({ limit: 2 }) as any;
-  const myths = (api as any).beautyMyths?.getRandom?.useQuery?.() as any;
-  const recipes = (api as any).beautyRecipes?.list?.useQuery?.({ limit: 2 }) as any;
-  const bookClubs = (api as any).bookClub?.list?.useQuery?.({ limit: 2 }) as any;
+  const courses = api.beautyCourses.list.useQuery();
+  const dailyTip = api.dailyBeautyTip.today.useQuery();
+  const expertTalks = api.expertTalks.upcoming.useQuery({ limit: 2 });
+  const myths = api.beautyMyths.getRandom.useQuery();
+  const recipes = api.beautyRecipes.list.useQuery({ limit: 2 });
+  const bookClubs = api.bookClub.list.useQuery({ limit: 2 });
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
@@ -44,21 +58,23 @@ export default function BeautyAcademyPage(): JSX.Element {
           <div className="lg:col-span-2 space-y-6">
             {/* Courses + Webinars */}
             <div className="grid gap-4 sm:grid-cols-2">
-              {(courses?.data?.items as any[])?.slice(0, 2).map((c: any, i: number) => (
-                <FreeCourseCard
-                  key={i}
-                  course={{
-                    title: c.title ?? 'دورة تجميل',
-                    level: c.level ?? 'beginner',
-                    duration: c.duration ?? '45 دقيقة',
-                    lessons: c.lessons ?? 6,
-                    instructor: c.instructor,
-                    enrolled: c.enrolled,
-                    emoji: c.emoji ?? '',
-                    hasCertificate: c.hasCertificate,
-                  }}
-                />
-              )) ?? (
+              {(courses?.data as unknown as { items?: LegacyCourseItem[] })?.items
+                ?.slice(0, 2)
+                .map((c, i) => (
+                  <FreeCourseCard
+                    key={i}
+                    course={{
+                      title: c.title ?? 'دورة تجميل',
+                      level: c.level ?? 'beginner',
+                      duration: c.duration ?? '45 دقيقة',
+                      lessons: c.lessons ?? 6,
+                      instructor: c.instructor,
+                      enrolled: c.enrolled,
+                      emoji: c.emoji ?? '',
+                      hasCertificate: c.hasCertificate,
+                    }}
+                  />
+                )) ?? (
                 <>
                   <FreeCourseCard
                     course={{
@@ -85,7 +101,7 @@ export default function BeautyAcademyPage(): JSX.Element {
               )}
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
-              {(expertTalks?.data as any[])?.slice(0, 2).map((t: any, i: number) => (
+              {expertTalks?.data?.slice(0, 2).map((t, i) => (
                 <BeautyExpertTalkCard
                   key={i}
                   talk={{
@@ -182,28 +198,28 @@ export default function BeautyAcademyPage(): JSX.Element {
             />
             <BeautyRecipeCard
               recipe={{
-                title: (recipes?.data?.items as any[])?.[0]?.title ?? 'ماسك العسل والزبادي',
-                ingredients: (recipes?.data?.items as any[])?.[0]?.ingredientsJson ?? [
+                title: recipes?.data?.items?.[0]?.title ?? 'ماسك العسل والزبادي',
+                ingredients: (recipes?.data?.items?.[0]?.ingredientsJson as string[]) ?? [
                   'ملعقة عسل',
                   'ملعقة زبادي',
                   'قطرات ليمون',
                 ],
-                steps: (recipes?.data?.items as any[])?.[0]?.stepsJson ?? [
+                steps: (recipes?.data?.items?.[0]?.stepsJson as string[]) ?? [
                   'اخلطي المكونات',
                   'ضعيها على الوجه 15 دقيقة',
                   'اغسلي بماء فاتر',
                 ],
-                duration: (recipes?.data?.items as any[])?.[0]?.duration ?? '15 دقيقة',
-                forSkin: (recipes?.data?.items as any[])?.[0]?.forSkin ?? 'جميع الأنواع',
+                duration: recipes?.data?.items?.[0]?.duration ?? '15 دقيقة',
+                forSkin: recipes?.data?.items?.[0]?.forSkin ?? 'جميع الأنواع',
               }}
             />
             <BeautyBookClubCard
               book={{
-                title: (bookClubs?.data?.items as any[])?.[0]?.title ?? 'أسرار الجمال العربي',
-                author: (bookClubs?.data?.items as any[])?.[0]?.author ?? 'د. نورة',
-                members: (bookClubs?.data?.items as any[])?.[0]?.members ?? 45,
-                currentChapter: (bookClubs?.data?.items as any[])?.[0]?.currentChapter ?? 'الفصل 3',
-                nextMeeting: (bookClubs?.data?.items as any[])?.[0]?.nextMeeting ?? '25 أغسطس',
+                title: bookClubs?.data?.items?.[0]?.title ?? 'أسرار الجمال العربي',
+                author: bookClubs?.data?.items?.[0]?.author ?? 'د. نورة',
+                members: bookClubs?.data?.items?.[0]?.members ?? 45,
+                currentChapter: bookClubs?.data?.items?.[0]?.currentChapter ?? 'الفصل 3',
+                nextMeeting: bookClubs?.data?.items?.[0]?.nextMeeting ?? '25 أغسطس',
               }}
             />
             <SaudiBeautyHeritageCard practice="henna" />

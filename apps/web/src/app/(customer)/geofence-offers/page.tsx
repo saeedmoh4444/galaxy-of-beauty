@@ -4,9 +4,12 @@ import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function GeofenceOffersPage(): JSX.Element {
-  const { data: offers, isLoading } = (api as any).geofenceOffers.nearby.useQuery({
+  const { data: offers, isLoading } = api.geofenceOffers.nearMe.useQuery({
     city: 'الرياض',
-  }) as { data: Array<Record<string, unknown>> | undefined; isLoading: boolean };
+  });
+  // No customer-facing opt-in procedure exists in the API (only the admin
+  // toggle) — kept as a documented latent gap until product decides.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- optIn procedure missing from API router
   const optInMut = (api as any).geofenceOffers.optIn.useMutation();
 
   const items = offers ?? [];

@@ -44,7 +44,7 @@ export function WebVitals(): null {
     // Dynamic import to avoid bundling — skip gracefully if not installed
     // @ts-expect-error — web-vitals is an optional dependency
     import('web-vitals')
-      .then(({ onLCP, onCLS, onINP, onFCP, onTTFB }: any) => {
+      .then(({ onLCP, onCLS, onINP, onFCP, onTTFB }) => {
         const report = (metric: { name: string; value: number; delta: number }) => {
           const entry: VitalMetric = {
             name: metric.name,

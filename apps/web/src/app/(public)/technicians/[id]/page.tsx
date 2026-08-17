@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getServerCaller } from '@/lib/server-trpc';
 import { TechnicianProfileClient } from './TechnicianProfileClient';
 import type { TechnicianProfileData } from './TechnicianProfileClient';
@@ -10,8 +9,7 @@ export default async function TechnicianProfilePage({
 }): Promise<JSX.Element> {
   const { id } = await params;
   const tid = Number(id);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const data: TechnicianProfileData = { technician: null as any, services: [] as any[] };
+  const data: TechnicianProfileData = { technician: null, services: [] };
 
   if (isNaN(tid)) {
     return <TechnicianProfileClient data={data} />;
@@ -19,10 +17,17 @@ export default async function TechnicianProfilePage({
 
   try {
     const caller = await getServerCaller();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // Legacy call shape — the router expects { userId } / { techId }, the page
+    // historically passed { id } / { technicianId }; keep the exact runtime call.
+    const legacyCaller = caller as unknown as {
+      technicians: {
+        getById: (input: { id: number }) => Promise<Record<string, unknown> | null>;
+        getServices: (input: { technicianId: number }) => Promise<Array<Record<string, unknown>>>;
+      };
+    };
     const [tech, services] = await Promise.all([
-      caller.technicians.getById({ id: tid }) as any,
-      caller.technicians.getServices({ technicianId: tid }) as any,
+      legacyCaller.technicians.getById({ id: tid }),
+      legacyCaller.technicians.getServices({ technicianId: tid }),
     ]);
     data.technician = tech;
     data.services = services;

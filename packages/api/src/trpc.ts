@@ -181,7 +181,6 @@ export function requireOwnership(
  */
 export function requireFeatureFlag(flagKey: string) {
   // Lazy import to avoid circular dependency
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const cachedFlags = new Map<string, { enabled: boolean; expiresAt: number }>();
 
   return middleware(async ({ ctx, next }) => {

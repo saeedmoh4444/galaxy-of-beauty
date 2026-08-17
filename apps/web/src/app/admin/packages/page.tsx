@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
 import { useState } from 'react';
 
 export default function AdminPackagesPage(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = api.beautyPackages.listAll.useQuery() as any;
-  const packages = (data ?? []) as Array<Record<string, any>>;
+  const { data, isLoading, isError, refetch } = api.beautyPackages.listAll.useQuery();
+  const packages = data ?? [];
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState({ nameAr: '', nameEn: '', discountPercent: 15, serviceIds: '' });
   const createMut = api.beautyPackages.create.useMutation({
@@ -31,7 +29,7 @@ export default function AdminPackagesPage(): JSX.Element {
         <EmptyState title="لا توجد باقات" />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {packages.map((p: Record<string, any>) => (
+          {packages.map((p) => (
             <Card key={p.id} padding="md">
               <h3 className="font-bold">{(p.nameJson as Record<string, string>)?.ar}</h3>
               <p className="text-sm text-text-secondary">

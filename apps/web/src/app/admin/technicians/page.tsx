@@ -29,11 +29,25 @@ export default function AdminTechniciansPage(): JSX.Element {
   const [reviewTech, setReviewTech] = useState<TechnicianItem | null>(null);
   const [reviewNote, setReviewNote] = useState('');
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = api.admin.listTechnicians.useQuery({
+  // Structural cast instead of RouterOutput — avoids TS2589 from deeply
+  // nested admin RouterOutput in Next.js build
+  const { data, isLoading, isError, refetch } = (
+    api as unknown as {
+      admin: {
+        listTechnicians: {
+          useQuery: (input: { page: number; limit: number }) => {
+            data: { items: TechnicianItem[] } | undefined;
+            isLoading: boolean;
+            isError: boolean;
+            refetch: () => void;
+          };
+        };
+      };
+    }
+  ).admin.listTechnicians.useQuery({
     page: 1,
     limit: 50,
-  }) as any;
+  });
   const verifyMut = api.technicians.verifyKyc.useMutation({
     onSuccess: () => {
       refetch();

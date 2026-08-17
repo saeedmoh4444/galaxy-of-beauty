@@ -10,8 +10,7 @@ export default async function GalleryPage({
   const { technicianId } = await params;
   const tid = Number(technicianId);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const data: GalleryPageData = { items: [] as any[], total: 0 };
+  const data: GalleryPageData = { items: [], total: 0 };
 
   if (isNaN(tid)) {
     data.fetchError = 'معرف الفنية غير صالح';
@@ -20,12 +19,11 @@ export default async function GalleryPage({
 
   try {
     const caller = await getServerCaller();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result = (await caller.gallery.byTechnician({
+    const result = await caller.gallery.byTechnician({
       technicianId: tid,
       page: 1,
       limit: 50,
-    })) as any;
+    });
     data.items = result.items ?? [];
     data.total = result.total ?? 0;
   } catch (e) {

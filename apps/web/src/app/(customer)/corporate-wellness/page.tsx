@@ -6,19 +6,20 @@ import { PageContainer, PageTitle, Card } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function CorporateWellnessPage(): JSX.Element {
-  const plans = (api as any).corporateWellness?.plans?.useQuery?.() as any;
-  const enquiries = (api as any).corporateWellness?.myEnquiries?.useQuery?.() as any;
+  const plans = api.corporateWellness.plans.useQuery();
+  const enquiries = api.corporateWellness.myEnquiries.useQuery();
   const [planId, setPlanId] = useState('growth');
   const [companyName, setCompanyName] = useState('');
   const [contactName, setContactName] = useState('');
   const [email, setEmail] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const enquireMut = api.corporateWellness.enquire.useMutation();
 
   const handleEnquire = async () => {
     if (!companyName || !contactName || !email) return;
     try {
-      await (api as any).corporateWellness.enquire.mutate({
+      await enquireMut.mutateAsync({
         companyName,
         contactName,
         email,
@@ -31,8 +32,8 @@ export default function CorporateWellnessPage(): JSX.Element {
     }
   };
 
-  const items = (plans?.data ?? []) as any[];
-  const enquiryItems = (enquiries?.data ?? []) as any[];
+  const items = plans?.data ?? [];
+  const enquiryItems = enquiries?.data ?? [];
 
   return (
     <DashboardLayout userRole="CUSTOMER">
@@ -51,7 +52,7 @@ export default function CorporateWellnessPage(): JSX.Element {
             )}
 
             <div className="grid gap-4 sm:grid-cols-2">
-              {items.map((p: any) => (
+              {items.map((p) => (
                 <button
                   key={p.id}
                   type="button"
@@ -64,7 +65,7 @@ export default function CorporateWellnessPage(): JSX.Element {
                       {p.nameAr}
                     </h4>
                     <p className="mt-1 text-lg font-extrabold text-rose-600 dark:text-rose-400">
-                      {(p.price as number)?.toLocaleString()} ر.س{' '}
+                      {p.price.toLocaleString()} ر.س{' '}
                       <span className="text-xs font-normal text-text-tertiary dark:text-gray-500">
                         / سنوياً
                       </span>
@@ -73,7 +74,7 @@ export default function CorporateWellnessPage(): JSX.Element {
                       حتى {p.employees} موظفة
                     </p>
                     <div className="mt-2 flex flex-wrap gap-1">
-                      {(p.services as string[])?.map((svc: string, i: number) => (
+                      {p.services?.map((svc, i) => (
                         <span
                           key={i}
                           className="text-[11px] text-emerald-600 dark:text-emerald-400"
@@ -134,7 +135,7 @@ export default function CorporateWellnessPage(): JSX.Element {
                   طلباتي السابقة
                 </h3>
                 <div className="mt-3 space-y-2">
-                  {enquiryItems.map((e: any, i: number) => (
+                  {enquiryItems.map((e, i) => (
                     <div key={i} className="rounded-lg bg-gray-50 p-3 dark:bg-gray-800">
                       <p className="text-sm font-semibold text-text-primary dark:text-gray-100">
                         {e.companyName}

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
@@ -7,18 +6,52 @@ import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, formatCurrency 
 
 const STATUSES = ['ALL', 'REQUESTED', 'ACCEPTED', 'PAID', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
 
+type BookingStatus =
+  | 'REQUESTED'
+  | 'ACCEPTED'
+  | 'PAYMENT_AUTHORIZED'
+  | 'CONFIRMED_OFFLINE'
+  | 'PAID'
+  | 'IN_PROGRESS'
+  | 'COMPLETED'
+  | 'REJECTED'
+  | 'CANCELLED'
+  | 'NO_SHOW';
+
+interface AdminBooking {
+  id: number;
+  bookingCode: string;
+  createdAt: string;
+  status: string;
+  totalAmount: number;
+}
+
 export default function AdminBookingsPage(): JSX.Element {
   const [status, setStatus] = useState<string | undefined>(undefined);
-  // Cast to avoid TS2589 from deeply nested admin RouterOutput in Next.js build
-  const bookingsQuery = api.admin.getAllBookings.useQuery({
-    status: (status || undefined) as any,
+  // Structural cast instead of RouterOutput — avoids TS2589 from deeply
+  // nested admin RouterOutput in Next.js build
+  const bookingsQuery = (
+    api as unknown as {
+      admin: {
+        getAllBookings: {
+          useQuery: (input: { status?: BookingStatus; page: number; limit: number }) => {
+            data: { items: AdminBooking[] } | undefined;
+            isLoading: boolean;
+            isError: boolean;
+            refetch: () => void;
+          };
+        };
+      };
+    }
+  ).admin.getAllBookings.useQuery({
+    status: (status || undefined) as BookingStatus | undefined,
     page: 1,
     limit: 20,
-  }) as any;
+  });
   const { data, isLoading, isError, refetch } = bookingsQuery;
   const cancelMut = api.bookings.transition.useMutation({ onSuccess: () => refetch() });
 
-  const bookings: any[] = data?.items ?? [];
+  const bookings: AdminBooking[] = data?.items ?? [];
 
   return (
     <div className="space-y-6">
@@ -43,7 +76,7 @@ export default function AdminBookingsPage(): JSX.Element {
         <EmptyState title="لا توجد حجوزات" />
       ) : (
         <div className="space-y-2">
-          {bookings.map((b: any) => (
+          {bookings.map((b) => (
             <Card key={b.id} padding="md">
               <div className="flex items-center justify-between">
                 <div>

@@ -26,7 +26,7 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyServicesPage(): JSX.Element {
-  const loyalty = (api as any).loyalty?.getAccount?.useQuery?.() as any;
+  const loyalty = api.loyalty.myAccount.useQuery();
 
   return (
     <DashboardLayout userRole="CUSTOMER">
@@ -114,7 +114,7 @@ export default function BeautyServicesPage(): JSX.Element {
 
             <BeautyRewardsCard
               points={loyalty?.data?.points ?? 1250}
-              tier={(loyalty?.data?.tier?.toLowerCase() as any) ?? 'gold'}
+              tier={(loyalty?.data?.tier?.toLowerCase() as 'silver' | 'gold' | 'diamond') ?? 'gold'}
             />
 
             {/* Technician tools */}

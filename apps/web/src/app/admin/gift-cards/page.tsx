@@ -1,14 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, TableSkeleton, ErrorAlert, EmptyState, formatCurrency } from '@galaxy/ui';
 
 export default function AdminGiftCardsPage(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, isLoading, isError, refetch } = api.giftCards.listAll.useQuery({
     page: 1,
     limit: 50,
-  }) as any;
+  });
   const items = data?.items ?? [];
 
   return (
@@ -33,7 +31,7 @@ export default function AdminGiftCardsPage(): JSX.Element {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-              {items.map((c: Record<string, any>) => (
+              {items.map((c) => (
                 <tr key={c.id}>
                   <td className="p-3 font-mono font-bold text-brand-600">{c.code}</td>
                   <td className="p-3">{formatCurrency(Number(c.amount))}</td>

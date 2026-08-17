@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
@@ -15,24 +14,31 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
+type SavingsGoal = {
+  id: number;
+  title: string;
+  targetAmount: number;
+  savedAmount: number;
+  status: string;
+};
+
 export default function SavingsGoalsPage(): JSX.Element {
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = (api as any).savingsGoals.list.useQuery() as any;
-  const createMut = (api as any).savingsGoals.create.useMutation({
+  const { data, isLoading, isError, refetch } = api.savingsGoals.list.useQuery();
+  const createMut = api.savingsGoals.create.useMutation({
     onSuccess: () => {
       refetch();
       setShowAdd(false);
       addToast('success', 'تم إنشاء الهدف');
     },
   });
-  const addFundsMut = (api as any).savingsGoals.addFunds.useMutation({
+  const addFundsMut = api.savingsGoals.addFunds.useMutation({
     onSuccess: () => {
       refetch();
       addToast('success', 'تمت الإضافة');
     },
   });
-  const deleteMut = (api as any).savingsGoals.delete.useMutation({
+  const deleteMut = api.savingsGoals.delete.useMutation({
     onSuccess: () => {
       refetch();
       addToast('success', 'تم الحذف');
@@ -42,7 +48,7 @@ export default function SavingsGoalsPage(): JSX.Element {
   const [form, setForm] = useState({ title: '', targetAmount: '', serviceId: '' });
   const [addAmount, setAddAmount] = useState<Record<number, string>>({});
 
-  const goals = (data ?? []) as Array<Record<string, any>>;
+  const goals = (data ?? []) as SavingsGoal[];
 
   return (
     <DashboardLayout userRole="CUSTOMER">
@@ -63,7 +69,7 @@ export default function SavingsGoalsPage(): JSX.Element {
           <EmptyState title="لا توجد أهداف" description="أنشئي هدف ادخار لخدمة تحلمين فيها" />
         ) : (
           <div className="space-y-4">
-            {goals.map((g: Record<string, any>) => {
+            {goals.map((g) => {
               const pct =
                 g.targetAmount > 0
                   ? Math.min(100, (Number(g.savedAmount) / Number(g.targetAmount)) * 100)

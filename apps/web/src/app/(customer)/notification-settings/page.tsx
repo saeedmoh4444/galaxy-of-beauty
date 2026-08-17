@@ -17,8 +17,7 @@ const TOGGLES = [
 
 export default function NotificationSettingsPage(): JSX.Element {
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, refetch } = api.notificationPrefs.get.useQuery() as any;
+  const { data, isLoading, refetch } = api.notificationPrefs.get.useQuery();
   const updateMut = api.notificationPrefs.update.useMutation({
     onSuccess: () => {
       refetch();
@@ -28,7 +27,7 @@ export default function NotificationSettingsPage(): JSX.Element {
   const [prefs, setPrefs] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    if (data) setPrefs(data);
+    if (data) setPrefs(data as Record<string, boolean>);
   }, [data]);
 
   const toggle = (key: string) => {

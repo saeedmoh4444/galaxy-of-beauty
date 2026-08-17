@@ -3,7 +3,7 @@ import { prisma } from '@galaxy/db';
 import { DEFAULT_PAGE_SIZE, SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, adminProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Service has no nameJson/emoji in Prisma schema (legacy reads)
 const db = prisma as any;
 
 export const flashDealRouter = router({

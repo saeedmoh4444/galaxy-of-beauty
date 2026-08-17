@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getServerCaller } from '@/lib/server-trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import { Card } from '@galaxy/ui';
 
 const TIER_LABELS: Record<string, { name: string; emoji: string; color: string }> = {
@@ -9,12 +9,10 @@ const TIER_LABELS: Record<string, { name: string; emoji: string; color: string }
 };
 
 export default async function RewardsPage(): Promise<JSX.Element> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let rewards: any[] = [];
+  let rewards: RouterOutputs['loyalty']['rewards'] = [];
   try {
     const caller = await getServerCaller();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    rewards = (await caller.loyalty.rewards()) as any[];
+    rewards = await caller.loyalty.rewards();
   } catch {
     /* empty */
   }
@@ -55,7 +53,7 @@ export default async function RewardsPage(): Promise<JSX.Element> {
         <p className="text-center text-text-tertiary">لا توجد مكافآت متاحة حالياً</p>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {rewards.map((r: Record<string, any>) => {
+          {rewards.map((r) => {
             const name = (r.nameJson as Record<string, string>)?.ar || '';
             const desc = (r.descriptionJson as Record<string, string>)?.ar || '';
             return (

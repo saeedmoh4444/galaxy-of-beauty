@@ -48,7 +48,7 @@ const HAIR_ROUTINES: Record<string, string[]> = {
 
 export default function BeautyRoutinePage(): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: profile, isLoading, isError, refetch } = api.beautyProfile.get.useQuery() as any;
+  const { data: profile, isLoading, isError, refetch } = api.beautyProfile.get.useQuery();
 
   const skinRoutine = profile?.skinType
     ? SKIN_ROUTINES[profile.skinType as string] || SKIN_ROUTINES['normal']

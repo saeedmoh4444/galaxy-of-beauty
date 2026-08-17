@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
@@ -8,21 +7,18 @@ import { Input, Card, GridSkeleton, Button, formatCurrency, ar } from '@galaxy/u
 export default function SearchPage(): JSX.Element {
   const [query, setQuery] = useState('');
   const [searched, setSearched] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: services, isLoading: svcLoading } = (api as any).services?.list?.useQuery?.(
+  const { data: services, isLoading: svcLoading } = api.services.list.useQuery(
     { search: query || undefined, limit: 12 },
     { enabled: searched && query.length > 1 },
-  ) as any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: products, isLoading: prodLoading } = (api as any).marketplace?.products?.useQuery?.(
+  );
+  const { data: products, isLoading: prodLoading } = api.marketplace.products.useQuery(
     { search: query || undefined, limit: 8 },
     { enabled: searched && query.length > 1 },
-  ) as any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: technicians, isLoading: techLoading } = (api as any).technicians?.list?.useQuery?.(
+  );
+  const { data: technicians, isLoading: techLoading } = api.technicians.list.useQuery(
     {},
     { enabled: searched && query.length > 1 },
-  ) as any;
+  );
 
   const handleSearch = () => {
     if (query.trim().length > 1) setSearched(true);
@@ -30,7 +26,7 @@ export default function SearchPage(): JSX.Element {
   const svcItems = services?.items ?? [];
   const prodItems = products?.items ?? [];
   const techItems = Array.isArray(technicians)
-    ? technicians.filter((t: any) => (t as any).user?.name?.includes?.(query))
+    ? technicians.filter((t) => (t as { user?: { name?: string } }).user?.name?.includes?.(query))
     : [];
 
   const isLoading = svcLoading || prodLoading || techLoading;
@@ -72,7 +68,7 @@ export default function SearchPage(): JSX.Element {
                 <div>
                   <h2 className="mb-4 text-lg font-bold"> خدمات</h2>
                   <div className="grid gap-4 sm:grid-cols-3">
-                    {svcItems.map((s: any) => (
+                    {svcItems.map((s) => (
                       <Link key={s.id} href={`/services/${s.id}`}>
                         <Card hover padding="md">
                           <div className="h-32 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100 flex items-center justify-center text-3xl"></div>
@@ -90,7 +86,7 @@ export default function SearchPage(): JSX.Element {
                 <div>
                   <h2 className="mb-4 text-lg font-bold"> منتجات</h2>
                   <div className="grid gap-4 sm:grid-cols-4">
-                    {prodItems.map((p: any) => (
+                    {prodItems.map((p) => (
                       <Link key={p.id} href={`/marketplace`}>
                         <Card hover padding="sm">
                           <div className="h-24 rounded-lg bg-surface-muted flex items-center justify-center text-2xl"></div>
@@ -108,7 +104,7 @@ export default function SearchPage(): JSX.Element {
                 <div>
                   <h2 className="mb-4 text-lg font-bold">‍ فنيات</h2>
                   <div className="grid gap-4 sm:grid-cols-3">
-                    {techItems.slice(0, 6).map((t: any) => (
+                    {techItems.slice(0, 6).map((t) => (
                       <Link key={t.id} href={`/technicians/${t.id}`}>
                         <Card hover padding="md">
                           <div className="text-center">

@@ -20,8 +20,7 @@ export default function PromoPage(): JSX.Element {
       return;
     }
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const r = await (utils as any).promo.validate.fetch({
+      const r = await utils.promo.validate.fetch({
         code: code.toUpperCase(),
         orderAmount: Number(amount),
       });

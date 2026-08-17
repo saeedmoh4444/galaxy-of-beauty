@@ -10,7 +10,7 @@ import { cn } from '@galaxy/shared';
  *   <SkinAnalysisCard concerns={['dryness', 'dark_spots']} />
  */
 
-type SkinConcern =
+export type SkinConcern =
   | 'dryness'
   | 'dark_spots'
   | 'acne'

@@ -25,7 +25,7 @@ const OCCASION_LABELS: Record<string, string> = {
 export default function GiftRegistryPage(): JSX.Element {
   const { addToast } = useToast();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = api.giftRegistry.myRegistries.useQuery() as any;
+  const { data, isLoading, isError, refetch } = api.giftRegistry.myRegistries.useQuery();
   const createMut = api.giftRegistry.create.useMutation({
     onSuccess: () => {
       refetch();

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
@@ -10,13 +9,7 @@ import { useToast } from '@galaxy/ui';
 
 export default function MySubscriptionPage(): JSX.Element {
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const {
-    data: sub,
-    isLoading,
-    isError,
-    refetch,
-  } = (api as any).subscriptions?.getMySubscription?.useQuery?.() as any;
+  const { data: sub, isLoading, isError, refetch } = api.subscriptions.getMySubscription.useQuery();
   const [paused, setPaused] = useState(false);
 
   const handlePause = () => {
@@ -55,13 +48,18 @@ export default function MySubscriptionPage(): JSX.Element {
       </DashboardLayout>
     );
 
-  const plan = sub.plan || {};
-  const planName = ((plan as any).nameJson as Record<string, string>)?.ar || 'الباقة';
-  const nextDate = sub.currentPeriodEnd
-    ? new Date(sub.currentPeriodEnd).toLocaleDateString('ar-SA')
+  const plan = (sub.plan || {}) as typeof sub.plan & {
+    servicesPerMonth?: number;
+    price?: number;
+    discountPercent?: number;
+  };
+  const planName = (plan.nameJson as Record<string, string>)?.ar || 'الباقة';
+  const subExtras = sub as { currentPeriodEnd?: string | Date; bookingsThisMonth?: number };
+  const nextDate = subExtras.currentPeriodEnd
+    ? new Date(subExtras.currentPeriodEnd).toLocaleDateString('ar-SA')
     : '—';
-  const bookingsThisMonth = sub.bookingsThisMonth || 0;
-  const servicesPerMonth = (plan as any).servicesPerMonth || 1;
+  const bookingsThisMonth = subExtras.bookingsThisMonth || 0;
+  const servicesPerMonth = plan.servicesPerMonth || 1;
   const remaining = Math.max(0, servicesPerMonth - bookingsThisMonth);
 
   return (
@@ -83,7 +81,7 @@ export default function MySubscriptionPage(): JSX.Element {
               {servicesPerMonth} {servicesPerMonth === 1 ? 'حجز' : 'حجوزات'} شهرياً
             </p>
             <p className="mt-1 text-lg font-bold text-brand-600">
-              {formatCurrency(Number((plan as any).price || 0))} / شهرياً
+              {formatCurrency(Number(plan.price || 0))} / شهرياً
             </p>
             <div className="mt-3 flex justify-center gap-4 text-sm">
               <div className="text-center">
@@ -95,7 +93,7 @@ export default function MySubscriptionPage(): JSX.Element {
                 <p className="text-text-secondary">متبقي</p>
               </div>
               <div className="text-center">
-                <p className="font-bold text-green-600">-{(plan as any).discountPercent || 0}%</p>
+                <p className="font-bold text-green-600">-{plan.discountPercent || 0}%</p>
                 <p className="text-text-secondary">توفير</p>
               </div>
             </div>
@@ -109,9 +107,13 @@ export default function MySubscriptionPage(): JSX.Element {
             <div className="flex justify-between">
               <span className="text-text-secondary">الحالة</span>
               <span
-                className={`font-bold ${sub.status === 'ACTIVE' ? 'text-green-600' : sub.status === 'PAUSED' ? 'text-amber-600' : 'text-red-600'}`}
+                className={`font-bold ${sub.status === 'ACTIVE' ? 'text-green-600' : (sub.status as string) === 'PAUSED' ? 'text-amber-600' : 'text-red-600'}`}
               >
-                {sub.status === 'ACTIVE' ? ' نشط' : sub.status === 'PAUSED' ? ' متوقف' : ' ملغي'}
+                {sub.status === 'ACTIVE'
+                  ? ' نشط'
+                  : (sub.status as string) === 'PAUSED'
+                    ? ' متوقف'
+                    : ' ملغي'}
               </span>
             </div>
             <div className="flex justify-between">
@@ -120,9 +122,7 @@ export default function MySubscriptionPage(): JSX.Element {
             </div>
             <div className="flex justify-between">
               <span className="text-text-secondary">الخصم</span>
-              <span className="text-green-600 font-bold">
-                -{(plan as any).discountPercent || 0}%
-              </span>
+              <span className="text-green-600 font-bold">-{plan.discountPercent || 0}%</span>
             </div>
             <div className="flex justify-between">
               <span className="text-text-secondary">الحجوزات المتبقية</span>

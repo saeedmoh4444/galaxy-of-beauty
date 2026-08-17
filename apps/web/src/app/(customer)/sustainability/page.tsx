@@ -49,10 +49,10 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function SustainabilityPage(): JSX.Element {
-  const weather = (api as any).weatherBeauty?.getAdvice?.useQuery?.({
+  const weather = api.weatherBeauty.getAdvice.useQuery({
     condition: 'hot',
     temp: 42,
-  }) as any;
+  });
 
   return (
     <DashboardLayout userRole="CUSTOMER">

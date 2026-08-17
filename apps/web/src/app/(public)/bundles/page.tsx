@@ -8,8 +8,7 @@ import { GridSkeleton, Button, formatCurrency, ar } from '@galaxy/ui';
 const BUNDLE_DISCOUNTS: Record<number, number> = { 2: 10, 3: 15, 4: 20, 5: 25 };
 
 export default function BundlesPage(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading } = api.categories.list.useQuery() as any;
+  const { data, isLoading } = api.categories.list.useQuery();
   const services = (data ?? []) as Array<Record<string, any>>;
   const [selected, setSelected] = useState<Set<number>>(new Set());
 

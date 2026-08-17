@@ -47,8 +47,7 @@ const LABELS: Record<string, string> = {
 
 export default function BeautyProfilePage(): JSX.Element {
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = api.beautyProfile.get.useQuery() as any;
+  const { data, isLoading, isError, refetch } = api.beautyProfile.get.useQuery();
   const upsertMut = api.beautyProfile.upsert.useMutation({
     onSuccess: () => {
       refetch();
@@ -82,14 +81,13 @@ export default function BeautyProfilePage(): JSX.Element {
     set(arr.includes(val) ? arr.filter((v) => v !== val) : [...arr, val]);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSave = () =>
     upsertMut.mutate({
-      skinType: (skinType || undefined) as any,
-      hairType: (hairType || undefined) as any,
-      hairLength: (hairLength || undefined) as any,
-      skinTone: (skinTone || undefined) as any,
-      makeupStyle: (makeupStyle || undefined) as any,
+      skinType: (skinType || undefined) as (typeof SKIN_TYPES)[number] | undefined,
+      hairType: (hairType || undefined) as (typeof HAIR_TYPES)[number] | undefined,
+      hairLength: (hairLength || undefined) as (typeof HAIR_LENGTHS)[number] | undefined,
+      skinTone: (skinTone || undefined) as (typeof SKIN_TONES)[number] | undefined,
+      makeupStyle: (makeupStyle || undefined) as (typeof MAKEUP_STYLES)[number] | undefined,
       concerns: concerns.length ? concerns : undefined,
       preferredScents: scents.length ? scents : undefined,
       notes: notes || undefined,

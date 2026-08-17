@@ -16,8 +16,7 @@ export interface TechniciansPageData {
 export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.Element {
   const [city, setCity] = useState('');
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const query = api.technicians.list.useQuery({ city: city || undefined }) as any;
+  const query = api.technicians.list.useQuery({ city: city || undefined });
   const techs: AnyRecord[] = Array.isArray(query.data)
     ? query.data
     : Array.isArray(data.initialTechnicians)

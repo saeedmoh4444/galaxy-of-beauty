@@ -22,8 +22,8 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyLifestylePage(): JSX.Element {
-  const loyalty = (api as any).loyalty?.getAccount?.useQuery?.() as any;
-  const budget = (api as any).beautyBudget?.get?.useQuery?.() as any;
+  const loyalty = api.loyalty.myAccount.useQuery();
+  const budget = api.beautyBudget.get.useQuery();
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
@@ -33,7 +33,7 @@ export default function BeautyLifestylePage(): JSX.Element {
           <div className="lg:col-span-2 space-y-6">
             <BeautyRewardsCard
               points={loyalty?.data?.points ?? 1250}
-              tier={(loyalty?.data?.tier?.toLowerCase() as any) ?? 'gold'}
+              tier={(loyalty?.data?.tier?.toLowerCase() as 'silver' | 'gold' | 'diamond') ?? 'gold'}
             />
             <div className="grid gap-4 sm:grid-cols-2">
               <LoyaltyDividendBadge

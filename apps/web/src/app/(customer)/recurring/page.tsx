@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
@@ -15,8 +14,7 @@ const FREQ_LABELS: Record<string, string> = {
 
 export default function RecurringPage(): JSX.Element {
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = api.recurringBookings.list.useQuery() as any;
+  const { data, isLoading, isError, refetch } = api.recurringBookings.list.useQuery();
   const createMut = api.recurringBookings.create.useMutation({
     onSuccess: () => {
       refetch();
@@ -45,7 +43,7 @@ export default function RecurringPage(): JSX.Element {
     nextDate: '',
   });
 
-  const bookings = (data ?? []) as Array<Record<string, any>>;
+  const bookings = data ?? [];
 
   return (
     <DashboardLayout userRole="CUSTOMER">
@@ -65,7 +63,7 @@ export default function RecurringPage(): JSX.Element {
           />
         ) : (
           <div className="space-y-3">
-            {bookings.map((b: Record<string, any>) => (
+            {bookings.map((b) => (
               <Card key={b.id} padding="md">
                 <div className="flex items-center justify-between">
                   <div>

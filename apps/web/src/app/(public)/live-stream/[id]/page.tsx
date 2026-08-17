@@ -15,25 +15,45 @@ export default function LiveStreamDetailPage(): JSX.Element {
   const chatRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState('');
 
+  const streamApi = api as unknown as {
+    liveStream: {
+      get: {
+        useQuery: (
+          input: { id: number },
+          opts: { enabled: boolean },
+        ) => {
+          data: Record<string, unknown> | null | undefined;
+          isLoading: boolean;
+          isError: boolean;
+          refetch: () => void;
+        };
+      };
+      chat: {
+        useQuery: (
+          input: { streamId: number },
+          opts: { enabled: boolean; refetchInterval: number },
+        ) => { data: Array<Record<string, unknown>> | undefined; refetch: () => void };
+      };
+      sendMessage: {
+        useMutation: (opts: { onSuccess: () => void }) => {
+          mutate: (input: { streamId: number; message: string }) => void;
+          isPending: boolean;
+        };
+      };
+    };
+  };
+
   const {
     data: stream,
     isLoading,
     isError,
     refetch,
-  } = (api as any).liveStream.get.useQuery({ id: streamId }, { enabled: !isNaN(streamId) }) as {
-    data: Record<string, unknown> | null | undefined;
-    isLoading: boolean;
-    isError: boolean;
-    refetch: () => void;
-  };
-  const { data: chat, refetch: refetchChat } = (api as any).liveStream.chat.useQuery(
+  } = streamApi.liveStream.get.useQuery({ id: streamId }, { enabled: !isNaN(streamId) });
+  const { data: chat, refetch: refetchChat } = streamApi.liveStream.chat.useQuery(
     { streamId },
     { enabled: !isNaN(streamId), refetchInterval: 3000 },
-  ) as {
-    data: Array<Record<string, unknown>> | undefined;
-    refetch: () => void;
-  };
-  const sendMut = (api as any).liveStream.sendMessage.useMutation({
+  );
+  const sendMut = streamApi.liveStream.sendMessage.useMutation({
     onSuccess: () => {
       setMessage('');
       refetchChat();

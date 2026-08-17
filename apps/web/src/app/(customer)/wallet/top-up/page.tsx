@@ -13,8 +13,7 @@ export default function WalletTopUpPage(): JSX.Element {
   const { addToast } = useToast();
   const [amount, setAmount] = useState('');
   const [selected, setSelected] = useState<number | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: balance, isLoading } = api.wallet.getBalance.useQuery() as any;
+  const { data: balance, isLoading } = api.wallet.getBalance.useQuery();
 
   const handleTopUp = () => {
     const a = selected || Number(amount);

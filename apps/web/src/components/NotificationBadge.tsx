@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import Link from 'next/link';
@@ -11,7 +10,7 @@ export function NotificationBadge(): JSX.Element {
     enabled: !isLoading && !!isAuthenticated,
     retry: false,
   });
-  const count = (data as any)?.count || 0;
+  const count = data?.count || 0;
 
   return (
     <Link

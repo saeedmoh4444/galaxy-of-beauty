@@ -1,6 +1,5 @@
 'use client';
 
-import { api } from '@/lib/trpc';
 import {
   PageContainer,
   PageTitle,
@@ -25,7 +24,10 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function BeautyExtrasPage(): JSX.Element {
-  const referral = (api as any).referrals?.myStats?.useQuery?.() as any;
+  // referrals.myStats doesn't exist in the API router (leaderboard is the
+  // closest real procedure, and it returns groupBy rows without names) —
+  // the card keeps showing its built-in fallback list until product
+  // decides the intended shape.
 
   return (
     <DashboardLayout userRole="CUSTOMER">
@@ -69,18 +71,12 @@ export default function BeautyExtrasPage(): JSX.Element {
             {/* Games + Social */}
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyReferralLeaderboardCard
-                leaders={
-                  (referral?.data?.leaderboard as any[])?.map((l: any) => ({
-                    name: l.name,
-                    referrals: l.referrals,
-                    emoji: l.emoji,
-                  })) ?? [
-                    { name: 'نورة', referrals: 12, emoji: '' },
-                    { name: 'مها', referrals: 8 },
-                    { name: 'ريم', referrals: 5 },
-                  ]
-                }
-                userRank={referral?.data?.myRank ?? 5}
+                leaders={[
+                  { name: 'نورة', referrals: 12, emoji: '' },
+                  { name: 'مها', referrals: 8 },
+                  { name: 'ريم', referrals: 5 },
+                ]}
+                userRank={5}
               />
               <GroupDiscountBadge
                 groupSize={3}

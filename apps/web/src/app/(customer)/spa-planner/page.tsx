@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
@@ -7,10 +6,10 @@ import { Card, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function SpaPlannerPage(): JSX.Element {
-  const { data: services } = api.spaPlanner.services.useQuery() as any;
-  const { data: breaks } = api.spaPlanner.breaks.useQuery() as any;
-  const { data: myPlans } = api.spaPlanner.myPlans.useQuery() as any;
-  const createMut = api.spaPlanner.create.useMutation() as any;
+  const { data: services } = api.spaPlanner.services.useQuery();
+  const { data: breaks } = api.spaPlanner.breaks.useQuery();
+  const { data: myPlans } = api.spaPlanner.myPlans.useQuery();
+  const createMut = api.spaPlanner.create.useMutation();
 
   const [name, setName] = useState('');
   const [selectedSvcs, setSelectedSvcs] = useState<number[]>([]);
@@ -106,7 +105,7 @@ export default function SpaPlannerPage(): JSX.Element {
                   if (name.trim() && selectedSvcs.length > 0)
                     createMut.mutate(
                       { name: name.trim(), serviceIds: selectedSvcs, breakIds: selectedBreaks },
-                      { onSuccess: (d: any) => setResult(d) },
+                      { onSuccess: (d) => setResult(d) },
                     );
                 }}
                 loading={createMut.isPending}

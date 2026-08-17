@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { api } from '@/lib/trpc';
@@ -15,15 +14,8 @@ const MILESTONES: Record<number, { emoji: string; reward: string }> = {
 };
 
 export default function StreakCalendarPage(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const {
-    data: streakData,
-    isLoading,
-    isError,
-    refetch,
-  } = (api as any).streaks?.get?.useQuery?.() as any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: bookings } = api.bookings.list.useQuery({ limit: 100 }) as any;
+  const { data: streakData, isLoading, isError, refetch } = api.streaks.get.useQuery();
+  const { data: bookings } = api.bookings.list.useQuery({ limit: 100 });
 
   const currentStreak = streakData?.currentStreak || 0;
   const longestStreak = streakData?.longestStreak || 0;
@@ -34,9 +26,9 @@ export default function StreakCalendarPage(): JSX.Element {
 
   // Build calendar: last 12 weeks
   const weeks: { label: string; booked: boolean; isCurrent: boolean }[] = [];
-  const completedBookings = (bookings?.bookings ?? []).filter((b: any) => b.status === 'COMPLETED');
+  const completedBookings = (bookings?.bookings ?? []).filter((b) => b.status === 'COMPLETED');
   const bookingDates = new Set(
-    completedBookings.map((b: any) => new Date(b.createdAt).toISOString().slice(0, 10)),
+    completedBookings.map((b) => new Date(b.createdAt).toISOString().slice(0, 10)),
   );
 
   for (let i = 11; i >= 0; i--) {

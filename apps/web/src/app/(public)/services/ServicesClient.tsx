@@ -23,15 +23,13 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
   const [selected, setSelected] = useState<Set<number>>(new Set());
 
   // Client-side queries — initial SSR data renders first, then hydrates
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const svcQuery = api.services.list.useQuery({
     search: debouncedSearch || undefined,
     sort: sort as 'newest',
     page,
     limit: 12,
-  }) as any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const catsQuery = api.categories.list.useQuery() as any;
+  });
+  const catsQuery = api.categories.list.useQuery();
 
   // Use SSR data while client query loads
   const cats = catsQuery.data ?? data.initialCategories;

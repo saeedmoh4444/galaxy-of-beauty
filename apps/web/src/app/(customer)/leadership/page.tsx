@@ -25,7 +25,7 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function LeadershipPage(): JSX.Element {
-  const socialImpact = (api as any).socialImpact?.stats?.useQuery?.() as any;
+  const socialImpact = api.socialImpact.stats.useQuery();
 
   return (
     <DashboardLayout userRole="CUSTOMER">

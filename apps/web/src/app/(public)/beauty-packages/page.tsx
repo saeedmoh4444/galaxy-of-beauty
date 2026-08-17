@@ -1,15 +1,22 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from 'next/link';
 import Image from 'next/image';
 import { getServerCaller } from '@/lib/server-trpc';
 
+interface BeautyPackageItem {
+  id: number;
+  nameJson: Record<string, string>;
+  descriptionJson: Record<string, string> | null;
+  imageUrl: string | null;
+  discountPercent: number;
+  isActive: boolean;
+  services: Array<{ id: number; serviceId: number }>;
+}
+
 export default async function BeautyPackagesPage(): Promise<JSX.Element> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let packages: any[] = [];
+  let packages: BeautyPackageItem[] = [];
   try {
     const caller = await getServerCaller();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    packages = (await caller.beautyPackages.list()) as any[];
+    packages = (await caller.beautyPackages.list()) as BeautyPackageItem[];
   } catch {
     /* empty */
   }
@@ -32,11 +39,10 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
         </div>
       ) : (
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {packages.map((pkg: Record<string, any>) => {
-            const name = (pkg.nameJson as Record<string, string>)?.ar || '';
-            const desc = (pkg.descriptionJson as Record<string, string>)?.ar || '';
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const services: any[] = pkg.services ?? [];
+          {packages.map((pkg) => {
+            const name = pkg.nameJson?.ar || '';
+            const desc = (pkg.descriptionJson as Record<string, string> | null)?.ar || '';
+            const services = pkg.services;
             return (
               <div
                 key={pkg.id}
@@ -58,7 +64,7 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
                   </div>
                   {desc && <p className="mt-2 text-sm text-gray-500 line-clamp-2">{desc}</p>}
                   <div className="mt-3 space-y-1">
-                    {services.map((s: Record<string, any>) => (
+                    {services.map((s) => (
                       <div
                         key={s.id}
                         className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"

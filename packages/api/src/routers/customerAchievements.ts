@@ -2,7 +2,7 @@ import { prisma } from '@galaxy/db';
 import { LARGE_PAGE_SIZE, MS_PER_90_DAYS } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Review model uses customerId, not userId (legacy where)
 const db = prisma as any;
 
 const ACHIEVEMENTS = [

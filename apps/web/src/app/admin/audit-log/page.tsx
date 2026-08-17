@@ -40,14 +40,14 @@ export default function AuditLogPage(): JSX.Element {
     adminId: adminFilter ? Number(adminFilter) : undefined,
   };
 
-  const { data, isLoading, isError, refetch } = (api as any).admin.auditLogs?.useQuery?.(input) ?? {
+  const { data, isLoading, isError, refetch } = api.admin.auditLogs.useQuery(input) ?? {
     data: undefined,
     isLoading: false,
     isError: false,
     refetch: () => {},
   };
 
-  const logs: Array<Record<string, unknown>> = data?.items ?? [];
+  const logs = data?.items ?? [];
   const total = data?.total ?? 0;
   const totalPages = Math.ceil(total / 20);
 
@@ -165,7 +165,7 @@ export default function AuditLogPage(): JSX.Element {
                           #{log.adminId as number}
                         </td>
                         <td className="px-4 py-2.5 text-xs text-text-tertiary" dir="ltr">
-                          {new Date(log.createdAt as string).toLocaleString('ar-SA')}
+                          {new Date(log.createdAt).toLocaleString('ar-SA')}
                         </td>
                       </tr>
                     ))}

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import Link from 'next/link';
@@ -6,15 +5,14 @@ import { api } from '@/lib/trpc';
 import { Card, Button, ar } from '@galaxy/ui';
 
 export function RebookReminder(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data } = api.bookings.list.useQuery({ limit: 50 }) as any;
-  const bookings = (data?.bookings ?? []) as Array<Record<string, any>>;
-  const completed = bookings.filter((b: any) => b.status === 'COMPLETED');
+  const { data } = api.bookings.list.useQuery({ limit: 50 });
+  const bookings = data?.bookings ?? [];
+  const completed = bookings.filter((b) => b.status === 'COMPLETED');
 
   if (completed.length === 0) return <></>;
 
   const lastBooking = completed.sort(
-    (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   )[0];
   if (!lastBooking) return <></>;
 
@@ -22,7 +20,7 @@ export function RebookReminder(): JSX.Element {
   if (daysSince < 14) return <></>; // Don't show if booked within 2 weeks
 
   const weeksSince = Math.floor(daysSince / 7);
-  const serviceName = ar((lastBooking.service as any)?.titleJson) || 'خدمة';
+  const serviceName = ar(lastBooking.service?.titleJson) || 'خدمة';
   const serviceId = lastBooking.serviceId;
 
   return (

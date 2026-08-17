@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
@@ -23,10 +22,8 @@ export default function SelfCarePage(): JSX.Element {
       setNotes('');
     },
   });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: history } = api.selfCare.history.useQuery({ days: 7 }) as any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: today } = api.selfCare.todayMood.useQuery() as any;
+  const { data: history } = api.selfCare.history.useQuery({ days: 7 });
+  const { data: today } = api.selfCare.todayMood.useQuery();
 
   return (
     <DashboardLayout userRole="CUSTOMER">
@@ -111,11 +108,11 @@ export default function SelfCarePage(): JSX.Element {
           </Card>
         )}
 
-        {history?.length > 0 && (
+        {history && history.length > 0 && (
           <Card padding="md">
             <h3 className="mb-3 font-semibold">آخر ٧ أيام</h3>
             <div className="flex justify-around">
-              {history.map((h: Record<string, any>, i: number) => (
+              {history.map((h, i) => (
                 <div key={i} className="text-center">
                   <div className="text-2xl">{MOODS[(h.mood || 1) - 1]}</div>
                   <div className="text-xs text-text-tertiary">

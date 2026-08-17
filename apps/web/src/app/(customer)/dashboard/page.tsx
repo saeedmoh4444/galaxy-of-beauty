@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import Link from 'next/link';
 import Image from 'next/image';
+import type { ComponentProps } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
@@ -29,25 +29,21 @@ import { RebookReminder } from '@/components/RebookReminder';
 
 export default function CustomerDashboardPage(): JSX.Element {
   const bookings = api.bookings.list.useQuery({ limit: 3 });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const insights = api.analytics.customerInsights.useQuery() as any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const budget = (api as any).beautyBudget?.get?.useQuery?.() as any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const pins = (api as any).inspiration?.list?.useQuery?.() as any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const registries = (api as any).giftRegistry?.myRegistries?.useQuery?.() as any;
+  const insights = api.analytics.customerInsights.useQuery();
+  const budget = api.beautyBudget.get.useQuery();
+  const pins = api.inspiration.list.useQuery();
+  const registries = api.giftRegistry.myRegistries.useQuery();
   // New wired components
-  const kindnessStatus = (api as any).kindnessPoints?.getStatus?.useQuery?.() as any;
-  const circles = (api as any).beautyCircles?.list?.useQuery?.({ limit: 3 }) as any;
-  const savingsGoals = (api as any).savingsGoals?.list?.useQuery?.() as any;
+  const kindnessStatus = api.kindnessPoints.getStatus.useQuery();
+  const circles = api.beautyCircles.list.useQuery({ limit: 3 });
+  const savingsGoals = api.savingsGoals.list.useQuery();
   // Budget services under 100 SAR
-  const budgetServices = (api as any).services?.list?.useQuery?.({
+  const budgetServices = api.services.list.useQuery({
     limit: 5,
     maxPrice: 100,
-  }) as any;
+  });
 
-  const streakInfo = insights.data?.streakInfo as Record<string, any> | undefined;
+  const streakInfo = insights.data?.streakInfo;
 
   return (
     <DashboardLayout userRole="CUSTOMER">
@@ -171,7 +167,7 @@ export default function CustomerDashboardPage(): JSX.Element {
 
           {/* Inspiration + Registry */}
           <div className="space-y-4">
-            {pins?.data?.length > 0 && (
+            {pins?.data?.length ? (
               <div>
                 <div className="mb-2 flex items-center justify-between">
                   <h2 className="text-lg font-semibold text-text-primary">لوحة الإلهام</h2>
@@ -180,27 +176,25 @@ export default function CustomerDashboardPage(): JSX.Element {
                   </Link>
                 </div>
                 <div className="flex gap-2 overflow-x-auto pb-2">
-                  {(pins.data as Array<Record<string, any>>)
-                    .slice(0, 3)
-                    .map((p: Record<string, any>) => (
-                      <div
-                        key={p.id}
-                        className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-surface-muted dark:bg-gray-800"
-                      >
-                        {p.imageUrl ? (
-                          <Image src={p.imageUrl} alt="" fill className="object-cover" />
-                        ) : (
-                          <div
-                            className="flex h-full items-center justify-center text-2xl"
-                            aria-hidden="true"
-                          ></div>
-                        )}
-                      </div>
-                    ))}
+                  {pins.data.slice(0, 3).map((p) => (
+                    <div
+                      key={p.id}
+                      className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-surface-muted dark:bg-gray-800"
+                    >
+                      {p.imageUrl ? (
+                        <Image src={p.imageUrl} alt="" fill className="object-cover" />
+                      ) : (
+                        <div
+                          className="flex h-full items-center justify-center text-2xl"
+                          aria-hidden="true"
+                        ></div>
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
-            )}
-            {registries?.data?.length > 0 && (
+            ) : null}
+            {registries?.data?.length ? (
               <div>
                 <div className="mb-2 flex items-center justify-between">
                   <h2 className="text-lg font-semibold text-text-primary">سجل الهدايا</h2>
@@ -208,9 +202,9 @@ export default function CustomerDashboardPage(): JSX.Element {
                     عرض الكل
                   </Link>
                 </div>
-                {registries.data.slice(0, 2).map((r: Record<string, any>) => {
+                {registries.data.slice(0, 2).map((r) => {
                   const pct =
-                    r.targetAmount > 0
+                    Number(r.targetAmount) > 0
                       ? Math.min(100, (Number(r.raisedAmount) / Number(r.targetAmount)) * 100)
                       : 0;
                   return (
@@ -235,7 +229,7 @@ export default function CustomerDashboardPage(): JSX.Element {
                   );
                 })}
               </div>
-            )}
+            ) : null}
           </div>
         </div>
 
@@ -245,8 +239,8 @@ export default function CustomerDashboardPage(): JSX.Element {
           {budget?.data && (
             <BeautyBudgetCard
               services={
-                (budgetServices?.data?.items as any[])?.slice(0, 4)?.map((s: any) => ({
-                  name: (s.titleJson as any)?.ar ?? '',
+                budgetServices?.data?.items?.slice(0, 4)?.map((s) => ({
+                  name: (s.titleJson as { ar?: string } | null)?.ar ?? '',
                   price: Number(s.basePrice),
                   category: 'facial' as const,
                   duration: `${s.durationMin} دقيقة`,
@@ -260,32 +254,34 @@ export default function CustomerDashboardPage(): JSX.Element {
         {/* Sisterhood + Circles row */}
         <div className="grid gap-6 lg:grid-cols-2">
           <SisterhoodWall />
-          {circles?.data?.items?.length > 0 && (
+          {circles?.data?.items?.length ? (
             <BeautyCircleCard
               circle={{
-                name: (circles.data.items[0] as any)?.name ?? 'دائرة الجمال',
-                topic: ((circles.data.items[0] as any)?.topic ?? 'skincare') as any,
-                members: (circles.data.items[0] as any)?.members ?? 0,
-                cover: (circles.data.items[0] as any)?.cover ?? '',
+                name: circles.data.items[0]?.name ?? 'دائرة الجمال',
+                topic: (circles.data.items[0]?.topic ?? 'skincare') as ComponentProps<
+                  typeof BeautyCircleCard
+                >['circle']['topic'],
+                members: circles.data.items[0]?.members ?? 0,
+                cover: circles.data.items[0]?.cover ?? '',
               }}
             />
-          )}
+          ) : null}
         </div>
 
         {/* Kindness + Savings row */}
         <div className="grid gap-4 sm:grid-cols-2">
           <KindnessPointsBadge points={kindnessStatus?.data?.points ?? 0} />
-          {savingsGoals?.data?.length > 0 && (
+          {savingsGoals?.data?.length ? (
             <BeautySavingsGoal
-              goals={(savingsGoals.data as any[]).slice(0, 2).map((g: any) => ({
-                label: g.name ?? 'هدف ادخار',
-                target: g.amount ?? 0,
-                saved: g.saved ?? 0,
-                monthly: g.monthly ?? 0,
-                emoji: g.emoji ?? '',
+              goals={(savingsGoals.data as Array<Record<string, unknown>>).slice(0, 2).map((g) => ({
+                label: (g.name as string) ?? 'هدف ادخار',
+                target: (g.amount as number) ?? 0,
+                saved: (g.saved as number) ?? 0,
+                monthly: (g.monthly as number) ?? 0,
+                emoji: (g.emoji as string) ?? '',
               }))}
             />
-          )}
+          ) : null}
         </div>
       </PageContainer>
     </DashboardLayout>

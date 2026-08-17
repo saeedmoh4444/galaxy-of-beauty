@@ -3,8 +3,7 @@ import { prisma } from '@galaxy/db';
 import { CYCLE_TRACKER_DAYS } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = prisma as any;
+const db = prisma;
 
 const PHASES = [
   {

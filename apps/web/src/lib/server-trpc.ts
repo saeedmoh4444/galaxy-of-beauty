@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { appRouter, createTRPCContext } from '@galaxy/api';
 
 /** Prisma Decimal duck-type check — avoids depending on @prisma/client directly. */
@@ -49,5 +48,5 @@ export function serializeForClient<T>(value: T): T {
  */
 export async function getServerCaller() {
   const ctx = await createTRPCContext();
-  return (appRouter as any).createCaller(ctx) as any;
+  return appRouter.createCaller(ctx);
 }

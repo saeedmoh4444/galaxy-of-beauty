@@ -1,15 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
 import { useState } from 'react';
 
 export default function AdminBlogPage(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, isLoading, isError, refetch } = api.blog.listAll.useQuery({
     page: 1,
     limit: 50,
-  }) as any;
+  });
   const posts = data?.items ?? [];
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState({
@@ -42,7 +40,7 @@ export default function AdminBlogPage(): JSX.Element {
         <EmptyState title="لا توجد مقالات" />
       ) : (
         <div className="space-y-3">
-          {posts.map((p: Record<string, any>) => (
+          {posts.map((p) => (
             <Card key={p.id} padding="md">
               <div className="flex items-center justify-between">
                 <div>

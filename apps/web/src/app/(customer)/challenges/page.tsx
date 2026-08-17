@@ -1,7 +1,6 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { useState, useCallback, useEffect } from 'react';
 import { PageContainer, PageTitle, Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -14,27 +13,20 @@ const CH: Record<string, { emoji: string; color: string; label: string }> = {
 };
 
 export default function ChallengesPage(): JSX.Element {
-  const [challenges, setChallenges] = useState<any[]>([]);
-  const [progress, setProgress] = useState<any>({});
-  const [, setLoading] = useState(true);
+  const listQuery = api.challenges.list.useQuery();
+  const progressQuery = api.challenges.myProgress.useQuery();
+  const joinMutation = api.challenges.join.useMutation({
+    onSuccess: () => {
+      listQuery.refetch();
+      progressQuery.refetch();
+    },
+  });
 
-  const fetch = useCallback(() => {
-    setLoading(true);
-    Promise.all([(api as any).challenges.list.query(), (api as any).challenges.progress.query()])
-      .then(([c, p]: any[]) => {
-        setChallenges(c ?? []);
-        setProgress(p);
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  const challenges = listQuery.data ?? [];
+  const progress = progressQuery.data;
 
   const join = (challengeId: string) => {
-    (api as any).challenges.join.mutate({ challengeId }).then(() => fetch());
+    joinMutation.mutate({ challengeId });
   };
 
   return (
@@ -43,9 +35,14 @@ export default function ChallengesPage(): JSX.Element {
         <PageTitle title=" التحديات" subtitle="تحديات ممتعة لجمالكِ" />
 
         <div className="space-y-4">
-          {challenges.map((c: any) => {
-            const cfg = CH[c.type] ?? { emoji: '', color: '#6b7280', label: c.type };
-            const prog = (progress as any)?.[c.type];
+          {challenges.map((c) => {
+            const cfg = CH[c.id] ?? { emoji: '', color: '#6b7280', label: c.id };
+            const prog =
+              c.id === '5bookings'
+                ? { current: progress?.bookingCount ?? 0, total: 5 }
+                : c.id === 'first_review'
+                  ? { current: progress?.reviewCount ?? 0, total: 1 }
+                  : undefined;
             return (
               <Card key={c.id} className="flex items-center gap-4 p-5">
                 <span className="text-4xl">{cfg.emoji}</span>

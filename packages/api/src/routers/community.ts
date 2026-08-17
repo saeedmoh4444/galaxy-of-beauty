@@ -3,7 +3,7 @@ import { prisma } from '@galaxy/db';
 import { SMALL_PAGE_SIZE, MS_PER_WEEK } from '@galaxy/shared';
 import { protectedProcedure, customerProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- CommunityPost/Comment have no relations in Prisma schema (legacy include)
 const db = prisma as any;
 
 export const communityRouter = router({

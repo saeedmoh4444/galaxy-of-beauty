@@ -18,19 +18,23 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function TechDashboardPage(): JSX.Element {
   const pending = api.bookings.getTechnicianPending.useQuery();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const earnings = api.analytics.technicianEarnings.useQuery({ days: 30 }) as any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: profile } = api.auth.me.useQuery() as any;
+  const earnings = api.analytics.technicianEarnings.useQuery({ days: 30 });
+  const { data: profile } = api.auth.me.useQuery();
   const transition = api.bookings.transition.useMutation({
     onSuccess: () => {
       pending.refetch();
     },
   });
 
-  const todayEarnings = earnings.data?.today || 0;
-  const weekEarnings = earnings.data?.week || 0;
-  const monthEarnings = earnings.data?.month || 0;
+  // technicianEarnings returns { dailyEarnings, totalEarnings, ... } — the
+  // today/week/month summaries below were never part of that shape, so the
+  // KPIs show 0 until product decides the intended aggregation.
+  const legacyEarnings = earnings.data as
+    | (NonNullable<typeof earnings.data> & { today?: number; week?: number; month?: number })
+    | undefined;
+  const todayEarnings = legacyEarnings?.today || 0;
+  const weekEarnings = legacyEarnings?.week || 0;
+  const monthEarnings = legacyEarnings?.month || 0;
   const rating = profile?.technician?.ratingAvg || 0;
   const completedBookings = profile?.technician?.completedBookings || 0;
 

@@ -35,7 +35,9 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function FamilyBeautyPage(): JSX.Element {
-  const familyAccount = (api as any).familyAccount?.get?.useQuery?.() as any;
+  // familyAccount.get doesn't exist — `list` is the real family data; the
+  // card's members/familyName lookups fall through to defaults as before.
+  const familyAccount = api.familyAccount.list.useQuery();
 
   return (
     <DashboardLayout userRole="CUSTOMER">
@@ -122,9 +124,14 @@ export default function FamilyBeautyPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <NewMomSupportCard babyAge={2} momName="نورة" />
               <FamilyDiscountCard
-                familySize={familyAccount?.data?.members?.length ?? 4}
+                familySize={
+                  (familyAccount?.data as unknown as { members?: unknown[] })?.members?.length ?? 4
+                }
                 discount={20}
-                familyName={familyAccount?.data?.familyName ?? 'آل محمد'}
+                familyName={
+                  (familyAccount?.data as unknown as { familyName?: string })?.familyName ??
+                  'آل محمد'
+                }
               />
             </div>
             <DadApprovalBadge serviceName="درس مكياج" age={14} parentName="الأب" />

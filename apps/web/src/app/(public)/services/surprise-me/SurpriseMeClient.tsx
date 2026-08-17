@@ -22,12 +22,10 @@ export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.El
     setLoading(true);
     setError('');
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      api.services.list.useQuery({ sort: 'popular', page: 1, limit: 50 }) as any;
+      api.services.list.useQuery({ sort: 'popular', page: 1, limit: 50 });
       // Wait briefly for the query — in production this would use api.services.list.fetch()
       const utils = api.useUtils();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const result = await (utils as any).services.list.fetch({
+      const result = await utils.services.list.fetch({
         sort: 'popular',
         page: 1,
         limit: 50,

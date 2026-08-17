@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import {
   Card,
   CardListSkeleton,
@@ -26,8 +26,7 @@ export default function GiftCardsPage(): JSX.Element {
   const [redeemCode, setRedeemCode] = useState('');
   const [redeemAmount, setRedeemAmount] = useState('');
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const myCardsQ = api.giftCards.myCards.useQuery() as any;
+  const myCardsQ = api.giftCards.myCards.useQuery();
   const buyMut = api.giftCards.purchase.useMutation({
     onSuccess: () => {
       addToast('success', 'تم شراء بطاقة الهدية بنجاح!');
@@ -47,8 +46,9 @@ export default function GiftCardsPage(): JSX.Element {
     },
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [checkResult, setCheckResult] = useState<any>(null);
+  const [checkResult, setCheckResult] = useState<RouterOutputs['giftCards']['checkBalance'] | null>(
+    null,
+  );
   const [checkError, setCheckError] = useState('');
 
   const handleCheckBalance = async () => {
@@ -59,12 +59,11 @@ export default function GiftCardsPage(): JSX.Element {
       return;
     }
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const utils = api.useUtils() as any;
+      const utils = api.useUtils();
       const r = await utils.giftCards.checkBalance.fetch({ code: checkCode });
       setCheckResult(r);
-    } catch (e: any) {
-      setCheckError(e?.message || 'البطاقة غير صالحة');
+    } catch (e: unknown) {
+      setCheckError(e instanceof Error ? e.message : 'البطاقة غير صالحة');
     }
   };
 
@@ -101,7 +100,7 @@ export default function GiftCardsPage(): JSX.Element {
             />
           ) : (
             <div className="space-y-3">
-              {myCardsQ.data.map((card: Record<string, any>) => (
+              {myCardsQ.data.map((card) => (
                 <Card key={card.id} padding="md">
                   <div className="flex items-center justify-between">
                     <div>

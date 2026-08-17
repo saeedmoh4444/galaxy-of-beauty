@@ -17,10 +17,10 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function SafetyPage(): JSX.Element {
-  const emergencyContacts = (api as any).safety?.getContacts?.useQuery?.() as any;
-  const latestBooking = (api as any).bookings?.list?.useQuery?.({ limit: 1 }) as any;
+  const emergencyContacts = api.safety.getContacts.useQuery();
+  const latestBooking = api.bookings.list.useQuery({ limit: 1 });
 
-  const booking = (latestBooking?.data?.bookings as any[])?.[0];
+  const booking = latestBooking?.data?.bookings?.[0];
 
   return (
     <DashboardLayout userRole="CUSTOMER">
@@ -43,13 +43,13 @@ export default function SafetyPage(): JSX.Element {
             </div>
             <LocationSharingCard
               contacts={
-                (emergencyContacts?.data as any[])?.map((c: any) => ({
+                emergencyContacts?.data?.map((c) => ({
                   name: c.name,
                   phone: c.phone,
-                  relation: c.relation,
+                  relation: c.relation ?? undefined,
                 })) ?? [{ name: 'أمي', phone: '0550000000', relation: 'mother' }]
               }
-              address={booking?.address ?? 'الرياض'}
+              address={(booking?.address as unknown as string) ?? 'الرياض'}
               technicianName={booking?.technician?.name ?? 'نورة'}
               estimatedEnd={
                 booking?.endAt

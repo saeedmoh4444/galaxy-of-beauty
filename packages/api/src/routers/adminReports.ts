@@ -2,8 +2,7 @@ import { prisma } from '@galaxy/db';
 import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { adminProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = prisma as any;
+const db = prisma;
 
 function generateCSV(rows: Array<Record<string, unknown>>, columns: string[]): string {
   const header = columns.join(',');

@@ -3,7 +3,7 @@ import { prisma } from '@galaxy/db';
 import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Booking has no completedAt in Prisma schema (legacy orderBy)
 const db = prisma as any;
 
 // Curated aftercare tips by service category — vetted by beauty professionals

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
@@ -19,12 +18,11 @@ const TYPE_LABELS: Record<string, string> = {
 
 export default function BeautyJournalPage(): JSX.Element {
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = (api as any).beautyJournal.list.useQuery({
+  const { data, isLoading, isError, refetch } = api.beautyJournal.list.useQuery({
     page: 1,
     limit: 20,
-  }) as any;
-  const createMut = (api as any).beautyJournal.create.useMutation({
+  });
+  const createMut = api.beautyJournal.create.useMutation({
     onSuccess: () => {
       refetch();
       setContent('');
@@ -34,7 +32,7 @@ export default function BeautyJournalPage(): JSX.Element {
       addToast('success', 'تمت الإضافة لليوميات');
     },
   });
-  const deleteMut = (api as any).beautyJournal.delete.useMutation({
+  const deleteMut = api.beautyJournal.delete.useMutation({
     onSuccess: () => {
       refetch();
       addToast('success', 'تم الحذف');
@@ -45,7 +43,7 @@ export default function BeautyJournalPage(): JSX.Element {
   const [mood, setMood] = useState(0);
   const [serviceType, setServiceType] = useState('');
 
-  const entries = (data ?? []) as Array<Record<string, any>>;
+  const entries = data ?? [];
 
   return (
     <DashboardLayout userRole="CUSTOMER">
@@ -103,7 +101,8 @@ export default function BeautyJournalPage(): JSX.Element {
                     title: title || undefined,
                     content: content.trim(),
                     mood: mood || undefined,
-                    serviceType: serviceType || undefined,
+                    serviceType: (serviceType || undefined) as
+                      (typeof SERVICE_TYPES)[number] | undefined,
                   });
               }}
               className="w-full"
@@ -123,7 +122,7 @@ export default function BeautyJournalPage(): JSX.Element {
           <EmptyState title="لا توجد يوميات" description="ابدئي بتدوين أول تجربة جمالية" />
         ) : (
           <div className="space-y-4">
-            {entries.map((e: Record<string, any>) => (
+            {entries.map((e) => (
               <Card key={e.id} padding="md" className="relative group">
                 <button
                   onClick={() => deleteMut.mutate({ id: e.id })}

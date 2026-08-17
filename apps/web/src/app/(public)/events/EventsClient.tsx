@@ -29,10 +29,23 @@ const EVENT_TYPES = [
 export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): JSX.Element {
   const [activeType, setActiveType] = useState<string | null>(null);
 
-  const { data, isLoading, isError, refetch } = (api as any).beautyEvents.list.useQuery(
-    {},
-    { initialData: initialEvents as any },
-  ) as { data: Event[] | undefined; isLoading: boolean; isError: boolean; refetch: () => void };
+  const { data, isLoading, isError, refetch } = (
+    api as unknown as {
+      beautyEvents: {
+        list: {
+          useQuery: (
+            input: Record<string, never>,
+            opts: { initialData: unknown[] },
+          ) => {
+            data: Event[] | undefined;
+            isLoading: boolean;
+            isError: boolean;
+            refetch: () => void;
+          };
+        };
+      };
+    }
+  ).beautyEvents.list.useQuery({}, { initialData: initialEvents });
 
   const events: Event[] = data ?? (isLoading ? (initialEvents as Event[]) : []);
   const filteredEvents = activeType ? events.filter((e) => e.eventType === activeType) : events;

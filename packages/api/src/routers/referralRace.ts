@@ -3,8 +3,7 @@ import { prisma } from '@galaxy/db';
 import { BULK_PAGE_SIZE, DEFAULT_PAGE_SIZE, DEFAULT_APP_URL, MS_PER_DAY } from '@galaxy/shared';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = prisma as any;
+const db = prisma;
 
 const CAMPAIGN_DURATION_DAYS = 14;
 const PRIZES = [' جلسة مجانية', ' خصم ٥٠٪', ' خصم ٣٠٪'];

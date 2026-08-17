@@ -34,8 +34,6 @@ interface TxnPage {
 export default function WalletScreen(): JSX.Element {
   const balance = trpc.wallet.getBalance.useQuery();
   const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 20 });
-  // Experimental routes — not yet in the typed tRPC router
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const loyalty = trpc.loyalty.myAccount.useQuery();
   const cashback = trpc.cashback.history.useQuery({ page: 1, limit: 20 });
 

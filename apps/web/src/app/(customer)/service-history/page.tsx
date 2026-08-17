@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { api } from '@/lib/trpc';
@@ -15,24 +14,23 @@ import {
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function ServiceHistoryPage(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery({ limit: 50 }) as any;
-  const bookings = (data?.bookings ?? []) as Array<Record<string, any>>;
+  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery({ limit: 50 });
+  const bookings = data?.bookings ?? [];
 
   // Group by service for reorder suggestions
   const serviceCounts: Record<
     number,
-    { count: number; lastDate: string; title: string; price: number }
+    { count: number; lastDate: Date; title: string; price: number }
   > = {};
   bookings
-    .filter((b: any) => b.status === 'COMPLETED')
-    .forEach((b: any) => {
+    .filter((b) => b.status === 'COMPLETED')
+    .forEach((b) => {
       const sid = b.serviceId;
       if (!serviceCounts[sid]) {
         serviceCounts[sid] = {
           count: 0,
           lastDate: b.createdAt,
-          title: ar((b.service as any)?.titleJson) || `خدمة #${sid}`,
+          title: ar(b.service?.titleJson) || `خدمة #${sid}`,
           price: Number(b.totalAmount),
         };
       }
@@ -45,7 +43,7 @@ export default function ServiceHistoryPage(): JSX.Element {
     .slice(0, 6);
 
   const recentBookings = [...bookings].sort(
-    (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   );
 
   return (
@@ -89,7 +87,7 @@ export default function ServiceHistoryPage(): JSX.Element {
             <EmptyState title="لا توجد حجوزات سابقة" />
           ) : (
             <div className="space-y-3">
-              {recentBookings.slice(0, 15).map((b: Record<string, any>, i: number) => (
+              {recentBookings.slice(0, 15).map((b, i) => (
                 <Card key={b.id || i} padding="sm">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">

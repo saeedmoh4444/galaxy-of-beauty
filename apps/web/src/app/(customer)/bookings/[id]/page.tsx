@@ -32,11 +32,7 @@ export default function BookingDetailPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
   const bookingId = Number(id);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const query = api.bookings.getById.useQuery(
-    { id: bookingId },
-    { enabled: !isNaN(bookingId) },
-  ) as any;
+  const query = api.bookings.getById.useQuery({ id: bookingId }, { enabled: !isNaN(bookingId) });
   const booking = query.data;
 
   if (query.isLoading)
@@ -80,9 +76,9 @@ export default function BookingDetailPage(): JSX.Element {
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-500">الخدمة</span>
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               <span className="font-semibold">
-                {((booking.service as any)?.titleJson as Record<string, string>)?.ar || '—'}
+                {(booking.service as unknown as { titleJson?: Record<string, string> } | null)
+                  ?.titleJson?.ar || '—'}
               </span>
             </div>
             <div className="flex items-center justify-between">

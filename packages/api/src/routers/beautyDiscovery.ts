@@ -8,7 +8,7 @@ import {
 } from '@galaxy/shared';
 import { publicProcedure, customerProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Service.emoji not in Prisma schema (legacy select keys)
 const db = prisma as any;
 
 export const beautyDiscoveryRouter = router({

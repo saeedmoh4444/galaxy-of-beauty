@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
 import { useState } from 'react';
 
 export default function AdminCampaignsPage(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = api.campaigns.listAll.useQuery() as any;
-  const campaigns = (data ?? []) as Array<Record<string, any>>;
+  const { data, isLoading, isError, refetch } = api.campaigns.listAll.useQuery();
+  const campaigns = data ?? [];
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState({
     nameAr: '',
@@ -39,15 +37,15 @@ export default function AdminCampaignsPage(): JSX.Element {
         <EmptyState title="لا توجد حملات" />
       ) : (
         <div className="space-y-3">
-          {campaigns.map((c: Record<string, any>) => (
+          {campaigns.map((c) => (
             <Card key={c.id} padding="md">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-bold">{(c.nameJson as Record<string, string>)?.ar}</h3>
                   <p className="text-sm text-text-secondary">
                     {c.discountType === 'percent'
-                      ? `-${c.discountValue}%`
-                      : `-${c.discountValue} ر.س`}
+                      ? `-${c.discountValue as unknown as number}%`
+                      : `-${c.discountValue as unknown as number} ر.س`}
                   </p>
                 </div>
                 <span

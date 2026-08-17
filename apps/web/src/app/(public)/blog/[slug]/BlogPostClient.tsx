@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import { ErrorAlert, Button } from '@galaxy/ui';
 import { ShareButtons } from '@/components/ShareButtons';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
@@ -38,15 +39,13 @@ export function BlogPostClient({
     isLoading,
     isError,
     refetch,
-  } = (api as any).blog.getBySlug.useQuery(
+  } = api.blog.getBySlug.useQuery(
     { slug },
-    { enabled: !!slug, initialData: initialPost as BlogPost | null | undefined },
-  ) as {
-    data: BlogPost | null | undefined;
-    isLoading: boolean;
-    isError: boolean;
-    refetch: () => void;
-  };
+    {
+      enabled: !!slug,
+      initialData: initialPost as unknown as RouterOutputs['blog']['getBySlug'],
+    },
+  );
 
   const post = clientPost ?? (initialPost as BlogPost | null);
 

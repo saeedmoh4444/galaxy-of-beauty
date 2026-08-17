@@ -3,8 +3,7 @@ import { prisma } from '@galaxy/db';
 import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
 import { customerProcedure, router, requireFeatureFlag } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = prisma as any;
+const db = prisma;
 
 const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.BRIDAL_CONCIERGE);
 

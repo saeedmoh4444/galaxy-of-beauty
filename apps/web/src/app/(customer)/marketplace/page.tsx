@@ -7,18 +7,19 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function MarketplacePage(): JSX.Element {
   const [search, setSearch] = useState('');
-  const products = (api as any).marketplace?.products?.useQuery?.({
+  const products = api.marketplace.products.useQuery({
     search: search || undefined,
     page: 1,
     limit: 24,
-  }) as any;
-  const cart = (api as any).marketplace?.cart?.useQuery?.() as any;
-  const items = (products?.data?.items ?? []) as any[];
-  const cartCount = ((cart?.data ?? []) as any[]).length;
+  });
+  const cart = api.marketplace.cart.useQuery();
+  const items = (products?.data?.items ?? []) as Array<Record<string, unknown>>;
+  const cartCount = cart?.data?.length ?? 0;
+  const addToCartMut = api.marketplace.addToCart.useMutation();
 
   const handleAddToCart = async (pid: number) => {
     try {
-      await (api as any).marketplace.addToCart.mutate({ productId: pid });
+      await addToCartMut.mutateAsync({ productId: pid });
     } catch {
       /* noop */
     }
@@ -50,17 +51,17 @@ export default function MarketplacePage(): JSX.Element {
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((p: any) => (
+            {items.map((p) => (
               <div
-                key={p.id}
+                key={p.id as number}
                 className="rounded-2xl border border-gray-100 bg-white p-4 dark:border-gray-800 dark:bg-gray-900"
               >
-                <span className="text-4xl">{p.emoji}</span>
+                <span className="text-4xl">{p.emoji as string}</span>
                 <h4 className="mt-2 text-sm font-bold text-text-primary dark:text-gray-100">
-                  {p.nameAr ?? p.titleAr}
+                  {(p.nameAr as string) ?? (p.titleAr as string)}
                 </h4>
                 <p className="mt-1 text-xs text-text-tertiary dark:text-gray-500 line-clamp-2">
-                  {p.descAr}
+                  {p.descAr as string}
                 </p>
                 <div className="mt-3 flex items-center justify-between">
                   <span className="text-lg font-extrabold text-rose-600 dark:text-rose-400">
@@ -68,7 +69,7 @@ export default function MarketplacePage(): JSX.Element {
                   </span>
                   <button
                     type="button"
-                    onClick={() => handleAddToCart(p.id)}
+                    onClick={() => handleAddToCart(p.id as number)}
                     className="rounded-xl bg-rose-600 px-4 py-2 text-xs font-bold text-white hover:bg-rose-700 transition-colors"
                   >
                     أضيفي

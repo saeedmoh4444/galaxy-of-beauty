@@ -10,7 +10,7 @@ import { useToast } from '@galaxy/ui';
 export default function AddressesPage(): JSX.Element {
   const { addToast } = useToast();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = api.addresses.list.useQuery() as any;
+  const { data, isLoading, isError, refetch } = api.addresses.list.useQuery();
   const addresses = (data ?? []) as Array<Record<string, any>>;
 
   const [showForm, setShowForm] = useState(false);

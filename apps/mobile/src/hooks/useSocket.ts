@@ -79,17 +79,17 @@ export function useSocket(): void {
       socketRef.current = socket;
 
       socket.on('connect', () => {
-        // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console -- socket lifecycle diagnostics
         console.log('[Socket] Connected:', socket?.id);
       });
 
       socket.on('connect_error', (err: Error) => {
-        // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console -- socket lifecycle diagnostics
         console.error('[Socket] Connection error:', err.message);
       });
 
       socket.on('disconnect', (reason: string) => {
-        // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console -- socket lifecycle diagnostics
         console.log('[Socket] Disconnected:', reason);
       });
 

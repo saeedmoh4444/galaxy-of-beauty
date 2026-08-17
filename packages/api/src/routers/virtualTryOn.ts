@@ -140,8 +140,7 @@ export const virtualTryOnRouter = router({
           take: SMALL_PAGE_SIZE,
           orderBy: { isFeatured: 'desc' },
         });
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return products.map((p: any) => ({
+        return products.map((p) => ({
           id: p.id,
           nameAr: (p.nameJson as Record<string, string>)?.ar ?? '',
           nameEn: (p.nameJson as Record<string, string>)?.en ?? '',
