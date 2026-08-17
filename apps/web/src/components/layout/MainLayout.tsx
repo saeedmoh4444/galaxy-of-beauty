@@ -4,29 +4,32 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LanguageToggle } from '@/components/LanguageToggle';
 import { BackToTop } from '@/components/BackToTop';
 import { NotificationBadge } from '@/components/NotificationBadge';
 import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
+import { useLocale } from '@/components/LocaleProvider';
 
-const navLinks = [
-  { href: '/discover', labelAr: ' اكتشفي', labelEn: 'Discover' },
-  { href: '/search', labelAr: '', labelEn: 'Search' },
-  { href: '/marketplace', labelAr: 'المتجر', labelEn: 'Marketplace' },
-  { href: '/mommy-and-me', labelAr: 'أم وابنتها', labelEn: 'Mommy & Me' },
-  { href: '/lookbook', labelAr: 'لوك بوك', labelEn: 'Lookbook' },
-  { href: '/bundles', labelAr: 'اصنعي باقتكِ', labelEn: 'Bundles' },
-  { href: '/beauty-quiz', labelAr: 'اختبار الجمال', labelEn: 'Quiz' },
-  { href: '/beauty-packages', labelAr: 'الباقات', labelEn: 'Packages' },
-  { href: '/bridal-concierge', labelAr: 'تخطيط الزفاف', labelEn: 'Bridal' },
-  { href: '/campaigns', labelAr: 'العروض', labelEn: 'Deals' },
-  { href: '/events', labelAr: 'الفعاليات', labelEn: 'Events' },
-  { href: '/blog', labelAr: 'المدونة', labelEn: 'Blog' },
+const navLinks: { href: string; key: TranslationKey }[] = [
+  { href: '/discover', key: 'nav.discover' },
+  { href: '/search', key: 'nav.search' },
+  { href: '/marketplace', key: 'nav.marketplace' },
+  { href: '/mommy-and-me', key: 'nav.mommyAndMe' },
+  { href: '/lookbook', key: 'nav.lookbook' },
+  { href: '/bundles', key: 'nav.bundles' },
+  { href: '/beauty-quiz', key: 'nav.beautyQuiz' },
+  { href: '/beauty-packages', key: 'nav.beautyPackages' },
+  { href: '/bridal-concierge', key: 'nav.bridalConcierge' },
+  { href: '/campaigns', key: 'nav.campaigns' },
+  { href: '/events', key: 'nav.events' },
+  { href: '/blog', key: 'nav.blog' },
 ];
 
 export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
   const pathname = usePathname();
+  const { t } = useLocale();
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -36,12 +39,12 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
           <Link href="/" className="flex items-center gap-2">
             <Image
               src="/logo.png"
-              alt="جالكسي بيوتي"
+              alt={t('common.brandName')}
               width={40}
               height={40}
               className="h-10 w-10 rounded-lg object-cover"
             />
-            <span className="text-xl font-bold text-brand-600">جالكسي بيوتي</span>
+            <span className="text-xl font-bold text-brand-600">{t('common.brandName')}</span>
           </Link>
 
           <nav className="hidden items-center gap-6 md:flex">
@@ -55,7 +58,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
                     : 'text-gray-600 dark:text-gray-400'
                 }`}
               >
-                {link.labelAr}
+                {t(link.key)}
               </Link>
             ))}
           </nav>
@@ -68,13 +71,13 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
               href="/login"
               className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
             >
-              دخول
+              {t('auth.login')}
             </Link>
             <Link
               href="/register"
               className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-700"
             >
-              إنشاء حساب
+              {t('auth.register')}
             </Link>
           </div>
         </div>
@@ -92,73 +95,76 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
               <Link href="/" className="flex items-center gap-2">
                 <Image
                   src="/logo.png"
-                  alt="جالكسي بيوتي"
+                  alt={t('common.brandName')}
                   width={40}
                   height={40}
                   className="h-10 w-10 rounded-lg object-cover"
                 />
-                <span className="text-lg font-bold text-brand-600">جالكسي بيوتي</span>
+                <span className="text-lg font-bold text-brand-600">{t('common.brandName')}</span>
               </Link>
-              <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
-                منصتكِ للجمال والعناية — احجزي خدمات التجميل المنزلية بكل سهولة
-              </p>
+              <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">{t('footer.tagline')}</p>
             </div>
             <div>
-              <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">تصفحي</h4>
+              <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">
+                {t('footer.browse')}
+              </h4>
               <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
                 <Link href="/services" className="block hover:text-brand-600">
-                  الخدمات
+                  {t('nav.services')}
                 </Link>
                 <Link href="/technicians" className="block hover:text-brand-600">
-                  الفنيات
+                  {t('nav.technicians')}
                 </Link>
                 <Link href="/marketplace" className="block hover:text-brand-600">
-                  المتجر
+                  {t('nav.marketplace')}
                 </Link>
                 <Link href="/blog" className="block hover:text-brand-600">
-                  المدونة
-                </Link>
-              </div>
-            </div>
-            <div>
-              <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">المساعدة</h4>
-              <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
-                <Link href="/ai-chat" className="block hover:text-brand-600">
-                  تحدثي مع مجرة الجمال
-                </Link>
-                <Link href="/bookings/create" className="block hover:text-brand-600">
-                  احجزي الآن
-                </Link>
-                <Link href="/subscription-boxes" className="block hover:text-brand-600">
-                  الصناديق الشهرية
-                </Link>
-                <Link href="/services/surprise-me" className="block hover:text-brand-600">
-                  فاجئيني
+                  {t('nav.blog')}
                 </Link>
               </div>
             </div>
             <div>
               <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">
-                روابط سريعة
+                {t('footer.help')}
+              </h4>
+              <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
+                <Link href="/ai-chat" className="block hover:text-brand-600">
+                  {t('footer.chatBeautyGalaxy')}
+                </Link>
+                <Link href="/bookings/create" className="block hover:text-brand-600">
+                  {t('button.bookNow')}
+                </Link>
+                <Link href="/subscription-boxes" className="block hover:text-brand-600">
+                  {t('footer.subscriptionBoxes')}
+                </Link>
+                <Link href="/services/surprise-me" className="block hover:text-brand-600">
+                  {t('footer.surpriseMe')}
+                </Link>
+              </div>
+            </div>
+            <div>
+              <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">
+                {t('footer.quickLinks')}
               </h4>
               <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
                 <Link href="/login" className="block hover:text-brand-600">
-                  تسجيل الدخول
+                  {t('auth.login')}
                 </Link>
                 <Link href="/register" className="block hover:text-brand-600">
-                  إنشاء حساب
+                  {t('auth.register')}
                 </Link>
                 <Link href="/dashboard" className="block hover:text-brand-600">
-                  لوحة التحكم
+                  {t('nav.dashboard')}
                 </Link>
                 <Link href="/gift-cards" className="block hover:text-brand-600">
-                  بطاقات الهدية
+                  {t('nav.giftCards')}
                 </Link>
               </div>
             </div>
           </div>
           <div className="mt-10 border-t border-gray-100 pt-6 text-center text-sm text-gray-400 dark:border-gray-800">
-            © {new Date().getFullYear()} Galaxy of Beauty — جالكسي بيوتي. جميع الحقوق محفوظة.
+            © {new Date().getFullYear()} Galaxy of Beauty — {t('common.brandName')}.{' '}
+            {t('footer.rights')}
           </div>
         </div>
       </footer>

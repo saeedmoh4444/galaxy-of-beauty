@@ -8,6 +8,10 @@
  * @type {import('tailwindcss').Config}
  */
 module.exports = {
+  // Class strategy: the app toggles `.dark` on <html> (ThemeToggle +
+  // pre-paint init script). 'media' (the Tailwind default) would make
+  // every dark: variant follow the OS preference instead.
+  darkMode: 'class',
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {

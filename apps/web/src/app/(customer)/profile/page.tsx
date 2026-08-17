@@ -16,6 +16,8 @@ import {
   InlineEdit,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import { useRouter } from 'next/navigation';
 
 type ProfileUser = NonNullable<RouterOutput['auth']['me']>;
 type ProfileAddress = RouterOutput['addresses']['list'][number];
@@ -67,8 +69,12 @@ export default function ProfilePage(): JSX.Element {
     await updateProfileMut.mutateAsync({ phone });
     return phone;
   };
+  const router = useRouter();
+  const { setLocale } = useLocale();
   const saveLanguage = (lang: 'ar' | 'en') => {
-    updateProfileMut.mutate({ preferredLanguage: lang });
+    updateProfileMut.mutate({ preferredLanguage: lang }); // cross-device persistence
+    setLocale(lang); // cookie + context + html attrs (immediate flip)
+    router.refresh();
   };
 
   // -- Addresses tab --

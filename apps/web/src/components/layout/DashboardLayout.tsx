@@ -6,109 +6,115 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { useAuth } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { LanguageToggle } from '@/components/LanguageToggle';
 
-const customerLinks = [
-  { href: '/dashboard', labelAr: 'لوحة التحكم', labelEn: 'Dashboard', icon: '' },
-  { href: '/bookings', labelAr: 'حجوزاتي', labelEn: 'My Bookings', icon: '' },
-  { href: '/bookings/create', labelAr: 'حجز جديد', labelEn: 'New Booking', icon: '' },
-  { href: '/wallet', labelAr: 'المحفظة', labelEn: 'Wallet', icon: '' },
-  { href: '/wishlist', labelAr: 'المفضلة', labelEn: 'Wishlist', icon: '️' },
-  { href: '/womens-services', labelAr: 'خدمات نسائية', labelEn: 'Women', icon: '' },
-  { href: '/dna-beauty', labelAr: 'تحليل الجينات', labelEn: 'DNA Beauty', icon: '' },
-  { href: '/ride-hailing', labelAr: 'توصيل للموعد', labelEn: 'Ride', icon: '' },
-  { href: '/last-mile', labelAr: 'توصيل سريع', labelEn: 'Delivery', icon: '' },
-  { href: '/calendar-sync', labelAr: 'مزامنة التقويم', labelEn: 'Calendar', icon: '️' },
-  { href: '/bnpl', labelAr: 'تقسيط', labelEn: 'BNPL', icon: '' },
-  { href: '/tech-onboarding', labelAr: 'تسجيل فنية', labelEn: 'Onboarding', icon: '' },
-  { href: '/ai-assistant', labelAr: 'المساعدة الذكية', labelEn: 'AI Assistant', icon: '' },
-  { href: '/beauty-bingo', labelAr: 'Beauty Bingo', labelEn: 'Bingo', icon: '' },
-  { href: '/service-wishlist', labelAr: 'متابعة الأسعار', labelEn: 'Wishlist', icon: '' },
-  { href: '/gift-card-market', labelAr: 'سوق البطاقات', labelEn: 'Gift Market', icon: '' },
-  { href: '/live-chat', labelAr: 'الدعم المباشر', labelEn: 'Live Chat', icon: '' },
-  { href: '/vendor-portal', labelAr: 'بوابة البائعين', labelEn: 'Vendor', icon: '' },
-  { href: '/certification-quiz', labelAr: 'الشهادات', labelEn: 'Certification', icon: '' },
-  { href: '/tech-waitlist', labelAr: 'قائمة الانتظار', labelEn: 'Waitlist', icon: '' },
-  { href: '/night-mode', labelAr: 'روتين ليلي', labelEn: 'Night Mode', icon: '' },
-  { href: '/travel-kit', labelAr: 'حقيبة السفر', labelEn: 'Travel Kit', icon: '' },
-  { href: '/expiry-tracker', labelAr: 'صلاحية المنتجات', labelEn: 'Expiry', icon: '️' },
-  { href: '/price-drop-alerts', labelAr: 'تنبيهات الأسعار', labelEn: 'Price Drops', icon: '' },
-  { href: '/loyalty-punch-card', labelAr: 'بطاقة الولاء', labelEn: 'Punch Card', icon: '' },
-  { href: '/routine-scheduler', labelAr: 'جدول الروتين', labelEn: 'Routine', icon: '' },
-  { href: '/booking-checklist', labelAr: 'قائمة التحضير', labelEn: 'Checklist', icon: '' },
-  { href: '/hair-color-sim', labelAr: 'محاكي الشعر', labelEn: 'Hair Color', icon: '‍️' },
-  { href: '/spa-planner', labelAr: 'مخطط سبا', labelEn: 'Spa Planner', icon: '️' },
-  { href: '/restock-reminder', labelAr: 'تجديد المنتجات', labelEn: 'Restock', icon: '' },
-  { href: '/skin-diary', labelAr: 'يوميات البشرة', labelEn: 'Skin Diary', icon: '' },
-  { href: '/pen-pal', labelAr: 'Beauty Pen Pal', labelEn: 'Pen Pal', icon: '' },
-  { href: '/sale-alerts', labelAr: 'تنبيهات العروض', labelEn: 'Sale Alerts', icon: '' },
-  { href: '/style-match', labelAr: 'Style Match', labelEn: 'Style Match', icon: '' },
-  { href: '/product-scanner', labelAr: 'فحص المنتجات', labelEn: 'Scanner', icon: '' },
-  { href: '/vip-membership', labelAr: 'عضوية VIP', labelEn: 'VIP', icon: '' },
-  { href: '/ai-routine', labelAr: 'روتين ذكي', labelEn: 'AI Routine', icon: '' },
-  { href: '/box-builder', labelAr: 'صندوق التجميل', labelEn: 'Box Builder', icon: '' },
-  { href: '/service-warranty', labelAr: 'ضمان الخدمة', labelEn: 'Warranty', icon: '️' },
-  { href: '/wellness-tracker', labelAr: 'متعقب العافية', labelEn: 'Wellness', icon: '' },
-  { href: '/home-service', labelAr: 'خدمة منزلية', labelEn: 'Home Service', icon: '' },
-  { href: '/beauty-analytics', labelAr: 'تحليلاتي', labelEn: 'Analytics', icon: '' },
-  { href: '/birthday-rewards', labelAr: 'هدية الميلاد', labelEn: 'Birthday', icon: '' },
-  { href: '/post-care', labelAr: 'العناية بعد الخدمة', labelEn: 'Aftercare', icon: '‍️' },
-  { href: '/mood-board', labelAr: 'لوحة الإلهام', labelEn: 'Mood Board', icon: '' },
-  { href: '/family-account', labelAr: 'حساب العائلة', labelEn: 'Family', icon: '‍‍' },
-  { href: '/virtual-try-on', labelAr: 'تجربة افتراضية', labelEn: 'Try-On AR', icon: '' },
-  { href: '/bridal-concierge', labelAr: 'تخطيط الزفاف', labelEn: 'Bridal', icon: '' },
-  { href: '/group-bookings', labelAr: 'مجموعات', labelEn: 'Groups', icon: '‍️' },
-  { href: '/challenges', labelAr: 'التحديات', labelEn: 'Challenges', icon: '' },
-  { href: '/loyalty', labelAr: 'الولاء', labelEn: 'Loyalty', icon: '' },
-  { href: '/promo', labelAr: 'كود الخصم', labelEn: 'Promo Code', icon: '️' },
-  { href: '/saved-cards', labelAr: 'البطاقات', labelEn: 'Cards', icon: '' },
-  { href: '/notifications', labelAr: 'الإشعارات', labelEn: 'Notifications', icon: '' },
-  { href: '/skin-analysis', labelAr: 'تحليل البشرة', labelEn: 'Skin Analysis', icon: '' },
-  { href: '/ai-chat', labelAr: 'مجرة الجمال', labelEn: 'Beauty Galaxy', icon: '' },
-  { href: '/subscriptions', labelAr: 'الاشتراكات', labelEn: 'Subscriptions', icon: '' },
-  { href: '/marketplace', labelAr: 'المتجر', labelEn: 'Marketplace', icon: '️' },
-  { href: '/subscription-boxes', labelAr: 'الصناديق الشهرية', labelEn: 'Boxes', icon: '' },
-  { href: '/cart', labelAr: 'سلة التسوق', labelEn: 'Cart', icon: '' },
-  { href: '/cashback', labelAr: 'استرداد نقدي', labelEn: 'Cashback', icon: '' },
-  { href: '/social', labelAr: 'مجتمع الجمال', labelEn: 'Community', icon: '' },
-  { href: '/video', labelAr: 'استشارات فيديو', labelEn: 'Video', icon: '' },
-  { href: '/smart-schedule', labelAr: 'جدولة ذكية', labelEn: 'Smart Schedule', icon: '' },
-  { href: '/profile', labelAr: 'الملف الشخصي', labelEn: 'Profile', icon: '' },
-  { href: '/addresses', labelAr: 'العناوين', labelEn: 'Addresses', icon: '' },
+type NavLink = { href: string; key: TranslationKey; icon: string };
+
+const customerLinks: NavLink[] = [
+  { href: '/dashboard', key: 'nav.dashboard', icon: '' },
+  { href: '/bookings', key: 'nav.myBookings', icon: '' },
+  { href: '/bookings/create', key: 'nav.bookings.create', icon: '' },
+  { href: '/wallet', key: 'nav.wallet', icon: '' },
+  { href: '/wishlist', key: 'nav.wishlist', icon: '️' },
+  { href: '/womens-services', key: 'nav.womens-services', icon: '' },
+  { href: '/dna-beauty', key: 'nav.dna-beauty', icon: '' },
+  { href: '/ride-hailing', key: 'nav.ride-hailing', icon: '' },
+  { href: '/last-mile', key: 'nav.last-mile', icon: '' },
+  { href: '/calendar-sync', key: 'nav.calendar-sync', icon: '️' },
+  { href: '/bnpl', key: 'nav.bnpl', icon: '' },
+  { href: '/tech-onboarding', key: 'nav.tech-onboarding', icon: '' },
+  { href: '/ai-assistant', key: 'nav.ai-assistant', icon: '' },
+  { href: '/beauty-bingo', key: 'nav.beauty-bingo', icon: '' },
+  { href: '/service-wishlist', key: 'nav.service-wishlist', icon: '' },
+  { href: '/gift-card-market', key: 'nav.gift-card-market', icon: '' },
+  { href: '/live-chat', key: 'nav.live-chat', icon: '' },
+  { href: '/vendor-portal', key: 'nav.vendor-portal', icon: '' },
+  { href: '/certification-quiz', key: 'nav.certification-quiz', icon: '' },
+  { href: '/tech-waitlist', key: 'nav.tech-waitlist', icon: '' },
+  { href: '/night-mode', key: 'nav.night-mode', icon: '' },
+  { href: '/travel-kit', key: 'nav.travel-kit', icon: '' },
+  { href: '/expiry-tracker', key: 'nav.expiry-tracker', icon: '️' },
+  { href: '/price-drop-alerts', key: 'nav.price-drop-alerts', icon: '' },
+  { href: '/loyalty-punch-card', key: 'nav.loyalty-punch-card', icon: '' },
+  { href: '/routine-scheduler', key: 'nav.routine-scheduler', icon: '' },
+  { href: '/booking-checklist', key: 'nav.booking-checklist', icon: '' },
+  { href: '/hair-color-sim', key: 'nav.hair-color-sim', icon: '‍️' },
+  { href: '/spa-planner', key: 'nav.spa-planner', icon: '️' },
+  { href: '/restock-reminder', key: 'nav.restock-reminder', icon: '' },
+  { href: '/skin-diary', key: 'nav.skin-diary', icon: '' },
+  { href: '/pen-pal', key: 'nav.pen-pal', icon: '' },
+  { href: '/sale-alerts', key: 'nav.sale-alerts', icon: '' },
+  { href: '/style-match', key: 'nav.style-match', icon: '' },
+  { href: '/product-scanner', key: 'nav.product-scanner', icon: '' },
+  { href: '/vip-membership', key: 'nav.vip-membership', icon: '' },
+  { href: '/ai-routine', key: 'nav.ai-routine', icon: '' },
+  { href: '/box-builder', key: 'nav.box-builder', icon: '' },
+  { href: '/service-warranty', key: 'nav.service-warranty', icon: '️' },
+  { href: '/wellness-tracker', key: 'nav.wellness-tracker', icon: '' },
+  { href: '/home-service', key: 'nav.home-service', icon: '' },
+  { href: '/beauty-analytics', key: 'nav.beauty-analytics', icon: '' },
+  { href: '/birthday-rewards', key: 'nav.birthday-rewards', icon: '' },
+  { href: '/post-care', key: 'nav.post-care', icon: '‍️' },
+  { href: '/mood-board', key: 'nav.mood-board', icon: '' },
+  { href: '/family-account', key: 'nav.family-account', icon: '‍‍' },
+  { href: '/virtual-try-on', key: 'nav.virtual-try-on', icon: '' },
+  { href: '/bridal-concierge', key: 'nav.bridal-concierge', icon: '' },
+  { href: '/group-bookings', key: 'nav.group-bookings', icon: '‍️' },
+  { href: '/challenges', key: 'nav.challenges', icon: '' },
+  { href: '/loyalty', key: 'nav.loyalty', icon: '' },
+  { href: '/promo', key: 'nav.promo', icon: '️' },
+  { href: '/saved-cards', key: 'nav.saved-cards', icon: '' },
+  { href: '/notifications', key: 'nav.notifications', icon: '' },
+  { href: '/skin-analysis', key: 'nav.skin-analysis', icon: '' },
+  { href: '/ai-chat', key: 'nav.ai-chat', icon: '' },
+  { href: '/subscriptions', key: 'nav.subscriptions', icon: '' },
+  { href: '/marketplace', key: 'nav.marketplace', icon: '️' },
+  { href: '/subscription-boxes', key: 'nav.subscription-boxes', icon: '' },
+  { href: '/cart', key: 'nav.cart', icon: '' },
+  { href: '/cashback', key: 'nav.cashback', icon: '' },
+  { href: '/social', key: 'nav.social', icon: '' },
+  { href: '/video', key: 'nav.video', icon: '' },
+  { href: '/smart-schedule', key: 'nav.smart-schedule', icon: '' },
+  { href: '/profile', key: 'nav.profile', icon: '' },
+  { href: '/addresses', key: 'nav.addresses', icon: '' },
 ];
 
-const technicianLinks = [
-  { href: '/tech/dashboard', labelAr: 'لوحة التحكم', labelEn: 'Dashboard', icon: '' },
-  { href: '/tech/slots', labelAr: 'المواعيد المتاحة', labelEn: 'Availability', icon: '' },
-  { href: '/tech/bookings', labelAr: 'الحجوزات', labelEn: 'Bookings', icon: '' },
-  { href: '/tech/earnings', labelAr: 'الأرباح', labelEn: 'Earnings', icon: '' },
-  { href: '/tech/performance', labelAr: 'أدائي', labelEn: 'Performance', icon: '' },
-  { href: '/tech/wallet', labelAr: 'المحفظة', labelEn: 'Wallet', icon: '' },
-  { href: '/tech/waitlist', labelAr: 'الطلبات المعلقة', labelEn: 'Pending', icon: '' },
-  { href: '/tech/gallery', labelAr: 'معرض الأعمال', labelEn: 'Gallery', icon: '️' },
-  { href: '/tech/calendar', labelAr: 'تقويم قوقل', labelEn: 'Calendar', icon: '' },
-  { href: '/tech/profile', labelAr: 'ملفي الشخصي', labelEn: 'Profile', icon: '' },
+const technicianLinks: NavLink[] = [
+  { href: '/tech/dashboard', key: 'nav.tech.dashboard', icon: '' },
+  { href: '/tech/slots', key: 'nav.tech.slots', icon: '' },
+  { href: '/tech/bookings', key: 'nav.tech.bookings', icon: '' },
+  { href: '/tech/earnings', key: 'nav.tech.earnings', icon: '' },
+  { href: '/tech/performance', key: 'nav.tech.performance', icon: '' },
+  { href: '/tech/wallet', key: 'nav.tech.wallet', icon: '' },
+  { href: '/tech/waitlist', key: 'nav.tech.waitlist', icon: '' },
+  { href: '/tech/gallery', key: 'nav.tech.gallery', icon: '️' },
+  { href: '/tech/calendar', key: 'nav.tech.calendar', icon: '' },
+  { href: '/tech/profile', key: 'nav.tech.profile', icon: '' },
 ];
 
-const adminLinks = [
-  { href: '/admin/dashboard', labelAr: 'لوحة التحكم', labelEn: 'Dashboard', icon: '' },
-  { href: '/admin/users', labelAr: 'المستخدمين', labelEn: 'Users', icon: '' },
-  { href: '/admin/technicians', labelAr: 'الفنيات', labelEn: 'Technicians', icon: '‍' },
-  { href: '/admin/services', labelAr: 'الخدمات', labelEn: 'Services', icon: '' },
-  { href: '/admin/categories', labelAr: 'الأقسام', labelEn: 'Categories', icon: '' },
-  { href: '/admin/areas', labelAr: 'المناطق', labelEn: 'Areas', icon: '' },
-  { href: '/admin/bookings', labelAr: 'الحجوزات', labelEn: 'Bookings', icon: '' },
-  { href: '/admin/finance', labelAr: 'المالية', labelEn: 'Finance', icon: '' },
-  { href: '/admin/flash-deals', labelAr: 'عروض فلاش', labelEn: 'Flash Deals', icon: '' },
-  { href: '/admin/beauty-events', labelAr: 'الفعاليات', labelEn: 'Events', icon: '' },
-  { href: '/admin/loyalty', labelAr: 'برامج الولاء', labelEn: 'Loyalty', icon: '' },
-  { href: '/admin/cms', labelAr: 'إدارة المحتوى', labelEn: 'CMS', icon: '' },
-  { href: '/admin/admin-tools', labelAr: 'أدوات المشرف', labelEn: 'Tools', icon: '️' },
-  { href: '/admin/group-bookings', labelAr: 'حجوزات جماعية', labelEn: 'Groups', icon: '' },
-  { href: '/admin/disputes', labelAr: 'النزاعات', labelEn: 'Disputes', icon: '' },
-  { href: '/admin/analytics', labelAr: 'التحليلات', labelEn: 'Analytics', icon: '' },
-  { href: '/admin/zatca', labelAr: 'زاتكا', labelEn: 'ZATCA', icon: '' },
-  { href: '/admin/settings', labelAr: 'الإعدادات', labelEn: 'Settings', icon: '️' },
+const adminLinks: NavLink[] = [
+  { href: '/admin/dashboard', key: 'nav.admin.dashboard', icon: '' },
+  { href: '/admin/users', key: 'nav.admin.users', icon: '' },
+  { href: '/admin/technicians', key: 'nav.admin.technicians', icon: '‍' },
+  { href: '/admin/services', key: 'nav.admin.services', icon: '' },
+  { href: '/admin/categories', key: 'nav.admin.categories', icon: '' },
+  { href: '/admin/areas', key: 'nav.admin.areas', icon: '' },
+  { href: '/admin/bookings', key: 'nav.admin.bookings', icon: '' },
+  { href: '/admin/finance', key: 'nav.admin.finance', icon: '' },
+  { href: '/admin/flash-deals', key: 'nav.admin.flash-deals', icon: '' },
+  { href: '/admin/beauty-events', key: 'nav.admin.beauty-events', icon: '' },
+  { href: '/admin/loyalty', key: 'nav.admin.loyalty', icon: '' },
+  { href: '/admin/cms', key: 'nav.admin.cms', icon: '' },
+  { href: '/admin/admin-tools', key: 'nav.admin.admin-tools', icon: '️' },
+  { href: '/admin/group-bookings', key: 'nav.admin.group-bookings', icon: '' },
+  { href: '/admin/disputes', key: 'nav.admin.disputes', icon: '' },
+  { href: '/admin/analytics', key: 'nav.admin.analytics', icon: '' },
+  { href: '/admin/zatca', key: 'nav.admin.zatca', icon: '' },
+  { href: '/admin/settings', key: 'nav.admin.settings', icon: '️' },
 ];
 
 export function DashboardLayout({
@@ -122,11 +128,12 @@ export function DashboardLayout({
   const pathname = usePathname();
   const router = useRouter();
   const { logout } = useAuth();
+  const { t } = useLocale();
   const links =
     userRole === 'ADMIN' ? adminLinks : userRole === 'TECHNICIAN' ? technicianLinks : customerLinks;
 
   const handleLogout = async () => {
-    if (!window.confirm('هل أنت متأكد من تسجيل الخروج؟')) return;
+    if (!window.confirm(t('confirm.logout'))) return;
     await logout();
     router.push('/login');
   };
@@ -138,12 +145,12 @@ export function DashboardLayout({
         <Link href="/" className="mb-8 flex items-center gap-2">
           <Image
             src="/logo.png"
-            alt="جالكسي بيوتي"
+            alt={t('common.brandName')}
             width={40}
             height={40}
             className="h-10 w-10 rounded-lg object-cover"
           />
-          <span className="text-xl font-bold text-brand-600">جالكسي بيوتي</span>
+          <span className="text-xl font-bold text-brand-600">{t('common.brandName')}</span>
         </Link>
         <nav className="space-y-1">
           {links.map((link) => (
@@ -157,7 +164,7 @@ export function DashboardLayout({
               }`}
             >
               <span>{link.icon}</span>
-              {link.labelAr}
+              {t(link.key)}
             </Link>
           ))}
         </nav>
@@ -165,17 +172,23 @@ export function DashboardLayout({
           onClick={handleLogout}
           className="mt-8 w-full rounded-lg px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950"
         >
-          تسجيل الخروج
+          {t('auth.logout')}
         </button>
       </aside>
 
-      {/* Content */}
-      <main
-        data-testid="dashboard-content"
-        className="flex-1 overflow-auto bg-gray-50 p-4 pb-20 md:p-6 md:pb-6 dark:bg-gray-950 animate-fade-in"
-      >
-        {children}
-      </main>
+      {/* Content — header strip hosts the language/theme toggles on all breakpoints */}
+      <div className="flex flex-1 flex-col overflow-auto">
+        <header className="sticky top-0 z-30 flex items-center justify-end gap-2 border-b border-gray-200 bg-white/80 px-4 py-2 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80">
+          <LanguageToggle />
+          <ThemeToggle />
+        </header>
+        <main
+          data-testid="dashboard-content"
+          className="flex-1 overflow-auto bg-gray-50 p-4 pb-20 md:p-6 md:pb-6 dark:bg-gray-950 animate-fade-in"
+        >
+          {children}
+        </main>
+      </div>
 
       {/* Mobile Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950 md:hidden">
@@ -189,7 +202,7 @@ export function DashboardLayout({
               }`}
             >
               <span className="text-lg">{link.icon}</span>
-              <span className="truncate max-w-[56px]">{link.labelAr}</span>
+              <span className="truncate max-w-[56px]">{t(link.key)}</span>
             </Link>
           ))}
         </div>

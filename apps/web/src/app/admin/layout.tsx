@@ -3,35 +3,40 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { useAuth } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { LanguageToggle } from '@/components/LanguageToggle';
 
-const adminLinks = [
-  { href: '/admin/dashboard', labelAr: 'لوحة التحكم', labelEn: 'Dashboard', icon: '' },
-  { href: '/admin/users', labelAr: 'المستخدمين', labelEn: 'Users', icon: '' },
-  { href: '/admin/technicians', labelAr: 'الفنيات', labelEn: 'Technicians', icon: '' },
-  { href: '/admin/categories', labelAr: 'الأقسام', labelEn: 'Categories', icon: '' },
-  { href: '/admin/services', labelAr: 'الخدمات', labelEn: 'Services', icon: '' },
-  { href: '/admin/bookings', labelAr: 'الحجوزات', labelEn: 'Bookings', icon: '' },
-  { href: '/admin/disputes', labelAr: 'النزاعات', labelEn: 'Disputes', icon: '️' },
-  { href: '/admin/finance', labelAr: 'المالية', labelEn: 'Finance', icon: '' },
-  { href: '/admin/settings', labelAr: 'الإعدادات', labelEn: 'Settings', icon: '️' },
-  { href: '/admin/gift-cards', labelAr: 'بطاقات الهدية', labelEn: 'Gift Cards', icon: '' },
-  { href: '/admin/packages', labelAr: 'الباقات', labelEn: 'Packages', icon: '' },
-  { href: '/admin/campaigns', labelAr: 'الحملات', labelEn: 'Campaigns', icon: '' },
-  { href: '/admin/blog', labelAr: 'المدونة', labelEn: 'Blog', icon: '' },
-  { href: '/admin/zatca', labelAr: 'الفاتورة الإلكترونية', labelEn: 'ZATCA', icon: '' },
-  { href: '/admin/analytics', labelAr: 'التحليلات المتقدمة', labelEn: 'Analytics', icon: '' },
-  { href: '/admin/monitoring', labelAr: 'مراقبة المنصة', labelEn: 'Monitoring', icon: '️' },
-  { href: '/admin/feature-flags', labelAr: 'إدارة الخصائص', labelEn: 'Feature Flags', icon: '' },
-  { href: '/admin/audit-log', labelAr: 'سجل التدقيق', labelEn: 'Audit Log', icon: '' },
-  { href: '/admin/reports', labelAr: 'التقارير', labelEn: 'Reports', icon: '' },
-  { href: '/admin/areas', labelAr: 'إدارة المناطق', labelEn: 'Areas', icon: '' },
+const adminLinks: { href: string; key: TranslationKey; icon: string }[] = [
+  { href: '/admin/dashboard', key: 'nav.admin.dashboard', icon: '' },
+  { href: '/admin/users', key: 'nav.admin.users', icon: '' },
+  { href: '/admin/technicians', key: 'nav.admin.technicians', icon: '' },
+  { href: '/admin/categories', key: 'nav.admin.categories', icon: '' },
+  { href: '/admin/services', key: 'nav.admin.services', icon: '' },
+  { href: '/admin/bookings', key: 'nav.admin.bookings', icon: '' },
+  { href: '/admin/disputes', key: 'nav.admin.disputes', icon: '️' },
+  { href: '/admin/finance', key: 'nav.admin.finance', icon: '' },
+  { href: '/admin/settings', key: 'nav.admin.settings', icon: '️' },
+  { href: '/admin/gift-cards', key: 'nav.admin.giftCards', icon: '' },
+  { href: '/admin/packages', key: 'nav.admin.packages', icon: '' },
+  { href: '/admin/campaigns', key: 'nav.admin.campaigns', icon: '' },
+  { href: '/admin/blog', key: 'nav.admin.blog', icon: '' },
+  { href: '/admin/zatca', key: 'nav.admin.zatca', icon: '' },
+  { href: '/admin/analytics', key: 'nav.admin.analytics', icon: '' },
+  { href: '/admin/monitoring', key: 'nav.admin.monitoring', icon: '️' },
+  { href: '/admin/feature-flags', key: 'nav.admin.featureFlags', icon: '' },
+  { href: '/admin/audit-log', key: 'nav.admin.auditLog', icon: '' },
+  { href: '/admin/reports', key: 'nav.admin.reports', icon: '' },
+  { href: '/admin/areas', key: 'nav.admin.areas', icon: '' },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }): ReactNode {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
+  const { t } = useLocale();
 
   // Redirect non-admins
   if (user && user.role !== 'ADMIN') {
@@ -43,7 +48,7 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
     <div className="flex min-h-screen">
       <aside className="hidden w-64 border-e border-edge bg-white p-4 md:block dark:border-gray-800 dark:bg-gray-950">
         <Link href="/admin/dashboard" className="mb-6 block text-lg font-bold text-brand-600">
-          لوحة الإدارة
+          {t('admin.title')}
         </Link>
         <nav className="space-y-0.5">
           {adminLinks.map((link) => (
@@ -57,7 +62,7 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
               }`}
             >
               <span>{link.icon}</span>
-              {link.labelAr}
+              {t(link.key)}
             </Link>
           ))}
         </nav>
@@ -66,7 +71,7 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
             href="/dashboard"
             className="block rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-surface-muted dark:text-gray-400 dark:hover:bg-gray-900"
           >
-            العودة للمتجر
+            {t('admin.backToStore')}
           </Link>
           <button
             onClick={async () => {
@@ -75,11 +80,19 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
             }}
             className="mt-1 w-full rounded-lg px-3 py-2 text-start text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950"
           >
-            تسجيل الخروج
+            {t('auth.logout')}
           </button>
         </div>
       </aside>
-      <main className="flex-1 overflow-auto bg-surface-muted p-6 dark:bg-gray-950">{children}</main>
+      <div className="flex flex-1 flex-col overflow-auto">
+        <header className="sticky top-0 z-30 flex items-center justify-end gap-2 border-b border-edge bg-white/80 px-4 py-2 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80">
+          <LanguageToggle />
+          <ThemeToggle />
+        </header>
+        <main className="flex-1 overflow-auto bg-surface-muted p-6 dark:bg-gray-950">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import { cookies } from 'next/headers';
+import type { Locale } from '@galaxy/shared';
 import Providers from '@/components/Providers';
+import { LocaleProvider } from '@/components/LocaleProvider';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { SkipLink } from '@/components/SkipLink';
 import { OfflineBanner } from '@/components/OfflineBanner';
@@ -58,18 +60,29 @@ export default async function RootLayout({
 }): Promise<ReactNode> {
   // Read locale from cookie (default: Arabic) — cookies() is async in Next.js 15
   const cookieStore = await cookies();
-  const locale = cookieStore.get('gob_lang')?.value || 'ar';
+  const locale: Locale = cookieStore.get('gob_lang')?.value === 'en' ? 'en' : 'ar';
   const isRTL = locale === 'ar';
+
+  // Pre-paint theme application: read localStorage before first paint so
+  // dark-mode users never see a light flash. Touches only documentElement
+  // (server HTML never renders the class; suppressHydrationWarning is set).
+  const themeInitScript = `(function(){try{var s=localStorage.getItem('theme');var d=s==='dark'||(!s&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();`;
 
   return (
     <html lang={locale} dir={isRTL ? 'rtl' : 'ltr'} suppressHydrationWarning>
+      <head>
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="min-h-screen bg-white font-sans text-text-primary antialiased dark:bg-gray-950 dark:text-gray-100">
         <SkipLink />
         <OfflineBanner />
         <main id="main-content" tabIndex={-1}>
           <ErrorBoundary>
             <ToastProvider>
-              <Providers>{children}</Providers>
+              <LocaleProvider initialLocale={locale}>
+                <Providers>{children}</Providers>
+              </LocaleProvider>
             </ToastProvider>
           </ErrorBoundary>
         </main>
