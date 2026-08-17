@@ -67,7 +67,7 @@ export default function BeautyAdvisorPage(): JSX.Element {
         </div>
 
         <div
-          className="flex-1 overflow-y-auto bg-white rounded-2xl border p-4 mb-3"
+          className="flex-1 overflow-y-auto bg-surface rounded-2xl border p-4 mb-3"
           style={{ minHeight: '300px' }}
         >
           <div className="space-y-4">

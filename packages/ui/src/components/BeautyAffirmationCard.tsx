@@ -64,7 +64,7 @@ export function BeautyAffirmationCard({ className = '' }: BeautyAffirmationCardP
       <button
         type="button"
         onClick={() => setIndex((p) => (p + 1) % AFFIRMATIONS.length)}
-        className="mt-3 w-full rounded-xl border border-pink-200 py-2 text-[10px] font-bold text-pink-700 hover:bg-white/60 dark:border-pink-800 dark:text-pink-300 transition-colors"
+        className="mt-3 w-full rounded-xl border border-pink-200 py-2 text-[10px] font-bold text-pink-700 hover:bg-white/60 dark:hover:bg-gray-800/60 dark:border-pink-800 dark:text-pink-300 transition-colors"
       >
         التأكيد التالي ←
       </button>
