@@ -19,17 +19,16 @@
 | ID    | Item                                             | Resolution                                                                                                                        |
 | ----- | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
 | P0-01 | Next.js 15 migration (8 high vulns, 14.2.35 EOL) | ✅ Next 15.5.23; `await params` on dynamic pages; web build + 168/168 e2e green                                                   |
+| P0-02 | womensServices.ts router split (3,626 lines)     | ✅ Router split to 153 lines in `f9d78d81` (Aug 12, pre-register); remaining 3,359-line static catalog split into 4 contiguous chunk files (2026-08-17) with order-pinning tests — merge preserves the categories endpoint order exactly |
 | P1-01 | Real ESLint setup across all workspaces          | ✅ 0 errors in all 6 code-bearing packages; web `.eslintrc.json` shadow duplicate removed                                         |
-| P1-03 | Test coverage: Tier 1 endpoints (was 9.5%)       | ✅ 578 tests; auth 2FA, booking state machine (72% of bookings.ts), payments, wallet, token cleanup, socket server (94%), worker handlers + wiring (81%), payfort gateway; ratchet 52/68/49/52 enforced |
+| P1-03 | Test coverage: Tier 1 endpoints (was 9.5%)       | ✅ 588 tests; auth 2FA, booking state machine (72% of bookings.ts), payments, wallet, token cleanup, socket server (94%), worker handlers + wiring (81%), payfort gateway, womensServices; ratchet 52/68/49/52 enforced |
 | P1-04 | Mobile app `any` budget (943 usages)             | ✅ 3 remaining                                                                                                                    |
 
 ## Active Debt Items
 
 ### P0 — Critical
 
-| ID    | Item                                         | Owner | Created  | Notes                                                    |
-| ----- | -------------------------------------------- | ----- | -------- | -------------------------------------------------------- |
-| P0-02 | womensServices.ts router split (3,626 lines) | —     | Aug 2026 | Emergency split: core / packages / specialists / privacy |
+None active — see Resolved.
 
 ### P1 — High
 
