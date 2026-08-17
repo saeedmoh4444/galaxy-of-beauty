@@ -21,7 +21,12 @@
     "test:integration": "turbo run test:integration",
     "test:e2e": "turbo run test:e2e",
     "audit:prod": "pnpm audit --prod",
-    "verify": "pnpm format:check && pnpm lint && pnpm type-check && pnpm db:validate && pnpm test:unit && pnpm build"
+    "verify": "pnpm format:check && pnpm lint && pnpm type-check && pnpm db:validate && pnpm test:unit && pnpm build",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,mjs,cjs}": "prettier --write",
+    "*.{json,md}": "prettier --write"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.65.0",
@@ -31,6 +36,8 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.3.0",
     "prettier": "^3.3.0",
     "turbo": "^2.0.0",
     "typescript": "^5.5.0"
