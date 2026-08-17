@@ -1,12 +1,15 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { customerProcedure, router } from '../trpc';
+import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
+import { customerProcedure, router, requireFeatureFlag } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = prisma as any;
 
+const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.BRIDAL_CONCIERGE);
+
 export const bridalConciergeRouter = router({
-  get: customerProcedure.query(async ({ ctx }) => {
+  get: customerProcedure.use(flag).query(async ({ ctx }) => {
     const c = await db.bridalConcierge.findUnique({
       where: { userId: ctx.user.id },
       include: { services: true },
@@ -14,6 +17,7 @@ export const bridalConciergeRouter = router({
     return c;
   }),
   upsert: customerProcedure
+    .use(flag)
     .input(
       z.object({
         weddingDate: z.string().datetime().optional(),
@@ -31,6 +35,7 @@ export const bridalConciergeRouter = router({
       });
     }),
   addService: customerProcedure
+    .use(flag)
     .input(
       z.object({
         serviceId: z.number(),
@@ -44,6 +49,7 @@ export const bridalConciergeRouter = router({
       return db.bridalService.create({ data: { conciergeId: c.id, ...input } });
     }),
   markTrialDone: customerProcedure
+    .use(flag)
     .input(z.object({ serviceId: z.number() }))
     .mutation(async ({ ctx, input }) => {
       return db.bridalService.updateMany({

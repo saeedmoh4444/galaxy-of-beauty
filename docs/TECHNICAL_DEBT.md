@@ -25,6 +25,7 @@
 | P1-03 | Test coverage: Tier 1 endpoints (was 9.5%)       | ✅ 580 tests; auth 2FA, booking state machine (72% of bookings.ts), payments, wallet, token cleanup, socket server (94%), worker handlers + wiring (81%), payfort gateway, womensServices, token reuse/family; ratchet 53/68/49/53 enforced |
 | —     | Broken check-constraints migration (found 2026-08-17) | ✅ `20260811_add_check_constraints` referenced unquoted camelCase columns (`total_amount`/`platform_fee`/`preferred_language`) and a non-existent `loyalty_tiers` table — would have failed `migrate deploy` on any fresh DB. Fixed in place (never applied anywhere); dev DB now carries all 6 constraints |
 | P1-04 | Mobile app `any` budget (943 usages)             | ✅ 3 remaining                                                                                                                    |
+| P2-01 | 12 experimental features need feature flags     | ✅ All 13 gated routers now fully behind requireFeatureFlag (3 gaps closed: beautyTrends.record, predictiveDemand.forecast, bridalConcierge — had no flag); feature_flags table was EMPTY (every gated procedure silently returned NOT_FOUND), now seeded enabled in db/seed.ts; feature-flags.test.ts (6 tests) pins the contract (2026-08-17) |
 | P1-05 | Refresh token family not enforced pre-Phase 3 data | ✅ Migration `20260817000000_refresh_token_family_backfill`: legacy rows (familyId='') each get their own family; column default now `gen_random_uuid()`. Reuse-detection revocation scoped to userId; rotation mints a fresh family on empty legacy familyId. Real integration tests replace the literal-only token-reuse file (2026-08-17) |
 
 ## Active Debt Items
@@ -41,7 +42,6 @@ None active — see Resolved.
 
 | ID    | Item                                        | Owner | Created  | Notes                                     |
 | ----- | ------------------------------------------- | ----- | -------- | ----------------------------------------- |
-| P2-01 | 12 experimental features need feature flags | —     | Aug 2026 | See context-map.md archive candidates     |
 | P2-02 | No database backup restore drill performed  | —     | Aug 2026 | Runbook exists, no drill evidence         |
 | P2-03 | Prettier not enforced in pre-commit hook    | —     | Aug 2026 | CI catches it, but local DX would improve |
 | P2-04 | `any` budget in web (286 usages)            | —     | Aug 2026 | Target: 150 by Dec 2026                   |

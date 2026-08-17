@@ -299,6 +299,7 @@ export const EXPERIMENTAL_FEATURES = {
   CONCIERGE: 'ENABLE_CONCIERGE',
   BEAUTY_METAVERSE: 'ENABLE_BEAUTY_METAVERSE',
   BEAUTY_BINGO: 'ENABLE_BEAUTY_BINGO',
+  BRIDAL_CONCIERGE: 'ENABLE_BRIDAL_CONCIERGE',
 } as const;
 /** ZATCA API base URL. */
 export const ZATCA_API_URL = 'https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal';

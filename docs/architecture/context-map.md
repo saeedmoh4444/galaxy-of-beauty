@@ -40,18 +40,32 @@
 
 ### Experimental (Not production-ready — archive or gate)
 
-| Domain            | Routers              | Recommendation                          |
-| ----------------- | -------------------- | --------------------------------------- |
-| Skin Analysis     | `skinAnalysis.*`     | Gate behind `ENABLE_SKIN_ANALYSIS` flag |
-| Virtual Try-On    | `virtualTryOn.*`     | Gate behind `ENABLE_VIRTUAL_TRYON` flag |
-| AI Chat           | `aiChat.*`           | Gate behind `ENABLE_AI_CHAT` flag       |
-| Product Scanner   | `productScanner.*`   | Gate behind feature flag                |
-| Predictive Demand | `predictiveDemand.*` | Archive (no router references)          |
-| Beauty Trends     | `beautyTrends.*`     | Archive (unused)                        |
-| Beauty Innovation | `beautyInnovation.*` | Merge into blog/content                 |
-| Secret Santa      | `secretSanta.*`      | Gate seasonally                         |
-| Time Capsule      | `timeCapsule.*`      | Archive (no active usage)               |
-| Concierge         | `concierge.*`        | Beta — gate                             |
+**Status (2026-08-17): ALL gated.** Every procedure in these routers is
+behind `requireFeatureFlag` (NOT_FOUND when disabled), and the 13 keys
+below are seeded `enabled` in `db/seed.ts` — ops toggles them at runtime
+via the `featureFlags.upsert` admin procedure. Keys live in
+`packages/shared/src/constants.ts` (`EXPERIMENTAL_FEATURES`).
+
+| Domain            | Routers              | Flag                     |
+| ----------------- | -------------------- | ------------------------ |
+| Skin Analysis     | `skinAnalysis.*`     | `ENABLE_SKIN_ANALYSIS`   |
+| Virtual Try-On    | `virtualTryOn.*`     | `ENABLE_VIRTUAL_TRYON`   |
+| AI Chat           | `aiAssistant.*`      | `ENABLE_AI_CHAT`         |
+| Product Scanner   | `productScanner.*`   | `ENABLE_PRODUCT_SCANNER` |
+| Predictive Demand | `predictiveDemand.*` | `ENABLE_PREDICTIVE_DEMAND` |
+| Beauty Trends     | `beautyTrends.*`     | `ENABLE_BEAUTY_TRENDS`   |
+| Beauty Innovation | (content)            | `ENABLE_BEAUTY_INNOVATION` |
+| Secret Santa      | `secretSanta.*`      | `ENABLE_SECRET_SANTA` (seasonal) |
+| Time Capsule      | `timeCapsule.*`      | `ENABLE_TIME_CAPSULE`    |
+| Concierge         | `concierge.*`        | `ENABLE_CONCIERGE`       |
+| Bridal Concierge  | `bridalConcierge.*`  | `ENABLE_BRIDAL_CONCIERGE` |
+| Beauty Metaverse  | `beautyMetaverse.*`  | `ENABLE_BEAUTY_METAVERSE` |
+| Beauty Bingo      | `beautyBingo.*`      | `ENABLE_BEAUTY_BINGO`    |
+
+Archival candidates from the original audit (beautySanta vs secretSanta,
+beautyQuests, sisterhoodWish, socialFeed, beautyMoodboard, beautyScanner)
+are tracked as P3-01 in the debt register — they still have web/mobile
+consumers, so removal needs a product decision.
 
 ### Duplicate / Low Value — Archive Candidates
 

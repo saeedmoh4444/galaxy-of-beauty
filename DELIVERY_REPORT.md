@@ -261,7 +261,7 @@ CI fixes (commits `0f282571` → `67c12d15`): prisma generate step + `postinstal
 pnpm format:check          # ✅ 0 warnings (was 1509 files failing)
 pnpm type-check            # ✅ 6/6 workspaces
 pnpm lint                  # ✅ 0 errors in all workspaces
-pnpm --filter @galaxy/api test        # ✅ 42 files, 580 tests
+pnpm --filter @galaxy/api test        # ✅ 43 files, 586 tests
 pnpm --filter @galaxy/api test:coverage  # ✅ exit 0, thresholds 53/68/49/53 enforced
 pnpm --filter @galaxy/web exec playwright test  # ✅ 168/168 (chromium + firefox + mobile chrome)
 pnpm --filter @galaxy/ui build-storybook  # ✅

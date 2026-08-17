@@ -2592,6 +2592,40 @@ async function main() {
     console.log(`    Plans: ${err.message?.slice(0, 60)}`);
   }
 
+  // ---- Feature flags (experimental features, toggled via featureFlags router) ----
+  // Seeded enabled so the gated routers behave as they did pre-gating.
+  // Ops can flip any flag at runtime through the admin featureFlags.upsert.
+  try {
+    const FEATURE_FLAGS = [
+      { key: 'ENABLE_SKIN_ANALYSIS', name: 'Skin Analysis' },
+      { key: 'ENABLE_VIRTUAL_TRYON', name: 'Virtual Try-On' },
+      { key: 'ENABLE_AI_CHAT', name: 'AI Chat (Beauty Galaxy)' },
+      { key: 'ENABLE_PRODUCT_SCANNER', name: 'Product Scanner' },
+      { key: 'ENABLE_PREDICTIVE_DEMAND', name: 'Predictive Demand' },
+      { key: 'ENABLE_BEAUTY_TRENDS', name: 'Beauty Trends' },
+      { key: 'ENABLE_BEAUTY_INNOVATION', name: 'Beauty Innovation' },
+      { key: 'ENABLE_SECRET_SANTA', name: 'Secret Santa' },
+      { key: 'ENABLE_TIME_CAPSULE', name: 'Time Capsule' },
+      { key: 'ENABLE_CONCIERGE', name: 'Concierge' },
+      { key: 'ENABLE_BRIDAL_CONCIERGE', name: 'Bridal Concierge' },
+      { key: 'ENABLE_BEAUTY_METAVERSE', name: 'Beauty Metaverse' },
+      { key: 'ENABLE_BEAUTY_BINGO', name: 'Beauty Bingo' },
+    ] as const;
+
+    await prisma.featureFlag.createMany({
+      data: FEATURE_FLAGS.map((f) => ({
+        key: f.key,
+        name: f.name,
+        enabled: true,
+        rolloutPercent: 100,
+      })),
+      skipDuplicates: true,
+    });
+    console.log(` ${FEATURE_FLAGS.length} feature flags`);
+  } catch (err: any) {
+    console.log(`    Feature flags: ${err.message?.slice(0, 60)}`);
+  }
+
   console.log('\n Seed complete! Test login: customer@test.com / Admin@123456\n');
 }
 
