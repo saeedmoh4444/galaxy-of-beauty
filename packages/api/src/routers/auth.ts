@@ -369,11 +369,13 @@ export const authRouter = router({
 
       // ── Reuse detection ──
       // If the token is already revoked, someone may be replaying a stolen token.
-      // Revoke the entire token family to prevent further abuse.
+      // Revoke the entire token family to prevent further abuse. Scoped to the
+      // user: legacy rows can share an empty familyId, and a cross-user
+      // revocation would log out innocent sessions.
       if (stored.revokedAt) {
         const familyId = stored.familyId;
         await prisma.refreshToken.updateMany({
-          where: { familyId, revokedAt: null },
+          where: { familyId, userId: payload.id, revokedAt: null },
           data: { revokedAt: new Date() },
         });
         audit({
@@ -394,11 +396,18 @@ export const authRouter = router({
         data: { revokedAt: new Date() },
       });
 
-      // Issue new tokens in the same family
+      // Issue new tokens in the same family. A legacy empty familyId would
+      // carry the shared bucket forward — mint a fresh family instead
+      // (post-migration rows can't be empty, but be safe against any that
+      // slip in between deploy windows).
       const newPayload = { id: payload.id, role: payload.role, email: payload.email };
       const accessToken = signAccessToken(newPayload);
       const refreshTokenJwt = signRefreshToken(newPayload);
-      await createRefreshToken(payload.id, refreshTokenJwt, stored.familyId);
+      await createRefreshToken(
+        payload.id,
+        refreshTokenJwt,
+        stored.familyId || generateTokenFamilyId(),
+      );
 
       // Set new cookies
       const isProduction = ctx.isProduction ?? false;

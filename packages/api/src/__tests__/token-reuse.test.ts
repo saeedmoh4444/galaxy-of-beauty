@@ -1,141 +1,161 @@
 /**
- * Token Reuse Detection Tests — Tier 1 (Auth & Sessions)
+ * Token Reuse Detection Tests — real integration coverage.
  *
- * Validates refresh token family rotation, reuse detection,
- * and session lifecycle. These are unit tests that verify
- * the business rules and validation — integration tests
- * for the full auth flow are in auth-flow.test.ts.
+ * Drives auth.register / auth.refresh against the seeded DB and inspects
+ * refresh_tokens rows to verify the family-rotation rules:
+ *   - rotation keeps the same familyId and revokes the previous token
+ *   - replaying a revoked token revokes the whole family
+ *   - family revocation is scoped to the token's user
+ *   - a legacy row with an empty familyId rotates into a fresh family
  */
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { prisma } from '@galaxy/db';
+import { appRouter } from '../routers/index';
+import { createTRPCContext } from '../context';
+
+const CSRF = 'a'.repeat(64);
+
+async function anonCaller() {
+  const ctx = await createTRPCContext({ csrfCookie: CSRF, csrfHeader: CSRF });
+  return (appRouter as any).createCaller(ctx);
+}
+
+const uid = Date.now();
+const emails: string[] = [];
+
+async function registerUser(tag: string): Promise<{
+  userId: number;
+  refreshToken: string;
+}> {
+  const email = `reuse-${tag}-${uid}@test.com`;
+  emails.push(email);
+  const caller = await anonCaller();
+  const result = await caller.auth.register({
+    email,
+    password: 'StrongPass123!',
+    name: 'اختبار العائلة',
+    phone: `+9665${String(Math.floor(10000000 + Math.random() * 90000000))}`,
+    acceptedTerms: true,
+  });
+  return { userId: result.user.id, refreshToken: result.refreshToken };
+}
+
+async function refresh(token: string) {
+  const caller = await anonCaller();
+  return caller.auth.refresh({ refreshToken: token });
+}
+
+function familyOf(token: string) {
+  return prisma.refreshToken.findUnique({ where: { token } }).then((r) => r?.familyId);
+}
+
+afterAll(async () => {
+  await prisma.user.deleteMany({ where: { email: { in: emails } } });
+});
+
+// ── Rotation rules ─────────────────────────────────────────
 
 describe('Refresh Token — Rotation Rules', () => {
-  it('each refresh should produce a new token', () => {
-    const token1 = 'token-v1';
-    const token2 = 'token-v2';
-    expect(token1).not.toBe(token2);
+  let userId: number;
+  let tokenA: string;
+  let tokenB: string;
+  let family: string | undefined;
+
+  beforeAll(async () => {
+    const u = await registerUser('rotate');
+    userId = u.userId;
+    tokenA = u.refreshToken;
+    family = await familyOf(tokenA);
+    const rotated = await refresh(tokenA);
+    tokenB = rotated.refreshToken;
   });
 
-  it('rotated token must have same familyId', () => {
-    const familyId = 'fam-001';
-    const oldToken = { token: 'tok-1', familyId };
-    const newToken = { token: 'tok-2', familyId };
-    expect(oldToken.familyId).toBe(newToken.familyId);
-    expect(oldToken.token).not.toBe(newToken.token);
+  it('assigns a non-empty familyId at registration', () => {
+    expect(family).toBeTruthy();
+    expect(family).not.toBe('');
   });
 
-  it('token family ID must be a valid UUID', () => {
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    expect('550e8400-e29b-41d4-a716-446655440000').toMatch(uuidRegex);
+  it('keeps the same familyId across rotation', async () => {
+    expect(await familyOf(tokenB)).toBe(family);
+  });
+
+  it('produces a different token on rotation', () => {
+    expect(tokenA).not.toBe(tokenB);
+  });
+
+  it('revokes the previous token during rotation', async () => {
+    const rowA = await prisma.refreshToken.findUnique({ where: { token: tokenA } });
+    expect(rowA?.revokedAt).toBeInstanceOf(Date);
   });
 });
+
+// ── Reuse detection ────────────────────────────────────────
 
 describe('Refresh Token — Reuse Detection', () => {
-  it('using a revoked token should revoke entire family', () => {
-    // If an attacker replays a previously-used refresh token,
-    // the server must revoke ALL tokens in that family
-    const familyId = 'fam-attack-001';
-    const token1Revoked = true;
-    const token2StillActive = true;
+  let userIdA: number;
+  let tokenA1: string;
+  let tokenA2: string;
+  let tokenB1: string;
 
-    // When token1 (revoked) is replayed:
-    if (token1Revoked) {
-      // Revoke entire family
-      const allRevoked = true;
-      expect(allRevoked).toBe(true);
-      // token2 (active) should now also be revoked
-      expect(token2StillActive && allRevoked).toBe(true);
-    }
+  beforeAll(async () => {
+    const a = await registerUser('replay-a');
+    userIdA = a.userId;
+    tokenA1 = a.refreshToken;
+    tokenA2 = (await refresh(tokenA1)).refreshToken;
+
+    const b = await registerUser('replay-b');
+    tokenB1 = b.refreshToken;
   });
 
-  it('should detect token replay attack', () => {
-    // Normal flow: token A → token B → token C
-    // Attack: replay token A after it was used to get token B
-    const usedToken = 'tok-A-already-used';
-    const currentValidToken = 'tok-C-current';
-    const attemptReplay = usedToken;
-    expect(attemptReplay).not.toBe(currentValidToken);
-    // Server detects mismatch: usedToken.revokedAt !== null
-  });
-});
-
-describe('Refresh Token — Expiry', () => {
-  it('should reject expired token based on JWT exp claim', () => {
-    const now = Math.floor(Date.now() / 1000);
-    const tokenExp = now - 3600; // expired 1 hour ago
-    expect(tokenExp).toBeLessThan(now);
+  it('rejects a replayed token', async () => {
+    await expect(refresh(tokenA1)).rejects.toThrow(/Token reuse detected/);
   });
 
-  it('should accept token with future expiry', () => {
-    const now = Math.floor(Date.now() / 1000);
-    const tokenExp = now + 604800; // 7 days from now
-    expect(tokenExp).toBeGreaterThan(now);
+  it('revokes the entire family on replay', async () => {
+    const rowA2 = await prisma.refreshToken.findUnique({ where: { token: tokenA2 } });
+    expect(rowA2?.revokedAt).toBeInstanceOf(Date);
   });
 
-  it('refresh token should not be usable as access token', () => {
-    const tokenType = 'refresh';
-    const requiredType = 'access';
-    expect(tokenType).not.toBe(requiredType);
-    // JWT 'type' claim prevents cross-use
+  it('leaves other users tokens untouched (cross-user isolation)', async () => {
+    const rowB1 = await prisma.refreshToken.findUnique({ where: { token: tokenB1 } });
+    expect(rowB1?.revokedAt).toBeNull();
+    // B's token still works
+    const rotated = await refresh(tokenB1);
+    expect(rotated.accessToken).toBeDefined();
+  });
+
+  it('rejects a token whose family was revoked by replay', async () => {
+    // A2 was revoked by the family revocation — replaying it lands in
+    // the same reuse-detection branch as A1.
+    await expect(refresh(tokenA2)).rejects.toThrow(/Token reuse detected/);
   });
 });
 
-describe('Auth — Session Lifecycle', () => {
-  it('login creates new session', () => {
-    const beforeLogin = null;
-    const afterLogin = { userId: 42, role: 'CUSTOMER' };
-    expect(beforeLogin).toBeNull();
-    expect(afterLogin).not.toBeNull();
-  });
+// ── Legacy empty-family guard ──────────────────────────────
 
-  it('logout invalidates all refresh tokens', () => {
-    // After logout, no refresh tokens should be usable
-    const tokensRevoked = true;
-    expect(tokensRevoked).toBe(true);
-  });
+describe('Refresh Token — Legacy Empty Family', () => {
+  it('rotates a legacy token into a fresh non-empty family', async () => {
+    const u = await registerUser('legacy');
+    const legacyToken = u.refreshToken;
 
-  it('password change invalidates all sessions', () => {
-    // Security: changing password must revoke all active tokens
-    const passwordChanged = true;
-    const allTokensRevoked = passwordChanged;
-    expect(allTokensRevoked).toBe(true);
-  });
+    // Simulate a pre-Phase-3 row: the DB default is now a UUID, but
+    // rows written before the backfill had familyId = ''.
+    await prisma.refreshToken.update({
+      where: { token: legacyToken },
+      data: { familyId: '' },
+    });
 
-  it('password reset invalidates all sessions', () => {
-    const passwordReset = true;
-    const allTokensRevoked = passwordReset;
-    expect(allTokensRevoked).toBe(true);
-  });
-});
+    const rotated = await refresh(legacyToken);
+    const newFamily = await familyOf(rotated.refreshToken);
+    expect(newFamily).toBeTruthy();
+    expect(newFamily).not.toBe('');
 
-describe('Auth — JWT Claims', () => {
-  it('access token must contain required claims', () => {
-    const claims = ['id', 'role', 'email', 'jti', 'iss', 'aud', 'type', 'iat', 'exp'];
-    const accessTokenClaims = new Set(claims);
-    expect(accessTokenClaims.has('type')).toBe(true);
-    expect(accessTokenClaims.has('iss')).toBe(true);
-    expect(accessTokenClaims.has('aud')).toBe(true);
-    expect(accessTokenClaims.has('jti')).toBe(true);
-  });
+    // The legacy row itself must be revoked by rotation.
+    const legacyRow = await prisma.refreshToken.findUnique({ where: { token: legacyToken } });
+    expect(legacyRow?.revokedAt).toBeInstanceOf(Date);
 
-  it('access token type must be "access"', () => {
-    const tokenType = 'access';
-    expect(tokenType).toBe('access');
-  });
-
-  it('refresh token type must be "refresh"', () => {
-    const tokenType = 'refresh';
-    expect(tokenType).toBe('refresh');
-  });
-
-  it('should reject token with wrong audience', () => {
-    const expectedAud = 'galaxy-of-beauty-api';
-    const actualAud = 'wrong-api';
-    expect(actualAud).not.toBe(expectedAud);
-  });
-
-  it('should reject token with wrong issuer', () => {
-    const expectedIss = 'galaxy-of-beauty';
-    const actualIss = 'malicious-issuer';
-    expect(actualIss).not.toBe(expectedIss);
+    // And the fresh token works normally.
+    const again = await refresh(rotated.refreshToken);
+    expect(again.accessToken).toBeDefined();
   });
 });

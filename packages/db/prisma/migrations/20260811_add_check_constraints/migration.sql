@@ -16,13 +16,13 @@ END $$;
 -- ── Monetary Fields (non-negative) ───────────────────────
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'chk_bookings_amount') THEN
-    ALTER TABLE bookings ADD CONSTRAINT chk_bookings_amount CHECK (total_amount >= 0);
+    ALTER TABLE bookings ADD CONSTRAINT chk_bookings_amount CHECK ("totalAmount" >= 0);
   END IF;
 END $$;
 
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'chk_bookings_fee') THEN
-    ALTER TABLE bookings ADD CONSTRAINT chk_bookings_fee CHECK (platform_fee >= 0);
+    ALTER TABLE bookings ADD CONSTRAINT chk_bookings_fee CHECK ("platformFee" >= 0);
   END IF;
 END $$;
 
@@ -41,13 +41,11 @@ END $$;
 -- ── Language ─────────────────────────────────────────────
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'chk_users_language') THEN
-    ALTER TABLE users ADD CONSTRAINT chk_users_language CHECK (preferred_language IN ('ar', 'en'));
+    ALTER TABLE users ADD CONSTRAINT chk_users_language CHECK ("preferredLanguage" IN ('ar', 'en'));
   END IF;
 END $$;
 
 -- ── Loyalty Discount ─────────────────────────────────────
-DO $$ BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'chk_loyalty_discount') THEN
-    ALTER TABLE loyalty_tiers ADD CONSTRAINT chk_loyalty_discount CHECK (discount_percent >= 0 AND discount_percent <= 100);
-  END IF;
-END $$;
+-- (Removed 2026-08-17: referenced a loyalty_tiers table that does not
+-- exist in the schema — no Tier model. There is no discount column on
+-- loyalty_accounts, so the intended constraint had no valid target.)
