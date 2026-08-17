@@ -103,4 +103,4 @@
 
 **Launch Verdict: ✅ TECHNICALLY READY — production hardening remains**
 
-All automated checks pass: 243 routers, 280 web routes, 557 API tests, 168/168 E2E across 3 browsers, coverage ratchet enforced, CI fully green on every push. The platform is feature-complete at a verifiably-correct baseline; production readiness still requires the remaining Phase 11 ops work (immutable artifacts, SLOs, rollback drills) — see [DELIVERY_REPORT.md](../DELIVERY_REPORT.md) addendum.
+All automated checks pass: 243 routers, 280 web routes, 575 API tests, 168/168 E2E across 3 browsers, coverage ratchet enforced, CI fully green on every push. The platform is feature-complete at a verifiably-correct baseline; production readiness still requires the remaining Phase 11 ops work (immutable artifacts, SLOs, rollback drills) — see [DELIVERY_REPORT.md](../DELIVERY_REPORT.md) addendum.

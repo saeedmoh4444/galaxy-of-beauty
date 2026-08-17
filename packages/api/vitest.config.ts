@@ -26,14 +26,16 @@ export default defineConfig({
         'src/routers/index.ts', // barrel file
       ],
       // Coverage ratchet (audit rec #4) — raise quarterly toward
-      // 55 → 60 → 65. Set just under current actuals (2026-08-17):
-      // 52.79 stmts / 67.36 branches / 44.78 functions / 52.79 lines.
-      // The laggards remain the workers entrypoints (index/run), the
-      // socket server.ts entry script, and the payfort gateway.
+      // 55 → 60 → 65. Set under current actuals (2026-08-17):
+      // 53.09 stmts / 68.92 branches / 49.07 functions / 53.09 lines.
+      // Statements/lines kept at 52 deliberately — same-code runs jitter
+      // ±0.4, so 53 would flake the gate. Next raise once actuals ≥53.5.
+      // The laggards remain the workers entrypoints (index/run) and the
+      // socket server.ts entry script.
       thresholds: {
         statements: 52,
-        branches: 66,
-        functions: 44,
+        branches: 68,
+        functions: 48,
         lines: 52,
       },
     },

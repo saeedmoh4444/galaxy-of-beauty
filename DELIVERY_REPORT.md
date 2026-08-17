@@ -261,8 +261,8 @@ CI fixes (commits `0f282571` → `67c12d15`): prisma generate step + `postinstal
 pnpm format:check          # ✅ 0 warnings (was 1509 files failing)
 pnpm type-check            # ✅ 6/6 workspaces
 pnpm lint                  # ✅ 0 errors in all workspaces
-pnpm --filter @galaxy/api test        # ✅ 39 files, 557 tests
-pnpm --filter @galaxy/api test:coverage  # ✅ exit 0, thresholds 52/66/44/52 enforced
+pnpm --filter @galaxy/api test        # ✅ 40 files, 575 tests
+pnpm --filter @galaxy/api test:coverage  # ✅ exit 0, thresholds 52/68/48/52 enforced
 pnpm --filter @galaxy/web exec playwright test  # ✅ 168/168 (chromium + firefox + mobile chrome)
 pnpm --filter @galaxy/ui build-storybook  # ✅
 node apps/web/scripts/smoke-mobile-contract.mjs  # ✅ 5/5 (requires dev server)
@@ -271,6 +271,6 @@ node apps/web/scripts/smoke-mobile-contract.mjs  # ✅ 5/5 (requires dev server)
 
 ## Remaining work
 
-- **Coverage toward 55%**: the workers entrypoints (`index.ts`/`run.ts`), the socket `server.ts` entry script, and `payfort` gateway integration remain the laggards. The socket server itself (`src/socket/index.ts`) is 94% via real socket.io-client integration tests, and the worker job handlers (`src/workers/handlers.ts`) are tested end-to-end against the seeded DB (2026-08-17).
+- **Coverage toward 55%**: the workers entrypoints (`index.ts`/`run.ts`) and the socket `server.ts` entry script remain the laggards. The socket server itself (`src/socket/index.ts`) is 94% via real socket.io-client integration tests, the worker job handlers (`src/workers/handlers.ts`) are tested end-to-end against the seeded DB, and the PayFort gateway is covered via signature vectors + mocked-fetch authorization flows (2026-08-17).
 - **Branch protection on master**: the last CI-adjacent task — requires repo-admin action (GitHub settings).
 - **Out of repo**: the separate TaskFlow assessment repository and Phase 11 ops/deployment modernization (staging infra, immutable artifacts, SLOs) need hosting/product decisions.
