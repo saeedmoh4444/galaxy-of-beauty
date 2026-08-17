@@ -2,11 +2,10 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import { Button, Card, CardListSkeleton, ErrorAlert, EmptyState, Input, Modal } from '@galaxy/ui';
 
-// Structural type avoids TS2589 deep instantiation from RouterOutput
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type CategoryItem = Record<string, any>;
+type CategoryItem = RouterOutputs['categories']['all'][number];
 
 function getCatName(cat: CategoryItem, lang: 'ar' | 'en'): string {
   const nameJson = cat.nameJson as { ar?: string; en?: string } | null;

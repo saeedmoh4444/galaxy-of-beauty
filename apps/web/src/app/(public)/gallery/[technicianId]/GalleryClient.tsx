@@ -1,10 +1,10 @@
 'use client';
 
 import Image from 'next/image';
+import type { RouterOutputs } from '@galaxy/api';
 import { Card, EmptyState } from '@galaxy/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type GalleryImage = Record<string, any>;
+type GalleryImage = RouterOutputs['gallery']['byTechnician']['items'][number];
 
 export interface GalleryPageData {
   items: GalleryImage[];

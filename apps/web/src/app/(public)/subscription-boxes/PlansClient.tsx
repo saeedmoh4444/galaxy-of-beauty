@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import { Card, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type PlanItem = Record<string, any>;
+type PlanItem = RouterOutputs['subscriptionBoxes']['plans'][number];
 
 export interface PlansPageData {
   plans: PlanItem[];
@@ -33,7 +33,7 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
         <EmptyState title="لا توجد باقات متاحة" description="لم يتم إضافة باقات اشتراك بعد." />
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {planList.map((plan: PlanItem) => (
+          {planList.map((plan) => (
             <Card key={plan.id} padding="lg" className="relative flex flex-col">
               {Number(plan.discountPercent) > 0 && (
                 <span className="absolute left-3 top-3 rounded-full bg-red-100 px-3 py-1 text-xs font-bold text-red-600 dark:bg-red-900 dark:text-red-300">

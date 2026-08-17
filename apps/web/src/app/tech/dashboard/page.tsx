@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import Link from 'next/link';
@@ -94,38 +93,36 @@ export default function TechDashboardPage(): JSX.Element {
           <EmptyState title="لا توجد طلبات معلقة" />
         ) : (
           <div className="space-y-3">
-            {(pending.data as unknown as Array<Record<string, any>>)
-              .slice(0, 10)
-              .map((b: Record<string, any>) => (
-                <Card key={b.id} padding="md">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold text-text-primary">{b.bookingCode}</p>
-                      <p className="text-sm text-text-secondary">
-                        {new Date(b.startAt).toLocaleDateString('ar-SA')} ·{' '}
-                        {formatCurrency(Number(b.totalAmount))}
-                      </p>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        size="sm"
-                        onClick={() => transition.mutate({ id: b.id as number, action: 'accept' })}
-                        loading={transition.isPending}
-                      >
-                        قبول
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="danger"
-                        onClick={() => transition.mutate({ id: b.id as number, action: 'reject' })}
-                        loading={transition.isPending}
-                      >
-                        رفض
-                      </Button>
-                    </div>
+            {(pending.data ?? []).slice(0, 10).map((b) => (
+              <Card key={b.id} padding="md">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold text-text-primary">{b.bookingCode}</p>
+                    <p className="text-sm text-text-secondary">
+                      {new Date(b.startAt).toLocaleDateString('ar-SA')} ·{' '}
+                      {formatCurrency(Number(b.totalAmount))}
+                    </p>
                   </div>
-                </Card>
-              ))}
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      onClick={() => transition.mutate({ id: b.id as number, action: 'accept' })}
+                      loading={transition.isPending}
+                    >
+                      قبول
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="danger"
+                      onClick={() => transition.mutate({ id: b.id as number, action: 'reject' })}
+                      loading={transition.isPending}
+                    >
+                      رفض
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            ))}
           </div>
         )}
       </PageContainer>

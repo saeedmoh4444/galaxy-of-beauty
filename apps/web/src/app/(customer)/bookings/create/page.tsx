@@ -7,13 +7,6 @@ import { Card, Button, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
-// RouterOutput types are too deeply nested — use Record for structural access
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ServiceListItem = Record<string, any>;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AddressItem = Record<string, any>;
-
 // Helper to extract bilingual JSON field
 function ar(json: unknown): string {
   return (json as { ar?: string })?.ar ?? '';
@@ -45,11 +38,10 @@ export default function CreateBookingPage(): JSX.Element {
   );
   const { data: addressesData } = api.addresses.list.useQuery();
 
-  const services = (servicesData?.items ?? []) as ServiceListItem[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const svc = serviceDetail as Record<string, any> | null;
-  const variants = (svc?.variants as Array<Record<string, unknown>>) ?? [];
-  const addresses = (addressesData ?? []) as AddressItem[];
+  const services = servicesData?.items ?? [];
+  const svc = serviceDetail;
+  const variants = svc?.variants ?? [];
+  const addresses = addressesData ?? [];
 
   const createMut = api.bookings.create.useMutation({
     onSuccess: (_result) => {

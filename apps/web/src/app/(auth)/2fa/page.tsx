@@ -20,7 +20,6 @@ export default function TwoFactorPage(): JSX.Element {
   const [verifyCode, setVerifyCode] = useState('');
   const [verifyError, setVerifyError] = useState('');
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const me = data as { twoFactorEnabled?: boolean } | undefined;
   const twoFactorEnabled = me?.twoFactorEnabled ?? false;
 

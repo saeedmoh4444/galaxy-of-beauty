@@ -2,14 +2,17 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import type { RouterOutputs } from '@galaxy/api';
 import { Card, EmptyState, Button, formatCurrency, ar } from '@galaxy/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyRecord = Record<string, any>;
+export type TechnicianProfileItem = RouterOutputs['technicians']['getById'] & {
+  galleryImages?: Array<{ imageUrl?: string; captionJson?: { ar?: string } }>;
+};
+export type TechnicianServiceItem = RouterOutputs['technicians']['getServices'][number];
 
 export interface TechnicianProfileData {
-  technician: AnyRecord | null;
-  services: AnyRecord[];
+  technician: TechnicianProfileItem | null;
+  services: TechnicianServiceItem[];
 }
 
 export function TechnicianProfileClient({ data }: { data: TechnicianProfileData }): JSX.Element {
@@ -27,7 +30,7 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
     );
   }
 
-  const user = tech.user ?? {};
+  const user = tech.user ?? ({} as typeof tech.user);
   const name = user.name ?? '';
   const rating = Number(tech.ratingAvg ?? 0);
   const completed = tech.completedBookings ?? 0;
@@ -80,8 +83,8 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
         <EmptyState title="لا توجد خدمات" description="لم تقم الفنية بإضافة خدمات بعد" />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s: AnyRecord) => {
-            const svc = s.service ?? {};
+          {services.map((s) => {
+            const svc = s.service ?? ({} as typeof s.service);
             return (
               <Card key={s.id} padding="md">
                 <h3 className="font-semibold">{ar(svc.titleJson)}</h3>
@@ -107,7 +110,7 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
             معرض الأعمال
           </h2>
           <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {galleryImages.slice(0, 8).map((img: AnyRecord, i: number) => (
+            {galleryImages.slice(0, 8).map((img, i) => (
               <div
                 key={i}
                 className="relative aspect-square rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden dark:bg-gray-800"

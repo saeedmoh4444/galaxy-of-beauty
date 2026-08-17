@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import { Button, Card, GridSkeleton, ErrorAlert, EmptyState, Modal } from '@galaxy/ui';
 
 const KYC_TABS = ['ALL', 'PENDING', 'SUBMITTED', 'VERIFIED', 'REJECTED'] as const;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type TechnicianItem = Record<string, any>;
+type TechnicianItem = RouterOutputs['admin']['listTechnicians']['items'][number];
 
 const kycBadge = (status: string): { label: string; className: string } => {
   switch (status) {
@@ -57,12 +56,10 @@ export default function AdminTechniciansPage(): JSX.Element {
   });
   const suspendMut = api.admin.suspendUser.useMutation({ onSuccess: () => refetch() });
 
-  const technicians: Array<Record<string, any>> = data?.items ?? [];
+  const technicians: TechnicianItem[] = data?.items ?? [];
 
   const filtered =
-    kycTab === 'ALL'
-      ? technicians
-      : technicians.filter((t: Record<string, any>) => t.kycStatus === kycTab);
+    kycTab === 'ALL' ? technicians : technicians.filter((t) => t.kycStatus === kycTab);
 
   const handleVerify = (approved: boolean) => {
     if (!reviewTech) return;

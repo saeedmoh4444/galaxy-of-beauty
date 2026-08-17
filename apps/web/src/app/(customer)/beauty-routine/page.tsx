@@ -47,7 +47,6 @@ const HAIR_ROUTINES: Record<string, string[]> = {
 };
 
 export default function BeautyRoutinePage(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: profile, isLoading, isError, refetch } = api.beautyProfile.get.useQuery();
 
   const skinRoutine = profile?.skinType
@@ -71,7 +70,6 @@ export default function BeautyRoutinePage(): JSX.Element {
           <Card padding="lg" className="text-center">
             <span className="text-5xl"></span>
             <p className="mt-4 text-text-secondary">أكملي ملفكِ الجمالي للحصول على روتين مخصص</p>
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             <a href="/beauty-profile" className="mt-4 inline-block">
               <Button>أكملي ملفكِ</Button>
             </a>

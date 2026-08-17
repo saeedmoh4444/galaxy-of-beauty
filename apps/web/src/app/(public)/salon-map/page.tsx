@@ -86,7 +86,6 @@ function MapView({
       const center: [number, number] = selectedCity
         ? [selectedCity.lat, selectedCity.lng]
         : [24.7136, 46.6753];
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const map = L.map(mapRef.current).setView(center, selectedCity ? 13 : 6);
       L.tileLayer(LEAFLET_TILE_URL, {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',

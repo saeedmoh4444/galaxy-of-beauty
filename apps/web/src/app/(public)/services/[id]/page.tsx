@@ -15,7 +15,7 @@ export default async function ServiceDetailPage({
     descriptionJson: null,
     basePrice: 0,
     durationMin: 0,
-    category: {},
+    category: {} as ServiceDetailData['category'],
     variants: [],
     technicianServices: [],
     tags: [],
@@ -34,15 +34,16 @@ export default async function ServiceDetailPage({
     const relatedResult = await caller.services.getRelated({ serviceId, limit: 4 });
 
     data.id = serviceId;
-    data.titleJson = (svc.titleJson ?? {}) as Record<string, unknown>;
-    data.descriptionJson = svc.descriptionJson as Record<string, unknown> | null;
+    data.titleJson = (svc.titleJson ?? {}) as ServiceDetailData['titleJson'];
+    data.descriptionJson = svc.descriptionJson as ServiceDetailData['descriptionJson'];
     data.basePrice = Number(svc.basePrice ?? 0);
     data.durationMin = Number(svc.durationMin ?? 0);
-    data.category = svc.category as Record<string, unknown>;
-    data.variants = (svc.variants as Array<Record<string, unknown>>) ?? [];
-    data.technicianServices = (svc.technicianServices as Array<Record<string, unknown>>) ?? [];
-    data.tags = (svc.tags as Array<{ tag: { nameJson: Record<string, unknown> } }>) ?? [];
-    data.related = (relatedResult as Array<Record<string, unknown>>) ?? [];
+    data.category = svc.category as ServiceDetailData['category'];
+    data.variants = (svc.variants as ServiceDetailData['variants']) ?? [];
+    data.technicianServices =
+      (svc.technicianServices as ServiceDetailData['technicianServices']) ?? [];
+    data.tags = (svc.tags as ServiceDetailData['tags']) ?? [];
+    data.related = (relatedResult as ServiceDetailData['related']) ?? [];
   } catch (e) {
     data.fetchError = (e as Error).message || 'فشل تحميل الخدمة';
   }

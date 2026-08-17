@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import {
   Button,
   Card,
@@ -13,12 +14,9 @@ import {
   formatCurrency,
 } from '@galaxy/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ServiceItem = Record<string, any>;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type CategoryItem = Record<string, any>;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type VariantItem = Record<string, any>;
+type ServiceItem = RouterOutputs['services']['list']['items'][number];
+type CategoryItem = RouterOutputs['categories']['all'][number];
+type VariantItem = RouterOutputs['services']['list']['items'][number]['variants'][number];
 
 interface ServiceForm {
   titleAr: string;
@@ -169,8 +167,7 @@ export default function AdminServicesPage(): JSX.Element {
     setVariantForm(emptyVariantForm);
   };
 
-  const getVariants = (svc: ServiceItem): VariantItem[] =>
-    (svc.variants as VariantItem[] | undefined) ?? [];
+  const getVariants = (svc: ServiceItem): VariantItem[] => svc.variants ?? [];
 
   return (
     <div className="space-y-6">

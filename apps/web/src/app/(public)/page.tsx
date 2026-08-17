@@ -1,14 +1,13 @@
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import { HomeClient } from './HomeClient';
 import type { HomePageProps } from './HomeClient';
 
 // Revalidate every 60s (ISR)
 export const revalidate = 60;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyCategory = any;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyService = any;
+type AnyCategory = RouterOutputs['categories']['list'][number];
+type AnyService = RouterOutputs['services']['list']['items'][number];
 
 export default async function HomePage(): Promise<JSX.Element> {
   let categories: AnyCategory[] = [];
@@ -36,8 +35,10 @@ export default async function HomePage(): Promise<JSX.Element> {
 
   return (
     <HomeClient
-      initialCategories={serializeForClient(categories as HomePageProps['initialCategories'])}
-      initialServices={serializeForClient(services as HomePageProps['initialServices'])}
+      initialCategories={
+        serializeForClient(categories) as unknown as HomePageProps['initialCategories']
+      }
+      initialServices={serializeForClient(services) as unknown as HomePageProps['initialServices']}
       serviceTotal={serviceTotal}
       fetchError={fetchError}
     />

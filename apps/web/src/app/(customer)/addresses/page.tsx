@@ -1,17 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
+type AddressItem = RouterOutputs['addresses']['list'][number];
+
 export default function AddressesPage(): JSX.Element {
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, isLoading, isError, refetch } = api.addresses.list.useQuery();
-  const addresses = (data ?? []) as Array<Record<string, any>>;
+  const addresses = data ?? [];
 
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -53,7 +54,7 @@ export default function AddressesPage(): JSX.Element {
     setForm({ label: '', city: '', area: '', street: '', building: '', floor: '', apartment: '' });
   };
 
-  const openEdit = (addr: Record<string, any>) => {
+  const openEdit = (addr: AddressItem) => {
     setForm({
       label: addr.label || '',
       city: addr.city || '',
@@ -88,7 +89,7 @@ export default function AddressesPage(): JSX.Element {
           <EmptyState title="لا توجد عناوين" description="أضف عنوانك الأول ليسهل عملية الحجز" />
         ) : (
           <div className="space-y-3">
-            {addresses.map((addr: Record<string, any>) => (
+            {addresses.map((addr) => (
               <Card key={addr.id} padding="md" className={addr.isDefault ? 'border-brand-500' : ''}>
                 <div className="flex items-start justify-between">
                   <div>

@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState, useCallback } from 'react';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import {
   Card,
   ErrorAlert,
@@ -17,9 +17,10 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 import { SortableGrid } from '@/components/SortableGrid';
 
+type PinItem = RouterOutputs['inspiration']['list'][number];
+
 export default function InspirationPage(): JSX.Element {
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, isLoading, isError, refetch } = api.inspiration.list.useQuery();
   const createMut = api.inspiration.create.useMutation({
     onSuccess: () => {
@@ -39,14 +40,14 @@ export default function InspirationPage(): JSX.Element {
 
   const [showAdd, setShowAdd] = useState(false);
   const [form, setForm] = useState({ imageUrl: '', title: '', notes: '', tags: '' });
-  const [orderedPins, setOrderedPins] = useState<Array<Record<string, any>> | null>(null);
+  const [orderedPins, setOrderedPins] = useState<PinItem[] | null>(null);
 
-  const allPins = (data ?? []) as Array<Record<string, any>>;
+  const allPins = data ?? [];
   // Use local order when user has reordered, otherwise server order
   const pins = orderedPins && orderedPins.length === allPins.length ? orderedPins : allPins;
 
   const handleReorder = useCallback(
-    (newPins: Array<Record<string, any>>) => {
+    (newPins: PinItem[]) => {
       setOrderedPins(newPins);
       // Optimistic — persist the new order; the server list orders by sortOrder
       reorderMut.mutate({ pinIds: newPins.map((p) => p.id as number) });
@@ -85,7 +86,7 @@ export default function InspirationPage(): JSX.Element {
             columns="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
             gap="gap-4"
           >
-            {(p: Record<string, any>) => (
+            {(p) => (
               <Card
                 key={p.id}
                 padding="md"
@@ -128,7 +129,7 @@ export default function InspirationPage(): JSX.Element {
                 )}
                 {p.tags?.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-1">
-                    {(p.tags as string[]).map((t: string) => (
+                    {p.tags.map((t: string) => (
                       <span
                         key={t}
                         className="rounded-full bg-brand-50 px-2 py-0.5 text-xs text-brand-600 dark:bg-brand-950 dark:text-brand-400"

@@ -1,6 +1,10 @@
 import { getServerCaller } from '@/lib/server-trpc';
 import { TechnicianProfileClient } from './TechnicianProfileClient';
-import type { TechnicianProfileData } from './TechnicianProfileClient';
+import type {
+  TechnicianProfileData,
+  TechnicianProfileItem,
+  TechnicianServiceItem,
+} from './TechnicianProfileClient';
 
 export default async function TechnicianProfilePage({
   params,
@@ -21,8 +25,8 @@ export default async function TechnicianProfilePage({
     // historically passed { id } / { technicianId }; keep the exact runtime call.
     const legacyCaller = caller as unknown as {
       technicians: {
-        getById: (input: { id: number }) => Promise<Record<string, unknown> | null>;
-        getServices: (input: { technicianId: number }) => Promise<Array<Record<string, unknown>>>;
+        getById: (input: { id: number }) => Promise<TechnicianProfileItem | null>;
+        getServices: (input: { technicianId: number }) => Promise<TechnicianServiceItem[]>;
       };
     };
     const [tech, services] = await Promise.all([

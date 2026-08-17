@@ -4,20 +4,20 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import { Input, Card, GridSkeleton, ErrorAlert, EmptyState, ar } from '@galaxy/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyRecord = Record<string, any>;
+type TechnicianItem = RouterOutputs['technicians']['list']['items'][number];
 
 export interface TechniciansPageData {
-  initialTechnicians: AnyRecord[];
+  initialTechnicians: TechnicianItem[];
 }
 
 export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.Element {
   const [city, setCity] = useState('');
 
   const query = api.technicians.list.useQuery({ city: city || undefined });
-  const techs: AnyRecord[] = Array.isArray(query.data)
+  const techs: TechnicianItem[] = Array.isArray(query.data)
     ? query.data
     : Array.isArray(data.initialTechnicians)
       ? data.initialTechnicians
@@ -49,8 +49,8 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
         <EmptyState title="لا توجد فنيات" description="لم يتم العثور على فنيات تطابق بحثك." />
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {techs.map((tech: AnyRecord) => {
-            const user = tech.user ?? {};
+          {techs.map((tech) => {
+            const user = tech.user ?? ({} as typeof tech.user);
             const name = user.name ?? '';
             const avatarUrl = user.avatarUrl ?? '';
             const cityName = tech.city ?? '';

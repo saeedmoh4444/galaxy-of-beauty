@@ -19,7 +19,6 @@ const TIER_BENEFITS: Record<string, string[]> = {
 };
 
 export default function LoyaltyDashboardPage(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: account, isLoading, isError, refetch } = api.loyalty.myAccount.useQuery();
 
   const tierKey = (account?.tier as string) || 'SILVER';

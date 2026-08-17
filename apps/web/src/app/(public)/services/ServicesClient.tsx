@@ -3,14 +3,15 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import { Input, Card, GridSkeleton, ErrorAlert, EmptyState, useDebounce, ar } from '@galaxy/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyRecord = Record<string, any>;
+type ServiceItem = RouterOutputs['services']['list']['items'][number];
+type CategoryItem = RouterOutputs['categories']['list'][number];
 
 export interface ServicesPageData {
-  initialServices: AnyRecord[];
-  initialCategories: AnyRecord[];
+  initialServices: ServiceItem[];
+  initialCategories: CategoryItem[];
   initialTotal: number;
 }
 
@@ -34,7 +35,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
   // Use SSR data while client query loads
   const cats = catsQuery.data ?? data.initialCategories;
   const svcData = svcQuery.data;
-  const items: AnyRecord[] =
+  const items: ServiceItem[] =
     svcQuery.isLoading && page === 1 && !debouncedSearch && sort === 'newest'
       ? data.initialServices
       : (svcData?.items ?? []);
@@ -91,7 +92,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
         </select>
         {cats.length > 0 && (
           <div className="flex flex-wrap gap-2">
-            {cats.map((c: AnyRecord) => (
+            {cats.map((c) => (
               <Link
                 key={c.id}
                 href={`/services?categoryId=${c.id}`}
@@ -133,7 +134,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
         <EmptyState title="لا توجد خدمات" description="جرب تغيير معايير البحث" />
       ) : (
         <div className="grid gap-6 md:grid-cols-3">
-          {items.map((svc: AnyRecord) =>
+          {items.map((svc) =>
             compareMode ? (
               <button
                 key={svc.id}

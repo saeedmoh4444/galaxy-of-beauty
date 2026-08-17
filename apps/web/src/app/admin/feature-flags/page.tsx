@@ -1,12 +1,12 @@
 'use client';
 
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import { Card, TableSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type FlagItem = Record<string, any>;
+type FlagItem = RouterOutputs['featureFlags']['list'][number];
 
 export default function FeatureFlagsPage(): JSX.Element {
   const { addToast } = useToast();

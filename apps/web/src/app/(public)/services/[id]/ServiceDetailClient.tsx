@@ -1,22 +1,41 @@
 'use client';
 
 import Link from 'next/link';
+import type { RouterOutputs } from '@galaxy/api';
 import { Button, Card, EmptyState, formatCurrency } from '@galaxy/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyRecord = Record<string, any>;
+type ServiceJson = { ar?: string; en?: string };
+
+type ServiceDetailCategory = RouterOutputs['services']['getById']['category'] & {
+  nameAr?: string;
+};
+type ServiceDetailVariant = RouterOutputs['services']['getById']['variants'][number] & {
+  nameJson?: ServiceJson | null;
+};
+type ServiceDetailTech =
+  RouterOutputs['services']['getById']['technicianServices'][number]['technician'] & {
+    city?: string;
+    bioJson?: ServiceJson | null;
+  };
+type ServiceDetailTechService =
+  RouterOutputs['services']['getById']['technicianServices'][number] & {
+    technician: ServiceDetailTech;
+  };
+type ServiceDetailRelated = RouterOutputs['services']['getRelated'][number] & {
+  titleJson?: ServiceJson | null;
+};
 
 export interface ServiceDetailData {
   id: number;
-  titleJson: AnyRecord;
-  descriptionJson: AnyRecord | null;
+  titleJson: ServiceJson;
+  descriptionJson: ServiceJson | null;
   basePrice: number;
   durationMin: number;
-  category: AnyRecord;
-  variants: AnyRecord[];
-  technicianServices: AnyRecord[];
-  tags: Array<{ tag: { nameJson: AnyRecord } }>;
-  related: AnyRecord[];
+  category: ServiceDetailCategory;
+  variants: ServiceDetailVariant[];
+  technicianServices: ServiceDetailTechService[];
+  tags: Array<{ tag: { nameJson?: ServiceJson | null } }>;
+  related: ServiceDetailRelated[];
   fetchError?: string;
 }
 
@@ -26,7 +45,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
   const variants = svc.variants ?? [];
   const techs = svc.technicianServices ?? [];
   const tags = svc.tags ?? [];
-  const cat = svc.category ?? {};
+  const cat = svc.category ?? ({} as ServiceDetailCategory);
   const related = svc.related ?? [];
   const id = svc.id;
 
@@ -108,7 +127,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
         <div className="mt-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">الخيارات</h2>
           <div className="mt-2 flex flex-wrap gap-2">
-            {variants.map((v: AnyRecord) => (
+            {variants.map((v) => (
               <span
                 key={v.id}
                 className="rounded-full bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800"
@@ -140,9 +159,9 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
             الفنيات المتاحات
           </h2>
           <div className="grid gap-4 md:grid-cols-2">
-            {techs.map((ts: AnyRecord) => {
-              const tech = ts.technician ?? {};
-              const user = tech.user ?? {};
+            {techs.map((ts) => {
+              const tech = ts.technician ?? ({} as typeof ts.technician);
+              const user = tech.user ?? ({} as typeof tech.user);
               return (
                 <Card key={ts.id} padding="md">
                   <div className="flex items-center justify-between">
@@ -180,7 +199,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
             خدمات مشابهة
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {related.map((r: AnyRecord) => (
+            {related.map((r) => (
               <Link key={r.id} href={`/services/${r.id}`}>
                 <Card hover padding="sm">
                   <div className="flex h-24 items-center justify-center rounded-lg bg-gray-100 text-3xl dark:bg-gray-800"></div>

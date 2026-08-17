@@ -1,15 +1,31 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import { GridSkeleton, Button, formatCurrency, ar } from '@galaxy/ui';
 const BUNDLE_DISCOUNTS: Record<number, number> = { 2: 10, 3: 15, 4: 20, 5: 25 };
 
+interface BundlesServiceItem {
+  id: number;
+  titleJson: { ar?: string; en?: string };
+  durationMin: number;
+  basePrice: number;
+  _isCat?: boolean;
+}
+
+type BundlesCategoryItem = Omit<RouterOutputs['categories']['list'][number], 'children'> & {
+  services?: BundlesServiceItem[];
+  children: BundlesCategoryItem[];
+  _isCat?: boolean;
+};
+
+type BundlesCard = BundlesServiceItem | (BundlesCategoryItem & { _isCat: true });
+
 export default function BundlesPage(): JSX.Element {
   const { data, isLoading } = api.categories.list.useQuery();
-  const services = (data ?? []) as Array<Record<string, any>>;
+  const services = (data ?? []) as BundlesCategoryItem[];
   const [selected, setSelected] = useState<Set<number>>(new Set());
 
   const toggle = (id: number) => {
@@ -61,15 +77,15 @@ export default function BundlesPage(): JSX.Element {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {services
-            .flatMap((cat: Record<string, any>) => {
-              const children = (cat.children as Array<Record<string, any>>) || [];
+            .flatMap((cat) => {
+              const children = cat.children || [];
               return [
                 ...(cat.services ? [{ ...cat, _isCat: true }] : []),
-                ...children.flatMap((child: Record<string, any>) => child.services || []),
-              ];
+                ...children.flatMap((child) => child.services || []),
+              ] as BundlesCard[];
             })
             .slice(0, 30)
-            .map((svc: Record<string, any>) =>
+            .map((svc) =>
               svc._isCat ? null : (
                 <button
                   key={svc.id}

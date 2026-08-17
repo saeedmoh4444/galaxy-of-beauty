@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import {
   Card,
   CardListSkeleton,
@@ -22,9 +22,13 @@ const OCCASION_LABELS: Record<string, string> = {
   other: 'أخرى ',
 };
 
+type RegistryItem = RouterOutputs['giftRegistry']['myRegistries'][number] & {
+  targetAmount: number;
+  raisedAmount: number;
+};
+
 export default function GiftRegistryPage(): JSX.Element {
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, isLoading, isError, refetch } = api.giftRegistry.myRegistries.useQuery();
   const createMut = api.giftRegistry.create.useMutation({
     onSuccess: () => {
@@ -42,7 +46,7 @@ export default function GiftRegistryPage(): JSX.Element {
     message: '',
   });
 
-  const registries = (data ?? []) as Array<Record<string, any>>;
+  const registries = (data ?? []) as RegistryItem[];
 
   return (
     <DashboardLayout userRole="CUSTOMER">
@@ -63,7 +67,7 @@ export default function GiftRegistryPage(): JSX.Element {
           <EmptyState title="لا توجد سجلات هدايا" description="أنشئي سجل هدايا لمناسبتكِ القادمة" />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
-            {registries.map((r: Record<string, any>) => {
+            {registries.map((r) => {
               const pct =
                 r.targetAmount > 0
                   ? Math.min(100, (Number(r.raisedAmount) / Number(r.targetAmount)) * 100)

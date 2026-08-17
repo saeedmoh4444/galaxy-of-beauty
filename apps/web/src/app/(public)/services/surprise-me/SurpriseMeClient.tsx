@@ -3,18 +3,17 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import { Button, Card, GridSkeleton, ErrorAlert, ar } from '@galaxy/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyRecord = Record<string, any>;
+type ServiceItem = RouterOutputs['services']['list']['items'][number];
 
 export interface SurpriseMePageData {
-  initialService: AnyRecord | null;
+  initialService: ServiceItem | null;
 }
 
 export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [service, setService] = useState<AnyRecord | null>(data.initialService);
+  const [service, setService] = useState<ServiceItem | null>(data.initialService);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -42,7 +41,7 @@ export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.El
     setLoading(false);
   };
 
-  const svc = service as AnyRecord | null;
+  const svc = service;
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 text-center">
@@ -80,7 +79,7 @@ export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.El
   );
 }
 
-function ServiceCard({ svc }: { svc: AnyRecord }): JSX.Element {
+function ServiceCard({ svc }: { svc: ServiceItem }): JSX.Element {
   return (
     <Card padding="lg" className="mx-auto max-w-sm text-center">
       <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900"></div>

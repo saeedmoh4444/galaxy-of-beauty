@@ -3,12 +3,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
-// Structural types to avoid TS2589 deep instantiation from RouterOutput
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type WishlistItem = Record<string, any>;
+type WishlistItem = RouterOutputs['wishlist']['list']['items'][number];
 
 export default function WishlistPage(): JSX.Element {
   const { data, isLoading, isError, refetch } = api.wishlist.list.useQuery();
