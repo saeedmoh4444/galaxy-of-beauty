@@ -3159,29 +3159,6 @@ model SecretSantaParticipant {
   @@map("secret_santa_participants")
 }
 
-model Affirmation {
-  id   Int    @id @default(autoincrement())
-  text String
-  emoji String @default("💖")
-  createdAt DateTime @default(now())
-
-  favorites AffirmationFavorite[]
-
-  @@map("affirmations")
-}
-
-model AffirmationFavorite {
-  id            Int      @id @default(autoincrement())
-  userId        Int
-  affirmationId Int
-  createdAt     DateTime @default(now())
-
-  affirmation   Affirmation @relation(fields: [affirmationId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, affirmationId])
-  @@map("affirmation_favorites")
-}
-
 model BeautySkill {
   id        Int      @id @default(autoincrement())
   userId    Int

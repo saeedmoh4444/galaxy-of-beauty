@@ -1,6 +1,6 @@
 # API Reference — Galaxy of Beauty
 
-> **243 tRPC routers, 14 domain modules**
+> **242 tRPC routers, 14 domain modules**
 > All endpoints are type-safe. No REST endpoints. Use the tRPC client.
 
 ---
