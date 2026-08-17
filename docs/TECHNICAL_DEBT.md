@@ -27,6 +27,7 @@
 | P1-04 | Mobile app `any` budget (943 usages)                  | ✅ 3 remaining                                                                                                                                                                                                                                                                                                                                  |
 | P2-01 | 12 experimental features need feature flags           | ✅ All 13 gated routers now fully behind requireFeatureFlag (3 gaps closed: beautyTrends.record, predictiveDemand.forecast, bridalConcierge — had no flag); feature_flags table was EMPTY (every gated procedure silently returned NOT_FOUND), now seeded enabled in db/seed.ts; feature-flags.test.ts (6 tests) pins the contract (2026-08-17) |
 | P2-03 | Prettier not enforced in pre-commit hook              | ✅ husky + lint-staged: `git commit` runs prettier --write on staged ts/tsx/js/jsx/mjs/cjs/json/md and re-stages; verified end-to-end (2026-08-17)                                                                                                                                                                                              |
+| P2-02 | No database backup restore drill performed            | ✅ Real drill on dev DB (2026-08-17): 220 tables dumped (-Fc) → restored into scratch DB → exact count(*) identical across every table. Runbook updated with full procedure + verification query + pg_dump version-mismatch gotcha                                                                                                              |
 | P1-05 | Refresh token family not enforced pre-Phase 3 data    | ✅ Migration `20260817000000_refresh_token_family_backfill`: legacy rows (familyId='') each get their own family; column default now `gen_random_uuid()`. Reuse-detection revocation scoped to userId; rotation mints a fresh family on empty legacy familyId. Real integration tests replace the literal-only token-reuse file (2026-08-17)    |
 
 ## Active Debt Items
@@ -41,11 +42,10 @@ None active — see Resolved.
 
 ### P2 — Medium
 
-| ID    | Item                                       | Owner | Created  | Notes                             |
-| ----- | ------------------------------------------ | ----- | -------- | --------------------------------- |
-| P2-02 | No database backup restore drill performed | —     | Aug 2026 | Runbook exists, no drill evidence |
-| P2-04 | `any` budget in web (286 usages)           | —     | Aug 2026 | Target: 150 by Dec 2026           |
-| P2-05 | 206 ESLint-disable directives to review    | —     | Aug 2026 | Most are `no-explicit-any`        |
+| ID    | Item                                    | Owner | Created  | Notes                      |
+| ----- | --------------------------------------- | ----- | -------- | -------------------------- |
+| P2-04 | `any` budget in web (286 usages)        | —     | Aug 2026 | Target: 150 by Dec 2026    |
+| P2-05 | 206 ESLint-disable directives to review | —     | Aug 2026 | Most are `no-explicit-any` |
 
 ### P3 — Low
 
