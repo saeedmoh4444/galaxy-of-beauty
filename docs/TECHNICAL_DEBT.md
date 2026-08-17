@@ -49,11 +49,11 @@ None active — see Resolved.
 
 ### P3 — Low
 
-| ID    | Item                                              | Owner | Created  | Notes                                 |
-| ----- | ------------------------------------------------- | ----- | -------- | ------------------------------------- |
-| P3-01 | 3 models flagged for archival (duplicates)        | —     | Aug 2026 | BeautySanta, BeautyQuest, Affirmation |
-| P3-02 | JSON localization lacks DB-level shape validation | —     | Aug 2026 | Currently validated only in app layer |
-| P3-03 | Turbo cache warnings (shared/ui no output)        | —     | Aug 2026 | Cosmetic — builds work fine           |
+| ID    | Item                                              | Owner | Created  | Notes                                                                                                                                                                                       |
+| ----- | ------------------------------------------------- | ----- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P3-01 | 3 models flagged for archival (duplicates)        | —     | Aug 2026 | Stale: BeautySanta + BeautyQuest already removed from schema. Only Affirmation/AffirmationFavorite remain (affirmations router, ZERO web/mobile consumers) — dropping is a product decision |
+| P3-02 | JSON localization lacks DB-level shape validation | —     | Aug 2026 | Currently validated only in app layer                                                                                                                                                       |
+| P3-03 | Turbo cache warnings (shared/ui no output)        | —     | Aug 2026 | Fixed 2026-08-17: package-level turbo.json with outputs:[] (turbo v2 dropped the package.json `turbo` field) — warning gone                                                                 |
 
 ---
 
