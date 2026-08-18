@@ -26,10 +26,12 @@ test.describe('Keyboard Navigation', () => {
   test('login form is keyboard accessible', async ({ page }) => {
     await page.goto('/login');
 
-    // Skip link may take first tab, then email field
-    await page.keyboard.press('Tab');
-    await page.keyboard.press('Tab');
-    const emailField = page.getByPlaceholder('example@email.com');
+    // Tab through the skip link + header toggles until an input receives
+    // focus (the header now hosts the language/theme toggles).
+    for (let i = 0; i < 6; i++) {
+      await page.keyboard.press('Tab');
+      if ((await page.locator('input:focus').count()) > 0) break;
+    }
     // Either email or password field should be focusable
     await expect(page.locator('input:focus').first()).toBeVisible();
   });

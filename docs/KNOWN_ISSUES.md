@@ -55,3 +55,16 @@
 **Workaround:** `eslint: { ignoreDuringBuilds: true }` in next.config.js
 **Fix:** Escape `"` characters in JSX text content
 **Status:** Workaround in place — TypeScript and tests catch real errors
+
+## 7. i18n English Coverage (Low) — mostly RESOLVED 2026-08-17
+
+**Status:** Full translation sweep delivered — the gob_lang switcher now
+renders the entire shell, auth funnel, all 149 customer pages, all
+public pages, tech/admin tooling, and 517 shared UI components in
+English (catalog: ~4,300 keys, per-domain modules under
+packages/shared/src/i18n/messages/).
+
+**Remaining Arabic (intentional):** proper nouns and sample data in a
+handful of pages; SEO metadata (layout.tsx, StructuredData) kept
+bilingual by design; mobile app i18n (`apps/mobile/src/lib/i18n.ts`)
+still dead — the shared catalog now serves both apps going forward.
