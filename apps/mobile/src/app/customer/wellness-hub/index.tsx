@@ -55,7 +55,7 @@ export default function WellnessHubScreen(): JSX.Element {
   if (dashQ.isError)
     return <ErrorAlert message="فشل تحميل البيانات" onRetry={() => dashQ.refetch()} />;
 
-  const d = dashQ.data as WellnessDashboard | null;
+  const d = dashQ.data as unknown as WellnessDashboard | null;
   const weekly = d?.weekly;
   const recentJournals = d?.recentJournals ?? [];
 

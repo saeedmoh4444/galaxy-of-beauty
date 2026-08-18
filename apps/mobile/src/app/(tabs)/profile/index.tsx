@@ -4,6 +4,7 @@ import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { setAuthToken } from '@/lib/authToken';
 import { setSocketToken } from '@/hooks/useSocket';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -36,6 +37,7 @@ interface ProfileUser {
 
 export default function ProfileScreen(): JSX.Element {
   const router = useRouter();
+  const { locale, t, setLocale } = useLocale();
   const profile = trpc.users.getMe.useQuery() ?? {
     data: null,
     isLoading: false,
@@ -86,6 +88,14 @@ export default function ProfileScreen(): JSX.Element {
           )}
         </View>
       </View>
+      <TouchableOpacity
+        style={styles.langRow}
+        onPress={() => setLocale(locale === 'ar' ? 'en' : 'ar')}
+        activeOpacity={0.6}
+      >
+        <Text style={styles.langLabel}>{t('profile.language')}</Text>
+        <Text style={styles.langValue}>{locale === 'ar' ? 'العربية' : 'English'}</Text>
+      </TouchableOpacity>
       <ScrollView style={styles.menuList}>
         {MENU_ITEMS.map((item, i) => (
           <TouchableOpacity
@@ -137,6 +147,26 @@ const styles = StyleSheet.create({
   avatarText: { fontSize: 28, color: COLORS.white, fontWeight: '700' },
   userName: { fontSize: 18, fontWeight: '700', color: COLORS.gray900 },
   userEmail: { fontSize: 13, color: COLORS.gray400, marginTop: 4 },
+  langRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    marginBottom: 12,
+  },
+  langLabel: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: COLORS.gray900,
+  },
+  langValue: {
+    fontSize: 14,
+    color: COLORS.brand,
+    fontWeight: '700',
+  },
   menuList: { marginBottom: 16 },
   menuItem: {
     flexDirection: 'row',

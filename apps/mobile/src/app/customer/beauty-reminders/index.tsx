@@ -73,7 +73,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
   if (q.isLoading) return <SkeletonList count={3} />;
   if (q.isError) return <ErrorAlert message="فشل تحميل التذكيرات" onRetry={() => q.refetch()} />;
 
-  const reminders = (q.data ?? []) as BeautyReminder[];
+  const reminders = (q.data ?? []) as unknown as BeautyReminder[];
   const overdue = reminders.filter((r) => new Date(r.nextDate ?? '') < new Date());
   const upcoming = reminders.filter((r) => new Date(r.nextDate ?? '') >= new Date());
 

@@ -15,6 +15,12 @@ import { adminMessages } from './messages/admin';
 import { marketingMessages } from './messages/marketing';
 import { uiMessages } from './messages/ui';
 import { miscMessages } from './messages/misc';
+import { mobileCoreMessages } from './messages/mobile/core';
+import { mobileAuthMessages } from './messages/mobile/auth';
+import { mobileCustomerMessages } from './messages/mobile/customer';
+import { mobileTechMessages } from './messages/mobile/tech';
+import { mobileAdminMessages } from './messages/mobile/admin';
+import { mobilePublicMessages } from './messages/mobile/public';
 import { ar, en } from '../types';
 
 export const defaultLocale = 'ar';
@@ -38,6 +44,12 @@ export const sharedMessages = {
   ...marketingMessages,
   ...uiMessages,
   ...miscMessages,
+  ...mobileCoreMessages,
+  ...mobileAuthMessages,
+  ...mobileCustomerMessages,
+  ...mobileTechMessages,
+  ...mobileAdminMessages,
+  ...mobilePublicMessages,
 } as const;
 
 export type TranslationKey = keyof typeof sharedMessages;

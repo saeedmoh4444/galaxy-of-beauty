@@ -21,7 +21,7 @@ export default function BeautyPackagesScreen(): JSX.Element {
   if (packagesQ.isError)
     return <ErrorAlert message="فشل تحميل الباقات" onRetry={() => packagesQ.refetch()} />;
 
-  const items = (packagesQ.data ?? []) as BeautyPackage[];
+  const items = (packagesQ.data ?? []) as unknown as BeautyPackage[];
 
   return (
     <ScrollView

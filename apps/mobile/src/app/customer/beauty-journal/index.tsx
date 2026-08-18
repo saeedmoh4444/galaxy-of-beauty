@@ -22,7 +22,7 @@ export default function BeautyJournalScreen(): JSX.Element {
     );
   if (q.isError) return <ErrorAlert message="فشل تحميل اليوميات" onRetry={() => q.refetch()} />;
 
-  const items = (q.data ?? []) as JournalEntry[];
+  const items = (q.data ?? []) as unknown as JournalEntry[];
 
   return (
     <ScrollView
