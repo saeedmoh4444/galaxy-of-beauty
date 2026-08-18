@@ -6,10 +6,10 @@ import { test, expect } from '@playwright/test';
  * - The LanguageToggle flips the cookie, context state, and server tree.
  */
 
-test('serves English UI when the gob_lang cookie is en', async ({ page }) => {
+test('serves English UI when the gob_lang cookie is en', async ({ page, baseURL }) => {
   await page
     .context()
-    .addCookies([{ name: 'gob_lang', value: 'en', url: 'http://localhost:3000' }]);
+    .addCookies([{ name: 'gob_lang', value: 'en', url: baseURL || 'http://localhost:3000' }]);
   await page.goto('/');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(page.locator('html')).toHaveAttribute('dir', 'ltr');
