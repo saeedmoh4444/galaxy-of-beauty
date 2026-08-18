@@ -15,15 +15,55 @@ interface SheLeadsProgramCardProps {
   duration?: string;
   onApply?: () => void;
   className?: string;
+  /** Subtitle under the heading */
+  subtitle?: string;
+  /** Duration stat label */
+  durationLabel?: string;
+  /** Participants stat label */
+  participantsLabel?: string;
+  /** Graduate testimonial */
+  testimonial?: string;
+  /** Testimonial author line */
+  testimonialAuthor?: string;
+  /** Apply button label */
+  applyButtonText?: string;
+  /** Footer text */
+  footerText?: string;
+  /** Display locale for module titles and descriptions */
+  locale?: 'ar' | 'en';
 }
 
 const MODULES = [
-  { emoji: '', title: 'إدارة الأعمال', desc: 'محاسبة، تسعير، إدارة المخزون' },
-  { emoji: '', title: 'قيادة الفريق', desc: 'توظيف، تدريب، تحفيز الخبيرات' },
-  { emoji: '', title: 'التسويق', desc: 'وسائل التواصل، العلامة التجارية' },
-  { emoji: '', title: 'التقنية', desc: 'نظام الحجز، التحليلات، التقارير' },
-  { emoji: '', title: 'خدمة العملاء', desc: 'بناء العلاقات، حل المشكلات' },
-  { emoji: '', title: 'الابتكار', desc: 'تطوير خدمات جديدة، التميز' },
+  {
+    emoji: '',
+    title: { ar: 'إدارة الأعمال', en: 'Business Management' },
+    desc: { ar: 'محاسبة، تسعير، إدارة المخزون', en: 'Accounting, pricing, inventory management' },
+  },
+  {
+    emoji: '',
+    title: { ar: 'قيادة الفريق', en: 'Team Leadership' },
+    desc: { ar: 'توظيف، تدريب، تحفيز الخبيرات', en: 'Hiring, training, motivating technicians' },
+  },
+  {
+    emoji: '',
+    title: { ar: 'التسويق', en: 'Marketing' },
+    desc: { ar: 'وسائل التواصل، العلامة التجارية', en: 'Social media, branding' },
+  },
+  {
+    emoji: '',
+    title: { ar: 'التقنية', en: 'Technology' },
+    desc: { ar: 'نظام الحجز، التحليلات، التقارير', en: 'Booking system, analytics, reports' },
+  },
+  {
+    emoji: '',
+    title: { ar: 'خدمة العملاء', en: 'Customer Service' },
+    desc: { ar: 'بناء العلاقات، حل المشكلات', en: 'Building relationships, problem solving' },
+  },
+  {
+    emoji: '',
+    title: { ar: 'الابتكار', en: 'Innovation' },
+    desc: { ar: 'تطوير خدمات جديدة، التميز', en: 'Developing new services, excellence' },
+  },
 ];
 
 export function SheLeadsProgramCard({
@@ -31,6 +71,14 @@ export function SheLeadsProgramCard({
   duration = '6 أشهر',
   onApply,
   className = '',
+  subtitle = 'من خبيرة إلى قائدة — برنامج المسار السريع للإدارة',
+  durationLabel = 'المدة',
+  participantsLabel = 'الملتحقات',
+  testimonial = '“من خبيرة تجميل إلى مديرة صالون في سنة واحدة”',
+  testimonialAuthor = '— نورة، خريجة البرنامج',
+  applyButtonText = 'انضمي للبرنامج',
+  footerText = 'لأن القيادة تبدأ بخطوة',
+  locale = 'ar',
 }: SheLeadsProgramCardProps): JSX.Element {
   return (
     <div
@@ -42,19 +90,17 @@ export function SheLeadsProgramCard({
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">She Leads</h4>
-        <p className="text-[10px] text-amber-600 dark:text-amber-400">
-          من خبيرة إلى قائدة — برنامج المسار السريع للإدارة
-        </p>
+        <p className="text-[10px] text-amber-600 dark:text-amber-400">{subtitle}</p>
       </div>
 
       {/* Stats */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">المدة</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{durationLabel}</p>
           <p className="text-sm font-bold text-amber-800 dark:text-amber-200">{duration}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">الملتحقات</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{participantsLabel}</p>
           <p className="text-sm font-bold text-amber-800 dark:text-amber-200">{participants}+</p>
         </div>
       </div>
@@ -62,14 +108,14 @@ export function SheLeadsProgramCard({
       {/* Modules */}
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {MODULES.map((m) => (
-          <div key={m.title} className="rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
+          <div key={m.title.ar} className="rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
             <span className="text-lg" aria-hidden="true">
               {m.emoji}
             </span>
             <p className="mt-0.5 text-[10px] font-bold text-text-primary dark:text-gray-100">
-              {m.title}
+              {m.title[locale]}
             </p>
-            <p className="text-[9px] text-text-tertiary dark:text-gray-400">{m.desc}</p>
+            <p className="text-[9px] text-text-tertiary dark:text-gray-400">{m.desc[locale]}</p>
           </div>
         ))}
       </div>
@@ -77,10 +123,10 @@ export function SheLeadsProgramCard({
       {/* Testimonial */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <p className="text-center text-[10px] italic text-amber-700 dark:text-amber-300">
-          &ldquo;من خبيرة تجميل إلى مديرة صالون في سنة واحدة&rdquo;
+          {testimonial}
         </p>
         <p className="mt-1 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-          — نورة، خريجة البرنامج
+          {testimonialAuthor}
         </p>
       </div>
 
@@ -90,12 +136,10 @@ export function SheLeadsProgramCard({
         onClick={onApply}
         className="mt-3 w-full rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 py-2.5 text-xs font-bold text-white hover:from-amber-600 hover:to-yellow-600 active:scale-[0.98] transition-all shadow-sm"
       >
-        انضمي للبرنامج
+        {applyButtonText}
       </button>
 
-      <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">
-        لأن القيادة تبدأ بخطوة
-      </p>
+      <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">{footerText}</p>
     </div>
   );
 }

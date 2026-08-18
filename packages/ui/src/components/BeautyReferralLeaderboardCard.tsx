@@ -20,12 +20,20 @@ interface BeautyReferralLeaderboardCardProps {
   leaders: Leader[];
   userRank?: number;
   className?: string;
+  title?: string;
+  subtitle?: string;
+  referralsText?: string;
+  rankText?: string;
 }
 
 export function BeautyReferralLeaderboardCard({
   leaders,
   userRank,
   className = '',
+  title = 'قائمة الإحالات',
+  subtitle = 'الأكثر دعوة لصديقاتهن',
+  referralsText = 'إحالة',
+  rankText = ' ترتيبكِ: #',
 }: BeautyReferralLeaderboardCardProps): JSX.Element | null {
   if (!leaders.length) return null;
 
@@ -41,8 +49,8 @@ export function BeautyReferralLeaderboardCard({
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true"></span>
         <div>
-          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">قائمة الإحالات</h4>
-          <p className="text-[10px] text-amber-500 dark:text-amber-400">الأكثر دعوة لصديقاتهن</p>
+          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
+          <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
         </div>
       </div>
 
@@ -61,7 +69,7 @@ export function BeautyReferralLeaderboardCard({
               {l.name}
             </span>
             <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300">
-              {l.referrals} إحالة
+              {l.referrals} {referralsText}
             </span>
           </div>
         ))}
@@ -69,7 +77,10 @@ export function BeautyReferralLeaderboardCard({
 
       {userRank && (
         <div className="mt-2 rounded-lg bg-amber-50 p-2 text-center dark:bg-amber-950">
-          <p className="text-[10px] text-amber-700 dark:text-amber-300"> ترتيبكِ: #{userRank}</p>
+          <p className="text-[10px] text-amber-700 dark:text-amber-300">
+            {rankText}
+            {userRank}
+          </p>
         </div>
       )}
     </div>

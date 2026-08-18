@@ -2,8 +2,10 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function IngredientSubPage(): JSX.Element {
+  const { t } = useLocale();
   const [search, setSearch] = useState('');
   const [q, setQ] = useState('');
   const { data: list } = api.ingredientSub.list.useQuery() as {
@@ -20,24 +22,28 @@ export default function IngredientSubPage(): JSX.Element {
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">بدائل المكونات</h1>
-        <p className="mt-2 text-text-secondary">اكتشفي بدائل آمنة وطبيعية للمواد الضارة</p>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.ingredient-sub.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.ingredient-sub.subtitle')}</p>
       </div>
       <div className="flex gap-2 mb-6">
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && setQ(search.trim())}
-          placeholder="اسم المادة..."
+          placeholder={t('marketing.ingredient-sub.search-placeholder')}
           className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
         />
-        <Button onClick={() => setQ(search.trim())}>بحث</Button>
+        <Button onClick={() => setQ(search.trim())}>{t('marketing.ingredient-sub.search')}</Button>
       </div>
       {q && isLoading ? (
         <CardListSkeleton count={4} />
       ) : subs.length > 0 ? (
         <Card padding="lg">
-          <h3 className="font-bold mb-3"> بدائل {result?.ingredient as string}</h3>
+          <h3 className="font-bold mb-3">
+            {t('marketing.ingredient-sub.alternatives-for', {
+              ingredient: result?.ingredient as string,
+            })}
+          </h3>
           <div className="space-y-3">
             {subs.map((s: Record<string, unknown>, i: number) => (
               <div
@@ -56,7 +62,7 @@ export default function IngredientSubPage(): JSX.Element {
         </Card>
       ) : items.length > 0 ? (
         <Card padding="lg">
-          <h3 className="font-bold mb-3"> المواد الضارة الشائعة</h3>
+          <h3 className="font-bold mb-3">{t('marketing.ingredient-sub.harmful-ingredients')}</h3>
           <div className="flex flex-wrap gap-2">
             {items.map((item: Record<string, unknown>) => (
               <button

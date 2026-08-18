@@ -3,8 +3,10 @@
 import { api } from '@/lib/trpc';
 import { Card, DetailSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import Link from 'next/link';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function FeaturedTechPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const {
     data: current,
     isLoading,
@@ -26,14 +28,14 @@ export default function FeaturedTechPage(): JSX.Element {
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">فنية الأسبوع</h1>
-        <p className="mt-2 text-text-secondary">نسلط الضوء على أفضل الفنيات في منصتنا</p>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.featured-tech.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.featured-tech.subtitle')}</p>
       </div>
 
       {isLoading ? (
         <DetailSkeleton />
       ) : isError ? (
-        <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+        <ErrorAlert message={t('marketing.featured-tech.load-error')} onRetry={() => refetch()} />
       ) : current ? (
         <Card
           padding="lg"
@@ -44,18 +46,21 @@ export default function FeaturedTechPage(): JSX.Element {
               {current.emoji as string}
             </div>
             <p className="text-xs text-amber-600 font-bold mt-3">
-              فنية الأسبوع —{' '}
-              {new Date(current.weekOf as string).toLocaleDateString('ar-SA', {
-                month: 'long',
-                day: 'numeric',
-              })}
+              {t('marketing.featured-tech.badge')}
+              {new Date(current.weekOf as string).toLocaleDateString(
+                locale === 'ar' ? 'ar-SA' : 'en-GB',
+                {
+                  month: 'long',
+                  day: 'numeric',
+                },
+              )}
             </p>
             <h2 className="mt-2 text-2xl font-extrabold">{current.name as string}</h2>
             <p className="text-text-secondary">{current.titleAr as string}</p>
           </div>
 
           <div className="mt-6">
-            <h3 className="font-bold mb-2"> الإنجازات</h3>
+            <h3 className="font-bold mb-2">{t('marketing.featured-tech.achievements')}</h3>
             <div className="flex flex-wrap gap-2">
               {(current.highlights as string[])?.map((h: string, i: number) => (
                 <span
@@ -69,7 +74,7 @@ export default function FeaturedTechPage(): JSX.Element {
           </div>
 
           <div className="mt-4">
-            <h3 className="font-bold mb-2"> الخدمات</h3>
+            <h3 className="font-bold mb-2">{t('marketing.featured-tech.services')}</h3>
             <div className="flex flex-wrap gap-2">
               {(current.services as string[])?.map((s: string, i: number) => (
                 <span
@@ -83,16 +88,22 @@ export default function FeaturedTechPage(): JSX.Element {
           </div>
 
           <div className="mt-6 rounded-xl bg-white dark:bg-gray-800 p-4">
-            <p className="text-sm font-bold text-brand-600"> مقابلة سريعة</p>
-            <p className="text-xs text-text-secondary mt-1">
-              س: {(current.interview as Record<string, string>)?.q}
+            <p className="text-sm font-bold text-brand-600">
+              {t('marketing.featured-tech.quick-interview')}
             </p>
-            <p className="text-sm mt-2">ج: {(current.interview as Record<string, string>)?.a}</p>
+            <p className="text-xs text-text-secondary mt-1">
+              {t('marketing.featured-tech.q-label')}
+              {(current.interview as Record<string, string>)?.q}
+            </p>
+            <p className="text-sm mt-2">
+              {t('marketing.featured-tech.a-label')}
+              {(current.interview as Record<string, string>)?.a}
+            </p>
           </div>
 
           <div className="mt-6 text-center">
             <Link href={`/technicians/${current.id}`}>
-              <Button>عرض الملف الكامل ←</Button>
+              <Button>{t('marketing.featured-tech.full-profile')}</Button>
             </Link>
           </div>
         </Card>
@@ -100,7 +111,9 @@ export default function FeaturedTechPage(): JSX.Element {
 
       {pastTechs.length > 0 && (
         <div className="mt-8">
-          <h3 className="font-bold text-lg mb-4"> فنيات سابقات</h3>
+          <h3 className="font-bold text-lg mb-4">
+            {t('marketing.featured-tech.past-technicians')}
+          </h3>
           <div className="flex flex-wrap gap-3">
             {pastTechs.map((t: Record<string, unknown>) => (
               <Link key={t.id as number} href={`/technicians/${t.id}`}>
@@ -108,10 +121,13 @@ export default function FeaturedTechPage(): JSX.Element {
                   <span>{t.emoji as string}</span>
                   <span className="font-medium">{t.name as string}</span>
                   <span className="text-xs text-text-tertiary">
-                    {new Date(t.weekOf as string).toLocaleDateString('ar-SA', {
-                      month: 'short',
-                      day: 'numeric',
-                    })}
+                    {new Date(t.weekOf as string).toLocaleDateString(
+                      locale === 'ar' ? 'ar-SA' : 'en-GB',
+                      {
+                        month: 'short',
+                        day: 'numeric',
+                      },
+                    )}
                   </span>
                 </span>
               </Link>

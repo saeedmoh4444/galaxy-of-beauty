@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyWishlistGiftsPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data: registries, isLoading } = api.giftRegistry.myRegistries.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -23,10 +25,12 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold"> سجل الهدايا</h1>
-            <p className="mt-1 text-sm text-text-secondary">قائمة أمنياتكِ من خدمات التجميل</p>
+            <h1 className="text-2xl font-bold">{t('wishlistGifts.title')}</h1>
+            <p className="mt-1 text-sm text-text-secondary">{t('wishlistGifts.subtitle')}</p>
           </div>
-          <Button onClick={() => setShowForm(!showForm)}>{showForm ? '' : '+ سجل جديد'}</Button>
+          <Button onClick={() => setShowForm(!showForm)}>
+            {showForm ? '' : t('wishlistGifts.addNew')}
+          </Button>
         </div>
 
         {showForm && (
@@ -34,7 +38,7 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="اسم السجل (مثال: هدايا عيد ميلادي)"
+              placeholder={t('wishlistGifts.namePlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm mb-3 dark:border-gray-700 dark:bg-gray-800"
             />
             <select
@@ -42,16 +46,16 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
               onChange={(e) => setOccasion(e.target.value)}
               className="w-full rounded-lg border px-3 py-2 text-sm mb-3 dark:border-gray-700 dark:bg-gray-800"
             >
-              <option value="wedding"> زفاف</option>
-              <option value="birthday"> عيد ميلاد</option>
-              <option value="baby_shower"> بيبي شاور</option>
-              <option value="other"> مناسبة أخرى</option>
+              <option value="wedding">{t('wishlistGifts.occasion.wedding')}</option>
+              <option value="birthday">{t('wishlistGifts.occasion.birthday')}</option>
+              <option value="baby_shower">{t('wishlistGifts.occasion.babyShower')}</option>
+              <option value="other">{t('wishlistGifts.occasion.other')}</option>
             </select>
             <input
               type="number"
               value={targetAmount}
               onChange={(e) => setTarget(Number(e.target.value))}
-              placeholder="المبلغ المستهدف (ر.س)"
+              placeholder={t('wishlistGifts.targetPlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm mb-3 dark:border-gray-700 dark:bg-gray-800"
             />
             <Button
@@ -76,7 +80,7 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
               loading={createMut.isPending}
               className="w-full"
             >
-              إنشاء السجل
+              {t('wishlistGifts.create')}
             </Button>
           </Card>
         )}
@@ -84,7 +88,7 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
         {created && (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
             <p className="text-2xl"></p>
-            <p className="font-bold text-green-700 mt-2">تم إنشاء سجل الهدايا</p>
+            <p className="font-bold text-green-700 mt-2">{t('wishlistGifts.created')}</p>
           </Card>
         )}
 
@@ -93,7 +97,7 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
         ) : !(registries ?? []).length ? (
           <Card padding="lg" className="text-center py-8">
             <p className="text-4xl mb-2"></p>
-            <p className="text-text-secondary">مافي سجلات هدايا بعد — أنشئي أول سجل</p>
+            <p className="text-text-secondary">{t('wishlistGifts.empty')}</p>
           </Card>
         ) : (
           <div className="space-y-3">
@@ -104,7 +108,9 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
                     <p className="font-bold">{r.title as string}</p>
                     <p className="text-xs text-text-secondary">
                       {r.occasion as string} ·{' '}
-                      {new Date(r.createdAt as string).toLocaleDateString('ar-SA')}
+                      {new Date(r.createdAt as string).toLocaleDateString(
+                        locale === 'en' ? 'en-GB' : 'ar-SA',
+                      )}
                     </p>
                   </div>
                   <div className="text-right">

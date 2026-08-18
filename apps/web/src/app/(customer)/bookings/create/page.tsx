@@ -6,11 +6,8 @@ import { api } from '@/lib/trpc';
 import { Card, Button, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
-
-// Helper to extract bilingual JSON field
-function ar(json: unknown): string {
-  return (json as { ar?: string })?.ar ?? '';
-}
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 // Helper to safely get number
 function num(v: unknown, fallback = 0): number {
@@ -18,6 +15,7 @@ function num(v: unknown, fallback = 0): number {
 }
 
 export default function CreateBookingPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const router = useRouter();
   const params = useSearchParams();
   const preselectedServiceId = Number(params.get('serviceId')) || undefined;
@@ -45,18 +43,18 @@ export default function CreateBookingPage(): JSX.Element {
 
   const createMut = api.bookings.create.useMutation({
     onSuccess: (_result) => {
-      addToast('success', 'تم إنشاء الحجز بنجاح!');
+      addToast('success', t('booking.created-success'));
       router.push(`/bookings`);
     },
     onError: () => {
-      addToast('error', 'فشل إنشاء الحجز');
+      addToast('error', t('booking.create-failed'));
       setSubmitting(false);
     },
   });
 
   const handleSubmit = async () => {
     if (!serviceId || !addressId) {
-      addToast('warning', 'الرجاء اختيار الخدمة والعنوان');
+      addToast('warning', t('booking.select-service-address'));
       return;
     }
     setSubmitting(true);
@@ -69,7 +67,7 @@ export default function CreateBookingPage(): JSX.Element {
       technicianId = techs[0]?.technician?.userId ?? 0;
     }
     if (!technicianId) {
-      addToast('error', 'لا توجد فنيات متاحة لهذه الخدمة حالياً');
+      addToast('error', t('booking.no-technicians'));
       setSubmitting(false);
       return;
     }
@@ -93,34 +91,42 @@ export default function CreateBookingPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6 px-4 py-8">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">حجز جديد</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
+          {t('booking.new-booking')}
+        </h1>
 
         {/* Progress steps */}
         <div className="flex items-center gap-2 text-sm">
-          {['الخدمة', 'التفاصيل', 'التأكيد'].map((label, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <span
-                className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
-                  step > i + 1
-                    ? 'bg-green-500 text-white'
-                    : step === i + 1
-                      ? 'bg-brand-600 text-white'
-                      : 'bg-gray-200 text-text-secondary'
-                }`}
-              >
-                {step > i + 1 ? '' : i + 1}
-              </span>
-              <span className={step === i + 1 ? 'font-bold text-brand-600' : 'text-text-tertiary'}>
-                {label}
-              </span>
-              {i < 2 && <span className="text-gray-300">→</span>}
-            </div>
-          ))}
+          {[t('booking.service'), t('booking.step-details'), t('booking.step-confirm')].map(
+            (label, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <span
+                  className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
+                    step > i + 1
+                      ? 'bg-green-500 text-white'
+                      : step === i + 1
+                        ? 'bg-brand-600 text-white'
+                        : 'bg-gray-200 text-text-secondary'
+                  }`}
+                >
+                  {step > i + 1 ? '' : i + 1}
+                </span>
+                <span
+                  className={step === i + 1 ? 'font-bold text-brand-600' : 'text-text-tertiary'}
+                >
+                  {label}
+                </span>
+                {i < 2 && <span className="text-gray-300">→</span>}
+              </div>
+            ),
+          )}
         </div>
 
         {step === 1 && (
           <Card padding="md">
-            <h3 className="mb-4 font-semibold text-text-primary dark:text-gray-100">اختر الخدمة</h3>
+            <h3 className="mb-4 font-semibold text-text-primary dark:text-gray-100">
+              {t('booking.choose-service')}
+            </h3>
             <div className="max-h-80 space-y-2 overflow-y-auto">
               {services.map((s) => (
                 <button
@@ -136,11 +142,12 @@ export default function CreateBookingPage(): JSX.Element {
                   }`}
                 >
                   <p className="font-semibold text-text-primary dark:text-gray-100">
-                    {ar((s as unknown as { titleJson: unknown }).titleJson)}
+                    {localize((s as unknown as { titleJson: unknown }).titleJson, locale)}
                   </p>
                   <p className="mt-1 text-sm text-text-secondary">
-                    {num((s as unknown as { basePrice: unknown }).basePrice).toFixed(0)} ر.س ·{' '}
-                    {num((s as unknown as { durationMin: unknown }).durationMin)} دقيقة
+                    {num((s as unknown as { basePrice: unknown }).basePrice).toFixed(0)}{' '}
+                    {t('misc.sar')} · {num((s as unknown as { durationMin: unknown }).durationMin)}{' '}
+                    {t('misc.min')}
                   </p>
                 </button>
               ))}
@@ -151,17 +158,17 @@ export default function CreateBookingPage(): JSX.Element {
         {step === 2 && svc && (
           <Card padding="md">
             <h3 className="mb-4 font-semibold text-text-primary dark:text-gray-100">
-              تفاصيل الحجز
+              {t('booking.details')}
             </h3>
 
             <p className="mb-2 text-sm font-bold text-brand-600">
-              {ar((svc as unknown as { titleJson: unknown }).titleJson)}
+              {localize((svc as unknown as { titleJson: unknown }).titleJson, locale)}
             </p>
 
             {variants.length > 0 && (
               <div className="mb-4">
                 <label htmlFor="bc-variant" className="mb-2 block text-sm text-text-secondary">
-                  اختر المتغير
+                  {t('booking.choose-variant')}
                 </label>
                 <select
                   id="bc-variant"
@@ -169,10 +176,11 @@ export default function CreateBookingPage(): JSX.Element {
                   value={variantId || ''}
                   onChange={(e) => setVariantId(Number(e.target.value) || undefined)}
                 >
-                  <option value="">الخدمة الأساسية</option>
+                  <option value="">{t('booking.base-service')}</option>
                   {variants.map((v) => (
                     <option key={v.id as number} value={v.id as number}>
-                      {ar(v.nameJson)} (+{num(v.priceDelta).toFixed(0)} ر.س)
+                      {localize(v.nameJson, locale)} (+{num(v.priceDelta).toFixed(0)}{' '}
+                      {t('misc.sar')})
                     </option>
                   ))}
                 </select>
@@ -181,7 +189,7 @@ export default function CreateBookingPage(): JSX.Element {
 
             <div className="mb-4">
               <label htmlFor="bc-address" className="mb-2 block text-sm text-text-secondary">
-                اختر العنوان
+                {t('booking.choose-address')}
               </label>
               <select
                 id="bc-address"
@@ -189,7 +197,7 @@ export default function CreateBookingPage(): JSX.Element {
                 value={addressId || ''}
                 onChange={(e) => setAddressId(Number(e.target.value) || undefined)}
               >
-                <option value="">اختر عنواناً...</option>
+                <option value="">{t('booking.choose-address-placeholder')}</option>
                 {addresses.map((a) => (
                   <option key={a.id} value={a.id}>
                     {String(a.label)} — {String(a.city)}
@@ -200,19 +208,19 @@ export default function CreateBookingPage(): JSX.Element {
 
             <div className="mb-4">
               <label htmlFor="bc-promo" className="mb-2 block text-sm text-text-secondary">
-                كود الخصم (اختياري)
+                {t('booking.promo-code')}
               </label>
               <Input
                 id="bc-promo"
                 value={promoCode}
                 onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                placeholder="مثال: WELCOME20"
+                placeholder={t('booking.promo-example')}
               />
             </div>
 
             <div className="mb-4">
               <label htmlFor="bc-notes" className="mb-2 block text-sm text-text-secondary">
-                ملاحظات
+                {t('booking.notes')}
               </label>
               <textarea
                 id="bc-notes"
@@ -220,16 +228,16 @@ export default function CreateBookingPage(): JSX.Element {
                 rows={3}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="أي ملاحظات إضافية..."
+                placeholder={t('booking.notes-placeholder')}
               />
             </div>
 
             <div className="flex gap-3">
               <Button onClick={() => setStep(1)} variant="outline">
-                السابق
+                {t('booking.previous')}
               </Button>
               <Button onClick={() => setStep(3)} className="flex-1">
-                التالي
+                {t('button.next')}
               </Button>
             </div>
           </Card>
@@ -237,37 +245,44 @@ export default function CreateBookingPage(): JSX.Element {
 
         {step === 3 && (
           <Card padding="md">
-            <h3 className="mb-4 font-semibold text-text-primary dark:text-gray-100">تأكيد الحجز</h3>
+            <h3 className="mb-4 font-semibold text-text-primary dark:text-gray-100">
+              {t('booking.confirm')}
+            </h3>
 
             <div className="space-y-3 text-sm">
               <div className="flex justify-between border-b pb-2">
-                <span className="text-text-secondary">الخدمة</span>
+                <span className="text-text-secondary">{t('booking.service')}</span>
                 <span className="font-semibold">
-                  {svc ? ar((svc as unknown as { titleJson: unknown }).titleJson) : ''}
+                  {svc
+                    ? localize((svc as unknown as { titleJson: unknown }).titleJson, locale)
+                    : ''}
                 </span>
               </div>
               <div className="flex justify-between border-b pb-2">
-                <span className="text-text-secondary">السعر</span>
+                <span className="text-text-secondary">{t('booking.price')}</span>
                 <span className="font-bold text-brand-600">
-                  {num((svc as unknown as { basePrice?: unknown })?.basePrice).toFixed(0)} ر.س
+                  {num((svc as unknown as { basePrice?: unknown })?.basePrice).toFixed(0)}{' '}
+                  {t('misc.sar')}
                 </span>
               </div>
               <div className="flex justify-between border-b pb-2">
-                <span className="text-text-secondary">المدة</span>
-                <span>{num((svc as unknown as { durationMin?: unknown })?.durationMin)} دقيقة</span>
+                <span className="text-text-secondary">{t('booking.duration')}</span>
+                <span>
+                  {num((svc as unknown as { durationMin?: unknown })?.durationMin)} {t('misc.min')}
+                </span>
               </div>
             </div>
 
             <p className="mt-4 text-sm text-text-tertiary">
-              * ستقوم الفنية بتأكيد الموعد النهائي بعد مراجعة الحجز.
+              {t('booking.technician-confirm-note')}
             </p>
 
             <div className="mt-6 flex gap-3">
               <Button onClick={() => setStep(2)} variant="outline">
-                السابق
+                {t('booking.previous')}
               </Button>
               <Button onClick={handleSubmit} loading={submitting} className="flex-1">
-                تأكيد الحجز
+                {t('booking.confirm')}
               </Button>
             </div>
           </Card>

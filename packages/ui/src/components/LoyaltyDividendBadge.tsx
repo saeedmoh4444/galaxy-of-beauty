@@ -20,11 +20,41 @@ interface LoyaltyDividendBadgeProps {
   /** Month of payout */
   payoutMonth?: string;
   className?: string;
+  /** Header title */
+  title?: string;
+  /** Word before the tier label */
+  rankLabel?: string;
+  /** Word after the cashback percentage */
+  cashbackWord?: string;
+  /** Label under the cashback amount */
+  annualCashbackLabel?: string;
+  /** Currency suffix for amounts */
+  currencySuffix?: string;
+  /** Label for the spend box */
+  spendLabel?: string;
+  /** Label for the refund box */
+  refundLabel?: string;
+  /** Label for the payout box */
+  payoutLabel?: string;
+  /** Prefix before the next tier label */
+  toNextTierPrefix?: string;
+  /** Word before the remaining amount */
+  remainingLabel?: string;
+  /** Word after the remaining amount */
+  upgradeWord?: string;
+  /** Text shown when at the top tier */
+  topTierText?: string;
+  /** Prefix before the payout month */
+  payoutInfoPrefix?: string;
+  /** Suffix after the payout month */
+  payoutInfoSuffix?: string;
+  /** Locale for internal tier data strings */
+  locale?: 'ar' | 'en';
 }
 
 interface TierDef {
   emoji: string;
-  label: string;
+  label: { ar: string; en: string };
   minSpend: number;
   rate: number;
   color: string;
@@ -34,7 +64,7 @@ interface TierDef {
 const TIERS: Record<'silver' | 'gold' | 'diamond', TierDef> = {
   silver: {
     emoji: '',
-    label: 'فضية',
+    label: { ar: 'فضية', en: 'Silver' },
     minSpend: 1000,
     rate: 3,
     color:
@@ -43,7 +73,7 @@ const TIERS: Record<'silver' | 'gold' | 'diamond', TierDef> = {
   },
   gold: {
     emoji: '',
-    label: 'ذهبية',
+    label: { ar: 'ذهبية', en: 'Gold' },
     minSpend: 3000,
     rate: 5,
     color:
@@ -52,7 +82,7 @@ const TIERS: Record<'silver' | 'gold' | 'diamond', TierDef> = {
   },
   diamond: {
     emoji: '',
-    label: 'ماسية',
+    label: { ar: 'ماسية', en: 'Diamond' },
     minSpend: 8000,
     rate: 8,
     color:
@@ -67,6 +97,21 @@ export function LoyaltyDividendBadge({
   tier,
   payoutMonth = 'يناير',
   className = '',
+  title = 'أرباح الولاء',
+  rankLabel = 'المرتبة ',
+  cashbackWord = 'استرداد نقدي',
+  annualCashbackLabel = 'أرباحكِ السنوية',
+  currencySuffix = 'ر.س',
+  spendLabel = 'إنفاقكِ',
+  refundLabel = 'الاسترداد',
+  payoutLabel = 'الدفع',
+  toNextTierPrefix = 'للوصول للمرتبة ',
+  remainingLabel = 'متبقي',
+  upgradeWord = 'للترقية',
+  topTierText = 'أنتِ في أعلى مرتبة — تهانينا!',
+  payoutInfoPrefix = 'تصرف أرباحكِ السنوية في ',
+  payoutInfoSuffix = 'من كل عام',
+  locale = 'ar',
 }: LoyaltyDividendBadgeProps): JSX.Element {
   // Auto-detect tier from spend or use provided tier
   const detectedTier = (tier ??
@@ -99,34 +144,37 @@ export function LoyaltyDividendBadge({
             {tierDef.emoji}
           </span>
           <div>
-            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">أرباح الولاء</h4>
+            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
             <p className="text-[10px] text-text-tertiary dark:text-gray-400">
-              المرتبة {tierDef.label} · {rate}% استرداد نقدي
+              {rankLabel}
+              {tierDef.label[locale]} · {rate}% {cashbackWord}
             </p>
           </div>
         </div>
 
         {/* Cashback amount */}
         <div className="text-center">
-          <p className="text-lg font-bold text-text-primary dark:text-gray-100">{cashback} ر.س</p>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">أرباحكِ السنوية</p>
+          <p className="text-lg font-bold text-text-primary dark:text-gray-100">
+            {cashback} {currencySuffix}
+          </p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{annualCashbackLabel}</p>
         </div>
       </div>
 
       {/* Yearly spend summary */}
       <div className="mt-3 grid grid-cols-3 gap-2">
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">إنفاقكِ</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{spendLabel}</p>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-            {yearlySpend.toLocaleString('ar-SA')} ر.س
+            {yearlySpend.toLocaleString('ar-SA')} {currencySuffix}
           </p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">الاسترداد</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{refundLabel}</p>
           <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400">{rate}%</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">الدفع</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{payoutLabel}</p>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">{payoutMonth}</p>
         </div>
       </div>
@@ -136,7 +184,8 @@ export function LoyaltyDividendBadge({
         <div className="mt-3 rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
           <div className="flex items-center justify-between text-[10px]">
             <span className="text-text-secondary dark:text-gray-300">
-              للوصول للمرتبة {nextTier.label}
+              {toNextTierPrefix}
+              {nextTier.label[locale]}
             </span>
             <span className="font-bold text-text-primary dark:text-gray-100">
               {progressToNext}%
@@ -152,11 +201,11 @@ export function LoyaltyDividendBadge({
             />
           </div>
           <p className="mt-1 text-[9px] text-text-tertiary dark:text-gray-500">
-            متبقي{' '}
+            {remainingLabel}{' '}
             {nextTier.minSpend - yearlySpend > 0
               ? (nextTier.minSpend - yearlySpend).toLocaleString('ar-SA')
               : 0}{' '}
-            ر.س للترقية
+            {currencySuffix} {upgradeWord}
           </p>
         </div>
       )}
@@ -164,15 +213,14 @@ export function LoyaltyDividendBadge({
       {/* Already top tier */}
       {!nextTier && (
         <div className="mt-3 rounded-xl bg-gradient-to-r from-sky-50 to-blue-50 p-3 text-center dark:from-sky-950 dark:to-blue-950">
-          <p className="text-xs font-bold text-sky-700 dark:text-sky-300">
-            أنتِ في أعلى مرتبة — تهانينا!
-          </p>
+          <p className="text-xs font-bold text-sky-700 dark:text-sky-300">{topTierText}</p>
         </div>
       )}
 
       {/* Payout info */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        تصرف أرباحكِ السنوية في {payoutMonth} من كل عام
+        {payoutInfoPrefix}
+        {payoutMonth} {payoutInfoSuffix}
       </p>
     </div>
   );

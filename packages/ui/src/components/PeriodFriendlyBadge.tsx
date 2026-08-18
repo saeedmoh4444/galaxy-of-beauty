@@ -6,19 +6,27 @@
  */
 
 interface PeriodFriendlyBadgeProps {
+  title?: string;
+  label?: string;
+  freeText?: string;
   className?: string;
 }
 
-export function PeriodFriendlyBadge({ className = '' }: PeriodFriendlyBadgeProps): JSX.Element {
+export function PeriodFriendlyBadge({
+  className = '',
+  title = 'أدوات الدورة الشهرية متوفرة مجاناً',
+  label = 'أدوات الدورة متوفرة',
+  freeText = 'مجاناً',
+}: PeriodFriendlyBadgeProps): JSX.Element {
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-full bg-pink-100 px-3 py-1.5 text-xs font-semibold text-pink-700 dark:bg-pink-950 dark:text-pink-300 ${className}`}
-      title="أدوات الدورة الشهرية متوفرة مجاناً"
+      title={title}
     >
       <span className="text-base">🩸</span>
-      <span>أدوات الدورة متوفرة</span>
+      <span>{label}</span>
       <span className="text-pink-400">•</span>
-      <span>مجاناً</span>
+      <span>{freeText}</span>
     </span>
   );
 }

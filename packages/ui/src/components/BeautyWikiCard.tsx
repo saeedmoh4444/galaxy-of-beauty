@@ -15,17 +15,17 @@ type WikiCategory =
 
 interface CategoryDef {
   emoji: string;
-  label: string;
+  label: { ar: string; en: string };
 }
 
 const CATEGORIES: Record<WikiCategory, CategoryDef> = {
-  ingredient: { emoji: '', label: 'مكونات' },
-  skincare: { emoji: '', label: 'عناية بالبشرة' },
-  haircare: { emoji: '', label: 'عناية بالشعر' },
-  makeup: { emoji: '', label: 'مكياج' },
-  tradition: { emoji: '', label: 'تراث سعودي' },
-  myth: { emoji: '', label: 'خرافات شائعة' },
-  health: { emoji: '🩺', label: 'صحة' },
+  ingredient: { emoji: '', label: { ar: 'مكونات', en: 'Ingredients' } },
+  skincare: { emoji: '', label: { ar: 'عناية بالبشرة', en: 'Skincare' } },
+  haircare: { emoji: '', label: { ar: 'عناية بالشعر', en: 'Haircare' } },
+  makeup: { emoji: '', label: { ar: 'مكياج', en: 'Makeup' } },
+  tradition: { emoji: '', label: { ar: 'تراث سعودي', en: 'Saudi heritage' } },
+  myth: { emoji: '', label: { ar: 'خرافات شائعة', en: 'Common myths' } },
+  health: { emoji: '🩺', label: { ar: 'صحة', en: 'Health' } },
 };
 
 interface WikiEntry {
@@ -46,12 +46,33 @@ interface BeautyWikiCardProps {
   entry: WikiEntry;
   onReadMore?: () => void;
   className?: string;
+  /** Verified by a doctor badge */
+  verifiedBadgeText?: string;
+  /** Suffix after the reading time */
+  readTimeSuffix?: string;
+  /** Arabic original content badge */
+  originalContentText?: string;
+  /** Read more button label */
+  readMoreText?: string;
+  /** Heritage entries callout */
+  traditionBadgeText?: string;
+  /** Myth entries callout */
+  mythBadgeText?: string;
+  /** Display locale for category labels */
+  locale?: 'ar' | 'en';
 }
 
 export function BeautyWikiCard({
   entry,
   onReadMore,
   className = '',
+  verifiedBadgeText = '🩺 موثوق طبياً',
+  readTimeSuffix = 'دقائق قراءة',
+  originalContentText = 'محتوى عربي أصلي',
+  readMoreText = 'اقرئي المزيد ←',
+  traditionBadgeText = 'هذا المحتوى يوثق تراث الجمال السعودي الأصيل',
+  mythBadgeText = 'هل تعتقدين أن معجون الأسنان يعالج الحبوب؟ اقرئي الحقيقة!',
+  locale = 'ar',
 }: BeautyWikiCardProps): JSX.Element {
   const cat = CATEGORIES[entry.category];
 
@@ -76,13 +97,13 @@ export function BeautyWikiCard({
                   : 'bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-300',
           )}
         >
-          {cat.emoji} {cat.label}
+          {cat.emoji} {cat.label[locale]}
         </span>
 
         {/* Verified badge */}
         {entry.verified && (
           <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-600 dark:bg-blue-950 dark:text-blue-400">
-            🩺 موثوق طبياً
+            {verifiedBadgeText}
           </span>
         )}
       </div>
@@ -98,12 +119,15 @@ export function BeautyWikiCard({
       {/* Meta row */}
       <div className="mt-2 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-gray-500">
         {entry.readTime && (
-          <span className="flex items-center gap-1"> {entry.readTime} دقائق قراءة</span>
+          <span className="flex items-center gap-1">
+            {' '}
+            {entry.readTime} {readTimeSuffix}
+          </span>
         )}
         {entry.author && <span className="flex items-center gap-1">️ {entry.author}</span>}
         {entry.isArabicOriginal && (
           <span className="rounded bg-teal-50 px-1.5 py-0.5 text-teal-700 dark:bg-teal-950 dark:text-teal-300">
-            محتوى عربي أصلي
+            {originalContentText}
           </span>
         )}
       </div>
@@ -114,14 +138,14 @@ export function BeautyWikiCard({
         onClick={onReadMore}
         className="mt-3 w-full rounded-xl border border-teal-200 bg-teal-50 py-2 text-xs font-bold text-teal-700 hover:bg-teal-100 dark:border-teal-800 dark:bg-teal-950 dark:text-teal-300 dark:hover:bg-teal-900 transition-colors"
       >
-        اقرئي المزيد ←
+        {readMoreText}
       </button>
 
       {/* Saudi Heritage badge for tradition entries */}
       {entry.category === 'tradition' && (
         <div className="mt-2 rounded-lg bg-amber-50 px-2.5 py-1.5 text-center dark:bg-amber-950">
           <p className="text-[10px] font-bold text-amber-700 dark:text-amber-300">
-            هذا المحتوى يوثق تراث الجمال السعودي الأصيل
+            {traditionBadgeText}
           </p>
         </div>
       )}
@@ -129,9 +153,7 @@ export function BeautyWikiCard({
       {/* Myth buster badge */}
       {entry.category === 'myth' && (
         <div className="mt-2 rounded-lg bg-rose-50 px-2.5 py-1.5 text-center dark:bg-rose-950">
-          <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300">
-            هل تعتقدين أن معجون الأسنان يعالج الحبوب؟ اقرئي الحقيقة!
-          </p>
+          <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300">{mythBadgeText}</p>
         </div>
       )}
     </div>

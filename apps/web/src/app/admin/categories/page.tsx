@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
 import { Button, Card, CardListSkeleton, ErrorAlert, EmptyState, Input, Modal } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 type CategoryItem = RouterOutputs['categories']['all'][number];
 
@@ -13,6 +14,7 @@ function getCatName(cat: CategoryItem, lang: 'ar' | 'en'): string {
 }
 
 export default function AdminCategoriesPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading, isError, refetch } = api.categories.all.useQuery();
   const createMut = api.categories.create.useMutation({
     onSuccess: () => {
@@ -73,7 +75,7 @@ export default function AdminCategoriesPage(): JSX.Element {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">إدارة الأقسام</h1>
+        <h1 className="text-2xl font-bold">{t('admin.categories.title')}</h1>
         <Button
           variant="primary"
           onClick={() => {
@@ -81,19 +83,19 @@ export default function AdminCategoriesPage(): JSX.Element {
             setCreateOpen(true);
           }}
         >
-          إضافة قسم
+          {t('admin.categories.add-category')}
         </Button>
       </div>
 
       {isLoading ? (
         <CardListSkeleton count={4} />
       ) : isError ? (
-        <ErrorAlert message="فشل تحميل الأقسام" onRetry={() => refetch()} />
+        <ErrorAlert message={t('admin.categories.load-error')} onRetry={() => refetch()} />
       ) : categories.length === 0 ? (
         <>
-          <EmptyState title="لا توجد أقسام" />
+          <EmptyState title={t('admin.categories.empty')} />
           <Button variant="primary" onClick={() => setCreateOpen(true)}>
-            إضافة القسم الأول
+            {t('admin.categories.add-first')}
           </Button>
         </>
       ) : (
@@ -106,23 +108,25 @@ export default function AdminCategoriesPage(): JSX.Element {
                     <p className="font-semibold">
                       {getCatName(cat, 'ar')} / {getCatName(cat, 'en')}
                     </p>
-                    <p className="text-sm text-text-secondary">المعرف: {cat.slug}</p>
                     <p className="text-sm text-text-secondary">
-                      الترتيب: {String(cat.sortOrder ?? 0)}
+                      {t('admin.categories.slug-label', { slug: cat.slug })}
+                    </p>
+                    <p className="text-sm text-text-secondary">
+                      {t('admin.categories.sort-order', { order: String(cat.sortOrder ?? 0) })}
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs ${cat.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
                     >
-                      {cat.isActive ? 'نشط' : 'غير نشط'}
+                      {cat.isActive ? t('status.active') : t('status.inactive')}
                     </span>
                     <Button size="sm" variant="outline" onClick={() => openEdit(cat)}>
-                      تعديل
+                      {t('button.edit')}
                     </Button>
                     {Boolean(cat.isActive) && (
                       <Button size="sm" variant="danger" onClick={() => handleDelete(cat)}>
-                        حذف
+                        {t('button.delete')}
                       </Button>
                     )}
                   </div>
@@ -136,23 +140,27 @@ export default function AdminCategoriesPage(): JSX.Element {
                         <p className="font-semibold">
                           ↳ {getCatName(child, 'ar')} / {getCatName(child, 'en')}
                         </p>
-                        <p className="text-sm text-text-secondary">المعرف: {child.slug}</p>
                         <p className="text-sm text-text-secondary">
-                          الترتيب: {String(child.sortOrder ?? 0)}
+                          {t('admin.categories.slug-label', { slug: child.slug })}
+                        </p>
+                        <p className="text-sm text-text-secondary">
+                          {t('admin.categories.sort-order', {
+                            order: String(child.sortOrder ?? 0),
+                          })}
                         </p>
                       </div>
                       <div className="flex items-center gap-3">
                         <span
                           className={`rounded-full px-2 py-0.5 text-xs ${child.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
                         >
-                          {child.isActive ? 'نشط' : 'غير نشط'}
+                          {child.isActive ? t('status.active') : t('status.inactive')}
                         </span>
                         <Button size="sm" variant="outline" onClick={() => openEdit(child)}>
-                          تعديل
+                          {t('button.edit')}
                         </Button>
                         {Boolean(child.isActive) && (
                           <Button size="sm" variant="danger" onClick={() => handleDelete(child)}>
-                            حذف
+                            {t('button.delete')}
                           </Button>
                         )}
                       </div>
@@ -166,20 +174,24 @@ export default function AdminCategoriesPage(): JSX.Element {
       )}
 
       {/* Create Modal */}
-      <Modal open={createOpen} onClose={() => setCreateOpen(false)} title="إضافة قسم جديد">
+      <Modal
+        open={createOpen}
+        onClose={() => setCreateOpen(false)}
+        title={t('admin.categories.add-title')}
+      >
         <div className="space-y-4">
           <Input
-            label="الاسم (عربي)"
+            label={t('admin.categories.name-ar')}
             value={form.nameAr}
             onChange={(e) => setForm({ ...form, nameAr: e.target.value })}
           />
           <Input
-            label="الاسم (إنجليزي)"
+            label={t('admin.categories.name-en')}
             value={form.nameEn}
             onChange={(e) => setForm({ ...form, nameEn: e.target.value })}
           />
           <Input
-            label="المعرف (Slug)"
+            label={t('admin.categories.slug-input')}
             value={form.slug}
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
           />
@@ -188,7 +200,7 @@ export default function AdminCategoriesPage(): JSX.Element {
               htmlFor="ac-parent-create"
               className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
             >
-              القسم الأب
+              {t('admin.categories.parent-category')}
             </label>
             <select
               id="ac-parent-create"
@@ -198,7 +210,7 @@ export default function AdminCategoriesPage(): JSX.Element {
                 setForm({ ...form, parentId: e.target.value ? Number(e.target.value) : null })
               }
             >
-              <option value="">-- لا يوجد (قسم رئيسي) --</option>
+              <option value="">{t('admin.categories.no-parent')}</option>
               {categories.map((c) => (
                 <option key={c.id} value={c.id}>
                   {getCatName(c, 'ar')}
@@ -208,30 +220,34 @@ export default function AdminCategoriesPage(): JSX.Element {
           </div>
           <div className="flex gap-2">
             <Button variant="primary" onClick={handleCreate} loading={createMut.isPending}>
-              حفظ
+              {t('button.save')}
             </Button>
             <Button variant="secondary" onClick={() => setCreateOpen(false)}>
-              إلغاء
+              {t('button.cancel')}
             </Button>
           </div>
         </div>
       </Modal>
 
       {/* Edit Modal */}
-      <Modal open={editOpen} onClose={() => setEditOpen(false)} title="تعديل القسم">
+      <Modal
+        open={editOpen}
+        onClose={() => setEditOpen(false)}
+        title={t('admin.categories.edit-title')}
+      >
         <div className="space-y-4">
           <Input
-            label="الاسم (عربي)"
+            label={t('admin.categories.name-ar')}
             value={form.nameAr}
             onChange={(e) => setForm({ ...form, nameAr: e.target.value })}
           />
           <Input
-            label="الاسم (إنجليزي)"
+            label={t('admin.categories.name-en')}
             value={form.nameEn}
             onChange={(e) => setForm({ ...form, nameEn: e.target.value })}
           />
           <Input
-            label="المعرف (Slug)"
+            label={t('admin.categories.slug-input')}
             value={form.slug}
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
           />
@@ -240,7 +256,7 @@ export default function AdminCategoriesPage(): JSX.Element {
               htmlFor="ac-parent-edit"
               className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
             >
-              القسم الأب
+              {t('admin.categories.parent-category')}
             </label>
             <select
               id="ac-parent-edit"
@@ -250,7 +266,7 @@ export default function AdminCategoriesPage(): JSX.Element {
                 setForm({ ...form, parentId: e.target.value ? Number(e.target.value) : null })
               }
             >
-              <option value="">-- لا يوجد (قسم رئيسي) --</option>
+              <option value="">{t('admin.categories.no-parent')}</option>
               {categories.map((c) => (
                 <option key={c.id} value={c.id}>
                   {getCatName(c, 'ar')}
@@ -260,10 +276,10 @@ export default function AdminCategoriesPage(): JSX.Element {
           </div>
           <div className="flex gap-2">
             <Button variant="primary" onClick={handleUpdate} loading={updateMut.isPending}>
-              تحديث
+              {t('admin.categories.update')}
             </Button>
             <Button variant="secondary" onClick={() => setEditOpen(false)}>
-              إلغاء
+              {t('button.cancel')}
             </Button>
           </div>
         </div>

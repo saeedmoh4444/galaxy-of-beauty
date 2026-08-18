@@ -12,14 +12,18 @@ import {
   BeautyCareerPathCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
+import type { TranslationKey } from '@galaxy/shared';
 
-const LEVELS: Record<string, { label: string; color: string }> = {
-  beginner: { label: 'مبتدئ', color: '#10b981' },
-  intermediate: { label: 'متوسط', color: '#f59e0b' },
-  advanced: { label: 'متقدم', color: '#ef4444' },
+const LEVELS: Record<string, { label: TranslationKey; color: string }> = {
+  beginner: { label: 'beautyCourses.level.beginner', color: '#10b981' },
+  intermediate: { label: 'beautyCourses.level.intermediate', color: '#f59e0b' },
+  advanced: { label: 'beautyCourses.level.advanced', color: '#ef4444' },
 };
 
 export default function BeautyCoursesPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const courses = api.beautyCourses.list.useQuery();
   const myCourses = api.beautyCourses.myCourses.useQuery();
   const [enrolled, setEnrolled] = useState<number[]>([]);
@@ -40,14 +44,14 @@ export default function BeautyCoursesPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" دورات تجميل" subtitle="تعلمي مهارات التجميل من الخبيرات" />
+        <PageTitle title={t('beautyCourses.title')} subtitle={t('beautyCourses.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
             {myItems.length > 0 && (
               <div className="rounded-2xl bg-emerald-50 p-4 dark:bg-emerald-950">
                 <h3 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-                  دوراتي ({myItems.length})
+                  {t('beautyCourses.myCourses', { count: myItems.length })}
                 </h3>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {myItems.map((c, i) => (
@@ -55,10 +59,10 @@ export default function BeautyCoursesPage(): JSX.Element {
                       key={i}
                       className="rounded-full bg-emerald-200 px-3 py-1 text-xs text-emerald-800 dark:bg-emerald-800 dark:text-emerald-200"
                     >
-                      {(
-                        (c.course as Record<string, unknown> | undefined)?.titleJson as
-                          Record<string, string> | undefined
-                      )?.ar ?? `دورة #${c.courseId}`}
+                      {localize(
+                        (c.course as Record<string, unknown> | undefined)?.titleJson,
+                        locale,
+                      ) || t('beautyCourses.courseFallback', { id: c.courseId })}
                     </span>
                   ))}
                 </div>
@@ -85,13 +89,13 @@ export default function BeautyCoursesPage(): JSX.Element {
                       </p>
                       <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-text-tertiary dark:text-gray-500">
                         <span>‍ {c.instructor}</span>
-                        <span> {c.lessons} دروس</span>
+                        <span> {t('beautyCourses.lessons', { count: c.lessons })}</span>
                         <span> {c.rating}</span>
                         <span
                           className="rounded-lg px-2 py-0.5 text-[11px] font-semibold"
                           style={{ backgroundColor: level.color + '20', color: level.color }}
                         >
-                          {level.label}
+                          {t(level.label)}
                         </span>
                       </div>
                       <button
@@ -100,7 +104,7 @@ export default function BeautyCoursesPage(): JSX.Element {
                         disabled={isEnrolled}
                         className={`mt-3 rounded-xl px-5 py-2.5 text-xs font-bold transition-all ${isEnrolled ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300' : 'bg-rose-600 text-white hover:bg-rose-700'}`}
                       >
-                        {isEnrolled ? ' مسجلة' : ' سجلي الآن'}
+                        {isEnrolled ? t('beautyCourses.enrolled') : t('beautyCourses.enrollNow')}
                       </button>
                     </div>
                   </div>
@@ -112,30 +116,30 @@ export default function BeautyCoursesPage(): JSX.Element {
           <div className="space-y-6">
             <BeautyWebinarCard
               webinar={{
-                title: 'أسرار البشرة',
+                title: t('beautyCourses.webinar.title'),
                 instructor: 'د. نورة',
-                date: '20 أغسطس',
-                time: '8:00 مساءً',
+                date: t('beautyCourses.webinar.date'),
+                time: t('beautyCourses.webinar.time'),
                 isFree: true,
-                topic: 'عناية',
+                topic: t('beautyCourses.webinar.topic'),
               }}
             />
             <BeautyExpertTalkCard
               talk={{
-                title: 'ريادة الأعمال في التجميل',
+                title: t('beautyCourses.talk.title'),
                 expert: 'م. سارة',
-                date: '15 سبتمبر',
+                date: t('beautyCourses.talk.date'),
                 isFree: true,
                 emoji: '',
               }}
             />
             <BeautyLearningPathCard
               path={{
-                title: 'مكياج احترافي',
+                title: t('beautyCourses.path.title'),
                 modules: 8,
                 completed: 0,
                 emoji: '',
-                duration: '6 أشهر',
+                duration: t('beautyCourses.path.duration'),
               }}
             />
             <BeautyCertificationPathCard path="skincare" />

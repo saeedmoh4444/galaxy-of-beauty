@@ -12,47 +12,69 @@ import { cn } from '@galaxy/shared';
 
 type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 
-const SEASONS: Record<Season, { emoji: string; title: string; reminders: string[] }> = {
+const SEASONS: Record<
+  Season,
+  { emoji: string; title: { ar: string; en: string }; reminders: { ar: string; en: string }[] }
+> = {
   spring: {
     emoji: '',
-    title: 'الربيع',
+    title: { ar: 'الربيع', en: 'Spring' },
     reminders: [
-      'جددي روتين التقشير',
-      'انتقلي لمرطب أخف',
-      'اهتمي بالحماية من الشمس',
-      'جربي ألوان باستيل',
+      { ar: 'جددي روتين التقشير', en: 'Refresh your exfoliation routine' },
+      { ar: 'انتقلي لمرطب أخف', en: 'Switch to a lighter moisturizer' },
+      { ar: 'اهتمي بالحماية من الشمس', en: 'Focus on sun protection' },
+      { ar: 'جربي ألوان باستيل', en: 'Try pastel shades' },
     ],
   },
   summer: {
     emoji: '️',
-    title: 'الصيف',
-    reminders: ['SPF 50+ يومياً', 'مرطب جل خفيف', 'اشربي ماء كثيراً', 'تجنبي المكياج الثقيل'],
+    title: { ar: 'الصيف', en: 'Summer' },
+    reminders: [
+      { ar: 'SPF 50+ يومياً', en: 'SPF 50+ daily' },
+      { ar: 'مرطب جل خفيف', en: 'Light gel moisturizer' },
+      { ar: 'اشربي ماء كثيراً', en: 'Drink plenty of water' },
+      { ar: 'تجنبي المكياج الثقيل', en: 'Avoid heavy makeup' },
+    ],
   },
   autumn: {
     emoji: '',
-    title: 'الخريف',
+    title: { ar: 'الخريف', en: 'Autumn' },
     reminders: [
-      'استعيدي ترطيب بشرتكِ',
-      'علاجات ما بعد الصيف',
-      'جربي ألوان دافئة',
-      'اهتمي بترطيب الشعر',
+      { ar: 'استعيدي ترطيب بشرتكِ', en: "Restore your skin's moisture" },
+      { ar: 'علاجات ما بعد الصيف', en: 'Post-summer treatments' },
+      { ar: 'جربي ألوان دافئة', en: 'Try warm shades' },
+      { ar: 'اهتمي بترطيب الشعر', en: 'Focus on hair hydration' },
     ],
   },
   winter: {
     emoji: '️',
-    title: 'الشتاء',
-    reminders: ['مرطب غني', 'بلسم شفاه', 'قناع ترطيب أسبوعي', 'احمي بشرتكِ من الهواء الجاف'],
+    title: { ar: 'الشتاء', en: 'Winter' },
+    reminders: [
+      { ar: 'مرطب غني', en: 'Rich moisturizer' },
+      { ar: 'بلسم شفاه', en: 'Lip balm' },
+      { ar: 'قناع ترطيب أسبوعي', en: 'Weekly hydrating mask' },
+      { ar: 'احمي بشرتكِ من الهواء الجاف', en: 'Protect your skin from dry air' },
+    ],
   },
 };
 
 interface BeautySeasonalReminderCardProps {
   season: Season;
   className?: string;
+  /** Prefix before the season name in the heading */
+  reminderPrefix?: string;
+  /** Subtitle under the heading */
+  subtitle?: string;
+  /** Display locale for season and reminder labels */
+  locale?: 'ar' | 'en';
 }
 
 export function BeautySeasonalReminderCard({
   season,
   className = '',
+  reminderPrefix = 'تذكير ',
+  subtitle = 'روتينكِ يتغير مع الفصول',
+  locale = 'ar',
 }: BeautySeasonalReminderCardProps): JSX.Element {
   const s = SEASONS[season];
 
@@ -67,8 +89,11 @@ export function BeautySeasonalReminderCard({
         <span className="text-3xl" aria-hidden="true">
           {s.emoji}
         </span>
-        <h4 className="mt-1 text-sm font-bold text-sky-800 dark:text-sky-200">تذكير {s.title}</h4>
-        <p className="text-[10px] text-sky-500 dark:text-sky-400">روتينكِ يتغير مع الفصول</p>
+        <h4 className="mt-1 text-sm font-bold text-sky-800 dark:text-sky-200">
+          {reminderPrefix}
+          {s.title[locale]}
+        </h4>
+        <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
       </div>
       <div className="mt-3 space-y-1.5">
         {s.reminders.map((r, i) => (
@@ -79,7 +104,7 @@ export function BeautySeasonalReminderCard({
             <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky-200 text-[10px] font-bold text-sky-700 dark:bg-sky-800 dark:text-sky-300">
               {i + 1}
             </span>
-            <span className="text-[10px] text-sky-800 dark:text-sky-200">{r}</span>
+            <span className="text-[10px] text-sky-800 dark:text-sky-200">{r[locale]}</span>
           </div>
         ))}
       </div>

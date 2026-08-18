@@ -3,8 +3,10 @@
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, ErrorAlert, EmptyState } from '@galaxy/ui';
 import Link from 'next/link';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function LiveStreamPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data, isLoading, isError, refetch } = (
     api as unknown as {
       liveStream: {
@@ -34,24 +36,25 @@ export default function LiveStreamPage(): JSX.Element {
       <div className="mb-10 text-center">
         <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
-          البث المباشر
+          {t('marketing.live-stream.title')}
         </h1>
-        <p className="mt-2 text-text-secondary">
-          تابعي جلسات البث المباشر من خبراء التجميل — تعلمي وتفاعلي مباشرة
-        </p>
+        <p className="mt-2 text-text-secondary">{t('marketing.live-stream.subtitle')}</p>
       </div>
 
       {isLoading ? (
         <GridSkeleton count={6} />
       ) : isError ? (
-        <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+        <ErrorAlert message={t('marketing.live-stream.load-error')} onRetry={() => refetch()} />
       ) : live.length === 0 && upcoming.length === 0 ? (
-        <EmptyState title="لا توجد بثوث حالياً" description="لم تبدأ أي بثوث مباشرة بعد" />
+        <EmptyState
+          title={t('marketing.live-stream.no-streams')}
+          description={t('marketing.live-stream.no-streams-desc')}
+        />
       ) : (
         <>
           {live.length > 0 && (
             <div className="mb-12">
-              <h2 className="mb-6 text-xl font-bold"> مباشر الآن</h2>
+              <h2 className="mb-6 text-xl font-bold">{t('marketing.live-stream.live-now')}</h2>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {live.map((s: Record<string, unknown>) => (
                   <Link key={s.id as number} href={`/live-stream/${s.id}`}>
@@ -64,10 +67,10 @@ export default function LiveStreamPage(): JSX.Element {
                           <span className="text-6xl"></span>
                         </div>
                         <span className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-red-600 px-3 py-1 text-xs font-bold text-white animate-pulse">
-                          مباشر
+                          {t('marketing.live-stream.live-badge')}
                         </span>
                         <span className="absolute bottom-2 right-2 rounded bg-black/70 px-2 py-0.5 text-xs text-white">
-                          {s.viewerCount as number} مشاهد
+                          {t('marketing.live-stream.viewers', { count: s.viewerCount as number })}
                         </span>
                       </div>
                       <div className="p-4">
@@ -86,7 +89,7 @@ export default function LiveStreamPage(): JSX.Element {
           )}
           {upcoming.length > 0 && (
             <div>
-              <h2 className="mb-6 text-xl font-bold"> قادم</h2>
+              <h2 className="mb-6 text-xl font-bold">{t('marketing.live-stream.upcoming')}</h2>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {upcoming.map((s: Record<string, unknown>) => (
                   <Card
@@ -100,12 +103,15 @@ export default function LiveStreamPage(): JSX.Element {
                       {s.technicianName as string}
                     </p>
                     <p className="text-xs text-brand-600 text-center mt-2 font-semibold">
-                      {new Date(s.startedAt as string).toLocaleDateString('ar-SA', {
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
+                      {new Date(s.startedAt as string).toLocaleDateString(
+                        locale === 'ar' ? 'ar-SA' : 'en-GB',
+                        {
+                          month: 'long',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        },
+                      )}
                     </p>
                   </Card>
                 ))}

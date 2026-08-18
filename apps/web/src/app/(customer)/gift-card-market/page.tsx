@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, Modal, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function GiftCardMarketPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: listings, refetch } = api.giftCardMarket.listings.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     refetch: () => void;
@@ -27,21 +29,23 @@ export default function GiftCardMarketPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold"> سوق البطاقات</h1>
-            <p className="mt-1 text-sm text-text-secondary">اشتري وببيعي بطاقات الهدايا</p>
+            <h1 className="text-2xl font-bold">{t('giftCardMarket.title')}</h1>
+            <p className="mt-1 text-sm text-text-secondary">{t('giftCardMarket.subtitle')}</p>
           </div>
-          <Button onClick={() => setShow(true)}>بيع بطاقة</Button>
+          <Button onClick={() => setShow(true)}>{t('giftCardMarket.sellButton')}</Button>
         </div>
         {items.length === 0 ? (
           <Card padding="lg">
-            <p className="text-center text-text-tertiary">لا توجد بطاقات حالياً</p>
+            <p className="text-center text-text-tertiary">{t('giftCardMarket.empty')}</p>
           </Card>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
             {items.map((l: Record<string, unknown>) => (
               <Card key={l.id as number} padding="lg" className="text-center">
                 <span className="text-4xl"></span>
-                <p className="font-bold mt-2">بطاقة {formatCurrency(l.value as number)}</p>
+                <p className="font-bold mt-2">
+                  {t('giftCardMarket.cardLabel', { amount: formatCurrency(l.value as number) })}
+                </p>
                 <div className="flex items-center justify-center gap-2 mt-1">
                   <span className="text-text-tertiary line-through text-sm">
                     {formatCurrency(l.value as number)}
@@ -51,7 +55,7 @@ export default function GiftCardMarketPage(): JSX.Element {
                   </span>
                 </div>
                 <span className="rounded-full bg-green-100 dark:bg-green-900 px-2 py-0.5 text-xs font-bold text-green-700">
-                  وفر {l.discount as number}%
+                  {t('giftCardMarket.save', { discount: l.discount as number })}
                 </span>
                 <p className="text-xs text-text-secondary mt-2">
                   {l.sellerName as string} · {l.createdAt as string}
@@ -61,16 +65,18 @@ export default function GiftCardMarketPage(): JSX.Element {
                   className="mt-3 w-full"
                   onClick={() => buyMut.mutate({ listingId: l.id as number })}
                 >
-                  شراء
+                  {t('giftCardMarket.buy')}
                 </Button>
               </Card>
             ))}
           </div>
         )}
-        <Modal open={show} onClose={() => setShow(false)} title="بيع بطاقة">
+        <Modal open={show} onClose={() => setShow(false)} title={t('giftCardMarket.modalTitle')}>
           <div className="space-y-3">
             <div>
-              <label className="text-sm">قيمة البطاقة: {formatCurrency(value)}</label>
+              <label className="text-sm">
+                {t('giftCardMarket.cardValue', { amount: formatCurrency(value) })}
+              </label>
               <input
                 type="range"
                 min={50}
@@ -86,8 +92,10 @@ export default function GiftCardMarketPage(): JSX.Element {
             </div>
             <div>
               <label className="text-sm">
-                سعر البيع: {formatCurrency(sprice)} (خصم{' '}
-                {Math.round(((value - sprice) / value) * 100)}%)
+                {t('giftCardMarket.sellingPrice', {
+                  amount: formatCurrency(sprice),
+                  percent: Math.round(((value - sprice) / value) * 100),
+                })}
               </label>
               <input
                 type="range"
@@ -104,7 +112,7 @@ export default function GiftCardMarketPage(): JSX.Element {
               loading={listMut.isPending}
               className="w-full"
             >
-              عرض البطاقة
+              {t('giftCardMarket.listCard')}
             </Button>
           </div>
         </Modal>

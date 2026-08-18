@@ -30,6 +30,32 @@ interface AnnualSummitCardProps {
   onRegister?: () => void;
   onSponsor?: () => void;
   className?: string;
+  /** Title of the summit */
+  title?: string;
+  /** Label prefixing the edition year, e.g. 'Annual edition {year}' */
+  editionLabel?: string;
+  /** Label for the city field */
+  cityLabel?: string;
+  /** Label for the date field */
+  dateLabel?: string;
+  /** Label for the topics section */
+  topicsLabel?: string;
+  /** Label for the speakers section */
+  speakersLabel?: string;
+  /** Text following the attendees count */
+  attendeesLabel?: string;
+  /** Label for the early-bird pricing block */
+  earlyBirdLabel?: string;
+  /** Currency suffix displayed after prices */
+  currencySuffix?: string;
+  /** Register call-to-action label */
+  registerLabel?: string;
+  /** Sponsor call-to-action label */
+  sponsorLabel?: string;
+  /** Footer pledge text */
+  footerText?: string;
+  /** Locale for internal sample data strings */
+  locale?: 'ar' | 'en';
 }
 
 export function AnnualSummitCard({
@@ -42,6 +68,19 @@ export function AnnualSummitCard({
   onRegister,
   onSponsor,
   className = '',
+  title = 'ملتقى المرأة في الجمال',
+  editionLabel = 'النسخة السنوية',
+  cityLabel = 'المدينة',
+  dateLabel = 'التاريخ',
+  topicsLabel = ' محاور الملتقى',
+  speakersLabel = '️ متحدثات',
+  attendeesLabel = ' سيدة مسجلة حتى الآن',
+  earlyBirdLabel = ' الحجز المبكر',
+  currencySuffix = 'ر.س',
+  registerLabel = 'سجّلي الآن ️',
+  sponsorLabel = 'راعي الملتقى',
+  footerText = 'معاً نبني مستقبل المرأة السعودية في قطاع التجميل',
+  locale = 'ar',
 }: AnnualSummitCardProps): JSX.Element {
   return (
     <div
@@ -53,41 +92,41 @@ export function AnnualSummitCard({
       {/* Header */}
       <div className="text-center">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-yellow-200 text-2xl dark:from-amber-800 dark:to-yellow-800"></div>
-        <h4 className="mt-2 text-sm font-bold text-amber-800 dark:text-amber-200">
-          ملتقى المرأة في الجمال
-        </h4>
-        <p className="text-[10px] text-amber-600 dark:text-amber-400">النسخة السنوية {year}</p>
+        <h4 className="mt-2 text-sm font-bold text-amber-800 dark:text-amber-200">{title}</h4>
+        <p className="text-[10px] text-amber-600 dark:text-amber-400">
+          {editionLabel} {year}
+        </p>
       </div>
 
       {/* Event details */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">المدينة</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{cityLabel}</p>
           <p className="text-xs font-bold text-amber-800 dark:text-amber-200"> {city}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">التاريخ</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{dateLabel}</p>
           <p className="text-xs font-bold text-amber-800 dark:text-amber-200"> {date}</p>
         </div>
       </div>
 
       {/* Topics */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200"> محاور الملتقى</p>
+        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">{topicsLabel}</p>
         <div className="mt-1 flex flex-wrap gap-1">
           {[
-            'ريادة الأعمال',
-            'تقنيات التجميل',
-            'الاستدامة',
-            'التمكين المالي',
-            'الصحة والجمال',
-            'التسويق الرقمي',
+            { ar: 'ريادة الأعمال', en: 'Entrepreneurship' },
+            { ar: 'تقنيات التجميل', en: 'Beauty Technology' },
+            { ar: 'الاستدامة', en: 'Sustainability' },
+            { ar: 'التمكين المالي', en: 'Financial Empowerment' },
+            { ar: 'الصحة والجمال', en: 'Health & Beauty' },
+            { ar: 'التسويق الرقمي', en: 'Digital Marketing' },
           ].map((t) => (
             <span
-              key={t}
+              key={t.ar}
               className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-medium text-amber-700 dark:bg-amber-900 dark:text-amber-300"
             >
-              {t}
+              {t[locale]}
             </span>
           ))}
         </div>
@@ -96,7 +135,9 @@ export function AnnualSummitCard({
       {/* Speakers */}
       {speakers.length > 0 && (
         <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-          <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">️ متحدثات</p>
+          <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">
+            {speakersLabel}
+          </p>
           <div className="mt-1.5 space-y-1.5">
             {speakers.map((s) => (
               <div key={s.name} className="flex items-center gap-2">
@@ -119,7 +160,8 @@ export function AnnualSummitCard({
       {attendees && (
         <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60">
           <p className="text-[10px] text-amber-700 dark:text-amber-300">
-            ️ {attendees.toLocaleString('ar-SA')} سيدة مسجلة حتى الآن
+            ️ {attendees.toLocaleString('ar-SA')}
+            {attendeesLabel}
           </p>
         </div>
       )}
@@ -127,9 +169,9 @@ export function AnnualSummitCard({
       {/* Pricing + CTA */}
       <div className="mt-3 flex items-center justify-between">
         <div>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500"> الحجز المبكر</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{earlyBirdLabel}</p>
           <p className="text-lg font-bold text-amber-800 dark:text-amber-200">
-            {earlyBirdPrice} ر.س
+            {earlyBirdPrice} {currencySuffix}
           </p>
         </div>
         <button
@@ -137,7 +179,7 @@ export function AnnualSummitCard({
           onClick={onRegister}
           className="rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 px-4 py-2.5 text-xs font-bold text-white hover:from-amber-600 hover:to-yellow-600 active:scale-[0.98] transition-all shadow-sm"
         >
-          سجّلي الآن ️
+          {registerLabel}
         </button>
       </div>
 
@@ -147,12 +189,10 @@ export function AnnualSummitCard({
         onClick={onSponsor}
         className="mt-2 w-full rounded-lg border border-amber-200 bg-white/60 py-1.5 text-[10px] font-medium text-amber-700 hover:bg-white dark:border-amber-800 dark:bg-gray-800/60 dark:text-amber-300"
       >
-        راعي الملتقى
+        {sponsorLabel}
       </button>
 
-      <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">
-        معاً نبني مستقبل المرأة السعودية في قطاع التجميل
-      </p>
+      <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">{footerText}</p>
     </div>
   );
 }

@@ -4,27 +4,30 @@ import { useState, useRef } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 import Link from 'next/link';
 
-const PALETTE_PRESETS = [
-  { label: 'وردي', colors: ['#D4737C', '#F2A0B6', '#C4A38C'] },
-  { label: 'ذهبي', colors: ['#D4A843', '#B76E79', '#E8D5B7'] },
-  { label: 'بني', colors: ['#6B4423', '#CD853F', '#8B6914'] },
-  { label: 'عنابي', colors: ['#722F37', '#673147', '#C41E3A'] },
-  { label: 'مرجاني', colors: ['#E8735A', '#F4A460', '#DEB6AB'] },
-  { label: 'طبيعي', colors: ['#DEB6AB', '#C4A38C', '#F2A0B6'] },
+const PALETTE_PRESETS: { label: TranslationKey; colors: string[] }[] = [
+  { label: 'styleMatch.palette.pink', colors: ['#D4737C', '#F2A0B6', '#C4A38C'] },
+  { label: 'styleMatch.palette.gold', colors: ['#D4A843', '#B76E79', '#E8D5B7'] },
+  { label: 'styleMatch.palette.brown', colors: ['#6B4423', '#CD853F', '#8B6914'] },
+  { label: 'styleMatch.palette.burgundy', colors: ['#722F37', '#673147', '#C41E3A'] },
+  { label: 'styleMatch.palette.coral', colors: ['#E8735A', '#F4A460', '#DEB6AB'] },
+  { label: 'styleMatch.palette.natural', colors: ['#DEB6AB', '#C4A38C', '#F2A0B6'] },
 ];
 
-const CATEGORIES = [
-  { key: '', nameAr: 'الكل', emoji: '' },
-  { key: 'daily', nameAr: 'يومي', emoji: '️' },
-  { key: 'evening', nameAr: 'سهرة', emoji: '' },
-  { key: 'party', nameAr: 'حفلات', emoji: '' },
-  { key: 'bridal', nameAr: 'عرايس', emoji: '' },
-  { key: 'traditional', nameAr: 'تقليدي', emoji: '' },
+const CATEGORIES: { key: string; label: TranslationKey; emoji: string }[] = [
+  { key: '', label: 'styleMatch.category.all', emoji: '' },
+  { key: 'daily', label: 'styleMatch.category.daily', emoji: '️' },
+  { key: 'evening', label: 'styleMatch.category.evening', emoji: '' },
+  { key: 'party', label: 'styleMatch.category.party', emoji: '' },
+  { key: 'bridal', label: 'styleMatch.category.bridal', emoji: '' },
+  { key: 'traditional', label: 'styleMatch.category.traditional', emoji: '' },
 ];
 
 export default function StyleMatchPage(): JSX.Element {
+  const { t } = useLocale();
   const [customColors, setCustomColors] = useState<string[]>(['#D4737C']);
   const [activePreset, setActivePreset] = useState<string | null>(null);
   const [category, setCategory] = useState('');
@@ -76,16 +79,14 @@ export default function StyleMatchPage(): JSX.Element {
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> Style Match</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            حمّلي صورة إطلالتكِ أو اختاري ألوانكِ المفضلة لاكتشاف إطلالات مشابهة
-          </p>
+          <p className="mt-1 text-sm text-text-secondary">{t('styleMatch.subtitle')}</p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Left — Photo Upload + Colors */}
           <div className="space-y-4">
             <Card padding="lg">
-              <h3 className="font-bold mb-3"> حمّلي صورة</h3>
+              <h3 className="font-bold mb-3">{t('styleMatch.uploadPhoto')}</h3>
               <input
                 ref={fileRef}
                 type="file"
@@ -96,13 +97,19 @@ export default function StyleMatchPage(): JSX.Element {
               {photoPreview && (
                 <div className="mt-3 rounded-xl overflow-hidden h-40 bg-surface-muted dark:bg-gray-800">
                   {/* eslint-disable-next-line @next/next/no-img-element -- blob: URL from URL.createObjectURL cannot be passed to next/image */}
-                  <img src={photoPreview} alt="معاينة" className="h-full w-full object-cover" />
+                  <img
+                    src={photoPreview}
+                    alt={t('styleMatch.preview')}
+                    className="h-full w-full object-cover"
+                  />
                 </div>
               )}
             </Card>
 
             <Card padding="lg">
-              <h3 className="font-bold mb-2"> الألوان ({customColors.length})</h3>
+              <h3 className="font-bold mb-2">
+                {t('styleMatch.colorsTitle', { count: customColors.length })}
+              </h3>
               <div className="flex flex-wrap gap-2 mb-3">
                 {PALETTE_PRESETS.map((p) => (
                   <button
@@ -118,7 +125,7 @@ export default function StyleMatchPage(): JSX.Element {
                           style={{ backgroundColor: c }}
                         />
                       ))}
-                      {p.label}
+                      {t(p.label)}
                     </span>
                   </button>
                 ))}
@@ -158,14 +165,14 @@ export default function StyleMatchPage(): JSX.Element {
                 className="w-full"
                 size="lg"
               >
-                ابحثي عن إطلالات مشابهة
+                {t('styleMatch.matchCta')}
               </Button>
             </div>
           </div>
 
           {/* Right — Category filter */}
           <Card padding="lg">
-            <h3 className="font-bold mb-3">️ نوع الإطلالة</h3>
+            <h3 className="font-bold mb-3">{t('styleMatch.lookTypeTitle')}</h3>
             <div className="flex flex-wrap gap-2">
               {CATEGORIES.map((c) => (
                 <button
@@ -173,7 +180,7 @@ export default function StyleMatchPage(): JSX.Element {
                   onClick={() => setCategory(c.key === category ? '' : c.key)}
                   className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${category === c.key ? 'bg-brand-600 text-white shadow-md' : category === '' && c.key === '' ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted dark:bg-gray-800 hover:bg-gray-200'}`}
                 >
-                  {c.emoji} {c.nameAr}
+                  {c.emoji} {t(c.label)}
                 </button>
               ))}
             </div>
@@ -184,15 +191,15 @@ export default function StyleMatchPage(): JSX.Element {
         {matchMut.isPending ? (
           <GridSkeleton count={6} />
         ) : matchMut.isError ? (
-          <ErrorAlert message="فشل البحث" onRetry={handleMatch} />
+          <ErrorAlert message={t('styleMatch.err.search')} onRetry={handleMatch} />
         ) : searched && resultsList.length === 0 ? (
           <EmptyState
-            title="لا توجد إطلالات مطابقة"
-            description="جربي تغيير الألوان أو نوع الإطلالة"
+            title={t('styleMatch.empty.title')}
+            description={t('styleMatch.empty.desc')}
           />
         ) : resultsList.length > 0 ? (
           <div>
-            <h3 className="font-bold text-lg mb-4"> إطلالات مشابهة</h3>
+            <h3 className="font-bold text-lg mb-4">{t('styleMatch.resultsTitle')}</h3>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {resultsList.map((r: Record<string, unknown>) => (
                 <Card
@@ -232,7 +239,9 @@ export default function StyleMatchPage(): JSX.Element {
                         <span className="text-xs font-bold text-green-600">
                           {r.matchPct as number}%
                         </span>
-                        <span className="text-[10px] text-text-tertiary">تطابق</span>
+                        <span className="text-[10px] text-text-tertiary">
+                          {t('styleMatch.matchLabel')}
+                        </span>
                       </div>
                     </div>
                     <h3 className="mt-2 font-bold group-hover:text-brand-600 transition-colors">
@@ -268,7 +277,7 @@ export default function StyleMatchPage(): JSX.Element {
                         className="mt-3 inline-block"
                       >
                         <Button size="sm" variant="ghost">
-                          شاهدي الدرس
+                          {t('styleMatch.watchTutorial')}
                         </Button>
                       </Link>
                     )}

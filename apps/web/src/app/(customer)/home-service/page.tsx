@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 import Link from 'next/link';
 
 const CITIES = [
@@ -24,6 +25,7 @@ const CITIES = [
 ];
 
 export default function HomeServicePage(): JSX.Element {
+  const { t } = useLocale();
   const [city, setCity] = useState('الرياض');
   const [address, setAddress] = useState('');
   const [serviceId, setServiceId] = useState('');
@@ -41,17 +43,18 @@ export default function HomeServicePage(): JSX.Element {
       setRequested(data as Record<string, unknown>);
       setError('');
     },
-    onError: (err: { message?: string }) => setError(err?.message ?? 'فشل الطلب'),
+    onError: (err: { message?: string }) =>
+      setError(err?.message ?? t('homeService.err.requestFailed')),
   });
 
   const handleRequest = () => {
     setError('');
     if (!address.trim()) {
-      setError('الرجاء إدخال العنوان');
+      setError(t('homeService.err.address'));
       return;
     }
     if (!serviceId) {
-      setError('الرجاء إدخال معرف الخدمة');
+      setError(t('homeService.err.serviceId'));
       return;
     }
     requestMut.mutate({
@@ -68,34 +71,32 @@ export default function HomeServicePage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> خدمة منزلية</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            الفنيات يجين لعنوانكِ — خدمة تجميل في منزلكِ براحة وأمان
-          </p>
+          <h1 className="text-2xl font-bold">{t('homeService.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('homeService.subtitle')}</p>
         </div>
 
         {/* Pricing Card */}
         {estimate && (
           <Card padding="lg" className="border-2 border-brand-200 dark:border-brand-800">
-            <h3 className="font-bold text-lg mb-4"> تقدير التكلفة — {city}</h3>
+            <h3 className="font-bold text-lg mb-4">{t('homeService.estimateTitle', { city })}</h3>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-text-secondary">رسوم الخدمة الأساسية</span>
+                <span className="text-text-secondary">{t('homeService.fee.service')}</span>
                 <span>{formatCurrency(estimate.serviceFee as number)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-text-secondary">رسوم الزيارة المنزلية</span>
+                <span className="text-text-secondary">{t('homeService.fee.travel')}</span>
                 <span>{formatCurrency(estimate.travelFee as number)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-text-secondary">رسوم الحجز</span>
+                <span className="text-text-secondary">{t('homeService.fee.booking')}</span>
                 <span>{formatCurrency(estimate.baseFee as number)}</span>
               </div>
               <hr className="dark:border-gray-700" />
               <div className="flex justify-between text-lg">
-                <span className="font-bold">الإجمالي التقريبي</span>
+                <span className="font-bold">{t('homeService.fee.total')}</span>
                 <span className="font-extrabold text-brand-600">
-                  {formatCurrency(estimate.total as number)} ر.س
+                  {formatCurrency(estimate.total as number)} {t('misc.sar')}
                 </span>
               </div>
             </div>
@@ -109,26 +110,26 @@ export default function HomeServicePage(): JSX.Element {
           >
             <span className="text-6xl"></span>
             <h2 className="mt-4 text-xl font-bold text-green-700 dark:text-green-300">
-              تم استلام طلبكِ!
+              {t('homeService.success.title')}
             </h2>
             <p className="mt-2 text-sm text-text-secondary">
-              رقم الطلب: {requested.requestId as string}
+              {t('homeService.success.requestId', { id: requested.requestId as string })}
             </p>
             <p className="text-sm text-text-secondary">{requested.estimatedArrival as string}</p>
             <div className="mt-4">
               <Link href="/bookings">
-                <Button size="sm">متابعة الطلب</Button>
+                <Button size="sm">{t('homeService.success.continue')}</Button>
               </Link>
             </div>
           </Card>
         ) : (
           <Card padding="lg">
-            <h3 className="font-bold text-lg mb-4"> طلب خدمة منزلية</h3>
+            <h3 className="font-bold text-lg mb-4">{t('homeService.form.title')}</h3>
             <div className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label htmlFor="hs-city" className="block text-sm font-semibold mb-1">
-                    المدينة
+                    {t('homeService.label.city')}
                   </label>
                   <select
                     id="hs-city"
@@ -145,35 +146,35 @@ export default function HomeServicePage(): JSX.Element {
                 </div>
                 <div>
                   <label htmlFor="hs-serviceId" className="block text-sm font-semibold mb-1">
-                    معرف الخدمة
+                    {t('homeService.label.serviceId')}
                   </label>
                   <input
                     id="hs-serviceId"
                     type="number"
                     value={serviceId}
                     onChange={(e) => setServiceId(e.target.value)}
-                    placeholder="مثال: ١"
+                    placeholder={t('homeService.placeholder.serviceId')}
                     className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
                   />
                 </div>
               </div>
               <div>
                 <label htmlFor="hs-address" className="block text-sm font-semibold mb-1">
-                  العنوان التفصيلي
+                  {t('homeService.label.address')}
                 </label>
                 <input
                   id="hs-address"
                   type="text"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  placeholder="الحي، الشارع، رقم المبنى"
+                  placeholder={t('homeService.placeholder.address')}
                   className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
                 />
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label htmlFor="hs-prefDate" className="block text-sm font-semibold mb-1">
-                    التاريخ المفضل
+                    {t('homeService.label.date')}
                   </label>
                   <input
                     id="hs-prefDate"
@@ -185,7 +186,7 @@ export default function HomeServicePage(): JSX.Element {
                 </div>
                 <div>
                   <label htmlFor="hs-prefTime" className="block text-sm font-semibold mb-1">
-                    الوقت المفضل
+                    {t('homeService.label.time')}
                   </label>
                   <input
                     id="hs-prefTime"
@@ -198,13 +199,13 @@ export default function HomeServicePage(): JSX.Element {
               </div>
               <div>
                 <label htmlFor="hs-notes" className="block text-sm font-semibold mb-1">
-                  ملاحظات
+                  {t('homeService.label.notes')}
                 </label>
                 <textarea
                   id="hs-notes"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="أي تفاصيل إضافية..."
+                  placeholder={t('homeService.placeholder.notes')}
                   rows={2}
                   className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
                 />
@@ -220,7 +221,7 @@ export default function HomeServicePage(): JSX.Element {
                 className="w-full"
                 size="lg"
               >
-                أرسلي الطلب
+                {t('homeService.submit')}
               </Button>
             </div>
           </Card>
@@ -228,9 +229,9 @@ export default function HomeServicePage(): JSX.Element {
 
         <div className="grid gap-4 sm:grid-cols-3">
           {[
-            { emoji: '', title: 'في منزلكِ', desc: 'الفنيات يأتين لعنوانكِ' },
-            { emoji: '️', title: 'خلال ٦٠ دقيقة', desc: 'وقت وصول سريع' },
-            { emoji: '️', title: 'خدمة آمنة', desc: 'جميع الفنيات موثقات' },
+            { emoji: '', title: t('homeService.feat1.title'), desc: t('homeService.feat1.desc') },
+            { emoji: '️', title: t('homeService.feat2.title'), desc: t('homeService.feat2.desc') },
+            { emoji: '️', title: t('homeService.feat3.title'), desc: t('homeService.feat3.desc') },
           ].map((b, i) => (
             <Card key={i} padding="md" className="text-center">
               <span className="text-3xl">{b.emoji}</span>

@@ -19,11 +19,15 @@ interface Trend {
 
 interface BeautyTrendAlertCardProps {
   trends: Trend[];
+  title?: string;
+  countSuffix?: string;
   className?: string;
 }
 
 export function BeautyTrendAlertCard({
   trends,
+  title = 'رائج الآن',
+  countSuffix = 'صيحة',
   className = '',
 }: BeautyTrendAlertCardProps): JSX.Element | null {
   if (!trends.length) return null;
@@ -38,8 +42,10 @@ export function BeautyTrendAlertCard({
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true"></span>
         <div>
-          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">رائج الآن</h4>
-          <p className="text-[10px] text-rose-500 dark:text-rose-400">{trends.length} صيحة</p>
+          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
+          <p className="text-[10px] text-rose-500 dark:text-rose-400">
+            {trends.length} {countSuffix}
+          </p>
         </div>
       </div>
       <div className="mt-3 space-y-2">

@@ -58,15 +58,17 @@ import {
   type SkinConcern,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function WellnessPage(): JSX.Element {
+  const { t } = useLocale();
   const cycleSettings = api.cycleTracker.settings.useQuery();
   const skinAnalysis = api.skinAnalysis.history.useQuery({});
 
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" الصحة والعافية" subtitle="جمالكِ يبدأ من صحتكِ" />
+        <PageTitle title={t('wellness.title')} subtitle={t('wellness.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Main */}

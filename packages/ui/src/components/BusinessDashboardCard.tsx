@@ -16,6 +16,12 @@ interface BusinessDashboardCardProps {
   month?: string;
   onViewFull?: () => void;
   className?: string;
+  title?: string;
+  revenueLabel?: string;
+  expensesLabel?: string;
+  profitLabel?: string;
+  marginLabel?: string;
+  reportButtonText?: string;
 }
 
 export function BusinessDashboardCard({
@@ -24,6 +30,12 @@ export function BusinessDashboardCard({
   month = 'هذا الشهر',
   onViewFull,
   className = '',
+  title = 'لوحة الأعمال',
+  revenueLabel = 'الإيراد',
+  expensesLabel = 'المصروفات',
+  profitLabel = 'الربح',
+  marginLabel = 'هامش الربح',
+  reportButtonText = 'التقرير الكامل',
 }: BusinessDashboardCardProps): JSX.Element {
   const profit = revenue.month - expenses;
   const margin = Math.round((profit / revenue.month) * 100);
@@ -40,9 +52,7 @@ export function BusinessDashboardCard({
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true"></span>
           <div>
-            <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-              لوحة الأعمال
-            </h4>
+            <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
             <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{month}</p>
           </div>
         </div>
@@ -61,19 +71,19 @@ export function BusinessDashboardCard({
       {/* KPIs */}
       <div className="mt-3 grid grid-cols-3 gap-2">
         <div className="rounded-xl bg-emerald-50 p-2.5 text-center dark:bg-emerald-950">
-          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">الإيراد</p>
+          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{revenueLabel}</p>
           <p className="text-sm font-bold text-emerald-800 dark:text-emerald-200">
             {revenue.month.toLocaleString('ar-SA')}
           </p>
         </div>
         <div className="rounded-xl bg-rose-50 p-2.5 text-center dark:bg-rose-950">
-          <p className="text-[9px] text-rose-600 dark:text-rose-400">المصروفات</p>
+          <p className="text-[9px] text-rose-600 dark:text-rose-400">{expensesLabel}</p>
           <p className="text-sm font-bold text-rose-800 dark:text-rose-200">
             {expenses.toLocaleString('ar-SA')}
           </p>
         </div>
         <div className="rounded-xl bg-blue-50 p-2.5 text-center dark:bg-blue-950">
-          <p className="text-[9px] text-blue-600 dark:text-blue-400">الربح</p>
+          <p className="text-[9px] text-blue-600 dark:text-blue-400">{profitLabel}</p>
           <p className="text-sm font-bold text-blue-800 dark:text-blue-200">
             {profit.toLocaleString('ar-SA')}
           </p>
@@ -83,7 +93,7 @@ export function BusinessDashboardCard({
       {/* Profit margin bar */}
       <div className="mt-2">
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-text-tertiary dark:text-gray-500">هامش الربح</span>
+          <span className="text-text-tertiary dark:text-gray-500">{marginLabel}</span>
           <span className="font-bold text-emerald-700 dark:text-emerald-300">{margin}%</span>
         </div>
         <div className="mt-1 h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
@@ -99,7 +109,7 @@ export function BusinessDashboardCard({
         onClick={onViewFull}
         className="mt-3 w-full rounded-lg border border-emerald-200 py-1.5 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-300"
       >
-        التقرير الكامل
+        {reportButtonText}
       </button>
     </div>
   );

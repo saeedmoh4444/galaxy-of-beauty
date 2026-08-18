@@ -18,6 +18,13 @@ interface WomenEmployerBadgeProps {
   /** Does salon have women in management */
   womenInManagement?: number;
   className?: string;
+  championTitle?: string;
+  employerTitle?: string;
+  fromText?: string;
+  staffCountText?: string;
+  benefitsText?: string;
+  inManagementText?: string;
+  footerText?: string;
 }
 
 export function WomenEmployerBadge({
@@ -26,6 +33,13 @@ export function WomenEmployerBadge({
   hasBenefits = false,
   womenInManagement,
   className = '',
+  championTitle = 'بطل تمكين المرأة',
+  employerTitle = 'مُشغّل للنساء',
+  fromText = 'من',
+  staffCountText = 'موظفة سعودية',
+  benefitsText = 'تأمين ومزايا',
+  inManagementText = 'في الإدارة',
+  footerText = '‍ ندعم الصالونات التي توظف وتمكّن المرأة السعودية',
 }: WomenEmployerBadgeProps): JSX.Element {
   const pct = Math.round((womenEmployed / totalStaff) * 100);
   const isChampion = pct >= 80;
@@ -47,10 +61,10 @@ export function WomenEmployerBadge({
           </span>
           <div>
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-              {isChampion ? 'بطل تمكين المرأة' : 'مُشغّل للنساء'}
+              {isChampion ? championTitle : employerTitle}
             </h4>
             <p className="text-[10px] text-text-tertiary dark:text-gray-400">
-              {womenEmployed} من {totalStaff} موظفة سعودية
+              {womenEmployed} {fromText} {totalStaff} {staffCountText}
             </p>
           </div>
         </div>
@@ -83,18 +97,18 @@ export function WomenEmployerBadge({
       <div className="mt-2 flex flex-wrap gap-1">
         {hasBenefits && (
           <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[9px] font-medium text-blue-700 dark:bg-blue-950 dark:text-blue-300">
-            تأمين ومزايا
+            {benefitsText}
           </span>
         )}
         {womenInManagement !== undefined && womenInManagement > 0 && (
           <span className="rounded-full bg-purple-50 px-2 py-0.5 text-[9px] font-medium text-purple-700 dark:bg-purple-950 dark:text-purple-300">
-            {womenInManagement} في الإدارة
+            {womenInManagement} {inManagementText}
           </span>
         )}
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        ‍ ندعم الصالونات التي توظف وتمكّن المرأة السعودية
+        {footerText}
       </p>
     </div>
   );

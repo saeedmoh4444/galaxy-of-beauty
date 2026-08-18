@@ -24,6 +24,9 @@ interface BeautyInfographicCardProps {
   emoji?: string;
   stats: InfoStat[];
   source?: string;
+  subtitle?: string;
+  sourceLabel?: string;
+  shareTipText?: string;
   className?: string;
 }
 
@@ -32,6 +35,9 @@ export function BeautyInfographicCard({
   emoji = '',
   stats,
   source,
+  subtitle = 'معلومات بصرية سريعة',
+  sourceLabel = 'المصدر:',
+  shareTipText = 'المعرفة المرئية أسهل للتذكر — شاركيها مع صديقاتكِ',
   className = '',
 }: BeautyInfographicCardProps): JSX.Element {
   const colors = [
@@ -54,7 +60,7 @@ export function BeautyInfographicCard({
         </span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{topic}</h4>
-          <p className="text-[10px] text-indigo-500 dark:text-indigo-400">معلومات بصرية سريعة</p>
+          <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{subtitle}</p>
         </div>
       </div>
 
@@ -84,13 +90,13 @@ export function BeautyInfographicCard({
       {/* Source */}
       {source && (
         <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-          المصدر: {source}
+          {sourceLabel} {source}
         </p>
       )}
 
       {/* Share tip */}
       <p className="mt-1.5 text-center text-[9px] text-indigo-500 dark:text-indigo-400">
-        المعرفة المرئية أسهل للتذكر — شاركيها مع صديقاتكِ
+        {shareTipText}
       </p>
     </div>
   );

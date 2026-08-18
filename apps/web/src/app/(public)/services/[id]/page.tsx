@@ -1,6 +1,8 @@
 import { getServerCaller } from '@/lib/server-trpc';
 import { ServiceDetailClient } from './ServiceDetailClient';
 import type { ServiceDetailData } from './ServiceDetailClient';
+import { getServerLocale } from '@/lib/i18n';
+import { t } from '@galaxy/shared';
 
 export default async function ServiceDetailPage({
   params,
@@ -8,6 +10,7 @@ export default async function ServiceDetailPage({
   params: Promise<{ id: string }>;
 }): Promise<JSX.Element> {
   const { id } = await params;
+  const locale = await getServerLocale();
 
   const data: ServiceDetailData = {
     id: Number(id),
@@ -23,7 +26,7 @@ export default async function ServiceDetailPage({
   };
 
   if (isNaN(Number(id))) {
-    data.fetchError = 'معرف الخدمة غير صالح';
+    data.fetchError = t('marketing.services.invalid-id', locale);
     return <ServiceDetailClient svc={data} />;
   }
 
@@ -45,7 +48,7 @@ export default async function ServiceDetailPage({
     data.tags = (svc.tags as ServiceDetailData['tags']) ?? [];
     data.related = (relatedResult as ServiceDetailData['related']) ?? [];
   } catch (e) {
-    data.fetchError = (e as Error).message || 'فشل تحميل الخدمة';
+    data.fetchError = (e as Error).message || t('marketing.services.load-error', locale);
   }
 
   return <ServiceDetailClient svc={data} />;

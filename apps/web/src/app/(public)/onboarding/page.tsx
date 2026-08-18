@@ -3,46 +3,49 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Button, Card } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 const STEPS = [
   {
-    title: ' أهلاً بكِ في جالكسي بيوتي!',
-    desc: 'منصتكِ الشاملة للجمال والعناية. دعينا نأخذكِ في جولة سريعة.',
-    action: 'هيا بنا!',
+    title: 'marketing.onboarding.step-1-title',
+    desc: 'marketing.onboarding.step-1-desc',
+    action: 'marketing.onboarding.step-1-action',
+    link: undefined,
   },
   {
-    title: ' اكتشفي الخدمات',
-    desc: 'تصفحي مئات الخدمات من فنيات معتمدات — شعر، بشرة، مكياج، مساج والمزيد.',
-    action: 'تصفحي الخدمات',
+    title: 'marketing.onboarding.step-2-title',
+    desc: 'marketing.onboarding.step-2-desc',
+    action: 'marketing.onboarding.step-2-action',
     link: '/services',
   },
   {
-    title: ' اعرفي نوع بشرتكِ',
-    desc: 'اختبار سريع يساعدكِ في معرفة نوع بشرتكِ والخدمات المناسبة لكِ.',
-    action: 'ابدئي الاختبار',
+    title: 'marketing.onboarding.step-3-title',
+    desc: 'marketing.onboarding.step-3-desc',
+    action: 'marketing.onboarding.step-3-action',
     link: '/beauty-quiz',
   },
   {
-    title: ' مناسبة خاصة؟',
-    desc: 'خططي لإطلالتكِ المثالية مع خدمة تخطيط الزفاف والباقات المخصصة.',
-    action: 'اكتشفي تخطيط الزفاف',
+    title: 'marketing.onboarding.step-4-title',
+    desc: 'marketing.onboarding.step-4-desc',
+    action: 'marketing.onboarding.step-4-action',
     link: '/bridal-concierge',
   },
   {
-    title: ' هدايا الجمال',
-    desc: 'بطاقات هدايا وسجل هدايا — أهدي من تحبين أو اطلبي ما تتمنين.',
-    action: 'تصفحي بطاقات الهدية',
+    title: 'marketing.onboarding.step-5-title',
+    desc: 'marketing.onboarding.step-5-desc',
+    action: 'marketing.onboarding.step-5-action',
     link: '/gift-cards',
   },
   {
-    title: ' أنتِ جاهزة!',
-    desc: 'احجزي موعدكِ الأول اليوم واستمتعي بتجربة جمال لا تُنسى.',
-    action: 'احجزي الآن',
+    title: 'marketing.onboarding.step-6-title',
+    desc: 'marketing.onboarding.step-6-desc',
+    action: 'marketing.onboarding.step-6-action',
     link: '/bookings/create',
   },
-];
+] as const;
 
 export default function OnboardingPage(): JSX.Element {
+  const { t } = useLocale();
   const [step, setStep] = useState(0);
   const s = STEPS[step]!;
 
@@ -57,16 +60,16 @@ export default function OnboardingPage(): JSX.Element {
             />
           ))}
         </div>
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">{s.title}</h1>
-        <p className="mt-4 text-text-secondary dark:text-gray-400">{s.desc}</p>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">{t(s.title)}</h1>
+        <p className="mt-4 text-text-secondary dark:text-gray-400">{t(s.desc)}</p>
         <div className="mt-8 flex gap-3 justify-center">
           {s.link ? (
             <Link href={s.link}>
-              <Button size="lg">{s.action}</Button>
+              <Button size="lg">{t(s.action)}</Button>
             </Link>
           ) : (
             <Button size="lg" onClick={() => setStep(step + 1)}>
-              {s.action}
+              {t(s.action)}
             </Button>
           )}
         </div>
@@ -75,7 +78,7 @@ export default function OnboardingPage(): JSX.Element {
             onClick={() => setStep(step - 1)}
             className="mt-4 text-sm text-text-tertiary hover:text-brand-600"
           >
-            ← السابق
+            {t('marketing.onboarding.back')}
           </button>
         )}
         {!s.link && step < STEPS.length - 1 && (
@@ -83,7 +86,7 @@ export default function OnboardingPage(): JSX.Element {
             onClick={() => setStep(STEPS.length - 1)}
             className="mt-4 block w-full text-sm text-text-tertiary hover:text-brand-600"
           >
-            تخطي
+            {t('marketing.onboarding.skip')}
           </button>
         )}
       </Card>

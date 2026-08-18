@@ -14,6 +14,13 @@ interface QuietHoursBadgeProps {
   hours: string;
   days: string;
   features?: string[];
+  title?: string;
+  subtitle?: string;
+  timeLabel?: string;
+  daysLabel?: string;
+  featuresTitle?: string;
+  bookButtonText?: string;
+  footerText?: string;
   className?: string;
 }
 
@@ -22,6 +29,13 @@ export function QuietHoursBadge({
   days,
   features = ['موسيقى منخفضة', 'إضاءة خافتة', 'عدد أقل من الزبونات', 'بدون عطور قوية'],
   className = '',
+  title = 'ساعات هادئة',
+  subtitle = 'أوقات مخصصة لراحة الحواس',
+  timeLabel = 'التوقيت',
+  daysLabel = 'الأيام',
+  featuresTitle = 'مميزات الساعات الهادئة',
+  bookButtonText = 'احجزي في الساعات الهادئة',
+  footerText = 'لأن الراحة الحسية حق للجميع',
 }: QuietHoursBadgeProps): JSX.Element {
   return (
     <div
@@ -32,18 +46,18 @@ export function QuietHoursBadge({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-purple-800 dark:text-purple-200">ساعات هادئة</h4>
-        <p className="text-[10px] text-purple-500 dark:text-purple-400">أوقات مخصصة لراحة الحواس</p>
+        <h4 className="mt-1 text-sm font-bold text-purple-800 dark:text-purple-200">{title}</h4>
+        <p className="text-[10px] text-purple-500 dark:text-purple-400">{subtitle}</p>
       </div>
 
       {/* Schedule */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-purple-600 dark:text-purple-400">التوقيت</p>
+          <p className="text-[9px] text-purple-600 dark:text-purple-400">{timeLabel}</p>
           <p className="text-sm font-bold text-purple-800 dark:text-purple-200"> {hours}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-purple-600 dark:text-purple-400">الأيام</p>
+          <p className="text-[9px] text-purple-600 dark:text-purple-400">{daysLabel}</p>
           <p className="text-sm font-bold text-purple-800 dark:text-purple-200"> {days}</p>
         </div>
       </div>
@@ -51,7 +65,7 @@ export function QuietHoursBadge({
       {/* Features */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <p className="text-[10px] font-bold text-purple-700 dark:text-purple-300">
-          مميزات الساعات الهادئة
+          {featuresTitle}
         </p>
         <div className="mt-1.5 flex flex-wrap gap-1.5">
           {features.map((f) => (
@@ -70,11 +84,11 @@ export function QuietHoursBadge({
         type="button"
         className="mt-3 w-full rounded-xl bg-purple-600 py-2.5 text-xs font-bold text-white hover:bg-purple-700 active:scale-[0.98] transition-all"
       >
-        احجزي في الساعات الهادئة
+        {bookButtonText}
       </button>
 
       <p className="mt-2 text-center text-[9px] text-purple-500 dark:text-purple-400">
-        لأن الراحة الحسية حق للجميع
+        {footerText}
       </p>
     </div>
   );

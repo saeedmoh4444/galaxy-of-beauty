@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, Button, Modal } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function VideoTestimonialsPage(): JSX.Element {
   const { user } = useAuth();
+  const { t } = useLocale();
   const { data, isLoading } = api.videoTestimonials.feed.useQuery({ page: 1, limit: 12 }) as {
     data: { items: Array<Record<string, unknown>> } | undefined;
     isLoading: boolean;
@@ -24,12 +26,14 @@ export default function VideoTestimonialsPage(): JSX.Element {
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">توصيات بالفيديو</h1>
-        <p className="mt-2 text-text-secondary">شوفي تجارب حقيقية من العميلات</p>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.video-testimonials.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.video-testimonials.subtitle')}</p>
       </div>
       {user && (
         <div className="text-center mb-6">
-          <Button onClick={() => setShow(true)}> شاركي فيديوكِ</Button>
+          <Button onClick={() => setShow(true)}>
+            {t('marketing.video-testimonials.share-video')}
+          </Button>
         </div>
       )}
       {isLoading ? (
@@ -53,30 +57,34 @@ export default function VideoTestimonialsPage(): JSX.Element {
           ))}
         </div>
       )}
-      <Modal open={show} onClose={() => setShow(false)} title="شاركي فيديو">
+      <Modal
+        open={show}
+        onClose={() => setShow(false)}
+        title={t('marketing.video-testimonials.modal-title')}
+      >
         <div className="space-y-3">
           <input
             value={vUrl}
             onChange={(e) => setVUrl(e.target.value)}
-            placeholder="رابط الفيديو"
+            placeholder={t('marketing.video-testimonials.video-url-placeholder')}
             className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
           />
           <div className="grid grid-cols-2 gap-3">
             <input
               value={techName}
               onChange={(e) => setTechName(e.target.value)}
-              placeholder="اسم الفنية"
+              placeholder={t('marketing.video-testimonials.tech-name-placeholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <input
               value={svcName}
               onChange={(e) => setSvcName(e.target.value)}
-              placeholder="الخدمة"
+              placeholder={t('marketing.video-testimonials.service-placeholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm">التقييم:</span>
+            <span className="text-sm">{t('marketing.video-testimonials.rating-label')}</span>
             {[1, 2, 3, 4, 5].map((s) => (
               <button
                 key={s}
@@ -89,7 +97,7 @@ export default function VideoTestimonialsPage(): JSX.Element {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             maxLength={300}
-            placeholder="تعليقك..."
+            placeholder={t('marketing.video-testimonials.comment-placeholder')}
             className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             rows={2}
           />
@@ -107,7 +115,7 @@ export default function VideoTestimonialsPage(): JSX.Element {
             loading={submitMut.isPending}
             className="w-full"
           >
-            نشر
+            {t('marketing.video-testimonials.submit')}
           </Button>
         </div>
       </Modal>

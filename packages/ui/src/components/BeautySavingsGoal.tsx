@@ -29,6 +29,32 @@ interface SavingsGoal {
 interface BeautySavingsGoalProps {
   goals: SavingsGoal[];
   className?: string;
+  /** Card heading */
+  title?: string;
+  /** Subtitle under the heading */
+  subtitle?: string;
+  /** Overall progress label */
+  overallProgressLabel?: string;
+  /** Text when a goal is complete */
+  completedText?: string;
+  /** Prefix before the remaining amount */
+  remainingPrefix?: string;
+  /** Suffix after the saved amount */
+  savedSuffix?: string;
+  /** Suffix after the target amount */
+  targetSuffix?: string;
+  /** Prefix before the monthly amount */
+  monthlyPrefix?: string;
+  /** Suffix after the months remaining count */
+  monthsRemainingSuffix?: string;
+  /** Contribute input placeholder */
+  contributePlaceholder?: string;
+  /** Add button label */
+  addButtonText?: string;
+  /** Encouragement footer */
+  encouragementText?: string;
+  /** Achieved goal footer */
+  achievedText?: string;
 }
 
 function formatSAR(amount: number): string {
@@ -42,6 +68,19 @@ function formatSAR(amount: number): string {
 export function BeautySavingsGoal({
   goals,
   className = '',
+  title = 'حصالتي التجميلية',
+  subtitle = 'ادخري لهواياتكِ الجمالية',
+  overallProgressLabel = 'التقدم الكلي',
+  completedText = ' اكتمل!',
+  remainingPrefix = 'باقي ',
+  savedSuffix = 'تم',
+  targetSuffix = 'الهدف',
+  monthlyPrefix = 'شهرياً ',
+  monthsRemainingSuffix = 'شهور متبقية',
+  contributePlaceholder = 'أضف مبلغ...',
+  addButtonText = 'إضافة',
+  encouragementText = 'كل ريال يقرّبكِ من جمالكِ — استمري!',
+  achievedText = 'مبروك! حققتِ هدفكِ — استمتعي بجمالكِ!',
 }: BeautySavingsGoalProps): JSX.Element | null {
   const [contribute, setContribute] = useState<Record<number, string>>({});
 
@@ -60,12 +99,8 @@ export function BeautySavingsGoal({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-            حصالتي التجميلية
-          </h4>
-          <p className="mt-0.5 text-xs text-text-tertiary dark:text-gray-400">
-            ادخري لهواياتكِ الجمالية
-          </p>
+          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
+          <p className="mt-0.5 text-xs text-text-tertiary dark:text-gray-400">{subtitle}</p>
         </div>
         <div className="rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
           {formatSAR(totalSaved)} / {formatSAR(totalTarget)}
@@ -75,7 +110,7 @@ export function BeautySavingsGoal({
       {/* Overall progress */}
       <div className="mt-3">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-text-tertiary dark:text-gray-400">التقدم الكلي</span>
+          <span className="text-text-tertiary dark:text-gray-400">{overallProgressLabel}</span>
           <span className="font-bold text-amber-600 dark:text-amber-400">
             {Math.round((totalSaved / totalTarget) * 100)}%
           </span>
@@ -113,7 +148,7 @@ export function BeautySavingsGoal({
                       : 'text-amber-600 dark:text-amber-400',
                   )}
                 >
-                  {remaining <= 0 ? ' اكتمل!' : `باقي ${formatSAR(remaining)}`}
+                  {remaining <= 0 ? completedText : `${remainingPrefix}${formatSAR(remaining)}`}
                 </span>
               </div>
 
@@ -137,15 +172,20 @@ export function BeautySavingsGoal({
 
               {/* SAR labels */}
               <div className="mt-1 flex justify-between text-[10px] text-text-tertiary dark:text-gray-500">
-                <span>{formatSAR(goal.saved)} تم</span>
-                <span>{formatSAR(goal.target)} الهدف</span>
+                <span>
+                  {formatSAR(goal.saved)} {savedSuffix}
+                </span>
+                <span>
+                  {formatSAR(goal.target)} {targetSuffix}
+                </span>
               </div>
 
               {/* Monthly contribution row */}
               {goal.monthly && remaining > 0 && (
                 <div className="mt-2 flex items-center gap-2 border-t border-gray-100 pt-2 dark:border-gray-700">
                   <span className="text-[10px] text-text-tertiary dark:text-gray-500">
-                    شهرياً {formatSAR(goal.monthly)}
+                    {monthlyPrefix}
+                    {formatSAR(goal.monthly)}
                   </span>
                   <div className="h-1 flex-1 rounded-full bg-amber-50 dark:bg-amber-950">
                     <div
@@ -154,7 +194,7 @@ export function BeautySavingsGoal({
                     />
                   </div>
                   <span className="text-[10px] text-text-tertiary dark:text-gray-500">
-                    {Math.ceil(remaining / goal.monthly)} شهور متبقية
+                    {Math.ceil(remaining / goal.monthly)} {monthsRemainingSuffix}
                   </span>
                 </div>
               )}
@@ -168,7 +208,7 @@ export function BeautySavingsGoal({
                     max={remaining}
                     value={currentContribute}
                     onChange={(e) => setContribute((prev) => ({ ...prev, [i]: e.target.value }))}
-                    placeholder="أضف مبلغ..."
+                    placeholder={contributePlaceholder}
                     className="flex-1 rounded-lg border border-amber-200 bg-amber-50 px-2 py-1 text-xs dark:border-amber-800 dark:bg-amber-950 dark:text-amber-100 dark:placeholder:text-amber-700"
                   />
                   <button
@@ -179,7 +219,7 @@ export function BeautySavingsGoal({
                     disabled={!currentContribute || Number(currentContribute) <= 0}
                     className="rounded-lg bg-amber-500 px-2.5 py-1 text-xs font-bold text-white hover:bg-amber-600 disabled:opacity-40"
                   >
-                    إضافة
+                    {addButtonText}
                   </button>
                 </div>
               )}
@@ -191,12 +231,12 @@ export function BeautySavingsGoal({
       {/* Footer encouragement */}
       {totalSaved < totalTarget && (
         <p className="mt-3 text-center text-[10px] text-text-tertiary dark:text-gray-500">
-          كل ريال يقرّبكِ من جمالكِ — استمري!
+          {encouragementText}
         </p>
       )}
       {totalSaved >= totalTarget && (
         <p className="mt-3 text-center text-[10px] font-bold text-success dark:text-green-400">
-          مبروك! حققتِ هدفكِ — استمتعي بجمالكِ!
+          {achievedText}
         </p>
       )}
     </div>

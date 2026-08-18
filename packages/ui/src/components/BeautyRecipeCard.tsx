@@ -24,9 +24,20 @@ interface BeautyRecipe {
 interface BeautyRecipeCardProps {
   recipe: BeautyRecipe;
   className?: string;
+  naturalText?: string;
+  ingredientsLabel?: string;
+  stepsLabel?: string;
+  cautionText?: string;
 }
 
-export function BeautyRecipeCard({ recipe, className = '' }: BeautyRecipeCardProps): JSX.Element {
+export function BeautyRecipeCard({
+  recipe,
+  className = '',
+  naturalText = 'طبيعي 100%',
+  ingredientsLabel = ' المكونات',
+  stepsLabel = ' الطريقة',
+  cautionText = 'اختبري على جزء صغير من بشرتكِ قبل الاستخدام',
+}: BeautyRecipeCardProps): JSX.Element {
   return (
     <div
       className={cn(
@@ -41,7 +52,7 @@ export function BeautyRecipeCard({ recipe, className = '' }: BeautyRecipeCardPro
             {recipe.title}
           </h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
-            {recipe.duration} · طبيعي 100%
+            {recipe.duration} · {naturalText}
             {recipe.forSkin && ` · ${recipe.forSkin}`}
           </p>
         </div>
@@ -49,7 +60,9 @@ export function BeautyRecipeCard({ recipe, className = '' }: BeautyRecipeCardPro
 
       {/* Ingredients */}
       <div className="mt-3 rounded-xl bg-emerald-50 p-3 dark:bg-emerald-950">
-        <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300"> المكونات</p>
+        <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
+          {ingredientsLabel}
+        </p>
         <div className="mt-1 flex flex-wrap gap-1">
           {recipe.ingredients.map((ing) => (
             <span
@@ -64,7 +77,7 @@ export function BeautyRecipeCard({ recipe, className = '' }: BeautyRecipeCardPro
 
       {/* Steps */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100"> الطريقة</p>
+        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">{stepsLabel}</p>
         <div className="mt-1 space-y-1">
           {recipe.steps.map((step, i) => (
             <div key={i} className="flex items-start gap-1.5">
@@ -79,7 +92,7 @@ export function BeautyRecipeCard({ recipe, className = '' }: BeautyRecipeCardPro
 
       {/* Caution */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        اختبري على جزء صغير من بشرتكِ قبل الاستخدام
+        {cautionText}
       </p>
     </div>
   );

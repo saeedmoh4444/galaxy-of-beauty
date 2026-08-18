@@ -20,12 +20,18 @@ interface ProgressPhoto {
 interface BeautyProgressPhotoCardProps {
   photos: ProgressPhoto[];
   onAddPhoto?: () => void;
+  title?: string;
+  photoCountSuffix?: string;
+  addText?: string;
   className?: string;
 }
 
 export function BeautyProgressPhotoCard({
   photos,
   onAddPhoto,
+  title = 'صور التقدم',
+  photoCountSuffix = 'صورة',
+  addText = 'أضيفي',
   className = '',
 }: BeautyProgressPhotoCardProps): JSX.Element {
   return (
@@ -39,8 +45,10 @@ export function BeautyProgressPhotoCard({
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true"></span>
           <div>
-            <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">صور التقدم</h4>
-            <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{photos.length} صورة</p>
+            <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{title}</h4>
+            <p className="text-[10px] text-indigo-500 dark:text-indigo-400">
+              {photos.length} {photoCountSuffix}
+            </p>
           </div>
         </div>
         <button
@@ -79,7 +87,7 @@ export function BeautyProgressPhotoCard({
           className="flex-shrink-0 w-24 rounded-xl border-2 border-dashed border-indigo-200 p-2 flex flex-col items-center justify-center text-indigo-400 hover:border-indigo-300 dark:border-indigo-800"
         >
           <span className="text-2xl">+</span>
-          <span className="mt-1 text-[9px]">أضيفي</span>
+          <span className="mt-1 text-[9px]">{addText}</span>
         </button>
       </div>
     </div>

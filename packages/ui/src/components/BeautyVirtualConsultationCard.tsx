@@ -18,6 +18,13 @@ interface BeautyVirtualConsultationCardProps {
   availableSlots?: string[];
   emoji?: string;
   onBook?: () => void;
+  title?: string;
+  onlineBadgeText?: string;
+  priceLabel?: string;
+  durationLabel?: string;
+  currencySuffix?: string;
+  availableSlotsLabel?: string;
+  bookButtonText?: string;
   className?: string;
 }
 
@@ -30,6 +37,13 @@ export function BeautyVirtualConsultationCard({
   emoji = '‍️',
   onBook,
   className = '',
+  title = 'استشارة عن بُعد',
+  onlineBadgeText = 'أونلاين',
+  priceLabel = 'السعر',
+  durationLabel = 'المدة',
+  currencySuffix = 'ر.س',
+  availableSlotsLabel = ' مواعيد متاحة',
+  bookButtonText = 'احجزي استشارة',
 }: BeautyVirtualConsultationCardProps): JSX.Element {
   return (
     <div
@@ -43,28 +57,32 @@ export function BeautyVirtualConsultationCard({
           {emoji}
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">استشارة عن بُعد</h4>
+          <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">{specialist}</p>
           <p className="text-[10px] text-text-tertiary dark:text-gray-500">{specialty}</p>
         </div>
         <span className="shrink-0 rounded-full bg-blue-50 px-2.5 py-0.5 text-[10px] font-bold text-blue-700 dark:bg-blue-950 dark:text-blue-300">
-          أونلاين
+          {onlineBadgeText}
         </span>
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-blue-50 p-2.5 text-center dark:bg-blue-950">
-          <p className="text-[9px] text-blue-600 dark:text-blue-400">السعر</p>
-          <p className="text-sm font-bold text-blue-800 dark:text-blue-200">{price} ر.س</p>
+          <p className="text-[9px] text-blue-600 dark:text-blue-400">{priceLabel}</p>
+          <p className="text-sm font-bold text-blue-800 dark:text-blue-200">
+            {price} {currencySuffix}
+          </p>
         </div>
         <div className="rounded-xl bg-blue-50 p-2.5 text-center dark:bg-blue-950">
-          <p className="text-[9px] text-blue-600 dark:text-blue-400">المدة</p>
+          <p className="text-[9px] text-blue-600 dark:text-blue-400">{durationLabel}</p>
           <p className="text-sm font-bold text-blue-800 dark:text-blue-200">{duration}</p>
         </div>
       </div>
 
       <div className="mt-2 rounded-xl bg-blue-50 p-3 dark:bg-blue-950">
-        <p className="text-[10px] font-bold text-blue-700 dark:text-blue-300"> مواعيد متاحة</p>
+        <p className="text-[10px] font-bold text-blue-700 dark:text-blue-300">
+          {availableSlotsLabel}
+        </p>
         <div className="mt-1.5 flex flex-wrap gap-1.5">
           {availableSlots.map((slot) => (
             <span
@@ -82,7 +100,7 @@ export function BeautyVirtualConsultationCard({
         onClick={onBook}
         className="mt-3 w-full rounded-xl bg-blue-600 py-2.5 text-xs font-bold text-white hover:bg-blue-700 active:scale-[0.98] transition-all"
       >
-        احجزي استشارة
+        {bookButtonText}
       </button>
     </div>
   );

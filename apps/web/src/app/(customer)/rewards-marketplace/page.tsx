@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, KPIRowSkeleton, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 const TIER_COLORS: Record<string, string> = {
   SILVER: 'from-gray-300 to-gray-400',
@@ -11,6 +12,7 @@ const TIER_COLORS: Record<string, string> = {
 };
 
 export default function RewardsMarketplacePage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data: account, isLoading: acctLoading } = api.loyalty.myAccount.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -36,8 +38,8 @@ export default function RewardsMarketplacePage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> سوق المكافآت</h1>
-          <p className="mt-1 text-sm text-text-secondary">استبدلي نقاطكِ بمكافآت وخدمات حصرية</p>
+          <h1 className="text-2xl font-bold">{t('rewardsMarketplace.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('rewardsMarketplace.subtitle')}</p>
         </div>
 
         {acctLoading ? (
@@ -47,15 +49,20 @@ export default function RewardsMarketplacePage(): JSX.Element {
             padding="lg"
             className={`text-center bg-gradient-to-r ${TIER_COLORS[tier] ?? TIER_COLORS['SILVER']!} text-white`}
           >
-            <p className="text-sm opacity-80">رصيد نقاطكِ</p>
-            <p className="text-4xl font-extrabold mt-2">{points.toLocaleString('ar-SA')}</p>
+            <p className="text-sm opacity-80">{t('rewardsMarketplace.pointsBalance')}</p>
+            <p className="text-4xl font-extrabold mt-2">
+              {points.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA')}
+            </p>
             <p className="text-sm mt-1 opacity-80">
-              {account?.tierNameAr as string} · مضاعف ×{account?.multiplier as number}
+              {account?.tierNameAr as string} · {t('rewardsMarketplace.multiplier')} ×
+              {account?.multiplier as number}
             </p>
             {(account?.nextTier as Record<string, unknown>) && (
               <p className="text-xs mt-2 bg-white dark:bg-gray-900/20 rounded-full px-3 py-1 inline-block">
-                تحتاجين {(account!.nextTier as Record<string, unknown>).pointsNeeded as number} نقطة
-                للوصول لـ {(account!.nextTier as Record<string, unknown>).name as string}
+                {t('rewardsMarketplace.nextTier', {
+                  count: (account!.nextTier as Record<string, unknown>).pointsNeeded as number,
+                  name: (account!.nextTier as Record<string, unknown>).name as string,
+                })}
               </p>
             )}
           </Card>
@@ -65,7 +72,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
           <GridSkeleton count={6} />
         ) : !(rewards ?? []).length ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-text-secondary">لا توجد مكافآت متاحة</p>
+            <p className="text-text-secondary">{t('rewardsMarketplace.noRewards')}</p>
           </Card>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -90,19 +97,25 @@ export default function RewardsMarketplacePage(): JSX.Element {
                     {(r.descriptionJson as Record<string, string>)?.ar ?? ''}
                   </p>
                   <p className="text-2xl font-extrabold text-amber-600 mt-3">
-                    {r.pointsCost as number} نقطة
+                    {t('rewardsMarketplace.points', { count: r.pointsCost as number })}
                   </p>
                   {(r.rewardValue as number) > 0 && (
                     <p className="text-xs text-text-secondary">
                       {r.rewardType === 'discount_percent'
-                        ? `خصم ${r.rewardValue as number}%`
+                        ? t('rewardsMarketplace.discountPercent', {
+                            percent: r.rewardValue as number,
+                          })
                         : r.rewardType === 'discount_fixed'
-                          ? `خصم ${formatCurrency(r.rewardValue as number)}`
-                          : 'خدمة مجانية'}
+                          ? t('rewardsMarketplace.discountFixed', {
+                              amount: formatCurrency(r.rewardValue as number),
+                            })
+                          : t('rewardsMarketplace.freeService')}
                     </p>
                   )}
                   {isRedeemed ? (
-                    <p className="text-green-600 font-bold mt-3"> تم الاستبدال</p>
+                    <p className="text-green-600 font-bold mt-3">
+                      {t('rewardsMarketplace.redeemed')}
+                    </p>
                   ) : (
                     <Button
                       size="sm"
@@ -116,7 +129,9 @@ export default function RewardsMarketplacePage(): JSX.Element {
                       disabled={!canAfford}
                       className="w-full mt-3"
                     >
-                      {canAfford ? ' استبدلي' : ' نقاط غير كافية'}
+                      {canAfford
+                        ? t('rewardsMarketplace.redeem')
+                        : t('rewardsMarketplace.insufficientPoints')}
                     </Button>
                   )}
                 </Card>
@@ -127,16 +142,16 @@ export default function RewardsMarketplacePage(): JSX.Element {
 
         {txs.length > 0 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3"> سجل النقاط</h3>
+            <h3 className="font-bold mb-3">{t('rewardsMarketplace.pointsHistory')}</h3>
             <div className="space-y-2">
-              {txs.slice(0, 10).map((t: Record<string, unknown>) => (
-                <div key={t.id as number} className="flex justify-between text-sm border-b pb-2">
-                  <span className="text-text-secondary">{t.reason as string}</span>
+              {txs.slice(0, 10).map((tx: Record<string, unknown>) => (
+                <div key={tx.id as number} className="flex justify-between text-sm border-b pb-2">
+                  <span className="text-text-secondary">{tx.reason as string}</span>
                   <span
-                    className={`font-bold ${(t.points as number) > 0 ? 'text-green-600' : 'text-red-600'}`}
+                    className={`font-bold ${(tx.points as number) > 0 ? 'text-green-600' : 'text-red-600'}`}
                   >
-                    {(t.points as number) > 0 ? '+' : ''}
-                    {t.points as number} نقطة
+                    {(tx.points as number) > 0 ? '+' : ''}
+                    {t('rewardsMarketplace.points', { count: tx.points as number })}
                   </span>
                 </div>
               ))}

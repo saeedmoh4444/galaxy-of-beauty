@@ -25,6 +25,38 @@ interface PanicButtonProps {
   technicianName?: string;
   onActivate?: () => void;
   className?: string;
+  /** Idle-state button title */
+  title?: string;
+  /** Idle-state button description */
+  idleDescription?: string;
+  /** Confirmation-state heading */
+  confirmTitle?: string;
+  /** Confirmation-state description */
+  confirmDescription?: string;
+  /** "Will be notified" label */
+  willNotifyLabel?: string;
+  /** Police row label */
+  policeLabel?: string;
+  /** Prefix before the address */
+  locationPrefix?: string;
+  /** Prefix before the technician name */
+  technicianPrefix?: string;
+  /** Confirm-send button label */
+  confirmButtonText?: string;
+  /** Cancel button label */
+  cancelButtonText?: string;
+  /** Activated-state heading */
+  activatedTitle?: string;
+  /** Prefix before the notified contacts count */
+  notifiedPrefix?: string;
+  /** Suffix after the notified contacts count */
+  notifiedSuffix?: string;
+  /** Done-state heading */
+  doneTitle?: string;
+  /** Done-state description */
+  doneDescription?: string;
+  /** Done-state button label */
+  doneButtonText?: string;
 }
 
 export function PanicButton({
@@ -33,6 +65,22 @@ export function PanicButton({
   technicianName,
   onActivate,
   className = '',
+  title = 'زر الطوارئ',
+  idleDescription = 'اضغطي في حالة الطوارئ — سيتم إشعار جهات اتصالكِ فوراً',
+  confirmTitle = 'تأكيد الطوارئ',
+  confirmDescription = 'سيتم إرسال موقعكِ الحالي إلى جهات اتصالكِ',
+  willNotifyLabel = 'سيتم إشعار',
+  policeLabel = 'الشرطة',
+  locationPrefix = ' الموقع: ',
+  technicianPrefix = '‍ الخبيرة: ',
+  confirmButtonText = 'نعم، إرسال الطوارئ 🆘',
+  cancelButtonText = 'إلغاء',
+  activatedTitle = 'تم إرسال الطوارئ!',
+  notifiedPrefix = 'تم إشعار ',
+  notifiedSuffix = ' جهات اتصال بموقعكِ الحالي',
+  doneTitle = 'المساعدة في الطريق',
+  doneDescription = 'جهات الاتصال تم إشعارها. ابقِي في مكان آمن.',
+  doneButtonText = 'تم — أنا بأمان الآن',
 }: PanicButtonProps): JSX.Element {
   const [stage, setStage] = useState<'idle' | 'confirm' | 'activated' | 'done'>('idle');
   const [countdown, setCountdown] = useState(3);
@@ -98,10 +146,8 @@ export function PanicButton({
             🆘
           </span>
           <div>
-            <p className="text-sm font-bold text-red-700 dark:text-red-300">زر الطوارئ</p>
-            <p className="text-[10px] text-red-500 dark:text-red-400">
-              اضغطي في حالة الطوارئ — سيتم إشعار جهات اتصالكِ فوراً
-            </p>
+            <p className="text-sm font-bold text-red-700 dark:text-red-300">{title}</p>
+            <p className="text-[10px] text-red-500 dark:text-red-400">{idleDescription}</p>
           </div>
         </button>
       )}
@@ -112,16 +158,16 @@ export function PanicButton({
           <div className="flex items-center gap-2">
             <span className="text-2xl" aria-hidden="true"></span>
             <div>
-              <p className="text-sm font-bold text-red-700 dark:text-red-300">تأكيد الطوارئ</p>
-              <p className="text-[10px] text-red-500 dark:text-red-400">
-                سيتم إرسال موقعكِ الحالي إلى جهات اتصالكِ
-              </p>
+              <p className="text-sm font-bold text-red-700 dark:text-red-300">{confirmTitle}</p>
+              <p className="text-[10px] text-red-500 dark:text-red-400">{confirmDescription}</p>
             </div>
           </div>
 
           {/* Who will be notified */}
           <div className="rounded-xl bg-white p-2.5 dark:bg-gray-800">
-            <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">سيتم إشعار</p>
+            <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
+              {willNotifyLabel}
+            </p>
             <div className="mt-1 space-y-1">
               {contacts.map((c) => (
                 <div
@@ -135,7 +181,7 @@ export function PanicButton({
               ))}
               <div className="flex items-center gap-1.5 text-[10px] text-text-secondary dark:text-gray-300">
                 <span></span>
-                <span className="font-bold">الشرطة</span>
+                <span className="font-bold">{policeLabel}</span>
                 <span className="text-text-tertiary">999</span>
               </div>
             </div>
@@ -143,11 +189,15 @@ export function PanicButton({
 
           {/* Address context */}
           {address && (
-            <p className="text-[10px] text-red-600 dark:text-red-400"> الموقع: {address}</p>
+            <p className="text-[10px] text-red-600 dark:text-red-400">
+              {locationPrefix}
+              {address}
+            </p>
           )}
           {technicianName && (
             <p className="text-[10px] text-red-600 dark:text-red-400">
-              ‍ الخبيرة: {technicianName}
+              {technicianPrefix}
+              {technicianName}
             </p>
           )}
 
@@ -158,14 +208,14 @@ export function PanicButton({
               onClick={handleConfirm}
               className="flex-1 rounded-xl bg-red-600 py-2.5 text-xs font-bold text-white hover:bg-red-700 active:scale-[0.98] transition-all"
             >
-              نعم، إرسال الطوارئ 🆘
+              {confirmButtonText}
             </button>
             <button
               type="button"
               onClick={handleCancel}
               className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-xs font-bold text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
             >
-              إلغاء
+              {cancelButtonText}
             </button>
           </div>
         </div>
@@ -178,9 +228,11 @@ export function PanicButton({
             <span className="text-3xl animate-pulse" aria-hidden="true"></span>
           </div>
           <div>
-            <p className="text-sm font-bold text-red-700 dark:text-red-300">تم إرسال الطوارئ!</p>
+            <p className="text-sm font-bold text-red-700 dark:text-red-300">{activatedTitle}</p>
             <p className="text-[10px] text-red-500 dark:text-red-400">
-              تم إشعار {contacts.length + 1} جهات اتصال بموقعكِ الحالي
+              {notifiedPrefix}
+              {contacts.length + 1}
+              {notifiedSuffix}
             </p>
           </div>
           <div className="text-2xl font-bold text-red-700 dark:text-red-300">{countdown}</div>
@@ -191,18 +243,14 @@ export function PanicButton({
       {stage === 'done' && (
         <div className="text-center space-y-2">
           <span className="text-3xl" aria-hidden="true"></span>
-          <p className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-            المساعدة في الطريق
-          </p>
-          <p className="text-[10px] text-emerald-600 dark:text-emerald-400">
-            جهات الاتصال تم إشعارها. ابقِي في مكان آمن.
-          </p>
+          <p className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{doneTitle}</p>
+          <p className="text-[10px] text-emerald-600 dark:text-emerald-400">{doneDescription}</p>
           <button
             type="button"
             onClick={handleCancel}
             className="rounded-xl bg-emerald-600 px-4 py-1.5 text-[10px] font-bold text-white"
           >
-            تم — أنا بأمان الآن
+            {doneButtonText}
           </button>
         </div>
       )}

@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function ExpiryTrackerPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data: cats } = api.expiryTracker.categories.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
   };
@@ -39,23 +41,21 @@ export default function ExpiryTrackerPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">️ متعقب الصلاحية</h1>
-            <p className="mt-1 text-sm text-text-secondary">
-              تتبعي تاريخ فتح منتجاتكِ وتجنبي استخدام المنتجات منتهية الصلاحية
-            </p>
+            <h1 className="text-2xl font-bold">{t('expiryTracker.title')}</h1>
+            <p className="mt-1 text-sm text-text-secondary">{t('expiryTracker.subtitle')}</p>
           </div>
-          <Button onClick={() => setShowAdd(true)}>+ منتج</Button>
+          <Button onClick={() => setShowAdd(true)}>{t('expiryTracker.addProduct')}</Button>
         </div>
 
         {isLoading ? (
           <CardListSkeleton count={4} />
         ) : isError ? (
-          <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+          <ErrorAlert message={t('expiryTracker.err.load')} onRetry={() => refetch()} />
         ) : myItems.length === 0 ? (
           <EmptyState
-            title="لا توجد منتجات"
-            description="أضيفي منتجاتكِ لتتبع تواريخ صلاحيتها"
-            action={{ label: 'إضافة', onPress: () => setShowAdd(true) }}
+            title={t('expiryTracker.empty.title')}
+            description={t('expiryTracker.empty.desc')}
+            action={{ label: t('expiryTracker.empty.action'), onPress: () => setShowAdd(true) }}
           />
         ) : (
           <div className="space-y-3">
@@ -76,22 +76,26 @@ export default function ExpiryTrackerPage(): JSX.Element {
                   <div className="flex-1">
                     <h3 className="font-bold">{i.productName as string}</h3>
                     <p className="text-xs text-text-secondary mt-0.5">
-                      فتح: {new Date(i.openDate as string).toLocaleDateString('ar-SA')} · ينتهي بعد{' '}
-                      {i.expiryMonths as number} شهر
+                      {t('expiryTracker.openInfo', {
+                        date: new Date(i.openDate as string).toLocaleDateString(
+                          locale === 'en' ? 'en-GB' : 'ar-SA',
+                        ),
+                        months: i.expiryMonths as number,
+                      })}
                     </p>
                   </div>
                   <div className="text-right">
                     {(i.expired as boolean) ? (
                       <span className="rounded-full bg-red-100 dark:bg-red-900 px-2.5 py-0.5 text-xs font-bold text-red-700">
-                        منتهي
+                        {t('expiryTracker.expired')}
                       </span>
                     ) : (i.isClose as boolean) ? (
                       <span className="rounded-full bg-amber-100 dark:bg-amber-900 px-2.5 py-0.5 text-xs font-bold text-amber-700">
-                        {i.daysLeft as number} يوم
+                        {t('expiryTracker.daysLeft', { days: i.daysLeft as number })}
                       </span>
                     ) : (
                       <span className="text-sm text-green-600 font-bold">
-                        {i.daysLeft as number} يوم
+                        {t('expiryTracker.daysLeft', { days: i.daysLeft as number })}
                       </span>
                     )}
                     <button
@@ -107,12 +111,16 @@ export default function ExpiryTrackerPage(): JSX.Element {
           </div>
         )}
 
-        <Modal open={showAdd} onClose={() => setShowAdd(false)} title="إضافة منتج">
+        <Modal
+          open={showAdd}
+          onClose={() => setShowAdd(false)}
+          title={t('expiryTracker.modal.title')}
+        >
           <div className="space-y-3">
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="اسم المنتج"
+              placeholder={t('expiryTracker.namePlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <select
@@ -122,7 +130,8 @@ export default function ExpiryTrackerPage(): JSX.Element {
             >
               {categories.map((c: Record<string, unknown>) => (
                 <option key={c.key as string} value={c.key as string}>
-                  {c.emoji as string} {c.nameAr as string} ({c.months as number} شهر)
+                  {c.emoji as string} {c.nameAr as string} ({c.months as number}{' '}
+                  {t('expiryTracker.monthUnit')})
                 </option>
               ))}
             </select>
@@ -133,7 +142,7 @@ export default function ExpiryTrackerPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-              ️ إضافة
+              {t('expiryTracker.add')}
             </Button>
           </div>
         </Modal>

@@ -3,8 +3,10 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, DashboardSkeleton, Button, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyDashboardPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading, isError, refetch } = api.beautyDashboard.overview.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -16,7 +18,7 @@ export default function BeautyDashboardPage(): JSX.Element {
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-4xl space-y-6">
-          <ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('beautyDashboard.err.load')} onRetry={() => refetch()} />
         </div>
       </DashboardLayout>
     );
@@ -25,8 +27,8 @@ export default function BeautyDashboardPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> لوحة الجمال</h1>
-          <p className="mt-1 text-sm text-text-secondary">نظرة شاملة على رحلتكِ الجمالية</p>
+          <h1 className="text-2xl font-bold">{t('beautyDashboard.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('beautyDashboard.subtitle')}</p>
         </div>
 
         {isLoading ? (
@@ -38,31 +40,31 @@ export default function BeautyDashboardPage(): JSX.Element {
                 <p className="text-2xl font-extrabold text-brand-600">
                   {(data?.upcomingBookings as number) ?? 0}
                 </p>
-                <p className="text-xs text-text-secondary">حجوزات قادمة</p>
+                <p className="text-xs text-text-secondary">{t('beautyDashboard.upcoming')}</p>
               </Card>
               <Card padding="lg" className="text-center">
                 <p className="text-2xl font-extrabold text-green-600">
                   {(data?.completedBookings as number) ?? 0}
                 </p>
-                <p className="text-xs text-text-secondary">مكتملة</p>
+                <p className="text-xs text-text-secondary">{t('referrals.stat.completed')}</p>
               </Card>
               <Card padding="lg" className="text-center">
                 <p className="text-2xl font-extrabold text-amber-600">
                   {(data?.streakDays as number) ?? 0}
                 </p>
-                <p className="text-xs text-text-secondary">أيام متتالية</p>
+                <p className="text-xs text-text-secondary">{t('beautyDashboard.streakDays')}</p>
               </Card>
               <Card padding="lg" className="text-center">
                 <p className="text-2xl font-extrabold text-purple-600">
                   {formatCurrency((data?.walletBalance as number) ?? 0)}
                 </p>
-                <p className="text-xs text-text-secondary">المحفظة</p>
+                <p className="text-xs text-text-secondary">{t('beautyDashboard.wallet')}</p>
               </Card>
             </div>
 
             <div className="grid gap-6 lg:grid-cols-2">
               <Card padding="lg">
-                <h3 className="font-bold mb-3"> آخر الحجوزات</h3>
+                <h3 className="font-bold mb-3">{t('beautyDashboard.recentBookings')}</h3>
                 {(data?.recentBookings as Array<Record<string, unknown>>)?.length ? (
                   (data?.recentBookings as Array<Record<string, unknown>>).map(
                     (b: Record<string, unknown>) => (
@@ -80,21 +82,21 @@ export default function BeautyDashboardPage(): JSX.Element {
                     ),
                   )
                 ) : (
-                  <p className="text-sm text-text-tertiary">لا توجد حجوزات</p>
+                  <p className="text-sm text-text-tertiary">{t('beautyDashboard.noBookings')}</p>
                 )}
                 <Link href="/bookings">
                   <Button size="sm" variant="outline" className="w-full mt-3">
-                    كل الحجوزات
+                    {t('beautyDashboard.allBookings')}
                   </Button>
                 </Link>
               </Card>
 
               <Card padding="lg">
-                <h3 className="font-bold mb-3"> لمحة عن بشرتكِ</h3>
+                <h3 className="font-bold mb-3">{t('beautyDashboard.skinOverview')}</h3>
                 {data?.skinType ? (
                   <div className="space-y-3">
                     <p className="text-sm">
-                      <span className="text-text-secondary">نوع البشرة:</span>{' '}
+                      <span className="text-text-secondary">{t('wellnessHub.skinTypeLabel')}</span>{' '}
                       <span className="font-bold">{data.skinType as string}</span>
                     </p>
                     {(data?.skinConcerns as string[])?.length > 0 && (
@@ -111,16 +113,18 @@ export default function BeautyDashboardPage(): JSX.Element {
                     )}
                     <Link href="/skin-analysis">
                       <Button size="sm" variant="outline" className="w-full mt-2">
-                        تحليل البشرة
+                        {t('wellnessHub.action.skin')}
                       </Button>
                     </Link>
                   </div>
                 ) : (
                   <div>
-                    <p className="text-sm text-text-tertiary">لم تسجلي تحليل بشرتكِ بعد</p>
+                    <p className="text-sm text-text-tertiary">
+                      {t('beautyDashboard.noSkinAnalysis')}
+                    </p>
                     <Link href="/skin-analysis">
                       <Button size="sm" className="w-full mt-3">
-                        حللي بشرتكِ
+                        {t('wellnessHub.skinCta')}
                       </Button>
                     </Link>
                   </div>
@@ -133,14 +137,14 @@ export default function BeautyDashboardPage(): JSX.Element {
                 <Card hover padding="md" className="text-center">
                   <span className="text-3xl"></span>
                   <p className="font-bold mt-2">{(data?.journalCount as number) ?? 0}</p>
-                  <p className="text-xs text-text-secondary">يوميات الجمال</p>
+                  <p className="text-xs text-text-secondary">{t('beautyDashboard.journal')}</p>
                 </Card>
               </Link>
               <Link href="/wishlist">
                 <Card hover padding="md" className="text-center">
                   <span className="text-3xl">️</span>
                   <p className="font-bold mt-2">{(data?.wishlistCount as number) ?? 0}</p>
-                  <p className="text-xs text-text-secondary">قائمة الأمنيات</p>
+                  <p className="text-xs text-text-secondary">{t('beautyDashboard.wishlist')}</p>
                 </Card>
               </Link>
               <Link href="/wallet">
@@ -149,7 +153,7 @@ export default function BeautyDashboardPage(): JSX.Element {
                   <p className="font-bold mt-2">
                     {formatCurrency((data?.bonusBalance as number) ?? 0)}
                   </p>
-                  <p className="text-xs text-text-secondary">رصيد المكافآت</p>
+                  <p className="text-xs text-text-secondary">{t('beautyDashboard.bonus')}</p>
                 </Card>
               </Link>
             </div>

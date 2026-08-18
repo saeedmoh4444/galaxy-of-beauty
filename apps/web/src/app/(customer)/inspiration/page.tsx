@@ -14,12 +14,14 @@ import {
   DashboardSkeleton,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 import { useToast } from '@galaxy/ui';
 import { SortableGrid } from '@/components/SortableGrid';
 
 type PinItem = RouterOutputs['inspiration']['list'][number];
 
 export default function InspirationPage(): JSX.Element {
+  const { t } = useLocale();
   const { addToast } = useToast();
   const { data, isLoading, isError, refetch } = api.inspiration.list.useQuery();
   const createMut = api.inspiration.create.useMutation({
@@ -27,13 +29,13 @@ export default function InspirationPage(): JSX.Element {
       refetch();
       setShowAdd(false);
       setForm({ imageUrl: '', title: '', notes: '', tags: '' });
-      addToast('success', 'تمت الإضافة');
+      addToast('success', t('inspiration.toast.added'));
     },
   });
   const deleteMut = api.inspiration.delete.useMutation({
     onSuccess: () => {
       refetch();
-      addToast('success', 'تم الحذف');
+      addToast('success', t('inspiration.toast.deleted'));
     },
   });
   const reorderMut = api.inspiration.reorder.useMutation();
@@ -60,23 +62,23 @@ export default function InspirationPage(): JSX.Element {
       <PageContainer width="wide">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-text-primary">لوحة الإلهام</h1>
+            <h1 className="text-2xl font-bold text-text-primary">{t('inspiration.title')}</h1>
             <p className="mt-1 text-sm text-text-secondary">
-              اسحبي الصور لإعادة ترتيبها · {pins.length} صورة
+              {t('inspiration.subtitle', { count: pins.length })}
             </p>
           </div>
-          <Button onClick={() => setShowAdd(true)}>إضافة إلهام</Button>
+          <Button onClick={() => setShowAdd(true)}>{t('inspiration.add')}</Button>
         </div>
 
         {isLoading ? (
           <DashboardSkeleton />
         ) : isError ? (
-          <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+          <ErrorAlert message={t('inspiration.err.load')} onRetry={() => refetch()} />
         ) : pins.length === 0 ? (
           <EmptyState
-            title="لا توجد دبابيس"
-            description="احفظي الصور والأفكار اللي تعجبكِ لموعدكِ القادم"
-            action={{ label: 'أضيفي أول إلهام', onPress: () => setShowAdd(true) }}
+            title={t('inspiration.empty.title')}
+            description={t('inspiration.empty.desc')}
+            action={{ label: t('inspiration.empty.action'), onPress: () => setShowAdd(true) }}
           />
         ) : (
           <SortableGrid
@@ -105,7 +107,7 @@ export default function InspirationPage(): JSX.Element {
                     <circle cx="9" cy="19" r="2" />
                     <circle cx="15" cy="19" r="2" />
                   </svg>
-                  اسحبي للترتيب
+                  {t('inspiration.dragHint')}
                 </div>
 
                 {p.imageUrl ? (
@@ -147,7 +149,7 @@ export default function InspirationPage(): JSX.Element {
                     setOrderedPins(null);
                   }}
                   className="absolute top-2 right-2 hidden rounded-full bg-red-500 p-1.5 text-white shadow-sm transition-colors hover:bg-red-600 group-hover:block"
-                  aria-label="حذف"
+                  aria-label={t('inspiration.deleteLabel')}
                 >
                   <svg
                     className="h-3 w-3"
@@ -177,25 +179,27 @@ export default function InspirationPage(): JSX.Element {
             }}
           >
             <div className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-gray-900">
-              <h3 className="mb-4 text-lg font-bold text-text-primary">إضافة إلهام جديد</h3>
+              <h3 className="mb-4 text-lg font-bold text-text-primary">
+                {t('inspiration.modal.title')}
+              </h3>
               <div className="space-y-3">
                 <Input
-                  placeholder="رابط الصورة"
+                  placeholder={t('inspiration.imageUrlPlaceholder')}
                   value={form.imageUrl}
                   onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
                 />
                 <Input
-                  placeholder="العنوان"
+                  placeholder={t('inspiration.titlePlaceholder')}
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
                 />
                 <Input
-                  placeholder="ملاحظات"
+                  placeholder={t('inspiration.notesPlaceholder')}
                   value={form.notes}
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
                 />
                 <Input
-                  placeholder="وسوم (مفصولة بفواصل)"
+                  placeholder={t('inspiration.tagsPlaceholder')}
                   value={form.tags}
                   onChange={(e) => setForm({ ...form, tags: e.target.value })}
                 />
@@ -212,7 +216,7 @@ export default function InspirationPage(): JSX.Element {
                   loading={createMut.isPending}
                   className="w-full"
                 >
-                  حفظ
+                  {t('inspiration.save')}
                 </Button>
               </div>
             </div>

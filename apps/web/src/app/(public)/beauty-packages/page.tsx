@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { t, localize } from '@galaxy/shared';
 import { getServerCaller } from '@/lib/server-trpc';
+import { getServerLocale } from '@/lib/i18n';
 
 interface BeautyPackageItem {
   id: number;
@@ -13,6 +15,7 @@ interface BeautyPackageItem {
 }
 
 export default async function BeautyPackagesPage(): Promise<JSX.Element> {
+  const locale = await getServerLocale();
   let packages: BeautyPackageItem[] = [];
   try {
     const caller = await getServerCaller();
@@ -24,24 +27,26 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">باقات التجميل</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+          {t('marketing.beauty-packages.title', locale)}
+        </h1>
         <p className="mt-2 text-gray-500 dark:text-gray-400">
-          باقات مجمعة بأسعار مخفضة — وفرّي عند حجز أكثر من خدمة معاً
+          {t('marketing.beauty-packages.subtitle', locale)}
         </p>
       </div>
       {packages.length === 0 ? (
         <div className="py-16 text-center text-gray-400">
           <span className="text-5xl"></span>
-          <p className="mt-4">لا توجد باقات حالياً. تابعينا قريباً!</p>
+          <p className="mt-4">{t('marketing.beauty-packages.no-packages', locale)}</p>
           <Link href="/services" className="mt-4 inline-block text-brand-600 hover:underline">
-            تصفحي جميع الخدمات
+            {t('marketing.beauty-packages.browse-services', locale)}
           </Link>
         </div>
       ) : (
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {packages.map((pkg) => {
-            const name = pkg.nameJson?.ar || '';
-            const desc = (pkg.descriptionJson as Record<string, string> | null)?.ar || '';
+            const name = localize(pkg.nameJson, locale);
+            const desc = localize(pkg.descriptionJson, locale);
             const services = pkg.services;
             return (
               <div
@@ -71,7 +76,9 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
                       >
                         <span></span>
                         {/* serviceId is the foreign key — service title not joined */}
-                        <span>خدمة #{s.serviceId}</span>
+                        <span>
+                          {t('marketing.beauty-packages.service-id', locale, { id: s.serviceId })}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -79,7 +86,7 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
                     href="/bookings/create"
                     className="mt-4 block w-full rounded-lg bg-brand-600 py-2 text-center text-sm font-medium text-white hover:bg-brand-700"
                   >
-                    احجزي الباقة
+                    {t('marketing.beauty-packages.book-package', locale)}
                   </Link>
                 </div>
               </div>

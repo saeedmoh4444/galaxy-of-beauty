@@ -12,16 +12,26 @@ import { cn } from '@galaxy/shared';
  */
 
 const MOODS = [
-  { emoji: '', label: 'سعيدة', value: 5 },
-  { emoji: '', label: 'مرتاحة', value: 4 },
-  { emoji: '', label: 'عادية', value: 3 },
-  { emoji: '', label: 'حزينة', value: 2 },
-  { emoji: '', label: 'متوترة', value: 1 },
+  { emoji: '', label: { ar: 'سعيدة', en: 'Happy' }, value: 5 },
+  { emoji: '', label: { ar: 'مرتاحة', en: 'Relaxed' }, value: 4 },
+  { emoji: '', label: { ar: 'عادية', en: 'Neutral' }, value: 3 },
+  { emoji: '', label: { ar: 'حزينة', en: 'Sad' }, value: 2 },
+  { emoji: '', label: { ar: 'متوترة', en: 'Anxious' }, value: 1 },
 ];
 
 interface BeautyMoodTrackerCardProps {
-  onSelectMood?: (mood: { emoji: string; label: string; value: number }) => void;
+  onSelectMood?: (mood: {
+    emoji: string;
+    label: { ar: string; en: string };
+    value: number;
+  }) => void;
   lastMood?: string;
+  /** Display language for built-in labels */
+  locale?: 'ar' | 'en';
+  title?: string;
+  lastMoodPrefix?: string;
+  noMoodText?: string;
+  footerText?: string;
   className?: string;
 }
 
@@ -29,6 +39,11 @@ export function BeautyMoodTrackerCard({
   onSelectMood,
   lastMood,
   className = '',
+  locale = 'ar',
+  title = 'كيف تشعرين؟',
+  lastMoodPrefix = 'آخر مزاج: ',
+  noMoodText = 'تتبعي مزاجكِ بعد كل جلسة',
+  footerText = 'مزاجكِ جزء من رحلة جمالكِ',
 }: BeautyMoodTrackerCardProps): JSX.Element {
   const [selected, setSelected] = useState<number | null>(null);
 
@@ -43,9 +58,9 @@ export function BeautyMoodTrackerCard({
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true"></span>
           <div>
-            <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">كيف تشعرين؟</h4>
+            <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{title}</h4>
             <p className="text-[10px] text-violet-500 dark:text-violet-400">
-              {lastMood ? `آخر مزاج: ${lastMood}` : 'تتبعي مزاجكِ بعد كل جلسة'}
+              {lastMood ? `${lastMoodPrefix}${lastMood}` : noMoodText}
             </p>
           </div>
         </div>
@@ -69,14 +84,14 @@ export function BeautyMoodTrackerCard({
           >
             <span className="text-2xl">{mood.emoji}</span>
             <span className="text-[9px] font-medium text-text-secondary dark:text-gray-300">
-              {mood.label}
+              {mood.label[locale]}
             </span>
           </button>
         ))}
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        مزاجكِ جزء من رحلة جمالكِ
+        {footerText}
       </p>
     </div>
   );

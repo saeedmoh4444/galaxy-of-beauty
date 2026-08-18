@@ -2,9 +2,11 @@
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function ReferralRacePage(): JSX.Element {
   const { user } = useAuth();
+  const { t } = useLocale();
   const { data, isLoading, isError, refetch } = api.referralRace.leaderboard.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -24,16 +26,16 @@ export default function ReferralRacePage(): JSX.Element {
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">سباق الإحالات</h1>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.referral-race.title')}</h1>
         <p className="mt-2 text-text-secondary">
-          تنافسي مع صديقاتكِ واكسبي جوائز! متبقي {days} يوم
+          {t('marketing.referral-race.subtitle', { days })}
         </p>
       </div>
 
       {isLoading ? (
         <CardListSkeleton count={4} />
       ) : isError ? (
-        <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+        <ErrorAlert message={t('marketing.referral-race.load-error')} onRetry={() => refetch()} />
       ) : (
         <Card padding="lg">
           <div className="flex gap-2 mb-4">
@@ -67,15 +69,17 @@ export default function ReferralRacePage(): JSX.Element {
       {myRank && (
         <Card padding="md" className="mt-4 text-center">
           <p>
-            موقعك:{' '}
+            {t('marketing.referral-race.my-rank-label')}{' '}
             <span className="font-bold text-brand-600">#{(myRank.rank as number) ?? '-'}</span> ·{' '}
-            {(myRank.count as number) ?? 0} إحالة
+            {t('marketing.referral-race.referrals-count', { count: (myRank.count as number) ?? 0 })}
           </p>
         </Card>
       )}
       {user && (
         <div className="mt-4 text-center">
-          <Button onClick={() => shareMut.mutate({ platform: 'whatsapp' })}> شاركي الرابط</Button>
+          <Button onClick={() => shareMut.mutate({ platform: 'whatsapp' })}>
+            {t('marketing.referral-race.share-link')}
+          </Button>
         </div>
       )}
     </div>

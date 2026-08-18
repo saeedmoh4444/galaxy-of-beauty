@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyBlushPlacementCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyBlushPlacementCard({
+  className = '',
+  title = 'موضع البلاشر',
+  subtitle = 'ارفعي — لا تنزلي',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,44 @@ export function BeautyBlushPlacementCard({ className = '' }: { className?: strin
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">موضع البلاشر</h4>
-          <p className="text-[10px] text-pink-500 dark:text-pink-400">ارفعي — لا تنزلي</p>
+          <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
+          <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'بيضاوي: على تفاحة الخد — للأعلى نحو الصدغ' },
-          { emoji: '', text: 'دائري: أعلى الخد — بزاوية حادة للأعلى' },
-          { emoji: '⬜', text: 'مربع: مركز الخد — دائري لتليين الزوايا' },
-          { emoji: '️', text: 'قلب: منخفض — تحت تفاحة الخد' },
+          {
+            emoji: '',
+            text: {
+              ar: 'بيضاوي: على تفاحة الخد — للأعلى نحو الصدغ',
+              en: 'Oval: on the cheek apple — upward toward the temple',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'دائري: أعلى الخد — بزاوية حادة للأعلى',
+              en: 'Circular: on the upper cheek — at a sharp upward angle',
+            },
+          },
+          {
+            emoji: '⬜',
+            text: {
+              ar: 'مربع: مركز الخد — دائري لتليين الزوايا',
+              en: 'Square: center of the cheek — circular to soften the corners',
+            },
+          },
+          {
+            emoji: '️',
+            text: { ar: 'قلب: منخفض — تحت تفاحة الخد', en: 'Heart: low — below the cheek apple' },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-pink-50 px-3 py-2 dark:bg-pink-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-pink-800 dark:text-pink-200">{t.text}</span>
+            <span className="text-[10px] text-pink-800 dark:text-pink-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

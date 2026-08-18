@@ -2,17 +2,38 @@
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
-const CATEGORIES = [
-  { key: 'hair', emoji: '‍️', name: 'الشعر', budget: 200, color: '#ec4899' },
-  { key: 'skin', emoji: '', name: 'البشرة', budget: 300, color: '#8b5cf6' },
-  { key: 'nails', emoji: '', name: 'الأظافر', budget: 100, color: '#f59e0b' },
-  { key: 'makeup', emoji: '', name: 'المكياج', budget: 150, color: '#db2777' },
-  { key: 'spa', emoji: '‍️', name: 'السبا', budget: 250, color: '#059669' },
-  { key: 'products', emoji: '', name: 'منتجات', budget: 200, color: '#0891b2' },
+const CATEGORIES: {
+  key: string;
+  emoji: string;
+  name: TranslationKey;
+  budget: number;
+  color: string;
+}[] = [
+  { key: 'hair', emoji: '‍️', name: 'beautyBudgetPlanner.catHair', budget: 200, color: '#ec4899' },
+  { key: 'skin', emoji: '', name: 'beautyBudgetPlanner.catSkin', budget: 300, color: '#8b5cf6' },
+  { key: 'nails', emoji: '', name: 'beautyBudgetPlanner.catNails', budget: 100, color: '#f59e0b' },
+  {
+    key: 'makeup',
+    emoji: '',
+    name: 'beautyBudgetPlanner.catMakeup',
+    budget: 150,
+    color: '#db2777',
+  },
+  { key: 'spa', emoji: '‍️', name: 'beautyBudgetPlanner.catSpa', budget: 250, color: '#059669' },
+  {
+    key: 'products',
+    emoji: '',
+    name: 'beautyBudgetPlanner.catProducts',
+    budget: 200,
+    color: '#0891b2',
+  },
 ];
 
 export default function BeautyBudgetPlannerPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: items, isLoading } = api.beautyBudgetPlanner.myBudgets.useQuery({
     month: '7',
     year: 2026,
@@ -30,21 +51,21 @@ export default function BeautyBudgetPlannerPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> مخطط الميزانية</h1>
-          <p className="mt-1 text-sm text-text-secondary">خططي لمصاريف جمالكِ السنوية</p>
+          <h1 className="text-2xl font-bold">{t('beautyBudgetPlanner.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('beautyBudgetPlanner.subtitle')}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-3">
           <Card padding="lg" className="text-center bg-amber-50">
             <p className="text-2xl font-extrabold">{formatCurrency(totalBudget)}</p>
-            <p className="text-xs text-text-secondary">الميزانية</p>
+            <p className="text-xs text-text-secondary">{t('beautyBudgetPlanner.budgetLabel')}</p>
           </Card>
           <Card padding="lg" className="text-center bg-green-50">
             <p className="text-2xl font-extrabold text-green-600">{formatCurrency(allocated)}</p>
-            <p className="text-xs text-text-secondary">مخصص</p>
+            <p className="text-xs text-text-secondary">{t('beautyBudgetPlanner.allocated')}</p>
           </Card>
           <Card padding="lg" className="text-center bg-blue-50">
             <p className="text-2xl font-extrabold text-blue-600">{formatCurrency(remaining)}</p>
-            <p className="text-xs text-text-secondary">متبقي</p>
+            <p className="text-xs text-text-secondary">{t('beautyBudgetPlanner.remaining')}</p>
           </Card>
         </div>
         {isLoading ? (
@@ -61,9 +82,9 @@ export default function BeautyBudgetPlannerPage(): JSX.Element {
                   <div className="flex items-center gap-4">
                     <span className="text-3xl">{c.emoji}</span>
                     <div className="flex-1">
-                      <p className="font-bold">{c.name}</p>
+                      <p className="font-bold">{t(c.name)}</p>
                       <p className="text-xs text-text-secondary">
-                        الميزانية: {formatCurrency(c.budget)}
+                        {t('beautyBudgetPlanner.catBudget', { amount: formatCurrency(c.budget) })}
                       </p>
                       <div className="mt-2 h-2 bg-surface-muted rounded-full">
                         <div

@@ -3,22 +3,25 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
-const SERVICES = [
-  { id: 1, name: 'مانيكير', emoji: '', price: 100 },
-  { id: 2, name: 'باديكير', emoji: '', price: 120 },
-  { id: 3, name: 'تنظيف بشرة', emoji: '', price: 200 },
-  { id: 4, name: 'مساج', emoji: '‍️', price: 250 },
-  { id: 5, name: 'مكياج', emoji: '', price: 300 },
+const SERVICES: { id: number; name: TranslationKey; emoji: string; price: number }[] = [
+  { id: 1, name: 'advancedBooking.service.manicure', emoji: '', price: 100 },
+  { id: 2, name: 'advancedBooking.service.pedicure', emoji: '', price: 120 },
+  { id: 3, name: 'advancedBooking.service.facial', emoji: '', price: 200 },
+  { id: 4, name: 'advancedBooking.service.massage', emoji: '‍️', price: 250 },
+  { id: 5, name: 'advancedBooking.service.makeup', emoji: '', price: 300 },
 ];
 
-const RECURRENCE_OPTS = [
-  { key: 'WEEKLY', name: 'أسبوعياً', emoji: '' },
-  { key: 'BIWEEKLY', name: 'كل أسبوعين', emoji: '️' },
-  { key: 'MONTHLY', name: 'شهرياً', emoji: '' },
+const RECURRENCE_OPTS: { key: string; name: TranslationKey; emoji: string }[] = [
+  { key: 'WEEKLY', name: 'advancedBooking.freq.weekly', emoji: '' },
+  { key: 'BIWEEKLY', name: 'advancedBooking.freq.biweekly', emoji: '️' },
+  { key: 'MONTHLY', name: 'advancedBooking.freq.monthly', emoji: '' },
 ];
 
 export default function AdvancedBookingPage(): JSX.Element {
+  const { t } = useLocale();
   const [mode, setMode] = useState<'recurring' | 'bundle'>('recurring');
   const [svcId, setSvcId] = useState(1);
   const [technicianId] = useState(1);
@@ -61,14 +64,14 @@ export default function AdvancedBookingPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> حجز متقدم</h1>
-          <p className="mt-1 text-sm text-text-secondary">حجوزات متكررة أو باقات متعددة الخدمات</p>
+          <h1 className="text-2xl font-bold">{t('advancedBooking.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('advancedBooking.subtitle')}</p>
         </div>
 
         {done ? (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
             <p className="text-3xl"></p>
-            <p className="font-bold text-green-700 mt-2">تم إنشاء الحجز بنجاح</p>
+            <p className="font-bold text-green-700 mt-2">{t('advancedBooking.success')}</p>
           </Card>
         ) : (
           <>
@@ -77,19 +80,19 @@ export default function AdvancedBookingPage(): JSX.Element {
                 onClick={() => setMode('recurring')}
                 className={`flex-1 rounded-lg px-4 py-3 text-sm font-medium ${mode === 'recurring' ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
               >
-                حجز متكرر
+                {t('advancedBooking.mode.recurring')}
               </button>
               <button
                 onClick={() => setMode('bundle')}
                 className={`flex-1 rounded-lg px-4 py-3 text-sm font-medium ${mode === 'bundle' ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
               >
-                باقة خدمات
+                {t('advancedBooking.mode.bundle')}
               </button>
             </div>
 
             {mode === 'recurring' ? (
               <Card padding="lg">
-                <h3 className="font-bold mb-3"> حجز متكرر</h3>
+                <h3 className="font-bold mb-3">{t('advancedBooking.recurringTitle')}</h3>
                 <div className="space-y-3">
                   <select
                     value={svcId}
@@ -98,7 +101,7 @@ export default function AdvancedBookingPage(): JSX.Element {
                   >
                     {SERVICES.map((s) => (
                       <option key={s.id} value={s.id}>
-                        {s.emoji} {s.name} — {formatCurrency(s.price)}
+                        {s.emoji} {t(s.name)} — {formatCurrency(s.price)}
                       </option>
                     ))}
                   </select>
@@ -109,7 +112,7 @@ export default function AdvancedBookingPage(): JSX.Element {
                         onClick={() => setRecurrence(r.key)}
                         className={`flex-1 rounded-lg px-3 py-2 text-sm ${recurrence === r.key ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
                       >
-                        {r.emoji} {r.name}
+                        {r.emoji} {t(r.name)}
                       </button>
                     ))}
                   </div>
@@ -119,7 +122,7 @@ export default function AdvancedBookingPage(): JSX.Element {
                     onChange={(e) => setOccurrences(Number(e.target.value))}
                     min={2}
                     max={12}
-                    placeholder="عدد المرات"
+                    placeholder={t('advancedBooking.placeholder.occurrences')}
                     className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
                   />
                   <input
@@ -129,8 +132,11 @@ export default function AdvancedBookingPage(): JSX.Element {
                     className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
                   />
                   <p className="text-sm text-text-secondary">
-                    الإجمالي: {occurrences} × {formatCurrency(svc.price)} ={' '}
-                    <span className="font-bold text-brand-600">{formatCurrency(totalPrice)}</span>
+                    {t('advancedBooking.total', {
+                      count: occurrences,
+                      price: formatCurrency(svc.price),
+                    })}{' '}
+                    = <span className="font-bold text-brand-600">{formatCurrency(totalPrice)}</span>
                   </p>
                 </div>
                 <Button
@@ -138,27 +144,27 @@ export default function AdvancedBookingPage(): JSX.Element {
                   loading={recurringMut.isPending}
                   className="w-full mt-3"
                 >
-                  إنشاء حجز متكرر
+                  {t('advancedBooking.createRecurring')}
                 </Button>
               </Card>
             ) : (
               <Card padding="lg">
-                <h3 className="font-bold mb-3"> باقة خدمات (خصم ١٥٪)</h3>
+                <h3 className="font-bold mb-3">{t('advancedBooking.bundleTitle')}</h3>
                 <p className="text-sm text-text-secondary mb-3">
-                  اختاري ٣ خدمات واحصلي على خصم ١٥٪
+                  {t('advancedBooking.bundleDesc')}
                 </p>
                 <div className="space-y-2 mb-4">
                   {SERVICES.slice(0, 3).map((s) => (
                     <div key={s.id} className="flex justify-between rounded-lg border p-3">
                       <span>
-                        {s.emoji} {s.name}
+                        {s.emoji} {t(s.name)}
                       </span>
                       <span>{formatCurrency(s.price)}</span>
                     </div>
                   ))}
                 </div>
                 <p className="text-sm">
-                  الإجمالي بعد الخصم:{' '}
+                  {t('advancedBooking.totalAfterDiscount')}{' '}
                   <span className="font-bold text-green-600">{formatCurrency(totalPrice)}</span>
                 </p>
                 <Button
@@ -176,7 +182,7 @@ export default function AdvancedBookingPage(): JSX.Element {
                   loading={bundleMut.isPending}
                   className="w-full mt-3"
                 >
-                  حجز الباقة
+                  {t('advancedBooking.bookBundle')}
                 </Button>
               </Card>
             )}

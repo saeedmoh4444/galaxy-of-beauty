@@ -43,6 +43,7 @@ const emptyAddressForm: AddressForm = {
 };
 
 export default function ProfilePage(): JSX.Element {
+  const { t, setLocale } = useLocale();
   const [activeTab, setActiveTab] = useState<'profile' | 'addresses'>('profile');
   const [msg, setMsg] = useState('');
 
@@ -55,7 +56,7 @@ export default function ProfilePage(): JSX.Element {
   } = api.auth.me.useQuery();
   const updateProfileMut = api.auth.updateProfile.useMutation({
     onSuccess: () => {
-      setMsg('تم تحديث الملف الشخصي بنجاح');
+      setMsg(t('profile.updated-success'));
       refetchUser();
     },
   });
@@ -70,7 +71,6 @@ export default function ProfilePage(): JSX.Element {
     return phone;
   };
   const router = useRouter();
-  const { setLocale } = useLocale();
   const saveLanguage = (lang: 'ar' | 'en') => {
     updateProfileMut.mutate({ preferredLanguage: lang }); // cross-device persistence
     setLocale(lang); // cookie + context + html attrs (immediate flip)
@@ -126,7 +126,7 @@ export default function ProfilePage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="text-2xl font-bold">الملف الشخصي</h1>
+        <h1 className="text-2xl font-bold">{t('profile.title')}</h1>
 
         {/* Tabs */}
         <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
@@ -138,7 +138,7 @@ export default function ProfilePage(): JSX.Element {
                 : 'text-text-secondary hover:text-text-primary dark:text-gray-400'
             }`}
           >
-            المعلومات الشخصية
+            {t('profile.personal-info')}
           </button>
           <button
             onClick={() => setActiveTab('addresses')}
@@ -148,7 +148,7 @@ export default function ProfilePage(): JSX.Element {
                 : 'text-text-secondary hover:text-text-primary dark:text-gray-400'
             }`}
           >
-            العناوين
+            {t('profile.addresses')}
           </button>
         </div>
 
@@ -164,13 +164,13 @@ export default function ProfilePage(): JSX.Element {
             {userLoading ? (
               <FormSkeleton fields={3} />
             ) : userError ? (
-              <ErrorAlert message="فشل تحميل الملف الشخصي" onRetry={() => refetchUser()} />
+              <ErrorAlert message={t('profile.load-error')} onRetry={() => refetchUser()} />
             ) : !userData ? (
               <div>
-                <EmptyState title="لا توجد بيانات" />
+                <EmptyState title={t('state.empty')} />
                 <div className="text-center">
                   <Link href="/login">
-                    <Button>تسجيل الدخول</Button>
+                    <Button>{t('profile.login')}</Button>
                   </Link>
                 </div>
               </div>
@@ -179,27 +179,25 @@ export default function ProfilePage(): JSX.Element {
                 <div className="space-y-4">
                   <div>
                     <span className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
-                      الاسم
+                      {t('profile.name')}
                     </span>
                     <InlineEdit
-                      label="الاسم"
+                      label={t('profile.name')}
                       value={(userData.name as string) ?? ''}
                       onSave={saveName}
-                      validate={(v) => (v.length < 2 ? 'الاسم قصير جداً' : null)}
+                      validate={(v) => (v.length < 2 ? t('profile.name-too-short') : null)}
                       disabled={updateProfileMut.isPending}
                     />
                   </div>
                   <div>
                     <span className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
-                      رقم الجوال
+                      {t('profile.phone')}
                     </span>
                     <InlineEdit
-                      label="رقم الجوال"
+                      label={t('profile.phone')}
                       value={(userData.phone as string) ?? ''}
                       onSave={savePhone}
-                      validate={(v) =>
-                        /^\+9665\d{8}$/.test(v) ? null : 'صيغة الجوال: +9665xxxxxxxx'
-                      }
+                      validate={(v) => (/^\+9665\d{8}$/.test(v) ? null : t('profile.phone-format'))}
                       placeholder="+9665xxxxxxxx"
                       disabled={updateProfileMut.isPending}
                     />
@@ -209,7 +207,7 @@ export default function ProfilePage(): JSX.Element {
                       htmlFor="pf-lang"
                       className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
                     >
-                      اللغة
+                      {t('profile.language')}
                     </label>
                     <select
                       id="pf-lang"
@@ -217,7 +215,7 @@ export default function ProfilePage(): JSX.Element {
                       onChange={(e) => saveLanguage(e.target.value as 'ar' | 'en')}
                       className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                     >
-                      <option value="ar">العربية</option>
+                      <option value="ar">{t('profile.arabic')}</option>
                       <option value="en">English</option>
                     </select>
                   </div>
@@ -231,21 +229,24 @@ export default function ProfilePage(): JSX.Element {
         {activeTab === 'addresses' && (
           <>
             <div className="flex justify-end">
-              <Button onClick={() => setShowAddrModal(true)}>إضافة عنوان</Button>
+              <Button onClick={() => setShowAddrModal(true)}>{t('profile.add-address')}</Button>
             </div>
 
             {addrLoading ? (
               <CardListSkeleton count={3} />
             ) : addrError ? (
-              <ErrorAlert message="فشل تحميل العناوين" onRetry={() => refetchAddr()} />
+              <ErrorAlert
+                message={t('profile.addresses-load-error')}
+                onRetry={() => refetchAddr()}
+              />
             ) : addrList.length === 0 ? (
               <div>
                 <EmptyState
-                  title="لا توجد عناوين"
-                  description="أضف عنوانك الأول ليسهل عملية الحجز"
+                  title={t('profile.no-addresses')}
+                  description={t('profile.add-first-address')}
                 />
                 <div className="text-center">
-                  <Button onClick={() => setShowAddrModal(true)}>إضافة عنوان</Button>
+                  <Button onClick={() => setShowAddrModal(true)}>{t('profile.add-address')}</Button>
                 </div>
               </div>
             ) : (
@@ -262,7 +263,7 @@ export default function ProfilePage(): JSX.Element {
                           <p className="font-semibold">{addr.label as string}</p>
                           {Boolean(addr.isDefault) && (
                             <span className="rounded-full bg-brand-100 px-2 py-0.5 text-xs font-medium text-brand-700 dark:bg-brand-900 dark:text-brand-300">
-                              افتراضي
+                              {t('profile.default')}
                             </span>
                           )}
                         </div>
@@ -271,7 +272,9 @@ export default function ProfilePage(): JSX.Element {
                         </p>
                         <p className="text-sm text-text-secondary">
                           {addr.street as string}
-                          {addr.building ? `, مبنى ${addr.building}` : ''}
+                          {addr.building
+                            ? t('profile.building-suffix', { building: addr.building as string })
+                            : ''}
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
@@ -292,7 +295,7 @@ export default function ProfilePage(): JSX.Element {
                             setShowAddrModal(true);
                           }}
                         >
-                          تعديل
+                          {t('button.edit')}
                         </Button>
                         {!addr.isDefault && (
                           <>
@@ -301,18 +304,18 @@ export default function ProfilePage(): JSX.Element {
                               size="sm"
                               onClick={() => setDefaultAddrMut.mutate({ id: addr.id as number })}
                             >
-                              تعيين افتراضي
+                              {t('profile.set-default')}
                             </Button>
                             <Button
                               variant="danger"
                               size="sm"
                               onClick={() => {
-                                if (confirm('هل أنت متأكد من حذف هذا العنوان؟')) {
+                                if (confirm(t('profile.delete-address-confirm'))) {
                                   deleteAddrMut.mutate({ id: addr.id as number });
                                 }
                               }}
                             >
-                              حذف
+                              {t('button.delete')}
                             </Button>
                           </>
                         )}
@@ -326,45 +329,45 @@ export default function ProfilePage(): JSX.Element {
             <Modal
               open={showAddrModal}
               onClose={closeAddrModal}
-              title={editingAddrId ? 'تعديل عنوان' : 'إضافة عنوان'}
+              title={editingAddrId ? t('profile.edit-address') : t('profile.add-address')}
               size="md"
             >
               <div className="space-y-4">
                 <Input
-                  label="تسمية (مثال: المنزل، العمل)"
+                  label={t('profile.label-hint')}
                   value={addrForm.label}
                   onChange={(e) => setAddrForm({ ...addrForm, label: e.target.value })}
                 />
                 <div className="grid grid-cols-2 gap-3">
                   <Input
-                    label="المدينة"
+                    label={t('profile.city')}
                     value={addrForm.city}
                     onChange={(e) => setAddrForm({ ...addrForm, city: e.target.value })}
                   />
                   <Input
-                    label="المنطقة"
+                    label={t('profile.area')}
                     value={addrForm.area}
                     onChange={(e) => setAddrForm({ ...addrForm, area: e.target.value })}
                   />
                 </div>
                 <Input
-                  label="الشارع"
+                  label={t('profile.street')}
                   value={addrForm.street}
                   onChange={(e) => setAddrForm({ ...addrForm, street: e.target.value })}
                 />
                 <div className="grid grid-cols-3 gap-3">
                   <Input
-                    label="المبنى"
+                    label={t('profile.building')}
                     value={addrForm.building}
                     onChange={(e) => setAddrForm({ ...addrForm, building: e.target.value })}
                   />
                   <Input
-                    label="الطابق"
+                    label={t('profile.floor')}
                     value={addrForm.floor}
                     onChange={(e) => setAddrForm({ ...addrForm, floor: e.target.value })}
                   />
                   <Input
-                    label="الشقة"
+                    label={t('profile.apartment')}
                     value={addrForm.apartment}
                     onChange={(e) => setAddrForm({ ...addrForm, apartment: e.target.value })}
                   />
@@ -374,7 +377,7 @@ export default function ProfilePage(): JSX.Element {
                   onClick={handleAddrSave}
                   loading={createAddrMut.isPending || updateAddrMut.isPending}
                 >
-                  {editingAddrId ? 'تحديث العنوان' : 'إضافة العنوان'}
+                  {editingAddrId ? t('profile.update-address') : t('profile.add-address-submit')}
                 </Button>
               </div>
             </Modal>

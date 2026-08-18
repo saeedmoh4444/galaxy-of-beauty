@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyGreenTeaCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyGreenTeaCard({
+  className = '',
+  title = 'الشاي الأخضر',
+  subtitle = 'مشروب الجمال اليومي',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,46 @@ export function BeautyGreenTeaCard({ className = '' }: { className?: string }): 
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">الشاي الأخضر</h4>
-          <p className="text-[10px] text-emerald-500 dark:text-emerald-400">مشروب الجمال اليومي</p>
+          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
+          <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '️', text: 'مضاد أكسدة قوي — يحمي البشرة من التلف' },
-          { emoji: '', text: 'يقلل الالتهابات — ممتاز للحبوب والاحمرار' },
-          { emoji: '', text: '2-3 أكواب يومياً — بدون سكر' },
-          { emoji: '', text: 'مثلج أو ساخن — أكياس الشاي للعيون المنتفخة' },
+          {
+            emoji: '️',
+            text: {
+              ar: 'مضاد أكسدة قوي — يحمي البشرة من التلف',
+              en: 'A powerful antioxidant — protects skin from damage',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'يقلل الالتهابات — ممتاز للحبوب والاحمرار',
+              en: 'Reduces inflammation — great for pimples and redness',
+            },
+          },
+          {
+            emoji: '',
+            text: { ar: '2-3 أكواب يومياً — بدون سكر', en: '2-3 cups a day — without sugar' },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'مثلج أو ساخن — أكياس الشاي للعيون المنتفخة',
+              en: 'Iced or hot — tea bags for puffy eyes',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 dark:bg-emerald-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-emerald-800 dark:text-emerald-200">{t.text}</span>
+            <span className="text-[10px] text-emerald-800 dark:text-emerald-200">
+              {t.text[locale]}
+            </span>
           </div>
         ))}
       </div>

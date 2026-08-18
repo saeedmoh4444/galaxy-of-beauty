@@ -4,34 +4,37 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 import { useToast } from '@galaxy/ui';
 
-const FREQ_LABELS: Record<string, string> = {
-  WEEKLY: 'أسبوعي',
-  BIWEEKLY: 'كل أسبوعين',
-  MONTHLY: 'شهري',
+const FREQ_LABELS: Record<string, TranslationKey> = {
+  WEEKLY: 'recurring.freq.weekly',
+  BIWEEKLY: 'recurring.freq.biweekly',
+  MONTHLY: 'recurring.freq.monthly',
 };
 
 export default function RecurringPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { addToast } = useToast();
   const { data, isLoading, isError, refetch } = api.recurringBookings.list.useQuery();
   const createMut = api.recurringBookings.create.useMutation({
     onSuccess: () => {
       refetch();
       setShowAdd(false);
-      addToast('success', 'تم إنشاء الحجز المتكرر');
+      addToast('success', t('recurring.toast.created'));
     },
   });
   const pauseMut = api.recurringBookings.pause.useMutation({
     onSuccess: () => {
       refetch();
-      addToast('success', 'تم الإيقاف');
+      addToast('success', t('recurring.toast.paused'));
     },
   });
   const cancelMut = api.recurringBookings.cancel.useMutation({
     onSuccess: () => {
       refetch();
-      addToast('success', 'تم الإلغاء');
+      addToast('success', t('recurring.toast.cancelled'));
     },
   });
   const [showAdd, setShowAdd] = useState(false);
@@ -49,18 +52,17 @@ export default function RecurringPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">حجوزات متكررة</h1>
-          <Button onClick={() => setShowAdd(true)}>إضافة حجز متكرر</Button>
+          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
+            {t('recurring.title')}
+          </h1>
+          <Button onClick={() => setShowAdd(true)}>{t('recurring.add')}</Button>
         </div>
         {isLoading ? (
           <CardListSkeleton count={4} />
         ) : isError ? (
-          <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+          <ErrorAlert message={t('recurring.err.load')} onRetry={() => refetch()} />
         ) : bookings.length === 0 ? (
-          <EmptyState
-            title="لا توجد حجوزات متكررة"
-            description="حددي حجز متكرر أسبوعي أو شهري لتوفير الوقت"
-          />
+          <EmptyState title={t('recurring.empty.title')} description={t('recurring.empty.desc')} />
         ) : (
           <div className="space-y-3">
             {bookings.map((b) => (
@@ -68,17 +70,23 @@ export default function RecurringPage(): JSX.Element {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-semibold">
-                      خدمة #{b.serviceId} · {FREQ_LABELS[b.frequency] || b.frequency}
+                      {t('recurring.service', { id: b.serviceId })} ·{' '}
+                      {FREQ_LABELS[b.frequency] ? t(FREQ_LABELS[b.frequency]) : b.frequency}
                     </p>
                     <p className="text-sm text-text-secondary">
-                      التالي: {new Date(b.nextDate).toLocaleDateString('ar-SA')}
+                      {t('recurring.nextLabel')}
+                      {new Date(b.nextDate).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA')}
                     </p>
                   </div>
                   <div className="flex gap-2">
                     <span
                       className={`rounded px-2 py-0.5 text-xs ${b.status === 'ACTIVE' ? 'bg-green-100 text-green-700' : b.status === 'PAUSED' ? 'bg-amber-100 text-amber-700' : 'bg-surface-muted text-text-secondary'}`}
                     >
-                      {b.status === 'ACTIVE' ? 'نشط' : b.status === 'PAUSED' ? 'متوقف' : 'ملغي'}
+                      {b.status === 'ACTIVE'
+                        ? t('recurring.status.active')
+                        : b.status === 'PAUSED'
+                          ? t('recurring.status.paused')
+                          : t('recurring.status.cancelled')}
                     </span>
                     {b.status === 'ACTIVE' && (
                       <Button
@@ -86,7 +94,7 @@ export default function RecurringPage(): JSX.Element {
                         variant="outline"
                         onClick={() => pauseMut.mutate({ id: b.id })}
                       >
-                        إيقاف
+                        {t('recurring.pause')}
                       </Button>
                     )}
                     {b.status !== 'CANCELLED' && (
@@ -95,7 +103,7 @@ export default function RecurringPage(): JSX.Element {
                         variant="danger"
                         onClick={() => cancelMut.mutate({ id: b.id })}
                       >
-                        إلغاء
+                        {t('recurring.cancel')}
                       </Button>
                     )}
                   </div>
@@ -117,22 +125,22 @@ export default function RecurringPage(): JSX.Element {
             }}
           >
             <div className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-gray-900">
-              <h3 className="mb-4 text-lg font-bold">حجز متكرر جديد</h3>
+              <h3 className="mb-4 text-lg font-bold">{t('recurring.modal.title')}</h3>
               <div className="space-y-3">
                 <Input
-                  placeholder="معرف الخدمة"
+                  placeholder={t('recurring.placeholder.serviceId')}
                   type="number"
                   value={form.serviceId}
                   onChange={(e) => setForm({ ...form, serviceId: e.target.value })}
                 />
                 <Input
-                  placeholder="معرف الفنية (اختياري)"
+                  placeholder={t('recurring.placeholder.technicianId')}
                   type="number"
                   value={form.technicianId}
                   onChange={(e) => setForm({ ...form, technicianId: e.target.value })}
                 />
                 <Input
-                  placeholder="معرف العنوان"
+                  placeholder={t('recurring.placeholder.addressId')}
                   type="number"
                   value={form.addressId}
                   onChange={(e) => setForm({ ...form, addressId: e.target.value })}
@@ -142,9 +150,9 @@ export default function RecurringPage(): JSX.Element {
                   onChange={(e) => setForm({ ...form, frequency: e.target.value })}
                   className="w-full rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800"
                 >
-                  <option value="WEEKLY">أسبوعي</option>
-                  <option value="BIWEEKLY">كل أسبوعين</option>
-                  <option value="MONTHLY">شهري</option>
+                  <option value="WEEKLY">{t('recurring.freq.weekly')}</option>
+                  <option value="BIWEEKLY">{t('recurring.freq.biweekly')}</option>
+                  <option value="MONTHLY">{t('recurring.freq.monthly')}</option>
                 </select>
                 <Input
                   type="date"
@@ -164,7 +172,7 @@ export default function RecurringPage(): JSX.Element {
                   loading={createMut.isPending}
                   className="w-full"
                 >
-                  حفظ
+                  {t('recurring.save')}
                 </Button>
               </div>
             </div>

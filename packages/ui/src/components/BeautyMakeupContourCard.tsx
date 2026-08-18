@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyMakeupContourCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyMakeupContourCard({
+  className = '',
+  heading = 'كونتور وهايلايت',
+  subtitle = 'نحت الوجه بالمكياج',
+  locale = 'ar',
+}: {
+  className?: string;
+  heading?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,44 @@ export function BeautyMakeupContourCard({ className = '' }: { className?: string
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">كونتور وهايلايت</h4>
-          <p className="text-[10px] text-amber-500 dark:text-amber-400">نحت الوجه بالمكياج</p>
+          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{heading}</h4>
+          <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'الكونتور: تحت عظمة الوجنة — خط الفك' },
-          { emoji: '', text: 'الهايلايت: أعلى الوجنة — عظمة الحاجب' },
-          { emoji: '️', text: 'ادمجي جيداً — لا خطوط ظاهرة' },
-          { emoji: '', text: 'درجة أغمق من بشرتك بدرجتين فقط' },
+          {
+            emoji: '',
+            text: {
+              ar: 'الكونتور: تحت عظمة الوجنة — خط الفك',
+              en: 'Contour: under the cheekbone — along the jawline',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'الهايلايت: أعلى الوجنة — عظمة الحاجب',
+              en: 'Highlight: top of the cheekbone — brow bone',
+            },
+          },
+          {
+            emoji: '️',
+            text: { ar: 'ادمجي جيداً — لا خطوط ظاهرة', en: 'Blend well — no visible lines' },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'درجة أغمق من بشرتك بدرجتين فقط',
+              en: 'Only two shades darker than your skin',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2 dark:bg-amber-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-amber-800 dark:text-amber-200">{t.text}</span>
+            <span className="text-[10px] text-amber-800 dark:text-amber-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

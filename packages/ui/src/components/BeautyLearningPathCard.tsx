@@ -22,12 +22,26 @@ interface BeautyLearningPathCardProps {
   path: LearningPath;
   onContinue?: () => void;
   className?: string;
+  heading?: string;
+  selfPacedText?: string;
+  unitsText?: string;
+  completedSuffix?: string;
+  startButtonText?: string;
+  completedButtonText?: string;
+  continueButtonText?: string;
 }
 
 export function BeautyLearningPathCard({
   path,
   onContinue,
   className = '',
+  heading = 'مسار تعليمي',
+  selfPacedText = 'ذاتي',
+  unitsText = 'وحدات',
+  completedSuffix = 'مكتمل',
+  startButtonText = 'ابدئي المسار',
+  completedButtonText = ' مكتمل — راجعي',
+  continueButtonText = 'واصلي التعلم ',
 }: BeautyLearningPathCardProps): JSX.Element {
   const pct = Math.round((path.completed / path.modules) * 100);
 
@@ -43,10 +57,10 @@ export function BeautyLearningPathCard({
           {path.emoji}
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">مسار تعليمي</h4>
+          <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{heading}</h4>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">{path.title}</p>
           <p className="text-[10px] text-text-tertiary dark:text-gray-500">
-            {path.duration || 'ذاتي'} · {path.modules} وحدات
+            {path.duration || selfPacedText} · {path.modules} {unitsText}
           </p>
         </div>
       </div>
@@ -54,7 +68,7 @@ export function BeautyLearningPathCard({
       <div className="mt-3">
         <div className="flex items-center justify-between text-[10px]">
           <span className="text-indigo-600 dark:text-indigo-400">
-            {path.completed}/{path.modules} مكتمل
+            {path.completed}/{path.modules} {completedSuffix}
           </span>
           <span className="font-bold text-indigo-700 dark:text-indigo-300">{pct}%</span>
         </div>
@@ -72,10 +86,10 @@ export function BeautyLearningPathCard({
         className="mt-3 w-full rounded-xl bg-indigo-600 py-2 text-xs font-bold text-white hover:bg-indigo-700 active:scale-[0.98] transition-all"
       >
         {path.completed === 0
-          ? 'ابدئي المسار'
+          ? startButtonText
           : path.completed === path.modules
-            ? ' مكتمل — راجعي'
-            : 'واصلي التعلم '}
+            ? completedButtonText
+            : continueButtonText}
       </button>
     </div>
   );

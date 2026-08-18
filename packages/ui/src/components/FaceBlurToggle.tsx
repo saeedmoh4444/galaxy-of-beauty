@@ -15,6 +15,15 @@ interface FaceBlurToggleProps {
   onToggle?: (enabled: boolean) => void;
   /** Number of photos that would be affected */
   photosAffected?: number;
+  title?: string;
+  enabledStatusText?: string;
+  disabledStatusText?: string;
+  howItWorksLabel?: string;
+  howItWorksDescription?: string;
+  photosAffectedText?: string;
+  enabledFooterText?: string;
+  disabledFooterText?: string;
+  footerNoteText?: string;
   className?: string;
 }
 
@@ -22,6 +31,15 @@ export function FaceBlurToggle({
   onToggle,
   photosAffected,
   className = '',
+  title = 'تعتيم الوجه',
+  enabledStatusText = 'يتم تعتيم الوجوه تلقائياً — خصوصيتكِ أولاً',
+  disabledStatusText = 'الوجوه ظاهرة — أنتِ تتحكمين',
+  howItWorksLabel = ' كيف يعمل؟',
+  howItWorksDescription = 'ذكاء اصطناعي على جهازكِ يتعرف على الوجوه ويعتمها تلقائياً. لا يتم رفع صوركِ إلى أي خادم — كل شيء على جهازكِ.',
+  photosAffectedText = ' صورة متأثرة بهذا الإعداد',
+  enabledFooterText = ' الوجوه معتمة تلقائياً في المعرض العام',
+  disabledFooterText = ' الوجوه غير معتمة — ننصح بتفعيل التعتيم للخصوصية',
+  footerNoteText = 'معالجة محلية بالكامل — خصوصيتكِ في جهازكِ فقط',
 }: FaceBlurToggleProps): JSX.Element {
   const [enabled, setEnabled] = useState(true);
 
@@ -44,11 +62,9 @@ export function FaceBlurToggle({
             ‍️
           </span>
           <div>
-            <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">تعتيم الوجه</h4>
+            <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
             <p className="text-[10px] text-blue-500 dark:text-blue-400">
-              {enabled
-                ? 'يتم تعتيم الوجوه تلقائياً — خصوصيتكِ أولاً'
-                : 'الوجوه ظاهرة — أنتِ تتحكمين'}
+              {enabled ? enabledStatusText : disabledStatusText}
             </p>
           </div>
         </div>
@@ -72,10 +88,9 @@ export function FaceBlurToggle({
 
       {/* How it works */}
       <div className="mt-3 rounded-xl bg-blue-50 p-3 dark:bg-blue-950">
-        <p className="text-[10px] font-bold text-blue-700 dark:text-blue-300"> كيف يعمل؟</p>
+        <p className="text-[10px] font-bold text-blue-700 dark:text-blue-300">{howItWorksLabel}</p>
         <p className="mt-0.5 text-[10px] text-blue-600 dark:text-blue-400">
-          ذكاء اصطناعي على جهازكِ يتعرف على الوجوه ويعتمها تلقائياً. لا يتم رفع صوركِ إلى أي خادم —
-          كل شيء على جهازكِ.
+          {howItWorksDescription}
         </p>
       </div>
 
@@ -83,7 +98,8 @@ export function FaceBlurToggle({
       {photosAffected !== undefined && (
         <div className="mt-2 rounded-lg bg-blue-50 p-2 text-center dark:bg-blue-950">
           <p className="text-[10px] text-blue-700 dark:text-blue-300">
-            {photosAffected} صورة متأثرة بهذا الإعداد
+            {photosAffected}
+            {photosAffectedText}
           </p>
         </div>
       )}
@@ -91,14 +107,12 @@ export function FaceBlurToggle({
       {/* Status */}
       <div className="mt-2 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
         <p className="text-center text-[10px] text-text-secondary dark:text-gray-300">
-          {enabled
-            ? ' الوجوه معتمة تلقائياً في المعرض العام'
-            : ' الوجوه غير معتمة — ننصح بتفعيل التعتيم للخصوصية'}
+          {enabled ? enabledFooterText : disabledFooterText}
         </p>
       </div>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        معالجة محلية بالكامل — خصوصيتكِ في جهازكِ فقط
+        {footerNoteText}
       </p>
     </div>
   );

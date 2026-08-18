@@ -17,6 +17,12 @@ interface PrayerTimeReminderProps {
   minutesUntil?: number;
   onDismiss?: () => void;
   className?: string;
+  title?: string;
+  soonBadgeText?: string;
+  countdownLabel?: string;
+  reminderText?: string;
+  dismissButtonText?: string;
+  footerText?: string;
 }
 
 export function PrayerTimeReminder({
@@ -25,6 +31,12 @@ export function PrayerTimeReminder({
   minutesUntil,
   onDismiss,
   className = '',
+  title = 'موعد الصلاة',
+  soonBadgeText = 'قريباً',
+  countdownLabel = 'دقيقة حتى الأذان',
+  reminderText = 'سنذكركِ قبل الأذان بـ 10 دقائق — لتستعدي للصلاة براحة',
+  dismissButtonText = 'شكراً',
+  footerText = 'راحتكِ الروحية جزء من تجربتكِ',
 }: PrayerTimeReminderProps): JSX.Element {
   const isSoon = minutesUntil !== undefined && minutesUntil <= 15;
 
@@ -42,9 +54,7 @@ export function PrayerTimeReminder({
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true"></span>
           <div>
-            <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-              موعد الصلاة
-            </h4>
+            <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
             <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
               {nextPrayer} — {time}
             </p>
@@ -52,7 +62,7 @@ export function PrayerTimeReminder({
         </div>
         {isSoon && (
           <span className="shrink-0 animate-pulse rounded-full bg-amber-200 px-2.5 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-800 dark:text-amber-200">
-            قريباً
+            {soonBadgeText}
           </span>
         )}
       </div>
@@ -61,14 +71,14 @@ export function PrayerTimeReminder({
       {minutesUntil !== undefined && (
         <div className="mt-2 rounded-xl bg-emerald-50 p-2.5 text-center dark:bg-emerald-950">
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{minutesUntil}</p>
-          <p className="text-[10px] text-emerald-600 dark:text-emerald-400">دقيقة حتى الأذان</p>
+          <p className="text-[10px] text-emerald-600 dark:text-emerald-400">{countdownLabel}</p>
         </div>
       )}
 
       {/* Gentle reminder */}
       <div className="mt-2 rounded-lg bg-emerald-50 p-2 dark:bg-emerald-950">
         <p className="text-center text-[10px] text-emerald-700 dark:text-emerald-300">
-          سنذكركِ قبل الأذان بـ 10 دقائق — لتستعدي للصلاة براحة
+          {reminderText}
         </p>
       </div>
 
@@ -78,12 +88,12 @@ export function PrayerTimeReminder({
           onClick={onDismiss}
           className="mt-2 w-full rounded-lg border border-emerald-200 py-1.5 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-300"
         >
-          شكراً
+          {dismissButtonText}
         </button>
       )}
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        راحتكِ الروحية جزء من تجربتكِ
+        {footerText}
       </p>
     </div>
   );

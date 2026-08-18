@@ -15,8 +15,10 @@ import {
   ConsentShield,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function SafetyPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const emergencyContacts = api.safety.getContacts.useQuery();
   const latestBooking = api.bookings.list.useQuery({ limit: 1 });
 
@@ -25,14 +27,14 @@ export default function SafetyPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="️ الأمان" subtitle="سلامتكِ أولاً — دائماً" />
+        <PageTitle title={'️' + t('safety.title')} subtitle={t('safety.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
             <PanicButton
               contacts={[
-                { name: 'أمي', phone: '0550000000', relation: 'mother' },
-                { name: 'أختي', phone: '0551111111' },
+                { name: t('safety.mom'), phone: '0550000000', relation: 'mother' },
+                { name: t('safety.sister'), phone: '0551111111' },
               ]}
               address="الرياض — حي الياسمين"
               technicianName="نورة"
@@ -47,16 +49,19 @@ export default function SafetyPage(): JSX.Element {
                   name: c.name,
                   phone: c.phone,
                   relation: c.relation ?? undefined,
-                })) ?? [{ name: 'أمي', phone: '0550000000', relation: 'mother' }]
+                })) ?? [{ name: t('safety.mom'), phone: '0550000000', relation: 'mother' }]
               }
               address={(booking?.address as unknown as string) ?? 'الرياض'}
               technicianName={booking?.technician?.name ?? 'نورة'}
               estimatedEnd={
                 booking?.endAt
-                  ? new Date(booking.endAt).toLocaleTimeString('ar-SA', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })
+                  ? new Date(booking.endAt).toLocaleTimeString(
+                      locale === 'en' ? 'en-GB' : 'ar-SA',
+                      {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      },
+                    )
                   : '21:00'
               }
             />

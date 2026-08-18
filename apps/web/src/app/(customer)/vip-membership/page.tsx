@@ -3,8 +3,10 @@
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function VIPMembershipPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: tiers, isLoading } = api.vipMembership.tiers.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -22,11 +24,13 @@ export default function VIPMembershipPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="text-center">
           <span className="text-6xl"></span>
-          <h1 className="mt-4 text-3xl font-bold">عضوية VIP</h1>
-          <p className="mt-2 text-text-secondary">ارتقِ بعضويتكِ واحصلي على مميزات حصرية</p>
+          <h1 className="mt-4 text-3xl font-bold">{t('vipMembership.title')}</h1>
+          <p className="mt-2 text-text-secondary">{t('vipMembership.subtitle')}</p>
           {current !== 'silver' && (
             <p className="mt-2 text-brand-600 font-bold">
-              عضوية {current === 'gold' ? ' ذهبية' : ' بلاتينية'} نشطة
+              {t('vipMembership.activeMembership')}
+              {current === 'gold' ? t('vipMembership.gold') : t('vipMembership.platinum')}
+              {t('vipMembership.active')}
             </p>
           )}
         </div>
@@ -34,30 +38,33 @@ export default function VIPMembershipPage(): JSX.Element {
         {isLoading ? (
           <GridSkeleton count={3} />
         ) : allTiers.length === 0 ? (
-          <ErrorAlert message="لا توجد بيانات" />
+          <ErrorAlert message={t('vipMembership.noData')} />
         ) : (
           <div className="grid gap-6 lg:grid-cols-3">
-            {allTiers.map((t: Record<string, unknown>) => {
-              const isCurrent = current === (t.key as string);
-              const benefits = (t.benefits as string[]) ?? [];
+            {allTiers.map((tx: Record<string, unknown>) => {
+              const isCurrent = current === (tx.key as string);
+              const benefits = (tx.benefits as string[]) ?? [];
               return (
                 <Card
-                  key={t.key as string}
+                  key={tx.key as string}
                   padding="lg"
                   className={`relative text-center ${isCurrent ? 'border-2 border-brand-400 ring-2 ring-brand-100 dark:ring-brand-900' : ''}`}
                 >
                   {isCurrent && (
                     <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-4 py-0.5 text-xs font-bold text-white">
-                      حالية
+                      {t('vipMembership.current')}
                     </span>
                   )}
-                  <span className="text-5xl">{t.emoji as string}</span>
-                  <h2 className="mt-2 text-xl font-extrabold">{t.nameAr as string}</h2>
+                  <span className="text-5xl">{tx.emoji as string}</span>
+                  <h2 className="mt-2 text-xl font-extrabold">{tx.nameAr as string}</h2>
                   <p className="mt-3 text-3xl font-extrabold text-brand-600">
-                    {(t.price as number) > 0
-                      ? formatCurrency(t.price as number) + ' ر.س'
-                      : 'مجاناً'}
-                    <span className="text-xs text-text-tertiary font-normal"> / سنة</span>
+                    {(tx.price as number) > 0
+                      ? formatCurrency(tx.price as number) + ' ' + t('beautyParty.currency')
+                      : t('vipMembership.free')}
+                    <span className="text-xs text-text-tertiary font-normal">
+                      {' '}
+                      / {t('vipMembership.perYear')}
+                    </span>
                   </p>
                   <ul className="mt-4 space-y-2 text-right">
                     {benefits.map((b: string, i: number) => (
@@ -70,19 +77,19 @@ export default function VIPMembershipPage(): JSX.Element {
                   <div className="mt-6">
                     {isCurrent ? (
                       <span className="rounded-full bg-green-100 dark:bg-green-900 px-4 py-2 text-sm font-bold text-green-700 dark:text-green-300">
-                        عضوية نشطة
+                        {t('vipMembership.membershipActive')}
                       </span>
-                    ) : (t.price as number) > 0 ? (
+                    ) : (tx.price as number) > 0 ? (
                       <Button
                         onClick={() =>
                           upgradeMut.mutate({
-                            tier: t.key as string as 'silver' | 'gold' | 'platinum',
+                            tier: tx.key as string as 'silver' | 'gold' | 'platinum',
                           })
                         }
                         loading={upgradeMut.isPending}
                         className="w-full"
                       >
-                        ترقية
+                        {t('vipMembership.upgrade')}
                       </Button>
                     ) : null}
                   </div>

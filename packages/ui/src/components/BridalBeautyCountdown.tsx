@@ -11,7 +11,7 @@ import { cn } from '@galaxy/shared';
  */
 
 interface Milestone {
-  label: string;
+  label: { ar: string; en: string };
   emoji: string;
   daysBefore: number;
   done: boolean;
@@ -20,23 +20,38 @@ interface Milestone {
 interface BridalBeautyCountdownProps {
   weddingDate: string;
   completedMilestones?: string[];
+  /** Display language for built-in milestone labels */
+  locale?: 'ar' | 'en';
+  weddingDayTitle?: string;
+  countdownTitle?: string;
+  congratsText?: string;
+  daysRemainingText?: string;
+  daysSuffix?: string;
+  journeyCompleteText?: string;
   className?: string;
 }
 
 const MILESTONES: Omit<Milestone, 'done'>[] = [
-  { label: 'خطة العناية', emoji: '', daysBefore: 180 },
-  { label: 'روتين يومي', emoji: '', daysBefore: 150 },
-  { label: 'علاجات متقدمة', emoji: '‍️', daysBefore: 120 },
-  { label: 'تجربة الإطلالة', emoji: '', daysBefore: 90 },
-  { label: 'اللمسات النهائية', emoji: '', daysBefore: 60 },
-  { label: 'الاستعداد الأخير', emoji: '', daysBefore: 30 },
-  { label: 'يوم الزفاف', emoji: '', daysBefore: 0 },
+  { label: { ar: 'خطة العناية', en: 'Care plan' }, emoji: '', daysBefore: 180 },
+  { label: { ar: 'روتين يومي', en: 'Daily routine' }, emoji: '', daysBefore: 150 },
+  { label: { ar: 'علاجات متقدمة', en: 'Advanced treatments' }, emoji: '‍️', daysBefore: 120 },
+  { label: { ar: 'تجربة الإطلالة', en: 'Look trial' }, emoji: '', daysBefore: 90 },
+  { label: { ar: 'اللمسات النهائية', en: 'Final touches' }, emoji: '', daysBefore: 60 },
+  { label: { ar: 'الاستعداد الأخير', en: 'Last preparations' }, emoji: '', daysBefore: 30 },
+  { label: { ar: 'يوم الزفاف', en: 'Wedding day' }, emoji: '', daysBefore: 0 },
 ];
 
 export function BridalBeautyCountdown({
   weddingDate,
   completedMilestones = [],
   className = '',
+  locale = 'ar',
+  weddingDayTitle = 'يوم الزفاف!',
+  countdownTitle = 'العد التنازلي للزفاف',
+  congratsText = 'مبروك! ',
+  daysRemainingText = 'يوم متبقي',
+  daysSuffix = 'يوم',
+  journeyCompleteText = 'ألف مبروك! رحلة الجمال اكتملت',
 }: BridalBeautyCountdownProps): JSX.Element {
   const today = new Date();
   const wedding = new Date(weddingDate);
@@ -48,7 +63,7 @@ export function BridalBeautyCountdown({
 
   const milestones: Milestone[] = MILESTONES.map((m) => ({
     ...m,
-    done: completedMilestones.includes(m.label) || daysLeft <= m.daysBefore,
+    done: completedMilestones.includes(m.label.ar) || daysLeft <= m.daysBefore,
   }));
 
   return (
@@ -63,10 +78,10 @@ export function BridalBeautyCountdown({
           {isPast ? '' : ''}
         </span>
         <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">
-          {isPast ? 'يوم الزفاف!' : 'العد التنازلي للزفاف'}
+          {isPast ? weddingDayTitle : countdownTitle}
         </h4>
         <p className="text-[10px] text-rose-500 dark:text-rose-400">
-          {isPast ? 'مبروك! ' : `${daysLeft} يوم متبقي`}
+          {isPast ? congratsText : `${daysLeft} ${daysRemainingText}`}
         </p>
       </div>
 
@@ -74,7 +89,7 @@ export function BridalBeautyCountdown({
         <div className="mt-3 space-y-1.5">
           {milestones.map((m, _i) => (
             <div
-              key={m.label}
+              key={m.label.ar}
               className={cn(
                 'flex items-center gap-2 rounded-lg px-3 py-2',
                 m.done ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-gray-50 dark:bg-gray-800',
@@ -98,10 +113,10 @@ export function BridalBeautyCountdown({
                     : 'text-text-secondary dark:text-gray-300',
                 )}
               >
-                {m.label}
+                {m.label[locale]}
               </span>
               <span className="text-[9px] text-text-tertiary dark:text-gray-500">
-                {m.daysBefore} يوم
+                {m.daysBefore} {daysSuffix}
               </span>
             </div>
           ))}
@@ -112,7 +127,7 @@ export function BridalBeautyCountdown({
         <div className="mt-3 rounded-xl bg-rose-50 p-4 text-center dark:bg-rose-950">
           <p className="text-lg" aria-hidden="true"></p>
           <p className="text-xs font-bold text-rose-700 dark:text-rose-300">
-            ألف مبروك! رحلة الجمال اكتملت
+            {journeyCompleteText}
           </p>
         </div>
       )}

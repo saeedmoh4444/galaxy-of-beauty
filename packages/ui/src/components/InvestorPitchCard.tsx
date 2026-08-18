@@ -17,6 +17,13 @@ interface InvestorPitchCardProps {
   onApply?: () => void;
   onInvest?: () => void;
   className?: string;
+  title?: string;
+  subtitle?: string;
+  projectsLabel?: string;
+  fundedLabel?: string;
+  currencyLabel?: string;
+  applyButtonText?: string;
+  investButtonText?: string;
 }
 
 export function InvestorPitchCard({
@@ -26,6 +33,13 @@ export function InvestorPitchCard({
   onApply,
   onInvest,
   className = '',
+  title = 'منصة الاستثمار',
+  subtitle = 'نربط رائدات الأعمال بالمستثمرين',
+  projectsLabel = 'مشروع',
+  fundedLabel = 'ممول',
+  currencyLabel = 'ريال',
+  applyButtonText = 'قدمي مشروعكِ',
+  investButtonText = 'استثمري',
 }: InvestorPitchCardProps): JSX.Element {
   return (
     <div
@@ -36,26 +50,22 @@ export function InvestorPitchCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">
-          منصة الاستثمار
-        </h4>
-        <p className="text-[10px] text-emerald-600 dark:text-emerald-400">
-          نربط رائدات الأعمال بالمستثمرين
-        </p>
+        <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">{title}</h4>
+        <p className="text-[10px] text-emerald-600 dark:text-emerald-400">{subtitle}</p>
       </div>
 
       <div className="mt-3 grid grid-cols-3 gap-2">
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{startups}</p>
-          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">مشروع</p>
+          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{projectsLabel}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{funded}</p>
-          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">ممول</p>
+          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{fundedLabel}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
           <p className="text-sm font-bold text-emerald-800 dark:text-emerald-200">{totalRaised}</p>
-          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">ريال</p>
+          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{currencyLabel}</p>
         </div>
       </div>
 
@@ -65,14 +75,14 @@ export function InvestorPitchCard({
           onClick={onApply}
           className="flex-1 rounded-xl bg-emerald-600 py-2 text-[10px] font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
         >
-          قدمي مشروعكِ
+          {applyButtonText}
         </button>
         <button
           type="button"
           onClick={onInvest}
           className="rounded-xl border border-emerald-200 bg-white px-3 py-2 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:bg-gray-800 dark:text-emerald-300"
         >
-          استثمري
+          {investButtonText}
         </button>
       </div>
     </div>

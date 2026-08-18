@@ -11,79 +11,117 @@ import { cn } from '@galaxy/shared';
  */
 
 interface HistoryEra {
-  era: string;
+  era: { ar: string; en: string };
   emoji: string;
-  year: string;
-  fact: string;
+  year: { ar: string; en: string };
+  fact: { ar: string; en: string };
 }
 
 const ERAS: HistoryEra[] = [
   {
-    era: 'مصر القديمة',
+    era: { ar: 'مصر القديمة', en: 'Ancient Egypt' },
     emoji: '️',
-    year: '3000 ق.م',
-    fact: 'كليوباترا استخدمت الحليب والعسل للاستحمام — وزيت الخروع للكحل',
+    year: { ar: '3000 ق.م', en: '3000 BC' },
+    fact: {
+      ar: 'كليوباترا استخدمت الحليب والعسل للاستحمام — وزيت الخروع للكحل',
+      en: 'Cleopatra bathed in milk and honey — and used castor oil for kohl',
+    },
   },
   {
-    era: 'اليونان القديمة',
+    era: { ar: 'اليونان القديمة', en: 'Ancient Greece' },
     emoji: '️',
-    year: '500 ق.م',
-    fact: 'استخدموا زيت الزيتون للترطيب والرصاص الأبيض لتفتيح البشرة',
+    year: { ar: '500 ق.م', en: '500 BC' },
+    fact: {
+      ar: 'استخدموا زيت الزيتون للترطيب والرصاص الأبيض لتفتيح البشرة',
+      en: 'They used olive oil for hydration and white lead to lighten the skin',
+    },
   },
   {
-    era: 'الجزيرة العربية',
+    era: { ar: 'الجزيرة العربية', en: 'Arabian Peninsula' },
     emoji: '',
-    year: '2000 ق.م',
-    fact: 'الحناء استخدمت للتزيين والتبريد — ونقشاتها تروي قصص القبائل',
+    year: { ar: '2000 ق.م', en: '2000 BC' },
+    fact: {
+      ar: 'الحناء استخدمت للتزيين والتبريد — ونقشاتها تروي قصص القبائل',
+      en: 'Henna was used for adornment and cooling — its patterns tell tribal stories',
+    },
   },
   {
-    era: 'العصر العباسي',
+    era: { ar: 'العصر العباسي', en: 'Abbasid era' },
     emoji: '',
-    year: '800 م',
-    fact: 'زرياب الأندلسي أدخل روتين العناية بالشعر والبشرة للنساء',
+    year: { ar: '800 م', en: '800 AD' },
+    fact: {
+      ar: 'زرياب الأندلسي أدخل روتين العناية بالشعر والبشرة للنساء',
+      en: 'Ziryab of Andalusia introduced hair and skincare routines for women',
+    },
   },
   {
-    era: 'أوروبا الفيكتورية',
+    era: { ar: 'أوروبا الفيكتورية', en: 'Victorian Europe' },
     emoji: '',
-    year: '1850 م',
-    fact: 'البشرة البيضاء رمز الثراء — والنساء تجنبن الشمس تماماً',
+    year: { ar: '1850 م', en: '1850 AD' },
+    fact: {
+      ar: 'البشرة البيضاء رمز الثراء — والنساء تجنبن الشمس تماماً',
+      en: 'Pale skin was a symbol of wealth — women avoided the sun entirely',
+    },
   },
   {
-    era: 'العصر الذهبي',
+    era: { ar: 'العصر الذهبي', en: 'The Golden Age' },
     emoji: '',
-    year: '1950 م',
-    fact: 'مارلين مونرو جعلت الشامة والشعر الأشقر موضة عالمية',
+    year: { ar: '1950 م', en: '1950 AD' },
+    fact: {
+      ar: 'مارلين مونرو جعلت الشامة والشعر الأشقر موضة عالمية',
+      en: 'Marilyn Monroe made beauty marks and blonde hair a global trend',
+    },
   },
   {
-    era: 'الثمانينات',
+    era: { ar: 'الثمانينات', en: 'The 80s' },
     emoji: '',
-    year: '1980 م',
-    fact: 'الألوان الجريئة والمكياج الثقيل — عصر الإفراط في كل شيء',
+    year: { ar: '1980 م', en: '1980 AD' },
+    fact: {
+      ar: 'الألوان الجريئة والمكياج الثقيل — عصر الإفراط في كل شيء',
+      en: 'Bold colors and heavy makeup — the era of excess in everything',
+    },
   },
   {
-    era: 'اليوم',
+    era: { ar: 'اليوم', en: 'Today' },
     emoji: '',
-    year: '2026 م',
-    fact: 'الجمال الطبيعي والعناية بالبشرة — والأهم: الجمال للجميع',
+    year: { ar: '2026 م', en: '2026 AD' },
+    fact: {
+      ar: 'الجمال الطبيعي والعناية بالبشرة — والأهم: الجمال للجميع',
+      en: 'Natural beauty and skincare — and most importantly: beauty for everyone',
+    },
   },
 ];
 
 interface BeautyHistoryTimelineProps {
   className?: string;
+  /** Header title */
+  title?: string;
+  /** Header subtitle */
+  subtitle?: string;
+  /** Footer text */
+  footerText?: string;
+  /** Locale for internal era data strings */
+  locale?: 'ar' | 'en';
 }
 
-export function BeautyHistoryTimeline({ className = '' }: BeautyHistoryTimelineProps): JSX.Element {
+export function BeautyHistoryTimeline({
+  className = '',
+  title = 'تاريخ الجمال',
+  subtitle = 'رحلة الجمال عبر العصور',
+  footerText = '"الجمال قصة قديمة — وما زلنا نكتب فصولها"',
+  locale = 'ar',
+}: BeautyHistoryTimelineProps): JSX.Element {
   return (
     <div className={cn('rounded-2xl bg-white p-5 dark:bg-gray-900', className)}>
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-amber-700 dark:text-amber-300">تاريخ الجمال</h4>
-        <p className="text-[10px] text-amber-500 dark:text-amber-400">رحلة الجمال عبر العصور</p>
+        <h4 className="mt-1 text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
+        <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
       </div>
 
       <div className="mt-4">
         {ERAS.map((era, i) => (
-          <div key={era.era} className="relative flex gap-3">
+          <div key={era.era.ar} className="relative flex gap-3">
             <div className="flex flex-col items-center">
               <div className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-amber-300 bg-amber-50 text-sm dark:border-amber-800 dark:bg-amber-950">
                 {era.emoji}
@@ -95,23 +133,21 @@ export function BeautyHistoryTimeline({ className = '' }: BeautyHistoryTimelineP
             <div className="pb-3 flex-1">
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold text-amber-800 dark:text-amber-200">
-                  {era.era}
+                  {era.era[locale]}
                 </span>
                 <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] text-amber-700 dark:bg-amber-900 dark:text-amber-300">
-                  {era.year}
+                  {era.year[locale]}
                 </span>
               </div>
               <p className="mt-0.5 text-[10px] leading-relaxed text-text-secondary dark:text-gray-300">
-                {era.fact}
+                {era.fact[locale]}
               </p>
             </div>
           </div>
         ))}
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">
-        &ldquo;الجمال قصة قديمة — وما زلنا نكتب فصولها&rdquo;
-      </p>
+      <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">{footerText}</p>
     </div>
   );
 }

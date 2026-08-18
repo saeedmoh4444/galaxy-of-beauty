@@ -9,9 +9,17 @@ import { cn } from '@galaxy/shared';
 
 interface BeautyEyebrowCardProps {
   className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
 }
 
-export function BeautyEyebrowCard({ className = '' }: BeautyEyebrowCardProps): JSX.Element {
+export function BeautyEyebrowCard({
+  className = '',
+  title = 'عناية بالحواجب',
+  subtitle = 'حواجب متناسقة — إطار الوجه',
+  locale = 'ar',
+}: BeautyEyebrowCardProps): JSX.Element {
   return (
     <div
       className={cn(
@@ -22,25 +30,42 @@ export function BeautyEyebrowCard({ className = '' }: BeautyEyebrowCardProps): J
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">عناية بالحواجب</h4>
-          <p className="text-[10px] text-amber-500 dark:text-amber-400">
-            حواجب متناسقة — إطار الوجه
-          </p>
+          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
+          <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '', label: 'تحديد الشكل', tip: 'لا تتبعي الصيحة — اتبعي شكل وجهك' },
-          { emoji: '🪞', label: 'لا تنتفي كثيراً', tip: 'الشعر قد لا ينمو مجدداً' },
-          { emoji: '️', label: 'تعبئة الفراغات', tip: 'قلم حواجب بلون مطابق' },
-          { emoji: '', label: 'زيت الخروع', tip: 'يساعد على تكثيف الحواجب' },
+          {
+            emoji: '',
+            label: { ar: 'تحديد الشكل', en: 'Shape them' },
+            tip: {
+              ar: 'لا تتبعي الصيحة — اتبعي شكل وجهك',
+              en: 'Do not follow trends — follow your face shape',
+            },
+          },
+          {
+            emoji: '🪞',
+            label: { ar: 'لا تنتفي كثيراً', en: 'Do not over-pluck' },
+            tip: { ar: 'الشعر قد لا ينمو مجدداً', en: 'Hair may not grow back' },
+          },
+          {
+            emoji: '️',
+            label: { ar: 'تعبئة الفراغات', en: 'Fill gaps' },
+            tip: { ar: 'قلم حواجب بلون مطابق', en: 'A brow pencil in a matching shade' },
+          },
+          {
+            emoji: '',
+            label: { ar: 'زيت الخروع', en: 'Castor oil' },
+            tip: { ar: 'يساعد على تكثيف الحواجب', en: 'Helps thicken brows' },
+          },
         ].map((t) => (
-          <div key={t.label} className="rounded-lg bg-amber-50 px-2.5 py-2 dark:bg-amber-950">
+          <div key={t.label.ar} className="rounded-lg bg-amber-50 px-2.5 py-2 dark:bg-amber-950">
             <span className="text-sm">{t.emoji}</span>
             <p className="mt-0.5 text-[10px] font-bold text-amber-800 dark:text-amber-200">
-              {t.label}
+              {t.label[locale]}
             </p>
-            <p className="text-[9px] text-amber-600 dark:text-amber-400">{t.tip}</p>
+            <p className="text-[9px] text-amber-600 dark:text-amber-400">{t.tip[locale]}</p>
           </div>
         ))}
       </div>

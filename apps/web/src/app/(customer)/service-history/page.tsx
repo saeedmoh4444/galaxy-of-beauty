@@ -2,18 +2,13 @@
 
 import { api } from '@/lib/trpc';
 import Link from 'next/link';
-import {
-  Card,
-  CardListSkeleton,
-  ErrorAlert,
-  EmptyState,
-  Button,
-  formatCurrency,
-  ar,
-} from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 export default function ServiceHistoryPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data, isLoading, isError, refetch } = api.bookings.list.useQuery({ limit: 50 });
   const bookings = data?.bookings ?? [];
 
@@ -30,7 +25,9 @@ export default function ServiceHistoryPage(): JSX.Element {
         serviceCounts[sid] = {
           count: 0,
           lastDate: b.createdAt,
-          title: ar(b.service?.titleJson) || `خدمة #${sid}`,
+          title:
+            localize(b.service?.titleJson, locale) ||
+            t('serviceHistory.serviceFallback', { id: sid }),
           price: Number(b.totalAmount),
         };
       }
@@ -49,12 +46,14 @@ export default function ServiceHistoryPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-8">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100"> سجل الخدمات</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
+          {t('serviceHistory.title')}
+        </h1>
 
         {/* Favorite Services — Reorder */}
         {favorites.length > 0 && (
           <div>
-            <h2 className="mb-4 text-lg font-semibold"> خدماتكِ المفضلة</h2>
+            <h2 className="mb-4 text-lg font-semibold">{t('serviceHistory.favoritesTitle')}</h2>
             <div className="grid gap-3 sm:grid-cols-2">
               {favorites.map(([sid, info]) => (
                 <Card key={sid} padding="md" hover>
@@ -62,12 +61,16 @@ export default function ServiceHistoryPage(): JSX.Element {
                     <div>
                       <p className="font-semibold">{info.title}</p>
                       <p className="text-xs text-text-secondary">
-                        تم الحجز {info.count} مرات · آخر مرة{' '}
-                        {new Date(info.lastDate).toLocaleDateString('ar-SA')}
+                        {t('serviceHistory.favoriteInfo', {
+                          count: info.count,
+                          date: new Date(info.lastDate).toLocaleDateString(
+                            locale === 'en' ? 'en-GB' : 'ar-SA',
+                          ),
+                        })}
                       </p>
                     </div>
                     <Link href={`/bookings/create?serviceId=${sid}`}>
-                      <Button size="sm">أعد الحجز</Button>
+                      <Button size="sm">{t('serviceHistory.rebook')}</Button>
                     </Link>
                   </div>
                 </Card>
@@ -78,13 +81,13 @@ export default function ServiceHistoryPage(): JSX.Element {
 
         {/* Timeline */}
         <div>
-          <h2 className="mb-4 text-lg font-semibold"> آخر الحجوزات</h2>
+          <h2 className="mb-4 text-lg font-semibold">{t('serviceHistory.recentTitle')}</h2>
           {isLoading ? (
             <CardListSkeleton count={4} />
           ) : isError ? (
-            <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+            <ErrorAlert message={t('serviceHistory.err.load')} onRetry={() => refetch()} />
           ) : recentBookings.length === 0 ? (
-            <EmptyState title="لا توجد حجوزات سابقة" />
+            <EmptyState title={t('serviceHistory.empty')} />
           ) : (
             <div className="space-y-3">
               {recentBookings.slice(0, 15).map((b, i) => (
@@ -97,7 +100,9 @@ export default function ServiceHistoryPage(): JSX.Element {
                       <div>
                         <p className="font-semibold text-sm">{b.bookingCode || `#${b.id}`}</p>
                         <p className="text-xs text-text-secondary">
-                          {new Date(b.createdAt).toLocaleDateString('ar-SA')}
+                          {new Date(b.createdAt).toLocaleDateString(
+                            locale === 'en' ? 'en-GB' : 'ar-SA',
+                          )}
                         </p>
                       </div>
                     </div>
@@ -108,7 +113,7 @@ export default function ServiceHistoryPage(): JSX.Element {
                       {b.status === 'COMPLETED' && (
                         <Link href={`/bookings/create?serviceId=${b.serviceId}`}>
                           <Button size="sm" variant="outline">
-                            إعادة حجز
+                            {t('serviceHistory.bookingAgain')}
                           </Button>
                         </Link>
                       )}

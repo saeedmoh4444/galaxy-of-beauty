@@ -71,7 +71,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
               href="/login"
               className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
             >
-              {t('auth.login')}
+              {t('auth.loginShort')}
             </Link>
             <Link
               href="/register"
@@ -163,8 +163,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
             </div>
           </div>
           <div className="mt-10 border-t border-gray-100 pt-6 text-center text-sm text-gray-400 dark:border-gray-800">
-            © {new Date().getFullYear()} Galaxy of Beauty — {t('common.brandName')}.{' '}
-            {t('footer.rights')}
+            © {new Date().getFullYear()} {t('common.brandName')}. {t('footer.rights')}
           </div>
         </div>
       </footer>

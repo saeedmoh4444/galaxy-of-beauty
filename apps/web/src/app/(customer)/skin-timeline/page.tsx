@@ -2,8 +2,10 @@
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function SkinTimelinePage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data, isLoading } = api.skinDiary.timeline.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -16,8 +18,8 @@ export default function SkinTimelinePage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">️ الخط الزمني للبشرة</h1>
-          <p className="mt-1 text-sm text-text-secondary">تتبعي رحلة بشرتكِ عبر الوقت</p>
+          <h1 className="text-2xl font-bold">️{t('skinTimeline.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('skinTimeline.subtitle')}</p>
         </div>
 
         {isLoading ? (
@@ -25,7 +27,7 @@ export default function SkinTimelinePage(): JSX.Element {
         ) : entries.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
             <p className="text-4xl mb-2">️</p>
-            <p className="text-text-secondary">مافي بيانات لبشرتكِ بعد — سجلي أول تحليل</p>
+            <p className="text-text-secondary">{t('skinTimeline.empty')}</p>
           </Card>
         ) : (
           <div className="relative">
@@ -41,17 +43,24 @@ export default function SkinTimelinePage(): JSX.Element {
                       <span className="text-2xl"></span>
                       <div className="flex-1">
                         <p className="font-bold text-sm">
-                          {(e.skinCondition as string) ?? 'غير محدد'}
+                          {(e.skinCondition as string) ?? t('skinTimeline.unspecified')}
                         </p>
                         <div className="mt-2 flex gap-4 text-xs text-text-secondary">
-                          <span> ترطيب {(e.hydration as number) ?? '—'}/10</span>
+                          <span>
+                            {t('skinTimeline.hydration', {
+                              value: (e.hydration as number) ?? '—',
+                            })}
+                          </span>
                           <span>
                             {' '}
-                            {new Date(e.createdAt as string).toLocaleDateString('ar-SA', {
-                              day: 'numeric',
-                              month: 'long',
-                              year: 'numeric',
-                            })}
+                            {new Date(e.createdAt as string).toLocaleDateString(
+                              locale === 'en' ? 'en-GB' : 'ar-SA',
+                              {
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric',
+                              },
+                            )}
                           </span>
                         </div>
                         {(e.notes as string) && (

@@ -21,6 +21,8 @@ interface BeautyMicroChallengeCardProps {
   challenge: MicroChallenge;
   onComplete?: () => void;
   onSkip?: () => void;
+  completeText?: string;
+  skipText?: string;
   className?: string;
 }
 
@@ -28,6 +30,8 @@ export function BeautyMicroChallengeCard({
   challenge,
   onComplete,
   onSkip,
+  completeText = 'أنجزتها!',
+  skipText = 'تخطي',
   className = '',
 }: BeautyMicroChallengeCardProps): JSX.Element {
   return (
@@ -53,14 +57,14 @@ export function BeautyMicroChallengeCard({
           onClick={onComplete}
           className="flex-1 rounded-lg bg-teal-600 py-2 text-[10px] font-bold text-white hover:bg-teal-700 active:scale-[0.98] transition-all"
         >
-          أنجزتها!
+          {completeText}
         </button>
         <button
           type="button"
           onClick={onSkip}
           className="rounded-lg border border-gray-200 px-4 py-2 text-[10px] font-bold text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
         >
-          تخطي
+          {skipText}
         </button>
       </div>
     </div>

@@ -2,8 +2,10 @@
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function GeofenceOffersPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: offers, isLoading } = api.geofenceOffers.nearMe.useQuery({
     city: 'الرياض',
   });
@@ -18,14 +20,12 @@ export default function GeofenceOffersPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> عروض بالقرب منك</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            عروض حصرية من الصالونات القريبة من موقعك
-          </p>
+          <h1 className="text-2xl font-bold">{t('geofenceOffers.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('geofenceOffers.subtitle')}</p>
         </div>
 
         <Button onClick={() => optInMut.mutate()} loading={optInMut.isPending} className="w-full">
-          فعلي التنبيهات القريبة
+          {t('geofenceOffers.enableNearbyAlerts')}
         </Button>
 
         {isLoading ? (

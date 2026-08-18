@@ -7,10 +7,12 @@ import { api } from '@/lib/trpc';
 import { DetailSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function LiveStreamDetailPage(): JSX.Element {
   const { id } = useParams();
   const { user } = useAuth();
+  const { t, locale } = useLocale();
   const streamId = parseInt(id as string, 10);
   const chatRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState('');
@@ -67,7 +69,7 @@ export default function LiveStreamDetailPage(): JSX.Element {
   if (isNaN(streamId))
     return (
       <div className="py-24 text-center">
-        <ErrorAlert message="معرف غير صالح" />
+        <ErrorAlert message={t('marketing.live-stream-detail.invalid-id')} />
       </div>
     );
   if (isLoading)
@@ -79,10 +81,13 @@ export default function LiveStreamDetailPage(): JSX.Element {
   if (isError || !stream)
     return (
       <div className="py-24 text-center">
-        <ErrorAlert message="فشل تحميل البث" onRetry={() => refetch()} />
+        <ErrorAlert
+          message={t('marketing.live-stream-detail.load-error')}
+          onRetry={() => refetch()}
+        />
         <Link href="/live-stream">
           <Button size="sm" className="mt-4">
-            العودة للبثوث
+            {t('marketing.live-stream-detail.back-to-streams')}
           </Button>
         </Link>
       </div>
@@ -95,7 +100,7 @@ export default function LiveStreamDetailPage(): JSX.Element {
       <div className="px-4 pt-4">
         <Breadcrumbs
           items={[
-            { label: 'البث المباشر', href: '/live-stream' },
+            { label: t('marketing.live-stream-detail.breadcrumb-label'), href: '/live-stream' },
             { label: stream.titleAr as string },
           ]}
         />
@@ -114,7 +119,7 @@ export default function LiveStreamDetailPage(): JSX.Element {
           ) : (
             <div className="text-center text-white/40">
               <span className="text-8xl"></span>
-              <p className="mt-4">انتظري بدء البث...</p>
+              <p className="mt-4">{t('marketing.live-stream-detail.waiting-for-stream')}</p>
             </div>
           )}
         </div>
@@ -125,11 +130,17 @@ export default function LiveStreamDetailPage(): JSX.Element {
           <div className="border-b border-gray-200 dark:border-gray-800 p-4">
             <div className="flex items-center gap-2">
               {isLive && <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />}
-              <h2 className="font-bold text-sm">{isLive ? ' مباشر' : ' قادم'}</h2>
+              <h2 className="font-bold text-sm">
+                {isLive
+                  ? t('marketing.live-stream-detail.live-badge')
+                  : t('marketing.live-stream-detail.upcoming-badge')}
+              </h2>
             </div>
             <p className="text-xs text-gray-500 mt-0.5">{stream.technicianName as string}</p>
             {isLive && (
-              <p className="text-xs text-gray-400 mt-0.5">{stream.viewerCount as number} مشاهد</p>
+              <p className="text-xs text-gray-400 mt-0.5">
+                {t('marketing.live-stream-detail.viewers', { count: stream.viewerCount as number })}
+              </p>
             )}
           </div>
 
@@ -137,17 +148,20 @@ export default function LiveStreamDetailPage(): JSX.Element {
           <div ref={chatRef} className="flex-1 overflow-y-auto p-4 space-y-2">
             {!chat || chat.length === 0 ? (
               <p className="text-center text-xs text-gray-400 py-8">
-                لا توجد رسائل بعد — كوني أول المتحدثات!
+                {t('marketing.live-stream-detail.no-messages')}
               </p>
             ) : (
               chat.map((m: Record<string, unknown>) => (
                 <div key={m.id as number} className="text-sm">
                   <span className="font-bold text-brand-600 text-xs">{m.userName as string}</span>
                   <span className="text-gray-400 text-[10px] ml-1">
-                    {new Date(m.createdAt as string).toLocaleTimeString('ar-SA', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
+                    {new Date(m.createdAt as string).toLocaleTimeString(
+                      locale === 'ar' ? 'ar-SA' : 'en-GB',
+                      {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      },
+                    )}
                   </span>
                   <p className="text-gray-700 dark:text-gray-300">{m.message as string}</p>
                 </div>
@@ -168,7 +182,7 @@ export default function LiveStreamDetailPage(): JSX.Element {
                       if (e.key === 'Enter' && message.trim())
                         sendMut.mutate({ streamId, message: message.trim() });
                     }}
-                    placeholder="اكتبي رسالة..."
+                    placeholder={t('marketing.live-stream-detail.message-placeholder')}
                     maxLength={300}
                     className="flex-1 rounded-lg border px-3 py-2 text-xs dark:border-gray-700 dark:bg-gray-800"
                   />
@@ -179,13 +193,13 @@ export default function LiveStreamDetailPage(): JSX.Element {
                     }}
                     loading={sendMut.isPending}
                   >
-                    إرسال
+                    {t('marketing.live-stream-detail.send')}
                   </Button>
                 </div>
               ) : (
                 <Link href="/login">
                   <Button size="sm" variant="ghost" className="w-full text-xs">
-                    سجّلي دخول للدردشة
+                    {t('marketing.live-stream-detail.login-to-chat')}
                   </Button>
                 </Link>
               )}

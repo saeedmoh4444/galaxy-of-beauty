@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { api } from '@/lib/trpc';
 import { CardSkeleton, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 const BEAUTY_GALAXY_AVATAR = '';
 
@@ -15,6 +16,7 @@ interface ChatMessage {
 }
 
 export default function AiChatPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -67,8 +69,10 @@ export default function AiChatPage(): JSX.Element {
             {BEAUTY_GALAXY_AVATAR}
           </div>
           <div>
-            <h1 className="text-xl font-bold">مجرة الجمال</h1>
-            <p className="text-xs text-purple-600 dark:text-purple-400">مستشارة التجميل الذكية</p>
+            <h1 className="text-xl font-bold">{t('aiChat.title')}</h1>
+            <p className="text-xs text-purple-600 dark:text-purple-400">
+              {t('aiChat.smartBeautyAdvisor')}
+            </p>
           </div>
         </div>
 
@@ -87,11 +91,8 @@ export default function AiChatPage(): JSX.Element {
           ) : messages.length === 0 && !sendMut.isPending ? (
             <div className="flex flex-col items-center justify-center pt-16 text-center">
               <div className="mb-4 text-6xl">{BEAUTY_GALAXY_AVATAR}</div>
-              <EmptyState
-                title="مرحباً بك في مجرة الجمال!"
-                description="أنا مستشارة التجميل الذكية، يمكنني مساعدتك في اختيار الخدمات المناسبة، نصائح العناية، وأجوبة على استفساراتك"
-              />
-              <p className="mt-4 text-sm text-purple-500">اسأليني عن أي شيء يخص التجميل والعناية</p>
+              <EmptyState title={t('aiChat.welcomeTitle')} description={t('aiChat.welcomeDesc')} />
+              <p className="mt-4 text-sm text-purple-500">{t('aiChat.askHint')}</p>
             </div>
           ) : (
             messages.map((msg) => (
@@ -108,17 +109,20 @@ export default function AiChatPage(): JSX.Element {
                 >
                   {msg.role === 'assistant' && (
                     <span className="mb-1 block text-xs font-medium text-purple-500">
-                      مجرة الجمال
+                      {t('aiChat.title')}
                     </span>
                   )}
                   <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.content}</p>
                   <p
                     className={`mt-1 text-[10px] ${msg.role === 'user' ? 'text-white/60' : 'text-text-tertiary'}`}
                   >
-                    {new Date(msg.createdAt).toLocaleTimeString('ar-SA', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
+                    {new Date(msg.createdAt).toLocaleTimeString(
+                      locale === 'en' ? 'en-GB' : 'ar-SA',
+                      {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      },
+                    )}
                   </p>
                 </div>
               </div>
@@ -127,7 +131,9 @@ export default function AiChatPage(): JSX.Element {
           {sendMut.isPending && (
             <div className="flex justify-start">
               <div className="max-w-[80%] rounded-2xl rounded-bl-md border border-purple-200 bg-purple-50 px-4 py-3 dark:border-purple-800 dark:bg-purple-900/30">
-                <span className="mb-1 block text-xs font-medium text-purple-500">مجرة الجمال</span>
+                <span className="mb-1 block text-xs font-medium text-purple-500">
+                  {t('aiChat.title')}
+                </span>
                 <span className="text-sm text-text-secondary">...</span>
               </div>
             </div>
@@ -143,7 +149,7 @@ export default function AiChatPage(): JSX.Element {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="اكتب رسالتك هنا..."
+              placeholder={t('aiChat.inputPlaceholder')}
               disabled={sendMut.isPending}
             />
             <Button
@@ -152,12 +158,10 @@ export default function AiChatPage(): JSX.Element {
               disabled={!input.trim() || sendMut.isPending}
               loading={sendMut.isPending}
             >
-              إرسال
+              {t('aiChat.send')}
             </Button>
           </div>
-          <p className="mt-1 text-[10px] text-text-tertiary">
-            اضغط Enter للإرسال | Shift+Enter لسطر جديد
-          </p>
+          <p className="mt-1 text-[10px] text-text-tertiary">{t('aiChat.keyboardHint')}</p>
         </div>
       </div>
     </DashboardLayout>

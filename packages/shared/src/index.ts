@@ -22,7 +22,7 @@ export type {
 export { ar, en } from './types/index';
 
 // i18n
-export { defaultLocale, supportedLocales, isRTL, sharedMessages, t } from './i18n';
+export { defaultLocale, supportedLocales, isRTL, localize, sharedMessages, t } from './i18n';
 export type { Locale, TranslationKey } from './i18n';
 
 // Theme

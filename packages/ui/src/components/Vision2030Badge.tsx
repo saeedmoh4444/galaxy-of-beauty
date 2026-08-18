@@ -13,6 +13,14 @@ import { cn } from '@galaxy/shared';
 interface Vision2030BadgeProps {
   womenEmployed: number;
   target?: number;
+  /** Display language for built-in labels */
+  locale?: 'ar' | 'en';
+  title?: string;
+  subtitle?: string;
+  goalLabel?: string;
+  womenTargetText?: string;
+  ofGoalText?: string;
+  footerText?: string;
   className?: string;
 }
 
@@ -20,6 +28,13 @@ export function Vision2030Badge({
   womenEmployed,
   target = 1000,
   className = '',
+  locale = 'ar',
+  title = 'رؤية 2030',
+  subtitle = 'نساهم في تمكين المرأة السعودية',
+  goalLabel = 'هدفنا: توظيف ',
+  womenTargetText = 'امرأة سعودية',
+  ofGoalText = 'من الهدف',
+  footerText = 'معاً نحو مستقبل أكثر إشراقاً للمرأة السعودية',
 }: Vision2030BadgeProps): JSX.Element {
   const pct = Math.round((womenEmployed / target) * 100);
 
@@ -32,16 +47,15 @@ export function Vision2030Badge({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">رؤية 2030</h4>
-        <p className="text-[10px] text-emerald-600 dark:text-emerald-400">
-          نساهم في تمكين المرأة السعودية
-        </p>
+        <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">{title}</h4>
+        <p className="text-[10px] text-emerald-600 dark:text-emerald-400">{subtitle}</p>
       </div>
 
       {/* Progress */}
       <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
         <p className="text-[10px] text-emerald-600 dark:text-emerald-400">
-          هدفنا: توظيف {target} امرأة سعودية
+          {goalLabel}
+          {target} {womenTargetText}
         </p>
         <p className="mt-1 text-3xl font-bold text-emerald-800 dark:text-emerald-200">
           {womenEmployed.toLocaleString('ar-SA')}
@@ -53,30 +67,30 @@ export function Vision2030Badge({
           />
         </div>
         <p className="mt-1 text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
-          {pct}% من الهدف
+          {pct}% {ofGoalText}
         </p>
       </div>
 
       {/* Vision pillars */}
       <div className="mt-2 grid grid-cols-3 gap-1.5 text-center">
         {[
-          { emoji: '‍', label: 'تمكين المرأة' },
-          { emoji: '', label: 'تنويع الاقتصاد' },
-          { emoji: '', label: 'ريادة عالمية' },
+          { emoji: '‍', label: { ar: 'تمكين المرأة', en: 'Women empowerment' } },
+          { emoji: '', label: { ar: 'تنويع الاقتصاد', en: 'Economic diversification' } },
+          { emoji: '', label: { ar: 'ريادة عالمية', en: 'Global leadership' } },
         ].map((p) => (
-          <div key={p.label} className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
+          <div key={p.label.ar} className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
             <span className="text-lg" aria-hidden="true">
               {p.emoji}
             </span>
             <p className="text-[9px] font-bold text-emerald-700 dark:text-emerald-300 mt-0.5">
-              {p.label}
+              {p.label[locale]}
             </p>
           </div>
         ))}
       </div>
 
       <p className="mt-2 text-center text-[9px] text-emerald-600 dark:text-emerald-400">
-        معاً نحو مستقبل أكثر إشراقاً للمرأة السعودية
+        {footerText}
       </p>
     </div>
   );

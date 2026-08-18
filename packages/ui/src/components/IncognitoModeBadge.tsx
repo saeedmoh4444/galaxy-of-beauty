@@ -13,12 +13,27 @@ import { cn } from '@galaxy/shared';
 
 interface IncognitoModeBadgeProps {
   onToggle?: (active: boolean) => void;
+  /** Display language for built-in labels */
+  locale?: 'ar' | 'en';
+  activeTitle?: string;
+  inactiveTitle?: string;
+  activeSubtitle?: string;
+  inactiveSubtitle?: string;
+  expiryText?: string;
+  privacyNote?: string;
   className?: string;
 }
 
 export function IncognitoModeBadge({
   onToggle,
   className = '',
+  locale = 'ar',
+  activeTitle = 'وضع التخفي نشط',
+  inactiveTitle = 'وضع التخفي',
+  activeSubtitle = 'لا يتم حفظ سجل التصفح — أنتِ مخفية تماماً',
+  inactiveSubtitle = 'تصفحي بدون حفظ السجل أو الاقتراحات',
+  expiryText = 'ينتهي وضع التخفي تلقائياً عند إغلاق التطبيق',
+  privacyNote = 'وضع التخفي يمنع حفظ سجل التصفح والبحث على جهازكِ. مزود الخدمة لا يزال يرى النشاط للفوترة.',
 }: IncognitoModeBadgeProps): JSX.Element {
   const [active, setActive] = useState(false);
 
@@ -46,12 +61,10 @@ export function IncognitoModeBadge({
           </span>
           <div>
             <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">
-              {active ? 'وضع التخفي نشط' : 'وضع التخفي'}
+              {active ? activeTitle : inactiveTitle}
             </h4>
             <p className="text-[10px] text-indigo-500 dark:text-indigo-400">
-              {active
-                ? 'لا يتم حفظ سجل التصفح — أنتِ مخفية تماماً'
-                : 'تصفحي بدون حفظ السجل أو الاقتراحات'}
+              {active ? activeSubtitle : inactiveSubtitle}
             </p>
           </div>
         </div>
@@ -78,20 +91,20 @@ export function IncognitoModeBadge({
         <div className="mt-3 space-y-2">
           <div className="grid grid-cols-2 gap-1.5">
             {[
-              { emoji: '', label: 'بدون سجل' },
-              { emoji: '', label: 'بدون اقتراحات' },
-              { emoji: '', label: 'بدون كعكات' },
-              { emoji: '️', label: 'حذف تلقائي' },
+              { emoji: '', label: { ar: 'بدون سجل', en: 'No history' } },
+              { emoji: '', label: { ar: 'بدون اقتراحات', en: 'No suggestions' } },
+              { emoji: '', label: { ar: 'بدون كعكات', en: 'No cookies' } },
+              { emoji: '️', label: { ar: 'حذف تلقائي', en: 'Auto-delete' } },
             ].map((f) => (
               <div
-                key={f.label}
+                key={f.label.ar}
                 className="flex items-center gap-1.5 rounded-lg bg-white/60 px-2.5 py-1.5 dark:bg-gray-800/60"
               >
                 <span className="text-xs" aria-hidden="true">
                   {f.emoji}
                 </span>
                 <span className="text-[10px] font-medium text-indigo-800 dark:text-indigo-200">
-                  {f.label}
+                  {f.label[locale]}
                 </span>
               </div>
             ))}
@@ -100,7 +113,7 @@ export function IncognitoModeBadge({
           {/* Expiry info */}
           <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
             <p className="text-center text-[10px] text-indigo-600 dark:text-indigo-400">
-              ينتهي وضع التخفي تلقائياً عند إغلاق التطبيق
+              {expiryText}
             </p>
           </div>
         </div>
@@ -109,9 +122,7 @@ export function IncognitoModeBadge({
       {/* Privacy note */}
       <div className="mt-2 flex items-start gap-1.5 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
         <span className="text-xs shrink-0" aria-hidden="true"></span>
-        <p className="text-[9px] text-text-tertiary dark:text-gray-500">
-          وضع التخفي يمنع حفظ سجل التصفح والبحث على جهازكِ. مزود الخدمة لا يزال يرى النشاط للفوترة.
-        </p>
+        <p className="text-[9px] text-text-tertiary dark:text-gray-500">{privacyNote}</p>
       </div>
     </div>
   );

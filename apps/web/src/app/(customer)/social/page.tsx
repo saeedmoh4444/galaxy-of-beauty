@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, GridSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 const TIP_CATEGORIES = ['skincare', 'makeup', 'hair', 'wellness', 'all'];
 
 export default function SocialPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: trending, isLoading: trLoading } = api.social.trending.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -50,18 +52,18 @@ export default function SocialPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> مجتمع الجمال</h1>
-          <p className="mt-1 text-sm text-text-secondary">اكتشفي أحدث الصيحات والفنيات المميزات</p>
+          <h1 className="text-2xl font-bold">{t('social.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('social.subtitle')}</p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Trending Services */}
           <Card padding="lg">
-            <h3 className="font-bold mb-3"> الأكثر طلباً</h3>
+            <h3 className="font-bold mb-3">{t('social.trending')}</h3>
             {trLoading ? (
               <CardListSkeleton count={4} />
             ) : !(trending ?? []).length ? (
-              <p className="text-sm text-text-tertiary">لا توجد بيانات</p>
+              <p className="text-sm text-text-tertiary">{t('social.noData')}</p>
             ) : (
               <div className="space-y-2">
                 {(trending ?? []).slice(0, 6).map((s: Record<string, unknown>) => (
@@ -70,10 +72,11 @@ export default function SocialPage(): JSX.Element {
                     className="flex items-center justify-between text-sm"
                   >
                     <span>
-                      {(s.titleJson as Record<string, string>)?.ar ?? `خدمة #${s.serviceId}`}
+                      {(s.titleJson as Record<string, string>)?.ar ??
+                        t('social.serviceFallback', { id: s.serviceId as number })}
                     </span>
                     <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs text-red-700">
-                      {s.bookingCount as number} حجز
+                      {t('social.bookings', { count: s.bookingCount as number })}
                     </span>
                   </div>
                 ))}
@@ -83,11 +86,11 @@ export default function SocialPage(): JSX.Element {
 
           {/* Technician Spotlight */}
           <Card padding="lg">
-            <h3 className="font-bold mb-3"> فنيات مميزات</h3>
+            <h3 className="font-bold mb-3">{t('social.spotlightTitle')}</h3>
             {spLoading ? (
               <CardListSkeleton count={3} />
             ) : !(spotlight ?? []).length ? (
-              <p className="text-sm text-text-tertiary">لا توجد بيانات</p>
+              <p className="text-sm text-text-tertiary">{t('social.noData')}</p>
             ) : (
               <div className="space-y-3">
                 {(spotlight ?? []).map((t: Record<string, unknown>) => (
@@ -108,7 +111,7 @@ export default function SocialPage(): JSX.Element {
 
         {/* Beauty Tips */}
         <Card padding="lg">
-          <h3 className="font-bold mb-3"> نصائح تجميلية</h3>
+          <h3 className="font-bold mb-3">{t('social.tipsTitle')}</h3>
           <div className="flex gap-2 mb-4 flex-wrap">
             {TIP_CATEGORIES.map((c) => (
               <button
@@ -117,21 +120,21 @@ export default function SocialPage(): JSX.Element {
                 className={`rounded-full px-3 py-1 text-xs ${tipCat === c ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
               >
                 {c === 'all'
-                  ? 'الكل'
+                  ? t('social.catAll')
                   : c === 'skincare'
-                    ? 'عناية'
+                    ? t('social.catSkincare')
                     : c === 'makeup'
-                      ? 'مكياج'
+                      ? t('social.catMakeup')
                       : c === 'hair'
-                        ? 'شعر'
-                        : 'صحة'}
+                        ? t('social.catHair')
+                        : t('social.catWellness')}
               </button>
             ))}
           </div>
           {tipsLoading ? (
             <CardListSkeleton count={4} />
           ) : tips.length === 0 ? (
-            <p className="text-sm text-text-tertiary">لا توجد نصائح</p>
+            <p className="text-sm text-text-tertiary">{t('social.noTips')}</p>
           ) : (
             <div className="grid gap-3 sm:grid-cols-2">
               {tips.map((t: Record<string, unknown>) => (
@@ -149,7 +152,7 @@ export default function SocialPage(): JSX.Element {
         {/* Lookbook */}
         {!lbLoading && (lookbook ?? []).length > 0 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3"> لوك بوك الموسم</h3>
+            <h3 className="font-bold mb-3">{t('social.lookbook')}</h3>
             <div className="grid gap-3 sm:grid-cols-4">
               {(lookbook ?? []).map((l: Record<string, unknown>) => (
                 <div key={l.id as string} className="rounded-lg border p-2 text-center">
@@ -163,11 +166,11 @@ export default function SocialPage(): JSX.Element {
 
         {/* Before/After Feed */}
         <Card padding="lg">
-          <h3 className="font-bold mb-3"> قبل وبعد</h3>
+          <h3 className="font-bold mb-3">{t('social.beforeAfter')}</h3>
           {feedLoading ? (
             <GridSkeleton count={6} />
           ) : feedItems.length === 0 ? (
-            <p className="text-sm text-text-tertiary">لا توجد صور</p>
+            <p className="text-sm text-text-tertiary">{t('social.noPhotos')}</p>
           ) : (
             <div className="grid gap-3 sm:grid-cols-3">
               {feedItems.map((f: Record<string, unknown>) => (

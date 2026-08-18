@@ -12,6 +12,8 @@ import {
   CAMPAIGN_POLL_INTERVAL_MS,
 } from '@galaxy/ui';
 import Link from 'next/link';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Campaign {
   id: number;
@@ -27,28 +29,30 @@ interface Campaign {
 }
 
 function Countdown({ endsAt }: { endsAt: string }) {
+  const { t } = useLocale();
   const [label, setLabel] = useState('');
   useEffect(() => {
     const update = () => {
       const diff = new Date(endsAt).getTime() - Date.now();
       if (diff <= 0) {
-        setLabel('انتهى');
+        setLabel(t('marketing.campaigns.ended'));
         return;
       }
       const d = Math.floor(diff / 86400000);
       const h = Math.floor((diff % 86400000) / 3600000);
-      if (d > 0) setLabel(`متبقي ${d} يوم`);
-      else if (h > 0) setLabel(`متبقي ${h} ساعة`);
-      else setLabel(`ينتهي قريباً`);
+      if (d > 0) setLabel(t('marketing.campaigns.days-left', { count: d }));
+      else if (h > 0) setLabel(t('marketing.campaigns.hours-left', { count: h }));
+      else setLabel(t('marketing.campaigns.ending-soon'));
     };
     update();
     const i = setInterval(update, CAMPAIGN_POLL_INTERVAL_MS);
     return () => clearInterval(i);
-  }, [endsAt]);
+  }, [endsAt, t]);
   return <span className="text-xs font-semibold text-red-500 animate-pulse"> {label}</span>;
 }
 
 export default function CampaignsPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const {
     data: active,
     isLoading: aLoad,
@@ -75,28 +79,31 @@ export default function CampaignsPage(): JSX.Element {
       <div className="mb-10 text-center">
         <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
-          العروض والحملات
+          {t('marketing.campaigns.title')}
         </h1>
         <p className="mt-2 text-text-secondary dark:text-gray-400">
-          عروض الموسم وخصومات حصرية — لفترة محدودة!
+          {t('marketing.campaigns.subtitle')}
         </p>
       </div>
 
       {isLoading ? (
         <GridSkeleton count={6} />
       ) : aErr ? (
-        <ErrorAlert message="فشل تحميل الحملات" onRetry={() => aRef()} />
+        <ErrorAlert message={t('marketing.campaigns.load-error')} onRetry={() => aRef()} />
       ) : isEmpty ? (
         <EmptyState
-          title="لا توجد حملات حالياً"
-          description="تابعينا للموسم القادم! "
-          action={{ label: 'تصفحي الخدمات', onPress: () => window.location.assign('/services') }}
+          title={t('marketing.campaigns.no-campaigns')}
+          description={t('marketing.campaigns.no-campaigns-desc')}
+          action={{
+            label: t('marketing.campaigns.browse-services'),
+            onPress: () => window.location.assign('/services'),
+          }}
         />
       ) : (
         <>
           {activeList.length > 0 && (
             <div className="mb-12">
-              <h2 className="mb-6 text-xl font-bold"> عروض نشطة الآن</h2>
+              <h2 className="mb-6 text-xl font-bold">{t('marketing.campaigns.active-now')}</h2>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {activeList.map((c) => (
                   <Card
@@ -111,15 +118,13 @@ export default function CampaignsPage(): JSX.Element {
                         <span></span>
                       )}
                       <span className="absolute top-3 right-3 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white animate-pulse">
-                        نشط
+                        {t('marketing.campaigns.active')}
                       </span>
                     </div>
                     <div className="p-5">
-                      <h3 className="text-lg font-bold">
-                        {(c.nameJson as Record<string, string>)?.ar}
-                      </h3>
+                      <h3 className="text-lg font-bold">{localize(c.nameJson, locale)}</h3>
                       <p className="mt-1 text-sm text-text-secondary line-clamp-2">
-                        {(c.descriptionJson as Record<string, string>)?.ar ?? ''}
+                        {localize(c.descriptionJson, locale)}
                       </p>
                       <div className="mt-3 flex items-center justify-between">
                         <span className="text-2xl font-extrabold text-red-600">
@@ -131,7 +136,9 @@ export default function CampaignsPage(): JSX.Element {
                       </div>
                       {c.promoCode && (
                         <div className="mt-2 flex items-center gap-2 rounded-lg bg-surface-muted dark:bg-gray-800 p-2">
-                          <span className="text-xs text-text-secondary">كود:</span>
+                          <span className="text-xs text-text-secondary">
+                            {t('marketing.campaigns.code-label')}
+                          </span>
                           <code className="font-mono font-bold text-brand-600 text-sm">
                             {c.promoCode}
                           </code>
@@ -141,7 +148,7 @@ export default function CampaignsPage(): JSX.Element {
                             }}
                             className="mr-auto text-xs text-brand-500 hover:text-brand-700"
                           >
-                            نسخ
+                            {t('marketing.campaigns.copy')}
                           </button>
                         </div>
                       )}
@@ -149,7 +156,7 @@ export default function CampaignsPage(): JSX.Element {
                         href="/services"
                         className="mt-3 block w-full rounded-lg bg-brand-600 py-2 text-center text-sm font-medium text-white hover:bg-brand-700 transition-colors"
                       >
-                        استفيدي من العرض
+                        {t('marketing.campaigns.use-offer')}
                       </Link>
                     </div>
                   </Card>
@@ -160,7 +167,7 @@ export default function CampaignsPage(): JSX.Element {
 
           {upcomingList.length > 0 && (
             <div>
-              <h2 className="mb-6 text-xl font-bold"> قريباً</h2>
+              <h2 className="mb-6 text-xl font-bold">{t('marketing.campaigns.coming-soon')}</h2>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {upcomingList.map((c) => (
                   <Card
@@ -172,15 +179,16 @@ export default function CampaignsPage(): JSX.Element {
                       <span></span>
                     </div>
                     <div className="p-5">
-                      <h3 className="text-lg font-bold">
-                        {(c.nameJson as Record<string, string>)?.ar}
-                      </h3>
+                      <h3 className="text-lg font-bold">{localize(c.nameJson, locale)}</h3>
                       <p className="mt-2 text-sm text-brand-600 font-semibold">
-                        يبدأ{' '}
-                        {new Date(c.startsAt).toLocaleDateString('ar-SA', {
-                          month: 'long',
-                          day: 'numeric',
-                        })}
+                        {t('marketing.campaigns.starts')}
+                        {new Date(c.startsAt).toLocaleDateString(
+                          locale === 'ar' ? 'ar-SA' : 'en-GB',
+                          {
+                            month: 'long',
+                            day: 'numeric',
+                          },
+                        )}
                       </p>
                       <span className="inline-block mt-2 rounded-full bg-blue-100 dark:bg-blue-900 px-3 py-1 text-xs font-medium text-blue-700 dark:text-blue-300">
                         {c.discountType === 'percent'

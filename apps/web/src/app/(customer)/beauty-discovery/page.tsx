@@ -2,8 +2,10 @@
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, GridSkeleton, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyDiscoveryPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data: featured, isLoading: fLoading } = api.beautyDiscovery.featured.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -21,8 +23,8 @@ export default function BeautyDiscoveryPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> اكتشفي</h1>
-          <p className="mt-1 text-sm text-text-secondary">خدمات وعروض وفعاليات مخصصة لكِ</p>
+          <h1 className="text-2xl font-bold">{t('beautyDiscovery.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('beautyDiscovery.subtitle')}</p>
         </div>
 
         {pLoading ? (
@@ -33,13 +35,16 @@ export default function BeautyDiscoveryPage(): JSX.Element {
               <div className="flex items-center gap-3">
                 <span className="text-2xl"></span>
                 <div>
-                  <p className="font-bold text-purple-700">ملفكِ الشخصي</p>
+                  <p className="font-bold text-purple-700">{t('beautyDiscovery.profile')}</p>
                   <p className="text-sm text-purple-600">
-                    {(forYou!.profile as Record<string, unknown>).skinType as string} ·{' '}
-                    {(forYou!.profile as Record<string, unknown>).hairType as string} ·{' '}
-                    {((forYou!.profile as Record<string, unknown>).concerns as string[])?.join(
-                      '، ',
-                    )}
+                    {t('beautyDiscovery.profileLine', {
+                      skinType: (forYou!.profile as Record<string, unknown>).skinType as string,
+                      hairType: (forYou!.profile as Record<string, unknown>).hairType as string,
+                      concerns:
+                        ((forYou!.profile as Record<string, unknown>).concerns as string[])?.join(
+                          t('aiFeed.separator'),
+                        ) ?? '',
+                    })}
                   </p>
                 </div>
               </div>
@@ -52,7 +57,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
             <CardListSkeleton count={4} />
           ) : (
             <Card padding="lg">
-              <h3 className="font-bold mb-3"> الأكثر طلباً</h3>
+              <h3 className="font-bold mb-3">{t('beautyDiscovery.popular')}</h3>
               <div className="space-y-2">
                 {(
                   (Array.isArray(featured?.popularServices)
@@ -77,7 +82,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
             <CardListSkeleton count={4} />
           ) : (
             <Card padding="lg">
-              <h3 className="font-bold mb-3"> لكِ خصيصاً</h3>
+              <h3 className="font-bold mb-3">{t('aiFeed.title')}</h3>
               {(forYou?.suggestions as Array<Record<string, unknown>>)?.length ? (
                 <div className="space-y-2">
                   {(forYou?.suggestions as Array<Record<string, unknown>>).map(
@@ -95,7 +100,9 @@ export default function BeautyDiscoveryPage(): JSX.Element {
                   )}
                 </div>
               ) : (
-                <p className="text-sm text-text-tertiary">احجزي خدمات علشان نقدر نقترح لكِ</p>
+                <p className="text-sm text-text-tertiary">
+                  {t('beautyDiscovery.emptySuggestions')}
+                </p>
               )}
             </Card>
           )}
@@ -105,13 +112,16 @@ export default function BeautyDiscoveryPage(): JSX.Element {
           <GridSkeleton count={4} />
         ) : (featured?.flashDeals as Array<Record<string, unknown>>)?.length ? (
           <Card padding="lg">
-            <h3 className="font-bold mb-3"> عروض فلاش</h3>
+            <h3 className="font-bold mb-3">{t('beautyDiscovery.flashDeals')}</h3>
             <div className="grid gap-3 sm:grid-cols-2">
               {(featured?.flashDeals as Array<Record<string, unknown>>)
                 .slice(0, 4)
                 .map((d: Record<string, unknown>) => (
                   <div key={d.id as number} className="rounded-lg border p-3">
-                    <span className="font-bold">{(d.title as string) ?? `عرض #${d.id}`}</span>
+                    <span className="font-bold">
+                      {(d.title as string) ??
+                        t('beautyDiscovery.dealFallback', { id: d.id as number })}
+                    </span>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="text-text-tertiary line-through text-sm">
                         {formatCurrency(d.originalPrice as number)}
@@ -133,7 +143,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
           <GridSkeleton count={4} />
         ) : (featured?.events as Array<Record<string, unknown>>)?.length ? (
           <Card padding="lg">
-            <h3 className="font-bold mb-3"> فعاليات قادمة</h3>
+            <h3 className="font-bold mb-3">{t('beautyDiscovery.events')}</h3>
             <div className="grid gap-3 sm:grid-cols-2">
               {(featured?.events as Array<Record<string, unknown>>).map(
                 (e: Record<string, unknown>) => (
@@ -141,7 +151,9 @@ export default function BeautyDiscoveryPage(): JSX.Element {
                     <p className="font-bold text-sm">{e.name as string}</p>
                     <p className="text-xs text-text-secondary">
                       {e.type as string} · {e.location as string} ·{' '}
-                      {new Date(e.date as string).toLocaleDateString('ar-SA')}
+                      {new Date(e.date as string).toLocaleDateString(
+                        locale === 'en' ? 'en-GB' : 'ar-SA',
+                      )}
                     </p>
                   </div>
                 ),

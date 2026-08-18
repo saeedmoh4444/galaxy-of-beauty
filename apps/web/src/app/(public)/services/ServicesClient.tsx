@@ -4,7 +4,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
-import { Input, Card, GridSkeleton, ErrorAlert, EmptyState, useDebounce, ar } from '@galaxy/ui';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
+import { Input, Card, GridSkeleton, ErrorAlert, EmptyState, useDebounce } from '@galaxy/ui';
 
 type ServiceItem = RouterOutputs['services']['list']['items'][number];
 type CategoryItem = RouterOutputs['categories']['list'][number];
@@ -16,6 +18,7 @@ export interface ServicesPageData {
 }
 
 export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Element {
+  const { t, locale } = useLocale();
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 300);
   const [sort, setSort] = useState('newest');
@@ -59,17 +62,17 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">الخدمات</h1>
+        <h1 className="text-2xl font-bold">{t('marketing.services.title')}</h1>
         <Link
           href="/services/surprise-me"
           className="rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white hover:bg-accent-600 transition-colors"
         >
-          فاجئيني
+          {t('marketing.services.surprise-me')}
         </Link>
       </div>
       <div className="mb-6 flex flex-wrap gap-4">
         <Input
-          placeholder="بحث عن خدمة..."
+          placeholder={t('marketing.services.search-placeholder')}
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
@@ -85,10 +88,10 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
           }}
           className="rounded-lg border border-edge px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-900"
         >
-          <option value="newest">الأحدث</option>
-          <option value="price_asc">السعر: منخفض لأعلى</option>
-          <option value="price_desc">السعر: أعلى لمنخفض</option>
-          <option value="popular">الأكثر طلباً</option>
+          <option value="newest">{t('marketing.services.sort-newest')}</option>
+          <option value="price_asc">{t('marketing.services.sort-price-asc')}</option>
+          <option value="price_desc">{t('marketing.services.sort-price-desc')}</option>
+          <option value="popular">{t('marketing.services.sort-popular')}</option>
         </select>
         {cats.length > 0 && (
           <div className="flex flex-wrap gap-2">
@@ -98,7 +101,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
                 href={`/services?categoryId=${c.id}`}
                 className="rounded-full bg-surface-muted px-3 py-1 text-xs dark:bg-gray-800"
               >
-                {ar(c.nameJson)}
+                {localize(c.nameJson, locale)}
               </Link>
             ))}
           </div>
@@ -114,14 +117,15 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
               : 'border border-edge text-text-secondary hover:bg-surface-muted dark:border-gray-600 dark:text-gray-400'
           }`}
         >
-          ️ مقارنة {compareMode ? '(نشط)' : ''}
+          {t('marketing.services.compare')}{' '}
+          {compareMode ? `(${t('marketing.services.compare-active')})` : ''}
         </button>
         {compareMode && selected.size >= 2 && (
           <Link
             href={`/compare?ids=${[...selected].join(',')}`}
             className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
           >
-            مقارنة ({selected.size})
+            {t('marketing.services.compare-count', { count: selected.size })}
           </Link>
         )}
       </div>
@@ -129,9 +133,15 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
       {svcQuery.isLoading ? (
         <GridSkeleton count={6} />
       ) : svcQuery.isError ? (
-        <ErrorAlert message="فشل تحميل الخدمات" onRetry={() => svcQuery.refetch()} />
+        <ErrorAlert
+          message={t('marketing.services.load-error')}
+          onRetry={() => svcQuery.refetch()}
+        />
       ) : items.length === 0 ? (
-        <EmptyState title="لا توجد خدمات" description="جرب تغيير معايير البحث" />
+        <EmptyState
+          title={t('marketing.services.no-services')}
+          description={t('marketing.services.no-services-desc')}
+        />
       ) : (
         <div className="grid gap-6 md:grid-cols-3">
           {items.map((svc) =>
@@ -150,26 +160,34 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
                   />
                   <div className="h-40 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100 dark:from-brand-900 dark:to-accent-900" />
                   <h3 className="mt-3 font-semibold text-text-primary dark:text-gray-100">
-                    {ar(svc.titleJson)}
+                    {localize(svc.titleJson, locale)}
                   </h3>
-                  <p className="mt-1 text-sm text-text-secondary">{svc.durationMin} دقيقة</p>
-                  <p className="mt-1 font-bold text-brand-600">{Number(svc.basePrice)} ر.س</p>
+                  <p className="mt-1 text-sm text-text-secondary">
+                    {t('marketing.services.duration-min', { min: svc.durationMin })}
+                  </p>
+                  <p className="mt-1 font-bold text-brand-600">
+                    {t('marketing.services.price-sar', { price: Number(svc.basePrice) })}
+                  </p>
                 </Card>
               </button>
             ) : (
               <Link key={svc.id} href={`/services/${svc.id}`}>
                 <Card hover>
                   <div className="h-40 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100" />
-                  <h3 className="mt-3 font-semibold">{ar(svc.titleJson)}</h3>
-                  <p className="mt-1 text-sm text-text-secondary">{svc.durationMin} دقيقة</p>
+                  <h3 className="mt-3 font-semibold">{localize(svc.titleJson, locale)}</h3>
+                  <p className="mt-1 text-sm text-text-secondary">
+                    {t('marketing.services.duration-min', { min: svc.durationMin })}
+                  </p>
                   <div className="mt-2 flex items-center justify-between">
-                    <p className="font-bold text-brand-600">{Number(svc.basePrice)} ر.س</p>
+                    <p className="font-bold text-brand-600">
+                      {t('marketing.services.price-sar', { price: Number(svc.basePrice) })}
+                    </p>
                     <Link
                       href={`/bookings/create?serviceId=${svc.id}`}
                       onClick={(e) => e.stopPropagation()}
                       className="rounded-lg bg-brand-600 px-3 py-1 text-xs font-medium text-white hover:bg-brand-700"
                     >
-                      احجز
+                      {t('marketing.services.book')}
                     </Link>
                   </div>
                 </Card>

@@ -1,7 +1,9 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { GridSkeleton } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 export default function BeautyStoriesPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading } = api.beautyStories.feed.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -14,7 +16,7 @@ export default function BeautyStoriesPage(): JSX.Element {
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">Beauty Stories</h1>
-        <p className="mt-2 text-text-secondary">قصص يومية من فنياتنا</p>
+        <p className="mt-2 text-text-secondary">{t('marketing.beauty-stories.subtitle')}</p>
       </div>
       {isLoading ? (
         <GridSkeleton count={4} />

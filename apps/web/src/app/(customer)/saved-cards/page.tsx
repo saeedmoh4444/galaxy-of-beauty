@@ -5,11 +5,13 @@ import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 import { useToast } from '@galaxy/ui';
 
 type SavedCardItem = RouterOutput['savedCards']['list'][number];
 
 export default function SavedCardsPage(): JSX.Element {
+  const { t } = useLocale();
   const { addToast } = useToast();
   const { data, isLoading, isError, refetch } = api.savedCards.list.useQuery();
   const cards: SavedCardItem[] = data ?? [];
@@ -27,14 +29,14 @@ export default function SavedCardsPage(): JSX.Element {
     onSuccess: () => {
       setShowAdd(false);
       refetch();
-      addToast('success', 'تمت إضافة البطاقة');
+      addToast('success', t('savedCards.toast.added'));
     },
-    onError: () => addToast('error', 'فشلت إضافة البطاقة'),
+    onError: () => addToast('error', t('savedCards.toast.addFailed')),
   });
   const deleteMut = api.savedCards.delete.useMutation({
     onSuccess: () => {
       refetch();
-      addToast('success', 'تم حذف البطاقة');
+      addToast('success', t('savedCards.toast.deleted'));
     },
   });
 
@@ -62,19 +64,19 @@ export default function SavedCardsPage(): JSX.Element {
       <div className="mx-auto max-w-2xl space-y-6 px-4 py-8">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            البطاقات المحفوظة
+            {t('savedCards.title')}
           </h1>
-          <Button onClick={() => setShowAdd(true)}>إضافة بطاقة</Button>
+          <Button onClick={() => setShowAdd(true)}>{t('savedCards.addCard')}</Button>
         </div>
 
         {isLoading ? (
           <CardListSkeleton count={2} />
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل البطاقات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('savedCards.err.load')} onRetry={() => refetch()} />
         ) : cards.length === 0 ? (
           <EmptyState
-            title="لا توجد بطاقات محفوظة"
-            description="أضف بطاقة دفع لتسريع عملية الحجز"
+            title={t('savedCards.empty.title')}
+            description={t('savedCards.empty.desc')}
           />
         ) : (
           cards.map((c) => (
@@ -93,7 +95,7 @@ export default function SavedCardsPage(): JSX.Element {
               <div className="flex items-center gap-2">
                 {c.isDefault ? (
                   <span className="rounded bg-green-100 px-2 py-0.5 text-xs text-green-700 dark:bg-green-900 dark:text-green-300">
-                    افتراضي
+                    {t('savedCards.defaultBadge')}
                   </span>
                 ) : null}
                 <Button
@@ -101,7 +103,7 @@ export default function SavedCardsPage(): JSX.Element {
                   size="sm"
                   onClick={() => deleteMut.mutate({ cardId: c.id })}
                 >
-                  حذف
+                  {t('savedCards.delete')}
                 </Button>
               </div>
             </Card>
@@ -112,15 +114,15 @@ export default function SavedCardsPage(): JSX.Element {
           <Modal open={showAdd} onClose={() => setShowAdd(false)}>
             <div className="space-y-4">
               <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
-                إضافة بطاقة جديدة
+                {t('savedCards.addModalTitle')}
               </h3>
               <Input
-                label="الاسم على البطاقة"
+                label={t('savedCards.cardholderLabel')}
                 value={form.cardholderName}
                 onChange={(e) => setForm({ ...form, cardholderName: e.target.value })}
               />
               <Input
-                label="آخر 4 أرقام"
+                label={t('savedCards.lastFourLabel')}
                 value={form.lastFour}
                 onChange={(e) => setForm({ ...form, lastFour: e.target.value })}
                 maxLength={4}
@@ -160,7 +162,7 @@ export default function SavedCardsPage(): JSX.Element {
                 </select>
               </div>
               <Button onClick={handleAdd} loading={addMut.isPending} className="w-full">
-                حفظ البطاقة
+                {t('savedCards.save')}
               </Button>
             </div>
           </Modal>

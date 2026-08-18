@@ -6,10 +6,12 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Button, Input, Card, ErrorAlert } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function RegisterPage(): JSX.Element {
   const router = useRouter();
   const { login } = useAuth();
+  const { t } = useLocale();
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -52,11 +54,11 @@ export default function RegisterPage(): JSX.Element {
     e.preventDefault();
     setError('');
     if (form.password !== form.confirmPassword) {
-      setError('كلمات المرور غير متطابقة');
+      setError(t('auth.password-mismatch'));
       return;
     }
     if (!accepted) {
-      setError('يجب الموافقة على الشروط والأحكام');
+      setError(t('auth.terms-required'));
       return;
     }
     mutation.mutate({
@@ -73,34 +75,38 @@ export default function RegisterPage(): JSX.Element {
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-8">
       <Card className="w-full max-w-md" padding="lg">
-        <h1 className="mb-6 text-center text-2xl font-bold">إنشاء حساب</h1>
+        <h1 className="mb-6 text-center text-2xl font-bold">{t('auth.register')}</h1>
         {error && (
           <div className="mb-4">
             <ErrorAlert message={error} />
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input label="الاسم" value={form.name} onChange={(e) => set('name', e.target.value)} />
           <Input
-            label="البريد الإلكتروني"
+            label={t('auth.name')}
+            value={form.name}
+            onChange={(e) => set('name', e.target.value)}
+          />
+          <Input
+            label={t('auth.email')}
             type="email"
             value={form.email}
             onChange={(e) => set('email', e.target.value)}
           />
           <Input
-            label="رقم الجوال"
+            label={t('auth.phone')}
             value={form.phone}
             onChange={(e) => set('phone', e.target.value)}
             dir="ltr"
           />
           <Input
-            label="كلمة المرور"
+            label={t('auth.password')}
             type="password"
             value={form.password}
             onChange={(e) => set('password', e.target.value)}
           />
           <Input
-            label="تأكيد كلمة المرور"
+            label={t('auth.confirm-password')}
             type="password"
             value={form.confirmPassword}
             onChange={(e) => set('confirmPassword', e.target.value)}
@@ -110,7 +116,7 @@ export default function RegisterPage(): JSX.Element {
               htmlFor="rg-account-type"
               className="mb-1.5 block text-sm font-medium text-text-primary dark:text-gray-300"
             >
-              نوع الحساب
+              {t('auth.account-type')}
             </label>
             <select
               id="rg-account-type"
@@ -118,13 +124,13 @@ export default function RegisterPage(): JSX.Element {
               onChange={(e) => set('role', e.target.value)}
               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-900"
             >
-              <option value="CUSTOMER">عميلة</option>
-              <option value="TECHNICIAN">فنية</option>
+              <option value="CUSTOMER">{t('auth.role-customer')}</option>
+              <option value="TECHNICIAN">{t('auth.role-technician')}</option>
             </select>
           </div>
           {form.role === 'TECHNICIAN' && (
             <Input
-              label="المدينة"
+              label={t('auth.city')}
               value={form.city}
               onChange={(e) => set('city', e.target.value)}
             />
@@ -135,19 +141,19 @@ export default function RegisterPage(): JSX.Element {
               checked={accepted}
               onChange={(e) => setAccepted(e.target.checked)}
             />
-            أوافق على{' '}
+            {t('auth.agree-terms')}{' '}
             <Link href="/terms" className="text-brand-600">
-              الشروط والأحكام
+              {t('auth.terms')}
             </Link>
           </label>
           <Button type="submit" className="w-full" loading={mutation.isPending}>
-            إنشاء حساب
+            {t('auth.register')}
           </Button>
         </form>
         <p className="mt-4 text-center text-sm text-text-secondary">
-          لديك حساب؟{' '}
+          {t('auth.hasAccount')}{' '}
           <Link href="/login" className="text-brand-600 hover:underline">
-            تسجيل الدخول
+            {t('auth.login')}
           </Link>
         </p>
       </Card>

@@ -13,13 +13,15 @@ import {
   formatCurrency,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 import { useToast } from '@galaxy/ui';
+import type { TranslationKey } from '@galaxy/shared';
 
-const OCCASION_LABELS: Record<string, string> = {
-  wedding: 'زفاف ',
-  birthday: 'عيد ميلاد ',
-  baby_shower: 'استقبال مولود ',
-  other: 'أخرى ',
+const OCCASIONS: Record<string, { label: TranslationKey; emoji: string }> = {
+  wedding: { label: 'giftRegistry.occasion.wedding', emoji: '' },
+  birthday: { label: 'giftRegistry.occasion.birthday', emoji: '' },
+  baby_shower: { label: 'giftRegistry.occasion.babyShower', emoji: '' },
+  other: { label: 'giftRegistry.occasion.other', emoji: '' },
 };
 
 type RegistryItem = RouterOutputs['giftRegistry']['myRegistries'][number] & {
@@ -28,13 +30,14 @@ type RegistryItem = RouterOutputs['giftRegistry']['myRegistries'][number] & {
 };
 
 export default function GiftRegistryPage(): JSX.Element {
+  const { t } = useLocale();
   const { addToast } = useToast();
   const { data, isLoading, isError, refetch } = api.giftRegistry.myRegistries.useQuery();
   const createMut = api.giftRegistry.create.useMutation({
     onSuccess: () => {
       refetch();
       setShowAdd(false);
-      addToast('success', 'تم إنشاء سجل الهدايا');
+      addToast('success', t('giftRegistry.toast.created'));
     },
   });
   const [showAdd, setShowAdd] = useState(false);
@@ -52,19 +55,20 @@ export default function GiftRegistryPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold"> سجل الهدايا</h1>
-          <Button onClick={() => setShowAdd(true)}>إنشاء سجل هدايا</Button>
+          <h1 className="text-2xl font-bold">{t('giftRegistry.title')}</h1>
+          <Button onClick={() => setShowAdd(true)}>{t('giftRegistry.createRegistry')}</Button>
         </div>
-        <p className="text-sm text-text-secondary">
-          أنشئي سجل هدايا لمناسبتكِ الخاصة ودعي أحبائكِ يساهمون في خدمات التجميل اللي تحلمين فيها
-        </p>
+        <p className="text-sm text-text-secondary">{t('giftRegistry.subtitle')}</p>
 
         {isLoading ? (
           <CardListSkeleton count={4} />
         ) : isError ? (
-          <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+          <ErrorAlert message={t('giftRegistry.err.load')} onRetry={() => refetch()} />
         ) : registries.length === 0 ? (
-          <EmptyState title="لا توجد سجلات هدايا" description="أنشئي سجل هدايا لمناسبتكِ القادمة" />
+          <EmptyState
+            title={t('giftRegistry.empty.title')}
+            description={t('giftRegistry.empty.desc')}
+          />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
             {registries.map((r) => {
@@ -72,24 +76,25 @@ export default function GiftRegistryPage(): JSX.Element {
                 r.targetAmount > 0
                   ? Math.min(100, (Number(r.raisedAmount) / Number(r.targetAmount)) * 100)
                   : 0;
+              const occasion = OCCASIONS[r.occasion];
               return (
                 <Card key={r.id} padding="lg">
                   <div className="text-center">
-                    <p className="text-3xl">{OCCASION_LABELS[r.occasion]?.split(' ')[1] || ''}</p>
+                    <p className="text-3xl">{occasion?.emoji || ''}</p>
                     <h3 className="mt-2 text-lg font-bold">{r.title}</h3>
                     <p className="text-xs text-text-secondary">
-                      {OCCASION_LABELS[r.occasion]?.split(' ')[0] || r.occasion}
+                      {occasion ? t(occasion.label) : r.occasion}
                     </p>
                   </div>
                   <div className="mt-4">
                     <div className="flex justify-between text-sm">
-                      <span>تم التجميع</span>
+                      <span>{t('giftRegistry.raised')}</span>
                       <span className="font-bold text-brand-600">
                         {formatCurrency(Number(r.raisedAmount))}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm text-text-secondary">
-                      <span>المستهدف</span>
+                      <span>{t('giftRegistry.target')}</span>
                       <span>{formatCurrency(Number(r.targetAmount))}</span>
                     </div>
                     <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
@@ -124,10 +129,10 @@ export default function GiftRegistryPage(): JSX.Element {
             }}
           >
             <div className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-gray-900">
-              <h3 className="mb-4 text-lg font-bold">سجل هدايا جديد</h3>
+              <h3 className="mb-4 text-lg font-bold">{t('giftRegistry.modal.title')}</h3>
               <div className="space-y-3">
                 <Input
-                  placeholder="العنوان (مثال: زفافي، عيد ميلادي)"
+                  placeholder={t('giftRegistry.placeholder.title')}
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
                 />
@@ -136,24 +141,24 @@ export default function GiftRegistryPage(): JSX.Element {
                   onChange={(e) => setForm({ ...form, occasion: e.target.value })}
                   className="w-full rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800"
                 >
-                  <option value="wedding">زفاف </option>
-                  <option value="birthday">عيد ميلاد </option>
-                  <option value="baby_shower">استقبال مولود </option>
-                  <option value="other">أخرى </option>
+                  <option value="wedding">{t('giftRegistry.occasion.wedding')}</option>
+                  <option value="birthday">{t('giftRegistry.occasion.birthday')}</option>
+                  <option value="baby_shower">{t('giftRegistry.occasion.babyShower')}</option>
+                  <option value="other">{t('giftRegistry.occasion.other')}</option>
                 </select>
                 <Input
                   type="number"
-                  placeholder="المبلغ المستهدف (ر.س)"
+                  placeholder={t('giftRegistry.placeholder.target')}
                   value={form.targetAmount}
                   onChange={(e) => setForm({ ...form, targetAmount: e.target.value })}
                 />
                 <Input
-                  placeholder="معرفات الخدمات (مفصولة بفواصل)"
+                  placeholder={t('giftRegistry.placeholder.serviceIds')}
                   value={form.serviceIds}
                   onChange={(e) => setForm({ ...form, serviceIds: e.target.value })}
                 />
                 <Input
-                  placeholder="رسالة للضيوف (اختياري)"
+                  placeholder={t('giftRegistry.placeholder.message')}
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                 />
@@ -173,7 +178,7 @@ export default function GiftRegistryPage(): JSX.Element {
                   loading={createMut.isPending}
                   className="w-full"
                 >
-                  إنشاء
+                  {t('giftRegistry.create')}
                 </Button>
               </div>
             </div>

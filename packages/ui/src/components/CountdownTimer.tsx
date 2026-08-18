@@ -15,6 +15,8 @@ interface CountdownTimerProps {
   onExpire?: () => void;
   showLabels?: boolean;
   className?: string;
+  expiredText?: string;
+  locale?: 'ar' | 'en';
 }
 
 interface TimeLeft {
@@ -42,6 +44,8 @@ export function CountdownTimer({
   onExpire,
   showLabels = true,
   className = '',
+  expiredText = 'انتهى العرض',
+  locale = 'ar',
 }: CountdownTimerProps): JSX.Element {
   const [time, setTime] = useState<TimeLeft>(calcTimeLeft(expiresAt));
 
@@ -57,15 +61,16 @@ export function CountdownTimer({
     return () => clearInterval(timer);
   }, [expiresAt, onExpire]);
 
-  if (time.expired) return <span className={`text-sm text-danger ${className}`}>انتهى العرض</span>;
+  if (time.expired)
+    return <span className={`text-sm text-danger ${className}`}>{expiredText}</span>;
 
   const pad = (n: number) => String(n).padStart(2, '0');
 
   const parts = [];
-  if (time.days > 0) parts.push({ v: pad(time.days), l: 'يوم' });
-  parts.push({ v: pad(time.hours), l: 'ساعة' });
-  parts.push({ v: pad(time.minutes), l: 'دقيقة' });
-  parts.push({ v: pad(time.seconds), l: 'ثانية' });
+  if (time.days > 0) parts.push({ v: pad(time.days), l: { ar: 'يوم', en: 'day' } });
+  parts.push({ v: pad(time.hours), l: { ar: 'ساعة', en: 'hour' } });
+  parts.push({ v: pad(time.minutes), l: { ar: 'دقيقة', en: 'minute' } });
+  parts.push({ v: pad(time.seconds), l: { ar: 'ثانية', en: 'second' } });
 
   return (
     <span
@@ -75,7 +80,9 @@ export function CountdownTimer({
       {parts.map((p, i) => (
         <span key={i} className="flex items-center gap-1">
           <span className="rounded bg-brand-50 px-1.5 py-0.5 dark:bg-brand-950">{p.v}</span>
-          {showLabels ? <span className="text-[10px] text-text-tertiary">{p.l}</span> : null}
+          {showLabels ? (
+            <span className="text-[10px] text-text-tertiary">{p.l[locale]}</span>
+          ) : null}
           {i < parts.length - 1 ? <span className="text-text-tertiary">:</span> : null}
         </span>
       ))}

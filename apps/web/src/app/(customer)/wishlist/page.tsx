@@ -6,10 +6,12 @@ import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
 import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 type WishlistItem = RouterOutputs['wishlist']['list']['items'][number];
 
 export default function WishlistPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading, isError, refetch } = api.wishlist.list.useQuery();
   const removeMut = api.wishlist.remove.useMutation({ onSuccess: () => refetch() });
 
@@ -18,18 +20,21 @@ export default function WishlistPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
-        <h1 className="text-2xl font-bold">المفضلة</h1>
+        <h1 className="text-2xl font-bold">{t('wishlist.title')}</h1>
 
         {isLoading ? (
           <GridSkeleton count={6} />
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل المفضلة" onRetry={() => refetch()} />
+          <ErrorAlert message={t('wishlist.loadError')} onRetry={() => refetch()} />
         ) : items.length === 0 ? (
           <div>
-            <EmptyState title="المفضلة فارغة" description="لم تقم بإضافة أي عنصر إلى المفضلة بعد" />
+            <EmptyState
+              title={t('wishlist.emptyTitle')}
+              description={t('wishlist.emptyDescription')}
+            />
             <div className="text-center">
               <Link href="/services">
-                <Button>تصفح الخدمات</Button>
+                <Button>{t('wishlist.browseServices')}</Button>
               </Link>
             </div>
           </div>
@@ -71,7 +76,7 @@ export default function WishlistPage(): JSX.Element {
                       onClick={() => removeMut.mutate({ wishlistItemId: item.id as number })}
                       className="mt-3 w-full rounded-lg border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950"
                     >
-                      إزالة
+                      {t('wishlist.remove')}
                     </button>
                   </Card>
                 );
@@ -107,7 +112,7 @@ export default function WishlistPage(): JSX.Element {
                       onClick={() => removeMut.mutate({ wishlistItemId: item.id as number })}
                       className="mt-3 w-full rounded-lg border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950"
                     >
-                      إزالة
+                      {t('wishlist.remove')}
                     </button>
                   </Card>
                 );

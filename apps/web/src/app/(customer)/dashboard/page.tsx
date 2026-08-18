@@ -26,8 +26,11 @@ import {
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { RebookReminder } from '@/components/RebookReminder';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 export default function CustomerDashboardPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const bookings = api.bookings.list.useQuery({ limit: 3 });
   const insights = api.analytics.customerInsights.useQuery();
   const budget = api.beautyBudget.get.useQuery();
@@ -49,12 +52,12 @@ export default function CustomerDashboardPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-text-primary">لوحة التحكم</h1>
+          <h1 className="text-2xl font-bold text-text-primary">{t('dashboard.title')}</h1>
           <RebookReminder />
           <Link href="/self-care">
             <Button variant="outline" size="sm">
               <Icon name="sparkle" size="sm" />
-              تقييم اليوم
+              {t('dashboard.daily-assessment')}
             </Button>
           </Link>
         </div>
@@ -63,23 +66,27 @@ export default function CustomerDashboardPage(): JSX.Element {
         {insights.isLoading ? (
           <DashboardSkeleton />
         ) : insights.isError ? (
-          <ErrorAlert message="فشل تحميل الإحصائيات" onRetry={() => insights.refetch()} />
+          <ErrorAlert message={t('dashboard.stats-error')} onRetry={() => insights.refetch()} />
         ) : (
           <div className="grid gap-4 md:grid-cols-4">
-            <StatCard label="الحجوزات" value={insights.data?.bookingCount ?? 0} icon="" />
             <StatCard
-              label="الإنفاق"
+              label={t('dashboard.bookings')}
+              value={insights.data?.bookingCount ?? 0}
+              icon=""
+            />
+            <StatCard
+              label={t('dashboard.spending')}
               value={formatCurrency(Number(insights.data?.totalSpent ?? 0))}
               icon=""
             />
             <StatCard
-              label="الاستمرارية"
-              value={` ${streakInfo?.currentStreak ?? 0} أسابيع`}
+              label={t('dashboard.continuity')}
+              value={` ${streakInfo?.currentStreak ?? 0} ${t('dashboard.weeks')}`}
               icon=""
             />
             {budget?.data ? (
               <StatCard
-                label="الميزانية"
+                label={t('dashboard.budget')}
                 value={formatCurrency(Number(budget.data.remaining))}
                 icon=""
               />
@@ -94,25 +101,25 @@ export default function CustomerDashboardPage(): JSX.Element {
           <Link href="/bookings/create">
             <Button size="lg">
               <Icon name="sparkle" size="sm" />
-              احجزي الآن
+              {t('button.bookNow')}
             </Button>
           </Link>
           <Link href="/gift-cards">
             <Button variant="outline">
               <Icon name="gift" size="sm" />
-              بطاقات الهدية
+              {t('dashboard.gift-cards')}
             </Button>
           </Link>
           <Link href="/inspiration">
             <Button variant="outline">
               <Icon name="bookmark" size="sm" />
-              لوحة الإلهام
+              {t('dashboard.inspiration-board')}
             </Button>
           </Link>
           <Link href="/services/surprise-me">
             <Button variant="outline">
               <Icon name="sparkle" size="sm" />
-              فاجئيني
+              {t('dashboard.surprise-me')}
             </Button>
           </Link>
         </div>
@@ -121,17 +128,22 @@ export default function CustomerDashboardPage(): JSX.Element {
           {/* Recent Bookings */}
           <div>
             <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-text-primary">آخر الحجوزات</h2>
+              <h2 className="text-lg font-semibold text-text-primary">
+                {t('dashboard.recent-bookings')}
+              </h2>
               <Link href="/bookings" className="text-xs text-brand-600 hover:underline">
-                عرض الكل
+                {t('action.viewAll')}
               </Link>
             </div>
             {bookings.isLoading ? (
               <CardListSkeleton count={3} />
             ) : bookings.isError ? (
-              <ErrorAlert message="فشل التحميل" onRetry={() => bookings.refetch()} />
+              <ErrorAlert message={t('dashboard.load-error')} onRetry={() => bookings.refetch()} />
             ) : !bookings.data?.bookings || (bookings.data.bookings as unknown[]).length === 0 ? (
-              <EmptyState title="لا توجد حجوزات" description="ابدئي رحلتكِ مع أول حجز" />
+              <EmptyState
+                title={t('dashboard.no-bookings')}
+                description={t('dashboard.start-journey')}
+              />
             ) : (
               <div className="space-y-2">
                 {(bookings.data.bookings as unknown as Record<string, unknown>[])
@@ -144,7 +156,9 @@ export default function CustomerDashboardPage(): JSX.Element {
                             {b.bookingCode as string}
                           </p>
                           <p className="text-xs text-text-secondary">
-                            {new Date(b.startAt as string).toLocaleDateString('ar-SA')}
+                            {new Date(b.startAt as string).toLocaleDateString(
+                              locale === 'en' ? 'en-GB' : 'ar-SA',
+                            )}
                           </p>
                         </div>
                         <span
@@ -170,9 +184,11 @@ export default function CustomerDashboardPage(): JSX.Element {
             {pins?.data?.length ? (
               <div>
                 <div className="mb-2 flex items-center justify-between">
-                  <h2 className="text-lg font-semibold text-text-primary">لوحة الإلهام</h2>
+                  <h2 className="text-lg font-semibold text-text-primary">
+                    {t('dashboard.inspiration-board')}
+                  </h2>
                   <Link href="/inspiration" className="text-xs text-brand-600 hover:underline">
-                    عرض الكل
+                    {t('action.viewAll')}
                   </Link>
                 </div>
                 <div className="flex gap-2 overflow-x-auto pb-2">
@@ -197,9 +213,11 @@ export default function CustomerDashboardPage(): JSX.Element {
             {registries?.data?.length ? (
               <div>
                 <div className="mb-2 flex items-center justify-between">
-                  <h2 className="text-lg font-semibold text-text-primary">سجل الهدايا</h2>
+                  <h2 className="text-lg font-semibold text-text-primary">
+                    {t('dashboard.gift-registry')}
+                  </h2>
                   <Link href="/gift-registry" className="text-xs text-brand-600 hover:underline">
-                    عرض الكل
+                    {t('action.viewAll')}
                   </Link>
                 </div>
                 {registries.data.slice(0, 2).map((r) => {
@@ -240,10 +258,10 @@ export default function CustomerDashboardPage(): JSX.Element {
             <BeautyBudgetCard
               services={
                 budgetServices?.data?.items?.slice(0, 4)?.map((s) => ({
-                  name: (s.titleJson as { ar?: string } | null)?.ar ?? '',
+                  name: localize(s.titleJson, locale),
                   price: Number(s.basePrice),
                   category: 'facial' as const,
-                  duration: `${s.durationMin} دقيقة`,
+                  duration: `${s.durationMin} ${t('misc.min')}`,
                 })) ?? []
               }
             />
@@ -257,7 +275,7 @@ export default function CustomerDashboardPage(): JSX.Element {
           {circles?.data?.items?.length ? (
             <BeautyCircleCard
               circle={{
-                name: circles.data.items[0]?.name ?? 'دائرة الجمال',
+                name: circles.data.items[0]?.name ?? t('dashboard.beauty-circle'),
                 topic: (circles.data.items[0]?.topic ?? 'skincare') as ComponentProps<
                   typeof BeautyCircleCard
                 >['circle']['topic'],
@@ -274,7 +292,7 @@ export default function CustomerDashboardPage(): JSX.Element {
           {savingsGoals?.data?.length ? (
             <BeautySavingsGoal
               goals={(savingsGoals.data as Array<Record<string, unknown>>).slice(0, 2).map((g) => ({
-                label: (g.name as string) ?? 'هدف ادخار',
+                label: (g.name as string) ?? t('dashboard.savings-goal'),
                 target: (g.amount as number) ?? 0,
                 saved: (g.saved as number) ?? 0,
                 monthly: (g.monthly as number) ?? 0,

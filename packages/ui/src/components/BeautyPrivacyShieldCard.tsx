@@ -21,21 +21,44 @@ interface BeautyPrivacyShieldCardProps {
   status: PrivacyStatus;
   onManageSettings?: () => void;
   className?: string;
+  locale?: 'ar' | 'en';
+  title?: string;
+  activeFeaturesText?: string;
+  manageButtonText?: string;
 }
 
 export function BeautyPrivacyShieldCard({
   status,
   onManageSettings,
   className = '',
+  locale = 'ar',
+  title = 'حالة الخصوصية',
+  activeFeaturesText = 'ميزات نشطة',
+  manageButtonText = 'إدارة الخصوصية',
 }: BeautyPrivacyShieldCardProps): JSX.Element {
   const items = [
-    { key: 'photosEncrypted', emoji: '', label: 'الصور مشفرة', active: status.photosEncrypted },
-    { key: 'locationHidden', emoji: '', label: 'الموقع مخفي', active: status.locationHidden },
-    { key: 'dataEncrypted', emoji: '️', label: 'البيانات مشفرة', active: status.dataEncrypted },
+    {
+      key: 'photosEncrypted',
+      emoji: '',
+      label: { ar: 'الصور مشفرة', en: 'Photos encrypted' },
+      active: status.photosEncrypted,
+    },
+    {
+      key: 'locationHidden',
+      emoji: '',
+      label: { ar: 'الموقع مخفي', en: 'Location hidden' },
+      active: status.locationHidden,
+    },
+    {
+      key: 'dataEncrypted',
+      emoji: '️',
+      label: { ar: 'البيانات مشفرة', en: 'Data encrypted' },
+      active: status.dataEncrypted,
+    },
     {
       key: 'anonymousMode',
       emoji: '️',
-      label: 'وضع التخفي',
+      label: { ar: 'وضع التخفي', en: 'Incognito mode' },
       active: status.anonymousMode ?? false,
     },
   ];
@@ -54,11 +77,9 @@ export function BeautyPrivacyShieldCard({
             ️
           </span>
           <div>
-            <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-              حالة الخصوصية
-            </h4>
+            <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
             <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
-              {activeCount}/{items.length} ميزات نشطة
+              {activeCount}/{items.length} {activeFeaturesText}
             </p>
           </div>
         </div>
@@ -83,7 +104,7 @@ export function BeautyPrivacyShieldCard({
                   : 'text-gray-400 dark:text-gray-600',
               )}
             >
-              {item.label}
+              {item.label[locale]}
             </span>
             <span className="text-xs">{item.active ? '' : '—'}</span>
           </div>
@@ -94,7 +115,7 @@ export function BeautyPrivacyShieldCard({
         onClick={onManageSettings}
         className="mt-3 w-full rounded-xl bg-emerald-600 py-2 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
       >
-        إدارة الخصوصية
+        {manageButtonText}
       </button>
     </div>
   );

@@ -6,11 +6,13 @@ import type { RouterOutput } from '@galaxy/api/client';
 import { Card, TableSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 type AreaItem = RouterOutput['platform']['listAreas'][number];
 type CityItem = RouterOutput['platform']['getCities'][number];
 
 export default function AdminAreasPage(): JSX.Element {
+  const { t } = useLocale();
   const { addToast } = useToast();
   const [cityFilter, setCityFilter] = useState<number | undefined>();
   const [showAdd, setShowAdd] = useState(false);
@@ -30,20 +32,20 @@ export default function AdminAreasPage(): JSX.Element {
     onSuccess: () => {
       setShowAdd(false);
       refetch();
-      addToast('success', 'تمت إضافة المنطقة');
+      addToast('success', t('admin.areas.added-toast'));
     },
-    onError: () => addToast('error', 'فشلت الإضافة'),
+    onError: () => addToast('error', t('admin.areas.add-failed-toast')),
   });
   const deleteMut = api.platform.deleteArea.useMutation({
     onSuccess: () => {
       refetch();
-      addToast('success', 'تم تعطيل المنطقة');
+      addToast('success', t('admin.areas.disabled-toast'));
     },
   });
 
   const handleAdd = () => {
     if (!newArea.cityId || !newArea.nameAr) {
-      addToast('warning', 'الرجاء إدخال البيانات');
+      addToast('warning', t('admin.areas.input-warning'));
       return;
     }
     createMut.mutate({
@@ -57,8 +59,10 @@ export default function AdminAreasPage(): JSX.Element {
     <DashboardLayout userRole="ADMIN">
       <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">إدارة المناطق</h1>
-          <Button onClick={() => setShowAdd(true)}>إضافة منطقة</Button>
+          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
+            {t('admin.areas.title')}
+          </h1>
+          <Button onClick={() => setShowAdd(true)}>{t('admin.areas.add-area')}</Button>
         </div>
 
         {/* City filter */}
@@ -68,7 +72,7 @@ export default function AdminAreasPage(): JSX.Element {
             value={cityFilter || ''}
             onChange={(e) => setCityFilter(Number(e.target.value) || undefined)}
           >
-            <option value="">كل المدن</option>
+            <option value="">{t('admin.areas.all-cities')}</option>
             {cities.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.nameAr}
@@ -80,18 +84,18 @@ export default function AdminAreasPage(): JSX.Element {
         {isLoading ? (
           <TableSkeleton rows={5} cols={4} />
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل المناطق" onRetry={() => refetch()} />
+          <ErrorAlert message={t('admin.areas.load-error')} onRetry={() => refetch()} />
         ) : areas.length === 0 ? (
-          <EmptyState title="لا توجد مناطق" description="لم يتم إضافة مناطق بعد." />
+          <EmptyState title={t('admin.areas.empty')} description={t('admin.areas.empty-desc')} />
         ) : (
           <Card padding="none">
             <table className="w-full text-sm">
               <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400">
                 <tr>
-                  <th className="p-3 text-right">المنطقة</th>
-                  <th className="p-3 text-right">المدينة</th>
-                  <th className="p-3 text-right">الحالة</th>
-                  <th className="p-3 text-right">إجراءات</th>
+                  <th className="p-3 text-right">{t('admin.areas.area-header')}</th>
+                  <th className="p-3 text-right">{t('admin.areas.city-header')}</th>
+                  <th className="p-3 text-right">{t('admin.areas.status-header')}</th>
+                  <th className="p-3 text-right">{t('admin.areas.actions-header')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -103,7 +107,7 @@ export default function AdminAreasPage(): JSX.Element {
                       <span
                         className={`rounded px-2 py-0.5 text-xs ${a.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
                       >
-                        {a.isActive ? 'نشط' : 'معطل'}
+                        {a.isActive ? t('status.active') : t('admin.disabled')}
                       </span>
                     </td>
                     <td className="p-3">
@@ -112,7 +116,7 @@ export default function AdminAreasPage(): JSX.Element {
                         size="sm"
                         onClick={() => deleteMut.mutate({ id: a.id })}
                       >
-                        تعطيل
+                        {t('admin.areas.disable')}
                       </Button>
                     </td>
                   </tr>
@@ -137,7 +141,7 @@ export default function AdminAreasPage(): JSX.Element {
           >
             <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900">
               <h3 className="mb-4 text-lg font-bold text-text-primary dark:text-gray-100">
-                إضافة منطقة جديدة
+                {t('admin.areas.add-title')}
               </h3>
               <div className="space-y-3">
                 <select
@@ -145,7 +149,7 @@ export default function AdminAreasPage(): JSX.Element {
                   value={newArea.cityId}
                   onChange={(e) => setNewArea({ ...newArea, cityId: e.target.value })}
                 >
-                  <option value="">اختر المدينة</option>
+                  <option value="">{t('admin.areas.select-city')}</option>
                   {cities.map((c) => (
                     <option key={c.id} value={c.id}>
                       {c.nameAr}
@@ -155,19 +159,19 @@ export default function AdminAreasPage(): JSX.Element {
                 <Input
                   value={newArea.nameAr}
                   onChange={(e) => setNewArea({ ...newArea, nameAr: e.target.value })}
-                  placeholder="اسم المنطقة (عربي)"
+                  placeholder={t('admin.areas.name-ar-placeholder')}
                 />
                 <Input
                   value={newArea.nameEn}
                   onChange={(e) => setNewArea({ ...newArea, nameEn: e.target.value })}
-                  placeholder="اسم المنطقة (إنجليزي)"
+                  placeholder={t('admin.areas.name-en-placeholder')}
                 />
                 <div className="flex gap-3">
                   <Button onClick={handleAdd} loading={createMut.isPending} className="flex-1">
-                    حفظ
+                    {t('button.save')}
                   </Button>
                   <Button variant="outline" onClick={() => setShowAdd(false)}>
-                    إلغاء
+                    {t('button.cancel')}
                   </Button>
                 </div>
               </div>

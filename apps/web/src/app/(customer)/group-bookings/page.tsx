@@ -12,14 +12,16 @@ import {
   formatCurrency,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 import Link from 'next/link';
 
-const THEMES = [
-  { value: 'bridal', label: ' عروس / توديع عزوبية', emoji: '' },
-  { value: 'birthday', label: ' عيد ميلاد', emoji: '' },
-  { value: 'girls_night', label: ' ليلة بنات', emoji: '' },
-  { value: 'family', label: '‍‍‍ عائلية', emoji: '‍‍‍' },
-  { value: 'other', label: ' أخرى', emoji: '' },
+const THEMES: { value: string; label: TranslationKey; emoji: string }[] = [
+  { value: 'bridal', label: 'groupBookings.theme.bridal', emoji: '' },
+  { value: 'birthday', label: 'groupBookings.theme.birthday', emoji: '' },
+  { value: 'girls_night', label: 'groupBookings.theme.girlsNight', emoji: '' },
+  { value: 'family', label: 'groupBookings.theme.family', emoji: '‍‍‍' },
+  { value: 'other', label: 'groupBookings.theme.other', emoji: '' },
 ];
 
 interface MemberInput {
@@ -45,28 +47,31 @@ interface Group {
   }>;
 }
 
-const DEFAULT_STATUS = {
-  label: 'غير معروف',
+const DEFAULT_STATUS: { label: TranslationKey; color: string } = {
+  label: 'groupBookings.status.unknown',
   color: 'bg-surface-muted text-text-primary dark:bg-gray-800 dark:text-gray-300',
 };
-const STATUS_MAP: Record<string, { label: string; color: string }> = {
+const STATUS_MAP: Record<string, { label: TranslationKey; color: string }> = {
   PENDING: {
-    label: 'قيد الانتظار',
+    label: 'groupBookings.status.pending',
     color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300',
   },
   CONFIRMED: {
-    label: 'مؤكد',
+    label: 'groupBookings.status.confirmed',
     color: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
   },
   IN_PROGRESS: {
-    label: 'جاري',
+    label: 'groupBookings.status.inProgress',
     color: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
   },
   COMPLETED: {
-    label: 'مكتمل',
+    label: 'groupBookings.status.completed',
     color: 'bg-surface-muted text-text-primary dark:bg-gray-800 dark:text-gray-300',
   },
-  CANCELLED: { label: 'ملغي', color: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' },
+  CANCELLED: {
+    label: 'groupBookings.status.cancelled',
+    color: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
+  },
 };
 
 const THEME_EMOJI: Record<string, string> = {
@@ -78,6 +83,7 @@ const THEME_EMOJI: Record<string, string> = {
 };
 
 export default function GroupBookingsPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const {
     data: groups,
     isLoading,
@@ -105,7 +111,7 @@ export default function GroupBookingsPage(): JSX.Element {
       resetForm();
       refetch();
     },
-    onError: () => setCreateError('فشل إنشاء المجموعة — يرجى المحاولة مرة أخرى'),
+    onError: () => setCreateError(t('groupBookings.err.create')),
   });
 
   const resetForm = () => {
@@ -140,12 +146,12 @@ export default function GroupBookingsPage(): JSX.Element {
   const handleCreate = () => {
     setCreateError('');
     if (!formName.trim()) {
-      setCreateError('يرجى إدخال اسم المجموعة');
+      setCreateError(t('groupBookings.err.name'));
       return;
     }
     const invalidMember = members.find((m) => !m.name.trim() || !m.serviceId);
     if (invalidMember) {
-      setCreateError('يرجى إدخال اسم وخدمة لكل عضوة');
+      setCreateError(t('groupBookings.err.member'));
       return;
     }
 
@@ -170,21 +176,33 @@ export default function GroupBookingsPage(): JSX.Element {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-              ‍️ حجوزات المجموعات
+              ‍️ {t('groupBookings.title')}
             </h1>
             <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
-              احجزي لكِ ولصديقاتكِ معاً — خصم يصل إلى ٣٠٪
+              {t('groupBookings.subtitle')}
             </p>
           </div>
-          <Button onClick={() => setShowCreate(true)}>+ مجموعة جديدة</Button>
+          <Button onClick={() => setShowCreate(true)}>+ {t('groupBookings.newGroup')}</Button>
         </div>
 
         {/* Benefits Cards */}
         <div className="grid gap-4 sm:grid-cols-3">
           {[
-            { emoji: '', title: 'خصم جماعي', desc: 'خصم يصل إلى ٣٠٪' },
-            { emoji: '‍️', title: 'حتى ٢٠ شخص', desc: 'كلما زاد العدد زاد الخصم' },
-            { emoji: '', title: 'أي مناسبة', desc: 'أعراس · أعياد · لقاءات' },
+            {
+              emoji: '',
+              title: t('groupBookings.benefit1.title'),
+              desc: t('groupBookings.benefit1.desc'),
+            },
+            {
+              emoji: '‍️',
+              title: t('groupBookings.benefit2.title'),
+              desc: t('groupBookings.benefit2.desc'),
+            },
+            {
+              emoji: '',
+              title: t('groupBookings.benefit3.title'),
+              desc: t('groupBookings.benefit3.desc'),
+            },
           ].map((b) => (
             <Card key={b.title} padding="md" className="text-center">
               <span className="text-3xl">{b.emoji}</span>
@@ -198,12 +216,12 @@ export default function GroupBookingsPage(): JSX.Element {
         {isLoading ? (
           <CardListSkeleton count={4} />
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل حجوزات المجموعات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('groupBookings.err.load')} onRetry={() => refetch()} />
         ) : allGroups.length === 0 ? (
           <EmptyState
-            title="لا توجد حجوزات مجموعات"
-            description="أنشئي أول مجموعة ودعي صديقاتكِ للاستمتاع!"
-            action={{ label: 'إنشاء مجموعة', onPress: () => setShowCreate(true) }}
+            title={t('groupBookings.empty.title')}
+            description={t('groupBookings.empty.desc')}
+            action={{ label: t('groupBookings.empty.action'), onPress: () => setShowCreate(true) }}
           />
         ) : (
           <div className="space-y-4">
@@ -226,10 +244,13 @@ export default function GroupBookingsPage(): JSX.Element {
                             <span
                               className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${statusInfo.color}`}
                             >
-                              {statusInfo.label}
+                              {t(statusInfo.label)}
                             </span>
                             <span className="text-xs text-text-secondary">
-                              {group.members.length} عضوات · خصم {group.discountPercent}%
+                              {t('groupBookings.membersCount', {
+                                count: group.members.length,
+                                pct: group.discountPercent,
+                              })}
                             </span>
                           </div>
                         </div>
@@ -241,11 +262,14 @@ export default function GroupBookingsPage(): JSX.Element {
                           </p>
                         )}
                         <p className="text-xs text-text-tertiary mt-1">
-                          {new Date(group.createdAt).toLocaleDateString('ar-SA', {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                          })}
+                          {new Date(group.createdAt).toLocaleDateString(
+                            locale === 'en' ? 'en-GB' : 'ar-SA',
+                            {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                            },
+                          )}
                         </p>
                       </div>
                     </div>
@@ -263,7 +287,7 @@ export default function GroupBookingsPage(): JSX.Element {
             setShowCreate(false);
             resetForm();
           }}
-          title="إنشاء مجموعة جديدة"
+          title={t('groupBookings.modal.title')}
         >
           <div className="space-y-4">
             {/* Group Name */}
@@ -272,14 +296,14 @@ export default function GroupBookingsPage(): JSX.Element {
                 htmlFor="gb-name"
                 className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
               >
-                اسم المجموعة
+                {t('groupBookings.label.name')}
               </label>
               <input
                 id="gb-name"
                 type="text"
                 value={formName}
                 onChange={(e) => setFormName(e.target.value)}
-                placeholder="مثال: حفلة توديع العزوبية"
+                placeholder={t('groupBookings.placeholder.name')}
                 className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
               />
             </div>
@@ -290,7 +314,7 @@ export default function GroupBookingsPage(): JSX.Element {
                 htmlFor="gb-theme"
                 className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
               >
-                المناسبة
+                {t('groupBookings.label.theme')}
               </label>
               <select
                 id="gb-theme"
@@ -298,9 +322,9 @@ export default function GroupBookingsPage(): JSX.Element {
                 onChange={(e) => setFormTheme(e.target.value)}
                 className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
               >
-                {THEMES.map((t) => (
-                  <option key={t.value} value={t.value}>
-                    {t.label}
+                {THEMES.map((themeOpt) => (
+                  <option key={themeOpt.value} value={themeOpt.value}>
+                    {t(themeOpt.label)}
                   </option>
                 ))}
               </select>
@@ -309,7 +333,8 @@ export default function GroupBookingsPage(): JSX.Element {
             {/* Discount */}
             <div>
               <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
-                نسبة الخصم: <span className="text-brand-600">{formDiscount}%</span>
+                {t('groupBookings.label.discount')}:{' '}
+                <span className="text-brand-600">{formDiscount}%</span>
               </label>
               <input
                 type="range"
@@ -331,7 +356,7 @@ export default function GroupBookingsPage(): JSX.Element {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-sm font-semibold text-text-primary dark:text-gray-300">
-                  العضوات ({members.length})
+                  {t('groupBookings.label.members', { count: members.length })}
                 </label>
                 <button
                   type="button"
@@ -339,7 +364,7 @@ export default function GroupBookingsPage(): JSX.Element {
                   disabled={members.length >= 20}
                   className="text-xs text-brand-600 hover:text-brand-700 disabled:opacity-50 font-medium"
                 >
-                  + إضافة عضوة
+                  + {t('groupBookings.addMember')}
                 </button>
               </div>
               <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
@@ -353,14 +378,14 @@ export default function GroupBookingsPage(): JSX.Element {
                       type="text"
                       value={m.name}
                       onChange={(e) => updateMember(idx, 'name', e.target.value)}
-                      placeholder="الاسم"
+                      placeholder={t('groupBookings.placeholder.memberName')}
                       className="flex-1 min-w-0 rounded border border-gray-200 px-2 py-1.5 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
                     />
                     <input
                       type="number"
                       value={m.serviceId}
                       onChange={(e) => updateMember(idx, 'serviceId', e.target.value)}
-                      placeholder="رقم الخدمة"
+                      placeholder={t('groupBookings.placeholder.serviceId')}
                       className="w-24 rounded border border-gray-200 px-2 py-1.5 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
                     />
                     {members.length > 2 && (
@@ -391,10 +416,10 @@ export default function GroupBookingsPage(): JSX.Element {
                   resetForm();
                 }}
               >
-                إلغاء
+                {t('groupBookings.cancel')}
               </Button>
               <Button onClick={handleCreate} loading={createMut.isPending}>
-                إنشاء المجموعة
+                {t('groupBookings.create')}
               </Button>
             </div>
           </div>

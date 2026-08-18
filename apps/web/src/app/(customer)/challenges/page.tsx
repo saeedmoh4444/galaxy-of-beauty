@@ -3,16 +3,19 @@
 import { api } from '@/lib/trpc';
 import { PageContainer, PageTitle, Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
-const CH: Record<string, { emoji: string; color: string; label: string }> = {
-  '7day_skincare': { emoji: '', color: '#ec4899', label: '7 أيام عناية' },
-  '5bookings': { emoji: '‍️', color: '#f59e0b', label: '5 حجوزات' },
-  first_review: { emoji: '', color: '#3b82f6', label: 'أول تقييم' },
-  streak_4weeks: { emoji: '', color: '#8b5cf6', label: '4 أسابيع متواصلة' },
-  refer_3friends: { emoji: '‍️', color: '#10b981', label: '3 إحالات' },
+const CH: Record<string, { emoji: string; color: string; label: TranslationKey }> = {
+  '7day_skincare': { emoji: '', color: '#ec4899', label: 'challenges.sevenDaySkincare' },
+  '5bookings': { emoji: '‍️', color: '#f59e0b', label: 'challenges.fiveBookings' },
+  first_review: { emoji: '', color: '#3b82f6', label: 'challenges.firstReview' },
+  streak_4weeks: { emoji: '', color: '#8b5cf6', label: 'challenges.fourWeeksStreak' },
+  refer_3friends: { emoji: '‍️', color: '#10b981', label: 'challenges.threeReferrals' },
 };
 
 export default function ChallengesPage(): JSX.Element {
+  const { t } = useLocale();
   const listQuery = api.challenges.list.useQuery();
   const progressQuery = api.challenges.myProgress.useQuery();
   const joinMutation = api.challenges.join.useMutation({
@@ -32,7 +35,7 @@ export default function ChallengesPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="default">
-        <PageTitle title=" التحديات" subtitle="تحديات ممتعة لجمالكِ" />
+        <PageTitle title={t('challenges.title')} subtitle={t('challenges.subtitle')} />
 
         <div className="space-y-4">
           {challenges.map((c) => {
@@ -48,7 +51,7 @@ export default function ChallengesPage(): JSX.Element {
                 <span className="text-4xl">{cfg.emoji}</span>
                 <div className="flex-1">
                   <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-                    {cfg.label}
+                    {t(cfg.label)}
                   </h4>
                   {prog && (
                     <p className="mt-1 text-xs text-text-tertiary dark:text-gray-500">
@@ -68,7 +71,7 @@ export default function ChallengesPage(): JSX.Element {
                   )}
                 </div>
                 <Button onClick={() => join(c.id)} className="shrink-0">
-                  انضمي
+                  {t('challenges.join')}
                 </Button>
               </Card>
             );

@@ -14,35 +14,55 @@ type WeatherCondition = 'hot' | 'mild' | 'cold' | 'humid' | 'dusty';
 
 interface WeatherAdvice {
   emoji: string;
-  title: string;
-  tips: string[];
+  title: { ar: string; en: string };
+  tips: { ar: string[]; en: string[] };
 }
 
 const ADVICE: Record<WeatherCondition, WeatherAdvice> = {
   hot: {
     emoji: '️',
-    title: 'حار',
-    tips: ['SPF 50+ ضروري', 'مرطب جل خفيف', 'ماء كثير', 'تجنبي المكياج الثقيل'],
+    title: { ar: 'حار', en: 'Hot' },
+    tips: {
+      ar: ['SPF 50+ ضروري', 'مرطب جل خفيف', 'ماء كثير', 'تجنبي المكياج الثقيل'],
+      en: [
+        'SPF 50+ is essential',
+        'Light gel moisturizer',
+        'Drink plenty of water',
+        'Avoid heavy makeup',
+      ],
+    },
   },
   mild: {
     emoji: '️',
-    title: 'معتدل',
-    tips: ['SPF 30 كافي', 'روتينكِ المعتاد', 'جربي إطلالة جديدة'],
+    title: { ar: 'معتدل', en: 'Mild' },
+    tips: {
+      ar: ['SPF 30 كافي', 'روتينكِ المعتاد', 'جربي إطلالة جديدة'],
+      en: ['SPF 30 is enough', 'Stick to your usual routine', 'Try a new look'],
+    },
   },
   cold: {
     emoji: '️',
-    title: 'بارد',
-    tips: ['مرطب غني', 'بلسم شفاه', 'قناع ترطيب', 'ماء دافئ للغسيل'],
+    title: { ar: 'بارد', en: 'Cold' },
+    tips: {
+      ar: ['مرطب غني', 'بلسم شفاه', 'قناع ترطيب', 'ماء دافئ للغسيل'],
+      en: ['Rich moisturizer', 'Lip balm', 'Hydrating mask', 'Wash with warm water'],
+    },
   },
   humid: {
     emoji: '',
-    title: 'رطب',
-    tips: ['منتجات خالية من الزيوت', 'مثبت مكياج', 'ورق نشاف', 'تونر قابض'],
+    title: { ar: 'رطب', en: 'Humid' },
+    tips: {
+      ar: ['منتجات خالية من الزيوت', 'مثبت مكياج', 'ورق نشاف', 'تونر قابض'],
+      en: ['Oil-free products', 'Makeup setting spray', 'Blotting paper', 'Astringent toner'],
+    },
   },
   dusty: {
     emoji: '️',
-    title: 'مغبر',
-    tips: ['غسول عميق مساءً', 'قناع منقي', 'تجنبي التقشير', 'أحكمي إغلاق المسام'],
+    title: { ar: 'مغبر', en: 'Dusty' },
+    tips: {
+      ar: ['غسول عميق مساءً', 'قناع منقي', 'تجنبي التقشير', 'أحكمي إغلاق المسام'],
+      en: ['Deep cleanser at night', 'Purifying mask', 'Skip exfoliating', 'Tighten your pores'],
+    },
   },
 };
 
@@ -50,12 +70,21 @@ interface BeautyWeatherCardProps {
   condition: WeatherCondition;
   temp?: number;
   className?: string;
+  /** Card heading */
+  title?: string;
+  /** Footer text */
+  footerText?: string;
+  /** Display locale for advice titles and tips */
+  locale?: 'ar' | 'en';
 }
 
 export function BeautyWeatherCard({
   condition,
   temp,
   className = '',
+  title = 'طقس الجمال',
+  footerText = '️ روتينكِ يتغير مع الطقس — ونحن نذكركِ',
+  locale = 'ar',
 }: BeautyWeatherCardProps): JSX.Element {
   const a = ADVICE[condition];
 
@@ -72,9 +101,9 @@ export function BeautyWeatherCard({
             {a.emoji}
           </span>
           <div>
-            <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">طقس الجمال</h4>
+            <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
             <p className="text-[10px] text-sky-500 dark:text-sky-400">
-              {a.title}
+              {a.title[locale]}
               {temp ? ` · ${temp}°C` : ''}
             </p>
           </div>
@@ -82,7 +111,7 @@ export function BeautyWeatherCard({
       </div>
 
       <div className="mt-3 space-y-1.5">
-        {a.tips.map((tip, i) => (
+        {a.tips[locale].map((tip, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-sky-50 px-3 py-2 dark:bg-sky-950"
@@ -96,7 +125,7 @@ export function BeautyWeatherCard({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        ️ روتينكِ يتغير مع الطقس — ونحن نذكركِ
+        {footerText}
       </p>
     </div>
   );

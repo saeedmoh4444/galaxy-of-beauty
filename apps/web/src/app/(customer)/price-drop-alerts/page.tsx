@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, Modal, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function PriceDropAlertsPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: tracked } = api.priceDropAlerts.tracked.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
   };
@@ -32,14 +34,12 @@ export default function PriceDropAlertsPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> تنبيهات الأسعار</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            تابعي أسعار الخدمات واحصلي على تنبيه عند انخفاضها
-          </p>
+          <h1 className="text-2xl font-bold">{t('priceDropAlerts.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('priceDropAlerts.subtitle')}</p>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-4"> خدمات انخفض سعرها</h3>
+          <h3 className="font-bold mb-4">{t('priceDropAlerts.droppedServices')}</h3>
           <div className="grid gap-3 sm:grid-cols-3">
             {services.map((s: Record<string, unknown>) => (
               <div
@@ -53,7 +53,7 @@ export default function PriceDropAlertsPage(): JSX.Element {
                     {formatCurrency(s.prevPrice as number)}
                   </span>
                   <span className="text-sm font-extrabold text-green-600">
-                    {formatCurrency(s.price as number)} ر.س
+                    {formatCurrency(s.price as number)} {t('beautyParty.currency')}
                   </span>
                 </div>
               </div>
@@ -63,13 +63,15 @@ export default function PriceDropAlertsPage(): JSX.Element {
 
         <Card padding="lg">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold"> تنبيهاتي</h3>
+            <h3 className="font-bold">{t('priceDropAlerts.myAlerts')}</h3>
             <Button size="sm" onClick={() => setShow(true)}>
-              + إضافة
+              {t('priceDropAlerts.add')}
             </Button>
           </div>
           {alerts.length === 0 ? (
-            <p className="text-sm text-text-tertiary text-center py-4">لا توجد تنبيهات</p>
+            <p className="text-sm text-text-tertiary text-center py-4">
+              {t('priceDropAlerts.noAlerts')}
+            </p>
           ) : (
             <div className="space-y-2">
               {alerts.map((a: Record<string, unknown>) => (
@@ -83,7 +85,9 @@ export default function PriceDropAlertsPage(): JSX.Element {
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-sm">
-                      السعر المستهدف: {formatCurrency(a.targetPrice as number)}
+                      {t('priceDropAlerts.targetPrice', {
+                        amount: formatCurrency(a.targetPrice as number),
+                      })}
                     </span>
                     <button
                       onClick={() => deleteMut.mutate({ id: a.id as number })}
@@ -98,16 +102,18 @@ export default function PriceDropAlertsPage(): JSX.Element {
           )}
         </Card>
 
-        <Modal open={show} onClose={() => setShow(false)} title="تنبيه سعر">
+        <Modal open={show} onClose={() => setShow(false)} title={t('priceDropAlerts.modalTitle')}>
           <div className="space-y-3">
             <input
               value={sname}
               onChange={(e) => setSname(e.target.value)}
-              placeholder="اسم الخدمة"
+              placeholder={t('priceDropAlerts.servicePlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <div>
-              <label className="text-sm">السعر المستهدف: {formatCurrency(tprice)}</label>
+              <label className="text-sm">
+                {t('priceDropAlerts.targetPrice', { amount: formatCurrency(tprice) })}
+              </label>
               <input
                 type="range"
                 min={50}
@@ -130,7 +136,7 @@ export default function PriceDropAlertsPage(): JSX.Element {
               loading={createMut.isPending}
               className="w-full"
             >
-              تفعيل
+              {t('priceDropAlerts.activate')}
             </Button>
           </div>
         </Modal>

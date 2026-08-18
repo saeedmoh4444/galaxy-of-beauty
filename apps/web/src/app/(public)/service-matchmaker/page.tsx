@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import Link from 'next/link';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function ServiceMatchmakerPage(): JSX.Element {
+  const { t } = useLocale();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [searchAnswers, setSearchAnswers] = useState<Record<string, string> | null>(null);
@@ -35,7 +37,7 @@ export default function ServiceMatchmakerPage(): JSX.Element {
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">Service Matchmaker</h1>
-        <p className="mt-2 text-text-secondary">أجيبي على ٣ أسئلة لاكتشاف الخدمة المثالية لكِ</p>
+        <p className="mt-2 text-text-secondary">{t('marketing.service-matchmaker.subtitle')}</p>
       </div>
 
       {searchAnswers ? (
@@ -53,16 +55,18 @@ export default function ServiceMatchmakerPage(): JSX.Element {
                 <div className="flex-1">
                   <h3 className="font-bold text-lg">{s.nameAr as string}</h3>
                   <span className="rounded-full bg-brand-100 dark:bg-brand-900 px-2 py-0.5 text-xs font-bold text-brand-700">
-                    {s.score as number}% تطابق
+                    {t('marketing.service-matchmaker.match-pct', { score: s.score as number })}
                   </span>
                 </div>
                 <div className="text-right">
                   <p className="text-xl font-extrabold text-brand-600">
-                    {formatCurrency(s.price as number)} ر.س
+                    {t('marketing.service-matchmaker.price-sar', {
+                      price: formatCurrency(s.price as number),
+                    })}
                   </p>
                   <Link href="/bookings/create">
                     <Button size="sm" className="mt-2">
-                      احجزي ←
+                      {t('marketing.service-matchmaker.book-cta')}
                     </Button>
                   </Link>
                 </div>
@@ -77,7 +81,7 @@ export default function ServiceMatchmakerPage(): JSX.Element {
                   setSearchAnswers(null);
                 }}
               >
-                إعادة
+                {t('marketing.service-matchmaker.retry')}
               </Button>
             </div>
           </div>
@@ -93,7 +97,7 @@ export default function ServiceMatchmakerPage(): JSX.Element {
             ))}
           </div>
           <p className="text-xs text-text-tertiary mb-1">
-            السؤال {step + 1} من {qs.length}
+            {t('marketing.service-matchmaker.question-of', { current: step + 1, total: qs.length })}
           </p>
           <h2 className="text-xl font-bold mb-6">{currentQ.q as string}</h2>
           <div className="space-y-2">

@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function NewsletterPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: issues, isLoading } = api.newsletter.issues.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -19,17 +21,15 @@ export default function NewsletterPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> النشرة البريدية</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            اشتركي في نشرتنا البريدية للحصول على آخر العروض والنصائح
-          </p>
+          <h1 className="text-2xl font-bold">{t('newsletter.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('newsletter.subtitle')}</p>
         </div>
 
         {subscribed ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
             <span className="text-6xl"></span>
-            <h2 className="mt-4 text-xl font-bold">تم الاشتراك!</h2>
-            <p className="text-text-secondary">شكراً لاشتراككِ في نشرتنا البريدية</p>
+            <h2 className="mt-4 text-xl font-bold">{t('newsletter.subscribedTitle')}</h2>
+            <p className="text-text-secondary">{t('newsletter.subscribedMessage')}</p>
           </Card>
         ) : (
           <Card padding="lg">
@@ -38,7 +38,7 @@ export default function NewsletterPage(): JSX.Element {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="بريدكِ الإلكتروني"
+                placeholder={t('newsletter.emailPlaceholder')}
                 className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
               />
               <Button
@@ -48,13 +48,13 @@ export default function NewsletterPage(): JSX.Element {
                 }}
                 loading={subscribeMut.isPending}
               >
-                اشتراك
+                {t('newsletter.subscribe')}
               </Button>
             </div>
           </Card>
         )}
 
-        <h3 className="font-bold text-lg"> النشرات السابقة</h3>
+        <h3 className="font-bold text-lg">{t('newsletter.pastIssues')}</h3>
         {isLoading ? (
           <CardListSkeleton count={3} />
         ) : (
@@ -68,7 +68,9 @@ export default function NewsletterPage(): JSX.Element {
                 </div>
                 <div className="text-right">
                   <span className="text-xs text-text-tertiary">{i.sentAt as string}</span>
-                  <p className="text-xs font-bold text-green-600">{i.openRate as number}% فتح</p>
+                  <p className="text-xs font-bold text-green-600">
+                    {t('newsletter.openRate', { count: i.openRate as number })}
+                  </p>
                 </div>
               </Card>
             ))}

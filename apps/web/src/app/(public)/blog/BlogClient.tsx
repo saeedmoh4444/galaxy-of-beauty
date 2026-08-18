@@ -4,6 +4,8 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
+import { localize, type TranslationKey } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 import { GridSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/ui';
 
 interface BlogPost {
@@ -17,21 +19,22 @@ interface BlogPost {
 }
 
 const POSTS_PER_PAGE = 9;
-const ALL_TAGS = [
-  'العناية بالبشرة',
-  'الشعر',
-  'المكياج',
-  'الأظافر',
-  'العناية الشخصية',
-  'نصائح',
-  'اتجاهات',
-  'صحة',
+// value = stored tag string in DB data (filtering); labelKey = display.
+const ALL_TAGS: { labelKey: TranslationKey; value: string }[] = [
+  { labelKey: 'marketing.blog.tag-skincare', value: 'العناية بالبشرة' },
+  { labelKey: 'marketing.blog.tag-hair', value: 'الشعر' },
+  { labelKey: 'marketing.blog.tag-makeup', value: 'المكياج' },
+  { labelKey: 'marketing.blog.tag-nails', value: 'الأظافر' },
+  { labelKey: 'marketing.blog.tag-personal-care', value: 'العناية الشخصية' },
+  { labelKey: 'marketing.blog.tag-tips', value: 'نصائح' },
+  { labelKey: 'marketing.blog.tag-trends', value: 'اتجاهات' },
+  { labelKey: 'marketing.blog.tag-health', value: 'صحة' },
 ];
 
-function readingTime(html: string): string {
+function readingMinutes(html: string): number {
   const text = html.replace(/<[^>]+>/g, '');
   const words = text.trim().split(/\s+/).length;
-  return `${Math.max(1, Math.ceil(words / 200))} دقائق قراءة`;
+  return Math.max(1, Math.ceil(words / 200));
 }
 
 export function BlogClient({
@@ -41,6 +44,7 @@ export function BlogClient({
   initialPosts: unknown[];
   initialTotal: number;
 }): JSX.Element {
+  const { t, locale } = useLocale();
   const [page, setPage] = useState(1);
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [search, setSearch] = useState('');
@@ -71,10 +75,10 @@ export function BlogClient({
       <div className="mb-10 text-center">
         <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
-          مدونة الجمال
+          {t('marketing.blog.title')}
         </h1>
         <p className="mt-2 text-text-secondary dark:text-gray-400">
-          نصائح، اتجاهات، وأسرار العناية بالجمال
+          {t('marketing.blog.subtitle')}
         </p>
       </div>
 
@@ -86,7 +90,7 @@ export function BlogClient({
             setSearch(e.target.value);
             setPage(1);
           }}
-          placeholder=" ابحثي في المقالات..."
+          placeholder={t('marketing.blog.search-placeholder')}
           className="w-full max-w-md rounded-xl border border-edge bg-surface-muted px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
         />
       </div>
@@ -99,18 +103,18 @@ export function BlogClient({
           }}
           className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${!activeTag ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'}`}
         >
-          الكل
+          {t('marketing.blog.all')}
         </button>
         {ALL_TAGS.slice(0, 8).map((tag) => (
           <button
-            key={tag}
+            key={tag.value}
             onClick={() => {
-              setActiveTag(tag === activeTag ? null : tag);
+              setActiveTag(tag.value === activeTag ? null : tag.value);
               setPage(1);
             }}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${activeTag === tag ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'}`}
+            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${activeTag === tag.value ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'}`}
           >
-            {tag}
+            {t(tag.labelKey)}
           </button>
         ))}
       </div>
@@ -118,30 +122,33 @@ export function BlogClient({
       {isLoading && !initialPosts.length ? (
         <GridSkeleton count={6} />
       ) : isError ? (
-        <ErrorAlert message="فشل تحميل المقالات" onRetry={() => refetch()} />
+        <ErrorAlert message={t('marketing.blog.load-error')} onRetry={() => refetch()} />
       ) : posts.length === 0 ? (
         <EmptyState
-          title="لا توجد مقالات بعد"
-          description="لم ننشر مقالات بعد. تابعي المدونة قريباً! "
+          title={t('marketing.blog.no-posts')}
+          description={t('marketing.blog.no-posts-desc')}
         />
       ) : filteredPosts.length === 0 ? (
         <EmptyState
-          title={`لا توجد مقالات في "${activeTag}"`}
-          description="جربي تصفية بوسم آخر"
-          action={{ label: 'عرض الكل', onPress: () => setActiveTag(null) }}
+          title={t('marketing.blog.no-posts-for-tag', { tag: activeTag ?? '' })}
+          description={t('marketing.blog.try-another-tag')}
+          action={{ label: t('marketing.blog.show-all'), onPress: () => setActiveTag(null) }}
         />
       ) : (
         <>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((post) => {
-              const title = post.titleJson?.ar ?? post.titleJson?.en ?? '';
-              const body = post.bodyJson?.ar ?? post.bodyJson?.en ?? '';
+              const title = localize(post.titleJson, locale);
+              const body = localize(post.bodyJson, locale);
               const date = post.publishedAt
-                ? new Date(post.publishedAt).toLocaleDateString('ar-SA', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })
+                ? new Date(post.publishedAt).toLocaleDateString(
+                    locale === 'ar' ? 'ar-SA' : 'en-GB',
+                    {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    },
+                  )
                 : '';
               return (
                 <Link key={post.id} href={`/blog/${post.slug}`} className="group">
@@ -164,7 +171,11 @@ export function BlogClient({
                       </h2>
                       <div className="mt-3 flex items-center gap-3 text-xs text-text-tertiary">
                         {date && <span> {date}</span>}
-                        {body && <span>️ {readingTime(body)}</span>}
+                        {body && (
+                          <span>
+                            ️ {t('marketing.blog.reading-time', { minutes: readingMinutes(body) })}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </article>

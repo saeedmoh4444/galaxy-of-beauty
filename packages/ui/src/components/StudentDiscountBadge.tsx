@@ -19,6 +19,15 @@ interface StudentDiscountBadgeProps {
   requiresVerification?: boolean;
   /** Original price before discount */
   originalPrice?: number;
+  title?: string;
+  discountText?: string;
+  originalPriceLabel?: string;
+  studentPriceLabel?: string;
+  currencySuffix?: string;
+  verificationTitle?: string;
+  verificationDescription?: string;
+  verifyButtonText?: string;
+  footerText?: string;
   className?: string;
 }
 
@@ -28,6 +37,15 @@ export function StudentDiscountBadge({
   requiresVerification = true,
   originalPrice,
   className = '',
+  title = 'خصم الطالبات',
+  discountText = 'خصم لطالبات الجامعة',
+  originalPriceLabel = 'السعر الأصلي',
+  studentPriceLabel = 'سعر الطالبات',
+  currencySuffix = 'ر.س',
+  verificationTitle = 'مطلوب بريد جامعي (.edu.sa)',
+  verificationDescription = 'أدخلي بريدكِ الجامعي للتحقق من أهليتكِ للخصم',
+  verifyButtonText = 'تحققي من أهليتكِ',
+  footerText = 'الجمال للجميع — بما فيهن الطالبات',
 }: StudentDiscountBadgeProps): JSX.Element {
   const discountedPrice = originalPrice ? Math.round(originalPrice * (1 - discount / 100)) : null;
 
@@ -43,9 +61,9 @@ export function StudentDiscountBadge({
         <div className="flex items-center gap-2">
           <span className="text-lg" aria-hidden="true"></span>
           <div>
-            <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">خصم الطالبات</h4>
+            <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">{title}</h4>
             <p className="text-[10px] text-orange-500 dark:text-orange-400">
-              {discount}% خصم لطالبات الجامعة
+              {discount}% {discountText}
             </p>
           </div>
         </div>
@@ -58,18 +76,20 @@ export function StudentDiscountBadge({
       {originalPrice && discountedPrice && (
         <div className="mt-3 flex items-center justify-center gap-3 rounded-xl bg-orange-50 p-3 dark:bg-orange-950">
           <div className="text-center">
-            <p className="text-[10px] text-text-tertiary dark:text-gray-500">السعر الأصلي</p>
+            <p className="text-[10px] text-text-tertiary dark:text-gray-500">
+              {originalPriceLabel}
+            </p>
             <p className="text-sm text-text-tertiary line-through dark:text-gray-400">
-              {originalPrice} ر.س
+              {originalPrice} {currencySuffix}
             </p>
           </div>
           <span className="text-orange-400" aria-hidden="true">
             →
           </span>
           <div className="text-center">
-            <p className="text-[10px] text-orange-600 dark:text-orange-400">سعر الطالبات</p>
+            <p className="text-[10px] text-orange-600 dark:text-orange-400">{studentPriceLabel}</p>
             <p className="text-lg font-bold text-orange-700 dark:text-orange-300">
-              {discountedPrice} ر.س
+              {discountedPrice} {currencySuffix}
             </p>
           </div>
         </div>
@@ -91,10 +111,10 @@ export function StudentDiscountBadge({
           <span className="text-xs shrink-0" aria-hidden="true"></span>
           <div>
             <p className="text-[10px] font-bold text-amber-700 dark:text-amber-300">
-              مطلوب بريد جامعي (.edu.sa)
+              {verificationTitle}
             </p>
             <p className="text-[10px] text-amber-600 dark:text-amber-400">
-              أدخلي بريدكِ الجامعي للتحقق من أهليتكِ للخصم
+              {verificationDescription}
             </p>
           </div>
         </div>
@@ -105,12 +125,12 @@ export function StudentDiscountBadge({
         type="button"
         className="mt-3 w-full rounded-xl bg-orange-600 py-2 text-xs font-bold text-white hover:bg-orange-700 active:scale-[0.98] transition-all"
       >
-        تحققي من أهليتكِ
+        {verifyButtonText}
       </button>
 
       {/* Footer */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        الجمال للجميع — بما فيهن الطالبات
+        {footerText}
       </p>
     </div>
   );

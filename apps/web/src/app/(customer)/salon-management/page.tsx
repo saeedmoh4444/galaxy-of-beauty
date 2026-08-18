@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, Modal, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function SalonManagementPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: dash } = api.salonManagement.dashboard.useQuery() as {
     data: Record<string, unknown> | undefined;
   };
@@ -31,39 +33,39 @@ export default function SalonManagementPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold"> إدارة الصالون</h1>
-            <p className="mt-1 text-sm text-text-secondary">أديري فريقكِ وتابعي أداء الصالون</p>
+            <h1 className="text-2xl font-bold">{t('salonManagement.title')}</h1>
+            <p className="mt-1 text-sm text-text-secondary">{t('salonManagement.subtitle')}</p>
           </div>
-          <Button onClick={() => setShow(true)}>+ موظفة</Button>
+          <Button onClick={() => setShow(true)}>{t('salonManagement.addStaff')}</Button>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-4">
           <Card padding="md" className="text-center">
             <p className="text-3xl"></p>
             <p className="text-2xl font-bold">{(dash?.todayBookings as number) ?? 0}</p>
-            <p className="text-xs text-text-secondary">حجز اليوم</p>
+            <p className="text-xs text-text-secondary">{t('salonManagement.todayBookings')}</p>
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-3xl"></p>
             <p className="text-2xl font-bold">
               {formatCurrency((dash?.todayRevenue as number) ?? 0)}
             </p>
-            <p className="text-xs text-text-secondary">إيراد اليوم</p>
+            <p className="text-xs text-text-secondary">{t('salonManagement.todayRevenue')}</p>
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-3xl">‍</p>
             <p className="text-2xl font-bold">{(dash?.activeStaff as number) ?? 0}</p>
-            <p className="text-xs text-text-secondary">موظفات</p>
+            <p className="text-xs text-text-secondary">{t('salonManagement.staff')}</p>
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-3xl"></p>
             <p className="text-2xl font-bold">{(dash?.avgRating as number) ?? 0}</p>
-            <p className="text-xs text-text-secondary">التقييم</p>
+            <p className="text-xs text-text-secondary">{t('salonManagement.rating')}</p>
           </Card>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-4">‍ فريق العمل</h3>
+          <h3 className="font-bold mb-4">‍{t('salonManagement.team')}</h3>
           <div className="space-y-2">
             {s.map((m: Record<string, unknown>) => (
               <div
@@ -75,7 +77,8 @@ export default function SalonManagementPage(): JSX.Element {
                   <div>
                     <p className="font-bold">{m.name as string}</p>
                     <p className="text-xs text-text-secondary">
-                      {m.role as string} · {m.rating as number} · {m.bookingsToday as number} حجوزات
+                      {m.role as string} · {m.rating as number} · {m.bookingsToday as number}{' '}
+                      {t('salonManagement.bookingsLabel')}
                     </p>
                   </div>
                 </div>
@@ -90,18 +93,22 @@ export default function SalonManagementPage(): JSX.Element {
           </div>
         </Card>
 
-        <Modal open={show} onClose={() => setShow(false)} title="إضافة موظفة">
+        <Modal
+          open={show}
+          onClose={() => setShow(false)}
+          title={t('salonManagement.addStaffModal')}
+        >
           <div className="space-y-3">
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="الاسم"
+              placeholder={t('salonManagement.namePlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <input
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              placeholder="الدور"
+              placeholder={t('salonManagement.rolePlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <Button
@@ -112,7 +119,7 @@ export default function SalonManagementPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-              ‍ إضافة
+              ‍{t('salonManagement.add')}
             </Button>
           </div>
         </Modal>

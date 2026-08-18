@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyGlutathioneCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyGlutathioneCard({
+  className = '',
+  title = 'الجلوتاثيون',
+  subtitle = 'ملك مضادات الأكسدة',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,47 @@ export function BeautyGlutathioneCard({ className = '' }: { className?: string }
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">الجلوتاثيون</h4>
-          <p className="text-[10px] text-amber-500 dark:text-amber-400">ملك مضادات الأكسدة</p>
+          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
+          <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'يفتح البشرة — يقلل إنتاج الميلانين' },
-          { emoji: '️', text: 'مضاد أكسدة قوي — يحمي من التلف' },
-          { emoji: '', text: 'حقن أو كبسولات — تحت إشراف طبي' },
-          { emoji: '', text: 'مصادر طبيعية — طماطم، سبانخ، ثوم' },
+          {
+            emoji: '',
+            text: {
+              ar: 'يفتح البشرة — يقلل إنتاج الميلانين',
+              en: 'Brightens the skin — reduces melanin production',
+            },
+          },
+          {
+            emoji: '️',
+            text: {
+              ar: 'مضاد أكسدة قوي — يحمي من التلف',
+              en: 'A powerful antioxidant — protects against damage',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'حقن أو كبسولات — تحت إشراف طبي',
+              en: 'Injections or capsules — under medical supervision',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'مصادر طبيعية — طماطم، سبانخ، ثوم',
+              en: 'Natural sources — tomatoes, spinach, garlic',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2 dark:bg-amber-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-amber-800 dark:text-amber-200">{t.text}</span>
+            <span className="text-[10px] text-amber-800 dark:text-amber-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

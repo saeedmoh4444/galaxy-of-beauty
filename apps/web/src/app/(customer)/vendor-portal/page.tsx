@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, Modal, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function VendorPortalPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: dash } = api.vendorPortal.dashboard.useQuery() as {
     data: Record<string, unknown> | undefined;
   };
@@ -31,32 +33,32 @@ export default function VendorPortalPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold"> بوابة البائعين</h1>
-            <p className="mt-1 text-sm text-text-secondary">أديري منتجاتكِ في متجر جالكسي بيوتي</p>
+            <h1 className="text-2xl font-bold">{t('vendorPortal.title')}</h1>
+            <p className="mt-1 text-sm text-text-secondary">{t('vendorPortal.subtitle')}</p>
           </div>
-          <Button onClick={() => setShow(true)}>+ منتج جديد</Button>
+          <Button onClick={() => setShow(true)}>+ {t('vendorPortal.newProduct')}</Button>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-4">
           <Card padding="md" className="text-center">
             <p className="text-3xl"></p>
             <p className="text-2xl font-bold">{(dash?.totalProducts as number) ?? 0}</p>
-            <p className="text-xs text-text-secondary">منتج</p>
+            <p className="text-xs text-text-secondary">{t('vendorPortal.products')}</p>
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-3xl"></p>
             <p className="text-2xl font-bold">{(dash?.totalSales as number) ?? 0}</p>
-            <p className="text-xs text-text-secondary">مبيعة</p>
+            <p className="text-xs text-text-secondary">{t('vendorPortal.sold')}</p>
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-3xl"></p>
             <p className="text-2xl font-bold">—</p>
-            <p className="text-xs text-text-secondary">الإيرادات</p>
+            <p className="text-xs text-text-secondary">{t('vendorPortal.revenue')}</p>
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-3xl"></p>
             <p className="text-2xl font-bold">{(dash?.rating as number) ?? 4.8}</p>
-            <p className="text-xs text-text-secondary">التقييم</p>
+            <p className="text-xs text-text-secondary">{t('vendorPortal.rating')}</p>
           </Card>
         </div>
 
@@ -68,13 +70,14 @@ export default function VendorPortalPage(): JSX.Element {
                 <div>
                   <p className="font-bold">{p.nameAr as string}</p>
                   <p className="text-xs text-text-secondary">
-                    مخزون: {p.stock as number} · مبيعات: {p.sales as number}
+                    {t('vendorPortal.stock')}: {p.stock as number} · {t('vendorPortal.sales')}:{' '}
+                    {p.sales as number}
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <span className="font-bold text-brand-600">
-                  {formatCurrency(p.price as number)} ر.س
+                  {formatCurrency(p.price as number)} {t('beautyParty.currency')}
                 </span>
                 <button
                   onClick={() => deleteMut.mutate({ id: p.id as number })}
@@ -87,26 +90,26 @@ export default function VendorPortalPage(): JSX.Element {
           ))}
         </div>
 
-        <Modal open={show} onClose={() => setShow(false)} title="إضافة منتج">
+        <Modal open={show} onClose={() => setShow(false)} title={t('vendorPortal.addProductTitle')}>
           <div className="space-y-3">
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="اسم المنتج"
+              placeholder={t('vendorPortal.productNamePlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <input
               type="number"
               value={price}
               onChange={(e) => setPrice(parseInt(e.target.value) || 0)}
-              placeholder="السعر (ر.س)"
+              placeholder={t('vendorPortal.pricePlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <input
               type="number"
               value={stock}
               onChange={(e) => setStock(parseInt(e.target.value) || 0)}
-              placeholder="المخزون"
+              placeholder={t('vendorPortal.stockPlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <Button
@@ -116,7 +119,7 @@ export default function VendorPortalPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-              إضافة
+              {t('vendorPortal.add')}
             </Button>
           </div>
         </Modal>

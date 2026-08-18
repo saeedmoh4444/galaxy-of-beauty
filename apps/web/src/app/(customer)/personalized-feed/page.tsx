@@ -2,8 +2,10 @@
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function PersonalizedFeedPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading } = api.personalizedFeed.feed.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -14,8 +16,8 @@ export default function PersonalizedFeedPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> خلاصتي</h1>
-          <p className="mt-1 text-sm text-text-secondary">محتوى مخصص لكِ بناءً على اهتماماتكِ</p>
+          <h1 className="text-2xl font-bold">{t('personalizedFeed.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('personalizedFeed.subtitle')}</p>
         </div>
         {isLoading ? (
           <CardListSkeleton count={6} />
@@ -35,7 +37,7 @@ export default function PersonalizedFeedPage(): JSX.Element {
                       ? `‍ ${item.technician}`
                       : item.brand
                         ? `️ ${item.brand}`
-                        : ` ${item.price as number} ر.س`}
+                        : ` ${item.price as number} ${t('beautyParty.currency')}`}
                   </p>
                 </div>
                 <span className="rounded-full bg-brand-100 dark:bg-brand-900 px-2 py-0.5 text-xs font-bold text-brand-700">

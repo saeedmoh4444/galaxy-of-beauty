@@ -13,22 +13,51 @@ import { cn } from '@galaxy/shared';
 interface WellnessCheckCardProps {
   lastCheck?: string;
   onStartCheck?: () => void;
+  /** Display language for built-in labels */
+  locale?: 'ar' | 'en';
+  title?: string;
+  subtitle?: string;
+  startButtonText?: string;
   className?: string;
 }
 
 const CHECKS = [
-  { emoji: '', label: 'شرب الماء', desc: '8 أكواب يومياً' },
-  { emoji: '', label: 'جودة النوم', desc: '7-8 ساعات' },
-  { emoji: '', label: 'روتين العناية', desc: 'صباح ومساء' },
-  { emoji: '️', label: 'واقي شمس', desc: 'SPF 30+' },
-  { emoji: '', label: 'صحة نفسية', desc: 'تأمل أو راحة' },
-  { emoji: '', label: 'تغذية', desc: 'طعام صحي متوازن' },
+  {
+    emoji: '',
+    label: { ar: 'شرب الماء', en: 'Water intake' },
+    desc: { ar: '8 أكواب يومياً', en: '8 cups daily' },
+  },
+  {
+    emoji: '',
+    label: { ar: 'جودة النوم', en: 'Sleep quality' },
+    desc: { ar: '7-8 ساعات', en: '7-8 hours' },
+  },
+  {
+    emoji: '',
+    label: { ar: 'روتين العناية', en: 'Skincare routine' },
+    desc: { ar: 'صباح ومساء', en: 'Morning & evening' },
+  },
+  { emoji: '️', label: { ar: 'واقي شمس', en: 'Sunscreen' }, desc: { ar: 'SPF 30+', en: 'SPF 30+' } },
+  {
+    emoji: '',
+    label: { ar: 'صحة نفسية', en: 'Mental health' },
+    desc: { ar: 'تأمل أو راحة', en: 'Meditation or rest' },
+  },
+  {
+    emoji: '',
+    label: { ar: 'تغذية', en: 'Nutrition' },
+    desc: { ar: 'طعام صحي متوازن', en: 'Balanced healthy food' },
+  },
 ];
 
 export function WellnessCheckCard({
   lastCheck,
   onStartCheck,
   className = '',
+  locale = 'ar',
+  title = 'الفحص الشهري',
+  subtitle = 'تقييم سريع لصحة جمالكِ',
+  startButtonText = 'ابدئي الفحص',
 }: WellnessCheckCardProps): JSX.Element {
   return (
     <div
@@ -41,12 +70,8 @@ export function WellnessCheckCard({
         <div className="flex items-center gap-2">
           <span className="text-2xl" aria-hidden="true"></span>
           <div>
-            <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-              الفحص الشهري
-            </h4>
-            <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
-              تقييم سريع لصحة جمالكِ
-            </p>
+            <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
+            <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
           </div>
         </div>
         {lastCheck && (
@@ -59,15 +84,15 @@ export function WellnessCheckCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {CHECKS.map((c) => (
           <div
-            key={c.label}
+            key={c.label.ar}
             className="flex items-center gap-2 rounded-lg bg-emerald-50 px-2.5 py-2 dark:bg-emerald-950"
           >
             <span className="text-sm">{c.emoji}</span>
             <div>
               <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-200">
-                {c.label}
+                {c.label[locale]}
               </p>
-              <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{c.desc}</p>
+              <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{c.desc[locale]}</p>
             </div>
           </div>
         ))}
@@ -78,7 +103,7 @@ export function WellnessCheckCard({
         onClick={onStartCheck}
         className="mt-3 w-full rounded-xl bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
       >
-        ابدئي الفحص
+        {startButtonText}
       </button>
     </div>
   );

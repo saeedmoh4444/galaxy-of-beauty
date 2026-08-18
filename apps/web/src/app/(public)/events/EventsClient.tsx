@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import Link from 'next/link';
 
@@ -20,13 +22,14 @@ interface Event {
 }
 
 const EVENT_TYPES = [
-  { key: 'workshop', label: ' ورش عمل' },
-  { key: 'masterclass', label: '‍ دروس متقدمة' },
-  { key: 'launch', label: ' إطلاق منتجات' },
-  { key: 'seasonal', label: ' موسمي' },
-];
+  { key: 'workshop', label: 'marketing.events.type-workshop' },
+  { key: 'masterclass', label: 'marketing.events.type-masterclass' },
+  { key: 'launch', label: 'marketing.events.type-launch' },
+  { key: 'seasonal', label: 'marketing.events.type-seasonal' },
+] as const;
 
 export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): JSX.Element {
+  const { t, locale } = useLocale();
   const [activeType, setActiveType] = useState<string | null>(null);
 
   const { data, isLoading, isError, refetch } = (
@@ -54,9 +57,11 @@ export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): J
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">الفعاليات</h1>
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
+          {t('marketing.events.title')}
+        </h1>
         <p className="mt-2 text-text-secondary dark:text-gray-400">
-          ورش عمل، دروس، وفعاليات تجميلية
+          {t('marketing.events.subtitle')}
         </p>
       </div>
 
@@ -66,7 +71,7 @@ export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): J
           onClick={() => setActiveType(null)}
           className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${!activeType ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'}`}
         >
-          الكل
+          {t('marketing.events.all')}
         </button>
         {EVENT_TYPES.map(({ key, label }) => (
           <button
@@ -74,7 +79,7 @@ export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): J
             onClick={() => setActiveType(key === activeType ? null : key)}
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${activeType === key ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'}`}
           >
-            {label}
+            {t(label)}
           </button>
         ))}
       </div>
@@ -82,38 +87,42 @@ export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): J
       {isLoading && !initialEvents.length ? (
         <GridSkeleton count={6} />
       ) : isError ? (
-        <ErrorAlert message="فشل تحميل الفعاليات" onRetry={() => refetch()} />
+        <ErrorAlert message={t('marketing.events.load-error')} onRetry={() => refetch()} />
       ) : events.length === 0 ? (
         <EmptyState
-          title="لا توجد فعاليات"
-          description="لم تُضف أي فعاليات بعد. تابعي الصفحة قريباً! "
+          title={t('marketing.events.no-events')}
+          description={t('marketing.events.no-events-desc')}
         />
       ) : filteredEvents.length === 0 ? (
         <EmptyState
-          title={`لا توجد فعاليات من هذا النوع`}
-          description="جربي تصفية نوع آخر"
+          title={t('marketing.events.no-events-of-type')}
+          description={t('marketing.events.try-another-type')}
           action={
-            activeType ? { label: 'عرض الكل', onPress: () => setActiveType(null) } : undefined
+            activeType
+              ? { label: t('marketing.events.show-all'), onPress: () => setActiveType(null) }
+              : undefined
           }
         />
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filteredEvents.map((event) => {
-            const name = event.nameJson?.ar ?? event.nameJson?.en ?? '';
-            const desc = event.descriptionJson
-              ? ((event.descriptionJson as Record<string, string>).ar ??
-                (event.descriptionJson as Record<string, string>).en ??
-                '')
-              : '';
-            const date = new Date(event.startsAt).toLocaleDateString('ar-SA', {
-              weekday: 'long',
-              month: 'long',
-              day: 'numeric',
-            });
-            const time = new Date(event.startsAt).toLocaleTimeString('ar-SA', {
-              hour: '2-digit',
-              minute: '2-digit',
-            });
+            const name = localize(event.nameJson, locale);
+            const desc = event.descriptionJson ? localize(event.descriptionJson, locale) : '';
+            const date = new Date(event.startsAt).toLocaleDateString(
+              locale === 'ar' ? 'ar-SA' : 'en-GB',
+              {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+              },
+            );
+            const time = new Date(event.startsAt).toLocaleTimeString(
+              locale === 'ar' ? 'ar-SA' : 'en-GB',
+              {
+                hour: '2-digit',
+                minute: '2-digit',
+              },
+            );
 
             return (
               <Card key={event.id} padding="md" className="flex flex-col">
@@ -138,10 +147,10 @@ export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): J
                 </div>
                 <div className="mt-auto pt-4 flex items-center justify-between">
                   <span className="font-bold text-brand-600">
-                    {event.price ? formatCurrency(Number(event.price)) : 'مجاناً '}
+                    {event.price ? formatCurrency(Number(event.price)) : t('marketing.events.free')}
                   </span>
                   <Link href={`/events/${event.id}`}>
-                    <Button size="sm">تفاصيل</Button>
+                    <Button size="sm">{t('marketing.events.details')}</Button>
                   </Link>
                 </div>
               </Card>

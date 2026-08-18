@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function RestockReminderPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: cats } = api.restockReminder.categories.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
   };
@@ -40,23 +42,24 @@ export default function RestockReminderPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold"> تجديد المنتجات</h1>
-            <p className="mt-1 text-sm text-text-secondary">
-              تتبعي منتجاتكِ واحصلي على تنبيهات لإعادة الشراء
-            </p>
+            <h1 className="text-2xl font-bold">{t('restockReminder.title')}</h1>
+            <p className="mt-1 text-sm text-text-secondary">{t('restockReminder.subtitle')}</p>
           </div>
-          <Button onClick={() => setShowAdd(true)}>+ منتج</Button>
+          <Button onClick={() => setShowAdd(true)}>{t('restockReminder.addProduct')}</Button>
         </div>
 
         {isLoading ? (
           <CardListSkeleton count={3} />
         ) : isError ? (
-          <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+          <ErrorAlert message={t('restockReminder.loadError')} onRetry={() => refetch()} />
         ) : myItems.length === 0 ? (
           <EmptyState
-            title="لا توجد منتجات"
-            description="أضيفي منتجاتكِ لبدء تتبعها"
-            action={{ label: 'إضافة منتج', onPress: () => setShowAdd(true) }}
+            title={t('restockReminder.emptyTitle')}
+            description={t('restockReminder.emptyDescription')}
+            action={{
+              label: t('restockReminder.addProductLabel'),
+              onPress: () => setShowAdd(true),
+            }}
           />
         ) : (
           <div className="space-y-3">
@@ -80,7 +83,7 @@ export default function RestockReminderPage(): JSX.Element {
                         <h3 className="font-bold">{item.productName as string}</h3>
                         {needsRestock && (
                           <span className="rounded-full bg-red-100 dark:bg-red-900 px-2 py-0.5 text-xs font-bold text-red-700 dark:text-red-300">
-                            حان وقت التجديد
+                            {t('restockReminder.timeToRestock')}
                           </span>
                         )}
                       </div>
@@ -91,7 +94,9 @@ export default function RestockReminderPage(): JSX.Element {
                             style={{ width: `${pct}%` }}
                           />
                         </div>
-                        <span className="text-xs text-text-secondary">{daysLeft} يوم متبقي</span>
+                        <span className="text-xs text-text-secondary">
+                          {t('restockReminder.daysLeft', { count: daysLeft })}
+                        </span>
                       </div>
                     </div>
                     <button
@@ -107,11 +112,15 @@ export default function RestockReminderPage(): JSX.Element {
           </div>
         )}
 
-        <Modal open={showAdd} onClose={() => setShowAdd(false)} title="إضافة منتج">
+        <Modal
+          open={showAdd}
+          onClose={() => setShowAdd(false)}
+          title={t('restockReminder.addModalTitle')}
+        >
           <div className="space-y-3">
             <div>
               <label htmlFor="rr-name" className="text-sm font-semibold">
-                اسم المنتج
+                {t('restockReminder.productNameLabel')}
               </label>
               <input
                 id="rr-name"
@@ -123,7 +132,7 @@ export default function RestockReminderPage(): JSX.Element {
             </div>
             <div>
               <label htmlFor="rr-category" className="text-sm font-semibold">
-                الفئة
+                {t('restockReminder.categoryLabel')}
               </label>
               <select
                 id="rr-category"
@@ -146,7 +155,7 @@ export default function RestockReminderPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-              إضافة
+              {t('restockReminder.add')}
             </Button>
           </div>
         </Modal>

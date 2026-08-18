@@ -1,7 +1,9 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { CardListSkeleton } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 export default function BeautyShortsPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading } = api.beautyShorts.feed.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -14,7 +16,7 @@ export default function BeautyShortsPage(): JSX.Element {
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">Beauty Shorts</h1>
-        <p className="mt-2 text-text-secondary">فيديوهات قصيرة وسريعة</p>
+        <p className="mt-2 text-text-secondary">{t('marketing.beauty-shorts.subtitle')}</p>
       </div>
       {isLoading ? (
         <CardListSkeleton count={3} />

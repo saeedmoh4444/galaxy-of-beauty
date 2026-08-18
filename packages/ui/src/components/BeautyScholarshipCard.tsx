@@ -26,6 +26,20 @@ interface BeautyScholarshipCardProps {
   program: ScholarshipProgram;
   onApply?: () => void;
   onSponsor?: () => void;
+  title?: string;
+  freeBadgeText?: string;
+  valueLabel?: string;
+  currencySuffix?: string;
+  seatsLabel?: string;
+  includesLabel?: string;
+  seatsRemainingPrefix?: string;
+  seatsRemainingSuffix?: string;
+  seatsFullText?: string;
+  durationLabel?: string;
+  applyButtonText?: string;
+  registrationClosedText?: string;
+  sponsorButtonText?: string;
+  footerText?: string;
   className?: string;
 }
 
@@ -34,6 +48,20 @@ export function BeautyScholarshipCard({
   onApply,
   onSponsor,
   className = '',
+  title = 'منحة دراسية',
+  freeBadgeText = 'مجانية',
+  valueLabel = 'قيمة المنحة',
+  currencySuffix = 'ر.س',
+  seatsLabel = 'المقاعد',
+  includesLabel = 'تشمل المنحة',
+  seatsRemainingPrefix = 'باقي ',
+  seatsRemainingSuffix = 'مقعد',
+  seatsFullText = 'اكتملت المقاعد',
+  durationLabel = '️ المدة:',
+  applyButtonText = 'تقديم على المنحة',
+  registrationClosedText = 'اكتمل التسجيل',
+  sponsorButtonText = 'راعي',
+  footerText = 'التعليم حق للجميع — لا تدعي الظروف تمنع حلمكِ',
 }: BeautyScholarshipCardProps): JSX.Element {
   const remaining = program.remaining ?? program.seats;
   const taken = program.seats - remaining;
@@ -52,26 +80,26 @@ export function BeautyScholarshipCard({
           {program.emoji || ''}
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">منحة دراسية</h4>
+          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100 mt-0.5">
             {program.name}
           </p>
         </div>
         <span className="shrink-0 rounded-full bg-teal-50 px-2.5 py-0.5 text-[10px] font-bold text-teal-700 dark:bg-teal-950 dark:text-teal-300">
-          مجانية
+          {freeBadgeText}
         </span>
       </div>
 
       {/* Program details */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-teal-50 p-2.5 text-center dark:bg-teal-950">
-          <p className="text-[9px] text-teal-600 dark:text-teal-400">قيمة المنحة</p>
+          <p className="text-[9px] text-teal-600 dark:text-teal-400">{valueLabel}</p>
           <p className="text-sm font-bold text-teal-800 dark:text-teal-200">
-            {program.value.toLocaleString('ar-SA')} ر.س
+            {program.value.toLocaleString('ar-SA')} {currencySuffix}
           </p>
         </div>
         <div className="rounded-xl bg-teal-50 p-2.5 text-center dark:bg-teal-950">
-          <p className="text-[9px] text-teal-600 dark:text-teal-400">المقاعد</p>
+          <p className="text-[9px] text-teal-600 dark:text-teal-400">{seatsLabel}</p>
           <p className="text-sm font-bold text-teal-800 dark:text-teal-200">
             {remaining}/{program.seats}
           </p>
@@ -81,7 +109,9 @@ export function BeautyScholarshipCard({
       {/* Includes */}
       {program.includes && program.includes.length > 0 && (
         <div className="mt-2 rounded-xl bg-gray-50 p-2.5 dark:bg-gray-800">
-          <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">تشمل المنحة</p>
+          <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
+            {includesLabel}
+          </p>
           <div className="mt-1 flex flex-wrap gap-1">
             {program.includes.map((item) => (
               <span
@@ -99,7 +129,9 @@ export function BeautyScholarshipCard({
       <div className="mt-2">
         <div className="flex items-center justify-between text-[10px]">
           <span className="text-text-tertiary dark:text-gray-500">
-            {remaining > 0 ? `باقي ${remaining} مقعد` : 'اكتملت المقاعد'}
+            {remaining > 0
+              ? `${seatsRemainingPrefix}${remaining} ${seatsRemainingSuffix}`
+              : seatsFullText}
           </span>
           <span className="font-bold text-teal-700 dark:text-teal-300">{pct}%</span>
         </div>
@@ -117,7 +149,7 @@ export function BeautyScholarshipCard({
       {/* Duration */}
       {program.duration && (
         <p className="mt-1.5 text-[10px] text-text-tertiary dark:text-gray-500">
-          ️ المدة: {program.duration}
+          {durationLabel} {program.duration}
         </p>
       )}
 
@@ -134,20 +166,18 @@ export function BeautyScholarshipCard({
               : 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500',
           )}
         >
-          {remaining > 0 ? 'تقديم على المنحة' : 'اكتمل التسجيل'}
+          {remaining > 0 ? applyButtonText : registrationClosedText}
         </button>
         <button
           type="button"
           onClick={onSponsor}
           className="rounded-xl border border-teal-200 bg-white px-3 py-2 text-[10px] font-bold text-teal-700 hover:bg-teal-50 dark:border-teal-800 dark:bg-gray-800 dark:text-teal-300"
         >
-          راعي
+          {sponsorButtonText}
         </button>
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-teal-600 dark:text-teal-400">
-        التعليم حق للجميع — لا تدعي الظروف تمنع حلمكِ
-      </p>
+      <p className="mt-2 text-center text-[9px] text-teal-600 dark:text-teal-400">{footerText}</p>
     </div>
   );
 }

@@ -21,12 +21,18 @@ interface Vlog {
 interface BeautyVlogCardProps {
   vlog: Vlog;
   onWatch?: () => void;
+  viewsSuffix?: string;
+  watchText?: string;
+  footerText?: string;
   className?: string;
 }
 
 export function BeautyVlogCard({
   vlog,
   onWatch,
+  viewsSuffix = 'مشاهدة',
+  watchText = '▶️ شاهدي الفلوق',
+  footerText = 'يوميات خبيراتنا — من القلب مباشرة',
   className = '',
 }: BeautyVlogCardProps): JSX.Element {
   return (
@@ -62,7 +68,7 @@ export function BeautyVlogCard({
         </div>
         {vlog.views && (
           <p className="mt-0.5 text-[9px] text-text-tertiary dark:text-gray-500">
-            ️ {vlog.views.toLocaleString('ar-SA')} مشاهدة
+            ️ {vlog.views.toLocaleString('ar-SA')} {viewsSuffix}
           </p>
         )}
       </div>
@@ -73,11 +79,11 @@ export function BeautyVlogCard({
         onClick={onWatch}
         className="mt-2 w-full rounded-lg bg-rose-600 py-1.5 text-[10px] font-bold text-white hover:bg-rose-700 active:scale-[0.98] transition-all"
       >
-        ▶️ شاهدي الفلوق
+        {watchText}
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        يوميات خبيراتنا — من القلب مباشرة
+        {footerText}
       </p>
     </div>
   );

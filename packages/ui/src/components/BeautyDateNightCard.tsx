@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyDateNightCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyDateNightCard({
+  className = '',
+  title = 'إطلالة الموعد',
+  subtitle = 'جاذبية — بدون مبالغة',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,47 @@ export function BeautyDateNightCard({ className = '' }: { className?: string }):
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">إطلالة الموعد</h4>
-          <p className="text-[10px] text-rose-500 dark:text-rose-400">جاذبية — بدون مبالغة</p>
+          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
+          <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'بشرة متوهجة — هايلايتر على عظمة الخد' },
-          { emoji: '️', text: 'عيون سموكي ناعمة — ألوان دافئة' },
-          { emoji: '', text: 'شفاه طبيعية — تينت أو لون شفاه شفاف' },
-          { emoji: '', text: 'عطر على نقاط النبض — وراء الأذن والرسغ' },
+          {
+            emoji: '',
+            text: {
+              ar: 'بشرة متوهجة — هايلايتر على عظمة الخد',
+              en: 'Glowing skin — highlighter on cheekbones',
+            },
+          },
+          {
+            emoji: '️',
+            text: {
+              ar: 'عيون سموكي ناعمة — ألوان دافئة',
+              en: 'Soft smoky eyes — warm tones',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'شفاه طبيعية — تينت أو لون شفاه شفاف',
+              en: 'Natural lips — a tint or clear gloss',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'عطر على نقاط النبض — وراء الأذن والرسغ',
+              en: 'Perfume on pulse points — behind ears and wrists',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-rose-50 px-3 py-2 dark:bg-rose-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-rose-800 dark:text-rose-200">{t.text}</span>
+            <span className="text-[10px] text-rose-800 dark:text-rose-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

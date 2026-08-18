@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyMaskneCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyMaskneCard({
+  className = '',
+  title = 'حبوب الكمامة',
+  subtitle = 'Mask-Ne — كيف تتعاملين معها',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,25 +21,44 @@ export function BeautyMaskneCard({ className = '' }: { className?: string }): JS
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">حبوب الكمامة</h4>
-          <p className="text-[10px] text-teal-500 dark:text-teal-400">
-            Mask-Ne — كيف تتعاملين معها
-          </p>
+          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
+          <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'غيري الكمامة يومياً — قماش أو طبي' },
-          { emoji: '', text: 'مرطب خفيف قبل الكمامة — حاجز حماية' },
-          { emoji: '', text: 'تجنبي المكياج تحت الكمامة' },
-          { emoji: '', text: 'نظفي وجهك بعد نزعها — بماء بارد' },
+          {
+            emoji: '',
+            text: {
+              ar: 'غيري الكمامة يومياً — قماش أو طبي',
+              en: 'Change the mask daily — cloth or medical',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'مرطب خفيف قبل الكمامة — حاجز حماية',
+              en: 'A light moisturizer before the mask — a protective barrier',
+            },
+          },
+          {
+            emoji: '',
+            text: { ar: 'تجنبي المكياج تحت الكمامة', en: 'Avoid makeup under the mask' },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'نظفي وجهك بعد نزعها — بماء بارد',
+              en: 'Cleanse your face after removing it — with cold water',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-teal-50 px-3 py-2 dark:bg-teal-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-teal-800 dark:text-teal-200">{t.text}</span>
+            <span className="text-[10px] text-teal-800 dark:text-teal-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

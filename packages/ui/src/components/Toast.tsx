@@ -25,7 +25,23 @@ const ToastContext = createContext<ToastContextValue | null>(null);
 
 let nextId = 0;
 
-export function ToastProvider({ children }: { children: ReactNode }): JSX.Element {
+export function ToastProvider({
+  children,
+  ariaLabel = 'الإشعارات',
+  successText = 'نجاح',
+  errorText = 'خطأ',
+  warningText = 'تحذير',
+  infoText = 'معلومة',
+  closeLabel = 'إغلاق',
+}: {
+  children: ReactNode;
+  ariaLabel?: string;
+  successText?: string;
+  errorText?: string;
+  warningText?: string;
+  infoText?: string;
+  closeLabel?: string;
+}): JSX.Element {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const removeToast = useCallback((id: number) => {
@@ -55,7 +71,7 @@ export function ToastProvider({ children }: { children: ReactNode }): JSX.Elemen
       {/* Toast container */}
       <div
         aria-live="polite"
-        aria-label="الإشعارات"
+        aria-label={ariaLabel}
         className="pointer-events-none fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 flex-col-reverse gap-2"
       >
         {toasts.map((toast) => (
@@ -89,18 +105,18 @@ export function ToastProvider({ children }: { children: ReactNode }): JSX.Elemen
             </span>
             <span className="sr-only">
               {toast.type === 'success'
-                ? 'نجاح'
+                ? successText
                 : toast.type === 'error'
-                  ? 'خطأ'
+                  ? errorText
                   : toast.type === 'warning'
-                    ? 'تحذير'
-                    : 'معلومة'}
+                    ? warningText
+                    : infoText}
             </span>
             <span>{toast.message}</span>
             <button
               onClick={() => removeToast(toast.id)}
               className="ml-2 opacity-70 hover:opacity-100"
-              aria-label="إغلاق"
+              aria-label={closeLabel}
             ></button>
           </div>
         ))}

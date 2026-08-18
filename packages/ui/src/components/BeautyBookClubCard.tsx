@@ -25,12 +25,26 @@ interface BeautyBookClubCardProps {
   book: BookClubBook;
   onJoin?: () => void;
   className?: string;
+  title?: string;
+  membersLabel?: string;
+  chapterLabel?: string;
+  defaultChapter?: string;
+  nextMeetingPrefix?: string;
+  joinButtonText?: string;
+  footerText?: string;
 }
 
 export function BeautyBookClubCard({
   book,
   onJoin,
   className = '',
+  title = 'نادي الكتاب',
+  membersLabel = 'الأعضاء',
+  chapterLabel = 'الفصل الحالي',
+  defaultChapter = 'قيد التحديد',
+  nextMeetingPrefix = 'اللقاء القادم: ',
+  joinButtonText = 'انضمي للنادي',
+  footerText = 'نقرأ معاً لنرتقي معاً',
 }: BeautyBookClubCardProps): JSX.Element {
   return (
     <div
@@ -44,7 +58,7 @@ export function BeautyBookClubCard({
           {book.emoji || ''}
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">نادي الكتاب</h4>
+          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100 mt-0.5">
             {book.title}
           </p>
@@ -55,13 +69,13 @@ export function BeautyBookClubCard({
       {/* Progress */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-amber-50 p-2.5 text-center dark:bg-amber-950">
-          <p className="text-[9px] text-amber-600 dark:text-amber-400">الأعضاء</p>
+          <p className="text-[9px] text-amber-600 dark:text-amber-400">{membersLabel}</p>
           <p className="text-sm font-bold text-amber-800 dark:text-amber-200">{book.members}</p>
         </div>
         <div className="rounded-xl bg-amber-50 p-2.5 text-center dark:bg-amber-950">
-          <p className="text-[9px] text-amber-600 dark:text-amber-400">الفصل الحالي</p>
+          <p className="text-[9px] text-amber-600 dark:text-amber-400">{chapterLabel}</p>
           <p className="text-xs font-bold text-amber-800 dark:text-amber-200 truncate">
-            {book.currentChapter || 'قيد التحديد'}
+            {book.currentChapter || defaultChapter}
           </p>
         </div>
       </div>
@@ -70,7 +84,8 @@ export function BeautyBookClubCard({
       {book.nextMeeting && (
         <div className="mt-2 rounded-lg bg-amber-50 p-2 dark:bg-amber-950">
           <p className="text-center text-[10px] text-amber-700 dark:text-amber-300">
-            اللقاء القادم: {book.nextMeeting}
+            {nextMeetingPrefix}
+            {book.nextMeeting}
           </p>
         </div>
       )}
@@ -81,11 +96,11 @@ export function BeautyBookClubCard({
         onClick={onJoin}
         className="mt-3 w-full rounded-xl bg-amber-600 py-2 text-xs font-bold text-white hover:bg-amber-700 active:scale-[0.98] transition-all"
       >
-        انضمي للنادي
+        {joinButtonText}
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        نقرأ معاً لنرتقي معاً
+        {footerText}
       </p>
     </div>
   );

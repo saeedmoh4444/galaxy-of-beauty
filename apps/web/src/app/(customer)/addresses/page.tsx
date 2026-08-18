@@ -6,10 +6,12 @@ import type { RouterOutputs } from '@galaxy/api';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 type AddressItem = RouterOutputs['addresses']['list'][number];
 
 export default function AddressesPage(): JSX.Element {
+  const { t } = useLocale();
   const { addToast } = useToast();
   const { data, isLoading, isError, refetch } = api.addresses.list.useQuery();
   const addresses = data ?? [];
@@ -30,20 +32,20 @@ export default function AddressesPage(): JSX.Element {
     onSuccess: () => {
       refetch();
       closeForm();
-      addToast('success', 'تمت إضافة العنوان');
+      addToast('success', t('profile.address-added'));
     },
   });
   const updateMut = api.addresses.update.useMutation({
     onSuccess: () => {
       refetch();
       closeForm();
-      addToast('success', 'تم تحديث العنوان');
+      addToast('success', t('profile.address-updated'));
     },
   });
   const deleteMut = api.addresses.delete.useMutation({
     onSuccess: () => {
       refetch();
-      addToast('success', 'تم حذف العنوان');
+      addToast('success', t('profile.address-deleted'));
     },
   });
   const setDefaultMut = api.addresses.setDefault.useMutation({ onSuccess: () => refetch() });
@@ -77,16 +79,21 @@ export default function AddressesPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">العناوين</h1>
-          <Button onClick={() => setShowForm(true)}>إضافة عنوان</Button>
+          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
+            {t('profile.addresses')}
+          </h1>
+          <Button onClick={() => setShowForm(true)}>{t('profile.add-address')}</Button>
         </div>
 
         {isLoading ? (
           <CardListSkeleton count={4} />
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل العناوين" onRetry={() => refetch()} />
+          <ErrorAlert message={t('profile.addresses-load-error')} onRetry={() => refetch()} />
         ) : addresses.length === 0 ? (
-          <EmptyState title="لا توجد عناوين" description="أضف عنوانك الأول ليسهل عملية الحجز" />
+          <EmptyState
+            title={t('profile.no-addresses')}
+            description={t('profile.add-first-address')}
+          />
         ) : (
           <div className="space-y-3">
             {addresses.map((addr) => (
@@ -97,7 +104,7 @@ export default function AddressesPage(): JSX.Element {
                       <p className="font-semibold">{addr.label}</p>
                       {addr.isDefault && (
                         <span className="rounded-full bg-brand-100 px-2 py-0.5 text-xs text-brand-700">
-                          افتراضي
+                          {t('profile.default')}
                         </span>
                       )}
                     </div>
@@ -112,18 +119,18 @@ export default function AddressesPage(): JSX.Element {
                         variant="outline"
                         onClick={() => setDefaultMut.mutate({ id: addr.id })}
                       >
-                        افتراضي
+                        {t('profile.default')}
                       </Button>
                     )}
                     <Button size="sm" variant="outline" onClick={() => openEdit(addr)}>
-                      تعديل
+                      {t('button.edit')}
                     </Button>
                     <Button
                       size="sm"
                       variant="danger"
                       onClick={() => deleteMut.mutate({ id: addr.id })}
                     >
-                      حذف
+                      {t('button.delete')}
                     </Button>
                   </div>
                 </div>
@@ -135,43 +142,43 @@ export default function AddressesPage(): JSX.Element {
         <Modal
           open={showForm}
           onClose={closeForm}
-          title={editingId ? 'تعديل العنوان' : 'إضافة عنوان'}
+          title={editingId ? t('profile.edit-address') : t('profile.add-address')}
         >
           <div className="space-y-3">
             <Input
-              label="المسمى"
+              label={t('profile.address-label')}
               value={form.label}
               onChange={(e) => setForm({ ...form, label: e.target.value })}
-              placeholder="مثال: المنزل"
+              placeholder={t('profile.label-placeholder')}
             />
             <Input
-              label="المدينة"
+              label={t('profile.city')}
               value={form.city}
               onChange={(e) => setForm({ ...form, city: e.target.value })}
             />
             <Input
-              label="المنطقة"
+              label={t('profile.area')}
               value={form.area}
               onChange={(e) => setForm({ ...form, area: e.target.value })}
             />
             <Input
-              label="الشارع"
+              label={t('profile.street')}
               value={form.street}
               onChange={(e) => setForm({ ...form, street: e.target.value })}
             />
             <div className="grid grid-cols-3 gap-2">
               <Input
-                label="المبنى"
+                label={t('profile.building')}
                 value={form.building}
                 onChange={(e) => setForm({ ...form, building: e.target.value })}
               />
               <Input
-                label="الطابق"
+                label={t('profile.floor')}
                 value={form.floor}
                 onChange={(e) => setForm({ ...form, floor: e.target.value })}
               />
               <Input
-                label="الشقة"
+                label={t('profile.apartment')}
                 value={form.apartment}
                 onChange={(e) => setForm({ ...form, apartment: e.target.value })}
               />
@@ -182,10 +189,10 @@ export default function AddressesPage(): JSX.Element {
                 loading={createMut.isPending || updateMut.isPending}
                 className="flex-1"
               >
-                حفظ
+                {t('button.save')}
               </Button>
               <Button variant="secondary" onClick={closeForm}>
-                إلغاء
+                {t('button.cancel')}
               </Button>
             </div>
           </div>

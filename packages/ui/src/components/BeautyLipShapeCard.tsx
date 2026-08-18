@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyLipShapeCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyLipShapeCard({
+  className = '',
+  heading = 'تحديد الشفاه',
+  subtitle = 'تقنيات لشفاه أجمل',
+  locale = 'ar',
+}: {
+  className?: string;
+  heading?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,47 @@ export function BeautyLipShapeCard({ className = '' }: { className?: string }): 
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">تحديد الشفاه</h4>
-          <p className="text-[10px] text-rose-500 dark:text-rose-400">تقنيات لشفاه أجمل</p>
+          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{heading}</h4>
+          <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '️', text: 'تحديد فوق الخط الطبيعي بقليل — شفاه ممتلئة' },
-          { emoji: '', text: 'هايلايتر فوق قوس كيوبيد — يبرز الشفاه' },
-          { emoji: '', text: 'لونين — فاتح بالوسط وداكن بالأطراف' },
-          { emoji: '', text: 'غلوس على المركز فقط — يعطي عمقاً بصرياً' },
+          {
+            emoji: '️',
+            text: {
+              ar: 'تحديد فوق الخط الطبيعي بقليل — شفاه ممتلئة',
+              en: 'Line just above your natural lip line — fuller lips',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'هايلايتر فوق قوس كيوبيد — يبرز الشفاه',
+              en: "Highlighter on the cupid's bow — accentuates the lips",
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'لونين — فاتح بالوسط وداكن بالأطراف',
+              en: 'Two tones — light in the center, darker at the edges',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'غلوس على المركز فقط — يعطي عمقاً بصرياً',
+              en: 'Gloss only on the center — adds visual depth',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-rose-50 px-3 py-2 dark:bg-rose-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-rose-800 dark:text-rose-200">{t.text}</span>
+            <span className="text-[10px] text-rose-800 dark:text-rose-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

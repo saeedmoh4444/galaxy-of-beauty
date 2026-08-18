@@ -54,12 +54,14 @@ import {
   BeautyLipsCareCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function MakeupGuidePage(): JSX.Element {
+  const { t } = useLocale();
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" دليل المكياج" subtitle="كل ما تحتاجينه لإطلالة مثالية" />
+        <PageTitle title={t('makeupGuide.title')} subtitle={t('makeupGuide.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

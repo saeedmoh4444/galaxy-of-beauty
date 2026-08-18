@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function RideHailingPage(): JSX.Element {
+  const { t } = useLocale();
   const {
     data: providers,
     isLoading,
@@ -31,7 +33,7 @@ export default function RideHailingPage(): JSX.Element {
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-3xl space-y-6">
-          <ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('rideHailing.loadError')} onRetry={() => refetch()} />
         </div>
       </DashboardLayout>
     );
@@ -42,13 +44,13 @@ export default function RideHailingPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> توصيل للموعد</h1>
-          <p className="mt-1 text-sm text-text-secondary">احجزي توصيل لمشواركِ لصالون التجميل</p>
+          <h1 className="text-2xl font-bold">{t('rideHailing.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('rideHailing.subtitle')}</p>
         </div>
         {result ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
             <span className="text-6xl"></span>
-            <h2 className="mt-4 text-xl font-bold">تم الحجز!</h2>
+            <h2 className="mt-4 text-xl font-bold">{t('rideHailing.booked')}</h2>
             <p className="font-bold mt-1">
               {result.driverName as string} · {result.carModel as string}
             </p>
@@ -58,7 +60,7 @@ export default function RideHailingPage(): JSX.Element {
           </Card>
         ) : (
           <Card padding="lg">
-            <h3 className="font-bold mb-4">اختر مزود التوصيل</h3>
+            <h3 className="font-bold mb-4">{t('rideHailing.chooseProvider')}</h3>
             <div className="space-y-3">
               {list.map((p: Record<string, unknown>) => (
                 <div
@@ -71,7 +73,7 @@ export default function RideHailingPage(): JSX.Element {
                       <p className="font-bold">{p.nameAr as string}</p>
                       <p className="text-xs text-text-secondary">
                         ️ {p.estimatedTime as string} · {formatCurrency(p.estimatedPrice as number)}{' '}
-                        ر.س
+                        {t('beautyParty.currency')}
                       </p>
                     </div>
                   </div>
@@ -88,7 +90,7 @@ export default function RideHailingPage(): JSX.Element {
                       )
                     }
                   >
-                    احجز
+                    {t('rideHailing.book')}
                   </Button>
                 </div>
               ))}

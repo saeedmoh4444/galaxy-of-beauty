@@ -3,8 +3,10 @@ import { useState, useRef, useEffect } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function LiveChatPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const [msg, setMsg] = useState('');
   const { data: history, refetch } = api.liveChat.history.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
@@ -27,8 +29,8 @@ export default function LiveChatPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-4">
         <div>
-          <h1 className="text-2xl font-bold"> الدعم المباشر</h1>
-          <p className="mt-1 text-sm text-text-secondary">تحدثي مع فريق الدعم مباشرة</p>
+          <h1 className="text-2xl font-bold">{t('liveChat.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('liveChat.subtitle')}</p>
         </div>
         <Card padding="md" className="h-[60vh] flex flex-col">
           <div className="flex-1 overflow-y-auto space-y-3 p-2">
@@ -45,10 +47,13 @@ export default function LiveChatPage(): JSX.Element {
                     className={`text-[10px] mt-1 ${m.isAgent ? 'text-text-tertiary' : 'text-white/60'}`}
                   >
                     {m.userName as string} ·{' '}
-                    {new Date(m.createdAt as string).toLocaleTimeString('ar-SA', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
+                    {new Date(m.createdAt as string).toLocaleTimeString(
+                      locale === 'en' ? 'en-GB' : 'ar-SA',
+                      {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      },
+                    )}
                   </p>
                 </div>
               </div>
@@ -62,14 +67,14 @@ export default function LiveChatPage(): JSX.Element {
               onKeyDown={(e) =>
                 e.key === 'Enter' && msg.trim() && sendMut.mutate({ message: msg.trim() })
               }
-              placeholder="اكتبي رسالتك..."
+              placeholder={t('liveChat.placeholder')}
               className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <Button
               onClick={() => msg.trim() && sendMut.mutate({ message: msg.trim() })}
               loading={sendMut.isPending}
             >
-              إرسال
+              {t('liveChat.send')}
             </Button>
           </div>
         </Card>

@@ -3,17 +3,44 @@
 import { cn } from '@galaxy/shared';
 
 const TIPS = [
-  { emoji: '', title: 'تقشير أسبوعي', desc: 'يزيل الخلايا الميتة ويجدد البشرة' },
-  { emoji: '', title: 'ترطيب بعد الاستحمام', desc: 'البشرة تمتص المرطب أفضل وهي رطبة' },
-  { emoji: '️', title: 'واقي للجسم', desc: 'لا تنسي رقبتك ويديك وقدميك' },
-  { emoji: '', title: 'شرب الماء', desc: 'بشرة الجسم تحتاج ترطيب من الداخل' },
+  {
+    emoji: '',
+    title: { ar: 'تقشير أسبوعي', en: 'Weekly exfoliation' },
+    desc: { ar: 'يزيل الخلايا الميتة ويجدد البشرة', en: 'Removes dead cells and renews the skin' },
+  },
+  {
+    emoji: '',
+    title: { ar: 'ترطيب بعد الاستحمام', en: 'Moisturize after showering' },
+    desc: {
+      ar: 'البشرة تمتص المرطب أفضل وهي رطبة',
+      en: 'Skin absorbs moisturizer best while damp',
+    },
+  },
+  {
+    emoji: '️',
+    title: { ar: 'واقي للجسم', en: 'Body sunscreen' },
+    desc: { ar: 'لا تنسي رقبتك ويديك وقدميك', en: "Don't forget your neck, hands and feet" },
+  },
+  {
+    emoji: '',
+    title: { ar: 'شرب الماء', en: 'Drink water' },
+    desc: { ar: 'بشرة الجسم تحتاج ترطيب من الداخل', en: 'Body skin needs hydration from within' },
+  },
 ];
 
 interface BeautyBodyCareCardProps {
   className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
 }
 
-export function BeautyBodyCareCard({ className = '' }: BeautyBodyCareCardProps): JSX.Element {
+export function BeautyBodyCareCard({
+  className = '',
+  title = 'عناية بالجسم',
+  subtitle = 'بشرة ناعمة من الرأس للقدمين',
+  locale = 'ar',
+}: BeautyBodyCareCardProps): JSX.Element {
   return (
     <div
       className={cn(
@@ -24,10 +51,8 @@ export function BeautyBodyCareCard({ className = '' }: BeautyBodyCareCardProps):
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">عناية بالجسم</h4>
-          <p className="text-[10px] text-teal-500 dark:text-teal-400">
-            بشرة ناعمة من الرأس للقدمين
-          </p>
+          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
+          <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1.5">
@@ -38,8 +63,10 @@ export function BeautyBodyCareCard({ className = '' }: BeautyBodyCareCardProps):
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
             <div>
-              <p className="text-[10px] font-bold text-teal-800 dark:text-teal-200">{t.title}</p>
-              <p className="text-[9px] text-teal-600 dark:text-teal-400">{t.desc}</p>
+              <p className="text-[10px] font-bold text-teal-800 dark:text-teal-200">
+                {t.title[locale]}
+              </p>
+              <p className="text-[9px] text-teal-600 dark:text-teal-400">{t.desc[locale]}</p>
             </div>
           </div>
         ))}

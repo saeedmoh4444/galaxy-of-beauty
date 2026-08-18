@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import type { RouterOutputs } from '@galaxy/api';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 import { Button, Card, EmptyState, formatCurrency } from '@galaxy/ui';
 
 type ServiceJson = { ar?: string; en?: string };
@@ -40,8 +42,9 @@ export interface ServiceDetailData {
 }
 
 export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.Element {
-  const title = svc.titleJson?.ar ?? '';
-  const desc = svc.descriptionJson?.ar ?? '';
+  const { t, locale } = useLocale();
+  const title = localize(svc.titleJson, locale);
+  const desc = localize(svc.descriptionJson, locale);
   const variants = svc.variants ?? [];
   const techs = svc.technicianServices ?? [];
   const tags = svc.tags ?? [];
@@ -55,7 +58,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
         <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-800 dark:bg-red-950">
           <p className="text-red-600 dark:text-red-400">{svc.fetchError}</p>
           <Link href="/services" className="mt-4 inline-block text-brand-600 hover:underline">
-            العودة للخدمات
+            {t('marketing.service-detail.back-to-services')}
           </Link>
         </div>
       </div>
@@ -77,7 +80,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
               key={i}
               className="rounded-full bg-brand-50 px-3 py-1 text-xs text-brand-700 dark:bg-brand-950 dark:text-brand-300"
             >
-              {t.tag.nameJson?.ar || ''}
+              {localize(t.tag.nameJson, locale)}
             </span>
           ))}
         </div>
@@ -97,7 +100,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
           }
           className="rounded-lg border border-gray-200 px-3 py-1 text-xs text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
         >
-          مشاركة
+          {t('marketing.service-detail.share')}
         </button>
         <button
           onClick={() => {
@@ -105,34 +108,38 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
           }}
           className="rounded-lg border border-gray-200 px-3 py-1 text-xs text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
         >
-          نسخ الرابط
+          {t('marketing.service-detail.copy-link')}
         </button>
       </div>
 
       <div className="mt-6 flex gap-8">
         <div>
-          <span className="text-sm text-gray-500">السعر</span>
+          <span className="text-sm text-gray-500">{t('marketing.service-detail.price')}</span>
           <p className="text-2xl font-bold text-brand-600">
             {formatCurrency(Number(svc.basePrice))}
           </p>
         </div>
         <div>
-          <span className="text-sm text-gray-500">المدة</span>
-          <p className="text-2xl font-bold">{svc.durationMin} دقيقة</p>
+          <span className="text-sm text-gray-500">{t('marketing.service-detail.duration')}</span>
+          <p className="text-2xl font-bold">
+            {t('marketing.service-detail.duration-min', { min: svc.durationMin })}
+          </p>
         </div>
       </div>
 
       {/* Variants */}
       {variants.length > 0 && (
         <div className="mt-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">الخيارات</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            {t('marketing.service-detail.options')}
+          </h2>
           <div className="mt-2 flex flex-wrap gap-2">
             {variants.map((v) => (
               <span
                 key={v.id}
                 className="rounded-full bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800"
               >
-                {v.nameJson?.ar}
+                {localize(v.nameJson, locale)}
                 {Number(v.priceDelta) > 0 ? ` (+${formatCurrency(Number(v.priceDelta))})` : ''}
               </span>
             ))}
@@ -143,11 +150,11 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
       {/* CTA */}
       <div className="mt-8 flex gap-3">
         <Link href={`/bookings/create?serviceId=${id}`}>
-          <Button size="lg">احجزي الآن</Button>
+          <Button size="lg">{t('marketing.service-detail.book-now')}</Button>
         </Link>
         <Link href={`/compare?ids=${id}`}>
           <Button size="lg" variant="outline">
-            مقارنة
+            {t('marketing.service-detail.compare')}
           </Button>
         </Link>
       </div>
@@ -156,7 +163,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
       {techs.length > 0 && (
         <div className="mt-10">
           <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">
-            الفنيات المتاحات
+            {t('marketing.service-detail.available-technicians')}
           </h2>
           <div className="grid gap-4 md:grid-cols-2">
             {techs.map((ts) => {
@@ -172,12 +179,12 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
                       </p>
                       {tech.bioJson ? (
                         <p className="mt-1 line-clamp-2 text-xs text-gray-400">
-                          {tech.bioJson?.ar || ''}
+                          {localize(tech.bioJson, locale)}
                         </p>
                       ) : null}
                     </div>
                     <Link href={`/bookings/create?serviceId=${id}`}>
-                      <Button size="sm">احجز</Button>
+                      <Button size="sm">{t('marketing.service-detail.book')}</Button>
                     </Link>
                   </div>
                 </Card>
@@ -188,7 +195,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
       )}
       {techs.length === 0 && (
         <div className="mt-8">
-          <EmptyState title="لا توجد فنيات متاحة لهذه الخدمة حالياً" />
+          <EmptyState title={t('marketing.service-detail.no-technicians')} />
         </div>
       )}
 
@@ -196,7 +203,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
       {related.length > 0 && (
         <div className="mt-12">
           <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">
-            خدمات مشابهة
+            {t('marketing.service-detail.related-services')}
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((r) => (
@@ -204,7 +211,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
                 <Card hover padding="sm">
                   <div className="flex h-24 items-center justify-center rounded-lg bg-gray-100 text-3xl dark:bg-gray-800"></div>
                   <p className="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
-                    {r.titleJson?.ar || ''}
+                    {localize(r.titleJson, locale)}
                   </p>
                   <p className="mt-1 text-xs font-bold text-brand-600">
                     {formatCurrency(Number(r.basePrice))}

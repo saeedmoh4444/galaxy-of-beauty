@@ -24,8 +24,10 @@ import {
   BeautyReferralLeaderboardCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyInnovationPage(): JSX.Element {
+  const { t } = useLocale();
   const weather = api.weatherBeauty.getAdvice.useQuery({
     condition: 'hot',
     temp: 42,
@@ -34,7 +36,7 @@ export default function BeautyInnovationPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" الابتكار" subtitle="تقنيات وأدوات ذكية لجمالكِ" />
+        <PageTitle title={t('beautyInnovation.title')} subtitle={t('beautyInnovation.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -43,11 +45,11 @@ export default function BeautyInnovationPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyVlogCard
                 vlog={{
-                  title: 'يوم في حياة نورة',
+                  title: t('beautyInnovation.vlogTitle'),
                   technician: 'نورة',
-                  duration: '8 دقائق',
+                  duration: t('beautyInnovation.vlogDuration'),
                   views: 1234,
-                  category: 'مكياج',
+                  category: t('beautyInnovation.vlogCategory'),
                 }}
               />
               <BeautyPlaylistCard />
@@ -69,12 +71,16 @@ export default function BeautyInnovationPage(): JSX.Element {
             <BeautyTimeCapsuleCard savedDate="2026-08-06" />
             <BeautyDreamBoardCard
               dreams={[
-                { emoji: '', text: 'شعر طويل صحي' },
-                { emoji: '', text: 'إطلالة زفاف' },
-                { emoji: '', text: 'إتقان المكياج' },
+                { emoji: '', text: t('beautyInnovation.dreamLongHair') },
+                { emoji: '', text: t('beautyInnovation.dreamWeddingLook') },
+                { emoji: '', text: t('beautyInnovation.dreamMasterMakeup') },
               ]}
             />
-            <BeautySecretSantaCard group="عرايس الرياض" budget={200} participants={12} />
+            <BeautySecretSantaCard
+              group={t('beautyInnovation.secretSantaGroup')}
+              budget={200}
+              participants={12}
+            />
 
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyReferralLeaderboardCard
@@ -91,8 +97,8 @@ export default function BeautyInnovationPage(): JSX.Element {
               <BeautyQuickTipCard
                 tip={{
                   emoji: '',
-                  title: 'الماء أولاً',
-                  body: 'اشربي كوب ماء قبل قهوتكِ الصباحية.',
+                  title: t('beautyInnovation.tipWaterTitle'),
+                  body: t('beautyInnovation.tipWaterBody'),
                 }}
               />
               <BeautyAffirmationCard />
@@ -104,7 +110,11 @@ export default function BeautyInnovationPage(): JSX.Element {
             <JustBecauseFlowers bookingsCount={15} />
             <HandwrittenNote bookingCount={10} technicianName="نورة" />
             <MirrorStickerCard />
-            <BirthdayMonthBadge month="مارس" discount={15} daysRemaining={22} />
+            <BirthdayMonthBadge
+              month={t('beautyInnovation.birthdayMonth')}
+              discount={15}
+              daysRemaining={22}
+            />
           </div>
         </div>
       </PageContainer>

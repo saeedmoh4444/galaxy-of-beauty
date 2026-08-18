@@ -5,40 +5,43 @@
  * From Phase W2: Life Stage Beauty.
  */
 
-const LIFE_STAGES: Record<string, { emoji: string; label: string; color: string }> = {
+const LIFE_STAGES: Record<
+  string,
+  { emoji: string; label: { ar: string; en: string }; color: string }
+> = {
   teen: {
     emoji: '',
-    label: 'مراهقة (١٥-١٨)',
+    label: { ar: 'مراهقة (١٥-١٨)', en: 'Teen (15-18)' },
     color: 'bg-pink-100 text-pink-700 dark:bg-pink-950 dark:text-pink-300',
   },
   young_adult: {
     emoji: '',
-    label: 'شابة (١٨-٢٥)',
+    label: { ar: 'شابة (١٨-٢٥)', en: 'Young Adult (18-25)' },
     color: 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
   },
   career: {
     emoji: '',
-    label: 'مهنية (٢٥-٣٥)',
+    label: { ar: 'مهنية (٢٥-٣٥)', en: 'Career Woman (25-35)' },
     color: 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300',
   },
   bride: {
     emoji: '',
-    label: 'عروس',
+    label: { ar: 'عروس', en: 'Bride' },
     color: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
   },
   mother: {
     emoji: '',
-    label: 'أمومة',
+    label: { ar: 'أمومة', en: 'Motherhood' },
     color: 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300',
   },
   confident: {
     emoji: '',
-    label: 'ثقة (٤٠-٥٥)',
+    label: { ar: 'ثقة (٤٠-٥٥)', en: 'Confident (40-55)' },
     color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300',
   },
   golden: {
     emoji: '',
-    label: 'العصر الذهبي (٥٥+)',
+    label: { ar: 'العصر الذهبي (٥٥+)', en: 'Golden Age (55+)' },
     color: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
   },
 };
@@ -46,16 +49,21 @@ const LIFE_STAGES: Record<string, { emoji: string; label: string; color: string 
 interface LifeStageBadgeProps {
   stage: string;
   className?: string;
+  locale?: 'ar' | 'en';
 }
 
-export function LifeStageBadge({ stage, className = '' }: LifeStageBadgeProps): JSX.Element | null {
+export function LifeStageBadge({
+  stage,
+  className = '',
+  locale = 'ar',
+}: LifeStageBadgeProps): JSX.Element | null {
   const s = LIFE_STAGES[stage];
   if (!s) return null;
   return (
     <span
       className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${s.color} ${className}`}
     >
-      {s.emoji} {s.label}
+      {s.emoji} {s.label[locale]}
     </span>
   );
 }

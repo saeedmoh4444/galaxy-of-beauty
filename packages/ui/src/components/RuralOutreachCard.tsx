@@ -18,6 +18,33 @@ interface RuralOutreachCardProps {
   onLearnMore?: () => void;
   onDonate?: () => void;
   className?: string;
+  /** Card heading */
+  title?: string;
+  /** Subtitle under the heading */
+  subtitle?: string;
+  /** Label for the trained count */
+  trainedLabel?: string;
+  /** Label for the employed count */
+  employedLabel?: string;
+  /** Label for the villages count */
+  villagesLabel?: string;
+  /** Prefix before the employment target */
+  targetPrefix?: string;
+  /** Suffix after the employment target */
+  targetSuffix?: string;
+  /** "How we reach them" heading */
+  howTitle?: string;
+  /** Outreach steps */
+  step1?: string;
+  step2?: string;
+  step3?: string;
+  step4?: string;
+  /** Learn-more button label */
+  learnMoreText?: string;
+  /** Donate button label */
+  donateText?: string;
+  /** Footer text */
+  footerText?: string;
 }
 
 export function RuralOutreachCard({
@@ -28,6 +55,21 @@ export function RuralOutreachCard({
   onLearnMore,
   onDonate,
   className = '',
+  title = 'تمكين المرأة الريفية',
+  subtitle = 'نصل إلى النساء في القرى والمدن الصغيرة',
+  trainedLabel = 'متدربة',
+  employedLabel = 'موظفة',
+  villagesLabel = 'قرية',
+  targetPrefix = 'هدف توظيف ',
+  targetSuffix = 'امرأة ريفية',
+  howTitle = 'كيف نصل إليهن',
+  step1 = '• عيادات متنقلة تزور القرى أسبوعياً',
+  step2 = '• تدريب عن بعد عبر الجوال',
+  step3 = '• شراكات مع جمعيات التنمية المحلية',
+  step4 = '• توفير معدات تجميل مجانية للمتدربات',
+  learnMoreText = 'اعرفي المزيد',
+  donateText = 'تبرعي',
+  footerText = 'كل امرأة تستحق فرصة — أينما كانت',
 }: RuralOutreachCardProps): JSX.Element {
   const employPct = Math.round((employed / target) * 100);
 
@@ -41,12 +83,8 @@ export function RuralOutreachCard({
       {/* Header */}
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">
-          تمكين المرأة الريفية
-        </h4>
-        <p className="text-[10px] text-emerald-600 dark:text-emerald-400">
-          نصل إلى النساء في القرى والمدن الصغيرة
-        </p>
+        <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">{title}</h4>
+        <p className="text-[10px] text-emerald-600 dark:text-emerald-400">{subtitle}</p>
       </div>
 
       {/* Stats */}
@@ -54,17 +92,17 @@ export function RuralOutreachCard({
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
           <p className="text-lg" aria-hidden="true"></p>
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{trained}</p>
-          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">متدربة</p>
+          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{trainedLabel}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
           <p className="text-lg" aria-hidden="true"></p>
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{employed}</p>
-          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">موظفة</p>
+          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{employedLabel}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
           <p className="text-lg" aria-hidden="true"></p>
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{villages}</p>
-          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">قرية</p>
+          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{villagesLabel}</p>
         </div>
       </div>
 
@@ -72,7 +110,8 @@ export function RuralOutreachCard({
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <div className="flex items-center justify-between text-[10px]">
           <span className="text-emerald-700 dark:text-emerald-300">
-            هدف توظيف {target} امرأة ريفية
+            {targetPrefix}
+            {target} {targetSuffix}
           </span>
           <span className="font-bold text-emerald-800 dark:text-emerald-200">{employPct}%</span>
         </div>
@@ -86,14 +125,12 @@ export function RuralOutreachCard({
 
       {/* How it works */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-200">
-          كيف نصل إليهن
-        </p>
+        <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-200">{howTitle}</p>
         <div className="mt-1 space-y-1 text-[10px] text-emerald-700 dark:text-emerald-300">
-          <p>• عيادات متنقلة تزور القرى أسبوعياً</p>
-          <p>• تدريب عن بعد عبر الجوال</p>
-          <p>• شراكات مع جمعيات التنمية المحلية</p>
-          <p>• توفير معدات تجميل مجانية للمتدربات</p>
+          <p>{step1}</p>
+          <p>{step2}</p>
+          <p>{step3}</p>
+          <p>{step4}</p>
         </div>
       </div>
 
@@ -104,19 +141,19 @@ export function RuralOutreachCard({
           onClick={onLearnMore}
           className="flex-1 rounded-xl bg-emerald-600 py-2 text-[10px] font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
         >
-          اعرفي المزيد
+          {learnMoreText}
         </button>
         <button
           type="button"
           onClick={onDonate}
           className="flex-1 rounded-xl border border-emerald-200 bg-white py-2 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:bg-gray-800 dark:text-emerald-300"
         >
-          تبرعي
+          {donateText}
         </button>
       </div>
 
       <p className="mt-2 text-center text-[9px] text-emerald-600 dark:text-emerald-400">
-        كل امرأة تستحق فرصة — أينما كانت
+        {footerText}
       </p>
     </div>
   );

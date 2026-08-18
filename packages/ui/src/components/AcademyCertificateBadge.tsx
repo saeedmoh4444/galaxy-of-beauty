@@ -16,7 +16,7 @@ type CertLevel = 'foundation' | 'professional' | 'master';
 
 interface LevelDef {
   emoji: string;
-  label: string;
+  label: { ar: string; en: string };
   color: string;
   gradient: string;
 }
@@ -24,19 +24,19 @@ interface LevelDef {
 const CERTS: Record<CertLevel, LevelDef> = {
   foundation: {
     emoji: '',
-    label: 'أساسي',
+    label: { ar: 'أساسي', en: 'Foundation' },
     color: 'text-emerald-600 dark:text-emerald-300',
     gradient: 'from-emerald-500 to-teal-500',
   },
   professional: {
     emoji: '',
-    label: 'احترافي',
+    label: { ar: 'احترافي', en: 'Professional' },
     color: 'text-blue-600 dark:text-blue-300',
     gradient: 'from-blue-500 to-sky-500',
   },
   master: {
     emoji: '',
-    label: 'ماستر',
+    label: { ar: 'ماستر', en: 'Master' },
     color: 'text-purple-600 dark:text-purple-300',
     gradient: 'from-purple-500 to-violet-500',
   },
@@ -57,6 +57,24 @@ interface AcademyCertificateBadgeProps {
   onShare?: () => void;
   onVerify?: () => void;
   className?: string;
+  /** Header title */
+  title?: string;
+  /** Academy name shown under the title */
+  academyName?: string;
+  /** Label for the certificate ID field */
+  certIdLabel?: string;
+  /** Blockchain verification heading */
+  verifiedTitle?: string;
+  /** Blockchain verification body text */
+  verifiedText?: string;
+  /** Share button label */
+  shareLabel?: string;
+  /** Verify button label */
+  verifyLabel?: string;
+  /** Accreditation footnote */
+  accreditationText?: string;
+  /** Locale for internal level label strings */
+  locale?: 'ar' | 'en';
 }
 
 export function AcademyCertificateBadge({
@@ -64,6 +82,15 @@ export function AcademyCertificateBadge({
   onShare,
   onVerify,
   className = '',
+  title = 'شهادة معتمدة',
+  academyName = 'أكاديمية جالاكسي بيوتي',
+  certIdLabel = 'رقم الشهادة',
+  verifiedTitle = 'موثقة بتقنية البلوك تشين',
+  verifiedText = 'شهادتكِ محمية ولا يمكن تزويرها',
+  shareLabel = 'مشاركة',
+  verifyLabel = 'تحقق',
+  accreditationText = '️ معتمدة من المؤسسة العامة للتدريب التقني والمهني',
+  locale = 'ar',
 }: AcademyCertificateBadgeProps): JSX.Element {
   const level = CERTS[certificate.level];
 
@@ -79,8 +106,8 @@ export function AcademyCertificateBadge({
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-sky-100 dark:from-blue-800 dark:to-sky-800">
           <span className="text-3xl" aria-hidden="true"></span>
         </div>
-        <h4 className="mt-2 text-sm font-bold text-blue-800 dark:text-blue-200">شهادة معتمدة</h4>
-        <p className="text-[10px] text-blue-500 dark:text-blue-400">أكاديمية جالاكسي بيوتي</p>
+        <h4 className="mt-2 text-sm font-bold text-blue-800 dark:text-blue-200">{title}</h4>
+        <p className="text-[10px] text-blue-500 dark:text-blue-400">{academyName}</p>
       </div>
 
       {/* Course name */}
@@ -99,7 +126,7 @@ export function AcademyCertificateBadge({
                   : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300',
             )}
           >
-            {level.emoji} {level.label}
+            {level.emoji} {level.label[locale]}
           </span>
           <span className="text-[10px] text-text-tertiary dark:text-gray-500">
             {certificate.date}
@@ -110,7 +137,7 @@ export function AcademyCertificateBadge({
       {/* Certificate ID */}
       {certificate.certId && (
         <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">رقم الشهادة</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{certIdLabel}</p>
           <p className="text-xs font-mono font-bold text-text-primary dark:text-gray-100" dir="ltr">
             {certificate.certId}
           </p>
@@ -123,11 +150,9 @@ export function AcademyCertificateBadge({
           <span className="text-xs" aria-hidden="true"></span>
           <div>
             <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
-              موثقة بتقنية البلوك تشين
+              {verifiedTitle}
             </p>
-            <p className="text-[9px] text-emerald-600 dark:text-emerald-400">
-              شهادتكِ محمية ولا يمكن تزويرها
-            </p>
+            <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{verifiedText}</p>
           </div>
         </div>
       )}
@@ -139,20 +164,20 @@ export function AcademyCertificateBadge({
           onClick={onShare}
           className="flex-1 rounded-xl bg-blue-600 py-2 text-[10px] font-bold text-white hover:bg-blue-700 active:scale-[0.98] transition-all"
         >
-          مشاركة
+          {shareLabel}
         </button>
         <button
           type="button"
           onClick={onVerify}
           className="flex-1 rounded-xl border border-blue-200 bg-white py-2 text-[10px] font-bold text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:bg-gray-800 dark:text-blue-300"
         >
-          تحقق
+          {verifyLabel}
         </button>
       </div>
 
       {/* Accreditation */}
       <p className="mt-2 text-center text-[9px] text-blue-500 dark:text-blue-400">
-        ️ معتمدة من المؤسسة العامة للتدريب التقني والمهني
+        {accreditationText}
       </p>
     </div>
   );

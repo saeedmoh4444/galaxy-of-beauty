@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyPerfumeLayerCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyPerfumeLayerCard({
+  className = '',
+  title = 'طبقات العطر',
+  subtitle = 'كيف تختارين عطرك',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,49 @@ export function BeautyPerfumeLayerCard({ className = '' }: { className?: string 
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">طبقات العطر</h4>
-          <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">كيف تختارين عطرك</p>
+          <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">{title}</h4>
+          <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'النفحة العليا: أول ما تشمين — حمضيات، خفيفة' },
-          { emoji: '', text: 'قلب العطر: بعد 15 دقيقة — ورود، توابل' },
-          { emoji: '🪵', text: 'القاعدة: بعد ساعة — خشب، مسك، فانيليا' },
-          { emoji: '', text: 'انتظري 30 دقيقة قبل الحكم على العطر' },
+          {
+            emoji: '',
+            text: {
+              ar: 'النفحة العليا: أول ما تشمين — حمضيات، خفيفة',
+              en: 'Top notes: what you smell first — citrus, light',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'قلب العطر: بعد 15 دقيقة — ورود، توابل',
+              en: 'Heart notes: after 15 minutes — roses, spices',
+            },
+          },
+          {
+            emoji: '🪵',
+            text: {
+              ar: 'القاعدة: بعد ساعة — خشب، مسك، فانيليا',
+              en: 'Base notes: after an hour — woods, musk, vanilla',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'انتظري 30 دقيقة قبل الحكم على العطر',
+              en: 'Wait 30 minutes before judging a fragrance',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-fuchsia-50 px-3 py-2 dark:bg-fuchsia-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-fuchsia-800 dark:text-fuchsia-200">{t.text}</span>
+            <span className="text-[10px] text-fuchsia-800 dark:text-fuchsia-200">
+              {t.text[locale]}
+            </span>
           </div>
         ))}
       </div>

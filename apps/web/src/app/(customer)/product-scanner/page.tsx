@@ -4,6 +4,8 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, DetailSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 import Link from 'next/link';
 
 interface ProductData {
@@ -27,10 +29,15 @@ const SAFETY_COLOR = (score: number) =>
   score >= 90 ? 'text-green-600' : score >= 75 ? 'text-amber-600' : 'text-red-600';
 const SAFETY_BG = (score: number) =>
   score >= 90 ? 'bg-green-500' : score >= 75 ? 'bg-amber-500' : 'bg-red-500';
-const SAFETY_LABEL = (score: number) =>
-  score >= 90 ? 'آمن جداً' : score >= 75 ? 'مقبول' : 'يحتوي على مواد مثيرة للحساسية';
+const SAFETY_LABEL = (score: number): TranslationKey =>
+  score >= 90
+    ? 'scanner.safety.safe'
+    : score >= 75
+      ? 'scanner.safety.ok'
+      : 'scanner.safety.allergen';
 
 export default function ProductScannerPage(): JSX.Element {
+  const { t } = useLocale();
   const [barcode, setBarcode] = useState('');
   const [cameraOn, setCameraOn] = useState(false);
   const [cameraError, setCameraError] = useState('');
@@ -63,7 +70,7 @@ export default function ProductScannerPage(): JSX.Element {
         setCameraOn(true);
       }
     } catch {
-      setCameraError('تعذر الوصول للكاميرا — تأكدي من الصلاحية');
+      setCameraError(t('scanner.cameraError'));
     }
   }, []);
 
@@ -88,10 +95,8 @@ export default function ProductScannerPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> فحص المنتجات</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            امسحي الباركود أو ادخلي الرمز لمعرفة مكونات المنتج ومدى أمانه
-          </p>
+          <h1 className="text-2xl font-bold">{t('scanner.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('scanner.subtitle')}</p>
         </div>
 
         {/* Input — Camera or Manual */}
@@ -105,9 +110,9 @@ export default function ProductScannerPage(): JSX.Element {
                 else startCamera();
               }}
             >
-              {cameraOn ? ' إيقاف' : ' مسح بالكاميرا'}
+              {cameraOn ? t('scanner.stop') : t('scanner.scanCamera')}
             </Button>
-            <span className="text-xs text-text-tertiary self-center">أو أدخلي الرمز يدوياً:</span>
+            <span className="text-xs text-text-tertiary self-center">{t('scanner.orManual')}</span>
           </div>
 
           {cameraOn && (
@@ -121,7 +126,7 @@ export default function ProductScannerPage(): JSX.Element {
                   <video ref={videoRef} playsInline muted className="h-48 w-full object-cover" />
                   <div className="absolute inset-0 border-2 border-brand-400/60 m-8 rounded-lg" />
                   <p className="absolute bottom-2 left-0 right-0 text-center text-xs text-white/70">
-                    وجّهي الباركود داخل الإطار
+                    {t('scanner.alignBarcode')}
                   </p>
                 </>
               )}
@@ -134,12 +139,12 @@ export default function ProductScannerPage(): JSX.Element {
               value={barcode}
               onChange={(e) => setBarcode(e.target.value.replace(/\D/g, '').slice(0, 20))}
               onKeyDown={(e) => e.key === 'Enter' && handleLookup()}
-              placeholder="أدخلي الباركود (أرقام فقط)..."
+              placeholder={t('scanner.barcodePlaceholder')}
               className="flex-1 rounded-lg border px-3 py-2.5 text-sm tracking-widest dark:border-gray-700 dark:bg-gray-800"
               dir="ltr"
             />
             <Button onClick={handleLookup} loading={isLoading} disabled={barcode.length < 8}>
-              فحص
+              {t('scanner.scan')}
             </Button>
           </div>
         </Card>
@@ -148,11 +153,11 @@ export default function ProductScannerPage(): JSX.Element {
         {isLoading ? (
           <DetailSkeleton />
         ) : isError ? (
-          <ErrorAlert message="فشل البحث عن المنتج" onRetry={() => refetch()} />
+          <ErrorAlert message={t('scanner.err.lookup')} onRetry={() => refetch()} />
         ) : result && !result.found ? (
           <EmptyState
-            title="المنتج غير موجود"
-            description={result.message ?? 'لم نجد هذا المنتج في قاعدة البيانات'}
+            title={t('scanner.notFound.title')}
+            description={result.message ?? t('scanner.notFound.desc')}
           />
         ) : product ? (
           <>
@@ -171,7 +176,7 @@ export default function ProductScannerPage(): JSX.Element {
                   <div className="mt-3 flex items-center gap-3">
                     <div className="flex-1">
                       <div className="flex justify-between text-xs mb-1">
-                        <span>مؤشر الأمان</span>
+                        <span>{t('scanner.safetyScore')}</span>
                         <span className={`font-bold ${SAFETY_COLOR(product.safetyScore)}`}>
                           {product.safetyScore}%
                         </span>
@@ -186,7 +191,7 @@ export default function ProductScannerPage(): JSX.Element {
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-bold ${SAFETY_COLOR(product.safetyScore)} bg-${SAFETY_BG(product.safetyScore).replace('bg-', 'bg-')}/10`}
                     >
-                      {SAFETY_LABEL(product.safetyScore)}
+                      {t(SAFETY_LABEL(product.safetyScore))}
                     </span>
                   </div>
                 </div>
@@ -195,7 +200,9 @@ export default function ProductScannerPage(): JSX.Element {
               {/* Concerns / Warnings */}
               {product.safetyDetails && product.safetyDetails.length > 0 && (
                 <div className="mt-4 rounded-xl bg-red-50 dark:bg-red-950 p-4">
-                  <h4 className="text-sm font-bold text-red-700 dark:text-red-300 mb-2">تنبيهات</h4>
+                  <h4 className="text-sm font-bold text-red-700 dark:text-red-300 mb-2">
+                    {t('scanner.warnings')}
+                  </h4>
                   <div className="space-y-2">
                     {product.safetyDetails.map((d, i) => (
                       <div key={i} className="text-sm text-red-600 dark:text-red-400">
@@ -208,7 +215,7 @@ export default function ProductScannerPage(): JSX.Element {
 
               {/* Ingredients */}
               <div className="mt-4">
-                <h4 className="text-sm font-bold mb-2"> المكونات</h4>
+                <h4 className="text-sm font-bold mb-2">{t('scanner.ingredients')}</h4>
                 <div className="flex flex-wrap gap-1.5">
                   {product.ingredients.map((ing) => {
                     const isAllergen = product.allergens.includes(ing);
@@ -232,7 +239,7 @@ export default function ProductScannerPage(): JSX.Element {
             {/* Alternatives */}
             {alternatives.length > 0 && (
               <Card padding="lg">
-                <h3 className="font-bold text-lg mb-4"> بدائل آمنة مقترحة</h3>
+                <h3 className="font-bold text-lg mb-4">{t('scanner.alternatives')}</h3>
                 <div className="space-y-3">
                   {alternatives.map((alt) => (
                     <div
@@ -248,7 +255,7 @@ export default function ProductScannerPage(): JSX.Element {
                       </div>
                       <Link href="/marketplace">
                         <Button size="sm" variant="ghost">
-                          {formatCurrency(alt.price)} ر.س →
+                          {formatCurrency(alt.price)} {t('misc.sar')} →
                         </Button>
                       </Link>
                     </div>
@@ -264,12 +271,12 @@ export default function ProductScannerPage(): JSX.Element {
           padding="lg"
           className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-none"
         >
-          <h3 className="font-bold mb-3"> نصائح لاختيار المنتجات</h3>
+          <h3 className="font-bold mb-3">{t('scanner.tipsTitle')}</h3>
           <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400 sm:grid-cols-2">
-            <p> اختاري منتجات خالية من البارابين والعطور</p>
-            <p> تأكدي من وجود واقي شمس في روتينك اليومي</p>
-            <p> ابحثي عن منتجات تحتوي على مكونات طبيعية</p>
-            <p> تجنبي المنتجات التي تحتوي على الكحول للبشرة الجافة</p>
+            <p>{t('scanner.tip1')}</p>
+            <p>{t('scanner.tip2')}</p>
+            <p>{t('scanner.tip3')}</p>
+            <p>{t('scanner.tip4')}</p>
           </div>
         </Card>
       </div>

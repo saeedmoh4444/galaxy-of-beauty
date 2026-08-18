@@ -22,58 +22,82 @@ type LeadershipRole =
 
 interface RoleDef {
   emoji: string;
-  title: string;
-  description: string;
+  title: { ar: string; en: string };
+  description: { ar: string; en: string };
   tier: 'gold' | 'silver' | 'bronze';
 }
 
 const ROLES: Record<LeadershipRole, RoleDef> = {
   franchise_owner: {
     emoji: '',
-    title: 'مالكة امتياز',
-    description: 'تملك وتدير فرعها الخاص من جالاكسي بيوتي',
+    title: { ar: 'مالكة امتياز', en: 'Franchise owner' },
+    description: {
+      ar: 'تملك وتدير فرعها الخاص من جالاكسي بيوتي',
+      en: 'Owns and runs her own Galaxy Beauty branch',
+    },
     tier: 'gold',
   },
   salon_manager: {
     emoji: '',
-    title: 'مديرة صالون',
-    description: 'تقود فريقاً من الخبيرات في صالونها',
+    title: { ar: 'مديرة صالون', en: 'Salon manager' },
+    description: {
+      ar: 'تقود فريقاً من الخبيرات في صالونها',
+      en: 'Leads a team of specialists in her salon',
+    },
     tier: 'silver',
   },
   master_technician: {
     emoji: '',
-    title: 'خبيرة رئيسية',
-    description: 'أعلى مستوى من المهارة والخبرة',
+    title: { ar: 'خبيرة رئيسية', en: 'Master technician' },
+    description: {
+      ar: 'أعلى مستوى من المهارة والخبرة',
+      en: 'The highest level of skill and experience',
+    },
     tier: 'gold',
   },
   academy_instructor: {
     emoji: '',
-    title: 'مدربة أكاديمية',
-    description: 'تعلّم الجيل القادم من خبيرات التجميل',
+    title: { ar: 'مدربة أكاديمية', en: 'Academy instructor' },
+    description: {
+      ar: 'تعلّم الجيل القادم من خبيرات التجميل',
+      en: 'Teaches the next generation of beauty experts',
+    },
     tier: 'silver',
   },
   mentor: {
     emoji: '',
-    title: 'مرشدة',
-    description: 'تشارك خبرتها مع الأخت الصغرى في برنامج الإرشاد',
+    title: { ar: 'مرشدة', en: 'Mentor' },
+    description: {
+      ar: 'تشارك خبرتها مع الأخت الصغرى في برنامج الإرشاد',
+      en: 'Shares her experience with a younger sister in the mentoring program',
+    },
     tier: 'bronze',
   },
   advisory_board: {
     emoji: '️',
-    title: 'المجلس الاستشاري',
-    description: 'قائدة في مجال التجميل والأعمال والتقنية',
+    title: { ar: 'المجلس الاستشاري', en: 'Advisory board' },
+    description: {
+      ar: 'قائدة في مجال التجميل والأعمال والتقنية',
+      en: 'A leader in beauty, business and technology',
+    },
     tier: 'gold',
   },
   community_leader: {
     emoji: '',
-    title: 'قائدة مجتمعية',
-    description: 'تنظم فعاليات المجتمع وتدعم الأخوات',
+    title: { ar: 'قائدة مجتمعية', en: 'Community leader' },
+    description: {
+      ar: 'تنظم فعاليات المجتمع وتدعم الأخوات',
+      en: 'Organizes community events and supports sisters',
+    },
     tier: 'bronze',
   },
   top_earner: {
     emoji: '',
-    title: 'الأعلى دخلاً',
-    description: 'من بين الأعلى دخلاً على المنصة هذا الشهر',
+    title: { ar: 'الأعلى دخلاً', en: 'Top earner' },
+    description: {
+      ar: 'من بين الأعلى دخلاً على المنصة هذا الشهر',
+      en: 'Among the highest earners on the platform this month',
+    },
     tier: 'gold',
   },
 };
@@ -86,20 +110,23 @@ const TIER_STYLES: Record<RoleDef['tier'], string> = {
     'border-orange-300 bg-gradient-to-br from-orange-50 to-amber-50 dark:border-orange-800 dark:from-orange-950 dark:to-amber-950',
 };
 
-const TIER_BADGE: Record<RoleDef['tier'], { emoji: string; label: string; className: string }> = {
+const TIER_BADGE: Record<
+  RoleDef['tier'],
+  { emoji: string; label: { ar: string; en: string }; className: string }
+> = {
   gold: {
     emoji: '',
-    label: 'ذهبي',
+    label: { ar: 'ذهبي', en: 'Gold' },
     className: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200',
   },
   silver: {
     emoji: '',
-    label: 'فضي',
+    label: { ar: 'فضي', en: 'Silver' },
     className: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
   },
   bronze: {
     emoji: '',
-    label: 'برونزي',
+    label: { ar: 'برونزي', en: 'Bronze' },
     className: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
   },
 };
@@ -117,6 +144,14 @@ interface SheLeadsBadgeProps {
   expanded?: boolean;
   size?: 'sm' | 'md';
   className?: string;
+  /** Text appended to the years of experience */
+  yearsExperienceText?: string;
+  /** Label prefixing the team size */
+  teamOfLabel?: string;
+  /** She Leads tagline */
+  tagline?: string;
+  /** Locale for internal role data strings */
+  locale?: 'ar' | 'en';
 }
 
 export function SheLeadsBadge({
@@ -127,6 +162,10 @@ export function SheLeadsBadge({
   teamSize,
   size = 'md',
   className = '',
+  yearsExperienceText = 'سنوات خبرة',
+  teamOfLabel = 'فريق من',
+  tagline = 'She Leads — لأن القيادة تبدأ من الداخل',
+  locale = 'ar',
 }: SheLeadsBadgeProps): JSX.Element {
   const roleDef = ROLES[role];
   const tier = TIER_BADGE[roleDef.tier];
@@ -147,7 +186,7 @@ export function SheLeadsBadge({
             tier.className,
           )}
         >
-          {tier.emoji} {tier.label}
+          {tier.emoji} {tier.label[locale]}
         </span>
       </div>
 
@@ -162,7 +201,7 @@ export function SheLeadsBadge({
           {name}
         </h4>
         <p className="text-[10px] font-medium text-text-tertiary dark:text-gray-400">
-          {roleDef.emoji} {roleDef.title}
+          {roleDef.emoji} {roleDef.title[locale]}
         </p>
       </div>
 
@@ -173,7 +212,7 @@ export function SheLeadsBadge({
           isSm ? 'text-[10px]' : 'text-xs',
         )}
       >
-        {roleDef.description}
+        {roleDef.description[locale]}
       </p>
 
       {/* Meta pills */}
@@ -185,12 +224,12 @@ export function SheLeadsBadge({
         )}
         {yearsOfExperience && (
           <span className="inline-flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 text-[10px] dark:bg-black/20 dark:text-gray-300">
-            ️ {yearsOfExperience} سنوات خبرة
+            ️ {yearsOfExperience} {yearsExperienceText}
           </span>
         )}
         {teamSize && (
           <span className="inline-flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 text-[10px] dark:bg-black/20 dark:text-gray-300">
-            فريق من {teamSize}
+            {teamOfLabel} {teamSize}
           </span>
         )}
       </div>
@@ -198,7 +237,7 @@ export function SheLeadsBadge({
       {/* She Leads tagline */}
       <div className="mt-3 border-t border-amber-200 pt-2 dark:border-amber-800">
         <p className="text-center text-[9px] font-bold text-amber-700 dark:text-amber-400">
-          She Leads — لأن القيادة تبدأ من الداخل
+          {tagline}
         </p>
       </div>
     </div>

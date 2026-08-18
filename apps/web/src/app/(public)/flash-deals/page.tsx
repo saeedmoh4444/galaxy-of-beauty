@@ -14,6 +14,7 @@ import {
 } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import Link from 'next/link';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Deal {
   id: number;
@@ -35,7 +36,9 @@ interface Deal {
 }
 
 function CountdownTimer({ endsAt }: { endsAt: string }): JSX.Element {
+  const { t } = useLocale();
   const [timeLeft, setTimeLeft] = useState('');
+  const [isEnded, setIsEnded] = useState(false);
 
   useEffect(() => {
     const update = () => {
@@ -44,29 +47,29 @@ function CountdownTimer({ endsAt }: { endsAt: string }): JSX.Element {
       const diff = end - now;
 
       if (diff <= 0) {
-        setTimeLeft('انتهى');
+        setIsEnded(true);
+        setTimeLeft(t('marketing.flash-deals.ended'));
         return;
       }
 
+      setIsEnded(false);
       const hours = Math.floor(diff / 3600000);
       const minutes = Math.floor((diff % 3600000) / 60000);
       const seconds = Math.floor((diff % 60000) / 1000);
 
       if (hours > 0) {
-        setTimeLeft(`${hours} س ${minutes} د ${seconds} ث`);
+        setTimeLeft(t('marketing.flash-deals.time-hms', { h: hours, m: minutes, s: seconds }));
       } else if (minutes > 0) {
-        setTimeLeft(`${minutes} د ${seconds} ث`);
+        setTimeLeft(t('marketing.flash-deals.time-ms', { m: minutes, s: seconds }));
       } else {
-        setTimeLeft(`${seconds} ثانية`);
+        setTimeLeft(t('marketing.flash-deals.time-s', { s: seconds }));
       }
     };
 
     update();
     const interval = setInterval(update, COUNTDOWN_INTERVAL_MS);
     return () => clearInterval(interval);
-  }, [endsAt]);
-
-  const isEnded = timeLeft === 'انتهى';
+  }, [endsAt, t]);
 
   return (
     <span
@@ -79,6 +82,7 @@ function CountdownTimer({ endsAt }: { endsAt: string }): JSX.Element {
 
 export default function FlashDealsPage(): JSX.Element {
   const { user } = useAuth();
+  const { t, locale } = useLocale();
   const {
     data: deals,
     isLoading,
@@ -119,9 +123,11 @@ export default function FlashDealsPage(): JSX.Element {
       {/* Header */}
       <div className="mb-10 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">عروض فلاش</h1>
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
+          {t('marketing.flash-deals.title')}
+        </h1>
         <p className="mt-2 text-text-secondary dark:text-gray-400">
-          عروض لفترة محدودة — الحقّي العرض قبل ما ينتهي!
+          {t('marketing.flash-deals.subtitle')}
         </p>
       </div>
 
@@ -129,12 +135,15 @@ export default function FlashDealsPage(): JSX.Element {
       {isLoading ? (
         <CardListSkeleton count={4} />
       ) : isError ? (
-        <ErrorAlert message="فشل تحميل العروض" onRetry={() => refetch()} />
+        <ErrorAlert message={t('marketing.flash-deals.load-error')} onRetry={() => refetch()} />
       ) : allDeals.length === 0 ? (
         <EmptyState
-          title="لا توجد عروض فلاش حالياً"
-          description="تحققي لاحقاً — العروض تتجدد باستمرار! "
-          action={{ label: 'تصفح الخدمات', onPress: () => window.location.assign('/services') }}
+          title={t('marketing.flash-deals.no-deals')}
+          description={t('marketing.flash-deals.no-deals-desc')}
+          action={{
+            label: t('marketing.flash-deals.browse-services'),
+            onPress: () => window.location.assign('/services'),
+          }}
         />
       ) : (
         <div className="space-y-6">
@@ -144,7 +153,10 @@ export default function FlashDealsPage(): JSX.Element {
             const soldOut = deal.currentRedemptions >= deal.maxRedemptions;
             const isClaimed = claimedIds.has(deal.id);
             const savings = deal.originalPrice - deal.dealPrice;
-            const title = deal.titleAr || deal.serviceNameAr;
+            const title =
+              locale === 'ar'
+                ? deal.titleAr || deal.serviceNameAr
+                : deal.titleEn || deal.serviceNameEn;
 
             return (
               <Card
@@ -160,7 +172,9 @@ export default function FlashDealsPage(): JSX.Element {
                     soldOut ? 'bg-gray-400' : 'bg-red-500 animate-pulse'
                   }`}
                 >
-                  {soldOut ? 'نفذت الكمية' : ' عرض فلاش'}
+                  {soldOut
+                    ? t('marketing.flash-deals.sold-out')
+                    : t('marketing.flash-deals.flash-badge')}
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-start gap-5">
@@ -190,7 +204,9 @@ export default function FlashDealsPage(): JSX.Element {
                         -{deal.discountPercent}%
                       </span>
                       <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-bold text-green-700 dark:bg-green-900 dark:text-green-300">
-                        وفر {formatCurrency(savings)}
+                        {t('marketing.flash-deals.save-amount', {
+                          amount: formatCurrency(savings),
+                        })}
                       </span>
                     </div>
 
@@ -198,7 +214,10 @@ export default function FlashDealsPage(): JSX.Element {
                     <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-text-secondary">
                       <CountdownTimer endsAt={deal.endsAt} />
                       <span>
-                        {deal.currentRedemptions} / {deal.maxRedemptions} تم الاستفادة
+                        {t('marketing.flash-deals.redemption-stats', {
+                          current: deal.currentRedemptions,
+                          max: deal.maxRedemptions,
+                        })}
                       </span>
                     </div>
 
@@ -211,11 +230,11 @@ export default function FlashDealsPage(): JSX.Element {
                     <div className="mt-4 flex flex-wrap items-center gap-3">
                       {soldOut ? (
                         <span className="rounded-lg bg-surface-muted px-4 py-2 text-sm font-semibold text-text-secondary dark:bg-gray-800">
-                          نفذت الكمية
+                          {t('marketing.flash-deals.sold-out')}
                         </span>
                       ) : isClaimed ? (
                         <span className="rounded-lg bg-green-100 px-4 py-2 text-sm font-semibold text-green-700 dark:bg-green-900 dark:text-green-300">
-                          تم الاستفادة من العرض
+                          {t('marketing.flash-deals.claimed')}
                         </span>
                       ) : user ? (
                         <Button
@@ -223,16 +242,16 @@ export default function FlashDealsPage(): JSX.Element {
                           loading={claimingId === deal.id}
                           size="sm"
                         >
-                          احجزي الآن
+                          {t('marketing.flash-deals.book-now')}
                         </Button>
                       ) : (
                         <Link href={`/login?redirect=/flash-deals`}>
-                          <Button size="sm">سجّلي دخول للاستفادة</Button>
+                          <Button size="sm">{t('marketing.flash-deals.login-to-claim')}</Button>
                         </Link>
                       )}
                       <Link href={`/services/${deal.serviceId}`}>
                         <Button variant="ghost" size="sm">
-                          تفاصيل الخدمة →
+                          {t('marketing.flash-deals.service-details')}
                         </Button>
                       </Link>
                     </div>
@@ -247,8 +266,8 @@ export default function FlashDealsPage(): JSX.Element {
       {/* Bottom CTA */}
       {allDeals.length > 0 && (
         <div className="mt-10 rounded-2xl bg-gradient-to-r from-red-500 to-orange-500 p-6 text-center text-white">
-          <p className="text-2xl font-bold"> لا تفوّتي العروض!</p>
-          <p className="mt-1 text-white/80">العروض تتجدد يومياً — تابعي صفحة العروض أول بأول</p>
+          <p className="text-2xl font-bold">{t('marketing.flash-deals.dont-miss')}</p>
+          <p className="mt-1 text-white/80">{t('marketing.flash-deals.daily-refresh')}</p>
         </div>
       )}
     </div>

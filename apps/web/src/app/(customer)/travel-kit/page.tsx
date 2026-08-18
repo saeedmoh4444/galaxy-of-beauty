@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function TravelKitPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: dests } = api.travelKit.destinations.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
   };
@@ -24,8 +26,8 @@ export default function TravelKitPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> حقيبة السفر</h1>
-          <p className="mt-1 text-sm text-text-secondary">جهزي حقيبة تجميل مثالية لرحلتكِ</p>
+          <h1 className="text-2xl font-bold">{t('travelKit.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('travelKit.subtitle')}</p>
         </div>
 
         <Card padding="lg">
@@ -44,7 +46,7 @@ export default function TravelKitPage(): JSX.Element {
             ))}
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-sm">المدة:</span>
+            <span className="text-sm">{t('travelKit.duration')}</span>
             <input
               type="range"
               min={1}
@@ -53,7 +55,9 @@ export default function TravelKitPage(): JSX.Element {
               onChange={(e) => setDays(parseInt(e.target.value))}
               className="flex-1 accent-brand-600"
             />
-            <span className="text-sm font-bold">{days} يوم</span>
+            <span className="text-sm font-bold">
+              {days} {t('travelKit.days')}
+            </span>
           </div>
         </Card>
 
@@ -61,10 +65,10 @@ export default function TravelKitPage(): JSX.Element {
           <CardListSkeleton count={4} />
         ) : kit ? (
           <Card padding="lg">
-            <h3 className="font-bold mb-3"> محتويات الحقيبة</h3>
+            <h3 className="font-bold mb-3">{t('travelKit.contents')}</h3>
             {(kit.tip as string) ? (
               <div className="mb-4 rounded-lg bg-brand-50 dark:bg-brand-950 p-3 text-sm text-brand-700">
-                <span className="font-bold"> نصيحة: </span>
+                <span className="font-bold">{t('travelKit.tipLabel')}</span>
                 {kit.tip as string}
               </div>
             ) : null}
@@ -81,11 +85,11 @@ export default function TravelKitPage(): JSX.Element {
                   </div>
                   {item.essential ? (
                     <span className="rounded-full bg-green-200 dark:bg-green-800 px-2 py-0.5 text-xs font-bold">
-                      أساسي
+                      {t('travelKit.essential')}
                     </span>
                   ) : (
                     <span className="rounded-full bg-gray-200 dark:bg-gray-700 px-2 py-0.5 text-xs">
-                      اختياري
+                      {t('travelKit.optional')}
                     </span>
                   )}
                 </div>

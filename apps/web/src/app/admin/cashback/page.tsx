@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminCashbackPage(): JSX.Element {
+  const { t } = useLocale();
   const [rate, setRate] = useState(5);
   const setRateMut = api.cashback.setRate.useMutation();
 
@@ -12,18 +14,18 @@ export default function AdminCashbackPage(): JSX.Element {
     <DashboardLayout userRole="ADMIN">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> إدارة الكاش باك</h1>
-          <p className="mt-1 text-sm text-text-secondary">تعديل نسبة الاسترداد النقدي</p>
+          <h1 className="text-2xl font-bold">{t('admin.cashback.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('admin.cashback.subtitle')}</p>
         </div>
 
         <Card padding="lg" className="text-center">
           <p className="text-6xl mb-4"></p>
-          <p className="text-sm text-text-secondary">نسبة الكاش باك الحالية</p>
+          <p className="text-sm text-text-secondary">{t('admin.cashback.current-rate')}</p>
           <p className="text-4xl font-extrabold text-brand-600 mt-2">{rate}%</p>
         </Card>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3">️ تعديل النسبة</h3>
+          <h3 className="font-bold mb-3">{t('admin.cashback.edit-rate')}</h3>
           <div className="flex gap-3">
             <input
               type="number"
@@ -34,10 +36,10 @@ export default function AdminCashbackPage(): JSX.Element {
               className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <Button onClick={() => setRateMut.mutate({ rate })} loading={setRateMut.isPending}>
-              حفظ
+              {t('button.save')}
             </Button>
           </div>
-          <p className="text-xs text-text-tertiary mt-2">النطاق المسموح: ١٪ — ٢٠٪</p>
+          <p className="text-xs text-text-tertiary mt-2">{t('admin.cashback.range-hint')}</p>
         </Card>
       </div>
     </DashboardLayout>

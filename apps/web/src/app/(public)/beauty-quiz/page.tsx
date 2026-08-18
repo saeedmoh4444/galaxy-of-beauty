@@ -3,89 +3,119 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Button, Card } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
-interface Question {
-  id: string;
-  text: string;
-  options: { label: string; value: string; icon: string }[];
-}
-
-const questions: Question[] = [
+const questions = [
   {
     id: 'occasion',
-    text: 'ما المناسبة؟',
+    text: 'marketing.beauty-quiz.q-occasion',
     options: [
-      { label: 'يومي', value: 'daily', icon: '️' },
-      { label: 'مناسبة خاصة', value: 'special', icon: '' },
-      { label: 'زفاف', value: 'wedding', icon: '' },
-      { label: 'استرخاء', value: 'relax', icon: '‍️' },
-      { label: 'تجربة جديدة', value: 'new', icon: '' },
+      { label: 'marketing.beauty-quiz.opt-daily', value: 'daily', icon: '️' },
+      { label: 'marketing.beauty-quiz.opt-special', value: 'special', icon: '' },
+      { label: 'marketing.beauty-quiz.opt-wedding', value: 'wedding', icon: '' },
+      { label: 'marketing.beauty-quiz.opt-relax', value: 'relax', icon: '‍️' },
+      { label: 'marketing.beauty-quiz.opt-new', value: 'new', icon: '' },
     ],
   },
   {
     id: 'focus',
-    text: 'على ماذا تركزين؟',
+    text: 'marketing.beauty-quiz.q-focus',
     options: [
-      { label: 'الشعر', value: 'hair', icon: '‍️' },
-      { label: 'البشرة', value: 'skin', icon: '' },
-      { label: 'المكياج', value: 'makeup', icon: '' },
-      { label: 'الأظافر', value: 'nails', icon: '' },
-      { label: 'الجسم', value: 'body', icon: '' },
+      { label: 'marketing.beauty-quiz.opt-hair', value: 'hair', icon: '‍️' },
+      { label: 'marketing.beauty-quiz.opt-skin', value: 'skin', icon: '' },
+      { label: 'marketing.beauty-quiz.opt-makeup', value: 'makeup', icon: '' },
+      { label: 'marketing.beauty-quiz.opt-nails', value: 'nails', icon: '' },
+      { label: 'marketing.beauty-quiz.opt-body', value: 'body', icon: '' },
     ],
   },
   {
     id: 'budget',
-    text: 'ميزانيتكِ التقريبية؟',
+    text: 'marketing.beauty-quiz.q-budget',
     options: [
-      { label: 'اقتصادية', value: 'low', icon: '' },
-      { label: 'متوسطة', value: 'mid', icon: '' },
-      { label: 'فاخرة', value: 'high', icon: '' },
+      { label: 'marketing.beauty-quiz.opt-low', value: 'low', icon: '' },
+      { label: 'marketing.beauty-quiz.opt-mid', value: 'mid', icon: '' },
+      { label: 'marketing.beauty-quiz.opt-high', value: 'high', icon: '' },
     ],
   },
-];
+] as const;
 
-const recommendations: Record<string, { title: string; services: string[]; link: string }> = {
+const recommendations = {
   'wedding-hair-high': {
-    title: 'إطلالة العروس الكاملة',
-    services: ['تسريحة شعر', 'مكياج عرايس', 'مانيكير', 'باديكير', 'عناية بالبشرة'],
+    title: 'marketing.beauty-quiz.rec-wedding-hair-high',
+    services: [
+      'marketing.beauty-quiz.svc-hair-styling',
+      'marketing.beauty-quiz.svc-bridal-makeup',
+      'marketing.beauty-quiz.svc-manicure',
+      'marketing.beauty-quiz.svc-pedicure',
+      'marketing.beauty-quiz.svc-skincare',
+    ],
     link: '/bridal-concierge',
   },
   'wedding-makeup-high': {
-    title: 'مكياج وإطلالة العروس',
-    services: ['مكياج عرايس', 'تسريحة شعر', 'تركيب رموش', 'تبييض أسنان'],
+    title: 'marketing.beauty-quiz.rec-wedding-makeup-high',
+    services: [
+      'marketing.beauty-quiz.svc-bridal-makeup',
+      'marketing.beauty-quiz.svc-hair-styling',
+      'marketing.beauty-quiz.svc-lashes',
+      'marketing.beauty-quiz.svc-teeth-whitening',
+    ],
     link: '/bridal-concierge',
   },
   'special-hair-mid': {
-    title: 'إطلالة المناسبات',
-    services: ['تسريحة شعر', 'مكياج سهرة', 'مانيكير'],
+    title: 'marketing.beauty-quiz.rec-special-hair-mid',
+    services: [
+      'marketing.beauty-quiz.svc-hair-styling',
+      'marketing.beauty-quiz.svc-evening-makeup',
+      'marketing.beauty-quiz.svc-manicure',
+    ],
     link: '/services',
   },
   'special-makeup-mid': {
-    title: 'مكياج المناسبات الخاصة',
-    services: ['مكياج سهرة', 'تركيب رموش', 'تحديد حواجب'],
+    title: 'marketing.beauty-quiz.rec-special-makeup-mid',
+    services: [
+      'marketing.beauty-quiz.svc-evening-makeup',
+      'marketing.beauty-quiz.svc-lashes',
+      'marketing.beauty-quiz.svc-brow-shaping',
+    ],
     link: '/services',
   },
   'daily-skin-low': {
-    title: 'عناية يومية بالبشرة',
-    services: ['تنظيف بشرة', 'ماسك وجه', 'عناية بالبشرة'],
+    title: 'marketing.beauty-quiz.rec-daily-skin-low',
+    services: [
+      'marketing.beauty-quiz.svc-facial-cleanse',
+      'marketing.beauty-quiz.svc-face-mask',
+      'marketing.beauty-quiz.svc-skincare',
+    ],
     link: '/services',
   },
   'relax-body-mid': {
-    title: 'جلسة استرخاء وعناية',
-    services: ['مساج', 'حمام مغربي', 'عناية بالجسم'],
+    title: 'marketing.beauty-quiz.rec-relax-body-mid',
+    services: [
+      'marketing.beauty-quiz.svc-massage',
+      'marketing.beauty-quiz.svc-moroccan-bath',
+      'marketing.beauty-quiz.svc-body-care',
+    ],
     link: '/services',
   },
   default: {
-    title: 'باقة الجمال المتكاملة',
-    services: ['مكياج', 'تسريحة شعر', 'مانيكير', 'عناية بالبشرة'],
+    title: 'marketing.beauty-quiz.rec-default',
+    services: [
+      'marketing.beauty-quiz.svc-makeup',
+      'marketing.beauty-quiz.svc-hair-styling',
+      'marketing.beauty-quiz.svc-manicure',
+      'marketing.beauty-quiz.svc-skincare',
+    ],
     link: '/services',
   },
-};
+} as const;
+
+type Recommendation = (typeof recommendations)[keyof typeof recommendations];
 
 export default function BeautyQuizPage(): JSX.Element {
+  const { t } = useLocale();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [result, setResult] = useState<(typeof recommendations)[string] | null>(null);
+  const [result, setResult] = useState<Recommendation | null>(null);
 
   const handleAnswer = (questionId: string, value: string) => {
     const newAnswers = { ...answers, [questionId]: value };
@@ -93,7 +123,8 @@ export default function BeautyQuizPage(): JSX.Element {
     if (step < questions.length - 1) setStep(step + 1);
     else {
       const key = `${newAnswers['occasion']}-${newAnswers['focus']}-${newAnswers['budget']}`;
-      setResult(recommendations[key] || recommendations['default'] || null);
+      const recMap: Record<string, Recommendation | undefined> = recommendations;
+      setResult(recMap[key] ?? recommendations.default);
     }
   };
 
@@ -108,22 +139,22 @@ export default function BeautyQuizPage(): JSX.Element {
       <div className="mx-auto max-w-lg px-4 py-16 text-center">
         <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
-          {result.title}
+          {t(result.title)}
         </h1>
-        <p className="mt-2 text-text-secondary">بناءً على إجاباتكِ، نرشح لكِ:</p>
+        <p className="mt-2 text-text-secondary">{t('marketing.beauty-quiz.result-title')}</p>
         <div className="mt-6 space-y-2">
           {result.services.map((s) => (
             <Card key={s} padding="sm">
-              <p className="font-medium text-text-primary dark:text-gray-100">{s}</p>
+              <p className="font-medium text-text-primary dark:text-gray-100">{t(s)}</p>
             </Card>
           ))}
         </div>
         <div className="mt-8 flex gap-3 justify-center">
           <Link href={result.link}>
-            <Button size="lg">تصفحي الخدمات</Button>
+            <Button size="lg">{t('marketing.beauty-quiz.browse-services')}</Button>
           </Link>
           <Button variant="outline" onClick={reset}>
-            إعادة الاختبار
+            {t('marketing.beauty-quiz.retry')}
           </Button>
         </div>
       </div>
@@ -146,7 +177,7 @@ export default function BeautyQuizPage(): JSX.Element {
           {step + 1} / {questions.length}
         </p>
       </div>
-      <h2 className="mb-6 text-2xl font-bold text-text-primary dark:text-gray-100">{q.text}</h2>
+      <h2 className="mb-6 text-2xl font-bold text-text-primary dark:text-gray-100">{t(q.text)}</h2>
       <div className="space-y-3">
         {q.options.map((o) => (
           <button
@@ -156,7 +187,7 @@ export default function BeautyQuizPage(): JSX.Element {
           >
             <span className="text-2xl">{o.icon}</span>
             <span className="text-lg font-medium text-text-primary dark:text-gray-100">
-              {o.label}
+              {t(o.label)}
             </span>
           </button>
         ))}

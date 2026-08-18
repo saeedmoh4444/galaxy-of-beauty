@@ -20,27 +20,60 @@ type HearingFeature =
 
 interface FeatureDef {
   emoji: string;
-  label: string;
-  detail: string;
+  label: { ar: string; en: string };
+  detail: { ar: string; en: string };
 }
 
 const FEATURES: Record<HearingFeature, FeatureDef> = {
-  hearing_loop: { emoji: '', label: 'حلقة سمعية', detail: 'نظام تضخيم صوت للأجهزة السمعية' },
-  written_communication: { emoji: '', label: 'تواصل كتابي', detail: 'ورقة وقلم للتواصل الكتابي' },
-  visual_alerts: { emoji: '', label: 'تنبيهات بصرية', detail: 'إشعارات ضوئية بدل الصوتية' },
-  lip_reading: { emoji: '', label: 'قراءة شفاه', detail: 'خبيرات يتحدثن بوضوح للقراءة' },
-  sign_language: { emoji: '', label: 'لغة إشارة', detail: 'خبيرات بلغة الإشارة' },
-  quiet_environment: { emoji: '', label: 'بيئة هادئة', detail: 'ضوضاء منخفضة للتركيز' },
+  hearing_loop: {
+    emoji: '',
+    label: { ar: 'حلقة سمعية', en: 'Hearing loop' },
+    detail: { ar: 'نظام تضخيم صوت للأجهزة السمعية', en: 'Sound amplification for hearing devices' },
+  },
+  written_communication: {
+    emoji: '',
+    label: { ar: 'تواصل كتابي', en: 'Written communication' },
+    detail: { ar: 'ورقة وقلم للتواصل الكتابي', en: 'Pen and paper for written communication' },
+  },
+  visual_alerts: {
+    emoji: '',
+    label: { ar: 'تنبيهات بصرية', en: 'Visual alerts' },
+    detail: { ar: 'إشعارات ضوئية بدل الصوتية', en: 'Light notifications instead of sound' },
+  },
+  lip_reading: {
+    emoji: '',
+    label: { ar: 'قراءة شفاه', en: 'Lip reading' },
+    detail: { ar: 'خبيرات يتحدثن بوضوح للقراءة', en: 'Technicians speak clearly for reading' },
+  },
+  sign_language: {
+    emoji: '',
+    label: { ar: 'لغة إشارة', en: 'Sign language' },
+    detail: { ar: 'خبيرات بلغة الإشارة', en: 'Sign language technicians' },
+  },
+  quiet_environment: {
+    emoji: '',
+    label: { ar: 'بيئة هادئة', en: 'Quiet environment' },
+    detail: { ar: 'ضوضاء منخفضة للتركيز', en: 'Low noise for focus' },
+  },
 };
 
 interface HearingAssistanceBadgeProps {
   features: HearingFeature[];
+  /** Display language for built-in labels */
+  locale?: 'ar' | 'en';
+  title?: string;
+  supportCountText?: string;
+  footerText?: string;
   className?: string;
 }
 
 export function HearingAssistanceBadge({
   features,
   className = '',
+  locale = 'ar',
+  title = 'مساعدة سمعية',
+  supportCountText = 'وسائل دعم سمعي',
+  footerText = 'نسمعكِ بكل الطرق — الجمال للجميع',
 }: HearingAssistanceBadgeProps): JSX.Element | null {
   if (!features.length) return null;
 
@@ -54,9 +87,9 @@ export function HearingAssistanceBadge({
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true"></span>
         <div>
-          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">مساعدة سمعية</h4>
+          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">
-            {features.length} وسائل دعم سمعي
+            {features.length} {supportCountText}
           </p>
         </div>
       </div>
@@ -73,17 +106,17 @@ export function HearingAssistanceBadge({
                 {def.emoji}
               </span>
               <div>
-                <p className="text-[10px] font-bold text-sky-800 dark:text-sky-200">{def.label}</p>
-                <p className="text-[9px] text-sky-600 dark:text-sky-400">{def.detail}</p>
+                <p className="text-[10px] font-bold text-sky-800 dark:text-sky-200">
+                  {def.label[locale]}
+                </p>
+                <p className="text-[9px] text-sky-600 dark:text-sky-400">{def.detail[locale]}</p>
               </div>
             </div>
           );
         })}
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-sky-600 dark:text-sky-400">
-        نسمعكِ بكل الطرق — الجمال للجميع
-      </p>
+      <p className="mt-2 text-center text-[9px] text-sky-600 dark:text-sky-400">{footerText}</p>
     </div>
   );
 }

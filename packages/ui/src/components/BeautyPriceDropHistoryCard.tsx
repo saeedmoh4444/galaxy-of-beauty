@@ -20,11 +20,17 @@ interface PriceDrop {
 
 interface BeautyPriceDropHistoryCardProps {
   drops: PriceDrop[];
+  title?: string;
+  savingsPrefix?: string;
+  currency?: string;
   className?: string;
 }
 
 export function BeautyPriceDropHistoryCard({
   drops,
+  title = 'انخفاضات الأسعار',
+  savingsPrefix = 'وفرتِ',
+  currency = 'ر.س',
   className = '',
 }: BeautyPriceDropHistoryCardProps): JSX.Element | null {
   if (!drops.length) return null;
@@ -41,11 +47,9 @@ export function BeautyPriceDropHistoryCard({
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true"></span>
           <div>
-            <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-              انخفاضات الأسعار
-            </h4>
+            <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
             <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
-              وفرتِ {totalSaved} ر.س
+              {savingsPrefix} {totalSaved} {currency}
             </p>
           </div>
         </div>
@@ -65,7 +69,7 @@ export function BeautyPriceDropHistoryCard({
               {d.oldPrice}
             </span>
             <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
-              {d.newPrice} ر.س
+              {d.newPrice} {currency}
             </span>
           </div>
         ))}

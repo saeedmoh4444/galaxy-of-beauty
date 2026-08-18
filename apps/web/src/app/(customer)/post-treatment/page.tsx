@@ -3,68 +3,86 @@
 import { useState } from 'react';
 import { PageContainer, PageTitle } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
 const TREATMENTS: Record<
   string,
-  { emoji: string; label: string; aftercare: string[]; timeline: { day: string; action: string }[] }
+  {
+    emoji: string;
+    label: TranslationKey;
+    aftercare: TranslationKey[];
+    timeline: { day: TranslationKey; action: TranslationKey }[];
+  }
 > = {
   facial: {
     emoji: '',
-    label: 'عناية بالبشرة',
-    aftercare: ['لا تلمسي وجهكِ', 'تجنبي المكياج ٢٤ ساعة', 'استخدمي واقي شمس', 'اشربي ماء بكثرة'],
+    label: 'postTreatment.treat.facial',
+    aftercare: [
+      'postTreatment.care.facial1',
+      'postTreatment.care.facial2',
+      'postTreatment.care.facial3',
+      'postTreatment.care.facial4',
+    ],
     timeline: [
-      { day: 'اليوم 1', action: 'لا تغسلي وجهكِ — اتركي المنتجات' },
-      { day: 'اليوم 2-3', action: 'غسول لطيف + مرطب' },
-      { day: 'اليوم 4-7', action: 'عودي لروتينك الطبيعي' },
+      { day: 'postTreatment.day1', action: 'postTreatment.step.facial1' },
+      { day: 'postTreatment.day2_3', action: 'postTreatment.step.facial2' },
+      { day: 'postTreatment.day4_7', action: 'postTreatment.step.facial3' },
     ],
   },
   waxing: {
     emoji: '️',
-    label: 'إزالة شعر',
-    aftercare: ['تجنبي الشمس ٤٨ ساعة', 'لا تستخدمي مقشر', 'ارتدي ملابس قطنية', 'رطبي المنطقة'],
+    label: 'postTreatment.treat.waxing',
+    aftercare: [
+      'postTreatment.care.waxing1',
+      'postTreatment.care.waxing2',
+      'postTreatment.care.waxing3',
+      'postTreatment.care.waxing4',
+    ],
     timeline: [
-      { day: 'اليوم 1', action: 'لا تلمسي المنطقة — تجنبي الحرارة' },
-      { day: 'اليوم 2-3', action: 'ترطيب خفيف + ملابس فضفاضة' },
-      { day: 'اليوم 4+', action: 'تقشير لطيف لمنع الشعر تحت الجلد' },
+      { day: 'postTreatment.day1', action: 'postTreatment.step.waxing1' },
+      { day: 'postTreatment.day2_3', action: 'postTreatment.step.waxing2' },
+      { day: 'postTreatment.day4_plus', action: 'postTreatment.step.waxing3' },
     ],
   },
   hair_color: {
     emoji: '‍️',
-    label: 'صبغ شعر',
+    label: 'postTreatment.treat.hairColor',
     aftercare: [
-      'لا تغسلي شعركِ ٤٨ ساعة',
-      'استخدمي شامبو خالي من الكبريتات',
-      'تجنبي الحرارة',
-      'استخدمي بلسم مرطب',
+      'postTreatment.care.hairColor1',
+      'postTreatment.care.hairColor2',
+      'postTreatment.care.hairColor3',
+      'postTreatment.care.hairColor4',
     ],
     timeline: [
-      { day: 'اليوم 1-2', action: 'لا تغسلي — ثبتي اللون' },
-      { day: 'اليوم 3-5', action: 'غسيل بماء بارد + بلسم' },
-      { day: 'اليوم 6+', action: 'روتين طبيعي مع حماية من الحرارة' },
+      { day: 'postTreatment.day1_2', action: 'postTreatment.step.hairColor1' },
+      { day: 'postTreatment.day3_5', action: 'postTreatment.step.hairColor2' },
+      { day: 'postTreatment.day6_plus', action: 'postTreatment.step.hairColor3' },
     ],
   },
   nails: {
     emoji: '',
-    label: 'أظافر',
+    label: 'postTreatment.treat.nails',
     aftercare: [
-      'تجنبي الماء الساخن',
-      'استخدمي كريم يدين',
-      'لا تستخدمي أظافركِ كأدوات',
-      'زيوت للأظافر',
+      'postTreatment.care.nails1',
+      'postTreatment.care.nails2',
+      'postTreatment.care.nails3',
+      'postTreatment.care.nails4',
     ],
     timeline: [
-      { day: 'اليوم 1', action: 'حافظي على جفاف الأظافر' },
-      { day: 'اليوم 2-7', action: 'رطبي يومياً + زيت للأظافر' },
-      { day: 'الأسبوع 2+', action: 'لمسات تصحيحية عند الحاجة' },
+      { day: 'postTreatment.day1', action: 'postTreatment.step.nails1' },
+      { day: 'postTreatment.day2_7', action: 'postTreatment.step.nails2' },
+      { day: 'postTreatment.week2_plus', action: 'postTreatment.step.nails3' },
     ],
   },
 };
 
 export default function PostTreatmentPage(): JSX.Element {
+  const { t } = useLocale();
   const [selected, setSelected] = useState('facial');
   const [completed, setCompleted] = useState<string[]>([]);
-  const t = TREATMENTS[selected]!;
-  const progress = Math.round((completed.length / t.timeline.length) * 100);
+  const treat = TREATMENTS[selected]!;
+  const progress = Math.round((completed.length / treat.timeline.length) * 100);
   const toggleDay = (day: string) => {
     if (completed.includes(day)) setCompleted(completed.filter((x) => x !== day));
     else setCompleted([...completed, day]);
@@ -73,7 +91,7 @@ export default function PostTreatmentPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="default">
-        <PageTitle title="‍️ متابعة ما بعد العلاج" subtitle="تعليمات العناية بعد كل خدمة" />
+        <PageTitle title={t('postTreatment.title')} subtitle={t('postTreatment.subtitle')} />
 
         <div className="mb-6 flex gap-2">
           {Object.entries(TREATMENTS).map(([key, val]) => (
@@ -88,7 +106,7 @@ export default function PostTreatmentPage(): JSX.Element {
             >
               <span className="text-2xl">{val.emoji}</span>
               <p className="mt-1 text-xs font-semibold text-text-primary dark:text-gray-100">
-                {val.label}
+                {t(val.label)}
               </p>
             </button>
           ))}
@@ -96,12 +114,14 @@ export default function PostTreatmentPage(): JSX.Element {
 
         <div className="rounded-2xl border border-gray-100 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
           <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
-            {t.emoji} {t.label}
+            {treat.emoji} {t(treat.label)}
           </h3>
 
           <div className="mt-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-bold text-text-primary dark:text-gray-100">التقدم</span>
+              <span className="text-sm font-bold text-text-primary dark:text-gray-100">
+                {t('postTreatment.progress')}
+              </span>
               <span className="text-sm font-bold text-rose-600 dark:text-rose-400">
                 {progress}%
               </span>
@@ -115,24 +135,24 @@ export default function PostTreatmentPage(): JSX.Element {
           </div>
 
           <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
-            تعليمات مهمة
+            {t('postTreatment.important')}
           </h4>
           <div className="mt-2 space-y-1">
-            {t.aftercare.map((a, i) => (
+            {treat.aftercare.map((a, i) => (
               <p
                 key={i}
                 className="flex items-center gap-2 text-sm text-text-secondary dark:text-gray-400"
               >
-                <span>•</span> {a}
+                <span>•</span> {t(a)}
               </p>
             ))}
           </div>
 
           <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
-            الجدول الزمني
+            {t('postTreatment.timelineTitle')}
           </h4>
           <div className="mt-2 space-y-2">
-            {t.timeline.map((tl, i) => (
+            {treat.timeline.map((tl, i) => (
               <button
                 key={i}
                 type="button"
@@ -148,9 +168,9 @@ export default function PostTreatmentPage(): JSX.Element {
                   <p
                     className={`text-sm font-bold ${completed.includes(tl.day) ? 'text-emerald-700 dark:text-emerald-300' : 'text-text-primary dark:text-gray-200'}`}
                   >
-                    {tl.day}
+                    {t(tl.day)}
                   </p>
-                  <p className="text-xs text-text-tertiary dark:text-gray-500">{tl.action}</p>
+                  <p className="text-xs text-text-tertiary dark:text-gray-500">{t(tl.action)}</p>
                 </div>
               </button>
             ))}

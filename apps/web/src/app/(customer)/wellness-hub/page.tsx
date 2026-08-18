@@ -3,8 +3,10 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, DashboardSkeleton, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function WellnessHubPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data, isLoading, isError, refetch } = api.wellnessHub.dashboard.useQuery();
 
   if (isLoading)
@@ -19,7 +21,7 @@ export default function WellnessHubPage(): JSX.Element {
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-5xl space-y-6">
-          <ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('wellnessHub.err.load')} onRetry={() => refetch()} />
         </div>
       </DashboardLayout>
     );
@@ -29,10 +31,8 @@ export default function WellnessHubPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> مركز العافية</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            نظرة شاملة على صحتكِ وجمالكِ في مكان واحد
-          </p>
+          <h1 className="text-2xl font-bold">{t('wellnessHub.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('wellnessHub.subtitle')}</p>
         </div>
 
         {/* Cycle Card */}
@@ -41,10 +41,10 @@ export default function WellnessHubPage(): JSX.Element {
             <span className="text-4xl">{d!.cycle.phase?.emoji}</span>
             <h3 className="font-bold text-lg mt-2">{d!.cycle.phase?.name}</h3>
             <p className="text-sm text-text-secondary">
-              اليوم {d!.cycle.currentDay} من {d!.cycle.cycleLength}
+              {t('wellnessHub.cycleDay', { day: d!.cycle.currentDay, total: d!.cycle.cycleLength })}
             </p>
             <p className="text-xs text-brand-600 mt-1">
-              ️ الدورة القادمة بعد {d!.cycle.daysUntilNext} يوم
+              ️ {t('wellnessHub.nextPeriod', { days: d!.cycle.daysUntilNext })}
             </p>
           </Card>
         )}
@@ -55,36 +55,36 @@ export default function WellnessHubPage(): JSX.Element {
             <p className="text-2xl font-extrabold">
               {d?.todayMood ? d.todayMood.mood + '/5' : '—'}
             </p>
-            <p className="text-xs text-text-secondary">مزاج اليوم</p>
+            <p className="text-xs text-text-secondary">{t('wellnessHub.stat.mood')}</p>
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-2xl font-extrabold text-blue-600">
               {d?.todayMood ? String(d.todayMood.energy) + '/10' : '—'}
             </p>
-            <p className="text-xs text-text-secondary">الطاقة</p>
+            <p className="text-xs text-text-secondary">{t('wellnessHub.stat.energy')}</p>
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-2xl font-extrabold text-purple-600">
               {d?.todayMood ? String(d.todayMood.sleepHours) + 'h' : '—'}
             </p>
-            <p className="text-xs text-text-secondary">النوم</p>
+            <p className="text-xs text-text-secondary">{t('wellnessHub.stat.sleep')}</p>
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-2xl font-extrabold text-cyan-600">
               {d?.todayMood ? String(d.todayMood.waterGlasses) + '' : '—'}
             </p>
-            <p className="text-xs text-text-secondary">الماء</p>
+            <p className="text-xs text-text-secondary">{t('wellnessHub.stat.water')}</p>
           </Card>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Skin Analysis */}
           <Card padding="lg">
-            <h3 className="font-bold mb-3"> تحليل البشرة</h3>
+            <h3 className="font-bold mb-3">{t('wellnessHub.skinTitle')}</h3>
             {d?.skin ? (
               <div className="space-y-2">
                 <p className="text-sm">
-                  <span className="text-text-secondary">نوع البشرة:</span>{' '}
+                  <span className="text-text-secondary">{t('wellnessHub.skinTypeLabel')}</span>{' '}
                   <span className="font-bold">{d.skin.skinType}</span>
                 </p>
                 <div className="flex flex-wrap gap-1">
@@ -100,10 +100,10 @@ export default function WellnessHubPage(): JSX.Element {
               </div>
             ) : (
               <div>
-                <p className="text-sm text-text-tertiary">لم تحللي بشرتكِ بعد</p>
+                <p className="text-sm text-text-tertiary">{t('wellnessHub.skinEmpty')}</p>
                 <Link href="/skin-analysis">
                   <Button size="sm" className="mt-2">
-                    حللي بشرتكِ
+                    {t('wellnessHub.skinCta')}
                   </Button>
                 </Link>
               </div>
@@ -112,11 +112,11 @@ export default function WellnessHubPage(): JSX.Element {
 
           {/* Weekly Summary */}
           <Card padding="lg">
-            <h3 className="font-bold mb-3"> ملخص الأسبوع</h3>
+            <h3 className="font-bold mb-3">{t('wellnessHub.weeklyTitle')}</h3>
             {d?.weekly && d.weekly.checkinCount > 0 ? (
               <div className="space-y-3">
                 <div>
-                  <p className="text-xs text-text-secondary mb-1">متوسط المزاج</p>
+                  <p className="text-xs text-text-secondary mb-1">{t('wellnessHub.avgMood')}</p>
                   <div className="h-2 bg-surface-muted rounded-full">
                     <div
                       className="h-2 bg-amber-500 rounded-full"
@@ -125,7 +125,7 @@ export default function WellnessHubPage(): JSX.Element {
                   </div>
                 </div>
                 <div>
-                  <p className="text-xs text-text-secondary mb-1">متوسط الطاقة</p>
+                  <p className="text-xs text-text-secondary mb-1">{t('wellnessHub.avgEnergy')}</p>
                   <div className="h-2 bg-surface-muted rounded-full">
                     <div
                       className="h-2 bg-blue-500 rounded-full"
@@ -134,33 +134,36 @@ export default function WellnessHubPage(): JSX.Element {
                   </div>
                 </div>
                 <p className="text-xs text-text-tertiary">
-                  {d.weekly.checkinCount} تقييم هذا الأسبوع
+                  {t('wellnessHub.checkins', { count: d.weekly.checkinCount })}
                 </p>
               </div>
             ) : (
-              <p className="text-sm text-text-tertiary">سجلي تقييمكِ اليومي</p>
+              <p className="text-sm text-text-tertiary">{t('wellnessHub.weeklyEmpty')}</p>
             )}
           </Card>
         </div>
 
         {/* Journal */}
         <Card padding="lg">
-          <h3 className="font-bold mb-3"> آخر اليوميات ({d?.journalCount ?? 0})</h3>
+          <h3 className="font-bold mb-3">
+            {t('wellnessHub.journalTitle', { count: d?.journalCount ?? 0 })}
+          </h3>
           {d?.recentJournals?.length ? (
             d.recentJournals.map((j) => (
               <div key={j.id} className="border-b py-2 last:border-0">
                 <p className="text-sm">{j.content}</p>
                 <p className="text-xs text-text-tertiary mt-1">
-                  {new Date(j.date).toLocaleDateString('ar-SA')} · مزاج: {j.mood ?? '—'}/5
+                  {new Date(j.date).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA')} ·{' '}
+                  {t('wellnessHub.moodLabel')} {j.mood ?? '—'}/5
                 </p>
               </div>
             ))
           ) : (
-            <p className="text-sm text-text-tertiary">لا توجد يوميات</p>
+            <p className="text-sm text-text-tertiary">{t('wellnessHub.journalEmpty')}</p>
           )}
           <Link href="/beauty-journal">
             <Button size="sm" variant="outline" className="w-full mt-3">
-              كل اليوميات
+              {t('wellnessHub.allJournals')}
             </Button>
           </Link>
         </Card>
@@ -170,25 +173,25 @@ export default function WellnessHubPage(): JSX.Element {
           <Link href="/self-care">
             <Card hover padding="md" className="text-center">
               <span className="text-2xl"></span>
-              <p className="text-xs font-medium mt-1">تقييم اليوم</p>
+              <p className="text-xs font-medium mt-1">{t('wellnessHub.action.today')}</p>
             </Card>
           </Link>
           <Link href="/cycle-tracker">
             <Card hover padding="md" className="text-center">
               <span className="text-2xl"></span>
-              <p className="text-xs font-medium mt-1">الدورة</p>
+              <p className="text-xs font-medium mt-1">{t('wellnessHub.action.cycle')}</p>
             </Card>
           </Link>
           <Link href="/skin-analysis">
             <Card hover padding="md" className="text-center">
               <span className="text-2xl"></span>
-              <p className="text-xs font-medium mt-1">تحليل البشرة</p>
+              <p className="text-xs font-medium mt-1">{t('wellnessHub.action.skin')}</p>
             </Card>
           </Link>
           <Link href="/wellness-tracker">
             <Card hover padding="md" className="text-center">
               <span className="text-2xl"></span>
-              <p className="text-xs font-medium mt-1">العافية</p>
+              <p className="text-xs font-medium mt-1">{t('wellnessHub.action.wellness')}</p>
             </Card>
           </Link>
         </div>

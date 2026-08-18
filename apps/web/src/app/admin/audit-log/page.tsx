@@ -12,21 +12,24 @@ import {
   Pagination,
   PageContainer,
 } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
+import { type TranslationKey } from '@galaxy/shared';
 
-const ACTION_OPTIONS = [
-  { value: '', label: 'الكل' },
-  { value: 'LOGIN_SUCCESS', label: ' تسجيل دخول' },
-  { value: 'SUSPEND_USER', label: ' تعليق مستخدم' },
-  { value: 'VERIFY_KYC', label: ' توثيق فنية' },
-  { value: 'UPDATE_CATEGORY', label: ' تعديل قسم' },
-  { value: 'UPDATE_SERVICE', label: ' تعديل خدمة' },
-  { value: 'CREATE_PROMO', label: '️ إنشاء كود خصم' },
-  { value: 'REFUND_PAYMENT', label: ' استرداد مبلغ' },
-  { value: 'MAINTENANCE_MODE', label: ' وضع الصيانة' },
-  { value: 'FEATURE_FLAG_CHANGED', label: ' تغيير خاصية' },
+const ACTION_OPTIONS: Array<{ value: string; labelKey: TranslationKey }> = [
+  { value: '', labelKey: 'admin.all' },
+  { value: 'LOGIN_SUCCESS', labelKey: 'admin.audit-log.action-login' },
+  { value: 'SUSPEND_USER', labelKey: 'admin.audit-log.action-suspend-user' },
+  { value: 'VERIFY_KYC', labelKey: 'admin.audit-log.action-verify-kyc' },
+  { value: 'UPDATE_CATEGORY', labelKey: 'admin.audit-log.action-update-category' },
+  { value: 'UPDATE_SERVICE', labelKey: 'admin.audit-log.action-update-service' },
+  { value: 'CREATE_PROMO', labelKey: 'admin.audit-log.action-create-promo' },
+  { value: 'REFUND_PAYMENT', labelKey: 'admin.audit-log.action-refund-payment' },
+  { value: 'MAINTENANCE_MODE', labelKey: 'admin.audit-log.action-maintenance-mode' },
+  { value: 'FEATURE_FLAG_CHANGED', labelKey: 'admin.audit-log.action-feature-flag' },
 ];
 
 export default function AuditLogPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const [page, setPage] = useState(1);
   const [actionFilter, setActionFilter] = useState('');
   const [targetFilter, setTargetFilter] = useState('');
@@ -55,8 +58,8 @@ export default function AuditLogPage(): JSX.Element {
     <PageContainer width="wide">
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> سجل التدقيق</h1>
-          <p className="mt-1 text-sm text-text-secondary">جميع إجراءات المشرفين في المنصة</p>
+          <h1 className="text-2xl font-bold">{t('admin.audit-log.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('admin.audit-log.subtitle')}</p>
         </div>
 
         {/* Filters */}
@@ -67,7 +70,7 @@ export default function AuditLogPage(): JSX.Element {
                 htmlFor="al-action-filter"
                 className="mb-1 block text-xs font-medium text-text-secondary"
               >
-                الإجراء
+                {t('admin.audit-log.action-header')}
               </label>
               <select
                 id="al-action-filter"
@@ -80,14 +83,14 @@ export default function AuditLogPage(): JSX.Element {
               >
                 {ACTION_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>
-                    {o.label}
+                    {t(o.labelKey)}
                   </option>
                 ))}
               </select>
             </div>
             <Input
-              label="نوع الهدف"
-              placeholder="مثال: User, Booking"
+              label={t('admin.audit-log.target-type')}
+              placeholder={t('admin.audit-log.target-placeholder')}
               value={targetFilter}
               onChange={(e) => {
                 setTargetFilter(e.target.value);
@@ -95,7 +98,7 @@ export default function AuditLogPage(): JSX.Element {
               }}
             />
             <Input
-              label="رقم المشرف"
+              label={t('admin.audit-log.admin-id')}
               placeholder="Admin ID"
               value={adminFilter}
               onChange={(e) => {
@@ -114,7 +117,7 @@ export default function AuditLogPage(): JSX.Element {
                   setPage(1);
                 }}
               >
-                مسح الفلاتر
+                {t('admin.audit-log.clear-filters')}
               </Button>
             </div>
           </div>
@@ -124,9 +127,12 @@ export default function AuditLogPage(): JSX.Element {
         {isLoading ? (
           <TableSkeleton rows={5} cols={6} />
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل سجل التدقيق" onRetry={() => refetch()} />
+          <ErrorAlert message={t('admin.audit-log.load-error')} onRetry={() => refetch()} />
         ) : logs.length === 0 ? (
-          <EmptyState title="لا توجد سجلات" description="لم يتم تسجيل أي إجراءات إدارية بعد" />
+          <EmptyState
+            title={t('admin.audit-log.empty')}
+            description={t('admin.audit-log.empty-desc')}
+          />
         ) : (
           <>
             <Card padding="none">
@@ -135,11 +141,11 @@ export default function AuditLogPage(): JSX.Element {
                   <thead className="border-b border-edge bg-surface-muted text-xs text-text-secondary">
                     <tr>
                       <th className="px-4 py-3 text-right">#</th>
-                      <th className="px-4 py-3 text-right">الإجراء</th>
-                      <th className="px-4 py-3 text-right">النوع</th>
-                      <th className="px-4 py-3 text-right">الهدف</th>
-                      <th className="px-4 py-3 text-right">المشرف</th>
-                      <th className="px-4 py-3 text-right">التاريخ</th>
+                      <th className="px-4 py-3 text-right">{t('admin.audit-log.action-header')}</th>
+                      <th className="px-4 py-3 text-right">{t('admin.audit-log.type-header')}</th>
+                      <th className="px-4 py-3 text-right">{t('admin.audit-log.target-header')}</th>
+                      <th className="px-4 py-3 text-right">{t('admin.audit-log.admin-header')}</th>
+                      <th className="px-4 py-3 text-right">{t('admin.audit-log.date-header')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-edge-muted">
@@ -165,7 +171,9 @@ export default function AuditLogPage(): JSX.Element {
                           #{log.adminId as number}
                         </td>
                         <td className="px-4 py-2.5 text-xs text-text-tertiary" dir="ltr">
-                          {new Date(log.createdAt).toLocaleString('ar-SA')}
+                          {new Date(log.createdAt).toLocaleString(
+                            locale === 'en' ? 'en-GB' : 'ar-SA',
+                          )}
                         </td>
                       </tr>
                     ))}

@@ -12,6 +12,7 @@ import {
   formatCurrency,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 import { useToast } from '@galaxy/ui';
 
 type SavingsGoal = {
@@ -23,25 +24,26 @@ type SavingsGoal = {
 };
 
 export default function SavingsGoalsPage(): JSX.Element {
+  const { t } = useLocale();
   const { addToast } = useToast();
   const { data, isLoading, isError, refetch } = api.savingsGoals.list.useQuery();
   const createMut = api.savingsGoals.create.useMutation({
     onSuccess: () => {
       refetch();
       setShowAdd(false);
-      addToast('success', 'تم إنشاء الهدف');
+      addToast('success', t('savingsGoals.toast.created'));
     },
   });
   const addFundsMut = api.savingsGoals.addFunds.useMutation({
     onSuccess: () => {
       refetch();
-      addToast('success', 'تمت الإضافة');
+      addToast('success', t('savingsGoals.toast.added'));
     },
   });
   const deleteMut = api.savingsGoals.delete.useMutation({
     onSuccess: () => {
       refetch();
-      addToast('success', 'تم الحذف');
+      addToast('success', t('savingsGoals.toast.deleted'));
     },
   });
   const [showAdd, setShowAdd] = useState(false);
@@ -55,18 +57,21 @@ export default function SavingsGoalsPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold"> أهداف الادخار</h1>
-            <p className="text-sm text-text-secondary mt-1">ادخري لخدمات أحلامكِ وحققي أهدافكِ</p>
+            <h1 className="text-2xl font-bold">{t('savingsGoals.title')}</h1>
+            <p className="text-sm text-text-secondary mt-1">{t('savingsGoals.subtitle')}</p>
           </div>
-          <Button onClick={() => setShowAdd(true)}>هدف جديد</Button>
+          <Button onClick={() => setShowAdd(true)}>{t('savingsGoals.newGoal')}</Button>
         </div>
 
         {isLoading ? (
           <CardListSkeleton count={3} />
         ) : isError ? (
-          <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+          <ErrorAlert message={t('savingsGoals.err.load')} onRetry={() => refetch()} />
         ) : goals.length === 0 ? (
-          <EmptyState title="لا توجد أهداف" description="أنشئي هدف ادخار لخدمة تحلمين فيها" />
+          <EmptyState
+            title={t('savingsGoals.empty.title')}
+            description={t('savingsGoals.empty.desc')}
+          />
         ) : (
           <div className="space-y-4">
             {goals.map((g) => {
@@ -106,7 +111,7 @@ export default function SavingsGoalsPage(): JSX.Element {
                     <div className="mt-3 flex gap-2">
                       <Input
                         type="number"
-                        placeholder="أضف مبلغ"
+                        placeholder={t('savingsGoals.addAmountPlaceholder')}
                         value={addAmount[g.id] || ''}
                         onChange={(e) => setAddAmount({ ...addAmount, [g.id]: e.target.value })}
                         className="flex-1"
@@ -121,14 +126,14 @@ export default function SavingsGoalsPage(): JSX.Element {
                           }
                         }}
                       >
-                        أضف
+                        {t('savingsGoals.add')}
                       </Button>
                       <Button
                         size="sm"
                         variant="danger"
                         onClick={() => deleteMut.mutate({ id: g.id })}
                       >
-                        حذف
+                        {t('savingsGoals.delete')}
                       </Button>
                     </div>
                   )}
@@ -151,22 +156,22 @@ export default function SavingsGoalsPage(): JSX.Element {
             }}
           >
             <div className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-gray-900">
-              <h3 className="mb-4 text-lg font-bold"> هدف ادخار جديد</h3>
+              <h3 className="mb-4 text-lg font-bold">{t('savingsGoals.modal.title')}</h3>
               <div className="space-y-3">
                 <Input
-                  placeholder="اسم الهدف (مثال: باقة العناية)"
+                  placeholder={t('savingsGoals.namePlaceholder')}
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
                 />
                 <Input
                   type="number"
-                  placeholder="المبلغ المستهدف (ر.س)"
+                  placeholder={t('savingsGoals.targetPlaceholder')}
                   value={form.targetAmount}
                   onChange={(e) => setForm({ ...form, targetAmount: e.target.value })}
                 />
                 <Input
                   type="number"
-                  placeholder="معرف الخدمة (اختياري)"
+                  placeholder={t('savingsGoals.serviceIdPlaceholder')}
                   value={form.serviceId}
                   onChange={(e) => setForm({ ...form, serviceId: e.target.value })}
                 />
@@ -181,7 +186,7 @@ export default function SavingsGoalsPage(): JSX.Element {
                   loading={createMut.isPending}
                   className="w-full"
                 >
-                  إنشاء
+                  {t('savingsGoals.create')}
                 </Button>
               </div>
             </div>

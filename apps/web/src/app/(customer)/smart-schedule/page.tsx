@@ -3,17 +3,20 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
-const POPULAR_SERVICES = [
-  { id: 1, name: 'مانيكير', emoji: '' },
-  { id: 2, name: 'باديكير', emoji: '' },
-  { id: 3, name: 'تنظيف بشرة', emoji: '' },
-  { id: 4, name: 'مساج', emoji: '‍️' },
-  { id: 5, name: 'صبغ شعر', emoji: '' },
-  { id: 6, name: 'مكياج', emoji: '' },
+const POPULAR_SERVICES: { id: number; name: TranslationKey; emoji: string }[] = [
+  { id: 1, name: 'recommendations.manicure', emoji: '' },
+  { id: 2, name: 'recommendations.pedicure', emoji: '' },
+  { id: 3, name: 'recommendations.facialCleaning', emoji: '' },
+  { id: 4, name: 'recommendations.massage', emoji: '‍️' },
+  { id: 5, name: 'recommendations.hairDye', emoji: '' },
+  { id: 6, name: 'recommendations.makeup', emoji: '' },
 ];
 
 export default function SmartSchedulePage(): JSX.Element {
+  const { t, locale } = useLocale();
   const [serviceId, setServiceId] = useState(1);
   const [datePref, setDatePref] = useState('');
   const { data, isLoading } = api.aiFeatures.smartSchedule.useQuery(
@@ -31,14 +34,12 @@ export default function SmartSchedulePage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> جدولة ذكية</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            أفضل المواعيد حسب توفر الفنيات وتقييماتهن
-          </p>
+          <h1 className="text-2xl font-bold">{t('smartSchedule.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('smartSchedule.subtitle')}</p>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3"> اختاري الخدمة</h3>
+          <h3 className="font-bold mb-3">{t('smartSchedule.chooseService')}</h3>
           <div className="flex flex-wrap gap-2 mb-3">
             {POPULAR_SERVICES.map((s) => (
               <button
@@ -46,7 +47,7 @@ export default function SmartSchedulePage(): JSX.Element {
                 onClick={() => setServiceId(s.id)}
                 className={`rounded-full px-4 py-2 text-sm transition-all ${serviceId === s.id ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
               >
-                {s.emoji} {s.name}
+                {s.emoji} {t(s.name)}
               </button>
             ))}
           </div>
@@ -55,7 +56,7 @@ export default function SmartSchedulePage(): JSX.Element {
             value={datePref}
             onChange={(e) => setDatePref(e.target.value)}
             className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
-            placeholder="اختياري — تاريخ مفضل"
+            placeholder={t('smartSchedule.datePlaceholder')}
           />
         </Card>
 
@@ -64,13 +65,13 @@ export default function SmartSchedulePage(): JSX.Element {
         ) : suggestions.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
             <p className="text-4xl mb-2"></p>
-            <p className="text-text-secondary">
-              لا توجد مواعيد متاحة حالياً — جربي خدمة ثانية أو تاريخ مختلف
-            </p>
+            <p className="text-text-secondary">{t('smartSchedule.noSlots')}</p>
           </Card>
         ) : (
           <Card padding="lg">
-            <h3 className="font-bold mb-4"> أفضل {suggestions.length} مواعيد</h3>
+            <h3 className="font-bold mb-4">
+              {t('smartSchedule.bestSlots', { count: suggestions.length })}
+            </h3>
             <div className="space-y-2">
               {suggestions.map((s: Record<string, unknown>, i: number) => {
                 const start = new Date(s.startAt as string);
@@ -80,27 +81,32 @@ export default function SmartSchedulePage(): JSX.Element {
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">‍</span>
                       <div>
-                        <p className="font-bold text-sm">فنية #{s.technicianId as number}</p>
+                        <p className="font-bold text-sm">
+                          {t('smartSchedule.technicianLabel', { id: s.technicianId as number })}
+                        </p>
                         <p className="text-xs text-text-secondary">
-                          {start.toLocaleDateString('ar-SA', {
+                          {start.toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA', {
                             weekday: 'long',
                             day: 'numeric',
                             month: 'long',
                           })}
                           {' · '}
-                          {start.toLocaleTimeString('ar-SA', {
+                          {start.toLocaleTimeString(locale === 'en' ? 'en-GB' : 'ar-SA', {
                             hour: '2-digit',
                             minute: '2-digit',
                           })}
                           {' — '}
-                          {end.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}
+                          {end.toLocaleTimeString(locale === 'en' ? 'en-GB' : 'ar-SA', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
                       <span className="text-xs text-amber-500">{s.rating as number}</span>
                       <Button size="sm" className="mt-1 block">
-                        احجز
+                        {t('smartSchedule.book')}
                       </Button>
                     </div>
                   </div>

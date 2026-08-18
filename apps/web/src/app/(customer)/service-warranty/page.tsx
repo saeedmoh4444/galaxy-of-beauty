@@ -13,29 +13,37 @@ import {
   formatCurrency,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
-const COMPENSATION_TYPES = [
+const COMPENSATION_TYPES: {
+  key: 'redo' | 'refund' | 'credit';
+  emoji: string;
+  label: TranslationKey;
+  desc: TranslationKey;
+}[] = [
   {
-    key: 'redo' as const,
+    key: 'redo',
     emoji: '',
-    label: 'إعادة الخدمة مجاناً',
-    desc: 'سنقوم بإعادة الخدمة بدون تكلفة إضافية',
+    label: 'warranty.comp.redo',
+    desc: 'warranty.comp.redoDesc',
   },
   {
-    key: 'refund' as const,
+    key: 'refund',
     emoji: '',
-    label: 'استرداد المبلغ',
-    desc: 'استرداد كامل لقيمة الخدمة',
+    label: 'warranty.comp.refund',
+    desc: 'warranty.comp.refundDesc',
   },
   {
-    key: 'credit' as const,
+    key: 'credit',
     emoji: '',
-    label: 'رصيد تعويضي',
-    desc: 'رصيد في المحفظة بنسبة ٣٠٪ من قيمة الخدمة',
+    label: 'warranty.comp.credit',
+    desc: 'warranty.comp.creditDesc',
   },
 ];
 
 export default function ServiceWarrantyPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: policy, isLoading: pLoad } = api.serviceWarranty.policy.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -77,7 +85,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
   const handleClaim = () => {
     setClaimError('');
     if (reason.trim().length < 10) {
-      setClaimError('الرجاء كتابة سبب مفصل (١٠ أحرف على الأقل)');
+      setClaimError(t('warranty.err.reason'));
       return;
     }
     claimMut.mutate({
@@ -94,15 +102,13 @@ export default function ServiceWarrantyPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">️ ضمان الخدمة</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            رضاكِ مضمون — إذا لم تكوني راضية، نضمن لكِ حقكِ
-          </p>
+          <h1 className="text-2xl font-bold">{t('warranty.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('warranty.subtitle')}</p>
         </div>
 
         {/* Coverage */}
         <Card padding="lg">
-          <h3 className="font-bold text-lg mb-4"> ماذا يغطي الضمان؟</h3>
+          <h3 className="font-bold text-lg mb-4">{t('warranty.coverageTitle')}</h3>
           {pLoad ? (
             <GridSkeleton count={3} />
           ) : (
@@ -123,28 +129,28 @@ export default function ServiceWarrantyPage(): JSX.Element {
 
         {/* Eligibility Check */}
         <Card padding="lg">
-          <h3 className="font-bold text-lg mb-4"> التحقق من الأهلية</h3>
+          <h3 className="font-bold text-lg mb-4">{t('warranty.eligibilityTitle')}</h3>
           <div className="flex gap-2">
             <input
               type="number"
               value={bookingId}
               onChange={(e) => setBookingId(e.target.value)}
-              placeholder="رقم الحجز"
+              placeholder={t('warranty.bookingId')}
               className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
-            <Button onClick={handleCheck}>تحقق</Button>
+            <Button onClick={handleCheck}>{t('warranty.check')}</Button>
           </div>
           {eligibility && (
             <div
               className={`mt-3 rounded-lg p-3 text-sm ${(eligibility.eligible as boolean) ? 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300' : 'bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-400'}`}
             >
               {(eligibility.eligible as boolean)
-                ? ' الحجز مؤهل للضمان'
+                ? t('warranty.eligible')
                 : ` ${eligibility.reason as string}`}
               {(eligibility.eligible as boolean) && (
                 <div className="mt-2">
                   <Button size="sm" onClick={() => setShowClaim(true)}>
-                    تقديم مطالبة
+                    {t('warranty.submitClaim')}
                   </Button>
                 </div>
               )}
@@ -153,20 +159,22 @@ export default function ServiceWarrantyPage(): JSX.Element {
         </Card>
 
         {/* My Claims */}
-        <h3 className="text-lg font-bold"> مطالباتي</h3>
+        <h3 className="text-lg font-bold">{t('warranty.myClaims')}</h3>
         {cLoad ? (
           <CardListSkeleton count={3} />
         ) : isError ? (
-          <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+          <ErrorAlert message={t('warranty.err.load')} onRetry={() => refetch()} />
         ) : myClaims.length === 0 ? (
-          <EmptyState title="لا توجد مطالبات" description="لم تقدّمي أي مطالبة ضمان حتى الآن" />
+          <EmptyState title={t('warranty.empty.title')} description={t('warranty.empty.desc')} />
         ) : (
           <div className="space-y-3">
             {myClaims.map((c: Record<string, unknown>) => (
               <Card key={c.id as number} padding="md">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-bold text-sm">حجز #{c.bookingId as number}</p>
+                    <p className="font-bold text-sm">
+                      {t('warranty.claimId', { id: c.bookingId as number })}
+                    </p>
                     <p className="text-xs text-text-secondary mt-0.5">{c.reason as string}</p>
                   </div>
                   <div className="text-right">
@@ -182,16 +190,16 @@ export default function ServiceWarrantyPage(): JSX.Element {
                       }`}
                     >
                       {c.status === 'PENDING'
-                        ? 'قيد المراجعة'
+                        ? t('warranty.status.pending')
                         : c.status === 'APPROVED'
-                          ? 'موافق'
+                          ? t('warranty.status.approved')
                           : c.status === 'REJECTED'
-                            ? 'مرفوض'
-                            : 'تم التعويض'}
+                            ? t('warranty.status.rejected')
+                            : t('warranty.status.compensated')}
                     </span>
                     {(c.compensation as number) > 0 && (
                       <p className="text-xs font-bold text-brand-600 mt-0.5">
-                        {formatCurrency(c.compensation as number)} ر.س
+                        {formatCurrency(c.compensation as number)} {t('misc.sar')}
                       </p>
                     )}
                   </div>
@@ -201,37 +209,41 @@ export default function ServiceWarrantyPage(): JSX.Element {
           </div>
         )}
 
-        <Modal open={showClaim} onClose={() => setShowClaim(false)} title="تقديم مطالبة ضمان">
+        <Modal
+          open={showClaim}
+          onClose={() => setShowClaim(false)}
+          title={t('warranty.modal.title')}
+        >
           <div className="space-y-4">
             <div>
               {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes a non-labelable button group */}
-              <label className="block text-sm font-semibold mb-2">نوع التعويض</label>
+              <label className="block text-sm font-semibold mb-2">{t('warranty.compType')}</label>
               <div className="space-y-2">
-                {COMPENSATION_TYPES.map((t) => (
+                {COMPENSATION_TYPES.map((comp) => (
                   <button
-                    key={t.key}
+                    key={comp.key}
                     type="button"
-                    onClick={() => setCompType(t.key)}
-                    className={`w-full text-right rounded-xl border p-3 text-sm transition-all ${compType === t.key ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}
+                    onClick={() => setCompType(comp.key)}
+                    className={`w-full text-right rounded-xl border p-3 text-sm transition-all ${compType === comp.key ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}
                   >
                     <span className="font-bold">
-                      {t.emoji} {t.label}
+                      {comp.emoji} {t(comp.label)}
                     </span>
-                    <p className="text-xs text-text-secondary mt-0.5">{t.desc}</p>
+                    <p className="text-xs text-text-secondary mt-0.5">{t(comp.desc)}</p>
                   </button>
                 ))}
               </div>
             </div>
             <div>
               <label htmlFor="sw-reason" className="block text-sm font-semibold mb-1">
-                سبب المطالبة
+                {t('warranty.reason')}
               </label>
               <textarea
                 id="sw-reason"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
                 rows={3}
-                placeholder="اشرحي سبب عدم رضاكِ عن الخدمة بالتفصيل..."
+                placeholder={t('warranty.reasonPlaceholder')}
                 className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
               />
             </div>
@@ -242,10 +254,10 @@ export default function ServiceWarrantyPage(): JSX.Element {
             )}
             <div className="flex justify-end gap-3">
               <Button variant="ghost" onClick={() => setShowClaim(false)}>
-                إلغاء
+                {t('warranty.cancel')}
               </Button>
               <Button onClick={handleClaim} loading={claimMut.isPending}>
-                ️ تقديم المطالبة
+                {t('warranty.submit')}
               </Button>
             </div>
           </div>

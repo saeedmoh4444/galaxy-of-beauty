@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 const SERVICES = [
   { id: 1, name: 'مانيكير', emoji: '' },
@@ -14,6 +15,7 @@ const SERVICES = [
 ];
 
 export default function AdminFlashDealsPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: active, isLoading } = api.flashDeals.active.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -28,12 +30,12 @@ export default function AdminFlashDealsPage(): JSX.Element {
     <DashboardLayout userRole="ADMIN">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> إدارة عروض الفلاش</h1>
-          <p className="mt-1 text-sm text-text-secondary">إنشاء وإدارة العروض محدودة الوقت</p>
+          <h1 className="text-2xl font-bold">{t('admin.flash-deals.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('admin.flash-deals.subtitle')}</p>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3"> إنشاء عرض جديد</h3>
+          <h3 className="font-bold mb-3">{t('admin.flash-deals.create-title')}</h3>
           <div className="grid gap-3 sm:grid-cols-2">
             <select
               value={svcId}
@@ -52,7 +54,7 @@ export default function AdminFlashDealsPage(): JSX.Element {
               onChange={(e) => setDiscount(Number(e.target.value))}
               min={10}
               max={80}
-              placeholder="نسبة الخصم %"
+              placeholder={t('admin.flash-deals.discount-placeholder')}
               className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <input
@@ -61,7 +63,7 @@ export default function AdminFlashDealsPage(): JSX.Element {
               onChange={(e) => setHours(Number(e.target.value))}
               min={1}
               max={72}
-              placeholder="المدة (ساعة)"
+              placeholder={t('admin.flash-deals.duration-placeholder')}
               className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <input
@@ -69,7 +71,7 @@ export default function AdminFlashDealsPage(): JSX.Element {
               value={maxRedemptions}
               onChange={(e) => setMax(Number(e.target.value))}
               min={1}
-              placeholder="الحد الأقصى"
+              placeholder={t('admin.flash-deals.max-placeholder')}
               className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
           </div>
@@ -85,16 +87,16 @@ export default function AdminFlashDealsPage(): JSX.Element {
             loading={createMut.isPending}
             className="w-full mt-3"
           >
-            إنشاء العرض
+            {t('admin.flash-deals.create-button')}
           </Button>
         </Card>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3"> العروض النشطة</h3>
+          <h3 className="font-bold mb-3">{t('admin.flash-deals.active-deals')}</h3>
           {isLoading ? (
             <CardListSkeleton count={4} />
           ) : !(active ?? []).length ? (
-            <p className="text-sm text-text-tertiary">لا توجد عروض نشطة</p>
+            <p className="text-sm text-text-tertiary">{t('admin.flash-deals.no-active')}</p>
           ) : (
             <div className="space-y-2">
               {(active ?? []).map((d: Record<string, unknown>) => (

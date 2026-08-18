@@ -20,11 +20,15 @@ interface Ingredient {
 
 interface BeautyIngredientHighlightCardProps {
   ingredient: Ingredient;
+  title?: string;
+  benefitsLabel?: string;
   className?: string;
 }
 
 export function BeautyIngredientHighlightCard({
   ingredient,
+  title = 'مكون مميز',
+  benefitsLabel = 'الفوائد',
   className = '',
 }: BeautyIngredientHighlightCardProps): JSX.Element {
   return (
@@ -39,7 +43,7 @@ export function BeautyIngredientHighlightCard({
           {ingredient.emoji || ''}
         </span>
         <div>
-          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">مكون مميز</h4>
+          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">
             {ingredient.name} · {ingredient.origin}
           </p>
@@ -47,7 +51,7 @@ export function BeautyIngredientHighlightCard({
       </div>
 
       <div className="mt-3 rounded-xl bg-amber-50 p-3 dark:bg-amber-950">
-        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200"> الفوائد</p>
+        <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200"> {benefitsLabel}</p>
         <div className="mt-1 flex flex-wrap gap-1">
           {ingredient.benefits.map((b) => (
             <span

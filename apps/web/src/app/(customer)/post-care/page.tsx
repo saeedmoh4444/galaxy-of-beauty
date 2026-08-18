@@ -4,7 +4,14 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, GridSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 import Link from 'next/link';
+
+const TABS: { key: 'plan' | 'library'; label: TranslationKey }[] = [
+  { key: 'plan', label: 'postCare.tab.plan' },
+  { key: 'library', label: 'postCare.tab.library' },
+];
 
 interface CareTip {
   id: string;
@@ -47,6 +54,7 @@ const TIMEFRAME_ICONS: Record<string, string> = {
 };
 
 export default function PostCarePage(): JSX.Element {
+  const { t, locale } = useLocale();
   const [activeTab, setActiveTab] = useState<'plan' | 'library'>('plan');
 
   // My Plan
@@ -91,29 +99,26 @@ export default function PostCarePage(): JSX.Element {
         {/* Header */}
         <div className="text-center sm:text-right">
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            ‍️ العناية بعد الخدمة
+            ‍️ {t('postCare.title')}
           </h1>
           <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
-            تعليمات مخصصة للعناية بنفسكِ بعد كل جلسة تجميل
+            {t('postCare.subtitle')}
           </p>
         </div>
 
         {/* Tabs */}
         <div className="flex gap-2 rounded-xl bg-surface-muted p-1 dark:bg-gray-800">
-          {[
-            { key: 'plan' as const, label: ' خطتي الشخصية' },
-            { key: 'library' as const, label: ' مكتبة العناية' },
-          ].map((t) => (
+          {TABS.map((tab) => (
             <button
-              key={t.key}
-              onClick={() => setActiveTab(t.key)}
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
               className={`flex-1 rounded-lg py-2.5 text-sm font-semibold transition-all ${
-                activeTab === t.key
+                activeTab === tab.key
                   ? 'bg-white text-brand-700 shadow dark:bg-gray-700 dark:text-brand-300'
                   : 'text-text-secondary hover:text-text-primary dark:hover:text-gray-300'
               }`}
             >
-              {t.label}
+              {t(tab.label)}
             </button>
           ))}
         </div>
@@ -124,13 +129,13 @@ export default function PostCarePage(): JSX.Element {
             {planLoading ? (
               <CardListSkeleton count={2} />
             ) : planError ? (
-              <ErrorAlert message="فشل تحميل خطة العناية" onRetry={() => refetchPlan()} />
+              <ErrorAlert message={t('postCare.err.plan')} onRetry={() => refetchPlan()} />
             ) : plans.length === 0 ? (
               <EmptyState
-                title="لا توجد خدمات مكتملة بعد"
-                description="بعد إتمام أول حجز، ستظهر تعليمات العناية هنا تلقائياً "
+                title={t('postCare.empty.title')}
+                description={t('postCare.empty.desc')}
                 action={{
-                  label: 'احجزي الآن',
+                  label: t('postCare.empty.action'),
                   onPress: () => window.location.assign('/bookings/create'),
                 }}
               />
@@ -149,10 +154,10 @@ export default function PostCarePage(): JSX.Element {
                         </h3>
                         <p className="text-xs text-text-secondary">
                           {plan.completedAt
-                            ? new Date(plan.completedAt).toLocaleDateString('ar-SA', {
-                                month: 'long',
-                                day: 'numeric',
-                              })
+                            ? new Date(plan.completedAt).toLocaleDateString(
+                                locale === 'en' ? 'en-GB' : 'ar-SA',
+                                { month: 'long', day: 'numeric' },
+                              )
                             : ''}{' '}
                           · {plan.category}
                         </p>
@@ -204,7 +209,7 @@ export default function PostCarePage(): JSX.Element {
             {libLoading ? (
               <GridSkeleton count={6} />
             ) : libError ? (
-              <ErrorAlert message="فشل تحميل المكتبة" onRetry={() => refetchLib()} />
+              <ErrorAlert message={t('postCare.err.library')} onRetry={() => refetchLib()} />
             ) : (
               <>
                 {!selectedLibCat ? (
@@ -220,7 +225,7 @@ export default function PostCarePage(): JSX.Element {
                             {cat.nameAr}
                           </h3>
                           <p className="text-xs text-text-secondary">
-                            {cat.tipsCount} نصائح للعناية
+                            {t('postCare.tipsCount', { count: cat.tipsCount })}
                           </p>
                         </Card>
                       </button>
@@ -232,7 +237,7 @@ export default function PostCarePage(): JSX.Element {
                       onClick={() => setSelectedLibCat(null)}
                       className="text-sm text-brand-600 hover:text-brand-700 font-medium mb-4 inline-block"
                     >
-                      ← العودة للمكتبة
+                      {t('postCare.backToLibrary')}
                     </button>
                     {libTips.map((tip) => (
                       <Card key={tip.id} padding="md" className="flex gap-4">
@@ -275,12 +280,14 @@ export default function PostCarePage(): JSX.Element {
           padding="lg"
           className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950 border-none text-center"
         >
-          <p className="text-lg font-bold text-text-primary dark:text-gray-100"> تذكري</p>
+          <p className="text-lg font-bold text-text-primary dark:text-gray-100">
+            {t('postCare.rememberTitle')}
+          </p>
           <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
-            العناية بعد الخدمة تطيل من نتائج الجلسة وتحافظ على جمالكِ لفترة أطول
+            {t('postCare.rememberBody')}
           </p>
           <Link href="/bookings/create" className="mt-3 inline-block">
-            <Button size="sm">احجزي جلستكِ القادمة </Button>
+            <Button size="sm">{t('postCare.bookNext')}</Button>
           </Link>
         </Card>
       </div>

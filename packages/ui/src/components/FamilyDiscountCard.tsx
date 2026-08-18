@@ -16,6 +16,15 @@ interface FamilyDiscountCardProps {
   familyName?: string;
   onBook?: () => void;
   className?: string;
+  title?: string;
+  familyPrefix?: string;
+  familySeparator?: string;
+  discountText?: string;
+  forText?: string;
+  familySizeText?: string;
+  membersText?: string;
+  bookText?: string;
+  footerText?: string;
 }
 
 export function FamilyDiscountCard({
@@ -24,6 +33,15 @@ export function FamilyDiscountCard({
   familyName,
   onBook,
   className = '',
+  title = 'خصم العائلة',
+  familyPrefix = 'عائلة ',
+  familySeparator = ' — ',
+  discountText = 'خصم',
+  forText = 'لـ',
+  familySizeText = 'أفراد فأكثر',
+  membersText = 'أفراد',
+  bookText = 'احجزي للعائلة',
+  footerText = 'الجمال يجمع العائلة',
 }: FamilyDiscountCardProps): JSX.Element {
   return (
     <div
@@ -36,11 +54,10 @@ export function FamilyDiscountCard({
         <span className="text-3xl" aria-hidden="true">
           ‍‍‍
         </span>
-        <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">
-          خصم العائلة
-        </h4>
+        <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">{title}</h4>
         <p className="text-[10px] text-emerald-600 dark:text-emerald-400">
-          {familyName ? `عائلة ${familyName} — ` : ''}خصم {discount}% لـ {familySize} أفراد فأكثر
+          {familyName ? `${familyPrefix}${familyName}${familySeparator}` : ''}
+          {discountText} {discount}% {forText} {familySize} {familySizeText}
         </p>
       </div>
 
@@ -61,7 +78,7 @@ export function FamilyDiscountCard({
             )}
           >
             <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-              {tier.size} أفراد
+              {tier.size} {membersText}
             </p>
             <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
               -{tier.off}%
@@ -75,11 +92,11 @@ export function FamilyDiscountCard({
         onClick={onBook}
         className="mt-3 w-full rounded-xl bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
       >
-        احجزي للعائلة
+        {bookText}
       </button>
 
       <p className="mt-2 text-center text-[9px] text-emerald-600 dark:text-emerald-400">
-        ‍‍‍ الجمال يجمع العائلة
+        ‍‍‍ {footerText}
       </p>
     </div>
   );

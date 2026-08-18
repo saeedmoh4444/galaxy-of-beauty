@@ -22,29 +22,73 @@ type AccessFeature =
 
 interface FeatureDef {
   emoji: string;
-  label: string;
-  detail: string;
+  label: { ar: string; en: string };
+  detail: { ar: string; en: string };
 }
 
 const FEATURES: Record<AccessFeature, FeatureDef> = {
-  wide_doors: { emoji: '', label: 'أبواب واسعة', detail: '90 سم عرض الأبواب' },
-  elevator: { emoji: '', label: 'مصعد', detail: 'مصعد يتسع للكرسي' },
-  accessible_bathroom: { emoji: '', label: 'دورة مياه مجهزة', detail: 'مقابض ومساحة للكرسي' },
-  low_counter: { emoji: '', label: 'طاولة منخفضة', detail: 'طاولة استقبال منخفضة' },
-  parking: { emoji: '🅿️', label: 'موقف مخصص', detail: 'موقف قريب من المدخل' },
-  ramp: { emoji: '', label: 'منحدر', detail: 'منحدر بديل عن الدرج' },
-  turning_space: { emoji: '', label: 'مساحة دوران', detail: 'مساحة 150 سم للدوران' },
-  staff_assistance: { emoji: '‍', label: 'مساعدة الموظفات', detail: 'موظفات مدربات للمساعدة' },
+  wide_doors: {
+    emoji: '',
+    label: { ar: 'أبواب واسعة', en: 'Wide doors' },
+    detail: { ar: '90 سم عرض الأبواب', en: '90 cm door width' },
+  },
+  elevator: {
+    emoji: '',
+    label: { ar: 'مصعد', en: 'Elevator' },
+    detail: { ar: 'مصعد يتسع للكرسي', en: 'Elevator fits a wheelchair' },
+  },
+  accessible_bathroom: {
+    emoji: '',
+    label: { ar: 'دورة مياه مجهزة', en: 'Accessible bathroom' },
+    detail: { ar: 'مقابض ومساحة للكرسي', en: 'Grab bars and wheelchair space' },
+  },
+  low_counter: {
+    emoji: '',
+    label: { ar: 'طاولة منخفضة', en: 'Low counter' },
+    detail: { ar: 'طاولة استقبال منخفضة', en: 'Low reception counter' },
+  },
+  parking: {
+    emoji: '🅿️',
+    label: { ar: 'موقف مخصص', en: 'Reserved parking' },
+    detail: { ar: 'موقف قريب من المدخل', en: 'Parking near the entrance' },
+  },
+  ramp: {
+    emoji: '',
+    label: { ar: 'منحدر', en: 'Ramp' },
+    detail: { ar: 'منحدر بديل عن الدرج', en: 'Ramp alternative to stairs' },
+  },
+  turning_space: {
+    emoji: '',
+    label: { ar: 'مساحة دوران', en: 'Turning space' },
+    detail: { ar: 'مساحة 150 سم للدوران', en: '150 cm turning space' },
+  },
+  staff_assistance: {
+    emoji: '‍',
+    label: { ar: 'مساعدة الموظفات', en: 'Staff assistance' },
+    detail: { ar: 'موظفات مدربات للمساعدة', en: 'Trained staff to help' },
+  },
 };
 
 interface WheelchairAccessibleBadgeProps {
   features: AccessFeature[];
   className?: string;
+  /** Card heading */
+  title?: string;
+  /** Suffix after the features count */
+  accessibilityCountText?: string;
+  /** Footer text */
+  footerText?: string;
+  /** Display locale for feature labels and details */
+  locale?: 'ar' | 'en';
 }
 
 export function WheelchairAccessibleBadge({
   features,
   className = '',
+  title = 'مهيأ للكراسي المتحركة',
+  accessibilityCountText = 'ميزات إتاحة',
+  footerText = 'الوصول حق للجميع — بدون استثناء',
+  locale = 'ar',
 }: WheelchairAccessibleBadgeProps): JSX.Element | null {
   if (!features.length) return null;
 
@@ -58,11 +102,9 @@ export function WheelchairAccessibleBadge({
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true"></span>
         <div>
-          <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">
-            مهيأ للكراسي المتحركة
-          </h4>
+          <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
           <p className="text-[10px] text-blue-500 dark:text-blue-400">
-            {features.length} ميزات إتاحة
+            {features.length} {accessibilityCountText}
           </p>
         </div>
       </div>
@@ -80,18 +122,16 @@ export function WheelchairAccessibleBadge({
               </span>
               <div>
                 <p className="text-[10px] font-bold text-blue-800 dark:text-blue-200">
-                  {def.label}
+                  {def.label[locale]}
                 </p>
-                <p className="text-[9px] text-blue-600 dark:text-blue-400">{def.detail}</p>
+                <p className="text-[9px] text-blue-600 dark:text-blue-400">{def.detail[locale]}</p>
               </div>
             </div>
           );
         })}
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-blue-600 dark:text-blue-400">
-        الوصول حق للجميع — بدون استثناء
-      </p>
+      <p className="mt-2 text-center text-[9px] text-blue-600 dark:text-blue-400">{footerText}</p>
     </div>
   );
 }

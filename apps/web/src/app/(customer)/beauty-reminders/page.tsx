@@ -18,32 +18,38 @@ import {
   BreastHealthCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyRemindersPage(): JSX.Element {
+  const { t } = useLocale();
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" التذكيرات" subtitle="اعتني بنفسكِ — كل يوم" />
+        <PageTitle title={t('beautyReminders.title')} subtitle={t('beautyReminders.subtitle')} />
         <div className="grid gap-6 lg:grid-cols-2">
           <div className="space-y-6">
             <BeautySelfCareReminderCard
-              reminder="خذي 5 دقائق للتنفس العميق والاسترخاء"
+              reminder={t('beautyReminders.reminder')}
               emoji=""
-              time="10:00 صباحاً"
+              time={t('beautyReminders.time10am')}
             />
             <BeautySleepCard bedtime="22:30" wakeTime="06:30" />
             <HydrationTracker goal={8} current={3} />
             <WellnessCheckCard lastCheck="2026-07" />
             <BeautyHabitTrackerCard
               habits={[
-                { name: 'واقي شمس', emoji: '️', done: true },
-                { name: '8 أكواب ماء', emoji: '', done: false },
-                { name: 'روتين مسائي', emoji: '', done: true },
+                { name: t('beautyReminders.habitSunscreen'), emoji: '️', done: true },
+                { name: t('beautyReminders.habitWater'), emoji: '', done: false },
+                { name: t('beautyReminders.habitEvening'), emoji: '', done: true },
               ]}
             />
           </div>
           <div className="space-y-6">
-            <PrayerTimeReminder nextPrayer="العصر" time="15:30" minutesUntil={45} />
+            <PrayerTimeReminder
+              nextPrayer={t('beautyReminders.asr')}
+              time="15:30"
+              minutesUntil={45}
+            />
             <DailyBeautyTipCard />
             <BeautyAffirmationCard />
             <BeautyGratitudeCard entries={15} />

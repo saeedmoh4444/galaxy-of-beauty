@@ -23,14 +23,17 @@ import {
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 export default function BeautyBudgetPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { addToast } = useToast();
   const { data, isLoading, isError, refetch } = api.beautyBudget.get.useQuery();
   const setBudgetMut = api.beautyBudget.set.useMutation({
     onSuccess: () => {
       refetch();
-      addToast('success', 'تم تحديث الميزانية');
+      addToast('success', t('beautyBudget.toastUpdated'));
     },
   });
   const [newBudget, setNewBudget] = useState('');
@@ -49,28 +52,28 @@ export default function BeautyBudgetPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" ميزانية الجمال" subtitle="خططي لإنفاقكِ الجمالي بذكاء" />
+        <PageTitle title={t('beautyBudget.title')} subtitle={t('beautyBudget.subtitle')} />
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Left column */}
           <div className="space-y-6">
             {isLoading ? (
               <FormSkeleton fields={4} />
             ) : isError ? (
-              <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+              <ErrorAlert message={t('beautyBudget.loadError')} onRetry={() => refetch()} />
             ) : (
               <>
                 <Card padding="lg" className="text-center">
-                  <p className="text-sm text-text-secondary">الميزانية الشهرية</p>
+                  <p className="text-sm text-text-secondary">{t('beautyBudget.monthlyBudget')}</p>
                   <p className="mt-1 text-4xl font-extrabold text-brand-600">
                     {formatCurrency(budget)}
                   </p>
                   <div className="mt-4 flex justify-around text-sm">
                     <div>
-                      <p className="text-text-secondary">تم الإنفاق</p>
+                      <p className="text-text-secondary">{t('beautyBudget.spent')}</p>
                       <p className="font-bold text-red-500">{formatCurrency(spent)}</p>
                     </div>
                     <div>
-                      <p className="text-text-secondary">متبقي</p>
+                      <p className="text-text-secondary">{t('beautyBudget.remaining')}</p>
                       <p
                         className={`font-bold ${remaining >= 0 ? 'text-green-600' : 'text-red-600'}`}
                       >
@@ -84,14 +87,16 @@ export default function BeautyBudgetPage(): JSX.Element {
                       style={{ width: `${pct}%` }}
                     />
                   </div>
-                  <p className="mt-1 text-xs text-text-tertiary">{pct.toFixed(0)}% من الميزانية</p>
+                  <p className="mt-1 text-xs text-text-tertiary">
+                    {t('beautyBudget.percentOfBudget', { pct: pct.toFixed(0) })}
+                  </p>
                 </Card>
                 <Card padding="md">
-                  <h3 className="mb-3 font-semibold">تحديث الميزانية</h3>
+                  <h3 className="mb-3 font-semibold">{t('beautyBudget.updateBudget')}</h3>
                   <div className="flex gap-3">
                     <Input
                       type="number"
-                      placeholder="الميزانية الشهرية (ر.س)"
+                      placeholder={t('beautyBudget.monthlyPlaceholder')}
                       value={newBudget}
                       onChange={(e) => setNewBudget(e.target.value)}
                     />
@@ -102,7 +107,7 @@ export default function BeautyBudgetPage(): JSX.Element {
                       }}
                       loading={setBudgetMut.isPending}
                     >
-                      حفظ
+                      {t('beautyBudget.save')}
                     </Button>
                   </div>
                 </Card>
@@ -112,10 +117,10 @@ export default function BeautyBudgetPage(): JSX.Element {
             <BeautyBudgetCard
               services={
                 budgetServices?.data?.items?.slice(0, 4)?.map((s) => ({
-                  name: (s.titleJson as { ar?: string } | null)?.ar ?? '',
+                  name: localize(s.titleJson, locale) ?? '',
                   price: Number(s.basePrice),
                   category: 'facial' as const,
-                  duration: `${s.durationMin} دقيقة`,
+                  duration: t('beautyBudget.minutes', { min: s.durationMin }),
                 })) ?? []
               }
             />
@@ -128,7 +133,7 @@ export default function BeautyBudgetPage(): JSX.Element {
                 goals={(savingsGoals.data as Array<Record<string, unknown>>)
                   .slice(0, 3)
                   .map((g) => ({
-                    label: (g.name as string) ?? 'هدف',
+                    label: (g.name as string) ?? t('beautyBudget.goalFallback'),
                     target: (g.amount as number) ?? 0,
                     saved: (g.saved as number) ?? 0,
                     monthly: (g.monthly as number) ?? 0,
@@ -140,7 +145,11 @@ export default function BeautyBudgetPage(): JSX.Element {
               <StudentDiscountBadge discount={15} />
               <LayawayBadge totalPrice={600} installments={3} installmentAmount={200} />
             </div>
-            <PriceAlertBadge serviceName="مانيكير سبا" currentPrice={120} targetPrice={80} />
+            <PriceAlertBadge
+              serviceName={t('beautyBudget.spaManicure')}
+              currentPrice={120}
+              targetPrice={80}
+            />
             <BeautySavingsMilestoneCard saved={spent} milestones={[500, 1000, 2000, 5000, 10000]} />
             <TaxHelperCard revenue={{ monthly: spent, vat: Math.round(spent * 0.15) }} />
           </div>

@@ -19,11 +19,15 @@ interface Award {
 
 interface BeautyAwardBadgeCardProps {
   awards: Award[];
+  title?: string;
+  subtitle?: string;
   className?: string;
 }
 
 export function BeautyAwardBadgeCard({
   awards,
+  title = 'جوائز المنصة',
+  subtitle = 'تقديراً للتميز في عالم الجمال',
   className = '',
 }: BeautyAwardBadgeCardProps): JSX.Element | null {
   if (!awards.length) return null;
@@ -37,10 +41,8 @@ export function BeautyAwardBadgeCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">جوائز المنصة</h4>
-        <p className="text-[10px] text-amber-600 dark:text-amber-400">
-          تقديراً للتميز في عالم الجمال
-        </p>
+        <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">{title}</h4>
+        <p className="text-[10px] text-amber-600 dark:text-amber-400">{subtitle}</p>
       </div>
 
       <div className="mt-3 space-y-2">

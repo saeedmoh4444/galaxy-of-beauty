@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function PenPalPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: interests } = api.penPal.interests.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
   };
@@ -40,14 +42,12 @@ export default function PenPalPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> Beauty Pen Pal</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            تواصلي مع عضوات يشاركنكِ نفس اهتمامات الجمال
-          </p>
+          <p className="mt-1 text-sm text-text-secondary">{t('penPal.subtitle')}</p>
         </div>
 
         {!registered ? (
           <Card padding="lg">
-            <h3 className="font-bold mb-4"> اختاري اهتماماتكِ (٢ على الأقل)</h3>
+            <h3 className="font-bold mb-4">{t('penPal.chooseInterests')}</h3>
             <div className="flex flex-wrap gap-2 mb-4">
               {allInterests.map((i: Record<string, unknown>) => (
                 <button
@@ -68,7 +68,7 @@ export default function PenPalPage(): JSX.Element {
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              placeholder="نبذة عنكِ (اختياري)..."
+              placeholder={t('penPal.bioPlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mb-3"
               rows={2}
             />
@@ -78,15 +78,15 @@ export default function PenPalPage(): JSX.Element {
               loading={registerMut.isPending}
               className="w-full"
             >
-              ابحثي عن صديقات
+              {t('penPal.findFriends')}
             </Button>
           </Card>
         ) : isLoading ? (
           <GridSkeleton count={6} />
         ) : isError ? (
-          <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+          <ErrorAlert message={t('penPal.loadError')} onRetry={() => refetch()} />
         ) : pals.length === 0 ? (
-          <EmptyState title="لا توجد تطابقات بعد" description="لم تسجل عضوات أخريات بعد" />
+          <EmptyState title={t('penPal.emptyTitle')} description={t('penPal.emptyDescription')} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {pals.map((p: Record<string, unknown>) => (
@@ -96,7 +96,7 @@ export default function PenPalPage(): JSX.Element {
                 </div>
                 <div className="mt-2 flex justify-center">
                   <span className="rounded-full bg-green-100 dark:bg-green-900 px-3 py-0.5 text-xs font-bold text-green-700">
-                    {p.score as number} اهتمامات مشتركة
+                    {t('penPal.sharedInterests', { count: p.score as number })}
                   </span>
                 </div>
                 {(p.bio as string) ? (

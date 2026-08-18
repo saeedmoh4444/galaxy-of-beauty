@@ -20,12 +20,14 @@ interface Habit {
 interface BeautyHabitTrackerCardProps {
   habits: Habit[];
   onToggle?: (name: string) => void;
+  title?: string;
   className?: string;
 }
 
 export function BeautyHabitTrackerCard({
   habits,
   onToggle,
+  title = 'عاداتي اليومية',
   className = '',
 }: BeautyHabitTrackerCardProps): JSX.Element {
   const [items, setItems] = useState(habits);
@@ -48,9 +50,7 @@ export function BeautyHabitTrackerCard({
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true"></span>
           <div>
-            <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-              عاداتي اليومية
-            </h4>
+            <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
             <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
               {done}/{items.length} · {pct}%
             </p>

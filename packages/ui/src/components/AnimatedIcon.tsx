@@ -10,14 +10,20 @@
  */
 
 // ── Success Checkmark ──────────────────────────────────────
-export function SuccessIcon({ size = 64 }: { size?: number }): JSX.Element {
+export function SuccessIcon({
+  size = 64,
+  label = 'تم بنجاح',
+}: {
+  size?: number;
+  label?: string;
+}): JSX.Element {
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 64 64"
       className="animate-success"
-      aria-label="تم بنجاح"
+      aria-label={label}
     >
       <circle
         cx="32"

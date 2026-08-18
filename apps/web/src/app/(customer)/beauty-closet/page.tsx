@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 const CATS = ['skincare', 'makeup', 'hair', 'nails', 'natural'];
 
 export default function BeautyClosetPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading } = api.beautyCloset.myProducts.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -22,10 +24,10 @@ export default function BeautyClosetPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold"> خزانة الجمال</h1>
-            <p className="mt-1 text-sm text-text-secondary">منتجاتكِ ومستحضراتكِ الشخصية</p>
+            <h1 className="text-2xl font-bold">{t('beautyCloset.title')}</h1>
+            <p className="mt-1 text-sm text-text-secondary">{t('beautyCloset.subtitle')}</p>
           </div>
-          <Button onClick={() => setShowAdd(true)}>+ منتج</Button>
+          <Button onClick={() => setShowAdd(true)}>{t('beautyCloset.addProduct')}</Button>
         </div>
         {isLoading ? (
           <GridSkeleton count={8} />
@@ -42,18 +44,18 @@ export default function BeautyClosetPage(): JSX.Element {
                   />
                 </div>
                 <p className="text-xs text-text-tertiary mt-1">
-                  متبقي {(p.usagePct as number) ?? 100}%
+                  {t('beautyCloset.usageLeft', { pct: (p.usagePct as number) ?? 100 })}
                 </p>
               </Card>
             ))}
           </div>
         )}
-        <Modal open={showAdd} onClose={() => setShowAdd(false)} title="إضافة منتج">
+        <Modal open={showAdd} onClose={() => setShowAdd(false)} title={t('beautyCloset.addTitle')}>
           <div className="space-y-3">
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="اسم المنتج"
+              placeholder={t('beautyCloset.productNamePlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <select
@@ -83,7 +85,7 @@ export default function BeautyClosetPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-              إضافة
+              {t('beautyCloset.add')}
             </Button>
           </div>
         </Modal>

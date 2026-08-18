@@ -3,9 +3,11 @@
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 import Link from 'next/link';
 
 export default function LoyaltyPunchCardPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading, isError, refetch } = api.loyaltyPunchCard.myCard.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -21,21 +23,22 @@ export default function LoyaltyPunchCardPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> بطاقة الولاء</h1>
-          <p className="mt-1 text-sm text-text-secondary">احجزي ١٠ مرات واحصلي على جلسة مجانية</p>
+          <h1 className="text-2xl font-bold">{t('loyaltyPunchCard.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('loyaltyPunchCard.subtitle')}</p>
         </div>
 
         {isLoading ? (
           <GridSkeleton count={10} />
         ) : isError ? (
-          <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+          <ErrorAlert message={t('loyaltyPunchCard.loadError')} onRetry={() => refetch()} />
         ) : (
           <Card padding="lg" className="text-center">
             <span className="text-6xl">{free ? '' : ''}</span>
             <h2 className="mt-4 text-xl font-bold">
               {free
-                ? 'مبروك! لكِ جلسة مجانية '
-                : ((data?.message as string) ?? `متبقي ${total - stamps} حجوزات`)}
+                ? t('loyaltyPunchCard.freeSession')
+                : ((data?.message as string) ??
+                  t('loyaltyPunchCard.remaining', { count: total - stamps }))}
             </h2>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               {Array.from({ length: total }, (_, i) => (
@@ -49,7 +52,9 @@ export default function LoyaltyPunchCardPage(): JSX.Element {
             </div>
             <div className="mt-6">
               <Link href="/bookings/create">
-                <Button size="lg">{free ? ' احجزي جلستكِ المجانية' : ' احجزي الآن'}</Button>
+                <Button size="lg">
+                  {free ? t('loyaltyPunchCard.bookFree') : t('loyaltyPunchCard.bookNow')}
+                </Button>
               </Link>
             </div>
           </Card>

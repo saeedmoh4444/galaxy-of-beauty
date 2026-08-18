@@ -4,8 +4,10 @@ import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button, ErrorAlert, formatCurrency } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import Link from 'next/link';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function WomensServicesPage(): JSX.Element {
+  const { t } = useLocale();
   const { user } = useAuth();
   const { data: cats } = api.womensServices.categories.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
@@ -42,23 +44,28 @@ export default function WomensServicesPage(): JSX.Element {
       <div className="mb-10 text-center">
         <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
-          خدمات نسائية
+          {t('marketing.womens-services.title')}
         </h1>
         <p className="mt-2 text-text-secondary dark:text-gray-400">
-          خدمات متخصصة للمرأة — عناية، جمال، وصحة في كل مرحلة من حياتكِ
+          {t('marketing.womens-services.subtitle')}
         </p>
       </div>
 
       {bookingResult ? (
         <Card padding="lg" className="text-center border-2 border-green-300 dark:border-green-700">
           <span className="text-6xl"></span>
-          <h2 className="mt-4 text-xl font-bold">تم الحجز!</h2>
+          <h2 className="mt-4 text-xl font-bold">{t('marketing.womens-services.booked-title')}</h2>
           <p className="font-bold mt-1">{bookingResult.service as string}</p>
           <p className="text-2xl font-extrabold text-brand-600 mt-2">
-            {formatCurrency(bookingResult.price as number)} ر.س
+            {t('marketing.womens-services.price-sar', {
+              price: formatCurrency(bookingResult.price as number),
+            })}
           </p>
           <p className="text-sm text-text-secondary">
-            ️ {bookingResult.durationMin as number} دقيقة
+            ️{' '}
+            {t('marketing.womens-services.duration-min', {
+              count: bookingResult.durationMin as number,
+            })}
           </p>
           {((bookingResult.specialRequirements as string[])?.length ?? 0) > 0 ? (
             <div className="mt-3 flex flex-wrap justify-center gap-1">
@@ -81,7 +88,7 @@ export default function WomensServicesPage(): JSX.Element {
               setSelectedCat(null);
             }}
           >
-            عودة
+            {t('marketing.womens-services.back')}
           </Button>
         </Card>
       ) : !selectedCat ? (
@@ -100,7 +107,9 @@ export default function WomensServicesPage(): JSX.Element {
                   {c.description as string}
                 </p>
                 <span className="mt-3 inline-block rounded-full bg-brand-100 dark:bg-brand-900 px-3 py-1 text-xs font-medium text-brand-700 dark:text-brand-300">
-                  {c.serviceCount as number} خدمات
+                  {t('marketing.womens-services.services-count', {
+                    count: c.serviceCount as number,
+                  })}
                 </span>
               </Card>
             </button>
@@ -109,14 +118,14 @@ export default function WomensServicesPage(): JSX.Element {
       ) : isLoading ? (
         <CardListSkeleton count={4} />
       ) : isError ? (
-        <ErrorAlert message="فشل تحميل الخدمات" onRetry={() => refetch()} />
+        <ErrorAlert message={t('marketing.womens-services.load-error')} onRetry={() => refetch()} />
       ) : (
         <div className="space-y-6">
           <button
             onClick={() => setSelectedCat(null)}
             className="text-brand-600 hover:text-brand-700 text-sm font-medium"
           >
-            ← العودة للأقسام
+            {t('marketing.womens-services.back-to-categories')}
           </button>
 
           <Card
@@ -155,9 +164,15 @@ export default function WomensServicesPage(): JSX.Element {
                 </div>
                 <div className="text-right">
                   <p className="text-xl font-extrabold text-brand-600">
-                    {formatCurrency(s.price as number)} ر.س
+                    {t('marketing.womens-services.price-sar', {
+                      price: formatCurrency(s.price as number),
+                    })}
                   </p>
-                  <p className="text-xs text-text-tertiary">{s.durationMin as number} دقيقة</p>
+                  <p className="text-xs text-text-tertiary">
+                    {t('marketing.womens-services.duration-min', {
+                      count: s.durationMin as number,
+                    })}
+                  </p>
                   {user && (
                     <Button
                       size="sm"
@@ -169,7 +184,7 @@ export default function WomensServicesPage(): JSX.Element {
                         )
                       }
                     >
-                      احجزي
+                      {t('marketing.womens-services.book')}
                     </Button>
                   )}
                 </div>
@@ -182,7 +197,9 @@ export default function WomensServicesPage(): JSX.Element {
               padding="lg"
               className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-none"
             >
-              <h3 className="font-bold mb-3 text-text-primary dark:text-gray-100"> نصائح مهمة</h3>
+              <h3 className="font-bold mb-3 text-text-primary dark:text-gray-100">
+                {t('marketing.womens-services.tips-title')}
+              </h3>
               <div className="space-y-2">
                 {safetyTips.map((tip: string, i: number) => (
                   <p key={i} className="text-sm text-text-secondary dark:text-gray-400">
@@ -196,7 +213,7 @@ export default function WomensServicesPage(): JSX.Element {
           {!user && (
             <div className="text-center">
               <Link href="/login">
-                <Button size="lg">سجّلي دخول للحجز</Button>
+                <Button size="lg">{t('marketing.womens-services.login-cta')}</Button>
               </Link>
             </div>
           )}

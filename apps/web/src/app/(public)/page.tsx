@@ -1,5 +1,7 @@
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import type { RouterOutputs } from '@galaxy/api';
+import { t } from '@galaxy/shared';
+import { getServerLocale } from '@/lib/i18n';
 import { HomeClient } from './HomeClient';
 import type { HomePageProps } from './HomeClient';
 
@@ -10,6 +12,7 @@ type AnyCategory = RouterOutputs['categories']['list'][number];
 type AnyService = RouterOutputs['services']['list']['items'][number];
 
 export default async function HomePage(): Promise<JSX.Element> {
+  const locale = await getServerLocale();
   let categories: AnyCategory[] = [];
   let services: AnyService[] = [];
   let serviceTotal = 0;
@@ -30,7 +33,7 @@ export default async function HomePage(): Promise<JSX.Element> {
     services = svc.items;
     serviceTotal = svc.total;
   } catch (e) {
-    fetchError = (e as Error).message || 'فشل تحميل البيانات';
+    fetchError = (e as Error).message || t('marketing.home.load-error', locale);
   }
 
   return (

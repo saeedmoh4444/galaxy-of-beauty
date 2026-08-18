@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyGlassesMakeupCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyGlassesMakeupCard({
+  className = '',
+  title = 'مكياج النظارات',
+  subtitle = 'إطلالة جميلة مع النظارة',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,44 @@ export function BeautyGlassesMakeupCard({ className = '' }: { className?: string
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">مكياج النظارات</h4>
-          <p className="text-[10px] text-sky-500 dark:text-sky-400">إطلالة جميلة مع النظارة</p>
+          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
+          <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '️', text: 'رموش مرفوعة — لا تلمس العدسات' },
-          { emoji: '', text: 'هايلايتر تحت الحاجب — يبرز العين' },
-          { emoji: '', text: 'ظلال مات — ليس لامعاً' },
-          { emoji: '️', text: 'حاجبين مرتبين — الإطار يبرزهما' },
+          {
+            emoji: '️',
+            text: {
+              ar: 'رموش مرفوعة — لا تلمس العدسات',
+              en: 'Curled lashes — so they do not touch the lenses',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'هايلايتر تحت الحاجب — يبرز العين',
+              en: 'Highlighter under the brow — makes the eyes pop',
+            },
+          },
+          {
+            emoji: '',
+            text: { ar: 'ظلال مات — ليس لامعاً', en: 'Matte eyeshadow — not shimmery' },
+          },
+          {
+            emoji: '️',
+            text: {
+              ar: 'حاجبين مرتبين — الإطار يبرزهما',
+              en: 'Tidy brows — the frames draw attention to them',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-sky-50 px-3 py-2 dark:bg-sky-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-sky-800 dark:text-sky-200">{t.text}</span>
+            <span className="text-[10px] text-sky-800 dark:text-sky-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

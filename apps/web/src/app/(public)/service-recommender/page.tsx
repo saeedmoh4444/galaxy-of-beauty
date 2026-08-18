@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import Link from 'next/link';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function ServiceRecommenderPage(): JSX.Element {
+  const { t } = useLocale();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [searchAnswers, setSearchAnswers] = useState<Record<string, string> | null>(null);
@@ -32,10 +34,8 @@ export default function ServiceRecommenderPage(): JSX.Element {
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">اكتشفي خدماتكِ المثالية</h1>
-        <p className="mt-2 text-text-secondary">
-          أجيبي على ٣ أسئلة وسنقترح عليكِ أفضل خدمات الجمال المناسبة لكِ
-        </p>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.service-recommender.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.service-recommender.subtitle')}</p>
       </div>
 
       {searchAnswers ? (
@@ -56,7 +56,7 @@ export default function ServiceRecommenderPage(): JSX.Element {
                       />
                     </div>
                     <span className="text-xs font-bold text-brand-600 mt-1">
-                      {r.matchPct as number}% تطابق
+                      {t('marketing.service-recommender.match-pct', { pct: r.matchPct as number })}
                     </span>
                   </Card>
                 </Link>
@@ -71,7 +71,7 @@ export default function ServiceRecommenderPage(): JSX.Element {
                   setSearchAnswers(null);
                 }}
               >
-                إعادة
+                {t('marketing.service-recommender.retry')}
               </Button>
             </div>
           </div>
@@ -87,7 +87,10 @@ export default function ServiceRecommenderPage(): JSX.Element {
             ))}
           </div>
           <p className="text-xs text-text-tertiary mb-1">
-            السؤال {step + 1} من {qs.length}
+            {t('marketing.service-recommender.question-of', {
+              current: step + 1,
+              total: qs.length,
+            })}
           </p>
           <h2 className="text-xl font-bold mb-6">{currentQ.q as string}</h2>
           <div className="space-y-2">

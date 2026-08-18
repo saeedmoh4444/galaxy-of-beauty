@@ -1,6 +1,7 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 const CAT_COLORS: Record<string, string> = {
   makeup: '#C41E3A',
@@ -11,6 +12,7 @@ const CAT_COLORS: Record<string, string> = {
 };
 
 export default function ServiceTrendsPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading, isError, refetch } = api.serviceTrends.trends.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -25,18 +27,18 @@ export default function ServiceTrendsPage(): JSX.Element {
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">توجهات الخدمات</h1>
-        <p className="mt-2 text-text-secondary">اكتشفي أكثر الخدمات طلباً حسب الموسم</p>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.service-trends.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.service-trends.subtitle')}</p>
       </div>
 
       {isLoading ? (
         <CardListSkeleton count={2} />
       ) : isError ? (
-        <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+        <ErrorAlert message={t('marketing.service-trends.load-error')} onRetry={() => refetch()} />
       ) : (
         <>
           <Card padding="lg" className="mb-6">
-            <h3 className="font-bold mb-4"> الإقبال الشهري</h3>
+            <h3 className="font-bold mb-4">{t('marketing.service-trends.monthly-demand')}</h3>
             <div className="h-48 flex items-end gap-1">
               {trends.map((m: Record<string, unknown>) => (
                 <div key={m.month as string} className="flex-1 flex flex-col items-center gap-1">
@@ -72,7 +74,7 @@ export default function ServiceTrendsPage(): JSX.Element {
           </Card>
 
           <Card padding="lg">
-            <h3 className="font-bold mb-4"> الأكثر طلباً هذا الشهر</h3>
+            <h3 className="font-bold mb-4">{t('marketing.service-trends.top-this-month')}</h3>
             <div className="space-y-2">
               {top.map((t: Record<string, unknown>, i: number) => (
                 <div

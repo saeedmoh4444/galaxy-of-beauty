@@ -18,6 +18,16 @@ interface GroupDiscountBadgeProps {
   serviceName?: string;
   originalPrice?: number;
   onInvite?: () => void;
+  title?: string;
+  subtitle?: string;
+  discountLabel?: string;
+  whenBookingPrefix?: string;
+  peopleTogetherText?: string;
+  currencySuffix?: string;
+  savePrefix?: string;
+  saveSuffix?: string;
+  inviteButtonText?: string;
+  footerText?: string;
   className?: string;
 }
 
@@ -28,6 +38,16 @@ export function GroupDiscountBadge({
   originalPrice,
   onInvite,
   className = '',
+  title = 'خصم المجموعة',
+  subtitle = 'احجزي مع صديقاتكِ ووفّري أكثر',
+  discountLabel = 'خصم',
+  whenBookingPrefix = 'عند حجز ',
+  peopleTogetherText = 'أشخاص معاً',
+  currencySuffix = 'ر.س',
+  savePrefix = 'وفر ',
+  saveSuffix = ')',
+  inviteButtonText = 'ادعي صديقاتكِ',
+  footerText = 'الجمال أحلى مع الصديقات',
 }: GroupDiscountBadgeProps): JSX.Element {
   const priceAfterDiscount = originalPrice
     ? Math.round(originalPrice * (1 - discount / 100))
@@ -47,12 +67,8 @@ export function GroupDiscountBadge({
         <span className="text-3xl" aria-hidden="true">
           ‍️
         </span>
-        <h4 className="mt-1 text-sm font-bold text-violet-800 dark:text-violet-200">
-          خصم المجموعة
-        </h4>
-        <p className="text-[10px] text-violet-500 dark:text-violet-400">
-          احجزي مع صديقاتكِ ووفّري أكثر
-        </p>
+        <h4 className="mt-1 text-sm font-bold text-violet-800 dark:text-violet-200">{title}</h4>
+        <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
       </div>
 
       {/* Discount visual */}
@@ -61,10 +77,13 @@ export function GroupDiscountBadge({
           <span className="text-3xl font-bold text-violet-700 dark:text-violet-300">
             {discount}%
           </span>
-          <span className="text-sm font-bold text-violet-500 dark:text-violet-400">خصم</span>
+          <span className="text-sm font-bold text-violet-500 dark:text-violet-400">
+            {discountLabel}
+          </span>
         </div>
         <p className="mt-1 text-[10px] text-text-secondary dark:text-gray-300">
-          عند حجز {groupSize} أشخاص معاً
+          {whenBookingPrefix}
+          {groupSize} {peopleTogetherText}
         </p>
       </div>
 
@@ -104,14 +123,16 @@ export function GroupDiscountBadge({
           )}
           <div className="mt-1 flex items-center justify-center gap-2 text-[10px]">
             <span className="text-text-tertiary line-through dark:text-gray-500">
-              {originalPrice} ر.س
+              {originalPrice} {currencySuffix}
             </span>
             <span className="text-violet-400">→</span>
             <span className="font-bold text-violet-700 dark:text-violet-300">
-              {priceAfterDiscount} ر.س
+              {priceAfterDiscount} {currencySuffix}
             </span>
             <span className="text-emerald-600 dark:text-emerald-400">
-              (وفر {savingsPerPerson} ر.س)
+              ({savePrefix}
+              {savingsPerPerson} {currencySuffix}
+              {saveSuffix})
             </span>
           </div>
         </div>
@@ -123,11 +144,11 @@ export function GroupDiscountBadge({
         onClick={onInvite}
         className="mt-3 w-full rounded-xl bg-violet-600 py-2.5 text-xs font-bold text-white hover:bg-violet-700 active:scale-[0.98] transition-all shadow-sm"
       >
-        ادعي صديقاتكِ
+        {inviteButtonText}
       </button>
 
       <p className="mt-2 text-center text-[9px] text-violet-500 dark:text-violet-400">
-        الجمال أحلى مع الصديقات
+        {footerText}
       </p>
     </div>
   );

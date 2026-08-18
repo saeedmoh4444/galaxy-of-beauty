@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautySchoolMakeupCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautySchoolMakeupCard({
+  className = '',
+  title = 'مكياج المدرسة',
+  subtitle = 'إطلالة طبيعية ليوم دراسي',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,44 @@ export function BeautySchoolMakeupCard({ className = '' }: { className?: string 
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">مكياج المدرسة</h4>
-          <p className="text-[10px] text-sky-500 dark:text-sky-400">إطلالة طبيعية ليوم دراسي</p>
+          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
+          <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '️', text: 'واقي شمس ملون — حماية + لون خفيف' },
-          { emoji: '️', text: 'ماسكارا بنية — أنعم من السوداء' },
-          { emoji: '', text: 'تينت شفاه — لون طبيعي يدوم' },
-          { emoji: '', text: 'مرطب فقط — البشرة تحتاج التنفس' },
+          {
+            emoji: '️',
+            text: {
+              ar: 'واقي شمس ملون — حماية + لون خفيف',
+              en: 'Tinted sunscreen — protection + a hint of color',
+            },
+          },
+          {
+            emoji: '️',
+            text: { ar: 'ماسكارا بنية — أنعم من السوداء', en: 'Brown mascara — softer than black' },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'تينت شفاه — لون طبيعي يدوم',
+              en: 'Lip tint — a natural, long-lasting color',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'مرطب فقط — البشرة تحتاج التنفس',
+              en: 'Moisturizer only — skin needs to breathe',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-sky-50 px-3 py-2 dark:bg-sky-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-sky-800 dark:text-sky-200">{t.text}</span>
+            <span className="text-[10px] text-sky-800 dark:text-sky-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Crumb {
   label: string;
@@ -8,10 +9,14 @@ interface Crumb {
 }
 
 export function Breadcrumbs({ items }: { items: Crumb[] }): JSX.Element {
+  const { t } = useLocale();
   return (
-    <nav aria-label="مسار التنقل" className="mb-4 flex items-center gap-1.5 text-sm text-gray-400">
+    <nav
+      aria-label={t('common.breadcrumb-nav')}
+      className="mb-4 flex items-center gap-1.5 text-sm text-gray-400"
+    >
       <Link href="/" className="hover:text-brand-600 transition-colors">
-        الرئيسية
+        {t('nav.home')}
       </Link>
       {items.map((item, idx) => (
         <span key={idx} className="flex items-center gap-1.5">

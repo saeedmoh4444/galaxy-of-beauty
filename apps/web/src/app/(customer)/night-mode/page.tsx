@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function NightModePage(): JSX.Element {
+  const { t } = useLocale();
   const { data: routine, isLoading: rLoad } = api.nightMode.routine.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -19,10 +21,8 @@ export default function NightModePage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> الروتين الليلي</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            روتين مسائي للاسترخاء والعناية بالبشرة قبل النوم
-          </p>
+          <h1 className="text-2xl font-bold">{t('nightMode.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('nightMode.subtitle')}</p>
         </div>
 
         {rLoad ? (
@@ -47,7 +47,9 @@ export default function NightModePage(): JSX.Element {
                       </span>
                       <p className="text-[10px] text-text-tertiary">{s.tip as string}</p>
                     </div>
-                    <span className="text-xs text-text-tertiary">{s.durationMin as number}د</span>
+                    <span className="text-xs text-text-tertiary">
+                      {t('nightMode.minutes', { count: s.durationMin as number })}
+                    </span>
                     <input
                       type="checkbox"
                       checked={done}
@@ -74,11 +76,11 @@ export default function NightModePage(): JSX.Element {
             padding="lg"
             className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950 dark:to-purple-950 border-none"
           >
-            <h3 className="font-bold mb-3"> نصائح لنوم أفضل</h3>
+            <h3 className="font-bold mb-3">{t('nightMode.tipsTitle')}</h3>
             <div className="space-y-2">
-              {allTips.map((t: string, i: number) => (
+              {allTips.map((tip: string, i: number) => (
                 <p key={i} className="text-sm">
-                  {t}
+                  {tip}
                 </p>
               ))}
             </div>

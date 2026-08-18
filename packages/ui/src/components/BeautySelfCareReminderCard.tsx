@@ -15,6 +15,8 @@ interface BeautySelfCareReminderCardProps {
   emoji?: string;
   time?: string;
   onSnooze?: () => void;
+  title?: string;
+  snoozeText?: string;
   className?: string;
 }
 
@@ -23,6 +25,8 @@ export function BeautySelfCareReminderCard({
   emoji = '‍️',
   time,
   onSnooze,
+  title = 'تذكير بالعناية',
+  snoozeText = 'ذكّريني لاحقاً',
   className = '',
 }: BeautySelfCareReminderCardProps): JSX.Element {
   return (
@@ -35,7 +39,7 @@ export function BeautySelfCareReminderCard({
       <div className="flex items-start gap-3">
         <span className="text-3xl shrink-0">{emoji}</span>
         <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-bold text-purple-800 dark:text-purple-200">تذكير بالعناية</h4>
+          <h4 className="text-sm font-bold text-purple-800 dark:text-purple-200">{title}</h4>
           <p className="mt-1 text-xs leading-relaxed text-purple-700 dark:text-purple-300">
             {reminder}
           </p>
@@ -48,7 +52,7 @@ export function BeautySelfCareReminderCard({
           onClick={onSnooze}
           className="mt-2 w-full rounded-lg border border-purple-200 py-1.5 text-[10px] font-bold text-purple-600 hover:bg-white/60 dark:hover:bg-gray-800/60 dark:border-purple-800 dark:text-purple-400 transition-colors"
         >
-          ذكّريني لاحقاً
+          {snoozeText}
         </button>
       )}
     </div>

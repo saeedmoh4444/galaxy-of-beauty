@@ -12,8 +12,8 @@ import { cn } from '@galaxy/shared';
 
 interface PostpartumService {
   emoji: string;
-  name: string;
-  description: string;
+  name: { ar: string; en: string };
+  description: { ar: string; en: string };
   price: number;
   availableFromDay: number; // days after birth
 }
@@ -21,36 +21,51 @@ interface PostpartumService {
 const SERVICES: PostpartumService[] = [
   {
     emoji: '🪢',
-    name: 'ربط البطن التقليدي',
-    description: 'ربط البطن بالطريقة السعودية التقليدية لدعم التعافي',
+    name: { ar: 'ربط البطن التقليدي', en: 'Traditional belly binding' },
+    description: {
+      ar: 'ربط البطن بالطريقة السعودية التقليدية لدعم التعافي',
+      en: 'Belly binding the traditional Saudi way to support recovery',
+    },
     price: 150,
     availableFromDay: 3,
   },
   {
     emoji: '‍️',
-    name: 'مساج النفاس',
-    description: 'مساج لطيف للجسم بالزيوت الدافئة لتخفيف الآلام',
+    name: { ar: 'مساج النفاس', en: 'Postpartum massage' },
+    description: {
+      ar: 'مساج لطيف للجسم بالزيوت الدافئة لتخفيف الآلام',
+      en: 'Gentle full-body massage with warm oils to ease pain',
+    },
     price: 200,
     availableFromDay: 7,
   },
   {
     emoji: '‍️',
-    name: 'علاج تساقط الشعر',
-    description: 'علاج طبيعي لتساقط الشعر بعد الولادة',
+    name: { ar: 'علاج تساقط الشعر', en: 'Hair loss treatment' },
+    description: {
+      ar: 'علاج طبيعي لتساقط الشعر بعد الولادة',
+      en: 'A natural treatment for postpartum hair loss',
+    },
     price: 180,
     availableFromDay: 30,
   },
   {
     emoji: '‍️',
-    name: 'عناية بالبشرة للنفاس',
-    description: 'ترطيب عميق وتوحيد لون البشرة بعد التغيرات الهرمونية',
+    name: { ar: 'عناية بالبشرة للنفاس', en: 'Postpartum skincare' },
+    description: {
+      ar: 'ترطيب عميق وتوحيد لون البشرة بعد التغيرات الهرمونية',
+      en: 'Deep hydration and evening out skin tone after hormonal changes',
+    },
     price: 160,
     availableFromDay: 14,
   },
   {
     emoji: '',
-    name: 'إطلالة الخروج الأولى',
-    description: 'مكياج ناعم وتصفيفة شعر لأول خروج بعد النفاس',
+    name: { ar: 'إطلالة الخروج الأولى', en: 'First outing look' },
+    description: {
+      ar: 'مكياج ناعم وتصفيفة شعر لأول خروج بعد النفاس',
+      en: 'Soft makeup and hairstyle for the first outing after postpartum',
+    },
     price: 250,
     availableFromDay: 40,
   },
@@ -60,12 +75,57 @@ interface PostpartumCareCardProps {
   daysSinceBirth: number;
   onBook?: (serviceName: string) => void;
   className?: string;
+  /** Header title */
+  title?: string;
+  /** Subtitle when the 40-day period is complete */
+  nifasCompleteText?: string;
+  /** Word prefixing the current day of postpartum */
+  nifasDayPrefix?: string;
+  /** Words connecting the day count to the remaining days */
+  nifasFromWord?: string;
+  /** Text for the remaining days count */
+  daysRemainingText?: string;
+  /** Label for the recovery progress bar */
+  progressLabel?: string;
+  /** Label at the start of the progress bar */
+  dayOneLabel?: string;
+  /** Label at the end of the progress bar */
+  dayFortyLabel?: string;
+  /** Label for the services section */
+  servicesLabel?: string;
+  /** Currency suffix shown after prices */
+  currencySuffix?: string;
+  /** Booking button label */
+  bookLabel?: string;
+  /** Text prefixing the unavailable-since count */
+  availableAfterText?: string;
+  /** Word for days in the unavailable count */
+  dayWord?: string;
+  /** Traditional wisdom footer text */
+  wisdomText?: string;
+  /** Locale for internal service data strings */
+  locale?: 'ar' | 'en';
 }
 
 export function PostpartumCareCard({
   daysSinceBirth,
   onBook,
   className = '',
+  title = 'عناية النفاس',
+  nifasCompleteText = ' اكتملت الأربعون — ألف مبروك!',
+  nifasDayPrefix = 'اليوم',
+  nifasFromWord = 'من النفاس —',
+  daysRemainingText = 'يوم متبقي',
+  progressLabel = 'تقدم التعافي',
+  dayOneLabel = 'اليوم 1',
+  dayFortyLabel = 'اليوم 40',
+  servicesLabel = 'خدمات النفاس المتاحة',
+  currencySuffix = 'ر.س',
+  bookLabel = 'احجزي',
+  availableAfterText = 'متاحة بعد',
+  dayWord = 'يوم',
+  wisdomText = '"الأربعين يوم راحة وتعافي — اعتني بنفسكِ كما تعتنين بطفلكِ"',
+  locale = 'ar',
 }: PostpartumCareCardProps): JSX.Element {
   const isNifasComplete = daysSinceBirth >= 40;
 
@@ -79,20 +139,18 @@ export function PostpartumCareCard({
       {/* Header */}
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-purple-700 dark:text-purple-300">
-          عناية النفاس
-        </h4>
+        <h4 className="mt-1 text-sm font-bold text-purple-700 dark:text-purple-300">{title}</h4>
         <p className="text-[10px] text-purple-500 dark:text-purple-400">
           {isNifasComplete
-            ? ' اكتملت الأربعون — ألف مبروك!'
-            : `اليوم ${daysSinceBirth} من النفاس — ${40 - daysSinceBirth} يوم متبقي`}
+            ? nifasCompleteText
+            : `${nifasDayPrefix} ${daysSinceBirth} ${nifasFromWord} ${40 - daysSinceBirth} ${daysRemainingText}`}
         </p>
       </div>
 
       {/* Progress */}
       <div className="mt-3">
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-text-tertiary dark:text-gray-400">تقدم التعافي</span>
+          <span className="text-text-tertiary dark:text-gray-400">{progressLabel}</span>
           <span className="font-bold text-purple-700 dark:text-purple-300">
             {Math.min(100, Math.round((daysSinceBirth / 40) * 100))}%
           </span>
@@ -104,15 +162,15 @@ export function PostpartumCareCard({
           />
         </div>
         <div className="mt-1 flex justify-between text-[9px] text-text-tertiary dark:text-gray-500">
-          <span>اليوم 1</span>
-          <span>اليوم 40</span>
+          <span>{dayOneLabel}</span>
+          <span>{dayFortyLabel}</span>
         </div>
       </div>
 
       {/* Services */}
       <div className="mt-3 space-y-2">
         <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          خدمات النفاس المتاحة
+          {servicesLabel}
         </p>
         {SERVICES.map((service) => {
           const isAvailable = daysSinceBirth >= service.availableFromDay;
@@ -120,7 +178,7 @@ export function PostpartumCareCard({
 
           return (
             <div
-              key={service.name}
+              key={service.name.ar}
               className={cn(
                 'flex items-center gap-3 rounded-xl border p-3 transition-all',
                 isAvailable
@@ -133,29 +191,29 @@ export function PostpartumCareCard({
               </span>
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-                  {service.name}
+                  {service.name[locale]}
                 </p>
                 <p className="text-[10px] text-text-tertiary dark:text-gray-400">
-                  {service.description}
+                  {service.description[locale]}
                 </p>
               </div>
               <div className="shrink-0 text-right">
                 {isAvailable ? (
                   <>
                     <p className="text-xs font-bold text-purple-700 dark:text-purple-400">
-                      {service.price} ر.س
+                      {service.price} {currencySuffix}
                     </p>
                     <button
                       type="button"
-                      onClick={() => onBook?.(service.name)}
+                      onClick={() => onBook?.(service.name.ar)}
                       className="mt-0.5 rounded-lg bg-purple-600 px-2 py-0.5 text-[9px] font-bold text-white hover:bg-purple-700"
                     >
-                      احجزي
+                      {bookLabel}
                     </button>
                   </>
                 ) : (
                   <p className="text-[10px] text-text-tertiary dark:text-gray-500">
-                    متاحة بعد {daysUntil} يوم
+                    {availableAfterText} {daysUntil} {dayWord}
                   </p>
                 )}
               </div>
@@ -167,7 +225,7 @@ export function PostpartumCareCard({
       {/* Traditional wisdom */}
       <div className="mt-3 rounded-xl bg-gradient-to-r from-purple-50 to-rose-50 p-3 dark:from-purple-950 dark:to-rose-950">
         <p className="text-center text-[10px] font-medium text-purple-700 dark:text-purple-300">
-          &ldquo;الأربعين يوم راحة وتعافي — اعتني بنفسكِ كما تعتنين بطفلكِ&rdquo;
+          {wisdomText}
         </p>
       </div>
     </div>

@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyEyeMassageCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyEyeMassageCard({
+  className = '',
+  title = 'مساج العين',
+  subtitle = '3 دقائق — لعيون مشرقة',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,47 @@ export function BeautyEyeMassageCard({ className = '' }: { className?: string })
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">مساج العين</h4>
-          <p className="text-[10px] text-teal-500 dark:text-teal-400">3 دقائق — لعيون مشرقة</p>
+          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
+          <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '️', text: 'البنصر — الأخف للتربيت على محيط العين' },
-          { emoji: '', text: 'من الداخل للخارج — بحركة دائرية' },
-          { emoji: '', text: 'مع كريم أو زيت — لتزلق الأصابع' },
-          { emoji: '️', text: '3 دقائق — صباحاً لتقليل الانتفاخ' },
+          {
+            emoji: '️',
+            text: {
+              ar: 'البنصر — الأخف للتربيت على محيط العين',
+              en: 'Ring finger — the gentlest for tapping around the eye',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'من الداخل للخارج — بحركة دائرية',
+              en: 'From inner to outer corner — in a circular motion',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'مع كريم أو زيت — لتزلق الأصابع',
+              en: 'With cream or oil — so fingers glide',
+            },
+          },
+          {
+            emoji: '️',
+            text: {
+              ar: '3 دقائق — صباحاً لتقليل الانتفاخ',
+              en: '3 minutes — in the morning to reduce puffiness',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-teal-50 px-3 py-2 dark:bg-teal-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-teal-800 dark:text-teal-200">{t.text}</span>
+            <span className="text-[10px] text-teal-800 dark:text-teal-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

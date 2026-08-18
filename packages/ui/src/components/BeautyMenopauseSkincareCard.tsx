@@ -2,8 +2,14 @@
 import { cn } from '@galaxy/shared';
 export function BeautyMenopauseSkincareCard({
   className = '',
+  title = 'عناية سن اليأس',
+  subtitle = 'بشرتكِ تتغير — وعنايتكِ معها',
+  locale = 'ar',
 }: {
   className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
 }): JSX.Element {
   return (
     <div
@@ -15,25 +21,44 @@ export function BeautyMenopauseSkincareCard({
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">عناية سن اليأس</h4>
-          <p className="text-[10px] text-rose-500 dark:text-rose-400">
-            بشرتكِ تتغير — وعنايتكِ معها
-          </p>
+          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
+          <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'ترطيب مكثف — البشرة تفقد الرطوبة' },
-          { emoji: '', text: 'ببتيدات — تحفز الكولاجين' },
-          { emoji: '️', text: 'حماية من الشمس — التصبغات تزيد' },
-          { emoji: '🩺', text: 'استشارة طبية — للعناية الهرمونية' },
+          {
+            emoji: '',
+            text: {
+              ar: 'ترطيب مكثف — البشرة تفقد الرطوبة',
+              en: 'Intense hydration — skin loses moisture',
+            },
+          },
+          {
+            emoji: '',
+            text: { ar: 'ببتيدات — تحفز الكولاجين', en: 'Peptides — stimulate collagen' },
+          },
+          {
+            emoji: '️',
+            text: {
+              ar: 'حماية من الشمس — التصبغات تزيد',
+              en: 'Sun protection — pigmentation increases',
+            },
+          },
+          {
+            emoji: '🩺',
+            text: {
+              ar: 'استشارة طبية — للعناية الهرمونية',
+              en: 'Medical consultation — for hormonal care',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-rose-50 px-3 py-2 dark:bg-rose-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-rose-800 dark:text-rose-200">{t.text}</span>
+            <span className="text-[10px] text-rose-800 dark:text-rose-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

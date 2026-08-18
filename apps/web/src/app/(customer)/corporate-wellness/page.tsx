@@ -4,8 +4,10 @@ import { api } from '@/lib/trpc';
 import { useState } from 'react';
 import { PageContainer, PageTitle, Card } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function CorporateWellnessPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const plans = api.corporateWellness.plans.useQuery();
   const enquiries = api.corporateWellness.myEnquiries.useQuery();
   const [planId, setPlanId] = useState('growth');
@@ -38,7 +40,10 @@ export default function CorporateWellnessPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" عافية الشركات" subtitle="باقات تجميل وعناية لمنسوبات الشركات" />
+        <PageTitle
+          title={t('corporateWellness.title')}
+          subtitle={t('corporateWellness.subtitle')}
+        />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -46,7 +51,7 @@ export default function CorporateWellnessPage(): JSX.Element {
               <div className="rounded-2xl bg-emerald-50 p-6 text-center dark:bg-emerald-950">
                 <span className="text-4xl"></span>
                 <p className="mt-3 font-bold text-emerald-700 dark:text-emerald-300">
-                  تم استلام طلبكِ وسنتواصل معكِ
+                  {t('corporateWellness.received')}
                 </p>
               </div>
             )}
@@ -65,13 +70,13 @@ export default function CorporateWellnessPage(): JSX.Element {
                       {p.nameAr}
                     </h4>
                     <p className="mt-1 text-lg font-extrabold text-rose-600 dark:text-rose-400">
-                      {p.price.toLocaleString()} ر.س{' '}
+                      {p.price.toLocaleString()} {t('beautyParty.currency')}{' '}
                       <span className="text-xs font-normal text-text-tertiary dark:text-gray-500">
-                        / سنوياً
+                        {t('corporateWellness.annually')}
                       </span>
                     </p>
                     <p className="mt-1 text-xs text-text-tertiary dark:text-gray-500">
-                      حتى {p.employees} موظفة
+                      {t('corporateWellness.upToEmployees', { count: p.employees })}
                     </p>
                     <div className="mt-2 flex flex-wrap gap-1">
                       {p.services?.map((svc, i) => (
@@ -93,7 +98,7 @@ export default function CorporateWellnessPage(): JSX.Element {
               onClick={() => setShowForm(!showForm)}
               className="w-full rounded-xl bg-rose-600 py-3 text-sm font-bold text-white hover:bg-rose-700 transition-colors"
             >
-              {showForm ? ' إغلاق' : ' تقديم طلب'}
+              {showForm ? t('corporateWellness.close') : t('corporateWellness.openRequest')}
             </button>
 
             {showForm && (
@@ -101,20 +106,20 @@ export default function CorporateWellnessPage(): JSX.Element {
                 <input
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
-                  placeholder="اسم الشركة"
+                  placeholder={t('corporateWellness.companyPlaceholder')}
                   className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-right dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                 />
                 <input
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
-                  placeholder="اسم المسؤولة"
+                  placeholder={t('corporateWellness.contactPlaceholder')}
                   className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-right dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                 />
                 <input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
-                  placeholder="البريد الإلكتروني"
+                  placeholder={t('corporateWellness.emailPlaceholder')}
                   className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-right dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                 />
                 <button
@@ -122,7 +127,7 @@ export default function CorporateWellnessPage(): JSX.Element {
                   onClick={handleEnquire}
                   className="w-full rounded-xl bg-rose-600 py-3 text-sm font-bold text-white hover:bg-rose-700 transition-colors"
                 >
-                  إرسال الطلب
+                  {t('corporateWellness.submitRequest')}
                 </button>
               </div>
             )}
@@ -132,7 +137,7 @@ export default function CorporateWellnessPage(): JSX.Element {
             {enquiryItems.length > 0 && (
               <Card className="p-4">
                 <h3 className="text-sm font-bold text-text-primary dark:text-gray-100">
-                  طلباتي السابقة
+                  {t('corporateWellness.myEnquiries')}
                 </h3>
                 <div className="mt-3 space-y-2">
                   {enquiryItems.map((e, i) => (
@@ -141,7 +146,10 @@ export default function CorporateWellnessPage(): JSX.Element {
                         {e.companyName}
                       </p>
                       <p className="text-xs text-text-tertiary dark:text-gray-500">
-                        {e.planId} · {new Date(e.createdAt).toLocaleDateString('ar-SA')}
+                        {e.planId} ·{' '}
+                        {new Date(e.createdAt).toLocaleDateString(
+                          locale === 'en' ? 'en-GB' : 'ar-SA',
+                        )}
                       </p>
                     </div>
                   ))}

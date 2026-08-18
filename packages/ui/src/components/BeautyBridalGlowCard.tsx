@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyBridalGlowCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyBridalGlowCard({
+  className = '',
+  title = 'إشراقة العروس',
+  subtitle = 'توهجي في يومكِ الكبير',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,27 +21,49 @@ export function BeautyBridalGlowCard({ className = '' }: { className?: string })
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-            إشراقة العروس
-          </h4>
-          <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
-            توهجي في يومكِ الكبير
-          </p>
+          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
+          <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: '8 أكواب ماء يومياً — لمدة شهر قبل الزفاف' },
-          { emoji: '', text: 'غذاء صحي — أفوكادو، سلمون، مكسرات' },
-          { emoji: '', text: '8 ساعات نوم — أهم سر للبشرة' },
-          { emoji: '', text: 'تأمل 10 دقائق — هدوء وثقة في يومكِ' },
+          {
+            emoji: '',
+            text: {
+              ar: '8 أكواب ماء يومياً — لمدة شهر قبل الزفاف',
+              en: '8 cups of water daily — for a month before the wedding',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'غذاء صحي — أفوكادو، سلمون، مكسرات',
+              en: 'Healthy food — avocado, salmon, nuts',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: '8 ساعات نوم — أهم سر للبشرة',
+              en: '8 hours of sleep — the biggest secret for your skin',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'تأمل 10 دقائق — هدوء وثقة في يومكِ',
+              en: '10 minutes of meditation — calm and confidence on your big day',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 dark:bg-emerald-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-emerald-800 dark:text-emerald-200">{t.text}</span>
+            <span className="text-[10px] text-emerald-800 dark:text-emerald-200">
+              {t.text[locale]}
+            </span>
           </div>
         ))}
       </div>

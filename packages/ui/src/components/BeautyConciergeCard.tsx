@@ -15,15 +15,27 @@ interface BeautyConciergeCardProps {
   onChat?: () => void;
   onCall?: () => void;
   className?: string;
+  /** Card heading */
+  title?: string;
+  /** Subtitle after the concierge name */
+  subtitle?: string;
+  /** Chat button label */
+  chatButtonText?: string;
+  /** Call button label */
+  callButtonText?: string;
+  /** Footer quote */
+  quoteText?: string;
+  /** Display locale for service labels */
+  locale?: 'ar' | 'en';
 }
 
 const SERVICES = [
-  { emoji: '', label: 'تنظيم المواعيد' },
-  { emoji: '', label: 'اقتراح خدمات' },
-  { emoji: '', label: 'تنسيق المفاجآت' },
-  { emoji: '', label: 'ترتيب التوصيل' },
-  { emoji: '', label: 'استشارة سريعة' },
-  { emoji: '', label: 'أولوية الحجز' },
+  { emoji: '', label: { ar: 'تنظيم المواعيد', en: 'Appointment scheduling' } },
+  { emoji: '', label: { ar: 'اقتراح خدمات', en: 'Service suggestions' } },
+  { emoji: '', label: { ar: 'تنسيق المفاجآت', en: 'Surprise coordination' } },
+  { emoji: '', label: { ar: 'ترتيب التوصيل', en: 'Delivery arrangement' } },
+  { emoji: '', label: { ar: 'استشارة سريعة', en: 'Quick consultation' } },
+  { emoji: '', label: { ar: 'أولوية الحجز', en: 'Booking priority' } },
 ];
 
 export function BeautyConciergeCard({
@@ -31,6 +43,12 @@ export function BeautyConciergeCard({
   onChat,
   onCall,
   className = '',
+  title = 'مرشدة الجمال الخاصة',
+  subtitle = 'مرشدتكِ الشخصية للعناية بجمالكِ',
+  chatButtonText = 'محادثة',
+  callButtonText = 'اتصال',
+  quoteText = '“دللي نفسكِ — ونحن نتولى الباقي”',
+  locale = 'ar',
 }: BeautyConciergeCardProps): JSX.Element {
   return (
     <div
@@ -43,11 +61,9 @@ export function BeautyConciergeCard({
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-yellow-200 text-3xl dark:from-amber-800 dark:to-yellow-800">
           ‍
         </div>
-        <h4 className="mt-2 text-sm font-bold text-amber-800 dark:text-amber-200">
-          مرشدة الجمال الخاصة
-        </h4>
+        <h4 className="mt-2 text-sm font-bold text-amber-800 dark:text-amber-200">{title}</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
-          {conciergeName} — مرشدتكِ الشخصية للعناية بجمالكِ
+          {conciergeName} — {subtitle}
         </p>
       </div>
 
@@ -55,14 +71,14 @@ export function BeautyConciergeCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {SERVICES.map((s) => (
           <div
-            key={s.label}
+            key={s.label.ar}
             className="flex items-center gap-2 rounded-xl bg-white/60 px-2.5 py-2 dark:bg-gray-800/60"
           >
             <span className="text-sm" aria-hidden="true">
               {s.emoji}
             </span>
             <span className="text-[10px] font-medium text-amber-800 dark:text-amber-200">
-              {s.label}
+              {s.label[locale]}
             </span>
           </div>
         ))}
@@ -75,20 +91,18 @@ export function BeautyConciergeCard({
           onClick={onChat}
           className="flex-1 rounded-xl bg-amber-600 py-2.5 text-xs font-bold text-white hover:bg-amber-700 active:scale-[0.98] transition-all"
         >
-          محادثة
+          {chatButtonText}
         </button>
         <button
           type="button"
           onClick={onCall}
           className="rounded-xl border border-amber-200 bg-white px-4 py-2.5 text-xs font-bold text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:bg-gray-800 dark:text-amber-300"
         >
-          اتصال
+          {callButtonText}
         </button>
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">
-        &ldquo;دللي نفسكِ — ونحن نتولى الباقي&rdquo;
-      </p>
+      <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">{quoteText}</p>
     </div>
   );
 }

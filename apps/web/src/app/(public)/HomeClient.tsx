@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { Button, Card, ErrorAlert, EmptyState, ServiceImage, ar } from '@galaxy/ui';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
+import { Button, Card, ErrorAlert, EmptyState, ServiceImage } from '@galaxy/ui';
 
 interface Category {
   id: number;
@@ -47,6 +49,7 @@ export function HomeClient({
   serviceTotal,
   fetchError,
 }: HomePageProps): JSX.Element {
+  const { t, locale } = useLocale();
   const categories = initialCategories;
   const svcItems = initialServices;
 
@@ -54,14 +57,12 @@ export function HomeClient({
     <div>
       {/* Hero */}
       <section className="bg-gradient-to-br from-brand-600 to-brand-800 px-4 py-24 text-center text-white">
-        <h1 className="text-3xl font-extrabold md:text-5xl">اكتشفي جمالك مع أفضل الفنيات</h1>
-        <p className="mt-4 text-lg text-brand-100">
-          احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج والمزيد
-        </p>
+        <h1 className="text-3xl font-extrabold md:text-5xl">{t('marketing.home.hero-title')}</h1>
+        <p className="mt-4 text-lg text-brand-100">{t('marketing.home.hero-subtitle')}</p>
         <div className="mt-8 flex justify-center gap-4">
           <Link href="/bookings/create">
             <Button size="lg" className="bg-white !text-brand-700 hover:bg-surface-muted">
-              احجزي الآن
+              {t('marketing.home.book-now')}
             </Button>
           </Link>
           <Link href="/services/surprise-me">
@@ -70,7 +71,7 @@ export function HomeClient({
               variant="outline"
               className="border-white !text-white hover:bg-white/10"
             >
-              فاجئيني
+              {t('marketing.home.surprise-me')}
             </Button>
           </Link>
         </div>
@@ -78,16 +79,22 @@ export function HomeClient({
 
       {/* Categories */}
       <section className="mx-auto max-w-7xl px-4 py-16">
-        <h2 className="mb-8 text-2xl font-bold">الأقسام</h2>
+        <h2 className="mb-8 text-2xl font-bold">{t('marketing.home.categories')}</h2>
         {fetchError && <ErrorAlert message={fetchError} onRetry={() => window.location.reload()} />}
-        {!fetchError && categories.length === 0 && <EmptyState title="لا توجد أقسام" />}
+        {!fetchError && categories.length === 0 && (
+          <EmptyState title={t('marketing.home.no-categories')} />
+        )}
         {categories.length > 0 && (
           <div className="grid grid-cols-3 gap-4 md:grid-cols-6">
             {categories.map((c) => (
               <Link key={c.id} href={`/services?categoryId=${c.id}`}>
                 <Card hover padding="lg" className="flex flex-col items-center text-center">
-                  <ServiceImage service={categoryImageKey(c.slug)} size="lg" alt={ar(c.nameJson)} />
-                  <h3 className="mt-3 text-sm font-semibold">{ar(c.nameJson)}</h3>
+                  <ServiceImage
+                    service={categoryImageKey(c.slug)}
+                    size="lg"
+                    alt={localize(c.nameJson, locale)}
+                  />
+                  <h3 className="mt-3 text-sm font-semibold">{localize(c.nameJson, locale)}</h3>
                 </Card>
               </Link>
             ))}
@@ -98,11 +105,13 @@ export function HomeClient({
       {/* Popular Services */}
       <section className="bg-surface-muted px-4 py-16 dark:bg-gray-900">
         <div className="mx-auto max-w-7xl">
-          <h2 className="mb-8 text-2xl font-bold">الخدمات الأكثر طلباً</h2>
+          <h2 className="mb-8 text-2xl font-bold">{t('marketing.home.popular-services')}</h2>
           {fetchError && (
             <ErrorAlert message={fetchError} onRetry={() => window.location.reload()} />
           )}
-          {!fetchError && svcItems.length === 0 && <EmptyState title="لا توجد خدمات" />}
+          {!fetchError && svcItems.length === 0 && (
+            <EmptyState title={t('marketing.home.no-services')} />
+          )}
           {svcItems.length > 0 && (
             <div className="grid gap-6 md:grid-cols-3">
               {svcItems.map((svc) => (
@@ -111,12 +120,16 @@ export function HomeClient({
                     <ServiceImage
                       service={String(svc.id)}
                       size="full"
-                      alt={ar(svc.titleJson)}
+                      alt={localize(svc.titleJson, locale)}
                       className="h-40"
                     />
-                    <h3 className="mt-3 font-semibold">{ar(svc.titleJson)}</h3>
-                    <p className="mt-1 text-sm text-text-secondary">{svc.durationMin} دقيقة</p>
-                    <p className="mt-2 font-bold text-brand-600">{svc.basePrice} ر.س</p>
+                    <h3 className="mt-3 font-semibold">{localize(svc.titleJson, locale)}</h3>
+                    <p className="mt-1 text-sm text-text-secondary">
+                      {t('marketing.home.duration-min', { min: svc.durationMin })}
+                    </p>
+                    <p className="mt-2 font-bold text-brand-600">
+                      {t('marketing.home.price-sar', { price: svc.basePrice })}
+                    </p>
                   </Card>
                 </Link>
               ))}
@@ -129,10 +142,13 @@ export function HomeClient({
       <section className="mx-auto max-w-7xl px-4 py-16 text-center">
         <div className="grid gap-8 md:grid-cols-4">
           {[
-            { label: 'قسم تجميل', value: `+${categories.length || 12}` },
-            { label: 'خبيرة تجميل', value: '+500' },
-            { label: 'خدمة', value: `+${serviceTotal || 25}` },
-            { label: 'مدينة سعودية', value: '+24' },
+            {
+              label: t('marketing.home.stat-beauty-sections'),
+              value: `+${categories.length || 12}`,
+            },
+            { label: t('marketing.home.stat-beauty-experts'), value: '+500' },
+            { label: t('marketing.home.stat-services'), value: `+${serviceTotal || 25}` },
+            { label: t('marketing.home.stat-saudi-cities'), value: '+24' },
           ].map((s) => (
             <div key={s.label}>
               <p className="text-3xl font-extrabold text-brand-600">{s.value}</p>
@@ -145,38 +161,40 @@ export function HomeClient({
       {/* Testimonials */}
       <section className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950 px-4 py-16">
         <div className="mx-auto max-w-5xl">
-          <h2 className="mb-8 text-center text-2xl font-bold">ماذا تقول عميلاتنا؟</h2>
+          <h2 className="mb-8 text-center text-2xl font-bold">
+            {t('marketing.home.testimonials-title')}
+          </h2>
           <div className="grid gap-6 md:grid-cols-3">
             {[
               {
-                name: 'سارة',
-                text: 'أفضل تجربة تجميل! حجزت مكياج ليوم زفافي وكانت النتيجة خيالية. الفنانة نورة أبدعت!',
+                name: t('marketing.home.testimonial-sara-name'),
+                text: t('marketing.home.testimonial-sara-text'),
                 rating: 5,
               },
               {
-                name: 'مريم',
-                text: 'جلسات تنظيف البشرة غيرت بشرتي تماماً. د. ليلى محترفة وتستخدم أفضل المنتجات.',
+                name: t('marketing.home.testimonial-maryam-name'),
+                text: t('marketing.home.testimonial-maryam-text'),
                 rating: 5,
               },
               {
-                name: 'نورة',
-                text: 'المنصة سهلة والتطبيق رائع. أقدر أحجز لأمي وأختي من حساب واحد. شكراً جالكسي بيوتي!',
+                name: t('marketing.home.testimonial-noura-name'),
+                text: t('marketing.home.testimonial-noura-text'),
                 rating: 5,
               },
-            ].map((t, i) => (
+            ].map((tst, i) => (
               <Card
                 key={i}
                 padding="lg"
                 className="text-center bg-white/80 dark:bg-gray-900/80 backdrop-blur"
               >
                 <p className="text-lg font-bold text-yellow-500">
-                  {'★'.repeat(t.rating)}
-                  {'☆'.repeat(5 - t.rating)}
+                  {'★'.repeat(tst.rating)}
+                  {'☆'.repeat(5 - tst.rating)}
                 </p>
                 <p className="mt-3 text-sm text-text-secondary dark:text-gray-400 leading-relaxed">
-                  &ldquo;{t.text}&rdquo;
+                  &ldquo;{tst.text}&rdquo;
                 </p>
-                <p className="mt-3 font-bold text-brand-600">— {t.name}</p>
+                <p className="mt-3 font-bold text-brand-600">— {tst.name}</p>
               </Card>
             ))}
           </div>
@@ -185,17 +203,49 @@ export function HomeClient({
 
       {/* Discover Features */}
       <section className="mx-auto max-w-7xl px-4 py-16">
-        <h2 className="mb-8 text-center text-2xl font-bold">اكتشفي المزيد</h2>
+        <h2 className="mb-8 text-center text-2xl font-bold">{t('marketing.home.discover-more')}</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { href: '/virtual-try-on', title: 'تجربة افتراضية', desc: 'جربي المكياج قبل الشراء' },
-            { href: '/tutorials', title: 'دروس الجمال', desc: 'تعلمي من الخبراء' },
-            { href: '/services', title: 'خريطة الصالونات', desc: 'اكتشفي الفنيات القريبات' },
-            { href: '/beauty-courses', title: 'دورات تجميل', desc: 'احصلي على شهادات' },
-            { href: '/blog', title: 'المدونة', desc: 'نصائح وأسرار الجمال' },
-            { href: '/flash-deals', title: 'عروض فلاش', desc: 'خصومات لفترة محدودة' },
-            { href: '/community', title: 'مجتمع الجمال', desc: 'شاركي تجاربكِ' },
-            { href: '/beauty-tips', title: 'نصائح يومية', desc: 'روتين العناية بالجمال' },
+            {
+              href: '/virtual-try-on',
+              title: t('marketing.home.feature-virtual-try-on'),
+              desc: t('marketing.home.feature-virtual-try-on-desc'),
+            },
+            {
+              href: '/tutorials',
+              title: t('marketing.home.feature-tutorials'),
+              desc: t('marketing.home.feature-tutorials-desc'),
+            },
+            {
+              href: '/services',
+              title: t('marketing.home.feature-salon-map'),
+              desc: t('marketing.home.feature-salon-map-desc'),
+            },
+            {
+              href: '/beauty-courses',
+              title: t('marketing.home.feature-beauty-courses'),
+              desc: t('marketing.home.feature-beauty-courses-desc'),
+            },
+            {
+              href: '/blog',
+              title: t('marketing.home.feature-blog'),
+              desc: t('marketing.home.feature-blog-desc'),
+            },
+            {
+              href: '/flash-deals',
+              title: t('marketing.home.feature-flash-deals'),
+              desc: t('marketing.home.feature-flash-deals-desc'),
+            },
+            {
+              href: '/community',
+              title: t('marketing.home.feature-community'),
+              desc: t('marketing.home.feature-community-desc'),
+            },
+            {
+              href: '/beauty-tips',
+              title: t('marketing.home.feature-daily-tips'),
+              desc: t('marketing.home.feature-daily-tips-desc'),
+            },
           ].map((f) => (
             <Link key={f.href} href={f.href}>
               <Card hover padding="lg" className="flex items-start gap-3 transition-all">

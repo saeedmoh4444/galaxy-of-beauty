@@ -1,146 +1,174 @@
 'use client';
 import { useState } from 'react';
 import { Card } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 const TRIMESTERS = [
   {
     key: 'first',
-    nameAr: 'الثلث الأول (١-٣ أشهر)',
+    nameAr: 'marketing.pregnancy-beauty.trimester-first',
     emoji: '',
     tips: [
       {
-        title: 'تجنبي العلاجات الكيميائية القوية',
-        desc: 'ابتعدي عن التقشير الكيميائي والليزر خلال هذه الفترة',
+        title: 'marketing.pregnancy-beauty.tip-chem-title',
+        desc: 'marketing.pregnancy-beauty.tip-chem-desc',
         icon: '',
       },
       {
-        title: 'استخدمي منتجات طبيعية',
-        desc: 'اختاري كريمات خالية من الريتينول والأحماض القوية',
+        title: 'marketing.pregnancy-beauty.tip-natural-title',
+        desc: 'marketing.pregnancy-beauty.tip-natural-desc',
         icon: '',
       },
       {
-        title: 'العناية بالغثيان الصباحي',
-        desc: 'جلسات مساج خفيف بالزيوت العطرية الآمنة للحامل',
+        title: 'marketing.pregnancy-beauty.tip-morning-title',
+        desc: 'marketing.pregnancy-beauty.tip-morning-desc',
         icon: '‍️',
       },
-      { title: 'ترطيب مكثف', desc: 'زيت الجوجوبا وزبدة الشيا لمنع تشققات البطن', icon: '' },
       {
-        title: 'تجنبي صبغات الشعر',
-        desc: 'انتظري حتى الثلث الثاني لصبغ الشعر بمنتجات خالية من الأمونيا',
+        title: 'marketing.pregnancy-beauty.tip-hydration-title',
+        desc: 'marketing.pregnancy-beauty.tip-hydration-desc',
+        icon: '',
+      },
+      {
+        title: 'marketing.pregnancy-beauty.tip-hair-dye-title',
+        desc: 'marketing.pregnancy-beauty.tip-hair-dye-desc',
         icon: '',
       },
     ],
   },
   {
     key: 'second',
-    nameAr: 'الثلث الثاني (٤-٦ أشهر)',
+    nameAr: 'marketing.pregnancy-beauty.trimester-second',
     emoji: '',
     tips: [
-      { title: 'مساج الحمل', desc: 'مساج متخصص للحامل — يخفف آلام الظهر ويحسن النوم', icon: '‍️' },
       {
-        title: 'مانيكير وباديكير آمن',
-        desc: 'استخدمي منتجات خالية من المواد الكيميائية الضارة',
+        title: 'marketing.pregnancy-beauty.tip-pregnancy-massage-title',
+        desc: 'marketing.pregnancy-beauty.tip-pregnancy-massage-desc',
+        icon: '‍️',
+      },
+      {
+        title: 'marketing.pregnancy-beauty.tip-nails-title',
+        desc: 'marketing.pregnancy-beauty.tip-nails-desc',
         icon: '',
       },
       {
-        title: 'عناية بالبشرة المتوهجة',
-        desc: 'استغلي توهج الحمل مع روتين عناية لطيف',
+        title: 'marketing.pregnancy-beauty.tip-glow-title',
+        desc: 'marketing.pregnancy-beauty.tip-glow-desc',
         icon: '',
       },
-      { title: 'صبغات شعر آمنة', desc: 'يمكنكِ صبغ شعركِ بمنتجات خالية من الأمونيا', icon: '‍️' },
       {
-        title: 'حمام دافئ (وليس ساخناً)',
-        desc: 'جلسات استرخاء بالماء الدافئ مع الأملاح الطبيعية',
+        title: 'marketing.pregnancy-beauty.tip-safe-dye-title',
+        desc: 'marketing.pregnancy-beauty.tip-safe-dye-desc',
+        icon: '‍️',
+      },
+      {
+        title: 'marketing.pregnancy-beauty.tip-warm-bath-title',
+        desc: 'marketing.pregnancy-beauty.tip-warm-bath-desc',
         icon: '',
       },
     ],
   },
   {
     key: 'third',
-    nameAr: 'الثلث الثالث (٧-٩ أشهر)',
+    nameAr: 'marketing.pregnancy-beauty.trimester-third',
     emoji: '',
     tips: [
-      { title: 'جلسات استرخاء وتحضير للولادة', desc: 'مساج خفيف مع تقنيات تنفس', icon: '' },
       {
-        title: 'عناية بالقدمين',
-        desc: 'باديكير لطيف مع تدليك للتخفيف من تورم القدمين',
+        title: 'marketing.pregnancy-beauty.tip-relax-title',
+        desc: 'marketing.pregnancy-beauty.tip-relax-desc',
         icon: '',
       },
-      { title: 'تحضير بشرة الوجه', desc: 'تنظيف وترطيب عميق استعداداً للولادة', icon: '' },
       {
-        title: 'تجنبي الاستلقاء على الظهر',
-        desc: 'اختاري جلسات عناية بوضعية الجلوس أو الجانب',
+        title: 'marketing.pregnancy-beauty.tip-feet-title',
+        desc: 'marketing.pregnancy-beauty.tip-feet-desc',
         icon: '',
       },
-      { title: 'قص الشعر فقط', desc: 'تجنبي الصبغات في الأسابيع الأخيرة', icon: '️' },
+      {
+        title: 'marketing.pregnancy-beauty.tip-face-title',
+        desc: 'marketing.pregnancy-beauty.tip-face-desc',
+        icon: '',
+      },
+      {
+        title: 'marketing.pregnancy-beauty.tip-back-title',
+        desc: 'marketing.pregnancy-beauty.tip-back-desc',
+        icon: '',
+      },
+      {
+        title: 'marketing.pregnancy-beauty.tip-haircut-title',
+        desc: 'marketing.pregnancy-beauty.tip-haircut-desc',
+        icon: '️',
+      },
     ],
   },
-];
+] as const;
 
 const SAFE_INGREDIENTS = [
-  'زيت الجوجوبا',
-  'زبدة الشيا',
-  'الألوفيرا',
-  'زيت جوز الهند',
-  'زيت اللوز الحلو',
-  'البابونج',
-  'اللافندر',
-  'ماء الورد',
-];
+  'marketing.pregnancy-beauty.ing-safe-jojoba',
+  'marketing.pregnancy-beauty.ing-safe-shea',
+  'marketing.pregnancy-beauty.ing-safe-aloe',
+  'marketing.pregnancy-beauty.ing-safe-coconut',
+  'marketing.pregnancy-beauty.ing-safe-almond',
+  'marketing.pregnancy-beauty.ing-safe-chamomile',
+  'marketing.pregnancy-beauty.ing-safe-lavender',
+  'marketing.pregnancy-beauty.ing-safe-rosewater',
+] as const;
 const AVOID_INGREDIENTS = [
-  'الريتينول',
-  'حمض الساليسيليك',
-  'الهيدروكينون',
-  'الفورمالديهايد',
-  'الزيوت العطرية القوية',
-  'الأمونيا',
-];
+  'marketing.pregnancy-beauty.ing-avoid-retinol',
+  'marketing.pregnancy-beauty.ing-avoid-salicylic',
+  'marketing.pregnancy-beauty.ing-avoid-hydroquinone',
+  'marketing.pregnancy-beauty.ing-avoid-formaldehyde',
+  'marketing.pregnancy-beauty.ing-avoid-essential-oils',
+  'marketing.pregnancy-beauty.ing-avoid-ammonia',
+] as const;
 
 export default function PregnancyBeautyPage(): JSX.Element {
+  const { t } = useLocale();
   const [trimester, setTrimester] = useState('first');
-  const current = TRIMESTERS.find((t) => t.key === trimester) ?? TRIMESTERS[0]!;
+  const current = TRIMESTERS.find((tri) => tri.key === trimester) ?? TRIMESTERS[0]!;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-10">
         <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
-          عناية الحامل
+          {t('marketing.pregnancy-beauty.title')}
         </h1>
-        <p className="mt-2 text-text-secondary">
-          دليل العناية بالجمال خلال فترة الحمل — آمن لكِ ولجنينكِ
-        </p>
+        <p className="mt-2 text-text-secondary">{t('marketing.pregnancy-beauty.subtitle')}</p>
       </div>
 
       <div className="flex justify-center gap-2 mb-10 flex-wrap">
-        {TRIMESTERS.map((t) => (
+        {TRIMESTERS.map((tri) => (
           <button
-            key={t.key}
-            onClick={() => setTrimester(t.key)}
-            className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${trimester === t.key ? 'bg-brand-600 text-white' : 'bg-surface-muted hover:bg-gray-200'}`}
+            key={tri.key}
+            onClick={() => setTrimester(tri.key)}
+            className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${trimester === tri.key ? 'bg-brand-600 text-white' : 'bg-surface-muted hover:bg-gray-200'}`}
           >
-            {t.emoji} {t.nameAr}
+            {tri.emoji} {t(tri.nameAr)}
           </button>
         ))}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2 mb-10">
         <Card padding="lg">
-          <h3 className="font-bold text-lg mb-4"> مكونات آمنة</h3>
+          <h3 className="font-bold text-lg mb-4">
+            {t('marketing.pregnancy-beauty.safe-ingredients-label')}
+          </h3>
           <div className="flex flex-wrap gap-2">
             {SAFE_INGREDIENTS.map((i) => (
               <span key={i} className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
-                {i}
+                {t(i)}
               </span>
             ))}
           </div>
         </Card>
         <Card padding="lg">
-          <h3 className="font-bold text-lg mb-4"> مكونات يجب تجنبها</h3>
+          <h3 className="font-bold text-lg mb-4">
+            {t('marketing.pregnancy-beauty.avoid-ingredients-label')}
+          </h3>
           <div className="flex flex-wrap gap-2">
             {AVOID_INGREDIENTS.map((i) => (
               <span key={i} className="rounded-full bg-red-100 px-3 py-1 text-sm text-red-700">
-                {i}
+                {t(i)}
               </span>
             ))}
           </div>
@@ -148,7 +176,7 @@ export default function PregnancyBeautyPage(): JSX.Element {
       </div>
 
       <h2 className="text-xl font-bold mb-6 text-center">
-        {current.emoji} نصائح {current.nameAr}
+        {current.emoji} {t('marketing.pregnancy-beauty.tips-heading', { name: t(current.nameAr) })}
       </h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {current.tips.map((tip, i) => (
@@ -156,8 +184,8 @@ export default function PregnancyBeautyPage(): JSX.Element {
             <div className="flex items-start gap-3">
               <span className="text-2xl">{tip.icon}</span>
               <div>
-                <h4 className="font-bold text-sm">{tip.title}</h4>
-                <p className="text-xs text-text-secondary mt-1">{tip.desc}</p>
+                <h4 className="font-bold text-sm">{t(tip.title)}</h4>
+                <p className="text-xs text-text-secondary mt-1">{t(tip.desc)}</p>
               </div>
             </div>
           </Card>

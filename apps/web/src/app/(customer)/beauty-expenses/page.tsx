@@ -2,8 +2,10 @@
 import { api } from '@/lib/trpc';
 import { Card, DashboardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyExpensesPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading, isError, refetch } = api.beautyExpenses.summary.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -14,7 +16,7 @@ export default function BeautyExpensesPage(): JSX.Element {
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-4xl space-y-6">
-          <ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('beautyExpenses.loadError')} onRetry={() => refetch()} />
         </div>
       </DashboardLayout>
     );
@@ -23,8 +25,8 @@ export default function BeautyExpensesPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> تحليل الإنفاق</h1>
-          <p className="mt-1 text-sm text-text-secondary">تتبعي مصاريفكِ على خدمات التجميل</p>
+          <h1 className="text-2xl font-bold">{t('beautyExpenses.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('beautyExpenses.subtitle')}</p>
         </div>
 
         {isLoading ? (
@@ -36,19 +38,19 @@ export default function BeautyExpensesPage(): JSX.Element {
                 <p className="text-2xl font-extrabold text-brand-600">
                   {formatCurrency((data?.thisMonthTotal as number) ?? 0)}
                 </p>
-                <p className="text-xs text-text-secondary">هذا الشهر</p>
+                <p className="text-xs text-text-secondary">{t('beautyExpenses.thisMonth')}</p>
               </Card>
               <Card padding="lg" className="text-center">
                 <p className="text-2xl font-extrabold">
                   {formatCurrency((data?.lastMonthTotal as number) ?? 0)}
                 </p>
-                <p className="text-xs text-text-secondary">الشهر الماضي</p>
+                <p className="text-xs text-text-secondary">{t('beautyExpenses.lastMonth')}</p>
               </Card>
               <Card padding="lg" className="text-center">
                 <p className="text-2xl font-extrabold text-green-600">
                   {formatCurrency((data?.thisYearTotal as number) ?? 0)}
                 </p>
-                <p className="text-xs text-text-secondary">هذه السنة</p>
+                <p className="text-xs text-text-secondary">{t('beautyExpenses.thisYear')}</p>
               </Card>
               <Card padding="lg" className="text-center">
                 <p
@@ -56,13 +58,13 @@ export default function BeautyExpensesPage(): JSX.Element {
                 >
                   {(data?.monthOverMonth as number) ?? 0}%
                 </p>
-                <p className="text-xs text-text-secondary">مقارنة بالشهر الماضي</p>
+                <p className="text-xs text-text-secondary">{t('beautyExpenses.vsLastMonth')}</p>
               </Card>
             </div>
 
             <div className="grid gap-6 lg:grid-cols-2">
               <Card padding="lg">
-                <h3 className="font-bold mb-3"> توزيع الإنفاق</h3>
+                <h3 className="font-bold mb-3">{t('beautyExpenses.byCategory')}</h3>
                 {(data?.byCategory as Array<Record<string, unknown>>)?.length ? (
                   (data?.byCategory as Array<Record<string, unknown>>).map(
                     (c: Record<string, unknown>) => {
@@ -82,19 +84,19 @@ export default function BeautyExpensesPage(): JSX.Element {
                             />
                           </div>
                           <p className="text-xs text-text-tertiary mt-0.5">
-                            {c.count as number} حجز
+                            {t('beautyExpenses.bookingCount', { count: c.count as number })}
                           </p>
                         </div>
                       );
                     },
                   )
                 ) : (
-                  <p className="text-sm text-text-tertiary">لا توجد بيانات</p>
+                  <p className="text-sm text-text-tertiary">{t('beautyExpenses.noData')}</p>
                 )}
               </Card>
 
               <Card padding="lg">
-                <h3 className="font-bold mb-3"> الاتجاه الشهري</h3>
+                <h3 className="font-bold mb-3">{t('beautyExpenses.monthlyTrend')}</h3>
                 {(data?.monthlyTrend as Array<Record<string, unknown>>)?.length ? (
                   <div className="space-y-3">
                     {(data?.monthlyTrend as Array<Record<string, unknown>>).map(
@@ -124,18 +126,20 @@ export default function BeautyExpensesPage(): JSX.Element {
                     )}
                   </div>
                 ) : (
-                  <p className="text-sm text-text-tertiary">لا توجد بيانات</p>
+                  <p className="text-sm text-text-tertiary">{t('beautyExpenses.noData')}</p>
                 )}
               </Card>
             </div>
 
             <Card padding="lg" className="text-center">
-              <p className="text-sm text-text-secondary">متوسط تكلفة الحجز</p>
+              <p className="text-sm text-text-secondary">{t('beautyExpenses.avgPerBooking')}</p>
               <p className="text-3xl font-extrabold text-brand-600">
                 {formatCurrency((data?.avgPerBooking as number) ?? 0)}
               </p>
               <p className="text-xs text-text-tertiary mt-1">
-                {(data?.totalBookingsThisMonth as number) ?? 0} حجز هذا الشهر
+                {t('beautyExpenses.bookingsThisMonth', {
+                  count: (data?.totalBookingsThisMonth as number) ?? 0,
+                })}
               </p>
             </Card>
           </>

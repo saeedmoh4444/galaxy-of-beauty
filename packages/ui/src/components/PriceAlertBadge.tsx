@@ -22,6 +22,32 @@ interface PriceAlertBadgeProps {
   onSetAlert?: (targetPrice: number) => void;
   onRemove?: () => void;
   className?: string;
+  /** Subtitle label */
+  badgeLabel?: string;
+  /** Current price stat label */
+  currentPriceLabel?: string;
+  /** Target price stat label */
+  targetPriceLabel?: string;
+  /** Difference stat label */
+  differenceLabel?: string;
+  /** Currency suffix for amounts */
+  currencySuffix?: string;
+  /** Prefix before the discount percentage */
+  discountPrefix?: string;
+  /** Prefix before the original price */
+  fromPrefix?: string;
+  /** Prefix before the current price */
+  toPrefix?: string;
+  /** Heading when the target is reached */
+  reachedTitle?: string;
+  /** Prefix before the current price in the reached note */
+  nowPrefix?: string;
+  /** Suffix after the current price in the reached note */
+  hurrySuffix?: string;
+  /** Prefix before the target price in the active status */
+  willNotifyPrefix?: string;
+  /** Status text when inactive */
+  inactiveStatusText?: string;
 }
 
 export function PriceAlertBadge({
@@ -33,6 +59,19 @@ export function PriceAlertBadge({
   onSetAlert,
   onRemove,
   className = '',
+  badgeLabel = 'تنبيه السعر',
+  currentPriceLabel = 'السعر الحالي',
+  targetPriceLabel = 'السعر المستهدف',
+  differenceLabel = 'الفرق',
+  currencySuffix = 'ر.س',
+  discountPrefix = 'مخفض ',
+  fromPrefix = 'من ',
+  toPrefix = 'إلى ',
+  reachedTitle = 'وصل السعر لهدفكِ!',
+  nowPrefix = 'السعر الآن ',
+  hurrySuffix = 'احجزي قبل ما يرتفع',
+  willNotifyPrefix = 'سننبهكِ عندما يقل السعر عن ',
+  inactiveStatusText = 'فعّلي التنبيه ليصلكِ إشعار عند انخفاض السعر',
 }: PriceAlertBadgeProps): JSX.Element {
   const [isActive, setIsActive] = useState(initialActive);
   const [target, setTarget] = useState(targetPrice);
@@ -68,7 +107,7 @@ export function PriceAlertBadge({
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
               {serviceName}
             </h4>
-            <p className="text-[10px] text-text-tertiary dark:text-gray-400">تنبيه السعر</p>
+            <p className="text-[10px] text-text-tertiary dark:text-gray-400">{badgeLabel}</p>
           </div>
         </div>
 
@@ -93,17 +132,19 @@ export function PriceAlertBadge({
       {/* Price info */}
       <div className="mt-3 grid grid-cols-3 gap-2">
         <div className="rounded-xl bg-gray-50 p-2 text-center dark:bg-gray-800">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">السعر الحالي</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{currentPriceLabel}</p>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-            {currentPrice} ر.س
+            {currentPrice} {currencySuffix}
           </p>
         </div>
         <div className="rounded-xl bg-gray-50 p-2 text-center dark:bg-gray-800">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">السعر المستهدف</p>
-          <p className="text-xs font-bold text-green-700 dark:text-green-400">{target} ر.س</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{targetPriceLabel}</p>
+          <p className="text-xs font-bold text-green-700 dark:text-green-400">
+            {target} {currencySuffix}
+          </p>
         </div>
         <div className="rounded-xl bg-gray-50 p-2 text-center dark:bg-gray-800">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">الفرق</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{differenceLabel}</p>
           <p
             className={cn(
               'text-xs font-bold',
@@ -112,7 +153,7 @@ export function PriceAlertBadge({
                 : 'text-rose-600 dark:text-rose-400',
             )}
           >
-            {isBelow ? '' : ''} {Math.abs(currentPrice - target)} ر.س
+            {isBelow ? '' : ''} {Math.abs(currentPrice - target)} {currencySuffix}
           </p>
         </div>
       </div>
@@ -121,7 +162,10 @@ export function PriceAlertBadge({
       {originalPrice && discount > 0 && (
         <div className="mt-2 rounded-lg bg-rose-50 px-2.5 py-1.5 text-center dark:bg-rose-950">
           <span className="text-[10px] font-bold text-rose-700 dark:text-rose-300">
-            مخفض {discount}% — من {originalPrice} إلى {currentPrice} ر.س
+            {discountPrefix}
+            {discount}% — {fromPrefix}
+            {originalPrice} {toPrefix}
+            {currentPrice} {currencySuffix}
           </span>
         </div>
       )}
@@ -130,11 +174,10 @@ export function PriceAlertBadge({
       {isActive && isBelow && (
         <div className="mt-2 rounded-xl bg-emerald-100 p-3 text-center dark:bg-emerald-900">
           <p className="text-sm" aria-hidden="true"></p>
-          <p className="text-xs font-bold text-emerald-800 dark:text-emerald-200">
-            وصل السعر لهدفكِ!
-          </p>
+          <p className="text-xs font-bold text-emerald-800 dark:text-emerald-200">{reachedTitle}</p>
           <p className="text-[10px] text-emerald-600 dark:text-emerald-400">
-            السعر الآن {currentPrice} ر.س — احجزي قبل ما يرتفع
+            {nowPrefix}
+            {currentPrice} {currencySuffix} — {hurrySuffix}
           </p>
         </div>
       )}
@@ -150,15 +193,15 @@ export function PriceAlertBadge({
             max={currentPrice}
             className="flex-1 rounded-lg border border-gray-200 px-2 py-1 text-[10px] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
           />
-          <span className="text-[10px] text-text-tertiary dark:text-gray-500">ر.س</span>
+          <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+            {currencySuffix}
+          </span>
         </div>
       )}
 
       {/* Status message */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        {isActive
-          ? `سننبهكِ عندما يقل السعر عن ${target} ر.س`
-          : 'فعّلي التنبيه ليصلكِ إشعار عند انخفاض السعر'}
+        {isActive ? `${willNotifyPrefix}${target} ${currencySuffix}` : inactiveStatusText}
       </p>
     </div>
   );

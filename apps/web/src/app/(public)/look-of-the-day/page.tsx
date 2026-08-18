@@ -2,9 +2,11 @@
 import { api } from '@/lib/trpc';
 import { Card, FormSkeleton, Button } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function LookOfTheDayPage(): JSX.Element {
   const { user } = useAuth();
+  const { t } = useLocale();
   const { data: today, isLoading } = api.lookOfTheDay.today.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -20,8 +22,8 @@ export default function LookOfTheDayPage(): JSX.Element {
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">إطلالة اليوم</h1>
-        <p className="mt-2 text-text-secondary">صوّتي لأجمل إطلالة!</p>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.look-of-the-day.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.look-of-the-day.subtitle')}</p>
       </div>
       {isLoading ? (
         <FormSkeleton fields={3} />
@@ -31,10 +33,11 @@ export default function LookOfTheDayPage(): JSX.Element {
           className="mb-8 border-2 border-amber-300 dark:border-amber-700 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950 dark:to-yellow-950 text-center"
         >
           <span className="text-5xl"></span>
-          <h2 className="mt-2 text-xl font-bold">إطلالة اليوم</h2>
+          <h2 className="mt-2 text-xl font-bold">{t('marketing.look-of-the-day.title')}</h2>
           <p className="text-lg font-bold mt-1">{today.title as string}</p>
           <p className="text-sm text-text-secondary">
-            ‍ {today.technicianName as string} · ️ {today.votes as number} صوت
+            ‍ {today.technicianName as string} · ️{' '}
+            {t('marketing.look-of-the-day.votes', { count: today.votes as number })}
           </p>
           {user && (
             <Button
@@ -42,7 +45,7 @@ export default function LookOfTheDayPage(): JSX.Element {
               className="mt-3"
               onClick={() => voteMut.mutate({ lookId: today.id as number })}
             >
-              ️ تصويت
+              {t('marketing.look-of-the-day.vote')}
             </Button>
           )}
         </Card>
@@ -62,7 +65,7 @@ export default function LookOfTheDayPage(): JSX.Element {
                   onClick={() => voteMut.mutate({ lookId: l.id as number })}
                   className="text-red-400 hover:text-red-600 text-sm"
                 >
-                  تصويت
+                  {t('marketing.look-of-the-day.vote')}
                 </button>
               )}
             </div>

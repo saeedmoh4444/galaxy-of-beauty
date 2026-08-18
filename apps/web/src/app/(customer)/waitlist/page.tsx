@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
 const STATUS_STYLES: Record<string, string> = {
   WAITING: 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300',
@@ -12,14 +14,15 @@ const STATUS_STYLES: Record<string, string> = {
   EXPIRED: 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400',
 };
 
-const STATUS_LABELS: Record<string, string> = {
-  WAITING: 'بانتظار الدور',
-  NOTIFIED: 'تم الإشعار',
-  CLAIMED: 'تم الحجز',
-  EXPIRED: 'منتهي',
+const STATUS_LABELS: Record<string, TranslationKey> = {
+  WAITING: 'waitlist.status.waiting',
+  NOTIFIED: 'waitlist.status.notified',
+  CLAIMED: 'waitlist.status.claimed',
+  EXPIRED: 'waitlist.status.expired',
 };
 
 export default function WaitlistPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const [showJoin, setShowJoin] = useState(false);
   const [selectedTechId, setSelectedTechId] = useState('');
   const [serviceName, setServiceName] = useState('');
@@ -44,19 +47,19 @@ export default function WaitlistPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">قائمة الانتظار</h1>
-          <Button onClick={() => setShowJoin(true)}>انضمام للقائمة</Button>
+          <h1 className="text-2xl font-bold">{t('waitlist.title')}</h1>
+          <Button onClick={() => setShowJoin(true)}>{t('waitlist.join')}</Button>
         </div>
 
         {isLoading ? (
           <CardListSkeleton count={3} />
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل قائمة الانتظار" onRetry={() => refetch()} />
+          <ErrorAlert message={t('waitlist.err.load')} onRetry={() => refetch()} />
         ) : entries.length === 0 ? (
           <div>
-            <EmptyState title="قائمة الانتظار فارغة" description="لم تنضم لأي قائمة انتظار بعد" />
+            <EmptyState title={t('waitlist.empty.title')} description={t('waitlist.empty.desc')} />
             <div className="text-center">
-              <Button onClick={() => setShowJoin(true)}>انضمام الآن</Button>
+              <Button onClick={() => setShowJoin(true)}>{t('waitlist.joinNow')}</Button>
             </div>
           </div>
         ) : (
@@ -67,25 +70,31 @@ export default function WaitlistPage(): JSX.Element {
                 <Card key={e.id as number} padding="md">
                   <div className="flex items-center justify-between">
                     <div className="space-y-1">
-                      <p className="font-semibold">{(e.technicianName as string) ?? 'فني'}</p>
+                      <p className="font-semibold">
+                        {(e.technicianName as string) ?? t('waitlist.technicianFallback')}
+                      </p>
                       <div className="flex items-center gap-3 text-sm text-text-secondary">
                         <span>
-                          الترتيب:{' '}
+                          {t('waitlist.positionLabel')}{' '}
                           <strong className="text-brand-600">#{e.position as number}</strong>
                         </span>
                         {(e.serviceName as string | null) ? (
-                          <span>الخدمة: {e.serviceName as string}</span>
+                          <span>
+                            {t('waitlist.serviceLabel', { name: e.serviceName as string })}
+                          </span>
                         ) : null}
                       </div>
                       <p className="text-xs text-text-tertiary">
-                        {new Date(e.createdAt as string).toLocaleDateString('ar-SA')}
+                        {new Date(e.createdAt as string).toLocaleDateString(
+                          locale === 'en' ? 'en-GB' : 'ar-SA',
+                        )}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
                       <span
                         className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_STYLES[statusKey] ?? 'bg-surface-muted text-text-secondary'}`}
                       >
-                        {STATUS_LABELS[statusKey] ?? statusKey}
+                        {STATUS_LABELS[statusKey] ? t(STATUS_LABELS[statusKey]) : statusKey}
                       </span>
                       {statusKey === 'WAITING' && (
                         <Button
@@ -96,7 +105,7 @@ export default function WaitlistPage(): JSX.Element {
                           }
                           loading={leaveMut.isPending}
                         >
-                          مغادرة
+                          {t('waitlist.leave')}
                         </Button>
                       )}
                     </div>
@@ -111,13 +120,13 @@ export default function WaitlistPage(): JSX.Element {
       <Modal
         open={showJoin}
         onClose={() => setShowJoin(false)}
-        title="انضمام لقائمة الانتظار"
+        title={t('waitlist.modal.title')}
         size="sm"
       >
         <div className="space-y-4">
           <div>
             <label htmlFor="wl-tech" className="mb-1 block text-sm font-medium">
-              اختر الفني
+              {t('waitlist.chooseTech')}
             </label>
             <select
               id="wl-tech"
@@ -125,7 +134,7 @@ export default function WaitlistPage(): JSX.Element {
               value={selectedTechId}
               onChange={(e) => setSelectedTechId(e.target.value)}
             >
-              <option value="">-- اختر فني --</option>
+              <option value="">{t('waitlist.placeholder.tech')}</option>
               {technicians.map((t: Record<string, unknown>) => (
                 <option key={t.id as number} value={t.id as number}>
                   {t.name as string}
@@ -134,10 +143,10 @@ export default function WaitlistPage(): JSX.Element {
             </select>
           </div>
           <Input
-            label="الخدمة (اختياري)"
+            label={t('waitlist.serviceOptional')}
             value={serviceName}
             onChange={(e) => setServiceName(e.target.value)}
-            placeholder="اسم الخدمة إن وجد"
+            placeholder={t('waitlist.placeholder.service')}
           />
           <Button
             className="w-full"
@@ -145,7 +154,7 @@ export default function WaitlistPage(): JSX.Element {
             disabled={!selectedTechId}
             onClick={() => joinMut.mutate({ technicianId: Number(selectedTechId) })}
           >
-            تأكيد الانضمام
+            {t('waitlist.confirmJoin')}
           </Button>
         </div>
       </Modal>

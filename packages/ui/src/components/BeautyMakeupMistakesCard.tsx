@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyMakeupMistakesCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyMakeupMistakesCard({
+  className = '',
+  heading = 'أخطاء المكياج',
+  subtitle = 'أخطاء شائعة — حلول بسيطة',
+  locale = 'ar',
+}: {
+  className?: string;
+  heading?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,47 @@ export function BeautyMakeupMistakesCard({ className = '' }: { className?: strin
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">أخطاء المكياج</h4>
-          <p className="text-[10px] text-rose-500 dark:text-rose-400">أخطاء شائعة — حلول بسيطة</p>
+          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{heading}</h4>
+          <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'اختيار لون فاونديشن أفتح — جربي على خط الفك' },
-          { emoji: '️', text: 'عدم تنظيف الفرش — بكتيريا تسبب الحبوب' },
-          { emoji: '', text: 'تحديد الشفاه بلون أغمق بكثير — نفس درجة الروج' },
-          { emoji: '️', text: 'مكياج عيون ثقيل + شفاه ثقيلة — اختاري واحداً' },
+          {
+            emoji: '',
+            text: {
+              ar: 'اختيار لون فاونديشن أفتح — جربي على خط الفك',
+              en: 'Choosing a lighter foundation shade — test on the jawline',
+            },
+          },
+          {
+            emoji: '️',
+            text: {
+              ar: 'عدم تنظيف الفرش — بكتيريا تسبب الحبوب',
+              en: 'Not cleaning brushes — bacteria cause breakouts',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'تحديد الشفاه بلون أغمق بكثير — نفس درجة الروج',
+              en: 'Lining lips much darker — match the lipstick shade',
+            },
+          },
+          {
+            emoji: '️',
+            text: {
+              ar: 'مكياج عيون ثقيل + شفاه ثقيلة — اختاري واحداً',
+              en: 'Heavy eyes + heavy lips — pick just one',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-rose-50 px-3 py-2 dark:bg-rose-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-rose-800 dark:text-rose-200">{t.text}</span>
+            <span className="text-[10px] text-rose-800 dark:text-rose-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

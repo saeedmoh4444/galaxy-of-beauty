@@ -47,8 +47,10 @@ import {
   BeautyFragranceFreeCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function SustainabilityPage(): JSX.Element {
+  const { t } = useLocale();
   const weather = api.weatherBeauty.getAdvice.useQuery({
     condition: 'hot',
     temp: 42,
@@ -57,7 +59,7 @@ export default function SustainabilityPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" الاستدامة والإتاحة" subtitle="جمال مستدام — للجميع" />
+        <PageTitle title={t('sustainability.title')} subtitle={t('sustainability.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -93,7 +95,10 @@ export default function SustainabilityPage(): JSX.Element {
                   'comfort_kit',
                 ]}
               />
-              <QuietHoursBadge hours="9-11 صباحاً" days="الثلاثاء والخميس" />
+              <QuietHoursBadge
+                hours={t('sustainability.quietHours')}
+                days={t('sustainability.quietDays')}
+              />
               <CognitiveAccessibilityBadge
                 features={['simple_menu', 'visual_schedule', 'clear_signage']}
               />
@@ -113,7 +118,9 @@ export default function SustainabilityPage(): JSX.Element {
               />
               <div className="space-y-4">
                 <SignLanguageBadge
-                  technicians={[{ name: 'نورة', level: 'fluent', specialty: 'مكياج' }]}
+                  technicians={[
+                    { name: 'نورة', level: 'fluent', specialty: t('sustainability.makeup') },
+                  ]}
                 />
                 <HearingAssistanceBadge
                   features={['hearing_loop', 'written_communication', 'visual_alerts']}
@@ -171,7 +178,11 @@ export default function SustainabilityPage(): JSX.Element {
             <JustBecauseFlowers bookingsCount={15} />
             <MirrorStickerCard />
             <HandwrittenNote bookingCount={10} technicianName="نورة" />
-            <BirthdayMonthBadge month="مارس" discount={15} daysRemaining={22} />
+            <BirthdayMonthBadge
+              month={t('sustainability.monthMarch')}
+              discount={15}
+              daysRemaining={22}
+            />
             <BeautySubscriptionCard tier="premium" />
             <BeautyConciergeCard conciergeName="سارة" />
             <BeautyNightOutCard available={true} />

@@ -12,23 +12,26 @@ import {
   PageContainer,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import { type TranslationKey } from '@galaxy/shared';
 
 type AdminHealth = RouterOutput['adminTools']['health'];
 
-const QUICK_LINKS = [
-  { href: '/admin/users', label: 'إدارة المستخدمين', icon: '' },
-  { href: '/admin/technicians', label: 'إدارة الفنيات', icon: '‍' },
-  { href: '/admin/services', label: 'إدارة الخدمات', icon: '' },
-  { href: '/admin/categories', label: 'إدارة الأقسام', icon: '' },
-  { href: '/admin/bookings', label: 'الحجوزات', icon: '' },
-  { href: '/admin/finance', label: 'المالية', icon: '' },
-  { href: '/admin/disputes', label: 'النزاعات', icon: '' },
-  { href: '/admin/zatca', label: 'زاتكا', icon: '' },
-  { href: '/admin/analytics', label: 'التحليلات', icon: '' },
-  { href: '/admin/settings', label: 'الإعدادات', icon: '️' },
-] as const;
+const QUICK_LINKS: Array<{ href: string; labelKey: TranslationKey; icon: string }> = [
+  { href: '/admin/users', labelKey: 'admin.dashboard.quick-users', icon: '' },
+  { href: '/admin/technicians', labelKey: 'admin.dashboard.quick-technicians', icon: '‍' },
+  { href: '/admin/services', labelKey: 'admin.dashboard.quick-services', icon: '' },
+  { href: '/admin/categories', labelKey: 'admin.dashboard.quick-categories', icon: '' },
+  { href: '/admin/bookings', labelKey: 'admin.dashboard.quick-bookings', icon: '' },
+  { href: '/admin/finance', labelKey: 'admin.dashboard.quick-finance', icon: '' },
+  { href: '/admin/disputes', labelKey: 'admin.dashboard.quick-disputes', icon: '' },
+  { href: '/admin/zatca', labelKey: 'admin.dashboard.quick-zatca', icon: '' },
+  { href: '/admin/analytics', labelKey: 'admin.dashboard.quick-analytics', icon: '' },
+  { href: '/admin/settings', labelKey: 'admin.dashboard.quick-settings', icon: '️' },
+];
 
 export default function AdminDashboardPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data, isLoading, isError, refetch } = api.adminTools.health.useQuery();
   const stats = data as AdminHealth;
 
@@ -46,7 +49,7 @@ export default function AdminDashboardPage(): JSX.Element {
     return (
       <DashboardLayout userRole="ADMIN">
         <PageContainer width="wide">
-          <ErrorAlert message="فشل تحميل لوحة التحكم" onRetry={() => refetch()} />
+          <ErrorAlert message={t('admin.dashboard.load-error')} onRetry={() => refetch()} />
         </PageContainer>
       </DashboardLayout>
     );
@@ -55,46 +58,58 @@ export default function AdminDashboardPage(): JSX.Element {
   return (
     <DashboardLayout userRole="ADMIN">
       <PageContainer width="wide">
-        <h1 className="text-2xl font-bold text-text-primary">لوحة التحكم</h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('admin.dashboard.title')}</h1>
 
         {/* Stats Grid */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard
-            label="إجمالي المستخدمين"
-            value={Number(stats?.users ?? 0).toLocaleString('ar-SA')}
+            label={t('admin.dashboard.total-users')}
+            value={Number(stats?.users ?? 0).toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA')}
             icon=""
           />
           <StatCard
-            label="الفنيات"
-            value={Number(stats?.technicians ?? 0).toLocaleString('ar-SA')}
+            label={t('admin.dashboard.technicians')}
+            value={Number(stats?.technicians ?? 0).toLocaleString(
+              locale === 'en' ? 'en-GB' : 'ar-SA',
+            )}
             icon="‍"
           />
           <StatCard
-            label="الخدمات النشطة"
-            value={Number(stats?.services ?? 0).toLocaleString('ar-SA')}
+            label={t('admin.dashboard.active-services')}
+            value={Number(stats?.services ?? 0).toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA')}
             icon=""
           />
           <StatCard
-            label="نزاعات مفتوحة"
-            value={Number(stats?.openDisputes ?? 0).toLocaleString('ar-SA')}
+            label={t('admin.dashboard.open-disputes')}
+            value={Number(stats?.openDisputes ?? 0).toLocaleString(
+              locale === 'en' ? 'en-GB' : 'ar-SA',
+            )}
             icon=""
           />
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard
-            label="إجمالي الحجوزات"
-            value={Number(stats?.totalBookings ?? 0).toLocaleString('ar-SA')}
+            label={t('admin.dashboard.total-bookings')}
+            value={Number(stats?.totalBookings ?? 0).toLocaleString(
+              locale === 'en' ? 'en-GB' : 'ar-SA',
+            )}
             icon=""
           />
           <StatCard
-            label="حجوزات اليوم"
-            value={Number(stats?.bookingsToday ?? 0).toLocaleString('ar-SA')}
+            label={t('admin.dashboard.bookings-today')}
+            value={Number(stats?.bookingsToday ?? 0).toLocaleString(
+              locale === 'en' ? 'en-GB' : 'ar-SA',
+            )}
             icon=""
           />
-          <StatCard label="نسبة الإكمال" value={`${stats?.completionRate ?? 0}%`} icon="" />
           <StatCard
-            label="الإيرادات"
+            label={t('admin.dashboard.completion-rate')}
+            value={`${stats?.completionRate ?? 0}%`}
+            icon=""
+          />
+          <StatCard
+            label={t('admin.dashboard.revenue')}
             value={formatCurrency(Number(stats?.totalRevenue ?? 0))}
             icon=""
           />
@@ -102,7 +117,9 @@ export default function AdminDashboardPage(): JSX.Element {
 
         {/* Quick Links */}
         <Card padding="md">
-          <h3 className="mb-3 text-lg font-semibold text-text-primary">إجراءات سريعة</h3>
+          <h3 className="mb-3 text-lg font-semibold text-text-primary">
+            {t('admin.dashboard.quick-actions')}
+          </h3>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {QUICK_LINKS.map((link) => (
               <Link
@@ -111,7 +128,7 @@ export default function AdminDashboardPage(): JSX.Element {
                 className="flex items-center gap-2 rounded-lg border border-edge bg-surface p-3 text-sm font-medium text-text-primary transition-colors hover:border-brand-300 hover:bg-brand-50 dark:hover:border-brand-700 dark:hover:bg-brand-950"
               >
                 <span aria-hidden="true">{link.icon}</span>
-                {link.label}
+                {t(link.labelKey)}
               </Link>
             ))}
           </div>
@@ -119,7 +136,9 @@ export default function AdminDashboardPage(): JSX.Element {
 
         {/* System Info */}
         <Card padding="md">
-          <h3 className="mb-3 text-lg font-semibold text-text-primary">معلومات النظام</h3>
+          <h3 className="mb-3 text-lg font-semibold text-text-primary">
+            {t('admin.dashboard.system-info')}
+          </h3>
           <div className="grid gap-3 text-sm sm:grid-cols-3">
             <div className="rounded-lg bg-surface-muted p-3 dark:bg-gray-800">
               <span className="text-text-secondary">Node.js</span>
@@ -128,14 +147,18 @@ export default function AdminDashboardPage(): JSX.Element {
               </p>
             </div>
             <div className="rounded-lg bg-surface-muted p-3 dark:bg-gray-800">
-              <span className="text-text-secondary">مدة التشغيل</span>
+              <span className="text-text-secondary">{t('admin.dashboard.uptime')}</span>
               <p className="font-semibold text-text-primary">
-                {Math.round(Number(stats?.uptime ?? 0) / 60)} دقيقة
+                {t('admin.dashboard.uptime-minutes', {
+                  minutes: Math.round(Number(stats?.uptime ?? 0) / 60),
+                })}
               </p>
             </div>
             <div className="rounded-lg bg-surface-muted p-3 dark:bg-gray-800">
-              <span className="text-text-secondary">قاعدة البيانات</span>
-              <p className="font-semibold text-success">{String(stats?.dbStatus ?? 'متصل')}</p>
+              <span className="text-text-secondary">{t('admin.dashboard.database')}</span>
+              <p className="font-semibold text-success">
+                {String(stats?.dbStatus ?? t('admin.dashboard.connected'))}
+              </p>
             </div>
           </div>
         </Card>

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 const TYPE_ICONS: Record<string, string> = {
   BOOKING: '',
@@ -15,6 +17,7 @@ const TYPE_ICONS: Record<string, string> = {
 };
 
 export default function NotificationsPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, refetch } = api.notifications.list.useQuery({
     page,
@@ -30,27 +33,30 @@ export default function NotificationsPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">الإشعارات</h1>
+          <h1 className="text-2xl font-bold">{t('profile.notifications-title')}</h1>
           <Button
             variant="outline"
             size="sm"
             onClick={() => markAllReadMut.mutate({})}
             loading={markAllReadMut.isPending}
           >
-            تحديد الكل كمقروء
+            {t('profile.mark-all-read')}
           </Button>
         </div>
 
         {isLoading ? (
           <CardListSkeleton count={5} />
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل الإشعارات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('profile.notifications-error')} onRetry={() => refetch()} />
         ) : items.length === 0 ? (
           <div>
-            <EmptyState title="لا توجد إشعارات" description="ليس لديك أي إشعارات جديدة" />
+            <EmptyState
+              title={t('profile.no-notifications')}
+              description={t('profile.no-notifications-desc')}
+            />
             <div className="text-center">
               <Link href="/services">
-                <Button>تصفح الخدمات</Button>
+                <Button>{t('booking.browse-services')}</Button>
               </Link>
             </div>
           </div>
@@ -78,21 +84,24 @@ export default function NotificationsPage(): JSX.Element {
                         <p
                           className={`text-sm ${isRead ? 'text-text-secondary dark:text-gray-400' : 'font-semibold text-text-primary dark:text-gray-100'}`}
                         >
-                          {titleJson?.ar ?? titleJson?.en ?? ''}
+                          {localize(titleJson, locale)}
                         </p>
                         <p
                           className={`mt-0.5 text-xs ${isRead ? 'text-text-tertiary' : 'text-text-secondary'}`}
                         >
-                          {bodyJson?.ar ?? bodyJson?.en ?? ''}
+                          {localize(bodyJson, locale)}
                         </p>
                         <p className="mt-1 text-xs text-text-tertiary">
-                          {new Date(n.createdAt as string).toLocaleDateString('ar-SA', {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
+                          {new Date(n.createdAt as string).toLocaleDateString(
+                            locale === 'en' ? 'en-GB' : 'ar-SA',
+                            {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            },
+                          )}
                         </p>
                       </div>
                       {!isRead && (
@@ -100,7 +109,7 @@ export default function NotificationsPage(): JSX.Element {
                           onClick={() => markReadMut.mutate({ id: n.id as number })}
                           className="shrink-0 rounded-full bg-brand-100 px-2.5 py-1 text-xs font-medium text-brand-700 transition-colors hover:bg-brand-200 dark:bg-brand-900 dark:text-brand-300"
                         >
-                          قراءة
+                          {t('profile.mark-read')}
                         </button>
                       )}
                     </div>
@@ -117,10 +126,10 @@ export default function NotificationsPage(): JSX.Element {
                   disabled={page <= 1}
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                 >
-                  السابق
+                  {t('booking.previous')}
                 </Button>
                 <span className="text-sm text-text-secondary">
-                  {page} من {totalPages}
+                  {t('profile.page-of', { page, totalPages })}
                 </span>
                 <Button
                   variant="outline"
@@ -128,7 +137,7 @@ export default function NotificationsPage(): JSX.Element {
                   disabled={page >= totalPages}
                   onClick={() => setPage((p) => p + 1)}
                 >
-                  التالي
+                  {t('button.next')}
                 </Button>
               </div>
             )}

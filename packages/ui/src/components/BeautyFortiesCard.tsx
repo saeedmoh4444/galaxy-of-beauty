@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyFortiesCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyFortiesCard({
+  className = '',
+  title = 'العناية في الأربعينات',
+  subtitle = 'تجديد وتقوية — بشرة ناضجة',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,25 +21,47 @@ export function BeautyFortiesCard({ className = '' }: { className?: string }): J
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">
-            العناية في الأربعينات
-          </h4>
-          <p className="text-[10px] text-rose-500 dark:text-rose-400">تجديد وتقوية — بشرة ناضجة</p>
+          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
+          <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'ببتيدات — تحفز الكولاجين وتشد البشرة' },
-          { emoji: '️', text: 'سيراميد — يقوي حاجز البشرة المترقق' },
-          { emoji: '', text: 'مساج وجه — يحسن الدورة ويرفع البشرة' },
-          { emoji: '', text: 'علاجات احترافية — ميكرونيدلنغ أو ليزر' },
+          {
+            emoji: '',
+            text: {
+              ar: 'ببتيدات — تحفز الكولاجين وتشد البشرة',
+              en: 'Peptides — boost collagen and firm the skin',
+            },
+          },
+          {
+            emoji: '️',
+            text: {
+              ar: 'سيراميد — يقوي حاجز البشرة المترقق',
+              en: 'Ceramides — strengthen the thinning skin barrier',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'مساج وجه — يحسن الدورة ويرفع البشرة',
+              en: 'Facial massage — improves circulation and lifts the skin',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'علاجات احترافية — ميكرونيدلنغ أو ليزر',
+              en: 'Professional treatments — microneedling or laser',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-rose-50 px-3 py-2 dark:bg-rose-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-rose-800 dark:text-rose-200">{t.text}</span>
+            <span className="text-[10px] text-rose-800 dark:text-rose-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

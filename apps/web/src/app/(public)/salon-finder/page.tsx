@@ -2,8 +2,10 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function SalonFinderPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: cities } = api.salonMap.cities.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
   };
@@ -22,15 +24,15 @@ export default function SalonFinderPage(): JSX.Element {
   if (isError)
     return (
       <div className="mx-auto max-w-5xl px-4 py-8">
-        <ErrorAlert message="فشل تحميل الصالونات" onRetry={() => refetch()} />
+        <ErrorAlert message={t('marketing.salon-finder.load-error')} onRetry={() => refetch()} />
       </div>
     );
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 space-y-6">
       <div className="text-center">
-        <h1 className="text-3xl font-bold"> صالونات قريبة منكِ</h1>
-        <p className="mt-2 text-text-secondary">اكتشفي صالونات التجميل القريبة في مدينتكِ</p>
+        <h1 className="text-3xl font-bold">{t('marketing.salon-finder.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.salon-finder.subtitle')}</p>
       </div>
 
       <div className="flex flex-wrap gap-2 justify-center">
@@ -38,7 +40,7 @@ export default function SalonFinderPage(): JSX.Element {
           onClick={() => setCity('')}
           className={`rounded-full px-4 py-2 text-sm ${!city ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
         >
-          الكل
+          {t('marketing.salon-finder.all')}
         </button>
         {(cities ?? []).map((c: Record<string, unknown>) => (
           <button
@@ -56,19 +58,22 @@ export default function SalonFinderPage(): JSX.Element {
       ) : !(results ?? []).length ? (
         <Card padding="lg" className="text-center py-8">
           <p className="text-4xl mb-2"></p>
-          <p className="text-text-secondary">لا توجد صالونات في هذه المدينة حالياً</p>
+          <p className="text-text-secondary">{t('marketing.salon-finder.no-salons')}</p>
         </Card>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {(results ?? []).map((t: Record<string, unknown>) => {
-            const user = t.user as Record<string, unknown> | undefined;
-            const services = (t.services as Array<Record<string, unknown>>) ?? [];
+          {(results ?? []).map((item: Record<string, unknown>) => {
+            const user = item.user as Record<string, unknown> | undefined;
+            const services = (item.services as Array<Record<string, unknown>>) ?? [];
             return (
-              <Card key={t.id as number} padding="lg" className="text-center">
+              <Card key={item.id as number} padding="lg" className="text-center">
                 <span className="text-5xl">‍️</span>
-                <h3 className="font-bold mt-3">{(user?.name as string) ?? `فنية #${t.id}`}</h3>
+                <h3 className="font-bold mt-3">
+                  {(user?.name as string) ??
+                    t('marketing.salon-finder.tech-fallback', { id: item.id as number })}
+                </h3>
                 <p className="text-xs text-text-secondary mt-1">
-                  {t.city as string} · {(t.ratingAvg as number) ?? '—'}
+                  {item.city as string} · {(item.ratingAvg as number) ?? '—'}
                 </p>
                 <div className="mt-3 flex flex-wrap gap-1 justify-center">
                   {services.slice(0, 3).map((s: Record<string, unknown>) => {
@@ -85,7 +90,7 @@ export default function SalonFinderPage(): JSX.Element {
                 </div>
                 {services.length > 0 && (
                   <p className="text-xs text-text-tertiary mt-2">
-                    من{' '}
+                    {t('marketing.salon-finder.from-label')}{' '}
                     {formatCurrency(
                       Number((services[0]?.service as Record<string, unknown>)?.basePrice ?? 0),
                     )}

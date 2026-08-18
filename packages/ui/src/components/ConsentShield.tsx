@@ -24,41 +24,59 @@ type Permission =
 
 interface PermDef {
   emoji: string;
-  label: string;
-  description: string;
+  label: { ar: string; en: string };
+  description: { ar: string; en: string };
   required?: boolean;
 }
 
 const PERMISSIONS: Record<Permission, PermDef> = {
   photo_gallery: {
     emoji: '️',
-    label: 'صور المعرض',
-    description: 'السماح بعرض صوري في المعرض العام للمنصة',
+    label: { ar: 'صور المعرض', en: 'Gallery photos' },
+    description: {
+      ar: 'السماح بعرض صوري في المعرض العام للمنصة',
+      en: 'Allow my photos to be shown in the platform gallery',
+    },
   },
   before_after: {
     emoji: '',
-    label: 'صور قبل/بعد',
-    description: 'السماح بمشاركة صور التحول (يمكن تعتيم الوجه)',
+    label: { ar: 'صور قبل/بعد', en: 'Before/after photos' },
+    description: {
+      ar: 'السماح بمشاركة صور التحول (يمكن تعتيم الوجه)',
+      en: 'Allow sharing transformation photos (face blur optional)',
+    },
   },
   testimonial: {
     emoji: '',
-    label: 'شهادة',
-    description: 'السماح بنشر تقييمي وشهادتي على المنصة',
+    label: { ar: 'شهادة', en: 'Testimonial' },
+    description: {
+      ar: 'السماح بنشر تقييمي وشهادتي على المنصة',
+      en: 'Allow my rating and testimonial to be published',
+    },
   },
   data_analytics: {
     emoji: '',
-    label: 'تحليل البيانات',
-    description: 'استخدام بياناتي بشكل مجهول لتحسين الخدمات',
+    label: { ar: 'تحليل البيانات', en: 'Data analytics' },
+    description: {
+      ar: 'استخدام بياناتي بشكل مجهول لتحسين الخدمات',
+      en: 'Use my data anonymously to improve services',
+    },
   },
   marketing_email: {
     emoji: '',
-    label: 'رسائل تسويقية',
-    description: 'استلام عروض وخصومات عبر البريد الإلكتروني',
+    label: { ar: 'رسائل تسويقية', en: 'Marketing emails' },
+    description: {
+      ar: 'استلام عروض وخصومات عبر البريد الإلكتروني',
+      en: 'Receive offers and discounts via email',
+    },
   },
   location_sharing: {
     emoji: '',
-    label: 'مشاركة الموقع',
-    description: 'مشاركة موقعي مع الخبيرة أثناء الخدمة المنزلية',
+    label: { ar: 'مشاركة الموقع', en: 'Location sharing' },
+    description: {
+      ar: 'مشاركة موقعي مع الخبيرة أثناء الخدمة المنزلية',
+      en: 'Share my location with the specialist during home service',
+    },
     required: true,
   },
 };
@@ -68,12 +86,30 @@ interface ConsentShieldProps {
   permissions?: Permission[];
   onChange?: (permissions: Permission[]) => void;
   className?: string;
+  /** Header title */
+  title?: string;
+  /** Header subtitle */
+  subtitle?: string;
+  /** Badge shown next to required permissions */
+  requiredLabel?: string;
+  /** Privacy pledge section title */
+  pledgeTitle?: string;
+  /** Privacy pledge body text */
+  pledgeText?: string;
+  /** Locale for internal data strings */
+  locale?: 'ar' | 'en';
 }
 
 export function ConsentShield({
   permissions: initialPermissions = [],
   onChange,
   className = '',
+  title = 'درع الموافقة',
+  subtitle = 'أنتِ تتحكمين ببياناتكِ — لا نشارك شيئاً بدون إذنكِ',
+  requiredLabel = 'مطلوب',
+  pledgeTitle = 'تعهد الخصوصية',
+  pledgeText = 'بياناتكِ ملككِ وحدكِ. يمكنكِ تغيير هذه الإعدادات في أي وقت. نحن لا نبيع بياناتكِ لأي طرف ثالث.',
+  locale = 'ar',
 }: ConsentShieldProps): JSX.Element {
   const [permissions, setPermissions] = useState<Permission[]>(initialPermissions);
 
@@ -104,10 +140,8 @@ export function ConsentShield({
           ️
         </span>
         <div>
-          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">درع الموافقة</h4>
-          <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
-            أنتِ تتحكمين ببياناتكِ — لا نشارك شيئاً بدون إذنكِ
-          </p>
+          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
+          <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
         </div>
         <span className="ml-auto rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
           {granted}/{total}
@@ -136,16 +170,16 @@ export function ConsentShield({
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
                   <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-                    {def.label}
+                    {def.label[locale]}
                   </p>
                   {isRequired && (
                     <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[8px] font-bold text-amber-700 dark:bg-amber-900 dark:text-amber-300">
-                      مطلوب
+                      {requiredLabel}
                     </span>
                   )}
                 </div>
                 <p className="text-[10px] text-text-tertiary dark:text-gray-400">
-                  {def.description}
+                  {def.description[locale]}
                 </p>
               </div>
 
@@ -175,12 +209,9 @@ export function ConsentShield({
       {/* Privacy pledge */}
       <div className="mt-3 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 p-3 text-center dark:from-emerald-950 dark:to-teal-950">
         <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
-          تعهد الخصوصية
+          {pledgeTitle}
         </p>
-        <p className="mt-0.5 text-[9px] text-emerald-600 dark:text-emerald-400">
-          بياناتكِ ملككِ وحدكِ. يمكنكِ تغيير هذه الإعدادات في أي وقت. نحن لا نبيع بياناتكِ لأي طرف
-          ثالث.
-        </p>
+        <p className="mt-0.5 text-[9px] text-emerald-600 dark:text-emerald-400">{pledgeText}</p>
       </div>
     </div>
   );

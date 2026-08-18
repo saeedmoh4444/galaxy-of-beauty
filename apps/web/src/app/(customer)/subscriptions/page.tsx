@@ -3,8 +3,10 @@
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function SubscriptionsPage(): JSX.Element {
+  const { t } = useLocale();
   const plansQ = api.subscriptions.getPlans.useQuery();
   const mySubQ = api.subscriptions.getMySubscription.useQuery();
   const purchaseMut = api.subscriptions.purchase.useMutation({ onSuccess: () => mySubQ.refetch() });
@@ -20,13 +22,13 @@ export default function SubscriptionsPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
-        <h1 className="text-2xl font-bold">باقات الاشتراك</h1>
+        <h1 className="text-2xl font-bold">{t('subscriptions.title')}</h1>
 
         {isLoading ? (
           <GridSkeleton count={3} />
         ) : isError ? (
           <ErrorAlert
-            message="فشل تحميل الباقات"
+            message={t('subscriptions.err.load')}
             onRetry={() => {
               plansQ.refetch();
               mySubQ.refetch();
@@ -34,7 +36,10 @@ export default function SubscriptionsPage(): JSX.Element {
           />
         ) : plans.length === 0 ? (
           <div>
-            <EmptyState title="لا توجد باقات متاحة حالياً" description="سيتم إضافة باقات قريباً" />
+            <EmptyState
+              title={t('subscriptions.empty.title')}
+              description={t('subscriptions.empty.desc')}
+            />
           </div>
         ) : (
           <>
@@ -42,18 +47,20 @@ export default function SubscriptionsPage(): JSX.Element {
               <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 dark:border-brand-800 dark:bg-brand-900/20">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
-                    <p className="text-sm text-brand-600 dark:text-brand-400">اشتراكك الحالي</p>
+                    <p className="text-sm text-brand-600 dark:text-brand-400">
+                      {t('subscriptions.currentPlan')}
+                    </p>
                     <p className="text-lg font-bold">{mySub.planName as string}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-sm text-text-secondary">المستخدم / الحد</p>
+                    <p className="text-sm text-text-secondary">{t('subscriptions.usageLabel')}</p>
                     <p className="font-semibold">
                       {(mySub.requestsUsed as number) ?? 0} / {(mySub.monthlyLimit as number) ?? 0}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-text-secondary">
-                      {mySub.autoRenew ? 'تجديد تلقائي' : 'بدون تجديد'}
+                      {mySub.autoRenew ? t('subscriptions.autoRenew') : t('subscriptions.noRenew')}
                     </span>
                     {Boolean(mySub.autoRenew) && (
                       <Button
@@ -62,7 +69,7 @@ export default function SubscriptionsPage(): JSX.Element {
                         onClick={() => cancelMut.mutate()}
                         loading={cancelMut.isPending}
                       >
-                        إلغاء التجديد
+                        {t('subscriptions.cancelRenew')}
                       </Button>
                     )}
                   </div>
@@ -81,7 +88,7 @@ export default function SubscriptionsPage(): JSX.Element {
             {!mySub && (
               <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/20">
                 <p className="text-sm text-amber-700 dark:text-amber-400">
-                  ليس لديك اشتراك نشط. اختر باقة للبدء في استخدام الميزات الحصرية.
+                  {t('subscriptions.noActive')}
                 </p>
               </div>
             )}
@@ -98,7 +105,7 @@ export default function SubscriptionsPage(): JSX.Element {
                   >
                     {isCurrentPlan && (
                       <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-4 py-0.5 text-xs font-medium text-white">
-                        الباقة الحالية
+                        {t('subscriptions.currentBadge')}
                       </span>
                     )}
                     <div className="mb-4 text-center">
@@ -106,7 +113,7 @@ export default function SubscriptionsPage(): JSX.Element {
                       <p className="mt-1 text-3xl font-bold text-brand-600">
                         {formatCurrency(Number(plan.price ?? 0))}
                       </p>
-                      <p className="text-xs text-text-secondary">/ شهرياً</p>
+                      <p className="text-xs text-text-secondary">{t('subscriptions.perMonth')}</p>
                     </div>
                     <ul className="mb-6 flex-1 space-y-2 text-sm">
                       {(plan.features as string[])?.map((f: string, i: number) => (
@@ -121,8 +128,11 @@ export default function SubscriptionsPage(): JSX.Element {
                     </ul>
                     <div className="mb-4 text-center">
                       <p className="text-sm text-text-secondary">
-                        حد الاستخدام:{' '}
-                        <strong>{(plan.monthlyLimit as number) ?? 'غير محدود'}</strong> طلب
+                        {t('subscriptions.usageLimit')}{' '}
+                        <strong>
+                          {(plan.monthlyLimit as number) ?? t('subscriptions.unlimited')}
+                        </strong>{' '}
+                        {t('subscriptions.requestsUnit')}
                       </p>
                     </div>
                     {!isCurrentPlan && (
@@ -132,7 +142,7 @@ export default function SubscriptionsPage(): JSX.Element {
                         loading={purchaseMut.isPending}
                         onClick={() => purchaseMut.mutate({ planId })}
                       >
-                        {plan.price === 0 ? 'مجاني' : 'اشتراك'}
+                        {plan.price === 0 ? t('subscriptions.free') : t('subscriptions.subscribe')}
                       </Button>
                     )}
                   </Card>

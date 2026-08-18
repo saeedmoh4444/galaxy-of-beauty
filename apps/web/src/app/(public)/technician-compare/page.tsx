@@ -1,103 +1,120 @@
 'use client';
 import { useState } from 'react';
 import { Card } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 const TECHNICIANS = [
   {
     id: 1,
     name: 'نورة العمري',
-    specialty: 'مكياج',
+    specialty: 'marketing.technician-compare.spec-makeup',
     rating: 4.9,
     reviews: 234,
     price: 300,
-    experience: '٨ سنوات',
+    experience: 'marketing.technician-compare.exp-8',
     city: 'الرياض',
     emoji: '',
-    services: ['مكياج عرايس', 'مكياج سهرة', 'مكياج ناعم'],
+    services: [
+      'marketing.technician-compare.svc-bridal-makeup',
+      'marketing.technician-compare.svc-evening-makeup',
+      'marketing.technician-compare.svc-soft-makeup',
+    ],
     features: { speed: 90, quality: 95, price: 70, communication: 92 },
   },
   {
     id: 2,
     name: 'سارة الحربي',
-    specialty: 'شعر',
+    specialty: 'marketing.technician-compare.spec-hair',
     rating: 4.8,
     reviews: 189,
     price: 250,
-    experience: '٦ سنوات',
+    experience: 'marketing.technician-compare.exp-6',
     city: 'جدة',
     emoji: '‍️',
-    services: ['تسريحات', 'صبغات', 'علاج شعر'],
+    services: [
+      'marketing.technician-compare.svc-hairstyles',
+      'marketing.technician-compare.svc-dyes',
+      'marketing.technician-compare.svc-hair-treatment',
+    ],
     features: { speed: 85, quality: 92, price: 80, communication: 88 },
   },
   {
     id: 3,
     name: 'هند المطيري',
-    specialty: 'أظافر',
+    specialty: 'marketing.technician-compare.spec-nails',
     rating: 4.7,
     reviews: 156,
     price: 180,
-    experience: '٥ سنوات',
+    experience: 'marketing.technician-compare.exp-5',
     city: 'الدمام',
     emoji: '',
-    services: ['مانيكير', 'باديكير', ' nail art'],
+    services: [
+      'marketing.technician-compare.svc-manicure',
+      'marketing.technician-compare.svc-pedicure',
+      'marketing.technician-compare.svc-nail-art',
+    ],
     features: { speed: 88, quality: 90, price: 90, communication: 85 },
   },
   {
     id: 4,
     name: 'د. ليلى القحطاني',
-    specialty: 'بشرة',
+    specialty: 'marketing.technician-compare.spec-skin',
     rating: 4.9,
     reviews: 312,
     price: 350,
-    experience: '١٢ سنة',
+    experience: 'marketing.technician-compare.exp-12',
     city: 'الرياض',
     emoji: '',
-    services: ['تنظيف بشرة', 'تقشير', 'علاج حب الشباب'],
+    services: [
+      'marketing.technician-compare.svc-facial',
+      'marketing.technician-compare.svc-peeling',
+      'marketing.technician-compare.svc-acne-treatment',
+    ],
     features: { speed: 80, quality: 98, price: 60, communication: 95 },
   },
-];
+] as const;
 
-const DIMS: Record<string, string> = {
-  speed: ' السرعة',
-  quality: ' الجودة',
-  price: ' السعر',
-  communication: ' التواصل',
-};
+const DIMS = {
+  speed: 'marketing.technician-compare.dim-speed',
+  quality: 'marketing.technician-compare.dim-quality',
+  price: 'marketing.technician-compare.dim-price',
+  communication: 'marketing.technician-compare.dim-communication',
+} as const;
+type DimKey = keyof typeof DIMS;
 
 export default function TechnicianComparePage(): JSX.Element {
+  const { t } = useLocale();
   const [selected, setSelected] = useState<number[]>([]);
   const toggle = (id: number) => {
     if (selected.includes(id)) setSelected(selected.filter((x) => x !== id));
     else if (selected.length < 3) setSelected([...selected, id]);
   };
-  const techs = TECHNICIANS.filter((t) => selected.includes(t.id));
+  const techs = TECHNICIANS.filter((tech) => selected.includes(tech.id));
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="text-center mb-10">
         <span className="text-6xl">‍</span>
-        <h1 className="mt-4 text-3xl font-bold">مقارنة الفنيات</h1>
-        <p className="mt-2 text-text-secondary">
-          قارني بين الفنيات واختاري الأفضل لكِ (اختاري ٢-٣)
-        </p>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.technician-compare.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.technician-compare.subtitle')}</p>
       </div>
 
       <Card padding="lg" className="mb-8">
         <div className="grid gap-3 sm:grid-cols-2">
-          {TECHNICIANS.map((t) => {
-            const isSel = selected.includes(t.id);
+          {TECHNICIANS.map((tech) => {
+            const isSel = selected.includes(tech.id);
             return (
               <button
-                key={t.id}
-                onClick={() => toggle(t.id)}
+                key={tech.id}
+                onClick={() => toggle(tech.id)}
                 className={`rounded-xl border-2 p-4 text-right transition-all ${isSel ? 'border-brand-400 bg-brand-50' : 'border-edge hover:border-edge'}`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-3xl">{t.emoji}</span>
+                  <span className="text-3xl">{tech.emoji}</span>
                   <div>
-                    <p className="font-bold">{t.name}</p>
+                    <p className="font-bold">{tech.name}</p>
                     <p className="text-xs text-text-secondary">
-                      {t.specialty} · {t.city} · {t.rating} · {t.experience}
+                      {t(tech.specialty)} · {tech.city} · {tech.rating} · {t(tech.experience)}
                     </p>
                   </div>
                   {isSel && <span className="mr-auto text-brand-600 text-xl"></span>}
@@ -110,87 +127,103 @@ export default function TechnicianComparePage(): JSX.Element {
 
       {techs.length >= 2 && (
         <Card padding="lg">
-          <h3 className="font-bold text-lg mb-6 text-center"> مقارنة {techs.length} فنيات</h3>
+          <h3 className="font-bold text-lg mb-6 text-center">
+            {t('marketing.technician-compare.compare-count', { count: techs.length })}
+          </h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b">
-                  <th className="p-3 text-right">الميزة</th>
-                  {techs.map((t) => (
-                    <th key={t.id} className="p-3 text-center">
-                      <span className="text-2xl block">{t.emoji}</span>
-                      {t.name}
+                  <th className="p-3 text-right">
+                    {t('marketing.technician-compare.feature-column')}
+                  </th>
+                  {techs.map((tech) => (
+                    <th key={tech.id} className="p-3 text-center">
+                      <span className="text-2xl block">{tech.emoji}</span>
+                      {tech.name}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 <tr className="border-b">
-                  <td className="p-3 text-text-secondary"> التقييم</td>
-                  {techs.map((t) => (
-                    <td key={t.id} className="p-3 text-center font-bold">
-                      {t.rating}
+                  <td className="p-3 text-text-secondary">
+                    {t('marketing.technician-compare.row-rating')}
+                  </td>
+                  {techs.map((tech) => (
+                    <td key={tech.id} className="p-3 text-center font-bold">
+                      {tech.rating}
                     </td>
                   ))}
                 </tr>
                 <tr className="border-b">
-                  <td className="p-3 text-text-secondary"> المراجعات</td>
-                  {techs.map((t) => (
-                    <td key={t.id} className="p-3 text-center">
-                      {t.reviews}
+                  <td className="p-3 text-text-secondary">
+                    {t('marketing.technician-compare.row-reviews')}
+                  </td>
+                  {techs.map((tech) => (
+                    <td key={tech.id} className="p-3 text-center">
+                      {tech.reviews}
                     </td>
                   ))}
                 </tr>
                 <tr className="border-b">
-                  <td className="p-3 text-text-secondary"> السعر</td>
-                  {techs.map((t) => (
-                    <td key={t.id} className="p-3 text-center font-bold text-brand-600">
-                      {t.price} ر.س
+                  <td className="p-3 text-text-secondary">
+                    {t('marketing.technician-compare.row-price')}
+                  </td>
+                  {techs.map((tech) => (
+                    <td key={tech.id} className="p-3 text-center font-bold text-brand-600">
+                      {t('marketing.technician-compare.price-sar', { price: tech.price })}
                     </td>
                   ))}
                 </tr>
                 <tr className="border-b">
-                  <td className="p-3 text-text-secondary"> المدينة</td>
-                  {techs.map((t) => (
-                    <td key={t.id} className="p-3 text-center">
-                      {t.city}
+                  <td className="p-3 text-text-secondary">
+                    {t('marketing.technician-compare.row-city')}
+                  </td>
+                  {techs.map((tech) => (
+                    <td key={tech.id} className="p-3 text-center">
+                      {tech.city}
                     </td>
                   ))}
                 </tr>
                 <tr className="border-b">
-                  <td className="p-3 text-text-secondary">️ الخبرة</td>
-                  {techs.map((t) => (
-                    <td key={t.id} className="p-3 text-center">
-                      {t.experience}
+                  <td className="p-3 text-text-secondary">
+                    {t('marketing.technician-compare.row-experience')}
+                  </td>
+                  {techs.map((tech) => (
+                    <td key={tech.id} className="p-3 text-center">
+                      {t(tech.experience)}
                     </td>
                   ))}
                 </tr>
                 <tr className="border-b">
-                  <td className="p-3 text-text-secondary"> الخدمات</td>
-                  {techs.map((t) => (
-                    <td key={t.id} className="p-3 text-center">
+                  <td className="p-3 text-text-secondary">
+                    {t('marketing.technician-compare.row-services')}
+                  </td>
+                  {techs.map((tech) => (
+                    <td key={tech.id} className="p-3 text-center">
                       <div className="flex flex-wrap gap-1 justify-center">
-                        {t.services.map((s) => (
+                        {tech.services.map((s) => (
                           <span
                             key={s}
                             className="rounded-full bg-surface-muted px-2 py-0.5 text-xs"
                           >
-                            {s}
+                            {t(s)}
                           </span>
                         ))}
                       </div>
                     </td>
                   ))}
                 </tr>
-                {Object.entries(DIMS).map(([k, label]) => (
+                {(Object.keys(DIMS) as DimKey[]).map((k) => (
                   <tr key={k} className="border-b">
-                    <td className="p-3 text-text-secondary">{label}</td>
-                    {techs.map((t) => (
-                      <td key={t.id} className="p-3">
+                    <td className="p-3 text-text-secondary">{t(DIMS[k])}</td>
+                    {techs.map((tech) => (
+                      <td key={tech.id} className="p-3">
                         <div className="h-2 bg-surface-muted rounded-full">
                           <div
                             className="h-2 bg-brand-600 rounded-full"
-                            style={{ width: `${t.features[k as keyof typeof t.features]}%` }}
+                            style={{ width: `${tech.features[k]}%` }}
                           />
                         </div>
                       </td>

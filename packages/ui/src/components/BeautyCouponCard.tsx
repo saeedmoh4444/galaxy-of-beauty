@@ -17,6 +17,9 @@ interface BeautyCouponCardProps {
   expiresAt?: string;
   description?: string;
   onCopy?: () => void;
+  title?: string;
+  copyText?: string;
+  expiresText?: string;
   className?: string;
 }
 
@@ -26,6 +29,9 @@ export function BeautyCouponCard({
   expiresAt,
   description,
   onCopy,
+  title = 'كوبون خصم',
+  copyText = 'نسخ',
+  expiresText = 'ينتهي',
   className = '',
 }: BeautyCouponCardProps): JSX.Element {
   const [copied, setCopied] = useState(false);
@@ -46,7 +52,7 @@ export function BeautyCouponCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">كوبون خصم</h4>
+        <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">{title}</h4>
         <p className="mt-1 text-3xl font-extrabold text-amber-700 dark:text-amber-300">
           {discount}%
         </p>
@@ -64,13 +70,13 @@ export function BeautyCouponCard({
           onClick={handleCopy}
           className="rounded-lg bg-amber-600 px-3 py-1.5 text-[10px] font-bold text-white hover:bg-amber-700 transition-colors"
         >
-          {copied ? '' : 'نسخ'}
+          {copied ? '' : copyText}
         </button>
       </div>
 
       {expiresAt && (
         <p className="mt-2 text-center text-[10px] text-amber-600 dark:text-amber-400">
-          ينتهي {expiresAt}
+          {expiresText} {expiresAt}
         </p>
       )}
     </div>

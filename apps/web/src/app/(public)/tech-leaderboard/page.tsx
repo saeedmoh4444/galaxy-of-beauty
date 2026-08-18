@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert } from '@galaxy/ui';
 import Link from 'next/link';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function TechLeaderboardPage(): JSX.Element {
+  const { t } = useLocale();
   const [category, setCategory] = useState('rating');
   const { data: cats } = api.techLeaderboard.categories.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
@@ -29,8 +31,8 @@ export default function TechLeaderboardPage(): JSX.Element {
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">لوحة المتصدرين</h1>
-        <p className="mt-2 text-text-secondary">أفضل الفنيات في منصتنا</p>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.tech-leaderboard.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.tech-leaderboard.subtitle')}</p>
       </div>
 
       <div className="flex flex-wrap justify-center gap-2 mb-6">
@@ -48,31 +50,41 @@ export default function TechLeaderboardPage(): JSX.Element {
       {isLoading ? (
         <CardListSkeleton count={4} />
       ) : isError ? (
-        <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+        <ErrorAlert
+          message={t('marketing.tech-leaderboard.load-error')}
+          onRetry={() => refetch()}
+        />
       ) : (
         <div className="space-y-3">
-          {items.map((t: Record<string, unknown>, idx: number) => (
-            <Link key={t.id as number} href={`/technicians/${t.id}`}>
+          {items.map((item: Record<string, unknown>, idx: number) => (
+            <Link key={item.id as number} href={`/technicians/${item.id}`}>
               <Card padding="md" className="flex items-center gap-4 hover:shadow-md transition-all">
                 <span className="text-2xl w-10 text-center font-bold">
                   {['', '', ''][idx] ?? `#${idx + 1}`}
                 </span>
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-purple-500 text-white font-bold">
-                  {((t.name as string) || '')[0]}
+                  {((item.name as string) || '')[0]}
                 </div>
                 <div className="flex-1">
-                  <p className="font-bold">{t.name as string}</p>
+                  <p className="font-bold">{item.name as string}</p>
                   <p className="text-xs text-text-secondary">
-                    {t.rating as number} · {t.reviewCount as number} مراجعة
+                    {t('marketing.tech-leaderboard.reviews-count', {
+                      rating: item.rating as number,
+                      reviewCount: item.reviewCount as number,
+                    })}
                   </p>
                 </div>
                 <div className="text-right">
                   <p className="font-bold text-brand-600">
                     {category === 'bookings'
-                      ? `${t.bookingCount as number} حجز`
+                      ? t('marketing.tech-leaderboard.bookings-count', {
+                          count: item.bookingCount as number,
+                        })
                       : category === 'speed'
-                        ? `${t.responseTime as number} د`
-                        : ` ${t.rating as number}`}
+                        ? t('marketing.tech-leaderboard.response-time', {
+                            count: item.responseTime as number,
+                          })
+                        : ` ${item.rating as number}`}
                   </p>
                 </div>
               </Card>

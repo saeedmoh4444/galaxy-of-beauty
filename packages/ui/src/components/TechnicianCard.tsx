@@ -27,12 +27,20 @@ interface TechData {
 interface TechnicianCardProps {
   tech: TechData;
   onSelect: (tech: TechData) => void;
+  bookingsSuffix?: string;
+  pricePrefix?: string;
+  currency?: string;
+  viewProfileText?: string;
   className?: string;
 }
 
 export function TechnicianCard({
   tech,
   onSelect,
+  bookingsSuffix = 'حجز',
+  pricePrefix = 'من',
+  currency = 'ر.س',
+  viewProfileText = 'عرض الملف',
   className = '',
 }: TechnicianCardProps): JSX.Element {
   return (
@@ -49,7 +57,9 @@ export function TechnicianCard({
       <div className="mt-2 flex items-center justify-center gap-2">
         {tech.rating ? <RatingStars rating={tech.rating} size="sm" /> : null}
         {tech.completedBookings ? (
-          <span className="text-xs text-text-tertiary">{tech.completedBookings}+ حجز</span>
+          <span className="text-xs text-text-tertiary">
+            {tech.completedBookings}+ {bookingsSuffix}
+          </span>
         ) : null}
       </div>
 
@@ -59,7 +69,7 @@ export function TechnicianCard({
 
       {tech.minPrice ? (
         <p className="mt-1 text-xs text-text-secondary dark:text-gray-400">
-          من {tech.minPrice} ر.س
+          {pricePrefix} {tech.minPrice} {currency}
         </p>
       ) : null}
 
@@ -67,7 +77,7 @@ export function TechnicianCard({
         onClick={() => onSelect(tech)}
         className="mt-3 w-full rounded-lg bg-brand-600 py-2 text-sm font-semibold text-white transition-all hover:bg-brand-700 active:scale-95"
       >
-        عرض الملف
+        {viewProfileText}
       </button>
     </Card>
   );

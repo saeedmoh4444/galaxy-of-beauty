@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 import Link from 'next/link';
 
 export default function KidsServicesPage(): JSX.Element {
+  const { t } = useLocale();
   const { user } = useAuth();
   const { data: cats } = api.kidsServices.categories.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
@@ -38,10 +40,8 @@ export default function KidsServicesPage(): JSX.Element {
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-10 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">خدمات الأطفال</h1>
-        <p className="mt-2 text-text-secondary">
-          عناية لطيفة وآمنة للصغار — من الرضع حتى المراهقات
-        </p>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.kids-services.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.kids-services.subtitle')}</p>
       </div>
 
       {result ? (
@@ -49,10 +49,13 @@ export default function KidsServicesPage(): JSX.Element {
           <span className="text-6xl"></span>
           <h2 className="mt-4 text-xl font-bold">{result.message as string}</h2>
           <p className="text-2xl font-extrabold text-brand-600 mt-2">
-            {formatCurrency(result.price as number)} ر.س
+            {t('marketing.kids-services.price-sar', {
+              price: formatCurrency(result.price as number),
+            })}
           </p>
           <p className="text-sm text-text-secondary mt-1">
-            {result.childName as string} · ️ {result.durationMin as number} دقيقة ·{' '}
+            {result.childName as string} · ️{' '}
+            {t('marketing.kids-services.duration-min', { min: result.durationMin as number })} ·{' '}
             {result.tip as string}
           </p>
           <Button
@@ -63,7 +66,7 @@ export default function KidsServicesPage(): JSX.Element {
               setSelectedCat(null);
             }}
           >
-            عودة
+            {t('marketing.kids-services.back')}
           </Button>
         </Card>
       ) : !selectedCat ? (
@@ -78,7 +81,7 @@ export default function KidsServicesPage(): JSX.Element {
                 <h3 className="mt-3 text-lg font-bold">{c.nameAr as string}</h3>
                 <p className="mt-1 text-xs text-text-secondary">{c.description as string}</p>
                 <span className="mt-3 inline-block rounded-full bg-brand-100 dark:bg-brand-900 px-3 py-1 text-xs font-medium text-brand-700">
-                  {c.serviceCount as number} خدمات
+                  {t('marketing.kids-services.services-count', { count: c.serviceCount as number })}
                 </span>
               </Card>
             </button>
@@ -87,14 +90,14 @@ export default function KidsServicesPage(): JSX.Element {
       ) : isLoading ? (
         <CardListSkeleton count={4} />
       ) : isError ? (
-        <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+        <ErrorAlert message={t('marketing.kids-services.load-error')} onRetry={() => refetch()} />
       ) : (
         <div className="space-y-6">
           <button
             onClick={() => setSelectedCat(null)}
             className="text-brand-600 text-sm font-medium"
           >
-            ← العودة
+            {t('marketing.kids-services.back-arrow')}
           </button>
           <Card
             padding="lg"
@@ -107,19 +110,19 @@ export default function KidsServicesPage(): JSX.Element {
           <div className="flex gap-3 items-end bg-surface-muted dark:bg-gray-800 rounded-xl p-4">
             <div>
               <label htmlFor="ks-child-name" className="text-xs font-semibold">
-                اسم الطفل
+                {t('marketing.kids-services.child-name')}
               </label>
               <input
                 id="ks-child-name"
                 value={childName}
                 onChange={(e) => setChildName(e.target.value)}
-                placeholder="الاسم..."
+                placeholder={t('marketing.kids-services.name-placeholder')}
                 className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1"
               />
             </div>
             <div>
               <label htmlFor="ks-child-age" className="text-xs font-semibold">
-                العمر
+                {t('marketing.kids-services.age')}
               </label>
               <input
                 id="ks-child-age"
@@ -140,15 +143,19 @@ export default function KidsServicesPage(): JSX.Element {
                   <div>
                     <h3 className="font-bold">{s.nameAr as string}</h3>
                     <p className="text-xs text-text-secondary">
-                      من عمر {(s.ageMin as number) || 0} سنوات
+                      {t('marketing.kids-services.age-from', { age: (s.ageMin as number) || 0 })}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
                   <p className="text-xl font-extrabold text-brand-600">
-                    {formatCurrency(s.price as number)} ر.س
+                    {t('marketing.kids-services.price-sar', {
+                      price: formatCurrency(s.price as number),
+                    })}
                   </p>
-                  <p className="text-xs text-text-tertiary">{s.durationMin as number} دقيقة</p>
+                  <p className="text-xs text-text-tertiary">
+                    {t('marketing.kids-services.duration-min', { min: s.durationMin as number })}
+                  </p>
                   {user ? (
                     <Button
                       size="sm"
@@ -166,7 +173,7 @@ export default function KidsServicesPage(): JSX.Element {
                           );
                       }}
                     >
-                      احجزي
+                      {t('marketing.kids-services.book')}
                     </Button>
                   ) : null}
                 </div>
@@ -175,7 +182,7 @@ export default function KidsServicesPage(): JSX.Element {
           </div>
           {tips && tips.length > 0 && (
             <Card padding="lg" className="bg-green-50 dark:bg-green-950 border-none">
-              <h3 className="font-bold mb-2"> نصائح</h3>
+              <h3 className="font-bold mb-2">{t('marketing.kids-services.tips')}</h3>
               <div className="space-y-1">
                 {tips.map((t: string, i: number) => (
                   <p key={i} className="text-sm">
@@ -188,7 +195,7 @@ export default function KidsServicesPage(): JSX.Element {
           {!user && (
             <div className="text-center">
               <Link href="/login">
-                <Button size="lg">سجّلي دخول للحجز</Button>
+                <Button size="lg">{t('marketing.kids-services.login-to-book')}</Button>
               </Link>
             </div>
           )}

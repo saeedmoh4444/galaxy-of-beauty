@@ -23,6 +23,12 @@ interface InlineEditProps {
   disabled?: boolean;
   /** Empty-state placeholder shown when value is empty */
   emptyText?: string;
+  /** Fallback error message shown when saving fails */
+  saveErrorText?: string;
+  /** Prompt suffix appended to the aria-label of the display button */
+  editPromptText?: string;
+  /** ARIA label used when the value was just saved */
+  savedLabel?: string;
 }
 
 /**
@@ -46,6 +52,9 @@ export function InlineEdit({
   className = '',
   disabled = false,
   emptyText = '—',
+  saveErrorText = 'فشل الحفظ',
+  editPromptText = 'اضغط للتعديل',
+  savedLabel = 'تم الحفظ',
 }: InlineEditProps) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(value);
@@ -96,13 +105,13 @@ export function InlineEdit({
       setJustSaved(true);
       setTimeout(() => setJustSaved(false), 1500);
     } catch (err) {
-      setError((err as Error).message || 'فشل الحفظ');
+      setError((err as Error).message || saveErrorText);
       setDraft(value); // Rollback
       inputRef.current?.focus();
     } finally {
       setSaving(false);
     }
-  }, [draft, value, validate, onSave]);
+  }, [draft, value, validate, onSave, saveErrorText]);
 
   const cancel = useCallback(() => {
     setEditing(false);
@@ -180,7 +189,7 @@ export function InlineEdit({
             'hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500',
             'disabled:cursor-not-allowed',
           )}
-          aria-label={`${label}: ${value || emptyText}. اضغط للتعديل`}
+          aria-label={`${label}: ${value || emptyText}. ${editPromptText}`}
         >
           <span className={cn(value ? 'text-text-primary' : 'text-text-tertiary italic')}>
             {value || emptyText}
@@ -207,7 +216,7 @@ export function InlineEdit({
               viewBox="0 0 24 24"
               strokeWidth={2.5}
               stroke="currentColor"
-              aria-label="تم الحفظ"
+              aria-label={savedLabel}
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M20 6 9 17l-5-5" />
             </svg>

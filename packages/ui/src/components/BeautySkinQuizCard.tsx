@@ -12,52 +12,75 @@ import { cn } from '@galaxy/shared';
  */
 
 interface Question {
-  question: string;
+  question: { ar: string; en: string };
   emoji: string;
-  options: { text: string; score: Record<string, number> }[];
+  options: { text: { ar: string; en: string }; score: Record<string, number> }[];
 }
 
 const QUESTIONS: Question[] = [
   {
-    question: 'كيف تبدو بشرتكِ بعد غسلها؟',
+    question: { ar: 'كيف تبدو بشرتكِ بعد غسلها؟', en: 'How does your skin feel after washing?' },
     emoji: '',
     options: [
-      { text: 'مشدودة وجافة', score: { dry: 3 } },
-      { text: 'لامعة ودهنية', score: { oily: 3 } },
-      { text: 'لامعة في T-zone فقط', score: { combination: 3 } },
-      { text: 'مريحة وطبيعية', score: { normal: 3 } },
+      { text: { ar: 'مشدودة وجافة', en: 'Tight and dry' }, score: { dry: 3 } },
+      { text: { ar: 'لامعة ودهنية', en: 'Shiny and oily' }, score: { oily: 3 } },
+      {
+        text: { ar: 'لامعة في T-zone فقط', en: 'Shiny in the T-zone only' },
+        score: { combination: 3 },
+      },
+      { text: { ar: 'مريحة وطبيعية', en: 'Comfortable and normal' }, score: { normal: 3 } },
     ],
   },
   {
-    question: 'كيف تتصرف بشرتكِ في الطقس الحار؟',
+    question: {
+      ar: 'كيف تتصرف بشرتكِ في الطقس الحار؟',
+      en: 'How does your skin behave in hot weather?',
+    },
     emoji: '️',
     options: [
-      { text: 'تصبح دهنية جداً', score: { oily: 3 } },
-      { text: 'تبقى جافة', score: { dry: 3 } },
-      { text: 'دهنية في الجبهة والأنف', score: { combination: 3 } },
-      { text: 'لا تتغير كثيراً', score: { normal: 3 } },
+      { text: { ar: 'تصبح دهنية جداً', en: 'Becomes very oily' }, score: { oily: 3 } },
+      { text: { ar: 'تبقى جافة', en: 'Stays dry' }, score: { dry: 3 } },
+      {
+        text: { ar: 'دهنية في الجبهة والأنف', en: 'Oily on forehead and nose' },
+        score: { combination: 3 },
+      },
+      { text: { ar: 'لا تتغير كثيراً', en: 'Does not change much' }, score: { normal: 3 } },
     ],
   },
   {
-    question: 'هل بشرتكِ حساسة للمنتجات الجديدة؟',
+    question: {
+      ar: 'هل بشرتكِ حساسة للمنتجات الجديدة؟',
+      en: 'Is your skin sensitive to new products?',
+    },
     emoji: '',
     options: [
-      { text: 'نعم، تحمر بسرعة', score: { sensitive: 4 } },
-      { text: 'أحياناً', score: { sensitive: 2 } },
-      { text: 'نادراً', score: { normal: 2 } },
-      { text: 'أبداً، أتحمل أي شيء', score: { oily: 2 } },
+      { text: { ar: 'نعم، تحمر بسرعة', en: 'Yes, it reddens quickly' }, score: { sensitive: 4 } },
+      { text: { ar: 'أحياناً', en: 'Sometimes' }, score: { sensitive: 2 } },
+      { text: { ar: 'نادراً', en: 'Rarely' }, score: { normal: 2 } },
+      { text: { ar: 'أبداً، أتحمل أي شيء', en: 'Never, I tolerate anything' }, score: { oily: 2 } },
     ],
   },
 ];
 
+const DEFAULT_RESULT_LABEL = { ar: 'طبيعية ', en: 'Normal ' };
+
 interface BeautySkinQuizCardProps {
   onComplete?: (result: string) => void;
   className?: string;
+  /** Title shown on the result screen */
+  resultTitle?: string;
+  /** Button to retake the quiz */
+  retryLabel?: string;
+  /** Locale for internal quiz data strings */
+  locale?: 'ar' | 'en';
 }
 
 export function BeautySkinQuizCard({
   onComplete,
   className = '',
+  resultTitle = 'نوع بشرتكِ',
+  retryLabel = 'جربي مرة أخرى',
+  locale = 'ar',
 }: BeautySkinQuizCardProps): JSX.Element {
   const [step, setStep] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({});
@@ -75,14 +98,14 @@ export function BeautySkinQuizCard({
     } else {
       const finalScores = { ...newScores };
       const winner = Object.entries(finalScores).sort(([, a], [, b]) => b - a)[0]?.[0] ?? 'normal';
-      const labels: Record<string, string> = {
-        oily: 'دهنية ',
-        dry: 'جافة ',
-        combination: 'مختلطة ',
-        normal: 'طبيعية ',
-        sensitive: 'حساسة ',
+      const labels: Record<string, { ar: string; en: string }> = {
+        oily: { ar: 'دهنية ', en: 'Oily ' },
+        dry: { ar: 'جافة ', en: 'Dry ' },
+        combination: { ar: 'مختلطة ', en: 'Combination ' },
+        normal: { ar: 'طبيعية ', en: 'Normal ' },
+        sensitive: { ar: 'حساسة ', en: 'Sensitive ' },
       };
-      setResult(labels[winner] ?? 'طبيعية ');
+      setResult((labels[winner] ?? DEFAULT_RESULT_LABEL)[locale]);
       onComplete?.(winner);
     }
   };
@@ -96,7 +119,7 @@ export function BeautySkinQuizCard({
         )}
       >
         <span className="text-4xl" aria-hidden="true"></span>
-        <h4 className="mt-2 text-sm font-bold text-teal-700 dark:text-teal-300">نوع بشرتكِ</h4>
+        <h4 className="mt-2 text-sm font-bold text-teal-700 dark:text-teal-300">{resultTitle}</h4>
         <p className="mt-2 text-2xl font-bold text-teal-800 dark:text-teal-200">{result}</p>
         <button
           type="button"
@@ -107,7 +130,7 @@ export function BeautySkinQuizCard({
           }}
           className="mt-3 rounded-xl bg-teal-600 px-4 py-2 text-xs font-bold text-white hover:bg-teal-700"
         >
-          جربي مرة أخرى
+          {retryLabel}
         </button>
       </div>
     );
@@ -128,7 +151,9 @@ export function BeautySkinQuizCard({
           {step + 1}/{QUESTIONS.length}
         </span>
       </div>
-      <p className="mt-2 text-xs font-bold text-text-primary dark:text-gray-100">{q.question}</p>
+      <p className="mt-2 text-xs font-bold text-text-primary dark:text-gray-100">
+        {q.question[locale]}
+      </p>
       <div className="mt-3 space-y-1.5">
         {q.options.map((opt, i) => (
           <button
@@ -137,7 +162,7 @@ export function BeautySkinQuizCard({
             onClick={() => handleAnswer(opt.score)}
             className="w-full rounded-lg bg-teal-50 px-3 py-2.5 text-left text-[10px] font-medium text-teal-800 hover:bg-teal-100 dark:bg-teal-950 dark:text-teal-200 dark:hover:bg-teal-900 transition-colors"
           >
-            {opt.text}
+            {opt.text[locale]}
           </button>
         ))}
       </div>

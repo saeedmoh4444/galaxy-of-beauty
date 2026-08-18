@@ -4,24 +4,34 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, TableSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import Link from 'next/link';
+import { useLocale } from '@/components/LocaleProvider';
 
 const MONTHS = [
-  'يناير',
-  'فبراير',
-  'مارس',
-  'أبريل',
-  'مايو',
-  'يونيو',
-  'يوليو',
-  'أغسطس',
-  'سبتمبر',
-  'أكتوبر',
-  'نوفمبر',
-  'ديسمبر',
-];
-const DAYS = ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'];
+  'marketing.tech-calendar.month-1',
+  'marketing.tech-calendar.month-2',
+  'marketing.tech-calendar.month-3',
+  'marketing.tech-calendar.month-4',
+  'marketing.tech-calendar.month-5',
+  'marketing.tech-calendar.month-6',
+  'marketing.tech-calendar.month-7',
+  'marketing.tech-calendar.month-8',
+  'marketing.tech-calendar.month-9',
+  'marketing.tech-calendar.month-10',
+  'marketing.tech-calendar.month-11',
+  'marketing.tech-calendar.month-12',
+] as const;
+const DAYS = [
+  'marketing.tech-calendar.day-1',
+  'marketing.tech-calendar.day-2',
+  'marketing.tech-calendar.day-3',
+  'marketing.tech-calendar.day-4',
+  'marketing.tech-calendar.day-5',
+  'marketing.tech-calendar.day-6',
+  'marketing.tech-calendar.day-7',
+] as const;
 
 export default function TechCalendarPage(): JSX.Element {
+  const { t } = useLocale();
   const today = new Date();
   const [month, setMonth] = useState(today.getMonth() + 1);
   const [year] = useState(today.getFullYear());
@@ -60,8 +70,8 @@ export default function TechCalendarPage(): JSX.Element {
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">تقويم المواعيد</h1>
-        <p className="mt-2 text-text-secondary">تصفّحي المواعيد المتاحة للفنيات واحجزي مباشرة</p>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.tech-calendar.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.tech-calendar.subtitle')}</p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -72,7 +82,7 @@ export default function TechCalendarPage(): JSX.Element {
               ◀
             </button>
             <h3 className="text-lg font-bold">
-              {MONTHS[month - 1]} {year}
+              {t(MONTHS[month - 1])} {year}
             </h3>
             <button onClick={() => setMonth(month === 12 ? 1 : month + 1)} className="text-xl">
               ▶
@@ -82,12 +92,15 @@ export default function TechCalendarPage(): JSX.Element {
           {isLoading ? (
             <TableSkeleton rows={5} cols={7} />
           ) : isError ? (
-            <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+            <ErrorAlert
+              message={t('marketing.tech-calendar.load-error')}
+              onRetry={() => refetch()}
+            />
           ) : (
             <div className="grid grid-cols-7 gap-1 text-center">
               {DAYS.map((d) => (
                 <div key={d} className="text-xs font-semibold text-text-tertiary py-1">
-                  {d}
+                  {t(d)}
                 </div>
               ))}
               {Array.from({ length: firstDay }, (_, i) => (
@@ -122,25 +135,25 @@ export default function TechCalendarPage(): JSX.Element {
 
         {/* Technician List */}
         <Card padding="lg">
-          <h3 className="font-bold mb-3">‍ الفنيات</h3>
+          <h3 className="font-bold mb-3">{t('marketing.tech-calendar.techs-label')}</h3>
           {tLoad ? (
             <CardListSkeleton count={4} />
           ) : (
             <div className="space-y-2 max-h-96 overflow-y-auto">
-              {techs.map((t: Record<string, unknown>) => (
+              {techs.map((tech: Record<string, unknown>) => (
                 <button
-                  key={t.id as number}
-                  onClick={() => setTechId(String(t.id))}
-                  className={`w-full text-right rounded-lg p-3 transition-all flex items-center gap-3 ${String(t.id) === techId ? 'bg-brand-50 dark:bg-brand-950 ring-2 ring-brand-300' : 'hover:bg-surface-muted dark:hover:bg-gray-800'}`}
+                  key={tech.id as number}
+                  onClick={() => setTechId(String(tech.id))}
+                  className={`w-full text-right rounded-lg p-3 transition-all flex items-center gap-3 ${String(tech.id) === techId ? 'bg-brand-50 dark:bg-brand-950 ring-2 ring-brand-300' : 'hover:bg-surface-muted dark:hover:bg-gray-800'}`}
                 >
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-purple-500 text-white text-sm font-bold">
-                    {(t.name as string)?.[0] ?? ''}
+                    {(tech.name as string)?.[0] ?? ''}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold truncate">{t.name as string}</p>
-                    <p className="text-xs text-text-secondary"> {t.rating as number}</p>
+                    <p className="text-sm font-bold truncate">{tech.name as string}</p>
+                    <p className="text-xs text-text-secondary"> {tech.rating as number}</p>
                   </div>
-                  {String(t.id) === techId && <span className="text-brand-500 text-xs"></span>}
+                  {String(tech.id) === techId && <span className="text-brand-500 text-xs"></span>}
                 </button>
               ))}
             </div>
@@ -151,10 +164,13 @@ export default function TechCalendarPage(): JSX.Element {
       {techName && (
         <div className="mt-6 text-center">
           <p className="text-sm text-text-secondary">
-            ‍ {techName} · {availableDates.length} يوم متاح هذا الشهر
+            {t('marketing.tech-calendar.available-days', {
+              name: techName,
+              count: availableDates.length,
+            })}
           </p>
           <Link href="/bookings/create" className="mt-3 inline-block">
-            <Button size="sm">احجزي الآن ←</Button>
+            <Button size="sm">{t('marketing.tech-calendar.book-cta')}</Button>
           </Link>
         </div>
       )}

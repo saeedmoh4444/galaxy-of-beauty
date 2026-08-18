@@ -17,6 +17,13 @@ interface BeautySecretSantaCardProps {
   onJoin?: () => void;
   onReveal?: () => void;
   className?: string;
+  title?: string;
+  budgetLabel?: string;
+  currencySuffix?: string;
+  participantsLabel?: string;
+  joinButtonText?: string;
+  revealButtonText?: string;
+  footerText?: string;
 }
 
 export function BeautySecretSantaCard({
@@ -26,6 +33,13 @@ export function BeautySecretSantaCard({
   onJoin,
   onReveal,
   className = '',
+  title = 'الهدية السرية',
+  budgetLabel = 'الميزانية',
+  currencySuffix = 'ر.س',
+  participantsLabel = 'المشاركات',
+  joinButtonText = 'انضمي للعبة',
+  revealButtonText = 'اكشفي هديتكِ',
+  footerText = 'الهدية الأجمل هي التي تأتي من القلب',
 }: BeautySecretSantaCardProps): JSX.Element {
   const isRevealed = false; // Would be date-gated in production
 
@@ -38,17 +52,19 @@ export function BeautySecretSantaCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-red-700 dark:text-red-300">الهدية السرية</h4>
+        <h4 className="mt-1 text-sm font-bold text-red-700 dark:text-red-300">{title}</h4>
         <p className="text-[10px] text-red-500 dark:text-red-400">{group}</p>
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">الميزانية</p>
-          <p className="text-lg font-bold text-red-700 dark:text-red-300">{budget} ر.س</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{budgetLabel}</p>
+          <p className="text-lg font-bold text-red-700 dark:text-red-300">
+            {budget} {currencySuffix}
+          </p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">المشاركات</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{participantsLabel}</p>
           <p className="text-lg font-bold text-red-700 dark:text-red-300">{participants}</p>
         </div>
       </div>
@@ -59,7 +75,7 @@ export function BeautySecretSantaCard({
           onClick={onJoin}
           className="mt-3 w-full rounded-xl bg-red-600 py-2.5 text-xs font-bold text-white hover:bg-red-700 active:scale-[0.98] transition-all"
         >
-          انضمي للعبة
+          {joinButtonText}
         </button>
       ) : (
         <button
@@ -67,12 +83,12 @@ export function BeautySecretSantaCard({
           onClick={onReveal}
           className="mt-3 w-full rounded-xl bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
         >
-          اكشفي هديتكِ
+          {revealButtonText}
         </button>
       )}
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        الهدية الأجمل هي التي تأتي من القلب
+        {footerText}
       </p>
     </div>
   );

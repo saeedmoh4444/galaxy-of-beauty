@@ -16,6 +16,13 @@ interface BeautyAccountabilityCardProps {
   streak: number;
   onCheckIn?: () => void;
   className?: string;
+  title?: string;
+  encouragesText?: string;
+  singleDayText?: string;
+  multiDayText?: string;
+  consecutiveText?: string;
+  buttonText?: string;
+  footerText?: string;
 }
 
 export function BeautyAccountabilityCard({
@@ -24,6 +31,13 @@ export function BeautyAccountabilityCard({
   streak,
   onCheckIn,
   className = '',
+  title = 'شريكة المساءلة',
+  encouragesText = 'تشجعكِ على:',
+  singleDayText = 'يوم',
+  multiDayText = 'أيام',
+  consecutiveText = 'متتالية',
+  buttonText = 'سجلي إنجاز اليوم',
+  footerText = 'معاً أقوى — شريكتكِ تنتظر تحديثكِ',
 }: BeautyAccountabilityCardProps): JSX.Element {
   return (
     <div
@@ -34,16 +48,16 @@ export function BeautyAccountabilityCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-teal-700 dark:text-teal-300">شريكة المساءلة</h4>
+        <h4 className="mt-1 text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
         <p className="text-[10px] text-teal-500 dark:text-teal-400">
-          {partner} تشجعكِ على: {goal}
+          {partner} {encouragesText} {goal}
         </p>
       </div>
 
       <div className="mt-3 rounded-xl bg-teal-50 p-4 text-center dark:bg-teal-950">
         <p className="text-3xl font-bold text-teal-700 dark:text-teal-300"> {streak}</p>
         <p className="text-[10px] text-teal-600 dark:text-teal-400">
-          {streak === 1 ? 'يوم' : 'أيام'} متتالية
+          {streak === 1 ? singleDayText : multiDayText} {consecutiveText}
         </p>
       </div>
 
@@ -52,11 +66,11 @@ export function BeautyAccountabilityCard({
         onClick={onCheckIn}
         className="mt-3 w-full rounded-xl bg-teal-600 py-2.5 text-xs font-bold text-white hover:bg-teal-700 active:scale-[0.98] transition-all"
       >
-        سجلي إنجاز اليوم
+        {buttonText}
       </button>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        معاً أقوى — شريكتكِ تنتظر تحديثكِ
+        {footerText}
       </p>
     </div>
   );

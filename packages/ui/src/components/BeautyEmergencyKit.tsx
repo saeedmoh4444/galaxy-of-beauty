@@ -24,30 +24,45 @@ type KitItem =
 
 interface ItemDef {
   emoji: string;
-  label: string;
+  label: { ar: string; en: string };
 }
 
 const ITEMS: Record<KitItem, ItemDef> = {
-  pads: { emoji: '🩹', label: 'فوط صحية' },
-  tampons: { emoji: '🩹', label: 'سدادات قطنية' },
-  hair_spray: { emoji: '', label: 'مثبت شعر' },
-  bobby_pins: { emoji: '', label: 'دبابيس شعر' },
-  hair_tie: { emoji: '', label: 'ربطة شعر' },
-  deodorant: { emoji: '', label: 'مزيل عرق' },
-  sewing_kit: { emoji: '🪡', label: 'عدة خياطة' },
-  stain_remover: { emoji: '', label: 'مزيل بقع' },
-  nail_file: { emoji: '', label: 'مبرد أظافر' },
-  mints: { emoji: '', label: 'منعش نفس' },
+  pads: { emoji: '🩹', label: { ar: 'فوط صحية', en: 'Sanitary pads' } },
+  tampons: { emoji: '🩹', label: { ar: 'سدادات قطنية', en: 'Tampons' } },
+  hair_spray: { emoji: '', label: { ar: 'مثبت شعر', en: 'Hairspray' } },
+  bobby_pins: { emoji: '', label: { ar: 'دبابيس شعر', en: 'Bobby pins' } },
+  hair_tie: { emoji: '', label: { ar: 'ربطة شعر', en: 'Hair tie' } },
+  deodorant: { emoji: '', label: { ar: 'مزيل عرق', en: 'Deodorant' } },
+  sewing_kit: { emoji: '🪡', label: { ar: 'عدة خياطة', en: 'Sewing kit' } },
+  stain_remover: { emoji: '', label: { ar: 'مزيل بقع', en: 'Stain remover' } },
+  nail_file: { emoji: '', label: { ar: 'مبرد أظافر', en: 'Nail file' } },
+  mints: { emoji: '', label: { ar: 'منعش نفس', en: 'Breath mints' } },
 };
 
 interface BeautyEmergencyKitProps {
   items: KitItem[];
   className?: string;
+  /** Badge heading */
+  title?: string;
+  /** Subtitle under the heading */
+  subtitle?: string;
+  /** Free-of-charge notice */
+  freeText?: string;
+  /** Footer text */
+  footerText?: string;
+  /** Display locale for item labels */
+  locale?: 'ar' | 'en';
 }
 
 export function BeautyEmergencyKit({
   items,
   className = '',
+  title = 'حقيبة الطوارئ',
+  subtitle = 'كل ما تحتاجينه في الحالات الطارئة — متوفر في دورة المياه',
+  freeText = 'مجاناً — لا حاجة للسؤال',
+  footerText = 'لأن الطوارئ لا تخبرنا قبل أن تأتي',
+  locale = 'ar',
 }: BeautyEmergencyKitProps): JSX.Element | null {
   if (!items.length) return null;
 
@@ -61,10 +76,8 @@ export function BeautyEmergencyKit({
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true"></span>
         <div>
-          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">حقيبة الطوارئ</h4>
-          <p className="text-[10px] text-rose-500 dark:text-rose-400">
-            كل ما تحتاجينه في الحالات الطارئة — متوفر في دورة المياه
-          </p>
+          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
+          <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
         </div>
       </div>
 
@@ -81,7 +94,7 @@ export function BeautyEmergencyKit({
                 {def.emoji}
               </span>
               <span className="text-[10px] font-medium text-rose-800 dark:text-rose-200">
-                {def.label}
+                {def.label[locale]}
               </span>
             </div>
           );
@@ -90,13 +103,11 @@ export function BeautyEmergencyKit({
 
       {/* Always free */}
       <div className="mt-2 rounded-lg bg-rose-50 p-2 text-center dark:bg-rose-950">
-        <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300">
-          مجاناً — لا حاجة للسؤال
-        </p>
+        <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300">{freeText}</p>
       </div>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        لأن الطوارئ لا تخبرنا قبل أن تأتي
+        {footerText}
       </p>
     </div>
   );

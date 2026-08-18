@@ -4,36 +4,38 @@ import { useParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
 import { Card, DetailSkeleton, ErrorAlert, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 
-const DEFAULT_STATUS = {
-  label: 'غير معروف',
+const DEFAULT_STATUS: { label: TranslationKey; color: string; bg: string } = {
+  label: 'groupBookingDetail.status.unknown',
   color: 'text-gray-700 dark:text-gray-300',
   bg: 'bg-gray-100 dark:bg-gray-800',
 };
-const STATUS_MAP: Record<string, { label: string; color: string; bg: string }> = {
+const STATUS_MAP: Record<string, { label: TranslationKey; color: string; bg: string }> = {
   PENDING: {
-    label: 'قيد الانتظار',
+    label: 'groupBookingDetail.status.pending',
     color: 'text-yellow-700 dark:text-yellow-300',
     bg: 'bg-yellow-100 dark:bg-yellow-900',
   },
   CONFIRMED: {
-    label: 'مؤكد',
+    label: 'groupBookingDetail.status.confirmed',
     color: 'text-green-700 dark:text-green-300',
     bg: 'bg-green-100 dark:bg-green-900',
   },
   IN_PROGRESS: {
-    label: 'جاري',
+    label: 'groupBookingDetail.status.inProgress',
     color: 'text-blue-700 dark:text-blue-300',
     bg: 'bg-blue-100 dark:bg-blue-900',
   },
   COMPLETED: {
-    label: 'مكتمل',
+    label: 'groupBookingDetail.status.completed',
     color: 'text-gray-700 dark:text-gray-300',
     bg: 'bg-gray-100 dark:bg-gray-800',
   },
   CANCELLED: {
-    label: 'ملغي',
+    label: 'groupBookingDetail.status.cancelled',
     color: 'text-red-700 dark:text-red-300',
     bg: 'bg-red-100 dark:bg-red-900',
   },
@@ -47,15 +49,16 @@ const THEME_EMOJI: Record<string, string> = {
   other: '',
 };
 
-const THEME_LABELS: Record<string, string> = {
-  bridal: 'عروس / توديع عزوبية',
-  birthday: 'عيد ميلاد',
-  girls_night: 'ليلة بنات',
-  family: 'عائلية',
-  other: 'أخرى',
+const THEME_LABELS: Record<string, TranslationKey> = {
+  bridal: 'groupBookingDetail.theme.bridal',
+  birthday: 'groupBookingDetail.theme.birthday',
+  girls_night: 'groupBookingDetail.theme.girlsNight',
+  family: 'groupBookingDetail.theme.family',
+  other: 'groupBookingDetail.theme.other',
 };
 
 export default function GroupBookingDetailPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const params = useParams();
   const groupId = parseInt(params?.id as string, 10);
 
@@ -74,7 +77,7 @@ export default function GroupBookingDetailPage(): JSX.Element {
   if (isNaN(groupId)) {
     return (
       <DashboardLayout userRole="CUSTOMER">
-        <ErrorAlert message="معرف المجموعة غير صالح" />
+        <ErrorAlert message={t('groupBookingDetail.err.invalidId')} />
       </DashboardLayout>
     );
   }
@@ -89,15 +92,15 @@ export default function GroupBookingDetailPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <Breadcrumbs
           items={[
-            { label: 'حجوزات المجموعات', href: '/group-bookings' },
-            { label: (group?.name as string) || 'تفاصيل' },
+            { label: t('groupBookingDetail.breadcrumbs.groupBookings'), href: '/group-bookings' },
+            { label: (group?.name as string) || t('groupBookingDetail.details') },
           ]}
         />
 
         {isLoading ? (
           <DetailSkeleton />
         ) : isError || !group ? (
-          <ErrorAlert message="فشل تحميل تفاصيل المجموعة" onRetry={() => refetch()} />
+          <ErrorAlert message={t('groupBookingDetail.err.load')} onRetry={() => refetch()} />
         ) : (
           <>
             {/* Group Header */}
@@ -114,15 +117,19 @@ export default function GroupBookingDetailPage(): JSX.Element {
                         {group?.name as string}
                       </h1>
                       <p className="text-sm text-gray-500">
-                        {THEME_LABELS[theme] ?? 'أخرى'} · خصم{' '}
-                        {(group?.discountPercent as number) ?? 0}%
+                        {t('groupBookingDetail.themeDiscount', {
+                          theme: THEME_LABELS[theme]
+                            ? t(THEME_LABELS[theme])
+                            : t('groupBookingDetail.theme.other'),
+                          discount: (group?.discountPercent as number) ?? 0,
+                        })}
                       </p>
                     </div>
                   </div>
                   <span
                     className={`rounded-full px-4 py-1.5 text-sm font-bold ${statusInfo.bg} ${statusInfo.color}`}
                   >
-                    {statusInfo.label}
+                    {t(statusInfo.label)}
                   </span>
                 </div>
               </div>
@@ -135,14 +142,14 @@ export default function GroupBookingDetailPage(): JSX.Element {
                 <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-gray-100">
                   {members.length}
                 </p>
-                <p className="text-xs text-gray-500">عضوة</p>
+                <p className="text-xs text-gray-500">{t('groupBookingDetail.membersLabel')}</p>
               </Card>
               <Card padding="md" className="text-center">
                 <p className="text-3xl">️</p>
                 <p className="mt-1 text-2xl font-bold text-brand-600">
                   {(group?.discountPercent as number) ?? 0}%
                 </p>
-                <p className="text-xs text-gray-500">خصم المجموعة</p>
+                <p className="text-xs text-gray-500">{t('groupBookingDetail.groupDiscount')}</p>
               </Card>
               <Card padding="md" className="text-center">
                 <p className="text-3xl"></p>
@@ -151,17 +158,19 @@ export default function GroupBookingDetailPage(): JSX.Element {
                     ? formatCurrency(Number(group?.totalAmount))
                     : '—'}
                 </p>
-                <p className="text-xs text-gray-500">المبلغ الإجمالي</p>
+                <p className="text-xs text-gray-500">{t('groupBookingDetail.totalAmount')}</p>
               </Card>
             </div>
 
             {/* Members List */}
             <Card padding="lg">
               <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
-                العضوات ({members.length})
+                {t('groupBookingDetail.membersTitle', { count: members.length })}
               </h2>
               {members.length === 0 ? (
-                <p className="text-center text-sm text-gray-400 py-8">لا توجد عضوات بعد</p>
+                <p className="text-center text-sm text-gray-400 py-8">
+                  {t('groupBookingDetail.noMembers')}
+                </p>
               ) : (
                 <div className="divide-y divide-gray-100 dark:divide-gray-800">
                   {members.map((member: Record<string, unknown>, idx: number) => {
@@ -181,15 +190,21 @@ export default function GroupBookingDetailPage(): JSX.Element {
                               {member?.name as string}
                             </p>
                             <p className="text-xs text-gray-500">
-                              الخدمة #{member?.serviceId as number}
-                              {member?.technicianId ? ` · الفنية #${member.technicianId}` : ''}
+                              {t('groupBookingDetail.memberService', {
+                                id: member?.serviceId as number,
+                              })}
+                              {member?.technicianId
+                                ? t('groupBookingDetail.memberTech', {
+                                    id: member?.technicianId as number,
+                                  })
+                                : ''}
                             </p>
                           </div>
                         </div>
                         <span
                           className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${mStatusInfo.bg} ${mStatusInfo.color}`}
                         >
-                          {mStatusInfo.label}
+                          {t(mStatusInfo.label)}
                         </span>
                       </div>
                     );
@@ -200,15 +215,18 @@ export default function GroupBookingDetailPage(): JSX.Element {
 
             {/* Created Date */}
             <p className="text-center text-xs text-gray-400">
-              تاريخ الإنشاء:{' '}
+              {t('groupBookingDetail.createdAtLabel')}{' '}
               {group?.createdAt
-                ? new Date(group.createdAt as string).toLocaleDateString('ar-SA', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })
+                ? new Date(group.createdAt as string).toLocaleDateString(
+                    locale === 'en' ? 'en-GB' : 'ar-SA',
+                    {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    },
+                  )
                 : '—'}
             </p>
           </>

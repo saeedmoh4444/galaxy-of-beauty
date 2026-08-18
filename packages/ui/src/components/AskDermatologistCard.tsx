@@ -29,6 +29,17 @@ interface AskDermatologistCardProps {
   hasSubmitted?: boolean;
   onSubmitQuestion?: (question: string) => void;
   onRegister?: () => void;
+  certifiedBadgeText?: string;
+  nextSessionLabel?: string;
+  soonBadgeText?: string;
+  sessionTimeText?: string;
+  questionsSubmittedSuffix?: string;
+  firstQuestionText?: string;
+  placeholder?: string;
+  submitButtonText?: string;
+  submittedConfirmationText?: string;
+  registerButtonText?: string;
+  anonymityNoteText?: string;
   className?: string;
 }
 
@@ -40,6 +51,17 @@ export function AskDermatologistCard({
   onSubmitQuestion,
   onRegister,
   className = '',
+  certifiedBadgeText = '🩺 استشارية معتمدة',
+  nextSessionLabel = 'الجلسة القادمة',
+  soonBadgeText = 'قريباً',
+  sessionTimeText = 'مساءً — مباشر على المنصة',
+  questionsSubmittedSuffix = 'سؤال مقدّم من المجتمع',
+  firstQuestionText = 'كوني أول من تسأل!',
+  placeholder = 'اكتبي سؤالكِ للدكتورة...',
+  submitButtonText = 'إرسال',
+  submittedConfirmationText = 'تم إرسال سؤالكِ — سترد الدكتورة خلال الجلسة',
+  registerButtonText = 'سجّلي حضوركِ الآن',
+  anonymityNoteText = 'يمكنكِ تقديم سؤالكِ بشكل مجهول — خصوصيتكِ محمية',
 }: AskDermatologistCardProps): JSX.Element {
   // Format date in Arabic
   const sessionDate = new Date(nextSession);
@@ -71,7 +93,7 @@ export function AskDermatologistCard({
             <p className="text-[9px] text-text-tertiary dark:text-gray-500">{doctor.credentials}</p>
           )}
           <span className="mt-1 inline-block rounded-full bg-blue-50 px-2 py-0.5 text-[9px] font-bold text-blue-600 dark:bg-blue-950 dark:text-blue-400">
-            🩺 استشارية معتمدة
+            {certifiedBadgeText}
           </span>
         </div>
       </div>
@@ -82,26 +104,24 @@ export function AskDermatologistCard({
           <div className="flex items-center gap-1.5">
             <span className="text-sm" aria-hidden="true"></span>
             <span className="text-[10px] font-bold text-blue-700 dark:text-blue-300">
-              الجلسة القادمة
+              {nextSessionLabel}
             </span>
           </div>
           {isSoon && (
             <span className="rounded-full bg-blue-200 px-2 py-0.5 text-[9px] font-bold text-blue-700 dark:bg-blue-800 dark:text-blue-200">
-              قريباً
+              {soonBadgeText}
             </span>
           )}
         </div>
         <p className="mt-1 text-xs font-bold text-blue-800 dark:text-blue-200">{arabicDate}</p>
-        <p className="text-[10px] text-blue-500 dark:text-blue-400">
-          8:00 مساءً — مباشر على المنصة
-        </p>
+        <p className="text-[10px] text-blue-500 dark:text-blue-400">8:00 {sessionTimeText}</p>
       </div>
 
       {/* Questions counter */}
       <div className="mt-2 flex items-center gap-2 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
         <span className="text-sm" aria-hidden="true"></span>
         <span className="text-[10px] text-text-secondary dark:text-gray-300">
-          {questionsCount > 0 ? `${questionsCount} سؤال مقدّم من المجتمع` : 'كوني أول من تسأل!'}
+          {questionsCount > 0 ? `${questionsCount} ${questionsSubmittedSuffix}` : firstQuestionText}
         </span>
       </div>
 
@@ -110,7 +130,7 @@ export function AskDermatologistCard({
         <div className="mt-2 flex gap-1.5">
           <input
             type="text"
-            placeholder="اكتبي سؤالكِ للدكتورة..."
+            placeholder={placeholder}
             maxLength={200}
             className="flex-1 rounded-lg border border-blue-200 bg-blue-50 px-2.5 py-1.5 text-[10px] dark:border-blue-800 dark:bg-blue-950 dark:text-blue-100 dark:placeholder:text-blue-600"
           />
@@ -119,7 +139,7 @@ export function AskDermatologistCard({
             onClick={() => onSubmitQuestion?.('')}
             className="rounded-lg bg-blue-600 px-3 py-1.5 text-[10px] font-bold text-white hover:bg-blue-700"
           >
-            إرسال
+            {submitButtonText}
           </button>
         </div>
       )}
@@ -128,7 +148,7 @@ export function AskDermatologistCard({
       {hasSubmitted && (
         <div className="mt-2 rounded-lg bg-emerald-50 p-2 text-center dark:bg-emerald-950">
           <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
-            تم إرسال سؤالكِ — سترد الدكتورة خلال الجلسة
+            {submittedConfirmationText}
           </p>
         </div>
       )}
@@ -139,12 +159,12 @@ export function AskDermatologistCard({
         onClick={onRegister}
         className="mt-2 w-full rounded-xl bg-blue-600 py-2 text-xs font-bold text-white hover:bg-blue-700 active:scale-[0.98] transition-all"
       >
-        سجّلي حضوركِ الآن
+        {registerButtonText}
       </button>
 
       {/* Anonymity note */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        يمكنكِ تقديم سؤالكِ بشكل مجهول — خصوصيتكِ محمية
+        {anonymityNoteText}
       </p>
     </div>
   );

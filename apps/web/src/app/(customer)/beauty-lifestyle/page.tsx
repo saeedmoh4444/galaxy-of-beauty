@@ -20,14 +20,16 @@ import {
   BeautySavingsGoal,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyLifestylePage(): JSX.Element {
+  const { t } = useLocale();
   const loyalty = api.loyalty.myAccount.useQuery();
   const budget = api.beautyBudget.get.useQuery();
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" نمط الحياة" subtitle="الجمال جزء من أسلوب حياتكِ" />
+        <PageTitle title={t('beautyLifestyle.title')} subtitle={t('beautyLifestyle.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -40,11 +42,11 @@ export default function BeautyLifestylePage(): JSX.Element {
                 yearlySpend={Number(budget?.data?.spent ?? 0) * 12 || 4500}
                 cashbackRate={5}
                 tier="gold"
-                payoutMonth="يناير"
+                payoutMonth={t('beautyLifestyle.january')}
               />
               <LoyaltyAnniversaryCard
                 years={2}
-                joinedDate="أغسطس 2024"
+                joinedDate={t('beautyLifestyle.august2024')}
                 totalBookings={
                   loyalty?.data?.lifetimePoints ? Math.round(loyalty.data.lifetimePoints / 10) : 48
                 }
@@ -58,14 +60,28 @@ export default function BeautyLifestylePage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyPriceDropHistoryCard
                 drops={[
-                  { service: 'مانيكير سبا', emoji: '', oldPrice: 150, newPrice: 99 },
-                  { service: 'مكياج', emoji: '', oldPrice: 350, newPrice: 299 },
+                  {
+                    service: t('beautyBudget.spaManicure'),
+                    emoji: '',
+                    oldPrice: 150,
+                    newPrice: 99,
+                  },
+                  {
+                    service: t('beautyExtras.categoryMakeup'),
+                    emoji: '',
+                    oldPrice: 350,
+                    newPrice: 299,
+                  },
                 ]}
               />
-              <PriceAlertBadge serviceName="مانيكير سبا" currentPrice={120} targetPrice={80} />
+              <PriceAlertBadge
+                serviceName={t('beautyBudget.spaManicure')}
+                currentPrice={120}
+                targetPrice={80}
+              />
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
-              <StudentDiscountBadge discount={15} university="جامعة الملك سعود" />
+              <StudentDiscountBadge discount={15} university={t('beautyLifestyle.ksu')} />
               <LayawayBadge
                 totalPrice={600}
                 installments={3}
@@ -78,8 +94,20 @@ export default function BeautyLifestylePage(): JSX.Element {
             <TaxHelperCard revenue={{ monthly: 8500, vat: 1275 }} />
             <BeautySavingsGoal
               goals={[
-                { label: 'باقة عناية', target: 500, saved: 325, monthly: 100, emoji: '' },
-                { label: 'جهاز مكياج', target: 1200, saved: 450, monthly: 200, emoji: '' },
+                {
+                  label: t('beautyLifestyle.careBundle'),
+                  target: 500,
+                  saved: 325,
+                  monthly: 100,
+                  emoji: '',
+                },
+                {
+                  label: t('beautyLifestyle.makeupDevice'),
+                  target: 1200,
+                  saved: 450,
+                  monthly: 200,
+                  emoji: '',
+                },
               ]}
             />
           </div>

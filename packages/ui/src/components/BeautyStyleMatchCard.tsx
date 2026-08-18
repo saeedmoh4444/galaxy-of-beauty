@@ -19,11 +19,17 @@ interface StyleMatch {
 
 interface BeautyStyleMatchCardProps {
   matches: StyleMatch[];
+  heading?: string;
+  subtitle?: string;
+  matchLabel?: string;
   className?: string;
 }
 
 export function BeautyStyleMatchCard({
   matches,
+  heading = 'تحليل الأسلوب',
+  subtitle = 'أسلوبكِ المثالي',
+  matchLabel = 'توافق',
   className = '',
 }: BeautyStyleMatchCardProps): JSX.Element | null {
   if (!matches.length) return null;
@@ -39,10 +45,8 @@ export function BeautyStyleMatchCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">
-          تحليل الأسلوب
-        </h4>
-        <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">أسلوبكِ المثالي</p>
+        <h4 className="mt-1 text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">{heading}</h4>
+        <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">{subtitle}</p>
       </div>
 
       <div className="mt-3 rounded-xl bg-fuchsia-50 p-4 text-center dark:bg-fuchsia-950">
@@ -51,7 +55,7 @@ export function BeautyStyleMatchCard({
         <p className="mt-1 text-2xl font-extrabold text-fuchsia-700 dark:text-fuchsia-300">
           {top.match}%
         </p>
-        <p className="text-[10px] text-fuchsia-600 dark:text-fuchsia-400">توافق</p>
+        <p className="text-[10px] text-fuchsia-600 dark:text-fuchsia-400">{matchLabel}</p>
       </div>
 
       <div className="mt-3 space-y-1.5">

@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function ClinicConnectPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: clinics } = api.clinicConnect.clinics.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
   };
@@ -25,12 +27,10 @@ export default function ClinicConnectPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> Clinic Connect</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            إحالة طبية من فنيات التجميل للعيادات المتخصصة
-          </p>
+          <p className="mt-1 text-sm text-text-secondary">{t('clinicConnect.subtitle')}</p>
         </div>
         <Card padding="lg">
-          <h3 className="font-bold mb-3"> العيادات المتخصصة</h3>
+          <h3 className="font-bold mb-3">{t('clinicConnect.clinics')}</h3>
           <div className="space-y-3">
             {list.map((c: Record<string, unknown>) => (
               <div
@@ -53,7 +53,7 @@ export default function ClinicConnectPage(): JSX.Element {
                     setShow(true);
                   }}
                 >
-                  إحالة
+                  {t('clinicConnect.refer')}
                 </Button>
               </div>
             ))}
@@ -61,7 +61,7 @@ export default function ClinicConnectPage(): JSX.Element {
         </Card>
         {refs.length > 0 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3"> إحالاتي</h3>
+            <h3 className="font-bold mb-3">{t('clinicConnect.myReferrals')}</h3>
             <div className="space-y-2">
               {refs.map((r: Record<string, unknown>) => (
                 <div key={r.id as number} className="flex justify-between text-sm">
@@ -69,19 +69,21 @@ export default function ClinicConnectPage(): JSX.Element {
                   <span
                     className={`rounded-full px-2 py-0.5 text-xs ${r.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'}`}
                   >
-                    {r.status === 'PENDING' ? 'معلقة' : 'مكتملة'}
+                    {r.status === 'PENDING'
+                      ? t('clinicConnect.pending')
+                      : t('clinicConnect.completed')}
                   </span>
                 </div>
               ))}
             </div>
           </Card>
         )}
-        <Modal open={show} onClose={() => setShow(false)} title="إحالة طبية">
+        <Modal open={show} onClose={() => setShow(false)} title={t('clinicConnect.modalTitle')}>
           <div className="space-y-3">
             <textarea
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              placeholder="سبب الإحالة..."
+              placeholder={t('clinicConnect.reasonPlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
               rows={3}
             />
@@ -92,7 +94,11 @@ export default function ClinicConnectPage(): JSX.Element {
             >
               {['routine', 'urgent', 'emergency'].map((u) => (
                 <option key={u} value={u}>
-                  {u === 'routine' ? 'روتيني' : u === 'urgent' ? 'عاجل' : 'طوارئ'}
+                  {u === 'routine'
+                    ? t('clinicConnect.routine')
+                    : u === 'urgent'
+                      ? t('clinicConnect.urgent')
+                      : t('clinicConnect.emergency')}
                 </option>
               ))}
             </select>
@@ -107,7 +113,7 @@ export default function ClinicConnectPage(): JSX.Element {
               loading={referMut.isPending}
               className="w-full"
             >
-              إرسال
+              {t('clinicConnect.send')}
             </Button>
           </div>
         </Modal>

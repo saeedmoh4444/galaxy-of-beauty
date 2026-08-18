@@ -2,9 +2,11 @@
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyAwardsPage(): JSX.Element {
   const { user } = useAuth();
+  const { t } = useLocale();
   const { data, isLoading } = api.beautyAwards.current.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -17,9 +19,9 @@ export default function BeautyAwardsPage(): JSX.Element {
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">جوائز الجمال الشهرية</h1>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.beauty-awards.title')}</h1>
         <p className="mt-2 text-text-secondary">
-          صوّتي لأفضل الفنيات — {(data?.month as string) ?? ''}
+          {t('marketing.beauty-awards.vote-cta', { month: (data?.month as string) ?? '' })}
         </p>
       </div>
       {isLoading ? (
@@ -47,7 +49,9 @@ export default function BeautyAwardsPage(): JSX.Element {
                         ) : null}
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className="text-sm font-bold">{n.votes as number} صوت</span>
+                        <span className="text-sm font-bold">
+                          {t('marketing.beauty-awards.votes', { count: n.votes as number })}
+                        </span>
                         {user && (
                           <Button
                             size="sm"
@@ -59,7 +63,7 @@ export default function BeautyAwardsPage(): JSX.Element {
                               })
                             }
                           >
-                            ️ تصويت
+                            {t('marketing.beauty-awards.vote')}
                           </Button>
                         )}
                       </div>

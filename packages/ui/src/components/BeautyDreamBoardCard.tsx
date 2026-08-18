@@ -19,12 +19,20 @@ interface BeautyDreamBoardCardProps {
   dreams: Dream[];
   onAddDream?: () => void;
   className?: string;
+  title?: string;
+  dreamCountText?: string;
+  addDreamText?: string;
+  footerText?: string;
 }
 
 export function BeautyDreamBoardCard({
   dreams,
   onAddDream,
   className = '',
+  title = 'لوحة الأحلام',
+  dreamCountText = 'حلم',
+  addDreamText = 'أضيفي حلماً',
+  footerText = 'احلمي — ثم حققي',
 }: BeautyDreamBoardCardProps): JSX.Element {
   return (
     <div
@@ -35,10 +43,10 @@ export function BeautyDreamBoardCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-violet-800 dark:text-violet-200">
-          لوحة الأحلام
-        </h4>
-        <p className="text-[10px] text-violet-500 dark:text-violet-400">{dreams.length} حلم</p>
+        <h4 className="mt-1 text-sm font-bold text-violet-800 dark:text-violet-200">{title}</h4>
+        <p className="text-[10px] text-violet-500 dark:text-violet-400">
+          {dreams.length} {dreamCountText}
+        </p>
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-2">
@@ -57,13 +65,13 @@ export function BeautyDreamBoardCard({
             className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-violet-200 p-3 text-violet-400 hover:border-violet-300 dark:border-violet-800"
           >
             <span className="text-2xl">+</span>
-            <span className="mt-1 text-[10px]">أضيفي حلماً</span>
+            <span className="mt-1 text-[10px]">{addDreamText}</span>
           </button>
         )}
       </div>
 
       <p className="mt-2 text-center text-[9px] text-violet-500 dark:text-violet-400">
-        احلمي — ثم حققي
+        {footerText}
       </p>
     </div>
   );

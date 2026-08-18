@@ -88,9 +88,13 @@ export function TableRowSkeleton({ cols = 4 }: { cols?: number }) {
 // ──────────────────────────────────────────────────────────────
 
 /** Skeleton that matches a dashboard with stat cards, quick actions, and content sections. */
-export function DashboardSkeleton() {
+export function DashboardSkeleton({
+  ariaLabel = 'جاري تحميل لوحة التحكم',
+}: {
+  ariaLabel?: string;
+}) {
   return (
-    <div role="status" aria-label="جاري تحميل لوحة التحكم" className="space-y-6">
+    <div role="status" aria-label={ariaLabel} className="space-y-6">
       {/* Stat cards row */}
       <div className="grid gap-4 md:grid-cols-4">
         {Array.from({ length: 4 }, (_, i) => (
@@ -132,9 +136,15 @@ export function DashboardSkeleton() {
 }
 
 /** Skeleton that matches a list of cards with consistent heights (e.g., bookings, services). */
-export function CardListSkeleton({ count = 4 }: { count?: number }) {
+export function CardListSkeleton({
+  count = 4,
+  ariaLabel = 'جاري تحميل القائمة',
+}: {
+  count?: number;
+  ariaLabel?: string;
+}) {
   return (
-    <div role="status" aria-label="جاري تحميل القائمة" className="space-y-3">
+    <div role="status" aria-label={ariaLabel} className="space-y-3">
       {Array.from({ length: count }, (_, i) => (
         <div key={i} className="rounded-2xl border border-edge bg-surface p-4 sm:p-6">
           <div className="animate-pulse flex items-center justify-between">
@@ -151,9 +161,9 @@ export function CardListSkeleton({ count = 4 }: { count?: number }) {
 }
 
 /** Skeleton that matches a detail page with header, main content, and sidebar. */
-export function DetailSkeleton() {
+export function DetailSkeleton({ ariaLabel = 'جاري تحميل التفاصيل' }: { ariaLabel?: string }) {
   return (
-    <div role="status" aria-label="جاري تحميل التفاصيل" className="space-y-6">
+    <div role="status" aria-label={ariaLabel} className="space-y-6">
       {/* Header */}
       <div className="animate-pulse space-y-2">
         <div className="h-8 w-48 rounded bg-gray-200 dark:bg-gray-700" />
@@ -183,11 +193,17 @@ export function DetailSkeleton() {
 }
 
 /** Skeleton that matches a form inside a card. */
-export function FormSkeleton({ fields = 5 }: { fields?: number }) {
+export function FormSkeleton({
+  fields = 5,
+  ariaLabel = 'جاري تحميل النموذج',
+}: {
+  fields?: number;
+  ariaLabel?: string;
+}) {
   return (
     <div
       role="status"
-      aria-label="جاري تحميل النموذج"
+      aria-label={ariaLabel}
       className="rounded-2xl border border-edge bg-surface p-6"
     >
       <div className="animate-pulse space-y-5">
@@ -205,9 +221,15 @@ export function FormSkeleton({ fields = 5 }: { fields?: number }) {
 }
 
 /** Skeleton that matches a horizontal KPI/metric row. */
-export function KPIRowSkeleton({ count = 4 }: { count?: number }) {
+export function KPIRowSkeleton({
+  count = 4,
+  ariaLabel = 'جاري تحميل المؤشرات',
+}: {
+  count?: number;
+  ariaLabel?: string;
+}) {
   return (
-    <div role="status" aria-label="جاري تحميل المؤشرات" className="flex gap-4">
+    <div role="status" aria-label={ariaLabel} className="flex gap-4">
       {Array.from({ length: count }, (_, i) => (
         <div key={i} className="flex-1 rounded-2xl border border-edge bg-surface p-5">
           <div className="animate-pulse space-y-3 text-center">
@@ -222,11 +244,17 @@ export function KPIRowSkeleton({ count = 4 }: { count?: number }) {
 }
 
 /** Skeleton that matches a responsive product/service grid. */
-export function GridSkeleton({ count = 8 }: { count?: number }) {
+export function GridSkeleton({
+  count = 8,
+  ariaLabel = 'جاري تحميل العناصر',
+}: {
+  count?: number;
+  ariaLabel?: string;
+}) {
   return (
     <div
       role="status"
-      aria-label="جاري تحميل العناصر"
+      aria-label={ariaLabel}
       className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
     >
       {Array.from({ length: count }, (_, i) => (
@@ -257,13 +285,17 @@ export function TextSkeleton({ width = '100%' }: { width?: string }) {
 }
 
 /** Skeleton that matches a full table with header and rows. */
-export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: number }) {
+export function TableSkeleton({
+  rows = 5,
+  cols = 4,
+  ariaLabel = 'جاري تحميل الجدول',
+}: {
+  rows?: number;
+  cols?: number;
+  ariaLabel?: string;
+}) {
   return (
-    <div
-      role="status"
-      aria-label="جاري تحميل الجدول"
-      className="rounded-2xl border border-edge bg-surface"
-    >
+    <div role="status" aria-label={ariaLabel} className="rounded-2xl border border-edge bg-surface">
       {/* Header */}
       <div className="border-b border-edge px-6 py-3">
         <div className="animate-pulse flex gap-4">

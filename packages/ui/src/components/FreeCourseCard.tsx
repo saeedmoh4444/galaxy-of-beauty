@@ -17,24 +17,24 @@ type CourseLang = 'ar' | 'en' | 'both';
 
 interface LevelDef {
   emoji: string;
-  label: string;
+  label: { ar: string; en: string };
   color: string;
 }
 
 const LEVELS: Record<CourseLevel, LevelDef> = {
   beginner: {
     emoji: '',
-    label: 'مبتدئة',
+    label: { ar: 'مبتدئة', en: 'Beginner' },
     color: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
   },
   intermediate: {
     emoji: '',
-    label: 'متوسطة',
+    label: { ar: 'متوسطة', en: 'Intermediate' },
     color: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
   },
   advanced: {
     emoji: '',
-    label: 'متقدمة',
+    label: { ar: 'متقدمة', en: 'Advanced' },
     color: 'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
   },
 };
@@ -63,18 +63,39 @@ interface FreeCourseCardProps {
   course: FreeCourse;
   onEnroll?: () => void;
   className?: string;
+  /** Free badge label */
+  freeText?: string;
+  /** Suffix after the lessons count */
+  lessonsSuffix?: string;
+  /** Suffix after the enrolled count */
+  enrolledSuffix?: string;
+  /** Certificate notice */
+  certificateText?: string;
+  /** New badge label */
+  newBadgeText?: string;
+  /** Enroll button label */
+  enrollButtonText?: string;
+  /** Display locale for level and language labels */
+  locale?: 'ar' | 'en';
 }
 
-const LANG_LABELS: Record<CourseLang, string> = {
-  ar: ' بالعربية',
-  en: ' بالإنجليزية',
-  both: ' العربية + الإنجليزية',
+const LANG_LABELS: Record<CourseLang, { ar: string; en: string }> = {
+  ar: { ar: ' بالعربية', en: ' in Arabic' },
+  en: { ar: ' بالإنجليزية', en: ' in English' },
+  both: { ar: ' العربية + الإنجليزية', en: ' Arabic + English' },
 };
 
 export function FreeCourseCard({
   course,
   onEnroll,
   className = '',
+  freeText = 'مجاني',
+  lessonsSuffix = 'دروس',
+  enrolledSuffix = 'مسجلة',
+  certificateText = 'شهادة معتمدة عند الإكمال',
+  newBadgeText = '🆕 أضيف مؤخراً',
+  enrollButtonText = 'ابدئي التعلم الآن',
+  locale = 'ar',
 }: FreeCourseCardProps): JSX.Element {
   const level = LEVELS[course.level];
 
@@ -94,11 +115,11 @@ export function FreeCourseCard({
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{course.title}</h4>
           <div className="mt-1 flex flex-wrap items-center gap-1.5">
             <span className={cn('rounded-full px-2 py-0.5 text-[10px] font-medium', level.color)}>
-              {level.emoji} {level.label}
+              {level.emoji} {level.label[locale]}
             </span>
             {course.language && (
               <span className="text-[10px] text-text-tertiary dark:text-gray-500">
-                {LANG_LABELS[course.language]}
+                {LANG_LABELS[course.language][locale]}
               </span>
             )}
           </div>
@@ -106,7 +127,7 @@ export function FreeCourseCard({
 
         {/* Free badge */}
         <span className="shrink-0 rounded-full bg-gradient-to-r from-teal-500 to-emerald-500 px-2.5 py-0.5 text-[10px] font-bold text-white">
-          مجاني
+          {freeText}
         </span>
       </div>
 
@@ -118,7 +139,7 @@ export function FreeCourseCard({
         </div>
         <div className="flex items-center gap-1 text-text-secondary dark:text-gray-300">
           <span aria-hidden="true"></span>
-          {course.lessons} دروس
+          {course.lessons} {lessonsSuffix}
         </div>
         {course.instructor && (
           <div className="flex items-center gap-1 text-text-secondary dark:text-gray-300">
@@ -129,7 +150,7 @@ export function FreeCourseCard({
         {course.enrolled !== undefined && (
           <div className="flex items-center gap-1 text-text-secondary dark:text-gray-300">
             <span aria-hidden="true">‍</span>
-            {course.enrolled.toLocaleString('ar-SA')} مسجلة
+            {course.enrolled.toLocaleString('ar-SA')} {enrolledSuffix}
           </div>
         )}
       </div>
@@ -139,7 +160,7 @@ export function FreeCourseCard({
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-teal-50 px-2 py-1 dark:bg-teal-950">
           <span className="text-xs" aria-hidden="true"></span>
           <span className="text-[10px] font-medium text-teal-700 dark:text-teal-300">
-            شهادة معتمدة عند الإكمال
+            {certificateText}
           </span>
         </div>
       )}
@@ -148,7 +169,7 @@ export function FreeCourseCard({
       {course.isNew && (
         <div className="mt-2">
           <span className="inline-block rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:bg-amber-950 dark:text-amber-400">
-            🆕 أضيف مؤخراً
+            {newBadgeText}
           </span>
         </div>
       )}
@@ -163,7 +184,7 @@ export function FreeCourseCard({
           'active:scale-[0.98]',
         )}
       >
-        ابدئي التعلم الآن
+        {enrollButtonText}
       </button>
     </div>
   );

@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyDryBrushingCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyDryBrushingCard({
+  className = '',
+  title = 'التقشير الجاف',
+  subtitle = 'تنظيف عميق بدون ماء',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,47 @@ export function BeautyDryBrushingCard({ className = '' }: { className?: string }
       <div className="flex items-center gap-2">
         <span className="text-xl">🪥</span>
         <div>
-          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">التقشير الجاف</h4>
-          <p className="text-[10px] text-amber-500 dark:text-amber-400">تنظيف عميق بدون ماء</p>
+          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
+          <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '️', text: 'من الأسفل للأعلى — دائماً باتجاه القلب' },
-          { emoji: '️', text: 'قبل الاستحمام — على بشرة جافة تماماً' },
-          { emoji: '', text: '2-3 مرات أسبوعياً — لا يومياً' },
-          { emoji: '', text: 'بعدها — زيت أو كريم مرطب فوراً' },
+          {
+            emoji: '️',
+            text: {
+              ar: 'من الأسفل للأعلى — دائماً باتجاه القلب',
+              en: 'Bottom to top — always toward the heart',
+            },
+          },
+          {
+            emoji: '️',
+            text: {
+              ar: 'قبل الاستحمام — على بشرة جافة تماماً',
+              en: 'Before showering — on completely dry skin',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: '2-3 مرات أسبوعياً — لا يومياً',
+              en: '2-3 times a week — not daily',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'بعدها — زيت أو كريم مرطب فوراً',
+              en: 'Afterwards — oil or moisturizer immediately',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2 dark:bg-amber-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-amber-800 dark:text-amber-200">{t.text}</span>
+            <span className="text-[10px] text-amber-800 dark:text-amber-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

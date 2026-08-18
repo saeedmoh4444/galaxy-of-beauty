@@ -12,41 +12,88 @@ import { cn } from '@galaxy/shared';
  */
 
 const TIPS = [
-  { emoji: '', tip: 'اشربي كوب ماء قبل قهوتكِ الصباحية — بشرتكِ ستشكركِ', category: 'عناية' },
+  {
+    emoji: '',
+    tip: {
+      ar: 'اشربي كوب ماء قبل قهوتكِ الصباحية — بشرتكِ ستشكركِ',
+      en: 'Drink a glass of water before your morning coffee — your skin will thank you',
+    },
+    category: { ar: 'عناية', en: 'Care' },
+  },
   {
     emoji: '️',
-    tip: 'واقي الشمس حتى في الأيام الغائمة — الأشعة فوق البنفسجية تخترق الغيوم',
-    category: 'حماية',
+    tip: {
+      ar: 'واقي الشمس حتى في الأيام الغائمة — الأشعة فوق البنفسجية تخترق الغيوم',
+      en: 'Sunscreen even on cloudy days — UV rays penetrate clouds',
+    },
+    category: { ar: 'حماية', en: 'Protection' },
   },
   {
     emoji: '',
-    tip: 'نامي على ظهركِ — يمنع تجاعيد الوجه ويحافظ على نضارة البشرة',
-    category: 'صحة',
+    tip: {
+      ar: 'نامي على ظهركِ — يمنع تجاعيد الوجه ويحافظ على نضارة البشرة',
+      en: 'Sleep on your back — it prevents facial wrinkles and keeps skin fresh',
+    },
+    category: { ar: 'صحة', en: 'Health' },
   },
-  { emoji: '', tip: 'طبقي المرطب على بشرة رطبة — يمتص بشكل أفضل', category: 'عناية' },
   {
     emoji: '',
-    tip: 'جددِي مكياجكِ كل 6 أشهر — المنتجات القديمة تجمع البكتيريا',
-    category: 'صحة',
+    tip: {
+      ar: 'طبقي المرطب على بشرة رطبة — يمتص بشكل أفضل',
+      en: 'Apply moisturizer on damp skin — it absorbs better',
+    },
+    category: { ar: 'عناية', en: 'Care' },
   },
-  { emoji: '', tip: 'شرائح الخيار الباردة تقلل انتفاخ العينين في 10 دقائق', category: 'طبيعي' },
+  {
+    emoji: '',
+    tip: {
+      ar: 'جددِي مكياجكِ كل 6 أشهر — المنتجات القديمة تجمع البكتيريا',
+      en: 'Refresh your makeup every 6 months — old products collect bacteria',
+    },
+    category: { ar: 'صحة', en: 'Health' },
+  },
+  {
+    emoji: '',
+    tip: {
+      ar: 'شرائح الخيار الباردة تقلل انتفاخ العينين في 10 دقائق',
+      en: 'Cold cucumber slices reduce eye puffiness in 10 minutes',
+    },
+    category: { ar: 'طبيعي', en: 'Natural' },
+  },
   {
     emoji: '‍️',
-    tip: 'لا تغسلي وجهكِ بالماء الساخن — الماء الفاتر أفضل للبشرة',
-    category: 'عناية',
+    tip: {
+      ar: 'لا تغسلي وجهكِ بالماء الساخن — الماء الفاتر أفضل للبشرة',
+      en: 'Do not wash your face with hot water — lukewarm water is better for skin',
+    },
+    category: { ar: 'عناية', en: 'Care' },
   },
   {
     emoji: '',
-    tip: 'الشاي الأخضر قبل النوم يساعد في محاربة الالتهابات وتجديد البشرة',
-    category: 'صحة',
+    tip: {
+      ar: 'الشاي الأخضر قبل النوم يساعد في محاربة الالتهابات وتجديد البشرة',
+      en: 'Green tea before bed helps fight inflammation and renew skin',
+    },
+    category: { ar: 'صحة', en: 'Health' },
   },
 ];
 
 interface DailyBeautyTipCardProps {
   className?: string;
+  /** Card heading */
+  title?: string;
+  /** Footer text */
+  footerText?: string;
+  /** Display locale for tip and category labels */
+  locale?: 'ar' | 'en';
 }
 
-export function DailyBeautyTipCard({ className = '' }: DailyBeautyTipCardProps): JSX.Element {
+export function DailyBeautyTipCard({
+  className = '',
+  title = 'نصيحة اليوم',
+  footerText = 'نصيحة جديدة كل يوم — تعلمي وطبقي',
+  locale = 'ar',
+}: DailyBeautyTipCardProps): JSX.Element {
   const [index] = useState(() => Math.floor(Math.random() * TIPS.length));
   const tip = TIPS[index]!;
 
@@ -60,8 +107,8 @@ export function DailyBeautyTipCard({ className = '' }: DailyBeautyTipCardProps):
       <div className="flex items-center gap-2">
         <span className="text-lg" aria-hidden="true"></span>
         <div>
-          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">نصيحة اليوم</h4>
-          <p className="text-[10px] text-amber-500 dark:text-amber-400">{tip.category}</p>
+          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
+          <p className="text-[10px] text-amber-500 dark:text-amber-400">{tip.category[locale]}</p>
         </div>
       </div>
 
@@ -70,7 +117,9 @@ export function DailyBeautyTipCard({ className = '' }: DailyBeautyTipCardProps):
         <span className="text-3xl" aria-hidden="true">
           {tip.emoji}
         </span>
-        <p className="mt-2 text-xs leading-relaxed text-amber-800 dark:text-amber-200">{tip.tip}</p>
+        <p className="mt-2 text-xs leading-relaxed text-amber-800 dark:text-amber-200">
+          {tip.tip[locale]}
+        </p>
       </div>
 
       {/* Rotating indicator */}
@@ -87,7 +136,7 @@ export function DailyBeautyTipCard({ className = '' }: DailyBeautyTipCardProps):
       </div>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        نصيحة جديدة كل يوم — تعلمي وطبقي
+        {footerText}
       </p>
     </div>
   );

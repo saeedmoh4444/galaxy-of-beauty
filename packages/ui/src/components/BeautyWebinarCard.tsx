@@ -27,12 +27,28 @@ interface BeautyWebinarCardProps {
   webinar: Webinar;
   onRegister?: () => void;
   className?: string;
+  freeBadgeText?: string;
+  dateLabel?: string;
+  timeLabel?: string;
+  defaultTime?: string;
+  registeredCountText?: string;
+  fullText?: string;
+  registerText?: string;
+  footerText?: string;
 }
 
 export function BeautyWebinarCard({
   webinar,
   onRegister,
   className = '',
+  freeBadgeText = 'مجاني',
+  dateLabel = 'التاريخ',
+  timeLabel = 'الوقت',
+  defaultTime = '8:00 مساءً',
+  registeredCountText = 'مسجلة',
+  fullText = 'اكتمل التسجيل',
+  registerText = 'سجّلي الآن ',
+  footerText = 'تعلمي من خبيرات الجمال — مباشر وتفاعلي',
 }: BeautyWebinarCardProps): JSX.Element {
   const isFull =
     webinar.maxSeats !== undefined &&
@@ -59,7 +75,7 @@ export function BeautyWebinarCard({
         </div>
         {webinar.isFree && (
           <span className="shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-            مجاني
+            {freeBadgeText}
           </span>
         )}
       </div>
@@ -67,13 +83,13 @@ export function BeautyWebinarCard({
       {/* Schedule */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-indigo-50 p-2.5 text-center dark:bg-indigo-950">
-          <p className="text-[9px] text-indigo-600 dark:text-indigo-400">التاريخ</p>
+          <p className="text-[9px] text-indigo-600 dark:text-indigo-400">{dateLabel}</p>
           <p className="text-xs font-bold text-indigo-800 dark:text-indigo-200">{webinar.date}</p>
         </div>
         <div className="rounded-xl bg-indigo-50 p-2.5 text-center dark:bg-indigo-950">
-          <p className="text-[9px] text-indigo-600 dark:text-indigo-400">الوقت</p>
+          <p className="text-[9px] text-indigo-600 dark:text-indigo-400">{timeLabel}</p>
           <p className="text-xs font-bold text-indigo-800 dark:text-indigo-200">
-            {webinar.time || '8:00 مساءً'}
+            {webinar.time || defaultTime}
           </p>
         </div>
       </div>
@@ -83,7 +99,7 @@ export function BeautyWebinarCard({
         <div className="mt-2">
           <div className="flex items-center justify-between text-[10px]">
             <span className="text-text-tertiary dark:text-gray-500">
-              {webinar.registered} مسجلة
+              {webinar.registered} {registeredCountText}
               {webinar.maxSeats && ` / ${webinar.maxSeats}`}
             </span>
           </div>
@@ -110,11 +126,11 @@ export function BeautyWebinarCard({
             : 'bg-indigo-600 text-white hover:bg-indigo-700',
         )}
       >
-        {isFull ? 'اكتمل التسجيل' : 'سجّلي الآن '}
+        {isFull ? fullText : registerText}
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        تعلمي من خبيرات الجمال — مباشر وتفاعلي
+        {footerText}
       </p>
     </div>
   );

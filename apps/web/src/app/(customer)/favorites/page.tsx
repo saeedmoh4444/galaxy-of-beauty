@@ -2,8 +2,10 @@
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function FavoritesPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading } = api.favorites.list.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -17,8 +19,8 @@ export default function FavoritesPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> المفضلة</h1>
-          <p className="mt-1 text-sm text-text-secondary">خدماتكِ وفنياتكِ المفضلة</p>
+          <h1 className="text-2xl font-bold">{t('favorites.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('favorites.subtitle')}</p>
         </div>
 
         {isLoading ? (
@@ -26,7 +28,7 @@ export default function FavoritesPage(): JSX.Element {
         ) : favorites.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
             <p className="text-4xl mb-2"></p>
-            <p className="text-text-secondary">مافي مفضلات بعد — أضيفي خدماتكِ المفضلة</p>
+            <p className="text-text-secondary">{t('favorites.empty')}</p>
           </Card>
         ) : (
           <div className="space-y-3">
@@ -38,8 +40,10 @@ export default function FavoritesPage(): JSX.Element {
                     <div>
                       <p className="font-bold">{f.label as string}</p>
                       <p className="text-xs text-text-secondary">
-                        خدمة #{f.serviceId as number}
-                        {f.technicianId ? ` · فنية #${f.technicianId}` : ''}
+                        {t('aiFeed.serviceFallback', { id: f.serviceId as number })}
+                        {f.technicianId
+                          ? t('favorites.technicianSuffix', { id: f.technicianId as number })
+                          : ''}
                       </p>
                     </div>
                   </div>
@@ -50,7 +54,7 @@ export default function FavoritesPage(): JSX.Element {
                     loading={removeMut.isPending}
                     className="text-red-500"
                   >
-                    حذف
+                    {t('favorites.remove')}
                   </Button>
                 </div>
               </Card>

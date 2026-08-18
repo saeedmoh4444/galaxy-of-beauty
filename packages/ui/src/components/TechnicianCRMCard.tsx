@@ -23,6 +23,29 @@ interface TechnicianCRMCardProps {
   revenueThisMonth?: number;
   avgRating?: number;
   className?: string;
+  /** Card heading */
+  title?: string;
+  /** Subtitle under the heading */
+  subtitle?: string;
+  /** Total customers label */
+  totalLabel?: string;
+  /** Regulars label */
+  regularsLabel?: string;
+  /** New customers label */
+  newLabel?: string;
+  /** Monthly revenue label */
+  revenueLabel?: string;
+  /** Currency suffix for revenue */
+  currencySuffix?: string;
+  /** Rating label */
+  ratingLabel?: string;
+  /** Quick action labels */
+  actionSendOffer?: string;
+  actionBirthdayWish?: string;
+  actionAskRating?: string;
+  actionFullReport?: string;
+  /** Display locale for quick action labels */
+  locale?: 'ar' | 'en';
 }
 
 export function TechnicianCRMCard({
@@ -30,6 +53,19 @@ export function TechnicianCRMCard({
   revenueThisMonth,
   avgRating,
   className = '',
+  title = 'زبوناتي',
+  subtitle = 'لوحة تحكم مصغرة لإدارة زبوناتكِ',
+  totalLabel = 'كل الزبونات',
+  regularsLabel = 'دائمات',
+  newLabel = 'جديدات',
+  revenueLabel = 'الإيراد الشهري',
+  currencySuffix = 'ر.س',
+  ratingLabel = 'التقييم',
+  actionSendOffer = 'إرسال عرض',
+  actionBirthdayWish = 'تهنئة ميلاد',
+  actionAskRating = 'طلب تقييم',
+  actionFullReport = 'تقرير كامل',
+  locale = 'ar',
 }: TechnicianCRMCardProps): JSX.Element {
   return (
     <div
@@ -43,10 +79,8 @@ export function TechnicianCRMCard({
           ‍
         </span>
         <div>
-          <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">زبوناتي</h4>
-          <p className="text-[10px] text-blue-500 dark:text-blue-400">
-            لوحة تحكم مصغرة لإدارة زبوناتكِ
-          </p>
+          <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
+          <p className="text-[10px] text-blue-500 dark:text-blue-400">{subtitle}</p>
         </div>
       </div>
 
@@ -54,19 +88,19 @@ export function TechnicianCRMCard({
       <div className="mt-3 grid grid-cols-3 gap-2">
         <div className="rounded-xl bg-blue-50 p-2.5 text-center dark:bg-blue-950">
           <p className="text-lg font-bold text-blue-800 dark:text-blue-200">{customers.total}</p>
-          <p className="text-[9px] text-blue-600 dark:text-blue-400">كل الزبونات</p>
+          <p className="text-[9px] text-blue-600 dark:text-blue-400">{totalLabel}</p>
         </div>
         <div className="rounded-xl bg-emerald-50 p-2.5 text-center dark:bg-emerald-950">
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">
             {customers.regulars}
           </p>
-          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">دائمات</p>
+          <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{regularsLabel}</p>
         </div>
         <div className="rounded-xl bg-amber-50 p-2.5 text-center dark:bg-amber-950">
           <p className="text-lg font-bold text-amber-800 dark:text-amber-200">
             +{customers.newThisMonth}
           </p>
-          <p className="text-[9px] text-amber-600 dark:text-amber-400">جديدات</p>
+          <p className="text-[9px] text-amber-600 dark:text-amber-400">{newLabel}</p>
         </div>
       </div>
 
@@ -74,15 +108,15 @@ export function TechnicianCRMCard({
       <div className="mt-2 grid grid-cols-2 gap-2">
         {revenueThisMonth !== undefined && (
           <div className="rounded-xl bg-gray-50 p-2.5 text-center dark:bg-gray-800">
-            <p className="text-[9px] text-text-tertiary dark:text-gray-500">الإيراد الشهري</p>
+            <p className="text-[9px] text-text-tertiary dark:text-gray-500">{revenueLabel}</p>
             <p className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-              {revenueThisMonth.toLocaleString('ar-SA')} ر.س
+              {revenueThisMonth.toLocaleString('ar-SA')} {currencySuffix}
             </p>
           </div>
         )}
         {avgRating !== undefined && (
           <div className="rounded-xl bg-gray-50 p-2.5 text-center dark:bg-gray-800">
-            <p className="text-[9px] text-text-tertiary dark:text-gray-500">التقييم</p>
+            <p className="text-[9px] text-text-tertiary dark:text-gray-500">{ratingLabel}</p>
             <p className="text-sm font-bold text-amber-700 dark:text-amber-300"> {avgRating}</p>
           </div>
         )}
@@ -91,17 +125,17 @@ export function TechnicianCRMCard({
       {/* Quick actions */}
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '', label: 'إرسال عرض' },
-          { emoji: '', label: 'تهنئة ميلاد' },
-          { emoji: '', label: 'طلب تقييم' },
-          { emoji: '', label: 'تقرير كامل' },
+          { emoji: '', label: { ar: actionSendOffer, en: 'Send offer' } },
+          { emoji: '', label: { ar: actionBirthdayWish, en: 'Birthday wish' } },
+          { emoji: '', label: { ar: actionAskRating, en: 'Ask for rating' } },
+          { emoji: '', label: { ar: actionFullReport, en: 'Full report' } },
         ].map((a) => (
           <button
-            key={a.label}
+            key={a.label.ar}
             type="button"
             className="rounded-lg bg-blue-50 py-1.5 text-[10px] font-medium text-blue-700 hover:bg-blue-100 dark:bg-blue-950 dark:text-blue-300 dark:hover:bg-blue-900 transition-colors"
           >
-            {a.emoji} {a.label}
+            {a.emoji} {a.label[locale]}
           </button>
         ))}
       </div>

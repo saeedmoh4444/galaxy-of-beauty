@@ -1,8 +1,10 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyExpoPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading } = api.beautyExpo.booths.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -13,8 +15,8 @@ export default function BeautyExpoPage(): JSX.Element {
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">معرض التجميل الافتراضي</h1>
-        <p className="mt-2 text-text-secondary">تجولي في أجنحة أشهر الماركات العالمية</p>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.beauty-expo.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.beauty-expo.subtitle')}</p>
       </div>
       {isLoading ? (
         <GridSkeleton count={6} />
@@ -39,7 +41,9 @@ export default function BeautyExpoPage(): JSX.Element {
                   </span>
                 ))}
               </div>
-              <p className="text-xs text-text-tertiary mt-3"> {b.visitors as number} زائر</p>
+              <p className="text-xs text-text-tertiary mt-3">
+                {t('marketing.beauty-expo.visitors', { count: b.visitors as number })}
+              </p>
             </Card>
           ))}
         </div>

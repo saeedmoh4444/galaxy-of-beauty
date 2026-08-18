@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BoxBuilderPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: catalog, isLoading } = api.boxBuilder.catalog.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -28,10 +30,8 @@ export default function BoxBuilderPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> صندوق التجميل الشهري</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            اختاري منتجاتكِ المفضلة واحصلي عليها شهرياً — ووفري حتى ١٥٪
-          </p>
+          <h1 className="text-2xl font-bold">{t('boxBuilder.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('boxBuilder.subtitle')}</p>
         </div>
 
         {result ? (
@@ -40,13 +40,15 @@ export default function BoxBuilderPage(): JSX.Element {
             className="text-center border-2 border-green-300 dark:border-green-700"
           >
             <span className="text-6xl"></span>
-            <h2 className="mt-4 text-xl font-bold">تم بناء صندوقكِ!</h2>
+            <h2 className="mt-4 text-xl font-bold">{t('boxBuilder.built')}</h2>
             <p className="text-2xl font-extrabold text-brand-600 mt-2">
-              {formatCurrency(result.total as number)} ر.س /{' '}
-              {(result.frequency as string) === 'monthly' ? 'شهرياً' : 'ربع سنوي'}
+              {formatCurrency(result.total as number)} {t('beautyParty.currency')} /{' '}
+              {(result.frequency as string) === 'monthly'
+                ? t('boxBuilder.monthly')
+                : t('boxBuilder.quarterly')}
             </p>
             <p className="text-sm text-green-600 mt-1">
-              وفرتِ {formatCurrency(result.discount as number)} ر.س!
+              {t('boxBuilder.saved', { amount: formatCurrency(result.discount as number) })}
             </p>
             <div className="mt-3 flex flex-wrap justify-center gap-1">
               {(result.products as Array<Record<string, unknown>>)?.map(
@@ -61,7 +63,7 @@ export default function BoxBuilderPage(): JSX.Element {
         ) : (
           <>
             <Card padding="lg">
-              <h3 className="font-bold mb-3">️ اختاري منتجاتكِ (٣-٦)</h3>
+              <h3 className="font-bold mb-3">️{t('boxBuilder.pickProducts')}</h3>
               {isLoading ? (
                 <GridSkeleton count={8} />
               ) : (
@@ -75,7 +77,7 @@ export default function BoxBuilderPage(): JSX.Element {
                       <span className="text-3xl">{p.emoji as string}</span>
                       <p className="text-xs font-bold mt-1">{p.nameAr as string}</p>
                       <p className="text-xs text-brand-600 font-semibold">
-                        {formatCurrency(p.price as number)} ر.س
+                        {formatCurrency(p.price as number)} {t('beautyParty.currency')}
                       </p>
                     </button>
                   ))}
@@ -90,7 +92,7 @@ export default function BoxBuilderPage(): JSX.Element {
                     type="text"
                     value={boxName}
                     onChange={(e) => setBoxName(e.target.value)}
-                    placeholder="اسم الصندوق"
+                    placeholder={t('boxBuilder.namePlaceholder')}
                     className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
                   />
                   <div className="flex gap-2">
@@ -100,16 +102,18 @@ export default function BoxBuilderPage(): JSX.Element {
                         onClick={() => setFreq(f)}
                         className={`flex-1 rounded-lg border py-2 text-sm font-medium ${freq === f ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}
                       >
-                        {f === 'monthly' ? ' شهري (خصم ١٥٪)' : ' ربع سنوي (خصم ١٠٪)'}
+                        {f === 'monthly'
+                          ? t('boxBuilder.monthlyDiscount')
+                          : t('boxBuilder.quarterlyDiscount')}
                       </button>
                     ))}
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span>المنتجات ({selected.length})</span>
+                    <span>{t('boxBuilder.productsCount', { count: selected.length })}</span>
                     <span>{formatCurrency(subtotal)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-green-600">الخصم</span>
+                    <span className="text-green-600">{t('boxBuilder.discount')}</span>
                     <span className="text-green-600">
                       -{formatCurrency(Math.round(subtotal * (freq === 'monthly' ? 0.15 : 0.1)))}
                     </span>
@@ -126,7 +130,7 @@ export default function BoxBuilderPage(): JSX.Element {
                     className="w-full"
                     size="lg"
                   >
-                    بناء الصندوق
+                    {t('boxBuilder.build')}
                   </Button>
                 </div>
               </Card>

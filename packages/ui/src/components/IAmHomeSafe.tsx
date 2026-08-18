@@ -20,6 +20,30 @@ interface IAmHomeSafeProps {
   alertContact?: { name: string; phone: string };
   onCheckIn?: () => void;
   className?: string;
+  /** Title when checked in */
+  checkedInTitle?: string;
+  /** Title before check-in */
+  confirmTitle?: string;
+  /** Subtitle when checked in */
+  checkedInSubtitle?: string;
+  /** Prefix before the alert time */
+  alertSubtitlePrefix?: string;
+  /** Suffix after the grace minutes count */
+  graceMinutesSuffix?: string;
+  /** Check-in button label */
+  checkInButtonText?: string;
+  /** Safe arrival heading */
+  safeTitle?: string;
+  /** Confirmation note */
+  confirmedText?: string;
+  /** Rate experience button label */
+  rateExperienceText?: string;
+  /** Prefix before the alert contact name */
+  alertContactPrefix?: string;
+  /** Suffix after the alert contact phone */
+  alertContactSuffix?: string;
+  /** Remaining time label */
+  remainingTimeLabel?: string;
 }
 
 export function IAmHomeSafe({
@@ -28,6 +52,18 @@ export function IAmHomeSafe({
   alertContact,
   onCheckIn,
   className = '',
+  checkedInTitle = 'وصلتِ للمنزل بأمان',
+  confirmTitle = 'تأكيد الوصول للمنزل',
+  checkedInSubtitle = 'الحمد لله على سلامتِك — تم إشعار جهة الاتصال',
+  alertSubtitlePrefix = 'سيتم إشعار جهة اتصالكِ إذا لم تؤكدي وصولكِ قبل ',
+  graceMinutesSuffix = 'دقيقة',
+  checkInButtonText = 'وصلت للمنزل بأمان',
+  safeTitle = 'الحمد لله على سلامتِك',
+  confirmedText = 'تم التأكيد — شكراً لاستخدامكِ جالاكسي بيوتي',
+  rateExperienceText = 'قيّمي تجربتكِ',
+  alertContactPrefix = 'سيتم إشعار ',
+  alertContactSuffix = ' إذا لم تؤكدي وصولكِ',
+  remainingTimeLabel = ' وقت التأكيد المتبقي',
 }: IAmHomeSafeProps): JSX.Element {
   const [checkedIn, setCheckedIn] = useState(false);
 
@@ -38,9 +74,9 @@ export function IAmHomeSafe({
 
   // Countdown text (simplified — would be real-time in production)
   const getAlertTime = () => {
-    if (!appointmentEnd) return `${graceMinutes} دقيقة`;
+    if (!appointmentEnd) return `${graceMinutes} ${graceMinutesSuffix}`;
     const [h, m] = appointmentEnd.split(':').map(Number);
-    if (h === undefined || m === undefined) return `${graceMinutes} دقيقة`;
+    if (h === undefined || m === undefined) return `${graceMinutes} ${graceMinutesSuffix}`;
     const totalMin = h * 60 + m + graceMinutes;
     const alertH = Math.floor(totalMin / 60) % 24;
     const alertM = totalMin % 60;
@@ -64,12 +100,10 @@ export function IAmHomeSafe({
         </span>
         <div>
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-            {checkedIn ? 'وصلتِ للمنزل بأمان' : 'تأكيد الوصول للمنزل'}
+            {checkedIn ? checkedInTitle : confirmTitle}
           </h4>
           <p className="text-[10px] text-text-tertiary dark:text-gray-400">
-            {checkedIn
-              ? 'الحمد لله على سلامتِك — تم إشعار جهة الاتصال'
-              : `سيتم إشعار جهة اتصالكِ إذا لم تؤكدي وصولكِ قبل ${getAlertTime()}`}
+            {checkedIn ? checkedInSubtitle : `${alertSubtitlePrefix}${getAlertTime()}`}
           </p>
         </div>
       </div>
@@ -81,7 +115,7 @@ export function IAmHomeSafe({
           onClick={handleCheckIn}
           className="mt-3 w-full rounded-xl bg-emerald-600 py-3 text-sm font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all shadow-sm shadow-emerald-200 dark:shadow-emerald-900"
         >
-          وصلت للمنزل بأمان
+          {checkInButtonText}
         </button>
       )}
 
@@ -90,11 +124,9 @@ export function IAmHomeSafe({
         <div className="mt-3 space-y-2">
           <div className="rounded-xl bg-emerald-100 p-3 text-center dark:bg-emerald-900">
             <p className="text-lg" aria-hidden="true"></p>
-            <p className="text-xs font-bold text-emerald-800 dark:text-emerald-200">
-              الحمد لله على سلامتِك
-            </p>
+            <p className="text-xs font-bold text-emerald-800 dark:text-emerald-200">{safeTitle}</p>
             <p className="mt-0.5 text-[10px] text-emerald-600 dark:text-emerald-400">
-              تم التأكيد — شكراً لاستخدامكِ جالاكسي بيوتي
+              {confirmedText}
             </p>
           </div>
 
@@ -103,7 +135,7 @@ export function IAmHomeSafe({
             type="button"
             className="w-full rounded-xl border border-emerald-200 bg-white py-2 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:bg-gray-800 dark:text-emerald-300"
           >
-            قيّمي تجربتكِ
+            {rateExperienceText}
           </button>
         </div>
       )}
@@ -113,7 +145,8 @@ export function IAmHomeSafe({
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-white/60 p-2 dark:bg-black/20">
           <span className="text-xs" aria-hidden="true"></span>
           <span className="text-[10px] text-text-secondary dark:text-gray-300">
-            سيتم إشعار {alertContact.name} ({alertContact.phone}) إذا لم تؤكدي وصولكِ
+            {alertContactPrefix}
+            {alertContact.name} ({alertContact.phone}){alertContactSuffix}
           </span>
         </div>
       )}
@@ -122,8 +155,10 @@ export function IAmHomeSafe({
       {!checkedIn && (
         <div className="mt-2">
           <div className="flex items-center justify-between text-[9px] text-text-tertiary dark:text-gray-500">
-            <span> وقت التأكيد المتبقي</span>
-            <span>{graceMinutes} دقيقة</span>
+            <span>{remainingTimeLabel}</span>
+            <span>
+              {graceMinutes} {graceMinutesSuffix}
+            </span>
           </div>
           <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-white/60 dark:bg-gray-800">
             <div

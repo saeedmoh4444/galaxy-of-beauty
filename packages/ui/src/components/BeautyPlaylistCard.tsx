@@ -11,23 +11,34 @@ import { cn } from '@galaxy/shared';
  */
 
 interface Track {
-  title: string;
+  title: { ar: string; en: string };
   duration: string;
   emoji: string;
 }
 
 const TRACKS: Track[] = [
-  { title: 'أمواج البحر', duration: '4:30', emoji: '' },
-  { title: 'صوت المطر', duration: '5:15', emoji: '️' },
-  { title: 'عود هادئ', duration: '3:45', emoji: '' },
-  { title: 'تأمل الصباح', duration: '6:00', emoji: '' },
+  { title: { ar: 'أمواج البحر', en: 'Sea waves' }, duration: '4:30', emoji: '' },
+  { title: { ar: 'صوت المطر', en: 'Rain sounds' }, duration: '5:15', emoji: '️' },
+  { title: { ar: 'عود هادئ', en: 'Calm oud' }, duration: '3:45', emoji: '' },
+  { title: { ar: 'تأمل الصباح', en: 'Morning meditation' }, duration: '6:00', emoji: '' },
 ];
 
 interface BeautyPlaylistCardProps {
+  /** Display language for built-in labels */
+  locale?: 'ar' | 'en';
+  title?: string;
+  subtitle?: string;
+  footerText?: string;
   className?: string;
 }
 
-export function BeautyPlaylistCard({ className = '' }: BeautyPlaylistCardProps): JSX.Element {
+export function BeautyPlaylistCard({
+  className = '',
+  locale = 'ar',
+  title = 'موسيقى الجمال',
+  subtitle = 'قائمة تشغيل للاسترخاء أثناء جلستكِ',
+  footerText = 'اختاري الموسيقى التي تحبينها لجلسة مثالية',
+}: BeautyPlaylistCardProps): JSX.Element {
   return (
     <div
       className={cn(
@@ -38,10 +49,8 @@ export function BeautyPlaylistCard({ className = '' }: BeautyPlaylistCardProps):
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true"></span>
         <div>
-          <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">موسيقى الجمال</h4>
-          <p className="text-[10px] text-violet-500 dark:text-violet-400">
-            قائمة تشغيل للاسترخاء أثناء جلستكِ
-          </p>
+          <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{title}</h4>
+          <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
         </div>
       </div>
 
@@ -53,7 +62,7 @@ export function BeautyPlaylistCard({ className = '' }: BeautyPlaylistCardProps):
           >
             <span className="text-sm">{t.emoji}</span>
             <span className="flex-1 text-[10px] font-medium text-violet-800 dark:text-violet-200">
-              {t.title}
+              {t.title[locale]}
             </span>
             <span className="text-[10px] text-violet-500 dark:text-violet-400">{t.duration}</span>
             <span className="text-violet-400 text-xs">▶️</span>
@@ -62,18 +71,23 @@ export function BeautyPlaylistCard({ className = '' }: BeautyPlaylistCardProps):
       </div>
 
       <div className="mt-2 flex gap-1.5">
-        {['استرخاء', 'تركيز', 'طاقة', 'نوم'].map((mood) => (
+        {[
+          { ar: 'استرخاء', en: 'Relax' },
+          { ar: 'تركيز', en: 'Focus' },
+          { ar: 'طاقة', en: 'Energy' },
+          { ar: 'نوم', en: 'Sleep' },
+        ].map((mood) => (
           <span
-            key={mood}
+            key={mood.ar}
             className="rounded-full bg-violet-50 px-2 py-0.5 text-[9px] text-violet-600 dark:bg-violet-950 dark:text-violet-400"
           >
-            {mood}
+            {mood[locale]}
           </span>
         ))}
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        اختاري الموسيقى التي تحبينها لجلسة مثالية
+        {footerText}
       </p>
     </div>
   );

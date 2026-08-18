@@ -15,9 +15,9 @@ type LifeStage =
 
 interface StageDef {
   emoji: string;
-  title: string;
+  title: { ar: string; en: string };
   ageRange: string;
-  services: string[];
+  services: { ar: string; en: string }[];
   color: string;
   gradient: string;
 }
@@ -34,49 +34,73 @@ const STAGES: LifeStage[] = [
 const STAGE_DEFS: Record<LifeStage, StageDef> = {
   first_steps: {
     emoji: '',
-    title: 'خطواتي الأولى',
+    title: { ar: 'خطواتي الأولى', en: 'First steps' },
     ageRange: '15-18',
-    services: ['أول درس مكياج', 'أساسيات العناية بالبشرة', 'أول باقة عناية'],
+    services: [
+      { ar: 'أول درس مكياج', en: 'First makeup lesson' },
+      { ar: 'أساسيات العناية بالبشرة', en: 'Skincare basics' },
+      { ar: 'أول باقة عناية', en: 'First care package' },
+    ],
     color: 'text-pink-600 dark:text-pink-300',
     gradient: 'from-pink-400 to-rose-400',
   },
   discovery: {
     emoji: '',
-    title: 'اكتشاف وتعبير',
+    title: { ar: 'اكتشاف وتعبير', en: 'Discovery and expression' },
     ageRange: '18-25',
-    services: ['إتقان المكياج', 'تجربة ألوان الشعر', 'ميزانية الجمال'],
+    services: [
+      { ar: 'إتقان المكياج', en: 'Mastering makeup' },
+      { ar: 'تجربة ألوان الشعر', en: 'Experimenting with hair colors' },
+      { ar: 'ميزانية الجمال', en: 'Beauty budget' },
+    ],
     color: 'text-purple-600 dark:text-purple-300',
     gradient: 'from-purple-400 to-violet-400',
   },
   career: {
     emoji: '',
-    title: 'مهنة وثقة',
+    title: { ar: 'مهنة وثقة', en: 'Career and confidence' },
     ageRange: '25-35',
-    services: ['مكياج احترافي', 'خدمات سريعة 30 دقيقة', 'إطلالة المقابلات'],
+    services: [
+      { ar: 'مكياج احترافي', en: 'Professional makeup' },
+      { ar: 'خدمات سريعة 30 دقيقة', en: 'Quick 30-minute services' },
+      { ar: 'إطلالة المقابلات', en: 'Interview looks' },
+    ],
     color: 'text-blue-600 dark:text-blue-300',
     gradient: 'from-blue-400 to-sky-400',
   },
   wedding_motherhood: {
     emoji: '',
-    title: 'زواج وأمومة',
+    title: { ar: 'زواج وأمومة', en: 'Marriage and motherhood' },
     ageRange: '25-40',
-    services: ['رحلة العروس', 'عناية الحمل', 'باقة الأم الجديدة'],
+    services: [
+      { ar: 'رحلة العروس', en: 'The bridal journey' },
+      { ar: 'عناية الحمل', en: 'Pregnancy care' },
+      { ar: 'باقة الأم الجديدة', en: 'New-mom package' },
+    ],
     color: 'text-rose-600 dark:text-rose-300',
     gradient: 'from-rose-400 to-pink-400',
   },
   confidence: {
     emoji: '',
-    title: 'ثقة وأناقة',
+    title: { ar: 'ثقة وأناقة', en: 'Confidence and elegance' },
     ageRange: '40-55',
-    services: ['علاجات مكافحة الشيخوخة', 'عناية هرمونية', 'باقة المرأة التنفيذية'],
+    services: [
+      { ar: 'علاجات مكافحة الشيخوخة', en: 'Anti-aging treatments' },
+      { ar: 'عناية هرمونية', en: 'Hormonal care' },
+      { ar: 'باقة المرأة التنفيذية', en: 'Executive woman package' },
+    ],
     color: 'text-amber-600 dark:text-amber-300',
     gradient: 'from-amber-400 to-orange-400',
   },
   golden: {
     emoji: '',
-    title: 'الجمال الذهبي',
+    title: { ar: 'الجمال الذهبي', en: 'Golden beauty' },
     ageRange: '55+',
-    services: ['علاجات لطيفة', 'أساليب كلاسيكية', 'باقة حفيدة العروس'],
+    services: [
+      { ar: 'علاجات لطيفة', en: 'Gentle treatments' },
+      { ar: 'أساليب كلاسيكية', en: 'Classic styles' },
+      { ar: 'باقة حفيدة العروس', en: "Bride's granddaughter package" },
+    ],
     color: 'text-emerald-600 dark:text-emerald-300',
     gradient: 'from-emerald-400 to-teal-400',
   },
@@ -88,6 +112,18 @@ interface BeautyJourneyTimelineProps {
   /** User's current age (highlights closest stage) */
   userAge?: number;
   className?: string;
+  /** Header title */
+  title?: string;
+  /** Header subtitle */
+  subtitle?: string;
+  /** Suffix after the age range */
+  ageSuffix?: string;
+  /** Label on the current stage badge */
+  hereLabel?: string;
+  /** Footer text */
+  footerText?: string;
+  /** Locale for internal stage data strings */
+  locale?: 'ar' | 'en';
 }
 
 function getStageForAge(age: number): LifeStage {
@@ -103,6 +139,12 @@ export function BeautyJourneyTimeline({
   activeStage,
   userAge,
   className = '',
+  title = 'رحلتي الجمالية',
+  subtitle = 'لكل مرحلة عمرية جمالها الخاص',
+  ageSuffix = 'سنة',
+  hereLabel = 'أنتِ هنا',
+  footerText = 'الجمال يتطور معكِ — ونحن معكِ في كل مرحلة',
+  locale = 'ar',
 }: BeautyJourneyTimelineProps): JSX.Element {
   const currentStage = activeStage ?? (userAge ? getStageForAge(userAge) : 'discovery');
   const currentIndex = STAGES.indexOf(currentStage);
@@ -111,10 +153,8 @@ export function BeautyJourneyTimeline({
     <div className={cn('rounded-2xl bg-white p-5 dark:bg-gray-900', className)}>
       {/* Header */}
       <div className="text-center">
-        <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">رحلتي الجمالية</h4>
-        <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-gray-400">
-          لكل مرحلة عمرية جمالها الخاص
-        </p>
+        <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
+        <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-gray-400">{subtitle}</p>
       </div>
 
       {/* Timeline */}
@@ -179,15 +219,15 @@ export function BeautyJourneyTimeline({
                             : 'text-text-secondary dark:text-gray-300',
                       )}
                     >
-                      {def.title}
+                      {def.title[locale]}
                     </span>
                     <span className="ml-2 text-[10px] text-text-tertiary dark:text-gray-500">
-                      {def.ageRange} سنة
+                      {def.ageRange} {ageSuffix}
                     </span>
                   </div>
                   {isActive && (
                     <span className="rounded-full bg-current px-2 py-0.5 text-[9px] font-bold text-white opacity-80">
-                      أنتِ هنا
+                      {hereLabel}
                     </span>
                   )}
                   {isPast && (
@@ -200,7 +240,7 @@ export function BeautyJourneyTimeline({
                   <div className="mt-1 flex flex-wrap gap-1">
                     {def.services.map((s) => (
                       <span
-                        key={s}
+                        key={s.ar}
                         className={cn(
                           'rounded-full px-2 py-0.5 text-[9px] font-medium',
                           isActive
@@ -208,7 +248,7 @@ export function BeautyJourneyTimeline({
                             : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
                         )}
                       >
-                        {s}
+                        {s[locale]}
                       </span>
                     ))}
                   </div>
@@ -221,7 +261,7 @@ export function BeautyJourneyTimeline({
 
       {/* Footer */}
       <p className="mt-2 text-center text-[9px] italic text-text-tertiary dark:text-gray-500">
-        الجمال يتطور معكِ — ونحن معكِ في كل مرحلة
+        {footerText}
       </p>
     </div>
   );

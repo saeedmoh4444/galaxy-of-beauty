@@ -3,16 +3,19 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
-const THEMES = [
-  { key: 'spa', emoji: '‍️', name: 'سبا منزلي' },
-  { key: 'makeup', emoji: '', name: 'حفلة مكياج' },
-  { key: 'nails', emoji: '', name: 'صالون أظافر' },
-  { key: 'bridal', emoji: '', name: 'توديع عزوبية' },
-  { key: 'skincare', emoji: '', name: 'روتين عناية' },
+const THEMES: { key: string; emoji: string; name: TranslationKey }[] = [
+  { key: 'spa', emoji: '‍️', name: 'beautyParty.theme.homeSpa' },
+  { key: 'makeup', emoji: '', name: 'beautyParty.theme.makeupParty' },
+  { key: 'nails', emoji: '', name: 'beautyParty.theme.nailSalon' },
+  { key: 'bridal', emoji: '', name: 'beautyParty.theme.bachelorette' },
+  { key: 'skincare', emoji: '', name: 'beautyParty.theme.skincareRoutine' },
 ];
 
 export default function BeautyPartyPage(): JSX.Element {
+  const { t } = useLocale();
   const createMut = api.beautyParty.create.useMutation();
   const [theme, setTheme] = useState('spa');
   const [guests, setGuests] = useState(4);
@@ -25,11 +28,11 @@ export default function BeautyPartyPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> حفلة تجميل</h1>
-          <p className="mt-1 text-sm text-text-secondary">خططي لحفلة تجميل لكِ ولصديقاتكِ</p>
+          <h1 className="text-2xl font-bold">{t('beautyParty.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('beautyParty.subtitle')}</p>
         </div>
         <Card padding="lg">
-          <h3 className="font-bold mb-4"> اختاري الثيم</h3>
+          <h3 className="font-bold mb-4">{t('beautyParty.chooseTheme')}</h3>
           <div className="space-y-2">
             {THEMES.map((th) => (
               <button
@@ -38,13 +41,13 @@ export default function BeautyPartyPage(): JSX.Element {
                 className={`w-full rounded-xl p-4 text-right border-2 transition-all ${theme === th.key ? 'border-brand-400 bg-brand-50' : 'border-gray-200'}`}
               >
                 <span className="text-2xl">{th.emoji}</span>{' '}
-                <span className="font-bold">{th.name}</span>
+                <span className="font-bold">{t(th.name)}</span>
               </button>
             ))}
           </div>
         </Card>
         <Card padding="lg">
-          <h3 className="font-bold mb-4">‍️ عدد الصديقات: {guests}</h3>
+          <h3 className="font-bold mb-4">‍️ {t('beautyParty.guestsCount', { guests })}</h3>
           <div className="flex gap-2">
             {[2, 3, 4, 5, 6, 8, 10].map((g) => (
               <button
@@ -61,19 +64,19 @@ export default function BeautyPartyPage(): JSX.Element {
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
               <span>
-                {guests} × {estPerPerson} ر.س
+                {guests} × {estPerPerson} {t('beautyParty.currency')}
               </span>
               <span>{formatCurrency(total)}</span>
             </div>
             {discount > 0 && (
               <div className="flex justify-between text-sm text-green-600">
-                <span>خصم المجموعة {discount}%</span>
+                <span>{t('beautyParty.groupDiscount', { discount })}</span>
                 <span>-{formatCurrency((total * discount) / 100)}</span>
               </div>
             )}
             <hr />
             <div className="flex justify-between font-bold text-lg">
-              <span>الإجمالي</span>
+              <span>{t('cart.total')}</span>
               <span>{formatCurrency(finalTotal)}</span>
             </div>
           </div>
@@ -90,7 +93,7 @@ export default function BeautyPartyPage(): JSX.Element {
           loading={createMut.isPending}
           className="w-full"
         >
-          احجزي حفلتكِ
+          {t('beautyParty.bookParty')}
         </Button>
       </div>
     </DashboardLayout>

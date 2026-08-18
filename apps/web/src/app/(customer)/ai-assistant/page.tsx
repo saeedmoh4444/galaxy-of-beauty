@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function AIAssistantPage(): JSX.Element {
+  const { t } = useLocale();
   const [q, setQ] = useState('');
   const { data: topics } = api.aiAssistant.topics.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
@@ -25,8 +27,8 @@ export default function AIAssistantPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> مساعدة الذكاء الاصطناعي</h1>
-          <p className="mt-1 text-sm text-text-secondary">اسأليني أي سؤال عن الجمال والعناية</p>
+          <h1 className="text-2xl font-bold">{t('aiAssistant.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('aiAssistant.subtitle')}</p>
         </div>
         <Card padding="lg">
           <div className="flex gap-2 mb-4">
@@ -34,22 +36,22 @@ export default function AIAssistantPage(): JSX.Element {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && ask(q)}
-              placeholder="اسألي عن روتين، بشرة، مكياج..."
+              placeholder={t('aiAssistant.placeholder')}
               className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
-            <Button onClick={() => ask(q)}>اسألي</Button>
+            <Button onClick={() => ask(q)}>{t('aiAssistant.ask')}</Button>
           </div>
           <div className="flex flex-wrap gap-2">
-            {topicList.map((t: Record<string, unknown>) => (
+            {topicList.map((tx: Record<string, unknown>) => (
               <button
-                key={t.key as string}
+                key={tx.key as string}
                 onClick={() => {
-                  setQ(t.label as string);
-                  ask(t.label as string);
+                  setQ(tx.label as string);
+                  ask(tx.label as string);
                 }}
                 className="rounded-full bg-brand-50 dark:bg-brand-950 px-3 py-1.5 text-xs font-medium"
               >
-                {t.emoji as string} {t.label as string}
+                {tx.emoji as string} {tx.label as string}
               </button>
             ))}
           </div>

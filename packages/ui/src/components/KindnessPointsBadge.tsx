@@ -14,7 +14,7 @@ type KindnessLevel = 'helper' | 'supporter' | 'generous' | 'angel';
 
 interface LevelDef {
   emoji: string;
-  title: string;
+  title: { ar: string; en: string };
   minPoints: number;
   color: string;
   gradient: string;
@@ -23,28 +23,28 @@ interface LevelDef {
 const LEVELS: Record<KindnessLevel, LevelDef> = {
   helper: {
     emoji: '',
-    title: 'مساعدة',
+    title: { ar: 'مساعدة', en: 'Helper' },
     minPoints: 0,
     color: 'text-pink-600 dark:text-pink-300',
     gradient: 'from-pink-400 to-rose-400',
   },
   supporter: {
     emoji: '',
-    title: 'داعمة',
+    title: { ar: 'داعمة', en: 'Supporter' },
     minPoints: 100,
     color: 'text-rose-600 dark:text-rose-300',
     gradient: 'from-rose-400 to-red-400',
   },
   generous: {
     emoji: '',
-    title: 'كريمة',
+    title: { ar: 'كريمة', en: 'Generous' },
     minPoints: 300,
     color: 'text-purple-600 dark:text-purple-300',
     gradient: 'from-purple-400 to-violet-400',
   },
   angel: {
     emoji: '',
-    title: 'ملاك',
+    title: { ar: 'ملاك', en: 'Angel' },
     minPoints: 1000,
     color: 'text-amber-600 dark:text-amber-300',
     gradient: 'from-amber-400 to-yellow-400',
@@ -52,16 +52,16 @@ const LEVELS: Record<KindnessLevel, LevelDef> = {
 };
 
 interface KindnessActivity {
-  action: string;
+  action: { ar: string; en: string };
   points: number;
 }
 
 const ACTIVITIES: KindnessActivity[] = [
-  { action: 'الإجابة على سؤال أخت', points: 10 },
-  { action: 'تقديم نصيحة مجانية', points: 25 },
-  { action: 'إرشاد أخت جديدة', points: 50 },
-  { action: 'تنظيم لقاء مجتمعي', points: 100 },
-  { action: 'المساهمة في بنك الجمال', points: 200 },
+  { action: { ar: 'الإجابة على سؤال أخت', en: "Answering a sister's question" }, points: 10 },
+  { action: { ar: 'تقديم نصيحة مجانية', en: 'Giving free advice' }, points: 25 },
+  { action: { ar: 'إرشاد أخت جديدة', en: 'Guiding a new sister' }, points: 50 },
+  { action: { ar: 'تنظيم لقاء مجتمعي', en: 'Organizing a community meetup' }, points: 100 },
+  { action: { ar: 'المساهمة في بنك الجمال', en: 'Contributing to the Beauty Bank' }, points: 200 },
 ];
 
 interface KindnessPointsBadgeProps {
@@ -69,6 +69,24 @@ interface KindnessPointsBadgeProps {
   level?: KindnessLevel;
   onViewRewards?: () => void;
   className?: string;
+  /** Badge heading */
+  title?: string;
+  /** Suffix after the points number */
+  pointsLabel?: string;
+  /** Prefix before the next level name */
+  reachPrefix?: string;
+  /** Prefix before the remaining points count */
+  remainingPrefix?: string;
+  /** Suffix after the remaining points count */
+  remainingSuffix?: string;
+  /** Activity list heading */
+  activityListTitle?: string;
+  /** Rewards button label */
+  buttonText?: string;
+  /** Sisterhood footer message */
+  footerText?: string;
+  /** Display locale for level and activity labels */
+  locale?: 'ar' | 'en';
 }
 
 export function KindnessPointsBadge({
@@ -76,6 +94,15 @@ export function KindnessPointsBadge({
   level,
   onViewRewards,
   className = '',
+  title = 'نقاط اللطف',
+  pointsLabel = 'نقطة',
+  reachPrefix = 'للوصول إلى ',
+  remainingPrefix = 'متبقي ',
+  remainingSuffix = 'نقطة للترقية',
+  activityListTitle = 'كيف تكسبين النقاط',
+  buttonText = 'استبدلي نقاطكِ بمكافآت',
+  footerText = 'كل نقطة تكتسبينها تعني أنكِ ساعدتِ أختاً',
+  locale = 'ar',
 }: KindnessPointsBadgeProps): JSX.Element {
   // Auto-detect level
   const detectedLevel: KindnessLevel =
@@ -123,9 +150,9 @@ export function KindnessPointsBadge({
             {levelDef.emoji}
           </div>
           <div>
-            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">نقاط اللطف</h4>
+            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
             <p className={cn('text-[10px] font-medium', levelDef.color)}>
-              {levelDef.emoji} {levelDef.title}
+              {levelDef.emoji} {levelDef.title[locale]}
             </p>
           </div>
         </div>
@@ -135,7 +162,7 @@ export function KindnessPointsBadge({
           <p className="text-xl font-bold text-pink-700 dark:text-pink-300">
             {points.toLocaleString('ar-SA')}
           </p>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">نقطة</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{pointsLabel}</p>
         </div>
       </div>
 
@@ -144,7 +171,8 @@ export function KindnessPointsBadge({
         <div className="mt-3 rounded-xl bg-pink-50 p-2.5 dark:bg-pink-950">
           <div className="flex items-center justify-between text-[10px]">
             <span className="text-text-secondary dark:text-gray-300">
-              للوصول إلى {nextDef.title}
+              {reachPrefix}
+              {nextDef.title[locale]}
             </span>
             <span className="font-bold text-pink-700 dark:text-pink-300">{progressToNext}%</span>
           </div>
@@ -158,7 +186,8 @@ export function KindnessPointsBadge({
             />
           </div>
           <p className="mt-1 text-[9px] text-text-tertiary dark:text-gray-500">
-            متبقي {nextDef.minPoints - points} نقطة للترقية
+            {remainingPrefix}
+            {nextDef.minPoints - points} {remainingSuffix}
           </p>
         </div>
       )}
@@ -166,14 +195,16 @@ export function KindnessPointsBadge({
       {/* Activity list */}
       <div className="mt-3 space-y-1">
         <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          كيف تكسبين النقاط
+          {activityListTitle}
         </p>
         {ACTIVITIES.map((a) => (
           <div
-            key={a.action}
+            key={a.action.ar}
             className="flex items-center justify-between rounded-lg bg-gray-50 px-2.5 py-1.5 dark:bg-gray-800"
           >
-            <span className="text-[10px] text-text-secondary dark:text-gray-300">{a.action}</span>
+            <span className="text-[10px] text-text-secondary dark:text-gray-300">
+              {a.action[locale]}
+            </span>
             <span className="text-[10px] font-bold text-pink-600 dark:text-pink-400">
               +{a.points}
             </span>
@@ -187,12 +218,12 @@ export function KindnessPointsBadge({
         onClick={onViewRewards}
         className="mt-3 w-full rounded-xl border border-pink-200 bg-pink-50 py-2 text-xs font-bold text-pink-700 hover:bg-pink-100 dark:border-pink-800 dark:bg-pink-950 dark:text-pink-300 transition-colors"
       >
-        استبدلي نقاطكِ بمكافآت
+        {buttonText}
       </button>
 
       {/* Sisterhood message */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        كل نقطة تكتسبينها تعني أنكِ ساعدتِ أختاً
+        {footerText}
       </p>
     </div>
   );

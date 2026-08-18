@@ -14,72 +14,85 @@ import {
   HydrationTracker,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
-const GOAL_TEMPLATES = [
+const GOAL_TEMPLATES: {
+  key: string;
+  emoji: string;
+  name: TranslationKey;
+  goals: TranslationKey[];
+}[] = [
   {
     key: 'skincare',
     emoji: '',
-    name: 'عناية بالبشرة',
+    name: 'beautyGoals.cat.skincare',
     goals: [
-      'روتين عناية يومي لمدة ٣٠ يوم',
-      'تقشير أسبوعي',
-      'شرب ٨ أكواب ماء يومياً',
-      'استخدام واقي شمس يومي',
+      'beautyGoals.goal.skincare1',
+      'beautyGoals.goal.skincare2',
+      'beautyGoals.goal.skincare3',
+      'beautyGoals.goal.skincare4',
     ],
   },
   {
     key: 'makeup',
     emoji: '',
-    name: 'مكياج',
+    name: 'beautyGoals.cat.makeup',
     goals: [
-      'تعلم أساسيات الكونتور',
-      'تجربة لون أحمر شفاه جديد',
-      'مكياج بدون أخطاء',
-      'تنظيف فرش المكياج أسبوعياً',
+      'beautyGoals.goal.makeup1',
+      'beautyGoals.goal.makeup2',
+      'beautyGoals.goal.makeup3',
+      'beautyGoals.goal.makeup4',
     ],
   },
   {
     key: 'hair',
     emoji: '‍️',
-    name: 'شعر',
-    goals: ['حمام زيت أسبوعي', 'قص أطراف الشعر', 'تجنب الحرارة لمدة أسبوعين', 'تجربة تسريحة جديدة'],
+    name: 'beautyGoals.cat.hair',
+    goals: [
+      'beautyGoals.goal.hair1',
+      'beautyGoals.goal.hair2',
+      'beautyGoals.goal.hair3',
+      'beautyGoals.goal.hair4',
+    ],
   },
   {
     key: 'health',
     emoji: '',
-    name: 'صحة وعافية',
+    name: 'beautyGoals.cat.health',
     goals: [
-      'نوم ٨ ساعات يومياً',
-      'ممارسة الرياضة ٣ مرات أسبوعياً',
-      'تناول فيتامينات يومية',
-      'تقليل السكر لمدة أسبوعين',
+      'beautyGoals.goal.health1',
+      'beautyGoals.goal.health2',
+      'beautyGoals.goal.health3',
+      'beautyGoals.goal.health4',
     ],
   },
   {
     key: 'nails',
     emoji: '',
-    name: 'أظافر',
+    name: 'beautyGoals.cat.nails',
     goals: [
-      'ترطيب الأظافر يومياً',
-      'عدم قضم الأظافر لمدة شهر',
-      'تجربة nail art',
-      'تقوية الأظافر بزيت الخروع',
+      'beautyGoals.goal.nails1',
+      'beautyGoals.goal.nails2',
+      'beautyGoals.goal.nails3',
+      'beautyGoals.goal.nails4',
     ],
   },
   {
     key: 'spirit',
     emoji: '',
-    name: 'روحانية',
+    name: 'beautyGoals.cat.spirit',
     goals: [
-      'جلسة عناية ذاتية أسبوعياً',
-      'تدوين ٣ أشياء إيجابية يومياً',
-      'تجربة التأمل لمدة ١٠ دقائق',
-      'حمام استرخاء أسبوعي',
+      'beautyGoals.goal.spirit1',
+      'beautyGoals.goal.spirit2',
+      'beautyGoals.goal.spirit3',
+      'beautyGoals.goal.spirit4',
     ],
   },
 ];
 
 export default function BeautyGoalsPage(): JSX.Element {
+  const { t } = useLocale();
   const visionGoals = api.visionBoard.myGoals.useQuery({ limit: 6 });
   const [goals, setGoals] = useState<Record<string, boolean[]>>({});
   const toggle = (catKey: string, idx: number) => {
@@ -101,7 +114,7 @@ export default function BeautyGoalsPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" أهداف الجمال" subtitle="حددي أهدافكِ وتابعي تقدمكِ" />
+        <PageTitle title={t('beautyGoals.title')} subtitle={t('beautyGoals.subtitle')} />
 
         <Card padding="lg" className="text-center">
           <div className="h-4 bg-surface-muted rounded-full">
@@ -111,7 +124,7 @@ export default function BeautyGoalsPage(): JSX.Element {
             />
           </div>
           <p className="text-sm text-text-secondary mt-2">
-            {checked}/{allGoals.length} هدف — {pct}%
+            {t('beautyGoals.progress', { done: checked, total: allGoals.length, pct })}
           </p>
         </Card>
 
@@ -123,7 +136,7 @@ export default function BeautyGoalsPage(): JSX.Element {
               <Card key={cat.key} padding="lg">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-2xl">{cat.emoji}</span>
-                  <h3 className="font-bold">{cat.name}</h3>
+                  <h3 className="font-bold">{t(cat.name)}</h3>
                   <span className="text-xs text-text-tertiary mr-auto">
                     {catChecked}/{cat.goals.length}
                   </span>
@@ -140,7 +153,7 @@ export default function BeautyGoalsPage(): JSX.Element {
                         onChange={() => toggle(cat.key, i)}
                         className="w-4 h-4 accent-brand-600"
                       />
-                      <span className="text-sm">{g}</span>
+                      <span className="text-sm">{t(g)}</span>
                     </label>
                   ))}
                 </div>
@@ -158,23 +171,25 @@ export default function BeautyGoalsPage(): JSX.Element {
                 text: g.text,
                 year: g.year,
                 achieved: g.achieved,
-              })) ?? [{ emoji: '', text: 'إطلالة زفاف', year: '2027', achieved: false }]
+              })) ?? [
+                { emoji: '', text: t('beautyGoals.visionWedding'), year: '2027', achieved: false },
+              ]
             }
           />
           <BeautySkillTreeCard
             skills={[
-              { name: 'مكياج أساسي', emoji: '', level: 3, max: 5 },
-              { name: 'عناية بالبشرة', emoji: '', level: 2, max: 5 },
-              { name: 'تسريحات', emoji: '', level: 1, max: 5 },
+              { name: t('beautyGoals.skill.basicMakeup'), emoji: '', level: 3, max: 5 },
+              { name: t('beautyGoals.skill.skincare'), emoji: '', level: 2, max: 5 },
+              { name: t('beautyGoals.skill.hairstyles'), emoji: '', level: 1, max: 5 },
             ]}
           />
         </div>
         <div className="grid gap-6 lg:grid-cols-3">
           <BeautyHabitTrackerCard
             habits={[
-              { name: 'واقي شمس', emoji: '️', done: true },
-              { name: '8 أكواب ماء', emoji: '', done: false },
-              { name: 'روتين مسائي', emoji: '', done: true },
+              { name: t('beautyGoals.habit.sunscreen'), emoji: '️', done: true },
+              { name: t('beautyGoals.habit.water'), emoji: '', done: false },
+              { name: t('beautyGoals.habit.evening'), emoji: '', done: true },
             ]}
           />
           <HydrationTracker goal={8} current={5} />
@@ -183,11 +198,11 @@ export default function BeautyGoalsPage(): JSX.Element {
         <div className="grid gap-4 sm:grid-cols-2">
           <BeautyLearningPathCard
             path={{
-              title: 'مكياج احترافي',
+              title: t('beautyGoals.path.title'),
               modules: 8,
               completed: 3,
               emoji: '',
-              duration: '6 أشهر',
+              duration: t('beautyGoals.path.duration'),
             }}
           />
           <BeautyCertificationPathCard path="makeup" />

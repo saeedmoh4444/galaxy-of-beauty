@@ -9,19 +9,19 @@
  *   → "١٤٤٨/٠٢/٠٥ هـ | 2026/08/05 م"
  */
 
-const HIJRI_MONTHS = [
-  'محرم',
-  'صفر',
-  'ربيع الأول',
-  'ربيع الثاني',
-  'جمادى الأولى',
-  'جمادى الآخرة',
-  'رجب',
-  'شعبان',
-  'رمضان',
-  'شوال',
-  'ذو القعدة',
-  'ذو الحجة',
+const HIJRI_MONTHS: { ar: string; en: string }[] = [
+  { ar: 'محرم', en: 'Muharram' },
+  { ar: 'صفر', en: 'Safar' },
+  { ar: 'ربيع الأول', en: 'Rabi al-Awwal' },
+  { ar: 'ربيع الثاني', en: 'Rabi al-Thani' },
+  { ar: 'جمادى الأولى', en: 'Jumada al-Awwal' },
+  { ar: 'جمادى الآخرة', en: 'Jumada al-Thani' },
+  { ar: 'رجب', en: 'Rajab' },
+  { ar: 'شعبان', en: 'Shaaban' },
+  { ar: 'رمضان', en: 'Ramadan' },
+  { ar: 'شوال', en: 'Shawwal' },
+  { ar: 'ذو القعدة', en: 'Dhu al-Qadah' },
+  { ar: 'ذو الحجة', en: 'Dhu al-Hijjah' },
 ];
 
 // Simplified Hijri approximation (Umm al-Qura-like)
@@ -48,12 +48,21 @@ function toHijriApprox(date: Date): { year: number; month: number; day: number }
 export function HijriDate({
   date,
   showGregorian = true,
+  hijriSuffix = 'هـ',
+  gregorianSuffix = 'م',
+  locale = 'ar',
 }: {
   date: Date;
   showGregorian?: boolean;
+  /** Era suffix appended to the Hijri date, e.g. 'AH' */
+  hijriSuffix?: string;
+  /** Era suffix appended to the Gregorian date, e.g. 'AD' */
+  gregorianSuffix?: string;
+  /** Locale for internal month-name strings */
+  locale?: 'ar' | 'en';
 }): JSX.Element {
   const h = toHijriApprox(date);
-  const hijriStr = `${String(h.day).padStart(2, '0')} ${HIJRI_MONTHS[h.month - 1]} ${h.year} هـ`;
+  const hijriStr = `${String(h.day).padStart(2, '0')} ${HIJRI_MONTHS[h.month - 1]?.[locale]} ${h.year} ${hijriSuffix}`;
   const gregStr = date.toLocaleDateString('ar-SA-u-ca-gregory', {
     year: 'numeric',
     month: '2-digit',
@@ -64,7 +73,7 @@ export function HijriDate({
     <span className="text-xs text-text-secondary dark:text-gray-400" dir="rtl">
       {hijriStr}
       {showGregorian ? <span className="mx-1 text-text-tertiary">|</span> : null}
-      {showGregorian ? `${gregStr} م` : null}
+      {showGregorian ? `${gregStr} ${gregorianSuffix}` : null}
     </span>
   );
 }

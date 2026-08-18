@@ -16,6 +16,12 @@ interface HydrationTrackerProps {
   current?: number;
   onAddCup?: () => void;
   className?: string;
+  title?: string;
+  cupsText?: string;
+  goalCompletedText?: string;
+  remainingPrefix?: string;
+  addCupText?: string;
+  benefitText?: string;
 }
 
 export function HydrationTracker({
@@ -23,6 +29,12 @@ export function HydrationTracker({
   current: initialCurrent = 0,
   onAddCup,
   className = '',
+  title = 'متعقب الماء',
+  cupsText = 'أكواب',
+  goalCompletedText = ' أكملتِ الهدف!',
+  remainingPrefix = 'باقي',
+  addCupText = '+ كوب',
+  benefitText = 'أكواب ماء = بشرة أكثر نضارة ومرونة',
 }: HydrationTrackerProps): JSX.Element {
   const [current, setCurrent] = useState(initialCurrent);
   const pct = Math.min(100, Math.round((current / goal) * 100));
@@ -46,9 +58,9 @@ export function HydrationTracker({
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true"></span>
           <div>
-            <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">متعقب الماء</h4>
+            <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
             <p className="text-[10px] text-sky-500 dark:text-sky-400">
-              {current}/{goal} أكواب
+              {current}/{goal} {cupsText}
             </p>
           </div>
         </div>
@@ -79,7 +91,7 @@ export function HydrationTracker({
       <div className="mt-2">
         <div className="flex items-center justify-between text-[10px]">
           <span className="text-text-tertiary dark:text-gray-500">
-            {pct >= 100 ? ' أكملتِ الهدف!' : `باقي ${goal - current} أكواب`}
+            {pct >= 100 ? goalCompletedText : `${remainingPrefix} ${goal - current} ${cupsText}`}
           </span>
           <span className="font-bold text-sky-700 dark:text-sky-300">{pct}%</span>
         </div>
@@ -104,7 +116,7 @@ export function HydrationTracker({
               : 'bg-sky-600 text-white hover:bg-sky-700',
           )}
         >
-          + كوب
+          {addCupText}
         </button>
         <button
           type="button"
@@ -118,7 +130,7 @@ export function HydrationTracker({
       {/* Skin benefit */}
       <div className="mt-2 rounded-lg bg-sky-50 p-2 dark:bg-sky-950">
         <p className="text-center text-[10px] text-sky-700 dark:text-sky-300">
-          {goal} أكواب ماء = بشرة أكثر نضارة ومرونة
+          {goal} {benefitText}
         </p>
       </div>
     </div>

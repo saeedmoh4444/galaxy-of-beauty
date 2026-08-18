@@ -27,6 +27,7 @@ import {
   SaudiBeautyHeritageCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 // Legacy page shape: the card grid below expects `{ items }`, but
 // beautyCourses.list returns a plain array — the optional chain falls
@@ -43,6 +44,7 @@ interface LegacyCourseItem {
 }
 
 export default function BeautyAcademyPage(): JSX.Element {
+  const { t } = useLocale();
   const courses = api.beautyCourses.list.useQuery();
   const dailyTip = api.dailyBeautyTip.today.useQuery();
   const expertTalks = api.expertTalks.upcoming.useQuery({ limit: 2 });
@@ -52,7 +54,7 @@ export default function BeautyAcademyPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" أكاديمية الجمال" subtitle="تعلمي، اكتشفي، وتطوري" />
+        <PageTitle title={t('academy.title')} subtitle={t('academy.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -64,9 +66,9 @@ export default function BeautyAcademyPage(): JSX.Element {
                   <FreeCourseCard
                     key={i}
                     course={{
-                      title: c.title ?? 'دورة تجميل',
+                      title: c.title ?? t('academy.courseFallback'),
                       level: c.level ?? 'beginner',
-                      duration: c.duration ?? '45 دقيقة',
+                      duration: c.duration ?? t('academy.duration45'),
                       lessons: c.lessons ?? 6,
                       instructor: c.instructor,
                       enrolled: c.enrolled,
@@ -78,9 +80,9 @@ export default function BeautyAcademyPage(): JSX.Element {
                 <>
                   <FreeCourseCard
                     course={{
-                      title: 'أساسيات العناية بالبشرة',
+                      title: t('academy.course.skincareBasics'),
                       level: 'beginner',
-                      duration: '45 دقيقة',
+                      duration: t('academy.duration45'),
                       lessons: 6,
                       instructor: 'د. نورة',
                       enrolled: 1234,
@@ -89,9 +91,9 @@ export default function BeautyAcademyPage(): JSX.Element {
                   />
                   <FreeCourseCard
                     course={{
-                      title: 'مكياج احترافي',
+                      title: t('academy.course.professionalMakeup'),
                       level: 'intermediate',
-                      duration: '90 دقيقة',
+                      duration: t('academy.duration90'),
                       lessons: 12,
                       hasCertificate: true,
                       emoji: '',
@@ -116,19 +118,19 @@ export default function BeautyAcademyPage(): JSX.Element {
                 <>
                   <BeautyWebinarCard
                     webinar={{
-                      title: 'أسرار البشرة',
+                      title: t('academy.talk.skinSecrets'),
                       instructor: 'د. نورة',
-                      date: '20 أغسطس',
-                      time: '8:00 مساءً',
+                      date: t('academy.dateAug20'),
+                      time: t('academy.timeAug20'),
                       isFree: true,
-                      topic: 'عناية',
+                      topic: t('academy.topic.care'),
                     }}
                   />
                   <BeautyExpertTalkCard
                     talk={{
-                      title: 'ريادة الأعمال في التجميل',
+                      title: t('academy.talk.beautyEntrepreneurship'),
                       expert: 'م. سارة',
-                      date: '15 سبتمبر',
+                      date: t('academy.dateSep15'),
                       isFree: true,
                       emoji: '',
                     }}
@@ -139,8 +141,8 @@ export default function BeautyAcademyPage(): JSX.Element {
             <AskDermatologistCard
               doctor={{
                 name: 'د. نورة القحطاني',
-                specialty: 'الأمراض الجلدية والتجميل',
-                credentials: 'البورد السعودي',
+                specialty: t('academy.specialty.dermatology'),
+                credentials: t('academy.credentials.saudiBoard'),
               }}
               nextSession="2026-08-20"
               questionsCount={15}
@@ -153,9 +155,9 @@ export default function BeautyAcademyPage(): JSX.Element {
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyMythBusterCard
-                myth={myths?.data?.myth ?? 'معجون الأسنان يعالج الحبوب'}
-                fact={myths?.data?.fact ?? 'معجون الأسنان يهيج البشرة ويسبب حروقاً كيميائية'}
-                source={myths?.data?.source ?? 'مجلة الأمراض الجلدية'}
+                myth={myths?.data?.myth ?? t('academy.myth.toothpaste')}
+                fact={myths?.data?.fact ?? t('academy.myth.toothpasteFact')}
+                source={myths?.data?.source ?? t('academy.myth.source')}
               />
               <BeautyTriviaCard />
             </div>
@@ -171,9 +173,9 @@ export default function BeautyAcademyPage(): JSX.Element {
           <div className="space-y-6">
             <BeautyWikiCard
               entry={{
-                title: 'فيتامين سي',
+                title: t('academy.ingredient.vitaminC'),
                 category: 'ingredient',
-                excerpt: 'فيتامين سي هو مضاد أكسدة قوي يساعد على تفتيح البشرة وتوحيد لونها...',
+                excerpt: t('academy.ingredient.vitaminCExcerpt'),
                 readTime: 5,
                 verified: true,
                 isArabicOriginal: true,
@@ -181,69 +183,78 @@ export default function BeautyAcademyPage(): JSX.Element {
             />
             <IngredientGlossaryCard
               ingredient={{
-                name: 'فيتامين سي',
+                name: t('academy.ingredient.vitaminC'),
                 type: 'antioxidant',
-                benefits: ['تفتيح', 'مضاد أكسدة', 'تحفيز الكولاجين'],
-                suitableFor: ['جميع أنواع البشرة'],
-                warnings: ['لا يخلط مع الريتينول'],
+                benefits: [
+                  t('academy.ingredient.benefit.brightening'),
+                  t('academy.ingredient.benefit.antioxidant'),
+                  t('academy.ingredient.benefit.collagen'),
+                ],
+                suitableFor: [t('academy.ingredient.allSkinTypes')],
+                warnings: [t('academy.ingredient.warning.retinol')],
               }}
             />
             <BeautyIngredientHighlightCard
               ingredient={{
-                name: 'زيت الأرغان',
-                origin: 'المغرب',
-                benefits: ['ترطيب', 'مضاد شيخوخة', 'تقوية الشعر'],
-                funFact: 'يحتوي على فيتامين E أكثر بـ 3 مرات من زيت الزيتون',
+                name: t('academy.ingredient.arganOil'),
+                origin: t('academy.ingredient.morocco'),
+                benefits: [
+                  t('academy.ingredient.benefit.hydration'),
+                  t('academy.ingredient.benefit.antiAging'),
+                  t('academy.ingredient.benefit.hairStrengthening'),
+                ],
+                funFact: t('academy.ingredient.arganFunFact'),
               }}
             />
             <BeautyRecipeCard
               recipe={{
-                title: recipes?.data?.items?.[0]?.title ?? 'ماسك العسل والزبادي',
+                title: recipes?.data?.items?.[0]?.title ?? t('academy.recipe.honeyYogurt'),
                 ingredients: (recipes?.data?.items?.[0]?.ingredientsJson as string[]) ?? [
-                  'ملعقة عسل',
-                  'ملعقة زبادي',
-                  'قطرات ليمون',
+                  t('academy.recipe.ingredient.honey'),
+                  t('academy.recipe.ingredient.yogurt'),
+                  t('academy.recipe.ingredient.lemon'),
                 ],
                 steps: (recipes?.data?.items?.[0]?.stepsJson as string[]) ?? [
-                  'اخلطي المكونات',
-                  'ضعيها على الوجه 15 دقيقة',
-                  'اغسلي بماء فاتر',
+                  t('academy.recipe.step.mix'),
+                  t('academy.recipe.step.apply'),
+                  t('academy.recipe.step.rinse'),
                 ],
-                duration: recipes?.data?.items?.[0]?.duration ?? '15 دقيقة',
-                forSkin: recipes?.data?.items?.[0]?.forSkin ?? 'جميع الأنواع',
+                duration: recipes?.data?.items?.[0]?.duration ?? t('academy.recipe.duration'),
+                forSkin: recipes?.data?.items?.[0]?.forSkin ?? t('academy.recipe.forSkin'),
               }}
             />
             <BeautyBookClubCard
               book={{
-                title: bookClubs?.data?.items?.[0]?.title ?? 'أسرار الجمال العربي',
+                title: bookClubs?.data?.items?.[0]?.title ?? t('academy.book.arabBeautySecrets'),
                 author: bookClubs?.data?.items?.[0]?.author ?? 'د. نورة',
                 members: bookClubs?.data?.items?.[0]?.members ?? 45,
-                currentChapter: bookClubs?.data?.items?.[0]?.currentChapter ?? 'الفصل 3',
-                nextMeeting: bookClubs?.data?.items?.[0]?.nextMeeting ?? '25 أغسطس',
+                currentChapter:
+                  bookClubs?.data?.items?.[0]?.currentChapter ?? t('academy.book.chapter3'),
+                nextMeeting: bookClubs?.data?.items?.[0]?.nextMeeting ?? t('academy.dateAug25'),
               }}
             />
             <SaudiBeautyHeritageCard practice="henna" />
             <BeautyInfographicCard
-              topic="الحماية من الشمس"
+              topic={t('academy.info.sunProtection')}
               emoji="️"
               stats={[
-                { label: 'أشعة UVA', value: '95%', desc: 'تخترق الغيوم والزجاج' },
-                { label: 'SPF 30', value: '97%', desc: 'نسبة الحماية' },
+                { label: t('academy.info.uvaRays'), value: '95%', desc: t('academy.info.uvaDesc') },
+                { label: 'SPF 30', value: '97%', desc: t('academy.info.spfDesc') },
               ]}
-              source="منظمة الصحة العالمية"
+              source={t('academy.info.who')}
             />
             <BeautyQuickTipCard
               tip={{
                 emoji: dailyTip?.data?.emoji ?? '',
-                title: dailyTip?.data?.category ?? 'الماء أولاً',
-                body: dailyTip?.data?.tip ?? 'اشربي كوب ماء قبل قهوتكِ الصباحية — بشرتكِ ستشكركِ',
-                source: 'أكاديمية الجمال',
+                title: dailyTip?.data?.category ?? t('academy.tip.waterFirst'),
+                body: dailyTip?.data?.tip ?? t('academy.tip.waterBody'),
+                source: t('academy.title'),
               }}
             />
             <ProBonoLessonCard lessons={24} volunteers={8} />
             <AcademyCertificateBadge
               certificate={{
-                course: 'مكياج احترافي',
+                course: t('academy.course.professionalMakeup'),
                 level: 'professional',
                 date: '2026-07',
                 certId: 'GOB-2026-001',
@@ -252,11 +263,11 @@ export default function BeautyAcademyPage(): JSX.Element {
             />
             <BeautyLearningPathCard
               path={{
-                title: 'مكياج احترافي',
+                title: t('academy.course.professionalMakeup'),
                 modules: 8,
                 completed: 3,
                 emoji: '',
-                duration: '6 أشهر',
+                duration: t('academy.path.sixMonths'),
               }}
             />
           </div>

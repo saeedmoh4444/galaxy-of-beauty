@@ -1,8 +1,10 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, formatCurrency } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function SmartPricingPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading } = api.smartPricing.current.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -13,10 +15,8 @@ export default function SmartPricingPage(): JSX.Element {
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">الأسعار الذكية</h1>
-        <p className="mt-2 text-text-secondary">
-          أسعار متغيرة حسب الطلب — احجزي في الوقت المناسب ووفري!
-        </p>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.smart-pricing.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.smart-pricing.subtitle')}</p>
       </div>
       {isLoading ? (
         <CardListSkeleton count={4} />
@@ -38,7 +38,9 @@ export default function SmartPricingPage(): JSX.Element {
                 <p
                   className={`text-2xl font-extrabold ${(s.currentPrice as number) < (s.basePrice as number) ? 'text-green-600' : 'text-brand-600'}`}
                 >
-                  {formatCurrency(s.currentPrice as number)} ر.س
+                  {t('marketing.smart-pricing.price-sar', {
+                    price: formatCurrency(s.currentPrice as number),
+                  })}
                 </p>
                 {(s.discount as number) > 0 && (
                   <span className="rounded-full bg-green-100 dark:bg-green-900 px-2 py-0.5 text-xs font-bold text-green-700">

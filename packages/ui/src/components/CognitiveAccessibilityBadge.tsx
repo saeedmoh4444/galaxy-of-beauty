@@ -20,27 +20,63 @@ type CogFeature =
 
 interface CogDef {
   emoji: string;
-  label: string;
-  detail: string;
+  label: { ar: string; en: string };
+  detail: { ar: string; en: string };
 }
 
 const FEATURES: CogDef[] = [
-  { emoji: '', label: 'قائمة مبسطة', detail: 'خيارات واضحة بدون تعقيد' },
-  { emoji: '️', label: 'جدول مرئي', detail: 'صور توضح كل خطوة قبل البدء' },
-  { emoji: '', label: 'لافتات واضحة', detail: 'إشارات بسيطة ومفهومة' },
-  { emoji: '', label: 'مساحة هادئة', detail: 'مكان للاستراحة عند الحاجة' },
-  { emoji: '‍', label: 'طاقم مألوف', detail: 'نفس الخبيرة في كل زيارة' },
-  { emoji: '', label: 'وقت ممتد', detail: 'مواعيد أطول بدون استعجال' },
+  {
+    emoji: '',
+    label: { ar: 'قائمة مبسطة', en: 'Simple menu' },
+    detail: { ar: 'خيارات واضحة بدون تعقيد', en: 'Clear options without complexity' },
+  },
+  {
+    emoji: '️',
+    label: { ar: 'جدول مرئي', en: 'Visual schedule' },
+    detail: { ar: 'صور توضح كل خطوة قبل البدء', en: 'Images explain each step before you start' },
+  },
+  {
+    emoji: '',
+    label: { ar: 'لافتات واضحة', en: 'Clear signage' },
+    detail: { ar: 'إشارات بسيطة ومفهومة', en: 'Simple, easy-to-understand signs' },
+  },
+  {
+    emoji: '',
+    label: { ar: 'مساحة هادئة', en: 'Quiet space' },
+    detail: { ar: 'مكان للاستراحة عند الحاجة', en: 'A place to rest when needed' },
+  },
+  {
+    emoji: '‍',
+    label: { ar: 'طاقم مألوف', en: 'Familiar staff' },
+    detail: { ar: 'نفس الخبيرة في كل زيارة', en: 'The same technician at every visit' },
+  },
+  {
+    emoji: '',
+    label: { ar: 'وقت ممتد', en: 'Extended time' },
+    detail: { ar: 'مواعيد أطول بدون استعجال', en: 'Longer appointments without rushing' },
+  },
 ];
 
 interface CognitiveAccessibilityBadgeProps {
   features: CogFeature[];
   className?: string;
+  /** Badge heading */
+  title?: string;
+  /** Subtitle under the heading */
+  subtitle?: string;
+  /** Footer text */
+  footerText?: string;
+  /** Display locale for feature labels and details */
+  locale?: 'ar' | 'en';
 }
 
 export function CognitiveAccessibilityBadge({
   features,
   className = '',
+  title = 'صديق للإدراك',
+  subtitle = 'ميزات تسهل التجربة على الجميع',
+  footerText = 'كل عقل جميل بطريقته',
+  locale = 'ar',
 }: CognitiveAccessibilityBadgeProps): JSX.Element | null {
   if (!features.length) return null;
 
@@ -54,7 +90,7 @@ export function CognitiveAccessibilityBadge({
   };
 
   const active = features
-    .map((k) => FEATURES.find((f) => f.label === map[k]))
+    .map((k) => FEATURES.find((f) => f.label.ar === map[k]))
     .filter(Boolean) as CogDef[];
 
   return (
@@ -67,28 +103,28 @@ export function CognitiveAccessibilityBadge({
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true"></span>
         <div>
-          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">صديق للإدراك</h4>
-          <p className="text-[10px] text-teal-500 dark:text-teal-400">
-            ميزات تسهل التجربة على الجميع
-          </p>
+          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
+          <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {active.map((f) => (
           <div
-            key={f.label}
+            key={f.label.ar}
             className="flex items-start gap-2 rounded-lg bg-teal-50 px-2.5 py-2 dark:bg-teal-950"
           >
             <span className="text-sm shrink-0">{f.emoji}</span>
             <div>
-              <p className="text-[10px] font-bold text-teal-800 dark:text-teal-200">{f.label}</p>
-              <p className="text-[9px] text-teal-600 dark:text-teal-400">{f.detail}</p>
+              <p className="text-[10px] font-bold text-teal-800 dark:text-teal-200">
+                {f.label[locale]}
+              </p>
+              <p className="text-[9px] text-teal-600 dark:text-teal-400">{f.detail[locale]}</p>
             </div>
           </div>
         ))}
       </div>
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        كل عقل جميل بطريقته
+        {footerText}
       </p>
     </div>
   );

@@ -13,6 +13,7 @@ interface ModalProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   showClose?: boolean;
   closeOnBackdrop?: boolean;
+  closeLabel?: string;
   className?: string;
 }
 
@@ -40,6 +41,7 @@ export function Modal({
   size = 'md',
   showClose = true,
   closeOnBackdrop = true,
+  closeLabel = 'إغلاق',
   className,
 }: ModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -153,7 +155,7 @@ export function Modal({
           <button
             onClick={onClose}
             className="absolute end-3 top-3 flex h-11 w-11 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-            aria-label="إغلاق"
+            aria-label={closeLabel}
           >
             <svg
               className="h-5 w-5"

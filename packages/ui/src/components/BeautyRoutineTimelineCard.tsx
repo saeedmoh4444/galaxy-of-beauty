@@ -17,6 +17,9 @@ interface BeautyRoutineTimelineCardProps {
   morning: string[];
   evening: string[];
   skinType?: string;
+  title?: string;
+  morningLabel?: string;
+  eveningLabel?: string;
   className?: string;
 }
 
@@ -24,6 +27,9 @@ export function BeautyRoutineTimelineCard({
   morning,
   evening,
   skinType,
+  title = 'روتيني اليومي',
+  morningLabel = 'صباحاً',
+  eveningLabel = 'مساءً',
   className = '',
 }: BeautyRoutineTimelineCardProps): JSX.Element {
   return (
@@ -37,7 +43,7 @@ export function BeautyRoutineTimelineCard({
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true"></span>
           <div>
-            <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">روتيني اليومي</h4>
+            <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
             {skinType && <p className="text-[10px] text-sky-500 dark:text-sky-400">{skinType}</p>}
           </div>
         </div>
@@ -48,7 +54,9 @@ export function BeautyRoutineTimelineCard({
         <div>
           <div className="flex items-center gap-1.5 mb-2">
             <span className="text-sm">️</span>
-            <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300">صباحاً</span>
+            <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300">
+              {morningLabel}
+            </span>
           </div>
           <div className="space-y-1">
             {morning.map((step, i) => (
@@ -67,7 +75,7 @@ export function BeautyRoutineTimelineCard({
           <div className="flex items-center gap-1.5 mb-2">
             <span className="text-sm"></span>
             <span className="text-[10px] font-bold text-indigo-700 dark:text-indigo-300">
-              مساءً
+              {eveningLabel}
             </span>
           </div>
           <div className="space-y-1">

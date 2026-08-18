@@ -15,6 +15,12 @@ interface BeautySavingsMilestoneCardProps {
   milestones: number[];
   onViewSavings?: () => void;
   className?: string;
+  title?: string;
+  savedAmountText?: string;
+  milestoneSuffix?: string;
+  nextMilestonePrefix?: string;
+  remainingPrefix?: string;
+  buttonText?: string;
 }
 
 const COLORS = [
@@ -30,6 +36,12 @@ export function BeautySavingsMilestoneCard({
   milestones,
   onViewSavings,
   className = '',
+  title = 'محطات الادخار',
+  savedAmountText = 'ر.س مدخرة',
+  milestoneSuffix = 'ر.س',
+  nextMilestonePrefix = 'المحطة القادمة: ',
+  remainingPrefix = ' — باقي',
+  buttonText = 'تفقدي مدخراتكِ',
 }: BeautySavingsMilestoneCardProps): JSX.Element | null {
   if (!milestones.length) return null;
   const nextMilestone = milestones.find((m) => m > saved);
@@ -43,11 +55,9 @@ export function BeautySavingsMilestoneCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-emerald-700 dark:text-emerald-300">
-          محطات الادخار
-        </h4>
+        <h4 className="mt-1 text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
         <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
-          {saved.toLocaleString('ar-SA')} ر.س مدخرة
+          {saved.toLocaleString('ar-SA')} {savedAmountText}
         </p>
       </div>
 
@@ -85,7 +95,7 @@ export function BeautySavingsMilestoneCard({
                   : 'text-gray-400 dark:text-gray-600',
               )}
             >
-              {m.toLocaleString('ar-SA')} ر.س
+              {m.toLocaleString('ar-SA')} {milestoneSuffix}
             </span>
           </div>
         ))}
@@ -94,8 +104,9 @@ export function BeautySavingsMilestoneCard({
       {nextMilestone && (
         <div className="mt-2 rounded-lg bg-amber-50 p-2 text-center dark:bg-amber-950">
           <p className="text-[10px] text-amber-700 dark:text-amber-300">
-            المحطة القادمة: {nextMilestone.toLocaleString('ar-SA')} ر.س — باقي{' '}
-            {nextMilestone - saved} ر.س
+            {nextMilestonePrefix}
+            {nextMilestone.toLocaleString('ar-SA')} {milestoneSuffix}
+            {remainingPrefix} {nextMilestone - saved} {milestoneSuffix}
           </p>
         </div>
       )}
@@ -105,7 +116,7 @@ export function BeautySavingsMilestoneCard({
         onClick={onViewSavings}
         className="mt-3 w-full rounded-xl bg-emerald-600 py-2 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
       >
-        تفقدي مدخراتكِ
+        {buttonText}
       </button>
     </div>
   );

@@ -20,48 +20,105 @@ interface MommyAndMeCardProps {
   duration?: string;
   onBook?: () => void;
   className?: string;
+  /** Header title */
+  title?: string;
+  /** Header subtitle */
+  subtitle?: string;
+  /** Label under the mom avatar */
+  momLabel?: string;
+  /** Word appended to the daughter's age */
+  yearsSuffix?: string;
+  /** Word for years in the age range badge */
+  yearsWord?: string;
+  /** Warning shown when the experience is not age-appropriate */
+  notAppropriateText?: string;
+  /** Label for the duration box */
+  durationLabel?: string;
+  /** Label for the price box */
+  priceLabel?: string;
+  /** Currency suffix shown after the price */
+  currencySuffix?: string;
+  /** Booking button label */
+  bookLabel?: string;
+  /** Memory note footer text */
+  memoryText?: string;
+  /** Locale for internal experience data strings */
+  locale?: 'ar' | 'en';
 }
 
 const EXPERIENCES = {
   mini_facial: {
     emoji: '‍️',
-    title: 'عناية بالبشرة المصغرة',
-    description: 'أول تجربة عناية بالبشرة للأم وابنتها',
+    title: { ar: 'عناية بالبشرة المصغرة', en: 'Mini facial' },
+    description: {
+      ar: 'أول تجربة عناية بالبشرة للأم وابنتها',
+      en: 'A first skincare experience for mom and daughter',
+    },
     ageMin: 8,
     ageMax: 15,
-    includes: ['تنظيف لطيف', 'ترطيب', 'واقي شمس', 'تدليك يدين'],
+    includes: [
+      { ar: 'تنظيف لطيف', en: 'Gentle cleansing' },
+      { ar: 'ترطيب', en: 'Moisturizing' },
+      { ar: 'واقي شمس', en: 'Sunscreen' },
+      { ar: 'تدليك يدين', en: 'Hand massage' },
+    ],
   },
   manicure: {
     emoji: '',
-    title: 'مانيكير الأم وابنتها',
-    description: 'أظافر جميلة جنباً إلى جنب',
+    title: { ar: 'مانيكير الأم وابنتها', en: 'Mom & daughter manicure' },
+    description: { ar: 'أظافر جميلة جنباً إلى جنب', en: 'Beautiful nails side by side' },
     ageMin: 6,
     ageMax: 16,
-    includes: ['تشذيب', 'برد', 'طلاء آمن', 'نقش بسيط'],
+    includes: [
+      { ar: 'تشذيب', en: 'Trimming' },
+      { ar: 'برد', en: 'Filing' },
+      { ar: 'طلاء آمن', en: 'Safe polish' },
+      { ar: 'نقش بسيط', en: 'Simple design' },
+    ],
   },
   hair_braiding: {
     emoji: '',
-    title: 'تضفير الشعر',
-    description: 'تسريحات شعر جميلة ومتناسقة',
+    title: { ar: 'تضفير الشعر', en: 'Hair braiding' },
+    description: { ar: 'تسريحات شعر جميلة ومتناسقة', en: 'Beautiful matching hairstyles' },
     ageMin: 5,
     ageMax: 14,
-    includes: ['تسريحة مضفرة', 'إكسسوارات شعر', 'لمسة لمعان'],
+    includes: [
+      { ar: 'تسريحة مضفرة', en: 'Braided style' },
+      { ar: 'إكسسوارات شعر', en: 'Hair accessories' },
+      { ar: 'لمسة لمعان', en: 'Glossy finish' },
+    ],
   },
   spa_day: {
     emoji: '',
-    title: 'يوم سبا مصغر',
-    description: 'يوم كامل من التدليل للأم وابنتها',
+    title: { ar: 'يوم سبا مصغر', en: 'Mini spa day' },
+    description: {
+      ar: 'يوم كامل من التدليل للأم وابنتها',
+      en: 'A full day of pampering for mom and daughter',
+    },
     ageMin: 10,
     ageMax: 17,
-    includes: ['مساج خفيف', 'مانيكير', 'باديكير', 'شاي وحلويات'],
+    includes: [
+      { ar: 'مساج خفيف', en: 'Light massage' },
+      { ar: 'مانيكير', en: 'Manicure' },
+      { ar: 'باديكير', en: 'Pedicure' },
+      { ar: 'شاي وحلويات', en: 'Tea and sweets' },
+    ],
   },
   makeup_lesson: {
     emoji: '',
-    title: 'درس مكياج أول',
-    description: 'تعلم أساسيات العناية والبشرة مع أمكِ',
+    title: { ar: 'درس مكياج أول', en: 'First makeup lesson' },
+    description: {
+      ar: 'تعلم أساسيات العناية والبشرة مع أمكِ',
+      en: 'Learn skincare basics with your mom',
+    },
     ageMin: 12,
     ageMax: 17,
-    includes: ['تنظيف البشرة', 'ترطيب', 'مكياج خفيف جداً', 'نصائح للعناية'],
+    includes: [
+      { ar: 'تنظيف البشرة', en: 'Skin cleansing' },
+      { ar: 'ترطيب', en: 'Moisturizing' },
+      { ar: 'مكياج خفيف جداً', en: 'Very light makeup' },
+      { ar: 'نصائح للعناية', en: 'Care tips' },
+    ],
   },
 };
 
@@ -74,6 +131,18 @@ export function MommyAndMeCard({
   duration = '90 دقيقة',
   onBook,
   className = '',
+  title = 'ماما وأنا',
+  subtitle = 'وقت خاص بين الأم وابنتها',
+  momLabel = 'ماما',
+  yearsSuffix = 'سنوات',
+  yearsWord = 'سنة',
+  notAppropriateText = 'قد لا يكون مناسباً لعمر ابنتكِ',
+  durationLabel = 'المدة',
+  priceLabel = 'السعر للشخصين',
+  currencySuffix = 'ر.س',
+  bookLabel = 'احجزي وقتكما الخاص',
+  memoryText = 'صورة تذكارية لكما معاً — لأن هذه اللحظات لا تنسى',
+  locale = 'ar',
 }: MommyAndMeCardProps): JSX.Element {
   const exp = EXPERIENCES[experience] ?? EXPERIENCES.mini_facial;
   const isAgeAppropriate = daughterAge >= exp.ageMin && daughterAge <= exp.ageMax;
@@ -90,8 +159,8 @@ export function MommyAndMeCard({
         <span className="text-3xl" aria-hidden="true">
           ‍
         </span>
-        <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">ماما وأنا</h4>
-        <p className="text-[10px] text-pink-500 dark:text-pink-400">وقت خاص بين الأم وابنتها</p>
+        <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">{title}</h4>
+        <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
       </div>
 
       {/* Participants */}
@@ -99,7 +168,7 @@ export function MommyAndMeCard({
         <div className="text-center">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-200 to-rose-200 text-lg dark:from-pink-800 dark:to-rose-800"></div>
           <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">{mom}</p>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">ماما</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{momLabel}</p>
         </div>
 
         <span className="text-pink-400 text-lg" aria-hidden="true"></span>
@@ -109,7 +178,9 @@ export function MommyAndMeCard({
           <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
             {daughter}
           </p>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{daughterAge} سنوات</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">
+            {daughterAge} {yearsSuffix}
+          </p>
         </div>
       </div>
 
@@ -120,8 +191,12 @@ export function MommyAndMeCard({
             {exp.emoji}
           </span>
           <div>
-            <p className="text-xs font-bold text-text-primary dark:text-gray-100">{exp.title}</p>
-            <p className="text-[10px] text-text-secondary dark:text-gray-300">{exp.description}</p>
+            <p className="text-xs font-bold text-text-primary dark:text-gray-100">
+              {exp.title[locale]}
+            </p>
+            <p className="text-[10px] text-text-secondary dark:text-gray-300">
+              {exp.description[locale]}
+            </p>
           </div>
         </div>
 
@@ -135,11 +210,11 @@ export function MommyAndMeCard({
                 : 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
             )}
           >
-            {exp.ageMin}-{exp.ageMax} سنة
+            {exp.ageMin}-{exp.ageMax} {yearsWord}
           </span>
           {!isAgeAppropriate && (
             <span className="text-[9px] text-amber-600 dark:text-amber-400">
-              قد لا يكون مناسباً لعمر ابنتكِ
+              {notAppropriateText}
             </span>
           )}
         </div>
@@ -148,10 +223,10 @@ export function MommyAndMeCard({
         <div className="mt-2 flex flex-wrap gap-1">
           {exp.includes.map((item) => (
             <span
-              key={item}
+              key={item.ar}
               className="rounded-full bg-pink-50 px-2 py-0.5 text-[9px] text-pink-700 dark:bg-pink-950 dark:text-pink-300"
             >
-              {item}
+              {item[locale]}
             </span>
           ))}
         </div>
@@ -160,12 +235,14 @@ export function MommyAndMeCard({
       {/* Details */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">المدة</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{durationLabel}</p>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">{duration}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">السعر للشخصين</p>
-          <p className="text-xs font-bold text-pink-700 dark:text-pink-400">{totalPrice} ر.س</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{priceLabel}</p>
+          <p className="text-xs font-bold text-pink-700 dark:text-pink-400">
+            {totalPrice} {currencySuffix}
+          </p>
         </div>
       </div>
 
@@ -175,13 +252,11 @@ export function MommyAndMeCard({
         onClick={onBook}
         className="mt-3 w-full rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 py-2.5 text-xs font-bold text-white hover:from-pink-600 hover:to-purple-600 active:scale-[0.98] transition-all shadow-sm"
       >
-        احجزي وقتكما الخاص
+        {bookLabel}
       </button>
 
       {/* Memory */}
-      <p className="mt-2 text-center text-[9px] text-pink-500 dark:text-pink-400">
-        صورة تذكارية لكما معاً — لأن هذه اللحظات لا تنسى
-      </p>
+      <p className="mt-2 text-center text-[9px] text-pink-500 dark:text-pink-400">{memoryText}</p>
     </div>
   );
 }

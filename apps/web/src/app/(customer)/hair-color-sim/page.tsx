@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 import Link from 'next/link';
 
 export default function HairColorSimPage(): JSX.Element {
+  const { t } = useLocale();
   const [photo, setPhoto] = useState('');
   const [selected, setSelected] = useState<string | null>(null);
   const { data: colors, isLoading } = api.hairColorSim.colors.useQuery() as {
@@ -21,12 +23,12 @@ export default function HairColorSimPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">‍️ محاكي لون الشعر</h1>
-          <p className="mt-1 text-sm text-text-secondary">جرّبي ألوان شعر مختلفة قبل الصبغة</p>
+          <h1 className="text-2xl font-bold">‍️{t('hairColorSim.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('hairColorSim.subtitle')}</p>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3"> حمّلي صورتكِ</h3>
+          <h3 className="font-bold mb-3">{t('hairColorSim.upload')}</h3>
           <input
             type="file"
             accept="image/*"
@@ -38,12 +40,16 @@ export default function HairColorSimPage(): JSX.Element {
           />
           {photo && (
             /* eslint-disable-next-line @next/next/no-img-element -- blob: URL from URL.createObjectURL cannot be passed to next/image */
-            <img src={photo} alt="صورتك" className="mt-3 h-48 rounded-xl object-cover w-full" />
+            <img
+              src={photo}
+              alt={t('hairColorSim.yourPhoto')}
+              className="mt-3 h-48 rounded-xl object-cover w-full"
+            />
           )}
         </Card>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-4"> اختاري لوناً</h3>
+          <h3 className="font-bold mb-4">{t('hairColorSim.choose')}</h3>
           {isLoading ? (
             <GridSkeleton count={6} />
           ) : (
@@ -72,7 +78,7 @@ export default function HairColorSimPage(): JSX.Element {
         {selected && (
           <div className="text-center">
             <Link href="/bookings/create">
-              <Button size="lg">‍️ احجزي صبغة الآن</Button>
+              <Button size="lg">‍️{t('hairColorSim.bookNow')}</Button>
             </Link>
           </div>
         )}

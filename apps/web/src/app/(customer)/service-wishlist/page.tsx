@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, EmptyState, Button, Modal, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function ServiceWishlistPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: items, refetch } = api.serviceWishlist.myWishlist.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     refetch: () => void;
@@ -27,16 +29,16 @@ export default function ServiceWishlistPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold"> قائمة الخدمات</h1>
-            <p className="mt-1 text-sm text-text-secondary">تابعي أسعار الخدمات اللي تبينها</p>
+            <h1 className="text-2xl font-bold">{t('serviceWishlist.title')}</h1>
+            <p className="mt-1 text-sm text-text-secondary">{t('serviceWishlist.subtitle')}</p>
           </div>
-          <Button onClick={() => setShow(true)}>+ خدمة</Button>
+          <Button onClick={() => setShow(true)}>{t('serviceWishlist.addService')}</Button>
         </div>
         {list.length === 0 ? (
           <EmptyState
-            title="لا توجد خدمات"
-            description="أضيفي خدمات لمتابعة أسعارها"
-            action={{ label: 'إضافة', onPress: () => setShow(true) }}
+            title={t('serviceWishlist.emptyTitle')}
+            description={t('serviceWishlist.emptyDescription')}
+            action={{ label: t('serviceWishlist.add'), onPress: () => setShow(true) }}
           />
         ) : (
           <div className="space-y-3">
@@ -47,7 +49,9 @@ export default function ServiceWishlistPage(): JSX.Element {
                   <div>
                     <p className="font-bold">{i.serviceName as string}</p>
                     <p className="text-xs text-text-secondary">
-                      أقل سعر: {formatCurrency(i.lowestPrice as number)}
+                      {t('serviceWishlist.lowestPrice', {
+                        amount: formatCurrency(i.lowestPrice as number),
+                      })}
                     </p>
                   </div>
                 </div>
@@ -71,19 +75,23 @@ export default function ServiceWishlistPage(): JSX.Element {
             ))}
           </div>
         )}
-        <Modal open={show} onClose={() => setShow(false)} title="إضافة خدمة">
+        <Modal
+          open={show}
+          onClose={() => setShow(false)}
+          title={t('serviceWishlist.addModalTitle')}
+        >
           <div className="space-y-3">
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="اسم الخدمة"
+              placeholder={t('serviceWishlist.serviceNamePlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <input
               type="number"
               value={price}
               onChange={(e) => setPrice(parseInt(e.target.value) || 0)}
-              placeholder="السعر الحالي"
+              placeholder={t('serviceWishlist.currentPricePlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <Button
@@ -94,7 +102,7 @@ export default function ServiceWishlistPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-              إضافة
+              {t('serviceWishlist.add')}
             </Button>
           </div>
         </Modal>

@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyHairBrideCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyHairBrideCard({
+  className = '',
+  title = 'شعر العروس',
+  subtitle = 'تحضير الشعر للزفاف',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,47 @@ export function BeautyHairBrideCard({ className = '' }: { className?: string }):
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">شعر العروس</h4>
-          <p className="text-[10px] text-pink-500 dark:text-pink-400">تحضير الشعر للزفاف</p>
+          <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
+          <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'ابدئي العناية قبل 6 أشهر من الزفاف' },
-          { emoji: '', text: 'حمام زيت أسبوعي — لتغذية عميقة' },
-          { emoji: '️', text: 'قص الأطراف قبل الزفاف بشهر' },
-          { emoji: '', text: 'تجربة التسريحة قبل الزفاف بأسبوعين' },
+          {
+            emoji: '',
+            text: {
+              ar: 'ابدئي العناية قبل 6 أشهر من الزفاف',
+              en: 'Start your care routine 6 months before the wedding',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'حمام زيت أسبوعي — لتغذية عميقة',
+              en: 'A weekly oil treatment — for deep nourishment',
+            },
+          },
+          {
+            emoji: '️',
+            text: {
+              ar: 'قص الأطراف قبل الزفاف بشهر',
+              en: 'Trim the ends a month before the wedding',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'تجربة التسريحة قبل الزفاف بأسبوعين',
+              en: 'Try the hairstyle two weeks before the wedding',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-pink-50 px-3 py-2 dark:bg-pink-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-pink-800 dark:text-pink-200">{t.text}</span>
+            <span className="text-[10px] text-pink-800 dark:text-pink-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

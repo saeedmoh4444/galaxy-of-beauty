@@ -16,6 +16,14 @@ interface AllergyTestCardProps {
   hasAllergies?: boolean;
   onBookTest?: () => void;
   className?: string;
+  title?: string;
+  allergySubtitle?: string;
+  patchTestSubtitle?: string;
+  lastTestLabel?: string;
+  nextDueLabel?: string;
+  dueButtonText?: string;
+  bookButtonText?: string;
+  footerText?: string;
 }
 
 export function AllergyTestCard({
@@ -24,6 +32,14 @@ export function AllergyTestCard({
   hasAllergies = false,
   onBookTest,
   className = '',
+  title = 'اختبار الحساسية',
+  allergySubtitle = 'لديكِ حساسية مسجلة',
+  patchTestSubtitle = 'اختبار رقعة قبل العلاجات الجديدة',
+  lastTestLabel = 'آخر اختبار',
+  nextDueLabel = 'الاختبار القادم',
+  dueButtonText = ' موعد الاختبار',
+  bookButtonText = 'احجزي اختبار حساسية',
+  footerText = '🩺 سلامتكِ أولاً — اختبار الحساسية مجاني',
 }: AllergyTestCardProps): JSX.Element {
   const isDue = nextDue ? new Date(nextDue) <= new Date() : false;
 
@@ -42,11 +58,9 @@ export function AllergyTestCard({
           🩹
         </span>
         <div>
-          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-            اختبار الحساسية
-          </h4>
+          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
-            {hasAllergies ? 'لديكِ حساسية مسجلة' : 'اختبار رقعة قبل العلاجات الجديدة'}
+            {hasAllergies ? allergySubtitle : patchTestSubtitle}
           </p>
         </div>
       </div>
@@ -54,7 +68,7 @@ export function AllergyTestCard({
       <div className="mt-3 grid grid-cols-2 gap-2">
         {lastTest && (
           <div className="rounded-xl bg-emerald-50 p-2.5 text-center dark:bg-emerald-950">
-            <p className="text-[9px] text-emerald-600 dark:text-emerald-400">آخر اختبار</p>
+            <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{lastTestLabel}</p>
             <p className="text-sm font-bold text-emerald-800 dark:text-emerald-200">{lastTest}</p>
           </div>
         )}
@@ -65,7 +79,7 @@ export function AllergyTestCard({
               isDue ? 'bg-amber-100 dark:bg-amber-900' : 'bg-emerald-50 dark:bg-emerald-950',
             )}
           >
-            <p className="text-[9px] text-text-tertiary dark:text-gray-500">الاختبار القادم</p>
+            <p className="text-[9px] text-text-tertiary dark:text-gray-500">{nextDueLabel}</p>
             <p
               className={cn(
                 'text-sm font-bold',
@@ -90,11 +104,11 @@ export function AllergyTestCard({
             : 'bg-emerald-600 text-white hover:bg-emerald-700',
         )}
       >
-        {isDue ? ' موعد الاختبار' : 'احجزي اختبار حساسية'}
+        {isDue ? dueButtonText : bookButtonText}
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🩺 سلامتكِ أولاً — اختبار الحساسية مجاني
+        {footerText}
       </p>
     </div>
   );

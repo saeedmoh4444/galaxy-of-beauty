@@ -37,11 +37,41 @@ const SAUDI_NAMES = [
 interface FakeNameGeneratorProps {
   onSelect?: (name: string) => void;
   className?: string;
+  /** Header title */
+  title?: string;
+  /** Header subtitle */
+  subtitle?: string;
+  /** Label above the current selection */
+  selectedLabel?: string;
+  /** Button to change the selected name */
+  changeLabel?: string;
+  /** Button to generate a random name */
+  generateLabel?: string;
+  /** Label above the generated name */
+  suggestionLabel?: string;
+  /** Button to use the generated name */
+  useLabel?: string;
+  /** Button to try another name */
+  tryAnotherLabel?: string;
+  /** Hint to pick from the list */
+  pickFromListLabel?: string;
+  /** Privacy footnote */
+  privacyNote?: string;
 }
 
 export function FakeNameGenerator({
   onSelect,
   className = '',
+  title = 'احجزي باسم مستعار',
+  subtitle = 'خصوصيتكِ تهمنا — لا حاجة لاستخدام اسمكِ الحقيقي',
+  selectedLabel = 'اسم الحجز',
+  changeLabel = 'تغيير الاسم',
+  generateLabel = 'ولّدي اسماً عشوائياً',
+  suggestionLabel = 'نقترح عليكِ',
+  useLabel = 'استخدام',
+  tryAnotherLabel = 'جربِي آخر',
+  pickFromListLabel = 'أو اختاري من القائمة',
+  privacyNote = 'اسمكِ الحقيقي يبقى محمياً. الاسم المستعار يُستخدم فقط للتواصل مع الخبيرة أثناء الموعد.',
 }: FakeNameGeneratorProps): JSX.Element {
   const [generated, setGenerated] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
@@ -69,12 +99,8 @@ export function FakeNameGenerator({
       <div className="flex items-center gap-2">
         <span className="text-lg" aria-hidden="true"></span>
         <div>
-          <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">
-            احجزي باسم مستعار
-          </h4>
-          <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">
-            خصوصيتكِ تهمنا — لا حاجة لاستخدام اسمكِ الحقيقي
-          </p>
+          <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">{title}</h4>
+          <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">{subtitle}</p>
         </div>
       </div>
 
@@ -82,7 +108,7 @@ export function FakeNameGenerator({
       {selected && (
         <div className="mt-3 rounded-xl bg-fuchsia-50 p-3 dark:bg-fuchsia-950">
           <p className="text-center text-[10px] text-fuchsia-600 dark:text-fuchsia-400">
-            اسم الحجز
+            {selectedLabel}
           </p>
           <p className="text-center text-lg font-bold text-fuchsia-800 dark:text-fuchsia-200">
             {selected}
@@ -92,7 +118,7 @@ export function FakeNameGenerator({
             onClick={() => setSelected(null)}
             className="mt-1 block w-full text-center text-[10px] text-fuchsia-500 underline hover:text-fuchsia-700 dark:text-fuchsia-400"
           >
-            تغيير الاسم
+            {changeLabel}
           </button>
         </div>
       )}
@@ -105,13 +131,15 @@ export function FakeNameGenerator({
             onClick={generate}
             className="mt-3 w-full rounded-xl bg-fuchsia-600 py-2.5 text-xs font-bold text-white hover:bg-fuchsia-700 active:scale-[0.98] transition-all"
           >
-            ولّدي اسماً عشوائياً
+            {generateLabel}
           </button>
 
           {/* Generated name */}
           {generated && (
             <div className="mt-3 rounded-xl bg-fuchsia-50 p-3 text-center dark:bg-fuchsia-950">
-              <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">نقترح عليكِ</p>
+              <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">
+                {suggestionLabel}
+              </p>
               <p className="mt-1 text-xl font-bold text-fuchsia-700 dark:text-fuchsia-300">
                 {generated}
               </p>
@@ -121,14 +149,14 @@ export function FakeNameGenerator({
                   onClick={() => select(generated)}
                   className="flex-1 rounded-lg bg-fuchsia-600 py-1.5 text-[10px] font-bold text-white hover:bg-fuchsia-700"
                 >
-                  استخدام
+                  {useLabel}
                 </button>
                 <button
                   type="button"
                   onClick={generate}
                   className="flex-1 rounded-lg bg-fuchsia-100 py-1.5 text-[10px] font-bold text-fuchsia-700 hover:bg-fuchsia-200 dark:bg-fuchsia-900 dark:text-fuchsia-300"
                 >
-                  جربِي آخر
+                  {tryAnotherLabel}
                 </button>
               </div>
             </div>
@@ -137,7 +165,7 @@ export function FakeNameGenerator({
           {/* Name grid */}
           <div className="mt-3">
             <p className="text-[10px] font-bold text-text-tertiary dark:text-gray-400 mb-2">
-              أو اختاري من القائمة
+              {pickFromListLabel}
             </p>
             <div className="flex flex-wrap gap-1.5">
               {SAUDI_NAMES.slice(0, 12).map((name) => (
@@ -158,9 +186,7 @@ export function FakeNameGenerator({
       {/* Privacy note */}
       <div className="mt-3 flex items-start gap-1.5 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
         <span className="text-xs shrink-0" aria-hidden="true"></span>
-        <p className="text-[9px] text-text-tertiary dark:text-gray-500">
-          اسمكِ الحقيقي يبقى محمياً. الاسم المستعار يُستخدم فقط للتواصل مع الخبيرة أثناء الموعد.
-        </p>
+        <p className="text-[9px] text-text-tertiary dark:text-gray-500">{privacyNote}</p>
       </div>
     </div>
   );

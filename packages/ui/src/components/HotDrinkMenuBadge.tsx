@@ -22,23 +22,57 @@ type Drink =
 
 interface DrinkDef {
   emoji: string;
-  name: string;
-  description: string;
+  name: { ar: string; en: string };
+  description: { ar: string; en: string };
 }
 
 const DRINKS: Record<Drink, DrinkDef> = {
   arabic_coffee: {
     emoji: '',
-    name: 'قهوة عربية',
-    description: 'قهوة سعودية أصيلة بالهيل والزعفران',
+    name: { ar: 'قهوة عربية', en: 'Arabic coffee' },
+    description: {
+      ar: 'قهوة سعودية أصيلة بالهيل والزعفران',
+      en: 'Authentic Saudi coffee with cardamom and saffron',
+    },
   },
-  karak: { emoji: '', name: 'كرك', description: 'شاي كرك هندي بالحليب والتوابل' },
-  herbal_tea: { emoji: '', name: 'شاي أعشاب', description: 'مزيج أعشاب طبيعي مهدئ' },
-  green_tea: { emoji: '', name: 'شاي أخضر', description: 'شاي أخضر منعش مع نعناع' },
-  chamomile: { emoji: '', name: 'بابونج', description: 'شاي بابونج للاسترخاء' },
-  mint_tea: { emoji: '', name: 'شاي نعناع', description: 'شاي نعناع طازج منعش' },
-  latte: { emoji: '', name: 'لاتيه', description: 'قهوة لاتيه كريمية' },
-  hot_chocolate: { emoji: '', name: 'شوكولاتة ساخنة', description: 'شوكولاتة ساخنة غنية' },
+  karak: {
+    emoji: '',
+    name: { ar: 'كرك', en: 'Karak tea' },
+    description: {
+      ar: 'شاي كرك هندي بالحليب والتوابل',
+      en: 'Indian karak tea with milk and spices',
+    },
+  },
+  herbal_tea: {
+    emoji: '',
+    name: { ar: 'شاي أعشاب', en: 'Herbal tea' },
+    description: { ar: 'مزيج أعشاب طبيعي مهدئ', en: 'A calming natural herbal blend' },
+  },
+  green_tea: {
+    emoji: '',
+    name: { ar: 'شاي أخضر', en: 'Green tea' },
+    description: { ar: 'شاي أخضر منعش مع نعناع', en: 'Refreshing green tea with mint' },
+  },
+  chamomile: {
+    emoji: '',
+    name: { ar: 'بابونج', en: 'Chamomile' },
+    description: { ar: 'شاي بابونج للاسترخاء', en: 'Chamomile tea for relaxation' },
+  },
+  mint_tea: {
+    emoji: '',
+    name: { ar: 'شاي نعناع', en: 'Mint tea' },
+    description: { ar: 'شاي نعناع طازج منعش', en: 'Fresh and refreshing mint tea' },
+  },
+  latte: {
+    emoji: '',
+    name: { ar: 'لاتيه', en: 'Latte' },
+    description: { ar: 'قهوة لاتيه كريمية', en: 'Creamy latte coffee' },
+  },
+  hot_chocolate: {
+    emoji: '',
+    name: { ar: 'شوكولاتة ساخنة', en: 'Hot chocolate' },
+    description: { ar: 'شوكولاتة ساخنة غنية', en: 'Rich hot chocolate' },
+  },
 };
 
 interface HotDrinkMenuBadgeProps {
@@ -46,12 +80,30 @@ interface HotDrinkMenuBadgeProps {
   /** Whether drinks are complimentary */
   complimentary?: boolean;
   className?: string;
+  /** Card heading */
+  title?: string;
+  /** Subtitle when drinks are complimentary */
+  complimentaryText?: string;
+  /** Subtitle when drinks are on request */
+  onRequestText?: string;
+  /** Free badge label */
+  freeBadgeText?: string;
+  /** Footer quote */
+  quoteText?: string;
+  /** Display locale for drink names and descriptions */
+  locale?: 'ar' | 'en';
 }
 
 export function HotDrinkMenuBadge({
   drinks,
   complimentary = true,
   className = '',
+  title = 'قائمة المشروبات',
+  complimentaryText = 'مجاناً مع كل خدمة',
+  onRequestText = 'متوفرة حسب الطلب',
+  freeBadgeText = 'مجاناً',
+  quoteText = '“القهوة العربية جزء من كرم الضيافة السعودية”',
+  locale = 'ar',
 }: HotDrinkMenuBadgeProps): JSX.Element | null {
   if (!drinks.length) return null;
 
@@ -66,14 +118,14 @@ export function HotDrinkMenuBadge({
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true"></span>
         <div>
-          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">قائمة المشروبات</h4>
+          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">
-            {complimentary ? 'مجاناً مع كل خدمة' : 'متوفرة حسب الطلب'}
+            {complimentary ? complimentaryText : onRequestText}
           </p>
         </div>
         {complimentary && (
           <span className="ml-auto shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
-            مجاناً
+            {freeBadgeText}
           </span>
         )}
       </div>
@@ -92,10 +144,10 @@ export function HotDrinkMenuBadge({
               </span>
               <div className="min-w-0">
                 <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200 truncate">
-                  {drink.name}
+                  {drink.name[locale]}
                 </p>
                 <p className="text-[9px] text-amber-600 dark:text-amber-400 truncate">
-                  {drink.description}
+                  {drink.description[locale]}
                 </p>
               </div>
             </div>
@@ -105,7 +157,7 @@ export function HotDrinkMenuBadge({
 
       {/* Warm touch */}
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        &ldquo;القهوة العربية جزء من كرم الضيافة السعودية&rdquo;
+        {quoteText}
       </p>
     </div>
   );

@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import { t } from '@galaxy/shared';
+import { getServerLocale } from '@/lib/i18n';
 
 /**
  * Branded route-level loading splash: logo + bouncing dots + loading text.
@@ -19,12 +21,14 @@ interface LogoLoaderProps {
 
 const SIZES = { sm: 56, md: 64, lg: 80 } as const;
 
-export function LogoLoader({
+export async function LogoLoader({
   size = 'md',
-  label = 'جاري التحميل...',
+  label,
   fullHeight = false,
   className = '',
 }: LogoLoaderProps) {
+  const locale = await getServerLocale();
+
   return (
     <div
       role="status"
@@ -48,7 +52,9 @@ export function LogoLoader({
         <div className="h-2.5 w-2.5 animate-bounce rounded-full bg-brand-500 [animation-delay:150ms]" />
         <div className="h-2.5 w-2.5 animate-bounce rounded-full bg-brand-400 [animation-delay:300ms]" />
       </div>
-      <p className="mt-4 text-sm font-medium text-gray-400">{label}</p>
+      <p className="mt-4 text-sm font-medium text-gray-400">
+        {label ?? t('state.loading', locale)}
+      </p>
     </div>
   );
 }

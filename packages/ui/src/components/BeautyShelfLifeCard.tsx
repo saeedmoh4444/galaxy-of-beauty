@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyShelfLifeCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyShelfLifeCard({
+  className = '',
+  title = 'مدة صلاحية المنتجات',
+  subtitle = 'متى تتخلصين من منتجاتك؟',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,25 +21,39 @@ export function BeautyShelfLifeCard({ className = '' }: { className?: string }):
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">
-            مدة صلاحية المنتجات
-          </h4>
-          <p className="text-[10px] text-amber-500 dark:text-amber-400">متى تتخلصين من منتجاتك؟</p>
+          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
+          <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '', label: 'ماسكارا', tip: '3-6 أشهر — الأسرع تلوثاً' },
-          { emoji: '', label: 'كريمات', tip: '6-12 شهر — بعد الفتح' },
-          { emoji: '', label: 'بودرة', tip: 'سنتان — الأطول عمراً' },
-          { emoji: '', label: 'طلاء أظافر', tip: 'سنة — يسمك مع الوقت' },
+          {
+            emoji: '',
+            label: { ar: 'ماسكارا', en: 'Mascara' },
+            tip: { ar: '3-6 أشهر — الأسرع تلوثاً', en: '3-6 months — fastest to contaminate' },
+          },
+          {
+            emoji: '',
+            label: { ar: 'كريمات', en: 'Creams' },
+            tip: { ar: '6-12 شهر — بعد الفتح', en: '6-12 months — after opening' },
+          },
+          {
+            emoji: '',
+            label: { ar: 'بودرة', en: 'Powder' },
+            tip: { ar: 'سنتان — الأطول عمراً', en: '2 years — the longest lasting' },
+          },
+          {
+            emoji: '',
+            label: { ar: 'طلاء أظافر', en: 'Nail polish' },
+            tip: { ar: 'سنة — يسمك مع الوقت', en: '1 year — thickens over time' },
+          },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-amber-50 px-2.5 py-2 dark:bg-amber-950">
             <span className="text-sm">{t.emoji}</span>
             <p className="mt-0.5 text-[10px] font-bold text-amber-800 dark:text-amber-200">
-              {t.label}
+              {t.label[locale]}
             </p>
-            <p className="text-[9px] text-amber-600 dark:text-amber-400">{t.tip}</p>
+            <p className="text-[9px] text-amber-600 dark:text-amber-400">{t.tip[locale]}</p>
           </div>
         ))}
       </div>

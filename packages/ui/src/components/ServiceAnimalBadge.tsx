@@ -11,10 +11,28 @@ import { cn } from '@galaxy/shared';
  */
 
 interface ServiceAnimalBadgeProps {
+  title?: string;
+  subtitle?: string;
+  item1?: string;
+  item2?: string;
+  item3?: string;
+  item4?: string;
+  proofNoteText?: string;
+  footerText?: string;
   className?: string;
 }
 
-export function ServiceAnimalBadge({ className = '' }: ServiceAnimalBadgeProps): JSX.Element {
+export function ServiceAnimalBadge({
+  className = '',
+  title = 'حيوانات الخدمة مرحب بها',
+  subtitle = 'نرحب بحيوانات الخدمة في جميع مرافقنا',
+  item1 = '• مكان مخصص لحيوان الخدمة بجانبكِ',
+  item2 = '• ماء متوفر لحيوانكِ',
+  item3 = '• فريق مدرب على التعامل مع حيوانات الخدمة',
+  item4 = '• مساحة كافية للكرسي المتحرك وحيوان الخدمة معاً',
+  proofNoteText = '‍ لا نحتاج إثبات — وجودكِ مع حيوانكِ يكفي',
+  footerText = 'الوصول حق للجميع',
+}: ServiceAnimalBadgeProps): JSX.Element {
   return (
     <div
       className={cn(
@@ -27,32 +45,28 @@ export function ServiceAnimalBadge({ className = '' }: ServiceAnimalBadgeProps):
           ‍
         </span>
         <div>
-          <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">
-            حيوانات الخدمة مرحب بها
-          </h4>
-          <p className="text-[10px] text-blue-500 dark:text-blue-400">
-            نرحب بحيوانات الخدمة في جميع مرافقنا
-          </p>
+          <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
+          <p className="text-[10px] text-blue-500 dark:text-blue-400">{subtitle}</p>
         </div>
       </div>
 
       <div className="mt-3 rounded-xl bg-blue-50 p-3 dark:bg-blue-950">
         <div className="space-y-1.5 text-[10px] text-blue-700 dark:text-blue-300">
-          <p>• مكان مخصص لحيوان الخدمة بجانبكِ</p>
-          <p>• ماء متوفر لحيوانكِ</p>
-          <p>• فريق مدرب على التعامل مع حيوانات الخدمة</p>
-          <p>• مساحة كافية للكرسي المتحرك وحيوان الخدمة معاً</p>
+          <p>{item1}</p>
+          <p>{item2}</p>
+          <p>{item3}</p>
+          <p>{item4}</p>
         </div>
       </div>
 
       <div className="mt-2 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
         <p className="text-center text-[10px] text-text-secondary dark:text-gray-300">
-          ‍ لا نحتاج إثبات — وجودكِ مع حيوانكِ يكفي
+          {proofNoteText}
         </p>
       </div>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        الوصول حق للجميع
+        {footerText}
       </p>
     </div>
   );

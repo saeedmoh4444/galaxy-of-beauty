@@ -4,8 +4,10 @@ import { api } from '@/lib/trpc';
 import { useState } from 'react';
 import { PageContainer, PageTitle } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function MarketplacePage(): JSX.Element {
+  const { t } = useLocale();
   const [search, setSearch] = useState('');
   const products = api.marketplace.products.useQuery({
     search: search || undefined,
@@ -30,7 +32,7 @@ export default function MarketplacePage(): JSX.Element {
       <PageContainer width="wide">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <PageTitle title="️ متجر الجمال" subtitle="منتجات تجميل أصلية" />
+            <PageTitle title={t('marketplace.title')} subtitle={t('marketplace.subtitle')} />
           </div>
           <span className="rounded-full bg-gray-100 px-4 py-2 text-sm font-bold text-text-primary dark:bg-gray-800 dark:text-gray-100">
             {cartCount}
@@ -40,14 +42,16 @@ export default function MarketplacePage(): JSX.Element {
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder=" ابحثي عن منتج..."
+          placeholder={t('marketplace.searchPlaceholder')}
           className="mb-6 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-right dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
         />
 
         {items.length === 0 ? (
           <div className="py-20 text-center">
             <span className="text-5xl">️</span>
-            <p className="mt-4 text-text-secondary dark:text-gray-400">لا توجد منتجات</p>
+            <p className="mt-4 text-text-secondary dark:text-gray-400">
+              {t('marketplace.noProducts')}
+            </p>
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -65,14 +69,14 @@ export default function MarketplacePage(): JSX.Element {
                 </p>
                 <div className="mt-3 flex items-center justify-between">
                   <span className="text-lg font-extrabold text-rose-600 dark:text-rose-400">
-                    {(p.price as number)?.toLocaleString()} ر.س
+                    {(p.price as number)?.toLocaleString()} {t('misc.sar')}
                   </span>
                   <button
                     type="button"
                     onClick={() => handleAddToCart(p.id as number)}
                     className="rounded-xl bg-rose-600 px-4 py-2 text-xs font-bold text-white hover:bg-rose-700 transition-colors"
                   >
-                    أضيفي
+                    {t('marketplace.add')}
                   </button>
                 </div>
               </div>

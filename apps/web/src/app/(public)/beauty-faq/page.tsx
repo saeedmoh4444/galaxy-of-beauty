@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
+import { useLocale } from '@/components/LocaleProvider';
 import { Card, CardListSkeleton } from '@galaxy/ui';
 
 export default function BeautyFaqPage(): JSX.Element {
+  const { t } = useLocale();
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState<string | undefined>();
   const [search, setSearch] = useState('');
@@ -25,7 +27,7 @@ export default function BeautyFaqPage(): JSX.Element {
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold">Beauty FAQ</h1>
-        <p className="mt-2 text-text-secondary">أجوبة على أسئلتكِ عن الجمال والعناية</p>
+        <p className="mt-2 text-text-secondary">{t('marketing.beauty-faq.subtitle')}</p>
       </div>
 
       <div className="flex gap-2 mb-6">
@@ -34,14 +36,14 @@ export default function BeautyFaqPage(): JSX.Element {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && setSearch(query.trim())}
-          placeholder=" ابحثي عن سؤال..."
+          placeholder={t('marketing.beauty-faq.search-placeholder')}
           className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
         />
         <button
           onClick={() => setSearch(query.trim())}
           className="rounded-lg bg-brand-600 px-4 py-2 text-white text-sm"
         >
-          بحث
+          {t('marketing.beauty-faq.search')}
         </button>
       </div>
 
@@ -50,7 +52,7 @@ export default function BeautyFaqPage(): JSX.Element {
           onClick={() => setCategory(undefined)}
           className={`rounded-full px-3 py-1 text-xs ${!category ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}
         >
-          الكل
+          {t('marketing.beauty-faq.all')}
         </button>
         {categories.map((c: Record<string, unknown>) => (
           <button

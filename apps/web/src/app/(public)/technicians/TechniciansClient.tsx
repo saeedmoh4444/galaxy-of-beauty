@@ -5,7 +5,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
-import { Input, Card, GridSkeleton, ErrorAlert, EmptyState, ar } from '@galaxy/ui';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
+import { Input, Card, GridSkeleton, ErrorAlert, EmptyState } from '@galaxy/ui';
 
 type TechnicianItem = RouterOutputs['technicians']['list']['items'][number];
 
@@ -14,6 +16,7 @@ export interface TechniciansPageData {
 }
 
 export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.Element {
+  const { t, locale } = useLocale();
   const [city, setCity] = useState('');
 
   const query = api.technicians.list.useQuery({ city: city || undefined });
@@ -26,15 +29,17 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
       <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">فنيات التجميل</h1>
+        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">
+          {t('marketing.technicians.title')}
+        </h1>
         <p className="mt-2 text-text-secondary dark:text-gray-400">
-          تصفحي فنيات التجميل المعتمدات في مدينتك
+          {t('marketing.technicians.subtitle')}
         </p>
       </div>
 
       <div className="mb-6 flex flex-wrap gap-4">
         <Input
-          placeholder="المدينة"
+          placeholder={t('marketing.technicians.city-placeholder')}
           value={city}
           onChange={(e) => setCity(e.target.value)}
           className="max-w-xs"
@@ -44,9 +49,15 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
       {query.isLoading && techs.length === 0 ? (
         <GridSkeleton count={6} />
       ) : query.isError ? (
-        <ErrorAlert message="فشل تحميل الفنيات" onRetry={() => query.refetch()} />
+        <ErrorAlert
+          message={t('marketing.technicians.load-error')}
+          onRetry={() => query.refetch()}
+        />
       ) : techs.length === 0 ? (
-        <EmptyState title="لا توجد فنيات" description="لم يتم العثور على فنيات تطابق بحثك." />
+        <EmptyState
+          title={t('marketing.technicians.no-technicians')}
+          description={t('marketing.technicians.no-technicians-desc')}
+        />
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {techs.map((tech) => {
@@ -57,7 +68,7 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
             const rating = Number(tech.ratingAvg ?? 0);
             const bookings = tech.completedBookings ?? 0;
             const isEco = tech.isEcoFriendly ?? false;
-            const bio = tech.bioJson ? ar(tech.bioJson) : '';
+            const bio = tech.bioJson ? localize(tech.bioJson, locale) : '';
 
             return (
               <Link key={tech.id} href={`/technicians/${tech.id}`}>
@@ -81,7 +92,9 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
                   {bio && <p className="mt-1 line-clamp-2 text-xs text-text-tertiary">{bio}</p>}
                   <div className="mt-3 flex items-center gap-3 text-sm">
                     <span className="text-amber-500"> {rating.toFixed(1)}</span>
-                    <span className="text-text-tertiary">{bookings} حجز</span>
+                    <span className="text-text-tertiary">
+                      {t('marketing.technicians.bookings-count', { count: bookings })}
+                    </span>
                     {isEco && <span className="text-green-500"></span>}
                   </div>
                 </Card>

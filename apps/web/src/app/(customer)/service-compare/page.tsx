@@ -4,8 +4,10 @@ import { api } from '@/lib/trpc';
 import { useState, useEffect, useCallback } from 'react';
 import { PageContainer, PageTitle } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function ServiceComparePage(): JSX.Element {
+  const { t } = useLocale();
   const [services, setServices] = useState<Array<Record<string, unknown>>>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [, setLoading] = useState(true);
@@ -32,7 +34,7 @@ export default function ServiceComparePage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="️ مقارنة الخدمات" subtitle="اختاري حتى 3 خدمات للمقارنة" />
+        <PageTitle title={'️' + t('serviceCompare.title')} subtitle={t('serviceCompare.subtitle')} />
 
         <div className="mb-6 grid gap-3 sm:grid-cols-3">
           {services.slice(0, 12).map((s) => {
@@ -49,7 +51,7 @@ export default function ServiceComparePage(): JSX.Element {
                   {(s.titleJson as { ar?: string } | null)?.ar ?? (s.nameAr as string | undefined)}
                 </p>
                 <p className="mt-1 text-sm font-bold text-cyan-600 dark:text-cyan-400">
-                  {(s.basePrice as number)?.toLocaleString()} ر.س
+                  {(s.basePrice as number)?.toLocaleString()} {t('beautyParty.currency')}
                 </p>
               </button>
             );
@@ -58,7 +60,9 @@ export default function ServiceComparePage(): JSX.Element {
 
         {compareItems.length >= 2 && (
           <div className="rounded-2xl border border-gray-100 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
-            <h3 className="text-lg font-bold text-text-primary dark:text-gray-100"> المقارنة</h3>
+            <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
+              {t('serviceCompare.comparison')}
+            </h3>
             <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {compareItems.map((s) => (
                 <div key={s.id as number} className="rounded-xl bg-gray-50 p-4 dark:bg-gray-800">
@@ -68,15 +72,15 @@ export default function ServiceComparePage(): JSX.Element {
                   </h4>
                   <div className="mt-3 space-y-2 text-sm text-text-secondary dark:text-gray-400">
                     <div className="flex justify-between">
-                      <span> السعر</span>
+                      <span>{t('serviceCompare.price')}</span>
                       <span className="font-bold text-text-primary dark:text-gray-100">
-                        {(s.basePrice as number)?.toLocaleString()} ر.س
+                        {(s.basePrice as number)?.toLocaleString()} {t('beautyParty.currency')}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span>️ المدة</span>
+                      <span>️{t('serviceCompare.duration')}</span>
                       <span className="font-bold text-text-primary dark:text-gray-100">
-                        {s.durationMin as number} دقيقة
+                        {t('serviceCompare.minutes', { count: s.durationMin as number })}
                       </span>
                     </div>
                   </div>

@@ -17,44 +17,44 @@ type IngredientType =
 
 interface TypeDef {
   emoji: string;
-  label: string;
+  label: { ar: string; en: string };
   color: string;
 }
 
 const TYPES: Record<IngredientType, TypeDef> = {
   active: {
     emoji: '',
-    label: 'مادة فعالة',
+    label: { ar: 'مادة فعالة', en: 'Active ingredient' },
     color: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
   },
   moisturizer: {
     emoji: '',
-    label: 'مرطب',
+    label: { ar: 'مرطب', en: 'Moisturizer' },
     color: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
   },
   exfoliant: {
     emoji: '',
-    label: 'مقشر',
+    label: { ar: 'مقشر', en: 'Exfoliant' },
     color: 'bg-orange-50 text-orange-700 dark:bg-orange-950 dark:text-orange-300',
   },
   antioxidant: {
     emoji: '️',
-    label: 'مضاد أكسدة',
+    label: { ar: 'مضاد أكسدة', en: 'Antioxidant' },
     color: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
   },
   sunscreen: {
     emoji: '️',
-    label: 'واقي شمس',
+    label: { ar: 'واقي شمس', en: 'Sunscreen' },
     color: 'bg-yellow-50 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300',
   },
   oil: {
     emoji: '🫒',
-    label: 'زيت',
+    label: { ar: 'زيت', en: 'Oil' },
     color: 'bg-lime-50 text-lime-700 dark:bg-lime-950 dark:text-lime-300',
   },
   natural: {
     emoji: '',
-    label: 'طبيعي',
+    label: { ar: 'طبيعي', en: 'Natural' },
     color: 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300',
   },
 };
@@ -75,12 +75,23 @@ interface Ingredient {
 
 interface IngredientGlossaryCardProps {
   ingredient: Ingredient;
+  /** Display language for built-in labels */
+  locale?: 'ar' | 'en';
+  benefitsLabel?: string;
+  suitableForLabel?: string;
+  warningsLabel?: string;
+  arabicContentText?: string;
   className?: string;
 }
 
 export function IngredientGlossaryCard({
   ingredient,
+  locale = 'ar',
   className = '',
+  benefitsLabel = ' الفوائد',
+  suitableForLabel = ' مناسب لـ',
+  warningsLabel = ' تحذيرات',
+  arabicContentText = 'محتوى عربي — لأن المعرفة حق للجميع',
 }: IngredientGlossaryCardProps): JSX.Element {
   const type = TYPES[ingredient.type];
 
@@ -109,14 +120,16 @@ export function IngredientGlossaryCard({
               type.color,
             )}
           >
-            {type.emoji} {type.label}
+            {type.emoji} {type.label[locale]}
           </span>
         </div>
       </div>
 
       {/* Benefits */}
       <div className="mt-3 rounded-xl bg-emerald-50 p-3 dark:bg-emerald-950">
-        <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300"> الفوائد</p>
+        <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
+          {benefitsLabel}
+        </p>
         <div className="mt-1 flex flex-wrap gap-1">
           {ingredient.benefits.map((b) => (
             <span
@@ -132,7 +145,7 @@ export function IngredientGlossaryCard({
       {/* Suitable for */}
       {ingredient.suitableFor && ingredient.suitableFor.length > 0 && (
         <div className="mt-2 rounded-xl bg-sky-50 p-2.5 dark:bg-sky-950">
-          <p className="text-[10px] font-bold text-sky-700 dark:text-sky-300"> مناسب لـ</p>
+          <p className="text-[10px] font-bold text-sky-700 dark:text-sky-300">{suitableForLabel}</p>
           <p className="mt-0.5 text-[10px] text-sky-600 dark:text-sky-400">
             {ingredient.suitableFor.join(' · ')}
           </p>
@@ -142,7 +155,7 @@ export function IngredientGlossaryCard({
       {/* Warnings */}
       {ingredient.warnings && ingredient.warnings.length > 0 && (
         <div className="mt-2 rounded-xl bg-rose-50 p-2.5 dark:bg-rose-950">
-          <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300"> تحذيرات</p>
+          <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300">{warningsLabel}</p>
           <ul className="mt-0.5 space-y-0.5">
             {ingredient.warnings.map((w) => (
               <li key={w} className="text-[10px] text-rose-600 dark:text-rose-400">
@@ -165,7 +178,7 @@ export function IngredientGlossaryCard({
       {/* Arabic content badge */}
       <div className="mt-2 flex items-center gap-1 text-[9px] text-text-tertiary dark:text-gray-500">
         <span></span>
-        <span>محتوى عربي — لأن المعرفة حق للجميع</span>
+        <span>{arabicContentText}</span>
       </div>
     </div>
   );

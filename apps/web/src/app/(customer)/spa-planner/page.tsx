@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function SpaPlannerPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data: services } = api.spaPlanner.services.useQuery();
   const { data: breaks } = api.spaPlanner.breaks.useQuery();
   const { data: myPlans } = api.spaPlanner.myPlans.useQuery();
@@ -29,18 +31,17 @@ export default function SpaPlannerPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">️ مخطط يوم سبا</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            خططي ليوم سبا متكامل مع خدمات واستراحات
-          </p>
+          <h1 className="text-2xl font-bold">️{t('spaPlanner.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('spaPlanner.subtitle')}</p>
         </div>
 
         {result ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
             <span className="text-6xl">‍️</span>
-            <h2 className="mt-4 text-xl font-bold">تم تخطيط يومكِ!</h2>
+            <h2 className="mt-4 text-xl font-bold">{t('spaPlanner.planned')}</h2>
             <p className="text-2xl font-extrabold text-brand-600 mt-2">
-              {result.totalMin as number} دقيقة · {formatCurrency(result.totalPrice as number)} ر.س
+              {t('serviceCompare.minutes', { count: result.totalMin as number })} ·{' '}
+              {formatCurrency(result.totalPrice as number)} {t('beautyParty.currency')}
             </p>
             <div className="mt-4 space-y-2">
               {(result.items as Array<Record<string, unknown>>)?.map(
@@ -48,19 +49,21 @@ export default function SpaPlannerPage(): JSX.Element {
                   <div key={idx} className="flex items-center gap-2 text-sm">
                     <span>{i.emoji as string}</span>
                     <span>{i.nameAr as string}</span>
-                    <span className="text-text-tertiary">{i.durationMin as number}د</span>
+                    <span className="text-text-tertiary">
+                      {t('nightMode.minutes', { count: i.durationMin as number })}
+                    </span>
                   </div>
                 ),
               )}
             </div>
             <Button className="mt-4" onClick={() => setResult(null)}>
-              تخطيط جديد
+              {t('spaPlanner.newPlan')}
             </Button>
           </Card>
         ) : (
           <>
             <Card padding="lg">
-              <h3 className="font-bold mb-3">‍️ اختاري الخدمات</h3>
+              <h3 className="font-bold mb-3">‍️{t('spaPlanner.chooseServices')}</h3>
               <div className="grid gap-2 sm:grid-cols-2">
                 {svcs.map((s: Record<string, unknown>) => (
                   <button
@@ -71,7 +74,8 @@ export default function SpaPlannerPage(): JSX.Element {
                     <span className="text-2xl">{s.emoji as string}</span>
                     <span className="font-bold text-sm mr-2">{s.nameAr as string}</span>
                     <span className="text-xs text-text-secondary mr-2">
-                      {s.durationMin as number}د · {formatCurrency(s.price as number)} ر.س
+                      {t('nightMode.minutes', { count: s.durationMin as number })} ·{' '}
+                      {formatCurrency(s.price as number)} {t('beautyParty.currency')}
                     </span>
                   </button>
                 ))}
@@ -79,7 +83,7 @@ export default function SpaPlannerPage(): JSX.Element {
             </Card>
 
             <Card padding="lg">
-              <h3 className="font-bold mb-3"> استراحات</h3>
+              <h3 className="font-bold mb-3">{t('spaPlanner.breaks')}</h3>
               <div className="flex flex-wrap gap-2">
                 {brks.map((b: Record<string, unknown>) => (
                   <button
@@ -97,7 +101,7 @@ export default function SpaPlannerPage(): JSX.Element {
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="اسم الخطة..."
+                placeholder={t('spaPlanner.planNamePlaceholder')}
                 className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
               />
               <Button
@@ -110,7 +114,7 @@ export default function SpaPlannerPage(): JSX.Element {
                 }}
                 loading={createMut.isPending}
               >
-                ️ خططي يومي
+                ️{t('spaPlanner.planMyDay')}
               </Button>
             </div>
           </>
@@ -118,13 +122,15 @@ export default function SpaPlannerPage(): JSX.Element {
 
         {plans.length > 0 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3"> خططي السابقة</h3>
+            <h3 className="font-bold mb-3">{t('spaPlanner.previousPlans')}</h3>
             <div className="space-y-2">
               {plans.map((p: Record<string, unknown>) => (
                 <div key={p.id as number} className="flex justify-between text-sm">
                   <span className="font-bold">{p.name as string}</span>
                   <span className="text-text-secondary">
-                    {new Date(p.createdAt as string).toLocaleDateString('ar-SA')}
+                    {new Date(p.createdAt as string).toLocaleDateString(
+                      locale === 'en' ? 'en-GB' : 'ar-SA',
+                    )}
                   </span>
                 </div>
               ))}

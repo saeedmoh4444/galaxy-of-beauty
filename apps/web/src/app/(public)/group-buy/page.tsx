@@ -2,9 +2,11 @@
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function GroupBuyPage(): JSX.Element {
   const { user } = useAuth();
+  const { t } = useLocale();
   const { data, isLoading } = api.groupBuy.deals.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -16,8 +18,8 @@ export default function GroupBuyPage(): JSX.Element {
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">صفقات المجموعة</h1>
-        <p className="mt-2 text-text-secondary">انضمي لمجموعة ووفري أكثر!</p>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.group-buy.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.group-buy.subtitle')}</p>
       </div>
       {isLoading ? (
         <GridSkeleton count={6} />
@@ -36,7 +38,9 @@ export default function GroupBuyPage(): JSX.Element {
                   {formatCurrency(d.originalPrice as number)}
                 </span>
                 <span className="text-2xl font-extrabold text-green-600 ml-2">
-                  {formatCurrency(d.groupPrice as number)} ر.س
+                  {t('marketing.group-buy.price-sar', {
+                    price: formatCurrency(d.groupPrice as number),
+                  })}
                 </span>
               </div>
               <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
@@ -48,7 +52,11 @@ export default function GroupBuyPage(): JSX.Element {
                 />
               </div>
               <p className="text-xs text-text-secondary mt-1">
-                {d.currentBuyers as number}/{d.minBuyers as number} مشتركة · {d.endsIn as string}
+                {t('marketing.group-buy.buyers-count', {
+                  current: d.currentBuyers as number,
+                  min: d.minBuyers as number,
+                  endsIn: d.endsIn as string,
+                })}
               </p>
               {user && (
                 <Button
@@ -56,7 +64,9 @@ export default function GroupBuyPage(): JSX.Element {
                   className="mt-3"
                   onClick={() => joinMut.mutate({ dealId: d.id as number })}
                 >
-                  انضمي ووفري {formatCurrency(d.savings as number)}
+                  {t('marketing.group-buy.join-savings', {
+                    savings: formatCurrency(d.savings as number),
+                  })}
                 </Button>
               )}
             </Card>

@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyDarkSkinCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyDarkSkinCard({
+  className = '',
+  title = 'البشرة الداكنة',
+  subtitle = 'غنية بالميلانين — عناية خاصة',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,25 +21,47 @@ export function BeautyDarkSkinCard({ className = '' }: { className?: string }): 
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">البشرة الداكنة</h4>
-          <p className="text-[10px] text-amber-500 dark:text-amber-400">
-            غنية بالميلانين — عناية خاصة
-          </p>
+          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
+          <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'ميل للجفاف — ترطيب مكثف بزبدة الشيا' },
-          { emoji: '', text: 'تصبغات — فيتامين C وهيالورونيك أسيد' },
-          { emoji: '', text: 'ألوان: برقوقي، عنابي، ذهبي — غنية وعميقة' },
-          { emoji: '️', text: 'SPF 30+ — الميلانين يحمي ولكن ليس 100%' },
+          {
+            emoji: '',
+            text: {
+              ar: 'ميل للجفاف — ترطيب مكثف بزبدة الشيا',
+              en: 'Prone to dryness — intense hydration with shea butter',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'تصبغات — فيتامين C وهيالورونيك أسيد',
+              en: 'Hyperpigmentation — vitamin C and hyaluronic acid',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'ألوان: برقوقي، عنابي، ذهبي — غنية وعميقة',
+              en: 'Shades: plum, maroon, gold — rich and deep',
+            },
+          },
+          {
+            emoji: '️',
+            text: {
+              ar: 'SPF 30+ — الميلانين يحمي ولكن ليس 100%',
+              en: 'SPF 30+ — melanin protects, but not 100%',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2 dark:bg-amber-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-amber-800 dark:text-amber-200">{t.text}</span>
+            <span className="text-[10px] text-amber-800 dark:text-amber-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

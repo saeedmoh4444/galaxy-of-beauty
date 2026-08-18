@@ -18,21 +18,23 @@ interface RelatedService {
 interface RelatedServicesProps {
   services: RelatedService[];
   onSelect: (service: RelatedService) => void;
+  heading?: string;
+  currency?: string;
   className?: string;
 }
 
 export function RelatedServices({
   services,
   onSelect,
+  heading = 'قد يعجبكِ أيضاً',
+  currency = 'ر.س',
   className = '',
 }: RelatedServicesProps): JSX.Element | null {
   if (services.length === 0) return null;
 
   return (
     <div className={className}>
-      <h3 className="mb-3 text-lg font-bold text-text-primary dark:text-gray-100">
-        قد يعجبكِ أيضاً
-      </h3>
+      <h3 className="mb-3 text-lg font-bold text-text-primary dark:text-gray-100">{heading}</h3>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((s) => (
           <button
@@ -46,7 +48,9 @@ export function RelatedServices({
                 {s.title}
               </p>
               <div className="mt-1 flex items-center gap-2">
-                <span className="text-sm font-bold text-brand-600">{s.price} ر.س</span>
+                <span className="text-sm font-bold text-brand-600">
+                  {s.price} {currency}
+                </span>
                 {s.duration ? (
                   <span className="text-xs text-text-tertiary">{s.duration}</span>
                 ) : null}

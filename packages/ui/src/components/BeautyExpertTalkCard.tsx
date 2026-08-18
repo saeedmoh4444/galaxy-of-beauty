@@ -22,12 +22,18 @@ interface ExpertTalk {
 interface BeautyExpertTalkCardProps {
   talk: ExpertTalk;
   onRegister?: () => void;
+  freeText?: string;
+  seatsSuffix?: string;
+  registerText?: string;
   className?: string;
 }
 
 export function BeautyExpertTalkCard({
   talk,
   onRegister,
+  freeText = 'مجاني',
+  seatsSuffix = 'مقعد متبقي',
+  registerText = 'سجلي حضوركِ',
   className = '',
 }: BeautyExpertTalkCardProps): JSX.Element {
   return (
@@ -49,7 +55,7 @@ export function BeautyExpertTalkCard({
         </div>
         {talk.isFree && (
           <span className="shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-            مجاني
+            {freeText}
           </span>
         )}
       </div>
@@ -57,7 +63,7 @@ export function BeautyExpertTalkCard({
       {talk.seats !== undefined && (
         <div className="mt-2 rounded-lg bg-indigo-50 p-2 text-center dark:bg-indigo-950">
           <p className="text-[10px] text-indigo-700 dark:text-indigo-300">
-            ️ {talk.seats} مقعد متبقي
+            ️ {talk.seats} {seatsSuffix}
           </p>
         </div>
       )}
@@ -67,7 +73,7 @@ export function BeautyExpertTalkCard({
         onClick={onRegister}
         className="mt-3 w-full rounded-xl bg-indigo-600 py-2 text-xs font-bold text-white hover:bg-indigo-700 active:scale-[0.98] transition-all"
       >
-        سجلي حضوركِ
+        {registerText}
       </button>
     </div>
   );

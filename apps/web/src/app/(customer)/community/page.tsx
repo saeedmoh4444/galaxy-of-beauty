@@ -21,8 +21,10 @@ import {
   HijabiBeautyCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function CommunityPage(): JSX.Element {
+  const { t } = useLocale();
   const circles = api.beautyCircles.list.useQuery({ limit: 6 });
   const kindness = api.kindnessPoints.getStatus.useQuery();
   const events = api.communityEvents.list.useQuery({ limit: 3 });
@@ -41,10 +43,10 @@ export default function CommunityPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="مجتمع الجمال" subtitle="تواصلي، شاركي، وانتمي" />
+        <PageTitle title={t('community.title')} subtitle={t('community.subtitle')} />
 
         {isError ? (
-          <ErrorAlert message="فشل تحميل بيانات المجتمع" onRetry={refetch} />
+          <ErrorAlert message={t('community.loadError')} onRetry={refetch} />
         ) : (
           <div className="grid gap-6 lg:grid-cols-3">
             {/* Main feed */}
@@ -62,13 +64,13 @@ export default function CommunityPage(): JSX.Element {
 
               {/* Circles */}
               <div>
-                <h2 className="mb-3 text-lg font-semibold text-text-primary">دوائر الجمال</h2>
+                <h2 className="mb-3 text-lg font-semibold text-text-primary">
+                  {t('community.circlesTitle')}
+                </h2>
                 {circles.isLoading ? (
                   <CardListSkeleton count={3} />
                 ) : !circles?.data?.items?.length ? (
-                  <p className="text-sm text-text-tertiary">
-                    لا توجد دوائر بعد — كوني أول من ينشئ واحدة!
-                  </p>
+                  <p className="text-sm text-text-tertiary">{t('community.noCircles')}</p>
                 ) : (
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {circles.data.items.slice(0, 3).map((c) => (
@@ -94,7 +96,9 @@ export default function CommunityPage(): JSX.Element {
               {/* Events */}
               {events?.data?.items?.length ? (
                 <div>
-                  <h2 className="mb-3 text-lg font-semibold text-text-primary">لقاءات قريبة</h2>
+                  <h2 className="mb-3 text-lg font-semibold text-text-primary">
+                    {t('community.upcomingEvents')}
+                  </h2>
                   <div className="grid gap-4 sm:grid-cols-2">
                     {events.data.items.slice(0, 2).map((e) => (
                       <CommunityEventCard
@@ -116,16 +120,16 @@ export default function CommunityPage(): JSX.Element {
               <div className="grid gap-4 sm:grid-cols-2">
                 <BeautyPodcastCard
                   episode={{
-                    title: 'قصة نجاح — من الصفر للاحتراف',
+                    title: t('community.episodeTitle'),
                     guest: 'نورة القحطاني',
-                    duration: '32 دقيقة',
+                    duration: t('community.episodeDuration'),
                     episodeNumber: 12,
                   }}
                 />
                 <InspirationBoardCard
                   pins={[
-                    { emoji: '', title: 'تسريحة ناعمة', savedBy: 'نورة' },
-                    { emoji: '', title: 'مكياج السهرة', savedBy: 'مها' },
+                    { emoji: '', title: t('community.pinSoftHairstyle'), savedBy: 'نورة' },
+                    { emoji: '', title: t('community.pinPartyMakeup'), savedBy: 'مها' },
                   ]}
                 />
               </div>
@@ -141,13 +145,15 @@ export default function CommunityPage(): JSX.Element {
               <BeautyHeroBadge
                 member={{
                   name: 'نورة القحطاني',
-                  story: 'بدأت من الصفر ووصلت لأفضل خبيرة مكياج في الرياض',
-                  achievement: 'درّبت 500 خبيرة',
+                  story: t('community.heroStory'),
+                  achievement: t('community.heroAchievement'),
                   city: 'الرياض',
                 }}
               />
               <MentorBadge />
-              <BeautyPenPalCard match={{ city: 'جدة', interest: 'مكياج', emoji: '' }} />
+              <BeautyPenPalCard
+                match={{ city: 'جدة', interest: t('community.interestMakeup'), emoji: '' }}
+              />
               <HijabiBeautyCard />
             </div>
           </div>

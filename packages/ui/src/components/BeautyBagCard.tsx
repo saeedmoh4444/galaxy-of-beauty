@@ -8,9 +8,17 @@ import { cn } from '@galaxy/shared';
  */
 interface BeautyBagCardProps {
   className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
 }
 
-export function BeautyBagCard({ className = '' }: BeautyBagCardProps): JSX.Element {
+export function BeautyBagCard({
+  className = '',
+  title = 'حقيبة الجمال',
+  subtitle = 'أساسيات لا تستغني عنها',
+  locale = 'ar',
+}: BeautyBagCardProps): JSX.Element {
   return (
     <div
       className={cn(
@@ -21,23 +29,39 @@ export function BeautyBagCard({ className = '' }: BeautyBagCardProps): JSX.Eleme
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">حقيبة الجمال</h4>
-          <p className="text-[10px] text-indigo-500 dark:text-indigo-400">أساسيات لا تستغني عنها</p>
+          <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{title}</h4>
+          <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '', label: 'أحمر شفاه', tip: 'لون ناعم للإطلالة اليومية' },
-          { emoji: '🪞', label: 'مرآة صغيرة', tip: 'للمسات السريعة' },
-          { emoji: '', label: 'مرطب سفر', tip: 'حجم صغير للطوارئ' },
-          { emoji: '️', label: 'واقي شمس', tip: 'Mini size للشنطة' },
+          {
+            emoji: '',
+            label: { ar: 'أحمر شفاه', en: 'Lipstick' },
+            tip: { ar: 'لون ناعم للإطلالة اليومية', en: 'A soft shade for everyday looks' },
+          },
+          {
+            emoji: '🪞',
+            label: { ar: 'مرآة صغيرة', en: 'Small mirror' },
+            tip: { ar: 'للمسات السريعة', en: 'For quick touch-ups' },
+          },
+          {
+            emoji: '',
+            label: { ar: 'مرطب سفر', en: 'Travel moisturizer' },
+            tip: { ar: 'حجم صغير للطوارئ', en: 'A travel size for emergencies' },
+          },
+          {
+            emoji: '️',
+            label: { ar: 'واقي شمس', en: 'Sunscreen' },
+            tip: { ar: 'Mini size للشنطة', en: 'A mini size for your bag' },
+          },
         ].map((t) => (
-          <div key={t.label} className="rounded-lg bg-indigo-50 px-2.5 py-2 dark:bg-indigo-950">
+          <div key={t.label.ar} className="rounded-lg bg-indigo-50 px-2.5 py-2 dark:bg-indigo-950">
             <span className="text-sm">{t.emoji}</span>
             <p className="mt-0.5 text-[10px] font-bold text-indigo-800 dark:text-indigo-200">
-              {t.label}
+              {t.label[locale]}
             </p>
-            <p className="text-[9px] text-indigo-600 dark:text-indigo-400">{t.tip}</p>
+            <p className="text-[9px] text-indigo-600 dark:text-indigo-400">{t.tip[locale]}</p>
           </div>
         ))}
       </div>

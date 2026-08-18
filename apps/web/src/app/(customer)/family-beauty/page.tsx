@@ -33,8 +33,10 @@ import {
   BeautyBabyBluesCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function FamilyBeautyPage(): JSX.Element {
+  const { t } = useLocale();
   // familyAccount.get doesn't exist — `list` is the real family data; the
   // card's members/familyName lookups fall through to defaults as before.
   const familyAccount = api.familyAccount.list.useQuery();
@@ -42,7 +44,7 @@ export default function FamilyBeautyPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="‍‍‍ جمال العائلة" subtitle="لحظات جميلة تجمع الأحباب" />
+        <PageTitle title={t('familyBeauty.title')} subtitle={t('familyBeauty.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -68,12 +70,17 @@ export default function FamilyBeautyPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <TeenBeautyCard
                 service={{
-                  name: 'أول درس مكياج',
+                  name: t('familyBeauty.makeupLesson'),
                   ageRange: '12-15',
                   price: 150,
                   emoji: '',
-                  description: 'تعلم أساسيات المكياج بطريقة آمنة وممتعة',
-                  learningPoints: ['تنظيف البشرة', 'ترطيب', 'مكياج خفيف جداً', 'نصائح للعناية'],
+                  description: t('familyBeauty.makeupLessonDesc'),
+                  learningPoints: [
+                    t('familyBeauty.learning.cleanse'),
+                    t('familyBeauty.learning.moisturize'),
+                    t('familyBeauty.learning.lightMakeup'),
+                    t('familyBeauty.learning.careTips'),
+                  ],
                   parentRequired: true,
                 }}
               />
@@ -89,11 +96,11 @@ export default function FamilyBeautyPage(): JSX.Element {
               <BrideTribeCard
                 bride="سارة"
                 bridesmaids={[
-                  { name: 'نورة', role: 'وصيفة أولى' },
+                  { name: 'نورة', role: t('familyBeauty.maidOfHonor') },
                   { name: 'مها', lookAssigned: true },
                   { name: 'ريم' },
                 ]}
-                weddingDate="15 مارس 2027"
+                weddingDate={t('familyBeauty.weddingDate')}
               />
               <GrandmotherPackageCard occasion="wedding" grandmaName="أم محمد" />
             </div>
@@ -113,7 +120,7 @@ export default function FamilyBeautyPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <GalentinesCard
                 friends={['نورة', 'مها']}
-                date="13 فبراير"
+                date={t('familyBeauty.galentinesDate')}
                 discount={20}
                 totalPrice={450}
               />
@@ -134,7 +141,11 @@ export default function FamilyBeautyPage(): JSX.Element {
                 }
               />
             </div>
-            <DadApprovalBadge serviceName="درس مكياج" age={14} parentName="الأب" />
+            <DadApprovalBadge
+              serviceName={t('familyBeauty.makeupLessonShort')}
+              age={14}
+              parentName={t('familyBeauty.dadLabel')}
+            />
 
             {/* Teen Beauty */}
             <div className="grid gap-4 sm:grid-cols-2">

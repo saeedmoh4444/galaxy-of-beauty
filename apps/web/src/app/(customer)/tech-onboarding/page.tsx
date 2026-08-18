@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function TechOnboardingPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, refetch } = api.techOnboarding.steps.useQuery() as {
     data: Record<string, unknown> | undefined;
     refetch: () => void;
@@ -27,8 +29,8 @@ export default function TechOnboardingPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> التسجيل كفنية</h1>
-          <p className="mt-1 text-sm text-text-secondary">أكملي الخطوات لتصبحي فنية معتمدة</p>
+          <h1 className="text-2xl font-bold">{t('techOnboarding.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('techOnboarding.subtitle')}</p>
         </div>
         <Card padding="lg">
           <div className="mb-4 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
@@ -38,7 +40,7 @@ export default function TechOnboardingPage(): JSX.Element {
             />
           </div>
           <p className="text-sm text-center mb-4">
-            {completed}/{total} مكتملة
+            {completed}/{total} {t('techOnboarding.completedLabel')}
           </p>
           <div className="space-y-3">
             {steps.map((s: Record<string, unknown>) => (
@@ -62,19 +64,23 @@ export default function TechOnboardingPage(): JSX.Element {
                       setShow(true);
                     }}
                   >
-                    رفع
+                    {t('techOnboarding.upload')}
                   </Button>
                 )}
               </div>
             ))}
           </div>
         </Card>
-        <Modal open={show} onClose={() => setShow(false)} title="رفع مستند">
+        <Modal
+          open={show}
+          onClose={() => setShow(false)}
+          title={t('techOnboarding.uploadDocTitle')}
+        >
           <div className="space-y-3">
             <input
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="رابط المستند"
+              placeholder={t('techOnboarding.docLinkPlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <Button
@@ -84,7 +90,7 @@ export default function TechOnboardingPage(): JSX.Element {
               loading={submitMut.isPending}
               className="w-full"
             >
-              رفع
+              {t('techOnboarding.upload')}
             </Button>
           </div>
         </Modal>

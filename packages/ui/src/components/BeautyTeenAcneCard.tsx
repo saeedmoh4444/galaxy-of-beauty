@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyTeenAcneCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyTeenAcneCard({
+  className = '',
+  locale = 'ar',
+  title = 'حبوب المراهقات',
+  subtitle = 'طبيعية — ومؤقتة',
+}: {
+  className?: string;
+  locale?: 'ar' | 'en';
+  title?: string;
+  subtitle?: string;
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,41 @@ export function BeautyTeenAcneCard({ className = '' }: { className?: string }): 
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">حبوب المراهقات</h4>
-          <p className="text-[10px] text-teal-500 dark:text-teal-400">طبيعية — ومؤقتة</p>
+          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
+          <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'غسول لطيف — مرتين يومياً' },
-          { emoji: '', text: 'لا تضغطي — تترك أثراً وندبات' },
-          { emoji: '', text: 'مرطب خالٍ من الزيوت — ضروري' },
-          { emoji: '🩺', text: 'إذا كانت شديدة — راجعي طبيبة جلدية' },
+          {
+            emoji: '',
+            text: { ar: 'غسول لطيف — مرتين يومياً', en: 'Gentle cleanser — twice daily' },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'لا تضغطي — تترك أثراً وندبات',
+              en: "Don't squeeze — it leaves marks and scars",
+            },
+          },
+          {
+            emoji: '',
+            text: { ar: 'مرطب خالٍ من الزيوت — ضروري', en: 'Oil-free moisturizer — essential' },
+          },
+          {
+            emoji: '🩺',
+            text: {
+              ar: 'إذا كانت شديدة — راجعي طبيبة جلدية',
+              en: 'If severe — see a dermatologist',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-teal-50 px-3 py-2 dark:bg-teal-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-teal-800 dark:text-teal-200">{t.text}</span>
+            <span className="text-[10px] text-teal-800 dark:text-teal-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

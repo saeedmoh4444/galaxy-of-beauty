@@ -1,78 +1,84 @@
 'use client';
 
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 import { Card, Button, FORTUNE_ANIMATION_MS } from '@galaxy/ui';
 import Link from 'next/link';
 
 const FORTUNES = [
   {
-    text: 'جمالكِ يبدأ من داخلكِ — اعتني بنفسكِ اليوم ',
+    text: 'marketing.beauty-fortune.fortune-1',
     emoji: '',
-    tip: 'اشربي ٨ أكواب ماء اليوم لبشرة متألقة',
+    tip: 'marketing.beauty-fortune.tip-1',
   },
   {
-    text: 'الابتسامة هي أفضل إكسسوار يمكنكِ ارتداؤه ',
+    text: 'marketing.beauty-fortune.fortune-2',
     emoji: '',
-    tip: 'ابتسمي — تفرز الإندورفين وتحسن البشرة',
+    tip: 'marketing.beauty-fortune.tip-2',
   },
   {
-    text: 'أنتِ أجمل عندما تكونين على طبيعتكِ ',
+    text: 'marketing.beauty-fortune.fortune-3',
     emoji: '',
-    tip: 'اختاري مكياج يبرز جمالكِ الطبيعي',
+    tip: 'marketing.beauty-fortune.tip-3',
   },
   {
-    text: 'الاعتناء بنفسكِ ليس رفاهية — إنه ضرورة ‍️',
+    text: 'marketing.beauty-fortune.fortune-4',
     emoji: '',
-    tip: 'خصصي ٣٠ دقيقة يومياً للعناية ببشرتكِ',
+    tip: 'marketing.beauty-fortune.tip-4',
   },
   {
-    text: 'كل يوم هو فرصة جديدة لتتألقي ',
+    text: 'marketing.beauty-fortune.fortune-5',
     emoji: '',
-    tip: 'جربي روتين عناية جديد هذا الأسبوع',
+    tip: 'marketing.beauty-fortune.tip-5',
   },
   {
-    text: 'الجمال ليس ما ترينه في المرآة فقط — بل ما تشعرين به ',
+    text: 'marketing.beauty-fortune.fortune-6',
     emoji: '',
-    tip: 'دللي نفسكِ بجلسة مساج هذا الشهر',
+    tip: 'marketing.beauty-fortune.tip-6',
   },
   {
-    text: 'ثقتكِ بنفسكِ هي سر جمالكِ ',
+    text: 'marketing.beauty-fortune.fortune-7',
     emoji: '',
-    tip: 'قفي أمام المرآة وقولي شيئاً إيجابياً عن نفسكِ',
+    tip: 'marketing.beauty-fortune.tip-7',
   },
   {
-    text: 'العناية بالبشرة استثمار — ليس مصروفاً ',
+    text: 'marketing.beauty-fortune.fortune-8',
     emoji: '',
-    tip: 'استثمري في روتين عناية منتظم',
+    tip: 'marketing.beauty-fortune.tip-8',
   },
   {
-    text: 'أنتِ تستحقين الأفضل دائماً ',
+    text: 'marketing.beauty-fortune.fortune-9',
     emoji: '',
-    tip: 'لا تترددي في تدليل نفسكِ بين الحين والآخر',
+    tip: 'marketing.beauty-fortune.tip-9',
   },
   {
-    text: 'جمالكِ فريد — لا تقارنيه بأحد ',
+    text: 'marketing.beauty-fortune.fortune-10',
     emoji: '',
-    tip: 'اختاري خدمات تناسب نوع بشرتكِ الفريد',
+    tip: 'marketing.beauty-fortune.tip-10',
   },
   {
-    text: 'الراحة والاسترخاء سر من أسرار الجمال ‍️',
+    text: 'marketing.beauty-fortune.fortune-11',
     emoji: '',
-    tip: 'احجزي جلسة استرخاء هذا الأسبوع',
+    tip: 'marketing.beauty-fortune.tip-11',
   },
-  { text: 'غداً أجمل — ابدئي اليوم ', emoji: '', tip: 'ابدئي روتين عناية متكامل من اليوم' },
-];
+  {
+    text: 'marketing.beauty-fortune.fortune-12',
+    emoji: '',
+    tip: 'marketing.beauty-fortune.tip-12',
+  },
+] as const;
 
-const SERVICE_LINKS: Record<string, { label: string; href: string }> = {
-  '‍️': { label: 'احجزي مساج', href: '/services' },
-  '': { label: 'تصفحي خدمات البشرة', href: '/services' },
-  '': { label: 'احجزي مكياج', href: '/services' },
-  '': { label: 'احجزي مانيكير', href: '/services' },
-  '': { label: 'تصفحي الخدمات', href: '/services' },
-  default: { label: 'تصفحي الخدمات', href: '/services' },
+const SERVICE_LINKS: Record<string, { href: string }> = {
+  '‍️': { href: '/services' },
+  '': { href: '/services' },
+  '': { href: '/services' },
+  '': { href: '/services' },
+  '': { href: '/services' },
+  default: { href: '/services' },
 };
 
 export default function BeautyFortunePage(): JSX.Element {
+  const { t } = useLocale();
   const [fortune, setFortune] = useState<(typeof FORTUNES)[number] | null>(null);
   const [opening, setOpening] = useState(false);
 
@@ -92,13 +98,13 @@ export default function BeautyFortunePage(): JSX.Element {
           <div>
             <span className="text-8xl"></span>
             <h1 className="mt-6 text-3xl font-extrabold text-text-primary dark:text-gray-100">
-              بسكويت الجمال
+              {t('marketing.beauty-fortune.title')}
             </h1>
             <p className="mt-2 text-text-secondary dark:text-gray-400">
-              اكسري البسكويت واكتشفي رسالتكِ الجمالية اليوم
+              {t('marketing.beauty-fortune.subtitle')}
             </p>
             <Button onClick={openFortune} size="lg" className="mt-8">
-              افتحي بسكويتكِ
+              {t('marketing.beauty-fortune.open')}
             </Button>
           </div>
         )}
@@ -106,7 +112,7 @@ export default function BeautyFortunePage(): JSX.Element {
         {opening && (
           <div className="animate-pulse">
             <span className="text-8xl"></span>
-            <p className="mt-4 text-text-secondary">جاري فتح البسكويت...</p>
+            <p className="mt-4 text-text-secondary">{t('marketing.beauty-fortune.opening')}</p>
           </div>
         )}
 
@@ -114,18 +120,20 @@ export default function BeautyFortunePage(): JSX.Element {
           <Card padding="lg" className="bg-white/90 backdrop-blur dark:bg-gray-900/90">
             <span className="text-6xl">{fortune.emoji}</span>
             <p className="mt-6 text-2xl font-bold text-text-primary dark:text-gray-100 leading-relaxed">
-              {fortune.text}
+              {t(fortune.text)}
             </p>
             <div className="mt-6 rounded-xl bg-brand-50 p-4 dark:bg-brand-950">
-              <p className="text-sm font-medium text-brand-700 dark:text-brand-300">نصيحة اليوم</p>
-              <p className="mt-1 text-brand-600 dark:text-brand-400">{fortune.tip}</p>
+              <p className="text-sm font-medium text-brand-700 dark:text-brand-300">
+                {t('marketing.beauty-fortune.tip-of-day')}
+              </p>
+              <p className="mt-1 text-brand-600 dark:text-brand-400">{t(fortune.tip)}</p>
             </div>
             <div className="mt-6 flex gap-3 justify-center">
               <Button onClick={openFortune} variant="outline">
-                بسكويت آخر
+                {t('marketing.beauty-fortune.another')}
               </Button>
               <Link href={SERVICE_LINKS[fortune.emoji]?.href || '/services'}>
-                <Button> احجزي الآن</Button>
+                <Button>{t('marketing.beauty-fortune.book-now')}</Button>
               </Link>
             </div>
           </Card>

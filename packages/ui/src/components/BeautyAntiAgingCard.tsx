@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyAntiAgingCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyAntiAgingCard({
+  className = '',
+  title = 'مكافحة الشيخوخة',
+  subtitle = 'ابدئي الآن — وليس لاحقاً',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,27 +21,49 @@ export function BeautyAntiAgingCard({ className = '' }: { className?: string }):
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">
-            مكافحة الشيخوخة
-          </h4>
-          <p className="text-[10px] text-purple-500 dark:text-purple-400">
-            ابدئي الآن — وليس لاحقاً
-          </p>
+          <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">{title}</h4>
+          <p className="text-[10px] text-purple-500 dark:text-purple-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '️', text: 'واقي شمس يومياً — يمنع 80% من التجاعيد' },
-          { emoji: '', text: 'ريتينول — المكون الذهبي لمكافحة الشيخوخة' },
-          { emoji: '', text: 'ترطيب — بشرة رطبة = بشرة شابة' },
-          { emoji: '', text: 'نوم كافٍ — وقت إصلاح البشرة الطبيعي' },
+          {
+            emoji: '️',
+            text: {
+              ar: 'واقي شمس يومياً — يمنع 80% من التجاعيد',
+              en: 'Daily sunscreen — prevents 80% of wrinkles',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'ريتينول — المكون الذهبي لمكافحة الشيخوخة',
+              en: 'Retinol — the golden anti-aging ingredient',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'ترطيب — بشرة رطبة = بشرة شابة',
+              en: 'Moisturize — hydrated skin is youthful skin',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'نوم كافٍ — وقت إصلاح البشرة الطبيعي',
+              en: 'Enough sleep — the skin’s natural repair time',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-purple-50 px-3 py-2 dark:bg-purple-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-purple-800 dark:text-purple-200">{t.text}</span>
+            <span className="text-[10px] text-purple-800 dark:text-purple-200">
+              {t.text[locale]}
+            </span>
           </div>
         ))}
       </div>

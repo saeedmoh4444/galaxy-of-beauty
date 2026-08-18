@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function TechBookingsPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const [status, setStatus] = useState<string | undefined>(undefined);
   const { data, isLoading, isError, refetch } = api.bookings.list.useQuery({
     status,
@@ -19,7 +21,7 @@ export default function TechBookingsPage(): JSX.Element {
   return (
     <DashboardLayout userRole="TECHNICIAN">
       <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="text-2xl font-bold">الحجوزات</h1>
+        <h1 className="text-2xl font-bold">{t('tech.bookings.title')}</h1>
         <div className="flex flex-wrap gap-2">
           {['ALL', 'REQUESTED', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED'].map((s) => (
             <button
@@ -35,9 +37,9 @@ export default function TechBookingsPage(): JSX.Element {
         {isLoading ? (
           <CardSkeleton />
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل الحجوزات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('tech.bookings.load-error')} onRetry={() => refetch()} />
         ) : bookings.length === 0 ? (
-          <EmptyState title="لا توجد حجوزات" />
+          <EmptyState title={t('tech.bookings.empty')} />
         ) : (
           <div className="space-y-3">
             {bookings.map((b: Record<string, unknown>) => (
@@ -46,7 +48,9 @@ export default function TechBookingsPage(): JSX.Element {
                   <div>
                     <p className="font-semibold">{b.bookingCode as string}</p>
                     <p className="text-sm text-text-secondary">
-                      {new Date(b.startAt as string).toLocaleDateString('ar-SA')}
+                      {new Date(b.startAt as string).toLocaleDateString(
+                        locale === 'en' ? 'en-GB' : 'ar-SA',
+                      )}
                     </p>
                   </div>
                   <span
@@ -63,7 +67,7 @@ export default function TechBookingsPage(): JSX.Element {
                             transition.mutate({ id: b.id as number, action: 'accept' })
                           }
                         >
-                          قبول
+                          {t('tech.bookings.accept')}
                         </Button>
                         <Button
                           size="sm"
@@ -72,7 +76,7 @@ export default function TechBookingsPage(): JSX.Element {
                             transition.mutate({ id: b.id as number, action: 'reject' })
                           }
                         >
-                          رفض
+                          {t('tech.bookings.reject')}
                         </Button>
                       </>
                     )}
@@ -81,7 +85,7 @@ export default function TechBookingsPage(): JSX.Element {
                         size="sm"
                         onClick={() => transition.mutate({ id: b.id as number, action: 'start' })}
                       >
-                        بدء
+                        {t('tech.bookings.start')}
                       </Button>
                     )}
                     {b.status === 'IN_PROGRESS' && (
@@ -91,7 +95,7 @@ export default function TechBookingsPage(): JSX.Element {
                           transition.mutate({ id: b.id as number, action: 'complete' })
                         }
                       >
-                        إكمال
+                        {t('tech.bookings.complete')}
                       </Button>
                     )}
                   </div>

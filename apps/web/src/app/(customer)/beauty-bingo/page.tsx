@@ -2,8 +2,10 @@
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyBingoPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading } = api.beautyBingo.card.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -19,16 +21,14 @@ export default function BeautyBingoPage(): JSX.Element {
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold"> Beauty Bingo</h1>
-          <p className="mt-1 text-sm text-text-secondary">أكملي المهام واكسبي جلسة مجانية!</p>
+          <p className="mt-1 text-sm text-text-secondary">{t('beautyBingo.subtitle')}</p>
         </div>
         {isLoading ? (
           <CardListSkeleton count={1} />
         ) : (
           <Card padding="lg" className="text-center">
             <span className="text-5xl"></span>
-            <p className="mt-2 font-bold">
-              {completed}/{total} مكتملة
-            </p>
+            <p className="mt-2 font-bold">{t('beautyBingo.completed', { completed, total })}</p>
             <p className="text-xs text-brand-600 mt-1">{data?.reward as string}</p>
             <div className="mt-4 grid grid-cols-3 gap-2">
               {tasks.map((t: Record<string, unknown>) => (
@@ -45,7 +45,7 @@ export default function BeautyBingoPage(): JSX.Element {
         )}
         <div className="text-center">
           <Button variant="ghost" onClick={() => markMut.mutate({ taskId: 1 })}>
-            تحديث
+            {t('beautyBingo.refresh')}
           </Button>
         </div>
       </div>

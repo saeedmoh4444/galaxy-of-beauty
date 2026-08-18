@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { BlogPostClient } from './BlogPostClient';
+import { getServerLocale } from '@/lib/i18n';
+import { t } from '@galaxy/shared';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -8,6 +10,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const locale = await getServerLocale();
   try {
     const caller = await getServerCaller();
     const post = await caller.blog.getBySlug({ slug });
@@ -17,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       const bodyJson = post.bodyJson as Record<string, string>;
       const body = bodyJson.ar ?? bodyJson.en ?? '';
       return {
-        title: `${title} | مدونة الجمال`,
+        title: `${title} | ${t('marketing.blog.meta-blog-name', locale)}`,
         description: body.replace(/<[^>]+>/g, '').slice(0, 160),
         openGraph: { title, description: body.replace(/<[^>]+>/g, '').slice(0, 160) },
       };
@@ -25,14 +28,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   } catch {
     /* fall through */
   }
-  return { title: 'المقال | مدونة الجمال' };
+  return {
+    title: `${t('marketing.blog.meta-article', locale)} | ${t('marketing.blog.meta-blog-name', locale)}`,
+  };
 }
 
 export default async function BlogPostPage({ params }: Props): Promise<JSX.Element> {
   const { slug } = await params;
+  const locale = await getServerLocale();
 
   if (!slug) {
-    return <BlogPostClient slug="" initialPost={null} fetchError="رابط غير صالح" />;
+    return (
+      <BlogPostClient
+        slug=""
+        initialPost={null}
+        fetchError={t('marketing.blog.invalid-link', locale)}
+      />
+    );
   }
 
   let post: Record<string, unknown> | null = null;
@@ -45,7 +57,7 @@ export default async function BlogPostPage({ params }: Props): Promise<JSX.Eleme
       unknown
     > | null;
   } catch (e) {
-    fetchError = (e as Error).message || 'فشل تحميل المقال';
+    fetchError = (e as Error).message || t('marketing.blog.load-error-post', locale);
   }
 
   return <BlogPostClient slug={slug} initialPost={post} fetchError={fetchError} />;

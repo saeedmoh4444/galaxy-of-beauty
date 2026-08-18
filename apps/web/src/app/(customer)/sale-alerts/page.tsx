@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function SaleAlertsPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: cats } = api.saleAlerts.categories.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
   };
@@ -46,12 +48,10 @@ export default function SaleAlertsPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold"> تنبيهات العروض</h1>
-            <p className="mt-1 text-sm text-text-secondary">
-              اشتركي في تنبيهات العروض ولا يفوتكِ أي خصم
-            </p>
+            <h1 className="text-2xl font-bold">{t('saleAlerts.title')}</h1>
+            <p className="mt-1 text-sm text-text-secondary">{t('saleAlerts.subtitle')}</p>
           </div>
-          <Button onClick={() => setShowAdd(true)}>+ تنبيه جديد</Button>
+          <Button onClick={() => setShowAdd(true)}>{t('saleAlerts.newAlert')}</Button>
         </div>
 
         {/* Active Deals */}
@@ -60,7 +60,7 @@ export default function SaleAlertsPage(): JSX.Element {
             padding="lg"
             className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950 dark:to-orange-950 border-none"
           >
-            <h3 className="font-bold mb-3"> عروض نشطة الآن</h3>
+            <h3 className="font-bold mb-3">{t('saleAlerts.activeDealsTitle')}</h3>
             <div className="grid gap-3 sm:grid-cols-3">
               {activeDeals.map((d: Record<string, unknown>) => (
                 <div
@@ -70,7 +70,9 @@ export default function SaleAlertsPage(): JSX.Element {
                   <span className="text-2xl">{d.emoji as string}</span>
                   <p className="font-bold text-sm mt-1">{d.titleAr as string}</p>
                   <p className="text-xs text-red-500 font-bold mt-1">-{d.discount as number}%</p>
-                  <p className="text-[10px] text-text-tertiary">ينتهي خلال {d.endsIn as string}</p>
+                  <p className="text-[10px] text-text-tertiary">
+                    {t('saleAlerts.endsIn', { endsIn: d.endsIn as string })}
+                  </p>
                 </div>
               ))}
             </div>
@@ -81,12 +83,12 @@ export default function SaleAlertsPage(): JSX.Element {
         {isLoading ? (
           <CardListSkeleton count={3} />
         ) : isError ? (
-          <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+          <ErrorAlert message={t('saleAlerts.err.load')} onRetry={() => refetch()} />
         ) : myAlerts.length === 0 ? (
           <EmptyState
-            title="لا توجد تنبيهات"
-            description="أنشئي تنبيهاً لتلقي إشعارات عند توفر عروض"
-            action={{ label: 'إنشاء تنبيه', onPress: () => setShowAdd(true) }}
+            title={t('saleAlerts.empty.title')}
+            description={t('saleAlerts.empty.desc')}
+            action={{ label: t('saleAlerts.empty.action'), onPress: () => setShowAdd(true) }}
           />
         ) : (
           <div className="space-y-3">
@@ -107,7 +109,7 @@ export default function SaleAlertsPage(): JSX.Element {
                     })}
                   </div>
                   <p className="text-xs text-text-secondary mt-1">
-                    خصم من {a.maxDiscount as number}% وأكثر
+                    {t('saleAlerts.minDiscount', { max: a.maxDiscount as number })}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -129,11 +131,13 @@ export default function SaleAlertsPage(): JSX.Element {
           </div>
         )}
 
-        <Modal open={showAdd} onClose={() => setShowAdd(false)} title="تنبيه جديد">
+        <Modal open={showAdd} onClose={() => setShowAdd(false)} title={t('saleAlerts.modal.title')}>
           <div className="space-y-3">
             <div>
               {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes a non-labelable button group */}
-              <label className="text-sm font-semibold mb-2 block">الفئات</label>
+              <label className="text-sm font-semibold mb-2 block">
+                {t('saleAlerts.categoriesLabel')}
+              </label>
               <div className="flex flex-wrap gap-2">
                 {categories
                   .filter((c: Record<string, unknown>) => c.key !== 'all')
@@ -155,7 +159,9 @@ export default function SaleAlertsPage(): JSX.Element {
               </div>
             </div>
             <div>
-              <label className="text-sm font-semibold">الحد الأدنى للخصم: {maxDiscount}%</label>
+              <label className="text-sm font-semibold">
+                {t('saleAlerts.minDiscountLabel', { max: maxDiscount })}
+              </label>
               <input
                 type="range"
                 min={10}
@@ -174,7 +180,7 @@ export default function SaleAlertsPage(): JSX.Element {
               loading={createMut.isPending}
               className="w-full"
             >
-              تفعيل التنبيه
+              {t('saleAlerts.activate')}
             </Button>
           </div>
         </Modal>

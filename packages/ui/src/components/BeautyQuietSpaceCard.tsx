@@ -12,21 +12,30 @@ import { cn } from '@galaxy/shared';
 
 interface BeautyQuietSpaceCardProps {
   features: string[];
+  /** Display language for built-in labels */
+  locale?: 'ar' | 'en';
+  title?: string;
+  subtitle?: string;
+  footerText?: string;
   className?: string;
 }
 
-const FEATURES_MAP: Record<string, { emoji: string; label: string }> = {
-  meditation_cushions: { emoji: '', label: 'وسائد تأمل' },
-  sound_machine: { emoji: '', label: 'جهاز أصوات مهدئة' },
-  dim_lights: { emoji: '', label: 'إضاءة خافتة' },
-  aromatherapy: { emoji: '', label: 'علاج بالروائح' },
-  weighted_blanket: { emoji: '', label: 'بطانية ثقيلة' },
-  tea_station: { emoji: '', label: 'ركن شاي' },
+const FEATURES_MAP: Record<string, { emoji: string; label: { ar: string; en: string } }> = {
+  meditation_cushions: { emoji: '', label: { ar: 'وسائد تأمل', en: 'Meditation cushions' } },
+  sound_machine: { emoji: '', label: { ar: 'جهاز أصوات مهدئة', en: 'Calming sound machine' } },
+  dim_lights: { emoji: '', label: { ar: 'إضاءة خافتة', en: 'Dim lighting' } },
+  aromatherapy: { emoji: '', label: { ar: 'علاج بالروائح', en: 'Aromatherapy' } },
+  weighted_blanket: { emoji: '', label: { ar: 'بطانية ثقيلة', en: 'Weighted blanket' } },
+  tea_station: { emoji: '', label: { ar: 'ركن شاي', en: 'Tea corner' } },
 };
 
 export function BeautyQuietSpaceCard({
   features,
   className = '',
+  locale = 'ar',
+  title = 'المساحة الهادئة',
+  subtitle = 'مكان للتأمل والاسترخاء',
+  footerText = 'خذي لحظة لنفسكِ',
 }: BeautyQuietSpaceCardProps): JSX.Element | null {
   if (!features.length) return null;
 
@@ -39,10 +48,8 @@ export function BeautyQuietSpaceCard({
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-purple-800 dark:text-purple-200">
-          المساحة الهادئة
-        </h4>
-        <p className="text-[10px] text-purple-500 dark:text-purple-400">مكان للتأمل والاسترخاء</p>
+        <h4 className="mt-1 text-sm font-bold text-purple-800 dark:text-purple-200">{title}</h4>
+        <p className="text-[10px] text-purple-500 dark:text-purple-400">{subtitle}</p>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {features.map((f) => {
@@ -54,14 +61,14 @@ export function BeautyQuietSpaceCard({
             >
               <span className="text-sm">{def.emoji}</span>
               <span className="text-[10px] font-medium text-purple-800 dark:text-purple-200">
-                {def.label}
+                {def.label[locale]}
               </span>
             </div>
           ) : null;
         })}
       </div>
       <p className="mt-2 text-center text-[9px] text-purple-500 dark:text-purple-400">
-        خذي لحظة لنفسكِ
+        {footerText}
       </p>
     </div>
   );

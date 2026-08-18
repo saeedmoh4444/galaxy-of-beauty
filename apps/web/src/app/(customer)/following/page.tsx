@@ -2,8 +2,10 @@
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function FollowingPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data, isLoading } = api.technicianFollows.myFollows.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -17,8 +19,8 @@ export default function FollowingPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">‍ متابعة الفنيات</h1>
-          <p className="mt-1 text-sm text-text-secondary">الفنيات اللي تتابعينهم</p>
+          <h1 className="text-2xl font-bold">‍{t('following.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('following.subtitle')}</p>
         </div>
 
         {isLoading ? (
@@ -26,7 +28,7 @@ export default function FollowingPage(): JSX.Element {
         ) : follows.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
             <p className="text-4xl mb-2">‍</p>
-            <p className="text-text-secondary">مافي فنيات متابعات بعد</p>
+            <p className="text-text-secondary">{t('following.empty')}</p>
           </Card>
         ) : (
           <div className="space-y-3">
@@ -36,9 +38,15 @@ export default function FollowingPage(): JSX.Element {
                   <div className="flex items-center gap-3">
                     <span className="text-3xl">‍</span>
                     <div>
-                      <p className="font-bold">فنية #{f.technicianId as number}</p>
+                      <p className="font-bold">
+                        {t('following.technicianLabel', { id: f.technicianId as number })}
+                      </p>
                       <p className="text-xs text-text-secondary">
-                        تمت المتابعة {new Date(f.createdAt as string).toLocaleDateString('ar-SA')}
+                        {t('following.followedOn', {
+                          date: new Date(f.createdAt as string).toLocaleDateString(
+                            locale === 'en' ? 'en-GB' : 'ar-SA',
+                          ),
+                        })}
                       </p>
                     </div>
                   </div>
@@ -49,7 +57,7 @@ export default function FollowingPage(): JSX.Element {
                     loading={unfollowMut.isPending}
                     className="text-red-500"
                   >
-                    إلغاء المتابعة
+                    {t('following.unfollow')}
                   </Button>
                 </div>
               </Card>

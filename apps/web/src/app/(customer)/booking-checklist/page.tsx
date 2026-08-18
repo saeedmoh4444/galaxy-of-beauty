@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BookingChecklistPage(): JSX.Element {
+  const { t } = useLocale();
   const [category, setCategory] = useState('makeup');
   const { data: cats } = api.bookingChecklist.categories.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
@@ -22,8 +24,8 @@ export default function BookingChecklistPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> قائمة التحضير</h1>
-          <p className="mt-1 text-sm text-text-secondary">كل ما تحتاجينه قبل موعدكِ</p>
+          <h1 className="text-2xl font-bold">{t('bookingChecklist.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('bookingChecklist.subtitle')}</p>
         </div>
 
         <div className="flex flex-wrap gap-2">

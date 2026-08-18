@@ -24,6 +24,32 @@ interface BrideTribeCardProps {
   pricePerPerson?: number;
   onCoordinate?: () => void;
   className?: string;
+  /** Card heading */
+  title?: string;
+  /** Subtitle under the heading */
+  subtitle?: string;
+  /** Label next to the bride name */
+  brideLabel?: string;
+  /** Prefix before the bridesmaids count */
+  bridesmaidsCountPrefix?: string;
+  /** Suffix after the bridesmaids count */
+  bridesmaidsCountSuffix?: string;
+  /** Status when a look is assigned */
+  coordinatedText?: string;
+  /** Status when a look is pending */
+  pendingText?: string;
+  /** Progress label */
+  progressLabel?: string;
+  /** Total price label */
+  totalLabel?: string;
+  /** Per-person price label */
+  perPersonLabel?: string;
+  /** Currency suffix for prices */
+  currencySuffix?: string;
+  /** Coordinate button label */
+  coordinateButtonText?: string;
+  /** Footer text */
+  footerText?: string;
 }
 
 export function BrideTribeCard({
@@ -34,6 +60,19 @@ export function BrideTribeCard({
   pricePerPerson = 300,
   onCoordinate,
   className = '',
+  title = 'قبيلة العروس',
+  subtitle = 'إطلالات متناسقة لكل وصيفاتكِ',
+  brideLabel = 'العروس ',
+  bridesmaidsCountPrefix = 'الوصيفات (',
+  bridesmaidsCountSuffix = ')',
+  coordinatedText = 'تم التنسيق',
+  pendingText = 'بانتظار التنسيق',
+  progressLabel = 'تقدم التنسيق',
+  totalLabel = 'الإجمالي',
+  perPersonLabel = 'للفرد',
+  currencySuffix = 'ر.س',
+  coordinateButtonText = 'نسّقي إطلالات الوصيفات',
+  footerText = 'لأن صديقاتكِ جزء من يومكِ الخاص',
 }: BrideTribeCardProps): JSX.Element {
   const assigned = bridesmaids.filter((b) => b.lookAssigned).length;
 
@@ -49,8 +88,8 @@ export function BrideTribeCard({
         <span className="text-3xl" aria-hidden="true">
           ‍️
         </span>
-        <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">قبيلة العروس</h4>
-        <p className="text-[10px] text-rose-500 dark:text-rose-400">إطلالات متناسقة لكل وصيفاتكِ</p>
+        <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
+        <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
       </div>
 
       {/* Bride */}
@@ -59,7 +98,7 @@ export function BrideTribeCard({
           <span className="text-2xl" aria-hidden="true"></span>
           <div>
             <p className="text-xs font-bold text-text-primary dark:text-gray-100">{bride}</p>
-            <p className="text-[10px] text-rose-600 dark:text-rose-400">العروس </p>
+            <p className="text-[10px] text-rose-600 dark:text-rose-400">{brideLabel}</p>
           </div>
           {weddingDate && (
             <span className="ml-auto text-[10px] text-text-tertiary dark:text-gray-400">
@@ -72,7 +111,9 @@ export function BrideTribeCard({
       {/* Bridesmaids list */}
       <div className="mt-2 space-y-1.5">
         <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          الوصيفات ({bridesmaids.length})
+          {bridesmaidsCountPrefix}
+          {bridesmaids.length}
+          {bridesmaidsCountSuffix}
         </p>
         {bridesmaids.map((b, i) => (
           <div
@@ -90,11 +131,11 @@ export function BrideTribeCard({
             </div>
             {b.lookAssigned ? (
               <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
-                تم التنسيق
+                {coordinatedText}
               </span>
             ) : (
               <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:bg-amber-950 dark:text-amber-400">
-                بانتظار التنسيق
+                {pendingText}
               </span>
             )}
           </div>
@@ -104,7 +145,7 @@ export function BrideTribeCard({
       {/* Progress */}
       <div className="mt-3">
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-text-secondary dark:text-gray-300">تقدم التنسيق</span>
+          <span className="text-text-secondary dark:text-gray-300">{progressLabel}</span>
           <span className="font-bold text-rose-600 dark:text-rose-400">
             {assigned}/{bridesmaids.length}
           </span>
@@ -122,12 +163,16 @@ export function BrideTribeCard({
       {/* Pricing */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-rose-50 p-2 text-center dark:bg-rose-950">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">الإجمالي</p>
-          <p className="text-sm font-bold text-rose-700 dark:text-rose-300">{totalPrice} ر.س</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{totalLabel}</p>
+          <p className="text-sm font-bold text-rose-700 dark:text-rose-300">
+            {totalPrice} {currencySuffix}
+          </p>
         </div>
         <div className="rounded-xl bg-rose-50 p-2 text-center dark:bg-rose-950">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">للفرد</p>
-          <p className="text-sm font-bold text-rose-700 dark:text-rose-300">{pricePerPerson} ر.س</p>
+          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{perPersonLabel}</p>
+          <p className="text-sm font-bold text-rose-700 dark:text-rose-300">
+            {pricePerPerson} {currencySuffix}
+          </p>
         </div>
       </div>
 
@@ -137,11 +182,11 @@ export function BrideTribeCard({
         onClick={onCoordinate}
         className="mt-3 w-full rounded-xl bg-rose-600 py-2.5 text-xs font-bold text-white hover:bg-rose-700 active:scale-[0.98] transition-all"
       >
-        نسّقي إطلالات الوصيفات
+        {coordinateButtonText}
       </button>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        لأن صديقاتكِ جزء من يومكِ الخاص
+        {footerText}
       </p>
     </div>
   );

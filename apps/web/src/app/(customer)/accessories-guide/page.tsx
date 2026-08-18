@@ -12,12 +12,14 @@ import {
   BeautyHandsCareCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function AccessoriesGuidePage(): JSX.Element {
+  const { t } = useLocale();
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" دليل الإكسسوارات" subtitle="اللمسة الأخيرة لإطلالة متكاملة" />
+        <PageTitle title={t('accessoriesGuide.title')} subtitle={t('accessoriesGuide.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

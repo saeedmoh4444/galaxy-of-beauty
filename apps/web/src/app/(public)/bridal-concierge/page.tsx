@@ -13,6 +13,7 @@ import {
   formatCurrency,
 } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -34,49 +35,50 @@ interface ConciergeData {
 }
 
 const STEPS = [
-  { key: 'profile', label: 'إنشاء الملف', emoji: '' },
-  { key: 'services', label: 'اختيار الخدمات', emoji: '' },
-  { key: 'trials', label: 'التجارب', emoji: '' },
-  { key: 'wedding', label: 'يوم الزفاف', emoji: '' },
-];
+  { key: 'profile', label: 'marketing.bridal-concierge.step-profile', emoji: '' },
+  { key: 'services', label: 'marketing.bridal-concierge.step-services', emoji: '' },
+  { key: 'trials', label: 'marketing.bridal-concierge.step-trials', emoji: '' },
+  { key: 'wedding', label: 'marketing.bridal-concierge.step-wedding', emoji: '' },
+] as const;
 
 const MARKETING_FEATURES = [
   {
     icon: '',
-    title: 'خططي ليومكِ',
-    desc: 'اختاري خدمات المكياج، الشعر، والعناية بالبشرة — وحددي مواعيد التجارب قبل الزفاف',
+    title: 'marketing.bridal-concierge.feature-plan-title',
+    desc: 'marketing.bridal-concierge.feature-plan-desc',
   },
   {
     icon: '',
-    title: 'جربي إطلالتكِ',
-    desc: 'جلسات تجربة مكياج وشعر مع أفضل الفنيات قبل اليوم الكبير',
+    title: 'marketing.bridal-concierge.feature-try-title',
+    desc: 'marketing.bridal-concierge.feature-try-desc',
   },
   {
     icon: '',
-    title: 'تألقي يوم زفافكِ',
-    desc: 'فريق متكامل من الفنيات المحترفات في يومكِ الخاص',
+    title: 'marketing.bridal-concierge.feature-shine-title',
+    desc: 'marketing.bridal-concierge.feature-shine-desc',
   },
   {
     icon: '',
-    title: 'تحكمي بالميزانية',
-    desc: 'حددي ميزانيتكِ وتابعي تكاليف كل خدمة — بدون مفاجآت',
+    title: 'marketing.bridal-concierge.feature-budget-title',
+    desc: 'marketing.bridal-concierge.feature-budget-desc',
   },
   {
     icon: '',
-    title: 'عد تنازلي',
-    desc: 'تابعي الأيام المتبقية ليوم زفافكِ مع تذكيرات للتجارب والمواعيد',
+    title: 'marketing.bridal-concierge.feature-countdown-title',
+    desc: 'marketing.bridal-concierge.feature-countdown-desc',
   },
   {
     icon: '',
-    title: 'نصائح حصرية',
-    desc: 'احصلي على نصائح مخصصة من خبراء التجميل للعناية قبل الزفاف',
+    title: 'marketing.bridal-concierge.feature-tips-title',
+    desc: 'marketing.bridal-concierge.feature-tips-desc',
   },
-];
+] as const;
 
 // ---------------------------------------------------------------------------
 // Bridal Dashboard (authenticated view)
 // ---------------------------------------------------------------------------
 function BridalDashboard(): JSX.Element {
+  const { t, locale } = useLocale();
   const {
     data: concierge,
     isLoading,
@@ -123,7 +125,7 @@ function BridalDashboard(): JSX.Element {
           setShowProfileForm(false);
           setFormError('');
         },
-        onError: () => setFormError('فشل حفظ البيانات'),
+        onError: () => setFormError(t('marketing.bridal-concierge.save-error')),
       },
     );
   };
@@ -131,7 +133,7 @@ function BridalDashboard(): JSX.Element {
   const handleAddService = () => {
     setServiceError('');
     if (!newServiceId) {
-      setServiceError('الرجاء إدخال معرف الخدمة');
+      setServiceError(t('marketing.bridal-concierge.service-id-required'));
       return;
     }
     addServiceMut.mutate(
@@ -148,7 +150,7 @@ function BridalDashboard(): JSX.Element {
           setNewServiceNotes('');
           setServiceError('');
         },
-        onError: () => setServiceError('فشل إضافة الخدمة'),
+        onError: () => setServiceError(t('marketing.bridal-concierge.add-service-error')),
       },
     );
   };
@@ -186,16 +188,21 @@ function BridalDashboard(): JSX.Element {
         <DashboardSkeleton />
       </div>
     );
-  if (isError) return <ErrorAlert message="فشل تحميل بيانات التخطيط" onRetry={() => refetch()} />;
+  if (isError)
+    return (
+      <ErrorAlert message={t('marketing.bridal-concierge.load-error')} onRetry={() => refetch()} />
+    );
 
   return (
     <>
       {/* Dashboard Header */}
       <div className="text-center sm:text-right">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          لوحة تخطيط الزفاف
+          {t('marketing.bridal-concierge.dashboard-title')}
         </h1>
-        <p className="mt-1 text-sm text-text-secondary">تابعي تقدمكِ نحو يوم زفافكِ </p>
+        <p className="mt-1 text-sm text-text-secondary">
+          {t('marketing.bridal-concierge.dashboard-subtitle')}
+        </p>
       </div>
 
       {/* Progress Steps */}
@@ -209,7 +216,7 @@ function BridalDashboard(): JSX.Element {
                 {idx < currentStep ? '' : step.emoji}
               </div>
               <p className="mt-1.5 text-xs font-semibold text-text-primary dark:text-gray-300 hidden sm:block">
-                {step.label}
+                {t(step.label)}
               </p>
             </div>
           ))}
@@ -225,16 +232,23 @@ function BridalDashboard(): JSX.Element {
       {/* Wedding Details */}
       <Card padding="lg">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-text-primary dark:text-gray-100">تفاصيل الزفاف</h2>
+          <h2 className="text-lg font-bold text-text-primary dark:text-gray-100">
+            {t('marketing.bridal-concierge.wedding-details')}
+          </h2>
           <Button size="sm" variant="ghost" onClick={openProfileForm}>
-            {hasProfile ? 'تعديل' : 'إضافة'}
+            {hasProfile
+              ? t('marketing.bridal-concierge.edit')
+              : t('marketing.bridal-concierge.add')}
           </Button>
         </div>
         {!hasProfile ? (
           <EmptyState
-            title="لم تضفي تفاصيل الزفاف بعد"
-            description="أضيفي تاريخ الزفاف، المكان، وعدد الضيوف للبدء"
-            action={{ label: 'إضافة التفاصيل', onPress: openProfileForm }}
+            title={t('marketing.bridal-concierge.no-details-title')}
+            description={t('marketing.bridal-concierge.no-details-desc')}
+            action={{
+              label: t('marketing.bridal-concierge.add-details'),
+              onPress: openProfileForm,
+            }}
           />
         ) : (
           <>
@@ -242,17 +256,22 @@ function BridalDashboard(): JSX.Element {
               {concierge?.weddingDate && (
                 <div className="rounded-xl bg-brand-50 p-3 text-center dark:bg-brand-950">
                   <p className="text-3xl"></p>
-                  <p className="mt-1 text-xs text-text-secondary">تاريخ الزفاف</p>
+                  <p className="mt-1 text-xs text-text-secondary">
+                    {t('marketing.bridal-concierge.wedding-date')}
+                  </p>
                   <p className="text-sm font-bold">
-                    {new Date(concierge.weddingDate).toLocaleDateString('ar-SA', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
+                    {new Date(concierge.weddingDate).toLocaleDateString(
+                      locale === 'ar' ? 'ar-SA' : 'en-GB',
+                      {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      },
+                    )}
                   </p>
                   {daysUntil !== null && daysUntil > 0 && (
                     <p className="mt-1 text-xs font-semibold text-brand-600">
-                      {daysUntil} يوم متبقي
+                      {t('marketing.bridal-concierge.days-left', { count: daysUntil })}
                     </p>
                   )}
                 </div>
@@ -260,28 +279,42 @@ function BridalDashboard(): JSX.Element {
               {concierge?.venue && (
                 <div className="rounded-xl bg-purple-50 p-3 text-center dark:bg-purple-950">
                   <p className="text-3xl"></p>
-                  <p className="mt-1 text-xs text-text-secondary">المكان</p>
+                  <p className="mt-1 text-xs text-text-secondary">
+                    {t('marketing.bridal-concierge.venue')}
+                  </p>
                   <p className="text-sm font-bold">{concierge.venue}</p>
                 </div>
               )}
               {concierge?.guestCount && (
                 <div className="rounded-xl bg-pink-50 p-3 text-center dark:bg-pink-950">
                   <p className="text-3xl"></p>
-                  <p className="mt-1 text-xs text-text-secondary">الضيوف</p>
-                  <p className="text-sm font-bold">{concierge.guestCount} ضيف</p>
+                  <p className="mt-1 text-xs text-text-secondary">
+                    {t('marketing.bridal-concierge.guests')}
+                  </p>
+                  <p className="text-sm font-bold">
+                    {t('marketing.bridal-concierge.guest-count', { count: concierge.guestCount })}
+                  </p>
                 </div>
               )}
               {concierge?.budget && (
                 <div className="rounded-xl bg-green-50 p-3 text-center dark:bg-green-950">
                   <p className="text-3xl"></p>
-                  <p className="mt-1 text-xs text-text-secondary">الميزانية</p>
-                  <p className="text-sm font-bold">{formatCurrency(concierge.budget)} ر.س</p>
+                  <p className="mt-1 text-xs text-text-secondary">
+                    {t('marketing.bridal-concierge.budget')}
+                  </p>
+                  <p className="text-sm font-bold">
+                    {t('marketing.bridal-concierge.budget-amount', {
+                      amount: formatCurrency(concierge.budget),
+                    })}
+                  </p>
                 </div>
               )}
             </div>
             {concierge?.notes && (
               <div className="mt-4 rounded-xl bg-surface-muted p-3 dark:bg-gray-800">
-                <p className="text-xs text-text-tertiary mb-1"> ملاحظات</p>
+                <p className="text-xs text-text-tertiary mb-1">
+                  {t('marketing.bridal-concierge.notes-label')}
+                </p>
                 <p className="text-sm text-text-primary dark:text-gray-300 whitespace-pre-wrap">
                   {concierge.notes}
                 </p>
@@ -296,20 +329,23 @@ function BridalDashboard(): JSX.Element {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-lg font-bold text-text-primary dark:text-gray-100">
-              خدمات التجميل
+              {t('marketing.bridal-concierge.services-title')}
             </h2>
             <p className="text-xs text-text-secondary">
-              {completedTrials} / {services.length} تجربة مكتملة
+              {t('marketing.bridal-concierge.trials-progress', {
+                done: completedTrials,
+                total: services.length,
+              })}
             </p>
           </div>
           <Button size="sm" onClick={() => setShowAddService(true)}>
-            + إضافة خدمة
+            {t('marketing.bridal-concierge.add-service')}
           </Button>
         </div>
         {services.length === 0 ? (
           <EmptyState
-            title="لم تضفي خدمات بعد"
-            description="أضيفي خدمات المكياج، الشعر، والعناية بالبشرة ليوم زفافكِ"
+            title={t('marketing.bridal-concierge.no-services-title')}
+            description={t('marketing.bridal-concierge.no-services-desc')}
           />
         ) : (
           <div className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -325,16 +361,21 @@ function BridalDashboard(): JSX.Element {
                     {svc.isTrialDone ? '' : ''}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold">خدمة #{svc.serviceId}</p>
+                    <p className="text-sm font-semibold">
+                      {t('marketing.bridal-concierge.service-id', { id: svc.serviceId })}
+                    </p>
                     {svc.trialDate && (
                       <p className="text-xs text-text-secondary">
-                        تجربة:{' '}
-                        {new Date(svc.trialDate).toLocaleDateString('ar-SA', {
-                          month: 'long',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
+                        {t('marketing.bridal-concierge.trial-label')}
+                        {new Date(svc.trialDate).toLocaleDateString(
+                          locale === 'ar' ? 'ar-SA' : 'en-GB',
+                          {
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          },
+                        )}
                       </p>
                     )}
                     {svc.notes && <p className="text-xs text-text-tertiary mt-0.5"> {svc.notes}</p>}
@@ -347,7 +388,7 @@ function BridalDashboard(): JSX.Element {
                     onClick={() => markTrialMut.mutate({ serviceId: svc.id })}
                     loading={markTrialMut.isPending}
                   >
-                    تمت التجربة
+                    {t('marketing.bridal-concierge.mark-trial-done')}
                   </Button>
                 )}
               </div>
@@ -361,24 +402,30 @@ function BridalDashboard(): JSX.Element {
         padding="lg"
         className="bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-950 dark:to-purple-950 border-none"
       >
-        <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3"> نصائح للعروس</h3>
+        <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">
+          {t('marketing.bridal-concierge.bride-tips')}
+        </h3>
         <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400">
-          <p> ابدئي جلسات العناية بالبشرة قبل ٣-٦ أشهر من الزفاف</p>
-          <p> احجزي تجربة المكياج قبل شهرين على الأقل</p>
-          <p>‍️ جربي تسريحة الشعر مع الطرحة قبل ٣ أسابيع</p>
-          <p> مانيكير وباديكير قبل يومين من الزفاف</p>
+          <p>{t('marketing.bridal-concierge.tip-skin')}</p>
+          <p>{t('marketing.bridal-concierge.tip-makeup-trial')}</p>
+          <p>{t('marketing.bridal-concierge.tip-hair')}</p>
+          <p>{t('marketing.bridal-concierge.tip-nails')}</p>
         </div>
       </Card>
 
       {/* Modals */}
-      <Modal open={showProfileForm} onClose={() => setShowProfileForm(false)} title="تفاصيل الزفاف">
+      <Modal
+        open={showProfileForm}
+        onClose={() => setShowProfileForm(false)}
+        title={t('marketing.bridal-concierge.wedding-details')}
+      >
         <div className="space-y-4">
           <div>
             <label
               htmlFor="bcd-wedding-date"
               className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
             >
-              تاريخ الزفاف
+              {t('marketing.bridal-concierge.wedding-date')}
             </label>
             <input
               id="bcd-wedding-date"
@@ -394,14 +441,14 @@ function BridalDashboard(): JSX.Element {
                 htmlFor="bcd-venue"
                 className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
               >
-                المكان
+                {t('marketing.bridal-concierge.venue')}
               </label>
               <input
                 id="bcd-venue"
                 type="text"
                 value={venue}
                 onChange={(e) => setVenue(e.target.value)}
-                placeholder="قاعة الأفراح، الرياض"
+                placeholder={t('marketing.bridal-concierge.venue-placeholder')}
                 className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
               />
             </div>
@@ -410,14 +457,14 @@ function BridalDashboard(): JSX.Element {
                 htmlFor="bcd-guests"
                 className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
               >
-                عدد الضيوف
+                {t('marketing.bridal-concierge.guest-count-label')}
               </label>
               <input
                 id="bcd-guests"
                 type="number"
                 value={guestCount}
                 onChange={(e) => setGuestCount(e.target.value)}
-                placeholder="٢٠٠"
+                placeholder={t('marketing.bridal-concierge.guests-placeholder')}
                 className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
               />
             </div>
@@ -427,14 +474,14 @@ function BridalDashboard(): JSX.Element {
               htmlFor="bcd-budget"
               className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
             >
-              الميزانية (ر.س)
+              {t('marketing.bridal-concierge.budget-label')}
             </label>
             <input
               id="bcd-budget"
               type="number"
               value={budget}
               onChange={(e) => setBudget(e.target.value)}
-              placeholder="٥٠٠٠"
+              placeholder={t('marketing.bridal-concierge.budget-placeholder')}
               className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
             />
           </div>
@@ -443,13 +490,13 @@ function BridalDashboard(): JSX.Element {
               htmlFor="bcd-notes"
               className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
             >
-              ملاحظات
+              {t('marketing.bridal-concierge.notes-field')}
             </label>
             <textarea
               id="bcd-notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="أي ملاحظات أو طلبات خاصة..."
+              placeholder={t('marketing.bridal-concierge.notes-placeholder')}
               rows={3}
               className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
             />
@@ -461,30 +508,34 @@ function BridalDashboard(): JSX.Element {
           )}
           <div className="flex justify-end gap-3 pt-2">
             <Button variant="ghost" onClick={() => setShowProfileForm(false)}>
-              إلغاء
+              {t('marketing.bridal-concierge.cancel')}
             </Button>
             <Button onClick={handleSaveProfile} loading={upsertMut.isPending}>
-              حفظ
+              {t('marketing.bridal-concierge.save')}
             </Button>
           </div>
         </div>
       </Modal>
 
-      <Modal open={showAddService} onClose={() => setShowAddService(false)} title="إضافة خدمة">
+      <Modal
+        open={showAddService}
+        onClose={() => setShowAddService(false)}
+        title={t('marketing.bridal-concierge.add-service-title')}
+      >
         <div className="space-y-4">
           <div>
             <label
               htmlFor="bcd-service-id"
               className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
             >
-              معرف الخدمة
+              {t('marketing.bridal-concierge.service-id-label')}
             </label>
             <input
               id="bcd-service-id"
               type="number"
               value={newServiceId}
               onChange={(e) => setNewServiceId(e.target.value)}
-              placeholder="مثال: ١ (مكياج)"
+              placeholder={t('marketing.bridal-concierge.service-id-placeholder')}
               className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
             />
           </div>
@@ -493,7 +544,7 @@ function BridalDashboard(): JSX.Element {
               htmlFor="bcd-trial-date"
               className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
             >
-              موعد التجربة (اختياري)
+              {t('marketing.bridal-concierge.trial-date-label')}
             </label>
             <input
               id="bcd-trial-date"
@@ -508,13 +559,13 @@ function BridalDashboard(): JSX.Element {
               htmlFor="bcd-service-notes"
               className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
             >
-              ملاحظات
+              {t('marketing.bridal-concierge.notes-field')}
             </label>
             <textarea
               id="bcd-service-notes"
               value={newServiceNotes}
               onChange={(e) => setNewServiceNotes(e.target.value)}
-              placeholder="أي ملاحظات عن الخدمة..."
+              placeholder={t('marketing.bridal-concierge.service-notes-placeholder')}
               rows={2}
               className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
             />
@@ -526,10 +577,10 @@ function BridalDashboard(): JSX.Element {
           )}
           <div className="flex justify-end gap-3 pt-2">
             <Button variant="ghost" onClick={() => setShowAddService(false)}>
-              إلغاء
+              {t('marketing.bridal-concierge.cancel')}
             </Button>
             <Button onClick={handleAddService} loading={addServiceMut.isPending}>
-              + إضافة
+              {t('marketing.bridal-concierge.add-service-btn')}
             </Button>
           </div>
         </div>
@@ -542,20 +593,20 @@ function BridalDashboard(): JSX.Element {
 // Marketing Landing (unauthenticated)
 // ---------------------------------------------------------------------------
 function MarketingLanding(): JSX.Element {
+  const { t } = useLocale();
   return (
     <>
       <div className="text-center">
         <span className="text-7xl"></span>
         <h1 className="mt-6 text-4xl font-extrabold text-text-primary dark:text-gray-100">
-          خدمة تخطيط زفافكِ
+          {t('marketing.bridal-concierge.landing-title')}
         </h1>
         <p className="mt-4 text-lg text-text-secondary dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
-          يوم زفافكِ يستحق الأفضل. صممنا لكِ خدمة شاملة لتخطيط إطلالتكِ من الألف إلى الياء — تجارب
-          مكياج، عناية بالبشرة، تسريحة الشعر، والمزيد.
+          {t('marketing.bridal-concierge.landing-subtitle')}
         </p>
         <div className="mt-6">
           <Link href="/login?redirect=/bridal-concierge">
-            <Button size="lg"> سجّلي دخول للبدء</Button>
+            <Button size="lg">{t('marketing.bridal-concierge.login-cta')}</Button>
           </Link>
         </div>
       </div>
@@ -565,23 +616,25 @@ function MarketingLanding(): JSX.Element {
           <Card key={i} padding="lg" className="text-center transition-all hover:shadow-lg">
             <div className="text-4xl">{f.icon}</div>
             <h3 className="mt-3 text-lg font-bold text-text-primary dark:text-gray-100">
-              {f.title}
+              {t(f.title)}
             </h3>
             <p className="mt-2 text-sm text-text-secondary dark:text-gray-400 leading-relaxed">
-              {f.desc}
+              {t(f.desc)}
             </p>
           </Card>
         ))}
       </div>
 
       <div className="mt-16 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 p-8 text-white text-center">
-        <p className="text-3xl font-bold"> رحلتكِ نحو يوم الزفاف</p>
+        <p className="text-3xl font-bold">{t('marketing.bridal-concierge.journey-title')}</p>
         <div className="mt-8 grid gap-4 sm:grid-cols-4">
           {STEPS.map((s, idx) => (
             <div key={s.key} className="rounded-xl bg-white/20 p-4 backdrop-blur">
               <p className="text-4xl">{s.emoji}</p>
-              <p className="mt-2 text-lg font-bold">الخطوة {idx + 1}</p>
-              <p className="text-sm text-white/80">{s.label}</p>
+              <p className="mt-2 text-lg font-bold">
+                {t('marketing.bridal-concierge.step-number', { number: idx + 1 })}
+              </p>
+              <p className="text-sm text-white/80">{t(s.label)}</p>
             </div>
           ))}
         </div>
@@ -589,7 +642,7 @@ function MarketingLanding(): JSX.Element {
 
       <div className="mt-12 text-center">
         <p className="text-lg text-text-secondary dark:text-gray-400">
-          تحتاجين مساعدة؟ تواصلي مع فريقنا على{' '}
+          {t('marketing.bridal-concierge.help-line')}
           <span className="font-bold text-brand-600">٩٢٠٠١٣٣٣٣</span>
         </p>
       </div>

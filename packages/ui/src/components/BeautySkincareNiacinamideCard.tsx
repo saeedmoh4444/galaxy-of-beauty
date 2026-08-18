@@ -2,8 +2,14 @@
 import { cn } from '@galaxy/shared';
 export function BeautySkincareNiacinamideCard({
   className = '',
+  title = 'نياسيناميد',
+  subtitle = 'فيتامين B3 المتعدد الفوائد',
+  locale = 'ar',
 }: {
   className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
 }): JSX.Element {
   return (
     <div
@@ -15,23 +21,38 @@ export function BeautySkincareNiacinamideCard({
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">نياسيناميد</h4>
-          <p className="text-[10px] text-teal-500 dark:text-teal-400">فيتامين B3 المتعدد الفوائد</p>
+          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
+          <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'يقلص المسام — بشرة أنعم' },
-          { emoji: '', text: 'يوحد اللون — يقلل التصبغات' },
-          { emoji: '️', text: 'يقوي حاجز البشرة' },
-          { emoji: '', text: 'آمن مع معظم المكونات — صباح ومساء' },
+          {
+            emoji: '',
+            text: { ar: 'يقلص المسام — بشرة أنعم', en: 'Minimizes pores — smoother skin' },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'يوحد اللون — يقلل التصبغات',
+              en: 'Evens tone — reduces hyperpigmentation',
+            },
+          },
+          { emoji: '️', text: { ar: 'يقوي حاجز البشرة', en: 'Strengthens the skin barrier' } },
+          {
+            emoji: '',
+            text: {
+              ar: 'آمن مع معظم المكونات — صباح ومساء',
+              en: 'Safe with most ingredients — morning and night',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-teal-50 px-3 py-2 dark:bg-teal-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-teal-800 dark:text-teal-200">{t.text}</span>
+            <span className="text-[10px] text-teal-800 dark:text-teal-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

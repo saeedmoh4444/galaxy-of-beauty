@@ -4,9 +4,17 @@ import { cn } from '@galaxy/shared';
 
 interface BeautyConfidenceCardProps {
   className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
 }
 
-export function BeautyConfidenceCard({ className = '' }: BeautyConfidenceCardProps): JSX.Element {
+export function BeautyConfidenceCard({
+  className = '',
+  title = 'ثقة وجمال',
+  subtitle = 'الجمال الحقيقي يبدأ من الداخل. ثقتكِ بنفسكِ هي أجمل ما يمكن أن ترتديه.',
+  locale = 'ar',
+}: BeautyConfidenceCardProps): JSX.Element {
   return (
     <div
       className={cn(
@@ -16,16 +24,19 @@ export function BeautyConfidenceCard({ className = '' }: BeautyConfidenceCardPro
     >
       <div className="text-center">
         <span className="text-4xl"></span>
-        <h4 className="mt-1 text-sm font-bold text-fuchsia-800 dark:text-fuchsia-200">ثقة وجمال</h4>
+        <h4 className="mt-1 text-sm font-bold text-fuchsia-800 dark:text-fuchsia-200">{title}</h4>
         <p className="mt-2 text-xs leading-relaxed text-fuchsia-700 dark:text-fuchsia-300">
-          الجمال الحقيقي يبدأ من الداخل. ثقتكِ بنفسكِ هي أجمل ما يمكن أن ترتديه.
+          {subtitle}
         </p>
         <div className="mt-3 space-y-1.5">
           {[
-            'أنتِ فريدة — لا تقارني نفسكِ بأحد',
-            'عيوبكِ جزء من جمالكِ',
-            'ابتسمي — العالم يحتاج نوركِ',
-            'كوني فخورة بكل ما أنجزته',
+            {
+              ar: 'أنتِ فريدة — لا تقارني نفسكِ بأحد',
+              en: 'You are unique — do not compare yourself to anyone',
+            },
+            { ar: 'عيوبكِ جزء من جمالكِ', en: 'Your flaws are part of your beauty' },
+            { ar: 'ابتسمي — العالم يحتاج نوركِ', en: 'Smile — the world needs your light' },
+            { ar: 'كوني فخورة بكل ما أنجزته', en: 'Be proud of everything you have accomplished' },
           ].map((t, i) => (
             <div
               key={i}
@@ -34,7 +45,9 @@ export function BeautyConfidenceCard({ className = '' }: BeautyConfidenceCardPro
               <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-fuchsia-200 text-[9px] font-bold text-fuchsia-700 dark:bg-fuchsia-800 dark:text-fuchsia-300">
                 {i + 1}
               </span>
-              <span className="text-[10px] text-fuchsia-800 dark:text-fuchsia-200">{t}</span>
+              <span className="text-[10px] text-fuchsia-800 dark:text-fuchsia-200">
+                {t[locale]}
+              </span>
             </div>
           ))}
         </div>

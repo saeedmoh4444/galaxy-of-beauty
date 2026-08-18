@@ -3,17 +3,20 @@
 import { api } from '@/lib/trpc';
 import { Card, KPIRowSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 import Link from 'next/link';
 
-const MILESTONES: Record<number, { emoji: string; reward: string }> = {
-  5: { emoji: '', reward: 'خصم ١٠٪ على الحجز التالي' },
-  10: { emoji: '', reward: 'جلسة عناية مجانية' },
-  20: { emoji: '', reward: 'باقة تجميل متكاملة' },
-  30: { emoji: '', reward: 'عضوية ذهبية لمدة شهر' },
-  50: { emoji: '', reward: 'يوم تجميل كامل مجاناً' },
+const MILESTONES: Record<number, { emoji: string; reward: TranslationKey }> = {
+  5: { emoji: '', reward: 'streakCalendar.reward.m5' },
+  10: { emoji: '', reward: 'streakCalendar.reward.m10' },
+  20: { emoji: '', reward: 'streakCalendar.reward.m20' },
+  30: { emoji: '', reward: 'streakCalendar.reward.m30' },
+  50: { emoji: '', reward: 'streakCalendar.reward.m50' },
 };
 
 export default function StreakCalendarPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data: streakData, isLoading, isError, refetch } = api.streaks.get.useQuery();
   const { data: bookings } = api.bookings.list.useQuery({ limit: 100 });
 
@@ -42,7 +45,10 @@ export default function StreakCalendarPage(): JSX.Element {
       return bookingDates.has(day.toISOString().slice(0, 10));
     }).some(Boolean);
     weeks.push({
-      label: weekStart.toLocaleDateString('ar-SA', { month: 'short', day: 'numeric' }),
+      label: weekStart.toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA', {
+        month: 'short',
+        day: 'numeric',
+      }),
       booked: hasBooking,
       isCurrent: i === 0,
     });
@@ -52,13 +58,13 @@ export default function StreakCalendarPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          تقويم الاستمرارية
+          {t('streakCalendar.title')}
         </h1>
 
         {isLoading ? (
           <KPIRowSkeleton count={1} />
         ) : isError ? (
-          <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+          <ErrorAlert message={t('streakCalendar.err.load')} onRetry={() => refetch()} />
         ) : (
           <>
             {/* Current Streak */}
@@ -67,16 +73,22 @@ export default function StreakCalendarPage(): JSX.Element {
               className="text-center bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950 dark:to-orange-950"
             >
               <p className="text-6xl"></p>
-              <p className="mt-2 text-sm text-text-secondary">الاستمرارية الحالية</p>
-              <p className="text-4xl font-extrabold text-orange-600 mt-1">{currentStreak} أسبوع</p>
+              <p className="mt-2 text-sm text-text-secondary">
+                {t('streakCalendar.currentStreak')}
+              </p>
+              <p className="text-4xl font-extrabold text-orange-600 mt-1">
+                {t('streakCalendar.weeks', { count: currentStreak })}
+              </p>
               <p className="text-xs text-text-tertiary mt-1">
-                أطول استمرارية: {longestStreak} أسبوع
+                {t('streakCalendar.longestStreak', { count: longestStreak })}
               </p>
               {milestone && (
                 <div className="mt-4 rounded-lg bg-white/80 p-3 dark:bg-gray-800/80">
-                  <p className="text-sm"> الهدف القادم: {nextMilestone} أسابيع</p>
+                  <p className="text-sm">
+                    {t('streakCalendar.nextMilestone', { count: nextMilestone as number })}
+                  </p>
                   <p className="text-xs text-brand-600 mt-1">
-                    {milestone.emoji} {milestone.reward}
+                    {milestone.emoji} {t(milestone.reward)}
                   </p>
                   <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
                     <div
@@ -90,7 +102,7 @@ export default function StreakCalendarPage(): JSX.Element {
 
             {/* Weekly Calendar */}
             <Card padding="lg">
-              <h3 className="mb-4 font-semibold">آخر ١٢ أسبوع</h3>
+              <h3 className="mb-4 font-semibold">{t('streakCalendar.last12Weeks')}</h3>
               <div className="grid grid-cols-4 gap-2">
                 {weeks.map((w, i) => (
                   <div
@@ -104,17 +116,19 @@ export default function StreakCalendarPage(): JSX.Element {
               </div>
               <div className="mt-3 flex justify-center gap-4 text-xs">
                 <span className="flex items-center gap-1">
-                  <span className="h-2 w-2 rounded-full bg-green-500" /> تم الحجز
+                  <span className="h-2 w-2 rounded-full bg-green-500" />{' '}
+                  {t('streakCalendar.legendBooked')}
                 </span>
                 <span className="flex items-center gap-1">
-                  <span className="h-2 w-2 rounded-full bg-gray-300" /> لم يتم
+                  <span className="h-2 w-2 rounded-full bg-gray-300" />{' '}
+                  {t('streakCalendar.legendNotBooked')}
                 </span>
               </div>
             </Card>
 
             {/* Milestones */}
             <Card padding="lg">
-              <h3 className="mb-4 font-semibold"> المكافآت القادمة</h3>
+              <h3 className="mb-4 font-semibold">{t('streakCalendar.rewardsTitle')}</h3>
               <div className="space-y-2">
                 {Object.entries(MILESTONES).map(([weeks, m]) => (
                   <div
@@ -124,15 +138,19 @@ export default function StreakCalendarPage(): JSX.Element {
                     <div className="flex items-center gap-2">
                       <span className="text-lg">{m.emoji}</span>
                       <div>
-                        <p className="text-sm font-semibold">{weeks} أسابيع</p>
-                        <p className="text-xs text-text-secondary">{m.reward}</p>
+                        <p className="text-sm font-semibold">
+                          {t('streakCalendar.milestoneWeeks', { count: weeks })}
+                        </p>
+                        <p className="text-xs text-text-secondary">{t(m.reward)}</p>
                       </div>
                     </div>
                     {Number(weeks) <= currentStreak ? (
-                      <span className="text-green-600 text-xs font-bold"> تم</span>
+                      <span className="text-green-600 text-xs font-bold">
+                        {t('streakCalendar.done')}
+                      </span>
                     ) : (
                       <span className="text-text-tertiary text-xs">
-                        {Number(weeks) - currentStreak} أسبوع متبقي
+                        {t('streakCalendar.weeksLeft', { count: Number(weeks) - currentStreak })}
                       </span>
                     )}
                   </div>
@@ -142,7 +160,7 @@ export default function StreakCalendarPage(): JSX.Element {
 
             <div className="text-center">
               <Link href="/bookings/create">
-                <Button>احجزي الآن وحافظي على استمراريتكِ </Button>
+                <Button>{t('streakCalendar.cta')}</Button>
               </Link>
             </div>
           </>

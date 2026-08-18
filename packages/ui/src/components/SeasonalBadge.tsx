@@ -51,9 +51,14 @@ const SEASONS: Record<string, { emoji: string; labelAr: string; labelEn: string;
 interface SeasonalBadgeProps {
   season: string;
   className?: string;
+  locale?: 'ar' | 'en';
 }
 
-export function SeasonalBadge({ season, className = '' }: SeasonalBadgeProps): JSX.Element | null {
+export function SeasonalBadge({
+  season,
+  className = '',
+  locale = 'ar',
+}: SeasonalBadgeProps): JSX.Element | null {
   const s = SEASONS[season];
   if (!s) return null;
 
@@ -61,7 +66,7 @@ export function SeasonalBadge({ season, className = '' }: SeasonalBadgeProps): J
     <span
       className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ${s.color} ${className}`}
     >
-      {s.emoji} {s.labelAr}
+      {s.emoji} {locale === 'en' ? s.labelEn : s.labelAr}
     </span>
   );
 }

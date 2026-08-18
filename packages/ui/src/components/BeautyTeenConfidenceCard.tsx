@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyTeenConfidenceCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyTeenConfidenceCard({
+  className = '',
+  locale = 'ar',
+  title = 'ثقة المراهقة',
+  subtitle = 'جمالكِ الحقيقي — ثقتكِ بنفسكِ',
+}: {
+  className?: string;
+  locale?: 'ar' | 'en';
+  title?: string;
+  subtitle?: string;
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,25 +21,46 @@ export function BeautyTeenConfidenceCard({ className = '' }: { className?: strin
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">ثقة المراهقة</h4>
-          <p className="text-[10px] text-purple-500 dark:text-purple-400">
-            جمالكِ الحقيقي — ثقتكِ بنفسكِ
-          </p>
+          <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">{title}</h4>
+          <p className="text-[10px] text-purple-500 dark:text-purple-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'أنتِ جميلة — بدون مكياج' },
-          { emoji: '🪞', text: 'قفي أمام المرآة — قولي شيئاً إيجابياً' },
-          { emoji: '', text: 'لا تقارني نفسكِ — بمواقع التواصل' },
-          { emoji: '', text: 'تحدثي مع أمكِ — أو أختكِ الكبيرة' },
+          {
+            emoji: '',
+            text: { ar: 'أنتِ جميلة — بدون مكياج', en: 'You are beautiful — without makeup' },
+          },
+          {
+            emoji: '🪞',
+            text: {
+              ar: 'قفي أمام المرآة — قولي شيئاً إيجابياً',
+              en: 'Stand before the mirror — say something positive',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'لا تقارني نفسكِ — بمواقع التواصل',
+              en: "Don't compare yourself — on social media",
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'تحدثي مع أمكِ — أو أختكِ الكبيرة',
+              en: 'Talk to your mother — or older sister',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-purple-50 px-3 py-2 dark:bg-purple-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-purple-800 dark:text-purple-200">{t.text}</span>
+            <span className="text-[10px] text-purple-800 dark:text-purple-200">
+              {t.text[locale]}
+            </span>
           </div>
         ))}
       </div>

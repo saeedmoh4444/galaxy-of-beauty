@@ -13,12 +13,14 @@ import {
   Input,
   Modal,
 } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 type SettingsMap = RouterOutput['platform']['getSettings'];
 type TermsData = RouterOutput['platform']['getTerms'];
 type CityItem = RouterOutput['platform']['getCities'][number];
 
 export default function AdminSettingsPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const [editOpen, setEditOpen] = useState(false);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [editValue, setEditValue] = useState('');
@@ -66,18 +68,18 @@ export default function AdminSettingsPage(): JSX.Element {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">الإعدادات</h1>
+        <h1 className="text-2xl font-bold">{t('admin.settings.title')}</h1>
       </div>
 
       {/* Settings List */}
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">إعدادات المنصة</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.settings.platform-settings')}</h2>
         {isLoading ? (
           <CardListSkeleton count={4} />
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل الإعدادات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('admin.settings.load-error')} onRetry={() => refetch()} />
         ) : settingsEntries.length === 0 ? (
-          <EmptyState title="لا توجد إعدادات" />
+          <EmptyState title={t('admin.settings.empty')} />
         ) : (
           <div className="space-y-2">
             {settingsEntries.map(([key, value]) => (
@@ -92,7 +94,7 @@ export default function AdminSettingsPage(): JSX.Element {
                   </p>
                 </div>
                 <Button size="sm" variant="outline" onClick={() => openEdit(key, value)}>
-                  تعديل
+                  {t('button.edit')}
                 </Button>
               </div>
             ))}
@@ -102,26 +104,28 @@ export default function AdminSettingsPage(): JSX.Element {
 
       {/* Maintenance Mode */}
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">وضع الصيانة</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.settings.maintenance-mode')}</h2>
         <div className="flex items-center gap-4">
           <span
             className={`rounded-full px-3 py-1 text-sm font-medium ${maintenanceMode ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}
           >
-            {maintenanceMode ? 'نشط' : 'غير نشط'}
+            {maintenanceMode ? t('status.active') : t('status.inactive')}
           </span>
           <Button
             variant={maintenanceMode ? 'primary' : 'danger'}
             onClick={() => toggleMaintenanceMut.mutate({})}
             loading={toggleMaintenanceMut.isPending}
           >
-            {maintenanceMode ? 'إيقاف الصيانة' : 'تفعيل الصيانة'}
+            {maintenanceMode
+              ? t('admin.settings.disable-maintenance')
+              : t('admin.settings.enable-maintenance')}
           </Button>
         </div>
       </Card>
 
       {/* Terms Version */}
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">الشروط والأحكام</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.settings.terms-title')}</h2>
         {termsQuery.isLoading ? (
           <div className="space-y-2">
             <TextSkeleton width="50%" />
@@ -129,16 +133,22 @@ export default function AdminSettingsPage(): JSX.Element {
             <TextSkeleton width="40%" />
           </div>
         ) : termsQuery.isError ? (
-          <ErrorAlert message="فشل تحميل الشروط" onRetry={() => termsQuery.refetch()} />
+          <ErrorAlert
+            message={t('admin.settings.terms-load-error')}
+            onRetry={() => termsQuery.refetch()}
+          />
         ) : (
           <div className="space-y-1 text-sm">
             <p>
-              <strong>الإصدار الحالي:</strong> {String(termsData?.version ?? '—')}
+              <strong>{t('admin.settings.current-version')}</strong>{' '}
+              {String(termsData?.version ?? '—')}
             </p>
             <p>
-              <strong>آخر تحديث:</strong>{' '}
+              <strong>{t('admin.settings.last-updated')}</strong>{' '}
               {termsData?.updatedAt
-                ? new Date(termsData.updatedAt).toLocaleDateString('ar-SA')
+                ? new Date(termsData.updatedAt).toLocaleDateString(
+                    locale === 'en' ? 'en-GB' : 'ar-SA',
+                  )
                 : '—'}
             </p>
             <p className="mt-2 max-h-32 overflow-y-auto whitespace-pre-wrap rounded bg-surface-muted p-2 text-xs dark:bg-gray-900">
@@ -146,7 +156,7 @@ export default function AdminSettingsPage(): JSX.Element {
                 ? String(
                     (termsData.content as { ar?: string }).ar ?? JSON.stringify(termsData.content),
                   )
-                : String(termsData?.content ?? 'لا يوجد محتوى')}
+                : String(termsData?.content ?? t('admin.settings.no-content'))}
             </p>
           </div>
         )}
@@ -154,7 +164,7 @@ export default function AdminSettingsPage(): JSX.Element {
 
       {/* Cities */}
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">المدن المتاحة</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.settings.available-cities')}</h2>
         {citiesQuery.isLoading ? (
           <div className="flex flex-wrap gap-2">
             <TextSkeleton width="6rem" />
@@ -163,9 +173,12 @@ export default function AdminSettingsPage(): JSX.Element {
             <TextSkeleton width="6rem" />
           </div>
         ) : citiesQuery.isError ? (
-          <ErrorAlert message="فشل تحميل المدن" onRetry={() => citiesQuery.refetch()} />
+          <ErrorAlert
+            message={t('admin.settings.cities-load-error')}
+            onRetry={() => citiesQuery.refetch()}
+          />
         ) : citiesData.length === 0 ? (
-          <EmptyState title="لا توجد مدن" />
+          <EmptyState title={t('admin.settings.no-cities')} />
         ) : (
           <div className="flex flex-wrap gap-2">
             {citiesData.map((city: CityItem, i: number) => (
@@ -182,14 +195,14 @@ export default function AdminSettingsPage(): JSX.Element {
 
       {/* Export */}
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">تصدير البيانات</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.settings.export-data')}</h2>
         <div className="flex flex-wrap items-end gap-4">
           <div>
             <label
               htmlFor="aset-export-format"
               className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
             >
-              الصيغة
+              {t('admin.settings.format')}
             </label>
             <select
               id="aset-export-format"
@@ -202,18 +215,18 @@ export default function AdminSettingsPage(): JSX.Element {
             </select>
           </div>
           <Button variant="primary" onClick={handleExport} loading={exportBookingsQuery.isFetching}>
-            تصدير الحجوزات
+            {t('admin.settings.export-bookings')}
           </Button>
           <Button
             variant="outline"
             onClick={() => exportBookingsQuery.refetch()}
             loading={exportBookingsQuery.isFetching}
           >
-            تصدير المستخدمين
+            {t('admin.settings.export-users')}
           </Button>
         </div>
         {exportBookingsQuery.data && (
-          <p className="mt-2 text-sm text-green-600">تم التصدير بنجاح</p>
+          <p className="mt-2 text-sm text-green-600">{t('admin.settings.export-success')}</p>
         )}
       </Card>
 
@@ -224,17 +237,21 @@ export default function AdminSettingsPage(): JSX.Element {
           setEditOpen(false);
           setSelectedKey(null);
         }}
-        title="تعديل الإعداد"
+        title={t('admin.settings.edit-setting')}
       >
         <div className="space-y-4">
           <p className="text-sm">
-            <strong>المفتاح:</strong> {selectedKey}
+            <strong>{t('admin.settings.key-label')}</strong> {selectedKey}
           </p>
           <p className="text-sm text-text-secondary">{editDescription}</p>
-          <Input label="القيمة" value={editValue} onChange={(e) => setEditValue(e.target.value)} />
+          <Input
+            label={t('admin.settings.value-label')}
+            value={editValue}
+            onChange={(e) => setEditValue(e.target.value)}
+          />
           <div className="flex gap-2">
             <Button variant="primary" onClick={handleUpdate} loading={updateMut.isPending}>
-              حفظ
+              {t('button.save')}
             </Button>
             <Button
               variant="secondary"
@@ -243,7 +260,7 @@ export default function AdminSettingsPage(): JSX.Element {
                 setSelectedKey(null);
               }}
             >
-              إلغاء
+              {t('button.cancel')}
             </Button>
           </div>
         </div>

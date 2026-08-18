@@ -14,16 +14,16 @@ type ProductType = 'facial' | 'hair' | 'body' | 'makeup' | 'nail' | 'wax';
 
 interface TypeDef {
   emoji: string;
-  label: string;
+  label: { ar: string; en: string };
 }
 
 const TYPES: Record<ProductType, TypeDef> = {
-  facial: { emoji: '', label: 'عناية بالبشرة' },
-  hair: { emoji: '', label: 'عناية بالشعر' },
-  body: { emoji: '', label: 'عناية بالجسم' },
-  makeup: { emoji: '', label: 'مكياج' },
-  nail: { emoji: '', label: 'أظافر' },
-  wax: { emoji: '️', label: 'إزالة شعر' },
+  facial: { emoji: '', label: { ar: 'عناية بالبشرة', en: 'Skincare' } },
+  hair: { emoji: '', label: { ar: 'عناية بالشعر', en: 'Haircare' } },
+  body: { emoji: '', label: { ar: 'عناية بالجسم', en: 'Body care' } },
+  makeup: { emoji: '', label: { ar: 'مكياج', en: 'Makeup' } },
+  nail: { emoji: '', label: { ar: 'أظافر', en: 'Nails' } },
+  wax: { emoji: '️', label: { ar: 'إزالة شعر', en: 'Hair removal' } },
 };
 
 interface ScentFreeBadgeProps {
@@ -31,12 +31,42 @@ interface ScentFreeBadgeProps {
   /** Whether all products are fragrance-free by default */
   fullyScentFree?: boolean;
   className?: string;
+  /** Badge heading */
+  title?: string;
+  /** Subtitle when the whole salon is fragrance-free */
+  fullyScentFreeSubtitle?: string;
+  /** Subtitle when products are fragrance-free on request */
+  partiallyScentFreeSubtitle?: string;
+  /** "Why fragrance-free" heading */
+  whyTitle?: string;
+  /** Benefits bullet list items */
+  benefit1?: string;
+  benefit2?: string;
+  benefit3?: string;
+  benefit4?: string;
+  /** Booking request note */
+  requestNote?: string;
+  /** Footer text */
+  footerText?: string;
+  /** Display locale for product type labels */
+  locale?: 'ar' | 'en';
 }
 
 export function ScentFreeBadge({
   productTypes,
   fullyScentFree = false,
   className = '',
+  title = 'خالٍ من العطور',
+  fullyScentFreeSubtitle = 'صالون خالٍ تماماً من العطور القوية',
+  partiallyScentFreeSubtitle = 'منتجات خالية من العطور متوفرة حسب الطلب',
+  whyTitle = 'لماذا خالٍ من العطور؟',
+  benefit1 = '• مناسب للبشرة الحساسة والحوامل',
+  benefit2 = '• مريح لذوات الحساسية التنفسية',
+  benefit3 = '• آمن لمرضى الشقيقة والصداع النصفي',
+  benefit4 = '• خيار مريح للحواس — بدون روائح قوية',
+  requestNote = 'اطلبي “خالٍ من العطور” عند الحجز — سنجهز كل شيء مسبقاً',
+  footerText = 'الجمال الطبيعي لا يحتاج إلى عطور قوية',
+  locale = 'ar',
 }: ScentFreeBadgeProps): JSX.Element | null {
   if (!productTypes.length) return null;
 
@@ -51,11 +81,9 @@ export function ScentFreeBadge({
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true"></span>
         <div>
-          <h4 className="text-sm font-bold text-green-700 dark:text-green-300">خالٍ من العطور</h4>
+          <h4 className="text-sm font-bold text-green-700 dark:text-green-300">{title}</h4>
           <p className="text-[10px] text-green-500 dark:text-green-400">
-            {fullyScentFree
-              ? 'صالون خالٍ تماماً من العطور القوية'
-              : 'منتجات خالية من العطور متوفرة حسب الطلب'}
+            {fullyScentFree ? fullyScentFreeSubtitle : partiallyScentFreeSubtitle}
           </p>
         </div>
         {fullyScentFree && (
@@ -74,7 +102,7 @@ export function ScentFreeBadge({
               key={pt}
               className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-[10px] font-medium text-green-700 dark:bg-green-950 dark:text-green-300"
             >
-              {t.emoji} {t.label}
+              {t.emoji} {t.label[locale]}
             </span>
           );
         })}
@@ -82,14 +110,12 @@ export function ScentFreeBadge({
 
       {/* Benefits */}
       <div className="mt-3 rounded-xl bg-green-50 p-3 dark:bg-green-950">
-        <p className="text-[10px] font-bold text-green-800 dark:text-green-200">
-          لماذا خالٍ من العطور؟
-        </p>
+        <p className="text-[10px] font-bold text-green-800 dark:text-green-200">{whyTitle}</p>
         <div className="mt-1 space-y-0.5 text-[10px] text-green-700 dark:text-green-300">
-          <p>• مناسب للبشرة الحساسة والحوامل</p>
-          <p>• مريح لذوات الحساسية التنفسية</p>
-          <p>• آمن لمرضى الشقيقة والصداع النصفي</p>
-          <p>• خيار مريح للحواس — بدون روائح قوية</p>
+          <p>{benefit1}</p>
+          <p>{benefit2}</p>
+          <p>{benefit3}</p>
+          <p>{benefit4}</p>
         </div>
       </div>
 
@@ -97,13 +123,13 @@ export function ScentFreeBadge({
       {!fullyScentFree && (
         <div className="mt-2 rounded-lg bg-amber-50 p-2 dark:bg-amber-950">
           <p className="text-center text-[10px] text-amber-700 dark:text-amber-300">
-            اطلبي &ldquo;خالٍ من العطور&rdquo; عند الحجز — سنجهز كل شيء مسبقاً
+            {requestNote}
           </p>
         </div>
       )}
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        الجمال الطبيعي لا يحتاج إلى عطور قوية
+        {footerText}
       </p>
     </div>
   );

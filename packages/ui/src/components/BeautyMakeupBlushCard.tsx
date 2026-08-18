@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyMakeupBlushCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyMakeupBlushCard({
+  className = '',
+  heading = 'أحمر الخدود',
+  subtitle = 'لمسة حيوية لوجهك',
+  locale = 'ar',
+}: {
+  className?: string;
+  heading?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,44 @@ export function BeautyMakeupBlushCard({ className = '' }: { className?: string }
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">أحمر الخدود</h4>
-          <p className="text-[10px] text-rose-500 dark:text-rose-400">لمسة حيوية لوجهك</p>
+          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{heading}</h4>
+          <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'ابتسمي — ضعيه على تفاحة الخد' },
-          { emoji: '️', text: 'ادمجيه للأعلى — نحو الصدغ' },
-          { emoji: '', text: 'كريمي للبشرة الجافة — بودرة للدهنية' },
-          { emoji: '', text: 'القليل كثير — ابدئي بكمية صغيرة' },
+          {
+            emoji: '',
+            text: {
+              ar: 'ابتسمي — ضعيه على تفاحة الخد',
+              en: 'Smile — apply on the apples of the cheeks',
+            },
+          },
+          {
+            emoji: '️',
+            text: { ar: 'ادمجيه للأعلى — نحو الصدغ', en: 'Blend upward — toward the temples' },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'كريمي للبشرة الجافة — بودرة للدهنية',
+              en: 'Cream for dry skin — powder for oily',
+            },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'القليل كثير — ابدئي بكمية صغيرة',
+              en: 'Less is more — start with a small amount',
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-rose-50 px-3 py-2 dark:bg-rose-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-rose-800 dark:text-rose-200">{t.text}</span>
+            <span className="text-[10px] text-rose-800 dark:text-rose-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

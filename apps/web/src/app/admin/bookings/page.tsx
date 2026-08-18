@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 const STATUSES = ['ALL', 'REQUESTED', 'ACCEPTED', 'PAID', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
 
@@ -27,6 +28,7 @@ interface AdminBooking {
 }
 
 export default function AdminBookingsPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const [status, setStatus] = useState<string | undefined>(undefined);
   // Structural cast instead of RouterOutput — avoids TS2589 from deeply
   // nested admin RouterOutput in Next.js build
@@ -55,7 +57,7 @@ export default function AdminBookingsPage(): JSX.Element {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">جميع الحجوزات</h1>
+      <h1 className="text-2xl font-bold">{t('admin.bookings.title')}</h1>
       <div className="flex flex-wrap gap-2">
         {STATUSES.map((s) => (
           <button
@@ -71,9 +73,9 @@ export default function AdminBookingsPage(): JSX.Element {
       {isLoading ? (
         <CardListSkeleton count={4} />
       ) : isError ? (
-        <ErrorAlert message="فشل تحميل الحجوزات" onRetry={() => refetch()} />
+        <ErrorAlert message={t('admin.bookings.load-error')} onRetry={() => refetch()} />
       ) : bookings.length === 0 ? (
-        <EmptyState title="لا توجد حجوزات" />
+        <EmptyState title={t('admin.bookings.empty')} />
       ) : (
         <div className="space-y-2">
           {bookings.map((b) => (
@@ -82,7 +84,7 @@ export default function AdminBookingsPage(): JSX.Element {
                 <div>
                   <p className="font-semibold">{b.bookingCode}</p>
                   <p className="text-sm text-text-secondary">
-                    {new Date(b.createdAt).toLocaleDateString('ar-SA')}
+                    {new Date(b.createdAt).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA')}
                   </p>
                 </div>
                 <span
@@ -97,7 +99,7 @@ export default function AdminBookingsPage(): JSX.Element {
                     variant="danger"
                     onClick={() => cancelMut.mutate({ id: b.id, action: 'cancel' })}
                   >
-                    إلغاء
+                    {t('button.cancel')}
                   </Button>
                 )}
               </div>

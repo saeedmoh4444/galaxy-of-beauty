@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminAiFeaturesPage(): JSX.Element {
+  const { t } = useLocale();
   const [reviewId, setReviewId] = useState('');
   const analyzeMut = api.aiFeatures.analyzeSentiment.useMutation();
   const [result, setResult] = useState<Record<string, unknown> | null>(null);
@@ -17,17 +19,17 @@ export default function AdminAiFeaturesPage(): JSX.Element {
     <DashboardLayout userRole="ADMIN">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> أدوات الذكاء الاصطناعي</h1>
-          <p className="mt-1 text-sm text-text-secondary">تحليل المشاعر وتوليد الوصف</p>
+          <h1 className="text-2xl font-bold">{t('admin.ai-features.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('admin.ai-features.subtitle')}</p>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3"> تحليل مشاعر المراجعة</h3>
+          <h3 className="font-bold mb-3">{t('admin.ai-features.sentiment-title')}</h3>
           <div className="flex gap-3">
             <input
               value={reviewId}
               onChange={(e) => setReviewId(e.target.value)}
-              placeholder="رقم المراجعة"
+              placeholder={t('admin.ai-features.review-id-placeholder')}
               className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <Button
@@ -39,7 +41,7 @@ export default function AdminAiFeaturesPage(): JSX.Element {
               }
               loading={analyzeMut.isPending}
             >
-              تحليل
+              {t('admin.ai-features.analyze')}
             </Button>
           </div>
           {result && (
@@ -56,18 +58,18 @@ export default function AdminAiFeaturesPage(): JSX.Element {
         </Card>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3"> توليد وصف خدمة</h3>
+          <h3 className="font-bold mb-3">{t('admin.ai-features.generate-title')}</h3>
           <div className="space-y-3">
             <input
               value={svcAr}
               onChange={(e) => setSvcAr(e.target.value)}
-              placeholder="اسم الخدمة (عربي)"
+              placeholder={t('admin.ai-features.service-name-ar')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <input
               value={svcEn}
               onChange={(e) => setSvcEn(e.target.value)}
-              placeholder="اسم الخدمة (إنجليزي)"
+              placeholder={t('admin.ai-features.service-name-en')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <Button
@@ -80,13 +82,13 @@ export default function AdminAiFeaturesPage(): JSX.Element {
               loading={descMut.isPending}
               className="w-full"
             >
-              توليد
+              {t('admin.ai-features.generate')}
             </Button>
           </div>
           {desc && (
             <div className="mt-3 grid gap-2 sm:grid-cols-2">
               <div className="rounded-lg border p-3">
-                <p className="text-xs text-text-secondary mb-1">العربية</p>
+                <p className="text-xs text-text-secondary mb-1">{t('admin.ai-features.arabic')}</p>
                 <p className="text-sm">{desc.descriptionAr as string}</p>
               </div>
               <div className="rounded-lg border p-3">

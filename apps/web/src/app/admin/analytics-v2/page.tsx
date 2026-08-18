@@ -1,8 +1,10 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, KPIRowSkeleton, formatCurrency } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminAnalyticsV2Page(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading } = api.adminAnalyticsV2.dashboard.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -12,7 +14,7 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 space-y-6">
       <div>
-        <h1 className="text-2xl font-bold"> التحليلات المتقدمة</h1>
+        <h1 className="text-2xl font-bold">{t('admin.analytics-v2.title')}</h1>
       </div>
       {isLoading ? (
         <KPIRowSkeleton count={4} />
@@ -24,32 +26,36 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
               <p className="text-2xl font-bold text-brand-600">
                 {formatCurrency((d.revenue as Record<string, number>)?.today ?? 0)}
               </p>
-              <p className="text-xs text-text-secondary">إيراد اليوم</p>
+              <p className="text-xs text-text-secondary">{t('admin.analytics-v2.revenue-today')}</p>
             </Card>
             <Card padding="lg" className="text-center">
               <p className="text-3xl"></p>
               <p className="text-2xl font-bold">
                 {(d.bookings as Record<string, number>)?.today ?? 0}
               </p>
-              <p className="text-xs text-text-secondary">حجز اليوم</p>
+              <p className="text-xs text-text-secondary">
+                {t('admin.analytics-v2.bookings-today')}
+              </p>
             </Card>
             <Card padding="lg" className="text-center">
               <p className="text-3xl"></p>
               <p className="text-2xl font-bold">
                 {(d.users as Record<string, number>)?.activeToday ?? 0}
               </p>
-              <p className="text-xs text-text-secondary">مستخدم نشط</p>
+              <p className="text-xs text-text-secondary">{t('admin.analytics-v2.active-users')}</p>
             </Card>
             <Card padding="lg" className="text-center">
               <p className="text-3xl">‍</p>
               <p className="text-2xl font-bold">
                 {(d.technicians as Record<string, number>)?.active ?? 0}
               </p>
-              <p className="text-xs text-text-secondary">فنية نشطة</p>
+              <p className="text-xs text-text-secondary">
+                {t('admin.analytics-v2.active-technicians')}
+              </p>
             </Card>
           </div>
           <Card padding="lg">
-            <h3 className="font-bold mb-4"> الإيرادات الأسبوعية</h3>
+            <h3 className="font-bold mb-4">{t('admin.analytics-v2.weekly-revenue')}</h3>
             <div className="flex items-end gap-2 h-32">
               {(d.revenue as Record<string, number[]>)?.chart?.map((v: number, i: number) => (
                 <div key={i} className="flex-1 flex flex-col items-center gap-1">
@@ -63,7 +69,7 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
             </div>
           </Card>
           <Card padding="lg">
-            <h3 className="font-bold mb-4"> الخدمات الأعلى</h3>
+            <h3 className="font-bold mb-4">{t('admin.analytics-v2.top-services')}</h3>
             <div className="space-y-2">
               {(d.topServices as Array<Record<string, unknown>>)?.map(
                 (s: Record<string, unknown>, i: number) => (
@@ -73,7 +79,9 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
                   >
                     <span className="text-xl w-8">#{i + 1}</span>
                     <span className="flex-1 font-bold">{s.name as string}</span>
-                    <span>{s.bookings as number} حجز</span>
+                    <span>
+                      {t('admin.analytics-v2.bookings-count', { count: s.bookings as number })}
+                    </span>
                     <span className="text-green-600 font-bold ml-4">
                       {formatCurrency(s.revenue as number)}
                     </span>
@@ -86,12 +94,14 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
             </div>
           </Card>
           <Card padding="lg" className="text-center">
-            <p className="font-bold"> توقعات الشهر القادم</p>
+            <p className="font-bold">{t('admin.analytics-v2.next-month-forecast')}</p>
             <p className="text-2xl font-extrabold text-brand-600 mt-2">
               {formatCurrency((d.forecast as Record<string, number>)?.nextMonthRevenue ?? 0)}
             </p>
             <p className="text-xs text-text-secondary">
-              نسبة الثقة: {(d.forecast as Record<string, number>)?.confidence ?? 0}%
+              {t('admin.analytics-v2.confidence', {
+                pct: (d.forecast as Record<string, number>)?.confidence ?? 0,
+              })}
             </p>
           </Card>
         </>

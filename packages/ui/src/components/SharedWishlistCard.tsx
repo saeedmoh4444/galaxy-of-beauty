@@ -24,6 +24,14 @@ interface SharedWishlistCardProps {
   items: WishlistItem[];
   sharedWith: string[];
   onAddItem?: () => void;
+  title?: string;
+  wishesCountText?: string;
+  giftedText?: string;
+  currencySuffix?: string;
+  totalLabel?: string;
+  sharedWithLabel?: string;
+  addItemText?: string;
+  footerText?: string;
   className?: string;
 }
 
@@ -32,6 +40,14 @@ export function SharedWishlistCard({
   sharedWith,
   onAddItem,
   className = '',
+  title = 'قائمة أمنياتي',
+  wishesCountText = ' أمنية · ',
+  giftedText = 'مُهداة',
+  currencySuffix = 'ر.س',
+  totalLabel = ' المجموع',
+  sharedWithLabel = '‍️ مشاركة مع',
+  addItemText = '+ أضيفي أمنية',
+  footerText = 'شاركي أمنياتكِ — ودعي أحبابكِ يدللونكِ',
 }: SharedWishlistCardProps): JSX.Element {
   const total = items.reduce((sum, item) => sum + item.price, 0);
   const gifted = items.filter((i) => i.isGifted).length;
@@ -47,9 +63,11 @@ export function SharedWishlistCard({
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true"></span>
           <div>
-            <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">قائمة أمنياتي</h4>
+            <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
             <p className="text-[10px] text-pink-500 dark:text-pink-400">
-              {items.length} أمنية · {gifted > 0 && `${gifted} مُهداة`}
+              {items.length}
+              {wishesCountText}
+              {gifted > 0 && `${gifted} ${giftedText}`}
             </p>
           </div>
         </div>
@@ -79,7 +97,7 @@ export function SharedWishlistCard({
                   : 'text-pink-600 dark:text-pink-400',
               )}
             >
-              {item.isGifted ? '' : `${item.price} ر.س`}
+              {item.isGifted ? '' : `${item.price} ${currencySuffix}`}
             </span>
           </div>
         ))}
@@ -87,13 +105,15 @@ export function SharedWishlistCard({
 
       {/* Total */}
       <div className="mt-2 flex items-center justify-between rounded-lg bg-pink-50 px-3 py-2 dark:bg-pink-950">
-        <span className="text-[10px] font-bold text-pink-700 dark:text-pink-300"> المجموع</span>
-        <span className="text-xs font-bold text-pink-800 dark:text-pink-200">{total} ر.س</span>
+        <span className="text-[10px] font-bold text-pink-700 dark:text-pink-300">{totalLabel}</span>
+        <span className="text-xs font-bold text-pink-800 dark:text-pink-200">
+          {total} {currencySuffix}
+        </span>
       </div>
 
       {/* Shared with */}
       <div className="mt-2">
-        <span className="text-[10px] text-text-tertiary dark:text-gray-500">‍️ مشاركة مع</span>
+        <span className="text-[10px] text-text-tertiary dark:text-gray-500">{sharedWithLabel}</span>
         <div className="mt-1 flex flex-wrap gap-1">
           {sharedWith.map((name) => (
             <span
@@ -111,11 +131,11 @@ export function SharedWishlistCard({
         onClick={onAddItem}
         className="mt-3 w-full rounded-xl border border-dashed border-pink-300 py-2 text-[10px] font-bold text-pink-600 hover:bg-pink-50 dark:border-pink-800 dark:text-pink-400 dark:hover:bg-pink-950 transition-colors"
       >
-        + أضيفي أمنية
+        {addItemText}
       </button>
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        شاركي أمنياتكِ — ودعي أحبابكِ يدللونكِ
+        {footerText}
       </p>
     </div>
   );

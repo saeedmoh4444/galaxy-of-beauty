@@ -15,6 +15,14 @@ interface EmailCaptureProps {
   discount?: string;
   onSubmit: (email: string) => void;
   onDismiss?: () => void;
+  successTitle?: string;
+  discountCodeLabel?: string;
+  useCodeText?: string;
+  discountTitlePrefix?: string;
+  firstBookingText?: string;
+  placeholder?: string;
+  submitButtonText?: string;
+  laterText?: string;
   className?: string;
 }
 
@@ -23,6 +31,14 @@ export function EmailCapture({
   onSubmit,
   onDismiss,
   className = '',
+  successTitle = 'تم التسجيل بنجاح!',
+  discountCodeLabel = 'كود الخصم: ',
+  useCodeText = 'استخدميه في أول حجز لكِ',
+  discountTitlePrefix = 'احصلي على خصم ',
+  firstBookingText = 'على أول حجز لكِ عند التسجيل',
+  placeholder = 'بريدك الإلكتروني',
+  submitButtonText = 'تسجيل',
+  laterText = 'لاحقاً',
 }: EmailCaptureProps): JSX.Element {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -34,19 +50,22 @@ export function EmailCapture({
       {submitted ? (
         <div>
           <span className="text-4xl"></span>
-          <h3 className="mt-3 text-lg font-bold">تم التسجيل بنجاح!</h3>
-          <p className="mt-1 text-sm text-brand-200">كود الخصم: WELCOME10</p>
-          <p className="mt-2 text-xs text-brand-300">استخدميه في أول حجز لكِ</p>
+          <h3 className="mt-3 text-lg font-bold">{successTitle}</h3>
+          <p className="mt-1 text-sm text-brand-200">{discountCodeLabel}WELCOME10</p>
+          <p className="mt-2 text-xs text-brand-300">{useCodeText}</p>
         </div>
       ) : (
         <div>
           <span className="text-4xl"></span>
-          <h3 className="mt-3 text-lg font-bold">احصلي على خصم {discount}</h3>
-          <p className="mt-1 text-sm text-brand-200">على أول حجز لكِ عند التسجيل</p>
+          <h3 className="mt-3 text-lg font-bold">
+            {discountTitlePrefix}
+            {discount}
+          </h3>
+          <p className="mt-1 text-sm text-brand-200">{firstBookingText}</p>
           <div className="mt-4 flex gap-2">
             <input
               type="email"
-              placeholder="بريدك الإلكتروني"
+              placeholder={placeholder}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="flex-1 rounded-lg border-0 bg-white/20 px-3 py-2 text-sm text-white placeholder:text-white/60"
@@ -61,12 +80,12 @@ export function EmailCapture({
                 }
               }}
             >
-              تسجيل
+              {submitButtonText}
             </Button>
           </div>
           {onDismiss ? (
             <button onClick={onDismiss} className="mt-3 text-xs text-brand-300 hover:text-white">
-              لاحقاً
+              {laterText}
             </button>
           ) : null}
         </div>

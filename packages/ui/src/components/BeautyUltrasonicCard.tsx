@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyUltrasonicCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyUltrasonicCard({
+  className = '',
+  locale = 'ar',
+  title = 'الموجات فوق الصوتية',
+  subtitle = 'ملعقة تنظيف المسام',
+}: {
+  className?: string;
+  locale?: 'ar' | 'en';
+  title?: string;
+  subtitle?: string;
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,25 +21,41 @@ export function BeautyUltrasonicCard({ className = '' }: { className?: string })
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">
-            الموجات فوق الصوتية
-          </h4>
-          <p className="text-[10px] text-teal-500 dark:text-teal-400">ملعقة تنظيف المسام</p>
+          <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
+          <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: 'اهتزازات عالية — تطرد الرؤوس السوداء' },
-          { emoji: '', text: 'على بشرة رطبة — أفضل نتائج' },
-          { emoji: '️', text: 'حركي للأعلى — بطول المسام' },
-          { emoji: '', text: 'مرة أسبوعياً — لا تفرطي في الاستخدام' },
+          {
+            emoji: '',
+            text: {
+              ar: 'اهتزازات عالية — تطرد الرؤوس السوداء',
+              en: 'High vibrations — drive out blackheads',
+            },
+          },
+          {
+            emoji: '',
+            text: { ar: 'على بشرة رطبة — أفضل نتائج', en: 'On damp skin — best results' },
+          },
+          {
+            emoji: '️',
+            text: { ar: 'حركي للأعلى — بطول المسام', en: 'Move upward — along the pores' },
+          },
+          {
+            emoji: '',
+            text: {
+              ar: 'مرة أسبوعياً — لا تفرطي في الاستخدام',
+              en: "Once a week — don't overuse it",
+            },
+          },
         ].map((t, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-lg bg-teal-50 px-3 py-2 dark:bg-teal-950"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-teal-800 dark:text-teal-200">{t.text}</span>
+            <span className="text-[10px] text-teal-800 dark:text-teal-200">{t.text[locale]}</span>
           </div>
         ))}
       </div>

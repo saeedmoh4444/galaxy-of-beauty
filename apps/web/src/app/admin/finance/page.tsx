@@ -13,11 +13,13 @@ import {
   Input,
   formatCurrency,
 } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 type FinancialData = RouterOutput['admin']['getFinancials'];
 type PayoutItem = NonNullable<RouterOutput['payouts']['listForAdmin']>['payouts'][number];
 
 export default function AdminFinancePage(): JSX.Element {
+  const { t } = useLocale();
   const financials = api.admin.getFinancials.useQuery();
   const payouts = api.payouts.listForAdmin.useQuery({ page: 1, limit: 20 });
   const calculateMut = api.payouts.calculate.useMutation();
@@ -28,34 +30,34 @@ export default function AdminFinancePage(): JSX.Element {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">المالية</h1>
+      <h1 className="text-2xl font-bold">{t('admin.finance.title')}</h1>
 
       {financials.isLoading ? (
         <KPIRowSkeleton count={4} />
       ) : financials.isError ? (
-        <ErrorAlert message="فشل التحميل" onRetry={() => financials.refetch()} />
+        <ErrorAlert message={t('admin.finance.load-error')} onRetry={() => financials.refetch()} />
       ) : (
         <div className="grid gap-4 md:grid-cols-4">
           <Card className="text-center">
-            <p className="text-sm text-text-secondary">الإيرادات</p>
+            <p className="text-sm text-text-secondary">{t('admin.finance.revenue')}</p>
             <p className="text-2xl font-bold text-brand-600">
               {formatCurrency(Number(fin?.totalRevenue ?? 0))}
             </p>
           </Card>
           <Card className="text-center">
-            <p className="text-sm text-text-secondary">رسوم المنصة</p>
+            <p className="text-sm text-text-secondary">{t('admin.finance.platform-fees')}</p>
             <p className="text-2xl font-bold text-amber-600">
               {formatCurrency(Number(fin?.platformFees ?? 0))}
             </p>
           </Card>
           <Card className="text-center">
-            <p className="text-sm text-text-secondary">أرباح الفنيات</p>
+            <p className="text-sm text-text-secondary">{t('admin.finance.technician-earnings')}</p>
             <p className="text-2xl font-bold text-green-600">
               {formatCurrency(Number(fin?.technicianEarnings ?? 0))}
             </p>
           </Card>
           <Card className="text-center">
-            <p className="text-sm text-text-secondary">مدفوعات معلقة</p>
+            <p className="text-sm text-text-secondary">{t('admin.finance.pending-payouts')}</p>
             <p className="text-2xl font-bold text-purple-600">
               {formatCurrency(Number(fin?.pendingPayouts ?? 0))}
             </p>
@@ -64,16 +66,16 @@ export default function AdminFinancePage(): JSX.Element {
       )}
 
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">احتساب المدفوعات</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.finance.calculate-payouts')}</h2>
         <div className="flex gap-4">
           <Input
-            label="من تاريخ"
+            label={t('admin.finance.from-date')}
             type="date"
             value={periodStart}
             onChange={(e) => setPeriodStart(e.target.value)}
           />
           <Input
-            label="إلى تاريخ"
+            label={t('admin.finance.to-date')}
             type="date"
             value={periodEnd}
             onChange={(e) => setPeriodEnd(e.target.value)}
@@ -88,20 +90,22 @@ export default function AdminFinancePage(): JSX.Element {
             loading={calculateMut.isPending}
             className="self-end"
           >
-            احتساب
+            {t('admin.finance.calculate')}
           </Button>
         </div>
-        {calculateMut.data && <p className="mt-2 text-sm text-green-600">تم الاحتساب بنجاح</p>}
+        {calculateMut.data && (
+          <p className="mt-2 text-sm text-green-600">{t('admin.finance.calculated-success')}</p>
+        )}
       </Card>
 
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">سجل المدفوعات</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.finance.payout-history')}</h2>
         {payouts.isLoading ? (
           <CardListSkeleton count={4} />
         ) : payouts.isError ? (
-          <ErrorAlert message="فشل التحميل" onRetry={() => payouts.refetch()} />
+          <ErrorAlert message={t('admin.finance.load-error')} onRetry={() => payouts.refetch()} />
         ) : !payouts.data || payouts.data.payouts.length === 0 ? (
-          <EmptyState title="لا توجد مدفوعات" />
+          <EmptyState title={t('admin.finance.no-payouts')} />
         ) : (
           <div className="space-y-2">
             {payouts.data.payouts.map((p: PayoutItem) => (

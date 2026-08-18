@@ -5,8 +5,10 @@ import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import Link from 'next/link';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function TechnicianQAPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { user } = useAuth();
   const [category, setCategory] = useState<string | undefined>();
   const [showAsk, setShowAsk] = useState(false);
@@ -40,8 +42,8 @@ export default function TechnicianQAPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-10 text-center">
-        <h1 className="text-3xl font-bold"> اسألي الفنيات</h1>
-        <p className="mt-2 text-text-secondary">اسألي خبراء التجميل — تجاوب الفنيات على أسئلتكِ</p>
+        <h1 className="text-3xl font-bold">{t('marketing.technician-qa.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.technician-qa.subtitle')}</p>
       </div>
 
       <div className="flex items-center justify-between mb-6">
@@ -50,7 +52,7 @@ export default function TechnicianQAPage(): JSX.Element {
             onClick={() => setCategory(undefined)}
             className={`rounded-full px-3 py-1 text-xs font-medium ${!category ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}
           >
-            الكل
+            {t('marketing.technician-qa.all-filter')}
           </button>
           {categories.map((c) => (
             <button
@@ -64,7 +66,7 @@ export default function TechnicianQAPage(): JSX.Element {
         </div>
         {user && (
           <Button size="sm" onClick={() => setShowAsk(true)}>
-            + اسألي
+            {t('marketing.technician-qa.ask-cta')}
           </Button>
         )}
       </div>
@@ -72,12 +74,19 @@ export default function TechnicianQAPage(): JSX.Element {
       {isLoading ? (
         <CardListSkeleton count={4} />
       ) : isError ? (
-        <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+        <ErrorAlert message={t('marketing.technician-qa.load-error')} onRetry={() => refetch()} />
       ) : items.length === 0 ? (
         <EmptyState
-          title="لا توجد أسئلة بعد"
-          description="كوني أول من يسأل!"
-          action={user ? { label: 'اسألي الآن', onPress: () => setShowAsk(true) } : undefined}
+          title={t('marketing.technician-qa.empty-title')}
+          description={t('marketing.technician-qa.empty-desc')}
+          action={
+            user
+              ? {
+                  label: t('marketing.technician-qa.empty-action'),
+                  onPress: () => setShowAsk(true),
+                }
+              : undefined
+          }
         />
       ) : (
         <div className="space-y-3">
@@ -102,11 +111,15 @@ export default function TechnicianQAPage(): JSX.Element {
                       </p>
                     </div>
                   ) : (
-                    <p className="mt-2 text-xs text-amber-500"> في انتظار الرد</p>
+                    <p className="mt-2 text-xs text-amber-500">
+                      {t('marketing.technician-qa.pending-label')}
+                    </p>
                   )}
                   <p className="mt-1 text-[10px] text-text-tertiary">
                     {item.userName as string} ·{' '}
-                    {new Date(item.createdAt as string).toLocaleDateString('ar-SA')}
+                    {new Date(item.createdAt as string).toLocaleDateString(
+                      locale === 'ar' ? 'ar-SA' : 'en-GB',
+                    )}
                   </p>
                 </div>
               </div>
@@ -118,16 +131,20 @@ export default function TechnicianQAPage(): JSX.Element {
       {!user && (
         <div className="mt-8 text-center">
           <Link href="/login">
-            <Button>سجّلي دخول للسؤال</Button>
+            <Button>{t('marketing.technician-qa.login-cta')}</Button>
           </Link>
         </div>
       )}
 
-      <Modal open={showAsk} onClose={() => setShowAsk(false)} title="اسألي الفنيات">
+      <Modal
+        open={showAsk}
+        onClose={() => setShowAsk(false)}
+        title={t('marketing.technician-qa.modal-title')}
+      >
         <div className="space-y-4">
           <div>
             <label htmlFor="tqa-category" className="block text-sm font-semibold mb-1">
-              الفئة
+              {t('marketing.technician-qa.category-label')}
             </label>
             <select
               id="tqa-category"
@@ -144,21 +161,21 @@ export default function TechnicianQAPage(): JSX.Element {
           </div>
           <div>
             <label htmlFor="tqa-question" className="block text-sm font-semibold mb-1">
-              سؤالكِ
+              {t('marketing.technician-qa.question-label')}
             </label>
             <textarea
               id="tqa-question"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               rows={3}
-              placeholder="اكتبي سؤالكِ هنا..."
+              placeholder={t('marketing.technician-qa.question-placeholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
               maxLength={500}
             />
           </div>
           <div className="flex justify-end gap-3">
             <Button variant="ghost" onClick={() => setShowAsk(false)}>
-              إلغاء
+              {t('marketing.technician-qa.cancel')}
             </Button>
             <Button
               onClick={() => {
@@ -170,7 +187,7 @@ export default function TechnicianQAPage(): JSX.Element {
               }}
               loading={askMut.isPending}
             >
-              إرسال ️
+              {t('marketing.technician-qa.submit')}
             </Button>
           </div>
         </div>

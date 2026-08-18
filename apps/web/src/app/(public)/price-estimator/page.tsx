@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, FormSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface EstimateResult {
   serviceName: string;
@@ -26,6 +27,7 @@ interface ServiceOption {
 }
 
 export default function PriceEstimatorPage(): JSX.Element {
+  const { t } = useLocale();
   const [search, setSearch] = useState('');
   const [selectedServiceId, setSelectedServiceId] = useState<number | null>(null);
   const [promoCode, setPromoCode] = useState('');
@@ -80,10 +82,10 @@ export default function PriceEstimatorPage(): JSX.Element {
       <div className="mb-8 text-center">
         <span className="text-6xl"></span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
-          حاسبة التكلفة
+          {t('marketing.price-estimator.title')}
         </h1>
         <p className="mt-2 text-text-secondary dark:text-gray-400">
-          احسبي تكلفة حجزكِ قبل التأكيد — السعر الأساسي، الرسوم، والخصومات
+          {t('marketing.price-estimator.subtitle')}
         </p>
       </div>
 
@@ -96,7 +98,8 @@ export default function PriceEstimatorPage(): JSX.Element {
               htmlFor="pe-service"
               className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1.5"
             >
-              الخدمة <span className="text-red-500">*</span>
+              {t('marketing.price-estimator.service-label')}
+              <span className="text-red-500">*</span>
             </label>
 
             {selectedService ? (
@@ -107,7 +110,9 @@ export default function PriceEstimatorPage(): JSX.Element {
                     <p className="text-sm font-bold text-text-primary dark:text-gray-100">
                       {selectedService.titleJson?.ar ??
                         selectedService.titleJson?.en ??
-                        `خدمة #${selectedService.id}`}
+                        t('marketing.price-estimator.service-fallback', {
+                          id: selectedService.id,
+                        })}
                     </p>
                     <p className="text-xs text-brand-600 font-semibold">
                       {formatCurrency(Number(selectedService.basePrice))}
@@ -117,7 +122,7 @@ export default function PriceEstimatorPage(): JSX.Element {
                 <button
                   onClick={() => setSelectedServiceId(null)}
                   className="text-text-tertiary hover:text-red-500 p-1 transition-colors"
-                  title="تغيير الخدمة"
+                  title={t('marketing.price-estimator.change-service')}
                 ></button>
               </div>
             ) : (
@@ -127,12 +132,12 @@ export default function PriceEstimatorPage(): JSX.Element {
                   type="text"
                   value={search}
                   onChange={(e) => handleSearchChange(e.target.value)}
-                  placeholder="ابحثي عن خدمة..."
+                  placeholder={t('marketing.price-estimator.search-placeholder')}
                   className="w-full rounded-xl border border-edge bg-surface-muted px-4 py-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
                 />
                 {servicesLoading && search.length > 0 && (
                   <div className="absolute top-full mt-1 w-full rounded-xl border border-edge bg-white p-4 text-center text-sm text-text-tertiary dark:border-gray-700 dark:bg-gray-900 z-10 shadow-lg">
-                    جاري البحث...
+                    {t('marketing.price-estimator.searching')}
                   </div>
                 )}
                 {search.length > 0 && !servicesLoading && serviceList.length > 0 && (
@@ -144,7 +149,9 @@ export default function PriceEstimatorPage(): JSX.Element {
                         className="flex w-full items-center justify-between px-4 py-3 text-sm hover:bg-brand-50 dark:hover:bg-brand-950 transition-colors border-b border-gray-50 dark:border-gray-800 last:border-0"
                       >
                         <span className="text-text-primary dark:text-gray-100">
-                          {s.titleJson?.ar ?? s.titleJson?.en ?? `خدمة #${s.id}`}
+                          {s.titleJson?.ar ??
+                            s.titleJson?.en ??
+                            t('marketing.price-estimator.service-fallback', { id: s.id })}
                         </span>
                         <span className="text-xs font-semibold text-brand-600">
                           {formatCurrency(Number(s.basePrice))}
@@ -163,7 +170,10 @@ export default function PriceEstimatorPage(): JSX.Element {
               htmlFor="pe-promo"
               className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1.5"
             >
-              كود الخصم <span className="text-text-tertiary font-normal">(اختياري)</span>
+              {t('marketing.price-estimator.promo-label')}{' '}
+              <span className="text-text-tertiary font-normal">
+                {t('marketing.price-estimator.optional')}
+              </span>
             </label>
             <div className="relative">
               <input
@@ -171,17 +181,17 @@ export default function PriceEstimatorPage(): JSX.Element {
                 type="text"
                 value={promoCode}
                 onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                placeholder="مثال: WELCOME20"
+                placeholder={t('marketing.price-estimator.promo-placeholder')}
                 className="w-full rounded-xl border border-edge bg-surface-muted px-4 py-3 text-sm uppercase tracking-wider focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
               />
               {promoCode && estimate?.promoValid && (
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-green-500 text-sm font-bold">
-                  صالح
+                  {t('marketing.price-estimator.promo-valid')}
                 </span>
               )}
               {hasPromoError && (
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-red-400 text-xs">
-                  غير صالح
+                  {t('marketing.price-estimator.promo-invalid')}
                 </span>
               )}
             </div>
@@ -190,13 +200,16 @@ export default function PriceEstimatorPage(): JSX.Element {
           {/* Quick Info */}
           <div className="rounded-xl bg-surface-muted p-3 dark:bg-gray-800 text-xs text-text-secondary space-y-1">
             <p>
-              <strong>السعر الأساسي</strong> — سعر الخدمة قبل أي إضافات
+              <strong>{t('marketing.price-estimator.base-price-label')}</strong> —{' '}
+              {t('marketing.price-estimator.base-price-hint')}
             </p>
             <p>
-              <strong>رسوم المنصة</strong> — ١١ ر.س ثابتة لكل حجز
+              <strong>{t('marketing.price-estimator.platform-fee-label')}</strong> —{' '}
+              {t('marketing.price-estimator.platform-fee-hint')}
             </p>
             <p>
-              <strong>الخصم</strong> — يطبق تلقائياً عند إدخال كود خصم صالح
+              <strong>{t('marketing.price-estimator.discount-label')}</strong> —{' '}
+              {t('marketing.price-estimator.discount-hint')}
             </p>
           </div>
         </div>
@@ -212,7 +225,9 @@ export default function PriceEstimatorPage(): JSX.Element {
       {isError && selectedServiceId && (
         <div className="mt-6">
           <ErrorAlert
-            message={(error as { message?: string })?.message || 'فشل حساب التكلفة'}
+            message={
+              (error as { message?: string })?.message || t('marketing.price-estimator.load-error')
+            }
             onRetry={() => refetch()}
           />
         </div>
@@ -240,7 +255,9 @@ export default function PriceEstimatorPage(): JSX.Element {
           {/* Breakdown */}
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
-              <span className="text-text-secondary">السعر الأساسي</span>
+              <span className="text-text-secondary">
+                {t('marketing.price-estimator.base-price-label')}
+              </span>
               <span className="font-medium text-text-primary dark:text-gray-300">
                 {formatCurrency(estimate.basePrice)}
               </span>
@@ -248,7 +265,9 @@ export default function PriceEstimatorPage(): JSX.Element {
 
             {estimate.variantDelta > 0 && (
               <div className="flex justify-between">
-                <span className="text-text-secondary">{estimate.variantName || 'المتغير'}</span>
+                <span className="text-text-secondary">
+                  {estimate.variantName || t('marketing.price-estimator.variant-fallback')}
+                </span>
                 <span className="text-purple-600 font-medium">
                   +{formatCurrency(estimate.variantDelta)}
                 </span>
@@ -256,14 +275,18 @@ export default function PriceEstimatorPage(): JSX.Element {
             )}
 
             <div className="flex justify-between pt-2 border-t border-gray-100 dark:border-gray-800">
-              <span className="text-text-secondary">المجموع الفرعي</span>
+              <span className="text-text-secondary">
+                {t('marketing.price-estimator.subtotal-label')}
+              </span>
               <span className="font-semibold text-gray-800 dark:text-gray-200">
                 {formatCurrency(estimate.subtotal)}
               </span>
             </div>
 
             <div className="flex justify-between">
-              <span className="text-text-secondary">رسوم المنصة</span>
+              <span className="text-text-secondary">
+                {t('marketing.price-estimator.platform-fee-label')}
+              </span>
               <span className="text-text-secondary dark:text-gray-400">
                 {formatCurrency(estimate.platformFee)}
               </span>
@@ -272,7 +295,8 @@ export default function PriceEstimatorPage(): JSX.Element {
             {estimate.discount > 0 && (
               <div className="flex justify-between rounded-lg bg-green-50 p-2 dark:bg-green-950">
                 <span className="text-green-700 dark:text-green-300 font-medium">
-                  ️ الخصم {estimate.discountType === 'percent' ? `(${promoCode})` : ''}
+                  {t('marketing.price-estimator.discount-row')}{' '}
+                  {estimate.discountType === 'percent' ? `(${promoCode})` : ''}
                 </span>
                 <span className="text-green-700 dark:text-green-300 font-bold">
                   -{formatCurrency(estimate.discount)}
@@ -282,7 +306,7 @@ export default function PriceEstimatorPage(): JSX.Element {
 
             {hasPromoError && (
               <div className="rounded-lg bg-red-50 p-2 text-center text-xs text-red-600 dark:bg-red-950 dark:text-red-400">
-                كود الخصم &ldquo;{promoCode}&rdquo; غير صالح أو منتهي الصلاحية
+                {t('marketing.price-estimator.promo-error', { code: promoCode })}
               </div>
             )}
 
@@ -290,15 +314,19 @@ export default function PriceEstimatorPage(): JSX.Element {
 
             {/* Total */}
             <div className="flex justify-between text-lg pt-1">
-              <span className="font-bold text-text-primary dark:text-gray-100">الإجمالي</span>
+              <span className="font-bold text-text-primary dark:text-gray-100">
+                {t('marketing.price-estimator.total-label')}
+              </span>
               <span className="font-extrabold text-brand-600">
-                {formatCurrency(estimate.total)} ر.س
+                {t('marketing.price-estimator.total-amount', {
+                  amount: formatCurrency(estimate.total),
+                })}
               </span>
             </div>
 
             {savings > 0 && (
               <div className="rounded-full bg-green-100 px-4 py-1.5 text-center text-xs font-bold text-green-700 dark:bg-green-900 dark:text-green-300">
-                وفرتِ {formatCurrency(savings)} ر.س!
+                {t('marketing.price-estimator.savings-badge', { amount: formatCurrency(savings) })}
               </div>
             )}
           </div>
@@ -312,7 +340,7 @@ export default function PriceEstimatorPage(): JSX.Element {
                 window.location.assign(`/bookings/create?serviceId=${selectedServiceId}`)
               }
             >
-              احجزي الآن ←
+              {t('marketing.price-estimator.book-cta')}
             </Button>
           </div>
         </Card>

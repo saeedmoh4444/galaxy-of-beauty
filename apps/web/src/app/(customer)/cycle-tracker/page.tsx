@@ -3,22 +3,25 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, KPIRowSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
-const SYMPTOMS_LIST = [
-  'تقلصات',
-  'صداع',
-  'تعب',
-  'انتفاخ',
-  'غثيان',
-  'أرق',
-  'شهية مفتوحة',
-  'آلام ظهر',
-  'حساسية الصدر',
-  'تقلبات مزاجية',
+const SYMPTOMS_LIST: TranslationKey[] = [
+  'cycleTracker.symptom.cramps',
+  'cycleTracker.symptom.headache',
+  'cycleTracker.symptom.fatigue',
+  'cycleTracker.symptom.bloating',
+  'cycleTracker.symptom.nausea',
+  'cycleTracker.symptom.insomnia',
+  'cycleTracker.symptom.increasedAppetite',
+  'cycleTracker.symptom.backPain',
+  'cycleTracker.symptom.breastTenderness',
+  'cycleTracker.symptom.moodSwings',
 ];
 const MOODS = ['', '', '', '', ''];
 
 export default function CycleTrackerPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: today, isLoading: todayLoading } = api.cycleTracker.today.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -41,7 +44,7 @@ export default function CycleTrackerPage(): JSX.Element {
   const [showLog, setShowLog] = useState(false);
   const [mood, setMood] = useState('');
   const [flow, setFlow] = useState('');
-  const [symptoms, setSymptoms] = useState<string[]>([]);
+  const [symptoms, setSymptoms] = useState<TranslationKey[]>([]);
   const [notes, setNotes] = useState('');
   const [showSettings, setShowSettings] = useState(false);
   const [cycleLen, setCycleLen] = useState(28);
@@ -58,7 +61,7 @@ export default function CycleTrackerPage(): JSX.Element {
         dayNumber: (today?.currentDay as number) ?? 1,
         mood,
         flowIntensity: (flow || undefined) as 'light' | undefined,
-        symptoms: symptoms.length > 0 ? symptoms : undefined,
+        symptoms: symptoms.length > 0 ? symptoms.map((s) => t(s)) : undefined,
         notes: notes || undefined,
       },
       {
@@ -75,8 +78,8 @@ export default function CycleTrackerPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold"> متعقب الدورة</h1>
-            <p className="mt-1 text-sm text-text-secondary">توصيات جمالية حسب يوم دورتكِ</p>
+            <h1 className="text-2xl font-bold">{t('cycleTracker.title')}</h1>
+            <p className="mt-1 text-sm text-text-secondary">{t('cycleTracker.subtitle')}</p>
           </div>
           <Button
             size="sm"
@@ -100,11 +103,11 @@ export default function CycleTrackerPage(): JSX.Element {
 
         {showSettings && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">️ إعدادات الدورة</h3>
+            <h3 className="font-bold mb-3">️ {t('cycleTracker.settingsTitle')}</h3>
             <div className="grid gap-3 sm:grid-cols-3">
               <div>
                 <label htmlFor="ct-cycleLen" className="text-xs text-text-secondary">
-                  مدة الدورة
+                  {t('cycleTracker.label.cycleLen')}
                 </label>
                 <input
                   id="ct-cycleLen"
@@ -116,7 +119,7 @@ export default function CycleTrackerPage(): JSX.Element {
               </div>
               <div>
                 <label htmlFor="ct-periodLen" className="text-xs text-text-secondary">
-                  مدة الدورة الشهرية
+                  {t('cycleTracker.label.periodLen')}
                 </label>
                 <input
                   id="ct-periodLen"
@@ -128,7 +131,7 @@ export default function CycleTrackerPage(): JSX.Element {
               </div>
               <div>
                 <label htmlFor="ct-lastStart" className="text-xs text-text-secondary">
-                  آخر دورة
+                  {t('cycleTracker.label.lastStart')}
                 </label>
                 <input
                   id="ct-lastStart"
@@ -153,7 +156,7 @@ export default function CycleTrackerPage(): JSX.Element {
               loading={settingsMut.isPending}
               className="w-full mt-3"
             >
-              حفظ
+              {t('cycleTracker.save')}
             </Button>
           </Card>
         )}
@@ -165,24 +168,22 @@ export default function CycleTrackerPage(): JSX.Element {
             <span className="text-5xl">{(phase?.emoji as string) ?? ''}</span>
             <h2 className="text-xl font-bold mt-2">{phase?.name as string}</h2>
             <p className="text-sm text-text-secondary">
-              اليوم {today?.currentDay as number} من {cycleLength}
+              {t('cycleTracker.dayOf', { day: today?.currentDay as number, total: cycleLength })}
             </p>
             {(today?.hasSettings as boolean) && (today?.daysUntilNext as number) != null && (
               <p className="text-xs text-brand-600 mt-1">
-                ️ متبقي {today?.daysUntilNext as number} يوم على الدورة القادمة
+                ️ {t('cycleTracker.daysUntilNext', { days: today?.daysUntilNext as number })}
               </p>
             )}
             {!today?.hasSettings && (
-              <p className="text-xs text-amber-600 mt-2">
-                اضبطي إعدادات الدورة للحصول على توقعات دقيقة
-              </p>
+              <p className="text-xs text-amber-600 mt-2">{t('cycleTracker.noSettings')}</p>
             )}
           </Card>
         )}
 
         <div className="flex gap-2">
           <Button onClick={() => setShowLog(!showLog)} className="flex-1">
-            {showLog ? '' : ' سجلي اليوم'}
+            {showLog ? '' : t('cycleTracker.logToday')}
           </Button>
         </div>
 
@@ -191,7 +192,9 @@ export default function CycleTrackerPage(): JSX.Element {
             <div className="space-y-3">
               <div>
                 {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes emoji picker buttons */}
-                <label className="text-xs text-text-secondary mb-1 block">المزاج</label>
+                <label className="text-xs text-text-secondary mb-1 block">
+                  {t('cycleTracker.label.mood')}
+                </label>
                 <div className="flex gap-2">
                   {MOODS.map((m) => (
                     <button
@@ -206,7 +209,9 @@ export default function CycleTrackerPage(): JSX.Element {
               </div>
               <div>
                 {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes flow selector buttons */}
-                <label className="text-xs text-text-secondary mb-1 block">شدة التدفق</label>
+                <label className="text-xs text-text-secondary mb-1 block">
+                  {t('cycleTracker.label.flow')}
+                </label>
                 <div className="flex gap-2">
                   {['light', 'medium', 'heavy', 'spotting'].map((f) => (
                     <button
@@ -215,19 +220,21 @@ export default function CycleTrackerPage(): JSX.Element {
                       className={`rounded-full px-4 py-1.5 text-xs ${flow === f ? 'bg-red-100 text-red-700 ring-1 ring-red-400' : 'bg-surface-muted'}`}
                     >
                       {f === 'light'
-                        ? 'خفيف'
+                        ? t('cycleTracker.flow.light')
                         : f === 'medium'
-                          ? 'متوسط'
+                          ? t('cycleTracker.flow.medium')
                           : f === 'heavy'
-                            ? 'غزير'
-                            : 'نقط'}
+                            ? t('cycleTracker.flow.heavy')
+                            : t('cycleTracker.flow.spotting')}
                     </button>
                   ))}
                 </div>
               </div>
               <div>
                 {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes symptom toggle buttons */}
-                <label className="text-xs text-text-secondary mb-1 block">الأعراض</label>
+                <label className="text-xs text-text-secondary mb-1 block">
+                  {t('cycleTracker.label.symptoms')}
+                </label>
                 <div className="flex flex-wrap gap-1">
                   {SYMPTOMS_LIST.map((s) => (
                     <button
@@ -239,7 +246,7 @@ export default function CycleTrackerPage(): JSX.Element {
                       }
                       className={`rounded-full px-3 py-1 text-xs ${symptoms.includes(s) ? 'bg-purple-100 text-purple-700' : 'bg-surface-muted'}`}
                     >
-                      {s}
+                      {t(s)}
                     </button>
                   ))}
                 </div>
@@ -247,19 +254,21 @@ export default function CycleTrackerPage(): JSX.Element {
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="ملاحظات..."
+                placeholder={t('cycleTracker.placeholder.notes')}
                 rows={2}
                 className="w-full rounded-lg border px-3 py-2 text-xs dark:border-gray-700 dark:bg-gray-800"
               />
               <Button onClick={handleLog} loading={logMut.isPending} className="w-full">
-                حفظ اليوم
+                {t('cycleTracker.saveDay')}
               </Button>
             </div>
           </Card>
         )}
 
         <Card padding="lg">
-          <h3 className="font-bold mb-3"> توصيات الجمال — {phase?.name as string}</h3>
+          <h3 className="font-bold mb-3">
+            {t('cycleTracker.tipsTitle', { phase: phase?.name as string })}
+          </h3>
           <div className="space-y-2">
             {((phase?.tips as string[]) ?? []).map((tip: string, i: number) => (
               <p key={i} className="text-sm text-text-secondary">
@@ -277,7 +286,7 @@ export default function CycleTrackerPage(): JSX.Element {
           </div>
         ) : (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">️ أيام الدورة</h3>
+            <h3 className="font-bold mb-3">️ {t('cycleTracker.daysTitle')}</h3>
             <div className="flex flex-wrap gap-1">
               {Array.from({ length: cycleLength }, (_, i) => i + 1).map((d) => {
                 const p = (() => {
@@ -293,7 +302,7 @@ export default function CycleTrackerPage(): JSX.Element {
                     key={d}
                     className={`w-8 h-8 rounded-full text-xs flex items-center justify-center relative ${entry ? 'ring-2 ring-offset-1' : 'bg-surface-muted'}`}
                     style={{ backgroundColor: entry ? p!.color + '30' : '', borderColor: p!.color }}
-                    title={`اليوم ${d}: ${p!.name}`}
+                    title={t('cycleTracker.dayTooltip', { day: d, phase: t(p!.name) })}
                   >
                     <span className="text-[10px]">{d}</span>
                   </div>
@@ -307,9 +316,9 @@ export default function CycleTrackerPage(): JSX.Element {
   );
 }
 
-const PHASES_LIST = [
-  { key: 'menstrual', name: 'الدورة', color: '#ec4899' },
-  { key: 'follicular', name: 'الجريبي', color: '#f59e0b' },
-  { key: 'ovulation', name: 'الإباضة', color: '#8b5cf6' },
-  { key: 'luteal', name: 'الأصفري', color: '#059669' },
+const PHASES_LIST: { key: string; name: TranslationKey; color: string }[] = [
+  { key: 'menstrual', name: 'cycleTracker.phase.menstrual', color: '#ec4899' },
+  { key: 'follicular', name: 'cycleTracker.phase.follicular', color: '#f59e0b' },
+  { key: 'ovulation', name: 'cycleTracker.phase.ovulation', color: '#8b5cf6' },
+  { key: 'luteal', name: 'cycleTracker.phase.luteal', color: '#059669' },
 ];

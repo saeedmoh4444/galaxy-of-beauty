@@ -30,12 +30,45 @@ interface TeenBeautyCardProps {
   service: TeenService;
   onBookWithParent?: () => void;
   className?: string;
+  /** Fallback duration when the service has none */
+  defaultDuration?: string;
+  /** Suffix after the age range */
+  yearsSuffix?: string;
+  /** "You will learn" heading */
+  learningTitle?: string;
+  /** Parent approval heading */
+  parentApprovalTitle?: string;
+  /** Parent approval notice */
+  parentApprovalText?: string;
+  /** Age-appropriate heading */
+  ageAppropriateTitle?: string;
+  /** Age-appropriate text for younger teens */
+  ageAppropriateYoung?: string;
+  /** Age-appropriate text for older teens */
+  ageAppropriateOlder?: string;
+  /** Currency suffix for the price */
+  currencySuffix?: string;
+  /** Parent consent suffix after the price */
+  parentConsentSuffix?: string;
+  /** Book with parent button label */
+  bookWithParentText?: string;
 }
 
 export function TeenBeautyCard({
   service,
   onBookWithParent,
   className = '',
+  defaultDuration = '45 دقيقة',
+  yearsSuffix = 'سنة',
+  learningTitle = 'راح تتعلم:',
+  parentApprovalTitle = 'بموافقة الأم',
+  parentApprovalText = 'تحتاجين موافقة والدتكِ قبل الحجز. يمكنها الموافقة من خلال تطبيق الأهل.',
+  ageAppropriateTitle = 'مناسبة لعمركِ',
+  ageAppropriateYoung = 'منتجات خفيفة وطبيعية — لا كريم أساس ثقيل ولا أظافر أكريليك',
+  ageAppropriateOlder = 'عناية لطيفة مناسبة لسنكِ — التركيز على العناية قبل التجميل',
+  currencySuffix = 'ر.س',
+  parentConsentSuffix = '+ موافقة ولي الأمر',
+  bookWithParentText = 'احجزي مع أمكِ ‍',
 }: TeenBeautyCardProps): JSX.Element {
   const ageMin = Number(service.ageRange.split('-')[0]) || 12;
 
@@ -57,14 +90,14 @@ export function TeenBeautyCard({
               {service.name}
             </h4>
             <p className="text-[10px] text-text-tertiary dark:text-gray-400">
-              ️ {service.duration || '45 دقيقة'}
+              ️ {service.duration || defaultDuration}
             </p>
           </div>
         </div>
 
         {/* Age range pill */}
         <span className="shrink-0 rounded-full bg-purple-100 px-2.5 py-0.5 text-[10px] font-bold text-purple-700 dark:bg-purple-950 dark:text-purple-300">
-          {service.ageRange} سنة
+          {service.ageRange} {yearsSuffix}
         </span>
       </div>
 
@@ -78,7 +111,9 @@ export function TeenBeautyCard({
       {/* Learning points */}
       {service.learningPoints && service.learningPoints.length > 0 && (
         <div className="mt-2 space-y-1">
-          <p className="text-[10px] font-bold text-purple-600 dark:text-purple-400">راح تتعلم:</p>
+          <p className="text-[10px] font-bold text-purple-600 dark:text-purple-400">
+            {learningTitle}
+          </p>
           {service.learningPoints.map((point, i) => (
             <div key={i} className="flex items-center gap-1.5">
               <span className="text-[10px] text-purple-400" aria-hidden="true"></span>
@@ -95,10 +130,10 @@ export function TeenBeautyCard({
             ‍
           </span>
           <div>
-            <p className="text-[10px] font-bold text-amber-700 dark:text-amber-300">بموافقة الأم</p>
-            <p className="text-[10px] text-amber-600 dark:text-amber-400">
-              تحتاجين موافقة والدتكِ قبل الحجز. يمكنها الموافقة من خلال تطبيق الأهل.
+            <p className="text-[10px] font-bold text-amber-700 dark:text-amber-300">
+              {parentApprovalTitle}
             </p>
+            <p className="text-[10px] text-amber-600 dark:text-amber-400">{parentApprovalText}</p>
           </div>
         </div>
       )}
@@ -108,12 +143,10 @@ export function TeenBeautyCard({
         <span className="text-sm" aria-hidden="true"></span>
         <div>
           <p className="text-[10px] font-bold text-purple-700 dark:text-purple-300">
-            مناسبة لعمركِ
+            {ageAppropriateTitle}
           </p>
           <p className="text-[10px] text-purple-600 dark:text-purple-400">
-            {ageMin <= 12
-              ? 'منتجات خفيفة وطبيعية — لا كريم أساس ثقيل ولا أظافر أكريليك'
-              : 'عناية لطيفة مناسبة لسنكِ — التركيز على العناية قبل التجميل'}
+            {ageMin <= 12 ? ageAppropriateYoung : ageAppropriateOlder}
           </p>
         </div>
       </div>
@@ -122,11 +155,11 @@ export function TeenBeautyCard({
       <div className="mt-3 flex items-center justify-between">
         <div>
           <span className="text-sm font-bold text-purple-700 dark:text-purple-400">
-            {service.price} ر.س
+            {service.price} {currencySuffix}
           </span>
           {service.parentRequired && (
             <span className="ml-1 text-[10px] text-text-tertiary dark:text-gray-500">
-              + موافقة ولي الأمر
+              {parentConsentSuffix}
             </span>
           )}
         </div>
@@ -135,7 +168,7 @@ export function TeenBeautyCard({
           onClick={onBookWithParent}
           className="rounded-xl bg-purple-600 px-3 py-1.5 text-[10px] font-bold text-white hover:bg-purple-700 active:scale-[0.98] transition-all"
         >
-          احجزي مع أمكِ ‍
+          {bookWithParentText}
         </button>
       </div>
     </div>

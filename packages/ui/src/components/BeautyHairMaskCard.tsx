@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyHairMaskCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyHairMaskCard({
+  className = '',
+  title = 'ماسك الشعر',
+  subtitle = 'وصفات طبيعية للشعر',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,23 +21,39 @@ export function BeautyHairMaskCard({ className = '' }: { className?: string }): 
       <div className="flex items-center gap-2">
         <span className="text-xl">‍️</span>
         <div>
-          <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">ماسك الشعر</h4>
-          <p className="text-[10px] text-purple-500 dark:text-purple-400">وصفات طبيعية للشعر</p>
+          <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">{title}</h4>
+          <p className="text-[10px] text-purple-500 dark:text-purple-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '', label: 'أفوكادو + عسل', tip: 'للشعر الجاف — ترطيب عميق' },
-          { emoji: '', label: 'بيض + زيت زيتون', tip: 'للشعر الضعيف — بروتين' },
-          { emoji: '', label: 'موز + زبادي', tip: 'للشعر التالف — ترميم' },
-          { emoji: '', label: 'خل تفاح', tip: 'لمعان وتنظيف فروة الرأس' },
+          {
+            emoji: '',
+            label: { ar: 'أفوكادو + عسل', en: 'Avocado + honey' },
+            tip: { ar: 'للشعر الجاف — ترطيب عميق', en: 'For dry hair — deep hydration' },
+          },
+          {
+            emoji: '',
+            label: { ar: 'بيض + زيت زيتون', en: 'Egg + olive oil' },
+            tip: { ar: 'للشعر الضعيف — بروتين', en: 'For weak hair — protein' },
+          },
+          {
+            emoji: '',
+            label: { ar: 'موز + زبادي', en: 'Banana + yogurt' },
+            tip: { ar: 'للشعر التالف — ترميم', en: 'For damaged hair — repair' },
+          },
+          {
+            emoji: '',
+            label: { ar: 'خل تفاح', en: 'Apple cider vinegar' },
+            tip: { ar: 'لمعان وتنظيف فروة الرأس', en: 'Shine and scalp cleansing' },
+          },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-purple-50 px-2.5 py-2 dark:bg-purple-950">
             <span className="text-sm">{t.emoji}</span>
             <p className="mt-0.5 text-[10px] font-bold text-purple-800 dark:text-purple-200">
-              {t.label}
+              {t.label[locale]}
             </p>
-            <p className="text-[9px] text-purple-600 dark:text-purple-400">{t.tip}</p>
+            <p className="text-[9px] text-purple-600 dark:text-purple-400">{t.tip[locale]}</p>
           </div>
         ))}
       </div>

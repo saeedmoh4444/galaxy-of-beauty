@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyMaskCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyMaskCard({
+  className = '',
+  heading = 'دليل الماسكات',
+  subtitle = 'أي ماسك لبشرتكِ؟',
+  locale = 'ar',
+}: {
+  className?: string;
+  heading?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,25 +21,39 @@ export function BeautyMaskCard({ className = '' }: { className?: string }): JSX.
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-            دليل الماسكات
-          </h4>
-          <p className="text-[10px] text-emerald-500 dark:text-emerald-400">أي ماسك لبشرتكِ؟</p>
+          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{heading}</h4>
+          <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '', label: 'طين', tip: 'للبشرة الدهنية — ينظف المسام' },
-          { emoji: '', label: 'ورقي', tip: 'للبشرة الجافة — ترطيب مكثف' },
-          { emoji: '', label: 'طبيعي', tip: 'عسل + زبادي — مهدئ' },
-          { emoji: '', label: 'ذهبي', tip: 'لجميع الأنواع — إشراقة' },
+          {
+            emoji: '',
+            label: { ar: 'طين', en: 'Clay' },
+            tip: { ar: 'للبشرة الدهنية — ينظف المسام', en: 'For oily skin — deep cleans pores' },
+          },
+          {
+            emoji: '',
+            label: { ar: 'ورقي', en: 'Sheet' },
+            tip: { ar: 'للبشرة الجافة — ترطيب مكثف', en: 'For dry skin — intense hydration' },
+          },
+          {
+            emoji: '',
+            label: { ar: 'طبيعي', en: 'Natural' },
+            tip: { ar: 'عسل + زبادي — مهدئ', en: 'Honey + yogurt — soothing' },
+          },
+          {
+            emoji: '',
+            label: { ar: 'ذهبي', en: 'Gold' },
+            tip: { ar: 'لجميع الأنواع — إشراقة', en: 'For all skin types — glow' },
+          },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-emerald-50 px-2.5 py-2 dark:bg-emerald-950">
             <span className="text-sm">{t.emoji}</span>
             <p className="mt-0.5 text-[10px] font-bold text-emerald-800 dark:text-emerald-200">
-              {t.label}
+              {t.label[locale]}
             </p>
-            <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{t.tip}</p>
+            <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{t.tip[locale]}</p>
           </div>
         ))}
       </div>

@@ -1,6 +1,16 @@
 'use client';
 import { cn } from '@galaxy/shared';
-export function BeautyLEDMaskCard({ className = '' }: { className?: string }): JSX.Element {
+export function BeautyLEDMaskCard({
+  className = '',
+  heading = 'قناع LED',
+  subtitle = 'العلاج بالضوء في منزلك',
+  locale = 'ar',
+}: {
+  className?: string;
+  heading?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
   return (
     <div
       className={cn(
@@ -11,21 +21,39 @@ export function BeautyLEDMaskCard({ className = '' }: { className?: string }): J
       <div className="flex items-center gap-2">
         <span className="text-xl"></span>
         <div>
-          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">قناع LED</h4>
-          <p className="text-[10px] text-sky-500 dark:text-sky-400">العلاج بالضوء في منزلك</p>
+          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{heading}</h4>
+          <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '', label: 'أحمر', tip: 'كولاجين — مضاد للشيخوخة' },
-          { emoji: '', label: 'أزرق', tip: 'يقتل البكتيريا — لعلاج الحبوب' },
-          { emoji: '', label: 'أصفر', tip: 'يفتح البقع — يقلل التصبغات' },
-          { emoji: '', label: 'أخضر', tip: 'مهدئ — يقلل الاحمرار' },
+          {
+            emoji: '',
+            label: { ar: 'أحمر', en: 'Red' },
+            tip: { ar: 'كولاجين — مضاد للشيخوخة', en: 'Collagen — anti-aging' },
+          },
+          {
+            emoji: '',
+            label: { ar: 'أزرق', en: 'Blue' },
+            tip: { ar: 'يقتل البكتيريا — لعلاج الحبوب', en: 'Kills bacteria — treats breakouts' },
+          },
+          {
+            emoji: '',
+            label: { ar: 'أصفر', en: 'Yellow' },
+            tip: { ar: 'يفتح البقع — يقلل التصبغات', en: 'Brightens spots — reduces pigmentation' },
+          },
+          {
+            emoji: '',
+            label: { ar: 'أخضر', en: 'Green' },
+            tip: { ar: 'مهدئ — يقلل الاحمرار', en: 'Calming — reduces redness' },
+          },
         ].map((t, i) => (
           <div key={i} className="rounded-lg bg-sky-50 px-2.5 py-2 dark:bg-sky-950">
             <span className="text-sm">{t.emoji}</span>
-            <p className="mt-0.5 text-[10px] font-bold text-sky-800 dark:text-sky-200">{t.label}</p>
-            <p className="text-[9px] text-sky-600 dark:text-sky-400">{t.tip}</p>
+            <p className="mt-0.5 text-[10px] font-bold text-sky-800 dark:text-sky-200">
+              {t.label[locale]}
+            </p>
+            <p className="text-[9px] text-sky-600 dark:text-sky-400">{t.tip[locale]}</p>
           </div>
         ))}
       </div>

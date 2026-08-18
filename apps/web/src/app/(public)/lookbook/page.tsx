@@ -4,141 +4,151 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 const SEASONS = [
   {
     id: 'summer',
-    nameAr: 'صيف ٢٠٢٦',
-    nameEn: 'Summer 2026',
+    nameAr: 'marketing.lookbook.season-summer-ar',
+    nameEn: 'marketing.lookbook.season-summer-en',
     emoji: '️',
     color: 'from-amber-400 to-orange-500',
   },
   {
     id: 'eid',
-    nameAr: 'أناقة العيد',
-    nameEn: 'Eid Elegance',
+    nameAr: 'marketing.lookbook.season-eid-ar',
+    nameEn: 'marketing.lookbook.season-eid-en',
     emoji: '',
     color: 'from-emerald-400 to-teal-600',
   },
   {
     id: 'wedding',
-    nameAr: 'موسم الأعراس',
-    nameEn: 'Wedding Season',
+    nameAr: 'marketing.lookbook.season-wedding-ar',
+    nameEn: 'marketing.lookbook.season-wedding-en',
     emoji: '',
     color: 'from-pink-400 to-rose-500',
   },
   {
     id: 'ramadan',
-    nameAr: 'رمضان كريم',
-    nameEn: 'Ramadan',
+    nameAr: 'marketing.lookbook.season-ramadan-ar',
+    nameEn: 'marketing.lookbook.season-ramadan-en',
     emoji: '',
     color: 'from-purple-400 to-indigo-600',
   },
-];
+] as const;
 
-const LOOKS: Record<
-  string,
-  { title: string; desc: string; image: string; tags: string[]; link: string }[]
-> = {
+const LOOKS = {
   summer: [
     {
-      title: 'إطلالة شاطئية منعشة',
-      desc: 'مكياج خفيف مقاوم للماء مع تسريحة شاطئية',
+      title: 'marketing.lookbook.look-summer-beach-title',
+      desc: 'marketing.lookbook.look-summer-beach-desc',
       image: '',
-      tags: ['مكياج', 'شعر', 'عناية'],
+      tags: [
+        'marketing.lookbook.tag-makeup',
+        'marketing.lookbook.tag-hair',
+        'marketing.lookbook.tag-care',
+      ],
       link: '/services',
     },
     {
-      title: 'عناية بالبشرة قبل الصيف',
-      desc: 'تقشير وترطيب عميق لبشرة متألقة',
+      title: 'marketing.lookbook.look-summer-skin-title',
+      desc: 'marketing.lookbook.look-summer-skin-desc',
       image: '',
-      tags: ['بشرة', 'عناية'],
+      tags: ['marketing.lookbook.tag-skin', 'marketing.lookbook.tag-care'],
       link: '/services',
     },
     {
-      title: 'ألوان الصيف الجريئة',
-      desc: 'مانيكير وباديكير بألوان الموسم',
+      title: 'marketing.lookbook.look-summer-colors-title',
+      desc: 'marketing.lookbook.look-summer-colors-desc',
       image: '',
-      tags: ['أظافر', 'مانيكير'],
+      tags: ['marketing.lookbook.tag-nails', 'marketing.lookbook.tag-manicure'],
       link: '/services',
     },
   ],
   eid: [
     {
-      title: 'إطلالة العيد الفاخرة',
-      desc: 'مكياج سهرة مع تسريحة أنيقة',
+      title: 'marketing.lookbook.look-eid-luxury-title',
+      desc: 'marketing.lookbook.look-eid-luxury-desc',
       image: '',
-      tags: ['مكياج', 'شعر'],
+      tags: ['marketing.lookbook.tag-makeup', 'marketing.lookbook.tag-hair'],
       link: '/services',
     },
     {
-      title: 'حناء العيد',
-      desc: 'نقوش حناء عصرية للمناسبات',
+      title: 'marketing.lookbook.look-eid-henna-title',
+      desc: 'marketing.lookbook.look-eid-henna-desc',
       image: '',
-      tags: ['حناء', 'مناسبات'],
+      tags: ['marketing.lookbook.tag-henna', 'marketing.lookbook.tag-occasions'],
       link: '/services',
     },
     {
-      title: 'بشرة متألقة للعيد',
-      desc: 'جلسة عناية متكاملة قبل العيد',
+      title: 'marketing.lookbook.look-eid-glow-title',
+      desc: 'marketing.lookbook.look-eid-glow-desc',
       image: '',
-      tags: ['بشرة', 'عناية'],
+      tags: ['marketing.lookbook.tag-skin', 'marketing.lookbook.tag-care'],
       link: '/services',
     },
   ],
   wedding: [
     {
-      title: 'إطلالة العروس الكاملة',
-      desc: 'مكياج، شعر، وأظافر ليومكِ الكبير',
+      title: 'marketing.lookbook.look-wedding-bride-title',
+      desc: 'marketing.lookbook.look-wedding-bride-desc',
       image: '',
-      tags: ['عرايس', 'مكياج', 'شعر'],
+      tags: [
+        'marketing.lookbook.tag-brides',
+        'marketing.lookbook.tag-makeup',
+        'marketing.lookbook.tag-hair',
+      ],
       link: '/bridal-concierge',
     },
     {
-      title: 'جلسة تصوير العروس',
-      desc: 'مكياج احترافي يدوم طوال اليوم',
+      title: 'marketing.lookbook.look-wedding-photo-title',
+      desc: 'marketing.lookbook.look-wedding-photo-desc',
       image: '',
-      tags: ['مكياج', 'تصوير'],
+      tags: ['marketing.lookbook.tag-makeup', 'marketing.lookbook.tag-photo'],
       link: '/services',
     },
     {
-      title: 'إطلالة أم العروس',
-      desc: 'مكياج ناعم وأنيق لأم العروس',
+      title: 'marketing.lookbook.look-wedding-mother-title',
+      desc: 'marketing.lookbook.look-wedding-mother-desc',
       image: '',
-      tags: ['مكياج', 'مناسبات'],
+      tags: ['marketing.lookbook.tag-makeup', 'marketing.lookbook.tag-occasions'],
       link: '/services',
     },
   ],
   ramadan: [
     {
-      title: 'عناية مسائية في رمضان',
-      desc: 'جلسات عناية بالبشرة بعد الإفطار',
+      title: 'marketing.lookbook.look-ramadan-evening-title',
+      desc: 'marketing.lookbook.look-ramadan-evening-desc',
       image: '',
-      tags: ['بشرة', 'عناية'],
+      tags: ['marketing.lookbook.tag-skin', 'marketing.lookbook.tag-care'],
       link: '/services',
     },
     {
-      title: 'إطلالة السحور',
-      desc: 'مكياج ناعم وطبيعي للسهرات الرمضانية',
+      title: 'marketing.lookbook.look-ramadan-suhoor-title',
+      desc: 'marketing.lookbook.look-ramadan-suhoor-desc',
       image: '',
-      tags: ['مكياج', 'سهرات'],
+      tags: ['marketing.lookbook.tag-makeup', 'marketing.lookbook.tag-evenings'],
       link: '/services',
     },
   ],
-};
+} as const;
+
+type Look = (typeof LOOKS)[keyof typeof LOOKS][number];
+const looksMap: Record<string, readonly Look[] | undefined> = LOOKS;
 
 export default function LookbookPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const [season, setSeason] = useState('summer');
 
   const currentSeason = SEASONS.find((s) => s.id === season) || SEASONS[0]!;
-  const looks = LOOKS[season] || [];
+  const looks = looksMap[season] ?? [];
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100"> لوك بوك</h1>
-        <p className="mt-2 text-text-secondary">
-          استلهمي إطلالتكِ من أحدث صيحات الجمال لكل المناسبات
-        </p>
+        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">
+          {t('marketing.lookbook.title')}
+        </h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.lookbook.subtitle')}</p>
       </div>
 
       <div className="flex justify-center gap-3 mb-10 flex-wrap">
@@ -148,14 +158,14 @@ export default function LookbookPage(): JSX.Element {
             onClick={() => setSeason(s.id)}
             className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all ${season === s.id ? `bg-gradient-to-r ${s.color} text-white shadow-lg` : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'}`}
           >
-            <span>{s.emoji}</span> {s.nameAr}
+            <span>{s.emoji}</span> {t(locale === 'ar' ? s.nameAr : s.nameEn)}
           </button>
         ))}
       </div>
 
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {currentSeason.emoji} {currentSeason.nameAr}
+          {currentSeason.emoji} {t(locale === 'ar' ? currentSeason.nameAr : currentSeason.nameEn)}
         </h2>
       </div>
 
@@ -169,16 +179,16 @@ export default function LookbookPage(): JSX.Element {
                 <span>{look.image}</span>
               </div>
               <h3 className="mt-4 text-lg font-bold text-text-primary group-hover:text-brand-600 dark:text-gray-100">
-                {look.title}
+                {t(look.title)}
               </h3>
-              <p className="mt-1 text-sm text-text-secondary">{look.desc}</p>
+              <p className="mt-1 text-sm text-text-secondary">{t(look.desc)}</p>
               <div className="mt-3 flex flex-wrap gap-1">
-                {look.tags.map((t) => (
+                {look.tags.map((tag) => (
                   <span
-                    key={t}
+                    key={tag}
                     className="rounded-full bg-brand-50 px-2 py-0.5 text-xs text-brand-600 dark:bg-brand-950"
                   >
-                    {t}
+                    {t(tag)}
                   </span>
                 ))}
               </div>
@@ -193,6 +203,7 @@ export default function LookbookPage(): JSX.Element {
 }
 
 function CommunityLooks(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data, isLoading } = api.lookOfTheDay.feed.useQuery({ page: 1, limit: 6 }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -204,8 +215,8 @@ function CommunityLooks(): JSX.Element {
   return (
     <div className="mt-16">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold"> إطلالات المجتمع</h2>
-        <p className="mt-2 text-text-secondary">أحدث الإطلالات من مجتمع جالكسي بيوتي</p>
+        <h2 className="text-2xl font-bold">{t('marketing.lookbook.community-title')}</h2>
+        <p className="mt-2 text-text-secondary">{t('marketing.lookbook.community-subtitle')}</p>
       </div>
       {isLoading ? (
         <GridSkeleton count={6} />
@@ -227,7 +238,8 @@ function CommunityLooks(): JSX.Element {
                 {l.userName as string} · ‍ {l.technicianName as string}
               </p>
               <p className="text-xs text-text-tertiary mt-1">
-                ️ {l.votes as number} · {new Date(l.date as string).toLocaleDateString('ar-SA')}
+                ️ {l.votes as number} ·{' '}
+                {new Date(l.date as string).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-GB')}
               </p>
             </Card>
           ))}

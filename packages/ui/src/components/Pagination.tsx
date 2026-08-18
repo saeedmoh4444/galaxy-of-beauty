@@ -4,12 +4,20 @@ interface PaginationProps {
   page: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  navLabel?: string;
+  prevLabel?: string;
+  nextLabel?: string;
+  pageLabel?: string;
 }
 
 export function Pagination({
   page,
   totalPages,
   onPageChange,
+  navLabel = 'التنقل بين الصفحات',
+  prevLabel = 'الصفحة السابقة',
+  nextLabel = 'الصفحة التالية',
+  pageLabel = 'صفحة',
 }: PaginationProps): JSX.Element | null {
   if (totalPages <= 1) return null;
 
@@ -23,12 +31,12 @@ export function Pagination({
   }
 
   return (
-    <nav aria-label="التنقل بين الصفحات" className="flex items-center justify-center gap-1">
+    <nav aria-label={navLabel} className="flex items-center justify-center gap-1">
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page <= 1}
         className="flex h-11 w-11 items-center justify-center rounded-lg text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 dark:text-gray-400 dark:hover:bg-gray-800"
-        aria-label="الصفحة السابقة"
+        aria-label={prevLabel}
       >
         ‹
       </button>
@@ -46,7 +54,7 @@ export function Pagination({
                 ? 'bg-brand-600 text-white'
                 : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
             }`}
-            aria-label={`صفحة ${p}`}
+            aria-label={`${pageLabel} ${p}`}
             aria-current={p === page ? 'page' : undefined}
           >
             {p}
@@ -57,7 +65,7 @@ export function Pagination({
         onClick={() => onPageChange(page + 1)}
         disabled={page >= totalPages}
         className="flex h-11 w-11 items-center justify-center rounded-lg text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 dark:text-gray-400 dark:hover:bg-gray-800"
-        aria-label="الصفحة التالية"
+        aria-label={nextLabel}
       >
         ›
       </button>

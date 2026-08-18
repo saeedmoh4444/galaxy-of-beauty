@@ -10,6 +10,7 @@ import {
   EmptyState,
   formatCurrency,
 } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 type RevenueDay = NonNullable<RouterOutput['analytics']['revenueChart']>['dailyRevenue'][number];
 type BookingStats = RouterOutput['analytics']['bookingStats'];
@@ -34,6 +35,7 @@ function StatCard({
 }
 
 export default function AdminAnalyticsPage(): JSX.Element {
+  const { t } = useLocale();
   const revenueQuery = api.analytics.revenueChart.useQuery({ days: 30 });
   const bookingStatsQuery = api.analytics.bookingStats.useQuery();
   const topTechQuery = api.analytics.topTechnicians.useQuery({ limit: 10 });
@@ -55,37 +57,37 @@ export default function AdminAnalyticsPage(): JSX.Element {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">الإحصائيات</h1>
+      <h1 className="text-2xl font-bold">{t('admin.analytics.title')}</h1>
 
       {/* Booking Stats */}
       <div>
-        <h2 className="mb-3 text-lg font-semibold">إحصائيات الحجوزات</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.analytics.booking-stats-title')}</h2>
         {bookingStatsQuery.isLoading ? (
           <KPIRowSkeleton count={4} />
         ) : bookingStatsQuery.isError ? (
           <ErrorAlert
-            message="فشل تحميل إحصائيات الحجوزات"
+            message={t('admin.analytics.booking-stats-error')}
             onRetry={() => bookingStatsQuery.refetch()}
           />
         ) : (
           <div className="grid gap-4 md:grid-cols-4">
             <StatCard
-              title="إجمالي الحجوزات"
+              title={t('admin.analytics.total-bookings')}
               value={String(bookingStats?.total ?? 0)}
               color="text-brand-600"
             />
             <StatCard
-              title="مكتملة"
+              title={t('admin.analytics.completed')}
               value={String(byStatusMap['COMPLETED'] ?? 0)}
               color="text-green-600"
             />
             <StatCard
-              title="قيد الانتظار"
+              title={t('admin.analytics.pending')}
               value={String(byStatusMap['REQUESTED'] ?? 0)}
               color="text-amber-600"
             />
             <StatCard
-              title="ملغية"
+              title={t('admin.analytics.cancelled')}
               value={String(byStatusMap['CANCELLED'] ?? 0)}
               color="text-red-600"
             />
@@ -95,13 +97,16 @@ export default function AdminAnalyticsPage(): JSX.Element {
 
       {/* Revenue Chart */}
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">الإيرادات (آخر 30 يوم)</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.analytics.revenue-title')}</h2>
         {revenueQuery.isLoading ? (
           <CardListSkeleton count={4} />
         ) : revenueQuery.isError ? (
-          <ErrorAlert message="فشل تحميل الإيرادات" onRetry={() => revenueQuery.refetch()} />
+          <ErrorAlert
+            message={t('admin.analytics.revenue-error')}
+            onRetry={() => revenueQuery.refetch()}
+          />
         ) : revenueData.length === 0 ? (
-          <EmptyState title="لا توجد بيانات إيرادات" />
+          <EmptyState title={t('admin.analytics.revenue-empty')} />
         ) : (
           <div className="flex items-end gap-1" style={{ height: 200 }}>
             {revenueData.map((r: RevenueDay, i: number) => {
@@ -130,21 +135,30 @@ export default function AdminAnalyticsPage(): JSX.Element {
 
       {/* Top Technicians */}
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">أفضل الفنيات</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.analytics.top-technicians')}</h2>
         {topTechQuery.isLoading ? (
           <CardListSkeleton count={4} />
         ) : topTechQuery.isError ? (
-          <ErrorAlert message="فشل تحميل أفضل الفنيات" onRetry={() => topTechQuery.refetch()} />
+          <ErrorAlert
+            message={t('admin.analytics.top-tech-error')}
+            onRetry={() => topTechQuery.refetch()}
+          />
         ) : topTechs.length === 0 ? (
-          <EmptyState title="لا توجد فنيات" />
+          <EmptyState title={t('admin.analytics.no-technicians')} />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-edge text-right dark:border-gray-800">
-                  <th className="pb-2 font-medium text-text-secondary">الاسم</th>
-                  <th className="pb-2 font-medium text-text-secondary">الحجوزات المكتملة</th>
-                  <th className="pb-2 font-medium text-text-secondary">التقييم</th>
+                  <th className="pb-2 font-medium text-text-secondary">
+                    {t('admin.analytics.name-header')}
+                  </th>
+                  <th className="pb-2 font-medium text-text-secondary">
+                    {t('admin.analytics.completed-bookings-header')}
+                  </th>
+                  <th className="pb-2 font-medium text-text-secondary">
+                    {t('admin.analytics.rating-header')}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -163,16 +177,16 @@ export default function AdminAnalyticsPage(): JSX.Element {
 
       {/* User Growth */}
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">نمو المستخدمين (آخر 30 يوم)</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.analytics.user-growth-title')}</h2>
         {userGrowthQuery.isLoading ? (
           <CardListSkeleton count={4} />
         ) : userGrowthQuery.isError ? (
           <ErrorAlert
-            message="فشل تحميل نمو المستخدمين"
+            message={t('admin.analytics.user-growth-error')}
             onRetry={() => userGrowthQuery.refetch()}
           />
         ) : userGrowth.length === 0 ? (
-          <EmptyState title="لا توجد بيانات نمو" />
+          <EmptyState title={t('admin.analytics.user-growth-empty')} />
         ) : (
           <div className="space-y-1">
             {userGrowth.map((u: UserGrowthDay, i: number) => (

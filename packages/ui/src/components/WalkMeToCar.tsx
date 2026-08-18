@@ -17,6 +17,18 @@ interface WalkMeToCarProps {
   /** Whether it's a home service (technician comes to you) */
   isHomeService?: boolean;
   onRequest?: () => void;
+  homeServiceTitle?: string;
+  carServiceTitle?: string;
+  darkSubtitle?: string;
+  lightSubtitle?: string;
+  escortingTitle?: string;
+  escortingSubtitle?: string;
+  sendingText?: string;
+  homeButtonText?: string;
+  carButtonText?: string;
+  safeCallText?: string;
+  liveLocationText?: string;
+  verifiedExpertText?: string;
   className?: string;
 }
 
@@ -31,6 +43,18 @@ export function WalkMeToCar({
   isHomeService = false,
   onRequest,
   className = '',
+  homeServiceTitle = 'أمان الخدمة المنزلية',
+  carServiceTitle = 'توصيل للسيارة',
+  darkSubtitle = ' موعد مسائي — سلامتكِ أولاً',
+  lightSubtitle = '️ خدمة متاحة في أي وقت تحتاجينها',
+  escortingTitle = 'الخبيرة في طريقها لمرافقتكِ',
+  escortingSubtitle = 'انتظري لحظة — لا تغادري وحدكِ',
+  sendingText = 'جاري إرسال الطلب... الخبيرة ستصل خلال دقيقة',
+  homeButtonText = 'شاركي موقعكِ المباشر',
+  carButtonText = 'رافقيني للسيارة ‍️',
+  safeCallText = ' اتصال آمن',
+  liveLocationText = ' موقع مباشر',
+  verifiedExpertText = ' خبيرة موثقة',
 }: WalkMeToCarProps): JSX.Element {
   const [requested, setRequested] = useState(false);
   const [escorting, setEscorting] = useState(false);
@@ -75,10 +99,10 @@ export function WalkMeToCar({
         </div>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">
-            {isHomeService ? 'أمان الخدمة المنزلية' : 'توصيل للسيارة'}
+            {isHomeService ? homeServiceTitle : carServiceTitle}
           </h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">
-            {isDark ? ' موعد مسائي — سلامتكِ أولاً' : '️ خدمة متاحة في أي وقت تحتاجينها'}
+            {isDark ? darkSubtitle : lightSubtitle}
           </p>
         </div>
       </div>
@@ -92,10 +116,10 @@ export function WalkMeToCar({
             </span>
             <div>
               <p className="text-xs font-bold text-indigo-700 dark:text-indigo-200">
-                الخبيرة في طريقها لمرافقتكِ
+                {escortingTitle}
               </p>
               <p className="text-[10px] text-indigo-600 dark:text-indigo-400">
-                انتظري لحظة — لا تغادري وحدكِ
+                {escortingSubtitle}
               </p>
             </div>
           </div>
@@ -107,9 +131,7 @@ export function WalkMeToCar({
         <div className="mt-3 rounded-xl bg-indigo-50 p-3 dark:bg-indigo-800">
           <div className="flex items-center gap-2">
             <div className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent" />
-            <p className="text-xs text-indigo-700 dark:text-indigo-200">
-              جاري إرسال الطلب... الخبيرة ستصل خلال دقيقة
-            </p>
+            <p className="text-xs text-indigo-700 dark:text-indigo-200">{sendingText}</p>
           </div>
         </div>
       )}
@@ -126,15 +148,15 @@ export function WalkMeToCar({
               : 'bg-gray-100 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 dark:bg-gray-800 dark:text-gray-300',
           )}
         >
-          {isHomeService ? 'شاركي موقعكِ المباشر' : 'رافقيني للسيارة ‍️'}
+          {isHomeService ? homeButtonText : carButtonText}
         </button>
       )}
 
       {/* Safety features footer */}
       <div className="mt-2 flex items-center justify-center gap-3 text-[9px] text-text-tertiary dark:text-gray-500">
-        <span> اتصال آمن</span>
-        <span> موقع مباشر</span>
-        <span> خبيرة موثقة</span>
+        <span>{safeCallText}</span>
+        <span>{liveLocationText}</span>
+        <span>{verifiedExpertText}</span>
       </div>
     </div>
   );

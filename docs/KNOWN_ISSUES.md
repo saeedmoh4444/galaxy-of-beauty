@@ -15,12 +15,10 @@
 
 ---
 
-## 2. 11 Utility Components Missing Dark Mode (Low)
+## 2. 11 Utility Components Missing Dark Mode (Low) — RESOLVED 2026-08-17
 
 **Components:** BookAgain, CardGrid, Celebration, EmailCapture, FloatingActionButton, HeroBanner, Icon, PageContainer, RamadanBanner, Stories, WhatsAppShare
-**Impact:** Minimal — these are wrappers/utilities that inherit colors from children or use brand colors
-**Fix:** Add `dark:` variants to background/text/border classes
-**Status:** Deferred — non-blocking
+**Resolution:** Full audit with `darkMode: 'class'` in effect — CardGrid/Celebration/Icon/PageContainer/Stories contain zero hardcoded light colors; the rest only use white on brand gradients/colored backgrounds (intentional design in both themes). 4 beauty-card hover overlays + FormField disabled select got missing `dark:` counterparts as part of the dark-mode sweep.
 
 ---
 

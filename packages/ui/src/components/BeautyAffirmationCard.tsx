@@ -12,21 +12,30 @@ import { cn } from '@galaxy/shared';
  */
 
 const AFFIRMATIONS = [
-  'أنا جميلة كما أنا',
-  'بشرتي متوهجة وصحية',
-  'أنا أستحق العناية بنفسي',
-  'جمالي الداخلي يشرق للخارج',
-  'كل يوم أزداد جمالاً وثقة',
-  'أنا ممتنة لجسدي وصحتي',
-  'عيوبي تجعلني فريدة',
-  'أنا أحب نفسي بدون شروط',
+  { ar: 'أنا جميلة كما أنا', en: 'I am beautiful as I am' },
+  { ar: 'بشرتي متوهجة وصحية', en: 'My skin is glowing and healthy' },
+  { ar: 'أنا أستحق العناية بنفسي', en: 'I deserve to care for myself' },
+  { ar: 'جمالي الداخلي يشرق للخارج', en: 'My inner beauty shines outward' },
+  { ar: 'كل يوم أزداد جمالاً وثقة', en: 'Every day I grow more beautiful and confident' },
+  { ar: 'أنا ممتنة لجسدي وصحتي', en: 'I am grateful for my body and health' },
+  { ar: 'عيوبي تجعلني فريدة', en: 'My imperfections make me unique' },
+  { ar: 'أنا أحب نفسي بدون شروط', en: 'I love myself unconditionally' },
 ];
 
 interface BeautyAffirmationCardProps {
+  /** Display language for built-in affirmations */
+  locale?: 'ar' | 'en';
+  title?: string;
+  nextButtonText?: string;
   className?: string;
 }
 
-export function BeautyAffirmationCard({ className = '' }: BeautyAffirmationCardProps): JSX.Element {
+export function BeautyAffirmationCard({
+  className = '',
+  locale = 'ar',
+  title = 'توكيدات إيجابية',
+  nextButtonText = 'التأكيد التالي ←',
+}: BeautyAffirmationCardProps): JSX.Element {
   const [index, setIndex] = useState(0);
   const affirmation = AFFIRMATIONS[index]!;
 
@@ -39,12 +48,12 @@ export function BeautyAffirmationCard({ className = '' }: BeautyAffirmationCardP
     >
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">توكيدات إيجابية</h4>
+        <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">{title}</h4>
       </div>
 
       <div className="mt-3 rounded-xl bg-white/60 p-5 text-center dark:bg-gray-800/60">
         <p className="text-lg font-bold leading-relaxed text-pink-800 dark:text-pink-200">
-          &ldquo;{affirmation}&rdquo;
+          &ldquo;{affirmation[locale]}&rdquo;
         </p>
         <p className="mt-2 text-2xl" aria-hidden="true"></p>
       </div>
@@ -66,7 +75,7 @@ export function BeautyAffirmationCard({ className = '' }: BeautyAffirmationCardP
         onClick={() => setIndex((p) => (p + 1) % AFFIRMATIONS.length)}
         className="mt-3 w-full rounded-xl border border-pink-200 py-2 text-[10px] font-bold text-pink-700 hover:bg-white/60 dark:hover:bg-gray-800/60 dark:border-pink-800 dark:text-pink-300 transition-colors"
       >
-        التأكيد التالي ←
+        {nextButtonText}
       </button>
     </div>
   );

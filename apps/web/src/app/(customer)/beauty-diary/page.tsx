@@ -3,16 +3,19 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
-const MOODS = [
-  { value: 5, emoji: '', label: 'ممتاز' },
-  { value: 4, emoji: '', label: 'جيد' },
-  { value: 3, emoji: '', label: 'عادي' },
-  { value: 2, emoji: '', label: 'سيء' },
-  { value: 1, emoji: '', label: 'مزعج' },
+const MOODS: { value: number; emoji: string; label: TranslationKey }[] = [
+  { value: 5, emoji: '', label: 'beautyDiary.mood.great' },
+  { value: 4, emoji: '', label: 'beautyDiary.mood.good' },
+  { value: 3, emoji: '', label: 'beautyDiary.mood.ok' },
+  { value: 2, emoji: '', label: 'beautyDiary.mood.bad' },
+  { value: 1, emoji: '', label: 'beautyDiary.mood.irritated' },
 ];
 
 export default function BeautyDiaryPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data: journals, isLoading } = api.beautyJournal.list.useQuery({ page: 1, limit: 20 }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
@@ -47,10 +50,12 @@ export default function BeautyDiaryPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold"> يوميات الجمال</h1>
-            <p className="mt-1 text-sm text-text-secondary">دوني رحلتكِ ومشاعركِ</p>
+            <h1 className="text-2xl font-bold">{t('beautyDiary.title')}</h1>
+            <p className="mt-1 text-sm text-text-secondary">{t('beautyDiary.subtitle')}</p>
           </div>
-          <Button onClick={() => setShowForm(!showForm)}>{showForm ? '' : '+ يومية'}</Button>
+          <Button onClick={() => setShowForm(!showForm)}>
+            {showForm ? '' : t('beautyDiary.addEntry')}
+          </Button>
         </div>
 
         {showForm && (
@@ -58,7 +63,7 @@ export default function BeautyDiaryPage(): JSX.Element {
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="اكتبي يومياتكِ..."
+              placeholder={t('beautyDiary.placeholder')}
               rows={3}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
@@ -70,12 +75,12 @@ export default function BeautyDiaryPage(): JSX.Element {
                   className={`rounded-full px-3 py-2 text-center transition-all ${mood === m.value ? 'ring-2 ring-brand-400 bg-brand-50 scale-110' : ''}`}
                 >
                   <span className="text-2xl block">{m.emoji}</span>
-                  <span className="text-xs">{m.label}</span>
+                  <span className="text-xs">{t(m.label)}</span>
                 </button>
               ))}
             </div>
             <Button onClick={handleCreate} loading={createMut.isPending} className="w-full mt-3">
-              حفظ
+              {t('beautyDiary.save')}
             </Button>
           </Card>
         )}
@@ -85,7 +90,7 @@ export default function BeautyDiaryPage(): JSX.Element {
         ) : entries.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
             <p className="text-4xl mb-2"></p>
-            <p className="text-text-secondary">مافي يوميات بعد — اكتبي أول يومية لكِ</p>
+            <p className="text-text-secondary">{t('beautyDiary.empty')}</p>
           </Card>
         ) : (
           <div className="space-y-3">
@@ -98,12 +103,15 @@ export default function BeautyDiaryPage(): JSX.Element {
                     <div className="flex-1">
                       <p className="text-sm">{e.content as string}</p>
                       <p className="text-xs text-text-tertiary mt-1">
-                        {new Date(e.createdAt as string).toLocaleDateString('ar-SA', {
-                          day: 'numeric',
-                          month: 'long',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
+                        {new Date(e.createdAt as string).toLocaleDateString(
+                          locale === 'en' ? 'en-GB' : 'ar-SA',
+                          {
+                            day: 'numeric',
+                            month: 'long',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          },
+                        )}
                       </p>
                     </div>
                   </div>

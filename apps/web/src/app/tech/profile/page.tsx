@@ -4,15 +4,18 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize, type TranslationKey } from '@galaxy/shared';
 
-const KYC_BADGES: Record<string, { colour: string; label: string }> = {
-  PENDING: { colour: 'bg-surface-muted text-text-primary', label: 'قيد الانتظار' },
-  SUBMITTED: { colour: 'bg-amber-100 text-amber-700', label: 'قيد المراجعة' },
-  VERIFIED: { colour: 'bg-green-100 text-green-700', label: 'موثق' },
-  REJECTED: { colour: 'bg-red-100 text-red-700', label: 'مرفوض' },
+const KYC_BADGES: Record<string, { colour: string; labelKey: TranslationKey }> = {
+  PENDING: { colour: 'bg-surface-muted text-text-primary', labelKey: 'tech.profile.kyc-pending' },
+  SUBMITTED: { colour: 'bg-amber-100 text-amber-700', labelKey: 'tech.profile.kyc-submitted' },
+  VERIFIED: { colour: 'bg-green-100 text-green-700', labelKey: 'tech.profile.kyc-verified' },
+  REJECTED: { colour: 'bg-red-100 text-red-700', labelKey: 'tech.profile.kyc-rejected' },
 };
 
 export default function TechProfilePage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data, isLoading, isError, refetch } = api.auth.me.useQuery();
   const servicesQ = api.services.list.useQuery({ limit: 50 });
   const addServiceMut = api.technicians.addService.useMutation({ onSuccess: () => refetch() });
@@ -64,12 +67,13 @@ export default function TechProfilePage(): JSX.Element {
   }
 
   const kycStatus = (tech?.kycStatus as string) ?? 'PENDING';
-  const badge: { colour: string; label: string } = KYC_BADGES[kycStatus] ?? KYC_BADGES.PENDING!;
+  const badge: { colour: string; labelKey: TranslationKey } =
+    KYC_BADGES[kycStatus] ?? KYC_BADGES.PENDING!;
 
   /* ---------- KYC upload ---------- */
   const handleKycSubmit = () => {
     if (!docUrl) {
-      setKycMsg('يرجى إدخال رابط المستند');
+      setKycMsg(t('tech.profile.kyc-url-error'));
       return;
     }
     submitKycMut.mutate({ documents: [{ type: docType, url: docUrl }] });
@@ -78,7 +82,7 @@ export default function TechProfilePage(): JSX.Element {
   /* ---------- Profile save ---------- */
   const profileMut = api.auth.updateProfile.useMutation({
     onSuccess: () => {
-      setProfileMsg('تم حفظ التغييرات');
+      setProfileMsg(t('tech.profile.saved-msg'));
       refetch();
     },
     onError: (e) => setProfileMsg(e.message),
@@ -89,7 +93,7 @@ export default function TechProfilePage(): JSX.Element {
     profileMut.mutate({ name: name || undefined });
     // Tech-specific fields (city, area, bioAr, bioEn, isEcoFriendly, bufferMinutes)
     // require a dedicated endpoint on the backend. Stub message for now.
-    setProfileMsg('تم تحديث البيانات الأساسية. تحديث بيانات الفني يحتاج نقطة نهاية.');
+    setProfileMsg(t('tech.profile.stub-msg'));
   };
 
   /* ---------- Services ---------- */
@@ -97,12 +101,12 @@ export default function TechProfilePage(): JSX.Element {
     if (!selectedServiceId) return;
     addServiceMut.mutate({ serviceId: selectedServiceId });
     setSelectedServiceId(null);
-    setServiceMsg('تمت إضافة الخدمة');
+    setServiceMsg(t('tech.profile.service-added'));
   };
 
   const handleRemoveService = (mappingId: number) => {
     removeServiceMut.mutate({ mappingId });
-    setServiceMsg('تمت إزالة الخدمة');
+    setServiceMsg(t('tech.profile.service-removed'));
   };
 
   const allServices = (servicesQ.data?.items as unknown as Record<string, unknown>[]) ?? [];
@@ -110,13 +114,13 @@ export default function TechProfilePage(): JSX.Element {
   return (
     <DashboardLayout userRole="TECHNICIAN">
       <div className="mx-auto max-w-4xl space-y-8">
-        <h1 className="text-2xl font-bold">الملف الشخصي</h1>
+        <h1 className="text-2xl font-bold">{t('tech.profile.title')}</h1>
 
         {/* ------ Loading ------ */}
         {isLoading && Array.from({ length: 4 }, (_, i) => <CardSkeleton key={i} />)}
 
         {/* ------ Error ------ */}
-        {isError && <ErrorAlert message="فشل تحميل الملف الشخصي" onRetry={() => refetch()} />}
+        {isError && <ErrorAlert message={t('tech.profile.load-error')} onRetry={() => refetch()} />}
 
         {/* ------ Data ------ */}
         {!isLoading && !isError && (
@@ -125,11 +129,13 @@ export default function TechProfilePage(): JSX.Element {
             <Card>
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-lg font-semibold">توثيق الهوية (KYC)</h2>
-                  <p className="text-sm text-text-secondary">حالة التوثيق</p>
+                  <h2 className="text-lg font-semibold">{t('tech.profile.kyc-title')}</h2>
+                  <p className="text-sm text-text-secondary">
+                    {t('tech.profile.kyc-status-label')}
+                  </p>
                 </div>
                 <span className={`rounded-full px-4 py-1.5 text-sm font-medium ${badge.colour}`}>
-                  {badge.label}
+                  {t(badge.labelKey)}
                 </span>
               </div>
 
@@ -142,31 +148,33 @@ export default function TechProfilePage(): JSX.Element {
                       onChange={(e) => setDocType(e.target.value)}
                       className="rounded-lg border border-edge bg-white px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-900"
                     >
-                      <option value="NATIONAL_ID">الهوية الوطنية</option>
-                      <option value="PASSPORT">جواز السفر</option>
-                      <option value="LICENSE">رخصة عمل</option>
+                      <option value="NATIONAL_ID">{t('tech.profile.doc-national-id')}</option>
+                      <option value="PASSPORT">{t('tech.profile.doc-passport')}</option>
+                      <option value="LICENSE">{t('tech.profile.doc-license')}</option>
                     </select>
                     <Input
-                      placeholder="رابط المستند"
+                      placeholder={t('tech.profile.document-url')}
                       value={docUrl}
                       onChange={(e) => setDocUrl(e.target.value)}
                       className="flex-1"
                     />
                   </div>
                   <Button onClick={handleKycSubmit} loading={submitKycMut.isPending}>
-                    إرسال للتوثيق
+                    {t('tech.profile.kyc-submit')}
                   </Button>
                 </div>
               ) : kycStatus === 'SUBMITTED' ? (
-                <p className="mt-2 text-sm text-amber-600">المستندات قيد المراجعة من قبل الإدارة</p>
+                <p className="mt-2 text-sm text-amber-600">
+                  {t('tech.profile.kyc-submitted-desc')}
+                </p>
               ) : (
-                <p className="mt-2 text-sm text-green-600">تم توثيق الهوية بنجاح</p>
+                <p className="mt-2 text-sm text-green-600">{t('tech.profile.kyc-verified-desc')}</p>
               )}
             </Card>
 
             {/* ── Profile Form ── */}
             <Card>
-              <h2 className="mb-4 text-lg font-semibold">المعلومات الشخصية</h2>
+              <h2 className="mb-4 text-lg font-semibold">{t('tech.profile.personal-info')}</h2>
               {profileMsg && (
                 <p
                   className={`mb-3 text-sm ${profileMut.isError ? 'text-red-600' : 'text-green-600'}`}
@@ -175,26 +183,38 @@ export default function TechProfilePage(): JSX.Element {
                 </p>
               )}
               <div className="grid gap-4 md:grid-cols-2">
-                <Input label="الاسم" value={name} onChange={(e) => setName(e.target.value)} />
-                <Input label="البريد الإلكتروني" value={me?.email as string} disabled />
-                <Input label="المدينة" value={city} onChange={(e) => setCity(e.target.value)} />
-                <Input label="المنطقة" value={area} onChange={(e) => setArea(e.target.value)} />
+                <Input
+                  label={t('tech.profile.name')}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <Input label={t('tech.profile.email')} value={me?.email as string} disabled />
+                <Input
+                  label={t('tech.profile.city')}
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                />
+                <Input
+                  label={t('tech.profile.area')}
+                  value={area}
+                  onChange={(e) => setArea(e.target.value)}
+                />
                 <div className="md:col-span-2">
                   <Input
-                    label="السيرة الذاتية (عربي)"
+                    label={t('tech.profile.bio-ar')}
                     value={bioAr}
                     onChange={(e) => setBioAr(e.target.value)}
                   />
                 </div>
                 <div className="md:col-span-2">
                   <Input
-                    label="السيرة الذاتية (إنجليزي)"
+                    label={t('tech.profile.bio-en')}
                     value={bioEn}
                     onChange={(e) => setBioEn(e.target.value)}
                   />
                 </div>
                 <Input
-                  label="وقت التحضير (دقائق)"
+                  label={t('tech.profile.buffer-minutes')}
                   type="number"
                   value={bufferMinutes}
                   onChange={(e) => setBufferMinutes(Number(e.target.value))}
@@ -204,7 +224,7 @@ export default function TechProfilePage(): JSX.Element {
                     htmlFor="tp-eco-friendly"
                     className="text-sm font-medium text-text-primary dark:text-gray-300"
                   >
-                    صديق للبيئة
+                    {t('tech.profile.eco-friendly')}
                   </label>
                   <input
                     id="tp-eco-friendly"
@@ -217,14 +237,14 @@ export default function TechProfilePage(): JSX.Element {
               </div>
               <div className="mt-4">
                 <Button onClick={handleProfileSave} loading={profileMut.isPending}>
-                  حفظ التغييرات
+                  {t('tech.profile.save-changes')}
                 </Button>
               </div>
             </Card>
 
             {/* ── Services Management ── */}
             <Card>
-              <h2 className="mb-4 text-lg font-semibold">الخدمات المقدمة</h2>
+              <h2 className="mb-4 text-lg font-semibold">{t('tech.profile.provided-services')}</h2>
               {serviceMsg && <p className="mb-3 text-sm text-green-600">{serviceMsg}</p>}
 
               {/* Add service */}
@@ -234,10 +254,10 @@ export default function TechProfilePage(): JSX.Element {
                   onChange={(e) => setSelectedServiceId(Number(e.target.value))}
                   className="flex-1 rounded-lg border border-edge bg-white px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-900"
                 >
-                  <option value="">اختر خدمة</option>
+                  <option value="">{t('tech.profile.select-service')}</option>
                   {allServices.map((s) => (
                     <option key={s.id as number} value={s.id as number}>
-                      {(s.titleJson as Record<string, string>)?.ar ?? ''}
+                      {localize(s.titleJson, locale)}
                     </option>
                   ))}
                 </select>
@@ -246,7 +266,7 @@ export default function TechProfilePage(): JSX.Element {
                   loading={addServiceMut.isPending}
                   disabled={!selectedServiceId}
                 >
-                  + إضافة
+                  {t('tech.slots.add')}
                 </Button>
               </div>
 
@@ -254,7 +274,10 @@ export default function TechProfilePage(): JSX.Element {
               {servicesQ.isLoading && servicesList === undefined ? (
                 <CardSkeleton />
               ) : !servicesList || servicesList.length === 0 ? (
-                <EmptyState title="لا توجد خدمات مضافة" description="أضف خدماتك من القائمة أعلاه" />
+                <EmptyState
+                  title={t('tech.profile.no-services')}
+                  description={t('tech.profile.no-services-desc')}
+                />
               ) : (
                 <div className="space-y-2">
                   {servicesList.map((mapping: Record<string, unknown>) => {
@@ -263,11 +286,9 @@ export default function TechProfilePage(): JSX.Element {
                       <Card key={mapping.id as number} padding="sm">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="font-medium">
-                              {(svc?.titleJson as Record<string, string>)?.ar ?? ''}
-                            </p>
+                            <p className="font-medium">{localize(svc?.titleJson, locale)}</p>
                             <p className="text-xs text-text-secondary">
-                              {Number(mapping.customPrice ?? svc?.basePrice ?? 0)} ر.س
+                              {Number(mapping.customPrice ?? svc?.basePrice ?? 0)} {t('misc.sar')}
                             </p>
                           </div>
                           <Button
@@ -279,7 +300,7 @@ export default function TechProfilePage(): JSX.Element {
                               removeServiceMut.variables?.mappingId === mapping.id
                             }
                           >
-                            إزالة
+                            {t('tech.profile.remove')}
                           </Button>
                         </div>
                       </Card>

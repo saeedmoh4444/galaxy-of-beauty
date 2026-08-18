@@ -14,8 +14,10 @@ import {
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function GiftCardsPage(): JSX.Element {
+  const { t } = useLocale();
   const { addToast } = useToast();
   const [tab, setTab] = useState<'my' | 'buy' | 'check'>('my');
   const [amount, setAmount] = useState('');
@@ -29,7 +31,7 @@ export default function GiftCardsPage(): JSX.Element {
   const myCardsQ = api.giftCards.myCards.useQuery();
   const buyMut = api.giftCards.purchase.useMutation({
     onSuccess: () => {
-      addToast('success', 'تم شراء بطاقة الهدية بنجاح!');
+      addToast('success', t('giftCards.purchaseSuccess'));
       myCardsQ.refetch();
       setAmount('');
       setRecipientEmail('');
@@ -39,7 +41,7 @@ export default function GiftCardsPage(): JSX.Element {
   });
   const redeemMut = api.giftCards.redeem.useMutation({
     onSuccess: () => {
-      addToast('success', 'تم استرداد الرصيد بنجاح!');
+      addToast('success', t('giftCards.redeemSuccess'));
       myCardsQ.refetch();
       setRedeemCode('');
       setRedeemAmount('');
@@ -55,7 +57,7 @@ export default function GiftCardsPage(): JSX.Element {
     setCheckError('');
     setCheckResult(null);
     if (!checkCode) {
-      setCheckError('الرجاء إدخال كود البطاقة');
+      setCheckError(t('giftCards.enterCodeError'));
       return;
     }
     try {
@@ -63,27 +65,29 @@ export default function GiftCardsPage(): JSX.Element {
       const r = await utils.giftCards.checkBalance.fetch({ code: checkCode });
       setCheckResult(r);
     } catch (e: unknown) {
-      setCheckError(e instanceof Error ? e.message : 'البطاقة غير صالحة');
+      setCheckError(e instanceof Error ? e.message : t('giftCards.invalidCard'));
     }
   };
 
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">بطاقات الهدية</h1>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
+          {t('giftCards.title')}
+        </h1>
 
         <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
           {[
-            { key: 'my', label: 'بطاقاتي' },
-            { key: 'buy', label: 'شراء' },
-            { key: 'check', label: 'التحقق من الرصيد' },
-          ].map((t) => (
+            { key: 'my', label: t('giftCards.tabMy') },
+            { key: 'buy', label: t('giftCards.tabBuy') },
+            { key: 'check', label: t('giftCards.tabCheck') },
+          ].map((tabItem) => (
             <button
-              key={t.key}
-              onClick={() => setTab(t.key as typeof tab)}
-              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === t.key ? 'border-brand-600 text-brand-600' : 'border-transparent text-text-secondary hover:text-text-primary'}`}
+              key={tabItem.key}
+              onClick={() => setTab(tabItem.key as typeof tab)}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === tabItem.key ? 'border-brand-600 text-brand-600' : 'border-transparent text-text-secondary hover:text-text-primary'}`}
             >
-              {t.label}
+              {tabItem.label}
             </button>
           ))}
         </div>
@@ -92,12 +96,9 @@ export default function GiftCardsPage(): JSX.Element {
           (myCardsQ.isLoading ? (
             <CardListSkeleton count={4} />
           ) : myCardsQ.isError ? (
-            <ErrorAlert message="فشل تحميل البطاقات" onRetry={() => myCardsQ.refetch()} />
+            <ErrorAlert message={t('giftCards.loadError')} onRetry={() => myCardsQ.refetch()} />
           ) : !myCardsQ.data || myCardsQ.data.length === 0 ? (
-            <EmptyState
-              title="لا توجد بطاقات هدايا"
-              description="اشتر بطاقة هدية لنفسك أو لأحد تحبينه"
-            />
+            <EmptyState title={t('giftCards.emptyTitle')} description={t('giftCards.emptyDesc')} />
           ) : (
             <div className="space-y-3">
               {myCardsQ.data.map((card) => (
@@ -106,17 +107,19 @@ export default function GiftCardsPage(): JSX.Element {
                     <div>
                       <p className="font-mono font-bold text-brand-600">{card.code}</p>
                       <p className="text-sm text-text-secondary">
-                        الرصيد: {formatCurrency(Number(card.balance))} /{' '}
+                        {t('giftCards.balanceLabel')} {formatCurrency(Number(card.balance))} /{' '}
                         {formatCurrency(Number(card.amount))}
                       </p>
                       {card.recipientName && (
-                        <p className="text-xs text-text-tertiary">لـ: {card.recipientName}</p>
+                        <p className="text-xs text-text-tertiary">
+                          {t('giftCards.forRecipient')} {card.recipientName}
+                        </p>
                       )}
                     </div>
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs ${card.status === 'ACTIVE' ? 'bg-green-100 text-green-700' : 'bg-surface-muted text-text-secondary'}`}
                     >
-                      {card.status === 'ACTIVE' ? 'نشطة' : 'مستخدمة'}
+                      {card.status === 'ACTIVE' ? t('giftCards.active') : t('giftCards.used')}
                     </span>
                   </div>
                 </Card>
@@ -126,33 +129,33 @@ export default function GiftCardsPage(): JSX.Element {
 
         {tab === 'buy' && (
           <Card padding="lg">
-            <h3 className="mb-4 text-lg font-semibold">شراء بطاقة هدية</h3>
+            <h3 className="mb-4 text-lg font-semibold">{t('giftCards.buyTitle')}</h3>
             <div className="space-y-4">
               <Input
-                label="المبلغ (ر.س)"
+                label={t('giftCards.amountLabel')}
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                hint="الحد الأدنى ٥٠ ر.س، الأقصى ٥٠٠٠ ر.س"
+                hint={t('giftCards.amountHint')}
               />
               <Input
-                label="البريد الإلكتروني للمستلم (اختياري)"
+                label={t('giftCards.recipientEmailLabel')}
                 value={recipientEmail}
                 onChange={(e) => setRecipientEmail(e.target.value)}
                 placeholder="friend@example.com"
               />
               <Input
-                label="اسم المستلم (اختياري)"
+                label={t('giftCards.recipientNameLabel')}
                 value={recipientName}
                 onChange={(e) => setRecipientName(e.target.value)}
-                placeholder="لأجمل صديقة"
+                placeholder={t('giftCards.recipientNamePlaceholder')}
               />
               <div>
                 <label
                   htmlFor="gc-message"
                   className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
                 >
-                  رسالة إهداء (اختياري)
+                  {t('giftCards.giftMessageLabel')}
                 </label>
                 <textarea
                   id="gc-message"
@@ -160,14 +163,14 @@ export default function GiftCardsPage(): JSX.Element {
                   rows={3}
                   value={giftMessage}
                   onChange={(e) => setGiftMessage(e.target.value)}
-                  placeholder="رسالة جميلة..."
+                  placeholder={t('giftCards.giftMessagePlaceholder')}
                 />
               </div>
               <Button
                 onClick={() => {
                   const a = Number(amount);
                   if (a < 50) {
-                    addToast('warning', 'الحد الأدنى ٥٠ ر.س');
+                    addToast('warning', t('giftCards.minAmount'));
                     return;
                   }
                   buyMut.mutate({
@@ -180,7 +183,7 @@ export default function GiftCardsPage(): JSX.Element {
                 loading={buyMut.isPending}
                 className="w-full"
               >
-                شراء بطاقة هدية
+                {t('giftCards.buyTitle')}
               </Button>
             </div>
           </Card>
@@ -188,16 +191,16 @@ export default function GiftCardsPage(): JSX.Element {
 
         {tab === 'check' && (
           <Card padding="lg">
-            <h3 className="mb-4 text-lg font-semibold">التحقق من رصيد البطاقة</h3>
+            <h3 className="mb-4 text-lg font-semibold">{t('giftCards.checkTitle')}</h3>
             <div className="space-y-4">
               <Input
-                label="كود البطاقة"
+                label={t('giftCards.cardCodeLabel')}
                 value={checkCode}
                 onChange={(e) => setCheckCode(e.target.value.toUpperCase())}
                 placeholder="GIFT-XXXX-XXXX"
               />
               <Button onClick={handleCheckBalance} className="w-full">
-                تحقق
+                {t('giftCards.check')}
               </Button>
               {checkError && <p className="text-sm text-red-600">{checkError}</p>}
               {checkResult && (
@@ -206,13 +209,16 @@ export default function GiftCardsPage(): JSX.Element {
                     {checkResult.code}
                   </p>
                   <p className="text-sm text-green-700 dark:text-green-300">
-                    الرصيد المتبقي: {formatCurrency(Number(checkResult.balance))}
+                    {t('giftCards.remainingBalance')} {formatCurrency(Number(checkResult.balance))}
                   </p>
                   <p className="text-xs text-green-600 dark:text-green-400">
-                    القيمة الأصلية: {formatCurrency(Number(checkResult.originalAmount))}
+                    {t('giftCards.originalValue')}{' '}
+                    {formatCurrency(Number(checkResult.originalAmount))}
                   </p>
                   {checkResult.recipientName && (
-                    <p className="text-xs text-green-600">لـ: {checkResult.recipientName}</p>
+                    <p className="text-xs text-green-600">
+                      {t('giftCards.forRecipient')} {checkResult.recipientName}
+                    </p>
                   )}
                 </div>
               )}
@@ -222,7 +228,7 @@ export default function GiftCardsPage(): JSX.Element {
 
         {/* Quick Redeem */}
         <Card padding="md">
-          <h3 className="mb-3 text-sm font-semibold">استرداد بطاقة هدية</h3>
+          <h3 className="mb-3 text-sm font-semibold">{t('giftCards.redeemTitle')}</h3>
           <div className="flex gap-3">
             <Input
               placeholder="GIFT-XXXX-XXXX"
@@ -232,7 +238,7 @@ export default function GiftCardsPage(): JSX.Element {
             />
             <Input
               type="number"
-              placeholder="المبلغ"
+              placeholder={t('giftCards.amountPlaceholder')}
               value={redeemAmount}
               onChange={(e) => setRedeemAmount(e.target.value)}
               className="w-28"
@@ -241,14 +247,14 @@ export default function GiftCardsPage(): JSX.Element {
               onClick={() => {
                 const a = Number(redeemAmount);
                 if (!redeemCode || !a) {
-                  addToast('warning', 'الرجاء إدخال الكود والمبلغ');
+                  addToast('warning', t('giftCards.enterCodeAndAmount'));
                   return;
                 }
                 redeemMut.mutate({ code: redeemCode, amount: a });
               }}
               loading={redeemMut.isPending}
             >
-              استرداد
+              {t('giftCards.redeem')}
             </Button>
           </div>
         </Card>

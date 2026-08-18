@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -11,6 +12,7 @@ interface BeforeInstallPromptEvent extends Event {
 export function PWAInstallPrompt(): JSX.Element {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [dismissed, setDismissed] = useState(false);
+  const { t } = useLocale();
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -36,16 +38,16 @@ export function PWAInstallPrompt(): JSX.Element {
       <div className="flex items-center gap-4">
         <Image
           src="/logo.png"
-          alt="جالكسي بيوتي"
+          alt={t('common.brandName')}
           width={48}
           height={48}
           className="h-12 w-12 rounded-xl"
         />
         <div className="flex-1">
           <p className="font-bold text-gray-900 dark:text-gray-100 text-sm">
-            أضيفي التطبيق للشاشة الرئيسية
+            {t('pwa.install-title')}
           </p>
-          <p className="text-xs text-gray-500 mt-0.5">وصول أسرع لحجوزاتكِ وخدماتكِ</p>
+          <p className="text-xs text-gray-500 mt-0.5">{t('pwa.install-desc')}</p>
         </div>
       </div>
       <div className="mt-3 flex gap-2">
@@ -53,13 +55,13 @@ export function PWAInstallPrompt(): JSX.Element {
           onClick={install}
           className="flex-1 rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
         >
-          تثبيت
+          {t('pwa.install')}
         </button>
         <button
           onClick={() => setDismissed(true)}
           className="rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
         >
-          لاحقاً
+          {t('pwa.later')}
         </button>
       </div>
     </div>
