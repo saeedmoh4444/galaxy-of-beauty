@@ -26,17 +26,18 @@ export default defineConfig({
         'src/routers/index.ts', // barrel file
       ],
       // Coverage ratchet (audit rec #4) — raise quarterly toward
-      // 55 → 60 → 65. Set under current actuals (2026-08-17):
-      // 53.67 stmts / 69.21 branches / 50.3 functions / 53.67 lines.
+      // 55 → 60 → 65. Set under current actuals (2026-08-19):
+      // 55.34 stmts / 72.22 branches / 61.4 functions / 55.34 lines.
       // Same-code runs jitter ±0.4 — keep ≥0.5 margin on every metric.
-      // Functions held at 49 (actual 50.3, raise once ≥50.6).
-      // The laggards remain the socket server.ts entry script and
-      // workers run.ts entry script.
+      // 2026-08-19 raise: +46 tests (zatcaMock, sentry, sms, push,
+      // googleCalendar, geofenceOffers) and the orphaned
+      // geoPromotions/serviceBundles routers archived (dead code
+      // removal also lifted the denominator).
       thresholds: {
-        statements: 53,
-        branches: 68,
-        functions: 49,
-        lines: 53,
+        statements: 54,
+        branches: 70,
+        functions: 60,
+        lines: 54,
       },
     },
   },

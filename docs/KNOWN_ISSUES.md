@@ -36,10 +36,10 @@ android` produces a 6.1MB Hermes bundle.
 
 ## 4. Test Coverage Gap (Medium)
 
-**Current (2026-08-16):** 38 test files, 543 tests (passing), coverage ratchet enforced at 50/61/36/50
-**Gap:** The remaining 0%-covered surfaces are `payfort` gateway integration, the socket server, and `workers/index`; untested procedure handlers across ~150 feature routers
-**Plan:** Gradual — ratchet upward toward 55% statements (see `packages/api/vitest.config.ts`)
-**Status:** In progress — auth 2FA, payments, booking lifecycle, wallet, and token-cleanup suites added since the 08-08 snapshot
+**Current (2026-08-19):** 49 test files, 632 tests (passing), coverage ratchet enforced at 54/70/60/54 (actuals 55.42/72.34/61.4/55.42)
+**Gap:** Untested procedure handlers across ~150 feature routers; entry scripts (socket server.ts, workers run.ts)
+**Plan:** Gradual — ratchet upward toward 55 → 60 → 65 (see `packages/api/vitest.config.ts`)
+**Status:** In progress — the 2026-08-19 raise added zatcaMock/sentry/sms/push/googleCalendar/geofenceOffers suites (+46 tests) and archived the orphaned geoPromotions/serviceBundles routers.
 
 ---
 
