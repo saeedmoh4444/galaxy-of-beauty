@@ -56,7 +56,7 @@
 **Fix:** Escape `"` characters in JSX text content
 **Status:** Workaround in place — TypeScript and tests catch real errors
 
-## 7. i18n English Coverage (Low) — mostly RESOLVED 2026-08-17
+## 7. i18n English Coverage (Low) — RESOLVED 2026-08-19
 
 **Status:** Full translation sweep delivered — the gob_lang switcher now
 renders the entire shell, auth funnel, all 149 customer pages, all
@@ -64,7 +64,25 @@ public pages, tech/admin tooling, and 517 shared UI components in
 English (catalog: ~4,300 keys, per-domain modules under
 packages/shared/src/i18n/messages/).
 
-**Remaining Arabic (intentional):** proper nouns and sample data in a
-handful of pages; SEO metadata (layout.tsx, StructuredData) kept
-bilingual by design; mobile app i18n (`apps/mobile/src/lib/i18n.ts`)
-still dead — the shared catalog now serves both apps going forward.
+**Mobile (resolved 2026-08-19):** the mobile app is now fully wired to
+the same shared catalog — every screen uses `useLocale()`/`t()`
+(catalog 5,891 keys; 1,580 used keys machine-verified defined).
+Content-data arrays (tips/guides/catalogs) intentionally remain Arabic;
+proper nouns and sample data stay Arabic in a handful of pages; SEO
+metadata kept bilingual by design.
+
+---
+
+## 8. Expo Export Broken — react-native Version Pin Drift (Medium) — RESOLVED 2026-08-19
+
+**Symptom:** `expo export --platform android` crashed in hermesc
+("private properties" error).
+**Root Cause:** apps/mobile pinned react-native 0.81.5 / react 19.1.0
+while Expo SDK 57 expects react-native 0.86.2 / react 19.2.3 (plus 16
+other drifted packages).
+**Resolution:** `npx expo install --fix` aligned all 18 packages
+(RN 0.86.2, react 19.2.3, TS 6.0.3, expo ~57.0.14, screens 4.26, ...).
+TS 6.0 deprecates `baseUrl` — silenced with `"ignoreDeprecations":
+"6.0"` in apps/mobile/tsconfig.json (revisit before TS 7).
+**Verified:** export produces a 6.1MB Hermes bytecode bundle; mobile
+tsc/lint, web, shared, and ui type-checks all green.
