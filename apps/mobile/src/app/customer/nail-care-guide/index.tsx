@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
@@ -147,10 +148,11 @@ const CARDS: Card[] = [
 ];
 
 export default function NailCareGuideScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.header}> دليل العناية بالأظافر</Text>
-      <Text style={styles.subtitle}>كل ما تحتاجينه لأظافر جميلة وصحية</Text>
+      <Text style={styles.header}>{t('mobile.nailCareGuide.title')}</Text>
+      <Text style={styles.subtitle}>{t('mobile.nailCareGuide.subtitle')}</Text>
       <View style={styles.grid}>
         {CARDS.map((card, i) => (
           <View key={i} style={[styles.card, { borderColor: card.color + '30' }]}>

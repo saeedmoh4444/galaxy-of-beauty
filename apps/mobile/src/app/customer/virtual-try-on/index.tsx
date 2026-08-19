@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface TryOnProduct {
   id?: number;
@@ -9,6 +10,7 @@ interface TryOnProduct {
 }
 
 export default function VirtualTryOnScreen(): JSX.Element {
+  const { t } = useLocale();
   const palettesQ = trpc.virtualTryOn.palettes.useQuery();
   const data = Object.values(palettesQ.data ?? {}).flat() as unknown as TryOnProduct[];
   if (palettesQ.isLoading) return <SkeletonList count={4} />;
@@ -24,8 +26,8 @@ export default function VirtualTryOnScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> تجربة افتراضية</Text>
-      <Text style={styles.sub}>جربي ألوان المكياج افتراضياً</Text>
+      <Text style={styles.t}>{t('mobile.virtualTryOn.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.virtualTryOn.subtitle')}</Text>
       {data.map((p, i) => (
         <TouchableOpacity key={i} style={styles.card}>
           <View style={[styles.swatch, { backgroundColor: p.hex }]} />

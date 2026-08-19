@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const TE: Record<string, string> = {
   bridal: '',
@@ -20,6 +21,7 @@ interface GroupBookingSummary {
 }
 
 export default function GroupBookingsScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.groupBookings.myGroups.useQuery();
   const groups: GroupBookingSummary[] =
     (q.data as unknown as GroupBookingSummary[] | undefined) ?? [];
@@ -37,14 +39,17 @@ export default function GroupBookingsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>‍️ الحجوزات الجماعية</Text>
+      <Text style={styles.t}>{t('mobile.groupBookings.title')}</Text>
       {groups.map((g) => (
         <View key={g.id} style={styles.card}>
           <Text style={styles.ge}>{TE[g.theme ?? ''] ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.gn}>{g.name}</Text>
             <Text style={styles.gm}>
-              {g.members?.length ?? 0} أفراد · {g.totalAmount?.toLocaleString()} ر.س
+              {t('mobile.groupBookings.members-summary', {
+                count: g.members?.length ?? 0,
+                total: g.totalAmount?.toLocaleString() ?? '',
+              })}
             </Text>
           </View>
           <View
@@ -55,12 +60,12 @@ export default function GroupBookingsScreen(): JSX.Element {
           >
             <Text style={styles.st}>
               {g.status === 'CONFIRMED'
-                ? 'مؤكد'
+                ? t('mobile.groupBookings.status-confirmed')
                 : g.status === 'PENDING'
-                  ? 'قيد الانتظار'
+                  ? t('mobile.groupBookings.status-pending')
                   : g.status === 'COMPLETED'
-                    ? 'مكتمل'
-                    : 'ملغي'}
+                    ? t('mobile.groupBookings.status-completed')
+                    : t('mobile.groupBookings.status-cancelled')}
             </Text>
           </View>
         </View>

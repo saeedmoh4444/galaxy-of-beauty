@@ -1,10 +1,12 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function SafetyScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>️ السلامة</Text>
-      <Text style={s.sub}>سلامتكِ أولويتنا</Text>
+      <Text style={s.h}>{t('mobile.safety.title')}</Text>
+      <Text style={s.sub}>{t('mobile.safety.subtitle')}</Text>
       <View style={s.grid}>
         {[
           {
@@ -78,7 +80,7 @@ export default function SafetyScreen(): JSX.Element {
               <Text style={s.cs}>{item.desc}</Text>
             </View>
             <TouchableOpacity style={[s.btn, { backgroundColor: item.color }]}>
-              <Text style={s.bt}>تفعيل</Text>
+              <Text style={s.bt}>{t('mobile.safety.activate')}</Text>
             </TouchableOpacity>
           </View>
         ))}

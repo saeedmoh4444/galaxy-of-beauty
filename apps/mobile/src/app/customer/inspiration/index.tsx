@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface InspirationPin {
   id?: number;
@@ -17,6 +18,7 @@ interface InspirationPin {
 }
 
 export default function InspirationScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.inspiration.list.useQuery();
   const pins: InspirationPin[] = (q.data as unknown as InspirationPin[] | undefined) ?? [];
   const delMut = trpc.inspiration.delete.useMutation({
@@ -40,7 +42,7 @@ export default function InspirationScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> لوحة الإلهام</Text>
+      <Text style={styles.t}>{t('mobile.inspiration.title')}</Text>
       <View style={styles.grid}>
         {pins.map((p) => (
           <View key={p.id} style={styles.card}>

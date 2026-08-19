@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl, Image } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface MoodPin {
   id?: number;
@@ -8,6 +9,7 @@ interface MoodPin {
 }
 
 export default function MoodBoardScreen(): JSX.Element {
+  const { t } = useLocale();
   const pinsQ = trpc.moodBoard.list.useQuery();
   const data: MoodPin[] = (pinsQ.data as unknown as MoodPin[] | undefined) ?? [];
 
@@ -25,7 +27,7 @@ export default function MoodBoardScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> لوحة المود</Text>
+      <Text style={styles.t}>{t('mobile.moodBoard.title')}</Text>
       <View style={styles.grid}>
         {data.map((p, i) => (
           <View key={i} style={styles.pin}>

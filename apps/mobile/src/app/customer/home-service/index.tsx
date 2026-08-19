@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } 
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface HomeServiceEstimate {
   totalEstimate?: number;
@@ -9,6 +10,7 @@ interface HomeServiceEstimate {
 }
 
 export default function HomeServiceScreen(): JSX.Element {
+  const { t } = useLocale();
   // Fetch-on-demand: the user taps to get an estimate, so keep the query disabled
   // until first request instead of firing on mount
   const estimateQ = trpc.homeService.estimate.useQuery(
@@ -29,9 +31,9 @@ export default function HomeServiceScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> خدمة منزلية</Text>
+      <Text style={styles.t}>{t('mobile.homeService.title')}</Text>
       <TouchableOpacity onPress={() => estimateQ.refetch()} style={styles.btn}>
-        <Text style={styles.bt}> تقدير التكلفة — الرياض</Text>
+        <Text style={styles.bt}>{t('mobile.homeService.estimate')}</Text>
       </TouchableOpacity>
       {estimate && (
         <View style={styles.card}>

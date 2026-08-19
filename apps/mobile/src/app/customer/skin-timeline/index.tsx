@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface SkinEntry {
   id?: number;
@@ -11,6 +12,7 @@ interface SkinEntry {
 }
 
 export default function SkinTimelineScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const [compareMode, setCompareMode] = useState(false);
   const entriesQ = trpc.skinDiary.entries.useQuery();
   const entries: SkinEntry[] = (entriesQ.data as unknown as SkinEntry[] | undefined) ?? [];
@@ -27,24 +29,28 @@ export default function SkinTimelineScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> تطور البشرة</Text>
-      <Text style={styles.sub}>تابعي رحلة بشرتكِ عبر الزمن</Text>
+      <Text style={styles.t}>{t('mobile.skinTimeline.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.skinTimeline.subtitle')}</Text>
 
       <TouchableOpacity onPress={() => setCompareMode(!compareMode)} style={styles.compareBtn}>
-        <Text style={styles.compareBt}>{compareMode ? 'إلغاء المقارنة' : ' مقارنة أسبوعية'}</Text>
+        <Text style={styles.compareBt}>
+          {compareMode
+            ? t('mobile.skinTimeline.cancel-compare')
+            : t('mobile.skinTimeline.weekly-compare')}
+        </Text>
       </TouchableOpacity>
 
       {compareMode ? (
         <View style={styles.compareGrid}>
           <View style={[styles.compareCard, styles.before]}>
-            <Text style={styles.compareLabel}> الأسبوع الماضي</Text>
+            <Text style={styles.compareLabel}>{t('mobile.skinTimeline.last-week')}</Text>
             <View style={styles.imgPlaceholder}>
               <Text style={{ fontSize: 40 }}></Text>
             </View>
           </View>
           <Text style={styles.compareVs}>VS</Text>
           <View style={[styles.compareCard, styles.after]}>
-            <Text style={styles.compareLabel}> هذا الأسبوع</Text>
+            <Text style={styles.compareLabel}>{t('mobile.skinTimeline.this-week')}</Text>
             <View style={styles.imgPlaceholder}>
               <Text style={{ fontSize: 40 }}></Text>
             </View>
@@ -58,12 +64,17 @@ export default function SkinTimelineScreen(): JSX.Element {
               <View style={[styles.entryDot, i === 0 && styles.entryDotLatest]} />
               <View style={styles.entryCard}>
                 <Text style={styles.entryDate}>
-                  {new Date(e.createdAt ?? Date.now()).toLocaleDateString('ar-SA', {
-                    month: 'short',
-                    day: 'numeric',
-                  })}
+                  {new Date(e.createdAt ?? Date.now()).toLocaleDateString(
+                    locale === 'ar' ? 'ar-SA' : 'en-GB',
+                    {
+                      month: 'short',
+                      day: 'numeric',
+                    },
+                  )}
                 </Text>
-                <Text style={styles.entryTitle}>{e.title ?? 'تحديث البشرة'}</Text>
+                <Text style={styles.entryTitle}>
+                  {e.title ?? t('mobile.skinTimeline.skin-update')}
+                </Text>
                 <View style={styles.entryMetrics}>
                   {e.hydration && <Text style={styles.metric}> {e.hydration}%</Text>}
                   {e.glow && <Text style={styles.metric}> {e.glow}/10</Text>}
@@ -75,21 +86,21 @@ export default function SkinTimelineScreen(): JSX.Element {
       )}
 
       <View style={styles.stats}>
-        <Text style={styles.st}> إحصائيات</Text>
+        <Text style={styles.st}>{t('mobile.skinTimeline.stats')}</Text>
         <View style={styles.statRow}>
           <View style={styles.stat}>
             <Text style={styles.statVal}></Text>
-            <Text style={styles.statLabel}>تحسن الترطيب</Text>
+            <Text style={styles.statLabel}>{t('mobile.skinTimeline.hydration-improvement')}</Text>
             <Text style={styles.statPct}>+15%</Text>
           </View>
           <View style={styles.stat}>
             <Text style={styles.statVal}></Text>
-            <Text style={styles.statLabel}>تحسن النضارة</Text>
+            <Text style={styles.statLabel}>{t('mobile.skinTimeline.glow-improvement')}</Text>
             <Text style={styles.statPct}>+20%</Text>
           </View>
           <View style={styles.stat}>
             <Text style={styles.statVal}></Text>
-            <Text style={styles.statLabel}>تحديثات</Text>
+            <Text style={styles.statLabel}>{t('mobile.skinTimeline.updates')}</Text>
             <Text style={styles.statPct}>{entries.length}</Text>
           </View>
         </View>

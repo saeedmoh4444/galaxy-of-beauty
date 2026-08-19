@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface WaitlistTech {
   id: number;
@@ -22,6 +23,7 @@ interface MyWaitlist {
 }
 
 export default function TechWaitlistScreen(): JSX.Element {
+  const { t } = useLocale();
   const popularQ = trpc.techWaitlist.popular.useQuery();
   const myListQ = trpc.techWaitlist.myWaitlists.useQuery();
   const popular: WaitlistTech[] = (popularQ.data as unknown as WaitlistTech[] | undefined) ?? [];
@@ -68,32 +70,37 @@ export default function TechWaitlistScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> قائمة الانتظار</Text>
-      {myList.length > 0 && <Text style={styles.st}> قوائمي</Text>}
-      {myList.map((t) => (
-        <View key={t.id} style={styles.card}>
+      <Text style={styles.t}>{t('mobile.waitlist.title')}</Text>
+      {myList.length > 0 && <Text style={styles.st}>{t('mobile.techWaitlist.my-lists')}</Text>}
+      {myList.map((w) => (
+        <View key={w.id} style={styles.card}>
           <Text style={styles.te}>‍</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.tn}>{t.name}</Text>
-            <Text style={styles.tm}>الموقع: {t.position ?? '—'}</Text>
+            <Text style={styles.tn}>{w.name}</Text>
+            <Text style={styles.tm}>
+              {t('mobile.techWaitlist.position', { position: w.position ?? '—' })}
+            </Text>
           </View>
-          <TouchableOpacity onPress={() => leave(t.id)} style={styles.lb}>
-            <Text style={styles.lt}>خروج</Text>
+          <TouchableOpacity onPress={() => leave(w.id)} style={styles.lb}>
+            <Text style={styles.lt}>{t('mobile.techWaitlist.leave')}</Text>
           </TouchableOpacity>
         </View>
       ))}
-      <Text style={styles.st}> الفنيات الأكثر طلباً</Text>
-      {popular.map((t) => (
-        <View key={t.id} style={styles.card}>
+      <Text style={styles.st}>{t('mobile.techWaitlist.popular')}</Text>
+      {popular.map((p) => (
+        <View key={p.id} style={styles.card}>
           <Text style={styles.te}>‍</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.tn}>{t.name}</Text>
+            <Text style={styles.tn}>{p.name}</Text>
             <Text style={styles.tm}>
-              {t.rating ?? 0} · {t.waitlistCount ?? 0} في الانتظار
+              {t('mobile.techWaitlist.waiting', {
+                rating: p.rating ?? 0,
+                count: p.waitlistCount ?? 0,
+              })}
             </Text>
           </View>
-          <TouchableOpacity onPress={() => join(t.id)} style={styles.jb}>
-            <Text style={styles.jt}>انضمام</Text>
+          <TouchableOpacity onPress={() => join(p.id)} style={styles.jb}>
+            <Text style={styles.jt}>{t('mobile.techWaitlist.join')}</Text>
           </TouchableOpacity>
         </View>
       ))}

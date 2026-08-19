@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
@@ -69,10 +70,11 @@ const CARDS: Card[] = [
 ];
 
 export default function LeadershipScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> القيادة</Text>
-      <Text style={s.sub}>تمكين المرأة في عالم التجميل</Text>
+      <Text style={s.h}>{t('mobile.leadership.title')}</Text>
+      <Text style={s.sub}>{t('mobile.leadership.subtitle')}</Text>
       <View style={s.grid}>
         {CARDS.map((c, i) => (
           <View key={i} style={[s.card, { borderColor: c.color + '30' }]}>

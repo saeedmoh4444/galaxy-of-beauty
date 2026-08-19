@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const CHALLENGES = [
   {
@@ -50,6 +51,7 @@ const CHALLENGES = [
 ];
 
 export default function SocialChallengesScreen(): JSX.Element {
+  const { t } = useLocale();
   const [joined, setJoined] = useState<string[]>([]);
 
   const toggle = (key: string) => {
@@ -59,13 +61,15 @@ export default function SocialChallengesScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> تحديات اجتماعية</Text>
-      <Text style={styles.sub}>انضمي للتحديات الجماعية وكسبي مكافآت</Text>
+      <Text style={styles.t}>{t('mobile.socialChallenges.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.socialChallenges.subtitle')}</Text>
 
       <View style={styles.myChallenges}>
-        <Text style={styles.mct}> تحدياتي ({joined.length})</Text>
+        <Text style={styles.mct}>
+          {t('mobile.socialChallenges.my-challenges', { count: joined.length })}
+        </Text>
         {joined.length === 0 ? (
-          <Text style={styles.mce}>لم تنضمي لأي تحدي بعد</Text>
+          <Text style={styles.mce}>{t('mobile.socialChallenges.no-challenges')}</Text>
         ) : (
           joined.map((key) => {
             const c = CHALLENGES.find((x) => x.key === key)!;
@@ -106,7 +110,7 @@ export default function SocialChallengesScreen(): JSX.Element {
               style={[styles.jb, isJoined && styles.jbJoined]}
             >
               <Text style={[styles.jt, isJoined && styles.jtJoined]}>
-                {isJoined ? ' منضم' : 'انضمام'}
+                {isJoined ? t('mobile.socialChallenges.joined') : t('mobile.socialChallenges.join')}
               </Text>
             </TouchableOpacity>
           </View>

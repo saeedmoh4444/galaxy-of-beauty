@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
@@ -212,10 +213,11 @@ const CARDS: Card[] = [
 ];
 
 export default function HairCareGuideScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.header}>‍️ دليل العناية بالشعر</Text>
-      <Text style={styles.subtitle}>كل ما تحتاجينه لشعر صحي وجميل</Text>
+      <Text style={styles.header}>{t('mobile.hairCareGuide.title')}</Text>
+      <Text style={styles.subtitle}>{t('mobile.hairCareGuide.subtitle')}</Text>
       <View style={styles.grid}>
         {CARDS.map((card, i) => (
           <View key={i} style={[styles.card, { borderColor: card.color + '30' }]}>

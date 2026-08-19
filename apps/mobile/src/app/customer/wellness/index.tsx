@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
@@ -407,10 +408,11 @@ const CARDS: Card[] = [
 ];
 
 export default function WellnessScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> الصحة والعافية</Text>
-      <Text style={s.sub}>جمالكِ يبدأ من صحتكِ</Text>
+      <Text style={s.h}>{t('mobile.wellness.title')}</Text>
+      <Text style={s.sub}>{t('mobile.wellness.subtitle')}</Text>
       <View style={s.grid}>
         {CARDS.map((c, i) => (
           <View key={i} style={[s.card, { borderColor: c.color + '30' }]}>

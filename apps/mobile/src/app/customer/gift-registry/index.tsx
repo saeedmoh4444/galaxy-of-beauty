@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface RegistryGift {
   id?: number;
@@ -10,6 +11,7 @@ interface RegistryGift {
 }
 
 export default function GiftRegistryScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.giftRegistry.myRegistries.useQuery();
   const data: RegistryGift[] = (q.data as unknown as RegistryGift[] | undefined) ?? [];
 
@@ -27,7 +29,7 @@ export default function GiftRegistryScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> سجل الهدايا</Text>
+      <Text style={styles.t}>{t('mobile.giftRegistry.title')}</Text>
       {data.map((g, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{g.emoji ?? ''}</Text>

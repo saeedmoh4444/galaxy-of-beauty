@@ -2,6 +2,7 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency, EXTENDED_PAGE_SIZE } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -13,6 +14,7 @@ const COLORS = {
 };
 
 export default function PaymentsScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const payments = trpc.wallet.getTransactions.useQuery({ page: 1, limit: EXTENDED_PAGE_SIZE }) ?? {
     data: null,
     isLoading: false,
@@ -26,20 +28,24 @@ export default function PaymentsScreen(): JSX.Element {
       isLoading={payments.isLoading}
       isError={payments.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل المدفوعات"
-      emptyTitle="لا توجد مدفوعات"
+      errorMessage={t('mobile.payments.load-error')}
+      emptyTitle={t('mobile.payments.empty')}
       onRetry={() => payments.refetch()}
     >
-      <Text style={styles.title}> المدفوعات</Text>
+      <Text style={styles.title}>{t('mobile.payments.title')}</Text>
       <FlatList
         data={data as Record<string, unknown>[]}
         keyExtractor={(_, i) => String(i)}
         renderItem={({ item }: { item: Record<string, unknown> }) => (
           <View style={styles.row}>
             <View>
-              <Text style={styles.desc}>حجز #{item.bookingId as number}</Text>
+              <Text style={styles.desc}>
+                {t('mobile.reschedule.booking', { id: (item.bookingId as number) ?? '' })}
+              </Text>
               <Text style={styles.date}>
-                {new Date(item.createdAt as string).toLocaleDateString('ar-SA')}
+                {new Date(item.createdAt as string).toLocaleDateString(
+                  locale === 'ar' ? 'ar-SA' : 'en-GB',
+                )}
               </Text>
             </View>
             <Text

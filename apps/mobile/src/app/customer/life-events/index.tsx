@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
@@ -225,10 +226,11 @@ const CARDS: Card[] = [
 ];
 
 export default function LifeEventsScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> مراحل الحياة</Text>
-      <Text style={s.sub}>لكل مرحلة عمرية جمالها الخاص</Text>
+      <Text style={s.h}>{t('mobile.lifeEvents.title')}</Text>
+      <Text style={s.sub}>{t('mobile.lifeEvents.subtitle')}</Text>
       <View style={s.grid}>
         {CARDS.map((c, i) => (
           <View key={i} style={[s.card, { borderColor: c.color + '30' }]}>

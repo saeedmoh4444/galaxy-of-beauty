@@ -1,10 +1,12 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function CustomerProfileScreen(): JSX.Element {
+  const { t } = useLocale();
   const user = trpc.users.getMe.useQuery();
   const data = user.data as Record<string, unknown> | undefined;
 
@@ -13,27 +15,30 @@ export default function CustomerProfileScreen(): JSX.Element {
       isLoading={user.isLoading}
       isError={user.isError}
       isEmpty={!data}
-      errorMessage="فشل تحميل الملف الشخصي"
+      errorMessage={t('mobile.profile.load-error')}
       onRetry={() => user.refetch()}
     >
-      <Text style={styles.title}> حسابي</Text>
+      <Text style={styles.title}>{t('mobile.profile.title')}</Text>
       {(data
         ? [
-            { label: 'الاسم', value: data.name as string },
-            { label: 'البريد', value: data.email as string },
-            { label: 'الهاتف', value: data.phone as string },
+            { label: t('mobile.profile.name'), value: data.name as string },
+            { label: t('mobile.profile.email'), value: data.email as string },
+            { label: t('mobile.profile.phone'), value: data.phone as string },
             {
-              label: 'الدور',
+              label: t('mobile.profile.role'),
               value:
                 (data.role as string) === 'CUSTOMER'
-                  ? 'عميلة'
+                  ? t('mobile.profile.role-customer')
                   : (data.role as string) === 'TECHNICIAN'
-                    ? 'فنية'
-                    : 'مشرفة',
+                    ? t('mobile.profile.role-technician')
+                    : t('mobile.profile.role-supervisor'),
             },
             {
-              label: 'اللغة',
-              value: (data.preferredLanguage as string) === 'ar' ? 'العربية' : 'English',
+              label: t('mobile.profile.language'),
+              value:
+                (data.preferredLanguage as string) === 'ar'
+                  ? t('mobile.profile.lang-ar')
+                  : 'English',
             },
           ]
         : []
@@ -44,7 +49,7 @@ export default function CustomerProfileScreen(): JSX.Element {
         </View>
       ))}
       <TouchableOpacity style={styles.editBtn}>
-        <Text style={styles.editText}>️ تعديل الملف</Text>
+        <Text style={styles.editText}>{t('mobile.profile.edit')}</Text>
       </TouchableOpacity>
     </ScreenState>
   );

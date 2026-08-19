@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
@@ -512,10 +513,11 @@ const INGREDIENTS: IngredientCard[] = [
 ];
 
 export default function SkincareGuideScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.header}> دليل المكونات</Text>
-      <Text style={styles.subtitle}>كل ما تحتاجين معرفته عن المكونات الفعالة للعناية بالبشرة</Text>
+      <Text style={styles.header}>{t('mobile.skincareGuide.title')}</Text>
+      <Text style={styles.subtitle}>{t('mobile.skincareGuide.subtitle')}</Text>
 
       <View style={styles.grid}>
         {INGREDIENTS.map((ingredient, i) => (

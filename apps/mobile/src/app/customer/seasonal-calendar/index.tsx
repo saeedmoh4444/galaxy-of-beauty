@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const SEASONS = [
   {
@@ -61,6 +62,7 @@ const SEASONS = [
 ];
 
 export default function SeasonalCalendarScreen(): JSX.Element {
+  const { t } = useLocale();
   const [season, setSeason] = useState('summer');
   const s = SEASONS.find((x) => x.key === season)!;
 
@@ -69,8 +71,8 @@ export default function SeasonalCalendarScreen(): JSX.Element {
       style={[styles.c, { backgroundColor: s.color + '10' }]}
       contentContainerStyle={styles.i}
     >
-      <Text style={[styles.t, { color: s.color }]}> تقويم الجمال</Text>
-      <Text style={styles.sub}>خدمات موسمية مصممة لبشرتكِ</Text>
+      <Text style={[styles.t, { color: s.color }]}>{t('mobile.seasonalCalendar.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.seasonalCalendar.subtitle')}</Text>
 
       <View style={styles.tabs}>
         {SEASONS.map((se) => (
@@ -93,7 +95,7 @@ export default function SeasonalCalendarScreen(): JSX.Element {
         <Text style={styles.cardTip}> {s.tips}</Text>
       </View>
 
-      <Text style={styles.st}>‍️ خدمات الموسم</Text>
+      <Text style={styles.st}>{t('mobile.seasonalCalendar.season-services')}</Text>
       {s.services.map((sv, i) => (
         <View key={i} style={styles.svc}>
           <Text style={styles.se}>{sv.emoji}</Text>
@@ -105,7 +107,7 @@ export default function SeasonalCalendarScreen(): JSX.Element {
       ))}
 
       <TouchableOpacity style={[styles.btn, { backgroundColor: s.color }]}>
-        <Text style={styles.bt}> احجزي خدمات الموسم</Text>
+        <Text style={styles.bt}>{t('mobile.seasonalCalendar.book')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

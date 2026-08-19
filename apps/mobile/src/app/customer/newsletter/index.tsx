@@ -10,6 +10,7 @@ import {
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface NewsletterIssue {
   id?: number;
@@ -18,6 +19,7 @@ interface NewsletterIssue {
 }
 
 export default function NewsletterScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const issuesQ = trpc.newsletter.issues.useQuery();
@@ -36,14 +38,14 @@ export default function NewsletterScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> النشرة البريدية</Text>
+      <Text style={styles.t}>{t('mobile.newsletter.title')}</Text>
       {!subscribed ? (
         <View style={styles.card}>
           <View style={styles.sr}>
             <TextInput
               value={email}
               onChangeText={setEmail}
-              placeholder="بريدكِ الإلكتروني"
+              placeholder={t('mobile.newsletter.email-placeholder')}
               keyboardType="email-address"
               style={styles.inp}
               placeholderTextColor="#9ca3af"
@@ -54,21 +56,21 @@ export default function NewsletterScreen(): JSX.Element {
               }}
               style={styles.sb}
             >
-              <Text style={styles.sbt}>اشتراك</Text>
+              <Text style={styles.sbt}>{t('mobile.newsletter.subscribe')}</Text>
             </TouchableOpacity>
           </View>
         </View>
       ) : (
         <View style={[styles.card, styles.sc]}>
           <Text style={{ fontSize: 48 }}></Text>
-          <Text style={styles.st}>تم الاشتراك!</Text>
+          <Text style={styles.st}>{t('mobile.newsletter.subscribed')}</Text>
         </View>
       )}
       {issues.map((i, idx) => (
         <View key={idx} style={styles.issue}>
           <Text style={styles.it}>{i.title ?? ''}</Text>
           <Text style={styles.id}>
-            {i.date ? new Date(i.date).toLocaleDateString('ar-SA') : ''}
+            {i.date ? new Date(i.date).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-GB') : ''}
           </Text>
         </View>
       ))}

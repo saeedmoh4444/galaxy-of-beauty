@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface MembershipInfo {
   tier?: string;
@@ -55,6 +56,7 @@ const MEMBERSHIPS = [
 ];
 
 export default function SalonMembershipScreen(): JSX.Element {
+  const { t } = useLocale();
   const membershipQ = trpc.salonMembership.myMembership.useQuery();
 
   const subscribeMut = trpc.salonMembership.subscribe.useMutation({
@@ -78,7 +80,12 @@ export default function SalonMembershipScreen(): JSX.Element {
 
   if (membershipQ.isLoading) return <SkeletonList count={3} />;
   if (membershipQ.isError)
-    return <ErrorAlert message="فشل تحميل العضويات" onRetry={() => membershipQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.salonMembership.load-error')}
+        onRetry={() => membershipQ.refetch()}
+      />
+    );
 
   const current = membershipQ.data as MembershipInfo | undefined;
 
@@ -94,8 +101,8 @@ export default function SalonMembershipScreen(): JSX.Element {
         />
       }
     >
-      <Text style={s.t}> عضويات الصالون</Text>
-      <Text style={s.sub}>اختاري العضوية اللي تناسبكِ</Text>
+      <Text style={s.t}>{t('mobile.salonMembership.title')}</Text>
+      <Text style={s.sub}>{t('mobile.salonMembership.subtitle')}</Text>
 
       {current?.tier && (
         <View
@@ -109,7 +116,7 @@ export default function SalonMembershipScreen(): JSX.Element {
           }}
         >
           <Text style={{ fontSize: 14, color: '#6b7280', textAlign: 'center' }}>
-            عضويتكِ الحالية
+            {t('mobile.salonMembership.current')}
           </Text>
           <Text
             style={{
@@ -121,17 +128,19 @@ export default function SalonMembershipScreen(): JSX.Element {
             }}
           >
             {current.tier === 'platinum'
-              ? ' بلاتينية'
+              ? t('mobile.salonMembership.tier-platinum')
               : current.tier === 'premium'
-                ? ' مميزة'
-                : ' أساسية'}
+                ? t('mobile.salonMembership.tier-premium')
+                : t('mobile.salonMembership.tier-basic')}
           </Text>
           {current.autoRenew && (
             <TouchableOpacity
               onPress={handleCancel}
               style={{ marginTop: 10, alignItems: 'center' }}
             >
-              <Text style={{ color: '#ef4444', fontWeight: '600' }}>إلغاء التجديد التلقائي</Text>
+              <Text style={{ color: '#ef4444', fontWeight: '600' }}>
+                {t('mobile.salonMembership.cancel-auto-renew')}
+              </Text>
             </TouchableOpacity>
           )}
         </View>
@@ -152,10 +161,14 @@ export default function SalonMembershipScreen(): JSX.Element {
             {m.name}
           </Text>
           <Text style={{ fontSize: 22, fontWeight: '800', textAlign: 'center', marginTop: 4 }}>
-            {m.price === 0 ? 'مجانية' : `${m.price} ر.س / شهرياً`}
+            {m.price === 0
+              ? t('mobile.salonMembership.free')
+              : t('mobile.salonMembership.monthly-price', { price: m.price })}
           </Text>
           <View style={{ marginTop: 12, gap: 4 }}>
-            <Text style={{ fontWeight: '600', color: '#374151', marginBottom: 4 }}>المميزات</Text>
+            <Text style={{ fontWeight: '600', color: '#374151', marginBottom: 4 }}>
+              {t('mobile.salonMembership.benefits')}
+            </Text>
             {m.benefits.map((b, i) => (
               <Text key={i} style={{ color: '#059669', fontSize: 12 }}>
                 {b}
@@ -166,7 +179,7 @@ export default function SalonMembershipScreen(): JSX.Element {
                 <Text
                   style={{ fontWeight: '600', color: '#9ca3af', marginTop: 8, marginBottom: 4 }}
                 >
-                  غير متضمن
+                  {t('mobile.salonMembership.not-included')}
                 </Text>
                 {m.notIncluded.map((b, i) => (
                   <Text key={i} style={{ color: '#d1d5db', fontSize: 12 }}>
@@ -180,7 +193,11 @@ export default function SalonMembershipScreen(): JSX.Element {
             onPress={() => handleSubscribe(m.key)}
             style={[s.btn, { backgroundColor: m.color, marginTop: 14 }]}
           >
-            <Text style={s.btnText}>{m.price === 0 ? 'مجانية' : 'اشتراك'}</Text>
+            <Text style={s.btnText}>
+              {m.price === 0
+                ? t('mobile.salonMembership.free')
+                : t('mobile.salonMembership.subscribe')}
+            </Text>
           </TouchableOpacity>
         </View>
       ))}

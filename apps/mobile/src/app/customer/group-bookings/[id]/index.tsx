@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const TE: Record<string, string> = {
   bridal: '',
@@ -10,12 +11,12 @@ const TE: Record<string, string> = {
   family: '‍‍‍',
   other: '',
 };
-const SM: Record<string, { label: string; color: string; bg: string }> = {
-  PENDING: { label: 'قيد الانتظار', color: '#d97706', bg: '#fef3c7' },
-  CONFIRMED: { label: 'مؤكد', color: '#059669', bg: '#dcfce7' },
-  IN_PROGRESS: { label: 'جاري', color: '#2563eb', bg: '#dbeafe' },
-  COMPLETED: { label: 'مكتمل', color: '#6b7280', bg: '#f3f4f6' },
-  CANCELLED: { label: 'ملغي', color: '#dc2626', bg: '#fee2e2' },
+const SM: Record<string, { color: string; bg: string }> = {
+  PENDING: { color: '#d97706', bg: '#fef3c7' },
+  CONFIRMED: { color: '#059669', bg: '#dcfce7' },
+  IN_PROGRESS: { color: '#2563eb', bg: '#dbeafe' },
+  COMPLETED: { color: '#6b7280', bg: '#f3f4f6' },
+  CANCELLED: { color: '#dc2626', bg: '#fee2e2' },
 };
 
 interface GroupBookingDetail {
@@ -36,16 +37,33 @@ interface GroupBookingMember {
 
 export default function GroupBookingDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { t } = useLocale();
   const q = trpc.groupBookings.getById.useQuery({ id: parseInt(id, 10) });
   const data = q.data as GroupBookingDetail | null;
   if (q.isLoading) return <SkeletonList count={4} />;
   if (!data)
     return (
       <View style={styles.c}>
-        <Text style={styles.e}>تعذر تحميل التفاصيل</Text>
+        <Text style={styles.e}>{t('mobile.groupBookings.load-error')}</Text>
       </View>
     );
-  const s = SM[data.status ?? ''] ?? { label: 'غير معروف', color: '#6b7280', bg: '#f3f4f6' };
+  const statusLabel = (status?: string): string => {
+    switch (status) {
+      case 'PENDING':
+        return t('mobile.groupBookings.status-pending');
+      case 'CONFIRMED':
+        return t('mobile.groupBookings.status-confirmed');
+      case 'IN_PROGRESS':
+        return t('mobile.groupBookings.status-in-progress');
+      case 'COMPLETED':
+        return t('mobile.groupBookings.status-completed');
+      case 'CANCELLED':
+        return t('mobile.groupBookings.status-cancelled');
+      default:
+        return t('mobile.groupBookings.status-unknown');
+    }
+  };
+  const s = SM[data.status ?? ''] ?? { color: '#6b7280', bg: '#f3f4f6' };
   return (
     <ScrollView
       style={styles.c}
@@ -62,19 +80,21 @@ export default function GroupBookingDetailScreen(): JSX.Element {
         {TE[data.theme ?? ''] ?? ''} {data.name}
       </Text>
       <View style={[styles.sb, { backgroundColor: s.bg }]}>
-        <Text style={[styles.sbt, { color: s.color }]}>{s.label}</Text>
+        <Text style={[styles.sbt, { color: s.color }]}>{statusLabel(data.status)}</Text>
       </View>
       <View style={styles.sec}>
-        <Text style={styles.secT}> المبلغ</Text>
+        <Text style={styles.secT}>{t('mobile.groupBookings.amount')}</Text>
         <Text style={styles.ta}>{data.totalAmount?.toLocaleString()} ر.س</Text>
-        <Text style={styles.td}>خصم: {data.discountPercent}%</Text>
+        <Text style={styles.td}>
+          {t('mobile.groupBookings.discount', { value: data.discountPercent ?? 0 })}
+        </Text>
       </View>
       {(data.members ?? []).map((m) => (
         <View key={m.id} style={styles.mr}>
           <Text style={styles.mn}>{m.name}</Text>
           <View style={[styles.mb, { backgroundColor: SM[m.status ?? '']?.bg ?? '#f3f4f6' }]}>
             <Text style={[styles.mbt, { color: SM[m.status ?? '']?.color ?? '#6b7280' }]}>
-              {SM[m.status ?? '']?.label ?? '—'}
+              {statusLabel(m.status)}
             </Text>
           </View>
         </View>

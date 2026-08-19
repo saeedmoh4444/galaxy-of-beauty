@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface IoTDevice {
   key?: string;
@@ -10,6 +11,7 @@ interface IoTDevice {
 }
 
 export default function IoTSyncScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.iotSync.devices.useQuery();
   const devices: IoTDevice[] = (q.data as unknown as IoTDevice[] | undefined) ?? [];
   const connectMut = trpc.iotSync.connect.useMutation();
@@ -29,7 +31,7 @@ export default function IoTSyncScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> الأجهزة الذكية</Text>
+      <Text style={styles.t}>{t('mobile.iotSync.title')}</Text>
       <View style={styles.grid}>
         {devices.map((d) => (
           <View key={d.key} style={styles.card}>
@@ -41,10 +43,14 @@ export default function IoTSyncScreen(): JSX.Element {
                 d.status === 'connected' ? { color: '#059669' } : { color: '#9ca3af' },
               ]}
             >
-              {d.status === 'connected' ? ' متصل' : ' غير متصل'}
+              {d.status === 'connected'
+                ? t('mobile.iotSync.connected')
+                : t('mobile.iotSync.disconnected')}
             </Text>
             <TouchableOpacity onPress={() => connect(d.key ?? '')} style={styles.db}>
-              <Text style={styles.dbt}>{d.status === 'connected' ? 'مزامنة' : 'ربط'}</Text>
+              <Text style={styles.dbt}>
+                {d.status === 'connected' ? t('mobile.iotSync.sync') : t('mobile.iotSync.link')}
+              </Text>
             </TouchableOpacity>
           </View>
         ))}
