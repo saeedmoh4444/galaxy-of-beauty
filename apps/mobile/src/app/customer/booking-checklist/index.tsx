@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -18,6 +19,7 @@ const CHECKLIST = [
 ];
 
 export default function BookingChecklistScreen(): JSX.Element {
+  const { t } = useLocale();
   const list = trpc.bookingChecklist.get.useQuery({ category: 'makeup' }) ?? {
     data: null,
     isLoading: false,
@@ -30,10 +32,10 @@ export default function BookingChecklistScreen(): JSX.Element {
       isLoading={list.isLoading}
       isError={list.isError}
       isEmpty={false}
-      errorMessage="فشل تحميل القائمة"
+      errorMessage={t('bookingChecklist.load-error')}
       onRetry={() => list.refetch()}
     >
-      <Text style={styles.title}> قائمة التحضير</Text>
+      <Text style={styles.title}>{t('bookingChecklist.title')}</Text>
       {CHECKLIST.map((item, i) => (
         <View key={i} style={styles.row}>
           <Text style={styles.check}>⬜</Text>

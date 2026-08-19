@@ -2,13 +2,8 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
-
-const TYPES: Record<string, string> = {
-  workshop: ' ورشة',
-  masterclass: ' ماستر كلاس',
-  launch: ' إطلاق',
-  seasonal: ' موسمي',
-};
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 interface EventNameJson {
   ar?: string;
@@ -31,6 +26,13 @@ interface EventRegistration {
 }
 
 export default function BeautyEventsScreen(): JSX.Element {
+  const { locale, t } = useLocale();
+  const typeLabels: Record<string, string> = {
+    workshop: t('beautyEvents.type-workshop'),
+    masterclass: t('beautyEvents.type-masterclass'),
+    launch: t('beautyEvents.type-launch'),
+    seasonal: t('beautyEvents.type-seasonal'),
+  };
   const eventsQ = trpc.beautyEvents.upcoming.useQuery();
   const myRegsQ = trpc.beautyEvents.myRegistrations.useQuery();
   const myRegs = (myRegsQ.data ?? []) as EventRegistration[];
@@ -55,7 +57,7 @@ export default function BeautyEventsScreen(): JSX.Element {
 
   if (eventsQ.isLoading) return <SkeletonList count={4} />;
   if (eventsQ.isError)
-    return <ErrorAlert message="فشل تحميل الفعاليات" onRetry={() => eventsQ.refetch()} />;
+    return <ErrorAlert message={t('beautyEvents.load-error')} onRetry={() => eventsQ.refetch()} />;
 
   const items: BeautyEvent[] = Array.isArray(eventsQ.data) ? eventsQ.data : [];
 
@@ -74,15 +76,15 @@ export default function BeautyEventsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={s.t}> فعاليات وورش</Text>
-      <Text style={s.sub}>سجلي في ورش العمل والفعاليات الحصرية</Text>
+      <Text style={s.t}>{t('beautyEvents.title')}</Text>
+      <Text style={s.sub}>{t('beautyEvents.subtitle')}</Text>
 
       {myRegs.length > 0 && (
         <View
           style={{ backgroundColor: '#ecfdf5', borderRadius: 12, padding: 12, marginBottom: 16 }}
         >
           <Text style={{ fontWeight: '700', color: '#059669', marginBottom: 4 }}>
-            مسجلة في {myRegs.length} فعاليات
+            {t('beautyEvents.registered-count', { count: myRegs.length })}
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
             {myRegs.map((r) => (
@@ -95,7 +97,9 @@ export default function BeautyEventsScreen(): JSX.Element {
                   paddingVertical: 4,
                 }}
               >
-                <Text style={{ fontSize: 11, color: '#047857' }}>{r.event?.nameJson?.ar}</Text>
+                <Text style={{ fontSize: 11, color: '#047857' }}>
+                  {r.event?.nameJson ? localize(r.event.nameJson, locale) : ''}
+                </Text>
               </View>
             ))}
           </View>
@@ -105,7 +109,7 @@ export default function BeautyEventsScreen(): JSX.Element {
       {items.length === 0 && (
         <View style={{ alignItems: 'center', padding: 30 }}>
           <Text style={{ fontSize: 40 }}></Text>
-          <Text style={{ color: '#6b7280', marginTop: 8 }}>لا توجد فعاليات قادمة</Text>
+          <Text style={{ color: '#6b7280', marginTop: 8 }}>{t('beautyEvents.empty')}</Text>
         </View>
       )}
 
@@ -114,18 +118,19 @@ export default function BeautyEventsScreen(): JSX.Element {
         return (
           <View key={e.id} style={s.card}>
             <View style={{ alignItems: 'center' }}>
-              <Text style={{ fontSize: 36 }}>{TYPES[e.eventType]?.split(' ')[0] ?? ''}</Text>
+              <Text style={{ fontSize: 36 }}>{''}</Text>
               <Text style={{ fontWeight: '800', fontSize: 16, marginTop: 8 }}>
-                {e.nameJson?.ar}
+                {e.nameJson ? localize(e.nameJson, locale) : ''}
               </Text>
               <Text style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>
-                {TYPES[e.eventType]}
+                {typeLabels[e.eventType]}
               </Text>
               <Text style={{ fontSize: 12, color: '#6b7280' }}>
-                {e.location} · {new Date(e.startsAt).toLocaleDateString('ar-SA')}
+                {e.location} ·{' '}
+                {new Date(e.startsAt).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}
               </Text>
               <Text style={{ fontWeight: '800', fontSize: 20, color: '#db2777', marginTop: 6 }}>
-                {e.price ? `${e.price} ر.س` : 'مجانية'}
+                {e.price ? t('beautyEvents.price', { price: e.price }) : t('beautyEvents.free')}
               </Text>
             </View>
             <TouchableOpacity
@@ -133,7 +138,7 @@ export default function BeautyEventsScreen(): JSX.Element {
               style={[s.btn, isReg && { backgroundColor: '#e5e7eb' }]}
             >
               <Text style={[s.btnText, isReg && { color: '#374151' }]}>
-                {isReg ? ' مسجلة — إلغاء' : ' سجلي الآن'}
+                {isReg ? t('beautyEvents.cancel') : t('beautyEvents.register')}
               </Text>
             </TouchableOpacity>
           </View>

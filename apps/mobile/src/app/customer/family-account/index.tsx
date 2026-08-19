@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface FamilyMember {
   id?: number;
@@ -9,6 +10,7 @@ interface FamilyMember {
 }
 
 export default function FamilyAccountScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.familyAccount.list.useQuery();
   const data: FamilyMember[] = (q.data as unknown as FamilyMember[] | undefined) ?? [];
 
@@ -26,7 +28,7 @@ export default function FamilyAccountScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>‍‍ حساب العائلة</Text>
+      <Text style={styles.t}>{t('familyAccount.title')}</Text>
       {data.map((m, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.avatar}></Text>

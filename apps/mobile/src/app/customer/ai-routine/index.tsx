@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const SKIN_TYPES = [
   { key: 'dry', emoji: '️', label: 'جافة' },
@@ -34,6 +35,13 @@ interface AIRoutineData {
 }
 
 export default function AIRoutineScreen(): JSX.Element {
+  const { t } = useLocale();
+  const skinLabels: Record<string, string> = {
+    dry: t('aiRoutine.skin-dry'),
+    oily: t('aiRoutine.skin-oily'),
+    combination: t('aiRoutine.skin-combination'),
+    normal: t('aiRoutine.skin-normal'),
+  };
   const [skinType, setSkinType] = useState<'dry' | 'oily' | 'combination' | 'normal'>(
     'combination',
   );
@@ -48,8 +56,8 @@ export default function AIRoutineScreen(): JSX.Element {
   if (!generated) {
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}> روتين العناية الذكي</Text>
-        <Text style={styles.sub}>اختاري نوع بشرتكِ لتوليد روتين مخصص</Text>
+        <Text style={styles.t}>{t('aiRoutine.title')}</Text>
+        <Text style={styles.sub}>{t('aiRoutine.subtitle')}</Text>
         <View style={styles.grid}>
           {SKIN_TYPES.map((t) => (
             <TouchableOpacity
@@ -59,13 +67,13 @@ export default function AIRoutineScreen(): JSX.Element {
             >
               <Text style={styles.skinEmoji}>{t.emoji}</Text>
               <Text style={[styles.skinLabel, skinType === t.key && styles.skinLabelActive]}>
-                {t.label}
+                {skinLabels[t.key] ?? t.label}
               </Text>
             </TouchableOpacity>
           ))}
         </View>
         <TouchableOpacity onPress={generate} style={styles.genBtn}>
-          <Text style={styles.genBtnText}> توليد الروتين</Text>
+          <Text style={styles.genBtnText}>{t('aiRoutine.generate')}</Text>
         </TouchableOpacity>
       </ScrollView>
     );
@@ -81,9 +89,11 @@ export default function AIRoutineScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> روتين العناية الذكي</Text>
+      <Text style={styles.t}>{t('aiRoutine.title')}</Text>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>️ الصباح ({data?.morning?.totalTime ?? '—'})</Text>
+        <Text style={styles.sectionTitle}>
+          {t('aiRoutine.morning', { time: data?.morning?.totalTime ?? '—' })}
+        </Text>
         {morning.map((s, i) => (
           <View key={i} style={styles.step}>
             <Text style={styles.stepEmoji}>{s.emoji}</Text>
@@ -95,7 +105,9 @@ export default function AIRoutineScreen(): JSX.Element {
         ))}
       </View>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}> المساء ({data?.evening?.totalTime ?? '—'})</Text>
+        <Text style={styles.sectionTitle}>
+          {t('aiRoutine.evening', { time: data?.evening?.totalTime ?? '—' })}
+        </Text>
         {evening.map((s, i) => (
           <View key={i} style={styles.step}>
             <Text style={styles.stepEmoji}>{s.emoji}</Text>
@@ -108,7 +120,7 @@ export default function AIRoutineScreen(): JSX.Element {
       </View>
       {tips.length > 0 && (
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}> نصائح</Text>
+          <Text style={styles.sectionTitle}>{t('aiRoutine.tips')}</Text>
           {tips.map((tip, i) => (
             <Text key={i} style={styles.tip}>
               • {tip}
@@ -122,7 +134,7 @@ export default function AIRoutineScreen(): JSX.Element {
         }}
         style={styles.resetBtn}
       >
-        <Text style={styles.resetBtnText}> إعادة</Text>
+        <Text style={styles.resetBtnText}>{t('aiRoutine.reset')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

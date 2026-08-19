@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface FranchiseDashboard {
   totalRevenue?: number;
@@ -18,6 +19,7 @@ interface FranchiseLocation {
 }
 
 export default function FranchisePortalScreen(): JSX.Element {
+  const { t } = useLocale();
   const dashQ = trpc.franchisePortal.dashboard.useQuery();
   const locationsQ = trpc.franchisePortal.locations.useQuery();
   if (dashQ.isLoading || locationsQ.isLoading) return <SkeletonList count={4} />;
@@ -39,17 +41,19 @@ export default function FranchisePortalScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> بوابة الامتياز</Text>
+      <Text style={styles.t}>{t('franchisePortal.title')}</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
-          <Text style={styles.kv}>{(dash?.totalRevenue ?? 0).toLocaleString()}</Text>
-          <Text style={styles.kl}>الإيرادات</Text>
+          <Text style={styles.kv}>
+            {t('franchisePortal.amount', { value: (dash?.totalRevenue ?? 0).toLocaleString() })}
+          </Text>
+          <Text style={styles.kl}>{t('franchisePortal.revenue')}</Text>
         </View>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
           <Text style={[styles.kv, { color: '#2563eb' }]}>{dash?.totalBookings ?? 0}</Text>
-          <Text style={styles.kl}>حجز</Text>
+          <Text style={styles.kl}>{t('franchisePortal.bookings')}</Text>
         </View>
       </View>
       {locations.map((l) => (
@@ -57,14 +61,20 @@ export default function FranchisePortalScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.ln}>{l.branch}</Text>
             <Text style={styles.lm}>
-              {l.city} · {l.staff} موظفات
+              {l.city} · {t('franchisePortal.staff', { staff: l.staff ?? 0 })}
             </Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
-            <Text style={styles.lb}>{l.bookings} حجز</Text>
-            <Text style={styles.lr}>{l.revenue?.toLocaleString()} ر.س</Text>
+            <Text style={styles.lb}>
+              {t('franchisePortal.booking-count', { bookings: l.bookings ?? 0 })}
+            </Text>
+            <Text style={styles.lr}>
+              {t('franchisePortal.amount', { value: l.revenue?.toLocaleString() ?? '' })}
+            </Text>
             <View style={[styles.badge, l.status === 'active' ? styles.ba : styles.bp]}>
-              <Text style={styles.bt}>{l.status === 'active' ? 'نشط' : 'معلق'}</Text>
+              <Text style={styles.bt}>
+                {l.status === 'active' ? t('franchisePortal.active') : t('franchisePortal.pending')}
+              </Text>
             </View>
           </View>
         </View>

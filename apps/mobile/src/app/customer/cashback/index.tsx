@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface CashbackInfo {
   balance?: number;
@@ -20,6 +21,7 @@ interface CashbackHistory {
 }
 
 export default function CashbackScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const infoQ = trpc.cashback.info.useQuery();
   const historyQ = trpc.cashback.history.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
   if (infoQ.isLoading || historyQ.isLoading) return <SkeletonList count={3} />;
@@ -41,25 +43,31 @@ export default function CashbackScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> استرداد نقدي</Text>
+      <Text style={styles.t}>{t('cashback.title')}</Text>
       <View style={styles.br}>
         <View style={styles.bc}>
-          <Text style={styles.bl}>رصيد الكاش باك</Text>
-          <Text style={styles.ba}>{(info?.balance ?? 0)?.toLocaleString()} ر.س</Text>
+          <Text style={styles.bl}>{t('cashback.balance')}</Text>
+          <Text style={styles.ba}>
+            {t('cashback.amount', { value: (info?.balance ?? 0)?.toLocaleString() })}
+          </Text>
         </View>
         <View style={styles.bc}>
-          <Text style={styles.bl}>الرصيد الإجمالي</Text>
+          <Text style={styles.bl}>{t('cashback.total-balance')}</Text>
           <Text style={[styles.ba, { color: '#7c3aed' }]}>
-            {(info?.totalBalance ?? 0)?.toLocaleString()} ر.س
+            {t('cashback.amount', { value: (info?.totalBalance ?? 0)?.toLocaleString() })}
           </Text>
         </View>
       </View>
-      {items.map((t) => (
-        <View key={t.id} style={styles.card}>
+      {items.map((tx) => (
+        <View key={tx.id} style={styles.card}>
           <Text style={styles.em}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.ta}>+{t.amount?.toLocaleString()} ر.س</Text>
-            <Text style={styles.td}>{new Date(t.createdAt).toLocaleDateString('ar-SA')}</Text>
+            <Text style={styles.ta}>
+              {t('cashback.amount', { value: `+${tx.amount?.toLocaleString()}` })}
+            </Text>
+            <Text style={styles.td}>
+              {new Date(tx.createdAt).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}
+            </Text>
           </View>
           <Text style={styles.tr}>{info?.rate ?? 5}%</Text>
         </View>

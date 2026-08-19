@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface FollowEntry {
   id?: number;
@@ -9,6 +10,7 @@ interface FollowEntry {
 }
 
 export default function FollowingScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const q = trpc.technicianFollows.myFollows.useQuery();
   const follows: FollowEntry[] = (q.data as unknown as FollowEntry[] | undefined) ?? [];
   const unfollowMut = trpc.technicianFollows.unfollow.useMutation({
@@ -32,18 +34,24 @@ export default function FollowingScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>‍ متابعة الفنيات</Text>
+      <Text style={styles.t}>{t('following.title')}</Text>
       {follows.map((f) => (
         <View key={f.technicianId} style={styles.card}>
           <Text style={styles.av}>‍</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nm}>فنية #{f.technicianId}</Text>
+            <Text style={styles.nm}>{t('following.technician', { id: f.technicianId })}</Text>
             <Text style={styles.meta}>
-              منذ {f.createdAt ? new Date(f.createdAt).toLocaleDateString('ar-SA') : ''}
+              {f.createdAt
+                ? t('following.since', {
+                    date: new Date(f.createdAt).toLocaleDateString(
+                      locale === 'ar' ? 'ar-SA' : 'en-US',
+                    ),
+                  })
+                : ''}
             </Text>
           </View>
           <TouchableOpacity onPress={() => unfollow(f.technicianId)} style={styles.ub}>
-            <Text style={styles.ut}>إلغاء المتابعة</Text>
+            <Text style={styles.ut}>{t('following.unfollow')}</Text>
           </TouchableOpacity>
         </View>
       ))}

@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const SEASONS_COLORS = [
   {
@@ -45,13 +46,14 @@ const SEASONS_COLORS = [
 ];
 
 export default function ColorAnalysisScreen(): JSX.Element {
+  const { t } = useLocale();
   const [season, setSeason] = useState('summer');
   const s = SEASONS_COLORS.find((x) => x.key === season)!;
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> تحليل الألوان</Text>
-      <Text style={styles.sub}>اكتشفي الألوان اللي تناسب بشرتكِ</Text>
+      <Text style={styles.t}>{t('colorAnalysis.title')}</Text>
+      <Text style={styles.sub}>{t('colorAnalysis.subtitle')}</Text>
 
       <View style={styles.tabs}>
         {SEASONS_COLORS.map((sc) => (
@@ -72,14 +74,14 @@ export default function ColorAnalysisScreen(): JSX.Element {
         </Text>
         <Text style={styles.cs}> {s.skin}</Text>
 
-        <Text style={styles.st}> لوحة الألوان</Text>
+        <Text style={styles.st}>{t('colorAnalysis.palette')}</Text>
         <View style={styles.palette}>
           {s.colors.map((c, i) => (
             <View key={i} style={[styles.swatch, { backgroundColor: c }]} />
           ))}
         </View>
 
-        <Text style={styles.st}> المكياج المناسب</Text>
+        <Text style={styles.st}>{t('colorAnalysis.makeup')}</Text>
         {s.makeup.map((m, i) => (
           <View key={i} style={styles.makeupItem}>
             <Text style={styles.makeupEmoji}></Text>
@@ -88,13 +90,13 @@ export default function ColorAnalysisScreen(): JSX.Element {
         ))}
 
         <View style={styles.jewelryRow}>
-          <Text style={styles.jewelryLabel}> المجوهرات</Text>
+          <Text style={styles.jewelryLabel}>{t('colorAnalysis.jewelry')}</Text>
           <Text style={styles.jewelryValue}>{s.jewelry}</Text>
         </View>
       </View>
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}> حللي بشرتكِ</Text>
+        <Text style={styles.bt}>{t('colorAnalysis.analyze')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

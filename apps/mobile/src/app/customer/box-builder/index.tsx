@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface BoxProduct {
   id: number;
@@ -11,6 +12,7 @@ interface BoxProduct {
 }
 
 export default function BoxBuilderScreen(): JSX.Element {
+  const { t } = useLocale();
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const q = trpc.boxBuilder.catalog.useQuery();
   const products: BoxProduct[] = (q.data as unknown as BoxProduct[] | undefined) ?? [];
@@ -36,11 +38,11 @@ export default function BoxBuilderScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> صندوقي</Text>
-      <Text style={styles.sub}>اختاري حتى ٥ منتجات لصندوقك الشهري</Text>
+      <Text style={styles.t}>{t('boxBuilder.title')}</Text>
+      <Text style={styles.sub}>{t('boxBuilder.subtitle')}</Text>
       {selected.size > 0 && (
         <View style={styles.badge}>
-          <Text style={styles.badgeText}> {selected.size} منتجات</Text>
+          <Text style={styles.badgeText}>{t('boxBuilder.count', { count: selected.size })}</Text>
         </View>
       )}
       {products.map((p) => {
@@ -54,7 +56,9 @@ export default function BoxBuilderScreen(): JSX.Element {
             <Text style={styles.emoji}>{p.emoji ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.name}>{p.nameAr}</Text>
-              <Text style={styles.price}>{p.price?.toLocaleString()} ر.س</Text>
+              <Text style={styles.price}>
+                {t('boxBuilder.price', { price: p.price?.toLocaleString() ?? '' })}
+              </Text>
             </View>
             <View style={[styles.check, isSel && styles.checkOn]}>
               <Text style={styles.checkText}>{isSel ? '' : '+'}</Text>

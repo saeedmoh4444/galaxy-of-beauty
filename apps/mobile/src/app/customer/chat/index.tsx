@@ -10,6 +10,7 @@ import {
 import { useState } from 'react';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ChatMessage {
   id?: number;
@@ -19,6 +20,7 @@ interface ChatMessage {
 }
 
 export default function ChatScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const [text, setText] = useState('');
   const q = trpc.chat.messages.useQuery({ bookingId: 1, page: 1, limit: BULK_PAGE_SIZE });
   const messages: ChatMessage[] = (q.data?.items ?? []) as unknown as ChatMessage[];
@@ -41,9 +43,9 @@ export default function ChatScreen(): JSX.Element {
   return (
     <View style={styles.c}>
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.i}>
-        <Text style={styles.t}> المحادثات</Text>
+        <Text style={styles.t}>{t('chat.title')}</Text>
         {messages.length === 0 ? (
-          <Text style={styles.e}>لا توجد رسائل</Text>
+          <Text style={styles.e}>{t('chat.empty')}</Text>
         ) : (
           messages.map((m) => (
             <View
@@ -52,10 +54,13 @@ export default function ChatScreen(): JSX.Element {
             >
               <Text style={styles.msgText}>{m.message}</Text>
               <Text style={styles.msgTime}>
-                {new Date(m.createdAt ?? '').toLocaleTimeString('ar-SA', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
+                {new Date(m.createdAt ?? '').toLocaleTimeString(
+                  locale === 'ar' ? 'ar-SA' : 'en-US',
+                  {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  },
+                )}
               </Text>
             </View>
           ))
@@ -65,7 +70,7 @@ export default function ChatScreen(): JSX.Element {
         <TextInput
           value={text}
           onChangeText={setText}
-          placeholder="اكتبي رسالة..."
+          placeholder={t('chat.placeholder')}
           style={styles.input}
           placeholderTextColor="#9ca3af"
         />

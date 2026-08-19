@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
@@ -56,10 +57,11 @@ const CARDS: AccCard[] = [
 ];
 
 export default function AccessoriesGuideScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.header}> دليل الإكسسوارات</Text>
-      <Text style={styles.subtitle}>اللمسة الأخيرة لإطلالة متكاملة</Text>
+      <Text style={styles.header}>{t('accessoriesGuide.title')}</Text>
+      <Text style={styles.subtitle}>{t('accessoriesGuide.subtitle')}</Text>
       <View style={styles.grid}>
         {CARDS.map((card, i) => (
           <View key={i} style={[styles.card, { borderColor: card.color + '30' }]}>

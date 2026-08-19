@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const CATS = [' مكياج', ' عناية', '‍️ شعر', ' أظافر', ' طبيعي'];
 
@@ -13,14 +14,22 @@ interface ClosetProduct {
 }
 
 export default function BeautyClosetScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const [filter, setFilter] = useState<string | null>(null);
+  const catLabels = [
+    t('beautyCloset.cat-makeup'),
+    t('beautyCloset.cat-skin'),
+    t('beautyCloset.cat-hair'),
+    t('beautyCloset.cat-nails'),
+    t('beautyCloset.cat-natural'),
+  ];
   const q = trpc.restockReminder.myItems.useQuery();
   const products: ClosetProduct[] = (q.data as unknown as ClosetProduct[] | undefined) ?? [];
 
   if (q.isLoading)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}> خزانة الجمال</Text>
+        <Text style={styles.t}>{t('beautyCloset.title')}</Text>
       </ScrollView>
     );
 
@@ -38,8 +47,8 @@ export default function BeautyClosetScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> خزانة الجمال</Text>
-      <Text style={styles.sub}>منتجاتكِ ومستحضراتكِ الشخصية</Text>
+      <Text style={styles.t}>{t('beautyCloset.title')}</Text>
+      <Text style={styles.sub}>{t('beautyCloset.subtitle')}</Text>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
         <View style={{ flexDirection: 'row', gap: 8 }}>
@@ -47,22 +56,22 @@ export default function BeautyClosetScreen(): JSX.Element {
             onPress={() => setFilter(null)}
             style={[styles.fc, !filter && styles.fca]}
           >
-            <Text style={[styles.ft, !filter && styles.fta]}>الكل</Text>
+            <Text style={[styles.ft, !filter && styles.fta]}>{t('beautyCloset.all')}</Text>
           </TouchableOpacity>
-          {CATS.map((c) => (
+          {CATS.map((c, i) => (
             <TouchableOpacity
               key={c}
               onPress={() => setFilter(c)}
               style={[styles.fc, filter === c && styles.fca]}
             >
-              <Text style={[styles.ft, filter === c && styles.fta]}>{c}</Text>
+              <Text style={[styles.ft, filter === c && styles.fta]}>{catLabels[i] ?? c}</Text>
             </TouchableOpacity>
           ))}
         </View>
       </ScrollView>
 
       {filtered.length === 0 ? (
-        <Text style={styles.e}> أضيفي منتجاتكِ الأولى!</Text>
+        <Text style={styles.e}>{t('beautyCloset.empty')}</Text>
       ) : (
         <View style={styles.grid}>
           {filtered.map((p, i) => (
@@ -71,20 +80,24 @@ export default function BeautyClosetScreen(): JSX.Element {
               <Text style={styles.pn}>{p.productName}</Text>
               {p.openDate && (
                 <Text style={styles.pd}>
-                  فتح: {new Date(p.openDate ?? '').toLocaleDateString('ar-SA')}
+                  {t('beautyCloset.opened', {
+                    date: new Date(p.openDate ?? '').toLocaleDateString(
+                      locale === 'ar' ? 'ar-SA' : 'en-US',
+                    ),
+                  })}
                 </Text>
               )}
               <View style={styles.pu}>
                 <View style={[styles.puf, { width: '60%' }]} />
               </View>
-              <Text style={styles.pm}>متبقي ~60%</Text>
+              <Text style={styles.pm}>{t('beautyCloset.remaining')}</Text>
             </View>
           ))}
         </View>
       )}
 
       <TouchableOpacity style={styles.addBtn}>
-        <Text style={styles.addBt}>+ إضافة منتج جديد</Text>
+        <Text style={styles.addBt}>{t('beautyCloset.add-product')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

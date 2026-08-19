@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const CATEGORIES = [
   { key: 'hair', emoji: '‍️', name: 'الشعر', budget: 200, color: '#ec4899' },
@@ -11,8 +12,17 @@ const CATEGORIES = [
 ];
 
 export default function BeautyBudgetPlannerScreen(): JSX.Element {
+  const { t } = useLocale();
   const [monthly] = useState<Record<string, number>>({});
   const [selectedCat, setSelectedCat] = useState<string | null>(null);
+  const categoryLabels: Record<string, string> = {
+    hair: t('beautyBudgetPlanner.cat-hair'),
+    skin: t('beautyBudgetPlanner.cat-skin'),
+    nails: t('beautyBudgetPlanner.cat-nails'),
+    makeup: t('beautyBudgetPlanner.cat-makeup'),
+    spa: t('beautyBudgetPlanner.cat-spa'),
+    products: t('beautyBudgetPlanner.cat-products'),
+  };
 
   const totalBudget = CATEGORIES.reduce((sum, c) => sum + c.budget, 0);
   const allocated = Object.values(monthly).reduce((s, v) => s + v, 0);
@@ -20,25 +30,25 @@ export default function BeautyBudgetPlannerScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> مخطط الميزانية</Text>
-      <Text style={styles.sub}>خططي لمصاريف جمالكِ السنوية</Text>
+      <Text style={styles.t}>{t('beautyBudgetPlanner.title')}</Text>
+      <Text style={styles.sub}>{t('beautyBudgetPlanner.subtitle')}</Text>
 
       <View style={styles.summaryRow}>
         <View style={[styles.summary, { backgroundColor: '#fef3c7' }]}>
           <Text style={styles.sv}>{totalBudget.toLocaleString()}</Text>
-          <Text style={styles.sl}>الميزانية</Text>
+          <Text style={styles.sl}>{t('beautyBudgetPlanner.budget')}</Text>
         </View>
         <View style={[styles.summary, { backgroundColor: '#dcfce7' }]}>
           <Text style={[styles.sv, { color: '#059669' }]}>{allocated.toLocaleString()}</Text>
-          <Text style={styles.sl}>مخصص</Text>
+          <Text style={styles.sl}>{t('beautyBudgetPlanner.allocated')}</Text>
         </View>
         <View style={[styles.summary, { backgroundColor: '#dbeafe' }]}>
           <Text style={[styles.sv, { color: '#2563eb' }]}>{remaining.toLocaleString()}</Text>
-          <Text style={styles.sl}>متبقي</Text>
+          <Text style={styles.sl}>{t('beautyBudgetPlanner.remaining')}</Text>
         </View>
       </View>
 
-      <Text style={styles.st}>‍️ الفئات</Text>
+      <Text style={styles.st}>{t('beautyBudgetPlanner.categories')}</Text>
       {CATEGORIES.map((c) => {
         const pct = Math.min(100, Math.round(((monthly[c.key] ?? 0) / c.budget) * 100));
         const isOver = (monthly[c.key] ?? 0) > c.budget;
@@ -50,8 +60,10 @@ export default function BeautyBudgetPlannerScreen(): JSX.Element {
           >
             <Text style={styles.ce}>{c.emoji}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.cn}>{c.name}</Text>
-              <Text style={styles.cb}>الميزانية: {c.budget.toLocaleString()} ر.س / شهرياً</Text>
+              <Text style={styles.cn}>{categoryLabels[c.key] ?? c.name}</Text>
+              <Text style={styles.cb}>
+                {t('beautyBudgetPlanner.cat-budget', { budget: c.budget.toLocaleString() })}
+              </Text>
               <View style={styles.bar}>
                 <View
                   style={[
@@ -62,14 +74,14 @@ export default function BeautyBudgetPlannerScreen(): JSX.Element {
               </View>
             </View>
             <Text style={[styles.cp, isOver && { color: '#dc2626' }]}>
-              {(monthly[c.key] ?? 0).toLocaleString()} ر.س
+              {t('beautyBudgetPlanner.amount', { value: (monthly[c.key] ?? 0).toLocaleString() })}
             </Text>
           </TouchableOpacity>
         );
       })}
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}> حفظ الميزانية</Text>
+        <Text style={styles.bt}>{t('beautyBudgetPlanner.save')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

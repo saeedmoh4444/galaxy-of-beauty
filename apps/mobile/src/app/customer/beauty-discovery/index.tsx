@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ServiceRow {
   id?: number;
@@ -36,12 +37,15 @@ interface ForYouData {
 }
 
 export default function BeautyDiscoveryScreen(): JSX.Element {
+  const { t } = useLocale();
   const featuredQ = trpc.beautyDiscovery.featured.useQuery();
   const forYouQ = trpc.beautyDiscovery.forYou.useQuery();
 
   if (featuredQ.isLoading) return <SkeletonList count={5} />;
   if (featuredQ.isError)
-    return <ErrorAlert message="فشل تحميل المحتوى" onRetry={() => featuredQ.refetch()} />;
+    return (
+      <ErrorAlert message={t('beautyDiscovery.load-error')} onRetry={() => featuredQ.refetch()} />
+    );
 
   const f = featuredQ.data as FeaturedData | null;
   const fy = forYouQ.data as ForYouData | null;
@@ -61,14 +65,16 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
         />
       }
     >
-      <Text style={s.t}> اكتشفي</Text>
-      <Text style={s.sub}>خدمات وعروض وفعاليات مخصصة لكِ</Text>
+      <Text style={s.t}>{t('beautyDiscovery.title')}</Text>
+      <Text style={s.sub}>{t('beautyDiscovery.subtitle')}</Text>
 
       {fy?.profile && (
         <View
           style={{ backgroundColor: '#faf5ff', borderRadius: 12, padding: 14, marginBottom: 16 }}
         >
-          <Text style={{ fontWeight: '700', color: '#7c3aed', fontSize: 15 }}> ملفكِ الشخصي</Text>
+          <Text style={{ fontWeight: '700', color: '#7c3aed', fontSize: 15 }}>
+            {t('beautyDiscovery.your-profile')}
+          </Text>
           <Text style={{ color: '#7c3aed', fontSize: 13, marginTop: 4 }}>
             {fy.profile.skinType} · {fy.profile.hairType} ·{' '}
             {(fy.profile.concerns as string[])?.join('، ')}
@@ -78,13 +84,15 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
 
       {(f?.popularServices ?? []).length > 0 && (
         <View style={{ marginBottom: 16 }}>
-          <Text style={s.st}> الأكثر طلباً</Text>
+          <Text style={s.st}>{t('beautyDiscovery.popular')}</Text>
           {(f?.popularServices ?? []).slice(0, 6).map((svc, i) => (
             <View key={svc.id ?? i} style={s.row}>
               <Text style={{ fontSize: 14 }}>
                 {svc.emoji} {svc.name}
               </Text>
-              <Text style={{ fontWeight: '700', color: '#db2777' }}>{svc.price} ر.س</Text>
+              <Text style={{ fontWeight: '700', color: '#db2777' }}>
+                {t('beautyDiscovery.price', { price: svc.price ?? 0 })}
+              </Text>
             </View>
           ))}
         </View>
@@ -92,7 +100,7 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
 
       {(f?.flashDeals ?? []).length > 0 && (
         <View style={{ marginBottom: 16 }}>
-          <Text style={s.st}> عروض فلاش</Text>
+          <Text style={s.st}>{t('beautyDiscovery.flash-deals')}</Text>
           {(f?.flashDeals ?? []).slice(0, 4).map((d, i) => (
             <View key={d.id ?? i} style={s.row}>
               <View style={{ flex: 1 }}>
@@ -100,10 +108,12 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
                 <Text
                   style={{ fontSize: 12, color: '#9ca3af', textDecorationLine: 'line-through' }}
                 >
-                  {d.originalPrice} ر.س
+                  {t('beautyDiscovery.price', { price: d.originalPrice ?? 0 })}
                 </Text>
               </View>
-              <Text style={{ fontWeight: '800', color: '#ef4444' }}>{d.dealPrice} ر.س</Text>
+              <Text style={{ fontWeight: '800', color: '#ef4444' }}>
+                {t('beautyDiscovery.price', { price: d.dealPrice ?? 0 })}
+              </Text>
             </View>
           ))}
         </View>
@@ -111,13 +121,15 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
 
       {(fy?.suggestions ?? []).length > 0 && (
         <View style={{ marginBottom: 16 }}>
-          <Text style={s.st}> لكِ خصيصاً</Text>
+          <Text style={s.st}>{t('beautyDiscovery.for-you')}</Text>
           {(fy?.suggestions ?? []).map((sug, i) => (
             <View key={sug.id ?? i} style={s.row}>
               <Text style={{ fontSize: 14 }}>
                 {sug.emoji} {sug.name}
               </Text>
-              <Text style={{ fontWeight: '700', color: '#db2777' }}>{sug.price} ر.س</Text>
+              <Text style={{ fontWeight: '700', color: '#db2777' }}>
+                {t('beautyDiscovery.price', { price: sug.price ?? 0 })}
+              </Text>
             </View>
           ))}
         </View>
@@ -125,7 +137,7 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
 
       {(f?.events ?? []).length > 0 && (
         <View style={{ marginBottom: 16 }}>
-          <Text style={s.st}> فعاليات قادمة</Text>
+          <Text style={s.st}>{t('beautyDiscovery.upcoming-events')}</Text>
           {(f?.events ?? []).map((e, i) => (
             <View key={e.id ?? i} style={s.row}>
               <View style={{ flex: 1 }}>

@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -12,6 +13,7 @@ const COLORS = {
 };
 
 export default function BeautyDashboardScreen(): JSX.Element {
+  const { t } = useLocale();
   const loyalty = trpc.loyalty.myAccount.useQuery();
   const insights = trpc.analytics.customerInsights.useQuery();
   const lData = loyalty.data as Record<string, unknown> | undefined;
@@ -22,18 +24,34 @@ export default function BeautyDashboardScreen(): JSX.Element {
       isLoading={loyalty.isLoading}
       isError={loyalty.isError}
       isEmpty={!lData && !iData}
-      errorMessage="فشل تحميل لوحة الجمال"
+      errorMessage={t('beautyDashboard.load-error')}
       onRetry={() => {
         loyalty.refetch();
         insights.refetch();
       }}
     >
-      <Text style={styles.title}> لوحة الجمال</Text>
+      <Text style={styles.title}>{t('beautyDashboard.title')}</Text>
       {[
-        { label: 'نقاط الولاء', value: `${String(lData?.points ?? 0)} `, color: COLORS.warning },
-        { label: 'المستوى', value: (lData?.tier as string) ?? '—', color: COLORS.brand },
-        { label: 'الحجوزات', value: String(iData?.bookingCount ?? 0), color: COLORS.success },
-        { label: 'الإنفاق', value: `${String(iData?.totalSpent ?? 0)} ر.س`, color: COLORS.gray900 },
+        {
+          label: t('beautyDashboard.loyalty-points'),
+          value: `${String(lData?.points ?? 0)} `,
+          color: COLORS.warning,
+        },
+        {
+          label: t('beautyDashboard.tier'),
+          value: (lData?.tier as string) ?? '—',
+          color: COLORS.brand,
+        },
+        {
+          label: t('beautyDashboard.bookings'),
+          value: String(iData?.bookingCount ?? 0),
+          color: COLORS.success,
+        },
+        {
+          label: t('beautyDashboard.spending'),
+          value: t('beautyDashboard.sar', { value: String(iData?.totalSpent ?? 0) }),
+          color: COLORS.gray900,
+        },
       ].map((item, i) => (
         <View key={i} style={styles.card}>
           <Text style={[styles.value, { color: item.color }]}>{item.value}</Text>

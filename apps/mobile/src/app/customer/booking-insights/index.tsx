@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface AnalyticsSummary {
   totalSpent?: number;
@@ -14,6 +15,7 @@ interface CategoryStat {
 }
 
 export default function BookingInsightsScreen(): JSX.Element {
+  const { t } = useLocale();
   const analyticsQ = trpc.beautyAnalytics.summary.useQuery();
   const byCatQ = trpc.beautyAnalytics.byCategory.useQuery();
   if (analyticsQ.isLoading || byCatQ.isLoading) return <SkeletonList count={3} />;
@@ -37,27 +39,27 @@ export default function BookingInsightsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> رؤى الحجوزات</Text>
+      <Text style={styles.t}>{t('bookingInsights.title')}</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
           <Text style={styles.kv}>{totalSpent.toLocaleString()}</Text>
-          <Text style={styles.kl}>ر.س إنفاق</Text>
+          <Text style={styles.kl}>{t('bookingInsights.spent-label')}</Text>
         </View>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
           <Text style={[styles.kv, { color: '#2563eb' }]}>{totalBookings}</Text>
-          <Text style={styles.kl}>حجز</Text>
+          <Text style={styles.kl}>{t('bookingInsights.booking-label')}</Text>
         </View>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
           <Text style={[styles.kv, { color: '#059669' }]}>{avgPerBooking.toLocaleString()}</Text>
-          <Text style={styles.kl}>متوسط</Text>
+          <Text style={styles.kl}>{t('bookingInsights.avg-label')}</Text>
         </View>
       </View>
       {byCat.length > 0 && (
         <View style={styles.sec}>
-          <Text style={styles.st}>‍️ توزيع الفئات</Text>
+          <Text style={styles.st}>{t('bookingInsights.by-category')}</Text>
           {byCat.map((cat, i) => (
             <View key={i} style={styles.cr}>
               <Text style={styles.cn}>{cat.category}</Text>
@@ -65,20 +67,22 @@ export default function BookingInsightsScreen(): JSX.Element {
                 <View style={[styles.cf, { width: `${cat.pct ?? 0}%` }]} />
               </View>
               <Text style={styles.cp}>{cat.pct}%</Text>
-              <Text style={styles.cs}>{cat.spent?.toLocaleString()} ر.س</Text>
+              <Text style={styles.cs}>
+                {t('bookingInsights.amount', { value: cat.spent?.toLocaleString() ?? '' })}
+              </Text>
             </View>
           ))}
         </View>
       )}
       <View style={styles.ic}>
         <Text style={styles.ie}></Text>
-        <Text style={styles.it}>نصيحة ذكية</Text>
+        <Text style={styles.it}>{t('bookingInsights.smart-tip')}</Text>
         <Text style={styles.ix}>
           {totalBookings < 5
-            ? 'احجزي ٥ خدمات للفئة الذهبية '
+            ? t('bookingInsights.tip-low')
             : avgPerBooking > 300
-              ? 'أنتِ تستثمرين في الجودة '
-              : 'احجزي باقات للخصم '}
+              ? t('bookingInsights.tip-quality')
+              : t('bookingInsights.tip-package')}
         </Text>
       </View>
     </ScrollView>

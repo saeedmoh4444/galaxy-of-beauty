@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface BirthdayReward {
   rewardName?: string;
@@ -8,6 +9,7 @@ interface BirthdayReward {
 }
 
 export default function BirthdayRewardsScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.birthdayRewards.myReward.useQuery();
   if (q.isLoading) return <SkeletonList count={3} />;
   const data = (q.data ?? null) as BirthdayReward | null;
@@ -24,18 +26,20 @@ export default function BirthdayRewardsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> مكافآت الميلاد</Text>
+      <Text style={styles.t}>{t('birthdayRewards.title')}</Text>
       {data ? (
         <View style={styles.card}>
           <Text style={styles.emoji}></Text>
           <Text style={styles.reward}>{data.rewardName}</Text>
-          <Text style={styles.code}>كود: {data.promoCode}</Text>
+          <Text style={styles.code}>
+            {t('birthdayRewards.code', { code: String(data.promoCode ?? '') })}
+          </Text>
           <TouchableOpacity style={styles.claimBtn}>
-            <Text style={styles.claimText}>استلام</Text>
+            <Text style={styles.claimText}>{t('birthdayRewards.claim')}</Text>
           </TouchableOpacity>
         </View>
       ) : (
-        <Text style={styles.e}>لا توجد مكافآت</Text>
+        <Text style={styles.e}>{t('birthdayRewards.empty')}</Text>
       )}
     </ScrollView>
   );

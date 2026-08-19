@@ -2,6 +2,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -12,6 +14,7 @@ const COLORS = {
 };
 
 export default function CartScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const cart = trpc.marketplace.cart.useQuery() ?? {
     data: null,
     isLoading: false,
@@ -32,18 +35,24 @@ export default function CartScreen(): JSX.Element {
       isLoading={cart.isLoading}
       isError={cart.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل السلة"
-      emptyTitle="السلة فارغة"
-      emptyDescription="أضيفي منتجات من المتجر"
+      errorMessage={t('cart.load-error')}
+      emptyTitle={t('cart.empty-title')}
+      emptyDescription={t('cart.empty-desc')}
       onRetry={() => cart.refetch()}
     >
-      <Text style={styles.title}> سلة التسوق</Text>
+      <Text style={styles.title}>{t('cart.title')}</Text>
       {(data as Record<string, unknown>[])?.map((item: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.row}>
             <View style={styles.left}>
-              <Text style={styles.name}>{(item.nameJson as Record<string, string>)?.ar ?? ''}</Text>
-              <Text style={styles.qty}>الكمية: {String(item.quantity ?? 1)}</Text>
+              <Text style={styles.name}>
+                {item.nameJson
+                  ? localize(item.nameJson as { ar?: string; en?: string }, locale)
+                  : ''}
+              </Text>
+              <Text style={styles.qty}>
+                {t('cart.quantity', { qty: String(item.quantity ?? 1) })}
+              </Text>
             </View>
             <Text style={styles.price}>{formatCurrency(Number(item.price ?? 0))}</Text>
           </View>
@@ -51,9 +60,9 @@ export default function CartScreen(): JSX.Element {
       ))}
       {data && data.length > 0 ? (
         <View style={styles.footer}>
-          <Text style={styles.total}>الإجمالي: {formatCurrency(total)}</Text>
+          <Text style={styles.total}>{t('cart.total', { total: formatCurrency(total) })}</Text>
           <TouchableOpacity style={styles.checkoutBtn}>
-            <Text style={styles.checkoutText}> إتمام الشراء</Text>
+            <Text style={styles.checkoutText}>{t('cart.checkout')}</Text>
           </TouchableOpacity>
         </View>
       ) : null}

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const PAYMENT_METHODS = [
   { key: 'wallet', emoji: '', label: 'المحفظة' },
@@ -11,7 +12,14 @@ const PAYMENT_METHODS = [
 ];
 
 export default function CheckoutScreen(): JSX.Element {
+  const { t } = useLocale();
   const [method, setMethod] = useState('wallet');
+  const methodLabels: Record<string, string> = {
+    wallet: t('checkout.method-wallet'),
+    card: t('checkout.method-card'),
+    apple_pay: 'Apple Pay',
+    bnpl: t('checkout.method-bnpl'),
+  };
 
   const balanceQ = trpc.wallet.getBalance.useQuery();
 
@@ -29,14 +37,16 @@ export default function CheckoutScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> الدفع</Text>
+      <Text style={styles.t}>{t('checkout.title')}</Text>
 
       <View style={styles.bc}>
-        <Text style={styles.bl}>رصيد المحفظة</Text>
-        <Text style={styles.ba}>{(balanceQ.data?.balance ?? 0).toLocaleString()} ر.س</Text>
+        <Text style={styles.bl}>{t('checkout.wallet-balance')}</Text>
+        <Text style={styles.ba}>
+          {t('checkout.amount-sar', { value: (balanceQ.data?.balance ?? 0).toLocaleString() })}
+        </Text>
       </View>
 
-      <Text style={styles.st}>طريقة الدفع</Text>
+      <Text style={styles.st}>{t('checkout.payment-method')}</Text>
       <View style={styles.pms}>
         {PAYMENT_METHODS.map((p) => (
           <TouchableOpacity
@@ -45,30 +55,34 @@ export default function CheckoutScreen(): JSX.Element {
             style={[styles.pm, method === p.key && styles.pma]}
           >
             <Text style={styles.pe}>{p.emoji}</Text>
-            <Text style={[styles.pl, method === p.key && styles.pla]}>{p.label}</Text>
+            <Text style={[styles.pl, method === p.key && styles.pla]}>
+              {methodLabels[p.key] ?? p.label}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
 
       <View style={styles.summary}>
-        <Text style={styles.st}>ملخص الدفع</Text>
+        <Text style={styles.st}>{t('checkout.summary')}</Text>
         <View style={styles.sr}>
-          <Text style={styles.sl}>المبلغ</Text>
-          <Text style={styles.sv}>200 ر.س</Text>
+          <Text style={styles.sl}>{t('checkout.amount-label')}</Text>
+          <Text style={styles.sv}>{t('checkout.amount-sar', { value: '200' })}</Text>
         </View>
         <View style={styles.sr}>
-          <Text style={styles.sl}>الضريبة</Text>
-          <Text style={styles.sv}>30 ر.س</Text>
+          <Text style={styles.sl}>{t('checkout.tax')}</Text>
+          <Text style={styles.sv}>{t('checkout.amount-sar', { value: '30' })}</Text>
         </View>
         <View style={styles.sd} />
         <View style={styles.sr}>
-          <Text style={[styles.sl, { fontWeight: '700' }]}>الإجمالي</Text>
-          <Text style={[styles.sv, { fontWeight: '800', fontSize: 20 }]}>230 ر.س</Text>
+          <Text style={[styles.sl, { fontWeight: '700' }]}>{t('checkout.total')}</Text>
+          <Text style={[styles.sv, { fontWeight: '800', fontSize: 20 }]}>
+            {t('checkout.amount-sar', { value: '230' })}
+          </Text>
         </View>
       </View>
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}> ادفع الآن 230 ر.س</Text>
+        <Text style={styles.bt}>{t('checkout.pay-now', { amount: '230' })}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

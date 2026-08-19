@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ExpiryItem {
   id?: number;
@@ -12,6 +13,7 @@ interface ExpiryItem {
 }
 
 export default function ExpiryTrackerScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.expiryTracker.myItems.useQuery();
   const items: ExpiryItem[] = (q.data as unknown as ExpiryItem[] | undefined) ?? [];
   const deleteMut = trpc.expiryTracker.delete.useMutation({
@@ -35,13 +37,15 @@ export default function ExpiryTrackerScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ متعقب الصلاحية</Text>
+      <Text style={styles.t}>{t('expiryTracker.title')}</Text>
       {items.map((i) => (
         <View key={i.id} style={[styles.card, i.expired && styles.exp, i.isClose && styles.close]}>
           <Text style={styles.em}>{i.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>{i.productName ?? ''}</Text>
-            <Text style={styles.meta}>ينتهي بعد {i.expiryMonths ?? 0} شهر</Text>
+            <Text style={styles.meta}>
+              {t('expiryTracker.expires', { months: i.expiryMonths ?? 0 })}
+            </Text>
           </View>
           <TouchableOpacity onPress={() => remove(i.id ?? 0)}>
             <Text style={styles.del}>️</Text>

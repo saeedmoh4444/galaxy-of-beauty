@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const EMERGENCIES = [
   {
@@ -59,6 +60,7 @@ const EMERGENCIES = [
 ];
 
 export default function BeautyRescueScreen(): JSX.Element {
+  const { t } = useLocale();
   const [selected, setSelected] = useState<string | null>(null);
   const [booked, setBooked] = useState(false);
 
@@ -66,16 +68,20 @@ export default function BeautyRescueScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> إنقاذ الجمال</Text>
-      <Text style={styles.sub}>خدمات تجميل طارئة — نصل لكِ خلال ساعة</Text>
+      <Text style={styles.t}>{t('beautyRescue.title')}</Text>
+      <Text style={styles.sub}>{t('beautyRescue.subtitle')}</Text>
 
       {booked && emergency ? (
         <View style={styles.confirmed}>
           <Text style={styles.cfEmoji}></Text>
-          <Text style={styles.cfTitle}>تم الطلب!</Text>
-          <Text style={styles.cfText}>خبيرة التجميل في الطريق — تصل خلال {emergency.time}</Text>
+          <Text style={styles.cfTitle}>{t('beautyRescue.requested')}</Text>
+          <Text style={styles.cfText}>
+            {t('beautyRescue.on-the-way', { time: emergency.time })}
+          </Text>
           <Text style={styles.cfPrice}>
-            {(emergency.price * 1.5).toLocaleString()} ر.س (شامل رسوم الطوارئ)
+            {t('beautyRescue.price-fee', {
+              price: (emergency.price * 1.5).toLocaleString(),
+            })}
           </Text>
           <TouchableOpacity
             onPress={() => {
@@ -84,7 +90,7 @@ export default function BeautyRescueScreen(): JSX.Element {
             }}
             style={styles.cfBtn}
           >
-            <Text style={styles.cfBt}>تم</Text>
+            <Text style={styles.cfBt}>{t('beautyRescue.done')}</Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -100,7 +106,7 @@ export default function BeautyRescueScreen(): JSX.Element {
                 <Text style={styles.cn}>{e.name}</Text>
                 <Text style={styles.cd}>{e.desc}</Text>
                 <Text style={styles.cp}>
-                  {e.price} ر.س · {e.time}
+                  {t('beautyRescue.price-time', { price: e.price ?? 0, time: e.time ?? '' })}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -111,7 +117,7 @@ export default function BeautyRescueScreen(): JSX.Element {
               <Text style={styles.dt}>
                 {emergency.emoji} {emergency.name}
               </Text>
-              <Text style={styles.dsub}>العلاج يشمل:</Text>
+              <Text style={styles.dsub}>{t('beautyRescue.includes')}</Text>
               {emergency.tips.map((t, i) => (
                 <View key={i} style={styles.dr}>
                   <Text style={styles.db}></Text>
@@ -119,13 +125,19 @@ export default function BeautyRescueScreen(): JSX.Element {
                 </View>
               ))}
               <View style={styles.dp}>
-                <Text style={styles.dpl}>السعر العادي: {emergency.price} ر.س</Text>
+                <Text style={styles.dpl}>
+                  {t('beautyRescue.regular-price', { price: emergency.price ?? 0 })}
+                </Text>
                 <Text style={styles.dpe}>
-                  السعر الطارئ: {(emergency.price * 1.5).toLocaleString()} ر.س
+                  {t('beautyRescue.urgent-price', {
+                    price: (emergency.price * 1.5).toLocaleString(),
+                  })}
                 </Text>
               </View>
               <TouchableOpacity onPress={() => setBooked(true)} style={styles.btn}>
-                <Text style={styles.bt}> احجزي الآن — نصل خلال {emergency.time}</Text>
+                <Text style={styles.bt}>
+                  {t('beautyRescue.book-now', { time: emergency.time })}
+                </Text>
               </TouchableOpacity>
             </View>
           )}
@@ -140,7 +152,7 @@ export default function BeautyRescueScreen(): JSX.Element {
           marginBottom: 12,
         }}
       >
-        نصائح SOS منزلية
+        {t('beautyRescue.sos-tips')}
       </Text>
       {[
         {
@@ -256,7 +268,7 @@ export default function BeautyRescueScreen(): JSX.Element {
           marginBottom: 12,
         }}
       >
-        عناية ما بعد الإجراءات
+        {t('beautyRescue.aftercare')}
       </Text>
       {[
         {

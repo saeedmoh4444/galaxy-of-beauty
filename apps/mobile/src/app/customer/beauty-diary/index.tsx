@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const MOODS = ['', '', '', '', '', '', '', ''];
 
@@ -12,6 +13,7 @@ interface DiaryEntry {
 }
 
 export default function BeautyDiaryScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const [todayMood, setTodayMood] = useState('');
   const q = trpc.beautyJournal.list.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
   const entries: DiaryEntry[] = (q.data as DiaryEntry[] | undefined) ?? [];
@@ -28,11 +30,11 @@ export default function BeautyDiaryScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> يوميات الجمال</Text>
-      <Text style={styles.sub}>اربطي مزاجكِ بروتين جمالكِ</Text>
+      <Text style={styles.t}>{t('beautyDiary.title')}</Text>
+      <Text style={styles.sub}>{t('beautyDiary.subtitle')}</Text>
 
       <View style={styles.moodCard}>
-        <Text style={styles.moodQ}>كيف تشعرين اليوم؟</Text>
+        <Text style={styles.moodQ}>{t('beautyDiary.mood-question')}</Text>
         <View style={styles.moods}>
           {MOODS.map((m) => (
             <TouchableOpacity
@@ -47,54 +49,57 @@ export default function BeautyDiaryScreen(): JSX.Element {
       </View>
 
       <View style={styles.stats}>
-        <Text style={styles.st}> إحصائيات المزاج</Text>
+        <Text style={styles.st}>{t('beautyDiary.mood-stats')}</Text>
         <View style={styles.statRow}>
           <View style={styles.stat}>
             <Text style={styles.statVal}></Text>
             <Text style={styles.statPct}>45%</Text>
-            <Text style={styles.statLabel}>سعيدة</Text>
+            <Text style={styles.statLabel}>{t('beautyDiary.mood-happy')}</Text>
           </View>
           <View style={styles.stat}>
             <Text style={styles.statVal}></Text>
             <Text style={styles.statPct}>30%</Text>
-            <Text style={styles.statLabel}>هادئة</Text>
+            <Text style={styles.statLabel}>{t('beautyDiary.mood-calm')}</Text>
           </View>
           <View style={styles.stat}>
             <Text style={styles.statVal}></Text>
             <Text style={styles.statPct}>15%</Text>
-            <Text style={styles.statLabel}>متحمسة</Text>
+            <Text style={styles.statLabel}>{t('beautyDiary.mood-excited')}</Text>
           </View>
           <View style={styles.stat}>
             <Text style={styles.statVal}></Text>
             <Text style={styles.statPct}>10%</Text>
-            <Text style={styles.statLabel}>متعب</Text>
+            <Text style={styles.statLabel}>{t('beautyDiary.mood-tired')}</Text>
           </View>
         </View>
       </View>
 
-      <Text style={styles.st}> آخر المدخلات</Text>
+      <Text style={styles.st}>{t('beautyDiary.latest-entries')}</Text>
       {entries.slice(0, 5).map((e, i) => (
         <View key={i} style={styles.entry}>
           <View style={styles.entryHeader}>
             <Text style={styles.entryMood}></Text>
             <Text style={styles.entryDate}>
-              {new Date(e.createdAt ?? Date.now()).toLocaleDateString('ar-SA', {
-                weekday: 'long',
-                month: 'short',
-                day: 'numeric',
-              })}
+              {new Date(e.createdAt ?? Date.now()).toLocaleDateString(
+                locale === 'ar' ? 'ar-SA' : 'en-US',
+                {
+                  weekday: 'long',
+                  month: 'short',
+                  day: 'numeric',
+                },
+              )}
             </Text>
           </View>
-          <Text style={styles.entryText}>{e.title ?? 'يوميات الجمال'}</Text>
+          <Text style={styles.entryText}>{e.title ?? t('beautyDiary.entry-fallback')}</Text>
           <View style={styles.entryMeta}>
-            <Text style={styles.entryMetaItem}>‍️ خدمة اليوم</Text>
-            <Text style={styles.entryMetaItem}> بشرة متألقة</Text>
+            <Text style={styles.entryMetaItem}>{t('beautyDiary.today-service')}</Text>
+            <Text style={styles.entryMetaItem}>{t('beautyDiary.glow-skin')}</Text>
           </View>
         </View>
       ))}
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}>️ تدوين اليوم</Text>
+        <Text style={styles.bt}>{t('beautyDiary.write-today')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

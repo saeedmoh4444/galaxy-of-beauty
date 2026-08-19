@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useState, useRef } from 'react';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const TOPICS = [
   { key: 'روتين', emoji: '', q: 'كيف أبني روتين عناية يومي؟' },
@@ -21,6 +22,7 @@ const TOPICS = [
 ];
 
 export default function BeautyAdvisorScreen(): JSX.Element {
+  const { t } = useLocale();
   const scrollRef = useRef<ScrollView>(null);
   const [messages, setMessages] = useState([
     {
@@ -35,14 +37,11 @@ export default function BeautyAdvisorScreen(): JSX.Element {
     onSuccess: (r) => {
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: r.answer ?? 'عذراً، لم أستطع الإجابة.' },
+        { role: 'assistant', content: r.answer ?? t('beautyAdvisor.no-answer') },
       ]);
     },
     onError: () => {
-      setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: 'عذراً، حدث خطأ. حاولي مرة أخرى.' },
-      ]);
+      setMessages((prev) => [...prev, { role: 'assistant', content: t('aiChat.error') }]);
     },
   });
 
@@ -57,8 +56,8 @@ export default function BeautyAdvisorScreen(): JSX.Element {
   return (
     <KeyboardAvoidingView style={s.c} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View style={s.header}>
-        <Text style={s.t}> مجرة الجمال</Text>
-        <Text style={s.sub}>مستشارة جمالكِ الشخصية</Text>
+        <Text style={s.t}>{t('beautyAdvisor.title')}</Text>
+        <Text style={s.sub}>{t('beautyAdvisor.subtitle')}</Text>
       </View>
 
       <ScrollView
@@ -99,7 +98,7 @@ export default function BeautyAdvisorScreen(): JSX.Element {
         {askMut.isPending && (
           <View style={{ alignItems: 'flex-start', marginBottom: 12 }}>
             <View style={[s.bubble, s.assistantBubble]}>
-              <Text style={[s.bubbleText, { color: '#9ca3af' }]}> جاري الكتابة...</Text>
+              <Text style={[s.bubbleText, { color: '#9ca3af' }]}>{t('beautyAdvisor.typing')}</Text>
             </View>
           </View>
         )}
@@ -109,7 +108,7 @@ export default function BeautyAdvisorScreen(): JSX.Element {
         <TextInput
           value={input}
           onChangeText={setInput}
-          placeholder="اكتبي سؤالكِ..."
+          placeholder={t('beautyAdvisor.placeholder')}
           style={s.inp}
           placeholderTextColor="#9ca3af"
           onSubmitEditing={() => handleSend()}

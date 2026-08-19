@@ -3,6 +3,7 @@ import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface JournalEntry {
   id?: number;
@@ -11,16 +12,18 @@ interface JournalEntry {
 }
 
 export default function BeautyJournalScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const q = trpc.beautyJournal.list.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
 
   if (q.isLoading)
     return (
       <View style={styles.c}>
-        <Text style={styles.t}> يوميات الجمال</Text>
+        <Text style={styles.t}>{t('beautyJournal.title')}</Text>
         <SkeletonList count={4} />
       </View>
     );
-  if (q.isError) return <ErrorAlert message="فشل تحميل اليوميات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return <ErrorAlert message={t('beautyJournal.load-error')} onRetry={() => q.refetch()} />;
 
   const items = (q.data ?? []) as unknown as JournalEntry[];
 
@@ -36,15 +39,15 @@ export default function BeautyJournalScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> يوميات الجمال</Text>
+      <Text style={styles.t}>{t('beautyJournal.title')}</Text>
       {items.length === 0 ? (
-        <Text style={styles.e}>لا توجد مدخلات</Text>
+        <Text style={styles.e}>{t('beautyJournal.empty')}</Text>
       ) : (
         items.map((e, i) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.entryTitle}>{e.title ?? 'مدخل'}</Text>
+            <Text style={styles.entryTitle}>{e.title ?? t('beautyJournal.entry-fallback')}</Text>
             <Text style={styles.entryDate}>
-              {new Date(e.createdAt ?? '').toLocaleDateString('ar-SA')}
+              {new Date(e.createdAt ?? '').toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}
             </Text>
           </View>
         ))

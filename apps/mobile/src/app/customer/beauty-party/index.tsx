@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const THEMES = [
   { key: 'spa', emoji: '‍️', name: 'سبا منزلي', desc: 'مساج وأقنعة واسترخاء' },
@@ -11,8 +12,23 @@ const THEMES = [
 ];
 
 export default function BeautyPartyScreen(): JSX.Element {
+  const { t } = useLocale();
   const [theme, setTheme] = useState('spa');
   const [guests, setGuests] = useState(4);
+  const themeNames: Record<string, string> = {
+    spa: t('beautyParty.theme-spa'),
+    makeup: t('beautyParty.theme-makeup'),
+    nails: t('beautyParty.theme-nails'),
+    bridal: t('beautyParty.theme-bridal'),
+    skincare: t('beautyParty.theme-skincare'),
+  };
+  const themeDescs: Record<string, string> = {
+    spa: t('beautyParty.theme-spa-desc'),
+    makeup: t('beautyParty.theme-makeup-desc'),
+    nails: t('beautyParty.theme-nails-desc'),
+    bridal: t('beautyParty.theme-bridal-desc'),
+    skincare: t('beautyParty.theme-skincare-desc'),
+  };
 
   const q = trpc.services.list.useQuery({});
 
@@ -33,10 +49,10 @@ export default function BeautyPartyScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> حفلة تجميل</Text>
-      <Text style={styles.sub}>خططي لحفلة تجميل لكِ ولصديقاتكِ</Text>
+      <Text style={styles.t}>{t('beautyParty.title')}</Text>
+      <Text style={styles.sub}>{t('beautyParty.subtitle')}</Text>
 
-      <Text style={styles.st}> اختاري الثيم</Text>
+      <Text style={styles.st}>{t('beautyParty.choose-theme')}</Text>
       <View style={styles.themes}>
         {THEMES.map((th) => (
           <TouchableOpacity
@@ -45,13 +61,17 @@ export default function BeautyPartyScreen(): JSX.Element {
             style={[styles.th, theme === th.key && styles.tha]}
           >
             <Text style={styles.the}>{th.emoji}</Text>
-            <Text style={[styles.thn, theme === th.key && styles.thna]}>{th.name}</Text>
-            <Text style={[styles.thd, theme === th.key && styles.thda]}>{th.desc}</Text>
+            <Text style={[styles.thn, theme === th.key && styles.thna]}>
+              {themeNames[th.key] ?? th.name}
+            </Text>
+            <Text style={[styles.thd, theme === th.key && styles.thda]}>
+              {themeDescs[th.key] ?? th.desc}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
 
-      <Text style={styles.st}>‍️ عدد الصديقات: {guests}</Text>
+      <Text style={styles.st}>{t('beautyParty.guests-count', { count: guests })}</Text>
       <View style={styles.guests}>
         {[2, 3, 4, 5, 6, 8, 10].map((g) => (
           <TouchableOpacity
@@ -65,32 +85,38 @@ export default function BeautyPartyScreen(): JSX.Element {
       </View>
 
       <View style={styles.summary}>
-        <Text style={styles.st}> التكلفة التقديرية</Text>
+        <Text style={styles.st}>{t('beautyParty.estimated-cost')}</Text>
         <View style={styles.sr}>
           <Text style={styles.sl}>
-            {guests} أشخاص × {estPerPerson} ر.س
+            {t('beautyParty.per-person', { guests, price: estPerPerson })}
           </Text>
-          <Text style={styles.sv}>{total.toLocaleString()} ر.س</Text>
+          <Text style={styles.sv}>
+            {t('beautyParty.amount', { value: total.toLocaleString() })}
+          </Text>
         </View>
         {discount > 0 && (
           <View style={styles.sr}>
-            <Text style={[styles.sl, { color: '#059669' }]}> خصم المجموعة {discount}%</Text>
+            <Text style={[styles.sl, { color: '#059669' }]}>
+              {t('beautyParty.group-discount', { pct: discount })}
+            </Text>
             <Text style={[styles.sv, { color: '#059669' }]}>
-              -{((total * discount) / 100).toLocaleString()} ر.س
+              {t('beautyParty.amount', {
+                value: '-' + ((total * discount) / 100).toLocaleString(),
+              })}
             </Text>
           </View>
         )}
         <View style={styles.sd} />
         <View style={styles.sr}>
-          <Text style={[styles.sl, { fontWeight: '700' }]}>الإجمالي</Text>
+          <Text style={[styles.sl, { fontWeight: '700' }]}>{t('beautyParty.total')}</Text>
           <Text style={[styles.sv, { fontWeight: '800', fontSize: 20 }]}>
-            {finalTotal.toLocaleString()} ر.س
+            {t('beautyParty.amount', { value: finalTotal.toLocaleString() })}
           </Text>
         </View>
       </View>
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}> احجزي حفلتكِ الآن</Text>
+        <Text style={styles.bt}>{t('beautyParty.book-now')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

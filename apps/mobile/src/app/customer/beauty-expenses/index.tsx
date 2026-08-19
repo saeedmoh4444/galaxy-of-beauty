@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ExpenseCategory {
   categoryId?: number;
@@ -23,10 +24,12 @@ interface ExpensesSummary {
 }
 
 export default function BeautyExpensesScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.beautyExpenses.summary.useQuery();
 
   if (q.isLoading) return <SkeletonList count={4} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل البيانات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return <ErrorAlert message={t('beautyExpenses.load-error')} onRetry={() => q.refetch()} />;
 
   const d = q.data as ExpensesSummary | null;
   const byCategory = d?.byCategory ?? [];
@@ -45,23 +48,27 @@ export default function BeautyExpensesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={s.t}> تحليل الإنفاق</Text>
-      <Text style={s.sub}>تتبعي مصاريفكِ على خدمات التجميل</Text>
+      <Text style={s.t}>{t('beautyExpenses.title')}</Text>
+      <Text style={s.sub}>{t('beautyExpenses.subtitle')}</Text>
 
       <View style={s.statsRow}>
         <View style={s.stat}>
-          <Text style={s.statNum}>{(d?.thisMonthTotal ?? 0).toLocaleString()} ر.س</Text>
-          <Text style={s.statLabel}>هذا الشهر</Text>
+          <Text style={s.statNum}>
+            {t('beautyExpenses.amount', { value: (d?.thisMonthTotal ?? 0).toLocaleString() })}
+          </Text>
+          <Text style={s.statLabel}>{t('beautyExpenses.this-month')}</Text>
         </View>
         <View style={s.stat}>
-          <Text style={s.statNum}>{(d?.lastMonthTotal ?? 0).toLocaleString()} ر.س</Text>
-          <Text style={s.statLabel}>الشهر الماضي</Text>
+          <Text style={s.statNum}>
+            {t('beautyExpenses.amount', { value: (d?.lastMonthTotal ?? 0).toLocaleString() })}
+          </Text>
+          <Text style={s.statLabel}>{t('beautyExpenses.last-month')}</Text>
         </View>
       </View>
 
       <View style={s.card}>
         <Text style={{ fontSize: 14, color: '#6b7280', textAlign: 'center' }}>
-          مقارنة بالشهر الماضي
+          {t('beautyExpenses.compare')}
         </Text>
         <Text
           style={{
@@ -78,7 +85,7 @@ export default function BeautyExpensesScreen(): JSX.Element {
 
       {byCategory.length > 0 && (
         <View style={{ marginTop: 16 }}>
-          <Text style={s.st}> توزيع الإنفاق</Text>
+          <Text style={s.st}>{t('beautyExpenses.by-category')}</Text>
           {byCategory.map((c) => {
             const pct = Math.round(((c.total ?? 0) / (d?.thisMonthTotal || 1)) * 100);
             return (
@@ -88,7 +95,7 @@ export default function BeautyExpensesScreen(): JSX.Element {
                 >
                   <Text style={{ fontSize: 13 }}>{c.name}</Text>
                   <Text style={{ fontWeight: '700', fontSize: 13 }}>
-                    {(c.total ?? 0).toLocaleString()} ر.س
+                    {t('beautyExpenses.amount', { value: (c.total ?? 0).toLocaleString() })}
                   </Text>
                 </View>
                 <View style={{ height: 8, backgroundColor: '#e5e7eb', borderRadius: 4 }}>
@@ -109,7 +116,7 @@ export default function BeautyExpensesScreen(): JSX.Element {
 
       {monthlyTrend.length > 0 && (
         <View style={{ marginTop: 16 }}>
-          <Text style={s.st}> الاتجاه الشهري</Text>
+          <Text style={s.st}>{t('beautyExpenses.monthly-trend')}</Text>
           {monthlyTrend.map((m) => {
             const pct = Math.round(((m.total ?? 0) / maxVal) * 100);
             return (
@@ -119,7 +126,7 @@ export default function BeautyExpensesScreen(): JSX.Element {
                 >
                   <Text style={{ fontSize: 12, color: '#6b7280' }}>{m.month}</Text>
                   <Text style={{ fontWeight: '700', fontSize: 12 }}>
-                    {(m.total ?? 0).toLocaleString()} ر.س
+                    {t('beautyExpenses.amount', { value: (m.total ?? 0).toLocaleString() })}
                   </Text>
                 </View>
                 <View style={{ height: 10, backgroundColor: '#e5e7eb', borderRadius: 5 }}>

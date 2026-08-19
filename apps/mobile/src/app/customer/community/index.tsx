@@ -12,6 +12,7 @@ import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface CommunityUser {
   id?: number;
@@ -39,6 +40,7 @@ interface MyLike {
 }
 
 export default function CommunityScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const feedQ = trpc.community.feed.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
   const myLikesQ = trpc.community.myLikes.useQuery();
   const trendingQ = trpc.community.trending.useQuery();
@@ -93,7 +95,7 @@ export default function CommunityScreen(): JSX.Element {
 
   if (feedQ.isLoading) return <SkeletonList count={4} />;
   if (feedQ.isError)
-    return <ErrorAlert message="فشل تحميل المجتمع" onRetry={() => feedQ.refetch()} />;
+    return <ErrorAlert message={t('community.load-error')} onRetry={() => feedQ.refetch()} />;
 
   return (
     <ScrollView
@@ -116,11 +118,13 @@ export default function CommunityScreen(): JSX.Element {
         }}
       >
         <View>
-          <Text style={s.t}> مجتمع الجمال</Text>
-          <Text style={s.sub}>شاركي تجاربكِ وآرائكِ</Text>
+          <Text style={s.t}>{t('community.title')}</Text>
+          <Text style={s.sub}>{t('community.subtitle')}</Text>
         </View>
         <TouchableOpacity onPress={() => setShowCreate(!showCreate)} style={s.createBtn}>
-          <Text style={{ color: '#fff', fontWeight: '700' }}>{showCreate ? '' : '+ منشور'}</Text>
+          <Text style={{ color: '#fff', fontWeight: '700' }}>
+            {showCreate ? '' : t('community.create')}
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -129,13 +133,13 @@ export default function CommunityScreen(): JSX.Element {
           <TextInput
             value={content}
             onChangeText={setContent}
-            placeholder="شاركي تجربتكِ أو نصيحة..."
+            placeholder={t('community.placeholder')}
             style={s.inp}
             placeholderTextColor="#9ca3af"
             multiline
           />
           <TouchableOpacity onPress={handleCreate} style={s.btn}>
-            <Text style={s.btnText}> نشر</Text>
+            <Text style={s.btnText}>{t('community.post')}</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -143,7 +147,7 @@ export default function CommunityScreen(): JSX.Element {
       {trendingPosts.length > 0 && (
         <View style={{ marginBottom: 16 }}>
           <Text style={{ fontWeight: '700', fontSize: 14, color: '#111827', marginBottom: 8 }}>
-            الأكثر تفاعلاً
+            {t('community.trending')}
           </Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {trendingPosts.map((p, i) => (
@@ -172,7 +176,7 @@ export default function CommunityScreen(): JSX.Element {
       {posts.length === 0 && (
         <View style={{ alignItems: 'center', padding: 30 }}>
           <Text style={{ fontSize: 40 }}></Text>
-          <Text style={{ color: '#6b7280', marginTop: 8 }}>كوني أول من يشارك</Text>
+          <Text style={{ color: '#6b7280', marginTop: 8 }}>{t('community.empty')}</Text>
         </View>
       )}
 
@@ -181,9 +185,13 @@ export default function CommunityScreen(): JSX.Element {
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 8 }}>
             <Text style={{ fontSize: 30 }}>‍</Text>
             <View>
-              <Text style={{ fontWeight: '600', fontSize: 14 }}>{p.user?.name ?? 'مستخدمة'}</Text>
+              <Text style={{ fontWeight: '600', fontSize: 14 }}>
+                {p.user?.name ?? t('community.user-fallback')}
+              </Text>
               <Text style={{ fontSize: 11, color: '#9ca3af' }}>
-                {new Date(p.createdAt ?? '').toLocaleDateString('ar-SA')}
+                {new Date(p.createdAt ?? '').toLocaleDateString(
+                  locale === 'ar' ? 'ar-SA' : 'en-US',
+                )}
               </Text>
             </View>
           </View>
@@ -217,7 +225,7 @@ export default function CommunityScreen(): JSX.Element {
               <TextInput
                 value={commentText}
                 onChangeText={setCommentText}
-                placeholder="أضيفي تعليق..."
+                placeholder={t('community.comment-placeholder')}
                 style={{
                   flex: 1,
                   backgroundColor: '#f9fafb',
@@ -237,7 +245,9 @@ export default function CommunityScreen(): JSX.Element {
                   justifyContent: 'center',
                 }}
               >
-                <Text style={{ color: '#fff', fontWeight: '600', fontSize: 12 }}>تعليق</Text>
+                <Text style={{ color: '#fff', fontWeight: '600', fontSize: 12 }}>
+                  {t('community.comment')}
+                </Text>
               </TouchableOpacity>
             </View>
           )}

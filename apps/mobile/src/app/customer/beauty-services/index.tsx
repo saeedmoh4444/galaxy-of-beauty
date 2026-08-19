@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
@@ -95,10 +96,11 @@ const CARDS: Card[] = [
 ];
 
 export default function BeautyServicesScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> خدمات الجمال</Text>
-      <Text style={s.sub}>اكتشفي كل ما تحتاجينه</Text>
+      <Text style={s.h}>{t('beautyServices.title')}</Text>
+      <Text style={s.sub}>{t('beautyServices.subtitle')}</Text>
       <View style={s.grid}>
         {CARDS.map((c, i) => (
           <View key={i} style={[s.card, { borderColor: c.color + '30' }]}>

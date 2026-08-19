@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const GT = [
   { key: 'glowing_skin', emoji: '', title: 'بشرة متألقة', target: 12 },
@@ -10,6 +11,7 @@ const GT = [
 ];
 
 export default function BeautyGoalsScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.beautyBudget.get.useQuery();
   if (q.isLoading) return <SkeletonList count={4} />;
   return (
@@ -24,7 +26,7 @@ export default function BeautyGoalsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> أهداف الجمال</Text>
+      <Text style={styles.t}>{t('beautyGoals.title')}</Text>
       <View style={styles.grid}>
         {GT.map((g) => {
           const pct = Math.min(100, Math.floor(Math.random() * 100));
@@ -35,11 +37,9 @@ export default function BeautyGoalsScreen(): JSX.Element {
               <View style={styles.pb}>
                 <View style={[styles.pf, { width: `${pct}%` }]} />
               </View>
-              <Text style={styles.gm}>
-                {g.target} جلسة · {pct}%
-              </Text>
+              <Text style={styles.gm}>{t('beautyGoals.progress', { target: g.target, pct })}</Text>
               <TouchableOpacity style={styles.sb}>
-                <Text style={styles.sbt}>تحديد هدف</Text>
+                <Text style={styles.sbt}>{t('beautyGoals.set-target')}</Text>
               </TouchableOpacity>
             </View>
           );

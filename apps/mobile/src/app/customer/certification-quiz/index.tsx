@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface QuizSummary {
   id?: string;
@@ -9,6 +10,7 @@ interface QuizSummary {
 }
 
 export default function CertificationQuizScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.certificationQuiz.quizzes.useQuery();
   const data: QuizSummary[] = (q.data as unknown as QuizSummary[] | undefined) ?? [];
 
@@ -26,13 +28,13 @@ export default function CertificationQuizScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> اختبار الشهادة</Text>
+      <Text style={styles.t}>{t('certificationQuiz.title')}</Text>
       {data.map((q, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.qTitle}>{q.titleAr}</Text>
           <Text style={styles.qDesc}>{q.descAr}</Text>
           <TouchableOpacity style={styles.startBtn}>
-            <Text style={styles.startText}>بدء</Text>
+            <Text style={styles.startText}>{t('certificationQuiz.start')}</Text>
           </TouchableOpacity>
         </View>
       ))}

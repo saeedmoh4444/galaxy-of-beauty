@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface CalendarSyncStatus {
   connected?: boolean;
@@ -16,6 +17,7 @@ interface CalendarEvent {
 }
 
 export default function CalendarSyncScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const [error, setError] = useState('');
   const statusQ = trpc.calendarSync.status.useQuery();
   const upcomingQ = trpc.calendarSync.upcoming.useQuery();
@@ -28,7 +30,7 @@ export default function CalendarSyncScreen(): JSX.Element {
   const connect = () => {
     // Google OAuth flow not wired on mobile yet — surface a clear message
     // instead of silently failing with a fake auth code.
-    setError('مزامنة تقويم Google غير متوفرة في التطبيق حالياً');
+    setError(t('calendarSync.error'));
   };
   const disconnect = () => {
     disconnectMut.mutate();
@@ -53,17 +55,19 @@ export default function CalendarSyncScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> مزامنة التقويم</Text>
+      <Text style={styles.t}>{t('calendarSync.title')}</Text>
       {error ? <Text style={styles.errText}>{error}</Text> : null}
       <View style={styles.card}>
         <Text style={styles.se}>{connected ? '' : ''}</Text>
-        <Text style={styles.st}>{connected ? 'التقويم مربوط' : 'لم يتم ربط التقويم بعد'}</Text>
+        <Text style={styles.st}>
+          {connected ? t('calendarSync.connected') : t('calendarSync.not-connected')}
+        </Text>
         <TouchableOpacity
           onPress={connected ? disconnect : connect}
           style={[styles.cb, connected && styles.cbd]}
         >
           <Text style={[styles.cbt, connected && styles.cbdt]}>
-            {connected ? 'قطع الاتصال' : ' ربط تقويم قوقل'}
+            {connected ? t('calendarSync.disconnect') : t('calendarSync.connect')}
           </Text>
         </TouchableOpacity>
       </View>
@@ -77,7 +81,7 @@ export default function CalendarSyncScreen(): JSX.Element {
                 <Text style={styles.em}>‍ {e.technician}</Text>
               </View>
               <Text style={styles.ed}>
-                {new Date(e.date).toLocaleDateString('ar-SA', {
+                {new Date(e.date).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US', {
                   month: 'short',
                   day: 'numeric',
                 })}

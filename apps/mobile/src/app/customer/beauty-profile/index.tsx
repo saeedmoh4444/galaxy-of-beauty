@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface BeautyProfileData {
   skinType?: string;
@@ -8,6 +9,7 @@ interface BeautyProfileData {
 }
 
 export default function BeautyProfileScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.beautyProfile.get.useQuery();
   if (q.isLoading) return <SkeletonList count={3} />;
   const data = q.data as unknown as BeautyProfileData | null;
@@ -23,11 +25,15 @@ export default function BeautyProfileScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> ملف الجمال</Text>
+      <Text style={styles.t}>{t('beautyProfile.title')}</Text>
       {data && (
         <View style={styles.card}>
-          <Text style={styles.label}>نوع البشرة: {data.skinType}</Text>
-          <Text style={styles.label}>نوع الشعر: {data.hairType}</Text>
+          <Text style={styles.label}>
+            {t('beautyProfile.skin-type', { type: String(data.skinType ?? '') })}
+          </Text>
+          <Text style={styles.label}>
+            {t('beautyProfile.hair-type', { type: String(data.hairType ?? '') })}
+          </Text>
         </View>
       )}
     </ScrollView>

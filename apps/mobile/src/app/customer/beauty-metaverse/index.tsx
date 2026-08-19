@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface MetaverseSalon {
   id: number;
@@ -14,6 +15,7 @@ interface EnterResult {
 }
 
 export default function BeautyMetaverseScreen(): JSX.Element {
+  const { t } = useLocale();
   const [result, setResult] = useState<EnterResult | null>(null);
   const q = trpc.beautyMetaverse.salons.useQuery();
   const salons: MetaverseSalon[] = (q.data as unknown as MetaverseSalon[] | undefined) ?? [];
@@ -27,12 +29,12 @@ export default function BeautyMetaverseScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}> عالم الجمال الافتراضي</Text>
+        <Text style={styles.t}>{t('beautyMetaverse.title')}</Text>
         <View style={[styles.card, styles.resultCard]}>
           <Text style={styles.resultEmoji}></Text>
           <Text style={styles.resultTitle}>{result.welcomeMessage}</Text>
           <TouchableOpacity onPress={() => setResult(null)} style={styles.exitBtn}>
-            <Text style={styles.exitBtnText}>خروج</Text>
+            <Text style={styles.exitBtnText}>{t('beautyMetaverse.exit')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -49,7 +51,7 @@ export default function BeautyMetaverseScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> عالم الجمال الافتراضي</Text>
+      <Text style={styles.t}>{t('beautyMetaverse.title')}</Text>
       <View style={styles.grid}>
         {salons.map((s) => (
           <TouchableOpacity key={s.id} onPress={() => enter(s.id)} style={styles.salon}>

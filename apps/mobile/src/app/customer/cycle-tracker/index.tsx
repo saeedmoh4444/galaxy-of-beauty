@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const CYCLE_PHASES = [
   {
@@ -41,7 +42,14 @@ const CYCLE_PHASES = [
 ];
 
 export default function CycleTrackerScreen(): JSX.Element {
+  const { t } = useLocale();
   const [selectedDay, setSelectedDay] = useState(14);
+  const phaseLabels: Record<string, string> = {
+    menstrual: t('cycleTracker.phase-menstrual'),
+    follicular: t('cycleTracker.phase-follicular'),
+    ovulation: t('cycleTracker.phase-ovulation'),
+    luteal: t('cycleTracker.phase-luteal'),
+  };
   const currentPhase = CYCLE_PHASES.find((p) => {
     const [s, e] = p.days.split('-').map(Number);
     return selectedDay >= s! && selectedDay <= (e || s!);
@@ -49,11 +57,11 @@ export default function CycleTrackerScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> متعقب الدورة</Text>
-      <Text style={styles.sub}>توصيات جمالية حسب يوم دورتكِ</Text>
+      <Text style={styles.t}>{t('cycleTracker.title')}</Text>
+      <Text style={styles.sub}>{t('cycleTracker.subtitle')}</Text>
 
       <View style={styles.daySelector}>
-        <Text style={styles.dayLabel}>اليوم {selectedDay}</Text>
+        <Text style={styles.dayLabel}>{t('cycleTracker.day', { day: selectedDay })}</Text>
         <View style={styles.days}>
           {Array.from({ length: 28 }, (_, i) => i + 1).map((d) => (
             <TouchableOpacity
@@ -83,11 +91,11 @@ export default function CycleTrackerScreen(): JSX.Element {
         ]}
       >
         <Text style={styles.phaseEmoji}>{currentPhase!.emoji}</Text>
-        <Text style={styles.phaseName}>{currentPhase!.name}</Text>
-        <Text style={styles.phaseDays}>الأيام {currentPhase!.days}</Text>
+        <Text style={styles.phaseName}>{phaseLabels[currentPhase!.key] ?? currentPhase!.name}</Text>
+        <Text style={styles.phaseDays}>{t('cycleTracker.days', { days: currentPhase!.days })}</Text>
       </View>
 
-      <Text style={styles.tipsTitle}> توصيات الجمال</Text>
+      <Text style={styles.tipsTitle}>{t('cycleTracker.tips')}</Text>
       {currentPhase!.tips.map((tip, i) => (
         <View key={i} style={styles.tip}>
           <Text style={styles.tipBullet}>•</Text>
@@ -95,7 +103,7 @@ export default function CycleTrackerScreen(): JSX.Element {
         </View>
       ))}
 
-      <Text style={styles.tipsTitle}>‍️ الخدمات المناسبة</Text>
+      <Text style={styles.tipsTitle}>{t('cycleTracker.services')}</Text>
       {[
         currentPhase!.key === 'menstrual'
           ? ['مساج استرخاء', 'ترطيب عميق', 'حمام بخار']

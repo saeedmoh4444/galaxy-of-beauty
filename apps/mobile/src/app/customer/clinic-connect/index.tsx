@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Clinic {
   id: number;
@@ -18,6 +19,7 @@ interface Referral {
 }
 
 export default function ClinicConnectScreen(): JSX.Element {
+  const { t } = useLocale();
   const clinicsQ = trpc.clinicConnect.clinics.useQuery();
   const referralsQ = trpc.clinicConnect.myReferrals.useQuery();
   const clinics: Clinic[] = (clinicsQ.data as unknown as Clinic[] | undefined) ?? [];
@@ -26,7 +28,7 @@ export default function ClinicConnectScreen(): JSX.Element {
   const refer = (clinicId: number) => {
     referMut.mutate({
       clinicId,
-      reason: 'استشارة جلدية',
+      reason: t('clinicConnect.reason'),
       urgency: 'routine',
     });
   };
@@ -46,7 +48,7 @@ export default function ClinicConnectScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> Clinic Connect</Text>
+      <Text style={styles.t}>{t('clinicConnect.title')}</Text>
       {clinics.map((c) => (
         <View key={c.id} style={styles.card}>
           <Text style={styles.em}>{c.emoji}</Text>
@@ -57,16 +59,18 @@ export default function ClinicConnectScreen(): JSX.Element {
             </Text>
           </View>
           <TouchableOpacity onPress={() => refer(c.id)} style={styles.rb}>
-            <Text style={styles.rt}>إحالة</Text>
+            <Text style={styles.rt}>{t('clinicConnect.refer')}</Text>
           </TouchableOpacity>
         </View>
       ))}
-      {referrals.length > 0 && <Text style={styles.st}> إحالاتي</Text>}
+      {referrals.length > 0 && <Text style={styles.st}>{t('clinicConnect.my-referrals')}</Text>}
       {referrals.map((r) => (
         <View key={r.id} style={styles.rc}>
           <Text style={styles.rr}>{r.reason}</Text>
           <View style={[styles.rbadge, r.status === 'PENDING' ? styles.rp : styles.rd]}>
-            <Text style={styles.rbt}>{r.status === 'PENDING' ? 'معلقة' : 'مكتملة'}</Text>
+            <Text style={styles.rbt}>
+              {r.status === 'PENDING' ? t('clinicConnect.pending') : t('clinicConnect.completed')}
+            </Text>
           </View>
         </View>
       ))}

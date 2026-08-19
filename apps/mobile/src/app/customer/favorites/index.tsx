@@ -1,10 +1,12 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function FavoritesScreen(): JSX.Element {
+  const { t } = useLocale();
   const favs = trpc.favorites.list.useQuery() ?? {
     data: null,
     isLoading: false,
@@ -18,17 +20,19 @@ export default function FavoritesScreen(): JSX.Element {
       isLoading={favs.isLoading}
       isError={favs.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل المفضلة"
-      emptyTitle="لا توجد خدمات مفضلة"
-      emptyDescription="أضيفي خدماتكِ المفضلة للوصول السريع"
+      errorMessage={t('favorites.load-error')}
+      emptyTitle={t('favorites.empty-title')}
+      emptyDescription={t('favorites.empty-desc')}
       onRetry={() => favs.refetch()}
     >
-      <Text style={styles.title}> المفضلة السريعة</Text>
+      <Text style={styles.title}>{t('favorites.title')}</Text>
       {(data as Record<string, unknown>[])?.map((f: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.row}>
             <Text style={styles.label}>{f.label as string}</Text>
-            <Text style={styles.serviceId}>خدمة #{f.serviceId as number}</Text>
+            <Text style={styles.serviceId}>
+              {t('favorites.service-id', { id: f.serviceId as number })}
+            </Text>
           </View>
         </View>
       ))}

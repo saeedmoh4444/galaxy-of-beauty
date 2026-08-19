@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const MENTOR_LEVELS = [
   { key: 'beginner', emoji: '', name: 'مبتدئة', desc: 'اكتشفي أساسيات العناية' },
@@ -10,17 +11,36 @@ const MENTOR_LEVELS = [
 const TOPICS = ['العناية بالبشرة', 'المكياج', 'العناية بالشعر', 'الأظافر', 'العطور', 'التغذية'];
 
 export default function BeautyMentorScreen(): JSX.Element {
+  const { t } = useLocale();
   const [level, setLevel] = useState('beginner');
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+  const levelNames: Record<string, string> = {
+    beginner: t('beautyMentor.level-beginner'),
+    intermediate: t('beautyMentor.level-intermediate'),
+    advanced: t('beautyMentor.level-advanced'),
+  };
+  const levelDescs: Record<string, string> = {
+    beginner: t('beautyMentor.level-beginner-desc'),
+    intermediate: t('beautyMentor.level-intermediate-desc'),
+    advanced: t('beautyMentor.level-advanced-desc'),
+  };
+  const topicLabels = [
+    t('beautyMentor.topic-skin'),
+    t('beautyMentor.topic-makeup'),
+    t('beautyMentor.topic-hair'),
+    t('beautyMentor.topic-nails'),
+    t('beautyMentor.topic-perfume'),
+    t('beautyMentor.topic-nutrition'),
+  ];
 
   const currentLevel = MENTOR_LEVELS.find((l) => l.key === level)!;
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>‍ مرشدة الجمال</Text>
-      <Text style={styles.sub}>تعلمي من خبيرات التجميل</Text>
+      <Text style={styles.t}>{t('beautyMentor.title')}</Text>
+      <Text style={styles.sub}>{t('beautyMentor.subtitle')}</Text>
 
-      <Text style={styles.st}> مستواكِ</Text>
+      <Text style={styles.st}>{t('beautyMentor.your-level')}</Text>
       <View style={styles.levels}>
         {MENTOR_LEVELS.map((l) => (
           <TouchableOpacity
@@ -29,26 +49,34 @@ export default function BeautyMentorScreen(): JSX.Element {
             style={[styles.lc, level === l.key && styles.lca]}
           >
             <Text style={styles.le}>{l.emoji}</Text>
-            <Text style={[styles.ln, level === l.key && styles.lna]}>{l.name}</Text>
-            <Text style={styles.ld}>{l.desc}</Text>
+            <Text style={[styles.ln, level === l.key && styles.lna]}>
+              {levelNames[l.key] ?? l.name}
+            </Text>
+            <Text style={styles.ld}>{levelDescs[l.key] ?? l.desc}</Text>
           </TouchableOpacity>
         ))}
       </View>
 
-      <Text style={styles.st}> المواضيع</Text>
+      <Text style={styles.st}>{t('beautyMentor.topics')}</Text>
       <View style={styles.topics}>
-        {TOPICS.map((tp) => (
+        {TOPICS.map((tp, i) => (
           <TouchableOpacity
             key={tp}
             onPress={() => setSelectedTopic(tp)}
             style={[styles.tp, selectedTopic === tp && styles.tpa]}
           >
-            <Text style={[styles.tpt, selectedTopic === tp && styles.tpta]}>{tp}</Text>
+            <Text style={[styles.tpt, selectedTopic === tp && styles.tpta]}>
+              {topicLabels[i] ?? tp}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
 
-      <Text style={styles.st}> خطة التعلم — {currentLevel.name}</Text>
+      <Text style={styles.st}>
+        {t('beautyMentor.learning-plan', {
+          name: levelNames[currentLevel.key] ?? currentLevel.name,
+        })}
+      </Text>
       <View style={styles.plan}>
         {[
           {
@@ -73,7 +101,7 @@ export default function BeautyMentorScreen(): JSX.Element {
       </View>
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}>‍ ابدئي رحلة التعلم</Text>
+        <Text style={styles.bt}>{t('beautyMentor.start')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

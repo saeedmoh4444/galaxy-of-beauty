@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 interface EmergencyService {
   id: number;
@@ -26,6 +28,7 @@ interface BookingResult {
 }
 
 export default function EmergencyBookingScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const [selectedSvc, setSelectedSvc] = useState<number | null>(null);
   const [result, setResult] = useState<BookingResult | null>(null);
 
@@ -62,10 +65,10 @@ export default function EmergencyBookingScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}> حجز طارئ</Text>
+        <Text style={styles.t}>{t('emergencyBooking.title')}</Text>
         <View style={[styles.card, styles.rc]}>
           <Text style={styles.re}></Text>
-          <Text style={styles.rt}>تم الحجز الطارئ!</Text>
+          <Text style={styles.rt}>{t('emergencyBooking.success')}</Text>
           <Text style={styles.rcode}>{result.bookingCode ?? '—'}</Text>
         </View>
       </ScrollView>
@@ -83,12 +86,14 @@ export default function EmergencyBookingScreen(): JSX.Element {
           />
         }
       >
-        <Text style={styles.t}> حجز طارئ</Text>
-        <Text style={styles.sub}>حجز فوري خلال ٣ ساعات — رسوم إضافية ٥٠ ر.س</Text>
+        <Text style={styles.t}>{t('emergencyBooking.title')}</Text>
+        <Text style={styles.sub}>{t('emergencyBooking.subtitle')}</Text>
         {services.slice(0, 10).map((s) => (
           <TouchableOpacity key={s.id} onPress={() => setSelectedSvc(s.id)} style={styles.sc}>
             <Text style={styles.se}>{s.emoji ?? ''}</Text>
-            <Text style={styles.sn}>{s.titleJson?.ar ?? s.nameAr ?? ''}</Text>
+            <Text style={styles.sn}>
+              {s.titleJson ? localize(s.titleJson, locale) : (s.nameAr ?? '')}
+            </Text>
             <Text style={styles.arrow}>→</Text>
           </TouchableOpacity>
         ))}
@@ -97,20 +102,24 @@ export default function EmergencyBookingScreen(): JSX.Element {
   if (availabilityQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> حجز طارئ</Text>
+      <Text style={styles.t}>{t('emergencyBooking.title')}</Text>
       <View style={styles.ec}>
-        <Text style={styles.et}> التكلفة التقديرية</Text>
-        <Text style={styles.ev}>{(availability.totalEstimate ?? 0).toLocaleString()} ر.س</Text>
+        <Text style={styles.et}>{t('emergencyBooking.estimated-cost')}</Text>
+        <Text style={styles.ev}>
+          {t('emergencyBooking.amount', {
+            value: (availability.totalEstimate ?? 0).toLocaleString(),
+          })}
+        </Text>
       </View>
-      {(availability.available ?? []).map((t) => (
-        <View key={t.technicianId} style={styles.card}>
+      {(availability.available ?? []).map((tech) => (
+        <View key={tech.technicianId} style={styles.card}>
           <Text style={styles.te}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.tn}>{t.name ?? ''}</Text>
-            <Text style={styles.tm}> {t.rating ?? ''}</Text>
+            <Text style={styles.tn}>{tech.name ?? ''}</Text>
+            <Text style={styles.tm}> {tech.rating ?? ''}</Text>
           </View>
-          <TouchableOpacity onPress={() => book(t.technicianId, 1)} style={styles.bb}>
-            <Text style={styles.bt}>احجز الآن</Text>
+          <TouchableOpacity onPress={() => book(tech.technicianId, 1)} style={styles.bb}>
+            <Text style={styles.bt}>{t('emergencyBooking.book-now')}</Text>
           </TouchableOpacity>
         </View>
       ))}
@@ -120,7 +129,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
         }}
         style={styles.back}
       >
-        <Text style={styles.backt}> تغيير الخدمة</Text>
+        <Text style={styles.backt}>{t('emergencyBooking.change-service')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

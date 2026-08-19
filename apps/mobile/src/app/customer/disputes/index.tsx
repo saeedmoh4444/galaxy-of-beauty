@@ -1,17 +1,19 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
-const STATUS_LABELS: Record<string, string> = {
-  OPEN: 'مفتوح',
-  UNDER_REVIEW: 'قيد المراجعة',
-  RESOLVED_CUSTOMER: 'محلول',
-  RESOLVED_TECHNICIAN: 'محلول',
-  CLOSED: 'مغلق',
-};
 
 export default function DisputesScreen(): JSX.Element {
+  const { locale, t } = useLocale();
+  const statusLabels: Record<string, string> = {
+    OPEN: t('disputes.status-open'),
+    UNDER_REVIEW: t('disputes.status-under-review'),
+    RESOLVED_CUSTOMER: t('disputes.status-resolved'),
+    RESOLVED_TECHNICIAN: t('disputes.status-resolved'),
+    CLOSED: t('disputes.status-closed'),
+  };
   const disputes = trpc.disputes.list.useQuery({}) ?? {
     data: null,
     isLoading: false,
@@ -25,30 +27,34 @@ export default function DisputesScreen(): JSX.Element {
       isLoading={disputes.isLoading}
       isError={disputes.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل النزاعات"
-      emptyTitle="لا توجد نزاعات"
-      emptyDescription="يمكنكِ فتح نزاع على أي حجز"
+      errorMessage={t('disputes.load-error')}
+      emptyTitle={t('disputes.empty-title')}
+      emptyDescription={t('disputes.empty-desc')}
       onRetry={() => disputes.refetch()}
     >
-      <Text style={styles.title}>️ النزاعات</Text>
+      <Text style={styles.title}>{t('disputes.title')}</Text>
       {(data as Record<string, unknown>[])?.map((d: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.row}>
             <Text style={styles.reason}>{d.reason as string}</Text>
             <Text style={styles.status}>
-              {STATUS_LABELS[d.status as string] ?? (d.status as string)}
+              {statusLabels[d.status as string] ?? (d.status as string)}
             </Text>
           </View>
           {d.resolution ? (
-            <Text style={styles.resolution}>الحل: {d.resolution as string}</Text>
+            <Text style={styles.resolution}>
+              {t('disputes.resolution', { resolution: d.resolution as string })}
+            </Text>
           ) : null}
           <Text style={styles.date}>
-            {new Date(d.createdAt as string).toLocaleDateString('ar-SA')}
+            {new Date(d.createdAt as string).toLocaleDateString(
+              locale === 'ar' ? 'ar-SA' : 'en-US',
+            )}
           </Text>
         </View>
       ))}
       <TouchableOpacity style={styles.addBtn}>
-        <Text style={styles.addText}> فتح نزاع جديد</Text>
+        <Text style={styles.addText}>{t('disputes.open-new')}</Text>
       </TouchableOpacity>
     </ScreenState>
   );

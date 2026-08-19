@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface RoutineStep {
   emoji?: string;
@@ -13,6 +14,7 @@ interface RoutineData {
 }
 
 export default function BeautyRoutineScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.routineScheduler.myRoutines.useQuery();
   if (q.isLoading) return <SkeletonList count={3} />;
   const data = q.data as unknown as RoutineData | null;
@@ -30,15 +32,15 @@ export default function BeautyRoutineScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> روتيني</Text>
-      {morning.length > 0 && <Text style={styles.st}>️ الصباح</Text>}
+      <Text style={styles.t}>{t('beautyRoutine.title')}</Text>
+      {morning.length > 0 && <Text style={styles.st}>{t('beautyRoutine.morning')}</Text>}
       {morning.map((s, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{s.emoji}</Text>
           <Text style={styles.name}>{s.nameAr}</Text>
         </View>
       ))}
-      {evening.length > 0 && <Text style={styles.st}> المساء</Text>}
+      {evening.length > 0 && <Text style={styles.st}>{t('beautyRoutine.evening')}</Text>}
       {evening.map((s, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{s.emoji}</Text>
