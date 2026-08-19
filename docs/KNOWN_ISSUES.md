@@ -4,14 +4,14 @@
 
 ---
 
-## 1. Expo Dev Server — Windows undici Bug (Medium)
+## 1. Expo Dev Server — Windows undici Bug (Medium) — RESOLVED 2026-08-19
 
 **Symptom:** `expo start` fails with `TypeError: Body is unusable: Body has already been read`
 **Root Cause:** Expo SDK 54 CLI reads HTTP response bodies twice, incompatible with Node 20/22 undici
 **Affects:** Windows only (`expo start --android`, `expo start --ios`)
-**Workaround:** `expo export --platform android` works (2021 modules, 5.72 MB bundle)
-**Fix:** Upgrade to Expo SDK 55+ when available
-**Status:** Open — affects dev workflow only, production build not impacted
+**Resolution:** SDK 57 upgrade (2026-08-19) — `expo start` now reaches
+"Waiting on http://localhost:8099" cleanly; `expo export --platform
+android` produces a 6.1MB Hermes bundle.
 
 ---
 
