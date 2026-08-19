@@ -3,6 +3,7 @@ import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface GiftCardItem {
   code?: string;
@@ -15,12 +16,15 @@ interface GiftCardListResponse {
 }
 
 export default function AdminGiftCardsScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.giftCards.listAll.useQuery({ page: 1, limit: BULK_PAGE_SIZE });
   const data = (q.data as unknown as GiftCardListResponse | null)?.items ?? [];
 
   if (q.isLoading) return <SkeletonList count={5} />;
   if (q.isError)
-    return <ErrorAlert message="فشل تحميل بطاقات الهدية" onRetry={() => q.refetch()} />;
+    return (
+      <ErrorAlert message={t('mobile.admin.gift-cards.load-error')} onRetry={() => q.refetch()} />
+    );
 
   return (
     <ScrollView
@@ -34,15 +38,19 @@ export default function AdminGiftCardsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> بطاقات الهدية</Text>
+      <Text style={styles.t}>{t('admin.gift-cards.title')}</Text>
       {data.map((c, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
             <Text style={styles.code}>{c.code}</Text>
-            <Text style={styles.meta}>{c.amount?.toLocaleString()} ر.س</Text>
+            <Text style={styles.meta}>
+              {c.amount?.toLocaleString()} {t('misc.sar')}
+            </Text>
           </View>
           <View style={[styles.badge, c.status === 'ACTIVE' ? styles.active : styles.used]}>
-            <Text style={styles.badgeText}>{c.status === 'ACTIVE' ? 'نشطة' : 'مستخدمة'}</Text>
+            <Text style={styles.badgeText}>
+              {c.status === 'ACTIVE' ? t('admin.gift-cards.active') : t('admin.gift-cards.used')}
+            </Text>
           </View>
         </View>
       ))}

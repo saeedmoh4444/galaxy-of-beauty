@@ -174,6 +174,8 @@ export const mobileAdminMessages = {
   // ---- Group Bookings ----
   'mobile.admin.group-bookings.title': { ar: ' حجوزات جماعية', en: 'Group Bookings' },
   'mobile.admin.group-bookings.people': { ar: '{count} أشخاص', en: '{count} people' },
+  'mobile.admin.group-bookings.confirmed': { ar: 'مؤكد', en: 'Confirmed' },
+  'mobile.admin.group-bookings.pending': { ar: 'معلق', en: 'Pending' },
 
   // ---- Loyalty ----
   'mobile.admin.loyalty.title': { ar: ' برنامج الولاء', en: 'Loyalty Program' },
@@ -202,6 +204,12 @@ export const mobileAdminMessages = {
   'mobile.admin.promo.uses': { ar: '{used}/{max} استخدام', en: '{used}/{max} uses' },
   'mobile.admin.promo.add-code': { ar: ' إضافة كود خصم', en: 'Add Promo Code' },
 
+  // ---- Predictive Demand ----
+  'mobile.admin.predictive-demand.load-error': {
+    ar: 'فشل تحميل التوقعات',
+    en: 'Failed to load demand forecast',
+  },
+
   // ---- Subscriptions ----
   'mobile.admin.subscriptions.title': { ar: ' الاشتراكات', en: 'Subscriptions' },
   'mobile.admin.subscriptions.subtitle': {
@@ -227,4 +235,5 @@ export const mobileAdminMessages = {
     en: 'First booking bonus',
   },
   'mobile.admin.settings.maintenance': { ar: ' الصيانة', en: 'Maintenance' },
+  'mobile.admin.settings.maintenance-mode': { ar: 'وضع الصيانة', en: 'Maintenance mode' },
 } as const satisfies Record<string, { ar: string; en: string }>;

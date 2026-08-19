@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 const RULES = [
   {
     id: 1,
@@ -30,10 +31,11 @@ const RULES = [
   { id: 4, service: 'صبغ شعر', emoji: '', rate: 5, minSpend: 150, maxCashback: 60, active: true },
 ];
 export default function AdminCashbackScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> إدارة الكاش باك</Text>
-      <Text style={s.sub}>سياسات استرداد النقود</Text>
+      <Text style={s.h}>{t('admin.cashback.title')}</Text>
+      <Text style={s.sub}>{t('mobile.admin.cashback.subtitle')}</Text>
       {RULES.map((r) => (
         <View key={r.id} style={s.card}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
@@ -41,22 +43,24 @@ export default function AdminCashbackScreen(): JSX.Element {
             <View style={{ flex: 1 }}>
               <Text style={s.cn}>{r.service}</Text>
               <Text style={s.cd}>
-                استرداد {r.rate}% — حد أدنى {r.minSpend} ر.س
+                {t('mobile.admin.cashback.rule-summary', { rate: r.rate, min: r.minSpend })}
               </Text>
             </View>
             <View style={[s.b, { backgroundColor: r.active ? '#d1fae5' : '#fee2e2' }]}>
               <Text style={[s.bt, { color: r.active ? '#059669' : '#dc2626' }]}>
-                {r.active ? 'مفعل' : 'معطل'}
+                {r.active ? t('admin.enabled') : t('admin.disabled')}
               </Text>
             </View>
           </View>
           <View style={s.info}>
-            <Text style={s.it}> أقصى استرداد: {r.maxCashback} ر.س</Text>
+            <Text style={s.it}>
+              {t('mobile.admin.cashback.max-cashback', { amount: r.maxCashback })}
+            </Text>
           </View>
         </View>
       ))}
       <TouchableOpacity style={s.btn}>
-        <Text style={s.btnText}> إضافة قاعدة جديدة</Text>
+        <Text style={s.btnText}>{t('mobile.admin.cashback.add-rule')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

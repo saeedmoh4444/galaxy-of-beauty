@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 const SUBS = [
   {
     id: 1,
@@ -42,10 +43,11 @@ const SUBS = [
   },
 ];
 export default function AdminSubscriptionsScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> الاشتراكات</Text>
-      <Text style={s.sub}>إدارة اشتراكات العضوية</Text>
+      <Text style={s.h}>{t('mobile.admin.subscriptions.title')}</Text>
+      <Text style={s.sub}>{t('mobile.admin.subscriptions.subtitle')}</Text>
       <View
         style={{
           flexDirection: 'row',
@@ -58,15 +60,21 @@ export default function AdminSubscriptionsScreen(): JSX.Element {
       >
         <View style={{ alignItems: 'center' }}>
           <Text style={{ fontSize: 24, fontWeight: '800', color: '#7c3aed' }}>4</Text>
-          <Text style={{ fontSize: 12, color: '#6b7280' }}>نشطة</Text>
+          <Text style={{ fontSize: 12, color: '#6b7280' }}>
+            {t('mobile.admin.beauty-events.active-f')}
+          </Text>
         </View>
         <View style={{ alignItems: 'center' }}>
           <Text style={{ fontSize: 24, fontWeight: '800', color: '#059669' }}>497</Text>
-          <Text style={{ fontSize: 12, color: '#6b7280' }}>ر.س شهرياً</Text>
+          <Text style={{ fontSize: 12, color: '#6b7280' }}>
+            {t('mobile.admin.subscriptions.sar-monthly')}
+          </Text>
         </View>
         <View style={{ alignItems: 'center' }}>
           <Text style={{ fontSize: 24, fontWeight: '800', color: '#d97706' }}>1</Text>
-          <Text style={{ fontSize: 12, color: '#6b7280' }}>ملغاة</Text>
+          <Text style={{ fontSize: 12, color: '#6b7280' }}>
+            {t('mobile.admin.subscriptions.cancelled')}
+          </Text>
         </View>
       </View>
       {SUBS.map((sb) => (
@@ -76,19 +84,24 @@ export default function AdminSubscriptionsScreen(): JSX.Element {
             <View style={{ flex: 1 }}>
               <Text style={s.cn}>{sb.customer}</Text>
               <Text style={s.cp}>
-                {sb.plan} · {sb.price === 0 ? 'مجاناً' : `${sb.price} ر.س/شهر`}
+                {sb.plan} ·{' '}
+                {sb.price === 0
+                  ? t('mobile.admin.subscriptions.free')
+                  : t('mobile.admin.subscriptions.price-month', { price: sb.price })}
               </Text>
             </View>
             <View
               style={[s.b, { backgroundColor: sb.status === 'active' ? '#d1fae5' : '#fee2e2' }]}
             >
               <Text style={[s.bt, { color: sb.status === 'active' ? '#059669' : '#dc2626' }]}>
-                {sb.status === 'active' ? 'نشط' : 'ملغى'}
+                {sb.status === 'active'
+                  ? t('mobile.admin.campaigns.active')
+                  : t('mobile.admin.subscriptions.cancelled-m')}
               </Text>
             </View>
           </View>
           <View style={{ flexDirection: 'row', gap: 12, marginTop: 6 }}>
-            <Text style={s.cl}> منذ {sb.since}</Text>
+            <Text style={s.cl}>{t('mobile.admin.subscriptions.since', { date: sb.since })}</Text>
             <Text style={s.cl}> {sb.nextBilling}</Text>
           </View>
         </View>

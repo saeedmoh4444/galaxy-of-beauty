@@ -1,5 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 export default function AIFeaturesScreen(): JSX.Element {
+  const { t } = useLocale();
   const features = [
     {
       key: 'ai_routine',
@@ -32,8 +34,8 @@ export default function AIFeaturesScreen(): JSX.Element {
   ];
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> ميزات الذكاء الاصطناعي</Text>
-      <Text style={s.sub}>إدارة خوارزميات AI في المنصة</Text>
+      <Text style={s.h}>{t('mobile.admin.ai-features.title')}</Text>
+      <Text style={s.sub}>{t('mobile.admin.ai-features.subtitle')}</Text>
       {features.map((f) => (
         <View key={f.key} style={s.card}>
           <Text style={s.ce}>{f.emoji}</Text>
@@ -42,7 +44,7 @@ export default function AIFeaturesScreen(): JSX.Element {
             <Text style={s.cd}>{f.desc}</Text>
           </View>
           <TouchableOpacity style={[s.t, { backgroundColor: f.enabled ? '#059669' : '#6b7280' }]}>
-            <Text style={s.tt}>{f.enabled ? 'مفعل' : 'معطل'}</Text>
+            <Text style={s.tt}>{f.enabled ? t('admin.enabled') : t('admin.disabled')}</Text>
           </TouchableOpacity>
         </View>
       ))}

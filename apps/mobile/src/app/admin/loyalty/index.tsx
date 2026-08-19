@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 const TIERS = [
   { name: 'برونزي', emoji: '', points: 0, color: '#d97706', discount: 0, members: 1250 },
   { name: 'فضي', emoji: '', points: 500, color: '#9ca3af', discount: 10, members: 680 },
@@ -6,38 +7,44 @@ const TIERS = [
   { name: 'بلاتيني', emoji: '', points: 5000, color: '#7c3aed', discount: 20, members: 85 },
 ];
 export default function AdminLoyaltyScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> برنامج الولاء</Text>
-      <Text style={s.sub}>إدارة مستويات العضوية والمكافآت</Text>
-      {TIERS.map((t) => (
-        <View key={t.name} style={[s.card, { borderLeftColor: t.color, borderLeftWidth: 4 }]}>
+      <Text style={s.h}>{t('mobile.admin.loyalty.title')}</Text>
+      <Text style={s.sub}>{t('mobile.admin.loyalty.subtitle')}</Text>
+      {TIERS.map((tier) => (
+        <View key={tier.name} style={[s.card, { borderLeftColor: tier.color, borderLeftWidth: 4 }]}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-            <Text style={s.ce}>{t.emoji}</Text>
+            <Text style={s.ce}>{tier.emoji}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={[s.cn, { color: t.color }]}>{t.name}</Text>
+              <Text style={[s.cn, { color: tier.color }]}>{tier.name}</Text>
               <Text style={s.cd}>
-                خصم {t.discount}% · {t.points.toLocaleString()} نقطة
+                {t('mobile.admin.loyalty.tier-summary', {
+                  discount: tier.discount,
+                  points: tier.points.toLocaleString(),
+                })}
               </Text>
             </View>
-            <Text style={s.cm}>{t.members.toLocaleString()} عضوة</Text>
+            <Text style={s.cm}>
+              {t('mobile.admin.loyalty.members-count', { count: tier.members.toLocaleString() })}
+            </Text>
           </View>
         </View>
       ))}
       <View style={[s.card, { marginTop: 16 }]}>
-        <Text style={s.cn}> إحصائيات</Text>
+        <Text style={s.cn}>{t('mobile.admin.loyalty.stats')}</Text>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
           <View style={s.stat}>
             <Text style={s.sv}>2,335</Text>
-            <Text style={s.sl}>مجموع العضوات</Text>
+            <Text style={s.sl}>{t('mobile.admin.loyalty.total-members')}</Text>
           </View>
           <View style={s.stat}>
             <Text style={s.sv}>4.8M</Text>
-            <Text style={s.sl}>نقطة ممنوحة</Text>
+            <Text style={s.sl}>{t('mobile.admin.loyalty.points-awarded')}</Text>
           </View>
           <View style={s.stat}>
             <Text style={s.sv}>85%</Text>
-            <Text style={s.sl}>نسبة الاحتفاظ</Text>
+            <Text style={s.sl}>{t('mobile.admin.loyalty.retention-rate')}</Text>
           </View>
         </View>
       </View>

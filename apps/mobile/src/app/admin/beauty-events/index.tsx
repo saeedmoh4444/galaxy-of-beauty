@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 const EVENTS = [
   {
     id: 1,
@@ -38,10 +39,11 @@ const EVENTS = [
   },
 ];
 export default function AdminBeautyEventsScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> فعاليات التجميل</Text>
-      <Text style={s.sub}>إدارة الفعاليات والمناسبات</Text>
+      <Text style={s.h}>{t('mobile.admin.beauty-events.title')}</Text>
+      <Text style={s.sub}>{t('mobile.admin.beauty-events.subtitle')}</Text>
       <View style={{ flexDirection: 'row', gap: 6, marginBottom: 16 }}>
         {['upcoming', 'active', 'completed'].map((st) => (
           <TouchableOpacity
@@ -49,7 +51,11 @@ export default function AdminBeautyEventsScreen(): JSX.Element {
             style={[s.fb, st === 'upcoming' && { backgroundColor: '#dbeafe' }]}
           >
             <Text style={[s.ft, st === 'upcoming' && { color: '#2563eb' }]}>
-              {st === 'upcoming' ? 'قادمة' : st === 'active' ? 'نشطة' : 'منتهية'}
+              {st === 'upcoming'
+                ? t('mobile.admin.beauty-events.upcoming')
+                : st === 'active'
+                  ? t('mobile.admin.beauty-events.active-f')
+                  : t('mobile.admin.beauty-events.ended-f')}
             </Text>
           </TouchableOpacity>
         ))}
@@ -63,7 +69,10 @@ export default function AdminBeautyEventsScreen(): JSX.Element {
               <Text style={s.cl}> {e.date}</Text>
               <Text style={s.cl}> {e.location}</Text>
             </View>
-            <Text style={s.ca}> {e.attendees} مشاركة</Text>
+            <Text style={s.ca}>
+              {' '}
+              {t('mobile.admin.beauty-events.attendees', { count: e.attendees })}
+            </Text>
           </View>
           <View
             style={[
@@ -91,7 +100,11 @@ export default function AdminBeautyEventsScreen(): JSX.Element {
                 },
               ]}
             >
-              {e.status === 'upcoming' ? 'قادم' : e.status === 'active' ? 'نشط' : 'منتهي'}
+              {e.status === 'upcoming'
+                ? t('mobile.admin.beauty-events.upcoming-badge')
+                : e.status === 'active'
+                  ? t('mobile.admin.campaigns.active')
+                  : t('mobile.admin.beauty-events.ended')}
             </Text>
           </View>
         </View>

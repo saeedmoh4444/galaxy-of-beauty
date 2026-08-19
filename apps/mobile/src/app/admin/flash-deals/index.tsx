@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 const DEALS = [
   {
     id: 1,
@@ -35,10 +36,11 @@ const DEALS = [
   },
 ];
 export default function AdminFlashDealsScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> عروض فلاش</Text>
-      <Text style={s.sub}>إدارة العروض محدودة الوقت</Text>
+      <Text style={s.h}>{t('mobile.admin.flash-deals.title')}</Text>
+      <Text style={s.sub}>{t('mobile.admin.flash-deals.subtitle')}</Text>
       {DEALS.map((d) => (
         <View key={d.id} style={s.card}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
@@ -46,8 +48,12 @@ export default function AdminFlashDealsScreen(): JSX.Element {
             <View style={{ flex: 1 }}>
               <Text style={s.cn}>{d.service}</Text>
               <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center', marginTop: 2 }}>
-                <Text style={s.cp}>{d.dealPrice} ر.س</Text>
-                <Text style={s.co}>{d.originalPrice} ر.س</Text>
+                <Text style={s.cp}>
+                  {d.dealPrice} {t('misc.sar')}
+                </Text>
+                <Text style={s.co}>
+                  {d.originalPrice} {t('misc.sar')}
+                </Text>
                 <View style={s.db}>
                   <Text style={s.dt}>-{d.discount}%</Text>
                 </View>
@@ -57,13 +63,13 @@ export default function AdminFlashDealsScreen(): JSX.Element {
               <View style={[s.pf, { width: `${(d.sold / d.max) * 100}%` }]} />
             </View>
             <Text style={s.ps}>
-              {d.sold}/{d.max} مباع · {d.endsIn}
+              {t('mobile.admin.flash-deals.sold', { sold: d.sold, max: d.max, endsIn: d.endsIn })}
             </Text>
           </View>
         </View>
       ))}
       <TouchableOpacity style={s.btn}>
-        <Text style={s.bt}> عرض فلاش جديد</Text>
+        <Text style={s.bt}>{t('mobile.admin.flash-deals.new-deal')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

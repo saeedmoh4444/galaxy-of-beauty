@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Area {
   id: number;
@@ -10,6 +11,7 @@ interface Area {
 }
 
 export default function AdminAreasScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.platform.listAreas.useQuery({});
   const data = (q.data as unknown as Area[] | null) ?? [];
   const deleteMut = trpc.platform.deleteArea.useMutation({ onSuccess: () => void q.refetch() });
@@ -19,7 +21,8 @@ export default function AdminAreasScreen(): JSX.Element {
   };
 
   if (q.isLoading) return <SkeletonList count={5} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل المناطق" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return <ErrorAlert message={t('admin.areas.load-error')} onRetry={() => q.refetch()} />;
 
   return (
     <ScrollView
@@ -33,7 +36,7 @@ export default function AdminAreasScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> المناطق</Text>
+      <Text style={styles.t}>{t('mobile.admin.areas.title')}</Text>
       {data.map((a, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>

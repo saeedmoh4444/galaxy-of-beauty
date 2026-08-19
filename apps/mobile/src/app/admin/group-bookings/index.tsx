@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 const GROUPS = [
   {
     id: 1,
@@ -32,10 +33,11 @@ const GROUPS = [
   },
 ];
 export default function AdminGroupBookingsScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> حجوزات جماعية</Text>
-      <Text style={s.sub}>إدارة حجوزات المجموعات</Text>
+      <Text style={s.h}>{t('mobile.admin.group-bookings.title')}</Text>
+      <Text style={s.sub}>{t('admin.group-bookings.subtitle')}</Text>
       {GROUPS.map((g) => (
         <View key={g.id} style={s.card}>
           <View
@@ -46,19 +48,23 @@ export default function AdminGroupBookingsScreen(): JSX.Element {
               style={[s.st, { backgroundColor: g.status === 'confirmed' ? '#d1fae5' : '#fef3c7' }]}
             >
               <Text style={[s.stt, { color: g.status === 'confirmed' ? '#059669' : '#d97706' }]}>
-                {g.status === 'confirmed' ? 'مؤكد' : 'معلق'}
+                {g.status === 'confirmed'
+                  ? t('mobile.admin.group-bookings.confirmed')
+                  : t('mobile.admin.group-bookings.pending')}
               </Text>
             </View>
           </View>
           <View style={{ flexDirection: 'row', gap: 12, marginTop: 8 }}>
             <Text style={s.cl}> {g.organizer}</Text>
-            <Text style={s.cl}> {g.size} أشخاص</Text>
+            <Text style={s.cl}> {t('mobile.admin.group-bookings.people', { count: g.size })}</Text>
           </View>
           <View style={{ flexDirection: 'row', gap: 12, marginTop: 4 }}>
             <Text style={s.cl}> {g.date}</Text>
             <Text style={s.cl}> {g.service}</Text>
           </View>
-          <Text style={s.cp}>{g.total.toLocaleString()} ر.س</Text>
+          <Text style={s.cp}>
+            {g.total.toLocaleString()} {t('misc.sar')}
+          </Text>
         </View>
       ))}
     </ScrollView>

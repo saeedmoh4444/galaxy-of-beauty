@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 const PROMOS = [
   {
     id: 1,
@@ -35,10 +36,11 @@ const PROMOS = [
   },
 ];
 export default function AdminPromoScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> إدارة العروض</Text>
-      <Text style={s.sub}>أكواد خصم وحملات ترويجية</Text>
+      <Text style={s.h}>{t('mobile.admin.promo.title')}</Text>
+      <Text style={s.sub}>{t('mobile.admin.promo.subtitle')}</Text>
       {PROMOS.map((p) => (
         <View key={p.id} style={[s.card, { opacity: p.active ? 1 : 0.6 }]}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
@@ -46,26 +48,27 @@ export default function AdminPromoScreen(): JSX.Element {
             <View style={{ flex: 1 }}>
               <Text style={s.cc}>{p.code}</Text>
               <Text style={s.cd}>
-                {p.type === 'percentage' ? `خصم ${p.discount}%` : `خصم ${p.discount} ر.س`} ·{' '}
+                {p.type === 'percentage'
+                  ? t('mobile.admin.promo.discount-percent', { discount: p.discount })
+                  : t('mobile.admin.promo.discount-fixed', { discount: p.discount })}
+                {' · '}
                 {p.expires}
               </Text>
             </View>
             <View style={[s.b, { backgroundColor: p.active ? '#d1fae5' : '#fee2e2' }]}>
               <Text style={[s.bt, { color: p.active ? '#059669' : '#dc2626' }]}>
-                {p.active ? 'مفعل' : 'منتهي'}
+                {p.active ? t('admin.enabled') : t('admin.promo.expired')}
               </Text>
             </View>
           </View>
           <View style={s.pb}>
             <View style={[s.pf, { width: `${(p.uses / p.maxUses) * 100}%` }]} />
           </View>
-          <Text style={s.pu}>
-            {p.uses}/{p.maxUses} استخدام
-          </Text>
+          <Text style={s.pu}>{t('mobile.admin.promo.uses', { used: p.uses, max: p.maxUses })}</Text>
         </View>
       ))}
       <TouchableOpacity style={s.btn}>
-        <Text style={s.btnText}> إضافة كود خصم</Text>
+        <Text style={s.btnText}>{t('mobile.admin.promo.add-code')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );
