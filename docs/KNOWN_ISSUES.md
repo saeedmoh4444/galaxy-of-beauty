@@ -52,12 +52,13 @@ android` produces a 6.1MB Hermes bundle.
 
 ---
 
-## 6. ESLint Build Warnings (Low)
+## 6. ESLint Build Warnings (Low) — RESOLVED 2026-08-19
 
 **Symptom:** `react/no-unescaped-entities` during production build
-**Workaround:** `eslint: { ignoreDuringBuilds: true }` in next.config.js
-**Fix:** Escape `"` characters in JSX text content
-**Status:** Workaround in place — TypeScript and tests catch real errors
+**Root Cause:** historical unescaped quotes in JSX text content (fixed in earlier cleanups)
+**Resolution:** web lint is now 0 errors / 7 warnings — removed the
+`eslint: { ignoreDuringBuilds: true }` workaround; `next build` passes
+with the ESLint gate restored.
 
 ## 7. i18n English Coverage (Low) — RESOLVED 2026-08-19
 

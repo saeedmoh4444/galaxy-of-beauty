@@ -10,7 +10,10 @@ const nextConfig = {
   // (tsc --noEmit, 10/10 workspaces). Next.js build may produce TS2589 false
   // positives from deeply nested tRPC RouterOutput types. See docs/adr/001-ts-build-strategy.md
   typescript: { ignoreBuildErrors: true },
-  eslint: { ignoreDuringBuilds: true },
+  // ESLint runs during builds again (KNOWN_ISSUES #6): the
+  // react/no-unescaped-entities violations that forced this off are
+  // long fixed — web lint is 0 errors / 7 warnings (2026-08-19).
+  eslint: { ignoreDuringBuilds: false },
 
   experimental: {
     optimizePackageImports: ['@galaxy/shared'],
