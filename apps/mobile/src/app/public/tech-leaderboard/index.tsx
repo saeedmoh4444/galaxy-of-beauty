@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface LeaderboardEntry {
   id?: number;
@@ -10,6 +11,7 @@ interface LeaderboardEntry {
 }
 
 export default function TechLeaderboardScreen(): JSX.Element {
+  const { t } = useLocale();
   const boardQ = trpc.techLeaderboard.leaderboard.useQuery({ category: 'rating' });
 
   if (boardQ.isLoading) return <SkeletonList count={5} />;
@@ -40,21 +42,22 @@ export default function TechLeaderboardScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> لوحة المتصدرين</Text>
-      <Text style={styles.sub}>أفضل الفنيات حسب التقييمات والحجوزات</Text>
+      <Text style={styles.t}>{t('mobile.public.tech-leaderboard.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.tech-leaderboard.subtitle')}</Text>
       {board.length === 0 ? (
-        <Text style={styles.e}>لا توجد بيانات</Text>
+        <Text style={styles.e}>{t('mobile.public.tech-leaderboard.empty')}</Text>
       ) : (
-        board.map((t, i) => (
-          <View key={t.id} style={[styles.card, i === 0 && styles.topCard]}>
+        board.map((item, i) => (
+          <View key={item.id} style={[styles.card, i === 0 && styles.topCard]}>
             <View style={[styles.rank, i === 0 && styles.rankTop]}>
               <Text style={[styles.rankText, i === 0 && styles.rankTextTop]}>{i + 1}</Text>
             </View>
             <Text style={styles.rankEmoji}>{i === 0 ? '' : i === 1 ? '' : i === 2 ? '' : '‍'}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.techName}>{t.name ?? ''}</Text>
+              <Text style={styles.techName}>{item.name ?? ''}</Text>
               <Text style={styles.techMeta}>
-                {t.rating ?? 0} · {t.bookings ?? 0} حجز
+                {item.rating ?? 0} ·{' '}
+                {t('mobile.public.bookings-count', { count: item.bookings ?? 0 })}
               </Text>
             </View>
             {i === 0 && <Text style={styles.crown}></Text>}

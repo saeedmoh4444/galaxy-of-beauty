@@ -1,9 +1,11 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 export default function TermsScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> الشروط والأحكام</Text>
-      <Text style={s.d}>آخر تحديث: 1 أغسطس 2026</Text>
+      <Text style={s.h}>{t('mobile.public.terms.title')}</Text>
+      <Text style={s.d}>{t('mobile.public.terms.updated')}</Text>
       {[
         'مقدمة',
         'باستخدامكِ لمنصة جالكسي بيوتي فإنكِ توافقين على الشروط والأحكام التالية. يرجى قراءتها بعناية.',

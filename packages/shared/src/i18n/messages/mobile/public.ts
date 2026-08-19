@@ -444,4 +444,149 @@ export const mobilePublicMessages = {
     ar: 'احجزي الاستشارة — {price} ر.س',
     en: 'Book Consultation — {price} SAR',
   },
+  // Shared formatters
+  'mobile.public.currency': { ar: '{price} ر.س', en: '{price} SAR' },
+  'mobile.public.bookings-count': { ar: '{count} حجز', en: '{count} bookings' },
+  'mobile.public.products-count': { ar: '{count} منتجات', en: '{count} products' },
+  // Gallery detail
+  'mobile.public.gallery-detail.title': { ar: '️ معرض الفنية', en: 'Technician Gallery' },
+  'mobile.public.gallery-detail.load-error': {
+    ar: 'فشل تحميل معرض الفنية',
+    en: 'Failed to load the gallery',
+  },
+  // Marketplace
+  'mobile.public.marketplace.load-error': {
+    ar: 'فشل تحميل المنتجات',
+    en: 'Failed to load products',
+  },
+  // Service trends
+  'mobile.public.service-trends.title': { ar: ' اتجاهات الخدمات', en: 'Service Trends' },
+  'mobile.public.service-trends.growth': { ar: '{growth}% نمو', en: '{growth}% growth' },
+  // Services
+  'mobile.public.services.title': { ar: '‍️ الخدمات', en: 'Services' },
+  'mobile.public.services.subtitle': {
+    ar: 'اكتشفي جميع خدمات التجميل والعناية',
+    en: 'Discover all beauty and care services',
+  },
+  'mobile.public.services.count': { ar: '{count} خدمات', en: '{count} services' },
+  'mobile.public.services.empty': {
+    ar: 'لا توجد خدمات في هذه الفئة',
+    en: 'No services in this category',
+  },
+  // Shop the look
+  'mobile.public.shop-the-look.title': { ar: '️ تسوقي الإطلالة', en: 'Shop the Look' },
+  'mobile.public.shop-the-look.subtitle': {
+    ar: 'تسوقي منتجات مستوحاة من إطلالات الفنانات',
+    en: 'Shop products inspired by celebrity looks',
+  },
+  'mobile.public.shop-the-look.empty': { ar: 'لا توجد إطلالات', en: 'No looks' },
+  'mobile.public.shop-the-look.products': { ar: ' المنتجات', en: ' Products' },
+  'mobile.public.shop-the-look.buy': { ar: 'شراء', en: 'Buy' },
+  // Smart pricing
+  'mobile.public.smart-pricing.title': { ar: ' الأسعار الذكية', en: 'Smart Pricing' },
+  'mobile.public.smart-pricing.subtitle': {
+    ar: 'أسعار متغيرة حسب الطلب — احجزي في الوقت المناسب ووفري!',
+    en: 'Prices vary by demand — book at the right time and save!',
+  },
+  'mobile.public.smart-pricing.empty': { ar: 'لا توجد خدمات', en: 'No services' },
+  // Subscription boxes
+  'mobile.public.subscription-boxes.title': { ar: ' الصناديق الشهرية', en: 'Monthly Boxes' },
+  'mobile.public.subscription-boxes.subtitle': {
+    ar: 'صندوق جمال شهري لباب بيتكِ',
+    en: 'A monthly beauty box delivered to your door',
+  },
+  'mobile.public.subscription-boxes.empty': { ar: 'لا توجد صناديق', en: 'No boxes' },
+  'mobile.public.subscription-boxes.load-error': {
+    ar: 'فشل تحميل الصناديق',
+    en: 'Failed to load boxes',
+  },
+  'mobile.public.subscription-boxes.per-month': { ar: '/شهرياً', en: '/month' },
+  'mobile.public.subscription-boxes.subscribe': { ar: 'اشتراك', en: 'Subscribe' },
+  // Tech calendar
+  'mobile.public.tech-calendar.title': { ar: ' تقويم الفنيات', en: 'Technician Calendar' },
+  'mobile.public.tech-calendar.available': { ar: 'متاح', en: 'Available' },
+  'mobile.public.tech-calendar.booked': { ar: 'محجوز', en: 'Booked' },
+  // Tech leaderboard
+  'mobile.public.tech-leaderboard.title': { ar: ' لوحة المتصدرين', en: 'Leaderboard' },
+  'mobile.public.tech-leaderboard.subtitle': {
+    ar: 'أفضل الفنيات حسب التقييمات والحجوزات',
+    en: 'Top technicians by ratings and bookings',
+  },
+  'mobile.public.tech-leaderboard.empty': { ar: 'لا توجد بيانات', en: 'No data' },
+  // Technician compare
+  'mobile.public.technician-compare.title': {
+    ar: '️ مقارنة الفنيات',
+    en: 'Compare Technicians',
+  },
+  'mobile.public.technician-compare.best': { ar: 'الأفضل: {name}', en: 'Best: {name}' },
+  'mobile.public.technician-compare.tie': { ar: 'متقاربتان', en: 'Very close' },
+  // Technician QA
+  'mobile.public.technician-qa.title': { ar: ' اسألي الفنيات', en: 'Ask the Technicians' },
+  'mobile.public.technician-qa.subtitle': {
+    ar: 'اطرحي أسئلتك على خبراء التجميل',
+    en: 'Ask your questions to beauty experts',
+  },
+  'mobile.public.technician-qa.empty': { ar: 'لا توجد أسئلة', en: 'No questions' },
+  'mobile.public.technician-qa.answer': { ar: ' الإجابة:', en: ' Answer:' },
+  'mobile.public.technician-qa.waiting': { ar: ' في انتظار الرد...', en: ' Awaiting reply...' },
+  // Technicians
+  'mobile.public.technicians.title': { ar: '‍ الفنيات', en: 'Technicians' },
+  'mobile.public.technicians.subtitle': {
+    ar: 'تعرفي على نخبة فنيات التجميل',
+    en: 'Meet our top beauty technicians',
+  },
+  'mobile.public.technicians.empty': { ar: 'لا توجد فنيات', en: 'No technicians' },
+  'mobile.public.technicians.load-error': {
+    ar: 'فشل تحميل الفنيات',
+    en: 'Failed to load technicians',
+  },
+  // Terms
+  'mobile.public.terms.title': { ar: ' الشروط والأحكام', en: 'Terms & Conditions' },
+  'mobile.public.terms.updated': {
+    ar: 'آخر تحديث: 1 أغسطس 2026',
+    en: 'Last updated: August 1, 2026',
+  },
+  // Trending
+  'mobile.public.trending.subtitle': {
+    ar: 'الخدمات والفنيات الأكثر طلباً هذا الشهر',
+    en: 'The most requested services and technicians this month',
+  },
+  'mobile.public.trending.services': {
+    ar: '‍️ الخدمات الرائجة',
+    en: ' Trending Services',
+  },
+  'mobile.public.trending.spotlight': { ar: ' فنيات مميزات', en: ' Featured Technicians' },
+  // Tutorials
+  'mobile.public.tutorials.title': { ar: ' دروس الجمال', en: 'Beauty Tutorials' },
+  'mobile.public.tutorial-detail.load-error': {
+    ar: 'تعذر تحميل الدرس',
+    en: 'Failed to load the tutorial',
+  },
+  'mobile.public.tutorial-detail.steps': { ar: ' الخطوات', en: ' Steps' },
+  // Video testimonials
+  'mobile.public.video-testimonials.title': { ar: ' تقييمات العملاء', en: 'Customer Reviews' },
+  // Surprise me
+  'mobile.public.surprise-me.title': { ar: ' فاجئيني', en: 'Surprise Me' },
+  'mobile.public.surprise-me.hint': { ar: 'اضغطي للاستكشاف!', en: 'Tap to explore!' },
+  'mobile.public.surprise-me.choose': { ar: ' اختر لي', en: ' Choose for me' },
+  'mobile.public.surprise-me.again': { ar: ' جربي مرة أخرى', en: ' Try again' },
+  // Service detail
+  'mobile.public.service-detail.load-error': {
+    ar: 'فشل تحميل الخدمة',
+    en: 'Failed to load the service',
+  },
+  'mobile.public.service-detail.not-found': { ar: 'الخدمة غير موجودة', en: 'Service not found' },
+  'mobile.public.service-detail.duration': {
+    ar: '️ {minutes} دقيقة',
+    en: '{minutes} minutes',
+  },
+  // Technician detail
+  'mobile.public.technician-detail.load-error': {
+    ar: 'فشل تحميل بيانات الفنية',
+    en: 'Failed to load the technician data',
+  },
+  'mobile.public.technician-detail.not-found': {
+    ar: 'الفنية غير موجودة',
+    en: 'Technician not found',
+  },
 } as const satisfies Record<string, { ar: string; en: string }>;

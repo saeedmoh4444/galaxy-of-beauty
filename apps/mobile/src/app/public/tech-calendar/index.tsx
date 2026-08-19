@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface CalendarSlot {
   id?: number;
@@ -15,13 +16,14 @@ interface CalendarDay {
 }
 
 export default function TechCalendarScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const slotsQ = trpc.techCalendar.listWithAvailability.useQuery();
 
   if (slotsQ.isLoading) return <SkeletonList count={5} />;
 
   const slots = (slotsQ.data as unknown as CalendarSlot[] | null) ?? [];
   const days = slots.reduce((acc: CalendarDay[], s) => {
-    const day = new Date(s.date as string).toLocaleDateString('ar-SA', {
+    const day = new Date(s.date as string).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US', {
       weekday: 'short',
       month: 'short',
       day: 'numeric',
@@ -43,21 +45,28 @@ export default function TechCalendarScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> تقويم الفنيات</Text>
+      <Text style={styles.t}>{t('mobile.public.tech-calendar.title')}</Text>
       {days.map((d, di) => (
         <View key={di} style={styles.dg}>
           <Text style={styles.dl}>{d.day}</Text>
           {d.slots.map((s) => (
             <View key={s.id} style={styles.slot}>
               <Text style={styles.stm}>
-                {new Date(s.date as string).toLocaleTimeString('ar-SA', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
+                {new Date(s.date as string).toLocaleTimeString(
+                  locale === 'ar' ? 'ar-SA' : 'en-US',
+                  {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  },
+                )}
               </Text>
               <Text style={styles.st}>‍ {s.technician as string}</Text>
               <View style={[styles.sb, s.available ? styles.sf : styles.su]}>
-                <Text style={styles.sbt}>{s.available ? 'متاح' : 'محجوز'}</Text>
+                <Text style={styles.sbt}>
+                  {s.available
+                    ? t('mobile.public.tech-calendar.available')
+                    : t('mobile.public.tech-calendar.booked')}
+                </Text>
               </View>
             </View>
           ))}

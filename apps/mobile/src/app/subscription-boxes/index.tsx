@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } 
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface SubscriptionBox {
   id?: number;
@@ -13,10 +14,17 @@ interface SubscriptionBox {
 }
 
 export default function SubscriptionBoxesScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.subscriptionBoxes.plans.useQuery();
   const boxes = (q.data as unknown as SubscriptionBox[] | null) ?? [];
   if (q.isLoading) return <SkeletonList count={4} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل الصناديق" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return (
+      <ErrorAlert
+        message={t('mobile.public.subscription-boxes.load-error')}
+        onRetry={() => q.refetch()}
+      />
+    );
   return (
     <ScrollView
       style={styles.c}
@@ -29,20 +37,24 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> الصناديق الشهرية</Text>
+      <Text style={styles.t}>{t('mobile.public.subscription-boxes.title')}</Text>
       {boxes.map((b) => (
         <View key={b.id} style={styles.card}>
           <Text style={styles.be}>{b.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.bn}>{b.nameAr}</Text>
             <Text style={styles.bd}>{b.descAr?.substring(0, 80)}</Text>
-            <Text style={styles.bi}> {b.itemCount} منتجات</Text>
+            <Text style={styles.bi}>
+              {t('mobile.public.products-count', { count: b.itemCount ?? 0 })}
+            </Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
-            <Text style={styles.bp}>{b.price?.toLocaleString()} ر.س</Text>
-            <Text style={styles.bper}>/شهرياً</Text>
+            <Text style={styles.bp}>
+              {t('mobile.public.currency', { price: b.price?.toLocaleString() ?? '' })}
+            </Text>
+            <Text style={styles.bper}>{t('mobile.public.subscription-boxes.per-month')}</Text>
             <TouchableOpacity style={styles.sb}>
-              <Text style={styles.sbt}>اشتراك</Text>
+              <Text style={styles.sbt}>{t('mobile.public.subscription-boxes.subscribe')}</Text>
             </TouchableOpacity>
           </View>
         </View>

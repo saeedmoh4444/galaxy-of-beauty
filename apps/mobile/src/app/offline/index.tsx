@@ -1,14 +1,16 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function OfflineScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <View style={styles.c}>
       <View style={styles.card}>
         <Text style={styles.emoji}></Text>
-        <Text style={styles.title}>أنت غير متصل</Text>
-        <Text style={styles.desc}>يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى</Text>
+        <Text style={styles.title}>{t('mobile.offline.title')}</Text>
+        <Text style={styles.desc}>{t('mobile.offline.desc')}</Text>
         <TouchableOpacity onPress={() => {}} style={styles.btn}>
-          <Text style={styles.btnText}> إعادة المحاولة</Text>
+          <Text style={styles.btnText}>{t('mobile.core.retryButton')}</Text>
         </TouchableOpacity>
       </View>
     </View>

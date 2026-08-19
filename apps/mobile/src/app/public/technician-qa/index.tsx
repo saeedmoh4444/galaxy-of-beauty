@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface QAItem {
   id?: number;
@@ -12,6 +13,7 @@ interface QAItem {
 }
 
 export default function TechnicianQAScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.technicianQA.list.useQuery({});
 
   if (q.isLoading) return <SkeletonList count={4} />;
@@ -30,10 +32,10 @@ export default function TechnicianQAScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> اسألي الفنيات</Text>
-      <Text style={styles.sub}>اطرحي أسئلتك على خبراء التجميل</Text>
+      <Text style={styles.t}>{t('mobile.public.technician-qa.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.technician-qa.subtitle')}</Text>
       {questions.length === 0 ? (
-        <Text style={styles.e}>لا توجد أسئلة</Text>
+        <Text style={styles.e}>{t('mobile.public.technician-qa.empty')}</Text>
       ) : (
         questions.map((q) => (
           <View key={q.id} style={styles.card}>
@@ -45,11 +47,11 @@ export default function TechnicianQAScreen(): JSX.Element {
               </Text>
               {q.answerAr ? (
                 <View style={styles.answer}>
-                  <Text style={styles.answerLabel}> الإجابة:</Text>
+                  <Text style={styles.answerLabel}>{t('mobile.public.technician-qa.answer')}</Text>
                   <Text style={styles.answerText}>{q.answerAr}</Text>
                 </View>
               ) : (
-                <Text style={styles.waiting}> في انتظار الرد...</Text>
+                <Text style={styles.waiting}>{t('mobile.public.technician-qa.waiting')}</Text>
               )}
             </View>
           </View>

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Technician {
   id?: number;
@@ -14,11 +15,17 @@ interface Technician {
 }
 
 export default function TechniciansScreen(): JSX.Element {
+  const { t } = useLocale();
   const techsQ = trpc.technicians.list.useQuery({});
 
   if (techsQ.isLoading) return <SkeletonList count={6} />;
   if (techsQ.isError)
-    return <ErrorAlert message="فشل تحميل الفنيات" onRetry={() => techsQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.technicians.load-error')}
+        onRetry={() => techsQ.refetch()}
+      />
+    );
 
   const items = ((techsQ.data as unknown as { items?: Technician[] } | null)?.items ??
     []) as Technician[];
@@ -35,24 +42,30 @@ export default function TechniciansScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>‍ الفنيات</Text>
-      <Text style={styles.sub}>تعرفي على نخبة فنيات التجميل</Text>
+      <Text style={styles.t}>{t('mobile.public.technicians.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.technicians.subtitle')}</Text>
       {items.length === 0 ? (
-        <Text style={styles.e}>لا توجد فنيات</Text>
+        <Text style={styles.e}>{t('mobile.public.technicians.empty')}</Text>
       ) : (
-        items.map((t) => (
-          <View key={t.id} style={styles.card}>
+        items.map((item) => (
+          <View key={item.id} style={styles.card}>
             <Text style={styles.avatar}>‍</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.techName}>{t.name as string}</Text>
+              <Text style={styles.techName}>{item.name as string}</Text>
               <Text style={styles.techSpecialty}>
-                {(t.specialtyAr as string) ?? (t.specialty as string)}
+                {(item.specialtyAr as string) ?? (item.specialty as string)}
               </Text>
               <View style={styles.techMeta}>
-                <Text style={styles.rating}> {(t.rating as number) ?? 0}</Text>
-                <Text style={styles.bookings}> {(t.totalBookings as number) ?? 0} حجز</Text>
+                <Text style={styles.rating}> {(item.rating as number) ?? 0}</Text>
+                <Text style={styles.bookings}>
+                  {t('mobile.public.bookings-count', {
+                    count: (item.totalBookings as number) ?? 0,
+                  })}
+                </Text>
                 <Text style={styles.price}>
-                  {(t.startingPrice as number)?.toLocaleString()} ر.س
+                  {t('mobile.public.currency', {
+                    price: (item.startingPrice as number)?.toLocaleString() ?? '',
+                  })}
                 </Text>
               </View>
             </View>

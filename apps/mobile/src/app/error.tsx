@@ -1,16 +1,16 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import type { ErrorBoundaryProps } from 'expo-router';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function RootError({ error, retry }: ErrorBoundaryProps): JSX.Element {
+  const { t } = useLocale();
   return (
     <View style={styles.c}>
       <Text style={styles.emoji}></Text>
-      <Text style={styles.t}>حدث خطأ غير متوقع</Text>
-      <Text style={styles.desc}>
-        {error.message || 'يرجى المحاولة مرة أخرى. إذا استمرت المشكلة، تواصلي مع فريق الدعم.'}
-      </Text>
+      <Text style={styles.t}>{t('mobile.rootError.title')}</Text>
+      <Text style={styles.desc}>{error.message || t('mobile.rootError.desc')}</Text>
       <TouchableOpacity onPress={retry} style={styles.btn}>
-        <Text style={styles.bt}> إعادة المحاولة</Text>
+        <Text style={styles.bt}>{t('mobile.core.retryButton')}</Text>
       </TouchableOpacity>
     </View>
   );

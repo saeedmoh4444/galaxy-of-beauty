@@ -95,4 +95,26 @@ export const mobileCoreMessages = {
     en: 'Sorry for this error. Please try again later.',
   },
   'mobile.core.dismiss': { ar: 'تجاهل', en: 'Dismiss' },
+  // Root system screens
+  'mobile.rootError.title': { ar: 'حدث خطأ غير متوقع', en: 'Unexpected error' },
+  'mobile.rootError.desc': {
+    ar: 'يرجى المحاولة مرة أخرى. إذا استمرت المشكلة، تواصلي مع فريق الدعم.',
+    en: 'Please try again. If the problem persists, contact our support team.',
+  },
+  'mobile.notFound.title': {
+    ar: 'عذراً، الصفحة التي تبحثين عنها غير موجودة',
+    en: 'Sorry, the page you are looking for does not exist',
+  },
+  'mobile.notFound.subtitle': {
+    ar: 'ربما تم نقلها أو حذفها',
+    en: 'It may have been moved or deleted',
+  },
+  'mobile.notFound.code': { ar: '٤٠٤', en: '404' },
+  'mobile.notFound.home': { ar: ' الرئيسية', en: ' Home' },
+  'mobile.notFound.back': { ar: '↩️ رجوع', en: '↩️ Back' },
+  'mobile.offline.title': { ar: 'أنت غير متصل', en: 'You are offline' },
+  'mobile.offline.desc': {
+    ar: 'يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى',
+    en: 'Please check your internet connection and try again',
+  },
 } as const;

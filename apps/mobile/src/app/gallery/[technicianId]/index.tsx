@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface GalleryPhoto {
   id?: number;
@@ -11,11 +12,18 @@ interface GalleryPhoto {
 }
 
 export default function GalleryDetailScreen(): JSX.Element {
+  const { t } = useLocale();
   const { technicianId } = useLocalSearchParams<{ technicianId: string }>();
   const q = trpc.gallery.byTechnician.useQuery({ technicianId: parseInt(technicianId, 10) });
   const photos = (q.data as unknown as { items?: GalleryPhoto[] } | null)?.items ?? [];
   if (q.isLoading) return <SkeletonList count={6} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل معرض الفنية" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return (
+      <ErrorAlert
+        message={t('mobile.public.gallery-detail.load-error')}
+        onRetry={() => q.refetch()}
+      />
+    );
   return (
     <ScrollView
       style={styles.c}
@@ -28,7 +36,7 @@ export default function GalleryDetailScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ معرض الفنية</Text>
+      <Text style={styles.t}>{t('mobile.public.gallery-detail.title')}</Text>
       <View style={styles.grid}>
         {photos.map((p, i) => (
           <View key={p.id ?? i} style={styles.pc}>

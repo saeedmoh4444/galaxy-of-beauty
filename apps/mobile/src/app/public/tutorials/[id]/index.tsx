@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface TutorialStep {
   titleAr?: string;
@@ -19,6 +20,7 @@ interface Tutorial {
 }
 
 export default function TutorialDetailScreen(): JSX.Element {
+  const { t } = useLocale();
   const { id } = useLocalSearchParams<{ id: string }>();
   const q = trpc.tutorials.getById.useQuery({ id: parseInt(id, 10) });
 
@@ -26,7 +28,7 @@ export default function TutorialDetailScreen(): JSX.Element {
   if (!q.data)
     return (
       <View style={styles.c}>
-        <Text style={styles.e}>تعذر تحميل الدرس</Text>
+        <Text style={styles.e}>{t('mobile.public.tutorial-detail.load-error')}</Text>
       </View>
     );
   const data = q.data as unknown as Tutorial;
@@ -56,7 +58,7 @@ export default function TutorialDetailScreen(): JSX.Element {
       <Text style={styles.desc}>{data.descAr}</Text>
       {data.steps && (
         <View style={styles.sec}>
-          <Text style={styles.st}> الخطوات</Text>
+          <Text style={styles.st}>{t('mobile.public.tutorial-detail.steps')}</Text>
           {data.steps.map((s, i) => (
             <View key={i} style={styles.step}>
               <View style={styles.sn}>

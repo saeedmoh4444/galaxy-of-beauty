@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface TechnicianDetail {
   id?: number;
@@ -14,16 +15,22 @@ interface TechnicianDetail {
 }
 
 export default function TechnicianDetailScreen(): JSX.Element {
+  const { t } = useLocale();
   const { id } = useLocalSearchParams<{ id: string }>();
   const q = trpc.technicians.getById.useQuery({ userId: parseInt(id, 10) });
   const data = (q.data as unknown as TechnicianDetail | null) ?? null;
   if (q.isLoading) return <SkeletonList count={4} />;
   if (q.isError)
-    return <ErrorAlert message="فشل تحميل بيانات الفنية" onRetry={() => q.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.technician-detail.load-error')}
+        onRetry={() => q.refetch()}
+      />
+    );
   if (!data)
     return (
       <View style={styles.c}>
-        <Text style={styles.e}>الفنية غير موجودة</Text>
+        <Text style={styles.e}>{t('mobile.public.technician-detail.not-found')}</Text>
       </View>
     );
   return (

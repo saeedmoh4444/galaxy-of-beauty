@@ -3,6 +3,8 @@ import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ServiceDetail {
   emoji?: string;
@@ -13,15 +15,22 @@ interface ServiceDetail {
 }
 
 export default function ServiceDetailScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const { id } = useLocalSearchParams<{ id: string }>();
   const q = trpc.services.getById.useQuery({ id: parseInt(id, 10) });
   const data = (q.data as unknown as ServiceDetail | null) ?? null;
   if (q.isLoading) return <SkeletonList count={4} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل الخدمة" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return (
+      <ErrorAlert
+        message={t('mobile.public.service-detail.load-error')}
+        onRetry={() => q.refetch()}
+      />
+    );
   if (!data)
     return (
       <View style={styles.c}>
-        <Text style={styles.e}>الخدمة غير موجودة</Text>
+        <Text style={styles.e}>{t('mobile.public.service-detail.not-found')}</Text>
       </View>
     );
   return (
@@ -37,13 +46,19 @@ export default function ServiceDetailScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>
-        {data.emoji ?? '‍️'} {data.titleJson?.ar}
+        {data.emoji ?? '‍️'} {localize(data.titleJson, locale)}
       </Text>
       <View style={styles.card}>
-        <Text style={styles.price}>{data.basePrice?.toLocaleString()} ر.س</Text>
-        <Text style={styles.dur}>️ {data.durationMin} دقيقة</Text>
+        <Text style={styles.price}>
+          {t('mobile.public.currency', { price: data.basePrice?.toLocaleString() ?? '' })}
+        </Text>
+        <Text style={styles.dur}>
+          {t('mobile.public.service-detail.duration', { minutes: data.durationMin ?? 0 })}
+        </Text>
       </View>
-      {data.descriptionJson && <Text style={styles.desc}>{data.descriptionJson?.ar}</Text>}
+      {data.descriptionJson && (
+        <Text style={styles.desc}>{localize(data.descriptionJson, locale)}</Text>
+      )}
     </ScrollView>
   );
 }

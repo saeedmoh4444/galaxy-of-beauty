@@ -1,20 +1,22 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function NotFoundScreen(): JSX.Element {
+  const { t } = useLocale();
   const router = useRouter();
   return (
     <View style={styles.c}>
       <Text style={styles.emoji}></Text>
-      <Text style={styles.code}>٤٠٤</Text>
-      <Text style={styles.t}>عذراً، الصفحة التي تبحثين عنها غير موجودة</Text>
-      <Text style={styles.sub}>ربما تم نقلها أو حذفها</Text>
+      <Text style={styles.code}>{t('mobile.notFound.code')}</Text>
+      <Text style={styles.t}>{t('mobile.notFound.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.notFound.subtitle')}</Text>
       <View style={styles.btns}>
         <TouchableOpacity onPress={() => router.replace('/')} style={styles.homeBtn}>
-          <Text style={styles.homeBt}> الرئيسية</Text>
+          <Text style={styles.homeBt}>{t('mobile.notFound.home')}</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Text style={styles.backBt}>↩️ رجوع</Text>
+          <Text style={styles.backBt}>{t('mobile.notFound.back')}</Text>
         </TouchableOpacity>
       </View>
     </View>

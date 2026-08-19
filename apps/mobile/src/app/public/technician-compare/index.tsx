@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface CompareTechnician {
   id: number;
@@ -12,6 +13,7 @@ interface CompareTechnician {
 }
 
 export default function TechnicianCompareScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.technicians.list.useQuery({});
   const [selected, setSelected] = useState<number[]>([]);
   const toggle = (id: number) => {
@@ -34,7 +36,7 @@ export default function TechnicianCompareScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ مقارنة الفنيات</Text>
+      <Text style={styles.t}>{t('mobile.public.technician-compare.title')}</Text>
       <View style={styles.grid}>
         {techs.slice(0, 12).map((t) => {
           const isSel = selected.includes(t.id);
@@ -53,32 +55,37 @@ export default function TechnicianCompareScreen(): JSX.Element {
       </View>
       {ct.length === 2 && (
         <View style={styles.tbl}>
-          <Text style={styles.ttl}> المقارنة</Text>
-          {ct.map((t) => (
-            <View key={t.id} style={styles.tc}>
-              <Text style={styles.tcn}>{t.name ?? ''}</Text>
+          <Text style={styles.ttl}>{t('mobile.public.compare.compare-title')}</Text>
+          {ct.map((item) => (
+            <View key={item.id} style={styles.tc}>
+              <Text style={styles.tcn}>{item.name ?? ''}</Text>
               <View style={styles.tr}>
                 <Text style={styles.tl}></Text>
-                <Text style={styles.tv}>{t.rating ?? 0}</Text>
+                <Text style={styles.tv}>{item.rating ?? 0}</Text>
               </View>
               <View style={styles.tr}>
                 <Text style={styles.tl}></Text>
-                <Text style={styles.tv}>{t.totalBookings ?? 0} حجز</Text>
+                <Text style={styles.tv}>
+                  {t('mobile.public.bookings-count', { count: item.totalBookings ?? 0 })}
+                </Text>
               </View>
               <View style={styles.tr}>
                 <Text style={styles.tl}></Text>
-                <Text style={styles.tv}>{(t.startingPrice ?? 0).toLocaleString()} ر.س</Text>
+                <Text style={styles.tv}>
+                  {t('mobile.public.currency', {
+                    price: (item.startingPrice ?? 0).toLocaleString(),
+                  })}
+                </Text>
               </View>
             </View>
           ))}
           <View style={styles.w}>
             <Text style={styles.wt}>
-              الأفضل:{' '}
               {(ct[0]?.rating ?? 0) > (ct[1]?.rating ?? 0)
-                ? (ct[0]?.name ?? '')
+                ? t('mobile.public.technician-compare.best', { name: ct[0]?.name ?? '' })
                 : (ct[0]?.rating ?? 0) < (ct[1]?.rating ?? 0)
-                  ? (ct[1]?.name ?? '')
-                  : 'متقاربتان'}
+                  ? t('mobile.public.technician-compare.best', { name: ct[1]?.name ?? '' })
+                  : t('mobile.public.technician-compare.tie')}
             </Text>
           </View>
         </View>

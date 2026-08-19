@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface TechnicianItem {
   id?: number;
@@ -14,10 +15,14 @@ interface TechnicianItem {
 }
 
 export default function TechniciansScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.technicians.list.useQuery({});
   const techs = (q.data as unknown as { items?: TechnicianItem[] } | null)?.items ?? [];
   if (q.isLoading) return <SkeletonList count={5} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل الفنيات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return (
+      <ErrorAlert message={t('mobile.public.technicians.load-error')} onRetry={() => q.refetch()} />
+    );
   return (
     <ScrollView
       style={styles.c}
@@ -30,17 +35,21 @@ export default function TechniciansScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>‍ الفنيات</Text>
-      {techs.map((t) => (
-        <View key={t.id} style={styles.card}>
+      <Text style={styles.t}>{t('mobile.public.technicians.title')}</Text>
+      {techs.map((item) => (
+        <View key={item.id} style={styles.card}>
           <Text style={styles.av}>‍</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.tn}>{t.name}</Text>
-            <Text style={styles.ts}>{t.specialtyAr ?? t.specialty}</Text>
+            <Text style={styles.tn}>{item.name}</Text>
+            <Text style={styles.ts}>{item.specialtyAr ?? item.specialty}</Text>
             <View style={styles.tm}>
-              <Text style={styles.tr}> {t.rating ?? 0}</Text>
-              <Text style={styles.tb}> {t.totalBookings ?? 0} حجز</Text>
-              <Text style={styles.tp}>{t.startingPrice?.toLocaleString()} ر.س</Text>
+              <Text style={styles.tr}> {item.rating ?? 0}</Text>
+              <Text style={styles.tb}>
+                {t('mobile.public.bookings-count', { count: item.totalBookings ?? 0 })}
+              </Text>
+              <Text style={styles.tp}>
+                {t('mobile.public.currency', { price: item.startingPrice?.toLocaleString() ?? '' })}
+              </Text>
             </View>
           </View>
         </View>

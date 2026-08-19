@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ServiceItem {
   id?: number;
@@ -14,6 +15,7 @@ interface ServiceItem {
 }
 
 export default function ServicesScreen(): JSX.Element {
+  const { t } = useLocale();
   const categoriesQ = trpc.categories.tree.useQuery();
   const [activeCat, setActiveCat] = useState<string | null>(null);
   const catItems = (
@@ -36,7 +38,12 @@ export default function ServicesScreen(): JSX.Element {
 
   if (categoriesQ.isLoading) return <SkeletonList count={6} />;
   if (categoriesQ.isError)
-    return <ErrorAlert message="فشل تحميل الخدمات" onRetry={() => categoriesQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.womens-services.load-error')}
+        onRetry={() => categoriesQ.refetch()}
+      />
+    );
 
   const svcItems = ((servicesQ.data as unknown as { items?: ServiceItem[] } | null)?.items ??
     []) as ServiceItem[];
@@ -53,8 +60,8 @@ export default function ServicesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>‍️ الخدمات</Text>
-      <Text style={styles.sub}>اكتشفي جميع خدمات التجميل والعناية</Text>
+      <Text style={styles.t}>{t('mobile.public.services.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.services.subtitle')}</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
         <View style={{ flexDirection: 'row', gap: 8 }}>
           {catItems.map((cat) => {
@@ -74,9 +81,11 @@ export default function ServicesScreen(): JSX.Element {
       </ScrollView>
       {activeCat && (
         <>
-          <Text style={styles.sectionTitle}>{svcItems.length} خدمات</Text>
+          <Text style={styles.sectionTitle}>
+            {t('mobile.public.services.count', { count: svcItems.length })}
+          </Text>
           {svcItems.length === 0 ? (
-            <Text style={styles.e}>لا توجد خدمات في هذه الفئة</Text>
+            <Text style={styles.e}>{t('mobile.public.services.empty')}</Text>
           ) : (
             svcItems.map((s) => (
               <View key={s.id} style={styles.card}>
@@ -85,7 +94,9 @@ export default function ServicesScreen(): JSX.Element {
                   <Text style={styles.svcName}>{s.nameAr}</Text>
                   <Text style={styles.svcDesc}>{s.descAr?.substring(0, 80)}</Text>
                   <View style={styles.svcMeta}>
-                    <Text style={styles.svcPrice}>{s.price?.toLocaleString()} ر.س</Text>
+                    <Text style={styles.svcPrice}>
+                      {t('mobile.public.currency', { price: s.price?.toLocaleString() ?? '' })}
+                    </Text>
                     <Text style={styles.svcDuration}>️ {s.duration}</Text>
                   </View>
                 </View>

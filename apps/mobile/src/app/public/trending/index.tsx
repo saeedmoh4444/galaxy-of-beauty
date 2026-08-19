@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface TrendingService {
   id?: number;
@@ -19,12 +21,18 @@ interface SpotlightTech {
 }
 
 export default function TrendingScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const trendingQ = trpc.social.trending.useQuery();
   const spotlightQ = trpc.social.spotlight.useQuery();
 
   if (trendingQ.isLoading) return <SkeletonList count={5} />;
   if (trendingQ.isError)
-    return <ErrorAlert message="فشل تحميل المحتوى" onRetry={() => trendingQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.discover.load-error')}
+        onRetry={() => trendingQ.refetch()}
+      />
+    );
 
   const trendingItems = (trendingQ.data as unknown as TrendingService[] | undefined) ?? [];
   const spotlightItems = (spotlightQ.data as unknown as SpotlightTech[] | undefined) ?? [];
@@ -41,28 +49,32 @@ export default function TrendingScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> الأكثر رواجاً</Text>
-      <Text style={styles.sub}>الخدمات والفنيات الأكثر طلباً هذا الشهر</Text>
+      <Text style={styles.t}>{t('mobile.public.discover.trending')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.trending.subtitle')}</Text>
       {trendingItems.length > 0 && (
         <>
-          <Text style={styles.sectionTitle}>‍️ الخدمات الرائجة</Text>
+          <Text style={styles.sectionTitle}>{t('mobile.public.trending.services')}</Text>
           {trendingItems.map((s, i) => (
             <View key={s.id ?? i} style={styles.card}>
               <View style={styles.rank}>
                 <Text style={styles.rankText}>#{i + 1}</Text>
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={styles.svcName}>{s.titleJson?.ar ?? s.name}</Text>
-                <Text style={styles.svcBookings}>{s.bookingCount} حجز</Text>
+                <Text style={styles.svcName}>{localize(s.titleJson, locale) ?? s.name}</Text>
+                <Text style={styles.svcBookings}>
+                  {t('mobile.public.bookings-count', { count: s.bookingCount ?? 0 })}
+                </Text>
               </View>
-              <Text style={styles.svcPrice}>{s.basePrice?.toLocaleString()} ر.س</Text>
+              <Text style={styles.svcPrice}>
+                {t('mobile.public.currency', { price: s.basePrice?.toLocaleString() ?? '' })}
+              </Text>
             </View>
           ))}
         </>
       )}
       {spotlightItems.length > 0 && (
         <>
-          <Text style={styles.sectionTitle}> فنيات مميزات</Text>
+          <Text style={styles.sectionTitle}>{t('mobile.public.trending.spotlight')}</Text>
           {spotlightItems.map((t, i) => (
             <View key={t.id ?? i} style={styles.card}>
               <Text style={styles.techEmoji}>

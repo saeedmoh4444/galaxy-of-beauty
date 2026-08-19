@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface LookProduct {
   id?: number;
@@ -27,6 +28,7 @@ interface Look {
 }
 
 export default function ShopTheLookScreen(): JSX.Element {
+  const { t } = useLocale();
   const looksQ = trpc.lookbook.current.useQuery();
 
   if (looksQ.isLoading) return <SkeletonList count={4} />;
@@ -45,10 +47,10 @@ export default function ShopTheLookScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ تسوقي الإطلالة</Text>
-      <Text style={styles.sub}>تسوقي منتجات مستوحاة من إطلالات الفنانات</Text>
+      <Text style={styles.t}>{t('mobile.public.shop-the-look.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.shop-the-look.subtitle')}</Text>
       {looks.length === 0 ? (
-        <Text style={styles.e}>لا توجد إطلالات</Text>
+        <Text style={styles.e}>{t('mobile.public.shop-the-look.empty')}</Text>
       ) : (
         looks.map((l) => (
           <View key={l.id} style={styles.card}>
@@ -65,7 +67,7 @@ export default function ShopTheLookScreen(): JSX.Element {
                 <Text style={styles.lookBy}>‍ {l.technician ?? ''}</Text>
               </View>
             </View>
-            <Text style={styles.productsTitle}> المنتجات</Text>
+            <Text style={styles.productsTitle}>{t('mobile.public.shop-the-look.products')}</Text>
             {l.products?.map((p) => (
               <View key={p.id} style={styles.product}>
                 <Text style={styles.prodEmoji}>{p.emoji ?? ''}</Text>
@@ -74,9 +76,11 @@ export default function ShopTheLookScreen(): JSX.Element {
                   <Text style={styles.prodBrand}>{p.brand ?? ''}</Text>
                 </View>
                 <View style={{ alignItems: 'flex-end' }}>
-                  <Text style={styles.prodPrice}>{(p.price ?? 0).toLocaleString()} ر.س</Text>
+                  <Text style={styles.prodPrice}>
+                    {t('mobile.public.currency', { price: (p.price ?? 0).toLocaleString() })}
+                  </Text>
                   <TouchableOpacity style={styles.buyBtn}>
-                    <Text style={styles.buyBtnText}>شراء</Text>
+                    <Text style={styles.buyBtnText}>{t('mobile.public.shop-the-look.buy')}</Text>
                   </TouchableOpacity>
                 </View>
               </View>

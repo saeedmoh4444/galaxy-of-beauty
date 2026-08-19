@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface CompareService {
   id: number;
@@ -13,6 +14,7 @@ interface CompareService {
 }
 
 export default function CompareScreen(): JSX.Element {
+  const { t } = useLocale();
   const [selected, setSelected] = useState<number[]>([]);
   const q = trpc.productCompare.list.useQuery();
   const services = (q.data as unknown as CompareService[] | null) ?? [];
@@ -22,7 +24,13 @@ export default function CompareScreen(): JSX.Element {
   };
   const ci = services.filter((s) => selected.includes(s.id));
   if (q.isLoading) return <SkeletonList count={5} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل الخدمات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return (
+      <ErrorAlert
+        message={t('mobile.public.womens-services.load-error')}
+        onRetry={() => q.refetch()}
+      />
+    );
   return (
     <ScrollView
       style={styles.c}
@@ -35,7 +43,7 @@ export default function CompareScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ مقارنة الخدمات</Text>
+      <Text style={styles.t}>{t('mobile.public.compare.title')}</Text>
       <View style={styles.grid}>
         {services.map((s) => {
           const isSel = selected.includes(s.id);
@@ -47,20 +55,24 @@ export default function CompareScreen(): JSX.Element {
             >
               <Text style={styles.ce}>{s.emoji ?? '‍️'}</Text>
               <Text style={[styles.cn, isSel && styles.cna]}>{s.nameAr}</Text>
-              <Text style={styles.cp}>{s.price?.toLocaleString()} ر.س</Text>
+              <Text style={styles.cp}>
+                {t('mobile.public.currency', { price: s.price?.toLocaleString() ?? '' })}
+              </Text>
             </TouchableOpacity>
           );
         })}
       </View>
       {ci.length > 0 && (
         <View style={styles.tbl}>
-          <Text style={styles.ttl}> المقارنة</Text>
+          <Text style={styles.ttl}>{t('mobile.public.compare.compare-title')}</Text>
           {ci.map((s) => (
             <View key={s.id} style={styles.tc}>
               <Text style={styles.tcn}>{s.nameAr}</Text>
               <View style={styles.tr}>
                 <Text style={styles.tl}></Text>
-                <Text style={styles.tv}>{s.price?.toLocaleString()} ر.س</Text>
+                <Text style={styles.tv}>
+                  {t('mobile.public.currency', { price: s.price?.toLocaleString() ?? '' })}
+                </Text>
               </View>
               <View style={styles.tr}>
                 <Text style={styles.tl}>️</Text>

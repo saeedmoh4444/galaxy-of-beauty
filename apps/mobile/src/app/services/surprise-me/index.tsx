@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface SurpriseService {
   emoji?: string;
@@ -10,6 +12,7 @@ interface SurpriseService {
 }
 
 export default function SurpriseMeScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const surpriseQ = trpc.services.surpriseMe.useQuery({}, { enabled: false });
   const result = (surpriseQ.data as unknown as SurpriseService | null) ?? null;
   const surprise = () => {
@@ -18,23 +21,25 @@ export default function SurpriseMeScreen(): JSX.Element {
   if (surpriseQ.isLoading) return <SkeletonList count={3} />;
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> فاجئيني</Text>
+      <Text style={styles.t}>{t('mobile.public.surprise-me.title')}</Text>
       {!result ? (
         <View style={styles.centered}>
           <Text style={styles.emoji}></Text>
-          <Text style={styles.hint}>اضغطي للاستكشاف!</Text>
+          <Text style={styles.hint}>{t('mobile.public.surprise-me.hint')}</Text>
           <TouchableOpacity onPress={surprise} style={styles.btn}>
-            <Text style={styles.bt}> اختر لي</Text>
+            <Text style={styles.bt}>{t('mobile.public.surprise-me.choose')}</Text>
           </TouchableOpacity>
         </View>
       ) : (
         <View style={styles.card}>
           <Text style={styles.re}>{result.emoji ?? '‍️'}</Text>
-          <Text style={styles.rn}>{result.titleJson?.ar}</Text>
-          <Text style={styles.rp}>{result.basePrice?.toLocaleString()} ر.س</Text>
+          <Text style={styles.rn}>{localize(result.titleJson, locale)}</Text>
+          <Text style={styles.rp}>
+            {t('mobile.public.currency', { price: result.basePrice?.toLocaleString() ?? '' })}
+          </Text>
           <Text style={styles.rd}>{result.reason}</Text>
           <TouchableOpacity onPress={surprise} style={styles.btn}>
-            <Text style={styles.bt}> جربي مرة أخرى</Text>
+            <Text style={styles.bt}>{t('mobile.public.surprise-me.again')}</Text>
           </TouchableOpacity>
         </View>
       )}

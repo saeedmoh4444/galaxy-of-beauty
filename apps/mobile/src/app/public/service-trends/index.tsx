@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ServiceTrend {
   emoji?: string;
@@ -10,6 +11,7 @@ interface ServiceTrend {
 }
 
 export default function ServiceTrendsScreen(): JSX.Element {
+  const { t } = useLocale();
   const dataQ = trpc.serviceTrends.trends.useQuery();
 
   if (dataQ.isLoading) return <SkeletonList count={4} />;
@@ -27,14 +29,15 @@ export default function ServiceTrendsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> اتجاهات الخدمات</Text>
+      <Text style={styles.t}>{t('mobile.public.service-trends.title')}</Text>
       {data.map((s, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.em}>{s.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>{s.nameAr ?? ''}</Text>
             <Text style={styles.meta}>
-              {s.trend ?? ''} · {s.growth ?? 0}% نمو
+              {s.trend ?? ''} ·{' '}
+              {t('mobile.public.service-trends.growth', { growth: s.growth ?? 0 })}
             </Text>
           </View>
         </View>
