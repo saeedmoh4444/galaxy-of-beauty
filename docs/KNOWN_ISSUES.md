@@ -43,12 +43,15 @@ android` produces a 6.1MB Hermes bundle.
 
 ---
 
-## 5. Reduced Motion Support (Low)
+## 5. Reduced Motion Support (Low) — RESOLVED 2026-08-19
 
-**Coverage:** Only 2/547 components use `prefers-reduced-motion`
-**Impact:** Motion-sensitive users may experience discomfort from animations
-**Fix:** Add `motion-safe:` prefixes or CSS media query to globals.css
-**Status:** Deferred — non-blocking
+**Fix:** The FE-005 global gate in `apps/web/src/app/globals.css` (a
+`@media (prefers-reduced-motion: reduce)` override clamping all
+animations/transitions to 0.01ms) already covers every component —
+the original "2/547 components" audit predated it (landed in Phase 10).
+**Verified 2026-08-19:** two e2e assertions in a11y-responsive.spec.ts —
+the 0.18s page transition animates by default and is clamped to ≤0.001s
+under `emulateMedia({ reducedMotion: 'reduce' })`. 11/11 a11y specs pass.
 
 ---
 

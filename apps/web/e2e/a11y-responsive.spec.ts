@@ -81,3 +81,24 @@ test.describe('Touch Targets', () => {
     }
   });
 });
+
+test.describe('Reduced Motion (FE-005)', () => {
+  test('page transition animates normally by default', async ({ page }) => {
+    await page.goto('/');
+    const el = page.locator('.animate-page-in').first();
+    await expect(el).toBeVisible();
+    const duration = await el.evaluate((node) => getComputedStyle(node).animationDuration);
+    // 0.18s page transition (UI/UX backlog 3.1)
+    expect(parseFloat(duration)).toBeGreaterThanOrEqual(0.17);
+  });
+
+  test('reduced-motion preference neutralizes animations', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    const el = page.locator('.animate-page-in').first();
+    await expect(el).toBeVisible();
+    const duration = await el.evaluate((node) => getComputedStyle(node).animationDuration);
+    // The FE-005 global gate clamps animations to 0.01ms
+    expect(parseFloat(duration)).toBeLessThanOrEqual(0.001);
+  });
+});
