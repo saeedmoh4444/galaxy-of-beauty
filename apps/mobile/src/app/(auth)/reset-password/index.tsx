@@ -9,9 +9,11 @@ import {
 import { trpc } from '@/lib/trpc-react';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function ResetPasswordScreen() {
   const router = useRouter();
+  const { t } = useLocale();
   const [token, setToken] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -22,24 +24,24 @@ export default function ResetPasswordScreen() {
   const resetMut = trpc.auth.resetPassword.useMutation({
     onSuccess: () => {
       setDone(true);
-      setMsg('تم إعادة تعيين كلمة المرور بنجاح');
+      setMsg(t('auth.reset-success'));
     },
     onError: (e) => {
-      setError(e.message ?? 'فشل إعادة تعيين كلمة المرور');
+      setError(e.message ?? t('mobile.auth.resetFailed'));
     },
   });
 
   const handleSubmit = () => {
     if (!token || !password) {
-      setError('جميع الحقول مطلوبة');
+      setError(t('mobile.auth.allFieldsRequired'));
       return;
     }
     if (password !== confirm) {
-      setError('كلمات المرور غير متطابقة');
+      setError(t('auth.password-mismatch'));
       return;
     }
     if (password.length < 8) {
-      setError('كلمة المرور يجب أن تكون ٨ أحرف على الأقل');
+      setError(t('mobile.auth.passwordTooShort'));
       return;
     }
     setError('');
@@ -48,7 +50,7 @@ export default function ResetPasswordScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>إعادة تعيين كلمة المرور</Text>
+      <Text style={styles.title}>{t('auth.reset-title')}</Text>
 
       {resetMut.isPending ? (
         <ActivityIndicator color="#7c3aed" style={{ marginTop: 32 }} />
@@ -57,38 +59,36 @@ export default function ResetPasswordScreen() {
           <Text style={styles.successIcon}></Text>
           <Text style={styles.successText}>{msg}</Text>
           <TouchableOpacity style={styles.btn} onPress={() => router.replace('/(auth)/login')}>
-            <Text style={styles.btnText}>تسجيل الدخول</Text>
+            <Text style={styles.btnText}>{t('auth.login')}</Text>
           </TouchableOpacity>
         </View>
       ) : (
         <View style={styles.form}>
           {error ? <Text style={styles.error}>{error}</Text> : null}
-          <Text style={styles.hint}>
-            أدخل رمز إعادة التعيين المرسل إلى بريدك الإلكتروني وكلمة المرور الجديدة
-          </Text>
+          <Text style={styles.hint}>{t('mobile.auth.resetHint')}</Text>
           <TextInput
             style={styles.input}
-            placeholder="رمز إعادة التعيين"
+            placeholder={t('mobile.auth.resetCodePlaceholder')}
             value={token}
             onChangeText={setToken}
             autoCapitalize="none"
           />
           <TextInput
             style={styles.input}
-            placeholder="كلمة المرور الجديدة"
+            placeholder={t('auth.new-password')}
             value={password}
             onChangeText={setPassword}
             secureTextEntry
           />
           <TextInput
             style={styles.input}
-            placeholder="تأكيد كلمة المرور"
+            placeholder={t('auth.confirm-password')}
             value={confirm}
             onChangeText={setConfirm}
             secureTextEntry
           />
           <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
-            <Text style={styles.btnText}>تغيير كلمة المرور</Text>
+            <Text style={styles.btnText}>{t('mobile.auth.changePassword')}</Text>
           </TouchableOpacity>
         </View>
       )}

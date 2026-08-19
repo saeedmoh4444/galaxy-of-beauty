@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface TechBadge {
   id?: number;
@@ -12,6 +13,7 @@ interface TechBadge {
 }
 
 export default function TechnicianBadgesScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.technicianBadges.list.useQuery();
 
   if (q.isLoading) return <SkeletonList count={4} />;
@@ -30,10 +32,10 @@ export default function TechnicianBadgesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> شارات الفنيات</Text>
-      <Text style={styles.sub}>شارات التميز والاعتماد للفنيات</Text>
+      <Text style={styles.t}>{t('mobile.public.technician-badges.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.technician-badges.subtitle')}</Text>
       {badges.length === 0 ? (
-        <Text style={styles.e}>لا توجد شارات</Text>
+        <Text style={styles.e}>{t('mobile.public.technician-badges.empty')}</Text>
       ) : (
         badges.map((b) => (
           <View key={b.id} style={styles.card}>
@@ -41,11 +43,17 @@ export default function TechnicianBadgesScreen(): JSX.Element {
             <View style={{ flex: 1 }}>
               <Text style={styles.badgeName}>{b.nameAr ?? ''}</Text>
               <Text style={styles.badgeDesc}>{b.descAr ?? ''}</Text>
-              <Text style={styles.badgeCount}>{b.technicianCount ?? 0} فنيات حاصلات عليها</Text>
+              <Text style={styles.badgeCount}>
+                {t('mobile.public.technician-badges.count', { count: b.technicianCount ?? 0 })}
+              </Text>
             </View>
             <View style={styles.badgeRarity}>
               <Text style={styles.rarityText}>
-                {b.rarity === 'rare' ? 'نادرة' : b.rarity === 'common' ? 'شائعة' : 'مميزة'}
+                {b.rarity === 'rare'
+                  ? t('mobile.public.technician-badges.rarity-rare')
+                  : b.rarity === 'common'
+                    ? t('mobile.public.technician-badges.rarity-common')
+                    : t('mobile.public.technician-badges.rarity-default')}
               </Text>
             </View>
           </View>

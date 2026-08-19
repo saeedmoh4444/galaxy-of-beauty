@@ -16,10 +16,12 @@ import { setAuthToken } from '@/lib/authToken';
 import { setSocketToken } from '@/hooks/useSocket';
 import { useBiometric } from '@/hooks/useBiometric';
 import { useToast } from '@/components/Toast';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function LoginScreen() {
   const router = useRouter();
   const { showToast } = useToast();
+  const { t } = useLocale();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [totpToken, setTotpToken] = useState('');
@@ -29,7 +31,7 @@ export default function LoginScreen() {
   const handleBiometricLogin = async () => {
     const result = await authenticate();
     if (result.success) {
-      showToast('success', 'تم التحقق البيومتري بنجاح');
+      showToast('success', t('mobile.auth.biometricSuccess'));
     }
   };
 
@@ -49,7 +51,7 @@ export default function LoginScreen() {
       if (err.data?.code === 'PRECONDITION_FAILED' && err.message === '2FA_REQUIRED') {
         setTwoFactorRequired(true);
       } else {
-        showToast('error', err.message || 'فشل تسجيل الدخول');
+        showToast('error', err.message || t('mobile.auth.loginFailed'));
       }
     },
   });
@@ -74,13 +76,13 @@ export default function LoginScreen() {
       keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
     >
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-        <Text style={styles.title}>تسجيل الدخول</Text>
+        <Text style={styles.title}>{t('auth.login')}</Text>
 
         {!twoFactorRequired ? (
           <>
             <TextInput
               style={styles.input}
-              placeholder="البريد الإلكتروني"
+              placeholder={t('auth.email')}
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
@@ -88,7 +90,7 @@ export default function LoginScreen() {
             />
             <TextInput
               style={styles.input}
-              placeholder="كلمة المرور"
+              placeholder={t('auth.password')}
               value={password}
               onChangeText={setPassword}
               secureTextEntry
@@ -96,9 +98,7 @@ export default function LoginScreen() {
           </>
         ) : (
           <View style={styles.totpContainer}>
-            <Text style={styles.totpLabel}>
-              تم تفعيل المصادقة الثنائية. أدخل رمز التحقق من تطبيق المصادقة:
-            </Text>
+            <Text style={styles.totpLabel}>{t('auth.totp-prompt')}</Text>
             <TextInput
               style={[styles.input, styles.totpInput]}
               placeholder="000000"
@@ -109,14 +109,14 @@ export default function LoginScreen() {
               autoFocus
             />
             <TouchableOpacity onPress={handleCancel2FA}>
-              <Text style={styles.cancelLink}>← العودة لتسجيل الدخول</Text>
+              <Text style={styles.cancelLink}>{t('auth.cancel-2fa')}</Text>
             </TouchableOpacity>
           </View>
         )}
 
         {isAvailable && !twoFactorRequired && (
           <TouchableOpacity onPress={handleBiometricLogin} style={styles.biometricBtn}>
-            <Text style={styles.biometricText}> دخول سريع</Text>
+            <Text style={styles.biometricText}>{t('mobile.auth.quickLogin')}</Text>
           </TouchableOpacity>
         )}
         <TouchableOpacity
@@ -127,13 +127,15 @@ export default function LoginScreen() {
           {loginMut.isPending ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text style={styles.buttonText}>{twoFactorRequired ? 'تحقق' : 'دخول'}</Text>
+            <Text style={styles.buttonText}>
+              {twoFactorRequired ? t('auth.verify') : t('auth.loginShort')}
+            </Text>
           )}
         </TouchableOpacity>
 
         {!twoFactorRequired && (
           <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
-            <Text style={styles.link}>إنشاء حساب جديد</Text>
+            <Text style={styles.link}>{t('mobile.auth.createNewAccount')}</Text>
           </TouchableOpacity>
         )}
       </ScrollView>

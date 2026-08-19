@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useToast } from '@/components/Toast';
+import { useLocale } from '@/components/LocaleProvider';
 import { formatCurrency } from '@galaxy/ui';
 import { TOP_UP_MIN_AMOUNT, TOP_UP_MAX_AMOUNT } from '@galaxy/shared';
 
@@ -23,6 +24,7 @@ const COLORS = {
 };
 
 export default function WalletTopUpScreen(): JSX.Element {
+  const { t } = useLocale();
   const [amount, setAmount] = useState('');
   const [selected, setSelected] = useState<number | null>(null);
   const { showToast } = useToast();
@@ -37,20 +39,20 @@ export default function WalletTopUpScreen(): JSX.Element {
       void utils.wallet.getBalance.invalidate();
     },
     onError: () => {
-      showToast('error', 'فشل شحن الرصيد');
+      showToast('error', t('mobile.topUp.top-up-error'));
     },
   });
 
   const handleTopUp = () => {
     const parsed = Number(amount);
     if (!Number.isFinite(parsed)) {
-      showToast('warning', 'أدخلي مبلغاً صحيحاً');
+      showToast('warning', t('mobile.topUp.invalid-amount'));
       return;
     }
     if (parsed < TOP_UP_MIN_AMOUNT || parsed > TOP_UP_MAX_AMOUNT) {
       showToast(
         'warning',
-        `المبلغ يجب أن يكون بين ${TOP_UP_MIN_AMOUNT} و ${TOP_UP_MAX_AMOUNT} ر.س`,
+        t('mobile.topUp.range-error', { min: TOP_UP_MIN_AMOUNT, max: TOP_UP_MAX_AMOUNT }),
       );
       return;
     }
@@ -65,17 +67,17 @@ export default function WalletTopUpScreen(): JSX.Element {
       isLoading={balance.isLoading}
       isError={balance.isError}
       isEmpty={!balance.data}
-      errorMessage="فشل تحميل المحفظة"
+      errorMessage={t('wallet.load-error')}
       onRetry={() => balance.refetch()}
     >
-      <Text style={styles.title}> شحن الرصيد</Text>
+      <Text style={styles.title}>{t('mobile.topUp.title')}</Text>
       <View style={styles.balanceCard}>
-        <Text style={styles.balanceLabel}>الرصيد الحالي</Text>
+        <Text style={styles.balanceLabel}>{t('wallet.current-balance')}</Text>
         <Text style={styles.balanceAmount}>
           {formatCurrency(Number(balance.data?.balance ?? 0))}
         </Text>
       </View>
-      <Text style={styles.sectionTitle}>المبالغ السريعة</Text>
+      <Text style={styles.sectionTitle}>{t('mobile.topUp.quick-amounts')}</Text>
       <View style={styles.presets}>
         {PRESETS.map((p) => (
           <TouchableOpacity
@@ -94,10 +96,10 @@ export default function WalletTopUpScreen(): JSX.Element {
       </View>
       <TextInput
         style={styles.input}
-        placeholder="أدخلي المبلغ"
+        placeholder={t('mobile.topUp.amount-placeholder')}
         value={amount}
-        onChangeText={(t) => {
-          setAmount(t);
+        onChangeText={(v) => {
+          setAmount(v);
           setSelected(null);
         }}
         keyboardType="number-pad"
@@ -110,7 +112,9 @@ export default function WalletTopUpScreen(): JSX.Element {
         {topUp.isPending ? (
           <ActivityIndicator color={COLORS.white} />
         ) : (
-          <Text style={styles.topUpText}> شحن {amount ? formatCurrency(Number(amount)) : ''}</Text>
+          <Text style={styles.topUpText}>
+            {t('wallet.top-up-button', { amount: amount ? formatCurrency(Number(amount)) : '' })}
+          </Text>
         )}
       </TouchableOpacity>
     </ScreenState>

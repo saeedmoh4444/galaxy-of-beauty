@@ -30,6 +30,7 @@ import {
   ScrollView,
   RefreshControl,
 } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ScreenStateProps {
   isLoading: boolean;
@@ -62,8 +63,8 @@ export function ScreenState({
   isLoading,
   isError,
   isEmpty,
-  errorMessage = 'حدث خطأ ما',
-  emptyTitle = 'لا توجد بيانات',
+  errorMessage,
+  emptyTitle,
   emptyDescription,
   emptyAction,
   onRetry,
@@ -71,12 +72,16 @@ export function ScreenState({
   onRefresh,
   children,
 }: ScreenStateProps): JSX.Element {
+  const { t } = useLocale();
+  const errMsg = errorMessage ?? t('state.error');
+  const emptyT = emptyTitle ?? t('state.empty');
+
   // ── Loading ──
   if (isLoading) {
     return (
       <View style={styles.centered}>
         <ActivityIndicator size="large" color={COLORS.brand} />
-        <Text style={styles.loadingText}>جاري التحميل...</Text>
+        <Text style={styles.loadingText}>{t('state.loading')}</Text>
       </View>
     );
   }
@@ -86,10 +91,10 @@ export function ScreenState({
     return (
       <View style={styles.centered}>
         <Text style={styles.errorEmoji}></Text>
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
+        <Text style={styles.errorMessage}>{errMsg}</Text>
         {onRetry && (
           <TouchableOpacity onPress={onRetry} style={styles.retryBtn}>
-            <Text style={styles.retryText}> إعادة المحاولة</Text>
+            <Text style={styles.retryText}>{t('mobile.core.retryButton')}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -101,7 +106,7 @@ export function ScreenState({
     return (
       <View style={styles.centered}>
         <Text style={styles.emptyEmoji}></Text>
-        <Text style={styles.emptyTitle}>{emptyTitle}</Text>
+        <Text style={styles.emptyTitle}>{emptyT}</Text>
         {emptyDescription && <Text style={styles.emptyDescription}>{emptyDescription}</Text>}
         {emptyAction && (
           <TouchableOpacity onPress={emptyAction.onPress} style={styles.emptyBtn}>

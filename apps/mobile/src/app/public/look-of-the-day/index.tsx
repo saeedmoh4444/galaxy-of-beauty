@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface LookOfTheDay {
   id?: number;
@@ -11,6 +12,7 @@ interface LookOfTheDay {
 }
 
 export default function LookOfTheDayScreen(): JSX.Element {
+  const { t } = useLocale();
   const looksQ = trpc.lookOfTheDay.feed.useQuery({});
   const looks: LookOfTheDay[] =
     (looksQ.data as unknown as { items?: LookOfTheDay[] } | undefined)?.items ?? [];
@@ -27,7 +29,7 @@ export default function LookOfTheDayScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> إطلالة اليوم</Text>
+      <Text style={styles.t}>{t('mobile.public.look-of-the-day.title')}</Text>
       {looks.map((l, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.le}>{l.emoji ?? ''}</Text>

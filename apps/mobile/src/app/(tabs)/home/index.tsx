@@ -1,8 +1,10 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
+import { localize } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useHaptics } from '@/hooks/useHaptics';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -15,6 +17,7 @@ const COLORS = {
 export default function HomeScreen(): JSX.Element {
   const router = useRouter();
   const { trigger } = useHaptics();
+  const { t, locale } = useLocale();
   const cats = trpc.categories.list.useQuery();
   const kindness = trpc.kindnessPoints.getStatus.useQuery();
   const dailyTip = trpc.dailyBeautyTip.today.useQuery();
@@ -27,11 +30,11 @@ export default function HomeScreen(): JSX.Element {
       isLoading={cats.isLoading}
       isError={cats.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل الأقسام"
-      emptyTitle="لا توجد أقسام"
+      errorMessage={t('mobile.core.categoriesLoadError')}
+      emptyTitle={t('marketing.home.no-categories')}
       onRetry={() => cats.refetch()}
     >
-      <Text style={styles.title}>جالكسي بيوتي</Text>
+      <Text style={styles.title}>{t('common.brandName')}</Text>
 
       {/* Community Stats Bar */}
       <View style={styles.statsRow}>
@@ -40,7 +43,9 @@ export default function HomeScreen(): JSX.Element {
             <View style={styles.statIcon}>
               <Text style={styles.statIconText}>K</Text>
             </View>
-            <Text style={styles.statText}>{kindness.data.points} نقطة</Text>
+            <Text style={styles.statText}>
+              {t('mobile.core.kindnessPoints', { points: kindness.data.points })}
+            </Text>
           </View>
         )}
         {compliments?.data !== undefined && (
@@ -48,7 +53,9 @@ export default function HomeScreen(): JSX.Element {
             <View style={styles.statIcon}>
               <Text style={styles.statIconText}>M</Text>
             </View>
-            <Text style={styles.statText}>{compliments.data} رسالة</Text>
+            <Text style={styles.statText}>
+              {t('mobile.core.complimentMessages', { count: compliments.data })}
+            </Text>
           </View>
         )}
         {dailyTip?.data && (
@@ -76,11 +83,11 @@ export default function HomeScreen(): JSX.Element {
           >
             <View style={styles.cardIcon}>
               <Text style={styles.cardIconText}>
-                {(cat.nameJson as Record<string, string>)?.ar?.charAt(0) ?? 'B'}
+                {localize(cat.nameJson, locale).charAt(0) || 'B'}
               </Text>
             </View>
             <Text style={styles.name}>
-              {(cat.nameJson as Record<string, string>)?.ar ?? (cat.nameAr as string) ?? ''}
+              {localize(cat.nameJson, locale) || (cat.nameAr as string) || ''}
             </Text>
           </TouchableOpacity>
         ))}

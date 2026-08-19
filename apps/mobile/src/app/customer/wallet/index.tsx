@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -28,6 +29,7 @@ interface WalletBalanceData {
 
 export default function WalletScreen(): JSX.Element {
   const router = useRouter();
+  const { t, locale } = useLocale();
   const balance = trpc.wallet.getBalance.useQuery();
   const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 20 });
   const balanceData = balance.data as unknown as WalletBalanceData | null;
@@ -37,44 +39,48 @@ export default function WalletScreen(): JSX.Element {
       isLoading={balance.isLoading}
       isError={balance.isError}
       isEmpty={!balance.data}
-      errorMessage="فشل تحميل المحفظة"
+      errorMessage={t('wallet.load-error')}
       onRetry={() => balance.refetch()}
     >
-      <Text style={styles.title}> المحفظة</Text>
+      <Text style={styles.title}>{t('wallet.title')}</Text>
       <View style={styles.balanceCard}>
-        <Text style={styles.balanceLabel}>الرصيد المتاح</Text>
+        <Text style={styles.balanceLabel}>{t('mobile.wallet.available-balance')}</Text>
         <Text style={styles.balanceAmount}>
           {formatCurrency(Number(balanceData?.balance ?? 0))}
         </Text>
         {(balanceData?.bonusBalance ?? 0) > 0 ? (
           <Text style={styles.bonusText}>
-            + {formatCurrency(Number(balanceData?.bonusBalance ?? 0))} مكافآت
+            {t('mobile.wallet.bonus', {
+              amount: formatCurrency(Number(balanceData?.bonusBalance ?? 0)),
+            })}
           </Text>
         ) : null}
         <TouchableOpacity
           style={styles.topUpBtn}
           onPress={() => router.push('/customer/wallet/top-up' as never)}
         >
-          <Text style={styles.topUpText}> شحن رصيد</Text>
+          <Text style={styles.topUpText}>{t('mobile.wallet.top-up')}</Text>
         </TouchableOpacity>
       </View>
-      <Text style={styles.sectionTitle}>آخر المعاملات</Text>
-      {((txns.data as { items?: TransactionItem[] } | undefined)?.items ?? []).map((t, i) => (
+      <Text style={styles.sectionTitle}>{t('mobile.wallet.recent-transactions')}</Text>
+      {((txns.data as { items?: TransactionItem[] } | undefined)?.items ?? []).map((txn, i) => (
         <View key={i} style={styles.txnRow}>
           <View>
-            <Text style={styles.txnDesc}>{t.description ?? t.source}</Text>
+            <Text style={styles.txnDesc}>{txn.description ?? txn.source}</Text>
             <Text style={styles.txnDate}>
-              {t.createdAt ? new Date(t.createdAt).toLocaleDateString('ar-SA') : ''}
+              {txn.createdAt
+                ? new Date(txn.createdAt).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA')
+                : ''}
             </Text>
           </View>
           <Text
             style={[
               styles.txnAmount,
-              { color: t.type === 'CREDIT' ? COLORS.success : COLORS.danger },
+              { color: txn.type === 'CREDIT' ? COLORS.success : COLORS.danger },
             ]}
           >
-            {t.type === 'CREDIT' ? '+' : '-'}
-            {formatCurrency(Number(t.amount))}
+            {txn.type === 'CREDIT' ? '+' : '-'}
+            {formatCurrency(Number(txn.amount))}
           </Text>
         </View>
       ))}

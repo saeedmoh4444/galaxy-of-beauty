@@ -12,6 +12,8 @@ import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 interface Booking {
   id?: number;
@@ -25,6 +27,7 @@ interface BookingsData {
 }
 
 export default function RescheduleScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const bookingsQ = trpc.bookings.list.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [newDate, setNewDate] = useState('');
@@ -50,7 +53,7 @@ export default function RescheduleScreen(): JSX.Element {
 
   if (bookingsQ.isLoading) return <SkeletonList count={3} />;
   if (bookingsQ.isError)
-    return <ErrorAlert message="فشل تحميل الحجوزات" onRetry={() => bookingsQ.refetch()} />;
+    return <ErrorAlert message={t('booking.load-error')} onRetry={() => bookingsQ.refetch()} />;
 
   const bookings = (bookingsQ.data as unknown as BookingsData | null)?.bookings ?? [];
   const active = bookings.filter((b) => b.status === 'REQUESTED' || b.status === 'ACCEPTED');
@@ -67,8 +70,8 @@ export default function RescheduleScreen(): JSX.Element {
         />
       }
     >
-      <Text style={s.t}> إعادة جدولة</Text>
-      <Text style={s.sub}>غيري موعد حجوزاتكِ القادمة</Text>
+      <Text style={s.t}>{t('mobile.reschedule.title')}</Text>
+      <Text style={s.sub}>{t('mobile.reschedule.subtitle')}</Text>
 
       {done && (
         <View
@@ -82,7 +85,7 @@ export default function RescheduleScreen(): JSX.Element {
         >
           <Text style={{ fontSize: 32 }}></Text>
           <Text style={{ fontWeight: '700', color: '#059669', marginTop: 8 }}>
-            تمت إعادة الجدولة بنجاح
+            {t('mobile.reschedule.success')}
           </Text>
         </View>
       )}
@@ -90,7 +93,9 @@ export default function RescheduleScreen(): JSX.Element {
       {active.length === 0 && (
         <View style={{ alignItems: 'center', padding: 30 }}>
           <Text style={{ fontSize: 40 }}></Text>
-          <Text style={{ color: '#6b7280', marginTop: 8 }}>مافي حجوزات قابلة لإعادة الجدولة</Text>
+          <Text style={{ color: '#6b7280', marginTop: 8 }}>
+            {t('mobile.reschedule.no-reschedulable')}
+          </Text>
         </View>
       )}
 
@@ -106,12 +111,16 @@ export default function RescheduleScreen(): JSX.Element {
             style={[s.card, isSel && { borderColor: '#db2777', backgroundColor: '#fdf2f8' }]}
           >
             <View style={{ flex: 1 }}>
-              <Text style={{ fontWeight: '600', fontSize: 14 }}>حجز #{b.id}</Text>
+              <Text style={{ fontWeight: '600', fontSize: 14 }}>
+                {t('mobile.reschedule.booking', { id: b.id ?? 0 })}
+              </Text>
               <Text style={{ fontSize: 12, color: '#6b7280' }}>
-                {b.service?.titleJson?.ar ?? ''}
+                {b.service?.titleJson ? localize(b.service.titleJson, locale) : ''}
               </Text>
               <Text style={{ fontSize: 11, color: '#9ca3af', marginTop: 2 }}>
-                {b.startAt ? new Date(b.startAt).toLocaleDateString('ar-SA') : ''}
+                {b.startAt
+                  ? new Date(b.startAt).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA')
+                  : ''}
               </Text>
             </View>
             <View
@@ -137,7 +146,7 @@ export default function RescheduleScreen(): JSX.Element {
           style={{ backgroundColor: '#fff', borderRadius: 14, padding: 14, marginTop: 16, gap: 10 }}
         >
           <Text style={{ fontWeight: '700', fontSize: 15, color: '#111827' }}>
-            اختر الموعد الجديد
+            {t('mobile.reschedule.choose-new-date')}
           </Text>
           <TextInput
             value={newDate}
@@ -156,7 +165,7 @@ export default function RescheduleScreen(): JSX.Element {
           <TextInput
             value={reason}
             onChangeText={setReason}
-            placeholder="سبب إعادة الجدولة (اختياري)"
+            placeholder={t('mobile.reschedule.reason-placeholder')}
             style={s.inp}
             placeholderTextColor="#9ca3af"
           />
@@ -164,7 +173,7 @@ export default function RescheduleScreen(): JSX.Element {
             onPress={handleReschedule}
             style={[s.btn, (!newDate || !newTime) && { opacity: 0.5 }]}
           >
-            <Text style={s.btnText}> تأكيد إعادة الجدولة</Text>
+            <Text style={s.btnText}>{t('mobile.reschedule.confirm')}</Text>
           </TouchableOpacity>
         </View>
       )}

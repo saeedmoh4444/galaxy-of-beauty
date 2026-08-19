@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Achievement {
   key?: string;
@@ -19,10 +20,12 @@ interface AchievementsData {
 }
 
 export default function AchievementsScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.customerAchievements.myAchievements.useQuery();
 
   if (q.isLoading) return <SkeletonList count={4} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل الإنجازات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return <ErrorAlert message={t('achievements.loadError')} onRetry={() => q.refetch()} />;
 
   const d = q.data as AchievementsData | null;
   const achievements = d?.achievements ?? [];
@@ -43,30 +46,30 @@ export default function AchievementsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={s.t}> الإنجازات</Text>
-      <Text style={s.sub}>ميداليات وجوائز رحلتكِ الجمالية</Text>
+      <Text style={s.t}>{t('achievements.title')}</Text>
+      <Text style={s.sub}>{t('achievements.subtitle')}</Text>
 
       <View style={s.progressBar}>
         <View style={[s.progressFill, { width: `${pct}%` }]} />
       </View>
       <Text style={{ textAlign: 'center', color: '#6b7280', fontSize: 13, marginBottom: 20 }}>
-        {earnedCount}/{totalCount} إنجاز — {pct}%
+        {t('achievements.progress-count', { earned: earnedCount, total: totalCount, pct })}
       </Text>
 
       <View style={s.statsRow}>
         <View style={s.stat}>
           <Text style={s.statNum}>{stats.totalBookings ?? 0}</Text>
-          <Text style={s.statLabel}>حجوزات</Text>
+          <Text style={s.statLabel}>{t('achievements.bookings')}</Text>
         </View>
         <View style={s.stat}>
           <Text style={[s.statNum, { color: '#059669' }]}>
-            {(stats.totalSpent ?? 0).toLocaleString()} ر.س
+            {(stats.totalSpent ?? 0).toLocaleString()} {t('misc.sar')}
           </Text>
-          <Text style={s.statLabel}>إنفاق</Text>
+          <Text style={s.statLabel}>{t('achievements.spending')}</Text>
         </View>
         <View style={s.stat}>
           <Text style={[s.statNum, { color: '#d97706' }]}>{stats.streakDays ?? 0}</Text>
-          <Text style={s.statLabel}>أيام</Text>
+          <Text style={s.statLabel}>{t('achievements.streak-label')}</Text>
         </View>
       </View>
 

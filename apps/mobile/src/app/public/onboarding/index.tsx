@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const slides = [
   {
@@ -13,6 +14,7 @@ const slides = [
 ];
 
 export default function OnboardingScreen(): JSX.Element {
+  const { t } = useLocale();
   const [step, setStep] = useState(0);
 
   const isLast = step === slides.length - 1;
@@ -31,14 +33,16 @@ export default function OnboardingScreen(): JSX.Element {
         <View style={styles.buttons}>
           {step > 0 && (
             <TouchableOpacity onPress={() => setStep(step - 1)} style={styles.backBtn}>
-              <Text style={styles.backBtnText}>السابق</Text>
+              <Text style={styles.backBtnText}>{t('mobile.public.onboarding.back')}</Text>
             </TouchableOpacity>
           )}
           <TouchableOpacity
             onPress={() => (isLast ? null : setStep(step + 1))}
             style={[styles.nextBtn, isLast && styles.doneBtn]}
           >
-            <Text style={styles.nextBtnText}>{isLast ? ' ابدئي الآن' : 'التالي →'}</Text>
+            <Text style={styles.nextBtnText}>
+              {isLast ? t('mobile.public.onboarding.start') : t('mobile.public.onboarding.next')}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

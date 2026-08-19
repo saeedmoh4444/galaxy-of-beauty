@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const SEASONS = [
   { id: 'summer', nameAr: 'صيف ٢٠٢٦', emoji: '️', color: '#f59e0b' },
@@ -87,13 +88,14 @@ const LOOKS: Record<string, { title: string; desc: string; emoji: string; tags: 
 };
 
 export default function LookbookScreen(): JSX.Element {
+  const { t } = useLocale();
   const [season, setSeason] = useState('summer');
   const currentLooks = LOOKS[season] ?? [];
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> لوك بوك</Text>
-      <Text style={styles.sub}>أحدث إطلالات وصيحات الجمال</Text>
+      <Text style={styles.t}>{t('mobile.public.lookbook.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.lookbook.subtitle')}</Text>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 20 }}>
         <View style={{ flexDirection: 'row', gap: 8 }}>

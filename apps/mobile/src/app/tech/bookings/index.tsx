@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -11,13 +13,13 @@ const COLORS = {
   danger: '#dc2626',
   info: '#3b82f6',
 };
-const STATUS: Record<string, string> = {
-  REQUESTED: 'قيد الانتظار',
-  ACCEPTED: 'مقبول',
-  COMPLETED: 'مكتمل',
-  CANCELLED: 'ملغي',
-  IN_PROGRESS: 'جاري',
-  NO_SHOW: 'لم تحضر',
+const STATUS: Record<string, TranslationKey> = {
+  REQUESTED: 'admin.analytics.pending',
+  ACCEPTED: 'booking.status.ACCEPTED',
+  COMPLETED: 'booking.status.COMPLETED',
+  CANCELLED: 'booking.status.CANCELLED',
+  IN_PROGRESS: 'mobile.tech.bookings.status-in-progress',
+  NO_SHOW: 'booking.status.NO_SHOW',
 };
 const STATUS_COLORS: Record<string, string> = {
   COMPLETED: '#10b981',
@@ -27,6 +29,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function TechBookingsScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const bookings = trpc.bookings.list.useQuery({ limit: 20 }) ?? {
     data: null,
     isLoading: false,
@@ -40,11 +43,11 @@ export default function TechBookingsScreen(): JSX.Element {
       isLoading={bookings.isLoading}
       isError={bookings.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل الحجوزات"
-      emptyTitle="لا توجد حجوزات"
+      errorMessage={t('tech.bookings.load-error')}
+      emptyTitle={t('tech.bookings.empty')}
       onRetry={() => bookings.refetch()}
     >
-      <Text style={styles.title}> حجوزاتي</Text>
+      <Text style={styles.title}>{t('mobile.tech.bookings.title')}</Text>
       {(data as Record<string, unknown>[])?.map((b: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.row}>
@@ -55,10 +58,12 @@ export default function TechBookingsScreen(): JSX.Element {
                 { color: STATUS_COLORS[b.status as string] ?? STATUS_COLORS.DEFAULT },
               ]}
             >
-              {STATUS[b.status as string] ?? (b.status as string)}
+              {STATUS[b.status as string] ? t(STATUS[b.status as string]) : (b.status as string)}
             </Text>
           </View>
-          <Text style={styles.date}>{new Date(b.startAt as string).toLocaleString('ar-SA')}</Text>
+          <Text style={styles.date}>
+            {new Date(b.startAt as string).toLocaleString(locale === 'en' ? 'en-US' : 'ar-SA')}
+          </Text>
         </View>
       ))}
     </ScreenState>

@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const FORTUNES = [
   {
@@ -61,6 +62,7 @@ const FORTUNES = [
 ];
 
 export default function BeautyFortuneScreen(): JSX.Element {
+  const { t } = useLocale();
   const [fortune, setFortune] = useState<(typeof FORTUNES)[0]>(FORTUNES[0]!);
 
   const getRandom = () => {
@@ -70,13 +72,13 @@ export default function BeautyFortuneScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> حظ الجمال</Text>
+      <Text style={styles.t}>{t('mobile.public.beauty-fortune.title')}</Text>
       <View style={styles.card}>
         <Text style={styles.fortuneEmoji}>{fortune.emoji}</Text>
         <Text style={styles.fortuneText}>{fortune.text}</Text>
         <Text style={styles.tip}> {fortune.tip}</Text>
         <TouchableOpacity onPress={getRandom} style={styles.btn}>
-          <Text style={styles.btnText}> جربي حظك</Text>
+          <Text style={styles.btnText}>{t('mobile.public.beauty-fortune.try')}</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

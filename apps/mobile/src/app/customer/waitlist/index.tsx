@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface WaitlistEntry {
   id?: number;
@@ -9,6 +10,7 @@ interface WaitlistEntry {
 }
 
 export default function WaitlistScreen(): JSX.Element {
+  const { t } = useLocale();
   const entriesQ = trpc.waitlist.listMyEntries.useQuery();
   const data: WaitlistEntry[] = (entriesQ.data as unknown as WaitlistEntry[] | undefined) ?? [];
   if (entriesQ.isLoading) return <SkeletonList count={4} />;
@@ -24,13 +26,15 @@ export default function WaitlistScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> قائمة الانتظار</Text>
+      <Text style={styles.t}>{t('mobile.waitlist.title')}</Text>
       {data.map((w, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{w.serviceName}</Text>
-            <Text style={styles.pos}>الموقع: #{w.position}</Text>
+            <Text style={styles.pos}>
+              {t('mobile.waitlist.position', { position: w.position ?? 0 })}
+            </Text>
           </View>
         </View>
       ))}

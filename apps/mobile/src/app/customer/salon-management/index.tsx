@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface SalonDashboard {
   todayBookings?: number;
@@ -15,6 +16,7 @@ interface SalonStaff {
 }
 
 export default function SalonManagementScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const dashQ = trpc.salonManagement.dashboard.useQuery();
   const staffQ = trpc.salonManagement.staff.useQuery();
   const dash = dashQ.data as SalonDashboard | null;
@@ -35,19 +37,19 @@ export default function SalonManagementScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> إدارة الصالون</Text>
+      <Text style={styles.t}>{t('mobile.salonManagement.title')}</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
           <Text style={styles.kv}>{dash?.todayBookings ?? 0}</Text>
-          <Text style={styles.kl}>حجز اليوم</Text>
+          <Text style={styles.kl}>{t('mobile.salonManagement.today-bookings')}</Text>
         </View>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
           <Text style={[styles.kv, { color: '#059669' }]}>
-            {(dash?.todayRevenue ?? 0).toLocaleString()}
+            {(dash?.todayRevenue ?? 0).toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA')}
           </Text>
-          <Text style={styles.kl}>ر.س</Text>
+          <Text style={styles.kl}>{t('mobile.vendorPortal.sar')}</Text>
         </View>
       </View>
       {staff.map((s) => (

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface AdminDashboard {
   totalUsers?: number;
@@ -10,11 +11,15 @@ interface AdminDashboard {
 }
 
 export default function AdminAnalyticsScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.admin.dashboardStats.useQuery();
   const data = (q.data as unknown as AdminDashboard | null) ?? {};
 
   if (q.isLoading) return <SkeletonList count={4} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل التحليلات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return (
+      <ErrorAlert message={t('mobile.admin.analytics.load-error')} onRetry={() => q.refetch()} />
+    );
 
   const d: AdminDashboard = data ?? {};
 
@@ -30,24 +35,24 @@ export default function AdminAnalyticsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> التحليلات</Text>
+      <Text style={styles.t}>{t('mobile.admin.analytics.title')}</Text>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={styles.kpiVal}>{d.totalUsers ?? 0}</Text>
-          <Text style={styles.kpiLabel}>مستخدم</Text>
+          <Text style={styles.kpiLabel}>{t('mobile.admin.analytics.users')}</Text>
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#2563eb' }]}>{d.totalBookings ?? 0}</Text>
-          <Text style={styles.kpiLabel}>حجز</Text>
+          <Text style={styles.kpiLabel}>{t('mobile.admin.analytics.bookings')}</Text>
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#059669' }]}>
             {(d.totalRevenue ?? 0).toLocaleString()}
           </Text>
-          <Text style={styles.kpiLabel}>ر.س</Text>
+          <Text style={styles.kpiLabel}>{t('misc.sar')}</Text>
         </View>
       </View>
     </ScrollView>

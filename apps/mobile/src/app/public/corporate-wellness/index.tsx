@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface WellnessPlan {
   id?: number;
@@ -10,6 +11,7 @@ interface WellnessPlan {
 }
 
 export default function CorporateWellnessScreen(): JSX.Element {
+  const { t } = useLocale();
   const plansQ = trpc.corporateWellness.plans.useQuery();
 
   if (plansQ.isLoading) return <SkeletonList count={4} />;
@@ -28,10 +30,10 @@ export default function CorporateWellnessScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> عروض الشركات</Text>
-      <Text style={styles.sub}>باقات تجميل للشركات والمؤسسات</Text>
+      <Text style={styles.t}>{t('mobile.public.corporate-wellness.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.corporate-wellness.subtitle')}</Text>
       {plans.length === 0 ? (
-        <Text style={styles.e}>لا توجد باقات</Text>
+        <Text style={styles.e}>{t('mobile.public.corporate-wellness.empty')}</Text>
       ) : (
         plans.map((p, i) => (
           <View key={i} style={styles.card}>
@@ -41,7 +43,9 @@ export default function CorporateWellnessScreen(): JSX.Element {
               <Text style={styles.planDesc}>{p.descAr}</Text>
             </View>
             <TouchableOpacity style={styles.inquireBtn}>
-              <Text style={styles.inquireText}>استفسار</Text>
+              <Text style={styles.inquireText}>
+                {t('mobile.public.corporate-wellness.inquire')}
+              </Text>
             </TouchableOpacity>
           </View>
         ))

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -14,6 +15,7 @@ const COLORS = {
 };
 
 export default function PromoScreen(): JSX.Element {
+  const { t } = useLocale();
   const [code, setCode] = useState('');
   const promos = trpc.promo.list.useQuery() ?? {
     data: null,
@@ -28,20 +30,20 @@ export default function PromoScreen(): JSX.Element {
       isLoading={promos.isLoading}
       isError={promos.isError}
       isEmpty={false}
-      errorMessage="فشل تحميل الأكواد"
+      errorMessage={t('mobile.promo.load-error')}
       onRetry={() => promos.refetch()}
     >
-      <Text style={styles.title}>️ أكواد الخصم</Text>
+      <Text style={styles.title}>{t('mobile.promo.title')}</Text>
       <View style={styles.inputRow}>
         <TextInput
           style={styles.input}
-          placeholder="أدخلي كود الخصم"
+          placeholder={t('mobile.promo.input-placeholder')}
           value={code}
           onChangeText={setCode}
           autoCapitalize="characters"
         />
         <TouchableOpacity style={styles.applyBtn}>
-          <Text style={styles.applyText}>تطبيق</Text>
+          <Text style={styles.applyText}>{t('mobile.promo.apply')}</Text>
         </TouchableOpacity>
       </View>
       {(data as Record<string, unknown>[])?.map((p: Record<string, unknown>, i: number) => (
@@ -49,12 +51,14 @@ export default function PromoScreen(): JSX.Element {
           <Text style={styles.promoCode}>{p.code as string}</Text>
           <Text style={styles.promoDesc}>
             {p.discountType === 'percent'
-              ? `خصم ${p.discountValue as number}%`
-              : `خصم ${formatCurrency(Number(p.discountValue))}`}
+              ? t('mobile.promo.discount-percent', { value: String(p.discountValue as number) })
+              : t('mobile.promo.discount-amount', {
+                  value: formatCurrency(Number(p.discountValue)),
+                })}
           </Text>
           {p.minOrderAmount ? (
             <Text style={styles.minOrder}>
-              الحد الأدنى: {formatCurrency(Number(p.minOrderAmount))}
+              {t('mobile.promo.min-order', { value: formatCurrency(Number(p.minOrderAmount)) })}
             </Text>
           ) : null}
         </View>

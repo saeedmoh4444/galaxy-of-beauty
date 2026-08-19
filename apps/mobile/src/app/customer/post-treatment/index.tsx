@@ -1,5 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
 const TREATMENTS: Record<
   string,
@@ -7,58 +9,87 @@ const TREATMENTS: Record<
 > = {
   facial: {
     emoji: '',
-    aftercare: ['لا تلمسي وجهكِ', 'تجنبي المكياج ٢٤ ساعة', 'استخدمي واقي شمس', 'اشربي ماء بكثرة'],
+    aftercare: [
+      'mobile.postTreatment.aftercare-facial-1',
+      'mobile.postTreatment.aftercare-facial-2',
+      'mobile.postTreatment.aftercare-facial-3',
+      'mobile.postTreatment.aftercare-facial-4',
+    ],
     timeline: [
-      { day: 'اليوم 1', action: 'لا تغسلي وجهكِ — اتركي المنتجات' },
-      { day: 'اليوم 2-3', action: 'غسول لطيف + مرطب' },
-      { day: 'اليوم 4-7', action: 'عودي لروتينك الطبيعي' },
+      { day: 'mobile.postTreatment.day-1', action: 'mobile.postTreatment.action-facial-day-1' },
+      { day: 'mobile.postTreatment.day-2-3', action: 'mobile.postTreatment.action-facial-day-2-3' },
+      { day: 'mobile.postTreatment.day-4-7', action: 'mobile.postTreatment.action-facial-day-4-7' },
     ],
   },
   waxing: {
     emoji: '️',
-    aftercare: ['تجنبي الشمس ٤٨ ساعة', 'لا تستخدمي مقشر', 'ارتدي ملابس قطنية', 'رطبي المنطقة'],
+    aftercare: [
+      'mobile.postTreatment.aftercare-waxing-1',
+      'mobile.postTreatment.aftercare-waxing-2',
+      'mobile.postTreatment.aftercare-waxing-3',
+      'mobile.postTreatment.aftercare-waxing-4',
+    ],
     timeline: [
-      { day: 'اليوم 1', action: 'لا تلمسي المنطقة — تجنبي الحرارة' },
-      { day: 'اليوم 2-3', action: 'ترطيب خفيف + ملابس فضفاضة' },
-      { day: 'اليوم 4+', action: 'تقشير لطيف لمنع الشعر تحت الجلد' },
+      { day: 'mobile.postTreatment.day-1', action: 'mobile.postTreatment.action-waxing-day-1' },
+      {
+        day: 'mobile.postTreatment.day-2-3',
+        action: 'mobile.postTreatment.action-waxing-day-2-3',
+      },
+      {
+        day: 'mobile.postTreatment.day-4-plus',
+        action: 'mobile.postTreatment.action-waxing-day-4-plus',
+      },
     ],
   },
   hair_color: {
     emoji: '‍️',
     aftercare: [
-      'لا تغسلي شعركِ ٤٨ ساعة',
-      'استخدمي شامبو خالي من الكبريتات',
-      'تجنبي الحرارة',
-      'استخدمي بلسم مرطب',
+      'mobile.postTreatment.aftercare-hair-color-1',
+      'mobile.postTreatment.aftercare-hair-color-2',
+      'mobile.postTreatment.aftercare-hair-color-3',
+      'mobile.postTreatment.aftercare-hair-color-4',
     ],
     timeline: [
-      { day: 'اليوم 1-2', action: 'لا تغسلي — ثبتي اللون' },
-      { day: 'اليوم 3-5', action: 'غسيل بماء بارد + بلسم' },
-      { day: 'اليوم 6+', action: 'روتين طبيعي مع حماية من الحرارة' },
+      {
+        day: 'mobile.postTreatment.day-1-2',
+        action: 'mobile.postTreatment.action-hair-color-day-1-2',
+      },
+      {
+        day: 'mobile.postTreatment.day-3-5',
+        action: 'mobile.postTreatment.action-hair-color-day-3-5',
+      },
+      {
+        day: 'mobile.postTreatment.day-6-plus',
+        action: 'mobile.postTreatment.action-hair-color-day-6-plus',
+      },
     ],
   },
   nails: {
     emoji: '',
     aftercare: [
-      'تجنبي الماء الساخن',
-      'استخدمي كريم يدين',
-      'لا تستخدمي أظافركِ كأدوات',
-      'زيوت للأظافر',
+      'mobile.postTreatment.aftercare-nails-1',
+      'mobile.postTreatment.aftercare-nails-2',
+      'mobile.postTreatment.aftercare-nails-3',
+      'mobile.postTreatment.aftercare-nails-4',
     ],
     timeline: [
-      { day: 'اليوم 1', action: 'حافظي على جفاف الأظافر' },
-      { day: 'اليوم 2-7', action: 'رطبي يومياً + زيت للأظافر' },
-      { day: 'الأسبوع 2+', action: 'لمسات تصحيحية عند الحاجة' },
+      { day: 'mobile.postTreatment.day-1', action: 'mobile.postTreatment.action-nails-day-1' },
+      { day: 'mobile.postTreatment.day-2-7', action: 'mobile.postTreatment.action-nails-day-2-7' },
+      {
+        day: 'mobile.postTreatment.week-2-plus',
+        action: 'mobile.postTreatment.action-nails-week-2-plus',
+      },
     ],
   },
 };
 
 export default function PostTreatmentScreen(): JSX.Element {
+  const { t } = useLocale();
   const [selected, setSelected] = useState('facial');
   const [completed, setCompleted] = useState<string[]>([]);
 
-  const t = TREATMENTS[selected]!;
-  const progress = Math.round((completed.length / t.timeline.length) * 100);
+  const treatment = TREATMENTS[selected]!;
+  const progress = Math.round((completed.length / treatment.timeline.length) * 100);
 
   const toggleDay = (day: string) => {
     if (completed.includes(day)) setCompleted(completed.filter((x) => x !== day));
@@ -67,8 +98,8 @@ export default function PostTreatmentScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>‍️ متابعة ما بعد العلاج</Text>
-      <Text style={styles.sub}>تعليمات العناية بعد كل خدمة</Text>
+      <Text style={styles.t}>{t('mobile.postTreatment.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.postTreatment.subtitle')}</Text>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 20 }}>
         <View style={{ flexDirection: 'row', gap: 8 }}>
@@ -84,12 +115,12 @@ export default function PostTreatmentScreen(): JSX.Element {
               <Text style={styles.te}>{val.emoji}</Text>
               <Text style={[styles.tn, selected === key && styles.tnA]}>
                 {key === 'facial'
-                  ? 'عناية بالبشرة'
+                  ? t('mobile.postTreatment.tab-facial')
                   : key === 'waxing'
-                    ? 'إزالة شعر'
+                    ? t('mobile.postTreatment.tab-waxing')
                     : key === 'hair_color'
-                      ? 'صبغ شعر'
-                      : 'أظافر'}
+                      ? t('mobile.postTreatment.tab-hair-color')
+                      : t('mobile.postTreatment.tab-nails')}
               </Text>
             </TouchableOpacity>
           ))}
@@ -97,24 +128,24 @@ export default function PostTreatmentScreen(): JSX.Element {
       </ScrollView>
 
       <View style={styles.progress}>
-        <Text style={styles.progressText}>تقدم المتابعة: {progress}%</Text>
+        <Text style={styles.progressText}>{t('mobile.postTreatment.progress', { progress })}</Text>
         <View style={styles.bar}>
           <View style={[styles.fill, { width: `${progress}%` }]} />
         </View>
       </View>
 
-      <Text style={styles.st}> التعليمات</Text>
+      <Text style={styles.st}>{t('mobile.postTreatment.instructions')}</Text>
       <View style={styles.card}>
-        {t.aftercare.map((a, i) => (
+        {treatment.aftercare.map((a, i) => (
           <View key={i} style={styles.ac}>
             <Text style={styles.acb}></Text>
-            <Text style={styles.act}>{a}</Text>
+            <Text style={styles.act}>{t(a as TranslationKey)}</Text>
           </View>
         ))}
       </View>
 
-      <Text style={styles.st}> الجدول الزمني</Text>
-      {t.timeline.map((tl) => {
+      <Text style={styles.st}>{t('mobile.postTreatment.timeline')}</Text>
+      {treatment.timeline.map((tl) => {
         const isDone = completed.includes(tl.day);
         return (
           <TouchableOpacity
@@ -126,8 +157,10 @@ export default function PostTreatmentScreen(): JSX.Element {
               <Text style={styles.tlct}>{isDone ? '' : '○'}</Text>
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={[styles.tld, isDone && styles.tldDone]}>{tl.day}</Text>
-              <Text style={styles.tla}>{tl.action}</Text>
+              <Text style={[styles.tld, isDone && styles.tldDone]}>
+                {t(tl.day as TranslationKey)}
+              </Text>
+              <Text style={styles.tla}>{t(tl.action as TranslationKey)}</Text>
             </View>
           </TouchableOpacity>
         );

@@ -9,9 +9,11 @@ import {
 import { trpc } from '@/lib/trpc-react';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function ForgotPasswordScreen() {
   const router = useRouter();
+  const { t } = useLocale();
   const [email, setEmail] = useState('');
   const [msg, setMsg] = useState('');
   const [error, setError] = useState('');
@@ -20,16 +22,16 @@ export default function ForgotPasswordScreen() {
   const forgotMut = trpc.auth.forgotPassword.useMutation({
     onSuccess: () => {
       setSent(true);
-      setMsg('تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني');
+      setMsg(t('mobile.auth.forgotSentMsg'));
     },
     onError: (e) => {
-      setError(e.message ?? 'فشل إرسال رابط إعادة التعيين');
+      setError(e.message ?? t('mobile.auth.forgotSendFailed'));
     },
   });
 
   const handleSubmit = () => {
     if (!email) {
-      setError('يرجى إدخال البريد الإلكتروني');
+      setError(t('mobile.auth.emailRequired'));
       return;
     }
     setError('');
@@ -38,8 +40,8 @@ export default function ForgotPasswordScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>نسيت كلمة المرور</Text>
-      <Text style={styles.sub}>أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور</Text>
+      <Text style={styles.title}>{t('auth.forgot-title')}</Text>
+      <Text style={styles.sub}>{t('auth.forgot-desc')}</Text>
 
       {forgotMut.isPending ? (
         <ActivityIndicator color="#7c3aed" style={{ marginTop: 32 }} />
@@ -48,7 +50,7 @@ export default function ForgotPasswordScreen() {
           <Text style={styles.successIcon}></Text>
           <Text style={styles.successText}>{msg}</Text>
           <TouchableOpacity style={styles.btn} onPress={() => router.back()}>
-            <Text style={styles.btnText}>العودة لتسجيل الدخول</Text>
+            <Text style={styles.btnText}>{t('auth.back-to-login-short')}</Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -56,17 +58,17 @@ export default function ForgotPasswordScreen() {
           {error ? <Text style={styles.error}>{error}</Text> : null}
           <TextInput
             style={styles.input}
-            placeholder="البريد الإلكتروني"
+            placeholder={t('auth.email')}
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
             autoCapitalize="none"
           />
           <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
-            <Text style={styles.btnText}>إرسال الرابط</Text>
+            <Text style={styles.btnText}>{t('mobile.auth.sendLink')}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => router.back()}>
-            <Text style={styles.link}>العودة لتسجيل الدخول</Text>
+            <Text style={styles.link}>{t('auth.back-to-login-short')}</Text>
           </TouchableOpacity>
         </View>
       )}

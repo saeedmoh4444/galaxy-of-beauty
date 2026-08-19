@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface TicketEvent {
   id?: number;
@@ -10,6 +11,7 @@ interface TicketEvent {
 }
 
 export default function EventTicketsScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const eventsQ = trpc.eventTickets.available.useQuery();
 
   if (eventsQ.isLoading) return <SkeletonList count={4} />;
@@ -28,10 +30,10 @@ export default function EventTicketsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ تذاكر الفعاليات</Text>
-      <Text style={styles.sub}>احجزي تذكرتكِ لأقرب فعالية</Text>
+      <Text style={styles.t}>{t('mobile.public.event-tickets.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.event-tickets.subtitle')}</Text>
       {events.length === 0 ? (
-        <Text style={styles.e}>لا توجد فعاليات</Text>
+        <Text style={styles.e}>{t('mobile.public.event-tickets.empty')}</Text>
       ) : (
         events.map((e, i) => (
           <View key={i} style={styles.card}>
@@ -39,11 +41,13 @@ export default function EventTicketsScreen(): JSX.Element {
             <View style={{ flex: 1 }}>
               <Text style={styles.eventName}>{e.nameAr ?? ''}</Text>
               <Text style={styles.eventDate}>
-                {e.date ? new Date(e.date).toLocaleDateString('ar-SA') : ''}
+                {e.date
+                  ? new Date(e.date).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')
+                  : ''}
               </Text>
             </View>
             <TouchableOpacity style={styles.bookBtn}>
-              <Text style={styles.bookBtnText}>حجز</Text>
+              <Text style={styles.bookBtnText}>{t('mobile.public.event-tickets.book')}</Text>
             </TouchableOpacity>
           </View>
         ))

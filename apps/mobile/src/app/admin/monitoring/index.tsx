@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const STATUS_COLORS: Record<string, string> = {
   healthy: '#059669',
@@ -25,11 +26,15 @@ interface HealthReport {
 }
 
 export default function MonitoringScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.monitoring.health.useQuery();
   const health = (q.data as unknown as HealthReport | null) ?? {};
 
   if (q.isLoading) return <SkeletonList count={5} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل حالة الأنظمة" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return (
+      <ErrorAlert message={t('mobile.admin.monitoring.load-error')} onRetry={() => q.refetch()} />
+    );
 
   const services = (health.services ?? {}) as Record<string, ServiceHealth>;
   const perf = (health.performance ?? {}) as HealthPerformance;
@@ -46,8 +51,8 @@ export default function MonitoringScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> Monitoring</Text>
-      <Text style={styles.sectionTitle}> الخدمات</Text>
+      <Text style={styles.t}>{t('mobile.admin.monitoring.title')}</Text>
+      <Text style={styles.sectionTitle}>{t('mobile.admin.monitoring.services')}</Text>
       <View style={styles.grid}>
         {Object.entries(services).map(([key, svc]) => (
           <View
@@ -64,12 +69,12 @@ export default function MonitoringScreen(): JSX.Element {
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={styles.kpiVal}>{perf.avgResponseMs ?? 0}ms</Text>
-          <Text style={styles.kpiLabel}>الاستجابة</Text>
+          <Text style={styles.kpiLabel}>{t('mobile.admin.monitoring.response')}</Text>
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#2563eb' }]}>{perf.activeSessions ?? 0}</Text>
-          <Text style={styles.kpiLabel}>جلسات</Text>
+          <Text style={styles.kpiLabel}>{t('mobile.admin.monitoring.sessions')}</Text>
         </View>
       </View>
     </ScrollView>

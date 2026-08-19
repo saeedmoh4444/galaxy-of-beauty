@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -11,6 +12,7 @@ const COLORS = {
 };
 
 export default function StreakCalendarScreen(): JSX.Element {
+  const { t } = useLocale();
   const streak = trpc.streaks.get.useQuery();
 
   return (
@@ -18,20 +20,24 @@ export default function StreakCalendarScreen(): JSX.Element {
       isLoading={streak.isLoading}
       isError={streak.isError}
       isEmpty={!streak.data}
-      errorMessage="فشل تحميل التقويم"
+      errorMessage={t('mobile.streakCalendar.load-error')}
       onRetry={() => streak.refetch()}
     >
-      <Text style={styles.title}> تقويم الاستمرارية</Text>
+      <Text style={styles.title}>{t('mobile.streakCalendar.title')}</Text>
       <View style={styles.card}>
         <Text style={styles.fire}></Text>
         <Text style={styles.current}>
-          الأسبوع الحالي: {String(streak.data?.currentStreak ?? 0)} أيام
+          {t('mobile.streakCalendar.current-week', {
+            days: String(streak.data?.currentStreak ?? 0),
+          })}
         </Text>
         <Text style={styles.longest}>
-          أطول استمرارية: {String(streak.data?.longestStreak ?? 0)} أيام
+          {t('mobile.streakCalendar.longest', {
+            days: String(streak.data?.longestStreak ?? 0),
+          })}
         </Text>
       </View>
-      <Text style={styles.tip}>احجزي أسبوعياً للحفاظ على استمراريتكِ وكسب المكافآت!</Text>
+      <Text style={styles.tip}>{t('mobile.streakCalendar.tip')}</Text>
     </ScreenState>
   );
 }

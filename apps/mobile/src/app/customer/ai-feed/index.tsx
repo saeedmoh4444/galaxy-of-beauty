@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface FeedItem {
   id?: number;
@@ -16,6 +18,7 @@ interface AIFeedData {
 }
 
 export default function AIFeedScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const q = trpc.aiFeatures.personalizedFeed.useQuery();
   if (q.isLoading) return <SkeletonList count={4} />;
   const data = q.data as unknown as AIFeedData | null;
@@ -34,30 +37,30 @@ export default function AIFeedScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> خلاصتي الذكية</Text>
+      <Text style={styles.t}>{t('aiFeed.title')}</Text>
       {skinProfile && (
         <View style={styles.sc}>
-          <Text style={styles.st}> ملف بشرتكِ</Text>
+          <Text style={styles.st}>{t('aiFeed.skin-profile')}</Text>
           <Text style={styles.sd}>{skinProfile.skinType}</Text>
         </View>
       )}
-      {recommendations.length > 0 && <Text style={styles.stl}> موصى به لكِ</Text>}
+      {recommendations.length > 0 && <Text style={styles.stl}>{t('aiFeed.recommended')}</Text>}
       {recommendations.map((r) => (
         <View key={r.id} style={styles.card}>
           <Text style={styles.em}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nm}>{r.titleJson?.ar ?? r.nameAr}</Text>
-            <Text style={styles.meta}>{r.basePrice?.toLocaleString()} ر.س</Text>
+            <Text style={styles.nm}>{localize(r.titleJson, locale) || r.nameAr}</Text>
+            <Text style={styles.meta}>{t('aiFeed.price', { price: r.basePrice ?? 0 })}</Text>
           </View>
         </View>
       ))}
-      {wishlistItems.length > 0 && <Text style={styles.stl}>️ من قائمة أمنياتكِ</Text>}
+      {wishlistItems.length > 0 && <Text style={styles.stl}>{t('aiFeed.from-wishlist')}</Text>}
       {wishlistItems.map((w) => (
         <View key={w.id} style={styles.card}>
           <Text style={styles.em}>️</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nm}>{w.titleJson?.ar ?? w.nameAr}</Text>
-            <Text style={styles.meta}>{w.basePrice?.toLocaleString()} ر.س</Text>
+            <Text style={styles.nm}>{localize(w.titleJson, locale) || w.nameAr}</Text>
+            <Text style={styles.meta}>{t('aiFeed.price', { price: w.basePrice ?? 0 })}</Text>
           </View>
         </View>
       ))}

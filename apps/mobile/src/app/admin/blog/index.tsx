@@ -3,6 +3,8 @@ import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 interface BlogPost {
   id?: number;
@@ -16,11 +18,13 @@ interface BlogListResponse {
 }
 
 export default function AdminBlogScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const q = trpc.blog.listAll.useQuery({ page: 1, limit: BULK_PAGE_SIZE });
   const data = (q.data as unknown as BlogListResponse | null)?.items ?? [];
 
   if (q.isLoading) return <SkeletonList count={5} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل المقالات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return <ErrorAlert message={t('mobile.admin.blog.load-error')} onRetry={() => q.refetch()} />;
 
   return (
     <ScrollView
@@ -34,15 +38,17 @@ export default function AdminBlogScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> المدونة</Text>
+      <Text style={styles.t}>{t('admin.blog.title')}</Text>
       {data.map((p, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.title}>{p.titleJson?.ar ?? ''}</Text>
+            <Text style={styles.title}>{localize(p.titleJson, locale)}</Text>
             <Text style={styles.meta}>{p.slug ?? ''}</Text>
           </View>
           <View style={[styles.badge, p.isPublished ? styles.pub : styles.draft]}>
-            <Text style={styles.badgeText}>{p.isPublished ? 'منشور' : 'مسودة'}</Text>
+            <Text style={styles.badgeText}>
+              {p.isPublished ? t('admin.beauty-events.published') : t('admin.blog.draft')}
+            </Text>
           </View>
         </View>
       ))}

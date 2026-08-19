@@ -1,8 +1,10 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function WhatsAppBotScreen(): JSX.Element {
+  const { t } = useLocale();
   // Data used for future WhatsApp integration status
   const q = trpc.whatsappBot.commands.useQuery();
 
@@ -20,22 +22,22 @@ export default function WhatsAppBotScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> واتساب</Text>
-      <Text style={styles.sub}>احجزي خدماتكِ عبر الواتساب</Text>
+      <Text style={styles.t}>{t('mobile.public.whatsapp-bot.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.whatsapp-bot.subtitle')}</Text>
 
       <View style={styles.card}>
         <Text style={styles.emoji}></Text>
-        <Text style={styles.ct}>اربطي حسابكِ بالواتساب للحجز السريع</Text>
-        <Text style={styles.cd}>احصلي على تأكيد فوري وتذكيرات عبر الواتساب</Text>
+        <Text style={styles.ct}>{t('mobile.public.whatsapp-bot.card-title')}</Text>
+        <Text style={styles.cd}>{t('mobile.public.whatsapp-bot.card-desc')}</Text>
       </View>
 
       <View style={styles.features}>
-        <Text style={styles.ft}> المميزات</Text>
+        <Text style={styles.ft}>{t('mobile.public.whatsapp-bot.features')}</Text>
         {[
-          { emoji: '', text: 'حجز سريع عبر رسالة واتساب' },
-          { emoji: '', text: 'تذكير تلقائي قبل الموعد' },
-          { emoji: '', text: 'محادثة مباشرة مع الفنية' },
-          { emoji: '', text: 'استعراض الخدمات والأسعار' },
+          { emoji: '', text: t('mobile.public.whatsapp-bot.feature-1') },
+          { emoji: '', text: t('mobile.public.whatsapp-bot.feature-2') },
+          { emoji: '', text: t('mobile.public.whatsapp-bot.feature-3') },
+          { emoji: '', text: t('mobile.public.whatsapp-bot.feature-4') },
         ].map((f, i) => (
           <View key={i} style={styles.fr}>
             <Text style={styles.fe}>{f.emoji}</Text>
@@ -45,7 +47,7 @@ export default function WhatsAppBotScreen(): JSX.Element {
       </View>
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}> اربطي الواتساب الآن</Text>
+        <Text style={styles.bt}>{t('mobile.public.whatsapp-bot.connect')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

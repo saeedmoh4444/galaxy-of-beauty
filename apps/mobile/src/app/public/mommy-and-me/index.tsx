@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface MommyService {
   id?: number;
@@ -12,6 +13,7 @@ interface MommyService {
 }
 
 export default function MommyAndMeScreen(): JSX.Element {
+  const { t } = useLocale();
   const servicesQ = trpc.womensServices.categories.useQuery();
   const services: MommyService[] = (servicesQ.data as unknown as MommyService[] | undefined) ?? [];
   if (servicesQ.isLoading) return <SkeletonList count={4} />;
@@ -27,7 +29,7 @@ export default function MommyAndMeScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>‍ أمي وأنا</Text>
+      <Text style={styles.t}>{t('mobile.public.mommy-and-me.title')}</Text>
       {services.map((s) => (
         <View key={s.id} style={styles.card}>
           <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
@@ -35,12 +37,14 @@ export default function MommyAndMeScreen(): JSX.Element {
             <Text style={styles.sn}>{s.nameAr}</Text>
             <Text style={styles.sd}>{s.descAr}</Text>
             <View style={styles.sm}>
-              <Text style={styles.sp}>{s.price?.toLocaleString()} ر.س</Text>
+              <Text style={styles.sp}>
+                {s.price?.toLocaleString()} {t('misc.sar')}
+              </Text>
               <Text style={styles.sdu}>️ {s.duration}</Text>
             </View>
           </View>
           <TouchableOpacity style={styles.bb}>
-            <Text style={styles.bt}>حجز</Text>
+            <Text style={styles.bt}>{t('mobile.public.mommy-and-me.book')}</Text>
           </TouchableOpacity>
         </View>
       ))}

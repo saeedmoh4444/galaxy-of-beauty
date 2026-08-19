@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface AdminUserItem {
   name?: string;
@@ -14,11 +15,13 @@ interface AdminUsersResponse {
 }
 
 export default function AdminUsersScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.admin.listCustomers.useQuery({});
   const data = (q.data as unknown as AdminUsersResponse | null)?.items ?? [];
 
   if (q.isLoading) return <SkeletonList count={6} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل المستخدمين" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return <ErrorAlert message={t('admin.users.load-error')} onRetry={() => q.refetch()} />;
 
   return (
     <ScrollView
@@ -32,7 +35,7 @@ export default function AdminUsersScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> المستخدمين</Text>
+      <Text style={styles.t}>{t('mobile.admin.users.title')}</Text>
       {data.map((u, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.avatar}></Text>

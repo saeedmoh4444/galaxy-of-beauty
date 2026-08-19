@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 interface Category {
   id?: number;
@@ -11,11 +13,15 @@ interface Category {
 }
 
 export default function AdminCategoriesScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const q = trpc.categories.list.useQuery();
   const data = (q.data as unknown as Category[] | null) ?? [];
 
   if (q.isLoading) return <SkeletonList count={6} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل الفئات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return (
+      <ErrorAlert message={t('mobile.admin.categories.load-error')} onRetry={() => q.refetch()} />
+    );
 
   return (
     <ScrollView
@@ -29,13 +35,15 @@ export default function AdminCategoriesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> الفئات</Text>
+      <Text style={styles.t}>{t('mobile.admin.categories.title')}</Text>
       {data.map((cat, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{cat.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{cat.nameJson?.ar ?? ''}</Text>
-            <Text style={styles.meta}>{cat._count?.services ?? 0} خدمات</Text>
+            <Text style={styles.name}>{localize(cat.nameJson, locale)}</Text>
+            <Text style={styles.meta}>
+              {t('mobile.admin.categories.services-count', { count: cat._count?.services ?? 0 })}
+            </Text>
           </View>
         </View>
       ))}

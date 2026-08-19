@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 const WAITLIST = [
   {
     id: 1,
@@ -42,10 +43,11 @@ const WAITLIST = [
   },
 ];
 export default function TechWaitlistScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> قائمة الانتظار</Text>
-      <Text style={s.sub}>إدارة طلبات الانتظار</Text>
+      <Text style={s.h}>{t('mobile.tech.waitlist.title')}</Text>
+      <Text style={s.sub}>{t('mobile.tech.waitlist.subtitle')}</Text>
       {WAITLIST.map((w) => (
         <View key={w.id} style={[s.card, { opacity: w.notified ? 0.5 : 1 }]}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
@@ -59,11 +61,11 @@ export default function TechWaitlistScreen(): JSX.Element {
                 {w.service} · {w.date} {w.time}
               </Text>
             </View>
-            {w.notified && <Text style={[s.nb]}> تم الإشعار</Text>}
+            {w.notified && <Text style={[s.nb]}>{t('mobile.tech.waitlist.notified')}</Text>}
           </View>
           {!w.notified && (
             <TouchableOpacity style={s.btn}>
-              <Text style={s.bt}> إشعار بتوفر موعد</Text>
+              <Text style={s.bt}>{t('mobile.tech.waitlist.notify-available')}</Text>
             </TouchableOpacity>
           )}
         </View>

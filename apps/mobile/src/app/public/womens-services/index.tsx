@@ -3,6 +3,7 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ServiceItem {
   nameAr?: string;
@@ -10,12 +11,18 @@ interface ServiceItem {
 }
 
 export default function WomensServicesScreen(): JSX.Element {
+  const { t } = useLocale();
   const catsQ = trpc.womensServices.categories.useQuery();
   const [selectedCat, setSelectedCat] = useState<Record<string, unknown> | null>(null);
 
   if (catsQ.isLoading) return <SkeletonList count={6} />;
   if (catsQ.isError)
-    return <ErrorAlert message="فشل تحميل الخدمات" onRetry={() => catsQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.womens-services.load-error')}
+        onRetry={() => catsQ.refetch()}
+      />
+    );
 
   const categories = (catsQ.data as unknown as Record<string, unknown>[] | undefined) ?? [];
 
@@ -31,8 +38,8 @@ export default function WomensServicesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> خدمات نسائية</Text>
-      <Text style={styles.sub}>خدمات تجميلية متكاملة للمرأة</Text>
+      <Text style={styles.t}>{t('mobile.public.womens-services.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.womens-services.subtitle')}</Text>
       <View style={styles.catGrid}>
         {categories.map((cat: Record<string, unknown>) => (
           <TouchableOpacity
@@ -53,7 +60,9 @@ export default function WomensServicesScreen(): JSX.Element {
           {((selectedCat.services as ServiceItem[]) ?? []).map((s, i) => (
             <View key={i} style={styles.svcCard}>
               <Text style={styles.svcName}>{s.nameAr as string}</Text>
-              <Text style={styles.svcPrice}>{(s.price as number)?.toLocaleString()} ر.س</Text>
+              <Text style={styles.svcPrice}>
+                {(s.price as number)?.toLocaleString()} {t('misc.sar')}
+              </Text>
             </View>
           ))}
         </View>

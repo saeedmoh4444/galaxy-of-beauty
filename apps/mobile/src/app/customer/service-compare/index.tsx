@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 interface CompareService {
   id: number;
@@ -13,6 +15,7 @@ interface CompareService {
 }
 
 export default function ServiceCompareScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const [selected, setSelected] = useState<number[]>([]);
   const servicesQ = trpc.services.list.useQuery({});
   const services: CompareService[] =
@@ -35,7 +38,7 @@ export default function ServiceCompareScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ مقارنة الخدمات</Text>
+      <Text style={styles.t}>{t('marketing.compare.title')}</Text>
       <View style={styles.grid}>
         {services.slice(0, 12).map((s) => {
           const isSel = selected.includes(s.id);
@@ -47,26 +50,36 @@ export default function ServiceCompareScreen(): JSX.Element {
             >
               <Text style={styles.ce}>{s.emoji ?? ''}</Text>
               <Text style={[styles.cn, isSel && styles.cna]}>
-                {s.titleJson?.ar ?? s.nameAr ?? ''}
+                {s.titleJson ? localize(s.titleJson, locale) : (s.nameAr ?? '')}
               </Text>
-              <Text style={styles.cp}>{(s.basePrice ?? 0).toLocaleString()} ر.س</Text>
+              <Text style={styles.cp}>
+                {t('marketing.compare.price-sar', {
+                  price: (s.basePrice ?? 0).toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA'),
+                })}
+              </Text>
             </TouchableOpacity>
           );
         })}
       </View>
       {compareItems.length >= 2 && (
         <View style={styles.tbl}>
-          <Text style={styles.ttl}> المقارنة</Text>
+          <Text style={styles.ttl}>{t('mobile.serviceCompare.comparison')}</Text>
           {compareItems.map((s) => (
             <View key={s.id} style={styles.cc}>
-              <Text style={styles.ct}>{s.titleJson?.ar ?? ''}</Text>
+              <Text style={styles.ct}>{s.titleJson ? localize(s.titleJson, locale) : ''}</Text>
               <View style={styles.cr}>
                 <Text style={styles.cl}></Text>
-                <Text style={styles.cv}>{(s.basePrice ?? 0).toLocaleString()} ر.س</Text>
+                <Text style={styles.cv}>
+                  {t('marketing.compare.price-sar', {
+                    price: (s.basePrice ?? 0).toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA'),
+                  })}
+                </Text>
               </View>
               <View style={styles.cr}>
                 <Text style={styles.cl}>️</Text>
-                <Text style={styles.cv}>{s.durationMin ?? 0} دقيقة</Text>
+                <Text style={styles.cv}>
+                  {t('marketing.compare.duration-min', { min: s.durationMin ?? 0 })}
+                </Text>
               </View>
             </View>
           ))}

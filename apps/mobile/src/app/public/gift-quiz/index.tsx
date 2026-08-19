@@ -2,6 +2,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
@@ -26,6 +28,7 @@ const QUESTIONS = [
 ];
 
 export default function GiftQuizScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const recommendations = trpc.giftQuiz.recommend.useQuery(
@@ -38,10 +41,10 @@ export default function GiftQuizScreen(): JSX.Element {
       isLoading={recommendations.isLoading && Object.keys(answers).length === QUESTIONS.length}
       isError={recommendations.isError}
       isEmpty={false}
-      errorMessage="فشل تحميل التوصيات"
+      errorMessage={t('mobile.public.gift-quiz.load-error')}
       onRetry={() => recommendations.refetch()}
     >
-      <Text style={styles.title}> محدد الهدايا</Text>
+      <Text style={styles.title}>{t('mobile.public.gift-quiz.title')}</Text>
       {step < QUESTIONS.length ? (
         <View style={styles.card}>
           <Text style={styles.question}>{QUESTIONS[step]!.q}</Text>
@@ -60,14 +63,16 @@ export default function GiftQuizScreen(): JSX.Element {
         </View>
       ) : (
         <View>
-          <Text style={styles.resultTitle}> توصياتنا لكِ</Text>
+          <Text style={styles.resultTitle}>{t('mobile.public.gift-quiz.recommendations')}</Text>
           {((recommendations.data as unknown as GiftRecommendation[] | undefined) || []).map(
             (r, i) => (
               <View key={i} style={styles.recCard}>
                 <Text style={styles.recEmoji}>{r.emoji ?? ''}</Text>
                 <View style={styles.recInfo}>
-                  <Text style={styles.recName}>{r.nameJson?.ar ?? ''}</Text>
-                  <Text style={styles.recPrice}>{r.price ? `${r.price} ر.س` : ''}</Text>
+                  <Text style={styles.recName}>{localize(r.nameJson, locale)}</Text>
+                  <Text style={styles.recPrice}>
+                    {r.price ? t('mobile.public.gift-quiz.price', { price: r.price }) : ''}
+                  </Text>
                 </View>
               </View>
             ),
@@ -79,7 +84,7 @@ export default function GiftQuizScreen(): JSX.Element {
               setAnswers({});
             }}
           >
-            <Text style={styles.restartText}> إعادة الاختبار</Text>
+            <Text style={styles.restartText}>{t('mobile.public.gift-quiz.restart')}</Text>
           </TouchableOpacity>
         </View>
       )}

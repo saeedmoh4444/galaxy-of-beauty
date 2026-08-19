@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface TodayHealthData {
   water?: number;
@@ -9,6 +10,7 @@ interface TodayHealthData {
 }
 
 export default function WellnessTrackerScreen(): JSX.Element {
+  const { t } = useLocale();
   const todayQ = trpc.wellnessTracker.today.useQuery();
   if (todayQ.isLoading) return <SkeletonList count={3} />;
   const d: TodayHealthData = (todayQ.data as unknown as TodayHealthData) ?? {};
@@ -24,22 +26,22 @@ export default function WellnessTrackerScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> متعقب الصحة</Text>
+      <Text style={styles.t}>{t('mobile.wellnessTracker.title')}</Text>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={styles.kpiVal}>{d.water ?? 0}</Text>
-          <Text style={styles.kpiLabel}>أكواب</Text>
+          <Text style={styles.kpiLabel}>{t('mobile.wellnessTracker.cups')}</Text>
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#2563eb' }]}>{d.sleep ?? 0}h</Text>
-          <Text style={styles.kpiLabel}>نوم</Text>
+          <Text style={styles.kpiLabel}>{t('mobile.wellnessTracker.sleep')}</Text>
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#059669' }]}>{d.steps ?? 0}</Text>
-          <Text style={styles.kpiLabel}>خطوة</Text>
+          <Text style={styles.kpiLabel}>{t('mobile.wellnessTracker.steps')}</Text>
         </View>
       </View>
     </ScrollView>

@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 interface BeautyPackage {
   id?: number;
@@ -12,11 +14,15 @@ interface BeautyPackage {
 }
 
 export default function AdminPackagesScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const q = trpc.beautyPackages.listAll.useQuery();
   const data = (q.data as unknown as BeautyPackage[] | null) ?? [];
 
   if (q.isLoading) return <SkeletonList count={4} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل الباقات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return (
+      <ErrorAlert message={t('mobile.admin.packages.load-error')} onRetry={() => q.refetch()} />
+    );
 
   return (
     <ScrollView
@@ -30,18 +36,25 @@ export default function AdminPackagesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> الباقات</Text>
+      <Text style={styles.t}>{t('admin.packages.title')}</Text>
       {data.map((p, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{p.nameJson?.ar ?? ''}</Text>
+            <Text style={styles.name}>{localize(p.nameJson, locale)}</Text>
             <Text style={styles.discount}>
-              -{p.discountPercent ?? 0}% · {p.services?.length || 0} خدمات
+              {t('admin.packages.meta', {
+                pct: p.discountPercent ?? 0,
+                count: p.services?.length || 0,
+              })}
             </Text>
           </View>
           <View style={[styles.badge, p.isActive ? styles.active : styles.inactive]}>
-            <Text style={styles.badgeText}>{p.isActive ? 'نشط' : 'غير نشط'}</Text>
+            <Text style={styles.badgeText}>
+              {p.isActive
+                ? t('mobile.admin.campaigns.active')
+                : t('mobile.admin.campaigns.inactive')}
+            </Text>
           </View>
         </View>
       ))}

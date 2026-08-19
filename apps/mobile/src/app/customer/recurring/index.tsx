@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface RecurringBooking {
   id?: number;
@@ -10,6 +11,7 @@ interface RecurringBooking {
 }
 
 export default function RecurringScreen(): JSX.Element {
+  const { t } = useLocale();
   const bookingsQ = trpc.recurringBookings.list.useQuery();
   const data: RecurringBooking[] =
     (bookingsQ.data as unknown as RecurringBooking[] | undefined) ?? [];
@@ -28,14 +30,17 @@ export default function RecurringScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> حجوزات متكررة</Text>
+      <Text style={styles.t}>{t('mobile.recurring.title')}</Text>
       {data.map((r, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{r.serviceName ?? ''}</Text>
             <Text style={styles.freq}>
-              {r.recurrence ?? ''} · {r.occurrences ?? 0} مرات
+              {t('mobile.recurring.freq', {
+                recurrence: r.recurrence ?? '',
+                count: r.occurrences ?? 0,
+              })}
             </Text>
           </View>
         </View>

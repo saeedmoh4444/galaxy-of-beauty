@@ -1,12 +1,13 @@
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 
-const TIERS: Record<string, { emoji: string; label: string }> = {
-  SILVER: { emoji: '', label: 'فضية' },
-  GOLD: { emoji: '', label: 'ذهبية' },
-  PLATINUM: { emoji: '', label: 'بلاتينية' },
+const TIERS: Record<string, { emoji: string }> = {
+  SILVER: { emoji: '' },
+  GOLD: { emoji: '' },
+  PLATINUM: { emoji: '' },
 };
 
 interface LoyaltyAccount {
@@ -22,31 +23,44 @@ interface LoyaltyTxn {
 }
 
 export default function LoyaltyScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const account = trpc.loyalty.myAccount.useQuery();
   const txs = trpc.loyalty.myTransactions.useQuery({ page: 1, limit: DEFAULT_PAGE_SIZE });
 
   const acc = account.data as unknown as LoyaltyAccount | undefined;
+
+  const tierLabels: Record<string, string> = {
+    SILVER: t('loyalty.tier-silver'),
+    GOLD: t('loyalty.tier-gold'),
+    PLATINUM: t('loyalty.tier-platinum'),
+  };
 
   return (
     <ScreenState
       isLoading={account.isLoading}
       isError={account.isError}
       isEmpty={!acc}
-      errorMessage="فشل تحميل حساب الولاء"
+      errorMessage={t('loyalty.load-error')}
       onRetry={() => account.refetch()}
     >
-      <Text style={styles.title}> الولاء</Text>
+      <Text style={styles.title}>{t('mobile.loyalty')}</Text>
 
       {/* Tier Card */}
       <View style={styles.tierCard}>
         <Text style={styles.tierEmoji}>{TIERS[acc?.tier ?? 'SILVER']?.emoji ?? ''}</Text>
-        <Text style={styles.tierLabel}>{TIERS[acc?.tier ?? 'SILVER']?.label ?? 'فضية'}</Text>
-        <Text style={styles.points}>{acc?.points ?? 0} نقطة</Text>
-        <Text style={styles.lifetime}>إجمالي: {acc?.lifetimePoints ?? 0} نقطة</Text>
+        <Text style={styles.tierLabel}>
+          {tierLabels[acc?.tier ?? 'SILVER'] ?? t('loyalty.tier-silver')}
+        </Text>
+        <Text style={styles.points}>
+          {acc?.points ?? 0} {t('loyalty.points')}
+        </Text>
+        <Text style={styles.lifetime}>
+          {t('loyalty.lifetime-points', { points: acc?.lifetimePoints ?? 0 })}
+        </Text>
       </View>
 
       {/* Recent Transactions */}
-      <Text style={styles.sectionTitle}>آخر العمليات</Text>
+      <Text style={styles.sectionTitle}>{t('loyalty.recent-transactions')}</Text>
       {txs.isLoading ? null : (
         <FlatList
           data={(txs.data as unknown as { items?: LoyaltyTxn[] } | null)?.items ?? []}
@@ -54,9 +68,13 @@ export default function LoyaltyScreen(): JSX.Element {
           renderItem={({ item }) => (
             <View style={styles.txnRow}>
               <View>
-                <Text style={styles.txnReason}>{item.reason ?? 'عملية'}</Text>
+                <Text style={styles.txnReason}>{item.reason ?? t('loyalty.txn-fallback')}</Text>
                 <Text style={styles.txnDate}>
-                  {item.createdAt ? new Date(item.createdAt).toLocaleDateString('ar-SA') : ''}
+                  {item.createdAt
+                    ? new Date(item.createdAt).toLocaleDateString(
+                        locale === 'ar' ? 'ar-SA' : 'en-GB',
+                      )
+                    : ''}
                 </Text>
               </View>
               <Text

@@ -1,10 +1,12 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function StreaksScreen(): JSX.Element {
+  const { t } = useLocale();
   const streak = trpc.streaks.get.useQuery();
   const data = streak.data as Record<string, unknown> | undefined;
 
@@ -13,18 +15,20 @@ export default function StreaksScreen(): JSX.Element {
       isLoading={streak.isLoading}
       isError={streak.isError}
       isEmpty={!data}
-      errorMessage="فشل تحميل الاستمرارية"
+      errorMessage={t('mobile.streaks.load-error')}
       onRetry={() => streak.refetch()}
     >
-      <Text style={styles.title}> الاستمرارية</Text>
+      <Text style={styles.title}>{t('mobile.streaks.title')}</Text>
       <View style={styles.card}>
         <Text style={styles.fire}></Text>
         <Text style={styles.current}>
-          الاستمرارية الحالية: {String(data?.currentStreak ?? 0)} أيام
+          {t('mobile.streaks.current', { days: String(data?.currentStreak ?? 0) })}
         </Text>
-        <Text style={styles.longest}>أطول استمرارية: {String(data?.longestStreak ?? 0)} أيام</Text>
+        <Text style={styles.longest}>
+          {t('mobile.streaks.longest', { days: String(data?.longestStreak ?? 0) })}
+        </Text>
       </View>
-      <Text style={styles.tip}>احجزي أسبوعياً للحفاظ على استمراريتكِ!</Text>
+      <Text style={styles.tip}>{t('mobile.streaks.tip')}</Text>
     </ScreenState>
   );
 }

@@ -12,6 +12,7 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface CommunityPost {
   id?: number;
@@ -26,6 +27,7 @@ interface CommunityFeed {
 }
 
 export default function CommunityScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const postsQ = trpc.community.feed.useQuery({ page: 1, limit: EXTENDED_PAGE_SIZE });
   const [content, setContent] = useState('');
 
@@ -50,7 +52,12 @@ export default function CommunityScreen(): JSX.Element {
 
   if (postsQ.isLoading) return <SkeletonList count={5} />;
   if (postsQ.isError)
-    return <ErrorAlert message="فشل تحميل المجتمع" onRetry={() => postsQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.community.load-error')}
+        onRetry={() => postsQ.refetch()}
+      />
+    );
 
   const items = (postsQ.data as CommunityFeed | null)?.posts ?? [];
 
@@ -67,11 +74,11 @@ export default function CommunityScreen(): JSX.Element {
           />
         }
       >
-        <Text style={styles.t}> مجتمع الجمال</Text>
-        <Text style={styles.sub}>شاركي تجاربكِ وآراءكِ</Text>
+        <Text style={styles.t}>{t('mobile.public.community.title')}</Text>
+        <Text style={styles.sub}>{t('mobile.public.community.subtitle')}</Text>
         <View style={styles.composer}>
           <TextInput
-            placeholder="شاركي تجربتكِ..."
+            placeholder={t('mobile.public.community.placeholder')}
             value={content}
             onChangeText={setContent}
             multiline
@@ -83,26 +90,34 @@ export default function CommunityScreen(): JSX.Element {
             disabled={createMut.isPending || !content.trim()}
             style={[styles.postBtn, !content.trim() && { opacity: 0.5 }]}
           >
-            <Text style={styles.postBtnText}>{createMut.isPending ? '...' : 'نشر'}</Text>
+            <Text style={styles.postBtnText}>
+              {createMut.isPending ? '...' : t('mobile.public.community.post')}
+            </Text>
           </TouchableOpacity>
         </View>
         {items.length === 0 ? (
-          <Text style={styles.e}>لا توجد منشورات بعد. كوني الأولى! </Text>
+          <Text style={styles.e}>{t('mobile.public.community.empty')}</Text>
         ) : (
           items.map((p) => (
             <View key={p.id} style={styles.card}>
               <View style={styles.cardHeader}>
                 <Text style={styles.avatar}>‍</Text>
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.userName}>{p.userName ?? 'مستخدم'}</Text>
+                  <Text style={styles.userName}>
+                    {p.userName ?? t('mobile.public.community.user')}
+                  </Text>
                   <Text style={styles.date}>
-                    {new Date(p.createdAt ?? '').toLocaleDateString('ar-SA')}
+                    {new Date(p.createdAt ?? '').toLocaleDateString(
+                      locale === 'ar' ? 'ar-SA' : 'en-US',
+                    )}
                   </Text>
                 </View>
               </View>
               <Text style={styles.postContent}>{p.content}</Text>
               <TouchableOpacity onPress={() => toggleLike(p.id ?? 0)} style={styles.likeBtn}>
-                <Text style={styles.likeText}>️ {p.likes ?? 0}</Text>
+                <Text style={styles.likeText}>
+                  {t('mobile.public.community.likes', { count: p.likes ?? 0 })}
+                </Text>
               </TouchableOpacity>
             </View>
           ))

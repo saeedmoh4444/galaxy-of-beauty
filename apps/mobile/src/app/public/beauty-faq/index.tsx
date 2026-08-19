@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface FaqItem {
   id?: number;
@@ -9,6 +10,7 @@ interface FaqItem {
 }
 
 export default function BeautyFaqScreen(): JSX.Element {
+  const { t } = useLocale();
   const faqsQ = trpc.beautyFaq.search.useQuery({});
   const faqs = (faqsQ.data as FaqItem[] | undefined) ?? [];
   if (faqsQ.isLoading) return <SkeletonList count={5} />;
@@ -24,7 +26,7 @@ export default function BeautyFaqScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> الأسئلة الشائعة</Text>
+      <Text style={styles.t}>{t('mobile.public.beauty-faq.title')}</Text>
       {faqs.map((f, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.fq}>{f.question}</Text>

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-nati
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface StyleMatchResult {
   styleEmoji?: string;
@@ -10,6 +11,7 @@ interface StyleMatchResult {
 }
 
 export default function StyleMatchScreen(): JSX.Element {
+  const { t } = useLocale();
   const [result, setResult] = useState<StyleMatchResult | null>(null);
   const matchMut = trpc.styleMatch.match.useMutation({
     onSuccess: (d) => setResult(d as unknown as StyleMatchResult),
@@ -20,13 +22,13 @@ export default function StyleMatchScreen(): JSX.Element {
   if (matchMut.isPending) return <SkeletonList count={3} />;
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> مطابقة الأسلوب</Text>
+      <Text style={styles.t}>{t('mobile.styleMatch.title')}</Text>
       {!result ? (
         <View style={styles.centered}>
           <Text style={styles.emoji}></Text>
-          <Text style={styles.hint}>اكتشفي أسلوبكِ المثالي</Text>
+          <Text style={styles.hint}>{t('mobile.styleMatch.hint')}</Text>
           <TouchableOpacity onPress={match} style={styles.btn}>
-            <Text style={styles.bt}> حللي أسلوبي</Text>
+            <Text style={styles.bt}>{t('mobile.styleMatch.analyze')}</Text>
           </TouchableOpacity>
         </View>
       ) : (

@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 interface AdminService {
   id?: number;
@@ -11,11 +13,13 @@ interface AdminService {
 }
 
 export default function AdminServicesScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const q = trpc.services.list.useQuery({});
   const data = (q.data as unknown as { items?: AdminService[] } | null)?.items ?? [];
 
   if (q.isLoading) return <SkeletonList count={6} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل الخدمات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return <ErrorAlert message={t('admin.services.load-error')} onRetry={() => q.refetch()} />;
 
   return (
     <ScrollView
@@ -29,13 +33,15 @@ export default function AdminServicesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>‍️ الخدمات</Text>
+      <Text style={styles.t}>{t('mobile.admin.services.title')}</Text>
       {data.map((s, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{s.emoji ?? '‍️'}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{s.titleJson?.ar ?? ''}</Text>
-            <Text style={styles.price}>{(s.basePrice ?? 0).toLocaleString()} ر.س</Text>
+            <Text style={styles.name}>{localize(s.titleJson, locale)}</Text>
+            <Text style={styles.price}>
+              {(s.basePrice ?? 0).toLocaleString()} {t('misc.sar')}
+            </Text>
           </View>
         </View>
       ))}

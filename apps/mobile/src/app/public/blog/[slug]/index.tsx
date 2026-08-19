@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface BlogPostData {
   titleJson?: { ar?: string; en?: string };
@@ -11,6 +13,7 @@ interface BlogPostData {
 }
 
 export default function BlogPostScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const postQ = trpc.blog.getBySlug.useQuery({ slug });
 
@@ -20,11 +23,11 @@ export default function BlogPostScreen(): JSX.Element {
   if (!post)
     return (
       <View style={styles.c}>
-        <Text style={styles.e}>المقال غير موجود</Text>
+        <Text style={styles.e}>{t('mobile.public.blog.not-found')}</Text>
       </View>
     );
-  const title = post.titleJson?.ar ?? String(slug).replace(/-/g, ' ');
-  const body = post.bodyJson?.ar ?? '';
+  const title = localize(post.titleJson, locale) ?? String(slug).replace(/-/g, ' ');
+  const body = localize(post.bodyJson, locale) ?? '';
   const tags = post.tags ?? [];
   const stripHtml = (html: string) => html.replace(/<[^>]+>/g, '').substring(0, 500);
   return (
@@ -43,11 +46,14 @@ export default function BlogPostScreen(): JSX.Element {
       <View style={styles.meta}>
         {post.publishedAt && (
           <Text style={styles.date}>
-            {new Date(post.publishedAt ?? '').toLocaleDateString('ar-SA', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
+            {new Date(post.publishedAt ?? '').toLocaleDateString(
+              locale === 'ar' ? 'ar-SA' : 'en-US',
+              {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              },
+            )}
           </Text>
         )}
         {tags.length > 0 && (

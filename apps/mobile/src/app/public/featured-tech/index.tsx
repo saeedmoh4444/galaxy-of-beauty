@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface FeaturedTech {
   name?: string;
@@ -14,6 +15,7 @@ interface PastFeaturedTech {
 }
 
 export default function FeaturedTechScreen(): JSX.Element {
+  const { t } = useLocale();
   const currentQ = trpc.featuredTech.current.useQuery();
   const pastQ = trpc.featuredTech.past.useQuery();
 
@@ -37,7 +39,7 @@ export default function FeaturedTechScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> فنية الشهر</Text>
+      <Text style={styles.t}>{t('mobile.public.featured-tech.title')}</Text>
       {tech && (
         <View style={styles.featured}>
           <Text style={styles.fEmoji}>‍</Text>
@@ -47,9 +49,9 @@ export default function FeaturedTechScreen(): JSX.Element {
           </Text>
         </View>
       )}
-      <Text style={styles.sectionTitle}> سابقات</Text>
+      <Text style={styles.sectionTitle}>{t('mobile.public.featured-tech.past-title')}</Text>
       {past.length === 0 ? (
-        <Text style={styles.e}>لا توجد فنيات سابقات</Text>
+        <Text style={styles.e}>{t('mobile.public.featured-tech.empty')}</Text>
       ) : (
         past.map((p, i) => (
           <View key={i} style={styles.card}>

@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = {
@@ -13,6 +14,7 @@ const COLORS = {
 };
 
 export default function GiftCardsScreen(): JSX.Element {
+  const { t } = useLocale();
   const cards = trpc.giftCards.myCards.useQuery() ?? {
     data: null,
     isLoading: false,
@@ -26,12 +28,12 @@ export default function GiftCardsScreen(): JSX.Element {
       isLoading={cards.isLoading}
       isError={cards.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل البطاقات"
-      emptyTitle="لا توجد بطاقات هدايا"
-      emptyDescription="اشتري بطاقة هدية لأصدقائك"
+      errorMessage={t('giftCards.loadError')}
+      emptyTitle={t('giftCards.emptyTitle')}
+      emptyDescription={t('giftCards.empty-desc')}
       onRetry={() => cards.refetch()}
     >
-      <Text style={styles.title}> بطاقات الهدية</Text>
+      <Text style={styles.title}>{t('giftCards.title')}</Text>
       {(data as Record<string, unknown>[])?.map((gc: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.row}>
@@ -42,11 +44,11 @@ export default function GiftCardsScreen(): JSX.Element {
                 { color: gc.status === 'ACTIVE' ? COLORS.active : COLORS.redeemed },
               ]}
             >
-              {(gc.status as string) === 'ACTIVE' ? ' نشطة' : ' مستخدمة'}
+              {(gc.status as string) === 'ACTIVE' ? t('giftCards.active') : t('giftCards.used')}
             </Text>
           </View>
           <Text style={styles.balance}>
-            الرصيد: {formatCurrency(Number(gc.balance ?? gc.amount ?? 0))}
+            {t('giftCards.balanceLabel')} {formatCurrency(Number(gc.balance ?? gc.amount ?? 0))}
           </Text>
         </View>
       ))}

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface CompareProduct {
   id?: number;
@@ -14,6 +15,7 @@ interface CompareProduct {
 
 export default function ProductCompareScreen(): JSX.Element {
   const [selected, setSelected] = useState<number[]>([]);
+  const { t } = useLocale();
   const productsQ = trpc.productCompare.list.useQuery();
   const products: CompareProduct[] =
     (productsQ.data as unknown as CompareProduct[] | undefined) ?? [];
@@ -35,7 +37,7 @@ export default function ProductCompareScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> مقارنة المنتجات</Text>
+      <Text style={styles.t}>{t('mobile.public.product-compare.title')}</Text>
       <View style={styles.grid}>
         {products.map((p) => {
           const isSel = selected.includes(p.id ?? -1);
@@ -47,20 +49,24 @@ export default function ProductCompareScreen(): JSX.Element {
             >
               <Text style={styles.ce}>{p.emoji ?? ''}</Text>
               <Text style={[styles.cn, isSel && styles.cna]}>{p.nameAr ?? ''}</Text>
-              <Text style={styles.cp}>{(p.price ?? 0).toLocaleString()} ر.س</Text>
+              <Text style={styles.cp}>
+                {(p.price ?? 0).toLocaleString()} {t('misc.sar')}
+              </Text>
             </TouchableOpacity>
           );
         })}
       </View>
       {ci.length > 0 && (
         <View style={styles.tbl}>
-          <Text style={styles.ttl}> المقارنة</Text>
+          <Text style={styles.ttl}>{t('mobile.public.product-compare.compare-title')}</Text>
           {ci.map((p) => (
             <View key={p.id} style={styles.tc}>
               <Text style={styles.tcn}>{p.nameAr ?? ''}</Text>
               <View style={styles.tr}>
                 <Text style={styles.tl}></Text>
-                <Text style={styles.tv}>{(p.price ?? 0).toLocaleString()} ر.س</Text>
+                <Text style={styles.tv}>
+                  {(p.price ?? 0).toLocaleString()} {t('misc.sar')}
+                </Text>
               </View>
               <View style={styles.tr}>
                 <Text style={styles.tl}>️</Text>

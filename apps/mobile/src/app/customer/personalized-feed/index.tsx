@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface FeedResponse {
   items?: FeedItem[];
@@ -17,6 +18,7 @@ interface FeedItem {
 }
 
 export default function PersonalizedFeedScreen(): JSX.Element {
+  const { t } = useLocale();
   const feedQ = trpc.personalizedFeed.feed.useQuery();
   if (feedQ.isLoading) return <SkeletonList count={5} />;
   const items = (feedQ.data as FeedResponse | null)?.items ?? [];
@@ -32,7 +34,7 @@ export default function PersonalizedFeedScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> خلاصتي</Text>
+      <Text style={styles.t}>{t('mobile.personalizedFeed.title')}</Text>
       {items.map((item) => (
         <View key={item.id} style={styles.card}>
           <Text style={styles.em}>{item.emoji}</Text>
@@ -43,7 +45,7 @@ export default function PersonalizedFeedScreen(): JSX.Element {
                 ? `‍ ${item.technician}`
                 : item.brand
                   ? `️ ${item.brand}`
-                  : ` ${item.price} ر.س`}
+                  : t('mobile.personalizedFeed.price', { price: item.price ?? 0 })}
             </Text>
           </View>
           <View style={styles.rb}>

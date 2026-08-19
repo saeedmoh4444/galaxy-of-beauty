@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const BD: Record<number, number> = { 2: 10, 3: 15, 4: 20, 5: 25 };
 
@@ -15,6 +16,7 @@ interface BundleService {
 }
 
 export default function BundlesScreen(): JSX.Element {
+  const { t } = useLocale();
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const servicesQ = trpc.categories.list.useQuery();
   const services = (servicesQ.data as unknown as BundleService[]) ?? [];
@@ -39,12 +41,10 @@ export default function BundlesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> اصنعي باقتكِ</Text>
+      <Text style={styles.t}>{t('mobile.public.bundles.title')}</Text>
       {count > 0 && (
         <View style={styles.db}>
-          <Text style={styles.dt}>
-            خصم {discount}% على {count} خدمات!
-          </Text>
+          <Text style={styles.dt}>{t('mobile.public.bundles.discount', { discount, count })}</Text>
         </View>
       )}
       {services.slice(0, 15).map((s) => {
@@ -58,7 +58,9 @@ export default function BundlesScreen(): JSX.Element {
             <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.sn}>{s.nameJson?.ar ?? s.nameAr ?? s.slug}</Text>
-              <Text style={styles.sm}>{s._count?.services ?? 0} خدمات</Text>
+              <Text style={styles.sm}>
+                {t('mobile.public.bundles.services-count', { count: s._count?.services ?? 0 })}
+              </Text>
             </View>
             <View style={[styles.ch, isSel && styles.cha]}>
               <Text style={[styles.cht, isSel && styles.chta]}>{isSel ? '' : '+'}</Text>

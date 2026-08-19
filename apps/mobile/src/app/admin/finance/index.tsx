@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface AdminFinanceDashboard {
   totalRevenue?: number;
@@ -10,12 +11,15 @@ interface AdminFinanceDashboard {
 }
 
 export default function AdminFinanceScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.admin.dashboardStats.useQuery();
   const data = (q.data as unknown as AdminFinanceDashboard | null) ?? {};
 
   if (q.isLoading) return <SkeletonList count={4} />;
   if (q.isError)
-    return <ErrorAlert message="فشل تحميل البيانات المالية" onRetry={() => q.refetch()} />;
+    return (
+      <ErrorAlert message={t('mobile.admin.finance.load-error')} onRetry={() => q.refetch()} />
+    );
 
   const d: AdminFinanceDashboard = data ?? {};
 
@@ -31,26 +35,26 @@ export default function AdminFinanceScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> المالية</Text>
+      <Text style={styles.t}>{t('mobile.admin.finance.title')}</Text>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={styles.kpiVal}>{(d.totalRevenue ?? 0).toLocaleString()}</Text>
-          <Text style={styles.kpiLabel}>الإيرادات</Text>
+          <Text style={styles.kpiLabel}>{t('admin.finance.revenue')}</Text>
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#dc2626' }]}>
             {(d.totalPayouts ?? 0).toLocaleString()}
           </Text>
-          <Text style={styles.kpiLabel}>المدفوعات</Text>
+          <Text style={styles.kpiLabel}>{t('mobile.admin.finance.payouts')}</Text>
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#059669' }]}>
             {(d.platformFees ?? 0).toLocaleString()}
           </Text>
-          <Text style={styles.kpiLabel}>رسوم المنصة</Text>
+          <Text style={styles.kpiLabel}>{t('admin.finance.platform-fees')}</Text>
         </View>
       </View>
     </ScrollView>

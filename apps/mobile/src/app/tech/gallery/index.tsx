@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 const PHOTOS = [
   { id: 1, emoji: '', name: 'تسريحة عروس', client: 'سارة', date: '15 يوليو', likes: 24 },
   { id: 2, emoji: '', name: 'مكياج سهرة', client: 'نورة', date: '20 يوليو', likes: 18 },
@@ -8,10 +9,11 @@ const PHOTOS = [
   { id: 6, emoji: '', name: 'مساج استرخاء', client: 'نورة', date: '12 أغسطس', likes: 20 },
 ];
 export default function TechGalleryScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>️ معرض الأعمال</Text>
-      <Text style={s.sub}>صور من أعمالكِ السابقة</Text>
+      <Text style={s.h}>{t('mobile.tech.gallery.title')}</Text>
+      <Text style={s.sub}>{t('mobile.tech.gallery.subtitle')}</Text>
       <View style={s.grid}>
         {PHOTOS.map((p) => (
           <View key={p.id} style={s.card}>
@@ -20,7 +22,7 @@ export default function TechGalleryScreen(): JSX.Element {
             <Text style={s.cd}>
               {p.client} · {p.date}
             </Text>
-            <Text style={s.cl}>️ {p.likes} إعجاب</Text>
+            <Text style={s.cl}>{t('mobile.tech.gallery.likes', { count: p.likes })}</Text>
           </View>
         ))}
       </View>

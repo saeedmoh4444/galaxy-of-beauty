@@ -2,6 +2,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -27,6 +28,7 @@ interface AnalyzerQueryResult {
 }
 
 export default function IngredientAnalyzerScreen(): JSX.Element {
+  const { t } = useLocale();
   const [search, setSearch] = useState('');
   const [submitted, setSubmitted] = useState('');
   const result = (trpc.ingredientAnalyzer.analyze.useQuery(
@@ -44,19 +46,19 @@ export default function IngredientAnalyzerScreen(): JSX.Element {
       isLoading={submitted.length > 0 && result.isLoading}
       isError={result.isError}
       isEmpty={false}
-      errorMessage="فشل تحليل المكون"
+      errorMessage={t('mobile.public.ingredient-analyzer.load-error')}
       onRetry={() => result.refetch()}
     >
-      <Text style={styles.title}> تحليل المكونات</Text>
+      <Text style={styles.title}>{t('mobile.public.ingredient-analyzer.title')}</Text>
       <View style={styles.inputRow}>
         <TextInput
           style={styles.input}
-          placeholder="أدخلي اسم المكون..."
+          placeholder={t('mobile.public.ingredient-analyzer.placeholder')}
           value={search}
           onChangeText={setSearch}
         />
         <TouchableOpacity style={styles.analyzeBtn} onPress={() => setSubmitted(search)}>
-          <Text style={styles.analyzeText}>تحليل</Text>
+          <Text style={styles.analyzeText}>{t('mobile.public.ingredient-analyzer.analyze')}</Text>
         </TouchableOpacity>
       </View>
       {result.data ? (

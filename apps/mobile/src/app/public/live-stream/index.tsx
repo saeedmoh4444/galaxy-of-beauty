@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface LiveStreamItem {
   id?: number;
@@ -12,6 +13,7 @@ interface LiveStreamItem {
 }
 
 export default function LiveStreamScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const upcomingQ = trpc.liveStream.upcoming.useQuery({});
   const items = (upcomingQ.data as unknown as LiveStreamItem[] | undefined) ?? [];
   if (upcomingQ.isLoading) return <SkeletonList count={4} />;
@@ -29,8 +31,8 @@ export default function LiveStreamScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> البث المباشر</Text>
-      {live.length > 0 && <Text style={styles.st}> مباشر الآن</Text>}
+      <Text style={styles.t}>{t('mobile.public.live-stream.title')}</Text>
+      {live.length > 0 && <Text style={styles.st}>{t('mobile.public.live-stream.live-now')}</Text>}
       {live.map((s) => (
         <View key={s.id} style={[styles.card, styles.lc]}>
           <Text style={styles.se}></Text>
@@ -41,11 +43,13 @@ export default function LiveStreamScreen(): JSX.Element {
             </Text>
           </View>
           <TouchableOpacity style={styles.wb}>
-            <Text style={styles.wt}>مشاهدة</Text>
+            <Text style={styles.wt}>{t('mobile.public.live-stream.watch')}</Text>
           </TouchableOpacity>
         </View>
       ))}
-      {upcoming.length > 0 && <Text style={styles.st}> قادم</Text>}
+      {upcoming.length > 0 && (
+        <Text style={styles.st}>{t('mobile.public.live-stream.upcoming')}</Text>
+      )}
       {upcoming.map((s) => (
         <View key={s.id} style={styles.card}>
           <Text style={styles.se}></Text>
@@ -54,7 +58,7 @@ export default function LiveStreamScreen(): JSX.Element {
             <Text style={styles.sm}>
               {s.host ?? ''} ·{' '}
               {s.scheduledAt
-                ? new Date(s.scheduledAt).toLocaleDateString('ar-SA', {
+                ? new Date(s.scheduledAt).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US', {
                     month: 'short',
                     day: 'numeric',
                     hour: '2-digit',

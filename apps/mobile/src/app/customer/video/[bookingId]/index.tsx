@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } 
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface VideoSession {
   roomId?: string;
@@ -9,6 +10,7 @@ interface VideoSession {
 }
 
 export default function VideoBookingScreen(): JSX.Element {
+  const { t } = useLocale();
   const { bookingId } = useLocalSearchParams<{ bookingId: string }>();
   const router = useRouter();
   const dataQ = trpc.video.getByBooking.useQuery({ bookingId: parseInt(bookingId, 10) });
@@ -17,7 +19,7 @@ export default function VideoBookingScreen(): JSX.Element {
   if (!data)
     return (
       <View style={styles.c}>
-        <Text style={styles.e}>الجلسة غير متاحة</Text>
+        <Text style={styles.e}>{t('mobile.video.unavailable')}</Text>
       </View>
     );
   return (
@@ -32,7 +34,7 @@ export default function VideoBookingScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> جلسة فيديو</Text>
+      <Text style={styles.t}>{t('mobile.video.title')}</Text>
       <View style={styles.card}>
         <Text style={styles.code}>{data.roomId ?? '—'}</Text>
         <Text style={styles.stat}>{data.status ?? ''}</Text>
@@ -41,7 +43,7 @@ export default function VideoBookingScreen(): JSX.Element {
         onPress={() => router.push(`/customer/video/${bookingId}/room` as never)}
         style={styles.btn}
       >
-        <Text style={styles.bt}> دخول الغرفة</Text>
+        <Text style={styles.bt}>{t('mobile.video.join-room')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

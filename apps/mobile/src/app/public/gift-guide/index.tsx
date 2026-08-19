@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface GiftGuide {
   id?: number;
@@ -13,11 +14,17 @@ interface GiftGuide {
 }
 
 export default function GiftGuideScreen(): JSX.Element {
+  const { t } = useLocale();
   const guidesQ = trpc.giftQuiz.questions.useQuery();
 
   if (guidesQ.isLoading) return <SkeletonList count={4} />;
   if (guidesQ.isError)
-    return <ErrorAlert message="فشل تحميل الدليل" onRetry={() => guidesQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.gift-guide.load-error')}
+        onRetry={() => guidesQ.refetch()}
+      />
+    );
 
   const items = (guidesQ.data ?? []) as GiftGuide[];
 
@@ -33,10 +40,10 @@ export default function GiftGuideScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> دليل الهدايا</Text>
-      <Text style={styles.sub}>أفكار هدايا لكل المناسبات</Text>
+      <Text style={styles.t}>{t('mobile.public.gift-guide.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.gift-guide.subtitle')}</Text>
       {items.length === 0 ? (
-        <Text style={styles.e}>لا توجد أدلة</Text>
+        <Text style={styles.e}>{t('mobile.public.gift-guide.empty')}</Text>
       ) : (
         items.map((g) => (
           <View key={g.id} style={styles.card}>
@@ -45,11 +52,13 @@ export default function GiftGuideScreen(): JSX.Element {
               <Text style={styles.guideTitle}>{g.titleAr as string}</Text>
               <Text style={styles.guideOccasion}>{g.occasionAr as string}</Text>
               <Text style={styles.guidePrice}>
-                من {(g.priceRange as string) ?? (g.minPrice as number)?.toLocaleString() + ' ر.س'}
+                {t('mobile.public.gift-guide.from-price', {
+                  price: (g.priceRange as string) ?? (g.minPrice as number)?.toLocaleString() ?? '',
+                })}
               </Text>
             </View>
             <TouchableOpacity style={styles.viewBtn}>
-              <Text style={styles.viewBtnText}>عرض</Text>
+              <Text style={styles.viewBtnText}>{t('mobile.public.gift-guide.view')}</Text>
             </TouchableOpacity>
           </View>
         ))

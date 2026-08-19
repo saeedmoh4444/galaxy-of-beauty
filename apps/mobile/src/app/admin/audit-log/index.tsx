@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 const LOGS = [
   {
     action: 'إضافة خدمة جديدة',
@@ -14,10 +15,11 @@ const LOGS = [
   { action: 'تصدير تقرير مالي', user: 'أ. نورة', time: 'قبل يومين', emoji: '', type: 'export' },
 ];
 export default function AuditLogScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> سجل التدقيق</Text>
-      <Text style={s.sub}>مراقبة جميع التغييرات في المنصة</Text>
+      <Text style={s.h}>{t('admin.audit-log.title')}</Text>
+      <Text style={s.sub}>{t('mobile.admin.audit-log.subtitle')}</Text>
       {LOGS.map((l, i) => (
         <View key={i} style={s.card}>
           <Text style={s.ce}>{l.emoji}</Text>
@@ -59,12 +61,12 @@ export default function AuditLogScreen(): JSX.Element {
               ]}
             >
               {l.type === 'create'
-                ? 'إنشاء'
+                ? t('mobile.admin.audit-log.tag-create')
                 : l.type === 'delete'
-                  ? 'حذف'
+                  ? t('mobile.admin.audit-log.tag-delete')
                   : l.type === 'export'
-                    ? 'تصدير'
-                    : 'تعديل'}
+                    ? t('mobile.admin.audit-log.tag-export')
+                    : t('mobile.admin.audit-log.tag-update')}
             </Text>
           </View>
         </View>

@@ -2,6 +2,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -12,6 +13,7 @@ const COLORS = {
 };
 
 export default function IngredientSubScreen(): JSX.Element {
+  const { t } = useLocale();
   const [search, setSearch] = useState('');
   const [submitted, setSubmitted] = useState('');
   const result = trpc.ingredientSub.find.useQuery(
@@ -24,19 +26,19 @@ export default function IngredientSubScreen(): JSX.Element {
       isLoading={submitted.length > 0 && result.isLoading}
       isError={result.isError}
       isEmpty={false}
-      errorMessage="فشل البحث عن بدائل"
+      errorMessage={t('mobile.public.ingredient-sub.load-error')}
       onRetry={() => result.refetch()}
     >
-      <Text style={styles.title}> بدائل المكونات</Text>
+      <Text style={styles.title}>{t('mobile.public.ingredient-sub.title')}</Text>
       <View style={styles.inputRow}>
         <TextInput
           style={styles.input}
-          placeholder="أدخلي اسم المكون..."
+          placeholder={t('mobile.public.ingredient-sub.placeholder')}
           value={search}
           onChangeText={setSearch}
         />
         <TouchableOpacity style={styles.searchBtn} onPress={() => setSubmitted(search)}>
-          <Text style={styles.searchText}>بحث</Text>
+          <Text style={styles.searchText}>{t('mobile.public.ingredient-sub.search')}</Text>
         </TouchableOpacity>
       </View>
       {((result.data as unknown as { subs?: string[] } | null)?.subs ?? []).map((alt, i) => (

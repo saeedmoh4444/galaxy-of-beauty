@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import type { ReactNode, ErrorInfo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -11,6 +12,40 @@ interface ErrorBoundaryProps {
 interface ErrorBoundaryState {
   hasError: boolean;
   error: Error | null;
+}
+
+function DefaultErrorFallback({
+  error,
+  onRetry,
+  onDismiss,
+}: {
+  error: Error | null;
+  onRetry: () => void;
+  onDismiss: () => void;
+}): JSX.Element {
+  const { t } = useLocale();
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.iconCircle}>
+        <Text style={styles.iconEmoji}></Text>
+      </View>
+      <Text style={styles.title}>{t('error.unexpected')}</Text>
+      <Text style={styles.subtitle}>{t('mobile.core.errorBoundaryDesc')}</Text>
+      {error && (
+        <Text style={styles.errorMsg} numberOfLines={3}>
+          {error.message}
+        </Text>
+      )}
+      <View style={styles.actions}>
+        <TouchableOpacity style={styles.retryBtn} onPress={onRetry} activeOpacity={0.8}>
+          <Text style={styles.retryText}>{t('error.try-again')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.reloadBtn} onPress={onDismiss} activeOpacity={0.8}>
+          <Text style={styles.reloadText}>{t('mobile.core.dismiss')}</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
+  );
 }
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
@@ -40,34 +75,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       if (this.props.fallback) return this.props.fallback;
 
       return (
-        <ScrollView contentContainerStyle={styles.container}>
-          <View style={styles.iconCircle}>
-            <Text style={styles.iconEmoji}></Text>
-          </View>
-          <Text style={styles.title}>حدث خطأ غير متوقع</Text>
-          <Text style={styles.subtitle}>نأسف على هذا الخطأ. يرجى المحاولة لاحقاً.</Text>
-          {this.state.error && (
-            <Text style={styles.errorMsg} numberOfLines={3}>
-              {this.state.error.message}
-            </Text>
-          )}
-          <View style={styles.actions}>
-            <TouchableOpacity
-              style={styles.retryBtn}
-              onPress={this.handleReset}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.retryText}>المحاولة مرة أخرى</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.reloadBtn}
-              onPress={() => this.setState({ hasError: false, error: null })}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.reloadText}>تجاهل</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+        <DefaultErrorFallback
+          error={this.state.error}
+          onRetry={this.handleReset}
+          onDismiss={() => this.setState({ hasError: false, error: null })}
+        />
       );
     }
 

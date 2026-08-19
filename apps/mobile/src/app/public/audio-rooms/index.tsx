@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface AudioRoom {
   id?: number;
@@ -17,11 +18,17 @@ interface AudioRoomsData {
 }
 
 export default function AudioRoomsScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const roomsQ = trpc.audioRooms.rooms.useQuery();
 
   if (roomsQ.isLoading) return <SkeletonList count={4} />;
   if (roomsQ.isError)
-    return <ErrorAlert message="فشل تحميل الغرف الصوتية" onRetry={() => roomsQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.audio-rooms.load-error')}
+        onRetry={() => roomsQ.refetch()}
+      />
+    );
 
   const rooms = roomsQ.data as AudioRoomsData | null;
   const live = rooms?.live ?? [];
@@ -39,24 +46,29 @@ export default function AudioRoomsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ الغرف الصوتية</Text>
-      <Text style={styles.sub}>انضمي لنقاشات مباشرة مع خبراء التجميل</Text>
-      {live.length > 0 && <Text style={styles.sectionTitle}> مباشر الآن</Text>}
+      <Text style={styles.t}>{t('mobile.public.audio-rooms.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.audio-rooms.subtitle')}</Text>
+      {live.length > 0 && (
+        <Text style={styles.sectionTitle}>{t('mobile.public.audio-rooms.live')}</Text>
+      )}
       {live.map((r) => (
         <View key={r.id} style={[styles.card, styles.liveCard]}>
           <Text style={styles.roomEmoji}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.roomTitle}>{r.title ?? ''}</Text>
             <Text style={styles.roomMeta}>
-              {r.host ?? ''} · {r.listeners ?? 0} مستمعين
+              {r.host ?? ''} ·{' '}
+              {t('mobile.public.audio-rooms.listeners', { count: r.listeners ?? 0 })}
             </Text>
           </View>
           <TouchableOpacity style={styles.joinBtn}>
-            <Text style={styles.joinBtnText}>انضمام</Text>
+            <Text style={styles.joinBtnText}>{t('mobile.public.audio-rooms.join')}</Text>
           </TouchableOpacity>
         </View>
       ))}
-      {upcoming.length > 0 && <Text style={styles.sectionTitle}> قادم</Text>}
+      {upcoming.length > 0 && (
+        <Text style={styles.sectionTitle}>{t('mobile.public.audio-rooms.upcoming')}</Text>
+      )}
       {upcoming.map((r) => (
         <View key={r.id} style={styles.card}>
           <Text style={styles.roomEmoji}></Text>
@@ -65,7 +77,7 @@ export default function AudioRoomsScreen(): JSX.Element {
             <Text style={styles.roomMeta}>
               {r.host ?? ''} ·{' '}
               {r.scheduledAt
-                ? new Date(r.scheduledAt).toLocaleDateString('ar-SA', {
+                ? new Date(r.scheduledAt).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US', {
                     month: 'short',
                     day: 'numeric',
                   })
@@ -73,11 +85,13 @@ export default function AudioRoomsScreen(): JSX.Element {
             </Text>
           </View>
           <View style={styles.remindBadge}>
-            <Text style={styles.remindText}> تذكير</Text>
+            <Text style={styles.remindText}>{t('mobile.public.audio-rooms.remind')}</Text>
           </View>
         </View>
       ))}
-      {live.length === 0 && upcoming.length === 0 && <Text style={styles.e}>لا توجد غرف</Text>}
+      {live.length === 0 && upcoming.length === 0 && (
+        <Text style={styles.e}>{t('mobile.public.audio-rooms.empty')}</Text>
+      )}
     </ScrollView>
   );
 }

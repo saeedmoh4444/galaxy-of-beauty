@@ -1,8 +1,10 @@
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { useState } from 'react';
+import { localize } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -14,6 +16,7 @@ const COLORS = {
 
 export default function ServicesScreen(): JSX.Element {
   const [search, setSearch] = useState('');
+  const { t, locale } = useLocale();
   const services = trpc.services.list.useQuery({
     sort: 'popular',
     limit: 20,
@@ -26,14 +29,14 @@ export default function ServicesScreen(): JSX.Element {
       isLoading={services.isLoading}
       isError={services.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل الخدمات"
-      emptyTitle="لا توجد خدمات"
+      errorMessage={t('marketing.services.load-error')}
+      emptyTitle={t('marketing.services.no-services')}
       onRetry={() => services.refetch()}
     >
-      <Text style={styles.title}> الخدمات</Text>
+      <Text style={styles.title}>{t('mobile.core.servicesTitle')}</Text>
       <TextInput
         style={styles.search}
-        placeholder=" بحث عن خدمة..."
+        placeholder={t('mobile.core.searchServicePlaceholder')}
         value={search}
         onChangeText={(t) => {
           setSearch(t);
@@ -46,10 +49,10 @@ export default function ServicesScreen(): JSX.Element {
           <View style={styles.row}>
             <View style={styles.left}>
               <Text style={styles.name}>
-                {(s.titleJson as Record<string, string>)?.ar ?? (s.titleAr as string) ?? ''}
+                {localize(s.titleJson, locale) || (s.titleAr as string) || ''}
               </Text>
               <Text style={styles.desc} numberOfLines={2}>
-                {(s.descriptionJson as Record<string, string>)?.ar?.slice(0, 80) ?? ''}
+                {localize(s.descriptionJson, locale).slice(0, 80)}
               </Text>
             </View>
             <Text style={styles.price}>{formatCurrency(Number(s.basePrice))}</Text>

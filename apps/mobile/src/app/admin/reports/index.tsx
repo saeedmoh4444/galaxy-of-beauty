@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ReportRow {
   name?: string;
@@ -14,11 +15,15 @@ interface DashboardData {
 }
 
 export default function AdminReportsScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.adminReports.dashboard.useQuery();
   const data = (q.data as unknown as DashboardData | null) ?? {};
 
   if (q.isLoading) return <SkeletonList count={5} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل التقارير" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return (
+      <ErrorAlert message={t('mobile.admin.reports.load-error')} onRetry={() => q.refetch()} />
+    );
 
   const d = data ?? {};
   const topTechs = d.topTechs ?? [];
@@ -36,21 +41,27 @@ export default function AdminReportsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> التقارير</Text>
-      {topTechs.length > 0 && <Text style={styles.st}>‍ أفضل الفنيات</Text>}
-      {topTechs.map((t, i) => (
+      <Text style={styles.t}>{t('admin.reports.title')}</Text>
+      {topTechs.length > 0 && (
+        <Text style={styles.st}>{t('mobile.admin.reports.top-technicians')}</Text>
+      )}
+      {topTechs.map((row, i) => (
         <View key={i} style={styles.row}>
           <Text style={styles.r}>#{i + 1}</Text>
-          <Text style={styles.n}>{t.name}</Text>
-          <Text style={styles.s}>{t.bookings} حجز</Text>
+          <Text style={styles.n}>{row.name}</Text>
+          <Text style={styles.s}>
+            {t('admin.reports.bookings-count', { count: row.bookings ?? 0 })}
+          </Text>
         </View>
       ))}
-      {byService.length > 0 && <Text style={styles.st}> حسب الخدمة</Text>}
-      {byService.map((s, i) => (
+      {byService.length > 0 && <Text style={styles.st}>{t('admin.reports.by-service')}</Text>}
+      {byService.map((svc, i) => (
         <View key={i} style={styles.row}>
           <Text style={styles.r}>#{i + 1}</Text>
-          <Text style={styles.n}>{s.name}</Text>
-          <Text style={styles.s}>{s.bookings} حجز</Text>
+          <Text style={styles.n}>{svc.name}</Text>
+          <Text style={styles.s}>
+            {t('admin.reports.bookings-count', { count: svc.bookings ?? 0 })}
+          </Text>
         </View>
       ))}
     </ScrollView>

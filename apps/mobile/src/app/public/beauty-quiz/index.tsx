@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const questions = [
   {
@@ -36,6 +37,7 @@ const questions = [
 ];
 
 export default function BeautyQuizScreen(): JSX.Element {
+  const { t } = useLocale();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [done, setDone] = useState(false);
@@ -54,11 +56,11 @@ export default function BeautyQuizScreen(): JSX.Element {
   if (done) {
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}> نتيجة الاختبار</Text>
+        <Text style={styles.t}>{t('mobile.public.beauty-quiz.result-title')}</Text>
         <View style={styles.resultCard}>
           <Text style={styles.resultEmoji}></Text>
-          <Text style={styles.resultTitle}>شكراً لمشاركتك!</Text>
-          <Text style={styles.resultDesc}>بناءً على إجاباتك، سنرشح لكِ أفضل الخدمات</Text>
+          <Text style={styles.resultTitle}>{t('mobile.public.beauty-quiz.thanks')}</Text>
+          <Text style={styles.resultDesc}>{t('mobile.public.beauty-quiz.result-desc')}</Text>
           <View style={styles.answers}>
             {Object.entries(answers).map(([qId, val]) => {
               const q = questions.find((x) => x.id === qId);
@@ -79,7 +81,7 @@ export default function BeautyQuizScreen(): JSX.Element {
           }}
           style={styles.btn}
         >
-          <Text style={styles.btnText}> إعادة</Text>
+          <Text style={styles.btnText}>{t('mobile.public.beauty-quiz.restart')}</Text>
         </TouchableOpacity>
       </ScrollView>
     );
@@ -89,7 +91,7 @@ export default function BeautyQuizScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> اختبار الجمال</Text>
+      <Text style={styles.t}>{t('mobile.public.beauty-quiz.title')}</Text>
       <Text style={styles.progress}>
         {step + 1}/{questions.length}
       </Text>

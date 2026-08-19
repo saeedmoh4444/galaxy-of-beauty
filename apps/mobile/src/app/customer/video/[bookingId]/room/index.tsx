@@ -2,35 +2,39 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { useToast } from '@/components/Toast';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function VideoRoomScreen() {
+  const { t } = useLocale();
   const { bookingId, room } = useLocalSearchParams<{ bookingId: string; room: string }>();
   const { showToast } = useToast();
   const [copied, setCopied] = useState(false);
 
   const copyRoomId = () => {
     setCopied(true);
-    showToast('info', `رقم الغرفة: ${room || 'غير معروف'}`);
+    showToast('info', t('mobile.video.room-toast', { room: room || t('mobile.video.unknown') }));
     setTimeout(() => setCopied(false), 2000);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>غرفة الفيديو</Text>
+      <Text style={styles.title}>{t('videoRoom.title')}</Text>
 
       <View style={styles.card}>
         <Text style={styles.emoji}></Text>
-        <Text style={styles.roomLabel}>رقم الغرفة</Text>
-        <Text style={styles.roomId}>{room || 'غير معروف'}</Text>
-        <Text style={styles.bookingLabel}>الحجز: {bookingId}</Text>
+        <Text style={styles.roomLabel}>{t('mobile.video.room-label')}</Text>
+        <Text style={styles.roomId}>{room || t('mobile.video.unknown')}</Text>
+        <Text style={styles.bookingLabel}>{t('mobile.video.booking-id', { id: bookingId })}</Text>
 
         <View style={styles.videoPlaceholder}>
-          <Text style={styles.placeholderText}>واجهة الفيديو</Text>
-          <Text style={styles.placeholderSub}>يتم التكامل مع Daily.co أو Whereby</Text>
+          <Text style={styles.placeholderText}>{t('mobile.video.video-ui')}</Text>
+          <Text style={styles.placeholderSub}>{t('mobile.video.integration-note')}</Text>
         </View>
 
         <TouchableOpacity style={styles.copyBtn} onPress={copyRoomId} activeOpacity={0.8}>
-          <Text style={styles.copyText}>{copied ? ' تم النسخ' : 'نسخ رقم الغرفة'}</Text>
+          <Text style={styles.copyText}>
+            {copied ? t('mobile.video.copied') : t('videoRoom.copyRoomNumber')}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

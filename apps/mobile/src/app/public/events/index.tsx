@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 const ET: Record<string, { label: string; emoji: string }> = {
   workshop: { label: 'ورشة عمل', emoji: '' },
@@ -20,6 +22,7 @@ interface BeautyEvent {
 }
 
 export default function EventsScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const [filter, setFilter] = useState<string | null>(null);
   const eventsQ = trpc.beautyEvents.upcoming.useQuery();
 
@@ -39,14 +42,14 @@ export default function EventsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> الفعاليات</Text>
+      <Text style={styles.t}>{t('mobile.public.events.title')}</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
         <View style={{ flexDirection: 'row', gap: 8 }}>
           <TouchableOpacity
             onPress={() => setFilter(null)}
             style={[styles.fc, !filter && styles.fca]}
           >
-            <Text style={[styles.ft, !filter && styles.fta]}>الكل</Text>
+            <Text style={[styles.ft, !filter && styles.fta]}>{t('marketing.events.all')}</Text>
           </TouchableOpacity>
           {Object.entries(ET).map(([key, t]) => (
             <TouchableOpacity
@@ -67,19 +70,19 @@ export default function EventsScreen(): JSX.Element {
           <View key={e.id} style={styles.card}>
             <Text style={styles.ee}>{et.emoji}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.en}>{e.nameJson?.ar ?? e.nameAr ?? ''}</Text>
+              <Text style={styles.en}>{localize(e.nameJson, locale) ?? e.nameAr ?? ''}</Text>
               <Text style={styles.em}>
                 {e.startsAt
-                  ? new Date(e.startsAt).toLocaleDateString('ar-SA', {
+                  ? new Date(e.startsAt).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US', {
                       month: 'long',
                       day: 'numeric',
                     })
                   : ''}{' '}
-                · {e.location ?? 'أونلاين'}
+                · {e.location ?? t('mobile.public.events.online')}
               </Text>
             </View>
             <TouchableOpacity style={styles.jb}>
-              <Text style={styles.jt}>تسجيل</Text>
+              <Text style={styles.jt}>{t('mobile.public.events.register')}</Text>
             </TouchableOpacity>
           </View>
         );

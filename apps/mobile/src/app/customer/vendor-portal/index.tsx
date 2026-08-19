@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface VendorDashboard {
   totalProducts?: number;
@@ -23,6 +24,7 @@ interface VendorProduct {
 }
 
 export default function VendorPortalScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const dashQ = trpc.vendorPortal.dashboard.useQuery();
   const productsQ = trpc.vendorPortal.myProducts.useQuery();
   const dash = dashQ.data as VendorDashboard | null;
@@ -54,19 +56,19 @@ export default function VendorPortalScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> بوابة البائعين</Text>
+      <Text style={styles.t}>{t('mobile.vendorPortal.title')}</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
           <Text style={styles.kv}>{dash?.totalProducts ?? 0}</Text>
-          <Text style={styles.kl}>منتجات</Text>
+          <Text style={styles.kl}>{t('mobile.vendorPortal.products')}</Text>
         </View>
         <View style={styles.k}>
           <Text style={styles.ke}></Text>
           <Text style={[styles.kv, { color: '#059669' }]}>
-            {(dash?.totalRevenue ?? 0)?.toLocaleString()}
+            {(dash?.totalRevenue ?? 0)?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA')}
           </Text>
-          <Text style={styles.kl}>ر.س</Text>
+          <Text style={styles.kl}>{t('mobile.vendorPortal.sar')}</Text>
         </View>
       </View>
       {products.map((p) => (
@@ -74,7 +76,11 @@ export default function VendorPortalScreen(): JSX.Element {
           <Text style={styles.em}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>{p.name}</Text>
-            <Text style={styles.meta}>{p.price?.toLocaleString()} ر.س</Text>
+            <Text style={styles.meta}>
+              {t('marketing.compare.price-sar', {
+                price: p.price?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA') ?? '',
+              })}
+            </Text>
           </View>
           <TouchableOpacity onPress={() => remove(p.id)}>
             <Text style={styles.del}>️</Text>

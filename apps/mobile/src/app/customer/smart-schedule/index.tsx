@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 interface ServiceRow {
   id: number;
@@ -25,6 +27,7 @@ interface SmartScheduleData {
 }
 
 export default function SmartScheduleScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const [selectedSvc, setSelectedSvc] = useState<number | null>(null);
   const servicesQ = trpc.services.list.useQuery({});
   const services: ServiceRow[] = (servicesQ.data as unknown as ServiceListData | null)?.items ?? [];
@@ -50,7 +53,7 @@ export default function SmartScheduleScreen(): JSX.Element {
           />
         }
       >
-        <Text style={styles.t}> جدولة ذكية</Text>
+        <Text style={styles.t}>{t('mobile.smartSchedule.title')}</Text>
         {services.slice(0, 10).map((s) => (
           <TouchableOpacity
             key={s.id}
@@ -58,7 +61,7 @@ export default function SmartScheduleScreen(): JSX.Element {
             style={[styles.sc, selectedSvc === s.id && styles.sca]}
           >
             <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
-            <Text style={styles.sn}>{s.titleJson?.ar ?? s.nameAr}</Text>
+            <Text style={styles.sn}>{s.titleJson ? localize(s.titleJson, locale) : s.nameAr}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -66,7 +69,7 @@ export default function SmartScheduleScreen(): JSX.Element {
   if (slotsQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> جدولة ذكية</Text>
+      <Text style={styles.t}>{t('mobile.smartSchedule.title')}</Text>
       {(slots.suggestions ?? []).map((s, i) => (
         <View key={i} style={styles.card}>
           <View style={styles.rk}>
@@ -74,24 +77,27 @@ export default function SmartScheduleScreen(): JSX.Element {
           </View>
           <View style={{ flex: 1 }}>
             <Text style={styles.sd}>
-              {new Date(s.startAt).toLocaleDateString('ar-SA', {
+              {new Date(s.startAt).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA', {
                 weekday: 'long',
                 month: 'long',
                 day: 'numeric',
               })}
             </Text>
             <Text style={styles.stm}>
-              {new Date(s.startAt).toLocaleTimeString('ar-SA', {
+              {new Date(s.startAt).toLocaleTimeString(locale === 'en' ? 'en-GB' : 'ar-SA', {
                 hour: '2-digit',
                 minute: '2-digit',
               })}
             </Text>
             <Text style={styles.sr}>
-              ‍ #{s.technicianId} · {s.rating}
+              {t('mobile.smartSchedule.tech-rating', {
+                id: s.technicianId ?? 0,
+                rating: s.rating ?? 0,
+              })}
             </Text>
           </View>
           <TouchableOpacity style={styles.bb}>
-            <Text style={styles.bt}>احجز</Text>
+            <Text style={styles.bt}>{t('mobile.smartSchedule.book')}</Text>
           </TouchableOpacity>
         </View>
       ))}
@@ -101,7 +107,7 @@ export default function SmartScheduleScreen(): JSX.Element {
         }}
         style={styles.back}
       >
-        <Text style={styles.backt}> تغيير الخدمة</Text>
+        <Text style={styles.backt}>{t('mobile.smartSchedule.change-service')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

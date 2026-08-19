@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const TRIMESTERS = [
   {
@@ -39,14 +40,15 @@ const TRIMESTERS = [
 ];
 
 export default function PregnancyBeautyScreen(): JSX.Element {
+  const { t } = useLocale();
   const [trimester, setTrimester] = useState('second');
 
-  const t = TRIMESTERS.find((x) => x.key === trimester)!;
+  const current = TRIMESTERS.find((x) => x.key === trimester)!;
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> جمال الحامل</Text>
-      <Text style={styles.sub}>خدمات آمنة لكل مرحلة من الحمل</Text>
+      <Text style={styles.t}>{t('mobile.public.pregnancy-beauty.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.pregnancy-beauty.subtitle')}</Text>
 
       <View style={styles.tabs}>
         {TRIMESTERS.map((tr) => (
@@ -59,15 +61,15 @@ export default function PregnancyBeautyScreen(): JSX.Element {
               {tr.emoji} {tr.name}
             </Text>
             <Text style={[styles.tabWeeks, trimester === tr.key && { color: '#fff' }]}>
-              أسبوع {tr.weeks}
+              {t('mobile.public.pregnancy-beauty.weeks', { weeks: tr.weeks })}
             </Text>
           </TouchableOpacity>
         ))}
       </View>
 
-      <View style={[styles.card, { borderColor: t.color }]}>
-        <Text style={styles.cardTitle}> نصائح</Text>
-        {t.tips.map((tip, i) => (
+      <View style={[styles.card, { borderColor: current.color }]}>
+        <Text style={styles.cardTitle}>{t('mobile.public.pregnancy-beauty.tips')}</Text>
+        {current.tips.map((tip, i) => (
           <View key={i} style={styles.row}>
             <Text style={styles.bullet}>•</Text>
             <Text style={styles.text}>{tip}</Text>
@@ -76,9 +78,11 @@ export default function PregnancyBeautyScreen(): JSX.Element {
       </View>
 
       <View style={styles.card}>
-        <Text style={[styles.cardTitle, { color: '#059669' }]}> آمن</Text>
+        <Text style={[styles.cardTitle, { color: '#059669' }]}>
+          {t('mobile.public.pregnancy-beauty.safe')}
+        </Text>
         <View style={styles.grid}>
-          {t.safe.map((s, i) => (
+          {current.safe.map((s, i) => (
             <View key={i} style={styles.chip}>
               <Text style={styles.chipText}> {s}</Text>
             </View>
@@ -87,9 +91,11 @@ export default function PregnancyBeautyScreen(): JSX.Element {
       </View>
 
       <View style={styles.card}>
-        <Text style={[styles.cardTitle, { color: '#dc2626' }]}> تجنبي</Text>
+        <Text style={[styles.cardTitle, { color: '#dc2626' }]}>
+          {t('mobile.public.pregnancy-beauty.avoid')}
+        </Text>
         <View style={styles.grid}>
-          {t.avoid.map((s, i) => (
+          {current.avoid.map((s, i) => (
             <View key={i} style={[styles.chip, styles.chipAvoid]}>
               <Text style={[styles.chipText, { color: '#dc2626' }]}> {s}</Text>
             </View>

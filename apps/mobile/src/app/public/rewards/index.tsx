@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const TL: Record<string, { name: string; emoji: string; color: string }> = {
   SILVER: { name: 'الفضية', emoji: '', color: '#9ca3af' },
@@ -19,6 +20,7 @@ interface Reward {
 }
 
 export default function RewardsScreen(): JSX.Element {
+  const { t } = useLocale();
   const rewardsQ = trpc.loyalty.rewards.useQuery();
   const rewards: Reward[] = (rewardsQ.data as unknown as Reward[] | undefined) ?? [];
   if (rewardsQ.isLoading) return <SkeletonList count={4} />;
@@ -34,7 +36,7 @@ export default function RewardsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> برنامج المكافآت</Text>
+      <Text style={styles.t}>{t('mobile.public.rewards.title')}</Text>
       <View style={styles.tr}>
         {Object.entries(TL).map(([key, t]) => (
           <View
@@ -53,7 +55,11 @@ export default function RewardsScreen(): JSX.Element {
             <Text style={styles.rn}>{r.nameAr ?? r.titleAr}</Text>
             <Text style={styles.rd}>{r.descAr}</Text>
           </View>
-          <Text style={styles.rp}>{(r.pointsCost ?? r.points)?.toLocaleString()} نقطة</Text>
+          <Text style={styles.rp}>
+            {t('mobile.public.rewards.points', {
+              count: (r.pointsCost ?? r.points)?.toLocaleString() ?? '',
+            })}
+          </Text>
         </View>
       ))}
     </ScrollView>

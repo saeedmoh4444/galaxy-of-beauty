@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ShortVideo {
   id?: number;
@@ -14,11 +15,17 @@ interface ShortVideo {
 }
 
 export default function BeautyShortsScreen(): JSX.Element {
+  const { t } = useLocale();
   const shortsQ = trpc.beautyShorts.feed.useQuery();
 
   if (shortsQ.isLoading) return <SkeletonList count={4} />;
   if (shortsQ.isError)
-    return <ErrorAlert message="فشل تحميل الفيديوهات" onRetry={() => shortsQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.beauty-shorts.load-error')}
+        onRetry={() => shortsQ.refetch()}
+      />
+    );
 
   const items = (shortsQ.data ?? []) as ShortVideo[];
 
@@ -34,10 +41,10 @@ export default function BeautyShortsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> فيديوهات قصيرة</Text>
-      <Text style={styles.sub}>أحدث فيديوهات التجميل القصيرة</Text>
+      <Text style={styles.t}>{t('mobile.public.beauty-shorts.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.beauty-shorts.subtitle')}</Text>
       {items.length === 0 ? (
-        <Text style={styles.e}>لا توجد فيديوهات</Text>
+        <Text style={styles.e}>{t('mobile.public.beauty-shorts.empty')}</Text>
       ) : (
         items.map((s, i) => (
           <TouchableOpacity key={s.id ?? i} style={styles.card}>

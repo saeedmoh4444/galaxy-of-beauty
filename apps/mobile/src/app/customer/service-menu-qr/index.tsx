@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface QrTechnician {
   id: number;
@@ -15,6 +16,7 @@ interface QrGenerated {
 }
 
 export default function ServiceMenuQRScreen(): JSX.Element {
+  const { t } = useLocale();
   const [result, setResult] = useState<QrGenerated | null>(null);
   const techsQ = trpc.serviceMenuQr.list.useQuery();
   const techs: QrTechnician[] = (techsQ.data as unknown as QrTechnician[] | undefined) ?? [];
@@ -38,22 +40,22 @@ export default function ServiceMenuQRScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> QR قائمة الخدمات</Text>
-      {techs.map((t) => (
-        <View key={t.id} style={styles.card}>
+      <Text style={styles.t}>{t('mobile.serviceMenuQr.title')}</Text>
+      {techs.map((tech) => (
+        <View key={tech.id} style={styles.card}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.tn}>{t.name}</Text>
-            <Text style={styles.ts}>{t.services}</Text>
+            <Text style={styles.tn}>{tech.name}</Text>
+            <Text style={styles.ts}>{tech.services}</Text>
           </View>
-          <TouchableOpacity onPress={() => generate(t.id)} style={styles.qb}>
-            <Text style={styles.qbt}>توليد QR</Text>
+          <TouchableOpacity onPress={() => generate(tech.id)} style={styles.qb}>
+            <Text style={styles.qbt}>{t('mobile.serviceMenuQr.generate')}</Text>
           </TouchableOpacity>
         </View>
       ))}
       {result && (
         <View style={styles.rc}>
           <Text style={styles.re}></Text>
-          <Text style={styles.rt}>تم توليد QR!</Text>
+          <Text style={styles.rt}>{t('mobile.serviceMenuQr.generated')}</Text>
           <Text style={styles.ru}>{result.qrUrl ?? result.url}</Text>
         </View>
       )}

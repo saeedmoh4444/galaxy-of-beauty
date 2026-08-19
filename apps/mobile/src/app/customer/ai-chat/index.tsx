@@ -8,16 +8,22 @@ import {
   TextInput,
 } from 'react-native';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 import { useState, useRef } from 'react';
 
 export default function AiChatScreen() {
+  const { locale, t } = useLocale();
   const [messages, setMessages] = useState<
     { id: string; role: string; content: string; time: string }[]
   >([]);
   const [input, setInput] = useState('');
   const scrollRef = useRef<ScrollView>(null);
 
-  const now = () => new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+  const now = () =>
+    new Date().toLocaleTimeString(locale === 'ar' ? 'ar-SA' : 'en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
 
   const chatMut = trpc.ai.chat.useMutation({
     onSuccess: (res) => {
@@ -36,7 +42,7 @@ export default function AiChatScreen() {
         {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
-          content: 'عذراً، حدث خطأ. حاولي مرة أخرى.',
+          content: t('aiChat.error'),
           time: now(),
         },
       ]);
@@ -62,8 +68,8 @@ export default function AiChatScreen() {
       <View style={styles.chatHeader}>
         <Text style={styles.avatar}></Text>
         <View>
-          <Text style={styles.chatTitle}>مجرة الجمال</Text>
-          <Text style={styles.chatSub}>مستشارة التجميل الذكية</Text>
+          <Text style={styles.chatTitle}>{t('aiChat.title')}</Text>
+          <Text style={styles.chatSub}>{t('aiChat.smartBeautyAdvisor')}</Text>
         </View>
       </View>
 
@@ -75,8 +81,8 @@ export default function AiChatScreen() {
         {messages.length === 0 && (
           <View style={styles.centered}>
             <Text style={styles.emptyIcon}></Text>
-            <Text style={styles.empty}>مرحباً بك في مجرة الجمال!</Text>
-            <Text style={styles.hint}>أنا مستشارة التجميل الذكية، اسأليني عن أي شيء</Text>
+            <Text style={styles.empty}>{t('aiChat.welcomeTitle')}</Text>
+            <Text style={styles.hint}>{t('aiChat.welcome-desc')}</Text>
           </View>
         )}
         {messages.map((m) => (
@@ -90,7 +96,9 @@ export default function AiChatScreen() {
                 m.role === 'user' ? styles.bubbleUser : styles.bubbleAssistant,
               ]}
             >
-              {m.role === 'assistant' && <Text style={styles.assistantLabel}>مجرة الجمال</Text>}
+              {m.role === 'assistant' && (
+                <Text style={styles.assistantLabel}>{t('aiChat.title')}</Text>
+              )}
               <Text style={[styles.msgText, m.role === 'user' && { color: '#fff' }]}>
                 {m.content}
               </Text>
@@ -105,7 +113,7 @@ export default function AiChatScreen() {
         {chatMut.isPending && (
           <View style={styles.msgAssistant}>
             <View style={styles.bubbleAssistant}>
-              <Text style={styles.assistantLabel}>مجرة الجمال</Text>
+              <Text style={styles.assistantLabel}>{t('aiChat.title')}</Text>
               <ActivityIndicator color="#7c3aed" size="small" />
             </View>
           </View>
@@ -115,7 +123,7 @@ export default function AiChatScreen() {
       <View style={styles.inputRow}>
         <TextInput
           style={styles.input}
-          placeholder="اكتب رسالتك..."
+          placeholder={t('aiChat.input-placeholder')}
           value={input}
           onChangeText={setInput}
           multiline
@@ -126,7 +134,7 @@ export default function AiChatScreen() {
           onPress={handleSend}
           disabled={!input.trim() || chatMut.isPending}
         >
-          <Text style={styles.sendText}>إرسال</Text>
+          <Text style={styles.sendText}>{t('aiChat.send')}</Text>
         </TouchableOpacity>
       </View>
     </View>

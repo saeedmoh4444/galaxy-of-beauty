@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface SavingsGoal {
   id?: number;
@@ -11,6 +12,7 @@ interface SavingsGoal {
 }
 
 export default function SavingsGoalsScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const goalsQ = trpc.savingsGoals.list.useQuery();
   const data: SavingsGoal[] = (goalsQ.data as unknown as SavingsGoal[] | undefined) ?? [];
   if (goalsQ.isLoading) return <SkeletonList count={4} />;
@@ -26,14 +28,17 @@ export default function SavingsGoalsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> أهداف التوفير</Text>
+      <Text style={styles.t}>{t('mobile.savingsGoals.title')}</Text>
       {data.map((g, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{g.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{g.nameAr}</Text>
             <Text style={styles.progress}>
-              {g.current?.toLocaleString()} / {g.target?.toLocaleString()} ر.س
+              {t('mobile.savingsGoals.progress', {
+                current: g.current?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA') ?? '',
+                target: g.target?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA') ?? '',
+              })}
             </Text>
           </View>
         </View>

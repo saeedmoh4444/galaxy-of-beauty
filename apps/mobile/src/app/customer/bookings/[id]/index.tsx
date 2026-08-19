@@ -2,18 +2,8 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 import { formatCurrency } from '@galaxy/ui';
-
-const SL: Record<string, string> = {
-  REQUESTED: 'قيد الطلب',
-  ACCEPTED: 'مقبول',
-  PAID: 'مدفوع',
-  IN_PROGRESS: 'قيد التنفيذ',
-  COMPLETED: 'مكتمل',
-  REJECTED: 'مرفوض',
-  CANCELLED: 'ملغي',
-  NO_SHOW: 'لم تحضر',
-};
 const SC: Record<string, { color: string; bg: string }> = {
   REQUESTED: { color: '#d97706', bg: '#fef3c7' },
   ACCEPTED: { color: '#2563eb', bg: '#dbeafe' },
@@ -28,6 +18,7 @@ const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900
 
 export default function BookingDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { locale, t } = useLocale();
   const detail = trpc.bookings.getById.useQuery({ id: Number(id) }, { enabled: !!id }) ?? {
     data: null,
     isLoading: false,
@@ -36,27 +27,46 @@ export default function BookingDetailScreen(): JSX.Element {
   };
   const data = detail.data as Record<string, unknown> | undefined;
 
+  const statusLabels: Record<string, string> = {
+    REQUESTED: t('booking.status.REQUESTED'),
+    ACCEPTED: t('booking.status.ACCEPTED'),
+    PAID: t('booking.status.PAID'),
+    IN_PROGRESS: t('booking.status.IN_PROGRESS'),
+    COMPLETED: t('booking.status.COMPLETED'),
+    REJECTED: t('booking.status.REJECTED'),
+    CANCELLED: t('booking.status.CANCELLED'),
+    NO_SHOW: t('booking.status.NO_SHOW'),
+  };
+
   return (
     <ScreenState
       isLoading={detail.isLoading}
       isError={detail.isError}
       isEmpty={!data}
-      errorMessage="فشل تحميل الحجز"
+      errorMessage={t('booking.detail-error')}
       onRetry={() => detail.refetch()}
     >
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.title}> تفاصيل الحجز</Text>
+        <Text style={styles.title}>{t('booking.details')}</Text>
         {(data
           ? [
-              { label: 'كود الحجز', value: data.bookingCode as string },
+              { label: t('bookings.detail.booking-code'), value: data.bookingCode as string },
               {
-                label: 'الحالة',
-                value: SL[data.status as string] ?? (data.status as string),
+                label: t('booking.status-label'),
+                value: statusLabels[data.status as string] ?? (data.status as string),
                 color: SC[data.status as string]?.color,
               },
-              { label: 'التاريخ', value: new Date(data.startAt as string).toLocaleString('ar-SA') },
-              { label: 'المبلغ', value: formatCurrency(Number(data.totalAmount ?? 0)) },
-              { label: 'رقم الفنية', value: `#${data.technicianId as number}` },
+              {
+                label: t('booking.date'),
+                value: new Date(data.startAt as string).toLocaleString(
+                  locale === 'ar' ? 'ar-SA' : 'en-GB',
+                ),
+              },
+              { label: t('booking.amount'), value: formatCurrency(Number(data.totalAmount ?? 0)) },
+              {
+                label: t('bookings.detail.technician-id'),
+                value: `#${data.technicianId as number}`,
+              },
             ]
           : []
         ).map((row, i) => (

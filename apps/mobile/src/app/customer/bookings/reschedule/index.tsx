@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface BookingRow {
   id: number;
@@ -17,6 +18,7 @@ interface RescheduleResult {
 export default function RescheduleScreen(): JSX.Element {
   const [selected, setSelected] = useState<number | null>(null);
   const [result, setResult] = useState<RescheduleResult | null>(null);
+  const { locale, t } = useLocale();
 
   const bookingsQ = trpc.bookings.list.useQuery({
     status: 'ACCEPTED',
@@ -42,11 +44,11 @@ export default function RescheduleScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}> تعديل الموعد</Text>
+        <Text style={styles.t}>{t('bookings.reschedule.title')}</Text>
         <View style={[styles.card, styles.rc]}>
           <Text style={styles.re}></Text>
-          <Text style={styles.rt}>تم طلب التعديل</Text>
-          <Text style={styles.rm}>سيتم إعلامكِ عند تأكيد الموعد الجديد</Text>
+          <Text style={styles.rt}>{t('bookings.reschedule.requested')}</Text>
+          <Text style={styles.rm}>{t('bookings.reschedule.notified')}</Text>
         </View>
       </ScrollView>
     );
@@ -62,7 +64,7 @@ export default function RescheduleScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> تعديل الموعد</Text>
+      <Text style={styles.t}>{t('bookings.reschedule.title')}</Text>
       {bookings.map((b) => (
         <TouchableOpacity
           key={b.id}
@@ -72,7 +74,7 @@ export default function RescheduleScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.bc}>{b.bookingCode}</Text>
             <Text style={styles.bd}>
-              {new Date(b.startAt).toLocaleDateString('ar-SA', {
+              {new Date(b.startAt).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-GB', {
                 weekday: 'long',
                 month: 'long',
                 day: 'numeric',
@@ -81,7 +83,7 @@ export default function RescheduleScreen(): JSX.Element {
           </View>
           {selected === b.id && (
             <TouchableOpacity onPress={() => reschedule(b.id)} style={styles.rb}>
-              <Text style={styles.rbt}>تعديل للغد</Text>
+              <Text style={styles.rbt}>{t('bookings.reschedule.tomorrow')}</Text>
             </TouchableOpacity>
           )}
         </TouchableOpacity>

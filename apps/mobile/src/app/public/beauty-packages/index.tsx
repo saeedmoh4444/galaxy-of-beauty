@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface BeautyPackage {
   id?: number;
@@ -15,11 +16,17 @@ interface BeautyPackage {
 }
 
 export default function BeautyPackagesScreen(): JSX.Element {
+  const { t } = useLocale();
   const packagesQ = trpc.beautyPackages.list.useQuery();
 
   if (packagesQ.isLoading) return <SkeletonList count={4} />;
   if (packagesQ.isError)
-    return <ErrorAlert message="فشل تحميل الباقات" onRetry={() => packagesQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.beauty-packages.load-error')}
+        onRetry={() => packagesQ.refetch()}
+      />
+    );
 
   const items = (packagesQ.data ?? []) as unknown as BeautyPackage[];
 
@@ -35,10 +42,10 @@ export default function BeautyPackagesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> باقات التجميل</Text>
-      <Text style={styles.sub}>باقات مجمعة بأسعار مخفضة</Text>
+      <Text style={styles.t}>{t('mobile.public.beauty-packages.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.beauty-packages.subtitle')}</Text>
       {items.length === 0 ? (
-        <Text style={styles.e}>لا توجد باقات</Text>
+        <Text style={styles.e}>{t('mobile.public.beauty-packages.empty')}</Text>
       ) : (
         items.map((p) => (
           <View key={p.id} style={styles.card}>
@@ -46,15 +53,24 @@ export default function BeautyPackagesScreen(): JSX.Element {
             <View style={{ flex: 1 }}>
               <Text style={styles.pkgName}>{p.nameAr as string}</Text>
               <Text style={styles.pkgServices}>
-                {(p.services as string) ?? (p.serviceCount as number) + ' خدمات'}
+                {(p.services as string) ??
+                  t('mobile.public.beauty-packages.services-count', {
+                    count: p.serviceCount as number,
+                  })}
               </Text>
             </View>
             <View style={{ alignItems: 'flex-end' }}>
               <Text style={styles.originalPrice}>
-                {(p.originalPrice as number)?.toLocaleString()} ر.س
+                {(p.originalPrice as number)?.toLocaleString()} {t('misc.sar')}
               </Text>
-              <Text style={styles.price}>{(p.price as number)?.toLocaleString()} ر.س</Text>
-              <Text style={styles.savings}>وفر {(p.savings as number)?.toLocaleString()} ر.س</Text>
+              <Text style={styles.price}>
+                {(p.price as number)?.toLocaleString()} {t('misc.sar')}
+              </Text>
+              <Text style={styles.savings}>
+                {t('mobile.public.beauty-packages.save', {
+                  amount: (p.savings as number)?.toLocaleString(),
+                })}
+              </Text>
             </View>
           </View>
         ))

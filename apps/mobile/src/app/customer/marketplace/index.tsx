@@ -11,6 +11,8 @@ import { useState } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface MarketProduct {
   id?: number;
@@ -28,6 +30,7 @@ interface CartItem {
 }
 
 export default function MarketplaceScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const [search, setSearch] = useState('');
   const productsQ = trpc.marketplace.products.useQuery({
     search: search || undefined,
@@ -46,7 +49,7 @@ export default function MarketplaceScreen(): JSX.Element {
 
   if (productsQ.isLoading) return <SkeletonList count={6} />;
   if (productsQ.isError)
-    return <ErrorAlert message="فشل تحميل المتجر" onRetry={() => productsQ.refetch()} />;
+    return <ErrorAlert message={t('marketplace.load-error')} onRetry={() => productsQ.refetch()} />;
 
   return (
     <ScrollView
@@ -69,8 +72,8 @@ export default function MarketplaceScreen(): JSX.Element {
         }}
       >
         <View>
-          <Text style={s.t}>️ متجر الجمال</Text>
-          <Text style={s.sub}>منتجات تجميل أصلية</Text>
+          <Text style={s.t}>{t('marketplace.title')}</Text>
+          <Text style={s.sub}>{t('marketplace.subtitle')}</Text>
         </View>
         <TouchableOpacity
           style={{
@@ -87,7 +90,7 @@ export default function MarketplaceScreen(): JSX.Element {
       <TextInput
         value={search}
         onChangeText={setSearch}
-        placeholder=" ابحثي عن منتج..."
+        placeholder={t('marketplace.searchPlaceholder')}
         style={s.inp}
         placeholderTextColor="#9ca3af"
       />
@@ -95,7 +98,7 @@ export default function MarketplaceScreen(): JSX.Element {
       {products.length === 0 && (
         <View style={{ alignItems: 'center', padding: 30 }}>
           <Text style={{ fontSize: 40 }}>️</Text>
-          <Text style={{ color: '#6b7280', marginTop: 8 }}>لا توجد منتجات</Text>
+          <Text style={{ color: '#6b7280', marginTop: 8 }}>{t('marketplace.noProducts')}</Text>
         </View>
       )}
 
@@ -107,7 +110,7 @@ export default function MarketplaceScreen(): JSX.Element {
               style={{ fontWeight: '600', fontSize: 13, textAlign: 'center', marginTop: 6 }}
               numberOfLines={1}
             >
-              {p.nameJson?.ar ?? `منتج #${p.id}`}
+              {localize(p.nameJson, locale) || t('cart.productFallback', { id: p.id ?? '' })}
             </Text>
             <Text style={{ fontSize: 11, color: '#6b7280', textAlign: 'center' }}>{p.brand}</Text>
             <Text
@@ -119,7 +122,7 @@ export default function MarketplaceScreen(): JSX.Element {
                 marginTop: 4,
               }}
             >
-              {(p.price ?? 0).toLocaleString()} ر.س
+              {(p.price ?? 0).toLocaleString()} {t('misc.sar')}
             </Text>
             <View
               style={{
@@ -130,7 +133,7 @@ export default function MarketplaceScreen(): JSX.Element {
               }}
             >
               <Text style={{ color: '#fff', textAlign: 'center', fontSize: 12, fontWeight: '600' }}>
-                أضيفي
+                {t('marketplace.add')}
               </Text>
             </View>
           </TouchableOpacity>

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Challenge {
   id?: string;
@@ -20,11 +21,17 @@ const GRADIENTS: Record<string, string[]> = {
 };
 
 export default function ChallengesScreen(): JSX.Element {
+  const { t } = useLocale();
   const challengesQ = trpc.challenges.list.useQuery();
 
   if (challengesQ.isLoading) return <SkeletonList count={4} />;
   if (challengesQ.isError)
-    return <ErrorAlert message="فشل تحميل التحديات" onRetry={() => challengesQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.challenges.load-error')}
+        onRetry={() => challengesQ.refetch()}
+      />
+    );
 
   const items = (challengesQ.data ?? []) as Challenge[];
 
@@ -40,10 +47,10 @@ export default function ChallengesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> تحديات الجمال</Text>
-      <Text style={styles.sub}>أكملي التحديات واكسبي مكافآت</Text>
+      <Text style={styles.t}>{t('mobile.public.challenges.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.challenges.subtitle')}</Text>
       {items.length === 0 ? (
-        <Text style={styles.e}>لا توجد تحديات</Text>
+        <Text style={styles.e}>{t('mobile.public.challenges.empty')}</Text>
       ) : (
         items.map((ch) => {
           const colors = GRADIENTS[ch.id as string] ?? ['#6b7280', '#9ca3af'];

@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 interface CMSContentCategory {
   id?: number;
@@ -11,11 +13,13 @@ interface CMSContentCategory {
 }
 
 export default function AdminCMSScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const q = trpc.cms.listCategories.useQuery();
   const data = (q.data as unknown as CMSContentCategory[] | null) ?? [];
 
   if (q.isLoading) return <SkeletonList count={5} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return <ErrorAlert message={t('mobile.admin.cms.load-error')} onRetry={() => q.refetch()} />;
 
   return (
     <ScrollView
@@ -29,14 +33,15 @@ export default function AdminCMSScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> إدارة المحتوى</Text>
+      <Text style={styles.t}>{t('admin.cms.title')}</Text>
       {data.map((cat, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}></Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{cat.nameJson?.ar ?? ''}</Text>
+            <Text style={styles.name}>{localize(cat.nameJson, locale)}</Text>
             <Text style={styles.meta}>
-              {cat.slug ?? ''} · {cat._count?.services ?? 0} خدمات
+              {cat.slug ?? ''} ·{' '}
+              {t('mobile.admin.categories.services-count', { count: cat._count?.services ?? 0 })}
             </Text>
           </View>
         </View>

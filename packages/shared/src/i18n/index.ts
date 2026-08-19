@@ -18,6 +18,8 @@ import { miscMessages } from './messages/misc';
 import { mobileCoreMessages } from './messages/mobile/core';
 import { mobileAuthMessages } from './messages/mobile/auth';
 import { mobileCustomerMessages } from './messages/mobile/customer';
+import { mobileCustomerAMessages } from './messages/mobile/customerA';
+import { mobileCustomerBMessages } from './messages/mobile/customerB';
 import { mobileTechMessages } from './messages/mobile/tech';
 import { mobileAdminMessages } from './messages/mobile/admin';
 import { mobilePublicMessages } from './messages/mobile/public';
@@ -47,6 +49,8 @@ export const sharedMessages = {
   ...mobileCoreMessages,
   ...mobileAuthMessages,
   ...mobileCustomerMessages,
+  ...mobileCustomerAMessages,
+  ...mobileCustomerBMessages,
   ...mobileTechMessages,
   ...mobileAdminMessages,
   ...mobilePublicMessages,

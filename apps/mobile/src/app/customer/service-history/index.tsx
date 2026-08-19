@@ -2,6 +2,7 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency, MAX_LIST_SIZE } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -12,6 +13,7 @@ const COLORS = {
 };
 
 export default function ServiceHistoryScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const bookings = trpc.bookings.list.useQuery({ limit: MAX_LIST_SIZE });
   const data = bookings.data?.bookings as unknown[] | undefined;
 
@@ -20,12 +22,12 @@ export default function ServiceHistoryScreen(): JSX.Element {
       isLoading={bookings.isLoading}
       isError={bookings.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل السجل"
-      emptyTitle="لا يوجد سجل خدمات"
-      emptyDescription="ستظهر خدماتكِ السابقة هنا"
+      errorMessage={t('mobile.serviceHistory.load-error')}
+      emptyTitle={t('mobile.serviceHistory.empty-title')}
+      emptyDescription={t('mobile.serviceHistory.empty-desc')}
       onRetry={() => bookings.refetch()}
     >
-      <Text style={styles.title}> سجل الخدمات</Text>
+      <Text style={styles.title}>{t('mobile.serviceHistory.title')}</Text>
       <FlatList
         data={data as Record<string, unknown>[]}
         keyExtractor={(_, i) => String(i)}
@@ -34,7 +36,9 @@ export default function ServiceHistoryScreen(): JSX.Element {
             <View>
               <Text style={styles.code}>{item.bookingCode as string}</Text>
               <Text style={styles.date}>
-                {new Date(item.startAt as string).toLocaleDateString('ar-SA')}
+                {new Date(item.startAt as string).toLocaleDateString(
+                  locale === 'en' ? 'en-GB' : 'ar-SA',
+                )}
               </Text>
             </View>
             <Text style={styles.amount}>{formatCurrency(Number(item.totalAmount ?? 0))}</Text>

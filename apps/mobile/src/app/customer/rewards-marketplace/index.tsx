@@ -4,6 +4,8 @@ import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 const TIER_COLORS: Record<string, string[]> = {
   SILVER: ['#d1d5db', '#9ca3af'],
@@ -45,6 +47,7 @@ interface TransactionsResult {
 }
 
 export default function RewardsMarketplaceScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const accountQ = trpc.loyalty.myAccount.useQuery();
   const rewardsQ = trpc.loyalty.rewards.useQuery();
   const txsQ = trpc.loyalty.myTransactions.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
@@ -63,7 +66,12 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
 
   if (accountQ.isLoading) return <SkeletonList count={4} />;
   if (accountQ.isError)
-    return <ErrorAlert message="فشل تحميل المكافآت" onRetry={() => accountQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.rewardsMarketplace.load-error')}
+        onRetry={() => accountQ.refetch()}
+      />
+    );
 
   const a = accountQ.data as LoyaltyAccount | null;
   const items = (rewardsQ.data as LoyaltyReward[] | undefined) ?? [];
@@ -84,12 +92,12 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
         />
       }
     >
-      <Text style={s.t}> سوق المكافآت</Text>
-      <Text style={s.sub}>استبدلي نقاطكِ بمكافآت حصرية</Text>
+      <Text style={s.t}>{t('mobile.rewardsMarketplace.title')}</Text>
+      <Text style={s.sub}>{t('mobile.rewardsMarketplace.subtitle')}</Text>
 
       <View style={[s.pointsCard, { backgroundColor: tierColors[0] }]}>
         <Text style={{ color: '#fff', fontSize: 13, opacity: 0.8, textAlign: 'center' }}>
-          رصيد نقاطكِ
+          {t('mobile.rewardsMarketplace.points-balance')}
         </Text>
         <Text
           style={{
@@ -100,12 +108,15 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
             marginTop: 4,
           }}
         >
-          {points.toLocaleString()}
+          {points.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA')}
         </Text>
         <Text
           style={{ color: '#fff', fontSize: 13, opacity: 0.8, textAlign: 'center', marginTop: 4 }}
         >
-          {a?.tierNameAr} · مضاعف ×{a?.multiplier}
+          {t('mobile.rewardsMarketplace.tier-multiplier', {
+            tier: a?.tierNameAr ?? '',
+            multiplier: a?.multiplier ?? 1,
+          })}
         </Text>
       </View>
 
@@ -133,20 +144,20 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
                     : ''}
               </Text>
               <Text style={{ fontWeight: '700', fontSize: 16, marginTop: 8 }}>
-                {r.nameJson?.ar}
+                {r.nameJson ? localize(r.nameJson, locale) : ''}
               </Text>
               <Text style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>
-                {r.descriptionJson?.ar}
+                {r.descriptionJson ? localize(r.descriptionJson, locale) : ''}
               </Text>
               <Text style={{ fontWeight: '800', fontSize: 22, color: '#d97706', marginTop: 8 }}>
-                {r.pointsCost} نقطة
+                {t('marketing.rewards.points-cost', { points: r.pointsCost })}
               </Text>
             </View>
             {isRedeemed ? (
               <Text
                 style={{ color: '#059669', fontWeight: '700', textAlign: 'center', marginTop: 10 }}
               >
-                تم الاستبدال
+                {t('mobile.rewardsMarketplace.redeemed')}
               </Text>
             ) : (
               <TouchableOpacity
@@ -154,7 +165,11 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
                 style={[s.btn, { marginTop: 12 }, !canAfford && { backgroundColor: '#d1d5db' }]}
                 disabled={!canAfford}
               >
-                <Text style={s.btnText}>{canAfford ? ' استبدلي' : ' نقاط غير كافية'}</Text>
+                <Text style={s.btnText}>
+                  {canAfford
+                    ? t('mobile.rewardsMarketplace.redeem')
+                    : t('mobile.rewardsMarketplace.insufficient')}
+                </Text>
               </TouchableOpacity>
             )}
           </View>
@@ -164,11 +179,11 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
       {transactions.length > 0 && (
         <View style={{ marginTop: 12 }}>
           <Text style={{ fontWeight: '700', fontSize: 15, color: '#111827', marginBottom: 8 }}>
-            سجل النقاط
+            {t('mobile.rewardsMarketplace.points-history')}
           </Text>
-          {transactions.slice(0, 10).map((t, i) => (
+          {transactions.slice(0, 10).map((txn, i) => (
             <View
-              key={t.id ?? i}
+              key={txn.id ?? i}
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -177,16 +192,16 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
                 borderBottomColor: '#f3f4f6',
               }}
             >
-              <Text style={{ fontSize: 13, color: '#6b7280' }}>{t.reason}</Text>
+              <Text style={{ fontSize: 13, color: '#6b7280' }}>{txn.reason}</Text>
               <Text
                 style={{
                   fontWeight: '700',
                   fontSize: 13,
-                  color: t.points > 0 ? '#059669' : '#ef4444',
+                  color: txn.points > 0 ? '#059669' : '#ef4444',
                 }}
               >
-                {t.points > 0 ? '+' : ''}
-                {t.points} نقطة
+                {txn.points > 0 ? '+' : ''}
+                {t('marketing.rewards.points-cost', { points: txn.points })}
               </Text>
             </View>
           ))}

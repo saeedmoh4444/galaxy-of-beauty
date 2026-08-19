@@ -1,10 +1,13 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function BeforeAfterScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const gallery = trpc.beforeAfter.feed.useQuery({}) ?? {
     data: null,
     isLoading: false,
@@ -18,18 +21,18 @@ export default function BeforeAfterScreen(): JSX.Element {
       isLoading={gallery.isLoading}
       isError={gallery.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل المعرض"
-      emptyTitle="لا توجد صور"
+      errorMessage={t('mobile.public.before-after.load-error')}
+      emptyTitle={t('mobile.public.before-after.empty')}
       onRetry={() => gallery.refetch()}
     >
-      <Text style={styles.title}> قبل وبعد</Text>
+      <Text style={styles.title}>{t('mobile.public.before-after.title')}</Text>
       <View style={styles.grid}>
         {(data as Record<string, unknown>[])?.map((item: Record<string, unknown>, i: number) => (
           <View key={i} style={styles.card}>
             <View style={styles.imagePlaceholder}>
               <Text style={styles.imageText}></Text>
             </View>
-            <Text style={styles.label}>{(item.titleJson as Record<string, string>)?.ar ?? ''}</Text>
+            <Text style={styles.label}>{localize(item.titleJson, locale)}</Text>
           </View>
         ))}
       </View>

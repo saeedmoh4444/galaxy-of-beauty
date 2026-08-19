@@ -2,16 +2,10 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 
 const STATUS_TABS = ['ALL', 'REQUESTED', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
-const STATUS_LABELS: Record<string, string> = {
-  REQUESTED: 'قيد الانتظار',
-  ACCEPTED: 'مقبول',
-  IN_PROGRESS: 'جاري',
-  COMPLETED: 'مكتمل',
-  CANCELLED: 'ملغي',
-};
 const STATUS_COLORS: Record<string, string> = {
   COMPLETED: '#10b981',
   CANCELLED: '#dc2626',
@@ -21,20 +15,29 @@ const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900
 
 export default function BookingsScreen(): JSX.Element {
   const [status, setStatus] = useState<string | undefined>();
+  const { locale, t } = useLocale();
   const bookings = trpc.bookings.list.useQuery({ status, limit: DEFAULT_PAGE_SIZE, page: 1 });
   const data = bookings.data?.bookings as unknown[] | undefined;
+
+  const statusLabels: Record<string, string> = {
+    REQUESTED: t('bookings.status-pending'),
+    ACCEPTED: t('booking.status.ACCEPTED'),
+    IN_PROGRESS: t('bookings.status-in-progress'),
+    COMPLETED: t('booking.status.COMPLETED'),
+    CANCELLED: t('booking.status.CANCELLED'),
+  };
 
   return (
     <ScreenState
       isLoading={bookings.isLoading}
       isError={bookings.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل الحجوزات"
-      emptyTitle="لا توجد حجوزات"
-      emptyDescription="ابدئي رحلتكِ مع أول حجز"
+      errorMessage={t('booking.load-error')}
+      emptyTitle={t('booking.no-bookings')}
+      emptyDescription={t('bookings.empty-cta')}
       onRetry={() => bookings.refetch()}
     >
-      <Text style={styles.title}> حجوزاتي</Text>
+      <Text style={styles.title}>{t('mobile.myBookings')}</Text>
       <View style={styles.tabs}>
         {STATUS_TABS.map((s) => (
           <TouchableOpacity
@@ -48,7 +51,7 @@ export default function BookingsScreen(): JSX.Element {
                 (!status && s === 'ALL') || s === status ? styles.tabTextActive : {},
               ]}
             >
-              {s === 'ALL' ? 'الكل' : (STATUS_LABELS[s] ?? s)}
+              {s === 'ALL' ? t('booking.all') : (statusLabels[s] ?? s)}
             </Text>
           </TouchableOpacity>
         ))}
@@ -63,10 +66,12 @@ export default function BookingsScreen(): JSX.Element {
                 { color: STATUS_COLORS[b.status as string] ?? STATUS_COLORS.DEFAULT },
               ]}
             >
-              {STATUS_LABELS[b.status as string] ?? (b.status as string)}
+              {statusLabels[b.status as string] ?? (b.status as string)}
             </Text>
           </View>
-          <Text style={styles.date}>{new Date(b.startAt as string).toLocaleString('ar-SA')}</Text>
+          <Text style={styles.date}>
+            {new Date(b.startAt as string).toLocaleString(locale === 'ar' ? 'ar-SA' : 'en-GB')}
+          </Text>
         </View>
       ))}
     </ScreenState>

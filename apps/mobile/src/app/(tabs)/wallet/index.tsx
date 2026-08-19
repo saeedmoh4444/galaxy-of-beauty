@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -32,6 +33,7 @@ interface TxnPage {
 }
 
 export default function WalletScreen(): JSX.Element {
+  const { t } = useLocale();
   const balance = trpc.wallet.getBalance.useQuery();
   const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 20 });
   const loyalty = trpc.loyalty.myAccount.useQuery();
@@ -45,21 +47,23 @@ export default function WalletScreen(): JSX.Element {
       isLoading={balance.isLoading}
       isError={balance.isError}
       isEmpty={false}
-      errorMessage="فشل تحميل المحفظة"
+      errorMessage={t('wallet.load-error')}
       onRetry={() => balance.refetch()}
     >
-      <Text style={styles.title}>المحفظة</Text>
+      <Text style={styles.title}>{t('nav.wallet')}</Text>
 
       <View style={styles.balanceCard}>
-        <Text style={styles.balanceLabel}>الرصيد المتاح</Text>
+        <Text style={styles.balanceLabel}>{t('mobile.core.availableBalance')}</Text>
         <Text style={styles.balanceAmount}>{formatCurrency(Number(balData?.balance ?? 0))}</Text>
         {(balData?.bonusBalance ?? 0) > 0 && (
           <Text style={styles.bonusText}>
-            + {formatCurrency(Number(balData?.bonusBalance))} رصيد مكافآت
+            {t('mobile.core.bonusAmount', {
+              amount: formatCurrency(Number(balData?.bonusBalance)),
+            })}
           </Text>
         )}
         <TouchableOpacity style={styles.topUpBtn}>
-          <Text style={styles.topUpText}>شحن رصيد</Text>
+          <Text style={styles.topUpText}>{t('mobile.core.topUp')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -74,7 +78,7 @@ export default function WalletScreen(): JSX.Element {
               <Text style={styles.rewardVal}>
                 {((loyalty.data as Record<string, unknown>)?.points as number) ?? 0}
               </Text>
-              <Text style={styles.rewardLbl}>نقاط ولاء</Text>
+              <Text style={styles.rewardLbl}>{t('mobile.core.loyaltyPoints')}</Text>
             </View>
           )}
           {cashback?.data && (
@@ -87,17 +91,17 @@ export default function WalletScreen(): JSX.Element {
                   ((cashback.data as Record<string, unknown>)?.totalCashback as number) ?? 0,
                 )}
               </Text>
-              <Text style={styles.rewardLbl}>كاش باك</Text>
+              <Text style={styles.rewardLbl}>{t('mobile.core.cashbackLabel')}</Text>
             </View>
           )}
         </View>
       )}
 
-      <Text style={styles.sectionTitle}>آخر المعاملات</Text>
+      <Text style={styles.sectionTitle}>{t('mobile.core.recentTransactions')}</Text>
       {txns.isLoading ? null : txns.isError ? (
-        <Text style={styles.errorText}>فشل تحميل المعاملات</Text>
+        <Text style={styles.errorText}>{t('wallet.transactions-error')}</Text>
       ) : (txnData?.items ?? []).length === 0 ? (
-        <Text style={styles.emptyText}>لا توجد معاملات</Text>
+        <Text style={styles.emptyText}>{t('wallet.no-transactions')}</Text>
       ) : (
         (txnData?.items ?? []).map((t, i) => (
           <View key={i} style={styles.txnRow}>

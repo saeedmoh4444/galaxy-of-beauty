@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface LeaderboardEntry {
   id?: number;
@@ -9,6 +10,7 @@ interface LeaderboardEntry {
 }
 
 export default function ReferralRaceScreen(): JSX.Element {
+  const { t } = useLocale();
   const leaderboardQ = trpc.referralRace.leaderboard.useQuery();
   const data: LeaderboardEntry[] = (
     (
@@ -32,7 +34,7 @@ export default function ReferralRaceScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> سباق الإحالات</Text>
+      <Text style={styles.t}>{t('mobile.public.referral-race.title')}</Text>
       {data.map((r, i) => (
         <View key={i} style={styles.card}>
           <View style={[styles.rk, i === 0 && styles.rk1]}>
@@ -40,7 +42,9 @@ export default function ReferralRaceScreen(): JSX.Element {
           </View>
           <View style={{ flex: 1 }}>
             <Text style={styles.rn}>{r.name}</Text>
-            <Text style={styles.rc}>{r.referrals} إحالة</Text>
+            <Text style={styles.rc}>
+              {t('mobile.public.referral-race.referral', { count: r.referrals ?? 0 })}
+            </Text>
           </View>
           {i === 0 && <Text style={styles.cr}></Text>}
         </View>

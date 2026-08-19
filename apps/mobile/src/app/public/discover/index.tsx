@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface DiscoverCategory {
   id?: number;
@@ -22,12 +23,18 @@ interface TrendingItem {
 }
 
 export default function DiscoverScreen(): JSX.Element {
+  const { t } = useLocale();
   const trendingQ = trpc.beautyDiscovery.featured.useQuery();
   const categoriesQ = trpc.categories.list.useQuery();
 
   if (trendingQ.isLoading) return <SkeletonList count={6} />;
   if (trendingQ.isError)
-    return <ErrorAlert message="فشل تحميل المحتوى" onRetry={() => trendingQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.discover.load-error')}
+        onRetry={() => trendingQ.refetch()}
+      />
+    );
 
   const trendingItems = ((trendingQ.data as unknown as { popularServices?: TrendingItem[] } | null)
     ?.popularServices ?? []) as TrendingItem[];
@@ -45,11 +52,11 @@ export default function DiscoverScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> اكتشف</Text>
-      <Text style={styles.sub}>اكتشفي خدمات وأفكار جديدة</Text>
+      <Text style={styles.t}>{t('mobile.public.discover.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.discover.subtitle')}</Text>
       {catItems.length > 0 && (
         <>
-          <Text style={styles.sectionTitle}> الفئات</Text>
+          <Text style={styles.sectionTitle}>{t('mobile.public.discover.categories')}</Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -66,21 +73,23 @@ export default function DiscoverScreen(): JSX.Element {
           </ScrollView>
         </>
       )}
-      <Text style={styles.sectionTitle}> الأكثر رواجاً</Text>
+      <Text style={styles.sectionTitle}>{t('mobile.public.discover.trending')}</Text>
       {trendingItems.length === 0 ? (
-        <Text style={styles.e}>لا توجد نتائج</Text>
+        <Text style={styles.e}>{t('state.noResults')}</Text>
       ) : (
-        trendingItems.map((t) => (
-          <View key={t.id} style={styles.card}>
-            <Text style={styles.cardEmoji}>{t.emoji ?? ''}</Text>
+        trendingItems.map((item) => (
+          <View key={item.id} style={styles.card}>
+            <Text style={styles.cardEmoji}>{item.emoji ?? ''}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.cardTitle}>{t.nameAr ?? t.titleAr ?? ''}</Text>
+              <Text style={styles.cardTitle}>{item.nameAr ?? item.titleAr ?? ''}</Text>
               <Text style={styles.cardDesc}>
-                {(t.descAr ?? t.description ?? '')?.substring(0, 100)}
+                {(item.descAr ?? item.description ?? '')?.substring(0, 100)}
               </Text>
               <View style={styles.cardMeta}>
-                <Text style={styles.price}>{(t.price ?? 0).toLocaleString()} ر.س</Text>
-                <Text style={styles.rating}> {t.rating ?? 0}</Text>
+                <Text style={styles.price}>
+                  {(item.price ?? 0).toLocaleString()} {t('misc.sar')}
+                </Text>
+                <Text style={styles.rating}> {item.rating ?? 0}</Text>
               </View>
             </View>
           </View>

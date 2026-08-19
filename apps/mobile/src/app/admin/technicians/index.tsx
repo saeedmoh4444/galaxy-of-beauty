@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface AdminTechnicianItem {
   name?: string;
@@ -10,11 +11,13 @@ interface AdminTechnicianItem {
 }
 
 export default function AdminTechniciansScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.technicians.list.useQuery({});
   const data = (q.data as unknown as { items?: AdminTechnicianItem[] } | null)?.items ?? [];
 
   if (q.isLoading) return <SkeletonList count={6} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل الفنيات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return <ErrorAlert message={t('admin.technicians.load-error')} onRetry={() => q.refetch()} />;
 
   return (
     <ScrollView
@@ -28,14 +31,14 @@ export default function AdminTechniciansScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>‍ الفنيات</Text>
-      {data.map((t, i) => (
+      <Text style={styles.t}>{t('mobile.admin.technicians.title')}</Text>
+      {data.map((row, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.avatar}>‍</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{t.name}</Text>
+            <Text style={styles.name}>{row.name}</Text>
             <Text style={styles.meta}>
-              {t.rating ?? 0} · {t.city}
+              {row.rating ?? 0} · {row.city}
             </Text>
           </View>
         </View>

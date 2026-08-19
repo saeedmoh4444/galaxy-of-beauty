@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ReferralDashboardData {
   totalReferred?: number;
@@ -8,6 +9,7 @@ interface ReferralDashboardData {
 }
 
 export default function ReferralDashboardScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const statsQ = trpc.referrals.getStats.useQuery();
 
   if (statsQ.isLoading) return <SkeletonList count={3} />;
@@ -26,19 +28,19 @@ export default function ReferralDashboardScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> لوحة الإحالات</Text>
+      <Text style={styles.t}>{t('mobile.referralDashboard.title')}</Text>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}>‍️</Text>
           <Text style={styles.kpiVal}>{d.totalReferred ?? 0}</Text>
-          <Text style={styles.kpiLabel}>إحالة</Text>
+          <Text style={styles.kpiLabel}>{t('mobile.referralDashboard.referrals')}</Text>
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#059669' }]}>
-            {(d.totalEarned ?? 0).toLocaleString()}
+            {(d.totalEarned ?? 0).toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA')}
           </Text>
-          <Text style={styles.kpiLabel}>ر.س</Text>
+          <Text style={styles.kpiLabel}>{t('mobile.vendorPortal.sar')}</Text>
         </View>
       </View>
     </ScrollView>

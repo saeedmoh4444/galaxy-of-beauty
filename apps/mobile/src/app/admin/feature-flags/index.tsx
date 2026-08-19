@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface FeatureFlag {
   id?: number;
@@ -12,6 +13,7 @@ interface FeatureFlag {
 }
 
 export default function FeatureFlagsScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.featureFlags.list.useQuery();
   const data = (q.data as unknown as FeatureFlag[] | null) ?? [];
   const toggleMut = trpc.featureFlags.toggle.useMutation({ onSuccess: () => void q.refetch() });
@@ -21,7 +23,13 @@ export default function FeatureFlagsScreen(): JSX.Element {
   };
 
   if (q.isLoading) return <SkeletonList count={5} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل الميزات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return (
+      <ErrorAlert
+        message={t('mobile.admin.feature-flags.load-error')}
+        onRetry={() => q.refetch()}
+      />
+    );
 
   return (
     <ScrollView
@@ -35,7 +43,7 @@ export default function FeatureFlagsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> Feature Flags</Text>
+      <Text style={styles.t}>{t('mobile.admin.feature-flags.title')}</Text>
       {data.map((f, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
@@ -46,7 +54,9 @@ export default function FeatureFlagsScreen(): JSX.Element {
             onPress={() => toggle(f.key)}
             style={[styles.toggle, f.enabled ? styles.on : styles.off]}
           >
-            <Text style={styles.toggleText}>{f.enabled ? 'مفعل' : 'معطل'}</Text>
+            <Text style={styles.toggleText}>
+              {f.enabled ? t('admin.enabled') : t('admin.disabled')}
+            </Text>
           </TouchableOpacity>
         </View>
       ))}

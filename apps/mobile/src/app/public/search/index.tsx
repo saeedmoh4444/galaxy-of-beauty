@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface SearchService {
   id?: number;
@@ -15,6 +16,7 @@ interface SearchResults {
 }
 
 export default function SearchScreen(): JSX.Element {
+  const { t } = useLocale();
   const [query, setQuery] = useState('');
   const resultsQ = trpc.search.search.useQuery({ query: query.trim() }, { enabled: false });
   const results = (resultsQ.data as unknown as SearchResults | null) ?? null;
@@ -24,12 +26,12 @@ export default function SearchScreen(): JSX.Element {
   };
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> بحث</Text>
+      <Text style={styles.t}>{t('mobile.public.search.title')}</Text>
       <View style={styles.sr}>
         <TextInput
           value={query}
           onChangeText={setQuery}
-          placeholder="ابحثي عن خدمات، فنيات، منتجات..."
+          placeholder={t('mobile.public.search.placeholder')}
           style={styles.inp}
           placeholderTextColor="#9ca3af"
           onSubmitEditing={doSearch}
@@ -42,13 +44,17 @@ export default function SearchScreen(): JSX.Element {
       {resultsQ.isLoading && <SkeletonList count={4} />}
       {resultsQ.data && !resultsQ.isLoading && (
         <>
-          {(results?.services ?? []).length > 0 && <Text style={styles.st}> خدمات</Text>}
+          {(results?.services ?? []).length > 0 && (
+            <Text style={styles.st}>{t('mobile.public.search.services')}</Text>
+          )}
           {(results?.services ?? []).map((s) => (
             <View key={s.id} style={styles.card}>
               <Text style={styles.ce}>{s.emoji ?? ''}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={styles.cn}>{s.nameAr ?? ''}</Text>
-                <Text style={styles.cm}>{(s.price ?? 0).toLocaleString()} ر.س</Text>
+                <Text style={styles.cm}>
+                  {(s.price ?? 0).toLocaleString()} {t('misc.sar')}
+                </Text>
               </View>
             </View>
           ))}

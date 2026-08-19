@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -11,6 +12,7 @@ const COLORS = {
 };
 
 export default function TechProfileScreen(): JSX.Element {
+  const { t } = useLocale();
   const profile = trpc.users.getMe.useQuery() ?? {
     data: null,
     isLoading: false,
@@ -24,17 +26,25 @@ export default function TechProfileScreen(): JSX.Element {
       isLoading={profile.isLoading}
       isError={profile.isError}
       isEmpty={!data}
-      errorMessage="فشل تحميل الملف الشخصي"
+      errorMessage={t('tech.profile.load-error')}
       onRetry={() => profile.refetch()}
     >
-      <Text style={styles.title}> ملفي الشخصي</Text>
+      <Text style={styles.title}>{t('mobile.tech.profile.title')}</Text>
       {(data
         ? [
-            { label: 'المدينة', value: data.city as string },
-            { label: 'التقييم', value: ` ${String(data.ratingAvg ?? 0)}` },
-            { label: 'الحجوزات المكتملة', value: String(data.completedBookings ?? 0) },
-            { label: 'حالة التوثيق', value: data.kycStatus as string },
-            { label: 'منتجات صديقة للبيئة', value: data.isEcoFriendly ? ' نعم' : ' لا' },
+            { label: t('tech.profile.city'), value: data.city as string },
+            { label: t('tech.dashboard.rating'), value: ` ${String(data.ratingAvg ?? 0)}` },
+            {
+              label: t('mobile.tech.profile.completed-bookings'),
+              value: String(data.completedBookings ?? 0),
+            },
+            { label: t('tech.dashboard.kyc-status'), value: data.kycStatus as string },
+            {
+              label: t('mobile.tech.profile.eco-friendly-products'),
+              value: data.isEcoFriendly
+                ? t('mobile.tech.profile.yes')
+                : t('mobile.tech.profile.no'),
+            },
           ]
         : []
       ).map((row, i) => (
@@ -44,7 +54,7 @@ export default function TechProfileScreen(): JSX.Element {
         </View>
       ))}
       <TouchableOpacity style={styles.editBtn}>
-        <Text style={styles.editText}>️ تعديل الملف</Text>
+        <Text style={styles.editText}>{t('mobile.tech.profile.edit-profile')}</Text>
       </TouchableOpacity>
     </ScreenState>
   );

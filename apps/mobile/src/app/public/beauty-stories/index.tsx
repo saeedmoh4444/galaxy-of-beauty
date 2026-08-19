@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface BeautyStory {
   id?: number;
@@ -14,11 +15,17 @@ interface BeautyStory {
 }
 
 export default function BeautyStoriesScreen(): JSX.Element {
+  const { t } = useLocale();
   const storiesQ = trpc.beautyStories.feed.useQuery();
 
   if (storiesQ.isLoading) return <SkeletonList count={4} />;
   if (storiesQ.isError)
-    return <ErrorAlert message="فشل تحميل القصص" onRetry={() => storiesQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.beauty-stories.load-error')}
+        onRetry={() => storiesQ.refetch()}
+      />
+    );
 
   const items = (storiesQ.data ?? []) as BeautyStory[];
 
@@ -34,10 +41,10 @@ export default function BeautyStoriesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> القصص</Text>
-      <Text style={styles.sub}>قصص نجاح وتحولات الجمال</Text>
+      <Text style={styles.t}>{t('mobile.public.beauty-stories.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.beauty-stories.subtitle')}</Text>
       {items.length === 0 ? (
-        <Text style={styles.e}>لا توجد قصص</Text>
+        <Text style={styles.e}>{t('mobile.public.beauty-stories.empty')}</Text>
       ) : (
         items.map((s, i) => (
           <View key={s.id ?? i} style={styles.card}>
@@ -50,7 +57,7 @@ export default function BeautyStoriesScreen(): JSX.Element {
               </Text>
             </View>
             <TouchableOpacity style={styles.readBtn}>
-              <Text style={styles.readBtnText}>قراءة</Text>
+              <Text style={styles.readBtnText}>{t('mobile.public.beauty-stories.read')}</Text>
             </TouchableOpacity>
           </View>
         ))

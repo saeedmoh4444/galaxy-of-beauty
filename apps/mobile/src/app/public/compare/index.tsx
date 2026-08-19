@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface CompareService {
   id: number;
@@ -12,6 +13,7 @@ interface CompareService {
 }
 
 export default function CompareScreen(): JSX.Element {
+  const { t } = useLocale();
   const [selected, setSelected] = useState<number[]>([]);
   const servicesQ = trpc.productCompare.list.useQuery();
   const services = (servicesQ.data as unknown as CompareService[]) ?? [];
@@ -36,8 +38,8 @@ export default function CompareScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ مقارنة الخدمات</Text>
-      <Text style={styles.sub}>اختاري حتى ٣ خدمات للمقارنة</Text>
+      <Text style={styles.t}>{t('mobile.public.compare.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.compare.subtitle')}</Text>
       <View style={styles.grid}>
         {services.map((s) => {
           const isSel = selected.includes(s.id);
@@ -51,20 +53,24 @@ export default function CompareScreen(): JSX.Element {
               <Text style={[styles.chipName, isSel && styles.chipNameActive]}>
                 {s.nameAr ?? ''}
               </Text>
-              <Text style={styles.chipPrice}>{(s.price ?? 0).toLocaleString()} ر.س</Text>
+              <Text style={styles.chipPrice}>
+                {(s.price ?? 0).toLocaleString()} {t('misc.sar')}
+              </Text>
             </TouchableOpacity>
           );
         })}
       </View>
       {compareItems.length > 0 && (
         <View style={styles.table}>
-          <Text style={styles.tableTitle}> المقارنة</Text>
+          <Text style={styles.tableTitle}>{t('mobile.public.compare.compare-title')}</Text>
           {compareItems.map((s) => (
             <View key={s.id} style={styles.compareCard}>
               <Text style={styles.cTitle}>{s.nameAr ?? ''}</Text>
               <View style={styles.cRow}>
                 <Text style={styles.cLabel}></Text>
-                <Text style={styles.cVal}>{(s.price ?? 0).toLocaleString()} ر.س</Text>
+                <Text style={styles.cVal}>
+                  {(s.price ?? 0).toLocaleString()} {t('misc.sar')}
+                </Text>
               </View>
               <View style={styles.cRow}>
                 <Text style={styles.cLabel}></Text>

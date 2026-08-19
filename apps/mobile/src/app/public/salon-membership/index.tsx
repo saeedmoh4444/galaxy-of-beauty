@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const MEMBERSHIPS = [
   {
@@ -48,12 +49,13 @@ const MEMBERSHIPS = [
 ];
 
 export default function SalonMembershipScreen(): JSX.Element {
+  const { t } = useLocale();
   const [selected, setSelected] = useState('premium');
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> عضويات الصالون</Text>
-      <Text style={styles.sub}>اختاري العضوية اللي تناسبكِ</Text>
+      <Text style={styles.t}>{t('mobile.public.salon-membership.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.salon-membership.subtitle')}</Text>
 
       <View style={styles.cards}>
         {MEMBERSHIPS.map((m) => {
@@ -68,11 +70,13 @@ export default function SalonMembershipScreen(): JSX.Element {
                 <Text style={styles.ce}>{m.emoji}</Text>
                 <Text style={[styles.cn, { color: m.color }]}>{m.name}</Text>
                 <Text style={styles.cp}>
-                  {m.price === 0 ? 'مجانية' : `${m.price} ر.س / شهرياً`}
+                  {m.price === 0
+                    ? t('mobile.public.salon-membership.free')
+                    : t('mobile.public.salon-membership.price', { price: m.price })}
                 </Text>
               </View>
               <View style={styles.cardBody}>
-                <Text style={styles.cbTitle}> المميزات</Text>
+                <Text style={styles.cbTitle}>{t('mobile.public.salon-membership.features')}</Text>
                 {m.benefits.map((b, i) => (
                   <View key={i} style={styles.benefit}>
                     <Text style={styles.benefitBullet}></Text>
@@ -82,7 +86,7 @@ export default function SalonMembershipScreen(): JSX.Element {
                 {m.notIncluded.length > 0 && (
                   <>
                     <Text style={[styles.cbTitle, { color: '#9ca3af', marginTop: 12 }]}>
-                      غير متضمن
+                      {t('mobile.public.salon-membership.not-included')}
                     </Text>
                     {m.notIncluded.map((b, i) => (
                       <View key={i} style={styles.benefit}>
@@ -99,7 +103,7 @@ export default function SalonMembershipScreen(): JSX.Element {
       </View>
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}> اشتركي الآن</Text>
+        <Text style={styles.bt}>{t('mobile.public.salon-membership.subscribe-cta')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

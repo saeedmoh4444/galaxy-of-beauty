@@ -3,10 +3,12 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/trpc-react';
 import { useToast } from '@/components/Toast';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function RegisterScreen() {
   const router = useRouter();
   const { showToast } = useToast();
+  const { t } = useLocale();
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -20,11 +22,11 @@ export default function RegisterScreen() {
 
   const registerMut = trpc.auth.register.useMutation({
     onSuccess: () => {
-      showToast('success', 'تم إنشاء الحساب بنجاح');
+      showToast('success', t('mobile.auth.accountCreated'));
       setTimeout(() => router.replace('/(auth)/login'), 1000);
     },
     onError: (err) => {
-      showToast('error', err.message || 'فشل إنشاء الحساب');
+      showToast('error', err.message || t('mobile.auth.registerFailed'));
     },
   });
 
@@ -42,16 +44,16 @@ export default function RegisterScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>إنشاء حساب</Text>
+      <Text style={styles.title}>{t('auth.register')}</Text>
       <TextInput
         style={styles.input}
-        placeholder="الاسم"
+        placeholder={t('auth.name')}
         value={form.name}
         onChangeText={(t) => set('name', t)}
       />
       <TextInput
         style={styles.input}
-        placeholder="البريد الإلكتروني"
+        placeholder={t('auth.email')}
         value={form.email}
         onChangeText={(t) => set('email', t)}
         keyboardType="email-address"
@@ -59,14 +61,14 @@ export default function RegisterScreen() {
       />
       <TextInput
         style={styles.input}
-        placeholder="رقم الجوال (+9665xxxxxxxx)"
+        placeholder={t('mobile.auth.phonePlaceholder')}
         value={form.phone}
         onChangeText={(t) => set('phone', t)}
         keyboardType="phone-pad"
       />
       <TextInput
         style={styles.input}
-        placeholder="كلمة المرور"
+        placeholder={t('auth.password')}
         value={form.password}
         onChangeText={(t) => set('password', t)}
         secureTextEntry
@@ -77,7 +79,7 @@ export default function RegisterScreen() {
           onPress={() => set('role', 'CUSTOMER')}
         >
           <Text style={[styles.roleText, form.role === 'CUSTOMER' && styles.roleTextActive]}>
-            عميلة
+            {t('auth.role-customer')}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -85,14 +87,14 @@ export default function RegisterScreen() {
           onPress={() => set('role', 'TECHNICIAN')}
         >
           <Text style={[styles.roleText, form.role === 'TECHNICIAN' && styles.roleTextActive]}>
-            فنية
+            {t('auth.role-technician')}
           </Text>
         </TouchableOpacity>
       </View>
       {form.role === 'TECHNICIAN' && (
         <TextInput
           style={styles.input}
-          placeholder="المدينة"
+          placeholder={t('auth.city')}
           value={form.city}
           onChangeText={(t) => set('city', t)}
         />
@@ -103,11 +105,11 @@ export default function RegisterScreen() {
         disabled={registerMut.isPending}
       >
         <Text style={styles.buttonText}>
-          {registerMut.isPending ? 'جاري الإنشاء...' : 'إنشاء حساب'}
+          {registerMut.isPending ? t('mobile.auth.registering') : t('auth.register')}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => router.back()}>
-        <Text style={styles.link}>لديك حساب؟ تسجيل الدخول</Text>
+        <Text style={styles.link}>{t('mobile.auth.hasAccountLogin')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

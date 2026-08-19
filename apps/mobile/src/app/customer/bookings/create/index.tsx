@@ -11,6 +11,8 @@ import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/trpc-react';
 import { useState } from 'react';
 import { MAX_LIST_SIZE } from '@galaxy/ui';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 import { useToast } from '@/components/Toast';
 
 interface ServiceListItem {
@@ -42,6 +44,7 @@ interface AddressItem {
 
 export default function CreateBookingScreen() {
   const router = useRouter();
+  const { locale, t } = useLocale();
   const { showToast } = useToast();
   const [step, setStep] = useState(1);
   const [serviceId, setServiceId] = useState<number | undefined>();
@@ -62,24 +65,24 @@ export default function CreateBookingScreen() {
 
   const createMut = trpc.bookings.create.useMutation({
     onSuccess: () => {
-      showToast('success', 'تم إنشاء الحجز بنجاح!');
+      showToast('success', t('booking.created-success'));
       setTimeout(() => router.back(), 1000);
     },
     onError: () => {
-      showToast('error', 'فشل إنشاء الحجز');
+      showToast('error', t('booking.create-failed'));
     },
   });
 
   const handleSubmit = () => {
     if (!serviceId || !addressId) {
-      showToast('warning', 'الرجاء اختيار الخدمة والعنوان');
+      showToast('warning', t('booking.select-service-address'));
       return;
     }
     // Auto-assign first available technician for this service
     const techs = svc?.technicianServices ?? [];
     const technicianId = techs[0]?.technician?.userId ?? 0;
     if (!technicianId) {
-      showToast('warning', 'لا توجد فنيات متاحة لهذه الخدمة حالياً');
+      showToast('warning', t('booking.no-technicians'));
       return;
     }
 
@@ -101,39 +104,44 @@ export default function CreateBookingScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.inner}>
-      <Text style={styles.title}>حجز جديد</Text>
+      <Text style={styles.title}>{t('booking.new-booking')}</Text>
 
       {/* Steps indicator */}
       <View style={styles.steps}>
-        {['الخدمة', 'التفاصيل', 'التأكيد'].map((label, i) => (
-          <View key={i} style={styles.stepRow}>
-            <View
-              style={[
-                styles.stepCircle,
-                step > i + 1
-                  ? styles.stepDone
-                  : step === i + 1
-                    ? styles.stepActive
-                    : styles.stepInactive,
-              ]}
-            >
-              <Text style={[styles.stepNum, step === i + 1 && { color: '#fff' }]}>
-                {step > i + 1 ? '' : i + 1}
+        {[t('booking.service'), t('booking.step-details'), t('booking.step-confirm')].map(
+          (label, i) => (
+            <View key={i} style={styles.stepRow}>
+              <View
+                style={[
+                  styles.stepCircle,
+                  step > i + 1
+                    ? styles.stepDone
+                    : step === i + 1
+                      ? styles.stepActive
+                      : styles.stepInactive,
+                ]}
+              >
+                <Text style={[styles.stepNum, step === i + 1 && { color: '#fff' }]}>
+                  {step > i + 1 ? '' : i + 1}
+                </Text>
+              </View>
+              <Text
+                style={[
+                  styles.stepLabel,
+                  step === i + 1 && { color: '#7c3aed', fontWeight: '700' },
+                ]}
+              >
+                {label}
               </Text>
+              {i < 2 && <Text style={styles.stepArrow}>→</Text>}
             </View>
-            <Text
-              style={[styles.stepLabel, step === i + 1 && { color: '#7c3aed', fontWeight: '700' }]}
-            >
-              {label}
-            </Text>
-            {i < 2 && <Text style={styles.stepArrow}>→</Text>}
-          </View>
-        ))}
+          ),
+        )}
       </View>
 
       {step === 1 && (
         <View>
-          <Text style={styles.sectionTitle}>اختر الخدمة</Text>
+          <Text style={styles.sectionTitle}>{t('booking.choose-service')}</Text>
           {services.map((s, i) => (
             <TouchableOpacity
               key={s.id ?? i}
@@ -144,9 +152,12 @@ export default function CreateBookingScreen() {
               }}
               activeOpacity={0.7}
             >
-              <Text style={styles.serviceName}>{s.titleJson?.ar ?? ''}</Text>
+              <Text style={styles.serviceName}>{localize(s.titleJson, locale)}</Text>
               <Text style={styles.serviceMeta}>
-                {Number(s.basePrice).toFixed(0)} ر.س · {s.durationMin} دقيقة
+                {t('bookings.create.service-meta', {
+                  price: Number(s.basePrice).toFixed(0),
+                  duration: s.durationMin ?? '',
+                })}
               </Text>
             </TouchableOpacity>
           ))}
@@ -155,18 +166,20 @@ export default function CreateBookingScreen() {
 
       {step === 2 && svc && (
         <View>
-          <Text style={styles.sectionTitle}>تفاصيل الحجز</Text>
-          <Text style={styles.selectedService}>{svc.titleJson?.ar ?? ''}</Text>
+          <Text style={styles.sectionTitle}>{t('booking.details')}</Text>
+          <Text style={styles.selectedService}>{localize(svc.titleJson, locale)}</Text>
 
           {variants.length > 0 && (
             <View style={styles.field}>
-              <Text style={styles.label}>المتغير</Text>
+              <Text style={styles.label}>{t('bookings.create.variant-label')}</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipRow}>
                 <TouchableOpacity
                   style={[styles.chip, !variantId && styles.chipActive]}
                   onPress={() => setVariantId(undefined)}
                 >
-                  <Text style={[styles.chipText, !variantId && { color: '#fff' }]}>الأساسي</Text>
+                  <Text style={[styles.chipText, !variantId && { color: '#fff' }]}>
+                    {t('bookings.create.variant-basic')}
+                  </Text>
                 </TouchableOpacity>
                 {variants.map((v, i) => (
                   <TouchableOpacity
@@ -175,7 +188,7 @@ export default function CreateBookingScreen() {
                     onPress={() => setVariantId(v.id)}
                   >
                     <Text style={[styles.chipText, variantId === v.id && { color: '#fff' }]}>
-                      {v.nameJson?.ar ?? ''}
+                      {localize(v.nameJson, locale)}
                     </Text>
                   </TouchableOpacity>
                 ))}
@@ -184,7 +197,7 @@ export default function CreateBookingScreen() {
           )}
 
           <View style={styles.field}>
-            <Text style={styles.label}>العنوان</Text>
+            <Text style={styles.label}>{t('bookings.create.address-label')}</Text>
             {addresses.map((a, i) => (
               <TouchableOpacity
                 key={a.id ?? i}
@@ -199,24 +212,24 @@ export default function CreateBookingScreen() {
           </View>
 
           <View style={styles.field}>
-            <Text style={styles.label}>كود الخصم</Text>
+            <Text style={styles.label}>{t('mobile.promo')}</Text>
             <TextInput
               style={styles.input}
               value={promoCode}
               onChangeText={(t) => setPromoCode(t.toUpperCase())}
-              placeholder="مثال: WELCOME20"
+              placeholder={t('booking.promo-example')}
               placeholderTextColor="#9ca3af"
               autoCapitalize="characters"
             />
           </View>
 
           <View style={styles.field}>
-            <Text style={styles.label}>ملاحظات</Text>
+            <Text style={styles.label}>{t('booking.notes')}</Text>
             <TextInput
               style={[styles.input, styles.textArea]}
               value={notes}
               onChangeText={setNotes}
-              placeholder="أي ملاحظات إضافية..."
+              placeholder={t('booking.notes-placeholder')}
               placeholderTextColor="#9ca3af"
               multiline
               numberOfLines={3}
@@ -225,10 +238,10 @@ export default function CreateBookingScreen() {
 
           <View style={styles.btnRow}>
             <TouchableOpacity style={styles.backBtn} onPress={() => setStep(1)}>
-              <Text style={styles.backText}>السابق</Text>
+              <Text style={styles.backText}>{t('booking.previous')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.nextBtn} onPress={() => setStep(3)}>
-              <Text style={styles.nextText}>التالي</Text>
+              <Text style={styles.nextText}>{t('button.next')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -236,25 +249,29 @@ export default function CreateBookingScreen() {
 
       {step === 3 && svc && (
         <View>
-          <Text style={styles.sectionTitle}>تأكيد الحجز</Text>
+          <Text style={styles.sectionTitle}>{t('booking.confirm')}</Text>
           <View style={styles.summary}>
             <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>الخدمة</Text>
-              <Text style={styles.summaryValue}>{svc.titleJson?.ar ?? ''}</Text>
+              <Text style={styles.summaryLabel}>{t('booking.service')}</Text>
+              <Text style={styles.summaryValue}>{localize(svc.titleJson, locale)}</Text>
             </View>
             <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>السعر</Text>
-              <Text style={styles.summaryPrice}>{Number(svc.basePrice).toFixed(0)} ر.س</Text>
+              <Text style={styles.summaryLabel}>{t('booking.price')}</Text>
+              <Text style={styles.summaryPrice}>
+                {Number(svc.basePrice).toFixed(0)} {t('misc.sar')}
+              </Text>
             </View>
             <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>المدة</Text>
-              <Text style={styles.summaryValue}>{svc.durationMin} دقيقة</Text>
+              <Text style={styles.summaryLabel}>{t('booking.duration')}</Text>
+              <Text style={styles.summaryValue}>
+                {svc.durationMin} {t('misc.min')}
+              </Text>
             </View>
           </View>
-          <Text style={styles.note}>* ستقوم الفنية بتأكيد الموعد النهائي</Text>
+          <Text style={styles.note}>{t('bookings.create.technician-note')}</Text>
           <View style={styles.btnRow}>
             <TouchableOpacity style={styles.backBtn} onPress={() => setStep(2)}>
-              <Text style={styles.backText}>السابق</Text>
+              <Text style={styles.backText}>{t('booking.previous')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.nextBtn}
@@ -264,7 +281,7 @@ export default function CreateBookingScreen() {
               {createMut.isPending ? (
                 <ActivityIndicator color="#fff" />
               ) : (
-                <Text style={styles.nextText}>تأكيد الحجز</Text>
+                <Text style={styles.nextText}>{t('booking.confirm')}</Text>
               )}
             </TouchableOpacity>
           </View>

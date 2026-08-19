@@ -4,12 +4,15 @@ import { MEDIUM_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
+import type { TranslationKey } from '@galaxy/shared';
 
 const TABS = [
-  { key: 'trending', label: ' رائج' },
-  { key: 'spotlight', label: ' مميزات' },
-  { key: 'tips', label: ' نصائح' },
-  { key: 'feed', label: ' قبل وبعد' },
+  { key: 'trending', label: 'mobile.social.tab-trending' as TranslationKey },
+  { key: 'spotlight', label: 'mobile.social.tab-spotlight' as TranslationKey },
+  { key: 'tips', label: 'mobile.social.tab-tips' as TranslationKey },
+  { key: 'feed', label: 'mobile.social.tab-feed' as TranslationKey },
 ];
 
 interface FeedItem {
@@ -45,6 +48,7 @@ interface LookbookItem {
 }
 
 export default function SocialScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const [tab, setTab] = useState('trending');
   const trendingQ = trpc.social.trending.useQuery();
   const spotlightQ = trpc.social.spotlight.useQuery();
@@ -54,7 +58,9 @@ export default function SocialScreen(): JSX.Element {
 
   if (trendingQ.isLoading) return <SkeletonList count={5} />;
   if (trendingQ.isError)
-    return <ErrorAlert message="فشل تحميل المحتوى" onRetry={() => trendingQ.refetch()} />;
+    return (
+      <ErrorAlert message={t('mobile.social.load-error')} onRetry={() => trendingQ.refetch()} />
+    );
 
   const tips = (tipsQ.data as BeautyTip[] | undefined) ?? [];
   const feedItems = (feedQ.data as { items?: FeedItem[] } | null)?.items ?? [];
@@ -74,32 +80,38 @@ export default function SocialScreen(): JSX.Element {
         />
       }
     >
-      <Text style={s.t}> مجتمع الجمال</Text>
-      <Text style={s.sub}>اكتشفي أحدث الصيحات والفنيات المميزات</Text>
+      <Text style={s.t}>{t('mobile.social.title')}</Text>
+      <Text style={s.sub}>{t('mobile.social.subtitle')}</Text>
 
       <View style={s.tabs}>
-        {TABS.map((t) => (
+        {TABS.map((tabItem) => (
           <TouchableOpacity
-            key={t.key}
-            onPress={() => setTab(t.key)}
-            style={[s.tab, tab === t.key && s.tabActive]}
+            key={tabItem.key}
+            onPress={() => setTab(tabItem.key)}
+            style={[s.tab, tab === tabItem.key && s.tabActive]}
           >
-            <Text style={[s.tabText, tab === t.key && s.tabTextActive]}>{t.label}</Text>
+            <Text style={[s.tabText, tab === tabItem.key && s.tabTextActive]}>
+              {t(tabItem.label)}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
 
       {tab === 'trending' && trendingList.length > 0 && (
         <View>
-          <Text style={s.st}> الخدمات الرائجة</Text>
+          <Text style={s.st}>{t('mobile.social.trending-services')}</Text>
           {trendingList.slice(0, 10).map((svc, i) => (
             <View key={svc.id ?? i} style={s.card}>
               <View style={s.rank}>
                 <Text style={s.rankText}>#{i + 1}</Text>
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={s.cardTitle}>{svc.titleJson?.ar ?? svc.name}</Text>
-                <Text style={s.cardSub}>{svc.bookingCount} حجز</Text>
+                <Text style={s.cardTitle}>
+                  {svc.titleJson ? localize(svc.titleJson, locale) : svc.name}
+                </Text>
+                <Text style={s.cardSub}>
+                  {t('mobile.social.bookings-count', { count: svc.bookingCount ?? 0 })}
+                </Text>
               </View>
             </View>
           ))}
@@ -108,7 +120,7 @@ export default function SocialScreen(): JSX.Element {
 
       {tab === 'spotlight' && spotlightList.length > 0 && (
         <View>
-          <Text style={s.st}> فنيات مميزات</Text>
+          <Text style={s.st}>{t('mobile.social.spotlight-technicians')}</Text>
           {spotlightList.map((tech, i) => (
             <View key={tech.id ?? i} style={s.card}>
               <Text style={s.avatar}>‍</Text>
@@ -125,7 +137,7 @@ export default function SocialScreen(): JSX.Element {
 
       {tab === 'tips' && tips.length > 0 && (
         <View>
-          <Text style={s.st}> نصائح تجميلية</Text>
+          <Text style={s.st}>{t('mobile.social.beauty-tips')}</Text>
           {tips.map((tip, i) => (
             <View key={tip.id ?? i} style={s.card}>
               <View style={{ flex: 1 }}>
@@ -139,7 +151,7 @@ export default function SocialScreen(): JSX.Element {
 
       {tab === 'feed' && feedItems.length > 0 && (
         <View>
-          <Text style={s.st}> قبل وبعد</Text>
+          <Text style={s.st}>{t('mobile.social.tab-feed')}</Text>
           <View style={s.grid}>
             {feedItems.map((item, i) => (
               <View key={item.id ?? i} style={s.gridItem}>
@@ -154,7 +166,7 @@ export default function SocialScreen(): JSX.Element {
 
       {lookbookItems.length > 0 && (
         <View style={{ marginTop: 24 }}>
-          <Text style={s.st}> لوك بوك الموسم</Text>
+          <Text style={s.st}>{t('mobile.social.lookbook')}</Text>
           {lookbookItems.slice(0, 4).map((l, i) => (
             <View key={l.id ?? i} style={s.card}>
               <Text style={s.avatar}></Text>

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const QUESTIONS = [
   {
@@ -54,6 +55,7 @@ interface MatchResult {
 }
 
 export default function ServiceMatchmakerScreen(): JSX.Element {
+  const { t } = useLocale();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState<Record<string, string> | null>(null);
@@ -87,10 +89,12 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
   if (result) {
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}> النتائج</Text>
+        <Text style={styles.t}>{t('mobile.public.service-matchmaker.results')}</Text>
         <View style={styles.resultCard}>
           <Text style={styles.resultEmoji}></Text>
-          <Text style={styles.resultTitle}>خدماتكِ المثالية</Text>
+          <Text style={styles.resultTitle}>
+            {t('mobile.public.service-matchmaker.your-perfect-services')}
+          </Text>
           {result.matches?.map((m, i) => (
             <View key={i} style={styles.match}>
               <Text style={styles.matchEmoji}>{m.emoji ?? '‍️'}</Text>
@@ -100,7 +104,9 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
               </View>
               <View style={{ alignItems: 'flex-end' }}>
                 <Text style={styles.matchScore}>{m.score}%</Text>
-                <Text style={styles.matchPrice}>{m.price?.toLocaleString()} ر.س</Text>
+                <Text style={styles.matchPrice}>
+                  {m.price?.toLocaleString()} {t('misc.sar')}
+                </Text>
               </View>
             </View>
           ))}
@@ -113,7 +119,7 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
           }}
           style={styles.resetBtn}
         >
-          <Text style={styles.resetBtnText}> إعادة</Text>
+          <Text style={styles.resetBtnText}>{t('mobile.public.service-matchmaker.reset')}</Text>
         </TouchableOpacity>
       </ScrollView>
     );
@@ -123,7 +129,7 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> Service Matchmaker</Text>
+      <Text style={styles.t}>{t('mobile.public.service-matchmaker.title')}</Text>
       <Text style={styles.progress}>
         {step + 1}/{QUESTIONS.length}
       </Text>

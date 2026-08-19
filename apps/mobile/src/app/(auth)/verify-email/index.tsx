@@ -9,9 +9,11 @@ import {
 import { trpc } from '@/lib/trpc-react';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function VerifyEmailScreen() {
   const router = useRouter();
+  const { t } = useLocale();
   const [token, setToken] = useState('');
   const [msg, setMsg] = useState('');
   const [error, setError] = useState('');
@@ -20,16 +22,16 @@ export default function VerifyEmailScreen() {
   const verifyMut = trpc.auth.verifyEmail.useMutation({
     onSuccess: () => {
       setDone(true);
-      setMsg('تم توثيق البريد الإلكتروني بنجاح');
+      setMsg(t('mobile.auth.emailVerified'));
     },
     onError: (e) => {
-      setError(e.message ?? 'فشل توثيق البريد الإلكتروني');
+      setError(e.message ?? t('mobile.auth.verifyEmailFailed'));
     },
   });
 
   const handleVerify = () => {
     if (!token) {
-      setError('يرجى إدخال رمز التحقق');
+      setError(t('mobile.auth.codeRequired'));
       return;
     }
     setError('');
@@ -38,7 +40,7 @@ export default function VerifyEmailScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>توثيق البريد الإلكتروني</Text>
+      <Text style={styles.title}>{t('mobile.auth.verifyTitle')}</Text>
 
       {verifyMut.isPending ? (
         <ActivityIndicator color="#7c3aed" style={{ marginTop: 32 }} />
@@ -47,25 +49,25 @@ export default function VerifyEmailScreen() {
           <Text style={styles.successIcon}></Text>
           <Text style={styles.successText}>{msg}</Text>
           <TouchableOpacity style={styles.btn} onPress={() => router.replace('/(auth)/login')}>
-            <Text style={styles.btnText}>تسجيل الدخول</Text>
+            <Text style={styles.btnText}>{t('auth.login')}</Text>
           </TouchableOpacity>
         </View>
       ) : (
         <View style={styles.form}>
           {error ? <Text style={styles.error}>{error}</Text> : null}
-          <Text style={styles.hint}>أدخل رمز التحقق المرسل إلى بريدك الإلكتروني لتوثيق حسابك</Text>
+          <Text style={styles.hint}>{t('mobile.auth.verifyHint')}</Text>
           <TextInput
             style={styles.input}
-            placeholder="رمز التحقق"
+            placeholder={t('mobile.twoFactorCode')}
             value={token}
             onChangeText={setToken}
             autoCapitalize="none"
           />
           <TouchableOpacity style={styles.btn} onPress={handleVerify}>
-            <Text style={styles.btnText}>توثيق</Text>
+            <Text style={styles.btnText}>{t('mobile.auth.verifyAction')}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => router.back()}>
-            <Text style={styles.link}>العودة</Text>
+            <Text style={styles.link}>{t('mobile.auth.back')}</Text>
           </TouchableOpacity>
         </View>
       )}

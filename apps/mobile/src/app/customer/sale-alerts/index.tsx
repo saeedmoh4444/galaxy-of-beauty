@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface SaleAlert {
   id?: number;
@@ -10,6 +11,7 @@ interface SaleAlert {
 }
 
 export default function SaleAlertsScreen(): JSX.Element {
+  const { t } = useLocale();
   const alertsQ = trpc.saleAlerts.myAlerts.useQuery();
   const data: SaleAlert[] = (alertsQ.data as unknown as SaleAlert[] | undefined) ?? [];
 
@@ -27,7 +29,7 @@ export default function SaleAlertsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ تنبيهات التخفيضات</Text>
+      <Text style={styles.t}>{t('mobile.saleAlerts.title')}</Text>
       {data.map((a, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{a.emoji ?? '️'}</Text>

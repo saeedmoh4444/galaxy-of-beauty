@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface OnboardingStep {
   key?: string;
@@ -20,6 +21,7 @@ interface OnboardingData {
 }
 
 export default function TechOnboardingScreen(): JSX.Element {
+  const { t } = useLocale();
   const dataQ = trpc.techOnboarding.steps.useQuery();
   const submitDocMut = trpc.techOnboarding.submitDoc.useMutation({
     onSuccess: () => {
@@ -49,12 +51,10 @@ export default function TechOnboardingScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> التسجيل كفنية</Text>
+      <Text style={styles.t}>{t('mobile.techOnboarding.title')}</Text>
       <View style={styles.pc}>
         <Text style={styles.pe}></Text>
-        <Text style={styles.pt}>
-          {completed}/{total} مكتملة
-        </Text>
+        <Text style={styles.pt}>{t('mobile.techOnboarding.completed', { completed, total })}</Text>
         <View style={styles.pb}>
           <View style={[styles.pf, { width: `${(completed / total) * 100}%` }]} />
         </View>
@@ -68,7 +68,7 @@ export default function TechOnboardingScreen(): JSX.Element {
           </View>
           {!s.completed && (
             <TouchableOpacity onPress={() => submitDoc(s.key ?? '')} style={styles.ub}>
-              <Text style={styles.ut}>رفع</Text>
+              <Text style={styles.ut}>{t('mobile.techOnboarding.upload')}</Text>
             </TouchableOpacity>
           )}
         </View>

@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface WishlistItem {
   id?: number;
@@ -11,6 +12,7 @@ interface WishlistItem {
 }
 
 export default function ServiceWishlistScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const itemsQ = trpc.serviceWishlist.myWishlist.useQuery();
   const items: WishlistItem[] = (itemsQ.data as unknown as WishlistItem[] | undefined) ?? [];
   const removeMut = trpc.serviceWishlist.remove.useMutation({
@@ -34,16 +36,24 @@ export default function ServiceWishlistScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> قائمة الخدمات</Text>
+      <Text style={styles.t}>{t('mobile.serviceWishlist.title')}</Text>
       {items.map((i) => (
         <View key={i.id} style={styles.card}>
           <Text style={styles.em}>{i.emoji}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>{i.serviceName}</Text>
-            <Text style={styles.lp}>أقل سعر: {i.lowestPrice?.toLocaleString()} ر.س</Text>
+            <Text style={styles.lp}>
+              {t('mobile.serviceWishlist.lowest-price', {
+                price: i.lowestPrice?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA') ?? '',
+              })}
+            </Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
-            <Text style={styles.cp}>{i.currentPrice?.toLocaleString()} ر.س</Text>
+            <Text style={styles.cp}>
+              {t('marketing.compare.price-sar', {
+                price: i.currentPrice?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA') ?? '',
+              })}
+            </Text>
             <TouchableOpacity onPress={() => remove(i.id ?? 0)}>
               <Text style={styles.del}>️</Text>
             </TouchableOpacity>

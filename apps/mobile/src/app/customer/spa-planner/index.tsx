@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface SpaService {
   id?: number;
@@ -11,6 +12,7 @@ interface SpaService {
 }
 
 export default function SpaPlannerScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const servicesQ = trpc.spaPlanner.services.useQuery();
   const data: SpaService[] = (servicesQ.data as unknown as SpaService[] | undefined) ?? [];
   if (servicesQ.isLoading) return <SkeletonList count={4} />;
@@ -26,14 +28,17 @@ export default function SpaPlannerScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>‍️ مخطط السبا</Text>
+      <Text style={styles.t}>{t('mobile.spaPlanner.title')}</Text>
       {data.map((s, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{s.emoji ?? '‍️'}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{s.nameAr}</Text>
             <Text style={styles.dur}>
-              ️ {s.duration} · {s.price?.toLocaleString()} ر.س
+              {t('mobile.spaPlanner.duration-price', {
+                duration: s.duration ?? '',
+                price: s.price?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA') ?? '',
+              })}
             </Text>
           </View>
         </View>

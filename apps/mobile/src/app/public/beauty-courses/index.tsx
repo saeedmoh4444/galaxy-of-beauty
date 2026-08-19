@@ -1,10 +1,13 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function BeautyCoursesScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const courses = trpc.beautyCourses.list.useQuery();
   const data = courses.data as unknown[] | undefined;
 
@@ -13,18 +16,19 @@ export default function BeautyCoursesScreen(): JSX.Element {
       isLoading={courses.isLoading}
       isError={courses.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل الدورات"
-      emptyTitle="لا توجد دورات"
+      errorMessage={t('mobile.public.beauty-courses.load-error')}
+      emptyTitle={t('mobile.public.beauty-courses.empty')}
       onRetry={() => courses.refetch()}
     >
-      <Text style={styles.title}> دورات التجميل</Text>
+      <Text style={styles.title}>{t('mobile.public.beauty-courses.title')}</Text>
       {(data as Record<string, unknown>[])?.map((c: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{(c.emoji as string) ?? ''}</Text>
           <View style={styles.info}>
-            <Text style={styles.name}>{(c.titleJson as Record<string, string>)?.ar ?? ''}</Text>
+            <Text style={styles.name}>{localize(c.titleJson, locale)}</Text>
             <Text style={styles.instructor}>
-              {c.instructor as string} • {c.lessons as number} دروس
+              {c.instructor as string} •{' '}
+              {t('mobile.public.beauty-courses.lessons-count', { count: c.lessons as number })}
             </Text>
             <Text style={styles.detail}>
               {c.level as string} • {c.duration as string} • {c.rating as number}

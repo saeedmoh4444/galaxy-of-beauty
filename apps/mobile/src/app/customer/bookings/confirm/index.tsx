@@ -1,8 +1,10 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BookingConfirmScreen(): JSX.Element {
   const { code, date } = useLocalSearchParams<{ code?: string; date?: string }>();
+  const { locale, t } = useLocale();
   const bookingCode = code || '———';
   const bookingDate = date || new Date().toISOString();
 
@@ -11,18 +13,18 @@ export default function BookingConfirmScreen(): JSX.Element {
       <View style={styles.iconCircle}>
         <Text style={styles.iconEmoji}></Text>
       </View>
-      <Text style={styles.t}>تم الحجز بنجاح!</Text>
-      <Text style={styles.sub}>تم إنشاء حجزكِ بنجاح. سيتم تأكيد الموعد من قبل الفنية قريباً.</Text>
+      <Text style={styles.t}>{t('booking.success-title')}</Text>
+      <Text style={styles.sub}>{t('booking.success-message')}</Text>
 
       <View style={styles.card}>
         <View style={styles.row}>
-          <Text style={styles.label}>رمز الحجز</Text>
+          <Text style={styles.label}>{t('booking.code')}</Text>
           <Text style={styles.code}>{bookingCode}</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.label}>التاريخ</Text>
+          <Text style={styles.label}>{t('booking.date')}</Text>
           <Text style={styles.value}>
-            {new Date(bookingDate).toLocaleDateString('ar-SA', {
+            {new Date(bookingDate).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-GB', {
               weekday: 'long',
               year: 'numeric',
               month: 'long',
@@ -31,9 +33,9 @@ export default function BookingConfirmScreen(): JSX.Element {
           </Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.label}>الوقت</Text>
+          <Text style={styles.label}>{t('booking.time')}</Text>
           <Text style={styles.value}>
-            {new Date(bookingDate).toLocaleTimeString('ar-SA', {
+            {new Date(bookingDate).toLocaleTimeString(locale === 'ar' ? 'ar-SA' : 'en-GB', {
               hour: '2-digit',
               minute: '2-digit',
             })}
@@ -42,10 +44,10 @@ export default function BookingConfirmScreen(): JSX.Element {
       </View>
 
       <TouchableOpacity style={styles.viewBtn}>
-        <Text style={styles.viewBtnText}> عرض حجوزاتي</Text>
+        <Text style={styles.viewBtnText}>{t('booking.view-my-bookings')}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.bookBtn}>
-        <Text style={styles.bookBtnText}>‍️ احجزي خدمة أخرى</Text>
+        <Text style={styles.bookBtnText}>{t('booking.book-another-service')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

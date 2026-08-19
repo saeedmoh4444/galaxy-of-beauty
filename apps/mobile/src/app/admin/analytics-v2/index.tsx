@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface AnalyticsKpi {
   today?: number;
@@ -28,11 +29,15 @@ interface AnalyticsData {
 }
 
 export default function AdminAnalyticsV2Screen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.adminAnalyticsV2.dashboard.useQuery();
   const data = (q.data as unknown as AnalyticsData | null) ?? {};
 
   if (q.isLoading) return <SkeletonList count={5} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل التحليلات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return (
+      <ErrorAlert message={t('mobile.admin.analytics.load-error')} onRetry={() => q.refetch()} />
+    );
 
   const d = data ?? {};
   const revenue = d.revenue ?? {};
@@ -51,25 +56,29 @@ export default function AdminAnalyticsV2Screen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> التحليلات المتقدمة</Text>
+      <Text style={styles.t}>{t('admin.analytics-v2.title')}</Text>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={styles.kpiVal}>{(revenue.today ?? 0)?.toLocaleString()}</Text>
-          <Text style={styles.kpiLabel}>إيراد اليوم</Text>
+          <Text style={styles.kpiLabel}>{t('admin.analytics-v2.revenue-today')}</Text>
         </View>
         <View style={styles.kpi}>
           <Text style={styles.kpiEmoji}></Text>
           <Text style={[styles.kpiVal, { color: '#2563eb' }]}>{bookings.today ?? 0}</Text>
-          <Text style={styles.kpiLabel}>حجز اليوم</Text>
+          <Text style={styles.kpiLabel}>{t('admin.analytics-v2.bookings-today')}</Text>
         </View>
       </View>
-      {top.length > 0 && <Text style={styles.sectionTitle}> الأعلى</Text>}
+      {top.length > 0 && (
+        <Text style={styles.sectionTitle}>{t('mobile.admin.analytics-v2.top')}</Text>
+      )}
       {top.map((s, i) => (
         <View key={i} style={styles.row}>
           <Text style={styles.rank}>#{i + 1}</Text>
           <Text style={styles.name}>{s.name}</Text>
-          <Text style={styles.stat}>{s.bookings} حجز</Text>
+          <Text style={styles.stat}>
+            {t('admin.analytics-v2.bookings-count', { count: s.bookings ?? 0 })}
+          </Text>
         </View>
       ))}
     </ScrollView>

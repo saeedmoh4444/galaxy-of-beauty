@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { trpc } from '@/lib/trpc-react';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface TwoFactorSetup {
   secret?: string;
@@ -15,6 +16,7 @@ interface TwoFactorSetup {
 }
 
 export default function TwoFactorScreen() {
+  const { t } = useLocale();
   const [error, setError] = useState('');
   const [setupData, setSetupData] = useState<TwoFactorSetup | null>(null);
   const [code, setCode] = useState('');
@@ -28,7 +30,7 @@ export default function TwoFactorScreen() {
 
   const setupMut = trpc.auth.setup2FA.useMutation({
     onSuccess: (res) => setSetupData(res),
-    onError: (e) => setError(e.message ?? 'فشل الإعداد'),
+    onError: (e) => setError(e.message ?? t('mobile.auth.setupFailed')),
   });
 
   const verifyMut = trpc.auth.verify2FA.useMutation({
@@ -37,19 +39,19 @@ export default function TwoFactorScreen() {
       setSetupData(null);
       setCode('');
     },
-    onError: (e) => setVerifyMsg(e.message ?? 'رمز غير صحيح'),
+    onError: (e) => setVerifyMsg(e.message ?? t('mobile.auth.invalidCode')),
   });
 
   const disableMut = trpc.auth.disable2FA.useMutation({
     onSuccess: () => setEnabledOverride(false),
-    onError: (e) => setError(e.message ?? 'فشل التعطيل'),
+    onError: (e) => setError(e.message ?? t('mobile.auth.disableFailed')),
   });
 
   const handleSetup = () => setupMut.mutate({});
 
   const handleVerify = () => {
     if (code.length !== 6) {
-      setVerifyMsg('يرجى إدخال رمز مكون من 6 أرقام');
+      setVerifyMsg(t('auth.otp6-error'));
       return;
     }
     setVerifyMsg('');
@@ -62,21 +64,21 @@ export default function TwoFactorScreen() {
   if (status.isError)
     return (
       <View style={styles.container}>
-        <Text style={styles.error}>فشل تحميل حالة المصادقة</Text>
+        <Text style={styles.error}>{t('mobile.auth.statusLoadFailed')}</Text>
       </View>
     );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>المصادقة الثنائية</Text>
+      <Text style={styles.title}>{t('mobile.auth.twoFactorTitle')}</Text>
 
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
       {enabled ? (
         <View style={styles.card}>
           <Text style={styles.checkIcon}></Text>
-          <Text style={styles.successText}>المصادقة الثنائية مفعلة</Text>
-          <Text style={styles.hint}>حسابك محمي برمز تحقق إضافي عند تسجيل الدخول</Text>
+          <Text style={styles.successText}>{t('auth.2fa-enabled')}</Text>
+          <Text style={styles.hint}>{t('mobile.auth.twoFactorActiveHint')}</Text>
           <TouchableOpacity
             style={[styles.btn, styles.dangerBtn]}
             onPress={handleDisable}
@@ -85,19 +87,17 @@ export default function TwoFactorScreen() {
             {disableMut.isPending ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={styles.btnText}>تعطيل المصادقة الثنائية</Text>
+              <Text style={styles.btnText}>{t('auth.2fa-disable')}</Text>
             )}
           </TouchableOpacity>
         </View>
       ) : setupData ? (
         <View style={styles.card}>
-          <Text style={styles.label}>الرمز السري (Secret):</Text>
+          <Text style={styles.label}>{t('auth.2fa-secret')}</Text>
           <Text style={styles.secret} selectable>
             {setupData.secret}
           </Text>
-          <Text style={styles.hint}>
-            انسخ الرمز السري إلى تطبيق المصادقة، ثم أدخل رمز التحقق للتأكيد
-          </Text>
+          <Text style={styles.hint}>{t('mobile.auth.secretHint')}</Text>
           {verifyMsg ? <Text style={styles.error}>{verifyMsg}</Text> : null}
           <TextInput
             style={styles.input}
@@ -115,20 +115,20 @@ export default function TwoFactorScreen() {
             {verifyMut.isPending ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={styles.btnText}>تأكيد وتفعيل</Text>
+              <Text style={styles.btnText}>{t('auth.2fa-confirm-enable')}</Text>
             )}
           </TouchableOpacity>
         </View>
       ) : (
         <View style={styles.card}>
           <Text style={styles.lockIcon}></Text>
-          <Text style={styles.subTitle}>إعداد المصادقة الثنائية</Text>
-          <Text style={styles.hint}>أضف طبقة حماية إضافية لحسابك باستخدام تطبيق المصادقة</Text>
+          <Text style={styles.subTitle}>{t('auth.2fa-setup-title')}</Text>
+          <Text style={styles.hint}>{t('mobile.auth.setupHint')}</Text>
           <TouchableOpacity style={styles.btn} onPress={handleSetup} disabled={setupMut.isPending}>
             {setupMut.isPending ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={styles.btnText}>بدء الإعداد</Text>
+              <Text style={styles.btnText}>{t('auth.2fa-start-setup')}</Text>
             )}
           </TouchableOpacity>
         </View>

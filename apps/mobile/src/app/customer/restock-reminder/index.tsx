@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface RestockItem {
   id?: number;
@@ -10,6 +11,7 @@ interface RestockItem {
 }
 
 export default function RestockReminderScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const itemsQ = trpc.restockReminder.myItems.useQuery();
   const data: RestockItem[] = (itemsQ.data as unknown as RestockItem[] | undefined) ?? [];
 
@@ -27,14 +29,18 @@ export default function RestockReminderScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> تذكير بإعادة الطلب</Text>
+      <Text style={styles.t}>{t('mobile.restockReminder.title')}</Text>
       {data.map((r, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{r.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{r.productName ?? ''}</Text>
             <Text style={styles.date}>
-              آخر طلب: {r.lastOrdered ? new Date(r.lastOrdered).toLocaleDateString('ar-SA') : ''}
+              {t('mobile.restockReminder.last-ordered', {
+                date: r.lastOrdered
+                  ? new Date(r.lastOrdered).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA')
+                  : '',
+              })}
             </Text>
           </View>
         </View>

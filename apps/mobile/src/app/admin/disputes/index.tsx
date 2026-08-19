@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
 interface DisputeItem {
   status?: string;
@@ -9,12 +11,22 @@ interface DisputeItem {
   createdAt?: string;
 }
 
+const STATUS_MAP: Record<string, TranslationKey> = {
+  OPEN: 'admin.disputes.status-open',
+  UNDER_REVIEW: 'admin.disputes.status-under-review',
+  RESOLVED_CUSTOMER: 'admin.disputes.status-customer',
+  RESOLVED_TECHNICIAN: 'admin.disputes.status-technician',
+  CLOSED: 'admin.disputes.status-closed',
+};
+
 export default function AdminDisputesScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const q = trpc.disputes.list.useQuery({});
   const data = (q.data as unknown as { items?: DisputeItem[] } | null)?.items ?? [];
 
   if (q.isLoading) return <SkeletonList count={5} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل النزاعات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return <ErrorAlert message={t('admin.disputes.load-error')} onRetry={() => q.refetch()} />;
 
   return (
     <ScrollView
@@ -28,14 +40,16 @@ export default function AdminDisputesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ النزاعات</Text>
+      <Text style={styles.t}>{t('mobile.admin.disputes.title')}</Text>
       {data.map((d, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.status}>{d.status}</Text>
+          <Text style={styles.status}>
+            {d.status && STATUS_MAP[d.status] ? t(STATUS_MAP[d.status]) : d.status}
+          </Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.reason}>{d.reason}</Text>
             <Text style={styles.date}>
-              {new Date(d.createdAt ?? '').toLocaleDateString('ar-SA')}
+              {new Date(d.createdAt ?? '').toLocaleDateString(locale === 'en' ? 'en-US' : 'ar-SA')}
             </Text>
           </View>
         </View>

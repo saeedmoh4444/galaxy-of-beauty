@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const CONSULTANTS = [
   {
@@ -44,22 +45,25 @@ export default function VirtualConsultationScreen(): JSX.Element {
   const [selectedCons, setSelectedCons] = useState<string | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [booked, setBooked] = useState(false);
+  const { t } = useLocale();
 
   const consultant = CONSULTANTS.find((c) => c.key === selectedCons);
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> استشارة افتراضية</Text>
-      <Text style={styles.sub}>استشيري خبيرات التجميل عبر الفيديو</Text>
+      <Text style={styles.t}>{t('mobile.public.virtual-consultation.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.virtual-consultation.subtitle')}</Text>
 
       {booked && consultant ? (
         <View style={styles.confirmed}>
           <Text style={styles.cfEmoji}></Text>
-          <Text style={styles.cfTitle}>تم حجز الاستشارة!</Text>
+          <Text style={styles.cfTitle}>{t('mobile.public.virtual-consultation.booked-title')}</Text>
           <Text style={styles.cfText}>
             {consultant.emoji} {consultant.name}
           </Text>
-          <Text style={styles.cfSlot}> {selectedSlot} — الرابط سيصلكِ عبر الإيميل</Text>
+          <Text style={styles.cfSlot}>
+            {t('mobile.public.virtual-consultation.booked-slot', { slot: selectedSlot ?? '' })}
+          </Text>
           <TouchableOpacity
             onPress={() => {
               setBooked(false);
@@ -68,7 +72,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
             }}
             style={styles.cfBtn}
           >
-            <Text style={styles.cfBt}>تم</Text>
+            <Text style={styles.cfBt}>{t('mobile.public.virtual-consultation.done')}</Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -87,7 +91,9 @@ export default function VirtualConsultationScreen(): JSX.Element {
                 <Text style={styles.cn}>{c.name}</Text>
                 <Text style={styles.cs}>{c.specialty}</Text>
                 <View style={styles.cm}>
-                  <Text style={styles.cp}>{c.price} ر.س</Text>
+                  <Text style={styles.cp}>
+                    {t('mobile.public.virtual-consultation.price', { price: c.price })}
+                  </Text>
                   <Text style={styles.cr}> {c.rating}</Text>
                 </View>
               </TouchableOpacity>
@@ -97,7 +103,10 @@ export default function VirtualConsultationScreen(): JSX.Element {
           {consultant && (
             <View style={styles.slots}>
               <Text style={styles.st}>
-                اختر الوقت — {consultant.emoji} {consultant.name}
+                {t('mobile.public.virtual-consultation.choose-time', {
+                  emoji: consultant.emoji,
+                  name: consultant.name,
+                })}
               </Text>
               <View style={styles.slotGrid}>
                 {consultant.slots.map((s) => (
@@ -112,7 +121,9 @@ export default function VirtualConsultationScreen(): JSX.Element {
               </View>
               {selectedSlot && (
                 <TouchableOpacity onPress={() => setBooked(true)} style={styles.btn}>
-                  <Text style={styles.bt}> احجزي الاستشارة — {consultant.price} ر.س</Text>
+                  <Text style={styles.bt}>
+                    {t('mobile.public.virtual-consultation.book', { price: consultant.price })}
+                  </Text>
                 </TouchableOpacity>
               )}
             </View>

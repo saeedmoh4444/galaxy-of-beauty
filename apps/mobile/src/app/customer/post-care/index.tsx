@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface PostCarePlan {
   id?: number;
@@ -10,6 +11,7 @@ interface PostCarePlan {
 }
 
 export default function PostCareScreen(): JSX.Element {
+  const { t } = useLocale();
   const libraryQ = trpc.postCare.library.useQuery();
   const data: PostCarePlan[] =
     (libraryQ.data as unknown as { categories?: PostCarePlan[] } | null)?.categories ?? [];
@@ -27,7 +29,7 @@ export default function PostCareScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>‍️ عناية ما بعد الخدمة</Text>
+      <Text style={styles.t}>{t('mobile.postCare.title')}</Text>
       {data.map((p, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{p.emoji ?? ''}</Text>

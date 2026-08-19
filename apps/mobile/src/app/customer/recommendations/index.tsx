@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 interface ServiceItem {
   id: number;
@@ -25,6 +27,7 @@ interface ServiceListData {
 }
 
 export default function RecommendationsScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const servicesQ = trpc.services.list.useQuery({});
   const services: ServiceItem[] =
@@ -51,7 +54,7 @@ export default function RecommendationsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> توصيات ذكية</Text>
+      <Text style={styles.t}>{t('mobile.recommendations.title')}</Text>
       {services.slice(0, 10).map((s) => (
         <TouchableOpacity
           key={s.id}
@@ -59,19 +62,23 @@ export default function RecommendationsScreen(): JSX.Element {
           style={[styles.sc, selectedId === s.id && styles.sca]}
         >
           <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
-          <Text style={styles.sn}>{s.titleJson?.ar ?? s.nameAr}</Text>
+          <Text style={styles.sn}>{s.titleJson ? localize(s.titleJson, locale) : s.nameAr}</Text>
         </TouchableOpacity>
       ))}
       {relatedQ.isFetching && <SkeletonList count={3} />}
       {related.length > 0 && !relatedQ.isFetching && (
-        <Text style={styles.st}> غالباً تُحجز مع:</Text>
+        <Text style={styles.st}>{t('mobile.recommendations.booked-together')}</Text>
       )}
       {related.map((r) => (
         <View key={r.id} style={styles.card}>
           <Text style={styles.re}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.rn}>{r.title}</Text>
-            <Text style={styles.rp}>{r.basePrice?.toLocaleString()} ر.س</Text>
+            <Text style={styles.rp}>
+              {t('marketing.compare.price-sar', {
+                price: r.basePrice?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA') ?? '',
+              })}
+            </Text>
           </View>
           <View style={styles.rb}>
             <Text style={styles.rbt}>{r.bookedTogether}x</Text>

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Salon {
   id?: number;
@@ -14,6 +15,7 @@ interface Salon {
 }
 
 export default function SalonFinderScreen(): JSX.Element {
+  const { t } = useLocale();
   const salonsQ = trpc.salonMap.explore.useQuery({
     city: DEFAULT_SAUDI_CITY /* TODO: use user location */,
   });
@@ -31,7 +33,7 @@ export default function SalonFinderScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> صالونات قريبة</Text>
+      <Text style={styles.t}>{t('mobile.public.salon-finder.title')}</Text>
       {salons.map((s) => (
         <View key={s.id} style={styles.card}>
           <Text style={styles.se}>‍️</Text>
@@ -42,11 +44,12 @@ export default function SalonFinderScreen(): JSX.Element {
               {s.distance ? ` · ${s.distance}` : ''}
             </Text>
             <Text style={styles.sr}>
-              {s.rating ?? 0} · ‍ {s.technicianCount ?? 0} فنيات
+              {s.rating ?? 0} · ‍{' '}
+              {t('mobile.public.salon-finder.technicians', { count: s.technicianCount ?? 0 })}
             </Text>
           </View>
           <TouchableOpacity style={styles.vb}>
-            <Text style={styles.vt}>عرض</Text>
+            <Text style={styles.vt}>{t('mobile.public.salon-finder.view')}</Text>
           </TouchableOpacity>
         </View>
       ))}

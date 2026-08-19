@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface MarketProduct {
   id?: number;
@@ -11,6 +12,7 @@ interface MarketProduct {
 }
 
 export default function MarketplaceScreen(): JSX.Element {
+  const { t } = useLocale();
   const productsQ = trpc.marketplace.products.useQuery({});
   const products: MarketProduct[] =
     (productsQ.data as unknown as { items?: MarketProduct[] } | undefined)?.items ?? [];
@@ -27,7 +29,7 @@ export default function MarketplaceScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ المتجر</Text>
+      <Text style={styles.t}>{t('mobile.public.marketplace.title')}</Text>
       <View style={styles.grid}>
         {products.length === 0
           ? [
@@ -50,7 +52,9 @@ export default function MarketplaceScreen(): JSX.Element {
                   <Text style={styles.ce}>{p.emoji ?? ''}</Text>
                 </View>
                 <Text style={styles.ct}>{p.nameAr ?? p.titleAr}</Text>
-                <Text style={styles.cp}>{(p.price ?? 0).toLocaleString()} ر.س</Text>
+                <Text style={styles.cp}>
+                  {(p.price ?? 0).toLocaleString()} {t('misc.sar')}
+                </Text>
               </TouchableOpacity>
             ))}
       </View>

@@ -1,31 +1,33 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 export default function TechPerformanceScreen(): JSX.Element {
+  const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> أدائي</Text>
-      <Text style={s.sub}>تحليلات وإحصائيات</Text>
+      <Text style={s.h}>{t('tech.performance.title')}</Text>
+      <Text style={s.sub}>{t('mobile.tech.performance.subtitle')}</Text>
       <View style={s.row}>
         <View style={s.stat}>
           <Text style={s.sv}>48</Text>
-          <Text style={s.sl}>حجز هذا الشهر</Text>
+          <Text style={s.sl}>{t('mobile.tech.performance.bookings-this-month')}</Text>
         </View>
         <View style={s.stat}>
           <Text style={s.sv}>4.8</Text>
-          <Text style={s.sl}> التقييم</Text>
+          <Text style={s.sl}>{t('mobile.tech.performance.rating')}</Text>
         </View>
       </View>
       <View style={s.row}>
         <View style={s.stat}>
           <Text style={s.sv}>12,450</Text>
-          <Text style={s.sl}>ر.س الإيرادات</Text>
+          <Text style={s.sl}>{t('mobile.tech.performance.revenue-sar')}</Text>
         </View>
         <View style={s.stat}>
           <Text style={s.sv}>92%</Text>
-          <Text style={s.sl}>نسبة الحضور</Text>
+          <Text style={s.sl}>{t('mobile.tech.performance.attendance-rate')}</Text>
         </View>
       </View>
       <View style={s.card}>
-        <Text style={s.ct}> اتجاه الحجوزات</Text>
+        <Text style={s.ct}>{t('mobile.tech.performance.bookings-trend')}</Text>
         <View
           style={{
             flexDirection: 'row',
@@ -49,12 +51,16 @@ export default function TechPerformanceScreen(): JSX.Element {
           ))}
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
-          <Text style={{ fontSize: 10, color: '#9ca3af' }}>يونيو</Text>
-          <Text style={{ fontSize: 10, color: '#9ca3af' }}>أغسطس</Text>
+          <Text style={{ fontSize: 10, color: '#9ca3af' }}>
+            {t('mobile.tech.performance.month-june')}
+          </Text>
+          <Text style={{ fontSize: 10, color: '#9ca3af' }}>
+            {t('mobile.tech.performance.month-august')}
+          </Text>
         </View>
       </View>
       <View style={s.card}>
-        <Text style={s.ct}> خدماتي الأكثر طلباً</Text>
+        <Text style={s.ct}>{t('mobile.tech.performance.top-services')}</Text>
         {[
           { name: 'مكياج', count: 15, emoji: '' },
           { name: 'تسريحة شعر', count: 12, emoji: '' },
