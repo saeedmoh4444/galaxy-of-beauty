@@ -22,12 +22,15 @@ android` produces a 6.1MB Hermes bundle.
 
 ---
 
-## 3. Seed Warnings (Low)
+## 3. Seed Warnings (Low) — RESOLVED 2026-08-19
 
-**Symptom:** `⚠️ Extra data: Invalid createMany()` for notifications, promo codes, gift cards
-**Root Cause:** Field name mismatches between seed script and Prisma schema (e.g., `title` vs `titleJson`)
-**Impact:** None — caught in try/catch, seed completes successfully
-**Status:** Deferred — cosmetic only
+**Symptom:** `Invalid createMany()` warnings for notifications, promo codes, gift cards
+**Root Causes (all fixed):**
+
+1. Notification seed wrote `title`/`body` — schema fields are `titleJson`/`bodyJson` (+ `sentVia`)
+2. Promo codes & gift cards were never deleted in the seed's cleanup transaction → unique-violation on `code` on re-seed (the real source of the recurring warnings)
+3. ar-only Json literals violating the P3-02 i18n CHECK constraints: giftQuizRecommendation.descJson ×4, compareProduct.nameJson ×4
+   **Verified:** seed runs clean twice in a row (idempotent, zero warnings).
 
 ---
 

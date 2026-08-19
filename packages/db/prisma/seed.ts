@@ -15,7 +15,9 @@ async function main() {
   await prisma.$transaction([
     // FK children first
     db.giftCardTransaction.deleteMany(),
+    db.giftCard.deleteMany(),
     db.promoUsage.deleteMany(),
+    db.promoCode.deleteMany(),
     db.geoPromotion.deleteMany(),
     db.liveStream.deleteMany(),
     db.eventRegistration.deleteMany(),
@@ -1473,7 +1475,10 @@ async function main() {
     data: [
       {
         nameJson: { ar: 'باقة عناية بالبشرة فاخرة', en: 'Premium Skincare Set' },
-        descJson: { ar: 'مجموعة متكاملة من كريم وسيروم وتونر' },
+        descJson: {
+          ar: 'مجموعة متكاملة من كريم وسيروم وتونر',
+          en: 'A complete set of cream, serum, and toner',
+        },
         price: 450,
         category: 'skincare',
         emoji: '',
@@ -1481,7 +1486,10 @@ async function main() {
       },
       {
         nameJson: { ar: 'علبة مكياج احترافية', en: 'Pro Makeup Kit' },
-        descJson: { ar: '١٨ لون ظلال عيون + ٦ ألوان أحمر شفاه' },
+        descJson: {
+          ar: '١٨ لون ظلال عيون + ٦ ألوان أحمر شفاه',
+          en: '18 eyeshadow shades + 6 lipstick colors',
+        },
         price: 320,
         category: 'makeup',
         emoji: '',
@@ -1489,7 +1497,10 @@ async function main() {
       },
       {
         nameJson: { ar: 'جلسة مساج استرخائية', en: 'Relaxation Massage' },
-        descJson: { ar: 'جلسة مساج ٦٠ دقيقة مع زيوت عطرية' },
+        descJson: {
+          ar: 'جلسة مساج ٦٠ دقيقة مع زيوت عطرية',
+          en: 'A 60-minute massage with aromatic oils',
+        },
         price: 250,
         category: 'wellness',
         emoji: '‍️',
@@ -1497,7 +1508,7 @@ async function main() {
       },
       {
         nameJson: { ar: 'بطاقة هدية جالكسي بيوتي', en: 'Galaxy Gift Card' },
-        descJson: { ar: 'قيمة ٣٠٠ ر.س' },
+        descJson: { ar: 'قيمة ٣٠٠ ر.س', en: 'Value: 300 SAR' },
         price: 300,
         category: 'giftcard',
         emoji: '',
@@ -1573,7 +1584,7 @@ async function main() {
   await prisma.compareProduct.createMany({
     data: [
       {
-        nameJson: { ar: 'كريم ترطيب يومي' },
+        nameJson: { ar: 'كريم ترطيب يومي', en: 'Daily Moisturizing Cream' },
         brand: 'Nivea',
         price: 89,
         rating: 4.5,
@@ -1585,7 +1596,7 @@ async function main() {
         vegan: false,
       },
       {
-        nameJson: { ar: 'مرطب طبيعي' },
+        nameJson: { ar: 'مرطب طبيعي', en: 'Natural Moisturizer' },
         brand: 'Organic Beauty',
         price: 120,
         rating: 4.8,
@@ -1597,7 +1608,7 @@ async function main() {
         vegan: true,
       },
       {
-        nameJson: { ar: 'سيروم فيتامين C' },
+        nameJson: { ar: 'سيروم فيتامين C', en: 'Vitamin C Serum' },
         brand: 'The Ordinary',
         price: 145,
         rating: 4.9,
@@ -1609,7 +1620,7 @@ async function main() {
         vegan: true,
       },
       {
-        nameJson: { ar: 'أحمر شفاه مطفي' },
+        nameJson: { ar: 'أحمر شفاه مطفي', en: 'Matte Lipstick' },
         brand: 'MAC',
         price: 110,
         rating: 4.3,
@@ -2063,16 +2074,21 @@ async function main() {
       data: [
         {
           userId: customer.id,
-          title: 'تم تأكيد حجزك',
-          body: 'تم قبول حجزك من قبل نورة العمري',
+          titleJson: { ar: 'تم تأكيد حجزك', en: 'Your booking is confirmed' },
+          bodyJson: {
+            ar: 'تم قبول حجزك من قبل نورة العمري',
+            en: 'Your booking was accepted by Noura Alomari',
+          },
           type: 'booking_accepted',
+          sentVia: ['in_app'],
           isRead: false,
         },
         {
           userId: customer.id,
-          title: 'عرض خاص',
-          body: 'خصم ٢٠٪ على خدمات المساج',
+          titleJson: { ar: 'عرض خاص', en: 'Special offer' },
+          bodyJson: { ar: 'خصم ٢٠٪ على خدمات المساج', en: '20% off massage services' },
           type: 'promo',
+          sentVia: ['in_app'],
           isRead: false,
         },
       ],
@@ -2189,7 +2205,7 @@ async function main() {
     });
     console.log(' 5 promo codes (active + expired)');
   } catch (err: any) {
-    console.log(`    Promo codes: ${err.message?.slice(0, 60)}`);
+    console.log(`    Promo codes: ${err.message?.slice(0, 700)}`);
   }
 
   // Gift cards
@@ -2261,7 +2277,7 @@ async function main() {
     });
     console.log(' 3 gift cards (active + redeemed)');
   } catch (err: any) {
-    console.log(`    Gift cards: ${err.message?.slice(0, 60)}`);
+    console.log(`    Gift cards: ${err.message?.slice(0, 700)}`);
   }
 
   // ── Geo Promotions ──
