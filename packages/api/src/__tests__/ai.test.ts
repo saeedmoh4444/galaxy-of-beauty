@@ -276,12 +276,76 @@ describe('ai router', () => {
       await expect(c.ai.chat({ message: 'مرحباً' })).rejects.toThrow(/يلزمك اشتراك/);
     }, 15000);
 
-    it('rejects chat when the monthly quota is exhausted', async () => {
-      const plan = await createPlan(0, 5); // zero monthly limit => always exhausted
+    it('allows chat on a zero-limit plan (unlimited)', async () => {
+      // FIXED 2026-08-19: `0 >= 0` made zero-limit plans permanently
+      // exhausted; monthlyLimit <= 0 now means unlimited.
+      await prisma.customerAiSubscription.deleteMany({ where: { userId: quotaUser.id } });
+      const plan = await createPlan(0, 5);
       await createSubscription(quotaUser.id, plan.id);
+
+      process.env['OPENAI_API_KEY'] = 'test-key';
+      vi.stubGlobal(
+        'fetch',
+        vi.fn().mockResolvedValue(
+          new Response(JSON.stringify({ choices: [{ message: { content: 'رد' } }] }), {
+            status: 200,
+          }),
+        ),
+      );
+
+      const c = await caller(quotaUser);
+      const res = await c.ai.chat({ message: 'مرحباً' });
+      expect(res.fallback).toBeFalsy();
+      expect(res.reply).toBe('رد');
+    }, 15000);
+
+    it('rejects chat when the monthly quota is exhausted', async () => {
+      await prisma.customerAiSubscription.deleteMany({ where: { userId: quotaUser.id } });
+      const plan = await createPlan(2, 5);
+      const sub = await createSubscription(quotaUser.id, plan.id);
+      // Two CHATBOT usage rows this month already consume the limit of 2
+      await prisma.aiUsage.createMany({
+        data: [
+          { subscriptionId: sub.id, feature: 'CHATBOT', requestCount: 1 },
+          { subscriptionId: sub.id, feature: 'CHATBOT', requestCount: 1 },
+        ],
+      });
 
       const c = await caller(quotaUser);
       await expect(c.ai.chat({ message: 'مرحباً' })).rejects.toThrow(/لقد استنفدت الحد الشهري/);
+    }, 15000);
+
+    it('does not count other features against the chat quota', async () => {
+      await prisma.customerAiSubscription.deleteMany({ where: { userId: quotaUser.id } });
+      const plan = await createPlan(1, 5);
+      const sub = await createSubscription(quotaUser.id, plan.id);
+      // A RECOMMENDATIONS usage row must not consume the CHATBOT quota
+      await prisma.aiUsage.create({
+        data: { subscriptionId: sub.id, feature: 'RECOMMENDATIONS', requestCount: 1 },
+      });
+
+      process.env['OPENAI_API_KEY'] = 'test-key';
+      vi.stubGlobal(
+        'fetch',
+        vi.fn().mockResolvedValue(
+          new Response(JSON.stringify({ choices: [{ message: { content: 'رد' } }] }), {
+            status: 200,
+          }),
+        ),
+      );
+
+      const c = await caller(quotaUser);
+      const res = await c.ai.chat({ message: 'مرحباً' });
+      expect(res.fallback).toBeFalsy();
+    }, 15000);
+
+    it('rejects chat when the plan covers a different feature', async () => {
+      await prisma.customerAiSubscription.deleteMany({ where: { userId: quotaUser.id } });
+      const plan = await createPlan(500, 79, 'RECOMMENDATIONS');
+      await createSubscription(quotaUser.id, plan.id);
+
+      const c = await caller(quotaUser);
+      await expect(c.ai.chat({ message: 'مرحباً' })).rejects.toThrow(/باقتك لا تشمل هذه الميزة/);
     }, 15000);
 
     it('validates chat input', async () => {

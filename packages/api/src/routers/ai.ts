@@ -60,6 +60,7 @@ async function callOpenAI(
 
 async function checkAiQuota(
   userId: number,
+  feature: string,
 ): Promise<{ allowed: boolean; subscription?: Record<string, unknown> }> {
   const sub = await prisma.customerAiSubscription.findUnique({
     where: { userId },
@@ -70,13 +71,26 @@ async function checkAiQuota(
     return { allowed: false };
   }
 
+  // Plans cover a single feature (AiFeature) — a subscription can only
+  // spend quota on the feature it was bought for.
+  if (sub.plan.feature !== feature) {
+    return {
+      allowed: false,
+      subscription: { planName: sub.plan.nameJson, feature: sub.plan.feature },
+    };
+  }
+
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  // Count only the matching feature's usage — the previous sum across
+  // all features diluted the quota.
   const monthlyRequests = sub.usage
-    .filter((u) => u.createdAt >= startOfMonth)
+    .filter((u) => u.createdAt >= startOfMonth && u.feature === feature)
     .reduce((sum, u) => sum + u.requestCount, 0);
 
-  if (monthlyRequests >= sub.plan.monthlyLimit) {
+  // monthlyLimit <= 0 means unlimited (the old `0 >= 0` comparison made
+  // zero-limit plans permanently exhausted).
+  if (sub.plan.monthlyLimit > 0 && monthlyRequests >= sub.plan.monthlyLimit) {
     return {
       allowed: false,
       subscription: {
@@ -120,15 +134,18 @@ export const aiRouter = router({
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
 
-      // Check AI subscription quota
-      const quota = await checkAiQuota(userId);
+      // Check AI subscription quota for this feature
+      const quota = await checkAiQuota(userId, 'CHATBOT');
       if (!quota.allowed) {
         const used = (quota.subscription?.['used'] as number) || 0;
         const limit = (quota.subscription?.['limit'] as number) || 0;
+        const featureMismatch = quota.subscription?.['feature'];
         throw new TRPCError({
           code: 'PRECONDITION_FAILED',
           message: quota.subscription
-            ? `لقد استنفدت الحد الشهري (${used}/${limit}). انتظري التجديد الشهري أو قومي بالترقية.`
+            ? featureMismatch
+              ? 'باقتك لا تشمل هذه الميزة. راجعي خطط الاشتراك المتاحة واختاري الباقة المناسبة.'
+              : `لقد استنفدت الحد الشهري (${used}/${limit}). انتظري التجديد الشهري أو قومي بالترقية.`
             : 'يلزمك اشتراك في باقة الذكاء الاصطناعي لاستخدام مجرة الجمال.',
         });
       }
@@ -237,6 +254,9 @@ export const aiRouter = router({
     .query(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       const limit = input.limit;
+      // No AI quota gate/tracking here: this procedure is pure scoring
+      // over local data (no external AI call), so it must not consume
+      // the subscriber's CHATBOT quota.
 
       // 1. Get user's booking history for category preferences
       const recentBookings = await prisma.booking.findMany({

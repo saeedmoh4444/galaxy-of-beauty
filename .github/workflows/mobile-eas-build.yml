@@ -44,6 +44,12 @@ jobs:
         with: { node-version: '20', cache: 'pnpm' }
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @galaxy/mobile type-check
+      # Catch SDK/package drift (KNOWN_ISSUES #8): react-native pinned to a
+      # version the installed Expo SDK rejects makes hermesc crash here —
+      # this step turns that class of regression into a CI failure.
+      - name: Verify expo export (hermesc bundle)
+        working-directory: apps/mobile
+        run: npx expo export --platform android
 
   # ── EAS Build (iOS) ──
   build-ios:
