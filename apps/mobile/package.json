@@ -5,8 +5,8 @@
   "type": "module",
   "main": "expo-router/entry",
   "scripts": {
-    "start": "expo start",
-    "dev": "expo start",
+    "start": "expo start --port 8083",
+    "dev": "expo start --port 8083",
     "dev:fix": "set NODE_OPTIONS=--no-experimental-fetch && expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
