@@ -46,21 +46,21 @@ below are seeded `enabled` in `db/seed.ts` — ops toggles them at runtime
 via the `featureFlags.upsert` admin procedure. Keys live in
 `packages/shared/src/constants.ts` (`EXPERIMENTAL_FEATURES`).
 
-| Domain            | Routers              | Flag                     |
-| ----------------- | -------------------- | ------------------------ |
-| Skin Analysis     | `skinAnalysis.*`     | `ENABLE_SKIN_ANALYSIS`   |
-| Virtual Try-On    | `virtualTryOn.*`     | `ENABLE_VIRTUAL_TRYON`   |
-| AI Chat           | `aiAssistant.*`      | `ENABLE_AI_CHAT`         |
-| Product Scanner   | `productScanner.*`   | `ENABLE_PRODUCT_SCANNER` |
-| Predictive Demand | `predictiveDemand.*` | `ENABLE_PREDICTIVE_DEMAND` |
-| Beauty Trends     | `beautyTrends.*`     | `ENABLE_BEAUTY_TRENDS`   |
-| Beauty Innovation | (content)            | `ENABLE_BEAUTY_INNOVATION` |
+| Domain            | Routers              | Flag                             |
+| ----------------- | -------------------- | -------------------------------- |
+| Skin Analysis     | `skinAnalysis.*`     | `ENABLE_SKIN_ANALYSIS`           |
+| Virtual Try-On    | `virtualTryOn.*`     | `ENABLE_VIRTUAL_TRYON`           |
+| AI Chat           | `aiAssistant.*`      | `ENABLE_AI_CHAT`                 |
+| Product Scanner   | `productScanner.*`   | `ENABLE_PRODUCT_SCANNER`         |
+| Predictive Demand | `predictiveDemand.*` | `ENABLE_PREDICTIVE_DEMAND`       |
+| Beauty Trends     | `beautyTrends.*`     | `ENABLE_BEAUTY_TRENDS`           |
+| Beauty Innovation | (content)            | `ENABLE_BEAUTY_INNOVATION`       |
 | Secret Santa      | `secretSanta.*`      | `ENABLE_SECRET_SANTA` (seasonal) |
-| Time Capsule      | `timeCapsule.*`      | `ENABLE_TIME_CAPSULE`    |
-| Concierge         | `concierge.*`        | `ENABLE_CONCIERGE`       |
-| Bridal Concierge  | `bridalConcierge.*`  | `ENABLE_BRIDAL_CONCIERGE` |
-| Beauty Metaverse  | `beautyMetaverse.*`  | `ENABLE_BEAUTY_METAVERSE` |
-| Beauty Bingo      | `beautyBingo.*`      | `ENABLE_BEAUTY_BINGO`    |
+| Time Capsule      | `timeCapsule.*`      | `ENABLE_TIME_CAPSULE`            |
+| Concierge         | `concierge.*`        | `ENABLE_CONCIERGE`               |
+| Bridal Concierge  | `bridalConcierge.*`  | `ENABLE_BRIDAL_CONCIERGE`        |
+| Beauty Metaverse  | `beautyMetaverse.*`  | `ENABLE_BEAUTY_METAVERSE`        |
+| Beauty Bingo      | `beautyBingo.*`      | `ENABLE_BEAUTY_BINGO`            |
 
 Archival candidates from the original audit (beautySanta vs secretSanta,
 beautyQuests, sisterhoodWish, socialFeed, beautyMoodboard, beautyScanner)

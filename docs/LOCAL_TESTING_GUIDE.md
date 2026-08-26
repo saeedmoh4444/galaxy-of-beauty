@@ -53,6 +53,7 @@ pnpm type-check                                      # ✅ 6 workspaces (mobile 
 pnpm lint                                            # ✅ 0 errors (warnings expected — see §9)
 pnpm --filter @galaxy/api test                       # ✅ 823 tests / 65 files
 pnpm --filter @galaxy/api test:coverage              # ✅ exit 0 — ratchet 62/74/69/62
+node scripts/audit-check.mjs                         # ✅ 0 critical (highs are baseline — see §9)
 pnpm --filter @galaxy/web build                      # ✅ ESLint runs during the build now
 cd apps/mobile && npx expo export --platform android # ✅ 6.1 MB Hermes bundle
 ```

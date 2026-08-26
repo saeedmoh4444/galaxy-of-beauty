@@ -66,9 +66,9 @@ describe('Feature flags — gated routers', () => {
     });
 
     const caller = await anonCaller();
-    await expect(
-      caller.productScanner.lookup({ barcode: '6281234567890' }),
-    ).rejects.toThrow(/Feature not available/);
+    await expect(caller.productScanner.lookup({ barcode: '6281234567890' })).rejects.toThrow(
+      /Feature not available/,
+    );
   });
 });
 
