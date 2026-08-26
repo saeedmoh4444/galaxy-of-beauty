@@ -15,6 +15,9 @@ import { spawnSync } from 'node:child_process';
 const res = spawnSync('pnpm', ['audit', '--json'], {
   encoding: 'utf8',
   shell: process.platform === 'win32', // pnpm is a shell shim on Linux CI runners
+  // The audit report is ~1.3 MB — spawnSync's 1 MB default kills the
+  // child with SIGTERM mid-output.
+  maxBuffer: 16 * 1024 * 1024,
 });
 
 if (!res.stdout) {
