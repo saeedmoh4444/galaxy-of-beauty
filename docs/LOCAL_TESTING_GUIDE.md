@@ -185,6 +185,24 @@ npx expo start                 # ✅ works on Windows now (SDK 57 fixed the undi
 # scan the QR with Expo Go, or press 'a' for the Android emulator
 ```
 
+> **Mobile networking (important)**: `localhost` on a phone/emulator is the DEVICE
+> itself, not your PC. Create `apps/mobile/.env` (copy `.env.example`) with the right
+> host for BOTH the API and the socket, then restart with `npx expo start -c`:
+>
+> ```bash
+> # Android emulator:
+> EXPO_PUBLIC_API_URL=http://10.0.2.2:3000/api/trpc
+> EXPO_PUBLIC_SOCKET_URL=http://10.0.2.2:4001
+>
+> # Physical phone via Expo Go (your PC's LAN IP, same Wi-Fi):
+> EXPO_PUBLIC_API_URL=http://192.168.x.x:3000/api/trpc
+> EXPO_PUBLIC_SOCKET_URL=http://192.168.x.x:4001
+> ```
+>
+> The socket server (`pnpm --filter @galaxy/api socket`) must be running for
+> real-time booking/wallet/waitlist events on mobile too. There is no CSP on
+> mobile — only the browser needed the `ws://localhost:*` allowance.
+
 - [ ] Login as `customer@test.com` (Bearer token persisted; re-launch keeps the session)
 - [ ] **Language switcher** (profile) → English/Arabic — EVERY screen translates
       (this was the big sweep: 300+ screens, catalog 5,891 keys)
