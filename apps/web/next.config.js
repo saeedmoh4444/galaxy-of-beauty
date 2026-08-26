@@ -79,7 +79,10 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https:",
-              "connect-src 'self' https://api.openai.com https://*.sentry.io wss:",
+              // ws://localhost:* + http://localhost:* cover the dev socket
+              // server (polling + websocket transports on :4001) — in
+              // production the socket rides wss: on the app origin.
+              "connect-src 'self' https://api.openai.com https://*.sentry.io ws://localhost:* http://localhost:* wss:",
               "frame-src 'self' https://www.youtube.com https://js.stripe.com",
               "media-src 'self' blob:",
               "object-src 'none'",

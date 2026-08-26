@@ -233,7 +233,7 @@ function TrendingNow(): JSX.Element {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {(trending ?? []).slice(0, 8).map((s: Record<string, unknown>) => (
-            <Link key={s.serviceId as number} href="/services">
+            <Link key={s.id as number} href={`/services/${s.id}`}>
               <Card hover padding="md" className="text-center">
                 <span className="text-2xl"></span>
                 <p className="font-bold text-sm mt-2">{localize(s.titleJson, locale)}</p>

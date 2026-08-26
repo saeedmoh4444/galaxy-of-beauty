@@ -25,7 +25,14 @@ pnpm db:seed                    # test data — idempotent, warning-free (~1 min
 > (see `DATABASE_URL` in `.env`). Redis is optional — the app logs a warn and degrades
 > gracefully when it's down.
 > **The API is served through the web app** (`/api/trpc/[trpc]`), so one dev server
-> covers web + API: `pnpm dev` → http://localhost:3000 (socket server on 4001).
+> covers web + API: `pnpm dev` → http://localhost:3000.
+> **The socket server runs SEPARATELY** (real-time notifications / booking events):
+>
+> ```bash
+> pnpm --filter @galaxy/api socket    # terminal 2 — ws://localhost:4001
+> ```
+>
+> Without it, the browser console fills with `[Socket] Connection error` retries.
 
 ## 1. Test Credentials (from seed)
 
