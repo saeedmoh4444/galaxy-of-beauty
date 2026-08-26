@@ -19,12 +19,7 @@ import {
 } from './handlers';
 
 // Job types are re-exported from handlers.ts (routers import them from '../workers')
-export type {
-  CashbackJob,
-  LoyaltyPointsJob,
-  NotificationJob,
-  CalendarSyncJob,
-} from './handlers';
+export type { CashbackJob, LoyaltyPointsJob, NotificationJob, CalendarSyncJob } from './handlers';
 
 // ── Worker factory ──
 

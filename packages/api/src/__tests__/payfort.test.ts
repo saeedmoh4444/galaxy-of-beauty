@@ -56,10 +56,7 @@ describe('generateRequestSignature', () => {
 
   it('skips the signature key, undefined, and empty values', () => {
     const sig = generateRequestSignature(
-      { b: '2', a: '1', signature: 'prev', empty: '', undef: undefined } as Record<
-        string,
-        string
-      >,
+      { b: '2', a: '1', signature: 'prev', empty: '', undef: undefined } as Record<string, string>,
       'secret',
     );
     expect(sig).toBe('8c5aab83ca09877f08eacf84c9db85355699e3b45b054d5d2f028a2e95bdbc35');
@@ -170,12 +167,14 @@ describe('authorizePayment', () => {
     setGatewayConfig();
     vi.stubGlobal(
       'fetch',
-      vi.fn().mockResolvedValue(
-        new Response(
-          JSON.stringify({ response_code: '00014', response_message: 'Invalid card' }),
-          { status: 200, headers: { 'Content-Type': 'application/json' } },
+      vi
+        .fn()
+        .mockResolvedValue(
+          new Response(
+            JSON.stringify({ response_code: '00014', response_message: 'Invalid card' }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } },
+          ),
         ),
-      ),
     );
 
     const result = await authorizePayment({
