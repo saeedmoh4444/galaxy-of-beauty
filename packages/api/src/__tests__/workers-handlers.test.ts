@@ -55,9 +55,7 @@ describe('handleWalletJob', () => {
     const wallet = await prisma.wallet.create({ data: buildWallet({ userId }) });
     const idem = `wtest-${Date.now()}-cashback-1`;
 
-    await handleWalletJob(
-      job({ userId, bookingId: 9001, amount: 25.5, idempotencyKey: idem }),
-    );
+    await handleWalletJob(job({ userId, bookingId: 9001, amount: 25.5, idempotencyKey: idem }));
 
     const updated = await prisma.wallet.findUnique({ where: { userId } });
     expect(Number(updated?.bonusBalance)).toBe(25.5);
@@ -84,9 +82,9 @@ describe('handleWalletJob', () => {
 
   it('throws when the user has no wallet', async () => {
     const userId = await createUser();
-    await expect(
-      handleWalletJob(job({ userId, bookingId: 9003, amount: 10 })),
-    ).rejects.toThrow(`Wallet not found for user ${userId}`);
+    await expect(handleWalletJob(job({ userId, bookingId: 9003, amount: 10 }))).rejects.toThrow(
+      `Wallet not found for user ${userId}`,
+    );
   });
 });
 
@@ -96,9 +94,7 @@ describe('handleLoyaltyJob', () => {
   it('creates a SILVER account when none exists and awards points', async () => {
     const userId = await createUser();
 
-    await handleLoyaltyJob(
-      job({ userId, bookingId: 9101, points: 50, reason: 'booking_reward' }),
-    );
+    await handleLoyaltyJob(job({ userId, bookingId: 9101, points: 50, reason: 'booking_reward' }));
 
     const account = await prisma.loyaltyAccount.findUnique({ where: { userId } });
     accountIds.push(account!.id);
@@ -119,9 +115,7 @@ describe('handleLoyaltyJob', () => {
       data: { userId, points: 100, lifetimePoints: 400, tier: 'SILVER' },
     });
 
-    await handleLoyaltyJob(
-      job({ userId, bookingId: 9102, points: 50, reason: 'booking_reward' }),
-    );
+    await handleLoyaltyJob(job({ userId, bookingId: 9102, points: 50, reason: 'booking_reward' }));
 
     const account = await prisma.loyaltyAccount.findUnique({ where: { userId } });
     accountIds.push(account!.id);
@@ -136,9 +130,7 @@ describe('handleLoyaltyJob', () => {
       data: { userId, points: 0, lifetimePoints: 490, tier: 'SILVER' },
     });
 
-    await handleLoyaltyJob(
-      job({ userId, bookingId: 9103, points: 20, reason: 'booking_reward' }),
-    );
+    await handleLoyaltyJob(job({ userId, bookingId: 9103, points: 20, reason: 'booking_reward' }));
 
     const account = await prisma.loyaltyAccount.findUnique({ where: { userId } });
     accountIds.push(account!.id);
@@ -152,9 +144,7 @@ describe('handleLoyaltyJob', () => {
       data: { userId, points: 0, lifetimePoints: 1990, tier: 'GOLD' },
     });
 
-    await handleLoyaltyJob(
-      job({ userId, bookingId: 9104, points: 15, reason: 'booking_reward' }),
-    );
+    await handleLoyaltyJob(job({ userId, bookingId: 9104, points: 15, reason: 'booking_reward' }));
 
     const account = await prisma.loyaltyAccount.findUnique({ where: { userId } });
     accountIds.push(account!.id);
@@ -236,14 +226,10 @@ describe('handleNotificationJob', () => {
 describe('handleIntegrationJob', () => {
   it('logs without throwing for all actions', async () => {
     await expect(
-      handleIntegrationJob(
-        job({ technicianId: 7, bookingId: 9201, action: 'create' }),
-      ),
+      handleIntegrationJob(job({ technicianId: 7, bookingId: 9201, action: 'create' })),
     ).resolves.toBeUndefined();
     await expect(
-      handleIntegrationJob(
-        job({ technicianId: 7, bookingId: 9201, action: 'delete' }),
-      ),
+      handleIntegrationJob(job({ technicianId: 7, bookingId: 9201, action: 'delete' })),
     ).resolves.toBeUndefined();
   });
 });

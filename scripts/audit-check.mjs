@@ -6,12 +6,14 @@
  * / non-runtime) and must not block merges; they are printed as a
  * baseline for the reviewer.
  */
-import { execFileSync } from 'node:child_process';
+import { execSync } from 'node:child_process';
 
-const pnpm = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm';
-const out = execFileSync(pnpm, ['audit', '--json'], {
+// execSync + shell: pnpm is a shell shim on Linux CI runners and
+// execFileSync cannot spawn it directly (ENOBUFS/EACCES).
+const out = execSync('pnpm audit --json', {
   encoding: 'utf8',
   stdio: ['ignore', 'pipe', 'ignore'],
+  shell: process.platform === 'win32' ? 'cmd.exe' : '/bin/bash',
 });
 
 const report = JSON.parse(out);
