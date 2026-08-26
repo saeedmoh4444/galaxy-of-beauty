@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import type { TranslationKey } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
-import { setAuthToken } from '@/lib/authToken';
+import { setAuthToken, getAuthToken } from '@/lib/authToken';
 import { setSocketToken } from '@/hooks/useSocket';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -46,7 +46,11 @@ export default function ProfileScreen(): JSX.Element {
     refetch: () => {},
   };
   const loyalty = trpc.loyalty.myAccount.useQuery();
-  const kindness = trpc.kindnessPoints.getStatus.useQuery();
+  // Auth-gated: the profile tab renders for guests too (pre-login state)
+  // and must not fire the authenticated kindness query for them.
+  const kindness = trpc.kindnessPoints.getStatus.useQuery(undefined, {
+    enabled: !!getAuthToken(),
+  });
   const p = profile.data as ProfileUser | null;
 
   const logout = trpc.auth.logout.useMutation({

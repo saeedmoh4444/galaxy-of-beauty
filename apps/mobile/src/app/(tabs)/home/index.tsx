@@ -5,6 +5,7 @@ import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useHaptics } from '@/hooks/useHaptics';
 import { useLocale } from '@/components/LocaleProvider';
+import { getAuthToken } from '@/lib/authToken';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -19,7 +20,11 @@ export default function HomeScreen(): JSX.Element {
   const { trigger } = useHaptics();
   const { t, locale } = useLocale();
   const cats = trpc.categories.list.useQuery();
-  const kindness = trpc.kindnessPoints.getStatus.useQuery();
+  // Auth-gated: the public home tab must not fire the authenticated
+  // kindness query for guests (was surfacing "Authentication required").
+  const kindness = trpc.kindnessPoints.getStatus.useQuery(undefined, {
+    enabled: !!getAuthToken(),
+  });
   const dailyTip = trpc.dailyBeautyTip.today.useQuery();
   const compliments = trpc.sisterhoodCompliments.count.useQuery();
 
