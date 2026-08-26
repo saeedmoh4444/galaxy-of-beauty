@@ -5,6 +5,11 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     include: ['src/__tests__/**/*.test.ts'],
+    // All 65 test files share one dev database; parallel file execution
+    // caused cross-file races (another file's in-flight bookings leaking
+    // into calendar.sync's view, payout wipes swallowing payment rows).
+    // Files run one at a time; tests within a file stay parallel.
+    fileParallelism: false,
     env: {
       DATABASE_URL:
         process.env['DATABASE_URL'] ||
@@ -27,17 +32,19 @@ export default defineConfig({
       ],
       // Coverage ratchet (audit rec #4) — raise quarterly toward
       // 55 → 60 → 65. Set under current actuals (2026-08-19):
-      // 55.34 stmts / 72.22 branches / 61.4 functions / 55.34 lines.
+      // 63.72 stmts / 75.74 branches / 70.17 functions / 63.72 lines.
       // Same-code runs jitter ±0.4 — keep ≥0.5 margin on every metric.
-      // 2026-08-19 raise: +46 tests (zatcaMock, sentry, sms, push,
-      // googleCalendar, geofenceOffers) and the orphaned
-      // geoPromotions/serviceBundles routers archived (dead code
-      // removal also lifted the denominator).
+      // 2026-08-19 raise (the "push toward 60" campaign): 17 routers
+      // covered by 6 agents (+188 tests); routers fixed en route:
+      // beautyDiscovery emoji selects (was broken at runtime),
+      // referrals applyCode circularity + unique-constraint,
+      // payouts.calculate idempotency, technicianEarnings user-id
+      // filter, waitlist rejoin P2002, calendar.pull fetch errors.
       thresholds: {
-        statements: 54,
-        branches: 70,
-        functions: 60,
-        lines: 54,
+        statements: 62,
+        branches: 74,
+        functions: 69,
+        lines: 62,
       },
     },
   },

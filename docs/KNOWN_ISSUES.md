@@ -36,10 +36,10 @@ android` produces a 6.1MB Hermes bundle.
 
 ## 4. Test Coverage Gap (Medium)
 
-**Current (2026-08-19):** 49 test files, 632 tests (passing), coverage ratchet enforced at 54/70/60/54 (actuals 55.42/72.34/61.4/55.42)
-**Gap:** Untested procedure handlers across ~150 feature routers; entry scripts (socket server.ts, workers run.ts)
-**Plan:** Gradual — ratchet upward toward 55 → 60 → 65 (see `packages/api/vitest.config.ts`)
-**Status:** In progress — the 2026-08-19 raise added zatcaMock/sentry/sms/push/googleCalendar/geofenceOffers suites (+46 tests) and archived the orphaned geoPromotions/serviceBundles routers.
+**Current (2026-08-19):** 65 test files, 820 tests (passing), coverage ratchet enforced at 62/74/69/62 (actuals 63.72/75.74/70.17/63.72) — the 60% statements goal is met.
+**Gap:** Untested procedure handlers across ~130 feature routers; entry scripts (socket server.ts, workers run.ts)
+**Plan:** Gradual — ratchet upward toward 65 → 70 (see `packages/api/vitest.config.ts`). Test files now run serially (fileParallelism: false) — 65 files sharing one dev DB had cross-file races under parallel + coverage instrumentation.
+**Status:** In progress — the "push toward 60" campaign covered 17 routers (+188 tests) and fixed six real router bugs found by the new tests (referrals circular applyCode, beautyDiscovery emoji selects, payouts idempotency, technicianEarnings wrong id filter, waitlist rejoin P2002, calendar.pull fetch errors).
 
 ---
 

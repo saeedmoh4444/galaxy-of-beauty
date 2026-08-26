@@ -88,8 +88,18 @@ export const payoutRouter = router({
 
       const earnings = Array.from(earningsMap.values());
 
-      // Persist — batch create Payout records
+      // Persist — batch create Payout records. Re-calculation replaces
+      // PENDING rows for the same period first: a double-click previously
+      // created duplicate payout rows (no unique constraint on
+      // technicianId/periodStart/periodEnd).
       if (earnings.length > 0) {
+        await prisma.payout.deleteMany({
+          where: {
+            periodStart,
+            periodEnd,
+            status: 'PENDING',
+          },
+        });
         await prisma.payout.createMany({
           data: earnings.map((entry) => ({
             technicianId: entry.technicianId,

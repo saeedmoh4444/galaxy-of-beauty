@@ -992,7 +992,7 @@ model Referral {
   id             Int      @id @default(autoincrement())
   referrerId     Int      // User who referred
   referredId     Int      // User who was referred (must complete first booking)
-  referralCode   String   @unique // Unique code for sharing
+  referralCode   String   // Referrer's share code (deterministic; many referrals may carry it)
   status         String   @default("PENDING") // PENDING, COMPLETED, EXPIRED
   rewardCredited Boolean  @default(false)
   referrerReward Decimal  @default(20) @db.Decimal(10, 2)

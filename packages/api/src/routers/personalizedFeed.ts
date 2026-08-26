@@ -30,17 +30,17 @@ export const personalizedFeedRouter = router({
       if (b.service?.categoryId)
         catCounts[b.service.categoryId] = (catCounts[b.service.categoryId] || 0) + 1;
     }
-    const interests =
-      Object.entries(catCounts).length > 0
-        ? ['skincare', 'makeup', 'wellness']
-        : ['skincare', 'makeup', 'wellness'];
+    // Booking history currently doesn't reshape interests (both branches
+    // were identical) — kept as a constant until category-based
+    // personalization is wired in.
+    const interests = ['skincare', 'makeup', 'wellness'];
 
     const items: Array<Record<string, unknown>> = [
       ...(services as any[]).map((s: any) => ({
         id: s.id,
         type: 'service',
         title: (s.titleJson as any)?.ar,
-        emoji: s.emoji || '',
+        emoji: '',
         price: Number(s.basePrice),
         relevance: 90,
       })),

@@ -26,7 +26,9 @@ export const waitlistRouter = router({
         throw notFound('Technician');
       }
 
-      // Check not already on waitlist for this technician
+      // Check not already on waitlist for this technician — any status
+      // (WAITING/NOTIFIED/CLAIMED) blocks a rejoin: the compound unique
+      // index would otherwise surface a raw P2002.
       const existing = await prisma.waitlistEntry.findUnique({
         where: {
           technicianId_customerId: {
@@ -36,7 +38,7 @@ export const waitlistRouter = router({
         },
       });
 
-      if (existing && existing.status === 'WAITING') {
+      if (existing) {
         throw new TRPCError({
           code: 'CONFLICT',
           message: 'You are already on the waitlist for this technician',

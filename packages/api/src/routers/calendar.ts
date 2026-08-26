@@ -201,12 +201,22 @@ export const calendarRouter = router({
     const timeMin = new Date().toISOString();
     const timeMax = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
 
-    const response = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${encodeURIComponent(timeMin)}&timeMax=${encodeURIComponent(timeMax)}&singleEvents=true&orderBy=startTime`,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      },
-    );
+    let response: Response;
+    try {
+      response = await fetch(
+        `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${encodeURIComponent(timeMin)}&timeMax=${encodeURIComponent(timeMax)}&singleEvents=true&orderBy=startTime`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      );
+    } catch {
+      // Network failures must surface as TRPCErrors, not raw TypeErrors
+      // (every other Google path in this file degrades gracefully).
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Failed to fetch Google Calendar events',
+      });
+    }
 
     if (!response.ok) {
       throw new TRPCError({

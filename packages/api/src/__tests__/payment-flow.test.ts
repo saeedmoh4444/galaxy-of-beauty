@@ -75,7 +75,7 @@ beforeAll(async () => {
   if (!other) throw new Error('No second customer in seed data');
   otherCustomer = { id: other.id, role: other.role, email: other.email };
 
-  const service = await prisma.service.findFirst();
+  const service = await prisma.service.findFirst({ orderBy: { id: 'asc' } });
   if (!service) throw new Error('No service in seed data');
   serviceId = service.id;
 

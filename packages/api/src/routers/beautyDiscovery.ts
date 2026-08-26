@@ -8,7 +8,7 @@ import {
 } from '@galaxy/shared';
 import { publicProcedure, customerProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Service.emoji not in Prisma schema (legacy select keys)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- dynamic where shapes across 4 models
 const db = prisma as any;
 
 export const beautyDiscoveryRouter = router({
@@ -18,13 +18,13 @@ export const beautyDiscoveryRouter = router({
       db.service.findMany({
         where: { isActive: true, isPopular: true },
         take: DISCOVERY_POPULAR_COUNT,
-        select: { id: true, titleJson: true, basePrice: true, imageUrl: true, emoji: true },
+        select: { id: true, titleJson: true, basePrice: true, imageUrl: true },
       }),
       db.service.findMany({
         where: { isActive: true },
         orderBy: { createdAt: 'desc' },
         take: DISCOVERY_POPULAR_COUNT,
-        select: { id: true, titleJson: true, basePrice: true, emoji: true },
+        select: { id: true, titleJson: true, basePrice: true },
       }),
       db.beautyEvent.findMany({
         where: { isPublished: true, startsAt: { gte: new Date() } },
@@ -51,13 +51,13 @@ export const beautyDiscoveryRouter = router({
         id: s.id,
         name: (s.titleJson as any)?.ar,
         price: Number(s.basePrice),
-        emoji: s.emoji ?? '',
+        emoji: '',
       })),
       newServices: newServices.map((s: any) => ({
         id: s.id,
         name: (s.titleJson as any)?.ar,
         price: Number(s.basePrice),
-        emoji: s.emoji ?? '',
+        emoji: '',
       })),
       events: upcomingEvents.map((e: any) => ({
         id: e.id,
@@ -97,7 +97,7 @@ export const beautyDiscoveryRouter = router({
         take: SMALL_PAGE_SIZE,
         select: {
           service: {
-            select: { id: true, titleJson: true, basePrice: true, emoji: true, categoryId: true },
+            select: { id: true, titleJson: true, basePrice: true, categoryId: true },
           },
         },
       }),
@@ -121,12 +121,12 @@ export const beautyDiscoveryRouter = router({
         ? await db.service.findMany({
             where: { categoryId: { in: topCats }, isActive: true },
             take: DISCOVERY_RECOMMEND_COUNT,
-            select: { id: true, titleJson: true, basePrice: true, emoji: true, categoryId: true },
+            select: { id: true, titleJson: true, basePrice: true, categoryId: true },
           })
         : await db.service.findMany({
             where: { isActive: true, isPopular: true },
             take: DISCOVERY_RECOMMEND_COUNT,
-            select: { id: true, titleJson: true, basePrice: true, emoji: true, categoryId: true },
+            select: { id: true, titleJson: true, basePrice: true, categoryId: true },
           });
 
     return {
@@ -137,13 +137,13 @@ export const beautyDiscoveryRouter = router({
         id: w.service?.id,
         name: (w.service?.titleJson as any)?.ar,
         price: Number(w.service?.basePrice || 0),
-        emoji: w.service?.emoji ?? '',
+        emoji: '',
       })),
       suggestions: suggestions.map((s: any) => ({
         id: s.id,
         name: (s.titleJson as any)?.ar,
         price: Number(s.basePrice),
-        emoji: s.emoji ?? '',
+        emoji: '',
         categoryId: s.categoryId,
       })),
     };
