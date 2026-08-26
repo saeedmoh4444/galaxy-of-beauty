@@ -13,8 +13,13 @@ test('serves English UI when the gob_lang cookie is en', async ({ page, baseURL 
   await page.goto('/');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(page.locator('html')).toHaveAttribute('dir', 'ltr');
-  // MainLayout nav renders from the catalog in English.
-  await expect(page.getByRole('link', { name: 'Discover', exact: true })).toBeVisible();
+  // The desktop nav (`hidden md:flex`) only exists at >= 768px; on mobile
+  // the locale proof is the html attrs + header CTA labels.
+  const isDesktop = (page.viewportSize()?.width ?? 1280) >= 768;
+  if (isDesktop) {
+    // MainLayout nav renders from the catalog in English.
+    await expect(page.getByRole('link', { name: 'Discover', exact: true })).toBeVisible();
+  }
   // Header CTA labels (footer also carries them — scope to the header).
   const header = page.locator('header').first();
   await expect(header.getByRole('link', { name: 'Login', exact: true })).toBeVisible();
@@ -38,7 +43,10 @@ test('toggle switches to English and back without a hard reload', async ({ page 
   // Context flips immediately (client re-render) and the cookie is set.
   await expect(html).toHaveAttribute('lang', 'en');
   await expect(html).toHaveAttribute('dir', 'ltr');
-  await expect(page.getByRole('link', { name: 'Discover', exact: true })).toBeVisible();
+  const isDesktop = (page.viewportSize()?.width ?? 1280) >= 768;
+  if (isDesktop) {
+    await expect(page.getByRole('link', { name: 'Discover', exact: true })).toBeVisible();
+  }
   const cookie = (await page.context().cookies()).find((c) => c.name === 'gob_lang');
   expect(cookie?.value).toBe('en');
 
