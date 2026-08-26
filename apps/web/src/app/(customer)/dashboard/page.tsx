@@ -23,6 +23,7 @@ import {
   BeautyBudgetCard,
   BeautyCircleCard,
   BeautySavingsGoal,
+  useAuth,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { RebookReminder } from '@/components/RebookReminder';
@@ -31,13 +32,17 @@ import { localize } from '@galaxy/shared';
 
 export default function CustomerDashboardPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const bookings = api.bookings.list.useQuery({ limit: 3 });
   const insights = api.analytics.customerInsights.useQuery();
   const budget = api.beautyBudget.get.useQuery();
   const pins = api.inspiration.list.useQuery();
   const registries = api.giftRegistry.myRegistries.useQuery();
-  // New wired components
-  const kindnessStatus = api.kindnessPoints.getStatus.useQuery();
+  // New wired components — kindness gated on the real session (an
+  // expired cookie still passes the middleware and would error-banner).
+  const kindnessStatus = api.kindnessPoints.getStatus.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const circles = api.beautyCircles.list.useQuery({ limit: 3 });
   const savingsGoals = api.savingsGoals.list.useQuery();
   // Budget services under 100 SAR
