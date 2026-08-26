@@ -167,8 +167,9 @@ describe('waitlist router', () => {
       const first = await cA.waitlist.join({ technicianId: t1.userId });
       expect(first.status).toBe('WAITING');
       expect(first.position).toBe(1);
-      // entry.technicianId is the technician record id, not the user id
-      expect(first.technicianId).toBe(t1.recordId);
+      // Public contract: technicianId echoes the USER id (2026-08-19 —
+      // it used to leak the internal profile id).
+      expect(first.technicianId).toBe(t1.userId);
       expect(first.customerId).toBe(customerA.id);
 
       const cB = await caller(customerB);
@@ -194,7 +195,7 @@ describe('waitlist router', () => {
       const cA = await caller(customerA);
       const list = await cA.waitlist.listMyEntries();
       expect(Array.isArray(list)).toBe(true);
-      const mine = list.find((e: any) => e.technicianId === t1.recordId);
+      const mine = list.find((e: any) => e.technicianId === t1.userId);
       expect(mine).toBeDefined();
       expect(mine!.technicianName).toBe(t1.name);
       expect(mine!.status).toBe('WAITING');
@@ -288,7 +289,7 @@ describe('waitlist router', () => {
         orderBy: { id: 'desc' },
       });
       expect(notif).not.toBeNull();
-      expect(notif!.link).toBe(`/technicians/${t3.recordId}`);
+      expect(notif!.link).toBe(`/technicians/${t3.userId}`);
       expect((notif!.bodyJson as any)['ar']).toContain('الفنية');
       expect(notif!.sentVia).toContain('in_app');
 

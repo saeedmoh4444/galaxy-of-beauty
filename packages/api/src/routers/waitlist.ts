@@ -56,6 +56,9 @@ export const waitlistRouter = router({
       const entry = await prisma.waitlistEntry.create({
         data: {
           customerId: ctx.user.id,
+          // Internal FK stores the Technician *profile* id; the public
+          // contract uses the technician's USER id everywhere (see
+          // listMyEntries/notifyNext below).
           technicianId: technician.id,
           serviceId,
           position: waitingCount + 1,
@@ -65,6 +68,7 @@ export const waitlistRouter = router({
 
       return {
         ...entry,
+        technicianId, // public contract: the user id the caller passed in
         position: waitingCount + 1,
       };
     }),
@@ -142,7 +146,9 @@ export const waitlistRouter = router({
       status: e.status,
       position: e.position,
       createdAt: e.createdAt,
-      technicianId: e.technicianId,
+      // Public contract: technician USER id (matches join/leave/getMyPosition/
+      // getStatus inputs) — the raw entry.technicianId is the profile id.
+      technicianId: e.technician.user.id,
       technicianName: e.technician.user.name,
       serviceName: null as string | null,
     }));
@@ -251,7 +257,9 @@ export const waitlistRouter = router({
         body: technician?.name
           ? `الفنية ${technician.name} أصبحت متاحة للحجز. بادري بحجز موعدك الآن!`
           : 'أصبحت الفنية متاحة للحجز. بادري بحجز موعدك الآن!',
-        data: { screen: 'waitlist', technicianId: String(entry.technicianId) },
+        // App routes by USER id (/technicians/[userId]) — the profile id
+        // would 404 on navigation.
+        data: { screen: 'waitlist', technicianId: String(entry.technician.userId) },
       });
 
       // Create in-app notification
@@ -268,7 +276,7 @@ export const waitlistRouter = router({
           type: 'WAITLIST',
           titleJson: { ar: 'تم توفر موعد! ', en: 'Slot Available! ' },
           bodyJson: { ar: bodyAr, en: bodyEn },
-          link: `/technicians/${entry.technicianId}`,
+          link: `/technicians/${entry.technician.userId}`,
           sentVia: ['push', 'in_app'],
           isRead: false,
         },

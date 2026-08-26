@@ -135,11 +135,18 @@ export default function WaitlistPage(): JSX.Element {
               onChange={(e) => setSelectedTechId(e.target.value)}
             >
               <option value="">{t('waitlist.placeholder.tech')}</option>
-              {technicians.map((t: Record<string, unknown>) => (
-                <option key={t.id as number} value={t.id as number}>
-                  {t.name as string}
-                </option>
-              ))}
+              {technicians.map((t: Record<string, unknown>) => {
+                // technicians.list returns raw profile rows — the public
+                // waitlist contract takes the technician USER id (profile
+                // ids 404 in join/leave lookups), and the name lives on
+                // the nested user object.
+                const user = t.user as Record<string, unknown> | undefined;
+                return (
+                  <option key={user?.id as number} value={user?.id as number}>
+                    {user?.name as string}
+                  </option>
+                );
+              })}
             </select>
           </div>
           <Input
