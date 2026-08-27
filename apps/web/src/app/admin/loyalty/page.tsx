@@ -1,7 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminLoyaltyPage(): JSX.Element {
@@ -12,7 +11,7 @@ export default function AdminLoyaltyPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">{t('admin.loyalty.title')}</h1>
@@ -51,6 +50,6 @@ export default function AdminLoyaltyPage(): JSX.Element {
           </Card>
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 }

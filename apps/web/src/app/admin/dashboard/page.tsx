@@ -11,7 +11,6 @@ import {
   StatCard,
   PageContainer,
 } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { type TranslationKey } from '@galaxy/shared';
 
@@ -37,26 +36,26 @@ export default function AdminDashboardPage(): JSX.Element {
 
   if (isLoading) {
     return (
-      <DashboardLayout userRole="ADMIN">
+      <>
         <PageContainer width="wide">
           <DashboardSkeleton />
         </PageContainer>
-      </DashboardLayout>
+      </>
     );
   }
 
   if (isError) {
     return (
-      <DashboardLayout userRole="ADMIN">
+      <>
         <PageContainer width="wide">
           <ErrorAlert message={t('admin.dashboard.load-error')} onRetry={() => refetch()} />
         </PageContainer>
-      </DashboardLayout>
+      </>
     );
   }
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <PageContainer width="wide">
         <h1 className="text-2xl font-bold text-text-primary">{t('admin.dashboard.title')}</h1>
 
@@ -163,6 +162,6 @@ export default function AdminDashboardPage(): JSX.Element {
           </div>
         </Card>
       </PageContainer>
-    </DashboardLayout>
+    </>
   );
 }

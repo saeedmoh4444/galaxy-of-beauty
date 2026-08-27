@@ -3,7 +3,6 @@
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
 import { Card, TableSkeleton, ErrorAlert, Button } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -23,7 +22,7 @@ export default function FeatureFlagsPage(): JSX.Element {
   });
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">Feature Flags</h1>
         {isLoading ? (
@@ -75,6 +74,6 @@ export default function FeatureFlagsPage(): JSX.Element {
           </Card>
         )}
       </div>
-    </DashboardLayout>
+    </>
   );
 }

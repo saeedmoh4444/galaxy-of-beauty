@@ -3,7 +3,6 @@
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
 import { Card, TableSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { type TranslationKey } from '@galaxy/shared';
@@ -44,7 +43,7 @@ export default function PayoutsPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
           {t('admin.payouts.title')}
@@ -92,6 +91,6 @@ export default function PayoutsPage(): JSX.Element {
           </Card>
         )}
       </div>
-    </DashboardLayout>
+    </>
   );
 }

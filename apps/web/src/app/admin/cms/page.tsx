@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, GridSkeleton } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
@@ -19,7 +18,7 @@ export default function AdminCmsPage(): JSX.Element {
   const [tab, setTab] = useState<'categories' | 'services'>('categories');
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-6xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">{t('admin.cms.title')}</h1>
@@ -90,6 +89,6 @@ export default function AdminCmsPage(): JSX.Element {
             </div>
           ))}
       </div>
-    </DashboardLayout>
+    </>
   );
 }
