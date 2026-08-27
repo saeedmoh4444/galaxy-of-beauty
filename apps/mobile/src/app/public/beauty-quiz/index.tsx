@@ -1,50 +1,34 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
 
-const questions = [
-  {
-    id: 'occasion',
-    text: 'ما المناسبة؟',
-    options: [
-      { label: 'يومي', value: 'daily', icon: '️' },
-      { label: 'مناسبة خاصة', value: 'special', icon: '' },
-      { label: 'زفاف', value: 'wedding', icon: '' },
-      { label: 'استرخاء', value: 'relax', icon: '‍️' },
-      { label: 'تجربة جديدة', value: 'new', icon: '' },
-    ],
-  },
-  {
-    id: 'budget',
-    text: 'ميزانيتك؟',
-    options: [
-      { label: 'اقتصادية', value: 'low', icon: '' },
-      { label: 'متوسطة', value: 'mid', icon: '' },
-      { label: 'فاخرة', value: 'high', icon: '' },
-      { label: 'بدون حدود', value: 'unlimited', icon: '' },
-    ],
-  },
-  {
-    id: 'style',
-    text: 'أسلوبك المفضل؟',
-    options: [
-      { label: 'طبيعي', value: 'natural', icon: '' },
-      { label: 'جريء', value: 'bold', icon: '' },
-      { label: 'كلاسيكي', value: 'classic', icon: '' },
-      { label: 'عصري', value: 'modern', icon: '' },
-    ],
-  },
-];
+interface QuizQuestion {
+  id: number;
+  question?: string;
+  optionsJson?: unknown;
+}
 
 export default function BeautyQuizScreen(): JSX.Element {
   const { t } = useLocale();
+  const quizQ = trpc.beautyQuiz.list.useQuery({ limit: 10 });
   const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [answers, setAnswers] = useState<Record<number, number>>({});
   const [done, setDone] = useState(false);
 
-  const select = (value: string) => {
+  const questions = ((quizQ.data as unknown as QuizQuestion[] | undefined) ?? []).map((q) => ({
+    id: q.id,
+    text: q.question ?? '',
+    options: ((q.optionsJson as string[] | undefined) ?? []).map((label, i) => ({
+      value: String(i),
+      label,
+    })),
+  }));
+
+  const select = (optIndex: number) => {
     const q = questions[step]!;
-    const next = { ...answers, [q.id]: value };
+    const next = { ...answers, [q.id]: optIndex };
     setAnswers(next);
     if (step < questions.length - 1) {
       setStep(step + 1);
@@ -53,63 +37,70 @@ export default function BeautyQuizScreen(): JSX.Element {
     }
   };
 
-  if (done) {
-    return (
-      <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}>{t('mobile.public.beauty-quiz.result-title')}</Text>
-        <View style={styles.resultCard}>
-          <Text style={styles.resultEmoji}></Text>
-          <Text style={styles.resultTitle}>{t('mobile.public.beauty-quiz.thanks')}</Text>
-          <Text style={styles.resultDesc}>{t('mobile.public.beauty-quiz.result-desc')}</Text>
-          <View style={styles.answers}>
-            {Object.entries(answers).map(([qId, val]) => {
-              const q = questions.find((x) => x.id === qId);
-              const opt = q?.options.find((o) => o.value === val);
-              return (
-                <Text key={qId} style={styles.answerRow}>
-                  {opt?.icon} {q?.text}: {opt?.label}
-                </Text>
-              );
-            })}
-          </View>
-        </View>
-        <TouchableOpacity
-          onPress={() => {
-            setStep(0);
-            setAnswers({});
-            setDone(false);
-          }}
-          style={styles.btn}
-        >
-          <Text style={styles.btnText}>{t('mobile.public.beauty-quiz.restart')}</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    );
-  }
-
-  const q = questions[step]!;
-
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>{t('mobile.public.beauty-quiz.title')}</Text>
-      <Text style={styles.progress}>
-        {step + 1}/{questions.length}
-      </Text>
-      <View style={styles.progressBar}>
-        <View
-          style={[styles.progressFill, { width: `${((step + 1) / questions.length) * 100}%` }]}
-        />
-      </View>
-      <Text style={styles.question}>{q.text}</Text>
-      <View style={styles.options}>
-        {q.options.map((o) => (
-          <TouchableOpacity key={o.value} onPress={() => select(o.value)} style={styles.option}>
-            <Text style={styles.optionIcon}>{o.icon}</Text>
-            <Text style={styles.optionLabel}>{o.label}</Text>
+    <ScreenState
+      isLoading={quizQ.isLoading}
+      isError={quizQ.isError}
+      isEmpty={questions.length === 0}
+      onRetry={() => quizQ.refetch()}
+    >
+      {done ? (
+        <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+          <Text style={styles.t}>{t('mobile.public.beauty-quiz.result-title')}</Text>
+          <View style={styles.resultCard}>
+            <Text style={styles.resultEmoji}></Text>
+            <Text style={styles.resultTitle}>{t('mobile.public.beauty-quiz.thanks')}</Text>
+            <Text style={styles.resultDesc}>{t('mobile.public.beauty-quiz.result-desc')}</Text>
+            <View style={styles.answers}>
+              {Object.entries(answers).map(([qId, optIndex]) => {
+                const q = questions.find((x) => x.id === Number(qId));
+                const opt = q?.options[optIndex];
+                return (
+                  <Text key={qId} style={styles.answerRow}>
+                    {q?.text}: {opt?.label ?? ''}
+                  </Text>
+                );
+              })}
+            </View>
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              setStep(0);
+              setAnswers({});
+              setDone(false);
+            }}
+            style={styles.btn}
+          >
+            <Text style={styles.btnText}>{t('mobile.public.beauty-quiz.restart')}</Text>
           </TouchableOpacity>
-        ))}
-      </View>
-    </ScrollView>
+        </ScrollView>
+      ) : (
+        <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+          <Text style={styles.t}>{t('mobile.public.beauty-quiz.title')}</Text>
+          <Text style={styles.progress}>
+            {step + 1}/{questions.length}
+          </Text>
+          <View style={styles.progressBar}>
+            <View
+              style={[styles.progressFill, { width: `${((step + 1) / questions.length) * 100}%` }]}
+            />
+          </View>
+          <Text style={styles.question}>{questions[step]!.text}</Text>
+          <View style={styles.options}>
+            {questions[step]!.options.map((o) => (
+              <TouchableOpacity
+                key={o.value}
+                onPress={() => select(Number(o.value))}
+                style={styles.option}
+              >
+                <Text style={styles.optionIcon}></Text>
+                <Text style={styles.optionLabel}>{o.label}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+      )}
+    </ScreenState>
   );
 }
 

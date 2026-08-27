@@ -1,61 +1,87 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
-const TRANSACTIONS = [
-  { id: 1, type: 'credit', amount: 350, desc: 'حجز — مكياج سارة', date: '15 أغسطس', emoji: '' },
-  { id: 2, type: 'credit', amount: 150, desc: 'حجز — مانيكير نورة', date: '14 أغسطس', emoji: '' },
-  { id: 3, type: 'debit', amount: 200, desc: 'سحب للمحفظة البنكية', date: '10 أغسطس', emoji: '' },
-  { id: 4, type: 'credit', amount: 500, desc: 'حجز — مساج مجموعة', date: '5 أغسطس', emoji: '' },
-  { id: 5, type: 'bonus', amount: 50, desc: 'مكافأة تقييم 5 نجوم', date: '1 أغسطس', emoji: '' },
-];
 export default function TechWalletScreen(): JSX.Element {
-  const { t } = useLocale();
-  const balance = 4850;
-  const pending = 750;
+  const { locale, t } = useLocale();
+  // Mirrors the web page: wallet.getBalance + wallet.getTransactions.
+  // Pending settlement comes from payouts.listMyPayouts (PENDING) and the
+  // this-month/completed-bookings stats from performance.myDashboard.
+  const balance = trpc.wallet.getBalance.useQuery();
+  const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 30 });
+  const pendingPayouts = trpc.payouts.listMyPayouts.useQuery({
+    status: 'PENDING',
+    page: 1,
+    limit: 50,
+  });
+  const perf = trpc.performance.myDashboard.useQuery();
+
+  const currentBalance = Number(balance.data?.balance ?? 0);
+  const pending = (pendingPayouts.data?.payouts ?? []).reduce((s, p) => s + Number(p.amount), 0);
+  const monthly = perf.data?.monthlyEarnings ?? [];
+  const thisMonth = monthly.length > 0 ? monthly[monthly.length - 1]!.total : 0;
+  const completed = perf.data?.completedBookings ?? 0;
+  const transactions = txns.data?.transactions ?? [];
+
   return (
-    <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>{t('mobile.tech.wallet.title')}</Text>
-      <View style={s.bc}>
-        <Text style={s.bl}>{t('mobile.tech.wallet.current-balance')}</Text>
-        <Text style={s.bv}>
-          {balance.toLocaleString()} {t('misc.sar')}
-        </Text>
-        <Text style={s.bp}>
-          {t('mobile.tech.wallet.pending-settlement', { amount: pending.toLocaleString() })}
-        </Text>
-      </View>
-      <View style={{ flexDirection: 'row', gap: 10, marginBottom: 16 }}>
-        <View style={[s.stat, { backgroundColor: '#d1fae5' }]}>
-          <Text style={[s.sv, { color: '#059669' }]}>12,450</Text>
-          <Text style={s.sl}>{t('mobile.tech.wallet.current-month')}</Text>
-        </View>
-        <View style={[s.stat, { backgroundColor: '#dbeafe' }]}>
-          <Text style={[s.sv, { color: '#2563eb' }]}>48</Text>
-          <Text style={s.sl}>{t('mobile.tech.wallet.completed-bookings')}</Text>
-        </View>
-      </View>
-      <Text style={s.ct}>{t('mobile.tech.wallet.recent-transactions')}</Text>
-      {TRANSACTIONS.map((tx) => (
-        <View key={tx.id} style={s.card}>
-          <Text style={s.ce}>{tx.emoji}</Text>
-          <View style={{ flex: 1 }}>
-            <Text style={s.cn}>{tx.desc}</Text>
-            <Text style={s.cd}>{tx.date}</Text>
-          </View>
-          <Text
-            style={[
-              s.ca,
-              {
-                color:
-                  tx.type === 'debit' ? '#dc2626' : tx.type === 'bonus' ? '#8b5cf6' : '#059669',
-              },
-            ]}
-          >
-            {tx.type === 'debit' ? '-' : '+'}
-            {tx.amount.toLocaleString()} {t('misc.sar')}
+    <ScreenState
+      isLoading={balance.isLoading || txns.isLoading || pendingPayouts.isLoading || perf.isLoading}
+      isError={balance.isError || txns.isError || pendingPayouts.isError || perf.isError}
+      isEmpty={false}
+      errorMessage={t('wallet.load-error')}
+      onRetry={() => {
+        balance.refetch();
+        txns.refetch();
+        pendingPayouts.refetch();
+        perf.refetch();
+      }}
+    >
+      <ScrollView style={s.c} contentContainerStyle={s.i}>
+        <Text style={s.h}>{t('mobile.tech.wallet.title')}</Text>
+        <View style={s.bc}>
+          <Text style={s.bl}>{t('mobile.tech.wallet.current-balance')}</Text>
+          <Text style={s.bv}>
+            {currentBalance.toLocaleString()} {t('misc.sar')}
+          </Text>
+          <Text style={s.bp}>
+            {t('mobile.tech.wallet.pending-settlement', { amount: pending.toLocaleString() })}
           </Text>
         </View>
-      ))}
-    </ScrollView>
+        <View style={{ flexDirection: 'row', gap: 10, marginBottom: 16 }}>
+          <View style={[s.stat, { backgroundColor: '#d1fae5' }]}>
+            <Text style={[s.sv, { color: '#059669' }]}>{thisMonth.toLocaleString()}</Text>
+            <Text style={s.sl}>{t('mobile.tech.wallet.current-month')}</Text>
+          </View>
+          <View style={[s.stat, { backgroundColor: '#dbeafe' }]}>
+            <Text style={[s.sv, { color: '#2563eb' }]}>{completed}</Text>
+            <Text style={s.sl}>{t('mobile.tech.wallet.completed-bookings')}</Text>
+          </View>
+        </View>
+        {transactions.length > 0 && (
+          <>
+            <Text style={s.ct}>{t('mobile.tech.wallet.recent-transactions')}</Text>
+            {transactions.map((tx) => (
+              <View key={tx.id} style={s.card}>
+                <Text style={s.ce}></Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={s.cn}>{tx.description ?? tx.source}</Text>
+                  <Text style={s.cd}>
+                    {new Date(tx.createdAt).toLocaleDateString(
+                      locale === 'en' ? 'en-GB' : 'ar-SA',
+                      { day: 'numeric', month: 'short' },
+                    )}
+                  </Text>
+                </View>
+                <Text style={[s.ca, { color: tx.type === 'DEBIT' ? '#dc2626' : '#059669' }]}>
+                  {tx.type === 'DEBIT' ? '-' : '+'}
+                  {Number(tx.amount).toLocaleString()} {t('misc.sar')}
+                </Text>
+              </View>
+            ))}
+          </>
+        )}
+      </ScrollView>
+    </ScreenState>
   );
 }
 const sc = StyleSheet.create({

@@ -1,87 +1,38 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { useState } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
 
-const FORTUNES = [
-  {
-    text: 'جمالكِ يبدأ من داخلكِ — اعتني بنفسكِ اليوم ',
-    emoji: '',
-    tip: 'اشربي ٨ أكواب ماء اليوم لبشرة متألقة',
-  },
-  {
-    text: 'الابتسامة هي أفضل إكسسوار يمكنكِ ارتداؤه ',
-    emoji: '',
-    tip: 'ابتسمي — تفرز الإندورفين وتحسن البشرة',
-  },
-  {
-    text: 'أنتِ أجمل عندما تكونين على طبيعتكِ ',
-    emoji: '',
-    tip: 'اختاري مكياج يبرز جمالكِ الطبيعي',
-  },
-  {
-    text: 'الاعتناء بنفسكِ ليس رفاهية — إنه ضرورة ‍️',
-    emoji: '',
-    tip: 'خصصي ٣٠ دقيقة يومياً للعناية ببشرتكِ',
-  },
-  {
-    text: 'كل يوم هو فرصة جديدة لتتألقي ',
-    emoji: '',
-    tip: 'جربي روتين عناية جديد هذا الأسبوع',
-  },
-  {
-    text: 'الجمال ليس ما ترينه في المرآة فقط — بل ما تشعرين به ',
-    emoji: '',
-    tip: 'دللي نفسكِ بجلسة مساج هذا الشهر',
-  },
-  {
-    text: 'ثقتكِ بنفسكِ هي سر جمالكِ ',
-    emoji: '',
-    tip: 'قفي أمام المرآة وقولي شيئاً إيجابياً عن نفسكِ',
-  },
-  {
-    text: 'العناية بالبشرة استثمار — ليس مصروفاً ',
-    emoji: '',
-    tip: 'استثمري في روتين عناية منتظم',
-  },
-  {
-    text: 'أنتِ تستحقين الأفضل دائماً ',
-    emoji: '',
-    tip: 'لا تترددي في تدليل نفسكِ بين الحين والآخر',
-  },
-  {
-    text: 'جمالكِ فريد — لا تقارنيه بأحد ',
-    emoji: '',
-    tip: 'اختاري خدمات تناسب نوع بشرتكِ الفريد',
-  },
-  {
-    text: 'الراحة والاسترخاء سر من أسرار الجمال ‍️',
-    emoji: '',
-    tip: 'احجزي جلسة استرخاء هذا الأسبوع',
-  },
-  { text: 'غداً أجمل — ابدئي اليوم ', emoji: '', tip: 'ابدئي روتين عناية متكامل من اليوم' },
-];
+interface DailyTip {
+  emoji?: string;
+  tip?: string;
+  category?: string;
+}
 
 export default function BeautyFortuneScreen(): JSX.Element {
   const { t } = useLocale();
-  const [fortune, setFortune] = useState<(typeof FORTUNES)[0]>(FORTUNES[0]!);
-
-  const getRandom = () => {
-    const next = FORTUNES[Math.floor(Math.random() * FORTUNES.length)] ?? FORTUNES[0]!;
-    setFortune(next);
-  };
+  const tipQ = trpc.dailyBeautyTip.today.useQuery();
+  const tip = tipQ.data as unknown as DailyTip | undefined;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>{t('mobile.public.beauty-fortune.title')}</Text>
-      <View style={styles.card}>
-        <Text style={styles.fortuneEmoji}>{fortune.emoji}</Text>
-        <Text style={styles.fortuneText}>{fortune.text}</Text>
-        <Text style={styles.tip}> {fortune.tip}</Text>
-        <TouchableOpacity onPress={getRandom} style={styles.btn}>
-          <Text style={styles.btnText}>{t('mobile.public.beauty-fortune.try')}</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+    <ScreenState
+      isLoading={tipQ.isLoading}
+      isError={tipQ.isError}
+      isEmpty={!tip}
+      onRetry={() => tipQ.refetch()}
+    >
+      <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+        <Text style={styles.t}>{t('mobile.public.beauty-fortune.title')}</Text>
+        <View style={styles.card}>
+          <Text style={styles.fortuneEmoji}>{tip?.emoji}</Text>
+          <Text style={styles.fortuneText}>{tip?.tip}</Text>
+          <Text style={styles.tip}> {tip?.category}</Text>
+          <TouchableOpacity onPress={() => tipQ.refetch()} style={styles.btn}>
+            <Text style={styles.btnText}>{t('mobile.public.beauty-fortune.try')}</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </ScreenState>
   );
 }
 

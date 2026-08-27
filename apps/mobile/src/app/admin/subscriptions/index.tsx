@@ -1,111 +1,52 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
-const SUBS = [
-  {
-    id: 1,
-    customer: 'نورة',
-    plan: 'Premium',
-    emoji: '',
-    price: 99,
-    status: 'active',
-    since: 'يناير 2026',
-    nextBilling: '1 سبتمبر',
-  },
-  {
-    id: 2,
-    customer: 'مها',
-    plan: 'Platinum',
-    emoji: '',
-    price: 299,
-    status: 'active',
-    since: 'مارس 2026',
-    nextBilling: '15 سبتمبر',
-  },
-  {
-    id: 3,
-    customer: 'ريم',
-    plan: 'Basic',
-    emoji: '',
-    price: 0,
-    status: 'active',
-    since: 'يونيو 2026',
-    nextBilling: '—',
-  },
-  {
-    id: 4,
-    customer: 'سارة',
-    plan: 'Premium',
-    emoji: '',
-    price: 99,
-    status: 'cancelled',
-    since: 'فبراير 2026',
-    nextBilling: '—',
-  },
-];
+import { localize } from '@galaxy/shared';
+
+interface SubscriptionPlan {
+  id?: number;
+  nameJson?: Record<string, string>;
+  feature?: string;
+  monthlyLimit?: number;
+  priceMonthly?: number;
+}
+
 export default function AdminSubscriptionsScreen(): JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  const q = trpc.subscriptions.getPlans.useQuery();
+  const plans = (q.data as unknown as SubscriptionPlan[] | null) ?? [];
+
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
       <Text style={s.h}>{t('mobile.admin.subscriptions.title')}</Text>
       <Text style={s.sub}>{t('mobile.admin.subscriptions.subtitle')}</Text>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          marginBottom: 16,
-          backgroundColor: '#fff',
-          borderRadius: 14,
-          padding: 16,
-        }}
+      <ScreenState
+        isLoading={q.isLoading}
+        isError={q.isError}
+        isEmpty={plans.length === 0}
+        emptyTitle={t('admin.subscriptions.empty')}
+        onRetry={() => q.refetch()}
       >
-        <View style={{ alignItems: 'center' }}>
-          <Text style={{ fontSize: 24, fontWeight: '800', color: '#7c3aed' }}>4</Text>
-          <Text style={{ fontSize: 12, color: '#6b7280' }}>
-            {t('mobile.admin.beauty-events.active-f')}
-          </Text>
-        </View>
-        <View style={{ alignItems: 'center' }}>
-          <Text style={{ fontSize: 24, fontWeight: '800', color: '#059669' }}>497</Text>
-          <Text style={{ fontSize: 12, color: '#6b7280' }}>
-            {t('mobile.admin.subscriptions.sar-monthly')}
-          </Text>
-        </View>
-        <View style={{ alignItems: 'center' }}>
-          <Text style={{ fontSize: 24, fontWeight: '800', color: '#d97706' }}>1</Text>
-          <Text style={{ fontSize: 12, color: '#6b7280' }}>
-            {t('mobile.admin.subscriptions.cancelled')}
-          </Text>
-        </View>
-      </View>
-      {SUBS.map((sb) => (
-        <View key={sb.id} style={[s.card, { opacity: sb.status === 'cancelled' ? 0.5 : 1 }]}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-            <Text style={s.ce}>{sb.emoji}</Text>
-            <View style={{ flex: 1 }}>
-              <Text style={s.cn}>{sb.customer}</Text>
-              <Text style={s.cp}>
-                {sb.plan} ·{' '}
-                {sb.price === 0
-                  ? t('mobile.admin.subscriptions.free')
-                  : t('mobile.admin.subscriptions.price-month', { price: sb.price })}
-              </Text>
-            </View>
-            <View
-              style={[s.b, { backgroundColor: sb.status === 'active' ? '#d1fae5' : '#fee2e2' }]}
-            >
-              <Text style={[s.bt, { color: sb.status === 'active' ? '#059669' : '#dc2626' }]}>
-                {sb.status === 'active'
-                  ? t('mobile.admin.campaigns.active')
-                  : t('mobile.admin.subscriptions.cancelled-m')}
+        {plans.map((p) => (
+          <View key={p.id} style={s.card}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+              <View style={{ flex: 1 }}>
+                <Text style={s.cn}>{localize(p.nameJson, locale)}</Text>
+                <Text style={s.cp}>
+                  {p.feature} ·{' '}
+                  {t('admin.subscriptions.monthly-limit', { count: p.monthlyLimit ?? 0 })}
+                </Text>
+              </View>
+              <Text style={[s.b, { color: '#059669' }]}>
+                {p.priceMonthly && p.priceMonthly > 0
+                  ? t('mobile.admin.subscriptions.price-month', { price: p.priceMonthly })
+                  : t('mobile.admin.subscriptions.free')}
               </Text>
             </View>
           </View>
-          <View style={{ flexDirection: 'row', gap: 12, marginTop: 6 }}>
-            <Text style={s.cl}>{t('mobile.admin.subscriptions.since', { date: sb.since })}</Text>
-            <Text style={s.cl}> {sb.nextBilling}</Text>
-          </View>
-        </View>
-      ))}
+        ))}
+      </ScreenState>
     </ScrollView>
   );
 }
@@ -115,11 +56,8 @@ const sc = StyleSheet.create({
   h: { fontSize: 24, fontWeight: '800', color: '#111827', textAlign: 'center' },
   sub: { fontSize: 14, color: '#6b7280', textAlign: 'center', marginBottom: 20 },
   card: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10 },
-  ce: { fontSize: 28 },
   cn: { fontSize: 15, fontWeight: '700', color: '#111827' },
   cp: { fontSize: 12, color: '#6b7280', marginTop: 2 },
-  b: { borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4 },
-  bt: { fontSize: 11, fontWeight: '700' },
-  cl: { fontSize: 11, color: '#6b7280' },
+  b: { fontSize: 16, fontWeight: '800' },
 });
 const s = sc;

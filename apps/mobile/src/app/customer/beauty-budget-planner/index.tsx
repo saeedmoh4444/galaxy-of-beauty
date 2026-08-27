@@ -1,5 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
 const CATEGORIES = [
@@ -13,7 +15,9 @@ const CATEGORIES = [
 
 export default function BeautyBudgetPlannerScreen(): JSX.Element {
   const { t } = useLocale();
-  const [monthly] = useState<Record<string, number>>({});
+  // Mirrors the web page: myBudgets for the July 2026 month.
+  const budgets = trpc.beautyBudgetPlanner.myBudgets.useQuery({ month: '7', year: 2026 });
+  const items = budgets.data ?? [];
   const [selectedCat, setSelectedCat] = useState<string | null>(null);
   const categoryLabels: Record<string, string> = {
     hair: t('beautyBudgetPlanner.cat-hair'),
@@ -25,65 +29,74 @@ export default function BeautyBudgetPlannerScreen(): JSX.Element {
   };
 
   const totalBudget = CATEGORIES.reduce((sum, c) => sum + c.budget, 0);
-  const allocated = Object.values(monthly).reduce((s, v) => s + v, 0);
+  const allocated = items.reduce((s, i) => s + i.spent, 0);
   const remaining = totalBudget - allocated;
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>{t('beautyBudgetPlanner.title')}</Text>
-      <Text style={styles.sub}>{t('beautyBudgetPlanner.subtitle')}</Text>
+    <ScreenState
+      isLoading={budgets.isLoading}
+      isError={budgets.isError}
+      isEmpty={false}
+      errorMessage={t('beautyBudget.load-error')}
+      onRetry={() => budgets.refetch()}
+    >
+      <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+        <Text style={styles.t}>{t('beautyBudgetPlanner.title')}</Text>
+        <Text style={styles.sub}>{t('beautyBudgetPlanner.subtitle')}</Text>
 
-      <View style={styles.summaryRow}>
-        <View style={[styles.summary, { backgroundColor: '#fef3c7' }]}>
-          <Text style={styles.sv}>{totalBudget.toLocaleString()}</Text>
-          <Text style={styles.sl}>{t('beautyBudgetPlanner.budget')}</Text>
+        <View style={styles.summaryRow}>
+          <View style={[styles.summary, { backgroundColor: '#fef3c7' }]}>
+            <Text style={styles.sv}>{totalBudget.toLocaleString()}</Text>
+            <Text style={styles.sl}>{t('beautyBudgetPlanner.budget')}</Text>
+          </View>
+          <View style={[styles.summary, { backgroundColor: '#dcfce7' }]}>
+            <Text style={[styles.sv, { color: '#059669' }]}>{allocated.toLocaleString()}</Text>
+            <Text style={styles.sl}>{t('beautyBudgetPlanner.allocated')}</Text>
+          </View>
+          <View style={[styles.summary, { backgroundColor: '#dbeafe' }]}>
+            <Text style={[styles.sv, { color: '#2563eb' }]}>{remaining.toLocaleString()}</Text>
+            <Text style={styles.sl}>{t('beautyBudgetPlanner.remaining')}</Text>
+          </View>
         </View>
-        <View style={[styles.summary, { backgroundColor: '#dcfce7' }]}>
-          <Text style={[styles.sv, { color: '#059669' }]}>{allocated.toLocaleString()}</Text>
-          <Text style={styles.sl}>{t('beautyBudgetPlanner.allocated')}</Text>
-        </View>
-        <View style={[styles.summary, { backgroundColor: '#dbeafe' }]}>
-          <Text style={[styles.sv, { color: '#2563eb' }]}>{remaining.toLocaleString()}</Text>
-          <Text style={styles.sl}>{t('beautyBudgetPlanner.remaining')}</Text>
-        </View>
-      </View>
 
-      <Text style={styles.st}>{t('beautyBudgetPlanner.categories')}</Text>
-      {CATEGORIES.map((c) => {
-        const pct = Math.min(100, Math.round(((monthly[c.key] ?? 0) / c.budget) * 100));
-        const isOver = (monthly[c.key] ?? 0) > c.budget;
-        return (
-          <TouchableOpacity
-            key={c.key}
-            onPress={() => setSelectedCat(c.key)}
-            style={[styles.cat, selectedCat === c.key && { borderColor: c.color }]}
-          >
-            <Text style={styles.ce}>{c.emoji}</Text>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.cn}>{categoryLabels[c.key] ?? c.name}</Text>
-              <Text style={styles.cb}>
-                {t('beautyBudgetPlanner.cat-budget', { budget: c.budget.toLocaleString() })}
-              </Text>
-              <View style={styles.bar}>
-                <View
-                  style={[
-                    styles.fill,
-                    { width: `${pct}%`, backgroundColor: isOver ? '#dc2626' : c.color },
-                  ]}
-                />
+        <Text style={styles.st}>{t('beautyBudgetPlanner.categories')}</Text>
+        {CATEGORIES.map((c) => {
+          const spent = items.find((i) => i.category === c.key)?.spent ?? 0;
+          const pct = Math.min(100, Math.round((spent / c.budget) * 100));
+          const isOver = spent > c.budget;
+          return (
+            <TouchableOpacity
+              key={c.key}
+              onPress={() => setSelectedCat(c.key)}
+              style={[styles.cat, selectedCat === c.key && { borderColor: c.color }]}
+            >
+              <Text style={styles.ce}>{c.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.cn}>{categoryLabels[c.key] ?? c.name}</Text>
+                <Text style={styles.cb}>
+                  {t('beautyBudgetPlanner.cat-budget', { budget: c.budget.toLocaleString() })}
+                </Text>
+                <View style={styles.bar}>
+                  <View
+                    style={[
+                      styles.fill,
+                      { width: `${pct}%`, backgroundColor: isOver ? '#dc2626' : c.color },
+                    ]}
+                  />
+                </View>
               </View>
-            </View>
-            <Text style={[styles.cp, isOver && { color: '#dc2626' }]}>
-              {t('beautyBudgetPlanner.amount', { value: (monthly[c.key] ?? 0).toLocaleString() })}
-            </Text>
-          </TouchableOpacity>
-        );
-      })}
+              <Text style={[styles.cp, isOver && { color: '#dc2626' }]}>
+                {t('beautyBudgetPlanner.amount', { value: spent.toLocaleString() })}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
 
-      <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}>{t('beautyBudgetPlanner.save')}</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        <TouchableOpacity style={styles.btn}>
+          <Text style={styles.bt}>{t('beautyBudgetPlanner.save')}</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </ScreenState>
   );
 }
 

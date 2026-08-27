@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
+// NO API: post-treatment care guides are static content (TREATMENTS map),
+// identical to the web page — no procedure serves aftercare/timeline data.
 const TREATMENTS: Record<
   string,
   { emoji: string; aftercare: string[]; timeline: { day: string; action: string }[] }

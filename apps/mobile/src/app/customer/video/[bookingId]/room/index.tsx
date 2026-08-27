@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useToast } from '@/components/Toast';
 import { useLocale } from '@/components/LocaleProvider';
 
+// NO API: video room is params-driven (bookingId/room passed in the URL),
+// identical to the web page — no procedure exists for room/booking lookup.
 export default function VideoRoomScreen() {
   const { t } = useLocale();
   const { bookingId, room } = useLocalSearchParams<{ bookingId: string; room: string }>();
