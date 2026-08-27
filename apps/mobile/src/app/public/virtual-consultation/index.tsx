@@ -1,7 +1,12 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+import { getAuthToken } from '@/lib/authToken';
 
+// The consultant catalog is static (web keeps it static too); the API
+// provides the bookings + the book mutation.
 const CONSULTANTS = [
   {
     key: 'skincare',
@@ -41,96 +46,158 @@ const CONSULTANTS = [
   },
 ];
 
+interface ConsultationBooking {
+  consultantType?: string;
+  slot?: string;
+  status?: string;
+}
+
 export default function VirtualConsultationScreen(): JSX.Element {
+  const { t } = useLocale();
+  const isAuthed = !!getAuthToken();
   const [selectedCons, setSelectedCons] = useState<string | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [booked, setBooked] = useState(false);
-  const { t } = useLocale();
+  const utils = trpc.useUtils();
+
+  const bookingsQ = trpc.virtualConsultation.myConsultations.useQuery(undefined, {
+    enabled: isAuthed,
+  });
 
   const consultant = CONSULTANTS.find((c) => c.key === selectedCons);
 
-  return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}>{t('mobile.public.virtual-consultation.title')}</Text>
-      <Text style={styles.sub}>{t('mobile.public.virtual-consultation.subtitle')}</Text>
+  const bookMut = trpc.virtualConsultation.book.useMutation({
+    onSuccess: () => {
+      setBooked(true);
+      void utils.virtualConsultation.myConsultations.invalidate();
+    },
+    onError: () => {},
+  });
+  const handleBook = () => {
+    if (!consultant || !selectedSlot || !getAuthToken()) return;
+    bookMut.mutate({
+      consultantType: consultant.key,
+      scheduledAt: new Date().toISOString(),
+      slot: selectedSlot,
+      price: consultant.price,
+    });
+  };
 
-      {booked && consultant ? (
-        <View style={styles.confirmed}>
-          <Text style={styles.cfEmoji}></Text>
-          <Text style={styles.cfTitle}>{t('mobile.public.virtual-consultation.booked-title')}</Text>
-          <Text style={styles.cfText}>
-            {consultant.emoji} {consultant.name}
-          </Text>
-          <Text style={styles.cfSlot}>
-            {t('mobile.public.virtual-consultation.booked-slot', { slot: selectedSlot ?? '' })}
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              setBooked(false);
-              setSelectedCons(null);
-              setSelectedSlot(null);
-            }}
-            style={styles.cfBtn}
-          >
-            <Text style={styles.cfBt}>{t('mobile.public.virtual-consultation.done')}</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <>
-          <View style={styles.grid}>
-            {CONSULTANTS.map((c) => (
-              <TouchableOpacity
-                key={c.key}
-                onPress={() => {
-                  setSelectedCons(c.key);
-                  setSelectedSlot(null);
-                }}
-                style={[styles.card, selectedCons === c.key && styles.cardA]}
-              >
-                <Text style={styles.ce}>{c.emoji}</Text>
-                <Text style={styles.cn}>{c.name}</Text>
-                <Text style={styles.cs}>{c.specialty}</Text>
-                <View style={styles.cm}>
-                  <Text style={styles.cp}>
-                    {t('mobile.public.virtual-consultation.price', { price: c.price })}
-                  </Text>
-                  <Text style={styles.cr}> {c.rating}</Text>
+  const myBookings = (bookingsQ.data as unknown as ConsultationBooking[] | undefined) ?? [];
+
+  return (
+    <ScreenState
+      isLoading={bookingsQ.isLoading}
+      isError={bookingsQ.isError}
+      isEmpty={false}
+      errorMessage={t('mobile.virtualConsultation.load-error')}
+      onRetry={() => bookingsQ.refetch()}
+    >
+      <ScrollView style={styles.c} contentContainerStyle={styles.i}>
+        <Text style={styles.t}>{t('mobile.public.virtual-consultation.title')}</Text>
+        <Text style={styles.sub}>{t('mobile.public.virtual-consultation.subtitle')}</Text>
+
+        {booked && consultant ? (
+          <View style={styles.confirmed}>
+            <Text style={styles.cfEmoji}></Text>
+            <Text style={styles.cfTitle}>
+              {t('mobile.public.virtual-consultation.booked-title')}
+            </Text>
+            <Text style={styles.cfText}>
+              {consultant.emoji} {consultant.name}
+            </Text>
+            <Text style={styles.cfSlot}>
+              {t('mobile.public.virtual-consultation.booked-slot', { slot: selectedSlot ?? '' })}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                setBooked(false);
+                setSelectedCons(null);
+                setSelectedSlot(null);
+              }}
+              style={styles.cfBtn}
+            >
+              <Text style={styles.cfBt}>{t('mobile.public.virtual-consultation.done')}</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <>
+            <View style={styles.grid}>
+              {CONSULTANTS.map((c) => (
+                <TouchableOpacity
+                  key={c.key}
+                  onPress={() => {
+                    setSelectedCons(c.key);
+                    setSelectedSlot(null);
+                  }}
+                  style={[styles.card, selectedCons === c.key && styles.cardA]}
+                >
+                  <Text style={styles.ce}>{c.emoji}</Text>
+                  <Text style={styles.cn}>{c.name}</Text>
+                  <Text style={styles.cs}>{c.specialty}</Text>
+                  <View style={styles.cm}>
+                    <Text style={styles.cp}>
+                      {t('mobile.public.virtual-consultation.price', { price: c.price })}
+                    </Text>
+                    <Text style={styles.cr}> {c.rating}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {consultant && (
+              <View style={styles.slots}>
+                <Text style={styles.st}>
+                  {t('mobile.public.virtual-consultation.choose-time', {
+                    emoji: consultant.emoji,
+                    name: consultant.name,
+                  })}
+                </Text>
+                <View style={styles.slotGrid}>
+                  {consultant.slots.map((s) => (
+                    <TouchableOpacity
+                      key={s}
+                      onPress={() => setSelectedSlot(s)}
+                      style={[styles.slot, selectedSlot === s && styles.slotA]}
+                    >
+                      <Text style={[styles.slotT, selectedSlot === s && styles.slotTA]}>{s}</Text>
+                    </TouchableOpacity>
+                  ))}
                 </View>
-              </TouchableOpacity>
+                {selectedSlot && (
+                  <TouchableOpacity onPress={handleBook} style={styles.btn}>
+                    <Text style={styles.bt}>
+                      {t('mobile.public.virtual-consultation.book', { price: consultant.price })}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            )}
+          </>
+        )}
+
+        {isAuthed && myBookings.length > 0 && (
+          <View style={styles.bookings}>
+            <Text style={styles.bookingsTitle}>{t('mobile.virtualConsultation.my-bookings')}</Text>
+            {myBookings.map((b, i) => (
+              <View key={i} style={styles.bookingRow}>
+                <Text style={styles.bookingText}>
+                  {b.consultantType} — {b.slot}
+                </Text>
+                <Text
+                  style={[
+                    styles.bookingStatus,
+                    { color: b.status === 'CONFIRMED' ? '#059669' : '#f59e0b' },
+                  ]}
+                >
+                  {b.status}
+                </Text>
+              </View>
             ))}
           </View>
-
-          {consultant && (
-            <View style={styles.slots}>
-              <Text style={styles.st}>
-                {t('mobile.public.virtual-consultation.choose-time', {
-                  emoji: consultant.emoji,
-                  name: consultant.name,
-                })}
-              </Text>
-              <View style={styles.slotGrid}>
-                {consultant.slots.map((s) => (
-                  <TouchableOpacity
-                    key={s}
-                    onPress={() => setSelectedSlot(s)}
-                    style={[styles.slot, selectedSlot === s && styles.slotA]}
-                  >
-                    <Text style={[styles.slotT, selectedSlot === s && styles.slotTA]}>{s}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-              {selectedSlot && (
-                <TouchableOpacity onPress={() => setBooked(true)} style={styles.btn}>
-                  <Text style={styles.bt}>
-                    {t('mobile.public.virtual-consultation.book', { price: consultant.price })}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </View>
-          )}
-        </>
-      )}
-    </ScrollView>
+        )}
+      </ScrollView>
+    </ScreenState>
   );
 }
 
@@ -191,4 +258,16 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   cfBt: { fontSize: 14, fontWeight: '600', color: '#6b7280' },
+  bookings: { marginTop: 20 },
+  bookingsTitle: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 },
+  bookingRow: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 6,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  bookingText: { fontSize: 13 },
+  bookingStatus: { fontSize: 11 },
 });

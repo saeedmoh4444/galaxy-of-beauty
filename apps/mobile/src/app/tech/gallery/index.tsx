@@ -1,5 +1,10 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { useLocale } from '@/components/LocaleProvider';
+
+// NO API: no tech-side gallery-list procedure — the gallery router only has
+// upload/delete (technician) and byTechnician (public, keyed by technician
+// profile id); the web gallery page is upload-only, and there is no likes
+// data in the GalleryImage model. Left static.
 const PHOTOS = [
   { id: 1, emoji: '', name: 'تسريحة عروس', client: 'سارة', date: '15 يوليو', likes: 24 },
   { id: 2, emoji: '', name: 'مكياج سهرة', client: 'نورة', date: '20 يوليو', likes: 18 },

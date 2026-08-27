@@ -1,72 +1,77 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
-const GROUPS = [
-  {
-    id: 1,
-    name: 'عرايس الرياض',
-    organizer: 'نورة',
-    size: 5,
-    date: '15 أغسطس',
-    service: 'مكياج + شعر',
-    status: 'confirmed',
-    total: 1250,
-  },
-  {
-    id: 2,
-    name: 'صديقات الجامعة',
-    organizer: 'مها',
-    size: 3,
-    date: '20 أغسطس',
-    service: 'مانيكير',
-    status: 'pending',
-    total: 450,
-  },
-  {
-    id: 3,
-    name: 'زميلات العمل',
-    organizer: 'ريم',
-    size: 8,
-    date: '1 سبتمبر',
-    service: 'مساج',
-    status: 'confirmed',
-    total: 1600,
-  },
-];
+
+interface GroupBooking {
+  id?: number;
+  organizerId?: number;
+  name?: string;
+  theme?: string | null;
+  status?: string;
+  totalAmount?: number;
+  createdAt?: string;
+  members?: Array<Record<string, unknown>>;
+}
+
 export default function AdminGroupBookingsScreen(): JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  const q = trpc.groupBookings.listAll.useQuery({ page: 1, limit: 20 });
+  const groups = (q.data as unknown as { items?: GroupBooking[] } | null)?.items ?? [];
+
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
       <Text style={s.h}>{t('mobile.admin.group-bookings.title')}</Text>
       <Text style={s.sub}>{t('admin.group-bookings.subtitle')}</Text>
-      {GROUPS.map((g) => (
-        <View key={g.id} style={s.card}>
-          <View
-            style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
-          >
-            <Text style={s.cn}>{g.name}</Text>
-            <View
-              style={[s.st, { backgroundColor: g.status === 'confirmed' ? '#d1fae5' : '#fef3c7' }]}
-            >
-              <Text style={[s.stt, { color: g.status === 'confirmed' ? '#059669' : '#d97706' }]}>
-                {g.status === 'confirmed'
-                  ? t('mobile.admin.group-bookings.confirmed')
-                  : t('mobile.admin.group-bookings.pending')}
+      <ScreenState
+        isLoading={q.isLoading}
+        isError={q.isError}
+        isEmpty={groups.length === 0}
+        emptyTitle={t('admin.group-bookings.empty')}
+        onRetry={() => q.refetch()}
+      >
+        {groups.map((g) => {
+          const confirmed = g.status !== 'PENDING';
+          const memberCount = g.members?.length ?? 0;
+          return (
+            <View key={g.id} style={s.card}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={s.cn}>{g.name}</Text>
+                <View style={[s.st, { backgroundColor: confirmed ? '#d1fae5' : '#fef3c7' }]}>
+                  <Text style={[s.stt, { color: confirmed ? '#059669' : '#d97706' }]}>
+                    {confirmed
+                      ? t('mobile.admin.group-bookings.confirmed')
+                      : t('mobile.admin.group-bookings.pending')}
+                  </Text>
+                </View>
+              </View>
+              <View style={{ flexDirection: 'row', gap: 12, marginTop: 8 }}>
+                <Text style={s.cl}>#{g.organizerId ?? 0}</Text>
+                <Text style={s.cl}>
+                  {t('mobile.admin.group-bookings.people', { count: memberCount })}
+                </Text>
+              </View>
+              <View style={{ flexDirection: 'row', gap: 12, marginTop: 4 }}>
+                <Text style={s.cl}>
+                  {g.createdAt
+                    ? new Date(g.createdAt).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-GB')
+                    : ''}
+                </Text>
+                <Text style={s.cl}>{g.theme ?? ''}</Text>
+              </View>
+              <Text style={s.cp}>
+                {(g.totalAmount ?? 0).toLocaleString()} {t('misc.sar')}
               </Text>
             </View>
-          </View>
-          <View style={{ flexDirection: 'row', gap: 12, marginTop: 8 }}>
-            <Text style={s.cl}> {g.organizer}</Text>
-            <Text style={s.cl}> {t('mobile.admin.group-bookings.people', { count: g.size })}</Text>
-          </View>
-          <View style={{ flexDirection: 'row', gap: 12, marginTop: 4 }}>
-            <Text style={s.cl}> {g.date}</Text>
-            <Text style={s.cl}> {g.service}</Text>
-          </View>
-          <Text style={s.cp}>
-            {g.total.toLocaleString()} {t('misc.sar')}
-          </Text>
-        </View>
-      ))}
+          );
+        })}
+      </ScreenState>
     </ScrollView>
   );
 }
