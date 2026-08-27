@@ -12,13 +12,19 @@ import {
   PageContainer,
   DashboardSkeleton,
   CardListSkeleton,
+  useAuth,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function TechDashboardPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const pending = api.bookings.getTechnicianPending.useQuery();
+  const { isAuthenticated } = useAuth();
+  // Gate: an expired cookie passes the middleware and would fire this
+  // auth-only query for guests ("Authentication required" noise).
+  const pending = api.bookings.getTechnicianPending.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const earnings = api.analytics.technicianEarnings.useQuery({ days: 30 });
   const { data: profile } = api.auth.me.useQuery();
   const transition = api.bookings.transition.useMutation({

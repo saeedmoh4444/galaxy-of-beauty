@@ -76,7 +76,11 @@ export function middleware(request: NextRequest) {
     );
 
     const origin = request.headers.get('origin');
-    if (origin && allowedOrigins.includes(origin)) {
+    // Dev origins: the Expo web build (Metro on :8081/:8083) calls the API
+    // cross-origin — without this the browser discards every response and
+    // the app renders blank. localhost-only, production unaffected.
+    const isDevLocalOrigin = !!origin && /^http:\/\/localhost(:\d+)?$/.test(origin);
+    if (origin && (allowedOrigins.includes(origin) || isDevLocalOrigin)) {
       response.headers.set('Access-Control-Allow-Origin', origin);
       response.headers.set('Access-Control-Allow-Credentials', 'true');
       response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
