@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import type { Socket } from 'socket.io-client';
 import { io } from 'socket.io-client';
 import { useQueryClient } from '@tanstack/react-query';
+import { useAuth } from '@galaxy/ui';
 import {
   SOCKET_DEFAULT_PORT,
   SOCKET_RECONNECT_ATTEMPTS,
@@ -45,9 +46,16 @@ const EVENT_CACHE_MAP: Record<string, string[]> = {
  */
 export function useSocket(): void {
   const queryClient = useQueryClient();
+  const { isAuthenticated } = useAuth();
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
+    // Guests have no session — the socket server rejects them with
+    // "Authentication required", which used to spam the console on every
+    // anonymous page load. Connect only when authenticated; the effect
+    // re-runs on auth change and the cleanup disconnects on logout.
+    if (!isAuthenticated) return;
+
     // ── Create and connect ──────────────────────────────
     // Auth token is now an HttpOnly cookie — sent automatically by the browser
     // on same-origin connections. No need to read from localStorage.
@@ -93,5 +101,5 @@ export function useSocket(): void {
       socket.disconnect();
       socketRef.current = null;
     };
-  }, [queryClient]);
+  }, [queryClient, isAuthenticated]);
 }
