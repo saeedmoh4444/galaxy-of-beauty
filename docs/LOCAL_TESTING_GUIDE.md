@@ -214,9 +214,25 @@ npx expo start                 # ✅ works on Windows now (SDK 57 fixed the undi
 - [ ] **Beauty advisor** — topic chips + custom questions
 - [ ] Bookings → create → reschedule → cancel flows
 - [ ] Profile → logout clears the token (login as another user behaves correctly)
+- [ ] **Dark mode** (new): profile → theme row under the language row → cycles
+      ☀️ Light → 🌙 Dark → ⚙️ System (persisted across restarts). Themed surfaces:
+      tabs (home/bookings/wallet/profile), login/register forms, discover, and all
+      shared components (screens, skeletons, toasts, error alerts)
+- [ ] **Guest states**: open authenticated tabs while logged out → clean redirect to
+      login (no error screens, no console spam) — the global UNAUTHORIZED handler
+- [ ] **Wired screens (Phase 2)**: beauty quiz (real questions), daily fortune (real
+      tips), tech performance / wallet / waitlist (real data), beauty budget planner,
+      salon membership (subscribe/cancel + current tier), virtual consultation (book +
+      my bookings), and the admin screens (audit log, events, flash deals,
+      group bookings, loyalty, promo, subscriptions)
 
 > Mobile has no automated test runner; its contract is verified by the smoke script (§3),
 > the 823 API tests, and `expo export` (§2).
+>
+> **Known NO-API screens** (static by design — each has a `// NO API:` comment):
+> bookings/confirm, post-treatment, video room, tech/gallery, admin ai-features +
+> cashback, public onboarding. The content screens (guides/catalogs/legal) are
+> editorial and stay static intentionally.
 
 ## 6. E2E (browser matrix)
 
