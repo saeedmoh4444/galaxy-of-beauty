@@ -10,6 +10,24 @@
 
 ---
 
+## Platform Parity Snapshot (2026-08-27)
+
+| Metric                               | Count                                                                 |
+| ------------------------------------ | --------------------------------------------------------------------- |
+| Mobile screens (routes)              | **304**                                                               |
+| Web pages (routes)                   | **285**                                                               |
+| Shared routes (same feature on both) | **258**                                                               |
+| Web-only routes                      | 6 — dynamic-param naming variants, no missing features                |
+| Mobile-only routes                   | 8 — app shells (home/index/error/not-found/offline) + naming variants |
+
+Mobile wiring: **259 screens wired to the API** · 7 static with a `// NO API` comment
+(no procedure exists) · ~34 editorial content screens (guides/catalogs/legal —
+intentionally static, same as web) · 4 system screens.
+Verdict: mobile is functionally equivalent to web — every screen with an API
+counterpart is connected to the same 242-router backend.
+
+---
+
 ## 0. One-Shot Setup
 
 ```bash
