@@ -1,13 +1,18 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton } from '@galaxy/ui';
+import { Card, CardSkeleton, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
 export default function TechWaitlistPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: waitlist, isLoading } = api.bookings.getTechnicianPending.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  // Gate: same as tech dashboard — guests with a stale cookie must not
+  // fire this auth-only query.
+  const { data: waitlist, isLoading } = api.bookings.getTechnicianPending.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };
