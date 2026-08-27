@@ -1,6 +1,6 @@
 'use client';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider, QueryCache, MutationCache } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import { useState } from 'react';
 import type { ReactNode } from 'react';
@@ -31,9 +31,28 @@ function getAuthHeaders(): Record<string, string> {
   return headers;
 }
 
+type TrpcClient = ReturnType<typeof api.createClient>;
+
+// Global UNAUTHORIZED handler: a stale/expired cookie passes the
+// middleware but the API rejects every protected query — instead of
+// error banners everywhere, clear the cookies and go to /login once.
+let redirecting = false;
+
+async function handleUnauthorized(error: unknown, client: TrpcClient): Promise<void> {
+  if (typeof window === 'undefined' || redirecting) return;
+  const code = (error as { data?: { code?: string } } | null)?.data?.code;
+  if (code !== 'UNAUTHORIZED') return;
+  redirecting = true;
+  try {
+    await client.auth.clearSession.mutate();
+  } catch {
+    // Cookie may already be gone — proceed regardless.
+  }
+  window.location.replace('/login');
+}
+
 export default function TRPCProvider({ children }: { children: ReactNode }): ReactNode {
-  const [queryClient] = useState(() => new QueryClient());
-  const [trpcClient] = useState(() =>
+  const [trpcClient] = useState<TrpcClient>(() =>
     api.createClient({
       links: [
         httpBatchLink({
@@ -43,6 +62,18 @@ export default function TRPCProvider({ children }: { children: ReactNode }): Rea
         }),
       ],
     }),
+  );
+
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        queryCache: new QueryCache({
+          onError: (error) => void handleUnauthorized(error, trpcClient),
+        }),
+        mutationCache: new MutationCache({
+          onError: (error) => void handleUnauthorized(error, trpcClient),
+        }),
+      }),
   );
 
   return (

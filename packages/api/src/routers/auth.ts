@@ -128,6 +128,16 @@ export function buildClearAuthCookies(): string[] {
 
 export const authRouter = router({
   // ──────────────────────────────────────────────────────
+  // Clear session cookies WITHOUT authentication — the web client calls
+  // this on UNAUTHORIZED responses so a stale cookie can't trap users
+  // in a /login → /dashboard redirect loop.
+  // ──────────────────────────────────────────────────────
+  clearSession: publicMutation.mutation(async ({ ctx }) => {
+    ctx.setCookies?.(buildClearAuthCookies());
+    return { success: true };
+  }),
+
+  // ──────────────────────────────────────────────────────
   // Register a new user account
   // ──────────────────────────────────────────────────────
   register: publicMutation.input(registerSchema).mutation(async ({ input, ctx }) => {
