@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@galaxy/shared';
 import { useAuth } from '@galaxy/ui';
+import { api } from '@/lib/trpc';
 import { useLocale } from '@/components/LocaleProvider';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LanguageToggle } from '@/components/LanguageToggle';
@@ -36,6 +37,7 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
+  const logoutMut = api.auth.logout.useMutation();
   const { t } = useLocale();
 
   // Redirect non-admins
@@ -75,6 +77,13 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
           </Link>
           <button
             onClick={async () => {
+              // Server logout clears the HttpOnly cookies; local logout
+              // only clears gob_user + state (see DashboardLayout).
+              try {
+                await logoutMut.mutateAsync({});
+              } catch {
+                // Best-effort — proceed with local cleanup.
+              }
               await logout();
               router.push('/login');
             }}

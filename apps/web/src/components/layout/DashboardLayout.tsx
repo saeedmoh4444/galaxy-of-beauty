@@ -8,6 +8,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@galaxy/shared';
 import { useAuth } from '@galaxy/ui';
+import { api } from '@/lib/trpc';
 import { useLocale } from '@/components/LocaleProvider';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LanguageToggle } from '@/components/LanguageToggle';
@@ -128,12 +129,22 @@ export function DashboardLayout({
   const pathname = usePathname();
   const router = useRouter();
   const { logout } = useAuth();
+  const logoutMut = api.auth.logout.useMutation();
   const { t } = useLocale();
   const links =
     userRole === 'ADMIN' ? adminLinks : userRole === 'TECHNICIAN' ? technicianLinks : customerLinks;
 
   const handleLogout = async () => {
     if (!window.confirm(t('confirm.logout'))) return;
+    // Server logout clears the HttpOnly cookies (gob_access/gob_refresh)
+    // via Set-Cookie; local logout only clears gob_user + state. Without
+    // the server call the middleware keeps redirecting /login back to
+    // /dashboard and the old session stays valid.
+    try {
+      await logoutMut.mutateAsync({});
+    } catch {
+      // Best-effort: cookies may already be gone; local cleanup proceeds.
+    }
     await logout();
     router.push('/login');
   };
