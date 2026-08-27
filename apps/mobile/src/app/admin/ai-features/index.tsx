@@ -1,5 +1,9 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useLocale } from '@/components/LocaleProvider';
+// NO API: aiFeatures router has no procedure that lists AI feature flags/toggles
+// (only generateDescription/analyzeSentiment admin mutations + customer-side
+// personalizedFeed/smartSchedule queries; web admin page is mutation-only with
+// local state) — the feature list stays static.
 export default function AIFeaturesScreen(): JSX.Element {
   const { t } = useLocale();
   const features = [

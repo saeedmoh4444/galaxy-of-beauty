@@ -1,76 +1,58 @@
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-const WAITLIST = [
-  {
-    id: 1,
-    customer: 'نورة',
-    emoji: '',
-    service: 'مكياج عروس',
-    date: '25 سبتمبر',
-    time: 'صباحاً',
-    position: 1,
-    notified: false,
-  },
-  {
-    id: 2,
-    customer: 'مها',
-    emoji: '',
-    service: 'تسريحة شعر',
-    date: '25 سبتمبر',
-    time: 'مساءً',
-    position: 2,
-    notified: false,
-  },
-  {
-    id: 3,
-    customer: 'ريم',
-    emoji: '',
-    service: 'مانيكير',
-    date: '26 سبتمبر',
-    time: 'صباحاً',
-    position: 3,
-    notified: true,
-  },
-  {
-    id: 4,
-    customer: 'سارة',
-    emoji: '',
-    service: 'مساج',
-    date: '27 سبتمبر',
-    time: 'مساءً',
-    position: 4,
-    notified: false,
-  },
-];
+
+// The waitlist router has no tech-side entry list (notifyNext/claim take an
+// entryId but nothing lists entries for a technician). Mirrors the web page:
+// the pending-requests listing is bookings.getTechnicianPending (REQUESTED
+// bookings).
 export default function TechWaitlistScreen(): JSX.Element {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
+  const pending = trpc.bookings.getTechnicianPending.useQuery();
+  const bookings = pending.data ?? [];
+
   return (
-    <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>{t('mobile.tech.waitlist.title')}</Text>
-      <Text style={s.sub}>{t('mobile.tech.waitlist.subtitle')}</Text>
-      {WAITLIST.map((w) => (
-        <View key={w.id} style={[s.card, { opacity: w.notified ? 0.5 : 1 }]}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-            <View style={[s.pos, { backgroundColor: '#f3f4f6' }]}>
-              <Text style={s.pn}>#{w.position}</Text>
+    <ScreenState
+      isLoading={pending.isLoading}
+      isError={pending.isError}
+      isEmpty={bookings.length === 0}
+      emptyTitle={t('tech.waitlist.empty')}
+      errorMessage={t('tech.bookings.load-error')}
+      onRetry={() => pending.refetch()}
+    >
+      <ScrollView style={s.c} contentContainerStyle={s.i}>
+        <Text style={s.h}>{t('mobile.tech.waitlist.title')}</Text>
+        <Text style={s.sub}>{t('mobile.tech.waitlist.subtitle')}</Text>
+        {bookings.map((b) => (
+          <View key={b.id} style={s.card}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+              <View style={[s.pos, { backgroundColor: '#fef3c7' }]}>
+                <Text style={[s.pn, { color: '#b45309' }]}>{b.id}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={s.cn}>
+                  {localize(b.service?.titleJson, locale) ||
+                    t('tech.waitlist.booking-ref', { id: b.id })}
+                </Text>
+                <Text style={s.cd}>
+                  {new Date(b.startAt).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA', {
+                    day: 'numeric',
+                    month: 'long',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}{' '}
+                  · {b.bookingCode}
+                  {b.customer?.name ? ` · ${b.customer.name}` : ''}
+                </Text>
+              </View>
+              <Text style={s.badge}>{t('tech.waitlist.pending')}</Text>
             </View>
-            <Text style={s.ce}>{w.emoji}</Text>
-            <View style={{ flex: 1 }}>
-              <Text style={s.cn}>{w.customer}</Text>
-              <Text style={s.cd}>
-                {w.service} · {w.date} {w.time}
-              </Text>
-            </View>
-            {w.notified && <Text style={[s.nb]}>{t('mobile.tech.waitlist.notified')}</Text>}
           </View>
-          {!w.notified && (
-            <TouchableOpacity style={s.btn}>
-              <Text style={s.bt}>{t('mobile.tech.waitlist.notify-available')}</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      ))}
-    </ScrollView>
+        ))}
+      </ScrollView>
+    </ScreenState>
   );
 }
 const sc = StyleSheet.create({
@@ -80,18 +62,17 @@ const sc = StyleSheet.create({
   sub: { fontSize: 14, color: '#6b7280', textAlign: 'center', marginBottom: 20 },
   card: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10 },
   pos: { borderRadius: 20, width: 36, height: 36, justifyContent: 'center', alignItems: 'center' },
-  pn: { fontSize: 14, fontWeight: '800', color: '#374151' },
-  ce: { fontSize: 24 },
+  pn: { fontSize: 13, fontWeight: '800', color: '#374151' },
   cn: { fontSize: 15, fontWeight: '700', color: '#111827' },
   cd: { fontSize: 12, color: '#6b7280', marginTop: 2 },
-  nb: { fontSize: 12, color: '#059669', fontWeight: '600' },
-  btn: {
-    backgroundColor: '#dbeafe',
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 8,
-    alignItems: 'center',
+  badge: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#b45309',
+    backgroundColor: '#fef3c7',
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
   },
-  bt: { fontSize: 13, fontWeight: '600', color: '#2563eb' },
 });
 const s = sc;

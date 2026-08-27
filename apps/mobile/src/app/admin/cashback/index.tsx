@@ -30,6 +30,9 @@ const RULES = [
   },
   { id: 4, service: 'صبغ شعر', emoji: '', rate: 5, minSpend: 150, maxCashback: 60, active: true },
 ];
+// NO API: cashback router has no admin query for cashback rules (only customer
+// history/info + admin setRate mutation; the web admin page is a rate editor
+// backed by local state) — the rules list stays static.
 export default function AdminCashbackScreen(): JSX.Element {
   const { t } = useLocale();
   return (

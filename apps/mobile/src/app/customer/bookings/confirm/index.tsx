@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-nati
 import { useLocalSearchParams } from 'expo-router';
 import { useLocale } from '@/components/LocaleProvider';
 
+// NO API: booking confirm is params-driven (code/date passed from the booking
+// flow URL), identical to the web page — no lookup-by-code procedure exists.
 export default function BookingConfirmScreen(): JSX.Element {
   const { code, date } = useLocalSearchParams<{ code?: string; date?: string }>();
   const { locale, t } = useLocale();

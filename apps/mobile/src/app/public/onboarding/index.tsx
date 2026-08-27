@@ -1,3 +1,8 @@
+// NO API: this welcome walkthrough is marketing slides (emoji/title/desc)
+// with no backend procedure. The beautyOnboarding router
+// (questions/submit/status) is an auth-gated (customerProcedure) post-signup
+// preferences questionnaire — a different flow with no public counterpart,
+// and the web page is static too.
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { useLocale } from '@/components/LocaleProvider';

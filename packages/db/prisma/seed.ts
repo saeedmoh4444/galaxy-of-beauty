@@ -75,6 +75,9 @@ async function main() {
     db.campaign.deleteMany(),
     db.flashDeal.deleteMany(),
     db.beautyCourse.deleteMany(),
+    db.beautyQuizAttempt.deleteMany(),
+    db.beautyQuizQuestion.deleteMany(),
+    db.dailyBeautyTip.deleteMany(),
     db.corporatePlan.deleteMany(),
     db.giftQuizRecommendation.deleteMany(),
     db.giftQuizQuestion.deleteMany(),
@@ -2640,6 +2643,59 @@ async function main() {
     console.log(` ${FEATURE_FLAGS.length} feature flags`);
   } catch (err: any) {
     console.log(`    Feature flags: ${err.message?.slice(0, 60)}`);
+  }
+
+  // ---- Daily beauty tips + beauty quiz (feed the mobile public screens) ----
+  try {
+    await db.dailyBeautyTip.createMany({
+      data: [
+        { emoji: '💧', tip: 'اشربي 8 أكواب ماء يومياً لبشرة نضرة', category: 'عناية' },
+        { emoji: '🧴', tip: 'لا تنسي واقي الشمس حتى في الأيام الغائمة', category: 'حماية' },
+        { emoji: '😴', tip: 'النوم 7-8 ساعات هو سر البشرة المتوهجة', category: 'عناية' },
+        { emoji: '💆', tip: 'دلكي وجهك بحركات دائرية لتنشيط الدورة الدموية', category: 'تدليك' },
+        { emoji: '🍊', tip: 'فيتامين C صباحاً لبشرة مشرقة طوال اليوم', category: 'تغذية' },
+        { emoji: '🚿', tip: 'استخدمي ماء فاتراً بدلاً من الساخن لغسل الوجه', category: 'عناية' },
+        { emoji: '🌿', tip: 'ماسك الطين مرة أسبوعياً لتنظيف المسام', category: 'عناية' },
+        { emoji: '💄', tip: 'أزيلي المكياج دائماً قبل النوم مهما كنتِ متعبة', category: 'عناية' },
+      ],
+    });
+    await db.beautyQuizQuestion.createMany({
+      data: [
+        {
+          question: 'ما هو نوع بشرتكِ؟',
+          optionsJson: ['جافة', 'دهنية', 'مختلطة', 'حساسة'],
+          correctIndex: 0,
+          explanation: 'كل نوع يحتاج روتيناً مختلفاً',
+        },
+        {
+          question: 'كم مرة تستخدمين واقي الشمس؟',
+          optionsJson: ['يومياً', 'أحياناً', 'أبداً'],
+          correctIndex: 0,
+          explanation: 'الوقاية اليومية أساس العناية',
+        },
+        {
+          question: 'ما هي أهم خطوة في الروتين المسائي؟',
+          optionsJson: ['إزالة المكياج', 'الترطيب', 'التقشير'],
+          correctIndex: 0,
+          explanation: 'النوم بمكياج يسبب انسداد المسام',
+        },
+        {
+          question: 'متى يكون أفضل وقت لتطبيق السيروم؟',
+          optionsJson: ['بعد التنظيف وقبل الترطيب', 'بعد الترطيب', 'قبل النوم فقط'],
+          correctIndex: 0,
+          explanation: 'السيروم يخترق البشرة النظيفة أفضل',
+        },
+        {
+          question: 'كم ساعة نوم تحتاجينها لبشرة صحية؟',
+          optionsJson: ['7-8 ساعات', '5-6 ساعات', '4 ساعات'],
+          correctIndex: 0,
+          explanation: 'النوم الكافي يعزز تجدد الخلايا',
+        },
+      ],
+    });
+    console.log(' Daily tips + beauty quiz questions');
+  } catch (err: any) {
+    console.log(`    Tips/quiz: ${err.message?.slice(0, 60)}`);
   }
 
   console.log('\n Seed complete! Test login: customer@test.com / Admin@123456\n');
