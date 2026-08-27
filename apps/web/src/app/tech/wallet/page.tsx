@@ -16,7 +16,9 @@ export default function TechWalletPage(): JSX.Element {
   };
   const withdrawMut = api.wallet.withdraw.useMutation();
   const [amount, setAmount] = useState('');
-  const transactions = (txData?.items as Array<Record<string, unknown>>) ?? [];
+  // wallet.getTransactions returns { transactions, pagination } — the
+  // old `.items` read rendered an empty list forever.
+  const transactions = (txData?.transactions as Array<Record<string, unknown>>) ?? [];
 
   return (
     <DashboardLayout userRole="TECHNICIAN">
@@ -88,10 +90,10 @@ export default function TechWalletPage(): JSX.Element {
                     )}
                   </span>
                   <span
-                    className={`font-bold ${(tx.amount as number) > 0 ? 'text-green-600' : 'text-red-600'}`}
+                    className={`font-bold ${Number(tx.amount) > 0 ? 'text-green-600' : 'text-red-600'}`}
                   >
-                    {(tx.amount as number) > 0 ? '+' : ''}
-                    {formatCurrency(Math.abs(tx.amount as number))}
+                    {Number(tx.amount) > 0 ? '+' : ''}
+                    {formatCurrency(Math.abs(Number(tx.amount)))}
                   </span>
                 </div>
               ))}
