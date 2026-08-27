@@ -7,6 +7,7 @@ import { ToastProvider } from '@/components/Toast';
 import { TRPCProvider } from '@/lib/trpc-react';
 import { loadAuthToken } from '@/lib/authToken';
 import { LocaleProvider, useLocale } from '@/components/LocaleProvider';
+import { ThemeProvider } from '@/components/ThemeProvider';
 
 function RootNavigator() {
   const { t } = useLocale();
@@ -187,8 +188,10 @@ function RootNavigator() {
 
 export default function RootLayout() {
   return (
-    <LocaleProvider>
-      <RootNavigator />
-    </LocaleProvider>
+    <ThemeProvider>
+      <LocaleProvider>
+        <RootNavigator />
+      </LocaleProvider>
+    </ThemeProvider>
   );
 }

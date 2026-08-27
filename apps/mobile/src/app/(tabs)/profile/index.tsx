@@ -6,6 +6,7 @@ import { trpc } from '@/lib/trpc-react';
 import { setAuthToken, getAuthToken } from '@/lib/authToken';
 import { setSocketToken } from '@/hooks/useSocket';
 import { useLocale } from '@/components/LocaleProvider';
+import { useTheme, type ThemeMode } from '@/components/ThemeProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -14,6 +15,16 @@ const COLORS = {
   gray400: '#6b7280',
   gray900: '#111827',
   danger: '#dc2626',
+};
+
+const THEME_MODES: ThemeMode[] = ['light', 'dark', 'system'];
+
+// Mode labels are not in the i18n catalog (theme keys are web-only), so the
+// current mode is shown as icon + short English label.
+const MODE_DISPLAY: Record<ThemeMode, { icon: string; label: string }> = {
+  light: { icon: '☀️', label: 'Light' },
+  dark: { icon: '🌙', label: 'Dark' },
+  system: { icon: '⚙️', label: 'System' },
 };
 
 const MENU_ITEMS: { labelKey: TranslationKey; href: string }[] = [
@@ -39,6 +50,7 @@ interface ProfileUser {
 export default function ProfileScreen(): JSX.Element {
   const router = useRouter();
   const { locale, t, setLocale } = useLocale();
+  const { mode, setMode } = useTheme();
   const profile = trpc.users.getMe.useQuery() ?? {
     data: null,
     isLoading: false,
@@ -100,6 +112,16 @@ export default function ProfileScreen(): JSX.Element {
       >
         <Text style={styles.langLabel}>{t('profile.language')}</Text>
         <Text style={styles.langValue}>{locale === 'ar' ? t('profile.arabic') : 'English'}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.langRow}
+        onPress={() => setMode(THEME_MODES[(THEME_MODES.indexOf(mode) + 1) % THEME_MODES.length])}
+        activeOpacity={0.6}
+      >
+        <Text style={styles.langLabel}>{t('mobile.nightMode.title')}</Text>
+        <Text style={styles.langValue}>
+          {MODE_DISPLAY[mode].icon} {MODE_DISPLAY[mode].label}
+        </Text>
       </TouchableOpacity>
       <ScrollView style={styles.menuList}>
         {MENU_ITEMS.map((item, i) => (

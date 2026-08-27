@@ -4,11 +4,15 @@ import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/trpc-react';
 import { useToast } from '@/components/Toast';
 import { useLocale } from '@/components/LocaleProvider';
+import { useTheme, themeColors } from '@/components/ThemeProvider';
 
 export default function RegisterScreen() {
   const router = useRouter();
   const { showToast } = useToast();
   const { t } = useLocale();
+  const { isDark } = useTheme();
+  const c = isDark ? themeColors.dark : themeColors.light;
+  const styles = makeStyles(c);
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -115,45 +119,47 @@ export default function RegisterScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { padding: 24, backgroundColor: '#fff' },
-  title: {
-    fontSize: 28,
-    fontWeight: '800',
-    color: '#7c3aed',
-    textAlign: 'center',
-    marginBottom: 32,
-    marginTop: 60,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 12,
-    padding: 14,
-    fontSize: 16,
-    marginBottom: 16,
-    backgroundColor: '#f9fafb',
-  },
-  button: {
-    backgroundColor: '#7c3aed',
-    borderRadius: 12,
-    padding: 16,
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  buttonDisabled: { opacity: 0.6 },
-  buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
-  link: { color: '#7c3aed', textAlign: 'center', marginTop: 16, fontSize: 14 },
-  roleRow: { flexDirection: 'row', gap: 12, marginBottom: 16 },
-  roleBtn: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 12,
-    padding: 12,
-    alignItems: 'center',
-  },
-  roleActive: { borderColor: '#7c3aed', backgroundColor: '#f5f3ff' },
-  roleText: { fontSize: 14, color: '#6b7280' },
-  roleTextActive: { color: '#7c3aed', fontWeight: '600' },
-});
+const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
+  StyleSheet.create({
+    container: { padding: 24, backgroundColor: c.bg },
+    title: {
+      fontSize: 28,
+      fontWeight: '800',
+      color: c.brand,
+      textAlign: 'center',
+      marginBottom: 32,
+      marginTop: 60,
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: c.border,
+      borderRadius: 12,
+      padding: 14,
+      fontSize: 16,
+      marginBottom: 16,
+      backgroundColor: c.surface,
+      color: c.text,
+    },
+    button: {
+      backgroundColor: c.brand,
+      borderRadius: 12,
+      padding: 16,
+      alignItems: 'center',
+      marginTop: 8,
+    },
+    buttonDisabled: { opacity: 0.6 },
+    buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
+    link: { color: c.brand, textAlign: 'center', marginTop: 16, fontSize: 14 },
+    roleRow: { flexDirection: 'row', gap: 12, marginBottom: 16 },
+    roleBtn: {
+      flex: 1,
+      borderWidth: 1,
+      borderColor: c.border,
+      borderRadius: 12,
+      padding: 12,
+      alignItems: 'center',
+    },
+    roleActive: { borderColor: c.brand, backgroundColor: c.surface },
+    roleText: { fontSize: 14, color: c.textSecondary },
+    roleTextActive: { color: c.brand, fontWeight: '600' },
+  });
