@@ -1,7 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, formatCurrency } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminGroupBookingsPage(): JSX.Element {
@@ -13,7 +12,7 @@ export default function AdminGroupBookingsPage(): JSX.Element {
   const groups = (groupData?.items as Array<Record<string, unknown>>) ?? [];
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">{t('admin.group-bookings.title')}</h1>
@@ -60,6 +59,6 @@ export default function AdminGroupBookingsPage(): JSX.Element {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </>
   );
 }

@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize, type TranslationKey } from '@galaxy/shared';
 
@@ -56,7 +55,7 @@ export default function AdminBeautyEventsPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">{t('admin.beauty-events.title')}</h1>
@@ -167,6 +166,6 @@ export default function AdminBeautyEventsPage(): JSX.Element {
           )}
         </Card>
       </div>
-    </DashboardLayout>
+    </>
   );
 }

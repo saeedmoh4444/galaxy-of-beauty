@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminAiFeaturesPage(): JSX.Element {
@@ -16,7 +15,7 @@ export default function AdminAiFeaturesPage(): JSX.Element {
   const [desc, setDesc] = useState<Record<string, unknown> | null>(null);
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">{t('admin.ai-features.title')}</h1>
@@ -99,6 +98,6 @@ export default function AdminAiFeaturesPage(): JSX.Element {
           )}
         </Card>
       </div>
-    </DashboardLayout>
+    </>
   );
 }

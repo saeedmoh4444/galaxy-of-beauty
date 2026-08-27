@@ -1,7 +1,6 @@
 'use client';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, formatCurrency } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminPromoPage(): JSX.Element {
@@ -12,7 +11,7 @@ export default function AdminPromoPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">{t('admin.promo.title')}</h1>
@@ -53,6 +52,6 @@ export default function AdminPromoPage(): JSX.Element {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </>
   );
 }

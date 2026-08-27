@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 const SERVICES = [
@@ -27,7 +26,7 @@ export default function AdminFlashDealsPage(): JSX.Element {
   const [maxRedemptions, setMax] = useState(20);
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">{t('admin.flash-deals.title')}</h1>
@@ -130,6 +129,6 @@ export default function AdminFlashDealsPage(): JSX.Element {
           )}
         </Card>
       </div>
-    </DashboardLayout>
+    </>
   );
 }
