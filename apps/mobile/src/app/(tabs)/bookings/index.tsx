@@ -5,17 +5,7 @@ import type { TranslationKey } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
-
-const COLORS = {
-  brand: '#7c3aed',
-  white: '#ffffff',
-  gray50: '#faf5ff',
-  gray400: '#6b7280',
-  gray900: '#111827',
-  success: '#10b981',
-  danger: '#ef4444',
-  info: '#3b82f6',
-};
+import { useTheme, themeColors } from '@/components/ThemeProvider';
 
 const STATUS_LABELS: Record<string, TranslationKey> = {
   REQUESTED: 'status.pending',
@@ -27,16 +17,19 @@ const STATUS_LABELS: Record<string, TranslationKey> = {
   NO_SHOW: 'booking.status.NO_SHOW',
 };
 
-const STATUS_COLORS: Record<string, string> = {
-  COMPLETED: COLORS.success,
-  CANCELLED: COLORS.danger,
-  REJECTED: COLORS.danger,
-  DEFAULT: COLORS.info,
-};
-
 export default function BookingsScreen(): JSX.Element {
   const [page] = useState(1);
   const { t, locale } = useLocale();
+  const { isDark } = useTheme();
+  const c = isDark ? themeColors.dark : themeColors.light;
+  const styles = makeStyles(c);
+  const statusColors: Record<string, string> = {
+    COMPLETED: c.success,
+    CANCELLED: c.danger,
+    REJECTED: c.danger,
+    // "Info" statuses (pending/accepted/in-progress) have no palette key — keep blue
+    DEFAULT: '#3b82f6',
+  };
   const bookings = trpc.bookings.list.useQuery({ page, limit: DEFAULT_PAGE_SIZE });
   const data = bookings.data?.bookings as unknown[] | undefined;
   const loyalty = trpc.loyalty.myAccount.useQuery();
@@ -81,7 +74,7 @@ export default function BookingsScreen(): JSX.Element {
               style={[
                 styles.status,
                 {
-                  color: STATUS_COLORS[b.status as string] ?? STATUS_COLORS.DEFAULT,
+                  color: statusColors[b.status as string] ?? statusColors.DEFAULT,
                 },
               ]}
             >
@@ -96,31 +89,32 @@ export default function BookingsScreen(): JSX.Element {
   );
 }
 
-const styles = StyleSheet.create({
-  header: { marginBottom: 12 },
-  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center' },
-  card: {
-    backgroundColor: COLORS.white,
-    borderRadius: 14,
-    padding: 16,
-    marginBottom: 8,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  left: { flex: 1 },
-  code: { fontSize: 14, fontWeight: '700', color: COLORS.gray900 },
-  date: { fontSize: 12, color: COLORS.gray400, marginTop: 4 },
-  status: { fontSize: 13, fontWeight: '600' },
-  loyaltyBadge: {
-    backgroundColor: '#fef3c7',
-    borderRadius: 16,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    alignSelf: 'flex-start',
-    marginTop: 4,
-  },
-  loyaltyText: { fontSize: 13, fontWeight: '700', color: '#d97706' },
-});
+const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
+  StyleSheet.create({
+    header: { marginBottom: 12 },
+    title: { fontSize: 24, fontWeight: '800', color: c.brand, textAlign: 'center' },
+    card: {
+      backgroundColor: c.surface,
+      borderRadius: 14,
+      padding: 16,
+      marginBottom: 8,
+      shadowColor: '#000',
+      shadowOpacity: 0.05,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+    left: { flex: 1 },
+    code: { fontSize: 14, fontWeight: '700', color: c.text },
+    date: { fontSize: 12, color: c.textSecondary, marginTop: 4 },
+    status: { fontSize: 13, fontWeight: '600' },
+    loyaltyBadge: {
+      backgroundColor: '#fef3c7',
+      borderRadius: 16,
+      paddingHorizontal: 12,
+      paddingVertical: 4,
+      alignSelf: 'flex-start',
+      marginTop: 4,
+    },
+    loyaltyText: { fontSize: 13, fontWeight: '700', color: '#d97706' },
+  });

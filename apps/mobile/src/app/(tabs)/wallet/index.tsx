@@ -1,18 +1,10 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
+import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
-
-const COLORS = {
-  brand: '#7c3aed',
-  white: '#ffffff',
-  gray50: '#faf5ff',
-  gray400: '#6b7280',
-  gray900: '#111827',
-  success: '#10b981',
-  danger: '#ef4444',
-};
+import { useTheme, themeColors } from '@/components/ThemeProvider';
 
 interface BalanceData {
   balance?: number;
@@ -34,6 +26,9 @@ interface TxnPage {
 
 export default function WalletScreen(): JSX.Element {
   const { t } = useLocale();
+  const { isDark } = useTheme();
+  const c = isDark ? themeColors.dark : themeColors.light;
+  const styles = makeStyles(c);
   const balance = trpc.wallet.getBalance.useQuery();
   const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 20 });
   const loyalty = trpc.loyalty.myAccount.useQuery();
@@ -98,7 +93,9 @@ export default function WalletScreen(): JSX.Element {
       )}
 
       <Text style={styles.sectionTitle}>{t('mobile.core.recentTransactions')}</Text>
-      {txns.isLoading ? null : txns.isError ? (
+      {txns.isLoading ? (
+        <SkeletonList count={3} />
+      ) : txns.isError ? (
         <Text style={styles.errorText}>{t('wallet.transactions-error')}</Text>
       ) : (txnData?.items ?? []).length === 0 ? (
         <Text style={styles.emptyText}>{t('wallet.no-transactions')}</Text>
@@ -110,10 +107,7 @@ export default function WalletScreen(): JSX.Element {
               <Text style={styles.txnDate}>{t.createdAt}</Text>
             </View>
             <Text
-              style={[
-                styles.txnAmount,
-                { color: t.type === 'DEPOSIT' ? COLORS.success : COLORS.danger },
-              ]}
+              style={[styles.txnAmount, { color: t.type === 'DEPOSIT' ? c.success : c.danger }]}
             >
               {t.type === 'DEPOSIT' ? '+' : '-'} {formatCurrency(t.amount ?? 0)}
             </Text>
@@ -124,63 +118,64 @@ export default function WalletScreen(): JSX.Element {
   );
 }
 
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: COLORS.brand,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  balanceCard: {
-    backgroundColor: COLORS.brand,
-    borderRadius: 16,
-    padding: 20,
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  balanceLabel: { color: 'rgba(255,255,255,0.8)', fontSize: 13 },
-  balanceAmount: { color: COLORS.white, fontSize: 32, fontWeight: '800', marginTop: 4 },
-  bonusText: { color: '#fef3c7', fontSize: 13, marginTop: 4 },
-  topUpBtn: {
-    backgroundColor: COLORS.white,
-    borderRadius: 10,
-    paddingHorizontal: 24,
-    paddingVertical: 10,
-    marginTop: 12,
-  },
-  topUpText: { color: COLORS.brand, fontWeight: '600' },
-  rewardsRow: { flexDirection: 'row', gap: 12, marginBottom: 16 },
-  rewardCard: {
-    flex: 1,
-    backgroundColor: COLORS.gray50,
-    borderRadius: 12,
-    padding: 12,
-    alignItems: 'center',
-  },
-  rewardIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#ede9fe',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 6,
-  },
-  rewardIconText: { fontSize: 12, fontWeight: '700', color: COLORS.brand },
-  rewardVal: { fontSize: 18, fontWeight: '700', color: COLORS.gray900 },
-  rewardLbl: { fontSize: 10, color: COLORS.gray400, marginTop: 2 },
-  sectionTitle: { fontSize: 16, fontWeight: '700', color: COLORS.gray900, marginBottom: 10 },
-  emptyText: { color: COLORS.gray400, textAlign: 'center', marginTop: 12 },
-  errorText: { color: COLORS.danger, textAlign: 'center', marginTop: 12 },
-  txnRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.gray50,
-  },
-  txnDesc: { fontWeight: '600', color: COLORS.gray900, fontSize: 13 },
-  txnDate: { fontSize: 10, color: COLORS.gray400, marginTop: 2 },
-  txnAmount: { fontWeight: '600', fontSize: 13 },
-});
+const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
+  StyleSheet.create({
+    title: {
+      fontSize: 24,
+      fontWeight: '800',
+      color: c.brand,
+      textAlign: 'center',
+      marginBottom: 20,
+    },
+    balanceCard: {
+      backgroundColor: c.brand,
+      borderRadius: 16,
+      padding: 20,
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    balanceLabel: { color: 'rgba(255,255,255,0.8)', fontSize: 13 },
+    balanceAmount: { color: '#ffffff', fontSize: 32, fontWeight: '800', marginTop: 4 },
+    bonusText: { color: '#fef3c7', fontSize: 13, marginTop: 4 },
+    topUpBtn: {
+      backgroundColor: '#ffffff',
+      borderRadius: 10,
+      paddingHorizontal: 24,
+      paddingVertical: 10,
+      marginTop: 12,
+    },
+    topUpText: { color: c.brand, fontWeight: '600' },
+    rewardsRow: { flexDirection: 'row', gap: 12, marginBottom: 16 },
+    rewardCard: {
+      flex: 1,
+      backgroundColor: c.surface,
+      borderRadius: 12,
+      padding: 12,
+      alignItems: 'center',
+    },
+    rewardIcon: {
+      width: 32,
+      height: 32,
+      borderRadius: 16,
+      backgroundColor: c.border,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 6,
+    },
+    rewardIconText: { fontSize: 12, fontWeight: '700', color: c.brand },
+    rewardVal: { fontSize: 18, fontWeight: '700', color: c.text },
+    rewardLbl: { fontSize: 10, color: c.textSecondary, marginTop: 2 },
+    sectionTitle: { fontSize: 16, fontWeight: '700', color: c.text, marginBottom: 10 },
+    emptyText: { color: c.textSecondary, textAlign: 'center', marginTop: 12 },
+    errorText: { color: c.danger, textAlign: 'center', marginTop: 12 },
+    txnRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      paddingVertical: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: c.border,
+    },
+    txnDesc: { fontWeight: '600', color: c.text, fontSize: 13 },
+    txnDate: { fontSize: 10, color: c.textSecondary, marginTop: 2 },
+    txnAmount: { fontWeight: '600', fontSize: 13 },
+  });

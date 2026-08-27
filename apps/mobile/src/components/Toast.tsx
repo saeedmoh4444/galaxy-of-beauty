@@ -1,5 +1,14 @@
 import { Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
-import { useState, useCallback, useRef, createContext, useContext, type ReactNode } from 'react';
+import {
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+  createContext,
+  useContext,
+  type ReactNode,
+} from 'react';
+import { themeColors, useTheme } from '@/components/ThemeProvider';
 
 type ToastType = 'success' | 'error' | 'warning' | 'info';
 
@@ -17,14 +26,20 @@ const Ctx = createContext<ToastCtx>({ showToast: () => {} });
 
 let nextId = 0;
 
-const COLORS: Record<ToastType, { bg: string; icon: string }> = {
-  success: { bg: '#16a34a', icon: '' },
-  error: { bg: '#dc2626', icon: '' },
-  warning: { bg: '#f59e0b', icon: '' },
-  info: { bg: '#374151', icon: 'ℹ️' },
-};
+// Light-mode values are today's exact colors. Colored toast chips work on
+// both themes (white text); dark mode swaps success for the palette green.
+function getToastColors(isDark: boolean): Record<ToastType, { bg: string; icon: string }> {
+  return {
+    success: { bg: isDark ? themeColors.dark.success : '#16a34a', icon: '' },
+    error: { bg: themeColors.dark.danger, icon: '' },
+    warning: { bg: '#f59e0b', icon: '' },
+    info: { bg: themeColors.dark.border, icon: 'ℹ️' },
+  };
+}
 
 export function ToastProvider({ children }: { children: ReactNode }) {
+  const { isDark } = useTheme();
+  const toastColors = useMemo(() => getToastColors(isDark), [isDark]);
   const [toast, setToast] = useState<ToastItem | null>(null);
   const opacity = useRef(new Animated.Value(0)).current;
 
@@ -45,8 +60,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     <Ctx.Provider value={{ showToast }}>
       {children}
       {toast && (
-        <Animated.View style={[styles.toast, { backgroundColor: COLORS[toast.type].bg, opacity }]}>
-          <Text style={styles.icon}>{COLORS[toast.type].icon}</Text>
+        <Animated.View
+          style={[styles.toast, { backgroundColor: toastColors[toast.type].bg, opacity }]}
+        >
+          <Text style={styles.icon}>{toastColors[toast.type].icon}</Text>
           <Text style={styles.message} numberOfLines={2}>
             {toast.message}
           </Text>
