@@ -48,7 +48,20 @@ async function handleUnauthorized(error: unknown, client: TrpcClient): Promise<v
   } catch {
     // Cookie may already be gone — proceed regardless.
   }
+  // Clear the localStorage session marker too: useAuth() hydrates from
+  // gob_user, and without this the notification badge / cart widget
+  // still report authenticated and keep firing protected queries on the
+  // login page (the UNAUTHORIZED loop the monitor caught).
+  try {
+    window.localStorage.removeItem('gob_user');
+  } catch {
+    // Storage may be unavailable — the redirect still proceeds.
+  }
   window.location.replace('/login');
+  // Allow a future expired session to trigger the flow again.
+  setTimeout(() => {
+    redirecting = false;
+  }, 3000);
 }
 
 export default function TRPCProvider({ children }: { children: ReactNode }): ReactNode {
