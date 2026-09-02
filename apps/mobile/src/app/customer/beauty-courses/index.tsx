@@ -2,8 +2,9 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
 
 const LEVELS: Record<string, { color: string }> = {
@@ -30,13 +31,14 @@ interface MyCourseItem {
 
 export default function BeautyCoursesScreen(): JSX.Element {
   const { locale, t } = useLocale();
+  const isAuthed = useAuthState();
   const levelLabels: Record<string, string> = {
     beginner: t('beautyCourses.level-beginner'),
     intermediate: t('beautyCourses.level-intermediate'),
     advanced: t('beautyCourses.level-advanced'),
   };
   const coursesQ = trpc.beautyCourses.list.useQuery();
-  const myCoursesQ = trpc.beautyCourses.myCourses.useQuery();
+  const myCoursesQ = trpc.beautyCourses.myCourses.useQuery(undefined, { enabled: isAuthed });
   const [enrolled, setEnrolled] = useState<number[]>([]);
 
   const enrollMut = trpc.beautyCourses.enroll.useMutation();

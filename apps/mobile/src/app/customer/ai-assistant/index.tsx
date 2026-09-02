@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface AssistantMessage {
   id?: number;
@@ -20,8 +21,9 @@ interface AssistantMessage {
 
 export default function AIAssistantScreen(): JSX.Element {
   const { t } = useLocale();
+  const isAuthed = useAuthState();
   const [input, setInput] = useState('');
-  const q = trpc.liveChat.history.useQuery();
+  const q = trpc.liveChat.history.useQuery(undefined, { enabled: isAuthed });
   const messages: AssistantMessage[] = (q.data as AssistantMessage[] | undefined) ?? [];
 
   if (q.isLoading)

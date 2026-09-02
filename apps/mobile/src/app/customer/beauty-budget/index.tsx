@@ -1,8 +1,9 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
-import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -16,14 +17,15 @@ const COLORS = {
 
 export default function BeautyBudgetScreen(): JSX.Element {
   const { t } = useLocale();
-  const budget = trpc.beautyBudget.get.useQuery() ?? {
+  const isAuthed = useAuthState();
+  const budget = trpc.beautyBudget.get.useQuery(undefined, { enabled: isAuthed }) ?? {
     data: null,
     isLoading: false,
     isError: false,
     refetch: () => {},
   };
-  const loyalty = trpc.loyalty.myAccount.useQuery();
-  const savings = trpc.savingsGoals.list.useQuery();
+  const loyalty = trpc.loyalty.myAccount.useQuery(undefined, { enabled: isAuthed });
+  const savings = trpc.savingsGoals.list.useQuery(undefined, { enabled: isAuthed });
   const data = budget.data as Record<string, unknown> | undefined;
 
   return (

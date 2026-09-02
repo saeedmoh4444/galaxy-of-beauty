@@ -3,6 +3,7 @@ import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface CashbackInfo {
   balance?: number;
@@ -21,9 +22,13 @@ interface CashbackHistory {
 }
 
 export default function CashbackScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { locale, t } = useLocale();
-  const infoQ = trpc.cashback.info.useQuery();
-  const historyQ = trpc.cashback.history.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
+  const infoQ = trpc.cashback.info.useQuery(undefined, { enabled: isAuthed });
+  const historyQ = trpc.cashback.history.useQuery(
+    { page: 1, limit: LARGE_PAGE_SIZE },
+    { enabled: isAuthed },
+  );
   if (infoQ.isLoading || historyQ.isLoading) return <SkeletonList count={3} />;
   const info = infoQ.data as unknown as CashbackInfo | null;
   const history = historyQ.data as unknown as CashbackHistory | null;

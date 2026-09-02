@@ -1,7 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface AnalyticsSummary {
   totalBookings: number;
@@ -23,9 +24,10 @@ interface MonthlyTrend {
 
 export default function BeautyAnalyticsScreen(): JSX.Element {
   const { t } = useLocale();
-  const summaryQ = trpc.beautyAnalytics.summary.useQuery();
-  const byCatQ = trpc.beautyAnalytics.byCategory.useQuery();
-  const trendQ = trpc.beautyAnalytics.monthlyTrend.useQuery();
+  const isAuthed = useAuthState();
+  const summaryQ = trpc.beautyAnalytics.summary.useQuery(undefined, { enabled: isAuthed });
+  const byCatQ = trpc.beautyAnalytics.byCategory.useQuery(undefined, { enabled: isAuthed });
+  const trendQ = trpc.beautyAnalytics.monthlyTrend.useQuery(undefined, { enabled: isAuthed });
 
   if (summaryQ.isLoading || byCatQ.isLoading || trendQ.isLoading) return <SkeletonList count={4} />;
   const s = (summaryQ.data as unknown as AnalyticsSummary | null) ?? {

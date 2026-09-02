@@ -1,7 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 const GT = [
   { key: 'glowing_skin', emoji: '', title: 'بشرة متألقة', target: 12 },
@@ -12,7 +13,8 @@ const GT = [
 
 export default function BeautyGoalsScreen(): JSX.Element {
   const { t } = useLocale();
-  const q = trpc.beautyBudget.get.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.beautyBudget.get.useQuery(undefined, { enabled: isAuthed });
   if (q.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView

@@ -1,8 +1,9 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 const MOODS = ['', '', '', '', '', '', '', ''];
 
@@ -14,8 +15,12 @@ interface DiaryEntry {
 
 export default function BeautyDiaryScreen(): JSX.Element {
   const { locale, t } = useLocale();
+  const isAuthed = useAuthState();
   const [todayMood, setTodayMood] = useState('');
-  const q = trpc.beautyJournal.list.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
+  const q = trpc.beautyJournal.list.useQuery(
+    { page: 1, limit: LARGE_PAGE_SIZE },
+    { enabled: isAuthed },
+  );
   const entries: DiaryEntry[] = (q.data as DiaryEntry[] | undefined) ?? [];
 
   return (

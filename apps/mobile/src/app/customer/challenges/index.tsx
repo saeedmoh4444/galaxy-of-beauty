@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const CH: Record<string, { emoji: string; color: string }> = {
   '7day_skincare': { emoji: '', color: '#ec4899' },
@@ -24,9 +25,10 @@ interface ChallengeProgress {
 }
 
 export default function ChallengesScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
   const listQ = trpc.challenges.list.useQuery();
-  const progressQ = trpc.challenges.myProgress.useQuery();
+  const progressQ = trpc.challenges.myProgress.useQuery(undefined, { enabled: isAuthed });
   const joinMut = trpc.challenges.join.useMutation({
     onSuccess: () => {
       void listQ.refetch();

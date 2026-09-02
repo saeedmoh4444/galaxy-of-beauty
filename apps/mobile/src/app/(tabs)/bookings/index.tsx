@@ -4,6 +4,7 @@ import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 import type { TranslationKey } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useAuthState } from '@/hooks/useAuthState';
 import { useLocale } from '@/components/LocaleProvider';
 import { useTheme, themeColors } from '@/components/ThemeProvider';
 
@@ -30,9 +31,14 @@ export default function BookingsScreen(): JSX.Element {
     // "Info" statuses (pending/accepted/in-progress) have no palette key — keep blue
     DEFAULT: '#3b82f6',
   };
-  const bookings = trpc.bookings.list.useQuery({ page, limit: DEFAULT_PAGE_SIZE });
+  // Guests see the empty/CTA state instead of firing 401s.
+  const isAuthed = useAuthState();
+  const bookings = trpc.bookings.list.useQuery(
+    { page, limit: DEFAULT_PAGE_SIZE },
+    { enabled: isAuthed },
+  );
   const data = bookings.data?.bookings as unknown[] | undefined;
-  const loyalty = trpc.loyalty.myAccount.useQuery();
+  const loyalty = trpc.loyalty.myAccount.useQuery(undefined, { enabled: isAuthed });
 
   return (
     <ScreenState

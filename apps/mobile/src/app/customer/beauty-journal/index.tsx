@@ -2,8 +2,9 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface JournalEntry {
   id?: number;
@@ -13,7 +14,11 @@ interface JournalEntry {
 
 export default function BeautyJournalScreen(): JSX.Element {
   const { locale, t } = useLocale();
-  const q = trpc.beautyJournal.list.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
+  const isAuthed = useAuthState();
+  const q = trpc.beautyJournal.list.useQuery(
+    { page: 1, limit: LARGE_PAGE_SIZE },
+    { enabled: isAuthed },
+  );
 
   if (q.isLoading)
     return (

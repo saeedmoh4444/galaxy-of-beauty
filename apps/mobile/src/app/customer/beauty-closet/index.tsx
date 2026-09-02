@@ -1,7 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 const CATS = [' مكياج', ' عناية', '‍️ شعر', ' أظافر', ' طبيعي'];
 
@@ -15,6 +16,7 @@ interface ClosetProduct {
 
 export default function BeautyClosetScreen(): JSX.Element {
   const { locale, t } = useLocale();
+  const isAuthed = useAuthState();
   const [filter, setFilter] = useState<string | null>(null);
   const catLabels = [
     t('beautyCloset.cat-makeup'),
@@ -23,7 +25,7 @@ export default function BeautyClosetScreen(): JSX.Element {
     t('beautyCloset.cat-nails'),
     t('beautyCloset.cat-natural'),
   ];
-  const q = trpc.restockReminder.myItems.useQuery();
+  const q = trpc.restockReminder.myItems.useQuery(undefined, { enabled: isAuthed });
   const products: ClosetProduct[] = (q.data as unknown as ClosetProduct[] | undefined) ?? [];
 
   if (q.isLoading)

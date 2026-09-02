@@ -1,7 +1,8 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -13,7 +14,8 @@ const COLORS = {
 
 export default function AddressesScreen(): JSX.Element {
   const { t } = useLocale();
-  const addresses = trpc.addresses.list.useQuery();
+  const isAuthed = useAuthState();
+  const addresses = trpc.addresses.list.useQuery(undefined, { enabled: isAuthed });
   const data = addresses.data as unknown[] | undefined;
 
   return (
