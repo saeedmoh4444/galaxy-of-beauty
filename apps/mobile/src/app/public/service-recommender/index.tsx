@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 import { localize } from '@galaxy/shared';
@@ -9,7 +10,8 @@ const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900
 
 export default function ServiceRecommenderScreen(): JSX.Element {
   const { locale, t } = useLocale();
-  const recs = trpc.serviceRecommender.myResults.useQuery() ?? {
+  const isAuthed = useAuthState();
+  const recs = trpc.serviceRecommender.myResults.useQuery(undefined, { enabled: isAuthed }) ?? {
     data: null,
     isLoading: false,
     isError: false,
