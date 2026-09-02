@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface FeedResponse {
   items?: FeedItem[];
@@ -19,7 +20,8 @@ interface FeedItem {
 
 export default function PersonalizedFeedScreen(): JSX.Element {
   const { t } = useLocale();
-  const feedQ = trpc.personalizedFeed.feed.useQuery();
+  const isAuthed = useAuthState();
+  const feedQ = trpc.personalizedFeed.feed.useQuery(undefined, { enabled: isAuthed });
   if (feedQ.isLoading) return <SkeletonList count={5} />;
   const items = (feedQ.data as FeedResponse | null)?.items ?? [];
   return (
