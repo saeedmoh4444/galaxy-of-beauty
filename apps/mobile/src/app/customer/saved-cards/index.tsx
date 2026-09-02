@@ -2,6 +2,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
@@ -14,7 +15,8 @@ const BRAND_COLORS: Record<string, string> = {
 
 export default function SavedCardsScreen(): JSX.Element {
   const { t } = useLocale();
-  const cards = trpc.savedCards.list.useQuery();
+  const isAuthed = useAuthState();
+  const cards = trpc.savedCards.list.useQuery(undefined, { enabled: isAuthed });
   const data = cards.data as unknown[] | undefined;
 
   return (

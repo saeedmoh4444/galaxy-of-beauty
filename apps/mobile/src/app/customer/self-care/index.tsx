@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -12,7 +13,8 @@ interface SelfCareActivity {
 
 export default function SelfCareScreen(): JSX.Element {
   const { t } = useLocale();
-  const historyQ = trpc.selfCare.history.useQuery({});
+  const isAuthed = useAuthState();
+  const historyQ = trpc.selfCare.history.useQuery({}, { enabled: isAuthed });
   const data: SelfCareActivity[] =
     (historyQ.data as unknown as SelfCareActivity[] | undefined) ?? [];
   if (historyQ.isLoading) return <SkeletonList count={4} />;

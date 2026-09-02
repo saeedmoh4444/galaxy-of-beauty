@@ -3,6 +3,7 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface MembershipInfo {
   tier?: string;
@@ -57,7 +58,8 @@ const MEMBERSHIPS = [
 
 export default function SalonMembershipScreen(): JSX.Element {
   const { t } = useLocale();
-  const membershipQ = trpc.salonMembership.myMembership.useQuery();
+  const isAuthed = useAuthState();
+  const membershipQ = trpc.salonMembership.myMembership.useQuery(undefined, { enabled: isAuthed });
 
   const subscribeMut = trpc.salonMembership.subscribe.useMutation({
     onSuccess: () => {

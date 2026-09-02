@@ -2,12 +2,14 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function CustomerProfileScreen(): JSX.Element {
   const { t } = useLocale();
-  const user = trpc.users.getMe.useQuery();
+  const isAuthed = useAuthState();
+  const user = trpc.users.getMe.useQuery(undefined, { enabled: isAuthed });
   const data = user.data as Record<string, unknown> | undefined;
 
   return (

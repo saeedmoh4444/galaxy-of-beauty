@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -11,7 +12,8 @@ interface TodayHealthData {
 
 export default function WellnessTrackerScreen(): JSX.Element {
   const { t } = useLocale();
-  const todayQ = trpc.wellnessTracker.today.useQuery();
+  const isAuthed = useAuthState();
+  const todayQ = trpc.wellnessTracker.today.useQuery(undefined, { enabled: isAuthed });
   if (todayQ.isLoading) return <SkeletonList count={3} />;
   const d: TodayHealthData = (todayQ.data as unknown as TodayHealthData) ?? {};
   return (
