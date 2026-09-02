@@ -64,6 +64,12 @@ export const bookingMessages = {
   'booking.choose-variant': { ar: 'اختر المتغير', en: 'Choose Variant' },
   'booking.base-service': { ar: 'الخدمة الأساسية', en: 'Base Service' },
   'booking.choose-address': { ar: 'اختر العنوان', en: 'Choose Address' },
+  'booking.choose-date': { ar: 'اختر التاريخ', en: 'Choose Date' },
+  'booking.choose-time': { ar: 'اختر الوقت', en: 'Choose Time' },
+  'booking.date-time-confirm': {
+    ar: 'التاريخ والوقت: {date} {time}',
+    en: 'Date & Time: {date} {time}',
+  },
   'booking.choose-address-placeholder': { ar: 'اختر عنواناً...', en: 'Select an address...' },
   'booking.promo-code': { ar: 'كود الخصم (اختياري)', en: 'Promo Code (optional)' },
   'booking.promo-example': { ar: 'مثال: WELCOME20', en: 'e.g. WELCOME20' },

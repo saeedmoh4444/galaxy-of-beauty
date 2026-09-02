@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { customerProcedure, router } from '../trpc';
+import { customerProcedure, publicProcedure, router } from '../trpc';
 
 const waitlists: Array<{
   id: number;
@@ -19,7 +19,7 @@ const POPULAR_TECHS = [
 ];
 
 export const techWaitlistRouter = router({
-  popular: customerProcedure.query(() => POPULAR_TECHS),
+  popular: publicProcedure.query(() => POPULAR_TECHS),
   myWaitlists: customerProcedure.query(async ({ ctx }) =>
     waitlists.filter((w) => w.userId === ctx.user.id),
   ),

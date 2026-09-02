@@ -1,17 +1,23 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function CertificationQuizPage(): JSX.Element {
   const { t, locale } = useLocale();
+  // /certification-quiz is not middleware-protected — gate the protected
+  // certificates query on auth so anonymous visitors don't 401 + bounce.
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const { data: quizzes, isLoading } = api.certificationQuiz.quizzes.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };
-  const { data: certs } = api.certificationQuiz.myCertificates.useQuery() as {
+  const { data: certs } = api.certificationQuiz.myCertificates.useQuery(undefined, {
+    enabled: !authLoading && isAuthenticated,
+    retry: false,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
   };
   const [quizId, setQuizId] = useState<string | null>(null);

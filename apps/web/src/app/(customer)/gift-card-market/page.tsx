@@ -6,7 +6,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function GiftCardMarketPage(): JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const { data: listings, refetch } = api.giftCardMarket.listings.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     refetch: () => void;
@@ -58,7 +58,10 @@ export default function GiftCardMarketPage(): JSX.Element {
                   {t('giftCardMarket.save', { discount: l.discount as number })}
                 </span>
                 <p className="text-xs text-text-secondary mt-2">
-                  {l.sellerName as string} · {l.createdAt as string}
+                  {l.sellerName as string} ·{' '}
+                  {new Date(l.createdAt as string | Date).toLocaleDateString(
+                    locale === 'ar' ? 'ar-SA' : 'en-GB',
+                  )}
                 </p>
                 <Button
                   size="sm"

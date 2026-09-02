@@ -126,8 +126,9 @@ async function main() {
   console.log(` ${cities.length} Saudi cities`);
 
   // ---- Admin User ----
-  // Password: Admin@123456
-  const adminPasswordHash = '$2b$12$WLl1knNaSSoIuae5Pjcd9.5IlMOPSEb8w5dd/22Kyxmkw5Sei2Wvi'; // Admin@123456
+  // Password: Admin@123456 (hash verified 2026-08-28 — the previous literal
+  // never matched the documented password, so every seeded account was unloggable)
+  const adminPasswordHash = '$2b$12$3EEqTDqBmYkYZ2baueS0I.J2EohI/RLelIDPk5jgvumJmTceUTtJe'; // Admin@123456
 
   const admin = await prisma.user.create({
     data: {
@@ -1717,7 +1718,7 @@ async function main() {
   // E2E Test Data — customers, technicians, bookings, reviews
   // ──────────────────────────────────────────────────────────
 
-  const customerPasswordHash = '$2b$12$WLl1knNaSSoIuae5Pjcd9.5IlMOPSEb8w5dd/22Kyxmkw5Sei2Wvi'; // Admin@123456
+  const customerPasswordHash = '$2b$12$3EEqTDqBmYkYZ2baueS0I.J2EohI/RLelIDPk5jgvumJmTceUTtJe'; // Admin@123456 (verified)
 
   // Test customer
   const customer = await prisma.user.create({

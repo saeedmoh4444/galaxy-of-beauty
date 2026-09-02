@@ -2624,6 +2624,7 @@ export const miscMessages = {
   },
   'liveChat.placeholder': { ar: 'اكتبي رسالتك...', en: 'Type your message...' },
   'liveChat.send': { ar: 'إرسال', en: 'Send' },
+  'beautyBingo.title': { ar: ' بينجو الجمال', en: 'Beauty Bingo' },
   'beautyBingo.subtitle': {
     ar: 'أكملي المهام واكسبي جلسة مجانية!',
     en: 'Complete the tasks and earn a free session!',

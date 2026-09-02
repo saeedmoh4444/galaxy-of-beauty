@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
 import { localize } from '@galaxy/shared';
@@ -19,6 +20,7 @@ export interface ServicesPageData {
 
 export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Element {
   const { t, locale } = useLocale();
+  const router = useRouter();
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 300);
   const [sort, setSort] = useState('newest');
@@ -171,7 +173,22 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
                 </Card>
               </button>
             ) : (
-              <Link key={svc.id} href={`/services/${svc.id}`}>
+              // Card navigation is a div (not an <a>) because the Book button
+              // inside renders its own <a> — anchors cannot nest in HTML.
+              <div
+                key={svc.id}
+                role="link"
+                tabIndex={0}
+                aria-label={localize(svc.titleJson, locale)}
+                onClick={() => router.push(`/services/${svc.id}`)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    router.push(`/services/${svc.id}`);
+                  }
+                }}
+                className="cursor-pointer"
+              >
                 <Card hover>
                   <div className="h-40 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100" />
                   <h3 className="mt-3 font-semibold">{localize(svc.titleJson, locale)}</h3>
@@ -191,7 +208,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
                     </Link>
                   </div>
                 </Card>
-              </Link>
+              </div>
             ),
           )}
         </div>
