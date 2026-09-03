@@ -36,6 +36,19 @@ of mobile defects immediately.
 | Web bookings/create missing date/time ("books tomorrow")          | date + time pickers (08:00–20:30, 30-min steps), confirm step shows the slot; dead promo field removed | web          |
 | Vendor portal revenue always `—`                                  | real `Σ price × sales` formula + rendered                                                              | web          |
 
+## 2b. Already fixed this round (2026-09-03)
+
+| Fix                                                            | Detail                                                                  | Platform     |
+| -------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------ |
+| Admin users list `.map` crash                                  | `listCustomers` returns `{items}` — page consumed `.items`              | web          |
+| Customer dashboard 401 storm (logged-out)                      | 8 protected queries gated on `isAuthenticated` (incl. `RebookReminder`) | web          |
+| `beautyPackages.listAll` 401 loop (stale logged-out tab)       | gated on `isAuthenticated`                                              | web          |
+| `zatca.listInvoices` 401 (stale logged-out tab)                | gated on `isAuthenticated`                                              | web          |
+| `performance.myDashboard` 401 (stale logged-out tab)           | gated on `isAuthenticated`                                              | web          |
+| Tech slots: overlap rejection failed silently                  | mutation errors surfaced above the form                                 | web          |
+| Tech bookings: raw English statuses + missing PAID/CANCELLED   | `booking.status.*` catalog keys + 2 new filter tabs                     | web          |
+| Terminology: Technician/الفنية → Service Provider/مقدمة الخدمة | catalog values only (12 files) — keys, routes, DB enum deferred         | web + mobile |
+
 ## 3. Root causes
 
 1. **Auth gating missing (401 class)** — `(tabs)/bookings`, `wallet`,
@@ -123,6 +136,16 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
    - Open question: tech promotions in the public "active campaigns" feed,
      or a separate "salon offers" rail? (Recommended: separate — platform
      sales vs salon deals have different trust signals.)
+8. **Tech profile page upgrade** (user finding, 2026-09-03 — the page looks
+   complete but half of it doesn't work):
+   - **Fix the stub save**: `handleProfileSave` only saves the name —
+     city/area/bio/bufferMinutes/isEcoFriendly are decorative (no backend
+     endpoint). Add `technicians.updateProfile` and wire the form.
+   - **Stats row**: ratingAvg / totalReviews / completedBookings (in the
+     model, never shown).
+   - **Contact + location**: phone from the user record; lat/lng later.
+   - **Custom price editing** per service (currently display-only;
+     `addService` takes no price).
 
 ## 6. Phase C — Mobile visual/UX parity
 
