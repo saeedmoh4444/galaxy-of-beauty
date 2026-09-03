@@ -1,12 +1,15 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, CardSkeleton, formatCurrency, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function TechPerformancePage(): JSX.Element {
   const { t } = useLocale();
-  const { data, isLoading } = api.performance.myDashboard.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading } = api.performance.myDashboard.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
   };
