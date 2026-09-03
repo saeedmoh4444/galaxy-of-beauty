@@ -5,7 +5,7 @@ export const marketingMessages = {
   // Home
   'marketing.home.hero-title': {
     ar: 'اكتشفي جمالك مع أفضل الفنيات',
-    en: 'Discover your beauty with the best technicians',
+    en: 'Discover your beauty with the best service providers',
   },
   'marketing.home.hero-subtitle': {
     ar: 'احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج والمزيد',
@@ -53,7 +53,7 @@ export const marketingMessages = {
   'marketing.home.feature-salon-map': { ar: 'خريطة الصالونات', en: 'Salon map' },
   'marketing.home.feature-salon-map-desc': {
     ar: 'اكتشفي الفنيات القريبات',
-    en: 'Discover nearby technicians',
+    en: 'Discover nearby service providers',
   },
   'marketing.home.feature-beauty-courses': { ar: 'دورات تجميل', en: 'Beauty courses' },
   'marketing.home.feature-beauty-courses-desc': {
@@ -114,10 +114,10 @@ export const marketingMessages = {
     ar: 'شعر، بشرة، مكياج، أظافر والمزيد',
     en: 'Hair, skin, makeup, nails and more',
   },
-  'marketing.discover.technicians': { ar: 'تصفحي الفنيات', en: 'Browse technicians' },
+  'marketing.discover.technicians': { ar: 'تصفحي الفنيات', en: 'Browse service providers' },
   'marketing.discover.technicians-desc': {
     ar: 'فنيات معتمدات في مدينتكِ',
-    en: 'Certified technicians in your city',
+    en: 'Certified service providers in your city',
   },
   'marketing.discover.shop-the-look': { ar: 'تسوقي الإطلالة', en: 'Shop the look' },
   'marketing.discover.shop-the-look-desc': {
@@ -209,7 +209,7 @@ export const marketingMessages = {
   'marketing.discover.search': { ar: 'بحث', en: 'Search' },
   'marketing.discover.search-desc': {
     ar: 'ابحثي عن خدمات ومنتجات وفنيات',
-    en: 'Search for services, products and technicians',
+    en: 'Search for services, products and service providers',
   },
   'marketing.discover.marketplace': { ar: 'المتجر', en: 'Marketplace' },
   'marketing.discover.marketplace-desc': {
@@ -229,17 +229,20 @@ export const marketingMessages = {
   'marketing.discover.bookings-count': { ar: '{count} حجز', en: '{count} bookings' },
 
   // Technicians
-  'marketing.technicians.title': { ar: 'فنيات التجميل', en: 'Beauty technicians' },
+  'marketing.technicians.title': { ar: 'فنيات التجميل', en: 'Beauty service providers' },
   'marketing.technicians.subtitle': {
     ar: 'تصفحي فنيات التجميل المعتمدات في مدينتك',
-    en: 'Browse certified beauty technicians in your city',
+    en: 'Browse certified beauty service providers in your city',
   },
   'marketing.technicians.city-placeholder': { ar: 'المدينة', en: 'City' },
-  'marketing.technicians.load-error': { ar: 'فشل تحميل الفنيات', en: 'Failed to load technicians' },
-  'marketing.technicians.no-technicians': { ar: 'لا توجد فنيات', en: 'No technicians found' },
+  'marketing.technicians.load-error': {
+    ar: 'فشل تحميل الفنيات',
+    en: 'Failed to load service providers',
+  },
+  'marketing.technicians.no-technicians': { ar: 'لا توجد فنيات', en: 'No service providers found' },
   'marketing.technicians.no-technicians-desc': {
     ar: 'لم يتم العثور على فنيات تطابق بحثك.',
-    en: 'No technicians match your search.',
+    en: 'No service providers match your search.',
   },
   'marketing.technicians.bookings-count': { ar: '{count} حجز', en: '{count} bookings' },
 
@@ -247,7 +250,7 @@ export const marketingMessages = {
   'marketing.search.title': { ar: ' بحث', en: 'Search' },
   'marketing.search.placeholder': {
     ar: 'ابحثي عن خدمات، منتجات، فنيات...',
-    en: 'Search for services, products, technicians...',
+    en: 'Search for services, products, service providers...',
   },
   'marketing.search.search-button': { ar: 'بحث', en: 'Search' },
   'marketing.search.searching': { ar: 'جاري البحث...', en: 'Searching...' },
@@ -256,7 +259,7 @@ export const marketingMessages = {
   'marketing.search.services-heading': { ar: ' خدمات', en: 'Services' },
   'marketing.search.duration-min': { ar: '{min} دقيقة', en: '{min} minutes' },
   'marketing.search.products-heading': { ar: ' منتجات', en: 'Products' },
-  'marketing.search.technicians-heading': { ar: '‍ فنيات', en: 'Technicians' },
+  'marketing.search.technicians-heading': { ar: '‍ فنيات', en: 'Service Providers' },
 
   // Surprise me
   'marketing.surprise-me.title': { ar: 'فاجئيني', en: 'Surprise me' },
@@ -295,31 +298,31 @@ export const marketingMessages = {
   'marketing.service-detail.compare': { ar: 'مقارنة', en: 'Compare' },
   'marketing.service-detail.available-technicians': {
     ar: 'الفنيات المتاحات',
-    en: 'Available technicians',
+    en: 'Available service providers',
   },
   'marketing.service-detail.book': { ar: 'احجز', en: 'Book' },
   'marketing.service-detail.no-technicians': {
     ar: 'لا توجد فنيات متاحة لهذه الخدمة حالياً',
-    en: 'No technicians are currently available for this service',
+    en: 'No service providers are currently available for this service',
   },
   'marketing.service-detail.related-services': { ar: 'خدمات مشابهة', en: 'Related services' },
 
   // Technician profile
   'marketing.technician-profile.not-found': {
-    ar: 'الفنية غير موجودة',
-    en: 'Technician not found',
+    ar: 'مقدمة الخدمة غير موجودة',
+    en: 'Service Provider not found',
   },
   'marketing.technician-profile.not-found-desc': {
-    ar: 'لم يتم العثور على ملف الفنية المطلوب',
-    en: 'The requested technician profile could not be found',
+    ar: 'لم يتم العثور على ملف مقدمة الخدمة المطلوب',
+    en: 'The requested service provider profile could not be found',
   },
   'marketing.technician-profile.back-to-technicians': {
     ar: 'العودة للفنيات',
-    en: 'Back to technicians',
+    en: 'Back to service providers',
   },
   'marketing.technician-profile.back-to-technicians-arrow': {
     ar: '← العودة للفنيات',
-    en: '← Back to technicians',
+    en: '← Back to service providers',
   },
   'marketing.technician-profile.verified': { ar: 'موثقة', en: 'Verified' },
   'marketing.technician-profile.eco-friendly': {
@@ -333,8 +336,8 @@ export const marketingMessages = {
   'marketing.technician-profile.services': { ar: 'الخدمات المقدمة', en: 'Services offered' },
   'marketing.technician-profile.no-services': { ar: 'لا توجد خدمات', en: 'No services' },
   'marketing.technician-profile.no-services-desc': {
-    ar: 'لم تقم الفنية بإضافة خدمات بعد',
-    en: 'The technician has not added any services yet',
+    ar: 'لم تقم مقدمة الخدمة بإضافة خدمات بعد',
+    en: 'The service provider has not added any services yet',
   },
   'marketing.technician-profile.duration-min': { ar: '{min} دقيقة', en: '{min} minutes' },
   'marketing.technician-profile.book-now': { ar: 'احجزي', en: 'Book' },
@@ -344,8 +347,8 @@ export const marketingMessages = {
   'marketing.gallery.title': { ar: 'معرض الأعمال', en: 'Work gallery' },
   'marketing.gallery.no-images': { ar: 'لا توجد صور في المعرض', en: 'No photos in the gallery' },
   'marketing.gallery.no-images-desc': {
-    ar: 'لم تقم الفنية برفع أي صور بعد.',
-    en: 'The technician has not uploaded any photos yet.',
+    ar: 'لم تقم مقدمة الخدمة برفع أي صور بعد.',
+    en: 'The service provider has not uploaded any photos yet.',
   },
   'marketing.gallery.images-count': { ar: '{count} صورة', en: '{count} photos' },
   'marketing.gallery.image-alt': { ar: 'Gallery image', en: 'Gallery image' },
@@ -588,7 +591,7 @@ export const marketingMessages = {
   'marketing.beauty-awards.title': { ar: 'جوائز الجمال الشهرية', en: 'Monthly Beauty Awards' },
   'marketing.beauty-awards.vote-cta': {
     ar: 'صوّتي لأفضل الفنيات — {month}',
-    en: 'Vote for the best technicians - {month}',
+    en: 'Vote for the best service providers - {month}',
   },
   'marketing.beauty-awards.votes': { ar: '{count} صوت', en: '{count} votes' },
   'marketing.beauty-awards.vote': { ar: '️ تصويت', en: 'Vote' },
@@ -601,12 +604,12 @@ export const marketingMessages = {
   'marketing.beauty-shorts.subtitle': { ar: 'فيديوهات قصيرة وسريعة', en: 'Short and quick videos' },
   'marketing.beauty-stories.subtitle': {
     ar: 'قصص يومية من فنياتنا',
-    en: 'Daily stories from our technicians',
+    en: 'Daily stories from our service providers',
   },
   'marketing.behind-scenes.title': { ar: 'وراء الكواليس', en: 'Behind the Scenes' },
   'marketing.behind-scenes.subtitle': {
     ar: 'شوفي كيف تشتغل الفنيات وراء الكواليس',
-    en: 'See how our technicians work behind the scenes',
+    en: 'See how our service providers work behind the scenes',
   },
   'marketing.beauty-podcast.title': { ar: 'بودكاست الجمال', en: 'Beauty Podcast' },
   'marketing.beauty-podcast.subtitle': {
@@ -728,20 +731,26 @@ export const marketingMessages = {
   'marketing.booking-heatmap.bookings-count': { ar: '{count} حجوزات', en: '{count} bookings' },
   'marketing.booking-heatmap.quiet': { ar: ' هادئ', en: ' Quiet' },
   'marketing.booking-heatmap.busy': { ar: ' مزدحم', en: ' Busy' },
-  'marketing.featured-tech.title': { ar: 'فنية الأسبوع', en: 'Technician of the Week' },
+  'marketing.featured-tech.title': { ar: 'مقدمة خدمة الأسبوع', en: 'Service Provider of the Week' },
   'marketing.featured-tech.subtitle': {
     ar: 'نسلط الضوء على أفضل الفنيات في منصتنا',
-    en: 'We shine the spotlight on the best technicians on our platform',
+    en: 'We shine the spotlight on the best service providers on our platform',
   },
   'marketing.featured-tech.load-error': { ar: 'فشل التحميل', en: 'Failed to load' },
-  'marketing.featured-tech.badge': { ar: 'فنية الأسبوع — ', en: 'Technician of the Week - ' },
+  'marketing.featured-tech.badge': {
+    ar: 'مقدمة خدمة الأسبوع — ',
+    en: 'Service Provider of the Week - ',
+  },
   'marketing.featured-tech.achievements': { ar: ' الإنجازات', en: ' Achievements' },
   'marketing.featured-tech.services': { ar: ' الخدمات', en: ' Services' },
   'marketing.featured-tech.quick-interview': { ar: ' مقابلة سريعة', en: ' Quick interview' },
   'marketing.featured-tech.q-label': { ar: 'س: ', en: 'Q: ' },
   'marketing.featured-tech.a-label': { ar: 'ج: ', en: 'A: ' },
   'marketing.featured-tech.full-profile': { ar: 'عرض الملف الكامل ←', en: 'View full profile ←' },
-  'marketing.featured-tech.past-technicians': { ar: ' فنيات سابقات', en: ' Past technicians' },
+  'marketing.featured-tech.past-technicians': {
+    ar: ' فنيات سابقات',
+    en: ' Past service providers',
+  },
   'marketing.flash-deals.ended': { ar: 'انتهى', en: 'Ended' },
   'marketing.flash-deals.time-hms': { ar: '{h} س {m} د {s} ث', en: '{h}h {m}m {s}s' },
   'marketing.flash-deals.time-ms': { ar: '{m} د {s} ث', en: '{m}m {s}s' },
@@ -943,7 +952,10 @@ export const marketingMessages = {
   'marketing.blog.invalid-link': { ar: 'رابط غير صالح', en: 'Invalid link' },
   'marketing.blog.load-error-post': { ar: 'فشل تحميل المقال', en: 'Failed to load article' },
   'marketing.services.invalid-id': { ar: 'معرف الخدمة غير صالح', en: 'Invalid service ID' },
-  'marketing.gallery.invalid-id': { ar: 'معرف الفنية غير صالح', en: 'Invalid technician ID' },
+  'marketing.gallery.invalid-id': {
+    ar: 'معرف مقدمة الخدمة غير صالح',
+    en: 'Invalid service provider ID',
+  },
   'marketing.gallery.load-error': { ar: 'فشل تحميل المعرض', en: 'Failed to load gallery' },
   'marketing.subscription-boxes.load-error': {
     ar: 'فشل تحميل الباقات',
@@ -988,7 +1000,7 @@ export const marketingMessages = {
   'marketing.tech-leaderboard.title': { ar: 'لوحة المتصدرين', en: 'Leaderboard' },
   'marketing.tech-leaderboard.subtitle': {
     ar: 'أفضل الفنيات في منصتنا',
-    en: 'The best technicians on our platform',
+    en: 'The best service providers on our platform',
   },
   'marketing.tech-leaderboard.load-error': { ar: 'فشل التحميل', en: 'Failed to load' },
   'marketing.tech-leaderboard.reviews-count': {
@@ -1001,7 +1013,7 @@ export const marketingMessages = {
   'marketing.salon-map.loading-map': { ar: 'جاري تحميل الخريطة...', en: 'Loading map...' },
   'marketing.salon-map.searching': {
     ar: 'جاري البحث عن فنيات...',
-    en: 'Searching for technicians...',
+    en: 'Searching for service providers...',
   },
   'marketing.salon-map.load-error': { ar: 'فشل تحميل الخريطة', en: 'Failed to load map' },
   'marketing.salon-map.available': { ar: 'متاحة', en: 'Available' },
@@ -1009,8 +1021,8 @@ export const marketingMessages = {
   'marketing.salon-map.price-sar': { ar: '{price} ر.س', en: '{price} SAR' },
   'marketing.salon-map.full-profile': { ar: 'عرض الملف الكامل ←', en: 'View full profile ←' },
   'marketing.salon-map.technicians-count': {
-    ar: '{count} فنية · {city}',
-    en: '{count} technicians · {city}',
+    ar: '{count} مقدمة خدمة · {city}',
+    en: '{count} service providers · {city}',
   },
   'marketing.salon-finder.load-error': { ar: 'فشل تحميل الصالونات', en: 'Failed to load salons' },
   'marketing.salon-finder.title': { ar: ' صالونات قريبة منكِ', en: 'Salons near you' },
@@ -1023,7 +1035,10 @@ export const marketingMessages = {
     ar: 'لا توجد صالونات في هذه المدينة حالياً',
     en: 'No salons in this city yet',
   },
-  'marketing.salon-finder.tech-fallback': { ar: 'فنية #${t.id}', en: 'Technician #{id}' },
+  'marketing.salon-finder.tech-fallback': {
+    ar: 'مقدمة خدمة #${t.id}',
+    en: 'Service Provider #{id}',
+  },
   'marketing.salon-finder.from-label': { ar: 'من', en: 'From' },
   'marketing.live-stream.title': { ar: 'البث المباشر', en: 'Live streaming' },
   'marketing.live-stream.subtitle': {
@@ -1044,13 +1059,16 @@ export const marketingMessages = {
   'marketing.trending.title': { ar: ' الأكثر رواجاً', en: 'Trending' },
   'marketing.trending.subtitle': {
     ar: 'أكثر الخدمات طلباً والفنيات تميزاً',
-    en: 'The most requested services and standout technicians',
+    en: 'The most requested services and standout service providers',
   },
   'marketing.trending.top-services': { ar: ' الخدمات الأكثر طلباً', en: 'Most requested services' },
   'marketing.trending.no-data': { ar: 'لا توجد بيانات', en: 'No data' },
   'marketing.trending.service-fallback': { ar: 'خدمة #${s.serviceId}', en: 'Service #{id}' },
   'marketing.trending.bookings-count': { ar: '{count} حجز', en: '{count} bookings' },
-  'marketing.trending.spotlight-technicians': { ar: ' فنيات مميزات', en: 'Featured technicians' },
+  'marketing.trending.spotlight-technicians': {
+    ar: ' فنيات مميزات',
+    en: 'Featured service providers',
+  },
   'marketing.tutorials.title': { ar: 'دروس الجمال', en: 'Beauty tutorials' },
   'marketing.tutorials.subtitle': {
     ar: 'تعلمي أسرار الجمال من خبراء معتمدين — دروس بالفيديو خطوة بخطوة',
@@ -1085,7 +1103,10 @@ export const marketingMessages = {
   'marketing.video-testimonials.share-video': { ar: ' شاركي فيديوكِ', en: 'Share your video' },
   'marketing.video-testimonials.modal-title': { ar: 'شاركي فيديو', en: 'Share a video' },
   'marketing.video-testimonials.video-url-placeholder': { ar: 'رابط الفيديو', en: 'Video link' },
-  'marketing.video-testimonials.tech-name-placeholder': { ar: 'اسم الفنية', en: 'Technician name' },
+  'marketing.video-testimonials.tech-name-placeholder': {
+    ar: 'اسم مقدمة الخدمة',
+    en: 'Service Provider name',
+  },
   'marketing.video-testimonials.service-placeholder': { ar: 'الخدمة', en: 'Service' },
   'marketing.video-testimonials.rating-label': { ar: 'التقييم:', en: 'Rating:' },
   'marketing.video-testimonials.comment-placeholder': { ar: 'تعليقك...', en: 'Your comment...' },
@@ -1142,7 +1163,10 @@ export const marketingMessages = {
     en: "The leading platform for booking beauty services in the Kingdom — proud of our clients' trust",
   },
   'marketing.beauty-stats.stat-bookings': { ar: 'حجز مكتمل', en: 'Completed bookings' },
-  'marketing.beauty-stats.stat-technicians': { ar: 'فنية معتمدة', en: 'Certified technicians' },
+  'marketing.beauty-stats.stat-technicians': {
+    ar: 'مقدمة خدمة معتمدة',
+    en: 'Certified service providers',
+  },
   'marketing.beauty-stats.stat-services': { ar: 'خدمة تجميل', en: 'Beauty services' },
   'marketing.beauty-stats.stat-happy-customers': { ar: 'عميلة سعيدة', en: 'Happy clients' },
   'marketing.beauty-stats.stat-avg-rating': { ar: 'متوسط التقييمات', en: 'Average rating' },
@@ -1246,7 +1270,7 @@ export const marketingMessages = {
   'marketing.before-after.before-url-label': { ar: 'رابط صورة قبل', en: 'Before image URL' },
   'marketing.before-after.after-url-label': { ar: 'رابط صورة بعد', en: 'After image URL' },
   'marketing.before-after.service-type-label': { ar: 'نوع الخدمة', en: 'Service type' },
-  'marketing.before-after.tech-name-label': { ar: 'اسم الفنية', en: 'Technician name' },
+  'marketing.before-after.tech-name-label': { ar: 'اسم مقدمة الخدمة', en: 'Service Provider name' },
   'marketing.before-after.desc-label': { ar: 'وصف', en: 'Description' },
   'marketing.before-after.submit': { ar: 'نشر', en: 'Post' },
   'marketing.bridal-concierge.step-profile': { ar: 'إنشاء الملف', en: 'Create your profile' },
@@ -1261,7 +1285,7 @@ export const marketingMessages = {
   'marketing.bridal-concierge.feature-try-title': { ar: 'جربي إطلالتكِ', en: 'Try your look' },
   'marketing.bridal-concierge.feature-try-desc': {
     ar: 'جلسات تجربة مكياج وشعر مع أفضل الفنيات قبل اليوم الكبير',
-    en: 'Makeup and hair trial sessions with the best technicians before the big day',
+    en: 'Makeup and hair trial sessions with the best service providers before the big day',
   },
   'marketing.bridal-concierge.feature-shine-title': {
     ar: 'تألقي يوم زفافكِ',
@@ -1269,7 +1293,7 @@ export const marketingMessages = {
   },
   'marketing.bridal-concierge.feature-shine-desc': {
     ar: 'فريق متكامل من الفنيات المحترفات في يومكِ الخاص',
-    en: 'A complete team of professional technicians on your special day',
+    en: 'A complete team of professional service providers on your special day',
   },
   'marketing.bridal-concierge.feature-budget-title': {
     ar: 'تحكمي بالميزانية',
@@ -1727,7 +1751,7 @@ export const marketingMessages = {
   'marketing.onboarding.step-2-title': { ar: ' اكتشفي الخدمات', en: ' Discover services' },
   'marketing.onboarding.step-2-desc': {
     ar: 'تصفحي مئات الخدمات من فنيات معتمدات — شعر، بشرة، مكياج، مساج والمزيد.',
-    en: 'Browse hundreds of services from certified technicians — hair, skin, makeup, massage and more.',
+    en: 'Browse hundreds of services from certified service providers — hair, skin, makeup, massage and more.',
   },
   'marketing.onboarding.step-2-action': { ar: 'تصفحي الخدمات', en: 'Browse services' },
   'marketing.onboarding.step-3-title': { ar: ' اعرفي نوع بشرتكِ', en: ' Know your skin type' },
@@ -2074,10 +2098,10 @@ export const marketingMessages = {
   'marketing.tech-calendar.title': { ar: 'تقويم المواعيد', en: 'Appointments calendar' },
   'marketing.tech-calendar.subtitle': {
     ar: 'تصفّحي المواعيد المتاحة للفنيات واحجزي مباشرة',
-    en: 'Browse the available slots for technicians and book directly',
+    en: 'Browse the available slots for service providers and book directly',
   },
   'marketing.tech-calendar.load-error': { ar: 'فشل التحميل', en: 'Failed to load' },
-  'marketing.tech-calendar.techs-label': { ar: '‍ الفنيات', en: ' Technicians' },
+  'marketing.tech-calendar.techs-label': { ar: '‍ الفنيات', en: ' Service Providers' },
   'marketing.tech-calendar.available-days': {
     ar: '‍ {name} · {count} يوم متاح هذا الشهر',
     en: ' {name} · {count} days available this month',
@@ -2096,8 +2120,8 @@ export const marketingMessages = {
     en: 'Quick responses and instant booking confirmations',
   },
   'marketing.technician-badges.badge-premium': {
-    ar: 'فنية متميزة معتمدة من جالكسي بيوتي',
-    en: 'A distinguished technician certified by Galaxy of Beauty',
+    ar: 'مقدمة خدمة متميزة معتمدة من جالكسي بيوتي',
+    en: 'A distinguished service provider certified by Galaxy of Beauty',
   },
   'marketing.technician-badges.badge-certified': {
     ar: 'حاصلة على شهادات معتمدة في مجال التجميل',
@@ -2113,13 +2137,13 @@ export const marketingMessages = {
   },
   'marketing.technician-badges.badge-mentor': {
     ar: 'مدربة وخبيرة تدرب فنيات أخريات',
-    en: 'A trainer and expert who mentors other technicians',
+    en: 'A trainer and expert who mentors other service providers',
   },
   'marketing.technician-badges.badge-fallback': { ar: 'شارة تميز', en: 'Excellence badge' },
-  'marketing.technician-badges.title': { ar: 'شارات الفنيات', en: 'Technician badges' },
+  'marketing.technician-badges.title': { ar: 'شارات الفنيات', en: 'Service Provider badges' },
   'marketing.technician-badges.subtitle': {
     ar: 'تعرفي على شارات التميز التي تحصل عليها فنياتنا — دليل على الاحترافية والجودة',
-    en: 'Discover the excellence badges our technicians earn — proof of professionalism and quality',
+    en: 'Discover the excellence badges our service providers earn — proof of professionalism and quality',
   },
   'marketing.technician-badges.load-error': {
     ar: 'فشل تحميل الشارات',
@@ -2128,17 +2152,20 @@ export const marketingMessages = {
   'marketing.technician-badges.empty-title': { ar: 'لا توجد شارات بعد', en: 'No badges yet' },
   'marketing.technician-badges.empty-desc': {
     ar: 'لم تُضف أي شارات للفنيات حتى الآن',
-    en: 'No badges have been added for technicians yet',
+    en: 'No badges have been added for service providers yet',
   },
   'marketing.technician-badges.cta-title': {
     ar: ' ابحثي عن فنيات معتمدات',
-    en: ' Find certified technicians',
+    en: ' Find certified service providers',
   },
   'marketing.technician-badges.cta-desc': {
     ar: 'الفنيات الحاصلات على شارات التميز يقدمن أعلى مستويات الجودة',
-    en: 'Technicians with excellence badges deliver the highest quality',
+    en: 'Service Providers with excellence badges deliver the highest quality',
   },
-  'marketing.technician-badges.cta-link': { ar: 'تصفحي الفنيات ←', en: 'Browse technicians ←' },
+  'marketing.technician-badges.cta-link': {
+    ar: 'تصفحي الفنيات ←',
+    en: 'Browse service providers ←',
+  },
   'marketing.technician-compare.spec-makeup': { ar: 'مكياج', en: 'Makeup' },
   'marketing.technician-compare.exp-8': { ar: '٨ سنوات', en: '8 years' },
   'marketing.technician-compare.svc-bridal-makeup': { ar: 'مكياج عرايس', en: 'Bridal makeup' },
@@ -2163,14 +2190,14 @@ export const marketingMessages = {
   'marketing.technician-compare.dim-quality': { ar: ' الجودة', en: ' Quality' },
   'marketing.technician-compare.dim-price': { ar: ' السعر', en: ' Price' },
   'marketing.technician-compare.dim-communication': { ar: ' التواصل', en: ' Communication' },
-  'marketing.technician-compare.title': { ar: 'مقارنة الفنيات', en: 'Compare technicians' },
+  'marketing.technician-compare.title': { ar: 'مقارنة الفنيات', en: 'Compare service providers' },
   'marketing.technician-compare.subtitle': {
     ar: 'قارني بين الفنيات واختاري الأفضل لكِ (اختاري ٢-٣)',
-    en: 'Compare technicians and choose the best for you (pick 2–3)',
+    en: 'Compare service providers and choose the best for you (pick 2–3)',
   },
   'marketing.technician-compare.compare-count': {
     ar: ' مقارنة {count} فنيات',
-    en: ' Comparing {count} technicians',
+    en: ' Comparing {count} service providers',
   },
   'marketing.technician-compare.feature-column': { ar: 'الميزة', en: 'Feature' },
   'marketing.technician-compare.row-rating': { ar: ' التقييم', en: ' Rating' },
@@ -2180,10 +2207,10 @@ export const marketingMessages = {
   'marketing.technician-compare.row-city': { ar: ' المدينة', en: ' City' },
   'marketing.technician-compare.row-experience': { ar: '️ الخبرة', en: ' Experience' },
   'marketing.technician-compare.row-services': { ar: ' الخدمات', en: ' Services' },
-  'marketing.technician-qa.title': { ar: ' اسألي الفنيات', en: ' Ask the technicians' },
+  'marketing.technician-qa.title': { ar: ' اسألي الفنيات', en: ' Ask the service providers' },
   'marketing.technician-qa.subtitle': {
     ar: 'اسألي خبراء التجميل — تجاوب الفنيات على أسئلتكِ',
-    en: 'Ask beauty experts — technicians answer your questions',
+    en: 'Ask beauty experts — service providers answer your questions',
   },
   'marketing.technician-qa.all-filter': { ar: 'الكل', en: 'All' },
   'marketing.technician-qa.ask-cta': { ar: '+ اسألي', en: '+ Ask' },
@@ -2193,7 +2220,7 @@ export const marketingMessages = {
   'marketing.technician-qa.empty-action': { ar: 'اسألي الآن', en: 'Ask now' },
   'marketing.technician-qa.pending-label': { ar: ' في انتظار الرد', en: ' Waiting for a reply' },
   'marketing.technician-qa.login-cta': { ar: 'سجّلي دخول للسؤال', en: 'Log in to ask' },
-  'marketing.technician-qa.modal-title': { ar: 'اسألي الفنيات', en: 'Ask the technicians' },
+  'marketing.technician-qa.modal-title': { ar: 'اسألي الفنيات', en: 'Ask the service providers' },
   'marketing.technician-qa.category-label': { ar: 'الفئة', en: 'Category' },
   'marketing.technician-qa.question-label': { ar: 'سؤالكِ', en: 'Your question' },
   'marketing.technician-qa.question-placeholder': {

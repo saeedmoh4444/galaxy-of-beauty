@@ -105,7 +105,7 @@ export const mobileCustomerBMessages = {
   'mobile.smartSchedule.title': { ar: ' جدولة ذكية', en: ' Smart Schedule' },
   'mobile.smartSchedule.tech-rating': {
     ar: '‍ #{id} · {rating}',
-    en: 'Technician #{id} · {rating}',
+    en: 'Service Provider #{id} · {rating}',
   },
   'mobile.smartSchedule.book': { ar: 'احجز', en: 'Book' },
   'mobile.smartSchedule.change-service': { ar: ' تغيير الخدمة', en: ' Change Service' },
@@ -116,7 +116,10 @@ export const mobileCustomerBMessages = {
   'mobile.vendorPortal.sar': { ar: 'ر.س', en: 'SAR' },
 
   // ---- tech-onboarding ----
-  'mobile.techOnboarding.title': { ar: ' التسجيل كفنية', en: ' Register as a Technician' },
+  'mobile.techOnboarding.title': {
+    ar: ' التسجيل كمقدمة خدمة',
+    en: ' Register as a Service Provider',
+  },
   'mobile.techOnboarding.completed': {
     ar: '{completed}/{total} مكتملة',
     en: '{completed}/{total} completed',
@@ -417,7 +420,7 @@ export const mobileCustomerBMessages = {
   'mobile.social.title': { ar: ' مجتمع الجمال', en: ' Beauty Community' },
   'mobile.social.subtitle': {
     ar: 'اكتشفي أحدث الصيحات والفنيات المميزات',
-    en: 'Discover the latest trends and top technicians',
+    en: 'Discover the latest trends and top service providers',
   },
   'mobile.social.tab-trending': { ar: ' رائج', en: ' Trending' },
   'mobile.social.tab-spotlight': { ar: ' مميزات', en: ' Spotlight' },
@@ -425,7 +428,7 @@ export const mobileCustomerBMessages = {
   'mobile.social.tab-feed': { ar: ' قبل وبعد', en: ' Before & After' },
   'mobile.social.trending-services': { ar: ' الخدمات الرائجة', en: ' Trending Services' },
   'mobile.social.bookings-count': { ar: '{count} حجز', en: '{count} bookings' },
-  'mobile.social.spotlight-technicians': { ar: ' فنيات مميزات', en: ' Featured Technicians' },
+  'mobile.social.spotlight-technicians': { ar: ' فنيات مميزات', en: ' Featured Service Providers' },
   'mobile.social.beauty-tips': { ar: ' نصائح تجميلية', en: ' Beauty Tips' },
   'mobile.social.lookbook': { ar: ' لوك بوك الموسم', en: ' Lookbook of the Season' },
 
@@ -675,7 +678,7 @@ export const mobileCustomerBMessages = {
   'mobile.profile.phone': { ar: 'الهاتف', en: 'Phone' },
   'mobile.profile.role': { ar: 'الدور', en: 'Role' },
   'mobile.profile.role-customer': { ar: 'عميلة', en: 'Customer' },
-  'mobile.profile.role-technician': { ar: 'فنية', en: 'Technician' },
+  'mobile.profile.role-technician': { ar: 'مقدمة خدمة', en: 'Service Provider' },
   'mobile.profile.role-supervisor': { ar: 'مشرفة', en: 'Supervisor' },
   'mobile.profile.language': { ar: 'اللغة', en: 'Language' },
   'mobile.profile.lang-ar': { ar: 'العربية', en: 'Arabic' },
@@ -830,7 +833,10 @@ export const mobileCustomerBMessages = {
   'mobile.techWaitlist.my-lists': { ar: ' قوائمي', en: ' My Lists' },
   'mobile.techWaitlist.position': { ar: 'الموقع: {position}', en: 'Position: {position}' },
   'mobile.techWaitlist.leave': { ar: 'خروج', en: 'Leave' },
-  'mobile.techWaitlist.popular': { ar: ' الفنيات الأكثر طلباً', en: ' Most Requested Technicians' },
+  'mobile.techWaitlist.popular': {
+    ar: ' الفنيات الأكثر طلباً',
+    en: ' Most Requested Service Providers',
+  },
   'mobile.techWaitlist.waiting': {
     ar: '{rating} · {count} في الانتظار',
     en: '{rating} · {count} waiting',
