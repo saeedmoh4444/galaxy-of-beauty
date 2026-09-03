@@ -85,6 +85,29 @@ remaining ungated, mobile tsc + lint clean, API suite 823/823.
 5. **Slot awareness** — `createBookingSchema` accepts `slotId`; surface the
    technician's available slots for the chosen date instead of free-form
    times (longer item; time-box separately).
+6. **Beauty packages — technician-proposed with admin approval** (user idea,
+   2026-09-03; recommended: additive flow, NOT a replacement for admin
+   creation):
+   - Keep admin-created packages (platform-curated promotions) AND add
+     technician-proposed ones behind an approval gate — consistent with the
+     existing technician KYC review model.
+   - Schema: `status` enum `DRAFT → PENDING_REVIEW → APPROVED |
+REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
+     `APPROVED` packages appear in the public `beautyPackages.list`.
+   - **Own-services rule**: a technician may bundle only their own services
+     (ownership/commission accounting breaks otherwise).
+   - **Live-package edits → back to PENDING**; bookings snapshot the package
+     at purchase time so past bookings survive edits (same snapshot concern
+     as services).
+   - Admin review queue: approve/reject with reason in `/admin/packages`;
+     tech gets a notification either way (notification infra exists).
+   - Tech UI: "My Packages" section in the tech portal — web + mobile
+     (largest chunk of the work).
+   - **Sequencing**: build AFTER B.3 (vendor-portal DB persistence) — both
+     share the provider-portal shell, admin approval list, and notification
+     wiring (one pattern, both domains).
+   - Open questions: providers = technicians only, or vendor-portal vendors
+     too? Approved packages auto-promoted on home, or manual?
 
 ## 6. Phase C — Mobile visual/UX parity
 
