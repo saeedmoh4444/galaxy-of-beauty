@@ -108,6 +108,21 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
      wiring (one pattern, both domains).
    - Open questions: providers = technicians only, or vendor-portal vendors
      too? Approved packages auto-promoted on home, or manual?
+7. **Tech promotions via a shared provider-submission system** (user idea,
+   2026-09-03; campaigns themselves stay ADMIN-ONLY — they are
+   platform-wide marketing with no service/tech ownership):
+   - Providers propose time-limited discounts on their own services —
+     modeled on the existing `flashDeals` shape (`serviceId`,
+     `originalPrice` → `dealPrice`, `startsAt/endsAt`, `isActive`).
+   - One generic **provider submission review queue** in admin
+     (approve/reject with reason + notification — the KYC-review pattern)
+     consumed by: B.3 vendor products, B.6 packages, B.7 tech promotions.
+     Build the queue ONCE, not per feature.
+   - Guardrails: own-services-only rule; discount floor to stop predatory
+     undercutting (max % off / cost floor — value TBD).
+   - Open question: tech promotions in the public "active campaigns" feed,
+     or a separate "salon offers" rail? (Recommended: separate — platform
+     sales vs salon deals have different trust signals.)
 
 ## 6. Phase C — Mobile visual/UX parity
 
