@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface CalendarSyncStatus {
   connected?: boolean;
@@ -17,10 +18,11 @@ interface CalendarEvent {
 }
 
 export default function CalendarSyncScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { locale, t } = useLocale();
   const [error, setError] = useState('');
-  const statusQ = trpc.calendarSync.status.useQuery();
-  const upcomingQ = trpc.calendarSync.upcoming.useQuery();
+  const statusQ = trpc.calendarSync.status.useQuery(undefined, { enabled: isAuthed });
+  const upcomingQ = trpc.calendarSync.upcoming.useQuery(undefined, { enabled: isAuthed });
   const disconnectMut = trpc.calendarSync.disconnect.useMutation({
     onSuccess: () => {
       void statusQ.refetch();

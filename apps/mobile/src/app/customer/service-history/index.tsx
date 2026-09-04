@@ -1,5 +1,6 @@
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency, MAX_LIST_SIZE } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -14,7 +15,8 @@ const COLORS = {
 
 export default function ServiceHistoryScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const bookings = trpc.bookings.list.useQuery({ limit: MAX_LIST_SIZE });
+  const isAuthed = useAuthState();
+  const bookings = trpc.bookings.list.useQuery({ limit: MAX_LIST_SIZE }, { enabled: isAuthed });
   const data = bookings.data?.bookings as unknown[] | undefined;
 
   return (

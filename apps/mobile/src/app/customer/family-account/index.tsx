@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface FamilyMember {
   id?: number;
@@ -10,8 +11,9 @@ interface FamilyMember {
 }
 
 export default function FamilyAccountScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
-  const q = trpc.familyAccount.list.useQuery();
+  const q = trpc.familyAccount.list.useQuery(undefined, { enabled: isAuthed });
   const data: FamilyMember[] = (q.data as unknown as FamilyMember[] | undefined) ?? [];
 
   if (q.isLoading) return <SkeletonList count={4} />;

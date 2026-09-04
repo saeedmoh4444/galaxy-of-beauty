@@ -4,6 +4,7 @@ import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import { bookingStatusLabelKey } from '@/lib/bookingStatus';
 
 export default function ReschedulePage(): JSX.Element {
   const { t, locale } = useLocale();
@@ -90,7 +91,7 @@ export default function ReschedulePage(): JSX.Element {
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs ${b.status === 'ACCEPTED' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}
                     >
-                      {b.status as string}
+                      {t(bookingStatusLabelKey(b.status as string))}
                     </span>
                   </div>
                   <p className="text-xs text-text-secondary mt-1">

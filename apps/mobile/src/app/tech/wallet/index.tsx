@@ -1,14 +1,16 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 export default function TechWalletScreen(): JSX.Element {
   const { locale, t } = useLocale();
+  const isAuthed = useAuthState();
   // Mirrors the web page: wallet.getBalance + wallet.getTransactions.
   // Pending settlement comes from payouts.listMyPayouts (PENDING) and the
   // this-month/completed-bookings stats from performance.myDashboard.
-  const balance = trpc.wallet.getBalance.useQuery();
-  const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 30 });
+  const balance = trpc.wallet.getBalance.useQuery(undefined, { enabled: isAuthed });
+  const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 30 }, { enabled: isAuthed });
   const pendingPayouts = trpc.payouts.listMyPayouts.useQuery({
     status: 'PENDING',
     page: 1,

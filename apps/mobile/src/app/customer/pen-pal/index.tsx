@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface PenPalMatch {
   name?: string;
@@ -10,7 +11,8 @@ interface PenPalMatch {
 
 export default function PenPalScreen(): JSX.Element {
   const { t } = useLocale();
-  const matchQ = trpc.penPal.match.useQuery();
+  const isAuthed = useAuthState();
+  const matchQ = trpc.penPal.match.useQuery(undefined, { enabled: isAuthed });
   const data = (matchQ.data?.[0] ?? null) as unknown as PenPalMatch;
 
   if (matchQ.isLoading) return <SkeletonList count={3} />;

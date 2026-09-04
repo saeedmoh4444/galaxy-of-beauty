@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { localize } from '@galaxy/shared';
 
 const COLORS = {
@@ -23,7 +24,8 @@ interface AppNotification {
 
 export default function NotificationsScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const notifs = trpc.notifications.list.useQuery({});
+  const isAuthed = useAuthState();
+  const notifs = trpc.notifications.list.useQuery({}, { enabled: isAuthed });
   const markAll = trpc.notifications.markAllRead.useMutation();
   const data = notifs.data as AppNotification[] | undefined;
 

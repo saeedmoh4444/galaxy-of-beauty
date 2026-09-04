@@ -1,7 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/trpc-react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface BingoTask {
   id?: number;
@@ -17,7 +18,8 @@ interface BingoCard {
 
 export default function BeautyBingoScreen(): JSX.Element {
   const { t } = useLocale();
-  const q = trpc.beautyBingo.card.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.beautyBingo.card.useQuery(undefined, { enabled: isAuthed });
   const markMut = trpc.beautyBingo.mark.useMutation({
     onSuccess: () => {
       void q.refetch();

@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
@@ -30,7 +31,8 @@ const STATUS_COLORS: Record<string, string> = {
 
 export default function TechBookingsScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const bookings = trpc.bookings.list.useQuery({ limit: 20 }) ?? {
+  const isAuthed = useAuthState();
+  const bookings = trpc.bookings.list.useQuery({ limit: 20 }, { enabled: isAuthed }) ?? {
     data: null,
     isLoading: false,
     isError: false,

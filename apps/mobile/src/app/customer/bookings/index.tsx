@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 
 const STATUS_TABS = ['ALL', 'REQUESTED', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
@@ -14,9 +15,13 @@ const STATUS_COLORS: Record<string, string> = {
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function BookingsScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const [status, setStatus] = useState<string | undefined>();
   const { locale, t } = useLocale();
-  const bookings = trpc.bookings.list.useQuery({ status, limit: DEFAULT_PAGE_SIZE, page: 1 });
+  const bookings = trpc.bookings.list.useQuery(
+    { status, limit: DEFAULT_PAGE_SIZE, page: 1 },
+    { enabled: isAuthed },
+  );
   const data = bookings.data?.bookings as unknown[] | undefined;
 
   const statusLabels: Record<string, string> = {

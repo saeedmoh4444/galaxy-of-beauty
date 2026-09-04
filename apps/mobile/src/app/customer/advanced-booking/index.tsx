@@ -1,9 +1,10 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
-import { useLocale } from '@/components/LocaleProvider';
 
 const REC = [
   { key: 'WEEKLY', emoji: '' },
@@ -40,6 +41,7 @@ interface SlotRow {
 
 export default function AdvancedBookingScreen(): JSX.Element {
   const { locale, t } = useLocale();
+  const isAuthed = useAuthState();
   const [selectedSvc, setSelectedSvc] = useState<number | null>(null);
   const [recurrence, setRecurrence] = useState<'WEEKLY' | 'BIWEEKLY' | 'MONTHLY'>('WEEKLY');
   const [occurrences, setOccurrences] = useState(4);
@@ -52,7 +54,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
   };
 
   const servicesQ = trpc.services.list.useQuery({});
-  const addressesQ = trpc.addresses.list.useQuery();
+  const addressesQ = trpc.addresses.list.useQuery(undefined, { enabled: isAuthed });
   const techniciansQ = trpc.technicians.list.useQuery({});
 
   // Resolve real IDs instead of hardcoded placeholders (audit fix B1/D1)

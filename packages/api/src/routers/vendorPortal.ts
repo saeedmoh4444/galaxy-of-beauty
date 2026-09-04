@@ -22,6 +22,10 @@ export const vendorPortalRouter = router({
     ...DASHBOARD,
     totalProducts: products.length,
     totalSales: products.reduce((s, p) => s + p.sales, 0),
+    // Revenue = Σ price × sales — the only derivable metric from the
+    // in-memory catalog. Full persistence/orders are tracked in the
+    // mobile fix plan (vendorPortal → DB).
+    revenue: products.reduce((s, p) => s + p.price * p.sales, 0),
   })),
   myProducts: customerProcedure.query(async ({ ctx }) =>
     products.filter((p) => p.vendorId === ctx.user.id),

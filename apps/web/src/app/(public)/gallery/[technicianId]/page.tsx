@@ -1,4 +1,4 @@
-import { getServerCaller } from '@/lib/server-trpc';
+import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { GalleryClient } from './GalleryClient';
 import type { GalleryPageData } from './GalleryClient';
 import { getServerLocale } from '@/lib/i18n';
@@ -27,7 +27,7 @@ export default async function GalleryPage({
       page: 1,
       limit: 50,
     });
-    data.items = result.items ?? [];
+    data.items = serializeForClient(result.items ?? []);
     data.total = result.total ?? 0;
   } catch (e) {
     data.fetchError = (e as Error).message || t('marketing.gallery.load-error', locale);

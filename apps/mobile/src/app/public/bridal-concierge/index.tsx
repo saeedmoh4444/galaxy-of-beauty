@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -24,7 +25,8 @@ interface BridalDashboard {
 
 export default function BridalConciergeScreen(): JSX.Element {
   const { locale, t } = useLocale();
-  const conciergeQ = trpc.bridalConcierge.get.useQuery();
+  const isAuthed = useAuthState();
+  const conciergeQ = trpc.bridalConcierge.get.useQuery(undefined, { enabled: isAuthed });
 
   if (conciergeQ.isLoading) return <SkeletonList count={4} />;
   if (conciergeQ.isError)

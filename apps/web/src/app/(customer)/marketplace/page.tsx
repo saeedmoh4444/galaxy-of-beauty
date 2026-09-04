@@ -2,19 +2,26 @@
 
 import { api } from '@/lib/trpc';
 import { useState } from 'react';
-import { PageContainer, PageTitle } from '@galaxy/ui';
+import { PageContainer, PageTitle, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function MarketplacePage(): JSX.Element {
   const { t } = useLocale();
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const [search, setSearch] = useState('');
   const products = api.marketplace.products.useQuery({
     search: search || undefined,
     page: 1,
     limit: 24,
   });
-  const cart = api.marketplace.cart.useQuery();
+  // /marketplace is not middleware-protected (products are public) — the cart
+  // query is, so gate it on auth to avoid UNAUTHORIZED + redirect for anonymous
+  // browsers (same pattern as NotificationBadge).
+  const cart = api.marketplace.cart.useQuery(undefined, {
+    enabled: !authLoading && isAuthenticated,
+    retry: false,
+  });
   const items = (products?.data?.items ?? []) as Array<Record<string, unknown>>;
   const cartCount = cart?.data?.length ?? 0;
   const addToCartMut = api.marketplace.addToCart.useMutation();

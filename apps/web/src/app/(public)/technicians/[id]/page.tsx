@@ -1,4 +1,4 @@
-import { getServerCaller } from '@/lib/server-trpc';
+import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { TechnicianProfileClient } from './TechnicianProfileClient';
 import type {
   TechnicianProfileData,
@@ -33,8 +33,8 @@ export default async function TechnicianProfilePage({
       legacyCaller.technicians.getById({ id: tid }),
       legacyCaller.technicians.getServices({ technicianId: tid }),
     ]);
-    data.technician = tech;
-    data.services = services;
+    data.technician = serializeForClient(tech);
+    data.services = serializeForClient(services);
   } catch {
     // Client will show error
   }

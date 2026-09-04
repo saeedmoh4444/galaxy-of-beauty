@@ -63,7 +63,7 @@ export const mobilePublicMessages = {
   'mobile.public.beauty-awards.title': { ar: ' جوائز التجميل', en: 'Beauty Awards' },
   'mobile.public.beauty-awards.subtitle': {
     ar: 'أفضل الخدمات والفنيات لهذا العام',
-    en: 'Best services and technicians of the year',
+    en: 'Best services and service providers of the year',
   },
   'mobile.public.beauty-awards.load-error': {
     ar: 'فشل تحميل الجوائز',
@@ -96,7 +96,10 @@ export const mobilePublicMessages = {
   'mobile.public.discover.load-error': { ar: 'فشل تحميل المحتوى', en: 'Failed to load content' },
   'mobile.public.discover.categories': { ar: ' الفئات', en: ' Categories' },
   'mobile.public.discover.trending': { ar: ' الأكثر رواجاً', en: ' Trending' },
-  'mobile.public.featured-tech.title': { ar: ' فنية الشهر', en: 'Technician of the Month' },
+  'mobile.public.featured-tech.title': {
+    ar: ' مقدمة خدمة الشهر',
+    en: 'Service Provider of the Month',
+  },
   'mobile.public.featured-tech.past-title': { ar: ' سابقات', en: ' Previous honorees' },
   'mobile.public.featured-tech.empty': {
     ar: 'لا توجد فنيات سابقات',
@@ -133,7 +136,10 @@ export const mobilePublicMessages = {
     en: 'The leading platform for booking beauty services in the Kingdom',
   },
   'mobile.public.beauty-stats.completed-bookings': { ar: 'حجز مكتمل', en: 'Completed bookings' },
-  'mobile.public.beauty-stats.certified-tech': { ar: 'فنية معتمدة', en: 'Certified technicians' },
+  'mobile.public.beauty-stats.certified-tech': {
+    ar: 'مقدمة خدمة معتمدة',
+    en: 'Certified service providers',
+  },
   'mobile.public.beauty-stats.beauty-services': { ar: 'خدمة تجميل', en: 'Beauty services' },
   'mobile.public.beauty-stats.happy-customers': { ar: 'عميلة سعيدة', en: 'Happy customers' },
   'mobile.public.beauty-stats.avg-rating': {
@@ -358,8 +364,8 @@ export const mobilePublicMessages = {
     en: 'Automatic reminder before the appointment',
   },
   'mobile.public.whatsapp-bot.feature-3': {
-    ar: 'محادثة مباشرة مع الفنية',
-    en: 'Direct chat with the technician',
+    ar: 'محادثة مباشرة مع مقدمة الخدمة',
+    en: 'Direct chat with the service provider',
   },
   'mobile.public.whatsapp-bot.feature-4': {
     ar: 'استعراض الخدمات والأسعار',
@@ -367,7 +373,10 @@ export const mobilePublicMessages = {
   },
   'mobile.public.whatsapp-bot.connect': { ar: ' اربطي الواتساب الآن', en: 'Connect WhatsApp Now' },
   'mobile.public.salon-finder.title': { ar: ' صالونات قريبة', en: 'Nearby Salons' },
-  'mobile.public.salon-finder.technicians': { ar: '{count} فنيات', en: '{count} technicians' },
+  'mobile.public.salon-finder.technicians': {
+    ar: '{count} فنيات',
+    en: '{count} service providers',
+  },
   'mobile.public.salon-finder.view': { ar: 'عرض', en: 'View' },
   'mobile.public.mommy-and-me.title': { ar: '‍ أمي وأنا', en: 'Mommy and Me' },
   'mobile.public.mommy-and-me.book': { ar: 'حجز', en: 'Book' },
@@ -376,7 +385,7 @@ export const mobilePublicMessages = {
   'mobile.public.search.title': { ar: ' بحث', en: 'Search' },
   'mobile.public.search.placeholder': {
     ar: 'ابحثي عن خدمات، فنيات، منتجات...',
-    en: 'Search for services, technicians, products...',
+    en: 'Search for services, service providers, products...',
   },
   'mobile.public.search.services': { ar: ' خدمات', en: 'Services' },
   'mobile.public.live-stream.title': { ar: ' البث المباشر', en: 'Live Stream' },
@@ -405,15 +414,15 @@ export const mobilePublicMessages = {
   'mobile.public.salon-membership.features': { ar: 'المميزات', en: 'Features' },
   'mobile.public.salon-membership.not-included': { ar: 'غير متضمن', en: 'Not included' },
   'mobile.public.salon-membership.subscribe-cta': { ar: 'اشتركي الآن', en: 'Subscribe Now' },
-  'mobile.public.technician-badges.title': { ar: 'شارات الفنيات', en: 'Technician Badges' },
+  'mobile.public.technician-badges.title': { ar: 'شارات الفنيات', en: 'Service Provider Badges' },
   'mobile.public.technician-badges.subtitle': {
     ar: 'شارات التميز والاعتماد للفنيات',
-    en: 'Excellence and accreditation badges for technicians',
+    en: 'Excellence and accreditation badges for service providers',
   },
   'mobile.public.technician-badges.empty': { ar: 'لا توجد شارات', en: 'No badges' },
   'mobile.public.technician-badges.count': {
     ar: '{count} فنيات حاصلات عليها',
-    en: '{count} technicians have earned it',
+    en: '{count} service providers have earned it',
   },
   'mobile.public.technician-badges.rarity-rare': { ar: 'نادرة', en: 'Rare' },
   'mobile.public.technician-badges.rarity-common': { ar: 'شائعة', en: 'Common' },
@@ -449,9 +458,12 @@ export const mobilePublicMessages = {
   'mobile.public.bookings-count': { ar: '{count} حجز', en: '{count} bookings' },
   'mobile.public.products-count': { ar: '{count} منتجات', en: '{count} products' },
   // Gallery detail
-  'mobile.public.gallery-detail.title': { ar: '️ معرض الفنية', en: 'Technician Gallery' },
+  'mobile.public.gallery-detail.title': {
+    ar: '️ معرض مقدمة الخدمة',
+    en: 'Service Provider Gallery',
+  },
   'mobile.public.gallery-detail.load-error': {
-    ar: 'فشل تحميل معرض الفنية',
+    ar: 'فشل تحميل معرض مقدمة الخدمة',
     en: 'Failed to load the gallery',
   },
   // Marketplace
@@ -503,25 +515,25 @@ export const mobilePublicMessages = {
   'mobile.public.subscription-boxes.per-month': { ar: '/شهرياً', en: '/month' },
   'mobile.public.subscription-boxes.subscribe': { ar: 'اشتراك', en: 'Subscribe' },
   // Tech calendar
-  'mobile.public.tech-calendar.title': { ar: ' تقويم الفنيات', en: 'Technician Calendar' },
+  'mobile.public.tech-calendar.title': { ar: ' تقويم الفنيات', en: 'Service Provider Calendar' },
   'mobile.public.tech-calendar.available': { ar: 'متاح', en: 'Available' },
   'mobile.public.tech-calendar.booked': { ar: 'محجوز', en: 'Booked' },
   // Tech leaderboard
   'mobile.public.tech-leaderboard.title': { ar: ' لوحة المتصدرين', en: 'Leaderboard' },
   'mobile.public.tech-leaderboard.subtitle': {
     ar: 'أفضل الفنيات حسب التقييمات والحجوزات',
-    en: 'Top technicians by ratings and bookings',
+    en: 'Top service providers by ratings and bookings',
   },
   'mobile.public.tech-leaderboard.empty': { ar: 'لا توجد بيانات', en: 'No data' },
   // Technician compare
   'mobile.public.technician-compare.title': {
     ar: '️ مقارنة الفنيات',
-    en: 'Compare Technicians',
+    en: 'Compare Service Providers',
   },
   'mobile.public.technician-compare.best': { ar: 'الأفضل: {name}', en: 'Best: {name}' },
   'mobile.public.technician-compare.tie': { ar: 'متقاربتان', en: 'Very close' },
   // Technician QA
-  'mobile.public.technician-qa.title': { ar: ' اسألي الفنيات', en: 'Ask the Technicians' },
+  'mobile.public.technician-qa.title': { ar: ' اسألي الفنيات', en: 'Ask the Service Providers' },
   'mobile.public.technician-qa.subtitle': {
     ar: 'اطرحي أسئلتك على خبراء التجميل',
     en: 'Ask your questions to beauty experts',
@@ -530,15 +542,15 @@ export const mobilePublicMessages = {
   'mobile.public.technician-qa.answer': { ar: ' الإجابة:', en: ' Answer:' },
   'mobile.public.technician-qa.waiting': { ar: ' في انتظار الرد...', en: ' Awaiting reply...' },
   // Technicians
-  'mobile.public.technicians.title': { ar: '‍ الفنيات', en: 'Technicians' },
+  'mobile.public.technicians.title': { ar: '‍ الفنيات', en: 'Service Providers' },
   'mobile.public.technicians.subtitle': {
     ar: 'تعرفي على نخبة فنيات التجميل',
-    en: 'Meet our top beauty technicians',
+    en: 'Meet our top beauty service providers',
   },
-  'mobile.public.technicians.empty': { ar: 'لا توجد فنيات', en: 'No technicians' },
+  'mobile.public.technicians.empty': { ar: 'لا توجد فنيات', en: 'No service providers' },
   'mobile.public.technicians.load-error': {
     ar: 'فشل تحميل الفنيات',
-    en: 'Failed to load technicians',
+    en: 'Failed to load service providers',
   },
   // Terms
   'mobile.public.terms.title': { ar: ' الشروط والأحكام', en: 'Terms & Conditions' },
@@ -549,13 +561,13 @@ export const mobilePublicMessages = {
   // Trending
   'mobile.public.trending.subtitle': {
     ar: 'الخدمات والفنيات الأكثر طلباً هذا الشهر',
-    en: 'The most requested services and technicians this month',
+    en: 'The most requested services and service providers this month',
   },
   'mobile.public.trending.services': {
     ar: '‍️ الخدمات الرائجة',
     en: ' Trending Services',
   },
-  'mobile.public.trending.spotlight': { ar: ' فنيات مميزات', en: ' Featured Technicians' },
+  'mobile.public.trending.spotlight': { ar: ' فنيات مميزات', en: ' Featured Service Providers' },
   // Tutorials
   'mobile.public.tutorials.title': { ar: ' دروس الجمال', en: 'Beauty Tutorials' },
   'mobile.public.tutorial-detail.load-error': {
@@ -582,11 +594,11 @@ export const mobilePublicMessages = {
   },
   // Technician detail
   'mobile.public.technician-detail.load-error': {
-    ar: 'فشل تحميل بيانات الفنية',
-    en: 'Failed to load the technician data',
+    ar: 'فشل تحميل بيانات مقدمة الخدمة',
+    en: 'Failed to load the service provider data',
   },
   'mobile.public.technician-detail.not-found': {
-    ar: 'الفنية غير موجودة',
-    en: 'Technician not found',
+    ar: 'مقدمة الخدمة غير موجودة',
+    en: 'Service Provider not found',
   },
 } as const satisfies Record<string, { ar: string; en: string }>;

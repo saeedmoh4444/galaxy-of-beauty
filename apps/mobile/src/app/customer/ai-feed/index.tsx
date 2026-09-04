@@ -1,8 +1,9 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
-import { useLocale } from '@/components/LocaleProvider';
 
 interface FeedItem {
   id?: number;
@@ -19,7 +20,8 @@ interface AIFeedData {
 
 export default function AIFeedScreen(): JSX.Element {
   const { locale, t } = useLocale();
-  const q = trpc.aiFeatures.personalizedFeed.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.aiFeatures.personalizedFeed.useQuery(undefined, { enabled: isAuthed });
   if (q.isLoading) return <SkeletonList count={4} />;
   const data = q.data as unknown as AIFeedData | null;
   const recommendations = data?.recommendations ?? [];

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface PostCarePlan {
   id?: number;
@@ -12,7 +13,8 @@ interface PostCarePlan {
 
 export default function PostCareScreen(): JSX.Element {
   const { t } = useLocale();
-  const libraryQ = trpc.postCare.library.useQuery();
+  const isAuthed = useAuthState();
+  const libraryQ = trpc.postCare.library.useQuery(undefined, { enabled: isAuthed });
   const data: PostCarePlan[] =
     (libraryQ.data as unknown as { categories?: PostCarePlan[] } | null)?.categories ?? [];
   if (libraryQ.isLoading) return <SkeletonList count={4} />;

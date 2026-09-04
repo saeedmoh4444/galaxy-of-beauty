@@ -42,6 +42,9 @@ export default function TechSlotsPage(): JSX.Element {
           ))}
         </div>
 
+        {createMut.error && <ErrorAlert message={createMut.error.message} />}
+        {deleteMut.error && <ErrorAlert message={deleteMut.error.message} />}
+
         <Card>
           <h2 className="mb-3 font-semibold">{t('tech.slots.add-slot')}</h2>
           <div className="flex gap-3">

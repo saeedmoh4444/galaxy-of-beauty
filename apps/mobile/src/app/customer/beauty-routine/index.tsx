@@ -1,7 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface RoutineStep {
   emoji?: string;
@@ -15,7 +16,8 @@ interface RoutineData {
 
 export default function BeautyRoutineScreen(): JSX.Element {
   const { t } = useLocale();
-  const q = trpc.routineScheduler.myRoutines.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.routineScheduler.myRoutines.useQuery(undefined, { enabled: isAuthed });
   if (q.isLoading) return <SkeletonList count={3} />;
   const data = q.data as unknown as RoutineData | null;
   const morning = (data?.morning as RoutineStep[] | undefined) ?? [];

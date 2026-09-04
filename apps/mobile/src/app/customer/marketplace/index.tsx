@@ -13,6 +13,7 @@ import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface MarketProduct {
   id?: number;
@@ -31,13 +32,14 @@ interface CartItem {
 
 export default function MarketplaceScreen(): JSX.Element {
   const { locale, t } = useLocale();
+  const isAuthed = useAuthState();
   const [search, setSearch] = useState('');
   const productsQ = trpc.marketplace.products.useQuery({
     search: search || undefined,
     page: 1,
     limit: 24,
   });
-  const cartQ = trpc.marketplace.cart.useQuery();
+  const cartQ = trpc.marketplace.cart.useQuery(undefined, { enabled: isAuthed });
   const productItems = (productsQ.data as unknown as MarketProductsResponse | null)?.items;
   const products: MarketProduct[] = Array.isArray(productItems) ? productItems : [];
   const cartCount = ((cartQ.data ?? []) as CartItem[]).length;

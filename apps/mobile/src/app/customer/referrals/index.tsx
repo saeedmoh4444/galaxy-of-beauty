@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -22,8 +23,11 @@ interface ReferralStats {
 
 export default function ReferralsScreen(): JSX.Element {
   const { t } = useLocale();
-  const code = trpc.referrals.getMyCode.useQuery();
-  const stats = trpc.referrals.getStats.useQuery() ?? { data: null };
+  const isAuthed = useAuthState();
+  const code = trpc.referrals.getMyCode.useQuery(undefined, { enabled: isAuthed });
+  const stats = trpc.referrals.getStats.useQuery(undefined, { enabled: isAuthed }) ?? {
+    data: null,
+  };
   const codeData = code.data as ReferralCodeData | null;
   const statsData = stats.data as ReferralStats | null;
 

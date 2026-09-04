@@ -6,8 +6,8 @@ import { Card, Button } from '@galaxy/ui';
 import { localize } from '@galaxy/shared/i18n';
 import { useLocale } from '@/components/LocaleProvider';
 
-export function RebookReminder(): JSX.Element {
-  const { data } = api.bookings.list.useQuery({ limit: 50 });
+export function RebookReminder({ enabled = true }: { enabled?: boolean }): JSX.Element {
+  const { data } = api.bookings.list.useQuery({ limit: 50 }, { enabled });
   const { locale, t } = useLocale();
   const bookings = data?.bookings ?? [];
   const completed = bookings.filter((b) => b.status === 'COMPLETED');

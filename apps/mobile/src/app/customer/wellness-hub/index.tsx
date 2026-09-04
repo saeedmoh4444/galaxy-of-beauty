@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -51,7 +52,8 @@ interface WellnessDashboard {
 
 export default function WellnessHubScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const dashQ = trpc.wellnessHub.dashboard.useQuery();
+  const isAuthed = useAuthState();
+  const dashQ = trpc.wellnessHub.dashboard.useQuery(undefined, { enabled: isAuthed });
 
   if (dashQ.isLoading) return <SkeletonList count={4} />;
   if (dashQ.isError)

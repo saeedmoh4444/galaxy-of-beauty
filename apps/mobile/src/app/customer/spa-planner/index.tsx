@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -13,7 +14,8 @@ interface SpaService {
 
 export default function SpaPlannerScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const servicesQ = trpc.spaPlanner.services.useQuery();
+  const isAuthed = useAuthState();
+  const servicesQ = trpc.spaPlanner.services.useQuery(undefined, { enabled: isAuthed });
   const data: SpaService[] = (servicesQ.data as unknown as SpaService[] | undefined) ?? [];
   if (servicesQ.isLoading) return <SkeletonList count={4} />;
   return (

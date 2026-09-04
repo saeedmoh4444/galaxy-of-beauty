@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface ChatMessage {
   id?: number;
@@ -20,9 +21,13 @@ interface ChatMessage {
 }
 
 export default function ChatScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { locale, t } = useLocale();
   const [text, setText] = useState('');
-  const q = trpc.chat.messages.useQuery({ bookingId: 1, page: 1, limit: BULK_PAGE_SIZE });
+  const q = trpc.chat.messages.useQuery(
+    { bookingId: 1, page: 1, limit: BULK_PAGE_SIZE },
+    { enabled: isAuthed },
+  );
   const messages: ChatMessage[] = (q.data?.items ?? []) as unknown as ChatMessage[];
 
   const sendMut = trpc.chat.send.useMutation({

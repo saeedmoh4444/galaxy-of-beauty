@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -13,9 +14,10 @@ const COLORS = {
 };
 
 export default function DashboardScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
   const router = useRouter();
-  const insights = trpc.analytics.customerInsights.useQuery();
+  const insights = trpc.analytics.customerInsights.useQuery(undefined, { enabled: isAuthed });
   const data = insights.data as Record<string, unknown> | undefined;
 
   return (

@@ -1,4 +1,4 @@
-import { getServerCaller } from '@/lib/server-trpc';
+import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { ServiceDetailClient } from './ServiceDetailClient';
 import type { ServiceDetailData } from './ServiceDetailClient';
 import { getServerLocale } from '@/lib/i18n';
@@ -41,12 +41,13 @@ export default async function ServiceDetailPage({
     data.descriptionJson = svc.descriptionJson as ServiceDetailData['descriptionJson'];
     data.basePrice = Number(svc.basePrice ?? 0);
     data.durationMin = Number(svc.durationMin ?? 0);
-    data.category = svc.category as ServiceDetailData['category'];
-    data.variants = (svc.variants as ServiceDetailData['variants']) ?? [];
-    data.technicianServices =
-      (svc.technicianServices as ServiceDetailData['technicianServices']) ?? [];
-    data.tags = (svc.tags as ServiceDetailData['tags']) ?? [];
-    data.related = (relatedResult as ServiceDetailData['related']) ?? [];
+    data.category = serializeForClient(svc.category as ServiceDetailData['category']);
+    data.variants = serializeForClient((svc.variants as ServiceDetailData['variants']) ?? []);
+    data.technicianServices = serializeForClient(
+      (svc.technicianServices as ServiceDetailData['technicianServices']) ?? [],
+    );
+    data.tags = serializeForClient((svc.tags as ServiceDetailData['tags']) ?? []);
+    data.related = serializeForClient((relatedResult as ServiceDetailData['related']) ?? []);
   } catch (e) {
     data.fetchError = (e as Error).message || t('marketing.services.load-error', locale);
   }

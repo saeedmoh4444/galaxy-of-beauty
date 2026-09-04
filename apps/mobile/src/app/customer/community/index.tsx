@@ -13,6 +13,7 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface CommunityUser {
   id?: number;
@@ -40,10 +41,11 @@ interface MyLike {
 }
 
 export default function CommunityScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { locale, t } = useLocale();
   const feedQ = trpc.community.feed.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
-  const myLikesQ = trpc.community.myLikes.useQuery();
-  const trendingQ = trpc.community.trending.useQuery();
+  const myLikesQ = trpc.community.myLikes.useQuery(undefined, { enabled: isAuthed });
+  const trendingQ = trpc.community.trending.useQuery(undefined, { enabled: isAuthed });
   const [content, setContent] = useState('');
   const [showCreate, setShowCreate] = useState(false);
   const [commentId, setCommentId] = useState<number | null>(null);

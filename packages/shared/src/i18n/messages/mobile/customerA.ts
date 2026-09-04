@@ -9,7 +9,7 @@ export const mobileCustomerAMessages = {
     en: 'Start your journey with your first booking',
   },
   'bookings.detail.booking-code': { ar: 'كود الحجز', en: 'Booking Code' },
-  'bookings.detail.technician-id': { ar: 'رقم الفنية', en: 'Technician ID' },
+  'bookings.detail.technician-id': { ar: 'رقم مقدمة الخدمة', en: 'Service Provider ID' },
   'bookings.reschedule.title': { ar: 'تعديل الموعد', en: 'Reschedule' },
   'bookings.reschedule.requested': { ar: 'تم طلب التعديل', en: 'Reschedule requested' },
   'bookings.reschedule.notified': {
@@ -25,8 +25,8 @@ export const mobileCustomerAMessages = {
   'bookings.create.variant-basic': { ar: 'الأساسي', en: 'Basic' },
   'bookings.create.address-label': { ar: 'العنوان', en: 'Address' },
   'bookings.create.technician-note': {
-    ar: '* ستقوم الفنية بتأكيد الموعد النهائي',
-    en: '* The technician will confirm the final appointment',
+    ar: '* ستقوم مقدمة الخدمة بتأكيد الموعد النهائي',
+    en: '* The service provider will confirm the final appointment',
   },
 
   // ── ai-chat ──
@@ -88,7 +88,7 @@ export const mobileCustomerAMessages = {
   'advancedBooking.freq-monthly': { ar: 'شهري', en: 'Monthly' },
 
   // ── ai-assistant ──
-  'aiAssistant.title': { ar: ' المساعد الذكي', en: 'AI Assistant' },
+  'aiAssistant.title': { ar: 'بيوتي AI', en: 'Beauty AI' },
   'aiAssistant.placeholder': {
     ar: 'اسألي عن خدمات التجميل...',
     en: 'Ask about beauty services...',
@@ -201,7 +201,7 @@ export const mobileCustomerAMessages = {
   'beautyAnalytics.monthly-trend': { ar: ' الاتجاه الشهري', en: 'Monthly Trend' },
 
   // ── beauty-bingo ──
-  'beautyBingo.title': { ar: ' Beauty Bingo', en: 'Beauty Bingo' },
+  'beautyBingo.title': { ar: 'بينجو الجمال', en: 'Beauty Bingo' },
   'beautyBingo.completed': { ar: '{done}/{total} مكتملة', en: '{done}/{total} completed' },
 
   // ── beauty-budget ──
@@ -826,8 +826,8 @@ export const mobileCustomerAMessages = {
   'favorites.service-id': { ar: 'خدمة #{id}', en: 'Service #{id}' },
 
   // ── following ──
-  'following.title': { ar: '‍ متابعة الفنيات', en: ' Following Technicians' },
-  'following.technician': { ar: 'فنية #{id}', en: 'Technician #{id}' },
+  'following.title': { ar: '‍ متابعة الفنيات', en: ' Following Service Providers' },
+  'following.technician': { ar: 'مقدمة خدمة #{id}', en: 'Service Provider #{id}' },
   'following.since': { ar: 'منذ {date}', en: 'Since {date}' },
   'following.unfollow': { ar: 'إلغاء المتابعة', en: 'Unfollow' },
 

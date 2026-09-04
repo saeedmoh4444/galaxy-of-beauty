@@ -30,7 +30,7 @@ export const authMessages = {
   'auth.confirm-password': { ar: 'تأكيد كلمة المرور', en: 'Confirm Password' },
   'auth.account-type': { ar: 'نوع الحساب', en: 'Account Type' },
   'auth.role-customer': { ar: 'عميلة', en: 'Customer' },
-  'auth.role-technician': { ar: 'فنية', en: 'Technician' },
+  'auth.role-technician': { ar: 'مقدمة خدمة', en: 'Service Provider' },
   'auth.city': { ar: 'المدينة', en: 'City' },
   'auth.agree-terms': { ar: 'أوافق على', en: 'I agree to the' },
   'auth.terms': { ar: 'الشروط والأحكام', en: 'Terms & Conditions' },

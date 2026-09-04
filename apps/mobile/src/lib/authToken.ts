@@ -38,11 +38,29 @@ const TOKEN_KEY = 'gob_access_token';
 
 let token: string | null = null;
 
+// ── Reactive subscribers (useAuthState hook) ─────────────────────
+
+type Listener = () => void;
+const listeners = new Set<Listener>();
+
+/** Subscribe to token changes. Returns an unsubscribe function. */
+export function subscribeAuthToken(fn: Listener): () => void {
+  listeners.add(fn);
+  return () => {
+    listeners.delete(fn);
+  };
+}
+
+function notifyTokenChange(): void {
+  listeners.forEach((fn) => fn());
+}
+
 /**
  * Restore a persisted token (call once at app start, before first request).
  */
 export async function loadAuthToken(): Promise<void> {
   token = await AsyncStorage.getItem(TOKEN_KEY);
+  notifyTokenChange();
 }
 
 /**
@@ -52,6 +70,7 @@ export async function setAuthToken(t: string | null): Promise<void> {
   token = t;
   if (t) await AsyncStorage.setItem(TOKEN_KEY, t);
   else await AsyncStorage.removeItem(TOKEN_KEY);
+  notifyTokenChange();
 }
 
 /** Sync accessor for per-request headers. */

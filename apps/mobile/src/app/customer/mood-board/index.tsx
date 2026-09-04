@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl, Image } from 'react
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface MoodPin {
   id?: number;
@@ -10,7 +11,8 @@ interface MoodPin {
 
 export default function MoodBoardScreen(): JSX.Element {
   const { t } = useLocale();
-  const pinsQ = trpc.moodBoard.list.useQuery();
+  const isAuthed = useAuthState();
+  const pinsQ = trpc.moodBoard.list.useQuery(undefined, { enabled: isAuthed });
   const data: MoodPin[] = (pinsQ.data as unknown as MoodPin[] | undefined) ?? [];
 
   if (pinsQ.isLoading) return <SkeletonList count={6} />;

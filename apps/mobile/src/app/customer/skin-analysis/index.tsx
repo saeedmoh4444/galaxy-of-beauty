@@ -7,8 +7,9 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import { trpc } from '@/lib/trpc-react';
+import { useAuthState } from '@/hooks/useAuthState';
 import { useCamera } from '@/hooks/useCamera';
+import { trpc } from '@/lib/trpc-react';
 import { useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 import { useToast } from '@/components/Toast';
@@ -16,15 +17,19 @@ import { useLocale } from '@/components/LocaleProvider';
 
 export default function SkinAnalysisScreen() {
   const { t, locale } = useLocale();
+  const isAuthed = useAuthState();
   const [imageUrl, setImageUrl] = useState('');
   const { showToast } = useToast();
   const [showCamera, setShowCamera] = useState(false);
   const { hasPermission, requestPermission, takePhoto } = useCamera();
 
-  const historyQ = trpc.skinAnalysis.history.useQuery({
-    page: 1,
-    limit: DEFAULT_PAGE_SIZE,
-  });
+  const historyQ = trpc.skinAnalysis.history.useQuery(
+    {
+      page: 1,
+      limit: DEFAULT_PAGE_SIZE,
+    },
+    { enabled: isAuthed },
+  );
   const history: Record<string, unknown>[] =
     ((historyQ.data as Record<string, unknown> | null)?.items as Record<string, unknown>[]) ?? [];
 
