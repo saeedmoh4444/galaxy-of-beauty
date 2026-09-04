@@ -224,6 +224,22 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
       images; photo-based matching (color extraction from the customer's
       uploaded photo — virtual-try-on/hair-color infra exists); user
       ratings/favorites on looks; link tutorials properly.
+12. **Product-scanner camera scanning** (user request, 2026-09-03 — today =
+    manual barcode typing against 8 hardcoded products):
+    - **Camera barcode scanning (core)**:
+      - Mobile: `expo-camera` barcode scanning (`onBarcodeScanned`) — the
+        dependency is already installed, near-free.
+      - Web: native `BarcodeDetector` API (Chrome/Safari) + `getUserMedia`;
+        zxing-js fallback for Firefox.
+    - **Data layer**: products → DB (`Product`/`ProductIngredient` models +
+      seed from the curated set, admin CRUD) — same hardcoded-content class
+      as B.9/B.11; real catalog growth needs a data source (open beauty
+      ingredient DB or partnership — TBD).
+    - **Visual product recognition (later)**: photo → product match needs
+      an ML service (Google Vision product search class) — partnership-gated
+      like ride-hailing; keep the API seam ready.
+    - **Store tie-in**: scanned product → "buy from our stores" handshake
+      (STORE_MARKETPLANE_PLAN Phase 2 — same pattern as restock-reminder).
 
 ## 6. Phase C — Mobile visual/UX parity
 
