@@ -429,6 +429,26 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
     - **P3 — the payoff**: Beauty AI reads the profile to personalize
       every answer (B.21 synergy), auto-configures try-on, providers see
       relevant preferences at booking.
+26. **Notification & reminder framework** (user blueprint, 2026-09-03 —
+    the engine behind every "and then notify them" in B.1–B.25):
+    - Existing: notifications router + sentVia, SMS (Twilio), push (Expo),
+      BullMQ workers, whatsappBot (gated). Missing: the framework layer.
+    - **P1 — templates + triggers + preferences**: ar/en template model
+      with `{{placeholders}}` (catalog pattern); trigger registry —
+      time-based (BullMQ delays: 24/48h booking reminders), action-based
+      (event hooks: booking created, registration started, approval
+      decided), condition-based (sweep jobs); per-type per-channel
+      opt-in/out preferences UI (anti-fatigue).
+    - **P2 — the blueprints**: customers (booking reminders 24–48h with
+      prep instructions, post-service follow-up + rebook, loyalty nudges
+      "باقي ٥٠ نقطة على خدمة مجانية!", "we miss you" 2-month re-engagement
+      with offers); providers (daily schedule digest, new-booking instant
+      alerts, follow-up prompts); vendors/stores ("finish your
+      registration" onboarding nudges — store plan Phase 1, inactivity
+      nudges).
+    - **P3 — campaigns + analytics**: admin segment console (one-off
+      marketing sends, offer codes), WhatsApp channel when the partnership
+      lands, delivery/open analytics dashboard.
 
 ## 6. Phase C — Mobile visual/UX parity
 
