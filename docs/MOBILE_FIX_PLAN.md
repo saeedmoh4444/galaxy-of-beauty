@@ -241,6 +241,21 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
       like ride-hailing; keep the API seam ready.
     - **Store tie-in**: scanned product → "buy from our stores" handshake
       (STORE_MARKETPLANE_PLAN Phase 2 — same pattern as restock-reminder).
+13. **Home-service fulfillment** (user finding, 2026-09-03 — the request is
+    a dead end today):
+    - Today: `estimate` is solid (shared fee constants), but `request`
+      creates a PENDING row and returns hardcoded `estimatedArrival` +
+      `confirmationSms: true` with NO actual SMS and NO provider matching —
+      nobody ever fulfills it.
+    - **P1 — matching + lifecycle**: match nearby available providers via
+      technician `latitude/longitude` (geofence infra exists —
+      `geofenceOffers`); status lifecycle PENDING → ASSIGNED → EN_ROUTE →
+      ARRIVED → IN_PROGRESS → COMPLETED/CANCELLED; provider accept/decline;
+      real ETA; SMS/notifications wiring (sms module + notification infra
+      exist).
+    - **P2 — pricing & payments**: distance-based travel fee (not city-only),
+      service-dependent service fee, payment link (wallet/Payfort exist),
+      customer tracking view (map tracking later — ride-hailing class).
 
 ## 6. Phase C — Mobile visual/UX parity
 
