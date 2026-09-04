@@ -88,7 +88,7 @@ export const mobileCustomerAMessages = {
   'advancedBooking.freq-monthly': { ar: 'شهري', en: 'Monthly' },
 
   // ── ai-assistant ──
-  'aiAssistant.title': { ar: ' المساعد الذكي', en: 'AI Assistant' },
+  'aiAssistant.title': { ar: 'بيوتي AI', en: 'Beauty AI' },
   'aiAssistant.placeholder': {
     ar: 'اسألي عن خدمات التجميل...',
     en: 'Ask about beauty services...',

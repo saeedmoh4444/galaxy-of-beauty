@@ -70,8 +70,8 @@ export const mobileCoreMessages = {
   'mobile.core.menuAcademy': { ar: ' أكاديمية الجمال', en: 'Beauty Academy' },
   'mobile.core.menuNotifications': { ar: ' الإشعارات', en: 'Notifications' },
   'mobile.core.aiAssistantHelp': {
-    ar: ' مجرة الجمال - المساعدة الذكية',
-    en: 'Beauty Galaxy - AI Assistant',
+    ar: ' مجرة الجمال - بيوتي AI',
+    en: 'Beauty Galaxy - Beauty AI',
   },
   'mobile.core.pointsLabel': { ar: ' نقاط', en: 'Points' },
   'mobile.core.kindnessLabel': { ar: ' لطف', en: 'Kindness' },

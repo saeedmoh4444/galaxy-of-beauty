@@ -137,7 +137,7 @@ export const miscMessages = {
 
   // AI Chat
   'aiChat.title': { ar: 'مجرة الجمال', en: 'Beauty Galaxy' },
-  'aiChat.smartBeautyAdvisor': { ar: 'مستشارة التجميل الذكية', en: 'Your Smart Beauty Advisor' },
+  'aiChat.smartBeautyAdvisor': { ar: 'مستشارة التجميل الذكية', en: 'Your Smart Beauty AI' },
   'aiChat.welcomeTitle': { ar: 'مرحباً بك في مجرة الجمال!', en: 'Welcome to Beauty Galaxy!' },
   'aiChat.welcomeDesc': {
     ar: 'أنا مستشارة التجميل الذكية، يمكنني مساعدتك في اختيار الخدمات المناسبة، نصائح العناية، وأجوبة على استفساراتك',
@@ -1459,8 +1459,8 @@ export const miscMessages = {
 
   // Beauty Advisor
   'beautyAdvisor.title': {
-    ar: ' مجرة الجمال — مستشارة جمالكِ',
-    en: 'Galaxy of Beauty — Your Beauty Advisor',
+    ar: ' مجرة الجمال — بيوتي AI',
+    en: 'Galaxy of Beauty — Beauty AI',
   },
   'beautyAdvisor.subtitle': {
     ar: 'اسأليني عن أي شيء يخص العناية والتجميل',
@@ -2935,7 +2935,7 @@ export const miscMessages = {
   'achievements.streakDays': { ar: 'أيام متتالية', en: 'Day streak' },
   'achievements.uniqueServices': { ar: 'خدمات مختلفة', en: 'Unique services' },
   'achievements.earned': { ar: 'تم', en: 'Earned' },
-  'aiAssistant.title': { ar: ' مساعدة الذكاء الاصطناعي', en: 'AI Assistant' },
+  'aiAssistant.title': { ar: 'بيوتي AI', en: 'Beauty AI' },
   'aiAssistant.subtitle': {
     ar: 'اسأليني أي سؤال عن الجمال والعناية',
     en: 'Ask me anything about beauty and care',

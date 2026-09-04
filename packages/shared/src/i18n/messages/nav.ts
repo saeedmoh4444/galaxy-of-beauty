@@ -53,7 +53,7 @@ export const navMessages = {
   'nav.calendar-sync': { ar: 'مزامنة التقويم', en: 'Calendar' },
   'nav.bnpl': { ar: 'تقسيط', en: 'BNPL' },
   'nav.tech-onboarding': { ar: 'تسجيل مقدمة خدمة', en: 'Onboarding' },
-  'nav.ai-assistant': { ar: 'المساعدة الذكية', en: 'AI Assistant' },
+  'nav.ai-assistant': { ar: 'بيوتي AI', en: 'Beauty AI' },
   'nav.beauty-bingo': { ar: 'Beauty Bingo', en: 'Bingo' },
   'nav.service-wishlist': { ar: 'متابعة الأسعار', en: 'Wishlist' },
   'nav.gift-card-market': { ar: 'سوق البطاقات', en: 'Gift Market' },
