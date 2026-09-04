@@ -59,6 +59,29 @@ of mobile defects immediately.
 | `calendarSync.status/upcoming/connect` 401s | customer calendar-sync page fires protected queries unauthenticated — part of the same sweep class                                                              |
 | Customer pages `bookings.list` callers      | ~9 pages (reviews, invoices, streak-calendar, my-journey, safety, …) — same gating class, ties into the PROTECTED_PATHS decision                                |
 
+## 2d. i18n catalog duplicate-key conflicts (systemic, found 2026-09-03)
+
+The shared catalog merge (`i18n/index.ts`) spreads web files first, then
+mobile — **mobile values silently override web values on every duplicate
+key**. Scan results: **49 AR-value conflicts** + **~13 English-in-Arabic
+labels**. Findings:
+
+- **English AR values (visible to Arabic users)**: `nav.beauty-bingo`,
+  `nav.pen-pal`, `nav.style-match`, `mobile.customerA Clinic Connect`,
+  `mobile.public Service Matchmaker`, `marketing Gallery image / nail art`,
+  campaign names (Summer 2026 / Eid Elegance / Wedding Season / Ramadan),
+  `mobile.admin Feature Flags / Monitoring`.
+- **Param-name mismatches (broken interpolation)**: `beautyBingo.completed`
+  web passes `{completed}/{total}`, mobile value uses `{done}/{total}` (web
+  renders raw placeholders — fixed partially `39f6793e`, param reconcile
+  still open); also `beautyCourses.lessons` ({count} vs {lessons}),
+  `beautyGoals.progress` ({done}/{total} vs {target}).
+- **Benign wording variants** (both Arabic, mobile voice differs) — leave.
+- **Architectural fix (recommended)**: per-platform catalogs (common base +
+  web/mobile overlays) so each platform resolves its own wording; then
+  reconcile the 3 param mismatches and translate the ~13 English labels.
+  Decisions needed: which value wins for each of the 49 collisions.
+
 ## 3. Root causes
 
 1. **Auth gating missing (401 class)** — `(tabs)/bookings`, `wallet`,
