@@ -179,6 +179,24 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
    - **Contact + location**: phone from the user record; lat/lng later.
    - **Custom price editing** per service (currently display-only;
      `addService` takes no price).
+9. **Certification system upgrade** (user request, 2026-09-03 — "more
+   advanced"; today = 2 hardcoded quizzes, 5 questions, MCQ-only):
+   - **Attempt lifecycle + question banks**: quizzes/questions → DB models
+     - seed (20–30 questions each), randomized subsets per attempt, attempts
+       limit, best-score tracking, retake policy; admin quiz-management page.
+   - **Learning value**: per-question explanations on results (education,
+     not just testing).
+   - **Verifiable certificates**: public shareable certificate page with
+     unique number + QR verification; expiry/renewal (annual
+     re-certification).
+   - **Provider integration (headline)**: earned certifications show as
+     verified badges on the service-provider public profile + in the admin
+     KYC review screen (real credentials during approval). Ties into B.6/B.7
+     trust layer and the store plan's Phase 4.
+   - **Later**: question types (true/false, ordering, image-based, case
+     scenarios); gamification (streaks/leaderboards — loyalty infra exists).
+   - Sequencing: 1 → 3 → 4 (foundation → explanations → verifiable certs →
+     provider badges).
 
 ## 6. Phase C — Mobile visual/UX parity
 
