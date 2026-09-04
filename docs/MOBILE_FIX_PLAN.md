@@ -381,6 +381,22 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
       class as pen-pal B.10 P3 — must land before scale); gamification
       (likes → beauty points, loyalty infra exists); commerce tie-in
       (posts tag looks/products → marketplace links).
+23. **Video consultation — complete the call** (user finding, 2026-09-03 —
+    the session shell exists, the actual video call is missing):
+    - Today: `startSession`/`getByBooking`/`endSession` + socket
+      `video_call_started` emit + waiting UI, but the room page has ZERO
+      media code (no getUserMedia, no RTCPeerConnection) — the call itself
+      doesn't exist.
+    - **P1 — the call**: WebRTC signaling over the existing socket
+      (offer/answer/ICE), camera/mic permission handling, call UI
+      (local/remote video, mute/camera toggles, connection states), status
+      lifecycle WAITING → CONNECTED → ENDED/MISSED.
+    - **P2 — workflow + instructions**: eligible booking statuses
+      (PAID/IN_PROGRESS — matches the video link), call duration limits,
+      missed-call + retry; in-app instructions (pre-call checklist —
+      lighting, permissions, privacy; how-to steps for the customer).
+    - **P3 — later**: recording with consent, screen-share for
+      consultations, Beauty AI side-panel during the call.
 
 ## 6. Phase C — Mobile visual/UX parity
 
