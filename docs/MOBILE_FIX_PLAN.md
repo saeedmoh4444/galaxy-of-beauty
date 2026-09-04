@@ -287,6 +287,17 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
     - **Progress checklist**: mark tips done (bingo-mark pattern).
     - **i18n**: `myPlan` reads `.ar` only for service/category names — EN
       mode broken; consider making `byCategory` public (guest content).
+16. **Mood-board logic** (user finding, 2026-09-03 — has drag-drop reorder
+    with persistence already):
+    - **P1 — board lifecycle**: edit/rename/delete boards, choose the cover
+      (today coverUrl = last added pin only), edit pins after creation
+      (addPin only — no editPin), tag filtering (tags stored but unused).
+    - **P2 — sharing & collaboration**: public share link + export
+      (image/PDF) to show the service provider during consultation;
+      collaborative boards (bride + planner).
+    - **P3 — commerce & AI links**: "book this look" (pins carry serviceId
+      — no booking flow), "buy the products in this look" (store plan
+      handshake), Beauty AI board generation (generate from preferences).
 
 ## 6. Phase C — Mobile visual/UX parity
 
