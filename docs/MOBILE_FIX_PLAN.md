@@ -61,6 +61,7 @@ of mobile defects immediately.
 | `expiryTracker.categories/myItems` 401 loop | expiry-tracker page fires protected queries unauthenticated — same gating class, loops on focus refetch (found via monitor)                                     |
 | `vipMembership.tiers/myTier` 401 loop       | vip-membership page fires protected queries unauthenticated — same gating class (found via monitor)                                                             |
 | `bridalConcierge.get` 401                   | bridal-concierge page fires a protected query unauthenticated — same gating class (found via monitor)                                                           |
+| `subscriptions.getMySubscription` 403 loop  | customer page fired while browsing as ADMIN — role-guard FORBIDDEN class (same as the 6 known procedures)                                                       |
 
 ## 2d. i18n catalog duplicate-key conflicts (systemic, found 2026-09-03)
 
