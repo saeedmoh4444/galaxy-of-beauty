@@ -311,6 +311,18 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
       member preferences/notes prefill the booking form.
     - **Later**: member self-booking via linked accounts (teens) — needs
       age/consent rules; member-specific reminders.
+18. **Virtual try-on expansion** (user request, 2026-09-03 — "more things
+    women can try on"; today = color pickers for lips/eyes/blush/nails +
+    product matching):
+    - **P1 — more categories**: hair colors (merge the separate
+      hair-color-sim), foundation shade matching (skin-tone → shade →
+      product), full look presets (reuse the style-match LOOKS data),
+      eyeliner/lash styles; save results to the mood board (B.16) + share.
+    - **P2 — realism**: MediaPipe Face Mesh (web) / face-detection (mobile)
+      for landmark-warped overlays instead of flat color washes — the big
+      quality jump, on-device and free.
+    - **P3 — commerce & AI**: "buy the products in this look" (store plan
+      handshake), Beauty AI look generation for skin tone/preferences.
 
 ## 6. Phase C — Mobile visual/UX parity
 
