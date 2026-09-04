@@ -412,6 +412,23 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
     - **P3 — learning**: weigh favorites (favorites router), mood-board
       look → matching provider, past no-shows/cancellations, seasonal
       patterns from booking history.
+25. **Beauty identity profile — "أنتِ" hub** (user finding, 2026-09-03 —
+    /profile is name/phone + addresses only; beauty data is scattered
+    across beauty-profile, closet, diary, habits, preferences):
+    - **P1 — merge into one hub**: /profile absorbs /beauty-profile
+      (upsert exists) with sections: account + addresses (existing),
+      beauty identity (skin/hair/concerns), stats row (bookings, favorite
+      services, loyalty tier/points); **profile completeness meter**
+      ("ملفك مكتمل ٧٠٪") with small rewards per milestone (B.14 tie);
+      per-field privacy visibility controls.
+    - **P2 — the details**: skin tone/shade (feeds B.18 foundation
+      matching), hair porosity, allergies/sensitivities (connect the
+      allergen-checker router), preferred fragrance notes, sizes/
+      measurements (feeds subscription-boxes + box-builder), birth +
+      celebration dates (feeds B.14).
+    - **P3 — the payoff**: Beauty AI reads the profile to personalize
+      every answer (B.21 synergy), auto-configures try-on, providers see
+      relevant preferences at booking.
 
 ## 6. Phase C — Mobile visual/UX parity
 
