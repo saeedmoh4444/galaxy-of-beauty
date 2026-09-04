@@ -397,6 +397,21 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
       lighting, permissions, privacy; how-to steps for the customer).
     - **P3 — later**: recording with consent, screen-share for
       consultations, Beauty AI side-panel during the call.
+24. **Smart schedule — ranking + booking wiring** (user finding,
+    2026-09-03 — today: real unbooked slots for the next 7 days, but
+    "smart" is just proximity):
+    - **P1 — real-context ranking**: provider rating, price, distance from
+      the customer's saved address (lat/lng exists both sides), past
+      bookings with the provider, buffer-minutes compliance, preferred
+      times from routine data.
+    - **P2 — explainability + one-tap booking**: show WHY a slot is
+      recommended ("تقييم ٤٫٩ · الأقرب لكِ · موعدكِ المعتاد"); render the
+      provider NAME (today shows `مقدمة خدمة #{id}` — the ID); wire Book →
+      real booking with `slotId` (builds on B.5); real date picker (the
+      bookings/create picker exists).
+    - **P3 — learning**: weigh favorites (favorites router), mood-board
+      look → matching provider, past no-shows/cancellations, seasonal
+      patterns from booking history.
 
 ## 6. Phase C — Mobile visual/UX parity
 
