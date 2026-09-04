@@ -59,6 +59,7 @@ of mobile defects immediately.
 | `calendarSync.status/upcoming/connect` 401s | customer calendar-sync page fires protected queries unauthenticated — part of the same sweep class                                                              |
 | Customer pages `bookings.list` callers      | ~9 pages (reviews, invoices, streak-calendar, my-journey, safety, …) — same gating class, ties into the PROTECTED_PATHS decision                                |
 | `expiryTracker.categories/myItems` 401 loop | expiry-tracker page fires protected queries unauthenticated — same gating class, loops on focus refetch (found via monitor)                                     |
+| `vipMembership.tiers/myTier` 401 loop       | vip-membership page fires protected queries unauthenticated — same gating class (found via monitor)                                                             |
 
 ## 2d. i18n catalog duplicate-key conflicts (systemic, found 2026-09-03)
 
