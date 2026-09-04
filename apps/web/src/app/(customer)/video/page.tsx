@@ -4,6 +4,7 @@ import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import { bookingStatusLabelKey } from '@/lib/bookingStatus';
 
 export default function VideoPage(): JSX.Element {
   const { t, locale } = useLocale();
@@ -48,7 +49,7 @@ export default function VideoPage(): JSX.Element {
                         {new Date(b.createdAt as string).toLocaleDateString(
                           locale === 'en' ? 'en-GB' : 'ar-SA',
                         )}{' '}
-                        · {b.status as string}
+                        · {t(bookingStatusLabelKey(b.status as string))}
                       </p>
                     </div>
                   </div>

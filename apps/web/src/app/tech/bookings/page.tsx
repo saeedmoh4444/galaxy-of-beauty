@@ -5,7 +5,7 @@ import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
-import { type TranslationKey } from '@galaxy/shared';
+import { bookingStatusLabelKey } from '@/lib/bookingStatus';
 
 const STATUS_TABS = [
   'ALL',
@@ -16,9 +16,6 @@ const STATUS_TABS = [
   'COMPLETED',
   'CANCELLED',
 ] as const;
-
-const statusLabelKey = (s: string): TranslationKey =>
-  s === 'ALL' ? 'booking.all' : (`booking.status.${s}` as TranslationKey);
 
 export default function TechBookingsPage(): JSX.Element {
   const { t, locale } = useLocale();
@@ -43,7 +40,7 @@ export default function TechBookingsPage(): JSX.Element {
               onClick={() => setStatus(s === 'ALL' ? undefined : s)}
               className={`rounded-full px-4 py-1.5 text-sm font-medium ${(s === 'ALL' && !status) || s === status ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}
             >
-              {t(statusLabelKey(s))}
+              {t(bookingStatusLabelKey(s))}
             </button>
           ))}
         </div>
@@ -70,7 +67,7 @@ export default function TechBookingsPage(): JSX.Element {
                   <span
                     className={`rounded-full px-3 py-1 text-xs font-medium ${b.status === 'COMPLETED' ? 'bg-green-100 text-green-700' : b.status === 'CANCELLED' ? 'bg-red-100 text-red-700' : 'bg-brand-100 text-brand-700'}`}
                   >
-                    {t(statusLabelKey(b.status as string))}
+                    {t(bookingStatusLabelKey(b.status as string))}
                   </span>
                   <div className="flex gap-1">
                     {b.status === 'REQUESTED' && (
