@@ -211,6 +211,19 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
       infra.
     - **P3 — safety**: report/block + admin moderation queue (social
       matching needs this before launch).
+11. **Style-match completion** (user finding, 2026-09-03 — English labels +
+    logic gaps):
+    - **i18n**: `nav.style-match` AR value is English (in §2d list); the
+      `LOOKS` content has mixed single-language fields (`titleAr/titleEn`
+      exist, but `category` is English-only and `style` Arabic-only — page
+      renders non-localized values; verify each rendered field).
+    - **Logic**: `LOOKS` is a hardcoded static array (no DB, no admin CRUD);
+      `imageUrl: null` on every look (no images — the platform has an image
+      pipeline already); matching is naive color-based.
+    - **Improvements**: move looks to DB + admin management; real look
+      images; photo-based matching (color extraction from the customer's
+      uploaded photo — virtual-try-on/hair-color infra exists); user
+      ratings/favorites on looks; link tutorials properly.
 
 ## 6. Phase C — Mobile visual/UX parity
 
