@@ -201,7 +201,7 @@ export const mobileCustomerAMessages = {
   'beautyAnalytics.monthly-trend': { ar: ' الاتجاه الشهري', en: 'Monthly Trend' },
 
   // ── beauty-bingo ──
-  'beautyBingo.title': { ar: ' Beauty Bingo', en: 'Beauty Bingo' },
+  'beautyBingo.title': { ar: 'بينجو الجمال', en: 'Beauty Bingo' },
   'beautyBingo.completed': { ar: '{done}/{total} مكتملة', en: '{done}/{total} completed' },
 
   // ── beauty-budget ──
