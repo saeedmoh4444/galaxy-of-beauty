@@ -50,6 +50,14 @@ of mobile defects immediately.
 | Terminology: Technician/الفنية → Service Provider/مقدمة الخدمة | catalog values only (12 files) — keys, routes, DB enum deferred                                              | web + mobile |
 | Customer bookings: raw English statuses + missing PAID         | shared `bookingStatusLabelKey` helper; tabs + badges localized on bookings, reschedule, video, tech bookings | web          |
 
+## 2c. Pending findings (observed, not yet fixed — user deferred)
+
+| Finding                                     | Note                                                                                                                                                            |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Web gating sweep (admin + tech)             | **34 files** fire protected queries with no `enabled` gate (31 admin / 5 tech) — 401 noise from stale logged-out tabs. One-pass sweep proposed, user undecided. |
+| `calendarSync.status/upcoming/connect` 401s | customer calendar-sync page fires protected queries unauthenticated — part of the same sweep class                                                              |
+| Customer pages `bookings.list` callers      | ~9 pages (reviews, invoices, streak-calendar, my-journey, safety, …) — same gating class, ties into the PROTECTED_PATHS decision                                |
+
 ## 3. Root causes
 
 1. **Auth gating missing (401 class)** — `(tabs)/bookings`, `wallet`,
