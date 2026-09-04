@@ -49,6 +49,7 @@ of mobile defects immediately.
 | Tech bookings: raw English statuses + missing PAID/CANCELLED   | `booking.status.*` catalog keys + 2 new filter tabs                                                          | web          |
 | Terminology: Technician/الفنية → Service Provider/مقدمة الخدمة | catalog values only (12 files) — keys, routes, DB enum deferred                                              | web + mobile |
 | Customer bookings: raw English statuses + missing PAID         | shared `bookingStatusLabelKey` helper; tabs + badges localized on bookings, reschedule, video, tech bookings | web          |
+| AI assistant naming → "Beauty AI" / "بيوتي AI"                 | unified web "AI Assistant" + mobile "Beauty Advisor" under one name (titles + nav, labels only)              | web + mobile |
 
 ## 2c. Pending findings (observed, not yet fixed — user deferred)
 
