@@ -323,6 +323,18 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
       quality jump, on-device and free.
     - **P3 — commerce & AI**: "buy the products in this look" (store plan
       handshake), Beauty AI look generation for skin tone/preferences.
+19. **Group bookings — sharing + join flow + discount wiring** (user idea,
+    2026-09-03 — today: members typed manually by name, no invites, and
+    `discountPercent` is stored but never applied):
+    - **P1 — sharing & joining**: `wa.me` share links (no API needed) with
+      group code + time + discount prefilled; public join links (users or
+      guests); size limits + deadline ("need N by date or group cancels");
+      social share (X/Instagram/Telegram).
+    - **P2 — money & members**: apply `discountPercent` at checkout
+      (build with B.2 promo chain — same mechanism); per-member bookings
+      within the group (same member concept as B.17 family accounts).
+    - **P3 — automation**: WhatsApp Business API invites/reminders via the
+      existing `whatsappBot` router — partnership-gated (Meta).
 
 ## 6. Phase C — Mobile visual/UX parity
 
