@@ -369,6 +369,18 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
     - **Phasing**: P1 merged backend (B.20) + home widget + guardrails →
       P2 token accounting + plan tiers + dashboard → P3 funnel CTAs into
       bookings/store.
+22. **Community social platform** (user finding, 2026-09-03 — the feed has
+    posts/likes/comments but is text-only, one-directional):
+    - **P1 — media + engagement**: image/video uploads on posts (image
+      pipeline exists); shares/reposts + WhatsApp share (B.19 `wa.me`
+      pattern); engagement notifications (notification infra exists).
+    - **P2 — social graph**: follow users + public profiles (the following
+      router exists for providers — extend to members); hashtags +
+      trending; suggested feed (follow-based ranking, not pure recency).
+    - **P3 — trust & money**: report/block + admin moderation (same safety
+      class as pen-pal B.10 P3 — must land before scale); gamification
+      (likes → beauty points, loyalty infra exists); commerce tie-in
+      (posts tag looks/products → marketplace links).
 
 ## 6. Phase C — Mobile visual/UX parity
 
