@@ -38,16 +38,17 @@ of mobile defects immediately.
 
 ## 2b. Already fixed this round (2026-09-03)
 
-| Fix                                                            | Detail                                                                  | Platform     |
-| -------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------ |
-| Admin users list `.map` crash                                  | `listCustomers` returns `{items}` — page consumed `.items`              | web          |
-| Customer dashboard 401 storm (logged-out)                      | 8 protected queries gated on `isAuthenticated` (incl. `RebookReminder`) | web          |
-| `beautyPackages.listAll` 401 loop (stale logged-out tab)       | gated on `isAuthenticated`                                              | web          |
-| `zatca.listInvoices` 401 (stale logged-out tab)                | gated on `isAuthenticated`                                              | web          |
-| `performance.myDashboard` 401 (stale logged-out tab)           | gated on `isAuthenticated`                                              | web          |
-| Tech slots: overlap rejection failed silently                  | mutation errors surfaced above the form                                 | web          |
-| Tech bookings: raw English statuses + missing PAID/CANCELLED   | `booking.status.*` catalog keys + 2 new filter tabs                     | web          |
-| Terminology: Technician/الفنية → Service Provider/مقدمة الخدمة | catalog values only (12 files) — keys, routes, DB enum deferred         | web + mobile |
+| Fix                                                            | Detail                                                                                                       | Platform     |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ------------ |
+| Admin users list `.map` crash                                  | `listCustomers` returns `{items}` — page consumed `.items`                                                   | web          |
+| Customer dashboard 401 storm (logged-out)                      | 8 protected queries gated on `isAuthenticated` (incl. `RebookReminder`)                                      | web          |
+| `beautyPackages.listAll` 401 loop (stale logged-out tab)       | gated on `isAuthenticated`                                                                                   | web          |
+| `zatca.listInvoices` 401 (stale logged-out tab)                | gated on `isAuthenticated`                                                                                   | web          |
+| `performance.myDashboard` 401 (stale logged-out tab)           | gated on `isAuthenticated`                                                                                   | web          |
+| Tech slots: overlap rejection failed silently                  | mutation errors surfaced above the form                                                                      | web          |
+| Tech bookings: raw English statuses + missing PAID/CANCELLED   | `booking.status.*` catalog keys + 2 new filter tabs                                                          | web          |
+| Terminology: Technician/الفنية → Service Provider/مقدمة الخدمة | catalog values only (12 files) — keys, routes, DB enum deferred                                              | web + mobile |
+| Customer bookings: raw English statuses + missing PAID         | shared `bookingStatusLabelKey` helper; tabs + badges localized on bookings, reschedule, video, tech bookings | web          |
 
 ## 3. Root causes
 
