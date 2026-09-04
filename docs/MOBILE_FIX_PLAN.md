@@ -346,6 +346,28 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
       `/ai-chat` redirects; `aiChat.*` catalog keys absorbed; nav
       deduplicated; mobile beauty-advisor already single — ensure it hits
       the same merged procedure.
+21. **Beauty AI productization — "تدليلك الذكي"** (user vision, 2026-09-03:
+    specialized women's-beauty AI on the home, freemium tokens, paid plans
+    for more):
+    - **Positioning**: the ONE specialized beauty advisor — advice,
+      consulting, helping, and everything beauty/women's services. The moat
+      vs generic chatbots: domain expertise + a warm Saudi-voice persona.
+    - **Home presence**: chat widget on the main home (all users, logged-in
+      or guest teaser with login nudge) — growth engine, not a buried page.
+    - **Freemium token model**: quota infra ALREADY exists (per-feature
+      `monthlyLimit` tied to plans, 2026-08-19 round) + vip-membership +
+      subscription products + Payfort/wallet — this is wiring, not new
+      billing. "Beauty AI Plus" tier folded into existing plan products.
+    - **Fair accounting**: count TOKENS (input+output), not requests — a
+      long consultation ≠ a one-liner; usage dashboard with
+      "باقي ١٢٤٠ توكن" remaining display + low-balance nudges.
+    - **Guardrails**: beauty-domain only (refuse off-domain), medical
+      disclaimers, escalation CTAs — every answer ends in the marketplace
+      funnel ("احجزي استشارة" / "اشتري المنتج") — the funnel is the real
+      revenue, token plans monetize the heavy users.
+    - **Phasing**: P1 merged backend (B.20) + home widget + guardrails →
+      P2 token accounting + plan tiers + dashboard → P3 funnel CTAs into
+      bookings/store.
 
 ## 6. Phase C — Mobile visual/UX parity
 
