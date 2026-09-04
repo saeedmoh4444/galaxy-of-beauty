@@ -335,6 +335,17 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
       within the group (same member concept as B.17 family accounts).
     - **P3 — automation**: WhatsApp Business API invites/reminders via the
       existing `whatsappBot` router — partnership-gated (Meta).
+20. **AI chat consolidation** (user finding, 2026-09-03 — `/ai-chat` is a
+    true duplicate of Beauty AI):
+    - Two web pages, two backends: `/ai-assistant` → `aiAssistant.ask`
+      (quota-managed) vs `/ai-chat` → `ai.chat` (separate endpoint WITH
+      `conversationId` history support that Beauty AI lacks).
+    - **Fix**: one canonical surface (Beauty AI, `/ai-assistant`) with a
+      merged backend — add conversation history to `aiAssistant.ask` (or
+      add quota checks to `ai.chat` — pick ONE, delete the other's usage);
+      `/ai-chat` redirects; `aiChat.*` catalog keys absorbed; nav
+      deduplicated; mobile beauty-advisor already single — ensure it hits
+      the same merged procedure.
 
 ## 6. Phase C — Mobile visual/UX parity
 
