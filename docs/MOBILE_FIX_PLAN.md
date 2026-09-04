@@ -256,6 +256,23 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
     - **P2 — pricing & payments**: distance-based travel fee (not city-only),
       service-dependent service fee, payment link (wallet/Payfort exist),
       customer tracking view (map tracking later — ride-hailing class).
+14. **"Pamper Yourself" rewards hub** (user idea, 2026-09-03 — reframe
+    birthday-rewards as a self-reward hub "تدليل نفسك"):
+    - Today: one `birthdayReward` row per user-year, one claim → `BDAY…`
+      promo code. One occasion, once a year, one reward type.
+    - **Occasion model** `RewardOccasion`: date-based personal (birthday
+      [DOB-verified, exists], graduation, promotion, anniversary, new job —
+      user-declared, admin-set limits 1/occasion/year) + platform seasonal
+      (Eid, Ramadan, National Day — ride on the campaigns infra).
+    - **Reward types beyond promo codes**: category discounts, free add-ons
+      (e.g., free mask with a facial), gift-box integration (box-builder
+      exists).
+    - **Naming** (labels-only): birthday-rewards → "تدليل نفسك" / "Pamper
+      Yourself"; birthday becomes one tab inside the hub.
+    - **Guardrail**: per-user/per-year claim limits + admin visibility to
+      stop farming self-declared occasions.
+    - Phasing: P1 rename + occasion model + limits → P2 seasonal occasions
+      - gift/experience rewards.
 
 ## 6. Phase C — Mobile visual/UX parity
 
