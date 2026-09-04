@@ -298,6 +298,18 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
     - **P3 — commerce & AI links**: "book this look" (pins carry serviceId
       — no booking flow), "buy the products in this look" (store plan
       handshake), Beauty AI board generation (generate from preferences).
+17. **Family-account booking flow** (user finding, 2026-09-03 — "after
+    adding a member, how to book a service?" — correct, the flow is
+    missing):
+    - Today: family members are standalone CRUD (list/add/update/remove);
+      `createBookingSchema` has NO member concept — bookings are always for
+      the account owner.
+    - **Fix**: `familyMemberId` (optional, ownership-validated) on booking
+      create; booking-create UI gets a "booking for" step (me / family
+      member); booking details + history show which member it was for;
+      member preferences/notes prefill the booking form.
+    - **Later**: member self-booking via linked accounts (teens) — needs
+      age/consent rules; member-specific reminders.
 
 ## 6. Phase C — Mobile visual/UX parity
 
