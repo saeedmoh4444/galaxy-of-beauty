@@ -198,6 +198,19 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
      scenarios); gamification (streaks/leaderboards — loyalty infra exists).
    - Sequencing: 1 → 3 → 4 (foundation → explanations → verifiable certs →
      provider badges).
+10. **Pen-pal completion** (user finding, 2026-09-03 — English labels + the
+    feature is a shell):
+    - **i18n**: `penPal.interests` returns `nameAr` only (no EN labels —
+      API data shape needs bilingual); `nav.pen-pal` AR value is English
+      (in §2d list).
+    - **P1 — correctness**: real display names (matches show hardcoded
+      `مستخدمة #{id}`), Jaccard similarity instead of raw overlap count,
+      activity + language filters.
+    - **P2 — the actual pen-pal part**: connect lifecycle
+      (request → accept/decline) + 1:1 messaging reusing the `liveChat`
+      infra.
+    - **P3 — safety**: report/block + admin moderation queue (social
+      matching needs this before launch).
 
 ## 6. Phase C — Mobile visual/UX parity
 
