@@ -273,6 +273,20 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
       stop farming self-declared occasions.
     - Phasing: P1 rename + occasion model + limits → P2 seasonal occasions
       - gift/experience rewards.
+15. **Post-care logic** (user finding, 2026-09-03):
+    - **LIVE BUG — myPlan is dead**: `orderBy: { completedAt: 'desc' }` on
+      a field that does NOT exist on Booking (schema has startAt/endAt/
+      cancelledAt only) → Prisma throws → `.catch(() => [])` silently
+      returns [] → the personalized plan is ALWAYS empty. Same class as the
+      search ILIKE silent-fallback bug. Fix: order by a real field
+      (startAt/endAt) — completion time ≈ endAt.
+    - **Day-aware personalization**: `TIMEFRAMES` exists but is unused —
+      tips should progress by days-since-completion (day 1 vs day 7 tips).
+    - **Reminders**: schedule push notifications per tip timeframe
+      (notification + reminder infra exist).
+    - **Progress checklist**: mark tips done (bingo-mark pattern).
+    - **i18n**: `myPlan` reads `.ar` only for service/category names — EN
+      mode broken; consider making `byCategory` public (guest content).
 
 ## 6. Phase C — Mobile visual/UX parity
 
