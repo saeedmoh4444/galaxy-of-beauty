@@ -60,6 +60,7 @@ of mobile defects immediately.
 | Customer pages `bookings.list` callers      | ~9 pages (reviews, invoices, streak-calendar, my-journey, safety, …) — same gating class, ties into the PROTECTED_PATHS decision                                |
 | `expiryTracker.categories/myItems` 401 loop | expiry-tracker page fires protected queries unauthenticated — same gating class, loops on focus refetch (found via monitor)                                     |
 | `vipMembership.tiers/myTier` 401 loop       | vip-membership page fires protected queries unauthenticated — same gating class (found via monitor)                                                             |
+| `bridalConcierge.get` 401                   | bridal-concierge page fires a protected query unauthenticated — same gating class (found via monitor)                                                           |
 
 ## 2d. i18n catalog duplicate-key conflicts (systemic, found 2026-09-03)
 
