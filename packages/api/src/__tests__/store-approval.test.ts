@@ -225,4 +225,66 @@ describe('store registration + approval (Store Phase 1)', () => {
     });
     expect(notif).not.toBeNull();
   });
+
+  it('Phase 2 acceptance: two stores in one cart → two orders, both stocks decremented', async () => {
+    // Second store with its own product.
+    const u4 = await prisma.user.create({ data: buildUser() });
+    createdUserIds.push(u4.id);
+    const vendor2 = await prisma.vendor.create({
+      data: {
+        userId: u4.id,
+        storeName: 'المتجر الثاني',
+        storeSlug: `second-store-${Date.now()}`,
+        isVerified: true,
+        isActive: true,
+      },
+    });
+    createdVendorIds.push(vendor2.id);
+    const product2 = await prisma.product.create({
+      data: {
+        vendorId: vendor2.id,
+        categoryId,
+        nameJson: { ar: 'منتج المتجر الثاني', en: 'Second store product' },
+        descriptionJson: { ar: '', en: '' },
+        price: 50,
+        stock: 4,
+      },
+    });
+    createdProductIds.push(product2.id);
+
+    // The buyer has orders from an earlier test — scope to this purchase
+    // by creation time; stocks were decremented before, so assert deltas.
+    const testStart = new Date();
+    const p1Before = await prisma.product.findUniqueOrThrow({
+      where: { id: createdProductIds[0]! },
+    });
+    const p2Before = await prisma.product.findUniqueOrThrow({
+      where: { id: product2.id },
+    });
+    const c = await caller(buyer);
+    await c.marketplace.addToCart({ productId: createdProductIds[0]!, quantity: 1 }); // store 1
+    await c.marketplace.addToCart({ productId: product2.id, quantity: 2 }); // store 2
+
+    const res = await c.marketplace.buyCart({});
+    expect(res.success).toBe(true);
+
+    const orders = await prisma.storeOrder.findMany({
+      where: {
+        customerId: buyer.id,
+        createdAt: { gte: testStart },
+      },
+    });
+    expect(orders.length).toBe(2);
+    const store1Order = orders.find((o) => o.vendorId !== vendor2.id)!;
+    const store2Order = orders.find((o) => o.vendorId === vendor2.id)!;
+    expect(Number(store1Order.totalAmount)).toBe(90);
+    expect(Number(store2Order.totalAmount)).toBe(100);
+    expect(store2Order.itemCount).toBe(2);
+    createdOrderIds.push(store1Order.id, store2Order.id);
+
+    const p1 = await prisma.product.findUniqueOrThrow({ where: { id: createdProductIds[0]! } });
+    const p2 = await prisma.product.findUniqueOrThrow({ where: { id: product2.id } });
+    expect(p1.stock).toBe(p1Before.stock - 1);
+    expect(p2.stock).toBe(p2Before.stock - 2);
+  });
 });
