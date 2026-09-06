@@ -11,6 +11,7 @@ import {
   Modal,
   Input,
   formatCurrency,
+  useAuth,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
@@ -18,9 +19,16 @@ import { type TranslationKey } from '@galaxy/shared';
 
 export default function TechEarningsPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const balanceQ = api.wallet.getBalance.useQuery();
-  const payoutsQ = api.payouts.listMyPayouts.useQuery({ page: 1, limit: 20 });
-  const earningsQ = api.analytics.technicianEarnings.useQuery({ days: 30 });
+  const { isAuthenticated } = useAuth();
+  const balanceQ = api.wallet.getBalance.useQuery(undefined, { enabled: isAuthenticated });
+  const payoutsQ = api.payouts.listMyPayouts.useQuery(
+    { page: 1, limit: 20 },
+    { enabled: isAuthenticated },
+  );
+  const earningsQ = api.analytics.technicianEarnings.useQuery(
+    { days: 30 },
+    { enabled: isAuthenticated },
+  );
 
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState('');

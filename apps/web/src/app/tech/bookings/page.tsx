@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { bookingStatusLabelKey } from '@/lib/bookingStatus';
@@ -19,12 +19,16 @@ const STATUS_TABS = [
 
 export default function TechBookingsPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [status, setStatus] = useState<string | undefined>(undefined);
-  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery({
-    status,
-    page: 1,
-    limit: 20,
-  });
+  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery(
+    {
+      status,
+      page: 1,
+      limit: 20,
+    },
+    { enabled: isAuthenticated },
+  );
   const transition = api.bookings.transition.useMutation({ onSuccess: () => refetch() });
 
   const bookings = (data?.bookings as unknown as Record<string, unknown>[]) ?? [];

@@ -1,14 +1,18 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, TableSkeleton, ErrorAlert, EmptyState, formatCurrency } from '@galaxy/ui';
+import { Card, TableSkeleton, ErrorAlert, EmptyState, formatCurrency, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminGiftCardsPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data, isLoading, isError, refetch } = api.giftCards.listAll.useQuery({
-    page: 1,
-    limit: 50,
-  });
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading, isError, refetch } = api.giftCards.listAll.useQuery(
+    {
+      page: 1,
+      limit: 50,
+    },
+    { enabled: isAuthenticated },
+  );
   const items = data?.items ?? [];
 
   return (

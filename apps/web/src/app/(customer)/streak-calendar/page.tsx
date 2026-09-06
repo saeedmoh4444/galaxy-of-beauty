@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, KPIRowSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, ErrorAlert, Button, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
@@ -17,8 +17,19 @@ const MILESTONES: Record<number, { emoji: string; reward: TranslationKey }> = {
 
 export default function StreakCalendarPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: streakData, isLoading, isError, refetch } = api.streaks.get.useQuery();
-  const { data: bookings } = api.bookings.list.useQuery({ limit: 100 });
+  const { isAuthenticated } = useAuth();
+  const {
+    data: streakData,
+    isLoading,
+    isError,
+    refetch,
+  } = api.streaks.get.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const { data: bookings } = api.bookings.list.useQuery(
+    { limit: 100 },
+    { enabled: isAuthenticated },
+  );
 
   const currentStreak = streakData?.currentStreak || 0;
   const longestStreak = streakData?.longestStreak || 0;

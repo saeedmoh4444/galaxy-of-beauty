@@ -2,14 +2,26 @@
 
 import { api } from '@/lib/trpc';
 import Link from 'next/link';
-import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
+import {
+  Card,
+  CardListSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  formatCurrency,
+  useAuth,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
 export default function ServiceHistoryPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery({ limit: 50 });
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery(
+    { limit: 50 },
+    { enabled: isAuthenticated },
+  );
   const bookings = data?.bookings ?? [];
 
   // Group by service for reorder suggestions

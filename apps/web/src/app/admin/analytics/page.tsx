@@ -9,6 +9,7 @@ import {
   ErrorAlert,
   EmptyState,
   formatCurrency,
+  useAuth,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -36,10 +37,22 @@ function StatCard({
 
 export default function AdminAnalyticsPage(): JSX.Element {
   const { t } = useLocale();
-  const revenueQuery = api.analytics.revenueChart.useQuery({ days: 30 });
-  const bookingStatsQuery = api.analytics.bookingStats.useQuery();
-  const topTechQuery = api.analytics.topTechnicians.useQuery({ limit: 10 });
-  const userGrowthQuery = api.analytics.userGrowth.useQuery({ days: 30 });
+  const { isAuthenticated } = useAuth();
+  const revenueQuery = api.analytics.revenueChart.useQuery(
+    { days: 30 },
+    { enabled: isAuthenticated },
+  );
+  const bookingStatsQuery = api.analytics.bookingStats.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const topTechQuery = api.analytics.topTechnicians.useQuery(
+    { limit: 10 },
+    { enabled: isAuthenticated },
+  );
+  const userGrowthQuery = api.analytics.userGrowth.useQuery(
+    { days: 30 },
+    { enabled: isAuthenticated },
+  );
 
   const revenueData = revenueQuery.data?.dailyRevenue ?? [];
   const bookingStats = bookingStatsQuery.data as BookingStats | undefined;

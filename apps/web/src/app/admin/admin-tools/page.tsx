@@ -1,11 +1,14 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminToolsPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: flags, isLoading } = api.featureFlags.list.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: flags, isLoading } = api.featureFlags.list.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };

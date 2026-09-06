@@ -1,11 +1,14 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, KPIRowSkeleton, CardListSkeleton } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, CardListSkeleton, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function PredictiveDemandPage(): JSX.Element {
   const { t } = useLocale();
-  const { data, isLoading } = api.predictiveDemand.forecast.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading } = api.predictiveDemand.forecast.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
   };

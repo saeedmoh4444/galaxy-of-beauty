@@ -53,15 +53,23 @@ of mobile defects immediately.
 
 ## 2c. Pending findings (observed, not yet fixed — user deferred)
 
-| Finding                                     | Note                                                                                                                                                            |
-| ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Web gating sweep (admin + tech)             | **34 files** fire protected queries with no `enabled` gate (31 admin / 5 tech) — 401 noise from stale logged-out tabs. One-pass sweep proposed, user undecided. |
-| `calendarSync.status/upcoming/connect` 401s | customer calendar-sync page fires protected queries unauthenticated — part of the same sweep class                                                              |
-| Customer pages `bookings.list` callers      | ~9 pages (reviews, invoices, streak-calendar, my-journey, safety, …) — same gating class, ties into the PROTECTED_PATHS decision                                |
-| `expiryTracker.categories/myItems` 401 loop | expiry-tracker page fires protected queries unauthenticated — same gating class, loops on focus refetch (found via monitor)                                     |
-| `vipMembership.tiers/myTier` 401 loop       | vip-membership page fires protected queries unauthenticated — same gating class (found via monitor)                                                             |
-| `bridalConcierge.get` 401                   | bridal-concierge page fires a protected query unauthenticated — same gating class (found via monitor)                                                           |
-| `subscriptions.getMySubscription` 403 loop  | customer page fired while browsing as ADMIN — role-guard FORBIDDEN class (same as the 6 known procedures)                                                       |
+✅ **SWEPT (2026-09-06)** — one-pass web gating sweep, 51 files, all queries
+gated with `useAuth().isAuthenticated` (pattern of admin/packages):
+28 admin files (41 queries), 7 tech files (12 queries), 16 customer/public
+files (calendarSync, expiryTracker, vipMembership, bridalConcierge,
+getMySubscription, ~9 `bookings.list` callers + co-located protected
+queries). Public queries left ungated on customer pages (`getPlans`,
+`services.list`). Per-agent tsc + eslint green.
+
+| Finding                                         | Note                                                                                                                              |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| ~~Web gating sweep (admin + tech)~~             | ✅ DONE (2026-09-06): 34-file class swept in one pass (see above).                                                                |
+| ~~`calendarSync.status/upcoming/connect` 401s~~ | ✅ DONE (2026-09-06): queries gated (connect/disconnect are mutations).                                                           |
+| ~~Customer pages `bookings.list` callers~~      | ✅ DONE (2026-09-06): reviews, invoices, streak-calendar, my-journey, safety, video, reschedule, bookings, service-history gated. |
+| ~~`expiryTracker.categories/myItems` 401 loop~~ | ✅ DONE (2026-09-06): gated — the focus-refetch loop is gone.                                                                     |
+| ~~`vipMembership.tiers/myTier` 401 loop~~       | ✅ DONE (2026-09-06): gated.                                                                                                      |
+| ~~`bridalConcierge.get` 401~~                   | ✅ DONE (2026-09-06): gated in BridalDashboard.                                                                                   |
+| ~~`subscriptions.getMySubscription` 403 loop~~  | ✅ DONE (2026-09-06): gated on both customer subscription pages.                                                                  |
 
 ## 2d. i18n catalog duplicate-key conflicts (systemic, found 2026-09-03)
 

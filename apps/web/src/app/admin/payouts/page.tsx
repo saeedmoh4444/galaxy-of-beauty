@@ -2,7 +2,15 @@
 
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Card, TableSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
+import {
+  Card,
+  TableSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  formatCurrency,
+  useAuth,
+} from '@galaxy/ui';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { type TranslationKey } from '@galaxy/shared';
@@ -11,8 +19,12 @@ type PayoutItem = NonNullable<RouterOutput['payouts']['listForAdmin']>['payouts'
 
 export default function PayoutsPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const { addToast } = useToast();
-  const { data, isLoading, isError, refetch } = api.payouts.listForAdmin.useQuery({});
+  const { data, isLoading, isError, refetch } = api.payouts.listForAdmin.useQuery(
+    {},
+    { enabled: isAuthenticated },
+  );
   const items: PayoutItem[] = data?.payouts ?? [];
   const processMut = api.payouts.process.useMutation({
     onSuccess: () => {

@@ -6,12 +6,18 @@ import { api } from '@/lib/trpc';
 import { Card, DetailSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
-import { useToast } from '@galaxy/ui';
+import { useToast, useAuth } from '@galaxy/ui';
 
 export default function MySubscriptionPage(): JSX.Element {
   const { t, locale } = useLocale();
   const { addToast } = useToast();
-  const { data: sub, isLoading, isError, refetch } = api.subscriptions.getMySubscription.useQuery();
+  const { isAuthenticated } = useAuth();
+  const {
+    data: sub,
+    isLoading,
+    isError,
+    refetch,
+  } = api.subscriptions.getMySubscription.useQuery(undefined, { enabled: isAuthenticated });
   const [paused, setPaused] = useState(false);
 
   const handlePause = () => {

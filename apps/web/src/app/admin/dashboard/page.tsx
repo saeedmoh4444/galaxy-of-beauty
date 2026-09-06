@@ -10,6 +10,7 @@ import {
   formatCurrency,
   StatCard,
   PageContainer,
+  useAuth,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { type TranslationKey } from '@galaxy/shared';
@@ -31,7 +32,10 @@ const QUICK_LINKS: Array<{ href: string; labelKey: TranslationKey; icon: string 
 
 export default function AdminDashboardPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data, isLoading, isError, refetch } = api.adminTools.health.useQuery();
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading, isError, refetch } = api.adminTools.health.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const stats = data as AdminHealth;
 
   if (isLoading) {

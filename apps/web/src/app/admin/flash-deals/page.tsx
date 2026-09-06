@@ -16,7 +16,13 @@ const SERVICES = [
 export default function AdminFlashDealsPage(): JSX.Element {
   const { t } = useLocale();
   const { isAuthenticated } = useAuth();
-  const { data: active, isLoading } = api.flashDeals.active.useQuery();
+  // Gated per the 2026-09-06 sweep (stale logged-out tabs).
+  const { data: active, isLoading } = api.flashDeals.active.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
+    data: Array<Record<string, unknown>> | undefined;
+    isLoading: boolean;
+  };
   const createMut = api.flashDeals.create.useMutation();
   const [svcId, setSvcId] = useState(1);
   const [discount, setDiscount] = useState(30);

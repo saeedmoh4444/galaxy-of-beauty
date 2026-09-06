@@ -1,17 +1,23 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardSkeleton, Button, formatCurrency, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function TechWalletPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: wallet, isLoading } = api.wallet.getBalance.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: wallet, isLoading } = api.wallet.getBalance.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
   };
-  const { data: txData } = api.wallet.getTransactions.useQuery({ page: 1, limit: 30 }) as {
+  const { data: txData } = api.wallet.getTransactions.useQuery(
+    { page: 1, limit: 30 },
+    { enabled: isAuthenticated },
+  ) as {
     data: Record<string, unknown> | undefined;
   };
   const withdrawMut = api.wallet.withdraw.useMutation();
