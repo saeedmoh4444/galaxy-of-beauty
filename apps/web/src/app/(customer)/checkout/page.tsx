@@ -8,7 +8,11 @@ import { localize } from '@galaxy/shared';
 
 export default function CheckoutPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: cart, isLoading } = api.marketplace.cart.useQuery() as {
+  const {
+    data: cart,
+    isLoading,
+    refetch,
+  } = api.marketplace.cart.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
     isError: boolean;
@@ -17,6 +21,15 @@ export default function CheckoutPage(): JSX.Element {
   const { data: wallet } = api.wallet.getBalance.useQuery() as {
     data: Record<string, unknown> | undefined;
   };
+  // B.3: the pay button used to be setPlaced(true) — now it completes the
+  // real purchase (stock/sales/vendor revenue) via marketplace.buyCart.
+  // Payment processing (wallet debit / payfort) remains separate work.
+  const buyMut = api.marketplace.buyCart.useMutation({
+    onSuccess: () => {
+      setPlaced(true);
+      refetch();
+    },
+  });
   const [method, setMethod] = useState<'wallet' | 'online'>('online');
   const [placed, setPlaced] = useState(false);
   const cartItems = cart ?? [];
@@ -110,7 +123,13 @@ export default function CheckoutPage(): JSX.Element {
               </div>
             </Card>
 
-            <Button onClick={() => setPlaced(true)} className="w-full" size="lg">
+            {buyMut.isError && <p className="text-sm text-red-600">{buyMut.error.message}</p>}
+            <Button
+              onClick={() => buyMut.mutate({})}
+              loading={buyMut.isPending}
+              className="w-full"
+              size="lg"
+            >
               {t('wallet.pay-now', { amount: formatCurrency(total) })}
             </Button>
           </>
