@@ -309,6 +309,7 @@ export const mobileCustomerBMessages = {
 
   // ---- post-care ----
   'mobile.postCare.title': { ar: '‍️ عناية ما بعد الخدمة', en: 'Post-Service Care' },
+  'mobile.postCare.tipsCount': { ar: '{count} نصيحة للعناية', en: '{count} care tips' },
 
   // ---- travel-kit ----
   'mobile.travelKit.title': { ar: ' حقيبة السفر', en: ' Travel Kit' },
