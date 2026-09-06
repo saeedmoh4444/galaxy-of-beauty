@@ -2432,6 +2432,13 @@ export const miscMessages = {
   'promo.codePlaceholder': { ar: 'مثال: WELCOME20', en: 'Example: WELCOME20' },
   'promo.amountLabel': { ar: 'قيمة الحجز (ر.س)', en: 'Booking amount (SAR)' },
   'promo.check': { ar: 'تحقق من الكود', en: 'Check code' },
+  'promo.apply': { ar: 'تطبيق', en: 'Apply' },
+  'promo.applied': { ar: 'تم تطبيق الكود', en: 'Code applied' },
+  'promo.remove': { ar: 'إزالة', en: 'Remove' },
+  'promo.redeem-failed': {
+    ar: 'تم إنشاء الحجز لكن تعذر تطبيق كود الخصم',
+    en: 'Booking created but the promo code could not be applied',
+  },
   'promo.err.required': {
     ar: 'الرجاء إدخال الكود والمبلغ',
     en: 'Please enter the code and amount',
