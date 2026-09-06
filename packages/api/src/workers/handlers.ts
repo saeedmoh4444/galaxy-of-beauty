@@ -34,6 +34,8 @@ export interface NotificationJob {
   bodyEn: string;
   channels: string[]; // ['email', 'sms', 'push', 'in_app']
   idempotencyKey?: string;
+  /** B.26: notifyUser() already created the in-app row — skip it here. */
+  skipInApp?: boolean;
 }
 
 export interface CalendarSyncJob {
@@ -45,6 +47,13 @@ export interface CalendarSyncJob {
   endAt?: string;
   summary?: string;
   idempotencyKey?: string;
+}
+
+/** B.26 — delayed booking reminder (24h/48h before startAt). */
+export interface BookingReminderJob {
+  bookingId: number;
+  date: string; // pre-formatted for the recipient locale
+  time: string;
 }
 
 // ── Handlers ──
@@ -111,31 +120,98 @@ export async function handleLoyaltyJob(job: Job<LoyaltyPointsJob>): Promise<void
 export async function handleNotificationJob(job: Job<NotificationJob>): Promise<void> {
   const { userId, type, titleAr, titleEn, bodyAr, bodyEn, channels } = job.data;
 
-  // Always create in-app notification
-  await prisma.notification.create({
-    data: {
-      userId,
-      type,
-      titleJson: { ar: titleAr, en: titleEn },
-      bodyJson: { ar: bodyAr, en: bodyEn },
-      sentVia: channels.length > 0 ? channels : ['in_app'],
+  // Legacy callers rely on this job to create the in-app row. B.26
+  // notifyUser() creates the row itself and sets skipInApp on the job so
+  // this handler only dispatches the external channels.
+  if (!job.data.skipInApp) {
+    await prisma.notification.create({
+      data: {
+        userId,
+        type,
+        titleJson: { ar: titleAr, en: titleEn },
+        bodyJson: { ar: bodyAr, en: bodyEn },
+        sentVia: channels.length > 0 ? channels : ['in_app'],
+      },
+    });
+  }
+
+  // External channels — real dispatch (B.26). All senders are failure-
+  // tolerant: unconfigured providers log and return, never throw.
+  if (channels.includes('email') || channels.includes('sms') || channels.includes('push')) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { email: true, phone: true, preferredLanguage: true },
+    });
+    if (!user) return;
+
+    if (channels.includes('email') && user.email) {
+      const { sendEmail } = await import('../lib/email');
+      await sendEmail({
+        to: user.email,
+        subject: titleEn,
+        html: `<h2>${titleEn}</h2><p>${bodyEn}</p>`,
+      });
+    }
+    if (channels.includes('sms') && user.phone) {
+      const { sendSms } = await import('../lib/sms');
+      // Arabic-first for SMS (KSA audience); fall back to English title.
+      await sendSms(user.phone, bodyAr || titleAr);
+    }
+    if (channels.includes('push')) {
+      const { sendPushToUser } = await import('../lib/push');
+      await sendPushToUser(userId, {
+        title: user.preferredLanguage === 'en' ? titleEn : titleAr,
+        body: user.preferredLanguage === 'en' ? bodyEn : bodyAr,
+      });
+    }
+  }
+}
+
+/**
+ * B.26 — render and deliver a booking reminder through the template
+ * framework. Silent no-op if the booking was cancelled or completed since
+ * the job was scheduled.
+ */
+export async function handleBookingReminderJob(job: Job<BookingReminderJob>): Promise<void> {
+  const { bookingId, date, time } = job.data;
+
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+    include: {
+      service: { select: { titleJson: true } },
+      customer: { select: { id: true, name: true, preferredLanguage: true } },
     },
   });
+  if (!booking || !['REQUESTED', 'ACCEPTED', 'PAID', 'IN_PROGRESS'].includes(booking.status)) {
+    return;
+  }
 
-  // For email/SMS/push — these would call external services
-  // Currently logged for observability; real implementation depends on providers
-  if (channels.includes('email')) {
-    // TODO: Send via nodemailer/SendGrid
-    console.log(`[Notification] Email queued for user ${userId}: ${titleEn}`);
+  const { notifyUser } = await import('../lib/notify');
+  const title = booking.service.titleJson as { ar: string; en: string };
+  await notifyUser({
+    userId: booking.customerId,
+    templateKey: 'booking_reminder',
+    vars: {
+      customerName: booking.customer.name,
+      serviceName:
+        booking.customer.preferredLanguage === 'en' ? (title.en ?? '') : (title.ar ?? ''),
+      date,
+      time,
+    },
+    link: `/bookings/${booking.id}`,
+  });
+}
+
+/**
+ * Job-name dispatcher for the gob-notifications queue. 'notification.send'
+ * (and legacy names) → handleNotificationJob; 'booking.reminder' →
+ * handleBookingReminderJob.
+ */
+export async function dispatchNotificationJob(job: Job): Promise<void> {
+  if (job.name === 'booking.reminder') {
+    return handleBookingReminderJob(job as Job<BookingReminderJob>);
   }
-  if (channels.includes('sms')) {
-    // TODO: Send via Twilio/Unifonic
-    console.log(`[Notification] SMS queued for user ${userId}: ${titleAr}`);
-  }
-  if (channels.includes('push')) {
-    // TODO: Send via Firebase Cloud Messaging / Expo Push
-    console.log(`[Notification] Push queued for user ${userId}: ${titleEn}`);
-  }
+  return handleNotificationJob(job as Job<NotificationJob>);
 }
 
 export async function handleIntegrationJob(job: Job<CalendarSyncJob>): Promise<void> {

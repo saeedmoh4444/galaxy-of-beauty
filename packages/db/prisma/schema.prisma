@@ -692,6 +692,24 @@ model Notification {
   @@map("notifications")
 }
 
+// B.26 — notification framework templates. Rendered via lib/notify.ts with
+// {{placeholder}} interpolation. category maps to a notificationPreference
+// toggle (bookingReminders / promotions / tips / community).
+model NotificationTemplate {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique // e.g. 'booking_created', 'booking_reminder'
+  category  String   // bookingReminders | promotions | tips | community
+  channels  String[] // default channels: ['in_app','push','sms','email']
+  titleJson Json     // { ar: "...", en: "..." } with {{placeholders}}
+  bodyJson  Json     // { ar: "...", en: "..." } with {{placeholders}}
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category, isActive])
+  @@map("notification_templates")
+}
+
 // =============================================================================
 // Waitlist
 // =============================================================================
