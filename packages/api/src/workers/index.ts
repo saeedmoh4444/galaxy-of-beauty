@@ -14,12 +14,18 @@ import { getRedis } from '../lib/redis';
 import {
   handleWalletJob,
   handleLoyaltyJob,
-  handleNotificationJob,
+  dispatchNotificationJob,
   handleIntegrationJob,
 } from './handlers';
 
 // Job types are re-exported from handlers.ts (routers import them from '../workers')
-export type { CashbackJob, LoyaltyPointsJob, NotificationJob, CalendarSyncJob } from './handlers';
+export type {
+  CashbackJob,
+  LoyaltyPointsJob,
+  NotificationJob,
+  CalendarSyncJob,
+  BookingReminderJob,
+} from './handlers';
 
 // ── Worker factory ──
 
@@ -58,7 +64,7 @@ function createWorker(
 
 export const walletWorker = createWorker('gob-wallet', handleWalletJob);
 export const loyaltyWorker = createWorker('gob-loyalty', handleLoyaltyJob);
-export const notificationWorker = createWorker('gob-notifications', handleNotificationJob);
+export const notificationWorker = createWorker('gob-notifications', dispatchNotificationJob);
 export const integrationWorker = createWorker('gob-integrations', handleIntegrationJob);
 
 /**
