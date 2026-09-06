@@ -142,26 +142,28 @@ remaining ungated, mobile tsc + lint clean, API suite 823/823.
 6. **Beauty packages — technician-proposed with admin approval** (user idea,
    2026-09-03; recommended: additive flow, NOT a replacement for admin
    creation):
-   - Keep admin-created packages (platform-curated promotions) AND add
-     technician-proposed ones behind an approval gate — consistent with the
-     existing technician KYC review model.
-   - Schema: `status` enum `DRAFT → PENDING_REVIEW → APPROVED |
-REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
-     `APPROVED` packages appear in the public `beautyPackages.list`.
-   - **Own-services rule**: a technician may bundle only their own services
-     (ownership/commission accounting breaks otherwise).
-   - **Live-package edits → back to PENDING**; bookings snapshot the package
-     at purchase time so past bookings survive edits (same snapshot concern
-     as services).
-   - Admin review queue: approve/reject with reason in `/admin/packages`;
-     tech gets a notification either way (notification infra exists).
-   - Tech UI: "My Packages" section in the tech portal — web + mobile
-     (largest chunk of the work).
-   - **Sequencing**: build AFTER B.3 (vendor-portal DB persistence) — both
-     share the provider-portal shell, admin approval list, and notification
-     wiring (one pattern, both domains).
-   - Open questions: providers = technicians only, or vendor-portal vendors
-     too? Approved packages auto-promoted on home, or manual?
+   - ✅ **DONE (2026-09-06) — core flow**: `BeautyPackage` gained
+     `status/createdByUserId/reviewNotes/reviewedBy/reviewedAt` (admin
+     packages default APPROVED); new generic `ProviderSubmission` queue
+     model (kind/status/payload/reviewNotes — B.7 rides the same queue).
+   - `beautyPackages.propose` (technician): own-services rule enforced
+     (bundled services must be in the tech's own mappings), creates the
+     package in PENDING_REVIEW + a submission row. `myPackages` for the
+     tech portal. Public `list` filters `status: APPROVED`.
+   - `providerReview.list/decide` (admin): FIFO queue, approve → package
+     APPROVED + `submission_approved` notification (B.26 templates),
+     reject with notes → REJECTED + `submission_rejected`. Wired into
+     `/admin/packages` (review section with notes input) + tech dashboard
+     (My Packages: propose form + status list).
+   - Tests: `package-approvals.test.ts` (7). NOTE: stacked on B.26 branch
+     (needs notifyUser + templates); GitHub re-bases the PR when #74
+     merges. GOTCHA: new routers must be re-exported from
+     `src/domains/<domain>/index.ts` — routers/index.ts imports domain
+     barrels, and a missing re-export silently yields undefined (empty
+     record → "No procedure found").
+   - Remaining: live-package edits → back to PENDING; booking snapshot of
+     packages; mobile My Packages; auto-promote approved packages on home
+     (open question).
 7. **Tech promotions via a shared provider-submission system** (user idea,
    2026-09-03; campaigns themselves stay ADMIN-ONLY — they are
    platform-wide marketing with no service/tech ownership):
