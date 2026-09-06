@@ -4,6 +4,34 @@ import { prisma } from '@galaxy/db';
 import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, customerProcedure, adminProcedure, router } from '../trpc';
 
+type PromoRow = NonNullable<Awaited<ReturnType<typeof prisma.promoCode.findUnique>>>;
+
+/**
+ * Shared validity guard (B.2): the same rules the public `validate` applies
+ * must also gate `redeemOnBooking` — redemption used to skip expiry, maxUses,
+ * and min-order checks.
+ */
+function assertPromoUsable(promo: PromoRow | null, orderAmount: number): asserts promo is PromoRow {
+  if (!promo || !promo.isActive) {
+    throw new TRPCError({ code: 'NOT_FOUND', message: 'Invalid or expired promo code' });
+  }
+
+  if (promo.validUntil && promo.validUntil < new Date()) {
+    throw new TRPCError({ code: 'BAD_REQUEST', message: 'Promo code has expired' });
+  }
+
+  if (promo.maxUses && promo.currentUses >= promo.maxUses) {
+    throw new TRPCError({ code: 'BAD_REQUEST', message: 'Promo code usage limit reached' });
+  }
+
+  if (promo.minOrderAmount && orderAmount < Number(promo.minOrderAmount)) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: `Minimum order amount is ${promo.minOrderAmount} SAR`,
+    });
+  }
+}
+
 export const promoRouter = router({
   // Validate a promo code (public — called at checkout)
   validate: publicProcedure
@@ -13,24 +41,7 @@ export const promoRouter = router({
         where: { code: input.code.toUpperCase() },
       });
 
-      if (!promo || !promo.isActive) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Invalid or expired promo code' });
-      }
-
-      if (promo.validUntil && promo.validUntil < new Date()) {
-        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Promo code has expired' });
-      }
-
-      if (promo.maxUses && promo.currentUses >= promo.maxUses) {
-        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Promo code usage limit reached' });
-      }
-
-      if (promo.minOrderAmount && input.orderAmount < Number(promo.minOrderAmount)) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: `Minimum order amount is ${promo.minOrderAmount} SAR`,
-        });
-      }
+      assertPromoUsable(promo, input.orderAmount);
 
       let discount = BigInt(0);
       if (promo.discountType === 'percent') {
@@ -65,8 +76,26 @@ export const promoRouter = router({
       const promo = await prisma.promoCode.findUnique({
         where: { code: input.code.toUpperCase() },
       });
-      if (!promo || !promo.isActive)
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Invalid promo code' });
+
+      assertPromoUsable(promo, Number(booking.totalAmount));
+
+      // Double-redemption guard: the unique (promoCodeId, userId, bookingId)
+      // index would otherwise surface as an opaque P2002 mid-transaction.
+      const existing = await prisma.promoUsage.findUnique({
+        where: {
+          promoCodeId_userId_bookingId: {
+            promoCodeId: promo.id,
+            userId: ctx.user.id,
+            bookingId: booking.id,
+          },
+        },
+      });
+      if (existing) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Promo already applied to this booking',
+        });
+      }
 
       // Calculate discount
       let discount: number;

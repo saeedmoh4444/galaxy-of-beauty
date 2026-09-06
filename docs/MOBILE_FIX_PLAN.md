@@ -120,9 +120,13 @@ remaining ungated, mobile tsc + lint clean, API suite 823/823.
 1. ✅ **Mobile booking-create date/time** — DONE (2026-08-28): 14-day date
    chips + 30-min time grid (08:00–20:30), local `startAt`/`endAt` composed,
    slot shown on confirm; dead promo field removed (matches web).
-2. **Promo codes on booking** — the API already has `promo.validate` and
-   `promo.redeemOnBooking`. Wire: validate at confirm (show discount) →
-   create booking → redeem. Web + mobile together (shared tRPC).
+2. ✅ **Promo codes on booking** — DONE (2026-09-06): validate at confirm
+   (shows discount + final total) → create booking → redeem (bookingId).
+   Wired on web + mobile booking-create (shared tRPC; `promo.validate.fetch`
+   pattern). Backend hardened: `redeemOnBooking` now enforces the same
+   expiry / maxUses / min-order guards as `validate` (was trusting the UI)
+   and rejects double redemption with a clean error instead of an opaque
+   P2002. Test: `promo-booking.test.ts` (7 tests).
 3. ✅ **Vendor portal → real persistence** — DONE (2026-09-06):
    - In-memory array replaced: `vendorPortal` router reads/writes the
      existing `Product`/`Vendor` models (no new model needed — schema
