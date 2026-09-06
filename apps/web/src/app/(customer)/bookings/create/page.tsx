@@ -3,11 +3,17 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
-import { Card, Button } from '@galaxy/ui';
+import { Card, Button, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
+
+interface AppliedPromo {
+  code: string;
+  discountAmount: number;
+  finalAmount: number;
+}
 
 // Helper to safely get number
 function num(v: unknown, fallback = 0): number {
@@ -33,6 +39,12 @@ export default function CreateBookingPage(): JSX.Element {
   const [addressId, setAddressId] = useState<number | undefined>();
   const [notes, setNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  // B.2 — promo chain: validate at confirm, redeem after booking creation.
+  const [promoCode, setPromoCode] = useState('');
+  const [appliedPromo, setAppliedPromo] = useState<AppliedPromo | null>(null);
+  const [promoMsg, setPromoMsg] = useState('');
+  const [promoErr, setPromoErr] = useState(false);
+  const utils = api.useUtils();
   // Local-date defaults: tomorrow at 10:00. startAt is computed from these
   // in handleSubmit (local time, not UTC) so the user controls the slot.
   const [bookingDate, setBookingDate] = useState<string>(
@@ -52,8 +64,22 @@ export default function CreateBookingPage(): JSX.Element {
   const variants = svc?.variants ?? [];
   const addresses = addressesData ?? [];
 
+  // Displayed total: base price + selected variant delta.
+  const variantDelta = variantId ? num(variants.find((v) => v.id === variantId)?.priceDelta) : 0;
+  const orderAmount = num((svc as unknown as { basePrice?: unknown })?.basePrice) + variantDelta;
+
+  const redeemMut = api.promo.redeemOnBooking.useMutation({
+    onError: () => addToast('error', t('promo.redeem-failed')),
+  });
+
   const createMut = api.bookings.create.useMutation({
-    onSuccess: (_result) => {
+    onSuccess: (result) => {
+      if (appliedPromo) {
+        const bookingId = num((result as unknown as { id?: unknown })?.id);
+        if (bookingId > 0) {
+          redeemMut.mutate({ code: appliedPromo.code, bookingId });
+        }
+      }
       addToast('success', t('booking.created-success'));
       router.push(`/bookings`);
     },
@@ -62,6 +88,40 @@ export default function CreateBookingPage(): JSX.Element {
       setSubmitting(false);
     },
   });
+
+  /* ---------- Promo ---------- */
+  const handleApplyPromo = async () => {
+    setPromoMsg('');
+    setPromoErr(false);
+    if (!promoCode.trim()) {
+      setPromoErr(true);
+      setPromoMsg(t('promo.err.required'));
+      return;
+    }
+    try {
+      const r = await utils.promo.validate.fetch({
+        code: promoCode.trim().toUpperCase(),
+        orderAmount,
+      });
+      setAppliedPromo({
+        code: r.code,
+        discountAmount: r.discountAmount,
+        finalAmount: r.finalAmount,
+      });
+      setPromoMsg(t('promo.applied'));
+    } catch {
+      setAppliedPromo(null);
+      setPromoErr(true);
+      setPromoMsg(t('promo.err.invalid'));
+    }
+  };
+
+  const handleRemovePromo = () => {
+    setAppliedPromo(null);
+    setPromoCode('');
+    setPromoMsg('');
+    setPromoErr(false);
+  };
 
   const handleSubmit = async () => {
     if (!serviceId || !addressId) {
@@ -314,6 +374,55 @@ export default function CreateBookingPage(): JSX.Element {
                   {t('booking.date-time-confirm', { date: bookingDate, time: bookingTime })}
                 </span>
               </div>
+              {appliedPromo && (
+                <>
+                  <div className="flex justify-between border-b pb-2">
+                    <span className="text-text-secondary">
+                      {t('promo.field.discount')} ({appliedPromo.code})
+                    </span>
+                    <span className="font-semibold text-green-600">
+                      −{appliedPromo.discountAmount.toFixed(0)} {t('misc.sar')}
+                    </span>
+                  </div>
+                  <div className="flex justify-between pb-2">
+                    <span className="font-semibold">{t('promo.field.total')}</span>
+                    <span className="font-bold text-brand-600">
+                      {appliedPromo.finalAmount.toFixed(0)} {t('misc.sar')}
+                    </span>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Promo code (B.2) */}
+            <div className="mt-4">
+              {appliedPromo ? (
+                <div className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-4 py-3 dark:border-green-800 dark:bg-green-950">
+                  <p className="text-sm font-semibold text-green-700 dark:text-green-300">
+                    {t('promo.applied')}: {appliedPromo.code}
+                  </p>
+                  <Button size="sm" variant="outline" onClick={handleRemovePromo}>
+                    {t('promo.remove')}
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <Input
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                    placeholder={t('promo.codePlaceholder')}
+                    className="flex-1"
+                  />
+                  <Button onClick={handleApplyPromo} variant="outline">
+                    {t('promo.apply')}
+                  </Button>
+                </div>
+              )}
+              {promoMsg && (
+                <p className={`mt-2 text-sm ${promoErr ? 'text-red-600' : 'text-green-600'}`}>
+                  {promoMsg}
+                </p>
+              )}
             </div>
 
             <p className="mt-4 text-sm text-text-tertiary">
