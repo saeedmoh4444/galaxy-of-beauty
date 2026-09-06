@@ -39,14 +39,29 @@ export const marketplaceRouter = router({
       const [items, total] = await Promise.all([
         prisma.product.findMany({
           where: where as never,
-          include: { vendor: { select: { storeName: true } } },
+          include: {
+            vendor: { select: { storeName: true } },
+            // Store plan Phase 4b — the active in-window deal, if any.
+            deals: {
+              where: { isActive: true, startsAt: { lte: new Date() }, endsAt: { gte: new Date() } },
+              orderBy: { createdAt: 'desc' },
+              take: 1,
+            },
+          },
           orderBy: orderBy as never,
           skip,
           take: input.limit,
         }),
         prisma.product.count({ where: where as never }),
       ]);
-      return { items, total, page: input.page };
+      return {
+        items: items.map(({ deals, ...item }) => ({
+          ...item,
+          activeDeal: deals[0] ?? null,
+        })),
+        total,
+        page: input.page,
+      };
     }),
 
   productDetail: publicProcedure

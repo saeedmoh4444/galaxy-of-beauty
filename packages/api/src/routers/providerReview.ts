@@ -12,7 +12,7 @@ import { adminProcedure, router } from '../trpc';
 import { notifyUser } from '../lib/notify';
 
 const SUBMISSION_STATUSES = ['PENDING_REVIEW', 'APPROVED', 'REJECTED'] as const;
-const SUBMISSION_KINDS = ['package', 'promotion', 'product'] as const;
+const SUBMISSION_KINDS = ['package', 'promotion', 'store_promotion', 'product'] as const;
 
 export const providerReviewRouter = router({
   list: adminProcedure
@@ -124,6 +124,45 @@ export const providerReviewRouter = router({
               isActive: true,
             },
           });
+        }
+      } else if (submission.kind === 'store_promotion') {
+        // Store plan Phase 4b — approved deals materialize as StoreDeal
+        // rows + the product's comparePrice (the "was" price) so the
+        // public listing shows the strike-through.
+        const payload = submission.payload as {
+          productId: number;
+          titleAr?: string;
+          originalPrice: number;
+          dealPrice: number;
+          startsAt: string;
+          endsAt: string;
+        };
+        subjectName = payload.titleAr ? `عرض ${payload.titleAr}` : `عرض #${submission.id}`;
+        if (input.approve) {
+          const product = await prisma.product.findUnique({
+            where: { id: payload.productId },
+            select: { vendorId: true },
+          });
+          if (!product) {
+            throw new TRPCError({ code: 'NOT_FOUND', message: 'Product missing' });
+          }
+          await prisma.$transaction([
+            prisma.storeDeal.create({
+              data: {
+                productId: payload.productId,
+                vendorId: product.vendorId,
+                originalPrice: payload.originalPrice,
+                dealPrice: payload.dealPrice,
+                startsAt: new Date(payload.startsAt),
+                endsAt: new Date(payload.endsAt),
+                isActive: true,
+              },
+            }),
+            prisma.product.update({
+              where: { id: payload.productId },
+              data: { comparePrice: payload.originalPrice },
+            }),
+          ]);
         }
       } else {
         // 'product' kind lands with the store plan.
