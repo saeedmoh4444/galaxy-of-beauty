@@ -311,6 +311,19 @@ export const mobileCustomerBMessages = {
   'mobile.postCare.title': { ar: '‍️ عناية ما بعد الخدمة', en: 'Post-Service Care' },
   'mobile.postCare.tipsCount': { ar: '{count} نصيحة للعناية', en: '{count} care tips' },
 
+  // ---- stores (store plan Phase 4) ----
+  'mobile.stores.title': { ar: 'المتاجر', en: 'Stores' },
+  'mobile.stores.products': { ar: 'منتج', en: 'products' },
+  'mobile.stores.empty': { ar: 'لا توجد متاجر بعد', en: 'No stores yet' },
+  'mobile.stores.load-error': { ar: 'فشل تحميل المتاجر', en: 'Failed to load stores' },
+  'mobile.stores.not-found': { ar: 'المتجر غير موجود', en: 'Store not found' },
+  'mobile.stores.verified': { ar: 'متجر موثق', en: 'Verified' },
+  'mobile.stores.stock': { ar: 'المخزون: {count}', en: 'Stock: {count}' },
+  'mobile.stores.add-to-cart': { ar: 'أضيفي للسلة', en: 'Add to cart' },
+  'mobile.stores.added-to-cart': { ar: 'تمت الإضافة للسلة', en: 'Added to cart' },
+  'mobile.stores.login-to-buy': { ar: 'سجلي الدخول للشراء', en: 'Sign in to buy' },
+  'mobile.stores.empty-products': { ar: 'لا توجد منتجات', en: 'No products' },
+
   // ---- travel-kit ----
   'mobile.travelKit.title': { ar: ' حقيبة السفر', en: ' Travel Kit' },
   'mobile.travelKit.kit-contents': {
