@@ -85,6 +85,15 @@ async function main() {
     db.communityLook.deleteMany(),
     db.compareProduct.deleteMany(),
     db.matchmakerQuestion.deleteMany(),
+    db.notificationTemplate.deleteMany(),
+    // Marketplace + provider submission tables (B.3/B.6) — vendor rows
+    // reference users, so they must be wiped before db.user.deleteMany().
+    db.cartItem.deleteMany(),
+    db.productReview.deleteMany(),
+    db.product.deleteMany(),
+    db.vendor.deleteMany(),
+    db.productCategory.deleteMany(),
+    db.providerSubmission.deleteMany(),
     db.user.deleteMany(),
     db.saudiCity.deleteMany(),
   ]);
@@ -2644,6 +2653,104 @@ async function main() {
     console.log(` ${FEATURE_FLAGS.length} feature flags`);
   } catch (err: any) {
     console.log(`    Feature flags: ${err.message?.slice(0, 60)}`);
+  }
+
+  // ---- Notification templates (B.26 framework) ----
+  // Rendered by lib/notify.ts with {{placeholder}} interpolation; category
+  // maps to the notificationPreference toggle of the same name.
+  try {
+    const NOTIFICATION_TEMPLATES = [
+      {
+        key: 'booking_created',
+        category: 'bookingReminders',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تم استلام طلب الحجز', en: 'Booking Request Received' },
+        bodyJson: {
+          ar: 'أهلًا {{customerName}}، تم استلام طلب حجزك لخدمة {{serviceName}}. سنخبرك فور تأكيده.',
+          en: 'Hi {{customerName}}, your booking request for {{serviceName}} has been received. We will notify you once it is confirmed.',
+        },
+      },
+      {
+        key: 'booking_accepted',
+        category: 'bookingReminders',
+        channels: ['in_app', 'push', 'sms'],
+        titleJson: { ar: 'تم تأكيد حجزك', en: 'Your Booking is Confirmed' },
+        bodyJson: {
+          ar: 'ممتاز {{customerName}}! تم تأكيد حجزك لخدمة {{serviceName}} مع {{techName}} بتاريخ {{date}} الساعة {{time}}.',
+          en: 'Great news {{customerName}}! Your {{serviceName}} booking with {{techName}} is confirmed for {{date}} at {{time}}.',
+        },
+      },
+      {
+        key: 'booking_reminder',
+        category: 'bookingReminders',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تذكير بموعدك', en: 'Upcoming Appointment Reminder' },
+        bodyJson: {
+          ar: 'تذكير: موعدك لخدمة {{serviceName}} بتاريخ {{date}} الساعة {{time}}. نراكم قريبًا!',
+          en: 'Reminder: your {{serviceName}} appointment is on {{date}} at {{time}}. See you soon!',
+        },
+      },
+      {
+        key: 'booking_request_tech',
+        category: 'bookingReminders',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'طلب حجز جديد', en: 'New Booking Request' },
+        bodyJson: {
+          ar: 'لديك طلب حجز جديد لخدمة {{serviceName}} من {{customerName}} بتاريخ {{date}} الساعة {{time}}.',
+          en: 'New booking request for {{serviceName}} from {{customerName}} on {{date}} at {{time}}.',
+        },
+      },
+      {
+        key: 'booking_followup',
+        category: 'tips',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'كيف كانت خدمتك؟', en: 'How Was Your Service?' },
+        bodyJson: {
+          ar: 'أهلًا {{customerName}}، نتمنى أن تكون خدمة {{serviceName}} نالت إعجابك. شاركينا تقييمك واحجزي جلستك القادمة!',
+          en: 'Hi {{customerName}}, we hope you enjoyed your {{serviceName}} session. Share your review and book your next visit!',
+        },
+      },
+      {
+        key: 'loyalty_nudge',
+        category: 'promotions',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'نقاطك تناديك', en: 'Your Points Are Waiting' },
+        bodyJson: {
+          ar: '{{customerName}}، باقي {{pointsNeeded}} نقطة فقط لتصلي إلى مستوى {{nextTier}}!',
+          en: '{{customerName}}, only {{pointsNeeded}} points to reach {{nextTier}} tier!',
+        },
+      },
+      // B.6/B.7 — provider submission decisions. Category 'provider' is not
+      // a preference toggle → always delivered.
+      {
+        key: 'submission_approved',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تمت الموافقة على طلبك', en: 'Your Submission Was Approved' },
+        bodyJson: {
+          ar: 'تهانينا {{providerName}}! تمت الموافقة على {{subjectName}} من قبل فريق جالكسي بيوتي.',
+          en: 'Congratulations {{providerName}}! Your {{subjectName}} was approved by the Galaxy of Beauty team.',
+        },
+      },
+      {
+        key: 'submission_rejected',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تم رفض طلبك', en: 'Your Submission Was Rejected' },
+        bodyJson: {
+          ar: 'عذرًا {{providerName}}، تم رفض {{subjectName}}.{{reason}}',
+          en: 'Sorry {{providerName}}, your {{subjectName}} was rejected.{{reason}}',
+        },
+      },
+    ] as const;
+
+    await prisma.notificationTemplate.createMany({
+      data: NOTIFICATION_TEMPLATES.map((t) => ({ ...t })),
+      skipDuplicates: true,
+    });
+    console.log(` ${NOTIFICATION_TEMPLATES.length} notification templates`);
+  } catch (err: any) {
+    console.log(`    Notification templates: ${err.message?.slice(0, 60)}`);
   }
 
   // ---- Daily beauty tips + beauty quiz (feed the mobile public screens) ----

@@ -692,6 +692,24 @@ model Notification {
   @@map("notifications")
 }
 
+// B.26 — notification framework templates. Rendered via lib/notify.ts with
+// {{placeholder}} interpolation. category maps to a notificationPreference
+// toggle (bookingReminders / promotions / tips / community).
+model NotificationTemplate {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique // e.g. 'booking_created', 'booking_reminder'
+  category  String   // bookingReminders | promotions | tips | community
+  channels  String[] // default channels: ['in_app','push','sms','email']
+  titleJson Json     // { ar: "...", en: "..." } with {{placeholders}}
+  bodyJson  Json     // { ar: "...", en: "..." } with {{placeholders}}
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category, isActive])
+  @@map("notification_templates")
+}
+
 // =============================================================================
 // Waitlist
 // =============================================================================
@@ -1396,12 +1414,42 @@ model BeautyPackage {
   discountPercent Int      @default(15) // % off vs individual booking
   isActive        Boolean  @default(true)
   sortOrder       Int      @default(0)
+  // B.6 — provider-proposed packages behind an approval gate.
+  // Admin-created packages are created APPROVED. DRAFT → PENDING_REVIEW →
+  // APPROVED | REJECTED for proposals; edits to a live proposal send it
+  // back to PENDING_REVIEW.
+  status          String   @default("APPROVED")
+  createdByUserId Int?     // null = admin-created
+  reviewNotes     String?
+  reviewedBy      Int?
+  reviewedAt      DateTime?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
   services        BeautyPackageService[]
 
+  @@index([status, isActive])
   @@map("beauty_packages")
+}
+
+// B.6/B.7 — generic provider submission review queue (packages, promotions,
+// vendor products). Admin approves/rejects with notes; the provider gets a
+// notification either way. payload holds the submitted entity snapshot.
+model ProviderSubmission {
+  id          Int      @id @default(autoincrement())
+  providerId  Int      // submitting provider's User.id (no FK — generic)
+  kind        String   // 'package' | 'promotion' | 'product'
+  status      String   @default("PENDING_REVIEW") // PENDING_REVIEW | APPROVED | REJECTED
+  payload     Json     // submitted entity snapshot
+  reviewNotes String?
+  reviewedBy  Int?
+  reviewedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([kind, status])
+  @@index([providerId, createdAt])
+  @@map("provider_submissions")
 }
 
 model BeautyPackageService {

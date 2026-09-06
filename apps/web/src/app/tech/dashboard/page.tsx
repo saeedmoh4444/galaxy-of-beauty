@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import {
@@ -7,6 +8,7 @@ import {
   ErrorAlert,
   EmptyState,
   Button,
+  Input,
   formatCurrency,
   StatCard,
   PageContainer,
@@ -16,6 +18,13 @@ import {
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import { localize, type TranslationKey } from '@galaxy/shared';
+
+const PACKAGE_STATUS_LABEL: Record<string, TranslationKey> = {
+  PENDING_REVIEW: 'tech.packages.status-pending',
+  APPROVED: 'tech.packages.status-approved',
+  REJECTED: 'tech.packages.status-rejected',
+};
 
 export default function TechDashboardPage(): JSX.Element {
   const { t, locale } = useLocale();
@@ -35,6 +44,35 @@ export default function TechDashboardPage(): JSX.Element {
       pending.refetch();
     },
   });
+
+  // B.6 — My Packages (propose + status list).
+  const techId = (profile?.technician?.id ?? 0) as number;
+  const myServicesQ = api.technicians.getServices.useQuery(
+    { techId },
+    { enabled: isAuthenticated && techId > 0 },
+  );
+  const myPackagesQ = api.beautyPackages.myPackages.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const proposeMut = api.beautyPackages.propose.useMutation({
+    onSuccess: () => {
+      setShowPackageForm(false);
+      setPkgNameAr('');
+      setPkgNameEn('');
+      setPkgDiscount(15);
+      setSelectedServiceIds([]);
+      myPackagesQ.refetch();
+    },
+  });
+  const [showPackageForm, setShowPackageForm] = useState(false);
+  const [pkgNameAr, setPkgNameAr] = useState('');
+  const [pkgNameEn, setPkgNameEn] = useState('');
+  const [pkgDiscount, setPkgDiscount] = useState(15);
+  const [selectedServiceIds, setSelectedServiceIds] = useState<number[]>([]);
+  const myPackages =
+    (myPackagesQ.data as unknown as Array<Record<string, unknown>> | undefined) ?? [];
+  const myServices =
+    (myServicesQ.data as unknown as Array<Record<string, unknown>> | undefined) ?? [];
 
   // technicianEarnings returns { dailyEarnings, totalEarnings, ... } — the
   // today/week/month summaries below were never part of that shape, so the
@@ -121,6 +159,125 @@ export default function TechDashboardPage(): JSX.Element {
             <Button variant="outline">{t('tech.dashboard.calendar')}</Button>
           </Link>
         </div>
+
+        {/* B.6 — My Packages (provider-proposed, admin-approved) */}
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-text-primary">{t('tech.packages.title')}</h2>
+          <Button size="sm" variant="outline" onClick={() => setShowPackageForm(!showPackageForm)}>
+            {t('tech.packages.propose')}
+          </Button>
+        </div>
+        {showPackageForm && (
+          <Card padding="md">
+            <div className="space-y-3">
+              <Input
+                label={t('tech.packages.name-ar')}
+                value={pkgNameAr}
+                onChange={(e) => setPkgNameAr(e.target.value)}
+              />
+              <Input
+                label={t('tech.packages.name-en')}
+                value={pkgNameEn}
+                onChange={(e) => setPkgNameEn(e.target.value)}
+              />
+              <Input
+                label={t('tech.packages.discount')}
+                type="number"
+                value={pkgDiscount}
+                onChange={(e) => setPkgDiscount(Number(e.target.value))}
+              />
+              <div>
+                <p className="mb-2 text-sm text-text-secondary">
+                  {t('tech.packages.select-services')}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {myServices.map((mapping: Record<string, unknown>) => {
+                    const svc = mapping.service as Record<string, unknown>;
+                    const sid = svc?.id as number;
+                    const active = selectedServiceIds.includes(sid);
+                    return (
+                      <button
+                        key={sid}
+                        onClick={() =>
+                          setSelectedServiceIds(
+                            active
+                              ? selectedServiceIds.filter((i) => i !== sid)
+                              : [...selectedServiceIds, sid],
+                          )
+                        }
+                        className={`rounded-full border px-3 py-1 text-xs ${
+                          active
+                            ? 'border-brand-500 bg-brand-50 text-brand-700'
+                            : 'border-gray-300 text-text-secondary'
+                        }`}
+                      >
+                        {localize(svc?.titleJson, locale)}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+              {proposeMut.isError && (
+                <p className="text-sm text-red-600">{proposeMut.error.message}</p>
+              )}
+              <Button
+                onClick={() =>
+                  proposeMut.mutate({
+                    nameAr: pkgNameAr.trim(),
+                    nameEn: pkgNameEn.trim() || pkgNameAr.trim(),
+                    discountPercent: pkgDiscount,
+                    serviceIds: selectedServiceIds,
+                  })
+                }
+                loading={proposeMut.isPending}
+                disabled={!pkgNameAr.trim() || selectedServiceIds.length < 2}
+              >
+                {t('button.save')}
+              </Button>
+            </div>
+          </Card>
+        )}
+        {!myPackagesQ.isLoading && myPackages.length === 0 ? (
+          <EmptyState title={t('tech.packages.empty')} />
+        ) : (
+          <div className="space-y-3">
+            {myPackages.map((p: Record<string, unknown>) => (
+              <Card key={p.id as number} padding="md">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold text-text-primary">
+                      {((p.nameJson as Record<string, string>) ?? {})['ar']}
+                    </p>
+                    <p className="text-sm text-text-secondary">
+                      −{p.discountPercent as number}% ·{' '}
+                      {(p.services as unknown[] | undefined)?.length ?? 0}{' '}
+                      {t('tech.packages.services')}
+                    </p>
+                  </div>
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-medium ${
+                      p.status === 'APPROVED'
+                        ? 'bg-green-100 text-green-700'
+                        : p.status === 'REJECTED'
+                          ? 'bg-red-100 text-red-700'
+                          : 'bg-amber-100 text-amber-700'
+                    }`}
+                  >
+                    {t(
+                      PACKAGE_STATUS_LABEL[(p.status as string) ?? ''] ??
+                        'tech.packages.status-pending',
+                    )}
+                  </span>
+                </div>
+                {p.status === 'REJECTED' && p.reviewNotes ? (
+                  <p className="mt-2 text-xs text-red-600">
+                    {t('tech.packages.reject-reason', { reason: p.reviewNotes as string })}
+                  </p>
+                ) : null}
+              </Card>
+            ))}
+          </div>
+        )}
 
         {/* Pending Bookings */}
         <h2 className="text-lg font-semibold text-text-primary">
