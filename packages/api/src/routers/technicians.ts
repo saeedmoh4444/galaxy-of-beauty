@@ -234,6 +234,60 @@ export const technicianRouter = router({
     }),
 
   /**
+   * updateProfile — update the authenticated technician's profile fields
+   * (B.8: previously the web form stubbed this — city/area/bio/buffer/eco
+   * were decorative). Technician only. Partial updates: omitted fields are
+   * left untouched, and bioAr/bioEn merge into bioJson per-language.
+   */
+  updateProfile: technicianProcedure
+    .input(
+      z
+        .object({
+          city: z.string().min(1).max(100).optional(),
+          area: z.string().min(1).max(100).optional(),
+          bioAr: z.string().max(2000).optional(),
+          bioEn: z.string().max(2000).optional(),
+          bufferMinutes: z.number().int().min(0).max(180).optional(),
+          isEcoFriendly: z.boolean().optional(),
+        })
+        .refine((v) => Object.keys(v).length > 0, {
+          message: 'At least one field is required',
+        }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const technician = await prisma.technician.findUnique({
+        where: { userId: ctx.user.id },
+      });
+      if (!technician) {
+        throw notFound('Technician profile');
+      }
+
+      const data: {
+        city?: string;
+        area?: string;
+        bioJson?: { ar?: string; en?: string };
+        bufferMinutes?: number;
+        isEcoFriendly?: boolean;
+      } = {};
+      if (input.city !== undefined) data.city = input.city;
+      if (input.area !== undefined) data.area = input.area;
+      if (input.bufferMinutes !== undefined) data.bufferMinutes = input.bufferMinutes;
+      if (input.isEcoFriendly !== undefined) data.isEcoFriendly = input.isEcoFriendly;
+      if (input.bioAr !== undefined || input.bioEn !== undefined) {
+        const current = (technician.bioJson ?? {}) as { ar?: string; en?: string };
+        data.bioJson = {
+          ar: input.bioAr ?? current.ar,
+          en: input.bioEn ?? current.en,
+        };
+      }
+
+      return prisma.technician.update({
+        where: { userId: ctx.user.id },
+        data,
+      });
+    }),
+
+  /**
    * submitKyc — submit KYC documents for review.
    * Technician only.
    * Sets kycStatus to SUBMITTED and stores the uploaded documents.
