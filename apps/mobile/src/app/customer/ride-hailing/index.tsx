@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface RideProvider {
   key: string;
@@ -21,8 +22,9 @@ interface BookingResult {
 
 export default function RideHailingScreen(): JSX.Element {
   const { t, locale } = useLocale();
+  const isAuthed = useAuthState();
   const [result, setResult] = useState<BookingResult | null>(null);
-  const providersQ = trpc.rideHailing.providers.useQuery();
+  const providersQ = trpc.rideHailing.providers.useQuery(undefined, { enabled: isAuthed });
   const providers: RideProvider[] =
     (providersQ.data as unknown as RideProvider[] | undefined) ?? [];
 

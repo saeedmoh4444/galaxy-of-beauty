@@ -1,7 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 const OCCASIONS = [
   { key: 'birthday', emoji: '', name: 'عيد ميلاد' },
@@ -14,7 +15,8 @@ const OCCASIONS = [
 
 export default function BeautyWishlistGiftsScreen(): JSX.Element {
   const { t } = useLocale();
-  const q = trpc.wishlist.list.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.wishlist.list.useQuery(undefined, { enabled: isAuthed });
   const occasionLabels: Record<string, string> = {
     birthday: t('beautyWishlistGifts.occasion-birthday'),
     eid: t('beautyWishlistGifts.occasion-eid'),

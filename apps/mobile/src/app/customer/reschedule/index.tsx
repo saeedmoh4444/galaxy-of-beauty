@@ -13,6 +13,7 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { localize } from '@galaxy/shared';
 
 interface Booking {
@@ -28,7 +29,11 @@ interface BookingsData {
 
 export default function RescheduleScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const bookingsQ = trpc.bookings.list.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
+  const isAuthed = useAuthState();
+  const bookingsQ = trpc.bookings.list.useQuery(
+    { page: 1, limit: LARGE_PAGE_SIZE },
+    { enabled: isAuthed },
+  );
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [newDate, setNewDate] = useState('');
   const [newTime, setNewTime] = useState('');

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface BoxProduct {
   id: number;
@@ -12,9 +13,10 @@ interface BoxProduct {
 }
 
 export default function BoxBuilderScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
   const [selected, setSelected] = useState<Set<number>>(new Set());
-  const q = trpc.boxBuilder.catalog.useQuery();
+  const q = trpc.boxBuilder.catalog.useQuery(undefined, { enabled: isAuthed });
   const products: BoxProduct[] = (q.data as unknown as BoxProduct[] | undefined) ?? [];
 
   const toggle = (id: number) => {

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface FranchiseDashboard {
   totalRevenue?: number;
@@ -19,9 +20,10 @@ interface FranchiseLocation {
 }
 
 export default function FranchisePortalScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
-  const dashQ = trpc.franchisePortal.dashboard.useQuery();
-  const locationsQ = trpc.franchisePortal.locations.useQuery();
+  const dashQ = trpc.franchisePortal.dashboard.useQuery(undefined, { enabled: isAuthed });
+  const locationsQ = trpc.franchisePortal.locations.useQuery(undefined, { enabled: isAuthed });
   if (dashQ.isLoading || locationsQ.isLoading) return <SkeletonList count={4} />;
   const dash = dashQ.data as unknown as FranchiseDashboard | null;
   const locations: FranchiseLocation[] =

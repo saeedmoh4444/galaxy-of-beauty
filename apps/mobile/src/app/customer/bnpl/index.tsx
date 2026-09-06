@@ -1,8 +1,9 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface BnplProvider {
   key: string;
@@ -16,8 +17,9 @@ interface BnplPlanResult {
 
 export default function BnplScreen(): JSX.Element {
   const { t } = useLocale();
-  const providersQ = trpc.bnpl.providers.useQuery();
-  const eligibilityQ = trpc.bnpl.eligibility.useQuery();
+  const isAuthed = useAuthState();
+  const providersQ = trpc.bnpl.providers.useQuery(undefined, { enabled: isAuthed });
+  const eligibilityQ = trpc.bnpl.eligibility.useQuery(undefined, { enabled: isAuthed });
   const [provider, setProvider] = useState('tabby');
   const [amount] = useState(500);
   const [inst] = useState(4);

@@ -37,7 +37,7 @@ export const mobileTechMessages = {
   },
 
   // ---- Dashboard ----
-  'mobile.tech.dashboard.title': { ar: ' لوحة الفنية', en: 'Technician Dashboard' },
+  'mobile.tech.dashboard.title': { ar: ' لوحة مقدمة الخدمة', en: 'Service Provider Dashboard' },
   'mobile.tech.dashboard.pending': { ar: ' معلقة', en: 'Pending' },
   'mobile.tech.dashboard.completed': { ar: ' مكتملة', en: 'Completed' },
   'mobile.tech.dashboard.rating': { ar: ' التقييم', en: 'Rating' },

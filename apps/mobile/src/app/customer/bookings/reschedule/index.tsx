@@ -4,6 +4,7 @@ import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface BookingRow {
   id: number;
@@ -16,15 +17,19 @@ interface RescheduleResult {
 }
 
 export default function RescheduleScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const [selected, setSelected] = useState<number | null>(null);
   const [result, setResult] = useState<RescheduleResult | null>(null);
   const { locale, t } = useLocale();
 
-  const bookingsQ = trpc.bookings.list.useQuery({
-    status: 'ACCEPTED',
-    page: 1,
-    limit: LARGE_PAGE_SIZE,
-  });
+  const bookingsQ = trpc.bookings.list.useQuery(
+    {
+      status: 'ACCEPTED',
+      page: 1,
+      limit: LARGE_PAGE_SIZE,
+    },
+    { enabled: isAuthed },
+  );
   const bookings: BookingRow[] =
     (bookingsQ.data as unknown as { bookings?: BookingRow[] })?.bookings ?? [];
 

@@ -1,12 +1,24 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
+import {
+  Card,
+  GridSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  Input,
+  Modal,
+  useAuth,
+} from '@galaxy/ui';
 import { useState } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminPackagesPage(): JSX.Element {
   const { t } = useLocale();
-  const { data, isLoading, isError, refetch } = api.beautyPackages.listAll.useQuery();
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading, isError, refetch } = api.beautyPackages.listAll.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const packages = data ?? [];
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState({ nameAr: '', nameEn: '', discountPercent: 15, serviceIds: '' });

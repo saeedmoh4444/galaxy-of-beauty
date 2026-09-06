@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface SalonDashboard {
   todayBookings?: number;
@@ -17,8 +18,9 @@ interface SalonStaff {
 
 export default function SalonManagementScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const dashQ = trpc.salonManagement.dashboard.useQuery();
-  const staffQ = trpc.salonManagement.staff.useQuery();
+  const isAuthed = useAuthState();
+  const dashQ = trpc.salonManagement.dashboard.useQuery(undefined, { enabled: isAuthed });
+  const staffQ = trpc.salonManagement.staff.useQuery(undefined, { enabled: isAuthed });
   const dash = dashQ.data as SalonDashboard | null;
   const staff: SalonStaff[] = (staffQ.data as SalonStaff[] | undefined) ?? [];
   if (dashQ.isLoading || staffQ.isLoading) return <SkeletonList count={4} />;

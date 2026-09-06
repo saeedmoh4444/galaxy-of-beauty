@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useToast } from '@/components/Toast';
 import { useLocale } from '@/components/LocaleProvider';
@@ -25,11 +26,12 @@ const COLORS = {
 
 export default function WalletTopUpScreen(): JSX.Element {
   const { t } = useLocale();
+  const isAuthed = useAuthState();
   const [amount, setAmount] = useState('');
   const [selected, setSelected] = useState<number | null>(null);
   const { showToast } = useToast();
   const utils = trpc.useUtils();
-  const balance = trpc.wallet.getBalance.useQuery();
+  const balance = trpc.wallet.getBalance.useQuery(undefined, { enabled: isAuthed });
 
   const topUp = trpc.wallet.topUp.useMutation({
     onSuccess: (res) => {

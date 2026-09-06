@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -52,7 +53,10 @@ const CONSULTANTS = [
 
 export default function VirtualConsultationScreen(): JSX.Element {
   const { t } = useLocale();
-  const bookingsQ = trpc.virtualConsultation.myConsultations.useQuery();
+  const isAuthed = useAuthState();
+  const bookingsQ = trpc.virtualConsultation.myConsultations.useQuery(undefined, {
+    enabled: isAuthed,
+  });
   const [selected, setSelected] = useState<string | null>(null);
   const [slot, setSlot] = useState<string | null>(null);
   const [booked, setBooked] = useState(false);

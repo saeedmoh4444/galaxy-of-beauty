@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
-import { Card, Button, Input } from '@galaxy/ui';
+import { Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -13,6 +13,12 @@ import { localize } from '@galaxy/shared';
 function num(v: unknown, fallback = 0): number {
   return typeof v === 'number' ? v : Number(v) || fallback;
 }
+
+// 08:00 → 20:30 in 30-minute steps
+const TIME_SLOTS: string[] = Array.from({ length: 26 }, (_, i) => {
+  const mins = 480 + i * 30;
+  return `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
+});
 
 export default function CreateBookingPage(): JSX.Element {
   const { t, locale } = useLocale();
@@ -25,9 +31,14 @@ export default function CreateBookingPage(): JSX.Element {
   const [serviceId, setServiceId] = useState<number | undefined>(preselectedServiceId);
   const [variantId, setVariantId] = useState<number | undefined>();
   const [addressId, setAddressId] = useState<number | undefined>();
-  const [promoCode, setPromoCode] = useState('');
   const [notes, setNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  // Local-date defaults: tomorrow at 10:00. startAt is computed from these
+  // in handleSubmit (local time, not UTC) so the user controls the slot.
+  const [bookingDate, setBookingDate] = useState<string>(
+    new Date(Date.now() + 86400000).toISOString().slice(0, 10),
+  );
+  const [bookingTime, setBookingTime] = useState<string>('10:00');
 
   const { data: servicesData } = api.services.list.useQuery({ page: 1, limit: 100 });
   const { data: serviceDetail } = api.services.getById.useQuery(
@@ -72,6 +83,15 @@ export default function CreateBookingPage(): JSX.Element {
       return;
     }
 
+    // Compose the slot from the user's local date + time selection.
+    const [h, m] = bookingTime.split(':').map(Number);
+    const start = new Date(`${bookingDate}T00:00:00`);
+    start.setHours(h, m, 0, 0);
+    const durationMin = num(
+      svc ? (svc as unknown as { durationMin?: number }).durationMin : 60,
+      60,
+    );
+
     createMut.mutate({
       serviceId,
       variantId,
@@ -79,12 +99,8 @@ export default function CreateBookingPage(): JSX.Element {
       technicianId,
       idempotencyKey: crypto.randomUUID(),
       notes: notes || undefined,
-      startAt: new Date(Date.now() + 86400000).toISOString(),
-      endAt: new Date(
-        Date.now() +
-          86400000 +
-          num(svc ? (svc as unknown as { durationMin?: number }).durationMin : 60, 60) * 60000,
-      ).toISOString(),
+      startAt: start.toISOString(),
+      endAt: new Date(start.getTime() + durationMin * 60000).toISOString(),
     });
   };
 
@@ -187,6 +203,39 @@ export default function CreateBookingPage(): JSX.Element {
               </div>
             )}
 
+            <div className="mb-4 grid grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="bc-date" className="mb-2 block text-sm text-text-secondary">
+                  {t('booking.choose-date')}
+                </label>
+                <input
+                  id="bc-date"
+                  type="date"
+                  min={new Date(Date.now() + 86400000).toISOString().slice(0, 10)}
+                  value={bookingDate}
+                  onChange={(e) => setBookingDate(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                />
+              </div>
+              <div>
+                <label htmlFor="bc-time" className="mb-2 block text-sm text-text-secondary">
+                  {t('booking.choose-time')}
+                </label>
+                <select
+                  id="bc-time"
+                  value={bookingTime}
+                  onChange={(e) => setBookingTime(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                >
+                  {TIME_SLOTS.map((slot) => (
+                    <option key={slot} value={slot}>
+                      {slot}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
             <div className="mb-4">
               <label htmlFor="bc-address" className="mb-2 block text-sm text-text-secondary">
                 {t('booking.choose-address')}
@@ -204,18 +253,6 @@ export default function CreateBookingPage(): JSX.Element {
                   </option>
                 ))}
               </select>
-            </div>
-
-            <div className="mb-4">
-              <label htmlFor="bc-promo" className="mb-2 block text-sm text-text-secondary">
-                {t('booking.promo-code')}
-              </label>
-              <Input
-                id="bc-promo"
-                value={promoCode}
-                onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                placeholder={t('booking.promo-example')}
-              />
             </div>
 
             <div className="mb-4">
@@ -269,6 +306,12 @@ export default function CreateBookingPage(): JSX.Element {
                 <span className="text-text-secondary">{t('booking.duration')}</span>
                 <span>
                   {num((svc as unknown as { durationMin?: unknown })?.durationMin)} {t('misc.min')}
+                </span>
+              </div>
+              <div className="flex justify-between border-b pb-2">
+                <span className="text-text-secondary">{t('booking.choose-time')}</span>
+                <span className="font-semibold">
+                  {t('booking.date-time-confirm', { date: bookingDate, time: bookingTime })}
                 </span>
               </div>
             </div>

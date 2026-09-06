@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/trpc-react';
+import { useAuthState } from '@/hooks/useAuthState';
 import { useState } from 'react';
 import { MAX_LIST_SIZE } from '@galaxy/ui';
 import { localize } from '@galaxy/shared';
@@ -42,6 +43,27 @@ interface AddressItem {
   city?: string;
 }
 
+// 08:00 → 20:30 in 30-minute steps
+const TIME_SLOTS: string[] = Array.from({ length: 26 }, (_, i) => {
+  const mins = 480 + i * 30;
+  return `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
+});
+
+// Next 14 days, local-date ISO keys + locale-aware short labels.
+function buildNextDays(locale: 'ar' | 'en'): Array<{ iso: string; label: string }> {
+  const fmt = new Intl.DateTimeFormat(locale === 'ar' ? 'ar-SA' : 'en-GB', {
+    weekday: 'short',
+    day: 'numeric',
+  });
+  return Array.from({ length: 14 }, (_, i) => {
+    const d = new Date(Date.now() + (i + 1) * 86400000);
+    const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(
+      d.getDate(),
+    ).padStart(2, '0')}`;
+    return { iso, label: fmt.format(d) };
+  });
+}
+
 export default function CreateBookingScreen() {
   const router = useRouter();
   const { locale, t } = useLocale();
@@ -50,11 +72,17 @@ export default function CreateBookingScreen() {
   const [serviceId, setServiceId] = useState<number | undefined>();
   const [variantId, setVariantId] = useState<number | undefined>();
   const [addressId, setAddressId] = useState<number | undefined>();
-  const [promoCode, setPromoCode] = useState('');
   const [notes, setNotes] = useState('');
+  // Local-date defaults: tomorrow at 10:00. startAt is composed from these
+  // in handleSubmit (local time, not UTC) so the user controls the slot.
+  const [bookingDate, setBookingDate] = useState<string>(buildNextDays(locale)[0]?.iso ?? '');
+  const [bookingTime, setBookingTime] = useState<string>('10:00');
+  const NEXT_DAYS = buildNextDays(locale);
 
+  const isAuthed = useAuthState();
   const servicesQ = trpc.services.list.useQuery({ page: 1, limit: MAX_LIST_SIZE });
-  const addressesQ = trpc.addresses.list.useQuery();
+  // Guests have no address book — gate to avoid a 401 on mount.
+  const addressesQ = trpc.addresses.list.useQuery(undefined, { enabled: isAuthed });
   const svcQ = trpc.services.getById.useQuery({ id: serviceId! }, { enabled: !!serviceId });
 
   const services: ServiceListItem[] =
@@ -86,6 +114,12 @@ export default function CreateBookingScreen() {
       return;
     }
 
+    // Compose the slot from the user's local date + time selection.
+    const [h, m] = bookingTime.split(':').map(Number);
+    const start = new Date(`${bookingDate}T00:00:00`);
+    start.setHours(h, m, 0, 0);
+    const durationMin = svc?.durationMin ?? 60;
+
     createMut.mutate({
       serviceId,
       variantId,
@@ -93,8 +127,8 @@ export default function CreateBookingScreen() {
       technicianId,
       idempotencyKey: `mob_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
       notes: notes || undefined,
-      startAt: new Date(Date.now() + 86400000).toISOString(),
-      endAt: new Date(Date.now() + 86400000 + (svc?.durationMin ?? 60) * 60000).toISOString(),
+      startAt: start.toISOString(),
+      endAt: new Date(start.getTime() + durationMin * 60000).toISOString(),
     });
   };
 
@@ -212,15 +246,37 @@ export default function CreateBookingScreen() {
           </View>
 
           <View style={styles.field}>
-            <Text style={styles.label}>{t('mobile.promo')}</Text>
-            <TextInput
-              style={styles.input}
-              value={promoCode}
-              onChangeText={(t) => setPromoCode(t.toUpperCase())}
-              placeholder={t('booking.promo-example')}
-              placeholderTextColor="#9ca3af"
-              autoCapitalize="characters"
-            />
+            <Text style={styles.label}>{t('booking.choose-date')}</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipRow}>
+              {NEXT_DAYS.map((d) => (
+                <TouchableOpacity
+                  key={d.iso}
+                  style={[styles.chip, bookingDate === d.iso && styles.chipActive]}
+                  onPress={() => setBookingDate(d.iso)}
+                >
+                  <Text style={[styles.chipText, bookingDate === d.iso && { color: '#fff' }]}>
+                    {d.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+
+          <View style={styles.field}>
+            <Text style={styles.label}>{t('booking.choose-time')}</Text>
+            <View style={styles.timeGrid}>
+              {TIME_SLOTS.map((slot) => (
+                <TouchableOpacity
+                  key={slot}
+                  style={[styles.chip, bookingTime === slot && styles.chipActive]}
+                  onPress={() => setBookingTime(slot)}
+                >
+                  <Text style={[styles.chipText, bookingTime === slot && { color: '#fff' }]}>
+                    {slot}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
 
           <View style={styles.field}>
@@ -265,6 +321,12 @@ export default function CreateBookingScreen() {
               <Text style={styles.summaryLabel}>{t('booking.duration')}</Text>
               <Text style={styles.summaryValue}>
                 {svc.durationMin} {t('misc.min')}
+              </Text>
+            </View>
+            <View style={styles.summaryRow}>
+              <Text style={styles.summaryLabel}>{t('booking.choose-time')}</Text>
+              <Text style={styles.summaryValue}>
+                {t('booking.date-time-confirm', { date: bookingDate, time: bookingTime })}
               </Text>
             </View>
           </View>
@@ -349,6 +411,7 @@ const styles = StyleSheet.create({
   field: { marginBottom: 16 },
   label: { fontSize: 13, fontWeight: '600', color: '#6b7280', textAlign: 'right', marginBottom: 6 },
   chipRow: { flexDirection: 'row', gap: 6 },
+  timeGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   chip: {
     paddingHorizontal: 14,
     paddingVertical: 8,

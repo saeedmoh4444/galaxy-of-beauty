@@ -1,4 +1,4 @@
-import { getServerCaller } from '@/lib/server-trpc';
+import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { ServicesClient } from './ServicesClient';
 import type { ServicesPageData } from './ServicesClient';
 
@@ -16,9 +16,9 @@ export default async function ServicesPage(): Promise<JSX.Element> {
       caller.categories.list(),
     ]);
 
-    data.initialServices = svcResult.items;
+    data.initialServices = serializeForClient(svcResult.items);
     data.initialTotal = svcResult.total;
-    data.initialCategories = categories;
+    data.initialCategories = serializeForClient(categories);
   } catch {
     // Client will retry with client-side queries on error
   }

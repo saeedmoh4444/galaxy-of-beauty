@@ -10,6 +10,7 @@ import {
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface InspirationPin {
   id?: number;
@@ -19,7 +20,8 @@ interface InspirationPin {
 
 export default function InspirationScreen(): JSX.Element {
   const { t } = useLocale();
-  const q = trpc.inspiration.list.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.inspiration.list.useQuery(undefined, { enabled: isAuthed });
   const pins: InspirationPin[] = (q.data as unknown as InspirationPin[] | undefined) ?? [];
   const delMut = trpc.inspiration.delete.useMutation({
     onSuccess: () => {

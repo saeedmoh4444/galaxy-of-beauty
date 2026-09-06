@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -24,8 +25,9 @@ interface MyWaitlist {
 
 export default function TechWaitlistScreen(): JSX.Element {
   const { t } = useLocale();
+  const isAuthed = useAuthState();
   const popularQ = trpc.techWaitlist.popular.useQuery();
-  const myListQ = trpc.techWaitlist.myWaitlists.useQuery();
+  const myListQ = trpc.techWaitlist.myWaitlists.useQuery(undefined, { enabled: isAuthed });
   const popular: WaitlistTech[] = (popularQ.data as unknown as WaitlistTech[] | undefined) ?? [];
   const myList: MyWaitlist[] = (myListQ.data as unknown as MyWaitlist[] | undefined) ?? [];
 

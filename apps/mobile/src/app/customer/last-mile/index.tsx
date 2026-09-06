@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface LastMileProduct {
   id: number;
@@ -20,9 +21,10 @@ interface OrderResult {
 
 export default function LastMileScreen(): JSX.Element {
   const { t } = useLocale();
+  const isAuthed = useAuthState();
   const [result, setResult] = useState<OrderResult | null>(null);
 
-  const productsQ = trpc.lastMileDelivery.products.useQuery();
+  const productsQ = trpc.lastMileDelivery.products.useQuery(undefined, { enabled: isAuthed });
   const products: LastMileProduct[] = (productsQ.data as LastMileProduct[] | undefined) ?? [];
 
   const orderMut = trpc.lastMileDelivery.order.useMutation({

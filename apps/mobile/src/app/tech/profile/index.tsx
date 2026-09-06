@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -13,7 +14,8 @@ const COLORS = {
 
 export default function TechProfileScreen(): JSX.Element {
   const { t } = useLocale();
-  const profile = trpc.users.getMe.useQuery() ?? {
+  const isAuthed = useAuthState();
+  const profile = trpc.users.getMe.useQuery(undefined, { enabled: isAuthed }) ?? {
     data: null,
     isLoading: false,
     isError: false,

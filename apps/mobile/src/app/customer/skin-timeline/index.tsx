@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -13,8 +14,9 @@ interface SkinEntry {
 
 export default function SkinTimelineScreen(): JSX.Element {
   const { t, locale } = useLocale();
+  const isAuthed = useAuthState();
   const [compareMode, setCompareMode] = useState(false);
-  const entriesQ = trpc.skinDiary.entries.useQuery();
+  const entriesQ = trpc.skinDiary.entries.useQuery(undefined, { enabled: isAuthed });
   const entries: SkinEntry[] = (entriesQ.data as unknown as SkinEntry[] | undefined) ?? [];
 
   return (

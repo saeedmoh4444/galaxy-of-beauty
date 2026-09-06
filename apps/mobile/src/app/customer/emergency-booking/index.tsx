@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { localize } from '@galaxy/shared';
 
 interface EmergencyService {
@@ -28,6 +29,7 @@ interface BookingResult {
 }
 
 export default function EmergencyBookingScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { locale, t } = useLocale();
   const [selectedSvc, setSelectedSvc] = useState<number | null>(null);
   const [result, setResult] = useState<BookingResult | null>(null);
@@ -43,7 +45,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
   );
   const availability = (availabilityQ.data as AvailabilityResult | undefined) ?? null;
 
-  const addressesQ = trpc.addresses.list.useQuery();
+  const addressesQ = trpc.addresses.list.useQuery(undefined, { enabled: isAuthed });
 
   const createMut = trpc.emergencyBooking.create.useMutation({
     onSuccess: (d) => setResult(d as unknown as BookingResult),

@@ -10,8 +10,9 @@ import {
 import { useState } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 const CATS: Record<string, string> = {
   hair: '‍️ شعر',
@@ -33,7 +34,8 @@ interface BeautyReminder {
 
 export default function BeautyRemindersScreen(): JSX.Element {
   const { locale, t } = useLocale();
-  const q = trpc.beautyReminders.myReminders.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.beautyReminders.myReminders.useQuery(undefined, { enabled: isAuthed });
   const catLabels: Record<string, string> = {
     hair: t('beautyReminders.cat-hair'),
     nails: t('beautyReminders.cat-nails'),

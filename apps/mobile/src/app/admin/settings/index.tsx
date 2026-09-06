@@ -1,7 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface PlatformConfig {
   platformFee?: string;
@@ -16,8 +17,9 @@ interface CashbackInfo {
 
 export default function AdminSettingsScreen(): JSX.Element {
   const { t } = useLocale();
+  const isAuthed = useAuthState();
   const settingsQ = trpc.platform.getSettings.useQuery();
-  const cashbackQ = trpc.cashback.info.useQuery();
+  const cashbackQ = trpc.cashback.info.useQuery(undefined, { enabled: isAuthed });
   const config: PlatformConfig = {
     ...((settingsQ.data as unknown as PlatformConfig | null) ?? {}),
     cashbackRate: (cashbackQ.data as unknown as CashbackInfo | null)?.rate,

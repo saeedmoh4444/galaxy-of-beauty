@@ -5,6 +5,7 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { localize } from '@galaxy/shared';
 
 const TIER_COLORS: Record<string, string[]> = {
@@ -48,9 +49,13 @@ interface TransactionsResult {
 
 export default function RewardsMarketplaceScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const accountQ = trpc.loyalty.myAccount.useQuery();
+  const isAuthed = useAuthState();
+  const accountQ = trpc.loyalty.myAccount.useQuery(undefined, { enabled: isAuthed });
   const rewardsQ = trpc.loyalty.rewards.useQuery();
-  const txsQ = trpc.loyalty.myTransactions.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
+  const txsQ = trpc.loyalty.myTransactions.useQuery(
+    { page: 1, limit: LARGE_PAGE_SIZE },
+    { enabled: isAuthed },
+  );
   const [redeemed, setRedeemed] = useState<number | null>(null);
 
   const redeemMut = trpc.loyalty.redeem.useMutation({

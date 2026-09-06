@@ -33,18 +33,22 @@ import { localize } from '@galaxy/shared';
 export default function CustomerDashboardPage(): JSX.Element {
   const { t, locale } = useLocale();
   const { isAuthenticated } = useAuth();
-  const bookings = api.bookings.list.useQuery({ limit: 3 });
-  const insights = api.analytics.customerInsights.useQuery();
-  const budget = api.beautyBudget.get.useQuery();
-  const pins = api.inspiration.list.useQuery();
-  const registries = api.giftRegistry.myRegistries.useQuery();
+  const bookings = api.bookings.list.useQuery({ limit: 3 }, { enabled: isAuthenticated });
+  const insights = api.analytics.customerInsights.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const budget = api.beautyBudget.get.useQuery(undefined, { enabled: isAuthenticated });
+  const pins = api.inspiration.list.useQuery(undefined, { enabled: isAuthenticated });
+  const registries = api.giftRegistry.myRegistries.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   // New wired components — kindness gated on the real session (an
   // expired cookie still passes the middleware and would error-banner).
   const kindnessStatus = api.kindnessPoints.getStatus.useQuery(undefined, {
     enabled: isAuthenticated,
   });
-  const circles = api.beautyCircles.list.useQuery({ limit: 3 });
-  const savingsGoals = api.savingsGoals.list.useQuery();
+  const circles = api.beautyCircles.list.useQuery({ limit: 3 }, { enabled: isAuthenticated });
+  const savingsGoals = api.savingsGoals.list.useQuery(undefined, { enabled: isAuthenticated });
   // Budget services under 100 SAR
   const budgetServices = api.services.list.useQuery({
     limit: 5,
@@ -58,7 +62,7 @@ export default function CustomerDashboardPage(): JSX.Element {
       <PageContainer width="wide">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-text-primary">{t('dashboard.title')}</h1>
-          <RebookReminder />
+          <RebookReminder enabled={isAuthenticated} />
           <Link href="/self-care">
             <Button variant="outline" size="sm">
               <Icon name="sparkle" size="sm" />

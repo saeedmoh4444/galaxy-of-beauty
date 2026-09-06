@@ -1,8 +1,9 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 const CATEGORIES = [
   { key: 'hair', emoji: '‍️', name: 'الشعر', budget: 200, color: '#ec4899' },
@@ -15,8 +16,12 @@ const CATEGORIES = [
 
 export default function BeautyBudgetPlannerScreen(): JSX.Element {
   const { t } = useLocale();
+  const isAuthed = useAuthState();
   // Mirrors the web page: myBudgets for the July 2026 month.
-  const budgets = trpc.beautyBudgetPlanner.myBudgets.useQuery({ month: '7', year: 2026 });
+  const budgets = trpc.beautyBudgetPlanner.myBudgets.useQuery(
+    { month: '7', year: 2026 },
+    { enabled: isAuthed },
+  );
   const items = budgets.data ?? [];
   const [selectedCat, setSelectedCat] = useState<string | null>(null);
   const categoryLabels: Record<string, string> = {

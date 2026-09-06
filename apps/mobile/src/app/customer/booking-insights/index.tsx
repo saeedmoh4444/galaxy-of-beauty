@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface AnalyticsSummary {
   totalSpent?: number;
@@ -15,9 +16,10 @@ interface CategoryStat {
 }
 
 export default function BookingInsightsScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
-  const analyticsQ = trpc.beautyAnalytics.summary.useQuery();
-  const byCatQ = trpc.beautyAnalytics.byCategory.useQuery();
+  const analyticsQ = trpc.beautyAnalytics.summary.useQuery(undefined, { enabled: isAuthed });
+  const byCatQ = trpc.beautyAnalytics.byCategory.useQuery(undefined, { enabled: isAuthed });
   if (analyticsQ.isLoading || byCatQ.isLoading) return <SkeletonList count={3} />;
   const s: AnalyticsSummary = (analyticsQ.data as unknown as AnalyticsSummary | null) ?? {};
   const totalSpent = s.totalSpent ?? 0;

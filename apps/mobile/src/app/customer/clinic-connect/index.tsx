@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface Clinic {
   id: number;
@@ -19,9 +20,10 @@ interface Referral {
 }
 
 export default function ClinicConnectScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
-  const clinicsQ = trpc.clinicConnect.clinics.useQuery();
-  const referralsQ = trpc.clinicConnect.myReferrals.useQuery();
+  const clinicsQ = trpc.clinicConnect.clinics.useQuery(undefined, { enabled: isAuthed });
+  const referralsQ = trpc.clinicConnect.myReferrals.useQuery(undefined, { enabled: isAuthed });
   const clinics: Clinic[] = (clinicsQ.data as unknown as Clinic[] | undefined) ?? [];
   const referrals: Referral[] = (referralsQ.data as unknown as Referral[] | undefined) ?? [];
   const referMut = trpc.clinicConnect.refer.useMutation();

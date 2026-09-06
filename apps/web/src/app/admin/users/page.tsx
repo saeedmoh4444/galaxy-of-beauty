@@ -16,7 +16,8 @@ export default function AdminUsersPage(): JSX.Element {
   const suspendMut = api.admin.suspendUser.useMutation({ onSuccess: () => refetch() });
   const [, setSelected] = useState<Record<string, unknown> | null>(null);
 
-  const customers = (data as unknown as Record<string, unknown>[]) ?? [];
+  const customers =
+    (data as unknown as { items: Record<string, unknown>[] } | undefined)?.items ?? [];
 
   return (
     <div className="space-y-6">

@@ -1,9 +1,10 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 import { useTheme, themeColors } from '@/components/ThemeProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface ServiceRow {
   id?: number;
@@ -39,11 +40,12 @@ interface ForYouData {
 
 export default function BeautyDiscoveryScreen(): JSX.Element {
   const { t } = useLocale();
+  const isAuthed = useAuthState();
   const { isDark } = useTheme();
   const c = isDark ? themeColors.dark : themeColors.light;
   const s = makeStyles(c);
   const featuredQ = trpc.beautyDiscovery.featured.useQuery();
-  const forYouQ = trpc.beautyDiscovery.forYou.useQuery();
+  const forYouQ = trpc.beautyDiscovery.forYou.useQuery(undefined, { enabled: isAuthed });
 
   if (featuredQ.isLoading) return <SkeletonList count={5} />;
 

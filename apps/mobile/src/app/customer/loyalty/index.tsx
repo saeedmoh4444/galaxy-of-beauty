@@ -2,6 +2,7 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 
 const TIERS: Record<string, { emoji: string }> = {
@@ -24,8 +25,12 @@ interface LoyaltyTxn {
 
 export default function LoyaltyScreen(): JSX.Element {
   const { locale, t } = useLocale();
-  const account = trpc.loyalty.myAccount.useQuery();
-  const txs = trpc.loyalty.myTransactions.useQuery({ page: 1, limit: DEFAULT_PAGE_SIZE });
+  const isAuthed = useAuthState();
+  const account = trpc.loyalty.myAccount.useQuery(undefined, { enabled: isAuthed });
+  const txs = trpc.loyalty.myTransactions.useQuery(
+    { page: 1, limit: DEFAULT_PAGE_SIZE },
+    { enabled: isAuthed },
+  );
 
   const acc = account.data as unknown as LoyaltyAccount | undefined;
 

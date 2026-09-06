@@ -2,8 +2,9 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 import type { TranslationKey } from '@galaxy/shared';
 
 interface BookingItem {
@@ -27,7 +28,8 @@ const STATUS_MAP: Record<string, TranslationKey> = {
 
 export default function AdminBookingsScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const q = trpc.bookings.list.useQuery({ page: 1, limit: BULK_PAGE_SIZE });
+  const isAuthed = useAuthState();
+  const q = trpc.bookings.list.useQuery({ page: 1, limit: BULK_PAGE_SIZE }, { enabled: isAuthed });
   const data = (q.data as unknown as { bookings?: BookingItem[] } | null)?.bookings ?? [];
 
   if (q.isLoading) return <SkeletonList count={6} />;

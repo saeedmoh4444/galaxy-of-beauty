@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 
 import { useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -20,11 +21,12 @@ interface StreamMessage {
 
 export default function LiveStreamDetailScreen(): JSX.Element {
   const { t } = useLocale();
+  const isAuthed = useAuthState();
   const { id } = useLocalSearchParams<{ id: string }>();
   const [chatText, setChatText] = useState('');
 
   const upcomingQ = trpc.liveStream.upcoming.useQuery({});
-  const historyQ = trpc.liveChat.history.useQuery();
+  const historyQ = trpc.liveChat.history.useQuery(undefined, { enabled: isAuthed });
 
   const sendMut = trpc.liveChat.send.useMutation({
     onSuccess: () => setChatText(''),

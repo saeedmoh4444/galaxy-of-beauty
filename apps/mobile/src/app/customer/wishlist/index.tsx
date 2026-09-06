@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -14,7 +15,8 @@ const COLORS = {
 
 export default function WishlistScreen(): JSX.Element {
   const { t } = useLocale();
-  const wishlist = trpc.wishlist.list.useQuery();
+  const isAuthed = useAuthState();
+  const wishlist = trpc.wishlist.list.useQuery(undefined, { enabled: isAuthed });
   const remove = trpc.wishlist.remove.useMutation();
 
   const data = wishlist.data as unknown[] | undefined;

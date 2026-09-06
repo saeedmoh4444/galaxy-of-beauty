@@ -47,7 +47,9 @@ export const serviceQuerySchema = z.object({
   maxPrice: z.coerce.number().optional(),
   sort: z.enum(['newest', 'price_asc', 'price_desc', 'popular', 'duration']).default('newest'),
   page: z.coerce.number().int().positive().default(1),
-  limit: z.coerce.number().int().min(1).max(50).default(12),
+  // 100 = MAX_LIST_SIZE (@galaxy/ui): the booking-create picker needs the full
+  // active catalog — a 50 cap silently hides services from the dropdown.
+  limit: z.coerce.number().int().min(1).max(100).default(12),
 });
 
 export const addTechnicianServiceSchema = z.object({

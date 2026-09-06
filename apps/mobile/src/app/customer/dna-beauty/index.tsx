@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useAuthState } from '@/hooks/useAuthState';
+import { useRouter } from 'expo-router';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface DnaQuestion {
@@ -20,7 +22,15 @@ export default function DNABeautyScreen(): JSX.Element {
   const q = trpc.dnaBeauty.questions.useQuery();
   const questions: DnaQuestion[] = (q.data as unknown as DnaQuestion[] | undefined) ?? [];
   const analyzeQ = trpc.dnaBeauty.analyze.useQuery({ answers }, { enabled: false });
+  const isAuthed = useAuthState();
+  const router = useRouter();
   const analyze = () => {
+    // Guests can answer questions but analyzing is a protected procedure —
+    // send them to login instead of firing a 401.
+    if (!isAuthed) {
+      router.push('/(auth)/login');
+      return;
+    }
     void analyzeQ.refetch();
   };
   if (q.isLoading) return <SkeletonList count={4} />;

@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -22,7 +23,8 @@ interface OnboardingData {
 
 export default function TechOnboardingScreen(): JSX.Element {
   const { t } = useLocale();
-  const dataQ = trpc.techOnboarding.steps.useQuery();
+  const isAuthed = useAuthState();
+  const dataQ = trpc.techOnboarding.steps.useQuery(undefined, { enabled: isAuthed });
   const submitDocMut = trpc.techOnboarding.submitDoc.useMutation({
     onSuccess: () => {
       void dataQ.refetch();

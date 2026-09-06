@@ -46,7 +46,7 @@ function randomDate(daysAgo: number, hour?: number): Date {
   return d;
 }
 
-const PASSWORD_HASH = '$2b$12$WLl1knNaSSoIuae5Pjcd9.5IlMOPSEb8w5dd/22Kyxmkw5Sei2Wvi'; // Admin@123456
+const PASSWORD_HASH = '$2b$12$3EEqTDqBmYkYZ2baueS0I.J2EohI/RLelIDPk5jgvumJmTceUTtJe'; // Admin@123456 (verified)
 
 const CITIES = [
   'الرياض',

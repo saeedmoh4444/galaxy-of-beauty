@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface RecurringBooking {
   id?: number;
@@ -12,7 +13,8 @@ interface RecurringBooking {
 
 export default function RecurringScreen(): JSX.Element {
   const { t } = useLocale();
-  const bookingsQ = trpc.recurringBookings.list.useQuery();
+  const isAuthed = useAuthState();
+  const bookingsQ = trpc.recurringBookings.list.useQuery(undefined, { enabled: isAuthed });
   const data: RecurringBooking[] =
     (bookingsQ.data as unknown as RecurringBooking[] | undefined) ?? [];
 

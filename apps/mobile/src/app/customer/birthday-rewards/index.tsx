@@ -1,7 +1,8 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface BirthdayReward {
   rewardName?: string;
@@ -10,7 +11,8 @@ interface BirthdayReward {
 
 export default function BirthdayRewardsScreen(): JSX.Element {
   const { t } = useLocale();
-  const q = trpc.birthdayRewards.myReward.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.birthdayRewards.myReward.useQuery(undefined, { enabled: isAuthed });
   if (q.isLoading) return <SkeletonList count={3} />;
   const data = (q.data ?? null) as BirthdayReward | null;
 

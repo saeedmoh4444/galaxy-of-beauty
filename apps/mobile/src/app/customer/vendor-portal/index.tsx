@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -25,8 +26,9 @@ interface VendorProduct {
 
 export default function VendorPortalScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const dashQ = trpc.vendorPortal.dashboard.useQuery();
-  const productsQ = trpc.vendorPortal.myProducts.useQuery();
+  const isAuthed = useAuthState();
+  const dashQ = trpc.vendorPortal.dashboard.useQuery(undefined, { enabled: isAuthed });
+  const productsQ = trpc.vendorPortal.myProducts.useQuery(undefined, { enabled: isAuthed });
   const dash = dashQ.data as VendorDashboard | null;
   const products: VendorProduct[] =
     (productsQ.data as unknown as VendorProduct[] | undefined) ?? [];

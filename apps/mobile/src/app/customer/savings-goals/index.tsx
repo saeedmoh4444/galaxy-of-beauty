@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -13,7 +14,8 @@ interface SavingsGoal {
 
 export default function SavingsGoalsScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const goalsQ = trpc.savingsGoals.list.useQuery();
+  const isAuthed = useAuthState();
+  const goalsQ = trpc.savingsGoals.list.useQuery(undefined, { enabled: isAuthed });
   const data: SavingsGoal[] = (goalsQ.data as unknown as SavingsGoal[] | undefined) ?? [];
   if (goalsQ.isLoading) return <SkeletonList count={4} />;
   return (

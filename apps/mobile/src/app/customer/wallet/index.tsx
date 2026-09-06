@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -30,8 +31,9 @@ interface WalletBalanceData {
 export default function WalletScreen(): JSX.Element {
   const router = useRouter();
   const { t, locale } = useLocale();
-  const balance = trpc.wallet.getBalance.useQuery();
-  const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 20 });
+  const isAuthed = useAuthState();
+  const balance = trpc.wallet.getBalance.useQuery(undefined, { enabled: isAuthed });
+  const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 20 }, { enabled: isAuthed });
   const balanceData = balance.data as unknown as WalletBalanceData | null;
 
   return (

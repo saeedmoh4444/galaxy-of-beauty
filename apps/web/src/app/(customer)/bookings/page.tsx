@@ -14,8 +14,17 @@ import {
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import { bookingStatusLabelKey } from '@/lib/bookingStatus';
 
-const STATUS_TABS = ['ALL', 'REQUESTED', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
+const STATUS_TABS = [
+  'ALL',
+  'REQUESTED',
+  'ACCEPTED',
+  'PAID',
+  'IN_PROGRESS',
+  'COMPLETED',
+  'CANCELLED',
+];
 
 export default function BookingsPage(): JSX.Element {
   const { t, locale } = useLocale();
@@ -54,7 +63,7 @@ export default function BookingsPage(): JSX.Element {
                   : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700'
               }`}
             >
-              {s === 'ALL' ? t('booking.all') : s}
+              {t(bookingStatusLabelKey(s))}
             </button>
           ))}
         </div>
@@ -94,7 +103,7 @@ export default function BookingsPage(): JSX.Element {
                           : 'bg-info-subtle text-info'
                     }`}
                   >
-                    {b.status as string}
+                    {t(bookingStatusLabelKey(b.status as string))}
                   </span>
                   {(b.status === 'REQUESTED' || b.status === 'ACCEPTED') && (
                     <Button size="sm" variant="danger" onClick={() => setCancelId(b.id as number)}>

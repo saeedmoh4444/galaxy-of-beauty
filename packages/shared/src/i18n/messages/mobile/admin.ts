@@ -9,11 +9,11 @@ export const mobileAdminMessages = {
   },
   'mobile.admin.dashboard.users': { ar: ' مستخدمين', en: 'Users' },
   'mobile.admin.dashboard.bookings': { ar: ' حجوزات', en: 'Bookings' },
-  'mobile.admin.dashboard.technicians': { ar: ' فنيات', en: 'Technicians' },
+  'mobile.admin.dashboard.technicians': { ar: ' فنيات', en: 'Service Providers' },
   'mobile.admin.dashboard.revenue': { ar: ' إيرادات', en: 'Revenue' },
   'mobile.admin.dashboard.link-users': { ar: ' المستخدمين', en: 'Users' },
   'mobile.admin.dashboard.link-bookings': { ar: ' الحجوزات', en: 'Bookings' },
-  'mobile.admin.dashboard.link-technicians': { ar: ' الفنيات', en: 'Technicians' },
+  'mobile.admin.dashboard.link-technicians': { ar: ' الفنيات', en: 'Service Providers' },
   'mobile.admin.dashboard.link-finance': { ar: ' المالية', en: 'Finance' },
   'mobile.admin.dashboard.link-analytics': { ar: ' التحليلات', en: 'Analytics' },
 
@@ -24,7 +24,7 @@ export const mobileAdminMessages = {
   'mobile.admin.bookings.title': { ar: ' الحجوزات', en: 'Bookings' },
 
   // ---- Technicians ----
-  'mobile.admin.technicians.title': { ar: '‍ الفنيات', en: 'Technicians' },
+  'mobile.admin.technicians.title': { ar: '‍ الفنيات', en: 'Service Providers' },
 
   // ---- Finance ----
   'mobile.admin.finance.title': { ar: ' المالية', en: 'Finance' },
@@ -87,7 +87,7 @@ export const mobileAdminMessages = {
 
   // ---- Reports ----
   'mobile.admin.reports.load-error': { ar: 'فشل تحميل التقارير', en: 'Failed to load reports' },
-  'mobile.admin.reports.top-technicians': { ar: '‍ أفضل الفنيات', en: 'Top Technicians' },
+  'mobile.admin.reports.top-technicians': { ar: '‍ أفضل الفنيات', en: 'Top Service Providers' },
 
   // ---- Services ----
   'mobile.admin.services.title': { ar: '‍️ الخدمات', en: 'Services' },

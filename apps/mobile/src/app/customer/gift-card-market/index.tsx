@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface GiftCardListing {
   id: number;
@@ -11,8 +12,9 @@ interface GiftCardListing {
 }
 
 export default function GiftCardMarketScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
-  const q = trpc.giftCardMarket.listings.useQuery();
+  const q = trpc.giftCardMarket.listings.useQuery(undefined, { enabled: isAuthed });
   const listings: GiftCardListing[] = (q.data as unknown as GiftCardListing[] | undefined) ?? [];
   const buyMut = trpc.giftCardMarket.buy.useMutation({
     onSuccess: () => {

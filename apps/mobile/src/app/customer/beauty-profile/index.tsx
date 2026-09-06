@@ -1,7 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface BeautyProfileData {
   skinType?: string;
@@ -10,7 +11,8 @@ interface BeautyProfileData {
 
 export default function BeautyProfileScreen(): JSX.Element {
   const { t } = useLocale();
-  const q = trpc.beautyProfile.get.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.beautyProfile.get.useQuery(undefined, { enabled: isAuthed });
   if (q.isLoading) return <SkeletonList count={3} />;
   const data = q.data as unknown as BeautyProfileData | null;
   return (

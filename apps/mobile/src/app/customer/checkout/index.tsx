@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const PAYMENT_METHODS = [
   { key: 'wallet', emoji: '', label: 'المحفظة' },
@@ -12,6 +13,7 @@ const PAYMENT_METHODS = [
 ];
 
 export default function CheckoutScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
   const [method, setMethod] = useState('wallet');
   const methodLabels: Record<string, string> = {
@@ -21,7 +23,7 @@ export default function CheckoutScreen(): JSX.Element {
     bnpl: t('checkout.method-bnpl'),
   };
 
-  const balanceQ = trpc.wallet.getBalance.useQuery();
+  const balanceQ = trpc.wallet.getBalance.useQuery(undefined, { enabled: isAuthed });
 
   if (balanceQ.isLoading) return <SkeletonList count={4} />;
 

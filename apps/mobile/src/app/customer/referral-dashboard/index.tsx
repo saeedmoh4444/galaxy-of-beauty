@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface ReferralDashboardData {
   totalReferred?: number;
@@ -10,7 +11,8 @@ interface ReferralDashboardData {
 
 export default function ReferralDashboardScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const statsQ = trpc.referrals.getStats.useQuery();
+  const isAuthed = useAuthState();
+  const statsQ = trpc.referrals.getStats.useQuery(undefined, { enabled: isAuthed });
 
   if (statsQ.isLoading) return <SkeletonList count={3} />;
 

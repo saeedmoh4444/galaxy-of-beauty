@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -14,8 +15,9 @@ const COLORS = {
 
 export default function BeautyDashboardScreen(): JSX.Element {
   const { t } = useLocale();
-  const loyalty = trpc.loyalty.myAccount.useQuery();
-  const insights = trpc.analytics.customerInsights.useQuery();
+  const isAuthed = useAuthState();
+  const loyalty = trpc.loyalty.myAccount.useQuery(undefined, { enabled: isAuthed });
+  const insights = trpc.analytics.customerInsights.useQuery(undefined, { enabled: isAuthed });
   const lData = loyalty.data as Record<string, unknown> | undefined;
   const iData = insights.data as Record<string, unknown> | undefined;
 

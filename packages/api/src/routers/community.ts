@@ -1,14 +1,16 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { SMALL_PAGE_SIZE, MS_PER_WEEK } from '@galaxy/shared';
-import { protectedProcedure, customerProcedure, router } from '../trpc';
+import { protectedProcedure, customerProcedure, publicProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- CommunityPost/Comment have no relations in Prisma schema (legacy include)
 const db = prisma as any;
 
 export const communityRouter = router({
   // Feed with user info and comments count
-  feed: protectedProcedure
+  // Public feed — the community wall is browsable without an account
+  // (public /community screens on web + mobile).
+  feed: publicProcedure
     .input(z.object({ page: z.number().default(1), limit: z.number().default(20) }))
     .query(async ({ input }) => {
       const skip = (input.page - 1) * input.limit;

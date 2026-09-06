@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const TE: Record<string, string> = {
   bridal: '',
@@ -36,9 +37,10 @@ interface GroupBookingMember {
 }
 
 export default function GroupBookingDetailScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { t } = useLocale();
-  const q = trpc.groupBookings.getById.useQuery({ id: parseInt(id, 10) });
+  const q = trpc.groupBookings.getById.useQuery({ id: parseInt(id, 10) }, { enabled: isAuthed });
   const data = q.data as GroupBookingDetail | null;
   if (q.isLoading) return <SkeletonList count={4} />;
   if (!data)

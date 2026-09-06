@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -22,8 +23,9 @@ interface TravelKit {
 
 export default function TravelKitScreen(): JSX.Element {
   const { t } = useLocale();
+  const isAuthed = useAuthState();
   const [kit, setKit] = useState<TravelKit | null>(null);
-  const destsQ = trpc.travelKit.destinations.useQuery();
+  const destsQ = trpc.travelKit.destinations.useQuery(undefined, { enabled: isAuthed });
   const dests: TravelDestination[] =
     (destsQ.data as unknown as TravelDestination[] | undefined) ?? [];
   if (destsQ.isLoading) return <SkeletonList count={4} />;

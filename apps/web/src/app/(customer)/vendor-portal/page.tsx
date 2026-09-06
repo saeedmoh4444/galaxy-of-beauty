@@ -52,7 +52,7 @@ export default function VendorPortalPage(): JSX.Element {
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-3xl"></p>
-            <p className="text-2xl font-bold">—</p>
+            <p className="text-2xl font-bold">{formatCurrency((dash?.revenue as number) ?? 0)}</p>
             <p className="text-xs text-text-secondary">{t('vendorPortal.revenue')}</p>
           </Card>
           <Card padding="md" className="text-center">

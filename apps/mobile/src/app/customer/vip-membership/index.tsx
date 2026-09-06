@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -11,7 +12,8 @@ interface VipStatus {
 
 export default function VIPMembershipScreen(): JSX.Element {
   const { t } = useLocale();
-  const tierQ = trpc.vipMembership.myTier.useQuery();
+  const isAuthed = useAuthState();
+  const tierQ = trpc.vipMembership.myTier.useQuery(undefined, { enabled: isAuthed });
   const data = tierQ.data as unknown as VipStatus | null;
   if (tierQ.isLoading) return <SkeletonList count={3} />;
   return (

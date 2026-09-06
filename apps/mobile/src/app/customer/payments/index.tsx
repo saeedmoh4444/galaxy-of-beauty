@@ -3,6 +3,7 @@ import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency, EXTENDED_PAGE_SIZE } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -15,7 +16,11 @@ const COLORS = {
 
 export default function PaymentsScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const payments = trpc.wallet.getTransactions.useQuery({ page: 1, limit: EXTENDED_PAGE_SIZE }) ?? {
+  const isAuthed = useAuthState();
+  const payments = trpc.wallet.getTransactions.useQuery(
+    { page: 1, limit: EXTENDED_PAGE_SIZE },
+    { enabled: isAuthed },
+  ) ?? {
     data: null,
     isLoading: false,
     isError: false,

@@ -1,8 +1,9 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
 
 interface EventNameJson {
@@ -27,6 +28,7 @@ interface EventRegistration {
 
 export default function BeautyEventsScreen(): JSX.Element {
   const { locale, t } = useLocale();
+  const isAuthed = useAuthState();
   const typeLabels: Record<string, string> = {
     workshop: t('beautyEvents.type-workshop'),
     masterclass: t('beautyEvents.type-masterclass'),
@@ -34,7 +36,7 @@ export default function BeautyEventsScreen(): JSX.Element {
     seasonal: t('beautyEvents.type-seasonal'),
   };
   const eventsQ = trpc.beautyEvents.upcoming.useQuery();
-  const myRegsQ = trpc.beautyEvents.myRegistrations.useQuery();
+  const myRegsQ = trpc.beautyEvents.myRegistrations.useQuery(undefined, { enabled: isAuthed });
   const myRegs = (myRegsQ.data ?? []) as EventRegistration[];
   const registeredIds = new Set(myRegs.map((r) => r.eventId));
 

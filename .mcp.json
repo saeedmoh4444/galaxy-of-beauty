@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["chrome-devtools-mcp@latest"],
+      "env": {}
+    },
+    "expo": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "expo-mcp@0.2.4",
+        "--dev-server-url",
+        "http://localhost:8083",
+        "--root",
+        "apps/mobile",
+        "--stdio"
+      ],
+      "env": {}
+    },
+    "next-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["next-devtools-mcp@0.3.6"],
+      "env": {}
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${CONTEXT7_API_KEY}"
+      }
+    }
+  }
+}

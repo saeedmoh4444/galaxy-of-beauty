@@ -28,7 +28,7 @@ export const miscMessages = {
   'women.safeSpace': { ar: 'مساحة نسائية آمنة', en: 'Safe Women-Only Space' },
   'women.privacyFirst': { ar: 'خصوصيتكِ أولاً', en: 'Your Privacy First' },
   'women.femaleOnly': { ar: 'نسائي بالكامل', en: 'Female Only' },
-  'women.verified': { ar: 'فنيات موثقات', en: 'Verified Technicians' },
+  'women.verified': { ar: 'فنيات موثقات', en: 'Verified Service Providers' },
   'women.periodKit': { ar: 'أدوات الدورة الشهرية متوفرة', en: 'Period Kit Available' },
   'women.prayerRoom': { ar: 'غرفة صلاة متوفرة', en: 'Prayer Room Available' },
 
@@ -137,7 +137,7 @@ export const miscMessages = {
 
   // AI Chat
   'aiChat.title': { ar: 'مجرة الجمال', en: 'Beauty Galaxy' },
-  'aiChat.smartBeautyAdvisor': { ar: 'مستشارة التجميل الذكية', en: 'Your Smart Beauty Advisor' },
+  'aiChat.smartBeautyAdvisor': { ar: 'مستشارة التجميل الذكية', en: 'Your Smart Beauty AI' },
   'aiChat.welcomeTitle': { ar: 'مرحباً بك في مجرة الجمال!', en: 'Welcome to Beauty Galaxy!' },
   'aiChat.welcomeDesc': {
     ar: 'أنا مستشارة التجميل الذكية، يمكنني مساعدتك في اختيار الخدمات المناسبة، نصائح العناية، وأجوبة على استفساراتك',
@@ -798,7 +798,7 @@ export const miscMessages = {
   'homeService.title': { ar: ' خدمة منزلية', en: 'Home Service' },
   'homeService.subtitle': {
     ar: 'الفنيات يجين لعنوانكِ — خدمة تجميل في منزلكِ براحة وأمان',
-    en: 'Our technicians come to you — beauty services at home, comfortably and safely',
+    en: 'Our service providers come to you — beauty services at home, comfortably and safely',
   },
   'homeService.estimateTitle': { ar: ' تقدير التكلفة — {city}', en: 'Cost estimate — {city}' },
   'homeService.fee.service': { ar: 'رسوم الخدمة الأساسية', en: 'Base service fee' },
@@ -831,12 +831,12 @@ export const miscMessages = {
   'homeService.feat1.title': { ar: 'في منزلكِ', en: 'At your home' },
   'homeService.feat1.desc': {
     ar: 'الفنيات يأتين لعنوانكِ',
-    en: 'Technicians come to your address',
+    en: 'Service Providers come to your address',
   },
   'homeService.feat2.title': { ar: 'خلال ٦٠ دقيقة', en: 'Within 60 minutes' },
   'homeService.feat2.desc': { ar: 'وقت وصول سريع', en: 'Fast arrival' },
   'homeService.feat3.title': { ar: 'خدمة آمنة', en: 'Safe service' },
-  'homeService.feat3.desc': { ar: 'جميع الفنيات موثقات', en: 'All technicians are verified' },
+  'homeService.feat3.desc': { ar: 'جميع الفنيات موثقات', en: 'All service providers are verified' },
 
   // Virtual Try-On
   'tryOn.title': { ar: 'تجربة المكياج الافتراضية', en: 'Virtual Makeup Try-On' },
@@ -1275,7 +1275,7 @@ export const miscMessages = {
   'membership.subscribe': { ar: 'اشتراك', en: 'Subscribe' },
   'membership.benefit.basic1': { ar: 'حجز المواعيد', en: 'Appointment booking' },
   'membership.benefit.basic2': { ar: 'تصفح الخدمات', en: 'Browse services' },
-  'membership.benefit.basic3': { ar: 'تقييم الفنيات', en: 'Rate technicians' },
+  'membership.benefit.basic3': { ar: 'تقييم الفنيات', en: 'Rate service providers' },
   'membership.notIncluded.basic1': { ar: 'خصم على الخدمات', en: 'Service discounts' },
   'membership.notIncluded.basic2': { ar: 'حجز أولوية', en: 'Priority booking' },
   'membership.notIncluded.basic3': { ar: 'استشارات مجانية', en: 'Free consultations' },
@@ -1459,8 +1459,8 @@ export const miscMessages = {
 
   // Beauty Advisor
   'beautyAdvisor.title': {
-    ar: ' مجرة الجمال — مستشارة جمالكِ',
-    en: 'Galaxy of Beauty — Your Beauty Advisor',
+    ar: ' مجرة الجمال — بيوتي AI',
+    en: 'Galaxy of Beauty — Beauty AI',
   },
   'beautyAdvisor.subtitle': {
     ar: 'اسأليني عن أي شيء يخص العناية والتجميل',
@@ -1919,8 +1919,8 @@ export const miscMessages = {
   'recurring.modal.title': { ar: 'حجز متكرر جديد', en: 'New recurring booking' },
   'recurring.placeholder.serviceId': { ar: 'معرف الخدمة', en: 'Service ID' },
   'recurring.placeholder.technicianId': {
-    ar: 'معرف الفنية (اختياري)',
-    en: 'Technician ID (optional)',
+    ar: 'معرف مقدمة الخدمة (اختياري)',
+    en: 'Service Provider ID (optional)',
   },
   'recurring.placeholder.addressId': { ar: 'معرف العنوان', en: 'Address ID' },
   'recurring.save': { ar: 'حفظ', en: 'Save' },
@@ -2060,7 +2060,7 @@ export const miscMessages = {
     en: "You haven't joined any waitlist yet",
   },
   'waitlist.joinNow': { ar: 'انضمام الآن', en: 'Join now' },
-  'waitlist.technicianFallback': { ar: 'فني', en: 'Technician' },
+  'waitlist.technicianFallback': { ar: 'فني', en: 'Service Provider' },
   'waitlist.positionLabel': { ar: 'الترتيب:', en: 'Position:' },
   'waitlist.serviceLabel': { ar: 'الخدمة: {name}', en: 'Service: {name}' },
   'waitlist.status.waiting': { ar: 'بانتظار الدور', en: 'Waiting for turn' },
@@ -2069,8 +2069,8 @@ export const miscMessages = {
   'waitlist.status.expired': { ar: 'منتهي', en: 'Expired' },
   'waitlist.leave': { ar: 'مغادرة', en: 'Leave' },
   'waitlist.modal.title': { ar: 'انضمام لقائمة الانتظار', en: 'Join waitlist' },
-  'waitlist.chooseTech': { ar: 'اختر الفني', en: 'Choose technician' },
-  'waitlist.placeholder.tech': { ar: '-- اختر فني --', en: '-- Choose a technician --' },
+  'waitlist.chooseTech': { ar: 'اختر الفني', en: 'Choose service provider' },
+  'waitlist.placeholder.tech': { ar: '-- اختر فني --', en: '-- Choose a service provider --' },
   'waitlist.serviceOptional': { ar: 'الخدمة (اختياري)', en: 'Service (optional)' },
   'waitlist.placeholder.service': { ar: 'اسم الخدمة إن وجد', en: 'Service name if any' },
   'waitlist.confirmJoin': { ar: 'تأكيد الانضمام', en: 'Confirm joining' },
@@ -2252,7 +2252,7 @@ export const miscMessages = {
     en: 'Completed bookings without review',
   },
   'reviews.serviceFallback': { ar: 'خدمة', en: 'Service' },
-  'reviews.technicianFallback': { ar: 'فني', en: 'Technician' },
+  'reviews.technicianFallback': { ar: 'فني', en: 'Service Provider' },
   'reviews.rate': { ar: 'تقييم', en: 'Rate' },
   'reviews.pastTitle': { ar: 'تقييماتي السابقة', en: 'My previous reviews' },
   'reviews.pastEmpty': { ar: 'لا توجد تقييمات سابقة', en: 'No previous reviews' },
@@ -2322,7 +2322,7 @@ export const miscMessages = {
   'emergencyBooking.pickService': { ar: ' اختاري الخدمة', en: ' Pick a service' },
   'emergencyBooking.noTechs': {
     ar: 'لا توجد فنيات متاحات حالياً لهذه الخدمة',
-    en: 'No technicians available for this service right now',
+    en: 'No service providers available for this service right now',
   },
   'emergencyBooking.success': { ar: 'تم الحجز الطارئ', en: 'Emergency booking confirmed' },
   'emergencyBooking.codeLabel': { ar: 'رمز الحجز:', en: 'Booking code:' },
@@ -2394,7 +2394,7 @@ export const miscMessages = {
   'myJourney.totalBookings': { ar: 'إجمالي الحجوزات', en: 'Total bookings' },
   'myJourney.completedBookings': { ar: 'حجوزات مكتملة', en: 'Completed bookings' },
   'myJourney.uniqueServices': { ar: 'خدمات مختلفة', en: 'Different services' },
-  'myJourney.uniqueTechs': { ar: 'فنيات مختلفات', en: 'Different technicians' },
+  'myJourney.uniqueTechs': { ar: 'فنيات مختلفات', en: 'Different service providers' },
   'myJourney.totalSpent': { ar: 'إجمالي الإنفاق', en: 'Total spent' },
   'myJourney.bestStreak': { ar: 'أفضل استمرارية', en: 'Best streak' },
   'myJourney.weeks': { ar: '{count} أسابيع', en: '{count} weeks' },
@@ -2404,7 +2404,7 @@ export const miscMessages = {
   'myJourney.milestone.five': { ar: '٥ حجوزات', en: '5 bookings' },
   'myJourney.milestone.ten': { ar: '١٠ حجوزات', en: '10 bookings' },
   'myJourney.milestone.savings': { ar: 'توفير ١٠٠٠ ر.س', en: 'Saved 1000 SAR' },
-  'myJourney.milestone.techs': { ar: '٣ فنيات مختلفات', en: '3 different technicians' },
+  'myJourney.milestone.techs': { ar: '٣ فنيات مختلفات', en: '3 different service providers' },
   'myJourney.milestone.services': { ar: '٥ خدمات مختلفة', en: '5 different services' },
 
   // Saved Cards
@@ -2538,7 +2538,7 @@ export const miscMessages = {
   'groupBookingDetail.membersTitle': { ar: 'العضوات ({count})', en: 'Members ({count})' },
   'groupBookingDetail.noMembers': { ar: 'لا توجد عضوات بعد', en: 'No members yet' },
   'groupBookingDetail.memberService': { ar: 'الخدمة #{id}', en: 'Service #{id}' },
-  'groupBookingDetail.memberTech': { ar: ' · الفنية #{id}', en: ' · Technician #{id}' },
+  'groupBookingDetail.memberTech': { ar: ' · مقدمة الخدمة #{id}', en: ' · Service Provider #{id}' },
   'groupBookingDetail.createdAtLabel': { ar: 'تاريخ الإنشاء:', en: 'Created at:' },
   'disputes.title': { ar: 'النزاعات', en: 'Disputes' },
   'disputes.createNew': { ar: 'فتح نزاع جديد', en: 'Open New Dispute' },
@@ -2606,7 +2606,10 @@ export const miscMessages = {
   'cashback.historyTitle': { ar: ' سجل الاسترداد', en: 'Cashback history' },
   'cashback.empty': { ar: 'لا توجد عمليات استرداد بعد', en: 'No cashback transactions yet' },
   'chat.title': { ar: ' المحادثات', en: 'Chats' },
-  'chat.subtitle': { ar: 'تواصلي مع الفنيات مباشرة', en: 'Chat directly with your technicians' },
+  'chat.subtitle': {
+    ar: 'تواصلي مع الفنيات مباشرة',
+    en: 'Chat directly with your service providers',
+  },
   'chat.activeConversations': { ar: ' المحادثات النشطة', en: 'Active chats' },
   'chat.noConversations': { ar: 'لا توجد محادثات', en: 'No conversations yet' },
   'chat.conversationFallback': { ar: 'محادثة', en: 'Conversation' },
@@ -2624,6 +2627,7 @@ export const miscMessages = {
   },
   'liveChat.placeholder': { ar: 'اكتبي رسالتك...', en: 'Type your message...' },
   'liveChat.send': { ar: 'إرسال', en: 'Send' },
+  'beautyBingo.title': { ar: ' بينجو الجمال', en: 'Beauty Bingo' },
   'beautyBingo.subtitle': {
     ar: 'أكملي المهام واكسبي جلسة مجانية!',
     en: 'Complete the tasks and earn a free session!',
@@ -2931,7 +2935,7 @@ export const miscMessages = {
   'achievements.streakDays': { ar: 'أيام متتالية', en: 'Day streak' },
   'achievements.uniqueServices': { ar: 'خدمات مختلفة', en: 'Unique services' },
   'achievements.earned': { ar: 'تم', en: 'Earned' },
-  'aiAssistant.title': { ar: ' مساعدة الذكاء الاصطناعي', en: 'AI Assistant' },
+  'aiAssistant.title': { ar: 'بيوتي AI', en: 'Beauty AI' },
   'aiAssistant.subtitle': {
     ar: 'اسأليني أي سؤال عن الجمال والعناية',
     en: 'Ask me anything about beauty and care',
@@ -3031,8 +3035,8 @@ export const miscMessages = {
   'beautyProfile.scentsTitle': { ar: 'العطور المفضلة', en: 'Favourite scents' },
   'beautyProfile.notesTitle': { ar: 'ملاحظات إضافية', en: 'Additional notes' },
   'beautyProfile.notesPlaceholder': {
-    ar: 'أي حساسية، تفضيلات خاصة، أو ملاحظات للفنية...',
-    en: 'Any allergies, special preferences, or notes for the technician...',
+    ar: 'أي حساسية، تفضيلات خاصة، أو ملاحظات للمقدمة خدمة...',
+    en: 'Any allergies, special preferences, or notes for the service provider...',
   },
   'beautyProfile.saveButton': { ar: 'حفظ الملف الجمالي', en: 'Save beauty profile' },
   'beautyProfile.opt.oily': { ar: 'دهنية', en: 'Oily' },
@@ -3072,7 +3076,7 @@ export const miscMessages = {
   'certificationQuiz.myCertificates': { ar: ' شهاداتي', en: 'My certificates' },
   'clinicConnect.subtitle': {
     ar: 'إحالة طبية من فنيات التجميل للعيادات المتخصصة',
-    en: 'Medical referrals from beauty technicians to specialised clinics',
+    en: 'Medical referrals from beauty service providers to specialised clinics',
   },
   'clinicConnect.clinics': { ar: ' العيادات المتخصصة', en: 'Specialised clinics' },
   'clinicConnect.refer': { ar: 'إحالة', en: 'Refer' },
@@ -3121,18 +3125,18 @@ export const miscMessages = {
   'favorites.title': { ar: ' المفضلة', en: 'Favorites' },
   'favorites.subtitle': {
     ar: 'خدماتكِ وفنياتكِ المفضلة',
-    en: 'Your favourite services and technicians',
+    en: 'Your favourite services and service providers',
   },
   'favorites.empty': {
     ar: 'مافي مفضلات بعد — أضيفي خدماتكِ المفضلة',
     en: 'No favourites yet — add your favourite services',
   },
-  'favorites.technicianSuffix': { ar: ' · فنية #{id}', en: ' · Technician #{id}' },
+  'favorites.technicianSuffix': { ar: ' · مقدمة خدمة #{id}', en: ' · Service Provider #{id}' },
   'favorites.remove': { ar: 'حذف', en: 'Remove' },
-  'following.title': { ar: ' متابعة الفنيات', en: 'Following Technicians' },
-  'following.subtitle': { ar: 'الفنيات اللي تتابعينهم', en: 'The technicians you follow' },
-  'following.empty': { ar: 'مافي فنيات متابعات بعد', en: 'No technicians followed yet' },
-  'following.technicianLabel': { ar: 'فنية #{id}', en: 'Technician #{id}' },
+  'following.title': { ar: ' متابعة الفنيات', en: 'Following Service Providers' },
+  'following.subtitle': { ar: 'الفنيات اللي تتابعينهم', en: 'The service providers you follow' },
+  'following.empty': { ar: 'مافي فنيات متابعات بعد', en: 'No service providers followed yet' },
+  'following.technicianLabel': { ar: 'مقدمة خدمة #{id}', en: 'Service Provider #{id}' },
   'following.followedOn': { ar: 'تمت المتابعة {date}', en: 'Followed on {date}' },
   'following.unfollow': { ar: 'إلغاء المتابعة', en: 'Unfollow' },
   'franchisePortal.title': { ar: ' بوابة الامتياز', en: 'Franchise Portal' },
@@ -3485,7 +3489,7 @@ export const miscMessages = {
   'smartSchedule.title': { ar: ' جدولة ذكية', en: 'Smart Scheduling' },
   'smartSchedule.subtitle': {
     ar: 'أفضل المواعيد حسب توفر الفنيات وتقييماتهن',
-    en: 'Best appointment times based on technician availability and ratings',
+    en: 'Best appointment times based on service provider availability and ratings',
   },
   'smartSchedule.chooseService': { ar: ' اختاري الخدمة', en: 'Choose the service' },
   'smartSchedule.datePlaceholder': { ar: 'اختياري — تاريخ مفضل', en: 'Optional — preferred date' },
@@ -3494,18 +3498,18 @@ export const miscMessages = {
     en: 'No slots available right now — try another service or a different date',
   },
   'smartSchedule.bestSlots': { ar: ' أفضل {count} مواعيد', en: 'Best {count} slots' },
-  'smartSchedule.technicianLabel': { ar: 'فنية #{id}', en: 'Technician #{id}' },
+  'smartSchedule.technicianLabel': { ar: 'مقدمة خدمة #{id}', en: 'Service Provider #{id}' },
   'smartSchedule.book': { ar: 'احجز', en: 'Book' },
   'social.title': { ar: ' مجتمع الجمال', en: 'Beauty Community' },
   'social.subtitle': {
     ar: 'اكتشفي أحدث الصيحات والفنيات المميزات',
-    en: 'Discover the latest trends and standout technicians',
+    en: 'Discover the latest trends and standout service providers',
   },
   'social.trending': { ar: ' الأكثر طلباً', en: 'Most Requested' },
   'social.noData': { ar: 'لا توجد بيانات', en: 'No data' },
   'social.serviceFallback': { ar: 'خدمة #{id}', en: 'Service #{id}' },
   'social.bookings': { ar: '{count} حجز', en: '{count} bookings' },
-  'social.spotlightTitle': { ar: ' فنيات مميزات', en: 'Featured Technicians' },
+  'social.spotlightTitle': { ar: ' فنيات مميزات', en: 'Featured Service Providers' },
   'social.tipsTitle': { ar: ' نصائح تجميلية', en: 'Beauty Tips' },
   'social.catAll': { ar: 'الكل', en: 'All' },
   'social.catSkincare': { ar: 'عناية', en: 'Skincare' },
@@ -3554,10 +3558,10 @@ export const miscMessages = {
   'sustainability.quietDays': { ar: 'الثلاثاء والخميس', en: 'Tuesday and Thursday' },
   'sustainability.makeup': { ar: 'مكياج', en: 'Makeup' },
   'sustainability.monthMarch': { ar: 'مارس', en: 'March' },
-  'techOnboarding.title': { ar: ' التسجيل كفنية', en: 'Register as a technician' },
+  'techOnboarding.title': { ar: ' التسجيل كمقدمة خدمة', en: 'Register as a service provider' },
   'techOnboarding.subtitle': {
-    ar: 'أكملي الخطوات لتصبحي فنية معتمدة',
-    en: 'Complete the steps to become a certified technician',
+    ar: 'أكملي الخطوات لتصبحي مقدمة خدمة معتمدة',
+    en: 'Complete the steps to become a certified service provider',
   },
   'techOnboarding.completedLabel': { ar: ' مكتملة', en: 'completed' },
   'techOnboarding.upload': { ar: 'رفع', en: 'Upload' },
@@ -3567,16 +3571,19 @@ export const miscMessages = {
   'techWaitlist.title': { ar: ' قائمة الانتظار', en: 'Waitlist' },
   'techWaitlist.subtitle': {
     ar: 'انضمي لقائمة انتظار الفنيات المشغولات',
-    en: 'Join the waitlist for busy technicians',
+    en: 'Join the waitlist for busy service providers',
   },
-  'techWaitlist.popularTitle': { ar: ' الفنيات الأكثر طلباً', en: 'Most requested technicians' },
+  'techWaitlist.popularTitle': {
+    ar: ' الفنيات الأكثر طلباً',
+    en: 'Most requested service providers',
+  },
   'techWaitlist.waitingLabel': { ar: ' في الانتظار', en: 'waiting' },
   'techWaitlist.join': { ar: 'انضمي', en: 'Join' },
   'techWaitlist.myLists': { ar: ' قوائم انتظاري', en: 'My waitlists' },
   'techWaitlist.emptyTitle': { ar: 'لا توجد قوائم انتظار', en: 'No waitlists' },
   'techWaitlist.emptyDescription': {
-    ar: 'انضمي لقائمة انتظار فنية مشغولة',
-    en: 'Join the waitlist for a busy technician',
+    ar: 'انضمي لقائمة انتظار مقدمة خدمة مشغولة',
+    en: 'Join the waitlist for a busy service provider',
   },
   'techWaitlist.leave': { ar: 'خروج', en: 'Leave' },
   'travelKit.title': { ar: ' حقيبة السفر', en: 'Travel Kit' },
@@ -3610,7 +3617,7 @@ export const miscMessages = {
   'video.title': { ar: ' استشارات الفيديو', en: 'Video Consultations' },
   'video.subtitle': {
     ar: 'مكالمات فيديو مباشرة مع الفنيات',
-    en: 'Live video calls with technicians',
+    en: 'Live video calls with service providers',
   },
   'video.noBookings': {
     ar: 'مافي حجوزات حالية — احجزي خدمة لبدء استشارة فيديو',
@@ -3624,7 +3631,7 @@ export const miscMessages = {
   'videoSession.consultationTitle': { ar: 'استشارة عبر الفيديو', en: 'Video consultation' },
   'videoSession.consultationDesc': {
     ar: 'تواصلي مع الفنانه مباشرة عبر مكالمة فيديو آمنة. يمكنك مناقشة احتياجاتك قبل الحجز.',
-    en: 'Connect directly with the technician via a secure video call. You can discuss your needs before booking.',
+    en: 'Connect directly with the service provider via a secure video call. You can discuss your needs before booking.',
   },
   'videoSession.start': { ar: 'بدء الاستشارة', en: 'Start consultation' },
   'videoSession.waitingOther': {

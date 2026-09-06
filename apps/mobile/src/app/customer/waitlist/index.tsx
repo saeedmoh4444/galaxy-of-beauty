@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -11,7 +12,8 @@ interface WaitlistEntry {
 
 export default function WaitlistScreen(): JSX.Element {
   const { t } = useLocale();
-  const entriesQ = trpc.waitlist.listMyEntries.useQuery();
+  const isAuthed = useAuthState();
+  const entriesQ = trpc.waitlist.listMyEntries.useQuery(undefined, { enabled: isAuthed });
   const data: WaitlistEntry[] = (entriesQ.data as unknown as WaitlistEntry[] | undefined) ?? [];
   if (entriesQ.isLoading) return <SkeletonList count={4} />;
   return (

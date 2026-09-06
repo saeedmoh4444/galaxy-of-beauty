@@ -2,6 +2,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -19,8 +20,12 @@ const CHECKLIST = [
 ];
 
 export default function BookingChecklistScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
-  const list = trpc.bookingChecklist.get.useQuery({ category: 'makeup' }) ?? {
+  const list = trpc.bookingChecklist.get.useQuery(
+    { category: 'makeup' },
+    { enabled: isAuthed },
+  ) ?? {
     data: null,
     isLoading: false,
     isError: false,

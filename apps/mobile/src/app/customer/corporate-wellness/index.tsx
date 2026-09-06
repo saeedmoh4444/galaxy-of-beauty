@@ -12,6 +12,7 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface CorporatePlan {
   id?: string;
@@ -29,9 +30,10 @@ interface CorporateEnquiry {
 }
 
 export default function CorporateWellnessScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
   const plansQ = trpc.corporateWellness.plans.useQuery();
-  const enquiriesQ = trpc.corporateWellness.myEnquiries.useQuery();
+  const enquiriesQ = trpc.corporateWellness.myEnquiries.useQuery(undefined, { enabled: isAuthed });
   const [planId, setPlanId] = useState('growth');
   const [companyName, setCompanyName] = useState('');
   const [contactName, setContactName] = useState('');

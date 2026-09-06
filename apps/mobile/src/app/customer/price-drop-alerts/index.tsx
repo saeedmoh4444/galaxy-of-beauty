@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface PriceDropAlert {
   id?: number;
@@ -12,7 +13,8 @@ interface PriceDropAlert {
 
 export default function PriceDropAlertsScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const alertsQ = trpc.priceDropAlerts.myAlerts.useQuery();
+  const isAuthed = useAuthState();
+  const alertsQ = trpc.priceDropAlerts.myAlerts.useQuery(undefined, { enabled: isAuthed });
   const data: PriceDropAlert[] = (alertsQ.data as unknown as PriceDropAlert[] | undefined) ?? [];
 
   if (alertsQ.isLoading) return <SkeletonList count={4} />;

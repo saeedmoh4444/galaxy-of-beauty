@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet } from 
 import { useState } from 'react';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface ChatMessage {
   message?: string;
@@ -11,8 +12,9 @@ interface ChatMessage {
 
 export default function LiveChatScreen() {
   const { t } = useLocale();
+  const isAuthed = useAuthState();
   const [msg, setMsg] = useState('');
-  const { data, refetch } = trpc.liveChat.history.useQuery() as {
+  const { data, refetch } = trpc.liveChat.history.useQuery(undefined, { enabled: isAuthed }) as {
     data?: ChatMessage[];
     refetch: () => void;
   };

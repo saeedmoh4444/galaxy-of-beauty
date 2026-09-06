@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useAuthState } from '@/hooks/useAuthState';
 import { formatCurrency } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { useTheme, themeColors } from '@/components/ThemeProvider';
@@ -29,10 +30,12 @@ export default function WalletScreen(): JSX.Element {
   const { isDark } = useTheme();
   const c = isDark ? themeColors.dark : themeColors.light;
   const styles = makeStyles(c);
-  const balance = trpc.wallet.getBalance.useQuery();
-  const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 20 });
-  const loyalty = trpc.loyalty.myAccount.useQuery();
-  const cashback = trpc.cashback.history.useQuery({ page: 1, limit: 20 });
+  // Guests see the empty/CTA state instead of firing 401s.
+  const isAuthed = useAuthState();
+  const balance = trpc.wallet.getBalance.useQuery(undefined, { enabled: isAuthed });
+  const txns = trpc.wallet.getTransactions.useQuery({ page: 1, limit: 20 }, { enabled: isAuthed });
+  const loyalty = trpc.loyalty.myAccount.useQuery(undefined, { enabled: isAuthed });
+  const cashback = trpc.cashback.history.useQuery({ page: 1, limit: 20 }, { enabled: isAuthed });
 
   const balData = balance.data as BalanceData | undefined;
   const txnData = txns.data as TxnPage | undefined;
