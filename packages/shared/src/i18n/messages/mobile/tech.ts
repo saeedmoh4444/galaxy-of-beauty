@@ -125,4 +125,7 @@ export const mobileTechMessages = {
   'mobile.tech.profile.yes': { ar: ' نعم', en: 'Yes' },
   'mobile.tech.profile.no': { ar: ' لا', en: 'No' },
   'mobile.tech.profile.edit-profile': { ar: '️ تعديل الملف', en: 'Edit Profile' },
+  'mobile.tech.profile.bio': { ar: 'نبذة عني', en: 'About me' },
+  'mobile.tech.profile.saving': { ar: 'جارٍ الحفظ…', en: 'Saving…' },
+  'mobile.tech.profile.cancel': { ar: 'إلغاء', en: 'Cancel' },
 } as const satisfies Record<string, { ar: string; en: string }>;
