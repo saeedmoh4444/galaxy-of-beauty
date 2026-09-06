@@ -1,13 +1,25 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
+import {
+  Card,
+  CardListSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  Input,
+  Modal,
+  useAuth,
+} from '@galaxy/ui';
 import { useState } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
 export default function AdminCampaignsPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data, isLoading, isError, refetch } = api.campaigns.listAll.useQuery();
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading, isError, refetch } = api.campaigns.listAll.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const campaigns = data ?? [];
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState({

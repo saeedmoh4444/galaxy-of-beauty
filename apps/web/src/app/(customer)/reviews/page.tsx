@@ -3,7 +3,16 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal, Input } from '@galaxy/ui';
+import {
+  Card,
+  CardListSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  Modal,
+  Input,
+  useAuth,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -11,12 +20,16 @@ const RATING_OPTIONS = [1, 2, 3, 4, 5];
 
 export default function ReviewsPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [selectedBookingId, setSelectedBookingId] = useState<number | null>(null);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [hoverRating, setHoverRating] = useState(0);
 
-  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery({ limit: 50 });
+  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery(
+    { limit: 50 },
+    { enabled: isAuthenticated },
+  );
   const createMut = api.reviews.create.useMutation({
     onSuccess: () => {
       setSelectedBookingId(null);

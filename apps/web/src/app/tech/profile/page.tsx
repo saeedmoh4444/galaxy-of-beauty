@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input } from '@galaxy/ui';
+import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize, type TranslationKey } from '@galaxy/shared';
@@ -16,8 +16,11 @@ const KYC_BADGES: Record<string, { colour: string; labelKey: TranslationKey }> =
 
 export default function TechProfilePage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data, isLoading, isError, refetch } = api.auth.me.useQuery();
-  const servicesQ = api.services.list.useQuery({ limit: 50 });
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading, isError, refetch } = api.auth.me.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const servicesQ = api.services.list.useQuery({ limit: 50 }, { enabled: isAuthenticated });
   const addServiceMut = api.technicians.addService.useMutation({ onSuccess: () => refetch() });
   const removeServiceMut = api.technicians.removeService.useMutation({
     onSuccess: () => refetch(),

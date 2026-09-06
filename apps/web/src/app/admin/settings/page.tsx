@@ -12,6 +12,7 @@ import {
   EmptyState,
   Input,
   Modal,
+  useAuth,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -21,13 +22,16 @@ type CityItem = RouterOutput['platform']['getCities'][number];
 
 export default function AdminSettingsPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [editOpen, setEditOpen] = useState(false);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [editValue, setEditValue] = useState('');
   const [editDescription, setEditDescription] = useState('');
   const [exportFormat, setExportFormat] = useState<'csv' | 'json'>('csv');
 
-  const { data, isLoading, isError, refetch } = api.platform.getSettings.useQuery();
+  const { data, isLoading, isError, refetch } = api.platform.getSettings.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const settingsMap = data as SettingsMap | undefined;
   const settingsEntries = Object.entries(settingsMap ?? {});
 
@@ -41,9 +45,16 @@ export default function AdminSettingsPage(): JSX.Element {
   const toggleMaintenanceMut = api.platform.toggleMaintenance.useMutation({
     onSuccess: () => refetch(),
   });
-  const termsQuery = api.platform.getTerms.useQuery();
-  const citiesQuery = api.platform.getCities.useQuery();
-  const exportBookingsQuery = api.platform.exportBookings.useQuery({ format: exportFormat });
+  const termsQuery = api.platform.getTerms.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const citiesQuery = api.platform.getCities.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const exportBookingsQuery = api.platform.exportBookings.useQuery(
+    { format: exportFormat },
+    { enabled: isAuthenticated },
+  );
 
   const termsData = termsQuery.data as TermsData | undefined;
   const citiesData = citiesQuery.data ?? [];

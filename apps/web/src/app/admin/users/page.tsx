@@ -2,17 +2,21 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminUsersPage(): JSX.Element {
   const { t } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [search, setSearch] = useState('');
-  const { data, isLoading, isError, refetch } = api.admin.listCustomers.useQuery({
-    search: search || undefined,
-    page: 1,
-    limit: 20,
-  });
+  const { data, isLoading, isError, refetch } = api.admin.listCustomers.useQuery(
+    {
+      search: search || undefined,
+      page: 1,
+      limit: 20,
+    },
+    { enabled: isAuthenticated },
+  );
   const suspendMut = api.admin.suspendUser.useMutation({ onSuccess: () => refetch() });
   const [, setSelected] = useState<Record<string, unknown> | null>(null);
 

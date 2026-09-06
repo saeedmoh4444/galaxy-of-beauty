@@ -2,17 +2,21 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/ui';
+import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Input, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function TechSlotsPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [date, setDate] = useState(new Date().toISOString().split('T')[0] ?? '');
-  const { data, isLoading, isError, refetch } = api.slots.getMySlots.useQuery({
-    startDate: date,
-    endDate: date,
-  });
+  const { data, isLoading, isError, refetch } = api.slots.getMySlots.useQuery(
+    {
+      startDate: date,
+      endDate: date,
+    },
+    { enabled: isAuthenticated },
+  );
   const createMut = api.slots.createSlots.useMutation({ onSuccess: () => refetch() });
   const deleteMut = api.slots.deleteSlot.useMutation({ onSuccess: () => refetch() });
   const [startTime, setStartTime] = useState('09:00');

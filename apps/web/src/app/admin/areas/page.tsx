@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Card, TableSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/ui';
+import { Card, TableSkeleton, ErrorAlert, EmptyState, Button, Input, useAuth } from '@galaxy/ui';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -12,6 +12,7 @@ type CityItem = RouterOutput['platform']['getCities'][number];
 
 export default function AdminAreasPage(): JSX.Element {
   const { t } = useLocale();
+  const { isAuthenticated } = useAuth();
   const { addToast } = useToast();
   const [cityFilter, setCityFilter] = useState<number | undefined>();
   const [showAdd, setShowAdd] = useState(false);
@@ -22,8 +23,12 @@ export default function AdminAreasPage(): JSX.Element {
     isLoading,
     isError,
     refetch,
-  } = api.platform.listAreas.useQuery(cityFilter ? { cityId: cityFilter } : {});
-  const { data: citiesData } = api.platform.getCities.useQuery();
+  } = api.platform.listAreas.useQuery(cityFilter ? { cityId: cityFilter } : {}, {
+    enabled: isAuthenticated,
+  });
+  const { data: citiesData } = api.platform.getCities.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const areas: AreaItem[] = areasData ?? [];
   const cities: CityItem[] = citiesData ?? [];
 
