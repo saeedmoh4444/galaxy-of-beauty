@@ -2655,6 +2655,34 @@ async function main() {
     console.log(`    Feature flags: ${err.message?.slice(0, 60)}`);
   }
 
+  // ---- Product marketplace categories (B.3: vendor products need a home) ----
+  // 'general' is the fallback category for vendor-added products.
+  try {
+    const PRODUCT_CATEGORIES = [
+      { nameJson: { ar: 'عام', en: 'General' }, slug: 'general', sortOrder: 0 },
+      {
+        nameJson: { ar: 'العناية بالبشرة', en: 'Skincare' },
+        slug: 'product-skincare',
+        sortOrder: 1,
+      },
+      {
+        nameJson: { ar: 'العناية بالشعر', en: 'Hair Care' },
+        slug: 'product-haircare',
+        sortOrder: 2,
+      },
+      { nameJson: { ar: 'المكياج', en: 'Makeup' }, slug: 'product-makeup', sortOrder: 3 },
+      { nameJson: { ar: 'العطور', en: 'Fragrance' }, slug: 'product-fragrance', sortOrder: 4 },
+    ] as const;
+
+    await prisma.productCategory.createMany({
+      data: PRODUCT_CATEGORIES.map((c) => ({ ...c })),
+      skipDuplicates: true,
+    });
+    console.log(` ${PRODUCT_CATEGORIES.length} product categories`);
+  } catch (err: any) {
+    console.log(`    Product categories: ${err.message?.slice(0, 60)}`);
+  }
+
   // ---- Notification templates (B.26 framework) ----
   // Rendered by lib/notify.ts with {{placeholder}} interpolation; category
   // maps to the notificationPreference toggle of the same name.

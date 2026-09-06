@@ -135,13 +135,23 @@ remaining ungated, mobile tsc + lint clean, API suite 823/823.
    expiry / maxUses / min-order guards as `validate` (was trusting the UI)
    and rejects double redemption with a clean error instead of an opaque
    P2002. Test: `promo-booking.test.ts` (7 tests).
-3. **Vendor portal → real persistence**:
-   - Prisma model `VendorProduct` (+ migration), router rewired from the
-     in-memory array to `prisma.vendorProduct`.
-   - Buy flow: vendors' products listed on the marketplace → `buyProduct`
-     decrements stock, increments `sales`, credits revenue.
-   - Dashboard: revenue from DB aggregates; `pendingOrders` real value or
-     removed from the card.
+3. ✅ **Vendor portal → real persistence** — DONE (2026-09-06):
+   - In-memory array replaced: `vendorPortal` router reads/writes the
+     existing `Product`/`Vendor` models (no new model needed — schema
+     gained `Product.sales` + `Product.emoji`, migration
+     `20260906000001`). `addProduct` auto-creates a minimal Vendor row on
+     first use; default category = seeded 'general' product category
+     (4 more marketplace categories seeded too).
+   - Buy flow: new `marketplace.buyCart` — transactional stock check +
+     decrement, `sales` increment, vendor `totalSales` credit, cart clear;
+     insufficient stock rejects the whole purchase and keeps the cart. The
+     web checkout pay button (previously fake `setPlaced(true)`) now calls
+     it.
+   - Dashboard: real aggregates — totalProducts/totalSales (Σ sales)/
+     revenue (Σ price × sales) + REAL rating (avg of product reviews);
+     `pendingOrders` dropped (no orders model — UI never used it).
+   - Tests: `vendor-portal.test.ts` (8). Wallet/payfort payment processing
+     on checkout remains separate (no wallet debit mutation yet).
 4. **Technician choice on booking-create** — today it silently takes the
    first technician. Show a list (name/rating/price) in step 2.
 5. **Slot awareness** — `createBookingSchema` accepts `slotId`; surface the

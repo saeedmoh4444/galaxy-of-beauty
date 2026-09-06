@@ -98,6 +98,57 @@ export const marketplaceRouter = router({
       return { success: true };
     }),
 
+  // ── Buy (B.3) ───────────────────────────────────────────
+  /**
+   * buyCart — purchase everything in the caller's cart.
+   * Transactionally checks stock, decrements it, increments product sales
+   * and vendor totalSales, then clears the cart. On insufficient stock the
+   * whole purchase is rejected and the cart is kept for correction.
+   */
+  buyCart: customerProcedure.input(z.object({})).mutation(async ({ ctx }) => {
+    const cartItems = await prisma.cartItem.findMany({
+      where: { userId: ctx.user.id },
+      include: {
+        product: { select: { id: true, price: true, stock: true, vendorId: true } },
+      },
+    });
+
+    if (cartItems.length === 0) {
+      throw new TRPCError({ code: 'BAD_REQUEST', message: 'Cart is empty' });
+    }
+
+    const shortage = cartItems.find((i) => i.product.stock < i.quantity);
+    if (shortage) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: `Insufficient stock for product #${shortage.productId} (available: ${shortage.product.stock})`,
+      });
+    }
+
+    const total = cartItems.reduce((sum, i) => sum + Number(i.product.price) * i.quantity, 0);
+    const totalItems = cartItems.reduce((sum, i) => sum + i.quantity, 0);
+
+    await prisma.$transaction(async (tx) => {
+      for (const item of cartItems) {
+        const amount = Number(item.product.price) * item.quantity;
+        await tx.product.update({
+          where: { id: item.productId },
+          data: {
+            stock: { decrement: item.quantity },
+            sales: { increment: item.quantity },
+          },
+        });
+        await tx.vendor.update({
+          where: { id: item.product.vendorId },
+          data: { totalSales: { increment: amount } },
+        });
+      }
+      await tx.cartItem.deleteMany({ where: { userId: ctx.user.id } });
+    });
+
+    return { success: true, items: totalItems, total };
+  }),
+
   // ── Categories ────────────────────────────────────────
   productCategories: publicProcedure.query(async () => {
     return prisma.productCategory.findMany({ orderBy: { sortOrder: 'asc' } });
