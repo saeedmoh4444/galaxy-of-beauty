@@ -1239,9 +1239,11 @@ model Product {
   price       Decimal  @db.Decimal(10, 2)
   comparePrice Decimal? @db.Decimal(10, 2) // "Was" price for discounts
   stock       Int      @default(0)
+  sales       Int      @default(0) // B.3: units sold (vendor portal metric)
   imageUrl    String?
   images      String[] // Additional images
   brand       String?
+  emoji       String   @default("") // B.3: product card icon
   isActive    Boolean  @default(true)
   isFeatured  Boolean  @default(false)
   tags        String[] // organic, vegan, cruelty-free, etc.
