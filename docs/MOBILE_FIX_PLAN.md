@@ -177,14 +177,20 @@ remaining ungated, mobile tsc + lint clean, API suite 823/823.
      sales vs salon deals have different trust signals.)
 8. **Tech profile page upgrade** (user finding, 2026-09-03 — the page looks
    complete but half of it doesn't work):
-   - **Fix the stub save**: `handleProfileSave` only saves the name —
-     city/area/bio/bufferMinutes/isEcoFriendly are decorative (no backend
-     endpoint). Add `technicians.updateProfile` and wire the form.
-   - **Stats row**: ratingAvg / totalReviews / completedBookings (in the
-     model, never shown).
-   - **Contact + location**: phone from the user record; lat/lng later.
-   - **Custom price editing** per service (currently display-only;
-     `addService` takes no price).
+   - ✅ **Fix the stub save** — DONE (2026-09-06): added
+     `technicians.updateProfile` (partial updates; bioAr/bioEn merge into
+     bioJson per-language) and wired the web form (name + tech fields save
+     together). Web hydration also fixed: it read `bioAr`/`bioEn` but the
+     model stores `bioJson`. Test: `technician-profile.test.ts` (5 tests).
+   - ✅ **Stats row** — DONE (2026-09-06): web profile shows ratingAvg /
+     totalReviews / completedBookings + phone (user record). Mobile shows
+     the same + city/area/bio/buffer (was reading fields off the wrong
+     object — `data.city` on User).
+   - ✅ **Custom price editing** — DONE (2026-09-06): backend existed
+     (`addService` customPrice + `updateService`); wired web UI — price
+     input on add, inline per-service price editor with save.
+   - Remaining: lat/lng location editing (later); mobile edit form exists
+     now (city/area/bio/buffer/eco) but not service/price management.
 9. **Certification system upgrade** (user request, 2026-09-03 — "more
    advanced"; today = 2 hardcoded quizzes, 5 questions, MCQ-only):
    - **Attempt lifecycle + question banks**: quizzes/questions → DB models

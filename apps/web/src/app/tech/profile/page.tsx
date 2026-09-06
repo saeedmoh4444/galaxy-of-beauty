@@ -14,6 +14,43 @@ const KYC_BADGES: Record<string, { colour: string; labelKey: TranslationKey }> =
   REJECTED: { colour: 'bg-red-100 text-red-700', labelKey: 'tech.profile.kyc-rejected' },
 };
 
+/** Inline custom-price editor for one technician service mapping (B.8c). */
+function ServicePriceEditor({
+  mappingId,
+  initialPrice,
+  saving,
+  onSave,
+}: {
+  mappingId: number;
+  initialPrice: number;
+  saving: boolean;
+  onSave: (mappingId: number, price: number) => void;
+}): JSX.Element {
+  const { t } = useLocale();
+  const [price, setPrice] = useState(String(initialPrice));
+  const dirty = Number(price) !== initialPrice && Number.isFinite(Number(price));
+
+  return (
+    <div className="flex items-center gap-2">
+      <Input
+        type="number"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+        className="w-28"
+        aria-label={t('tech.profile.custom-price')}
+      />
+      <Button
+        size="sm"
+        disabled={!dirty}
+        loading={saving}
+        onClick={() => onSave(mappingId, Number(price))}
+      >
+        {t('tech.profile.save-price')}
+      </Button>
+    </div>
+  );
+}
+
 export default function TechProfilePage(): JSX.Element {
   const { t, locale } = useLocale();
   const { data, isLoading, isError, refetch } = api.auth.me.useQuery();
@@ -22,7 +59,11 @@ export default function TechProfilePage(): JSX.Element {
   const removeServiceMut = api.technicians.removeService.useMutation({
     onSuccess: () => refetch(),
   });
+  const updateServiceMut = api.technicians.updateService.useMutation({
+    onSuccess: () => refetch(),
+  });
   const submitKycMut = api.technicians.submitKyc.useMutation({ onSuccess: () => refetch() });
+  const updateTechMut = api.technicians.updateProfile.useMutation();
 
   const me = data as unknown as Record<string, unknown>;
   const tech = me?.technician as Record<string, unknown> | undefined;
@@ -43,6 +84,7 @@ export default function TechProfilePage(): JSX.Element {
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
   const [bufferMinutes, setBufferMinutes] = useState(5);
   const [profileMsg, setProfileMsg] = useState('');
+  const [profileErr, setProfileErr] = useState(false);
 
   // KYC
   const [docType, setDocType] = useState('NATIONAL_ID');
@@ -51,16 +93,18 @@ export default function TechProfilePage(): JSX.Element {
 
   // Service selection
   const [selectedServiceId, setSelectedServiceId] = useState<number | null>(null);
+  const [customPrice, setCustomPrice] = useState('');
   const [serviceMsg, setServiceMsg] = useState('');
 
   // Hydrate form when data loads
   const [_hydrated, setHydrated] = useState(false);
   if (data && !_hydrated) {
+    const bio = tech?.bioJson as Record<string, string> | undefined;
     setName((me?.name as string) ?? '');
     setCity((tech?.city as string) ?? '');
     setArea((tech?.area as string) ?? '');
-    setBioAr((tech?.bioAr as string) ?? '');
-    setBioEn((tech?.bioEn as string) ?? '');
+    setBioAr(bio?.['ar'] ?? '');
+    setBioEn(bio?.['en'] ?? '');
     setIsEcoFriendly((tech?.isEcoFriendly as boolean) ?? false);
     setBufferMinutes((tech?.bufferMinutes as number) ?? 5);
     setHydrated(true);
@@ -80,27 +124,39 @@ export default function TechProfilePage(): JSX.Element {
   };
 
   /* ---------- Profile save ---------- */
-  const profileMut = api.auth.updateProfile.useMutation({
-    onSuccess: () => {
+  const profileMut = api.auth.updateProfile.useMutation();
+
+  const handleProfileSave = async () => {
+    setProfileMsg('');
+    setProfileErr(false);
+    try {
+      await profileMut.mutateAsync({ name: name || undefined });
+      await updateTechMut.mutateAsync({
+        city: city || undefined,
+        area: area || undefined,
+        bioAr: bioAr || undefined,
+        bioEn: bioEn || undefined,
+        bufferMinutes: Number.isFinite(bufferMinutes) ? bufferMinutes : undefined,
+        isEcoFriendly,
+      });
       setProfileMsg(t('tech.profile.saved-msg'));
       refetch();
-    },
-    onError: (e) => setProfileMsg(e.message),
-  });
-
-  const handleProfileSave = () => {
-    setProfileMsg('');
-    profileMut.mutate({ name: name || undefined });
-    // Tech-specific fields (city, area, bioAr, bioEn, isEcoFriendly, bufferMinutes)
-    // require a dedicated endpoint on the backend. Stub message for now.
-    setProfileMsg(t('tech.profile.stub-msg'));
+    } catch (e) {
+      setProfileErr(true);
+      setProfileMsg(e instanceof Error ? e.message : String(e));
+    }
   };
 
   /* ---------- Services ---------- */
   const handleAddService = () => {
     if (!selectedServiceId) return;
-    addServiceMut.mutate({ serviceId: selectedServiceId });
+    const price = Number(customPrice);
+    addServiceMut.mutate({
+      serviceId: selectedServiceId,
+      customPrice: Number.isFinite(price) && price > 0 ? price : undefined,
+    });
     setSelectedServiceId(null);
+    setCustomPrice('');
     setServiceMsg(t('tech.profile.service-added'));
   };
 
@@ -176,9 +232,7 @@ export default function TechProfilePage(): JSX.Element {
             <Card>
               <h2 className="mb-4 text-lg font-semibold">{t('tech.profile.personal-info')}</h2>
               {profileMsg && (
-                <p
-                  className={`mb-3 text-sm ${profileMut.isError ? 'text-red-600' : 'text-green-600'}`}
-                >
+                <p className={`mb-3 text-sm ${profileErr ? 'text-red-600' : 'text-green-600'}`}>
                   {profileMsg}
                 </p>
               )}
@@ -236,9 +290,47 @@ export default function TechProfilePage(): JSX.Element {
                 </div>
               </div>
               <div className="mt-4">
-                <Button onClick={handleProfileSave} loading={profileMut.isPending}>
+                <Button
+                  onClick={handleProfileSave}
+                  loading={profileMut.isPending || updateTechMut.isPending}
+                >
                   {t('tech.profile.save-changes')}
                 </Button>
+              </div>
+            </Card>
+
+            {/* ── Stats ── */}
+            <Card>
+              <h2 className="mb-4 text-lg font-semibold">{t('tech.profile.stats-title')}</h2>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                <div className="rounded-xl bg-surface-muted p-4 text-center dark:bg-gray-800">
+                  <p className="text-2xl font-bold text-amber-500">
+                    {(tech?.ratingAvg as number) ?? 0}
+                  </p>
+                  <p className="mt-1 text-xs text-text-secondary">{t('tech.profile.rating')}</p>
+                </div>
+                <div className="rounded-xl bg-surface-muted p-4 text-center dark:bg-gray-800">
+                  <p className="text-2xl font-bold text-text-primary dark:text-gray-100">
+                    {String((tech?.totalReviews as number) ?? 0)}
+                  </p>
+                  <p className="mt-1 text-xs text-text-secondary">
+                    {t('tech.profile.total-reviews')}
+                  </p>
+                </div>
+                <div className="rounded-xl bg-surface-muted p-4 text-center dark:bg-gray-800">
+                  <p className="text-2xl font-bold text-brand-600 dark:text-brand-300">
+                    {String((tech?.completedBookings as number) ?? 0)}
+                  </p>
+                  <p className="mt-1 text-xs text-text-secondary">
+                    {t('tech.profile.completed-bookings')}
+                  </p>
+                </div>
+                <div className="rounded-xl bg-surface-muted p-4 text-center dark:bg-gray-800">
+                  <p className="truncate text-sm font-bold text-text-primary dark:text-gray-100">
+                    {(me?.phone as string) ?? '—'}
+                  </p>
+                  <p className="mt-1 text-xs text-text-secondary">{t('tech.profile.phone')}</p>
+                </div>
               </div>
             </Card>
 
@@ -261,6 +353,13 @@ export default function TechProfilePage(): JSX.Element {
                     </option>
                   ))}
                 </select>
+                <Input
+                  type="number"
+                  placeholder={t('tech.profile.custom-price')}
+                  value={customPrice}
+                  onChange={(e) => setCustomPrice(e.target.value)}
+                  className="w-36"
+                />
                 <Button
                   onClick={handleAddService}
                   loading={addServiceMut.isPending}
@@ -282,26 +381,45 @@ export default function TechProfilePage(): JSX.Element {
                 <div className="space-y-2">
                   {servicesList.map((mapping: Record<string, unknown>) => {
                     const svc = mapping.service as Record<string, unknown> | undefined;
+                    const mappingId = mapping.id as number;
                     return (
-                      <Card key={mapping.id as number} padding="sm">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-medium">{localize(svc?.titleJson, locale)}</p>
+                      <Card key={mappingId} padding="sm">
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate font-medium">
+                              {localize(svc?.titleJson, locale)}
+                            </p>
                             <p className="text-xs text-text-secondary">
-                              {Number(mapping.customPrice ?? svc?.basePrice ?? 0)} {t('misc.sar')}
+                              {t('tech.profile.base-price')}: {Number(svc?.basePrice ?? 0)}{' '}
+                              {t('misc.sar')}
                             </p>
                           </div>
-                          <Button
-                            size="sm"
-                            variant="danger"
-                            onClick={() => handleRemoveService(mapping.id as number)}
-                            loading={
-                              removeServiceMut.isPending &&
-                              removeServiceMut.variables?.mappingId === mapping.id
-                            }
-                          >
-                            {t('tech.profile.remove')}
-                          </Button>
+                          <div className="flex items-center gap-2">
+                            <ServicePriceEditor
+                              mappingId={mappingId}
+                              initialPrice={Number(mapping.customPrice ?? svc?.basePrice ?? 0)}
+                              saving={
+                                updateServiceMut.isPending &&
+                                updateServiceMut.variables?.mappingId === mappingId
+                              }
+                              onSave={(id, price) => {
+                                if (Number.isFinite(price) && price > 0) {
+                                  updateServiceMut.mutate({ mappingId: id, customPrice: price });
+                                }
+                              }}
+                            />
+                            <Button
+                              size="sm"
+                              variant="danger"
+                              onClick={() => handleRemoveService(mappingId)}
+                              loading={
+                                removeServiceMut.isPending &&
+                                removeServiceMut.variables?.mappingId === mappingId
+                              }
+                            >
+                              {t('tech.profile.remove')}
+                            </Button>
+                          </div>
                         </div>
                       </Card>
                     );
