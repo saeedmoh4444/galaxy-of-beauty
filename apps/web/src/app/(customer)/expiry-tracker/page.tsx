@@ -2,13 +2,16 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function ExpiryTrackerPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: cats } = api.expiryTracker.categories.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: cats } = api.expiryTracker.categories.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
   };
   const {
@@ -16,7 +19,7 @@ export default function ExpiryTrackerPage(): JSX.Element {
     isLoading,
     isError,
     refetch,
-  } = api.expiryTracker.myItems.useQuery() as {
+  } = api.expiryTracker.myItems.useQuery(undefined, { enabled: isAuthenticated }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
     isError: boolean;

@@ -1,15 +1,20 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, DashboardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, DashboardSkeleton, Button, formatCurrency, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminReportsPage(): JSX.Element {
   const { t } = useLocale();
-  const { data, isLoading } = api.adminReports.dashboard.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading } = api.adminReports.dashboard.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
   };
-  const { data: csv } = api.adminReports.exportCSV.useQuery() as {
+  const { data: csv } = api.adminReports.exportCSV.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, string> | undefined;
   };
 

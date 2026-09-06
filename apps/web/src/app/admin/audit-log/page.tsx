@@ -11,6 +11,7 @@ import {
   Button,
   Pagination,
   PageContainer,
+  useAuth,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { type TranslationKey } from '@galaxy/shared';
@@ -30,6 +31,7 @@ const ACTION_OPTIONS: Array<{ value: string; labelKey: TranslationKey }> = [
 
 export default function AuditLogPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [page, setPage] = useState(1);
   const [actionFilter, setActionFilter] = useState('');
   const [targetFilter, setTargetFilter] = useState('');
@@ -43,7 +45,9 @@ export default function AuditLogPage(): JSX.Element {
     adminId: adminFilter ? Number(adminFilter) : undefined,
   };
 
-  const { data, isLoading, isError, refetch } = api.admin.auditLogs.useQuery(input) ?? {
+  const { data, isLoading, isError, refetch } = api.admin.auditLogs.useQuery(input, {
+    enabled: isAuthenticated,
+  }) ?? {
     data: undefined,
     isLoading: false,
     isError: false,

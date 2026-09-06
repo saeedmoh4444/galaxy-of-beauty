@@ -79,12 +79,13 @@ const MARKETING_FEATURES = [
 // ---------------------------------------------------------------------------
 function BridalDashboard(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const {
     data: concierge,
     isLoading,
     isError,
     refetch,
-  } = api.bridalConcierge.get.useQuery() as {
+  } = api.bridalConcierge.get.useQuery(undefined, { enabled: isAuthenticated }) as {
     data: ConciergeData | null | undefined;
     isLoading: boolean;
     isError: boolean;

@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, formatCurrency, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize, type TranslationKey } from '@galaxy/shared';
 
@@ -14,7 +14,10 @@ const EVENT_TYPES: Array<{ key: string; labelKey: TranslationKey }> = [
 
 export default function AdminBeautyEventsPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: events, isLoading } = api.beautyEvents.listAll.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: events, isLoading } = api.beautyEvents.listAll.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };

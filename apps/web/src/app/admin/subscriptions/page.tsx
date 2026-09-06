@@ -1,11 +1,14 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, formatCurrency, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminSubscriptionsPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: plans, isLoading } = api.subscriptions.getPlans.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: plans, isLoading } = api.subscriptions.getPlans.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };

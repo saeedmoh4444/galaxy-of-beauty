@@ -12,6 +12,7 @@ import {
   Input,
   Modal,
   formatCurrency,
+  useAuth,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -62,6 +63,7 @@ const STATUSES = ['ALL', 'ACTIVE', 'INACTIVE'] as const;
 
 export default function AdminServicesPage(): JSX.Element {
   const { t } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [search, setSearch] = useState('');
   const [catFilter, setCatFilter] = useState<number | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
@@ -72,7 +74,10 @@ export default function AdminServicesPage(): JSX.Element {
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [variantForm, setVariantForm] = useState<VariantForm>(emptyVariantForm);
 
-  const { data, isLoading, isError, refetch } = api.services.list.useQuery({ limit: 50 });
+  const { data, isLoading, isError, refetch } = api.services.list.useQuery(
+    { limit: 50 },
+    { enabled: isAuthenticated },
+  );
   const createMut = api.services.create.useMutation({
     onSuccess: () => {
       refetch();
@@ -91,7 +96,7 @@ export default function AdminServicesPage(): JSX.Element {
   const addVariantMut = api.services.createVariant.useMutation({ onSuccess: () => refetch() });
   const removeVariantMut = api.services.deleteVariant.useMutation({ onSuccess: () => refetch() });
 
-  const catsQuery = api.categories.all.useQuery();
+  const catsQuery = api.categories.all.useQuery(undefined, { enabled: isAuthenticated });
   const categories: CategoryItem[] = catsQuery.data ?? [];
   const services: ServiceItem[] = data?.items ?? [];
 

@@ -1,11 +1,14 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, KPIRowSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, formatCurrency, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminAnalyticsV2Page(): JSX.Element {
   const { t } = useLocale();
-  const { data, isLoading } = api.adminAnalyticsV2.dashboard.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading } = api.adminAnalyticsV2.dashboard.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
   };

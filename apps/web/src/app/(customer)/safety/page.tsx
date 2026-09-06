@@ -13,14 +13,18 @@ import {
   FaceBlurToggle,
   IncognitoModeBadge,
   ConsentShield,
+  useAuth,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function SafetyPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const emergencyContacts = api.safety.getContacts.useQuery();
-  const latestBooking = api.bookings.list.useQuery({ limit: 1 });
+  const { isAuthenticated } = useAuth();
+  const emergencyContacts = api.safety.getContacts.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const latestBooking = api.bookings.list.useQuery({ limit: 1 }, { enabled: isAuthenticated });
 
   const booking = latestBooking?.data?.bookings?.[0];
 

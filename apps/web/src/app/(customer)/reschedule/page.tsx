@@ -1,14 +1,18 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { bookingStatusLabelKey } from '@/lib/bookingStatus';
 
 export default function ReschedulePage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: bookingsData, isLoading } = api.bookings.list.useQuery({ page: 1, limit: 20 }) as {
+  const { isAuthenticated } = useAuth();
+  const { data: bookingsData, isLoading } = api.bookings.list.useQuery(
+    { page: 1, limit: 20 },
+    { enabled: isAuthenticated },
+  ) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
     isError: boolean;

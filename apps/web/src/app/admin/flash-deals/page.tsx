@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, formatCurrency, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 const SERVICES = [
@@ -15,7 +15,10 @@ const SERVICES = [
 
 export default function AdminFlashDealsPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: active, isLoading } = api.flashDeals.active.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: active, isLoading } = api.flashDeals.active.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };

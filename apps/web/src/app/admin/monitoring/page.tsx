@@ -1,6 +1,14 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, KPIRowSkeleton, ErrorAlert, EmptyState, PageContainer, StatCard } from '@galaxy/ui';
+import {
+  Card,
+  KPIRowSkeleton,
+  ErrorAlert,
+  EmptyState,
+  PageContainer,
+  StatCard,
+  useAuth,
+} from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { type TranslationKey } from '@galaxy/shared';
 
@@ -21,18 +29,21 @@ const SERVICE_LABEL_KEYS: Record<string, TranslationKey> = {
 
 export default function MonitoringPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const {
     data: health,
     isLoading,
     isError,
     refetch,
-  } = api.monitoring.health.useQuery() as {
+  } = api.monitoring.health.useQuery(undefined, { enabled: isAuthenticated }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
     isError: boolean;
     refetch: () => void;
   };
-  const { data: errors } = api.monitoring.errorsFeed.useQuery() as {
+  const { data: errors } = api.monitoring.errorsFeed.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, unknown> | undefined;
   };
 

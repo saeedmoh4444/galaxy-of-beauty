@@ -1,14 +1,18 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, formatCurrency, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminGroupBookingsPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: groupData, isLoading } = api.groupBookings.listAll.useQuery({
-    page: 1,
-    limit: 20,
-  }) as { data: Record<string, unknown> | undefined; isLoading: boolean };
+  const { isAuthenticated } = useAuth();
+  const { data: groupData, isLoading } = api.groupBookings.listAll.useQuery(
+    {
+      page: 1,
+      limit: 20,
+    },
+    { enabled: isAuthenticated },
+  ) as { data: Record<string, unknown> | undefined; isLoading: boolean };
   const groups = (groupData?.items as Array<Record<string, unknown>>) ?? [];
 
   return (

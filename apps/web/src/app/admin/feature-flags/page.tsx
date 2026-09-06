@@ -2,7 +2,7 @@
 
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
-import { Card, TableSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, TableSkeleton, ErrorAlert, Button, useAuth } from '@galaxy/ui';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -10,8 +10,11 @@ type FlagItem = RouterOutputs['featureFlags']['list'][number];
 
 export default function FeatureFlagsPage(): JSX.Element {
   const { t } = useLocale();
+  const { isAuthenticated } = useAuth();
   const { addToast } = useToast();
-  const { data, isLoading, isError, refetch } = api.featureFlags.list.useQuery();
+  const { data, isLoading, isError, refetch } = api.featureFlags.list.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const flags: FlagItem[] = data ?? [];
   const toggleMut = api.featureFlags.toggle.useMutation({
     onSuccess: () => {

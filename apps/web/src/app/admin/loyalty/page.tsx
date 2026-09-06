@@ -1,11 +1,14 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminLoyaltyPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: rewards, isLoading: rwLoading } = api.loyalty.listRewards.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: rewards, isLoading: rwLoading } = api.loyalty.listRewards.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };

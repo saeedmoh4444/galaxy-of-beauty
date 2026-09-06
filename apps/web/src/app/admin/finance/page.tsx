@@ -12,6 +12,7 @@ import {
   Button,
   Input,
   formatCurrency,
+  useAuth,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -20,8 +21,14 @@ type PayoutItem = NonNullable<RouterOutput['payouts']['listForAdmin']>['payouts'
 
 export default function AdminFinancePage(): JSX.Element {
   const { t } = useLocale();
-  const financials = api.admin.getFinancials.useQuery();
-  const payouts = api.payouts.listForAdmin.useQuery({ page: 1, limit: 20 });
+  const { isAuthenticated } = useAuth();
+  const financials = api.admin.getFinancials.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const payouts = api.payouts.listForAdmin.useQuery(
+    { page: 1, limit: 20 },
+    { enabled: isAuthenticated },
+  );
   const calculateMut = api.payouts.calculate.useMutation();
   const [periodStart, setPeriodStart] = useState('');
   const [periodEnd, setPeriodEnd] = useState('');
